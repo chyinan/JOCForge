@@ -1,0 +1,6 @@
+/target/
+/artifacts/mvp/*
+!/artifacts/mvp/.gitkeep
+*.ec3
+*.bw64
+*.wav
