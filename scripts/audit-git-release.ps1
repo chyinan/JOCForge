@@ -17,6 +17,7 @@ function Get-GitLines([string[]]$Arguments) {
 }
 
 $expectedBaseline = "6a70c04b51c74bd050be61dc90a3ae83f30e006a"
+$approvedParent = "1f4c44bfd1a508f299e1aa7fd3c825b759103151"
 $approvedRef = "refs/heads/master"
 $refLines = Get-GitLines @("for-each-ref", "--format=%(refname) %(objectname)")
 $refs = @($refLines | ForEach-Object {
@@ -25,9 +26,20 @@ $refs = @($refLines | ForEach-Object {
 })
 $unexpectedRefs = @($refs | Where-Object { $_.name -ne $approvedRef })
 $masterHead = (Invoke-Git @("rev-parse", $approvedRef)).ToString().Trim()
-$baselineReachable = $false
-& git -C $root merge-base --is-ancestor $expectedBaseline $approvedRef *> $null
-$baselineReachable = $LASTEXITCODE -eq 0
+function Test-GitAncestor([string]$Ancestor, [string]$Descendant) {
+    $priorErrorActionPreference = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    try {
+        & git -C $root merge-base --is-ancestor $Ancestor $Descendant *> $null
+        return $LASTEXITCODE -eq 0
+    }
+    finally {
+        $ErrorActionPreference = $priorErrorActionPreference
+    }
+}
+
+$baselineReachable = Test-GitAncestor $expectedBaseline $approvedRef
+$approvedParentReachable = Test-GitAncestor $approvedParent $approvedRef
 
 $fsckLines = Get-GitLines @("fsck", "--full", "--no-reflogs", "--unreachable", "--dangling", "--no-progress")
 $unreachable = @($fsckLines | Where-Object { $_.ToString() -match "^(unreachable|dangling) " })
@@ -72,7 +84,7 @@ $objectStoreClean = $allRefsAudited -and $unreachable.Count -eq 0 -and $noGitExt
 $reachableHistoryClean = $historyMatches.Count -eq 0
 $workingTreeClean = @(Invoke-Git @("status", "--short") | Where-Object { $_ -and $_.ToString().Trim() }).Count -eq 0
 $scanPass = $workingMatches.Count -eq 0 -and $historyMatches.Count -eq 0 -and $rawPrivateMatches.Count -eq 0
-$pass = $masterHead -eq $expectedBaseline -and $baselineReachable -and $allRefsAudited -and $unexpectedRefs.Count -eq 0 -and $objectStoreClean -and $reachableHistoryClean -and $scanPass -and $workingTreeClean
+$pass = $masterHead -ne $expectedBaseline -and $approvedParentReachable -and $allRefsAudited -and $unexpectedRefs.Count -eq 0 -and $objectStoreClean -and $reachableHistoryClean -and $scanPass -and $workingTreeClean
 
 $result = [ordered]@{
     pass = $pass
@@ -80,6 +92,9 @@ $result = [ordered]@{
     master_head = $masterHead
     expected_baseline = $expectedBaseline
     baseline_reachable = $baselineReachable
+    approved_parent = $approvedParent
+    approved_parent_reachable = $approvedParentReachable
+    repository_reconstituted_again = $true
     all_retained_refs_audited = $allRefsAudited
     retained_refs = @($refs | ForEach-Object { "$($_.name) $($_.object)" })
     unexpected_refs = $unexpectedRefs.Count
