@@ -2,7 +2,7 @@
 
 use jocforge_core::{
     AdmObjectKind, AdmPosition, ReductionConfig, ReductionSource, reduce_scene,
-    reduction_assignment_changes,
+    reduction_assignment_changes, reduction_identity_changes,
 };
 
 fn source(ordinal: usize) -> ReductionSource {
@@ -140,4 +140,26 @@ fn positive_contribution_gain_is_not_counted_as_a_silent_drop() {
             .iter()
             .all(|accounting| accounting.contribution_gain > 0.0)
     );
+}
+
+#[test]
+fn coded_identity_metric_ignores_member_reordering_when_representatives_persist() {
+    let sources = (0..20).map(source).collect::<Vec<_>>();
+    let first = reduce_scene(&sources, ReductionConfig::default()).expect("first reduction");
+    let mut reordered = first.clone();
+    reordered.coded_objects.swap(0, 1);
+
+    assert_eq!(reduction_identity_changes(&first, &reordered), 0);
+    assert_eq!(reduction_identity_changes(&first, &first), 0);
+    assert_eq!(reduction_assignment_changes(&first, &reordered), 0);
+}
+
+#[test]
+fn coded_identity_metric_counts_a_representative_replacement_once() {
+    let sources = (0..20).map(source).collect::<Vec<_>>();
+    let first = reduce_scene(&sources, ReductionConfig::default()).expect("first reduction");
+    let mut changed = first.clone();
+    changed.coded_objects[0].representative_source_index = usize::MAX;
+
+    assert_eq!(reduction_identity_changes(&first, &changed), 1);
 }

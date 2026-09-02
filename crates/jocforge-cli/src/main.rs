@@ -15,8 +15,9 @@ use file_scan::{read_pcm_frame, scan_bw64_file};
 
 use jocforge_core::{
     AdmObject, AdmObjectKind, JocProfile, ReductionConfig, ReductionSource,
-    factorize_source_derived, generate_synthetic_scene_fixture, package_source_derived_access_unit,
-    parse_bw64_adm_metadata, profile_spec, reduce_scene_with_previous, write_one_au_proof,
+    factorize_source_derived, generate_synthetic_scene_fixture,
+    package_source_derived_access_unit_with_frame_sizes, parse_bw64_adm_metadata, profile_spec,
+    rate_budget, reduce_scene_with_previous, write_one_au_proof,
 };
 
 const JOC_FRAME_SAMPLES: usize = 1536;
@@ -36,11 +37,93 @@ fn run(arguments: &[String]) -> Result<(), String> {
     match arguments.first().map(String::as_str) {
         Some("proof") => run_proof(&arguments[1..]),
         Some("fixture") => run_fixture(&arguments[1..]),
+        Some("fixture-directspeakers") => run_direct_speaker_fixture(&arguments[1..]),
+        Some("fixture-unsupported") => run_unsupported_fixture(&arguments[1..]),
         Some("inspect-adm") => run_inspect_adm(&arguments[1..]),
         Some("encode") => run_encode(&arguments[1..]),
+        Some("temporal") => run_temporal(&arguments[1..]),
+        Some("temporal-adversarial") => run_temporal_adversarial(&arguments[1..]),
         Some(command) => Err(format!("unsupported command '{command}'")),
-        None => Err("usage: jocforge proof|fixture|inspect-adm ...".to_owned()),
+        None => Err(
+            "usage: jocforge proof|fixture|fixture-directspeakers|fixture-unsupported|inspect-adm|encode|temporal ..."
+                .to_owned(),
+        ),
     }
+}
+
+fn run_temporal(arguments: &[String]) -> Result<(), String> {
+    let [output] = arguments else {
+        return Err("usage: jocforge temporal OUTPUT.csv".to_owned());
+    };
+    write_temporal_metrics(
+        &PathBuf::from(output),
+        jocforge_core::temporal_corpus(),
+        ReductionConfig::default(),
+    )
+}
+
+fn run_temporal_adversarial(arguments: &[String]) -> Result<(), String> {
+    let (output, config) = match arguments {
+        [output] => (output.as_str(), ReductionConfig::default()),
+        [flag, output] if flag == "--no-continuity" => (
+            output.as_str(),
+            ReductionConfig {
+                temporal_continuity_weight: 0.0,
+                ..ReductionConfig::default()
+            },
+        ),
+        _ => {
+            return Err(
+                "usage: jocforge temporal-adversarial [--no-continuity] OUTPUT.csv".to_owned(),
+            );
+        }
+    };
+    write_temporal_metrics(
+        &PathBuf::from(output),
+        jocforge_core::adversarial_temporal_corpus(),
+        config,
+    )
+}
+
+fn write_temporal_metrics(
+    output: &Path,
+    scenes: Vec<jocforge_core::TemporalScene>,
+    config: ReductionConfig,
+) -> Result<(), String> {
+    let mut csv = String::from(
+        "scene,frame_count,authored_source_count,maximum_coded_object_count,silent_object_drops,maximum_source_reconstruction_error,maximum_spatial_representation_error,maximum_cross_object_leakage,minimum_headroom_margin,total_assignment_changes,total_coded_identity_changes,assignment_changes_per_minute,max_sliding_window_changes,minimum_coded_identity_lifetime_frames,median_coded_identity_lifetime_frames,reassignment_burstiness,maximum_position_jump,maximum_trajectory_error,maximum_gain_jump,maximum_pcm_boundary_discontinuity,maximum_reconstruction_error_change,maximum_speaker_render_discontinuity,stationary_assignment_churn_after_initialization\n",
+    );
+    for scene in scenes {
+        let metrics = jocforge_core::analyze_temporal_scene_with_config(&scene, config)?;
+        let _ = writeln!(
+            csv,
+            "{},{},{},{},{},{:.17e},{:.17e},{:.17e},{:.17e},{},{},{:.17e},{},{},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{}",
+            metrics.scene,
+            metrics.frame_count,
+            metrics.authored_source_count,
+            metrics.maximum_coded_object_count,
+            metrics.silent_object_drops,
+            metrics.maximum_source_reconstruction_error,
+            metrics.maximum_spatial_representation_error,
+            metrics.maximum_cross_object_leakage,
+            metrics.minimum_headroom_margin,
+            metrics.total_assignment_changes,
+            metrics.total_coded_identity_changes,
+            metrics.assignment_changes_per_minute,
+            metrics.max_sliding_window_changes,
+            metrics.minimum_coded_identity_lifetime_frames,
+            metrics.median_coded_identity_lifetime_frames,
+            metrics.reassignment_burstiness,
+            metrics.maximum_position_jump,
+            metrics.maximum_trajectory_error,
+            metrics.maximum_gain_jump,
+            metrics.maximum_pcm_boundary_discontinuity,
+            metrics.maximum_reconstruction_error_change,
+            metrics.maximum_speaker_render_discontinuity,
+            metrics.stationary_assignment_churn_after_initialization,
+        );
+    }
+    write_output(output, csv.into_bytes(), "temporal metrics")
 }
 
 fn run_proof(arguments: &[String]) -> Result<(), String> {
@@ -79,9 +162,54 @@ fn run_fixture(arguments: &[String]) -> Result<(), String> {
     write_output(&output, fixture.bw64_header_and_pcm, "fixture")
 }
 
+fn run_direct_speaker_fixture(arguments: &[String]) -> Result<(), String> {
+    let [flag, seconds, output] = arguments else {
+        return Err("usage: jocforge fixture-directspeakers --seconds N OUTPUT.bw64".to_owned());
+    };
+    if flag != "--seconds" {
+        return Err("usage: jocforge fixture-directspeakers --seconds N OUTPUT.bw64".to_owned());
+    }
+    let seconds = seconds
+        .parse::<u32>()
+        .map_err(|error| format!("invalid fixture duration '{seconds}': {error}"))?;
+    let fixture = jocforge_core::generate_synthetic_direct_speaker_fixture(seconds)?;
+    write_output(
+        &PathBuf::from(output),
+        fixture.bw64_header_and_pcm,
+        "DirectSpeakers fixture",
+    )
+}
+
+fn run_unsupported_fixture(arguments: &[String]) -> Result<(), String> {
+    let [flag, seconds, output] = arguments else {
+        return Err("usage: jocforge fixture-unsupported --seconds N OUTPUT.bw64".to_owned());
+    };
+    if flag != "--seconds" {
+        return Err("usage: jocforge fixture-unsupported --seconds N OUTPUT.bw64".to_owned());
+    }
+    let seconds = seconds
+        .parse::<u32>()
+        .map_err(|error| format!("invalid fixture duration '{seconds}': {error}"))?;
+    let fixture = jocforge_core::generate_synthetic_unsupported_fixture(seconds)?;
+    write_output(
+        &PathBuf::from(output),
+        fixture.bw64_header_and_pcm,
+        "unsupported fixture",
+    )
+}
+
 fn run_inspect_adm(arguments: &[String]) -> Result<(), String> {
-    let [input] = arguments else {
-        return Err("usage: jocforge inspect-adm INPUT.bw64".to_owned());
+    let (input, inventory_output) = match arguments {
+        [input] => (input.as_str(), None),
+        [input, flag, output] if flag == "--direct-speakers-csv" => {
+            (input.as_str(), Some(output.as_str()))
+        }
+        _ => {
+            return Err(
+                "usage: jocforge inspect-adm INPUT.bw64 [--direct-speakers-csv OUTPUT.csv]"
+                    .to_owned(),
+            );
+        }
     };
     let input = PathBuf::from(input);
     let scanned = scan_bw64_file(&input)?;
@@ -99,7 +227,7 @@ fn run_inspect_adm(arguments: &[String]) -> Result<(), String> {
         .collect::<Vec<_>>()
         .join(",");
     println!(
-        "form={} chunks={} chunk_ids={} data_offset={} data_bytes={} dbmd_bytes={} sample_rate={} channels={} samples={} tracks={} track_uids={} objects={} dynamic_objects={} direct_speakers={}",
+        "form={} chunks={} chunk_ids={} data_offset={} data_bytes={} dbmd_bytes={} sample_rate={} channels={} samples={} tracks={} track_uids={} objects={} dynamic_objects={} direct_speakers={} direct_speaker_channels={}",
         String::from_utf8_lossy(&scanned.form),
         scanned.chunks.len(),
         chunk_ids,
@@ -113,22 +241,121 @@ fn run_inspect_adm(arguments: &[String]) -> Result<(), String> {
         parsed.track_uid_count,
         parsed.objects.len(),
         parsed.dynamic_object_count(),
-        parsed.direct_speaker_count()
+        parsed.direct_speaker_count(),
+        parsed.direct_speaker_channel_count()
     );
+    if let Some(output) = inventory_output {
+        write_direct_speaker_inventory(&PathBuf::from(output), &parsed)?;
+    }
     Ok(())
 }
 
+fn write_direct_speaker_inventory(
+    path: &Path,
+    metadata: &jocforge_core::ParsedAdmMetadata,
+) -> Result<(), String> {
+    let programme_relationship = metadata
+        .programmes
+        .iter()
+        .flat_map(|programme| {
+            programme
+                .content_id_refs
+                .iter()
+                .map(|content_id| format!("{} -> {content_id}", programme.programme_id))
+        })
+        .collect::<Vec<_>>()
+        .join(";");
+    let mut output = String::from(
+        "object_id,object_name,pack_format_id,pack_format_name,channel_id,channel_name,track_uid,track_index,is_lfe,azimuth,elevation,distance,object_start,object_duration,block_rtime,block_duration,gain,programme_relationship\n",
+    );
+    for object in metadata
+        .objects
+        .iter()
+        .filter(|object| object.kind == AdmObjectKind::DirectSpeakers)
+    {
+        for channel in &object.channels {
+            let _ = writeln!(
+                output,
+                "{},{},{},{},{},{},{},{},{},{:.17e},{:.17e},{:.17e},{},{},{},{},{},{}",
+                csv_cell(&object.object_id),
+                csv_cell(&object.object_name),
+                csv_cell(&object.pack_format_id),
+                csv_cell(&object.pack_format_name),
+                csv_cell(&channel.channel_id),
+                csv_cell(&channel.channel_name),
+                csv_cell(&channel.track_uid),
+                channel.track_index,
+                channel.is_lfe,
+                channel.position.azimuth,
+                channel.position.elevation,
+                channel.position.distance,
+                csv_cell(object.start.as_deref().unwrap_or("")),
+                csv_cell(object.duration.as_deref().unwrap_or("")),
+                csv_cell(channel.block_rtime.as_deref().unwrap_or("")),
+                csv_cell(channel.block_duration.as_deref().unwrap_or("")),
+                csv_cell(channel.gain.as_deref().unwrap_or("")),
+                csv_cell(&programme_relationship),
+            );
+        }
+    }
+    write_output(path, output.into_bytes(), "DirectSpeakers inventory")
+}
+
+fn csv_cell(value: &str) -> String {
+    if value.contains([',', '"', '\r', '\n']) {
+        format!("\"{}\"", value.replace('"', "\"\""))
+    } else {
+        value.to_owned()
+    }
+}
+
 fn run_encode(arguments: &[String]) -> Result<(), String> {
-    let [input, output, flag, profile_name] = arguments else {
+    if arguments.len() < 4 || (arguments.len() - 4) % 2 != 0 {
         return Err(
-            "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile idx0|idx1|idx2".to_owned(),
-        );
-    };
-    if flag != "--profile" {
-        return Err(
-            "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile idx0|idx1|idx2".to_owned(),
+            "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile idx0|idx1|idx2 [--bitrate KBPS] [--temporal-weight VALUE]"
+                .to_owned(),
         );
     }
+    let input = &arguments[0];
+    let output = &arguments[1];
+    let flag = &arguments[2];
+    let profile_name = &arguments[3];
+    if flag != "--profile" {
+        return Err(
+            "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile idx0|idx1|idx2 [--bitrate KBPS] [--temporal-weight VALUE]"
+                .to_owned(),
+        );
+    }
+    let mut target_bitrate_kbps = 1664;
+    let mut temporal_continuity_weight = ReductionConfig::default().temporal_continuity_weight;
+    let mut option_index = 4;
+    while option_index < arguments.len() {
+        let option = &arguments[option_index];
+        let value = arguments
+            .get(option_index + 1)
+            .ok_or_else(|| "encode option is missing its value".to_owned())?;
+        match option.as_str() {
+            "--bitrate" => {
+                target_bitrate_kbps = value
+                    .parse::<u32>()
+                    .map_err(|error| format!("invalid total bitrate '{value}': {error}"))?;
+            }
+            "--temporal-weight" => {
+                temporal_continuity_weight = value.parse::<f64>().map_err(|error| {
+                    format!("invalid temporal continuity weight '{value}': {error}")
+                })?;
+            }
+            _ => {
+                return Err(
+                    "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile idx0|idx1|idx2 [--bitrate KBPS] [--temporal-weight VALUE]"
+                        .to_owned(),
+                );
+            }
+        }
+        option_index += 2;
+    }
+    let rate = rate_budget(target_bitrate_kbps)
+        .map_err(|error| format!("invalid encode budget: {error}"))?;
     let profile = parse_profile(profile_name)?;
     let input_path = PathBuf::from(input);
     let scanned = scan_bw64_file(&input_path)?;
@@ -164,8 +391,15 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
     }
     let track_indices = supported_objects
         .iter()
-        .map(|object| object.track_index)
+        .flat_map(|object| object.channels.iter().map(|channel| channel.track_index))
         .collect::<Vec<_>>();
+    let lfe_source_indices = supported_objects
+        .iter()
+        .flat_map(|object| object.channels.iter())
+        .enumerate()
+        .filter_map(|(index, channel)| channel.is_lfe.then_some(index))
+        .collect::<Vec<_>>();
+    let i0_channels = 5 + usize::from(!lfe_source_indices.is_empty());
     let rank = profile_spec(profile).input_labels.len();
     let frame_count = metadata.sample_count.div_ceil(JOC_FRAME_SAMPLES);
     let encoded_samples = frame_count
@@ -176,9 +410,12 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         .map_err(|error| format!("failed to create encoder work directory: {error}"))?;
     let i0_raw_path = work_root.join("carrier-i0.f32le");
     let i0_carrier_path = work_root.join("carrier-i0.ec3");
-    let reduction_config = ReductionConfig::default();
+    let reduction_config = ReductionConfig {
+        temporal_continuity_weight,
+        ..ReductionConfig::default()
+    };
     let mut metrics = String::from(
-        "record,frame,source_index,object_id,kind,coded_object_index,contribution_gain,source_energy,represented_energy,relative_error,spatial_error,source_count,coded_count,silent_drops,source_reconstruction_error,spatial_representation_error,cross_object_leakage,max_coded_peak,headroom_margin,assignment_changes\n",
+        "record,frame,source_index,object_id,kind,coded_object_index,contribution_gain,source_energy,represented_energy,relative_error,spatial_error,source_count,coded_count,silent_drops,source_reconstruction_error,spatial_representation_error,cross_object_leakage,max_coded_peak,headroom_margin,assignment_changes,coded_identity_changes,coded_representative_source_index,source_azimuth,source_elevation,source_distance,coded_azimuth,coded_elevation,coded_distance,coded_first_sample,coded_last_sample\n",
     );
     let mut previous_reduction = None;
     let mut raw_file = fs::File::create(&i0_raw_path).map_err(|error| {
@@ -189,7 +426,8 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
     })?;
     for frame_index in 0..frame_count {
         let source_pcm = read_pcm_frame(&input_path, &scanned, frame_index, &track_indices)?;
-        let sources = reduction_sources(&supported_objects, source_pcm)?;
+        let lfe_pcm = lfe_carrier(&source_pcm, &lfe_source_indices)?;
+        let sources = reduction_sources(&supported_objects, &source_pcm)?;
         let reduction =
             reduce_scene_with_previous(&sources, reduction_config, previous_reduction.as_ref())
                 .map_err(|error| {
@@ -203,25 +441,41 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         let factorization = factorize_source_derived(&object_pcm, rank).map_err(|error| {
             format!("failed to factorize reduced objects at frame {frame_index}: {error}")
         })?;
+        let mut i0_carriers = factorization.carriers[..5].to_vec();
+        if !lfe_source_indices.is_empty() {
+            i0_carriers.push(lfe_pcm);
+        }
         raw_file
-            .write_all(&interleaved_f32le(
-                &factorization.carriers[..5],
-                JOC_FRAME_SAMPLES,
-            ))
+            .write_all(&interleaved_f32le(&i0_carriers, JOC_FRAME_SAMPLES))
             .map_err(|error| format!("failed to write carrier PCM frame {frame_index}: {error}"))?;
         append_reduction_metrics(&mut metrics, frame_index, &sources, &reduction);
+        append_lfe_metrics(
+            &mut metrics,
+            frame_index,
+            &supported_objects,
+            &source_pcm,
+            &lfe_source_indices,
+            reduction.coded_objects.len(),
+        );
         previous_reduction = Some(reduction);
     }
     drop(raw_file);
-    encode_ffmpeg_carrier(&i0_raw_path, &i0_carrier_path, 5, "1024k")?;
-    let i0_carrier_bytes = read_carrier_frames(&i0_carrier_path, 4096, frame_count)?;
-    let mut output_bytes = Vec::with_capacity(frame_count * (4096 + 2560));
+    encode_ffmpeg_carrier(
+        &i0_raw_path,
+        &i0_carrier_path,
+        i0_channels,
+        &format!("{}k", rate.carrier_bitrate_kbps),
+    )?;
+    let i0_carrier_bytes =
+        read_carrier_frames(&i0_carrier_path, rate.carrier_frame_bytes, frame_count)?;
+    let mut output_bytes =
+        Vec::with_capacity(frame_count * (rate.carrier_frame_bytes + rate.d0_frame_bytes));
     previous_reduction = None;
     for frame_index in 0..frame_count {
-        let i0_start = frame_index * 4096;
-        let i0_frame = &i0_carrier_bytes[i0_start..i0_start + 4096];
+        let i0_start = frame_index * rate.carrier_frame_bytes;
+        let i0_frame = &i0_carrier_bytes[i0_start..i0_start + rate.carrier_frame_bytes];
         let source_pcm = read_pcm_frame(&input_path, &scanned, frame_index, &track_indices)?;
-        let sources = reduction_sources(&supported_objects, source_pcm)?;
+        let sources = reduction_sources(&supported_objects, &source_pcm)?;
         let reduction =
             reduce_scene_with_previous(&sources, reduction_config, previous_reduction.as_ref())
                 .map_err(|error| {
@@ -246,7 +500,7 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         } else {
             factorization.carriers[..2].to_vec()
         };
-        let access_unit = package_source_derived_access_unit(
+        let access_unit = package_source_derived_access_unit_with_frame_sizes(
             profile,
             sequence,
             &factorization.scaled_matrix,
@@ -254,6 +508,7 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
             i0_frame,
             &d0_carriers,
             0,
+            rate.d0_frame_bytes,
         )
         .map_err(|error| format!("failed to package frame {frame_index}: {error}"))?;
         output_bytes.extend_from_slice(&access_unit);
@@ -266,13 +521,20 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
     write_output(&metrics_path, metrics.into_bytes(), "reduction metrics")?;
     let _ = fs::remove_dir_all(work_root);
     println!(
-        "encoded profile={profile_name} frames={frame_count} samples={encoded_samples} authored_sources={} dynamic_objects={} direct_speakers={} coded_objects_last_frame={} output_bytes={output_bytes_len} target_bitrate=1664000 reduction=deterministic:farthest-point+weighted-aggregate metrics={}",
+        "encoded profile={profile_name} frames={frame_count} samples={encoded_samples} authored_sources={} authored_channels={} dynamic_objects={} direct_speakers={} direct_speaker_channels={} lfe_core_channels={} coded_objects_last_frame={} output_bytes={output_bytes_len} target_bitrate={} carrier_bitrate={} d0_bitrate={} temporal_weight={:.17e} reduction=deterministic:farthest-point+weighted-aggregate metrics={}",
         supported_objects.len(),
+        track_indices.len(),
         metadata.dynamic_object_count(),
         metadata.direct_speaker_count(),
+        metadata.direct_speaker_channel_count(),
+        usize::from(!lfe_source_indices.is_empty()),
         previous_reduction
             .as_ref()
             .map_or(0, |result| result.coded_objects.len()),
+        rate.total_bitrate_kbps * 1000,
+        rate.carrier_bitrate_kbps * 1000,
+        rate.d0_bitrate_kbps * 1000,
+        reduction_config.temporal_continuity_weight,
         metrics_path.display(),
     );
     Ok(())
@@ -280,28 +542,71 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
 
 fn reduction_sources(
     objects: &[&AdmObject],
-    pcm: Vec<Vec<f64>>,
+    pcm: &[Vec<f64>],
 ) -> Result<Vec<ReductionSource>, String> {
-    if objects.len() != pcm.len() {
+    let expected_sources = objects
+        .iter()
+        .map(|object| object.channels.len())
+        .sum::<usize>();
+    if expected_sources != pcm.len() {
         return Err(format!(
-            "ADM source and PCM counts differ: {} objects, {} tracks",
-            objects.len(),
+            "ADM source and PCM counts differ: {} channel bindings, {} tracks",
+            expected_sources,
             pcm.len()
         ));
     }
-    objects
-        .iter()
-        .zip(pcm)
-        .map(|(object, signal)| {
-            Ok(ReductionSource {
-                source_index: object.ordinal,
-                object_id: object.object_id.clone(),
+    let mut sources = Vec::with_capacity(
+        pcm.len().saturating_sub(
+            objects
+                .iter()
+                .flat_map(|object| object.channels.iter())
+                .filter(|channel| channel.is_lfe)
+                .count(),
+        ),
+    );
+    let mut flat_index = 0;
+    for object in objects {
+        for channel in &object.channels {
+            let signal = pcm
+                .get(flat_index)
+                .cloned()
+                .ok_or_else(|| "ADM source and PCM channel bindings are misaligned".to_owned())?;
+            if channel.is_lfe {
+                flat_index += 1;
+                continue;
+            }
+            let object_id = if object.channels.len() == 1 {
+                object.object_id.clone()
+            } else {
+                format!("{}:{}", object.object_id, channel.channel_id)
+            };
+            sources.push(ReductionSource {
+                source_index: flat_index,
+                object_id,
                 kind: object.kind,
-                position: object.position,
+                position: channel.position,
                 signal,
-            })
-        })
-        .collect()
+            });
+            flat_index += 1;
+        }
+    }
+    Ok(sources)
+}
+
+fn lfe_carrier(pcm: &[Vec<f64>], lfe_indices: &[usize]) -> Result<Vec<f64>, String> {
+    let mut carrier = vec![0.0; JOC_FRAME_SAMPLES];
+    for index in lfe_indices {
+        let channel = pcm
+            .get(*index)
+            .ok_or_else(|| "LFE PCM binding is outside the selected frame".to_owned())?;
+        if channel.len() != JOC_FRAME_SAMPLES {
+            return Err("LFE PCM frame does not have the public frame length".to_owned());
+        }
+        for (output, value) in carrier.iter_mut().zip(channel) {
+            *output += *value;
+        }
+    }
+    Ok(carrier)
 }
 
 fn append_reduction_metrics(
@@ -324,9 +629,18 @@ fn append_reduction_metrics(
                 },
             )
         });
+        let coded = reduction.coded_objects.get(accounting.coded_object_index);
+        let source_position = source.map_or(
+            jocforge_core::AdmPosition {
+                azimuth: 0.0,
+                elevation: 0.0,
+                distance: 0.0,
+            },
+            |source| source.position,
+        );
         let _ = writeln!(
             output,
-            "source,{frame_index},{},{object_id},{kind},{},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{},{},{},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{}",
+            "source,{frame_index},{},{object_id},{kind},{},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{},{},{},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{},{},{},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e}",
             accounting.source_index,
             accounting.coded_object_index,
             accounting.contribution_gain,
@@ -343,7 +657,65 @@ fn append_reduction_metrics(
             reduction.diagnostics.max_coded_peak,
             reduction.diagnostics.headroom_margin,
             reduction.diagnostics.assignment_changes,
+            reduction.diagnostics.coded_identity_changes,
+            coded.map_or(usize::MAX, |object| object.representative_source_index),
+            source_position.azimuth,
+            source_position.elevation,
+            source_position.distance,
+            coded.map_or(0.0, |object| object.position.azimuth),
+            coded.map_or(0.0, |object| object.position.elevation),
+            coded.map_or(0.0, |object| object.position.distance),
+            coded
+                .and_then(|object| object.signal.first())
+                .copied()
+                .unwrap_or(0.0),
+            coded
+                .and_then(|object| object.signal.last())
+                .copied()
+                .unwrap_or(0.0),
         );
+    }
+}
+
+fn append_lfe_metrics(
+    output: &mut String,
+    frame_index: usize,
+    objects: &[&AdmObject],
+    pcm: &[Vec<f64>],
+    lfe_source_indices: &[usize],
+    coded_count: usize,
+) {
+    let mut flat_index = 0;
+    for object in objects {
+        for channel in &object.channels {
+            if !lfe_source_indices.contains(&flat_index) {
+                flat_index += 1;
+                continue;
+            }
+            let signal = &pcm[flat_index];
+            let energy =
+                signal.iter().map(|value| value * value).sum::<f64>() / signal.len().max(1) as f64;
+            let _ = writeln!(
+                output,
+                "lfe,{frame_index},{},{}:{},DirectSpeakers,-1,1.00000000000000000e0,{:.17e},{:.17e},0.00000000000000000e0,0.00000000000000000e0,{},{},0,0.00000000000000000e0,0.00000000000000000e0,0.00000000000000000e0,0.00000000000000000e0,0.00000000000000000e0,0,0,0,{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e}",
+                flat_index,
+                object.object_id,
+                channel.channel_id,
+                energy,
+                energy,
+                pcm.len(),
+                coded_count,
+                channel.position.azimuth,
+                channel.position.elevation,
+                channel.position.distance,
+                channel.position.azimuth,
+                channel.position.elevation,
+                channel.position.distance,
+                signal.first().copied().unwrap_or(0.0),
+                signal.last().copied().unwrap_or(0.0),
+            );
+            flat_index += 1;
+        }
     }
 }
 

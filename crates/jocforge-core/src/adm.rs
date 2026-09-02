@@ -12,10 +12,30 @@ const QUANTUM: f64 = 820.0 / 4096.0;
 pub struct AdmObject {
     pub ordinal: usize,
     pub object_id: String,
+    pub object_name: String,
+    pub start: Option<String>,
+    pub duration: Option<String>,
+    pub pack_format_id: String,
+    pub pack_format_name: String,
     pub track_uid: String,
     pub track_index: usize,
     pub position: AdmPosition,
     pub kind: AdmObjectKind,
+    pub channels: Vec<AdmChannel>,
+}
+
+/// One channel binding inside an ADM object, including its explicit PCM track.
+#[derive(Clone, Debug, PartialEq)]
+pub struct AdmChannel {
+    pub channel_id: String,
+    pub channel_name: String,
+    pub track_uid: String,
+    pub track_index: usize,
+    pub position: AdmPosition,
+    pub is_lfe: bool,
+    pub block_rtime: Option<String>,
+    pub block_duration: Option<String>,
+    pub gain: Option<String>,
 }
 
 /// ADM object category retained for the source-file census.
@@ -54,8 +74,18 @@ pub struct ParsedAdm {
     pub sample_rate: u32,
     pub channel_count: usize,
     pub sample_count: usize,
+    pub programmes: Vec<AdmProgramme>,
     pub objects: Vec<AdmObject>,
     pub pcm: Vec<Vec<f64>>,
+}
+
+/// ADM programme-to-content relationship retained for source inventory.
+#[derive(Clone, Debug, PartialEq)]
+pub struct AdmProgramme {
+    pub programme_id: String,
+    pub content_id_refs: Vec<String>,
+    pub start: Option<String>,
+    pub end: Option<String>,
 }
 
 /// ADM/BW64 metadata parsed without loading the PCM payload.
@@ -67,6 +97,7 @@ pub struct ParsedAdmMetadata {
     pub data_bytes: u64,
     pub track_count: usize,
     pub track_uid_count: usize,
+    pub programmes: Vec<AdmProgramme>,
     pub objects: Vec<AdmObject>,
 }
 
@@ -85,6 +116,15 @@ impl ParsedAdmMetadata {
             .iter()
             .filter(|object| object.kind == AdmObjectKind::DirectSpeakers)
             .count()
+    }
+
+    #[must_use]
+    pub fn direct_speaker_channel_count(&self) -> usize {
+        self.objects
+            .iter()
+            .filter(|object| object.kind == AdmObjectKind::DirectSpeakers)
+            .map(|object| object.channels.len())
+            .sum()
     }
 }
 
@@ -226,6 +266,7 @@ pub fn parse_bw64_adm(bytes: &[u8]) -> Result<ParsedAdm, AdmError> {
         sample_rate: metadata.sample_rate,
         channel_count: metadata.channel_count,
         sample_count: metadata.sample_count,
+        programmes: metadata.programmes,
         objects: metadata.objects,
         pcm,
     })
@@ -261,12 +302,10 @@ pub fn parse_bw64_adm_metadata(
     let sample_count = usize::try_from(data_bytes / block_align_u64)
         .map_err(|_| AdmError::InvalidContainer("PCM sample count"))?;
     let chna = parse_chna(chna)?;
-    let objects = parse_adm_objects(
-        std::str::from_utf8(axml)
-            .map_err(|_| AdmError::InvalidMetadata("axml is not UTF-8".to_owned()))?,
-        &chna.bindings,
-        channel_count,
-    )?;
+    let xml = std::str::from_utf8(axml)
+        .map_err(|_| AdmError::InvalidMetadata("axml is not UTF-8".to_owned()))?;
+    let programmes = parse_adm_programmes(xml)?;
+    let objects = parse_adm_objects(xml, &chna.bindings, channel_count)?;
     if sample_rate != SAMPLE_RATE {
         return Err(AdmError::InvalidMetadata(format!(
             "MVP requires 48000 Hz, got {sample_rate}"
@@ -279,8 +318,24 @@ pub fn parse_bw64_adm_metadata(
         data_bytes,
         track_count: chna.track_count,
         track_uid_count: chna.track_uid_count,
+        programmes,
         objects,
     })
+}
+
+fn parse_adm_programmes(xml: &str) -> Result<Vec<AdmProgramme>, AdmError> {
+    tag_blocks(xml, "audioProgramme")
+        .into_iter()
+        .map(|block| {
+            let open = opening_tag(block, "audioProgramme")?;
+            Ok(AdmProgramme {
+                programme_id: attribute(open, "audioProgrammeID")?,
+                content_id_refs: child_texts(block, "audioContentIDRef")?,
+                start: attribute_optional(open, "start"),
+                end: attribute_optional(open, "end"),
+            })
+        })
+        .collect()
 }
 
 /// Decodes selected interleaved integer PCM tracks from one bounded frame.
@@ -358,6 +413,76 @@ pub fn generate_synthetic_scene_fixture(
     duration_seconds: u32,
     object_count: usize,
 ) -> Result<SyntheticFixture, String> {
+    generate_fixture_with_layout(duration_seconds, object_count, &[])
+}
+
+/// Generates a small mixed ADM fixture for DirectSpeakers causal validation.
+/// The layout contains two non-LFE speakers, one LFE speaker, and two objects.
+pub fn generate_synthetic_direct_speaker_fixture(
+    duration_seconds: u32,
+) -> Result<SyntheticFixture, String> {
+    let direct_channels = [
+        FixtureDirectChannel {
+            channel_id: "AC_00011001",
+            channel_name: "RoomCentricLeft",
+            position: AdmPosition {
+                azimuth: -1.0,
+                elevation: 0.0,
+                distance: 1.0,
+            },
+        },
+        FixtureDirectChannel {
+            channel_id: "AC_00011002",
+            channel_name: "RoomCentricRight",
+            position: AdmPosition {
+                azimuth: 1.0,
+                elevation: 0.0,
+                distance: 1.0,
+            },
+        },
+        FixtureDirectChannel {
+            channel_id: "AC_00011003",
+            channel_name: "RoomCentricLFE",
+            position: AdmPosition {
+                azimuth: 0.0,
+                elevation: 0.0,
+                distance: -1.0,
+            },
+        },
+    ];
+    generate_fixture_with_layout(duration_seconds, 2, &direct_channels)
+}
+
+/// Generates a deterministic ADM fixture whose pack type is intentionally
+/// outside the supported Objects/DirectSpeakers subset.
+pub fn generate_synthetic_unsupported_fixture(
+    duration_seconds: u32,
+) -> Result<SyntheticFixture, String> {
+    let mut fixture = generate_synthetic_scene_fixture(duration_seconds, 1)?;
+    let marker = b"typeDefinition=\"Objects\"";
+    let replacement = b"typeDefinition=\"Other__\"";
+    let start = fixture
+        .bw64_header_and_pcm
+        .windows(marker.len())
+        .position(|window| window == marker)
+        .ok_or_else(|| "synthetic fixture pack type marker is missing".to_owned())?;
+    fixture.bw64_header_and_pcm[start..start + replacement.len()].copy_from_slice(replacement);
+    let marker = b"typeLabel=\"0003\"";
+    let replacement = b"typeLabel=\"0004\"";
+    let start = fixture
+        .bw64_header_and_pcm
+        .windows(marker.len())
+        .position(|window| window == marker)
+        .ok_or_else(|| "synthetic fixture pack type label is missing".to_owned())?;
+    fixture.bw64_header_and_pcm[start..start + replacement.len()].copy_from_slice(replacement);
+    Ok(fixture)
+}
+
+fn generate_fixture_with_layout(
+    duration_seconds: u32,
+    object_count: usize,
+    direct_channels: &[FixtureDirectChannel],
+) -> Result<SyntheticFixture, String> {
     if duration_seconds == 0 || duration_seconds > 30 {
         return Err("synthetic fixture duration must be 1..=30 seconds".to_owned());
     }
@@ -368,7 +493,10 @@ pub fn generate_synthetic_scene_fixture(
         .map_err(|_| "fixture duration overflow".to_owned())?
         .checked_mul(SAMPLE_RATE as usize)
         .ok_or_else(|| "fixture sample count overflow".to_owned())?;
-    let ground_truth = fixture_matrix(object_count);
+    let channel_count = object_count
+        .checked_add(direct_channels.len())
+        .ok_or_else(|| "fixture channel count overflow".to_owned())?;
+    let ground_truth = fixture_matrix(channel_count);
     let basis = (0..RANK)
         .map(|index| {
             let frequency = 220.0 + f64::from((index as u32) * 37);
@@ -393,15 +521,15 @@ pub fn generate_synthetic_scene_fixture(
                 .collect::<Vec<_>>()
         })
         .collect::<Vec<_>>();
-    let xml = fixture_axml(duration_seconds, object_count);
-    let chna = fixture_chna(object_count);
+    let xml = fixture_axml(duration_seconds, object_count, direct_channels);
+    let chna = fixture_chna(object_count, direct_channels);
     let pcm_bytes = encode_pcm_24(&pcm);
     let bw64 = build_bw64(
         xml.as_bytes(),
         &chna,
         &pcm_bytes,
         sample_count,
-        object_count,
+        channel_count,
     );
     Ok(SyntheticFixture {
         bw64_header_and_pcm: bw64,
@@ -410,6 +538,13 @@ pub fn generate_synthetic_scene_fixture(
             .map(|row| row.iter().map(|value| value * QUANTUM).collect())
             .collect(),
     })
+}
+
+#[derive(Clone, Copy)]
+struct FixtureDirectChannel {
+    channel_id: &'static str,
+    channel_name: &'static str,
+    position: AdmPosition,
 }
 
 fn read_u16_le(bytes: &[u8]) -> Result<u16, AdmError> {
@@ -471,14 +606,22 @@ fn parse_adm_objects(
     for block in tag_blocks(xml, "audioPackFormat") {
         let open = opening_tag(block, "audioPackFormat")?;
         let id = attribute(open, "audioPackFormatID")?;
-        let channel = child_text(block, "audioChannelFormatIDRef")?;
+        let channels = child_texts(block, "audioChannelFormatIDRef")?;
+        if channels.is_empty() {
+            return Err(AdmError::InvalidMetadata(format!(
+                "pack {id} has no channel format references"
+            )));
+        }
+        let pack_name =
+            attribute_optional(open, "audioPackFormatName").unwrap_or_else(|| id.clone());
         let type_definition = attribute_optional(open, "typeDefinition");
         let type_label = attribute_optional(open, "typeLabel");
         packs.insert(
             id,
             (
-                channel,
+                channels,
                 adm_object_kind(type_definition.as_deref(), type_label.as_deref()),
+                pack_name,
             ),
         );
     }
@@ -486,44 +629,93 @@ fn parse_adm_objects(
     for block in tag_blocks(xml, "audioChannelFormat") {
         let open = opening_tag(block, "audioChannelFormat")?;
         let id = attribute(open, "audioChannelFormatID")?;
+        let channel_name =
+            attribute_optional(open, "audioChannelFormatName").unwrap_or_else(|| id.clone());
         let block_format = tag_blocks(block, "audioBlockFormat")
             .into_iter()
             .next()
             .ok_or_else(|| {
                 AdmError::InvalidMetadata(format!("channel {id} has no block format"))
             })?;
-        positions.insert(id, parse_position(block_format)?);
+        let block_open = opening_tag(block_format, "audioBlockFormat")?;
+        positions.insert(
+            id,
+            ChannelMetadata {
+                channel_name: channel_name.clone(),
+                position: parse_position(block_format)?,
+                is_lfe: channel_name.to_ascii_lowercase().contains("lfe"),
+                block_rtime: attribute_optional(block_open, "rtime"),
+                block_duration: attribute_optional(block_open, "duration"),
+                gain: attribute_optional(block_open, "gain").or_else(|| {
+                    tag_blocks(block_format, "gain")
+                        .into_iter()
+                        .next()
+                        .and_then(|block| inner_text(block, "gain").ok())
+                        .map(ToOwned::to_owned)
+                }),
+            },
+        );
     }
     let mut objects = Vec::new();
     for (ordinal, block) in tag_blocks(xml, "audioObject").into_iter().enumerate() {
         let open = opening_tag(block, "audioObject")?;
         let object_id = attribute(open, "audioObjectID")?;
-        let track_uid = child_text(block, "audioTrackUIDRef")?;
         let pack_id = child_text(block, "audioPackFormatIDRef")?;
-        let (channel_id, kind) = packs.get(&pack_id).ok_or_else(|| {
+        let track_uids = child_texts(block, "audioTrackUIDRef")?;
+        let (channel_ids, kind, pack_name) = packs.get(&pack_id).ok_or_else(|| {
             AdmError::InvalidMetadata(format!(
                 "object {object_id} references unknown pack {pack_id}"
             ))
         })?;
-        let position = positions
-            .get(channel_id)
-            .copied()
-            .ok_or_else(|| AdmError::MissingPosition(object_id.clone()))?;
-        let track_index = *bindings
-            .get(&track_uid)
-            .ok_or_else(|| AdmError::MissingObjectBinding(object_id.clone()))?;
-        if track_index == 0 || track_index > channel_count {
+        if channel_ids.len() != track_uids.len() {
             return Err(AdmError::InvalidMetadata(format!(
-                "object {object_id} maps to PCM track {track_index}"
+                "object {object_id} has {} channel references but {} TrackUID references",
+                channel_ids.len(),
+                track_uids.len()
             )));
         }
+        let mut channels = Vec::with_capacity(channel_ids.len());
+        for (channel_id, track_uid) in channel_ids.iter().zip(track_uids) {
+            let channel = positions
+                .get(channel_id)
+                .ok_or_else(|| AdmError::MissingPosition(object_id.clone()))?;
+            let track_index = *bindings
+                .get(&track_uid)
+                .ok_or_else(|| AdmError::MissingObjectBinding(object_id.clone()))?;
+            if track_index == 0 || track_index > channel_count {
+                return Err(AdmError::InvalidMetadata(format!(
+                    "object {object_id} maps to PCM track {track_index}"
+                )));
+            }
+            channels.push(AdmChannel {
+                channel_id: channel_id.clone(),
+                channel_name: channel.channel_name.clone(),
+                track_uid,
+                track_index,
+                position: channel.position,
+                is_lfe: channel.is_lfe,
+                block_rtime: channel.block_rtime.clone(),
+                block_duration: channel.block_duration.clone(),
+                gain: channel.gain.clone(),
+            });
+        }
+        let first_channel = channels.first().ok_or_else(|| {
+            AdmError::InvalidMetadata(format!("object {object_id} has no channels"))
+        })?;
         objects.push(AdmObject {
             ordinal,
             object_id,
-            track_uid,
-            track_index,
-            position,
+            object_name: attribute_optional(open, "audioObjectName")
+                .unwrap_or_else(|| "unnamed".to_owned()),
+            start: attribute_optional(open, "start"),
+            duration: attribute_optional(open, "duration"),
+            pack_format_id: pack_id,
+            pack_format_name: pack_name.clone(),
+            track_uid: first_channel.track_uid.clone(),
+            track_index: first_channel.track_index,
+            position: first_channel.position,
             kind: *kind,
+            channels,
         });
     }
     if objects.is_empty() {
@@ -532,6 +724,16 @@ fn parse_adm_objects(
         ));
     }
     Ok(objects)
+}
+
+#[derive(Clone, Debug)]
+struct ChannelMetadata {
+    channel_name: String,
+    position: AdmPosition,
+    is_lfe: bool,
+    block_rtime: Option<String>,
+    block_duration: Option<String>,
+    gain: Option<String>,
 }
 
 fn adm_object_kind(type_definition: Option<&str>, type_label: Option<&str>) -> AdmObjectKind {
@@ -646,6 +848,13 @@ fn child_text(block: &str, name: &str) -> Result<String, AdmError> {
     inner_text(block, name).map(ToOwned::to_owned)
 }
 
+fn child_texts(block: &str, name: &str) -> Result<Vec<String>, AdmError> {
+    tag_blocks(block, name)
+        .into_iter()
+        .map(|child| child_text(child, name))
+        .collect()
+}
+
 fn inner_text<'a>(block: &'a str, name: &str) -> Result<&'a str, AdmError> {
     let open_marker = format!("<{name}");
     let start = block
@@ -734,7 +943,11 @@ fn fixture_matrix(object_count: usize) -> Vec<Vec<f64>> {
         .collect()
 }
 
-fn fixture_axml(duration_seconds: u32, object_count: usize) -> String {
+fn fixture_axml(
+    duration_seconds: u32,
+    object_count: usize,
+    direct_channels: &[FixtureDirectChannel],
+) -> String {
     let duration = format!("00:00:{duration_seconds:02}.00000");
     let mut xml = String::from(
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ebuCoreMain xmlns=\"urn:ebu:metadata-schema:ebuCore_2016\"><coreMetadata><format><audioFormatExtended>",
@@ -743,6 +956,9 @@ fn fixture_axml(duration_seconds: u32, object_count: usize) -> String {
         xml,
         "<audioProgramme audioProgrammeID=\"APR_1001\" audioProgrammeName=\"JOCForge Synthetic Programme\" start=\"00:00:00.00000\" end=\"{duration}\"><audioContentIDRef>ACO_1001</audioContentIDRef></audioProgramme><audioContent audioContentID=\"ACO_1001\" audioContentName=\"JOCForge Synthetic Content\">"
     );
+    if !direct_channels.is_empty() {
+        xml.push_str("<audioObjectIDRef>AO_1001</audioObjectIDRef>");
+    }
     for object in 0..object_count {
         let _ = write!(
             xml,
@@ -751,6 +967,41 @@ fn fixture_axml(duration_seconds: u32, object_count: usize) -> String {
         );
     }
     xml.push_str("<dialogue mixedContentKind=\"0\">2</dialogue></audioContent>");
+    if !direct_channels.is_empty() {
+        xml.push_str("<audioPackFormat audioPackFormatID=\"AP_00011001\" audioPackFormatName=\"Synthetic Bed\" typeLabel=\"0001\" typeDefinition=\"DirectSpeakers\">");
+        for channel in direct_channels {
+            let _ = write!(
+                xml,
+                "<audioChannelFormatIDRef>{}</audioChannelFormatIDRef>",
+                channel.channel_id
+            );
+        }
+        xml.push_str("</audioPackFormat>");
+        for channel in direct_channels {
+            let _ = write!(
+                xml,
+                "<audioChannelFormat audioChannelFormatID=\"{}\" audioChannelFormatName=\"{}\" typeLabel=\"0001\" typeDefinition=\"DirectSpeakers\"><audioBlockFormat audioBlockFormatID=\"AB_{}\"><cartesian>1</cartesian><position coordinate=\"X\">{:.6}</position><position coordinate=\"Y\">{:.6}</position><position coordinate=\"Z\">{:.6}</position></audioBlockFormat></audioChannelFormat>",
+                channel.channel_id,
+                channel.channel_name,
+                channel.channel_id,
+                channel.position.azimuth,
+                channel.position.elevation,
+                channel.position.distance,
+            );
+        }
+        let mut track_uids = String::new();
+        for index in 0..direct_channels.len() {
+            let _ = write!(
+                track_uids,
+                "<audioTrackUIDRef>ATU_{:08X}</audioTrackUIDRef>",
+                index + 1
+            );
+        }
+        let _ = write!(
+            xml,
+            "<audioObject audioObjectID=\"AO_1001\" audioObjectName=\"Synthetic Bed\" start=\"00:00:00.00000\" duration=\"{duration}\"><audioPackFormatIDRef>AP_00011001</audioPackFormatIDRef>{track_uids}</audioObject>"
+        );
+    }
     for object in 0..object_count {
         let id = 0x0003_1001 + object;
         let x = -0.8 + f64::from((object as u32) % 8) * 0.2;
@@ -767,27 +1018,46 @@ fn fixture_axml(duration_seconds: u32, object_count: usize) -> String {
         let _ = write!(
             xml,
             "<audioObject audioObjectID=\"AO_{object_id:04X}\" audioObjectName=\"Object {object:02}\" start=\"00:00:00.00000\" duration=\"{duration}\"><audioPackFormatIDRef>AP_{format_id:08X}</audioPackFormatIDRef><audioTrackUIDRef>ATU_{:08X}</audioTrackUIDRef></audioObject>",
-            object + 1
+            object + direct_channels.len() + 1
         );
     }
-    for object in 0..CHANNEL_COUNT {
-        let format_id = 0x0003_1001 + object;
+    for (index, channel) in direct_channels.iter().enumerate() {
+        let stream_id = channel.channel_id.trim_start_matches("AC_");
+        let track_uid = index + 1;
         let _ = write!(
             xml,
-            "<audioStreamFormat audioStreamFormatID=\"AS_{format_id:08X}\" audioStreamFormatName=\"PCM_Object {object:02}\" formatLabel=\"0001\" formatDefinition=\"PCM\"><audioChannelFormatIDRef>AC_{format_id:08X}</audioChannelFormatIDRef><audioPackFormatIDRef>AP_{format_id:08X}</audioPackFormatIDRef><audioTrackFormatIDRef>AT_{format_id:08X}_01</audioTrackFormatIDRef></audioStreamFormat><audioTrackFormat audioTrackFormatID=\"AT_{format_id:08X}_01\" audioTrackFormatName=\"PCM_Object {object:02}\" formatLabel=\"0001\" formatDefinition=\"PCM\"><audioStreamFormatIDRef>AS_{format_id:08X}</audioStreamFormatIDRef></audioTrackFormat><audioTrackUID UID=\"ATU_{:08X}\" sampleRate=\"48000\" bitDepth=\"24\"><audioTrackFormatIDRef>AT_{format_id:08X}_01</audioTrackFormatIDRef><audioPackFormatIDRef>AP_{format_id:08X}</audioPackFormatIDRef></audioTrackUID>",
-            object + 1
+            "<audioStreamFormat audioStreamFormatID=\"AS_{stream_id}\" audioStreamFormatName=\"PCM_{stream_id}\" formatLabel=\"0001\" formatDefinition=\"PCM\"><audioChannelFormatIDRef>{}</audioChannelFormatIDRef><audioPackFormatIDRef>AP_00011001</audioPackFormatIDRef><audioTrackFormatIDRef>AT_{stream_id}_01</audioTrackFormatIDRef></audioStreamFormat><audioTrackFormat audioTrackFormatID=\"AT_{stream_id}_01\" audioTrackFormatName=\"PCM_{stream_id}\" formatLabel=\"0001\" formatDefinition=\"PCM\"><audioStreamFormatIDRef>AS_{stream_id}</audioStreamFormatIDRef></audioTrackFormat><audioTrackUID UID=\"ATU_{track_uid:08X}\" sampleRate=\"48000\" bitDepth=\"24\"><audioTrackFormatIDRef>AT_{stream_id}_01</audioTrackFormatIDRef><audioPackFormatIDRef>AP_00011001</audioPackFormatIDRef></audioTrackUID>",
+            channel.channel_id,
+        );
+    }
+    for object in 0..object_count {
+        let format_id = 0x0003_1001 + object;
+        let track_uid = object + direct_channels.len() + 1;
+        let _ = write!(
+            xml,
+            "<audioStreamFormat audioStreamFormatID=\"AS_{format_id:08X}\" audioStreamFormatName=\"PCM_Object {object:02}\" formatLabel=\"0001\" formatDefinition=\"PCM\"><audioChannelFormatIDRef>AC_{format_id:08X}</audioChannelFormatIDRef><audioPackFormatIDRef>AP_{format_id:08X}</audioPackFormatIDRef><audioTrackFormatIDRef>AT_{format_id:08X}_01</audioTrackFormatIDRef></audioStreamFormat><audioTrackFormat audioTrackFormatID=\"AT_{format_id:08X}_01\" audioTrackFormatName=\"PCM_Object {object:02}\" formatLabel=\"0001\" formatDefinition=\"PCM\"><audioStreamFormatIDRef>AS_{format_id:08X}</audioStreamFormatIDRef></audioTrackFormat><audioTrackUID UID=\"ATU_{track_uid:08X}\" sampleRate=\"48000\" bitDepth=\"24\"><audioTrackFormatIDRef>AT_{format_id:08X}_01</audioTrackFormatIDRef><audioPackFormatIDRef>AP_{format_id:08X}</audioPackFormatIDRef></audioTrackUID>"
         );
     }
     xml.push_str("</audioFormatExtended></format></coreMetadata></ebuCoreMain>");
     xml
 }
 
-fn fixture_chna(object_count: usize) -> Vec<u8> {
-    let mut bytes = Vec::with_capacity(4 + object_count * 40);
-    bytes.extend_from_slice(&(object_count as u16).to_le_bytes());
-    bytes.extend_from_slice(&(object_count as u16).to_le_bytes());
+fn fixture_chna(object_count: usize, direct_channels: &[FixtureDirectChannel]) -> Vec<u8> {
+    let channel_count = object_count + direct_channels.len();
+    let mut bytes = Vec::with_capacity(4 + channel_count * 40);
+    bytes.extend_from_slice(&(channel_count as u16).to_le_bytes());
+    bytes.extend_from_slice(&(channel_count as u16).to_le_bytes());
+    for (index, channel) in direct_channels.iter().enumerate() {
+        let track_index = index + 1;
+        let stream_id = channel.channel_id.trim_start_matches("AC_");
+        bytes.extend_from_slice(&(track_index as u16).to_le_bytes());
+        append_padded_ascii(&mut bytes, &format!("ATU_{track_index:08X}"), 12);
+        append_padded_ascii(&mut bytes, &format!("AT_{stream_id}_01"), 14);
+        append_padded_ascii(&mut bytes, "AP_00011001", 11);
+        bytes.push(0);
+    }
     for object in 0..object_count {
-        let id = object + 1;
+        let id = object + direct_channels.len() + 1;
         bytes.extend_from_slice(&(id as u16).to_le_bytes());
         append_padded_ascii(&mut bytes, &format!("ATU_{id:08X}"), 12);
         append_padded_ascii(

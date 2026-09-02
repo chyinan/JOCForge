@@ -13,6 +13,7 @@ const DEFAULT_SIGNAL_WEIGHT: f64 = 0.55;
 const DEFAULT_SPATIAL_WEIGHT: f64 = 0.35;
 const DEFAULT_ENERGY_WEIGHT: f64 = 0.10;
 const DEFAULT_ENERGY_FLOOR: f64 = 1.0e-12;
+const DEFAULT_TEMPORAL_CONTINUITY_WEIGHT: f64 = 0.15;
 const DISTANCE_TIE_EPSILON: f64 = 1.0e-12;
 
 /// Project-owned controls for deterministic authored-object reduction.
@@ -30,6 +31,8 @@ pub struct ReductionConfig {
     pub energy_weight: f64,
     /// Maximum absolute coded-object sample before deterministic scaling.
     pub output_peak_limit: f64,
+    /// Additive cost for moving a source to a different prior-frame cluster.
+    pub temporal_continuity_weight: f64,
 }
 
 impl Default for ReductionConfig {
@@ -41,6 +44,7 @@ impl Default for ReductionConfig {
             spatial_weight: DEFAULT_SPATIAL_WEIGHT,
             energy_weight: DEFAULT_ENERGY_WEIGHT,
             output_peak_limit: DEFAULT_OUTPUT_PEAK_LIMIT,
+            temporal_continuity_weight: DEFAULT_TEMPORAL_CONTINUITY_WEIGHT,
         }
     }
 }
@@ -90,6 +94,7 @@ pub struct ReductionDiagnostics {
     pub max_coded_peak: f64,
     pub headroom_margin: f64,
     pub assignment_changes: usize,
+    pub coded_identity_changes: usize,
 }
 
 /// Pure result of the clean authored-to-coded reduction stage.
@@ -161,7 +166,7 @@ pub fn reduce_scene(
     sources: &[ReductionSource],
     config: ReductionConfig,
 ) -> Result<ReductionResult, ReductionError> {
-    reduce_scene_internal(sources, config, None)
+    reduce_scene_internal(sources, config, None, None)
 }
 
 /// Reduces a scene while reusing the previous coded representatives when the
@@ -189,9 +194,29 @@ pub fn reduce_scene_with_previous(
             None
         }
     });
-    let mut result = reduce_scene_internal(sources, config, preferred_seeds.as_deref())?;
+    let previous_assignments = preferred_seeds.as_ref().map(|_| {
+        sources
+            .iter()
+            .map(|source| {
+                previous.and_then(|result| {
+                    result
+                        .source_accounting
+                        .iter()
+                        .find(|accounting| accounting.source_index == source.source_index)
+                        .map(|accounting| accounting.coded_object_index)
+                })
+            })
+            .collect::<Vec<_>>()
+    });
+    let mut result = reduce_scene_internal(
+        sources,
+        config,
+        preferred_seeds.as_deref(),
+        previous_assignments.as_deref(),
+    )?;
     if let Some(previous) = previous {
         result.diagnostics.assignment_changes = reduction_assignment_changes(previous, &result);
+        result.diagnostics.coded_identity_changes = reduction_identity_changes(previous, &result);
     }
     Ok(result)
 }
@@ -200,6 +225,7 @@ fn reduce_scene_internal(
     sources: &[ReductionSource],
     config: ReductionConfig,
     preferred_seeds: Option<&[usize]>,
+    previous_assignments: Option<&[Option<usize>]>,
 ) -> Result<ReductionResult, ReductionError> {
     validate_inputs(sources, config)?;
     let source_count = sources.len();
@@ -233,6 +259,7 @@ fn reduce_scene_internal(
         spatial_scale,
         &seeds,
         config,
+        previous_assignments,
     );
 
     let mut clusters = vec![Vec::<usize>::new(); seeds.len()];
@@ -326,6 +353,7 @@ fn reduce_scene_internal(
             max_coded_peak,
             headroom_margin: (config.output_peak_limit - max_coded_peak).max(0.0),
             assignment_changes: 0,
+            coded_identity_changes: 0,
         },
     })
 }
@@ -347,6 +375,26 @@ pub fn reduction_assignment_changes(left: &ReductionResult, right: &ReductionRes
         .count()
 }
 
+/// Counts coded representative identities that disappeared between reductions.
+///
+/// Coded ordinals are serialization positions, not identities. A stable
+/// representative source remains the same identity even if a caller presents
+/// the coded-object vector in a different order.
+#[must_use]
+pub fn reduction_identity_changes(left: &ReductionResult, right: &ReductionResult) -> usize {
+    let left_identities = left
+        .coded_objects
+        .iter()
+        .map(|object| object.representative_source_index)
+        .collect::<BTreeSet<_>>();
+    let right_identities = right
+        .coded_objects
+        .iter()
+        .map(|object| object.representative_source_index)
+        .collect::<BTreeSet<_>>();
+    left_identities.difference(&right_identities).count()
+}
+
 fn validate_inputs(
     sources: &[ReductionSource],
     config: ReductionConfig,
@@ -365,6 +413,11 @@ fn validate_inputs(
     if !config.output_peak_limit.is_finite() || !(0.0..=1.0).contains(&config.output_peak_limit) {
         return Err(ReductionError::InvalidConfiguration(
             "output peak limit must be finite and in 0..=1",
+        ));
+    }
+    if !config.temporal_continuity_weight.is_finite() || config.temporal_continuity_weight < 0.0 {
+        return Err(ReductionError::InvalidConfiguration(
+            "temporal continuity weight must be finite and non-negative",
         ));
     }
     if [
@@ -548,6 +601,7 @@ fn assign_sources(
     spatial_scale: f64,
     seeds: &[usize],
     config: ReductionConfig,
+    previous_assignments: Option<&[Option<usize>]>,
 ) -> Vec<usize> {
     (0..sources.len())
         .map(|source_index| {
@@ -567,6 +621,13 @@ fn assign_sources(
                         spatial_scale,
                         config,
                     );
+                    let left_distance = continuity_cost(
+                        left_distance,
+                        previous_assignments,
+                        source_index,
+                        *left_cluster,
+                        config,
+                    );
                     let right_distance = source_distance(
                         source_index,
                         **right_seed,
@@ -574,6 +635,13 @@ fn assign_sources(
                         signatures,
                         energies,
                         spatial_scale,
+                        config,
+                    );
+                    let right_distance = continuity_cost(
+                        right_distance,
+                        previous_assignments,
+                        source_index,
+                        *right_cluster,
                         config,
                     );
                     compare_min_score_then_index(
@@ -588,6 +656,24 @@ fn assign_sources(
                 .map_or(0, |(cluster_index, _)| cluster_index)
         })
         .collect()
+}
+
+fn continuity_cost(
+    distance: f64,
+    previous_assignments: Option<&[Option<usize>]>,
+    source_index: usize,
+    cluster_index: usize,
+    config: ReductionConfig,
+) -> f64 {
+    let should_switch = previous_assignments
+        .and_then(|assignments| assignments.get(source_index).copied().flatten())
+        .is_some_and(|previous_cluster| previous_cluster != cluster_index);
+    distance
+        + if should_switch {
+            config.temporal_continuity_weight
+        } else {
+            0.0
+        }
 }
 
 fn combine_cluster(

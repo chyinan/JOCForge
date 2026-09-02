@@ -19,6 +19,10 @@ Last verified: 2026-09-02
 - `.\scripts\run-mvp.ps1`
 - `.\scripts\run-decision-engine.ps1` — generalized clean corpus, Hanabi,
   OpenJOC/FFmpeg evidence, and clean-test status report.
+- `.\scripts\run-validation-closure.ps1` — clean bitrate, DirectSpeakers,
+  leakage, temporal and matrix closure evidence.
+- `.\scripts\run-temporal-stabilization.ps1` — Hanabi before/after and
+  adversarial continuity evidence.
 
 ## Project Structure
 
@@ -30,6 +34,10 @@ Last verified: 2026-09-02
   reduction, source accounting, spatial aggregation, and stability metrics.
 - `crates/jocforge-core/src/profile.rs` — mandatory idx0/idx1/idx2 topology
   contracts.
+- `crates/jocforge-core/src/rate.rs` — deterministic clean I0/D0 budget
+  allocations and legal-rate policy.
+- `crates/jocforge-core/src/validation.rs` — pure controlled and adversarial
+  temporal corpus generation and metrics.
 - `crates/jocforge-core/src/writer.rs` — pure JOC/OAMD/EMDF and I0 plus
   PCM-derived dependent D0 writer.
 - `crates/jocforge-cli/src/main.rs` — file/process orchestration shell.
@@ -56,14 +64,18 @@ Last verified: 2026-09-02
 
 - `profile_spec` is the single JOCForge-owned source for the three mandatory
   public topology labels and dependent channel maps.
-- `package_source_derived_access_unit` accepts exactly one 4096-byte FFmpeg I0
+- `package_source_derived_access_unit` accepts one legal even-sized FFmpeg I0
   frame and two 1536-sample source D0 carrier windows for the selected active
-  coded-object set, returning I0 plus a JOCForge-owned PCM-derived 2560-byte D0
-  carriage. Matrix and OAMD row counts must match.
+  coded-object set, returning I0 plus a JOCForge-owned PCM-derived D0 carriage
+  whose validated minimum is 2560 bytes. Matrix and OAMD row counts must match.
 - `reduce_scene` and `reduce_scene_with_previous` provide the pure N-to-15
   clean decision boundary. Every supported authored source has a deterministic
-  coded-object assignment and positive accounting gain; `Other` ADM kinds are
-  rejected by the CLI.
+  coded-object assignment and positive accounting gain; previous representatives
+  and the project-owned temporal continuity cost stabilize source membership;
+  `Other` ADM kinds are rejected by the CLI.
+- `reduction_assignment_changes` measures authored membership changes;
+  `reduction_identity_changes` measures representative identity replacements.
+  These are separate metrics and must not be conflated.
 - The CLI reads large BW64 PCM one public 1536-sample frame at a time and pads
   only the final short frame with zeros, preserving source timing/accounting.
 - Production code does not import OpenJOC crates or share its serialization
@@ -84,6 +96,12 @@ Last verified: 2026-09-02
   a valid 2560-byte dependent D0 whose two channels are driven by source
   carrier PCM-window features; the D0 path is source-derived but not yet a
   transparent perceptual E-AC-3 encoder.
+- `ReductionConfig.temporal_continuity_weight` defaults to the clean-side
+  dimensionless value `0.15`; it adds a switch cost only when a source moves
+  between prior-frame clusters and is covered by controlled/adversarial tests.
+- DirectSpeakers channel bindings are expanded from ADM references. Non-LFE
+  channels use the documented positioned-source fallback; LFE channels are
+  carried once in the core LFE path and receive explicit accounting records.
 - Full matrix, one coarse parameter band, fixed basis continuity, and a
   deterministic 64-sample coefficient analysis view are intentional clean
   milestone limits, not claims of perceptual encoder parity.

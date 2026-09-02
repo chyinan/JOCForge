@@ -93,15 +93,28 @@ the writer; it is not an inferred reference implementation table.
 ## Temporal and compatibility policy
 
 The reducer preserves source ordinal order for unmerged scenes and stable seed
-ordering for merged scenes. A pure `compare_reduction_assignments` diagnostic
-reports changed source assignments between consecutive results. The initial
-CLI processes a complete programme, while tests can invoke the same pure
-reducer on consecutive windows. OAMD uses aggregate position for merged
-sources and documents the narrow DirectSpeakers policy: the parsed component
-is either retained as an explicitly classified source contribution or rejected
-with a named unsupported-input error; it is never silently omitted.
+ordering for merged scenes. `reduction_assignment_changes` measures authored
+source membership changes, while `reduction_identity_changes` compares
+representative source identities and does not mistake coded-vector reordering
+for identity churn. The continuity policy adds the project-owned,
+dimensionless `temporal_continuity_weight` to a candidate switch cost; a source
+may still switch when the current signal/spatial cost improvement is larger.
+The default value is 0.15 and is covered by controlled and adversarial tests.
 
-Compatibility mode remains profile-fixed in this milestone. The CLI records
+The initial CLI processes a complete programme, while tests can invoke the same
+pure reducer on consecutive windows. OAMD uses aggregate position for merged
+sources. Each DirectSpeakers AudioObject is expanded using every referenced
+channel format and TrackUID. Non-LFE DirectSpeakers channels enter the
+explicitly classified source reduction; LFE channels bypass that reduction and
+are summed once into the core LFE path, with separate accounting records. An
+unsupported ADM kind is rejected with a named error; no source is silently
+omitted. This remains a narrow positioned-channel policy, not complete
+authored-bed recovery.
+
+Compatibility mode remains profile-fixed in this milestone. A source scene with
+an LFE channel uses an E-AC-3 core LFE in addition to the profile's full-band
+carrier; idx0 therefore reports a 5.1 physical carrier, while idx1/idx2 retain
+their dependent full-band extensions. The CLI records
 the selected profile, carrier count, active coded-object count, matrix and
 reduction metrics. Speaker-render comparison is an external validation step;
 the implementation does not claim production perceptual quality.

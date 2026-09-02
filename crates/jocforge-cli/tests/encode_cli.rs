@@ -75,3 +75,50 @@ fn encode_cli_accepts_a_clean_fixture_above_the_old_object_limit() {
 
     let _ = fs::remove_dir_all(root);
 }
+
+#[test]
+fn encode_cli_retains_an_lfe_as_a_separate_core_channel() {
+    let root = env::temp_dir().join(format!("jocforge-directspeakers-{}", std::process::id()));
+    fs::create_dir_all(&root).expect("temporary directory");
+    let input = root.join("directspeakers.bw64");
+    let output = root.join("directspeakers.ec3");
+    let fixture = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+        .args([
+            "fixture-directspeakers",
+            "--seconds",
+            "1",
+            input.to_str().expect("input path is UTF-8"),
+        ])
+        .status()
+        .expect("DirectSpeakers fixture CLI starts");
+    assert!(fixture.success());
+
+    let encoded = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+        .args([
+            "encode",
+            input.to_str().expect("input path is UTF-8"),
+            output.to_str().expect("output path is UTF-8"),
+            "--profile",
+            "idx1",
+        ])
+        .status()
+        .expect("DirectSpeakers encode CLI starts");
+    assert!(encoded.success());
+
+    let probe = Command::new("ffprobe")
+        .args([
+            "-v",
+            "error",
+            "-show_entries",
+            "stream=channels",
+            "-of",
+            "default=noprint_wrappers=1:nokey=1",
+            output.to_str().expect("output path is UTF-8"),
+        ])
+        .output()
+        .expect("ffprobe starts");
+    assert!(probe.status.success());
+    assert_eq!(String::from_utf8_lossy(&probe.stdout).trim(), "8");
+
+    let _ = fs::remove_dir_all(root);
+}
