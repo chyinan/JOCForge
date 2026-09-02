@@ -3,7 +3,8 @@
 JOCForge is an independent, clean-room ADM-to-E-AC-3/JOC encoder proof. The
 `0.1.0-dev` MVP prioritizes a reproducible standards-derived writer, finite
 round-trip output, and external OpenJOC v0.15.0 validation over perceptual
-encoder quality.
+encoder quality. The source-derived milestone proves the controlled
+15-object path, including seven rank carriers and a PCM-derived dependent D0.
 
 The MVP supports 48 kHz, integer PCM BW64/RF64/RIFF ADM input with a narrow
 public subset: one programme/content relationship, up to 15 dynamic object
@@ -33,6 +34,18 @@ writes local evidence under `artifacts/mvp/`.
 The evidence includes `validation.json`, `metrics.json`, `frame-budget.csv`,
 `object-binding.csv`, `profile-comparison.txt`, and the three rendered WAVs.
 
+## Reproduce the source-derived milestone
+
+The source-derived script first censuses the real ADM-BWF export at
+`D:\ADM BWF\打上花火.wav`, verifies its 38-track/29-object metadata, and checks
+that encoding is rejected explicitly because its 28 authored Objects exceed
+the current `<=15` scene limit. It then generates the controlled fixture,
+encodes all profiles, and writes evidence under `artifacts/source-derived/`.
+
+```powershell
+.\scripts\run-source-derived.ps1
+```
+
 Manual commands:
 
 ```powershell
@@ -48,10 +61,13 @@ cargo run -p jocforge -- encode artifacts/mvp/synthetic-reference.bw64 artifacts
 different JOC payload headers and different dependent channel maps; idx2 is
 not a relabeled idx1.
 
-FFmpeg is used only as an external 5-channel E-AC-3 I0 carrier encoder. The
-JOCForge-owned writer creates the dependent D0, full-matrix JOC payload, OAMD,
-EMDF container, and frame carriage. D0 is deliberately small enough that
-4096-byte I0 + 2560-byte D0 equals 1664 kbps at 48 kHz/six blocks.
+FFmpeg is used only as the external 5-channel E-AC-3 I0 carrier encoder. The
+JOCForge-owned writer creates the PCM-derived two-channel dependent D0,
+full-matrix JOC payload, OAMD, EMDF container, and frame carriage. Each D0
+channel is driven by a bounded feature of its source carrier's 256-sample PCM
+window; it is not a fixed structural tone, but it is not yet a perceptual or
+transparent E-AC-3 encoder. D0 is 2560 bytes, so 4096-byte I0 + 2560-byte D0
+equals 1664 kbps at 48 kHz/six blocks.
 
 ## Boundaries
 
@@ -61,7 +77,7 @@ rank-controlled fixture proves an explainable linear pipeline; compatibility
 presentation and arbitrary ADM factorization remain experimental.
 
 OpenJOC is an external validator/decoder/renderer only. EBU `libadm`,
-`libbw64`, and `libear` were audited as public Apache-2.0 resources. Full C++
-interop is deferred because this Windows host has no CMake/Boost compiler path;
-the narrow ingest boundary and migration plan are recorded in
-`PROVENANCE.md`.
+`libbw64`, and `libear` were audited from their upstream Apache-2.0 license
+files. Full C++ interop is deferred because this Windows host has no exposed
+CMake/C++/Boost build path; the narrow ingest boundary and migration plan are
+recorded in `PROVENANCE.md`. This project does not claim full ADM support.

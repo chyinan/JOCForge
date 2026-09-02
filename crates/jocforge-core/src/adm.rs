@@ -15,6 +15,22 @@ pub struct AdmObject {
     pub track_uid: String,
     pub track_index: usize,
     pub position: AdmPosition,
+    pub kind: AdmObjectKind,
+}
+
+/// ADM object category retained for the source-file census.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum AdmObjectKind {
+    Objects,
+    DirectSpeakers,
+    Other,
+}
+
+impl AdmObjectKind {
+    #[must_use]
+    pub fn is_dynamic(self) -> bool {
+        self == Self::Objects
+    }
 }
 
 /// Cartesian-free ADM position values retained for OAMD conversion.
@@ -42,6 +58,36 @@ pub struct ParsedAdm {
     pub pcm: Vec<Vec<f64>>,
 }
 
+/// ADM/BW64 metadata parsed without loading the PCM payload.
+#[derive(Clone, Debug, PartialEq)]
+pub struct ParsedAdmMetadata {
+    pub sample_rate: u32,
+    pub channel_count: usize,
+    pub sample_count: usize,
+    pub data_bytes: u64,
+    pub track_count: usize,
+    pub track_uid_count: usize,
+    pub objects: Vec<AdmObject>,
+}
+
+impl ParsedAdmMetadata {
+    #[must_use]
+    pub fn dynamic_object_count(&self) -> usize {
+        self.objects
+            .iter()
+            .filter(|object| object.kind.is_dynamic())
+            .count()
+    }
+
+    #[must_use]
+    pub fn direct_speaker_count(&self) -> usize {
+        self.objects
+            .iter()
+            .filter(|object| object.kind == AdmObjectKind::DirectSpeakers)
+            .count()
+    }
+}
+
 /// Repository-owned fixture bytes and the ground-truth rank-7 matrix.
 #[derive(Clone, Debug, PartialEq)]
 pub struct SyntheticFixture {
@@ -60,6 +106,7 @@ pub enum AdmError {
     MissingObjectBinding(String),
     MissingPosition(String),
     InvalidNumber(String),
+    UnsupportedObjectCount { dynamic_objects: usize },
 }
 
 impl fmt::Display for AdmError {
@@ -85,6 +132,10 @@ impl fmt::Display for AdmError {
                 write!(formatter, "missing position for ADM object {object}")
             }
             Self::InvalidNumber(value) => write!(formatter, "invalid ADM numeric value '{value}'"),
+            Self::UnsupportedObjectCount { dynamic_objects } => write!(
+                formatter,
+                "Unsupported ADM scene: {dynamic_objects} authored dynamic objects exceed current <=15 source-derived MVP profile; scene reduction is not implemented."
+            ),
         }
     }
 }
@@ -157,7 +208,6 @@ pub fn parse_bw64_adm(bytes: &[u8]) -> Result<ParsedAdm, AdmError> {
     }
     let format = read_u16_le(&fmt[0..2])?;
     let channel_count = usize::from(read_u16_le(&fmt[2..4])?);
-    let sample_rate = read_u32_le(&fmt[4..8])?;
     let block_align = usize::from(read_u16_le(&fmt[12..14])?);
     let bits = read_u16_le(&fmt[14..16])?;
     if format != 1 || !matches!(bits, 16 | 24 | 32) {
@@ -170,13 +220,51 @@ pub fn parse_bw64_adm(bytes: &[u8]) -> Result<ParsedAdm, AdmError> {
     if data_range.len() % block_align != 0 {
         return Err(AdmError::InvalidContainer("PCM data alignment"));
     }
-    let sample_count = data_range.len() / block_align;
-    let pcm = decode_pcm(&bytes[data_range.clone()], channel_count, bits);
-    let bindings = parse_chna(&chna)?;
+    let metadata = parse_bw64_adm_metadata(&fmt, &axml, &chna, data_range.len() as u64)?;
+    let pcm = decode_pcm(&bytes[data_range], channel_count, bits);
+    Ok(ParsedAdm {
+        sample_rate: metadata.sample_rate,
+        channel_count: metadata.channel_count,
+        sample_count: metadata.sample_count,
+        objects: metadata.objects,
+        pcm,
+    })
+}
+
+/// Parses ADM/BW64 metadata from already extracted chunks without reading PCM.
+pub fn parse_bw64_adm_metadata(
+    fmt: &[u8],
+    axml: &[u8],
+    chna: &[u8],
+    data_bytes: u64,
+) -> Result<ParsedAdmMetadata, AdmError> {
+    if fmt.len() < 16 {
+        return Err(AdmError::Truncated("fmt chunk"));
+    }
+    let format = read_u16_le(&fmt[0..2])?;
+    let channel_count = usize::from(read_u16_le(&fmt[2..4])?);
+    let sample_rate = read_u32_le(&fmt[4..8])?;
+    let block_align = usize::from(read_u16_le(&fmt[12..14])?);
+    let bits = read_u16_le(&fmt[14..16])?;
+    if format != 1 || !matches!(bits, 16 | 24 | 32) {
+        return Err(AdmError::UnsupportedPcm { format, bits });
+    }
+    let bytes_per_sample = usize::from(bits / 8);
+    if channel_count == 0 || block_align != channel_count * bytes_per_sample {
+        return Err(AdmError::InvalidContainer("PCM block alignment"));
+    }
+    let block_align_u64 = u64::try_from(block_align)
+        .map_err(|_| AdmError::InvalidContainer("PCM block alignment"))?;
+    if data_bytes % block_align_u64 != 0 {
+        return Err(AdmError::InvalidContainer("PCM data alignment"));
+    }
+    let sample_count = usize::try_from(data_bytes / block_align_u64)
+        .map_err(|_| AdmError::InvalidContainer("PCM sample count"))?;
+    let chna = parse_chna(chna)?;
     let objects = parse_adm_objects(
-        std::str::from_utf8(&axml)
+        std::str::from_utf8(axml)
             .map_err(|_| AdmError::InvalidMetadata("axml is not UTF-8".to_owned()))?,
-        &bindings,
+        &chna.bindings,
         channel_count,
     )?;
     if sample_rate != SAMPLE_RATE {
@@ -184,13 +272,25 @@ pub fn parse_bw64_adm(bytes: &[u8]) -> Result<ParsedAdm, AdmError> {
             "MVP requires 48000 Hz, got {sample_rate}"
         )));
     }
-    Ok(ParsedAdm {
+    Ok(ParsedAdmMetadata {
         sample_rate,
         channel_count,
         sample_count,
+        data_bytes,
+        track_count: chna.track_count,
+        track_uid_count: chna.track_uid_count,
         objects,
-        pcm,
     })
+}
+
+/// Admits only the authored dynamic-object count supported by the source-derived MVP.
+pub fn validate_source_derived_object_limit(dynamic_object_count: usize) -> Result<(), AdmError> {
+    if dynamic_object_count > 15 {
+        return Err(AdmError::UnsupportedObjectCount {
+            dynamic_objects: dynamic_object_count,
+        });
+    }
+    Ok(())
 }
 
 /// Generates a four-second, 15-object, rank-7 synthetic ADM/BW64 fixture.
@@ -261,7 +361,13 @@ fn read_u64_le(bytes: &[u8]) -> Result<u64, AdmError> {
     Ok(u64::from_le_bytes(value))
 }
 
-fn parse_chna(bytes: &[u8]) -> Result<HashMap<String, usize>, AdmError> {
+struct ChnaBindings {
+    bindings: HashMap<String, usize>,
+    track_count: usize,
+    track_uid_count: usize,
+}
+
+fn parse_chna(bytes: &[u8]) -> Result<ChnaBindings, AdmError> {
     if bytes.len() < 4 {
         return Err(AdmError::Truncated("chna chunk"));
     }
@@ -277,7 +383,11 @@ fn parse_chna(bytes: &[u8]) -> Result<HashMap<String, usize>, AdmError> {
         let track_index = usize::from(read_u16_le(&bytes[start..start + 2])?);
         result.insert(uid, track_index);
     }
-    Ok(result)
+    Ok(ChnaBindings {
+        bindings: result,
+        track_count: tracks,
+        track_uid_count: uids,
+    })
 }
 
 fn parse_adm_objects(
@@ -290,7 +400,15 @@ fn parse_adm_objects(
         let open = opening_tag(block, "audioPackFormat")?;
         let id = attribute(open, "audioPackFormatID")?;
         let channel = child_text(block, "audioChannelFormatIDRef")?;
-        packs.insert(id, channel);
+        let type_definition = attribute_optional(open, "typeDefinition");
+        let type_label = attribute_optional(open, "typeLabel");
+        packs.insert(
+            id,
+            (
+                channel,
+                adm_object_kind(type_definition.as_deref(), type_label.as_deref()),
+            ),
+        );
     }
     let mut positions = HashMap::new();
     for block in tag_blocks(xml, "audioChannelFormat") {
@@ -310,7 +428,7 @@ fn parse_adm_objects(
         let object_id = attribute(open, "audioObjectID")?;
         let track_uid = child_text(block, "audioTrackUIDRef")?;
         let pack_id = child_text(block, "audioPackFormatIDRef")?;
-        let channel_id = packs.get(&pack_id).ok_or_else(|| {
+        let (channel_id, kind) = packs.get(&pack_id).ok_or_else(|| {
             AdmError::InvalidMetadata(format!(
                 "object {object_id} references unknown pack {pack_id}"
             ))
@@ -333,6 +451,7 @@ fn parse_adm_objects(
             track_uid,
             track_index,
             position,
+            kind: *kind,
         });
     }
     if objects.is_empty() {
@@ -341,6 +460,20 @@ fn parse_adm_objects(
         ));
     }
     Ok(objects)
+}
+
+fn adm_object_kind(type_definition: Option<&str>, type_label: Option<&str>) -> AdmObjectKind {
+    if type_definition.is_some_and(|value| value.eq_ignore_ascii_case("objects"))
+        || type_label == Some("0003")
+    {
+        return AdmObjectKind::Objects;
+    }
+    if type_definition.is_some_and(|value| value.eq_ignore_ascii_case("directspeakers"))
+        || type_label == Some("0002")
+    {
+        return AdmObjectKind::DirectSpeakers;
+    }
+    AdmObjectKind::Other
 }
 
 fn parse_position(block: &str) -> Result<AdmPosition, AdmError> {

@@ -2,14 +2,18 @@
 
 use std::{
     env, fs,
-    io::Read,
     path::{Path, PathBuf},
     process::ExitCode,
 };
 
+mod file_scan;
+
+use file_scan::scan_bw64_file;
+
 use jocforge_core::{
-    JocProfile, factorize_rank_controlled, generate_synthetic_fixture, package_ffmpeg_access_unit,
-    parse_bw64_adm, profile_spec, write_one_au_proof,
+    JocProfile, factorize_rank_controlled, generate_synthetic_fixture,
+    package_source_derived_access_unit, parse_bw64_adm, parse_bw64_adm_metadata, profile_spec,
+    validate_source_derived_object_limit, write_one_au_proof,
 };
 
 fn main() -> ExitCode {
@@ -64,15 +68,36 @@ fn run_inspect_adm(arguments: &[String]) -> Result<(), String> {
         return Err("usage: jocforge inspect-adm INPUT.bw64".to_owned());
     };
     let input = PathBuf::from(input);
-    let bytes = read_adm_bytes(&input)?;
-    let parsed =
-        parse_bw64_adm(&bytes).map_err(|error| format!("failed to inspect ADM: {error}"))?;
+    let scanned = scan_bw64_file(&input)?;
+    let parsed = parse_bw64_adm_metadata(
+        &scanned.fmt,
+        &scanned.axml,
+        &scanned.chna,
+        scanned.data_size,
+    )
+    .map_err(|error| format!("failed to inspect ADM: {error}"))?;
+    let chunk_ids = scanned
+        .chunks
+        .iter()
+        .map(|chunk| String::from_utf8_lossy(&chunk.id).to_string())
+        .collect::<Vec<_>>()
+        .join(",");
     println!(
-        "sample_rate={} channels={} samples={} objects={}",
+        "form={} chunks={} chunk_ids={} data_offset={} data_bytes={} dbmd_bytes={} sample_rate={} channels={} samples={} tracks={} track_uids={} objects={} dynamic_objects={} direct_speakers={}",
+        String::from_utf8_lossy(&scanned.form),
+        scanned.chunks.len(),
+        chunk_ids,
+        scanned.data_offset,
+        scanned.data_size,
+        scanned.dbmd.len(),
         parsed.sample_rate,
         parsed.channel_count,
         parsed.sample_count,
-        parsed.objects.len()
+        parsed.track_count,
+        parsed.track_uid_count,
+        parsed.objects.len(),
+        parsed.dynamic_object_count(),
+        parsed.direct_speaker_count()
     );
     Ok(())
 }
@@ -90,6 +115,21 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
     }
     let profile = parse_profile(profile_name)?;
     let input_path = PathBuf::from(input);
+    let scanned = scan_bw64_file(&input_path)?;
+    let metadata = parse_bw64_adm_metadata(
+        &scanned.fmt,
+        &scanned.axml,
+        &scanned.chna,
+        scanned.data_size,
+    )
+    .map_err(|error| {
+        format!(
+            "failed to parse ADM metadata '{}': {error}",
+            input_path.display()
+        )
+    })?;
+    validate_source_derived_object_limit(metadata.dynamic_object_count())
+        .map_err(|error| error.to_string())?;
     let input_bytes = fs::read(&input_path).map_err(|error| {
         format!(
             "failed to read ADM input '{}': {error}",
@@ -102,8 +142,12 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
             input_path.display()
         )
     })?;
-    let object_pcm = parsed
+    let dynamic_objects = parsed
         .objects
+        .iter()
+        .filter(|object| object.kind.is_dynamic())
+        .collect::<Vec<_>>();
+    let object_pcm = dynamic_objects
         .iter()
         .map(|object| {
             parsed
@@ -114,8 +158,7 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         })
         .collect::<Result<Vec<_>, _>>()?;
     let rank = profile_spec(profile).input_labels.len();
-    let positions = parsed
-        .objects
+    let positions = dynamic_objects
         .iter()
         .map(|object| object.position)
         .collect::<Vec<_>>();
@@ -131,10 +174,50 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
     let work_root = env::temp_dir().join(format!("jocforge-encode-{}", std::process::id()));
     fs::create_dir_all(&work_root)
         .map_err(|error| format!("failed to create encoder work directory: {error}"))?;
-    let raw_path = work_root.join("carrier.f32le");
-    let carrier_path = work_root.join("carrier.ec3");
-    let raw = interleaved_f32le(&factorization.carriers[..rank.min(5)], complete_samples);
-    fs::write(&raw_path, raw).map_err(|error| format!("failed to write carrier PCM: {error}"))?;
+    let i0_raw_path = work_root.join("carrier-i0.f32le");
+    let i0_carrier_path = work_root.join("carrier-i0.ec3");
+    let i0_bytes = interleaved_f32le(&factorization.carriers[..5], complete_samples);
+    let d0_carriers = if rank == 7 {
+        factorization.carriers[5..7].to_vec()
+    } else {
+        factorization.carriers[..2].to_vec()
+    };
+    let expected_frames = complete_samples / 1536;
+    encode_ffmpeg_carrier(&i0_raw_path, &i0_carrier_path, i0_bytes, 5, "1024k")?;
+    let i0_carrier_bytes = read_carrier_frames(&i0_carrier_path, 4096, expected_frames)?;
+    let mut output_bytes = Vec::with_capacity(expected_frames * 8192);
+    for frame_index in 0..expected_frames {
+        let i0_start = frame_index * 4096;
+        let i0_frame = &i0_carrier_bytes[i0_start..i0_start + 4096];
+        let sequence = u16::try_from(frame_index % 1023 + 1).unwrap_or(1);
+        let access_unit = package_source_derived_access_unit(
+            profile,
+            sequence,
+            &factorization.scaled_matrix,
+            &positions,
+            i0_frame,
+            &d0_carriers,
+            frame_index * 1536,
+        )?;
+        output_bytes.extend_from_slice(&access_unit);
+    }
+    let output_path = PathBuf::from(output);
+    write_output(&output_path, output_bytes, "encoded")?;
+    let _ = fs::remove_dir_all(work_root);
+    println!(
+        "encoded profile={profile_name} frames={expected_frames} sample_rate=48000 carriers=source-derived:ffmpeg:i0=5x1024k,jocforge:d0=2xpcm-derived"
+    );
+    Ok(())
+}
+
+fn encode_ffmpeg_carrier(
+    raw_path: &Path,
+    carrier_path: &Path,
+    raw: Vec<u8>,
+    channels: usize,
+    bitrate: &str,
+) -> Result<(), String> {
+    fs::write(raw_path, raw).map_err(|error| format!("failed to write carrier PCM: {error}"))?;
     let ffmpeg = std::process::Command::new("ffmpeg")
         .args([
             "-hide_banner",
@@ -146,71 +229,47 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
             "-ar",
             "48000",
             "-ac",
-            "5",
-            "-i",
         ])
-        .arg(&raw_path)
-        .args(["-c:a", "eac3", "-b:a", "1024k", "-f", "eac3"])
-        .arg(&carrier_path)
+        .arg(channels.to_string())
+        .args(["-i"])
+        .arg(raw_path)
+        .args(["-c:a", "eac3", "-b:a", bitrate, "-f", "eac3"])
+        .arg(carrier_path)
         .status()
         .map_err(|error| format!("failed to start FFmpeg E-AC-3 encoder: {error}"))?;
     if !ffmpeg.success() {
-        let _ = fs::remove_dir_all(&work_root);
-        return Err("FFmpeg E-AC-3 carrier encoding failed".to_owned());
-    }
-    let carrier_bytes = fs::read(&carrier_path)
-        .map_err(|error| format!("failed to read FFmpeg carrier output: {error}"))?;
-    if carrier_bytes.len() % 4096 != 0 {
-        let _ = fs::remove_dir_all(&work_root);
-        return Err("FFmpeg carrier output is not a sequence of 4096-byte frames".to_owned());
-    }
-    let expected_frames = complete_samples / 1536;
-    if carrier_bytes.len() / 4096 != expected_frames {
-        let _ = fs::remove_dir_all(&work_root);
         return Err(format!(
-            "FFmpeg carrier frame count differs: expected {expected_frames}, got {}",
-            carrier_bytes.len() / 4096
+            "FFmpeg E-AC-3 {channels}-channel carrier encoding failed"
         ));
     }
-    let mut output_bytes = Vec::with_capacity(expected_frames * 8192);
-    for frame_index in 0..expected_frames {
-        let start = frame_index * 4096;
-        let frame = &carrier_bytes[start..start + 4096];
-        let sequence = u16::try_from(frame_index % 1023 + 1).unwrap_or(1);
-        let access_unit = package_ffmpeg_access_unit(
-            profile,
-            sequence,
-            &factorization.scaled_matrix,
-            &positions,
-            frame,
-        )?;
-        output_bytes.extend_from_slice(&access_unit);
-    }
-    let output_path = PathBuf::from(output);
-    write_output(&output_path, output_bytes, "encoded")?;
-    let _ = fs::remove_dir_all(work_root);
-    println!(
-        "encoded profile={profile_name} frames={expected_frames} sample_rate=48000 carrier=ffmpeg:eac3:1024k"
-    );
     Ok(())
 }
 
-fn read_adm_bytes(path: &PathBuf) -> Result<Vec<u8>, String> {
-    let length = fs::metadata(path)
-        .map_err(|error| format!("failed to stat ADM input '{}': {error}", path.display()))?
-        .len();
-    if length > 64 * 1024 * 1024 {
-        let mut file = fs::File::open(path)
-            .map_err(|error| format!("failed to open ADM input '{}': {error}", path.display()))?;
-        let mut prefix = Vec::with_capacity(1024 * 1024);
-        file.by_ref()
-            .take(1024 * 1024)
-            .read_to_end(&mut prefix)
-            .map_err(|error| format!("failed to read ADM header '{}': {error}", path.display()))?;
-        return Ok(prefix);
+fn read_carrier_frames(
+    path: &Path,
+    frame_bytes: usize,
+    expected_frames: usize,
+) -> Result<Vec<u8>, String> {
+    let bytes = fs::read(path).map_err(|error| {
+        format!(
+            "failed to read FFmpeg carrier output '{}': {error}",
+            path.display()
+        )
+    })?;
+    if bytes.len() % frame_bytes != 0 {
+        return Err(format!(
+            "FFmpeg carrier output '{}' is not a sequence of {frame_bytes}-byte frames",
+            path.display()
+        ));
     }
-    fs::read(path)
-        .map_err(|error| format!("failed to read ADM input '{}': {error}", path.display()))
+    if bytes.len() / frame_bytes != expected_frames {
+        return Err(format!(
+            "FFmpeg carrier '{}' frame count differs: expected {expected_frames}, got {}",
+            path.display(),
+            bytes.len() / frame_bytes
+        ));
+    }
+    Ok(bytes)
 }
 
 fn interleaved_f32le(carriers: &[Vec<f64>], samples: usize) -> Vec<u8> {

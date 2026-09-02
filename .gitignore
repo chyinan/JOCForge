@@ -1,6 +1,8 @@
 /target/
 /artifacts/mvp/*
 !/artifacts/mvp/.gitkeep
+/artifacts/source-derived/*
+!/artifacts/source-derived/.gitkeep
 *.ec3
 *.bw64
 *.wav

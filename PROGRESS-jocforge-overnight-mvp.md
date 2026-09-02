@@ -1,6 +1,6 @@
 # 进度追踪：JOCForge overnight MVP
 
-> 创建时间：2026-09-02 | 状态：进行中
+> 创建时间：2026-09-02 | 状态：进行中；source-derived milestone reopened 2026-09-02
 
 ## 目标
 构建独立的 clean-room/public-spec-based JOCForge MVP，实现受限 ADM/BW64 输入到新生成 raw E-AC-3/JOC `.ec3` 的端到端编码、OpenJOC 外部严格验证、解码和渲染。
@@ -36,10 +36,10 @@
 - `D:/Programs/JOCForge/summary/ebus-and-openjoc.md` — EBU library audit, integration decision, supplied file observation.
 
 ## 当前进度
-writer-first proof、窄 BW64/ADM fixture、rank-controlled analysis、FFmpeg I0 + JOCForge D0 packaging、三种 4 秒 profile 输出、OpenJOC strict inspect/decode/render、确定性和文档已完成；正在执行最终质量门禁与 adversarial review。
+前一阶段结构 proof 已提交为 `13837d6c4ed2dc4c317efa718d88a354640fa751`。本 milestone 基线已复核，正在修复 real ADM chunk scanner、扩展 real-file census/admission，并将 7-input D0 从 structural substitute 改为 source-derived carrier PCM。
 
 ## 下一步
-刷新运行 cargo quality gates、复核 Git diff、提交本地 commit；最终报告真实输入文件观察、三个 profile 证据、MVP 限制和下一步。
+先为 metadata-after-data、large-data seek、odd padding 和 >15 object rejection 写失败测试；再实现 seek-aware scanner、source-derived seven-carrier pipeline 与 fresh external validation。
 
 ## 发现的关键信息
 - 用户要求 writer-first，OpenJOC 只能作为外部验证器/解码器/渲染器。
@@ -53,4 +53,19 @@ writer-first proof、窄 BW64/ADM fixture、rank-controlled analysis、FFmpeg I0
 - Final raw outputs are each 832000 bytes: 125 access units, each 4096-byte I0 plus 2560-byte D0, actual 1664000 bit/s.
 - OpenJOC external evidence: all three outputs strict inspect exit 0, 125/125 EMDF parsed, 0 malformed; all three render exit 0; FFmpeg independently decodes each stream exit 0; OpenJOC `decode --internal-base` produced 15 reconstruction rows for each profile.
 - Repeat encode SHA-256 is identical: `928fe595e967889c674cfea92adb4c3b5f5b68e6f7cf68c39548658ea5d8c6be`.
-- The supplied `D:\ADM BWF\打上花火.wav` remains ordinary 38-channel RIFF PCM at the inspected header boundary and is rejected by the ADM parser for missing `axml`; no silent ADM reinterpretation is performed.
+- The supplied `D:\ADM BWF\打上花火.wav` is confirmed RIFF ADM-BWF with trailing `axml/chna/dbmd`; the seek-aware scanner census succeeds and the encoder rejects its 28 dynamic objects explicitly before PCM loading.
+- Re-adjudication established the supplied file is RIFF ADM-BWF with trailing `axml/chna/dbmd`; the earlier census stopped at 1 MiB and was wrong.
+- New milestone requirement: `D:\ADM BWF\打上花火.wav` must parse/census successfully but encode must reject explicitly because it contains 28 authored Objects > the current 15-object source-derived MVP limit.
+
+## Current source-derived milestone evidence (2026-09-02)
+
+- Added seek-scanner regressions for metadata-after-data, a 128 MiB seek-over,
+  odd chunk padding, and clean EOF.
+- Controlled source-derived outputs are in ignored `artifacts/source-derived/`:
+  three 832000-byte streams, 125 AUs each, with a 4096-byte FFmpeg I0 and a
+  2560-byte JOCForge PCM-derived D0.
+- Both D0 channels are driven from source carrier 256-sample window features;
+  this is causal source-derived evidence, not transparent perceptual E-AC-3
+  encoding.
+- OpenJOC v0.15.0 strict inspect/render/internal-base decode and independent
+  FFmpeg decode passed for idx0, idx1, and idx2.

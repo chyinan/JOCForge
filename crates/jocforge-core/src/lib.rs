@@ -8,14 +8,17 @@ mod profile;
 mod writer;
 
 pub use adm::{
-    AdmError, AdmObject, AdmPosition, ParsedAdm, SyntheticFixture, generate_synthetic_fixture,
-    parse_bw64_adm,
+    AdmError, AdmObject, AdmObjectKind, AdmPosition, ParsedAdm, ParsedAdmMetadata,
+    SyntheticFixture, generate_synthetic_fixture, parse_bw64_adm, parse_bw64_adm_metadata,
+    validate_source_derived_object_limit,
 };
 pub use analysis::{
     QuantizedCoefficient, RankFactorization, factorize_rank_controlled, quantize_coefficient,
 };
 pub use profile::{JocProfileSpec, profile_spec};
-pub use writer::{package_ffmpeg_access_unit, write_one_au_proof};
+pub use writer::{
+    package_ffmpeg_access_unit, package_source_derived_access_unit, write_one_au_proof,
+};
 
 /// MVP JOC downmix profiles.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

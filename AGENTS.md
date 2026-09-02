@@ -26,8 +26,11 @@ Last verified: 2026-09-02
   and explicit matrix quantization.
 - `crates/jocforge-core/src/profile.rs` — mandatory idx0/idx1/idx2 topology
   contracts.
-- `crates/jocforge-core/src/writer.rs` — pure JOC/OAMD/EMDF and I0/D0 writer.
+- `crates/jocforge-core/src/writer.rs` — pure JOC/OAMD/EMDF and I0 plus
+  PCM-derived dependent D0 writer.
 - `crates/jocforge-cli/src/main.rs` — file/process orchestration shell.
+- `crates/jocforge-cli/src/file_scan.rs` — seek-aware BW64 chunk scanner that
+  reads metadata after large `data` chunks without loading PCM.
 - `scripts/` — reproducible external validation and evidence generation.
 - `summary/` — focused investigation summaries.
 
@@ -45,23 +48,27 @@ Last verified: 2026-09-02
 
 - `profile_spec` is the single JOCForge-owned source for the three mandatory
   public topology labels and dependent channel maps.
-- `package_ffmpeg_access_unit` accepts exactly one 4096-byte I0 frame and
-  returns I0 + JOCForge-owned D0 carriage.
+- `package_source_derived_access_unit` accepts exactly one 4096-byte FFmpeg I0
+  frame and two 1536-sample source D0 carrier windows, returning I0 plus a
+  JOCForge-owned PCM-derived 2560-byte D0 carriage.
 - Production code does not import OpenJOC crates or share its serialization
   implementation; external OpenJOC inspect/decode/render remains an
   independent validation loop.
 - No proprietary Dolby encoder binary, media, or reverse-engineered logic is
   permitted in this repository.
-- Generated audio/binary evidence under `artifacts/mvp/` is local and ignored;
-  reproduce it with `scripts/run-mvp.ps1`.
+- Generated audio/binary evidence under `artifacts/mvp/` and
+  `artifacts/source-derived/` is local and ignored; reproduce it with
+  `scripts/run-mvp.ps1` or `scripts/run-source-derived.ps1`.
 
 ## Key Decisions
 
 - The overnight MVP uses a narrow Rust BW64/axml/chna subset because this host
   lacks an exposed CMake/compiler/Boost path; `libadm`/`libbw64` migration is
   follow-up work.
-- FFmpeg encodes the actual 5-channel I0 carrier at 1024 kbps. A fixed,
-  standards-derived 2560-byte D0 keeps the raw stream at 1664 kbps.
+- FFmpeg encodes the actual 5-channel I0 carrier at 1024 kbps. JOCForge writes
+  a valid 2560-byte dependent D0 whose two channels are driven by source
+  carrier PCM-window features; the D0 path is source-derived but not yet a
+  transparent perceptual E-AC-3 encoder.
 - Full matrix, one coarse parameter band, fixed basis continuity, and a
   rank-controlled synthetic fixture are intentional MVP limits, not claims of
   perceptual encoder parity.

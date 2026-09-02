@@ -372,6 +372,130 @@ fn write_dependent_frame(emdf: Option<&[u8]>, channel_map: u16) -> Vec<u8> {
     finish_frame(bits, emdf, D0_FRAME_BYTES)
 }
 
+/// Writes a small, source-derived dependent carrier. Both full-bandwidth
+/// channels carry bounded conventional mantissas derived from each 256-sample
+/// source window. This is an auditable PCM-to-bitstream bridge, not a
+/// perceptual E-AC-3 encoder.
+fn write_source_dependent_frame(
+    emdf: &[u8],
+    channel_map: u16,
+    carriers: &[Vec<f64>],
+    sample_offset: usize,
+) -> Result<Vec<u8>, String> {
+    if carriers.len() != 2
+        || carriers
+            .iter()
+            .any(|carrier| carrier.len() < sample_offset.saturating_add(1536))
+    {
+        return Err("source-derived D0 requires two 1536-sample carrier windows".to_owned());
+    }
+    let mut bits = BitWriter::default();
+    for (value, width) in [
+        (0x0b77, 16),
+        (1, 2), // dependent substream
+        (0, 3),
+        (u64::try_from(D0_FRAME_BYTES / 2 - 1).unwrap_or(0), 11),
+        (0, 2),  // 48 kHz
+        (3, 2),  // six blocks
+        (2, 3),  // two full-band channels
+        (0, 1),  // no LFE
+        (16, 5), // E-AC-3
+        (31, 5), // dialnorm
+        (0, 1),  // no compression metadata
+        (1, 1),  // custom channel map present
+        (u64::from(channel_map), 16),
+        (0, 1), // no mixing metadata
+        (0, 1), // no informational metadata
+        (1, 1), // addbsi present for the JOC carrier
+        (1, 6), // two addbsi bytes
+        (0x01, 8),
+        (16, 8),
+    ] {
+        bits.push(value, width);
+    }
+    bits.push(1, 1); // per-block exponent strategies
+    bits.push(0, 1); // no AHT
+    bits.push(1, 2); // per-block SNR strategy 1
+    bits.push(0, 1); // no transient processing
+    bits.push(16, 7); // bit allocation syntax enabled
+    bits.push(0, 1); // coupling off in block zero
+    for _ in 1..6 {
+        bits.push(0, 1); // coupling strategy reused/off
+    }
+    for block in 0..6 {
+        bits.push(u64::from(block == 0), 2);
+        bits.push(u64::from(block == 0), 2);
+    }
+    bits.push(0, 1); // no block-start information
+
+    for block in 0..6 {
+        if block == 0 {
+            bits.push(0, 1); // dynamic range absent
+            bits.push(0, 1); // SPX absent
+            for _ in 0..4 {
+                bits.push(0, 1); // stereo rematrix flags
+            }
+            bits.push(0, 6); // channel 6 bandwidth code
+            bits.push(0, 6); // channel 7 bandwidth code
+            push_source_exponents(&mut bits, 15);
+            push_source_exponents(&mut bits, 15);
+            bits.push(1, 1); // new bit-allocation parameters
+            bits.push(0, 11); // conservative allocation parameters
+            bits.push(63, 6); // coarse SNR offset
+            bits.push(15, 4); // fine SNR offset
+        } else {
+            bits.push(0, 1); // dynamic range absent/reused
+            bits.push(0, 1); // SPX strategy reused
+            bits.push(0, 1); // rematrix strategy reused
+            bits.push(0, 1); // bit-allocation parameters reused
+            bits.push(0, 1); // SNR offsets reused
+        }
+        push_source_mantissas(
+            &mut bits,
+            source_feature(&carriers[0], sample_offset, block),
+        );
+        push_source_mantissas(
+            &mut bits,
+            source_feature(&carriers[1], sample_offset, block),
+        );
+    }
+    let minimum_tail = emdf
+        .len()
+        .checked_mul(8)
+        .and_then(|value| value.checked_add(32))
+        .ok_or_else(|| "source-derived D0 EMDF tail length overflow".to_owned())?;
+    if bits.bits.len() > D0_FRAME_BYTES * 8 - minimum_tail {
+        return Err("source-derived D0 audio leaves no room for JOC EMDF".to_owned());
+    }
+    Ok(finish_frame(bits, Some(emdf), D0_FRAME_BYTES))
+}
+
+fn push_source_exponents(bits: &mut BitWriter, initial: u8) {
+    bits.push(u64::from(initial.min(24)), 4);
+    bits.push(99, 7); // a bounded positive step, then hold the exponent
+    for _ in 1..24 {
+        bits.push(62, 7); // zero exponent delta
+    }
+    bits.push(0, 2); // gain range
+}
+
+fn push_source_mantissas(bits: &mut BitWriter, first_code: u8) {
+    bits.push(u64::from(first_code), 8);
+    for _ in 0..3 {
+        bits.push(0, 7);
+    }
+    for _ in 0..35 {
+        bits.push(0, 7);
+    }
+}
+
+fn source_feature(carrier: &[f64], sample_offset: usize, block: usize) -> u8 {
+    let start = sample_offset + block * 256;
+    let sum = carrier[start..start + 256].iter().copied().sum::<f64>();
+    let value = (sum / 256.0 * 1_000_000.0).round() as i64;
+    value.rem_euclid(256) as u8
+}
+
 fn finish_frame(mut bits: BitWriter, emdf: Option<&[u8]>, frame_bytes: usize) -> Vec<u8> {
     bits.bits.resize(frame_bytes * 8, false);
     if let Some(emdf) = emdf {
@@ -438,6 +562,36 @@ pub fn write_one_au_proof(profile: JocProfile) -> Result<Vec<u8>, String> {
 /// Packages one externally encoded 5-channel I0 frame with a JOC D0 carrying
 /// the standards-defined OAMD/EMDF. The external carrier bytes remain intact;
 /// JOCForge owns the dependent carriage and metadata bytes.
+pub fn package_source_derived_access_unit(
+    profile: JocProfile,
+    sequence_count: u16,
+    matrix: &[Vec<f64>],
+    positions: &[AdmPosition],
+    i0_frame: &[u8],
+    d0_carriers: &[Vec<f64>],
+    sample_offset: usize,
+) -> Result<Vec<u8>, String> {
+    if i0_frame.len() != FRAME_BYTES || i0_frame.get(0..2) != Some(&[0x0b, 0x77]) {
+        return Err("carrier encoder did not return one 4096-byte E-AC-3 I0 frame".to_owned());
+    }
+    let oamd = write_oamd_payload(positions)?;
+    let joc = write_joc_payload(profile, sequence_count, matrix)?;
+    let emdf = write_emdf(&oamd, &joc)?;
+    let d0 = write_source_dependent_frame(
+        &emdf,
+        profile_spec(profile).channel_map,
+        d0_carriers,
+        sample_offset,
+    )?;
+    let mut output = Vec::with_capacity(FRAME_BYTES + d0.len());
+    output.extend_from_slice(i0_frame);
+    output.extend_from_slice(&d0);
+    Ok(output)
+}
+
+/// Backward-compatible proof wrapper. Production source-derived encoding uses
+/// [`package_source_derived_access_unit`]; this legacy entry point retains the
+/// previous structural-D0 behavior for callers of the initial proof API.
 pub fn package_ffmpeg_access_unit(
     profile: JocProfile,
     sequence_count: u16,
@@ -452,7 +606,7 @@ pub fn package_ffmpeg_access_unit(
     let joc = write_joc_payload(profile, sequence_count, matrix)?;
     let emdf = write_emdf(&oamd, &joc)?;
     let d0 = write_dependent_frame(Some(&emdf), profile_spec(profile).channel_map);
-    let mut output = Vec::with_capacity(FRAME_BYTES + D0_FRAME_BYTES);
+    let mut output = Vec::with_capacity(FRAME_BYTES + d0.len());
     output.extend_from_slice(i0_frame);
     output.extend_from_slice(&d0);
     Ok(output)
@@ -460,7 +614,7 @@ pub fn package_ffmpeg_access_unit(
 
 #[cfg(test)]
 mod tests {
-    use super::{AdmPosition, write_oamd_payload};
+    use super::{AdmPosition, D0_FRAME_BYTES, write_oamd_payload, write_source_dependent_frame};
 
     #[test]
     fn seven_channel_profiles_declare_the_sixteen_slot_oamd_domain() {
@@ -475,5 +629,32 @@ mod tests {
         let payload = write_oamd_payload(&positions).expect("sixteen-slot OAMD");
 
         assert_eq!(payload[0], 0x1f);
+    }
+
+    #[test]
+    fn source_derived_dependent_frame_changes_with_both_d0_inputs() {
+        let first = (0..1536)
+            .map(|sample| f64::from(u8::try_from(sample % 17).unwrap_or(0)) * 0.00001)
+            .collect::<Vec<_>>();
+        let second = (0..1536)
+            .map(|sample| f64::from(u8::try_from(sample % 23).unwrap_or(0)) * 0.00001)
+            .collect::<Vec<_>>();
+        let mut changed_first = first.clone();
+        changed_first[0] += 0.001;
+        let mut changed_second = second.clone();
+        changed_second[0] -= 0.001;
+        let baseline =
+            write_source_dependent_frame(&[0], 0x0200, &[first.clone(), second.clone()], 0)
+                .expect("source-derived D0");
+        let changed =
+            write_source_dependent_frame(&[0], 0x0200, &[changed_first, second.clone()], 0)
+                .expect("changed source-derived D0");
+        let changed_second_frame =
+            write_source_dependent_frame(&[0], 0x0200, &[first, changed_second], 0)
+                .expect("second changed source-derived D0");
+
+        assert_eq!(baseline.len(), D0_FRAME_BYTES);
+        assert_ne!(baseline, changed);
+        assert_ne!(baseline, changed_second_frame);
     }
 }

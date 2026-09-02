@@ -14,25 +14,32 @@ proprietary Dolby encoder binary was used to generate MVP outputs.
 
 ## EBU ecosystem audit
 
-| Resource | Upstream commit inspected | License | JOCForge status |
+| Resource | Upstream version / commit inspected | License | JOCForge status |
 | --- | --- | --- | --- |
-| [ebu/libadm](https://github.com/ebu/libadm) | `aed1ac5aea2844da374712a2b51339a09485df6f` (`master`) | Apache-2.0 | DEVELOPMENT_REFERENCE; production C++ interop deferred |
-| [ebu/libbw64](https://github.com/ebu/libbw64) | `d3dae5c74deada286994c8a4c2a03edd82d65589` (`master`) | Apache-2.0 | DEVELOPMENT_REFERENCE; production C++ interop deferred |
-| [ebu/libear](https://github.com/ebu/libear) | `2db69f8fcea0bc5db8a78e14a9c2ae6ed4283c15` (`master`) | Apache-2.0 | VALIDATION_REFERENCE; not an encoder dependency |
+| [ebu/libadm](https://github.com/ebu/libadm) | upstream CMake `0.14.0`; `aed1ac5aea2844da374712a2b51339a09485df6f` (`master`) | Apache-2.0, inspected in upstream `LICENSE` | DEVELOPMENT_REFERENCE; not linked |
+| [ebu/libbw64](https://github.com/ebu/libbw64) | upstream CMake `0.10.0`; `d3dae5c74deada286994c8a4c2a03edd82d65589` (`master`) | Apache-2.0, inspected in upstream `LICENSE` | DEVELOPMENT_REFERENCE; not linked |
+| [ebu/libear](https://github.com/ebu/libear) | `master` (no separate release version used); `2db69f8fcea0bc5db8a78e14a9c2ae6ed4283c15` | Apache-2.0, inspected in upstream `LICENSE` | VALIDATION_REFERENCE; not linked |
 
-`libadm` is C++11 + Boost headers + CMake and models ITU-R BS.2076 XML.
-`libbw64` is C++ header-only + CMake with BW64/RF64, `ds64`, `axml`, `chna`,
-and integer PCM support. `libear` is C++14 + Boost + recursive submodules and
-provides BS.2127 render components. The local host exposes Rust and FFmpeg but
-not a CMake/compiler/Boost path, so a full FFI bridge would be disproportionate
-for this overnight proof. `ADM_MVP_INGEST = NARROW_NATIVE_SUBSET`; migration to
-libadm/libbw64 interop is follow-up work.
+`libadm` exposes the public C++ ADM element/reference model for ITU-R BS.2076
+ADM XML (including programme/content/object/pack/channel/TrackUID relationships
+where represented); upstream documents incomplete sub-element coverage and no
+S-ADM. It requires C++11, Boost headers, and CMake. `libbw64` exposes a
+header-only C++ BW64/RF64/BWF reader/writer layer for `ds64`, `axml`, `chna`,
+and 16/24/32-bit integer PCM; it requires CMake but no runtime library. `libear`
+provides independent BS.2127 ADM speaker-render components, requires C++14,
+Boost, and recursive submodules, and is not an encoder. The current host exposes
+Rust and FFmpeg but no usable `cmake`, `cl`, `g++`, or `clang++` toolchain, so a
+C++ FFI bridge would be disproportionate for the overnight MVP. The explicit
+decision is `ADM_MVP_INGEST = LIBADM_LIBBW64_NARROW_NATIVE_SUBSET`; migration to
+libadm/libbw64 interop is follow-up work. None of these libraries provides JOC
+encoding support.
 
 ## Other dependencies and roles
 
 - FFmpeg 8.1 full build: `PRODUCTION_DEPENDENCY` as an external executable
   invoked for deterministic 5-channel E-AC-3 I0 carrier audio at 1024 kbps.
-  The binary is not redistributed by this repository.
+  The binary is not redistributed by this repository. It is not used to claim
+  dependent-D0 support; JOCForge writes the PCM-derived D0 syntax itself.
 - OpenJOC v0.15.0: `VALIDATION_REFERENCE` / external validator / decoder /
   renderer. JOCForge production code does not link to OpenJOC crates.
 - Synthetic fixture: repository-owned deterministic sine-basis PCM, no
@@ -41,9 +48,21 @@ libadm/libbw64 interop is follow-up work.
 
 ## Supplied real file
 
-`D:\ADM BWF\打上花火.wav` was tested at the RIFF header boundary. It is 38-channel,
-48 kHz, 24-bit PCM with `JUNK`, `fmt `, and `data` chunks; no standard `axml` or
-`chna` chunk was present before `data`. JOCForge therefore rejects it as ADM
-input with an explicit missing-`axml` error instead of silently treating it as
-ADM. It remains available as a real PCM stress asset; if an ADM/BW64 export
-with metadata is supplied, the narrow ingest path can be tested against it.
+`D:\ADM BWF\打上花火.wav` is the supplied Logic Pro ADM-BWF export. The recorded
+physical size is `1,583,325,474` bytes and its SHA-256 is
+`adfee1efadd5d331497ec55a1c94b89c7f1a717ad959d6d5c726efb0b64e81aa`. It is a
+RIFF/WAVE 38-channel, 48 kHz, 24-bit PCM file with chunks `JUNK`, `fmt `,
+`data`, `axml`, `chna`, and `dbmd`; `axml/chna/dbmd` occur after the large
+`data` chunk. The seek-aware scanner and narrow ADM model census 38 tracks,
+38 TrackUIDs, 29 authored objects: 28 `Objects` and 1 `DirectSpeakers`.
+
+JOCForge deliberately does not reduce the 28 authored dynamic objects. The
+real file is therefore censused successfully but encode is rejected before PCM
+loading with:
+
+`Unsupported ADM scene: 28 authored dynamic objects exceed current <=15 source-derived MVP profile; scene reduction is not implemented.`
+
+The controlled source-derived fixture remains the only encoding input in this
+milestone. Its D0 contains source-window-derived PCM features for both D0
+channels; this is causal source-derived evidence, not transparent perceptual
+E-AC-3 encoding.
