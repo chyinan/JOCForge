@@ -17,7 +17,7 @@ separately from unintended leakage.
 | --- | ---: | ---: | ---: | --- |
 | source reconstruction error | 0 | 0.0939073..0.3805623 | `<= 0.4757030` | Detects a clear increase over the measured N>15 baseline. |
 | spatial representation error | 1.70e-17 | 0.0101535..0.1376798 | `<= 0.1720998` | Detects a clear aggregate-position regression. |
-| unintended leakage | 0 | 0 after explicit merge labeling | `== 0` | Any cross-source contribution not explained by an explicit coded-cluster merge is a failure. |
+| unexplained cluster leakage | 0 | independently recomputed coded-signal residual | `<= 1e-12` | Rebuilding each coded signal from its source membership and gains must leave only floating-point residual. Intentional merge energy remains a separate diagnostic. |
 | silent object drops | 0 | 0 | `== 0` | Source accounting is a hard invariant. |
 | maximum coded peak | 0.0699959 | 0.0699959..0.1388048 | `<= 0.90` | Public headroom invariant from the reducer. |
 
@@ -26,6 +26,37 @@ The raw reducer `cross_object_leakage` values for controlled-16/20/28 were
 representations in those fixtures and are not relabeled as unintended
 leakage. The full source-to-coded contribution matrix is in
 `artifacts/validation-closure/leakage-matrix.csv`.
+
+## Independent closure metrics
+
+The authoritative runner is `scripts/run-validation-closure.ps1`. It requires
+these finite fields in every source metrics sidecar and applies the published
+quality thresholds to the controlled acceptance corpus. Hanabi values are
+reported as observations; they are not silently treated as a production
+quality claim.
+
+| Field | Threshold | Clean derivation |
+| --- | ---: | --- |
+| `unexplained_cluster_leakage` | `<= 1e-12` | Recompute coded PCM from explicit source indices and contribution gains, then divide residual energy by coded energy. |
+| `speaker_render_error` | `<= 0.5` | Compare a deterministic normalized left/right position projection of authored source PCM with the same projection of reduced coded PCM. |
+| `factorization_reconstruction_error` | `<= 0.6` | Apply the measured carrier/matrix pair on the deterministic analysis view and compute normalized RMS residual. The bound is above the fresh five-carrier clean baseline (`0.5286687`) with explicit structural headroom. |
+| `matrix_coefficient_jump` | `<= 2.0` | Maximum element-wise delta between consecutive scaled matrices. |
+| `carrier_coefficient_jump` | `<= 1.8` | Maximum element-wise delta between consecutive normalized carrier vectors; the limit follows from the 0.90 carrier peak bound. |
+
+`cross_object_leakage` is retained as an intentional-cluster diagnostic and
+does not determine acceptance. The speaker metric is a clean mathematical
+compatibility proxy; it does not claim a decoded proprietary speaker-render
+reference or production perceptual quality. Missing fields, missing source
+rows, non-finite values, and threshold violations fail closed.
+
+The compatibility closure also consumes
+`artifacts/validation-closure/spectral-phase.json`, generated from the
+repository-owned ten-fixture corpus. Its hard gates measure
+magnitude-spectrum deviation, band energy, spectral tilt, transient retention,
+inter-channel phase, normalized coherence, polarity, quadrature, stereo
+width, and transient boundary discontinuity. Parameters and rationales are
+documented in `docs/spectral-phase-quality-gates.md`; the multi-object row is
+supplemental rather than a perceptual-quality claim.
 
 ## Temporal gate
 
@@ -46,13 +77,14 @@ claim.
 
 ## Quality result categories
 
-- `SIGNAL_RECONSTRUCTION_GATE`: `RESEARCH_ONLY`; the metrics are reducer-side
-  diagnostics and do not establish perceptual E-AC-3 quality.
-- `LEAKAGE_GATE`: `RESEARCH_ONLY`; the current matrix proves explicit source
-  accounting and intentional merges, but is not a decoded full-band
-  contribution oracle.
+- `SIGNAL_RECONSTRUCTION_GATE`: `PASS` when the independent source/matrix
+  residuals meet the published structural thresholds; this does not establish
+  perceptual E-AC-3 quality.
+- `LEAKAGE_GATE`: `PASS` when the recomputed unexplained cluster residual is
+  at most `1e-12`; intentional merge energy is not relabeled as leakage.
 - `SPATIAL_GATE`: `PASS` for the controlled source-position metrics; no
   independent libear reference render was available on this host.
-- `COMPATIBILITY_GATE`: `RESEARCH_ONLY`; OpenJOC render/decode is available,
-  but the complete independent speaker-reference comparison is not closed for
-  every profile/rate.
+- `COMPATIBILITY_GATE`: `PASS` when OpenJOC/FFmpeg render/decode succeeds, the
+  clean speaker projection is at most `0.5` for every supported profile, and
+  the hard spectral/phase gates pass; these remain structural compatibility
+  checks, not a perceptual claim.

@@ -1,12 +1,14 @@
 # JOCForge
 
-Last verified: 2026-09-02
+Last verified: 2026-09-03
 
 ## Tech Stack
 
 - Rust 2024 workspace with `jocforge-core` and `jocforge` CLI.
 - Standard-library core; FFmpeg is an external E-AC-3 carrier executable.
-- OpenJOC v0.15.0 is an external validation/decoder/renderer reference only.
+- OpenJOC v0.16.0 is the pinned external validation/decoder/renderer reference;
+  identity is enforced by `validation/openjoc-validator.json` and the pin
+  helper script.
 - No C++ dependency is linked in the MVP; EBU C++ projects are documented
   public references pending a proportionate FFI integration.
 
@@ -38,6 +40,8 @@ Last verified: 2026-09-02
   allocations and legal-rate policy.
 - `crates/jocforge-core/src/validation.rs` — pure controlled and adversarial
   temporal corpus generation and metrics.
+- `crates/jocforge-core/src/spectral.rs` — pure deterministic spectral/phase
+  corpus generation and compatibility metrics.
 - `crates/jocforge-core/src/writer.rs` — pure JOC/OAMD/EMDF and I0 plus
   PCM-derived dependent D0 writer.
 - `crates/jocforge-cli/src/main.rs` — file/process orchestration shell.
@@ -45,6 +49,7 @@ Last verified: 2026-09-02
   reads metadata after large `data` chunks without loading PCM, plus bounded
   PCM-frame reads for large programmes.
 - `scripts/` — reproducible external validation and evidence generation.
+- `validation/openjoc-validator.json` — authoritative external validator pin.
 - `summary/` — focused investigation summaries.
 - `docs/clean-generalized-encoder-design.md` and
   `docs/clean-implementation-traceability.md` — clean algorithm decisions and
@@ -59,11 +64,17 @@ Last verified: 2026-09-02
 - User-facing errors are lowercase actionable fragments.
 - Matrix and metadata ordering is explicit and stable; unsupported ADM input
   is rejected rather than silently flattened.
+- DirectSpeakers LFE routing uses only public `speakerLabel`/`frequency.lowPass`
+  semantics; human-readable names never determine routing.
+- The static CHNA ingest policy rejects duplicate/conflicting TrackUID,
+  track-index, and pack relations before source expansion.
 
 ## Contracts and Boundaries
 
 - `profile_spec` is the single JOCForge-owned source for the three mandatory
   public topology labels and dependent channel maps.
+- `parse_bw64_adm_metadata` accepts only the static full-track subset, validates
+  CHNA one-to-one bindings, and derives LFE from semantic ADM metadata.
 - `package_source_derived_access_unit` accepts one legal even-sized FFmpeg I0
   frame and two 1536-sample source D0 carrier windows for the selected active
   coded-object set, returning I0 plus a JOCForge-owned PCM-derived D0 carriage
@@ -81,6 +92,9 @@ Last verified: 2026-09-02
 - Production code does not import OpenJOC crates or share its serialization
   implementation; external OpenJOC inspect/decode/render remains an
   independent validation loop.
+- `spectral_phase_report` and `quantization-stress` provide independent clean
+  evidence; `clean-validation-closure.json` is output-only and never an
+  acceptance authority.
 - No proprietary Dolby encoder binary, media, or reverse-engineered logic is
   permitted in this repository.
 - Generated audio/binary evidence under `artifacts/` is local and ignored;
@@ -101,7 +115,8 @@ Last verified: 2026-09-02
   between prior-frame clusters and is covered by controlled/adversarial tests.
 - DirectSpeakers channel bindings are expanded from ADM references. Non-LFE
   channels use the documented positioned-source fallback; LFE channels are
-  carried once in the core LFE path and receive explicit accounting records.
+  carried once in the core LFE path, bounded by the shared 0.90 peak limit, and
+  receive explicit accounting records.
 - Full matrix, one coarse parameter band, fixed basis continuity, and a
   deterministic 64-sample coefficient analysis view are intentional clean
   milestone limits, not claims of perceptual encoder parity.

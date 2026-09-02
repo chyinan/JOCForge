@@ -12,7 +12,7 @@ The current host has Rust and FFmpeg but no CMake/compiler/Boost toolchain expos
 
 ## OpenJOC boundary
 
-OpenJOC v0.15.0 is used only as an independently built external validator, decoder, and renderer. Its existing public tests and summaries were consulted for ETSI syntax cross-checks. JOCForge production code does not depend on OpenJOC crates or decoder internals.
+OpenJOC v0.16.0 is used only as an independently built external validator, decoder, and renderer. The exact executable identity is pinned in `validation/openjoc-validator.json`. Its existing public tests and summaries were consulted for ETSI syntax cross-checks. JOCForge production code does not depend on OpenJOC crates or decoder internals.
 
 ## Supplied real file observation
 

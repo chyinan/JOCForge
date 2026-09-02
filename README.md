@@ -2,15 +2,18 @@
 
 JOCForge is an independent, clean-room ADM-to-E-AC-3/JOC encoder proof. The
 `0.1.0-dev` milestone prioritizes a reproducible standards-derived writer,
-finite round-trip output, deterministic N-to-15 scene reduction, and external
-OpenJOC v0.15.0 validation over perceptual encoder quality.
+finite round-trip output, deterministic N-to-15 scene reduction, and the pinned
+external OpenJOC 0.16.0 validator over perceptual encoder quality.
 
 The encoder supports 48 kHz, integer PCM BW64/RF64/RIFF ADM input with a narrow
 public subset: one programme/content relationship, one object pack/channel per
 track, one position block per object, and `chna` TrackUID bindings. Authored
 `Objects` and positioned `DirectSpeakers` are explicitly accounted for and
-reduced to at most 15 coded representations. Other unsupported kinds are
-rejected; complete non-LFE bed semantics are not claimed.
+reduced to at most 15 coded representations. The parser accepts only full-track
+static timing and a single position block; extra blocks, unsupported
+trajectories, and ambiguous programme membership are rejected before PCM
+processing. Other unsupported kinds are rejected; complete non-LFE bed
+semantics are not claimed.
 
 ## Build
 
@@ -76,11 +79,15 @@ equals 1664 kbps at 48 kHz/six blocks.
 This is not Dolby encoder parity, Dolby perceptual quality, production
 mastering, native Dolby bitstream identity, or lossless ADM recovery. The
 generalized reducer is an independent signal/spatial seed-and-aggregate
-algorithm; compatibility presentation, frequency-local optimization, and
-complete non-LFE bed mapping remain open research. `PRODUCTION_PERCEPTUAL_QUALITY`
-is not claimed.
+algorithm. Clean validation also records source/matrix residuals, coefficient
+jumps, and a normalized speaker-projection compatibility proxy; these are
+structural checks, not decoded proprietary parity or perceptual quality.
+Frequency-local optimization and complete non-LFE bed mapping remain open
+research. `PRODUCTION_PERCEPTUAL_QUALITY` is not claimed.
 
-OpenJOC is an external validator/decoder/renderer only. EBU `libadm`,
+OpenJOC is an external validator/decoder/renderer only. Its identity is pinned
+in `validation/openjoc-validator.json` and checked by every script that invokes
+it. EBU `libadm`,
 `libbw64`, and `libear` were audited from their upstream Apache-2.0 license
 files. Full C++ interop is deferred because this Windows host has no exposed
 CMake/C++/Boost build path; the narrow ingest boundary and migration plan are

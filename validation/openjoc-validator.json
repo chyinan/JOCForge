@@ -1,0 +1,14 @@
+{
+  "tool": "OpenJOC",
+  "semantic_version": "0.16.0",
+  "source_revision": "ad6556babf42566f1a09820b01dc333703c8b1da",
+  "source_description": "v0.16.0-2-gad6556b",
+  "executable_sha256": "b4fb4593be8dfe3bbeceb4ba4e3eb9c97f89ebe043555e8af615cb4eea289bee",
+  "platform": "windows-x86_64",
+  "default_executable": "D:\\Programs\\OpenJOC\\target\\debug\\openjoc.exe",
+  "version_command": "openjoc.exe --version",
+  "validation_commands": [
+    "openjoc.exe inspect OUTPUT.ec3",
+    "openjoc.exe render-joc OUTPUT.ec3 --layout LAYOUT --output RENDER.wav --no-progress --overwrite"
+  ]
+}

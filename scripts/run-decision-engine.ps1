@@ -8,6 +8,27 @@ $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
 $artifact = Join-Path $root "artifacts\decision-engine"
 New-Item -ItemType Directory -Force $artifact | Out-Null
+# This runner is a diagnostic corpus sampler. The authoritative clean
+# acceptance matrix is emitted by run-validation-closure.ps1.
+$authoritativeRunner = "scripts/run-validation-closure.ps1"
+$authoritativeEvidence = Join-Path $root "artifacts\validation-closure\clean-validation-closure.json"
+if (Test-Path -LiteralPath $authoritativeEvidence) {
+    $closure = Get-Content -LiteralPath $authoritativeEvidence -Raw | ConvertFrom-Json
+    [ordered]@{
+        authoritative_runner = $authoritativeRunner
+        status_semantics = "diagnostic report delegated to the authoritative clean closure; no competing acceptance matrix"
+        delegated_from = $authoritativeEvidence
+        validation = $closure.hanabi_validation
+        controlled_profile_validation = $closure.controlled_profile_validation
+        corpus = $closure.leakage_observations
+        deterministic = [ordered]@{ pass = (($closure.clean_tests | Where-Object { $_.test_id -eq "T-010" -and $_.status -eq "PASS" }).Count -eq 1) }
+        clean_tests = $closure.clean_tests
+    } | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath (Join-Path $artifact "clean-validation.json")
+    Write-Output "JOCForge decision-engine diagnostic report delegated to $authoritativeRunner"
+    return
+}
+
+throw "authoritative clean closure is missing; run scripts/run-validation-closure.ps1 first"
 
 function Invoke-Checked([string]$file, [string[]]$arguments) {
     & $file @arguments
@@ -140,21 +161,13 @@ $hashB = Get-Sha256 $deterministicB
 $deterministic = $hashA -eq $hashB
 
 $tests = @(
-    [ordered]@{ test_id = "T-001"; status = "PASS"; evidence = "controlled-15-idx1.ec3" },
-    [ordered]@{ test_id = "T-002"; status = "PASS"; evidence = "controlled-20-idx1.ec3; coded_objects=15; source accounting sidecar" },
     [ordered]@{ test_id = "T-003"; status = if (($validation | Where-Object { !$_.pass }).Count -eq 0) { "PASS" } else { "FAIL" }; evidence = "Hanabi three-profile validation" },
-    [ordered]@{ test_id = "T-004"; status = "BLOCKED"; evidence = "CLI exposes the documented 1664 kbps profile; rate sweep remains open" },
-    [ordered]@{ test_id = "T-005"; status = "PASS"; evidence = "reduction_assignment_changes API and previous-seed policy" },
-    [ordered]@{ test_id = "T-006"; status = "BLOCKED"; evidence = "moving ADM trajectory corpus remains open research" },
-    [ordered]@{ test_id = "T-007"; status = "BLOCKED"; evidence = "leakage is measured in sidecars; project threshold is not yet published" },
-    [ordered]@{ test_id = "T-008"; status = if (($validation | Where-Object { !$_.pass }).Count -eq 0) { "PASS" } else { "FAIL" }; evidence = "OpenJOC speaker renders and FFmpeg decode" },
-    [ordered]@{ test_id = "T-009"; status = "PASS"; evidence = "writer general coarse symbol test and strict parse" },
-    [ordered]@{ test_id = "T-010"; status = if ($deterministic) { "PASS" } else { "FAIL" }; evidence = "$hashA == $hashB" },
-    [ordered]@{ test_id = "T-011"; status = "PASS"; evidence = "Hanabi ceil frame count and zero-padded short final frame" },
-    [ordered]@{ test_id = "T-012"; status = "BLOCKED"; evidence = "unsupported-input corpus remains open research" }
+    [ordered]@{ test_id = "T-010"; status = if ($deterministic) { "PASS" } else { "FAIL" }; evidence = "$hashA == $hashB" }
 )
 
 [ordered]@{
+    authoritative_runner = $authoritativeRunner
+    status_semantics = "PASS/FAIL are diagnostic-only here; acceptance status is authoritative only in run-validation-closure.ps1"
     source_census = $censusText
     validation = $validation
     corpus = $corpus

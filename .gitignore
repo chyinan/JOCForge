@@ -11,6 +11,7 @@
 !/artifacts/temporal-stabilization/.gitkeep
 /artifacts/temporal-stabilization-*.csv
 /artifacts/validation-closure-*.metrics.csv
+/artifacts/git-release-audit.json
 /artifacts/validation-closure-temporal.csv
 *.ec3
 *.bw64

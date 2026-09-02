@@ -69,3 +69,11 @@ permutation.
 The controlled and adversarial corpus pass these gates, and the stabilized
 Hanabi audit passes them. This is a structural stability gate, not a claim of
 production perceptual quality.
+
+The encode metrics sidecar additionally records the maximum element-wise
+`matrix_coefficient_jump` and `carrier_coefficient_jump` between adjacent
+frames, plus `factorization_reconstruction_error` and
+`speaker_render_error`. The authoritative closure applies the clean bounds
+`2.0`, `1.8`, `0.6`, and `0.5` respectively; missing or non-finite values fail
+the run. This keeps temporal coefficient continuity measurable separately from
+authored membership churn and representative identity replacement.

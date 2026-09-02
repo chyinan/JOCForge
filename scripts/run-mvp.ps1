@@ -7,6 +7,7 @@ $root = Split-Path -Parent $PSScriptRoot
 $artifact = Join-Path $root "artifacts\mvp"
 $roundtrip = Join-Path $artifact "roundtrip"
 New-Item -ItemType Directory -Force $roundtrip | Out-Null
+. (Join-Path $PSScriptRoot "openjoc-validator-pin.ps1")
 
 function Invoke-Checked([string]$file, [string[]]$arguments) {
     & $file @arguments
@@ -26,6 +27,9 @@ function Get-Sha256([string]$path) {
         $sha.Dispose()
     }
 }
+
+$validatorIdentity = Assert-OpenJocValidatorPin $root $OpenJoc
+$validatorIdentity | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $artifact "openjoc-validator-identity.json") -Encoding utf8
 
 $fixture = Join-Path $artifact "synthetic-reference.adm.wav"
 Invoke-Checked "cargo" @("run", "-p", "jocforge", "--quiet", "--", "fixture", "--seconds", "4", $fixture)

@@ -20,6 +20,6 @@ source carrier PCM features from each 256-sample window; this is not a fixed
 structural tone, but it is also not yet a transparent perceptual E-AC-3
 encoder.
 
-OpenJOC v0.15.0 strict inspect, render, and internal-base decode, plus generic
+OpenJOC v0.16.0 strict inspect, render, and internal-base decode, plus generic
 FFmpeg decode, passed for idx0, idx1, and idx2. Regression tests cover metadata
 after `data`, a 128 MiB seek-over, odd padding, and clean EOF.
