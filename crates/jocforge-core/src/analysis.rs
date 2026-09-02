@@ -3,12 +3,24 @@
 use std::fmt;
 
 const JOC_COARSE_QUANTUM: f64 = 820.0 / 4096.0;
+// Absolute lower bound for ridge regularization in normalized PCM units.
+// It keeps an all-silent or very small basis away from a singular solve.
 const SOURCE_DERIVED_RIDGE: f64 = 1.0e-8;
+// Five percent of mean basis energy is the scale-responsive regularization;
+// the lower bound above supplies a finite floor for near-silent windows.
 const SOURCE_DERIVED_RIDGE_RATIO: f64 = 0.05;
+// The same floor used for bounded zero-energy decisions; it prevents a
+// normalized residual from magnifying numerical noise in silent windows.
+const SOURCE_DERIVED_ENERGY_FLOOR: f64 = 1.0e-12;
 // A compact deterministic view limits per-frame solve cost while the carrier
 // itself continues to use the complete source window.
 const SOURCE_DERIVED_ANALYSIS_SAMPLES: usize = 64;
-const SOURCE_DERIVED_CARRIER_PEAK_LIMIT: f64 = 0.90;
+/// Shared normalized PCM peak limit for all public carrier paths, including LFE.
+pub const SOURCE_DERIVED_CARRIER_PEAK_LIMIT: f64 = 0.90;
+// Gaussian elimination treats a pivot below this normalized magnitude as
+// numerically singular; ridge normally prevents this path for source-derived
+// inputs, while the guard keeps public callers fail-closed.
+const PIVOT_EPSILON: f64 = 1.0e-12;
 
 /// A low-rank factorization with an explicit carrier scaling identity.
 #[derive(Clone, Debug, PartialEq)]
@@ -229,6 +241,103 @@ pub fn factorize_source_derived(
     Ok(factorization)
 }
 
+/// Measures normalized RMS residual on the same deterministic analysis view
+/// used by source-derived factorization. This is a source-domain oracle
+/// independent of metadata labels or an acceptance script's expected zero.
+pub fn reconstruction_error(
+    objects: &[Vec<f64>],
+    factorization: &RankFactorization,
+) -> Result<f64, AnalysisError> {
+    validate_factorization_inputs(objects)?;
+    let first = objects.first().ok_or(AnalysisError::EmptyObjectSet)?;
+    let carrier_count = factorization.carriers.len();
+    if carrier_count == 0
+        || factorization
+            .carriers
+            .iter()
+            .any(|carrier| carrier.len() != first.len())
+        || factorization.ideal_matrix.len() != objects.len()
+        || factorization.scaled_matrix.len() != objects.len()
+        || factorization
+            .scaled_matrix
+            .iter()
+            .any(|row| row.len() != carrier_count)
+    {
+        return Err(AnalysisError::DimensionMismatch);
+    }
+    let sample_indices = if first.len() <= SOURCE_DERIVED_ANALYSIS_SAMPLES {
+        (0..first.len()).collect::<Vec<_>>()
+    } else {
+        (0..first.len())
+            .step_by(first.len().div_ceil(SOURCE_DERIVED_ANALYSIS_SAMPLES))
+            .take(SOURCE_DERIVED_ANALYSIS_SAMPLES)
+            .collect::<Vec<_>>()
+    };
+    let mut total_energy = 0.0;
+    let mut total_error_energy = 0.0;
+    for (object, coefficients) in objects.iter().zip(&factorization.scaled_matrix) {
+        for sample in sample_indices.iter().copied() {
+            let reconstructed = factorization
+                .carriers
+                .iter()
+                .zip(coefficients)
+                .map(|(carrier, coefficient)| carrier[sample] * coefficient)
+                .sum::<f64>();
+            let error = object[sample] - reconstructed;
+            total_energy += object[sample] * object[sample];
+            total_error_energy += error * error;
+        }
+    }
+    if total_energy <= SOURCE_DERIVED_ENERGY_FLOOR {
+        return Ok(0.0);
+    }
+    Ok((total_error_energy / total_energy).sqrt())
+}
+
+/// Applies the clean carrier peak policy to one finite PCM signal.
+pub fn limit_signal_peak(signal: &[f64], peak_limit: f64) -> Result<Vec<f64>, AnalysisError> {
+    if signal.is_empty() {
+        return Err(AnalysisError::EmptyObject);
+    }
+    if !peak_limit.is_finite() || !(0.0..=1.0).contains(&peak_limit) {
+        return Err(AnalysisError::NonFiniteCoefficient);
+    }
+    if signal.iter().any(|value| !value.is_finite()) {
+        return Err(AnalysisError::NonFiniteInput);
+    }
+    let peak = signal.iter().map(|value| value.abs()).fold(0.0, f64::max);
+    let scale = if peak > peak_limit && peak > SOURCE_DERIVED_ENERGY_FLOOR {
+        peak_limit / peak
+    } else {
+        1.0
+    };
+    Ok(signal.iter().map(|value| value * scale).collect())
+}
+
+/// Returns the largest finite element-wise delta between two rectangular
+/// coefficient matrices or carrier collections.
+pub fn maximum_absolute_difference(
+    left: &[Vec<f64>],
+    right: &[Vec<f64>],
+) -> Result<f64, AnalysisError> {
+    if left.len() != right.len() {
+        return Err(AnalysisError::DimensionMismatch);
+    }
+    let mut maximum = 0.0_f64;
+    for (left_row, right_row) in left.iter().zip(right) {
+        if left_row.len() != right_row.len() {
+            return Err(AnalysisError::DimensionMismatch);
+        }
+        for (left, right) in left_row.iter().zip(right_row) {
+            if !left.is_finite() || !right.is_finite() {
+                return Err(AnalysisError::NonFiniteInput);
+            }
+            maximum = maximum.max((left - right).abs());
+        }
+    }
+    Ok(maximum)
+}
+
 fn validate_factorization_inputs(objects: &[Vec<f64>]) -> Result<(), AnalysisError> {
     let first = objects.first().ok_or(AnalysisError::EmptyObjectSet)?;
     if first.is_empty() {
@@ -385,7 +494,7 @@ fn solve_normal_equation(matrix: &[Vec<f64>], right: &[f64]) -> Result<Vec<f64>,
                     .total_cmp(&augmented[right][pivot].abs())
             })
             .ok_or(AnalysisError::SingularBasis)?;
-        if augmented[pivot_row][pivot].abs() < 1.0e-12 {
+        if augmented[pivot_row][pivot].abs() < PIVOT_EPSILON {
             return Err(AnalysisError::SingularBasis);
         }
         augmented.swap(pivot, pivot_row);

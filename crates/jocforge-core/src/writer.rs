@@ -6,6 +6,25 @@ const FRAME_BYTES: usize = 4096;
 const D0_FRAME_BYTES: usize = 2560;
 const OAMD_ID: u64 = 11;
 const JOC_ID: u64 = 14;
+// The coarse OAMD fields quantize normalized horizontal coordinates to 32
+// bins and non-negative height to the public four-bit range.
+const OAMD_COORDINATE_MIN: f64 = -1.0;
+const OAMD_COORDINATE_MAX: f64 = 1.0;
+const OAMD_COORDINATE_CODE_MAX: f64 = 31.0;
+const OAMD_HEIGHT_CODE_MAX: f64 = 15.0;
+// These source-derived D0 controls are named so their syntax role and clean
+// demonstrator rationale can be audited independently.
+const SOURCE_FEATURE_SAMPLE_WINDOW: usize = 256;
+const SOURCE_FEATURE_SCALE: f64 = 1_000_000.0;
+const SOURCE_FEATURE_MODULUS: i64 = 64;
+const D0_INITIAL_EXPONENT: u8 = 15;
+const D0_MAX_EXPONENT: u8 = 24;
+const D0_EXPONENT_STEP: u8 = 99;
+const D0_ZERO_EXPONENT_DELTA: u8 = 62;
+const D0_EXPONENT_COUNT: usize = 24;
+const D0_MANTISSA_FIRST_BITS: u8 = 8;
+const D0_MANTISSA_ZERO_COUNT: usize = 3;
+const D0_MANTISSA_COUNT: usize = 35;
 
 // Public ETSI TS 103 420 coarse generic Huffman tree (Annex A.1, MTX mode).
 // A negative child is a leaf encoded as -symbol - 1.
@@ -357,12 +376,14 @@ fn push_variable_bits_max(bits: &mut BitWriter, value: u64) -> Result<(), String
 }
 
 fn oamd_coordinate(value: f64) -> u64 {
-    let rounded = ((value.clamp(-1.0, 1.0) + 1.0) * 31.0).round() as i64;
+    let rounded = ((value.clamp(OAMD_COORDINATE_MIN, OAMD_COORDINATE_MAX) + 1.0)
+        * OAMD_COORDINATE_CODE_MAX)
+        .round() as i64;
     u64::try_from(rounded).unwrap_or(0)
 }
 
 fn oamd_height(value: f64) -> u64 {
-    let rounded = value.abs().clamp(0.0, 15.0).round() as i64;
+    let rounded = value.abs().clamp(0.0, OAMD_HEIGHT_CODE_MAX).round() as i64;
     u64::try_from(rounded).unwrap_or(0)
 }
 
@@ -566,8 +587,8 @@ fn write_source_dependent_frame(
             }
             bits.push(0, 6); // channel 6 bandwidth code
             bits.push(0, 6); // channel 7 bandwidth code
-            push_source_exponents(&mut bits, 15);
-            push_source_exponents(&mut bits, 15);
+            push_source_exponents(&mut bits, D0_INITIAL_EXPONENT);
+            push_source_exponents(&mut bits, D0_INITIAL_EXPONENT);
             bits.push(1, 1); // new bit-allocation parameters
             bits.push(0, 11); // conservative allocation parameters
             bits.push(63, 6); // coarse SNR offset
@@ -600,29 +621,32 @@ fn write_source_dependent_frame(
 }
 
 fn push_source_exponents(bits: &mut BitWriter, initial: u8) {
-    bits.push(u64::from(initial.min(24)), 4);
-    bits.push(99, 7); // a bounded positive step, then hold the exponent
-    for _ in 1..24 {
-        bits.push(62, 7); // zero exponent delta
+    bits.push(u64::from(initial.min(D0_MAX_EXPONENT)), 4);
+    bits.push(u64::from(D0_EXPONENT_STEP), 7); // bounded positive step
+    for _ in 1..D0_EXPONENT_COUNT {
+        bits.push(u64::from(D0_ZERO_EXPONENT_DELTA), 7); // hold exponent
     }
     bits.push(0, 2); // gain range
 }
 
 fn push_source_mantissas(bits: &mut BitWriter, first_code: u8) {
-    bits.push(u64::from(first_code), 8);
-    for _ in 0..3 {
+    bits.push(u64::from(first_code), D0_MANTISSA_FIRST_BITS);
+    for _ in 0..D0_MANTISSA_ZERO_COUNT {
         bits.push(0, 7);
     }
-    for _ in 0..35 {
+    for _ in 0..D0_MANTISSA_COUNT {
         bits.push(0, 7);
     }
 }
 
 fn source_feature(carrier: &[f64], sample_offset: usize, block: usize) -> u8 {
-    let start = sample_offset + block * 256;
-    let sum = carrier[start..start + 256].iter().copied().sum::<f64>();
-    let value = (sum / 256.0 * 1_000_000.0).round() as i64;
-    value.rem_euclid(64) as u8
+    let start = sample_offset + block * SOURCE_FEATURE_SAMPLE_WINDOW;
+    let sum = carrier[start..start + SOURCE_FEATURE_SAMPLE_WINDOW]
+        .iter()
+        .copied()
+        .sum::<f64>();
+    let value = (sum / SOURCE_FEATURE_SAMPLE_WINDOW as f64 * SOURCE_FEATURE_SCALE).round() as i64;
+    value.rem_euclid(SOURCE_FEATURE_MODULUS) as u8
 }
 
 fn finish_frame(mut bits: BitWriter, emdf: Option<&[u8]>, frame_bytes: usize) -> Vec<u8> {

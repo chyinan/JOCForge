@@ -45,3 +45,48 @@ fn fixture_cli_writes_an_adm_bw64_file() {
     assert!(bytes.windows(4).any(|window| window == b"chna"));
     let _ = fs::remove_file(output_path);
 }
+
+#[test]
+fn quantization_stress_cli_reports_all_profiles_and_full_domain() {
+    let output_path = env::temp_dir().join(format!(
+        "jocforge-quantization-stress-{}.json",
+        std::process::id()
+    ));
+    let status = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+        .args([
+            "quantization-stress",
+            output_path.to_str().expect("temporary path is UTF-8"),
+        ])
+        .status()
+        .expect("quantization stress CLI starts");
+
+    assert!(status.success());
+    let report = fs::read_to_string(&output_path).expect("quantization report exists");
+    assert!(report.contains("\"pass\": true"));
+    assert!(report.contains("\"profile_count\": 3"));
+    assert!(report.contains("\"domain_values_checked\": 96"));
+    let _ = fs::remove_file(output_path);
+}
+
+#[test]
+fn spectral_phase_cli_reports_the_controlled_corpus() {
+    let output_path = env::temp_dir().join(format!(
+        "jocforge-spectral-phase-{}.json",
+        std::process::id()
+    ));
+    let status = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+        .args([
+            "spectral-phase",
+            output_path.to_str().expect("temporary path is UTF-8"),
+        ])
+        .status()
+        .expect("spectral phase CLI starts");
+
+    assert!(status.success());
+    let report = fs::read_to_string(&output_path).expect("spectral report exists");
+    assert!(report.contains("\"pass\": true"));
+    assert!(report.contains("\"fixture_count\": 10"));
+    assert!(report.contains("magnitude_spectrum_deviation"));
+    assert!(report.contains("phase_difference"));
+    let _ = fs::remove_file(output_path);
+}

@@ -1,5 +1,7 @@
 // pattern: Imperative Shell
 
+// pattern: Imperative Shell
+
 use std::{
     fs::File,
     io::{Read, Seek, SeekFrom},
@@ -9,6 +11,9 @@ use std::{
 use jocforge_core::decode_pcm_frame;
 
 const JOC_FRAME_SAMPLES: usize = 1536;
+// Metadata is bounded independently of the PCM payload so a malformed chunk
+// cannot force an unbounded allocation in the file-reading shell.
+const MAX_METADATA_BODY_BYTES: usize = 16 * 1024 * 1024;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub(crate) struct ScannedChunk {
@@ -201,9 +206,9 @@ pub(crate) fn read_pcm_frame(
 fn read_body(file: &mut File, offset: u64, size: u64, label: &str) -> Result<Vec<u8>, String> {
     let length =
         usize::try_from(size).map_err(|_| format!("BW64 {label} chunk is too large to inspect"))?;
-    if length > 16 * 1024 * 1024 {
+    if length > MAX_METADATA_BODY_BYTES {
         return Err(format!(
-            "BW64 {label} chunk exceeds the 16 MiB metadata bound"
+            "BW64 {label} chunk exceeds the {MAX_METADATA_BODY_BYTES} byte metadata bound"
         ));
     }
     let mut body = vec![0_u8; length];
@@ -328,6 +333,24 @@ mod tests {
         let scanned = scan_bw64_file(&path).expect("clean EOF");
         assert_eq!(scanned.chunks.last().expect("last chunk").id, *b"chna");
         assert_eq!(scanned.chunks.len(), 4);
+        let _ = fs::remove_file(path);
+    }
+
+    #[test]
+    fn scanner_rejects_metadata_above_the_named_memory_bound() {
+        let path = temp_path("metadata-bound");
+        let mut file = fs::File::create(&path).expect("temporary BW64");
+        file.write_all(b"RIFF\x00\x00\x00\x00WAVE")
+            .expect("RIFF header");
+        append_chunk(&mut file, *b"fmt ", &fmt_16_mono());
+        append_chunk(&mut file, *b"data", &[0, 0]);
+        let oversized = vec![0_u8; super::MAX_METADATA_BODY_BYTES + 1];
+        append_chunk(&mut file, *b"axml", &oversized);
+        file.flush().expect("flush fixture");
+
+        let error = scan_bw64_file(&path).expect_err("oversized metadata must be rejected");
+
+        assert!(error.contains("metadata bound"));
         let _ = fs::remove_file(path);
     }
 }

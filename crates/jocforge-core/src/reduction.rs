@@ -12,8 +12,12 @@ const DEFAULT_OUTPUT_PEAK_LIMIT: f64 = 0.90;
 const DEFAULT_SIGNAL_WEIGHT: f64 = 0.55;
 const DEFAULT_SPATIAL_WEIGHT: f64 = 0.35;
 const DEFAULT_ENERGY_WEIGHT: f64 = 0.10;
+// Normalized PCM energy below this value is treated as numerical silence;
+// it bounds divisions in RMS, residual, and headroom calculations.
 const DEFAULT_ENERGY_FLOOR: f64 = 1.0e-12;
 const DEFAULT_TEMPORAL_CONTINUITY_WEIGHT: f64 = 0.15;
+// Scores within this absolute normalized-cost band use source identity as a
+// stable tie-breaker, preventing platform-dependent near-tie permutations.
 const DISTANCE_TIE_EPSILON: f64 = 1.0e-12;
 
 /// Project-owned controls for deterministic authored-object reduction.
@@ -91,6 +95,10 @@ pub struct ReductionDiagnostics {
     pub source_reconstruction_error: f64,
     pub spatial_representation_error: f64,
     pub cross_object_leakage: f64,
+    /// Normalized residual not explained by the explicit source membership.
+    pub unexplained_cluster_leakage: f64,
+    /// Normalized error of a deterministic left/right speaker projection.
+    pub speaker_render_error: f64,
     pub max_coded_peak: f64,
     pub headroom_margin: f64,
     pub assignment_changes: usize,
@@ -120,6 +128,8 @@ pub enum ReductionError {
     },
     NonFiniteSignal(usize),
     NonFinitePosition(usize),
+    MissingSourceIndex(usize),
+    InvalidCodedObject(usize),
 }
 
 impl fmt::Display for ReductionError {
@@ -155,6 +165,18 @@ impl fmt::Display for ReductionError {
                 formatter,
                 "reduction source {index} has a non-finite position"
             ),
+            Self::MissingSourceIndex(index) => {
+                write!(
+                    formatter,
+                    "reduction result references missing source {index}"
+                )
+            }
+            Self::InvalidCodedObject(index) => {
+                write!(
+                    formatter,
+                    "reduction coded object {index} has mismatched signal data"
+                )
+            }
         }
     }
 }
@@ -195,18 +217,15 @@ pub fn reduce_scene_with_previous(
         }
     });
     let previous_assignments = preferred_seeds.as_ref().map(|_| {
-        sources
-            .iter()
-            .map(|source| {
-                previous.and_then(|result| {
-                    result
-                        .source_accounting
-                        .iter()
-                        .find(|accounting| accounting.source_index == source.source_index)
-                        .map(|accounting| accounting.coded_object_index)
-                })
+        previous
+            .map(|result| {
+                result
+                    .source_accounting
+                    .iter()
+                    .map(|accounting| (accounting.source_index, accounting.coded_object_index))
+                    .collect::<Vec<_>>()
             })
-            .collect::<Vec<_>>()
+            .unwrap_or_default()
     });
     let mut result = reduce_scene_internal(
         sources,
@@ -225,7 +244,7 @@ fn reduce_scene_internal(
     sources: &[ReductionSource],
     config: ReductionConfig,
     preferred_seeds: Option<&[usize]>,
-    previous_assignments: Option<&[Option<usize>]>,
+    previous_assignments: Option<&[(usize, usize)]>,
 ) -> Result<ReductionResult, ReductionError> {
     validate_inputs(sources, config)?;
     let source_count = sources.len();
@@ -340,7 +359,7 @@ fn reduce_scene_internal(
     } else {
         (total_other_energy / total_cluster_energy).min(1.0)
     };
-    Ok(ReductionResult {
+    let mut result = ReductionResult {
         coded_objects,
         source_accounting,
         diagnostics: ReductionDiagnostics {
@@ -350,12 +369,17 @@ fn reduce_scene_internal(
             source_reconstruction_error,
             spatial_representation_error,
             cross_object_leakage,
+            unexplained_cluster_leakage: 0.0,
+            speaker_render_error: 0.0,
             max_coded_peak,
             headroom_margin: (config.output_peak_limit - max_coded_peak).max(0.0),
             assignment_changes: 0,
             coded_identity_changes: 0,
         },
-    })
+    };
+    result.diagnostics.unexplained_cluster_leakage = unexplained_cluster_leakage(sources, &result)?;
+    result.diagnostics.speaker_render_error = speaker_render_error(sources, &result)?;
+    Ok(result)
 }
 
 /// Counts source-to-coded assignment changes between two pure reduction results.
@@ -393,6 +417,113 @@ pub fn reduction_identity_changes(left: &ReductionResult, right: &ReductionResul
         .map(|object| object.representative_source_index)
         .collect::<BTreeSet<_>>();
     left_identities.difference(&right_identities).count()
+}
+
+/// Recomputes each coded signal from its explicit source membership and
+/// reports the largest normalized residual. A non-zero value therefore means
+/// the coded signal contains energy not explained by the clean source map.
+pub fn unexplained_cluster_leakage(
+    sources: &[ReductionSource],
+    result: &ReductionResult,
+) -> Result<f64, ReductionError> {
+    validate_inputs(sources, ReductionConfig::default())?;
+    let mut maximum = 0.0_f64;
+    for coded in &result.coded_objects {
+        if coded.source_indices.len() != coded.contribution_gains.len()
+            || coded.signal.len() != sources[0].signal.len()
+        {
+            return Err(ReductionError::InvalidCodedObject(coded.coded_index));
+        }
+        let mut expected = vec![0.0; coded.signal.len()];
+        for (source_index, gain) in coded
+            .source_indices
+            .iter()
+            .copied()
+            .zip(coded.contribution_gains.iter().copied())
+        {
+            let source = sources
+                .iter()
+                .find(|source| source.source_index == source_index)
+                .ok_or(ReductionError::MissingSourceIndex(source_index))?;
+            for (output, input) in expected.iter_mut().zip(&source.signal) {
+                *output += gain * input;
+            }
+        }
+        let residual_energy = coded
+            .signal
+            .iter()
+            .zip(expected)
+            .map(|(actual, expected)| {
+                let residual = actual - expected;
+                residual * residual
+            })
+            .sum::<f64>();
+        let coded_energy = coded.signal.iter().map(|value| value * value).sum::<f64>();
+        let ratio = if coded_energy <= DEFAULT_ENERGY_FLOOR {
+            0.0
+        } else {
+            residual_energy / coded_energy
+        };
+        maximum = maximum.max(ratio);
+    }
+    Ok(maximum)
+}
+
+/// Compares a source-domain speaker projection with the same projection of
+/// the reduced coded signals. It is a quantitative compatibility proxy, not a
+/// claim about a proprietary decoder's rendered output.
+pub fn speaker_render_error(
+    sources: &[ReductionSource],
+    result: &ReductionResult,
+) -> Result<f64, ReductionError> {
+    validate_inputs(sources, ReductionConfig::default())?;
+    let sample_count = sources[0].signal.len();
+    let mut target = vec![[0.0; 2]; sample_count];
+    let mut reconstructed = vec![[0.0; 2]; sample_count];
+    for source in sources {
+        let weights = speaker_weights(source.position);
+        for (sample, value) in source.signal.iter().copied().enumerate() {
+            target[sample][0] += value * weights[0];
+            target[sample][1] += value * weights[1];
+        }
+    }
+    for coded in &result.coded_objects {
+        if coded.signal.len() != sample_count {
+            return Err(ReductionError::InvalidCodedObject(coded.coded_index));
+        }
+        let weights = speaker_weights(coded.position);
+        for (sample, value) in coded.signal.iter().copied().enumerate() {
+            reconstructed[sample][0] += value * weights[0];
+            reconstructed[sample][1] += value * weights[1];
+        }
+    }
+    let target_energy = target
+        .iter()
+        .flatten()
+        .map(|value| value * value)
+        .sum::<f64>();
+    if target_energy <= DEFAULT_ENERGY_FLOOR {
+        return Ok(0.0);
+    }
+    let residual_energy = target
+        .iter()
+        .zip(reconstructed)
+        .flat_map(|(target, reconstructed)| {
+            target
+                .iter()
+                .copied()
+                .zip(reconstructed)
+                .map(|(target, reconstructed)| target - reconstructed)
+                .collect::<Vec<_>>()
+        })
+        .map(|residual| residual * residual)
+        .sum::<f64>();
+    Ok((residual_energy / target_energy).sqrt())
+}
+
+fn speaker_weights(position: AdmPosition) -> [f64; 2] {
+    let azimuth = position.azimuth.clamp(-1.0, 1.0);
+    [(1.0 - azimuth) * 0.5, (1.0 + azimuth) * 0.5]
 }
 
 fn validate_inputs(
@@ -601,7 +732,7 @@ fn assign_sources(
     spatial_scale: f64,
     seeds: &[usize],
     config: ReductionConfig,
-    previous_assignments: Option<&[Option<usize>]>,
+    previous_assignments: Option<&[(usize, usize)]>,
 ) -> Vec<usize> {
     (0..sources.len())
         .map(|source_index| {
@@ -624,7 +755,7 @@ fn assign_sources(
                     let left_distance = continuity_cost(
                         left_distance,
                         previous_assignments,
-                        source_index,
+                        sources[source_index].source_index,
                         *left_cluster,
                         config,
                     );
@@ -640,7 +771,7 @@ fn assign_sources(
                     let right_distance = continuity_cost(
                         right_distance,
                         previous_assignments,
-                        source_index,
+                        sources[source_index].source_index,
                         *right_cluster,
                         config,
                     );
@@ -660,13 +791,13 @@ fn assign_sources(
 
 fn continuity_cost(
     distance: f64,
-    previous_assignments: Option<&[Option<usize>]>,
-    source_index: usize,
+    previous_assignments: Option<&[(usize, usize)]>,
+    source_identity: usize,
     cluster_index: usize,
     config: ReductionConfig,
 ) -> f64 {
     let should_switch = previous_assignments
-        .and_then(|assignments| assignments.get(source_index).copied().flatten())
+        .and_then(|assignments| previous_assignment_for_identity(assignments, source_identity))
         .is_some_and(|previous_cluster| previous_cluster != cluster_index);
     distance
         + if should_switch {
@@ -674,6 +805,16 @@ fn continuity_cost(
         } else {
             0.0
         }
+}
+
+fn previous_assignment_for_identity(
+    assignments: &[(usize, usize)],
+    source_identity: usize,
+) -> Option<usize> {
+    assignments
+        .iter()
+        .find(|(identity, _)| *identity == source_identity)
+        .map(|(_, cluster_index)| *cluster_index)
 }
 
 fn combine_cluster(
@@ -822,4 +963,18 @@ fn compare_min_score_then_index(
         return left_score.total_cmp(&right_score);
     }
     sources[left].source_index.cmp(&sources[right].source_index)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::previous_assignment_for_identity;
+
+    #[test]
+    fn prior_assignment_lookup_is_keyed_by_source_identity() {
+        let assignments = [(5, 0), (2, 1)];
+
+        assert_eq!(previous_assignment_for_identity(&assignments, 5), Some(0));
+        assert_eq!(previous_assignment_for_identity(&assignments, 2), Some(1));
+        assert_eq!(previous_assignment_for_identity(&assignments, 4), None);
+    }
 }

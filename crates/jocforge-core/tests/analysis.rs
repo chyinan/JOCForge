@@ -1,6 +1,9 @@
 // pattern: Functional Core
 
-use jocforge_core::{factorize_rank_controlled, factorize_source_derived, quantize_coefficient};
+use jocforge_core::{
+    SOURCE_DERIVED_CARRIER_PEAK_LIMIT, factorize_rank_controlled, factorize_source_derived,
+    limit_signal_peak, maximum_absolute_difference, quantize_coefficient, reconstruction_error,
+};
 
 #[test]
 fn rank_factorization_recovers_known_linear_combinations() {
@@ -79,5 +82,43 @@ fn source_derived_factorization_regularizes_near_singular_windows() {
             .iter()
             .flatten()
             .all(|value| value.is_finite())
+    );
+}
+
+#[test]
+fn factorization_reconstruction_error_is_an_independent_residual_measure() {
+    let objects = vec![
+        vec![1.0, 0.0, 0.0, 0.0],
+        vec![0.0, 1.0, 0.0, 0.0],
+        vec![1.0, 1.0, 0.0, 0.0],
+    ];
+    let factorization = factorize_rank_controlled(&objects, 2).expect("rank factorization");
+
+    let error = reconstruction_error(&objects, &factorization).expect("reconstruction error");
+
+    assert!(error.is_finite());
+    assert!(error < 1.0e-12);
+}
+
+#[test]
+fn coefficient_jump_measure_is_bounded_by_the_largest_actual_delta() {
+    let previous = vec![vec![0.1, -0.2], vec![0.3, 0.4]];
+    let current = vec![vec![0.2, -0.1], vec![0.0, 0.9]];
+
+    let jump = maximum_absolute_difference(&previous, &current).expect("coefficient jump");
+
+    assert!((jump - 0.5).abs() < 1.0e-12);
+}
+
+#[test]
+fn shared_carrier_peak_policy_scales_lfe_sums_without_non_finite_values() {
+    let limited = limit_signal_peak(&[1.2, -0.6, 0.3], SOURCE_DERIVED_CARRIER_PEAK_LIMIT)
+        .expect("peak policy");
+
+    assert!((limited[0] - SOURCE_DERIVED_CARRIER_PEAK_LIMIT).abs() < 1.0e-12);
+    assert!(limited.iter().all(|value| value.is_finite()));
+    assert!(
+        limited.iter().map(|value| value.abs()).fold(0.0, f64::max)
+            <= SOURCE_DERIVED_CARRIER_PEAK_LIMIT
     );
 }

@@ -1,11 +1,19 @@
 // pattern: Functional Core
 
-use std::{collections::HashMap, f64::consts::PI, fmt, fmt::Write as _};
+use std::{
+    collections::{BTreeSet, HashMap},
+    f64::consts::PI,
+    fmt,
+    fmt::Write as _,
+};
 
 const CHANNEL_COUNT: usize = 15;
 const SAMPLE_RATE: u32 = 48_000;
 const RANK: usize = 7;
 const QUANTUM: f64 = 820.0 / 4096.0;
+// ADM fixture/export timestamps carry five fractional decimal places; this
+// is one timestamp unit and is smaller than a 48 kHz sample period.
+const ADM_TIME_EPSILON: f64 = 1.0e-5;
 
 /// One supported dynamic ADM object after BW64/chna resolution.
 #[derive(Clone, Debug, PartialEq)]
@@ -29,6 +37,10 @@ pub struct AdmObject {
 pub struct AdmChannel {
     pub channel_id: String,
     pub channel_name: String,
+    /// Public ADM DirectSpeakers label, when supplied by the channel block.
+    pub speaker_label: Option<String>,
+    /// Public ADM frequency low-pass declaration, when supplied by the channel.
+    pub low_pass: Option<f64>,
     pub track_uid: String,
     pub track_index: usize,
     pub position: AdmPosition,
@@ -146,7 +158,6 @@ pub enum AdmError {
     MissingObjectBinding(String),
     MissingPosition(String),
     InvalidNumber(String),
-    UnsupportedObjectCount { dynamic_objects: usize },
 }
 
 impl fmt::Display for AdmError {
@@ -172,10 +183,6 @@ impl fmt::Display for AdmError {
                 write!(formatter, "missing position for ADM object {object}")
             }
             Self::InvalidNumber(value) => write!(formatter, "invalid ADM numeric value '{value}'"),
-            Self::UnsupportedObjectCount { dynamic_objects } => write!(
-                formatter,
-                "Unsupported ADM scene: {dynamic_objects} authored dynamic objects exceed current <=15 source-derived MVP profile; scene reduction is not implemented."
-            ),
         }
     }
 }
@@ -305,7 +312,26 @@ pub fn parse_bw64_adm_metadata(
     let xml = std::str::from_utf8(axml)
         .map_err(|_| AdmError::InvalidMetadata("axml is not UTF-8".to_owned()))?;
     let programmes = parse_adm_programmes(xml)?;
-    let objects = parse_adm_objects(xml, &chna.bindings, channel_count)?;
+    validate_programme_timing(&programmes, sample_count)?;
+    let programme_object_ids = parse_programme_object_ids(xml, &programmes)?;
+    let objects = parse_adm_objects(xml, &chna.bindings, channel_count, sample_count)?;
+    if !programme_object_ids.is_empty() {
+        for object in &objects {
+            if !programme_object_ids.contains(&object.object_id) {
+                return Err(AdmError::InvalidMetadata(format!(
+                    "object {} is not referenced by the programme",
+                    object.object_id
+                )));
+            }
+        }
+        for object_id in programme_object_ids {
+            if !objects.iter().any(|object| object.object_id == object_id) {
+                return Err(AdmError::InvalidMetadata(format!(
+                    "programme references unknown audioObject {object_id}"
+                )));
+            }
+        }
+    }
     if sample_rate != SAMPLE_RATE {
         return Err(AdmError::InvalidMetadata(format!(
             "MVP requires 48000 Hz, got {sample_rate}"
@@ -336,6 +362,95 @@ fn parse_adm_programmes(xml: &str) -> Result<Vec<AdmProgramme>, AdmError> {
             })
         })
         .collect()
+}
+
+fn validate_programme_timing(
+    programmes: &[AdmProgramme],
+    sample_count: usize,
+) -> Result<(), AdmError> {
+    if programmes.len() > 1 {
+        return Err(AdmError::InvalidMetadata(
+            "multiple audioProgramme elements are unsupported by the narrow encoder".to_owned(),
+        ));
+    }
+    let full_duration = sample_count as f64 / f64::from(SAMPLE_RATE);
+    for programme in programmes {
+        let start = programme
+            .start
+            .as_deref()
+            .map(|value| parse_adm_time(value).map_err(|()| value))
+            .transpose()
+            .map_err(|value| {
+                AdmError::InvalidMetadata(format!(
+                    "{} programme timing uses unsupported ADM time '{value}'",
+                    programme.programme_id
+                ))
+            })?;
+        let end = programme
+            .end
+            .as_deref()
+            .map(|value| parse_adm_time(value).map_err(|()| value))
+            .transpose()
+            .map_err(|value| {
+                AdmError::InvalidMetadata(format!(
+                    "{} programme timing uses unsupported ADM time '{value}'",
+                    programme.programme_id
+                ))
+            })?;
+        match (start, end) {
+            (Some(start), Some(end))
+                if end >= start
+                    && (end - start - full_duration).abs()
+                        <= ADM_TIME_EPSILON * full_duration.max(1.0) => {}
+            (None, None) => {}
+            _ => {
+                return Err(AdmError::InvalidMetadata(format!(
+                    "{} programme timing does not cover the full PCM duration",
+                    programme.programme_id
+                )));
+            }
+        }
+    }
+    Ok(())
+}
+
+fn parse_programme_object_ids(
+    xml: &str,
+    programmes: &[AdmProgramme],
+) -> Result<BTreeSet<String>, AdmError> {
+    if programmes.is_empty() {
+        return Ok(BTreeSet::new());
+    }
+    let mut content_objects = HashMap::new();
+    for block in tag_blocks(xml, "audioContent") {
+        let open = opening_tag(block, "audioContent")?;
+        let content_id = attribute(open, "audioContentID")?;
+        content_objects.insert(content_id, child_texts(block, "audioObjectIDRef")?);
+    }
+    let mut object_ids = BTreeSet::new();
+    for programme in programmes {
+        if programme.content_id_refs.is_empty() {
+            return Err(AdmError::InvalidMetadata(format!(
+                "programme {} has no content references",
+                programme.programme_id
+            )));
+        }
+        for content_id in &programme.content_id_refs {
+            let objects = content_objects.get(content_id).ok_or_else(|| {
+                AdmError::InvalidMetadata(format!(
+                    "programme {} references unknown audioContent {content_id}",
+                    programme.programme_id
+                ))
+            })?;
+            object_ids.extend(objects.iter().cloned());
+        }
+    }
+    if object_ids.is_empty() {
+        return Err(AdmError::InvalidMetadata(
+            "programme has no audioObject references".to_owned(),
+        ));
+    }
+    Ok(object_ids)
 }
 
 /// Decodes selected interleaved integer PCM tracks from one bounded frame.
@@ -392,12 +507,12 @@ pub fn decode_pcm_frame(
     Ok(output)
 }
 
-/// Admits only the authored dynamic-object count supported by the source-derived MVP.
-pub fn validate_source_derived_object_limit(dynamic_object_count: usize) -> Result<(), AdmError> {
-    if dynamic_object_count > 15 {
-        return Err(AdmError::UnsupportedObjectCount {
-            dynamic_objects: dynamic_object_count,
-        });
+/// Validates the ADM metadata boundary required by source-derived encoding.
+pub fn validate_source_derived_adm_metadata(metadata: &ParsedAdmMetadata) -> Result<(), AdmError> {
+    if metadata.programmes.is_empty() {
+        return Err(AdmError::InvalidMetadata(
+            "source-derived encode requires an audioProgramme for object membership".to_owned(),
+        ));
     }
     Ok(())
 }
@@ -425,6 +540,7 @@ pub fn generate_synthetic_direct_speaker_fixture(
         FixtureDirectChannel {
             channel_id: "AC_00011001",
             channel_name: "RoomCentricLeft",
+            speaker_label: "M-030",
             position: AdmPosition {
                 azimuth: -1.0,
                 elevation: 0.0,
@@ -434,6 +550,7 @@ pub fn generate_synthetic_direct_speaker_fixture(
         FixtureDirectChannel {
             channel_id: "AC_00011002",
             channel_name: "RoomCentricRight",
+            speaker_label: "M+030",
             position: AdmPosition {
                 azimuth: 1.0,
                 elevation: 0.0,
@@ -443,6 +560,7 @@ pub fn generate_synthetic_direct_speaker_fixture(
         FixtureDirectChannel {
             channel_id: "AC_00011003",
             channel_name: "RoomCentricLFE",
+            speaker_label: "LFE1",
             position: AdmPosition {
                 azimuth: 0.0,
                 elevation: 0.0,
@@ -544,6 +662,7 @@ fn generate_fixture_with_layout(
 struct FixtureDirectChannel {
     channel_id: &'static str,
     channel_name: &'static str,
+    speaker_label: &'static str,
     position: AdmPosition,
 }
 
@@ -569,9 +688,14 @@ fn read_u64_le(bytes: &[u8]) -> Result<u64, AdmError> {
 }
 
 struct ChnaBindings {
-    bindings: HashMap<String, usize>,
+    bindings: HashMap<String, ChnaBinding>,
     track_count: usize,
     track_uid_count: usize,
+}
+
+struct ChnaBinding {
+    track_index: usize,
+    pack_ref: String,
 }
 
 fn parse_chna(bytes: &[u8]) -> Result<ChnaBindings, AdmError> {
@@ -580,15 +704,48 @@ fn parse_chna(bytes: &[u8]) -> Result<ChnaBindings, AdmError> {
     }
     let tracks = usize::from(u16::from_le_bytes(bytes[0..2].try_into().unwrap()));
     let uids = usize::from(u16::from_le_bytes(bytes[2..4].try_into().unwrap()));
-    if tracks != uids || bytes.len() < 4 + tracks * 40 {
+    let expected_bytes = tracks
+        .checked_mul(40)
+        .and_then(|size| size.checked_add(4))
+        .ok_or(AdmError::InvalidContainer("chna entry count"))?;
+    if tracks != uids || bytes.len() < expected_bytes {
         return Err(AdmError::InvalidContainer("chna entry count"));
     }
     let mut result = HashMap::with_capacity(tracks);
+    let mut indices = HashMap::with_capacity(tracks);
     for index in 0..tracks {
         let start = 4 + index * 40;
         let uid = read_padded_string(&bytes[start + 2..start + 14]);
         let track_index = usize::from(read_u16_le(&bytes[start..start + 2])?);
-        result.insert(uid, track_index);
+        let track_ref = read_padded_string(&bytes[start + 14..start + 28]);
+        let pack_ref = read_padded_string(&bytes[start + 28..start + 39]);
+        if track_index == 0 || track_index > tracks {
+            return Err(AdmError::InvalidMetadata(format!(
+                "CHNA track index {track_index} is outside 1..={tracks}"
+            )));
+        }
+        if uid.is_empty() || track_ref.is_empty() || pack_ref.is_empty() {
+            return Err(AdmError::InvalidMetadata(format!(
+                "CHNA row {index} has an empty binding field"
+            )));
+        }
+        if result.contains_key(&uid) {
+            return Err(AdmError::InvalidMetadata(format!(
+                "duplicate CHNA TrackUID {uid}"
+            )));
+        }
+        if let Some(previous_uid) = indices.insert(track_index, uid.clone()) {
+            return Err(AdmError::InvalidMetadata(format!(
+                "duplicate CHNA track index {track_index} for {previous_uid} and {uid}"
+            )));
+        }
+        result.insert(
+            uid,
+            ChnaBinding {
+                track_index,
+                pack_ref,
+            },
+        );
     }
     Ok(ChnaBindings {
         bindings: result,
@@ -599,8 +756,9 @@ fn parse_chna(bytes: &[u8]) -> Result<ChnaBindings, AdmError> {
 
 fn parse_adm_objects(
     xml: &str,
-    bindings: &HashMap<String, usize>,
+    bindings: &HashMap<String, ChnaBinding>,
     channel_count: usize,
+    sample_count: usize,
 ) -> Result<Vec<AdmObject>, AdmError> {
     let mut packs = HashMap::new();
     for block in tag_blocks(xml, "audioPackFormat") {
@@ -631,19 +789,41 @@ fn parse_adm_objects(
         let id = attribute(open, "audioChannelFormatID")?;
         let channel_name =
             attribute_optional(open, "audioChannelFormatName").unwrap_or_else(|| id.clone());
-        let block_format = tag_blocks(block, "audioBlockFormat")
-            .into_iter()
-            .next()
-            .ok_or_else(|| {
-                AdmError::InvalidMetadata(format!("channel {id} has no block format"))
-            })?;
+        let block_formats = tag_blocks(block, "audioBlockFormat");
+        if block_formats.is_empty() {
+            return Err(AdmError::InvalidMetadata(format!(
+                "channel {id} has no block format"
+            )));
+        }
+        if block_formats.len() != 1 {
+            return Err(AdmError::InvalidMetadata(format!(
+                "channel {id} has multiple audioBlockFormat elements; trajectories are unsupported"
+            )));
+        }
+        let block_format = block_formats[0];
         let block_open = opening_tag(block_format, "audioBlockFormat")?;
+        validate_static_time(
+            attribute_optional(block_open, "rtime").as_deref(),
+            0.0,
+            "block timing",
+            &id,
+        )?;
+        validate_static_time(
+            attribute_optional(block_open, "duration").as_deref(),
+            sample_count as f64 / f64::from(SAMPLE_RATE),
+            "block timing",
+            &id,
+        )?;
+        validate_static_jump_position(block_format, &id)?;
+        let (speaker_label, low_pass, lfe_semantics) = channel_semantics(block, &id)?;
         positions.insert(
             id,
             ChannelMetadata {
                 channel_name: channel_name.clone(),
                 position: parse_position(block_format)?,
-                is_lfe: channel_name.to_ascii_lowercase().contains("lfe"),
+                speaker_label,
+                low_pass,
+                lfe_semantics,
                 block_rtime: attribute_optional(block_open, "rtime"),
                 block_duration: attribute_optional(block_open, "duration"),
                 gain: attribute_optional(block_open, "gain").or_else(|| {
@@ -657,6 +837,7 @@ fn parse_adm_objects(
         );
     }
     let mut objects = Vec::new();
+    let mut referenced_track_uids = BTreeSet::new();
     for (ordinal, block) in tag_blocks(xml, "audioObject").into_iter().enumerate() {
         let open = opening_tag(block, "audioObject")?;
         let object_id = attribute(open, "audioObjectID")?;
@@ -674,26 +855,58 @@ fn parse_adm_objects(
                 track_uids.len()
             )));
         }
+        let object_start = attribute_optional(open, "start");
+        let object_duration = attribute_optional(open, "duration");
+        validate_static_time(object_start.as_deref(), 0.0, "object timing", &object_id)?;
+        validate_static_time(
+            object_duration.as_deref(),
+            sample_count as f64 / f64::from(SAMPLE_RATE),
+            "object timing",
+            &object_id,
+        )?;
         let mut channels = Vec::with_capacity(channel_ids.len());
         for (channel_id, track_uid) in channel_ids.iter().zip(track_uids) {
+            if !referenced_track_uids.insert(track_uid.clone()) {
+                return Err(AdmError::InvalidMetadata(format!(
+                    "duplicate ADM TrackUID reference {track_uid}"
+                )));
+            }
             let channel = positions
                 .get(channel_id)
                 .ok_or_else(|| AdmError::MissingPosition(object_id.clone()))?;
-            let track_index = *bindings
+            let binding = bindings
                 .get(&track_uid)
                 .ok_or_else(|| AdmError::MissingObjectBinding(object_id.clone()))?;
+            let track_index = binding.track_index;
             if track_index == 0 || track_index > channel_count {
                 return Err(AdmError::InvalidMetadata(format!(
                     "object {object_id} maps to PCM track {track_index}"
                 )));
             }
+            if binding.pack_ref != pack_id.as_str() {
+                return Err(AdmError::InvalidMetadata(format!(
+                    "object {object_id} CHNA pack relation conflicts with {}",
+                    binding.pack_ref
+                )));
+            }
+            let is_lfe = if *kind == AdmObjectKind::DirectSpeakers {
+                channel.lfe_semantics.ok_or_else(|| {
+                    AdmError::InvalidMetadata(format!(
+                        "channel {channel_id} is missing LFE semantic metadata"
+                    ))
+                })?
+            } else {
+                false
+            };
             channels.push(AdmChannel {
                 channel_id: channel_id.clone(),
                 channel_name: channel.channel_name.clone(),
+                speaker_label: channel.speaker_label.clone(),
+                low_pass: channel.low_pass,
                 track_uid,
                 track_index,
                 position: channel.position,
-                is_lfe: channel.is_lfe,
+                is_lfe,
                 block_rtime: channel.block_rtime.clone(),
                 block_duration: channel.block_duration.clone(),
                 gain: channel.gain.clone(),
@@ -707,8 +920,8 @@ fn parse_adm_objects(
             object_id,
             object_name: attribute_optional(open, "audioObjectName")
                 .unwrap_or_else(|| "unnamed".to_owned()),
-            start: attribute_optional(open, "start"),
-            duration: attribute_optional(open, "duration"),
+            start: object_start,
+            duration: object_duration,
             pack_format_id: pack_id,
             pack_format_name: pack_name.clone(),
             track_uid: first_channel.track_uid.clone(),
@@ -726,11 +939,68 @@ fn parse_adm_objects(
     Ok(objects)
 }
 
+fn validate_static_jump_position(block: &str, channel_id: &str) -> Result<(), AdmError> {
+    let jump_positions = tag_blocks(block, "jumpPosition");
+    if jump_positions.len() > 1 {
+        return Err(AdmError::InvalidMetadata(format!(
+            "channel {channel_id} has multiple jumpPosition elements; trajectories are unsupported"
+        )));
+    }
+    if let Some(jump_position) = jump_positions.first() {
+        let open = opening_tag(jump_position, "jumpPosition")?;
+        let value = inner_text(jump_position, "jumpPosition")?;
+        let interpolation = attribute_optional(open, "interpolationLength");
+        if value != "1" || interpolation.as_deref().is_some_and(|value| value != "0") {
+            return Err(AdmError::InvalidMetadata(format!(
+                "channel {channel_id} has unsupported jumpPosition trajectory"
+            )));
+        }
+    }
+    Ok(())
+}
+
+fn validate_static_time(
+    value: Option<&str>,
+    expected_seconds: f64,
+    field: &str,
+    identity: &str,
+) -> Result<(), AdmError> {
+    let Some(value) = value else {
+        return Ok(());
+    };
+    let actual_seconds = parse_adm_time(value).map_err(|()| {
+        AdmError::InvalidMetadata(format!(
+            "{identity} {field} uses unsupported ADM time '{value}'"
+        ))
+    })?;
+    let tolerance = ADM_TIME_EPSILON * expected_seconds.abs().max(1.0);
+    if (actual_seconds - expected_seconds).abs() > tolerance {
+        return Err(AdmError::InvalidMetadata(format!(
+            "{identity} {field} is not supported by the full-track static subset"
+        )));
+    }
+    Ok(())
+}
+
+fn parse_adm_time(value: &str) -> Result<f64, ()> {
+    let (hours_minutes, seconds) = value.rsplit_once(':').ok_or(())?;
+    let (hours, minutes) = hours_minutes.split_once(':').ok_or(())?;
+    let hours = hours.parse::<u64>().map_err(|_| ())?;
+    let minutes = minutes.parse::<u64>().map_err(|_| ())?;
+    let seconds = seconds.parse::<f64>().map_err(|_| ())?;
+    if minutes >= 60 || !(0.0..60.0).contains(&seconds) || !seconds.is_finite() {
+        return Err(());
+    }
+    Ok(hours as f64 * 3600.0 + minutes as f64 * 60.0 + seconds)
+}
+
 #[derive(Clone, Debug)]
 struct ChannelMetadata {
     channel_name: String,
     position: AdmPosition,
-    is_lfe: bool,
+    speaker_label: Option<String>,
+    low_pass: Option<f64>,
+    lfe_semantics: Option<bool>,
     block_rtime: Option<String>,
     block_duration: Option<String>,
     gain: Option<String>,
@@ -785,6 +1055,77 @@ fn parse_position(block: &str) -> Result<AdmPosition, AdmError> {
         ));
     }
     Ok(position)
+}
+
+type ChannelSemantics = (Option<String>, Option<f64>, Option<bool>);
+
+fn channel_semantics(channel_block: &str, channel_id: &str) -> Result<ChannelSemantics, AdmError> {
+    let speaker_labels = child_texts(channel_block, "speakerLabel")?;
+    if speaker_labels.len() > 1 {
+        return Err(AdmError::InvalidMetadata(format!(
+            "channel {channel_id} has multiple speakerLabel elements"
+        )));
+    }
+    let speaker_label = speaker_labels
+        .into_iter()
+        .next()
+        .filter(|value| !value.trim().is_empty());
+    let frequencies = tag_blocks(channel_block, "frequency");
+    if frequencies.len() > 1 {
+        return Err(AdmError::InvalidMetadata(format!(
+            "channel {channel_id} has multiple frequency elements"
+        )));
+    }
+    let low_pass = frequencies
+        .first()
+        .map(|frequency| {
+            let low_passes = tag_blocks(frequency, "lowPass");
+            if low_passes.len() > 1 {
+                return Err(AdmError::InvalidMetadata(format!(
+                    "channel {channel_id} has multiple lowPass elements"
+                )));
+            }
+            let Some(low_pass) = low_passes.first() else {
+                return Ok(None);
+            };
+            let raw = inner_text(low_pass, "lowPass")?;
+            let value = raw
+                .parse::<f64>()
+                .map_err(|_| AdmError::InvalidNumber(raw.to_owned()))?;
+            if !value.is_finite() || value <= 0.0 {
+                return Err(AdmError::InvalidMetadata(format!(
+                    "channel {channel_id} has an invalid lowPass frequency"
+                )));
+            }
+            Ok(Some(value))
+        })
+        .transpose()?
+        .flatten();
+    let label_is_lfe = speaker_label.as_deref().is_some_and(is_lfe_speaker_label);
+    if low_pass.is_some() && speaker_label.is_some() && !label_is_lfe {
+        return Err(AdmError::InvalidMetadata(format!(
+            "channel {channel_id} has conflicting LFE semantic metadata"
+        )));
+    }
+    let semantics = if speaker_label.is_some() || low_pass.is_some() {
+        Some(label_is_lfe || low_pass.is_some())
+    } else {
+        None
+    };
+    Ok((speaker_label, low_pass, semantics))
+}
+
+fn is_lfe_speaker_label(label: &str) -> bool {
+    let canonical = label
+        .trim()
+        .rsplit(':')
+        .next()
+        .unwrap_or(label)
+        .to_ascii_uppercase();
+    matches!(
+        canonical.as_str(),
+        "LFE" | "LFE1" | "LFE2" | "LFEL" | "LFER" | "RC_LFE" | "RC_LFE2"
+    )
 }
 
 fn tag_blocks<'a>(xml: &'a str, name: &str) -> Vec<&'a str> {
@@ -980,10 +1321,11 @@ fn fixture_axml(
         for channel in direct_channels {
             let _ = write!(
                 xml,
-                "<audioChannelFormat audioChannelFormatID=\"{}\" audioChannelFormatName=\"{}\" typeLabel=\"0001\" typeDefinition=\"DirectSpeakers\"><audioBlockFormat audioBlockFormatID=\"AB_{}\"><cartesian>1</cartesian><position coordinate=\"X\">{:.6}</position><position coordinate=\"Y\">{:.6}</position><position coordinate=\"Z\">{:.6}</position></audioBlockFormat></audioChannelFormat>",
+                "<audioChannelFormat audioChannelFormatID=\"{}\" audioChannelFormatName=\"{}\" typeLabel=\"0001\" typeDefinition=\"DirectSpeakers\"><audioBlockFormat audioBlockFormatID=\"AB_{}\"><cartesian>1</cartesian><speakerLabel>{}</speakerLabel><position coordinate=\"X\">{:.6}</position><position coordinate=\"Y\">{:.6}</position><position coordinate=\"Z\">{:.6}</position></audioBlockFormat></audioChannelFormat>",
                 channel.channel_id,
                 channel.channel_name,
                 channel.channel_id,
+                channel.speaker_label,
                 channel.position.azimuth,
                 channel.position.elevation,
                 channel.position.distance,

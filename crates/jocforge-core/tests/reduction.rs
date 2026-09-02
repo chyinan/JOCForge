@@ -2,7 +2,8 @@
 
 use jocforge_core::{
     AdmObjectKind, AdmPosition, ReductionConfig, ReductionSource, reduce_scene,
-    reduction_assignment_changes, reduction_identity_changes,
+    reduction_assignment_changes, reduction_identity_changes, speaker_render_error,
+    unexplained_cluster_leakage,
 };
 
 fn source(ordinal: usize) -> ReductionSource {
@@ -162,4 +163,95 @@ fn coded_identity_metric_counts_a_representative_replacement_once() {
     changed.coded_objects[0].representative_source_index = usize::MAX;
 
     assert_eq!(reduction_identity_changes(&first, &changed), 1);
+}
+
+#[test]
+fn sparse_source_identity_keeps_its_prior_continuity_assignment() {
+    let make_source = |source_index: usize, azimuth: f64| ReductionSource {
+        source_index,
+        object_id: format!("AO_{source_index:04X}"),
+        kind: AdmObjectKind::Objects,
+        position: AdmPosition {
+            azimuth,
+            elevation: 0.0,
+            distance: 1.0,
+        },
+        signal: vec![if source_index == 5 { 0.5 } else { 1.0 }; 32],
+    };
+    let config = ReductionConfig {
+        max_coded_objects: 2,
+        temporal_continuity_weight: 0.15,
+        ..ReductionConfig::default()
+    };
+    let previous_sources = vec![
+        make_source(0, -1.0),
+        make_source(2, 1.0),
+        make_source(5, -0.1),
+    ];
+    let current_sources = vec![
+        make_source(0, -1.0),
+        make_source(5, 0.1),
+        make_source(2, 1.0),
+    ];
+
+    let previous = reduce_scene(&previous_sources, config).expect("previous reduction");
+    let previous_assignment = previous
+        .source_accounting
+        .iter()
+        .find(|accounting| accounting.source_index == 5)
+        .expect("sparse source accounting")
+        .coded_object_index;
+    let without_continuity = jocforge_core::reduce_scene_with_previous(
+        &current_sources,
+        ReductionConfig {
+            temporal_continuity_weight: 0.0,
+            ..config
+        },
+        Some(&previous),
+    )
+    .expect("unregularized current reduction");
+    assert_ne!(
+        without_continuity
+            .source_accounting
+            .iter()
+            .find(|accounting| accounting.source_index == 5)
+            .expect("unregularized sparse source accounting")
+            .coded_object_index,
+        previous_assignment
+    );
+    let current =
+        jocforge_core::reduce_scene_with_previous(&current_sources, config, Some(&previous))
+            .expect("current reduction");
+
+    assert_eq!(
+        current
+            .source_accounting
+            .iter()
+            .find(|accounting| accounting.source_index == 5)
+            .expect("current sparse source accounting")
+            .coded_object_index,
+        previous_assignment
+    );
+}
+
+#[test]
+fn clean_reduction_reports_no_unexplained_cluster_residual() {
+    let sources = (0..20).map(source).collect::<Vec<_>>();
+    let result = reduce_scene(&sources, ReductionConfig::default()).expect("scene reduction");
+
+    let leakage = unexplained_cluster_leakage(&sources, &result).expect("leakage oracle");
+
+    assert!(leakage.is_finite());
+    assert!(leakage < 1.0e-24);
+}
+
+#[test]
+fn clean_reduction_reports_a_quantitative_stereo_render_error() {
+    let sources = vec![source(0)];
+    let result = reduce_scene(&sources, ReductionConfig::default()).expect("scene reduction");
+
+    let error = speaker_render_error(&sources, &result).expect("speaker render oracle");
+
+    assert!(error.is_finite());
+    assert!(error < 1.0e-12);
 }

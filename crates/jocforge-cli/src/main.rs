@@ -15,9 +15,11 @@ use file_scan::{read_pcm_frame, scan_bw64_file};
 
 use jocforge_core::{
     AdmObject, AdmObjectKind, JocProfile, ReductionConfig, ReductionSource,
-    factorize_source_derived, generate_synthetic_scene_fixture,
+    SOURCE_DERIVED_CARRIER_PEAK_LIMIT, factorize_source_derived, generate_synthetic_scene_fixture,
+    limit_signal_peak, maximum_absolute_difference,
     package_source_derived_access_unit_with_frame_sizes, parse_bw64_adm_metadata, profile_spec,
-    rate_budget, reduce_scene_with_previous, write_one_au_proof,
+    quantize_coefficient, rate_budget, reconstruction_error, reduce_scene_with_previous,
+    spectral_phase_report, validate_source_derived_adm_metadata, write_one_au_proof,
 };
 
 const JOC_FRAME_SAMPLES: usize = 1536;
@@ -41,11 +43,13 @@ fn run(arguments: &[String]) -> Result<(), String> {
         Some("fixture-unsupported") => run_unsupported_fixture(&arguments[1..]),
         Some("inspect-adm") => run_inspect_adm(&arguments[1..]),
         Some("encode") => run_encode(&arguments[1..]),
+        Some("quantization-stress") => run_quantization_stress(&arguments[1..]),
+        Some("spectral-phase") => run_spectral_phase(&arguments[1..]),
         Some("temporal") => run_temporal(&arguments[1..]),
         Some("temporal-adversarial") => run_temporal_adversarial(&arguments[1..]),
         Some(command) => Err(format!("unsupported command '{command}'")),
         None => Err(
-            "usage: jocforge proof|fixture|fixture-directspeakers|fixture-unsupported|inspect-adm|encode|temporal ..."
+            "usage: jocforge proof|fixture|fixture-directspeakers|fixture-unsupported|inspect-adm|encode|quantization-stress|spectral-phase|temporal ..."
                 .to_owned(),
         ),
     }
@@ -134,6 +138,118 @@ fn run_proof(arguments: &[String]) -> Result<(), String> {
     let bytes = write_one_au_proof(profile)?;
     let output = PathBuf::from(output);
     write_output(&output, bytes, "proof")
+}
+
+fn run_quantization_stress(arguments: &[String]) -> Result<(), String> {
+    let [output] = arguments else {
+        return Err("usage: jocforge quantization-stress OUTPUT.json".to_owned());
+    };
+    let quantum = 820.0 / 4096.0;
+    let profiles = [JocProfile::Idx0, JocProfile::Idx1, JocProfile::Idx2];
+    let mut max_error = 0.0_f64;
+    let mut pass = true;
+    let mut matrix_values_checked = 0_usize;
+    for profile in profiles {
+        let columns = profile_spec(profile).input_labels.len();
+        for object_count in 1..=15 {
+            for object in 0..object_count {
+                for column in 0..columns {
+                    let step = i32::try_from((object * columns + column) % 96)
+                        .map_err(|_| "quantization stress index overflow".to_owned())?
+                        - 48;
+                    let coefficient = quantize_coefficient(f64::from(step) * quantum)
+                        .map_err(|error| format!("quantization stress failed: {error}"))?;
+                    let expected_symbol = step.rem_euclid(96) as u16;
+                    pass &= coefficient.encoded_symbol == expected_symbol;
+                    pass &= coefficient.decoded.is_finite() && coefficient.error.is_finite();
+                    max_error = max_error.max(coefficient.error.abs());
+                    matrix_values_checked += 1;
+                }
+            }
+        }
+    }
+    for step in -48_i32..=47 {
+        let coefficient = quantize_coefficient(f64::from(step) * quantum)
+            .map_err(|error| format!("quantization domain stress failed: {error}"))?;
+        pass &= coefficient.encoded_symbol == step.rem_euclid(96) as u16;
+        pass &= coefficient.decoded.is_finite() && coefficient.error.is_finite();
+        max_error = max_error.max(coefficient.error.abs());
+    }
+    pass &= max_error <= quantum * 0.5 + 1.0e-12;
+    let json = format!(
+        "{{\n  \"pass\": {},\n  \"profile_count\": 3,\n  \"profiles\": [\"idx0\", \"idx1\", \"idx2\"],\n  \"domain_min_step\": -48,\n  \"domain_max_step\": 47,\n  \"domain_values_checked\": 96,\n  \"matrix_values_checked\": {matrix_values_checked},\n  \"quantum\": {quantum:.17e},\n  \"maximum_absolute_error\": {max_error:.17e}\n}}\n",
+        json_bool(pass),
+    );
+    write_output(
+        &PathBuf::from(output),
+        json.into_bytes(),
+        "quantization stress report",
+    )?;
+    if pass {
+        Ok(())
+    } else {
+        Err("quantization stress gate failed".to_owned())
+    }
+}
+
+fn run_spectral_phase(arguments: &[String]) -> Result<(), String> {
+    let [output] = arguments else {
+        return Err("usage: jocforge spectral-phase OUTPUT.json".to_owned());
+    };
+    let report = spectral_phase_report();
+    let metrics = report
+        .metrics
+        .iter()
+        .map(|metric| {
+            format!(
+                "{{\"name\":\"{}\",\"relationship\":\"{}\",\"hard_gate\":{},\"magnitude_spectrum_deviation\":{:.17e},\"band_energy_error\":{:.17e},\"spectral_tilt_error\":{:.17e},\"transient_spectral_retention\":{:.17e},\"low_frequency_retention\":{:.17e},\"high_frequency_retention\":{:.17e},\"phase_difference\":{:.17e},\"normalized_correlation\":{:.17e},\"polarity_preserved\":{},\"quadrature_phase_error\":{:.17e},\"transient_boundary_discontinuity\":{:.17e},\"stereo_width_error\":{:.17e},\"reduction_coded_objects\":{},\"reduction_pass\":{},\"pass\":{}}}",
+                metric.name,
+                metric.relationship,
+                json_bool(metric.gate_scope.is_hard()),
+                metric.magnitude_spectrum_deviation,
+                metric.band_energy_error,
+                metric.spectral_tilt_error,
+                metric.transient_spectral_retention,
+                metric.low_frequency_retention,
+                metric.high_frequency_retention,
+                metric.phase_difference,
+                metric.normalized_correlation,
+                json_bool(metric.polarity_preserved.is_pass()),
+                metric.quadrature_phase_error,
+                metric.transient_boundary_discontinuity,
+                metric.stereo_width_error,
+                metric.reduction_coded_objects,
+                json_bool(metric.reduction_pass.is_pass()),
+                json_bool(metric.pass.is_pass()),
+            )
+        })
+        .collect::<Vec<_>>()
+        .join(",\n    ");
+    let json = format!(
+        "{{\n  \"pass\": {},\n  \"fixture_count\": {},\n  \"reference_stage\": \"authored deterministic PCM\",\n  \"compatibility_stage\": \"clean pre-E-AC-3 compatibility presentation\",\n  \"decoded_eac3_stage\": \"NOT_AVAILABLE\",\n  \"openjoc_stage\": \"NOT_AVAILABLE\",\n  \"fft_size\": 256,\n  \"window\": \"periodic Hann over one 256-sample window\",\n  \"sample_rate\": 48000,\n  \"spectral_gate\": {},\n  \"phase_gate\": {},\n  \"polarity_gate\": {},\n  \"quadrature_gate\": {},\n  \"transient_gate\": {},\n  \"metrics\": [\n    {}\n  ]\n}}\n",
+        json_bool(report.pass.is_pass()),
+        report.fixture_count,
+        json_bool(report.spectral_gate.is_pass()),
+        json_bool(report.phase_gate.is_pass()),
+        json_bool(report.polarity_gate.is_pass()),
+        json_bool(report.quadrature_gate.is_pass()),
+        json_bool(report.transient_gate.is_pass()),
+        metrics,
+    );
+    write_output(
+        &PathBuf::from(output),
+        json.into_bytes(),
+        "spectral phase report",
+    )?;
+    if report.pass.is_pass() {
+        Ok(())
+    } else {
+        Err("spectral/phase compatibility gate failed".to_owned())
+    }
+}
+
+fn json_bool(value: bool) -> &'static str {
+    if value { "true" } else { "false" }
 }
 
 fn run_fixture(arguments: &[String]) -> Result<(), String> {
@@ -266,7 +382,7 @@ fn write_direct_speaker_inventory(
         .collect::<Vec<_>>()
         .join(";");
     let mut output = String::from(
-        "object_id,object_name,pack_format_id,pack_format_name,channel_id,channel_name,track_uid,track_index,is_lfe,azimuth,elevation,distance,object_start,object_duration,block_rtime,block_duration,gain,programme_relationship\n",
+        "object_id,object_name,pack_format_id,pack_format_name,channel_id,channel_name,speaker_label,low_pass,track_uid,track_index,is_lfe,azimuth,elevation,distance,object_start,object_duration,block_rtime,block_duration,gain,programme_relationship\n",
     );
     for object in metadata
         .objects
@@ -276,13 +392,17 @@ fn write_direct_speaker_inventory(
         for channel in &object.channels {
             let _ = writeln!(
                 output,
-                "{},{},{},{},{},{},{},{},{},{:.17e},{:.17e},{:.17e},{},{},{},{},{},{}",
+                "{},{},{},{},{},{},{},{},{},{},{},{:.17e},{:.17e},{:.17e},{},{},{},{},{},{}",
                 csv_cell(&object.object_id),
                 csv_cell(&object.object_name),
                 csv_cell(&object.pack_format_id),
                 csv_cell(&object.pack_format_name),
                 csv_cell(&channel.channel_id),
                 csv_cell(&channel.channel_name),
+                csv_cell(channel.speaker_label.as_deref().unwrap_or("")),
+                channel
+                    .low_pass
+                    .map_or_else(String::new, |value| value.to_string()),
                 csv_cell(&channel.track_uid),
                 channel.track_index,
                 channel.is_lfe,
@@ -371,6 +491,8 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
             input_path.display()
         )
     })?;
+    validate_source_derived_adm_metadata(&metadata)
+        .map_err(|error| format!("failed to validate ADM encode boundary: {error}"))?;
     if let Some(object) = metadata
         .objects
         .iter()
@@ -415,9 +537,10 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         ..ReductionConfig::default()
     };
     let mut metrics = String::from(
-        "record,frame,source_index,object_id,kind,coded_object_index,contribution_gain,source_energy,represented_energy,relative_error,spatial_error,source_count,coded_count,silent_drops,source_reconstruction_error,spatial_representation_error,cross_object_leakage,max_coded_peak,headroom_margin,assignment_changes,coded_identity_changes,coded_representative_source_index,source_azimuth,source_elevation,source_distance,coded_azimuth,coded_elevation,coded_distance,coded_first_sample,coded_last_sample\n",
+        "record,frame,source_index,object_id,kind,coded_object_index,contribution_gain,source_energy,represented_energy,relative_error,spatial_error,source_count,coded_count,silent_drops,source_reconstruction_error,spatial_representation_error,cross_object_leakage,unexplained_cluster_leakage,speaker_render_error,factorization_reconstruction_error,matrix_coefficient_jump,carrier_coefficient_jump,max_coded_peak,headroom_margin,assignment_changes,coded_identity_changes,coded_representative_source_index,source_azimuth,source_elevation,source_distance,coded_azimuth,coded_elevation,coded_distance,coded_first_sample,coded_last_sample\n",
     );
     let mut previous_reduction = None;
+    let mut previous_factorization: Option<jocforge_core::RankFactorization> = None;
     let mut raw_file = fs::File::create(&i0_raw_path).map_err(|error| {
         format!(
             "failed to create carrier PCM '{}': {error}",
@@ -441,14 +564,47 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         let factorization = factorize_source_derived(&object_pcm, rank).map_err(|error| {
             format!("failed to factorize reduced objects at frame {frame_index}: {error}")
         })?;
+        let factorization_reconstruction_error = reconstruction_error(&object_pcm, &factorization)
+            .map_err(|error| {
+                format!("failed to measure factorization residual at frame {frame_index}: {error}")
+            })?;
+        let matrix_coefficient_jump = if let Some(previous) = previous_factorization.as_ref() {
+            maximum_absolute_difference(&previous.scaled_matrix, &factorization.scaled_matrix)
+                .map_err(|error| {
+                    format!(
+                        "failed to measure matrix coefficient jump at frame {frame_index}: {error}"
+                    )
+                })?
+        } else {
+            0.0
+        };
+        let carrier_coefficient_jump = if let Some(previous) = previous_factorization.as_ref() {
+            maximum_absolute_difference(&previous.carriers, &factorization.carriers).map_err(
+                |error| {
+                    format!(
+                        "failed to measure carrier coefficient jump at frame {frame_index}: {error}"
+                    )
+                },
+            )?
+        } else {
+            0.0
+        };
         let mut i0_carriers = factorization.carriers[..5].to_vec();
         if !lfe_source_indices.is_empty() {
-            i0_carriers.push(lfe_pcm);
+            i0_carriers.push(lfe_pcm.clone());
         }
         raw_file
             .write_all(&interleaved_f32le(&i0_carriers, JOC_FRAME_SAMPLES))
             .map_err(|error| format!("failed to write carrier PCM frame {frame_index}: {error}"))?;
-        append_reduction_metrics(&mut metrics, frame_index, &sources, &reduction);
+        append_reduction_metrics(
+            &mut metrics,
+            frame_index,
+            &sources,
+            &reduction,
+            factorization_reconstruction_error,
+            matrix_coefficient_jump,
+            carrier_coefficient_jump,
+        );
         append_lfe_metrics(
             &mut metrics,
             frame_index,
@@ -456,7 +612,9 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
             &source_pcm,
             &lfe_source_indices,
             reduction.coded_objects.len(),
+            &lfe_pcm,
         );
+        previous_factorization = Some(factorization);
         previous_reduction = Some(reduction);
     }
     drop(raw_file);
@@ -606,7 +764,8 @@ fn lfe_carrier(pcm: &[Vec<f64>], lfe_indices: &[usize]) -> Result<Vec<f64>, Stri
             *output += *value;
         }
     }
-    Ok(carrier)
+    limit_signal_peak(&carrier, SOURCE_DERIVED_CARRIER_PEAK_LIMIT)
+        .map_err(|error| format!("failed to apply LFE carrier peak policy: {error}"))
 }
 
 fn append_reduction_metrics(
@@ -614,6 +773,9 @@ fn append_reduction_metrics(
     frame_index: usize,
     sources: &[ReductionSource],
     reduction: &jocforge_core::ReductionResult,
+    factorization_reconstruction_error: f64,
+    matrix_coefficient_jump: f64,
+    carrier_coefficient_jump: f64,
 ) {
     for accounting in &reduction.source_accounting {
         let source = sources
@@ -640,7 +802,7 @@ fn append_reduction_metrics(
         );
         let _ = writeln!(
             output,
-            "source,{frame_index},{},{object_id},{kind},{},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{},{},{},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{},{},{},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e}",
+            "source,{frame_index},{},{object_id},{kind},{},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{},{},{},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{},{},{},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e}",
             accounting.source_index,
             accounting.coded_object_index,
             accounting.contribution_gain,
@@ -654,6 +816,11 @@ fn append_reduction_metrics(
             reduction.diagnostics.source_reconstruction_error,
             reduction.diagnostics.spatial_representation_error,
             reduction.diagnostics.cross_object_leakage,
+            reduction.diagnostics.unexplained_cluster_leakage,
+            reduction.diagnostics.speaker_render_error,
+            factorization_reconstruction_error,
+            matrix_coefficient_jump,
+            carrier_coefficient_jump,
             reduction.diagnostics.max_coded_peak,
             reduction.diagnostics.headroom_margin,
             reduction.diagnostics.assignment_changes,
@@ -684,7 +851,13 @@ fn append_lfe_metrics(
     pcm: &[Vec<f64>],
     lfe_source_indices: &[usize],
     coded_count: usize,
+    lfe_carrier: &[f64],
 ) {
+    let lfe_peak = lfe_carrier
+        .iter()
+        .map(|value| value.abs())
+        .fold(0.0, f64::max);
+    let lfe_headroom = (SOURCE_DERIVED_CARRIER_PEAK_LIMIT - lfe_peak).max(0.0);
     let mut flat_index = 0;
     for object in objects {
         for channel in &object.channels {
@@ -695,25 +868,45 @@ fn append_lfe_metrics(
             let signal = &pcm[flat_index];
             let energy =
                 signal.iter().map(|value| value * value).sum::<f64>() / signal.len().max(1) as f64;
-            let _ = writeln!(
-                output,
-                "lfe,{frame_index},{},{}:{},DirectSpeakers,-1,1.00000000000000000e0,{:.17e},{:.17e},0.00000000000000000e0,0.00000000000000000e0,{},{},0,0.00000000000000000e0,0.00000000000000000e0,0.00000000000000000e0,0.00000000000000000e0,0.00000000000000000e0,0,0,0,{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e}",
-                flat_index,
-                object.object_id,
-                channel.channel_id,
-                energy,
-                energy,
-                pcm.len(),
-                coded_count,
-                channel.position.azimuth,
-                channel.position.elevation,
-                channel.position.distance,
-                channel.position.azimuth,
-                channel.position.elevation,
-                channel.position.distance,
-                signal.first().copied().unwrap_or(0.0),
-                signal.last().copied().unwrap_or(0.0),
-            );
+            let row = [
+                "lfe".to_owned(),
+                frame_index.to_string(),
+                flat_index.to_string(),
+                format!("{}:{}", object.object_id, channel.channel_id),
+                "DirectSpeakers".to_owned(),
+                "-1".to_owned(),
+                "1.00000000000000000e0".to_owned(),
+                format!("{energy:.17e}"),
+                format!("{energy:.17e}"),
+                "0.00000000000000000e0".to_owned(),
+                "0.00000000000000000e0".to_owned(),
+                pcm.len().to_string(),
+                coded_count.to_string(),
+                "0".to_owned(),
+                "0.00000000000000000e0".to_owned(),
+                "0.00000000000000000e0".to_owned(),
+                "0.00000000000000000e0".to_owned(),
+                "0.00000000000000000e0".to_owned(),
+                "0.00000000000000000e0".to_owned(),
+                "0.00000000000000000e0".to_owned(),
+                "0.00000000000000000e0".to_owned(),
+                "0.00000000000000000e0".to_owned(),
+                format!("{lfe_peak:.17e}"),
+                format!("{lfe_headroom:.17e}"),
+                "0".to_owned(),
+                "0".to_owned(),
+                "0".to_owned(),
+                format!("{:.17e}", channel.position.azimuth),
+                format!("{:.17e}", channel.position.elevation),
+                format!("{:.17e}", channel.position.distance),
+                format!("{:.17e}", channel.position.azimuth),
+                format!("{:.17e}", channel.position.elevation),
+                format!("{:.17e}", channel.position.distance),
+                format!("{:.17e}", signal.first().copied().unwrap_or(0.0)),
+                format!("{:.17e}", signal.last().copied().unwrap_or(0.0)),
+            ];
+            output.push_str(&row.join(","));
+            output.push('\n');
             flat_index += 1;
         }
     }
