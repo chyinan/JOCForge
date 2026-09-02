@@ -1,15 +1,16 @@
 # JOCForge
 
 JOCForge is an independent, clean-room ADM-to-E-AC-3/JOC encoder proof. The
-`0.1.0-dev` MVP prioritizes a reproducible standards-derived writer, finite
-round-trip output, and external OpenJOC v0.15.0 validation over perceptual
-encoder quality. The source-derived milestone proves the controlled
-15-object path, including seven rank carriers and a PCM-derived dependent D0.
+`0.1.0-dev` milestone prioritizes a reproducible standards-derived writer,
+finite round-trip output, deterministic N-to-15 scene reduction, and external
+OpenJOC v0.15.0 validation over perceptual encoder quality.
 
-The MVP supports 48 kHz, integer PCM BW64/RF64/RIFF ADM input with a narrow
-public subset: one programme/content relationship, up to 15 dynamic object
-tracks, one object pack/channel per track, one position block per object, and
-`chna` TrackUID bindings. It intentionally does not claim full ADM support.
+The encoder supports 48 kHz, integer PCM BW64/RF64/RIFF ADM input with a narrow
+public subset: one programme/content relationship, one object pack/channel per
+track, one position block per object, and `chna` TrackUID bindings. Authored
+`Objects` and positioned `DirectSpeakers` are explicitly accounted for and
+reduced to at most 15 coded representations. Other unsupported kinds are
+rejected; complete non-LFE bed semantics are not claimed.
 
 ## Build
 
@@ -34,13 +35,13 @@ writes local evidence under `artifacts/mvp/`.
 The evidence includes `validation.json`, `metrics.json`, `frame-budget.csv`,
 `object-binding.csv`, `profile-comparison.txt`, and the three rendered WAVs.
 
-## Reproduce the source-derived milestone
+## Reproduce the generalized clean milestone
 
 The source-derived script first censuses the real ADM-BWF export at
-`D:\ADM BWF\打上花火.wav`, verifies its 38-track/29-object metadata, and checks
-that encoding is rejected explicitly because its 28 authored Objects exceed
-the current `<=15` scene limit. It then generates the controlled fixture,
-encodes all profiles, and writes evidence under `artifacts/source-derived/`.
+`D:\ADM BWF\打上花火.wav`, verifies its 38-track/29-object metadata, then
+reduces and encodes the 28-object programme to at most 15 coded objects. The
+generalized outputs and per-frame/source accounting are written under
+`artifacts/decision-engine/`.
 
 ```powershell
 .\scripts\run-source-derived.ps1
@@ -50,6 +51,7 @@ Manual commands:
 
 ```powershell
 cargo run -p jocforge -- fixture --seconds 4 artifacts/mvp/synthetic-reference.bw64
+cargo run -p jocforge -- fixture --seconds 1 --objects 28 artifacts/decision-engine/fixture-28.bw64
 cargo run -p jocforge -- inspect-adm artifacts/mvp/synthetic-reference.bw64
 cargo run -p jocforge -- encode artifacts/mvp/synthetic-reference.bw64 artifacts/mvp/jocforge-mvp-idx0.ec3 --profile idx0
 cargo run -p jocforge -- encode artifacts/mvp/synthetic-reference.bw64 artifacts/mvp/jocforge-mvp-flat7x-idx1.ec3 --profile idx1
@@ -73,8 +75,10 @@ equals 1664 kbps at 48 kHz/six blocks.
 
 This is not Dolby encoder parity, Dolby perceptual quality, production
 mastering, native Dolby bitstream identity, or lossless ADM recovery. The
-rank-controlled fixture proves an explainable linear pipeline; compatibility
-presentation and arbitrary ADM factorization remain experimental.
+generalized reducer is an independent signal/spatial seed-and-aggregate
+algorithm; compatibility presentation, frequency-local optimization, and
+complete non-LFE bed mapping remain open research. `PRODUCTION_PERCEPTUAL_QUALITY`
+is not claimed.
 
 OpenJOC is an external validator/decoder/renderer only. EBU `libadm`,
 `libbw64`, and `libear` were audited from their upstream Apache-2.0 license

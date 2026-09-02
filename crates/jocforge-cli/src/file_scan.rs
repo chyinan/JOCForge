@@ -6,6 +6,10 @@ use std::{
     path::Path,
 };
 
+use jocforge_core::decode_pcm_frame;
+
+const JOC_FRAME_SAMPLES: usize = 1536;
+
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub(crate) struct ScannedChunk {
     pub(crate) id: [u8; 4],
@@ -131,6 +135,67 @@ pub(crate) fn scan_bw64_file(path: &Path) -> Result<ScannedBw64, String> {
         data_offset,
         data_size,
     })
+}
+
+pub(crate) fn read_pcm_frame(
+    path: &Path,
+    scanned: &ScannedBw64,
+    frame_index: usize,
+    track_indices: &[usize],
+) -> Result<Vec<Vec<f64>>, String> {
+    if scanned.fmt.len() < 16 {
+        return Err("BW64 fmt chunk is truncated".to_owned());
+    }
+    let format = u16::from_le_bytes([scanned.fmt[0], scanned.fmt[1]]);
+    let channel_count = usize::from(u16::from_le_bytes([scanned.fmt[2], scanned.fmt[3]]));
+    let bits = u16::from_le_bytes([scanned.fmt[14], scanned.fmt[15]]);
+    let bytes_per_sample = usize::from(bits / 8);
+    let block_align = channel_count
+        .checked_mul(bytes_per_sample)
+        .ok_or_else(|| "BW64 PCM block alignment overflows".to_owned())?;
+    if format != 1 || channel_count == 0 || !matches!(bits, 16 | 24 | 32) {
+        return Err(format!(
+            "unsupported BW64 PCM format {format} with {bits} bits"
+        ));
+    }
+    let total_samples = usize::try_from(scanned.data_size)
+        .ok()
+        .and_then(|bytes| bytes.checked_div(block_align))
+        .ok_or_else(|| "BW64 PCM sample count overflows".to_owned())?;
+    let start_sample = frame_index
+        .checked_mul(JOC_FRAME_SAMPLES)
+        .ok_or_else(|| "BW64 PCM frame offset overflows".to_owned())?;
+    if start_sample >= total_samples {
+        return Err(format!(
+            "BW64 PCM frame {frame_index} is outside the data chunk"
+        ));
+    }
+    let available_samples = JOC_FRAME_SAMPLES.min(total_samples - start_sample);
+    let byte_count = available_samples
+        .checked_mul(block_align)
+        .ok_or_else(|| "BW64 PCM frame byte count overflows".to_owned())?;
+    let byte_offset = scanned
+        .data_offset
+        .checked_add(
+            u64::try_from(start_sample)
+                .ok()
+                .and_then(|sample| sample.checked_mul(u64::try_from(block_align).ok()?))
+                .ok_or_else(|| "BW64 PCM frame byte offset overflows".to_owned())?,
+        )
+        .ok_or_else(|| "BW64 PCM frame byte offset overflows".to_owned())?;
+    let mut file = File::open(path)
+        .map_err(|error| format!("failed to open PCM input '{}': {error}", path.display()))?;
+    file.seek(SeekFrom::Start(byte_offset))
+        .map_err(|error| format!("failed to seek PCM frame {frame_index}: {error}"))?;
+    let mut bytes = vec![0_u8; byte_count];
+    file.read_exact(&mut bytes)
+        .map_err(|error| format!("failed to read PCM frame {frame_index}: {error}"))?;
+    let mut decoded = decode_pcm_frame(&bytes, channel_count, bits, track_indices)
+        .map_err(|error| format!("failed to decode PCM frame {frame_index}: {error}"))?;
+    for channel in &mut decoded {
+        channel.resize(JOC_FRAME_SAMPLES, 0.0);
+    }
+    Ok(decoded)
 }
 
 fn read_body(file: &mut File, offset: u64, size: u64, label: &str) -> Result<Vec<u8>, String> {

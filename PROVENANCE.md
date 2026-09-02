@@ -56,13 +56,16 @@ RIFF/WAVE 38-channel, 48 kHz, 24-bit PCM file with chunks `JUNK`, `fmt `,
 `data` chunk. The seek-aware scanner and narrow ADM model census 38 tracks,
 38 TrackUIDs, 29 authored objects: 28 `Objects` and 1 `DirectSpeakers`.
 
-JOCForge deliberately does not reduce the 28 authored dynamic objects. The
-real file is therefore censused successfully but encode is rejected before PCM
-loading with:
+The generalized clean implementation now ingests the 28 `Objects` plus the
+one positioned `DirectSpeakers` component, assigns every supported authored
+source to a deterministic reduction cluster, and emits at most 15 coded
+representations. The DirectSpeakers treatment is an explicit narrow clean-side
+fallback through the positioned source-accounting path; complete non-LFE bed
+semantics remain open and are not inferred.
 
-`Unsupported ADM scene: 28 authored dynamic objects exceed current <=15 source-derived MVP profile; scene reduction is not implemented.`
-
-The controlled source-derived fixture remains the only encoding input in this
-milestone. Its D0 contains source-window-derived PCM features for both D0
-channels; this is causal source-derived evidence, not transparent perceptual
-E-AC-3 encoding.
+The reduction and carrier paths are implemented by the Clean Implementer from
+sanitized behavioral requirements, public specifications, and generic
+mathematical methods. No contaminated workspace, private sanitizer material,
+or proprietary encoder analysis was used. D0 contains source-window-derived
+PCM features for both D0 channels; this remains a source-derived demonstrator,
+not a transparent perceptual E-AC-3 encoder.

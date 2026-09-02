@@ -283,6 +283,60 @@ pub fn parse_bw64_adm_metadata(
     })
 }
 
+/// Decodes selected interleaved integer PCM tracks from one bounded frame.
+///
+/// The file shell supplies only the bytes for the requested frame; this pure
+/// conversion keeps large-programme ingest from requiring a whole-file PCM
+/// allocation.
+pub fn decode_pcm_frame(
+    bytes: &[u8],
+    channel_count: usize,
+    bits: u16,
+    track_indices: &[usize],
+) -> Result<Vec<Vec<f64>>, AdmError> {
+    if channel_count == 0 || !matches!(bits, 16 | 24 | 32) {
+        return Err(AdmError::UnsupportedPcm { format: 1, bits });
+    }
+    let bytes_per_sample = usize::from(bits / 8);
+    let block_align = channel_count
+        .checked_mul(bytes_per_sample)
+        .ok_or(AdmError::InvalidContainer("PCM block alignment"))?;
+    if bytes.len() % block_align != 0 {
+        return Err(AdmError::InvalidContainer("PCM frame alignment"));
+    }
+    if track_indices
+        .iter()
+        .any(|track_index| *track_index == 0 || *track_index > channel_count)
+    {
+        return Err(AdmError::InvalidContainer("PCM track index"));
+    }
+    let sample_count = bytes.len() / block_align;
+    let mut output = vec![Vec::with_capacity(sample_count); track_indices.len()];
+    for sample in 0..sample_count {
+        for (output_index, track_index) in track_indices.iter().copied().enumerate() {
+            let offset = sample * block_align + (track_index - 1) * bytes_per_sample;
+            let value = match bits {
+                16 => f64::from(read_i16_le(bytes, offset)) / 32768.0,
+                24 => {
+                    let raw = i32::from(*bytes.get(offset).unwrap_or(&0))
+                        | (i32::from(*bytes.get(offset + 1).unwrap_or(&0)) << 8)
+                        | (i32::from(*bytes.get(offset + 2).unwrap_or(&0)) << 16);
+                    let signed = if raw & 0x80_0000 != 0 {
+                        raw | !0xFF_FFFF
+                    } else {
+                        raw
+                    };
+                    f64::from(signed) / 8_388_608.0
+                }
+                32 => f64::from(read_i32_le(bytes, offset)) / 2_147_483_648.0,
+                _ => unreachable!("PCM bit depth validated above"),
+            };
+            output[output_index].push(value);
+        }
+    }
+    Ok(output)
+}
+
 /// Admits only the authored dynamic-object count supported by the source-derived MVP.
 pub fn validate_source_derived_object_limit(dynamic_object_count: usize) -> Result<(), AdmError> {
     if dynamic_object_count > 15 {
@@ -295,14 +349,26 @@ pub fn validate_source_derived_object_limit(dynamic_object_count: usize) -> Resu
 
 /// Generates a four-second, 15-object, rank-7 synthetic ADM/BW64 fixture.
 pub fn generate_synthetic_fixture(duration_seconds: u32) -> Result<SyntheticFixture, String> {
+    generate_synthetic_scene_fixture(duration_seconds, CHANNEL_COUNT)
+}
+
+/// Generates a repository-owned rank-7 synthetic fixture with a configurable
+/// authored-object count for clean reduction and acceptance tests.
+pub fn generate_synthetic_scene_fixture(
+    duration_seconds: u32,
+    object_count: usize,
+) -> Result<SyntheticFixture, String> {
     if duration_seconds == 0 || duration_seconds > 30 {
         return Err("synthetic fixture duration must be 1..=30 seconds".to_owned());
+    }
+    if !(1..=64).contains(&object_count) {
+        return Err("synthetic fixture object count must be 1..=64".to_owned());
     }
     let sample_count = usize::try_from(duration_seconds)
         .map_err(|_| "fixture duration overflow".to_owned())?
         .checked_mul(SAMPLE_RATE as usize)
         .ok_or_else(|| "fixture sample count overflow".to_owned())?;
-    let ground_truth = fixture_matrix();
+    let ground_truth = fixture_matrix(object_count);
     let basis = (0..RANK)
         .map(|index| {
             let frequency = 220.0 + f64::from((index as u32) * 37);
@@ -327,10 +393,16 @@ pub fn generate_synthetic_fixture(duration_seconds: u32) -> Result<SyntheticFixt
                 .collect::<Vec<_>>()
         })
         .collect::<Vec<_>>();
-    let xml = fixture_axml(duration_seconds);
-    let chna = fixture_chna();
+    let xml = fixture_axml(duration_seconds, object_count);
+    let chna = fixture_chna(object_count);
     let pcm_bytes = encode_pcm_24(&pcm);
-    let bw64 = build_bw64(xml.as_bytes(), &chna, &pcm_bytes, sample_count);
+    let bw64 = build_bw64(
+        xml.as_bytes(),
+        &chna,
+        &pcm_bytes,
+        sample_count,
+        object_count,
+    );
     Ok(SyntheticFixture {
         bw64_header_and_pcm: bw64,
         matrix: ground_truth
@@ -646,8 +718,8 @@ fn read_i32_le(bytes: &[u8], offset: usize) -> i32 {
     i32::from_le_bytes(value)
 }
 
-fn fixture_matrix() -> Vec<Vec<f64>> {
-    (0..CHANNEL_COUNT)
+fn fixture_matrix(object_count: usize) -> Vec<Vec<f64>> {
+    (0..object_count)
         .map(|object| {
             (0..RANK)
                 .map(|basis| {
@@ -662,7 +734,7 @@ fn fixture_matrix() -> Vec<Vec<f64>> {
         .collect()
 }
 
-fn fixture_axml(duration_seconds: u32) -> String {
+fn fixture_axml(duration_seconds: u32, object_count: usize) -> String {
     let duration = format!("00:00:{duration_seconds:02}.00000");
     let mut xml = String::from(
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ebuCoreMain xmlns=\"urn:ebu:metadata-schema:ebuCore_2016\"><coreMetadata><format><audioFormatExtended>",
@@ -671,7 +743,7 @@ fn fixture_axml(duration_seconds: u32) -> String {
         xml,
         "<audioProgramme audioProgrammeID=\"APR_1001\" audioProgrammeName=\"JOCForge Synthetic Programme\" start=\"00:00:00.00000\" end=\"{duration}\"><audioContentIDRef>ACO_1001</audioContentIDRef></audioProgramme><audioContent audioContentID=\"ACO_1001\" audioContentName=\"JOCForge Synthetic Content\">"
     );
-    for object in 0..CHANNEL_COUNT {
+    for object in 0..object_count {
         let _ = write!(
             xml,
             "<audioObjectIDRef>AO_{:04X}</audioObjectIDRef>",
@@ -679,7 +751,7 @@ fn fixture_axml(duration_seconds: u32) -> String {
         );
     }
     xml.push_str("<dialogue mixedContentKind=\"0\">2</dialogue></audioContent>");
-    for object in 0..CHANNEL_COUNT {
+    for object in 0..object_count {
         let id = 0x0003_1001 + object;
         let x = -0.8 + f64::from((object as u32) % 8) * 0.2;
         let y = 0.2 + f64::from((object as u32) / 8) * 0.2;
@@ -689,7 +761,7 @@ fn fixture_axml(duration_seconds: u32) -> String {
             "<audioPackFormat audioPackFormatID=\"AP_{id:08X}\" audioPackFormatName=\"Object {object:02}\" typeLabel=\"0003\" typeDefinition=\"Objects\"><audioChannelFormatIDRef>AC_{id:08X}</audioChannelFormatIDRef></audioPackFormat><audioChannelFormat audioChannelFormatID=\"AC_{id:08X}\" audioChannelFormatName=\"Object {object:02}\" typeLabel=\"0003\" typeDefinition=\"Objects\"><audioBlockFormat audioBlockFormatID=\"AB_{id:08X}_00000001\" rtime=\"00:00:00.00000\" duration=\"{duration}\"><cartesian>1</cartesian><position coordinate=\"X\">{x:.6}</position><position coordinate=\"Y\">{y:.6}</position><position coordinate=\"Z\">{z:.6}</position><jumpPosition interpolationLength=\"0\">1</jumpPosition></audioBlockFormat></audioChannelFormat>"
         );
     }
-    for object in 0..CHANNEL_COUNT {
+    for object in 0..object_count {
         let format_id = 0x0003_1001 + object;
         let object_id = 0x100B + object;
         let _ = write!(
@@ -710,11 +782,11 @@ fn fixture_axml(duration_seconds: u32) -> String {
     xml
 }
 
-fn fixture_chna() -> Vec<u8> {
-    let mut bytes = Vec::with_capacity(4 + CHANNEL_COUNT * 40);
-    bytes.extend_from_slice(&(CHANNEL_COUNT as u16).to_le_bytes());
-    bytes.extend_from_slice(&(CHANNEL_COUNT as u16).to_le_bytes());
-    for object in 0..CHANNEL_COUNT {
+fn fixture_chna(object_count: usize) -> Vec<u8> {
+    let mut bytes = Vec::with_capacity(4 + object_count * 40);
+    bytes.extend_from_slice(&(object_count as u16).to_le_bytes());
+    bytes.extend_from_slice(&(object_count as u16).to_le_bytes());
+    for object in 0..object_count {
         let id = object + 1;
         bytes.extend_from_slice(&(id as u16).to_le_bytes());
         append_padded_ascii(&mut bytes, &format!("ATU_{id:08X}"), 12);
@@ -739,7 +811,7 @@ fn append_padded_ascii(output: &mut Vec<u8>, value: &str, width: usize) {
 
 fn encode_pcm_24(pcm: &[Vec<f64>]) -> Vec<u8> {
     let sample_count = pcm.first().map_or(0, Vec::len);
-    let mut bytes = Vec::with_capacity(sample_count * CHANNEL_COUNT * 3);
+    let mut bytes = Vec::with_capacity(sample_count * pcm.len() * 3);
     for sample in 0..sample_count {
         for channel in pcm {
             let value = (channel[sample] * 8_388_607.0)
@@ -761,7 +833,13 @@ fn append_chunk(output: &mut Vec<u8>, id: [u8; 4], body: &[u8]) {
     }
 }
 
-fn build_bw64(xml: &[u8], chna: &[u8], pcm: &[u8], samples: usize) -> Vec<u8> {
+fn build_bw64(
+    xml: &[u8],
+    chna: &[u8],
+    pcm: &[u8],
+    samples: usize,
+    channel_count: usize,
+) -> Vec<u8> {
     let mut output = Vec::new();
     output.extend_from_slice(b"BW64\xff\xff\xff\xffWAVE");
     let mut ds64 = Vec::with_capacity(28);
@@ -770,7 +848,7 @@ fn build_bw64(xml: &[u8], chna: &[u8], pcm: &[u8], samples: usize) -> Vec<u8> {
     ds64.extend_from_slice(&(samples as u64).to_le_bytes());
     ds64.extend_from_slice(&0_u32.to_le_bytes());
     append_chunk(&mut output, *b"ds64", &ds64);
-    let channels = CHANNEL_COUNT as u16;
+    let channels = channel_count as u16;
     let block_align = channels * 3;
     let byte_rate = SAMPLE_RATE * u32::from(block_align);
     let mut fmt = Vec::with_capacity(16);

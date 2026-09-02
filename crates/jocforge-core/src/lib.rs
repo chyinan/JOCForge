@@ -5,17 +5,25 @@
 mod adm;
 mod analysis;
 mod profile;
+mod reduction;
 mod writer;
 
 pub use adm::{
     AdmError, AdmObject, AdmObjectKind, AdmPosition, ParsedAdm, ParsedAdmMetadata,
-    SyntheticFixture, generate_synthetic_fixture, parse_bw64_adm, parse_bw64_adm_metadata,
+    SyntheticFixture, decode_pcm_frame, generate_synthetic_fixture,
+    generate_synthetic_scene_fixture, parse_bw64_adm, parse_bw64_adm_metadata,
     validate_source_derived_object_limit,
 };
 pub use analysis::{
-    QuantizedCoefficient, RankFactorization, factorize_rank_controlled, quantize_coefficient,
+    QuantizedCoefficient, RankFactorization, factorize_rank_controlled, factorize_source_derived,
+    quantize_coefficient,
 };
 pub use profile::{JocProfileSpec, profile_spec};
+pub use reduction::{
+    MAX_CODED_OBJECTS, ReducedObject, ReductionConfig, ReductionDiagnostics, ReductionError,
+    ReductionResult, ReductionSource, SourceAccounting, reduce_scene, reduce_scene_with_previous,
+    reduction_assignment_changes,
+};
 pub use writer::{
     package_ffmpeg_access_unit, package_source_derived_access_unit, write_one_au_proof,
 };

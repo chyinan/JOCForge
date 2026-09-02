@@ -1,7 +1,8 @@
 // pattern: Functional Core
 
 use jocforge_core::{
-    AdmObjectKind, generate_synthetic_fixture, parse_bw64_adm, validate_source_derived_object_limit,
+    AdmObjectKind, generate_synthetic_fixture, generate_synthetic_scene_fixture, parse_bw64_adm,
+    validate_source_derived_object_limit,
 };
 
 #[test]
@@ -55,4 +56,23 @@ fn source_derived_admission_rejects_more_than_fifteen_authored_objects() {
         error.to_string(),
         "Unsupported ADM scene: 28 authored dynamic objects exceed current <=15 source-derived MVP profile; scene reduction is not implemented."
     );
+}
+
+#[test]
+fn generated_clean_corpus_supports_over_budget_object_counts() {
+    for object_count in [16, 20, 28] {
+        let fixture =
+            generate_synthetic_scene_fixture(1, object_count).expect("over-budget clean fixture");
+        let parsed = parse_bw64_adm(&fixture.bw64_header_and_pcm).expect("parse clean fixture");
+
+        assert_eq!(parsed.objects.len(), object_count);
+        assert_eq!(parsed.channel_count, object_count);
+        assert_eq!(fixture.matrix.len(), object_count);
+        assert!(
+            parsed
+                .pcm
+                .iter()
+                .all(|channel| channel.iter().any(|value| *value != 0.0))
+        );
+    }
 }

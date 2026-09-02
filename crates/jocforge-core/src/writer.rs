@@ -6,8 +6,106 @@ const FRAME_BYTES: usize = 4096;
 const D0_FRAME_BYTES: usize = 2560;
 const OAMD_ID: u64 = 11;
 const JOC_ID: u64 = 14;
-const JOC_ZERO_CODEWORD: &str = "0";
-const JOC_UNIT_CODEWORD: &str = "11";
+
+// Public ETSI TS 103 420 coarse generic Huffman tree (Annex A.1, MTX mode).
+// A negative child is a leaf encoded as -symbol - 1.
+const JOC_COARSE_HUFFMAN: [[i16; 2]; 95] = [
+    [-1, 1],
+    [2, -2],
+    [-96, 3],
+    [4, -3],
+    [-95, 5],
+    [6, 7],
+    [-4, -94],
+    [8, 9],
+    [-5, -93],
+    [10, 11],
+    [-6, -92],
+    [12, 13],
+    [-7, -91],
+    [14, 15],
+    [16, -90],
+    [-8, 17],
+    [18, -89],
+    [-9, 19],
+    [20, 21],
+    [-88, -10],
+    [22, 23],
+    [-11, -87],
+    [24, 25],
+    [26, -86],
+    [-12, 27],
+    [28, -85],
+    [-13, 29],
+    [30, 31],
+    [32, -84],
+    [-14, 33],
+    [34, -15],
+    [-83, 35],
+    [36, 37],
+    [-16, 38],
+    [-17, -82],
+    [39, 40],
+    [41, -81],
+    [42, 43],
+    [44, 45],
+    [46, 47],
+    [48, 49],
+    [50, 51],
+    [52, -18],
+    [-78, 53],
+    [-19, 54],
+    [55, 56],
+    [57, 58],
+    [-22, 59],
+    [60, 61],
+    [62, 63],
+    [64, 65],
+    [66, 67],
+    [68, -20],
+    [-21, -79],
+    [-80, -25],
+    [69, 70],
+    [-26, 71],
+    [72, 73],
+    [74, 75],
+    [76, 77],
+    [78, 79],
+    [80, 81],
+    [82, 83],
+    [84, 85],
+    [86, 87],
+    [88, 89],
+    [90, 91],
+    [92, 93],
+    [94, -23],
+    [-74, -75],
+    [-72, -73],
+    [-76, -77],
+    [-34, -35],
+    [-32, -33],
+    [-38, -39],
+    [-36, -37],
+    [-30, -31],
+    [-28, -29],
+    [-50, -51],
+    [-48, -49],
+    [-54, -55],
+    [-52, -53],
+    [-42, -43],
+    [-40, -41],
+    [-46, -47],
+    [-44, -45],
+    [-66, -67],
+    [-64, -65],
+    [-70, -71],
+    [-68, -69],
+    [-58, -59],
+    [-56, -57],
+    [-62, -63],
+    [-60, -61],
+    [-24, -27],
+];
 
 #[derive(Default)]
 struct BitWriter {
@@ -114,7 +212,11 @@ fn write_joc_payload(
     };
     let mut bits = BitWriter::default();
     bits.push(u64::from(downmix_index), 3);
-    let object_count = 15_u8;
+    let object_count = u8::try_from(matrix.len())
+        .map_err(|_| "JOC coded-object count exceeds the six-bit field".to_owned())?;
+    if !(1..=15).contains(&object_count) {
+        return Err("JOC coded-object count must be 1..=15".to_owned());
+    }
     if matrix.len() != usize::from(object_count)
         || matrix
             .iter()
@@ -139,28 +241,56 @@ fn write_joc_payload(
         for ideal in row {
             let coefficient = quantize_coefficient(*ideal)
                 .map_err(|error| format!("failed to quantize JOC coefficient: {error}"))?;
-            let codeword = match coefficient.encoded_symbol {
-                0 => JOC_ZERO_CODEWORD,
-                1 => JOC_UNIT_CODEWORD,
-                symbol => {
-                    return Err(format!(
-                        "JOC MVP writer only supports public coarse symbols 0 and 1, got {symbol}"
-                    ));
-                }
-            };
-            for bit in codeword.bytes() {
-                bits.bits.push(bit == b'1');
-            }
+            push_coarse_huffman(&mut bits, coefficient.encoded_symbol)?;
         }
     }
     Ok(bits.padded_bytes())
+}
+
+fn push_coarse_huffman(bits: &mut BitWriter, symbol: u16) -> Result<(), String> {
+    if symbol >= 96 {
+        return Err(format!(
+            "JOC coarse Huffman symbol {symbol} is outside 0..=95"
+        ));
+    }
+    let mut path = Vec::new();
+    if !find_huffman_path(0, symbol, &mut path) {
+        return Err(format!(
+            "JOC coarse Huffman symbol {symbol} has no public codeword"
+        ));
+    }
+    bits.bits.extend(path);
+    Ok(())
+}
+
+fn find_huffman_path(node: usize, symbol: u16, path: &mut Vec<bool>) -> bool {
+    if node >= JOC_COARSE_HUFFMAN.len() {
+        return false;
+    }
+    for (branch, child) in JOC_COARSE_HUFFMAN[node].iter().copied().enumerate() {
+        path.push(branch == 1);
+        if child < 0 {
+            if u16::try_from(-child - 1).ok() == Some(symbol) {
+                return true;
+            }
+        } else if let Ok(child) = usize::try_from(child)
+            && find_huffman_path(child, symbol, path)
+        {
+            return true;
+        }
+        path.pop();
+    }
+    false
 }
 
 /// Writes one active dynamic-object OAMD element. The single position is an
 /// intentional MVP fixture: remaining object slots are not claimed here.
 fn write_oamd_payload(positions: &[AdmPosition]) -> Result<Vec<u8>, String> {
     if positions.is_empty() || positions.len() > 15 {
-        return Err("MVP OAMD supports 1..=15 dynamic object positions".to_owned());
+        return Err("OAMD supports 1..=15 dynamic object positions".to_owned());
+    }
+    if positions.iter().any(|position| !position.is_finite()) {
+        return Err("OAMD positions must be finite".to_owned());
     }
     let mut body = BitWriter::default();
     body.push(0, 1); // discard unknown
@@ -187,15 +317,11 @@ fn write_oamd_payload(positions: &[AdmPosition]) -> Result<Vec<u8>, String> {
         body.push(0, 1); // channel lock disabled
         body.push(0, 1); // no additional table data
     }
-    for _ in positions.len()..15 {
-        body.push(1, 1); // inactive object slot
-        body.push(0, 1); // no additional table data
-    }
     let body = body.padded_bytes();
 
     let mut payload = BitWriter::default();
     payload.push(0, 2); // syntax version
-    payload.push(15, 5); // 16 total objects: base LFE plus 15 dynamic
+    payload.push(u64::try_from(positions.len()).unwrap_or(0), 5); // base LFE plus active dynamic objects
     payload.push(1, 1); // dynamic-only programme
     payload.push(1, 1); // base LFE object present
     payload.push(0, 1); // no alternate object data
@@ -381,6 +507,7 @@ fn write_source_dependent_frame(
     channel_map: u16,
     carriers: &[Vec<f64>],
     sample_offset: usize,
+    complexity_index: u8,
 ) -> Result<Vec<u8>, String> {
     if carriers.len() != 2
         || carriers
@@ -409,7 +536,7 @@ fn write_source_dependent_frame(
         (1, 1), // addbsi present for the JOC carrier
         (1, 6), // two addbsi bytes
         (0x01, 8),
-        (16, 8),
+        (u64::from(complexity_index), 8),
     ] {
         bits.push(value, width);
     }
@@ -493,7 +620,7 @@ fn source_feature(carrier: &[f64], sample_offset: usize, block: usize) -> u8 {
     let start = sample_offset + block * 256;
     let sum = carrier[start..start + 256].iter().copied().sum::<f64>();
     let value = (sum / 256.0 * 1_000_000.0).round() as i64;
-    value.rem_euclid(256) as u8
+    value.rem_euclid(64) as u8
 }
 
 fn finish_frame(mut bits: BitWriter, emdf: Option<&[u8]>, frame_bytes: usize) -> Vec<u8> {
@@ -574,6 +701,9 @@ pub fn package_source_derived_access_unit(
     if i0_frame.len() != FRAME_BYTES || i0_frame.get(0..2) != Some(&[0x0b, 0x77]) {
         return Err("carrier encoder did not return one 4096-byte E-AC-3 I0 frame".to_owned());
     }
+    if matrix.len() != positions.len() {
+        return Err("JOC matrix rows must match reduced OAMD positions".to_owned());
+    }
     let oamd = write_oamd_payload(positions)?;
     let joc = write_joc_payload(profile, sequence_count, matrix)?;
     let emdf = write_emdf(&oamd, &joc)?;
@@ -582,6 +712,8 @@ pub fn package_source_derived_access_unit(
         profile_spec(profile).channel_map,
         d0_carriers,
         sample_offset,
+        u8::try_from(positions.len() + 1)
+            .map_err(|_| "JOC complexity index exceeds its eight-bit field".to_owned())?,
     )?;
     let mut output = Vec::with_capacity(FRAME_BYTES + d0.len());
     output.extend_from_slice(i0_frame);
@@ -614,7 +746,10 @@ pub fn package_ffmpeg_access_unit(
 
 #[cfg(test)]
 mod tests {
-    use super::{AdmPosition, D0_FRAME_BYTES, write_oamd_payload, write_source_dependent_frame};
+    use super::{
+        AdmPosition, D0_FRAME_BYTES, source_feature, write_oamd_payload,
+        write_source_dependent_frame,
+    };
 
     #[test]
     fn seven_channel_profiles_declare_the_sixteen_slot_oamd_domain() {
@@ -644,17 +779,24 @@ mod tests {
         let mut changed_second = second.clone();
         changed_second[0] -= 0.001;
         let baseline =
-            write_source_dependent_frame(&[0], 0x0200, &[first.clone(), second.clone()], 0)
+            write_source_dependent_frame(&[0], 0x0200, &[first.clone(), second.clone()], 0, 16)
                 .expect("source-derived D0");
         let changed =
-            write_source_dependent_frame(&[0], 0x0200, &[changed_first, second.clone()], 0)
+            write_source_dependent_frame(&[0], 0x0200, &[changed_first, second.clone()], 0, 16)
                 .expect("changed source-derived D0");
         let changed_second_frame =
-            write_source_dependent_frame(&[0], 0x0200, &[first, changed_second], 0)
+            write_source_dependent_frame(&[0], 0x0200, &[first, changed_second], 0, 16)
                 .expect("second changed source-derived D0");
 
         assert_eq!(baseline.len(), D0_FRAME_BYTES);
         assert_ne!(baseline, changed);
         assert_ne!(baseline, changed_second_frame);
+    }
+
+    #[test]
+    fn source_features_fit_the_bounded_conventional_mantissa_range() {
+        let carrier = vec![0.801; 1536];
+
+        assert!(source_feature(&carrier, 0, 0) < 64);
     }
 }

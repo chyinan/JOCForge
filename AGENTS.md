@@ -17,22 +17,30 @@ Last verified: 2026-09-02
 - `cargo clippy --workspace --all-targets --locked -- -D warnings`
 - `cargo test --workspace --locked`
 - `.\scripts\run-mvp.ps1`
+- `.\scripts\run-decision-engine.ps1` — generalized clean corpus, Hanabi,
+  OpenJOC/FFmpeg evidence, and clean-test status report.
 
 ## Project Structure
 
 - `crates/jocforge-core/src/adm.rs` — narrow public BW64/ADM subset and
   deterministic synthetic fixture generation.
 - `crates/jocforge-core/src/analysis.rs` — pure rank-controlled factorization
-  and explicit matrix quantization.
+  plus generalized source-derived factorization with bounded analysis/ridge.
+- `crates/jocforge-core/src/reduction.rs` — pure deterministic authored-object
+  reduction, source accounting, spatial aggregation, and stability metrics.
 - `crates/jocforge-core/src/profile.rs` — mandatory idx0/idx1/idx2 topology
   contracts.
 - `crates/jocforge-core/src/writer.rs` — pure JOC/OAMD/EMDF and I0 plus
   PCM-derived dependent D0 writer.
 - `crates/jocforge-cli/src/main.rs` — file/process orchestration shell.
 - `crates/jocforge-cli/src/file_scan.rs` — seek-aware BW64 chunk scanner that
-  reads metadata after large `data` chunks without loading PCM.
+  reads metadata after large `data` chunks without loading PCM, plus bounded
+  PCM-frame reads for large programmes.
 - `scripts/` — reproducible external validation and evidence generation.
 - `summary/` — focused investigation summaries.
+- `docs/clean-generalized-encoder-design.md` and
+  `docs/clean-implementation-traceability.md` — clean algorithm decisions and
+  71-requirement disposition.
 
 ## Conventions
 
@@ -49,16 +57,23 @@ Last verified: 2026-09-02
 - `profile_spec` is the single JOCForge-owned source for the three mandatory
   public topology labels and dependent channel maps.
 - `package_source_derived_access_unit` accepts exactly one 4096-byte FFmpeg I0
-  frame and two 1536-sample source D0 carrier windows, returning I0 plus a
-  JOCForge-owned PCM-derived 2560-byte D0 carriage.
+  frame and two 1536-sample source D0 carrier windows for the selected active
+  coded-object set, returning I0 plus a JOCForge-owned PCM-derived 2560-byte D0
+  carriage. Matrix and OAMD row counts must match.
+- `reduce_scene` and `reduce_scene_with_previous` provide the pure N-to-15
+  clean decision boundary. Every supported authored source has a deterministic
+  coded-object assignment and positive accounting gain; `Other` ADM kinds are
+  rejected by the CLI.
+- The CLI reads large BW64 PCM one public 1536-sample frame at a time and pads
+  only the final short frame with zeros, preserving source timing/accounting.
 - Production code does not import OpenJOC crates or share its serialization
   implementation; external OpenJOC inspect/decode/render remains an
   independent validation loop.
 - No proprietary Dolby encoder binary, media, or reverse-engineered logic is
   permitted in this repository.
-- Generated audio/binary evidence under `artifacts/mvp/` and
-  `artifacts/source-derived/` is local and ignored; reproduce it with
-  `scripts/run-mvp.ps1` or `scripts/run-source-derived.ps1`.
+- Generated audio/binary evidence under `artifacts/` is local and ignored;
+  reproduce the baseline with `scripts/run-mvp.ps1` or the generalized clean
+  evidence with `scripts/run-source-derived.ps1` / `scripts/run-decision-engine.ps1`.
 
 ## Key Decisions
 
@@ -70,5 +85,10 @@ Last verified: 2026-09-02
   carrier PCM-window features; the D0 path is source-derived but not yet a
   transparent perceptual E-AC-3 encoder.
 - Full matrix, one coarse parameter band, fixed basis continuity, and a
-  rank-controlled synthetic fixture are intentional MVP limits, not claims of
-  perceptual encoder parity.
+  deterministic 64-sample coefficient analysis view are intentional clean
+  milestone limits, not claims of perceptual encoder parity.
+- The generalized reducer uses independent signal-signature, spatial, and
+  energy weighting with a hard coded-object ceiling of 15. Coded cluster
+  positions are energy-weighted aggregates; DirectSpeakers are handled only by
+  the explicitly documented positioned-source fallback, not as complete bed
+  semantics.
