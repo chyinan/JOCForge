@@ -19,9 +19,10 @@ pub use adm::{
     parse_bw64_adm_metadata, validate_source_derived_adm_metadata,
 };
 pub use analysis::{
-    QuantizedCoefficient, RankFactorization, SOURCE_DERIVED_CARRIER_PEAK_LIMIT,
-    factorize_rank_controlled, factorize_source_derived, limit_signal_peak,
-    maximum_absolute_difference, quantize_coefficient, reconstruction_error,
+    CarrierCausalityMeasurement, QuantizedCoefficient, RankFactorization,
+    SOURCE_DERIVED_CARRIER_PEAK_LIMIT, factorize_rank_controlled, factorize_source_derived,
+    limit_signal_peak, maximum_absolute_difference, quantize_coefficient, reconstruction_error,
+    source_derived_carrier_causality,
 };
 pub use profile::{JocProfileSpec, profile_spec};
 pub use rate::{RateBudget, RateBudgetError, rate_budget};
@@ -32,7 +33,8 @@ pub use reduction::{
     unexplained_cluster_leakage,
 };
 pub use spectral::{
-    GateScope, GateStatus, SpectralPhaseMetric, SpectralPhaseReport, spectral_phase_report,
+    FinalRenderGate, FinalRenderMeasurement, GateScope, GateStatus, SpectralPhaseMetric,
+    SpectralPhaseReport, final_render_gate, spectral_phase_report,
 };
 pub use validation::{
     TemporalIdentityMetrics, TemporalMetrics, TemporalScene, adversarial_temporal_corpus,
@@ -40,8 +42,9 @@ pub use validation::{
     temporal_corpus,
 };
 pub use writer::{
-    package_ffmpeg_access_unit, package_source_derived_access_unit,
-    package_source_derived_access_unit_with_frame_sizes, write_one_au_proof,
+    D0CausalityMeasurement, d0_carrier_causality, package_ffmpeg_access_unit,
+    package_source_derived_access_unit, package_source_derived_access_unit_with_frame_sizes,
+    write_one_au_proof,
 };
 
 /// MVP JOC downmix profiles.

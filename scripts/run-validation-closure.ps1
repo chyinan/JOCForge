@@ -1,3 +1,5 @@
+# pattern: Imperative Shell
+
 param(
     [string]$SourceAdm = "",
     [string]$OpenJoc = "D:\Programs\OpenJOC\target\debug\openjoc.exe",
@@ -25,6 +27,28 @@ $TemporalPcmBoundaryDiscontinuityThreshold = 0.0182486
 $TemporalGainJumpThreshold = 0.1465067
 $TemporalSpeakerDiscontinuityThreshold = 0.0137795
 $ShortFinalFrameSamples = 1536
+. (Join-Path $PSScriptRoot "final-render-quality.ps1")
+
+function Invoke-FinalRenderGate([pscustomobject]$Measurement, [string]$OutputPath) {
+    $arguments = @(
+        "run", "-p", "jocforge", "--quiet", "--", "final-render-gate", $OutputPath,
+        $(if ($Measurement.finite) { "true" } else { "false" }),
+        $(if ($Measurement.channel_coverage) { "true" } else { "false" }),
+        "$($Measurement.spectral_error)", "$($Measurement.spectral_tilt_error)",
+        "$($Measurement.phase_coherence)",
+        $(if ($Measurement.polarity_preserved) { "true" } else { "false" }),
+        "$($Measurement.quadrature_phase_error)", "$($Measurement.transient_phase_discontinuity)",
+        "$($Measurement.leakage)", "$($Measurement.peak)", "$($Measurement.headroom_margin)"
+    )
+    $text = (& cargo @arguments 2>&1) -join "`n"
+    $exit = $LASTEXITCODE
+    if (!(Test-Path -LiteralPath $OutputPath)) {
+        throw "final-render gate did not write its report: $OutputPath; $text"
+    }
+    $report = Get-Content -LiteralPath $OutputPath -Raw | ConvertFrom-Json
+    $report | Add-Member -NotePropertyName command_exit_code -NotePropertyValue $exit
+    $report
+}
 
 function Invoke-Checked([string]$File, [string[]]$Arguments) {
     & $File @Arguments
@@ -73,7 +97,8 @@ function Invoke-Inspect([string]$OutputPath, [string]$Name, [string]$Layout, [sw
     $renderLog = "$render.openjoc.log"
     $decodeLog = "$render.ffmpeg.log"
 
-    if ($ReuseExisting -and (Test-Path -LiteralPath $inspectLog) -and (Test-Path -LiteralPath $render) -and (Test-Path -LiteralPath $decodeLog)) {
+    if ($ReuseExisting -and (Test-Path -LiteralPath $inspectLog) -and
+        (Test-Path -LiteralPath $decodeLog) -and ($SkipRender -or (Test-Path -LiteralPath $render))) {
         $inspectExit = 0
         $renderExit = 0
         $decodeExit = 0
@@ -110,8 +135,8 @@ function Invoke-Inspect([string]$OutputPath, [string]$Name, [string]$Layout, [sw
     if (!(Test-Path -LiteralPath $metricsPath)) {
         throw "metrics file does not exist: $metricsPath"
     }
-    $metricRows = @(Read-MetricRows $metricsPath)
-    if ($metricRows.Count -eq 0) {
+    $metricSummary = Read-MetricSummary $metricsPath
+    if ($metricSummary.source_rows -eq 0) {
         throw "metrics file has no source rows: $metricsPath"
     }
     [pscustomobject]@{
@@ -127,14 +152,14 @@ function Invoke-Inspect([string]$OutputPath, [string]$Name, [string]$Layout, [sw
         finite_pcm = if ($decodeExit -eq 0) { "YES" } else { "NO" }
         output_bytes = $outputBytes
         render = $render
-        source_count = [int](@($metricRows | ForEach-Object { [int]$_.source_count } | Measure-Object -Maximum).Maximum)
-        coded_count = [int](@($metricRows | ForEach-Object { [int]$_.coded_count } | Measure-Object -Maximum).Maximum)
-        silent_drops = [int](@($metricRows | ForEach-Object { [int]$_.silent_drops } | Measure-Object -Maximum).Maximum)
-        unexplained_cluster_leakage_max = Format-Number (Get-MaxMetric $metricRows unexplained_cluster_leakage)
-        speaker_render_error_max = Format-Number (Get-MaxMetric $metricRows speaker_render_error)
-        factorization_reconstruction_error_max = Format-Number (Get-MaxMetric $metricRows factorization_reconstruction_error)
-        matrix_coefficient_jump_max = Format-Number (Get-MaxMetric $metricRows matrix_coefficient_jump)
-        carrier_coefficient_jump_max = Format-Number (Get-MaxMetric $metricRows carrier_coefficient_jump)
+        source_count = $metricSummary.source_count
+        coded_count = $metricSummary.coded_count
+        silent_drops = $metricSummary.silent_drops
+        unexplained_cluster_leakage_max = Format-Number $metricSummary.unexplained_cluster_leakage_max
+        speaker_render_error_max = Format-Number $metricSummary.speaker_render_error_max
+        factorization_reconstruction_error_max = Format-Number $metricSummary.factorization_reconstruction_error_max
+        matrix_coefficient_jump_max = Format-Number $metricSummary.matrix_coefficient_jump_max
+        carrier_coefficient_jump_max = Format-Number $metricSummary.carrier_coefficient_jump_max
     }
 }
 
@@ -161,8 +186,315 @@ function Get-DerivedStatus([bool]$Pass) {
     "FAIL"
 }
 
+function Test-FiniteNumber($Value) {
+    try { $number = [double]$Value } catch { return $false }
+    -not [double]::IsNaN($number) -and -not [double]::IsInfinity($number)
+}
+
 function Read-MetricRows([string]$Path) {
-    @(Import-Csv -LiteralPath $Path | Where-Object { $_.record -eq "source" })
+    $reader = [IO.StreamReader]::new($Path)
+    try {
+        $header = $reader.ReadLine().Split(',')
+        $indices = @{}
+        for ($index = 0; $index -lt $header.Count; $index++) { $indices[$header[$index]] = $index }
+        $required = @(
+            "record", "frame", "source_index", "object_id", "kind", "coded_object_index",
+            "contribution_gain", "source_energy", "represented_energy", "relative_error",
+            "spatial_error", "source_count", "coded_count", "silent_drops",
+            "source_reconstruction_error", "spatial_representation_error", "cross_object_leakage",
+            "unexplained_cluster_leakage", "speaker_render_error", "factorization_reconstruction_error",
+            "matrix_coefficient_jump", "carrier_coefficient_jump", "max_coded_peak", "headroom_margin",
+            "coded_representative_source_index", "source_azimuth", "source_elevation", "source_distance",
+            "coded_azimuth", "coded_elevation", "coded_distance", "coded_first_sample", "coded_last_sample"
+        )
+        foreach ($field in $required) {
+            if (!$indices.ContainsKey($field)) { throw "metrics are missing required field '$field'" }
+        }
+        $rows = [System.Collections.Generic.List[object]]::new()
+        while ($null -ne ($line = $reader.ReadLine())) {
+            $fields = $line.Split(',')
+            if ($fields[$indices["record"]] -ne "source") { continue }
+            $rows.Add([pscustomobject]@{
+                record = $fields[$indices["record"]]; frame = $fields[$indices["frame"]];
+                source_index = $fields[$indices["source_index"]]; object_id = $fields[$indices["object_id"]];
+                kind = $fields[$indices["kind"]]; coded_object_index = $fields[$indices["coded_object_index"]];
+                contribution_gain = $fields[$indices["contribution_gain"]]; source_energy = $fields[$indices["source_energy"]];
+                represented_energy = $fields[$indices["represented_energy"]]; relative_error = $fields[$indices["relative_error"]];
+                spatial_error = $fields[$indices["spatial_error"]]; source_count = $fields[$indices["source_count"]];
+                coded_count = $fields[$indices["coded_count"]]; silent_drops = $fields[$indices["silent_drops"]];
+                source_reconstruction_error = $fields[$indices["source_reconstruction_error"]];
+                spatial_representation_error = $fields[$indices["spatial_representation_error"]];
+                cross_object_leakage = $fields[$indices["cross_object_leakage"]];
+                unexplained_cluster_leakage = $fields[$indices["unexplained_cluster_leakage"]];
+                speaker_render_error = $fields[$indices["speaker_render_error"]];
+                factorization_reconstruction_error = $fields[$indices["factorization_reconstruction_error"]];
+                matrix_coefficient_jump = $fields[$indices["matrix_coefficient_jump"]];
+                carrier_coefficient_jump = $fields[$indices["carrier_coefficient_jump"]];
+                max_coded_peak = $fields[$indices["max_coded_peak"]]; headroom_margin = $fields[$indices["headroom_margin"]];
+                coded_representative_source_index = $fields[$indices["coded_representative_source_index"]];
+                source_azimuth = $fields[$indices["source_azimuth"]]; source_elevation = $fields[$indices["source_elevation"]];
+                source_distance = $fields[$indices["source_distance"]]; coded_azimuth = $fields[$indices["coded_azimuth"]];
+                coded_elevation = $fields[$indices["coded_elevation"]]; coded_distance = $fields[$indices["coded_distance"]];
+                coded_first_sample = $fields[$indices["coded_first_sample"]]; coded_last_sample = $fields[$indices["coded_last_sample"]]
+            })
+        }
+        $rows.ToArray()
+    }
+    finally {
+        $reader.Dispose()
+    }
+}
+
+function Get-LfeMetricIndices([string]$Path) {
+    $reader = [IO.StreamReader]::new($Path)
+    try {
+        $header = $reader.ReadLine().Split(',')
+        $recordIndex = [Array]::IndexOf($header, "record")
+        $sourceIndex = [Array]::IndexOf($header, "source_index")
+        if ($recordIndex -lt 0 -or $sourceIndex -lt 0) { throw "metrics are missing LFE index fields" }
+        $indices = [System.Collections.Generic.List[int]]::new()
+        while ($null -ne ($line = $reader.ReadLine())) {
+            $fields = $line.Split(',')
+            if ($fields[$recordIndex] -eq "lfe") { $indices.Add([int]$fields[$sourceIndex]) }
+        }
+        $indices.ToArray()
+    }
+    finally {
+        $reader.Dispose()
+    }
+}
+
+function Read-MetricSummary([string]$Path) {
+    $reader = [IO.StreamReader]::new($Path)
+    try {
+        $header = $reader.ReadLine().Split(',')
+        $indices = @{}
+        for ($index = 0; $index -lt $header.Count; $index++) { $indices[$header[$index]] = $index }
+        $required = @(
+            "record", "source_count", "coded_count", "silent_drops", "unexplained_cluster_leakage",
+            "source_reconstruction_error", "spatial_representation_error", "speaker_render_error",
+            "factorization_reconstruction_error", "matrix_coefficient_jump", "carrier_coefficient_jump",
+            "max_coded_peak", "headroom_margin"
+        )
+        foreach ($field in $required) {
+            if (!$indices.ContainsKey($field)) { throw "metrics are missing required field '$field'" }
+        }
+        $sourceRows = 0
+        $sourceCount = 0
+        $codedCount = 0
+        $silentDrops = 0
+        $maxima = @{}
+        $metricFields = @(
+            "unexplained_cluster_leakage", "source_reconstruction_error", "spatial_representation_error",
+            "speaker_render_error", "factorization_reconstruction_error", "matrix_coefficient_jump",
+            "carrier_coefficient_jump", "max_coded_peak"
+        )
+        foreach ($field in $metricFields) { $maxima[$field] = 0.0 }
+        $minimumHeadroom = [double]::PositiveInfinity
+        while ($null -ne ($line = $reader.ReadLine())) {
+            $fields = $line.Split(',')
+            if ($fields[$indices["record"]] -ne "source") { continue }
+            $sourceRows++
+            $sourceCount = [Math]::Max($sourceCount, [int]$fields[$indices["source_count"]])
+            $codedCount = [Math]::Max($codedCount, [int]$fields[$indices["coded_count"]])
+            $silentDrops = [Math]::Max($silentDrops, [int]$fields[$indices["silent_drops"]])
+            foreach ($field in $metricFields) {
+                $value = [double]$fields[$indices[$field]]
+                if ([double]::IsNaN($value) -or [double]::IsInfinity($value)) {
+                    throw "metric '$field' is not finite"
+                }
+                $maxima[$field] = [Math]::Max($maxima[$field], $value)
+            }
+            $headroom = [double]$fields[$indices["headroom_margin"]]
+            if ([double]::IsNaN($headroom) -or [double]::IsInfinity($headroom)) {
+                throw "metric 'headroom_margin' is not finite"
+            }
+            $minimumHeadroom = [Math]::Min($minimumHeadroom, $headroom)
+        }
+        [pscustomobject]@{
+            source_rows = $sourceRows; source_count = $sourceCount; coded_count = $codedCount; silent_drops = $silentDrops;
+            unexplained_cluster_leakage_max = $maxima["unexplained_cluster_leakage"];
+            source_reconstruction_error_max = $maxima["source_reconstruction_error"];
+            spatial_representation_error_max = $maxima["spatial_representation_error"];
+            speaker_render_error_max = $maxima["speaker_render_error"];
+            factorization_reconstruction_error_max = $maxima["factorization_reconstruction_error"];
+            matrix_coefficient_jump_max = $maxima["matrix_coefficient_jump"];
+            carrier_coefficient_jump_max = $maxima["carrier_coefficient_jump"];
+            max_coded_peak = $maxima["max_coded_peak"];
+            headroom_margin_min = $minimumHeadroom
+        }
+    }
+    finally {
+        $reader.Dispose()
+    }
+}
+
+function Find-ByteSequence([byte[]]$Bytes, [byte[]]$Needle, [int]$Start = 0) {
+    for ($offset = $Start; $offset -le $Bytes.Length - $Needle.Length; $offset++) {
+        $match = $true
+        for ($index = 0; $index -lt $Needle.Length; $index++) {
+            if ($Bytes[$offset + $index] -ne $Needle[$index]) { $match = $false; break }
+        }
+        if ($match) { return $offset }
+    }
+    -1
+}
+
+function Test-QualityGatesFromMetricSummary([pscustomobject]$Summary) {
+    $pass = $Summary.source_reconstruction_error_max -le $SourceReconstructionErrorThreshold -and
+        $Summary.spatial_representation_error_max -le $SpatialRepresentationErrorThreshold -and
+        $Summary.unexplained_cluster_leakage_max -le $UnexplainedLeakageThreshold -and
+        $Summary.speaker_render_error_max -le $SpeakerRenderErrorThreshold -and
+        $Summary.factorization_reconstruction_error_max -le $FactorizationResidualThreshold -and
+        $Summary.matrix_coefficient_jump_max -le $MatrixCoefficientJumpThreshold -and
+        $Summary.carrier_coefficient_jump_max -le $CarrierCoefficientJumpThreshold -and
+        $Summary.max_coded_peak -le $MaximumCodedPeakThreshold -and
+        $Summary.headroom_margin_min -ge 0.0
+    [pscustomobject]@{
+        pass = $pass
+        reason = if ($pass) { "" } else { "one or more published quality thresholds failed" }
+        source_reconstruction_error_max = $Summary.source_reconstruction_error_max
+        spatial_representation_error_max = $Summary.spatial_representation_error_max
+        unexplained_cluster_leakage_max = $Summary.unexplained_cluster_leakage_max
+        speaker_render_error_max = $Summary.speaker_render_error_max
+        factorization_reconstruction_error_max = $Summary.factorization_reconstruction_error_max
+        matrix_coefficient_jump_max = $Summary.matrix_coefficient_jump_max
+        carrier_coefficient_jump_max = $Summary.carrier_coefficient_jump_max
+        max_coded_peak = $Summary.max_coded_peak
+        headroom_margin_min = $Summary.headroom_margin_min
+    }
+}
+
+function New-PerturbedBw64Fixture([string]$SourcePath, [string]$OutputPath, [int]$SourceIndex) {
+    $bytes = [IO.File]::ReadAllBytes($SourcePath)
+    $fmtOffset = Find-ByteSequence $bytes ([byte[]](0x66, 0x6d, 0x74, 0x20))
+    $dataChunkOffset = Find-ByteSequence $bytes ([byte[]](0x64, 0x61, 0x74, 0x61))
+    if ($fmtOffset -lt 0 -or $dataChunkOffset -lt 0) { throw "source fixture is missing fmt/data chunks" }
+    $channels = [int][BitConverter]::ToUInt16($bytes, $fmtOffset + 10)
+    $bits = [int][BitConverter]::ToUInt16($bytes, $fmtOffset + 22)
+    $dataOffset = $dataChunkOffset + 8
+    $dataBytes = [int64]($bytes.Length - $dataOffset)
+    $axmlOffset = Find-ByteSequence $bytes ([byte[]](0x61, 0x78, 0x6d, 0x6c)) ($dataOffset + 1)
+    if ($axmlOffset -gt $dataOffset) { $dataBytes = $axmlOffset - $dataOffset }
+    if ($channels -le 0 -or $bits -ne 24 -or $dataBytes -le 0 -or $dataBytes % ($channels * 3) -ne 0) {
+        throw "source fixture has an unsupported PCM layout for causality perturbation"
+    }
+    if ($SourceIndex -lt 0 -or $SourceIndex -ge $channels) { throw "causality source index is outside fixture channels" }
+    $sampleCount = [int64]($dataBytes / ($channels * 3))
+    for ($sample = 0; $sample -lt $sampleCount; $sample++) {
+        $phase = 2.0 * [Math]::PI * (1733.0 + 83.0 * $SourceIndex) * $sample / 48000.0
+        $value = [int]([Math]::Round(0.25 * [Math]::Sin($phase) * 8388607.0))
+        $encoded = [BitConverter]::GetBytes($value)
+        $offset = [int64]$dataOffset + ($sample * $channels + $SourceIndex) * 3
+        $bytes[$offset] = $encoded[0]
+        $bytes[$offset + 1] = $encoded[1]
+        $bytes[$offset + 2] = $encoded[2]
+    }
+    [IO.File]::WriteAllBytes($OutputPath, $bytes)
+}
+
+function New-RelationshipBw64Fixture([string]$SourcePath, [string]$OutputPath, [string]$Relationship) {
+    $bytes = [IO.File]::ReadAllBytes($SourcePath)
+    $fmtOffset = Find-ByteSequence $bytes ([byte[]](0x66, 0x6d, 0x74, 0x20))
+    $dataChunkOffset = Find-ByteSequence $bytes ([byte[]](0x64, 0x61, 0x74, 0x61))
+    if ($fmtOffset -lt 0 -or $dataChunkOffset -lt 0) { throw "source fixture is missing fmt/data chunks" }
+    $channels = [int][BitConverter]::ToUInt16($bytes, $fmtOffset + 10)
+    $bits = [int][BitConverter]::ToUInt16($bytes, $fmtOffset + 22)
+    $dataOffset = $dataChunkOffset + 8
+    $axmlOffset = Find-ByteSequence $bytes ([byte[]](0x61, 0x78, 0x6d, 0x6c)) ($dataOffset + 1)
+    if ($channels -le 0 -or $bits -ne 24 -or $axmlOffset -le $dataOffset) {
+        throw "source fixture has an unsupported PCM layout for relationship probe"
+    }
+    $dataBytes = $axmlOffset - $dataOffset
+    if ($dataBytes % ($channels * 3) -ne 0) { throw "relationship probe PCM data is not frame aligned" }
+    $sampleCount = [int64]($dataBytes / ($channels * 3))
+    for ($sample = 0; $sample -lt $sampleCount; $sample++) {
+        for ($channel = 0; $channel -lt $channels; $channel++) {
+            $value = if ($Relationship -eq "quadrature" -and $channel -eq 0) {
+                0.10 * [Math]::Sin(2.0 * [Math]::PI * 375.0 * $sample / 48000.0)
+            } elseif ($Relationship -eq "quadrature" -and $channel -eq 1) {
+                0.10 * [Math]::Cos(2.0 * [Math]::PI * 375.0 * $sample / 48000.0)
+            } elseif ($Relationship -eq "transient" -and $channel -in @(0, 1) -and $sample -lt 48) {
+                0.10 * [Math]::Sin(2.0 * [Math]::PI * 8062.5 * $sample / 48000.0)
+            } else {
+                0.001 * [Math]::Sin(2.0 * [Math]::PI * (220.0 + 17.0 * $channel) * $sample / 48000.0)
+            }
+            $encoded = [BitConverter]::GetBytes([int]([Math]::Round($value * 8388607.0)))
+            $offset = [int64]$dataOffset + ($sample * $channels + $channel) * 3
+            $bytes[$offset] = $encoded[0]
+            $bytes[$offset + 1] = $encoded[1]
+            $bytes[$offset + 2] = $encoded[2]
+        }
+    }
+    [IO.File]::WriteAllBytes($OutputPath, $bytes)
+}
+
+function Measure-RenderedPcmDifference([string]$BaselinePath, [string]$PerturbedPath) {
+    $baseline = Read-F64PcmStream $BaselinePath
+    $perturbed = Read-F64PcmStream $PerturbedPath
+    if ($baseline.channels -ne $perturbed.channels) { throw "causality render channel layouts differ" }
+    $count = [Math]::Min($baseline.values.Length, $perturbed.values.Length)
+    $maximumDifference = 0.0
+    $differenceEnergy = 0.0
+    for ($index = 0; $index -lt $count; $index++) {
+        $difference = $baseline.values[$index] - $perturbed.values[$index]
+        $maximumDifference = [Math]::Max($maximumDifference, [Math]::Abs($difference))
+        $differenceEnergy += $difference * $difference
+    }
+    [pscustomobject]@{
+        samples_compared = $count / $baseline.channels
+        maximum_absolute_difference = $maximumDifference
+        rms_difference = [Math]::Sqrt($differenceEnergy / [Math]::Max(1, $count))
+        finite = (@($perturbed.values | Where-Object { [double]::IsNaN($_) -or [double]::IsInfinity($_) }).Count -eq 0)
+    }
+}
+
+function Test-CarrierCausalityReport([pscustomobject]$Report) {
+    if ($null -eq $Report -or $Report.pass -ne $true) { return $false }
+    $expected = @{ idx0 = 5; idx1 = 7; idx2 = 7 }
+    foreach ($profile in $expected.Keys) {
+        $entry = @($Report.profiles | Where-Object { $_.profile -eq $profile })[0]
+        if ($null -eq $entry -or [int]$entry.expected_carrier_count -ne $expected[$profile] -or $entry.pass -ne $true) { return $false }
+        $carriers = @($entry.carriers)
+        if ($carriers.Count -ne $expected[$profile]) { return $false }
+        $indices = @($carriers | ForEach-Object { [int]$_.carrier_index } | Sort-Object -Unique)
+        if (@(Compare-Object (0..($expected[$profile] - 1)) $indices).Count -gt 0) { return $false }
+        if (@($carriers | Where-Object {
+                $_.carrier_index -ne $_.source_index -or $_.carrier_changed -ne $true -or
+                !(Test-FiniteNumber $_.maximum_change) -or
+                [double]$_.maximum_change -le 1.0e-12
+            }).Count -gt 0) { return $false }
+        $d0Rows = @($entry.d0_writer)
+        $expectedD0Indices = if ($profile -eq "idx0") { @(0, 1) } else { @(5, 6) }
+        $actualD0Indices = @($entry.d0_input_source_indices | ForEach-Object { [int]$_ })
+        if (@(Compare-Object $expectedD0Indices $actualD0Indices).Count -gt 0) { return $false }
+        if ($entry.d0_writer_pass -ne $true -or $d0Rows.Count -ne 2 -or
+            @($d0Rows | Where-Object {
+                $_.input_index -notin @(0, 1) -or $_.changed -ne $true -or
+                [int]$_.changed_byte_count -le 0
+            }).Count -gt 0) { return $false }
+    }
+    $true
+}
+
+function Test-SourceCausalityReport([pscustomobject]$Report) {
+    if ($null -eq $Report -or $Report.pass -ne $true) { return $false }
+    $expected = @{ idx0 = 5; idx1 = 7; idx2 = 7 }
+    foreach ($profile in $expected.Keys) {
+        $entry = @($Report.profiles | Where-Object { $_.profile -eq $profile })[0]
+        if ($null -eq $entry -or [int]$entry.expected_carrier_count -ne $expected[$profile] -or $entry.pass -ne $true) { return $false }
+        $rows = @($entry.perturbations)
+        if ($rows.Count -ne $expected[$profile]) { return $false }
+        $indices = @($rows | ForEach-Object { [int]$_.source_index } | Sort-Object -Unique)
+        if (@(Compare-Object (0..($expected[$profile] - 1)) $indices).Count -gt 0) { return $false }
+        if (@($rows | Where-Object {
+                $_.input_hash_changed -ne $true -or $_.output_hash_changed -ne $true -or
+                $_.render_delta_finite -ne $true -or !(Test-FiniteNumber $_.render_rms_difference) -or
+                !(Test-FiniteNumber $_.render_maximum_absolute_difference) -or
+                [double]$_.render_rms_difference -le 1.0e-7
+            }).Count -gt 0) { return $false }
+    }
+    $true
 }
 
 function Get-MaxMetric($Rows, [string]$Name) {
@@ -201,7 +533,7 @@ function Get-RunLifetimes($Values) {
     @($lifetimes)
 }
 
-function Test-SourceAccounting($Rows, [int]$ExpectedSourceCount = -1) {
+function Test-SourceAccounting($Rows, [int]$ExpectedSourceCount = -1, [int[]]$ExpectedSourceIndices = @()) {
     $Rows = @($Rows)
     $reasons = [System.Collections.Generic.List[string]]::new()
     if ($Rows.Count -eq 0) {
@@ -213,38 +545,135 @@ function Test-SourceAccounting($Rows, [int]$ExpectedSourceCount = -1) {
         if ($properties -notcontains $field) { $reasons.Add("missing source accounting field '$field'") }
     }
     if ($reasons.Count -eq 0) {
-        $frameGroups = @($Rows | Group-Object frame)
-        foreach ($group in $frameGroups) {
-            $frameRows = @($group.Group)
-            $sourceCount = [int]$frameRows[0].source_count
-            if ($sourceCount -le 0) { $reasons.Add("frame $($group.Name) has no authored sources") }
-            if ($ExpectedSourceCount -ge 0 -and $sourceCount -ne $ExpectedSourceCount) {
-                $reasons.Add("frame $($group.Name) source count differs from expected")
+        $frameStates = @{}
+        foreach ($row in $Rows) {
+            $frame = [string]$row.frame
+            if (!$frameStates.ContainsKey($frame)) {
+                $frameStates[$frame] = [pscustomobject]@{
+                    rows = 0; source_count = [int]$row.source_count;
+                    mixed_source_count = $false; over_budget = $false; silent_drop = $false;
+                    non_positive_gain = $false; indices = [System.Collections.Generic.HashSet[int]]::new()
+                }
             }
-            if ($frameRows.Count -ne $sourceCount) { $reasons.Add("frame $($group.Name) has incomplete source rows") }
-            if (@($frameRows | Select-Object -ExpandProperty source_index -Unique).Count -ne $sourceCount) {
-                $reasons.Add("frame $($group.Name) has duplicate or missing source indices")
+            $state = $frameStates[$frame]
+            $state.rows++
+            $null = $state.indices.Add([int]$row.source_index)
+            if ([int]$row.source_count -ne $state.source_count) { $state.mixed_source_count = $true }
+            if ([int]$row.coded_count -gt $MaximumCodedObjects) { $state.over_budget = $true }
+            if ([int]$row.silent_drops -ne 0) { $state.silent_drop = $true }
+            if ([double]$row.contribution_gain -le 0.0) { $state.non_positive_gain = $true }
+        }
+        $expectedSet = [System.Collections.Generic.HashSet[int]]::new()
+        if ($ExpectedSourceIndices.Count -gt 0) {
+            foreach ($index in $ExpectedSourceIndices) { $null = $expectedSet.Add([int]$index) }
+        }
+        foreach ($frame in $frameStates.Keys) {
+            $state = $frameStates[$frame]
+            $expected = if ($expectedSet.Count -gt 0) {
+                $expectedSet
+            } elseif ($state.source_count -gt 0) {
+                $generatedExpected = [System.Collections.Generic.HashSet[int]]::new()
+                foreach ($index in 0..($state.source_count - 1)) { $null = $generatedExpected.Add($index) }
+                $generatedExpected
+            } else {
+                [System.Collections.Generic.HashSet[int]]::new()
             }
-            if (@($frameRows | Where-Object { [int]$_.source_count -ne $sourceCount }).Count -gt 0) {
-                $reasons.Add("frame $($group.Name) mixes source counts")
+            $complete = $state.rows -eq $expected.Count -and $state.indices.Count -eq $expected.Count
+            if ($complete) {
+                foreach ($index in $expected) {
+                    if (!$state.indices.Contains($index)) { $complete = $false; break }
+                }
             }
-            if (@($frameRows | Where-Object { [int]$_.coded_count -gt $MaximumCodedObjects }).Count -gt 0) {
-                $reasons.Add("frame $($group.Name) exceeds the coded-object budget")
+            if ($state.source_count -le 0) { $reasons.Add("frame $frame has no authored sources") }
+            if ($ExpectedSourceCount -ge 0 -and $state.source_count -ne $ExpectedSourceCount) {
+                $reasons.Add("frame $frame source count differs from expected")
             }
-            if (@($frameRows | Where-Object { [int]$_.silent_drops -ne 0 }).Count -gt 0) {
-                $reasons.Add("frame $($group.Name) silently drops a source")
-            }
-            if (@($frameRows | Where-Object { [double]$_.contribution_gain -le 0.0 }).Count -gt 0) {
-                $reasons.Add("frame $($group.Name) has a non-positive source contribution")
-            }
+            if (!$complete) { $reasons.Add("frame $frame source indices are not the complete expected domain") }
+            if ($state.mixed_source_count) { $reasons.Add("frame $frame mixes source counts") }
+            if ($state.over_budget) { $reasons.Add("frame $frame exceeds the coded-object budget") }
+            if ($state.silent_drop) { $reasons.Add("frame $frame silently drops a source") }
+            if ($state.non_positive_gain) { $reasons.Add("frame $frame has a non-positive source contribution") }
         }
     }
     [pscustomobject]@{
         pass = $reasons.Count -eq 0
         reason = ($reasons -join "; ")
-        frame_count = @($Rows | Group-Object frame).Count
+        frame_count = @($Rows | ForEach-Object { [string]$_.frame } | Sort-Object -Unique).Count
         source_count = if ($Rows.Count -gt 0) { [int]$Rows[0].source_count } else { 0 }
         source_rows = $Rows.Count
+    }
+}
+
+function Test-SourceAccountingCsv([string]$Path, [int]$ExpectedSourceCount = -1, [int[]]$ExpectedSourceIndices = @()) {
+    $reader = [IO.StreamReader]::new($Path)
+    try {
+        $header = $reader.ReadLine().Split(',')
+        $indices = @{}
+        for ($index = 0; $index -lt $header.Count; $index++) { $indices[$header[$index]] = $index }
+        foreach ($field in @("record", "frame", "source_index", "source_count", "coded_count", "silent_drops", "contribution_gain")) {
+            if (!$indices.ContainsKey($field)) { throw "metrics are missing required source accounting field '$field'" }
+        }
+        $frameStates = @{}
+        $sourceRows = 0
+        while ($null -ne ($line = $reader.ReadLine())) {
+            $fields = $line.Split(',')
+            if ($fields[$indices["record"]] -ne "source") { continue }
+            $sourceRows++
+            $frame = $fields[$indices["frame"]]
+            if (!$frameStates.ContainsKey($frame)) {
+                $frameStates[$frame] = [pscustomobject]@{
+                    rows = 0; source_count = [int]$fields[$indices["source_count"]];
+                    mixed_source_count = $false; over_budget = $false; silent_drop = $false;
+                    non_positive_gain = $false; indices = [System.Collections.Generic.HashSet[int]]::new()
+                }
+            }
+            $state = $frameStates[$frame]
+            $state.rows++
+            $null = $state.indices.Add([int]$fields[$indices["source_index"]])
+            if ([int]$fields[$indices["source_count"]] -ne $state.source_count) { $state.mixed_source_count = $true }
+            if ([int]$fields[$indices["coded_count"]] -gt $MaximumCodedObjects) { $state.over_budget = $true }
+            if ([int]$fields[$indices["silent_drops"]] -ne 0) { $state.silent_drop = $true }
+            if ([double]$fields[$indices["contribution_gain"]] -le 0.0) { $state.non_positive_gain = $true }
+        }
+        $reasons = [System.Collections.Generic.List[string]]::new()
+        $expectedSet = [System.Collections.Generic.HashSet[int]]::new()
+        if ($ExpectedSourceIndices.Count -gt 0) {
+            foreach ($index in $ExpectedSourceIndices) { $null = $expectedSet.Add([int]$index) }
+        }
+        foreach ($frame in $frameStates.Keys) {
+            $state = $frameStates[$frame]
+            $expected = if ($expectedSet.Count -gt 0) {
+                $expectedSet
+            } elseif ($state.source_count -gt 0) {
+                $generatedExpected = [System.Collections.Generic.HashSet[int]]::new()
+                foreach ($index in 0..($state.source_count - 1)) { $null = $generatedExpected.Add($index) }
+                $generatedExpected
+            } else {
+                [System.Collections.Generic.HashSet[int]]::new()
+            }
+            $complete = $state.rows -eq $expected.Count -and $state.indices.Count -eq $expected.Count
+            if ($complete) {
+                foreach ($index in $expected) {
+                    if (!$state.indices.Contains($index)) { $complete = $false; break }
+                }
+            }
+            if ($state.source_count -le 0) { $reasons.Add("frame $frame has no authored sources") }
+            if ($ExpectedSourceCount -ge 0 -and $state.source_count -ne $ExpectedSourceCount) { $reasons.Add("frame $frame source count differs from expected") }
+            if (!$complete) { $reasons.Add("frame $frame source indices are not the complete expected domain") }
+            if ($state.mixed_source_count) { $reasons.Add("frame $frame mixes source counts") }
+            if ($state.over_budget) { $reasons.Add("frame $frame exceeds the coded-object budget") }
+            if ($state.silent_drop) { $reasons.Add("frame $frame silently drops a source") }
+            if ($state.non_positive_gain) { $reasons.Add("frame $frame has a non-positive source contribution") }
+        }
+        $firstFrame = if ($frameStates.Count -gt 0) { @($frameStates.Keys)[0] } else { $null }
+        [pscustomobject]@{
+            pass = $reasons.Count -eq 0; reason = ($reasons -join "; "); frame_count = $frameStates.Count;
+            source_count = if ($null -ne $firstFrame) { [int]$frameStates[$firstFrame].source_count } else { 0 };
+            source_rows = $sourceRows
+        }
+    }
+    finally {
+        $reader.Dispose()
     }
 }
 
@@ -327,6 +756,73 @@ function Get-MinMetric($Rows, [string]$Name) {
     })
     if ($values.Count -eq 0) { return 0.0 }
     ($values | Measure-Object -Minimum).Minimum
+}
+
+function Test-T008ProfileConditions(
+    [pscustomobject]$Validation,
+    $Rows,
+    [pscustomobject]$FinalRender
+) {
+    $Rows = @($Rows)
+    $reasons = [System.Collections.Generic.List[string]]::new()
+    $strictPass = $false; $renderPass = $false; $finitePass = $false; $malformedPass = $false; $traversalPass = $false
+    $sourceReconstructionPass = $false; $spatialPass = $false; $leakagePass = $false; $speakerPass = $false
+    $factorizationPass = $false; $matrixPass = $false; $carrierPass = $false; $peakPass = $false; $headroomPass = $false
+    $finalRenderPass = $false
+    if ($null -eq $Validation) { $reasons.Add("profile validation is missing") }
+    else {
+        $strictPass = $Validation.openjoc_strict_result -eq "PASS"
+        $renderPass = $Validation.render_result -eq "PASS"
+        $finitePass = $Validation.finite_pcm -eq "YES"
+        $malformedPass = [int]$Validation.malformed_aus -eq 0
+        $traversalPass = [int]$Validation.carrier_traversal_errors -eq 0
+    }
+    if ($null -eq $FinalRender -or $null -eq $FinalRender.gate) { $reasons.Add("final decoded render gate is missing") }
+    else { $finalRenderPass = $FinalRender.gate.pass -eq $true -and [int]$FinalRender.gate.command_exit_code -eq 0 }
+    if ($Rows.Count -gt 0) {
+        $sourceReconstruction = Get-MaxMetric $Rows source_reconstruction_error
+        $spatial = Get-MaxMetric $Rows spatial_representation_error
+        $leakage = Get-MaxMetric $Rows unexplained_cluster_leakage
+        $speaker = Get-MaxMetric $Rows speaker_render_error
+        $factorization = Get-MaxMetric $Rows factorization_reconstruction_error
+        $matrix = Get-MaxMetric $Rows matrix_coefficient_jump
+        $carrier = Get-MaxMetric $Rows carrier_coefficient_jump
+        $peak = Get-MaxMetric $Rows max_coded_peak
+        $headroom = Get-MinMetric $Rows headroom_margin
+        $sourceReconstructionPass = $sourceReconstruction -le $SourceReconstructionErrorThreshold
+        $spatialPass = $spatial -le $SpatialRepresentationErrorThreshold
+        $leakagePass = $leakage -le $UnexplainedLeakageThreshold
+        $speakerPass = $speaker -le $SpeakerRenderErrorThreshold
+        $factorizationPass = $factorization -le $FactorizationResidualThreshold
+        $matrixPass = $matrix -le $MatrixCoefficientJumpThreshold
+        $carrierPass = $carrier -le $CarrierCoefficientJumpThreshold
+        $peakPass = $peak -le $MaximumCodedPeakThreshold
+        $headroomPass = $headroom -ge 0.0
+    }
+    $checks = @($strictPass, $renderPass, $finitePass, $malformedPass, $traversalPass, $sourceReconstructionPass, $spatialPass, $leakagePass, $speakerPass, $factorizationPass, $matrixPass, $carrierPass, $peakPass, $headroomPass, $finalRenderPass)
+    $pass = $Rows.Count -gt 0 -and @($checks | Where-Object { $_ -ne $true }).Count -eq 0
+    if (!$strictPass) { $reasons.Add("OpenJOC strict validation failed") }
+    if (!$renderPass) { $reasons.Add("OpenJOC compatibility render failed") }
+    if (!$finitePass) { $reasons.Add("decoded E-AC-3 PCM is not finite") }
+    if (!$malformedPass) { $reasons.Add("malformed access units are present") }
+    if (!$traversalPass) { $reasons.Add("carrier traversal errors are present") }
+    if (!$sourceReconstructionPass) { $reasons.Add("source reconstruction threshold failed") }
+    if (!$spatialPass) { $reasons.Add("spatial representation threshold failed") }
+    if (!$leakagePass) { $reasons.Add("source leakage threshold failed") }
+    if (!$speakerPass) { $reasons.Add("speaker render threshold failed") }
+    if (!$factorizationPass) { $reasons.Add("factorization residual threshold failed") }
+    if (!$matrixPass) { $reasons.Add("matrix continuity threshold failed") }
+    if (!$carrierPass) { $reasons.Add("carrier continuity threshold failed") }
+    if (!$peakPass) { $reasons.Add("coded peak threshold failed") }
+    if (!$headroomPass) { $reasons.Add("coded headroom threshold failed") }
+    if (!$finalRenderPass) { $reasons.Add("final decoded render gate failed") }
+    [pscustomobject]@{
+        pass = $pass; reason = ($reasons -join "; "); strict = $strictPass; render = $renderPass;
+        finite = $finitePass; malformed_aus = $malformedPass; carrier_traversal = $traversalPass;
+        source_reconstruction = $sourceReconstructionPass; spatial = $spatialPass; leakage = $leakagePass;
+        speaker = $speakerPass; factorization = $factorizationPass; matrix = $matrixPass; carrier = $carrierPass;
+        coded_peak = $peakPass; coded_headroom = $headroomPass; final_decoded_render = $finalRenderPass
+    }
 }
 
 function Get-Median([double[]]$Values) {
@@ -639,8 +1135,25 @@ $hanabiOutput = Join-Path $artifact "hanabi-multichannel-idx1.ec3"
 if (!$ReuseExisting -or !(Test-Path -LiteralPath $hanabiOutput)) {
     Invoke-Encode $SourceAdm $hanabiOutput 1664
 }
-$hanabiRows = Read-MetricRows "$hanabiOutput.metrics.csv"
-$hanabiAudited = Get-TemporalAudit $hanabiRows "hanabi"
+$hanabiSummary = Read-MetricSummary "$hanabiOutput.metrics.csv"
+$hanabiMetricsHash = Get-Sha256 "$hanabiOutput.metrics.csv"
+$hanabiLfeIndices = @(Get-LfeMetricIndices "$hanabiOutput.metrics.csv" | Sort-Object -Unique)
+$hanabiTotalSourceCount = [int]$hanabiSummary.source_count + $hanabiLfeIndices.Count
+$hanabiExpectedSourceIndices = @(
+    0..($hanabiTotalSourceCount - 1) | Where-Object { $hanabiLfeIndices -notcontains $_ }
+)
+$existingTemporalAuditPath = Join-Path $artifact "temporal-audit.csv"
+$hanabiTemporalHashPath = Join-Path $artifact "hanabi-temporal-input.sha256"
+$existingHanabiAudit = if ((Test-Path -LiteralPath $existingTemporalAuditPath) -and
+    (Test-Path -LiteralPath $hanabiTemporalHashPath) -and
+    (Get-Content -LiteralPath $hanabiTemporalHashPath -Raw).Trim() -eq $hanabiMetricsHash) {
+    @((Import-Csv -LiteralPath $existingTemporalAuditPath) | Where-Object { $_.scene -eq "hanabi" })[0]
+} else { $null }
+$hanabiAudited = if ($null -ne $existingHanabiAudit) {
+    $existingHanabiAudit
+} else {
+    Get-TemporalAudit (Read-MetricRows "$hanabiOutput.metrics.csv") "hanabi"
+}
 $temporalAudits.Add([pscustomobject]@{
     scene = $hanabiAudited.scene; source = "Hanabi"; frame_count = $hanabiAudited.frame_count;
     authored_source_count = $hanabiAudited.authored_source_count; maximum_coded_object_count = $hanabiAudited.maximum_coded_object_count;
@@ -662,6 +1175,7 @@ $temporalAudits.Add([pscustomobject]@{
     stationary_authored_source_assignment_churn_after_initialization = "N/A"
 })
 $temporalAudits | Export-Csv -LiteralPath (Join-Path $artifact "temporal-audit.csv") -NoTypeInformation -Encoding utf8
+Set-Content -LiteralPath $hanabiTemporalHashPath -Value $hanabiMetricsHash -Encoding ascii
 
 $causalFixture = Join-Path $artifact "directspeakers-causal.bw64"
 if (!$ReuseExisting -or !(Test-Path -LiteralPath $causalFixture)) {
@@ -742,25 +1256,17 @@ $hanabiProfiles = @(
     [pscustomobject]@{ name = "idx2"; layout = "7.1.4"; output = (Join-Path $artifact "hanabi-idx2.ec3") }
 )
 $hanabiValidations = [System.Collections.Generic.List[object]]::new()
-$hanabiPrimaryAccountingPass = $false
+$hanabiPrimaryAccountingPass = $true
 foreach ($profile in $hanabiProfiles) {
     if ($profile.name -ne "idx1") {
         Invoke-Encode $SourceAdm $profile.output 1664 $profile.name
     }
     $inspection = Invoke-Inspect $profile.output "hanabi-$($profile.name)" $profile.layout -SkipRender
-    if ($profile.name -eq "idx1") {
-        $rows = Read-MetricRows "$($profile.output).metrics.csv"
-        $accounting = Test-SourceAccounting $rows
-        $quality = Test-QualityGates $rows
-        $hanabiPrimaryAccountingPass = $accounting.pass
-        $inspection | Add-Member -NotePropertyName source_accounting_pass -NotePropertyValue $accounting.pass
-        $inspection | Add-Member -NotePropertyName quality_gate_pass -NotePropertyValue $quality.pass
-        Remove-Variable rows,accounting,quality -ErrorAction SilentlyContinue
-        [GC]::Collect()
-    }
-    else {
-        $inspection | Add-Member -NotePropertyName source_accounting_pass -NotePropertyValue "PRIMARY_IDX1_EVIDENCE"
-    }
+    $accounting = Test-SourceAccountingCsv "$($profile.output).metrics.csv" -1 $hanabiExpectedSourceIndices
+    $quality = Test-QualityGatesFromMetricSummary (Read-MetricSummary "$($profile.output).metrics.csv")
+    $hanabiPrimaryAccountingPass = $hanabiPrimaryAccountingPass -and $accounting.pass
+    $inspection | Add-Member -NotePropertyName source_accounting_pass -NotePropertyValue $accounting.pass
+    $inspection | Add-Member -NotePropertyName quality_gate_pass -NotePropertyValue $quality.pass
     $roundTripQualityPass = [double]$inspection.unexplained_cluster_leakage_max -le $UnexplainedLeakageThreshold -and
         [double]$inspection.speaker_render_error_max -le $SpeakerRenderErrorThreshold -and
         [double]$inspection.factorization_reconstruction_error_max -ge 0.0 -and
@@ -784,8 +1290,114 @@ foreach ($profile in $hanabiProfiles) {
     $controlledProfileValidations.Add($inspection)
 }
 
+$carrierCausalityPath = Join-Path $artifact "carrier-causality.json"
+Invoke-Checked "cargo" @("run", "-p", "jocforge", "--quiet", "--", "carrier-causality", $carrierCausalityPath)
+$carrierCausality = Get-Content -LiteralPath $carrierCausalityPath -Raw | ConvertFrom-Json
+$carrierStagePass = Test-CarrierCausalityReport $carrierCausality
+
+$sourceCausalityProfiles = [System.Collections.Generic.List[object]]::new()
+foreach ($profile in $hanabiProfiles) {
+    $carrierCount = if ($profile.name -eq "idx0") { 5 } else { 7 }
+    $baselineValidation = @($controlledProfileValidations | Where-Object { $_.name -eq "controlled-profile-$($profile.name)" })[0]
+    $perturbations = [System.Collections.Generic.List[object]]::new()
+    for ($sourceIndex = 0; $sourceIndex -lt $carrierCount; $sourceIndex++) {
+        $perturbedFixture = Join-Path $artifact "source-causality-$($profile.name)-$sourceIndex.bw64"
+        if (!$ReuseExisting -or !(Test-Path -LiteralPath $perturbedFixture)) {
+            New-PerturbedBw64Fixture $rateFixture $perturbedFixture $sourceIndex
+        }
+        $perturbedOutput = Join-Path $artifact "source-causality-$($profile.name)-$sourceIndex.ec3"
+        Invoke-Encode $perturbedFixture $perturbedOutput 1664 $profile.name
+        $perturbedInspection = Invoke-Inspect $perturbedOutput "source-causality-$($profile.name)-$sourceIndex" $profile.layout
+        $renderDelta = Measure-RenderedPcmDifference $baselineValidation.render $perturbedInspection.render
+        $perturbations.Add([pscustomobject]@{
+            source_index = $sourceIndex
+            input_hash_changed = ((Get-Sha256 $rateFixture) -ne (Get-Sha256 $perturbedFixture))
+            output_hash_changed = ((Get-Sha256 $baselineValidation.output) -ne (Get-Sha256 $perturbedOutput))
+            render_rms_difference = $renderDelta.rms_difference
+            render_maximum_absolute_difference = $renderDelta.maximum_absolute_difference
+            render_delta_finite = $renderDelta.finite
+            openjoc_strict_result = $perturbedInspection.openjoc_strict_result
+            finite_pcm = $perturbedInspection.finite_pcm
+        })
+    }
+    $profilePass = $perturbations.Count -eq $carrierCount -and
+        @($perturbations | Where-Object {
+            $_.input_hash_changed -ne $true -or $_.output_hash_changed -ne $true -or
+            $_.render_delta_finite -ne $true -or $_.openjoc_strict_result -ne "PASS" -or
+            $_.finite_pcm -ne "YES" -or [double]$_.render_rms_difference -le 1.0e-7
+        }).Count -eq 0
+    $sourceCausalityProfiles.Add([pscustomobject]@{
+        profile = $profile.name; expected_carrier_count = $carrierCount; pass = $profilePass;
+        perturbations = $perturbations
+    })
+}
+$sourceCausalityReport = [pscustomobject]@{
+    stage = "ENCODED_OUTPUT_AND_FINAL_DECODED_RENDER"
+    fixture = "controlled-rate-15.bw64 with one independently perturbed source channel per case"
+    carrier_stage = $carrierCausality
+    carrier_stage_pass = $carrierStagePass
+    profiles = $sourceCausalityProfiles
+    pass = $carrierStagePass -and (Test-SourceCausalityReport ([pscustomobject]@{
+            pass = ($sourceCausalityProfiles | Where-Object { $_.pass -ne $true }).Count -eq 0
+            profiles = $sourceCausalityProfiles
+        }))
+}
+$sourceCausalityReport | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath (Join-Path $artifact "source-causality.json") -Encoding utf8
+$sourceCausalityPass = Test-SourceCausalityReport $sourceCausalityReport
+
+$finalRenderValidations = [System.Collections.Generic.List[object]]::new()
+foreach ($profile in $hanabiProfiles) {
+    $validation = @($controlledProfileValidations | Where-Object { $_.name -eq "controlled-profile-$($profile.name)" })[0]
+    if ($null -eq $validation -or $validation.render_result -ne "PASS") {
+        $finalRenderValidations.Add([pscustomobject]@{
+            stage = "FINAL_DECODED_RENDER"; profile = $profile.name; pass = $false;
+            reason = "pinned OpenJOC render was not available"; gate = $null
+        })
+        continue
+    }
+    $profileRows = Read-MetricRows "$($validation.output).metrics.csv"
+    $sourceLeakage = Get-MaxMetric $profileRows unexplained_cluster_leakage
+    $measurement = Measure-FinalRenderEvidence $validation.output $validation.render $profile.name $sourceLeakage
+    $gatePath = Join-Path $artifact "final-render-$($profile.name).json"
+    $gate = Invoke-FinalRenderGate $measurement $gatePath
+    $measurement | Add-Member -NotePropertyName gate -NotePropertyValue $gate
+    $measurement | Add-Member -NotePropertyName validator_identity -NotePropertyValue $validatorIdentity
+    $finalRenderValidations.Add($measurement)
+}
+$finalRenderProfilesPass = @($finalRenderValidations | Where-Object { $_.gate.pass -ne $true -or $_.gate.command_exit_code -ne 0 }).Count -eq 0
+
+$finalRenderCorpusValidations = [System.Collections.Generic.List[object]]::new()
+foreach ($relationship in @("quadrature", "transient")) {
+    $relationshipFixture = Join-Path $artifact "spectral-final-$relationship.bw64"
+    if (!$ReuseExisting -or !(Test-Path -LiteralPath $relationshipFixture)) {
+        New-RelationshipBw64Fixture $rateFixture $relationshipFixture $relationship
+    }
+    $relationshipOutput = Join-Path $artifact "spectral-final-$relationship.ec3"
+    Invoke-Encode $relationshipFixture $relationshipOutput 1664 "idx1"
+    $relationshipInspection = Invoke-Inspect $relationshipOutput "spectral-final-$relationship" "7.1.4"
+    $relationshipRows = Read-MetricRows "$relationshipOutput.metrics.csv"
+    $relationshipLeakage = Get-MaxMetric $relationshipRows unexplained_cluster_leakage
+    $relationshipMeasurement = Measure-FinalRenderEvidence $relationshipOutput $relationshipInspection.render "idx1" $relationshipLeakage $relationship
+    $relationshipGatePath = Join-Path $artifact "final-render-corpus-$relationship.json"
+    $relationshipGate = Invoke-FinalRenderGate $relationshipMeasurement $relationshipGatePath
+    $relationshipMeasurement | Add-Member -NotePropertyName gate -NotePropertyValue $relationshipGate
+    $relationshipMeasurement | Add-Member -NotePropertyName validator_identity -NotePropertyValue $validatorIdentity
+    $finalRenderCorpusValidations.Add($relationshipMeasurement)
+}
+$finalRenderCorpusPass = @($finalRenderCorpusValidations | Where-Object { $_.gate.pass -ne $true -or $_.gate.command_exit_code -ne 0 }).Count -eq 0
+$finalRenderPass = $finalRenderProfilesPass -and $finalRenderCorpusPass
+
+$finalRenderSummaryPath = Join-Path $artifact "final-decoded-render-summary.json"
+[ordered]@{
+    stage = "FINAL_DECODED_RENDER"
+    decoder = "PINNED_OPENJOC"
+    validator_identity = $validatorIdentity
+    final_render_pass = $finalRenderPass
+    profiles = $finalRenderValidations
+    corpus = $finalRenderCorpusValidations
+} | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath $finalRenderSummaryPath -Encoding utf8
 $spectralPhasePath = Join-Path $artifact "spectral-phase.json"
-Invoke-Checked "cargo" @("run", "-p", "jocforge", "--quiet", "--", "spectral-phase", $spectralPhasePath)
+Invoke-Checked "cargo" @("run", "-p", "jocforge", "--quiet", "--", "spectral-phase", $spectralPhasePath, "--final-render-report", $finalRenderSummaryPath)
 $spectralPhase = Get-Content -LiteralPath $spectralPhasePath -Raw | ConvertFrom-Json
 $controlledIdx1 = @($controlledProfileValidations | Where-Object { $_.name -eq "controlled-profile-idx1" })[0]
 $controlledIdx1Rows = Read-MetricRows "$($controlledIdx1.output).metrics.csv"
@@ -813,10 +1425,29 @@ $t001Pass = $null -ne $controlledIdx1 -and
     $controlledIdx1.malformed_aus -eq 0 -and
     $controlledIdx1Accounting.pass -and
     $controlledIdx1.coded_count -le $MaximumCodedObjects -and
-    $controlledIdx1Quality.pass
+    $controlledIdx1Quality.pass -and
+    $sourceCausalityPass
+$t008ProfileConditions = [System.Collections.Generic.List[object]]::new()
+foreach ($profile in $hanabiProfiles) {
+    $validation = @($controlledProfileValidations | Where-Object { $_.name -eq "controlled-profile-$($profile.name)" })[0]
+    $finalRender = @($finalRenderValidations | Where-Object { $_.profile -eq $profile.name })[0]
+    $rows = if ($null -ne $validation) { Read-MetricRows "$($validation.output).metrics.csv" } else { @() }
+    $conditions = Test-T008ProfileConditions $validation $rows $finalRender
+    $t008ProfileConditions.Add([pscustomobject]@{
+        profile = $profile.name; pass = $conditions.pass; reason = $conditions.reason;
+        strict = $conditions.strict; render = $conditions.render; finite = $conditions.finite;
+        malformed_aus = $conditions.malformed_aus; carrier_traversal = $conditions.carrier_traversal;
+        source_reconstruction = $conditions.source_reconstruction; spatial = $conditions.spatial;
+        leakage = $conditions.leakage; speaker = $conditions.speaker; factorization = $conditions.factorization;
+        matrix = $conditions.matrix; carrier = $conditions.carrier; coded_peak = $conditions.coded_peak;
+        coded_headroom = $conditions.coded_headroom; final_decoded_render = $conditions.final_decoded_render;
+        final_render_pass = $conditions.final_decoded_render
+    })
+}
+$t008AllProfileConditionsPass = @($t008ProfileConditions | Where-Object { $_.pass -ne $true }).Count -eq 0
 $t008Pass = $spectralPhase.pass -eq $true -and
-    @($hanabiValidations | Where-Object { $_.openjoc_strict_result -ne "PASS" -or $_.finite_pcm -ne "YES" }).Count -eq 0 -and
-    @($controlledProfileValidations | Where-Object { $_.openjoc_strict_result -ne "PASS" -or $_.render_result -ne "PASS" -or $_.finite_pcm -ne "YES" -or [double]$_.speaker_render_error_max -gt $SpeakerRenderErrorThreshold -or [double]$_.factorization_reconstruction_error_max -gt $FactorizationResidualThreshold }).Count -eq 0
+    @($hanabiValidations | Where-Object { $_.openjoc_strict_result -ne "PASS" -or $_.finite_pcm -ne "YES" -or $_.malformed_aus -ne 0 -or $_.carrier_traversal_errors -ne 0 }).Count -eq 0 -and
+    $t008AllProfileConditionsPass -and $finalRenderProfilesPass -and $finalRenderCorpusPass
 $t009Pass = $quantization.pass -eq $true -and
     [int]$quantization.profile_count -eq 3 -and
     [int]$quantization.domain_values_checked -eq 96 -and
@@ -828,12 +1459,12 @@ $t002Pass = @($fixtureRows | Where-Object {
         $_.silent_drops -eq 0 -and
         $_.source_accounting_pass -eq $true -and
         $_.quality_gate_pass -eq $true
-    }).Count -eq 3
+    }).Count -eq 3 -and $sourceCausalityPass
 $t003Pass = @($hanabiValidations | Where-Object {
         $_.openjoc_strict_result -ne "PASS" -or $_.finite_pcm -ne "YES" -or $_.malformed_aus -ne 0
     }).Count -eq 0 -and
     $hanabiAccountingPass -and $hanabiObjectBudgetPass -and $hanabiRoundTripQualityPass -and
-    $causalJson.causal_test -eq $true -and $directSpeakersDocumented
+    $causalJson.causal_test -eq $true -and $directSpeakersDocumented -and $sourceCausalityPass
 
 $antiSelfReportRoot = Join-Path ([IO.Path]::GetTempPath()) "jocforge-closure-anti-self-report-$PID"
 New-Item -ItemType Directory -Force $antiSelfReportRoot | Out-Null
@@ -878,12 +1509,52 @@ try {
     $stationaryChurnRejected = -not (Test-StationaryTemporalEvidence $mutation.stationary $controlledIdx1Rows).pass
     $mutation.moving.maximum_position_jump = $TemporalPositionJumpThreshold + 1.0
     $movingDiscontinuityRejected = -not (Test-MovingTemporalEvidence @($mutation.moving)).pass
+    $finalRenderBase = @($finalRenderValidations | Where-Object { $_.profile -eq "idx1" })[0]
+    $finalRenderMutations = @(
+        [pscustomobject]@{ name = "spectral_tilt"; finite = $finalRenderBase.finite; channel_coverage = $finalRenderBase.channel_coverage; spectral_error = $finalRenderBase.spectral_error; spectral_tilt_error = 2.0; phase_coherence = $finalRenderBase.phase_coherence; polarity_preserved = $finalRenderBase.polarity_preserved; quadrature_phase_error = $finalRenderBase.quadrature_phase_error; transient_phase_discontinuity = $finalRenderBase.transient_phase_discontinuity; leakage = $finalRenderBase.leakage; peak = $finalRenderBase.peak; headroom_margin = $finalRenderBase.headroom_margin },
+        [pscustomobject]@{ name = "phase_collapse"; finite = $finalRenderBase.finite; channel_coverage = $finalRenderBase.channel_coverage; spectral_error = $finalRenderBase.spectral_error; spectral_tilt_error = $finalRenderBase.spectral_tilt_error; phase_coherence = 0.0; polarity_preserved = $finalRenderBase.polarity_preserved; quadrature_phase_error = $finalRenderBase.quadrature_phase_error; transient_phase_discontinuity = $finalRenderBase.transient_phase_discontinuity; leakage = $finalRenderBase.leakage; peak = $finalRenderBase.peak; headroom_margin = $finalRenderBase.headroom_margin },
+        [pscustomobject]@{ name = "polarity_inversion"; finite = $finalRenderBase.finite; channel_coverage = $finalRenderBase.channel_coverage; spectral_error = $finalRenderBase.spectral_error; spectral_tilt_error = $finalRenderBase.spectral_tilt_error; phase_coherence = $finalRenderBase.phase_coherence; polarity_preserved = $false; quadrature_phase_error = $finalRenderBase.quadrature_phase_error; transient_phase_discontinuity = $finalRenderBase.transient_phase_discontinuity; leakage = $finalRenderBase.leakage; peak = $finalRenderBase.peak; headroom_margin = $finalRenderBase.headroom_margin },
+        [pscustomobject]@{ name = "quadrature_collapse"; finite = $finalRenderBase.finite; channel_coverage = $finalRenderBase.channel_coverage; spectral_error = $finalRenderBase.spectral_error; spectral_tilt_error = $finalRenderBase.spectral_tilt_error; phase_coherence = $finalRenderBase.phase_coherence; polarity_preserved = $finalRenderBase.polarity_preserved; quadrature_phase_error = 2.0; transient_phase_discontinuity = $finalRenderBase.transient_phase_discontinuity; leakage = $finalRenderBase.leakage; peak = $finalRenderBase.peak; headroom_margin = $finalRenderBase.headroom_margin },
+        [pscustomobject]@{ name = "transient_phase"; finite = $finalRenderBase.finite; channel_coverage = $finalRenderBase.channel_coverage; spectral_error = $finalRenderBase.spectral_error; spectral_tilt_error = $finalRenderBase.spectral_tilt_error; phase_coherence = $finalRenderBase.phase_coherence; polarity_preserved = $finalRenderBase.polarity_preserved; quadrature_phase_error = $finalRenderBase.quadrature_phase_error; transient_phase_discontinuity = 1.0; leakage = $finalRenderBase.leakage; peak = $finalRenderBase.peak; headroom_margin = $finalRenderBase.headroom_margin },
+        [pscustomobject]@{ name = "leakage"; finite = $finalRenderBase.finite; channel_coverage = $finalRenderBase.channel_coverage; spectral_error = $finalRenderBase.spectral_error; spectral_tilt_error = $finalRenderBase.spectral_tilt_error; phase_coherence = $finalRenderBase.phase_coherence; polarity_preserved = $finalRenderBase.polarity_preserved; quadrature_phase_error = $finalRenderBase.quadrature_phase_error; transient_phase_discontinuity = $finalRenderBase.transient_phase_discontinuity; leakage = 1.0; peak = $finalRenderBase.peak; headroom_margin = $finalRenderBase.headroom_margin },
+        [pscustomobject]@{ name = "headroom"; finite = $finalRenderBase.finite; channel_coverage = $finalRenderBase.channel_coverage; spectral_error = $finalRenderBase.spectral_error; spectral_tilt_error = $finalRenderBase.spectral_tilt_error; phase_coherence = $finalRenderBase.phase_coherence; polarity_preserved = $finalRenderBase.polarity_preserved; quadrature_phase_error = $finalRenderBase.quadrature_phase_error; transient_phase_discontinuity = $finalRenderBase.transient_phase_discontinuity; leakage = $finalRenderBase.leakage; peak = 1.0; headroom_margin = -0.1 }
+    )
+    $finalRenderMutationResults = [System.Collections.Generic.List[object]]::new()
+    foreach ($finalMutation in $finalRenderMutations) {
+        $mutationReportPath = Join-Path $negativeMutationRoot ("final-render-" + $finalMutation.name + ".json")
+        $mutationGate = Invoke-FinalRenderGate $finalMutation $mutationReportPath
+        $finalRenderMutationResults.Add([pscustomobject]@{
+            mutation = $finalMutation.name; rejected = ($mutationGate.pass -ne $true); gate = $mutationGate
+        })
+    }
+    $finalRenderNegativePass = $finalRenderMutationResults.Count -eq $finalRenderMutations.Count -and
+        @($finalRenderMutationResults | Where-Object { $_.rejected -ne $true }).Count -eq 0
+    $carrierPlaceholderMutation = Get-Content -LiteralPath $carrierCausalityPath -Raw | ConvertFrom-Json
+    $carrierPlaceholderMutation.profiles[0].carriers[0].carrier_changed = $false
+    $placeholderCarrierNegativeTest = -not (Test-CarrierCausalityReport $carrierPlaceholderMutation)
+    $sourceCausalityMutation = Get-Content -LiteralPath (Join-Path $artifact "source-causality.json") -Raw | ConvertFrom-Json
+    $sourceCausalityMutation.profiles[0].perturbations[0].render_rms_difference = 0.0
+    $sourceCausalityMutation.profiles[0].perturbations[0].output_hash_changed = $false
+    $sourceCausalityNegativeTest = -not (Test-SourceCausalityReport $sourceCausalityMutation)
+    $t008FinalRenderBase = @($finalRenderValidations | Where-Object { $_.profile -eq "idx1" })[0]
+    $t008LeakageRowsMutation = @($controlledIdx1Rows | ConvertTo-Json -Depth 10 | ConvertFrom-Json)
+    foreach ($row in $t008LeakageRowsMutation) { $row.unexplained_cluster_leakage = 1.0 }
+    $t008AggregateLeakageNegativeTest = -not (Test-T008ProfileConditions $controlledIdx1 $t008LeakageRowsMutation $t008FinalRenderBase).pass
+    $t008HeadroomRowsMutation = @($controlledIdx1Rows | ConvertTo-Json -Depth 10 | ConvertFrom-Json)
+    foreach ($row in $t008HeadroomRowsMutation) { $row.max_coded_peak = 1.0; $row.headroom_margin = -0.1 }
+    $t008AggregateHeadroomNegativeTest = -not (Test-T008ProfileConditions $controlledIdx1 $t008HeadroomRowsMutation $t008FinalRenderBase).pass
     $negativeMutationTests = [pscustomobject]@{
-        pass = $sourceDropRejected -and $qualityThresholdRejected -and $stationaryChurnRejected -and $movingDiscontinuityRejected
+        pass = $sourceDropRejected -and $qualityThresholdRejected -and $stationaryChurnRejected -and $movingDiscontinuityRejected -and $finalRenderNegativePass -and $placeholderCarrierNegativeTest -and $sourceCausalityNegativeTest -and $t008AggregateLeakageNegativeTest -and $t008AggregateHeadroomNegativeTest
         source_drop_rejected = $sourceDropRejected
         quality_threshold_rejected = $qualityThresholdRejected
         stationary_churn_rejected = $stationaryChurnRejected
         moving_discontinuity_rejected = $movingDiscontinuityRejected
+        final_render_mutations = $finalRenderMutationResults
+        final_render_negative_pass = $finalRenderNegativePass
+        placeholder_carrier_negative_test = $placeholderCarrierNegativeTest
+        source_causality_negative_test = $sourceCausalityNegativeTest
+        t008_aggregate_leakage_negative_test = $t008AggregateLeakageNegativeTest
+        t008_aggregate_headroom_negative_test = $t008AggregateHeadroomNegativeTest
         source = "temporary synthetic JSON derived from primary evidence; committed artifacts were not modified"
     }
 }
@@ -891,15 +1562,60 @@ finally {
     if (Test-Path -LiteralPath $negativeMutationRoot) { Remove-Item -LiteralPath $negativeMutationRoot -Recurse -Force }
 }
 
+$t001Predicates = [ordered]@{
+    syntax_valid = ($controlledIdx1.openjoc_strict_result -eq "PASS" -and $controlledIdx1.malformed_aus -eq 0)
+    finite_pcm = ($controlledIdx1.finite_pcm -eq "YES")
+    source_coverage = ($controlledIdx1Accounting.pass -and $sourceCausalityPass)
+    coded_budget = ($controlledIdx1.coded_count -le $MaximumCodedObjects)
+    quality_thresholds = $controlledIdx1Quality.pass
+}
+$t002Predicates = [ordered]@{
+    reduction_fixture_coverage = (@($fixtureRows | Where-Object { $_.scene -in @("controlled-16", "controlled-20", "controlled-28") }).Count -eq 3)
+    coded_budget = (@($fixtureRows | Where-Object { $_.scene -in @("controlled-16", "controlled-20", "controlled-28") -and $_.coded_count -le $MaximumCodedObjects }).Count -eq 3)
+    no_silent_discard = (@($fixtureRows | Where-Object { $_.scene -in @("controlled-16", "controlled-20", "controlled-28") -and $_.silent_drops -eq 0 }).Count -eq 3)
+    source_coverage = (@($fixtureRows | Where-Object { $_.scene -in @("controlled-16", "controlled-20", "controlled-28") -and $_.source_accounting_pass -eq $true }).Count -eq 3 -and $sourceCausalityPass)
+    quality_thresholds = (@($fixtureRows | Where-Object { $_.scene -in @("controlled-16", "controlled-20", "controlled-28") -and $_.quality_gate_pass -eq $true }).Count -eq 3)
+}
+$t003Predicates = [ordered]@{
+    all_profile_validation = (@($hanabiValidations | Where-Object { $_.openjoc_strict_result -eq "PASS" -and $_.finite_pcm -eq "YES" -and $_.malformed_aus -eq 0 }).Count -eq 3)
+    no_silent_object_discard = $hanabiObjectBudgetPass
+    authored_source_coverage = ($hanabiAccountingPass -and $sourceCausalityPass)
+    directspeakers_handling_documented = ($causalJson.causal_test -eq $true -and $directSpeakersDocumented)
+    roundtrip_quality_observation = $hanabiRoundTripQualityPass
+}
+$t008Predicates = [ordered]@{
+    internal_spectral_phase_corpus = ($spectralPhase.pass -eq $true)
+    final_render_profiles = $finalRenderProfilesPass
+    final_render_corpus = $finalRenderCorpusPass
+    declared_profile_conditions = $t008AllProfileConditionsPass
+    leakage_gate = (@($t008ProfileConditions | Where-Object { $_.leakage -ne $true }).Count -eq 0)
+    headroom_gate = (@($t008ProfileConditions | Where-Object { $_.coded_headroom -ne $true -or $_.final_decoded_render -ne $true }).Count -eq 0)
+    final_render_negative_mutations = $negativeMutationTests.final_render_negative_pass
+}
+$predicateAudit = [ordered]@{
+    T001 = [ordered]@{ declared_conditions = $t001Predicates; all_conditions_pass = (@($t001Predicates.Values | Where-Object { $_ -ne $true }).Count -eq 0) }
+    T002 = [ordered]@{ declared_conditions = $t002Predicates; all_conditions_pass = (@($t002Predicates.Values | Where-Object { $_ -ne $true }).Count -eq 0) }
+    T003 = [ordered]@{ declared_conditions = $t003Predicates; all_conditions_pass = (@($t003Predicates.Values | Where-Object { $_ -ne $true }).Count -eq 0) }
+    T008 = [ordered]@{ declared_conditions = $t008Predicates; all_conditions_pass = (@($t008Predicates.Values | Where-Object { $_ -ne $true }).Count -eq 0); per_profile = $t008ProfileConditions }
+}
+$underassertedCleanTests = @(
+    [pscustomobject]@{ test_id = "T-001"; required = 5; asserted = $t001Predicates.Keys.Count }
+    [pscustomobject]@{ test_id = "T-002"; required = 5; asserted = $t002Predicates.Keys.Count }
+    [pscustomobject]@{ test_id = "T-003"; required = 5; asserted = $t003Predicates.Keys.Count }
+    [pscustomobject]@{ test_id = "T-008"; required = 6; asserted = $t008Predicates.Keys.Count }
+) | Where-Object { $_.asserted -lt $_.required }
+$predicateAudit.underasserted_clean_tests = $underassertedCleanTests
+$predicateAudit.underasserted_clean_tests_count = @($underassertedCleanTests | Where-Object { $null -ne $_ }).Count
+
 $cleanTests = @(
-    [pscustomobject]@{ test_id = "T-001"; status = Get-DerivedStatus $t001Pass; command = "cargo run -p jocforge -- encode + OpenJOC inspect/render + FFmpeg decode"; evidence = "controlled-profile-idx1.ec3.metrics.csv plus primary inspection"; measured = "strict=$($controlledIdx1.openjoc_strict_result); finite_pcm=$($controlledIdx1.finite_pcm); render=$($controlledIdx1.render_result); malformed_aus=$($controlledIdx1.malformed_aus); source_accounting=$($controlledIdx1Accounting.pass); coded_count=$($controlledIdx1.coded_count); quality=$($controlledIdx1Quality.pass)"; expected = "strict=PASS; finite_pcm=YES; render=PASS; malformed_aus=0; source accounting complete; M<=15; all published quality thresholds pass" },
-    [pscustomobject]@{ test_id = "T-002"; status = Get-DerivedStatus $t002Pass; evidence = "controlled-16/20/28 metrics sidecars plus independent leakage-matrix.csv"; measured = "all three coded_count<=15, silent_drops=0, source accounting complete, and quality thresholds pass"; expected = "M<=15; no silent discard; source/error/leakage/spatial quality thresholds pass" },
-    [pscustomobject]@{ test_id = "T-003"; status = Get-DerivedStatus $t003Pass; evidence = "Hanabi three-profile strict sidecars; primary idx1 accounting/quality; direct-speakers-causal.json and docs"; measured = "all profiles strict/finite/M<=15/no drops; primary source accounting=$hanabiAccountingPass; round-trip observation=$hanabiRoundTripQualityPass; DirectSpeakers causal test=$($causalJson.causal_test); documented=$directSpeakersDocumented"; expected = "no silent object dropping; M<=15; DirectSpeakers handling documented" },
+    [pscustomobject]@{ test_id = "T-001"; status = Get-DerivedStatus $t001Pass; command = "cargo run -p jocforge -- encode + pinned OpenJOC inspect/render + FFmpeg decode + source perturbations"; evidence = "controlled-profile-idx1.ec3.metrics.csv; source-causality.json; primary inspection"; measured = "strict=$($controlledIdx1.openjoc_strict_result); finite_pcm=$($controlledIdx1.finite_pcm); render=$($controlledIdx1.render_result); malformed_aus=$($controlledIdx1.malformed_aus); source_accounting=$($controlledIdx1Accounting.pass); coded_count=$($controlledIdx1.coded_count); quality=$($controlledIdx1Quality.pass); source_causality=$sourceCausalityPass"; expected = "strict=PASS; finite_pcm=YES; render=PASS; malformed_aus=0; complete source domain; every intended carrier input has causal encoded/render response; M<=15; all published quality thresholds pass" },
+    [pscustomobject]@{ test_id = "T-002"; status = Get-DerivedStatus $t002Pass; evidence = "controlled-16/20/28 metrics sidecars; independent leakage-matrix.csv; source-causality.json"; measured = "all three coded_count<=15, silent_drops=0, complete source accounting, quality thresholds pass, source_causality=$sourceCausalityPass"; expected = "M<=15; no silent discard; complete source coverage; source/error/leakage/spatial quality thresholds pass" },
+    [pscustomobject]@{ test_id = "T-003"; status = Get-DerivedStatus $t003Pass; evidence = "Hanabi three-profile strict sidecars; primary idx1 accounting/quality; source-causality.json; direct-speakers-causal.json and docs"; measured = "all profiles strict/finite/M<=15/no drops; primary source accounting=$hanabiAccountingPass; round-trip observation=$hanabiRoundTripQualityPass; DirectSpeakers causal test=$($causalJson.causal_test); documented=$directSpeakersDocumented; source_causality=$sourceCausalityPass"; expected = "no silent object dropping; complete authored-source coverage; every intended idx0/idx1/idx2 carrier input is causally source-derived; M<=15; DirectSpeakers handling documented" },
     [pscustomobject]@{ test_id = "T-004"; status = Get-DerivedStatus ((($bitrateRows | Where-Object status -eq "FAIL").Count -eq 0)); command = "cargo run -p jocforge -- encode for supported and unsupported rate probes"; evidence = "bitrate-sweep.csv"; measured = "failed_rows=$(@($bitrateRows | Where-Object status -eq "FAIL").Count); lower_rate_rows=$(@($bitrateRows | Where-Object { $_.actual_bitrate_kbps -eq "REJECTED" }).Count)"; expected = "failed_rows=0; each unsupported rate has nonzero exit and explicit rejection" },
     [pscustomobject]@{ test_id = "T-005"; status = Get-DerivedStatus $t005Evidence.pass; evidence = "temporal-metrics.csv plus stationary controlled-profile-idx1 metrics"; measured = "assignment/representative/slot churn and lifetimes are stable; transition bounds and matrix/carrier jumps are within thresholds"; expected = "no gratuitous representation permutation, sign/state jump, or audible reassignment artefact" },
     [pscustomobject]@{ test_id = "T-006"; status = Get-DerivedStatus $t006Evidence.pass; evidence = "temporal-metrics.csv and temporal-audit.csv"; measured = "five moving scenes checked for M, no drops, trajectory error, position jump, PCM discontinuity, gain jump, and speaker discontinuity"; expected = "bounded spatial/trajectory error without avoidable discontinuity" },
     [pscustomobject]@{ test_id = "T-007"; status = if ((@($leakageRows | Where-Object { [double]$_.unexplained_cluster_leakage -gt $UnexplainedLeakageThreshold }).Count) -eq 0) { "PASS" } else { "FAIL" }; evidence = "leakage-matrix.csv; independent coded-signal residual" },
-    [pscustomobject]@{ test_id = "T-008"; status = Get-DerivedStatus $t008Pass; command = "cargo run -p jocforge -- spectral-phase plus controlled profile OpenJOC/FFmpeg validation"; evidence = "spectral-phase.json; controlled profile renders; Hanabi strict/decode"; measured = "spectral_phase=$($spectralPhase.pass); spectral_gate=$($spectralPhase.spectral_gate); phase_gate=$($spectralPhase.phase_gate); polarity_gate=$($spectralPhase.polarity_gate); quadrature_gate=$($spectralPhase.quadrature_gate); transient_gate=$($spectralPhase.transient_gate)"; expected = "all hard spectral/phase gates true; all supported profile renders/decode strict" },
+    [pscustomobject]@{ test_id = "T-008"; status = Get-DerivedStatus $t008Pass; command = "cargo run -p jocforge -- spectral-phase plus pinned OpenJOC decoded/rendered final-render gate"; evidence = "spectral-phase.json; final-render-idx0/idx1/idx2.json; controlled profile metrics; Hanabi strict/decode"; measured = "spectral_phase=$($spectralPhase.pass); final_render_profiles=$($finalRenderPass); final_render_gates=$($t008AllProfileConditionsPass); leakage_headroom=$(@($t008ProfileConditions | Where-Object { $_.pass -ne $true }).Count -eq 0); negative_mutations=$($negativeMutationTests.final_render_negative_pass)"; expected = "all hard spectral/phase gates true; actual pinned OpenJOC final-render spectral, phase, polarity, quadrature, transient, leakage and headroom predicates pass" },
     [pscustomobject]@{ test_id = "T-009"; status = Get-DerivedStatus $t009Pass; command = "cargo run -p jocforge -- quantization-stress"; evidence = "quantization-stress.json"; measured = "profiles=$($quantization.profile_count); domain_values=$($quantization.domain_values_checked); matrix_values=$($quantization.matrix_values_checked); maximum_error=$($quantization.maximum_absolute_error)"; expected = "three profiles; 96 domain values; full matrix stress; error <= half quantum" },
     [pscustomobject]@{ test_id = "T-010"; status = if (($bitrateRows | Where-Object { $_.deterministic_reencode -eq "FAIL" }).Count -eq 0) { "PASS" } else { "FAIL" }; evidence = "bitrate sweep hashes" },
     [pscustomobject]@{ test_id = "T-011"; status = if ($shortJson.pass) { "PASS" } else { "FAIL" }; evidence = "short-final-process.json; repeated CLI process and ceil-frame accounting" },
@@ -933,8 +1649,14 @@ $closure = [ordered]@{
     short_final_process = $shortJson
     quantization_stress = $quantization
     spectral_phase = $spectralPhase
+    carrier_causality = $carrierCausality
+    source_causality = $sourceCausalityReport
+    final_decoded_render = $finalRenderValidations
+    final_render_corpus = $finalRenderCorpusValidations
+    t008_profile_conditions = $t008ProfileConditions
     anti_self_report_meta_test = $antiSelfReport
     negative_mutation_tests = $negativeMutationTests
+    predicate_audit = $predicateAudit
     controlled_profile_validation = $controlledProfileValidations
     hanabi_validation = $hanabiValidations
     clean_tests = $cleanTests

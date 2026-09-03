@@ -1,9 +1,72 @@
 // pattern: Functional Core
 
 use jocforge_core::{
-    ReductionConfig, adversarial_temporal_corpus, analyze_temporal_scene,
-    analyze_temporal_scene_with_config, temporal_corpus,
+    FinalRenderMeasurement, ReductionConfig, adversarial_temporal_corpus, analyze_temporal_scene,
+    analyze_temporal_scene_with_config, final_render_gate, temporal_corpus,
 };
+
+#[test]
+fn final_render_gate_rejects_each_declared_structural_mutation() {
+    let clean = FinalRenderMeasurement {
+        finite: true,
+        channel_coverage: true,
+        spectral_error: 0.10,
+        spectral_tilt_error: 0.20,
+        phase_coherence: 0.80,
+        polarity_preserved: true,
+        quadrature_phase_error: 0.10,
+        transient_phase_discontinuity: 0.10,
+        leakage: 0.0,
+        peak: 0.50,
+        headroom_margin: 0.40,
+    };
+    assert!(final_render_gate(&clean).pass);
+
+    let mutations = [
+        FinalRenderMeasurement {
+            spectral_tilt_error: 2.0,
+            ..clean
+        },
+        FinalRenderMeasurement {
+            phase_coherence: 0.0,
+            ..clean
+        },
+        FinalRenderMeasurement {
+            polarity_preserved: false,
+            ..clean
+        },
+        FinalRenderMeasurement {
+            quadrature_phase_error: 2.0,
+            ..clean
+        },
+        FinalRenderMeasurement {
+            transient_phase_discontinuity: 1.0,
+            ..clean
+        },
+        FinalRenderMeasurement {
+            leakage: 1.0,
+            ..clean
+        },
+        FinalRenderMeasurement {
+            peak: 1.0,
+            headroom_margin: -0.1,
+            ..clean
+        },
+        FinalRenderMeasurement {
+            finite: false,
+            ..clean
+        },
+        FinalRenderMeasurement {
+            channel_coverage: false,
+            ..clean
+        },
+    ];
+    assert!(
+        mutations
+            .iter()
+            .all(|measurement| !final_render_gate(measurement).pass)
+    );
+}
 
 #[test]
 fn temporal_corpus_contains_the_required_six_controlled_scenes() {

@@ -16,4 +16,7 @@ fn mandatory_profiles_have_distinct_public_input_orders() {
     );
     assert_ne!(flat.input_labels, height.input_labels);
     assert_ne!(flat.channel_map, height.channel_map);
+    assert_eq!(profile_spec(JocProfile::Idx0).d0_source_indices, [0, 1]);
+    assert_eq!(flat.d0_source_indices, [5, 6]);
+    assert_eq!(height.d0_source_indices, [5, 6]);
 }

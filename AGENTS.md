@@ -31,24 +31,26 @@ Last verified: 2026-09-03
 - `crates/jocforge-core/src/adm.rs` — narrow public BW64/ADM subset and
   deterministic synthetic fixture generation.
 - `crates/jocforge-core/src/analysis.rs` — pure rank-controlled factorization
-  plus generalized source-derived factorization with bounded analysis/ridge.
+  plus generalized source-derived factorization with bounded analysis/ridge
+  and deterministic carrier-causality probes.
 - `crates/jocforge-core/src/reduction.rs` — pure deterministic authored-object
   reduction, source accounting, spatial aggregation, and stability metrics.
 - `crates/jocforge-core/src/profile.rs` — mandatory idx0/idx1/idx2 topology
-  contracts.
+  contracts, including profile-owned D0 source indices.
 - `crates/jocforge-core/src/rate.rs` — deterministic clean I0/D0 budget
   allocations and legal-rate policy.
 - `crates/jocforge-core/src/validation.rs` — pure controlled and adversarial
   temporal corpus generation and metrics.
 - `crates/jocforge-core/src/spectral.rs` — pure deterministic spectral/phase
-  corpus generation and compatibility metrics.
+  corpus generation, compatibility metrics, and final-render gate evaluation.
 - `crates/jocforge-core/src/writer.rs` — pure JOC/OAMD/EMDF and I0 plus
   PCM-derived dependent D0 writer.
 - `crates/jocforge-cli/src/main.rs` — file/process orchestration shell.
 - `crates/jocforge-cli/src/file_scan.rs` — seek-aware BW64 chunk scanner that
   reads metadata after large `data` chunks without loading PCM, plus bounded
   PCM-frame reads for large programmes.
-- `scripts/` — reproducible external validation and evidence generation.
+- `scripts/` — reproducible external validation and evidence generation;
+  `final-render-quality.ps1` measures actual decoded/rendered PCM.
 - `validation/openjoc-validator.json` — authoritative external validator pin.
 - `summary/` — focused investigation summaries.
 - `docs/clean-generalized-encoder-design.md` and
@@ -97,6 +99,16 @@ Last verified: 2026-09-03
 - `spectral_phase_report` and `quantization-stress` provide independent clean
   evidence; `clean-validation-closure.json` is output-only and never an
   acceptance authority.
+- `carrier-causality.json` and `source-causality.json` are required evidence
+  for idx0/idx1/idx2 intended carrier source coverage; presence/count alone is
+  not sufficient.
+- D0 source indices are owned by `profile_spec` and consumed by both the
+  production package path and the D0 causality evidence; the closure asserts
+  the per-row carrier/source identities and both dependent inputs.
+- `spectral-phase OUTPUT.json --final-render-report REPORT.json` records the
+  internal corpus diagnostics together with a passing pinned
+  `FINAL_DECODED_RENDER` evidence stage. The closure runner's PASS predicate
+  consumes the Rust final-render gate for actual OpenJOC-rendered PCM.
 - No proprietary Dolby encoder binary, media, or reverse-engineered logic is
   permitted in this repository.
 - Generated audio/binary evidence under `artifacts/` is local and ignored;
@@ -127,3 +139,8 @@ Last verified: 2026-09-03
   positions are energy-weighted aggregates; DirectSpeakers are handled only by
   the explicitly documented positioned-source fallback, not as complete bed
   semantics.
+- Final decoded-render checks use the pinned OpenJOC output and independent
+  FFmpeg decode as a same-carrier alignment reference. Their structural
+  thresholds allow E-AC-3/downmix loss while rejecting non-finite samples,
+  spectral collapse/tilt, phase collapse, polarity inversion, excessive
+  leakage, and headroom violations; they do not claim perceptual parity.

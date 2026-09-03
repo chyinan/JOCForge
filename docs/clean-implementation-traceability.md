@@ -39,7 +39,7 @@ Disposition counts: `IMPLEMENTED=54`, `ALREADY_SATISFIED=7`, `TEST_ONLY=0`,
 | RED-008 | IMPLEMENTED | signal/spatial/energy objective | design document and config |
 | RED-009 | IMPLEMENTED | previous representative seed reuse and explicit continuity switch cost | `reduce_scene_with_previous`; temporal regression tests |
 | CAR-001 | ALREADY_SATISFIED | existing `profile_spec` topology | profile tests; strict inspect |
-| CAR-002 | IMPLEMENTED | source-derived 5/7 carrier wrapper | factorization tests; CLI |
+| CAR-002 | IMPLEMENTED | source-derived 5/7 carrier wrapper with profile-owned D0 mapping and per-input perturbation evidence | `profile_spec` mapping test; `carrier-causality.json`; `source-causality.json`; factorization/writer/CLI tests |
 | CAR-003 | IMPLEMENTED | reduced signals remain carrier inputs and measured matrix residual is thresholded | factorization residual oracle; closure JSON |
 | CAR-004 | IMPLEMENTED | bounded reduction output and shared `0.90` peak normalization for reduced and LFE carriers | LFE peak/headroom sidecar rows and peak-limit unit/integration tests |
 | CAR-005 | IMPLEMENTED | profile labels/order remain stable | profile tests and stdout |
@@ -49,7 +49,7 @@ Disposition counts: `IMPLEMENTED=54`, `ALREADY_SATISFIED=7`, `TEST_ONLY=0`,
 | MAT-001 | IMPLEMENTED | public coarse 96-symbol Huffman table and quantizer | writer arbitrary-symbol test; full-domain three-profile quantization stress |
 | MAT-002 | IMPLEMENTED | bounded carrier scaling and quantized coefficients | factorization wrapper |
 | MAT-003 | IMPLEMENTED | ridge-regularized least-squares objective | `analysis.rs` |
-| MAT-004 | IMPLEMENTED | closure measures signal, spatial, unexplained leakage, factorization, and speaker-proxy error | quality gates and closure artifacts |
+| MAT-004 | IMPLEMENTED | closure measures signal, spatial, unexplained leakage, factorization, speaker-proxy, and final decoded-render compatibility error | quality gates; `final-decoded-render-summary.json`; derived T-008 |
 | MAT-005 | IMPLEMENTED | dynamic ridge regularization | near-singular analysis test |
 | MAT-006 | IMPLEMENTED | deterministic coefficients with finite element-wise jump measurement | analysis jump test; sidecar and repeated encode |
 | MAT-007 | IMPLEMENTED | full matrix dimensions and EMDF payload bounds | OpenJOC strict inspect; full-domain quantization stress |
@@ -66,8 +66,8 @@ Disposition counts: `IMPLEMENTED=54`, `ALREADY_SATISFIED=7`, `TEST_ONLY=0`,
 | TMP-008 | OPEN_RESEARCH | richer interpolation policy remains deferred after membership stabilization | ORQ-006; C3 gate |
 | COM-001 | ALREADY_SATISFIED | profile channel maps and public EMDF payload IDs | profile/writer tests |
 | COM-002 | IMPLEMENTED | profile-fixed compatibility layouts documented | design and README |
-| COM-003 | IMPLEMENTED | OpenJOC speaker render plus quantitative clean speaker projection per profile | rendered WAV evidence; `speaker_render_error` threshold |
-| COM-004 | IMPLEMENTED | strict render/decode plus independently measured spectral, band, tilt, transient, phase, coherence, polarity, quadrature, and boundary gates | `spectral-phase.json`; controlled profile OpenJOC/FFmpeg evidence; derived T-008 |
+| COM-003 | IMPLEMENTED | pinned OpenJOC speaker render plus quantitative clean speaker projection per profile | rendered WAV evidence; `speaker_render_error` threshold; `FINAL_DECODED_RENDER` rows |
+| COM-004 | IMPLEMENTED | strict render/decode plus independently measured final-render spectral, band, tilt, transient, phase, coherence, polarity, quadrature, leakage, and headroom gates | `spectral-phase.json` with embedded `FINAL_DECODED_RENDER`; `final-render-idx*.json`; derived T-008 |
 | COM-005 | IMPLEMENTED | compatibility is profile selection, not source mutation | CLI profile path |
 | COM-006 | OPEN_RESEARCH | compatibility loss is not yet in reducer objective | ORQ-007 |
 | COM-007 | ALREADY_SATISFIED | retained as reference-only observation | clean handoff |
@@ -103,3 +103,18 @@ audio uses the complete 1536-sample source window.
 
 This milestone does not claim production perceptual quality, frequency-local
 optimization, sparse/full selection parity, or complete non-LFE bed semantics.
+
+## D4 evidence-closure regeneration
+
+The 2026-09-03 closure regeneration retains the complete handoff matrix:
+
+- `CLEAN_REQUIREMENTS_TOTAL = 71`
+- `MANDATORY_REQUIREMENTS_TOTAL = 53`
+- `MANDATORY_REQUIREMENTS_UNRESOLVED = 0`
+- `REQUIREMENT_TRACEABILITY = COMPLETE`
+
+T-001, T-002, and T-003 now require exact expected source-index domains and
+causal source perturbations. T-008 requires one predicate for each declared
+strict/decode/render, source-quality, leakage, peak/headroom, and final-render
+condition. Closure status remains derived from primary sidecars, actual
+rendered PCM, and the Rust gate; closure JSON is output-only.

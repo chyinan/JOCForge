@@ -74,6 +74,114 @@ pub struct SpectralPhaseReport {
     pub metrics: Vec<SpectralPhaseMetric>,
 }
 
+/// Measurements made after the pinned decoder has rendered the final output.
+///
+/// These values deliberately describe the consumer-visible path rather than
+/// the internal reducer or carrier basis. E-AC-3 and compatibility rendering
+/// are lossy, so the spectral and phase thresholds are structural guards, not
+/// bit-identity requirements.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct FinalRenderMeasurement {
+    pub finite: bool,
+    pub channel_coverage: bool,
+    pub spectral_error: f64,
+    pub spectral_tilt_error: f64,
+    pub phase_coherence: f64,
+    pub polarity_preserved: bool,
+    pub quadrature_phase_error: f64,
+    pub transient_phase_discontinuity: f64,
+    pub leakage: f64,
+    pub peak: f64,
+    pub headroom_margin: f64,
+}
+
+/// Per-condition final-render gate result.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct FinalRenderGate {
+    pub pass: bool,
+    pub finite: GateStatus,
+    pub channel_coverage: GateStatus,
+    pub spectral: GateStatus,
+    pub phase: GateStatus,
+    pub polarity: GateStatus,
+    pub quadrature: GateStatus,
+    pub transient: GateStatus,
+    pub leakage: GateStatus,
+    pub headroom: GateStatus,
+}
+
+const FINAL_RENDER_SPECTRAL_ERROR_LIMIT: f64 = 0.75;
+const FINAL_RENDER_SPECTRAL_TILT_LIMIT: f64 = 1.0;
+const FINAL_RENDER_PHASE_COHERENCE_FLOOR: f64 = 0.50;
+// Compatibility downmix can rotate a stereo pair substantially; 1.5 radians
+// is the structural boundary while coherence and polarity remain independent
+// gates for collapse and inversion.
+const FINAL_RENDER_QUADRATURE_ERROR_LIMIT: f64 = 1.50;
+const FINAL_RENDER_TRANSIENT_DISCONTINUITY_LIMIT: f64 = 0.75;
+const FINAL_RENDER_LEAKAGE_LIMIT: f64 = ENERGY_FLOOR;
+const FINAL_RENDER_PEAK_LIMIT: f64 = 0.90;
+const FINAL_RENDER_HEADROOM_FLOOR: f64 = 0.0;
+
+/// Evaluates all mandatory structural conditions for one final decoded render.
+#[must_use]
+pub fn final_render_gate(measurement: &FinalRenderMeasurement) -> FinalRenderGate {
+    let finite = measurement.finite
+        && [
+            measurement.spectral_error,
+            measurement.spectral_tilt_error,
+            measurement.phase_coherence,
+            measurement.quadrature_phase_error,
+            measurement.transient_phase_discontinuity,
+            measurement.leakage,
+            measurement.peak,
+            measurement.headroom_margin,
+        ]
+        .into_iter()
+        .all(f64::is_finite);
+    let spectral = finite
+        && measurement.spectral_error >= 0.0
+        && measurement.spectral_error <= FINAL_RENDER_SPECTRAL_ERROR_LIMIT
+        && measurement.spectral_tilt_error >= 0.0
+        && measurement.spectral_tilt_error <= FINAL_RENDER_SPECTRAL_TILT_LIMIT;
+    let phase = finite
+        && measurement.phase_coherence >= FINAL_RENDER_PHASE_COHERENCE_FLOOR
+        && measurement.phase_coherence <= 1.0;
+    let polarity = finite && measurement.polarity_preserved;
+    let quadrature = finite
+        && measurement.quadrature_phase_error >= 0.0
+        && measurement.quadrature_phase_error <= FINAL_RENDER_QUADRATURE_ERROR_LIMIT;
+    let transient = finite
+        && measurement.transient_phase_discontinuity >= 0.0
+        && measurement.transient_phase_discontinuity <= FINAL_RENDER_TRANSIENT_DISCONTINUITY_LIMIT;
+    let leakage =
+        finite && measurement.leakage >= 0.0 && measurement.leakage <= FINAL_RENDER_LEAKAGE_LIMIT;
+    let headroom = finite
+        && measurement.peak >= 0.0
+        && measurement.peak <= FINAL_RENDER_PEAK_LIMIT
+        && measurement.headroom_margin >= FINAL_RENDER_HEADROOM_FLOOR;
+    let channel_coverage = finite && measurement.channel_coverage;
+    FinalRenderGate {
+        pass: finite
+            && channel_coverage
+            && spectral
+            && phase
+            && polarity
+            && quadrature
+            && transient
+            && leakage
+            && headroom,
+        finite: status(finite),
+        channel_coverage: status(channel_coverage),
+        spectral: status(spectral),
+        phase: status(phase),
+        polarity: status(polarity),
+        quadrature: status(quadrature),
+        transient: status(transient),
+        leakage: status(leakage),
+        headroom: status(headroom),
+    }
+}
+
 /// Builds the repository-owned controlled spectral/phase corpus and measures
 /// a clean compatibility presentation before E-AC-3 coding.
 ///

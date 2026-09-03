@@ -1,6 +1,7 @@
 // pattern: Imperative Shell
 
 use std::{
+    collections::BTreeMap,
     env,
     fmt::Write as _,
     fs,
@@ -14,12 +15,13 @@ mod file_scan;
 use file_scan::{read_pcm_frame, scan_bw64_file};
 
 use jocforge_core::{
-    AdmObject, AdmObjectKind, JocProfile, ReductionConfig, ReductionSource,
-    SOURCE_DERIVED_CARRIER_PEAK_LIMIT, factorize_source_derived, generate_synthetic_scene_fixture,
-    limit_signal_peak, maximum_absolute_difference,
-    package_source_derived_access_unit_with_frame_sizes, parse_bw64_adm_metadata, profile_spec,
-    quantize_coefficient, rate_budget, reconstruction_error, reduce_scene_with_previous,
-    spectral_phase_report, validate_source_derived_adm_metadata, write_one_au_proof,
+    AdmObject, AdmObjectKind, FinalRenderMeasurement, JocProfile, ReductionConfig, ReductionSource,
+    SOURCE_DERIVED_CARRIER_PEAK_LIMIT, d0_carrier_causality, factorize_source_derived,
+    final_render_gate, generate_synthetic_scene_fixture, limit_signal_peak,
+    maximum_absolute_difference, package_source_derived_access_unit_with_frame_sizes,
+    parse_bw64_adm_metadata, profile_spec, quantize_coefficient, rate_budget, reconstruction_error,
+    reduce_scene_with_previous, source_derived_carrier_causality, spectral_phase_report,
+    validate_source_derived_adm_metadata, write_one_au_proof,
 };
 
 const JOC_FRAME_SAMPLES: usize = 1536;
@@ -44,12 +46,14 @@ fn run(arguments: &[String]) -> Result<(), String> {
         Some("inspect-adm") => run_inspect_adm(&arguments[1..]),
         Some("encode") => run_encode(&arguments[1..]),
         Some("quantization-stress") => run_quantization_stress(&arguments[1..]),
+        Some("carrier-causality") => run_carrier_causality(&arguments[1..]),
         Some("spectral-phase") => run_spectral_phase(&arguments[1..]),
+        Some("final-render-gate") => run_final_render_gate(&arguments[1..]),
         Some("temporal") => run_temporal(&arguments[1..]),
         Some("temporal-adversarial") => run_temporal_adversarial(&arguments[1..]),
         Some(command) => Err(format!("unsupported command '{command}'")),
         None => Err(
-            "usage: jocforge proof|fixture|fixture-directspeakers|fixture-unsupported|inspect-adm|encode|quantization-stress|spectral-phase|temporal ..."
+            "usage: jocforge proof|fixture|fixture-directspeakers|fixture-unsupported|inspect-adm|encode|quantization-stress|carrier-causality|spectral-phase|final-render-gate|temporal ..."
                 .to_owned(),
         ),
     }
@@ -197,11 +201,111 @@ fn run_quantization_stress(arguments: &[String]) -> Result<(), String> {
     }
 }
 
-fn run_spectral_phase(arguments: &[String]) -> Result<(), String> {
+fn run_carrier_causality(arguments: &[String]) -> Result<(), String> {
     let [output] = arguments else {
-        return Err("usage: jocforge spectral-phase OUTPUT.json".to_owned());
+        return Err("usage: jocforge carrier-causality OUTPUT.json".to_owned());
+    };
+    let profile_specs = [("idx0", 5_usize), ("idx1", 7_usize), ("idx2", 7_usize)];
+    let mut profile_json = Vec::with_capacity(profile_specs.len());
+    let mut pass = true;
+    for (profile, carrier_count) in profile_specs {
+        let measurements = source_derived_carrier_causality(carrier_count)
+            .map_err(|error| format!("carrier causality fixture failed for {profile}: {error}"))?;
+        let profile_pass = measurements.iter().all(|measurement| {
+            measurement.carrier_index == measurement.source_index
+                && measurement.carrier_changed
+                && measurement.maximum_change > 1.0e-12
+        });
+        let joc_profile = parse_profile(profile)?;
+        let d0_measurements = d0_carrier_causality(joc_profile)
+            .map_err(|error| format!("D0 causality fixture failed for {profile}: {error}"))?;
+        let d0_pass = d0_measurements
+            .iter()
+            .all(|measurement| measurement.changed && measurement.changed_byte_count > 0);
+        let d0_source_indices = profile_spec(joc_profile).d0_source_indices;
+        pass &= measurements.len() == carrier_count && profile_pass && d0_pass;
+        let rows = measurements
+            .iter()
+            .map(|measurement| {
+                format!(
+                    "{{\"carrier_index\":{},\"source_index\":{},\"maximum_change\":{:.17e},\"carrier_changed\":{}}}",
+                    measurement.carrier_index,
+                    measurement.source_index,
+                    measurement.maximum_change,
+                    json_bool(measurement.carrier_changed),
+                )
+            })
+            .collect::<Vec<_>>()
+            .join(",");
+        let d0_rows = d0_measurements
+            .iter()
+            .map(|measurement| {
+                format!(
+                    "{{\"input_index\":{},\"changed_byte_count\":{},\"changed\":{}}}",
+                    measurement.input_index,
+                    measurement.changed_byte_count,
+                    json_bool(measurement.changed),
+                )
+            })
+            .collect::<Vec<_>>()
+            .join(",");
+        profile_json.push(format!(
+            "{{\"profile\":\"{profile}\",\"expected_carrier_count\":{carrier_count},\"pass\":{},\"carriers\":[{rows}],\"d0_input_source_indices\":[{},{}],\"d0_writer_pass\":{},\"d0_writer\":[{d0_rows}]}}",
+            json_bool(profile_pass && d0_pass),
+            d0_source_indices[0],
+            d0_source_indices[1],
+            json_bool(d0_pass),
+        ));
+    }
+    let json = format!(
+        "{{\n  \"fixture\": \"deterministic source perturbation\",\n  \"pass\": {},\n  \"profiles\": [{}]\n}}\n",
+        json_bool(pass),
+        profile_json.join(","),
+    );
+    write_output(
+        &PathBuf::from(output),
+        json.into_bytes(),
+        "carrier causality report",
+    )?;
+    if pass {
+        Ok(())
+    } else {
+        Err("source-derived carrier causality gate failed".to_owned())
+    }
+}
+
+fn run_spectral_phase(arguments: &[String]) -> Result<(), String> {
+    let (output, final_render_report_path) = match arguments {
+        [output] => (output.as_str(), None),
+        [output, flag, report] if flag == "--final-render-report" => {
+            (output.as_str(), Some(report.as_str()))
+        }
+        _ => {
+            return Err(
+                "usage: jocforge spectral-phase OUTPUT.json [--final-render-report REPORT.json]"
+                    .to_owned(),
+            );
+        }
     };
     let report = spectral_phase_report();
+    let (decoded_eac3_stage, openjoc_stage, final_render_evidence) =
+        if let Some(path) = final_render_report_path {
+            let evidence = fs::read_to_string(path).map_err(|error| {
+                format!("failed to read final decoded render evidence '{path}': {error}")
+            })?;
+            let evidence_value = parse_json_document(&evidence).map_err(|error| {
+                format!("failed to parse final decoded render evidence '{path}': {error}")
+            })?;
+            if !final_render_evidence_is_valid(&evidence_value) {
+                return Err(
+                    "final decoded render evidence is missing a passing FINAL_DECODED_RENDER stage"
+                        .to_owned(),
+                );
+            }
+            ("FINAL_DECODED_RENDER", "FINAL_DECODED_RENDER", evidence)
+        } else {
+            ("NOT_AVAILABLE", "NOT_AVAILABLE", String::from("null"))
+        };
     let metrics = report
         .metrics
         .iter()
@@ -231,9 +335,12 @@ fn run_spectral_phase(arguments: &[String]) -> Result<(), String> {
         .collect::<Vec<_>>()
         .join(",\n    ");
     let json = format!(
-        "{{\n  \"pass\": {},\n  \"fixture_count\": {},\n  \"reference_stage\": \"authored deterministic PCM\",\n  \"compatibility_stage\": \"clean pre-E-AC-3 compatibility presentation\",\n  \"decoded_eac3_stage\": \"NOT_AVAILABLE\",\n  \"openjoc_stage\": \"NOT_AVAILABLE\",\n  \"fft_size\": 256,\n  \"window\": \"periodic Hann over one 256-sample window\",\n  \"sample_rate\": 48000,\n  \"spectral_gate\": {},\n  \"phase_gate\": {},\n  \"polarity_gate\": {},\n  \"quadrature_gate\": {},\n  \"transient_gate\": {},\n  \"metrics\": [\n    {}\n  ]\n}}\n",
+        "{{\n  \"pass\": {},\n  \"fixture_count\": {},\n  \"reference_stage\": \"authored deterministic PCM\",\n  \"compatibility_stage\": \"clean pre-E-AC-3 compatibility presentation\",\n  \"decoded_eac3_stage\": \"{}\",\n  \"openjoc_stage\": \"{}\",\n  \"final_decoded_render_evidence\": {},\n  \"fft_size\": 256,\n  \"window\": \"periodic Hann over one 256-sample window\",\n  \"sample_rate\": 48000,\n  \"spectral_gate\": {},\n  \"phase_gate\": {},\n  \"polarity_gate\": {},\n  \"quadrature_gate\": {},\n  \"transient_gate\": {},\n  \"metrics\": [\n    {}\n  ]\n}}\n",
         json_bool(report.pass.is_pass()),
         report.fixture_count,
+        decoded_eac3_stage,
+        openjoc_stage,
+        final_render_evidence,
         json_bool(report.spectral_gate.is_pass()),
         json_bool(report.phase_gate.is_pass()),
         json_bool(report.polarity_gate.is_pass()),
@@ -253,6 +360,423 @@ fn run_spectral_phase(arguments: &[String]) -> Result<(), String> {
     }
 }
 
+fn run_final_render_gate(arguments: &[String]) -> Result<(), String> {
+    let [
+        output,
+        finite,
+        channel_coverage,
+        spectral_error,
+        spectral_tilt_error,
+        phase_coherence,
+        polarity_preserved,
+        quadrature_phase_error,
+        transient_phase_discontinuity,
+        leakage,
+        peak,
+        headroom_margin,
+    ] = arguments
+    else {
+        return Err("usage: jocforge final-render-gate OUTPUT.json FINITE CHANNEL_COVERAGE SPECTRAL_ERROR SPECTRAL_TILT_ERROR PHASE_COHERENCE POLARITY_PRESERVED QUADRATURE_PHASE_ERROR TRANSIENT_PHASE_DISCONTINUITY LEAKAGE PEAK HEADROOM_MARGIN".to_owned());
+    };
+    let measurement = FinalRenderMeasurement {
+        finite: parse_boolean(finite)?,
+        channel_coverage: parse_boolean(channel_coverage)?,
+        spectral_error: parse_f64("spectral error", spectral_error)?,
+        spectral_tilt_error: parse_f64("spectral tilt error", spectral_tilt_error)?,
+        phase_coherence: parse_f64("phase coherence", phase_coherence)?,
+        polarity_preserved: parse_boolean(polarity_preserved)?,
+        quadrature_phase_error: parse_f64("quadrature phase error", quadrature_phase_error)?,
+        transient_phase_discontinuity: parse_f64(
+            "transient phase discontinuity",
+            transient_phase_discontinuity,
+        )?,
+        leakage: parse_f64("leakage", leakage)?,
+        peak: parse_f64("peak", peak)?,
+        headroom_margin: parse_f64("headroom margin", headroom_margin)?,
+    };
+    let gate = final_render_gate(&measurement);
+    let json = format!(
+        "{{\n  \"stage\": \"FINAL_DECODED_RENDER\",\n  \"finite\": {},\n  \"channel_coverage\": {},\n  \"spectral_error\": {:.17e},\n  \"spectral_tilt_error\": {:.17e},\n  \"phase_coherence\": {:.17e},\n  \"polarity_preserved\": {},\n  \"quadrature_phase_error\": {:.17e},\n  \"transient_phase_discontinuity\": {:.17e},\n  \"leakage\": {:.17e},\n  \"peak\": {:.17e},\n  \"headroom_margin\": {:.17e},\n  \"finite_gate\": {},\n  \"channel_coverage_gate\": {},\n  \"spectral_gate\": {},\n  \"phase_gate\": {},\n  \"polarity_gate\": {},\n  \"quadrature_gate\": {},\n  \"transient_gate\": {},\n  \"leakage_gate\": {},\n  \"headroom_gate\": {},\n  \"pass\": {}\n}}\n",
+        json_bool(measurement.finite),
+        json_bool(measurement.channel_coverage),
+        measurement.spectral_error,
+        measurement.spectral_tilt_error,
+        measurement.phase_coherence,
+        json_bool(measurement.polarity_preserved),
+        measurement.quadrature_phase_error,
+        measurement.transient_phase_discontinuity,
+        measurement.leakage,
+        measurement.peak,
+        measurement.headroom_margin,
+        json_bool(gate.finite.is_pass()),
+        json_bool(gate.channel_coverage.is_pass()),
+        json_bool(gate.spectral.is_pass()),
+        json_bool(gate.phase.is_pass()),
+        json_bool(gate.polarity.is_pass()),
+        json_bool(gate.quadrature.is_pass()),
+        json_bool(gate.transient.is_pass()),
+        json_bool(gate.leakage.is_pass()),
+        json_bool(gate.headroom.is_pass()),
+        json_bool(gate.pass),
+    );
+    write_output(
+        &PathBuf::from(output),
+        json.into_bytes(),
+        "final decoded render gate report",
+    )?;
+    if gate.pass {
+        Ok(())
+    } else {
+        Err("final decoded render gate failed".to_owned())
+    }
+}
+
+fn parse_boolean(value: &str) -> Result<bool, String> {
+    match value {
+        "true" => Ok(true),
+        "false" => Ok(false),
+        _ => Err(format!("invalid boolean '{value}': expected true or false")),
+    }
+}
+
+fn parse_f64(name: &str, value: &str) -> Result<f64, String> {
+    value
+        .parse::<f64>()
+        .map_err(|error| format!("invalid {name} '{value}': {error}"))
+}
+
+#[derive(Clone, Debug, PartialEq)]
+enum JsonValue {
+    Object(BTreeMap<String, JsonValue>),
+    Array(Vec<JsonValue>),
+    String(String),
+    Bool(bool),
+    Number(String),
+    Null,
+}
+
+struct JsonParser<'a> {
+    bytes: &'a [u8],
+    offset: usize,
+}
+
+fn parse_json_document(document: &str) -> Result<JsonValue, String> {
+    let mut parser = JsonParser {
+        bytes: document.as_bytes(),
+        offset: 0,
+    };
+    let value = parser.parse_value()?;
+    parser.skip_whitespace();
+    if parser.offset != parser.bytes.len() {
+        return Err("trailing data after JSON value".to_owned());
+    }
+    Ok(value)
+}
+
+impl JsonParser<'_> {
+    fn parse_value(&mut self) -> Result<JsonValue, String> {
+        self.skip_whitespace();
+        match self.bytes.get(self.offset).copied() {
+            Some(b'{') => self.parse_object(),
+            Some(b'[') => self.parse_array(),
+            Some(b'"') => self.parse_string().map(JsonValue::String),
+            Some(b't') => self.parse_literal(b"true", JsonValue::Bool(true)),
+            Some(b'f') => self.parse_literal(b"false", JsonValue::Bool(false)),
+            Some(b'n') => self.parse_literal(b"null", JsonValue::Null),
+            Some(b'-' | b'0'..=b'9') => self.parse_number().map(JsonValue::Number),
+            Some(_) => Err(format!("unexpected JSON byte at offset {}", self.offset)),
+            None => Err("unexpected end of JSON document".to_owned()),
+        }
+    }
+
+    fn parse_object(&mut self) -> Result<JsonValue, String> {
+        self.expect_byte(b'{')?;
+        let mut object = BTreeMap::new();
+        self.skip_whitespace();
+        if self.consume_byte(b'}') {
+            return Ok(JsonValue::Object(object));
+        }
+        loop {
+            self.skip_whitespace();
+            let key = self.parse_string()?;
+            self.skip_whitespace();
+            self.expect_byte(b':')?;
+            let value = self.parse_value()?;
+            object.insert(key, value);
+            self.skip_whitespace();
+            if self.consume_byte(b'}') {
+                return Ok(JsonValue::Object(object));
+            }
+            self.expect_byte(b',')?;
+        }
+    }
+
+    fn parse_array(&mut self) -> Result<JsonValue, String> {
+        self.expect_byte(b'[')?;
+        let mut array = Vec::new();
+        self.skip_whitespace();
+        if self.consume_byte(b']') {
+            return Ok(JsonValue::Array(array));
+        }
+        loop {
+            array.push(self.parse_value()?);
+            self.skip_whitespace();
+            if self.consume_byte(b']') {
+                return Ok(JsonValue::Array(array));
+            }
+            self.expect_byte(b',')?;
+        }
+    }
+
+    fn parse_string(&mut self) -> Result<String, String> {
+        self.expect_byte(b'"')?;
+        let mut value = String::new();
+        loop {
+            let byte = self
+                .bytes
+                .get(self.offset)
+                .copied()
+                .ok_or_else(|| "unterminated JSON string".to_owned())?;
+            self.offset += 1;
+            match byte {
+                b'"' => return Ok(value),
+                b'\\' => {
+                    let escape = self
+                        .bytes
+                        .get(self.offset)
+                        .copied()
+                        .ok_or_else(|| "unterminated JSON escape".to_owned())?;
+                    self.offset += 1;
+                    let character = match escape {
+                        b'"' => '"',
+                        b'\\' => '\\',
+                        b'/' => '/',
+                        b'b' => '\u{0008}',
+                        b'f' => '\u{000c}',
+                        b'n' => '\n',
+                        b'r' => '\r',
+                        b't' => '\t',
+                        b'u' => {
+                            let mut code = 0_u32;
+                            for _ in 0..4 {
+                                let digit = self
+                                    .bytes
+                                    .get(self.offset)
+                                    .copied()
+                                    .and_then(hex_digit)
+                                    .ok_or_else(|| "invalid JSON unicode escape".to_owned())?;
+                                self.offset += 1;
+                                code = code * 16 + u32::from(digit);
+                            }
+                            char::from_u32(code)
+                                .ok_or_else(|| "invalid JSON unicode scalar".to_owned())?
+                        }
+                        _ => return Err("invalid JSON escape".to_owned()),
+                    };
+                    value.push(character);
+                }
+                0..=0x1f => return Err("JSON string contains a control byte".to_owned()),
+                byte => value.push(char::from(byte)),
+            }
+        }
+    }
+
+    fn parse_number(&mut self) -> Result<String, String> {
+        let start = self.offset;
+        if self.consume_byte(b'-') {
+            // The integer portion below validates that '-' is not standalone.
+        }
+        match self.bytes.get(self.offset).copied() {
+            Some(b'0') => self.offset += 1,
+            Some(b'1'..=b'9') => {
+                self.offset += 1;
+                while self.bytes.get(self.offset).is_some_and(u8::is_ascii_digit) {
+                    self.offset += 1;
+                }
+            }
+            _ => return Err("invalid JSON number".to_owned()),
+        }
+        if self.consume_byte(b'.') {
+            let fraction_start = self.offset;
+            while self.bytes.get(self.offset).is_some_and(u8::is_ascii_digit) {
+                self.offset += 1;
+            }
+            if fraction_start == self.offset {
+                return Err("JSON number has an empty fraction".to_owned());
+            }
+        }
+        if self
+            .bytes
+            .get(self.offset)
+            .is_some_and(|byte| *byte == b'e' || *byte == b'E')
+        {
+            self.offset += 1;
+            if self
+                .bytes
+                .get(self.offset)
+                .is_some_and(|byte| *byte == b'+' || *byte == b'-')
+            {
+                self.offset += 1;
+            }
+            let exponent_start = self.offset;
+            while self.bytes.get(self.offset).is_some_and(u8::is_ascii_digit) {
+                self.offset += 1;
+            }
+            if exponent_start == self.offset {
+                return Err("JSON number has an empty exponent".to_owned());
+            }
+        }
+        Ok(String::from_utf8_lossy(&self.bytes[start..self.offset]).into_owned())
+    }
+
+    fn parse_literal(&mut self, literal: &[u8], value: JsonValue) -> Result<JsonValue, String> {
+        if self.bytes.get(self.offset..self.offset + literal.len()) == Some(literal) {
+            self.offset += literal.len();
+            Ok(value)
+        } else {
+            Err("invalid JSON literal".to_owned())
+        }
+    }
+
+    fn skip_whitespace(&mut self) {
+        while self
+            .bytes
+            .get(self.offset)
+            .is_some_and(u8::is_ascii_whitespace)
+        {
+            self.offset += 1;
+        }
+    }
+
+    fn consume_byte(&mut self, expected: u8) -> bool {
+        if self.bytes.get(self.offset).copied() == Some(expected) {
+            self.offset += 1;
+            true
+        } else {
+            false
+        }
+    }
+
+    fn expect_byte(&mut self, expected: u8) -> Result<(), String> {
+        if self.consume_byte(expected) {
+            Ok(())
+        } else {
+            Err(format!(
+                "expected JSON byte '{}' at offset {}",
+                char::from(expected),
+                self.offset
+            ))
+        }
+    }
+}
+
+fn hex_digit(byte: u8) -> Option<u8> {
+    match byte {
+        b'0'..=b'9' => Some(byte - b'0'),
+        b'a'..=b'f' => Some(byte - b'a' + 10),
+        b'A'..=b'F' => Some(byte - b'A' + 10),
+        _ => None,
+    }
+}
+
+fn final_render_evidence_is_valid(value: &JsonValue) -> bool {
+    let JsonValue::Object(root) = value else {
+        return false;
+    };
+    if json_string(root, "stage") != Some("FINAL_DECODED_RENDER")
+        || json_string(root, "decoder") != Some("PINNED_OPENJOC")
+        || json_boolean(root, "final_render_pass") != Some(true)
+    {
+        return false;
+    }
+    let Some(JsonValue::Array(profiles)) = root.get("profiles") else {
+        return false;
+    };
+    ["idx0", "idx1", "idx2"].into_iter().all(|profile| {
+        profiles
+            .iter()
+            .any(|value| json_profile_gate_is_passing(value, profile))
+    })
+}
+
+fn json_profile_gate_is_passing(value: &JsonValue, profile: &str) -> bool {
+    let JsonValue::Object(object) = value else {
+        return false;
+    };
+    if json_string(object, "stage") != Some("FINAL_DECODED_RENDER")
+        || json_string(object, "profile") != Some(profile)
+        || json_boolean(object, "finite") != Some(true)
+        || json_boolean(object, "channel_coverage") != Some(true)
+        || json_boolean(object, "polarity_preserved") != Some(true)
+        || !required_finite_measurements_present(object)
+    {
+        return false;
+    }
+    let Some(JsonValue::Object(gate)) = object.get("gate") else {
+        return false;
+    };
+    let required_gates = [
+        "finite_gate",
+        "channel_coverage_gate",
+        "spectral_gate",
+        "phase_gate",
+        "polarity_gate",
+        "quadrature_gate",
+        "transient_gate",
+        "leakage_gate",
+        "headroom_gate",
+    ];
+    json_number(gate, "command_exit_code") == Some(0.0)
+        && required_gates
+            .into_iter()
+            .all(|name| json_boolean(gate, name) == Some(true))
+        && json_boolean(gate, "pass") == Some(true)
+}
+
+fn required_finite_measurements_present(object: &BTreeMap<String, JsonValue>) -> bool {
+    [
+        "spectral_error",
+        "spectral_tilt_error",
+        "phase_coherence",
+        "quadrature_phase_error",
+        "transient_phase_discontinuity",
+        "leakage",
+        "peak",
+        "headroom_margin",
+    ]
+    .into_iter()
+    .all(|name| {
+        object
+            .get(name)
+            .and_then(json_number_value)
+            .is_some_and(f64::is_finite)
+    })
+}
+
+fn json_string<'a>(object: &'a BTreeMap<String, JsonValue>, name: &str) -> Option<&'a str> {
+    match object.get(name) {
+        Some(JsonValue::String(value)) => Some(value),
+        _ => None,
+    }
+}
+
+fn json_boolean(object: &BTreeMap<String, JsonValue>, name: &str) -> Option<bool> {
+    match object.get(name) {
+        Some(JsonValue::Bool(value)) => Some(*value),
+        _ => None,
+    }
+}
+
+fn json_number(object: &BTreeMap<String, JsonValue>, name: &str) -> Option<f64> {
+    object.get(name).and_then(json_number_value)
+}
+
+fn json_number_value(value: &JsonValue) -> Option<f64> {
+    match value {
+        JsonValue::Number(value) => value.parse::<f64>().ok(),
+        _ => None,
+    }
+}
 fn json_bool(value: bool) -> &'static str {
     if value { "true" } else { "false" }
 }
@@ -658,11 +1182,11 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
             .iter()
             .map(|object| object.position)
             .collect::<Vec<_>>();
-        let d0_carriers = if rank == 7 {
-            factorization.carriers[5..7].to_vec()
-        } else {
-            factorization.carriers[..2].to_vec()
-        };
+        let d0_source_indices = profile_spec(profile).d0_source_indices;
+        let d0_carriers = d0_source_indices
+            .into_iter()
+            .map(|index| factorization.carriers[index].clone())
+            .collect::<Vec<_>>();
         let access_unit = package_source_derived_access_unit_with_frame_sizes(
             profile,
             sequence,

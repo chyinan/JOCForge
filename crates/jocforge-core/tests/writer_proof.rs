@@ -1,6 +1,6 @@
 // pattern: Functional Core
 
-use jocforge_core::{JocProfile, write_one_au_proof};
+use jocforge_core::{JocProfile, d0_carrier_causality, write_one_au_proof};
 
 #[test]
 fn writer_produces_a_complete_idx0_processing_unit() {
@@ -91,4 +91,17 @@ fn writer_encodes_general_coarse_matrix_symbols() {
     .expect("general coarse matrix symbols");
 
     assert_eq!(access_unit.len(), 4096 + 2560);
+}
+
+#[test]
+fn source_derived_d0_writer_changes_for_each_dependent_input() {
+    for profile in [JocProfile::Idx0, JocProfile::Idx1, JocProfile::Idx2] {
+        let measurements = d0_carrier_causality(profile).expect("D0 causality fixture");
+        assert_eq!(measurements.len(), 2);
+        assert!(
+            measurements
+                .iter()
+                .all(|measurement| measurement.changed && measurement.changed_byte_count > 0)
+        );
+    }
 }

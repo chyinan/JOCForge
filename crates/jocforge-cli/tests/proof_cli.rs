@@ -69,6 +69,66 @@ fn quantization_stress_cli_reports_all_profiles_and_full_domain() {
 }
 
 #[test]
+fn carrier_causality_cli_reports_each_profile_source_set() {
+    let output_path = env::temp_dir().join(format!(
+        "jocforge-carrier-causality-{}.json",
+        std::process::id()
+    ));
+    let status = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+        .args([
+            "carrier-causality",
+            output_path.to_str().expect("temporary path is UTF-8"),
+        ])
+        .status()
+        .expect("carrier causality CLI starts");
+
+    assert!(status.success());
+    let report = fs::read_to_string(&output_path).expect("carrier causality report exists");
+    assert!(report.contains("\"pass\": true"));
+    assert!(report.contains("\"profile\":\"idx0\""));
+    assert!(report.contains("\"profile\":\"idx1\""));
+    assert!(report.contains("\"profile\":\"idx2\""));
+    let _ = fs::remove_file(output_path);
+}
+
+#[test]
+fn spectral_phase_cli_rejects_incomplete_final_render_evidence() {
+    let root = env::temp_dir().join(format!(
+        "jocforge-spectral-final-render-reject-{}",
+        std::process::id()
+    ));
+    fs::create_dir_all(&root).expect("temporary directory");
+    let output_path = root.join("spectral.json");
+    let evidence_path = root.join("forged-final-render.json");
+    fs::write(
+        &evidence_path,
+        r#"{
+  "stage": "FINAL_DECODED_RENDER",
+  "decoder": "PINNED_OPENJOC",
+  "final_render_pass": true,
+  "profiles": [
+    {"profile": "idx0"},
+    {"profile": "idx1"},
+    {"profile": "idx2"}
+  ]
+}"#,
+    )
+    .expect("forged evidence");
+    let status = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+        .args([
+            "spectral-phase",
+            output_path.to_str().expect("output path is UTF-8"),
+            "--final-render-report",
+            evidence_path.to_str().expect("evidence path is UTF-8"),
+        ])
+        .status()
+        .expect("spectral phase CLI starts");
+
+    assert!(!status.success());
+    let _ = fs::remove_dir_all(root);
+}
+
+#[test]
 fn spectral_phase_cli_reports_the_controlled_corpus() {
     let output_path = env::temp_dir().join(format!(
         "jocforge-spectral-phase-{}.json",

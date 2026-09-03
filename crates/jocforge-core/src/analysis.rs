@@ -33,6 +33,15 @@ pub struct RankFactorization {
     pub carrier_peak_after_scaling: f64,
 }
 
+/// Controlled source-to-carrier perturbation evidence for one profile.
+#[derive(Clone, Debug, PartialEq)]
+pub struct CarrierCausalityMeasurement {
+    pub carrier_index: usize,
+    pub source_index: usize,
+    pub maximum_change: f64,
+    pub carrier_changed: bool,
+}
+
 /// Quantization evidence for one full-matrix coefficient.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct QuantizedCoefficient {
@@ -239,6 +248,52 @@ pub fn factorize_source_derived(
         .map(|value| value.abs())
         .fold(0.0, f64::max);
     Ok(factorization)
+}
+
+/// Perturbs each intended source basis independently and measures its matching
+/// carrier response. This is a deterministic validation fixture; it does not
+/// participate in production encoding.
+pub fn source_derived_carrier_causality(
+    carrier_count: usize,
+) -> Result<Vec<CarrierCausalityMeasurement>, AnalysisError> {
+    if carrier_count == 0 || carrier_count > 7 {
+        return Err(AnalysisError::InvalidRank {
+            rank: carrier_count,
+            object_count: 8,
+        });
+    }
+    let objects = (0..8)
+        .map(|object| {
+            (0..128)
+                .map(|sample| {
+                    let x = f64::from(sample) + 1.0;
+                    (x * (f64::from(object) + 1.0) * 0.031).sin()
+                        + 0.25 * (x * (f64::from(object) + 2.0) * 0.017).cos()
+                })
+                .collect::<Vec<_>>()
+        })
+        .collect::<Vec<_>>();
+    let baseline = factorize_source_derived(&objects, carrier_count)?;
+    let mut measurements = Vec::with_capacity(carrier_count);
+    for source_index in 0..carrier_count {
+        let mut perturbed_objects = objects.clone();
+        for (sample, value) in perturbed_objects[source_index].iter_mut().enumerate() {
+            *value += 0.125 * ((sample as f64 + 1.0) * 0.071).sin();
+        }
+        let perturbed = factorize_source_derived(&perturbed_objects, carrier_count)?;
+        let maximum_change = baseline.carriers[source_index]
+            .iter()
+            .zip(&perturbed.carriers[source_index])
+            .map(|(left, right)| (left - right).abs())
+            .fold(0.0, f64::max);
+        measurements.push(CarrierCausalityMeasurement {
+            carrier_index: source_index,
+            source_index,
+            maximum_change,
+            carrier_changed: maximum_change > 1.0e-12,
+        });
+    }
+    Ok(measurements)
 }
 
 /// Measures normalized RMS residual on the same deterministic analysis view

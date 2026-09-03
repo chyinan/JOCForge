@@ -26,6 +26,14 @@ const D0_MANTISSA_FIRST_BITS: u8 = 8;
 const D0_MANTISSA_ZERO_COUNT: usize = 3;
 const D0_MANTISSA_COUNT: usize = 35;
 
+/// Writer-level causality evidence for one source-derived D0 input.
+#[derive(Clone, Debug, PartialEq)]
+pub struct D0CausalityMeasurement {
+    pub input_index: usize,
+    pub changed_byte_count: usize,
+    pub changed: bool,
+}
+
 // Public ETSI TS 103 420 coarse generic Huffman tree (Annex A.1, MTX mode).
 // A negative child is a leaf encoded as -symbol - 1.
 const JOC_COARSE_HUFFMAN: [[i16; 2]; 95] = [
@@ -788,6 +796,53 @@ pub fn package_source_derived_access_unit_with_frame_sizes(
     output.extend_from_slice(i0_frame);
     output.extend_from_slice(&d0);
     Ok(output)
+}
+
+/// Verifies that each D0 source input changes the emitted dependent frame.
+/// The fixture is deterministic and exercises the actual source-dependent D0
+/// writer rather than only checking an in-memory carrier flag.
+pub fn d0_carrier_causality(profile: JocProfile) -> Result<Vec<D0CausalityMeasurement>, String> {
+    let first = (0..1536)
+        .map(|sample| (f64::from(sample) * 0.011).sin() * 0.1)
+        .collect::<Vec<_>>();
+    let second = (0..1536)
+        .map(|sample| (f64::from(sample) * 0.017 + 0.4).cos() * 0.1)
+        .collect::<Vec<_>>();
+    let emdf = vec![0x5a; 16];
+    let channel_map = profile_spec(profile).channel_map;
+    let baseline = write_source_dependent_frame(
+        &emdf,
+        channel_map,
+        &[first.clone(), second.clone()],
+        0,
+        1,
+        D0_FRAME_BYTES,
+    )?;
+    let mut measurements = Vec::with_capacity(2);
+    for input_index in 0..2 {
+        let source = if input_index == 0 {
+            first.clone()
+        } else {
+            second.clone()
+        };
+        let mut perturbed = source;
+        perturbed[17] += 0.017;
+        let mut carriers = vec![first.clone(), second.clone()];
+        carriers[input_index] = perturbed;
+        let changed =
+            write_source_dependent_frame(&emdf, channel_map, &carriers, 0, 1, D0_FRAME_BYTES)?;
+        let changed_byte_count = baseline
+            .iter()
+            .zip(&changed)
+            .filter(|(left, right)| left != right)
+            .count();
+        measurements.push(D0CausalityMeasurement {
+            input_index,
+            changed_byte_count,
+            changed: changed_byte_count > 0,
+        });
+    }
+    Ok(measurements)
 }
 
 /// Backward-compatible proof wrapper. Production source-derived encoding uses

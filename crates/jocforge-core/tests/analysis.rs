@@ -3,6 +3,7 @@
 use jocforge_core::{
     SOURCE_DERIVED_CARRIER_PEAK_LIMIT, factorize_rank_controlled, factorize_source_derived,
     limit_signal_peak, maximum_absolute_difference, quantize_coefficient, reconstruction_error,
+    source_derived_carrier_causality,
 };
 
 #[test]
@@ -121,4 +122,18 @@ fn shared_carrier_peak_policy_scales_lfe_sums_without_non_finite_values() {
         limited.iter().map(|value| value.abs()).fold(0.0, f64::max)
             <= SOURCE_DERIVED_CARRIER_PEAK_LIMIT
     );
+}
+
+#[test]
+fn source_derived_carrier_causality_covers_each_intended_profile_input() {
+    for carrier_count in [5, 7] {
+        let measurements = source_derived_carrier_causality(carrier_count)
+            .expect("controlled carrier causality fixture");
+        assert_eq!(measurements.len(), carrier_count);
+        assert!(measurements.iter().all(|measurement| {
+            measurement.carrier_index == measurement.source_index
+                && measurement.carrier_changed
+                && measurement.maximum_change > 1.0e-12
+        }));
+    }
 }
