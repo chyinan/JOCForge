@@ -12,6 +12,15 @@ application-managed snapshot is external workspace state and must be absent
 from the release object database. Reflogs are not retained as provenance
 evidence.
 
+Codex-local working refs under `refs/codex/turn-diffs/*` belong to the
+development workspace namespace. The host may recreate them while a task is
+active; their presence is not evidence that the project release namespace is
+unclean. A release export therefore uses an explicit bundle of
+`refs/heads/master` and a fresh object database, without copying development
+refs, remotes, stash, reflogs, or unreachable objects. Agent-D4 audits the
+resulting frozen candidate repository rather than the instrumented development
+workspace.
+
 The reproducible audit is `scripts/audit-git-release.ps1`. It checks the
 allowlisted refs, complete object reachability, unreachable/dangling objects,
 packed and loose object inventory, reflogs, alternates, replace refs, grafts,

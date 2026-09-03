@@ -1,6 +1,6 @@
 # Clean temporal quality gates
 
-> Verified: 2026-09-02
+> Verified: 2026-09-03
 > Evidence: `artifacts/temporal-stabilization/hanabi-before-after.json`
 
 ## Metric definitions
