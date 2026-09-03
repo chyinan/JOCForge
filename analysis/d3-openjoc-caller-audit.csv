@@ -1,0 +1,8 @@
+caller,class,direct_openjoc_invocation,pin_enforcement,evidence
+scripts/run-validation-closure.ps1,AUTHORITATIVE_VALIDATION,YES,YES,"sources openjoc-validator-pin.ps1 and calls Assert-OpenJocValidatorPin before inspect/render"
+scripts/run-decision-engine.ps1,AUTHORITATIVE_VALIDATION_DELEGATOR,YES,YES,"sources the same pin helper before delegating or invoking validation"
+scripts/run-temporal-stabilization.ps1,AUTHORITATIVE_VALIDATION,YES,YES,"sources openjoc-validator-pin.ps1 and validates identity before profile checks"
+scripts/run-mvp.ps1,AUTHORITATIVE_VALIDATION,YES,YES,"sources openjoc-validator-pin.ps1 and validates identity before inspect/render"
+scripts/run-source-derived.ps1,DELEGATED_CALLER,NO,YES,"passes OpenJOC path only to run-decision-engine.ps1, whose resolver is authoritative"
+scripts/test-openjoc-validator-pin.ps1,VALIDATOR_PIN_TEST,NO,YES,"sources and exercises Assert-OpenJocValidatorPin with wrong hash/version/path cases"
+validation/openjoc-validator.json,DOCUMENTED_PIN,NO,YES,"single project pin document for semantic version, source revision, executable hash, and default path"
