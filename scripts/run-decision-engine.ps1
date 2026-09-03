@@ -1,6 +1,7 @@
+# pattern: Imperative Shell
+
 param(
     [string]$SourceAdm = "",
-    [string]$OpenJoc = "D:\Programs\OpenJOC\target\debug\openjoc.exe",
     [switch]$ReuseExisting
 )
 
@@ -9,6 +10,7 @@ $root = Split-Path -Parent $PSScriptRoot
 $artifact = Join-Path $root "artifacts\decision-engine"
 New-Item -ItemType Directory -Force $artifact | Out-Null
 . (Join-Path $PSScriptRoot "openjoc-validator-pin.ps1")
+$OpenJoc = (Resolve-OpenJocValidator $root).executable
 $validatorIdentity = Assert-OpenJocValidatorPin $root $OpenJoc
 # This runner is a diagnostic corpus sampler. The authoritative clean
 # acceptance matrix is emitted by run-validation-closure.ps1.

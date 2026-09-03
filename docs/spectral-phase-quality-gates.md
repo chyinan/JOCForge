@@ -56,7 +56,10 @@ supported profile. It requires finite samples, spectral error `<= 0.75`,
 spectral tilt error `<= 1.0`, phase coherence `>= 0.50`, polarity preserved,
 quadrature phase error `<= 1.50` radians, transient phase discontinuity `<=
 0.75`, source-domain measured leakage `<= 1e-12`, rendered peak `<= 0.90`,
-and non-negative headroom relative to the shared `0.90` limit. The broader
+and non-negative headroom relative to the shared `0.90` limit. Final-render
+leakage is measured as unintended rendered output-channel energy divided by
+intended rendered output-channel energy from the actual pinned OpenJOC PCM;
+the threshold is `1e-12`. The broader
 spectral/tilt bounds explicitly allow the known E-AC-3 loss and stereo
 compatibility downmix; the independent polarity/coherence/finite/headroom
 predicates catch structural failures.
@@ -69,8 +72,10 @@ also traverse encode, E-AC-3, pinned OpenJOC render, and final PCM measurement.
 
 The closure also runs independent temporary mutations for spectral tilt,
 phase collapse, polarity inversion, quadrature collapse, transient phase,
-leakage, and clipping/headroom. Every mutation must be rejected by the same
-Rust gate before T-008 can pass.
+actual final-render PCM leakage, source-stage leakage, and clipping/headroom.
+Every mutation must be rejected by the same Rust gate before T-008 can pass;
+changing only the source-stage leakage field cannot make a bad final-render
+leakage measurement pass.
 
 ## Supplemental Hanabi diagnostics
 

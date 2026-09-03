@@ -7,8 +7,8 @@ Last verified: 2026-09-03
 - Rust 2024 workspace with `jocforge-core` and `jocforge` CLI.
 - Standard-library core; FFmpeg is an external E-AC-3 carrier executable.
 - OpenJOC v0.16.0 is the pinned external validation/decoder/renderer reference;
-  identity is enforced by `validation/openjoc-validator.json` and the pin
-  helper script.
+  identity is enforced by `validation/openjoc-validator.json`, its frozen
+  manifest under `D:\Programs\JOCForge-validator`, and the resolver helper.
 - No C++ dependency is linked in the MVP; EBU C++ projects are documented
   public references pending a proportionate FFI integration.
 
@@ -50,7 +50,8 @@ Last verified: 2026-09-03
   reads metadata after large `data` chunks without loading PCM, plus bounded
   PCM-frame reads for large programmes.
 - `scripts/` — reproducible external validation and evidence generation;
-  `final-render-quality.ps1` measures actual decoded/rendered PCM.
+  `final-render-quality.ps1` measures actual decoded/rendered PCM and all
+  authoritative OpenJOC callers resolve the frozen manifest artifact.
 - `validation/openjoc-validator.json` — authoritative external validator pin.
 - `summary/` — focused investigation summaries.
 - `docs/clean-generalized-encoder-design.md` and
@@ -109,6 +110,13 @@ Last verified: 2026-09-03
   internal corpus diagnostics together with a passing pinned
   `FINAL_DECODED_RENDER` evidence stage. The closure runner's PASS predicate
   consumes the Rust final-render gate for actual OpenJOC-rendered PCM.
+- `final_render_leakage` is measured from unintended-to-intended channel energy
+  in actual frozen-OpenJOC rendered PCM; source-stage
+  `unexplained_cluster_leakage` is a separate metric and cannot satisfy it.
+- Bitrate support is a `PROFILE x BITRATE` contract. Current supported cells
+  are idx0/idx1/idx2 at 1024, 1280, 1408, 1536, and 1664 kbps; lower tested
+  rates reject for paired I0/D0 capacity. The 384 kbps I0 path disables
+  automatic FFmpeg channel coupling for pinned OpenJOC traversal correctness.
 - No proprietary Dolby encoder binary, media, or reverse-engineered logic is
   permitted in this repository.
 - Generated audio/binary evidence under `artifacts/` is local and ignored;

@@ -1,6 +1,7 @@
+# pattern: Imperative Shell
+
 param(
     [string]$SourceAdm = "",
-    [string]$OpenJoc = "D:\Programs\OpenJOC\target\debug\openjoc.exe",
     [switch]$ReuseExisting
 )
 
@@ -9,6 +10,7 @@ $root = Split-Path -Parent $PSScriptRoot
 $artifact = Join-Path $root "artifacts\temporal-stabilization"
 New-Item -ItemType Directory -Force $artifact | Out-Null
 . (Join-Path $PSScriptRoot "openjoc-validator-pin.ps1")
+$OpenJoc = (Resolve-OpenJocValidator $root).executable
 
 function Invoke-Checked([string]$File, [string[]]$Arguments) {
     & $File @Arguments

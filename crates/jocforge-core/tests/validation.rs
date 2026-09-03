@@ -16,7 +16,7 @@ fn final_render_gate_rejects_each_declared_structural_mutation() {
         polarity_preserved: true,
         quadrature_phase_error: 0.10,
         transient_phase_discontinuity: 0.10,
-        leakage: 0.0,
+        final_render_leakage: 0.0,
         peak: 0.50,
         headroom_margin: 0.40,
     };
@@ -44,7 +44,7 @@ fn final_render_gate_rejects_each_declared_structural_mutation() {
             ..clean
         },
         FinalRenderMeasurement {
-            leakage: 1.0,
+            final_render_leakage: 1.0,
             ..clean
         },
         FinalRenderMeasurement {

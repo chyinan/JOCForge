@@ -1,11 +1,12 @@
+# pattern: Imperative Shell
+
 param(
-    [string]$SourceAdm = "",
-    [string]$OpenJoc = "D:\Programs\OpenJOC\target\debug\openjoc.exe"
+    [string]$SourceAdm = ""
 )
 
 $ErrorActionPreference = "Stop"
 $script = Join-Path $PSScriptRoot "run-decision-engine.ps1"
-& $script -SourceAdm $SourceAdm -OpenJoc $OpenJoc
+& $script -SourceAdm $SourceAdm
 if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
 }

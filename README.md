@@ -24,8 +24,8 @@ cargo test --workspace --locked
 
 ## Reproduce the controlled proof
 
-The host must provide Rust, FFmpeg, and an independently built OpenJOC CLI.
-Set `$OpenJoc` in `scripts/run-mvp.ps1` if the OpenJOC executable is elsewhere.
+The host must provide Rust and FFmpeg. The validation scripts resolve the
+immutable OpenJOC artifact declared by `validation/openjoc-validator.json`.
 
 ```powershell
 .\scripts\run-mvp.ps1
@@ -73,6 +73,15 @@ channel is driven by a bounded feature of its source carrier's 256-sample PCM
 window; it is not a fixed structural tone, but it is not yet a perceptual or
 transparent E-AC-3 encoder. D0 is 2560 bytes, so 4096-byte I0 + 2560-byte D0
 equals 1664 kbps at 48 kHz/six blocks.
+
+The clean bitrate contract is profile-specific (`PROFILE x BITRATE`), not a
+single global bitrate flag. The current controlled contract tests
+`idx0 / 5.X`, `idx1 / Flat-7.X`, and `idx2 / 5.X+2` at 1024, 1280, 1408,
+1536, and 1664 kbps. At 1024 kbps the 384 kbps I0 carrier disables FFmpeg's
+automatic channel coupling because the pinned OpenJOC decoder cannot traverse
+that low-rate coupled carrier; this preserves the required 1024 target and
+does not change the five-carrier topology. Rates without a legal paired
+I0/D0 budget are rejected deterministically.
 
 ## Boundaries
 

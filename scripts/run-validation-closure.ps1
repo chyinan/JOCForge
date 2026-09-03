@@ -2,7 +2,6 @@
 
 param(
     [string]$SourceAdm = "",
-    [string]$OpenJoc = "D:\Programs\OpenJOC\target\debug\openjoc.exe",
     [switch]$ReuseExisting
 )
 
@@ -11,6 +10,7 @@ $root = Split-Path -Parent $PSScriptRoot
 $artifact = Join-Path $root "artifacts\validation-closure"
 New-Item -ItemType Directory -Force $artifact | Out-Null
 . (Join-Path $PSScriptRoot "openjoc-validator-pin.ps1")
+$OpenJoc = (Resolve-OpenJocValidator $root).executable
 
 $invariant = [Globalization.CultureInfo]::InvariantCulture
 $MaximumCodedObjects = 15
@@ -38,10 +38,17 @@ function Invoke-FinalRenderGate([pscustomobject]$Measurement, [string]$OutputPat
         "$($Measurement.phase_coherence)",
         $(if ($Measurement.polarity_preserved) { "true" } else { "false" }),
         "$($Measurement.quadrature_phase_error)", "$($Measurement.transient_phase_discontinuity)",
-        "$($Measurement.leakage)", "$($Measurement.peak)", "$($Measurement.headroom_margin)"
+        "$($Measurement.final_render_leakage)", "$($Measurement.peak)", "$($Measurement.headroom_margin)"
     )
-    $text = (& cargo @arguments 2>&1) -join "`n"
-    $exit = $LASTEXITCODE
+    $priorErrorActionPreference = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    try {
+        $text = (& cargo @arguments 2>&1) -join "`n"
+        $exit = $LASTEXITCODE
+    }
+    finally {
+        $ErrorActionPreference = $priorErrorActionPreference
+    }
     if (!(Test-Path -LiteralPath $OutputPath)) {
         throw "final-render gate did not write its report: $OutputPath; $text"
     }
@@ -147,8 +154,12 @@ function Invoke-Inspect([string]$OutputPath, [string]$Name, [string]$Layout, [sw
         carrier_traversal_errors = $carrierTraversalErrors
         oamd_bytes_per_au = $oamdBytes
         joc_bytes_per_au = $jocBytes
-        openjoc_strict_result = if ($inspectExit -eq 0 -and $malformed -eq 0) { "PASS" } else { "FAIL" }
-        render_result = if ($SkipRender) { "NOT_RUN" } elseif ($renderExit -eq 0) { "PASS" } else { "RESEARCH_ONLY" }
+        openjoc_parse_result = if ($inspectExit -eq 0) { "PASS" } else { "FAIL" }
+        openjoc_strict_result = if ($inspectExit -eq 0 -and $malformed -eq 0 -and $carrierTraversalErrors -eq 0) { "PASS" } else { "FAIL" }
+        openjoc_decode_result = if ($SkipRender) { "NOT_RUN" } elseif ($renderExit -eq 0) { "PASS" } else { "FAIL" }
+        openjoc_render_result = if ($SkipRender) { "NOT_RUN" } elseif ($renderExit -eq 0) { "PASS" } else { "FAIL" }
+        render_result = if ($SkipRender) { "NOT_RUN" } elseif ($renderExit -eq 0) { "PASS" } else { "FAIL" }
+        ffmpeg_decode_result = if ($decodeExit -eq 0) { "PASS" } else { "FAIL" }
         finite_pcm = if ($decodeExit -eq 0) { "YES" } else { "NO" }
         output_bytes = $outputBytes
         render = $render
@@ -163,11 +174,11 @@ function Invoke-Inspect([string]$OutputPath, [string]$Name, [string]$Layout, [sw
     }
 }
 
-function Invoke-RejectedEncode([string]$InputPath, [string]$OutputPath, [int]$BitrateKbps) {
+function Invoke-RejectedEncode([string]$InputPath, [string]$OutputPath, [int]$BitrateKbps, [string]$Profile = "idx1") {
     $priorErrorActionPreference = $ErrorActionPreference
     $ErrorActionPreference = "Continue"
     try {
-        $text = (& cargo run -p jocforge --quiet -- encode $InputPath $OutputPath --profile idx1 --bitrate "$BitrateKbps" 2>&1) -join "`n"
+        $text = (& cargo run -p jocforge --quiet -- encode $InputPath $OutputPath --profile $Profile --bitrate "$BitrateKbps" 2>&1) -join "`n"
         $exit = $LASTEXITCODE
     }
     finally {
@@ -184,6 +195,35 @@ function Invoke-RejectedEncode([string]$InputPath, [string]$OutputPath, [int]$Bi
 function Get-DerivedStatus([bool]$Pass) {
     if ($Pass) { return "PASS" }
     "FAIL"
+}
+
+function Test-BitrateCell([pscustomobject]$Cell) {
+    if ($Cell.encode_result -eq "REJECTED") {
+        $capacityRejected = $Cell.rejection_category -eq "CAPACITY" -and
+            [int]$Cell.encode_exit_code -ne 0
+        return [pscustomobject]@{
+            pass = $capacityRejected
+            classification = if ($capacityRejected) { "REJECTED_CAPACITY" } else { "FAIL_CORRECTNESS" }
+        }
+    }
+    $supported = $Cell.encode_result -eq "PASS" -and
+        [int]$Cell.encode_exit_code -eq 0 -and
+        $Cell.structural_validation -eq "PASS" -and
+        $Cell.openjoc_parse_result -eq "PASS" -and
+        $Cell.openjoc_strict_result -eq "PASS" -and
+        $Cell.openjoc_decode_result -eq "PASS" -and
+        $Cell.openjoc_render_result -eq "PASS" -and
+        $Cell.ffmpeg_decode_result -eq "PASS" -and
+        $Cell.finite_pcm -eq "YES" -and
+        [int]$Cell.malformed_aus -eq 0 -and
+        [int]$Cell.carrier_traversal_errors -eq 0 -and
+        $Cell.deterministic_encode -eq "PASS" -and
+        $Cell.actual_bitrate_kbps -eq $Cell.target_bitrate_kbps -and
+        $Cell.quality_pass -eq $true
+    [pscustomobject]@{
+        pass = $supported
+        classification = if ($supported) { "SUPPORTED" } else { "FAIL_CORRECTNESS" }
+    }
 }
 
 function Test-FiniteNumber($Value) {
@@ -766,9 +806,9 @@ function Test-T008ProfileConditions(
     $Rows = @($Rows)
     $reasons = [System.Collections.Generic.List[string]]::new()
     $strictPass = $false; $renderPass = $false; $finitePass = $false; $malformedPass = $false; $traversalPass = $false
-    $sourceReconstructionPass = $false; $spatialPass = $false; $leakagePass = $false; $speakerPass = $false
+    $sourceReconstructionPass = $false; $spatialPass = $false; $sourceLeakagePass = $false; $speakerPass = $false
     $factorizationPass = $false; $matrixPass = $false; $carrierPass = $false; $peakPass = $false; $headroomPass = $false
-    $finalRenderPass = $false
+    $finalRenderPass = $false; $finalRenderLeakagePass = $false
     if ($null -eq $Validation) { $reasons.Add("profile validation is missing") }
     else {
         $strictPass = $Validation.openjoc_strict_result -eq "PASS"
@@ -778,7 +818,14 @@ function Test-T008ProfileConditions(
         $traversalPass = [int]$Validation.carrier_traversal_errors -eq 0
     }
     if ($null -eq $FinalRender -or $null -eq $FinalRender.gate) { $reasons.Add("final decoded render gate is missing") }
-    else { $finalRenderPass = $FinalRender.gate.pass -eq $true -and [int]$FinalRender.gate.command_exit_code -eq 0 }
+    else {
+        $finalRenderPass = $FinalRender.gate.pass -eq $true -and [int]$FinalRender.gate.command_exit_code -eq 0
+        if ($FinalRender.PSObject.Properties.Name -contains "final_render_leakage") {
+            $finalRenderLeakage = [double]$FinalRender.final_render_leakage
+            $finalRenderLeakagePass = Test-FiniteNumber $finalRenderLeakage -and
+                $finalRenderLeakage -ge 0.0 -and $finalRenderLeakage -le $UnexplainedLeakageThreshold
+        }
+    }
     if ($Rows.Count -gt 0) {
         $sourceReconstruction = Get-MaxMetric $Rows source_reconstruction_error
         $spatial = Get-MaxMetric $Rows spatial_representation_error
@@ -791,7 +838,7 @@ function Test-T008ProfileConditions(
         $headroom = Get-MinMetric $Rows headroom_margin
         $sourceReconstructionPass = $sourceReconstruction -le $SourceReconstructionErrorThreshold
         $spatialPass = $spatial -le $SpatialRepresentationErrorThreshold
-        $leakagePass = $leakage -le $UnexplainedLeakageThreshold
+        $sourceLeakagePass = $leakage -le $UnexplainedLeakageThreshold
         $speakerPass = $speaker -le $SpeakerRenderErrorThreshold
         $factorizationPass = $factorization -le $FactorizationResidualThreshold
         $matrixPass = $matrix -le $MatrixCoefficientJumpThreshold
@@ -799,7 +846,7 @@ function Test-T008ProfileConditions(
         $peakPass = $peak -le $MaximumCodedPeakThreshold
         $headroomPass = $headroom -ge 0.0
     }
-    $checks = @($strictPass, $renderPass, $finitePass, $malformedPass, $traversalPass, $sourceReconstructionPass, $spatialPass, $leakagePass, $speakerPass, $factorizationPass, $matrixPass, $carrierPass, $peakPass, $headroomPass, $finalRenderPass)
+    $checks = @($strictPass, $renderPass, $finitePass, $malformedPass, $traversalPass, $sourceReconstructionPass, $spatialPass, $sourceLeakagePass, $speakerPass, $factorizationPass, $matrixPass, $carrierPass, $peakPass, $headroomPass, $finalRenderLeakagePass, $finalRenderPass)
     $pass = $Rows.Count -gt 0 -and @($checks | Where-Object { $_ -ne $true }).Count -eq 0
     if (!$strictPass) { $reasons.Add("OpenJOC strict validation failed") }
     if (!$renderPass) { $reasons.Add("OpenJOC compatibility render failed") }
@@ -808,20 +855,53 @@ function Test-T008ProfileConditions(
     if (!$traversalPass) { $reasons.Add("carrier traversal errors are present") }
     if (!$sourceReconstructionPass) { $reasons.Add("source reconstruction threshold failed") }
     if (!$spatialPass) { $reasons.Add("spatial representation threshold failed") }
-    if (!$leakagePass) { $reasons.Add("source leakage threshold failed") }
+    if (!$sourceLeakagePass) { $reasons.Add("source-stage leakage threshold failed") }
     if (!$speakerPass) { $reasons.Add("speaker render threshold failed") }
     if (!$factorizationPass) { $reasons.Add("factorization residual threshold failed") }
     if (!$matrixPass) { $reasons.Add("matrix continuity threshold failed") }
     if (!$carrierPass) { $reasons.Add("carrier continuity threshold failed") }
     if (!$peakPass) { $reasons.Add("coded peak threshold failed") }
     if (!$headroomPass) { $reasons.Add("coded headroom threshold failed") }
+    if (!$finalRenderLeakagePass) { $reasons.Add("final-render leakage threshold failed") }
     if (!$finalRenderPass) { $reasons.Add("final decoded render gate failed") }
     [pscustomobject]@{
         pass = $pass; reason = ($reasons -join "; "); strict = $strictPass; render = $renderPass;
         finite = $finitePass; malformed_aus = $malformedPass; carrier_traversal = $traversalPass;
-        source_reconstruction = $sourceReconstructionPass; spatial = $spatialPass; leakage = $leakagePass;
+        source_reconstruction = $sourceReconstructionPass; spatial = $spatialPass; source_leakage = $sourceLeakagePass;
         speaker = $speakerPass; factorization = $factorizationPass; matrix = $matrixPass; carrier = $carrierPass;
-        coded_peak = $peakPass; coded_headroom = $headroomPass; final_decoded_render = $finalRenderPass
+        coded_peak = $peakPass; coded_headroom = $headroomPass; final_render_leakage = $finalRenderLeakagePass;
+        final_decoded_render = $finalRenderPass
+    }
+}
+
+function New-FinalRenderLeakageMutation(
+    [string]$InputPath,
+    [string]$OutputPath,
+    [int]$UnintendedChannel
+) {
+    $stream = Read-F64PcmStream $InputPath
+    if ($UnintendedChannel -lt 0 -or $UnintendedChannel -ge $stream.channels) {
+        throw "final-render leakage mutation channel is outside rendered PCM"
+    }
+    $values = [double[]]$stream.values.Clone()
+    for ($sample = 0; $sample -lt $stream.samples; $sample++) {
+        $values[$sample * $stream.channels + $UnintendedChannel] =
+            $values[$sample * $stream.channels]
+    }
+    $rawPath = Join-Path ([IO.Path]::GetTempPath()) ("jocforge-final-render-leakage-$PID.f64le")
+    try {
+        $bytes = New-Object byte[] ($values.Length * 8)
+        for ($index = 0; $index -lt $values.Length; $index++) {
+            [Buffer]::BlockCopy([BitConverter]::GetBytes($values[$index]), 0, $bytes, $index * 8, 8)
+        }
+        [IO.File]::WriteAllBytes($rawPath, $bytes)
+        & ffmpeg -hide_banner -v error -y -f f64le -ar 48000 -ac $stream.channels -i $rawPath -c:a pcm_f32le -f wav $OutputPath
+        if ($LASTEXITCODE -ne 0) {
+            throw "failed to write temporary final-render leakage mutation"
+        }
+    }
+    finally {
+        if (Test-Path -LiteralPath $rawPath) { Remove-Item -LiteralPath $rawPath -Force }
     }
 }
 
@@ -960,7 +1040,7 @@ if ([string]::IsNullOrWhiteSpace($SourceAdm)) {
 if ([string]::IsNullOrWhiteSpace($SourceAdm) -or !(Test-Path -LiteralPath $SourceAdm)) { throw "source ADM file does not exist: $SourceAdm" }
 $validatorIdentity = Assert-OpenJocValidatorPin $root $OpenJoc
 $validatorIdentity | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $artifact "openjoc-validator-identity.json") -Encoding utf8
-$validatorPinTestOutput = (& powershell -NoProfile -File (Join-Path $PSScriptRoot "test-openjoc-validator-pin.ps1") -OpenJoc $OpenJoc 2>&1) -join "`n"
+$validatorPinTestOutput = (& powershell -NoProfile -File (Join-Path $PSScriptRoot "test-openjoc-validator-pin.ps1") 2>&1) -join "`n"
 $validatorPinTestExit = $LASTEXITCODE
 if ($validatorPinTestExit -ne 0) {
     throw "OpenJOC validator pin test failed with exit code $validatorPinTestExit"
@@ -983,78 +1063,100 @@ $rateSpecs = @(
 )
 $rateByTotal = @{}
 foreach ($spec in $rateSpecs) { $rateByTotal["$($spec.total)"] = $spec }
+$bitrateProfiles = @(
+    [pscustomobject]@{ name = "idx0"; layout = "2.0"; carrier_count = 5 },
+    [pscustomobject]@{ name = "idx1"; layout = "7.1.4"; carrier_count = 7 },
+    [pscustomobject]@{ name = "idx2"; layout = "7.1.4"; carrier_count = 7 }
+)
+$bitrateCandidates = @(384, 448, 640, 768, 896, 1024, 1280, 1408, 1536, 1664)
 $rateFixture = Join-Path $artifact "controlled-rate-15.bw64"
 if (!$ReuseExisting -or !(Test-Path -LiteralPath $rateFixture)) {
     Invoke-Checked "cargo" @("run", "-p", "jocforge", "--quiet", "--", "fixture", "--seconds", "1", "--objects", "15", $rateFixture)
 }
 $bitrateRows = [System.Collections.Generic.List[object]]::new()
-foreach ($requested in @(384, 448, 640, 768, 896, 1024, 1280, 1408, 1536, 1664)) {
-    if (!$rateByTotal.ContainsKey("$requested")) {
-        $rejectedOutput = Join-Path $artifact "bitrate-$requested-rejected.ec3"
-        if (Test-Path -LiteralPath $rejectedOutput) { Remove-Item -LiteralPath $rejectedOutput -Force }
-        $rejection = Invoke-RejectedEncode $rateFixture $rejectedOutput $requested
-        $bitrateRows.Add([pscustomobject]@{
-            target_bitrate_kbps = $requested; actual_bitrate_kbps = "REJECTED"; profile = "idx1";
-            coded_object_count = "N/A"; metadata_bytes_per_au = "N/A"; carrier_bytes_per_au = "N/A";
-            malformed_aus = 0; carrier_traversal_errors = 0; openjoc_strict_result = "NOT_TESTED"; finite_pcm = "NOT_TESTED";
-            openjoc_carrier_traversal_errors = "N/A";
-            source_reconstruction_error_max = "N/A"; spatial_representation_error_max = "N/A";
-            cross_object_leakage_max = "N/A"; unexplained_cluster_leakage_max = "N/A";
-            speaker_render_error_max = "N/A"; factorization_reconstruction_error_max = "N/A";
-            matrix_coefficient_jump_max = "N/A"; carrier_coefficient_jump_max = "N/A";
-            headroom_margin_min = "N/A"; deterministic_reencode = "N/A";
-            compatibility_render = "NOT_TESTED"; status = Get-DerivedStatus $rejection.explicit_rejection;
-            command_exit_code = $rejection.exit_code; command_diagnostic = $rejection.diagnostic;
-            quality_fallback = "measured CLI rejection: no clean paired I0/D0 budget"
-        })
-        continue
+foreach ($profile in $bitrateProfiles) {
+    foreach ($requested in $bitrateCandidates) {
+        $cellName = "bitrate-$requested-$($profile.name)"
+        if (!$rateByTotal.ContainsKey("$requested")) {
+            $rejectedOutput = Join-Path $artifact ($cellName + "-rejected.ec3")
+            if (Test-Path -LiteralPath $rejectedOutput) { Remove-Item -LiteralPath $rejectedOutput -Force }
+            $rejection = Invoke-RejectedEncode $rateFixture $rejectedOutput $requested $profile.name
+            $rejectionCategory = if ($rejection.explicit_rejection) { "CAPACITY" } else { "CORRECTNESS" }
+            $classification = if ($rejectionCategory -eq "CAPACITY") { "REJECTED_CAPACITY" } else { "FAIL_CORRECTNESS" }
+            $bitrateRows.Add([pscustomobject]@{
+                target_bitrate_kbps = $requested; actual_bitrate_kbps = "REJECTED"; profile = $profile.name;
+                carrier_count = $profile.carrier_count; coded_object_count = "N/A"; metadata_bytes_per_au = "N/A"; carrier_bytes_per_au = "N/A";
+                encode_result = "REJECTED"; encode_exit_code = $rejection.exit_code; rejection_category = $rejectionCategory;
+                structural_validation = "NOT_APPLICABLE"; openjoc_parse_result = "NOT_APPLICABLE"; openjoc_strict_result = "NOT_APPLICABLE";
+                openjoc_decode_result = "NOT_APPLICABLE"; openjoc_render_result = "NOT_APPLICABLE"; ffmpeg_decode_result = "NOT_APPLICABLE";
+                finite_pcm = "NOT_APPLICABLE"; malformed_aus = "NOT_APPLICABLE"; carrier_traversal_errors = "NOT_APPLICABLE";
+                openjoc_carrier_traversal_errors = "NOT_APPLICABLE"; quality_pass = "NOT_APPLICABLE";
+                source_reconstruction_error_max = "N/A"; spatial_representation_error_max = "N/A";
+                cross_object_leakage_max = "N/A"; unexplained_cluster_leakage_max = "N/A";
+                speaker_render_error_max = "N/A"; factorization_reconstruction_error_max = "N/A";
+                matrix_coefficient_jump_max = "N/A"; carrier_coefficient_jump_max = "N/A";
+                headroom_margin_min = "N/A"; deterministic_encode = "NOT_APPLICABLE";
+                compatibility_render = "NOT_APPLICABLE"; classification = $classification; status = $classification;
+                command_diagnostic = $rejection.diagnostic;
+                quality_fallback = "deterministic CLI rejection: no clean paired I0/D0 budget"
+            })
+            continue
+        }
+        $spec = $rateByTotal["$requested"]
+        $output = Join-Path $artifact ($cellName + ".ec3")
+        Invoke-Encode $rateFixture $output $requested $profile.name
+        $inspection = Invoke-Inspect $output $cellName $profile.layout
+        $metricsPath = "$output.metrics.csv"
+        $rows = Read-MetricRows $metricsPath
+        $frameRows = @($rows | Group-Object frame | ForEach-Object { $_.Group[0] })
+        $codedCount = if ($frameRows.Count -gt 0) { [int](@($frameRows | ForEach-Object { [int]$_.coded_count } | Measure-Object -Maximum).Maximum) } else { 0 }
+        $duration = [Math]::Max($inspection.access_units * 1536.0 / 48000.0, 1536.0 / 48000.0)
+        $actual = [Math]::Round($inspection.output_bytes * 8.0 / $duration / 1000.0, 3)
+        $repeat = Join-Path $artifact ($cellName + "-repeat.ec3")
+        Invoke-Encode $rateFixture $repeat $requested $profile.name
+        $deterministic = (Get-Sha256 $output) -eq (Get-Sha256 $repeat)
+        $unexplainedLeakage = Get-MaxMetric $rows unexplained_cluster_leakage
+        $speakerRenderError = Get-MaxMetric $rows speaker_render_error
+        $factorizationResidual = Get-MaxMetric $rows factorization_reconstruction_error
+        $matrixJump = Get-MaxMetric $rows matrix_coefficient_jump
+        $carrierJump = Get-MaxMetric $rows carrier_coefficient_jump
+        $qualityPass = $unexplainedLeakage -le $UnexplainedLeakageThreshold -and
+            $speakerRenderError -le $SpeakerRenderErrorThreshold -and
+            $factorizationResidual -le $FactorizationResidualThreshold -and
+            $matrixJump -le $MatrixCoefficientJumpThreshold -and
+            $carrierJump -le $CarrierCoefficientJumpThreshold
+        $row = [pscustomobject]@{
+            target_bitrate_kbps = $requested; actual_bitrate_kbps = $actual; profile = $profile.name;
+            carrier_count = $profile.carrier_count; coded_object_count = $codedCount; metadata_bytes_per_au = $inspection.oamd_bytes_per_au + $inspection.joc_bytes_per_au;
+            carrier_bytes_per_au = $spec.carrier_bytes; encode_result = "PASS"; encode_exit_code = 0; rejection_category = "NONE";
+            structural_validation = if ($inspection.openjoc_strict_result -eq "PASS" -and $inspection.malformed_aus -eq 0 -and $inspection.carrier_traversal_errors -eq 0) { "PASS" } else { "FAIL" };
+            openjoc_parse_result = $inspection.openjoc_parse_result; openjoc_strict_result = $inspection.openjoc_strict_result;
+            openjoc_decode_result = $inspection.openjoc_decode_result; openjoc_render_result = $inspection.openjoc_render_result;
+            ffmpeg_decode_result = $inspection.ffmpeg_decode_result; finite_pcm = $inspection.finite_pcm;
+            malformed_aus = $inspection.malformed_aus; carrier_traversal_errors = $inspection.carrier_traversal_errors;
+            openjoc_carrier_traversal_errors = $inspection.carrier_traversal_errors; quality_pass = $qualityPass;
+            source_reconstruction_error_max = Format-Number (Get-MaxMetric $rows source_reconstruction_error);
+            spatial_representation_error_max = Format-Number (Get-MaxMetric $rows spatial_representation_error);
+            cross_object_leakage_max = Format-Number (Get-MaxMetric $rows cross_object_leakage);
+            unexplained_cluster_leakage_max = Format-Number $unexplainedLeakage;
+            speaker_render_error_max = Format-Number $speakerRenderError;
+            factorization_reconstruction_error_max = Format-Number $factorizationResidual;
+            matrix_coefficient_jump_max = Format-Number $matrixJump;
+            carrier_coefficient_jump_max = Format-Number $carrierJump;
+            headroom_margin_min = Format-Number (Get-MinMetric $rows headroom_margin);
+            deterministic_encode = if ($deterministic) { "PASS" } else { "FAIL" };
+            compatibility_render = $inspection.openjoc_render_result;
+            quality_fallback = "none; 15 coded objects retained; deterministic I0/D0 split $($spec.carrier)+$($spec.d0) kbps"
+        }
+        $verdict = Test-BitrateCell $row
+        $row | Add-Member -NotePropertyName classification -NotePropertyValue $verdict.classification
+        $row | Add-Member -NotePropertyName status -NotePropertyValue $verdict.classification
+        $bitrateRows.Add($row)
     }
-    $spec = $rateByTotal["$requested"]
-    $output = Join-Path $artifact "bitrate-$requested.ec3"
-    Invoke-Encode $rateFixture $output $requested
-    $inspection = Invoke-Inspect $output "bitrate-$requested" "7.1.4"
-    $metricsPath = "$output.metrics.csv"
-    $rows = Read-MetricRows $metricsPath
-    $frameRows = @($rows | Group-Object frame | ForEach-Object { $_.Group[0] })
-    $codedCount = if ($frameRows.Count -gt 0) { [int](@($frameRows | ForEach-Object { [int]$_.coded_count } | Measure-Object -Maximum).Maximum) } else { 0 }
-    $duration = [Math]::Max($inspection.access_units * 1536.0 / 48000.0, 1536.0 / 48000.0)
-    $actual = [Math]::Round($inspection.output_bytes * 8.0 / $duration / 1000.0, 3)
-    $repeat = Join-Path $artifact "bitrate-$requested-repeat.ec3"
-    Invoke-Encode $rateFixture $repeat $requested
-    $deterministic = (Get-Sha256 $output) -eq (Get-Sha256 $repeat)
-    $unexplainedLeakage = Get-MaxMetric $rows unexplained_cluster_leakage
-    $speakerRenderError = Get-MaxMetric $rows speaker_render_error
-    $factorizationResidual = Get-MaxMetric $rows factorization_reconstruction_error
-    $matrixJump = Get-MaxMetric $rows matrix_coefficient_jump
-    $carrierJump = Get-MaxMetric $rows carrier_coefficient_jump
-    $qualityPass = $unexplainedLeakage -le $UnexplainedLeakageThreshold -and
-        $speakerRenderError -le $SpeakerRenderErrorThreshold -and
-        $factorizationResidual -le $FactorizationResidualThreshold -and
-        $matrixJump -le $MatrixCoefficientJumpThreshold -and
-        $carrierJump -le $CarrierCoefficientJumpThreshold
-    $bitrateRows.Add([pscustomobject]@{
-        target_bitrate_kbps = $requested; actual_bitrate_kbps = $actual; profile = "idx1";
-        coded_object_count = $codedCount; metadata_bytes_per_au = $inspection.oamd_bytes_per_au + $inspection.joc_bytes_per_au;
-        carrier_bytes_per_au = $spec.carrier_bytes; malformed_aus = $inspection.malformed_aus;
-        openjoc_strict_result = $inspection.openjoc_strict_result; finite_pcm = $inspection.finite_pcm;
-        source_reconstruction_error_max = Format-Number (Get-MaxMetric $rows source_reconstruction_error);
-        spatial_representation_error_max = Format-Number (Get-MaxMetric $rows spatial_representation_error);
-        cross_object_leakage_max = Format-Number (Get-MaxMetric $rows cross_object_leakage);
-        unexplained_cluster_leakage_max = Format-Number $unexplainedLeakage;
-        speaker_render_error_max = Format-Number $speakerRenderError;
-        factorization_reconstruction_error_max = Format-Number $factorizationResidual;
-        matrix_coefficient_jump_max = Format-Number $matrixJump;
-        carrier_coefficient_jump_max = Format-Number $carrierJump;
-        headroom_margin_min = Format-Number (Get-MinMetric $rows headroom_margin);
-        deterministic_reencode = if ($deterministic) { "PASS" } else { "FAIL" };
-        compatibility_render = $inspection.render_result;
-        openjoc_carrier_traversal_errors = $inspection.carrier_traversal_errors;
-        status = if ($inspection.openjoc_strict_result -eq "PASS" -and $inspection.finite_pcm -eq "YES" -and $deterministic -and $actual -eq $requested -and $qualityPass) { "PASS" } else { "FAIL" };
-        quality_fallback = "none; 15 coded objects retained; deterministic I0/D0 split $($spec.carrier)+$($spec.d0) kbps"
-    })
 }
 $bitrateCsv = Join-Path $artifact "bitrate-sweep.csv"
 $bitrateRows | Export-Csv -LiteralPath $bitrateCsv -NoTypeInformation -Encoding utf8
+$bitrateRows | Export-Csv -LiteralPath (Join-Path $artifact "profile-bitrate-matrix.csv") -NoTypeInformation -Encoding utf8
 
 $quantizationPath = Join-Path $artifact "quantization-stress.json"
 Invoke-Checked "cargo" @("run", "-p", "jocforge", "--quiet", "--", "quantization-stress", $quantizationPath)
@@ -1357,7 +1459,13 @@ foreach ($profile in $hanabiProfiles) {
     }
     $profileRows = Read-MetricRows "$($validation.output).metrics.csv"
     $sourceLeakage = Get-MaxMetric $profileRows unexplained_cluster_leakage
-    $measurement = Measure-FinalRenderEvidence $validation.output $validation.render $profile.name $sourceLeakage
+    $measurement = Measure-FinalRenderEvidence $validation.output $validation.render $profile.name
+    $measurement | Add-Member -NotePropertyName input_fixture_id -NotePropertyValue "controlled-rate-15.bw64"
+    $measurement | Add-Member -NotePropertyName encoded_artifact_sha256 -NotePropertyValue (Get-Sha256 $validation.output)
+    $measurement | Add-Member -NotePropertyName rendered_artifact_sha256 -NotePropertyValue (Get-Sha256 $validation.render)
+    $measurement | Add-Member -NotePropertyName pinned_openjoc_identity -NotePropertyValue $validatorIdentity
+    $measurement | Add-Member -NotePropertyName source_stage_leakage -NotePropertyValue $sourceLeakage
+    $measurement | Add-Member -NotePropertyName final_render_leakage_threshold -NotePropertyValue $UnexplainedLeakageThreshold
     $gatePath = Join-Path $artifact "final-render-$($profile.name).json"
     $gate = Invoke-FinalRenderGate $measurement $gatePath
     $measurement | Add-Member -NotePropertyName gate -NotePropertyValue $gate
@@ -1377,7 +1485,13 @@ foreach ($relationship in @("quadrature", "transient")) {
     $relationshipInspection = Invoke-Inspect $relationshipOutput "spectral-final-$relationship" "7.1.4"
     $relationshipRows = Read-MetricRows "$relationshipOutput.metrics.csv"
     $relationshipLeakage = Get-MaxMetric $relationshipRows unexplained_cluster_leakage
-    $relationshipMeasurement = Measure-FinalRenderEvidence $relationshipOutput $relationshipInspection.render "idx1" $relationshipLeakage $relationship
+    $relationshipMeasurement = Measure-FinalRenderEvidence $relationshipOutput $relationshipInspection.render "idx1" $relationship
+    $relationshipMeasurement | Add-Member -NotePropertyName input_fixture_id -NotePropertyValue ("spectral-final-" + $relationship + ".bw64")
+    $relationshipMeasurement | Add-Member -NotePropertyName encoded_artifact_sha256 -NotePropertyValue (Get-Sha256 $relationshipOutput)
+    $relationshipMeasurement | Add-Member -NotePropertyName rendered_artifact_sha256 -NotePropertyValue (Get-Sha256 $relationshipInspection.render)
+    $relationshipMeasurement | Add-Member -NotePropertyName pinned_openjoc_identity -NotePropertyValue $validatorIdentity
+    $relationshipMeasurement | Add-Member -NotePropertyName source_stage_leakage -NotePropertyValue $relationshipLeakage
+    $relationshipMeasurement | Add-Member -NotePropertyName final_render_leakage_threshold -NotePropertyValue $UnexplainedLeakageThreshold
     $relationshipGatePath = Join-Path $artifact "final-render-corpus-$relationship.json"
     $relationshipGate = Invoke-FinalRenderGate $relationshipMeasurement $relationshipGatePath
     $relationshipMeasurement | Add-Member -NotePropertyName gate -NotePropertyValue $relationshipGate
@@ -1438,9 +1552,10 @@ foreach ($profile in $hanabiProfiles) {
         strict = $conditions.strict; render = $conditions.render; finite = $conditions.finite;
         malformed_aus = $conditions.malformed_aus; carrier_traversal = $conditions.carrier_traversal;
         source_reconstruction = $conditions.source_reconstruction; spatial = $conditions.spatial;
-        leakage = $conditions.leakage; speaker = $conditions.speaker; factorization = $conditions.factorization;
+        source_leakage = $conditions.source_leakage; speaker = $conditions.speaker; factorization = $conditions.factorization;
         matrix = $conditions.matrix; carrier = $conditions.carrier; coded_peak = $conditions.coded_peak;
-        coded_headroom = $conditions.coded_headroom; final_decoded_render = $conditions.final_decoded_render;
+        coded_headroom = $conditions.coded_headroom; final_render_leakage = $conditions.final_render_leakage;
+        final_decoded_render = $conditions.final_decoded_render;
         final_render_pass = $conditions.final_decoded_render
     })
 }
@@ -1465,6 +1580,30 @@ $t003Pass = @($hanabiValidations | Where-Object {
     }).Count -eq 0 -and
     $hanabiAccountingPass -and $hanabiObjectBudgetPass -and $hanabiRoundTripQualityPass -and
     $causalJson.causal_test -eq $true -and $directSpeakersDocumented -and $sourceCausalityPass
+
+$bitrateVerdicts = @($bitrateRows | ForEach-Object { Test-BitrateCell $_ })
+$bitrateSupportedCount = @($bitrateVerdicts | Where-Object { $_.classification -eq "SUPPORTED" }).Count
+$bitrateRejectedCapacityCount = @($bitrateVerdicts | Where-Object { $_.classification -eq "REJECTED_CAPACITY" }).Count
+$bitrateCorrectnessFailureCount = @($bitrateVerdicts | Where-Object { $_.classification -eq "FAIL_CORRECTNESS" }).Count
+$t004Pass = $bitrateCorrectnessFailureCount -eq 0 -and
+    $bitrateSupportedCount -gt 0 -and
+    $bitrateRejectedCapacityCount -gt 0
+$bitrateAntiContradictionTest = $false
+$bitrateSupportedBaseline = @($bitrateRows | Where-Object {
+        $_.profile -eq "idx0" -and $_.target_bitrate_kbps -eq 1024 -and
+        (Test-BitrateCell $_).classification -eq "SUPPORTED"
+    })[0]
+if ($null -ne $bitrateSupportedBaseline) {
+    $bitrateMutation = ConvertFrom-Json ($bitrateSupportedBaseline | ConvertTo-Json -Depth 10)
+    $bitrateMutation.openjoc_parse_result = "FAIL"
+    $bitrateMutation.openjoc_strict_result = "FAIL"
+    $bitrateMutation.openjoc_decode_result = "FAIL"
+    $bitrateMutation.openjoc_render_result = "FAIL"
+    $bitrateMutation.compatibility_render = "FAIL"
+    $bitrateMutation.classification = "SUPPORTED"
+    $bitrateMutation.status = "SUPPORTED"
+    $bitrateAntiContradictionTest = -not (Test-BitrateCell $bitrateMutation).pass
+}
 
 $antiSelfReportRoot = Join-Path ([IO.Path]::GetTempPath()) "jocforge-closure-anti-self-report-$PID"
 New-Item -ItemType Directory -Force $antiSelfReportRoot | Out-Null
@@ -1511,13 +1650,13 @@ try {
     $movingDiscontinuityRejected = -not (Test-MovingTemporalEvidence @($mutation.moving)).pass
     $finalRenderBase = @($finalRenderValidations | Where-Object { $_.profile -eq "idx1" })[0]
     $finalRenderMutations = @(
-        [pscustomobject]@{ name = "spectral_tilt"; finite = $finalRenderBase.finite; channel_coverage = $finalRenderBase.channel_coverage; spectral_error = $finalRenderBase.spectral_error; spectral_tilt_error = 2.0; phase_coherence = $finalRenderBase.phase_coherence; polarity_preserved = $finalRenderBase.polarity_preserved; quadrature_phase_error = $finalRenderBase.quadrature_phase_error; transient_phase_discontinuity = $finalRenderBase.transient_phase_discontinuity; leakage = $finalRenderBase.leakage; peak = $finalRenderBase.peak; headroom_margin = $finalRenderBase.headroom_margin },
-        [pscustomobject]@{ name = "phase_collapse"; finite = $finalRenderBase.finite; channel_coverage = $finalRenderBase.channel_coverage; spectral_error = $finalRenderBase.spectral_error; spectral_tilt_error = $finalRenderBase.spectral_tilt_error; phase_coherence = 0.0; polarity_preserved = $finalRenderBase.polarity_preserved; quadrature_phase_error = $finalRenderBase.quadrature_phase_error; transient_phase_discontinuity = $finalRenderBase.transient_phase_discontinuity; leakage = $finalRenderBase.leakage; peak = $finalRenderBase.peak; headroom_margin = $finalRenderBase.headroom_margin },
-        [pscustomobject]@{ name = "polarity_inversion"; finite = $finalRenderBase.finite; channel_coverage = $finalRenderBase.channel_coverage; spectral_error = $finalRenderBase.spectral_error; spectral_tilt_error = $finalRenderBase.spectral_tilt_error; phase_coherence = $finalRenderBase.phase_coherence; polarity_preserved = $false; quadrature_phase_error = $finalRenderBase.quadrature_phase_error; transient_phase_discontinuity = $finalRenderBase.transient_phase_discontinuity; leakage = $finalRenderBase.leakage; peak = $finalRenderBase.peak; headroom_margin = $finalRenderBase.headroom_margin },
-        [pscustomobject]@{ name = "quadrature_collapse"; finite = $finalRenderBase.finite; channel_coverage = $finalRenderBase.channel_coverage; spectral_error = $finalRenderBase.spectral_error; spectral_tilt_error = $finalRenderBase.spectral_tilt_error; phase_coherence = $finalRenderBase.phase_coherence; polarity_preserved = $finalRenderBase.polarity_preserved; quadrature_phase_error = 2.0; transient_phase_discontinuity = $finalRenderBase.transient_phase_discontinuity; leakage = $finalRenderBase.leakage; peak = $finalRenderBase.peak; headroom_margin = $finalRenderBase.headroom_margin },
-        [pscustomobject]@{ name = "transient_phase"; finite = $finalRenderBase.finite; channel_coverage = $finalRenderBase.channel_coverage; spectral_error = $finalRenderBase.spectral_error; spectral_tilt_error = $finalRenderBase.spectral_tilt_error; phase_coherence = $finalRenderBase.phase_coherence; polarity_preserved = $finalRenderBase.polarity_preserved; quadrature_phase_error = $finalRenderBase.quadrature_phase_error; transient_phase_discontinuity = 1.0; leakage = $finalRenderBase.leakage; peak = $finalRenderBase.peak; headroom_margin = $finalRenderBase.headroom_margin },
-        [pscustomobject]@{ name = "leakage"; finite = $finalRenderBase.finite; channel_coverage = $finalRenderBase.channel_coverage; spectral_error = $finalRenderBase.spectral_error; spectral_tilt_error = $finalRenderBase.spectral_tilt_error; phase_coherence = $finalRenderBase.phase_coherence; polarity_preserved = $finalRenderBase.polarity_preserved; quadrature_phase_error = $finalRenderBase.quadrature_phase_error; transient_phase_discontinuity = $finalRenderBase.transient_phase_discontinuity; leakage = 1.0; peak = $finalRenderBase.peak; headroom_margin = $finalRenderBase.headroom_margin },
-        [pscustomobject]@{ name = "headroom"; finite = $finalRenderBase.finite; channel_coverage = $finalRenderBase.channel_coverage; spectral_error = $finalRenderBase.spectral_error; spectral_tilt_error = $finalRenderBase.spectral_tilt_error; phase_coherence = $finalRenderBase.phase_coherence; polarity_preserved = $finalRenderBase.polarity_preserved; quadrature_phase_error = $finalRenderBase.quadrature_phase_error; transient_phase_discontinuity = $finalRenderBase.transient_phase_discontinuity; leakage = $finalRenderBase.leakage; peak = 1.0; headroom_margin = -0.1 }
+        [pscustomobject]@{ name = "spectral_tilt"; finite = $finalRenderBase.finite; channel_coverage = $finalRenderBase.channel_coverage; spectral_error = $finalRenderBase.spectral_error; spectral_tilt_error = 2.0; phase_coherence = $finalRenderBase.phase_coherence; polarity_preserved = $finalRenderBase.polarity_preserved; quadrature_phase_error = $finalRenderBase.quadrature_phase_error; transient_phase_discontinuity = $finalRenderBase.transient_phase_discontinuity; final_render_leakage = $finalRenderBase.final_render_leakage; peak = $finalRenderBase.peak; headroom_margin = $finalRenderBase.headroom_margin },
+        [pscustomobject]@{ name = "phase_collapse"; finite = $finalRenderBase.finite; channel_coverage = $finalRenderBase.channel_coverage; spectral_error = $finalRenderBase.spectral_error; spectral_tilt_error = $finalRenderBase.spectral_tilt_error; phase_coherence = 0.0; polarity_preserved = $finalRenderBase.polarity_preserved; quadrature_phase_error = $finalRenderBase.quadrature_phase_error; transient_phase_discontinuity = $finalRenderBase.transient_phase_discontinuity; final_render_leakage = $finalRenderBase.final_render_leakage; peak = $finalRenderBase.peak; headroom_margin = $finalRenderBase.headroom_margin },
+        [pscustomobject]@{ name = "polarity_inversion"; finite = $finalRenderBase.finite; channel_coverage = $finalRenderBase.channel_coverage; spectral_error = $finalRenderBase.spectral_error; spectral_tilt_error = $finalRenderBase.spectral_tilt_error; phase_coherence = $finalRenderBase.phase_coherence; polarity_preserved = $false; quadrature_phase_error = $finalRenderBase.quadrature_phase_error; transient_phase_discontinuity = $finalRenderBase.transient_phase_discontinuity; final_render_leakage = $finalRenderBase.final_render_leakage; peak = $finalRenderBase.peak; headroom_margin = $finalRenderBase.headroom_margin },
+        [pscustomobject]@{ name = "quadrature_collapse"; finite = $finalRenderBase.finite; channel_coverage = $finalRenderBase.channel_coverage; spectral_error = $finalRenderBase.spectral_error; spectral_tilt_error = $finalRenderBase.spectral_tilt_error; phase_coherence = $finalRenderBase.phase_coherence; polarity_preserved = $finalRenderBase.polarity_preserved; quadrature_phase_error = 2.0; transient_phase_discontinuity = $finalRenderBase.transient_phase_discontinuity; final_render_leakage = $finalRenderBase.final_render_leakage; peak = $finalRenderBase.peak; headroom_margin = $finalRenderBase.headroom_margin },
+        [pscustomobject]@{ name = "transient_phase"; finite = $finalRenderBase.finite; channel_coverage = $finalRenderBase.channel_coverage; spectral_error = $finalRenderBase.spectral_error; spectral_tilt_error = $finalRenderBase.spectral_tilt_error; phase_coherence = $finalRenderBase.phase_coherence; polarity_preserved = $finalRenderBase.polarity_preserved; quadrature_phase_error = $finalRenderBase.quadrature_phase_error; transient_phase_discontinuity = 1.0; final_render_leakage = $finalRenderBase.final_render_leakage; peak = $finalRenderBase.peak; headroom_margin = $finalRenderBase.headroom_margin },
+        [pscustomobject]@{ name = "leakage"; finite = $finalRenderBase.finite; channel_coverage = $finalRenderBase.channel_coverage; spectral_error = $finalRenderBase.spectral_error; spectral_tilt_error = $finalRenderBase.spectral_tilt_error; phase_coherence = $finalRenderBase.phase_coherence; polarity_preserved = $finalRenderBase.polarity_preserved; quadrature_phase_error = $finalRenderBase.quadrature_phase_error; transient_phase_discontinuity = $finalRenderBase.transient_phase_discontinuity; final_render_leakage = 1.0; peak = $finalRenderBase.peak; headroom_margin = $finalRenderBase.headroom_margin },
+        [pscustomobject]@{ name = "headroom"; finite = $finalRenderBase.finite; channel_coverage = $finalRenderBase.channel_coverage; spectral_error = $finalRenderBase.spectral_error; spectral_tilt_error = $finalRenderBase.spectral_tilt_error; phase_coherence = $finalRenderBase.phase_coherence; polarity_preserved = $finalRenderBase.polarity_preserved; quadrature_phase_error = $finalRenderBase.quadrature_phase_error; transient_phase_discontinuity = $finalRenderBase.transient_phase_discontinuity; final_render_leakage = $finalRenderBase.final_render_leakage; peak = 1.0; headroom_margin = -0.1 }
     )
     $finalRenderMutationResults = [System.Collections.Generic.List[object]]::new()
     foreach ($finalMutation in $finalRenderMutations) {
@@ -1537,20 +1676,43 @@ try {
     $sourceCausalityMutation.profiles[0].perturbations[0].output_hash_changed = $false
     $sourceCausalityNegativeTest = -not (Test-SourceCausalityReport $sourceCausalityMutation)
     $t008FinalRenderBase = @($finalRenderValidations | Where-Object { $_.profile -eq "idx1" })[0]
-    $t008LeakageRowsMutation = @($controlledIdx1Rows | ConvertTo-Json -Depth 10 | ConvertFrom-Json)
+    $finalRenderPcmMutationPath = Join-Path $negativeMutationRoot "final-render-leakage-pcm.wav"
+    New-FinalRenderLeakageMutation $t008FinalRenderBase.rendered_path $finalRenderPcmMutationPath 3
+    $finalRenderPcmMutationMeasurement = Measure-FinalRenderEvidence $t008FinalRenderBase.encoded_path $finalRenderPcmMutationPath "idx1"
+    $finalRenderPcmMutationGatePath = Join-Path $negativeMutationRoot "final-render-leakage-pcm.json"
+    $finalRenderPcmMutationGate = Invoke-FinalRenderGate $finalRenderPcmMutationMeasurement $finalRenderPcmMutationGatePath
+    $finalRenderPcmNegativePass = [double]$finalRenderPcmMutationMeasurement.final_render_leakage -gt $UnexplainedLeakageThreshold -and
+        $finalRenderPcmMutationGate.pass -ne $true
+    $sourceOnlyRowsMutation = ConvertFrom-Json (ConvertTo-Json -InputObject ([object[]]$controlledIdx1Rows) -Depth 10)
+    foreach ($row in $sourceOnlyRowsMutation) { $row.unexplained_cluster_leakage = 0.0 }
+    $badFinalRenderEvidence = ConvertFrom-Json ($t008FinalRenderBase | ConvertTo-Json -Depth 10)
+    $badFinalRenderEvidence.final_render_leakage = 1.0
+    $badFinalRenderEvidence.gate.pass = $false
+    $sourceOnlyOverridePass = (Test-T008ProfileConditions $controlledIdx1 $sourceOnlyRowsMutation $badFinalRenderEvidence).pass
+    $sourceStageCannotOverrideFinalRender = -not $sourceOnlyOverridePass
+    $t008LeakageRowsMutation = ConvertFrom-Json (ConvertTo-Json -InputObject ([object[]]$controlledIdx1Rows) -Depth 10)
     foreach ($row in $t008LeakageRowsMutation) { $row.unexplained_cluster_leakage = 1.0 }
     $t008AggregateLeakageNegativeTest = -not (Test-T008ProfileConditions $controlledIdx1 $t008LeakageRowsMutation $t008FinalRenderBase).pass
-    $t008HeadroomRowsMutation = @($controlledIdx1Rows | ConvertTo-Json -Depth 10 | ConvertFrom-Json)
+    $t008HeadroomRowsMutation = ConvertFrom-Json (ConvertTo-Json -InputObject ([object[]]$controlledIdx1Rows) -Depth 10)
     foreach ($row in $t008HeadroomRowsMutation) { $row.max_coded_peak = 1.0; $row.headroom_margin = -0.1 }
     $t008AggregateHeadroomNegativeTest = -not (Test-T008ProfileConditions $controlledIdx1 $t008HeadroomRowsMutation $t008FinalRenderBase).pass
     $negativeMutationTests = [pscustomobject]@{
-        pass = $sourceDropRejected -and $qualityThresholdRejected -and $stationaryChurnRejected -and $movingDiscontinuityRejected -and $finalRenderNegativePass -and $placeholderCarrierNegativeTest -and $sourceCausalityNegativeTest -and $t008AggregateLeakageNegativeTest -and $t008AggregateHeadroomNegativeTest
+        pass = $sourceDropRejected -and $qualityThresholdRejected -and $stationaryChurnRejected -and $movingDiscontinuityRejected -and $finalRenderNegativePass -and $finalRenderPcmNegativePass -and $sourceStageCannotOverrideFinalRender -and $bitrateAntiContradictionTest -and $placeholderCarrierNegativeTest -and $sourceCausalityNegativeTest -and $t008AggregateLeakageNegativeTest -and $t008AggregateHeadroomNegativeTest
         source_drop_rejected = $sourceDropRejected
         quality_threshold_rejected = $qualityThresholdRejected
         stationary_churn_rejected = $stationaryChurnRejected
         moving_discontinuity_rejected = $movingDiscontinuityRejected
         final_render_mutations = $finalRenderMutationResults
         final_render_negative_pass = $finalRenderNegativePass
+        final_render_pcm_negative_pass = $finalRenderPcmNegativePass
+        final_render_pcm_mutation = [pscustomobject]@{
+            measured_final_render_leakage = $finalRenderPcmMutationMeasurement.final_render_leakage
+            threshold = $UnexplainedLeakageThreshold
+            gate_pass = $finalRenderPcmMutationGate.pass
+        }
+        source_stage_cannot_override_final_render = $sourceStageCannotOverrideFinalRender
+        source_leakage_reused_as_final = -not $sourceStageCannotOverrideFinalRender
+        bitrate_anti_contradiction_test = $bitrateAntiContradictionTest
         placeholder_carrier_negative_test = $placeholderCarrierNegativeTest
         source_causality_negative_test = $sourceCausalityNegativeTest
         t008_aggregate_leakage_negative_test = $t008AggregateLeakageNegativeTest
@@ -1588,9 +1750,12 @@ $t008Predicates = [ordered]@{
     final_render_profiles = $finalRenderProfilesPass
     final_render_corpus = $finalRenderCorpusPass
     declared_profile_conditions = $t008AllProfileConditionsPass
-    leakage_gate = (@($t008ProfileConditions | Where-Object { $_.leakage -ne $true }).Count -eq 0)
+    source_leakage_gate = (@($t008ProfileConditions | Where-Object { $_.source_leakage -ne $true }).Count -eq 0)
+    final_render_leakage_gate = (@($t008ProfileConditions | Where-Object { $_.final_render_leakage -ne $true }).Count -eq 0)
     headroom_gate = (@($t008ProfileConditions | Where-Object { $_.coded_headroom -ne $true -or $_.final_decoded_render -ne $true }).Count -eq 0)
     final_render_negative_mutations = $negativeMutationTests.final_render_negative_pass
+    final_render_pcm_negative_mutation = $negativeMutationTests.final_render_pcm_negative_pass
+    source_stage_cannot_override_final_render = $negativeMutationTests.source_stage_cannot_override_final_render
 }
 $predicateAudit = [ordered]@{
     T001 = [ordered]@{ declared_conditions = $t001Predicates; all_conditions_pass = (@($t001Predicates.Values | Where-Object { $_ -ne $true }).Count -eq 0) }
@@ -1602,7 +1767,7 @@ $underassertedCleanTests = @(
     [pscustomobject]@{ test_id = "T-001"; required = 5; asserted = $t001Predicates.Keys.Count }
     [pscustomobject]@{ test_id = "T-002"; required = 5; asserted = $t002Predicates.Keys.Count }
     [pscustomobject]@{ test_id = "T-003"; required = 5; asserted = $t003Predicates.Keys.Count }
-    [pscustomobject]@{ test_id = "T-008"; required = 6; asserted = $t008Predicates.Keys.Count }
+    [pscustomobject]@{ test_id = "T-008"; required = 10; asserted = $t008Predicates.Keys.Count }
 ) | Where-Object { $_.asserted -lt $_.required }
 $predicateAudit.underasserted_clean_tests = $underassertedCleanTests
 $predicateAudit.underasserted_clean_tests_count = @($underassertedCleanTests | Where-Object { $null -ne $_ }).Count
@@ -1611,7 +1776,7 @@ $cleanTests = @(
     [pscustomobject]@{ test_id = "T-001"; status = Get-DerivedStatus $t001Pass; command = "cargo run -p jocforge -- encode + pinned OpenJOC inspect/render + FFmpeg decode + source perturbations"; evidence = "controlled-profile-idx1.ec3.metrics.csv; source-causality.json; primary inspection"; measured = "strict=$($controlledIdx1.openjoc_strict_result); finite_pcm=$($controlledIdx1.finite_pcm); render=$($controlledIdx1.render_result); malformed_aus=$($controlledIdx1.malformed_aus); source_accounting=$($controlledIdx1Accounting.pass); coded_count=$($controlledIdx1.coded_count); quality=$($controlledIdx1Quality.pass); source_causality=$sourceCausalityPass"; expected = "strict=PASS; finite_pcm=YES; render=PASS; malformed_aus=0; complete source domain; every intended carrier input has causal encoded/render response; M<=15; all published quality thresholds pass" },
     [pscustomobject]@{ test_id = "T-002"; status = Get-DerivedStatus $t002Pass; evidence = "controlled-16/20/28 metrics sidecars; independent leakage-matrix.csv; source-causality.json"; measured = "all three coded_count<=15, silent_drops=0, complete source accounting, quality thresholds pass, source_causality=$sourceCausalityPass"; expected = "M<=15; no silent discard; complete source coverage; source/error/leakage/spatial quality thresholds pass" },
     [pscustomobject]@{ test_id = "T-003"; status = Get-DerivedStatus $t003Pass; evidence = "Hanabi three-profile strict sidecars; primary idx1 accounting/quality; source-causality.json; direct-speakers-causal.json and docs"; measured = "all profiles strict/finite/M<=15/no drops; primary source accounting=$hanabiAccountingPass; round-trip observation=$hanabiRoundTripQualityPass; DirectSpeakers causal test=$($causalJson.causal_test); documented=$directSpeakersDocumented; source_causality=$sourceCausalityPass"; expected = "no silent object dropping; complete authored-source coverage; every intended idx0/idx1/idx2 carrier input is causally source-derived; M<=15; DirectSpeakers handling documented" },
-    [pscustomobject]@{ test_id = "T-004"; status = Get-DerivedStatus ((($bitrateRows | Where-Object status -eq "FAIL").Count -eq 0)); command = "cargo run -p jocforge -- encode for supported and unsupported rate probes"; evidence = "bitrate-sweep.csv"; measured = "failed_rows=$(@($bitrateRows | Where-Object status -eq "FAIL").Count); lower_rate_rows=$(@($bitrateRows | Where-Object { $_.actual_bitrate_kbps -eq "REJECTED" }).Count)"; expected = "failed_rows=0; each unsupported rate has nonzero exit and explicit rejection" },
+    [pscustomobject]@{ test_id = "T-004"; status = Get-DerivedStatus $t004Pass; command = "cargo run -p jocforge -- encode for every profile × bitrate cell plus pinned OpenJOC and FFmpeg validation"; evidence = "profile-bitrate-matrix.csv"; measured = "supported_cells=$bitrateSupportedCount; rejected_capacity_cells=$bitrateRejectedCapacityCount; correctness_failures=$bitrateCorrectnessFailureCount"; expected = "every SUPPORTED cell passes encode, structural, OpenJOC parse/decode/render, FFmpeg decode, finite PCM and deterministic gates; lower capacity cells reject explicitly" },
     [pscustomobject]@{ test_id = "T-005"; status = Get-DerivedStatus $t005Evidence.pass; evidence = "temporal-metrics.csv plus stationary controlled-profile-idx1 metrics"; measured = "assignment/representative/slot churn and lifetimes are stable; transition bounds and matrix/carrier jumps are within thresholds"; expected = "no gratuitous representation permutation, sign/state jump, or audible reassignment artefact" },
     [pscustomobject]@{ test_id = "T-006"; status = Get-DerivedStatus $t006Evidence.pass; evidence = "temporal-metrics.csv and temporal-audit.csv"; measured = "five moving scenes checked for M, no drops, trajectory error, position jump, PCM discontinuity, gain jump, and speaker discontinuity"; expected = "bounded spatial/trajectory error without avoidable discontinuity" },
     [pscustomobject]@{ test_id = "T-007"; status = if ((@($leakageRows | Where-Object { [double]$_.unexplained_cluster_leakage -gt $UnexplainedLeakageThreshold }).Count) -eq 0) { "PASS" } else { "FAIL" }; evidence = "leakage-matrix.csv; independent coded-signal residual" },
@@ -1642,6 +1807,16 @@ $closure = [ordered]@{
     generated = (Get-Date).ToUniversalTime().ToString("o", $invariant)
     firewall = [ordered]@{ contaminated_workspace_read = "NO"; sanitizer_private_read = "NO" }
     bitrate_sweep = $bitrateRows
+    bitrate_contract = "PROFILE x BITRATE; supported cells require every mandatory validation stage"
+    bitrate_matrix = [ordered]@{
+        supported = $bitrateSupportedCount
+        rejected_capacity = $bitrateRejectedCapacityCount
+        fail_correctness = $bitrateCorrectnessFailureCount
+        supported_with_render_failure = @($bitrateRows | Where-Object {
+            (Test-BitrateCell $_).classification -eq "SUPPORTED" -and $_.openjoc_render_result -ne "PASS"
+        }).Count
+        anti_contradiction_test = $bitrateAntiContradictionTest
+    }
     temporal_audit = $temporalAudits
     leakage_observations = $fixtureRows
     directspeakers = $causalJson

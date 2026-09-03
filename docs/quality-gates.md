@@ -38,6 +38,7 @@ quality claim.
 | Field | Threshold | Clean derivation |
 | --- | ---: | --- |
 | `unexplained_cluster_leakage` | `<= 1e-12` | Recompute coded PCM from explicit source indices and contribution gains, then divide residual energy by coded energy. |
+| `final_render_leakage` | `<= 1e-12` | Measure unintended rendered output-channel energy divided by intended rendered output-channel energy from the actual pinned OpenJOC PCM. |
 | `speaker_render_error` | `<= 0.5` | Compare a deterministic normalized left/right position projection of authored source PCM with the same projection of reduced coded PCM. |
 | `factorization_reconstruction_error` | `<= 0.6` | Apply the measured carrier/matrix pair on the deterministic analysis view and compute normalized RMS residual. The bound is above the fresh five-carrier clean baseline (`0.5286687`) with explicit structural headroom. |
 | `matrix_coefficient_jump` | `<= 2.0` | Maximum element-wise delta between consecutive scaled matrices. |
@@ -80,8 +81,13 @@ claim.
 - `SIGNAL_RECONSTRUCTION_GATE`: `PASS` when the independent source/matrix
   residuals meet the published structural thresholds; this does not establish
   perceptual E-AC-3 quality.
-- `LEAKAGE_GATE`: `PASS` when the recomputed unexplained cluster residual is
-  at most `1e-12`; intentional merge energy is not relabeled as leakage.
+- `LEAKAGE_GATE`: `PASS` when the recomputed source-stage unexplained cluster
+  residual is at most `1e-12`; intentional merge energy is not relabeled as
+  leakage.
+- `FINAL_RENDER_LEAKAGE_GATE`: `PASS` when the actual pinned OpenJOC rendered
+  PCM has at most `1e-12` unintended-to-intended channel energy ratio. This is
+  an independent final-render measurement and never consumes the source-stage
+  residual.
 - `SPATIAL_GATE`: `PASS` for the controlled source-position metrics; no
   independent libear reference render was available on this host.
 - `COMPATIBILITY_GATE`: `PASS` when OpenJOC/FFmpeg render/decode succeeds, the

@@ -1,6 +1,6 @@
-param(
-    [string]$OpenJoc = "D:\Programs\OpenJOC\target\debug\openjoc.exe"
-)
+# pattern: Imperative Shell
+
+param()
 
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
@@ -8,6 +8,7 @@ $artifact = Join-Path $root "artifacts\mvp"
 $roundtrip = Join-Path $artifact "roundtrip"
 New-Item -ItemType Directory -Force $roundtrip | Out-Null
 . (Join-Path $PSScriptRoot "openjoc-validator-pin.ps1")
+$OpenJoc = (Resolve-OpenJocValidator $root).executable
 
 function Invoke-Checked([string]$file, [string[]]$arguments) {
     & $file @arguments

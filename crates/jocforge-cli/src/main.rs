@@ -1,5 +1,7 @@
 // pattern: Imperative Shell
 
+// pattern: Imperative Shell
+
 use std::{
     collections::BTreeMap,
     env,
@@ -293,6 +295,10 @@ fn run_spectral_phase(arguments: &[String]) -> Result<(), String> {
             let evidence = fs::read_to_string(path).map_err(|error| {
                 format!("failed to read final decoded render evidence '{path}': {error}")
             })?;
+            let evidence = evidence
+                .strip_prefix('\u{feff}')
+                .unwrap_or(&evidence)
+                .to_owned();
             let evidence_value = parse_json_document(&evidence).map_err(|error| {
                 format!("failed to parse final decoded render evidence '{path}': {error}")
             })?;
@@ -371,12 +377,12 @@ fn run_final_render_gate(arguments: &[String]) -> Result<(), String> {
         polarity_preserved,
         quadrature_phase_error,
         transient_phase_discontinuity,
-        leakage,
+        final_render_leakage,
         peak,
         headroom_margin,
     ] = arguments
     else {
-        return Err("usage: jocforge final-render-gate OUTPUT.json FINITE CHANNEL_COVERAGE SPECTRAL_ERROR SPECTRAL_TILT_ERROR PHASE_COHERENCE POLARITY_PRESERVED QUADRATURE_PHASE_ERROR TRANSIENT_PHASE_DISCONTINUITY LEAKAGE PEAK HEADROOM_MARGIN".to_owned());
+        return Err("usage: jocforge final-render-gate OUTPUT.json FINITE CHANNEL_COVERAGE SPECTRAL_ERROR SPECTRAL_TILT_ERROR PHASE_COHERENCE POLARITY_PRESERVED QUADRATURE_PHASE_ERROR TRANSIENT_PHASE_DISCONTINUITY FINAL_RENDER_LEAKAGE PEAK HEADROOM_MARGIN".to_owned());
     };
     let measurement = FinalRenderMeasurement {
         finite: parse_boolean(finite)?,
@@ -390,13 +396,13 @@ fn run_final_render_gate(arguments: &[String]) -> Result<(), String> {
             "transient phase discontinuity",
             transient_phase_discontinuity,
         )?,
-        leakage: parse_f64("leakage", leakage)?,
+        final_render_leakage: parse_f64("final render leakage", final_render_leakage)?,
         peak: parse_f64("peak", peak)?,
         headroom_margin: parse_f64("headroom margin", headroom_margin)?,
     };
     let gate = final_render_gate(&measurement);
     let json = format!(
-        "{{\n  \"stage\": \"FINAL_DECODED_RENDER\",\n  \"finite\": {},\n  \"channel_coverage\": {},\n  \"spectral_error\": {:.17e},\n  \"spectral_tilt_error\": {:.17e},\n  \"phase_coherence\": {:.17e},\n  \"polarity_preserved\": {},\n  \"quadrature_phase_error\": {:.17e},\n  \"transient_phase_discontinuity\": {:.17e},\n  \"leakage\": {:.17e},\n  \"peak\": {:.17e},\n  \"headroom_margin\": {:.17e},\n  \"finite_gate\": {},\n  \"channel_coverage_gate\": {},\n  \"spectral_gate\": {},\n  \"phase_gate\": {},\n  \"polarity_gate\": {},\n  \"quadrature_gate\": {},\n  \"transient_gate\": {},\n  \"leakage_gate\": {},\n  \"headroom_gate\": {},\n  \"pass\": {}\n}}\n",
+        "{{\n  \"stage\": \"FINAL_DECODED_RENDER\",\n  \"finite\": {},\n  \"channel_coverage\": {},\n  \"spectral_error\": {:.17e},\n  \"spectral_tilt_error\": {:.17e},\n  \"phase_coherence\": {:.17e},\n  \"polarity_preserved\": {},\n  \"quadrature_phase_error\": {:.17e},\n  \"transient_phase_discontinuity\": {:.17e},\n  \"final_render_leakage\": {:.17e},\n  \"peak\": {:.17e},\n  \"headroom_margin\": {:.17e},\n  \"finite_gate\": {},\n  \"channel_coverage_gate\": {},\n  \"spectral_gate\": {},\n  \"phase_gate\": {},\n  \"polarity_gate\": {},\n  \"quadrature_gate\": {},\n  \"transient_gate\": {},\n  \"final_render_leakage_gate\": {},\n  \"headroom_gate\": {},\n  \"pass\": {}\n}}\n",
         json_bool(measurement.finite),
         json_bool(measurement.channel_coverage),
         measurement.spectral_error,
@@ -405,7 +411,7 @@ fn run_final_render_gate(arguments: &[String]) -> Result<(), String> {
         json_bool(measurement.polarity_preserved),
         measurement.quadrature_phase_error,
         measurement.transient_phase_discontinuity,
-        measurement.leakage,
+        measurement.final_render_leakage,
         measurement.peak,
         measurement.headroom_margin,
         json_bool(gate.finite.is_pass()),
@@ -415,7 +421,7 @@ fn run_final_render_gate(arguments: &[String]) -> Result<(), String> {
         json_bool(gate.polarity.is_pass()),
         json_bool(gate.quadrature.is_pass()),
         json_bool(gate.transient.is_pass()),
-        json_bool(gate.leakage.is_pass()),
+        json_bool(gate.final_render_leakage.is_pass()),
         json_bool(gate.headroom.is_pass()),
         json_bool(gate.pass),
     );
@@ -461,6 +467,7 @@ struct JsonParser<'a> {
 }
 
 fn parse_json_document(document: &str) -> Result<JsonValue, String> {
+    let document = document.strip_prefix('\u{feff}').unwrap_or(document);
     let mut parser = JsonParser {
         bytes: document.as_bytes(),
         offset: 0,
@@ -723,7 +730,7 @@ fn json_profile_gate_is_passing(value: &JsonValue, profile: &str) -> bool {
         "polarity_gate",
         "quadrature_gate",
         "transient_gate",
-        "leakage_gate",
+        "final_render_leakage_gate",
         "headroom_gate",
     ];
     json_number(gate, "command_exit_code") == Some(0.0)
@@ -740,7 +747,7 @@ fn required_finite_measurements_present(object: &BTreeMap<String, JsonValue>) ->
         "phase_coherence",
         "quadrature_phase_error",
         "transient_phase_discontinuity",
-        "leakage",
+        "final_render_leakage",
         "peak",
         "headroom_margin",
     ]
@@ -1447,7 +1454,8 @@ fn encode_ffmpeg_carrier(
     channels: usize,
     bitrate: &str,
 ) -> Result<(), String> {
-    let ffmpeg = std::process::Command::new("ffmpeg")
+    let mut command = std::process::Command::new("ffmpeg");
+    command
         .args([
             "-hide_banner",
             "-loglevel",
@@ -1462,7 +1470,16 @@ fn encode_ffmpeg_carrier(
         .arg(channels.to_string())
         .args(["-i"])
         .arg(raw_path)
-        .args(["-c:a", "eac3", "-b:a", bitrate, "-f", "eac3"])
+        .args(["-c:a", "eac3", "-b:a", bitrate]);
+    if bitrate == "384k" {
+        // FFmpeg's automatic low-rate coupling emits a carrier that the
+        // pinned OpenJOC renderer cannot traverse (grouped exponent 125).
+        // Disable only that low-rate mode; the public 5-channel carrier
+        // topology and its exact frame budget remain unchanged.
+        command.args(["-channel_coupling", "0"]);
+    }
+    let ffmpeg = command
+        .args(["-f", "eac3"])
         .arg(carrier_path)
         .status()
         .map_err(|error| format!("failed to start FFmpeg E-AC-3 encoder: {error}"))?;

@@ -1,5 +1,7 @@
 // pattern: Functional Core
 
+// pattern: Functional Core
+
 use std::f64::consts::{PI, TAU};
 
 use crate::{AdmObjectKind, AdmPosition, ReductionConfig, ReductionSource, reduce_scene};
@@ -90,7 +92,7 @@ pub struct FinalRenderMeasurement {
     pub polarity_preserved: bool,
     pub quadrature_phase_error: f64,
     pub transient_phase_discontinuity: f64,
-    pub leakage: f64,
+    pub final_render_leakage: f64,
     pub peak: f64,
     pub headroom_margin: f64,
 }
@@ -106,7 +108,7 @@ pub struct FinalRenderGate {
     pub polarity: GateStatus,
     pub quadrature: GateStatus,
     pub transient: GateStatus,
-    pub leakage: GateStatus,
+    pub final_render_leakage: GateStatus,
     pub headroom: GateStatus,
 }
 
@@ -132,7 +134,7 @@ pub fn final_render_gate(measurement: &FinalRenderMeasurement) -> FinalRenderGat
             measurement.phase_coherence,
             measurement.quadrature_phase_error,
             measurement.transient_phase_discontinuity,
-            measurement.leakage,
+            measurement.final_render_leakage,
             measurement.peak,
             measurement.headroom_margin,
         ]
@@ -153,8 +155,9 @@ pub fn final_render_gate(measurement: &FinalRenderMeasurement) -> FinalRenderGat
     let transient = finite
         && measurement.transient_phase_discontinuity >= 0.0
         && measurement.transient_phase_discontinuity <= FINAL_RENDER_TRANSIENT_DISCONTINUITY_LIMIT;
-    let leakage =
-        finite && measurement.leakage >= 0.0 && measurement.leakage <= FINAL_RENDER_LEAKAGE_LIMIT;
+    let final_render_leakage = finite
+        && measurement.final_render_leakage >= 0.0
+        && measurement.final_render_leakage <= FINAL_RENDER_LEAKAGE_LIMIT;
     let headroom = finite
         && measurement.peak >= 0.0
         && measurement.peak <= FINAL_RENDER_PEAK_LIMIT
@@ -168,7 +171,7 @@ pub fn final_render_gate(measurement: &FinalRenderMeasurement) -> FinalRenderGat
             && polarity
             && quadrature
             && transient
-            && leakage
+            && final_render_leakage
             && headroom,
         finite: status(finite),
         channel_coverage: status(channel_coverage),
@@ -177,7 +180,7 @@ pub fn final_render_gate(measurement: &FinalRenderMeasurement) -> FinalRenderGat
         polarity: status(polarity),
         quadrature: status(quadrature),
         transient: status(transient),
-        leakage: status(leakage),
+        final_render_leakage: status(final_render_leakage),
         headroom: status(headroom),
     }
 }

@@ -67,15 +67,15 @@ Disposition counts: `IMPLEMENTED=54`, `ALREADY_SATISFIED=7`, `TEST_ONLY=0`,
 | COM-001 | ALREADY_SATISFIED | profile channel maps and public EMDF payload IDs | profile/writer tests |
 | COM-002 | IMPLEMENTED | profile-fixed compatibility layouts documented | design and README |
 | COM-003 | IMPLEMENTED | pinned OpenJOC speaker render plus quantitative clean speaker projection per profile | rendered WAV evidence; `speaker_render_error` threshold; `FINAL_DECODED_RENDER` rows |
-| COM-004 | IMPLEMENTED | strict render/decode plus independently measured final-render spectral, band, tilt, transient, phase, coherence, polarity, quadrature, leakage, and headroom gates | `spectral-phase.json` with embedded `FINAL_DECODED_RENDER`; `final-render-idx*.json`; derived T-008 |
+| COM-004 | IMPLEMENTED | strict render/decode plus independently measured final-render spectral, band, tilt, transient, phase, coherence, polarity, quadrature, actual rendered-PCM leakage, and headroom gates | `spectral-phase.json` with embedded `FINAL_DECODED_RENDER`; `final-render-idx*.json`; derived T-008 |
 | COM-005 | IMPLEMENTED | compatibility is profile selection, not source mutation | CLI profile path |
 | COM-006 | OPEN_RESEARCH | compatibility loss is not yet in reducer objective | ORQ-007 |
 | COM-007 | ALREADY_SATISFIED | retained as reference-only observation | clean handoff |
 | COM-008 | OPEN_RESEARCH | sequential objective selected for milestone | ORQ-007 |
-| RATE-001 | IMPLEMENTED | fixed documented 48 kHz/1024k carrier support | parser and CLI errors |
-| RATE-002 | IMPLEMENTED | deterministic I0/D0 budget table and actual-rate enforcement | bitrate sweep; rate tests |
-| RATE-003 | IMPLEMENTED | max-15 budget and public payload bounds | writer/reducer checks |
-| RATE-004 | IMPLEMENTED | explicit reduction or typed failure | reduction/writer errors |
+| RATE-001 | IMPLEMENTED | fixed documented 48 kHz profile/rate legality | parser and CLI errors |
+| RATE-002 | IMPLEMENTED | deterministic I0/D0 budget table and actual-rate enforcement per profile x bitrate cell | profile-bitrate matrix; rate tests |
+| RATE-003 | IMPLEMENTED | max-15 budget and public payload bounds with pinned OpenJOC render acceptance | writer/reducer checks; profile-bitrate matrix |
+| RATE-004 | IMPLEMENTED | explicit capacity rejection or correctness failure per profile x bitrate cell | reduction/writer errors; profile-bitrate matrix |
 | RATE-005 | IMPLEMENTED | final coded dynamic-object target never exceeds 15 | Hanabi output |
 | RATE-006 | OPEN_RESEARCH | adaptive capacity is deferred | ORQ-002 |
 | RATE-007 | ALREADY_SATISFIED | retained as reference-only observation | clean handoff |

@@ -246,7 +246,6 @@ function Measure-FinalRenderEvidence(
     [string]$EncodedPath,
     [string]$RenderedPath,
     [string]$Profile,
-    [double]$SourceLeakage,
     [string]$Relationship = "preserved"
 ) {
     $referenceChannels = if ($Profile -eq "idx0") { 2 } else { 0 }
@@ -294,6 +293,25 @@ function Measure-FinalRenderEvidence(
     }
     $activeChannelSet = [System.Collections.Generic.HashSet[int]]::new()
     foreach ($channel in $activeChannels) { $null = $activeChannelSet.Add($channel) }
+    $intendedRenderEnergy = 0.0
+    $unintendedRenderEnergy = 0.0
+    for ($sample = 0; $sample -lt $candidate.samples; $sample++) {
+        for ($channel = 0; $channel -lt $candidate.channels; $channel++) {
+            $value = $candidate.values[$sample * $candidate.channels + $channel]
+            if ($activeChannelSet.Contains($channel)) {
+                $intendedRenderEnergy += $value * $value
+            }
+            else {
+                $unintendedRenderEnergy += $value * $value
+            }
+        }
+    }
+    $finalRenderLeakage = if ($intendedRenderEnergy -le 1.0e-12) {
+        if ($unintendedRenderEnergy -le 1.0e-12) { 0.0 } else { 1.0 }
+    }
+    else {
+        $unintendedRenderEnergy / $intendedRenderEnergy
+    }
     $channelStats = [System.Collections.Generic.List[object]]::new()
     for ($channel = 0; $channel -lt $candidate.channels; $channel++) {
         $channelEnergy = 0.0
@@ -350,9 +368,11 @@ function Measure-FinalRenderEvidence(
         phase_difference_error = $phaseError
         quadrature_phase_error = $quadratureError
         transient_phase_discontinuity = Get-TransientPhaseDiscontinuity $reference $candidate $lag $comparableChannels
-        leakage = $SourceLeakage
+        final_render_leakage = $finalRenderLeakage
+        final_render_leakage_reference_energy = $intendedRenderEnergy
+        final_render_leakage_unintended_energy = $unintendedRenderEnergy
+        final_render_leakage_measurement = "unintended rendered channel energy / intended rendered channel energy"
         peak = $peak
         headroom_margin = 0.90 - $peak
-        source_leakage_measurement = "maximum unexplained_cluster_leakage from actual encoded source PCM metrics"
     }
 }
