@@ -864,12 +864,13 @@ New-Item -ItemType Directory -Force $negativeMutationRoot | Out-Null
 try {
     [ordered]@{
         source = $controlledIdx1Rows[0]
+        source_rows = @($controlledIdx1Rows)
         stationary = $stationaryRow
         moving = $movingRows[0]
     } | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $negativeMutationRoot "primary.json") -Encoding utf8
     $mutation = Get-Content -LiteralPath (Join-Path $negativeMutationRoot "primary.json") -Raw | ConvertFrom-Json
-    $mutation.source.silent_drops = 1
-    $sourceDropRejected = -not (Test-SourceAccounting @($mutation.source) 15).pass
+    foreach ($row in @($mutation.source_rows)) { $row.silent_drops = 1 }
+    $sourceDropRejected = -not (Test-SourceAccounting @($mutation.source_rows) 15).pass
     $mutation.source.silent_drops = 0
     $mutation.source.unexplained_cluster_leakage = 1.0
     $qualityThresholdRejected = -not (Test-QualityGates @($mutation.source)).pass
