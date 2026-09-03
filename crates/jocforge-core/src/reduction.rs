@@ -101,8 +101,8 @@ pub struct ReductionDiagnostics {
     pub speaker_render_error: f64,
     pub max_coded_peak: f64,
     pub headroom_margin: f64,
-    pub assignment_changes: usize,
-    pub coded_identity_changes: usize,
+    pub authored_source_assignment_changes: usize,
+    pub representative_source_changes: usize,
 }
 
 /// Pure result of the clean authored-to-coded reduction stage.
@@ -234,8 +234,10 @@ pub fn reduce_scene_with_previous(
         previous_assignments.as_deref(),
     )?;
     if let Some(previous) = previous {
-        result.diagnostics.assignment_changes = reduction_assignment_changes(previous, &result);
-        result.diagnostics.coded_identity_changes = reduction_identity_changes(previous, &result);
+        result.diagnostics.authored_source_assignment_changes =
+            authored_source_assignment_changes(previous, &result);
+        result.diagnostics.representative_source_changes =
+            representative_source_changes(previous, &result);
     }
     Ok(result)
 }
@@ -373,8 +375,8 @@ fn reduce_scene_internal(
             speaker_render_error: 0.0,
             max_coded_peak,
             headroom_margin: (config.output_peak_limit - max_coded_peak).max(0.0),
-            assignment_changes: 0,
-            coded_identity_changes: 0,
+            authored_source_assignment_changes: 0,
+            representative_source_changes: 0,
         },
     };
     result.diagnostics.unexplained_cluster_leakage = unexplained_cluster_leakage(sources, &result)?;
@@ -382,9 +384,12 @@ fn reduce_scene_internal(
     Ok(result)
 }
 
-/// Counts source-to-coded assignment changes between two pure reduction results.
+/// Counts authored source-to-coded assignment changes between two reductions.
 #[must_use]
-pub fn reduction_assignment_changes(left: &ReductionResult, right: &ReductionResult) -> usize {
+pub fn authored_source_assignment_changes(
+    left: &ReductionResult,
+    right: &ReductionResult,
+) -> usize {
     let mut right_assignments = right
         .source_accounting
         .iter()
@@ -399,13 +404,13 @@ pub fn reduction_assignment_changes(left: &ReductionResult, right: &ReductionRes
         .count()
 }
 
-/// Counts coded representative identities that disappeared between reductions.
+/// Counts representative source identities that disappeared between reductions.
 ///
-/// Coded ordinals are serialization positions, not identities. A stable
+/// Coded ordinals are output slots, not authored identities. A stable
 /// representative source remains the same identity even if a caller presents
 /// the coded-object vector in a different order.
 #[must_use]
-pub fn reduction_identity_changes(left: &ReductionResult, right: &ReductionResult) -> usize {
+pub fn representative_source_changes(left: &ReductionResult, right: &ReductionResult) -> usize {
     let left_identities = left
         .coded_objects
         .iter()

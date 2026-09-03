@@ -95,13 +95,13 @@ fn write_temporal_metrics(
     config: ReductionConfig,
 ) -> Result<(), String> {
     let mut csv = String::from(
-        "scene,frame_count,authored_source_count,maximum_coded_object_count,silent_object_drops,maximum_source_reconstruction_error,maximum_spatial_representation_error,maximum_cross_object_leakage,minimum_headroom_margin,total_assignment_changes,total_coded_identity_changes,assignment_changes_per_minute,max_sliding_window_changes,minimum_coded_identity_lifetime_frames,median_coded_identity_lifetime_frames,reassignment_burstiness,maximum_position_jump,maximum_trajectory_error,maximum_gain_jump,maximum_pcm_boundary_discontinuity,maximum_reconstruction_error_change,maximum_speaker_render_discontinuity,stationary_assignment_churn_after_initialization\n",
+        "scene,frame_count,authored_source_count,maximum_coded_object_count,silent_object_drops,maximum_source_reconstruction_error,maximum_spatial_representation_error,maximum_cross_object_leakage,minimum_headroom_margin,total_authored_source_assignment_changes,total_representative_source_changes,total_coded_slot_replacements,authored_source_assignment_changes_per_minute,max_sliding_window_authored_source_assignment_changes,minimum_authored_source_assignment_lifetime_frames,median_authored_source_assignment_lifetime_frames,minimum_representative_source_lifetime_frames,median_representative_source_lifetime_frames,minimum_coded_slot_lifetime_frames,median_coded_slot_lifetime_frames,authored_source_assignment_reassignment_burstiness,maximum_position_jump,maximum_trajectory_error,maximum_gain_jump,maximum_pcm_boundary_discontinuity,maximum_reconstruction_error_change,maximum_speaker_render_discontinuity,stationary_authored_source_assignment_churn_after_initialization\n",
     );
     for scene in scenes {
         let metrics = jocforge_core::analyze_temporal_scene_with_config(&scene, config)?;
         let _ = writeln!(
             csv,
-            "{},{},{},{},{},{:.17e},{:.17e},{:.17e},{:.17e},{},{},{:.17e},{},{},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{}",
+            "{},{},{},{},{},{:.17e},{:.17e},{:.17e},{:.17e},{},{},{},{:.17e},{},{},{:.17e},{},{:.17e},{},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{}",
             metrics.scene,
             metrics.frame_count,
             metrics.authored_source_count,
@@ -111,20 +111,25 @@ fn write_temporal_metrics(
             metrics.maximum_spatial_representation_error,
             metrics.maximum_cross_object_leakage,
             metrics.minimum_headroom_margin,
-            metrics.total_assignment_changes,
-            metrics.total_coded_identity_changes,
-            metrics.assignment_changes_per_minute,
-            metrics.max_sliding_window_changes,
-            metrics.minimum_coded_identity_lifetime_frames,
-            metrics.median_coded_identity_lifetime_frames,
-            metrics.reassignment_burstiness,
+            metrics.total_authored_source_assignment_changes,
+            metrics.total_representative_source_changes,
+            metrics.total_coded_slot_replacements,
+            metrics.authored_source_assignment_changes_per_minute,
+            metrics.max_sliding_window_authored_source_assignment_changes,
+            metrics.minimum_authored_source_assignment_lifetime_frames,
+            metrics.median_authored_source_assignment_lifetime_frames,
+            metrics.minimum_representative_source_lifetime_frames,
+            metrics.median_representative_source_lifetime_frames,
+            metrics.minimum_coded_slot_lifetime_frames,
+            metrics.median_coded_slot_lifetime_frames,
+            metrics.authored_source_assignment_reassignment_burstiness,
             metrics.maximum_position_jump,
             metrics.maximum_trajectory_error,
             metrics.maximum_gain_jump,
             metrics.maximum_pcm_boundary_discontinuity,
             metrics.maximum_reconstruction_error_change,
             metrics.maximum_speaker_render_discontinuity,
-            metrics.stationary_assignment_churn_after_initialization,
+            metrics.stationary_authored_source_assignment_churn_after_initialization,
         );
     }
     write_output(output, csv.into_bytes(), "temporal metrics")
@@ -537,7 +542,7 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         ..ReductionConfig::default()
     };
     let mut metrics = String::from(
-        "record,frame,source_index,object_id,kind,coded_object_index,contribution_gain,source_energy,represented_energy,relative_error,spatial_error,source_count,coded_count,silent_drops,source_reconstruction_error,spatial_representation_error,cross_object_leakage,unexplained_cluster_leakage,speaker_render_error,factorization_reconstruction_error,matrix_coefficient_jump,carrier_coefficient_jump,max_coded_peak,headroom_margin,assignment_changes,coded_identity_changes,coded_representative_source_index,source_azimuth,source_elevation,source_distance,coded_azimuth,coded_elevation,coded_distance,coded_first_sample,coded_last_sample\n",
+        "record,frame,source_index,object_id,kind,coded_object_index,contribution_gain,source_energy,represented_energy,relative_error,spatial_error,source_count,coded_count,silent_drops,source_reconstruction_error,spatial_representation_error,cross_object_leakage,unexplained_cluster_leakage,speaker_render_error,factorization_reconstruction_error,matrix_coefficient_jump,carrier_coefficient_jump,max_coded_peak,headroom_margin,authored_source_assignment_changes,representative_source_changes,coded_representative_source_index,source_azimuth,source_elevation,source_distance,coded_azimuth,coded_elevation,coded_distance,coded_first_sample,coded_last_sample\n",
     );
     let mut previous_reduction = None;
     let mut previous_factorization: Option<jocforge_core::RankFactorization> = None;
@@ -823,8 +828,8 @@ fn append_reduction_metrics(
             carrier_coefficient_jump,
             reduction.diagnostics.max_coded_peak,
             reduction.diagnostics.headroom_margin,
-            reduction.diagnostics.assignment_changes,
-            reduction.diagnostics.coded_identity_changes,
+            reduction.diagnostics.authored_source_assignment_changes,
+            reduction.diagnostics.representative_source_changes,
             coded.map_or(usize::MAX, |object| object.representative_source_index),
             source_position.azimuth,
             source_position.elevation,

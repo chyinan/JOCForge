@@ -1,6 +1,6 @@
 # Clean implementation traceability
 
-> Date: 2026-09-02
+> Date: 2026-09-03
 > Source: `D:\\Programs\\jocforge-sanitized-spec-01\\clean-handoff`
 > Firewall: only the clean handoff, public specifications, generic mathematics, and the clean repository were used.
 
@@ -9,7 +9,8 @@ reproduced by `scripts/run-validation-closure.ps1`. The C3 temporal
 stabilization is recorded in `artifacts/temporal-stabilization/` and
 reproduced by `scripts/run-temporal-stabilization.ps1`. The prior temporal
 matrix was insufficient because it counted source membership changes as coded
-identity changes; the strengthened metric now reports both.
+identity changes. The strengthened metric now reports authored-source
+assignment, representative-source, and coded-slot domains separately.
 
 Disposition counts: `IMPLEMENTED=54`, `ALREADY_SATISFIED=7`, `TEST_ONLY=0`,
 `OPEN_RESEARCH=10`, total `71`.
@@ -59,7 +60,7 @@ Disposition counts: `IMPLEMENTED=54`, `ALREADY_SATISFIED=7`, `TEST_ONLY=0`,
 | TMP-002 | ALREADY_SATISFIED | 1536-sample public frame loop | OpenJOC AU census |
 | TMP-003 | IMPLEMENTED | previous seeds, identity-keyed continuity, and measured matrix/carrier jumps | sparse identity and analysis tests; sidecar |
 | TMP-004 | IMPLEMENTED | aggregate position per coded cluster; unsupported input trajectories rejected | OAMD position output; ADM timing/block tests |
-| TMP-005 | IMPLEMENTED | `reduction_assignment_changes` and `reduction_identity_changes` with identity-keyed prior state | metric validity and sparse-index tests |
+| TMP-005 | IMPLEMENTED | Explicit authored-source assignment, representative-source, and coded-slot change/lifetime metrics with identity-keyed prior state | six causal identity-domain tests; temporal closure and regenerated Hanabi evidence |
 | TMP-006 | IMPLEMENTED | `ceil` frame count, zero-padded short final frame, and repeated CLI-process evidence | `short-final-process.json`; CLI integration |
 | TMP-007 | IMPLEMENTED | unchanged source representatives reused between frames | previous-result API |
 | TMP-008 | OPEN_RESEARCH | richer interpolation policy remains deferred after membership stabilization | ORQ-006; C3 gate |

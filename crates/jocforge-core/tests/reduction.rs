@@ -1,9 +1,9 @@
 // pattern: Functional Core
 
 use jocforge_core::{
-    AdmObjectKind, AdmPosition, ReductionConfig, ReductionSource, reduce_scene,
-    reduction_assignment_changes, reduction_identity_changes, speaker_render_error,
-    unexplained_cluster_leakage,
+    AdmObjectKind, AdmPosition, ReductionConfig, ReductionSource,
+    authored_source_assignment_changes, reduce_scene, representative_source_changes,
+    speaker_render_error, unexplained_cluster_leakage,
 };
 
 fn source(ordinal: usize) -> ReductionSource {
@@ -80,7 +80,7 @@ fn identical_windows_are_deterministic_and_have_zero_assignment_churn() {
     let second = reduce_scene(&sources, ReductionConfig::default()).expect("second reduction");
 
     assert_eq!(first, second);
-    assert_eq!(reduction_assignment_changes(&first, &second), 0);
+    assert_eq!(authored_source_assignment_changes(&first, &second), 0);
 }
 
 #[test]
@@ -144,25 +144,25 @@ fn positive_contribution_gain_is_not_counted_as_a_silent_drop() {
 }
 
 #[test]
-fn coded_identity_metric_ignores_member_reordering_when_representatives_persist() {
+fn representative_source_metric_ignores_member_reordering_when_representatives_persist() {
     let sources = (0..20).map(source).collect::<Vec<_>>();
     let first = reduce_scene(&sources, ReductionConfig::default()).expect("first reduction");
     let mut reordered = first.clone();
     reordered.coded_objects.swap(0, 1);
 
-    assert_eq!(reduction_identity_changes(&first, &reordered), 0);
-    assert_eq!(reduction_identity_changes(&first, &first), 0);
-    assert_eq!(reduction_assignment_changes(&first, &reordered), 0);
+    assert_eq!(representative_source_changes(&first, &reordered), 0);
+    assert_eq!(representative_source_changes(&first, &first), 0);
+    assert_eq!(authored_source_assignment_changes(&first, &reordered), 0);
 }
 
 #[test]
-fn coded_identity_metric_counts_a_representative_replacement_once() {
+fn representative_source_metric_counts_a_replacement_once() {
     let sources = (0..20).map(source).collect::<Vec<_>>();
     let first = reduce_scene(&sources, ReductionConfig::default()).expect("first reduction");
     let mut changed = first.clone();
     changed.coded_objects[0].representative_source_index = usize::MAX;
 
-    assert_eq!(reduction_identity_changes(&first, &changed), 1);
+    assert_eq!(representative_source_changes(&first, &changed), 1);
 }
 
 #[test]

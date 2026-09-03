@@ -8,6 +8,8 @@ $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
 $artifact = Join-Path $root "artifacts\decision-engine"
 New-Item -ItemType Directory -Force $artifact | Out-Null
+. (Join-Path $PSScriptRoot "openjoc-validator-pin.ps1")
+$validatorIdentity = Assert-OpenJocValidatorPin $root $OpenJoc
 # This runner is a diagnostic corpus sampler. The authoritative clean
 # acceptance matrix is emitted by run-validation-closure.ps1.
 $authoritativeRunner = "scripts/run-validation-closure.ps1"
@@ -16,6 +18,7 @@ if (Test-Path -LiteralPath $authoritativeEvidence) {
     $closure = Get-Content -LiteralPath $authoritativeEvidence -Raw | ConvertFrom-Json
     [ordered]@{
         authoritative_runner = $authoritativeRunner
+        validator_identity = $validatorIdentity
         status_semantics = "diagnostic report delegated to the authoritative clean closure; no competing acceptance matrix"
         delegated_from = $authoritativeEvidence
         validation = $closure.hanabi_validation

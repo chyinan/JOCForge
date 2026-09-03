@@ -17,9 +17,9 @@ The closure runner regenerated `clean-validation-closure.json` with 12/12
 PASS, zero failures/not-run, a passing anti-self-report test, passing
 quantization stress over all 96 symbols and 2,280 matrix values, and passing
 ten-fixture spectral/phase hard gates. Hanabi temporal stabilization retained
-39,503→140 assignment-change reduction, zero coded identity changes, all three
-profile strict/decode checks, deterministic repeat, and one singular semantic
-LFE path.
+39,503→140 authored-source assignment-change reduction, zero
+representative-source changes, zero coded-slot replacements, all three profile
+strict/decode checks, deterministic repeat, and one singular semantic LFE path.
 
 The repository has since been reconstituted into a fresh object database from
 the approved clean parent, with one `refs/heads/master` ref and no reflogs,

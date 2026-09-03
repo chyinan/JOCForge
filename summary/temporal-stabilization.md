@@ -1,16 +1,17 @@
-# C3 temporal stabilization
+# C5/D3 temporal stabilization remediation
 
-Verified 2026-09-02.
+Verified 2026-09-03.
 
 ## Metric validity
 
-`reduction_assignment_changes` measures authored source membership changes
-(`source_index -> coded_object_index`). It does not measure coded identity by
-itself. `reduction_identity_changes` compares representative source identities
-and remains zero when coded-vector order changes without representative
-replacement. The sidecar records both the aggregate identity count and each
-coded object's representative source index so identity lifetimes are
-reproducible.
+Temporal evidence uses three explicit domains. `authored_source_assignment_changes`
+measures authored source membership changes (`source_index ->
+ coded_object_index`); `representative_source_changes` measures representative
+source identities entering or leaving the representative set;
+`coded_slot_replacements` measures a different representative occupying the
+same output ordinal. Authored assignment, representative-source, and coded-slot
+lifetimes are reported separately. The sidecar records each coded object's
+representative source index so all domains are reproducible.
 
 ## Root cause
 
@@ -30,17 +31,21 @@ when the current representation cost improvement exceeds the continuity cost.
 
 ## Evidence
 
-The before/after Hanabi audit is in
-`artifacts/temporal-stabilization/hanabi-before-after.json`. Assignment changes
-fall from 39,503 to 140, maximum 8-frame churn from 92 to 4, minimum assignment
-lifetime from 1 to 3 frames, and median assignment lifetime from 1 to 643
-frames. Representative identity changes remain zero and coded identity
-lifetime spans all 9,042 frames. Reconstruction and spatial maxima improve.
+The regenerated before/after Hanabi audit is in
+`artifacts/temporal-stabilization/hanabi-before-after.json`. Authored-source
+assignment changes fall from 39,503 to 140, maximum 8-frame churn from 92 to 4,
+minimum assignment lifetime from 1 to 3 frames, and median assignment lifetime
+from 1 to 643 frames. Representative-source changes and coded-slot replacements
+remain zero; representative-source and coded-slot lifetimes span all 9,042
+frames. Reconstruction and spatial maxima improve. All three regenerated
+profiles pass pinned OpenJOC strict inspect and FFmpeg decode, and deterministic
+repeat is true.
 
 The adversarial corpus covers near-equal costs, boundary crossing, alternating
 levels, temporary silence, correlated divergence, and separated-to-correlated
 sources. The unregularized corpus produces churn; the default policy reduces
-all six cases to zero assignment changes without non-finite output.
+all six cases to zero authored-source assignment changes, representative-source
+changes, and coded-slot replacements without non-finite output.
 
 ## Review and verification
 

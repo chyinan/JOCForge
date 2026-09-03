@@ -93,13 +93,17 @@ the writer; it is not an inferred reference implementation table.
 ## Temporal and compatibility policy
 
 The reducer preserves source ordinal order for unmerged scenes and stable seed
-ordering for merged scenes. `reduction_assignment_changes` measures authored
-source membership changes, while `reduction_identity_changes` compares
-representative source identities and does not mistake coded-vector reordering
-for identity churn. The continuity policy adds the project-owned,
-dimensionless `temporal_continuity_weight` to a candidate switch cost; a source
-may still switch when the current signal/spatial cost improvement is larger.
-The default value is 0.15 and is covered by controlled and adversarial tests.
+ordering for merged scenes. Temporal evidence names three independent identity
+domains: `authored_source_assignment_changes` measures authored-source to
+coded-slot changes; `representative_source_changes` measures representative
+source identities entering or leaving the coded representative set;
+`coded_slot_replacements` measures a different representative occupying the
+same output slot. Authored assignment lifetimes, representative-source
+lifetimes, and coded-slot lifetimes are reported separately. The continuity
+policy adds the project-owned, dimensionless `temporal_continuity_weight` to a
+candidate switch cost; a source may still switch when the current
+signal/spatial cost improvement is larger. The default value is 0.15 and is
+covered by controlled, causal, and adversarial tests.
 
 The initial CLI processes a complete programme, while tests can invoke the same
 pure reducer on consecutive windows. OAMD uses aggregate position for merged

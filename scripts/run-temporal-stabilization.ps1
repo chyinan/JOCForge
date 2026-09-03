@@ -26,7 +26,8 @@ function Get-Sha256([string]$Path) {
 
 function Invoke-Encode([string]$InputPath, [string]$OutputPath, [string]$Profile, [double]$TemporalWeight) {
     $metrics = "$OutputPath.metrics.csv"
-    if ($ReuseExisting -and (Test-Path -LiteralPath $OutputPath) -and (Test-Path -LiteralPath $metrics)) { return }
+    if ($ReuseExisting -and (Test-Path -LiteralPath $OutputPath) -and (Test-Path -LiteralPath $metrics) -and
+        (Get-Content -LiteralPath $metrics -TotalCount 1) -match "authored_source_assignment_changes,representative_source_changes") { return }
     Invoke-Checked "cargo" @(
         "run", "-p", "jocforge", "--quiet", "--", "encode", $InputPath, $OutputPath,
         "--profile", $Profile, "--bitrate", "1664", "--temporal-weight", "$TemporalWeight"
@@ -51,13 +52,43 @@ function Get-SlidingMaximum([int[]]$Values, [int]$Window) {
     $maximum
 }
 
+function Get-RunLifetimes($Values) {
+    $Values = @($Values)
+    if ($Values.Count -eq 0) { return @() }
+    $lifetimes = [System.Collections.Generic.List[int]]::new()
+    $current = $Values[0]
+    $length = 1
+    foreach ($value in ($Values | Select-Object -Skip 1)) {
+        if ($value -eq $current) { $length++ }
+        else { $lifetimes.Add($length); $current = $value; $length = 1 }
+    }
+    $lifetimes.Add($length)
+    @($lifetimes)
+}
+
 function Get-Audit([string]$MetricsPath, [string]$Name) {
     $rows = @(Import-Csv -LiteralPath $MetricsPath | Where-Object record -eq source)
-    $frameRows = @($rows | Group-Object frame | ForEach-Object { $_.Group[0] } | Sort-Object { [int]$_.frame })
-    $changes = @($frameRows | Select-Object -Skip 1 | ForEach-Object { [int]$_.assignment_changes })
-    $identityChanges = @($frameRows | Select-Object -Skip 1 | ForEach-Object { [int]$_.coded_identity_changes })
+    $frameGroups = @($rows | Group-Object frame | Sort-Object { [int]$_.Name })
+    $frameRows = @($frameGroups | ForEach-Object { $_.Group[0] })
+    $changes = @($frameRows | Select-Object -Skip 1 | ForEach-Object { [int]$_.authored_source_assignment_changes })
+    $identityChanges = @($frameRows | Select-Object -Skip 1 | ForEach-Object { [int]$_.representative_source_changes })
     $totalChanges = if ($changes.Count) { ($changes | Measure-Object -Sum).Sum } else { 0 }
     $totalIdentityChanges = if ($identityChanges.Count) { ($identityChanges | Measure-Object -Sum).Sum } else { 0 }
+    $slotReplacementChanges = [System.Collections.Generic.List[int]]::new()
+    for ($frameIndex = 1; $frameIndex -lt $frameGroups.Count; $frameIndex++) {
+        $previousSlots = @{}
+        $currentSlots = @{}
+        foreach ($row in @($frameGroups[$frameIndex - 1].Group)) {
+            $slot = [int]$row.coded_object_index
+            if (!$previousSlots.ContainsKey($slot)) { $previousSlots[$slot] = [int]$row.coded_representative_source_index }
+        }
+        foreach ($row in @($frameGroups[$frameIndex].Group)) {
+            $slot = [int]$row.coded_object_index
+            if (!$currentSlots.ContainsKey($slot)) { $currentSlots[$slot] = [int]$row.coded_representative_source_index }
+        }
+        $slotReplacementChanges.Add(@($previousSlots.Keys | Where-Object { $currentSlots.ContainsKey($_) -and $previousSlots[$_] -ne $currentSlots[$_] }).Count)
+    }
+    $totalSlotReplacementChanges = if ($slotReplacementChanges.Count) { ($slotReplacementChanges | Measure-Object -Sum).Sum } else { 0 }
 
     $assignmentLifetimes = [System.Collections.Generic.List[int]]::new()
     foreach ($group in @($rows | Group-Object source_index)) {
@@ -71,16 +102,16 @@ function Get-Audit([string]$MetricsPath, [string]$Name) {
         $assignmentLifetimes.Add($lifetime)
     }
 
-    $identityLifetimes = [System.Collections.Generic.List[int]]::new()
+    $representativeSourceLifetimes = [System.Collections.Generic.List[int]]::new()
     foreach ($group in @($rows | Group-Object coded_representative_source_index)) {
         $frames = @($group.Group | ForEach-Object { [int]$_.frame } | Sort-Object -Unique)
         if ($frames.Count -eq 0) { continue }
         $lifetime = 1
         for ($index = 1; $index -lt $frames.Count; $index++) {
             if ($frames[$index] -eq $frames[$index - 1] + 1) { $lifetime++ }
-            else { $identityLifetimes.Add($lifetime); $lifetime = 1 }
+            else { $representativeSourceLifetimes.Add($lifetime); $lifetime = 1 }
         }
-        $identityLifetimes.Add($lifetime)
+        $representativeSourceLifetimes.Add($lifetime)
     }
 
     $positionJump = 0.0
@@ -116,18 +147,29 @@ function Get-Audit([string]$MetricsPath, [string]$Name) {
     $reconstruction = @($rows | ForEach-Object { [double]$_.source_reconstruction_error })
     $spatial = @($rows | ForEach-Object { [double]$_.spatial_representation_error })
     $leakage = @($rows | ForEach-Object { [double]$_.cross_object_leakage })
-    $identity = @($identityLifetimes | ForEach-Object { [double]$_ })
+    $representativeSource = @($representativeSourceLifetimes | ForEach-Object { [double]$_ })
     $assignment = @($assignmentLifetimes | ForEach-Object { [double]$_ })
+    $maximumCodedObjectCount = if ($rows.Count) { (@($rows | ForEach-Object { [int]$_.coded_count } | Measure-Object -Maximum).Maximum) } else { 0 }
+    $codedSlotLifetimes = [System.Collections.Generic.List[int]]::new()
+    for ($slot = 0; $slot -lt $maximumCodedObjectCount; $slot++) {
+        $presence = @($frameRows | ForEach-Object { [int]$_.coded_count -gt $slot })
+        foreach ($lifetime in @(Get-RunLifetimes $presence)) {
+            $codedSlotLifetimes.Add([int]$lifetime)
+        }
+    }
+    $slotLifetimeArray = @($codedSlotLifetimes | Sort-Object | ForEach-Object { [double]$_ })
     [pscustomobject]@{
         name = $Name; frame_count = $frameRows.Count; authored_source_count = if ($frameRows.Count) { [int]$frameRows[0].source_count } else { 0 }
-        maximum_coded_object_count = if ($rows.Count) { (@($rows | ForEach-Object { [int]$_.coded_count } | Measure-Object -Maximum).Maximum) } else { 0 }
-        total_assignment_changes = $totalChanges; total_coded_identity_changes = $totalIdentityChanges
-        assignment_changes_per_minute = $totalChanges / $minutes; max_8frame_assignment_changes = Get-SlidingMaximum $changes 8
-        min_assignment_lifetime_frames = if ($assignment.Count) { (@($assignment | Measure-Object -Minimum).Minimum) } else { 0 }
-        median_assignment_lifetime_frames = Get-Median ([double[]]$assignment)
-        min_coded_identity_lifetime_frames = if ($identity.Count) { (@($identity | Measure-Object -Minimum).Minimum) } else { 0 }
-        median_coded_identity_lifetime_frames = Get-Median ([double[]]$identity)
-        reassignment_burstiness = if ($totalChanges) { (Get-SlidingMaximum $changes 8) / [double]$totalChanges } else { 0.0 }
+        maximum_coded_object_count = $maximumCodedObjectCount
+        total_authored_source_assignment_changes = $totalChanges; total_representative_source_changes = $totalIdentityChanges; total_coded_slot_replacements = $totalSlotReplacementChanges
+        authored_source_assignment_changes_per_minute = $totalChanges / $minutes; max_sliding_window_authored_source_assignment_changes = Get-SlidingMaximum $changes 8
+        minimum_authored_source_assignment_lifetime_frames = if ($assignment.Count) { (@($assignment | Measure-Object -Minimum).Minimum) } else { 0 }
+        median_authored_source_assignment_lifetime_frames = Get-Median ([double[]]$assignment)
+        minimum_representative_source_lifetime_frames = if ($representativeSource.Count) { (@($representativeSource | Measure-Object -Minimum).Minimum) } else { 0 }
+        median_representative_source_lifetime_frames = Get-Median ([double[]]$representativeSource)
+        minimum_coded_slot_lifetime_frames = if ($slotLifetimeArray.Count) { $slotLifetimeArray[0] } else { 0 }
+        median_coded_slot_lifetime_frames = Get-Median ([double[]]$slotLifetimeArray)
+        authored_source_assignment_reassignment_burstiness = if ($totalChanges) { (Get-SlidingMaximum $changes 8) / [double]$totalChanges } else { 0.0 }
         maximum_position_jump = $positionJump; maximum_pcm_boundary_discontinuity = $pcmDiscontinuity; maximum_gain_jump = $gainJump
         maximum_speaker_render_discontinuity = $speakerDiscontinuity; activity_boundary_events = $activityEvents; source_motion_events = $sourceMotionEvents
         large_position_jumps = $largePositionJumps; gain_jumps_over_half = $gainJumpsOverHalf
@@ -201,11 +243,11 @@ $comparison = [ordered]@{
     before = $beforeAudit
     after = $afterAudit
     improvement = [ordered]@{
-        assignment_change_reduction_ratio = if ($beforeAudit.total_assignment_changes) { 1.0 - $afterAudit.total_assignment_changes / [double]$beforeAudit.total_assignment_changes } else { 1.0 }
-        max_8frame_reduction_ratio = if ($beforeAudit.max_8frame_assignment_changes) { 1.0 - $afterAudit.max_8frame_assignment_changes / [double]$beforeAudit.max_8frame_assignment_changes } else { 1.0 }
-        median_assignment_lifetime_delta_frames = $afterAudit.median_assignment_lifetime_frames - $beforeAudit.median_assignment_lifetime_frames
-        coded_identity_changes_before = $beforeAudit.total_coded_identity_changes
-        coded_identity_changes_after = $afterAudit.total_coded_identity_changes
+        authored_source_assignment_change_reduction_ratio = if ($beforeAudit.total_authored_source_assignment_changes) { 1.0 - $afterAudit.total_authored_source_assignment_changes / [double]$beforeAudit.total_authored_source_assignment_changes } else { 1.0 }
+        max_sliding_window_authored_source_assignment_reduction_ratio = if ($beforeAudit.max_sliding_window_authored_source_assignment_changes) { 1.0 - $afterAudit.max_sliding_window_authored_source_assignment_changes / [double]$beforeAudit.max_sliding_window_authored_source_assignment_changes } else { 1.0 }
+        median_authored_source_assignment_lifetime_delta_frames = $afterAudit.median_authored_source_assignment_lifetime_frames - $beforeAudit.median_authored_source_assignment_lifetime_frames
+        representative_source_changes_before = $beforeAudit.total_representative_source_changes
+        representative_source_changes_after = $afterAudit.total_representative_source_changes
     }
     quality_regression = [ordered]@{
         reconstruction = ($afterAudit.maximum_source_reconstruction_error -le $beforeAudit.maximum_source_reconstruction_error)

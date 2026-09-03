@@ -31,8 +31,14 @@ fn stationary_temporal_control_has_no_steady_state_assignment_churn() {
         .expect("stationary control");
     let metrics = analyze_temporal_scene(&scene).expect("temporal analysis");
 
-    assert_eq!(metrics.stationary_assignment_churn_after_initialization, 0);
-    assert_eq!(metrics.max_sliding_window_changes, 0);
+    assert_eq!(
+        metrics.stationary_authored_source_assignment_churn_after_initialization,
+        0
+    );
+    assert_eq!(
+        metrics.max_sliding_window_authored_source_assignment_changes,
+        0
+    );
 }
 
 #[test]
@@ -46,7 +52,11 @@ fn crowded_temporal_control_reduces_all_sources_without_silent_drops() {
     assert!(metrics.authored_source_count > 15);
     assert!(metrics.maximum_coded_object_count <= 15);
     assert_eq!(metrics.silent_object_drops, 0);
-    assert!(metrics.assignment_changes_per_minute.is_finite());
+    assert!(
+        metrics
+            .authored_source_assignment_changes_per_minute
+            .is_finite()
+    );
 }
 
 #[test]
@@ -65,9 +75,12 @@ fn continuity_weight_reduces_membership_thrashing_without_changing_identity_metr
     .expect("unregularized temporal analysis");
     let stable = analyze_temporal_scene(&scene).expect("regularized temporal analysis");
 
-    assert!(unstable.total_assignment_changes > stable.total_assignment_changes);
-    assert_eq!(unstable.total_coded_identity_changes, 0);
-    assert_eq!(stable.total_coded_identity_changes, 0);
+    assert!(
+        unstable.total_authored_source_assignment_changes
+            > stable.total_authored_source_assignment_changes
+    );
+    assert_eq!(unstable.total_representative_source_changes, 0);
+    assert_eq!(stable.total_representative_source_changes, 0);
 }
 
 #[test]
@@ -92,7 +105,11 @@ fn adversarial_temporal_corpus_contains_the_required_six_cases() {
 fn adversarial_temporal_corpus_is_finite_and_reducer_safe() {
     for scene in adversarial_temporal_corpus() {
         let metrics = analyze_temporal_scene(&scene).expect("adversarial temporal analysis");
-        assert!(metrics.assignment_changes_per_minute.is_finite());
+        assert!(
+            metrics
+                .authored_source_assignment_changes_per_minute
+                .is_finite()
+        );
         assert!(metrics.maximum_position_jump.is_finite());
         assert!(metrics.maximum_pcm_boundary_discontinuity.is_finite());
         assert!(metrics.maximum_gain_jump.is_finite());
@@ -119,11 +136,11 @@ fn adversarial_temporal_corpus_rejects_unregularized_thrashing() {
     assert!(
         unstable
             .iter()
-            .any(|metrics| metrics.total_assignment_changes > 0)
+            .any(|metrics| metrics.total_authored_source_assignment_changes > 0)
     );
     assert!(
         stable
             .iter()
-            .all(|metrics| metrics.total_assignment_changes == 0)
+            .all(|metrics| metrics.total_authored_source_assignment_changes == 0)
     );
 }

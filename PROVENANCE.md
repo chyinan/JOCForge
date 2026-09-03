@@ -36,10 +36,14 @@ encoding support.
 
 ## Other dependencies and roles
 
-- FFmpeg 8.1 full build: `PRODUCTION_DEPENDENCY` as an external executable
-  invoked for deterministic 5-channel E-AC-3 I0 carrier audio at 1024 kbps.
-  The binary is not redistributed by this repository. It is not used to claim
-  dependent-D0 support; JOCForge writes the PCM-derived D0 syntax itself.
+- FFmpeg 8.1 full build (`8.1-full_build-www.gyan.dev`, Windows build):
+  `PRODUCTION_DEPENDENCY` as an external executable invoked for deterministic
+  5-channel E-AC-3 I0 carrier audio at 1024 kbps. The observed build reports
+  `--enable-gpl --enable-version3` and is therefore a GPL-enabled full build;
+  its installed executable/build configuration is the provenance subject, not
+  a repository dependency or redistribution grant. The binary is not
+  redistributed by this repository. It is not used to claim dependent-D0
+  support; JOCForge writes the PCM-derived D0 syntax itself.
 - OpenJOC v0.16.0: `VALIDATION_REFERENCE` / external validator / decoder /
   renderer. The exact source revision, Windows x86-64 executable SHA256, and
   commands are pinned in `validation/openjoc-validator.json`; the pin is

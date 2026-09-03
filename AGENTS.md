@@ -84,9 +84,11 @@ Last verified: 2026-09-03
   coded-object assignment and positive accounting gain; previous representatives
   and the project-owned temporal continuity cost stabilize source membership;
   `Other` ADM kinds are rejected by the CLI.
-- `reduction_assignment_changes` measures authored membership changes;
-  `reduction_identity_changes` measures representative identity replacements.
-  These are separate metrics and must not be conflated.
+- `authored_source_assignment_changes` measures authored-source to coded-slot
+  changes; `representative_source_changes` measures representative-source
+  identity replacements; `coded_slot_replacements` measures same-slot
+  representative changes. Their lifetimes are separate named metrics and must
+  not be conflated.
 - The CLI reads large BW64 PCM one public 1536-sample frame at a time and pads
   only the final short frame with zeros, preserving source timing/accounting.
 - Production code does not import OpenJOC crates or share its serialization

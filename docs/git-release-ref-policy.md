@@ -4,7 +4,7 @@ The public clean-release candidate retains exactly one Git ref:
 
 | Ref | Purpose | Required target |
 | --- | --- | --- |
-| `refs/heads/master` | sole clean implementation branch | includes expected baseline `6a70c04b51c74bd050be61dc90a3ae83f30e006a` |
+| `refs/heads/master` | sole clean implementation branch | contains the preserved clean parent `1f4c44bfd1a508f299e1aa7fd3c825b759103151` and the frozen release-candidate history |
 
 No tags, remotes, notes, stash ref, replace refs, alternates, grafts, or
 application snapshot refs are part of the public release namespace. Any

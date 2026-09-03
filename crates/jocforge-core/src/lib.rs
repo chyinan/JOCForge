@@ -27,16 +27,17 @@ pub use profile::{JocProfileSpec, profile_spec};
 pub use rate::{RateBudget, RateBudgetError, rate_budget};
 pub use reduction::{
     MAX_CODED_OBJECTS, ReducedObject, ReductionConfig, ReductionDiagnostics, ReductionError,
-    ReductionResult, ReductionSource, SourceAccounting, reduce_scene, reduce_scene_with_previous,
-    reduction_assignment_changes, reduction_identity_changes, speaker_render_error,
+    ReductionResult, ReductionSource, SourceAccounting, authored_source_assignment_changes,
+    reduce_scene, reduce_scene_with_previous, representative_source_changes, speaker_render_error,
     unexplained_cluster_leakage,
 };
 pub use spectral::{
     GateScope, GateStatus, SpectralPhaseMetric, SpectralPhaseReport, spectral_phase_report,
 };
 pub use validation::{
-    TemporalMetrics, TemporalScene, adversarial_temporal_corpus, analyze_temporal_scene,
-    analyze_temporal_scene_with_config, temporal_corpus,
+    TemporalIdentityMetrics, TemporalMetrics, TemporalScene, adversarial_temporal_corpus,
+    analyze_temporal_scene, analyze_temporal_scene_with_config, measure_temporal_identity_metrics,
+    temporal_corpus,
 };
 pub use writer::{
     package_ffmpeg_access_unit, package_source_derived_access_unit,

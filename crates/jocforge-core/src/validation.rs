@@ -1,5 +1,7 @@
 // pattern: Functional Core
 
+use std::collections::BTreeSet;
+
 use crate::{
     AdmObjectKind, AdmPosition, ReductionConfig, ReductionResult, ReductionSource,
     reduce_scene_with_previous,
@@ -29,20 +31,44 @@ pub struct TemporalMetrics {
     pub maximum_spatial_representation_error: f64,
     pub maximum_cross_object_leakage: f64,
     pub minimum_headroom_margin: f64,
-    pub total_assignment_changes: usize,
-    pub total_coded_identity_changes: usize,
-    pub assignment_changes_per_minute: f64,
-    pub max_sliding_window_changes: usize,
-    pub minimum_coded_identity_lifetime_frames: usize,
-    pub median_coded_identity_lifetime_frames: f64,
-    pub reassignment_burstiness: f64,
+    pub total_authored_source_assignment_changes: usize,
+    pub total_representative_source_changes: usize,
+    pub total_coded_slot_replacements: usize,
+    pub authored_source_assignment_changes_per_minute: f64,
+    pub max_sliding_window_authored_source_assignment_changes: usize,
+    pub minimum_authored_source_assignment_lifetime_frames: usize,
+    pub median_authored_source_assignment_lifetime_frames: f64,
+    pub minimum_representative_source_lifetime_frames: usize,
+    pub median_representative_source_lifetime_frames: f64,
+    pub minimum_coded_slot_lifetime_frames: usize,
+    pub median_coded_slot_lifetime_frames: f64,
+    pub authored_source_assignment_reassignment_burstiness: f64,
     pub maximum_position_jump: f64,
     pub maximum_trajectory_error: f64,
     pub maximum_gain_jump: f64,
     pub maximum_pcm_boundary_discontinuity: f64,
     pub maximum_reconstruction_error_change: f64,
     pub maximum_speaker_render_discontinuity: f64,
-    pub stationary_assignment_churn_after_initialization: usize,
+    pub stationary_authored_source_assignment_churn_after_initialization: usize,
+}
+
+/// Temporal measurements with an explicit identity domain for every count and
+/// lifetime. Coded slots are output ordinals; representative sources are
+/// authored source identities; assignments map authored sources to slots.
+#[derive(Clone, Debug, PartialEq)]
+pub struct TemporalIdentityMetrics {
+    pub authored_source_assignment_changes: usize,
+    pub representative_source_changes: usize,
+    pub coded_slot_replacements: usize,
+    pub authored_source_assignment_lifetimes: Vec<usize>,
+    pub representative_source_lifetimes: Vec<usize>,
+    pub coded_slot_lifetimes: Vec<usize>,
+    pub minimum_authored_source_assignment_lifetime_frames: usize,
+    pub median_authored_source_assignment_lifetime_frames: f64,
+    pub minimum_representative_source_lifetime_frames: usize,
+    pub median_representative_source_lifetime_frames: f64,
+    pub minimum_coded_slot_lifetime_frames: usize,
+    pub median_coded_slot_lifetime_frames: f64,
 }
 
 /// Builds the six clean, repository-owned temporal validation scenes.
@@ -109,38 +135,15 @@ pub fn analyze_temporal_scene_with_config(
     let transition_changes = reductions
         .iter()
         .skip(1)
-        .map(|result| result.diagnostics.assignment_changes)
+        .map(|result| result.diagnostics.authored_source_assignment_changes)
         .collect::<Vec<_>>();
-    let total_assignment_changes = transition_changes.iter().sum::<usize>();
-    let total_coded_identity_changes = reductions
-        .iter()
-        .skip(1)
-        .map(|result| result.diagnostics.coded_identity_changes)
-        .sum::<usize>();
+    let identity_metrics = measure_temporal_identity_metrics(&reductions, source_count)?;
     let max_sliding_window_changes = transition_changes
         .windows(SLIDING_WINDOW_FRAMES.min(transition_changes.len()).max(1))
         .map(|window| window.iter().sum())
         .max()
         .unwrap_or(0);
     let duration_minutes = scene.frames.len() as f64 * FRAME_SECONDS / 60.0;
-
-    let mut lifetimes = Vec::new();
-    for source_index in 0..source_count {
-        let mut current_identity = coded_identity(&reductions[0], source_index)?;
-        let mut current_lifetime = 1_usize;
-        for reduction in reductions.iter().skip(1) {
-            let identity = coded_identity(reduction, source_index)?;
-            if identity == current_identity {
-                current_lifetime += 1;
-            } else {
-                lifetimes.push(current_lifetime);
-                current_identity = identity;
-                current_lifetime = 1;
-            }
-        }
-        lifetimes.push(current_lifetime);
-    }
-    lifetimes.sort_unstable();
 
     let mut maximum_position_jump: f64 = 0.0;
     let mut maximum_trajectory_error: f64 = 0.0;
@@ -209,7 +212,6 @@ pub fn analyze_temporal_scene_with_config(
         .map(|result| result.coded_objects.len())
         .max()
         .unwrap_or(0);
-    let median_coded_identity_lifetime_frames = median(&lifetimes);
     Ok(TemporalMetrics {
         scene: scene.name,
         frame_count: scene.frames.len(),
@@ -220,17 +222,33 @@ pub fn analyze_temporal_scene_with_config(
         maximum_spatial_representation_error,
         maximum_cross_object_leakage,
         minimum_headroom_margin,
-        total_assignment_changes,
-        total_coded_identity_changes,
-        assignment_changes_per_minute: total_assignment_changes as f64
+        total_authored_source_assignment_changes: identity_metrics
+            .authored_source_assignment_changes,
+        total_representative_source_changes: identity_metrics.representative_source_changes,
+        total_coded_slot_replacements: identity_metrics.coded_slot_replacements,
+        authored_source_assignment_changes_per_minute: identity_metrics
+            .authored_source_assignment_changes
+            as f64
             / duration_minutes.max(FRAME_SECONDS / 60.0),
-        max_sliding_window_changes,
-        minimum_coded_identity_lifetime_frames: lifetimes.first().copied().unwrap_or(0),
-        median_coded_identity_lifetime_frames,
-        reassignment_burstiness: if total_assignment_changes == 0 {
+        max_sliding_window_authored_source_assignment_changes: max_sliding_window_changes,
+        minimum_authored_source_assignment_lifetime_frames: identity_metrics
+            .minimum_authored_source_assignment_lifetime_frames,
+        median_authored_source_assignment_lifetime_frames: identity_metrics
+            .median_authored_source_assignment_lifetime_frames,
+        minimum_representative_source_lifetime_frames: identity_metrics
+            .minimum_representative_source_lifetime_frames,
+        median_representative_source_lifetime_frames: identity_metrics
+            .median_representative_source_lifetime_frames,
+        minimum_coded_slot_lifetime_frames: identity_metrics.minimum_coded_slot_lifetime_frames,
+        median_coded_slot_lifetime_frames: identity_metrics.median_coded_slot_lifetime_frames,
+        authored_source_assignment_reassignment_burstiness: if identity_metrics
+            .authored_source_assignment_changes
+            == 0
+        {
             0.0
         } else {
-            max_sliding_window_changes as f64 / total_assignment_changes as f64
+            max_sliding_window_changes as f64
+                / identity_metrics.authored_source_assignment_changes as f64
         },
         maximum_position_jump,
         maximum_trajectory_error,
@@ -238,12 +256,158 @@ pub fn analyze_temporal_scene_with_config(
         maximum_pcm_boundary_discontinuity,
         maximum_reconstruction_error_change,
         maximum_speaker_render_discontinuity,
-        stationary_assignment_churn_after_initialization: if scene.name == "stationary-control" {
-            total_assignment_changes
+        stationary_authored_source_assignment_churn_after_initialization: if scene.name
+            == "stationary-control"
+        {
+            identity_metrics.authored_source_assignment_changes
         } else {
             0
         },
     })
+}
+
+/// Measures authored-assignment, representative-source, and coded-slot
+/// domains independently across a sequence of reductions.
+pub fn measure_temporal_identity_metrics(
+    reductions: &[ReductionResult],
+    source_count: usize,
+) -> Result<TemporalIdentityMetrics, String> {
+    if reductions.len() < 2 {
+        return Err("temporal identity metrics require at least two reductions".to_owned());
+    }
+    if source_count == 0 {
+        return Err("temporal identity metrics require at least one authored source".to_owned());
+    }
+
+    let authored_assignments = (0..source_count)
+        .map(|source_index| {
+            reductions
+                .iter()
+                .map(|reduction| {
+                    accounting(reduction, source_index).map(|row| row.coded_object_index)
+                })
+                .collect::<Result<Vec<_>, _>>()
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    let authored_source_assignment_changes = authored_assignments
+        .iter()
+        .map(|assignments| {
+            assignments
+                .windows(2)
+                .filter(|pair| pair[0] != pair[1])
+                .count()
+        })
+        .sum();
+    let authored_source_assignment_lifetimes = authored_assignments
+        .iter()
+        .flat_map(|assignments| contiguous_lifetimes(assignments))
+        .collect::<Vec<_>>();
+
+    let representative_sets = reductions
+        .iter()
+        .map(|reduction| {
+            reduction
+                .coded_objects
+                .iter()
+                .map(|object| object.representative_source_index)
+                .collect::<BTreeSet<_>>()
+        })
+        .collect::<Vec<_>>();
+    let representative_source_changes = representative_sets
+        .windows(2)
+        .map(|pair| pair[0].difference(&pair[1]).count())
+        .sum();
+    let representative_sources = representative_sets
+        .iter()
+        .flat_map(|set| set.iter().copied())
+        .collect::<BTreeSet<_>>();
+    let representative_source_lifetimes = representative_sources
+        .iter()
+        .flat_map(|representative_source_index| {
+            let presence = reductions
+                .iter()
+                .map(|reduction| {
+                    reduction.coded_objects.iter().any(|object| {
+                        object.representative_source_index == *representative_source_index
+                    })
+                })
+                .collect::<Vec<_>>();
+            contiguous_lifetimes(&presence)
+        })
+        .collect::<Vec<_>>();
+
+    let coded_slot_replacements = reductions
+        .windows(2)
+        .map(|pair| {
+            pair[0]
+                .coded_objects
+                .iter()
+                .zip(&pair[1].coded_objects)
+                .filter(|(left, right)| {
+                    left.representative_source_index != right.representative_source_index
+                })
+                .count()
+        })
+        .sum();
+    let maximum_coded_slots = reductions
+        .iter()
+        .map(|reduction| reduction.coded_objects.len())
+        .max()
+        .unwrap_or(0);
+    let coded_slot_lifetimes = (0..maximum_coded_slots)
+        .flat_map(|slot_index| {
+            let presence = reductions
+                .iter()
+                .map(|reduction| slot_index < reduction.coded_objects.len())
+                .collect::<Vec<_>>();
+            contiguous_lifetimes(&presence)
+        })
+        .collect::<Vec<_>>();
+
+    Ok(TemporalIdentityMetrics {
+        authored_source_assignment_changes,
+        representative_source_changes,
+        coded_slot_replacements,
+        minimum_authored_source_assignment_lifetime_frames: minimum_lifetime(
+            &authored_source_assignment_lifetimes,
+        ),
+        median_authored_source_assignment_lifetime_frames: median(
+            &authored_source_assignment_lifetimes,
+        ),
+        minimum_representative_source_lifetime_frames: minimum_lifetime(
+            &representative_source_lifetimes,
+        ),
+        median_representative_source_lifetime_frames: median(&representative_source_lifetimes),
+        minimum_coded_slot_lifetime_frames: minimum_lifetime(&coded_slot_lifetimes),
+        median_coded_slot_lifetime_frames: median(&coded_slot_lifetimes),
+        authored_source_assignment_lifetimes,
+        representative_source_lifetimes,
+        coded_slot_lifetimes,
+    })
+}
+
+fn contiguous_lifetimes<T: PartialEq>(values: &[T]) -> Vec<usize> {
+    let Some(first) = values.first() else {
+        return Vec::new();
+    };
+    let mut lifetimes = Vec::new();
+    let mut current = first;
+    let mut length = 1;
+    for value in values.iter().skip(1) {
+        if value == current {
+            length += 1;
+        } else {
+            lifetimes.push(length);
+            current = value;
+            length = 1;
+        }
+    }
+    lifetimes.push(length);
+    lifetimes
+}
+
+fn minimum_lifetime(lifetimes: &[usize]) -> usize {
+    lifetimes.iter().copied().min().unwrap_or(0)
 }
 
 fn build_scene(name: &'static str, source_count: usize) -> TemporalScene {
@@ -367,10 +531,6 @@ fn scene_signal(scene: &str, source_index: usize, frame_index: usize) -> Vec<f64
         .collect()
 }
 
-fn coded_identity(result: &ReductionResult, source_index: usize) -> Result<usize, String> {
-    Ok(accounting(result, source_index)?.coded_object_index)
-}
-
 fn accounting(
     result: &ReductionResult,
     source_index: usize,
@@ -419,5 +579,178 @@ fn median(values: &[usize]) -> f64 {
         (values[middle - 1] + values[middle]) as f64 / 2.0
     } else {
         values[middle] as f64
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::measure_temporal_identity_metrics;
+    use crate::{ReducedObject, ReductionDiagnostics, ReductionResult, SourceAccounting};
+
+    fn synthetic_reduction(
+        assignments: &[(usize, usize)],
+        representative_sources: &[usize],
+    ) -> ReductionResult {
+        let coded_objects = representative_sources
+            .iter()
+            .enumerate()
+            .map(|(coded_index, representative_source_index)| ReducedObject {
+                coded_index,
+                representative_source_index: *representative_source_index,
+                source_indices: assignments
+                    .iter()
+                    .filter_map(|(source_index, assigned_coded_index)| {
+                        (*assigned_coded_index == coded_index).then_some(*source_index)
+                    })
+                    .collect(),
+                contribution_gains: assignments
+                    .iter()
+                    .filter_map(|(_, assigned_coded_index)| {
+                        (*assigned_coded_index == coded_index).then_some(1.0)
+                    })
+                    .collect(),
+                position: crate::AdmPosition {
+                    azimuth: 0.0,
+                    elevation: 0.0,
+                    distance: 1.0,
+                },
+                signal: vec![0.0],
+            })
+            .collect();
+        let source_accounting = assignments
+            .iter()
+            .map(|(source_index, coded_object_index)| SourceAccounting {
+                source_index: *source_index,
+                coded_object_index: *coded_object_index,
+                contribution_gain: 1.0,
+                source_energy: 1.0,
+                represented_energy: 1.0,
+                relative_error: 0.0,
+                spatial_error: 0.0,
+            })
+            .collect();
+        ReductionResult {
+            coded_objects,
+            source_accounting,
+            diagnostics: ReductionDiagnostics {
+                authored_source_count: assignments.len(),
+                coded_object_count: representative_sources.len(),
+                silent_object_drops: 0,
+                source_reconstruction_error: 0.0,
+                spatial_representation_error: 0.0,
+                cross_object_leakage: 0.0,
+                unexplained_cluster_leakage: 0.0,
+                speaker_render_error: 0.0,
+                max_coded_peak: 0.0,
+                headroom_margin: 0.9,
+                authored_source_assignment_changes: 0,
+                representative_source_changes: 0,
+            },
+        }
+    }
+
+    #[test]
+    fn stationary_scene_has_zero_churn_and_full_lifetimes_in_each_domain() {
+        let reductions = vec![
+            synthetic_reduction(&[(0, 0), (1, 1)], &[0, 1]),
+            synthetic_reduction(&[(0, 0), (1, 1)], &[0, 1]),
+            synthetic_reduction(&[(0, 0), (1, 1)], &[0, 1]),
+        ];
+
+        let metrics = measure_temporal_identity_metrics(&reductions, 2).expect("metrics");
+
+        assert_eq!(metrics.authored_source_assignment_changes, 0);
+        assert_eq!(metrics.representative_source_changes, 0);
+        assert_eq!(metrics.coded_slot_replacements, 0);
+        assert_eq!(
+            metrics.minimum_authored_source_assignment_lifetime_frames,
+            3
+        );
+        assert_eq!(metrics.minimum_representative_source_lifetime_frames, 3);
+        assert_eq!(metrics.minimum_coded_slot_lifetime_frames, 3);
+    }
+
+    #[test]
+    fn authored_assignment_change_does_not_count_as_representative_or_slot_change() {
+        let reductions = vec![
+            synthetic_reduction(&[(0, 0), (1, 1)], &[0, 1]),
+            synthetic_reduction(&[(0, 0), (1, 1)], &[0, 1]),
+            synthetic_reduction(&[(0, 1), (1, 0)], &[0, 1]),
+        ];
+
+        let metrics = measure_temporal_identity_metrics(&reductions, 2).expect("metrics");
+
+        assert_eq!(metrics.authored_source_assignment_changes, 2);
+        assert_eq!(metrics.representative_source_changes, 0);
+        assert_eq!(metrics.coded_slot_replacements, 0);
+        assert_eq!(
+            metrics.minimum_authored_source_assignment_lifetime_frames,
+            1
+        );
+        assert_eq!(metrics.minimum_representative_source_lifetime_frames, 3);
+    }
+
+    #[test]
+    fn stable_coded_slot_and_replaced_representative_have_different_lifetimes() {
+        let reductions = vec![
+            synthetic_reduction(&[(0, 0)], &[0]),
+            synthetic_reduction(&[(0, 0)], &[1]),
+            synthetic_reduction(&[(0, 0)], &[1]),
+        ];
+
+        let metrics = measure_temporal_identity_metrics(&reductions, 1).expect("metrics");
+
+        assert_eq!(metrics.representative_source_changes, 1);
+        assert_eq!(metrics.coded_slot_replacements, 1);
+        assert_eq!(metrics.minimum_representative_source_lifetime_frames, 1);
+        assert_eq!(metrics.minimum_coded_slot_lifetime_frames, 3);
+    }
+
+    #[test]
+    fn stable_representatives_survive_other_member_assignment_churn() {
+        let reductions = vec![
+            synthetic_reduction(&[(0, 0), (1, 1), (2, 0)], &[0, 1]),
+            synthetic_reduction(&[(0, 0), (1, 1), (2, 1)], &[0, 1]),
+            synthetic_reduction(&[(0, 0), (1, 1), (2, 0)], &[0, 1]),
+        ];
+
+        let metrics = measure_temporal_identity_metrics(&reductions, 3).expect("metrics");
+
+        assert_eq!(metrics.authored_source_assignment_changes, 2);
+        assert_eq!(metrics.representative_source_changes, 0);
+        assert_eq!(metrics.minimum_representative_source_lifetime_frames, 3);
+        assert_eq!(metrics.minimum_coded_slot_lifetime_frames, 3);
+    }
+
+    #[test]
+    fn deliberate_representative_replacement_is_not_hidden_by_slot_continuity() {
+        let reductions = vec![
+            synthetic_reduction(&[(0, 0), (1, 1)], &[0, 1]),
+            synthetic_reduction(&[(0, 0), (1, 1)], &[0, 2]),
+        ];
+
+        let metrics = measure_temporal_identity_metrics(&reductions, 2).expect("metrics");
+
+        assert_eq!(metrics.representative_source_changes, 1);
+        assert_eq!(metrics.coded_slot_replacements, 1);
+        assert_eq!(metrics.minimum_coded_slot_lifetime_frames, 2);
+    }
+
+    #[test]
+    fn rapid_slot_permutation_is_separate_from_representative_source_churn() {
+        let reductions = vec![
+            synthetic_reduction(&[(0, 0), (1, 1)], &[0, 1]),
+            synthetic_reduction(&[(0, 0), (1, 1)], &[1, 0]),
+            synthetic_reduction(&[(0, 0), (1, 1)], &[0, 1]),
+            synthetic_reduction(&[(0, 0), (1, 1)], &[1, 0]),
+        ];
+
+        let metrics = measure_temporal_identity_metrics(&reductions, 2).expect("metrics");
+
+        assert_eq!(metrics.authored_source_assignment_changes, 0);
+        assert_eq!(metrics.representative_source_changes, 0);
+        assert_eq!(metrics.coded_slot_replacements, 6);
+        assert_eq!(metrics.minimum_representative_source_lifetime_frames, 4);
+        assert_eq!(metrics.minimum_coded_slot_lifetime_frames, 4);
     }
 }

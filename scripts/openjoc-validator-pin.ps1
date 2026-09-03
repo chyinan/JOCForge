@@ -21,6 +21,13 @@ function Assert-OpenJocValidatorPin([string]$RepositoryRoot, [string]$OpenJocPat
         throw "OpenJOC executable does not exist: $OpenJocPath"
     }
     $pin = Get-Content -LiteralPath $pinPath -Raw | ConvertFrom-Json
+    if ($pin.tool -ne "OpenJOC" -or
+        [string]::IsNullOrWhiteSpace($pin.semantic_version) -or
+        [string]::IsNullOrWhiteSpace($pin.source_revision) -or
+        $pin.source_revision -notmatch "^[0-9a-f]{40}$" -or
+        $pin.executable_sha256 -notmatch "^[0-9a-f]{64}$") {
+        throw "OpenJOC validator pin is malformed: $pinPath"
+    }
     $actualHash = Get-OpenJocSha256 $OpenJocPath
     if ($actualHash -ne $pin.executable_sha256) {
         throw "OpenJOC validator SHA256 does not match pin: expected '$($pin.executable_sha256)', got '$actualHash'"
