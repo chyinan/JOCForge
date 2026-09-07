@@ -21,6 +21,7 @@ use jocforge_core::{
     ReductionConfig, ReductionSource, SOURCE_DERIVED_CARRIER_PEAK_LIMIT, d0_carrier_causality,
     factorize_source_derived, final_render_gate, generate_synthetic_scene_fixture,
     limit_signal_peak, maximum_absolute_difference, package_i0_skip_field_access_unit,
+    package_legacy_ac3_source_derived_access_unit,
     package_multi_dependent_source_derived_access_unit,
     package_source_derived_access_unit_with_frame_sizes, parse_bw64_adm_metadata, profile_spec,
     quantize_coefficient, reconstruction_error, reduce_scene_with_previous, resolve_encoding_plan,
@@ -215,7 +216,7 @@ fn run_multi_dependent_proof(arguments: &[String]) -> Result<(), String> {
         interleaved_f32le(&i0_carriers, JOC_FRAME_SAMPLES),
     )
     .map_err(|error| format!("failed to write conformance carrier PCM: {error}"))?;
-    encode_ffmpeg_carrier(&raw_path, &carrier_path, 5, "1024k")?;
+    encode_ffmpeg_carrier(&raw_path, &carrier_path, 5, "1024k", "eac3")?;
     let i0 = read_carrier_frames(&carrier_path, 4096, 1)?;
     let dependent_channel_maps = dependent_channel_maps[..dependent_count].to_vec();
     let dependent_carriers = (0..dependent_count)
@@ -1097,7 +1098,7 @@ fn csv_cell(value: &str) -> String {
 fn run_encode(arguments: &[String]) -> Result<(), String> {
     if arguments.len() < 4 || (arguments.len() - 4) % 2 != 0 {
         return Err(
-            "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile 5.X|Flat-7.X|5.X+2|5.X Phase|5.X+2 Phase [--compat etsi|deployed] [--carriage etsi|i0-skipfld] [--emdf-profile etsi|deployed] [--bitrate KBPS] [--temporal-weight VALUE]"
+            "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile 5.X|Flat-7.X|5.X+2|5.X Phase|5.X+2 Phase [--compat etsi|deployed] [--carriage etsi|i0-skipfld|legacy-ac3] [--emdf-profile etsi|deployed] [--bitrate KBPS] [--temporal-weight VALUE]"
                 .to_owned(),
         );
     }
@@ -1107,7 +1108,7 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
     let profile_name = &arguments[3];
     if flag != "--profile" {
         return Err(
-            "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile 5.X|Flat-7.X|5.X+2|5.X Phase|5.X+2 Phase [--compat etsi|deployed] [--carriage etsi|i0-skipfld] [--emdf-profile etsi|deployed] [--bitrate KBPS] [--temporal-weight VALUE]"
+            "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile 5.X|Flat-7.X|5.X+2|5.X Phase|5.X+2 Phase [--compat etsi|deployed] [--carriage etsi|i0-skipfld|legacy-ac3] [--emdf-profile etsi|deployed] [--bitrate KBPS] [--temporal-weight VALUE]"
                 .to_owned(),
         );
     }
@@ -1145,7 +1146,7 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
             }
             _ => {
                 return Err(
-                    "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile 5.X|Flat-7.X|5.X+2|5.X Phase|5.X+2 Phase [--compat etsi|deployed] [--carriage etsi|i0-skipfld] [--emdf-profile etsi|deployed] [--bitrate KBPS] [--temporal-weight VALUE]"
+                    "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile 5.X|Flat-7.X|5.X+2|5.X Phase|5.X+2 Phase [--compat etsi|deployed] [--carriage etsi|i0-skipfld|legacy-ac3] [--emdf-profile etsi|deployed] [--bitrate KBPS] [--temporal-weight VALUE]"
                         .to_owned(),
                 );
             }
@@ -1297,11 +1298,17 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         previous_reduction = Some(reduction);
     }
     drop(raw_file);
+    let carrier_codec = if carriage == JocCarriage::LegacyAc3Dependent {
+        "ac3"
+    } else {
+        "eac3"
+    };
     encode_ffmpeg_carrier(
         &i0_raw_path,
         &i0_carrier_path,
         i0_channels,
         &format!("{}k", rate.carrier_encode_bitrate_kbps),
+        carrier_codec,
     )?;
     let i0_carrier_bytes = read_carrier_frames(
         &i0_carrier_path,
@@ -1359,6 +1366,16 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
                 &factorization.scaled_matrix,
                 &positions,
                 i0_frame,
+            ),
+            JocCarriage::LegacyAc3Dependent => package_legacy_ac3_source_derived_access_unit(
+                profile,
+                emdf_profile,
+                sequence,
+                &factorization.scaled_matrix,
+                &positions,
+                i0_frame,
+                &d0_carriers,
+                0,
             ),
         }
         .map_err(|error| format!("failed to package frame {frame_index}: {error}"))?;
@@ -1610,6 +1627,7 @@ fn encode_ffmpeg_carrier(
     carrier_path: &Path,
     channels: usize,
     bitrate: &str,
+    codec: &str,
 ) -> Result<(), String> {
     let mut command = std::process::Command::new("ffmpeg");
     command
@@ -1627,22 +1645,23 @@ fn encode_ffmpeg_carrier(
         .arg(channels.to_string())
         .args(["-i"])
         .arg(raw_path)
-        .args(["-c:a", "eac3", "-b:a", bitrate]);
-    if bitrate == "384k" {
+        .args(["-c:a", codec, "-b:a", bitrate]);
+    if codec == "eac3" && bitrate == "384k" {
         // FFmpeg's automatic low-rate coupling emits a carrier that the
         // pinned OpenJOC renderer cannot traverse (grouped exponent 125).
         // Disable only that low-rate mode; the public 5-channel carrier
         // topology and its exact frame budget remain unchanged.
         command.args(["-channel_coupling", "0"]);
     }
+    let output_format = if codec == "ac3" { "ac3" } else { "eac3" };
     let ffmpeg = command
-        .args(["-f", "eac3"])
+        .args(["-f", output_format])
         .arg(carrier_path)
         .status()
-        .map_err(|error| format!("failed to start FFmpeg E-AC-3 encoder: {error}"))?;
+        .map_err(|error| format!("failed to start FFmpeg {codec} encoder: {error}"))?;
     if !ffmpeg.success() {
         return Err(format!(
-            "FFmpeg E-AC-3 {channels}-channel carrier encoding failed"
+            "FFmpeg {codec} {channels}-channel carrier encoding failed"
         ));
     }
     Ok(())
@@ -1701,6 +1720,7 @@ fn parse_carriage(value: &str) -> Result<JocCarriage, String> {
     match value {
         "etsi" => Ok(JocCarriage::EtsiAuxDependent),
         "i0-skipfld" => Ok(JocCarriage::I0SkipField),
+        "legacy-ac3" => Ok(JocCarriage::LegacyAc3Dependent),
         other => Err(format!("unsupported JOC carriage '{other}'")),
     }
 }
@@ -1739,6 +1759,10 @@ mod tests {
     fn cli_names_carriage_and_emdf_profile_separately() {
         assert_eq!(parse_carriage("etsi"), Ok(JocCarriage::EtsiAuxDependent));
         assert_eq!(parse_carriage("i0-skipfld"), Ok(JocCarriage::I0SkipField));
+        assert_eq!(
+            parse_carriage("legacy-ac3"),
+            Ok(JocCarriage::LegacyAc3Dependent)
+        );
         assert_eq!(parse_emdf_profile("etsi"), Ok(EmdfProfile::EtsiStrict));
         assert_eq!(
             parse_emdf_profile("deployed"),

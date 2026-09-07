@@ -839,6 +839,70 @@ pub fn package_source_derived_access_unit_with_frame_sizes(
     Ok(output)
 }
 
+/// Packages the validated original-syntax AC-3 I0 plus E-AC-3 D0 JOC form.
+/// This advanced path is intentionally limited to Flat-7.X/idx1 and a
+/// 48-kHz, six-block, 640 kbps AC-3 core until more public core topologies are
+/// independently validated.
+#[allow(clippy::too_many_arguments)]
+pub fn package_legacy_ac3_source_derived_access_unit(
+    profile: JocProfile,
+    emdf_profile: EmdfProfile,
+    sequence_count: u16,
+    matrix: &[Vec<f64>],
+    positions: &[AdmPosition],
+    ac3_i0_frame: &[u8],
+    d0_carriers: &[Vec<f64>],
+    sample_offset: usize,
+) -> Result<Vec<u8>, String> {
+    if profile != JocProfile::Idx1 {
+        return Err("legacy AC-3 carriage currently supports Flat-7.X only".to_owned());
+    }
+    if !valid_legacy_ac3_i0_frame(ac3_i0_frame) {
+        return Err(
+            "legacy AC-3 carriage requires one 48 kHz bsid 6/8 5.1 AC-3 I0 frame".to_owned(),
+        );
+    }
+    if matrix.len() != positions.len() {
+        return Err("JOC matrix rows must match reduced OAMD positions".to_owned());
+    }
+    let oamd = write_oamd_payload(positions)?;
+    let joc = write_joc_payload(profile, sequence_count, matrix)?;
+    let emdf = write_emdf(&oamd, &joc, emdf_profile)?;
+    let d0 = write_source_dependent_frame(
+        &emdf,
+        profile_spec(profile).channel_map,
+        d0_carriers,
+        sample_offset,
+        u8::try_from(positions.len() + 1)
+            .map_err(|_| "JOC complexity index exceeds its eight-bit field".to_owned())?,
+        D0_FRAME_BYTES,
+    )?;
+    let mut output = Vec::with_capacity(ac3_i0_frame.len() + d0.len());
+    output.extend_from_slice(ac3_i0_frame);
+    output.extend_from_slice(&d0);
+    Ok(output)
+}
+
+fn valid_legacy_ac3_i0_frame(frame: &[u8]) -> bool {
+    frame.len() == 2560
+        && frame.get(0..2) == Some(&[0x0b, 0x77])
+        && read_bits(frame, 32, 2) == Some(0)
+        && matches!(read_bits(frame, 40, 5), Some(6 | 8))
+        && read_bits(frame, 48, 3) == Some(7)
+}
+
+fn read_bits(bytes: &[u8], offset: usize, width: usize) -> Option<u32> {
+    if width > 32 || offset.checked_add(width)? > bytes.len().checked_mul(8)? {
+        return None;
+    }
+    let mut value = 0_u32;
+    for bit in 0..width {
+        let position = offset + bit;
+        value = (value << 1) | u32::from((bytes[position / 8] >> (7 - position % 8)) & 1);
+    }
+    Some(value)
+}
+
 /// Packages a general raw E-AC-3 JOC access unit with sequential D0..D7
 /// dependents. Each dependent uses the profile's public replacement channel
 /// map; only the last dependent carries the OAMD/JOC EMDF and type-A addbsi.

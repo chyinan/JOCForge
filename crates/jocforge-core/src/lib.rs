@@ -52,9 +52,9 @@ pub use validation::{
 };
 pub use writer::{
     D0CausalityMeasurement, d0_carrier_causality, package_ffmpeg_access_unit,
-    package_i0_skip_field_access_unit, package_multi_dependent_source_derived_access_unit,
-    package_source_derived_access_unit, package_source_derived_access_unit_with_frame_sizes,
-    write_one_au_proof,
+    package_i0_skip_field_access_unit, package_legacy_ac3_source_derived_access_unit,
+    package_multi_dependent_source_derived_access_unit, package_source_derived_access_unit,
+    package_source_derived_access_unit_with_frame_sizes, write_one_au_proof,
 };
 
 /// MVP JOC downmix profiles.
@@ -107,6 +107,8 @@ pub enum JocCarriage {
     EtsiAuxDependent,
     /// Public E-AC-3 I0-only carriage with EMDF in audio-block skip fields.
     I0SkipField,
+    /// Advanced public original-syntax AC-3 I0 plus E-AC-3 D0 carriage.
+    LegacyAc3Dependent,
 }
 
 /// EMDF signaling convention selected independently from carriage topology.

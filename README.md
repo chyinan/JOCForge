@@ -61,6 +61,7 @@ cargo run -p jocforge -- encode artifacts/mvp/synthetic-reference.bw64 artifacts
 cargo run -p jocforge -- encode artifacts/mvp/synthetic-reference.bw64 artifacts/mvp/jocforge-mvp-5x2-idx2.ec3 --profile idx2
 cargo run -p jocforge -- encode artifacts/mvp/synthetic-reference.bw64 artifacts/mvp/jocforge-mvp-5x-phase-idx3.ec3 --profile "5.X Phase"
 cargo run -p jocforge -- encode artifacts/mvp/synthetic-reference.bw64 artifacts/mvp/jocforge-mvp-5x2-phase-idx4.ec3 --profile "5.X+2 Phase"
+cargo run -p jocforge -- encode artifacts/mvp/synthetic-reference.bw64 artifacts/mvp/jocforge-mvp-flat7x-legacy.ec3 --profile Flat-7.X --carriage legacy-ac3 --bitrate 1280
 ```
 
 `idx1` is Flat-7.X with `L,R,C,Ls,Rs,Lrs,Rrs` and `chanmap=0x0200`.
@@ -69,6 +70,9 @@ different JOC payload headers and different dependent channel maps; idx2 is
 not a relabeled idx1. `idx3` and `idx4` are the public phase-signaled variants;
 the JOCForge implementation treats the phase wording as signaling-only and
 does not add a second PCM phase transform.
+
+The advanced `legacy-ac3` carriage is currently closed only for Flat-7.X/idx1
+at 1280 kbps: a 640 kbps original-syntax AC-3 I0 plus a 640 kbps E-AC-3 D0.
 
 FFmpeg is used only as the external 5-channel E-AC-3 I0 carrier encoder. The
 JOCForge-owned writer creates the PCM-derived two-channel dependent D0,

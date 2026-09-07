@@ -36,3 +36,13 @@ fn deployed_compat_budget_uses_a_padded_nominal_i0_frame() {
     assert_eq!(budget.carrier_encoded_frame_bytes, 3584);
     assert_eq!(budget.d0_frame_bytes, 0);
 }
+
+#[test]
+fn legacy_ac3_budget_uses_640_plus_640_kbps_frames() {
+    let budget = rate_budget_for_carriage(JocCarriage::LegacyAc3Dependent, 1280)
+        .expect("legacy AC-3 plus D0 budget");
+    assert_eq!(budget.carrier_bitrate_kbps, 640);
+    assert_eq!(budget.carrier_frame_bytes, 2560);
+    assert_eq!(budget.d0_bitrate_kbps, 640);
+    assert_eq!(budget.d0_frame_bytes, 2560);
+}

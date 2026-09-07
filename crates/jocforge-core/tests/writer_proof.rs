@@ -2,6 +2,7 @@
 
 use jocforge_core::{
     EmdfProfile, JocProfile, d0_carrier_causality, package_i0_skip_field_access_unit,
+    package_legacy_ac3_source_derived_access_unit,
     package_multi_dependent_source_derived_access_unit, package_source_derived_access_unit,
     write_one_au_proof,
 };
@@ -248,6 +249,34 @@ fn one_multi_dependent_frame_matches_the_existing_d0_writer() {
     )
     .expect("multi D0");
     assert_eq!(normal, multi);
+}
+
+#[test]
+fn legacy_ac3_package_retains_the_original_core_and_appends_one_d0() {
+    let unit = 820.0 / 4096.0;
+    let matrix = vec![vec![unit, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]];
+    let position = jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    };
+    let ac3 = vec![0x0b, 0x77]
+        .into_iter()
+        .chain(std::iter::repeat_n(0, 2558))
+        .collect::<Vec<_>>();
+    let carriers = vec![vec![0.1; 1536], vec![0.2; 1536]];
+    let error = package_legacy_ac3_source_derived_access_unit(
+        JocProfile::Idx1,
+        EmdfProfile::EtsiStrict,
+        1,
+        &matrix,
+        &[position],
+        &ac3,
+        &carriers,
+        0,
+    )
+    .expect_err("zero-filled AC-3 core must fail its public header validation");
+    assert!(error.contains("legacy AC-3"));
 }
 
 #[test]

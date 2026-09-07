@@ -77,7 +77,16 @@ pub fn rate_budget_for_carriage(
             carrier_encoded_frame_bytes: frame_bytes(896),
             d0_frame_bytes: 0,
         }),
-        crate::JocCarriage::I0SkipField => {
+        crate::JocCarriage::LegacyAc3Dependent if total_bitrate_kbps == 1280 => Ok(RateBudget {
+            total_bitrate_kbps,
+            carrier_bitrate_kbps: 640,
+            carrier_encode_bitrate_kbps: 640,
+            d0_bitrate_kbps: 640,
+            carrier_frame_bytes: frame_bytes(640),
+            carrier_encoded_frame_bytes: frame_bytes(640),
+            d0_frame_bytes: frame_bytes(640),
+        }),
+        crate::JocCarriage::I0SkipField | crate::JocCarriage::LegacyAc3Dependent => {
             Err(RateBudgetError::UnsupportedTotalBitrate(total_bitrate_kbps))
         }
     }

@@ -52,3 +52,25 @@ fn resolver_keeps_the_actionable_total_bitrate_error_category() {
 
     assert!(error.to_string().contains("unsupported total bitrate"));
 }
+
+#[test]
+fn resolver_admits_only_the_validated_legacy_ac3_flat7x_plan() {
+    let plan = resolve_encoding_plan(
+        JocProfile::Idx1,
+        JocCarriage::LegacyAc3Dependent,
+        EmdfProfile::EtsiStrict,
+        1280,
+    )
+    .expect("legacy AC-3 Flat-7.X plan");
+    assert_eq!(plan.rate.carrier_bitrate_kbps, 640);
+    assert_eq!(plan.rate.d0_bitrate_kbps, 640);
+
+    let unsupported = resolve_encoding_plan(
+        JocProfile::Idx0,
+        JocCarriage::LegacyAc3Dependent,
+        EmdfProfile::EtsiStrict,
+        1280,
+    )
+    .expect_err("legacy AC-3 is not yet closed for 5.X");
+    assert!(unsupported.to_string().contains("unsupported carriage"));
+}
