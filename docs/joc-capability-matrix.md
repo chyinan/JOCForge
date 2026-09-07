@@ -6,11 +6,11 @@
 
 | Semantic profile | Index | Source-derived inputs | Canonical carriage | Supported cells |
 |---|---:|---|---|---:|
-| 5.X | idx0 | L,R,C,Ls,Rs | 12 |
-| Flat-7.X | idx1 | L,R,C,Ls,Rs,Lrs,Rrs | 10 |
-| 5.X+2 | idx2 | L,R,C,Ls,Rs,Tfl,Tfr | 10 |
-| 5.X Phase | idx3 | L,R,C,Ls,Rs | 10 |
-| 5.X+2 Phase | idx4 | L,R,C,Ls,Rs,Tfl,Tfr | 10 |
+| 5.X | idx0 | L,R,C,Ls,Rs | 7 |
+| Flat-7.X | idx1 | L,R,C,Ls,Rs,Lrs,Rrs | 6 |
+| 5.X+2 | idx2 | L,R,C,Ls,Rs,Tfl,Tfr | 6 |
+| 5.X Phase | idx3 | L,R,C,Ls,Rs | 6 |
+| 5.X+2 Phase | idx4 | L,R,C,Ls,Rs,Tfl,Tfr | 6 |
 | reserved-5 | idx5 |  | 0 |
 | reserved-6 | idx6 |  | 0 |
 | reserved-7 | idx7 |  | 0 |
@@ -25,8 +25,8 @@ idx0鈥搃dx4 follow ETSI TS 103 420 V1.2.1 Table 47/48. JOCForge uses Lrs/Rrs a
 | PUBLIC_AMBIGUOUS | 2240 |
 | REJECTED_CAPACITY | 194 |
 | RESERVED | 3840 |
-| SPEC_LEGAL_NOT_IMPLEMENTED | 814 |
-| SUPPORTED_PASS | 52 |
+| SPEC_LEGAL_NOT_IMPLEMENTED | 835 |
+| SUPPORTED_PASS | 31 |
 
 ## Evidence and boundaries
 

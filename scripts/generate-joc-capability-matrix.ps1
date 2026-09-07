@@ -35,12 +35,14 @@ function Get-CellStatus($profile, [string]$lfe, [string]$carriage, [string]$emdf
     if ($carriage -eq "i0-skipfld") {
         if ($profile.index -ne 0) { return "PUBLIC_AMBIGUOUS" }
         if ($bitrate -ne 1024) { return "REJECTED_CAPACITY" }
+        if ($lfe -eq "present") { return "SPEC_LEGAL_NOT_IMPLEMENTED" }
         if ($blocks -ne "6" -or $dependents -ne "D0") { return "SPEC_LEGAL_NOT_IMPLEMENTED" }
         return "SUPPORTED_PASS"
     }
     if ($blocks -ne "6") { return "SPEC_LEGAL_NOT_IMPLEMENTED" }
     if ($dependents -ne "D0") { return "SPEC_LEGAL_NOT_IMPLEMENTED" }
     if ($bitrate -lt 1024) { return "REJECTED_CAPACITY" }
+    if ($lfe -eq "present" -and $bitrate -ne 1664) { return "SPEC_LEGAL_NOT_IMPLEMENTED" }
     return "SUPPORTED_PASS"
 }
 
