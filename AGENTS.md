@@ -45,8 +45,8 @@ Last verified: 2026-09-07
   corpus generation, compatibility metrics, and final-render gate evaluation.
 - `crates/jocforge-core/src/eac3.rs` — public fail-closed E-AC-3 audio-block
   walker, nominal-frame padding, skipfld insertion, and CRC2 rewrite.
-- `crates/jocforge-core/src/writer.rs` — pure JOC/OAMD/EMDF and ETSI-strict
-  I0/D0 plus deployed-compatible I0-only packaging.
+- `crates/jocforge-core/src/writer.rs` — pure JOC/OAMD/EMDF and independent
+  `JocCarriage`/`EmdfProfile` packaging for ETSI and I0 skip-field paths.
 - `crates/jocforge-cli/src/main.rs` — file/process orchestration shell.
 - `crates/jocforge-cli/src/file_scan.rs` — seek-aware BW64 chunk scanner that
   reads metadata after large `data` chunks without loading PCM, plus bounded
@@ -67,8 +67,9 @@ Last verified: 2026-09-07
 - Core logic is deterministic and side-effect free; file/process I/O stays in
   CLI or scripts.
 - User-facing errors are lowercase actionable fragments.
-- Carriage selection is explicit: `etsi-strict` is the default and
-  `deployed-compat` is limited to idx0/1024 in the initial implementation.
+- Carriage and EMDF signaling are explicit: `etsi`/`i0-skipfld` selects
+  topology, `etsi`/`deployed` selects signaling, and the default is ETSI
+  strict. Deployed compatibility is limited to idx0/1024 initially.
 - Matrix and metadata ordering is explicit and stable; unsupported ADM input
   is rejected rather than silently flattened.
 - DirectSpeakers LFE routing uses only public `speakerLabel`/`frequency.lowPass`
@@ -82,14 +83,15 @@ Last verified: 2026-09-07
   public topology labels and dependent channel maps.
 - `parse_bw64_adm_metadata` accepts only the static full-track subset, validates
   CHNA one-to-one bindings, and derives LFE from semantic ADM metadata.
-- `package_source_derived_access_unit` accepts one legal even-sized FFmpeg I0
+- `package_source_derived_access_unit` accepts an explicit EMDF profile, one legal even-sized FFmpeg I0
   frame and two 1536-sample source D0 carrier windows for the selected active
   coded-object set, returning I0 plus a JOCForge-owned PCM-derived D0 carriage
   whose validated minimum is 2560 bytes. Matrix and OAMD row counts must match.
-- `package_deployed_compat_access_unit` accepts a public FFmpeg I0 core, pads
-  the deployed MVP's 896 kbps encoded core to a nominal 4096-byte/1024 kbps
-  frame, and inserts strict OAMD/JOC EMDF into public audio-block skip fields;
-  it emits no D0 and fails closed when the skip-field capacity is insufficient.
+- `package_i0_skip_field_access_unit` accepts a public FFmpeg I0 core, pads
+  the I0 skip-field MVP's 896 kbps encoded core to a nominal 4096-byte/1024
+  kbps frame, and inserts profile-selected OAMD/JOC EMDF into public
+  audio-block skip fields; it emits no D0 and fails closed when capacity is
+  insufficient.
 - `reduce_scene` and `reduce_scene_with_previous` provide the pure N-to-15
   clean decision boundary. Every supported authored source has a deterministic
   coded-object assignment and positive accounting gain; previous representatives
@@ -138,10 +140,11 @@ Last verified: 2026-09-07
 - The overnight MVP uses a narrow Rust BW64/axml/chna subset because this host
   lacks an exposed CMake/compiler/Boost path; `libadm`/`libbw64` migration is
   follow-up work.
-- FFmpeg remains the external public E-AC-3 audio-core encoder. ETSI-strict
+- FFmpeg remains the external public E-AC-3 audio-core encoder. ETSI strict
   retains the established 384+640 I0/D0 allocation at 1024 kbps. The public
-  deployed-compatible idx0/1024 mode encodes a 896 kbps I0 core, pads it to a
-  nominal 4096-byte frame, and carries JOC EMDF in skipfld; it is a carriage
+  deployed compatibility preset uses the I0 skip-field idx0/1024 carriage,
+  encodes a 896 kbps I0 core, pads it to a nominal 4096-byte frame, and sets
+  only payload 11/14 `codecdatae=0`; this is a carriage/signaling
   implementation, not a new perceptual E-AC-3 encoder.
 - `ReductionConfig.temporal_continuity_weight` defaults to the clean-side
   dimensionless value `0.15`; it adds a switch cost only when a source moves

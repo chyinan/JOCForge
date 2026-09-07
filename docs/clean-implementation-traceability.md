@@ -46,7 +46,7 @@ Disposition counts: `IMPLEMENTED=54`, `ALREADY_SATISFIED=7`, `TEST_ONLY=0`,
 | CAR-006 | IMPLEMENTED | stable seeds, continuity cost, and measured carrier/matrix coefficient jumps | sidecar jump metrics; temporal closure |
 | CAR-007 | IMPLEMENTED | measurable signal/spatial/leakage/headroom objective | reduction diagnostics |
 | CAR-008 | OPEN_RESEARCH | carrier dimension is currently profile-fixed | ORQ-003 remains open |
-| CAR-009 | IMPLEMENTED | explicit `etsi-strict` versus public `deployed-compat` carriage; I0-only skipfld frame transform is fail-closed and keeps strict default | deployed full-stream census; OpenJOC strict inspect/render; FFmpeg decode; deterministic hash |
+| CAR-009 | IMPLEMENTED | orthogonal `JocCarriage` and `EmdfProfile`; I0-only skipfld frame transform is fail-closed and keeps ETSI strict default | deployed full-stream census; OpenJOC strict inspect/render; FFmpeg decode; deterministic hash |
 | MAT-001 | IMPLEMENTED | public coarse 96-symbol Huffman table and quantizer | writer arbitrary-symbol test; full-domain three-profile quantization stress |
 | MAT-002 | IMPLEMENTED | bounded carrier scaling and quantized coefficients | factorization wrapper |
 | MAT-003 | IMPLEMENTED | ridge-regularized least-squares objective | `analysis.rs` |

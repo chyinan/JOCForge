@@ -47,15 +47,17 @@ can be added to the stream. The clean result is therefore recorded as:
 
 `MEDIAINFO_INTEROPERABILITY = OPEN`
 
-The project must not change `codecdatae` or invent an addbsi value solely to
-make MediaInfo display `E-AC-3 JOC` without a new ETSI-grounded test proving
-the resulting stream remains conforming.
+The ETSI strict profile remains unchanged and must not change `codecdatae` or
+invent an addbsi value solely to make MediaInfo display `E-AC-3 JOC`. A
+separate, explicitly named deployed compatibility profile may select the
+observed `codecdatae=0` deviation for interoperability measurement; that
+profile is not normative ETSI signaling.
 
 ## Public I0-only skip-field carriage
 
-The separate deployed-compatible carriage closure is recorded in
+The separate I0 skip-field carriage closure is recorded in
 [`public-i0-skipfld-carriage.md`](public-i0-skipfld-carriage.md). It does not
 change the MediaInfo conclusion: public skip-field carriage and MediaInfo's
-`codecdatae` heuristic are independent questions. The deployed-compatible
-mode retains JOCForge's strict EMDF configuration and does not copy DEE's
-`codecdatae=0` or payload IDs 1/2.
+`codecdatae` heuristic are independent questions. Deployed compatibility uses
+only the measured `codecdatae=0` change and does not copy DEE's payload IDs 1/2
+or other deviations.
