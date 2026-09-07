@@ -166,3 +166,21 @@ Last verified: 2026-09-07
   thresholds allow E-AC-3/downmix loss while rejecting non-finite samples,
   spectral collapse/tilt, phase collapse, polarity inversion, excessive
   leakage, and headroom violations; they do not claim perceptual parity.
+
+## Post-D8 generalized profile closure
+
+- `JocProfile` and `profile_spec` cover public ETSI TS 103 420 idx0..idx4.
+  idx3 and idx4 are signaling-only phase variants that reuse the idx0 and
+  idx2 carrier families; no additional PCM phase transform is emitted.
+- `crates/jocforge-core/src/plan.rs` resolves immutable profile, carriage,
+  EMDF, and bitrate combinations before ADM I/O. Unsupported combinations fail
+  closed with profile-aware errors.
+- `docs/joc-capability-matrix.md` and the generated CSV/JSON artifacts define
+  the multidimensional profile x carriage x signaling x block x dependent x
+  bitrate x container lattice. idx5..idx7 remain reserved and never emit.
+- Canonical ETSI raw-elementary idx0..idx4 cells at 1024, 1280, 1408, 1536,
+  and 1664 kbps have five-profile OpenJOC/FFmpeg/render/causality evidence;
+  the LFE-present variants have a separate five-profile evidence run.
+- General short-block, multi-dependent, CMAF, and legacy-core generation is
+  classified explicitly in the capability matrix and remains fail-closed until
+  independent writer and validation contracts are added.
