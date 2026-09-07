@@ -880,7 +880,7 @@ pub fn package_legacy_ac3_source_derived_access_unit(
 }
 
 fn valid_legacy_ac3_i0_frame(frame: &[u8]) -> bool {
-    frame.len() == 2560
+    matches!(frame.len(), 1536 | 1792 | 2048 | 2304 | 2560)
         && frame.get(0..2) == Some(&[0x0b, 0x77])
         && read_bits(frame, 32, 2) == Some(0)
         && matches!(read_bits(frame, 40, 5), Some(6 | 8))

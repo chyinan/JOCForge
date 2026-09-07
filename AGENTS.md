@@ -185,8 +185,9 @@ Last verified: 2026-09-07
   classified explicitly in the capability matrix and remains fail-closed until
   independent writer and validation contracts are added.
 - The validated advanced legacy-core exception is `legacy-ac3` with public
-  idx0..idx4, 1280 kbps, one original-syntax AC-3 I0 plus one E-AC-3 D0;
-  other legacy-core cells remain fail-closed.
+  idx0..idx4 at 1280 kbps and idx1 at 1024/1088/1152/1216 kbps, with one
+  original-syntax AC-3 I0 plus one E-AC-3 D0; other legacy-core cells remain
+  fail-closed.
 - `crates/jocforge-core/src/conformance.rs` provides the pure public contract
   for 1/2/3/6-block grouping to one 1,536-sample interval and sequential D0..D7
   ID bounds; it is a planning/validation API, not a compressed short-frame

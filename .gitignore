@@ -19,6 +19,7 @@
 /artifacts/multi-dependent-closure/
 /artifacts/legacy-core-closure/
 /artifacts/legacy-core-profile-closure/
+/artifacts/legacy-core-rate-sweep/
 /artifacts/legacy-core-*.metrics.csv
 *.ec3
 *.bw64

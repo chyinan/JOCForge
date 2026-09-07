@@ -46,3 +46,20 @@ fn legacy_ac3_budget_uses_640_plus_640_kbps_frames() {
     assert_eq!(budget.d0_bitrate_kbps, 640);
     assert_eq!(budget.d0_frame_bytes, 2560);
 }
+
+#[test]
+fn legacy_ac3_budget_accepts_the_validated_ac3_core_rate_sweep() {
+    for (total, core, bytes) in [
+        (1024, 384, 1536),
+        (1088, 448, 1792),
+        (1152, 512, 2048),
+        (1216, 576, 2304),
+        (1280, 640, 2560),
+    ] {
+        let budget = rate_budget_for_carriage(JocCarriage::LegacyAc3Dependent, total)
+            .expect("legacy AC-3 rate cell");
+        assert_eq!(budget.carrier_bitrate_kbps, core);
+        assert_eq!(budget.carrier_frame_bytes, bytes);
+        assert_eq!(budget.d0_frame_bytes, 2560);
+    }
+}
