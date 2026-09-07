@@ -30,10 +30,14 @@ pub use analysis::{
 };
 pub use cmaf::cmaf_joc_init_and_fragments;
 pub use conformance::{
-    BlockPartition, ChannelOwnershipCensus, ConformancePlanError, DependentTopology,
-    FfmpegInteroperabilityStatus, MultiDependentValidationReport, ShortBlockPlan,
-    canonical_dependent_channel_maps, channel_map_channel_count, resolve_dependent_topology,
-    resolve_short_block_plan, validate_multi_dependent_access_unit,
+    BlockPartition, CapabilityVerdict, ChannelOwnershipCensus, ConformancePlanError,
+    DEPENDENT_CHANNEL_ROLE_CENSUS, DependentChannelRoleSpec, DependentLfePolicy, DependentPlan,
+    DependentTopology, FfmpegInteroperabilityStatus, MultiDependentValidationReport, OwnershipPlan,
+    OwnershipPlanError, OwnershipValidationReport, ProgrammeOwner, ShortBlockPlan,
+    canonical_dependent_channel_maps, canonical_dependent_lfe_plan,
+    canonical_dependent_lfe_plan_for_count, channel_map_channel_count, channel_map_role_labels,
+    dependent_topology_verdict, resolve_dependent_topology, resolve_short_block_plan,
+    semantic_maximum, validate_multi_dependent_access_unit, validate_ownership_plan,
 };
 pub use eac3::inject_joc_skipfld;
 pub use plan::{JocEncodingPlan, JocPlanError, resolve_encoding_plan};
@@ -60,6 +64,7 @@ pub use writer::{
     D0CausalityMeasurement, d0_carrier_causality, package_ffmpeg_access_unit,
     package_i0_skip_field_access_unit, package_legacy_ac3_source_derived_access_unit,
     package_multi_dependent_source_derived_access_unit,
+    package_multi_dependent_source_derived_access_unit_with_plan,
     package_short_block_conformance_access_unit, package_source_derived_access_unit,
     package_source_derived_access_unit_with_frame_sizes, write_one_au_proof,
 };

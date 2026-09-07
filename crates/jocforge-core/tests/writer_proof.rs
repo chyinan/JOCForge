@@ -1,9 +1,11 @@
 // pattern: Functional Core
 
 use jocforge_core::{
-    BlockPartition, EmdfProfile, JocProfile, d0_carrier_causality,
-    package_i0_skip_field_access_unit, package_legacy_ac3_source_derived_access_unit,
+    BlockPartition, DependentLfePolicy, DependentPlan, EmdfProfile, JocProfile, OwnershipPlan,
+    canonical_dependent_channel_maps, d0_carrier_causality, package_i0_skip_field_access_unit,
+    package_legacy_ac3_source_derived_access_unit,
     package_multi_dependent_source_derived_access_unit,
+    package_multi_dependent_source_derived_access_unit_with_plan,
     package_short_block_conformance_access_unit, package_source_derived_access_unit,
     validate_multi_dependent_access_unit, write_one_au_proof,
 };
@@ -438,7 +440,7 @@ fn multi_dependent_writer_rejects_an_empty_chanmap() {
         0,
     )
     .expect_err("empty chanmap must fail closed");
-    assert!(error.contains("chanmap"));
+    assert!(error.contains("channel map"));
 }
 
 #[test]
@@ -560,7 +562,65 @@ fn multi_dependent_writer_rejects_more_than_eight_or_nonsequential_dependents() 
         0,
     )
     .expect_err("D8 must be outside the public dependent-substream bound");
-    assert!(too_many.contains("at most eight"));
+    assert!(too_many.contains("maximum is 8"));
+}
+
+#[test]
+fn malformed_d6_and_d7_plans_fail_before_any_frame_is_emitted() {
+    let i0 = write_one_au_proof(JocProfile::Idx0)
+        .expect("valid synthetic I0")
+        .into_iter()
+        .take(4096)
+        .collect::<Vec<_>>();
+    let position = jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    };
+    let base = canonical_dependent_channel_maps(JocProfile::Idx0, 5)
+        .expect("canonical idx0 maps")
+        .into_iter()
+        .enumerate()
+        .map(|(id, channel_map)| {
+            DependentPlan::new(
+                u8::try_from(id).unwrap_or(7),
+                channel_map,
+                DependentLfePolicy::Absent,
+            )
+        })
+        .collect::<Vec<_>>();
+    for extra_count in 1..=2 {
+        let final_id = u8::try_from(5 + extra_count - 1).unwrap_or(7);
+        let mut dependents = base.clone();
+        for id in 5..=final_id {
+            dependents.push(DependentPlan::new(id, 0x4002, DependentLfePolicy::Absent));
+        }
+        let plan = OwnershipPlan {
+            profile: JocProfile::Idx0,
+            independent_lfe: false,
+            dependents,
+            final_joc_owner: final_id,
+        };
+        let carriers = plan
+            .dependents
+            .iter()
+            .map(|dependent| vec![vec![0.0; 1536]; dependent.full_band_channel_count()])
+            .collect::<Vec<_>>();
+        let error = package_multi_dependent_source_derived_access_unit_with_plan(
+            JocProfile::Idx0,
+            EmdfProfile::EtsiStrict,
+            1,
+            &[vec![820.0 / 4096.0; 5]],
+            &[position],
+            &i0,
+            &plan,
+            &carriers,
+            &vec![None; plan.dependents.len()],
+            0,
+        )
+        .expect_err("malformed D6/D7 plan must fail closed");
+        assert!(error.contains("unsupported LFE2"));
+    }
 }
 
 #[test]

@@ -7,7 +7,7 @@ interoperability evidence only.
 
 ## Authorities
 
-- [ETSI TS 102 366 V1.4.1](https://www.etsi.org/deliver/etsi_ts/102300_102399/102366/01.04.01_60/ts_102366v010401p.pdf), clauses E.1.3 and E.2.8.
+- [ETSI TS 102 366 V1.4.1](https://www.etsi.org/deliver/etsi_ts/102300_102399/102366/01.04.01_60/ts_102366v010401p.pdf), clauses E.1.3, E.2.8.2, and Table E.1.4.
 - [ETSI TS 103 420 V1.2.1](https://www.etsi.org/deliver/etsi_ts/103400_103499/103420/01.02.01_60/ts_103420v010201p.pdf), Tables 47/48 and clauses 6.3, 8.1–8.3.
 
 ## E-AC-3 stream topology
@@ -51,10 +51,11 @@ TS 102 366 V1.4.1 Table E.1.4 maps the custom bits as: 0 L, 1 C, 2 R, 3 Ls,
 the hexadecimal masks used by JOCForge are consequently `0x8000` for bit 0,
 `0x0200` for bit 6, and `0x0010` for bit 11.
 
-JOCForge's canonical source-derived plan additionally requires no overlapping
-dependent ownership, no dependent LFE, and no unclaimed source placeholder.
-Those are deliberate fail-closed product/conformance constraints; they do not
-redefine the public E-AC-3 replacement semantics.
+JOCForge's canonical source-derived plan requires no duplicate dependent
+full-band ownership, no empty dependent, no LFE2, and exactly one final LFE
+owner. A single dependent LFE is admitted: it is a replacement when I0 already
+owns LFE and a supplement when I0 has no LFE. These are explicit plan policies;
+they do not redefine the public E-AC-3 replacement semantics.
 
 ## JOC and metadata ownership
 
@@ -112,10 +113,29 @@ and source-carrier requirements are applied.
 | `I0+D0..D3` | `PUBLIC_LEGAL` | `SUPPORTED_PASS` | Supported for profiles whose final Table-47 set closes. |
 | `I0+D0..D4` | `PUBLIC_LEGAL` | `SUPPORTED_PASS` | Canonical idx0/idx3 and 7-channel profiles as applicable. |
 | `I0+D0..D5` | `PUBLIC_LEGAL` | `SUPPORTED_PASS` | Canonical seven-channel profile with five single replacements plus one pair. |
-| `I0+D0..D6` | `PUBLIC_LEGAL` | `PUBLIC_LEGAL_NOT_IMPLEMENTED` | No-LFE canonical Table-47 ownership has no seventh non-overlapping dependent slot. |
-| `I0+D0..D7` | `PUBLIC_LEGAL` | `PUBLIC_LEGAL_NOT_IMPLEMENTED` | Public raw count is legal; this JOCForge plan does not guess overlapping or LFE dependent ownership. |
+| `I0+D0..D6` | `PUBLIC_LEGAL` | `SEMANTIC_CEILING` | No-LFE canonical Table-47 ownership has no seventh non-overlapping dependent slot; dependent LFE is attached to an existing full-band owner and does not create an LFE-only slot. |
+| `I0+D0..D7` | `PUBLIC_LEGAL` | `SEMANTIC_CEILING` | Raw syntax permits D7, but the canonical Table-47 ownership plan has no additional non-empty, non-duplicated slot. |
 
-`PUBLIC_LEGAL_NOT_IMPLEMENTED` is not an invalidity claim. It means the
-combined canonical JOCForge plan is deliberately fail-closed pending an
-independent profile/ownership design. CMAF rows remain invalid for `D1+`
-under Annex E and are not promoted by this raw-carriage work.
+`SEMANTIC_CEILING` is not an invalidity claim and is not a writer-capacity
+failure. It means the public raw ID is available, but the selected canonical
+JOC/Table-47 plan has no additional useful ownership slot. CMAF rows remain
+invalid for `D1+` under Annex E and are not promoted by this raw-carriage work.
+
+## Dependent LFE closure
+
+TS 102 366 E.1.3.1.7–1.8 and Table E.1.4 provide two public ways to signal a
+dependent LFE: `lfeon=1` for the standard dependent channel set, or the LFE
+location bit in `chanmap` for a custom map. E.2.8.2 explicitly defines a
+dependent center+LFE example as replacing I0 center+LFE. If I0 has no LFE, the
+dependent LFE is a supplement and becomes the programme's sole LFE owner.
+
+For idx2/idx4, JOCForge's Table-47 `Tfl/Tfr` profile family is carried by the
+public Table-E.1.4 `Vhl/Vhr` pair at bit 11; ownership reports retain the
+public map-role names.
+
+The JOCForge canonical writer supports one source-derived dependent LFE owner
+in D0, with both supplement and I0-replacement forms validated across all
+useful D0..D4/D5 counts. It rejects multiple dependent LFE owners, LFE2, empty dependents, and
+duplicate dependent full-band locations. The final programme LFE is kept out
+of the JOC reconstruction matrix; the final dependent still owns the sole
+OAMD/JOC EMDF even when D0 owns the LFE audio.

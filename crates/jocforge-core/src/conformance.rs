@@ -85,6 +85,359 @@ impl DependentTopology {
     }
 }
 
+/// First-class LFE ownership policy for a dependent plan.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum DependentLfePolicy {
+    Absent,
+    Supplement,
+    ReplaceIndependent,
+}
+
+/// One dependent substream's public channel ownership declaration.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct DependentPlan {
+    pub id: u8,
+    pub channel_map: u16,
+    pub lfe_policy: DependentLfePolicy,
+}
+
+impl DependentPlan {
+    #[must_use]
+    pub const fn new(id: u8, channel_map: u16, lfe_policy: DependentLfePolicy) -> Self {
+        Self {
+            id,
+            channel_map,
+            lfe_policy,
+        }
+    }
+
+    #[must_use]
+    pub fn full_band_channel_count(&self) -> usize {
+        channel_map_tokens(self.channel_map).map_or(0, |tokens| {
+            tokens.into_iter().filter(|token| *token < 100).count()
+        })
+    }
+
+    #[must_use]
+    pub fn has_lfe(&self) -> bool {
+        channel_map_tokens(self.channel_map).is_ok_and(|tokens| tokens.contains(&101))
+    }
+}
+
+/// Programme-level owner used by the ownership report.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum ProgrammeOwner {
+    Independent,
+    Dependent(u8),
+}
+
+/// Immutable ownership plan consumed by the raw multi-dependent writer.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct OwnershipPlan {
+    pub profile: JocProfile,
+    pub independent_lfe: bool,
+    pub dependents: Vec<DependentPlan>,
+    pub final_joc_owner: u8,
+}
+
+/// Capability state for one public profile/topology cell.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum CapabilityVerdict {
+    SupportedPass,
+    SemanticCeiling,
+    SpecLegalNotImplemented,
+    RejectedCapacity,
+    PublicAmbiguous,
+    Invalid,
+    Reserved,
+    FfmpegUnsupportedDecoderFeature,
+}
+
+impl fmt::Display for CapabilityVerdict {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        formatter.write_str(match self {
+            Self::SupportedPass => "SUPPORTED_PASS",
+            Self::SemanticCeiling => "SEMANTIC_CEILING",
+            Self::SpecLegalNotImplemented => "SPEC_LEGAL_NOT_IMPLEMENTED",
+            Self::RejectedCapacity => "REJECTED_CAPACITY",
+            Self::PublicAmbiguous => "PUBLIC_AMBIGUOUS",
+            Self::Invalid => "INVALID",
+            Self::Reserved => "RESERVED",
+            Self::FfmpegUnsupportedDecoderFeature => "FFMPEG_UNSUPPORTED_DECODER_FEATURE",
+        })
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum OwnershipPlanError {
+    EmptyPlan,
+    TooManyDependents { actual: usize },
+    SemanticCeiling { actual: usize, maximum: usize },
+    NonSequentialId { expected: u8, actual: u8 },
+    EmptyChannelMap { id: u8 },
+    NoFullBandChannel { id: u8 },
+    UnsupportedLfe2 { id: u8 },
+    LfePolicyConflict,
+    MultipleDependentLfe,
+    DuplicateDependentChannel { id: u8 },
+    UnexpectedChannel { id: u8, token: u8 },
+    FinalJocOwnerMismatch { expected: u8, actual: u8 },
+}
+
+impl fmt::Display for OwnershipPlanError {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::EmptyPlan => {
+                formatter.write_str("ownership plan requires at least one dependent")
+            }
+            Self::TooManyDependents { actual } => {
+                write!(
+                    formatter,
+                    "ownership plan has {actual} dependents; maximum is 8"
+                )
+            }
+            Self::SemanticCeiling { actual, maximum } => {
+                write!(
+                    formatter,
+                    "ownership plan has {actual} dependents; canonical semantic maximum is {maximum}"
+                )
+            }
+            Self::NonSequentialId { expected, actual } => {
+                write!(
+                    formatter,
+                    "ownership plan expected D{expected}, got D{actual}"
+                )
+            }
+            Self::EmptyChannelMap { id } => {
+                write!(formatter, "dependent D{id} has an empty channel map")
+            }
+            Self::NoFullBandChannel { id } => {
+                write!(
+                    formatter,
+                    "dependent D{id} must carry at least one full-band channel"
+                )
+            }
+            Self::UnsupportedLfe2 { id } => {
+                write!(
+                    formatter,
+                    "dependent D{id} claims unsupported LFE2 ownership"
+                )
+            }
+            Self::LfePolicyConflict => {
+                formatter.write_str("dependent LFE policy conflicts with independent LFE ownership")
+            }
+            Self::MultipleDependentLfe => {
+                formatter.write_str("multiple dependents claim LFE ownership")
+            }
+            Self::DuplicateDependentChannel { id } => {
+                write!(
+                    formatter,
+                    "dependent D{id} duplicates dependent full-band ownership"
+                )
+            }
+            Self::UnexpectedChannel { id, token } => {
+                write!(
+                    formatter,
+                    "dependent D{id} claims channel token {token} outside the selected JOC profile"
+                )
+            }
+            Self::FinalJocOwnerMismatch { expected, actual } => {
+                write!(
+                    formatter,
+                    "final JOC owner must be D{expected}, got D{actual}"
+                )
+            }
+        }
+    }
+}
+
+impl std::error::Error for OwnershipPlanError {}
+
+/// Machine-readable result of validating an ownership plan.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct OwnershipValidationReport {
+    pub lfe_owner: Option<ProgrammeOwner>,
+    pub full_band_channel_roles: Vec<u8>,
+    pub semantic_maximum: usize,
+    pub final_joc_owner: u8,
+}
+
+/// Complete public Table E.1.4 dependent channel-role census.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct DependentChannelRoleSpec {
+    pub public_role: &'static str,
+    pub speaker_channel_semantic: &'static str,
+    pub chanmap_syntax: &'static str,
+    pub replacement_supplement_meaning: &'static str,
+    pub lfe: bool,
+    pub applicable_base_acmod: &'static str,
+    pub conflict_rules: &'static str,
+    pub public_clause_table: &'static str,
+}
+
+pub const DEPENDENT_CHANNEL_ROLE_CENSUS: &[DependentChannelRoleSpec] = &[
+    DependentChannelRoleSpec {
+        public_role: "Left",
+        speaker_channel_semantic: "L",
+        chanmap_syntax: "bit 0 / 0x8000",
+        replacement_supplement_meaning: "replacement if present in I0; supplement otherwise",
+        lfe: false,
+        applicable_base_acmod: "dependent acmod/lfeon cardinality",
+        conflict_rules: "duplicate dependent role rejected by canonical plan",
+        public_clause_table: "TS 102 366 E.1.3.1.7-E.1.3.1.8, Table E.1.4, E.2.8.2",
+    },
+    DependentChannelRoleSpec {
+        public_role: "Centre",
+        speaker_channel_semantic: "C",
+        chanmap_syntax: "bit 1 / 0x4000",
+        replacement_supplement_meaning: "replacement if present in I0; supplement otherwise",
+        lfe: false,
+        applicable_base_acmod: "dependent acmod/lfeon cardinality",
+        conflict_rules: "duplicate dependent role rejected by canonical plan",
+        public_clause_table: "TS 102 366 E.1.3.1.7-E.1.3.1.8, Table E.1.4, E.2.8.2",
+    },
+    DependentChannelRoleSpec {
+        public_role: "Right",
+        speaker_channel_semantic: "R",
+        chanmap_syntax: "bit 2 / 0x2000",
+        replacement_supplement_meaning: "replacement if present in I0; supplement otherwise",
+        lfe: false,
+        applicable_base_acmod: "dependent acmod/lfeon cardinality",
+        conflict_rules: "duplicate dependent role rejected by canonical plan",
+        public_clause_table: "TS 102 366 E.1.3.1.7-E.1.3.1.8, Table E.1.4, E.2.8.2",
+    },
+    DependentChannelRoleSpec {
+        public_role: "Left Surround",
+        speaker_channel_semantic: "Ls",
+        chanmap_syntax: "bit 3 / 0x1000",
+        replacement_supplement_meaning: "replacement if present in I0; supplement otherwise",
+        lfe: false,
+        applicable_base_acmod: "dependent acmod/lfeon cardinality",
+        conflict_rules: "duplicate dependent role rejected by canonical plan",
+        public_clause_table: "TS 102 366 E.1.3.1.7-E.1.3.1.8, Table E.1.4, E.2.8.2",
+    },
+    DependentChannelRoleSpec {
+        public_role: "Right Surround",
+        speaker_channel_semantic: "Rs",
+        chanmap_syntax: "bit 4 / 0x0800",
+        replacement_supplement_meaning: "replacement if present in I0; supplement otherwise",
+        lfe: false,
+        applicable_base_acmod: "dependent acmod/lfeon cardinality",
+        conflict_rules: "duplicate dependent role rejected by canonical plan",
+        public_clause_table: "TS 102 366 E.1.3.1.7-E.1.3.1.8, Table E.1.4, E.2.8.2",
+    },
+    DependentChannelRoleSpec {
+        public_role: "Lc/Rc pair",
+        speaker_channel_semantic: "left/right centre pair",
+        chanmap_syntax: "bit 5 / 0x0400",
+        replacement_supplement_meaning: "replacement if present in I0; supplement otherwise",
+        lfe: false,
+        applicable_base_acmod: "dependent acmod/lfeon cardinality",
+        conflict_rules: "duplicate pair or member role rejected by canonical plan",
+        public_clause_table: "TS 102 366 E.1.3.1.7-E.1.3.1.8, Table E.1.4, E.2.8.2",
+    },
+    DependentChannelRoleSpec {
+        public_role: "Lrs/Rrs pair",
+        speaker_channel_semantic: "left/right rear surround pair",
+        chanmap_syntax: "bit 6 / 0x0200",
+        replacement_supplement_meaning: "replacement if present in I0; supplement otherwise",
+        lfe: false,
+        applicable_base_acmod: "dependent acmod/lfeon cardinality",
+        conflict_rules: "duplicate pair or member role rejected by canonical plan",
+        public_clause_table: "TS 102 366 E.1.3.1.7-E.1.3.1.8, Table E.1.4, E.2.8.2",
+    },
+    DependentChannelRoleSpec {
+        public_role: "Cs",
+        speaker_channel_semantic: "centre surround",
+        chanmap_syntax: "bit 7 / 0x0100",
+        replacement_supplement_meaning: "replacement if present in I0; supplement otherwise",
+        lfe: false,
+        applicable_base_acmod: "dependent acmod/lfeon cardinality",
+        conflict_rules: "duplicate dependent role rejected by canonical plan",
+        public_clause_table: "TS 102 366 E.1.3.1.7-E.1.3.1.8, Table E.1.4, E.2.8.2",
+    },
+    DependentChannelRoleSpec {
+        public_role: "Ts",
+        speaker_channel_semantic: "top surround",
+        chanmap_syntax: "bit 8 / 0x0080",
+        replacement_supplement_meaning: "replacement if present in I0; supplement otherwise",
+        lfe: false,
+        applicable_base_acmod: "dependent acmod/lfeon cardinality",
+        conflict_rules: "duplicate dependent role rejected by canonical plan",
+        public_clause_table: "TS 102 366 E.1.3.1.7-E.1.3.1.8, Table E.1.4, E.2.8.2",
+    },
+    DependentChannelRoleSpec {
+        public_role: "Lsd/Rsd pair",
+        speaker_channel_semantic: "left/right side surround pair",
+        chanmap_syntax: "bit 9 / 0x0040",
+        replacement_supplement_meaning: "replacement if present in I0; supplement otherwise",
+        lfe: false,
+        applicable_base_acmod: "dependent acmod/lfeon cardinality",
+        conflict_rules: "duplicate pair or member role rejected by canonical plan",
+        public_clause_table: "TS 102 366 E.1.3.1.7-E.1.3.1.8, Table E.1.4, E.2.8.2",
+    },
+    DependentChannelRoleSpec {
+        public_role: "Lw/Rw pair",
+        speaker_channel_semantic: "left/right wide pair",
+        chanmap_syntax: "bit 10 / 0x0020",
+        replacement_supplement_meaning: "replacement if present in I0; supplement otherwise",
+        lfe: false,
+        applicable_base_acmod: "dependent acmod/lfeon cardinality",
+        conflict_rules: "duplicate pair or member role rejected by canonical plan",
+        public_clause_table: "TS 102 366 E.1.3.1.7-E.1.3.1.8, Table E.1.4, E.2.8.2",
+    },
+    DependentChannelRoleSpec {
+        public_role: "Vhl/Vhr pair",
+        speaker_channel_semantic: "vertical height left/right pair",
+        chanmap_syntax: "bit 11 / 0x0010",
+        replacement_supplement_meaning: "replacement if present in I0; supplement otherwise",
+        lfe: false,
+        applicable_base_acmod: "dependent acmod/lfeon cardinality",
+        conflict_rules: "duplicate pair or member role rejected by canonical plan",
+        public_clause_table: "TS 102 366 E.1.3.1.7-E.1.3.1.8, Table E.1.4, E.2.8.2",
+    },
+    DependentChannelRoleSpec {
+        public_role: "Vhc",
+        speaker_channel_semantic: "vertical height centre",
+        chanmap_syntax: "bit 12 / 0x0008",
+        replacement_supplement_meaning: "replacement if present in I0; supplement otherwise",
+        lfe: false,
+        applicable_base_acmod: "dependent acmod/lfeon cardinality",
+        conflict_rules: "duplicate dependent role rejected by canonical plan",
+        public_clause_table: "TS 102 366 E.1.3.1.7-E.1.3.1.8, Table E.1.4, E.2.8.2",
+    },
+    DependentChannelRoleSpec {
+        public_role: "Lts/Rts pair",
+        speaker_channel_semantic: "left/right top side pair",
+        chanmap_syntax: "bit 13 / 0x0004",
+        replacement_supplement_meaning: "replacement if present in I0; supplement otherwise",
+        lfe: false,
+        applicable_base_acmod: "dependent acmod/lfeon cardinality",
+        conflict_rules: "duplicate pair or member role rejected by canonical plan",
+        public_clause_table: "TS 102 366 E.1.3.1.7-E.1.3.1.8, Table E.1.4, E.2.8.2",
+    },
+    DependentChannelRoleSpec {
+        public_role: "LFE2",
+        speaker_channel_semantic: "second low-frequency effects channel",
+        chanmap_syntax: "bit 14 / 0x0002",
+        replacement_supplement_meaning: "public E-AC-3 location; not admitted by canonical single-LFE JOC plan",
+        lfe: true,
+        applicable_base_acmod: "dependent lfeon/map cardinality",
+        conflict_rules: "LFE2 is not Table 47 LFE(0); fail closed",
+        public_clause_table: "TS 102 366 E.1.3.1.7-E.1.3.1.8, Table E.1.4",
+    },
+    DependentChannelRoleSpec {
+        public_role: "LFE",
+        speaker_channel_semantic: "low-frequency effects channel",
+        chanmap_syntax: "bit 15 / 0x0001 or lfeon=1",
+        replacement_supplement_meaning: "replacement of I0 LFE if present; supplement if I0 has no LFE",
+        lfe: true,
+        applicable_base_acmod: "dependent lfeon/map cardinality",
+        conflict_rules: "exactly one final LFE owner in canonical plan",
+        public_clause_table: "TS 102 366 E.1.3.1.7-E.1.3.1.8, Table E.1.4, E.2.8.2",
+    },
+];
+
 /// Machine-readable evidence returned by the independent raw-carriage
 /// validator. The validator deliberately parses only public E-AC-3/JOC
 /// structure; audio reconstruction remains the responsibility of OpenJOC.
@@ -101,6 +454,8 @@ pub struct MultiDependentValidationReport {
     pub numblkscod: u8,
     pub total_samples: usize,
     pub lfe_present: bool,
+    pub lfe_owner: Option<ProgrammeOwner>,
+    pub semantic_maximum: usize,
     pub unique_dependent_channel_ownership: bool,
     pub ownership_census: Vec<ChannelOwnershipCensus>,
 }
@@ -249,9 +604,17 @@ pub fn validate_multi_dependent_access_unit(
     if dependent_count > 8 {
         return Err("multi-dependent access unit exceeds public D0..D7 bound".to_owned());
     }
+    if dependent_count > semantic_maximum(profile) {
+        return Err(format!(
+            "multi-dependent access unit exceeds the {} canonical semantic maximum of {}",
+            profile.semantic_name(),
+            semantic_maximum(profile)
+        ));
+    }
     let mut dependent_ids = Vec::with_capacity(dependent_count);
     let mut dependent_channel_maps = Vec::with_capacity(dependent_count);
     let mut owned = Vec::new();
+    let mut dependent_lfe_seen = false;
     let mut assembled = vec![0_u8, 1, 2, 3, 4];
     let mut ownership_census = vec![ChannelOwnershipCensus {
         stream_type: independent.stream_type,
@@ -294,20 +657,37 @@ pub fn validate_multi_dependent_access_unit(
             )
         })?;
         let tokens = channel_map_tokens(channel_map)?;
-        if tokens.len() != frame.full_bandwidth_channels {
+        if tokens.len() != frame.full_bandwidth_channels + usize::from(frame.lfe_on) {
             return Err(format!(
-                "dependent D{} chanmap carries {} channels but acmod declares {}",
+                "dependent D{} chanmap carries {} channels but acmod/lfeon declare {}",
                 frame.substream_id,
                 tokens.len(),
-                frame.full_bandwidth_channels
+                frame.full_bandwidth_channels + usize::from(frame.lfe_on)
             ));
         }
-        if tokens.iter().any(|token| *token >= 100) {
-            return Err(
-                "canonical JOC multi-dependent topology does not permit a dependent LFE".to_owned(),
-            );
+        if tokens.contains(&100) {
+            return Err(format!(
+                "dependent D{} claims unsupported LFE2 ownership",
+                frame.substream_id
+            ));
         }
-        if tokens.iter().any(|token| owned.contains(token)) {
+        if frame.lfe_on != tokens.contains(&101) {
+            return Err(format!(
+                "dependent D{} lfeon does not match its custom channel map",
+                frame.substream_id
+            ));
+        }
+        if frame.lfe_on {
+            if dependent_lfe_seen {
+                return Err("multiple dependents claim LFE ownership".to_owned());
+            }
+            dependent_lfe_seen = true;
+        }
+        if tokens
+            .iter()
+            .filter(|token| **token < 100)
+            .any(|token| owned.contains(token))
+        {
             return Err(format!(
                 "dependent D{} duplicates physical channel ownership",
                 frame.substream_id
@@ -318,8 +698,8 @@ pub fn validate_multi_dependent_access_unit(
             substream_id: frame.substream_id,
             channel_tokens: tokens.clone(),
         });
-        owned.extend(tokens.iter().copied());
-        for token in tokens {
+        owned.extend(tokens.iter().filter(|token| **token < 100).copied());
+        for token in tokens.into_iter().filter(|token| *token < 100) {
             if !assembled.contains(&token) {
                 assembled.push(token);
             }
@@ -376,6 +756,17 @@ pub fn validate_multi_dependent_access_unit(
         ));
     }
 
+    let lfe_owner = if dependent_lfe_seen {
+        dependent_ids
+            .iter()
+            .zip(frames.iter().skip(1))
+            .find(|(_, frame)| frame.lfe_on)
+            .map(|(id, _)| ProgrammeOwner::Dependent(*id))
+    } else if independent.lfe_on {
+        Some(ProgrammeOwner::Independent)
+    } else {
+        None
+    };
     Ok(MultiDependentValidationReport {
         component_count: frames.len(),
         dependent_ids,
@@ -387,70 +778,48 @@ pub fn validate_multi_dependent_access_unit(
         sample_rate: independent.sample_rate,
         numblkscod: independent.numblkscod,
         total_samples: independent.audio_blocks * 256,
-        lfe_present: independent.lfe_on,
+        lfe_present: independent.lfe_on || dependent_lfe_seen,
+        lfe_owner,
+        semantic_maximum: semantic_maximum(profile),
         unique_dependent_channel_ownership: true,
         ownership_census,
     })
 }
 
-/// Validates a source-derived dependent plan before any frame bytes are
-/// emitted. This keeps channel ownership and carrier cardinality fail-closed
-/// at the writer boundary as well as at the serialized-byte boundary.
-pub(crate) fn validate_multi_dependent_plan(
-    profile: JocProfile,
-    dependent_channel_maps: &[u16],
-    dependent_channel_counts: &[usize],
+pub(crate) fn validate_source_dependent_ownership_plan(
+    plan: &OwnershipPlan,
+    dependent_full_band_counts: &[usize],
+    dependent_lfe_present: &[bool],
 ) -> Result<(), String> {
-    if dependent_channel_maps.is_empty() || dependent_channel_maps.len() > 8 {
-        return Err("multi-dependent JOC requires 1..=8 dependents".to_owned());
-    }
-    if dependent_channel_maps.len() != dependent_channel_counts.len() {
+    let report = validate_ownership_plan(plan).map_err(|error| error.to_string())?;
+    if plan.dependents.len() != dependent_full_band_counts.len() {
         return Err("multi-dependent channel maps must match carrier count".to_owned());
     }
-    let mut owned = Vec::new();
-    let mut assembled = vec![0_u8, 1, 2, 3, 4];
-    for (index, (&channel_map, &channel_count)) in dependent_channel_maps
-        .iter()
-        .zip(dependent_channel_counts)
-        .enumerate()
-    {
-        if !(1..=2).contains(&channel_count) {
+    if !dependent_lfe_present.is_empty() && plan.dependents.len() != dependent_lfe_present.len() {
+        return Err("dependent LFE carriers must match dependent count".to_owned());
+    }
+    for (index, dependent) in plan.dependents.iter().enumerate() {
+        let full_band_count = dependent_full_band_counts[index];
+        if !(1..=2).contains(&full_band_count) {
             return Err(format!(
-                "dependent D{index} requires one or two source-derived channels"
+                "dependent D{index} requires one or two source-derived full-band channels"
             ));
         }
-        let tokens = channel_map_tokens(channel_map)?;
-        if tokens.len() != channel_count {
+        if dependent.full_band_channel_count() != full_band_count {
             return Err(format!(
-                "dependent D{index} chanmap carries {} channels but the source plan carries {channel_count}",
-                tokens.len()
+                "dependent D{index} chanmap carries {} full-band channels but the source plan carries {full_band_count}",
+                dependent.full_band_channel_count()
             ));
         }
-        if tokens.iter().any(|token| *token >= 100) {
-            return Err("source-derived JOC dependents cannot claim an LFE channel".to_owned());
-        }
-        if tokens.iter().any(|token| owned.contains(token)) {
-            return Err(format!("dependent D{index} duplicates channel ownership"));
-        }
-        owned.extend(tokens.iter().copied());
-        for token in tokens {
-            if !assembled.contains(&token) {
-                assembled.push(token);
-            }
+        if !dependent_lfe_present.is_empty() && dependent.has_lfe() != dependent_lfe_present[index]
+        {
+            return Err(format!(
+                "dependent D{index} LFE ownership does not match its source carrier"
+            ));
         }
     }
-    let expected = match profile {
-        JocProfile::Idx0 | JocProfile::Idx3 => vec![0, 1, 2, 3, 4],
-        JocProfile::Idx1 => vec![0, 1, 2, 3, 4, 5, 6],
-        JocProfile::Idx2 | JocProfile::Idx4 => vec![0, 1, 2, 3, 4, 7, 8],
-    };
-    assembled.sort_unstable();
-    if assembled != expected {
-        return Err(format!(
-            "dependent channel ownership {:?} does not close {}",
-            assembled,
-            profile.semantic_name()
-        ));
+    if report.final_joc_owner != plan.final_joc_owner {
+        return Err("ownership plan final JOC owner changed during validation".to_owned());
     }
     Ok(())
 }
@@ -491,6 +860,47 @@ pub fn canonical_dependent_channel_maps(
         }
     };
     Ok(maps)
+}
+
+/// Returns the canonical maximum topology with one source-derived dependent
+/// LFE supplement. The supplement replaces no I0 LFE because this plan's I0
+/// intentionally has no LFE; it remains one and only one programme LFE.
+pub fn canonical_dependent_lfe_plan(profile: JocProfile) -> Result<OwnershipPlan, String> {
+    canonical_dependent_lfe_plan_for_count(profile, semantic_maximum(profile))
+}
+
+/// Returns a canonical no-overlap topology with one dependent LFE for any
+/// useful count at or below the profile semantic maximum.
+pub fn canonical_dependent_lfe_plan_for_count(
+    profile: JocProfile,
+    dependent_count: usize,
+) -> Result<OwnershipPlan, String> {
+    let mut maps = canonical_dependent_channel_maps(profile, dependent_count)?;
+    let first = maps
+        .first_mut()
+        .ok_or_else(|| "canonical dependent LFE plan has no dependent".to_owned())?;
+    *first |= 0x0001;
+    let dependents = maps
+        .into_iter()
+        .enumerate()
+        .map(|(index, channel_map)| {
+            DependentPlan::new(
+                u8::try_from(index).unwrap_or(7),
+                channel_map,
+                if index == 0 {
+                    DependentLfePolicy::Supplement
+                } else {
+                    DependentLfePolicy::Absent
+                },
+            )
+        })
+        .collect::<Vec<_>>();
+    Ok(OwnershipPlan {
+        profile,
+        independent_lfe: false,
+        final_joc_owner: u8::try_from(dependents.len().saturating_sub(1)).unwrap_or(7),
+        dependents,
+    })
 }
 
 #[derive(Clone, Debug)]
@@ -778,4 +1188,402 @@ pub(crate) fn channel_map_tokens(channel_map: u16) -> Result<Vec<u8>, String> {
 #[must_use]
 pub fn channel_map_channel_count(channel_map: u16) -> usize {
     channel_map_tokens(channel_map).map_or(0, |tokens| tokens.len())
+}
+
+/// Returns the public Table E.1.4 role names in coded-channel order.
+pub fn channel_map_role_labels(channel_map: u16) -> Result<Vec<&'static str>, String> {
+    channel_map_tokens(channel_map).map(|tokens| {
+        tokens
+            .into_iter()
+            .map(|token| match token {
+                0 => "Left",
+                1 => "Centre",
+                2 => "Right",
+                3 => "Left Surround",
+                4 => "Right Surround",
+                5 => "Lrs",
+                6 => "Rrs",
+                7 => "Vhl",
+                8 => "Vhr",
+                9 => "Lc",
+                10 => "Rc",
+                11 => "Cs",
+                12 => "Ts",
+                13 => "Lsd",
+                14 => "Rsd",
+                15 => "Lw",
+                16 => "Rw",
+                17 => "Vhc",
+                18 => "Lts",
+                19 => "Rts",
+                100 => "LFE2",
+                101 => "LFE",
+                _ => "unknown",
+            })
+            .collect()
+    })
+}
+
+const CANONICAL_SINGLE_ROLE_MAPS: &[u16] = &[0x8000, 0x4000, 0x2000, 0x1000, 0x0800];
+const IDX1_CANONICAL_ROLE_GROUPS: &[u16] = &[0x8000, 0x4000, 0x2000, 0x1000, 0x0800, 0x0200];
+const IDX2_CANONICAL_ROLE_GROUPS: &[u16] = &[0x8000, 0x4000, 0x2000, 0x1000, 0x0800, 0x0010];
+
+fn canonical_role_group_masks(profile: JocProfile) -> &'static [u16] {
+    match profile {
+        JocProfile::Idx0 | JocProfile::Idx3 => CANONICAL_SINGLE_ROLE_MAPS,
+        JocProfile::Idx1 => IDX1_CANONICAL_ROLE_GROUPS,
+        JocProfile::Idx2 | JocProfile::Idx4 => IDX2_CANONICAL_ROLE_GROUPS,
+    }
+}
+
+/// Returns the useful dependent maximum derived from the canonical public
+/// Table E.1.4 role groups for the selected Table-47 profile.
+#[must_use]
+pub fn semantic_maximum(profile: JocProfile) -> usize {
+    canonical_role_group_masks(profile).len()
+}
+
+/// Classifies a requested dependent count without conflating syntax and
+/// canonical programme ownership.
+#[must_use]
+pub fn dependent_topology_verdict(
+    profile: JocProfile,
+    dependent_count: usize,
+) -> CapabilityVerdict {
+    if !(1..=8).contains(&dependent_count) {
+        CapabilityVerdict::Invalid
+    } else if dependent_count > semantic_maximum(profile) {
+        CapabilityVerdict::SemanticCeiling
+    } else {
+        CapabilityVerdict::SupportedPass
+    }
+}
+
+/// Validates one immutable programme ownership plan before serialization.
+pub fn validate_ownership_plan(
+    plan: &OwnershipPlan,
+) -> Result<OwnershipValidationReport, OwnershipPlanError> {
+    if plan.dependents.is_empty() {
+        return Err(OwnershipPlanError::EmptyPlan);
+    }
+    if plan.dependents.len() > 8 {
+        return Err(OwnershipPlanError::TooManyDependents {
+            actual: plan.dependents.len(),
+        });
+    }
+    let maximum = semantic_maximum(plan.profile);
+    let expected_full_band = match plan.profile {
+        JocProfile::Idx0 | JocProfile::Idx3 => vec![0, 1, 2, 3, 4],
+        JocProfile::Idx1 => vec![0, 1, 2, 3, 4, 5, 6],
+        JocProfile::Idx2 | JocProfile::Idx4 => vec![0, 1, 2, 3, 4, 7, 8],
+    };
+    let mut dependent_full_band = Vec::new();
+    let mut lfe_owner = plan.independent_lfe.then_some(ProgrammeOwner::Independent);
+    for (index, dependent) in plan.dependents.iter().enumerate() {
+        let expected_id = u8::try_from(index).unwrap_or(7);
+        if dependent.id != expected_id {
+            return Err(OwnershipPlanError::NonSequentialId {
+                expected: expected_id,
+                actual: dependent.id,
+            });
+        }
+        let tokens = channel_map_tokens(dependent.channel_map)
+            .map_err(|_| OwnershipPlanError::EmptyChannelMap { id: dependent.id })?;
+        if !tokens.iter().any(|token| *token < 100) {
+            return Err(OwnershipPlanError::NoFullBandChannel { id: dependent.id });
+        }
+        let has_lfe = tokens.contains(&101);
+        if tokens.contains(&100) {
+            return Err(OwnershipPlanError::UnsupportedLfe2 { id: dependent.id });
+        }
+        let expected_policy = match dependent.lfe_policy {
+            DependentLfePolicy::Absent => false,
+            DependentLfePolicy::Supplement | DependentLfePolicy::ReplaceIndependent => true,
+        };
+        if has_lfe != expected_policy {
+            return Err(OwnershipPlanError::LfePolicyConflict);
+        }
+        if has_lfe {
+            if lfe_owner.is_some() && !plan.independent_lfe {
+                return Err(OwnershipPlanError::MultipleDependentLfe);
+            }
+            if plan.independent_lfe
+                && dependent.lfe_policy != DependentLfePolicy::ReplaceIndependent
+            {
+                return Err(OwnershipPlanError::LfePolicyConflict);
+            }
+            if !plan.independent_lfe && dependent.lfe_policy != DependentLfePolicy::Supplement {
+                return Err(OwnershipPlanError::LfePolicyConflict);
+            }
+            if lfe_owner.is_some_and(|owner| matches!(owner, ProgrammeOwner::Dependent(_))) {
+                return Err(OwnershipPlanError::MultipleDependentLfe);
+            }
+            lfe_owner = Some(ProgrammeOwner::Dependent(dependent.id));
+        }
+        for token in tokens.into_iter().filter(|token| *token < 100) {
+            if !expected_full_band.contains(&token) {
+                return Err(OwnershipPlanError::UnexpectedChannel {
+                    id: dependent.id,
+                    token,
+                });
+            }
+            if dependent_full_band.contains(&token) {
+                return Err(OwnershipPlanError::DuplicateDependentChannel { id: dependent.id });
+            }
+            dependent_full_band.push(token);
+        }
+    }
+    let expected_final_owner = plan.dependents.last().map_or(0, |dependent| dependent.id);
+    if plan.final_joc_owner != expected_final_owner {
+        return Err(OwnershipPlanError::FinalJocOwnerMismatch {
+            expected: expected_final_owner,
+            actual: plan.final_joc_owner,
+        });
+    }
+    if plan.dependents.len() > maximum {
+        return Err(OwnershipPlanError::SemanticCeiling {
+            actual: plan.dependents.len(),
+            maximum,
+        });
+    }
+    Ok(OwnershipValidationReport {
+        lfe_owner,
+        full_band_channel_roles: expected_full_band,
+        semantic_maximum: maximum,
+        final_joc_owner: expected_final_owner,
+    })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{
+        CapabilityVerdict, DependentLfePolicy, DependentPlan, JocProfile, OwnershipPlan,
+        OwnershipPlanError, canonical_dependent_channel_maps, dependent_topology_verdict,
+        semantic_maximum, validate_ownership_plan,
+    };
+
+    fn idx0_full_plan(lfe_policy: DependentLfePolicy) -> OwnershipPlan {
+        let first_map = if lfe_policy == DependentLfePolicy::Absent {
+            0x4000
+        } else {
+            0x4001
+        };
+        OwnershipPlan {
+            profile: JocProfile::Idx0,
+            independent_lfe: matches!(lfe_policy, DependentLfePolicy::ReplaceIndependent),
+            dependents: vec![
+                DependentPlan::new(0, first_map, lfe_policy),
+                DependentPlan::new(1, 0x8000, DependentLfePolicy::Absent),
+                DependentPlan::new(2, 0x2000, DependentLfePolicy::Absent),
+                DependentPlan::new(3, 0x1000, DependentLfePolicy::Absent),
+                DependentPlan::new(4, 0x0800, DependentLfePolicy::Absent),
+            ],
+            final_joc_owner: 4,
+        }
+    }
+
+    #[test]
+    fn dependent_lfe_replacement_is_one_explicit_programme_owner() {
+        let report =
+            validate_ownership_plan(&idx0_full_plan(DependentLfePolicy::ReplaceIndependent))
+                .expect("dependent LFE replacement plan");
+
+        assert_eq!(report.lfe_owner, Some(super::ProgrammeOwner::Dependent(0)));
+        assert_eq!(report.semantic_maximum, 5);
+    }
+
+    #[test]
+    fn dependent_lfe_supplement_is_valid_when_i0_has_no_lfe() {
+        let report = validate_ownership_plan(&idx0_full_plan(DependentLfePolicy::Supplement))
+            .expect("dependent LFE supplement plan");
+
+        assert_eq!(report.lfe_owner, Some(super::ProgrammeOwner::Dependent(0)));
+        assert!(report.full_band_channel_roles.contains(&2));
+    }
+
+    #[test]
+    fn second_dependent_lfe_is_rejected() {
+        let mut plan = idx0_full_plan(DependentLfePolicy::Supplement);
+        plan.dependents[1] = DependentPlan::new(1, 0x2001, DependentLfePolicy::Supplement);
+
+        assert_eq!(
+            validate_ownership_plan(&plan),
+            Err(OwnershipPlanError::MultipleDependentLfe)
+        );
+    }
+
+    #[test]
+    fn lfe_policy_must_match_independent_lfe_state() {
+        let mut plan = idx0_full_plan(DependentLfePolicy::Supplement);
+        plan.independent_lfe = true;
+
+        assert_eq!(
+            validate_ownership_plan(&plan),
+            Err(OwnershipPlanError::LfePolicyConflict)
+        );
+    }
+
+    #[test]
+    fn d6_and_d7_are_first_class_semantic_ceiling_verdicts() {
+        for profile in [
+            JocProfile::Idx0,
+            JocProfile::Idx1,
+            JocProfile::Idx2,
+            JocProfile::Idx3,
+            JocProfile::Idx4,
+        ] {
+            let maximum = super::semantic_maximum(profile);
+            assert_eq!(
+                dependent_topology_verdict(profile, maximum + 1),
+                CapabilityVerdict::SemanticCeiling
+            );
+            assert_eq!(
+                dependent_topology_verdict(profile, maximum + 2),
+                CapabilityVerdict::SemanticCeiling
+            );
+        }
+    }
+
+    #[test]
+    fn empty_dependents_are_not_a_semantic_plan() {
+        let mut plan = idx0_full_plan(DependentLfePolicy::Absent);
+        plan.dependents[0] = DependentPlan::new(0, 0, DependentLfePolicy::Absent);
+
+        assert_eq!(
+            validate_ownership_plan(&plan),
+            Err(OwnershipPlanError::EmptyChannelMap { id: 0 })
+        );
+    }
+
+    #[test]
+    fn duplicate_channel_and_id_gap_plans_fail_before_serialization() {
+        let mut duplicate = idx0_full_plan(DependentLfePolicy::Absent);
+        duplicate.dependents[1] = DependentPlan::new(1, 0x4000, DependentLfePolicy::Absent);
+        assert_eq!(
+            validate_ownership_plan(&duplicate),
+            Err(OwnershipPlanError::DuplicateDependentChannel { id: 1 })
+        );
+
+        let mut gap = idx0_full_plan(DependentLfePolicy::Absent);
+        gap.dependents[2].id = 3;
+        assert_eq!(
+            validate_ownership_plan(&gap),
+            Err(OwnershipPlanError::NonSequentialId {
+                expected: 2,
+                actual: 3,
+            })
+        );
+    }
+
+    #[test]
+    fn lfe2_and_semantic_ceiling_are_fail_closed() {
+        let mut lfe2 = idx0_full_plan(DependentLfePolicy::Absent);
+        lfe2.dependents[0] = DependentPlan::new(0, 0x4002, DependentLfePolicy::Absent);
+        assert_eq!(
+            validate_ownership_plan(&lfe2),
+            Err(OwnershipPlanError::UnsupportedLfe2 { id: 0 })
+        );
+
+        assert_eq!(
+            dependent_topology_verdict(JocProfile::Idx0, 6),
+            CapabilityVerdict::SemanticCeiling
+        );
+
+        let mut lfe_only = idx0_full_plan(DependentLfePolicy::Absent);
+        lfe_only.dependents[0] = DependentPlan::new(0, 0x0001, DependentLfePolicy::Supplement);
+        assert_eq!(
+            validate_ownership_plan(&lfe_only),
+            Err(OwnershipPlanError::NoFullBandChannel { id: 0 })
+        );
+
+        let mut wrong_owner = idx0_full_plan(DependentLfePolicy::Absent);
+        wrong_owner.final_joc_owner = 3;
+        assert_eq!(
+            validate_ownership_plan(&wrong_owner),
+            Err(OwnershipPlanError::FinalJocOwnerMismatch {
+                expected: 4,
+                actual: 3,
+            })
+        );
+    }
+
+    #[test]
+    fn d6_and_d7_malformed_candidates_are_rejected_independently_of_the_ceiling() {
+        for profile in [
+            JocProfile::Idx0,
+            JocProfile::Idx1,
+            JocProfile::Idx2,
+            JocProfile::Idx3,
+            JocProfile::Idx4,
+        ] {
+            let maximum = semantic_maximum(profile);
+            let base = canonical_dependent_channel_maps(profile, maximum)
+                .expect("canonical maximum maps")
+                .into_iter()
+                .enumerate()
+                .map(|(id, channel_map)| {
+                    DependentPlan::new(
+                        u8::try_from(id).unwrap_or(7),
+                        channel_map,
+                        DependentLfePolicy::Absent,
+                    )
+                })
+                .collect::<Vec<_>>();
+            for extra_count in 1..=2 {
+                let extra_id = u8::try_from(maximum).unwrap_or(7);
+                let final_extra_id = u8::try_from(maximum + extra_count - 1).unwrap_or(7);
+                let mut empty = OwnershipPlan {
+                    profile,
+                    independent_lfe: false,
+                    dependents: base.clone(),
+                    final_joc_owner: final_extra_id,
+                };
+                for id in extra_id..=final_extra_id {
+                    empty
+                        .dependents
+                        .push(DependentPlan::new(id, 0, DependentLfePolicy::Absent));
+                }
+                assert_eq!(
+                    validate_ownership_plan(&empty),
+                    Err(OwnershipPlanError::EmptyChannelMap { id: extra_id })
+                );
+
+                let mut duplicate = OwnershipPlan {
+                    profile,
+                    independent_lfe: false,
+                    dependents: base.clone(),
+                    final_joc_owner: final_extra_id,
+                };
+                for id in extra_id..=final_extra_id {
+                    duplicate.dependents.push(DependentPlan::new(
+                        id,
+                        base[0].channel_map,
+                        DependentLfePolicy::Absent,
+                    ));
+                }
+                assert_eq!(
+                    validate_ownership_plan(&duplicate),
+                    Err(OwnershipPlanError::DuplicateDependentChannel { id: extra_id })
+                );
+
+                let mut invalid_map = OwnershipPlan {
+                    profile,
+                    independent_lfe: false,
+                    dependents: base.clone(),
+                    final_joc_owner: final_extra_id,
+                };
+                for id in extra_id..=final_extra_id {
+                    invalid_map.dependents.push(DependentPlan::new(
+                        id,
+                        0x4002,
+                        DependentLfePolicy::Absent,
+                    ));
+                }
+                assert_eq!(
+                    validate_ownership_plan(&invalid_map),
+                    Err(OwnershipPlanError::UnsupportedLfe2 { id: extra_id })
+                );
+            }
+        }
+    }
 }

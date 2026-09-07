@@ -1,6 +1,6 @@
 # JOCForge
 
-Last verified: 2026-09-07
+Last verified: 2026-09-08
 
 ## Tech Stack
 
@@ -23,6 +23,9 @@ Last verified: 2026-09-07
   OpenJOC/FFmpeg evidence, and clean-test status report.
 - `.\scripts\run-validation-closure.ps1` — clean bitrate, DirectSpeakers,
   leakage, temporal and matrix closure evidence.
+- `scripts/run-multi-dependent-closure.ps1` and
+  `scripts/generate-joc-capability-matrix.ps1` — raw multi-dependent
+  ownership/LFE closure and profile × carriage × bitrate capability lattice.
 - `.\scripts\run-temporal-stabilization.ps1` — Hanabi before/after and
   adversarial continuity evidence.
 
@@ -37,6 +40,9 @@ Last verified: 2026-09-07
   reduction, source accounting, spatial aggregation, and stability metrics.
 - `crates/jocforge-core/src/profile.rs` — mandatory idx0..idx4 topology
   contracts, including profile-owned D0 source indices.
+- `crates/jocforge-core/src/conformance.rs` — public E-AC-3 role census,
+  immutable dependent ownership plans, semantic-ceiling verdicts, and
+  independent serialized ownership validation.
 - `crates/jocforge-core/src/rate.rs` — deterministic clean I0/D0 budget
   allocations and legal-rate policy.
 - `crates/jocforge-core/src/validation.rs` — pure controlled and adversarial
@@ -46,7 +52,8 @@ Last verified: 2026-09-07
 - `crates/jocforge-core/src/eac3.rs` — public fail-closed E-AC-3 audio-block
   walker, nominal-frame padding, skipfld insertion, and CRC2 rewrite.
 - `crates/jocforge-core/src/writer.rs` — pure JOC/OAMD/EMDF and independent
-  `JocCarriage`/`EmdfProfile` packaging for ETSI and I0 skip-field paths.
+  `JocCarriage`/`EmdfProfile` packaging for ETSI and I0 skip-field paths,
+  including source-derived dependent-LFE carriage.
 - `crates/jocforge-cli/src/main.rs` — file/process orchestration shell.
 - `crates/jocforge-cli/src/file_scan.rs` — seek-aware BW64 chunk scanner that
   reads metadata after large `data` chunks without loading PCM, plus bounded
@@ -92,6 +99,20 @@ Last verified: 2026-09-07
   kbps frame, and inserts profile-selected OAMD/JOC EMDF into public
   audio-block skip fields; it emits no D0 and fails closed when capacity is
   insufficient.
+- `OwnershipPlan` is the immutable dependent topology contract for the raw
+  multi-dependent writer. Its validator requires sequential D0..D7 IDs,
+  public map cardinality, non-empty full-band ownership, no duplicate
+  dependent full-band role, at most one LFE owner, and final-dependent JOC/EMDF
+  ownership before serialization.
+- Dependent LFE is public through `lfeon`/Table E.1.4. In the canonical JOC
+  plan it replaces I0 LFE when I0 owns one and supplements it otherwise; the
+  final programme has exactly one LFE outside the JOC reconstruction matrix.
+  LFE2 and multiple dependent LFE owners fail closed.
+- The canonical raw JOC semantic ceiling is D0..D4 for idx0/idx3 and D0..D5
+  for idx1/idx2/idx4, with or without the single dependent-LFE supplement or
+  replacement.
+  Public raw D6/D7 syntax remains legal but capability cells beyond these
+  plan maxima are `SEMANTIC_CEILING`, not writer gaps.
 - `reduce_scene` and `reduce_scene_with_previous` provide the pure N-to-15
   clean decision boundary. Every supported authored source has a deterministic
   coded-object assignment and positive accounting gain; previous representatives
@@ -134,6 +155,8 @@ Last verified: 2026-09-07
 - Generated audio/binary evidence under `artifacts/` is local and ignored;
   reproduce the baseline with `scripts/run-mvp.ps1` or the generalized clean
   evidence with `scripts/run-source-derived.ps1` / `scripts/run-decision-engine.ps1`.
+  The tracked `artifacts/dependent-channel-role-census.csv` is generated from
+  the complete public Table E.1.4 role table.
 
 ## Key Decisions
 
@@ -186,7 +209,9 @@ Last verified: 2026-09-07
   ownership, explicit capacity planning, and profile-specific canonical maps.
   No-LFE canonical coverage is D0..D4 for idx0/idx3 and D0..D5 for idx1/idx2/idx4;
   public raw D0..D7 legality remains documented separately, while D6/D7 are
-  fail-closed for this JOC ownership plan. CMAF remains I0 plus optional D0.
+  `SEMANTIC_CEILING` for this JOC ownership plan. Dependent-LFE coverage is
+  source-derived D0..D4/D5 at the same semantic maxima. CMAF remains I0 plus
+  optional D0.
 - FFmpeg is interoperability evidence only for raw multi-dependent carriage.
   A legal JOCForge/OpenJOC cell may be `SUPPORTED_PASS` with
   `UNSUPPORTED_DECODER_FEATURE` when stock FFmpeg skips additional nonzero

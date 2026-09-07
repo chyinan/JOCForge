@@ -17,18 +17,21 @@ mod file_scan;
 use file_scan::{read_pcm_frame, scan_bw64_file};
 
 use jocforge_core::{
-    AdmObject, AdmObjectKind, BlockPartition, EmdfProfile, FinalRenderMeasurement, JocCarriage,
-    JocProfile, ReductionConfig, ReductionSource, SOURCE_DERIVED_CARRIER_PEAK_LIMIT,
-    canonical_dependent_channel_maps, channel_map_channel_count, cmaf_joc_init_and_fragments,
+    AdmObject, AdmObjectKind, BlockPartition, DEPENDENT_CHANNEL_ROLE_CENSUS, DependentLfePolicy,
+    EmdfProfile, FinalRenderMeasurement, JocCarriage, JocProfile, ReductionConfig, ReductionSource,
+    SOURCE_DERIVED_CARRIER_PEAK_LIMIT, canonical_dependent_channel_maps,
+    canonical_dependent_lfe_plan_for_count, channel_map_channel_count, cmaf_joc_init_and_fragments,
     d0_carrier_causality, factorize_source_derived, final_render_gate,
     generate_synthetic_scene_fixture, limit_signal_peak, maximum_absolute_difference,
     package_i0_skip_field_access_unit, package_legacy_ac3_source_derived_access_unit,
     package_multi_dependent_source_derived_access_unit,
+    package_multi_dependent_source_derived_access_unit_with_plan,
     package_short_block_conformance_access_unit,
     package_source_derived_access_unit_with_frame_sizes, parse_bw64_adm_metadata, profile_spec,
     quantize_coefficient, rate_budget_for_dependents, reconstruction_error,
-    reduce_scene_with_previous, resolve_encoding_plan, source_derived_carrier_causality,
-    spectral_phase_report, validate_source_derived_adm_metadata, write_one_au_proof,
+    reduce_scene_with_previous, resolve_encoding_plan, semantic_maximum,
+    source_derived_carrier_causality, spectral_phase_report, validate_multi_dependent_access_unit,
+    validate_source_derived_adm_metadata, write_one_au_proof,
 };
 
 const JOC_FRAME_SAMPLES: usize = 1536;
@@ -48,6 +51,8 @@ fn run(arguments: &[String]) -> Result<(), String> {
     match arguments.first().map(String::as_str) {
         Some("proof") => run_proof(&arguments[1..]),
         Some("conformance-multi-dependent") => run_multi_dependent_proof(&arguments[1..]),
+        Some("conformance-dependent-lfe") => run_dependent_lfe_proof(&arguments[1..]),
+        Some("dependent-role-census") => run_dependent_role_census(&arguments[1..]),
         Some("conformance-short") => run_short_block_proof(&arguments[1..]),
         Some("conformance-cmaf") => run_cmaf_proof(&arguments[1..]),
         Some("fixture") => run_fixture(&arguments[1..]),
@@ -63,7 +68,7 @@ fn run(arguments: &[String]) -> Result<(), String> {
         Some("temporal-adversarial") => run_temporal_adversarial(&arguments[1..]),
         Some(command) => Err(format!("unsupported command '{command}'")),
         None => Err(
-            "usage: jocforge proof|conformance-short|conformance-multi-dependent|conformance-cmaf|fixture|fixture-directspeakers|fixture-unsupported|inspect-adm|encode|quantization-stress|carrier-causality|spectral-phase|final-render-gate|temporal ..."
+            "usage: jocforge proof|conformance-short|conformance-multi-dependent|conformance-dependent-lfe|dependent-role-census|conformance-cmaf|fixture|fixture-directspeakers|fixture-unsupported|inspect-adm|encode|quantization-stress|carrier-causality|spectral-phase|final-render-gate|temporal ..."
                 .to_owned(),
         ),
     }
@@ -166,12 +171,20 @@ fn run_multi_dependent_proof(arguments: &[String]) -> Result<(), String> {
                 .to_owned(),
         );
     };
+    remove_stale_output(Path::new(output))?;
     let profile = parse_profile(profile_name)?;
     let dependent_count = dependent_count
         .parse::<usize>()
         .map_err(|error| format!("invalid dependent count '{dependent_count}': {error}"))?;
     if !(1..=8).contains(&dependent_count) {
         return Err("dependent count must be in 1..=8 for D0..D7".to_owned());
+    }
+    if dependent_count > semantic_maximum(profile) {
+        return Err(format!(
+            "semantic ceiling: {} canonical plan supports at most D0..D{}",
+            profile.semantic_name(),
+            semantic_maximum(profile) - 1
+        ));
     }
     let dependent_channel_maps = canonical_dependent_channel_maps(profile, dependent_count)?;
     let total_bitrate = 1024_u32
@@ -255,8 +268,90 @@ fn run_multi_dependent_proof(arguments: &[String]) -> Result<(), String> {
         0,
     )?;
     let report = jocforge_core::validate_multi_dependent_access_unit(&bytes, profile)?;
+    let expected_dependent_ids = (0..dependent_count)
+        .map(|id| u8::try_from(id).unwrap_or(7))
+        .collect::<Vec<_>>();
+    let structural_validation = report.dependent_ids == expected_dependent_ids
+        && report.joc_owner == expected_dependent_ids.last().copied()
+        && report.unique_dependent_channel_ownership
+        && report.lfe_owner.is_none();
+    let expected_frame_bytes = i0.len() + dependent_carriers.len() * budget.d0_frame_bytes;
+    let capacity_validated =
+        i0.len() == budget.carrier_encoded_frame_bytes && bytes.len() == expected_frame_bytes;
+    let source_causality_by_role = dependent_carriers
+        .iter()
+        .enumerate()
+        .map(|(index, carriers)| {
+            carriers
+                .iter()
+                .enumerate()
+                .map(|(channel, _)| {
+                    let mut changed_carriers = dependent_carriers.clone();
+                    changed_carriers[index][channel][0] += 0.125;
+                    package_multi_dependent_source_derived_access_unit(
+                        profile,
+                        EmdfProfile::EtsiStrict,
+                        1,
+                        &matrix,
+                        &[position],
+                        &i0,
+                        &dependent_channel_maps,
+                        &changed_carriers,
+                        0,
+                    )
+                    .is_ok_and(|changed| changed != bytes)
+                })
+                .collect::<Vec<_>>()
+        })
+        .collect::<Vec<_>>();
+    let source_causality = source_causality_by_role
+        .iter()
+        .flatten()
+        .all(|value| *value);
+    let ownership_path = PathBuf::from(output).with_extension("ownership.json");
+    let dependent_json = dependent_channel_maps
+        .iter()
+        .enumerate()
+        .map(|(index, channel_map)| {
+            let labels = jocforge_core::channel_map_role_labels(*channel_map)
+                .unwrap_or_default()
+                .into_iter()
+                .map(|label| format!("\"{label}\""))
+                .collect::<Vec<_>>()
+                .join(",");
+            format!(
+                "{{\"id\":{},\"channel_map\":\"0x{:04x}\",\"owned_roles\":[{}],\"lfe_policy\":\"absent\",\"source_derived\":true,\"source_causality\":{},\"source_causality_by_role\":[{}]}}",
+                index,
+                channel_map,
+                labels,
+                source_causality_by_role[index].iter().all(|value| *value),
+                source_causality_by_role[index]
+                    .iter()
+                    .map(std::string::ToString::to_string)
+                    .collect::<Vec<_>>()
+                    .join(",")
+            )
+        })
+        .collect::<Vec<_>>()
+        .join(",");
+    let ownership_json = format!(
+        "{{\"profile\":\"idx{}\",\"semantic_profile\":\"{}\",\"lfe_state\":\"absent\",\"lfe_semantics\":\"none\",\"independent_lfe\":false,\"topology\":\"I0+D0..D{}\",\"lfe_owner\":null,\"independent_lfe_owner\":\"none\",\"joc_owner\":\"D{}\",\"lfe_in_joc_matrix\":false,\"semantic_maximum\":{},\"dependent_count\":{},\"structural_validation\":{},\"capacity_validated\":{},\"independent_frame_bytes\":{},\"dependent_frame_bytes\":{},\"total_frame_bytes\":{},\"source_causality\":{},\"dependents\":[{}]}}\n",
+        profile.downmix_index(),
+        profile.semantic_name(),
+        dependent_count - 1,
+        report.joc_owner.unwrap_or(0),
+        report.semantic_maximum,
+        report.component_count - 1,
+        structural_validation,
+        capacity_validated,
+        budget.carrier_encoded_frame_bytes,
+        budget.d0_frame_bytes,
+        expected_frame_bytes,
+        source_causality,
+        dependent_json
+    );
     println!(
-        "multi-dependent plan: profile={} components={} I0+D0..D{} maps={:?} joc_owner=D{} bitrate={} kbps I0={} kbps each_dependent={} kbps structural=PASS",
+        "multi-dependent plan: profile={} components={} I0+D0..D{} maps={:?} joc_owner=D{} bitrate={} kbps I0={} kbps each_dependent={} kbps structural=PASS ownership={}",
         profile.semantic_name(),
         report.component_count,
         dependent_count - 1,
@@ -265,14 +360,337 @@ fn run_multi_dependent_proof(arguments: &[String]) -> Result<(), String> {
         budget.total_bitrate_kbps,
         budget.carrier_bitrate_kbps,
         budget.d0_bitrate_kbps,
+        ownership_path.display(),
     );
     let result = write_output(
         &PathBuf::from(output),
         bytes,
         "multi-dependent conformance proof",
     );
+    let result = match result {
+        Ok(()) => write_output(
+            &ownership_path,
+            ownership_json.into_bytes(),
+            "multi-dependent ownership",
+        ),
+        Err(error) => Err(error),
+    };
     let _ = fs::remove_dir_all(work_root);
     result
+}
+
+fn run_dependent_lfe_proof(arguments: &[String]) -> Result<(), String> {
+    let (arguments, replacement) = if arguments
+        .last()
+        .is_some_and(|value| value == "--replacement")
+    {
+        (&arguments[..arguments.len().saturating_sub(1)], true)
+    } else {
+        (arguments, false)
+    };
+    let (profile_name, dependent_count, output) = match arguments {
+        [profile_name, output] => (profile_name, None, output),
+        [profile_name, dependent_count, output] => (profile_name, Some(dependent_count), output),
+        _ => {
+            return Err(
+                "usage: jocforge conformance-dependent-lfe PROFILE [DEPENDENT_COUNT] OUTPUT.ec3 [--replacement]"
+                    .to_owned(),
+            );
+        }
+    };
+    remove_stale_output(Path::new(output))?;
+    let profile = parse_profile(profile_name)?;
+    let dependent_count = dependent_count
+        .map(|value| {
+            value
+                .parse::<usize>()
+                .map_err(|error| format!("invalid dependent count '{value}': {error}"))
+        })
+        .transpose()?
+        .unwrap_or_else(|| semantic_maximum(profile));
+    if !(1..=8).contains(&dependent_count) {
+        return Err("dependent count must be in 1..=8 for D0..D7".to_owned());
+    }
+    if dependent_count > semantic_maximum(profile) {
+        return Err(format!(
+            "semantic ceiling: {} canonical plan supports at most D0..D{}",
+            profile.semantic_name(),
+            semantic_maximum(profile) - 1
+        ));
+    }
+    let mut ownership_plan = canonical_dependent_lfe_plan_for_count(profile, dependent_count)?;
+    if replacement {
+        ownership_plan.independent_lfe = true;
+        ownership_plan.dependents[0].lfe_policy = DependentLfePolicy::ReplaceIndependent;
+    }
+    let total_bitrate = 1024_u32
+        .checked_add(
+            u32::try_from(ownership_plan.dependents.len().saturating_sub(1))
+                .unwrap_or(u32::MAX)
+                .saturating_mul(640),
+        )
+        .ok_or_else(|| "dependent-LFE total bitrate overflow".to_owned())?;
+    let budget = rate_budget_for_dependents(total_bitrate, ownership_plan.dependents.len())
+        .map_err(|error| format!("invalid dependent-LFE bitrate plan: {error}"))?;
+    let columns = profile_spec(profile).input_labels.len();
+    let matrix = vec![
+        (0..columns)
+            .map(|column| if column == 0 { 820.0 / 4096.0 } else { 0.0 })
+            .collect::<Vec<_>>(),
+    ];
+    let position = jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    };
+    let work_root = env::temp_dir().join(format!("jocforge-dependent-lfe-{}", std::process::id()));
+    fs::create_dir_all(&work_root)
+        .map_err(|error| format!("failed to create dependent-LFE work directory: {error}"))?;
+    let result = (|| {
+        let raw_path = work_root.join("i0.f32le");
+        let carrier_path = work_root.join("i0.ec3");
+        let lfe_source = (0..JOC_FRAME_SAMPLES)
+            .map(|sample| (sample as f64 * 0.0017).sin() * 0.08)
+            .collect::<Vec<_>>();
+        let mut i0_carriers = (0..5)
+            .map(|channel| {
+                (0..JOC_FRAME_SAMPLES)
+                    .map(|sample| {
+                        (f64::from(u32::try_from(sample).unwrap_or(0))
+                            * (0.011 + f64::from(channel) * 0.001))
+                            .sin()
+                            * 0.1
+                    })
+                    .collect::<Vec<_>>()
+            })
+            .collect::<Vec<_>>();
+        if replacement {
+            i0_carriers.push(lfe_source.clone());
+        }
+        fs::write(
+            &raw_path,
+            interleaved_f32le(&i0_carriers, JOC_FRAME_SAMPLES),
+        )
+        .map_err(|error| format!("failed to write dependent-LFE carrier PCM: {error}"))?;
+        encode_ffmpeg_carrier(
+            &raw_path,
+            &carrier_path,
+            i0_carriers.len(),
+            &format!("{}k", budget.carrier_encode_bitrate_kbps),
+            "eac3",
+        )?;
+        let i0 = read_carrier_frames(&carrier_path, budget.carrier_encoded_frame_bytes, 1)?;
+        let dependent_carriers = ownership_plan
+            .dependents
+            .iter()
+            .enumerate()
+            .map(|(dependent, plan)| {
+                (0..plan.full_band_channel_count())
+                    .map(|channel| {
+                        (0..JOC_FRAME_SAMPLES)
+                            .map(|sample| {
+                                (sample as f64 * (0.011 + channel as f64 * 0.003)
+                                    + dependent as f64 * (0.07 + channel as f64 * 0.02))
+                                    .sin()
+                                    * 0.1
+                            })
+                            .collect::<Vec<_>>()
+                    })
+                    .collect::<Vec<_>>()
+            })
+            .collect::<Vec<_>>();
+        let mut lfe_carriers = vec![None; ownership_plan.dependents.len()];
+        lfe_carriers[0] = Some(lfe_source);
+        let bytes = package_multi_dependent_source_derived_access_unit_with_plan(
+            profile,
+            EmdfProfile::EtsiStrict,
+            1,
+            &matrix,
+            &[position],
+            &i0,
+            &ownership_plan,
+            &dependent_carriers,
+            &lfe_carriers,
+            0,
+        )?;
+        let report = validate_multi_dependent_access_unit(&bytes, profile)?;
+        let expected_dependent_ids = (0..ownership_plan.dependents.len())
+            .map(|id| u8::try_from(id).unwrap_or(7))
+            .collect::<Vec<_>>();
+        let structural_validation = report.dependent_ids == expected_dependent_ids
+            && report.joc_owner == expected_dependent_ids.last().copied()
+            && report.unique_dependent_channel_ownership
+            && report.lfe_present
+            && report.lfe_owner.is_some();
+        let expected_frame_bytes = i0.len() + dependent_carriers.len() * budget.d0_frame_bytes;
+        let capacity_validated =
+            i0.len() == budget.carrier_encoded_frame_bytes && bytes.len() == expected_frame_bytes;
+        let source_causality_by_role = ownership_plan
+            .dependents
+            .iter()
+            .enumerate()
+            .map(|(index, plan)| {
+                let mut causality = Vec::with_capacity(plan.full_band_channel_count() + 1);
+                for channel in 0..plan.full_band_channel_count() {
+                    let mut changed_carriers = dependent_carriers.clone();
+                    changed_carriers[index][channel][0] += 0.125;
+                    causality.push(
+                        package_multi_dependent_source_derived_access_unit_with_plan(
+                            profile,
+                            EmdfProfile::EtsiStrict,
+                            1,
+                            &matrix,
+                            &[position],
+                            &i0,
+                            &ownership_plan,
+                            &changed_carriers,
+                            &lfe_carriers,
+                            0,
+                        )
+                        .is_ok_and(|changed| changed != bytes),
+                    );
+                }
+                if lfe_carriers[index].is_some() {
+                    let mut changed_lfe_carriers = lfe_carriers.clone();
+                    changed_lfe_carriers[index]
+                        .as_mut()
+                        .expect("LFE carrier present")[0] += 0.125;
+                    causality.push(
+                        package_multi_dependent_source_derived_access_unit_with_plan(
+                            profile,
+                            EmdfProfile::EtsiStrict,
+                            1,
+                            &matrix,
+                            &[position],
+                            &i0,
+                            &ownership_plan,
+                            &dependent_carriers,
+                            &changed_lfe_carriers,
+                            0,
+                        )
+                        .is_ok_and(|changed| changed != bytes),
+                    );
+                }
+                causality
+            })
+            .collect::<Vec<_>>();
+        let source_causality = source_causality_by_role
+            .iter()
+            .flatten()
+            .all(|value| *value);
+        let ownership_path = PathBuf::from(output).with_extension("ownership.json");
+        let dependent_json = ownership_plan
+            .dependents
+            .iter()
+            .enumerate()
+            .map(|(index, plan)| {
+                let labels = jocforge_core::channel_map_role_labels(plan.channel_map)
+                    .unwrap_or_default()
+                    .into_iter()
+                    .map(|label| format!("\"{label}\""))
+                    .collect::<Vec<_>>()
+                    .join(",");
+                format!(
+                    "{{\"id\":{},\"channel_map\":\"0x{:04x}\",\"owned_roles\":[{}],\"lfe_policy\":\"{}\",\"source_derived\":true,\"source_causality\":{},\"source_causality_by_role\":[{}]}}",
+                    plan.id,
+                    plan.channel_map,
+                    labels,
+                    dependent_lfe_policy_name(plan.lfe_policy),
+                    source_causality_by_role[index].iter().all(|value| *value),
+                    source_causality_by_role[index]
+                        .iter()
+                        .map(std::string::ToString::to_string)
+                        .collect::<Vec<_>>()
+                        .join(",")
+                )
+            })
+            .collect::<Vec<_>>()
+            .join(",");
+        let lfe_state = if replacement {
+            "independent-replaced-by-dependent"
+        } else {
+            "dependent-supplement"
+        };
+        let lfe_semantics = if replacement {
+            "replacement"
+        } else {
+            "supplementation"
+        };
+        let ownership_json = format!(
+            "{{\"profile\":\"idx{}\",\"semantic_profile\":\"{}\",\"lfe_state\":\"{}\",\"lfe_semantics\":\"{}\",\"independent_lfe\":{},\"topology\":\"I0+D0..D{}\",\"lfe_owner\":\"D0\",\"independent_lfe_owner\":\"{}\",\"joc_owner\":\"D{}\",\"lfe_in_joc_matrix\":false,\"semantic_maximum\":{},\"dependent_count\":{},\"structural_validation\":{},\"capacity_validated\":{},\"independent_frame_bytes\":{},\"dependent_frame_bytes\":{},\"total_frame_bytes\":{},\"source_causality\":{},\"dependents\":[{}]}}\n",
+            profile.downmix_index(),
+            profile.semantic_name(),
+            lfe_state,
+            lfe_semantics,
+            replacement,
+            ownership_plan.dependents.len() - 1,
+            if replacement { "I0" } else { "none" },
+            report.joc_owner.unwrap_or(0),
+            report.semantic_maximum,
+            report.component_count - 1,
+            structural_validation,
+            capacity_validated,
+            budget.carrier_encoded_frame_bytes,
+            budget.d0_frame_bytes,
+            expected_frame_bytes,
+            source_causality,
+            dependent_json
+        );
+        write_output(&PathBuf::from(output), bytes, "dependent-LFE")?;
+        write_output(
+            &ownership_path,
+            ownership_json.into_bytes(),
+            "dependent-LFE ownership",
+        )?;
+        println!(
+            "dependent-LFE plan: profile={} components={} lfe_owner=D0 semantics={} joc_owner=D{} bitrate={} kbps structural=PASS ownership={}",
+            profile.semantic_name(),
+            report.component_count,
+            lfe_semantics,
+            report.joc_owner.unwrap_or(0),
+            budget.total_bitrate_kbps,
+            ownership_path.display()
+        );
+        Ok(())
+    })();
+    let _ = fs::remove_dir_all(work_root);
+    result
+}
+
+fn dependent_lfe_policy_name(policy: DependentLfePolicy) -> &'static str {
+    match policy {
+        DependentLfePolicy::Absent => "absent",
+        DependentLfePolicy::Supplement => "supplement",
+        DependentLfePolicy::ReplaceIndependent => "replace-independent",
+    }
+}
+
+fn run_dependent_role_census(arguments: &[String]) -> Result<(), String> {
+    let [output] = arguments else {
+        return Err("usage: jocforge dependent-role-census OUTPUT.csv".to_owned());
+    };
+    let mut csv = String::from(
+        "public role,speaker/channel semantic,chanmap syntax,replacement/supplement meaning,LFE yes/no,applicable base acmod,conflict rules,public clause/table\n",
+    );
+    for role in DEPENDENT_CHANNEL_ROLE_CENSUS {
+        let _ = writeln!(
+            csv,
+            "\"{}\",\"{}\",\"{}\",\"{}\",{},\"{}\",\"{}\",\"{}\"",
+            role.public_role,
+            role.speaker_channel_semantic,
+            role.chanmap_syntax,
+            role.replacement_supplement_meaning,
+            if role.lfe { "yes" } else { "no" },
+            role.applicable_base_acmod,
+            role.conflict_rules,
+            role.public_clause_table,
+        );
+    }
+    write_output(
+        &PathBuf::from(output),
+        csv.into_bytes(),
+        "dependent channel-role census",
+    )
 }
 
 fn run_short_block_proof(arguments: &[String]) -> Result<(), String> {
@@ -1834,13 +2252,87 @@ fn parse_compat_preset(value: &str) -> Result<(JocCarriage, EmdfProfile), String
     }
 }
 
+#[allow(clippy::needless_pass_by_value)]
 fn write_output(path: &Path, bytes: Vec<u8>, description: &str) -> Result<(), String> {
-    fs::write(path, bytes).map_err(|error| {
+    let parent = path
+        .parent()
+        .filter(|parent| !parent.as_os_str().is_empty())
+        .unwrap_or_else(|| Path::new("."));
+    fs::create_dir_all(parent).map_err(|error| {
         format!(
-            "failed to write {description} output '{}': {error}",
-            path.display()
+            "failed to prepare {description} output directory '{}': {error}",
+            parent.display()
         )
-    })
+    })?;
+    let file_name = path
+        .file_name()
+        .ok_or_else(|| format!("failed to write {description} output: path has no file name"))?
+        .to_string_lossy();
+    let temporary = parent.join(format!(".{file_name}.tmp-{}", std::process::id()));
+    let result = (|| {
+        let mut file = fs::OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(&temporary)
+            .map_err(|error| {
+                format!(
+                    "failed to create temporary {description} output '{}': {error}",
+                    temporary.display()
+                )
+            })?;
+        file.write_all(&bytes).map_err(|error| {
+            format!(
+                "failed to write temporary {description} output '{}': {error}",
+                temporary.display()
+            )
+        })?;
+        file.sync_all().map_err(|error| {
+            format!(
+                "failed to flush temporary {description} output '{}': {error}",
+                temporary.display()
+            )
+        })?;
+        drop(file);
+        if path.exists() {
+            fs::remove_file(path).map_err(|error| {
+                format!(
+                    "failed to replace existing {description} output '{}': {error}",
+                    path.display()
+                )
+            })?;
+        }
+        fs::rename(&temporary, path).map_err(|error| {
+            format!(
+                "failed to publish {description} output '{}': {error}",
+                path.display()
+            )
+        })
+    })();
+    if result.is_err() {
+        let _ = fs::remove_file(&temporary);
+    }
+    result
+}
+
+fn remove_stale_output(path: &Path) -> Result<(), String> {
+    if path.exists() {
+        fs::remove_file(path).map_err(|error| {
+            format!(
+                "failed to remove stale output '{}': {error}",
+                path.display()
+            )
+        })?;
+    }
+    let ownership_path = path.with_extension("ownership.json");
+    if ownership_path.exists() {
+        fs::remove_file(&ownership_path).map_err(|error| {
+            format!(
+                "failed to remove stale ownership output '{}': {error}",
+                ownership_path.display()
+            )
+        })?;
+    }
+    Ok(())
 }
 
 #[cfg(test)]

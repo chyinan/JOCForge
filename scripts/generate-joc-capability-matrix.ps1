@@ -5,6 +5,7 @@ param()
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
 $artifact = Join-Path $root "artifacts"
+$generatedDate = Get-Date -Format "yyyy-MM-dd"
 $profiles = @(
     [pscustomobject]@{ index = 0; name = "5.X"; aliases = "idx0"; input_count = 5; carriers = "L,R,C,Ls,Rs"; topology = "I0+ D0"; phase = $false },
     [pscustomobject]@{ index = 1; name = "Flat-7.X"; aliases = "idx1"; input_count = 7; carriers = "L,R,C,Ls,Rs,Lrs,Rrs"; topology = "I0+ D0"; phase = $false },
@@ -15,7 +16,14 @@ $profiles = @(
     [pscustomobject]@{ index = 6; name = "reserved-6"; aliases = "idx6"; input_count = 0; carriers = ""; topology = "never"; phase = $false },
     [pscustomobject]@{ index = 7; name = "reserved-7"; aliases = "idx7"; input_count = 0; carriers = ""; topology = "never"; phase = $false }
 )
-$lfeStates = @("absent", "present")
+$canonicalRoleGroups = @{
+    0 = @("Left", "Centre", "Right", "Left Surround", "Right Surround")
+    1 = @("Left", "Centre", "Right", "Left Surround", "Right Surround", "Lrs/Rrs pair")
+    2 = @("Left", "Centre", "Right", "Left Surround", "Right Surround", "Vhl/Vhr pair")
+    3 = @("Left", "Centre", "Right", "Left Surround", "Right Surround")
+    4 = @("Left", "Centre", "Right", "Left Surround", "Right Surround", "Vhl/Vhr pair")
+}
+$lfeStates = @("absent", "independent", "dependent")
 $carriages = @("etsi", "i0-skipfld", "legacy-ac3")
 $emdfProfiles = @("etsi", "deployed")
 $blockPartitions = @("1", "2", "3", "6")
@@ -29,8 +37,27 @@ function Get-DependentCount([string]$topology) {
 }
 
 function Get-CanonicalDependentMaximum([int]$profileIndex) {
-    if ($profileIndex -in @(0, 3)) { return 5 }
-    return 6
+    return @($canonicalRoleGroups[$profileIndex]).Count
+}
+
+function Get-SemanticVerdict($profile, [string]$lfe, [string]$carriage, [string]$emdf, [string]$blocks, [string]$dependents, [string]$scope) {
+    $dependentCount = Get-DependentCount $dependents
+    if ($profile.index -ge 5) { return "RESERVED" }
+    if ($scope -eq "CMAF" -and $dependents -ne "D0") { return "INVALID" }
+    if ($emdf -eq "deployed") { return "PUBLIC_AMBIGUOUS" }
+    if ($scope -eq "raw-elementary" -and $dependentCount -gt (Get-CanonicalDependentMaximum $profile.index)) { return "SEMANTIC_CEILING" }
+    if ($scope -eq "raw-elementary" -and $carriage -eq "etsi" -and $blocks -eq "6" -and $lfe -in @("absent", "independent", "dependent")) { return "PUBLIC_LEGAL" }
+    return "SPEC_LEGAL_NOT_IMPLEMENTED"
+}
+
+function Get-CapacityVerdict($profile, [string]$lfe, [string]$carriage, [string]$blocks, [string]$dependents, [int]$bitrate, [string]$scope) {
+    if ($scope -ne "raw-elementary" -or $carriage -ne "etsi" -or $blocks -ne "6") { return "NOT_APPLICABLE" }
+    $dependentCount = Get-DependentCount $dependents
+    if ($dependentCount -gt (Get-CanonicalDependentMaximum $profile.index)) { return "NOT_APPLICABLE" }
+    $requiredBitrate = 1024 + (($dependentCount - 1) * 640)
+    $carrierBitrate = $bitrate - ($dependentCount * 640)
+    if ($bitrate -lt $requiredBitrate -or $carrierBitrate -notin @(384, 448, 512, 576, 640, 768, 896, 1024)) { return "REJECTED_CAPACITY" }
+    return "WITHIN_BUDGET"
 }
 
 function Get-CellStatus($profile, [string]$lfe, [string]$carriage, [string]$emdf, [string]$blocks, [string]$dependents, [int]$bitrate, [string]$scope) {
@@ -50,7 +77,7 @@ function Get-CellStatus($profile, [string]$lfe, [string]$carriage, [string]$emdf
     if ($carriage -eq "legacy-ac3") {
         if ($profile.index -gt 4) { return "RESERVED" }
         if ($bitrate -notin @(1024, 1088, 1152, 1216, 1280)) { return "REJECTED_CAPACITY" }
-        if ($lfe -eq "present" -or $blocks -ne "6" -or $dependents -ne "D0") {
+        if ($lfe -ne "absent" -or $blocks -ne "6" -or $dependents -ne "D0") {
             return "SPEC_LEGAL_NOT_IMPLEMENTED"
         }
         if ($profile.index -ne 1 -and $bitrate -ne 1280) {
@@ -61,17 +88,18 @@ function Get-CellStatus($profile, [string]$lfe, [string]$carriage, [string]$emdf
     if ($carriage -eq "i0-skipfld") {
         if ($profile.index -ne 0) { return "PUBLIC_AMBIGUOUS" }
         if ($bitrate -ne 1024) { return "REJECTED_CAPACITY" }
-        if ($lfe -eq "present") { return "SPEC_LEGAL_NOT_IMPLEMENTED" }
+        if ($lfe -ne "absent") { return "SPEC_LEGAL_NOT_IMPLEMENTED" }
         if ($blocks -ne "6" -or $dependents -ne "D0") { return "SPEC_LEGAL_NOT_IMPLEMENTED" }
         return "SUPPORTED_PASS"
     }
     if ($blocks -ne "6") { return "SPEC_LEGAL_NOT_IMPLEMENTED" }
-    if ($dependentCount -gt $canonicalMaximum) { return "PUBLIC_LEGAL_NOT_IMPLEMENTED" }
-    if ($lfe -eq "present") { return "SPEC_LEGAL_NOT_IMPLEMENTED" }
+    if ($dependentCount -gt $canonicalMaximum) { return "SEMANTIC_CEILING" }
     $requiredBitrate = 1024 + (($dependentCount - 1) * 640)
     $carrierBitrate = $bitrate - ($dependentCount * 640)
     if ($bitrate -lt $requiredBitrate -or $carrierBitrate -notin @(384, 448, 512, 576, 640, 768, 896, 1024)) { return "REJECTED_CAPACITY" }
-    if ($dependentCount -eq 1 -and $bitrate -in @(1024, 1280, 1408, 1536, 1664)) { return "SUPPORTED_PASS" }
+    if ($lfe -in @("independent", "dependent") -and $bitrate -ne $requiredBitrate) { return "SPEC_LEGAL_NOT_IMPLEMENTED" }
+    if ($dependentCount -eq 1 -and $lfe -eq "absent" -and $bitrate -in @(1024, 1280, 1408, 1536, 1664)) { return "SUPPORTED_PASS" }
+    if ($dependentCount -eq 1 -and $lfe -in @("independent", "dependent") -and $bitrate -eq 1024) { return "SUPPORTED_PASS" }
     if ($bitrate -eq $requiredBitrate) { return "SUPPORTED_PASS" }
     return "SPEC_LEGAL_NOT_IMPLEMENTED"
 }
@@ -86,7 +114,7 @@ foreach ($profile in $profiles) {
                         $dependentCount = Get-DependentCount $dependents
                         foreach ($bitrate in $bitrates) {
                             foreach ($scope in $scopes) {
-                                $rows.Add([ordered]@{
+                                $rows.Add([pscustomobject]@{
                                     semantic_profile = $profile.name
                                     profile_index = $profile.index
                                     aliases = $profile.aliases
@@ -102,9 +130,11 @@ foreach ($profile in $profiles) {
                                     scope = $scope
                                     phase_signaled = $profile.phase
                                     public_legality = if ($profile.index -ge 5) { "RESERVED" } elseif ($scope -eq "CMAF" -and $dependents -ne "D0") { "INVALID" } elseif ($emdf -eq "deployed") { "PUBLIC_AMBIGUOUS" } else { "PUBLIC_LEGAL" }
+                                    semantic_verdict = Get-SemanticVerdict $profile $lfe $carriage $emdf $blocks $dependents $scope
+                                    capacity_verdict = Get-CapacityVerdict $profile $lfe $carriage $blocks $dependents $bitrate $scope
                                     status = Get-CellStatus $profile $lfe $carriage $emdf $blocks $dependents $bitrate $scope
-                                    ffmpeg_interoperability = if ($scope -eq "raw-elementary" -and $carriage -eq "etsi" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $lfe -eq "absent" -and $dependentCount -gt 1 -and $bitrate -eq (1024 + (($dependentCount - 1) * 640))) { "UNSUPPORTED_DECODER_FEATURE" } elseif ($scope -eq "raw-elementary" -and $carriage -eq "etsi" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $lfe -eq "absent" -and $dependentCount -eq 1 -and $bitrate -in @(1024,1280,1408,1536,1664)) { "PASS" } else { "NOT_MEASURED" }
-                                    evidence = if ($profile.index -le 4 -and $scope -eq "CMAF" -and $lfe -eq "absent" -and $bitrate -in @(1024,1280,1408,1536,1664) -and $carriage -eq "etsi" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $dependents -eq "D0") { "artifacts/cmaf-closure/validation.json" } elseif ($scope -eq "raw-elementary" -and $carriage -eq "etsi" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $lfe -eq "absent" -and $dependentCount -le (Get-CanonicalDependentMaximum $profile.index) -and (($dependentCount -eq 1 -and $bitrate -in @(1024,1280,1408,1536,1664)) -or $bitrate -eq (1024 + (($dependentCount - 1) * 640)))) { "artifacts/multi-dependent-closure/validation.json" } elseif ($profile.index -eq 1 -and $carriage -eq "legacy-ac3" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $dependents -eq "D0" -and $bitrate -in @(1024,1088,1152,1216,1280) -and $scope -eq "raw-elementary") { "artifacts/legacy-core-rate-sweep/validation.json" } elseif ($profile.index -le 4 -and $carriage -eq "legacy-ac3" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $dependents -eq "D0" -and $bitrate -eq 1280 -and $scope -eq "raw-elementary") { "artifacts/legacy-core-profile-closure/validation.json" } elseif ($profile.index -le 4 -and $carriage -eq "etsi" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $dependents -eq "D0" -and $bitrate -eq 1664 -and $scope -eq "raw-elementary") { "artifacts/profile-closure/profile-validation.json; artifacts/profile-closure/lfe-validation.json; artifacts/profile-closure/source-causality.json" } else { "docs/joc-capability-matrix.md" }
+                                    ffmpeg_interoperability = if ($scope -eq "raw-elementary" -and $carriage -eq "etsi" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $dependentCount -gt 1 -and $bitrate -eq (1024 + (($dependentCount - 1) * 640))) { "UNSUPPORTED_DECODER_FEATURE" } elseif ($scope -eq "raw-elementary" -and $carriage -eq "etsi" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $dependentCount -eq 1 -and (($lfe -eq "absent" -and $bitrate -in @(1024,1280,1408,1536,1664)) -or ($lfe -in @("independent", "dependent") -and $bitrate -eq 1024))) { "PASS" } else { "NOT_MEASURED" }
+                                    evidence = if ($profile.index -le 4 -and $scope -eq "CMAF" -and $lfe -eq "absent" -and $bitrate -in @(1024,1280,1408,1536,1664) -and $carriage -eq "etsi" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $dependents -eq "D0") { "artifacts/cmaf-closure/validation.json" } elseif ($scope -eq "raw-elementary" -and $carriage -eq "etsi" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $dependentCount -le (Get-CanonicalDependentMaximum $profile.index) -and (($lfe -eq "absent" -and (($dependentCount -eq 1 -and $bitrate -in @(1024,1280,1408,1536,1664)) -or $bitrate -eq (1024 + (($dependentCount - 1) * 640)))) -or ($lfe -in @("independent", "dependent") -and $bitrate -eq (1024 + (($dependentCount - 1) * 640))))) { "artifacts/multi-dependent-closure/validation.json" } elseif ($profile.index -eq 1 -and $carriage -eq "legacy-ac3" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $dependents -eq "D0" -and $bitrate -in @(1024,1088,1152,1216,1280) -and $scope -eq "raw-elementary") { "artifacts/legacy-core-rate-sweep/validation.json" } elseif ($profile.index -le 4 -and $carriage -eq "legacy-ac3" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $dependents -eq "D0" -and $bitrate -eq 1280 -and $scope -eq "raw-elementary") { "artifacts/legacy-core-profile-closure/validation.json" } elseif ($profile.index -le 4 -and $carriage -eq "etsi" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $dependents -eq "D0" -and $bitrate -eq 1664 -and $scope -eq "raw-elementary") { "artifacts/profile-closure/profile-validation.json; artifacts/profile-closure/lfe-validation.json; artifacts/profile-closure/source-causality.json" } else { "docs/joc-capability-matrix.md" }
                                 })
                             }
                         }
@@ -117,6 +147,9 @@ foreach ($profile in $profiles) {
 
 $rows | Export-Csv -LiteralPath (Join-Path $artifact "joc-capability-matrix.csv") -NoTypeInformation -Encoding utf8
 $rows | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $artifact "joc-capability-matrix.json") -Encoding utf8
+$ceilingRows = @($rows | Where-Object { $_.status -eq "SEMANTIC_CEILING" })
+$ceilingRows | Export-Csv -LiteralPath (Join-Path $artifact "multi-dependent-semantic-ceiling.csv") -NoTypeInformation -Encoding utf8
+$ceilingRows | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $artifact "multi-dependent-semantic-ceiling.json") -Encoding utf8
 
 $counts = $rows | ForEach-Object { $_.status } | Group-Object | Sort-Object Name
 $summary = foreach ($count in $counts) { "| $($count.Name) | $($count.Count) |" }
@@ -128,7 +161,7 @@ $profileSummary = foreach ($profile in $profiles) {
 $markdown = @(
     "# JOC capability matrix",
     "",
-    "> Generated from the public-spec closure rules on 2026-09-07. The CSV and JSON artifacts enumerate every cross-product cell; this document records the authority and the evidence boundary.",
+    "> Generated from the public-spec closure rules on $generatedDate. The CSV and JSON artifacts enumerate every cross-product cell; this document records the authority and the evidence boundary.",
     "",
     "## Profile authority",
     "",
@@ -149,7 +182,8 @@ $markdown = @(
     "- ``SUPPORTED_PASS`` includes the canonical raw-elementary ETSI dependent carriage, strict EMDF, six-block cells evidenced by ``artifacts/multi-dependent-closure/validation.json``; the I0+D0 profile closure remains evidenced by ``artifacts/profile-closure/``.",
     "- ``REJECTED_CAPACITY`` is the deterministic lower-rate result for the current paired I0/D0 writer budget.",
     "- ``PUBLIC_AMBIGUOUS`` covers deployed codecdatae deviation and non-idx0 skip-field carriage where the public documents do not close the JOC-carrier meaning.",
-    "- ``PUBLIC_LEGAL_NOT_IMPLEMENTED`` is a legal raw E-AC-3 dependent count not yet closed by the canonical no-LFE Table-47 JOC ownership plan; it is not an invalidity claim. ``SPEC_LEGAL_NOT_IMPLEMENTED`` covers other legal forms not yet generated, including source-derived short blocks and LFE-present multi-dependent plans.",
+    "- ``SEMANTIC_CEILING`` is a public raw D6/D7 syntax cell beyond the canonical Table-47 ownership maximum: no additional non-empty, non-duplicated dependent slot exists for this plan. It is not an implementation-gap claim. ``SPEC_LEGAL_NOT_IMPLEMENTED`` remains for legal forms outside the generated writer evidence.",
+    "- Dependent LFE is represented by public ``lfeon``/Table-E.1.4 LFE ownership, is a replacement of I0 LFE when I0 has LFE and a supplement otherwise, and remains outside the JOC matrix. Canonical dependent-LFE closure is evidenced by ``artifacts/multi-dependent-closure/validation.json`` and per-fixture ownership sidecars.",
     "- ``OUT_OF_SCOPE_CONTAINER`` keeps CMAF's six-block, I0 plus optional D0, and container-specific signaling rules separate from raw elementary-stream support.",
     "- The advanced CMAF writer closes the no-LFE, strict, one-I0+D0, six-block, 1024/1280/1408/1536/1664 kbps idx0..idx4 cells; remaining CMAF cells stay explicitly unimplemented or out of scope.",
     "- `legacy-ac3` is supported for idx1 across 1024/1088/1152/1216/1280 kbps and for idx0..idx4 at 1280 kbps, with strict EMDF, no LFE, six blocks, and I0+D0; other legacy-core cells remain fail-closed.",
@@ -163,4 +197,29 @@ $markdown = @(
     ""
 )
 $markdown | Set-Content -LiteralPath (Join-Path $root "docs\joc-capability-matrix.md") -Encoding utf8
+$ceilingSummary = foreach ($group in ($ceilingRows | Group-Object semantic_profile, lfe, dependent_topology)) {
+    $first = $group.Group | Select-Object -First 1
+    "| $($first.semantic_profile) | $($first.lfe) | $($first.dependent_topology) | $($group.Count) | $($first.semantic_verdict) |"
+}
+$ceilingMarkdown = @(
+    "# Raw multi-dependent semantic ceiling",
+    "",
+    "> Generated on $generatedDate from ETSI TS 102 366 V1.4.1 E.1.3.1.2/E.1.3.1.7–1.8/E.2.8.2 and TS 103 420 V1.2.1 Table 47/48.",
+    "",
+    "``SEMANTIC_CEILING`` means the public D6/D7 ID is syntactically available, but the selected canonical Table-47 JOC ownership graph has no additional non-empty, non-duplicated dependent slot. It is distinct from ``REJECTED_CAPACITY`` and ``SPEC_LEGAL_NOT_IMPLEMENTED``.",
+    "",
+    "The canonical maximum is D0..D4 for idx0/idx3 and D0..D5 for idx1/idx2/idx4. One dependent LFE is a replacement or supplement on an existing full-band dependent and does not create an LFE-only slot.",
+    "",
+    "## Ceiling rows",
+    "",
+    "| Profile | LFE state | Topology | Cells | Verdict |",
+    "|---|---|---|---:|---|",
+    $ceilingSummary,
+    "",
+    "Total semantic-ceiling cells: $($ceilingRows.Count).",
+    "",
+    "See ``artifacts/multi-dependent-semantic-ceiling.csv`` and ``.json`` for the complete cross-product rows; the general matrix remains in ``artifacts/joc-capability-matrix.csv`` and ``.json``.",
+    ""
+)
+$ceilingMarkdown | Set-Content -LiteralPath (Join-Path $root "docs\multi-dependent-semantic-ceiling.md") -Encoding utf8
 Write-Output "JOC capability matrix written to $artifact"

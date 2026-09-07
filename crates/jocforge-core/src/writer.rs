@@ -1,7 +1,8 @@
 // pattern: Functional Core
 
 use crate::{
-    AdmPosition, BlockPartition, EmdfProfile, JocProfile, profile_spec, quantize_coefficient,
+    AdmPosition, BlockPartition, DependentLfePolicy, DependentPlan, EmdfProfile, JocProfile,
+    OwnershipPlan, profile_spec, quantize_coefficient,
 };
 
 const FRAME_BYTES: usize = 4096;
@@ -680,6 +681,29 @@ fn write_source_dependent_frame_with_options(
     complexity_index: u8,
     frame_bytes: usize,
 ) -> Result<Vec<u8>, String> {
+    write_source_dependent_frame_with_lfe_options(
+        emdf,
+        dependent_substream_id,
+        channel_map,
+        carriers,
+        None,
+        sample_offset,
+        complexity_index,
+        frame_bytes,
+    )
+}
+
+#[allow(clippy::too_many_arguments)]
+fn write_source_dependent_frame_with_lfe_options(
+    emdf: Option<&[u8]>,
+    dependent_substream_id: u8,
+    channel_map: u16,
+    carriers: &[Vec<f64>],
+    lfe_carrier: Option<&[f64]>,
+    sample_offset: usize,
+    complexity_index: u8,
+    frame_bytes: usize,
+) -> Result<Vec<u8>, String> {
     validate_frame_bytes(frame_bytes, "D0")?;
     if dependent_substream_id > 7 {
         return Err("dependent substream id must be in D0..D7".to_owned());
@@ -688,6 +712,7 @@ fn write_source_dependent_frame_with_options(
         || carriers
             .iter()
             .any(|carrier| carrier.len() < sample_offset.saturating_add(1536))
+        || lfe_carrier.is_some_and(|carrier| carrier.len() < sample_offset.saturating_add(1536))
     {
         return Err(
             "source-derived dependent requires one or two 1536-sample carrier windows".to_owned(),
@@ -696,15 +721,20 @@ fn write_source_dependent_frame_with_options(
     if carriers
         .iter()
         .any(|carrier| carrier.iter().any(|sample| !sample.is_finite()))
+        || lfe_carrier.is_some_and(|carrier| carrier.iter().any(|sample| !sample.is_finite()))
     {
         return Err("source-derived dependent carriers must contain finite PCM".to_owned());
     }
     let mapped_channel_count = crate::conformance::channel_map_channel_count(channel_map);
-    if mapped_channel_count != carriers.len() {
+    let expected_channel_count = carriers.len() + usize::from(lfe_carrier.is_some());
+    if mapped_channel_count != expected_channel_count {
         return Err(format!(
-            "dependent chanmap carries {mapped_channel_count} channels but source-derived input has {}",
-            carriers.len()
+            "dependent chanmap carries {mapped_channel_count} channels but source-derived input has {expected_channel_count}"
         ));
+    }
+    let channel_tokens = crate::conformance::channel_map_tokens(channel_map)?;
+    if channel_tokens.contains(&100) || channel_tokens.contains(&101) != lfe_carrier.is_some() {
+        return Err("dependent LFE carrier does not match its public channel map".to_owned());
     }
     let mut bits = BitWriter::default();
     for (value, width) in [
@@ -715,11 +745,11 @@ fn write_source_dependent_frame_with_options(
         (0, 2),                                          // 48 kHz
         (3, 2),                                          // six blocks
         (u64::try_from(carriers.len()).unwrap_or(0), 3), // one or two full-band channels
-        (0, 1),                                          // no LFE
-        (16, 5),                                         // E-AC-3
-        (31, 5),                                         // dialnorm
-        (0, 1),                                          // no compression metadata
-        (1, 1),                                          // custom channel map present
+        (u64::from(lfe_carrier.is_some()), 1),
+        (16, 5), // E-AC-3
+        (31, 5), // dialnorm
+        (0, 1),  // no compression metadata
+        (1, 1),  // custom channel map present
         (u64::from(channel_map), 16),
         (0, 1), // no mixing metadata
         (0, 1), // no informational metadata
@@ -748,6 +778,11 @@ fn write_source_dependent_frame_with_options(
             bits.push(u64::from(block == 0), 2);
         }
     }
+    if lfe_carrier.is_some() {
+        for block in 0..6 {
+            bits.push(u64::from(block == 0), 1);
+        }
+    }
     bits.push(0, 1); // no block-start information
 
     for block in 0..6 {
@@ -765,6 +800,9 @@ fn write_source_dependent_frame_with_options(
             for _ in carriers {
                 push_source_exponents(&mut bits, D0_INITIAL_EXPONENT);
             }
+            if lfe_carrier.is_some() {
+                push_source_lfe_exponents(&mut bits, D0_INITIAL_EXPONENT);
+            }
             bits.push(1, 1); // new bit-allocation parameters
             bits.push(0, 11); // conservative allocation parameters
             bits.push(63, 6); // coarse SNR offset
@@ -778,6 +816,9 @@ fn write_source_dependent_frame_with_options(
         }
         for carrier in carriers {
             push_source_mantissas(&mut bits, source_feature(carrier, sample_offset, block));
+        }
+        if let Some(carrier) = lfe_carrier {
+            push_source_lfe_mantissas(&mut bits, source_feature(carrier, sample_offset, block));
         }
     }
     if let Some(emdf) = emdf {
@@ -802,6 +843,12 @@ fn push_source_exponents(bits: &mut BitWriter, initial: u8) {
     bits.push(0, 2); // gain range
 }
 
+fn push_source_lfe_exponents(bits: &mut BitWriter, initial: u8) {
+    bits.push(u64::from(initial.min(D0_MAX_EXPONENT)), 4);
+    bits.push(87, 7);
+    bits.push(87, 7);
+}
+
 fn push_source_mantissas(bits: &mut BitWriter, first_code: u8) {
     bits.push(u64::from(first_code), D0_MANTISSA_FIRST_BITS);
     for _ in 0..D0_MANTISSA_ZERO_COUNT {
@@ -810,6 +857,12 @@ fn push_source_mantissas(bits: &mut BitWriter, first_code: u8) {
     for _ in 0..D0_MANTISSA_COUNT {
         bits.push(0, 7);
     }
+}
+
+fn push_source_lfe_mantissas(bits: &mut BitWriter, first_code: u8) {
+    bits.push(u64::from(first_code), 8);
+    bits.push(0, 7);
+    bits.push(0, 7);
 }
 
 fn source_feature(carrier: &[f64], sample_offset: usize, block: usize) -> u8 {
@@ -1114,22 +1167,76 @@ pub fn package_multi_dependent_source_derived_access_unit(
     dependent_carriers: &[Vec<Vec<f64>>],
     sample_offset: usize,
 ) -> Result<Vec<u8>, String> {
+    let plans = dependent_channel_maps
+        .iter()
+        .enumerate()
+        .map(|(index, channel_map)| {
+            DependentPlan::new(
+                u8::try_from(index).unwrap_or(7),
+                *channel_map,
+                DependentLfePolicy::Absent,
+            )
+        })
+        .collect::<Vec<_>>();
+    let plan = OwnershipPlan {
+        profile,
+        independent_lfe: false,
+        dependents: plans,
+        final_joc_owner: u8::try_from(dependent_carriers.len().saturating_sub(1)).unwrap_or(7),
+    };
+    let lfe_carriers = vec![None; dependent_carriers.len()];
+    package_multi_dependent_source_derived_access_unit_with_plan(
+        profile,
+        emdf_profile,
+        sequence_count,
+        matrix,
+        positions,
+        i0_frame,
+        &plan,
+        dependent_carriers,
+        &lfe_carriers,
+        sample_offset,
+    )
+}
+
+/// Packages a raw multi-dependent AU from an explicit ownership plan.
+#[allow(clippy::too_many_arguments)]
+pub fn package_multi_dependent_source_derived_access_unit_with_plan(
+    profile: JocProfile,
+    emdf_profile: EmdfProfile,
+    sequence_count: u16,
+    matrix: &[Vec<f64>],
+    positions: &[AdmPosition],
+    i0_frame: &[u8],
+    ownership_plan: &OwnershipPlan,
+    dependent_carriers: &[Vec<Vec<f64>>],
+    dependent_lfe_carriers: &[Option<Vec<f64>>],
+    sample_offset: usize,
+) -> Result<Vec<u8>, String> {
     if i0_frame.len() < 2 || i0_frame.len() % 2 != 0 || i0_frame.get(0..2) != Some(&[0x0b, 0x77]) {
         return Err("carrier encoder did not return one legal E-AC-3 I0 frame".to_owned());
     }
-    if dependent_carriers.is_empty() {
-        return Err("multi-dependent JOC requires at least one dependent".to_owned());
+    if ownership_plan.profile != profile {
+        return Err("ownership plan profile does not match the selected profile".to_owned());
     }
-    if dependent_carriers.len() > 8 {
-        return Err("multi-dependent JOC supports at most eight D0..D7 dependents".to_owned());
+    if dependent_carriers.len() != ownership_plan.dependents.len()
+        || dependent_lfe_carriers.len() != ownership_plan.dependents.len()
+    {
+        return Err("dependent source carriers must match ownership plan count".to_owned());
     }
-    if dependent_channel_maps.len() != dependent_carriers.len() {
-        return Err("multi-dependent channel maps must match dependent count".to_owned());
+    let independent_lfe = read_bits(i0_frame, 39, 1)
+        .ok_or_else(|| "carrier encoder returned an incomplete I0 LFE field".to_owned())?
+        != 0;
+    if independent_lfe != ownership_plan.independent_lfe {
+        return Err("I0 LFE ownership does not match the ownership plan".to_owned());
     }
-    crate::conformance::validate_multi_dependent_plan(
-        profile,
-        dependent_channel_maps,
+    crate::conformance::validate_source_dependent_ownership_plan(
+        ownership_plan,
         &dependent_carriers.iter().map(Vec::len).collect::<Vec<_>>(),
+        &dependent_lfe_carriers
+            .iter()
+            .map(Option::is_some)
+            .collect::<Vec<_>>(),
     )?;
     if matrix.len() != positions.len() {
         return Err("JOC matrix rows must match reduced OAMD positions".to_owned());
@@ -1142,23 +1249,25 @@ pub fn package_multi_dependent_source_derived_access_unit(
     let mut output = Vec::with_capacity(i0_frame.len() + dependent_carriers.len() * D0_FRAME_BYTES);
     output.extend_from_slice(i0_frame);
     for (index, carriers) in dependent_carriers.iter().enumerate() {
-        let substream_id = u8::try_from(index).unwrap_or(7);
+        let substream_id = ownership_plan.dependents[index].id;
         let dependent = if index + 1 == dependent_carriers.len() {
-            write_source_dependent_frame_with_options(
+            write_source_dependent_frame_with_lfe_options(
                 Some(emdf.as_slice()),
                 substream_id,
-                dependent_channel_maps[index],
+                ownership_plan.dependents[index].channel_map,
                 carriers,
+                dependent_lfe_carriers[index].as_deref(),
                 sample_offset,
                 complexity_index,
                 D0_FRAME_BYTES,
             )?
         } else {
-            write_source_dependent_frame_with_options(
+            write_source_dependent_frame_with_lfe_options(
                 None,
                 substream_id,
-                dependent_channel_maps[index],
+                ownership_plan.dependents[index].channel_map,
                 carriers,
+                dependent_lfe_carriers[index].as_deref(),
                 sample_offset,
                 complexity_index,
                 D0_FRAME_BYTES,
@@ -1281,10 +1390,15 @@ pub fn package_ffmpeg_access_unit(
 #[cfg(test)]
 mod tests {
     use super::{
-        AdmPosition, D0_FRAME_BYTES, source_feature, write_emdf, write_oamd_payload,
-        write_source_dependent_frame,
+        AdmPosition, D0_FRAME_BYTES, source_feature, write_emdf, write_five_channel_frame,
+        write_oamd_payload, write_source_dependent_frame,
+        write_source_dependent_frame_with_lfe_options,
     };
-    use crate::EmdfProfile;
+    use crate::{
+        DependentLfePolicy, DependentPlan, EmdfProfile, JocProfile, OwnershipPlan,
+        package_multi_dependent_source_derived_access_unit_with_plan,
+        validate_multi_dependent_access_unit,
+    };
 
     struct TestBitReader<'a> {
         bytes: &'a [u8],
@@ -1426,5 +1540,81 @@ mod tests {
             .expect_err("lower-rate source-derived D0 is not validated");
 
         assert!(error.contains("below the source-derived minimum"));
+    }
+
+    #[test]
+    fn source_derived_dependent_lfe_is_causally_encoded_and_structurally_owned() {
+        let full_band = vec![vec![0.01; 1536]];
+        let mut lfe = vec![0.0; 1536];
+        lfe[0] = 0.75;
+        let baseline = write_source_dependent_frame_with_lfe_options(
+            None,
+            0,
+            0x4001,
+            &full_band,
+            Some(&lfe),
+            0,
+            16,
+            D0_FRAME_BYTES,
+        )
+        .expect("source-derived dependent LFE");
+
+        lfe[0] = -0.75;
+        let changed = write_source_dependent_frame_with_lfe_options(
+            None,
+            0,
+            0x4001,
+            &full_band,
+            Some(&lfe),
+            0,
+            16,
+            D0_FRAME_BYTES,
+        )
+        .expect("changed source-derived dependent LFE");
+        assert_ne!(baseline, changed);
+
+        let plans = [
+            DependentPlan::new(0, 0x4001, DependentLfePolicy::Supplement),
+            DependentPlan::new(1, 0x8000, DependentLfePolicy::Absent),
+            DependentPlan::new(2, 0x2000, DependentLfePolicy::Absent),
+            DependentPlan::new(3, 0x1000, DependentLfePolicy::Absent),
+            DependentPlan::new(4, 0x0800, DependentLfePolicy::Absent),
+        ];
+        let carriers = plans
+            .iter()
+            .map(|plan| {
+                let count = plan.full_band_channel_count();
+                (0..count).map(|_| vec![0.01; 1536]).collect::<Vec<_>>()
+            })
+            .collect::<Vec<_>>();
+        let lfe_carriers = vec![Some(lfe), None, None, None, None];
+        let matrix = vec![vec![0.1; 5]];
+        let positions = [AdmPosition {
+            azimuth: 0.0,
+            elevation: 0.0,
+            distance: 0.0,
+        }];
+        let bytes = package_multi_dependent_source_derived_access_unit_with_plan(
+            JocProfile::Idx0,
+            EmdfProfile::EtsiStrict,
+            1,
+            &matrix,
+            &positions,
+            &write_five_channel_frame(None, false),
+            &OwnershipPlan {
+                profile: JocProfile::Idx0,
+                independent_lfe: false,
+                dependents: plans.to_vec(),
+                final_joc_owner: 4,
+            },
+            &carriers,
+            &lfe_carriers,
+            0,
+        )
+        .expect("package source-derived dependent LFE");
+        let report = validate_multi_dependent_access_unit(&bytes, JocProfile::Idx0)
+            .expect("validate source-derived dependent LFE");
+        assert!(report.lfe_present);
+        assert_eq!(report.joc_owner, Some(4));
     }
 }
