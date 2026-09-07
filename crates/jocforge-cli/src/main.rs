@@ -313,15 +313,29 @@ fn run_short_block_proof(arguments: &[String]) -> Result<(), String> {
 }
 
 fn run_cmaf_proof(arguments: &[String]) -> Result<(), String> {
-    let [profile_name, input, output] = arguments else {
-        return Err("usage: jocforge conformance-cmaf PROFILE INPUT.ec3 OUTPUT.mp4".to_owned());
+    let (profile_name, input, output, bitrate_kbps) = match arguments {
+        [profile_name, input, output] => (profile_name, input, output, 1664_u32),
+        [profile_name, input, output, flag, value] if flag == "--bitrate" => (
+            profile_name,
+            input,
+            output,
+            value
+                .parse::<u32>()
+                .map_err(|error| format!("invalid CMAF bitrate '{value}': {error}"))?,
+        ),
+        _ => {
+            return Err(
+                "usage: jocforge conformance-cmaf PROFILE INPUT.ec3 OUTPUT.mp4 [--bitrate KBPS]"
+                    .to_owned(),
+            );
+        }
     };
     let profile = parse_profile(profile_name)?;
     let plan = resolve_encoding_plan(
         profile,
         JocCarriage::EtsiAuxDependent,
         EmdfProfile::EtsiStrict,
-        1664,
+        bitrate_kbps,
     )
     .map_err(|error| format!("invalid CMAF conformance plan: {error}"))?;
     let bytes =
@@ -337,7 +351,7 @@ fn run_cmaf_proof(arguments: &[String]) -> Result<(), String> {
         .map(<[u8]>::to_vec)
         .collect::<Vec<_>>();
     let output_bytes =
-        cmaf_joc_init_and_fragments(profile, EmdfProfile::EtsiStrict, 1664, &samples)?;
+        cmaf_joc_init_and_fragments(profile, EmdfProfile::EtsiStrict, bitrate_kbps, &samples)?;
     write_output(&PathBuf::from(output), output_bytes, "CMAF conformance")
 }
 
