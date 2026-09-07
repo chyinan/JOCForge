@@ -19,7 +19,7 @@ use file_scan::{read_pcm_frame, scan_bw64_file};
 use jocforge_core::{
     AdmObject, AdmObjectKind, BlockPartition, EmdfProfile, FinalRenderMeasurement, JocCarriage,
     JocProfile, ReductionConfig, ReductionSource, SOURCE_DERIVED_CARRIER_PEAK_LIMIT,
-    d0_carrier_causality, factorize_source_derived, final_render_gate,
+    cmaf_joc_init_and_fragments, d0_carrier_causality, factorize_source_derived, final_render_gate,
     generate_synthetic_scene_fixture, limit_signal_peak, maximum_absolute_difference,
     package_i0_skip_field_access_unit, package_legacy_ac3_source_derived_access_unit,
     package_multi_dependent_source_derived_access_unit,
@@ -48,6 +48,7 @@ fn run(arguments: &[String]) -> Result<(), String> {
         Some("proof") => run_proof(&arguments[1..]),
         Some("conformance-multi-dependent") => run_multi_dependent_proof(&arguments[1..]),
         Some("conformance-short") => run_short_block_proof(&arguments[1..]),
+        Some("conformance-cmaf") => run_cmaf_proof(&arguments[1..]),
         Some("fixture") => run_fixture(&arguments[1..]),
         Some("fixture-directspeakers") => run_direct_speaker_fixture(&arguments[1..]),
         Some("fixture-unsupported") => run_unsupported_fixture(&arguments[1..]),
@@ -61,7 +62,7 @@ fn run(arguments: &[String]) -> Result<(), String> {
         Some("temporal-adversarial") => run_temporal_adversarial(&arguments[1..]),
         Some(command) => Err(format!("unsupported command '{command}'")),
         None => Err(
-            "usage: jocforge proof|conformance-short|conformance-multi-dependent|fixture|fixture-directspeakers|fixture-unsupported|inspect-adm|encode|quantization-stress|carrier-causality|spectral-phase|final-render-gate|temporal ..."
+            "usage: jocforge proof|conformance-short|conformance-multi-dependent|conformance-cmaf|fixture|fixture-directspeakers|fixture-unsupported|inspect-adm|encode|quantization-stress|carrier-causality|spectral-phase|final-render-gate|temporal ..."
                 .to_owned(),
         ),
     }
@@ -309,6 +310,35 @@ fn run_short_block_proof(arguments: &[String]) -> Result<(), String> {
         bytes,
         "short-block conformance proof",
     )
+}
+
+fn run_cmaf_proof(arguments: &[String]) -> Result<(), String> {
+    let [profile_name, input, output] = arguments else {
+        return Err("usage: jocforge conformance-cmaf PROFILE INPUT.ec3 OUTPUT.mp4".to_owned());
+    };
+    let profile = parse_profile(profile_name)?;
+    let plan = resolve_encoding_plan(
+        profile,
+        JocCarriage::EtsiAuxDependent,
+        EmdfProfile::EtsiStrict,
+        1664,
+    )
+    .map_err(|error| format!("invalid CMAF conformance plan: {error}"))?;
+    let bytes =
+        fs::read(input).map_err(|error| format!("failed to read raw JOC input: {error}"))?;
+    let sample_size = plan.rate.carrier_frame_bytes + plan.rate.d0_frame_bytes;
+    if bytes.len() % sample_size != 0 {
+        return Err(format!(
+            "CMAF input must contain complete {sample_size}-byte JOC access units"
+        ));
+    }
+    let samples = bytes
+        .chunks_exact(sample_size)
+        .map(<[u8]>::to_vec)
+        .collect::<Vec<_>>();
+    let output_bytes =
+        cmaf_joc_init_and_fragments(profile, EmdfProfile::EtsiStrict, 1664, &samples)?;
+    write_output(&PathBuf::from(output), output_bytes, "CMAF conformance")
 }
 
 fn run_quantization_stress(arguments: &[String]) -> Result<(), String> {

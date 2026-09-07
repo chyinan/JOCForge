@@ -192,3 +192,6 @@ Last verified: 2026-09-07
   1/2/3/6-block grouping to one 1,536-sample interval and sequential D0..D7
   ID bounds. `conformance-short` is an advanced synthetic short-frame writer;
   it is not the normal PCM-derived bitrate path.
+- `crates/jocforge-core/src/cmaf.rs` and `conformance-cmaf` provide the
+  validated advanced CMAF path for no-LFE strict idx0..idx4, one I0+D0,
+  six-block, 1664 kbps samples. Other container cells remain fail-closed.

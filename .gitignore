@@ -21,6 +21,8 @@
 /artifacts/legacy-core-profile-closure/
 /artifacts/legacy-core-rate-sweep/
 /artifacts/short-block-closure/
+/artifacts/cmaf-closure/
+/artifacts/cmaf-probe.mp4
 /artifacts/legacy-core-*.metrics.csv
 *.ec3
 *.bw64

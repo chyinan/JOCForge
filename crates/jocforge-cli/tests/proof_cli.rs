@@ -91,6 +91,31 @@ fn advanced_short_block_cli_writes_one_grouped_interval() {
 }
 
 #[test]
+fn advanced_cmaf_cli_wraps_a_complete_raw_joc_sample() {
+    let root = env::temp_dir().join(format!("jocforge-cmaf-{}", std::process::id()));
+    fs::create_dir_all(&root).expect("temporary directory");
+    let raw = root.join("sample.ec3");
+    let output = root.join("sample.mp4");
+    let proof = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+        .args(["proof", "idx1", raw.to_str().expect("raw path is UTF-8")])
+        .status()
+        .expect("proof CLI starts");
+    assert!(proof.success());
+    let cmaf = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+        .args([
+            "conformance-cmaf",
+            "idx1",
+            raw.to_str().expect("raw path is UTF-8"),
+            output.to_str().expect("CMAF path is UTF-8"),
+        ])
+        .status()
+        .expect("CMAF CLI starts");
+    assert!(cmaf.success());
+    assert!(fs::metadata(&output).expect("CMAF output").len() > 0);
+    let _ = fs::remove_dir_all(root);
+}
+
+#[test]
 fn quantization_stress_cli_reports_all_profiles_and_full_domain() {
     let output_path = env::temp_dir().join(format!(
         "jocforge-quantization-stress-{}.json",

@@ -4,6 +4,7 @@
 
 mod adm;
 mod analysis;
+mod cmaf;
 mod conformance;
 mod eac3;
 mod plan;
@@ -27,6 +28,7 @@ pub use analysis::{
     limit_signal_peak, maximum_absolute_difference, quantize_coefficient, reconstruction_error,
     source_derived_carrier_causality,
 };
+pub use cmaf::cmaf_joc_init_and_fragments;
 pub use conformance::{
     BlockPartition, ConformancePlanError, DependentTopology, ShortBlockPlan,
     resolve_dependent_topology, resolve_short_block_plan,
