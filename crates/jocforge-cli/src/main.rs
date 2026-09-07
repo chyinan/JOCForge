@@ -17,11 +17,12 @@ mod file_scan;
 use file_scan::{read_pcm_frame, scan_bw64_file};
 
 use jocforge_core::{
-    AdmObject, AdmObjectKind, FinalRenderMeasurement, JocProfile, ReductionConfig, ReductionSource,
-    SOURCE_DERIVED_CARRIER_PEAK_LIMIT, d0_carrier_causality, factorize_source_derived,
-    final_render_gate, generate_synthetic_scene_fixture, limit_signal_peak,
-    maximum_absolute_difference, package_source_derived_access_unit_with_frame_sizes,
-    parse_bw64_adm_metadata, profile_spec, quantize_coefficient, rate_budget, reconstruction_error,
+    AdmObject, AdmObjectKind, FinalRenderMeasurement, JocCarriage, JocProfile, ReductionConfig,
+    ReductionSource, SOURCE_DERIVED_CARRIER_PEAK_LIMIT, d0_carrier_causality,
+    factorize_source_derived, final_render_gate, generate_synthetic_scene_fixture,
+    limit_signal_peak, maximum_absolute_difference, package_deployed_compat_access_unit,
+    package_source_derived_access_unit_with_frame_sizes, parse_bw64_adm_metadata, profile_spec,
+    quantize_coefficient, rate_budget_for_carriage, reconstruction_error,
     reduce_scene_with_previous, source_derived_carrier_causality, spectral_phase_report,
     validate_source_derived_adm_metadata, write_one_au_proof,
 };
@@ -968,7 +969,7 @@ fn csv_cell(value: &str) -> String {
 fn run_encode(arguments: &[String]) -> Result<(), String> {
     if arguments.len() < 4 || (arguments.len() - 4) % 2 != 0 {
         return Err(
-            "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile idx0|idx1|idx2 [--bitrate KBPS] [--temporal-weight VALUE]"
+            "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile idx0|idx1|idx2 [--carriage etsi-strict|deployed-compat] [--bitrate KBPS] [--temporal-weight VALUE]"
                 .to_owned(),
         );
     }
@@ -978,11 +979,12 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
     let profile_name = &arguments[3];
     if flag != "--profile" {
         return Err(
-            "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile idx0|idx1|idx2 [--bitrate KBPS] [--temporal-weight VALUE]"
+            "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile idx0|idx1|idx2 [--carriage etsi-strict|deployed-compat] [--bitrate KBPS] [--temporal-weight VALUE]"
                 .to_owned(),
         );
     }
     let mut target_bitrate_kbps = 1664;
+    let mut carriage = JocCarriage::EtsiStrict;
     let mut temporal_continuity_weight = ReductionConfig::default().temporal_continuity_weight;
     let mut option_index = 4;
     while option_index < arguments.len() {
@@ -991,6 +993,9 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
             .get(option_index + 1)
             .ok_or_else(|| "encode option is missing its value".to_owned())?;
         match option.as_str() {
+            "--carriage" => {
+                carriage = parse_carriage(value)?;
+            }
             "--bitrate" => {
                 target_bitrate_kbps = value
                     .parse::<u32>()
@@ -1003,16 +1008,19 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
             }
             _ => {
                 return Err(
-                    "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile idx0|idx1|idx2 [--bitrate KBPS] [--temporal-weight VALUE]"
+                    "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile idx0|idx1|idx2 [--carriage etsi-strict|deployed-compat] [--bitrate KBPS] [--temporal-weight VALUE]"
                         .to_owned(),
                 );
             }
         }
         option_index += 2;
     }
-    let rate = rate_budget(target_bitrate_kbps)
-        .map_err(|error| format!("invalid encode budget: {error}"))?;
     let profile = parse_profile(profile_name)?;
+    if carriage == JocCarriage::DeployedCompat && profile != JocProfile::Idx0 {
+        return Err("deployed-compatible carriage currently supports idx0 only".to_owned());
+    }
+    let rate = rate_budget_for_carriage(carriage, target_bitrate_kbps)
+        .map_err(|error| format!("invalid encode budget: {error}"))?;
     let input_path = PathBuf::from(input);
     let scanned = scan_bw64_file(&input_path)?;
     let metadata = parse_bw64_adm_metadata(
@@ -1158,16 +1166,19 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         &i0_raw_path,
         &i0_carrier_path,
         i0_channels,
-        &format!("{}k", rate.carrier_bitrate_kbps),
+        &format!("{}k", rate.carrier_encode_bitrate_kbps),
     )?;
-    let i0_carrier_bytes =
-        read_carrier_frames(&i0_carrier_path, rate.carrier_frame_bytes, frame_count)?;
+    let i0_carrier_bytes = read_carrier_frames(
+        &i0_carrier_path,
+        rate.carrier_encoded_frame_bytes,
+        frame_count,
+    )?;
     let mut output_bytes =
         Vec::with_capacity(frame_count * (rate.carrier_frame_bytes + rate.d0_frame_bytes));
     previous_reduction = None;
     for frame_index in 0..frame_count {
-        let i0_start = frame_index * rate.carrier_frame_bytes;
-        let i0_frame = &i0_carrier_bytes[i0_start..i0_start + rate.carrier_frame_bytes];
+        let i0_start = frame_index * rate.carrier_encoded_frame_bytes;
+        let i0_frame = &i0_carrier_bytes[i0_start..i0_start + rate.carrier_encoded_frame_bytes];
         let source_pcm = read_pcm_frame(&input_path, &scanned, frame_index, &track_indices)?;
         let sources = reduction_sources(&supported_objects, &source_pcm)?;
         let reduction =
@@ -1194,16 +1205,25 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
             .into_iter()
             .map(|index| factorization.carriers[index].clone())
             .collect::<Vec<_>>();
-        let access_unit = package_source_derived_access_unit_with_frame_sizes(
-            profile,
-            sequence,
-            &factorization.scaled_matrix,
-            &positions,
-            i0_frame,
-            &d0_carriers,
-            0,
-            rate.d0_frame_bytes,
-        )
+        let access_unit = match carriage {
+            JocCarriage::EtsiStrict => package_source_derived_access_unit_with_frame_sizes(
+                profile,
+                sequence,
+                &factorization.scaled_matrix,
+                &positions,
+                i0_frame,
+                &d0_carriers,
+                0,
+                rate.d0_frame_bytes,
+            ),
+            JocCarriage::DeployedCompat => package_deployed_compat_access_unit(
+                profile,
+                sequence,
+                &factorization.scaled_matrix,
+                &positions,
+                i0_frame,
+            ),
+        }
         .map_err(|error| format!("failed to package frame {frame_index}: {error}"))?;
         output_bytes.extend_from_slice(&access_unit);
         previous_reduction = Some(reduction);
@@ -1215,7 +1235,7 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
     write_output(&metrics_path, metrics.into_bytes(), "reduction metrics")?;
     let _ = fs::remove_dir_all(work_root);
     println!(
-        "encoded profile={profile_name} frames={frame_count} samples={encoded_samples} authored_sources={} authored_channels={} dynamic_objects={} direct_speakers={} direct_speaker_channels={} lfe_core_channels={} coded_objects_last_frame={} output_bytes={output_bytes_len} target_bitrate={} carrier_bitrate={} d0_bitrate={} temporal_weight={:.17e} reduction=deterministic:farthest-point+weighted-aggregate metrics={}",
+        "encoded profile={profile_name} carriage={carriage:?} frames={frame_count} samples={encoded_samples} authored_sources={} authored_channels={} dynamic_objects={} direct_speakers={} direct_speaker_channels={} lfe_core_channels={} coded_objects_last_frame={} output_bytes={output_bytes_len} target_bitrate={} carrier_bitrate={} d0_bitrate={} temporal_weight={:.17e} reduction=deterministic:farthest-point+weighted-aggregate metrics={}",
         supported_objects.len(),
         track_indices.len(),
         metadata.dynamic_object_count(),
@@ -1535,6 +1555,14 @@ fn parse_profile(value: &str) -> Result<JocProfile, String> {
         "idx1" => Ok(JocProfile::Idx1),
         "idx2" => Ok(JocProfile::Idx2),
         other => Err(format!("unsupported JOC profile '{other}'")),
+    }
+}
+
+fn parse_carriage(value: &str) -> Result<JocCarriage, String> {
+    match value {
+        "etsi-strict" => Ok(JocCarriage::EtsiStrict),
+        "deployed-compat" => Ok(JocCarriage::DeployedCompat),
+        other => Err(format!("unsupported JOC carriage '{other}'")),
     }
 }
 

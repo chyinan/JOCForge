@@ -4,6 +4,7 @@
 
 mod adm;
 mod analysis;
+mod eac3;
 mod profile;
 mod rate;
 mod reduction;
@@ -24,8 +25,9 @@ pub use analysis::{
     limit_signal_peak, maximum_absolute_difference, quantize_coefficient, reconstruction_error,
     source_derived_carrier_causality,
 };
+pub use eac3::inject_joc_skipfld;
 pub use profile::{JocProfileSpec, profile_spec};
-pub use rate::{RateBudget, RateBudgetError, rate_budget};
+pub use rate::{RateBudget, RateBudgetError, rate_budget, rate_budget_for_carriage};
 pub use reduction::{
     MAX_CODED_OBJECTS, ReducedObject, ReductionConfig, ReductionDiagnostics, ReductionError,
     ReductionResult, ReductionSource, SourceAccounting, authored_source_assignment_changes,
@@ -42,9 +44,9 @@ pub use validation::{
     temporal_corpus,
 };
 pub use writer::{
-    D0CausalityMeasurement, d0_carrier_causality, package_ffmpeg_access_unit,
-    package_source_derived_access_unit, package_source_derived_access_unit_with_frame_sizes,
-    write_one_au_proof,
+    D0CausalityMeasurement, d0_carrier_causality, package_deployed_compat_access_unit,
+    package_ffmpeg_access_unit, package_source_derived_access_unit,
+    package_source_derived_access_unit_with_frame_sizes, write_one_au_proof,
 };
 
 /// MVP JOC downmix profiles.
@@ -53,4 +55,13 @@ pub enum JocProfile {
     Idx0,
     Idx1,
     Idx2,
+}
+
+/// Publicly selected E-AC-3/JOC carriage topology.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum JocCarriage {
+    /// Existing JOCForge I0 plus dependent-substream carriage.
+    EtsiStrict,
+    /// Public E-AC-3 I0-only carriage with EMDF in audio-block skip fields.
+    DeployedCompat,
 }

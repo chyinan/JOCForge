@@ -1,6 +1,6 @@
 # JOCForge
 
-Last verified: 2026-09-03
+Last verified: 2026-09-07
 
 ## Tech Stack
 
@@ -43,8 +43,10 @@ Last verified: 2026-09-03
   temporal corpus generation and metrics.
 - `crates/jocforge-core/src/spectral.rs` — pure deterministic spectral/phase
   corpus generation, compatibility metrics, and final-render gate evaluation.
-- `crates/jocforge-core/src/writer.rs` — pure JOC/OAMD/EMDF and I0 plus
-  PCM-derived dependent D0 writer.
+- `crates/jocforge-core/src/eac3.rs` — public fail-closed E-AC-3 audio-block
+  walker, nominal-frame padding, skipfld insertion, and CRC2 rewrite.
+- `crates/jocforge-core/src/writer.rs` — pure JOC/OAMD/EMDF and ETSI-strict
+  I0/D0 plus deployed-compatible I0-only packaging.
 - `crates/jocforge-cli/src/main.rs` — file/process orchestration shell.
 - `crates/jocforge-cli/src/file_scan.rs` — seek-aware BW64 chunk scanner that
   reads metadata after large `data` chunks without loading PCM, plus bounded
@@ -65,6 +67,8 @@ Last verified: 2026-09-03
 - Core logic is deterministic and side-effect free; file/process I/O stays in
   CLI or scripts.
 - User-facing errors are lowercase actionable fragments.
+- Carriage selection is explicit: `etsi-strict` is the default and
+  `deployed-compat` is limited to idx0/1024 in the initial implementation.
 - Matrix and metadata ordering is explicit and stable; unsupported ADM input
   is rejected rather than silently flattened.
 - DirectSpeakers LFE routing uses only public `speakerLabel`/`frequency.lowPass`
@@ -82,6 +86,10 @@ Last verified: 2026-09-03
   frame and two 1536-sample source D0 carrier windows for the selected active
   coded-object set, returning I0 plus a JOCForge-owned PCM-derived D0 carriage
   whose validated minimum is 2560 bytes. Matrix and OAMD row counts must match.
+- `package_deployed_compat_access_unit` accepts a public FFmpeg I0 core, pads
+  the deployed MVP's 896 kbps encoded core to a nominal 4096-byte/1024 kbps
+  frame, and inserts strict OAMD/JOC EMDF into public audio-block skip fields;
+  it emits no D0 and fails closed when the skip-field capacity is insufficient.
 - `reduce_scene` and `reduce_scene_with_previous` provide the pure N-to-15
   clean decision boundary. Every supported authored source has a deterministic
   coded-object assignment and positive accounting gain; previous representatives
@@ -113,9 +121,11 @@ Last verified: 2026-09-03
 - `final_render_leakage` is measured from unintended-to-intended channel energy
   in actual frozen-OpenJOC rendered PCM; source-stage
   `unexplained_cluster_leakage` is a separate metric and cannot satisfy it.
-- Bitrate support is a `PROFILE x BITRATE` contract. Current supported cells
-  are idx0/idx1/idx2 at 1024, 1280, 1408, 1536, and 1664 kbps; lower tested
-  rates reject for paired I0/D0 capacity. The 384 kbps I0 path disables
+- Bitrate support is a `CARRIAGE x PROFILE x BITRATE` contract. ETSI-strict
+  supported cells are idx0/idx1/idx2 at 1024, 1280, 1408, 1536, and 1664 kbps;
+  deployed-compatible initially supports idx0/1024 only. Lower strict rates
+  reject for paired I0/D0 capacity.
+  The 384 kbps strict I0 path disables
   automatic FFmpeg channel coupling for pinned OpenJOC traversal correctness.
 - No proprietary Dolby encoder binary, media, or reverse-engineered logic is
   permitted in this repository.
@@ -128,10 +138,11 @@ Last verified: 2026-09-03
 - The overnight MVP uses a narrow Rust BW64/axml/chna subset because this host
   lacks an exposed CMake/compiler/Boost path; `libadm`/`libbw64` migration is
   follow-up work.
-- FFmpeg encodes the actual 5-channel I0 carrier at 1024 kbps. JOCForge writes
-  a valid 2560-byte dependent D0 whose two channels are driven by source
-  carrier PCM-window features; the D0 path is source-derived but not yet a
-  transparent perceptual E-AC-3 encoder.
+- FFmpeg remains the external public E-AC-3 audio-core encoder. ETSI-strict
+  retains the established 384+640 I0/D0 allocation at 1024 kbps. The public
+  deployed-compatible idx0/1024 mode encodes a 896 kbps I0 core, pads it to a
+  nominal 4096-byte frame, and carries JOC EMDF in skipfld; it is a carriage
+  implementation, not a new perceptual E-AC-3 encoder.
 - `ReductionConfig.temporal_continuity_weight` defaults to the clean-side
   dimensionless value `0.15`; it adds a switch cost only when a source moves
   between prior-frame clusters and is covered by controlled/adversarial tests.

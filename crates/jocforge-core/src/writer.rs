@@ -798,6 +798,44 @@ pub fn package_source_derived_access_unit_with_frame_sizes(
     Ok(output)
 }
 
+/// Packages one public I0-only deployed-compatible AU.  The external FFmpeg
+/// frame remains the audio core; JOCForge owns the public EMDF and inserts it
+/// into the I0 audio-block skip field without retaining a dependent substream.
+#[allow(clippy::too_many_arguments)]
+pub fn package_deployed_compat_access_unit(
+    profile: JocProfile,
+    sequence_count: u16,
+    matrix: &[Vec<f64>],
+    positions: &[AdmPosition],
+    i0_frame: &[u8],
+) -> Result<Vec<u8>, String> {
+    if profile != JocProfile::Idx0 {
+        return Err("deployed-compatible carriage currently supports idx0 only".to_owned());
+    }
+    if i0_frame.get(0..2) != Some(&[0x0b, 0x77])
+        || !(i0_frame.len() == FRAME_BYTES || i0_frame.len() == 3584)
+    {
+        return Err("deployed-compatible carriage requires one public E-AC-3 I0 frame".to_owned());
+    }
+    if matrix.len() != positions.len() {
+        return Err("JOC matrix rows must match reduced OAMD positions".to_owned());
+    }
+    let oamd = write_oamd_payload(positions)?;
+    let joc = write_joc_payload(profile, sequence_count, matrix)?;
+    let emdf = write_emdf(&oamd, &joc)?;
+    let i0_frame = if i0_frame.len() == FRAME_BYTES {
+        i0_frame.to_vec()
+    } else {
+        crate::eac3::inflate_eac3_frame(i0_frame, FRAME_BYTES)?
+    };
+    crate::eac3::inject_joc_skipfld(
+        &i0_frame,
+        &emdf,
+        u8::try_from(positions.len() + 1)
+            .map_err(|_| "JOC complexity index exceeds its eight-bit field".to_owned())?,
+    )
+}
+
 /// Verifies that each D0 source input changes the emitted dependent frame.
 /// The fixture is deterministic and exercises the actual source-dependent D0
 /// writer rather than only checking an in-memory carrier flag.

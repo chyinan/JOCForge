@@ -50,3 +50,12 @@ can be added to the stream. The clean result is therefore recorded as:
 The project must not change `codecdatae` or invent an addbsi value solely to
 make MediaInfo display `E-AC-3 JOC` without a new ETSI-grounded test proving
 the resulting stream remains conforming.
+
+## Public I0-only skip-field carriage
+
+The separate deployed-compatible carriage closure is recorded in
+[`public-i0-skipfld-carriage.md`](public-i0-skipfld-carriage.md). It does not
+change the MediaInfo conclusion: public skip-field carriage and MediaInfo's
+`codecdatae` heuristic are independent questions. The deployed-compatible
+mode retains JOCForge's strict EMDF configuration and does not copy DEE's
+`codecdatae=0` or payload IDs 1/2.

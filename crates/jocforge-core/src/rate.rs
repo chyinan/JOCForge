@@ -6,9 +6,13 @@ use std::fmt;
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct RateBudget {
     pub total_bitrate_kbps: u32,
+    /// Nominal bitrate represented by the final carriage frame.
     pub carrier_bitrate_kbps: u32,
+    /// External encoder bitrate used before any public frame padding.
+    pub carrier_encode_bitrate_kbps: u32,
     pub d0_bitrate_kbps: u32,
     pub carrier_frame_bytes: usize,
+    pub carrier_encoded_frame_bytes: usize,
     pub d0_frame_bytes: usize,
 }
 
@@ -47,10 +51,36 @@ pub fn rate_budget(total_bitrate_kbps: u32) -> Result<RateBudget, RateBudgetErro
     Ok(RateBudget {
         total_bitrate_kbps,
         carrier_bitrate_kbps,
+        carrier_encode_bitrate_kbps: carrier_bitrate_kbps,
         d0_bitrate_kbps,
         carrier_frame_bytes: frame_bytes(carrier_bitrate_kbps),
+        carrier_encoded_frame_bytes: frame_bytes(carrier_bitrate_kbps),
         d0_frame_bytes: frame_bytes(d0_bitrate_kbps),
     })
+}
+
+/// Returns the deterministic profile-independent allocation for a selected
+/// carriage topology.  The deployed-compatible MVP deliberately supports only
+/// one complete 1024 kbps I0 frame; it does not synthesize a dependent frame.
+pub fn rate_budget_for_carriage(
+    carriage: crate::JocCarriage,
+    total_bitrate_kbps: u32,
+) -> Result<RateBudget, RateBudgetError> {
+    match carriage {
+        crate::JocCarriage::EtsiStrict => rate_budget(total_bitrate_kbps),
+        crate::JocCarriage::DeployedCompat if total_bitrate_kbps == 1024 => Ok(RateBudget {
+            total_bitrate_kbps,
+            carrier_bitrate_kbps: 1024,
+            carrier_encode_bitrate_kbps: 896,
+            d0_bitrate_kbps: 0,
+            carrier_frame_bytes: frame_bytes(1024),
+            carrier_encoded_frame_bytes: frame_bytes(896),
+            d0_frame_bytes: 0,
+        }),
+        crate::JocCarriage::DeployedCompat => {
+            Err(RateBudgetError::UnsupportedTotalBitrate(total_bitrate_kbps))
+        }
+    }
 }
 
 fn frame_bytes(bitrate_kbps: u32) -> usize {
