@@ -693,6 +693,19 @@ fn write_source_dependent_frame_with_options(
             "source-derived dependent requires one or two 1536-sample carrier windows".to_owned(),
         );
     }
+    if carriers
+        .iter()
+        .any(|carrier| carrier.iter().any(|sample| !sample.is_finite()))
+    {
+        return Err("source-derived dependent carriers must contain finite PCM".to_owned());
+    }
+    let mapped_channel_count = crate::conformance::channel_map_channel_count(channel_map);
+    if mapped_channel_count != carriers.len() {
+        return Err(format!(
+            "dependent chanmap carries {mapped_channel_count} channels but source-derived input has {}",
+            carriers.len()
+        ));
+    }
     let mut bits = BitWriter::default();
     for (value, width) in [
         (0x0b77, 16),
@@ -1113,6 +1126,11 @@ pub fn package_multi_dependent_source_derived_access_unit(
     if dependent_channel_maps.len() != dependent_carriers.len() {
         return Err("multi-dependent channel maps must match dependent count".to_owned());
     }
+    crate::conformance::validate_multi_dependent_plan(
+        profile,
+        dependent_channel_maps,
+        &dependent_carriers.iter().map(Vec::len).collect::<Vec<_>>(),
+    )?;
     if matrix.len() != positions.len() {
         return Err("JOC matrix rows must match reduced OAMD positions".to_owned());
     }
@@ -1136,7 +1154,15 @@ pub fn package_multi_dependent_source_derived_access_unit(
                 D0_FRAME_BYTES,
             )?
         } else {
-            write_dependent_frame_with_id(Some(&[]), substream_id, dependent_channel_maps[index])
+            write_source_dependent_frame_with_options(
+                None,
+                substream_id,
+                dependent_channel_maps[index],
+                carriers,
+                sample_offset,
+                complexity_index,
+                D0_FRAME_BYTES,
+            )?
         };
         output.extend_from_slice(&dependent);
     }

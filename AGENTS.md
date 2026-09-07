@@ -35,7 +35,7 @@ Last verified: 2026-09-07
   and deterministic carrier-causality probes.
 - `crates/jocforge-core/src/reduction.rs` — pure deterministic authored-object
   reduction, source accounting, spatial aggregation, and stability metrics.
-- `crates/jocforge-core/src/profile.rs` — mandatory idx0/idx1/idx2 topology
+- `crates/jocforge-core/src/profile.rs` — mandatory idx0..idx4 topology
   contracts, including profile-owned D0 source indices.
 - `crates/jocforge-core/src/rate.rs` — deterministic clean I0/D0 budget
   allocations and legal-rate policy.
@@ -181,9 +181,16 @@ Last verified: 2026-09-07
 - Canonical ETSI raw-elementary idx0..idx4 cells at 1024, 1280, 1408, 1536,
   and 1664 kbps have five-profile OpenJOC/FFmpeg/render/causality evidence;
   the LFE-present variants have a separate five-profile evidence run.
-- General short-block, multi-dependent, CMAF, and legacy-core generation is
-  classified explicitly in the capability matrix and remains fail-closed until
-  independent writer and validation contracts are added.
+- General raw multi-dependent generation now has an independent structural
+  validator, source-derived non-final dependents, final-dependent-only JOC/OAMD
+  ownership, explicit capacity planning, and profile-specific canonical maps.
+  No-LFE canonical coverage is D0..D4 for idx0/idx3 and D0..D5 for idx1/idx2/idx4;
+  public raw D0..D7 legality remains documented separately, while D6/D7 are
+  fail-closed for this JOC ownership plan. CMAF remains I0 plus optional D0.
+- FFmpeg is interoperability evidence only for raw multi-dependent carriage.
+  A legal JOCForge/OpenJOC cell may be `SUPPORTED_PASS` with
+  `UNSUPPORTED_DECODER_FEATURE` when stock FFmpeg skips additional nonzero
+  substream IDs; malformed common paths remain real failures.
 - The validated advanced legacy-core exception is `legacy-ac3` with public
   idx0..idx4 at 1280 kbps and idx1 at 1024/1088/1152/1216 kbps, with one
   original-syntax AC-3 I0 plus one E-AC-3 D0; other legacy-core cells remain

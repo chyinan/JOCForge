@@ -5,7 +5,7 @@ use jocforge_core::{
     package_i0_skip_field_access_unit, package_legacy_ac3_source_derived_access_unit,
     package_multi_dependent_source_derived_access_unit,
     package_short_block_conformance_access_unit, package_source_derived_access_unit,
-    write_one_au_proof,
+    validate_multi_dependent_access_unit, write_one_au_proof,
 };
 
 fn ffmpeg_i0_frame(label: &str) -> Vec<u8> {
@@ -179,9 +179,10 @@ fn multi_dependent_writer_places_joc_emdf_only_on_the_last_sequential_dependent(
         elevation: 0.0,
         distance: 0.0,
     };
-    let i0 = vec![0x0b, 0x77]
+    let i0 = write_one_au_proof(JocProfile::Idx1)
+        .expect("valid synthetic I0")
         .into_iter()
-        .chain(std::iter::repeat_n(0, 4094))
+        .take(4096)
         .collect::<Vec<_>>();
     let maps = vec![0xc000, 0x3000];
     let carriers = vec![
@@ -210,6 +211,234 @@ fn multi_dependent_writer_places_joc_emdf_only_on_the_last_sequential_dependent(
             .windows(2)
             .any(|window| window == [0x58, 0x38])
     );
+
+    let report = validate_multi_dependent_access_unit(&access_unit, JocProfile::Idx0)
+        .expect("independent multi-dependent structural validation");
+    assert_eq!(report.dependent_ids, vec![0, 1]);
+    assert_eq!(report.dependent_channel_maps, maps);
+    assert_eq!(report.joc_owner, Some(1));
+    assert_eq!(report.joc_downmix_index, 0);
+    assert_eq!(report.complexity_index, 2);
+    assert_eq!(report.total_samples, 1536);
+    assert!(report.unique_dependent_channel_ownership);
+    assert_eq!(
+        report
+            .ownership_census
+            .iter()
+            .map(|entry| entry.channel_tokens.len())
+            .collect::<Vec<_>>(),
+        vec![5, 2, 2]
+    );
+}
+
+#[test]
+fn multi_dependent_writer_supports_three_source_derived_dependents() {
+    let matrix = vec![vec![820.0 / 4096.0; 7]];
+    let position = jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    };
+    let i0 = write_one_au_proof(JocProfile::Idx1)
+        .expect("valid synthetic I0")
+        .into_iter()
+        .take(4096)
+        .collect::<Vec<_>>();
+    let maps = vec![0xc000, 0x3000, 0x0200];
+    let carriers = (0..3)
+        .map(|dependent| {
+            vec![
+                vec![0.1 + f64::from(dependent) * 0.01; 1536],
+                vec![0.2 + f64::from(dependent) * 0.01; 1536],
+            ]
+        })
+        .collect::<Vec<_>>();
+
+    let access_unit = package_multi_dependent_source_derived_access_unit(
+        JocProfile::Idx1,
+        EmdfProfile::EtsiStrict,
+        1,
+        &matrix,
+        &[position],
+        &i0,
+        &maps,
+        &carriers,
+        0,
+    )
+    .expect("three-dependent source-derived AU");
+    let report = validate_multi_dependent_access_unit(&access_unit, JocProfile::Idx1)
+        .expect("three-dependent structural validation");
+
+    assert_eq!(report.component_count, 4);
+    assert_eq!(report.dependent_ids, vec![0, 1, 2]);
+    assert_eq!(report.dependent_channel_maps, maps);
+    assert_eq!(report.joc_owner, Some(2));
+    assert_eq!(report.joc_downmix_index, 1);
+}
+
+#[test]
+fn multi_dependent_writer_supports_six_unique_single_channel_dependents() {
+    let matrix = vec![vec![820.0 / 4096.0; 7]];
+    let position = jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    };
+    let i0 = write_one_au_proof(JocProfile::Idx1)
+        .expect("valid synthetic I0")
+        .into_iter()
+        .take(4096)
+        .collect::<Vec<_>>();
+    let maps = vec![0x8000, 0x4000, 0x2000, 0x1000, 0x0800, 0x0200];
+    let carriers = (0..maps.len())
+        .map(|dependent| {
+            let channels = if dependent == maps.len() - 1 { 2 } else { 1 };
+            (0..channels)
+                .map(|channel| {
+                    vec![
+                        0.1 + f64::from(u32::try_from(dependent).expect("dependent")) * 0.01
+                            + f64::from(u32::try_from(channel).expect("channel")) * 0.01;
+                        1536
+                    ]
+                })
+                .collect::<Vec<_>>()
+        })
+        .collect::<Vec<_>>();
+
+    let access_unit = package_multi_dependent_source_derived_access_unit(
+        JocProfile::Idx1,
+        EmdfProfile::EtsiStrict,
+        1,
+        &matrix,
+        &[position],
+        &i0,
+        &maps,
+        &carriers,
+        0,
+    )
+    .expect("six-dependent source-derived AU");
+    let report = validate_multi_dependent_access_unit(&access_unit, JocProfile::Idx1)
+        .expect("six-dependent structural validation");
+
+    assert_eq!(report.dependent_ids, (0..6).collect::<Vec<_>>());
+    assert_eq!(report.joc_owner, Some(5));
+    assert_eq!(report.dependent_channel_maps, maps);
+
+    for dependent in 0..carriers.len() {
+        let mut perturbed_carriers = carriers.clone();
+        perturbed_carriers[dependent][0][0] += 0.037;
+        let perturbed = package_multi_dependent_source_derived_access_unit(
+            JocProfile::Idx1,
+            EmdfProfile::EtsiStrict,
+            1,
+            &matrix,
+            &[position],
+            &i0,
+            &maps,
+            &perturbed_carriers,
+            0,
+        )
+        .expect("perturbed source-derived AU");
+        let start = i0.len() + dependent * 2560;
+        assert_ne!(
+            &access_unit[start..start + 2560],
+            &perturbed[start..start + 2560],
+            "dependent D{dependent} must retain source causality"
+        );
+    }
+}
+
+#[test]
+fn multi_dependent_writer_rejects_duplicate_dependent_channel_ownership() {
+    let position = jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    };
+    let i0 = write_one_au_proof(JocProfile::Idx1)
+        .expect("valid synthetic I0")
+        .into_iter()
+        .take(4096)
+        .collect::<Vec<_>>();
+    let carriers = vec![
+        vec![vec![0.1; 1536], vec![0.2; 1536]],
+        vec![vec![0.3; 1536], vec![0.4; 1536]],
+    ];
+    let error = package_multi_dependent_source_derived_access_unit(
+        JocProfile::Idx1,
+        EmdfProfile::EtsiStrict,
+        1,
+        &[vec![820.0 / 4096.0; 7]],
+        &[position],
+        &i0,
+        &[0xc000, 0xc000],
+        &carriers,
+        0,
+    )
+    .expect_err("duplicate dependent ownership must fail closed");
+    assert!(error.contains("duplicate") || error.contains("overlap"));
+}
+
+#[test]
+fn independent_validator_rejects_out_of_order_dependent_id() {
+    let position = jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    };
+    let i0 = write_one_au_proof(JocProfile::Idx1)
+        .expect("valid synthetic I0")
+        .into_iter()
+        .take(4096)
+        .collect::<Vec<_>>();
+    let carriers = vec![
+        vec![vec![0.1; 1536], vec![0.2; 1536]],
+        vec![vec![0.3; 1536], vec![0.4; 1536]],
+    ];
+    let mut access_unit = package_multi_dependent_source_derived_access_unit(
+        JocProfile::Idx1,
+        EmdfProfile::EtsiStrict,
+        1,
+        &[vec![820.0 / 4096.0; 7]],
+        &[position],
+        &i0,
+        &[0xc000, 0x0200],
+        &carriers,
+        0,
+    )
+    .expect("valid two-dependent AU");
+    access_unit[4096 + 2] |= 0x10;
+
+    let error = validate_multi_dependent_access_unit(&access_unit, JocProfile::Idx1)
+        .expect_err("out-of-order dependent must fail closed");
+    assert!(error.contains("sequential"));
+}
+
+#[test]
+fn multi_dependent_writer_rejects_an_empty_chanmap() {
+    let position = jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    };
+    let i0 = write_one_au_proof(JocProfile::Idx1)
+        .expect("valid synthetic I0")
+        .into_iter()
+        .take(4096)
+        .collect::<Vec<_>>();
+    let error = package_multi_dependent_source_derived_access_unit(
+        JocProfile::Idx0,
+        EmdfProfile::EtsiStrict,
+        1,
+        &[vec![820.0 / 4096.0; 5]],
+        &[position],
+        &i0,
+        &[0],
+        &[vec![vec![0.1; 1536]]],
+        0,
+    )
+    .expect_err("empty chanmap must fail closed");
+    assert!(error.contains("chanmap"));
 }
 
 #[test]

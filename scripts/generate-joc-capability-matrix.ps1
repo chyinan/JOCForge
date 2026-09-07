@@ -19,11 +19,23 @@ $lfeStates = @("absent", "present")
 $carriages = @("etsi", "i0-skipfld", "legacy-ac3")
 $emdfProfiles = @("etsi", "deployed")
 $blockPartitions = @("1", "2", "3", "6")
-$dependentTopologies = @("D0", "D0..D7")
-$bitrates = @(384, 448, 512, 576, 640, 768, 896, 1024, 1088, 1152, 1216, 1280, 1408, 1536, 1664)
+$dependentTopologies = @("D0", "D0..D1", "D0..D2", "D0..D3", "D0..D4", "D0..D5", "D0..D6", "D0..D7")
+$bitrates = @(384, 448, 512, 576, 640, 768, 896, 1024, 1088, 1152, 1216, 1280, 1408, 1536, 1664, 2304, 2944, 3584, 4224, 4864, 5504)
 $scopes = @("raw-elementary", "CMAF")
 
+function Get-DependentCount([string]$topology) {
+    if ($topology -eq "D0") { return 1 }
+    return ([int]($topology -replace "D0..D", "") + 1)
+}
+
+function Get-CanonicalDependentMaximum([int]$profileIndex) {
+    if ($profileIndex -in @(0, 3)) { return 5 }
+    return 6
+}
+
 function Get-CellStatus($profile, [string]$lfe, [string]$carriage, [string]$emdf, [string]$blocks, [string]$dependents, [int]$bitrate, [string]$scope) {
+    $dependentCount = Get-DependentCount $dependents
+    $canonicalMaximum = Get-CanonicalDependentMaximum $profile.index
     if ($profile.index -ge 5) { return "RESERVED" }
     if ($scope -eq "CMAF") {
         if ($carriage -ne "etsi" -or $emdf -ne "etsi" -or $blocks -ne "6" -or $dependents -ne "D0") {
@@ -54,10 +66,14 @@ function Get-CellStatus($profile, [string]$lfe, [string]$carriage, [string]$emdf
         return "SUPPORTED_PASS"
     }
     if ($blocks -ne "6") { return "SPEC_LEGAL_NOT_IMPLEMENTED" }
-    if ($dependents -ne "D0") { return "SPEC_LEGAL_NOT_IMPLEMENTED" }
-    if ($bitrate -lt 1024) { return "REJECTED_CAPACITY" }
-    if ($lfe -eq "present" -and $bitrate -ne 1664) { return "SPEC_LEGAL_NOT_IMPLEMENTED" }
-    return "SUPPORTED_PASS"
+    if ($dependentCount -gt $canonicalMaximum) { return "PUBLIC_LEGAL_NOT_IMPLEMENTED" }
+    if ($lfe -eq "present") { return "SPEC_LEGAL_NOT_IMPLEMENTED" }
+    $requiredBitrate = 1024 + (($dependentCount - 1) * 640)
+    $carrierBitrate = $bitrate - ($dependentCount * 640)
+    if ($bitrate -lt $requiredBitrate -or $carrierBitrate -notin @(384, 448, 512, 576, 640, 768, 896, 1024)) { return "REJECTED_CAPACITY" }
+    if ($dependentCount -eq 1 -and $bitrate -in @(1024, 1280, 1408, 1536, 1664)) { return "SUPPORTED_PASS" }
+    if ($bitrate -eq $requiredBitrate) { return "SUPPORTED_PASS" }
+    return "SPEC_LEGAL_NOT_IMPLEMENTED"
 }
 
 $rows = [System.Collections.Generic.List[object]]::new()
@@ -67,6 +83,7 @@ foreach ($profile in $profiles) {
             foreach ($emdf in $emdfProfiles) {
                 foreach ($blocks in $blockPartitions) {
                     foreach ($dependents in $dependentTopologies) {
+                        $dependentCount = Get-DependentCount $dependents
                         foreach ($bitrate in $bitrates) {
                             foreach ($scope in $scopes) {
                                 $rows.Add([ordered]@{
@@ -80,11 +97,14 @@ foreach ($profile in $profiles) {
                                     emdf_profile = $emdf
                                     block_partition = $blocks
                                     dependent_topology = $dependents
+                                    dependent_count = Get-DependentCount $dependents
                                     bitrate_kbps = $bitrate
                                     scope = $scope
                                     phase_signaled = $profile.phase
+                                    public_legality = if ($profile.index -ge 5) { "RESERVED" } elseif ($scope -eq "CMAF" -and $dependents -ne "D0") { "INVALID" } elseif ($emdf -eq "deployed") { "PUBLIC_AMBIGUOUS" } else { "PUBLIC_LEGAL" }
                                     status = Get-CellStatus $profile $lfe $carriage $emdf $blocks $dependents $bitrate $scope
-                                    evidence = if ($profile.index -le 4 -and $scope -eq "CMAF" -and $lfe -eq "absent" -and $bitrate -in @(1024,1280,1408,1536,1664) -and $carriage -eq "etsi" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $dependents -eq "D0") { "artifacts/cmaf-closure/validation.json" } elseif ($profile.index -eq 1 -and $carriage -eq "legacy-ac3" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $dependents -eq "D0" -and $bitrate -in @(1024,1088,1152,1216,1280) -and $scope -eq "raw-elementary") { "artifacts/legacy-core-rate-sweep/validation.json" } elseif ($profile.index -le 4 -and $carriage -eq "legacy-ac3" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $dependents -eq "D0" -and $bitrate -eq 1280 -and $scope -eq "raw-elementary") { "artifacts/legacy-core-profile-closure/validation.json" } elseif ($profile.index -le 4 -and $carriage -eq "etsi" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $dependents -eq "D0" -and $bitrate -eq 1664 -and $scope -eq "raw-elementary") { "artifacts/profile-closure/profile-validation.json; artifacts/profile-closure/lfe-validation.json; artifacts/profile-closure/source-causality.json" } else { "docs/joc-capability-matrix.md" }
+                                    ffmpeg_interoperability = if ($scope -eq "raw-elementary" -and $carriage -eq "etsi" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $lfe -eq "absent" -and $dependentCount -gt 1 -and $bitrate -eq (1024 + (($dependentCount - 1) * 640))) { "UNSUPPORTED_DECODER_FEATURE" } elseif ($scope -eq "raw-elementary" -and $carriage -eq "etsi" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $lfe -eq "absent" -and $dependentCount -eq 1 -and $bitrate -in @(1024,1280,1408,1536,1664)) { "PASS" } else { "NOT_MEASURED" }
+                                    evidence = if ($profile.index -le 4 -and $scope -eq "CMAF" -and $lfe -eq "absent" -and $bitrate -in @(1024,1280,1408,1536,1664) -and $carriage -eq "etsi" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $dependents -eq "D0") { "artifacts/cmaf-closure/validation.json" } elseif ($scope -eq "raw-elementary" -and $carriage -eq "etsi" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $lfe -eq "absent" -and $dependentCount -le (Get-CanonicalDependentMaximum $profile.index) -and (($dependentCount -eq 1 -and $bitrate -in @(1024,1280,1408,1536,1664)) -or $bitrate -eq (1024 + (($dependentCount - 1) * 640)))) { "artifacts/multi-dependent-closure/validation.json" } elseif ($profile.index -eq 1 -and $carriage -eq "legacy-ac3" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $dependents -eq "D0" -and $bitrate -in @(1024,1088,1152,1216,1280) -and $scope -eq "raw-elementary") { "artifacts/legacy-core-rate-sweep/validation.json" } elseif ($profile.index -le 4 -and $carriage -eq "legacy-ac3" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $dependents -eq "D0" -and $bitrate -eq 1280 -and $scope -eq "raw-elementary") { "artifacts/legacy-core-profile-closure/validation.json" } elseif ($profile.index -le 4 -and $carriage -eq "etsi" -and $emdf -eq "etsi" -and $blocks -eq "6" -and $dependents -eq "D0" -and $bitrate -eq 1664 -and $scope -eq "raw-elementary") { "artifacts/profile-closure/profile-validation.json; artifacts/profile-closure/lfe-validation.json; artifacts/profile-closure/source-causality.json" } else { "docs/joc-capability-matrix.md" }
                                 })
                             }
                         }
@@ -126,14 +146,14 @@ $markdown = @(
     "",
     "## Evidence and boundaries",
     "",
-    "- `SUPPORTED_PASS` currently means the canonical raw-elementary ETSI dependent carriage, strict EMDF, six-block, I0+D0, and one of the validated 1024/1280/1408/1536/1664 kbps cells. The 1664 kbps five-profile render/source-causality run and the matching LFE-present run are in `artifacts/profile-closure/`.",
-    "- `REJECTED_CAPACITY` is the deterministic lower-rate result for the current paired I0/D0 writer budget.",
-    "- `PUBLIC_AMBIGUOUS` covers deployed codecdatae deviation and non-idx0 skip-field carriage where the public documents do not close the JOC-carrier meaning.",
-    "- `SPEC_LEGAL_NOT_IMPLEMENTED` covers normal PCM-derived raw-E-AC-3 forms not yet generated by JOCForge, including source-derived short blocks and multiple dependents. Advanced synthetic short-block conformance evidence is recorded separately in `artifacts/short-block-closure/`.",
-    "- `OUT_OF_SCOPE_CONTAINER` keeps CMAF's six-block, I0 plus optional D0, and container-specific signaling rules separate from raw elementary-stream support.",
+    "- ``SUPPORTED_PASS`` includes the canonical raw-elementary ETSI dependent carriage, strict EMDF, six-block cells evidenced by ``artifacts/multi-dependent-closure/validation.json``; the I0+D0 profile closure remains evidenced by ``artifacts/profile-closure/``.",
+    "- ``REJECTED_CAPACITY`` is the deterministic lower-rate result for the current paired I0/D0 writer budget.",
+    "- ``PUBLIC_AMBIGUOUS`` covers deployed codecdatae deviation and non-idx0 skip-field carriage where the public documents do not close the JOC-carrier meaning.",
+    "- ``PUBLIC_LEGAL_NOT_IMPLEMENTED`` is a legal raw E-AC-3 dependent count not yet closed by the canonical no-LFE Table-47 JOC ownership plan; it is not an invalidity claim. ``SPEC_LEGAL_NOT_IMPLEMENTED`` covers other legal forms not yet generated, including source-derived short blocks and LFE-present multi-dependent plans.",
+    "- ``OUT_OF_SCOPE_CONTAINER`` keeps CMAF's six-block, I0 plus optional D0, and container-specific signaling rules separate from raw elementary-stream support.",
     "- The advanced CMAF writer closes the no-LFE, strict, one-I0+D0, six-block, 1024/1280/1408/1536/1664 kbps idx0..idx4 cells; remaining CMAF cells stay explicitly unimplemented or out of scope.",
     "- `legacy-ac3` is supported for idx1 across 1024/1088/1152/1216/1280 kbps and for idx0..idx4 at 1280 kbps, with strict EMDF, no LFE, six blocks, and I0+D0; other legacy-core cells remain fail-closed.",
-    "- idx5–idx7 are `RESERVED` and are never emitted.",
+    "- idx5–idx7 are ``RESERVED`` and are never emitted. Raw D1+ cells with normative gates passed report FFmpeg interoperability separately as ``UNSUPPORTED_DECODER_FEATURE``; FFmpeg is not a legality gate.",
     "",
     "## Public references",
     "",

@@ -59,6 +59,41 @@ pub fn rate_budget(total_bitrate_kbps: u32) -> Result<RateBudget, RateBudgetErro
     })
 }
 
+/// Returns a deterministic raw-carriage allocation for multiple source-
+/// derived dependents. Each dependent receives the established 640 kbps
+/// minimum frame capacity; the independent bitrate is the remaining budget.
+/// This rejects totals that cannot be represented by a bounded I0 frame.
+pub fn rate_budget_for_dependents(
+    total_bitrate_kbps: u32,
+    dependent_count: usize,
+) -> Result<RateBudget, RateBudgetError> {
+    if !(1..=8).contains(&dependent_count) {
+        return Err(RateBudgetError::UnsupportedTotalBitrate(total_bitrate_kbps));
+    }
+    let dependent_bitrate = u32::try_from(dependent_count)
+        .ok()
+        .and_then(|count| count.checked_mul(640))
+        .ok_or(RateBudgetError::UnsupportedTotalBitrate(total_bitrate_kbps))?;
+    let carrier_bitrate = total_bitrate_kbps
+        .checked_sub(dependent_bitrate)
+        .ok_or(RateBudgetError::UnsupportedTotalBitrate(total_bitrate_kbps))?;
+    if !matches!(
+        carrier_bitrate,
+        384 | 448 | 512 | 576 | 640 | 768 | 896 | 1024
+    ) {
+        return Err(RateBudgetError::UnsupportedTotalBitrate(total_bitrate_kbps));
+    }
+    Ok(RateBudget {
+        total_bitrate_kbps,
+        carrier_bitrate_kbps: carrier_bitrate,
+        carrier_encode_bitrate_kbps: carrier_bitrate,
+        d0_bitrate_kbps: 640,
+        carrier_frame_bytes: frame_bytes(carrier_bitrate),
+        carrier_encoded_frame_bytes: frame_bytes(carrier_bitrate),
+        d0_frame_bytes: frame_bytes(640),
+    })
+}
+
 /// Returns the deterministic profile-independent allocation for a selected
 /// carriage topology. The I0 skip-field MVP deliberately supports only one
 /// complete 1024 kbps I0 frame; it does not synthesize a dependent frame.

@@ -62,8 +62,13 @@ fn advanced_multi_dependent_cli_writes_sequential_dependents() {
         .status()
         .expect("multi-dependent CLI starts");
 
-    assert!(!status.success());
-    assert!(!output_path.exists());
+    assert!(status.success());
+    let bytes = fs::read(&output_path).expect("multi-dependent output exists");
+    assert_eq!(bytes.len(), 1536 + 2 * 2560);
+    assert_eq!(&bytes[0..2], &[0x0b, 0x77]);
+    assert_eq!(&bytes[1536..1538], &[0x0b, 0x77]);
+    assert_eq!(&bytes[4096..4098], &[0x0b, 0x77]);
+    let _ = fs::remove_file(output_path);
 }
 
 #[test]

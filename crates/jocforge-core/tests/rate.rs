@@ -63,3 +63,17 @@ fn legacy_ac3_budget_accepts_the_validated_ac3_core_rate_sweep() {
         assert_eq!(budget.d0_frame_bytes, 2560);
     }
 }
+
+#[test]
+fn multi_dependent_budget_scales_the_total_without_fixed_i0_split() {
+    let two = jocforge_core::rate_budget_for_dependents(1664, 2)
+        .expect("384 kbps I0 plus two 640 kbps dependents");
+    assert_eq!(two.carrier_bitrate_kbps, 384);
+    assert_eq!(two.d0_bitrate_kbps, 640);
+    assert_eq!(two.d0_frame_bytes, 2560);
+
+    let six = jocforge_core::rate_budget_for_dependents(4224, 6)
+        .expect("384 kbps I0 plus six 640 kbps dependents");
+    assert_eq!(six.carrier_bitrate_kbps, 384);
+    assert!(jocforge_core::rate_budget_for_dependents(1664, 3).is_err());
+}

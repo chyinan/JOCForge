@@ -30,13 +30,17 @@ pub use analysis::{
 };
 pub use cmaf::cmaf_joc_init_and_fragments;
 pub use conformance::{
-    BlockPartition, ConformancePlanError, DependentTopology, ShortBlockPlan,
-    resolve_dependent_topology, resolve_short_block_plan,
+    BlockPartition, ChannelOwnershipCensus, ConformancePlanError, DependentTopology,
+    FfmpegInteroperabilityStatus, MultiDependentValidationReport, ShortBlockPlan,
+    canonical_dependent_channel_maps, channel_map_channel_count, resolve_dependent_topology,
+    resolve_short_block_plan, validate_multi_dependent_access_unit,
 };
 pub use eac3::inject_joc_skipfld;
 pub use plan::{JocEncodingPlan, JocPlanError, resolve_encoding_plan};
 pub use profile::{JocProfileSpec, profile_spec};
-pub use rate::{RateBudget, RateBudgetError, rate_budget, rate_budget_for_carriage};
+pub use rate::{
+    RateBudget, RateBudgetError, rate_budget, rate_budget_for_carriage, rate_budget_for_dependents,
+};
 pub use reduction::{
     MAX_CODED_OBJECTS, ReducedObject, ReductionConfig, ReductionDiagnostics, ReductionError,
     ReductionResult, ReductionSource, SourceAccounting, authored_source_assignment_changes,

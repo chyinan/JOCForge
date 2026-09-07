@@ -1,7 +1,9 @@
 // pattern: Functional Core
 
 use jocforge_core::{
-    BlockPartition, ConformancePlanError, resolve_dependent_topology, resolve_short_block_plan,
+    BlockPartition, ConformancePlanError, FfmpegInteroperabilityStatus, JocProfile,
+    canonical_dependent_channel_maps, channel_map_channel_count, resolve_dependent_topology,
+    resolve_short_block_plan,
 };
 
 #[test]
@@ -57,5 +59,31 @@ fn dependent_topology_is_sequential_and_bounded_by_public_substream_ids() {
     assert_eq!(
         resolve_dependent_topology(9),
         Err(ConformancePlanError::DependentCount { actual: 9 })
+    );
+}
+
+#[test]
+fn canonical_multi_dependent_maps_close_profile_ownership_without_overlap() {
+    assert_eq!(
+        canonical_dependent_channel_maps(JocProfile::Idx0, 2).expect("5.X D0+D1"),
+        vec![0xc000, 0x3000]
+    );
+    assert_eq!(
+        canonical_dependent_channel_maps(JocProfile::Idx1, 6).expect("Flat-7.X six-dependent plan"),
+        vec![0x8000, 0x4000, 0x2000, 0x1000, 0x0800, 0x0200]
+    );
+    assert!(canonical_dependent_channel_maps(JocProfile::Idx0, 6).is_err());
+    assert_eq!(channel_map_channel_count(0x0200), 2);
+}
+
+#[test]
+fn ffmpeg_interoperability_status_has_explicit_external_only_names() {
+    assert_eq!(
+        FfmpegInteroperabilityStatus::UnsupportedDecoderFeature.to_string(),
+        "UNSUPPORTED_DECODER_FEATURE"
+    );
+    assert_eq!(
+        FfmpegInteroperabilityStatus::FailStreamError.to_string(),
+        "FAIL_STREAM_ERROR"
     );
 }
