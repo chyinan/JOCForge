@@ -13,6 +13,9 @@
 /artifacts/validation-closure-*.metrics.csv
 /artifacts/git-release-audit.json
 /artifacts/validation-closure-temporal.csv
+/artifacts/joc-capability-matrix.csv
+/artifacts/joc-capability-matrix.json
+/artifacts/profile-closure/
 *.ec3
 *.bw64
 *.wav

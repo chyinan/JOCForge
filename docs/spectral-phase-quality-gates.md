@@ -64,9 +64,9 @@ spectral/tilt bounds explicitly allow the known E-AC-3 loss and stereo
 compatibility downmix; the independent polarity/coherence/finite/headroom
 predicates catch structural failures.
 
-Channel coverage is profile-specific: idx0 checks both stereo outputs; idx1
-checks all active 7.1.4 speaker outputs; idx2 additionally checks the TFL/TFR
-height outputs. Inactive output slots are still measured for finite values and
+Channel coverage is profile-specific: idx0 and idx3 check both stereo outputs;
+idx1 checks all active 7.1.4 speaker outputs; idx2 and idx4 additionally check
+the TFL/TFR height outputs. Inactive output slots are still measured for finite values and
 peak safety. Quadrature and transient rows are separate clean fixtures that
 also traverse encode, E-AC-3, pinned OpenJOC render, and final PCM measurement.
 

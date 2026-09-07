@@ -39,7 +39,9 @@ Invoke-Checked "cargo" @("run", "-p", "jocforge", "--quiet", "--", "inspect-adm"
 $profiles = @(
     @{ Name = "idx0"; File = "jocforge-mvp-idx0.ec3"; Layout = "2.0"; Render = "idx0-stereo.wav"; Map = "0xc000"; Inputs = "L,R,C,Ls,Rs" },
     @{ Name = "idx1"; File = "jocforge-mvp-flat7x-idx1.ec3"; Layout = "7.1.4"; Render = "idx1-714.wav"; Map = "0x0200"; Inputs = "L,R,C,Ls,Rs,Lrs,Rrs" },
-    @{ Name = "idx2"; File = "jocforge-mvp-5x2-idx2.ec3"; Layout = "7.1.4"; Render = "idx2-714.wav"; Map = "0x0010"; Inputs = "L,R,C,Ls,Rs,Tfl,Tfr" }
+    @{ Name = "idx2"; File = "jocforge-mvp-5x2-idx2.ec3"; Layout = "7.1.4"; Render = "idx2-714.wav"; Map = "0x0010"; Inputs = "L,R,C,Ls,Rs,Tfl,Tfr" },
+    @{ Name = "idx3"; File = "jocforge-mvp-5x-phase-idx3.ec3"; Layout = "2.0"; Render = "idx3-stereo.wav"; Map = "0xc000"; Inputs = "L,R,C,Ls,Rs" },
+    @{ Name = "idx4"; File = "jocforge-mvp-5x2-phase-idx4.ec3"; Layout = "7.1.4"; Render = "idx4-714.wav"; Map = "0x0010"; Inputs = "L,R,C,Ls,Rs,Tfl,Tfr" }
 )
 
 $validation = @()
@@ -66,7 +68,7 @@ foreach ($profile in $profiles) {
     $inspectText = Get-Content -Raw $inspectLog
     $validation += [ordered]@{
         profile = $profile.Name
-        downmix_index = @{ idx0 = 0; idx1 = 1; idx2 = 2 }[$profile.Name]
+        downmix_index = @{ idx0 = 0; idx1 = 1; idx2 = 2; idx3 = 3; idx4 = 4 }[$profile.Name]
         input_order = $profile.Inputs
         channel_map = $profile.Map
         openjoc_strict_exit = $inspectExit

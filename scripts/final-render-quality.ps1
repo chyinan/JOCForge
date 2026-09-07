@@ -248,10 +248,10 @@ function Measure-FinalRenderEvidence(
     [string]$Profile,
     [string]$Relationship = "preserved"
 ) {
-    $referenceChannels = if ($Profile -eq "idx0") { 2 } else { 0 }
+    $referenceChannels = if ($Profile -in @("idx0", "idx3")) { 2 } else { 0 }
     $reference = Read-F64PcmStream $EncodedPath $referenceChannels
     $candidate = Read-F64PcmStream $RenderedPath
-    $comparableChannels = if ($Profile -eq "idx0") { 2 } else { 3 }
+    $comparableChannels = if ($Profile -in @("idx0", "idx3")) { 2 } else { 3 }
     if ($candidate.channels -lt $comparableChannels -or $reference.channels -lt $comparableChannels) {
         throw "final-render channel layout is too small for $Profile"
     }
@@ -284,9 +284,9 @@ function Measure-FinalRenderEvidence(
         }
         $peak = [Math]::Max($peak, [Math]::Abs($value))
     }
-    $activeChannels = if ($Profile -eq "idx0") {
+    $activeChannels = if ($Profile -in @("idx0", "idx3")) {
         @(0, 1)
-    } elseif ($Profile -eq "idx2") {
+    } elseif ($Profile -in @("idx2", "idx4")) {
         @(0, 1, 2, 4, 5, 6, 7, 8, 9)
     } else {
         @(0, 1, 2, 4, 5, 6, 7)

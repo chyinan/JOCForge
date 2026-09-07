@@ -21,7 +21,7 @@ Disposition counts: `IMPLEMENTED=54`, `ALREADY_SATISFIED=7`, `TEST_ONLY=0`,
 | PUB-002 | IMPLEMENTED | `profile.rs`, `writer.rs` frame/profile contract | core writer tests; OpenJOC |
 | PUB-003 | IMPLEMENTED | `adm.rs` ADM/channel bindings, full-track timing, positions, and semantic LFE classification from `speakerLabel`/`frequency.lowPass` | semantic LFE and fail-closed ADM tests; DirectSpeakers inventory |
 | PUB-004 | IMPLEMENTED | CLI rejects `Other`; parser rejects extra blocks, unsupported trajectories, and ambiguous programme membership | explicit parser/CLI errors and rejection tests |
-| PUB-005 | IMPLEMENTED | `README.md`, design document | documented idx0/idx1/idx2 and ADM subset |
+| PUB-005 | IMPLEMENTED | `README.md`, design document | documented idx0..idx4 and ADM subset |
 | PUB-006 | IMPLEMENTED | deterministic pure core and fixed shell ordering | reduction determinism test |
 | PIPE-001 | IMPLEMENTED | `main.rs` expands every validated ADM channel binding and routes bounded LFE once to the core | duplicate CHNA rejection tests; Hanabi metrics sidecar and LFE singular-path evidence |
 | PIPE-002 | IMPLEMENTED | `reduction.rs` accounting and diagnostics plus explicit LFE records | reduction tests; per-frame CSV |
@@ -47,7 +47,7 @@ Disposition counts: `IMPLEMENTED=54`, `ALREADY_SATISFIED=7`, `TEST_ONLY=0`,
 | CAR-007 | IMPLEMENTED | measurable signal/spatial/leakage/headroom objective | reduction diagnostics |
 | CAR-008 | OPEN_RESEARCH | carrier dimension is currently profile-fixed | ORQ-003 remains open |
 | CAR-009 | IMPLEMENTED | orthogonal `JocCarriage` and `EmdfProfile`; I0-only skipfld frame transform is fail-closed and keeps ETSI strict default | deployed full-stream census; OpenJOC strict inspect/render; FFmpeg decode; deterministic hash |
-| MAT-001 | IMPLEMENTED | public coarse 96-symbol Huffman table and quantizer | writer arbitrary-symbol test; full-domain three-profile quantization stress |
+| MAT-001 | IMPLEMENTED | public coarse 96-symbol Huffman table and quantizer | writer arbitrary-symbol test; full-domain five-profile quantization stress |
 | MAT-002 | IMPLEMENTED | bounded carrier scaling and quantized coefficients | factorization wrapper |
 | MAT-003 | IMPLEMENTED | ridge-regularized least-squares objective | `analysis.rs` |
 | MAT-004 | IMPLEMENTED | closure measures signal, spatial, unexplained leakage, factorization, speaker-proxy, and final decoded-render compatibility error | quality gates; `final-decoded-render-summary.json`; derived T-008 |

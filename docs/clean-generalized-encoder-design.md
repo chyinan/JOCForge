@@ -14,7 +14,9 @@ The public JOC contract describes `joc_num_objects` as a one-based six-bit
 field and uses `b_joc_obj_present` for each declared object. The implementation
 therefore emits the actual active coded-object count rather than declaring
 unused objects. The selected profile remains the source of truth for the
-five-channel idx0 topology and the distinct seven-channel idx1/idx2 topologies.
+five-channel idx0/idx3 topologies and the distinct seven-channel idx1/idx2/idx4
+topologies. idx3 and idx4 use the public phase-signaled indices without adding
+an extra PCM phase transform.
 
 ## Design alternatives considered
 
@@ -77,8 +79,8 @@ by the writer boundary.
 
 ## Carrier and matrix policy
 
-The public profile fixes carrier count and ordering: idx0 uses five channels;
-idx1 uses `L,R,C,Ls,Rs,Lrs,Rrs`; idx2 uses
+The public profile fixes carrier count and ordering: idx0 and idx3 use five
+channels; idx1 uses `L,R,C,Ls,Rs,Lrs,Rrs`; idx2 and idx4 use
 `L,R,C,Ls,Rs,Tfl,Tfr`. Carriers are source-derived combinations of reduced
 signals. If there are fewer reduced objects than carrier channels, the extra
 carriers are deterministic source-derived blends and the matrix contains zero
@@ -128,7 +130,7 @@ the implementation does not claim production perceptual quality.
 - Pure core tests cover budget, non-empty source accounting, bounded output,
   determinism, stable assignments, finite diagnostics, and invalid input.
 - Writer tests cover actual object count, inactive-slot removal, coarse Huffman
-  zero/positive/negative symbols, and all three profile dimensions.
+  zero/positive/negative symbols, and all five public profile dimensions.
 - CLI/script tests cover the controlled corpus, rate and framing diagnostics,
   deterministic re-encode, OpenJOC strict validation, FFmpeg decode, finite
   PCM, and the 28-object Hanabi acceptance path where local inputs/tools exist.

@@ -1023,7 +1023,7 @@ function Measure-RenderedPcmDifference([string]$BaselinePath, [string]$Perturbed
 
 function Test-CarrierCausalityReport([pscustomobject]$Report) {
     if ($null -eq $Report -or $Report.pass -ne $true) { return $false }
-    $expected = @{ idx0 = 5; idx1 = 7; idx2 = 7 }
+    $expected = @{ idx0 = 5; idx1 = 7; idx2 = 7; idx3 = 5; idx4 = 7 }
     foreach ($profile in $expected.Keys) {
         $entry = @($Report.profiles | Where-Object { $_.profile -eq $profile })[0]
         if ($null -eq $entry -or [int]$entry.expected_carrier_count -ne $expected[$profile] -or $entry.pass -ne $true) { return $false }
@@ -1037,7 +1037,7 @@ function Test-CarrierCausalityReport([pscustomobject]$Report) {
                 [double]$_.maximum_change -le 1.0e-12
             }).Count -gt 0) { return $false }
         $d0Rows = @($entry.d0_writer)
-        $expectedD0Indices = if ($profile -eq "idx0") { @(0, 1) } else { @(5, 6) }
+        $expectedD0Indices = if ($profile -in @("idx0", "idx3")) { @(0, 1) } else { @(5, 6) }
         $actualD0Indices = @($entry.d0_input_source_indices | ForEach-Object { [int]$_ })
         if (@(Compare-Object $expectedD0Indices $actualD0Indices).Count -gt 0) { return $false }
         if ($entry.d0_writer_pass -ne $true -or $d0Rows.Count -ne 2 -or
@@ -1051,7 +1051,7 @@ function Test-CarrierCausalityReport([pscustomobject]$Report) {
 
 function Test-SourceCausalityReport([pscustomobject]$Report) {
     if ($null -eq $Report -or $Report.pass -ne $true) { return $false }
-    $expected = @{ idx0 = 5; idx1 = 7; idx2 = 7 }
+    $expected = @{ idx0 = 5; idx1 = 7; idx2 = 7; idx3 = 5; idx4 = 7 }
     foreach ($profile in $expected.Keys) {
         $entry = @($Report.profiles | Where-Object { $_.profile -eq $profile })[0]
         if ($null -eq $entry -or [int]$entry.expected_carrier_count -ne $expected[$profile] -or $entry.pass -ne $true) { return $false }
@@ -1598,7 +1598,9 @@ foreach ($spec in $rateSpecs) { $rateByTotal["$($spec.total)"] = $spec }
 $bitrateProfiles = @(
     [pscustomobject]@{ name = "idx0"; layout = "2.0"; carrier_count = 5 },
     [pscustomobject]@{ name = "idx1"; layout = "7.1.4"; carrier_count = 7 },
-    [pscustomobject]@{ name = "idx2"; layout = "7.1.4"; carrier_count = 7 }
+    [pscustomobject]@{ name = "idx2"; layout = "7.1.4"; carrier_count = 7 },
+    [pscustomobject]@{ name = "idx3"; layout = "2.0"; carrier_count = 5 },
+    [pscustomobject]@{ name = "idx4"; layout = "7.1.4"; carrier_count = 7 }
 )
 $bitrateCandidates = @(384, 448, 640, 768, 896, 1024, 1280, 1408, 1536, 1664)
 $rateFixture = Join-Path $artifact "controlled-rate-15.bw64"
@@ -1940,7 +1942,9 @@ $shortJson | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $arti
 $hanabiProfiles = @(
     [pscustomobject]@{ name = "idx0"; layout = "2.0"; output = (Join-Path $artifact "hanabi-idx0.ec3") },
     [pscustomobject]@{ name = "idx1"; layout = "7.1.4"; output = $hanabiOutput },
-    [pscustomobject]@{ name = "idx2"; layout = "7.1.4"; output = (Join-Path $artifact "hanabi-idx2.ec3") }
+    [pscustomobject]@{ name = "idx2"; layout = "7.1.4"; output = (Join-Path $artifact "hanabi-idx2.ec3") },
+    [pscustomobject]@{ name = "idx3"; layout = "2.0"; output = (Join-Path $artifact "hanabi-idx3.ec3") },
+    [pscustomobject]@{ name = "idx4"; layout = "7.1.4"; output = (Join-Path $artifact "hanabi-idx4.ec3") }
 )
 $hanabiValidations = [System.Collections.Generic.List[object]]::new()
 $hanabiPrimaryAccountingPass = $true
@@ -1984,7 +1988,7 @@ $carrierStagePass = Test-CarrierCausalityReport $carrierCausality
 
 $sourceCausalityProfiles = [System.Collections.Generic.List[object]]::new()
 foreach ($profile in $hanabiProfiles) {
-    $carrierCount = if ($profile.name -eq "idx0") { 5 } else { 7 }
+    $carrierCount = if ($profile.name -in @("idx0", "idx3")) { 5 } else { 7 }
     $baselineValidation = @($controlledProfileValidations | Where-Object { $_.name -eq "controlled-profile-$($profile.name)" })[0]
     $perturbations = [System.Collections.Generic.List[object]]::new()
     for ($sourceIndex = 0; $sourceIndex -lt $carrierCount; $sourceIndex++) {
@@ -2145,7 +2149,7 @@ $t007CrossObjectEvidence | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath (
 $hanabiAccountingPass = $hanabiPrimaryAccountingPass
 $hanabiRoundTripQualityPass = @($hanabiValidations | Where-Object {
         $_.quality_observation_pass -eq $true
-    }).Count -eq 3
+    }).Count -eq $hanabiProfiles.Count
 $hanabiObjectBudgetPass = @($hanabiValidations | Where-Object {
         [int]$_.coded_count -gt $MaximumCodedObjects -or [int]$_.silent_drops -ne 0
     }).Count -eq 0
@@ -2185,7 +2189,7 @@ $t008Pass = $spectralPhase.pass -eq $true -and
     @($hanabiValidations | Where-Object { $_.openjoc_strict_result -ne "PASS" -or $_.finite_pcm -ne "YES" -or $_.malformed_aus -ne 0 -or $_.carrier_traversal_errors -ne 0 }).Count -eq 0 -and
     $t008AllProfileConditionsPass -and $finalRenderProfilesPass -and $finalRenderCorpusPass
 $t009Pass = $quantization.pass -eq $true -and
-    [int]$quantization.profile_count -eq 3 -and
+    [int]$quantization.profile_count -eq 5 -and
     [int]$quantization.domain_values_checked -eq 96 -and
     [int]$quantization.matrix_values_checked -gt 0
 
@@ -2497,7 +2501,7 @@ $t002Predicates = [ordered]@{
     quality_thresholds = (@($fixtureRows | Where-Object { $_.scene -in @("controlled-16", "controlled-20", "controlled-28") -and $_.quality_gate_pass -eq $true }).Count -eq 3)
 }
 $t003Predicates = [ordered]@{
-    all_profile_validation = (@($hanabiValidations | Where-Object { $_.openjoc_strict_result -eq "PASS" -and $_.finite_pcm -eq "YES" -and $_.malformed_aus -eq 0 }).Count -eq 3)
+    all_profile_validation = (@($hanabiValidations | Where-Object { $_.openjoc_strict_result -eq "PASS" -and $_.finite_pcm -eq "YES" -and $_.malformed_aus -eq 0 }).Count -eq $hanabiProfiles.Count)
     no_silent_object_discard = $hanabiObjectBudgetPass
     authored_source_coverage = ($hanabiAccountingPass -and $sourceCausalityPass)
     directspeakers_handling_documented = ($causalJson.causal_test -eq $true -and $directSpeakersDocumented)
@@ -2564,7 +2568,7 @@ $t008Predicates = [ordered]@{
 $t009Predicates = [ordered]@{
     pre_post_coefficients = $quantization.pass -eq $true -and [int]$quantization.domain_values_checked -eq 96 -and
         [int]$quantization.matrix_values_checked -gt 0 -and (Test-FiniteNumber $quantization.maximum_absolute_error)
-    syntax_valid = $quantization.pass -eq $true -and [int]$quantization.profile_count -eq 3
+    syntax_valid = $quantization.pass -eq $true -and [int]$quantization.profile_count -eq 5
     quality_budget = [double]$quantization.maximum_absolute_error -le ([double]$quantization.quantum * 0.5 + 1.0e-12)
 }
 $t009Pass = @($t009Predicates.Values | Where-Object { $_ -ne $true }).Count -eq 0
@@ -2603,12 +2607,12 @@ $t012Pass = @($t012Predicates.Values | Where-Object { $_ -ne $true }).Count -eq 
 $cleanTests = @(
     [pscustomobject]@{ test_id = "T-001"; status = Get-DerivedStatus $t001Pass; command = "cargo run -p jocforge -- encode + pinned OpenJOC inspect/render + FFmpeg decode + source perturbations"; evidence = "controlled-profile-idx1.ec3.metrics.csv; source-causality.json; primary inspection"; measured = "strict=$($controlledIdx1.openjoc_strict_result); finite_pcm=$($controlledIdx1.finite_pcm); render=$($controlledIdx1.render_result); malformed_aus=$($controlledIdx1.malformed_aus); source_accounting=$($controlledIdx1Accounting.pass); coded_count=$($controlledIdx1.coded_count); quality=$($controlledIdx1Quality.pass); source_causality=$sourceCausalityPass"; expected = "strict=PASS; finite_pcm=YES; render=PASS; malformed_aus=0; complete source domain; every intended carrier input has causal encoded/render response; M<=15; all published quality thresholds pass" },
     [pscustomobject]@{ test_id = "T-002"; status = Get-DerivedStatus $t002Pass; evidence = "controlled-16/20/28 metrics sidecars; independent leakage-matrix.csv; source-causality.json"; measured = "all three coded_count<=15, silent_drops=0, complete source accounting, quality thresholds pass, source_causality=$sourceCausalityPass"; expected = "M<=15; no silent discard; complete source coverage; source/error/leakage/spatial quality thresholds pass" },
-    [pscustomobject]@{ test_id = "T-003"; status = Get-DerivedStatus $t003Pass; evidence = "Hanabi three-profile strict sidecars; primary idx1 accounting/quality; source-causality.json; direct-speakers-causal.json and docs"; measured = "all profiles strict/finite/M<=15/no drops; primary source accounting=$hanabiAccountingPass; round-trip observation=$hanabiRoundTripQualityPass; DirectSpeakers causal test=$($causalJson.causal_test); documented=$directSpeakersDocumented; source_causality=$sourceCausalityPass"; expected = "no silent object dropping; complete authored-source coverage; every intended idx0/idx1/idx2 carrier input is causally source-derived; M<=15; DirectSpeakers handling documented" },
+    [pscustomobject]@{ test_id = "T-003"; status = Get-DerivedStatus $t003Pass; evidence = "Hanabi five-profile strict sidecars; primary idx1 accounting/quality; source-causality.json; direct-speakers-causal.json and docs"; measured = "all profiles strict/finite/M<=15/no drops; primary source accounting=$hanabiAccountingPass; round-trip observation=$hanabiRoundTripQualityPass; DirectSpeakers causal test=$($causalJson.causal_test); documented=$directSpeakersDocumented; source_causality=$sourceCausalityPass"; expected = "no silent object dropping; complete authored-source coverage; every intended idx0..idx4 carrier input is causally source-derived; M<=15; DirectSpeakers handling documented" },
     [pscustomobject]@{ test_id = "T-004"; status = Get-DerivedStatus $t004Pass; command = "cargo run -p jocforge -- encode for every profile × bitrate cell plus pinned OpenJOC and FFmpeg validation"; evidence = "profile-bitrate-matrix.csv"; measured = "supported_cells=$bitrateSupportedCount; rejected_capacity_cells=$bitrateRejectedCapacityCount; correctness_failures=$bitrateCorrectnessFailureCount"; expected = "every SUPPORTED cell passes encode, structural, OpenJOC parse/decode/render, FFmpeg decode, finite PCM and deterministic gates; lower capacity cells reject explicitly" },
     [pscustomobject]@{ test_id = "T-005"; status = Get-DerivedStatus $t005Pass; evidence = "t005-metadata-evidence.json from pinned OpenJOC decode timeline; temporal-metrics.csv; stationary metrics"; measured = "metadata=$($t005Predicates.metadata); identities=$($t005Predicates.identities); coefficient_carrier=$($t005Predicates.coefficient_and_carrier_continuity); audio_transitions=$($t005Predicates.audio_transitions); metadata_negative=$t005MetadataNegativeMutationPass"; expected = "no gratuitous representation permutation, sign/state jump, or audible reassignment artefact" },
     [pscustomobject]@{ test_id = "T-006"; status = Get-DerivedStatus $t006Pass; evidence = "t006-rendered-position-evidence.csv from pinned OpenJOC render PCM; temporal-metrics.csv; temporal-audit.csv"; measured = "trajectories=$($t006Predicates.reduced_trajectories); rendered_position=$($t006Predicates.rendered_position); discontinuities=$($t006Predicates.discontinuities); renderer_pin=$($t006RenderedPositionEvidence.renderer_pin_verified); rendered_negative=$t006RenderedPositionNegativeMutationPass"; expected = "bounded spatial/trajectory error without avoidable discontinuity" },
     [pscustomobject]@{ test_id = "T-007"; status = Get-DerivedStatus $t007Pass; evidence = "cross-object-leakage-matrix.csv; t007-cross-object-evidence.json; independent coded-signal residual"; measured = "reconstruction_matrix=$($t007Predicates.reconstruction_matrix); cross_object_leakage=$($t007Predicates.cross_object_leakage); threshold=$CrossObjectLeakageThreshold; negative=$t007NegativeMutationPass; aggregate_substitution=$($t007CrossObjectEvidence.aggregate_substitution)"; expected = "cross-object leakage below project threshold" },
-    [pscustomobject]@{ test_id = "T-008"; status = Get-DerivedStatus $t008Pass; command = "cargo run -p jocforge -- spectral-phase plus pinned OpenJOC decoded/rendered final-render gate"; evidence = "spectral-phase.json; final-render-idx0/idx1/idx2.json; controlled profile metrics; Hanabi strict/decode"; measured = "spectral_phase=$($spectralPhase.pass); final_render_profiles=$($finalRenderPass); final_render_gates=$($t008AllProfileConditionsPass); leakage_headroom=$(@($t008ProfileConditions | Where-Object { $_.pass -ne $true }).Count -eq 0); negative_mutations=$($negativeMutationTests.final_render_negative_pass)"; expected = "all hard spectral/phase gates true; actual pinned OpenJOC final-render spectral, phase, polarity, quadrature, transient, leakage and headroom predicates pass" },
+    [pscustomobject]@{ test_id = "T-008"; status = Get-DerivedStatus $t008Pass; command = "cargo run -p jocforge -- spectral-phase plus pinned OpenJOC decoded/rendered final-render gate"; evidence = "spectral-phase.json; final-render-idx0..idx4.json; controlled profile metrics; Hanabi strict/decode"; measured = "spectral_phase=$($spectralPhase.pass); final_render_profiles=$($finalRenderPass); final_render_gates=$($t008AllProfileConditionsPass); leakage_headroom=$(@($t008ProfileConditions | Where-Object { $_.pass -ne $true }).Count -eq 0); negative_mutations=$($negativeMutationTests.final_render_negative_pass)"; expected = "all hard spectral/phase gates true; actual pinned OpenJOC final-render spectral, phase, polarity, quadrature, transient, leakage and headroom predicates pass" },
     [pscustomobject]@{ test_id = "T-009"; status = Get-DerivedStatus $t009Pass; command = "cargo run -p jocforge -- quantization-stress"; evidence = "quantization-stress.json"; measured = "pre_post=$($t009Predicates.pre_post_coefficients); syntax=$($t009Predicates.syntax_valid); quality_budget=$($t009Predicates.quality_budget); maximum_error=$($quantization.maximum_absolute_error)"; expected = "three profiles; 96 domain values; full matrix stress; error <= half quantum" },
     [pscustomobject]@{ test_id = "T-010"; status = Get-DerivedStatus $t010Pass; evidence = "profile-bitrate-matrix.csv; independent OpenJOC metadata projections"; measured = "supported_rows=$($t010DeterminismEvidence.supported_row_count); bytes=$($t010DeterminismEvidence.byte_identity_rows); parsed_metadata=$($t010DeterminismEvidence.parsed_metadata_identity_rows); metrics=$($t010DeterminismEvidence.metrics_identity_rows); negative_mutation=$t010NegativeMutationPass"; expected = "identical input/settings produce identical output bytes, parsed metadata, and metrics" },
     [pscustomobject]@{ test_id = "T-011"; status = Get-DerivedStatus $t011Pass; evidence = "short-final-process.json; controlled-short-final.openjoc-inspect.log; source metrics"; measured = "frame_count=$($t011Predicates.frame_count); timing=$($t011Predicates.timing); metadata_ordering=$($t011Predicates.metadata_ordering); source_accounting=$($t011Predicates.source_accounting); timing_negative=$t011TimingNegativeMutationPass; ordering_negative=$t011OrderingNegativeMutationPass"; expected = "no duplication, omission, or reordering; public flush semantics hold" },
