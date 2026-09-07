@@ -44,8 +44,8 @@ pub use validation::{
     temporal_corpus,
 };
 pub use writer::{
-    D0CausalityMeasurement, d0_carrier_causality, package_deployed_compat_access_unit,
-    package_ffmpeg_access_unit, package_source_derived_access_unit,
+    D0CausalityMeasurement, d0_carrier_causality, package_ffmpeg_access_unit,
+    package_i0_skip_field_access_unit, package_source_derived_access_unit,
     package_source_derived_access_unit_with_frame_sizes, write_one_au_proof,
 };
 
@@ -58,10 +58,22 @@ pub enum JocProfile {
 }
 
 /// Publicly selected E-AC-3/JOC carriage topology.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub enum JocCarriage {
-    /// Existing JOCForge I0 plus dependent-substream carriage.
-    EtsiStrict,
+    /// Existing JOCForge I0 plus dependent-substream carriage with EMDF in D0.
+    #[default]
+    EtsiAuxDependent,
     /// Public E-AC-3 I0-only carriage with EMDF in audio-block skip fields.
+    I0SkipField,
+}
+
+/// EMDF signaling convention selected independently from carriage topology.
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub enum EmdfProfile {
+    /// Published ETSI TS 103 420 configuration, including `codecdatae=1`.
+    #[default]
+    EtsiStrict,
+    /// Observed deployed interoperability deviation: `codecdatae=0` for IDs
+    /// 11 and 14, with all other JOCForge-owned configuration unchanged.
     DeployedCompat,
 }

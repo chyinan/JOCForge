@@ -28,7 +28,7 @@ fn clean_rate_budget_rejects_an_unrepresentable_total_budget() {
 
 #[test]
 fn deployed_compat_budget_uses_a_padded_nominal_i0_frame() {
-    let budget = rate_budget_for_carriage(JocCarriage::DeployedCompat, 1024)
+    let budget = rate_budget_for_carriage(JocCarriage::I0SkipField, 1024)
         .expect("deployed-compatible idx0 budget");
     assert_eq!(budget.carrier_bitrate_kbps, 1024);
     assert_eq!(budget.carrier_encode_bitrate_kbps, 896);

@@ -17,10 +17,10 @@ mod file_scan;
 use file_scan::{read_pcm_frame, scan_bw64_file};
 
 use jocforge_core::{
-    AdmObject, AdmObjectKind, FinalRenderMeasurement, JocCarriage, JocProfile, ReductionConfig,
-    ReductionSource, SOURCE_DERIVED_CARRIER_PEAK_LIMIT, d0_carrier_causality,
+    AdmObject, AdmObjectKind, EmdfProfile, FinalRenderMeasurement, JocCarriage, JocProfile,
+    ReductionConfig, ReductionSource, SOURCE_DERIVED_CARRIER_PEAK_LIMIT, d0_carrier_causality,
     factorize_source_derived, final_render_gate, generate_synthetic_scene_fixture,
-    limit_signal_peak, maximum_absolute_difference, package_deployed_compat_access_unit,
+    limit_signal_peak, maximum_absolute_difference, package_i0_skip_field_access_unit,
     package_source_derived_access_unit_with_frame_sizes, parse_bw64_adm_metadata, profile_spec,
     quantize_coefficient, rate_budget_for_carriage, reconstruction_error,
     reduce_scene_with_previous, source_derived_carrier_causality, spectral_phase_report,
@@ -969,7 +969,7 @@ fn csv_cell(value: &str) -> String {
 fn run_encode(arguments: &[String]) -> Result<(), String> {
     if arguments.len() < 4 || (arguments.len() - 4) % 2 != 0 {
         return Err(
-            "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile idx0|idx1|idx2 [--carriage etsi-strict|deployed-compat] [--bitrate KBPS] [--temporal-weight VALUE]"
+            "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile idx0|idx1|idx2 [--compat etsi|deployed] [--carriage etsi|i0-skipfld] [--emdf-profile etsi|deployed] [--bitrate KBPS] [--temporal-weight VALUE]"
                 .to_owned(),
         );
     }
@@ -979,12 +979,13 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
     let profile_name = &arguments[3];
     if flag != "--profile" {
         return Err(
-            "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile idx0|idx1|idx2 [--carriage etsi-strict|deployed-compat] [--bitrate KBPS] [--temporal-weight VALUE]"
+            "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile idx0|idx1|idx2 [--compat etsi|deployed] [--carriage etsi|i0-skipfld] [--emdf-profile etsi|deployed] [--bitrate KBPS] [--temporal-weight VALUE]"
                 .to_owned(),
         );
     }
     let mut target_bitrate_kbps = 1664;
-    let mut carriage = JocCarriage::EtsiStrict;
+    let mut carriage = JocCarriage::default();
+    let mut emdf_profile = EmdfProfile::default();
     let mut temporal_continuity_weight = ReductionConfig::default().temporal_continuity_weight;
     let mut option_index = 4;
     while option_index < arguments.len() {
@@ -995,6 +996,14 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         match option.as_str() {
             "--carriage" => {
                 carriage = parse_carriage(value)?;
+            }
+            "--emdf-profile" => {
+                emdf_profile = parse_emdf_profile(value)?;
+            }
+            "--compat" => {
+                let (preset_carriage, preset_emdf_profile) = parse_compat_preset(value)?;
+                carriage = preset_carriage;
+                emdf_profile = preset_emdf_profile;
             }
             "--bitrate" => {
                 target_bitrate_kbps = value
@@ -1008,7 +1017,7 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
             }
             _ => {
                 return Err(
-                    "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile idx0|idx1|idx2 [--carriage etsi-strict|deployed-compat] [--bitrate KBPS] [--temporal-weight VALUE]"
+                    "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile idx0|idx1|idx2 [--compat etsi|deployed] [--carriage etsi|i0-skipfld] [--emdf-profile etsi|deployed] [--bitrate KBPS] [--temporal-weight VALUE]"
                         .to_owned(),
                 );
             }
@@ -1016,8 +1025,8 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         option_index += 2;
     }
     let profile = parse_profile(profile_name)?;
-    if carriage == JocCarriage::DeployedCompat && profile != JocProfile::Idx0 {
-        return Err("deployed-compatible carriage currently supports idx0 only".to_owned());
+    if carriage == JocCarriage::I0SkipField && profile != JocProfile::Idx0 {
+        return Err("i0 skip-field carriage currently supports idx0 only".to_owned());
     }
     let rate = rate_budget_for_carriage(carriage, target_bitrate_kbps)
         .map_err(|error| format!("invalid encode budget: {error}"))?;
@@ -1206,8 +1215,9 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
             .map(|index| factorization.carriers[index].clone())
             .collect::<Vec<_>>();
         let access_unit = match carriage {
-            JocCarriage::EtsiStrict => package_source_derived_access_unit_with_frame_sizes(
+            JocCarriage::EtsiAuxDependent => package_source_derived_access_unit_with_frame_sizes(
                 profile,
+                emdf_profile,
                 sequence,
                 &factorization.scaled_matrix,
                 &positions,
@@ -1216,8 +1226,9 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
                 0,
                 rate.d0_frame_bytes,
             ),
-            JocCarriage::DeployedCompat => package_deployed_compat_access_unit(
+            JocCarriage::I0SkipField => package_i0_skip_field_access_unit(
                 profile,
+                emdf_profile,
                 sequence,
                 &factorization.scaled_matrix,
                 &positions,
@@ -1235,7 +1246,7 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
     write_output(&metrics_path, metrics.into_bytes(), "reduction metrics")?;
     let _ = fs::remove_dir_all(work_root);
     println!(
-        "encoded profile={profile_name} carriage={carriage:?} frames={frame_count} samples={encoded_samples} authored_sources={} authored_channels={} dynamic_objects={} direct_speakers={} direct_speaker_channels={} lfe_core_channels={} coded_objects_last_frame={} output_bytes={output_bytes_len} target_bitrate={} carrier_bitrate={} d0_bitrate={} temporal_weight={:.17e} reduction=deterministic:farthest-point+weighted-aggregate metrics={}",
+        "encoded profile={profile_name} carriage={carriage:?} emdf_profile={emdf_profile:?} frames={frame_count} samples={encoded_samples} authored_sources={} authored_channels={} dynamic_objects={} direct_speakers={} direct_speaker_channels={} lfe_core_channels={} coded_objects_last_frame={} output_bytes={output_bytes_len} target_bitrate={} carrier_bitrate={} d0_bitrate={} temporal_weight={:.17e} reduction=deterministic:farthest-point+weighted-aggregate metrics={}",
         supported_objects.len(),
         track_indices.len(),
         metadata.dynamic_object_count(),
@@ -1560,9 +1571,25 @@ fn parse_profile(value: &str) -> Result<JocProfile, String> {
 
 fn parse_carriage(value: &str) -> Result<JocCarriage, String> {
     match value {
-        "etsi-strict" => Ok(JocCarriage::EtsiStrict),
-        "deployed-compat" => Ok(JocCarriage::DeployedCompat),
+        "etsi" => Ok(JocCarriage::EtsiAuxDependent),
+        "i0-skipfld" => Ok(JocCarriage::I0SkipField),
         other => Err(format!("unsupported JOC carriage '{other}'")),
+    }
+}
+
+fn parse_emdf_profile(value: &str) -> Result<EmdfProfile, String> {
+    match value {
+        "etsi" => Ok(EmdfProfile::EtsiStrict),
+        "deployed" => Ok(EmdfProfile::DeployedCompat),
+        other => Err(format!("unsupported EMDF profile '{other}'")),
+    }
+}
+
+fn parse_compat_preset(value: &str) -> Result<(JocCarriage, EmdfProfile), String> {
+    match value {
+        "etsi" => Ok((JocCarriage::EtsiAuxDependent, EmdfProfile::EtsiStrict)),
+        "deployed" => Ok((JocCarriage::I0SkipField, EmdfProfile::DeployedCompat)),
+        other => Err(format!("unsupported compatibility preset '{other}'")),
     }
 }
 
@@ -1573,4 +1600,33 @@ fn write_output(path: &Path, bytes: Vec<u8>, description: &str) -> Result<(), St
             path.display()
         )
     })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{parse_carriage, parse_compat_preset, parse_emdf_profile};
+    use jocforge_core::{EmdfProfile, JocCarriage};
+
+    #[test]
+    fn cli_names_carriage_and_emdf_profile_separately() {
+        assert_eq!(parse_carriage("etsi"), Ok(JocCarriage::EtsiAuxDependent));
+        assert_eq!(parse_carriage("i0-skipfld"), Ok(JocCarriage::I0SkipField));
+        assert_eq!(parse_emdf_profile("etsi"), Ok(EmdfProfile::EtsiStrict));
+        assert_eq!(
+            parse_emdf_profile("deployed"),
+            Ok(EmdfProfile::DeployedCompat)
+        );
+    }
+
+    #[test]
+    fn deployed_compat_preset_selects_both_orthogonal_dimensions() {
+        assert_eq!(
+            parse_compat_preset("deployed"),
+            Ok((JocCarriage::I0SkipField, EmdfProfile::DeployedCompat))
+        );
+        assert_eq!(
+            parse_compat_preset("etsi"),
+            Ok((JocCarriage::EtsiAuxDependent, EmdfProfile::EtsiStrict))
+        );
+    }
 }

@@ -2,7 +2,7 @@
 
 use std::process::Command;
 
-use jocforge_core::{AdmPosition, JocProfile, package_deployed_compat_access_unit};
+use jocforge_core::{AdmPosition, EmdfProfile, JocProfile, package_i0_skip_field_access_unit};
 
 fn ffmpeg_core(bitrate: &str, label: &str) -> Vec<u8> {
     let path =
@@ -63,9 +63,15 @@ fn deployed_carriage_pads_public_core_and_inserts_skipfld() {
     let frame = ffmpeg_core("896k", "896");
     assert_eq!(frame.len(), 3584);
     let (matrix, positions) = fixture_scene();
-    let output =
-        package_deployed_compat_access_unit(JocProfile::Idx0, 1, &matrix, &positions, &frame)
-            .expect("deployed-compatible carriage");
+    let output = package_i0_skip_field_access_unit(
+        JocProfile::Idx0,
+        EmdfProfile::DeployedCompat,
+        1,
+        &matrix,
+        &positions,
+        &frame,
+    )
+    .expect("I0 skip-field carriage");
     assert_eq!(output.len(), 4096);
     assert_eq!(&output[0..2], &[0x0b, 0x77]);
 }
@@ -75,8 +81,14 @@ fn deployed_carriage_fails_closed_when_native_1024_core_has_no_skip_capacity() {
     let frame = ffmpeg_core("1024k", "1024-capacity");
     assert_eq!(frame.len(), 4096);
     let (matrix, positions) = fixture_scene();
-    let error =
-        package_deployed_compat_access_unit(JocProfile::Idx0, 1, &matrix, &positions, &frame)
-            .expect_err("native 1024 core should not silently truncate EMDF");
+    let error = package_i0_skip_field_access_unit(
+        JocProfile::Idx0,
+        EmdfProfile::DeployedCompat,
+        1,
+        &matrix,
+        &positions,
+        &frame,
+    )
+    .expect_err("native 1024 core should not silently truncate EMDF");
     assert!(error.contains("insufficient public skip-field capacity"));
 }

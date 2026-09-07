@@ -1,6 +1,6 @@
 // pattern: Functional Core
 
-use crate::{AdmPosition, JocProfile, profile_spec, quantize_coefficient};
+use crate::{AdmPosition, EmdfProfile, JocProfile, profile_spec, quantize_coefficient};
 
 const FRAME_BYTES: usize = 4096;
 const D0_FRAME_BYTES: usize = 2560;
@@ -177,8 +177,9 @@ fn pack_bits(bits: &[bool]) -> Vec<u8> {
 }
 
 /// Produces a bounded, deterministic JOC EMDF container with one OAMD and one
-/// JOC payload. The field choices follow TS 103 420 table 56's strict profile.
-fn write_emdf(oamd: &[u8], joc: &[u8]) -> Result<Vec<u8>, String> {
+/// JOC payload. Only the explicitly selected profile controls signaling
+/// deviations; all other fields remain the current JOCForge configuration.
+fn write_emdf(oamd: &[u8], joc: &[u8], emdf_profile: EmdfProfile) -> Result<Vec<u8>, String> {
     if oamd.len() > u8::MAX.into() || joc.len() > u8::MAX.into() {
         return Err("JOC EMDF payload exceeds the MVP byte bound".to_owned());
     }
@@ -192,8 +193,11 @@ fn write_emdf(oamd: &[u8], joc: &[u8]) -> Result<Vec<u8>, String> {
         container.push(1, 1); // group ID present
         container.push(1, 2); // shared group ID
         container.push(0, 1); // group ID terminates
-        container.push(1, 1); // codec data present
-        container.push(0, 8); // reserved codec data value
+        let codec_data_present = matches!(emdf_profile, EmdfProfile::EtsiStrict);
+        container.push(u64::from(codec_data_present), 1);
+        if codec_data_present {
+            container.push(0, 8); // reserved codec data value
+        }
         container.push(0, 1); // discard unknown payload false
         container.push(1, 1); // payload frame aligned
         container.push(0, 1); // create duplicate false
@@ -717,7 +721,7 @@ pub fn write_one_au_proof(profile: JocProfile) -> Result<Vec<u8>, String> {
         })
         .collect::<Vec<_>>();
     let joc = write_joc_payload(profile, 1, &matrix)?;
-    let emdf = write_emdf(&oamd, &joc)?;
+    let emdf = write_emdf(&oamd, &joc, EmdfProfile::default())?;
     let output = match profile {
         JocProfile::Idx0 => write_five_channel_frame(Some(&emdf), true),
         JocProfile::Idx1 => [
@@ -740,6 +744,7 @@ pub fn write_one_au_proof(profile: JocProfile) -> Result<Vec<u8>, String> {
 #[allow(clippy::too_many_arguments)]
 pub fn package_source_derived_access_unit(
     profile: JocProfile,
+    emdf_profile: EmdfProfile,
     sequence_count: u16,
     matrix: &[Vec<f64>],
     positions: &[AdmPosition],
@@ -749,6 +754,7 @@ pub fn package_source_derived_access_unit(
 ) -> Result<Vec<u8>, String> {
     package_source_derived_access_unit_with_frame_sizes(
         profile,
+        emdf_profile,
         sequence_count,
         matrix,
         positions,
@@ -766,6 +772,7 @@ pub fn package_source_derived_access_unit(
 #[allow(clippy::too_many_arguments)]
 pub fn package_source_derived_access_unit_with_frame_sizes(
     profile: JocProfile,
+    emdf_profile: EmdfProfile,
     sequence_count: u16,
     matrix: &[Vec<f64>],
     positions: &[AdmPosition],
@@ -782,7 +789,7 @@ pub fn package_source_derived_access_unit_with_frame_sizes(
     }
     let oamd = write_oamd_payload(positions)?;
     let joc = write_joc_payload(profile, sequence_count, matrix)?;
-    let emdf = write_emdf(&oamd, &joc)?;
+    let emdf = write_emdf(&oamd, &joc, emdf_profile)?;
     let d0 = write_source_dependent_frame(
         &emdf,
         profile_spec(profile).channel_map,
@@ -798,31 +805,32 @@ pub fn package_source_derived_access_unit_with_frame_sizes(
     Ok(output)
 }
 
-/// Packages one public I0-only deployed-compatible AU.  The external FFmpeg
+/// Packages one public I0-only skip-field AU. The external FFmpeg
 /// frame remains the audio core; JOCForge owns the public EMDF and inserts it
 /// into the I0 audio-block skip field without retaining a dependent substream.
 #[allow(clippy::too_many_arguments)]
-pub fn package_deployed_compat_access_unit(
+pub fn package_i0_skip_field_access_unit(
     profile: JocProfile,
+    emdf_profile: EmdfProfile,
     sequence_count: u16,
     matrix: &[Vec<f64>],
     positions: &[AdmPosition],
     i0_frame: &[u8],
 ) -> Result<Vec<u8>, String> {
     if profile != JocProfile::Idx0 {
-        return Err("deployed-compatible carriage currently supports idx0 only".to_owned());
+        return Err("I0 skip-field carriage currently supports idx0 only".to_owned());
     }
     if i0_frame.get(0..2) != Some(&[0x0b, 0x77])
         || !(i0_frame.len() == FRAME_BYTES || i0_frame.len() == 3584)
     {
-        return Err("deployed-compatible carriage requires one public E-AC-3 I0 frame".to_owned());
+        return Err("I0 skip-field carriage requires one public E-AC-3 I0 frame".to_owned());
     }
     if matrix.len() != positions.len() {
         return Err("JOC matrix rows must match reduced OAMD positions".to_owned());
     }
     let oamd = write_oamd_payload(positions)?;
     let joc = write_joc_payload(profile, sequence_count, matrix)?;
-    let emdf = write_emdf(&oamd, &joc)?;
+    let emdf = write_emdf(&oamd, &joc, emdf_profile)?;
     let i0_frame = if i0_frame.len() == FRAME_BYTES {
         i0_frame.to_vec()
     } else {
@@ -898,7 +906,7 @@ pub fn package_ffmpeg_access_unit(
     }
     let oamd = write_oamd_payload(positions)?;
     let joc = write_joc_payload(profile, sequence_count, matrix)?;
-    let emdf = write_emdf(&oamd, &joc)?;
+    let emdf = write_emdf(&oamd, &joc, EmdfProfile::default())?;
     let d0 = write_dependent_frame(Some(&emdf), profile_spec(profile).channel_map);
     let mut output = Vec::with_capacity(FRAME_BYTES + d0.len());
     output.extend_from_slice(i0_frame);
@@ -909,9 +917,65 @@ pub fn package_ffmpeg_access_unit(
 #[cfg(test)]
 mod tests {
     use super::{
-        AdmPosition, D0_FRAME_BYTES, source_feature, write_oamd_payload,
+        AdmPosition, D0_FRAME_BYTES, source_feature, write_emdf, write_oamd_payload,
         write_source_dependent_frame,
     };
+    use crate::EmdfProfile;
+
+    struct TestBitReader<'a> {
+        bytes: &'a [u8],
+        position: usize,
+    }
+
+    impl<'a> TestBitReader<'a> {
+        fn new(bytes: &'a [u8], position: usize) -> Self {
+            Self { bytes, position }
+        }
+
+        fn read(&mut self, width: usize) -> u64 {
+            let mut value = 0;
+            for _ in 0..width {
+                let byte = self.bytes[self.position / 8];
+                let shift = 7 - self.position % 8;
+                value = (value << 1) | u64::from((byte >> shift) & 1);
+                self.position += 1;
+            }
+            value
+        }
+    }
+
+    fn codec_data_flags(emdf: &[u8]) -> Vec<bool> {
+        let mut reader = TestBitReader::new(emdf, 32);
+        reader.read(2);
+        reader.read(3);
+        let mut flags = Vec::new();
+        loop {
+            let payload_id = reader.read(5);
+            if payload_id == 0 {
+                break;
+            }
+            assert_eq!(reader.read(1), 0); // sample offset absent
+            assert_eq!(reader.read(1), 0); // duration absent
+            assert_eq!(reader.read(1), 1); // group ID present
+            assert_eq!(reader.read(2), 1); // shared group ID
+            assert_eq!(reader.read(1), 0); // group ID terminates
+            let codec_data_present = reader.read(1) != 0;
+            if codec_data_present {
+                reader.read(8);
+            }
+            assert_eq!(reader.read(1), 0); // discard unknown payload false
+            assert_eq!(reader.read(1), 1); // payload frame aligned
+            reader.read(1); // create duplicate
+            reader.read(1); // remove duplicate
+            reader.read(5); // priority
+            reader.read(2); // processing allowed
+            let payload_bytes = reader.read(8);
+            assert_eq!(reader.read(1), 0); // payload length terminates
+            reader.read(usize::try_from(payload_bytes).unwrap_or(0) * 8);
+            flags.push(codec_data_present);
+        }
+        flags
+    }
 
     #[test]
     fn seven_channel_profiles_declare_the_sixteen_slot_oamd_domain() {
@@ -926,6 +990,16 @@ mod tests {
         let payload = write_oamd_payload(&positions).expect("sixteen-slot OAMD");
 
         assert_eq!(payload[0], 0x1f);
+    }
+
+    #[test]
+    fn emdf_profile_controls_codec_data_bits_without_stale_codec_bytes() {
+        let strict = write_emdf(&[0xaa], &[0xbb], EmdfProfile::EtsiStrict).expect("strict EMDF");
+        let deployed =
+            write_emdf(&[0xaa], &[0xbb], EmdfProfile::DeployedCompat).expect("deployed EMDF");
+
+        assert_eq!(codec_data_flags(&strict), [true, true]);
+        assert_eq!(codec_data_flags(&deployed), [false, false]);
     }
 
     #[test]

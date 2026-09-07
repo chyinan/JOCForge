@@ -60,15 +60,15 @@ pub fn rate_budget(total_bitrate_kbps: u32) -> Result<RateBudget, RateBudgetErro
 }
 
 /// Returns the deterministic profile-independent allocation for a selected
-/// carriage topology.  The deployed-compatible MVP deliberately supports only
-/// one complete 1024 kbps I0 frame; it does not synthesize a dependent frame.
+/// carriage topology. The I0 skip-field MVP deliberately supports only one
+/// complete 1024 kbps I0 frame; it does not synthesize a dependent frame.
 pub fn rate_budget_for_carriage(
     carriage: crate::JocCarriage,
     total_bitrate_kbps: u32,
 ) -> Result<RateBudget, RateBudgetError> {
     match carriage {
-        crate::JocCarriage::EtsiStrict => rate_budget(total_bitrate_kbps),
-        crate::JocCarriage::DeployedCompat if total_bitrate_kbps == 1024 => Ok(RateBudget {
+        crate::JocCarriage::EtsiAuxDependent => rate_budget(total_bitrate_kbps),
+        crate::JocCarriage::I0SkipField if total_bitrate_kbps == 1024 => Ok(RateBudget {
             total_bitrate_kbps,
             carrier_bitrate_kbps: 1024,
             carrier_encode_bitrate_kbps: 896,
@@ -77,7 +77,7 @@ pub fn rate_budget_for_carriage(
             carrier_encoded_frame_bytes: frame_bytes(896),
             d0_frame_bytes: 0,
         }),
-        crate::JocCarriage::DeployedCompat => {
+        crate::JocCarriage::I0SkipField => {
             Err(RateBudgetError::UnsupportedTotalBitrate(total_bitrate_kbps))
         }
     }

@@ -3,7 +3,7 @@
 //! Public E-AC-3 audio-block carriage primitives.
 //!
 //! This module is intentionally a narrow, fail-closed walker for the FFmpeg
-//! core shape used by the deployed-compatible MVP.  It follows the public
+//! core shape used by the I0 skip-field carriage. It follows the public
 //! E-AC-3 syntax in ETSI TS 102 366, clauses 4.4.3, E.1.2.3, and 6.2.2.  It
 //! does not decode mantissa values; it only counts their public codeword width
 //! so that `skipfld` can be inserted before the mantissas without changing the
@@ -534,7 +534,7 @@ fn parse_bsi_end(frame: &[u8]) -> Result<(usize, usize), String> {
     let acmod = ((frame[4] >> 1) & 0x07) as usize;
     let strmtyp = (frame[2] >> 6) & 0x03;
     if acmod != 7 || strmtyp != 0 {
-        return Err("deployed-compatible carriage requires independent 5.1 I0".to_owned());
+        return Err("i0 skip-field carriage requires independent 5.1 I0".to_owned());
     }
     reader.read(5)?;
     if reader.read(1)? != 0 {
@@ -843,7 +843,7 @@ fn splice_addbsi(frame: &[u8], addbsi_bit: usize, complexity: u8) -> Result<Vec<
     let body_bits = total_bits - 17;
     let old_addbsi = BitReader::new(frame, addbsi_bit).read(1)?;
     if old_addbsi != 0 {
-        return Err("deployed-compatible carriage requires an FFmpeg I0 without addbsi".to_owned());
+        return Err("i0 skip-field carriage requires an FFmpeg I0 without addbsi".to_owned());
     }
     let added_bits = 22_usize;
     let trim_at = body_bits
@@ -873,23 +873,17 @@ fn splice_addbsi(frame: &[u8], addbsi_bit: usize, complexity: u8) -> Result<Vec<
 /// field while preserving the encoded audio syntax and fixed frame size.
 pub fn inject_joc_skipfld(frame: &[u8], emdf: &[u8], complexity: u8) -> Result<Vec<u8>, String> {
     if frame.len() != 4096 || frame.get(0..2) != Some(&[0x0b, 0x77]) {
-        return Err(
-            "deployed-compatible carriage requires one 4096-byte E-AC-3 I0 frame".to_owned(),
-        );
+        return Err("i0 skip-field carriage requires one 4096-byte E-AC-3 I0 frame".to_owned());
     }
     if emdf.len() > 0x1ff {
         return Err("JOC EMDF exceeds the public 9-bit skip-field byte capacity".to_owned());
     }
     if BitReader::new(frame, frame.len() * 8 - 18).read(1)? != 0 {
-        return Err(
-            "deployed-compatible carriage does not rewrite existing auxiliary data".to_owned(),
-        );
+        return Err("i0 skip-field carriage does not rewrite existing auxiliary data".to_owned());
     }
     let (addbsi_bit, addbsi) = parse_bsi_end(frame)?;
     if addbsi != 0 {
-        return Err(
-            "deployed-compatible carriage requires one FFmpeg I0 without addbsi".to_owned(),
-        );
+        return Err("i0 skip-field carriage requires one FFmpeg I0 without addbsi".to_owned());
     }
     let (_, _original_points, original_end) = locate_skip_points(frame, addbsi_bit + 1)?;
     let original_body_bits = frame.len() * 8 - 17;
