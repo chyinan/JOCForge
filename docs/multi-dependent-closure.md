@@ -17,6 +17,12 @@ CLI therefore removes the output and returns an actionable failure instead of
 advertising the form as supported. The capability matrix remains
 `SPEC_LEGAL_NOT_IMPLEMENTED` for multi-dependent cells.
 
+This is an external decoder boundary, not an unexamined JOCForge error:
+current FFmpeg `libavcodec/eac3dec.c` explicitly decodes only substream ID 0,
+skips additional substreams, and requests an additional-substream sample. See
+[FFmpeg's E-AC-3 decoder source](https://github.com/FFmpeg/FFmpeg/blob/master/libavcodec/eac3dec.c)
+and its [dependent-stream support history](https://ffmpeg.org/pipermail/ffmpeg-cvslog/2018-March/113134.html).
+
 The remaining work is an independently validated E-AC-3 carrier path that
 preserves both public dependent ownership and FFmpeg core decode. No vendor
 bytes or proprietary behavior are used in this probe.
