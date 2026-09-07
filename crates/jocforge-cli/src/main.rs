@@ -21,6 +21,7 @@ use jocforge_core::{
     ReductionConfig, ReductionSource, SOURCE_DERIVED_CARRIER_PEAK_LIMIT, d0_carrier_causality,
     factorize_source_derived, final_render_gate, generate_synthetic_scene_fixture,
     limit_signal_peak, maximum_absolute_difference, package_i0_skip_field_access_unit,
+    package_multi_dependent_source_derived_access_unit,
     package_source_derived_access_unit_with_frame_sizes, parse_bw64_adm_metadata, profile_spec,
     quantize_coefficient, reconstruction_error, reduce_scene_with_previous, resolve_encoding_plan,
     source_derived_carrier_causality, spectral_phase_report, validate_source_derived_adm_metadata,
@@ -43,6 +44,7 @@ fn main() -> ExitCode {
 fn run(arguments: &[String]) -> Result<(), String> {
     match arguments.first().map(String::as_str) {
         Some("proof") => run_proof(&arguments[1..]),
+        Some("conformance-multi-dependent") => run_multi_dependent_proof(&arguments[1..]),
         Some("fixture") => run_fixture(&arguments[1..]),
         Some("fixture-directspeakers") => run_direct_speaker_fixture(&arguments[1..]),
         Some("fixture-unsupported") => run_unsupported_fixture(&arguments[1..]),
@@ -56,7 +58,7 @@ fn run(arguments: &[String]) -> Result<(), String> {
         Some("temporal-adversarial") => run_temporal_adversarial(&arguments[1..]),
         Some(command) => Err(format!("unsupported command '{command}'")),
         None => Err(
-            "usage: jocforge proof|fixture|fixture-directspeakers|fixture-unsupported|inspect-adm|encode|quantization-stress|carrier-causality|spectral-phase|final-render-gate|temporal ..."
+            "usage: jocforge proof|conformance-multi-dependent|fixture|fixture-directspeakers|fixture-unsupported|inspect-adm|encode|quantization-stress|carrier-causality|spectral-phase|final-render-gate|temporal ..."
                 .to_owned(),
         ),
     }
@@ -150,6 +152,118 @@ fn run_proof(arguments: &[String]) -> Result<(), String> {
     let bytes = write_one_au_proof(profile)?;
     let output = PathBuf::from(output);
     write_output(&output, bytes, "proof")
+}
+
+fn run_multi_dependent_proof(arguments: &[String]) -> Result<(), String> {
+    let [profile_name, dependent_count, output] = arguments else {
+        return Err(
+            "usage: jocforge conformance-multi-dependent PROFILE DEPENDENT_COUNT OUTPUT.ec3"
+                .to_owned(),
+        );
+    };
+    let profile = parse_profile(profile_name)?;
+    let dependent_count = dependent_count
+        .parse::<usize>()
+        .map_err(|error| format!("invalid dependent count '{dependent_count}': {error}"))?;
+    if !(1..=8).contains(&dependent_count) {
+        return Err("dependent count must be in 1..=8 for D0..D7".to_owned());
+    }
+    let dependent_channel_maps = match profile {
+        JocProfile::Idx0 | JocProfile::Idx3 => vec![0xc000_u16, 0x3000],
+        _ => {
+            return Err(
+                "advanced multi-dependent JOC currently supports 5.X replacement maps only"
+                    .to_owned(),
+            );
+        }
+    };
+    if dependent_count > 2 {
+        return Err("5.X replacement-map conformance supports at most two dependents".to_owned());
+    }
+    let columns = profile_spec(profile).input_labels.len();
+    let unit = 820.0 / 4096.0;
+    let matrix = vec![
+        (0..columns)
+            .map(|column| if column == 0 { unit } else { 0.0 })
+            .collect::<Vec<_>>(),
+    ];
+    let position = jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    };
+    let work_root =
+        env::temp_dir().join(format!("jocforge-multi-dependent-{}", std::process::id()));
+    fs::create_dir_all(&work_root)
+        .map_err(|error| format!("failed to create conformance work directory: {error}"))?;
+    let raw_path = work_root.join("i0.f32le");
+    let carrier_path = work_root.join("i0.ec3");
+    let i0_carriers = (0..5)
+        .map(|channel| {
+            (0..JOC_FRAME_SAMPLES)
+                .map(|sample| {
+                    (f64::from(u32::try_from(sample).unwrap_or(0))
+                        * (0.011 + f64::from(channel) * 0.001))
+                        .sin()
+                        * 0.1
+                })
+                .collect::<Vec<_>>()
+        })
+        .collect::<Vec<_>>();
+    fs::write(
+        &raw_path,
+        interleaved_f32le(&i0_carriers, JOC_FRAME_SAMPLES),
+    )
+    .map_err(|error| format!("failed to write conformance carrier PCM: {error}"))?;
+    encode_ffmpeg_carrier(&raw_path, &carrier_path, 5, "1024k")?;
+    let i0 = read_carrier_frames(&carrier_path, 4096, 1)?;
+    let dependent_channel_maps = dependent_channel_maps[..dependent_count].to_vec();
+    let dependent_carriers = (0..dependent_count)
+        .map(|dependent| {
+            let first = (0..1536)
+                .map(|sample| (f64::from(sample) * 0.011 + dependent as f64 * 0.07).sin() * 0.1)
+                .collect::<Vec<_>>();
+            let second = (0..1536)
+                .map(|sample| (f64::from(sample) * 0.017 + dependent as f64 * 0.11).cos() * 0.1)
+                .collect::<Vec<_>>();
+            vec![first, second]
+        })
+        .collect::<Vec<_>>();
+    let bytes = package_multi_dependent_source_derived_access_unit(
+        profile,
+        EmdfProfile::EtsiStrict,
+        1,
+        &matrix,
+        &[position],
+        &i0,
+        &dependent_channel_maps,
+        &dependent_carriers,
+        0,
+    )?;
+    let result = write_output(
+        &PathBuf::from(output),
+        bytes,
+        "multi-dependent conformance proof",
+    );
+    if result.is_ok() {
+        let ffmpeg = std::process::Command::new("ffmpeg")
+            .args(["-hide_banner", "-v", "error", "-f", "eac3", "-i"])
+            .arg(output)
+            .args(["-f", "null", "-"])
+            .status()
+            .map_err(|error| {
+                format!("failed to start FFmpeg multi-dependent validation: {error}")
+            })?;
+        if !ffmpeg.success() {
+            let _ = fs::remove_file(output);
+            return Err(
+                "multi-dependent conformance output failed independent FFmpeg core decode"
+                    .to_owned(),
+            );
+        }
+    }
+    let _ = fs::remove_dir_all(work_root);
+    result
 }
 
 fn run_quantization_stress(arguments: &[String]) -> Result<(), String> {

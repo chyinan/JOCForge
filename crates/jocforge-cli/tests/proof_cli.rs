@@ -47,6 +47,26 @@ fn fixture_cli_writes_an_adm_bw64_file() {
 }
 
 #[test]
+fn advanced_multi_dependent_cli_writes_sequential_dependents() {
+    let output_path = env::temp_dir().join(format!(
+        "jocforge-multi-dependent-{}.ec3",
+        std::process::id()
+    ));
+    let status = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+        .args([
+            "conformance-multi-dependent",
+            "idx0",
+            "2",
+            output_path.to_str().expect("temporary path is UTF-8"),
+        ])
+        .status()
+        .expect("multi-dependent CLI starts");
+
+    assert!(!status.success());
+    assert!(!output_path.exists());
+}
+
+#[test]
 fn quantization_stress_cli_reports_all_profiles_and_full_domain() {
     let output_path = env::temp_dir().join(format!(
         "jocforge-quantization-stress-{}.json",

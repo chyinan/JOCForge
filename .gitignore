@@ -16,6 +16,7 @@
 /artifacts/joc-capability-matrix.csv
 /artifacts/joc-capability-matrix.json
 /artifacts/profile-closure/
+/artifacts/multi-dependent-closure/
 *.ec3
 *.bw64
 *.wav

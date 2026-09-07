@@ -2,7 +2,8 @@
 
 use jocforge_core::{
     EmdfProfile, JocProfile, d0_carrier_causality, package_i0_skip_field_access_unit,
-    package_source_derived_access_unit, write_one_au_proof,
+    package_multi_dependent_source_derived_access_unit, package_source_derived_access_unit,
+    write_one_au_proof,
 };
 
 fn ffmpeg_i0_frame(label: &str) -> Vec<u8> {
@@ -165,6 +166,119 @@ fn source_derived_d0_writer_changes_for_each_dependent_input() {
                 .all(|measurement| measurement.changed && measurement.changed_byte_count > 0)
         );
     }
+}
+
+#[test]
+fn multi_dependent_writer_places_joc_emdf_only_on_the_last_sequential_dependent() {
+    let unit = 820.0 / 4096.0;
+    let matrix = vec![vec![unit, 0.0, 0.0, 0.0, 0.0]];
+    let position = jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    };
+    let i0 = vec![0x0b, 0x77]
+        .into_iter()
+        .chain(std::iter::repeat_n(0, 4094))
+        .collect::<Vec<_>>();
+    let maps = vec![0xc000, 0x3000];
+    let carriers = vec![
+        vec![vec![0.1; 1536], vec![0.2; 1536]],
+        vec![vec![0.3; 1536], vec![0.4; 1536]],
+    ];
+
+    let access_unit = package_multi_dependent_source_derived_access_unit(
+        JocProfile::Idx0,
+        EmdfProfile::EtsiStrict,
+        1,
+        &matrix,
+        &[position],
+        &i0,
+        &maps,
+        &carriers,
+        0,
+    )
+    .expect("two-dependent source-derived AU");
+
+    assert_eq!(access_unit.len(), 4096 + 2 * 2560);
+    assert_eq!(&access_unit[4096..4098], &[0x0b, 0x77]);
+    assert_eq!(&access_unit[6656..6658], &[0x0b, 0x77]);
+    assert!(
+        access_unit[6656..]
+            .windows(2)
+            .any(|window| window == [0x58, 0x38])
+    );
+}
+
+#[test]
+fn one_multi_dependent_frame_matches_the_existing_d0_writer() {
+    let unit = 820.0 / 4096.0;
+    let matrix = vec![vec![unit, 0.0, 0.0, 0.0, 0.0]];
+    let position = jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    };
+    let i0 = vec![0x0b, 0x77]
+        .into_iter()
+        .chain(std::iter::repeat_n(0, 4094))
+        .collect::<Vec<_>>();
+    let carriers = vec![vec![0.1; 1536], vec![0.2; 1536]];
+    let normal = package_source_derived_access_unit(
+        JocProfile::Idx0,
+        EmdfProfile::EtsiStrict,
+        1,
+        &matrix,
+        &[position],
+        &i0,
+        &carriers,
+        0,
+    )
+    .expect("normal D0");
+    let multi = package_multi_dependent_source_derived_access_unit(
+        JocProfile::Idx0,
+        EmdfProfile::EtsiStrict,
+        1,
+        &matrix,
+        &[position],
+        &i0,
+        &[0xc000],
+        &[carriers],
+        0,
+    )
+    .expect("multi D0");
+    assert_eq!(normal, multi);
+}
+
+#[test]
+fn multi_dependent_writer_rejects_more_than_eight_or_nonsequential_dependents() {
+    let i0 = vec![0x0b, 0x77]
+        .into_iter()
+        .chain(std::iter::repeat_n(0, 4094))
+        .collect::<Vec<_>>();
+    let carriers = vec![vec![vec![0.0; 1536]]; 9];
+    let maps = vec![
+        0x8000, 0x4000, 0x2000, 0x1000, 0x0800, 0x0100, 0x0080, 0x0040, 0x0020,
+    ];
+    let matrix = vec![vec![0.0; 5]];
+    let position = jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    };
+    let too_many = package_multi_dependent_source_derived_access_unit(
+        JocProfile::Idx0,
+        EmdfProfile::EtsiStrict,
+        1,
+        &matrix,
+        &[position],
+        &i0,
+        &maps,
+        &carriers,
+        0,
+    )
+    .expect_err("D8 must be outside the public dependent-substream bound");
+    assert!(too_many.contains("at most eight"));
 }
 
 #[test]

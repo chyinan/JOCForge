@@ -47,8 +47,9 @@ pub use validation::{
 };
 pub use writer::{
     D0CausalityMeasurement, d0_carrier_causality, package_ffmpeg_access_unit,
-    package_i0_skip_field_access_unit, package_source_derived_access_unit,
-    package_source_derived_access_unit_with_frame_sizes, write_one_au_proof,
+    package_i0_skip_field_access_unit, package_multi_dependent_source_derived_access_unit,
+    package_source_derived_access_unit, package_source_derived_access_unit_with_frame_sizes,
+    write_one_au_proof,
 };
 
 /// MVP JOC downmix profiles.

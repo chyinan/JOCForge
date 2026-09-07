@@ -462,10 +462,18 @@ fn write_five_channel_frame(emdf: Option<&[u8]>, joc_extension: bool) -> Vec<u8>
 }
 
 fn write_dependent_frame(emdf: Option<&[u8]>, channel_map: u16) -> Vec<u8> {
+    write_dependent_frame_with_id(emdf, 0, channel_map)
+}
+
+fn write_dependent_frame_with_id(
+    emdf: Option<&[u8]>,
+    dependent_substream_id: u8,
+    channel_map: u16,
+) -> Vec<u8> {
     let mut bits = BitWriter::default();
     bits.push(0x0b77, 16);
     bits.push(1, 2); // dependent substream
-    bits.push(0, 3); // dependent substream ID
+    bits.push(u64::from(dependent_substream_id), 3); // dependent substream ID
     bits.push(u64::try_from(D0_FRAME_BYTES / 2 - 1).unwrap_or(0), 11);
     bits.push(0, 2); // 48 kHz
     bits.push(3, 2); // six blocks
@@ -538,50 +546,80 @@ fn write_source_dependent_frame(
     complexity_index: u8,
     frame_bytes: usize,
 ) -> Result<Vec<u8>, String> {
+    write_source_dependent_frame_with_options(
+        Some(emdf),
+        0,
+        channel_map,
+        carriers,
+        sample_offset,
+        complexity_index,
+        frame_bytes,
+    )
+}
+
+fn write_source_dependent_frame_with_options(
+    emdf: Option<&[u8]>,
+    dependent_substream_id: u8,
+    channel_map: u16,
+    carriers: &[Vec<f64>],
+    sample_offset: usize,
+    complexity_index: u8,
+    frame_bytes: usize,
+) -> Result<Vec<u8>, String> {
     validate_frame_bytes(frame_bytes, "D0")?;
-    if carriers.len() != 2
+    if dependent_substream_id > 7 {
+        return Err("dependent substream id must be in D0..D7".to_owned());
+    }
+    if !(1..=2).contains(&carriers.len())
         || carriers
             .iter()
             .any(|carrier| carrier.len() < sample_offset.saturating_add(1536))
     {
-        return Err("source-derived D0 requires two 1536-sample carrier windows".to_owned());
+        return Err(
+            "source-derived dependent requires one or two 1536-sample carrier windows".to_owned(),
+        );
     }
     let mut bits = BitWriter::default();
     for (value, width) in [
         (0x0b77, 16),
         (1, 2), // dependent substream
-        (0, 3),
+        (u64::from(dependent_substream_id), 3),
         (u64::try_from(frame_bytes / 2 - 1).unwrap_or(0), 11),
-        (0, 2),  // 48 kHz
-        (3, 2),  // six blocks
-        (2, 3),  // two full-band channels
-        (0, 1),  // no LFE
-        (16, 5), // E-AC-3
-        (31, 5), // dialnorm
-        (0, 1),  // no compression metadata
-        (1, 1),  // custom channel map present
+        (0, 2),                                          // 48 kHz
+        (3, 2),                                          // six blocks
+        (u64::try_from(carriers.len()).unwrap_or(0), 3), // one or two full-band channels
+        (0, 1),                                          // no LFE
+        (16, 5),                                         // E-AC-3
+        (31, 5),                                         // dialnorm
+        (0, 1),                                          // no compression metadata
+        (1, 1),                                          // custom channel map present
         (u64::from(channel_map), 16),
         (0, 1), // no mixing metadata
         (0, 1), // no informational metadata
-        (1, 1), // addbsi present for the JOC carrier
-        (1, 6), // two addbsi bytes
-        (0x01, 8),
-        (u64::from(complexity_index), 8),
     ] {
         bits.push(value, width);
+    }
+    bits.push(u64::from(emdf.is_some()), 1); // addbsi only on the EMDF carrier
+    if emdf.is_some() {
+        bits.push(1, 6); // two addbsi bytes
+        bits.push(0x01, 8);
+        bits.push(u64::from(complexity_index), 8);
     }
     bits.push(1, 1); // per-block exponent strategies
     bits.push(0, 1); // no AHT
     bits.push(1, 2); // per-block SNR strategy 1
     bits.push(0, 1); // no transient processing
     bits.push(16, 7); // bit allocation syntax enabled
-    bits.push(0, 1); // coupling off in block zero
-    for _ in 1..6 {
-        bits.push(0, 1); // coupling strategy reused/off
+    if carriers.len() == 2 {
+        bits.push(0, 1); // coupling off in block zero
+        for _ in 1..6 {
+            bits.push(0, 1); // coupling strategy reused/off
+        }
     }
     for block in 0..6 {
-        bits.push(u64::from(block == 0), 2);
-        bits.push(u64::from(block == 0), 2);
+        for _ in 0..carriers.len() {
+            bits.push(u64::from(block == 0), 2);
+        }
     }
     bits.push(0, 1); // no block-start information
 
@@ -589,13 +627,17 @@ fn write_source_dependent_frame(
         if block == 0 {
             bits.push(0, 1); // dynamic range absent
             bits.push(0, 1); // SPX absent
-            for _ in 0..4 {
-                bits.push(0, 1); // stereo rematrix flags
+            if carriers.len() == 2 {
+                for _ in 0..4 {
+                    bits.push(0, 1); // stereo rematrix flags
+                }
             }
-            bits.push(0, 6); // channel 6 bandwidth code
-            bits.push(0, 6); // channel 7 bandwidth code
-            push_source_exponents(&mut bits, D0_INITIAL_EXPONENT);
-            push_source_exponents(&mut bits, D0_INITIAL_EXPONENT);
+            for _ in 0..carriers.len() {
+                bits.push(0, 6); // channel bandwidth code
+            }
+            for _ in carriers {
+                push_source_exponents(&mut bits, D0_INITIAL_EXPONENT);
+            }
             bits.push(1, 1); // new bit-allocation parameters
             bits.push(0, 11); // conservative allocation parameters
             bits.push(63, 6); // coarse SNR offset
@@ -607,24 +649,21 @@ fn write_source_dependent_frame(
             bits.push(0, 1); // bit-allocation parameters reused
             bits.push(0, 1); // SNR offsets reused
         }
-        push_source_mantissas(
-            &mut bits,
-            source_feature(&carriers[0], sample_offset, block),
-        );
-        push_source_mantissas(
-            &mut bits,
-            source_feature(&carriers[1], sample_offset, block),
-        );
+        for carrier in carriers {
+            push_source_mantissas(&mut bits, source_feature(carrier, sample_offset, block));
+        }
     }
-    let minimum_tail = emdf
-        .len()
-        .checked_mul(8)
-        .and_then(|value| value.checked_add(32))
-        .ok_or_else(|| "source-derived D0 EMDF tail length overflow".to_owned())?;
-    if bits.bits.len() > frame_bytes * 8 - minimum_tail {
-        return Err("source-derived D0 audio leaves no room for JOC EMDF".to_owned());
+    if let Some(emdf) = emdf {
+        let minimum_tail = emdf
+            .len()
+            .checked_mul(8)
+            .and_then(|value| value.checked_add(32))
+            .ok_or_else(|| "source-derived D0 EMDF tail length overflow".to_owned())?;
+        if bits.bits.len() > frame_bytes * 8 - minimum_tail {
+            return Err("source-derived D0 audio leaves no room for JOC EMDF".to_owned());
+        }
     }
-    Ok(finish_frame(bits, Some(emdf), frame_bytes))
+    Ok(finish_frame(bits, emdf, frame_bytes))
 }
 
 fn push_source_exponents(bits: &mut BitWriter, initial: u8) {
@@ -797,6 +836,64 @@ pub fn package_source_derived_access_unit_with_frame_sizes(
     let mut output = Vec::with_capacity(i0_frame.len() + d0.len());
     output.extend_from_slice(i0_frame);
     output.extend_from_slice(&d0);
+    Ok(output)
+}
+
+/// Packages a general raw E-AC-3 JOC access unit with sequential D0..D7
+/// dependents. Each dependent uses the profile's public replacement channel
+/// map; only the last dependent carries the OAMD/JOC EMDF and type-A addbsi.
+/// This is an advanced conformance path, not the normal product topology.
+#[allow(clippy::too_many_arguments)]
+pub fn package_multi_dependent_source_derived_access_unit(
+    profile: JocProfile,
+    emdf_profile: EmdfProfile,
+    sequence_count: u16,
+    matrix: &[Vec<f64>],
+    positions: &[AdmPosition],
+    i0_frame: &[u8],
+    dependent_channel_maps: &[u16],
+    dependent_carriers: &[Vec<Vec<f64>>],
+    sample_offset: usize,
+) -> Result<Vec<u8>, String> {
+    if i0_frame.len() < 2 || i0_frame.len() % 2 != 0 || i0_frame.get(0..2) != Some(&[0x0b, 0x77]) {
+        return Err("carrier encoder did not return one legal E-AC-3 I0 frame".to_owned());
+    }
+    if dependent_carriers.is_empty() {
+        return Err("multi-dependent JOC requires at least one dependent".to_owned());
+    }
+    if dependent_carriers.len() > 8 {
+        return Err("multi-dependent JOC supports at most eight D0..D7 dependents".to_owned());
+    }
+    if dependent_channel_maps.len() != dependent_carriers.len() {
+        return Err("multi-dependent channel maps must match dependent count".to_owned());
+    }
+    if matrix.len() != positions.len() {
+        return Err("JOC matrix rows must match reduced OAMD positions".to_owned());
+    }
+    let oamd = write_oamd_payload(positions)?;
+    let joc = write_joc_payload(profile, sequence_count, matrix)?;
+    let emdf = write_emdf(&oamd, &joc, emdf_profile)?;
+    let complexity_index = u8::try_from(positions.len() + 1)
+        .map_err(|_| "JOC complexity index exceeds its eight-bit field".to_owned())?;
+    let mut output = Vec::with_capacity(i0_frame.len() + dependent_carriers.len() * D0_FRAME_BYTES);
+    output.extend_from_slice(i0_frame);
+    for (index, carriers) in dependent_carriers.iter().enumerate() {
+        let substream_id = u8::try_from(index).unwrap_or(7);
+        let dependent = if index + 1 == dependent_carriers.len() {
+            write_source_dependent_frame_with_options(
+                Some(emdf.as_slice()),
+                substream_id,
+                dependent_channel_maps[index],
+                carriers,
+                sample_offset,
+                complexity_index,
+                D0_FRAME_BYTES,
+            )?
+        } else {
+            write_dependent_frame_with_id(Some(&[]), substream_id, dependent_channel_maps[index])
+        };
+        output.extend_from_slice(&dependent);
+    }
     Ok(output)
 }
 
