@@ -4,6 +4,7 @@
 
 mod adm;
 mod analysis;
+mod conformance;
 mod eac3;
 mod plan;
 mod profile;
@@ -25,6 +26,10 @@ pub use analysis::{
     SOURCE_DERIVED_CARRIER_PEAK_LIMIT, factorize_rank_controlled, factorize_source_derived,
     limit_signal_peak, maximum_absolute_difference, quantize_coefficient, reconstruction_error,
     source_derived_carrier_causality,
+};
+pub use conformance::{
+    BlockPartition, ConformancePlanError, DependentTopology, ShortBlockPlan,
+    resolve_dependent_topology, resolve_short_block_plan,
 };
 pub use eac3::inject_joc_skipfld;
 pub use plan::{JocEncodingPlan, JocPlanError, resolve_encoding_plan};

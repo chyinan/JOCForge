@@ -184,3 +184,7 @@ Last verified: 2026-09-07
 - General short-block, multi-dependent, CMAF, and legacy-core generation is
   classified explicitly in the capability matrix and remains fail-closed until
   independent writer and validation contracts are added.
+- `crates/jocforge-core/src/conformance.rs` provides the pure public contract
+  for 1/2/3/6-block grouping to one 1,536-sample interval and sequential D0..D7
+  ID bounds; it is a planning/validation API, not a compressed short-frame
+  serializer.
