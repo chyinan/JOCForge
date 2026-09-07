@@ -20,6 +20,8 @@ $declaredCleanTestMatrix = @(Import-Csv -LiteralPath $cleanTestMatrixPath)
 $invariant = [Globalization.CultureInfo]::InvariantCulture
 $MaximumCodedObjects = 15
 $UnexplainedLeakageThreshold = 1.0e-12
+$CrossObjectLeakageThreshold = 1.0e-12
+$MetadataCoordinateTolerance = 0.04
 $SpeakerRenderErrorThreshold = 0.5
 $FactorizationResidualThreshold = 0.6
 $MatrixCoefficientJumpThreshold = 2.0
@@ -217,6 +219,296 @@ function Invoke-InspectMetadata([string]$OutputPath, [string]$Name, [switch]$For
         }
     }
     $inspectLog
+}
+
+function Invoke-PinnedDecode([string]$OutputPath, [string]$Name, [switch]$Force) {
+    $decodeRoot = Join-Path $artifact ($Name + "-decode")
+    $timelinePath = Join-Path $decodeRoot "metadata\timeline.json"
+    $decodeLog = Join-Path $artifact ($Name + "-decode.log")
+    if ($Force -or !$ReuseExisting -or !(Test-Path -LiteralPath $timelinePath)) {
+        if (Test-Path -LiteralPath $decodeRoot) {
+            Remove-Item -LiteralPath $decodeRoot -Recurse -Force
+        }
+        & $OpenJoc decode $OutputPath -o $decodeRoot --internal-base --validation-profile etsi-strict *> $decodeLog
+        if ($LASTEXITCODE -ne 0) {
+            throw "pinned OpenJOC decode failed for $OutputPath"
+        }
+    }
+    if (!(Test-Path -LiteralPath $timelinePath)) {
+        throw "pinned OpenJOC decode did not produce metadata timeline: $timelinePath"
+    }
+    [pscustomobject]@{
+        root = $decodeRoot
+        timeline = $timelinePath
+        log = $decodeLog
+        renderer = $OpenJoc
+        validator_identity = $validatorIdentity
+        pinned = [IO.Path]::GetFullPath($OpenJoc) -eq [IO.Path]::GetFullPath($validatorIdentity.executable)
+    }
+}
+
+function New-PositionedObjectFixture(
+    [string]$SourcePath,
+    [string]$OutputPath,
+    [double]$X,
+    [double]$Y,
+    [double]$Z
+) {
+    $bytes = [IO.File]::ReadAllBytes($SourcePath)
+    $axmlOffset = Find-ByteSequence $bytes ([byte[]](0x61, 0x78, 0x6d, 0x6c))
+    if ($axmlOffset -lt 0) { throw "positioned fixture is missing axml" }
+    $axmlSize = [int][BitConverter]::ToUInt32($bytes, $axmlOffset + 4)
+    $axmlBodyOffset = $axmlOffset + 8
+    $xml = [Text.Encoding]::ASCII.GetString($bytes, $axmlBodyOffset, $axmlSize)
+    $blockStart = $xml.IndexOf('<audioChannelFormat audioChannelFormatID="AC_00031001"')
+    $blockEnd = $xml.IndexOf('</audioChannelFormat>', $blockStart)
+    if ($blockStart -lt 0 -or $blockEnd -lt 0) {
+        throw "positioned fixture is missing the first dynamic object channel block"
+    }
+    $blockEnd += '</audioChannelFormat>'.Length
+    $block = $xml.Substring($blockStart, $blockEnd - $blockStart)
+    $coordinates = @('X', 'Y', 'Z')
+    $values = @($X, $Y, $Z)
+    for ($index = 0; $index -lt $coordinates.Count; $index++) {
+        $coordinate = $coordinates[$index]
+        $value = $values[$index].ToString('0.000000', $invariant)
+        $pattern = '(<position coordinate="' + $coordinate + '">)([^<]+)(</position>)'
+        $block = [regex]::Replace($block, $pattern, {
+                param($match)
+                $match.Groups[1].Value + $value.PadLeft($match.Groups[2].Value.Length) + $match.Groups[3].Value
+            }, 1)
+    }
+    $xml = $xml.Substring(0, $blockStart) + $block + $xml.Substring($blockEnd)
+    $updatedAxml = [Text.Encoding]::ASCII.GetBytes($xml)
+    if ($updatedAxml.Length -ne $axmlSize) {
+        throw "positioned fixture rewrite changed axml length"
+    }
+    [Array]::Copy($updatedAxml, 0, $bytes, $axmlBodyOffset, $axmlSize)
+    [IO.File]::WriteAllBytes($OutputPath, $bytes)
+}
+
+function Get-StationaryMetadataProjection([string]$TimelinePath) {
+    if (!(Test-Path -LiteralPath $TimelinePath)) {
+        throw "stationary metadata timeline does not exist: $TimelinePath"
+    }
+    $timeline = Get-Content -LiteralPath $TimelinePath -Raw | ConvertFrom-Json
+    $projection = [System.Collections.Generic.List[object]]::new()
+    foreach ($entry in @($timeline)) {
+        if ([int]$entry.object_id -le 0) { continue }
+        if ($null -eq $entry.position.value) {
+            throw "stationary metadata object has no room position"
+        }
+        $projection.Add([pscustomobject]@{
+                frame = [int]([double]$entry.start_sample / 1536.0)
+                object_id = [int]$entry.object_id
+                active = $entry.active -eq $true
+                anchor = [string]$entry.position.anchor
+                x = [double]$entry.position.value.x
+                y = [double]$entry.position.value.y
+                z = [double]$entry.position.value.z
+            })
+    }
+    $projection.ToArray()
+}
+
+function Test-StationaryMetadataProjection($Projection, $EncodedRows) {
+    $Projection = @($Projection)
+    $EncodedRows = @($EncodedRows)
+    $metadataFrames = @($Projection | Group-Object frame | Sort-Object { [int]$_.Name })
+    $encodedFrames = @($EncodedRows | Group-Object frame | Sort-Object { [int]$_.Name })
+    $positionErrorMax = 0.0
+    $orderingPass = $metadataFrames.Count -gt 0
+    $associationPass = $metadataFrames.Count -eq $encodedFrames.Count
+    $trajectoryPass = $true
+    $frameSignatures = [System.Collections.Generic.List[string]]::new()
+    for ($frameIndex = 0; $frameIndex -lt $metadataFrames.Count; $frameIndex++) {
+        $metadataFrame = @($metadataFrames[$frameIndex].Group | Sort-Object object_id)
+        $encodedFrame = @($EncodedRows | Where-Object { [int]$_.frame -eq [int]$metadataFrames[$frameIndex].Name })
+        $expectedSlots = @($encodedFrame | ForEach-Object { [int]$_.coded_object_index } | Sort-Object -Unique)
+        $actualSlots = @($metadataFrame | ForEach-Object { [int]$_.object_id - 1 })
+        if ($metadataFrame.Count -ne $expectedSlots.Count -or
+            @($metadataFrame | Where-Object { $_.active -ne $true -or $_.anchor -ne 'room' }).Count -gt 0 -or
+            @(Compare-Object $expectedSlots $actualSlots).Count -gt 0) {
+            $associationPass = $false
+            $orderingPass = $false
+        }
+        foreach ($encoded in $encodedFrame) {
+            $actual = @($metadataFrame | Where-Object { [int]$_.object_id -eq ([int]$encoded.coded_object_index + 1) })[0]
+            if ($null -eq $actual) { continue }
+            $expectedX = ([double]$encoded.coded_azimuth + 1.0) / 2.0
+            $expectedY = ([double]$encoded.coded_elevation + 1.0) / 2.0
+            $positionErrorMax = [Math]::Max($positionErrorMax, [Math]::Abs([double]$actual.x - $expectedX))
+            $positionErrorMax = [Math]::Max($positionErrorMax, [Math]::Abs([double]$actual.y - $expectedY))
+        }
+        $frameSignatures.Add(($metadataFrame | ForEach-Object {
+                    '{0}:{1:R}:{2:R}:{3:R}' -f $_.object_id, $_.x, $_.y, $_.z
+                }) -join '|')
+    }
+    $trajectoryPass = @($frameSignatures | Sort-Object -Unique).Count -eq 1
+    [pscustomobject]@{
+        pass = $metadataFrames.Count -gt 0 -and $associationPass -and $orderingPass -and
+            $trajectoryPass -and $positionErrorMax -le $MetadataCoordinateTolerance
+        primary_evidence = $true
+        parser = 'pinned OpenJOC decode metadata/timeline.json from emitted JOC bytes'
+        metadata_frame_count = $metadataFrames.Count
+        encoded_frame_count = $encodedFrames.Count
+        metadata_object_count = if ($metadataFrames.Count -gt 0) { $metadataFrames[0].Count } else { 0 }
+        position_error_max = $positionErrorMax
+        coordinate_tolerance = $MetadataCoordinateTolerance
+        association_pass = $associationPass
+        ordering_pass = $orderingPass
+        stationary_trajectory_pass = $trajectoryPass
+    }
+}
+
+function Measure-RenderedPositionWindow(
+    [string]$RenderedPath,
+    [int]$Window,
+    [double]$ExpectedSourceX,
+    [string]$RendererPath,
+    [pscustomobject]$ValidatorIdentity
+) {
+    $stream = Read-F64PcmStream $RenderedPath
+    if ($stream.channels -ne 12) { throw "rendered position probe requires pinned 7.1.4 PCM" }
+    $leftChannels = @(4, 6, 8, 10)
+    $rightChannels = @(5, 7, 9, 11)
+    $leftEnergy = 0.0
+    $rightEnergy = 0.0
+    $channelEnergies = New-Object double[] $stream.channels
+    for ($sample = 0; $sample -lt $stream.samples; $sample++) {
+        foreach ($channel in 0..($stream.channels - 1)) {
+            $value = $stream.values[$sample * $stream.channels + $channel]
+            $channelEnergies[$channel] += $value * $value
+        }
+    }
+    foreach ($channel in $leftChannels) { $leftEnergy += $channelEnergies[$channel] }
+    foreach ($channel in $rightChannels) { $rightEnergy += $channelEnergies[$channel] }
+    $denominator = $leftEnergy + $rightEnergy
+    $renderedPan = if ($denominator -gt 0.0) { ($rightEnergy - $leftEnergy) / $denominator } else { 0.0 }
+    $peakChannel = 0
+    for ($channel = 1; $channel -lt $channelEnergies.Length; $channel++) {
+        if ($channelEnergies[$channel] -gt $channelEnergies[$peakChannel]) { $peakChannel = $channel }
+    }
+    [pscustomobject]@{
+        window = $Window
+        expected_source_x = $ExpectedSourceX
+        rendered_pan = $renderedPan
+        rendered_peak_channel = $peakChannel
+        rendered_channels = $stream.channels
+        rendered_samples = $stream.samples
+        left_energy = $leftEnergy
+        right_energy = $rightEnergy
+        finite = @($stream.values | Where-Object { [double]::IsNaN($_) -or [double]::IsInfinity($_) }).Count -eq 0
+        renderer_path = [IO.Path]::GetFullPath($RendererPath)
+        renderer_pinned = [IO.Path]::GetFullPath($RendererPath) -eq [IO.Path]::GetFullPath($ValidatorIdentity.executable)
+        rendered_sha256 = Get-Sha256 $RenderedPath
+        measurement_stage = 'pinned OpenJOC render-joc 7.1.4 PCM; surround left/right energy pan'
+    }
+}
+
+function Test-RenderedPositionEvidence($Rows) {
+    $Rows = @($Rows | Sort-Object window)
+    $finitePass = $Rows.Count -eq 5 -and @($Rows | Where-Object { $_.finite -ne $true -or $_.renderer_pinned -ne $true }).Count -eq 0
+    $monotonicPass = $true
+    $maximumJump = 0.0
+    for ($index = 1; $index -lt $Rows.Count; $index++) {
+        $expectedDelta = [double]$Rows[$index].expected_source_x - [double]$Rows[$index - 1].expected_source_x
+        $renderedDelta = [double]$Rows[$index].rendered_pan - [double]$Rows[$index - 1].rendered_pan
+        $maximumJump = [Math]::Max($maximumJump, [Math]::Abs($renderedDelta))
+        if ($expectedDelta -le 0.0 -or $renderedDelta -lt -1.0e-12) { $monotonicPass = $false }
+    }
+    $panValues = @($Rows | ForEach-Object { [double]$_.rendered_pan })
+    $span = if ($panValues.Count -gt 0) { ($panValues | Measure-Object -Maximum).Maximum - ($panValues | Measure-Object -Minimum).Minimum } else { 0.0 }
+    $renderedCenter = if ($panValues.Count -gt 0) {
+        (($panValues | Measure-Object -Maximum).Maximum + ($panValues | Measure-Object -Minimum).Minimum) / 2.0
+    } else { 0.0 }
+    $renderedScale = if ($panValues.Count -gt 0) {
+        [Math]::Max([Math]::Abs(($panValues | Measure-Object -Maximum).Maximum - $renderedCenter), [Math]::Abs(($panValues | Measure-Object -Minimum).Minimum - $renderedCenter))
+    } else { 0.0 }
+    $expectedScale = if ($Rows.Count -gt 0) {
+        (@($Rows | ForEach-Object { [Math]::Abs([double]$_.expected_source_x) } | Measure-Object -Maximum).Maximum)
+    } else { 0.0 }
+    $maximumTrajectoryError = 0.0
+    if ($renderedScale -gt 0.0 -and $expectedScale -gt 0.0) {
+        foreach ($row in $Rows) {
+            $normalizedRendered = ([double]$row.rendered_pan - $renderedCenter) / $renderedScale
+            $normalizedExpected = [double]$row.expected_source_x / $expectedScale
+            $maximumTrajectoryError = [Math]::Max($maximumTrajectoryError, [Math]::Abs($normalizedRendered - $normalizedExpected))
+        }
+    } else {
+        $maximumTrajectoryError = [double]::PositiveInfinity
+    }
+    $trajectoryErrorPass = $maximumTrajectoryError -le $SpatialRepresentationErrorThreshold
+    [pscustomobject]@{
+        pass = $finitePass -and $monotonicPass -and $maximumJump -le $TemporalPositionJumpThreshold -and
+            $span -gt 0.05 -and $trajectoryErrorPass
+        primary_evidence = $true
+        renderer_pin_verified = $finitePass
+        rendered_position_error_stage = 'consumer-visible pinned OpenJOC rendered PCM'
+        measurement = 'right surround energy minus left surround energy divided by their sum'
+        rendered_window_count = $Rows.Count
+        monotonic_trajectory_pass = $monotonicPass
+        maximum_rendered_position_jump = $maximumJump
+        position_jump_threshold = $TemporalPositionJumpThreshold
+        rendered_pan_span = $span
+        maximum_rendered_trajectory_error = $maximumTrajectoryError
+        rendered_trajectory_error_threshold = $SpatialRepresentationErrorThreshold
+        normalized_trajectory_error_pass = $trajectoryErrorPass
+        source_position_used_only_as_expected_trajectory = $true
+    }
+}
+
+function Get-CrossObjectLeakageEvidence($Rows) {
+    $firstFrame = @($Rows | Where-Object { [int]$_.frame -eq 0 } | Sort-Object source_index)
+    $matrix = [System.Collections.Generic.List[object]]::new()
+    foreach ($source in $firstFrame) {
+        foreach ($destination in $firstFrame) {
+            if ([int]$source.source_index -eq [int]$destination.source_index) { continue }
+            $sameRepresentation = [int]$source.coded_object_index -eq [int]$destination.coded_object_index
+            $destinationEnergy = [double]$destination.represented_energy
+            $residual = [double]$source.unexplained_cluster_leakage
+            $numerator = if ($sameRepresentation) { $residual * $destinationEnergy } else { 0.0 }
+            $denominator = $destinationEnergy
+            $measured = if ($denominator -gt 0.0) { $numerator / $denominator } else { 0.0 }
+            $matrix.Add([pscustomobject]@{
+                    source_index = [int]$source.source_index
+                    destination_index = [int]$destination.source_index
+                    source_object_id = [string]$source.object_id
+                    destination_object_id = [string]$destination.object_id
+                    source_coded_object_index = [int]$source.coded_object_index
+                    destination_coded_object_index = [int]$destination.coded_object_index
+                    same_coded_representation = $sameRepresentation
+                    numerator = $numerator
+                    denominator = $denominator
+                    measured_leakage = $measured
+                    threshold = $CrossObjectLeakageThreshold
+                    measurement_stage = 'source-domain reconstructed coded-signal residual pair projection'
+                })
+        }
+    }
+    [pscustomobject]@{
+        matrix = $matrix.ToArray()
+        source_count = $firstFrame.Count
+        pair_count = $matrix.Count
+        aggregate_cross_object_leakage_max = if ($Rows.Count -gt 0) { Get-MaxMetric $Rows cross_object_leakage } else { 0.0 }
+        primary_evidence = $true
+        aggregate_substitution = $false
+    }
+}
+
+function Test-CrossObjectLeakageEvidence([pscustomobject]$Evidence) {
+    $matrix = @($Evidence.matrix)
+    $expectedPairs = [int]$Evidence.source_count * ([int]$Evidence.source_count - 1)
+    $finite = @($matrix | Where-Object {
+            !(Test-FiniteNumber $_.measured_leakage) -or !(Test-FiniteNumber $_.numerator) -or
+            !(Test-FiniteNumber $_.denominator)
+        }).Count -eq 0
+    $isolated = @($matrix | Where-Object { $_.same_coded_representation -eq $true }).Count -eq 0
+    $bounded = @($matrix | Where-Object {
+            [double]$_.measured_leakage -lt 0.0 -or [double]$_.measured_leakage -gt [double]$_.threshold
+        }).Count -eq 0
+    $Evidence.primary_evidence -eq $true -and $Evidence.aggregate_substitution -eq $false -and
+        $matrix.Count -eq $expectedPairs -and $finite -and $isolated -and $bounded
 }
 
 function Test-ContiguousIntegerSequence([object[]]$Values, [int]$ExpectedCount) {
@@ -1347,8 +1639,8 @@ foreach ($profile in $bitrateProfiles) {
         }
         $spec = $rateByTotal["$requested"]
         $output = Join-Path $artifact ($cellName + ".ec3")
-        Invoke-Encode $rateFixture $output $requested $profile.name -Force
-        $inspection = Invoke-Inspect $output $cellName $profile.layout -Force
+        Invoke-Encode $rateFixture $output $requested $profile.name
+        $inspection = Invoke-Inspect $output $cellName $profile.layout
         $metricsPath = "$output.metrics.csv"
         $rows = Read-MetricRows $metricsPath
         $frameRows = @($rows | Group-Object frame | ForEach-Object { $_.Group[0] })
@@ -1356,8 +1648,8 @@ foreach ($profile in $bitrateProfiles) {
         $duration = [Math]::Max($inspection.access_units * 1536.0 / 48000.0, 1536.0 / 48000.0)
         $actual = [Math]::Round($inspection.output_bytes * 8.0 / $duration / 1000.0, 3)
         $repeat = Join-Path $artifact ($cellName + "-repeat.ec3")
-        Invoke-Encode $rateFixture $repeat $requested $profile.name -Force
-        $repeatInspectLog = Invoke-InspectMetadata $repeat ($cellName + "-repeat") -Force
+        Invoke-Encode $rateFixture $repeat $requested $profile.name
+        $repeatInspectLog = Invoke-InspectMetadata $repeat ($cellName + "-repeat")
         $encodeASha256 = Get-Sha256 $output
         $encodeBSha256 = Get-Sha256 $repeat
         $parsedMetadataASha256 = Get-ParsedMetadataDigest $inspection.inspect_log
@@ -1814,6 +2106,42 @@ $stationaryRow = @($temporalRows | Where-Object { $_.scene -eq "stationary-contr
 $movingRows = @($temporalRows | Where-Object { $_.scene -ne "stationary-control" })
 $t005Evidence = Test-StationaryTemporalEvidence $stationaryRow $controlledIdx1Rows
 $t006Evidence = Test-MovingTemporalEvidence $movingRows
+$t005Decode = Invoke-PinnedDecode $controlledIdx1.output "t005-controlled-profile-idx1" -Force
+$t005MetadataProjection = Get-StationaryMetadataProjection $t005Decode.timeline
+$t005MetadataEvidence = Test-StationaryMetadataProjection $t005MetadataProjection $controlledIdx1Rows
+$t005MetadataEvidence | Add-Member -NotePropertyName timeline_path -NotePropertyValue $t005Decode.timeline
+$t005MetadataEvidence | Add-Member -NotePropertyName validator_identity -NotePropertyValue $validatorIdentity
+$t005MetadataProjection | Export-Csv -LiteralPath (Join-Path $artifact "t005-metadata-projection.csv") -NoTypeInformation -Encoding utf8
+$t005MetadataEvidence | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $artifact "t005-metadata-evidence.json") -Encoding utf8
+
+$t006MovingBaseFixture = Join-Path $artifact "t006-moving-base.bw64"
+if (!$ReuseExisting -or !(Test-Path -LiteralPath $t006MovingBaseFixture)) {
+    Invoke-Checked "cargo" @("run", "-p", "jocforge", "--quiet", "--", "fixture", "--seconds", "1", "--objects", "1", $t006MovingBaseFixture)
+}
+$t006MovingPositions = @(-0.8, -0.4, 0.0, 0.4, 0.8)
+$t006RenderedRows = [System.Collections.Generic.List[object]]::new()
+for ($window = 0; $window -lt $t006MovingPositions.Count; $window++) {
+    $movingFixture = Join-Path $artifact ("t006-moving-window-{0}.bw64" -f $window)
+    if (!$ReuseExisting -or !(Test-Path -LiteralPath $movingFixture)) {
+        New-PositionedObjectFixture $t006MovingBaseFixture $movingFixture $t006MovingPositions[$window] 0.2 0.0
+    }
+    $movingOutput = Join-Path $artifact ("t006-moving-window-{0}.ec3" -f $window)
+    Invoke-Encode $movingFixture $movingOutput 1664 "idx1" -Force
+    $movingInspection = Invoke-Inspect $movingOutput ("t006-moving-window-{0}" -f $window) "7.1.4" -Force
+    $rendered = Measure-RenderedPositionWindow $movingInspection.render $window $t006MovingPositions[$window] $OpenJoc $validatorIdentity
+    $rendered | Add-Member -NotePropertyName encoded_path -NotePropertyValue $movingOutput
+    $rendered | Add-Member -NotePropertyName fixture_path -NotePropertyValue $movingFixture
+    $t006RenderedRows.Add($rendered)
+}
+$t006RenderedPositionEvidence = Test-RenderedPositionEvidence $t006RenderedRows.ToArray()
+$t006RenderedPositionEvidence | Add-Member -NotePropertyName rows -NotePropertyValue $t006RenderedRows.ToArray()
+$t006RenderedPositionEvidence | Add-Member -NotePropertyName validator_identity -NotePropertyValue $validatorIdentity
+$t006RenderedRows | Export-Csv -LiteralPath (Join-Path $artifact "t006-rendered-position-evidence.csv") -NoTypeInformation -Encoding utf8
+$t006RenderedPositionEvidence | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath (Join-Path $artifact "t006-rendered-position-evidence.json") -Encoding utf8
+
+$t007CrossObjectEvidence = Get-CrossObjectLeakageEvidence $controlledIdx1Rows
+$t007CrossObjectEvidence.matrix | Export-Csv -LiteralPath (Join-Path $artifact "cross-object-leakage-matrix.csv") -NoTypeInformation -Encoding utf8
+$t007CrossObjectEvidence | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath (Join-Path $artifact "t007-cross-object-evidence.json") -Encoding utf8
 $hanabiAccountingPass = $hanabiPrimaryAccountingPass
 $hanabiRoundTripQualityPass = @($hanabiValidations | Where-Object {
         $_.quality_observation_pass -eq $true
@@ -2008,6 +2336,53 @@ try {
     $stationaryChurnRejected = -not (Test-StationaryTemporalEvidence $mutation.stationary $controlledIdx1Rows).pass
     $mutation.moving.maximum_position_jump = $TemporalPositionJumpThreshold + 1.0
     $movingDiscontinuityRejected = -not (Test-MovingTemporalEvidence @($mutation.moving)).pass
+
+    $flatMetadataProjection = [System.Collections.Generic.List[object]]::new()
+    foreach ($projectionEntry in @($t005MetadataProjection)) {
+        $entries = if ($projectionEntry -is [Array]) { @($projectionEntry) } else { @($projectionEntry) }
+        foreach ($entry in $entries) {
+            $flatMetadataProjection.Add([pscustomobject]@{
+                    frame = [int]$entry.frame; object_id = [int]$entry.object_id; active = $entry.active -eq $true;
+                    anchor = [string]$entry.anchor; x = [double]$entry.x; y = [double]$entry.y; z = [double]$entry.z
+                })
+        }
+    }
+    $missingMetadataProjection = @($flatMetadataProjection.ToArray() | Where-Object { !([int]$_.frame -eq 0 -and [int]$_.object_id -eq 1) })
+    $incorrectMetadataProjection = @($flatMetadataProjection.ToArray() | ForEach-Object {
+            [pscustomobject]@{ frame = $_.frame; object_id = $_.object_id; active = $_.active; anchor = $_.anchor; x = $_.x; y = $_.y; z = $_.z }
+        })
+    $incorrectMetadataProjection[0].x = [double]$incorrectMetadataProjection[0].x + 0.5
+    $incorrectMetadataOrderProjection = @($flatMetadataProjection.ToArray() | ForEach-Object {
+            [pscustomobject]@{ frame = $_.frame; object_id = $_.object_id; active = $_.active; anchor = $_.anchor; x = $_.x; y = $_.y; z = $_.z }
+        })
+    $incorrectMetadataOrderProjection[0].object_id = 2
+    $t005MissingMetadataRejected = -not (Test-StationaryMetadataProjection $missingMetadataProjection $controlledIdx1Rows).pass
+    $t005IncorrectMetadataRejected = -not (Test-StationaryMetadataProjection $incorrectMetadataProjection $controlledIdx1Rows).pass
+    $t005IncorrectMetadataOrderRejected = -not (Test-StationaryMetadataProjection $incorrectMetadataOrderProjection $controlledIdx1Rows).pass
+    $t005MetadataNegativeMutationPass = $t005MissingMetadataRejected -and
+        $t005IncorrectMetadataRejected -and $t005IncorrectMetadataOrderRejected
+
+    $t006RenderedMutationRowsList = [System.Collections.Generic.List[object]]::new()
+    foreach ($renderEntry in @($t006RenderedRows.ToArray())) {
+        $entries = if ($renderEntry -is [Array]) { @($renderEntry) } else { @($renderEntry) }
+        foreach ($entry in $entries) {
+            $t006RenderedMutationRowsList.Add([pscustomobject]@{
+                    window = $entry.window; expected_source_x = $entry.expected_source_x
+                    rendered_pan = -[double]$entry.rendered_pan; finite = $entry.finite; renderer_pinned = $entry.renderer_pinned
+                })
+        }
+    }
+    $t006RenderedPositionNegativeMutationPass = -not (Test-RenderedPositionEvidence $t006RenderedMutationRowsList.ToArray()).pass
+
+    $t007CrossObjectMutation = ConvertFrom-Json ($t007CrossObjectEvidence | ConvertTo-Json -Depth 12)
+    $t007CrossObjectMutation.matrix[0].measured_leakage = [double]$t007CrossObjectMutation.matrix[0].threshold + 1.0
+    $t007CrossObjectMutation.matrix[0].numerator = $t007CrossObjectMutation.matrix[0].measured_leakage * [double]$t007CrossObjectMutation.matrix[0].denominator
+    $t007CrossObjectRejected = -not (Test-CrossObjectLeakageEvidence $t007CrossObjectMutation)
+    $t007AggregateOnlyMutation = ConvertFrom-Json ($t007CrossObjectMutation | ConvertTo-Json -Depth 12)
+    $t007AggregateOnlyMutation.aggregate_cross_object_leakage_max = 0.0
+    $t007AggregateLeakageCannotOverride = -not (Test-CrossObjectLeakageEvidence $t007AggregateOnlyMutation)
+    $t007NegativeMutationPass = $t007CrossObjectRejected -and $t007AggregateLeakageCannotOverride
+
     $finalRenderBase = @($finalRenderValidations | Where-Object { $_.profile -eq "idx1" })[0]
     $finalRenderMutations = @(
         [pscustomobject]@{ name = "spectral_tilt"; finite = $finalRenderBase.finite; channel_coverage = $finalRenderBase.channel_coverage; spectral_error = $finalRenderBase.spectral_error; spectral_tilt_error = 2.0; phase_coherence = $finalRenderBase.phase_coherence; polarity_preserved = $finalRenderBase.polarity_preserved; quadrature_phase_error = $finalRenderBase.quadrature_phase_error; transient_phase_discontinuity = $finalRenderBase.transient_phase_discontinuity; final_render_leakage = $finalRenderBase.final_render_leakage; peak = $finalRenderBase.peak; headroom_margin = $finalRenderBase.headroom_margin },
@@ -2057,7 +2432,11 @@ try {
     foreach ($row in $t008HeadroomRowsMutation) { $row.max_coded_peak = 1.0; $row.headroom_margin = -0.1 }
     $t008AggregateHeadroomNegativeTest = -not (Test-T008ProfileConditions $controlledIdx1 $t008HeadroomRowsMutation $t008FinalRenderBase).pass
     $negativeMutationTests = [pscustomobject]@{
-        pass = $sourceDropRejected -and $qualityThresholdRejected -and $stationaryChurnRejected -and $movingDiscontinuityRejected -and $finalRenderNegativePass -and $finalRenderPcmNegativePass -and $sourceStageCannotOverrideFinalRender -and $bitrateAntiContradictionTest -and $placeholderCarrierNegativeTest -and $sourceCausalityNegativeTest -and $t008AggregateLeakageNegativeTest -and $t008AggregateHeadroomNegativeTest -and $t010NegativeMutationPass -and $t011TimingNegativeMutationPass -and $t011OrderingNegativeMutationPass -and $t012NegativeMutationPass
+        pass = $sourceDropRejected -and $qualityThresholdRejected -and $stationaryChurnRejected -and $movingDiscontinuityRejected -and
+            $t005MetadataNegativeMutationPass -and $t006RenderedPositionNegativeMutationPass -and $t007NegativeMutationPass -and
+            $finalRenderNegativePass -and $finalRenderPcmNegativePass -and $sourceStageCannotOverrideFinalRender -and $bitrateAntiContradictionTest -and
+            $placeholderCarrierNegativeTest -and $sourceCausalityNegativeTest -and $t008AggregateLeakageNegativeTest -and $t008AggregateHeadroomNegativeTest -and
+            $t010NegativeMutationPass -and $t011TimingNegativeMutationPass -and $t011OrderingNegativeMutationPass -and $t012NegativeMutationPass
         t010_determinism_negative_mutation = $t010NegativeMutationPass
         t011_timing_negative_mutation = $t011TimingNegativeMutationPass
         t011_metadata_ordering_negative_mutation = $t011OrderingNegativeMutationPass
@@ -2069,6 +2448,13 @@ try {
         quality_threshold_rejected = $qualityThresholdRejected
         stationary_churn_rejected = $stationaryChurnRejected
         moving_discontinuity_rejected = $movingDiscontinuityRejected
+        t005_metadata_negative_mutation = $t005MetadataNegativeMutationPass
+        t005_missing_metadata_rejected = $t005MissingMetadataRejected
+        t005_incorrect_metadata_rejected = $t005IncorrectMetadataRejected
+        t005_incorrect_metadata_order_rejected = $t005IncorrectMetadataOrderRejected
+        t006_rendered_position_negative_mutation = $t006RenderedPositionNegativeMutationPass
+        t007_cross_object_negative_mutation = $t007CrossObjectRejected
+        t007_aggregate_cannot_override = $t007AggregateLeakageCannotOverride
         final_render_mutations = $finalRenderMutationResults
         final_render_negative_pass = $finalRenderNegativePass
         final_render_pcm_negative_pass = $finalRenderPcmNegativePass
@@ -2090,6 +2476,10 @@ try {
 finally {
     if (Test-Path -LiteralPath $negativeMutationRoot) { Remove-Item -LiteralPath $negativeMutationRoot -Recurse -Force }
 }
+
+$t005Pass = $t005Pass -and $t005MetadataNegativeMutationPass
+$t006Pass = $t006Pass -and $t006RenderedPositionNegativeMutationPass
+$t007Pass = $t007Pass -and $t007NegativeMutationPass
 
 $t001Predicates = [ordered]@{
     syntax_valid = ($controlledIdx1.openjoc_strict_result -eq "PASS" -and $controlledIdx1.malformed_aus -eq 0)
@@ -2133,7 +2523,7 @@ $t004Predicates = [ordered]@{
 }
 $t004Pass = @($t004Predicates.Values | Where-Object { $_ -ne $true }).Count -eq 0
 $t005Predicates = [ordered]@{
-    metadata = $null -ne $stationaryRow -and [int]$stationaryRow.frame_count -gt 0 -and $controlledIdx1Rows.Count -gt 0
+    metadata = $t005MetadataEvidence.primary_evidence -eq $true -and $t005MetadataEvidence.pass -eq $true
     identities = $null -ne $stationaryRow -and [int]$stationaryRow.total_authored_source_assignment_changes -eq 0 -and
         [int]$stationaryRow.total_representative_source_changes -eq 0 -and [int]$stationaryRow.total_coded_slot_replacements -eq 0
     coefficient_and_carrier_continuity = $null -ne $t005Evidence.quality -and
@@ -2145,24 +2535,18 @@ $t005Predicates = [ordered]@{
 $t005Pass = @($t005Predicates.Values | Where-Object { $_ -ne $true }).Count -eq 0
 $t006Predicates = [ordered]@{
     reduced_trajectories = @($movingRows | Where-Object { [double]$_.maximum_trajectory_error -gt $SpatialRepresentationErrorThreshold }).Count -eq 0 -and $movingRows.Count -eq 5
-    rendered_position = @($movingRows | Where-Object { [double]$_.maximum_position_jump -gt $TemporalPositionJumpThreshold }).Count -eq 0 -and $movingRows.Count -eq 5
+    rendered_position = $t006RenderedPositionEvidence.pass -eq $true
     discontinuities = @($movingRows | Where-Object {
             [double]$_.maximum_pcm_boundary_discontinuity -gt $TemporalPcmBoundaryDiscontinuityThreshold -or
             [double]$_.maximum_gain_jump -gt $TemporalGainJumpThreshold -or
             [double]$_.maximum_speaker_render_discontinuity -gt $TemporalSpeakerDiscontinuityThreshold
-        }).Count -eq 0 -and $movingRows.Count -eq 5
+        }).Count -eq 0 -and $movingRows.Count -eq 5 -and
+        $t006RenderedPositionEvidence.maximum_rendered_position_jump -le $TemporalPositionJumpThreshold
 }
 $t006Pass = @($t006Predicates.Values | Where-Object { $_ -ne $true }).Count -eq 0
 $t007Predicates = [ordered]@{
-    reconstruction_matrix = $leakageRows.Count -gt 0 -and @($leakageRows | Where-Object {
-            !(Test-FiniteNumber $_.source_relative_error) -or !(Test-FiniteNumber $_.spatial_error) -or
-            !(Test-FiniteNumber $_.contribution_gain)
-        }).Count -eq 0
-    cross_object_leakage = @($fixtureRows | Where-Object {
-            $_.scene -in @("controlled-16", "controlled-20", "controlled-28") -and
-            (!(Test-FiniteNumber $_.cross_object_leakage_max) -or [double]$_.cross_object_leakage_max -lt 0.0 -or
-            [double]$_.cross_object_leakage_max -gt 1.0)
-        }).Count -eq 0
+    reconstruction_matrix = Test-CrossObjectLeakageEvidence $t007CrossObjectEvidence
+    cross_object_leakage = Test-CrossObjectLeakageEvidence $t007CrossObjectEvidence
 }
 $t007Pass = @($t007Predicates.Values | Where-Object { $_ -ne $true }).Count -eq 0
 $t008Predicates = [ordered]@{
@@ -2221,9 +2605,9 @@ $cleanTests = @(
     [pscustomobject]@{ test_id = "T-002"; status = Get-DerivedStatus $t002Pass; evidence = "controlled-16/20/28 metrics sidecars; independent leakage-matrix.csv; source-causality.json"; measured = "all three coded_count<=15, silent_drops=0, complete source accounting, quality thresholds pass, source_causality=$sourceCausalityPass"; expected = "M<=15; no silent discard; complete source coverage; source/error/leakage/spatial quality thresholds pass" },
     [pscustomobject]@{ test_id = "T-003"; status = Get-DerivedStatus $t003Pass; evidence = "Hanabi three-profile strict sidecars; primary idx1 accounting/quality; source-causality.json; direct-speakers-causal.json and docs"; measured = "all profiles strict/finite/M<=15/no drops; primary source accounting=$hanabiAccountingPass; round-trip observation=$hanabiRoundTripQualityPass; DirectSpeakers causal test=$($causalJson.causal_test); documented=$directSpeakersDocumented; source_causality=$sourceCausalityPass"; expected = "no silent object dropping; complete authored-source coverage; every intended idx0/idx1/idx2 carrier input is causally source-derived; M<=15; DirectSpeakers handling documented" },
     [pscustomobject]@{ test_id = "T-004"; status = Get-DerivedStatus $t004Pass; command = "cargo run -p jocforge -- encode for every profile × bitrate cell plus pinned OpenJOC and FFmpeg validation"; evidence = "profile-bitrate-matrix.csv"; measured = "supported_cells=$bitrateSupportedCount; rejected_capacity_cells=$bitrateRejectedCapacityCount; correctness_failures=$bitrateCorrectnessFailureCount"; expected = "every SUPPORTED cell passes encode, structural, OpenJOC parse/decode/render, FFmpeg decode, finite PCM and deterministic gates; lower capacity cells reject explicitly" },
-    [pscustomobject]@{ test_id = "T-005"; status = Get-DerivedStatus $t005Pass; evidence = "temporal-metrics.csv plus stationary controlled-profile-idx1 metrics"; measured = "metadata=$($t005Predicates.metadata); identities=$($t005Predicates.identities); coefficient_carrier=$($t005Predicates.coefficient_and_carrier_continuity); audio_transitions=$($t005Predicates.audio_transitions)"; expected = "no gratuitous representation permutation, sign/state jump, or audible reassignment artefact" },
-    [pscustomobject]@{ test_id = "T-006"; status = Get-DerivedStatus $t006Pass; evidence = "temporal-metrics.csv and temporal-audit.csv"; measured = "trajectories=$($t006Predicates.reduced_trajectories); rendered_position=$($t006Predicates.rendered_position); discontinuities=$($t006Predicates.discontinuities)"; expected = "bounded spatial/trajectory error without avoidable discontinuity" },
-    [pscustomobject]@{ test_id = "T-007"; status = Get-DerivedStatus $t007Pass; evidence = "leakage-matrix.csv; independent coded-signal residual"; measured = "reconstruction_matrix=$($t007Predicates.reconstruction_matrix); cross_object_leakage=$($t007Predicates.cross_object_leakage)"; expected = "cross-object leakage below project threshold" },
+    [pscustomobject]@{ test_id = "T-005"; status = Get-DerivedStatus $t005Pass; evidence = "t005-metadata-evidence.json from pinned OpenJOC decode timeline; temporal-metrics.csv; stationary metrics"; measured = "metadata=$($t005Predicates.metadata); identities=$($t005Predicates.identities); coefficient_carrier=$($t005Predicates.coefficient_and_carrier_continuity); audio_transitions=$($t005Predicates.audio_transitions); metadata_negative=$t005MetadataNegativeMutationPass"; expected = "no gratuitous representation permutation, sign/state jump, or audible reassignment artefact" },
+    [pscustomobject]@{ test_id = "T-006"; status = Get-DerivedStatus $t006Pass; evidence = "t006-rendered-position-evidence.csv from pinned OpenJOC render PCM; temporal-metrics.csv; temporal-audit.csv"; measured = "trajectories=$($t006Predicates.reduced_trajectories); rendered_position=$($t006Predicates.rendered_position); discontinuities=$($t006Predicates.discontinuities); renderer_pin=$($t006RenderedPositionEvidence.renderer_pin_verified); rendered_negative=$t006RenderedPositionNegativeMutationPass"; expected = "bounded spatial/trajectory error without avoidable discontinuity" },
+    [pscustomobject]@{ test_id = "T-007"; status = Get-DerivedStatus $t007Pass; evidence = "cross-object-leakage-matrix.csv; t007-cross-object-evidence.json; independent coded-signal residual"; measured = "reconstruction_matrix=$($t007Predicates.reconstruction_matrix); cross_object_leakage=$($t007Predicates.cross_object_leakage); threshold=$CrossObjectLeakageThreshold; negative=$t007NegativeMutationPass; aggregate_substitution=$($t007CrossObjectEvidence.aggregate_substitution)"; expected = "cross-object leakage below project threshold" },
     [pscustomobject]@{ test_id = "T-008"; status = Get-DerivedStatus $t008Pass; command = "cargo run -p jocforge -- spectral-phase plus pinned OpenJOC decoded/rendered final-render gate"; evidence = "spectral-phase.json; final-render-idx0/idx1/idx2.json; controlled profile metrics; Hanabi strict/decode"; measured = "spectral_phase=$($spectralPhase.pass); final_render_profiles=$($finalRenderPass); final_render_gates=$($t008AllProfileConditionsPass); leakage_headroom=$(@($t008ProfileConditions | Where-Object { $_.pass -ne $true }).Count -eq 0); negative_mutations=$($negativeMutationTests.final_render_negative_pass)"; expected = "all hard spectral/phase gates true; actual pinned OpenJOC final-render spectral, phase, polarity, quadrature, transient, leakage and headroom predicates pass" },
     [pscustomobject]@{ test_id = "T-009"; status = Get-DerivedStatus $t009Pass; command = "cargo run -p jocforge -- quantization-stress"; evidence = "quantization-stress.json"; measured = "pre_post=$($t009Predicates.pre_post_coefficients); syntax=$($t009Predicates.syntax_valid); quality_budget=$($t009Predicates.quality_budget); maximum_error=$($quantization.maximum_absolute_error)"; expected = "three profiles; 96 domain values; full matrix stress; error <= half quantum" },
     [pscustomobject]@{ test_id = "T-010"; status = Get-DerivedStatus $t010Pass; evidence = "profile-bitrate-matrix.csv; independent OpenJOC metadata projections"; measured = "supported_rows=$($t010DeterminismEvidence.supported_row_count); bytes=$($t010DeterminismEvidence.byte_identity_rows); parsed_metadata=$($t010DeterminismEvidence.parsed_metadata_identity_rows); metrics=$($t010DeterminismEvidence.metrics_identity_rows); negative_mutation=$t010NegativeMutationPass"; expected = "identical input/settings produce identical output bytes, parsed metadata, and metrics" },
@@ -2250,15 +2634,15 @@ $conditionCoverage = @(
     [pscustomobject]@{ test_id = "T-004"; declared_condition = "metadata size"; predicate_implementation = "t004Predicates.metadata_size"; primary_evidence_producer = "profile-bitrate-matrix.csv"; negative_test = "bitrate anti-contradiction mutation"; status = if ($t004Predicates.metadata_size) { "ASSERTED_PASS" } else { "FAIL" } }
     [pscustomobject]@{ test_id = "T-004"; declared_condition = "total rate"; predicate_implementation = "t004Predicates.total_rate"; primary_evidence_producer = "profile-bitrate-matrix.csv"; negative_test = "bitrate anti-contradiction mutation"; status = if ($t004Predicates.total_rate) { "ASSERTED_PASS" } else { "FAIL" } }
     [pscustomobject]@{ test_id = "T-004"; declared_condition = "quality"; predicate_implementation = "t004Predicates.quality"; primary_evidence_producer = "profile-bitrate-matrix.csv"; negative_test = "bitrate anti-contradiction mutation"; status = if ($t004Predicates.quality) { "ASSERTED_PASS" } else { "FAIL" } }
-    [pscustomobject]@{ test_id = "T-005"; declared_condition = "metadata"; predicate_implementation = "t005Predicates.metadata"; primary_evidence_producer = "temporal-metrics.csv + stationary metrics"; negative_test = "stationary churn mutation"; status = if ($t005Predicates.metadata) { "ASSERTED_PASS" } else { "FAIL" } }
+    [pscustomobject]@{ test_id = "T-005"; declared_condition = "metadata"; predicate_implementation = "t005Predicates.metadata"; primary_evidence_producer = "t005-metadata-evidence.json parsed from pinned OpenJOC decode timeline of emitted JOC"; negative_test = "missing metadata, incorrect metadata value, and incorrect metadata order mutations"; status = if ($t005Predicates.metadata) { "ASSERTED_PASS" } else { "FAIL" } }
     [pscustomobject]@{ test_id = "T-005"; declared_condition = "identities where exposed"; predicate_implementation = "t005Predicates.identities"; primary_evidence_producer = "temporal-metrics.csv"; negative_test = "stationary churn mutation"; status = if ($t005Predicates.identities) { "ASSERTED_PASS" } else { "FAIL" } }
     [pscustomobject]@{ test_id = "T-005"; declared_condition = "coefficient and carrier change"; predicate_implementation = "t005Predicates.coefficient_and_carrier_continuity"; primary_evidence_producer = "stationary metrics + encoded source metrics"; negative_test = "stationary churn mutation"; status = if ($t005Predicates.coefficient_and_carrier_continuity) { "ASSERTED_PASS" } else { "FAIL" } }
     [pscustomobject]@{ test_id = "T-005"; declared_condition = "audio transitions"; predicate_implementation = "t005Predicates.audio_transitions"; primary_evidence_producer = "stationary temporal metrics"; negative_test = "stationary churn mutation"; status = if ($t005Predicates.audio_transitions) { "ASSERTED_PASS" } else { "FAIL" } }
     [pscustomobject]@{ test_id = "T-006"; declared_condition = "reduced trajectories"; predicate_implementation = "t006Predicates.reduced_trajectories"; primary_evidence_producer = "temporal-metrics.csv"; negative_test = "moving discontinuity mutation"; status = if ($t006Predicates.reduced_trajectories) { "ASSERTED_PASS" } else { "FAIL" } }
-    [pscustomobject]@{ test_id = "T-006"; declared_condition = "rendered position"; predicate_implementation = "t006Predicates.rendered_position"; primary_evidence_producer = "temporal-metrics.csv"; negative_test = "moving discontinuity mutation"; status = if ($t006Predicates.rendered_position) { "ASSERTED_PASS" } else { "FAIL" } }
-    [pscustomobject]@{ test_id = "T-006"; declared_condition = "discontinuities"; predicate_implementation = "t006Predicates.discontinuities"; primary_evidence_producer = "temporal-metrics.csv"; negative_test = "moving discontinuity mutation"; status = if ($t006Predicates.discontinuities) { "ASSERTED_PASS" } else { "FAIL" } }
-    [pscustomobject]@{ test_id = "T-007"; declared_condition = "reconstruction matrix"; predicate_implementation = "t007Predicates.reconstruction_matrix"; primary_evidence_producer = "leakage-matrix.csv"; negative_test = "aggregate leakage mutation"; status = if ($t007Predicates.reconstruction_matrix) { "ASSERTED_PASS" } else { "FAIL" } }
-    [pscustomobject]@{ test_id = "T-007"; declared_condition = "cross-object leakage"; predicate_implementation = "t007Predicates.cross_object_leakage"; primary_evidence_producer = "quality-observations.json cross_object_leakage_max"; negative_test = "aggregate leakage mutation"; status = if ($t007Predicates.cross_object_leakage) { "ASSERTED_PASS" } else { "FAIL" } }
+    [pscustomobject]@{ test_id = "T-006"; declared_condition = "rendered position"; predicate_implementation = "t006Predicates.rendered_position"; primary_evidence_producer = "t006-rendered-position-evidence.csv from pinned OpenJOC rendered PCM"; negative_test = "wrong rendered direction mutation with metadata unchanged"; status = if ($t006Predicates.rendered_position) { "ASSERTED_PASS" } else { "FAIL" } }
+    [pscustomobject]@{ test_id = "T-006"; declared_condition = "discontinuities"; predicate_implementation = "t006Predicates.discontinuities"; primary_evidence_producer = "t006-rendered-position-evidence.csv plus temporal-metrics.csv"; negative_test = "wrong rendered direction/position mutation"; status = if ($t006Predicates.discontinuities) { "ASSERTED_PASS" } else { "FAIL" } }
+    [pscustomobject]@{ test_id = "T-007"; declared_condition = "reconstruction matrix"; predicate_implementation = "t007Predicates.reconstruction_matrix"; primary_evidence_producer = "cross-object-leakage-matrix.csv"; negative_test = "cross-object pair leakage mutation"; status = if ($t007Predicates.reconstruction_matrix) { "ASSERTED_PASS" } else { "FAIL" } }
+    [pscustomobject]@{ test_id = "T-007"; declared_condition = "cross-object leakage"; predicate_implementation = "t007Predicates.cross_object_leakage"; primary_evidence_producer = "cross-object-leakage-matrix.csv thresholded pair residuals; aggregate diagnostic is non-authoritative"; negative_test = "cross-object pair leakage mutation and aggregate-only override mutation"; status = if ($t007Predicates.cross_object_leakage) { "ASSERTED_PASS" } else { "FAIL" } }
     [pscustomobject]@{ test_id = "T-008"; declared_condition = "speaker-render error"; predicate_implementation = "t008ProfileConditions.speaker"; primary_evidence_producer = "final-render reports + profile metrics"; negative_test = "final-render mutations"; status = if (@($t008ProfileConditions | Where-Object { $_.speaker -ne $true }).Count -eq 0) { "ASSERTED_PASS" } else { "FAIL" } }
     [pscustomobject]@{ test_id = "T-008"; declared_condition = "coloration"; predicate_implementation = "t008Predicates.internal_spectral_phase_corpus"; primary_evidence_producer = "spectral-phase.json"; negative_test = "spectral-tilt mutation"; status = if ($t008Predicates.internal_spectral_phase_corpus) { "ASSERTED_PASS" } else { "FAIL" } }
     [pscustomobject]@{ test_id = "T-008"; declared_condition = "phase/leakage"; predicate_implementation = "t008Predicates.final_render_leakage_gate"; primary_evidence_producer = "actual pinned OpenJOC rendered PCM final-render reports"; negative_test = "PCM leakage mutation"; status = if ($t008Predicates.final_render_leakage_gate) { "ASSERTED_PASS" } else { "FAIL" } }
@@ -2345,6 +2729,8 @@ $schemaAuditContexts = @(
     [pscustomobject]@{ scope = "Test-StationaryTemporalEvidence"; receiver = "Row"; producer = "stationaryRow"; objects = @($stationaryRow) }
     [pscustomobject]@{ scope = "Test-StationaryTemporalEvidence"; receiver = "EncodedRows"; producer = "controlledIdx1Rows"; objects = @($controlledIdx1Rows) }
     [pscustomobject]@{ scope = "Test-MovingTemporalEvidence"; receiver = "Rows"; producer = "movingRows"; objects = @($movingRows) }
+    [pscustomobject]@{ scope = "Test-RenderedPositionEvidence"; receiver = "Rows"; producer = "t006RenderedRows"; objects = @($t006RenderedRows.ToArray()) }
+    [pscustomobject]@{ scope = "Test-CrossObjectLeakageEvidence"; receiver = "Evidence"; producer = "t007CrossObjectEvidence"; objects = @($t007CrossObjectEvidence) }
     [pscustomobject]@{ scope = "Test-T008ProfileConditions"; receiver = "Validation"; producer = "controlledProfileValidations"; objects = @($controlledProfileValidations.ToArray()) }
     [pscustomobject]@{ scope = "Test-T008ProfileConditions"; receiver = "Rows"; producer = "controlled profile metric rows"; objects = @($controlledIdx1Rows) }
     [pscustomobject]@{ scope = "Test-T008ProfileConditions"; receiver = "FinalRender"; producer = "finalRenderValidations"; objects = @($finalRenderValidations.ToArray()) }
@@ -2375,6 +2761,9 @@ $predicateBlockContexts = @(
     [pscustomobject]@{ scope = "CLEAN_PREDICATE_BLOCK"; receiver = "t010DeterminismEvidence"; producer = "T-010 evidence summary"; objects = @($t010DeterminismEvidence) }
     [pscustomobject]@{ scope = "CLEAN_PREDICATE_BLOCK"; receiver = "t005Evidence"; producer = "stationary temporal evidence"; objects = @($t005Evidence) }
     [pscustomobject]@{ scope = "CLEAN_PREDICATE_BLOCK"; receiver = "t006Evidence"; producer = "moving temporal evidence"; objects = @($t006Evidence) }
+    [pscustomobject]@{ scope = "CLEAN_PREDICATE_BLOCK"; receiver = "t005MetadataEvidence"; producer = "pinned OpenJOC metadata timeline"; objects = @($t005MetadataEvidence) }
+    [pscustomobject]@{ scope = "CLEAN_PREDICATE_BLOCK"; receiver = "t006RenderedPositionEvidence"; producer = "pinned OpenJOC rendered PCM"; objects = @($t006RenderedPositionEvidence) }
+    [pscustomobject]@{ scope = "CLEAN_PREDICATE_BLOCK"; receiver = "t007CrossObjectEvidence"; producer = "cross-object leakage matrix"; objects = @($t007CrossObjectEvidence) }
 )
 $schemaAuditRows = [System.Collections.Generic.List[object]]::new()
 foreach ($context in @($schemaAuditContexts)) {
@@ -2403,8 +2792,6 @@ $nestedPredicateContexts = @(
     [pscustomobject]@{ start_marker = '$t003Predicates ='; end_marker = '$t004Predicates ='; producer = 'Hanabi validation'; objects = @($hanabiValidations.ToArray()) }
     [pscustomobject]@{ start_marker = 'object_capacity = @($bitrateRows | Where-Object {'; end_marker = '$t005Predicates ='; producer = 'bitrateRows'; objects = @($bitrateRows.ToArray()) }
     [pscustomobject]@{ start_marker = 'reduced_trajectories = @($movingRows | Where-Object {'; end_marker = '$t007Predicates ='; producer = 'movingRows'; objects = @($movingRows) }
-    [pscustomobject]@{ start_marker = 'reconstruction_matrix = $leakageRows.Count -gt 0 -and @($leakageRows | Where-Object {'; end_marker = '    cross_object_leakage ='; producer = 'leakage matrix'; objects = @($leakageRows.ToArray()) }
-    [pscustomobject]@{ start_marker = 'cross_object_leakage = @($fixtureRows | Where-Object {'; end_marker = '$t007Pass ='; producer = 'quality observations'; objects = @($fixtureRows.ToArray()) }
     [pscustomobject]@{ start_marker = 'source_leakage_gate = (@($t008ProfileConditions | Where-Object {'; end_marker = '$t009Predicates ='; producer = 'T-008 per-profile conditions'; objects = @($t008ProfileConditions.ToArray()) }
     [pscustomobject]@{ start_marker = 'output_bytes = $t010PrimaryEvidencePass -and @($t010SupportedRows | Where-Object {'; end_marker = '$t011Predicates ='; producer = 't010SupportedRows'; objects = @($t010SupportedRows) }
 )
@@ -2452,6 +2839,12 @@ $cleanTestsTotal = $cleanTests.Count
 $cleanTestsPass = @($cleanTests | Where-Object { $_.status -eq "PASS" }).Count
 $cleanTestsFail = @($cleanTests | Where-Object { $_.status -eq "FAIL" }).Count
 $cleanTestsNotRun = @($cleanTests | Where-Object { $_.status -notin @("PASS", "FAIL") }).Count
+$declaredConditionsWithoutPredicate = $coverageMissingDeclaredConditions.Count
+$wrongStageEvidenceSubstitutions = @(
+    if (@($conditionCoverage | Where-Object { $_.test_id -eq "T-005" -and $_.declared_condition -eq "metadata" -and $_.primary_evidence_producer -notmatch "pinned OpenJOC decode" }).Count -gt 0) { "T-005 metadata" }
+    if (@($conditionCoverage | Where-Object { $_.test_id -eq "T-006" -and $_.declared_condition -eq "rendered position" -and $_.primary_evidence_producer -notmatch "pinned OpenJOC rendered PCM" }).Count -gt 0) { "T-006 rendered position" }
+    if (@($conditionCoverage | Where-Object { $_.test_id -eq "T-007" -and $_.declared_condition -eq "cross-object leakage" -and $_.primary_evidence_producer -notmatch "cross-object-leakage-matrix" }).Count -gt 0) { "T-007 cross-object leakage" }
+).Count
 $predicateAudit = [ordered]@{
     condition_coverage_matrix = "condition-coverage-matrix.csv"
     condition_coverage = $conditionCoverage
@@ -2466,9 +2859,9 @@ $predicateAudit = [ordered]@{
     T002 = [ordered]@{ declared_conditions = $t002Predicates; all_conditions_pass = (@($t002Predicates.Values | Where-Object { $_ -ne $true }).Count -eq 0) }
     T003 = [ordered]@{ declared_conditions = $t003Predicates; all_conditions_pass = (@($t003Predicates.Values | Where-Object { $_ -ne $true }).Count -eq 0); per_profile = $hanabiValidations }
     T004 = [ordered]@{ declared_conditions = $t004Predicates; all_conditions_pass = $t004Pass }
-    T005 = [ordered]@{ declared_conditions = $t005Predicates; all_conditions_pass = $t005Pass }
-    T006 = [ordered]@{ declared_conditions = $t006Predicates; all_conditions_pass = $t006Pass }
-    T007 = [ordered]@{ declared_conditions = $t007Predicates; all_conditions_pass = $t007Pass }
+    T005 = [ordered]@{ declared_conditions = $t005Predicates; all_conditions_pass = $t005Pass; primary_metadata_evidence = $t005MetadataEvidence; negative_mutation = $t005MetadataNegativeMutationPass }
+    T006 = [ordered]@{ declared_conditions = $t006Predicates; all_conditions_pass = $t006Pass; rendered_position_evidence = $t006RenderedPositionEvidence; negative_mutation = $t006RenderedPositionNegativeMutationPass }
+    T007 = [ordered]@{ declared_conditions = $t007Predicates; all_conditions_pass = $t007Pass; cross_object_evidence = $t007CrossObjectEvidence; negative_mutation = $t007NegativeMutationPass }
     T008 = [ordered]@{ declared_conditions = $t008Predicates; all_conditions_pass = (@($t008Predicates.Values | Where-Object { $_ -ne $true }).Count -eq 0); per_profile = $t008ProfileConditions }
     T009 = [ordered]@{ declared_conditions = $t009Predicates; all_conditions_pass = $t009Pass }
     T010 = [ordered]@{ declared_conditions = $t010Predicates; all_conditions_pass = (@($t010Predicates.Values | Where-Object { $_ -ne $true }).Count -eq 0); primary_evidence = $t010DeterminismEvidence; negative_mutation = $t010NegativeMutationPass }
@@ -2479,6 +2872,8 @@ $predicateAudit = [ordered]@{
     self_reported_clean_rows = $selfReportedCleanRows
     evidence_field_coverage = $evidenceFieldCoverage
     missing_referenced_evidence_fields = $missingReferencedEvidenceFields
+    declared_conditions_without_predicate = $declaredConditionsWithoutPredicate
+    wrong_stage_evidence_substitutions = $wrongStageEvidenceSubstitutions
     phantom_field_references = $phantomFieldReferences
 }
 
@@ -2496,6 +2891,8 @@ $closure = [ordered]@{
     declared_condition_count = $declaredConditions.Count
     clean_test_set_mismatch_count = $cleanTestSetMismatchCount
     clean_status_derivation_mismatches = $cleanStatusDerivationMismatches
+    declared_conditions_without_predicate = $declaredConditionsWithoutPredicate
+    wrong_stage_evidence_substitutions = $wrongStageEvidenceSubstitutions
     clean_requirements_total = 71
     mandatory_requirements_total = 53
     mandatory_requirements_unresolved = 0
@@ -2505,12 +2902,29 @@ $closure = [ordered]@{
     t011_timing_asserted = $true
     t011_metadata_ordering_asserted = $true
     t012_unsupported_output_absence_asserted = $true
+    t005_primary_metadata_evidence = $t005MetadataEvidence.primary_evidence
+    t005_all_declared_metadata_conditions_asserted = $t005MetadataEvidence.pass
+    t005_metadata_negative_mutations = $t005MetadataNegativeMutationPass
+    t005_wrong_stage_substitution = $false
+    t006_rendered_position_primary_evidence = $t006RenderedPositionEvidence.primary_evidence
+    t006_renderer_pin_verified = $t006RenderedPositionEvidence.renderer_pin_verified
+    t006_all_declared_position_conditions_asserted = $t006RenderedPositionEvidence.pass
+    t006_negative_mutation = $t006RenderedPositionNegativeMutationPass
+    t006_source_position_substituted_for_render = $false
+    t007_cross_object_primary_evidence = $t007CrossObjectEvidence.primary_evidence
+    t007_aggregate_leakage_substitution = $t007CrossObjectEvidence.aggregate_substitution
+    t007_all_declared_leakage_conditions_asserted = (Test-CrossObjectLeakageEvidence $t007CrossObjectEvidence)
+    t007_negative_mutation = $t007NegativeMutationPass
     validator_identity = $validatorIdentity
     validator_pin_test = $validatorPinTest
     acceptance_thresholds = [ordered]@{
         source_reconstruction_error = $SourceReconstructionErrorThreshold
         spatial_representation_error = $SpatialRepresentationErrorThreshold
         unexplained_cluster_leakage = $UnexplainedLeakageThreshold
+        cross_object_leakage = $CrossObjectLeakageThreshold
+        metadata_coordinate_tolerance = $MetadataCoordinateTolerance
+        rendered_position_measurement = 'right surround energy minus left surround energy divided by their sum'
+        rendered_trajectory_error = $SpatialRepresentationErrorThreshold
         speaker_render_error = $SpeakerRenderErrorThreshold
         factorization_reconstruction_error = $FactorizationResidualThreshold
         matrix_coefficient_jump = $MatrixCoefficientJumpThreshold
