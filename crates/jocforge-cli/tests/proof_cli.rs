@@ -67,6 +67,30 @@ fn advanced_multi_dependent_cli_writes_sequential_dependents() {
 }
 
 #[test]
+fn advanced_short_block_cli_writes_one_grouped_interval() {
+    let output_path =
+        env::temp_dir().join(format!("jocforge-short-block-{}.ec3", std::process::id()));
+    let status = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+        .args([
+            "conformance-short",
+            "idx0",
+            "1+1+1+1+1+1",
+            output_path.to_str().expect("temporary path is UTF-8"),
+        ])
+        .status()
+        .expect("short-block CLI starts");
+
+    assert!(status.success());
+    assert_eq!(
+        fs::metadata(&output_path)
+            .expect("short-block output")
+            .len(),
+        6144
+    );
+    let _ = fs::remove_file(output_path);
+}
+
+#[test]
 fn quantization_stress_cli_reports_all_profiles_and_full_domain() {
     let output_path = env::temp_dir().join(format!(
         "jocforge-quantization-stress-{}.json",

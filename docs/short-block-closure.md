@@ -12,9 +12,9 @@ block partitions whose total is six and returns the corresponding block codes,
 sample count, and `convsync` sequence. It also exposes the public sequential
 D0..D7 dependent-ID bound through `resolve_dependent_topology`.
 
-This does not yet emit short compressed E-AC-3 frames. The available FFmpeg
-E-AC-3 encoder exposes no short-block frame-duration option, and JOCForge has
-not introduced an independent five/seven-channel short-frame serializer. The
-capability matrix therefore keeps short-block cells
-`SPEC_LEGAL_NOT_IMPLEMENTED`; CMAF cells remain container-specific and do not
-inherit General E-AC-3 short-block legality.
+The advanced `conformance-short` command now emits synthetic five/seven-channel
+short frames with bounded zero-energy audio fields. The four canonical
+partitions (`1+1+1+1+1+1`, `3+3`, `2+2+2`, and `1+2+3`) pass pinned OpenJOC
+inspect/render and FFmpeg decode for idx0..idx4. These are conformance fixtures,
+not the normal PCM-derived bitrate path; source-derived short-frame encoding and
+CMAF packaging remain separate work.

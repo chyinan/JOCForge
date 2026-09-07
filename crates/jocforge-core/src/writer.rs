@@ -1,6 +1,8 @@
 // pattern: Functional Core
 
-use crate::{AdmPosition, EmdfProfile, JocProfile, profile_spec, quantize_coefficient};
+use crate::{
+    AdmPosition, BlockPartition, EmdfProfile, JocProfile, profile_spec, quantize_coefficient,
+};
 
 const FRAME_BYTES: usize = 4096;
 const D0_FRAME_BYTES: usize = 2560;
@@ -461,6 +463,118 @@ fn write_five_channel_frame(emdf: Option<&[u8]>, joc_extension: bool) -> Vec<u8>
     finish_frame(bits, emdf, FRAME_BYTES)
 }
 
+#[allow(clippy::too_many_arguments)]
+fn write_short_conformance_frame(
+    stream_type: u8,
+    substream_id: u8,
+    channel_map: Option<u16>,
+    channel_count: usize,
+    blocks: BlockPartition,
+    convsync: bool,
+    emdf: Option<&[u8]>,
+    complexity_index: u8,
+    frame_bytes: usize,
+) -> Result<Vec<u8>, String> {
+    if !matches!(
+        blocks,
+        BlockPartition::One | BlockPartition::Two | BlockPartition::Three
+    ) {
+        return Err("short conformance frame requires a 1/2/3-block partition".to_owned());
+    }
+    if !(1..=5).contains(&channel_count) || (stream_type == 1) != channel_map.is_some() {
+        return Err("short conformance frame channel topology is invalid".to_owned());
+    }
+    let block_count = blocks.audio_blocks();
+    let mut bits = BitWriter::default();
+    for (value, width) in [
+        (0x0b77, 16),
+        (u64::from(stream_type), 2),
+        (u64::from(substream_id), 3),
+        (u64::try_from(frame_bytes / 2 - 1).unwrap_or(0), 11),
+        (0, 2), // 48 kHz
+        (u64::from(blocks.numblkscod()), 2),
+        (
+            if channel_count == 1 {
+                1
+            } else if channel_count == 2 {
+                2
+            } else {
+                7
+            },
+            3,
+        ),
+        (0, 1), // no LFE
+        (16, 5),
+        (31, 5),
+        (0, 1), // no compression metadata
+    ] {
+        bits.push(value, width);
+    }
+    if let Some(channel_map) = channel_map {
+        bits.push(1, 1);
+        bits.push(u64::from(channel_map), 16);
+    }
+    bits.push(0, 1); // no mixing metadata
+    bits.push(0, 1); // no informational metadata
+    if stream_type == 0 {
+        bits.push(u64::from(convsync), 1);
+    }
+    bits.push(u64::from(emdf.is_some()), 1);
+    if emdf.is_some() {
+        bits.push(1, 6);
+        bits.push(0x01, 8);
+        bits.push(u64::from(complexity_index), 8);
+    }
+    bits.push(0, 2); // frame SNR strategy
+    bits.push(0, 1); // no transient processing
+    bits.push(0, 7); // compact syntax flags
+    if channel_count > 1 {
+        bits.push(0, 1); // coupling not in use in block zero
+        for _ in 1..block_count {
+            bits.push(0, 1); // coupling strategy reused/off
+        }
+    }
+    for block in 0..block_count {
+        for _ in 0..channel_count {
+            bits.push(u64::from(block == 0), 2);
+        }
+    }
+    if stream_type == 0 {
+        bits.push(0, 1); // converter exponent strategy absent
+    }
+    bits.push(0, 6); // frame coarse SNR offset
+    bits.push(0, 4); // frame fine SNR offset
+    if block_count > 1 {
+        bits.push(0, 1); // no block-start information
+    }
+    bits.push(0, 1); // dynamic range absent
+    bits.push(0, 1); // SPX not in use
+    if channel_count == 2 {
+        for _ in 0..4 {
+            bits.push(0, 1); // rematrix flags
+        }
+    }
+    for _ in 0..channel_count {
+        bits.push(0, 6); // channel bandwidth code
+    }
+    for _ in 0..channel_count {
+        push_source_exponents(&mut bits, D0_INITIAL_EXPONENT);
+    }
+    for _ in 0..channel_count {
+        bits.push(0, 2); // gain range
+    }
+    bits.push(0, 1); // converter SNR offset absent
+    for _ in 1..block_count {
+        bits.push(0, 1); // dynamic range absent
+        bits.push(0, 1); // SPX strategy reused
+        if channel_count == 2 {
+            bits.push(0, 1); // rematrix strategy reused
+        }
+        bits.push(0, 1); // converter SNR offset absent
+    }
+    Ok(finish_frame(bits, emdf, frame_bytes))
+}
+
 fn write_dependent_frame(emdf: Option<&[u8]>, channel_map: u16) -> Vec<u8> {
     write_dependent_frame_with_id(emdf, 0, channel_map)
 }
@@ -876,6 +990,78 @@ pub fn package_legacy_ac3_source_derived_access_unit(
     let mut output = Vec::with_capacity(ac3_i0_frame.len() + d0.len());
     output.extend_from_slice(ac3_i0_frame);
     output.extend_from_slice(&d0);
+    Ok(output)
+}
+
+/// Builds one synthetic General JOC interval from public 1/2/3-block
+/// syncframe partitions. This is an advanced syntax/conformance path: audio
+/// mantissas are bounded zero-energy fields, while OAMD/JOC metadata remains
+/// fully serialized and carried on each D0 frame.
+#[allow(clippy::too_many_arguments)]
+pub fn package_short_block_conformance_access_unit(
+    profile: JocProfile,
+    emdf_profile: EmdfProfile,
+    sequence_count: u16,
+    matrix: &[Vec<f64>],
+    positions: &[AdmPosition],
+    partitions: &[BlockPartition],
+) -> Result<Vec<u8>, String> {
+    let plan = crate::conformance::resolve_short_block_plan(partitions)
+        .map_err(|error| format!("invalid short-block conformance plan: {error}"))?;
+    if plan.partitions().contains(&BlockPartition::Six) {
+        if plan.partitions().len() != 1 {
+            return Err("six-block partition cannot be mixed with short partitions".to_owned());
+        }
+        if positions.is_empty() {
+            return Err("short-block conformance requires at least one position".to_owned());
+        }
+        let oamd = write_oamd_payload(positions)?;
+        let joc = write_joc_payload(profile, sequence_count, matrix)?;
+        let emdf = write_emdf(&oamd, &joc, emdf_profile)?;
+        return Ok([
+            write_five_channel_frame(None, false),
+            write_dependent_frame(Some(&emdf), profile_spec(profile).channel_map),
+        ]
+        .concat());
+    }
+    if matrix.len() != positions.len() || positions.is_empty() {
+        return Err(
+            "short-block matrix and OAMD positions must be non-empty and aligned".to_owned(),
+        );
+    }
+    let oamd = write_oamd_payload(positions)?;
+    let joc = write_joc_payload(profile, sequence_count, matrix)?;
+    let emdf = write_emdf(&oamd, &joc, emdf_profile)?;
+    let channel_map = profile_spec(profile).channel_map;
+    let complexity_index = u8::try_from(positions.len() + 1)
+        .map_err(|_| "JOC complexity index exceeds its eight-bit field".to_owned())?;
+    let mut output = Vec::new();
+    for (index, partition) in plan.partitions().iter().copied().enumerate() {
+        let i0 = write_short_conformance_frame(
+            0,
+            0,
+            None,
+            5,
+            partition,
+            index == 0,
+            None,
+            complexity_index,
+            512,
+        )?;
+        let d0 = write_short_conformance_frame(
+            1,
+            0,
+            Some(channel_map),
+            2,
+            partition,
+            false,
+            (index + 1 == plan.partitions().len()).then_some(emdf.as_slice()),
+            complexity_index,
+            512,
+        )?;
+        output.extend_from_slice(&i0);
+        output.extend_from_slice(&d0);
+    }
     Ok(output)
 }
 

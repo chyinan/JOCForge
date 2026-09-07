@@ -17,12 +17,13 @@ mod file_scan;
 use file_scan::{read_pcm_frame, scan_bw64_file};
 
 use jocforge_core::{
-    AdmObject, AdmObjectKind, EmdfProfile, FinalRenderMeasurement, JocCarriage, JocProfile,
-    ReductionConfig, ReductionSource, SOURCE_DERIVED_CARRIER_PEAK_LIMIT, d0_carrier_causality,
-    factorize_source_derived, final_render_gate, generate_synthetic_scene_fixture,
-    limit_signal_peak, maximum_absolute_difference, package_i0_skip_field_access_unit,
-    package_legacy_ac3_source_derived_access_unit,
+    AdmObject, AdmObjectKind, BlockPartition, EmdfProfile, FinalRenderMeasurement, JocCarriage,
+    JocProfile, ReductionConfig, ReductionSource, SOURCE_DERIVED_CARRIER_PEAK_LIMIT,
+    d0_carrier_causality, factorize_source_derived, final_render_gate,
+    generate_synthetic_scene_fixture, limit_signal_peak, maximum_absolute_difference,
+    package_i0_skip_field_access_unit, package_legacy_ac3_source_derived_access_unit,
     package_multi_dependent_source_derived_access_unit,
+    package_short_block_conformance_access_unit,
     package_source_derived_access_unit_with_frame_sizes, parse_bw64_adm_metadata, profile_spec,
     quantize_coefficient, reconstruction_error, reduce_scene_with_previous, resolve_encoding_plan,
     source_derived_carrier_causality, spectral_phase_report, validate_source_derived_adm_metadata,
@@ -46,6 +47,7 @@ fn run(arguments: &[String]) -> Result<(), String> {
     match arguments.first().map(String::as_str) {
         Some("proof") => run_proof(&arguments[1..]),
         Some("conformance-multi-dependent") => run_multi_dependent_proof(&arguments[1..]),
+        Some("conformance-short") => run_short_block_proof(&arguments[1..]),
         Some("fixture") => run_fixture(&arguments[1..]),
         Some("fixture-directspeakers") => run_direct_speaker_fixture(&arguments[1..]),
         Some("fixture-unsupported") => run_unsupported_fixture(&arguments[1..]),
@@ -59,7 +61,7 @@ fn run(arguments: &[String]) -> Result<(), String> {
         Some("temporal-adversarial") => run_temporal_adversarial(&arguments[1..]),
         Some(command) => Err(format!("unsupported command '{command}'")),
         None => Err(
-            "usage: jocforge proof|conformance-multi-dependent|fixture|fixture-directspeakers|fixture-unsupported|inspect-adm|encode|quantization-stress|carrier-causality|spectral-phase|final-render-gate|temporal ..."
+            "usage: jocforge proof|conformance-short|conformance-multi-dependent|fixture|fixture-directspeakers|fixture-unsupported|inspect-adm|encode|quantization-stress|carrier-causality|spectral-phase|final-render-gate|temporal ..."
                 .to_owned(),
         ),
     }
@@ -265,6 +267,48 @@ fn run_multi_dependent_proof(arguments: &[String]) -> Result<(), String> {
     }
     let _ = fs::remove_dir_all(work_root);
     result
+}
+
+fn run_short_block_proof(arguments: &[String]) -> Result<(), String> {
+    let [profile_name, partition_spec, output] = arguments else {
+        return Err("usage: jocforge conformance-short PROFILE PARTITIONS OUTPUT.ec3".to_owned());
+    };
+    let profile = parse_profile(profile_name)?;
+    let partitions = partition_spec
+        .split('+')
+        .map(|value| match value {
+            "1" => Ok(BlockPartition::One),
+            "2" => Ok(BlockPartition::Two),
+            "3" => Ok(BlockPartition::Three),
+            "6" => Ok(BlockPartition::Six),
+            other => Err(format!("unsupported short-block partition '{other}'")),
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    let columns = profile_spec(profile).input_labels.len();
+    let unit = 820.0 / 4096.0;
+    let matrix = vec![
+        (0..columns)
+            .map(|column| if column == 0 { unit } else { 0.0 })
+            .collect::<Vec<_>>(),
+    ];
+    let position = jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    };
+    let bytes = package_short_block_conformance_access_unit(
+        profile,
+        EmdfProfile::EtsiStrict,
+        1,
+        &matrix,
+        &[position],
+        &partitions,
+    )?;
+    write_output(
+        &PathBuf::from(output),
+        bytes,
+        "short-block conformance proof",
+    )
 }
 
 fn run_quantization_stress(arguments: &[String]) -> Result<(), String> {

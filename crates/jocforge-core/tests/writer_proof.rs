@@ -1,9 +1,10 @@
 // pattern: Functional Core
 
 use jocforge_core::{
-    EmdfProfile, JocProfile, d0_carrier_causality, package_i0_skip_field_access_unit,
-    package_legacy_ac3_source_derived_access_unit,
-    package_multi_dependent_source_derived_access_unit, package_source_derived_access_unit,
+    BlockPartition, EmdfProfile, JocProfile, d0_carrier_causality,
+    package_i0_skip_field_access_unit, package_legacy_ac3_source_derived_access_unit,
+    package_multi_dependent_source_derived_access_unit,
+    package_short_block_conformance_access_unit, package_source_derived_access_unit,
     write_one_au_proof,
 };
 
@@ -277,6 +278,29 @@ fn legacy_ac3_package_retains_the_original_core_and_appends_one_d0() {
     )
     .expect_err("zero-filled AC-3 core must fail its public header validation");
     assert!(error.contains("legacy AC-3"));
+}
+
+#[test]
+fn short_block_conformance_writer_preserves_one_1536_sample_group() {
+    let unit = 820.0 / 4096.0;
+    let matrix = vec![vec![unit, 0.0, 0.0, 0.0, 0.0]];
+    let position = jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    };
+    let partitions = vec![BlockPartition::One; 6];
+    let access_unit = package_short_block_conformance_access_unit(
+        JocProfile::Idx0,
+        EmdfProfile::EtsiStrict,
+        1,
+        &matrix,
+        &[position],
+        &partitions,
+    )
+    .expect("short-block conformance AU");
+
+    assert_eq!(access_unit.len(), 6 * (512 + 512));
 }
 
 #[test]
