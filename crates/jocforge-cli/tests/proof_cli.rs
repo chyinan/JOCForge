@@ -63,7 +63,7 @@ fn quantization_stress_cli_reports_all_profiles_and_full_domain() {
     assert!(status.success());
     let report = fs::read_to_string(&output_path).expect("quantization report exists");
     assert!(report.contains("\"pass\": true"));
-    assert!(report.contains("\"profile_count\": 3"));
+    assert!(report.contains("\"profile_count\": 5"));
     assert!(report.contains("\"domain_values_checked\": 96"));
     let _ = fs::remove_file(output_path);
 }
@@ -88,6 +88,8 @@ fn carrier_causality_cli_reports_each_profile_source_set() {
     assert!(report.contains("\"profile\":\"idx0\""));
     assert!(report.contains("\"profile\":\"idx1\""));
     assert!(report.contains("\"profile\":\"idx2\""));
+    assert!(report.contains("\"profile\":\"idx3\""));
+    assert!(report.contains("\"profile\":\"idx4\""));
     let _ = fs::remove_file(output_path);
 }
 

@@ -60,11 +60,23 @@ fn writer_produces_a_complete_idx0_processing_unit() {
 fn seven_input_profiles_use_i0_plus_2560_byte_d0_carriage() {
     let flat = jocforge_core::write_one_au_proof(JocProfile::Idx1).expect("idx1 proof");
     let height = jocforge_core::write_one_au_proof(JocProfile::Idx2).expect("idx2 proof");
+    let phase_height = jocforge_core::write_one_au_proof(JocProfile::Idx4).expect("idx4 proof");
 
     assert_eq!(flat.len(), 4096 + 2560);
     assert_eq!(height.len(), 4096 + 2560);
+    assert_eq!(phase_height.len(), 4096 + 2560);
     assert_eq!(&flat[4096..4098], &[0x0b, 0x77]);
     assert_eq!(&height[4096..4098], &[0x0b, 0x77]);
+    assert_eq!(&phase_height[4096..4098], &[0x0b, 0x77]);
+}
+
+#[test]
+fn phase_profiles_keep_their_base_carriage_widths() {
+    let phase_five = jocforge_core::write_one_au_proof(JocProfile::Idx3).expect("idx3 proof");
+    let phase_height = jocforge_core::write_one_au_proof(JocProfile::Idx4).expect("idx4 proof");
+
+    assert_eq!(phase_five.len(), 4096);
+    assert_eq!(phase_height.len(), 4096 + 2560);
 }
 
 #[test]
@@ -138,7 +150,13 @@ fn writer_encodes_general_coarse_matrix_symbols() {
 
 #[test]
 fn source_derived_d0_writer_changes_for_each_dependent_input() {
-    for profile in [JocProfile::Idx0, JocProfile::Idx1, JocProfile::Idx2] {
+    for profile in [
+        JocProfile::Idx0,
+        JocProfile::Idx1,
+        JocProfile::Idx2,
+        JocProfile::Idx3,
+        JocProfile::Idx4,
+    ] {
         let measurements = d0_carrier_causality(profile).expect("D0 causality fixture");
         assert_eq!(measurements.len(), 2);
         assert!(

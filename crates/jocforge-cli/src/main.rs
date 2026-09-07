@@ -22,9 +22,9 @@ use jocforge_core::{
     factorize_source_derived, final_render_gate, generate_synthetic_scene_fixture,
     limit_signal_peak, maximum_absolute_difference, package_i0_skip_field_access_unit,
     package_source_derived_access_unit_with_frame_sizes, parse_bw64_adm_metadata, profile_spec,
-    quantize_coefficient, rate_budget_for_carriage, reconstruction_error,
-    reduce_scene_with_previous, source_derived_carrier_causality, spectral_phase_report,
-    validate_source_derived_adm_metadata, write_one_au_proof,
+    quantize_coefficient, reconstruction_error, reduce_scene_with_previous, resolve_encoding_plan,
+    source_derived_carrier_causality, spectral_phase_report, validate_source_derived_adm_metadata,
+    write_one_au_proof,
 };
 
 const JOC_FRAME_SAMPLES: usize = 1536;
@@ -144,7 +144,7 @@ fn write_temporal_metrics(
 
 fn run_proof(arguments: &[String]) -> Result<(), String> {
     let [profile, output] = arguments else {
-        return Err("usage: jocforge proof idx0|idx1|idx2 OUTPUT.ec3".to_owned());
+        return Err("usage: jocforge proof idx0|idx1|idx2|idx3|idx4 OUTPUT.ec3".to_owned());
     };
     let profile = parse_profile(profile)?;
     let bytes = write_one_au_proof(profile)?;
@@ -157,7 +157,13 @@ fn run_quantization_stress(arguments: &[String]) -> Result<(), String> {
         return Err("usage: jocforge quantization-stress OUTPUT.json".to_owned());
     };
     let quantum = 820.0 / 4096.0;
-    let profiles = [JocProfile::Idx0, JocProfile::Idx1, JocProfile::Idx2];
+    let profiles = [
+        JocProfile::Idx0,
+        JocProfile::Idx1,
+        JocProfile::Idx2,
+        JocProfile::Idx3,
+        JocProfile::Idx4,
+    ];
     let mut max_error = 0.0_f64;
     let mut pass = true;
     let mut matrix_values_checked = 0_usize;
@@ -189,7 +195,7 @@ fn run_quantization_stress(arguments: &[String]) -> Result<(), String> {
     }
     pass &= max_error <= quantum * 0.5 + 1.0e-12;
     let json = format!(
-        "{{\n  \"pass\": {},\n  \"profile_count\": 3,\n  \"profiles\": [\"idx0\", \"idx1\", \"idx2\"],\n  \"domain_min_step\": -48,\n  \"domain_max_step\": 47,\n  \"domain_values_checked\": 96,\n  \"matrix_values_checked\": {matrix_values_checked},\n  \"quantum\": {quantum:.17e},\n  \"maximum_absolute_error\": {max_error:.17e}\n}}\n",
+        "{{\n  \"pass\": {},\n  \"profile_count\": 5,\n  \"profiles\": [\"idx0\", \"idx1\", \"idx2\", \"idx3\", \"idx4\"],\n  \"domain_min_step\": -48,\n  \"domain_max_step\": 47,\n  \"domain_values_checked\": 96,\n  \"matrix_values_checked\": {matrix_values_checked},\n  \"quantum\": {quantum:.17e},\n  \"maximum_absolute_error\": {max_error:.17e}\n}}\n",
         json_bool(pass),
     );
     write_output(
@@ -208,7 +214,13 @@ fn run_carrier_causality(arguments: &[String]) -> Result<(), String> {
     let [output] = arguments else {
         return Err("usage: jocforge carrier-causality OUTPUT.json".to_owned());
     };
-    let profile_specs = [("idx0", 5_usize), ("idx1", 7_usize), ("idx2", 7_usize)];
+    let profile_specs = [
+        ("idx0", 5_usize),
+        ("idx1", 7_usize),
+        ("idx2", 7_usize),
+        ("idx3", 5_usize),
+        ("idx4", 7_usize),
+    ];
     let mut profile_json = Vec::with_capacity(profile_specs.len());
     let mut pass = true;
     for (profile, carrier_count) in profile_specs {
@@ -700,11 +712,13 @@ fn final_render_evidence_is_valid(value: &JsonValue) -> bool {
     let Some(JsonValue::Array(profiles)) = root.get("profiles") else {
         return false;
     };
-    ["idx0", "idx1", "idx2"].into_iter().all(|profile| {
-        profiles
-            .iter()
-            .any(|value| json_profile_gate_is_passing(value, profile))
-    })
+    ["idx0", "idx1", "idx2", "idx3", "idx4"]
+        .into_iter()
+        .all(|profile| {
+            profiles
+                .iter()
+                .any(|value| json_profile_gate_is_passing(value, profile))
+        })
 }
 
 fn json_profile_gate_is_passing(value: &JsonValue, profile: &str) -> bool {
@@ -969,7 +983,7 @@ fn csv_cell(value: &str) -> String {
 fn run_encode(arguments: &[String]) -> Result<(), String> {
     if arguments.len() < 4 || (arguments.len() - 4) % 2 != 0 {
         return Err(
-            "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile idx0|idx1|idx2 [--compat etsi|deployed] [--carriage etsi|i0-skipfld] [--emdf-profile etsi|deployed] [--bitrate KBPS] [--temporal-weight VALUE]"
+            "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile 5.X|Flat-7.X|5.X+2|5.X Phase|5.X+2 Phase [--compat etsi|deployed] [--carriage etsi|i0-skipfld] [--emdf-profile etsi|deployed] [--bitrate KBPS] [--temporal-weight VALUE]"
                 .to_owned(),
         );
     }
@@ -979,7 +993,7 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
     let profile_name = &arguments[3];
     if flag != "--profile" {
         return Err(
-            "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile idx0|idx1|idx2 [--compat etsi|deployed] [--carriage etsi|i0-skipfld] [--emdf-profile etsi|deployed] [--bitrate KBPS] [--temporal-weight VALUE]"
+            "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile 5.X|Flat-7.X|5.X+2|5.X Phase|5.X+2 Phase [--compat etsi|deployed] [--carriage etsi|i0-skipfld] [--emdf-profile etsi|deployed] [--bitrate KBPS] [--temporal-weight VALUE]"
                 .to_owned(),
         );
     }
@@ -1017,7 +1031,7 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
             }
             _ => {
                 return Err(
-                    "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile idx0|idx1|idx2 [--compat etsi|deployed] [--carriage etsi|i0-skipfld] [--emdf-profile etsi|deployed] [--bitrate KBPS] [--temporal-weight VALUE]"
+                    "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile 5.X|Flat-7.X|5.X+2|5.X Phase|5.X+2 Phase [--compat etsi|deployed] [--carriage etsi|i0-skipfld] [--emdf-profile etsi|deployed] [--bitrate KBPS] [--temporal-weight VALUE]"
                         .to_owned(),
                 );
             }
@@ -1025,11 +1039,9 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         option_index += 2;
     }
     let profile = parse_profile(profile_name)?;
-    if carriage == JocCarriage::I0SkipField && profile != JocProfile::Idx0 {
-        return Err("i0 skip-field carriage currently supports idx0 only".to_owned());
-    }
-    let rate = rate_budget_for_carriage(carriage, target_bitrate_kbps)
-        .map_err(|error| format!("invalid encode budget: {error}"))?;
+    let plan = resolve_encoding_plan(profile, carriage, emdf_profile, target_bitrate_kbps)
+        .map_err(|error| format!("invalid encoding plan: {error}"))?;
+    let rate = plan.rate;
     let input_path = PathBuf::from(input);
     let scanned = scan_bw64_file(&input_path)?;
     let metadata = parse_bw64_adm_metadata(
@@ -1562,9 +1574,11 @@ fn interleaved_f32le(carriers: &[Vec<f64>], samples: usize) -> Vec<u8> {
 
 fn parse_profile(value: &str) -> Result<JocProfile, String> {
     match value {
-        "idx0" => Ok(JocProfile::Idx0),
-        "idx1" => Ok(JocProfile::Idx1),
-        "idx2" => Ok(JocProfile::Idx2),
+        "idx0" | "5.X" => Ok(JocProfile::Idx0),
+        "idx1" | "Flat-7.X" => Ok(JocProfile::Idx1),
+        "idx2" | "5.X+2" => Ok(JocProfile::Idx2),
+        "idx3" | "5.X Phase" => Ok(JocProfile::Idx3),
+        "idx4" | "5.X+2 Phase" => Ok(JocProfile::Idx4),
         other => Err(format!("unsupported JOC profile '{other}'")),
     }
 }
@@ -1604,8 +1618,8 @@ fn write_output(path: &Path, bytes: Vec<u8>, description: &str) -> Result<(), St
 
 #[cfg(test)]
 mod tests {
-    use super::{parse_carriage, parse_compat_preset, parse_emdf_profile};
-    use jocforge_core::{EmdfProfile, JocCarriage};
+    use super::{parse_carriage, parse_compat_preset, parse_emdf_profile, parse_profile};
+    use jocforge_core::{EmdfProfile, JocCarriage, JocProfile};
 
     #[test]
     fn cli_names_carriage_and_emdf_profile_separately() {
@@ -1628,5 +1642,16 @@ mod tests {
             parse_compat_preset("etsi"),
             Ok((JocCarriage::EtsiAuxDependent, EmdfProfile::EtsiStrict))
         );
+    }
+
+    #[test]
+    fn cli_accepts_semantic_profile_names_and_numeric_aliases() {
+        assert_eq!(parse_profile("5.X"), Ok(JocProfile::Idx0));
+        assert_eq!(parse_profile("Flat-7.X"), Ok(JocProfile::Idx1));
+        assert_eq!(parse_profile("5.X+2"), Ok(JocProfile::Idx2));
+        assert_eq!(parse_profile("5.X Phase"), Ok(JocProfile::Idx3));
+        assert_eq!(parse_profile("5.X+2 Phase"), Ok(JocProfile::Idx4));
+        assert_eq!(parse_profile("idx3"), Ok(JocProfile::Idx3));
+        assert!(parse_profile("idx5").is_err());
     }
 }

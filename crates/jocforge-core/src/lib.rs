@@ -5,6 +5,7 @@
 mod adm;
 mod analysis;
 mod eac3;
+mod plan;
 mod profile;
 mod rate;
 mod reduction;
@@ -26,6 +27,7 @@ pub use analysis::{
     source_derived_carrier_causality,
 };
 pub use eac3::inject_joc_skipfld;
+pub use plan::{JocEncodingPlan, JocPlanError, resolve_encoding_plan};
 pub use profile::{JocProfileSpec, profile_spec};
 pub use rate::{RateBudget, RateBudgetError, rate_budget, rate_budget_for_carriage};
 pub use reduction::{
@@ -55,6 +57,40 @@ pub enum JocProfile {
     Idx0,
     Idx1,
     Idx2,
+    Idx3,
+    Idx4,
+}
+
+impl JocProfile {
+    /// Returns the user-facing semantic name from ETSI TS 103 420 Table 47.
+    #[must_use]
+    pub const fn semantic_name(self) -> &'static str {
+        match self {
+            Self::Idx0 => "5.X",
+            Self::Idx1 => "Flat-7.X",
+            Self::Idx2 => "5.X+2",
+            Self::Idx3 => "5.X Phase",
+            Self::Idx4 => "5.X+2 Phase",
+        }
+    }
+
+    /// Returns the numeric JOC downmix configuration index.
+    #[must_use]
+    pub const fn downmix_index(self) -> u8 {
+        match self {
+            Self::Idx0 => 0,
+            Self::Idx1 => 1,
+            Self::Idx2 => 2,
+            Self::Idx3 => 3,
+            Self::Idx4 => 4,
+        }
+    }
+
+    /// Returns whether this profile signals the public phase variant.
+    #[must_use]
+    pub const fn is_phase_signaled(self) -> bool {
+        matches!(self, Self::Idx3 | Self::Idx4)
+    }
 }
 
 /// Publicly selected E-AC-3/JOC carriage topology.

@@ -232,15 +232,10 @@ fn write_joc_payload(
     if sequence_count > 1023 {
         return Err("JOC sequence count exceeds its ten-bit field".to_owned());
     }
-    let channel_count = match profile {
-        JocProfile::Idx0 => 5_u8,
-        JocProfile::Idx1 | JocProfile::Idx2 => 7_u8,
-    };
-    let downmix_index = match profile {
-        JocProfile::Idx0 => 0_u8,
-        JocProfile::Idx1 => 1_u8,
-        JocProfile::Idx2 => 2_u8,
-    };
+    let spec = profile_spec(profile);
+    let channel_count = u8::try_from(spec.input_labels.len())
+        .map_err(|_| "JOC profile input channel count exceeds its field".to_owned())?;
+    let downmix_index = spec.downmix_index;
     let mut bits = BitWriter::default();
     bits.push(u64::from(downmix_index), 3);
     let object_count = u8::try_from(matrix.len())
@@ -723,13 +718,13 @@ pub fn write_one_au_proof(profile: JocProfile) -> Result<Vec<u8>, String> {
     let joc = write_joc_payload(profile, 1, &matrix)?;
     let emdf = write_emdf(&oamd, &joc, EmdfProfile::default())?;
     let output = match profile {
-        JocProfile::Idx0 => write_five_channel_frame(Some(&emdf), true),
+        JocProfile::Idx0 | JocProfile::Idx3 => write_five_channel_frame(Some(&emdf), true),
         JocProfile::Idx1 => [
             write_five_channel_frame(None, false),
             write_dependent_frame(Some(&emdf), 0x0200),
         ]
         .concat(),
-        JocProfile::Idx2 => [
+        JocProfile::Idx2 | JocProfile::Idx4 => [
             write_five_channel_frame(None, false),
             write_dependent_frame(Some(&emdf), 0x0010),
         ]
