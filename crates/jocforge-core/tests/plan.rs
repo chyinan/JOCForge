@@ -65,12 +65,12 @@ fn resolver_admits_only_the_validated_legacy_ac3_flat7x_plan() {
     assert_eq!(plan.rate.carrier_bitrate_kbps, 640);
     assert_eq!(plan.rate.d0_bitrate_kbps, 640);
 
-    let unsupported = resolve_encoding_plan(
-        JocProfile::Idx0,
+    let phase_plan = resolve_encoding_plan(
+        JocProfile::Idx4,
         JocCarriage::LegacyAc3Dependent,
         EmdfProfile::EtsiStrict,
         1280,
     )
-    .expect_err("legacy AC-3 is not yet closed for 5.X");
-    assert!(unsupported.to_string().contains("unsupported carriage"));
+    .expect("legacy AC-3 phase profile plan");
+    assert_eq!(phase_plan.profile, JocProfile::Idx4);
 }

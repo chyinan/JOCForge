@@ -65,9 +65,6 @@ pub fn resolve_encoding_plan(
     if carriage == JocCarriage::I0SkipField && profile != JocProfile::Idx0 {
         return Err(JocPlanError::UnsupportedCarriage { profile, carriage });
     }
-    if carriage == JocCarriage::LegacyAc3Dependent && profile != JocProfile::Idx1 {
-        return Err(JocPlanError::UnsupportedCarriage { profile, carriage });
-    }
     let rate = crate::rate_budget_for_carriage(carriage, bitrate_kbps).map_err(|_| {
         JocPlanError::UnsupportedBitrate {
             profile,

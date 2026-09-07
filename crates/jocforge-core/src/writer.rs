@@ -840,9 +840,8 @@ pub fn package_source_derived_access_unit_with_frame_sizes(
 }
 
 /// Packages the validated original-syntax AC-3 I0 plus E-AC-3 D0 JOC form.
-/// This advanced path is intentionally limited to Flat-7.X/idx1 and a
-/// 48-kHz, six-block, 640 kbps AC-3 core until more public core topologies are
-/// independently validated.
+/// This advanced path is limited to the five public idx0..idx4 topologies and
+/// a 48-kHz, six-block, 640 kbps AC-3 core.
 #[allow(clippy::too_many_arguments)]
 pub fn package_legacy_ac3_source_derived_access_unit(
     profile: JocProfile,
@@ -854,9 +853,6 @@ pub fn package_legacy_ac3_source_derived_access_unit(
     d0_carriers: &[Vec<f64>],
     sample_offset: usize,
 ) -> Result<Vec<u8>, String> {
-    if profile != JocProfile::Idx1 {
-        return Err("legacy AC-3 carriage currently supports Flat-7.X only".to_owned());
-    }
     if !valid_legacy_ac3_i0_frame(ac3_i0_frame) {
         return Err(
             "legacy AC-3 carriage requires one 48 kHz bsid 6/8 5.1 AC-3 I0 frame".to_owned(),

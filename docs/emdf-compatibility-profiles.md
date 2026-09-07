@@ -12,7 +12,7 @@ payload configuration used by the single semantic writer.
 | --- | --- | --- | --- |
 | ETSI Strict | `--compat etsi` (default) | I0 plus dependent D0, EMDF in D0 `auxdata` | 1 for IDs 11 and 14 |
 | I0 Skip-Field with strict EMDF | `--carriage i0-skipfld --emdf-profile etsi` | I0-only, EMDF in audio-block `skipfld` | 1 for IDs 11 and 14 |
-| Legacy AC-3 Flat-7.X | `--profile Flat-7.X --carriage legacy-ac3 --bitrate 1280` | original-syntax AC-3 I0 plus E-AC-3 D0 | 1 for IDs 11 and 14 |
+| Legacy AC-3 public profiles | `--profile idx0..idx4 --carriage legacy-ac3 --bitrate 1280` | original-syntax AC-3 I0 plus E-AC-3 D0 | 1 for IDs 11 and 14 |
 | Deployed Compatibility | `--compat deployed` | I0-only, EMDF in audio-block `skipfld` | 0 for IDs 11 and 14 |
 
 Advanced flags may select the two dimensions explicitly. The deployed preset

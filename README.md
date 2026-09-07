@@ -71,8 +71,8 @@ not a relabeled idx1. `idx3` and `idx4` are the public phase-signaled variants;
 the JOCForge implementation treats the phase wording as signaling-only and
 does not add a second PCM phase transform.
 
-The advanced `legacy-ac3` carriage is currently closed only for Flat-7.X/idx1
-at 1280 kbps: a 640 kbps original-syntax AC-3 I0 plus a 640 kbps E-AC-3 D0.
+The advanced `legacy-ac3` carriage is closed for public idx0..idx4 at 1280
+kbps: a 640 kbps original-syntax AC-3 I0 plus a 640 kbps E-AC-3 D0.
 
 FFmpeg is used only as the external 5-channel E-AC-3 I0 carrier encoder. The
 JOCForge-owned writer creates the PCM-derived two-channel dependent D0,
