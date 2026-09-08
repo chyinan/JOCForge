@@ -50,7 +50,9 @@ pub use plan::{
     classify_composition, composition_capability_matrix, resolve_composition,
     resolve_encoding_plan, resolve_encoding_plan_with_partition,
 };
-pub use profile::{JocProfileSpec, profile_spec};
+pub use profile::{
+    JocProfileSpec, profile_spec, semantic_slot_for_label, semantic_slot_for_position,
+};
 pub use rate::{
     RateBudget, RateBudgetError, partition_frame_bytes, rate_budget, rate_budget_for_carriage,
     rate_budget_for_dependents,

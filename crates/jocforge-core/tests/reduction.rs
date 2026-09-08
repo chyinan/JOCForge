@@ -17,6 +17,7 @@ fn source(ordinal: usize) -> ReductionSource {
         source_index: ordinal,
         object_id: format!("AO_{ordinal:04X}"),
         kind: AdmObjectKind::Objects,
+        semantic_slot: None,
         position: AdmPosition {
             azimuth: -1.0 + ordinal as f64 * 0.07,
             elevation: -0.4 + ordinal as f64 * 0.02,
@@ -102,6 +103,7 @@ fn identical_sources_keep_each_selected_cluster_non_empty() {
             source_index: ordinal,
             object_id: format!("AO_{ordinal:04X}"),
             kind: template.kind,
+            semantic_slot: template.semantic_slot,
             position: template.position,
             signal: template.signal.clone(),
         })
@@ -171,6 +173,7 @@ fn sparse_source_identity_keeps_its_prior_continuity_assignment() {
         source_index,
         object_id: format!("AO_{source_index:04X}"),
         kind: AdmObjectKind::Objects,
+        semantic_slot: None,
         position: AdmPosition {
             azimuth,
             elevation: 0.0,
@@ -254,4 +257,30 @@ fn clean_reduction_reports_a_quantitative_stereo_render_error() {
 
     assert!(error.is_finite());
     assert!(error < 1.0e-12);
+}
+
+#[test]
+fn semantic_slots_are_seeded_and_ordered_before_unconstrained_sources() {
+    let mut sources = (0..8).map(source).collect::<Vec<_>>();
+    sources[0].semantic_slot = Some(2);
+    sources[1].semantic_slot = Some(0);
+    sources[2].semantic_slot = Some(1);
+
+    let result = reduce_scene(
+        &sources,
+        ReductionConfig {
+            max_coded_objects: 3,
+            ..ReductionConfig::default()
+        },
+    )
+    .expect("semantic seed reduction");
+
+    assert_eq!(
+        result
+            .coded_objects
+            .iter()
+            .map(|object| object.representative_source_index)
+            .collect::<Vec<_>>(),
+        vec![1, 2, 0]
+    );
 }

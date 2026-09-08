@@ -15,7 +15,7 @@ mod file_scan;
 use file_scan::{read_pcm_frame, scan_bw64_file};
 
 use jocforge_core::{
-    AdmObject, AdmObjectKind, BlockPartition, CompositionRequest, CompositionResolver,
+    AdmChannel, AdmObject, AdmObjectKind, BlockPartition, CompositionRequest, CompositionResolver,
     DEPENDENT_CHANNEL_ROLE_CENSUS, DependentLfePolicy, EmdfProfile, FinalRenderMeasurement,
     JocCarriage, JocContainer, JocProfile, LfeOwnership, ReductionConfig, ReductionSource,
     SOURCE_DERIVED_CARRIER_PEAK_LIMIT, channel_map_channel_count, cmaf_joc_init_and_fragments,
@@ -30,10 +30,10 @@ use jocforge_core::{
     package_source_derived_short_skip_field_access_unit,
     package_source_derived_skip_field_access_unit, parse_bw64_adm_metadata, profile_spec,
     quantize_coefficient, reconstruction_error, reduce_scene_with_previous,
-    resolve_encoding_plan_with_partition, semantic_maximum, source_derived_carrier_causality,
-    spectral_phase_report, validate_multi_dependent_access_unit,
-    validate_short_multi_dependent_access_unit, validate_source_derived_adm_metadata,
-    write_one_au_proof,
+    resolve_encoding_plan_with_partition, semantic_maximum, semantic_slot_for_label,
+    semantic_slot_for_position, source_derived_carrier_causality, spectral_phase_report,
+    validate_multi_dependent_access_unit, validate_short_multi_dependent_access_unit,
+    validate_source_derived_adm_metadata, write_one_au_proof,
 };
 
 const JOC_FRAME_SAMPLES: usize = 1536;
@@ -2219,7 +2219,7 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
     for frame_index in 0..frame_count {
         let source_pcm = read_pcm_frame(&input_path, &scanned, frame_index, &track_indices)?;
         let lfe_pcm = lfe_carrier(&source_pcm, &lfe_source_indices)?;
-        let sources = reduction_sources(&supported_objects, &source_pcm)?;
+        let sources = reduction_sources(profile, &supported_objects, &source_pcm)?;
         let reduction =
             reduce_scene_with_previous(&sources, reduction_config, previous_reduction.as_ref())
                 .map_err(|error| {
@@ -2350,7 +2350,7 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
                 Some(&carrier_bytes[i0_start..i0_start + rate.carrier_encoded_frame_bytes])
             };
         let source_pcm = read_pcm_frame(&input_path, &scanned, frame_index, &track_indices)?;
-        let sources = reduction_sources(&supported_objects, &source_pcm)?;
+        let sources = reduction_sources(profile, &supported_objects, &source_pcm)?;
         let reduction =
             reduce_scene_with_previous(&sources, reduction_config, previous_reduction.as_ref())
                 .map_err(|error| {
@@ -2514,6 +2514,7 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
 }
 
 fn reduction_sources(
+    profile: JocProfile,
     objects: &[&AdmObject],
     pcm: &[Vec<f64>],
 ) -> Result<Vec<ReductionSource>, String> {
@@ -2557,6 +2558,7 @@ fn reduction_sources(
                 source_index: flat_index,
                 object_id,
                 kind: object.kind,
+                semantic_slot: semantic_slot_for_channel(channel, profile),
                 position: channel.position,
                 signal,
             });
@@ -2564,6 +2566,40 @@ fn reduction_sources(
         }
     }
     Ok(sources)
+}
+
+fn semantic_slot_for_channel(channel: &AdmChannel, profile: JocProfile) -> Option<usize> {
+    let label_slot = channel.speaker_label.as_deref().and_then(|label| {
+        let canonical = label.rsplit(':').next().unwrap_or(label).trim();
+        match profile {
+            JocProfile::Idx1 => semantic_slot_for_label(canonical),
+            JocProfile::Idx0 | JocProfile::Idx3 => match canonical {
+                "L" | "FL" | "RC_L" | "M-030" => Some(0),
+                "R" | "FR" | "RC_R" | "M+030" => Some(1),
+                "C" | "FC" | "RC_C" | "M+000" => Some(2),
+                "Ls" | "SL" | "RC_Ls" | "RC_Lss" => Some(3),
+                "Rs" | "SR" | "RC_Rs" | "RC_Rss" => Some(4),
+                _ => None,
+            },
+            JocProfile::Idx2 | JocProfile::Idx4 => match canonical {
+                "L" | "FL" | "RC_L" | "M-030" => Some(0),
+                "R" | "FR" | "RC_R" | "M+030" => Some(1),
+                "C" | "FC" | "RC_C" | "M+000" => Some(2),
+                "Ls" | "SL" | "RC_Ls" | "RC_Lss" => Some(3),
+                "Rs" | "SR" | "RC_Rs" | "RC_Rss" => Some(4),
+                "Tfl" | "TFL" | "RC_Lts" => Some(5),
+                "Tfr" | "TFR" | "RC_Rts" => Some(6),
+                _ => None,
+            },
+        }
+    });
+    label_slot.or_else(|| match profile {
+        JocProfile::Idx1 | JocProfile::Idx0 | JocProfile::Idx3 => {
+            semantic_slot_for_position(channel.position)
+                .filter(|slot| profile == JocProfile::Idx1 || *slot < 5)
+        }
+        JocProfile::Idx2 | JocProfile::Idx4 => None,
+    })
 }
 
 fn lfe_carrier(pcm: &[Vec<f64>], lfe_indices: &[usize]) -> Result<Vec<f64>, String> {
@@ -2803,10 +2839,23 @@ fn read_carrier_frames(
 
 fn interleaved_f32le(carriers: &[Vec<f64>], samples: usize) -> Vec<u8> {
     let channels = carriers.len();
+    let order = if channels == 6 {
+        // JOCForge's semantic I0 order is L,R,C,Ls,Rs,LFE. FFmpeg's raw
+        // 5.1 input order is L,R,C,LFE,Ls,Rs.
+        [0, 1, 2, 5, 3, 4].to_vec()
+    } else {
+        (0..channels).collect()
+    };
     let mut bytes = Vec::with_capacity(samples * channels * 4);
-    for sample in 0..samples {
-        for carrier in carriers {
-            bytes.extend_from_slice(&(carrier[sample] as f32).to_le_bytes());
+    for (sample, _) in carriers
+        .first()
+        .into_iter()
+        .flat_map(|carrier| carrier.iter())
+        .enumerate()
+        .take(samples)
+    {
+        for index in &order {
+            bytes.extend_from_slice(&(carriers[*index][sample] as f32).to_le_bytes());
         }
     }
     bytes
@@ -2981,7 +3030,7 @@ fn remove_stale_output(path: &Path) -> Result<(), String> {
 #[cfg(test)]
 mod tests {
     use super::{
-        apply_compat_preset, composition_matrix_csv, composition_matrix_json,
+        apply_compat_preset, composition_matrix_csv, composition_matrix_json, interleaved_f32le,
         parse_block_partition, parse_carriage, parse_compat_preset, parse_emdf_profile,
         parse_profile, parse_short_multi_dependent_options,
     };
@@ -3091,5 +3140,19 @@ mod tests {
         assert_eq!(options.partitions, vec![BlockPartition::Two; 3]);
         assert_eq!(options.emdf_profile, EmdfProfile::DeployedCompat);
         assert_eq!(options.lfe_ownership, LfeOwnership::DependentReplacement);
+    }
+
+    #[test]
+    fn ffmpeg_i0_interleaver_places_lfe_before_surround_pairs() {
+        let carriers = (1..=6)
+            .map(|value| vec![f64::from(value)])
+            .collect::<Vec<_>>();
+        let bytes = interleaved_f32le(&carriers, 1);
+        let values = bytes
+            .chunks_exact(4)
+            .map(|chunk| f32::from_le_bytes(chunk.try_into().expect("f32 bytes")))
+            .collect::<Vec<_>>();
+
+        assert_eq!(values, vec![1.0, 2.0, 3.0, 6.0, 4.0, 5.0]);
     }
 }

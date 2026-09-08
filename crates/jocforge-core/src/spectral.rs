@@ -353,6 +353,7 @@ fn fixture(
             source_index: 0,
             object_id: format!("{name}:left"),
             kind: AdmObjectKind::Objects,
+            semantic_slot: None,
             position: AdmPosition {
                 azimuth: -1.0,
                 elevation: 0.0,
@@ -364,6 +365,7 @@ fn fixture(
             source_index: 1,
             object_id: format!("{name}:right"),
             kind: AdmObjectKind::Objects,
+            semantic_slot: None,
             position: AdmPosition {
                 azimuth: 1.0,
                 elevation: 0.0,
@@ -483,6 +485,7 @@ fn multi_object_scene() -> (Vec<f64>, Vec<f64>, Vec<f64>, Vec<f64>, usize, bool)
             source_index,
             object_id: format!("spectral-source-{source_index:02}"),
             kind: AdmObjectKind::Objects,
+            semantic_slot: None,
             position: AdmPosition {
                 azimuth: -0.9 + source_index as f64 * 0.12,
                 elevation: if source_index % 2 == 0 { -0.2 } else { 0.2 },

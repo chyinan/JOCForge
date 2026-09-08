@@ -418,6 +418,7 @@ fn build_scene(name: &'static str, source_count: usize) -> TemporalScene {
                     source_index,
                     object_id: format!("{name}:source-{source_index:02}"),
                     kind: AdmObjectKind::Objects,
+                    semantic_slot: None,
                     position: scene_position(name, source_index, frame_index, source_count),
                     signal: scene_signal(name, source_index, frame_index),
                 })

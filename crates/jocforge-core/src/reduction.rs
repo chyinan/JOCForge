@@ -59,6 +59,10 @@ pub struct ReductionSource {
     pub source_index: usize,
     pub object_id: String,
     pub kind: AdmObjectKind,
+    /// Optional canonical public speaker slot for a fixed source. The slot
+    /// is used only to keep semantic base carriers ahead of unconstrained
+    /// dynamic-object representatives during bounded seed selection.
+    pub semantic_slot: Option<usize>,
     pub position: AdmPosition,
     pub signal: Vec<f64>,
 }
@@ -726,8 +730,32 @@ fn choose_seeds(
         let Some(candidate) = candidate else { break };
         seeds.push(candidate);
     }
-    seeds.sort_unstable_by_key(|index| sources[*index].source_index);
-    seeds
+    let mut ordered = Vec::with_capacity(seeds.len());
+    for semantic_slot in 0..7 {
+        if let Some((source_index, _)) = sources
+            .iter()
+            .enumerate()
+            .filter(|(_, source)| source.semantic_slot == Some(semantic_slot))
+            .max_by(|(left_index, _left), (right_index, _right)| {
+                compare_energy_then_index(*left_index, *right_index, energies, sources)
+            })
+        {
+            ordered.push(source_index);
+        }
+    }
+    for seed in seeds {
+        if !ordered.contains(&seed) {
+            ordered.push(seed);
+        }
+    }
+    if !ordered
+        .iter()
+        .any(|index| sources[*index].semantic_slot.is_some())
+    {
+        ordered.sort_unstable_by_key(|index| sources[*index].source_index);
+    }
+    ordered.truncate(count);
+    ordered
 }
 
 fn assign_sources(

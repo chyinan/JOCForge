@@ -1,6 +1,9 @@
 // pattern: Functional Core
 
-use jocforge_core::{EmdfProfile, JocCarriage, JocProfile, profile_spec};
+use jocforge_core::{
+    EmdfProfile, JocCarriage, JocProfile, profile_spec, semantic_slot_for_label,
+    semantic_slot_for_position,
+};
 
 #[test]
 fn mandatory_profiles_have_distinct_public_input_orders() {
@@ -47,4 +50,44 @@ fn strict_profiles_are_the_defaults_and_carriage_is_independent() {
     assert_eq!(JocCarriage::default(), JocCarriage::EtsiAuxDependent);
     assert_ne!(JocCarriage::EtsiAuxDependent, JocCarriage::I0SkipField);
     assert_ne!(EmdfProfile::EtsiStrict, EmdfProfile::DeployedCompat);
+}
+
+#[test]
+fn audio_semantic_identity_gate_covers_flat7x_carriers_and_lfe_boundary() {
+    let labels = [
+        "RC_L", "RC_R", "RC_C", "RC_Lss", "RC_Rss", "RC_Lrs", "RC_Rrs",
+    ];
+    assert_eq!(
+        labels.map(semantic_slot_for_label),
+        [
+            Some(0),
+            Some(1),
+            Some(2),
+            Some(3),
+            Some(4),
+            Some(5),
+            Some(6)
+        ]
+    );
+    assert_eq!(semantic_slot_for_label("RC_LFE"), None);
+    assert_eq!(
+        [
+            semantic_slot_for_position(jocforge_core::AdmPosition {
+                azimuth: -1.0,
+                elevation: -1.0,
+                distance: 0.0,
+            }),
+            semantic_slot_for_position(jocforge_core::AdmPosition {
+                azimuth: 0.0,
+                elevation: -1.0,
+                distance: 0.0,
+            }),
+            semantic_slot_for_position(jocforge_core::AdmPosition {
+                azimuth: 1.0,
+                elevation: 1.0,
+                distance: 0.0,
+            }),
+        ],
+        [Some(0), Some(2), Some(6)]
+    );
 }
