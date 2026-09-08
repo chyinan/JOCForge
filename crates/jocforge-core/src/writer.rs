@@ -1,8 +1,8 @@
 // pattern: Functional Core
 
 use crate::{
-    AdmPosition, BlockPartition, DependentLfePolicy, DependentPlan, EmdfProfile, JocProfile,
-    OwnershipPlan, profile_spec, quantize_coefficient,
+    AdmPosition, BlockPartition, DependentLfePolicy, DependentPlan, EmdfProfile, JocEncodingPlan,
+    JocProfile, OwnershipPlan, partition_frame_bytes, profile_spec, quantize_coefficient,
 };
 
 const FRAME_BYTES: usize = 4096;
@@ -464,8 +464,11 @@ fn write_five_channel_frame(emdf: Option<&[u8]>, joc_extension: bool) -> Vec<u8>
     finish_frame(bits, emdf, FRAME_BYTES)
 }
 
+/// Writes one public 1/2/3-block E-AC-3 frame. The optional exponent view is
+/// populated by the normal source-derived path and absent only for the
+/// synthetic conformance fixture.
 #[allow(clippy::too_many_arguments)]
-fn write_short_conformance_frame(
+fn write_public_short_frame(
     stream_type: u8,
     substream_id: u8,
     channel_map: Option<u16>,
@@ -475,7 +478,9 @@ fn write_short_conformance_frame(
     emdf: Option<&[u8]>,
     complexity_index: u8,
     frame_bytes: usize,
+    source_exponent_codes: Option<&[u8]>,
 ) -> Result<Vec<u8>, String> {
+    validate_frame_bytes(frame_bytes, "short")?;
     if !matches!(
         blocks,
         BlockPartition::One | BlockPartition::Two | BlockPartition::Three
@@ -558,8 +563,15 @@ fn write_short_conformance_frame(
     for _ in 0..channel_count {
         bits.push(0, 6); // channel bandwidth code
     }
-    for _ in 0..channel_count {
+    for channel in 0..channel_count {
         push_source_exponents(&mut bits, D0_INITIAL_EXPONENT);
+        if let Some(codes) = source_exponent_codes {
+            let code = codes.get(channel).copied().ok_or_else(|| {
+                "source-derived short frame exponent count differs from channel count".to_owned()
+            })?;
+            let exponent_start = bits.bits.len().saturating_sub(4 + 7 * 24 + 2);
+            bits.set(exponent_start, u64::from(code % (D0_MAX_EXPONENT + 1)), 4);
+        }
     }
     for _ in 0..channel_count {
         bits.push(0, 2); // gain range
@@ -573,9 +585,20 @@ fn write_short_conformance_frame(
         }
         bits.push(0, 1); // converter SNR offset absent
     }
+    let reserved_tail = emdf.map_or(17, |payload| {
+        payload.len().saturating_mul(8).saturating_add(32)
+    });
+    if bits.bits.len() > frame_bytes.saturating_mul(8).saturating_sub(reserved_tail) {
+        return Err(format!(
+            "short frame capacity is insufficient: need {} bits, have {}",
+            bits.bits.len().saturating_add(reserved_tail),
+            frame_bytes.saturating_mul(8)
+        ));
+    }
     Ok(finish_frame(bits, emdf, frame_bytes))
 }
 
+#[allow(clippy::too_many_arguments)]
 fn write_dependent_frame(emdf: Option<&[u8]>, channel_map: u16) -> Vec<u8> {
     write_dependent_frame_with_id(emdf, 0, channel_map)
 }
@@ -891,7 +914,9 @@ fn finish_frame(mut bits: BitWriter, emdf: Option<&[u8]>, frame_bytes: usize) ->
             bits.set(start + index * 8, u64::from(byte), 8);
         }
     }
-    bits.fixed_bytes(frame_bytes)
+    let mut output = bits.fixed_bytes(frame_bytes);
+    crate::eac3::rewrite_crc2(&mut output).expect("validated E-AC-3 frame has a CRC2 field");
+    output
 }
 
 fn validate_frame_bytes(frame_bytes: usize, label: &str) -> Result<(), String> {
@@ -1103,7 +1128,7 @@ pub fn package_short_block_conformance_access_unit(
         .map_err(|_| "JOC complexity index exceeds its eight-bit field".to_owned())?;
     let mut output = Vec::new();
     for (index, partition) in plan.partitions().iter().copied().enumerate() {
-        let i0 = write_short_conformance_frame(
+        let i0 = write_public_short_frame(
             0,
             0,
             None,
@@ -1113,8 +1138,9 @@ pub fn package_short_block_conformance_access_unit(
             None,
             complexity_index,
             512,
+            None,
         )?;
-        let d0 = write_short_conformance_frame(
+        let d0 = write_public_short_frame(
             1,
             0,
             Some(channel_map),
@@ -1124,10 +1150,113 @@ pub fn package_short_block_conformance_access_unit(
             (index + 1 == plan.partitions().len()).then_some(emdf.as_slice()),
             complexity_index,
             512,
+            None,
         )?;
         output.extend_from_slice(&i0);
         output.extend_from_slice(&d0);
     }
+    Ok(output)
+}
+
+/// Packages one source-derived raw JOC interval as genuine short E-AC-3
+/// syncframes. Each I0/D0 pair is independently serialized with the selected
+/// public block count; only the final D0 owns the interval's JOC/OAMD EMDF.
+///
+/// This advanced path intentionally excludes LFE and exotic dependent
+/// topologies until their short-frame timing and ownership contracts are
+/// independently closed. The normal six-block path remains unchanged.
+#[allow(clippy::too_many_arguments)]
+pub fn package_source_derived_short_block_access_unit(
+    plan: &JocEncodingPlan,
+    sequence_count: u16,
+    matrix: &[Vec<f64>],
+    positions: &[AdmPosition],
+    i0_carriers: &[Vec<f64>],
+    d0_carriers: &[Vec<f64>],
+) -> Result<Vec<u8>, String> {
+    if plan.block_partition.is_default() {
+        return Err(
+            "source-derived short writer requires a non-default block partition".to_owned(),
+        );
+    }
+    if crate::conformance::classify_block_partition(plan.block_partition.partitions())
+        != crate::BlockPartitionStatus::PublicLegal
+    {
+        return Err(
+            "source-derived short writer requires a publicly closed block partition".to_owned(),
+        );
+    }
+    if matrix.len() != positions.len() || positions.is_empty() {
+        return Err(
+            "source-derived short matrix and OAMD positions must be non-empty and aligned"
+                .to_owned(),
+        );
+    }
+    if i0_carriers.len() != 5 || d0_carriers.len() != 2 {
+        return Err(
+            "source-derived short writer requires five I0 and two D0 full-band carriers".to_owned(),
+        );
+    }
+    for carrier in i0_carriers.iter().chain(d0_carriers.iter()) {
+        if carrier.len() < 1536 || carrier.iter().any(|sample| !sample.is_finite()) {
+            return Err(
+                "source-derived short carriers must contain 1536 finite samples".to_owned(),
+            );
+        }
+    }
+    let carrier_sizes = partition_frame_bytes(
+        plan.rate.carrier_frame_bytes,
+        plan.block_partition.partitions(),
+    )?;
+    let d0_sizes =
+        partition_frame_bytes(plan.rate.d0_frame_bytes, plan.block_partition.partitions())?;
+    let oamd = write_oamd_payload(positions)?;
+    let joc = write_joc_payload(plan.profile, sequence_count, matrix)?;
+    let emdf = write_emdf(&oamd, &joc, plan.emdf_profile)?;
+    let complexity_index = u8::try_from(positions.len() + 1)
+        .map_err(|_| "JOC complexity index exceeds its eight-bit field".to_owned())?;
+    let mut output = Vec::new();
+    for (index, range) in plan.block_partition.frame_ranges(0).into_iter().enumerate() {
+        let i0_exponent_codes = i0_carriers
+            .iter()
+            .map(|carrier| source_feature(carrier, range.start_sample, 0))
+            .collect::<Vec<_>>();
+        let i0 = write_public_short_frame(
+            0,
+            0,
+            None,
+            5,
+            plan.block_partition.partitions()[index],
+            plan.block_partition.convsync()[index],
+            None,
+            complexity_index,
+            carrier_sizes[index],
+            Some(&i0_exponent_codes),
+        )?;
+        let d0_exponent_codes = d0_carriers
+            .iter()
+            .map(|carrier| source_feature(carrier, range.start_sample, 0))
+            .collect::<Vec<_>>();
+        let d0 = write_public_short_frame(
+            1,
+            0,
+            Some(profile_spec(plan.profile).channel_map),
+            2,
+            plan.block_partition.partitions()[index],
+            false,
+            (index + 1 == plan.block_partition.partitions().len()).then_some(emdf.as_slice()),
+            complexity_index,
+            d0_sizes[index],
+            Some(&d0_exponent_codes),
+        )?;
+        output.extend_from_slice(&i0);
+        output.extend_from_slice(&d0);
+    }
+    crate::conformance::validate_short_block_access_unit(
+        &output,
+        plan.profile,
+        plan.block_partition.partitions(),
+    )?;
     Ok(output)
 }
 

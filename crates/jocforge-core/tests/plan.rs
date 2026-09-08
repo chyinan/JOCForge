@@ -1,6 +1,9 @@
 // pattern: Functional Core
 
-use jocforge_core::{EmdfProfile, JocCarriage, JocPlanError, JocProfile, resolve_encoding_plan};
+use jocforge_core::{
+    BlockPartition, EmdfProfile, JocCarriage, JocPlanError, JocProfile, resolve_encoding_plan,
+    resolve_encoding_plan_with_partition,
+};
 
 #[test]
 fn resolver_returns_a_complete_profile_carriage_rate_plan() {
@@ -73,4 +76,52 @@ fn resolver_admits_only_the_validated_legacy_ac3_flat7x_plan() {
     )
     .expect("legacy AC-3 phase profile plan");
     assert_eq!(phase_plan.profile, JocProfile::Idx4);
+}
+
+#[test]
+fn resolver_carries_a_short_partition_and_exact_sample_ranges() {
+    let plan = resolve_encoding_plan_with_partition(
+        JocProfile::Idx1,
+        JocCarriage::EtsiAuxDependent,
+        EmdfProfile::EtsiStrict,
+        1664,
+        &[BlockPartition::Three, BlockPartition::Three],
+    )
+    .expect("3+3 raw short-block plan");
+
+    assert_eq!(
+        plan.block_partition.partitions(),
+        &[BlockPartition::Three, BlockPartition::Three]
+    );
+    assert_eq!(
+        plan.block_partition.frame_ranges(9_216),
+        vec![
+            jocforge_core::ShortBlockFrameRange {
+                syncframe_index: 0,
+                start_sample: 9_216,
+                end_sample: 9_984,
+                audio_blocks: 3,
+            },
+            jocforge_core::ShortBlockFrameRange {
+                syncframe_index: 1,
+                start_sample: 9_984,
+                end_sample: 10_752,
+                audio_blocks: 3,
+            },
+        ]
+    );
+}
+
+#[test]
+fn resolver_rejects_short_partitions_on_non_raw_etsi_carriage() {
+    let error = resolve_encoding_plan_with_partition(
+        JocProfile::Idx0,
+        JocCarriage::I0SkipField,
+        EmdfProfile::DeployedCompat,
+        1024,
+        &[BlockPartition::One; 6],
+    )
+    .expect_err("skip-field short blocks must remain fail-closed");
+
+    assert!(error.to_string().contains("short-block partition"));
 }

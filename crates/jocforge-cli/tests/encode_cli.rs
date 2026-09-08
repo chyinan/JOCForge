@@ -54,6 +54,99 @@ fn encode_cli_uses_ffmpeg_for_the_carrier_and_writes_joc_output() {
 }
 
 #[test]
+fn encode_cli_writes_a_real_grouped_short_partition_and_exact_sample_accounting() {
+    let root = env::temp_dir().join(format!("jocforge-short-encode-{}", std::process::id()));
+    fs::create_dir_all(&root).expect("temporary directory");
+    let input = root.join("fixture.bw64");
+    let output = root.join("idx1-3-3.ec3");
+    let fixture = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+        .args([
+            "fixture",
+            "--seconds",
+            "1",
+            "--objects",
+            "1",
+            input.to_str().expect("input path is UTF-8"),
+        ])
+        .status()
+        .expect("fixture CLI starts");
+    assert!(fixture.success());
+
+    let encoded = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+        .args([
+            "encode",
+            input.to_str().expect("input path is UTF-8"),
+            output.to_str().expect("output path is UTF-8"),
+            "--profile",
+            "idx1",
+            "--block-partition",
+            "3+3",
+            "--bitrate",
+            "1664",
+        ])
+        .status()
+        .expect("short encode CLI starts");
+    assert!(encoded.success());
+    assert_eq!(
+        fs::metadata(&output).expect("short encoded output").len(),
+        32 * 6656
+    );
+
+    let accounting = fs::read_to_string(format!("{}.sample-accounting.csv", output.display()))
+        .expect("sample accounting");
+    let rows = accounting.lines().skip(1).collect::<Vec<_>>();
+    assert_eq!(rows.len(), 64);
+    let mut source_samples = 0_usize;
+    let mut padding_samples = 0_usize;
+    let mut previous_end = 0_usize;
+    for row in rows {
+        let fields = row.split(',').collect::<Vec<_>>();
+        assert_eq!(fields.len(), 7);
+        let start = fields[3].parse::<usize>().expect("start sample");
+        let end = fields[4].parse::<usize>().expect("end sample");
+        let source = fields[5].parse::<usize>().expect("source sample count");
+        let padding = fields[6].parse::<usize>().expect("padding sample count");
+        assert_eq!(start, previous_end);
+        assert_eq!(source + padding, end - start);
+        previous_end = end;
+        source_samples += source;
+        padding_samples += padding;
+    }
+    assert_eq!(previous_end, 32 * 1536);
+    assert_eq!(source_samples, 48_000);
+    assert_eq!(padding_samples, 1_152);
+
+    let _ = fs::remove_dir_all(root);
+}
+
+#[test]
+fn encode_cli_removes_stale_output_when_partition_validation_fails() {
+    let root = env::temp_dir().join(format!("jocforge-short-invalid-{}", std::process::id()));
+    fs::create_dir_all(&root).expect("temporary directory");
+    let output = root.join("stale.ec3");
+    fs::write(&output, b"stale").expect("stale output");
+
+    let failed = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+        .args([
+            "encode",
+            root.join("missing.bw64")
+                .to_str()
+                .expect("input path is UTF-8"),
+            output.to_str().expect("output path is UTF-8"),
+            "--profile",
+            "idx1",
+            "--block-partition",
+            "4+2",
+        ])
+        .status()
+        .expect("invalid short encode CLI starts");
+    assert!(!failed.success());
+    assert!(!output.exists());
+
+    let _ = fs::remove_dir_all(root);
+}
+
+#[test]
 fn encode_cli_accepts_the_validated_legacy_ac3_flat7x_carriage() {
     let root = env::temp_dir().join(format!("jocforge-legacy-core-{}", std::process::id()));
     fs::create_dir_all(&root).expect("temporary directory");

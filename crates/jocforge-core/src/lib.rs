@@ -30,20 +30,25 @@ pub use analysis::{
 };
 pub use cmaf::cmaf_joc_init_and_fragments;
 pub use conformance::{
-    BlockPartition, CapabilityVerdict, ChannelOwnershipCensus, ConformancePlanError,
-    DEPENDENT_CHANNEL_ROLE_CENSUS, DependentChannelRoleSpec, DependentLfePolicy, DependentPlan,
-    DependentTopology, FfmpegInteroperabilityStatus, MultiDependentValidationReport, OwnershipPlan,
-    OwnershipPlanError, OwnershipValidationReport, ProgrammeOwner, ShortBlockPlan,
+    BlockPartition, BlockPartitionStatus, CapabilityVerdict, ChannelOwnershipCensus,
+    ConformancePlanError, DEPENDENT_CHANNEL_ROLE_CENSUS, DependentChannelRoleSpec,
+    DependentLfePolicy, DependentPlan, DependentTopology, FfmpegInteroperabilityStatus,
+    MultiDependentValidationReport, OwnershipPlan, OwnershipPlanError, OwnershipValidationReport,
+    ProgrammeOwner, ShortBlockFrameRange, ShortBlockPlan, ShortBlockValidationReport,
     canonical_dependent_channel_maps, canonical_dependent_lfe_plan,
     canonical_dependent_lfe_plan_for_count, channel_map_channel_count, channel_map_role_labels,
-    dependent_topology_verdict, resolve_dependent_topology, resolve_short_block_plan,
-    semantic_maximum, validate_multi_dependent_access_unit, validate_ownership_plan,
+    classify_block_partition, dependent_topology_verdict, resolve_dependent_topology,
+    resolve_short_block_plan, semantic_maximum, validate_multi_dependent_access_unit,
+    validate_ownership_plan, validate_short_block_access_unit,
 };
 pub use eac3::inject_joc_skipfld;
-pub use plan::{JocEncodingPlan, JocPlanError, resolve_encoding_plan};
+pub use plan::{
+    JocEncodingPlan, JocPlanError, resolve_encoding_plan, resolve_encoding_plan_with_partition,
+};
 pub use profile::{JocProfileSpec, profile_spec};
 pub use rate::{
-    RateBudget, RateBudgetError, rate_budget, rate_budget_for_carriage, rate_budget_for_dependents,
+    RateBudget, RateBudgetError, partition_frame_bytes, rate_budget, rate_budget_for_carriage,
+    rate_budget_for_dependents,
 };
 pub use reduction::{
     MAX_CODED_OBJECTS, ReducedObject, ReductionConfig, ReductionDiagnostics, ReductionError,
@@ -66,7 +71,8 @@ pub use writer::{
     package_multi_dependent_source_derived_access_unit,
     package_multi_dependent_source_derived_access_unit_with_plan,
     package_short_block_conformance_access_unit, package_source_derived_access_unit,
-    package_source_derived_access_unit_with_frame_sizes, write_one_au_proof,
+    package_source_derived_access_unit_with_frame_sizes,
+    package_source_derived_short_block_access_unit, write_one_au_proof,
 };
 
 /// MVP JOC downmix profiles.

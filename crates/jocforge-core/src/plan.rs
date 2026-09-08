@@ -2,19 +2,23 @@
 
 use std::fmt;
 
-use crate::{EmdfProfile, JocCarriage, JocProfile, JocProfileSpec, RateBudget, profile_spec};
+use crate::{
+    BlockPartition, BlockPartitionStatus, EmdfProfile, JocCarriage, JocProfile, JocProfileSpec,
+    RateBudget, ShortBlockPlan, classify_block_partition, profile_spec, resolve_short_block_plan,
+};
 
 /// Immutable encoding choices consumed by the JOC carriage writer.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct JocEncodingPlan {
     pub profile: JocProfile,
     pub spec: JocProfileSpec,
     pub carriage: JocCarriage,
     pub emdf_profile: EmdfProfile,
     pub rate: RateBudget,
+    pub block_partition: ShortBlockPlan,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub enum JocPlanError {
     UnsupportedCarriage {
         profile: JocProfile,
@@ -24,6 +28,14 @@ pub enum JocPlanError {
         profile: JocProfile,
         carriage: JocCarriage,
         bitrate_kbps: u32,
+    },
+    InvalidBlockPartition {
+        actual_blocks: usize,
+    },
+    UnsupportedBlockPartition {
+        profile: JocProfile,
+        carriage: JocCarriage,
+        status: BlockPartitionStatus,
     },
 }
 
@@ -44,6 +56,19 @@ impl fmt::Display for JocPlanError {
                 "unsupported total bitrate {bitrate_kbps} kbps for profile {} and carriage {carriage:?}",
                 profile.semantic_name()
             ),
+            Self::InvalidBlockPartition { actual_blocks } => write!(
+                formatter,
+                "invalid short-block partition: totals {actual_blocks} audio blocks; expected 6"
+            ),
+            Self::UnsupportedBlockPartition {
+                profile,
+                carriage,
+                status,
+            } => write!(
+                formatter,
+                "unsupported short-block partition ({status}) for profile {} and carriage {carriage:?}",
+                profile.semantic_name()
+            ),
         }
     }
 }
@@ -62,6 +87,49 @@ pub fn resolve_encoding_plan(
     emdf_profile: EmdfProfile,
     bitrate_kbps: u32,
 ) -> Result<JocEncodingPlan, JocPlanError> {
+    resolve_encoding_plan_with_partition(
+        profile,
+        carriage,
+        emdf_profile,
+        bitrate_kbps,
+        &[BlockPartition::Six],
+    )
+}
+
+/// Resolves a complete plan with an explicit raw E-AC-3 block partition.
+///
+/// The default resolver above remains the stable six-block API. Short
+/// partitions are admitted only for strict raw ETSI auxiliary-dependent
+/// carriage; deployed skip-field, legacy-core, and other combinations remain
+/// fail-closed until independently closed.
+pub fn resolve_encoding_plan_with_partition(
+    profile: JocProfile,
+    carriage: JocCarriage,
+    emdf_profile: EmdfProfile,
+    bitrate_kbps: u32,
+    partitions: &[BlockPartition],
+) -> Result<JocEncodingPlan, JocPlanError> {
+    let block_partition = resolve_short_block_plan(partitions).map_err(|error| {
+        JocPlanError::InvalidBlockPartition {
+            actual_blocks: match error {
+                crate::ConformancePlanError::EmptyBlockPlan => 0,
+                crate::ConformancePlanError::TotalBlocks { actual }
+                | crate::ConformancePlanError::DependentCount { actual } => actual,
+            },
+        }
+    })?;
+    let status = classify_block_partition(partitions);
+    if status != BlockPartitionStatus::PublicLegal
+        || (!block_partition.is_default()
+            && (carriage != JocCarriage::EtsiAuxDependent
+                || emdf_profile != EmdfProfile::EtsiStrict))
+    {
+        return Err(JocPlanError::UnsupportedBlockPartition {
+            profile,
+            carriage,
+            status,
+        });
+    }
     if carriage == JocCarriage::I0SkipField && profile != JocProfile::Idx0 {
         return Err(JocPlanError::UnsupportedCarriage { profile, carriage });
     }
@@ -78,5 +146,6 @@ pub fn resolve_encoding_plan(
         carriage,
         emdf_profile,
         rate,
+        block_partition,
     })
 }

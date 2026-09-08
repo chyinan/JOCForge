@@ -1,9 +1,9 @@
 // pattern: Functional Core
 
 use jocforge_core::{
-    BlockPartition, DependentLfePolicy, DependentPlan, EmdfProfile, JocProfile, OwnershipPlan,
-    canonical_dependent_channel_maps, d0_carrier_causality, package_i0_skip_field_access_unit,
-    package_legacy_ac3_source_derived_access_unit,
+    BlockPartition, DependentLfePolicy, DependentPlan, EmdfProfile, JocCarriage, JocProfile,
+    OwnershipPlan, canonical_dependent_channel_maps, d0_carrier_causality,
+    package_i0_skip_field_access_unit, package_legacy_ac3_source_derived_access_unit,
     package_multi_dependent_source_derived_access_unit,
     package_multi_dependent_source_derived_access_unit_with_plan,
     package_short_block_conformance_access_unit, package_source_derived_access_unit,
@@ -532,6 +532,82 @@ fn short_block_conformance_writer_preserves_one_1536_sample_group() {
     .expect("short-block conformance AU");
 
     assert_eq!(access_unit.len(), 6 * (512 + 512));
+}
+
+#[test]
+fn source_derived_short_writer_emits_real_partitioned_frames_and_tracks_carriers() {
+    let plan = jocforge_core::resolve_encoding_plan_with_partition(
+        JocProfile::Idx1,
+        JocCarriage::EtsiAuxDependent,
+        EmdfProfile::EtsiStrict,
+        1664,
+        &[BlockPartition::Three, BlockPartition::Three],
+    )
+    .expect("source-derived 3+3 plan");
+    let positions = vec![jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    }];
+    let matrix = vec![vec![0.2; 7]];
+    let i0_carriers = vec![vec![0.1; 1536]; 5];
+    let d0_carriers = vec![vec![0.2; 1536]; 2];
+    let bytes = jocforge_core::package_source_derived_short_block_access_unit(
+        &plan,
+        1,
+        &matrix,
+        &positions,
+        &i0_carriers,
+        &d0_carriers,
+    )
+    .expect("source-derived short AU");
+
+    assert_eq!(bytes.len(), 2 * (2048 + 1280));
+    let block_codes = (0..4)
+        .map(|frame| {
+            let offset = if frame % 2 == 0 {
+                frame / 2 * 3328
+            } else {
+                (frame / 2) * 3328 + 2048
+            };
+            (bytes[offset + 4] >> 4) & 0x03
+        })
+        .collect::<Vec<_>>();
+    assert_eq!(block_codes, vec![2, 2, 2, 2]);
+    let report = jocforge_core::validate_short_block_access_unit(
+        &bytes,
+        JocProfile::Idx1,
+        &[BlockPartition::Three, BlockPartition::Three],
+    )
+    .expect("independent short AU validation");
+    assert_eq!(report.syncframes, 4);
+    assert_eq!(report.audio_blocks, 6);
+    assert_eq!(report.samples, 1536);
+    assert_eq!(report.metadata_owner_frame, 3);
+    let mut corrupted = bytes.clone();
+    let last = corrupted.len() - 1;
+    corrupted[last] ^= 1;
+    assert!(
+        jocforge_core::validate_short_block_access_unit(
+            &corrupted,
+            JocProfile::Idx1,
+            &[BlockPartition::Three, BlockPartition::Three],
+        )
+        .expect_err("corrupted short AU CRC2")
+        .contains("crc2")
+    );
+
+    let changed_i0 = vec![vec![0.2; 1536]; 5];
+    let changed = jocforge_core::package_source_derived_short_block_access_unit(
+        &plan,
+        1,
+        &matrix,
+        &positions,
+        &changed_i0,
+        &d0_carriers,
+    )
+    .expect("changed source-derived short AU");
+    assert_ne!(bytes, changed);
 }
 
 #[test]

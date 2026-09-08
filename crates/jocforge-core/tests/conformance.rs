@@ -1,9 +1,9 @@
 // pattern: Functional Core
 
 use jocforge_core::{
-    BlockPartition, ConformancePlanError, FfmpegInteroperabilityStatus, JocProfile,
-    canonical_dependent_channel_maps, channel_map_channel_count, resolve_dependent_topology,
-    resolve_short_block_plan,
+    BlockPartition, BlockPartitionStatus, ConformancePlanError, FfmpegInteroperabilityStatus,
+    JocProfile, canonical_dependent_channel_maps, channel_map_channel_count,
+    classify_block_partition, resolve_dependent_topology, resolve_short_block_plan,
 };
 
 #[test]
@@ -50,6 +50,22 @@ fn short_block_plan_covers_the_canonical_public_partition_families() {
         assert_eq!(plan.samples(), 1536);
         assert_eq!(plan.audio_blocks(), 6);
     }
+}
+
+#[test]
+fn mixed_short_partitions_are_classified_without_being_enabled_by_normal_plan() {
+    assert_eq!(
+        classify_block_partition(&[
+            BlockPartition::One,
+            BlockPartition::Two,
+            BlockPartition::Three,
+        ]),
+        BlockPartitionStatus::PublicAmbiguous
+    );
+    assert_eq!(
+        classify_block_partition(&[BlockPartition::Three, BlockPartition::Three]),
+        BlockPartitionStatus::PublicLegal
+    );
 }
 
 #[test]

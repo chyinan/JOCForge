@@ -34,6 +34,47 @@ impl BlockPartition {
     }
 }
 
+/// Classification of a complete six-block raw JOC programme partition.
+///
+/// The E-AC-3 syntax defines the legal count for each syncframe. The normal
+/// JOCForge writer deliberately closes only the canonical pure families;
+/// other six-block compositions remain available to the lower-level
+/// conformance planner but are not silently enabled for production output.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum BlockPartitionStatus {
+    PublicLegal,
+    PublicAmbiguous,
+    Invalid,
+}
+
+impl fmt::Display for BlockPartitionStatus {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        formatter.write_str(match self {
+            Self::PublicLegal => "PUBLIC_LEGAL",
+            Self::PublicAmbiguous => "PUBLIC_AMBIGUOUS",
+            Self::Invalid => "INVALID",
+        })
+    }
+}
+
+/// One source-sample range represented by one short syncframe.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct ShortBlockFrameRange {
+    pub syncframe_index: usize,
+    pub start_sample: usize,
+    pub end_sample: usize,
+    pub audio_blocks: usize,
+}
+
+/// Independent structural report for one grouped short-block JOC interval.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct ShortBlockValidationReport {
+    pub syncframes: usize,
+    pub audio_blocks: usize,
+    pub samples: usize,
+    pub metadata_owner_frame: usize,
+}
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ShortBlockPlan {
     partitions: Vec<BlockPartition>,
@@ -70,6 +111,62 @@ impl ShortBlockPlan {
     #[must_use]
     pub fn convsync(&self) -> &[bool] {
         &self.convsync
+    }
+
+    #[must_use]
+    pub fn is_default(&self) -> bool {
+        self.partitions.as_slice() == [BlockPartition::Six]
+    }
+
+    #[must_use]
+    pub fn frame_ranges(&self, start_sample: usize) -> Vec<ShortBlockFrameRange> {
+        let mut cursor = start_sample;
+        self.partitions
+            .iter()
+            .copied()
+            .enumerate()
+            .map(|(syncframe_index, partition)| {
+                let start = cursor;
+                let end = start.saturating_add(partition.audio_blocks() * 256);
+                cursor = end;
+                ShortBlockFrameRange {
+                    syncframe_index,
+                    start_sample: start,
+                    end_sample: end,
+                    audio_blocks: partition.audio_blocks(),
+                }
+            })
+            .collect()
+    }
+}
+
+/// Classifies the public closure boundary for one complete six-block group.
+#[must_use]
+pub fn classify_block_partition(partitions: &[BlockPartition]) -> BlockPartitionStatus {
+    let total_blocks = partitions
+        .iter()
+        .map(|partition| partition.audio_blocks())
+        .sum::<usize>();
+    if partitions.is_empty() || total_blocks != 6 {
+        return BlockPartitionStatus::Invalid;
+    }
+    match partitions {
+        [BlockPartition::Six]
+        | [BlockPartition::Three, BlockPartition::Three]
+        | [
+            BlockPartition::Two,
+            BlockPartition::Two,
+            BlockPartition::Two,
+        ]
+        | [
+            BlockPartition::One,
+            BlockPartition::One,
+            BlockPartition::One,
+            BlockPartition::One,
+            BlockPartition::One,
+            BlockPartition::One,
+        ] => BlockPartitionStatus::PublicLegal,
+        _ => BlockPartitionStatus::PublicAmbiguous,
     }
 }
 
@@ -544,6 +641,98 @@ pub fn resolve_short_block_plan(
     })
 }
 
+/// Validates the independently serialised two-substream form used by the
+/// source-derived short writer. Metadata is owned by the final D0 of the
+/// grouped interval, while each preceding frame remains audio-only.
+pub fn validate_short_block_access_unit(
+    stream: &[u8],
+    profile: JocProfile,
+    partitions: &[BlockPartition],
+) -> Result<ShortBlockValidationReport, String> {
+    let plan = resolve_short_block_plan(partitions)
+        .map_err(|error| format!("invalid short-block validation plan: {error}"))?;
+    if classify_block_partition(partitions) != BlockPartitionStatus::PublicLegal {
+        return Err("short-block validator requires a publicly closed partition".to_owned());
+    }
+    if partitions.contains(&BlockPartition::Six) {
+        return Err("short-block validator requires only 1/2/3-block frames".to_owned());
+    }
+    let expected_frames = partitions.len() * 2;
+    let mut frames = Vec::with_capacity(expected_frames);
+    let mut offset = 0_usize;
+    while offset < stream.len() {
+        let frame = parse_structural_frame(stream, offset)?;
+        let frame_end = offset
+            .checked_add(frame.frame_size)
+            .ok_or_else(|| "short-block frame offset overflow".to_owned())?;
+        crate::eac3::validate_crc2(
+            stream
+                .get(offset..frame_end)
+                .ok_or_else(|| "short-block frame exceeds stream bounds".to_owned())?,
+        )?;
+        offset = frame_end;
+        frames.push(frame);
+    }
+    if offset != stream.len() || frames.len() != expected_frames {
+        return Err(format!(
+            "short-block access unit contains {} frames; expected {expected_frames}",
+            frames.len()
+        ));
+    }
+    let expected_channel_map = profile_spec(profile).channel_map;
+    for (index, partition) in partitions.iter().copied().enumerate() {
+        let independent = &frames[index * 2];
+        let dependent = &frames[index * 2 + 1];
+        if independent.stream_type != 0
+            || independent.substream_id != 0
+            || independent.sample_rate != 48_000
+            || independent.audio_blocks != partition.audio_blocks()
+            || independent.audio_coding_mode != 7
+            || independent.channel_map.is_some()
+            || independent.lfe_on
+            || independent.addbsi.is_some()
+            || independent.emdf.is_some()
+            || independent.convsync != Some(plan.convsync()[index])
+        {
+            return Err(format!("invalid short-block I0 at syncframe group {index}"));
+        }
+        if dependent.stream_type != 1
+            || dependent.substream_id != 0
+            || dependent.sample_rate != 48_000
+            || dependent.audio_blocks != partition.audio_blocks()
+            || dependent.channel_map != Some(expected_channel_map)
+            || dependent.lfe_on
+            || dependent.convsync.is_some()
+        {
+            return Err(format!("invalid short-block D0 at syncframe group {index}"));
+        }
+        let final_frame = index + 1 == partitions.len();
+        if dependent.addbsi.is_some() != final_frame || dependent.emdf.is_some() != final_frame {
+            return Err(format!(
+                "short-block JOC metadata must be owned by final D0; group {index}"
+            ));
+        }
+        if let Some(addbsi) = &dependent.addbsi {
+            if !addbsi.type_a || addbsi.complexity_index == 0 || dependent.emdf.is_none() {
+                return Err("short-block final D0 has invalid JOC addbsi".to_owned());
+            }
+        }
+        if let Some(emdf) = &dependent.emdf {
+            if emdf.payload_ids != vec![11, 14]
+                || emdf.joc_downmix_index != profile_spec(profile).downmix_index
+            {
+                return Err("short-block final D0 has invalid JOC EMDF profile".to_owned());
+            }
+        }
+    }
+    Ok(ShortBlockValidationReport {
+        syncframes: frames.len(),
+        audio_blocks: plan.audio_blocks(),
+        samples: plan.samples(),
+        metadata_owner_frame: expected_frames - 1,
+    })
+}
+
 /// Resolves sequential dependent IDs permitted by the public three-bit field.
 pub fn resolve_dependent_topology(
     dependent_count: usize,
@@ -911,6 +1100,7 @@ struct StructuralFrame {
     sample_rate: u32,
     numblkscod: u8,
     audio_blocks: usize,
+    convsync: Option<bool>,
     audio_coding_mode: u8,
     lfe_on: bool,
     full_bandwidth_channels: usize,
@@ -1042,6 +1232,11 @@ fn parse_structural_frame_inner(stream: &[u8], offset: usize) -> Result<Structur
             "informational metadata is outside the canonical structural fixture".to_owned(),
         );
     }
+    let convsync = if stream_type == 0 && numblkscod != 3 {
+        Some(reader.read(1)? != 0)
+    } else {
+        None
+    };
     let addbsi = if reader.read(1)? != 0 {
         let byte_count = reader.read(6)? as usize + 1;
         let bytes = reader.read_bytes(byte_count)?;
@@ -1064,6 +1259,7 @@ fn parse_structural_frame_inner(stream: &[u8], offset: usize) -> Result<Structur
         sample_rate,
         numblkscod,
         audio_blocks,
+        convsync,
         audio_coding_mode,
         lfe_on,
         full_bandwidth_channels,

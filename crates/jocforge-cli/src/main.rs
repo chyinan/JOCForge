@@ -27,14 +27,16 @@ use jocforge_core::{
     package_multi_dependent_source_derived_access_unit,
     package_multi_dependent_source_derived_access_unit_with_plan,
     package_short_block_conformance_access_unit,
-    package_source_derived_access_unit_with_frame_sizes, parse_bw64_adm_metadata, profile_spec,
+    package_source_derived_access_unit_with_frame_sizes,
+    package_source_derived_short_block_access_unit, parse_bw64_adm_metadata, profile_spec,
     quantize_coefficient, rate_budget_for_dependents, reconstruction_error,
-    reduce_scene_with_previous, resolve_encoding_plan, semantic_maximum,
-    source_derived_carrier_causality, spectral_phase_report, validate_multi_dependent_access_unit,
-    validate_source_derived_adm_metadata, write_one_au_proof,
+    reduce_scene_with_previous, resolve_encoding_plan, resolve_encoding_plan_with_partition,
+    semantic_maximum, source_derived_carrier_causality, spectral_phase_report,
+    validate_multi_dependent_access_unit, validate_source_derived_adm_metadata, write_one_au_proof,
 };
 
 const JOC_FRAME_SAMPLES: usize = 1536;
+const ENCODE_USAGE: &str = "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile 5.X|Flat-7.X|5.X+2|5.X Phase|5.X+2 Phase [--compat etsi|deployed] [--carriage etsi|i0-skipfld|legacy-ac3] [--emdf-profile etsi|deployed] [--bitrate KBPS] [--block-partition 6|3+3|2+2+2|1+1+1+1+1+1] [--temporal-weight VALUE]";
 
 fn main() -> ExitCode {
     let arguments = env::args().skip(1).collect::<Vec<_>>();
@@ -1608,24 +1610,20 @@ fn csv_cell(value: &str) -> String {
 
 fn run_encode(arguments: &[String]) -> Result<(), String> {
     if arguments.len() < 4 || (arguments.len() - 4) % 2 != 0 {
-        return Err(
-            "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile 5.X|Flat-7.X|5.X+2|5.X Phase|5.X+2 Phase [--compat etsi|deployed] [--carriage etsi|i0-skipfld|legacy-ac3] [--emdf-profile etsi|deployed] [--bitrate KBPS] [--temporal-weight VALUE]"
-                .to_owned(),
-        );
+        return Err(ENCODE_USAGE.to_owned());
     }
     let input = &arguments[0];
     let output = &arguments[1];
+    remove_stale_output(Path::new(output))?;
     let flag = &arguments[2];
     let profile_name = &arguments[3];
     if flag != "--profile" {
-        return Err(
-            "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile 5.X|Flat-7.X|5.X+2|5.X Phase|5.X+2 Phase [--compat etsi|deployed] [--carriage etsi|i0-skipfld|legacy-ac3] [--emdf-profile etsi|deployed] [--bitrate KBPS] [--temporal-weight VALUE]"
-                .to_owned(),
-        );
+        return Err(ENCODE_USAGE.to_owned());
     }
     let mut target_bitrate_kbps = 1664;
     let mut carriage = JocCarriage::default();
     let mut emdf_profile = EmdfProfile::default();
+    let mut block_partition = vec![BlockPartition::Six];
     let mut temporal_continuity_weight = ReductionConfig::default().temporal_continuity_weight;
     let mut option_index = 4;
     while option_index < arguments.len() {
@@ -1655,18 +1653,24 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
                     format!("invalid temporal continuity weight '{value}': {error}")
                 })?;
             }
+            "--block-partition" => {
+                block_partition = parse_block_partition(value)?;
+            }
             _ => {
-                return Err(
-                    "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile 5.X|Flat-7.X|5.X+2|5.X Phase|5.X+2 Phase [--compat etsi|deployed] [--carriage etsi|i0-skipfld|legacy-ac3] [--emdf-profile etsi|deployed] [--bitrate KBPS] [--temporal-weight VALUE]"
-                        .to_owned(),
-                );
+                return Err(ENCODE_USAGE.to_owned());
             }
         }
         option_index += 2;
     }
     let profile = parse_profile(profile_name)?;
-    let plan = resolve_encoding_plan(profile, carriage, emdf_profile, target_bitrate_kbps)
-        .map_err(|error| format!("invalid encoding plan: {error}"))?;
+    let plan = resolve_encoding_plan_with_partition(
+        profile,
+        carriage,
+        emdf_profile,
+        target_bitrate_kbps,
+        &block_partition,
+    )
+    .map_err(|error| format!("invalid encoding plan: {error}"))?;
     let rate = plan.rate;
     let input_path = PathBuf::from(input);
     let scanned = scan_bw64_file(&input_path)?;
@@ -1712,6 +1716,13 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         .enumerate()
         .filter_map(|(index, channel)| channel.is_lfe.then_some(index))
         .collect::<Vec<_>>();
+    let short_block_mode = !plan.block_partition.is_default();
+    if short_block_mode && !lfe_source_indices.is_empty() {
+        return Err(
+            "source-derived short-block encoding with LFE is not closed; use the default six-block partition"
+                .to_owned(),
+        );
+    }
     let i0_channels = 5 + usize::from(!lfe_source_indices.is_empty());
     let rank = profile_spec(profile).input_labels.len();
     let frame_count = metadata.sample_count.div_ceil(JOC_FRAME_SAMPLES);
@@ -1732,12 +1743,19 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
     );
     let mut previous_reduction = None;
     let mut previous_factorization: Option<jocforge_core::RankFactorization> = None;
-    let mut raw_file = fs::File::create(&i0_raw_path).map_err(|error| {
-        format!(
-            "failed to create carrier PCM '{}': {error}",
-            i0_raw_path.display()
-        )
-    })?;
+    let mut raw_file = if short_block_mode {
+        None
+    } else {
+        Some(fs::File::create(&i0_raw_path).map_err(|error| {
+            format!(
+                "failed to create carrier PCM '{}': {error}",
+                i0_raw_path.display()
+            )
+        })?)
+    };
+    let mut sample_accounting = String::from(
+        "programme_interval,syncframe_index,block_count,start_sample,end_sample,source_sample_count,padding_samples\n",
+    );
     for frame_index in 0..frame_count {
         let source_pcm = read_pcm_frame(&input_path, &scanned, frame_index, &track_indices)?;
         let lfe_pcm = lfe_carrier(&source_pcm, &lfe_source_indices)?;
@@ -1784,9 +1802,34 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         if !lfe_source_indices.is_empty() {
             i0_carriers.push(lfe_pcm.clone());
         }
-        raw_file
-            .write_all(&interleaved_f32le(&i0_carriers, JOC_FRAME_SAMPLES))
-            .map_err(|error| format!("failed to write carrier PCM frame {frame_index}: {error}"))?;
+        if let Some(raw_file) = raw_file.as_mut() {
+            raw_file
+                .write_all(&interleaved_f32le(&i0_carriers, JOC_FRAME_SAMPLES))
+                .map_err(|error| {
+                    format!("failed to write carrier PCM frame {frame_index}: {error}")
+                })?;
+        }
+        for range in plan
+            .block_partition
+            .frame_ranges(frame_index * JOC_FRAME_SAMPLES)
+        {
+            let source_start = range.start_sample.min(metadata.sample_count);
+            let source_end = range.end_sample.min(metadata.sample_count);
+            let source_sample_count = source_end.saturating_sub(source_start);
+            let frame_sample_count = range.end_sample.saturating_sub(range.start_sample);
+            let padding_samples = frame_sample_count.saturating_sub(source_sample_count);
+            writeln!(
+                sample_accounting,
+                "{frame_index},{},{},{},{},{},{}",
+                range.syncframe_index,
+                range.audio_blocks,
+                range.start_sample,
+                range.end_sample,
+                source_sample_count,
+                padding_samples,
+            )
+            .map_err(|error| format!("failed to format sample accounting: {error}"))?;
+        }
         append_reduction_metrics(
             &mut metrics,
             frame_index,
@@ -1809,29 +1852,40 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         previous_reduction = Some(reduction);
     }
     drop(raw_file);
-    let carrier_codec = if carriage == JocCarriage::LegacyAc3Dependent {
-        "ac3"
+    let i0_carrier_bytes = if short_block_mode {
+        None
     } else {
-        "eac3"
+        let carrier_codec = if carriage == JocCarriage::LegacyAc3Dependent {
+            "ac3"
+        } else {
+            "eac3"
+        };
+        encode_ffmpeg_carrier(
+            &i0_raw_path,
+            &i0_carrier_path,
+            i0_channels,
+            &format!("{}k", rate.carrier_encode_bitrate_kbps),
+            carrier_codec,
+        )?;
+        Some(read_carrier_frames(
+            &i0_carrier_path,
+            rate.carrier_encoded_frame_bytes,
+            frame_count,
+        )?)
     };
-    encode_ffmpeg_carrier(
-        &i0_raw_path,
-        &i0_carrier_path,
-        i0_channels,
-        &format!("{}k", rate.carrier_encode_bitrate_kbps),
-        carrier_codec,
-    )?;
-    let i0_carrier_bytes = read_carrier_frames(
-        &i0_carrier_path,
-        rate.carrier_encoded_frame_bytes,
-        frame_count,
-    )?;
     let mut output_bytes =
         Vec::with_capacity(frame_count * (rate.carrier_frame_bytes + rate.d0_frame_bytes));
     previous_reduction = None;
     for frame_index in 0..frame_count {
-        let i0_start = frame_index * rate.carrier_encoded_frame_bytes;
-        let i0_frame = &i0_carrier_bytes[i0_start..i0_start + rate.carrier_encoded_frame_bytes];
+        let i0_frame = if short_block_mode {
+            None
+        } else {
+            let carrier_bytes = i0_carrier_bytes
+                .as_ref()
+                .ok_or_else(|| "missing FFmpeg carrier bytes for six-block encoding".to_owned())?;
+            let i0_start = frame_index * rate.carrier_encoded_frame_bytes;
+            Some(&carrier_bytes[i0_start..i0_start + rate.carrier_encoded_frame_bytes])
+        };
         let source_pcm = read_pcm_frame(&input_path, &scanned, frame_index, &track_indices)?;
         let sources = reduction_sources(&supported_objects, &source_pcm)?;
         let reduction =
@@ -1858,36 +1912,51 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
             .into_iter()
             .map(|index| factorization.carriers[index].clone())
             .collect::<Vec<_>>();
-        let access_unit = match carriage {
-            JocCarriage::EtsiAuxDependent => package_source_derived_access_unit_with_frame_sizes(
-                profile,
-                emdf_profile,
+        let access_unit = if short_block_mode {
+            package_source_derived_short_block_access_unit(
+                &plan,
                 sequence,
                 &factorization.scaled_matrix,
                 &positions,
-                i0_frame,
+                &factorization.carriers[..5],
                 &d0_carriers,
-                0,
-                rate.d0_frame_bytes,
-            ),
-            JocCarriage::I0SkipField => package_i0_skip_field_access_unit(
-                profile,
-                emdf_profile,
-                sequence,
-                &factorization.scaled_matrix,
-                &positions,
-                i0_frame,
-            ),
-            JocCarriage::LegacyAc3Dependent => package_legacy_ac3_source_derived_access_unit(
-                profile,
-                emdf_profile,
-                sequence,
-                &factorization.scaled_matrix,
-                &positions,
-                i0_frame,
-                &d0_carriers,
-                0,
-            ),
+            )
+        } else {
+            let i0_frame =
+                i0_frame.ok_or_else(|| "missing I0 frame for six-block encoding".to_owned())?;
+            match carriage {
+                JocCarriage::EtsiAuxDependent => {
+                    package_source_derived_access_unit_with_frame_sizes(
+                        profile,
+                        emdf_profile,
+                        sequence,
+                        &factorization.scaled_matrix,
+                        &positions,
+                        i0_frame,
+                        &d0_carriers,
+                        0,
+                        rate.d0_frame_bytes,
+                    )
+                }
+                JocCarriage::I0SkipField => package_i0_skip_field_access_unit(
+                    profile,
+                    emdf_profile,
+                    sequence,
+                    &factorization.scaled_matrix,
+                    &positions,
+                    i0_frame,
+                ),
+                JocCarriage::LegacyAc3Dependent => package_legacy_ac3_source_derived_access_unit(
+                    profile,
+                    emdf_profile,
+                    sequence,
+                    &factorization.scaled_matrix,
+                    &positions,
+                    i0_frame,
+                    &d0_carriers,
+                    0,
+                ),
+            }
         }
         .map_err(|error| format!("failed to package frame {frame_index}: {error}"))?;
         output_bytes.extend_from_slice(&access_unit);
@@ -1895,12 +1964,29 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
     }
     let output_path = PathBuf::from(output);
     let output_bytes_len = output_bytes.len();
-    write_output(&output_path, output_bytes, "encoded")?;
     let metrics_path = PathBuf::from(format!("{}.metrics.csv", output_path.display()));
-    write_output(&metrics_path, metrics.into_bytes(), "reduction metrics")?;
+    let accounting_path = PathBuf::from(format!("{}.sample-accounting.csv", output_path.display()));
+    let publish_result = (|| {
+        write_output(&output_path, output_bytes, "encoded")?;
+        write_output(&metrics_path, metrics.into_bytes(), "reduction metrics")?;
+        write_output(
+            &accounting_path,
+            sample_accounting.into_bytes(),
+            "sample accounting",
+        )
+    })();
+    if publish_result.is_err() {
+        let _ = remove_stale_output(&output_path);
+    }
+    publish_result?;
     let _ = fs::remove_dir_all(work_root);
     println!(
-        "encoded profile={profile_name} carriage={carriage:?} emdf_profile={emdf_profile:?} frames={frame_count} samples={encoded_samples} authored_sources={} authored_channels={} dynamic_objects={} direct_speakers={} direct_speaker_channels={} lfe_core_channels={} coded_objects_last_frame={} output_bytes={output_bytes_len} target_bitrate={} carrier_bitrate={} d0_bitrate={} temporal_weight={:.17e} reduction=deterministic:farthest-point+weighted-aggregate metrics={}",
+        "encoded profile={profile_name} carriage={carriage:?} emdf_profile={emdf_profile:?} block_partition={} frames={frame_count} samples={encoded_samples} authored_sources={} authored_channels={} dynamic_objects={} direct_speakers={} direct_speaker_channels={} lfe_core_channels={} coded_objects_last_frame={} output_bytes={output_bytes_len} target_bitrate={} carrier_bitrate={} d0_bitrate={} temporal_weight={:.17e} reduction=deterministic:farthest-point+weighted-aggregate metrics={} sample_accounting={}",
+        block_partition
+            .iter()
+            .map(|partition| partition.audio_blocks().to_string())
+            .collect::<Vec<_>>()
+            .join("+"),
         supported_objects.len(),
         track_indices.len(),
         metadata.dynamic_object_count(),
@@ -1915,6 +2001,7 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         rate.d0_bitrate_kbps * 1000,
         reduction_config.temporal_continuity_weight,
         metrics_path.display(),
+        accounting_path.display(),
     );
     Ok(())
 }
@@ -2227,6 +2314,24 @@ fn parse_profile(value: &str) -> Result<JocProfile, String> {
     }
 }
 
+fn parse_block_partition(value: &str) -> Result<Vec<BlockPartition>, String> {
+    let mut partitions = Vec::new();
+    for token in value.split('+') {
+        let partition = match token {
+            "1" => BlockPartition::One,
+            "2" => BlockPartition::Two,
+            "3" => BlockPartition::Three,
+            "6" => BlockPartition::Six,
+            other => return Err(format!("unsupported audio block count '{other}'")),
+        };
+        partitions.push(partition);
+    }
+    if partitions.is_empty() {
+        return Err("short-block partition must not be empty".to_owned());
+    }
+    Ok(partitions)
+}
+
 fn parse_carriage(value: &str) -> Result<JocCarriage, String> {
     match value {
         "etsi" => Ok(JocCarriage::EtsiAuxDependent),
@@ -2332,13 +2437,29 @@ fn remove_stale_output(path: &Path) -> Result<(), String> {
             )
         })?;
     }
+    for sidecar in [
+        path.with_extension("metrics.csv"),
+        path.with_extension("sample-accounting.csv"),
+    ] {
+        if sidecar.exists() {
+            fs::remove_file(&sidecar).map_err(|error| {
+                format!(
+                    "failed to remove stale output sidecar '{}': {error}",
+                    sidecar.display()
+                )
+            })?;
+        }
+    }
     Ok(())
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{parse_carriage, parse_compat_preset, parse_emdf_profile, parse_profile};
-    use jocforge_core::{EmdfProfile, JocCarriage, JocProfile};
+    use super::{
+        parse_block_partition, parse_carriage, parse_compat_preset, parse_emdf_profile,
+        parse_profile,
+    };
+    use jocforge_core::{BlockPartition, EmdfProfile, JocCarriage, JocProfile};
 
     #[test]
     fn cli_names_carriage_and_emdf_profile_separately() {
@@ -2376,5 +2497,18 @@ mod tests {
         assert_eq!(parse_profile("5.X+2 Phase"), Ok(JocProfile::Idx4));
         assert_eq!(parse_profile("idx3"), Ok(JocProfile::Idx3));
         assert!(parse_profile("idx5").is_err());
+    }
+
+    #[test]
+    fn cli_parses_user_facing_block_partition_names_and_rejects_unknown_counts() {
+        assert_eq!(
+            parse_block_partition("1+1+1+1+1+1"),
+            Ok(vec![BlockPartition::One; 6])
+        );
+        assert_eq!(
+            parse_block_partition("3+3"),
+            Ok(vec![BlockPartition::Three, BlockPartition::Three])
+        );
+        assert!(parse_block_partition("4+2").is_err());
     }
 }

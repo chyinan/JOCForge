@@ -6,11 +6,11 @@
 
 | Semantic profile | Index | Source-derived inputs | Canonical carriage | Supported cells |
 |---|---:|---|---|---:|
-| 5.X | idx0 | L,R,C,Ls,Rs | 26 |
-| Flat-7.X | idx1 | L,R,C,Ls,Rs,Lrs,Rrs | 32 |
-| 5.X+2 | idx2 | L,R,C,Ls,Rs,Tfl,Tfr | 28 |
-| 5.X Phase | idx3 | L,R,C,Ls,Rs | 25 |
-| 5.X+2 Phase | idx4 | L,R,C,Ls,Rs,Tfl,Tfr | 28 |
+| 5.X | idx0 | L,R,C,Ls,Rs | 41 |
+| Flat-7.X | idx1 | L,R,C,Ls,Rs,Lrs,Rrs | 47 |
+| 5.X+2 | idx2 | L,R,C,Ls,Rs,Tfl,Tfr | 43 |
+| 5.X Phase | idx3 | L,R,C,Ls,Rs | 40 |
+| 5.X+2 Phase | idx4 | L,R,C,Ls,Rs,Tfl,Tfr | 43 |
 | reserved-5 | idx5 |  | 0 |
 | reserved-6 | idx6 |  | 0 |
 | reserved-7 | idx7 |  | 0 |
@@ -21,13 +21,13 @@ idx0鈥搃dx4 follow ETSI TS 103 420 V1.2.1 Table 47/48. JOCForge uses Lrs/Rrs a
 
 | Status | Cells |
 |---|---:|
-| OUT_OF_SCOPE_CONTAINER | 60165 |
-| PUBLIC_AMBIGUOUS | 38304 |
-| REJECTED_CAPACITY | 11106 |
-| RESERVED | 72576 |
+| NOT_APPLICABLE_CONTAINER | 75285 |
+| PUBLIC_AMBIGUOUS | 53424 |
+| REJECTED_CAPACITY | 11346 |
+| RESERVED | 90720 |
 | SEMANTIC_CEILING | 756 |
-| SPEC_LEGAL_NOT_IMPLEMENTED | 10490 |
-| SUPPORTED_PASS | 139 |
+| SPEC_LEGAL_NOT_IMPLEMENTED | 10175 |
+| SUPPORTED_PASS | 214 |
 
 ## Evidence and boundaries
 
@@ -36,7 +36,8 @@ idx0鈥搃dx4 follow ETSI TS 103 420 V1.2.1 Table 47/48. JOCForge uses Lrs/Rrs a
 - `PUBLIC_AMBIGUOUS` covers deployed codecdatae deviation and non-idx0 skip-field carriage where the public documents do not close the JOC-carrier meaning.
 - `SEMANTIC_CEILING` is a public raw D6/D7 syntax cell beyond the canonical Table-47 ownership maximum: no additional non-empty, non-duplicated dependent slot exists for this plan. It is not an implementation-gap claim. `SPEC_LEGAL_NOT_IMPLEMENTED` remains for legal forms outside the generated writer evidence.
 - Dependent LFE is represented by public `lfeon`/Table-E.1.4 LFE ownership, is a replacement of I0 LFE when I0 has LFE and a supplement otherwise, and remains outside the JOC matrix. Canonical dependent-LFE closure is evidenced by `artifacts/multi-dependent-closure/validation.json` and per-fixture ownership sidecars.
-- `OUT_OF_SCOPE_CONTAINER` keeps CMAF's six-block, I0 plus optional D0, and container-specific signaling rules separate from raw elementary-stream support.
+- `NOT_APPLICABLE_CONTAINER` keeps CMAF's six-block, I0 plus optional D0, and container-specific signaling rules separate from raw elementary-stream support.
+- The normal raw source-derived writer closes 6, 3+3, 2+2+2, and 1+1+1+1+1+1 at the measured strict 1024/1280/1408/1536/1664 kbps cells for the no-LFE I0+D0 topology. Mixed compositions remain PUBLIC_AMBIGUOUS until a normative grouping rule is closed.
 - The advanced CMAF writer closes the no-LFE, strict, one-I0+D0, six-block, 1024/1280/1408/1536/1664 kbps idx0..idx4 cells; remaining CMAF cells stay explicitly unimplemented or out of scope.
 - legacy-ac3 is supported for idx1 across 1024/1088/1152/1216/1280 kbps and for idx0..idx4 at 1280 kbps, with strict EMDF, no LFE, six blocks, and I0+D0; other legacy-core cells remain fail-closed.
 - idx5鈥搃dx7 are `RESERVED` and are never emitted. Raw D1+ cells with normative gates passed report FFmpeg interoperability separately as `UNSUPPORTED_DECODER_FEATURE`; FFmpeg is not a legality gate.

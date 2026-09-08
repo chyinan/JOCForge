@@ -796,13 +796,27 @@ fn write_frame_size(frame: &mut [u8], size: usize) -> Result<(), String> {
     Ok(())
 }
 
-fn rewrite_crc2(frame: &mut [u8]) -> Result<(), String> {
+pub(crate) fn rewrite_crc2(frame: &mut [u8]) -> Result<(), String> {
     if frame.len() < 4 {
         return Err("E-AC-3 frame is too short for crc2".to_owned());
     }
     let crc = crc16(&frame[2..frame.len() - 2]);
     let end = frame.len();
     frame[end - 2..].copy_from_slice(&crc.to_be_bytes());
+    Ok(())
+}
+
+pub(crate) fn validate_crc2(frame: &[u8]) -> Result<(), String> {
+    if frame.len() < 4 {
+        return Err("E-AC-3 frame is too short for crc2".to_owned());
+    }
+    let expected = crc16(&frame[2..frame.len() - 2]);
+    let actual = u16::from_be_bytes([frame[frame.len() - 2], frame[frame.len() - 1]]);
+    if actual != expected {
+        return Err(format!(
+            "E-AC-3 crc2 mismatch: expected {expected:04x}, got {actual:04x}"
+        ));
+    }
     Ok(())
 }
 

@@ -1,6 +1,8 @@
 // pattern: Functional Core
 
-use jocforge_core::{JocCarriage, rate_budget, rate_budget_for_carriage};
+use jocforge_core::{
+    BlockPartition, JocCarriage, partition_frame_bytes, rate_budget, rate_budget_for_carriage,
+};
 
 #[test]
 fn clean_rate_budget_maps_supported_total_rates_to_explicit_frame_sizes() {
@@ -76,4 +78,27 @@ fn multi_dependent_budget_scales_the_total_without_fixed_i0_split() {
         .expect("384 kbps I0 plus six 640 kbps dependents");
     assert_eq!(six.carrier_bitrate_kbps, 384);
     assert!(jocforge_core::rate_budget_for_dependents(1664, 3).is_err());
+}
+
+#[test]
+fn short_frame_budget_preserves_the_six_block_component_total() {
+    assert_eq!(
+        partition_frame_bytes(4096, &[BlockPartition::One; 6])
+            .expect("1024 kbps I0 short-frame budget"),
+        vec![682, 682, 684, 682, 682, 684]
+    );
+    assert_eq!(
+        partition_frame_bytes(
+            2560,
+            &[
+                BlockPartition::Two,
+                BlockPartition::Two,
+                BlockPartition::Two,
+            ],
+        )
+        .expect("640 kbps D0 short-frame budget")
+        .into_iter()
+        .sum::<usize>(),
+        2560
+    );
 }

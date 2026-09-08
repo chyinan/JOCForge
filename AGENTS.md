@@ -26,6 +26,8 @@ Last verified: 2026-09-08
 - `scripts/run-multi-dependent-closure.ps1` and
   `scripts/generate-joc-capability-matrix.ps1` — raw multi-dependent
   ownership/LFE closure and profile × carriage × bitrate capability lattice.
+- `scripts/run-short-block-closure.ps1` — synthetic conformance plus real
+  source-derived raw short-block closure for canonical partitions.
 - `.\scripts\run-temporal-stabilization.ps1` — Hanabi before/after and
   adversarial continuity evidence.
 
@@ -42,9 +44,11 @@ Last verified: 2026-09-08
   contracts, including profile-owned D0 source indices.
 - `crates/jocforge-core/src/conformance.rs` — public E-AC-3 role census,
   immutable dependent ownership plans, semantic-ceiling verdicts, and
-  independent serialized ownership validation.
+  independent serialized ownership validation, block partition/range
+  contracts, and short-group structural validation.
 - `crates/jocforge-core/src/rate.rs` — deterministic clean I0/D0 budget
-  allocations and legal-rate policy.
+  allocations, legal-rate policy, and even-word short-frame budget
+  distribution.
 - `crates/jocforge-core/src/validation.rs` — pure controlled and adversarial
   temporal corpus generation and metrics.
 - `crates/jocforge-core/src/spectral.rs` — pure deterministic spectral/phase
@@ -53,8 +57,10 @@ Last verified: 2026-09-08
   walker, nominal-frame padding, skipfld insertion, and CRC2 rewrite.
 - `crates/jocforge-core/src/writer.rs` — pure JOC/OAMD/EMDF and independent
   `JocCarriage`/`EmdfProfile` packaging for ETSI and I0 skip-field paths,
-  including source-derived dependent-LFE carriage.
-- `crates/jocforge-cli/src/main.rs` — file/process orchestration shell.
+  including source-derived dependent-LFE carriage and canonical source-derived
+  raw short syncframe groups.
+- `crates/jocforge-cli/src/main.rs` — file/process orchestration shell,
+  advanced `--block-partition` selection, and sample-accounting sidecars.
 - `crates/jocforge-cli/src/file_scan.rs` — seek-aware BW64 chunk scanner that
   reads metadata after large `data` chunks without loading PCM, plus bounded
   PCM-frame reads for large programmes.
@@ -99,6 +105,18 @@ Last verified: 2026-09-08
   kbps frame, and inserts profile-selected OAMD/JOC EMDF into public
   audio-block skip fields; it emits no D0 and fails closed when capacity is
   insufficient.
+- `resolve_encoding_plan_with_partition` carries the explicit raw JOC
+  `ShortBlockPlan`. Normal closure admits `6`, `3+3`, `2+2+2`, and
+  `1+1+1+1+1+1` only for strict ETSI I0+D0; mixed six-block compositions are
+  `PUBLIC_AMBIGUOUS`, and deployed/legacy/skip-field short combinations fail
+  closed.
+- `package_source_derived_short_block_access_unit` writes genuine 1/2/3-block
+  E-AC-3 syncframes from the normal factorization carrier inputs. It keeps one
+  programme interval at six blocks/1536 samples, writes JOC/OAMD EMDF only on
+  final D0, and validates the serialized group before returning bytes.
+- Normal `encode` defaults to six-block FFmpeg I0 encoding. Advanced short raw
+  output emits `.sample-accounting.csv`; source samples are represented once,
+  with only the established final programme-tail zero padding.
 - `OwnershipPlan` is the immutable dependent topology contract for the raw
   multi-dependent writer. Its validator requires sequential D0..D7 IDs,
   public map cardinality, non-empty full-band ownership, no duplicate
@@ -150,6 +168,9 @@ Last verified: 2026-09-08
   reject for paired I0/D0 capacity.
   The 384 kbps strict I0 path disables
   automatic FFmpeg channel coupling for pinned OpenJOC traversal correctness.
+- Short-block bitrate support is a `PROFILE x PARTITION x BITRATE` contract;
+  frame budgets are distributed in even 16-bit words and capacity is checked
+  before short-frame bytes are returned. CMAF remains six-block-only.
 - No proprietary Dolby encoder binary, media, or reverse-engineered logic is
   permitted in this repository.
 - Generated audio/binary evidence under `artifacts/` is local and ignored;
@@ -169,6 +190,10 @@ Last verified: 2026-09-08
   encodes a 896 kbps I0 core, pads it to a nominal 4096-byte frame, and sets
   only payload 11/14 `codecdatae=0`; this is a carriage/signaling
   implementation, not a new perceptual E-AC-3 encoder.
+- The local FFmpeg E-AC-3 encoder exposes no public block-count option and
+  short PCM inputs still produce six-block frames. The advanced raw short path
+  therefore reuses the project-owned public-syntax short-frame primitive with
+  source-derived bounded fields; it never changes a six-block payload header.
 - `ReductionConfig.temporal_continuity_weight` defaults to the clean-side
   dimensionless value `0.15`; it adds a switch cost only when a source moves
   between prior-frame clusters and is covered by controlled/adversarial tests.
@@ -223,7 +248,8 @@ Last verified: 2026-09-08
 - `crates/jocforge-core/src/conformance.rs` provides the public contract for
   1/2/3/6-block grouping to one 1,536-sample interval and sequential D0..D7
   ID bounds. `conformance-short` is an advanced synthetic short-frame writer;
-  it is not the normal PCM-derived bitrate path.
+  it is not the normal PCM-derived bitrate path. The normal raw writer's
+  canonical short partitions are exercised by `run-short-block-closure.ps1`.
 - `crates/jocforge-core/src/cmaf.rs` and `conformance-cmaf` provide the
   validated advanced CMAF path for no-LFE strict idx0..idx4, one I0+D0,
   six-block, 1664 kbps samples. Other container cells remain fail-closed.

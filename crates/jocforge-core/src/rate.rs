@@ -2,6 +2,8 @@
 
 use std::fmt;
 
+use crate::BlockPartition;
+
 /// Explicit clean-side allocation for one 48 kHz JOC access unit.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct RateBudget {
@@ -141,4 +143,40 @@ pub fn rate_budget_for_carriage(
 
 fn frame_bytes(bitrate_kbps: u32) -> usize {
     (bitrate_kbps as usize) * 4
+}
+
+/// Distributes one six-block component budget over an explicit short-frame
+/// partition without rounding away or duplicating any coded bytes. E-AC-3
+/// frame sizes are even, so the allocation is performed in 16-bit words using
+/// cumulative proportional boundaries.
+pub fn partition_frame_bytes(
+    total_frame_bytes: usize,
+    partitions: &[BlockPartition],
+) -> Result<Vec<usize>, String> {
+    if total_frame_bytes == 0 || total_frame_bytes % 2 != 0 {
+        return Err("short-frame byte budget must be a positive even size".to_owned());
+    }
+    let total_blocks = partitions
+        .iter()
+        .map(|partition| partition.audio_blocks())
+        .sum::<usize>();
+    if total_blocks != 6 || partitions.is_empty() {
+        return Err("short-frame partition must total exactly 6 audio blocks".to_owned());
+    }
+    let total_words = total_frame_bytes / 2;
+    let mut previous_words = 0_usize;
+    let mut previous_blocks = 0_usize;
+    let mut output = Vec::with_capacity(partitions.len());
+    for partition in partitions {
+        previous_blocks += partition.audio_blocks();
+        let cumulative_words = total_words * previous_blocks / 6;
+        let words = cumulative_words.saturating_sub(previous_words);
+        if words == 0 {
+            return Err("short-frame byte budget cannot represent one partition".to_owned());
+        }
+        output.push(words * 2);
+        previous_words = cumulative_words;
+    }
+    debug_assert_eq!(previous_words, total_words);
+    Ok(output)
 }
