@@ -1,0 +1,42 @@
+﻿{
+    "schema":  "jocforge-interop-tool-versions-v1",
+    "jocforge_head":  "aa6ad11be84cd726573780b48b0db90b6f1c3446",
+    "census_source_head":  "8919c8c75beb3a795539fd7ddb00ad4ce888b00a",
+    "openjoc_head":  "a52c35d21e68e18dbaa8fa18accfbfea44087367",
+    "publication_commit":  "aa6ad11be84cd726573780b48b0db90b6f1c3446",
+    "tools":  {
+                  "openjoc":  {
+                                  "name":  "OpenJOC",
+                                  "available":  true,
+                                  "version":  "OpenJOC 0.16.0",
+                                  "sha256":  "c740767304775648e18e3fdf8e490744e3c9521e27a8e2fca2aad9027b12977c",
+                                  "source_head":  "a52c35d21e68e18dbaa8fa18accfbfea44087367",
+                                  "path_recorded":  false,
+                                  "location_policy":  "external checkout path omitted"
+                              },
+                  "ffmpeg":  {
+                                 "name":  "FFmpeg",
+                                 "available":  true,
+                                 "version":  "8.1-full_build-www.gyan.dev",
+                                 "sha256":  "865b4a599b589982cbfa875c32eec92abbe0d6e78120ab3d28701b59e95d8265",
+                                 "path_recorded":  false,
+                                 "location_policy":  "executable path omitted"
+                             },
+                  "ffprobe":  {
+                                  "name":  "ffprobe",
+                                  "available":  true,
+                                  "version":  "8.1-full_build-www.gyan.dev",
+                                  "sha256":  "d1c3740b2c2a23e3b8990afdf08492a9879fe1845ccdbc43e5cb2404ac01b2f1",
+                                  "path_recorded":  false,
+                                  "location_policy":  "executable path omitted"
+                              },
+                  "mediainfo":  {
+                                    "name":  "MediaInfo",
+                                    "available":  true,
+                                    "version":  "MediaInfoLib 21.03",
+                                    "sha256":  "62bed8fd20d54e862c35f3a220022da8074538e5ead67895c4c5cbb03100a2a8",
+                                    "path_recorded":  false,
+                                    "location_policy":  "executable path omitted"
+                                }
+              }
+}

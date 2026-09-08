@@ -1,0 +1,41 @@
+﻿{
+    "schema":  "jocforge-interop-census-summary-v1",
+    "positive_probes":  20,
+    "negative_controls":  0,
+    "mediaInfo_available":  true,
+    "openjoc":  [
+                    {
+                        "status":  "FULL_PASS",
+                        "count":  20
+                    }
+                ],
+    "ffmpeg":  [
+                   {
+                       "status":  "FULL_PASS",
+                       "count":  14
+                   },
+                   {
+                       "status":  "PARTIAL_ADDITIONAL_SUBSTREAM_UNSUPPORTED",
+                       "count":  6
+                   }
+               ],
+    "mediainfo":  [
+                      {
+                          "status":  "EAC3_ONLY_FALSE_NEGATIVE",
+                          "count":  19
+                      },
+                      {
+                          "status":  "JOC_RECOGNIZED_CORRECTLY",
+                          "count":  1
+                      }
+                  ],
+    "quality":  {
+                    "positive_probe_public_legality":  true,
+                    "openjoc_positive_malformed_zero":  true,
+                    "strict_deployed_pair":  true,
+                    "shortblock_comparison":  true,
+                    "multidependent_comparison":  true,
+                    "version_scoped_claims":  true,
+                    "wrappers_double_counted":  false
+                }
+}
