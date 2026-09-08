@@ -1,6 +1,6 @@
 # SPEC_LEGAL_NOT_IMPLEMENTED zero-closure audit
 
-Status: implementation and validation complete; local commit pending final review.
+Status: complete; implementation commit `148134f`, audit/documentation commit `fe04f34`; push not performed.
 
 This document records the human-scale audit for the capability cells that were
 classified `SPEC_LEGAL_NOT_IMPLEMENTED` by the central
