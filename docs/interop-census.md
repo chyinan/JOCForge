@@ -217,13 +217,24 @@ From the JOCForge repository root:
 .\scripts\run-interop-census.ps1 -OpenJocRoot ..\OpenJOC
 ```
 
-Prerequisites are Rust/Cargo, a clean OpenJOC checkout at source commit
+Prerequisites are Rust/Cargo, an OpenJOC Git checkout containing source commit
 `a52c35d21e68e18dbaa8fa18accfbfea44087367`, FFmpeg 8.1 with ffprobe, and
-MediaInfo 21.03. Supply the OpenJOC checkout with
-`-OpenJocRoot` or `JOCFORGE_OPENJOC_ROOT`; supply MediaInfo with
-`-MediaInfoPath` or make it available on PATH. No machine-specific path is
-required. Pass `-OutputRoot artifacts\interop-census-rerun` for an independent
-clean rerun.
+MediaInfo 21.03. Supply the active OpenJOC checkout with
+`-OpenJocRoot` or `JOCFORGE_OPENJOC_ROOT`; the runner creates or reuses a clean
+detached worktree at the exact census pin, builds the CLI there, and does not
+require the active checkout to be at that commit or clean. Use
+`-OpenJocWorktreeRoot` for a reusable worktree path and
+`-KeepOpenJocWorktree` to retain a worktree created by the run. No
+machine-specific path is required. Pass
+`-OutputRoot artifacts\interop-census-rerun` for an independent clean rerun.
+
+The historical publication records the tested executable SHA-256
+`c740767304775648e18e3fdf8e490744e3c9521e27a8e2fca2aad9027b12977c`. A fresh
+source build records its own binary SHA-256; native Rust executable bytes are
+not assumed to be identical across build environments. The authoritative
+reproduction identity is the exact detached OpenJOC commit, version, and
+source-built executable path, while the historical SHA remains visible as
+publication evidence.
 
 The runner generates `corpus-manifest.json`, `detailed-matrix.csv`,
 `detailed-matrix.json`, `summary.json`, `tool-versions.json`, and one probe

@@ -107,11 +107,12 @@ JOCForge probes selected from the public capability model:
   additional-substream coverage; and
 - MediaInfo 21.03: 1 JOC recognition and 19 E-AC-3-only false negatives.
 
-These are observations for the exact tested versions, not universal decoder or
-detector claims. See [`docs/interop-census.md`](docs/interop-census.md) for the
-probe table, controlled-pair findings, hashes, and limitations. Reproduce it
-with a clean OpenJOC checkout at the census pin and local tool paths supplied
-through parameters or environment variables:
+These are observations for the exact tested versions and OpenJOC census commit,
+not universal decoder or detector claims. See
+[`docs/interop-census.md`](docs/interop-census.md) for the probe table,
+controlled-pair findings, hashes, and limitations. Reproduce it from an active
+OpenJOC Git checkout; the runner independently creates a clean detached
+worktree at the census pin and accepts a dirty or newer active checkout:
 
 ```powershell
 .\scripts\run-interop-census.ps1 -OpenJocRoot ..\OpenJOC -MediaInfoPath "C:\path\to\MediaInfo.exe"

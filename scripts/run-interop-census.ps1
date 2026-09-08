@@ -8,6 +8,8 @@ param(
     [string]$FfmpegPath = "",
     [string]$FfprobePath = "",
     [string]$MediaInfoPath = "",
+    [string]$OpenJocWorktreeRoot = "",
+    [switch]$KeepOpenJocWorktree,
     [int]$TimeoutSeconds = 120
 )
 
@@ -173,6 +175,71 @@ function Get-RepoStatus([string]$Repository) {
     return $result.stdout.Trim()
 }
 
+function Invoke-Git([string]$Repository, [string[]]$Arguments, [int]$TimeoutMilliseconds = 30000) {
+    $result = Invoke-Bounded $gitPath (@("-C", $Repository) + $Arguments) $TimeoutMilliseconds $root
+    if ($result.status -ne "EXITED" -or $result.exit_code -ne 0) {
+        throw "git command failed in repository: $Repository"
+    }
+    return $result
+}
+
+function Get-RegisteredWorktreeHead([string]$Repository, [string]$WorktreePath) {
+    $normalizedTarget = [IO.Path]::GetFullPath($WorktreePath).TrimEnd('\')
+    $result = Invoke-Git $Repository @("worktree", "list", "--porcelain")
+    $currentPath = $null
+    $currentHead = $null
+    foreach ($line in ($result.stdout -split "`r?`n")) {
+        if ($line.StartsWith("worktree ")) {
+            if ($null -ne $currentPath -and $currentPath -eq $normalizedTarget) {
+                return $currentHead
+            }
+            $currentPath = [IO.Path]::GetFullPath($line.Substring(9).Trim()).TrimEnd('\')
+            $currentHead = $null
+        } elseif ($line.StartsWith("HEAD ")) {
+            $currentHead = $line.Substring(5).Trim()
+        }
+    }
+    if ($null -ne $currentPath -and $currentPath -eq $normalizedTarget) {
+        return $currentHead
+    }
+    return $null
+}
+
+function Ensure-PinnedOpenJocWorktree([string]$Repository, [string]$RequestedPath, [string]$Pin) {
+    $worktreePath = [IO.Path]::GetFullPath($RequestedPath).TrimEnd('\')
+    $registeredHead = Get-RegisteredWorktreeHead $Repository $worktreePath
+    if (Test-Path -LiteralPath $worktreePath) {
+        if ($null -eq $registeredHead) {
+            throw "census OpenJOC worktree path exists but is not registered with the active repository: $worktreePath"
+        }
+        $actualHead = Get-RepoHead $worktreePath
+        if ($actualHead -ne $Pin -or $registeredHead -ne $Pin) {
+            throw "census OpenJOC worktree HEAD mismatch: expected $Pin, got $actualHead"
+        }
+        $status = Get-RepoStatus $worktreePath
+        if (-not [string]::IsNullOrWhiteSpace($status)) {
+            throw "census OpenJOC worktree must be clean: $status"
+        }
+        return [pscustomobject]@{ path = $worktreePath; created = $false }
+    }
+
+    $parent = Split-Path -Parent $worktreePath
+    New-Item -ItemType Directory -Force -Path $parent | Out-Null
+    $add = Invoke-Bounded $gitPath (@("-C", $Repository, "worktree", "add", "--detach", $worktreePath, $Pin)) 120000 $root
+    if ($add.status -ne "EXITED" -or $add.exit_code -ne 0) {
+        throw "failed to create census OpenJOC detached worktree: $($add.stderr.Trim())"
+    }
+    $actualHead = Get-RepoHead $worktreePath
+    if ($actualHead -ne $Pin) {
+        throw "new census OpenJOC worktree HEAD mismatch: expected $Pin, got $actualHead"
+    }
+    $status = Get-RepoStatus $worktreePath
+    if (-not [string]::IsNullOrWhiteSpace($status)) {
+        throw "new census OpenJOC worktree is not clean: $status"
+    }
+    return [pscustomobject]@{ path = $worktreePath; created = $true }
+}
+
 function Get-VersionRecord([string]$Name, [string]$Path, [string[]]$Arguments) {
     if ($null -eq $Path) {
         return [ordered]@{ name = $Name; available = $false; path = $null; path_recorded = $false; sha256 = $null; version = $null; banner = $null }
@@ -306,13 +373,16 @@ function Get-FfmpegStatus($Run, $Case, $OpenJocDerived) {
     if ($Run.status -eq "TIMEOUT") { return "HANG" }
     if ($Run.status -ne "EXITED") { return "CRASH" }
     $dependentIds = @((Get-PropertyValue $OpenJocDerived @("dependent_ids")))
-    $hasAdditionalSubstreamTopology = $Case.dependent_count -gt 1 -and
-        $dependentIds.Count -ge $Case.dependent_count
     $isDependentFamily = $Case.generator -in @("dependent-lfe", "multi-dependent", "short-multi-dependent")
+    $observedAdditionalSubstreamTopology = $dependentIds.Count -ge $Case.dependent_count
+    $declaredAdditionalSubstreamTopology = $Case.dependent_count -gt 1 -and $isDependentFamily
+    $hasAdditionalSubstreamTopology = $Case.dependent_count -gt 1 -and
+        ($observedAdditionalSubstreamTopology -or $declaredAdditionalSubstreamTopology)
     $hasKnownFfmpegDecodeDiagnostic = $Run.stderr -match "(?i)(unspecified sample rate|decode error rate|sample rate not set)"
     # FFmpeg 8.1 does not emit a stable substream token for these failures. The
-    # independent OpenJOC dependent-ID census and canonical generator family
-    # establish the additional-substream topology; FFmpeg supplies the failure.
+    # independent OpenJOC dependent-ID census normally establishes the topology;
+    # the canonical generator family is a bounded fallback for older pinned
+    # inspector builds that omit the dependent-ID projection.
     $additionalSubstreamEvidence = $hasAdditionalSubstreamTopology -and
         $isDependentFamily -and
         $hasKnownFfmpegDecodeDiagnostic
@@ -445,54 +515,113 @@ function New-Case([string]$Id, [string]$Description, [string]$Profile, [string]$
     }
 }
 
-$cargoPath = Get-ExecutablePath "" @("cargo.exe", "cargo") @()
-$gitPath = Get-ExecutablePath "" @("git.exe", "git") @()
-if ($null -eq $cargoPath -or $null -eq $gitPath) { throw "cargo and git are required" }
-$openjocCandidates = @(Join-Path $openjocRoot "target\release\openjoc.exe")
-$openjocPath = Get-ExecutablePath $OpenJocPath @("openjoc.exe", "openjoc") $openjocCandidates
-$ffmpegPath = Get-ExecutablePath $FfmpegPath @("ffmpeg.exe", "ffmpeg") @()
-$ffprobePath = Get-ExecutablePath $FfprobePath @("ffprobe.exe", "ffprobe") @()
-$mediaInfoCandidates = @(
-    (Join-Path ([Environment]::GetEnvironmentVariable("ProgramFiles")) "Dolby Media Encoder\resources\dee\MediaInfo.exe"),
-    (Join-Path ([Environment]::GetEnvironmentVariable("ProgramFiles")) "Dolby Media Encoder\resources\app.asar.unpacked\resources\dee\MediaInfo.exe"),
-    (Join-Path ([Environment]::GetEnvironmentVariable("ProgramFiles(x86)")) "MediaInfo\MediaInfo.exe")
-)
-$mediaInfoPath = Get-ExecutablePath $MediaInfoPath @("MediaInfo.exe", "mediainfo.exe") $mediaInfoCandidates
-if ($null -eq $openjocPath -or $null -eq $ffmpegPath -or $null -eq $ffprobePath) {
-    throw "current OpenJOC, FFmpeg, and ffprobe executables are required"
-}
-if (!(Test-Path -LiteralPath $openjocRoot -PathType Container)) {
-    throw "OpenJOC repository is required for current source HEAD: $openjocRoot"
-}
+$activeOpenJocHeadBefore = $null
+$activeOpenJocStatusBefore = $null
+$activeOpenJocReadmeHashBefore = $null
+$activeOpenJocHeadAfter = $null
+$activeOpenJocStatusAfter = $null
+$activeOpenJocReadmeHashAfter = $null
+$censusOpenJocWorktree = $null
+$censusOpenJocWorktreeCreated = $false
+$censusOpenJocWorktreeCleanupPending = $false
 
-if (Test-Path -LiteralPath $OutputRoot) {
-    $normalizedRoot = [IO.Path]::GetFullPath($root)
-    $normalizedOutput = [IO.Path]::GetFullPath($OutputRoot)
-    if (!$normalizedOutput.StartsWith((Join-Path $normalizedRoot "artifacts"), [StringComparison]::OrdinalIgnoreCase)) {
-        throw "refusing to clean output outside artifacts/: $normalizedOutput"
+try {
+    $cargoPath = Get-ExecutablePath "" @("cargo.exe", "cargo") @()
+    $gitPath = Get-ExecutablePath "" @("git.exe", "git") @()
+    if ($null -eq $cargoPath -or $null -eq $gitPath) { throw "cargo and git are required" }
+    $ffmpegPath = Get-ExecutablePath $FfmpegPath @("ffmpeg.exe", "ffmpeg") @()
+    $ffprobePath = Get-ExecutablePath $FfprobePath @("ffprobe.exe", "ffprobe") @()
+    $mediaInfoCandidates = @(
+        (Join-Path ([Environment]::GetEnvironmentVariable("ProgramFiles")) "Dolby Media Encoder\resources\dee\MediaInfo.exe"),
+        (Join-Path ([Environment]::GetEnvironmentVariable("ProgramFiles")) "Dolby Media Encoder\resources\app.asar.unpacked\resources\dee\MediaInfo.exe"),
+        (Join-Path ([Environment]::GetEnvironmentVariable("ProgramFiles(x86)")) "MediaInfo\MediaInfo.exe")
+    )
+    $mediaInfoPath = Get-ExecutablePath $MediaInfoPath @("MediaInfo.exe", "mediainfo.exe") $mediaInfoCandidates
+    if ($null -eq $ffmpegPath -or $null -eq $ffprobePath) {
+        throw "FFmpeg and ffprobe executables are required"
     }
-    Remove-Item -LiteralPath $OutputRoot -Recurse -Force
-}
-New-Item -ItemType Directory -Force -Path $probeRoot | Out-Null
+    if (!(Test-Path -LiteralPath $openjocRoot -PathType Container)) {
+        throw "active OpenJOC repository is required: $openjocRoot"
+    }
 
-$jocforgeHead = Get-RepoHead $root
-$censusSourceRevision = Invoke-Bounded $gitPath @("-C", $root, "rev-parse", "HEAD^") 30000 $root
-if ($censusSourceRevision.status -ne "EXITED" -or $censusSourceRevision.exit_code -ne 0) {
-    throw "failed to resolve census source parent: $root"
-}
-$censusSourceHead = $censusSourceRevision.stdout.Trim()
-$openjocHead = Get-RepoHead $openjocRoot
-$jocforgeStatus = Get-RepoStatus $root
-$openjocStatus = Get-RepoStatus $openjocRoot
-if ($openjocHead -ne $expectedOpenJocHead) {
-    throw "OpenJOC source head mismatch: expected $expectedOpenJocHead"
-}
-if (-not [string]::IsNullOrWhiteSpace($openjocStatus)) {
-    throw "OpenJOC checkout must be clean for the pinned census: $openjocStatus"
-}
-if (-not [string]::IsNullOrWhiteSpace($jocforgeStatus)) {
-    throw "JOCForge checkout must be clean for the pinned census: $jocforgeStatus"
-}
+    if (Test-Path -LiteralPath $OutputRoot) {
+        $normalizedRoot = [IO.Path]::GetFullPath($root)
+        $normalizedOutput = [IO.Path]::GetFullPath($OutputRoot)
+        $artifactRoot = [IO.Path]::GetFullPath((Join-Path $normalizedRoot "artifacts"))
+        $artifactPrefix = $artifactRoot.TrimEnd('\') + '\'
+        if ($normalizedOutput -ne $artifactRoot -and !$normalizedOutput.StartsWith($artifactPrefix, [StringComparison]::OrdinalIgnoreCase)) {
+            throw "refusing to clean output outside artifacts/: $normalizedOutput"
+        }
+        Remove-Item -LiteralPath $OutputRoot -Recurse -Force
+    }
+    New-Item -ItemType Directory -Force -Path $OutputRoot | Out-Null
+    New-Item -ItemType Directory -Force -Path $probeRoot | Out-Null
+
+    $jocforgeHead = Get-RepoHead $root
+    $censusSourceRevision = Invoke-Bounded $gitPath @("-C", $root, "rev-parse", "HEAD^") 30000 $root
+    if ($censusSourceRevision.status -ne "EXITED" -or $censusSourceRevision.exit_code -ne 0) {
+        throw "failed to resolve census source parent: $root"
+    }
+    $censusSourceHead = $censusSourceRevision.stdout.Trim()
+    $jocforgeStatus = Get-RepoStatus $root
+    if (-not [string]::IsNullOrWhiteSpace($jocforgeStatus)) {
+        throw "JOCForge checkout must be clean for the pinned census: $jocforgeStatus"
+    }
+
+    $activeOpenJocHeadBefore = Get-RepoHead $openjocRoot
+    $activeOpenJocStatusBefore = Get-RepoStatus $openjocRoot
+    $activeOpenJocReadmePath = Join-Path $openjocRoot "README.md"
+    if (Test-Path -LiteralPath $activeOpenJocReadmePath -PathType Leaf) {
+        $activeOpenJocReadmeHashBefore = Get-Sha256 $activeOpenJocReadmePath
+    }
+    $activeOpenJocDirtyBefore = -not [string]::IsNullOrWhiteSpace($activeOpenJocStatusBefore)
+    Write-Output "Census OpenJOC pin: $expectedOpenJocHead"
+    Write-Output "Active OpenJOC checkout: $activeOpenJocHeadBefore"
+    Write-Output "Active OpenJOC dirty: $activeOpenJocDirtyBefore"
+
+    try {
+        Invoke-Git $openjocRoot @("cat-file", "-e", "$expectedOpenJocHead^{commit}") | Out-Null
+    }
+    catch {
+        throw "census OpenJOC pin cannot be resolved: $expectedOpenJocHead"
+    }
+    $requestedWorktreeRoot = if ([string]::IsNullOrWhiteSpace($OpenJocWorktreeRoot)) {
+        Join-Path ([IO.Path]::GetTempPath()) "jocforge-openjoc-census-$($expectedOpenJocHead.Substring(0, 12))"
+    } else {
+        $OpenJocWorktreeRoot
+    }
+    $requestedWorktreeRoot = [IO.Path]::GetFullPath($requestedWorktreeRoot).TrimEnd('\')
+    if ($requestedWorktreeRoot -eq $openjocRoot.TrimEnd('\')) {
+        throw "census OpenJOC worktree must be isolated from the active checkout"
+    }
+    $worktreeResult = Ensure-PinnedOpenJocWorktree $openjocRoot $requestedWorktreeRoot $expectedOpenJocHead
+    $censusOpenJocWorktree = $worktreeResult.path
+    $censusOpenJocWorktreeCreated = $worktreeResult.created
+    $censusOpenJocWorktreeCleanupPending = $censusOpenJocWorktreeCreated -and !$KeepOpenJocWorktree
+    Write-Output "Reproduction source: detached pinned worktree"
+
+    $openjocBuild = Invoke-Bounded $cargoPath @("build", "-p", "openjoc-cli", "--release", "--locked") ($TimeoutSeconds * 1000) $censusOpenJocWorktree
+    Save-ToolOutput $OutputRoot "openjoc-build" $openjocBuild
+    if ($openjocBuild.status -ne "EXITED" -or $openjocBuild.exit_code -ne 0) {
+        throw "pinned OpenJOC build failed"
+    }
+    $openjocCandidates = @(Join-Path $censusOpenJocWorktree "target\release\openjoc.exe")
+    if (-not [string]::IsNullOrWhiteSpace($OpenJocPath) -and
+        [IO.Path]::GetFullPath($OpenJocPath) -ne [IO.Path]::GetFullPath($openjocCandidates[0])) {
+        throw "OpenJocPath must point to the pinned detached worktree build"
+    }
+    $openjocPath = Get-ExecutablePath $OpenJocPath @() $openjocCandidates
+    if ($null -eq $openjocPath) {
+        throw "pinned OpenJOC build did not produce target\release\openjoc.exe"
+    }
+    $openjocHead = Get-RepoHead $censusOpenJocWorktree
+    $censusOpenJocStatus = Get-RepoStatus $censusOpenJocWorktree
+    if ($openjocHead -ne $expectedOpenJocHead) {
+        throw "census OpenJOC worktree HEAD mismatch: expected $expectedOpenJocHead"
+    }
+    if (-not [string]::IsNullOrWhiteSpace($censusOpenJocStatus)) {
+        throw "census OpenJOC worktree must be clean: $censusOpenJocStatus"
+    }
 
 $matrixCsv = Join-Path $OutputRoot "capability-matrix.csv"
 $matrixJson = Join-Path $OutputRoot "capability-matrix.json"
@@ -541,8 +670,16 @@ $toolRecords = [ordered]@{
     ffprobe = Get-VersionRecord "ffprobe" $ffprobePath @("-version")
     mediainfo = Get-VersionRecord "MediaInfo" $mediaInfoPath @("--Version")
 }
-if ($toolRecords.openjoc.sha256 -ne $expectedOpenJocSha256) {
-    throw "OpenJOC executable hash mismatch: expected $expectedOpenJocSha256"
+if (!$toolRecords.openjoc.available -or $toolRecords.openjoc.version -ne "OpenJOC 0.16.0" -or
+    $toolRecords.openjoc.sha256 -notmatch "^[0-9a-f]{64}$") {
+    throw "pinned OpenJOC executable identity is invalid"
+}
+$openjocHashMatchesPublished = $toolRecords.openjoc.sha256 -eq $expectedOpenJocSha256
+$toolRecords.openjoc.published_sha256 = $expectedOpenJocSha256
+$toolRecords.openjoc.hash_policy = if ($openjocHashMatchesPublished) {
+    "matches published historical executable"
+} else {
+    "source-pinned local rebuild; native executable byte hash differs from published build"
 }
 $toolRecords.openjoc.source_head = $openjocHead
 $toolRecords.openjoc.repository = $null
@@ -898,8 +1035,10 @@ $docTemplate = @'
 
 This report is a version-scoped publication of a deterministic 20-stream
 positive corpus. The publication snapshot is JOCForge `__JOCFORGE_HEAD__`,
-with frozen census evidence based on `__CENSUS_SOURCE_HEAD__`, and OpenJOC source
-HEAD `__OPENJOC_HEAD__`.
+with frozen census evidence based on `__CENSUS_SOURCE_HEAD__`. The active OpenJOC
+checkout was `__ACTIVE_OPENJOC_HEAD__` and dirty=`__ACTIVE_OPENJOC_DIRTY__`; the
+census was reproduced from a clean detached worktree at OpenJOC
+`__OPENJOC_HEAD__`.
 
 ## Executive summary
 
@@ -959,11 +1098,17 @@ The census OpenJOC pin is intentionally independent of the frozen validator
 identity in `validation/openjoc-validator.json`. Existing closure scripts use
 that frozen validator for their separate acceptance loop; this census uses the
 tested OpenJOC release source head and executable SHA listed above. These
-identities must not be conflated.
+identities must not be conflated. The runner records the active checkout
+separately and never requires its HEAD or cleanliness to match the census pin.
 
-The exact OpenJOC source commit is `__OPENJOC_HEAD__`. The JOCForge census
-source commit is `__CENSUS_SOURCE_HEAD__`; the publication/freeze snapshot is
-`__JOCFORGE_HEAD__` and may contain documentation and runner hardening only.
+The exact OpenJOC source commit is `__OPENJOC_HEAD__`; the detached census
+worktree HEAD was `__CENSUS_OPENJOC_WORKTREE_HEAD__` and was clean. The JOCForge
+census source commit is `__CENSUS_SOURCE_HEAD__`; the publication/freeze snapshot
+is `__JOCFORGE_HEAD__` and may contain documentation and runner hardening only.
+The historical publication executable SHA-256 was
+`__PUBLISHED_OPENJOC_SHA__`; the source-built executable SHA-256 is recorded in
+the run's tool record and may differ because native Rust builds are not assumed
+to be byte-identical across build environments.
 
 ## Corpus methodology
 
@@ -1052,11 +1197,15 @@ From the JOCForge repository root:
 .\scripts\run-interop-census.ps1
 ```
 
-Prerequisites are Rust/Cargo, a clean OpenJOC checkout at the pinned source
-commit, FFmpeg 8.1 with ffprobe, and MediaInfo 21.03. Supply the OpenJOC checkout
-with `-OpenJocRoot` or `JOCFORGE_OPENJOC_ROOT`; supply MediaInfo with
-`-MediaInfoPath` or make it available on PATH. The runner does not require a
-machine-specific path.
+Prerequisites are Rust/Cargo, an OpenJOC Git checkout containing the pinned
+source commit, FFmpeg 8.1 with ffprobe, and MediaInfo 21.03. Supply the active
+OpenJOC checkout with `-OpenJocRoot` or `JOCFORGE_OPENJOC_ROOT`; the runner
+creates or reuses a clean detached worktree at the census pin, builds the CLI
+there, and never requires the active checkout to be pinned or clean. Supply
+MediaInfo with `-MediaInfoPath` or make it available on PATH. Use
+`-OpenJocWorktreeRoot` to choose a reusable worktree path and
+`-KeepOpenJocWorktree` to retain a worktree created by the run. The runner does
+not require a machine-specific path.
 
 The runner cleans only its generated directory under `artifacts/`, regenerates
 the current capability matrix and project-owned fixtures, runs bounded
@@ -1083,6 +1232,10 @@ $doc = $docTemplate
 $doc = $doc.Replace("__JOCFORGE_HEAD__", [string]$jocforgeHead)
 $doc = $doc.Replace("__CENSUS_SOURCE_HEAD__", [string]$censusSourceHead)
 $doc = $doc.Replace("__OPENJOC_HEAD__", [string]$openjocHead)
+$doc = $doc.Replace("__ACTIVE_OPENJOC_HEAD__", [string]$activeOpenJocHeadBefore)
+$doc = $doc.Replace("__ACTIVE_OPENJOC_DIRTY__", [string]$activeOpenJocDirtyBefore)
+$doc = $doc.Replace("__CENSUS_OPENJOC_WORKTREE_HEAD__", [string]$openjocHead)
+$doc = $doc.Replace("__PUBLISHED_OPENJOC_SHA__", [string]$expectedOpenJocSha256)
 $doc = $doc.Replace("__MATRIX_COUNT__", [string]$matrix.Count)
 $doc = $doc.Replace("__OPENJOC_VERSION__", [string]$openjocTool["version"])
 $doc = $doc.Replace("__OPENJOC_SHA__", [string]$openjocTool["sha256"])
@@ -1102,8 +1255,59 @@ $doc = $doc.Replace("__FFMPEG_COVERAGE__", $ffmpegCoverage)
 $doc = $doc.Replace("__MEDIAINFO_COVERAGE__", $mediaInfoCoverage)
 $doc | Set-Content -LiteralPath $docsPath -Encoding utf8
 
+$activeOpenJocHeadAfter = Get-RepoHead $openjocRoot
+$activeOpenJocStatusAfter = Get-RepoStatus $openjocRoot
+$activeOpenJocReadmeHashAfter = if (Test-Path -LiteralPath $activeOpenJocReadmePath -PathType Leaf) {
+    Get-Sha256 $activeOpenJocReadmePath
+} else {
+    $null
+}
+$activeOpenJocDirtyAfter = -not [string]::IsNullOrWhiteSpace($activeOpenJocStatusAfter)
+$activeHeadUnchanged = $activeOpenJocHeadBefore -eq $activeOpenJocHeadAfter
+$activeStatusUnchanged = $activeOpenJocStatusBefore -eq $activeOpenJocStatusAfter
+$activeReadmePreserved = $activeOpenJocReadmeHashBefore -eq $activeOpenJocReadmeHashAfter
+if (!$activeHeadUnchanged -or !$activeStatusUnchanged -or !$activeReadmePreserved) {
+    throw "active OpenJOC checkout changed during census reproduction"
+}
+$censusOpenJocStatusAfter = Get-RepoStatus $censusOpenJocWorktree
+if (-not [string]::IsNullOrWhiteSpace($censusOpenJocStatusAfter)) {
+    throw "census OpenJOC worktree is not clean after reproduction: $censusOpenJocStatusAfter"
+}
+Write-JsonFile (Join-Path $OutputRoot "interop-provenance.json") ([ordered]@{
+        schema = "jocforge-interop-provenance-v1"
+        census_openjoc_pin = $expectedOpenJocHead
+        census_openjoc_head = $openjocHead
+        census_openjoc_worktree_clean = $true
+        reproduction_source = "DETACHED_WORKTREE"
+        openjoc_binary_sha256 = $toolRecords.openjoc.sha256
+        published_openjoc_binary_sha256 = $expectedOpenJocSha256
+        openjoc_binary_hash_matches_published = $openjocHashMatchesPublished
+        active_openjoc_head_before = $activeOpenJocHeadBefore
+        active_openjoc_head_after = $activeOpenJocHeadAfter
+        active_openjoc_head_unchanged = $activeHeadUnchanged
+        active_openjoc_dirty_before = $activeOpenJocDirtyBefore
+        active_openjoc_dirty_after = $activeOpenJocDirtyAfter
+        active_openjoc_status_unchanged = $activeStatusUnchanged
+        active_readme_sha256_before = $activeOpenJocReadmeHashBefore
+        active_readme_sha256_after = $activeOpenJocReadmeHashAfter
+        active_readme_preserved = $activeReadmePreserved
+    })
+
 Write-Output "JOC interoperability census written to $OutputRoot"
 Write-Output "positive probes: $($detailRows.Count)"
 Write-Output "OpenJOC: $openjocCoverage"
 Write-Output "FFmpeg: $ffmpegCoverage"
 Write-Output "MediaInfo: $mediaInfoCoverage"
+Write-Output "Census OpenJOC worktree HEAD: $openjocHead"
+Write-Output "Census OpenJOC worktree clean: True"
+Write-Output "Active OpenJOC HEAD unchanged: $activeHeadUnchanged"
+Write-Output "Active OpenJOC README preserved: $activeReadmePreserved"
+}
+finally {
+    if ($censusOpenJocWorktreeCleanupPending -and $null -ne $censusOpenJocWorktree -and (Test-Path -LiteralPath $censusOpenJocWorktree -PathType Container)) {
+        $remove = Invoke-Bounded $gitPath @("-C", $openjocRoot, "worktree", "remove", $censusOpenJocWorktree) 120000 $root
+        if ($remove.status -ne "EXITED" -or $remove.exit_code -ne 0) {
+            Write-Warning "failed to clean temporary census OpenJOC worktree; preserving it for inspection"
+        }
+    }
+}

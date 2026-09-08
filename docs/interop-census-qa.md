@@ -8,7 +8,7 @@ package.
 | Initial complete workspace test run | One transient failure was observed. |
 | Targeted rerun | PASS. |
 | Subsequent full workspace suite rerun | PASS. |
-| Clean census reruns | Reproducible normalized results and hashes. |
+| Clean census reruns | Reproducible corpus/result hashes; local native source-build hashes are recorded per run. |
 
 The transient failure is historical QA context, not a current unresolved
 failure and not part of the interoperability result counts. The final census
@@ -19,4 +19,8 @@ baseline remains 20 positive probes, OpenJOC 20/20, FFmpeg 14 FULL plus 6
 The public reproduction path is
 [`scripts/run-interop-census.ps1`](../scripts/run-interop-census.ps1). It uses
 project-owned synthetic fixtures and does not require publishing copyrighted
-source media.
+source media. It creates a clean detached worktree at the historical OpenJOC
+pin even when the active OpenJOC checkout is newer or dirty. Historical
+publication executable hashes remain evidence; fresh native source builds
+record their actual executable hash because byte identity is not assumed across
+build environments.
