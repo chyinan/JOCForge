@@ -32,6 +32,8 @@
 /artifacts/spec-legal-zero/*.log
 /artifacts/spec-legal-zero/*.wav
 /artifacts/spec-legal-zero/initial-baseline-regenerated.*
+/artifacts/interop-census/
+/artifacts/interop-census-rerun/
 *.ec3
 *.bw64
 *.wav
