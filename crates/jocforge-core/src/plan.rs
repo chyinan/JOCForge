@@ -197,6 +197,9 @@ fn canonical_ownership(
         lfe_ownership,
         LfeOwnership::Independent | LfeOwnership::DependentReplacement
     );
+    // Replacement intentionally carries the predecessor in I0 and the same
+    // public location in D0; decoding replaces the I0 contribution, so the
+    // programme still has one final LFE owner (the dependent).
     if matches!(
         lfe_ownership,
         LfeOwnership::DependentSupplement | LfeOwnership::DependentReplacement
@@ -287,28 +290,27 @@ fn resolve_composition_inner(
         }
         JocContainer::Raw => match request.carriage {
             JocCarriage::I0SkipField => {
-                if request.profile != JocProfile::Idx0 {
-                    return Err(classified(
-                        CapabilityVerdict::SpecLegalNotImplemented,
-                        "I0 skip-field carriage is closed only for idx0",
-                    ));
-                }
                 if request.dependent_count != 0 {
                     return Err(classified(
                         CapabilityVerdict::NotApplicable,
                         "I0 skip-field carriage has no dependent topology",
                     ));
                 }
-                if request.lfe_ownership != LfeOwnership::Absent {
+                if matches!(
+                    request.profile,
+                    JocProfile::Idx1 | JocProfile::Idx2 | JocProfile::Idx4
+                ) {
                     return Err(classified(
-                        CapabilityVerdict::SpecLegalNotImplemented,
-                        "skip-field LFE ownership has no validated source-derived path",
+                        CapabilityVerdict::NotApplicable,
+                        "I0-only skip-field carriage cannot supply the seven-channel profile inputs",
                     ));
                 }
-                if short {
+                if request.profile == JocProfile::Idx3
+                    && request.emdf_profile == EmdfProfile::DeployedCompat
+                {
                     return Err(classified(
-                        CapabilityVerdict::SpecLegalNotImplemented,
-                        "deployed skip-field signaling has only a validated six-block carriage",
+                        CapabilityVerdict::NotApplicable,
+                        "deployed compatibility remains limited to the idx0/1024 preset",
                     ));
                 }
             }
@@ -323,18 +325,6 @@ fn resolve_composition_inner(
                     return Err(classified(
                         CapabilityVerdict::NotApplicable,
                         "fixed legacy AC-3 I0 does not participate in the E-AC-3 short-block axis",
-                    ));
-                }
-                if request.lfe_ownership != LfeOwnership::Absent {
-                    return Err(classified(
-                        CapabilityVerdict::SpecLegalNotImplemented,
-                        "legacy-core LFE ownership has no validated composition path",
-                    ));
-                }
-                if request.emdf_profile != EmdfProfile::EtsiStrict {
-                    return Err(classified(
-                        CapabilityVerdict::SpecLegalNotImplemented,
-                        "legacy-core closure is validated only with strict EMDF",
                     ));
                 }
                 if request.bitrate_kbps != 1280

@@ -38,9 +38,10 @@ pub use conformance::{
     canonical_dependent_channel_maps, canonical_dependent_lfe_plan,
     canonical_dependent_lfe_plan_for_count, channel_map_channel_count, channel_map_role_labels,
     classify_block_partition, dependent_topology_verdict, resolve_dependent_topology,
-    resolve_short_block_plan, semantic_maximum, validate_multi_dependent_access_unit,
-    validate_ownership_plan, validate_short_block_access_unit,
-    validate_short_multi_dependent_access_unit,
+    resolve_short_block_plan, semantic_maximum, validate_legacy_ac3_source_derived_access_unit,
+    validate_multi_dependent_access_unit, validate_ownership_plan,
+    validate_short_block_access_unit, validate_short_multi_dependent_access_unit,
+    validate_short_skip_field_access_unit,
 };
 pub use eac3::inject_joc_skipfld;
 pub use plan::{
@@ -72,12 +73,15 @@ pub use validation::{
 pub use writer::{
     D0CausalityMeasurement, d0_carrier_causality, package_ffmpeg_access_unit,
     package_i0_skip_field_access_unit, package_legacy_ac3_source_derived_access_unit,
+    package_legacy_ac3_source_derived_access_unit_with_plan,
     package_multi_dependent_source_derived_access_unit,
     package_multi_dependent_source_derived_access_unit_with_plan,
     package_short_block_conformance_access_unit, package_source_derived_access_unit,
     package_source_derived_access_unit_with_frame_sizes,
     package_source_derived_short_block_access_unit,
-    package_source_derived_short_block_access_unit_with_plan, write_one_au_proof,
+    package_source_derived_short_block_access_unit_with_plan,
+    package_source_derived_short_skip_field_access_unit,
+    package_source_derived_skip_field_access_unit, write_one_au_proof,
 };
 
 /// MVP JOC downmix profiles.

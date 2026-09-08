@@ -48,6 +48,53 @@ fn ffmpeg_i0_frame(label: &str) -> Vec<u8> {
     frame
 }
 
+fn ffmpeg_legacy_i0_frame(label: &str, lfe: bool) -> Vec<u8> {
+    let path = std::env::temp_dir().join(format!(
+        "jocforge-legacy-test-{label}-{}.ac3",
+        std::process::id(),
+    ));
+    let layout = if lfe { "5.1" } else { "5.0" };
+    let channels = if lfe { 6 } else { 5 };
+    let pan = if lfe {
+        "[0:a]pan=5.1|c0=c0|c1=c0|c2=c0|c3=c0|c4=c0|c5=c0"
+    } else {
+        "[0:a]pan=5.0|c0=c0|c1=c0|c2=c0|c3=c0|c4=c0"
+    };
+    let status = std::process::Command::new("ffmpeg")
+        .args([
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-f",
+            "lavfi",
+            "-i",
+            "anoisesrc=color=white:sample_rate=48000:amplitude=0.2",
+            "-filter_complex",
+            pan,
+            "-t",
+            "0.032",
+            "-frames:a",
+            "1",
+            "-c:a",
+            "ac3",
+            "-b:a",
+            "640k",
+            "-ac",
+            &channels.to_string(),
+            "-f",
+            "ac3",
+            "-y",
+        ])
+        .arg(&path)
+        .status()
+        .expect("ffmpeg starts");
+    assert!(status.success(), "legacy {layout} FFmpeg encode");
+    let frame = std::fs::read(&path).expect("FFmpeg legacy I0 output");
+    std::fs::remove_file(path).expect("remove FFmpeg legacy I0 output");
+    assert_eq!(frame.len(), 2560);
+    frame
+}
+
 #[test]
 fn writer_produces_a_complete_idx0_processing_unit() {
     let access_unit = write_one_au_proof(JocProfile::Idx0).expect("writer proof");
@@ -512,6 +559,86 @@ fn legacy_ac3_package_retains_the_original_core_and_appends_one_d0() {
 }
 
 #[test]
+fn legacy_plan_writer_closes_deployed_and_all_lfe_ownership_modes() {
+    let position = jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    };
+    let matrix = vec![vec![0.2; 7]];
+    for (index, lfe_ownership) in [
+        jocforge_core::LfeOwnership::Independent,
+        jocforge_core::LfeOwnership::DependentSupplement,
+        jocforge_core::LfeOwnership::DependentReplacement,
+    ]
+    .into_iter()
+    .enumerate()
+    {
+        let plan = jocforge_core::resolve_composition(&jocforge_core::CompositionRequest {
+            profile: JocProfile::Idx1,
+            container: jocforge_core::JocContainer::Raw,
+            carriage: JocCarriage::LegacyAc3Dependent,
+            emdf_profile: EmdfProfile::DeployedCompat,
+            bitrate_kbps: 1280,
+            partitions: vec![BlockPartition::Six],
+            dependent_count: 1,
+            lfe_ownership,
+        })
+        .expect("legacy LFE/deployed plan");
+        let ownership = plan.ownership.as_ref().expect("legacy ownership");
+        let i0 = ffmpeg_legacy_i0_frame(&format!("{index}"), ownership.independent_lfe);
+        let d0_carriers = vec![vec![0.1; 1536], vec![0.2; 1536]];
+        let d0_lfe = ownership.dependents[0].has_lfe().then(|| vec![0.3; 1536]);
+        let bytes = jocforge_core::package_legacy_ac3_source_derived_access_unit_with_plan(
+            &plan,
+            1,
+            &matrix,
+            &[position],
+            &i0,
+            &d0_carriers,
+            d0_lfe.as_deref(),
+            0,
+        )
+        .expect("legacy source-derived LFE/deployed AU");
+        assert_eq!(bytes.len(), 5120);
+        assert_eq!(&bytes[0..2], &[0x0b, 0x77]);
+        assert_eq!(&bytes[2560..2562], &[0x0b, 0x77]);
+
+        let mut changed_d0_carriers = d0_carriers.clone();
+        changed_d0_carriers[0][0] += 0.5;
+        let changed = jocforge_core::package_legacy_ac3_source_derived_access_unit_with_plan(
+            &plan,
+            1,
+            &matrix,
+            &[position],
+            &i0,
+            &changed_d0_carriers,
+            d0_lfe.as_deref(),
+            0,
+        )
+        .expect("changed legacy source-derived AU");
+        assert_ne!(bytes, changed, "legacy D0 source must be causal");
+
+        if index == 0 {
+            let mut corrupted_i0 = i0.clone();
+            corrupted_i0[2] ^= 1;
+            let error = jocforge_core::package_legacy_ac3_source_derived_access_unit_with_plan(
+                &plan,
+                1,
+                &matrix,
+                &[position],
+                &corrupted_i0,
+                &d0_carriers,
+                d0_lfe.as_deref(),
+                0,
+            )
+            .expect_err("legacy AC-3 CRC1 corruption must fail closed");
+            assert!(error.contains("crc1"));
+        }
+    }
+}
+
+#[test]
 fn short_block_conformance_writer_preserves_one_1536_sample_group() {
     let unit = 820.0 / 4096.0;
     let matrix = vec![vec![unit, 0.0, 0.0, 0.0, 0.0]];
@@ -610,6 +737,172 @@ fn source_derived_short_writer_emits_real_partitioned_frames_and_tracks_carriers
     )
     .expect("changed source-derived short AU");
     assert_ne!(bytes, changed);
+}
+
+#[test]
+fn source_derived_skip_field_short_writer_uses_the_selected_partition() {
+    let plan = jocforge_core::resolve_composition(&jocforge_core::CompositionRequest {
+        profile: JocProfile::Idx0,
+        container: jocforge_core::JocContainer::Raw,
+        carriage: JocCarriage::I0SkipField,
+        emdf_profile: EmdfProfile::DeployedCompat,
+        bitrate_kbps: 1024,
+        partitions: vec![BlockPartition::Three, BlockPartition::Three],
+        dependent_count: 0,
+        lfe_ownership: jocforge_core::LfeOwnership::Absent,
+    })
+    .expect("skip-field short plan");
+    let position = jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    };
+    let matrix = vec![vec![0.2; 5]];
+    let carriers = vec![vec![0.1; 1536]; 5];
+    let bytes = jocforge_core::package_source_derived_short_skip_field_access_unit(
+        &plan,
+        1,
+        &matrix,
+        &[position],
+        &carriers,
+        None,
+    )
+    .expect("source-derived skip-field short AU");
+    assert_eq!(bytes.len(), 4096);
+
+    let mut changed_carriers = carriers.clone();
+    changed_carriers[0][0] += 0.5;
+    let changed = jocforge_core::package_source_derived_short_skip_field_access_unit(
+        &plan,
+        1,
+        &[vec![0.2; 5]],
+        &[position],
+        &changed_carriers,
+        None,
+    )
+    .expect("changed source-derived skip-field short AU");
+    assert_ne!(bytes, changed, "short I0 source must be causal");
+}
+
+#[test]
+fn source_derived_skip_field_short_writer_serializes_independent_lfe_causally() {
+    let plan = jocforge_core::resolve_composition(&jocforge_core::CompositionRequest {
+        profile: JocProfile::Idx0,
+        container: jocforge_core::JocContainer::Raw,
+        carriage: JocCarriage::I0SkipField,
+        emdf_profile: EmdfProfile::DeployedCompat,
+        bitrate_kbps: 1024,
+        partitions: vec![BlockPartition::Two; 3],
+        dependent_count: 0,
+        lfe_ownership: jocforge_core::LfeOwnership::Independent,
+    })
+    .expect("skip-field LFE short plan");
+    let position = jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    };
+    let carriers = vec![vec![0.1; 1536]; 5];
+    let lfe = vec![0.03; 1536];
+    let bytes = jocforge_core::package_source_derived_short_skip_field_access_unit(
+        &plan,
+        1,
+        &[vec![0.2; 5]],
+        &[position],
+        &carriers,
+        Some(&lfe),
+    )
+    .expect("skip-field LFE short AU");
+    let mut changed_lfe = lfe;
+    changed_lfe[512] += 0.5;
+    let changed = jocforge_core::package_source_derived_short_skip_field_access_unit(
+        &plan,
+        1,
+        &[vec![0.2; 5]],
+        &[position],
+        &carriers,
+        Some(&changed_lfe),
+    )
+    .expect("changed skip-field LFE short AU");
+    assert_ne!(bytes, changed, "short independent LFE must be causal");
+}
+
+#[test]
+fn phase_profile_uses_the_same_strict_skip_field_short_writer() {
+    let plan = jocforge_core::resolve_composition(&jocforge_core::CompositionRequest {
+        profile: JocProfile::Idx3,
+        container: jocforge_core::JocContainer::Raw,
+        carriage: JocCarriage::I0SkipField,
+        emdf_profile: EmdfProfile::EtsiStrict,
+        bitrate_kbps: 1024,
+        partitions: vec![BlockPartition::One; 6],
+        dependent_count: 0,
+        lfe_ownership: jocforge_core::LfeOwnership::Absent,
+    })
+    .expect("phase skip-field short plan");
+    let position = jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    };
+    let bytes = jocforge_core::package_source_derived_short_skip_field_access_unit(
+        &plan,
+        1,
+        &[vec![0.2; 5]],
+        &[position],
+        &vec![vec![0.1; 1536]; 5],
+        None,
+    )
+    .expect("phase source-derived skip-field short AU");
+    assert_eq!(bytes.len(), 4096);
+}
+
+#[test]
+fn source_derived_skip_field_six_writer_closes_phase_profile_without_ffmpeg_walker() {
+    let plan = jocforge_core::resolve_composition(&jocforge_core::CompositionRequest {
+        profile: JocProfile::Idx3,
+        container: jocforge_core::JocContainer::Raw,
+        carriage: JocCarriage::I0SkipField,
+        emdf_profile: EmdfProfile::EtsiStrict,
+        bitrate_kbps: 1024,
+        partitions: vec![BlockPartition::Six],
+        dependent_count: 0,
+        lfe_ownership: jocforge_core::LfeOwnership::Absent,
+    })
+    .expect("phase skip-field six plan");
+    let position = jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    };
+    let carriers = (0..5)
+        .map(|channel| vec![0.001 * f64::from(channel + 1); 1536])
+        .collect::<Vec<_>>();
+    let bytes = jocforge_core::package_source_derived_skip_field_access_unit(
+        &plan,
+        1,
+        &[vec![0.2; 5]],
+        &[position],
+        &carriers,
+    )
+    .expect("source-derived phase skip-field six AU");
+    assert_eq!(bytes.len(), 4096);
+    assert_eq!(&bytes[0..2], &[0x0b, 0x77]);
+
+    let mut changed_carriers = carriers;
+    changed_carriers[0][0] += 0.5;
+    let changed = jocforge_core::package_source_derived_skip_field_access_unit(
+        &plan,
+        1,
+        &[vec![0.2; 5]],
+        &[position],
+        &changed_carriers,
+    )
+    .expect("changed source-derived phase skip-field six AU");
+    assert_ne!(
+        bytes, changed,
+        "I0 source carrier must be causally serialized"
+    );
 }
 
 #[test]
@@ -869,6 +1162,18 @@ fn i0_skip_field_profile_changes_only_emdf_signaling() {
     assert_eq!(strict.len(), 4096);
     assert_eq!(deployed.len(), strict.len());
     assert_ne!(deployed, strict);
+
+    let phase = package_i0_skip_field_access_unit(
+        JocProfile::Idx3,
+        EmdfProfile::EtsiStrict,
+        1,
+        &matrix,
+        &positions,
+        &i0,
+    )
+    .expect("strict phase I0 skip-field AU");
+    assert_eq!(phase.len(), strict.len());
+    assert_ne!(phase, strict);
 }
 
 #[test]

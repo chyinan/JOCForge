@@ -399,6 +399,24 @@ fn oamd_height(value: f64) -> u64 {
 }
 
 fn write_five_channel_frame(emdf: Option<&[u8]>, joc_extension: bool) -> Vec<u8> {
+    write_five_channel_frame_with_exponents(emdf, joc_extension, [0; 5])
+}
+
+fn write_five_channel_frame_with_exponents(
+    emdf: Option<&[u8]>,
+    joc_extension: bool,
+    exponent_codes: [u8; 5],
+) -> Vec<u8> {
+    write_five_channel_frame_with_options(emdf, joc_extension, exponent_codes, None, 16)
+}
+
+fn write_five_channel_frame_with_options(
+    emdf: Option<&[u8]>,
+    joc_extension: bool,
+    exponent_codes: [u8; 5],
+    skip_field: Option<&[u8]>,
+    complexity_index: u8,
+) -> Vec<u8> {
     let exponent_delta_codes = [62_u8; 5];
     let mut bits = BitWriter::default();
     for (value, width) in [
@@ -422,13 +440,13 @@ fn write_five_channel_frame(emdf: Option<&[u8]>, joc_extension: bool) -> Vec<u8>
     if joc_extension {
         bits.push(1, 6); // two addbsi bytes
         bits.push(0x01, 8); // JOC extension type
-        bits.push(16, 8); // fifteen dynamic slots plus base-LFE slot
+        bits.push(u64::from(complexity_index), 8);
     }
     bits.push(1, 1);
     bits.push(0, 1);
     bits.push(0, 2);
     bits.push(0, 1);
-    bits.push(0, 7);
+    bits.push(u64::from(skip_field.is_some()) * 0b0000010, 7);
     bits.push(0, 1);
     for _ in 1..6 {
         bits.push(0, 1);
@@ -449,20 +467,26 @@ fn write_five_channel_frame(emdf: Option<&[u8]>, joc_extension: bool) -> Vec<u8>
     for _ in 0..5 {
         bits.push(0, 6);
     }
-    for exponent_delta_code in exponent_delta_codes {
-        bits.push(0, 4); // channel initial exponent
+    for (channel, exponent_delta_code) in exponent_delta_codes.into_iter().enumerate() {
+        bits.push(u64::from(exponent_codes[channel].min(D0_MAX_EXPONENT)), 4);
         for _ in 0..24 {
             bits.push(u64::from(exponent_delta_code), 7);
         }
         bits.push(0, 2);
     }
     bits.push(0, 1);
+    if skip_field.is_some() {
+        push_short_skip_field(&mut bits, skip_field, 0);
+    }
     for _ in 1..6 {
         bits.push(0, 1);
         bits.push(0, 1);
         bits.push(0, 1);
+        if skip_field.is_some() {
+            bits.push(0, 1);
+        }
     }
-    finish_frame(bits, emdf, FRAME_BYTES)
+    finish_frame(bits, skip_field.map_or(emdf, |_| None), FRAME_BYTES)
 }
 
 /// Writes one public 1/2/3-block E-AC-3 frame. The optional exponent view is
@@ -477,6 +501,7 @@ fn write_public_short_frame(
     blocks: BlockPartition,
     convsync: bool,
     emdf: Option<&[u8]>,
+    skip_field: Option<&[u8]>,
     complexity_index: u8,
     frame_bytes: usize,
     source_exponent_codes: Option<&[u8]>,
@@ -484,6 +509,12 @@ fn write_public_short_frame(
     sample_offset: usize,
 ) -> Result<Vec<u8>, String> {
     validate_frame_bytes(frame_bytes, "short")?;
+    if emdf.is_some() && skip_field.is_some() {
+        return Err("short frame cannot carry both frame-end EMDF and skip-field EMDF".to_owned());
+    }
+    if skip_field.is_some_and(|payload| payload.len() > 0x1ff) {
+        return Err("short skip-field EMDF exceeds the public 9-bit byte capacity".to_owned());
+    }
     if !matches!(
         blocks,
         BlockPartition::One | BlockPartition::Two | BlockPartition::Three
@@ -547,22 +578,21 @@ fn write_public_short_frame(
     if stream_type == 0 {
         bits.push(u64::from(convsync), 1);
     }
-    bits.push(u64::from(emdf.is_some()), 1);
-    if emdf.is_some() {
+    let metadata_carrier = emdf.or(skip_field);
+    bits.push(u64::from(metadata_carrier.is_some()), 1);
+    if metadata_carrier.is_some() {
         bits.push(1, 6);
         bits.push(0x01, 8);
         bits.push(u64::from(complexity_index), 8);
     }
     bits.push(u64::from(lfe_source_carrier.is_some()) * 2, 2);
     bits.push(0, 1); // no transient processing
-    bits.push(
-        if lfe_source_carrier.is_some() {
-            0b0011000
-        } else {
-            0
-        },
-        7,
-    ); // compact syntax flags; frame fast-gain only for independent LFE
+    let syntax_flags = (if lfe_source_carrier.is_some() {
+        0b0011000
+    } else {
+        0
+    }) | if skip_field.is_some() { 0b0000010 } else { 0 };
+    bits.push(syntax_flags, 7); // compact syntax flags; bit 5 enables skip fields
     if channel_count > 1 {
         bits.push(0, 1); // coupling not in use in block zero
         for _ in 1..block_count {
@@ -626,9 +656,9 @@ fn write_public_short_frame(
         }
         bits.push(4, 3); // LFE fast gain
     }
-    if lfe_source_carrier.is_none() {
+    if lfe_source_carrier.is_none() && skip_field.is_none() {
         for _ in 0..channel_count {
-            bits.push(0, 2); // gain range
+            bits.push(0, 2); // legacy bounded gain-range padding
         }
     }
     bits.push(0, 1); // converter SNR offset absent
@@ -645,6 +675,9 @@ fn write_public_short_frame(
                 bits.push(0, 1); // fast-gain codes reused
                 bits.push(0, 1); // converter SNR offset absent
             }
+            if skip_field.is_some() {
+                push_short_skip_field(&mut bits, skip_field, block);
+            }
             push_short_i0_zero_mantissas(&mut bits, channel_count);
             push_short_i0_lfe_mantissas(
                 &mut bits,
@@ -652,13 +685,18 @@ fn write_public_short_frame(
             );
         }
     } else {
-        for _ in 1..block_count {
-            bits.push(0, 1); // dynamic range absent
-            bits.push(0, 1); // SPX strategy reused
-            if channel_count == 2 {
-                bits.push(0, 1); // rematrix strategy reused
+        for block in 0..block_count {
+            if block > 0 {
+                bits.push(0, 1); // dynamic range absent
+                bits.push(0, 1); // SPX strategy reused
+                if channel_count == 2 {
+                    bits.push(0, 1); // rematrix strategy reused
+                }
+                bits.push(0, 1); // converter SNR offset absent
             }
-            bits.push(0, 1); // converter SNR offset absent
+            if skip_field.is_some() {
+                push_short_skip_field(&mut bits, skip_field, block);
+            }
         }
     }
     let reserved_tail = emdf.map_or(17, |payload| {
@@ -672,6 +710,17 @@ fn write_public_short_frame(
         ));
     }
     Ok(finish_frame(bits, emdf, frame_bytes))
+}
+
+fn push_short_skip_field(bits: &mut BitWriter, payload: Option<&[u8]>, block: usize) {
+    let payload = payload.filter(|_| block == 0);
+    bits.push(u64::from(payload.is_some()), 1);
+    if let Some(payload) = payload {
+        bits.push(u64::try_from(payload.len()).unwrap_or(0), 9);
+        for byte in payload {
+            bits.push(u64::from(*byte), 8);
+        }
+    }
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -988,6 +1037,37 @@ fn push_short_i0_lfe_mantissas(bits: &mut BitWriter, feature: u8) {
     bits.push(13, 5); // BAP-1 group containing three zero codes
 }
 
+fn write_source_independent_six_skip_frame(
+    emdf: &[u8],
+    complexity_index: u8,
+    carriers: &[Vec<f64>],
+) -> Result<Vec<u8>, String> {
+    if emdf.len() > 0x1ff {
+        return Err("I0 skip-field EMDF exceeds the public 9-bit byte capacity".to_owned());
+    }
+    if carriers.len() != 5
+        || carriers
+            .iter()
+            .any(|carrier| carrier.len() < 1536 || carrier.iter().any(|sample| !sample.is_finite()))
+    {
+        return Err("source-derived I0 requires five finite 1536-sample carriers".to_owned());
+    }
+    let exponent_codes = carriers
+        .iter()
+        .map(|carrier| source_feature(carrier, 0, 0))
+        .collect::<Vec<_>>();
+    let exponent_codes: [u8; 5] = exponent_codes
+        .try_into()
+        .map_err(|_| "source-derived I0 exponent count differs from five channels".to_owned())?;
+    Ok(write_five_channel_frame_with_options(
+        Some(emdf),
+        true,
+        exponent_codes,
+        Some(emdf),
+        complexity_index,
+    ))
+}
+
 fn source_feature(carrier: &[f64], sample_offset: usize, block: usize) -> u8 {
     let start = sample_offset + block * SOURCE_FEATURE_SAMPLE_WINDOW;
     let sum = carrier[start..start + SOURCE_FEATURE_SAMPLE_WINDOW]
@@ -1163,6 +1243,7 @@ pub fn package_legacy_ac3_source_derived_access_unit(
             "legacy AC-3 carriage requires one 48 kHz bsid 6/8 5.1 AC-3 I0 frame".to_owned(),
         );
     }
+    crate::eac3::validate_legacy_ac3_crc(ac3_i0_frame)?;
     if matrix.len() != positions.len() {
         return Err("JOC matrix rows must match reduced OAMD positions".to_owned());
     }
@@ -1181,6 +1262,81 @@ pub fn package_legacy_ac3_source_derived_access_unit(
     let mut output = Vec::with_capacity(ac3_i0_frame.len() + d0.len());
     output.extend_from_slice(ac3_i0_frame);
     output.extend_from_slice(&d0);
+    Ok(output)
+}
+
+/// Packages the legacy original-syntax AC-3 I0 plus one E-AC-3 D0 using the
+/// resolved ownership and signaling plan. Independent LFE remains in the AC-3
+/// I0; supplement/replacement LFE is carried by the mapped D0 as requested.
+#[allow(clippy::too_many_arguments)]
+pub fn package_legacy_ac3_source_derived_access_unit_with_plan(
+    plan: &JocEncodingPlan,
+    sequence_count: u16,
+    matrix: &[Vec<f64>],
+    positions: &[AdmPosition],
+    ac3_i0_frame: &[u8],
+    d0_carriers: &[Vec<f64>],
+    d0_lfe_carrier: Option<&[f64]>,
+    sample_offset: usize,
+) -> Result<Vec<u8>, String> {
+    if plan.container != JocContainer::Raw
+        || plan.carriage != crate::JocCarriage::LegacyAc3Dependent
+        || !plan.block_partition.is_default()
+        || plan.dependent_count != 1
+    {
+        return Err("legacy source-derived writer requires a raw six-block I0+D0 plan".to_owned());
+    }
+    let ownership_plan = plan
+        .ownership
+        .as_ref()
+        .ok_or_else(|| "legacy source-derived writer requires an ownership plan".to_owned())?;
+    if ownership_plan.profile != plan.profile || ownership_plan.dependents.len() != 1 {
+        return Err("legacy source-derived ownership plan does not match one D0".to_owned());
+    }
+    if !valid_legacy_ac3_i0_frame(ac3_i0_frame) {
+        return Err(
+            "legacy AC-3 carriage requires one 48 kHz bsid 6/8 5.1 AC-3 I0 frame".to_owned(),
+        );
+    }
+    let independent_lfe = read_bits(ac3_i0_frame, 55, 1)
+        .ok_or_else(|| "legacy AC-3 I0 has no complete lfeon field".to_owned())?
+        != 0;
+    if independent_lfe != ownership_plan.independent_lfe {
+        return Err("legacy AC-3 I0 LFE ownership does not match the resolved plan".to_owned());
+    }
+    if matrix.len() != positions.len() {
+        return Err("JOC matrix rows must match reduced OAMD positions".to_owned());
+    }
+    if d0_carriers.len() != ownership_plan.dependents[0].full_band_channel_count() {
+        return Err("legacy D0 source carriers do not match its channel map".to_owned());
+    }
+    if d0_lfe_carrier.is_some() != ownership_plan.dependents[0].has_lfe() {
+        return Err("legacy D0 LFE carrier does not match the resolved ownership".to_owned());
+    }
+    let oamd = write_oamd_payload(positions)?;
+    let joc = write_joc_payload(plan.profile, sequence_count, matrix)?;
+    let emdf = write_emdf(&oamd, &joc, plan.emdf_profile)?;
+    let d0 = write_source_dependent_frame_with_lfe_options(
+        Some(&emdf),
+        ownership_plan.dependents[0].id,
+        ownership_plan.dependents[0].channel_map,
+        d0_carriers,
+        d0_lfe_carrier,
+        sample_offset,
+        u8::try_from(positions.len() + 1)
+            .map_err(|_| "JOC complexity index exceeds its eight-bit field".to_owned())?,
+        plan.rate.d0_frame_bytes,
+    )?;
+    let mut output = Vec::with_capacity(ac3_i0_frame.len() + d0.len());
+    output.extend_from_slice(ac3_i0_frame);
+    output.extend_from_slice(&d0);
+    crate::conformance::validate_legacy_ac3_source_derived_access_unit(
+        &output,
+        plan.profile,
+        ownership_plan,
+        plan.emdf_profile,
+        plan.rate.carrier_frame_bytes,
+    )?;
     Ok(output)
 }
 
@@ -1236,6 +1392,7 @@ pub fn package_short_block_conformance_access_unit(
             partition,
             index == 0,
             None,
+            None,
             complexity_index,
             512,
             None,
@@ -1250,6 +1407,7 @@ pub fn package_short_block_conformance_access_unit(
             partition,
             false,
             (index + 1 == plan.partitions().len()).then_some(emdf.as_slice()),
+            None,
             complexity_index,
             512,
             None,
@@ -1270,6 +1428,9 @@ pub fn package_short_block_conformance_access_unit(
 /// their short-frame timing and ownership contracts are independently closed.
 /// The independent programme LFE is carried in every corresponding short I0
 /// frame and remains outside the JOC reconstruction matrix.
+/// The clean-side source-derived contract is the bounded source feature view
+/// used by the existing short primitive; it does not claim perceptual encoder
+/// parity or synthesize an empty dependent slot.
 #[allow(clippy::too_many_arguments)]
 pub fn package_source_derived_short_block_access_unit(
     plan: &JocEncodingPlan,
@@ -1347,6 +1508,7 @@ pub fn package_source_derived_short_block_access_unit(
             plan.block_partition.partitions()[index],
             plan.block_partition.convsync()[index],
             None,
+            None,
             complexity_index,
             carrier_sizes[index],
             Some(&i0_exponent_codes),
@@ -1365,6 +1527,7 @@ pub fn package_source_derived_short_block_access_unit(
             plan.block_partition.partitions()[index],
             false,
             (index + 1 == plan.block_partition.partitions().len()).then_some(emdf.as_slice()),
+            None,
             complexity_index,
             d0_sizes[index],
             Some(&d0_exponent_codes),
@@ -1378,6 +1541,103 @@ pub fn package_source_derived_short_block_access_unit(
         &output,
         plan.profile,
         plan.block_partition.partitions(),
+    )?;
+    Ok(output)
+}
+
+/// Packages one source-derived I0-only skip-field interval as genuine short
+/// E-AC-3 syncframes. The final short I0 carries the JOC/OAMD EMDF in its
+/// audio-block skip field; no dependent substream is synthesized.
+#[allow(clippy::too_many_arguments)]
+pub fn package_source_derived_short_skip_field_access_unit(
+    plan: &JocEncodingPlan,
+    sequence_count: u16,
+    matrix: &[Vec<f64>],
+    positions: &[AdmPosition],
+    i0_carriers: &[Vec<f64>],
+    i0_lfe_carrier: Option<&[f64]>,
+) -> Result<Vec<u8>, String> {
+    if plan.container != JocContainer::Raw || plan.carriage != crate::JocCarriage::I0SkipField {
+        return Err("short skip-field writer requires raw I0 skip-field carriage".to_owned());
+    }
+    if !matches!(plan.profile, JocProfile::Idx0 | JocProfile::Idx3) {
+        return Err("short skip-field writer requires a five-channel profile".to_owned());
+    }
+    if plan.profile == JocProfile::Idx3 && plan.emdf_profile == EmdfProfile::DeployedCompat {
+        return Err("deployed short skip-field signaling is limited to idx0".to_owned());
+    }
+    if plan.dependent_count != 0 || plan.block_partition.is_default() {
+        return Err("short skip-field writer requires one non-default I0-only plan".to_owned());
+    }
+    if crate::conformance::classify_block_partition(plan.block_partition.partitions())
+        != crate::BlockPartitionStatus::PublicLegal
+    {
+        return Err(
+            "short skip-field writer requires a publicly closed block partition".to_owned(),
+        );
+    }
+    if matrix.len() != positions.len() || positions.is_empty() {
+        return Err(
+            "short skip-field matrix and OAMD positions must be non-empty and aligned".to_owned(),
+        );
+    }
+    if i0_carriers.len() != 5
+        || i0_carriers
+            .iter()
+            .any(|carrier| carrier.len() < 1536 || carrier.iter().any(|sample| !sample.is_finite()))
+    {
+        return Err(
+            "short skip-field writer requires five finite 1536-sample I0 carriers".to_owned(),
+        );
+    }
+    if i0_lfe_carrier.is_some_and(|carrier| {
+        carrier.len() < 1536 || carrier.iter().any(|sample| !sample.is_finite())
+    }) {
+        return Err("short skip-field I0 LFE carrier must contain 1536 finite samples".to_owned());
+    }
+    if i0_lfe_carrier.is_some() != (plan.lfe_ownership == crate::LfeOwnership::Independent) {
+        return Err("short skip-field I0 LFE carrier does not match ownership".to_owned());
+    }
+    let frame_sizes = partition_frame_bytes(
+        plan.rate.carrier_frame_bytes,
+        plan.block_partition.partitions(),
+    )?;
+    let oamd = write_oamd_payload(positions)?;
+    let joc = write_joc_payload(plan.profile, sequence_count, matrix)?;
+    let emdf = write_emdf(&oamd, &joc, plan.emdf_profile)?;
+    let complexity_index = u8::try_from(positions.len() + 1)
+        .map_err(|_| "JOC complexity index exceeds its eight-bit field".to_owned())?;
+    let mut output = Vec::new();
+    for (index, range) in plan.block_partition.frame_ranges(0).into_iter().enumerate() {
+        let exponent_codes = i0_carriers
+            .iter()
+            .map(|carrier| source_feature(carrier, range.start_sample, 0))
+            .collect::<Vec<_>>();
+        let final_frame = index + 1 == plan.block_partition.partitions().len();
+        let frame = write_public_short_frame(
+            0,
+            0,
+            None,
+            5,
+            plan.block_partition.partitions()[index],
+            plan.block_partition.convsync()[index],
+            None,
+            final_frame.then_some(emdf.as_slice()),
+            complexity_index,
+            frame_sizes[index],
+            Some(&exponent_codes),
+            i0_lfe_carrier,
+            range.start_sample,
+        )?;
+        output.extend_from_slice(&frame);
+    }
+    crate::conformance::validate_short_skip_field_access_unit(
+        &output,
+        plan.profile,
+        plan.emdf_profile,
+        &emdf[4..],
+        plan.block_partition.partitions(),
+        i0_lfe_carrier.is_some(),
     )?;
     Ok(output)
 }
@@ -1477,6 +1737,7 @@ pub fn package_source_derived_short_block_access_unit_with_plan(
             plan.block_partition.partitions()[partition_index],
             plan.block_partition.convsync()[partition_index],
             None,
+            None,
             complexity_index,
             carrier_sizes[partition_index],
             Some(&i0_exponent_codes),
@@ -1500,6 +1761,7 @@ pub fn package_source_derived_short_block_access_unit_with_plan(
                 plan.block_partition.partitions()[partition_index],
                 false,
                 final_dependent.then_some(emdf.as_slice()),
+                None,
                 complexity_index,
                 dependent_sizes[partition_index],
                 Some(&exponent_codes),
@@ -1517,10 +1779,83 @@ pub fn package_source_derived_short_block_access_unit_with_plan(
     Ok(output)
 }
 
+/// Packages one source-derived six-block I0-only skip-field interval. This
+/// path uses the same clean public six-block syntax as the proof writer, but
+/// derives each active channel's bounded exponent view from the five source
+/// carriers before inserting the JOC/OAMD EMDF into the audio-block skip
+/// fields. It is a source-derived public syntax bridge, not a perceptual
+/// encoder claim or an empty dependent placeholder.
+#[allow(clippy::too_many_arguments)]
+pub fn package_source_derived_skip_field_access_unit(
+    plan: &JocEncodingPlan,
+    sequence_count: u16,
+    matrix: &[Vec<f64>],
+    positions: &[AdmPosition],
+    i0_carriers: &[Vec<f64>],
+) -> Result<Vec<u8>, String> {
+    if plan.container != JocContainer::Raw
+        || plan.carriage != crate::JocCarriage::I0SkipField
+        || !plan.block_partition.is_default()
+    {
+        return Err("source-derived skip-field writer requires a raw six-block I0 plan".to_owned());
+    }
+    if !matches!(plan.profile, JocProfile::Idx0 | JocProfile::Idx3) {
+        return Err("source-derived skip-field writer requires a five-channel profile".to_owned());
+    }
+    if plan.profile == JocProfile::Idx3 && plan.emdf_profile == EmdfProfile::DeployedCompat {
+        return Err("deployed skip-field signaling is limited to idx0".to_owned());
+    }
+    if plan.dependent_count != 0 {
+        return Err("source-derived skip-field writer requires one I0-only plan".to_owned());
+    }
+    if matrix.len() != positions.len() || positions.is_empty() {
+        return Err(
+            "source-derived skip-field matrix and OAMD positions must be non-empty and aligned"
+                .to_owned(),
+        );
+    }
+    if i0_carriers.len() != 5
+        || i0_carriers
+            .iter()
+            .any(|carrier| carrier.len() < 1536 || carrier.iter().any(|sample| !sample.is_finite()))
+    {
+        return Err(
+            "source-derived skip-field writer requires five finite 1536-sample I0 carriers"
+                .to_owned(),
+        );
+    }
+    if plan.lfe_ownership != crate::LfeOwnership::Absent {
+        return Err("source-derived six-block skip-field writer requires no LFE".to_owned());
+    }
+    let oamd = write_oamd_payload(positions)?;
+    let joc = write_joc_payload(plan.profile, sequence_count, matrix)?;
+    let emdf = write_emdf(&oamd, &joc, plan.emdf_profile)?;
+    let complexity_index = u8::try_from(positions.len() + 1)
+        .map_err(|_| "JOC complexity index exceeds its eight-bit field".to_owned())?;
+    let frame = write_source_independent_six_skip_frame(&emdf, complexity_index, i0_carriers)?;
+    crate::conformance::validate_short_skip_field_access_unit(
+        &frame,
+        plan.profile,
+        plan.emdf_profile,
+        &emdf[4..],
+        &[BlockPartition::Six],
+        false,
+    )?;
+    Ok(frame)
+}
+
 fn valid_legacy_ac3_i0_frame(frame: &[u8]) -> bool {
     matches!(frame.len(), 1536 | 1792 | 2048 | 2304 | 2560)
         && frame.get(0..2) == Some(&[0x0b, 0x77])
         && read_bits(frame, 32, 2) == Some(0)
+        && read_bits(frame, 34, 6).and_then(|code| {
+            [
+                32_usize, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 384, 448, 512,
+                576, 640,
+            ]
+            .get(usize::try_from(code / 2).ok()?)
+            .and_then(|bitrate| bitrate.checked_mul(4))
+        }) == Some(frame.len())
         && matches!(read_bits(frame, 40, 5), Some(6 | 8))
         && read_bits(frame, 48, 3) == Some(7)
 }
@@ -1676,8 +2011,11 @@ pub fn package_i0_skip_field_access_unit(
     positions: &[AdmPosition],
     i0_frame: &[u8],
 ) -> Result<Vec<u8>, String> {
-    if profile != JocProfile::Idx0 {
-        return Err("I0 skip-field carriage currently supports idx0 only".to_owned());
+    if !matches!(profile, JocProfile::Idx0 | JocProfile::Idx3) {
+        return Err("I0 skip-field carriage requires a five-channel profile".to_owned());
+    }
+    if profile == JocProfile::Idx3 && emdf_profile == EmdfProfile::DeployedCompat {
+        return Err("deployed skip-field signaling is limited to idx0".to_owned());
     }
     if i0_frame.get(0..2) != Some(&[0x0b, 0x77])
         || !(i0_frame.len() == FRAME_BYTES || i0_frame.len() == 3584)

@@ -820,6 +820,26 @@ pub(crate) fn validate_crc2(frame: &[u8]) -> Result<(), String> {
     Ok(())
 }
 
+pub(crate) fn validate_legacy_ac3_crc(frame: &[u8]) -> Result<(), String> {
+    if frame.len() < 8 || frame.len() % 2 != 0 {
+        return Err("legacy AC-3 I0 is too short for CRC validation".to_owned());
+    }
+    let frame_words = frame.len() / 2;
+    let crc1_words = (frame_words >> 1)
+        .checked_add(frame_words >> 3)
+        .ok_or_else(|| "legacy AC-3 I0 CRC1 range overflows".to_owned())?;
+    let crc1_end = crc1_words
+        .checked_mul(2)
+        .ok_or_else(|| "legacy AC-3 I0 CRC1 byte range overflows".to_owned())?;
+    if crc1_end > frame.len() || crc16(&frame[2..crc1_end]) != 0 {
+        return Err("legacy AC-3 I0 crc1 mismatch".to_owned());
+    }
+    if crc16(&frame[2..]) != 0 {
+        return Err("legacy AC-3 I0 crc2 mismatch".to_owned());
+    }
+    Ok(())
+}
+
 /// Extends a public E-AC-3 frame with zero-valued auxiliary padding while
 /// changing only its declared frame size and CRC2.  Audio syntax is copied
 /// bit-for-bit; the final zero bit remains `auxdatae=0`.

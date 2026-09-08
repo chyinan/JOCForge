@@ -27,6 +27,26 @@ fn resolver_returns_a_complete_profile_carriage_rate_plan() {
 
 #[test]
 fn resolver_rejects_skip_field_for_profiles_without_a_closed_topology() {
+    let error = CompositionResolver::resolve(&CompositionRequest {
+        profile: JocProfile::Idx1,
+        container: JocContainer::Raw,
+        carriage: JocCarriage::I0SkipField,
+        emdf_profile: EmdfProfile::DeployedCompat,
+        bitrate_kbps: 1024,
+        partitions: vec![BlockPartition::Six],
+        dependent_count: 0,
+        lfe_ownership: LfeOwnership::Absent,
+    })
+    .expect_err("idx1 skip-field carriage must remain not applicable");
+
+    assert_eq!(
+        error.classification.verdict,
+        CapabilityVerdict::NotApplicable
+    );
+}
+
+#[test]
+fn compatibility_wrapper_maps_not_applicable_skip_field_to_an_actionable_error() {
     let error = resolve_encoding_plan(
         JocProfile::Idx1,
         JocCarriage::I0SkipField,
@@ -35,13 +55,201 @@ fn resolver_rejects_skip_field_for_profiles_without_a_closed_topology() {
     )
     .expect_err("idx1 skip-field carriage must remain fail-closed");
 
-    assert_eq!(
+    assert!(matches!(
         error,
-        JocPlanError::UnsupportedCarriage {
+        JocPlanError::UnsupportedBlockPartition {
             profile: JocProfile::Idx1,
             carriage: JocCarriage::I0SkipField,
+            status: jocforge_core::BlockPartitionStatus::PublicLegal,
         }
+    ));
+}
+
+#[test]
+fn skip_field_profile_and_dependent_axes_are_classified_by_applicability() {
+    for (profile, dependent_count) in [(JocProfile::Idx1, 0), (JocProfile::Idx2, 1)] {
+        let error = CompositionResolver::resolve(&CompositionRequest {
+            profile,
+            container: JocContainer::Raw,
+            carriage: JocCarriage::I0SkipField,
+            emdf_profile: EmdfProfile::EtsiStrict,
+            bitrate_kbps: 1024,
+            partitions: vec![BlockPartition::Six],
+            dependent_count,
+            lfe_ownership: LfeOwnership::Absent,
+        })
+        .expect_err("skip-field has no seven-channel/dependent topology");
+        assert_eq!(
+            error.classification.verdict,
+            CapabilityVerdict::NotApplicable
+        );
+    }
+}
+
+#[test]
+fn phase_profile_reuses_the_five_channel_skip_field_carriage() {
+    let plan = CompositionResolver::resolve(&CompositionRequest {
+        profile: JocProfile::Idx3,
+        container: JocContainer::Raw,
+        carriage: JocCarriage::I0SkipField,
+        emdf_profile: EmdfProfile::EtsiStrict,
+        bitrate_kbps: 1024,
+        partitions: vec![BlockPartition::Six],
+        dependent_count: 0,
+        lfe_ownership: LfeOwnership::Absent,
+    })
+    .expect("idx3 is a five-input phase-signaled I0-only profile");
+    assert_eq!(plan.spec.input_labels.len(), 5);
+    assert!(plan.spec.phase_signaled);
+}
+
+#[test]
+fn skip_field_short_canonical_and_mixed_partitions_have_distinct_results() {
+    let canonical = CompositionResolver::resolve(&CompositionRequest {
+        profile: JocProfile::Idx0,
+        container: JocContainer::Raw,
+        carriage: JocCarriage::I0SkipField,
+        emdf_profile: EmdfProfile::DeployedCompat,
+        bitrate_kbps: 1024,
+        partitions: vec![BlockPartition::Three, BlockPartition::Three],
+        dependent_count: 0,
+        lfe_ownership: LfeOwnership::Absent,
+    })
+    .expect("skip-field canonical short partition");
+    assert_eq!(
+        canonical.block_partition.partitions(),
+        &[BlockPartition::Three, BlockPartition::Three]
     );
+
+    let mixed = CompositionResolver::resolve(&CompositionRequest {
+        partitions: vec![
+            BlockPartition::One,
+            BlockPartition::Two,
+            BlockPartition::Three,
+        ],
+        ..CompositionRequest {
+            profile: JocProfile::Idx0,
+            container: JocContainer::Raw,
+            carriage: JocCarriage::I0SkipField,
+            emdf_profile: EmdfProfile::EtsiStrict,
+            bitrate_kbps: 1024,
+            partitions: vec![BlockPartition::Six],
+            dependent_count: 0,
+            lfe_ownership: LfeOwnership::Absent,
+        }
+    })
+    .expect_err("heterogeneous skip-field ownership remains ambiguous");
+    assert_eq!(
+        mixed.classification.verdict,
+        CapabilityVerdict::PublicAmbiguous
+    );
+}
+
+#[test]
+fn skip_field_and_legacy_plans_carry_the_remaining_public_axes() {
+    let skip_lfe = CompositionResolver::resolve(&CompositionRequest {
+        profile: JocProfile::Idx0,
+        container: JocContainer::Raw,
+        carriage: JocCarriage::I0SkipField,
+        emdf_profile: EmdfProfile::EtsiStrict,
+        bitrate_kbps: 1024,
+        partitions: vec![BlockPartition::Six],
+        dependent_count: 0,
+        lfe_ownership: LfeOwnership::Independent,
+    })
+    .expect("skip-field independent LFE");
+    assert_eq!(skip_lfe.lfe_ownership, LfeOwnership::Independent);
+
+    let deployed_legacy = CompositionResolver::resolve(&CompositionRequest {
+        profile: JocProfile::Idx4,
+        container: JocContainer::Raw,
+        carriage: JocCarriage::LegacyAc3Dependent,
+        emdf_profile: EmdfProfile::DeployedCompat,
+        bitrate_kbps: 1280,
+        partitions: vec![BlockPartition::Six],
+        dependent_count: 1,
+        lfe_ownership: LfeOwnership::Absent,
+    })
+    .expect("legacy deployed EMDF");
+    assert_eq!(deployed_legacy.emdf_profile, EmdfProfile::DeployedCompat);
+
+    for lfe_ownership in [
+        LfeOwnership::Independent,
+        LfeOwnership::DependentSupplement,
+        LfeOwnership::DependentReplacement,
+    ] {
+        CompositionResolver::resolve(&CompositionRequest {
+            profile: JocProfile::Idx1,
+            container: JocContainer::Raw,
+            carriage: JocCarriage::LegacyAc3Dependent,
+            emdf_profile: EmdfProfile::EtsiStrict,
+            bitrate_kbps: 1280,
+            partitions: vec![BlockPartition::Six],
+            dependent_count: 1,
+            lfe_ownership,
+        })
+        .expect("legacy LFE ownership plan");
+    }
+
+    let skip_capacity = CompositionResolver::resolve(&CompositionRequest {
+        profile: JocProfile::Idx0,
+        container: JocContainer::Raw,
+        carriage: JocCarriage::I0SkipField,
+        emdf_profile: EmdfProfile::EtsiStrict,
+        bitrate_kbps: 1088,
+        partitions: vec![BlockPartition::Three, BlockPartition::Three],
+        dependent_count: 0,
+        lfe_ownership: LfeOwnership::Absent,
+    })
+    .expect_err("skip-field rates above its 1024 kbps frame are capacity-bound");
+    assert_eq!(
+        skip_capacity.classification.verdict,
+        CapabilityVerdict::RejectedCapacity
+    );
+
+    let legacy_capacity = CompositionResolver::resolve(&CompositionRequest {
+        profile: JocProfile::Idx0,
+        container: JocContainer::Raw,
+        carriage: JocCarriage::LegacyAc3Dependent,
+        emdf_profile: EmdfProfile::DeployedCompat,
+        bitrate_kbps: 1216,
+        partitions: vec![BlockPartition::Six],
+        dependent_count: 1,
+        lfe_ownership: LfeOwnership::Absent,
+    })
+    .expect_err("legacy idx0 lower rates remain capacity-bound");
+    assert_eq!(
+        legacy_capacity.classification.verdict,
+        CapabilityVerdict::RejectedCapacity
+    );
+}
+
+#[test]
+fn authoritative_matrix_has_no_unimplemented_public_cells() {
+    let rows = jocforge_core::composition_capability_matrix();
+    let gaps = rows
+        .iter()
+        .filter(|row| row.classification.verdict == CapabilityVerdict::SpecLegalNotImplemented)
+        .count();
+    assert_eq!(gaps, 0, "authoritative matrix still contains {gaps} gaps");
+}
+
+#[test]
+fn authoritative_matrix_preserves_the_zero_closure_verdict_counts() {
+    let rows = jocforge_core::composition_capability_matrix();
+    let count = |verdict| {
+        rows.iter()
+            .filter(|row| row.classification.verdict == verdict)
+            .count()
+    };
+    assert_eq!(count(CapabilityVerdict::SupportedPass), 2393);
+    assert_eq!(count(CapabilityVerdict::PublicAmbiguous), 2990);
+    assert_eq!(count(CapabilityVerdict::NotApplicable), 110825);
+    assert_eq!(count(CapabilityVerdict::SemanticCeiling), 6240);
+    assert_eq!(count(CapabilityVerdict::RejectedCapacity), 10152);
+    assert_eq!(count(CapabilityVerdict::Invalid), 7800);
+    assert_eq!(count(CapabilityVerdict::Reserved), 0);
+    assert_eq!(count(CapabilityVerdict::SpecLegalNotImplemented), 0);
 }
 
 #[test]
@@ -133,17 +341,17 @@ fn resolver_carries_a_short_partition_and_exact_sample_ranges() {
 }
 
 #[test]
-fn resolver_rejects_short_partitions_on_non_raw_etsi_carriage() {
-    let error = resolve_encoding_plan_with_partition(
+fn resolver_admits_short_partitions_on_skip_field_carriage() {
+    let plan = resolve_encoding_plan_with_partition(
         JocProfile::Idx0,
         JocCarriage::I0SkipField,
         EmdfProfile::DeployedCompat,
         1024,
         &[BlockPartition::One; 6],
     )
-    .expect_err("skip-field short blocks must remain fail-closed");
+    .expect("skip-field short blocks");
 
-    assert!(error.to_string().contains("short-block partition"));
+    assert_eq!(plan.block_partition.audio_blocks(), 6);
 }
 
 #[test]

@@ -1,7 +1,11 @@
 // pattern: Functional Core
 
-use crate::{JocProfile, profile_spec};
+use crate::{EmdfProfile, JocProfile, profile_spec};
 use std::fmt;
+
+const AC3_48_KBPS: [usize; 19] = [
+    32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 384, 448, 512, 576, 640,
+];
 
 /// Public E-AC-3 `numblkscod` partitions for one syncframe.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -740,6 +744,207 @@ pub fn validate_short_block_access_unit(
     })
 }
 
+/// Validates a grouped short I0-only skip-field programme. The final I0 owns
+/// the exact supplied JOC/OAMD EMDF body in its first audio-block skip field;
+/// no dependent frame is allowed in this carriage.
+pub fn validate_short_skip_field_access_unit(
+    stream: &[u8],
+    profile: JocProfile,
+    emdf_profile: EmdfProfile,
+    expected_emdf: &[u8],
+    partitions: &[BlockPartition],
+    lfe_present: bool,
+) -> Result<ShortBlockValidationReport, String> {
+    let plan = resolve_short_block_plan(partitions)
+        .map_err(|error| format!("invalid short skip-field validation plan: {error}"))?;
+    if classify_block_partition(partitions) != BlockPartitionStatus::PublicLegal {
+        return Err("short skip-field validator requires a publicly closed partition".to_owned());
+    }
+    let mut frames = Vec::with_capacity(partitions.len());
+    let mut offset = 0_usize;
+    while offset < stream.len() {
+        let frame = parse_structural_frame(stream, offset)?;
+        let frame_end = offset
+            .checked_add(frame.frame_size)
+            .ok_or_else(|| "short skip-field frame offset overflow".to_owned())?;
+        let bytes = stream
+            .get(offset..frame_end)
+            .ok_or_else(|| "short skip-field frame exceeds stream bounds".to_owned())?;
+        crate::eac3::validate_crc2(bytes)?;
+        offset = frame_end;
+        frames.push((frame, bytes));
+    }
+    if offset != stream.len() || frames.len() != partitions.len() {
+        return Err(format!(
+            "short skip-field access unit contains {} frames; expected {}",
+            frames.len(),
+            partitions.len()
+        ));
+    }
+    let expected_downmix_index = profile_spec(profile).downmix_index;
+    let mut complexity_index = 0;
+    for (index, (frame, bytes)) in frames.iter().enumerate() {
+        if frame.stream_type != 0
+            || frame.substream_id != 0
+            || frame.sample_rate != 48_000
+            || frame.audio_blocks != partitions[index].audio_blocks()
+            || frame.audio_coding_mode != 7
+            || frame.channel_map.is_some()
+            || frame.lfe_on != lfe_present
+            || frame.emdf.is_some()
+            || frame.convsync
+                != if partitions[index] == BlockPartition::Six {
+                    None
+                } else {
+                    Some(plan.convsync()[index])
+                }
+        {
+            return Err(format!("invalid short skip-field I0 at syncframe {index}"));
+        }
+        let skip_enabled = short_skip_field_enabled(frame, bytes)?;
+        let embedded = embedded_emdf(bytes, expected_emdf)?;
+        let final_frame = index + 1 == frames.len();
+        if skip_enabled != final_frame || embedded.is_some() != final_frame {
+            return Err(format!(
+                "short skip-field EMDF must be present only on final I0; frame {index}, skip_enabled={skip_enabled}, embedded={}",
+                embedded.is_some()
+            ));
+        }
+        if let Some((summary, payload_start, _body)) = embedded {
+            let payload_end = payload_start
+                .checked_add(expected_emdf.len().saturating_mul(8))
+                .ok_or_else(|| "short skip-field EMDF payload offset overflows".to_owned())?;
+            if payload_start < 10 || payload_end > bytes.len().saturating_mul(8) {
+                return Err(
+                    "short skip-field EMDF payload exceeds its physical skip-field range"
+                        .to_owned(),
+                );
+            }
+            if summary.payload_ids != vec![11, 14]
+                || summary.joc_downmix_index != expected_downmix_index
+                || summary.codec_data_present != vec![emdf_profile == EmdfProfile::EtsiStrict; 2]
+            {
+                return Err("short skip-field EMDF has an invalid profile or signaling".to_owned());
+            }
+            if frame
+                .addbsi
+                .as_ref()
+                .is_none_or(|addbsi| !addbsi.type_a || addbsi.complexity_index == 0)
+            {
+                return Err("short skip-field final I0 has invalid JOC addbsi".to_owned());
+            }
+            complexity_index = frame
+                .addbsi
+                .as_ref()
+                .map_or(0, |addbsi| addbsi.complexity_index);
+        } else if frame.addbsi.is_some() {
+            return Err("short skip-field non-final I0 unexpectedly owns JOC addbsi".to_owned());
+        }
+    }
+    Ok(ShortBlockValidationReport {
+        syncframes: frames.len(),
+        audio_blocks: plan.audio_blocks(),
+        samples: plan.samples(),
+        metadata_owner_frame: frames.len() - 1,
+        lfe_present,
+        complexity_index,
+    })
+}
+
+/// Validates the public legacy original-syntax AC-3 I0 plus one E-AC-3 D0
+/// form. The AC-3 header is checked independently from the E-AC-3 structural
+/// parser so the legacy frame is not mistaken for an E-AC-3 stream header.
+pub fn validate_legacy_ac3_source_derived_access_unit(
+    stream: &[u8],
+    profile: JocProfile,
+    ownership_plan: &OwnershipPlan,
+    emdf_profile: EmdfProfile,
+    expected_i0_frame_bytes: usize,
+) -> Result<(), String> {
+    if ownership_plan.profile != profile || ownership_plan.dependents.len() != 1 {
+        return Err("legacy validator requires one matching dependent ownership plan".to_owned());
+    }
+    let i0 = stream
+        .get(..expected_i0_frame_bytes)
+        .ok_or_else(|| "legacy AC-3 I0 is truncated".to_owned())?;
+    let mut reader = StructuralBitReader::new(i0);
+    if reader.read(16)? != 0x0b77 {
+        return Err("legacy AC-3 I0 has an invalid syncword".to_owned());
+    }
+    reader.read(16)?; // original-syntax CRC1
+    if reader.read(2)? != 0 {
+        return Err("legacy AC-3 I0 is not 48 kHz".to_owned());
+    }
+    let frame_size_code = reader.read(6)? as usize;
+    let declared_i0_bytes = AC3_48_KBPS
+        .get(frame_size_code / 2)
+        .and_then(|bitrate| bitrate.checked_mul(4))
+        .ok_or_else(|| "legacy AC-3 I0 has an invalid frmsizecod".to_owned())?;
+    if declared_i0_bytes != expected_i0_frame_bytes {
+        return Err(format!(
+            "legacy AC-3 I0 frmsizecod declares {declared_i0_bytes} bytes; expected {expected_i0_frame_bytes}"
+        ));
+    }
+    let bitstream_id = reader.read(5)?;
+    if !matches!(bitstream_id, 6 | 8) {
+        return Err("legacy AC-3 I0 requires bsid 6 or 8".to_owned());
+    }
+    reader.read(3)?; // bsmod
+    let audio_coding_mode = reader.read(3)? as u8;
+    if audio_coding_mode != 7 {
+        return Err("legacy AC-3 I0 requires the public 5.1 acmod".to_owned());
+    }
+    if audio_coding_mode & 1 != 0 && audio_coding_mode != 1 {
+        reader.read(2)?; // cmixlev
+    }
+    if audio_coding_mode & 4 != 0 {
+        reader.read(2)?; // surmixlev
+    }
+    if audio_coding_mode == 2 {
+        reader.read(2)?; // dsurmod
+    }
+    let i0_lfe = reader.read(1)? != 0;
+    if i0_lfe != ownership_plan.independent_lfe {
+        return Err("legacy AC-3 I0 LFE state disagrees with ownership plan".to_owned());
+    }
+    crate::eac3::validate_legacy_ac3_crc(i0)?;
+    let d0 = parse_structural_frame(stream, expected_i0_frame_bytes)?;
+    let d0_end = expected_i0_frame_bytes
+        .checked_add(d0.frame_size)
+        .ok_or_else(|| "legacy D0 frame offset overflows".to_owned())?;
+    if d0_end != stream.len()
+        || d0.stream_type != 1
+        || d0.substream_id != ownership_plan.dependents[0].id
+        || d0.sample_rate != 48_000
+        || d0.audio_blocks != 6
+        || d0.channel_map != Some(ownership_plan.dependents[0].channel_map)
+        || d0.lfe_on != ownership_plan.dependents[0].has_lfe()
+    {
+        return Err("legacy E-AC-3 D0 does not match the ownership plan".to_owned());
+    }
+    crate::eac3::validate_crc2(
+        stream
+            .get(expected_i0_frame_bytes..d0_end)
+            .ok_or_else(|| "legacy D0 frame is truncated".to_owned())?,
+    )?;
+    let Some(addbsi) = d0.addbsi else {
+        return Err("legacy D0 is missing final JOC addbsi".to_owned());
+    };
+    if !addbsi.type_a || addbsi.complexity_index == 0 {
+        return Err("legacy D0 has invalid JOC addbsi".to_owned());
+    }
+    let Some(emdf) = d0.emdf else {
+        return Err("legacy D0 is missing final JOC EMDF".to_owned());
+    };
+    if emdf.payload_ids != vec![11, 14]
+        || emdf.joc_downmix_index != profile_spec(profile).downmix_index
+        || emdf.codec_data_present != vec![emdf_profile == EmdfProfile::EtsiStrict; 2]
+    {
+        return Err("legacy D0 EMDF has an invalid profile or signaling".to_owned());
+    }
+    Ok(())
+}
+
 /// Validates a grouped short-block programme with one I0 and a shared
 /// partition across every associated D0..D7 dependent.
 pub fn validate_short_multi_dependent_access_unit(
@@ -1254,6 +1459,7 @@ struct StructuralFrame {
     lfe_on: bool,
     full_bandwidth_channels: usize,
     channel_map: Option<u16>,
+    audio_syntax_start_bit: usize,
     addbsi: Option<Addbsi>,
     emdf: Option<EmdfSummary>,
 }
@@ -1268,6 +1474,7 @@ struct Addbsi {
 struct EmdfSummary {
     payload_ids: Vec<u8>,
     joc_downmix_index: u8,
+    codec_data_present: Vec<bool>,
 }
 
 struct StructuralBitReader<'a> {
@@ -1399,6 +1606,7 @@ fn parse_structural_frame_inner(stream: &[u8], offset: usize) -> Result<Structur
     } else {
         None
     };
+    let audio_syntax_start_bit = reader.position;
     let emdf = parse_emdf(frame)
         .map_err(|error| format!("frame at byte offset {offset} EMDF: {error}"))?;
     Ok(StructuralFrame {
@@ -1413,9 +1621,88 @@ fn parse_structural_frame_inner(stream: &[u8], offset: usize) -> Result<Structur
         lfe_on,
         full_bandwidth_channels,
         channel_map,
+        audio_syntax_start_bit,
         addbsi,
         emdf,
     })
+}
+
+fn short_skip_field_enabled(frame: &StructuralFrame, bytes: &[u8]) -> Result<bool, String> {
+    let mut reader = StructuralBitReader {
+        bytes,
+        position: frame.audio_syntax_start_bit,
+    };
+    if frame.numblkscod == 3 {
+        reader.read(2)?; // exponent strategy exists and AHT exists
+    }
+    reader.read(2)?;
+    reader.read(1)?;
+    reader.read(5)?;
+    Ok(reader.read(1)? != 0)
+}
+
+fn embedded_emdf(
+    frame: &[u8],
+    expected: &[u8],
+) -> Result<Option<(EmdfSummary, usize, Vec<u8>)>, String> {
+    let mut found = None;
+    let frame_bits = frame
+        .len()
+        .checked_mul(8)
+        .ok_or_else(|| "short skip-field frame bit length overflows".to_owned())?;
+    for index in 0..frame_bits.saturating_sub(32) {
+        if read_bits_at(frame, index, 16)? != 0x5838 {
+            continue;
+        }
+        let body_len = usize::try_from(read_bits_at(frame, index + 16, 16)?)
+            .map_err(|_| "short skip-field EMDF length overflows usize".to_owned())?;
+        let end = index
+            .checked_add(32)
+            .and_then(|value| value.checked_add(body_len.saturating_mul(8)))
+            .ok_or_else(|| "short skip-field EMDF length overflows frame".to_owned())?;
+        if end > frame_bits {
+            continue;
+        }
+        let body = read_bytes_at(frame, index + 32, body_len)?;
+        if let Ok(summary) = parse_emdf_body(&body) {
+            if body != expected {
+                continue;
+            }
+            let skip_start = index.saturating_sub(10);
+            if index < 10
+                || read_bits_at(frame, skip_start, 1)? != 1
+                || read_bits_at(frame, skip_start + 1, 9)?
+                    != u32::try_from(body_len + 4).unwrap_or(u32::MAX)
+            {
+                continue;
+            }
+            found.get_or_insert((summary, index, body));
+        }
+    }
+    Ok(found)
+}
+
+fn read_bits_at(bytes: &[u8], position: usize, width: usize) -> Result<u32, String> {
+    let end = position
+        .checked_add(width)
+        .ok_or_else(|| "short skip-field bit position overflows".to_owned())?;
+    if end > bytes.len().saturating_mul(8) {
+        return Err("short skip-field bit read exceeds frame".to_owned());
+    }
+    let mut value = 0_u32;
+    for bit in position..end {
+        value = (value << 1) | u32::from((bytes[bit / 8] >> (7 - bit % 8)) & 1);
+    }
+    Ok(value)
+}
+
+fn read_bytes_at(bytes: &[u8], position: usize, count: usize) -> Result<Vec<u8>, String> {
+    (0..count)
+        .map(|index| {
+            u8::try_from(read_bits_at(bytes, position + index * 8, 8)?)
+                .map_err(|_| "short skip-field byte value overflows".to_owned())
+        })
+        .collect()
 }
 
 fn parse_emdf(frame: &[u8]) -> Result<Option<EmdfSummary>, String> {
@@ -1450,10 +1737,15 @@ fn parse_emdf(frame: &[u8]) -> Result<Option<EmdfSummary>, String> {
     let body = frame
         .get(marker + 4..marker + 4 + body_len)
         .ok_or_else(|| "truncated EMDF body".to_owned())?;
+    Ok(Some(parse_emdf_body(body)?))
+}
+
+fn parse_emdf_body(body: &[u8]) -> Result<EmdfSummary, String> {
     let mut reader = StructuralBitReader::new(body);
     let _version = reader.read(2)?;
     let _key_identifier = reader.read(3)?;
     let mut payloads = Vec::new();
+    let mut codec_data_present = Vec::new();
     let mut joc_downmix_index = None;
     loop {
         let payload_id = reader.read(5)? as u8;
@@ -1466,7 +1758,8 @@ fn parse_emdf(frame: &[u8]) -> Result<Option<EmdfSummary>, String> {
             let _group_id = reader.read(2)?;
             let _group_id_terminates = reader.read(1)?;
         }
-        if reader.read(1)? != 0 {
+        let codec_data = reader.read(1)? != 0;
+        if codec_data {
             let _codec_data = reader.read(8)?;
         }
         let _discard_unknown = reader.read(1)?;
@@ -1483,12 +1776,14 @@ fn parse_emdf(frame: &[u8]) -> Result<Option<EmdfSummary>, String> {
             joc_downmix_index = Some(payload_reader.read(3)? as u8);
         }
         payloads.push(payload_id);
+        codec_data_present.push(codec_data);
     }
-    Ok(Some(EmdfSummary {
+    Ok(EmdfSummary {
         payload_ids: payloads,
         joc_downmix_index: joc_downmix_index
             .ok_or_else(|| "EMDF is missing JOC payload 14".to_owned())?,
-    }))
+        codec_data_present,
+    })
 }
 
 fn standard_full_bandwidth_channels(audio_coding_mode: u8) -> Result<usize, String> {

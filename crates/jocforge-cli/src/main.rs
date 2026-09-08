@@ -1,7 +1,5 @@
 // pattern: Imperative Shell
 
-// pattern: Imperative Shell
-
 use std::{
     collections::BTreeMap,
     env,
@@ -23,13 +21,15 @@ use jocforge_core::{
     SOURCE_DERIVED_CARRIER_PEAK_LIMIT, channel_map_channel_count, cmaf_joc_init_and_fragments,
     d0_carrier_causality, factorize_source_derived, final_render_gate,
     generate_synthetic_scene_fixture, limit_signal_peak, maximum_absolute_difference,
-    package_i0_skip_field_access_unit, package_legacy_ac3_source_derived_access_unit,
+    package_i0_skip_field_access_unit, package_legacy_ac3_source_derived_access_unit_with_plan,
     package_multi_dependent_source_derived_access_unit_with_plan,
     package_short_block_conformance_access_unit,
     package_source_derived_access_unit_with_frame_sizes,
     package_source_derived_short_block_access_unit,
-    package_source_derived_short_block_access_unit_with_plan, parse_bw64_adm_metadata,
-    profile_spec, quantize_coefficient, reconstruction_error, reduce_scene_with_previous,
+    package_source_derived_short_block_access_unit_with_plan,
+    package_source_derived_short_skip_field_access_unit,
+    package_source_derived_skip_field_access_unit, parse_bw64_adm_metadata, profile_spec,
+    quantize_coefficient, reconstruction_error, reduce_scene_with_previous,
     resolve_encoding_plan_with_partition, semantic_maximum, source_derived_carrier_causality,
     spectral_phase_report, validate_multi_dependent_access_unit,
     validate_short_multi_dependent_access_unit, validate_source_derived_adm_metadata,
@@ -313,6 +313,7 @@ fn run_multi_dependent_proof(arguments: &[String]) -> Result<(), String> {
         5,
         &format!("{}k", budget.carrier_encode_bitrate_kbps),
         "eac3",
+        false,
     )?;
     let i0 = read_carrier_frames(&carrier_path, budget.carrier_encoded_frame_bytes, 1)?;
     let dependent_carriers = (0..dependent_count)
@@ -571,6 +572,7 @@ fn run_dependent_lfe_proof(arguments: &[String]) -> Result<(), String> {
             i0_carriers.len(),
             &format!("{}k", budget.carrier_encode_bitrate_kbps),
             "eac3",
+            false,
         )?;
         let i0 = read_carrier_frames(&carrier_path, budget.carrier_encoded_frame_bytes, 1)?;
         let dependent_carriers = ownership_plan
@@ -2153,13 +2155,13 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         .collect::<Vec<_>>();
     let lfe_ownership = if lfe_source_indices.is_empty() {
         LfeOwnership::Absent
-    } else if carriage == JocCarriage::EtsiAuxDependent {
+    } else if matches!(
+        carriage,
+        JocCarriage::EtsiAuxDependent | JocCarriage::I0SkipField | JocCarriage::LegacyAc3Dependent
+    ) {
         LfeOwnership::Independent
     } else {
-        return Err(format!(
-            "invalid encoding composition: {}: the selected carriage has no validated source-derived LFE ownership path",
-            jocforge_core::CapabilityVerdict::SpecLegalNotImplemented
-        ));
+        return Err("invalid encoding composition: unsupported LFE ownership".to_owned());
     };
     if lfe_ownership != LfeOwnership::Absent {
         plan = CompositionResolver::resolve(&CompositionRequest {
@@ -2176,7 +2178,11 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
     }
     let rate = plan.rate;
     let short_block_mode = !plan.block_partition.is_default();
-    let i0_channels = 5 + usize::from(!lfe_source_indices.is_empty());
+    let independent_lfe = matches!(
+        plan.lfe_ownership,
+        LfeOwnership::Independent | LfeOwnership::DependentReplacement
+    );
+    let i0_channels = 5 + usize::from(independent_lfe);
     let rank = profile_spec(profile).input_labels.len();
     let frame_count = metadata.sample_count.div_ceil(JOC_FRAME_SAMPLES);
     let encoded_samples = frame_count
@@ -2196,16 +2202,17 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
     );
     let mut previous_reduction = None;
     let mut previous_factorization: Option<jocforge_core::RankFactorization> = None;
-    let mut raw_file = if short_block_mode {
-        None
-    } else {
-        Some(fs::File::create(&i0_raw_path).map_err(|error| {
-            format!(
-                "failed to create carrier PCM '{}': {error}",
-                i0_raw_path.display()
-            )
-        })?)
-    };
+    let mut raw_file =
+        if short_block_mode || (carriage == JocCarriage::I0SkipField && !independent_lfe) {
+            None
+        } else {
+            Some(fs::File::create(&i0_raw_path).map_err(|error| {
+                format!(
+                    "failed to create carrier PCM '{}': {error}",
+                    i0_raw_path.display()
+                )
+            })?)
+        };
     let mut sample_accounting = String::from(
         "programme_interval,syncframe_index,block_count,start_sample,end_sample,source_sample_count,padding_samples\n",
     );
@@ -2305,40 +2312,43 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         previous_reduction = Some(reduction);
     }
     drop(raw_file);
-    let i0_carrier_bytes = if short_block_mode {
-        None
-    } else {
-        let carrier_codec = if carriage == JocCarriage::LegacyAc3Dependent {
-            "ac3"
+    let i0_carrier_bytes =
+        if short_block_mode || (carriage == JocCarriage::I0SkipField && !independent_lfe) {
+            None
         } else {
-            "eac3"
+            let carrier_codec = if carriage == JocCarriage::LegacyAc3Dependent {
+                "ac3"
+            } else {
+                "eac3"
+            };
+            encode_ffmpeg_carrier(
+                &i0_raw_path,
+                &i0_carrier_path,
+                i0_channels,
+                &format!("{}k", rate.carrier_encode_bitrate_kbps),
+                carrier_codec,
+                carriage == JocCarriage::I0SkipField,
+            )?;
+            Some(read_carrier_frames(
+                &i0_carrier_path,
+                rate.carrier_encoded_frame_bytes,
+                frame_count,
+            )?)
         };
-        encode_ffmpeg_carrier(
-            &i0_raw_path,
-            &i0_carrier_path,
-            i0_channels,
-            &format!("{}k", rate.carrier_encode_bitrate_kbps),
-            carrier_codec,
-        )?;
-        Some(read_carrier_frames(
-            &i0_carrier_path,
-            rate.carrier_encoded_frame_bytes,
-            frame_count,
-        )?)
-    };
     let mut output_bytes =
         Vec::with_capacity(frame_count * (rate.carrier_frame_bytes + rate.d0_frame_bytes));
     previous_reduction = None;
     for frame_index in 0..frame_count {
-        let i0_frame = if short_block_mode {
-            None
-        } else {
-            let carrier_bytes = i0_carrier_bytes
-                .as_ref()
-                .ok_or_else(|| "missing FFmpeg carrier bytes for six-block encoding".to_owned())?;
-            let i0_start = frame_index * rate.carrier_encoded_frame_bytes;
-            Some(&carrier_bytes[i0_start..i0_start + rate.carrier_encoded_frame_bytes])
-        };
+        let i0_frame =
+            if short_block_mode || (carriage == JocCarriage::I0SkipField && !independent_lfe) {
+                None
+            } else {
+                let carrier_bytes = i0_carrier_bytes.as_ref().ok_or_else(|| {
+                    "missing FFmpeg carrier bytes for six-block encoding".to_owned()
+                })?;
+                let i0_start = frame_index * rate.carrier_encoded_frame_bytes;
+                Some(&carrier_bytes[i0_start..i0_start + rate.carrier_encoded_frame_bytes])
+            };
         let source_pcm = read_pcm_frame(&input_path, &scanned, frame_index, &track_indices)?;
         let sources = reduction_sources(&supported_objects, &source_pcm)?;
         let reduction =
@@ -2367,20 +2377,33 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
             .map(|index| factorization.carriers[index].clone())
             .collect::<Vec<_>>();
         let access_unit = if short_block_mode {
-            package_source_derived_short_block_access_unit(
-                &plan,
-                sequence,
-                &factorization.scaled_matrix,
-                &positions,
-                &factorization.carriers[..5],
-                &d0_carriers,
-                (!lfe_source_indices.is_empty()).then_some(lfe_pcm.as_slice()),
-            )
+            match carriage {
+                JocCarriage::EtsiAuxDependent => package_source_derived_short_block_access_unit(
+                    &plan,
+                    sequence,
+                    &factorization.scaled_matrix,
+                    &positions,
+                    &factorization.carriers[..5],
+                    &d0_carriers,
+                    independent_lfe.then_some(lfe_pcm.as_slice()),
+                ),
+                JocCarriage::I0SkipField => package_source_derived_short_skip_field_access_unit(
+                    &plan,
+                    sequence,
+                    &factorization.scaled_matrix,
+                    &positions,
+                    &factorization.carriers[..5],
+                    independent_lfe.then_some(lfe_pcm.as_slice()),
+                ),
+                JocCarriage::LegacyAc3Dependent => {
+                    Err("legacy AC-3 carriage does not support short-block output".to_owned())
+                }
+            }
         } else {
-            let i0_frame =
-                i0_frame.ok_or_else(|| "missing I0 frame for six-block encoding".to_owned())?;
             match carriage {
                 JocCarriage::EtsiAuxDependent => {
+                    let i0_frame = i0_frame
+                        .ok_or_else(|| "missing I0 frame for six-block encoding".to_owned())?;
                     package_source_derived_access_unit_with_frame_sizes(
                         profile,
                         emdf_profile,
@@ -2393,24 +2416,48 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
                         rate.d0_frame_bytes,
                     )
                 }
-                JocCarriage::I0SkipField => package_i0_skip_field_access_unit(
-                    profile,
-                    emdf_profile,
-                    sequence,
-                    &factorization.scaled_matrix,
-                    &positions,
-                    i0_frame,
-                ),
-                JocCarriage::LegacyAc3Dependent => package_legacy_ac3_source_derived_access_unit(
-                    profile,
-                    emdf_profile,
-                    sequence,
-                    &factorization.scaled_matrix,
-                    &positions,
-                    i0_frame,
-                    &d0_carriers,
-                    0,
-                ),
+                JocCarriage::I0SkipField => {
+                    if independent_lfe {
+                        let i0_frame = i0_frame.ok_or_else(|| {
+                            "missing I0 frame for LFE skip-field encoding".to_owned()
+                        })?;
+                        package_i0_skip_field_access_unit(
+                            profile,
+                            emdf_profile,
+                            sequence,
+                            &factorization.scaled_matrix,
+                            &positions,
+                            i0_frame,
+                        )
+                    } else {
+                        package_source_derived_skip_field_access_unit(
+                            &plan,
+                            sequence,
+                            &factorization.scaled_matrix,
+                            &positions,
+                            &factorization.carriers[..5],
+                        )
+                    }
+                }
+                JocCarriage::LegacyAc3Dependent => {
+                    let i0_frame = i0_frame
+                        .ok_or_else(|| "missing I0 frame for six-block encoding".to_owned())?;
+                    let dependent_lfe = plan
+                        .ownership
+                        .as_ref()
+                        .and_then(|ownership| ownership.dependents.first())
+                        .and_then(|dependent| dependent.has_lfe().then_some(lfe_pcm.as_slice()));
+                    package_legacy_ac3_source_derived_access_unit_with_plan(
+                        &plan,
+                        sequence,
+                        &factorization.scaled_matrix,
+                        &positions,
+                        i0_frame,
+                        &d0_carriers,
+                        dependent_lfe,
+                        0,
+                    )
+                }
             }
         }
         .map_err(|error| format!("failed to package frame {frame_index}: {error}"))?;
@@ -2686,6 +2733,7 @@ fn encode_ffmpeg_carrier(
     channels: usize,
     bitrate: &str,
     codec: &str,
+    disable_channel_coupling: bool,
 ) -> Result<(), String> {
     let mut command = std::process::Command::new("ffmpeg");
     command
@@ -2704,11 +2752,12 @@ fn encode_ffmpeg_carrier(
         .args(["-i"])
         .arg(raw_path)
         .args(["-c:a", codec, "-b:a", bitrate]);
-    if codec == "eac3" && bitrate == "384k" {
+    if codec == "eac3" && (bitrate == "384k" || disable_channel_coupling) {
         // FFmpeg's automatic low-rate coupling emits a carrier that the
-        // pinned OpenJOC renderer cannot traverse (grouped exponent 125).
-        // Disable only that low-rate mode; the public 5-channel carrier
-        // topology and its exact frame budget remain unchanged.
+        // pinned OpenJOC renderer cannot traverse (grouped exponent 125),
+        // while the skip-field walker requires the uncoupled audio syntax at
+        // every I0 bitrate. The public carrier topology and frame budget are
+        // unchanged.
         command.args(["-channel_coupling", "0"]);
     }
     let output_format = if codec == "ac3" { "ac3" } else { "eac3" };
