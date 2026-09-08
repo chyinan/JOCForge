@@ -1,8 +1,9 @@
 // pattern: Functional Core
 
 use crate::{
-    AdmPosition, BlockPartition, DependentLfePolicy, DependentPlan, EmdfProfile, JocEncodingPlan,
-    JocProfile, OwnershipPlan, partition_frame_bytes, profile_spec, quantize_coefficient,
+    AdmPosition, BlockPartition, DependentLfePolicy, DependentPlan, EmdfProfile, JocContainer,
+    JocEncodingPlan, JocProfile, OwnershipPlan, partition_frame_bytes, profile_spec,
+    quantize_coefficient,
 };
 
 const FRAME_BYTES: usize = 4096;
@@ -504,8 +505,13 @@ fn write_public_short_frame(
                 .to_owned(),
         );
     }
-    if lfe_source_carrier.is_some() && (stream_type != 0 || channel_count != 5) {
-        return Err("short LFE is only supported on the independent five-channel I0".to_owned());
+    if lfe_source_carrier.is_some()
+        && ((stream_type == 0 && channel_count != 5) || (stream_type == 1 && channel_count > 2))
+    {
+        return Err(
+            "short LFE requires the independent five-channel I0 or a one/two-channel dependent"
+                .to_owned(),
+        );
     }
     let mut bits = BitWriter::default();
     for (value, width) in [
@@ -595,7 +601,7 @@ fn write_public_short_frame(
     }
     for channel in 0..channel_count {
         push_source_exponents(&mut bits, D0_INITIAL_EXPONENT);
-        if lfe_source_carrier.is_none()
+        if (lfe_source_carrier.is_none() || stream_type == 1)
             && let Some(codes) = source_exponent_codes
         {
             let code = codes.get(channel).copied().ok_or_else(|| {
@@ -1274,6 +1280,13 @@ pub fn package_source_derived_short_block_access_unit(
     d0_carriers: &[Vec<f64>],
     i0_lfe_carrier: Option<&[f64]>,
 ) -> Result<Vec<u8>, String> {
+    if plan.container != JocContainer::Raw || plan.carriage != crate::JocCarriage::EtsiAuxDependent
+    {
+        return Err("source-derived short writer requires raw ETSI auxiliary carriage".to_owned());
+    }
+    if plan.dependent_count != 1 {
+        return Err("source-derived short writer requires exactly one dependent".to_owned());
+    }
     if plan.block_partition.is_default() {
         return Err(
             "source-derived short writer requires a non-default block partition".to_owned(),
@@ -1364,6 +1377,141 @@ pub fn package_source_derived_short_block_access_unit(
     crate::conformance::validate_short_block_access_unit(
         &output,
         plan.profile,
+        plan.block_partition.partitions(),
+    )?;
+    Ok(output)
+}
+
+/// Packages one source-derived raw JOC interval as interleaved short
+/// syncframes for an immutable I0+D0..Dn ownership plan. Every component uses
+/// the same public partition and the final dependent owns JOC/OAMD EMDF.
+#[allow(clippy::too_many_arguments)]
+pub fn package_source_derived_short_block_access_unit_with_plan(
+    plan: &JocEncodingPlan,
+    sequence_count: u16,
+    matrix: &[Vec<f64>],
+    positions: &[AdmPosition],
+    i0_carriers: &[Vec<f64>],
+    i0_lfe_carrier: Option<&[f64]>,
+    dependent_carriers: &[Vec<Vec<f64>>],
+    dependent_lfe_carriers: &[Option<Vec<f64>>],
+) -> Result<Vec<u8>, String> {
+    if plan.container != JocContainer::Raw || plan.carriage != crate::JocCarriage::EtsiAuxDependent
+    {
+        return Err("short multi-dependent writer requires raw ETSI auxiliary carriage".to_owned());
+    }
+    if plan.block_partition.is_default() {
+        return Err(
+            "source-derived short multi-dependent writer requires a non-default block partition"
+                .to_owned(),
+        );
+    }
+    let ownership_plan = plan
+        .ownership
+        .as_ref()
+        .ok_or_else(|| "short multi-dependent writer requires an ownership plan".to_owned())?;
+    if ownership_plan.profile != plan.profile
+        || ownership_plan.dependents.len() != plan.dependent_count
+        || dependent_carriers.len() != plan.dependent_count
+        || dependent_lfe_carriers.len() != plan.dependent_count
+    {
+        return Err(
+            "short multi-dependent inputs do not match the resolved ownership plan".to_owned(),
+        );
+    }
+    if matrix.len() != positions.len() || positions.is_empty() {
+        return Err(
+            "short multi-dependent matrix and OAMD positions must be non-empty and aligned"
+                .to_owned(),
+        );
+    }
+    if i0_carriers.len() != 5
+        || i0_carriers
+            .iter()
+            .any(|carrier| carrier.len() < 1536 || carrier.iter().any(|sample| !sample.is_finite()))
+    {
+        return Err(
+            "short multi-dependent writer requires five finite 1536-sample I0 carriers".to_owned(),
+        );
+    }
+    if i0_lfe_carrier.is_some_and(|carrier| {
+        carrier.len() < 1536 || carrier.iter().any(|sample| !sample.is_finite())
+    }) {
+        return Err(
+            "short multi-dependent I0 LFE carrier must contain 1536 finite samples".to_owned(),
+        );
+    }
+    if i0_lfe_carrier.is_some() != ownership_plan.independent_lfe {
+        return Err("I0 LFE carrier does not match resolved LFE ownership".to_owned());
+    }
+    crate::conformance::validate_source_dependent_ownership_plan(
+        ownership_plan,
+        &dependent_carriers.iter().map(Vec::len).collect::<Vec<_>>(),
+        &dependent_lfe_carriers
+            .iter()
+            .map(Option::is_some)
+            .collect::<Vec<_>>(),
+    )?;
+    let carrier_sizes = partition_frame_bytes(
+        plan.rate.carrier_frame_bytes,
+        plan.block_partition.partitions(),
+    )?;
+    let dependent_sizes =
+        partition_frame_bytes(plan.rate.d0_frame_bytes, plan.block_partition.partitions())?;
+    let oamd = write_oamd_payload(positions)?;
+    let joc = write_joc_payload(plan.profile, sequence_count, matrix)?;
+    let emdf = write_emdf(&oamd, &joc, plan.emdf_profile)?;
+    let complexity_index = u8::try_from(positions.len() + 1)
+        .map_err(|_| "JOC complexity index exceeds its eight-bit field".to_owned())?;
+    let mut output = Vec::new();
+    for (partition_index, range) in plan.block_partition.frame_ranges(0).into_iter().enumerate() {
+        let i0_exponent_codes = i0_carriers
+            .iter()
+            .map(|carrier| source_feature(carrier, range.start_sample, 0))
+            .collect::<Vec<_>>();
+        let i0 = write_public_short_frame(
+            0,
+            0,
+            None,
+            5,
+            plan.block_partition.partitions()[partition_index],
+            plan.block_partition.convsync()[partition_index],
+            None,
+            complexity_index,
+            carrier_sizes[partition_index],
+            Some(&i0_exponent_codes),
+            i0_lfe_carrier,
+            range.start_sample,
+        )?;
+        output.extend_from_slice(&i0);
+        for (dependent_index, dependent_plan) in ownership_plan.dependents.iter().enumerate() {
+            let carriers = &dependent_carriers[dependent_index];
+            let exponent_codes = carriers
+                .iter()
+                .map(|carrier| source_feature(carrier, range.start_sample, 0))
+                .collect::<Vec<_>>();
+            let final_dependent = partition_index + 1 == plan.block_partition.partitions().len()
+                && dependent_index + 1 == ownership_plan.dependents.len();
+            let dependent = write_public_short_frame(
+                1,
+                dependent_plan.id,
+                Some(dependent_plan.channel_map),
+                dependent_plan.full_band_channel_count(),
+                plan.block_partition.partitions()[partition_index],
+                false,
+                final_dependent.then_some(emdf.as_slice()),
+                complexity_index,
+                dependent_sizes[partition_index],
+                Some(&exponent_codes),
+                dependent_lfe_carriers[dependent_index].as_deref(),
+                range.start_sample,
+            )?;
+            output.extend_from_slice(&dependent);
+        }
+    }
+    crate::conformance::validate_short_multi_dependent_access_unit(
+        &output,
+        ownership_plan,
         plan.block_partition.partitions(),
     )?;
     Ok(output)

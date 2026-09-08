@@ -31,13 +31,13 @@ idx0–idx4 follow ETSI TS 103 420 V1.2.1 Table 47/48. JOCForge uses Lrs/Rrs as 
 
 ## Evidence and boundaries
 
-- `SUPPORTED_PASS` includes the canonical raw-elementary ETSI dependent carriage, strict EMDF, six-block cells evidenced by `artifacts/multi-dependent-closure/validation.json`; the I0+D0 profile closure remains evidenced by `artifacts/profile-closure/`.
+- `SUPPORTED_PASS` is resolved by the central orthogonal composition plan; canonical raw-elementary ETSI representatives are evidenced by `artifacts/multi-dependent-closure/validation.json` and `artifacts/orthogonal-closure/validation.json`.
 - `REJECTED_CAPACITY` is the deterministic lower-rate result for the current paired I0/D0 writer budget.
-- `PUBLIC_AMBIGUOUS` covers deployed codecdatae deviation and non-idx0 skip-field carriage where the public documents do not close the JOC-carrier meaning.
+- `PUBLIC_AMBIGUOUS` is reserved for mixed short partitions whose programme grouping/ownership is not publicly closed. Deployed `codecdatae=0` is an independent signaling profile and is not itself a raw-carriage ambiguity.
 - `SEMANTIC_CEILING` is a public raw D6/D7 syntax cell beyond the canonical Table-47 ownership maximum: no additional non-empty, non-duplicated dependent slot exists for this plan. It is not an implementation-gap claim. `SPEC_LEGAL_NOT_IMPLEMENTED` remains for legal forms outside the generated writer evidence.
 - Dependent LFE is represented by public `lfeon`/Table-E.1.4 LFE ownership, is a replacement of I0 LFE when I0 has LFE and a supplement otherwise, and remains outside the JOC matrix. Canonical dependent-LFE closure is evidenced by `artifacts/multi-dependent-closure/validation.json` and per-fixture ownership sidecars.
-- `NOT_APPLICABLE_CONTAINER` keeps CMAF's six-block, I0 plus optional D0, and container-specific signaling rules separate from raw elementary-stream support.
-- The normal raw source-derived writer closes 6, 3+3, 2+2+2, and 1+1+1+1+1+1 at the measured strict 1024/1280/1408/1536/1664 kbps cells for the I0+D0 topology with absent or independent programme LFE. Independent LFE is serialized in every corresponding short I0; dependent-LFE short framing and mixed compositions remain fail-closed.
+- `NOT_APPLICABLE` keeps CMAF's six-block, I0 plus optional D0, and container-specific signaling rules separate from raw elementary-stream support; legacy AC-3 short framing is also not applicable.
+- The raw source-derived writer closes 6, 3+3, 2+2+2, and 1+1+1+1+1+1 for I0+D0 and generalized D0..Dn ownership where the central plan and structural writer are applicable. Independent and dependent LFE ownership remain outside the JOC matrix, and deployed signaling remains separate from carriage.
 - The advanced CMAF writer closes the no-LFE, strict, one-I0+D0, six-block, 1024/1280/1408/1536/1664 kbps idx0..idx4 cells; remaining CMAF cells stay explicitly unimplemented or out of scope.
 - legacy-ac3 is supported for idx1 across 1024/1088/1152/1216/1280 kbps and for idx0..idx4 at 1280 kbps, with strict EMDF, no LFE, six blocks, and I0+D0; other legacy-core cells remain fail-closed.
 - idx5–idx7 are `RESERVED` and are never emitted. Raw D1+ cells with normative gates passed report FFmpeg interoperability separately as `UNSUPPORTED_DECODER_FEATURE`; FFmpeg is not a legality gate.

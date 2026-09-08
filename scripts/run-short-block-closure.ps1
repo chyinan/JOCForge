@@ -149,7 +149,10 @@ foreach ($profile in $profiles) {
         $lfeInspectExit = $LASTEXITCODE
         & $openjoc render-joc $lfeOutput --layout $lfeLayout --output $lfeRender --no-progress --overwrite *> ($lfeRender + ".log")
         $lfeRenderExit = $LASTEXITCODE
+        $lfeErrorPreference = $ErrorActionPreference
+        $ErrorActionPreference = "Continue"
         $lfeRenderStats = (& ffmpeg -hide_banner -i $lfeRender -af "pan=mono|c0=c3,astats=metadata=1:reset=0" -f null - 2>&1 | Out-String)
+        $ErrorActionPreference = $lfeErrorPreference
         $lfeRenderFinite = $lfeRenderStats -match "Number of NaNs: 0(?:\.0+)?" -and $lfeRenderStats -match "Number of Infs: 0(?:\.0+)?" -and $lfeRenderStats -notmatch "RMS level dB: -inf"
         & ffmpeg -hide_banner -v error -f eac3 -i $lfeOutput -f null - *> (Join-Path $artifact ($profile.name + "-lfe-" + $safe + ".ffmpeg.log"))
         $lfeFfmpegExit = $LASTEXITCODE

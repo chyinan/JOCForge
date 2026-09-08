@@ -40,10 +40,14 @@ pub use conformance::{
     classify_block_partition, dependent_topology_verdict, resolve_dependent_topology,
     resolve_short_block_plan, semantic_maximum, validate_multi_dependent_access_unit,
     validate_ownership_plan, validate_short_block_access_unit,
+    validate_short_multi_dependent_access_unit,
 };
 pub use eac3::inject_joc_skipfld;
 pub use plan::{
-    JocEncodingPlan, JocPlanError, resolve_encoding_plan, resolve_encoding_plan_with_partition,
+    CapabilityClassification, CompositionCapabilityRow, CompositionError, CompositionRequest,
+    CompositionResolver, JocContainer, JocEncodingPlan, JocPlanError, LfeOwnership,
+    classify_composition, composition_capability_matrix, resolve_composition,
+    resolve_encoding_plan, resolve_encoding_plan_with_partition,
 };
 pub use profile::{JocProfileSpec, profile_spec};
 pub use rate::{
@@ -72,7 +76,8 @@ pub use writer::{
     package_multi_dependent_source_derived_access_unit_with_plan,
     package_short_block_conformance_access_unit, package_source_derived_access_unit,
     package_source_derived_access_unit_with_frame_sizes,
-    package_source_derived_short_block_access_unit, write_one_au_proof,
+    package_source_derived_short_block_access_unit,
+    package_source_derived_short_block_access_unit_with_plan, write_one_au_proof,
 };
 
 /// MVP JOC downmix profiles.

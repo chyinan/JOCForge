@@ -28,6 +28,8 @@ Last verified: 2026-09-08
   ownership/LFE closure and profile × carriage × bitrate capability lattice.
 - `scripts/run-short-block-closure.ps1` — synthetic conformance plus real
   source-derived raw short-block closure for canonical partitions.
+- `scripts/run-orthogonal-composition-closure.ps1` — cheap composition lattice
+  generation plus targeted short multi-dependent/OpenJOC/FFmpeg representatives.
 - `.\scripts\run-temporal-stabilization.ps1` — Hanabi before/after and
   adversarial continuity evidence.
 
@@ -42,6 +44,9 @@ Last verified: 2026-09-08
   reduction, source accounting, spatial aggregation, and stability metrics.
 - `crates/jocforge-core/src/profile.rs` — mandatory idx0..idx4 topology
   contracts, including profile-owned D0 source indices.
+- `crates/jocforge-core/src/plan.rs` — pure orthogonal composition request,
+  verdict/reason classification, canonical ownership resolution, and cheap
+  capability lattice generation.
 - `crates/jocforge-core/src/conformance.rs` — public E-AC-3 role census,
   immutable dependent ownership plans, semantic-ceiling verdicts, and
   independent serialized ownership validation, block partition/range
@@ -82,7 +87,8 @@ Last verified: 2026-09-08
 - User-facing errors are lowercase actionable fragments.
 - Carriage and EMDF signaling are explicit: `etsi`/`i0-skipfld` selects
   topology, `etsi`/`deployed` selects signaling, and the default is ETSI
-  strict. Deployed compatibility is limited to idx0/1024 initially.
+  strict. The deployed preset retains the idx0/1024 I0 skip-field default,
+  while explicit raw ETSI carriage can use deployed signaling independently.
 - Matrix and metadata ordering is explicit and stable; unsupported ADM input
   is rejected rather than silently flattened.
 - DirectSpeakers LFE routing uses only public `speakerLabel`/`frequency.lowPass`
@@ -106,10 +112,10 @@ Last verified: 2026-09-08
   audio-block skip fields; it emits no D0 and fails closed when capacity is
   insufficient.
 - `resolve_encoding_plan_with_partition` carries the explicit raw JOC
-  `ShortBlockPlan`. Normal closure admits `6`, `3+3`, `2+2+2`, and
-  `1+1+1+1+1+1` only for strict ETSI I0+D0; mixed six-block compositions are
-  `PUBLIC_AMBIGUOUS`, and deployed/legacy/skip-field short combinations fail
-  closed.
+  `ShortBlockPlan`. Canonical raw ETSI closure admits `6`, `3+3`,
+  `2+2+2`, and `1+1+1+1+1+1` for source-derived I0+D0 and generalized
+  dependents; mixed six-block compositions are `PUBLIC_AMBIGUOUS`. CMAF and
+  fixed legacy AC-3 retain their separate six-block rules.
 - `package_source_derived_short_block_access_unit` writes genuine 1/2/3-block
   E-AC-3 syncframes from the normal factorization carrier inputs. An optional
   independent I0 LFE carrier is serialized in every corresponding short I0
@@ -124,6 +130,10 @@ Last verified: 2026-09-08
   public map cardinality, non-empty full-band ownership, no duplicate
   dependent full-band role, at most one LFE owner, and final-dependent JOC/EMDF
   ownership before serialization.
+- `CompositionRequest` and `CompositionResolver` are the authoritative pure
+  composition boundary across raw/CMAF, carriage, EMDF, partition, dependent
+  count, LFE ownership, semantic ceiling, and bitrate capacity. Rejected
+  requests retain a structured `CapabilityClassification.reason`.
 - Dependent LFE is public through `lfeon`/Table E.1.4. In the canonical JOC
   plan it replaces I0 LFE when I0 owns one and supplements it otherwise; the
   final programme has exactly one LFE outside the JOC reconstruction matrix.
@@ -172,9 +182,9 @@ Last verified: 2026-09-08
   automatic FFmpeg channel coupling for pinned OpenJOC traversal correctness.
 - Short-block bitrate support is a `PROFILE x PARTITION x BITRATE` contract;
   frame budgets are distributed in even 16-bit words and capacity is checked
-  before short-frame bytes are returned. Canonical independent-LFE short cells
-  are closed for the same strict raw rates; dependent-LFE, deployed, and
-  legacy-core short cells remain fail-closed. CMAF remains six-block-only.
+  before short-frame bytes are returned. Canonical raw short cells include
+  independent/dependent LFE ownership and strict/deployed EMDF where the raw
+  ownership path is closed; legacy-core short and CMAF short remain fail-closed.
 - No proprietary Dolby encoder binary, media, or reverse-engineered logic is
   permitted in this repository.
 - Generated audio/binary evidence under `artifacts/` is local and ignored;
@@ -246,6 +256,10 @@ Last verified: 2026-09-08
   A legal JOCForge/OpenJOC cell may be `SUPPORTED_PASS` with
   `UNSUPPORTED_DECODER_FEATURE` when stock FFmpeg skips additional nonzero
   substream IDs; malformed common paths remain real failures.
+- Source-derived short multi-dependent generation uses one shared partition
+  for I0 and every dependent, interleaves I0,D0..Dn per 1,536-sample interval,
+  and places JOC/OAMD only on the final dependent of the interval. The pure
+  capability matrix is generated separately from heavyweight validation.
 - The validated advanced legacy-core exception is `legacy-ac3` with public
   idx0..idx4 at 1280 kbps and idx1 at 1024/1088/1152/1216 kbps, with one
   original-syntax AC-3 I0 plus one E-AC-3 D0; other legacy-core cells remain

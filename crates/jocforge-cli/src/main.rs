@@ -17,22 +17,23 @@ mod file_scan;
 use file_scan::{read_pcm_frame, scan_bw64_file};
 
 use jocforge_core::{
-    AdmObject, AdmObjectKind, BlockPartition, DEPENDENT_CHANNEL_ROLE_CENSUS, DependentLfePolicy,
-    EmdfProfile, FinalRenderMeasurement, JocCarriage, JocProfile, ReductionConfig, ReductionSource,
-    SOURCE_DERIVED_CARRIER_PEAK_LIMIT, canonical_dependent_channel_maps,
-    canonical_dependent_lfe_plan_for_count, channel_map_channel_count, cmaf_joc_init_and_fragments,
+    AdmObject, AdmObjectKind, BlockPartition, CompositionRequest, CompositionResolver,
+    DEPENDENT_CHANNEL_ROLE_CENSUS, DependentLfePolicy, EmdfProfile, FinalRenderMeasurement,
+    JocCarriage, JocContainer, JocProfile, LfeOwnership, ReductionConfig, ReductionSource,
+    SOURCE_DERIVED_CARRIER_PEAK_LIMIT, channel_map_channel_count, cmaf_joc_init_and_fragments,
     d0_carrier_causality, factorize_source_derived, final_render_gate,
     generate_synthetic_scene_fixture, limit_signal_peak, maximum_absolute_difference,
     package_i0_skip_field_access_unit, package_legacy_ac3_source_derived_access_unit,
-    package_multi_dependent_source_derived_access_unit,
     package_multi_dependent_source_derived_access_unit_with_plan,
     package_short_block_conformance_access_unit,
     package_source_derived_access_unit_with_frame_sizes,
-    package_source_derived_short_block_access_unit, parse_bw64_adm_metadata, profile_spec,
-    quantize_coefficient, rate_budget_for_dependents, reconstruction_error,
-    reduce_scene_with_previous, resolve_encoding_plan, resolve_encoding_plan_with_partition,
-    semantic_maximum, source_derived_carrier_causality, spectral_phase_report,
-    validate_multi_dependent_access_unit, validate_source_derived_adm_metadata, write_one_au_proof,
+    package_source_derived_short_block_access_unit,
+    package_source_derived_short_block_access_unit_with_plan, parse_bw64_adm_metadata,
+    profile_spec, quantize_coefficient, reconstruction_error, reduce_scene_with_previous,
+    resolve_encoding_plan_with_partition, semantic_maximum, source_derived_carrier_causality,
+    spectral_phase_report, validate_multi_dependent_access_unit,
+    validate_short_multi_dependent_access_unit, validate_source_derived_adm_metadata,
+    write_one_au_proof,
 };
 
 const JOC_FRAME_SAMPLES: usize = 1536;
@@ -53,10 +54,14 @@ fn run(arguments: &[String]) -> Result<(), String> {
     match arguments.first().map(String::as_str) {
         Some("proof") => run_proof(&arguments[1..]),
         Some("conformance-multi-dependent") => run_multi_dependent_proof(&arguments[1..]),
+        Some("conformance-short-multi-dependent") => {
+            run_short_multi_dependent_proof(&arguments[1..])
+        }
         Some("conformance-dependent-lfe") => run_dependent_lfe_proof(&arguments[1..]),
         Some("dependent-role-census") => run_dependent_role_census(&arguments[1..]),
         Some("conformance-short") => run_short_block_proof(&arguments[1..]),
         Some("conformance-cmaf") => run_cmaf_proof(&arguments[1..]),
+        Some("composition-matrix") => run_composition_matrix(&arguments[1..]),
         Some("fixture") => run_fixture(&arguments[1..]),
         Some("fixture-directspeakers") => run_direct_speaker_fixture(&arguments[1..]),
         Some("fixture-unsupported") => run_unsupported_fixture(&arguments[1..]),
@@ -70,7 +75,7 @@ fn run(arguments: &[String]) -> Result<(), String> {
         Some("temporal-adversarial") => run_temporal_adversarial(&arguments[1..]),
         Some(command) => Err(format!("unsupported command '{command}'")),
         None => Err(
-            "usage: jocforge proof|conformance-short|conformance-multi-dependent|conformance-dependent-lfe|dependent-role-census|conformance-cmaf|fixture|fixture-directspeakers|fixture-unsupported|inspect-adm|encode|quantization-stress|carrier-causality|spectral-phase|final-render-gate|temporal ..."
+            "usage: jocforge proof|conformance-short|conformance-multi-dependent|conformance-short-multi-dependent|conformance-dependent-lfe|dependent-role-census|conformance-cmaf|composition-matrix|fixture|fixture-directspeakers|fixture-unsupported|inspect-adm|encode|quantization-stress|carrier-causality|spectral-phase|final-render-gate|temporal ..."
                 .to_owned(),
         ),
     }
@@ -166,6 +171,67 @@ fn run_proof(arguments: &[String]) -> Result<(), String> {
     write_output(&output, bytes, "proof")
 }
 
+struct ShortMultiDependentOptions {
+    profile_name: String,
+    dependent_count: usize,
+    partitions: Vec<BlockPartition>,
+    output: String,
+    emdf_profile: EmdfProfile,
+    lfe_ownership: LfeOwnership,
+}
+
+fn parse_short_multi_dependent_options(
+    arguments: &[String],
+) -> Result<ShortMultiDependentOptions, String> {
+    if arguments.len() < 4 {
+        return Err(
+            "usage: jocforge conformance-short-multi-dependent PROFILE DEPENDENT_COUNT PARTITION OUTPUT.ec3 [--emdf etsi|deployed] [--lfe absent|independent|supplement|replacement]"
+                .to_owned(),
+        );
+    }
+    let dependent_count = arguments[1]
+        .parse::<usize>()
+        .map_err(|error| format!("invalid dependent count '{}': {error}", arguments[1]))?;
+    let partitions = parse_block_partition(&arguments[2])?;
+    let mut emdf_profile = EmdfProfile::EtsiStrict;
+    let mut lfe_ownership = LfeOwnership::Absent;
+    let mut index = 4;
+    while index < arguments.len() {
+        let flag = arguments
+            .get(index)
+            .ok_or_else(|| "short multi-dependent option is missing a flag".to_owned())?;
+        let value = arguments
+            .get(index + 1)
+            .ok_or_else(|| format!("short multi-dependent option '{flag}' is missing a value"))?;
+        match flag.as_str() {
+            "--emdf" => emdf_profile = parse_emdf_profile(value)?,
+            "--lfe" => {
+                lfe_ownership = match value.as_str() {
+                    "absent" => LfeOwnership::Absent,
+                    "independent" => LfeOwnership::Independent,
+                    "supplement" => LfeOwnership::DependentSupplement,
+                    "replacement" => LfeOwnership::DependentReplacement,
+                    other => return Err(format!("unsupported LFE ownership '{other}'")),
+                }
+            }
+            other => {
+                return Err(format!(
+                    "unsupported short multi-dependent option '{other}'"
+                ));
+            }
+        }
+        index += 2;
+    }
+    Ok(ShortMultiDependentOptions {
+        profile_name: arguments[0].clone(),
+        dependent_count,
+        partitions,
+        output: arguments[3].clone(),
+        emdf_profile,
+        lfe_ownership,
+    })
+}
+
 fn run_multi_dependent_proof(arguments: &[String]) -> Result<(), String> {
     let [profile_name, dependent_count, output] = arguments else {
         return Err(
@@ -178,17 +244,6 @@ fn run_multi_dependent_proof(arguments: &[String]) -> Result<(), String> {
     let dependent_count = dependent_count
         .parse::<usize>()
         .map_err(|error| format!("invalid dependent count '{dependent_count}': {error}"))?;
-    if !(1..=8).contains(&dependent_count) {
-        return Err("dependent count must be in 1..=8 for D0..D7".to_owned());
-    }
-    if dependent_count > semantic_maximum(profile) {
-        return Err(format!(
-            "semantic ceiling: {} canonical plan supports at most D0..D{}",
-            profile.semantic_name(),
-            semantic_maximum(profile) - 1
-        ));
-    }
-    let dependent_channel_maps = canonical_dependent_channel_maps(profile, dependent_count)?;
     let total_bitrate = 1024_u32
         .checked_add(
             u32::try_from(dependent_count.saturating_sub(1))
@@ -196,8 +251,27 @@ fn run_multi_dependent_proof(arguments: &[String]) -> Result<(), String> {
                 .saturating_mul(640),
         )
         .ok_or_else(|| "multi-dependent total bitrate overflow".to_owned())?;
-    let budget = rate_budget_for_dependents(total_bitrate, dependent_count)
-        .map_err(|error| format!("invalid multi-dependent bitrate plan: {error}"))?;
+    let plan = CompositionResolver::resolve(&CompositionRequest {
+        profile,
+        container: JocContainer::Raw,
+        carriage: JocCarriage::EtsiAuxDependent,
+        emdf_profile: EmdfProfile::EtsiStrict,
+        bitrate_kbps: total_bitrate,
+        partitions: vec![BlockPartition::Six],
+        dependent_count,
+        lfe_ownership: LfeOwnership::Absent,
+    })
+    .map_err(|error| format!("invalid multi-dependent composition: {error}"))?;
+    let ownership_plan = plan
+        .ownership
+        .as_ref()
+        .ok_or_else(|| "multi-dependent composition did not return ownership".to_owned())?;
+    let dependent_channel_maps = ownership_plan
+        .dependents
+        .iter()
+        .map(|dependent| dependent.channel_map)
+        .collect::<Vec<_>>();
+    let budget = plan.rate;
     let columns = profile_spec(profile).input_labels.len();
     let unit = 820.0 / 4096.0;
     let matrix = vec![
@@ -258,15 +332,17 @@ fn run_multi_dependent_proof(arguments: &[String]) -> Result<(), String> {
                 .collect::<Vec<_>>()
         })
         .collect::<Vec<_>>();
-    let bytes = package_multi_dependent_source_derived_access_unit(
+    let dependent_lfe_carriers = vec![None; dependent_count];
+    let bytes = package_multi_dependent_source_derived_access_unit_with_plan(
         profile,
         EmdfProfile::EtsiStrict,
         1,
         &matrix,
         &[position],
         &i0,
-        &dependent_channel_maps,
+        ownership_plan,
         &dependent_carriers,
+        &dependent_lfe_carriers,
         0,
     )?;
     let report = jocforge_core::validate_multi_dependent_access_unit(&bytes, profile)?;
@@ -290,15 +366,16 @@ fn run_multi_dependent_proof(arguments: &[String]) -> Result<(), String> {
                 .map(|(channel, _)| {
                     let mut changed_carriers = dependent_carriers.clone();
                     changed_carriers[index][channel][0] += 0.125;
-                    package_multi_dependent_source_derived_access_unit(
+                    package_multi_dependent_source_derived_access_unit_with_plan(
                         profile,
                         EmdfProfile::EtsiStrict,
                         1,
                         &matrix,
                         &[position],
                         &i0,
-                        &dependent_channel_maps,
+                        ownership_plan,
                         &changed_carriers,
+                        &dependent_lfe_carriers,
                         0,
                     )
                     .is_ok_and(|changed| changed != bytes)
@@ -420,20 +497,34 @@ fn run_dependent_lfe_proof(arguments: &[String]) -> Result<(), String> {
             semantic_maximum(profile) - 1
         ));
     }
-    let mut ownership_plan = canonical_dependent_lfe_plan_for_count(profile, dependent_count)?;
-    if replacement {
-        ownership_plan.independent_lfe = true;
-        ownership_plan.dependents[0].lfe_policy = DependentLfePolicy::ReplaceIndependent;
-    }
+    let lfe_ownership = if replacement {
+        LfeOwnership::DependentReplacement
+    } else {
+        LfeOwnership::DependentSupplement
+    };
     let total_bitrate = 1024_u32
         .checked_add(
-            u32::try_from(ownership_plan.dependents.len().saturating_sub(1))
+            u32::try_from(dependent_count.saturating_sub(1))
                 .unwrap_or(u32::MAX)
                 .saturating_mul(640),
         )
         .ok_or_else(|| "dependent-LFE total bitrate overflow".to_owned())?;
-    let budget = rate_budget_for_dependents(total_bitrate, ownership_plan.dependents.len())
-        .map_err(|error| format!("invalid dependent-LFE bitrate plan: {error}"))?;
+    let plan = CompositionResolver::resolve(&CompositionRequest {
+        profile,
+        container: JocContainer::Raw,
+        carriage: JocCarriage::EtsiAuxDependent,
+        emdf_profile: EmdfProfile::EtsiStrict,
+        bitrate_kbps: total_bitrate,
+        partitions: vec![BlockPartition::Six],
+        dependent_count,
+        lfe_ownership,
+    })
+    .map_err(|error| format!("invalid dependent-LFE composition: {error}"))?;
+    let ownership_plan = plan
+        .ownership
+        .as_ref()
+        .ok_or_else(|| "dependent-LFE composition did not return ownership".to_owned())?;
+    let budget = plan.rate;
     let columns = profile_spec(profile).input_labels.len();
     let matrix = vec![
         (0..columns)
@@ -510,7 +601,7 @@ fn run_dependent_lfe_proof(arguments: &[String]) -> Result<(), String> {
             &matrix,
             &[position],
             &i0,
-            &ownership_plan,
+            ownership_plan,
             &dependent_carriers,
             &lfe_carriers,
             0,
@@ -544,7 +635,7 @@ fn run_dependent_lfe_proof(arguments: &[String]) -> Result<(), String> {
                             &matrix,
                             &[position],
                             &i0,
-                            &ownership_plan,
+                            ownership_plan,
                             &changed_carriers,
                             &lfe_carriers,
                             0,
@@ -565,7 +656,7 @@ fn run_dependent_lfe_proof(arguments: &[String]) -> Result<(), String> {
                             &matrix,
                             &[position],
                             &i0,
-                            &ownership_plan,
+                            ownership_plan,
                             &dependent_carriers,
                             &changed_lfe_carriers,
                             0,
@@ -756,12 +847,16 @@ fn run_cmaf_proof(arguments: &[String]) -> Result<(), String> {
         }
     };
     let profile = parse_profile(profile_name)?;
-    let plan = resolve_encoding_plan(
+    let plan = CompositionResolver::resolve(&CompositionRequest {
         profile,
-        JocCarriage::EtsiAuxDependent,
-        EmdfProfile::EtsiStrict,
+        container: JocContainer::Cmaf,
+        carriage: JocCarriage::EtsiAuxDependent,
+        emdf_profile: EmdfProfile::EtsiStrict,
         bitrate_kbps,
-    )
+        partitions: vec![BlockPartition::Six],
+        dependent_count: 1,
+        lfe_ownership: LfeOwnership::Absent,
+    })
     .map_err(|error| format!("invalid CMAF conformance plan: {error}"))?;
     let bytes =
         fs::read(input).map_err(|error| format!("failed to read raw JOC input: {error}"))?;
@@ -778,6 +873,347 @@ fn run_cmaf_proof(arguments: &[String]) -> Result<(), String> {
     let output_bytes =
         cmaf_joc_init_and_fragments(profile, EmdfProfile::EtsiStrict, bitrate_kbps, &samples)?;
     write_output(&PathBuf::from(output), output_bytes, "CMAF conformance")
+}
+
+fn profile_label(profile: JocProfile) -> String {
+    format!("idx{}", profile.downmix_index())
+}
+
+fn carriage_label(carriage: JocCarriage) -> &'static str {
+    match carriage {
+        JocCarriage::EtsiAuxDependent => "etsi",
+        JocCarriage::I0SkipField => "i0-skipfld",
+        JocCarriage::LegacyAc3Dependent => "legacy-ac3",
+    }
+}
+
+fn emdf_label(profile: EmdfProfile) -> &'static str {
+    match profile {
+        EmdfProfile::EtsiStrict => "etsi",
+        EmdfProfile::DeployedCompat => "deployed",
+    }
+}
+
+fn lfe_ownership_label(ownership: LfeOwnership) -> &'static str {
+    match ownership {
+        LfeOwnership::Absent => "absent",
+        LfeOwnership::Independent => "independent",
+        LfeOwnership::DependentSupplement => "dependent-supplement",
+        LfeOwnership::DependentReplacement => "dependent-replacement",
+    }
+}
+
+fn partition_label(partitions: &[BlockPartition]) -> String {
+    partitions
+        .iter()
+        .map(|partition| partition.audio_blocks().to_string())
+        .collect::<Vec<_>>()
+        .join("+")
+}
+
+fn csv_field(value: &str) -> String {
+    if value
+        .chars()
+        .any(|character| matches!(character, ',' | '"' | '\n' | '\r'))
+    {
+        format!("\"{}\"", value.replace('"', "\"\""))
+    } else {
+        value.to_owned()
+    }
+}
+
+fn json_quoted(value: &str) -> String {
+    format!(
+        "\"{}\"",
+        value
+            .replace('\\', "\\\\")
+            .replace('"', "\\\"")
+            .replace('\n', "\\n")
+            .replace('\r', "\\r")
+    )
+}
+
+fn composition_matrix_csv(rows: &[jocforge_core::CompositionCapabilityRow]) -> String {
+    let mut output = String::from(
+        "profile,container,carriage,emdf_profile,partition,dependent_count,lfe_ownership,bitrate_kbps,verdict,reason\n",
+    );
+    for row in rows {
+        let fields = [
+            profile_label(row.profile),
+            row.container.to_string(),
+            carriage_label(row.carriage).to_owned(),
+            emdf_label(row.emdf_profile).to_owned(),
+            partition_label(&row.partitions),
+            row.dependent_count.to_string(),
+            lfe_ownership_label(row.lfe_ownership).to_owned(),
+            row.bitrate_kbps.to_string(),
+            row.classification.verdict.to_string(),
+            row.classification.reason.clone(),
+        ];
+        output.push_str(
+            &fields
+                .iter()
+                .map(|field| csv_field(field))
+                .collect::<Vec<_>>()
+                .join(","),
+        );
+        output.push('\n');
+    }
+    output
+}
+
+fn composition_matrix_json(rows: &[jocforge_core::CompositionCapabilityRow]) -> String {
+    let mut output = format!(
+        "{{\"schema\":\"jocforge-orthogonal-composition-v1\",\"row_count\":{},\"rows\":[",
+        rows.len()
+    );
+    for (index, row) in rows.iter().enumerate() {
+        if index > 0 {
+            output.push(',');
+        }
+        let _ = write!(
+            output,
+            "{{\"profile\":{},\"container\":{},\"carriage\":{},\"emdf_profile\":{},\"partition\":{},\"dependent_count\":{},\"lfe_ownership\":{},\"bitrate_kbps\":{},\"verdict\":{},\"reason\":{}}}",
+            json_quoted(&profile_label(row.profile)),
+            json_quoted(&row.container.to_string()),
+            json_quoted(carriage_label(row.carriage)),
+            json_quoted(emdf_label(row.emdf_profile)),
+            json_quoted(&partition_label(&row.partitions)),
+            row.dependent_count,
+            json_quoted(lfe_ownership_label(row.lfe_ownership)),
+            row.bitrate_kbps,
+            json_quoted(&row.classification.verdict.to_string()),
+            json_quoted(&row.classification.reason),
+        );
+    }
+    output.push_str("]}\n");
+    output
+}
+
+fn run_composition_matrix(arguments: &[String]) -> Result<(), String> {
+    let [csv_path, json_path] = arguments else {
+        return Err("usage: jocforge composition-matrix OUTPUT.csv OUTPUT.json".to_owned());
+    };
+    let rows = jocforge_core::composition_capability_matrix();
+    write_output(
+        &PathBuf::from(csv_path),
+        composition_matrix_csv(&rows).into_bytes(),
+        "composition capability CSV",
+    )?;
+    write_output(
+        &PathBuf::from(json_path),
+        composition_matrix_json(&rows).into_bytes(),
+        "composition capability JSON",
+    )
+}
+
+fn run_short_multi_dependent_proof(arguments: &[String]) -> Result<(), String> {
+    let options = parse_short_multi_dependent_options(arguments)?;
+    remove_stale_output(Path::new(&options.output))?;
+    let profile = parse_profile(&options.profile_name)?;
+    let total_bitrate = 1024_u32
+        .checked_add(
+            u32::try_from(options.dependent_count.saturating_sub(1))
+                .unwrap_or(u32::MAX)
+                .saturating_mul(640),
+        )
+        .ok_or_else(|| "short multi-dependent total bitrate overflow".to_owned())?;
+    let plan = CompositionResolver::resolve(&CompositionRequest {
+        profile,
+        container: JocContainer::Raw,
+        carriage: JocCarriage::EtsiAuxDependent,
+        emdf_profile: options.emdf_profile,
+        bitrate_kbps: total_bitrate,
+        partitions: options.partitions.clone(),
+        dependent_count: options.dependent_count,
+        lfe_ownership: options.lfe_ownership,
+    })
+    .map_err(|error| format!("invalid short multi-dependent composition: {error}"))?;
+    let ownership = plan
+        .ownership
+        .as_ref()
+        .ok_or_else(|| "short multi-dependent composition did not return ownership".to_owned())?;
+    let carrier = |seed: f64| {
+        (0..JOC_FRAME_SAMPLES)
+            .map(|sample| ((sample as f64) * 0.013 + seed).sin() * 0.1)
+            .collect::<Vec<_>>()
+    };
+    let i0_carriers = (0..5)
+        .map(|index| carrier(f64::from(index)))
+        .collect::<Vec<_>>();
+    let i0_lfe_carrier = ownership.independent_lfe.then(|| carrier(8.0));
+    let dependent_carriers = ownership
+        .dependents
+        .iter()
+        .enumerate()
+        .map(|(dependent, dependent_plan)| {
+            (0..dependent_plan.full_band_channel_count())
+                .map(|channel| carrier(0.2 + dependent as f64 + channel as f64))
+                .collect::<Vec<_>>()
+        })
+        .collect::<Vec<_>>();
+    let dependent_lfe_carriers = ownership
+        .dependents
+        .iter()
+        .enumerate()
+        .map(|(index, dependent)| dependent.has_lfe().then(|| carrier(9.0 + index as f64)))
+        .collect::<Vec<_>>();
+    let matrix = vec![vec![0.1; profile_spec(profile).input_labels.len()]];
+    let position = jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    };
+    let bytes = package_source_derived_short_block_access_unit_with_plan(
+        &plan,
+        1,
+        &matrix,
+        &[position],
+        &i0_carriers,
+        i0_lfe_carrier.as_deref(),
+        &dependent_carriers,
+        &dependent_lfe_carriers,
+    )?;
+    validate_short_multi_dependent_access_unit(
+        &bytes,
+        ownership,
+        plan.block_partition.partitions(),
+    )?;
+    let expected_bytes = plan
+        .rate
+        .carrier_frame_bytes
+        .checked_add(
+            plan.rate
+                .d0_frame_bytes
+                .checked_mul(plan.dependent_count)
+                .ok_or_else(|| "short multi-dependent capacity overflows usize".to_owned())?,
+        )
+        .ok_or_else(|| "short multi-dependent capacity overflows usize".to_owned())?;
+    let capacity_validated = bytes.len() == expected_bytes;
+    if !capacity_validated {
+        return Err(format!(
+            "short multi-dependent capacity mismatch: emitted {} bytes, expected {expected_bytes}",
+            bytes.len()
+        ));
+    }
+    let mut source_causality = true;
+    if i0_lfe_carrier.is_none() {
+        for channel in 0..i0_carriers.len() {
+            let mut changed_carriers = i0_carriers.clone();
+            changed_carriers[channel][0] += 0.125;
+            source_causality &= package_source_derived_short_block_access_unit_with_plan(
+                &plan,
+                1,
+                &matrix,
+                &[position],
+                &changed_carriers,
+                i0_lfe_carrier.as_deref(),
+                &dependent_carriers,
+                &dependent_lfe_carriers,
+            )
+            .is_ok_and(|changed| changed != bytes);
+        }
+    }
+    if let Some(lfe) = i0_lfe_carrier.as_ref() {
+        let mut changed_lfe = lfe.clone();
+        changed_lfe[0] += 0.125;
+        source_causality &= package_source_derived_short_block_access_unit_with_plan(
+            &plan,
+            1,
+            &matrix,
+            &[position],
+            &i0_carriers,
+            Some(changed_lfe.as_slice()),
+            &dependent_carriers,
+            &dependent_lfe_carriers,
+        )
+        .is_ok_and(|changed| changed != bytes);
+    }
+    for (dependent_index, carriers) in dependent_carriers.iter().enumerate() {
+        for channel in 0..carriers.len() {
+            let mut changed_carriers = dependent_carriers.clone();
+            changed_carriers[dependent_index][channel][0] += 0.125;
+            source_causality &= package_source_derived_short_block_access_unit_with_plan(
+                &plan,
+                1,
+                &matrix,
+                &[position],
+                &i0_carriers,
+                i0_lfe_carrier.as_deref(),
+                &changed_carriers,
+                &dependent_lfe_carriers,
+            )
+            .is_ok_and(|changed| changed != bytes);
+        }
+        if let Some(lfe) = dependent_lfe_carriers[dependent_index].as_ref() {
+            let mut changed_lfe_carriers = dependent_lfe_carriers.clone();
+            changed_lfe_carriers[dependent_index] = Some(lfe.clone());
+            changed_lfe_carriers[dependent_index]
+                .as_mut()
+                .expect("changed LFE carrier present")[0] += 0.125;
+            source_causality &= package_source_derived_short_block_access_unit_with_plan(
+                &plan,
+                1,
+                &matrix,
+                &[position],
+                &i0_carriers,
+                i0_lfe_carrier.as_deref(),
+                &dependent_carriers,
+                &changed_lfe_carriers,
+            )
+            .is_ok_and(|changed| changed != bytes);
+        }
+    }
+    if !source_causality {
+        return Err("short multi-dependent source causality gate failed".to_owned());
+    }
+    let ownership_path = PathBuf::from(&options.output).with_extension("ownership.json");
+    let ownership_json = format!(
+        "{{\n  \"profile\":\"{}\",\n  \"container\":\"{}\",\n  \"carriage\":\"{}\",\n  \"emdf_profile\":\"{}\",\n  \"block_partition\":\"{}\",\n  \"dependent_count\":{},\n  \"lfe_ownership\":\"{}\",\n  \"joc_owner\":\"D{}\",\n  \"structural_validation\":true,\n  \"capacity_validated\":{},\n  \"source_causality_scope\":\"all serialized source-owned fields\",\n  \"i0_full_band_causality\":\"{}\",\n  \"source_causality\":{}\n}}\n",
+        profile_label(profile),
+        plan.container,
+        carriage_label(plan.carriage),
+        emdf_label(plan.emdf_profile),
+        partition_label(plan.block_partition.partitions()),
+        plan.dependent_count,
+        lfe_ownership_label(plan.lfe_ownership),
+        ownership.final_joc_owner,
+        json_bool(capacity_validated),
+        if i0_lfe_carrier.is_some() {
+            "not_applicable_for_i0_lfe_short_frame"
+        } else {
+            "pass"
+        },
+        json_bool(source_causality),
+    );
+    let publish = (|| {
+        write_output(
+            &PathBuf::from(&options.output),
+            bytes,
+            "short multi-dependent proof",
+        )?;
+        write_output(
+            &ownership_path,
+            ownership_json.into_bytes(),
+            "short multi-dependent ownership",
+        )
+    })();
+    if publish.is_err() {
+        let _ = remove_stale_output(Path::new(&options.output));
+    }
+    publish?;
+    println!(
+        "Profile: {} | Carriage: {} | EMDF: {} | Block partition: {} | Dependents: D0..D{} | LFE ownership: {} | Bitrate: {} kbps | JOC owner: D{}",
+        profile_label(profile),
+        carriage_label(plan.carriage),
+        emdf_label(plan.emdf_profile),
+        partition_label(plan.block_partition.partitions()),
+        plan.dependent_count.saturating_sub(1),
+        lfe_ownership_label(plan.lfe_ownership),
+        plan.rate.total_bitrate_kbps,
+        ownership.final_joc_owner,
+    );
+    Ok(())
 }
 
 fn run_quantization_stress(arguments: &[String]) -> Result<(), String> {
@@ -1622,6 +2058,7 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
     }
     let mut target_bitrate_kbps = 1664;
     let mut carriage = JocCarriage::default();
+    let mut carriage_explicit = false;
     let mut emdf_profile = EmdfProfile::default();
     let mut block_partition = vec![BlockPartition::Six];
     let mut temporal_continuity_weight = ReductionConfig::default().temporal_continuity_weight;
@@ -1634,14 +2071,13 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         match option.as_str() {
             "--carriage" => {
                 carriage = parse_carriage(value)?;
+                carriage_explicit = true;
             }
             "--emdf-profile" => {
                 emdf_profile = parse_emdf_profile(value)?;
             }
             "--compat" => {
-                let (preset_carriage, preset_emdf_profile) = parse_compat_preset(value)?;
-                carriage = preset_carriage;
-                emdf_profile = preset_emdf_profile;
+                (carriage, emdf_profile) = apply_compat_preset(carriage, carriage_explicit, value)?;
             }
             "--bitrate" => {
                 target_bitrate_kbps = value
@@ -1663,7 +2099,7 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         option_index += 2;
     }
     let profile = parse_profile(profile_name)?;
-    let plan = resolve_encoding_plan_with_partition(
+    let mut plan = resolve_encoding_plan_with_partition(
         profile,
         carriage,
         emdf_profile,
@@ -1671,7 +2107,6 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         &block_partition,
     )
     .map_err(|error| format!("invalid encoding plan: {error}"))?;
-    let rate = plan.rate;
     let input_path = PathBuf::from(input);
     let scanned = scan_bw64_file(&input_path)?;
     let metadata = parse_bw64_adm_metadata(
@@ -1716,6 +2151,30 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         .enumerate()
         .filter_map(|(index, channel)| channel.is_lfe.then_some(index))
         .collect::<Vec<_>>();
+    let lfe_ownership = if lfe_source_indices.is_empty() {
+        LfeOwnership::Absent
+    } else if carriage == JocCarriage::EtsiAuxDependent {
+        LfeOwnership::Independent
+    } else {
+        return Err(format!(
+            "invalid encoding composition: {}: the selected carriage has no validated source-derived LFE ownership path",
+            jocforge_core::CapabilityVerdict::SpecLegalNotImplemented
+        ));
+    };
+    if lfe_ownership != LfeOwnership::Absent {
+        plan = CompositionResolver::resolve(&CompositionRequest {
+            profile,
+            container: JocContainer::Raw,
+            carriage,
+            emdf_profile,
+            bitrate_kbps: target_bitrate_kbps,
+            partitions: block_partition.clone(),
+            dependent_count: usize::from(carriage != JocCarriage::I0SkipField),
+            lfe_ownership,
+        })
+        .map_err(|error| format!("invalid encoding composition: {error}"))?;
+    }
+    let rate = plan.rate;
     let short_block_mode = !plan.block_partition.is_default();
     let i0_channels = 5 + usize::from(!lfe_source_indices.is_empty());
     let rank = profile_spec(profile).input_labels.len();
@@ -2358,6 +2817,22 @@ fn parse_compat_preset(value: &str) -> Result<(JocCarriage, EmdfProfile), String
     }
 }
 
+fn apply_compat_preset(
+    carriage: JocCarriage,
+    carriage_explicit: bool,
+    value: &str,
+) -> Result<(JocCarriage, EmdfProfile), String> {
+    let (preset_carriage, emdf_profile) = parse_compat_preset(value)?;
+    Ok((
+        if carriage_explicit {
+            carriage
+        } else {
+            preset_carriage
+        },
+        emdf_profile,
+    ))
+}
+
 #[allow(clippy::needless_pass_by_value)]
 fn write_output(path: &Path, bytes: Vec<u8>, description: &str) -> Result<(), String> {
     let parent = path
@@ -2457,10 +2932,14 @@ fn remove_stale_output(path: &Path) -> Result<(), String> {
 #[cfg(test)]
 mod tests {
     use super::{
+        apply_compat_preset, composition_matrix_csv, composition_matrix_json,
         parse_block_partition, parse_carriage, parse_compat_preset, parse_emdf_profile,
-        parse_profile,
+        parse_profile, parse_short_multi_dependent_options,
     };
-    use jocforge_core::{BlockPartition, EmdfProfile, JocCarriage, JocProfile};
+    use jocforge_core::{
+        BlockPartition, CapabilityClassification, CompositionCapabilityRow, EmdfProfile,
+        JocCarriage, JocContainer, JocProfile, LfeOwnership,
+    };
 
     #[test]
     fn cli_names_carriage_and_emdf_profile_separately() {
@@ -2487,6 +2966,10 @@ mod tests {
             parse_compat_preset("etsi"),
             Ok((JocCarriage::EtsiAuxDependent, EmdfProfile::EtsiStrict))
         );
+        assert_eq!(
+            apply_compat_preset(JocCarriage::EtsiAuxDependent, true, "deployed"),
+            Ok((JocCarriage::EtsiAuxDependent, EmdfProfile::DeployedCompat))
+        );
     }
 
     #[test]
@@ -2511,5 +2994,53 @@ mod tests {
             Ok(vec![BlockPartition::Three, BlockPartition::Three])
         );
         assert!(parse_block_partition("4+2").is_err());
+    }
+
+    #[test]
+    fn composition_matrix_serialization_keeps_dimensions_and_reason() {
+        let row = CompositionCapabilityRow {
+            profile: JocProfile::Idx2,
+            container: JocContainer::Raw,
+            carriage: JocCarriage::EtsiAuxDependent,
+            emdf_profile: EmdfProfile::EtsiStrict,
+            partitions: vec![BlockPartition::Two; 3],
+            dependent_count: 2,
+            lfe_ownership: LfeOwnership::DependentSupplement,
+            bitrate_kbps: 2304,
+            classification: CapabilityClassification {
+                verdict: jocforge_core::CapabilityVerdict::SupportedPass,
+                reason: "resolved by central plan".to_owned(),
+            },
+        };
+
+        let csv = composition_matrix_csv(std::slice::from_ref(&row));
+        let json = composition_matrix_json(&[row]);
+        assert!(csv.contains("profile,container,carriage,emdf_profile"));
+        assert!(
+            csv.contains("idx2,raw,etsi,etsi,2+2+2,2,dependent-supplement,2304,SUPPORTED_PASS")
+        );
+        assert!(json.contains("\"dependent_count\":2"));
+        assert!(json.contains("\"verdict\":\"SUPPORTED_PASS\""));
+        assert!(json.contains("central plan"));
+    }
+
+    #[test]
+    fn cli_parses_short_multi_dependent_plan_without_fallbacks() {
+        let options = parse_short_multi_dependent_options(&[
+            "idx4".to_owned(),
+            "6".to_owned(),
+            "2+2+2".to_owned(),
+            "out.ec3".to_owned(),
+            "--emdf".to_owned(),
+            "deployed".to_owned(),
+            "--lfe".to_owned(),
+            "replacement".to_owned(),
+        ])
+        .expect("short multi-dependent options");
+        assert_eq!(options.profile_name, "idx4");
+        assert_eq!(options.dependent_count, 6);
+        assert_eq!(options.partitions, vec![BlockPartition::Two; 3]);
+        assert_eq!(options.emdf_profile, EmdfProfile::DeployedCompat);
+        assert_eq!(options.lfe_ownership, LfeOwnership::DependentReplacement);
     }
 }

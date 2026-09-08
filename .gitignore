@@ -15,6 +15,9 @@
 /artifacts/validation-closure-temporal.csv
 /artifacts/joc-capability-matrix.csv
 /artifacts/joc-capability-matrix.json
+/artifacts/composition-capability-matrix.csv
+/artifacts/composition-capability-matrix.json
+/artifacts/orthogonal-closure/
 /artifacts/profile-closure/
 /artifacts/multi-dependent-closure/
 /artifacts/legacy-core-closure/

@@ -1,6 +1,9 @@
 // pattern: Functional Core
 
-use crate::{EmdfProfile, JocCarriage, JocProfile, rate_budget_for_carriage};
+use crate::{
+    BlockPartition, CompositionRequest, CompositionResolver, EmdfProfile, JocCarriage,
+    JocContainer, JocProfile, LfeOwnership,
+};
 
 const CMAF_SAMPLE_DURATION: u32 = 1536;
 
@@ -198,13 +201,22 @@ fn fragment(sample: &[u8], sequence: u32, decode_time: u64) -> Vec<u8> {
 /// per complete 1,536-sample raw JOC access unit.
 pub fn cmaf_joc_init_and_fragments(
     profile: JocProfile,
-    _emdf_profile: EmdfProfile,
+    emdf_profile: EmdfProfile,
     bitrate_kbps: u32,
     samples: &[Vec<u8>],
 ) -> Result<Vec<u8>, String> {
-    let rate = rate_budget_for_carriage(JocCarriage::EtsiAuxDependent, bitrate_kbps)
-        .map_err(|error| format!("invalid CMAF bitrate: {error}"))?;
-    let expected_size = rate.carrier_frame_bytes + rate.d0_frame_bytes;
+    let plan = CompositionResolver::resolve(&CompositionRequest {
+        profile,
+        container: JocContainer::Cmaf,
+        carriage: JocCarriage::EtsiAuxDependent,
+        emdf_profile,
+        bitrate_kbps,
+        partitions: vec![BlockPartition::Six],
+        dependent_count: 1,
+        lfe_ownership: LfeOwnership::Absent,
+    })
+    .map_err(|error| format!("invalid CMAF composition: {error}"))?;
+    let expected_size = plan.rate.carrier_frame_bytes + plan.rate.d0_frame_bytes;
     if samples.is_empty()
         || samples
             .iter()
@@ -212,7 +224,7 @@ pub fn cmaf_joc_init_and_fragments(
     {
         return Err("CMAF sample must be one complete 1536-sample JOC access unit".to_owned());
     }
-    let dec3 = dec3_box(profile, bitrate_kbps);
+    let dec3 = dec3_box(profile, plan.rate.total_bitrate_kbps);
     let mut output = init_segment(&dec3);
     for (index, sample) in samples.iter().enumerate() {
         output.extend_from_slice(&fragment(

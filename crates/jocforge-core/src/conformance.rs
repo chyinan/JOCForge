@@ -74,6 +74,7 @@ pub struct ShortBlockValidationReport {
     pub samples: usize,
     pub metadata_owner_frame: usize,
     pub lfe_present: bool,
+    pub complexity_index: u8,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -246,9 +247,9 @@ pub enum CapabilityVerdict {
     SpecLegalNotImplemented,
     RejectedCapacity,
     PublicAmbiguous,
+    NotApplicable,
     Invalid,
     Reserved,
-    FfmpegUnsupportedDecoderFeature,
 }
 
 impl fmt::Display for CapabilityVerdict {
@@ -259,9 +260,9 @@ impl fmt::Display for CapabilityVerdict {
             Self::SpecLegalNotImplemented => "SPEC_LEGAL_NOT_IMPLEMENTED",
             Self::RejectedCapacity => "REJECTED_CAPACITY",
             Self::PublicAmbiguous => "PUBLIC_AMBIGUOUS",
+            Self::NotApplicable => "NOT_APPLICABLE",
             Self::Invalid => "INVALID",
             Self::Reserved => "RESERVED",
-            Self::FfmpegUnsupportedDecoderFeature => "FFMPEG_UNSUPPORTED_DECODER_FEATURE",
         })
     }
 }
@@ -682,6 +683,7 @@ pub fn validate_short_block_access_unit(
     }
     let expected_channel_map = profile_spec(profile).channel_map;
     let lfe_present = frames.first().is_some_and(|frame| frame.lfe_on);
+    let mut complexity_index = 0;
     for (index, partition) in partitions.iter().copied().enumerate() {
         let independent = &frames[index * 2];
         let dependent = &frames[index * 2 + 1];
@@ -718,6 +720,7 @@ pub fn validate_short_block_access_unit(
             if !addbsi.type_a || addbsi.complexity_index == 0 || dependent.emdf.is_none() {
                 return Err("short-block final D0 has invalid JOC addbsi".to_owned());
             }
+            complexity_index = addbsi.complexity_index;
         }
         if let Some(emdf) = &dependent.emdf {
             if emdf.payload_ids != vec![11, 14]
@@ -733,6 +736,149 @@ pub fn validate_short_block_access_unit(
         samples: plan.samples(),
         metadata_owner_frame: expected_frames - 1,
         lfe_present,
+        complexity_index,
+    })
+}
+
+/// Validates a grouped short-block programme with one I0 and a shared
+/// partition across every associated D0..D7 dependent.
+pub fn validate_short_multi_dependent_access_unit(
+    stream: &[u8],
+    ownership_plan: &OwnershipPlan,
+    partitions: &[BlockPartition],
+) -> Result<ShortBlockValidationReport, String> {
+    let plan = resolve_short_block_plan(partitions)
+        .map_err(|error| format!("invalid short multi-dependent plan: {error}"))?;
+    if classify_block_partition(partitions) != BlockPartitionStatus::PublicLegal {
+        return Err(
+            "short multi-dependent validator requires a publicly closed partition".to_owned(),
+        );
+    }
+    if partitions.contains(&BlockPartition::Six) {
+        return Err("short multi-dependent validator requires only 1/2/3-block frames".to_owned());
+    }
+    validate_ownership_plan(ownership_plan)
+        .map_err(|error| format!("invalid short multi-dependent ownership plan: {error}"))?;
+    let component_count = ownership_plan.dependents.len().saturating_add(1);
+    let expected_frames = partitions
+        .len()
+        .checked_mul(component_count)
+        .ok_or_else(|| "short multi-dependent frame count overflow".to_owned())?;
+    let mut frames = Vec::with_capacity(expected_frames);
+    let mut offset = 0_usize;
+    while offset < stream.len() {
+        let frame = parse_structural_frame(stream, offset)?;
+        let frame_end = offset
+            .checked_add(frame.frame_size)
+            .ok_or_else(|| "short multi-dependent frame offset overflow".to_owned())?;
+        crate::eac3::validate_crc2(
+            stream
+                .get(offset..frame_end)
+                .ok_or_else(|| "short multi-dependent frame exceeds stream bounds".to_owned())?,
+        )?;
+        offset = frame_end;
+        frames.push(frame);
+    }
+    if offset != stream.len() || frames.len() != expected_frames {
+        return Err(format!(
+            "short multi-dependent access unit contains {} frames; expected {expected_frames}",
+            frames.len()
+        ));
+    }
+    let mut frame_index = 0_usize;
+    let mut lfe_present = false;
+    let mut complexity_index = 0;
+    for (partition_index, partition) in partitions.iter().copied().enumerate() {
+        let independent = frames
+            .get(frame_index)
+            .ok_or_else(|| "short multi-dependent I0 frame is missing".to_owned())?;
+        frame_index += 1;
+        if independent.stream_type != 0
+            || independent.substream_id != 0
+            || independent.sample_rate != 48_000
+            || independent.numblkscod != partition.numblkscod()
+            || independent.audio_blocks != partition.audio_blocks()
+            || independent.audio_coding_mode != 7
+            || independent.channel_map.is_some()
+            || independent.lfe_on != ownership_plan.independent_lfe
+            || independent.addbsi.is_some()
+            || independent.emdf.is_some()
+            || independent.convsync != Some(plan.convsync()[partition_index])
+        {
+            return Err(format!(
+                "invalid short multi-dependent I0 at syncframe group {partition_index}"
+            ));
+        }
+        lfe_present |= independent.lfe_on;
+        for (dependent_index, dependent_plan) in ownership_plan.dependents.iter().enumerate() {
+            let dependent = frames.get(frame_index).ok_or_else(|| {
+                format!(
+                    "short multi-dependent D{} frame is missing at group {partition_index}",
+                    dependent_plan.id
+                )
+            })?;
+            frame_index += 1;
+            let final_dependent = partition_index + 1 == partitions.len()
+                && dependent_index + 1 == ownership_plan.dependents.len();
+            let expected_full_band_channels = dependent_plan.full_band_channel_count();
+            let expected_acmod = match expected_full_band_channels {
+                1 => 1,
+                2 => 2,
+                _ => 7,
+            };
+            if dependent.stream_type != 1
+                || dependent.substream_id != dependent_plan.id
+                || dependent.sample_rate != 48_000
+                || dependent.numblkscod != partition.numblkscod()
+                || dependent.audio_blocks != partition.audio_blocks()
+                || dependent.audio_coding_mode != expected_acmod
+                || dependent.channel_map != Some(dependent_plan.channel_map)
+                || dependent.full_bandwidth_channels != expected_full_band_channels
+                || dependent.lfe_on != dependent_plan.has_lfe()
+                || dependent.convsync.is_some()
+                || dependent.addbsi.is_some() != final_dependent
+                || dependent.emdf.is_some() != final_dependent
+            {
+                return Err(format!(
+                    "invalid short multi-dependent D{} at syncframe group {partition_index}",
+                    dependent_plan.id
+                ));
+            }
+            if final_dependent {
+                if dependent
+                    .addbsi
+                    .as_ref()
+                    .is_none_or(|addbsi| !addbsi.type_a || addbsi.complexity_index == 0)
+                {
+                    return Err(
+                        "short multi-dependent final D0..D7 has invalid JOC addbsi".to_owned()
+                    );
+                }
+                complexity_index = dependent
+                    .addbsi
+                    .as_ref()
+                    .map_or(0, |addbsi| addbsi.complexity_index);
+                if dependent.emdf.as_ref().is_none_or(|emdf| {
+                    emdf.payload_ids != vec![11, 14]
+                        || emdf.joc_downmix_index
+                            != profile_spec(ownership_plan.profile).downmix_index
+                }) {
+                    return Err(
+                        "short multi-dependent final D0..D7 has invalid JOC EMDF profile"
+                            .to_owned(),
+                    );
+                }
+            }
+            lfe_present |= dependent.lfe_on;
+        }
+    }
+    Ok(ShortBlockValidationReport {
+        syncframes: frames.len(),
+        audio_blocks: plan.audio_blocks(),
+        samples: plan.samples(),
+        metadata_owner_frame: expected_frames - 1,
+        lfe_present,
+        complexity_index,
     })
 }
 
@@ -1471,6 +1617,9 @@ pub fn validate_ownership_plan(
         });
     }
     let maximum = semantic_maximum(plan.profile);
+    // Dependent maps intentionally cover a selected replacement/supplement
+    // subset of the profile roles; the validator rejects unknown or duplicate
+    // roles but does not require every profile channel to appear in every plan.
     let expected_full_band = match plan.profile {
         JocProfile::Idx0 | JocProfile::Idx3 => vec![0, 1, 2, 3, 4],
         JocProfile::Idx1 => vec![0, 1, 2, 3, 4, 5, 6],
