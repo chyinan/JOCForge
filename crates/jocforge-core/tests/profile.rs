@@ -1,8 +1,9 @@
 // pattern: Functional Core
 
 use jocforge_core::{
-    EmdfProfile, JocCarriage, JocProfile, profile_spec, semantic_slot_for_label,
-    semantic_slot_for_position,
+    AdmObjectKind, AdmPosition, EmdfProfile, JocCarriage, JocProfile, profile_spec,
+    semantic_slot_for_label, semantic_slot_for_position, semantic_slot_for_profile_label,
+    semantic_slot_for_source_channel,
 };
 
 #[test]
@@ -89,5 +90,108 @@ fn audio_semantic_identity_gate_covers_flat7x_carriers_and_lfe_boundary() {
             }),
         ],
         [Some(0), Some(2), Some(6)]
+    );
+}
+
+#[test]
+fn profile_semantic_slots_follow_profile_spec_and_fixed_channels_only() {
+    let profiles = [
+        (
+            JocProfile::Idx0,
+            [Some(0), Some(1), Some(2), Some(3), Some(4), None, None],
+        ),
+        (
+            JocProfile::Idx1,
+            [
+                Some(0),
+                Some(1),
+                Some(2),
+                Some(3),
+                Some(4),
+                Some(5),
+                Some(6),
+            ],
+        ),
+        (
+            JocProfile::Idx2,
+            [Some(0), Some(1), Some(2), Some(3), Some(4), None, None],
+        ),
+        (
+            JocProfile::Idx3,
+            [Some(0), Some(1), Some(2), Some(3), Some(4), None, None],
+        ),
+        (
+            JocProfile::Idx4,
+            [Some(0), Some(1), Some(2), Some(3), Some(4), None, None],
+        ),
+    ];
+    let labels = ["L", "R", "C", "Ls", "Rs", "Lrs", "Rrs"];
+    for (profile, expected) in profiles {
+        assert_eq!(
+            labels.map(|label| semantic_slot_for_profile_label(profile, label)),
+            expected
+        );
+    }
+    assert_eq!(
+        semantic_slot_for_profile_label(JocProfile::Idx2, "Tfl"),
+        Some(5)
+    );
+    assert_eq!(
+        semantic_slot_for_profile_label(JocProfile::Idx0, "Tfl"),
+        None
+    );
+    assert_eq!(
+        semantic_slot_for_profile_label(JocProfile::Idx1, "Tfl"),
+        None
+    );
+    assert_eq!(
+        semantic_slot_for_profile_label(JocProfile::Idx2, "Lrs"),
+        None
+    );
+
+    let centre = AdmPosition {
+        azimuth: 0.0,
+        elevation: -1.0,
+        distance: 0.0,
+    };
+    assert_eq!(
+        semantic_slot_for_source_channel(
+            JocProfile::Idx1,
+            AdmObjectKind::DirectSpeakers,
+            Some("RC_C"),
+            centre,
+        ),
+        Some(2)
+    );
+    assert_eq!(
+        semantic_slot_for_source_channel(
+            JocProfile::Idx1,
+            AdmObjectKind::Objects,
+            Some("RC_C"),
+            centre,
+        ),
+        Some(2)
+    );
+}
+
+#[test]
+fn canonical_object_positions_can_seed_profile_carriers_but_arbitrary_objects_cannot() {
+    let centre = AdmPosition {
+        azimuth: 0.0,
+        elevation: -1.0,
+        distance: 0.0,
+    };
+    let arbitrary = AdmPosition {
+        azimuth: 0.37,
+        elevation: 0.12,
+        distance: 1.0,
+    };
+    assert_eq!(
+        semantic_slot_for_source_channel(JocProfile::Idx1, AdmObjectKind::Objects, None, centre),
+        Some(2)
+    );
+    assert_eq!(
+        semantic_slot_for_source_channel(JocProfile::Idx1, AdmObjectKind::Objects, None, arbitrary,),
+        None
     );
 }

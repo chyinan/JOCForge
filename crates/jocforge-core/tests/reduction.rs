@@ -283,4 +283,11 @@ fn semantic_slots_are_seeded_and_ordered_before_unconstrained_sources() {
             .collect::<Vec<_>>(),
         vec![1, 2, 0]
     );
+    let mut accounted = result
+        .source_accounting
+        .iter()
+        .map(|record| record.source_index)
+        .collect::<Vec<_>>();
+    accounted.sort_unstable();
+    assert_eq!(accounted, (0..8).collect::<Vec<_>>());
 }

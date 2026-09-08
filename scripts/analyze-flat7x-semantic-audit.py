@@ -14,6 +14,23 @@ import numpy as np
 
 INPUTS = ("L", "R", "C", "Ls", "Rs", "Lrs", "Rrs", "LFE")
 OUTPUTS = ("FL", "FR", "FC", "LFE", "Lb", "Rb", "Ls", "Rs")
+EXPECTED_OUTPUTS = {
+    "L": "FL",
+    "R": "FR",
+    "C": "FC",
+    "Ls": "Ls",
+    "Rs": "Rs",
+    "Lrs": "Lb",
+    "Rrs": "Rb",
+    "LFE": "LFE",
+}
+ALLOWED_OUTPUTS = {
+    **{label: {output} for label, output in EXPECTED_OUTPUTS.items()},
+    "Lrs": {"Lb", "Rb"},
+    "Rrs": {"Lb", "Rb"},
+}
+MAX_UNINTENDED_RMS_RATIO = 0.01
+MIN_IDENTITY_RMS = 1.0e-6
 
 
 def read_float_wav(path: Path) -> np.ndarray:
@@ -72,6 +89,37 @@ def channel_metrics(samples: np.ndarray) -> list[dict[str, float | bool]]:
     return values
 
 
+def validate_identity_report(rows: list[dict[str, object]], full_finite: bool) -> list[str]:
+    """Return actionable failures for the permanent one-hot semantic gate."""
+    failures: list[str] = []
+    by_input = {str(row.get("input")): row for row in rows}
+    for input_label, expected_output in EXPECTED_OUTPUTS.items():
+        row = by_input.get(input_label)
+        if row is None:
+            failures.append(f"{input_label} row is missing")
+            continue
+        if row.get("dominant_output") != expected_output:
+            failures.append(
+                f"{input_label} expected {expected_output}, got {row.get('dominant_output')}"
+            )
+        if not bool(row.get("finite")):
+            failures.append(f"{input_label} render is non-finite")
+        if float(row.get("max_rms", 0.0)) <= MIN_IDENTITY_RMS:
+            failures.append(f"{input_label} render is silent")
+        normalized = row.get("normalized_rms")
+        if not isinstance(normalized, list) or len(normalized) != len(OUTPUTS):
+            failures.append(f"{input_label} normalized RMS vector is invalid")
+            continue
+        for output_index, output_label in enumerate(OUTPUTS):
+            if output_label not in ALLOWED_OUTPUTS[input_label] and float(normalized[output_index]) > MAX_UNINTENDED_RMS_RATIO:
+                failures.append(
+                    f"{input_label} leaks into {output_label}: ratio {float(normalized[output_index]):.6g}"
+                )
+    if not full_finite:
+        failures.append("full render is non-finite")
+    return failures
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("root", type=Path)
@@ -94,6 +142,7 @@ def main() -> int:
                 "dominant_output": dominant,
                 "max_rms": maximum,
                 "finite": all(bool(item["finite"]) for item in metrics),
+                "normalized_rms": normalized,
                 "channels": metrics,
             }
         )
@@ -113,6 +162,13 @@ def main() -> int:
             "channels": channel_metrics(full_samples),
         },
     }
+    gate_failures = validate_identity_report(rows, bool(report["full_render"]["finite"]))
+    report["semantic_gate"] = {
+        "passed": not gate_failures,
+        "max_unintended_rms_ratio": MAX_UNINTENDED_RMS_RATIO,
+        "minimum_identity_rms": MIN_IDENTITY_RMS,
+        "failures": gate_failures,
+    }
     root.mkdir(parents=True, exist_ok=True)
     (root / f"{args.output_stem}.json").write_text(
         json.dumps(report, indent=2), encoding="utf-8"
@@ -127,6 +183,12 @@ def main() -> int:
     print("center_only_dominant_output", report["center_only_dominant_output"])
     print("lfe_only_dominant_output", report["lfe_only_dominant_output"])
     print("full_render_frames", report["full_render"]["frames"])
+    if gate_failures:
+        print("semantic_identity_gate FAIL")
+        for failure in gate_failures:
+            print(" -", failure)
+        return 1
+    print("semantic_identity_gate PASS")
     return 0
 
 

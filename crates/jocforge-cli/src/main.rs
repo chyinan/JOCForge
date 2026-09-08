@@ -15,7 +15,7 @@ mod file_scan;
 use file_scan::{read_pcm_frame, scan_bw64_file};
 
 use jocforge_core::{
-    AdmChannel, AdmObject, AdmObjectKind, BlockPartition, CompositionRequest, CompositionResolver,
+    AdmObject, AdmObjectKind, BlockPartition, CompositionRequest, CompositionResolver,
     DEPENDENT_CHANNEL_ROLE_CENSUS, DependentLfePolicy, EmdfProfile, FinalRenderMeasurement,
     JocCarriage, JocContainer, JocProfile, LfeOwnership, ReductionConfig, ReductionSource,
     SOURCE_DERIVED_CARRIER_PEAK_LIMIT, channel_map_channel_count, cmaf_joc_init_and_fragments,
@@ -30,10 +30,10 @@ use jocforge_core::{
     package_source_derived_short_skip_field_access_unit,
     package_source_derived_skip_field_access_unit, parse_bw64_adm_metadata, profile_spec,
     quantize_coefficient, reconstruction_error, reduce_scene_with_previous,
-    resolve_encoding_plan_with_partition, semantic_maximum, semantic_slot_for_label,
-    semantic_slot_for_position, source_derived_carrier_causality, spectral_phase_report,
-    validate_multi_dependent_access_unit, validate_short_multi_dependent_access_unit,
-    validate_source_derived_adm_metadata, write_one_au_proof,
+    resolve_encoding_plan_with_partition, semantic_maximum, semantic_slot_for_source_channel,
+    source_derived_carrier_causality, spectral_phase_report, validate_multi_dependent_access_unit,
+    validate_short_multi_dependent_access_unit, validate_source_derived_adm_metadata,
+    write_one_au_proof,
 };
 
 const JOC_FRAME_SAMPLES: usize = 1536;
@@ -2558,7 +2558,12 @@ fn reduction_sources(
                 source_index: flat_index,
                 object_id,
                 kind: object.kind,
-                semantic_slot: semantic_slot_for_channel(channel, profile),
+                semantic_slot: semantic_slot_for_source_channel(
+                    profile,
+                    object.kind,
+                    channel.speaker_label.as_deref(),
+                    channel.position,
+                ),
                 position: channel.position,
                 signal,
             });
@@ -2566,40 +2571,6 @@ fn reduction_sources(
         }
     }
     Ok(sources)
-}
-
-fn semantic_slot_for_channel(channel: &AdmChannel, profile: JocProfile) -> Option<usize> {
-    let label_slot = channel.speaker_label.as_deref().and_then(|label| {
-        let canonical = label.rsplit(':').next().unwrap_or(label).trim();
-        match profile {
-            JocProfile::Idx1 => semantic_slot_for_label(canonical),
-            JocProfile::Idx0 | JocProfile::Idx3 => match canonical {
-                "L" | "FL" | "RC_L" | "M-030" => Some(0),
-                "R" | "FR" | "RC_R" | "M+030" => Some(1),
-                "C" | "FC" | "RC_C" | "M+000" => Some(2),
-                "Ls" | "SL" | "RC_Ls" | "RC_Lss" => Some(3),
-                "Rs" | "SR" | "RC_Rs" | "RC_Rss" => Some(4),
-                _ => None,
-            },
-            JocProfile::Idx2 | JocProfile::Idx4 => match canonical {
-                "L" | "FL" | "RC_L" | "M-030" => Some(0),
-                "R" | "FR" | "RC_R" | "M+030" => Some(1),
-                "C" | "FC" | "RC_C" | "M+000" => Some(2),
-                "Ls" | "SL" | "RC_Ls" | "RC_Lss" => Some(3),
-                "Rs" | "SR" | "RC_Rs" | "RC_Rss" => Some(4),
-                "Tfl" | "TFL" | "RC_Lts" => Some(5),
-                "Tfr" | "TFR" | "RC_Rts" => Some(6),
-                _ => None,
-            },
-        }
-    });
-    label_slot.or_else(|| match profile {
-        JocProfile::Idx1 | JocProfile::Idx0 | JocProfile::Idx3 => {
-            semantic_slot_for_position(channel.position)
-                .filter(|slot| profile == JocProfile::Idx1 || *slot < 5)
-        }
-        JocProfile::Idx2 | JocProfile::Idx4 => None,
-    })
 }
 
 fn lfe_carrier(pcm: &[Vec<f64>], lfe_indices: &[usize]) -> Result<Vec<f64>, String> {

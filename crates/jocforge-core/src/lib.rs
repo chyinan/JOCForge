@@ -52,6 +52,7 @@ pub use plan::{
 };
 pub use profile::{
     JocProfileSpec, profile_spec, semantic_slot_for_label, semantic_slot_for_position,
+    semantic_slot_for_profile_label, semantic_slot_for_source_channel,
 };
 pub use rate::{
     RateBudget, RateBudgetError, partition_frame_bytes, rate_budget, rate_budget_for_carriage,

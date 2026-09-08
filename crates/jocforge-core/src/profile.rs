@@ -1,6 +1,6 @@
 // pattern: Functional Core
 
-use crate::JocProfile;
+use crate::{AdmObjectKind, AdmPosition, JocProfile};
 
 /// Standards-defined JOC input topology used by the MVP.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -22,23 +22,48 @@ const IDX2_LABELS: &[&str] = &["L", "R", "C", "Ls", "Rs", "Tfl", "Tfr"];
 /// label. The slot order is the JOC reconstruction order, with LFE omitted.
 #[must_use]
 pub fn semantic_slot_for_label(label: &str) -> Option<usize> {
-    match label {
-        "L" | "FL" | "RC_L" | "M-030" => Some(0),
-        "R" | "FR" | "RC_R" | "M+030" => Some(1),
-        "C" | "FC" | "RC_C" | "M+000" => Some(2),
-        "Ls" | "SL" | "RC_Ls" | "RC_Lss" => Some(3),
-        "Rs" | "SR" | "RC_Rs" | "RC_Rss" => Some(4),
-        "Lrs" | "Lb" | "BL" | "RC_Lrs" | "RC_Lb" => Some(5),
-        "Rrs" | "Rb" | "BR" | "RC_Rrs" | "RC_Rb" => Some(6),
+    match canonical_speaker_label(label)? {
+        "L" => Some(0),
+        "R" => Some(1),
+        "C" => Some(2),
+        "Ls" => Some(3),
+        "Rs" => Some(4),
+        "Lrs" | "Tfl" => Some(5),
+        "Rrs" | "Tfr" => Some(6),
         _ => None,
     }
+}
+
+fn canonical_speaker_label(label: &str) -> Option<&'static str> {
+    match label {
+        "L" | "FL" | "RC_L" | "M-030" => Some("L"),
+        "R" | "FR" | "RC_R" | "M+030" => Some("R"),
+        "C" | "FC" | "RC_C" | "M+000" => Some("C"),
+        "Ls" | "SL" | "RC_Ls" | "RC_Lss" => Some("Ls"),
+        "Rs" | "SR" | "RC_Rs" | "RC_Rss" => Some("Rs"),
+        "Lrs" | "Lb" | "BL" | "RC_Lrs" | "RC_Lb" => Some("Lrs"),
+        "Rrs" | "Rb" | "BR" | "RC_Rrs" | "RC_Rb" => Some("Rrs"),
+        "Tfl" | "TFL" | "RC_Lts" => Some("Tfl"),
+        "Tfr" | "TFR" | "RC_Rts" => Some("Tfr"),
+        _ => None,
+    }
+}
+
+/// Returns the fixed-speaker slot only when the selected profile carries it.
+#[must_use]
+pub fn semantic_slot_for_profile_label(profile: JocProfile, label: &str) -> Option<usize> {
+    let canonical = canonical_speaker_label(label)?;
+    profile_spec(profile)
+        .input_labels
+        .iter()
+        .position(|candidate| *candidate == canonical)
 }
 
 /// Returns a slot for an exact normalized synthetic speaker position.
 /// Arbitrary object positions intentionally return `None`; their spatial
 /// semantics remain OAMD metadata rather than a fixed base-channel claim.
 #[must_use]
-pub fn semantic_slot_for_position(position: crate::AdmPosition) -> Option<usize> {
+pub fn semantic_slot_for_position(position: AdmPosition) -> Option<usize> {
     let axis = |value: f64| {
         if (value + 1.0).abs() <= 1.0e-6 {
             Some(0_usize)
@@ -63,6 +88,34 @@ pub fn semantic_slot_for_position(position: crate::AdmPosition) -> Option<usize>
         (Some(2), Some(2)) => Some(6),
         _ => None,
     }
+}
+
+/// Returns the profile-owned slot for a carrier-eligible source channel.
+///
+/// DirectSpeakers use their public label when available. Object sources may
+/// seed a fixed carrier only when their authored position is exactly a
+/// canonical position in the selected profile; arbitrary object positions
+/// remain OAMD semantics and return `None`.
+#[must_use]
+pub fn semantic_slot_for_source_channel(
+    profile: JocProfile,
+    kind: AdmObjectKind,
+    speaker_label: Option<&str>,
+    position: AdmPosition,
+) -> Option<usize> {
+    if kind == AdmObjectKind::DirectSpeakers {
+        speaker_label
+            .and_then(|label| {
+                let canonical = label.rsplit(':').next().unwrap_or(label).trim();
+                semantic_slot_for_profile_label(profile, canonical)
+            })
+            .or_else(|| semantic_slot_for_position(position))
+    } else if kind == AdmObjectKind::Objects {
+        semantic_slot_for_position(position)
+    } else {
+        None
+    }
+    .filter(|slot| *slot < profile_spec(profile).input_labels.len())
 }
 
 /// Returns the public Table-47 topology for a mandatory MVP profile.

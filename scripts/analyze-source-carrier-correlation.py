@@ -13,6 +13,20 @@ from pathlib import Path
 import numpy as np
 
 
+PRE_CORE_ORDERS = {
+    "ffmpeg-5.1": ("L", "R", "C", "LFE", "Ls", "Rs"),
+    "jocforge-semantic-6": ("L", "R", "C", "Ls", "Rs", "LFE"),
+}
+
+
+def pre_core_channel_labels(order: str) -> tuple[str, ...]:
+    """Return the explicit interleaved order used by the captured carrier."""
+    try:
+        return PRE_CORE_ORDERS[order]
+    except KeyError as error:
+        raise ValueError(f"unsupported pre-core channel order: {order}") from error
+
+
 def locate_bw64_data(path: Path) -> tuple[int, int, int, int]:
     with path.open("rb") as handle:
         header = handle.read(12)
@@ -72,7 +86,14 @@ def main() -> int:
     parser.add_argument("source", type=Path)
     parser.add_argument("pre_core", type=Path)
     parser.add_argument("root", type=Path)
+    parser.add_argument(
+        "--pre-core-order",
+        choices=tuple(PRE_CORE_ORDERS),
+        default="ffmpeg-5.1",
+        help="interleaved order used when the pre-core carrier was captured",
+    )
     args = parser.parse_args()
+    pre_core_labels = pre_core_channel_labels(args.pre_core_order)
     data_offset, data_size, channels, _ = locate_bw64_data(args.source)
     if channels != 38 or data_size % (channels * 3):
         raise ValueError("verified Hanabi source must contain 38 PCM tracks")
@@ -130,7 +151,8 @@ def main() -> int:
         "source_frames": source_frames,
         "compared_frames": frame_count,
         "source_channels": channels,
-        "pre_core_channels": ["L", "R", "C", "Ls", "Rs", "LFE"],
+        "pre_core_order": args.pre_core_order,
+        "pre_core_channels": list(pre_core_labels),
         "tracks_sorted_by_pre_core_channel_and_abs_zero_mean_correlation": rows,
     }
     args.root.mkdir(parents=True, exist_ok=True)

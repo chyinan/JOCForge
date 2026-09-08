@@ -34,6 +34,7 @@
 /artifacts/spec-legal-zero/initial-baseline-regenerated.*
 /artifacts/interop-census/
 /artifacts/interop-census-rerun/
+/artifacts/flat7x-interop-rerun/
 /artifacts/flat7x-semantic-fidelity-audit/
 /scripts/__pycache__/
 *.ec3
