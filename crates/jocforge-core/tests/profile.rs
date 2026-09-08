@@ -194,4 +194,30 @@ fn canonical_object_positions_can_seed_profile_carriers_but_arbitrary_objects_ca
         semantic_slot_for_source_channel(JocProfile::Idx1, AdmObjectKind::Objects, None, arbitrary,),
         None
     );
+    assert_eq!(
+        semantic_slot_for_source_channel(
+            JocProfile::Idx1,
+            AdmObjectKind::DirectSpeakers,
+            Some("Tfl"),
+            AdmPosition {
+                azimuth: -1.0,
+                elevation: 1.0,
+                distance: 0.0,
+            },
+        ),
+        None
+    );
+    assert_eq!(
+        semantic_slot_for_source_channel(
+            JocProfile::Idx2,
+            AdmObjectKind::DirectSpeakers,
+            Some("Lrs"),
+            AdmPosition {
+                azimuth: -1.0,
+                elevation: 1.0,
+                distance: 0.0,
+            },
+        ),
+        None
+    );
 }

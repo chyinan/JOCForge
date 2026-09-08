@@ -104,12 +104,13 @@ pub fn semantic_slot_for_source_channel(
     position: AdmPosition,
 ) -> Option<usize> {
     if kind == AdmObjectKind::DirectSpeakers {
-        speaker_label
-            .and_then(|label| {
+        match speaker_label {
+            Some(label) => {
                 let canonical = label.rsplit(':').next().unwrap_or(label).trim();
                 semantic_slot_for_profile_label(profile, canonical)
-            })
-            .or_else(|| semantic_slot_for_position(position))
+            }
+            None => semantic_slot_for_position(position),
+        }
     } else if kind == AdmObjectKind::Objects {
         semantic_slot_for_position(position)
     } else {
