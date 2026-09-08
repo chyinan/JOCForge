@@ -36,7 +36,8 @@ $cases = @(
     [pscustomobject]@{ name = "idx0-d0-3x2"; profile = "idx0"; dependents = 1; partition = "3+3"; lfe = "absent"; emdf = "etsi"; layout = "5.1" },
     [pscustomobject]@{ name = "idx2-d1-1x6-deployed"; profile = "idx2"; dependents = 2; partition = "1+1+1+1+1+1"; lfe = "absent"; emdf = "deployed"; layout = "7.1.4" },
     [pscustomobject]@{ name = "idx4-d1-2x3-replacement"; profile = "idx4"; dependents = 2; partition = "2+2+2"; lfe = "replacement"; emdf = "etsi"; layout = "7.1.4" },
-    [pscustomobject]@{ name = "legal-monster-idx4-d0-d4-3x2-supplement"; profile = "idx4"; dependents = 5; partition = "3+3"; lfe = "supplement"; emdf = "etsi"; layout = "7.1.4" }
+    [pscustomobject]@{ name = "legal-monster-idx4-d0-d4-3x2-supplement"; profile = "idx4"; dependents = 5; partition = "3+3"; lfe = "supplement"; emdf = "etsi"; layout = "7.1.4" },
+    [pscustomobject]@{ name = "legal-monster-idx4-d0-d5-3x2-absent"; profile = "idx4"; dependents = 6; partition = "3+3"; lfe = "absent"; emdf = "etsi"; layout = "7.1.4" }
 )
 
 $rows = [System.Collections.Generic.List[object]]::new()

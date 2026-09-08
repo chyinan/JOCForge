@@ -68,6 +68,8 @@ The frozen OpenJOC validator resolved from `validation/openjoc-validator.json` i
 
 Heavyweight OpenJOC inspect/render, FFmpeg decode, source causality, finite PCM, continuity, and deterministic repeat checks are targeted at canonical representatives, boundary rates, pairwise interactions, and the maximum-complexity legal raw stream rather than every matrix row.
 
+The closure script emits both the maximum semantic topology monster (`idx4`, D0..D5, `3+3`, strict, no LFE) and the maximum validated LFE-bearing variant (`idx4`, D0..D4, dependent supplement). The D0..D5 dependent-LFE short cell remains separately classified by the resolver and is not substituted into the no-LFE maximum.
+
 ## Remaining intentional closures
 
 - Heterogeneous component partitions remain `PUBLIC_AMBIGUOUS`.
