@@ -73,6 +73,7 @@ pub struct ShortBlockValidationReport {
     pub audio_blocks: usize,
     pub samples: usize,
     pub metadata_owner_frame: usize,
+    pub lfe_present: bool,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -680,6 +681,7 @@ pub fn validate_short_block_access_unit(
         ));
     }
     let expected_channel_map = profile_spec(profile).channel_map;
+    let lfe_present = frames.first().is_some_and(|frame| frame.lfe_on);
     for (index, partition) in partitions.iter().copied().enumerate() {
         let independent = &frames[index * 2];
         let dependent = &frames[index * 2 + 1];
@@ -689,7 +691,7 @@ pub fn validate_short_block_access_unit(
             || independent.audio_blocks != partition.audio_blocks()
             || independent.audio_coding_mode != 7
             || independent.channel_map.is_some()
-            || independent.lfe_on
+            || independent.lfe_on != lfe_present
             || independent.addbsi.is_some()
             || independent.emdf.is_some()
             || independent.convsync != Some(plan.convsync()[index])
@@ -730,6 +732,7 @@ pub fn validate_short_block_access_unit(
         audio_blocks: plan.audio_blocks(),
         samples: plan.samples(),
         metadata_owner_frame: expected_frames - 1,
+        lfe_present,
     })
 }
 

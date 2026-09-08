@@ -19,8 +19,12 @@ separate contract through `resolve_dependent_topology`.
 The advanced `conformance-short` command remains a synthetic syntax fixture.
 The normal `encode` command accepts `--block-partition` for the four canonical
 families and writes source-derived raw E-AC-3 short syncframes from the actual
-1536-sample carrier interval. PCM sample accounting is emitted beside the
-`.ec3` output as `.sample-accounting.csv`; the group remains exactly six
-blocks/1536 samples and only the final D0 carries JOC/OAMD EMDF. The default
-remains `6`. Short framing is raw elementary-stream capability only; CMAF
-continues to require six-block samples.
+1536-sample carrier interval. Independent programme LFE is sliced over the
+same short ranges, emitted in every corresponding I0 with `lfeon=1`, and
+remains outside the JOC reconstruction matrix. PCM sample accounting is
+emitted beside the `.ec3` output as `.sample-accounting.csv`; the group remains
+exactly six blocks/1536 samples and only the final D0 carries JOC/OAMD EMDF.
+The default remains `6`. Dependent-LFE, deployed, legacy-core, and exotic
+multi-dependent short combinations remain fail-closed. Short framing is raw
+elementary-stream capability only; CMAF continues to require six-block
+samples.

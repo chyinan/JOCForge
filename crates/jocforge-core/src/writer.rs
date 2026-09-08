@@ -479,6 +479,8 @@ fn write_public_short_frame(
     complexity_index: u8,
     frame_bytes: usize,
     source_exponent_codes: Option<&[u8]>,
+    lfe_source_carrier: Option<&[f64]>,
+    sample_offset: usize,
 ) -> Result<Vec<u8>, String> {
     validate_frame_bytes(frame_bytes, "short")?;
     if !matches!(
@@ -491,6 +493,20 @@ fn write_public_short_frame(
         return Err("short conformance frame channel topology is invalid".to_owned());
     }
     let block_count = blocks.audio_blocks();
+    let lfe_end = sample_offset
+        .checked_add(block_count * 256)
+        .ok_or_else(|| "short LFE sample window overflows usize".to_owned())?;
+    if lfe_source_carrier.is_some_and(|carrier| {
+        carrier.len() < lfe_end || carrier.iter().any(|sample| !sample.is_finite())
+    }) {
+        return Err(
+            "short LFE source carrier does not contain the selected finite sample window"
+                .to_owned(),
+        );
+    }
+    if lfe_source_carrier.is_some() && (stream_type != 0 || channel_count != 5) {
+        return Err("short LFE is only supported on the independent five-channel I0".to_owned());
+    }
     let mut bits = BitWriter::default();
     for (value, width) in [
         (0x0b77, 16),
@@ -509,7 +525,7 @@ fn write_public_short_frame(
             },
             3,
         ),
-        (0, 1), // no LFE
+        (u64::from(lfe_source_carrier.is_some()), 1),
         (16, 5),
         (31, 5),
         (0, 1), // no compression metadata
@@ -531,9 +547,16 @@ fn write_public_short_frame(
         bits.push(0x01, 8);
         bits.push(u64::from(complexity_index), 8);
     }
-    bits.push(0, 2); // frame SNR strategy
+    bits.push(u64::from(lfe_source_carrier.is_some()) * 2, 2);
     bits.push(0, 1); // no transient processing
-    bits.push(0, 7); // compact syntax flags
+    bits.push(
+        if lfe_source_carrier.is_some() {
+            0b0011000
+        } else {
+            0
+        },
+        7,
+    ); // compact syntax flags; frame fast-gain only for independent LFE
     if channel_count > 1 {
         bits.push(0, 1); // coupling not in use in block zero
         for _ in 1..block_count {
@@ -545,11 +568,18 @@ fn write_public_short_frame(
             bits.push(u64::from(block == 0), 2);
         }
     }
+    if lfe_source_carrier.is_some() {
+        for block in 0..block_count {
+            bits.push(u64::from(block == 0), 1);
+        }
+    }
     if stream_type == 0 {
         bits.push(0, 1); // converter exponent strategy absent
     }
-    bits.push(0, 6); // frame coarse SNR offset
-    bits.push(0, 4); // frame fine SNR offset
+    if lfe_source_carrier.is_none() {
+        bits.push(0, 6); // frame coarse SNR offset
+        bits.push(0, 4); // frame fine SNR offset
+    }
     if block_count > 1 {
         bits.push(0, 1); // no block-start information
     }
@@ -565,7 +595,9 @@ fn write_public_short_frame(
     }
     for channel in 0..channel_count {
         push_source_exponents(&mut bits, D0_INITIAL_EXPONENT);
-        if let Some(codes) = source_exponent_codes {
+        if lfe_source_carrier.is_none()
+            && let Some(codes) = source_exponent_codes
+        {
             let code = codes.get(channel).copied().ok_or_else(|| {
                 "source-derived short frame exponent count differs from channel count".to_owned()
             })?;
@@ -573,17 +605,55 @@ fn write_public_short_frame(
             bits.set(exponent_start, u64::from(code % (D0_MAX_EXPONENT + 1)), 4);
         }
     }
-    for _ in 0..channel_count {
-        bits.push(0, 2); // gain range
+    if lfe_source_carrier.is_some() {
+        push_source_lfe_exponents(&mut bits, D0_INITIAL_EXPONENT);
+        bits.push(1, 1); // new bit-allocation parameters
+        bits.push(0, 11); // bounded parameters shared by full-band and LFE
+        bits.push(63, 6); // shared coarse SNR offset
+        for _ in 0..channel_count {
+            bits.push(15, 4); // full-band channel fine SNR offset
+        }
+        bits.push(15, 4); // LFE fine SNR offset
+        bits.push(1, 1); // new fast-gain codes
+        for _ in 0..channel_count {
+            bits.push(4, 3); // full-band fast gain
+        }
+        bits.push(4, 3); // LFE fast gain
+    }
+    if lfe_source_carrier.is_none() {
+        for _ in 0..channel_count {
+            bits.push(0, 2); // gain range
+        }
     }
     bits.push(0, 1); // converter SNR offset absent
-    for _ in 1..block_count {
-        bits.push(0, 1); // dynamic range absent
-        bits.push(0, 1); // SPX strategy reused
-        if channel_count == 2 {
-            bits.push(0, 1); // rematrix strategy reused
+    if let Some(lfe_source_carrier) = lfe_source_carrier {
+        for block in 0..block_count {
+            if block > 0 {
+                bits.push(0, 1); // dynamic range absent
+                bits.push(0, 1); // SPX strategy reused
+                if channel_count == 2 {
+                    bits.push(0, 1); // rematrix strategy reused
+                }
+                bits.push(0, 1); // bit-allocation parameters reused
+                bits.push(0, 1); // SNR offsets reused
+                bits.push(0, 1); // fast-gain codes reused
+                bits.push(0, 1); // converter SNR offset absent
+            }
+            push_short_i0_zero_mantissas(&mut bits, channel_count);
+            push_short_i0_lfe_mantissas(
+                &mut bits,
+                source_feature(lfe_source_carrier, sample_offset, block),
+            );
         }
-        bits.push(0, 1); // converter SNR offset absent
+    } else {
+        for _ in 1..block_count {
+            bits.push(0, 1); // dynamic range absent
+            bits.push(0, 1); // SPX strategy reused
+            if channel_count == 2 {
+                bits.push(0, 1); // rematrix strategy reused
+            }
+            bits.push(0, 1); // converter SNR offset absent
+        }
     }
     let reserved_tail = emdf.map_or(17, |payload| {
         payload.len().saturating_mul(8).saturating_add(32)
@@ -888,6 +958,30 @@ fn push_source_lfe_mantissas(bits: &mut BitWriter, first_code: u8) {
     bits.push(0, 7);
 }
 
+/// Writes the bounded zero full-band mantissas used by the independent short
+/// I0 LFE variant. With the fixed side-info profile above, each full-band
+/// channel has BAP sequence `[4, 3, 0..]`; the shared grouped-BAP state means
+/// every other channel reuses the pending BAP-4 group code.
+fn push_short_i0_zero_mantissas(bits: &mut BitWriter, channel_count: usize) {
+    for channel in 0..channel_count {
+        if channel % 2 == 0 {
+            bits.push(60, 7); // BAP-4 group containing two zero codes
+        }
+        bits.push(3, 3); // BAP-3 zero code
+    }
+}
+
+/// Writes one source-derived LFE mantissa view for the independent short I0.
+/// The LFE BAP-4 group reuses the final full-band group's zero code; three
+/// BAP-3 words carry the bounded six-bit source feature and a zero code, then
+/// the BAP-1 group carries three zero codes.
+fn push_short_i0_lfe_mantissas(bits: &mut BitWriter, feature: u8) {
+    bits.push(u64::from(feature % 7), 3);
+    bits.push(u64::from((feature / 7) % 7), 3);
+    bits.push(3, 3);
+    bits.push(13, 5); // BAP-1 group containing three zero codes
+}
+
 fn source_feature(carrier: &[f64], sample_offset: usize, block: usize) -> u8 {
     let start = sample_offset + block * SOURCE_FEATURE_SAMPLE_WINDOW;
     let sum = carrier[start..start + SOURCE_FEATURE_SAMPLE_WINDOW]
@@ -1139,6 +1233,8 @@ pub fn package_short_block_conformance_access_unit(
             complexity_index,
             512,
             None,
+            None,
+            0,
         )?;
         let d0 = write_public_short_frame(
             1,
@@ -1151,6 +1247,8 @@ pub fn package_short_block_conformance_access_unit(
             complexity_index,
             512,
             None,
+            None,
+            0,
         )?;
         output.extend_from_slice(&i0);
         output.extend_from_slice(&d0);
@@ -1162,9 +1260,10 @@ pub fn package_short_block_conformance_access_unit(
 /// syncframes. Each I0/D0 pair is independently serialized with the selected
 /// public block count; only the final D0 owns the interval's JOC/OAMD EMDF.
 ///
-/// This advanced path intentionally excludes LFE and exotic dependent
-/// topologies until their short-frame timing and ownership contracts are
-/// independently closed. The normal six-block path remains unchanged.
+/// This advanced path intentionally excludes exotic dependent topologies until
+/// their short-frame timing and ownership contracts are independently closed.
+/// The independent programme LFE is carried in every corresponding short I0
+/// frame and remains outside the JOC reconstruction matrix.
 #[allow(clippy::too_many_arguments)]
 pub fn package_source_derived_short_block_access_unit(
     plan: &JocEncodingPlan,
@@ -1173,6 +1272,7 @@ pub fn package_source_derived_short_block_access_unit(
     positions: &[AdmPosition],
     i0_carriers: &[Vec<f64>],
     d0_carriers: &[Vec<f64>],
+    i0_lfe_carrier: Option<&[f64]>,
 ) -> Result<Vec<u8>, String> {
     if plan.block_partition.is_default() {
         return Err(
@@ -1204,6 +1304,11 @@ pub fn package_source_derived_short_block_access_unit(
             );
         }
     }
+    if i0_lfe_carrier.is_some_and(|carrier| {
+        carrier.len() < 1536 || carrier.iter().any(|sample| !sample.is_finite())
+    }) {
+        return Err("source-derived short LFE carrier must contain 1536 finite samples".to_owned());
+    }
     let carrier_sizes = partition_frame_bytes(
         plan.rate.carrier_frame_bytes,
         plan.block_partition.partitions(),
@@ -1232,6 +1337,8 @@ pub fn package_source_derived_short_block_access_unit(
             complexity_index,
             carrier_sizes[index],
             Some(&i0_exponent_codes),
+            i0_lfe_carrier,
+            range.start_sample,
         )?;
         let d0_exponent_codes = d0_carriers
             .iter()
@@ -1248,6 +1355,8 @@ pub fn package_source_derived_short_block_access_unit(
             complexity_index,
             d0_sizes[index],
             Some(&d0_exponent_codes),
+            None,
+            range.start_sample,
         )?;
         output.extend_from_slice(&i0);
         output.extend_from_slice(&d0);

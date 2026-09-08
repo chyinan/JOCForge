@@ -272,6 +272,53 @@ fn encode_cli_retains_an_lfe_as_a_separate_core_channel() {
 }
 
 #[test]
+fn encode_cli_accepts_lfe_in_a_real_short_partition() {
+    let root = env::temp_dir().join(format!(
+        "jocforge-directspeakers-short-{}",
+        std::process::id()
+    ));
+    fs::create_dir_all(&root).expect("temporary directory");
+    let input = root.join("directspeakers.bw64");
+    let output = root.join("directspeakers-short.ec3");
+    let fixture = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+        .args([
+            "fixture-directspeakers",
+            "--seconds",
+            "1",
+            input.to_str().expect("input path is UTF-8"),
+        ])
+        .status()
+        .expect("DirectSpeakers fixture CLI starts");
+    assert!(fixture.success());
+
+    let encoded = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+        .args([
+            "encode",
+            input.to_str().expect("input path is UTF-8"),
+            output.to_str().expect("output path is UTF-8"),
+            "--profile",
+            "idx2",
+            "--bitrate",
+            "1280",
+            "--block-partition",
+            "2+2+2",
+        ])
+        .status()
+        .expect("short LFE encode CLI starts");
+    assert!(encoded.success());
+    assert_eq!(
+        fs::metadata(&output).expect("short LFE output").len(),
+        32 * 5120
+    );
+
+    let accounting = fs::read_to_string(format!("{}.sample-accounting.csv", output.display()))
+        .expect("short LFE sample accounting");
+    assert_eq!(accounting.lines().count(), 1 + 32 * 3);
+
+    let _ = fs::remove_dir_all(root);
+}
+
+#[test]
 fn encode_cli_reports_a_bounded_lfe_peak_and_headroom_margin() {
     let root = env::temp_dir().join(format!("jocforge-lfe-headroom-{}", std::process::id()));
     fs::create_dir_all(&root).expect("temporary directory");

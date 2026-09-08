@@ -559,6 +559,7 @@ fn source_derived_short_writer_emits_real_partitioned_frames_and_tracks_carriers
         &positions,
         &i0_carriers,
         &d0_carriers,
+        None,
     )
     .expect("source-derived short AU");
 
@@ -605,9 +606,145 @@ fn source_derived_short_writer_emits_real_partitioned_frames_and_tracks_carriers
         &positions,
         &changed_i0,
         &d0_carriers,
+        None,
     )
     .expect("changed source-derived short AU");
     assert_ne!(bytes, changed);
+}
+
+#[test]
+fn source_derived_short_writer_keeps_independent_lfe_outside_joc_matrix() {
+    let plan = jocforge_core::resolve_encoding_plan_with_partition(
+        JocProfile::Idx2,
+        JocCarriage::EtsiAuxDependent,
+        EmdfProfile::EtsiStrict,
+        1280,
+        &[
+            BlockPartition::Two,
+            BlockPartition::Two,
+            BlockPartition::Two,
+        ],
+    )
+    .expect("source-derived 2+2+2 plan");
+    let position = jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    };
+    let matrix = vec![vec![0.2; 7]];
+    let i0_carriers = vec![vec![0.1; 1536]; 5];
+    let d0_carriers = vec![vec![0.2; 1536]; 2];
+    let lfe = (0..1536)
+        .map(|sample| (f64::from(sample) * 0.021).sin() * 0.2)
+        .collect::<Vec<_>>();
+    let bytes = jocforge_core::package_source_derived_short_block_access_unit(
+        &plan,
+        1,
+        &matrix,
+        &[position],
+        &i0_carriers,
+        &d0_carriers,
+        Some(&lfe),
+    )
+    .expect("source-derived short AU with independent LFE");
+    let report = jocforge_core::validate_short_block_access_unit(
+        &bytes,
+        JocProfile::Idx2,
+        &[
+            BlockPartition::Two,
+            BlockPartition::Two,
+            BlockPartition::Two,
+        ],
+    )
+    .expect("independent LFE short AU validation");
+    assert!(report.lfe_present);
+    assert_eq!(report.samples, 1536);
+
+    let mut changed_lfe = lfe;
+    for sample in &mut changed_lfe[512..768] {
+        *sample = 0.75;
+    }
+    let changed = jocforge_core::package_source_derived_short_block_access_unit(
+        &plan,
+        1,
+        &matrix,
+        &[position],
+        &i0_carriers,
+        &d0_carriers,
+        Some(&changed_lfe),
+    )
+    .expect("changed source-derived short AU with independent LFE");
+    assert_ne!(bytes, changed);
+}
+
+#[test]
+fn source_derived_short_writer_closes_all_canonical_lfe_profiles_and_partitions() {
+    let profiles = [
+        JocProfile::Idx0,
+        JocProfile::Idx1,
+        JocProfile::Idx2,
+        JocProfile::Idx3,
+        JocProfile::Idx4,
+    ];
+    let partitions = [
+        vec![BlockPartition::Three, BlockPartition::Three],
+        vec![
+            BlockPartition::Two,
+            BlockPartition::Two,
+            BlockPartition::Two,
+        ],
+        vec![BlockPartition::One; 6],
+    ];
+    let position = jocforge_core::AdmPosition {
+        azimuth: 0.0,
+        elevation: 0.0,
+        distance: 0.0,
+    };
+    let i0_carriers = vec![vec![0.1; 1536]; 5];
+    let d0_carriers = vec![vec![0.2; 1536]; 2];
+    let lfe = vec![0.125; 1536];
+    for profile in profiles {
+        let matrix = vec![vec![
+            0.2;
+            jocforge_core::profile_spec(profile).input_labels.len()
+        ]];
+        for partition in &partitions {
+            let plan = jocforge_core::resolve_encoding_plan_with_partition(
+                profile,
+                JocCarriage::EtsiAuxDependent,
+                EmdfProfile::EtsiStrict,
+                1280,
+                partition,
+            )
+            .expect("canonical LFE short plan");
+            let bytes = jocforge_core::package_source_derived_short_block_access_unit(
+                &plan,
+                1,
+                &matrix,
+                &[position],
+                &i0_carriers,
+                &d0_carriers,
+                Some(&lfe),
+            )
+            .expect("canonical LFE short AU");
+            let report =
+                jocforge_core::validate_short_block_access_unit(&bytes, profile, partition)
+                    .expect("canonical LFE short validation");
+            assert!(report.lfe_present);
+            assert_eq!(report.syncframes, partition.len() * 2);
+            assert_eq!(report.audio_blocks, 6);
+            assert_eq!(report.samples, 1536);
+
+            let ranges = jocforge_core::resolve_short_block_plan(partition)
+                .expect("canonical range plan")
+                .frame_ranges(0);
+            assert_eq!(ranges.first().expect("first range").start_sample, 0);
+            assert_eq!(ranges.last().expect("last range").end_sample, 1536,);
+            for pair in ranges.windows(2) {
+                assert_eq!(pair[0].end_sample, pair[1].start_sample);
+            }
+        }
+    }
 }
 
 #[test]

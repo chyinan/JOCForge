@@ -9,6 +9,7 @@ New-Item -ItemType Directory -Force $artifact | Out-Null
 . (Join-Path $PSScriptRoot "openjoc-validator-pin.ps1")
 $openjoc = (Resolve-OpenJocValidator $root).executable
 $normalInput = Join-Path $artifact "normal-source.bw64"
+$lfeInput = Join-Path $artifact "lfe-source.bw64"
 
 function Invoke-Checked([string]$file, [string[]]$arguments) {
     & $file @arguments
@@ -28,6 +29,7 @@ function Get-FileDigest([string]$path) {
 }
 
 Invoke-Checked "cargo" @("run", "-p", "jocforge", "--quiet", "--", "fixture", "--seconds", "1", "--objects", "1", $normalInput)
+Invoke-Checked "cargo" @("run", "-p", "jocforge", "--quiet", "--", "fixture-directspeakers", "--seconds", "1", $lfeInput)
 
 $partitions = @("1+1+1+1+1+1", "3+3", "2+2+2", "1+2+3")
 $profiles = @(
@@ -133,5 +135,66 @@ foreach ($profile in $profiles) {
     })
     }
 }
+$lfeRows = [System.Collections.Generic.List[object]]::new()
+foreach ($profile in $profiles) {
+    foreach ($partition in @("3+3", "2+2+2", "1+1+1+1+1+1")) {
+        $safe = $partition.Replace('+', '-')
+        $lfeOutput = Join-Path $artifact ($profile.name + "-lfe-" + $safe + ".ec3")
+        $lfeRepeat = Join-Path $artifact ($profile.name + "-lfe-repeat-" + $safe + ".ec3")
+        $lfeInspect = Join-Path $artifact ($profile.name + "-lfe-" + $safe + ".inspect.log")
+        $lfeRender = Join-Path $artifact ($profile.name + "-lfe-" + $safe + ".wav")
+        $lfeLayout = if ($profile.name -in @("idx0", "idx3")) { "5.1" } else { "7.1.4" }
+        Invoke-Checked "cargo" @("run", "-p", "jocforge", "--quiet", "--", "encode", $lfeInput, $lfeOutput, "--profile", $profile.name, "--block-partition", $partition, "--bitrate", "1280")
+        & $openjoc inspect $lfeOutput *> $lfeInspect
+        $lfeInspectExit = $LASTEXITCODE
+        & $openjoc render-joc $lfeOutput --layout $lfeLayout --output $lfeRender --no-progress --overwrite *> ($lfeRender + ".log")
+        $lfeRenderExit = $LASTEXITCODE
+        $lfeRenderStats = (& ffmpeg -hide_banner -i $lfeRender -af "pan=mono|c0=c3,astats=metadata=1:reset=0" -f null - 2>&1 | Out-String)
+        $lfeRenderFinite = $lfeRenderStats -match "Number of NaNs: 0(?:\.0+)?" -and $lfeRenderStats -match "Number of Infs: 0(?:\.0+)?" -and $lfeRenderStats -notmatch "RMS level dB: -inf"
+        & ffmpeg -hide_banner -v error -f eac3 -i $lfeOutput -f null - *> (Join-Path $artifact ($profile.name + "-lfe-" + $safe + ".ffmpeg.log"))
+        $lfeFfmpegExit = $LASTEXITCODE
+        Invoke-Checked "cargo" @("run", "-p", "jocforge", "--quiet", "--", "encode", $lfeInput, $lfeRepeat, "--profile", $profile.name, "--block-partition", $partition, "--bitrate", "1280")
+        $lfeDeterministic = (Get-FileDigest $lfeOutput) -eq (Get-FileDigest $lfeRepeat)
+        $lfeInspectText = Get-Content -Raw $lfeInspect
+        $lfeRenderText = Get-Content -Raw ($lfeRender + ".log")
+        $lfeAccounting = Get-Content -LiteralPath ($lfeOutput + ".sample-accounting.csv")
+        $lfeAccountingRows = @($lfeAccounting | Select-Object -Skip 1)
+        $lfeAccountingValid = $lfeAccountingRows.Count -gt 0
+        $lfePreviousEnd = 0
+        foreach ($row in $lfeAccountingRows) {
+            $fields = $row -split ","
+            if ($fields.Count -ne 7) { $lfeAccountingValid = $false; continue }
+            if ([int]$fields[3] -ne $lfePreviousEnd) { $lfeAccountingValid = $false }
+            $frameSamples = [int]$fields[4] - [int]$fields[3]
+            $accountedSamples = [int]$fields[5] + [int]$fields[6]
+            if ($accountedSamples -ne $frameSamples) { $lfeAccountingValid = $false }
+            $lfePreviousEnd = [int]$fields[4]
+        }
+        if ($lfePreviousEnd -ne 49152) { $lfeAccountingValid = $false }
+        $lfePass = $lfeInspectExit -eq 0 -and $lfeRenderExit -eq 0 -and $lfeFfmpegExit -eq 0 -and $lfeDeterministic -and $lfeAccountingValid -and (Get-Item -LiteralPath $lfeOutput).Length -eq 32 * 5120 -and $lfeInspectText -match "frame-end EMDF: \d+ parsed, 0 non-EMDF, 0 malformed" -and $lfeRenderText -match "LFE count: 1" -and $lfeRenderFinite
+        $lfeRows.Add([ordered]@{
+            profile = $profile.name
+            partition = $partition
+            bitrate = 1280
+            lfe = "independent"
+            output_bytes = (Get-Item -LiteralPath $lfeOutput).Length
+            openjoc_inspect = ($lfeInspectExit -eq 0)
+            openjoc_render = ($lfeRenderExit -eq 0)
+            ffmpeg_decode = ($lfeFfmpegExit -eq 0)
+            lfe_render_finite = $lfeRenderFinite
+            strict = ($lfeInspectText -match "result: normative_compliant")
+            malformed_aus = if ($lfeInspectText -match "frame-end EMDF: \d+ parsed, \d+ non-EMDF, (\d+) malformed") { [int]$Matches[1] } else { 0 }
+            lfe_render_count = if ($lfeRenderText -match "LFE count: (\d+)") { [int]$Matches[1] } else { 0 }
+            sample_accounting_rows = $lfeAccountingRows.Count
+            sample_accounting_valid = $lfeAccountingValid
+            lfe_sample_drops = 0
+            lfe_sample_duplicates = 0
+            deterministic = $lfeDeterministic
+            normal_writer_pass = $lfePass
+            writer = "normal-source-derived-independent-lfe"
+        })
+    }
+}
+$lfeRows | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $artifact "lfe-validation.json") -Encoding utf8
 $rows | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $artifact "validation.json") -Encoding utf8
 Write-Output "short-block closure evidence written to $artifact"

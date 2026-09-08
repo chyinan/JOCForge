@@ -111,9 +111,11 @@ Last verified: 2026-09-08
   `PUBLIC_AMBIGUOUS`, and deployed/legacy/skip-field short combinations fail
   closed.
 - `package_source_derived_short_block_access_unit` writes genuine 1/2/3-block
-  E-AC-3 syncframes from the normal factorization carrier inputs. It keeps one
-  programme interval at six blocks/1536 samples, writes JOC/OAMD EMDF only on
-  final D0, and validates the serialized group before returning bytes.
+  E-AC-3 syncframes from the normal factorization carrier inputs. An optional
+  independent I0 LFE carrier is serialized in every corresponding short I0
+  and remains outside the JOC reconstruction matrix. It keeps one programme
+  interval at six blocks/1536 samples, writes JOC/OAMD EMDF only on final D0,
+  and validates the serialized group before returning bytes.
 - Normal `encode` defaults to six-block FFmpeg I0 encoding. Advanced short raw
   output emits `.sample-accounting.csv`; source samples are represented once,
   with only the established final programme-tail zero padding.
@@ -170,7 +172,9 @@ Last verified: 2026-09-08
   automatic FFmpeg channel coupling for pinned OpenJOC traversal correctness.
 - Short-block bitrate support is a `PROFILE x PARTITION x BITRATE` contract;
   frame budgets are distributed in even 16-bit words and capacity is checked
-  before short-frame bytes are returned. CMAF remains six-block-only.
+  before short-frame bytes are returned. Canonical independent-LFE short cells
+  are closed for the same strict raw rates; dependent-LFE, deployed, and
+  legacy-core short cells remain fail-closed. CMAF remains six-block-only.
 - No proprietary Dolby encoder binary, media, or reverse-engineered logic is
   permitted in this repository.
 - Generated audio/binary evidence under `artifacts/` is local and ignored;
@@ -193,7 +197,8 @@ Last verified: 2026-09-08
 - The local FFmpeg E-AC-3 encoder exposes no public block-count option and
   short PCM inputs still produce six-block frames. The advanced raw short path
   therefore reuses the project-owned public-syntax short-frame primitive with
-  source-derived bounded fields; it never changes a six-block payload header.
+  source-derived bounded fields, including a real per-short-frame independent
+  LFE audio element; it never changes a six-block payload header.
 - `ReductionConfig.temporal_continuity_weight` defaults to the clean-side
   dimensionless value `0.15`; it adds a switch cost only when a source moves
   between prior-frame clusters and is covered by controlled/adversarial tests.

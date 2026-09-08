@@ -1717,12 +1717,6 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         .filter_map(|(index, channel)| channel.is_lfe.then_some(index))
         .collect::<Vec<_>>();
     let short_block_mode = !plan.block_partition.is_default();
-    if short_block_mode && !lfe_source_indices.is_empty() {
-        return Err(
-            "source-derived short-block encoding with LFE is not closed; use the default six-block partition"
-                .to_owned(),
-        );
-    }
     let i0_channels = 5 + usize::from(!lfe_source_indices.is_empty());
     let rank = profile_spec(profile).input_labels.len();
     let frame_count = metadata.sample_count.div_ceil(JOC_FRAME_SAMPLES);
@@ -1901,6 +1895,7 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         let factorization = factorize_source_derived(&object_pcm, rank).map_err(|error| {
             format!("failed to repeat reduced factorization at frame {frame_index}: {error}")
         })?;
+        let lfe_pcm = lfe_carrier(&source_pcm, &lfe_source_indices)?;
         let sequence = u16::try_from(frame_index % 1023 + 1).unwrap_or(1);
         let positions = reduction
             .coded_objects
@@ -1920,6 +1915,7 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
                 &positions,
                 &factorization.carriers[..5],
                 &d0_carriers,
+                (!lfe_source_indices.is_empty()).then_some(lfe_pcm.as_slice()),
             )
         } else {
             let i0_frame =
@@ -1981,7 +1977,7 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
     publish_result?;
     let _ = fs::remove_dir_all(work_root);
     println!(
-        "encoded profile={profile_name} carriage={carriage:?} emdf_profile={emdf_profile:?} block_partition={} frames={frame_count} samples={encoded_samples} authored_sources={} authored_channels={} dynamic_objects={} direct_speakers={} direct_speaker_channels={} lfe_core_channels={} coded_objects_last_frame={} output_bytes={output_bytes_len} target_bitrate={} carrier_bitrate={} d0_bitrate={} temporal_weight={:.17e} reduction=deterministic:farthest-point+weighted-aggregate metrics={} sample_accounting={}",
+        "encoded profile={profile_name} carriage={carriage:?} emdf_profile={emdf_profile:?} block_partition={} frames={frame_count} samples={encoded_samples} authored_sources={} authored_channels={} dynamic_objects={} direct_speakers={} direct_speaker_channels={} lfe_core_channels={} lfe={} coded_objects_last_frame={} output_bytes={output_bytes_len} target_bitrate={} carrier_bitrate={} d0_bitrate={} temporal_weight={:.17e} reduction=deterministic:farthest-point+weighted-aggregate metrics={} sample_accounting={}",
         block_partition
             .iter()
             .map(|partition| partition.audio_blocks().to_string())
@@ -1993,6 +1989,11 @@ fn run_encode(arguments: &[String]) -> Result<(), String> {
         metadata.direct_speaker_count(),
         metadata.direct_speaker_channel_count(),
         usize::from(!lfe_source_indices.is_empty()),
+        if lfe_source_indices.is_empty() {
+            "absent"
+        } else {
+            "present"
+        },
         previous_reduction
             .as_ref()
             .map_or(0, |result| result.coded_objects.len()),
