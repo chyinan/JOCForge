@@ -29,6 +29,9 @@ Last verified: 2026-09-08
 - `scripts/run-short-block-closure.ps1` — synthetic conformance plus real
   source-derived raw short-block closure for canonical partitions.
 - `scripts/run-orthogonal-composition-closure.ps1` — cheap composition lattice
+- `scripts/run-spec-legal-zero-closure.ps1` — authoritative zero-gap matrix,
+  reclassification boundaries, deterministic representatives, and pinned
+  OpenJOC inspect/render evidence.
   generation plus targeted short multi-dependent/OpenJOC/FFmpeg representatives.
 - `.\scripts\run-temporal-stabilization.ps1` — Hanabi before/after and
   adversarial continuity evidence.
@@ -62,8 +65,9 @@ Last verified: 2026-09-08
   walker, nominal-frame padding, skipfld insertion, and CRC2 rewrite.
 - `crates/jocforge-core/src/writer.rs` — pure JOC/OAMD/EMDF and independent
   `JocCarriage`/`EmdfProfile` packaging for ETSI and I0 skip-field paths,
-  including source-derived dependent-LFE carriage and canonical source-derived
-  raw short syncframe groups.
+  including source-derived I0 skip-field six/short groups, plan-aware
+  legacy-core LFE/deployed carriage, source-derived dependent-LFE carriage,
+  and canonical source-derived raw short syncframe groups.
 - `crates/jocforge-cli/src/main.rs` — file/process orchestration shell,
   advanced `--block-partition` selection, and sample-accounting sidecars.
 - `crates/jocforge-cli/src/file_scan.rs` — seek-aware BW64 chunk scanner that
@@ -111,6 +115,15 @@ Last verified: 2026-09-08
   kbps frame, and inserts profile-selected OAMD/JOC EMDF into public
   audio-block skip fields; it emits no D0 and fails closed when capacity is
   insufficient.
+- `package_source_derived_skip_field_access_unit` and
+  `package_source_derived_short_skip_field_access_unit` provide the production
+  source-derived I0-only strict idx3/idx0 and idx0 deployed skip-field paths;
+  the short validator checks grouped timing, addbsi, embedded EMDF, LFE state,
+  and CRC2.
+- `package_legacy_ac3_source_derived_access_unit_with_plan` consumes the
+  resolved legacy ownership graph, preserves the original AC-3 I0, and emits
+  a source-derived E-AC-3 D0 with independent, supplement, or replacement LFE
+  and strict/deployed EMDF signaling.
 - `resolve_encoding_plan_with_partition` carries the explicit raw JOC
   `ShortBlockPlan`. Canonical raw ETSI closure admits `6`, `3+3`,
   `2+2+2`, and `1+1+1+1+1+1` for source-derived I0+D0 and generalized
@@ -182,9 +195,10 @@ Last verified: 2026-09-08
   automatic FFmpeg channel coupling for pinned OpenJOC traversal correctness.
 - Short-block bitrate support is a `PROFILE x PARTITION x BITRATE` contract;
   frame budgets are distributed in even 16-bit words and capacity is checked
-  before short-frame bytes are returned. Canonical raw short cells include
-  independent/dependent LFE ownership and strict/deployed EMDF where the raw
-  ownership path is closed; legacy-core short and CMAF short remain fail-closed.
+  before short-frame bytes are returned. Canonical raw ETSI and I0 skip-field
+  short cells include their validated independent/dependent LFE ownership and
+  strict/deployed EMDF paths; legacy-core short and CMAF short remain
+  fail-closed.
 - No proprietary Dolby encoder binary, media, or reverse-engineered logic is
   permitted in this repository.
 - Generated audio/binary evidence under `artifacts/` is local and ignored;
@@ -209,6 +223,11 @@ Last verified: 2026-09-08
   therefore reuses the project-owned public-syntax short-frame primitive with
   source-derived bounded fields, including a real per-short-frame independent
   LFE audio element; it never changes a six-block payload header.
+- I0 skip-field six-block output without LFE uses the project-owned public
+  source-derived six-block syntax so arbitrary FFmpeg mantissa layouts cannot
+  prevent safe skip-field traversal. Independent-LFE six-block output retains
+  the validated external FFmpeg I0 plus JOCForge skip-field injector; both
+  paths preserve one source-derived programme carrier.
 - `ReductionConfig.temporal_continuity_weight` defaults to the clean-side
   dimensionless value `0.15`; it adds a switch cost only when a source moves
   between prior-frame clusters and is covered by controlled/adversarial tests.
@@ -262,8 +281,9 @@ Last verified: 2026-09-08
   capability matrix is generated separately from heavyweight validation.
 - The validated advanced legacy-core exception is `legacy-ac3` with public
   idx0..idx4 at 1280 kbps and idx1 at 1024/1088/1152/1216 kbps, with one
-  original-syntax AC-3 I0 plus one E-AC-3 D0; other legacy-core cells remain
-  fail-closed.
+  original-syntax AC-3 I0 plus one E-AC-3 D0. Strict and deployed EMDF plus
+  independent/dependent LFE ownership are validated at that same capacity
+  boundary; other legacy-core cells remain fail-closed.
 - `crates/jocforge-core/src/conformance.rs` provides the public contract for
   1/2/3/6-block grouping to one 1,536-sample interval and sequential D0..D7
   ID bounds. `conformance-short` is an advanced synthetic short-frame writer;

@@ -1,0 +1,6 @@
+family_id,family_name,initial_cells,initial_verdict,reason,root_cause_category,resolution,implemented_cells,reclassified_cells,final_verdicts
+F1,skip-field profile eligibility,17680,SPEC_LEGAL_NOT_IMPLEMENTED,I0 skip-field carriage is closed only for idx0,carriage/profile applicability,implemented-and-reclassified,8,17672,SUPPORTED_PASS:8;PUBLIC_AMBIGUOUS:26;REJECTED_CAPACITY:96;NOT_APPLICABLE:17550
+F2,skip-field independent LFE,130,SPEC_LEGAL_NOT_IMPLEMENTED,skip-field LFE ownership has no validated source-derived path,LFE ownership/carriage,implemented-and-reclassified,8,122,SUPPORTED_PASS:8;PUBLIC_AMBIGUOUS:26;REJECTED_CAPACITY:96
+F3,skip-field canonical short partitions,104,SPEC_LEGAL_NOT_IMPLEMENTED,deployed skip-field signaling has only a validated six-block carriage,short-block skip-field writer/timing,implemented-and-reclassified,6,98,SUPPORTED_PASS:6;PUBLIC_AMBIGUOUS:26;REJECTED_CAPACITY:72
+F4,legacy-core LFE ownership,390,SPEC_LEGAL_NOT_IMPLEMENTED,legacy-core LFE ownership has no validated composition path,legacy-core LFE ownership/carriage,implemented-and-reclassified,54,336,SUPPORTED_PASS:54;REJECTED_CAPACITY:336
+F5,legacy-core deployed EMDF,65,SPEC_LEGAL_NOT_IMPLEMENTED,legacy-core closure is validated only with strict EMDF,carriage/signaling composition,implemented-and-reclassified,9,56,SUPPORTED_PASS:9;REJECTED_CAPACITY:56

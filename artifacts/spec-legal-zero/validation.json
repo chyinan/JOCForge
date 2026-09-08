@@ -1,0 +1,80 @@
+﻿[
+    {
+        "name":  "f1-idx3-skipfield-six",
+        "profile":  "idx3",
+        "carriage":  "i0-skipfld",
+        "emdf_profile":  "etsi",
+        "partition":  "6",
+        "bitrate_kbps":  1024,
+        "resolved_dependent_count":  0,
+        "resolved_partition":  "6",
+        "resolved_lfe_ownership":  "absent",
+        "resolved_legacy_core":  false,
+        "resolved_skip_observed":  32,
+        "resolved_joc_owners":  [
+                                    "I0"
+                                ],
+        "deterministic":  true,
+        "pinned_openjoc_inspect":  true,
+        "pinned_openjoc_render":  true,
+        "pinned_malformed_aus":  0,
+        "inspector_json":  true,
+        "inspector_malformed_aus":  0,
+        "inspector_source_revision":  "a52c35d21e68e18dbaa8fa18accfbfea44087367",
+        "source_causality":  "pass: source_derived_skip_field_short_writer_uses_the_selected_partition; source_derived_skip_field_short_writer_serializes_independent_lfe_causally; source_derived_skip_field_six_writer_closes_phase_profile_without_ffmpeg_walker; legacy_plan_writer_closes_deployed_and_all_lfe_ownership_modes",
+        "ffmpeg_decode":  true,
+        "output_bytes":  131072
+    },
+    {
+        "name":  "f2-f3-idx0-skipfield-lfe-2x2x2",
+        "profile":  "idx0",
+        "carriage":  "i0-skipfld",
+        "emdf_profile":  "deployed",
+        "partition":  "2+2+2",
+        "bitrate_kbps":  1024,
+        "resolved_dependent_count":  0,
+        "resolved_partition":  "2 2 2",
+        "resolved_lfe_ownership":  "independent_owned:I0",
+        "resolved_legacy_core":  false,
+        "resolved_skip_observed":  32,
+        "resolved_joc_owners":  [
+                                    "I0"
+                                ],
+        "deterministic":  true,
+        "pinned_openjoc_inspect":  true,
+        "pinned_openjoc_render":  true,
+        "pinned_malformed_aus":  0,
+        "inspector_json":  true,
+        "inspector_malformed_aus":  0,
+        "inspector_source_revision":  "a52c35d21e68e18dbaa8fa18accfbfea44087367",
+        "source_causality":  "pass: source_derived_skip_field_short_writer_uses_the_selected_partition; source_derived_skip_field_short_writer_serializes_independent_lfe_causally; source_derived_skip_field_six_writer_closes_phase_profile_without_ffmpeg_walker; legacy_plan_writer_closes_deployed_and_all_lfe_ownership_modes",
+        "ffmpeg_decode":  true,
+        "output_bytes":  131072
+    },
+    {
+        "name":  "f4-f5-idx1-legacy-deployed-lfe",
+        "profile":  "idx1",
+        "carriage":  "legacy-ac3",
+        "emdf_profile":  "deployed",
+        "partition":  "6",
+        "bitrate_kbps":  1280,
+        "resolved_dependent_count":  1,
+        "resolved_partition":  "6",
+        "resolved_lfe_ownership":  "independent_owned:I0",
+        "resolved_legacy_core":  true,
+        "resolved_skip_observed":  0,
+        "resolved_joc_owners":  [
+                                    "D0"
+                                ],
+        "deterministic":  true,
+        "pinned_openjoc_inspect":  true,
+        "pinned_openjoc_render":  true,
+        "pinned_malformed_aus":  0,
+        "inspector_json":  true,
+        "inspector_malformed_aus":  0,
+        "inspector_source_revision":  "a52c35d21e68e18dbaa8fa18accfbfea44087367",
+        "source_causality":  "pass: source_derived_skip_field_short_writer_uses_the_selected_partition; source_derived_skip_field_short_writer_serializes_independent_lfe_causally; source_derived_skip_field_six_writer_closes_phase_profile_without_ffmpeg_walker; legacy_plan_writer_closes_deployed_and_all_lfe_ownership_modes",
+        "ffmpeg_decode":  true,
+        "output_bytes":  163840
+    }
+]

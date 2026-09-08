@@ -27,6 +27,11 @@
 /artifacts/cmaf-closure/
 /artifacts/cmaf-probe.mp4
 /artifacts/legacy-core-*.metrics.csv
+/artifacts/spec-legal-zero/representatives/
+/artifacts/spec-legal-zero/hanabi/
+/artifacts/spec-legal-zero/*.log
+/artifacts/spec-legal-zero/*.wav
+/artifacts/spec-legal-zero/initial-baseline-regenerated.*
 *.ec3
 *.bw64
 *.wav

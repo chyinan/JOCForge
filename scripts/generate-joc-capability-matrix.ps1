@@ -15,7 +15,7 @@ function Invoke-Checked([string]$file, [string[]]$arguments) {
 $compositionCsv = Join-Path $artifact "composition-capability-matrix.csv"
 $compositionJson = Join-Path $artifact "composition-capability-matrix.json"
 Invoke-Checked "cargo" @(
-    "run", "-p", "jocforge", "--quiet", "--", "composition-matrix",
+    "run", "-p", "jocforge", "--quiet", "--locked", "--", "composition-matrix",
     $compositionCsv, $compositionJson
 )
 
@@ -29,9 +29,21 @@ $ceilingRows = @($rows | Where-Object { $_.verdict -eq "SEMANTIC_CEILING" })
 $ceilingRows | Export-Csv -LiteralPath (Join-Path $artifact "multi-dependent-semantic-ceiling.csv") -NoTypeInformation -Encoding utf8
 $ceilingRows | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $artifact "multi-dependent-semantic-ceiling.json") -Encoding utf8
 
-$counts = $rows | Group-Object verdict | Sort-Object Name
-$countLines = foreach ($count in $counts) {
-    "| $($count.Name) | $($count.Count) |"
+$verdictNames = @(
+    "SUPPORTED_PASS",
+    "PUBLIC_AMBIGUOUS",
+    "NOT_APPLICABLE",
+    "SEMANTIC_CEILING",
+    "REJECTED_CAPACITY",
+    "INVALID",
+    "RESERVED",
+    "SPEC_LEGAL_NOT_IMPLEMENTED"
+)
+$countMap = @{}
+foreach ($verdict in $verdictNames) { $countMap[$verdict] = 0 }
+foreach ($count in ($rows | Group-Object verdict)) { $countMap[$count.Name] = $count.Count }
+$countLines = foreach ($verdict in $verdictNames) {
+    "| $verdict | $($countMap[$verdict]) |"
 }
 $profileLines = foreach ($group in ($rows | Group-Object profile)) {
     $first = $group.Group | Select-Object -First 1
@@ -67,7 +79,7 @@ $markdown = @(
     "- PUBLIC_AMBIGUOUS is reserved for mixed short partitions whose programme grouping and ownership are not publicly closed.",
     "- NOT_APPLICABLE keeps CMAF six-block I0 plus optional D0 and fixed legacy AC-3 framing separate from raw composition.",
     "- SEMANTIC_CEILING is distinct from capacity rejection: raw D6/D7 IDs exist, but the canonical Table-47 ownership graph has no additional non-duplicated slot.",
-    "- SPEC_LEGAL_NOT_IMPLEMENTED records public variants without a validated JOCForge writer path.",
+    "- SPEC_LEGAL_NOT_IMPLEMENTED is zero in the regenerated matrix; any future nonzero row is a release-blocking implementation or audit gap.",
     "- FFmpeg interoperability is metadata, not normative classification.",
     "",
     "See docs/orthogonal-composition-closure.md for the human-scale composition rules and targeted validation evidence.",

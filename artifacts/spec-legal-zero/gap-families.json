@@ -1,0 +1,93 @@
+{
+  "audit": "initial-authoritative-composition-matrix",
+  "start_head": "3b88223353e161344609616d11ab0cd0dabcdd8c",
+  "matrix_rows": 140400,
+  "initial_spec_legal_not_implemented": 18369,
+  "unique_gap_families": 5,
+  "families": [
+    {
+      "id": "F1",
+      "name": "skip-field profile eligibility",
+      "initial_cells": 17680,
+      "reason": "I0 skip-field carriage is closed only for idx0",
+      "dimensions": "profile=idx1..idx4; container=raw; carriage=i0-skipfld; emdf=etsi|deployed; partition=6|3+3|2+2+2|1x6|1+2+3; dependent_count=0..8 where the current resolver reaches this reason; lfe=absent|independent|dependent-supplement|dependent-replacement where valid; bitrate=1024..4864 lattice",
+      "public_semantics": "Requires targeted profile/carriage audit. Seven-input profiles cannot obtain their additional full-band programme inputs from an I0-only carrier; phase-profile idx3 must be checked separately because it reuses the five-input family.",
+      "root_cause_category": "carriage/profile applicability",
+      "resolution": "implemented-and-reclassified",
+      "implemented_cells": 8,
+      "reclassified_cells": 17672,
+      "final_verdicts": {
+        "SUPPORTED_PASS": 8,
+        "PUBLIC_AMBIGUOUS": 26,
+        "REJECTED_CAPACITY": 96,
+        "NOT_APPLICABLE": 17550
+      }
+    },
+    {
+      "id": "F2",
+      "name": "skip-field independent LFE",
+      "initial_cells": 130,
+      "reason": "skip-field LFE ownership has no validated source-derived path",
+      "dimensions": "profile=idx0; container=raw; carriage=i0-skipfld; emdf=etsi|deployed; partition=6|3+3|2+2+2|1x6|1+2+3; dependent_count=0; lfe=independent; bitrate=1024..4864 lattice",
+      "public_semantics": "LFE is optional and bypasses JOC; an I0-only carrier can own it independently if the carrier frame and skip-field writer preserve the public LFE element.",
+      "root_cause_category": "LFE ownership/carriage",
+      "resolution": "implemented-and-reclassified",
+      "implemented_cells": 8,
+      "reclassified_cells": 122,
+      "final_verdicts": {
+        "SUPPORTED_PASS": 8,
+        "PUBLIC_AMBIGUOUS": 26,
+        "REJECTED_CAPACITY": 96
+      }
+    },
+    {
+      "id": "F3",
+      "name": "skip-field canonical short partitions",
+      "initial_cells": 104,
+      "reason": "deployed skip-field signaling has only a validated six-block carriage",
+      "dimensions": "profile=idx0; container=raw; carriage=i0-skipfld; emdf=etsi|deployed; partition=3+3|2+2+2|1x6|1+2+3; dependent_count=0; lfe=absent; bitrate=1024..4864 lattice",
+      "public_semantics": "Requires source-derived short I0 frames with audio-block skip fields; mixed 1+2+3 remains publicly ambiguous and is not part of canonical closure.",
+      "root_cause_category": "short-block skip-field writer/timing",
+      "resolution": "implemented-and-reclassified",
+      "implemented_cells": 6,
+      "reclassified_cells": 98,
+      "final_verdicts": {
+        "SUPPORTED_PASS": 6,
+        "PUBLIC_AMBIGUOUS": 26,
+        "REJECTED_CAPACITY": 72
+      }
+    },
+    {
+      "id": "F4",
+      "name": "legacy-core LFE ownership",
+      "initial_cells": 390,
+      "reason": "legacy-core LFE ownership has no validated composition path",
+      "dimensions": "profile=idx0..idx4; container=raw; carriage=legacy-ac3; emdf=etsi|deployed; partition=6; dependent_count=1; lfe=independent|dependent-supplement|dependent-replacement; bitrate=1024..4864 lattice",
+      "public_semantics": "AC-3 I0 may own the optional bypassed LFE, and the E-AC-3 D0 can supplement or replace it with a public channel map; exactly-one final programme owner must remain enforced.",
+      "root_cause_category": "legacy-core LFE ownership/carriage",
+      "resolution": "implemented-and-reclassified",
+      "implemented_cells": 54,
+      "reclassified_cells": 336,
+      "final_verdicts": {
+        "SUPPORTED_PASS": 54,
+        "REJECTED_CAPACITY": 336
+      }
+    },
+    {
+      "id": "F5",
+      "name": "legacy-core deployed EMDF",
+      "initial_cells": 65,
+      "reason": "legacy-core closure is validated only with strict EMDF",
+      "dimensions": "profile=idx0..idx4; container=raw; carriage=legacy-ac3; emdf=deployed; partition=6; dependent_count=1; lfe=absent; bitrate=1024..4864 lattice",
+      "public_semantics": "EMDF signaling is an independent axis from legacy AC-3/E-AC-3 carriage; the existing writer already owns the deployed codec-data omission and needs representative validation.",
+      "root_cause_category": "carriage/signaling composition",
+      "resolution": "implemented-and-reclassified",
+      "implemented_cells": 9,
+      "reclassified_cells": 56,
+      "final_verdicts": {
+        "SUPPORTED_PASS": 9,
+        "REJECTED_CAPACITY": 56
+      }
+    }
+  ]
+}

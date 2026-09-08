@@ -1,0 +1,17 @@
+﻿{
+    "tool":  "OpenJOC",
+    "semantic_version":  "0.16.0",
+    "source_revision":  "ad6556babf42566f1a09820b01dc333703c8b1da",
+    "source_description":  null,
+    "executable_sha256":  "7e761d0c8a23a064c96c1f70f6415e1d95f18b8b88d72eca0bfa6b52d8ee2daf",
+    "executable":  "D:\\Programs\\JOCForge-validator\\openjoc-0.16.0-ad6556\\openjoc.exe",
+    "artifact_manifest":  "D:\\Programs\\JOCForge-validator\\openjoc-0.16.0-ad6556\\validator-manifest.json",
+    "cargo_lock_sha256":  "419a3daf2f4711b6e3f8331b1d55e98a9289d710a2edf0cb49ca6ed4badd61c6",
+    "rustc":  "rustc 1.95.0 (59807616e 2026-04-14)",
+    "cargo":  "cargo 1.95.0 (f2d3ce0bd 2026-03-21)",
+    "target":  "x86_64-pc-windows-msvc",
+    "build_profile":  "release",
+    "version_output":  "OpenJOC 0.16.0",
+    "platform":  "windows-x86_64",
+    "old_pin_sha256":  "b4fb4593be8dfe3bbeceb4ba4e3eb9c97f89ebe043555e8af615cb4eea289bee"
+}
