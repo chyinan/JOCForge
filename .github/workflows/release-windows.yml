@@ -1,0 +1,194 @@
+name: Windows self-contained release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version; run this workflow from the exact source tag."
+        required: true
+        type: string
+      publish:
+        description: "Upload the verified bundle to the GitHub release for this tag."
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      RELEASE_VERSION: ${{ inputs.version }}
+      JOCFORGE_OPENJOC_MANIFEST: ${{ vars.JOCFORGE_OPENJOC_MANIFEST }}
+      JOCFORGE_OPENJOC_EXECUTABLE: ${{ vars.JOCFORGE_OPENJOC_EXECUTABLE }}
+    steps:
+      - name: Check out the exact source revision
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+
+      - name: Require a release tag
+        shell: pwsh
+        run: |
+          if (-not $env:GITHUB_REF.StartsWith("refs/tags/")) {
+            throw "release workflow must run from an exact source tag"
+          }
+          if ($env:GITHUB_REF_NAME -ne ("v" + $env:RELEASE_VERSION)) {
+            throw "workflow version does not match the checked-out tag"
+          }
+
+      - name: Verify Cargo.lock
+        shell: pwsh
+        run: cargo metadata --locked --format-version 1 | Out-Null
+
+      - name: Load the FFmpeg pin and verify its source archive
+        shell: pwsh
+        run: |
+          $pin = Get-Content release/ffmpeg-pin.json -Raw | ConvertFrom-Json
+          $resolved = (git ls-remote https://git.ffmpeg.org/ffmpeg.git ("refs/tags/" + $pin.ffmpeg.tag)).Split("`t")[0]
+          if ($resolved -ne $pin.ffmpeg.commit) {
+            throw "FFmpeg tag does not resolve to the pinned commit: expected $($pin.ffmpeg.commit), got $resolved"
+          }
+          $archive = Join-Path $env:RUNNER_TEMP ("ffmpeg-" + $pin.ffmpeg.version + ".tar.xz")
+          Invoke-WebRequest -Uri $pin.ffmpeg.source_url -OutFile $archive
+          $actual = (Get-FileHash -Algorithm SHA256 -LiteralPath $archive).Hash.ToLowerInvariant()
+          if ($actual -ne $pin.ffmpeg.source_sha256) {
+            throw "FFmpeg source SHA256 mismatch: expected $($pin.ffmpeg.source_sha256), got $actual"
+          }
+          "FFMPEG_ARCHIVE=$archive" >> $env:GITHUB_ENV
+          "FFMPEG_VERSION=$($pin.ffmpeg.version)" >> $env:GITHUB_ENV
+
+      - name: Verify the provisioned OpenJOC pin
+        if: ${{ env.JOCFORGE_OPENJOC_MANIFEST != '' || env.JOCFORGE_OPENJOC_EXECUTABLE != '' }}
+        shell: pwsh
+        run: |
+          if (-not $env:JOCFORGE_OPENJOC_MANIFEST -or -not $env:JOCFORGE_OPENJOC_EXECUTABLE) {
+            throw "both pinned OpenJOC environment paths are required"
+          }
+          & pwsh -NoProfile -File scripts/test-openjoc-validator-pin.ps1
+
+      - name: Extract the pinned FFmpeg source
+        shell: pwsh
+        run: |
+          tar -xf $env:FFMPEG_ARCHIVE -C $env:RUNNER_TEMP
+          $sourceRoot = Join-Path $env:RUNNER_TEMP ("ffmpeg-" + $env:FFMPEG_VERSION)
+          if (-not (Test-Path (Join-Path $sourceRoot "configure"))) {
+            throw "pinned FFmpeg source root is incomplete: $sourceRoot"
+          }
+          $prefix = Join-Path $env:RUNNER_TEMP "ffmpeg-prefix"
+          "FFMPEG_SOURCE_ROOT=$sourceRoot" >> $env:GITHUB_ENV
+          "FFMPEG_PREFIX=$prefix" >> $env:GITHUB_ENV
+
+      - name: Install the MinGW x64 build toolchain
+        uses: msys2/setup-msys2@66cd2cce69caa17b53920067426061ca1de3a884 # v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            make
+            mingw-w64-x86_64-gcc
+
+      - name: Build FFmpeg from the pinned source
+        shell: msys2 {0}
+        run: |
+          set -euo pipefail
+          source_dir="$(cygpath -u "$FFMPEG_SOURCE_ROOT")"
+          prefix="$(cygpath -u "$FFMPEG_PREFIX")"
+          bash scripts/release/ffmpeg-configure.sh "$source_dir" "$prefix"
+
+      - name: Verify the effective FFmpeg license configuration
+        shell: pwsh
+        run: |
+          $ffmpeg = Join-Path $env:FFMPEG_PREFIX "bin\ffmpeg.exe"
+          $ffprobe = Join-Path $env:FFMPEG_PREFIX "bin\ffprobe.exe"
+          foreach ($path in @($ffmpeg, $ffprobe)) {
+            if (-not (Test-Path $path)) { throw "FFmpeg build did not produce $path" }
+          }
+          $buildconf = (& $ffmpeg -buildconf 2>&1) -join "`n"
+          if ($buildconf -match "--enable-gpl|--enable-nonfree|--enable-version3") {
+            throw "FFmpeg license configuration is not the permitted LGPL-compatible build"
+          }
+          Write-Output $buildconf
+          "FFMPEG_BINARY=$ffmpeg" >> $env:GITHUB_ENV
+          "FFPROBE_BINARY=$ffprobe" >> $env:GITHUB_ENV
+
+      - name: Build JOCForge in release mode
+        shell: pwsh
+        run: cargo build --release --locked -p jocforge
+
+      - name: Install the release semantic QA dependency
+        if: ${{ env.JOCFORGE_OPENJOC_EXECUTABLE != '' }}
+        shell: pwsh
+        run: python -m pip install --disable-pip-version-check numpy
+
+      - name: Assemble the self-contained bundle
+        shell: pwsh
+        run: |
+          $output = Join-Path $env:RUNNER_TEMP "jocforge-release"
+          & pwsh -NoProfile -File scripts/release/assemble-windows-release.ps1 `
+            -FfmpegPrefix $env:FFMPEG_PREFIX `
+            -FfmpegSourceRoot $env:FFMPEG_SOURCE_ROOT `
+            -FfmpegSourceArchive $env:FFMPEG_ARCHIVE `
+            -JocforgeExecutable (Join-Path $env:GITHUB_WORKSPACE "target\release\jocforge.exe") `
+            -OutputRoot $output `
+            -Version $env:RELEASE_VERSION `
+            -CiBuilt
+          "RELEASE_OUTPUT=$output" >> $env:GITHUB_ENV
+
+      - name: Extract and smoke-test the final ZIP
+        shell: pwsh
+        run: |
+          $zip = Join-Path $env:RELEASE_OUTPUT ("JOCForge-v{0}-win-x64.zip" -f $env:RELEASE_VERSION)
+          $report = Join-Path $env:RELEASE_OUTPUT "release-smoke.json"
+          $args = @("-NoProfile", "-File", "scripts/release/smoke-windows-bundle.ps1", "-ZipPath", $zip, "-ReportPath", $report)
+          if ($env:JOCFORGE_OPENJOC_EXECUTABLE) {
+            $args += @("-OpenJocPath", $env:JOCFORGE_OPENJOC_EXECUTABLE, "-RequireOpenJoc")
+          }
+          $args += @("-ReleaseArtifactPath", (Join-Path $env:RELEASE_OUTPUT "release-artifact.json"))
+          & pwsh @args
+
+      - name: Upload the verified build artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: JOCForge-v${{ inputs.version }}-win-x64
+          path: ${{ runner.temp }}/jocforge-release
+          if-no-files-found: error
+
+      - name: Refuse publication without pinned OpenJOC semantic QA
+        if: ${{ inputs.publish }}
+        shell: pwsh
+        run: |
+          if (-not $env:JOCFORGE_OPENJOC_EXECUTABLE) {
+            throw "publication requires a separately provisioned pinned OpenJOC executable for semantic QA"
+          }
+
+  publish:
+    needs: build
+    if: ${{ inputs.publish && startsWith(github.ref, 'refs/tags/') }}
+    runs-on: windows-latest
+    env:
+      RELEASE_VERSION: ${{ inputs.version }}
+    permissions:
+      contents: write
+    steps:
+      - name: Download the verified bundle
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: JOCForge-v${{ inputs.version }}-win-x64
+          path: release
+
+      - name: Upload assets to the existing tag release
+        shell: pwsh
+        run: |
+          if ($env:RELEASE_VERSION -notmatch '^[A-Za-z0-9._-]+$') { throw "release version contains unsafe path characters" }
+          $bundle = Join-Path $env:GITHUB_WORKSPACE ("release\JOCForge-v{0}-win-x64" -f $env:RELEASE_VERSION)
+          $zip = Join-Path $env:GITHUB_WORKSPACE ("release\JOCForge-v{0}-win-x64.zip" -f $env:RELEASE_VERSION)
+          $source = Get-ChildItem -LiteralPath (Join-Path $bundle "licenses\FFmpeg") -Filter "ffmpeg-*.tar.xz" -File | Select-Object -First 1
+          $checksums = Join-Path $bundle "SHA256SUMS.txt"
+          $artifact = Join-Path $env:GITHUB_WORKSPACE "release\release-artifact.json"
+          $smoke = Join-Path $env:GITHUB_WORKSPACE "release\release-smoke.json"
+          if (-not (Test-Path $artifact) -or -not (Test-Path $smoke)) { throw "release evidence is incomplete" }
+          if (-not (Test-Path $zip) -or $null -eq $source -or -not (Test-Path $checksums)) { throw "verified release assets are incomplete" }
+          gh release upload ("v" + $env:RELEASE_VERSION) $zip $checksums $artifact $smoke $source.FullName --clobber

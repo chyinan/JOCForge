@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "ffmpeg": {
+    "version": "8.1",
+    "tag": "n8.1",
+    "commit": "a65b3bfe9dacc3b20597ef199d0afdd8bc8128e2",
+    "source_url": "https://ffmpeg.org/releases/ffmpeg-8.1.tar.xz",
+    "source_sha256": "b072aed6871998cce9b36e7774033105ca29e33632be5b6347f3206898e0756a",
+    "license": "LGPL-2.1-or-later",
+    "license_basis": "no --enable-gpl, no --enable-nonfree, and no --enable-version3",
+    "gpl_enabled": false,
+    "nonfree_enabled": false,
+    "version3_enabled": false,
+    "local_modifications": "NONE",
+    "build_configuration": [
+      "./configure",
+      "--target-os=mingw32",
+      "--arch=x86_64",
+      "--enable-static",
+      "--disable-shared",
+      "--disable-everything",
+      "--disable-autodetect",
+      "--disable-network",
+      "--disable-ffplay",
+      "--disable-doc",
+      "--disable-x86asm",
+      "--enable-encoder=ac3",
+      "--enable-encoder=eac3",
+      "--enable-encoder=pcm_s16le",
+      "--enable-decoder=ac3",
+      "--enable-decoder=eac3",
+      "--enable-decoder=pcm_f32le",
+      "--enable-demuxer=ac3",
+      "--enable-demuxer=eac3",
+      "--enable-demuxer=f32le",
+      "--enable-demuxer=mov",
+      "--enable-demuxer=wav",
+      "--enable-muxer=ac3",
+      "--enable-muxer=eac3",
+      "--enable-muxer=null",
+      "--enable-parser=ac3",
+      "--enable-protocol=file",
+      "--enable-protocol=pipe",
+      "--enable-filter=anull"
+    ],
+    "binary_sha256": {
+      "ffmpeg.exe": null,
+      "ffprobe.exe": null,
+      "status": "PENDING_CI_BUILD"
+    }
+  },
+  "release_artifact": {
+    "zip_sha256": null,
+    "zip_size_bytes": null,
+    "status": "PENDING_CI_BUILD"
+  }
+}

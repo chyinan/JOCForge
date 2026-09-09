@@ -17,8 +17,9 @@ semantics are not claimed.
 
 ## Quick start
 
-Install Rust 1.85 or newer and FFmpeg. The commands below build and test the
-workspace without private source media.
+Install Rust 1.85 or newer. A source checkout also needs FFmpeg on `PATH` for
+the carrier encoder and independent decode checks. The commands below build
+and test the workspace without private source media.
 
 ```powershell
 cargo fmt --all -- --check
@@ -26,6 +27,11 @@ cargo check --workspace --locked
 cargo clippy --workspace --all-targets --locked -- -D warnings
 cargo test --workspace --locked
 ```
+
+Official Windows releases are self-contained bundles with the exact FFmpeg
+and ffprobe build tested by release CI. The bundled tools are separate
+FFmpeg components, not Apache-2.0 JOCForge code; see
+[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) and the release audit.
 
 Commands that write an output path create missing parent directories and
 atomically replace an existing file at that path. Choose output paths
@@ -171,3 +177,10 @@ separately documented, version-scoped release pin. EBU `libadm`,
 files. Full C++ interop is deferred because this Windows host has no exposed
 CMake/C++/Boost build path; the narrow ingest boundary and migration plan are
 recorded in `PROVENANCE.md`. This project does not claim full ADM support.
+
+## License
+
+JOCForge source and workspace crates are licensed under the Apache License,
+Version 2.0. Apache-2.0 does not grant trademark rights or resolve third-party
+patent questions. The official binary bundle carries FFmpeg's separate
+license and source-provenance material.

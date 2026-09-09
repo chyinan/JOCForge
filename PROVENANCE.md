@@ -36,14 +36,20 @@ encoding support.
 
 ## Other dependencies and roles
 
-- FFmpeg 8.1 full build (`8.1-full_build-www.gyan.dev`, Windows build):
-  `PRODUCTION_DEPENDENCY` as an external executable invoked for deterministic
-  5-channel E-AC-3 I0 carrier audio at 1024 kbps. The observed build reports
-  `--enable-gpl --enable-version3` and is therefore a GPL-enabled full build;
-  its installed executable/build configuration is the provenance subject, not
-  a repository dependency or redistribution grant. The binary is not
-  redistributed by this repository. It is not used to claim dependent-D0
-  support; JOCForge writes the PCM-derived D0 syntax itself.
+- Local development and the current source-checkout validation use FFmpeg 8.1
+  as an external executable invoked for deterministic 5-channel E-AC-3 I0
+  carrier audio at 1024 kbps and independent decode checks. The observed
+  `8.1-full_build-www.gyan.dev` host build reports `--enable-gpl
+  --enable-version3`; it is not a JOCForge dependency, is not Apache-licensed,
+  and is not redistributed by the source repository. It is not used to claim
+  dependent-D0 support; JOCForge writes the PCM-derived D0 syntax itself.
+- The intended Windows release bundle uses the separate source-built FFmpeg
+  pin in `release/ffmpeg-pin.json`: FFmpeg `n8.1` at commit
+  `a65b3bfe9dacc3b20597ef199d0afdd8bc8128e2`, with the official source archive
+  hash recorded there. Its frozen configuration enables neither GPL nor
+  nonfree code and is audited as LGPL-2.1-or-later. The release workflow keeps
+  FFmpeg's license files, source archive, build configuration, local-change
+  record, and binary hashes separate from JOCForge's Apache-2.0 license.
 - OpenJOC v0.16.0: `VALIDATION_REFERENCE` / external validator / decoder /
   renderer. The exact source revision, Windows x86-64 executable SHA256, and
   commands are pinned in `validation/openjoc-validator.json`; the pin is

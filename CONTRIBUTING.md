@@ -29,3 +29,11 @@ git diff --check
 Tests should cover changed behavior, malformed input, and any public profile or
 carriage contract affected by the change. Do not include generated audio,
 private audit output, or local validator binaries in a change.
+
+## License for contributions
+
+Contributions must be original work or based on publicly available
+specifications and legitimately redistributable references. By intentionally
+submitting a contribution for inclusion in JOCForge, you submit it under the
+Apache License, Version 2.0, unless you clearly state otherwise. No separate
+CLA or DCO sign-off is required for this first release.
