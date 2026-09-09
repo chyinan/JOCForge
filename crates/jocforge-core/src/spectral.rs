@@ -529,7 +529,7 @@ fn render_reduced(objects: &[crate::ReducedObject]) -> (Vec<f64>, Vec<f64>) {
     for object in objects {
         let azimuth = object.position.azimuth.clamp(-1.0, 1.0);
         let left_weight = (1.0 - azimuth) * 0.5;
-        let right_weight = (1.0 + azimuth) * 0.5;
+        let right_weight = f64::midpoint(1.0, azimuth);
         for (sample, value) in object.signal.iter().copied().enumerate() {
             left[sample] += value * left_weight;
             right[sample] += value * right_weight;
@@ -552,7 +552,7 @@ fn render_sources(sources: &[ReductionSource]) -> (Vec<f64>, Vec<f64>) {
     for source in sources {
         let azimuth = source.position.azimuth.clamp(-1.0, 1.0);
         let left_weight = (1.0 - azimuth) * 0.5;
-        let right_weight = (1.0 + azimuth) * 0.5;
+        let right_weight = f64::midpoint(1.0, azimuth);
         for (sample, value) in source.signal.iter().copied().enumerate() {
             left[sample] += value * left_weight;
             right[sample] += value * right_weight;

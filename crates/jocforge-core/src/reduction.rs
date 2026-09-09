@@ -532,7 +532,7 @@ pub fn speaker_render_error(
 
 fn speaker_weights(position: AdmPosition) -> [f64; 2] {
     let azimuth = position.azimuth.clamp(-1.0, 1.0);
-    [(1.0 - azimuth) * 0.5, (1.0 + azimuth) * 0.5]
+    [(1.0 - azimuth) * 0.5, f64::midpoint(1.0, azimuth)]
 }
 
 fn validate_inputs(
