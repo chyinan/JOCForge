@@ -15,7 +15,8 @@ fn ffmpeg_core(bitrate: &str, label: &str) -> Vec<u8> {
             "-f",
             "lavfi",
             "-i",
-            "anoisesrc=color=white:sample_rate=48000:amplitude=0.2",
+            // Frame slack depends on the noise samples; keep capacity probes reproducible.
+            "anoisesrc=color=white:sample_rate=48000:amplitude=0.2:seed=1",
             "-filter_complex",
             "[0:a]pan=5.1|c0=c0|c1=c0|c2=c0|c3=c0|c4=c0|c5=c0",
             "-t",
