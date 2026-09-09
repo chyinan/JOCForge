@@ -38,6 +38,26 @@ use jocforge_core::{
 
 const JOC_FRAME_SAMPLES: usize = 1536;
 const ENCODE_USAGE: &str = "usage: jocforge encode INPUT.bw64 OUTPUT.ec3 --profile 5.X|Flat-7.X|5.X+2|5.X Phase|5.X+2 Phase [--compat etsi|deployed] [--carriage etsi|i0-skipfld|legacy-ac3] [--emdf-profile etsi|deployed] [--bitrate KBPS] [--block-partition 6|3+3|2+2+2|1+1+1+1+1+1] [--temporal-weight VALUE]";
+const PUBLIC_HELP: &str = concat!(
+    "JOCForge independent ADM-to-E-AC-3/JOC encoder proof\n\n",
+    "Usage:\n",
+    "  jocforge --help\n",
+    "  jocforge --version\n",
+    "  jocforge fixture --seconds N OUTPUT.bw64\n",
+    "  jocforge fixture-directspeakers --seconds N OUTPUT.bw64\n",
+    "  jocforge inspect-adm INPUT.bw64\n",
+    "  jocforge encode INPUT.bw64 OUTPUT.ec3 --profile PROFILE [OPTIONS]\n",
+    "  jocforge proof PROFILE OUTPUT.ec3\n",
+    "  jocforge conformance-short PROFILE PARTITIONS OUTPUT.ec3\n",
+    "  jocforge conformance-multi-dependent PROFILE COUNT OUTPUT.ec3\n",
+    "  jocforge conformance-short-multi-dependent PROFILE COUNT PARTITIONS OUTPUT.ec3\n",
+    "  jocforge conformance-dependent-lfe PROFILE [COUNT] OUTPUT.ec3 [--replacement]\n",
+    "  jocforge conformance-cmaf PROFILE INPUT.ec3 OUTPUT.mp4 [--bitrate KBPS]\n",
+    "  jocforge composition-matrix OUTPUT.csv OUTPUT.json\n\n",
+    "Profiles: idx0 (5.X), idx1 (Flat-7.X), idx2 (5.X+2), idx3 (5.X Phase), ",
+    "and idx4 (5.X+2 Phase).\n",
+    "Run a command without arguments for its detailed usage.\n",
+);
 
 fn main() -> ExitCode {
     let arguments = env::args().skip(1).collect::<Vec<_>>();
@@ -51,7 +71,16 @@ fn main() -> ExitCode {
 }
 
 fn run(arguments: &[String]) -> Result<(), String> {
-    match arguments.first().map(String::as_str) {
+    match arguments {
+        [flag] if flag == "--help" || flag == "-h" => {
+            print!("{PUBLIC_HELP}");
+            Ok(())
+        }
+        [flag] if flag == "--version" => {
+            println!("jocforge {}", env!("CARGO_PKG_VERSION"));
+            Ok(())
+        }
+        _ => match arguments.first().map(String::as_str) {
         Some("proof") => run_proof(&arguments[1..]),
         Some("conformance-multi-dependent") => run_multi_dependent_proof(&arguments[1..]),
         Some("conformance-short-multi-dependent") => {
@@ -78,6 +107,7 @@ fn run(arguments: &[String]) -> Result<(), String> {
             "usage: jocforge proof|conformance-short|conformance-multi-dependent|conformance-short-multi-dependent|conformance-dependent-lfe|dependent-role-census|conformance-cmaf|composition-matrix|fixture|fixture-directspeakers|fixture-unsupported|inspect-adm|encode|quantization-stress|carrier-causality|spectral-phase|final-render-gate|temporal ..."
                 .to_owned(),
         ),
+        },
     }
 }
 

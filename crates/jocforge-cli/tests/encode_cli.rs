@@ -3,6 +3,43 @@
 use std::{env, fs, process::Command};
 
 #[test]
+fn cli_long_help_is_successful_and_publicly_scoped() {
+    let output = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+        .arg("--help")
+        .output()
+        .expect("help CLI starts");
+    assert!(output.status.success());
+    let help = String::from_utf8_lossy(&output.stdout);
+    assert!(help.contains("Usage:"));
+    assert!(!help.contains("carrier-causality"));
+    assert!(!help.contains("spectral-phase"));
+    assert!(!help.contains("D:\\Programs"));
+}
+
+#[test]
+fn cli_short_help_is_successful() {
+    let output = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+        .arg("-h")
+        .output()
+        .expect("short help CLI starts");
+    assert!(output.status.success());
+    assert!(String::from_utf8_lossy(&output.stdout).contains("Usage:"));
+}
+
+#[test]
+fn cli_version_is_successful_and_reports_the_package_version() {
+    let output = Command::new(env!("CARGO_BIN_EXE_jocforge"))
+        .arg("--version")
+        .output()
+        .expect("version CLI starts");
+    assert!(output.status.success());
+    assert_eq!(
+        String::from_utf8_lossy(&output.stdout).trim(),
+        concat!("jocforge ", env!("CARGO_PKG_VERSION"))
+    );
+}
+
+#[test]
 fn encode_cli_uses_ffmpeg_for_the_carrier_and_writes_joc_output() {
     let root = env::temp_dir().join(format!("jocforge-encode-{}", std::process::id()));
     fs::create_dir_all(&root).expect("temporary directory");
