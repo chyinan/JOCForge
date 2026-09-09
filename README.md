@@ -63,6 +63,20 @@ written under `artifacts/decision-engine/`.
 .\scripts\run-source-derived.ps1 -SourceAdm "C:\path\to\local-adm.wav"
 ```
 
+The full validation closure is an optional audit workflow. It requires the
+same explicitly supplied local ADM-BWF source plus a separately maintained
+clean-test matrix; neither is included in this repository:
+
+```powershell
+.\scripts\run-validation-closure.ps1 `
+  -SourceAdm "C:\path\to\local-adm.wav" `
+  -CleanTestMatrixPath "C:\path\to\clean-test-matrix.csv"
+```
+
+The temporal closure likewise requires `-SourceAdm`. These scripts fail closed
+when their external inputs are not configured instead of searching machine-
+specific directories.
+
 Manual commands:
 
 ```powershell
