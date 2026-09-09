@@ -1,7 +1,7 @@
 # JOCForge public release checklist
 
-Status at release-blocker closure source state (2026-09-09): final fresh
-publication gate pending.
+Status at final release-blocker closure state (2026-09-09): engineering gate
+PASS; human legal review remains a separate non-blocking review item.
 
 ## PASS
 
@@ -49,8 +49,8 @@ publication gate pending.
 ## REVIEW
 
 - [ ] Human license, patent, and trademark review.
-- [ ] Recreate the final publication repository from the new source commit and
-  rerun the complete independent fresh-clone gate.
+- [x] Recreate the final publication repository from the final source commit
+  and rerun the complete independent fresh-clone gate.
 - [ ] Decide whether Git author email metadata is acceptable for public history.
 - [ ] Provision/document the external read-only OpenJOC validator for strict and
   render validation. Configure `JOCFORGE_OPENJOC_MANIFEST` and
@@ -62,9 +62,9 @@ publication gate pending.
 
 ## BLOCKER
 
-- No source-side release blocker remains in the fixed local RC evidence;
-  publication remains intentionally stopped until the new exact-history export
-  and complete final gate are independently rerun.
+- All six source-side release blockers are closed and the final exact-history
+  publication/fresh-clone/RC gate passed. No push, tag, GitHub repository, or
+  GitHub release was created.
 
 See [`public-release-audit.md`](public-release-audit.md) for evidence and the
 machine-readable records under `artifacts/public-release-audit/`.
