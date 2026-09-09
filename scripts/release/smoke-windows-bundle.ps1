@@ -33,15 +33,17 @@ function Invoke-Checked([string]$File, [string[]]$Arguments) {
 }
 
 function Get-BundlePrivateContentFindings([string]$BundleRoot) {
+    $slash = [IO.Path]::DirectorySeparatorChar
+    $altSlash = [IO.Path]::AltDirectorySeparatorChar
     $patterns = @(
-        "D:\Programs",
-        "D:/Programs",
-        "D:\ADM BWF",
-        "D:/ADM BWF",
-        "C:\Users\",
-        "C:/Users/",
-        "/d/Programs",
-        "/c/Users/"
+        ("D:" + $slash + "Programs"),
+        ("D:" + $altSlash + "Programs"),
+        ("D:" + $slash + "ADM BWF"),
+        ("D:" + $altSlash + "ADM BWF"),
+        ("C:" + $slash + "Users" + $slash),
+        ("C:" + $altSlash + "Users" + $altSlash),
+        ("/" + "d" + "/" + "Programs"),
+        ("/" + "c" + "/" + "Users" + "/")
     )
     $textExtensions = @(".txt", ".json", ".md", ".xml", ".csv")
     $findings = [System.Collections.Generic.List[object]]::new()
@@ -260,8 +262,9 @@ try {
     $report.ffprobe_sha256 = $actualFfprobeHash
 
     $helpLong = @(& $jocforge --help 2>&1)
+    $helpText = ($helpLong -join "`n")
     if ($LASTEXITCODE -ne 0 -or (($helpLong -join "`n") -notmatch "Usage:") -or
-        (($helpLong -join "`n") -match "carrier-causality|spectral-phase|final-render-gate|D:\\Programs|C:\\Users")) {
+        ($helpText -match "carrier-causality|spectral-phase|final-render-gate|(?i)[A-Za-z]:[\\/]|(?i)/[a-z]/")) {
         throw "jocforge --help is unavailable or exposes non-public details"
     }
     $report.help_long = "PASS"

@@ -13,7 +13,8 @@ fn cli_long_help_is_successful_and_publicly_scoped() {
     assert!(help.contains("Usage:"));
     assert!(!help.contains("carrier-causality"));
     assert!(!help.contains("spectral-phase"));
-    assert!(!help.contains("D:\\Programs"));
+    assert!(!help.contains(":\\"));
+    assert!(!help.contains(":/"));
 }
 
 #[test]

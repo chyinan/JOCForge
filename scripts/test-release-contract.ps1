@@ -115,6 +115,21 @@ if (Test-Path -LiteralPath $smokePath -PathType Leaf) {
     if ($smoke -notmatch "UNSUPPORTED_DECODER_FEATURE") {
         $failures.Add("release smoke does not classify the known FFmpeg additional-substream limitation")
     }
+    $backslash = [char]92
+    $privatePathLiterals = @(
+        ("D:" + $backslash + "Programs"),
+        ("D:/" + "Programs"),
+        ("D:" + $backslash + "ADM BWF"),
+        ("D:/" + "ADM BWF"),
+        ("C:" + $backslash + "Users"),
+        ("C:/" + "Users")
+    )
+    foreach ($privatePathLiteral in $privatePathLiterals) {
+        if ($smoke.Contains($privatePathLiteral)) {
+            $failures.Add("release smoke contains a machine-specific private path literal")
+            break
+        }
+    }
 }
 
 if ($failures.Count -gt 0) {
