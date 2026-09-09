@@ -29,14 +29,27 @@ $env:JOCFORGE_OPENJOC_EXECUTABLE = "C:\\path\\to\\openjoc.exe"
 ## Release CI provisioning
 
 The Windows release workflow builds the bundle on GitHub's hosted Windows
-runner. Publication then requires a separate `semantic-qa` job on an ephemeral
-Windows x64 runner labeled `jocforge-release-qa`. Start that one-job runner with
-the two environment variables above, the frozen artifact, PowerShell 7, and
-Python with NumPy installed. Do not attach this runner to pull-request jobs.
+runner from an exact source tag. When the frozen validator is unavailable on
+that runner, dispatch with `publish=false` and download the successful run's
+complete artifact. On a maintainer's Windows host with the two environment
+variables above, PowerShell 7, and Python with NumPy, run:
 
-The QA job downloads the hosted build, verifies the frozen validator identity,
-and runs the extracted ZIP smoke test with `-RequireOpenJoc`. Only its verified
-artifact can reach the upload job. Create a draft release before dispatching
-with `publish=true`; review the uploaded hashes and license evidence before
-making the release public. The validator binary remains outside the repository
-and release assets.
+```powershell
+pwsh -NoProfile -File scripts/release/smoke-windows-bundle.ps1 `
+  -ZipPath "C:\path\to\release\JOCForge-vVERSION-win-x64.zip" `
+  -ReportPath "C:\path\to\release\release-smoke.json" `
+  -ReleaseArtifactPath "C:\path\to\release\release-artifact.json" `
+  -OpenJocPath $env:JOCFORGE_OPENJOC_EXECUTABLE -RequireOpenJoc
+```
+
+Keep the downloaded ZIP unchanged. This verifies its hashes and validator pin,
+runs the full extracted-bundle semantic gate, and updates the external evidence
+files. Require passing smoke, semantic, and license evidence before uploading
+the ZIP, the outer `SHA256SUMS.txt` (including the ZIP digest), the updated
+reports, and the FFmpeg source archive to a draft release. Verify those uploaded
+assets before publishing with `gh`. Record that semantic QA ran on the
+maintainer host, separately from the hosted build.
+
+If the frozen validator is provisioned on the CI runner, `publish=true` retains
+the all-in-CI semantic gate and upload path. Neither path redistributes the
+validator binary.

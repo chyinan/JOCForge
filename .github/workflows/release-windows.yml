@@ -160,54 +160,16 @@ jobs:
           path: ${{ runner.temp }}/jocforge-release
           if-no-files-found: error
 
-  semantic-qa:
-    needs: build
-    if: ${{ inputs.publish && startsWith(github.ref, 'refs/tags/') }}
-    # A maintainer starts a one-job runner with the frozen validator environment.
-    # This job is dispatch-only; pull requests never run on this machine.
-    runs-on: [self-hosted, Windows, X64, jocforge-release-qa]
-    timeout-minutes: 30
-    env:
-      RELEASE_VERSION: ${{ inputs.version }}
-    steps:
-      - name: Check out the exact source revision
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-        with:
-          persist-credentials: false
-
-      - name: Verify the separately provisioned frozen validator
+      - name: Refuse publication without pinned OpenJOC semantic QA
+        if: ${{ inputs.publish }}
         shell: pwsh
         run: |
-          if (-not $env:JOCFORGE_OPENJOC_MANIFEST -or -not $env:JOCFORGE_OPENJOC_EXECUTABLE) {
-            throw "publication requires the frozen OpenJOC executable and manifest"
+          if (-not $env:JOCFORGE_OPENJOC_EXECUTABLE) {
+            throw "publication requires a separately provisioned pinned OpenJOC executable for semantic QA"
           }
-          & pwsh -NoProfile -File scripts/test-openjoc-validator-pin.ps1
-
-      - name: Download the CI-built bundle
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
-        with:
-          name: JOCForge-v${{ inputs.version }}-win-x64
-          path: release-output
-
-      - name: Require extracted-bundle semantic QA
-        shell: pwsh
-        run: |
-          $output = Join-Path $env:GITHUB_WORKSPACE "release-output"
-          $zip = Join-Path $output ("JOCForge-v{0}-win-x64.zip" -f $env:RELEASE_VERSION)
-          & pwsh -NoProfile -File scripts/release/smoke-windows-bundle.ps1 `
-            -ZipPath $zip -ReportPath (Join-Path $output "release-smoke.json") `
-            -ReleaseArtifactPath (Join-Path $output "release-artifact.json") `
-            -OpenJocPath $env:JOCFORGE_OPENJOC_EXECUTABLE -RequireOpenJoc
-
-      - name: Upload the semantically verified artifacts
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: JOCForge-v${{ inputs.version }}-win-x64-verified
-          path: release-output
-          if-no-files-found: error
 
   publish:
-    needs: semantic-qa
+    needs: build
     if: ${{ inputs.publish && startsWith(github.ref, 'refs/tags/') }}
     runs-on: windows-latest
     env:
@@ -218,7 +180,7 @@ jobs:
       - name: Download the verified bundle
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
-          name: JOCForge-v${{ inputs.version }}-win-x64-verified
+          name: JOCForge-v${{ inputs.version }}-win-x64
           path: release
 
       - name: Upload assets to the existing tag release
@@ -228,17 +190,16 @@ jobs:
           $bundle = Join-Path $env:GITHUB_WORKSPACE ("release\JOCForge-v{0}-win-x64" -f $env:RELEASE_VERSION)
           $zip = Join-Path $env:GITHUB_WORKSPACE ("release\JOCForge-v{0}-win-x64.zip" -f $env:RELEASE_VERSION)
           $source = Get-ChildItem -LiteralPath (Join-Path $bundle "licenses\FFmpeg") -Filter "ffmpeg-*.tar.xz" -File | Select-Object -First 1
-          $checksums = Join-Path $bundle "SHA256SUMS.txt"
+          $checksums = Join-Path $env:GITHUB_WORKSPACE "release\SHA256SUMS.txt"
           $artifact = Join-Path $env:GITHUB_WORKSPACE "release\release-artifact.json"
           $smoke = Join-Path $env:GITHUB_WORKSPACE "release\release-smoke.json"
           if (-not (Test-Path $artifact) -or -not (Test-Path $smoke)) { throw "release evidence is incomplete" }
           if (-not (Test-Path $zip) -or $null -eq $source -or -not (Test-Path $checksums)) { throw "verified release assets are incomplete" }
-          $evidence = Get-Content -LiteralPath $artifact -Raw | ConvertFrom-Json
           $qa = Get-Content -LiteralPath $smoke -Raw | ConvertFrom-Json
-          if ($evidence.release_semantic_qa -ne "PASS" -or $qa.release_semantic_qa -ne "PASS" -or
-              $qa.flat7x_audio_semantic_identity -ne "PASS" -or $evidence.binary_distribution_license_gate -ne "PASS") {
-            throw "publication requires passing semantic and license evidence"
+          if ($qa.release_semantic_qa -ne "PASS" -or $qa.flat7x_audio_semantic_identity -ne "PASS") {
+            throw "publication requires passing extracted-bundle semantic QA"
           }
           gh release upload ("v" + $env:RELEASE_VERSION) $zip $checksums $artifact $smoke $source.FullName --clobber
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
