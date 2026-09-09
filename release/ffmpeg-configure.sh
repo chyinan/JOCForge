@@ -8,10 +8,11 @@ fi
 
 source_dir=$1
 prefix=$2
+canonical_prefix=/jocforge-ffmpeg-prefix
 cd "$source_dir"
 
 ./configure \
-    --prefix="$prefix" \
+    --prefix="$canonical_prefix" \
     --target-os=mingw32 \
     --arch=x86_64 \
     --enable-static \
@@ -44,4 +45,5 @@ cd "$source_dir"
     --enable-filter=aresample
 
 make -j"${NUMBER_OF_PROCESSORS:-2}"
-make install
+mkdir -p "$prefix/bin"
+cp -f ffmpeg.exe ffprobe.exe "$prefix/bin/"

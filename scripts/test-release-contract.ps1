@@ -65,6 +65,10 @@ foreach ($required in @(
 if ($configure -match [regex]::Escape("--enable-demuxer=f32le")) {
     $failures.Add("authoritative configure script still uses the invalid f32le demuxer name")
 }
+if ($configure -notmatch "canonical_prefix=/jocforge-ffmpeg-prefix" -or
+    $configure.Contains('--prefix="$prefix"')) {
+    $failures.Add("FFmpeg configure would embed the machine-specific installation prefix in binaries")
+}
 
 if (Test-Path -LiteralPath $pinPath -PathType Leaf) {
     $pin = Get-Content -LiteralPath $pinPath -Raw | ConvertFrom-Json
