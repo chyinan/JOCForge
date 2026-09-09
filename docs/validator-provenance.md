@@ -25,3 +25,18 @@ script that needs it, provision the read-only pinned artifact and set:
 $env:JOCFORGE_OPENJOC_MANIFEST = "C:\\path\\to\\validator-manifest.json"
 $env:JOCFORGE_OPENJOC_EXECUTABLE = "C:\\path\\to\\openjoc.exe"
 ```
+
+## Release CI provisioning
+
+The Windows release workflow builds the bundle on GitHub's hosted Windows
+runner. Publication then requires a separate `semantic-qa` job on an ephemeral
+Windows x64 runner labeled `jocforge-release-qa`. Start that one-job runner with
+the two environment variables above, the frozen artifact, PowerShell 7, and
+Python with NumPy installed. Do not attach this runner to pull-request jobs.
+
+The QA job downloads the hosted build, verifies the frozen validator identity,
+and runs the extracted ZIP smoke test with `-RequireOpenJoc`. Only its verified
+artifact can reach the upload job. Create a draft release before dispatching
+with `publish=true`; review the uploaded hashes and license evidence before
+making the release public. The validator binary remains outside the repository
+and release assets.

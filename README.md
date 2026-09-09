@@ -1,186 +1,139 @@
-# JOCForge
+<p align="center">
+  <img src="docs/assets/jocforge-logo.png" alt="JOCForge" width="360">
+</p>
 
-JOCForge is an independent, clean-room ADM-to-E-AC-3/JOC encoder proof. The
-`0.1.0-dev` milestone prioritizes a reproducible standards-derived writer,
-finite round-trip output, deterministic N-to-15 scene reduction, and the pinned
-external OpenJOC 0.16.0 validator over perceptual encoder quality.
+<h1 align="center">One scene. 965 ways to forge it.</h1>
 
-The encoder supports 48 kHz, integer PCM BW64/RF64/RIFF ADM input with a narrow
-public subset: one programme/content relationship, one object pack/channel per
-track, one position block per object, and `chna` TrackUID bindings. Authored
-`Objects` and positioned `DirectSpeakers` are explicitly accounted for and
-reduced to at most 15 coded representations. The parser accepts only full-track
-static timing and a single position block; extra blocks, unsupported
-trajectories, and ambiguous programme membership are rejected before PCM
-processing. Other unsupported kinds are rejected; complete non-LFE bed
-semantics are not claimed.
+<p align="center">
+  <strong>965 legal immersive-audio variants. Before you even choose a bitrate.</strong><br>
+  Independent, clean-room ADM → E-AC-3/JOC encoding, built in Rust.
+</p>
 
-## Quick start
+<p align="center">
+  <a href="#the-965-difference">Explore the variants</a> ·
+  <a href="#forge-your-first-stream">Quick start</a> ·
+  <a href="docs/interop-census.md">Validation evidence</a> ·
+  <a href="docs/development-guide.md">Developer guide</a>
+</p>
 
-Install Rust 1.85 or newer. A source checkout also needs FFmpeg on `PATH` for
-the carrier encoder and independent decode checks. The commands below build
-and test the workspace without private source media.
+---
+
+| **965** structural variants | **5** public JOC profiles | **2,393** supported cells | **0** modeled implementation gaps |
+|:---:|:---:|:---:|:---:|
+| Bitrate choices excluded | idx0 through idx4 | Including bitrate choices | Applicable, unambiguous, capacity-viable space |
+
+## The 965 difference
+
+**JOCForge can generate 965 legal E-AC-3/JOC immersive-audio variants, excluding bitrate options.** Compose profiles, carriage, metadata signaling, block partitions, dependent substreams, and LFE ownership through one standards-derived encoding planner.
+
+These are distinct supported configurations in the project's modeled public ETSI space. Count each supported combination of **profile × container × carriage × EMDF signaling × block partition × dependent count × LFE ownership** once, leaving bitrate out. At least one modeled bitrate supports each variant; every bitrate does not support every variant.
+
+| Profile | Carrier family | Variants without bitrate |
+|:---|:---|---:|
+| **idx0** | 5.X | **185** |
+| **idx1** | Flat-7.X | **201** |
+| **idx2** | 5.X+2 | **201** |
+| **idx3** | 5.X Phase | **177** |
+| **idx4** | 5.X+2 Phase | **201** |
+| **Total** | | **965** |
+
+Phase profiles use distinct public signaling with the corresponding carrier family; they do not add a PCM phase transform. The [capability matrix](docs/joc-capability-matrix.md) defines supported combinations and the [capability freeze](docs/capability-freeze.md) defines their scope.
+
+## Build the stream around the scene
+
+| Capability | What JOCForge brings |
+|:---|:---|
+| **Scene → objects** | Deterministic N-to-15 reduction with signal, spatial, and energy weighting, temporal continuity, and explicit source accounting. |
+| **Choose your carriage** | Raw ETSI I0 + dependents, I0 skip-field carriage, and an advanced legacy AC-3 core path. Strict and deployed EMDF signaling are explicit choices. |
+| **Shape the frames** | Genuine source-derived raw partitions: `6`, `3+3`, `2+2+2`, and `1+1+1+1+1+1`, preserving 1,536 samples per programme interval. |
+| **Own the topology** | Multiple dependent substreams up to the profile's semantic ceiling, final-dependent JOC/OAMD ownership, and explicit independent or dependent LFE routing. |
+| **Package for CMAF** | Advanced fragmented `ec-3`/`dec3` output for validated no-LFE, strict, six-block I0+D0 profiles at 1664 kbps. |
+| **Trace the result** | Independent OpenJOC inspection/rendering, FFmpeg decode evidence, carrier/source causality, and per-source accounting. |
+
+Supported combinations are resolved before ADM I/O. Ambiguous structures, insufficient capacity, and unsupported ownership fail with explicit classifications. The matrix defines which features compose.
+
+## Forge your first stream
+
+Install **Rust 1.85+** and put **FFmpeg on `PATH`** for a source checkout. Generate a synthetic scene and encode it without downloading source media:
 
 ```powershell
+cargo run -p jocforge --locked -- fixture --seconds 4 artifacts/demo/scene.bw64
+cargo run -p jocforge --locked -- encode artifacts/demo/scene.bw64 artifacts/demo/scene.ec3 --profile idx0
+```
+
+Try Flat-7.X by choosing `--profile idx1`, or explore all five profiles and advanced carriage in the [developer guide](docs/development-guide.md).
+
+Input support covers **48 kHz integer PCM BW64/RF64/RIFF with static ADM**, including supported Objects and positioned DirectSpeakers. The parser requires full-track timing, a single position block, and unambiguous CHNA bindings. Full ADM and complete non-LFE bed semantics are outside the current scope.
+
+Output commands create missing parent directories and replace existing targets. Failed encodes remove the target and generated sidecars, so choose output paths deliberately.
+
+Official Windows release bundles include separately licensed, pinned FFmpeg and ffprobe executables. See [third-party notices](THIRD_PARTY_NOTICES.md) for license and provenance details.
+
+## Evidence you can inspect
+
+The version-scoped interoperability census tests **20 legal probes** selected from the capability model:
+
+| Reference | Observed result |
+|:---|:---|
+| **OpenJOC 0.16.0** | **20/20** inspection/render-or-container-decode gates passed: 19 raw renders and one CMAF decode. |
+| **FFmpeg 8.1** | **14** full decodes; **6** partial results from additional-substream coverage. |
+| **MediaInfo 21.03** | **1** JOC recognition; **19** E-AC-3-only false negatives. |
+
+The 965 count describes supported compositions, not 965 individually rendered census probes or universal device compatibility. Decoder and detector observations do not determine standards legality. Read the [probe results and limitations](docs/interop-census.md).
+
+<details>
+<summary><strong>Reproduce the 965 count</strong></summary>
+
+Generate the authoritative matrix, then collapse supported rows across bitrate:
+
+```powershell
+.\scripts\generate-joc-capability-matrix.ps1
+$supported = Import-Csv artifacts/composition-capability-matrix.csv |
+  Where-Object verdict -eq 'SUPPORTED_PASS'
+($supported | Group-Object profile,container,carriage,emdf_profile,partition,dependent_count,lfe_ownership).Count
+# 965
+```
+
+The complete model contains 140,400 rows, including 2,393 supported cells and zero `SPEC_LEGAL_NOT_IMPLEMENTED` cells. This is a bounded public-spec implementation claim.
+
+</details>
+
+<details>
+<summary><strong>Run the controlled proof and workspace checks</strong></summary>
+
+The controlled proof requires the separately provisioned [pinned OpenJOC validator](docs/validator-provenance.md), plus Rust and FFmpeg.
+
+```powershell
+.\scripts\run-mvp.ps1
 cargo fmt --all -- --check
 cargo check --workspace --locked
 cargo clippy --workspace --all-targets --locked -- -D warnings
 cargo test --workspace --locked
 ```
 
-Official Windows releases are self-contained bundles with the exact FFmpeg
-and ffprobe build tested by release CI. The bundled tools are separate
-FFmpeg components, not Apache-2.0 JOCForge code; see
-[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) and the release audit.
+For local ADM, generalized closure, and advanced encoding examples, use the [development and validation guide](docs/development-guide.md).
 
-Commands that write an output path create missing parent directories and
-atomically replace an existing file at that path. Choose output paths
-deliberately; failed encodes remove the target and generated sidecars rather
-than leaving stale output that looks successful.
+</details>
 
-The controlled proof also needs the separately provisioned OpenJOC validator
-described in [`docs/validator-provenance.md`](docs/validator-provenance.md).
+## Where the project stands
 
-## Reproduce the controlled proof
+**`0.1.0-dev` is an encoder proof focused on structural coverage and reproducible validation.** JOCForge owns its JOC/OAMD/EMDF writer and source-derived dependent carriage; FFmpeg supplies an external audio-core encoder, and OpenJOC serves as an independent validation reference.
 
-The host must provide Rust and FFmpeg. The validation scripts resolve the
-immutable OpenJOC artifact declared by `validation/openjoc-validator.json`.
+The current algorithm uses a full matrix, one coarse parameter band, and bounded source-derived carrier fields. Perceptual encoder parity, production mastering quality, lossless ADM recovery, and Dolby certification are not claimed. Frequency-local optimization and complete non-LFE bed mapping remain research work.
 
-```powershell
-.\scripts\run-mvp.ps1
-```
+## Go deeper
 
-The script generates a repository-owned four-second rank-7 BW64 fixture,
-encodes all five public idx0–idx4 profiles, runs OpenJOC strict inspect/render, and
-writes local evidence under `artifacts/mvp/`.
+| Document | Explore |
+|:---|:---|
+| [Capability matrix](docs/joc-capability-matrix.md) | Supported compositions and rejection boundaries |
+| [Capability freeze](docs/capability-freeze.md) | Scope, counts, and zero-gap invariant |
+| [Developer guide](docs/development-guide.md) | Build, encode, reproduce, and audit |
+| [Clean encoder design](docs/clean-generalized-encoder-design.md) | Reduction and source-derived encoding decisions |
+| [Interoperability census](docs/interop-census.md) | Version-pinned external evidence |
+| [Provenance](PROVENANCE.md) | Clean-room sources and implementation boundaries |
 
-The evidence includes `validation.json`, `metrics.json`, `frame-budget.csv`,
-`object-binding.csv`, `profile-comparison.txt`, and the five rendered WAVs.
+---
 
-## Reproduce the generalized clean milestone
+<p align="center"><strong>Forge the topology. Keep the evidence.</strong></p>
 
-The source-derived script accepts a local ADM-BWF path, verifies its
-38-track/29-object metadata, then reduces and encodes the 28-object programme
-to at most 15 coded objects. The source media is not included in this
-repository. The generalized outputs and per-frame/source accounting are
-written under `artifacts/decision-engine/`.
-
-```powershell
-.\scripts\run-source-derived.ps1 -SourceAdm "C:\path\to\local-adm.wav"
-```
-
-The full validation closure is an optional audit workflow. It requires the
-same explicitly supplied local ADM-BWF source plus a separately maintained
-clean-test matrix; neither is included in this repository:
-
-```powershell
-.\scripts\run-validation-closure.ps1 `
-  -SourceAdm "C:\path\to\local-adm.wav" `
-  -CleanTestMatrixPath "C:\path\to\clean-test-matrix.csv"
-```
-
-The temporal closure likewise requires `-SourceAdm`. These scripts fail closed
-when their external inputs are not configured instead of searching machine-
-specific directories.
-
-Manual commands:
-
-```powershell
-cargo run -p jocforge -- fixture --seconds 4 artifacts/mvp/synthetic-reference.bw64
-cargo run -p jocforge -- fixture --seconds 1 --objects 28 artifacts/decision-engine/fixture-28.bw64
-cargo run -p jocforge -- inspect-adm artifacts/mvp/synthetic-reference.bw64
-cargo run -p jocforge -- encode artifacts/mvp/synthetic-reference.bw64 artifacts/mvp/jocforge-mvp-idx0.ec3 --profile idx0
-cargo run -p jocforge -- encode artifacts/mvp/synthetic-reference.bw64 artifacts/mvp/jocforge-mvp-flat7x-idx1.ec3 --profile idx1
-cargo run -p jocforge -- encode artifacts/mvp/synthetic-reference.bw64 artifacts/mvp/jocforge-mvp-5x2-idx2.ec3 --profile idx2
-cargo run -p jocforge -- encode artifacts/mvp/synthetic-reference.bw64 artifacts/mvp/jocforge-mvp-5x-phase-idx3.ec3 --profile "5.X Phase"
-cargo run -p jocforge -- encode artifacts/mvp/synthetic-reference.bw64 artifacts/mvp/jocforge-mvp-5x2-phase-idx4.ec3 --profile "5.X+2 Phase"
-cargo run -p jocforge -- encode artifacts/mvp/synthetic-reference.bw64 artifacts/mvp/jocforge-mvp-flat7x-legacy.ec3 --profile Flat-7.X --carriage legacy-ac3 --bitrate 1280
-```
-
-`idx1` is Flat-7.X with `L,R,C,Ls,Rs,Lrs,Rrs` and `chanmap=0x0200`.
-`idx2` is 5.X+2 with `L,R,C,Ls,Rs,Tfl,Tfr` and `chanmap=0x0010`. They are
-different JOC payload headers and different dependent channel maps; idx2 is
-not a relabeled idx1. `idx3` and `idx4` are the public phase-signaled variants;
-the JOCForge implementation treats the phase wording as signaling-only and
-does not add a second PCM phase transform.
-
-The advanced `legacy-ac3` carriage is closed for public idx0..idx4 at 1280
-kbps, and for Flat-7.X/idx1 at 1024, 1088, 1152, and 1216 kbps. The AC-3
-core uses 384/448/512/576/640 kbps and the E-AC-3 D0 uses 640 kbps.
-
-FFmpeg is used only as the external 5-channel E-AC-3 I0 carrier encoder. The
-JOCForge-owned writer creates the PCM-derived two-channel dependent D0,
-full-matrix JOC payload, OAMD, EMDF container, and frame carriage. Each D0
-channel is driven by a bounded feature of its source carrier's 256-sample PCM
-window; it is not a fixed structural tone, but it is not yet a perceptual or
-transparent E-AC-3 encoder. D0 is 2560 bytes, so 4096-byte I0 + 2560-byte D0
-equals 1664 kbps at 48 kHz/six blocks.
-
-The clean bitrate contract is profile-specific (`PROFILE x BITRATE`), not a
-single global bitrate flag. The current controlled contract tests all five
-public profiles at 1024, 1280, 1408, 1536, and 1664 kbps. At 1024 kbps the
-384 kbps I0 carrier disables FFmpeg's
-automatic channel coupling because the pinned OpenJOC decoder cannot traverse
-that low-rate coupled carrier; this preserves the required 1024 target and
-does not change the five-carrier topology. Rates without a legal paired
-I0/D0 budget are rejected deterministically.
-
-The multidimensional public capability lattice is generated by
-`scripts/generate-joc-capability-matrix.ps1` and documented in
-[`docs/joc-capability-matrix.md`](docs/joc-capability-matrix.md).
-
-## Interoperability census
-
-The version-scoped OpenJOC × FFmpeg × MediaInfo census covers 20 legal
-JOCForge probes selected from the public capability model:
-
-- OpenJOC 0.16.0: 20/20 passed the inspection/render-or-container-decode gate
-  (19 raw renders plus 1 CMAF container decode);
-- FFmpeg 8.1: 14 fully decoded and 6 partially handled because of tested
-  additional-substream coverage; and
-- MediaInfo 21.03: 1 JOC recognition and 19 E-AC-3-only false negatives.
-
-These are observations for the exact tested versions and OpenJOC census commit,
-not universal decoder or detector claims. See
-[`docs/interop-census.md`](docs/interop-census.md) for the probe table,
-controlled-pair findings, hashes, and limitations. Reproduce it from an active
-OpenJOC Git checkout; the runner independently creates a clean detached
-worktree at the census pin and accepts a dirty or newer active checkout:
-
-```powershell
-.\scripts\run-interop-census.ps1 -OpenJocRoot ..\OpenJOC -MediaInfoPath "C:\path\to\MediaInfo.exe"
-```
-
-The current modeled capability space is frozen in
-[`docs/capability-freeze.md`](docs/capability-freeze.md).
-
-The advanced `conformance-cmaf` command wraps complete raw I0+D0 access units
-in `ec-3`/`dec3` fragmented CMAF. Its validated scope is no-LFE, strict
-idx0..idx4 at 1664 kbps.
-
-## Boundaries
-
-This is not Dolby encoder parity, Dolby perceptual quality, production
-mastering, native Dolby bitstream identity, or lossless ADM recovery. The
-generalized reducer is an independent signal/spatial seed-and-aggregate
-algorithm. Clean validation also records source/matrix residuals, coefficient
-jumps, and a normalized speaker-projection compatibility proxy; these are
-structural checks, not decoded proprietary parity or perceptual quality.
-Frequency-local optimization and complete non-LFE bed mapping remain open
-research. `PRODUCTION_PERCEPTUAL_QUALITY` is not claimed.
-
-OpenJOC is an external decoder/renderer only. The controlled-proof and closure
-scripts resolve the immutable validator artifact in
-`validation/openjoc-validator.json`; the interoperability census uses its
-separately documented, version-scoped release pin. EBU `libadm`,
-`libbw64`, and `libear` were audited from their upstream Apache-2.0 license
-files. Full C++ interop is deferred because this Windows host has no exposed
-CMake/C++/Boost build path; the narrow ingest boundary and migration plan are
-recorded in `PROVENANCE.md`. This project does not claim full ADM support.
-
-## License
-
-JOCForge source and workspace crates are licensed under the Apache License,
-Version 2.0. Apache-2.0 does not grant trademark rights or resolve third-party
-patent questions. The official binary bundle carries FFmpeg's separate
-license and source-provenance material.
+JOCForge source and workspace crates are **[Apache-2.0](LICENSE)**. FFmpeg retains its separate license. The source license does not grant trademark rights or resolve third-party patent questions.
