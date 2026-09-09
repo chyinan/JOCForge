@@ -32,6 +32,35 @@ function Invoke-Checked([string]$File, [string[]]$Arguments) {
     }
 }
 
+function Get-BundlePrivateContentFindings([string]$BundleRoot) {
+    $patterns = @(
+        "D:\Programs",
+        "D:/Programs",
+        "D:\ADM BWF",
+        "D:/ADM BWF",
+        "C:\Users\",
+        "C:/Users/",
+        "/d/Programs",
+        "/c/Users/"
+    )
+    $textExtensions = @(".txt", ".json", ".md", ".xml", ".csv")
+    $findings = [System.Collections.Generic.List[object]]::new()
+    foreach ($file in Get-ChildItem -LiteralPath $BundleRoot -File -Recurse) {
+        if ($textExtensions -notcontains $file.Extension.ToLowerInvariant()) {
+            continue
+        }
+        $body = [IO.File]::ReadAllText($file.FullName)
+        foreach ($pattern in $patterns) {
+            $count = ([regex]::Matches($body, [regex]::Escape($pattern), [Text.RegularExpressions.RegexOptions]::IgnoreCase)).Count
+            if ($count -gt 0) {
+                $relative = $file.FullName.Substring($BundleRoot.Length + 1).Replace('\', '/')
+                $findings.Add([pscustomobject]@{ file = $relative; pattern = $pattern; count = $count })
+            }
+        }
+    }
+    return @($findings)
+}
+
 function Invoke-OpenJocRawQa([string]$EncodedPath, [string]$Layout, [string]$Name) {
     if ([string]::IsNullOrWhiteSpace($OpenJocPath)) {
         return
@@ -87,6 +116,11 @@ $report = [ordered]@{
     cmaf = "NOT_RUN"
     cmaf_ffprobe = "NOT_RUN"
     flat7x_audio_semantic_identity = "NOT_RUN"
+    private_content_findings = @()
+    external_libwinpthread = "NOT_FOUND"
+    help_long = "NOT_RUN"
+    help_short = "NOT_RUN"
+    version = "NOT_RUN"
 }
 
 try {
@@ -143,6 +177,11 @@ try {
             throw "bundle SHA256SUMS.txt does not match extracted file hashes: $expected"
         }
     }
+    $privateContent = @(Get-BundlePrivateContentFindings $bundleRoot)
+    $report.private_content_findings = $privateContent
+    if ($privateContent.Count -gt 0) {
+        throw "bundle contains machine-specific private paths"
+    }
     $artifact = $null
     if (![string]::IsNullOrWhiteSpace($ReleaseArtifactPath)) {
         if (!(Test-Path -LiteralPath $ReleaseArtifactPath -PathType Leaf)) {
@@ -186,14 +225,56 @@ try {
     if ([IO.Path]::GetFullPath($resolvedFfmpeg) -ne [IO.Path]::GetFullPath($ffmpeg)) {
         throw "isolated PATH resolved FFmpeg outside the extracted bundle: $resolvedFfmpeg"
     }
+    $resolvedFfprobe = (& where.exe ffprobe.exe 2>$null | Select-Object -First 1).Trim()
+    if ([string]::IsNullOrWhiteSpace($resolvedFfprobe)) {
+        throw "bundled ffprobe was not discoverable from the isolated PATH"
+    }
+    if ([IO.Path]::GetFullPath($resolvedFfprobe) -ne [IO.Path]::GetFullPath($ffprobe)) {
+        throw "isolated PATH resolved ffprobe outside the extracted bundle: $resolvedFfprobe"
+    }
+    $resolvedWinpthreadValue = (& where.exe libwinpthread-1.dll 2>$null | Select-Object -First 1)
+    $resolvedWinpthread = if ($null -eq $resolvedWinpthreadValue) {
+        ""
+    }
+    else {
+        $resolvedWinpthreadValue.ToString().Trim()
+    }
+    if (![string]::IsNullOrWhiteSpace($resolvedWinpthread)) {
+        throw "isolated PATH exposes an external libwinpthread runtime: $resolvedWinpthread"
+    }
     $report.bundled_ffmpeg_actually_used = $true
     $report.system_ffmpeg_required = $false
-    $report.ffmpeg_version = ((& $ffmpeg -version 2>&1) -join "`n").Trim()
-    $report.ffprobe_version = ((& $ffprobe -version 2>&1) -join "`n").Trim()
+    $ffmpegVersionOutput = @(& $ffmpeg -version 2>&1)
+    if ($LASTEXITCODE -ne 0) {
+        throw "bundled FFmpeg could not start from the isolated PATH"
+    }
+    $ffprobeVersionOutput = @(& $ffprobe -version 2>&1)
+    if ($LASTEXITCODE -ne 0) {
+        throw "bundled ffprobe could not start from the isolated PATH"
+    }
+    $report.ffmpeg_version = (($ffmpegVersionOutput | Select-Object -First 1) -join "").Trim()
+    $report.ffprobe_version = (($ffprobeVersionOutput | Select-Object -First 1) -join "").Trim()
     $report.ffmpeg_path = [IO.Path]::GetFullPath($ffmpeg)
     $report.ffprobe_path = [IO.Path]::GetFullPath($ffprobe)
     $report.ffmpeg_sha256 = $actualFfmpegHash
     $report.ffprobe_sha256 = $actualFfprobeHash
+
+    $helpLong = @(& $jocforge --help 2>&1)
+    if ($LASTEXITCODE -ne 0 -or (($helpLong -join "`n") -notmatch "Usage:") -or
+        (($helpLong -join "`n") -match "carrier-causality|spectral-phase|final-render-gate|D:\\Programs|C:\\Users")) {
+        throw "jocforge --help is unavailable or exposes non-public details"
+    }
+    $report.help_long = "PASS"
+    $helpShort = @(& $jocforge -h 2>&1)
+    if ($LASTEXITCODE -ne 0 -or (($helpShort -join "`n") -notmatch "Usage:")) {
+        throw "jocforge -h is unavailable"
+    }
+    $report.help_short = "PASS"
+    $versionOutput = @(& $jocforge --version 2>&1)
+    if ($LASTEXITCODE -ne 0 -or (($versionOutput -join "`n").Trim() -notmatch '^jocforge [0-9A-Za-z._-]+$')) {
+        throw "jocforge --version is unavailable"
+    }
+    $report.version = (($versionOutput | Select-Object -First 1) -join "").Trim()
 
     Set-Location $bundleRoot
     $work = Join-Path $bundleRoot "smoke-work-测试"
@@ -237,8 +318,18 @@ try {
 
     $multiOutput = Join-Path $work "multi-dependent.ec3"
     Invoke-Checked $jocforge @("conformance-multi-dependent", "idx0", "2", $multiOutput)
-    Invoke-Checked $ffmpeg @("-hide_banner", "-v", "error", "-f", "eac3", "-i", $multiOutput, "-f", "null", "-")
-    $report.multi_dependent_ffmpeg = "PASS"
+    $multiFfmpegLog = Join-Path $work "multi-dependent-ffmpeg.log"
+    & $ffmpeg @("-hide_banner", "-v", "error", "-f", "eac3", "-i", $multiOutput, "-f", "null", "-") *> $multiFfmpegLog
+    $multiFfmpegExit = $LASTEXITCODE
+    if ($multiFfmpegExit -eq 0) {
+        $report.multi_dependent_ffmpeg = "PASS"
+    }
+    elseif ($multiFfmpegExit -eq 69) {
+        $report.multi_dependent_ffmpeg = "UNSUPPORTED_DECODER_FEATURE"
+    }
+    else {
+        throw "bundled FFmpeg rejected the multi-dependent representative with unexpected exit code $multiFfmpegExit"
+    }
     Invoke-OpenJocRawQa $multiOutput "2.0" "multi-dependent"
     $report.multi_dependent = if ([string]::IsNullOrWhiteSpace($OpenJocPath)) { "NOT_RUN" } else { "PASS" }
 

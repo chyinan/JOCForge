@@ -73,9 +73,13 @@ The official release model is a separate Windows x64 bundle containing
 SHA-256
 `b072aed6871998cce9b36e7774033105ca29e33632be5b6347f3206898e0756a`, and
 builds with no `--enable-gpl`, `--enable-nonfree`, or `--enable-version3`.
-The resulting FFmpeg configuration is intended to be LGPL-2.1-or-later. The
-bundle keeps FFmpeg license files, the complete source archive, build config,
-local-change record, and binary hashes separate from JOCForge's `LICENSE`.
+The resulting FFmpeg configuration is LGPL-2.1-or-later. The bundle keeps
+FFmpeg license files, the complete source archive, build config, local-change
+record, and binary hashes separate from JOCForge's `LICENSE`. The MinGW-w64
+winpthreads runtime is statically linked with the FFmpeg executables; the
+bundle does not require or distribute `libwinpthread-1.dll` and includes the
+applicable MIT/BSD-3-Clause-Clear text as
+`licenses/FFmpeg/WINPTHREADS-COPYING.txt`.
 
 The source pin and configuration are recorded in
 [`release/ffmpeg-pin.json`](../release/ffmpeg-pin.json). The source hash and
@@ -99,7 +103,8 @@ archive and build provenance. Those FFmpeg texts must not be merged into the
 Apache-2.0 `LICENSE`.
 
 The planned FFmpeg configuration disables external library autodetection, GPL
-components, nonfree components, and version-3 components. The CI license check
+components, nonfree components, and version-3 components, and statically links
+the MinGW-w64 winpthreads runtime. The CI license check
 fails if the built configuration reports any of those enable flags. If a
 future feature requires a different configuration, it needs a fresh license
 and release audit.

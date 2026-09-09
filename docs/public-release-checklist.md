@@ -1,10 +1,11 @@
 # JOCForge public release checklist
 
-Status at audit code state `1349457…`: `REVIEW_REQUIRED`.
+Status at release-blocker closure source state (2026-09-09): final fresh
+publication gate pending.
 
 ## PASS
 
-- [x] Full reachable history scan completed: 53 commits; no reachable secret,
+- [x] Full reachable history scan completed: 54 candidate `master` commits; no reachable secret,
   contaminated material, proprietary implementation derivation, or copyright
   media.
 - [x] Current tracked tree has no high-confidence secret candidates, private
@@ -23,7 +24,7 @@ Status at audit code state `1349457…`: `REVIEW_REQUIRED`.
 - [x] `cargo fmt --all -- --check`.
 - [x] `cargo check --workspace --locked`.
 - [x] `cargo clippy --workspace --all-targets --locked -- -D warnings`.
-- [x] `cargo test --workspace --locked`: 173 passed.
+- [x] `cargo test --workspace --locked`: 176 passed.
 - [x] `git diff --check`.
 - [x] Isolated fresh clone build/test gates passed.
 - [x] Synthetic public smoke passed for idx0..idx4 with OpenJOC and FFmpeg.
@@ -36,18 +37,20 @@ Status at audit code state `1349457…`: `REVIEW_REQUIRED`.
   and release-path hygiene are present.
 - [x] Windows x64 self-contained release workflow is checked in and refuses
   publication unless the exact source tag and pinned FFmpeg source are used.
+- [x] Release workflow invokes the authoritative `release/ffmpeg-configure.sh`
+  path and `scripts/test-release-contract.ps1` checks workflow file references.
+- [x] The pinned FFmpeg configuration enables `pcm_f32le` and `aresample`,
+  statically links MinGW-w64 winpthreads, and records its separate license.
+- [x] Release assembly normalizes build provenance and creates lexicographically
+  ordered, fixed-timestamp ZIP entries; two local assemblies were byte-identical.
+- [x] The extracted local RC passed bundled FFmpeg/ffprobe, help/version,
+  idx0..idx4, LFE, short-block, legacy-core, CMAF and semantic smoke.
 
 ## REVIEW
 
 - [ ] Human license, patent, and trademark review.
-- [ ] Execute Windows release CI: build FFmpeg from the pin with no GPL/nonfree
-  components, generate binary and ZIP hashes, and retain the source package.
-- [ ] Extract the final ZIP with system FFmpeg hidden from PATH and prove the
-  bundled executable is used. Run the representative release semantic QA with
-  the separately provisioned pinned OpenJOC validator.
-- [ ] Publish only an explicit fresh object database containing
-  `refs/heads/master`; exclude 26 desktop Codex refs and 65 unreachable local
-  objects. Do not delete them without separate approval.
+- [ ] Recreate the final publication repository from the new source commit and
+  rerun the complete independent fresh-clone gate.
 - [ ] Decide whether Git author email metadata is acceptable for public history.
 - [ ] Provision/document the external read-only OpenJOC validator for strict and
   render validation. Configure `JOCFORGE_OPENJOC_MANIFEST` and
@@ -55,13 +58,13 @@ Status at audit code state `1349457…`: `REVIEW_REQUIRED`.
 - [ ] Treat the full validation closure as optional until a clean-test matrix
   and local source are supplied explicitly.
 - [ ] Add the legitimate JOCForge logo asset if required by the publication
-  plan.
+  plan; branding remains intentionally deferred.
 
 ## BLOCKER
 
-- The self-contained binary is not yet built or smoke-tested in this workspace;
-  source-license closure is complete, but binary publication remains gated.
-- Publication remains intentionally stopped until the REVIEW items are closed.
+- No source-side release blocker remains in the fixed local RC evidence;
+  publication remains intentionally stopped until the new exact-history export
+  and complete final gate are independently rerun.
 
 See [`public-release-audit.md`](public-release-audit.md) for evidence and the
 machine-readable records under `artifacts/public-release-audit/`.

@@ -12,6 +12,11 @@
     "nonfree_enabled": false,
     "version3_enabled": false,
     "local_modifications": "NONE",
+    "winpthreads": {
+      "linkage": "static",
+      "license": "MIT AND BSD-3-Clause-Clear",
+      "license_file": "release/winpthreads-COPYING.txt"
+    },
     "build_configuration": [
       "./configure",
       "--target-os=mingw32",
@@ -24,6 +29,7 @@
       "--disable-ffplay",
       "--disable-doc",
       "--disable-x86asm",
+      "--extra-ldflags=-static",
       "--enable-encoder=ac3",
       "--enable-encoder=eac3",
       "--enable-encoder=pcm_s16le",
@@ -32,7 +38,7 @@
       "--enable-decoder=pcm_f32le",
       "--enable-demuxer=ac3",
       "--enable-demuxer=eac3",
-      "--enable-demuxer=f32le",
+      "--enable-demuxer=pcm_f32le",
       "--enable-demuxer=mov",
       "--enable-demuxer=wav",
       "--enable-muxer=ac3",
@@ -41,7 +47,8 @@
       "--enable-parser=ac3",
       "--enable-protocol=file",
       "--enable-protocol=pipe",
-      "--enable-filter=anull"
+      "--enable-filter=anull",
+      "--enable-filter=aresample"
     ],
     "binary_sha256": {
       "ffmpeg.exe": null,

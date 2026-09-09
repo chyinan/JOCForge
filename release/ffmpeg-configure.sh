@@ -22,6 +22,7 @@ cd "$source_dir"
     --disable-ffplay \
     --disable-doc \
     --disable-x86asm \
+    --extra-ldflags=-static \
     --enable-encoder=ac3 \
     --enable-encoder=eac3 \
     --enable-encoder=pcm_s16le \
@@ -30,7 +31,7 @@ cd "$source_dir"
     --enable-decoder=pcm_f32le \
     --enable-demuxer=ac3 \
     --enable-demuxer=eac3 \
-    --enable-demuxer=f32le \
+    --enable-demuxer=pcm_f32le \
     --enable-demuxer=mov \
     --enable-demuxer=wav \
     --enable-muxer=ac3 \
@@ -39,7 +40,8 @@ cd "$source_dir"
     --enable-parser=ac3 \
     --enable-protocol=file \
     --enable-protocol=pipe \
-    --enable-filter=anull
+    --enable-filter=anull \
+    --enable-filter=aresample
 
 make -j"${NUMBER_OF_PROCESSORS:-2}"
 make install

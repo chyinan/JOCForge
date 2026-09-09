@@ -29,6 +29,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Check release file and FFmpeg contracts
+        shell: pwsh
+        run: pwsh -NoProfile -File scripts/test-release-contract.ps1
+
       - name: Require a release tag
         shell: pwsh
         run: |
@@ -96,7 +100,7 @@ jobs:
           set -euo pipefail
           source_dir="$(cygpath -u "$FFMPEG_SOURCE_ROOT")"
           prefix="$(cygpath -u "$FFMPEG_PREFIX")"
-          bash scripts/release/ffmpeg-configure.sh "$source_dir" "$prefix"
+          bash release/ffmpeg-configure.sh "$source_dir" "$prefix"
 
       - name: Verify the effective FFmpeg license configuration
         shell: pwsh
