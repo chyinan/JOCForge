@@ -12,6 +12,7 @@
 /artifacts/temporal-stabilization-*.csv
 /artifacts/validation-closure-*.metrics.csv
 /artifacts/git-release-audit.json
+/artifacts/public-release-audit/
 /artifacts/validation-closure-temporal.csv
 /artifacts/joc-capability-matrix.csv
 /artifacts/joc-capability-matrix.json
@@ -37,6 +38,7 @@
 /artifacts/flat7x-interop-rerun/
 /artifacts/flat7x-semantic-fidelity-audit/
 /scripts/__pycache__/
+/PROGRESS-*.md
 *.ec3
 *.bw64
 *.wav

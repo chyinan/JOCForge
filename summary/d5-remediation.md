@@ -32,8 +32,8 @@ The original `b4fb45…` executable was not recoverable from permitted locations
 after the active OpenJOC development target was overwritten. OpenJOC source
 revision `ad6556…` was checked out cleanly and built once with
 `cargo build --release --locked`. The resulting OpenJOC 0.16.0 executable is
-frozen read-only under `D:\Programs\JOCForge-validator` and is resolved only
-through `validation/openjoc-validator.json` and
+frozen read-only as a separately provisioned external artifact and is resolved
+only through `validation/openjoc-validator.json` and
 `scripts/openjoc-validator-pin.ps1`.
 
 ## Fresh closure

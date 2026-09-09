@@ -204,9 +204,9 @@ function Invoke-Validation([string]$Path, [string]$Name) {
 }
 
 if ([string]::IsNullOrWhiteSpace($SourceAdm)) {
-    $SourceAdm = Get-ChildItem -LiteralPath "D:\ADM BWF" -File -Filter "*.wav" | Where-Object { $_.Length -eq 1583325474 } | Select-Object -First 1 -ExpandProperty FullName
+    throw "source ADM file is required: pass -SourceAdm <local ADM-BWF path>; copyrighted source media is not included"
 }
-if ([string]::IsNullOrWhiteSpace($SourceAdm) -or !(Test-Path -LiteralPath $SourceAdm)) { throw "source ADM file does not exist: $SourceAdm" }
+if (!(Test-Path -LiteralPath $SourceAdm -PathType Leaf)) { throw "source ADM file does not exist: $SourceAdm" }
 $validatorIdentity = Assert-OpenJocValidatorPin $root $OpenJoc
 $validatorIdentity | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $artifact "openjoc-validator-identity.json") -Encoding utf8
 

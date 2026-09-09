@@ -16,13 +16,10 @@ OpenJOC v0.16.0 is used only as an independently built external validator, decod
 
 ## Supplied real file observation
 
-`D:\ADM BWF\打上花火.wav` is the supplied Logic Pro ADM-BWF export. Its recorded
-physical size is `1,583,325,474` bytes and its SHA-256 is
-`adfee1efadd5d331497ec55a1c94b89c7f1a717ad959d6d5c726efb0b64e81aa`. It is a
-RIFF/WAVE 38-channel, 48 kHz, 24-bit PCM file with `JUNK`, `fmt `, `data`,
-`axml`, `chna`, and `dbmd`; the metadata chunks occur after the large `data`
+A separately supplied Logic Pro ADM-BWF export was used for local QA. It is not
+part of the repository or public test corpus. The file is a RIFF/WAVE
+38-channel, 48 kHz, 24-bit PCM export with metadata after the large `data`
 chunk. The seek-aware scanner handles that ordering and the narrow model
 census counts 38 tracks, 38 TrackUIDs, 29 authored objects (28 `Objects`, 1
-`DirectSpeakers`). JOCForge censuses it successfully but rejects encoding
-before PCM loading because the current source-derived MVP admits at most 15
-dynamic objects; no scene reduction is performed.
+`DirectSpeakers`). JOCForge censuses it successfully; any source-derived run
+must receive the local source path explicitly.

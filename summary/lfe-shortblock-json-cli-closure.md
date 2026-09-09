@@ -20,7 +20,7 @@ The independent validator now reports `lfe_present`, requires consistent I0 LFE 
 
 - Core tests cover all idx0..idx4 × `3+3`, `2+2+2`, and `1x6` at 1280 kbps, including contiguous 1,536-sample ranges and LFE causal serialization.
 - `scripts/run-short-block-closure.ps1` produced 15/15 independent-LFE rows passing frozen OpenJOC inspect, full render with `LFE count: 1`, FFmpeg decode, accounting, and deterministic repeat.
-- Real Hanabi `D:\ADM BWF\打上花火.wav` encode succeeded at idx2 / 1280 kbps / 2+2+2: 9,042 AUs, 54,252 frames, 46,295,040 bytes, frozen strict inspect PASS, zero malformed EMDF, full render PASS, and FFmpeg decode PASS.
+- A separately supplied real ADM-BWF source encoded successfully at idx2 / 1280 kbps / 2+2+2: 9,042 AUs, 54,252 frames, 46,295,040 bytes, frozen strict inspect PASS, zero malformed EMDF, full render PASS, and FFmpeg decode PASS.
 - Current OpenJOC source-built `openjoc inspect FILE --json` reported direct fields: schema 1, JOC present, profile index 2 / `5.X+2`, carriers `L,R,C,Ls,Rs,Tfl,Tfr`, partition `[2,2,2]`, 1,536 samples/AU, `independent_owned:I0`, malformed 0, strict `pass`.
 - Rendered Hanabi LFE PCM had 13,888,544 samples, zero NaNs/Infs, and nonzero RMS. A project-owned baseline/changed-only-LFE render produced different LFE PCM hashes, proving decoded/rendered LFE causality.
 

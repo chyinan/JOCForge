@@ -1,9 +1,10 @@
 // pattern: Functional Core
 
 use jocforge_core::{
-    AdmObjectKind, generate_synthetic_direct_speaker_fixture, generate_synthetic_fixture,
-    generate_synthetic_scene_fixture, generate_synthetic_unsupported_fixture, parse_bw64_adm,
-    parse_bw64_adm_metadata, validate_source_derived_adm_metadata,
+    AdmObjectKind, decode_pcm_frame, generate_synthetic_direct_speaker_fixture,
+    generate_synthetic_fixture, generate_synthetic_scene_fixture,
+    generate_synthetic_unsupported_fixture, parse_bw64_adm, parse_bw64_adm_metadata,
+    validate_source_derived_adm_metadata,
 };
 
 #[test]
@@ -32,6 +33,26 @@ fn plain_riff_without_adm_chunks_is_rejected_explicitly() {
     let error = parse_bw64_adm(&bytes).expect_err("plain RIFF is not ADM");
 
     assert!(error.to_string().contains("axml"));
+}
+
+#[test]
+fn metadata_parser_rejects_excessive_pcm_channel_count() {
+    let mut fmt = [1_u8, 0, 0, 0, 0x80, 0xbb, 0, 0, 0, 0x65, 4, 0, 0, 0, 16, 0];
+    fmt[2..4].copy_from_slice(&257_u16.to_le_bytes());
+    fmt[12..14].copy_from_slice(&514_u16.to_le_bytes());
+
+    let error = parse_bw64_adm_metadata(&fmt, b"", b"", 0)
+        .expect_err("excessive PCM channel count must be rejected");
+
+    assert!(error.to_string().contains("PCM channel count"));
+}
+
+#[test]
+fn pcm_decoder_rejects_excessive_channel_count() {
+    let error = decode_pcm_frame(&[], 257, 16, &[])
+        .expect_err("excessive PCM channel count must be rejected");
+
+    assert!(error.to_string().contains("PCM channel count"));
 }
 
 #[test]

@@ -7,8 +7,8 @@ Last verified: 2026-09-08
 - Rust 2024 workspace with `jocforge-core` and `jocforge` CLI.
 - Standard-library core; FFmpeg is an external E-AC-3 carrier executable.
 - OpenJOC v0.16.0 is the pinned external validation/decoder/renderer reference;
-  identity is enforced by `validation/openjoc-validator.json`, its frozen
-  manifest under `D:\Programs\JOCForge-validator`, and the resolver helper.
+  identity is enforced by `validation/openjoc-validator.json` and the resolver
+  helper's separately provisioned frozen manifest.
 - No C++ dependency is linked in the MVP; EBU C++ projects are documented
   public references pending a proportionate FFI integration.
 

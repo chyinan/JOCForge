@@ -16,7 +16,7 @@ function Get-GitLines([string[]]$Arguments) {
     @(Invoke-Git $Arguments | Where-Object { $_ -and $_.ToString().Trim() })
 }
 
-$expectedBaseline = "6a70c04b51c74bd050be61dc90a3ae83f30e006a"
+$expectedBaseline = "92d9dc011142f458fc8a60964bbac4bad7a65dde"
 $approvedParent = "1f4c44bfd1a508f299e1aa7fd3c825b759103151"
 $approvedRef = "refs/heads/master"
 $refLines = Get-GitLines @("for-each-ref", "--format=%(refname) %(objectname)")

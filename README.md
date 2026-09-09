@@ -15,12 +15,25 @@ trajectories, and ambiguous programme membership are rejected before PCM
 processing. Other unsupported kinds are rejected; complete non-LFE bed
 semantics are not claimed.
 
-## Build
+## Quick start
+
+Install Rust 1.85 or newer and FFmpeg. The commands below build and test the
+workspace without private source media.
 
 ```powershell
+cargo fmt --all -- --check
 cargo check --workspace --locked
+cargo clippy --workspace --all-targets --locked -- -D warnings
 cargo test --workspace --locked
 ```
+
+Commands that write an output path create missing parent directories and
+atomically replace an existing file at that path. Choose output paths
+deliberately; failed encodes remove the target and generated sidecars rather
+than leaving stale output that looks successful.
+
+The controlled proof also needs the separately provisioned OpenJOC validator
+described in [`docs/validator-provenance.md`](docs/validator-provenance.md).
 
 ## Reproduce the controlled proof
 

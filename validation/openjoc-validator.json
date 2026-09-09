@@ -5,8 +5,8 @@
   "source_description": "v0.16.0-2-gad6556b",
   "executable_sha256": "7e761d0c8a23a064c96c1f70f6415e1d95f18b8b88d72eca0bfa6b52d8ee2daf",
   "old_pin_sha256": "b4fb4593be8dfe3bbeceb4ba4e3eb9c97f89ebe043555e8af615cb4eea289bee",
-  "artifact_manifest": "D:\\Programs\\JOCForge-validator\\openjoc-0.16.0-ad6556\\validator-manifest.json",
-  "frozen_executable": "D:\\Programs\\JOCForge-validator\\openjoc-0.16.0-ad6556\\openjoc.exe",
+  "artifact_manifest_env": "JOCFORGE_OPENJOC_MANIFEST",
+  "frozen_executable_env": "JOCFORGE_OPENJOC_EXECUTABLE",
   "platform": "windows-x86_64",
   "version_command": "openjoc.exe --version",
   "validation_commands": [

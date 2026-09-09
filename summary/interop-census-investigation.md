@@ -5,8 +5,8 @@ Verified 2026-09-08 against JOCForge HEAD `8919c8c75beb3a795539fd7ddb00ad4ce888b
 ## Current boundary
 
 - The authoritative matrix regenerated from the central resolver contains 140,400 rows: 2,393 `SUPPORTED_PASS`, 0 `SPEC_LEGAL_NOT_IMPLEMENTED`.
-- The census uses the current OpenJOC release binary at `D:\Programs\OpenJOC\target\release\openjoc.exe`, not the frozen JOCForge validator.
-- FFmpeg and ffprobe are the same 8.1-full_build-www.gyan.dev build. MediaInfo CLI is MediaInfoLib 21.03 from `D:\Programs\dee71joc\test_dee\MediaInfo.exe`.
+- The census uses the current OpenJOC release binary from an explicitly supplied active checkout, not the frozen JOCForge validator.
+- FFmpeg and ffprobe are the same 8.1-full_build-www.gyan.dev build. MediaInfo CLI is an explicitly supplied MediaInfoLib 21.03 executable.
 - The runner selects 20 deterministic project-owned positive probes, including all five profiles, strict/deployed pairs, I0 skip-field, three normal short partitions, independent and dependent LFE, D1+, legacy AC-3, CMAF, an orthogonal short/deployed composition, and the current generator-compatible semantic maximum.
 
 ## Evidence model

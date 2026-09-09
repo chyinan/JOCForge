@@ -1,7 +1,7 @@
 # Clean implementation traceability
 
 > Date: 2026-09-03
-> Source: `D:\\Programs\\jocforge-sanitized-spec-01\\clean-handoff`
+> Source: separately provisioned sanitized clean handoff; local path omitted
 > Firewall: only the clean handoff, public specifications, generic mathematics, and the clean repository were used.
 
 The C2 validation closure is recorded in `artifacts/validation-closure/` and

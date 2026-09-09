@@ -8,14 +8,15 @@ $root = Split-Path -Parent $PSScriptRoot
 $OpenJoc = (Resolve-OpenJocValidator $root).executable
 
 $identity = Assert-OpenJocValidatorPin $root $OpenJoc
-$activeOpenJocTarget = "D:\Programs\OpenJOC\target\debug\openjoc.exe"
 $frozenHashBefore = Get-OpenJocSha256 $OpenJoc
 $tempRoot = Join-Path ([IO.Path]::GetTempPath()) "jocforge-openjoc-pin-tests-$PID"
 $fake = Join-Path $tempRoot "openjoc.exe"
+$activeOpenJocTarget = Join-Path $tempRoot "active-openjoc.exe"
 $wrongVersionRoot = Join-Path $tempRoot "wrong-version"
 try {
     New-Item -ItemType Directory -Force (Join-Path $wrongVersionRoot "validation") | Out-Null
     [IO.File]::WriteAllBytes($fake, [byte[]](0..31))
+    [IO.File]::WriteAllBytes($activeOpenJocTarget, [byte[]](0..31))
     $wrongHashRejected = $false
     try {
         Assert-OpenJocValidatorPin $root $fake | Out-Null

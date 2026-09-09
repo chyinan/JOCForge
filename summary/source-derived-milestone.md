@@ -2,12 +2,11 @@
 
 Verified 2026-09-02.
 
-The supplied Logic Pro ADM-BWF file at `D:\ADM BWF\打上花火.wav` is scanned
-through EOF even though metadata follows the large `data` chunk. The chunk
-sequence is `JUNK`, `fmt `, `data`, `axml`, `chna`, `dbmd`. The file has 38
-tracks, 38 TrackUIDs, 29 authored objects, 28 `Objects`, and 1
-`DirectSpeakers`. Its recorded physical size is `1,583,325,474` bytes and its
-SHA-256 is `adfee1efadd5d331497ec55a1c94b89c7f1a717ad959d6d5c726efb0b64e81aa`.
+The separately supplied Logic Pro ADM-BWF file is scanned through EOF even
+though metadata follows the large `data` chunk. The chunk sequence is `JUNK`,
+`fmt `, `data`, `axml`, `chna`, `dbmd`. The file has 38 tracks, 38 TrackUIDs,
+29 authored objects, 28 `Objects`, and 1 `DirectSpeakers`; the source path,
+filename, size, hash, and media are intentionally omitted from public docs.
 
 JOCForge does not reduce that scene. Encoding is rejected before PCM loading:
 

@@ -60,13 +60,16 @@ encoding support.
 
 ## Supplied real file
 
-`D:\ADM BWF\打上花火.wav` is the supplied Logic Pro ADM-BWF export. The recorded
-physical size is `1,583,325,474` bytes and its SHA-256 is
-`adfee1efadd5d331497ec55a1c94b89c7f1a717ad959d6d5c726efb0b64e81aa`. It is a
-RIFF/WAVE 38-channel, 48 kHz, 24-bit PCM file with chunks `JUNK`, `fmt `,
-`data`, `axml`, `chna`, and `dbmd`; `axml/chna/dbmd` occur after the large
-`data` chunk. The seek-aware scanner and narrow ADM model census 38 tracks,
-38 TrackUIDs, 29 authored objects: 28 `Objects` and 1 `DirectSpeakers`.
+A separately supplied Logic Pro ADM-BWF export was used for local QA. The file
+is not part of this repository, is not required for the controlled public
+smoke test, and must be supplied explicitly to scripts that exercise the
+source-derived milestone. Its local filename, path, hash, and media contents
+are intentionally omitted from public provenance.
+
+The seek-aware scanner handles metadata after a large `data` chunk. The narrow
+ADM model accepts the tested 38-track, 48 kHz, 24-bit structure and records the
+29 authored objects (28 `Objects` and 1 `DirectSpeakers`) without bundling the
+source media.
 
 The generalized clean implementation now ingests the 28 `Objects` plus the
 one positioned `DirectSpeakers` component, assigns every supported authored

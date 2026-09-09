@@ -1,6 +1,6 @@
 ﻿# JOC capability matrix
 
-> Generated on 2026-09-08 by the central JOCForge composition resolver. The complete lattice is in the resolver-generated CSV/JSON artifacts.
+> Generated on 2026-09-09 by the central JOCForge composition resolver. The complete lattice is in the resolver-generated CSV/JSON artifacts.
 
 ## Central authority
 

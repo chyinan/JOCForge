@@ -16,8 +16,8 @@ mod validation;
 mod writer;
 
 pub use adm::{
-    AdmChannel, AdmError, AdmObject, AdmObjectKind, AdmPosition, AdmProgramme, ParsedAdm,
-    ParsedAdmMetadata, SyntheticFixture, decode_pcm_frame,
+    AdmChannel, AdmError, AdmObject, AdmObjectKind, AdmPosition, AdmProgramme, MAX_PCM_CHANNELS,
+    ParsedAdm, ParsedAdmMetadata, SyntheticFixture, decode_pcm_frame,
     generate_synthetic_direct_speaker_fixture, generate_synthetic_fixture,
     generate_synthetic_scene_fixture, generate_synthetic_unsupported_fixture, parse_bw64_adm,
     parse_bw64_adm_metadata, validate_source_derived_adm_metadata,

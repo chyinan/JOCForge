@@ -4,11 +4,11 @@
 
 ## Locations
 
-D7 uses three separate locations:
+D7 uses three separate locations supplied by the auditor:
 
-1. **Frozen candidate** — `D:\Programs\JOCForge-release-candidate-20260904-d7` is the read-only provenance authority. No test, build, archive, audit report, generated evidence, or temporary file may be written below this path after the candidate fingerprint is recorded.
-2. **D7 audit workspace** — `D:\Programs\JOCForge-D7-audit-20260904` stores fingerprints, reports, logs, and generated audit artifacts.
-3. **Disposable execution copy** — `D:\Programs\JOCForge-D7-audit-20260904\execution-copy` is an independent non-local clone used for cargo, scripts, tests, and any tool that may write build or evidence output.
+1. **Frozen candidate** — `<candidate-root>` is the read-only provenance authority. No test, build, archive, audit report, generated evidence, or temporary file may be written below this path after the candidate fingerprint is recorded.
+2. **D7 audit workspace** — `<audit-root>` stores fingerprints, reports, logs, and generated audit artifacts.
+3. **Disposable execution copy** — `<execution-root>` is an independent non-local clone used for cargo, scripts, tests, and any tool that may write build or evidence output.
 
 The audit workspace and execution copy must be outside the frozen candidate. Do not use object alternates, hardlinks, shared worktrees, or a local clone operation that couples their object stores.
 
@@ -18,11 +18,11 @@ The audit workspace and execution copy must be outside the frozen candidate. Do 
 2. Create the execution copy with an explicit non-local clone, for example:
 
    ```powershell
-   git clone --no-local --single-branch --branch master D:\Programs\JOCForge-release-candidate-20260904-d7 D:\Programs\JOCForge-D7-audit-20260904\execution-copy
+   git clone --no-local --single-branch --branch master $env:JOCFORGE_CANDIDATE_ROOT $env:JOCFORGE_EXECUTION_ROOT
    ```
 
 3. Run engineering, cargo, validation, and audit commands only from the execution copy. Set `CARGO_TARGET_DIR` to a directory under the audit workspace if a command must directly read another path; never let cargo target output resolve into the frozen candidate.
-4. If `git archive` is required, use an absolute output path outside the candidate, such as `D:\Programs\JOCForge-D7-audit-20260904\candidate-head.tar`. Never use a relative archive path while the candidate is the current directory.
+4. If `git archive` is required, use the absolute path in `$env:JOCFORGE_ARCHIVE_PATH` outside the candidate. Never use a relative archive path while the candidate is the current directory.
 5. Reproduce the candidate fingerprint at the end from the frozen candidate. A changed status, tree hash, file manifest, object count, pack hash, ref, reflog, alternate, replace ref, or other candidate state is an audit failure requiring a fresh candidate.
 
 ## Candidate immutability fingerprint
@@ -43,11 +43,11 @@ The fingerprint is reproduced by the D7 auditor independently. Files created in 
 The auditor must resolve and validate every writable location before any command that can write:
 
 ```powershell
-$candidate = (Resolve-Path -LiteralPath 'D:\Programs\JOCForge-release-candidate-20260904-d7').Path
-$audit = (Resolve-Path -LiteralPath 'D:\Programs\JOCForge-D7-audit-20260904').Path
-$execution = [IO.Path]::GetFullPath('D:\Programs\JOCForge-D7-audit-20260904\execution-copy')
-$archive = [IO.Path]::GetFullPath('D:\Programs\JOCForge-D7-audit-20260904\candidate-head.tar')
-$cargoTarget = [IO.Path]::GetFullPath('D:\Programs\JOCForge-D7-audit-20260904\cargo-target')
+$candidate = (Resolve-Path -LiteralPath $env:JOCFORGE_CANDIDATE_ROOT).Path
+$audit = (Resolve-Path -LiteralPath $env:JOCFORGE_AUDIT_ROOT).Path
+$execution = [IO.Path]::GetFullPath($env:JOCFORGE_EXECUTION_ROOT)
+$archive = [IO.Path]::GetFullPath($env:JOCFORGE_ARCHIVE_PATH)
+$cargoTarget = [IO.Path]::GetFullPath($env:JOCFORGE_CARGO_TARGET)
 foreach ($writable in @($audit, $execution, $archive, $cargoTarget)) {
     if ($writable.StartsWith($candidate + '\', [StringComparison]::OrdinalIgnoreCase)) { throw "writable D7 path is inside frozen candidate: $writable" }
 }

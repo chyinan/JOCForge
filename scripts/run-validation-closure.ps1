@@ -2,6 +2,7 @@
 
 param(
     [string]$SourceAdm = "",
+    [string]$CleanTestMatrixPath = "",
     [switch]$ReuseExisting
 )
 
@@ -11,9 +12,17 @@ $artifact = Join-Path $root "artifacts\validation-closure"
 New-Item -ItemType Directory -Force $artifact | Out-Null
 . (Join-Path $PSScriptRoot "openjoc-validator-pin.ps1")
 $OpenJoc = (Resolve-OpenJocValidator $root).executable
-$cleanTestMatrixPath = "D:\Programs\jocforge-sanitized-spec-01\clean-handoff\clean-test-matrix.csv"
-if (!(Test-Path -LiteralPath $cleanTestMatrixPath)) {
-    throw "sanitized clean-test matrix does not exist: $cleanTestMatrixPath"
+$cleanTestMatrixPath = if ([string]::IsNullOrWhiteSpace($CleanTestMatrixPath)) {
+    $env:JOCFORGE_CLEAN_TEST_MATRIX
+} else {
+    $CleanTestMatrixPath
+}
+if ([string]::IsNullOrWhiteSpace($cleanTestMatrixPath)) {
+    throw "clean-test matrix is required: pass -CleanTestMatrixPath or set JOCFORGE_CLEAN_TEST_MATRIX"
+}
+$cleanTestMatrixPath = [IO.Path]::GetFullPath($cleanTestMatrixPath)
+if (!(Test-Path -LiteralPath $cleanTestMatrixPath -PathType Leaf)) {
+    throw "clean-test matrix does not exist: $cleanTestMatrixPath"
 }
 $declaredCleanTestMatrix = @(Import-Csv -LiteralPath $cleanTestMatrixPath)
 
@@ -1565,11 +1574,9 @@ function Get-TemporalAudit($Rows, [string]$Name) {
 }
 
 if ([string]::IsNullOrWhiteSpace($SourceAdm)) {
-    $SourceAdm = Get-ChildItem -LiteralPath "D:\ADM BWF" -File -Filter "*.wav" |
-        Where-Object { $_.Length -eq 1583325474 } |
-        Select-Object -First 1 -ExpandProperty FullName
+    throw "source ADM file is required: pass -SourceAdm <local ADM-BWF path>; copyrighted source media is not included"
 }
-if ([string]::IsNullOrWhiteSpace($SourceAdm) -or !(Test-Path -LiteralPath $SourceAdm)) { throw "source ADM file does not exist: $SourceAdm" }
+if (!(Test-Path -LiteralPath $SourceAdm -PathType Leaf)) { throw "source ADM file does not exist: $SourceAdm" }
 $validatorIdentity = Assert-OpenJocValidatorPin $root $OpenJoc
 $validatorIdentity | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $artifact "openjoc-validator-identity.json") -Encoding utf8
 $validatorPinTestOutput = (& powershell -NoProfile -File (Join-Path $PSScriptRoot "test-openjoc-validator-pin.ps1") 2>&1) -join "`n"

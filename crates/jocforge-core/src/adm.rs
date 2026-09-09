@@ -11,6 +11,11 @@ const CHANNEL_COUNT: usize = 15;
 const SAMPLE_RATE: u32 = 48_000;
 const RANK: usize = 7;
 const QUANTUM: f64 = 820.0 / 4096.0;
+/// Maximum interleaved PCM channel count admitted by the file boundary.
+///
+/// This bounds one-frame allocations while retaining the 38-channel ADM
+/// source class used by the generalized clean milestone.
+pub const MAX_PCM_CHANNELS: usize = 256;
 // ADM fixture/export timestamps carry five fractional decimal places; this
 // is one timestamp unit and is smaller than a 48 kHz sample period.
 const ADM_TIME_EPSILON: f64 = 1.0e-5;
@@ -261,7 +266,10 @@ pub fn parse_bw64_adm(bytes: &[u8]) -> Result<ParsedAdm, AdmError> {
         return Err(AdmError::UnsupportedPcm { format, bits });
     }
     let bytes_per_sample = usize::from(bits / 8);
-    if block_align != channel_count * bytes_per_sample || channel_count == 0 {
+    if channel_count == 0 || channel_count > MAX_PCM_CHANNELS {
+        return Err(AdmError::InvalidContainer("PCM channel count"));
+    }
+    if block_align != channel_count * bytes_per_sample {
         return Err(AdmError::InvalidContainer("PCM block alignment"));
     }
     if data_range.len() % block_align != 0 {
@@ -298,7 +306,10 @@ pub fn parse_bw64_adm_metadata(
         return Err(AdmError::UnsupportedPcm { format, bits });
     }
     let bytes_per_sample = usize::from(bits / 8);
-    if channel_count == 0 || block_align != channel_count * bytes_per_sample {
+    if channel_count == 0 || channel_count > MAX_PCM_CHANNELS {
+        return Err(AdmError::InvalidContainer("PCM channel count"));
+    }
+    if block_align != channel_count * bytes_per_sample {
         return Err(AdmError::InvalidContainer("PCM block alignment"));
     }
     let block_align_u64 = u64::try_from(block_align)
@@ -466,6 +477,9 @@ pub fn decode_pcm_frame(
 ) -> Result<Vec<Vec<f64>>, AdmError> {
     if channel_count == 0 || !matches!(bits, 16 | 24 | 32) {
         return Err(AdmError::UnsupportedPcm { format: 1, bits });
+    }
+    if channel_count > MAX_PCM_CHANNELS {
+        return Err(AdmError::InvalidContainer("PCM channel count"));
     }
     let bytes_per_sample = usize::from(bits / 8);
     let block_align = channel_count

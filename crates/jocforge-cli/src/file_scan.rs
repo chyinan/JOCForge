@@ -8,7 +8,7 @@ use std::{
     path::Path,
 };
 
-use jocforge_core::decode_pcm_frame;
+use jocforge_core::{MAX_PCM_CHANNELS, decode_pcm_frame};
 
 const JOC_FRAME_SAMPLES: usize = 1536;
 // Metadata is bounded independently of the PCM payload so a malformed chunk
@@ -158,7 +158,12 @@ pub(crate) fn read_pcm_frame(
     let block_align = channel_count
         .checked_mul(bytes_per_sample)
         .ok_or_else(|| "BW64 PCM block alignment overflows".to_owned())?;
-    if format != 1 || channel_count == 0 || !matches!(bits, 16 | 24 | 32) {
+    if channel_count == 0 || channel_count > MAX_PCM_CHANNELS {
+        return Err(format!(
+            "unsupported BW64 PCM channel count {channel_count}: maximum is {MAX_PCM_CHANNELS}"
+        ));
+    }
+    if format != 1 || !matches!(bits, 16 | 24 | 32) {
         return Err(format!(
             "unsupported BW64 PCM format {format} with {bits} bits"
         ));
@@ -221,7 +226,7 @@ fn read_body(file: &mut File, offset: u64, size: u64, label: &str) -> Result<Vec
 
 #[cfg(test)]
 mod tests {
-    use super::{ScannedChunk, scan_bw64_file};
+    use super::{ScannedChunk, read_pcm_frame, scan_bw64_file};
     use std::{
         fs,
         io::{Seek, SeekFrom, Write},
@@ -351,6 +356,27 @@ mod tests {
         let error = scan_bw64_file(&path).expect_err("oversized metadata must be rejected");
 
         assert!(error.contains("metadata bound"));
+        let _ = fs::remove_file(path);
+    }
+
+    #[test]
+    fn pcm_frame_reader_rejects_excessive_channel_count_before_allocating() {
+        let path = temp_path("channel-bound");
+        let mut file = fs::File::create(&path).expect("temporary BW64");
+        file.write_all(b"RIFF\x00\x00\x00\x00WAVE")
+            .expect("RIFF header");
+        let mut fmt = fmt_16_mono();
+        fmt[2..4].copy_from_slice(&257_u16.to_le_bytes());
+        fmt[12..14].copy_from_slice(&514_u16.to_le_bytes());
+        append_chunk(&mut file, *b"fmt ", &fmt);
+        append_chunk(&mut file, *b"data", &vec![0_u8; 514]);
+        write_metadata_tail(&mut file);
+        file.flush().expect("flush fixture");
+
+        let scanned = scan_bw64_file(&path).expect("scan channel-bound fixture");
+        let error = read_pcm_frame(&path, &scanned, 0, &[1]).expect_err("channel bound");
+
+        assert!(error.contains("PCM channel count"));
         let _ = fs::remove_file(path);
     }
 }

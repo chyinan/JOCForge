@@ -20,7 +20,7 @@ function Get-OpenJocValidatorPin([string]$RepositoryRoot) {
         throw "OpenJOC validator pin does not exist: $pinPath"
     }
     $pin = Get-Content -LiteralPath $pinPath -Raw | ConvertFrom-Json
-    foreach ($property in @("tool", "semantic_version", "source_revision", "executable_sha256", "artifact_manifest", "frozen_executable")) {
+    foreach ($property in @("tool", "semantic_version", "source_revision", "executable_sha256", "artifact_manifest_env", "frozen_executable_env")) {
         if ([string]::IsNullOrWhiteSpace([string]$pin.$property)) {
             throw "OpenJOC validator pin is missing '$property': $pinPath"
         }
@@ -30,13 +30,31 @@ function Get-OpenJocValidatorPin([string]$RepositoryRoot) {
         $pin.executable_sha256 -notmatch "^[0-9a-f]{64}$") {
         throw "OpenJOC validator pin is malformed: $pinPath"
     }
+    foreach ($property in @("artifact_manifest_env", "frozen_executable_env")) {
+        if ([string]$pin.$property -notmatch "^[A-Za-z_][A-Za-z0-9_]*$") {
+            throw "OpenJOC validator pin has an invalid environment variable name '$property': $pinPath"
+        }
+    }
     $pin
+}
+
+function Resolve-PinnedPath([pscustomobject]$Pin, [string]$PathProperty, [string]$EnvironmentProperty) {
+    $configured = [string]$Pin.$PathProperty
+    if (![string]::IsNullOrWhiteSpace($configured)) {
+        return [IO.Path]::GetFullPath($configured)
+    }
+    $environmentName = [string]$Pin.$EnvironmentProperty
+    $environmentValue = [Environment]::GetEnvironmentVariable($environmentName)
+    if ([string]::IsNullOrWhiteSpace($environmentValue)) {
+        throw "OpenJOC validator path is not configured: set $environmentName"
+    }
+    [IO.Path]::GetFullPath($environmentValue)
 }
 
 function Assert-OpenJocValidatorPin([string]$RepositoryRoot, [string]$OpenJocPath = "") {
     $pin = Get-OpenJocValidatorPin $RepositoryRoot
-    $manifestPath = [IO.Path]::GetFullPath($pin.artifact_manifest)
-    $frozenPath = [IO.Path]::GetFullPath($pin.frozen_executable)
+    $manifestPath = Resolve-PinnedPath $pin "artifact_manifest" "artifact_manifest_env"
+    $frozenPath = Resolve-PinnedPath $pin "frozen_executable" "frozen_executable_env"
     if (!(Test-Path -LiteralPath $manifestPath) -or !(Test-Path -LiteralPath $frozenPath)) {
         throw "frozen OpenJOC validator artifact is incomplete: $manifestPath"
     }

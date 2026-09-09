@@ -12,7 +12,16 @@ unavailable after the active development target was overwritten. The migrated
 frozen artifact is OpenJOC semantic version `0.16.0`, built from source
 revision `ad6556babf42566f1a09820b01dc333703c8b1da`, with SHA256
 `7e761d0c8a23a064c96c1f70f6415e1d95f18b8b88d72eca0bfa6b52d8ee2daf` on
-Windows x86-64. Its immutable manifest and executable live at the path
-declared in `validation/openjoc-validator.json`. OpenJOC remains an external
-validator/decoder/renderer, not a JOCForge implementation dependency or the
-sole evidence authority.
+Windows x86-64. Its immutable manifest and executable are provided through
+the `JOCFORGE_OPENJOC_MANIFEST` and `JOCFORGE_OPENJOC_EXECUTABLE` environment
+variables declared in `validation/openjoc-validator.json`. OpenJOC remains an
+external validator/decoder/renderer, not a JOCForge implementation dependency
+or the sole evidence authority.
+
+The repository does not redistribute the validator binary. Before running a
+script that needs it, provision the read-only pinned artifact and set:
+
+```powershell
+$env:JOCFORGE_OPENJOC_MANIFEST = "C:\\path\\to\\validator-manifest.json"
+$env:JOCFORGE_OPENJOC_EXECUTABLE = "C:\\path\\to\\openjoc.exe"
+```
