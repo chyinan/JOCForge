@@ -1,7 +1,9 @@
 # 错误模型
 
-当前只有 domain 的 BackendUnavailable 和 CLI 的 invalid command。帮助/版本退出 0，编码不可用或无效参数退出 2。错误为小写、可行动的片段。输入路径和输出路径目前完全不被解析或触碰。
+当前可执行路径仍只有 domain 的 BackendUnavailable 和 CLI 的 invalid command。帮助/版本退出 0，编码不可用或无效参数退出 2。错误为小写、可行动的片段。输入路径和输出路径目前完全不被解析或触碰。
 
-未来 domain 错误用枚举承载规范条件和类型化上下文；I/O 错误由 shell 附路径和底层原因。application 保留错误类别。禁止把所有错误转换成成功空输出，禁止失败后切换旧算法。
+批准错误分类包括 `UNSUPPORTED_PROFILE`、输入/shape、参数身份、时钟/generation、容量、候选不可行、无可接受候选、queue transaction、完整性、durable I/O 和 programme retired。后续 domain API 必须用枚举承载规范条件和类型化上下文；I/O 错误由 shell 附路径和底层原因。application 保留错误类别。
 
-未来发布规则：所有校验完成前不替换目标；临时文件失败须清理自身所有的临时产物；flush/rename 的平台语义和覆盖政策先评审。无规范授权时，不能把失败输入、未支付预算、未完成 drain 或不完整 payload 发布为有效结果。这些是待实现契约，当前没有发布能力。
+`UNSUPPORTED_PROFILE` 在入口拒绝未登记组合，且不得创建 staged state。candidate scratch 的不可行结果只在存在后续合法 candidate 时可继续。其余 fatal 必须记录 first failing stage，后续 stage 为 `NOT_RUN`，programme 进入 `RETIRED`。禁止把错误转换成成功空输出，也禁止失败后切换其他算法。
+
+发布规则已经由 GTC 和 F15P 定义：所有校验完成前不替换目标；短写循环必须达到 4,096 bytes；零进展、readback、durability 或 replace 失败均为 fatal。失败 attempt 的 temp artifact 标为 abandoned。同一 attempt 不得通过 truncate 后继续。当前仍没有发布实现。

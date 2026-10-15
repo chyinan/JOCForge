@@ -1,2 +1,8 @@
 // pattern: Functional Core
-//! Reserved joc boundary. No algorithm or persistent state is implemented.
+//! JOC boundaries consume approved immutable projections. No algorithm or state is implemented.
+
+pub mod coefficient_payload;
+pub mod downmix_profile;
+pub mod emdf;
+pub mod huffman;
+pub mod oamd;

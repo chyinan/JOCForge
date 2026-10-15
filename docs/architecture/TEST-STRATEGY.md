@@ -4,6 +4,10 @@
 
 当前 3 个 CLI 集成测试验证 help/version、编码拒绝且已有文件不变、旧命令拒绝。边界脚本检查当前 crate 依赖、算法根隔离与 domain 的 I/O 词法违规。它是工程防护，不是形式化的 Rust 语义证明。
 
-未来按批准规格新增：有界输入截断/溢出、PCM 字节与时钟会计、每 owner 初始化和失败提交、receipt 不变性、规范 wire 向量、独立外部解析/解码/最终输出比较。具体精度、帧长、阈值和表必须逐项注明受审来源，缺项则拒绝放行。结构解析成功不代表音频或感知正确。
+权威规格已经选择 48 kHz、1,536 samples/AU 和 4,096 bytes/AU。后续测试按批准包新增：有界输入截断/溢出、PCM 字节与时钟会计、每 owner cold/reset/fatal、receipt 不变性、规范 wire 向量和独立外部解析/解码/最终输出比较。参数、阈值和表必须逐项绑定 `PARAMETER-MAP.md`，缺项则拒绝放行。
 
-验证命令：fmt/check/clippy/test --locked，独立 target-dir 冷构建，check-boundaries.py。CI 在 Windows 和 Linux 运行，当前无需外部编码器。发布工作流保持手动检查空骨架，架构和实现未批准前不打包或发布音频产品。
+公共语法原语还必须覆盖 bit cursor 0/1/31/32/32768、容量溢出、CRC residual=0、单 bit 破坏、frmsiz 边界、header 保留码、非 48 kHz/非 5.1/dependent/非 4,096-byte 拒绝、六个 Huffman 表全部 symbol、两种 EMDF mode、四 payload 顺序、截断和失败零提交。
+
+validation 的 structural parser、channel-map、topology、frame report 和 W04 与 production 分离。parser 成功不代表 codec conformance、音频正确或产品验收通过。
+
+验证命令：fmt/check/clippy/test --locked 和 `python -X utf8 -B scripts/check-boundaries.py`。CI 在 Windows 和 Linux 运行。`INDEPENDENT_IMPLEMENTATION_VALIDATION` 和 `PRODUCT_ACCEPTANCE/W04` 仍为 `NOT_RUN`，不得由静态检查或单元测试替代。

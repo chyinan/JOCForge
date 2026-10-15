@@ -2,21 +2,39 @@
 
 | 路径 | 职责边界 | 当前实现 |
 |---|---|---|
-| domain/numeric | 不可变数值类型及基础运算 | 空壳；无常数和 DSP |
-| domain/state | 共享不可变契约的归属与错误类型 | 仅 BackendUnavailable |
+| domain/numeric | 批准数值语义的未来 Functional Core 边界 | 空壳；本轮不实现 |
+| domain/state | 共享不可变契约和拒绝错误 | 仅 migration rejection；本轮不扩展 |
 | domain/frontend | 输入语义验证与规范化 | 空壳 |
 | domain/spatial | 空间领域转换 | 空壳 |
-| domain/joc | JOC 领域数据与受审规则 | 空壳 |
+| domain/joc/downmix_profile | `JocDownmixProfile` 边界 | 空壳；无常数 |
+| domain/joc/huffman | F05QH traversal 边界 | 空壳；无表和遍历实现 |
+| domain/joc/emdf | F13 EMDF production 边界 | 空壳；无 serializer |
+| domain/joc/oamd | F05O/F05L OAMD 边界 | 空壳；无 producer |
+| domain/joc/coefficient_payload | F05Q/F05JL coefficient body 边界 | 空壳；无量化或 payload |
 | domain/meter | 计量规则 | 空壳 |
 | domain/transform | 变换领域规则 | 空壳 |
-| domain/codec | 音频编码与 wire 职责边界 | 空壳 |
-| domain/timeline | F01/F12 时钟、排队和最终 drain 契约 | 空壳；未选择帧长 |
+| domain/codec/bitio | bounded MSB bit I/O 边界 | 空壳；无 writer |
+| domain/codec/frame_syntax | selected E-AC-3 schema 边界 | 空壳；无字段实现 |
+| domain/codec/frame_size | 4,096-byte AU size contract | 空壳；无计算实现 |
+| domain/codec/bap | F12A BAP 边界 | 空壳；无算法 |
+| domain/codec/mantissa | mantissa production 边界 | 空壳；无算法 |
+| domain/codec/frame_builder | validated receipt 消费边界 | 空壳；不计算上游值 |
+| domain/codec/core_layout | 5.1 六 carrier 边界 | 空壳；无 sample mapping |
+| domain/codec/substream_topology | 1 independent / 0 dependent 边界 | 空壳；无 writer |
+| domain/codec/rate_profile | 1,024 kbps / 6 blocks / 1,536 samples / 4,096 bytes 边界 | 空壳；无 rate plan |
+| domain/integrity/crc16 | 公共 CRC16 production 边界 | 空壳；无多项式或实现 |
+| domain/integrity/keyless_checksum | F14K keyless receipt 边界 | 空壳；无 checksum 实现 |
+| domain/timeline | 已批准 callback/source/writer/AU 时钟类型边界 | 空壳；关系见 CLOCK-MAP |
 | domain/publication | 不可变待发布结果与声明 | 空壳 |
 | domain/transaction | 纯提交/撤销决策 | 空壳 |
 | application | 验证请求并协调各 owner | 仅拒绝 encode |
 | io/bw64、pcm | 有界字节、chunk 和 PCM 读取适配 | 空壳；未复制旧扫描器 |
 | io/atomic_output | 临时写入、flush、rename 和回滚副作用 | 空壳 |
 | CLI | 参数、退出码、未来 I/O 协调 | help/version/拒绝编码 |
-| validation | 独立解码/比较工具适配 | 空壳；无旧验收门 |
+| validation/eac3_parser | E-AC-3 structural parser | 空壳；validation only |
+| validation/channel_map_validator | channel-map validator | 空壳；validation only |
+| validation/topology_validator | substream topology validator | 空壳；validation only |
+| validation/frame_report | frame report | 空壳；validation only |
+| validation/w04 | W04 objective/render evidence | 空壳；validation only |
 
-以上为职责划分，不能作为 GTC owner 映射或算法授权。当前无未来 profile 抽象、插件或 feature 生产分支。函数签名应等规范后按实际需要建立。
+以上职责受已批准 GTC、owner projection、profile 表和 104 行规格映射约束。空模块只物化边界，不授权算法实现。当前无未来 profile 抽象、插件或算法 feature 分支。

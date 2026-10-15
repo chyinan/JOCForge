@@ -3,6 +3,7 @@
 
 pub mod codec;
 pub mod frontend;
+pub mod integrity;
 pub mod joc;
 pub mod meter;
 pub mod numeric;

@@ -2,9 +2,15 @@
 
 批准日期：2026-10-15。
 
-批准的架构基线提交：`469cc61cb4345c89dc96cb205f991ac23c26457b`。
+`approved_design_reference = 469cc61cb4345c89dc96cb205f991ac23c26457b`
 
-本隔离目录原先没有 Git 历史。本地首次基线提交为 `e3d1e8e56933d04fe10337b6ed7fb0843f3659bc`。该提交只建立批准架构的本地 Git 身份，不替代上面的批准基线引用。
+`isolated_baseline_commit = e3d1e8e56933d04fe10337b6ed7fb0843f3659bc`
+
+`local_approval_commit = 1b1ba39c2bf9ea5ccf1351ec7280cfe7459b7b24`
+
+`approved_design_reference` 是批准的设计参考身份。当前隔离仓库没有继承对应的 Git 历史，因此不得声称本地文件与该提交字节一致。`isolated_baseline_commit` 是本地首次基线提交。`local_approval_commit` 只记录本地批准状态。
+
+当前任务从权威规格包独立物化批准设计。实现者不会读取旧仓库，也不会复制旧仓库源码。
 
 ## 权威规格
 
