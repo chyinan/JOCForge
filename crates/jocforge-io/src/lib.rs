@@ -4,3 +4,4 @@
 pub mod atomic_output;
 pub mod bw64;
 pub mod pcm;
+pub mod provider;

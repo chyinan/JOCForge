@@ -730,7 +730,7 @@
         "type": "FrontendControlStaged"
       }
     },
-    "materialization_status": "MAPPING_COMPLETE_BLOCKED_ON_P1.4_PROVIDER_CONTRACT",
+    "materialization_status": "READY_FOR_IMPLEMENTATION",
     "permissions": {
       "abort": {
         "authority": "future global CallbackTransaction coordinator",
@@ -828,7 +828,7 @@
     "implementation_status": "NOT_STARTED",
     "prerequisite": "P1.4-A-F01E-PROVIDER-CONTRACT LOCALLY_VERIFIED",
     "programme_root": "frontend_control",
-    "status": "BLOCKED_ON_P1.4_F01E_PROVIDER_CONTRACT",
+    "status": "SATISFIED_READY_FOR_IMPLEMENTATION",
     "task_id": "P1.3-B-FRONTEND-CONTROL-AUDIT"
   }
 }
@@ -840,8 +840,8 @@
 {
   "boundaries": {
     "application": "coordinate I/O evidence to domain validation; never bypass receipt",
-    "domain": "recompute SHA/length, identity gate, parse typed value, validate, canonicalize, emit typed provider+receipt; no file access",
-    "io": "read immutable bytes and report diagnostic path/observed length only; no JSON interpretation"
+    "domain": "recompute MANIFEST SHA before parse, derive the unique provider entry, validate provider bytes against it, then parse/validate/canonicalize the provider; no file access",
+    "io": "read immutable MANIFEST/provider bytes and report diagnostic path/observed length/SHA only; no JSON interpretation"
   },
   "canonical_reconstruction": {
     "cold_preimage_hex_source": "parameters/f01e-selected-constructor-v1.json#/cold_preimage_hex",
@@ -893,12 +893,20 @@
       "integer/string/bool/null access",
       "custom visitor duplicate-field rejection"
     ],
-    "status": "REQUIRES_SEPARATE_APPROVAL"
+    "status": "APPROVED_AND_LOCKED"
   },
   "errors": [
     {
       "category": "PARAMETER_IDENTITY",
+      "code": "PACKAGE_MANIFEST_OBSERVATION_MISMATCH"
+    },
+    {
+      "category": "PARAMETER_IDENTITY",
       "code": "PACKAGE_MANIFEST_IDENTITY_MISMATCH"
+    },
+    {
+      "category": "PARAMETER_IDENTITY",
+      "code": "PACKAGE_MANIFEST_ENTRY_MISMATCH"
     },
     {
       "category": "PARAMETER_IDENTITY",
@@ -934,7 +942,7 @@
     }
   ],
   "failure": "no provider receipt/state; caller fail-stop before P1.3-B stage",
-  "implementation_status": "NOT_STARTED",
+  "implementation_status": "LOCALLY_VERIFIED",
   "input_acceptance": {
     "bom": "rejected by identity mismatch",
     "duplicate_keys": "any modified duplicate-key document rejected by identity mismatch before parser; typed visitor must also reject duplicates defensively",
@@ -948,37 +956,27 @@
     "utf8": "exact asset must decode as UTF-8; decode failure after identity is PROVIDER_UTF8_ERROR"
   },
   "io_input": {
-    "fields": [
-      {
-        "name": "bytes",
-        "type": "immutable Arc<[u8]>"
-      },
-      {
-        "name": "diagnostic_path",
-        "type": "optional path display; never identity"
-      },
-      {
-        "name": "actual_byte_length",
-        "type": "u64",
-        "value": 20138
-      },
-      {
-        "name": "actual_sha256",
-        "type": "[u8;32]",
-        "value": "b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb"
-      },
-      {
-        "name": "package_manifest_sha256",
-        "type": "[u8;32]",
-        "value": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
-      }
+    "shared_fields": [
+      "immutable Arc<[u8]> bytes",
+      "optional diagnostic path; never identity",
+      "observed byte length",
+      "observed SHA-256"
     ],
-    "type": "ProviderFileEvidence"
+    "types": [
+      "PackageManifestEvidence",
+      "ProviderFileEvidence"
+    ],
+    "validation_flow": [
+      "recompute complete MANIFEST.json SHA-256 before parsing",
+      "parse the SHA-authenticated manifest and require one unique F01E entry",
+      "bind entry path, bytes and SHA-256 into ValidatedF01EPackageManifest",
+      "validate provider observation and bytes against that validated entry"
+    ]
   },
   "output": {
     "receipt": {
       "fields": [
-        "provider_identity",
+        "validated_manifest_lineage",
         "provider_file_sha256",
         "provider_file_bytes",
         "schema_id",
@@ -989,6 +987,7 @@
         "provider_generation"
       ],
       "immutability": "all fields immutable",
+      "lineage": "validated_manifest_lineage contains expected ProviderIdentity plus the recomputed SHA-256 from ValidatedF01EPackageManifest; caller constants are not proof",
       "provider_generation": 0,
       "type": "F01EProviderReceipt"
     },
@@ -1051,7 +1050,7 @@
       "normalized_config"
     ]
   },
-  "status": "READY_FOR_DEPENDENCY_APPROVAL",
+  "status": "LOCALLY_VERIFIED",
   "task_id": "P1.4-A-F01E-PROVIDER-CONTRACT"
 }
 ```

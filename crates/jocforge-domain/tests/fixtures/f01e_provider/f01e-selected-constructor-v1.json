@@ -1,0 +1,457 @@
+{
+  "schema": "f01e-selected-constructor.v1",
+  "value": {
+    "schema": "F01E_SELECTED_COLD_V1",
+    "callback_index": 0,
+    "normal_callbacks": 0,
+    "remaining_cached_drains": 4,
+    "phase": "BEFORE_FIRST_NORMAL",
+    "objects": [
+      {
+        "object_ordinal": 0,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 1,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 2,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 3,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 4,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 5,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 6,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 7,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 8,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 9,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 10,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 11,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 12,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 13,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 14,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 15,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 16,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 17,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 18,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 19,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 20,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 21,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 22,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 23,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 24,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 25,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 26,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 27,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "last_control38_snapshot": null,
+    "last_regular37_snapshot": null,
+    "dbmd_binding": null,
+    "physical_binding": null,
+    "normalized_config": {
+      "sample_rate_hz": 48000,
+      "channels": 38,
+      "pcm_bits": 24,
+      "source_samples": 6522906,
+      "bit_rate_kbps": 1024,
+      "bit_rate_enum": 5,
+      "layout_enum": 8,
+      "target_capacity": 15,
+      "frame_samples": 1536,
+      "spatial_config_mode": 0,
+      "dispatch_mode": 2,
+      "virtual_prefix_count": 11,
+      "bed_count": 10,
+      "object_count": 28,
+      "event_start_samples": 0,
+      "line_drc": "none",
+      "rf_drc": "none",
+      "time_base": "file_position"
+    }
+  },
+  "canonical_serialization": {
+    "encoding": "UTF-8 JSON",
+    "sort_keys": true,
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": false,
+    "numbers": "JSON decimal integers; booleans/null lowercase",
+    "trailing_bytes": "none"
+  },
+  "cold_preimage_hex": "7b2263616c6c6261636b5f696e646578223a302c2264626d645f62696e64696e67223a6e756c6c2c226c6173745f636f6e74726f6c33385f736e617073686f74223a6e756c6c2c226c6173745f726567756c617233375f736e617073686f74223a6e756c6c2c226e6f726d616c5f63616c6c6261636b73223a302c226e6f726d616c697a65645f636f6e666967223a7b226265645f636f756e74223a31302c226269745f726174655f656e756d223a352c226269745f726174655f6b627073223a313032342c226368616e6e656c73223a33382c2264697370617463685f6d6f6465223a322c226576656e745f73746172745f73616d706c6573223a302c226672616d655f73616d706c6573223a313533362c226c61796f75745f656e756d223a382c226c696e655f647263223a226e6f6e65222c226f626a6563745f636f756e74223a32382c2270636d5f62697473223a32342c2272665f647263223a226e6f6e65222c2273616d706c655f726174655f687a223a34383030302c22736f757263655f73616d706c6573223a363532323930362c227370617469616c5f636f6e6669675f6d6f6465223a302c227461726765745f6361706163697479223a31352c2274696d655f62617365223a2266696c655f706f736974696f6e222c227669727475616c5f7072656669785f636f756e74223a31317d2c226f626a65637473223a5b7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a302c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a312c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a322c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a332c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a342c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a352c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a362c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a372c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a382c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a392c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a31302c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a31312c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a31322c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a31332c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a31342c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a31352c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a31362c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a31372c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a31382c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a31392c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a32302c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a32312c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a32322c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a32332c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a32342c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a32352c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a32362c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d2c7b226576656e745f6361636865223a6e756c6c2c22686f73745f6368616e6e656c5f696e646578223a6e756c6c2c226f626a6563745f6f7264696e616c223a32372c2273616d706c65725f70726576696f75735f70726573656e74223a66616c73652c2273616d706c65725f70726576696f75735f78797a5f753332223a5b302c302c305d7d5d2c227068617365223a224245464f52455f46495253545f4e4f524d414c222c22706879736963616c5f62696e64696e67223a6e756c6c2c2272656d61696e696e675f6361636865645f647261696e73223a342c22736368656d61223a22463031455f53454c45435445445f434f4c445f5631227d",
+  "cold_bytes": 4402,
+  "cold_sha256": "9c943879cd36cb45bc7538346cfdf4f71d0998d8f261f75c135045fcb59870aa",
+  "nested_schema": {
+    "objects": "array[28] ordered object_ordinal; each record has object_ordinal U32, host_channel_index U32, event_cache optional canonical event, sampler_previous_present bool, sampler_previous_xyz_u32 U32[3] interpreted as F32 bits",
+    "physical_binding": "optional runtime-derived binding; cold is null. After parse it contains bed_hosts_by_channel_format_id, object_hosts_by_object_ordinal, lfe_host and regular37_host_order",
+    "snapshots": "optional control38 U32[38][13] and regular37 U32[37][13]; both absent at cold",
+    "dbmd_binding": "optional immutable DBMD identity/track table; absent before parse"
+  },
+  "derived_scratch_adapter": {
+    "binding_algorithm": "parse 10 bed graph records keyed by unique channel_format_id and 28 object graph records keyed by unique object ordinal; validate every host is integer 0..37 and the two host sets are a disjoint union of all 38 hosts; identify exactly one bed semantic_role=lfe; bed_hosts follow declared pack channel_format_id order only for bed identity, object_hosts follow object ordinal; lfe_host is the semantic lfe record host; regular37_host_order is sorted(all hosts except lfe_host)",
+    "control38": "callback-local U32[38][13]; for each derived bed host use F01E.5 DBMD/semantic bed rule, and for each derived object host use that ordinal's F01E.9 event/sampler plus matching DBMD track",
+    "regular37": "callback-local view control38[host] for derived regular37_host_order",
+    "object_mapping": "object ordinal maps only through runtime graph object_hosts_by_object_ordinal; no host formula is permitted",
+    "lifecycle": "scratch is derived after full parse/preflight; on success optional snapshots receive complete arrays once; on failure neither snapshot nor object state commits"
+  },
+  "actual_default_fixture_not_cold": {
+    "bed_hosts_by_channel_format_id": {
+      "A": 0,
+      "B": 1,
+      "C": 2,
+      "D": 3,
+      "E": 4,
+      "F": 5,
+      "G": 6,
+      "H": 7,
+      "I": 8,
+      "J": 9
+    },
+    "object_hosts_by_object_ordinal": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37
+    ],
+    "lfe_channel_format_id": "D",
+    "lfe_host": 3,
+    "regular37_host_order": [
+      0,
+      1,
+      2,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37
+    ]
+  },
+  "private_key_required": false
+}

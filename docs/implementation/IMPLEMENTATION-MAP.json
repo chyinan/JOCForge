@@ -7,8 +7,8 @@
     "CLOCK_FOUNDATION": "LOCALLY_VERIFIED",
     "SELECTED_PROFILE_GATE": "LOCALLY_VERIFIED",
     "P1.2": "SCOPED_COMPLETE_CURRENT_MATERIALIZED_CONSUMERS__FUTURE_CONSUMERS_DEFERRED",
-    "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B_BLOCKED_ON_P1.4",
-    "P1.4": "HOLD"
+    "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B_READY_FOR_IMPLEMENTATION",
+    "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_NOT_OPEN"
   },
   "functional_entries": [
     {
@@ -1416,7 +1416,7 @@
     },
     {
       "root_id": "frontend_control",
-      "materialization_status": "MAPPING_COMPLETE_BLOCKED_ON_P1.4_PROVIDER_CONTRACT",
+      "materialization_status": "READY_FOR_IMPLEMENTATION",
       "schema_file": "parameters/f01e-selected-constructor-v1.json",
       "schema_version": "f01e-selected-constructor.v1",
       "schema_pointer": "/value",
@@ -1819,8 +1819,8 @@
       "materialization_status": "MATERIALIZED"
     },
     "P1.2": "SCOPED_COMPLETE_CURRENT_MATERIALIZED_CONSUMERS__FUTURE_CONSUMERS_DEFERRED",
-    "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B_BLOCKED_ON_P1.4",
-    "P1.4": "HOLD",
+    "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B_READY_FOR_IMPLEMENTATION",
+    "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_NOT_OPEN",
     "P1.2-A": {
       "task_id": "P1.2-A-Q15-COORDINATE",
       "status": "LOCALLY_VERIFIED",
@@ -2124,7 +2124,7 @@
     },
     "P1.3-B": {
       "task_id": "P1.3-B-FRONTEND-CONTROL-AUDIT",
-      "status": "BLOCKED_ON_P1.4_F01E_PROVIDER_CONTRACT",
+      "status": "SATISFIED_READY_FOR_IMPLEMENTATION",
       "programme_root": "frontend_control",
       "implementation_status": "NOT_STARTED",
       "cross_root_atomic_commit": "DEFERRED_NOT_IMPLEMENTED",
@@ -2132,35 +2132,25 @@
     },
     "P1.4-A": {
       "task_id": "P1.4-A-F01E-PROVIDER-CONTRACT",
-      "status": "READY_FOR_DEPENDENCY_APPROVAL",
-      "implementation_status": "NOT_STARTED",
+      "status": "LOCALLY_VERIFIED",
+      "implementation_status": "LOCALLY_VERIFIED",
       "scope": "F01E_SELECTED_COLD_V1 provider identity, typed parse, validation and receipt only",
       "io_input": {
-        "type": "ProviderFileEvidence",
-        "fields": [
-          {
-            "name": "bytes",
-            "type": "immutable Arc<[u8]>"
-          },
-          {
-            "name": "diagnostic_path",
-            "type": "optional path display; never identity"
-          },
-          {
-            "name": "actual_byte_length",
-            "type": "u64",
-            "value": 20138
-          },
-          {
-            "name": "actual_sha256",
-            "type": "[u8;32]",
-            "value": "b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb"
-          },
-          {
-            "name": "package_manifest_sha256",
-            "type": "[u8;32]",
-            "value": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
-          }
+        "types": [
+          "PackageManifestEvidence",
+          "ProviderFileEvidence"
+        ],
+        "shared_fields": [
+          "immutable Arc<[u8]> bytes",
+          "optional diagnostic path; never identity",
+          "observed byte length",
+          "observed SHA-256"
+        ],
+        "validation_flow": [
+          "recompute complete MANIFEST.json SHA-256 before parsing",
+          "parse the SHA-authenticated manifest and require one unique F01E entry",
+          "bind entry path, bytes and SHA-256 into ValidatedF01EPackageManifest",
+          "validate provider observation and bytes against that validated entry"
         ]
       },
       "provider_identity": {
@@ -2255,7 +2245,7 @@
         "receipt": {
           "type": "F01EProviderReceipt",
           "fields": [
-            "provider_identity",
+            "validated_manifest_lineage",
             "provider_file_sha256",
             "provider_file_bytes",
             "schema_id",
@@ -2265,13 +2255,22 @@
             "canonical_bytes",
             "provider_generation"
           ],
+          "lineage": "validated_manifest_lineage contains expected ProviderIdentity plus the recomputed SHA-256 from ValidatedF01EPackageManifest; caller constants are not proof",
           "provider_generation": 0,
           "immutability": "all fields immutable"
         }
       },
       "errors": [
         {
+          "code": "PACKAGE_MANIFEST_OBSERVATION_MISMATCH",
+          "category": "PARAMETER_IDENTITY"
+        },
+        {
           "code": "PACKAGE_MANIFEST_IDENTITY_MISMATCH",
+          "category": "PARAMETER_IDENTITY"
+        },
+        {
+          "code": "PACKAGE_MANIFEST_ENTRY_MISMATCH",
           "category": "PARAMETER_IDENTITY"
         },
         {
@@ -2309,12 +2308,12 @@
       ],
       "failure": "no provider receipt/state; caller fail-stop before P1.3-B stage",
       "boundaries": {
-        "io": "read immutable bytes and report diagnostic path/observed length only; no JSON interpretation",
-        "domain": "recompute SHA/length, identity gate, parse typed value, validate, canonicalize, emit typed provider+receipt; no file access",
+        "io": "read immutable MANIFEST/provider bytes and report diagnostic path/observed length/SHA only; no JSON interpretation",
+        "domain": "recompute MANIFEST SHA before parse, derive the unique provider entry, validate provider bytes against it, then parse/validate/canonicalize the provider; no file access",
         "application": "coordinate I/O evidence to domain validation; never bypass receipt"
       },
       "dependency_candidate": {
-        "status": "REQUIRES_SEPARATE_APPROVAL",
+        "status": "APPROVED_AND_LOCKED",
         "crate": "serde_json",
         "exact_version_candidate": "=1.0.154",
         "cached_archive": "C:/Users/chyinan/.cargo/registry/cache/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.154.crate",
@@ -2355,6 +2354,16 @@
       "archive_sha256": "a7507d819769d01a365ab707794a4084392c824f54a7a6a7862f8c3d0892b283",
       "license_choice": "Apache-2.0",
       "scope": "reader_eof canonical SHA-256 only"
+    },
+    "serde_json": {
+      "version": "=1.0.154",
+      "default_features": false,
+      "features": [
+        "std"
+      ],
+      "archive_sha256": "e7e9cc8b1b85264074fbcc02a88680c4096b1e47df8f739dceb03bf482f04bd6",
+      "license_choice": "Apache-2.0",
+      "scope": "F01E provider syntax parsing and private field access after identity gate only"
     }
   }
 }
