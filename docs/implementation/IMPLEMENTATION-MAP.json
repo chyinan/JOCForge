@@ -1367,7 +1367,7 @@
     "P1.4": "HOLD",
     "P1.2-A": {
       "task_id": "P1.2-A-Q15-COORDINATE",
-      "status": "GO",
+      "status": "LOCALLY_VERIFIED",
       "consumer": {
         "functional_id": "F03P",
         "module": "crates/jocforge-domain/src/spatial/point_response.rs",
@@ -1385,13 +1385,20 @@
       "primitive": {
         "name": "quantize_q15_coordinate",
         "input": "finite f32",
-        "output": "Result<i32, Q15CoordinateError>",
+        "output": "Result<Q15Coordinate, Q15CoordinateError>",
         "rounding": "binary32 round-to-nearest ties-to-even at multiply and add",
         "shift": "NOT_APPLICABLE",
         "saturation": "positive values above 32767 saturate to 32767; no negative clamp",
         "overflow": "reject if final truncated value cannot fit i32",
         "non_finite": "reject input or intermediate NaN/Infinity",
-        "negative_zero": "preserve through multiply/add semantics; truncates to integer zero"
+        "negative_zero": "preserve through multiply/add semantics; truncates to integer zero",
+        "typed_value": {
+          "name": "Q15Coordinate",
+          "scope": "F03P.2 scoped typed value",
+          "representation": "private i32",
+          "accessor": "pub const fn value(self) -> i32",
+          "mutability": "immutable"
+        }
       },
       "vectors": {
         "kind": "PARENT_INTEGRATION_VECTOR",
@@ -1408,7 +1415,7 @@
       "planned_tests": [
         "crates/jocforge-domain/tests/numeric_q15_coordinate.rs"
       ],
-      "implementation_status": "NOT_STARTED"
+      "implementation_status": "LOCALLY_VERIFIED"
     }
   }
 }

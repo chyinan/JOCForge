@@ -1,2 +1,6 @@
 // pattern: Functional Core
-//! Reserved numeric boundary. No algorithm or persistent state is implemented.
+//! Consumer-bound numeric primitives; no generic math toolkit.
+
+mod q15_coordinate;
+
+pub use q15_coordinate::{Q15Coordinate, Q15CoordinateError, quantize_q15_coordinate};

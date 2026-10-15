@@ -31,7 +31,7 @@
     "module": "crates/jocforge-domain/src/spatial/point_response.rs",
     "scope": "F03P.2 Q15 coordinate quantization only"
   },
-  "implementation_status": "NOT_STARTED",
+  "implementation_status": "LOCALLY_VERIFIED",
   "planned_files": [
     "crates/jocforge-domain/src/numeric/q15_coordinate.rs",
     "crates/jocforge-domain/src/numeric/mod.rs"
@@ -44,11 +44,18 @@
     "name": "quantize_q15_coordinate",
     "negative_zero": "preserve through multiply/add semantics; truncates to integer zero",
     "non_finite": "reject input or intermediate NaN/Infinity",
-    "output": "Result<i32, Q15CoordinateError>",
+    "output": "Result<Q15Coordinate, Q15CoordinateError>",
     "overflow": "reject if final truncated value cannot fit i32",
     "rounding": "binary32 round-to-nearest ties-to-even at multiply and add",
     "saturation": "positive values above 32767 saturate to 32767; no negative clamp",
-    "shift": "NOT_APPLICABLE"
+    "shift": "NOT_APPLICABLE",
+    "typed_value": {
+      "accessor": "pub const fn value(self) -> i32",
+      "mutability": "immutable",
+      "name": "Q15Coordinate",
+      "representation": "private i32",
+      "scope": "F03P.2 scoped typed value"
+    }
   },
   "spec_binding": {
     "file": "specs/03-point-response-and-target-context.md",
@@ -59,7 +66,7 @@
     ],
     "section": "F03P.2 15-point basis and quantization"
   },
-  "status": "GO",
+  "status": "LOCALLY_VERIFIED",
   "task_id": "P1.2-A-Q15-COORDINATE",
   "vectors": {
     "case_pointers": [
