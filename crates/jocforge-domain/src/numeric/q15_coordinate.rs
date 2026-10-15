@@ -1,6 +1,8 @@
 // pattern: Functional Core
 //! F03P.2-only Q15 coordinate quantization.
 
+use super::{FiniteF32, r32_add, r32_mul};
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Q15CoordinateError {
     NonFiniteInput,
@@ -18,25 +20,20 @@ impl Q15Coordinate {
 }
 
 pub fn quantize_q15_coordinate(input: f32) -> Result<Q15Coordinate, Q15CoordinateError> {
-    if !input.is_finite() {
-        return Err(Q15CoordinateError::NonFiniteInput);
-    }
+    let input = FiniteF32::new(input).map_err(|_| Q15CoordinateError::NonFiniteInput)?;
 
     // Separate statements preserve the two specified binary32 rounding points.
-    let scaled = input * 32_768.0_f32;
-    if !scaled.is_finite() {
-        return Err(Q15CoordinateError::NonFiniteIntermediate);
-    }
-    let half = if scaled.is_sign_negative() {
+    let scale =
+        FiniteF32::new(32_768.0_f32).map_err(|_| Q15CoordinateError::NonFiniteIntermediate)?;
+    let scaled = r32_mul(input, scale).map_err(|_| Q15CoordinateError::NonFiniteIntermediate)?;
+    let half = if scaled.value().is_sign_negative() {
         -0.5_f32
     } else {
         0.5_f32
     };
-    let biased = scaled + half;
-    if !biased.is_finite() {
-        return Err(Q15CoordinateError::NonFiniteIntermediate);
-    }
-    let truncated = biased.trunc();
+    let half = FiniteF32::new(half).map_err(|_| Q15CoordinateError::NonFiniteIntermediate)?;
+    let biased = r32_add(scaled, half).map_err(|_| Q15CoordinateError::NonFiniteIntermediate)?;
+    let truncated = biased.value().trunc();
 
     if truncated > 32_767.0_f32 {
         return Ok(Q15Coordinate(32_767));

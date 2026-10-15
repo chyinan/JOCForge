@@ -88,7 +88,7 @@
     "module": "crates/jocforge-domain/src/numeric/q15_coordinate.rs",
     "scope": "F03P.2 multiply and signed-half add rounding points only"
   },
-  "implementation_status": "NOT_STARTED",
+  "implementation_status": "LOCALLY_VERIFIED",
   "planned_files": [
     "crates/jocforge-domain/src/numeric/finite_f32.rs",
     "crates/jocforge-domain/src/numeric/q15_coordinate.rs",
@@ -139,7 +139,7 @@
       "N00.2 boundaries"
     ]
   },
-  "status": "GO",
+  "status": "LOCALLY_VERIFIED",
   "task_id": "P1.2-B-FINITE-R32-ADD-MUL",
   "vectors": {
     "case_pointers": [
