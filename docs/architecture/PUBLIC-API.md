@@ -24,6 +24,8 @@
 
 owner 的公开边界只接收 immutable input、proposal 或 staged result。每次 stage 返回类型化 owner receipt。receipt 至少携带 owner、transaction、before/after generation、canonical identity、changed 和 commit count。Hash 只验证身份，不能代替完整 state。
 
+完整 owner receipt 元数据只用于 committed state owner 和明确登记的 staged owner boundary。纯 numeric 结果、profile 校验和普通时间转换返回轻量 typed value 或 conversion result，不得为了统一框架包装 heavyweight receipt。
+
 application 只协调 receipt。它不得计算 FFT、QMF、BAP、mantissa、Huffman、payload 或 frame。CLI 只负责参数和 I/O 组装。validation 不进入 production 依赖图。
 
 ## Reset 与失败

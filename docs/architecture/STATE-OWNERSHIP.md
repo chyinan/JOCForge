@@ -4,7 +4,7 @@
 
 每个 owner 的 state 都保持私有。跨 owner 只传 immutable input、proposal、staged result 或 receipt。接收者不得反向写生产者 state，也不得重新执行已产生 receipt 的 stage。
 
-## Owner 登记
+## Selected overlap projection
 
 | Field group | Functional ID | Owning module | Exact state schema | Cold provider | Clock | Stage authority | Commit authority | Reset authority | EOF/drain | Fatal behavior | Canonical serialization | Receipt type |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -28,6 +28,27 @@
 | `none_pure_value` | `body_proposals`，不属于 committed owner 计数 |
 
 programme root 是顶层协调边界，不是第七个 leaf commit owner。F15 协调一次 source-root commit；leaf executor 每 source 仍只执行一次。
+
+## GTC programme owner roots
+
+本表绑定 `test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json` 的 12 个 required owner root。每个 root 使用 schema 的 `ownerState` 外壳，并通过 `state_ref` 绑定本行的 exact state schema 和 cold provider。
+
+| Programme root | Exact state schema | Cold provider | Clock | Stage authority | Commit authority | Reset authority | Fatal behavior | Receipt type | Owning module |
+|---|---|---|---|---|---|---|---|---|---|
+| `reader_eof` | F01/F02 reader cursor、cached input、normal/drain counters 和 EOF phase | `specs/01-input-and-clock.md` | `FrontendCallbackIndex` | F01R/F02 | callback root | programme full reset | discard callback stage；`RETIRED` | `OwnerReceipt<ReaderEof>` | `domain/frontend/input_clock.rs`；I/O 在 `jocforge-io/bw64`、`pcm` |
+| `frontend_control` | event/control/config and callback snapshot | `parameters/f01e-selected-constructor-v1.json` | `FrontendCallbackIndex` | F01E | callback root | programme full reset | discard callback stage；`RETIRED` | `OwnerReceipt<FrontendControl>` | `domain/frontend/config.rs`、`events.rs` |
+| `spatial_control` | `adm-installed48-state-v1` 加 selected overlap 的 F03W/F05R56 fields | `parameters/adm-installed48-state-v1.json` 与 `reader56-target-profile-v1.json` | `FrontendCallbackIndex` | F03W、F05R56 | callback root | programme full reset | discard spatial-control stage；`RETIRED` | `OwnerReceipt<SpatialControl>` | `domain/spatial/gate.rs` 至 `reader56.rs` |
+| `spatial_audio` | `F04-WHOLE-SPATIAL-STATE-SCHEMA.json` | F04C cold schema and QMF providers | callback `g`、receiver `r` | F04C | callback root | programme full reset | discard spatial-audio stage；`RETIRED` | `OwnerReceipt<SpatialAudio>` | `domain/spatial/component.rs`、`receiver.rs`、`qmf.rs` |
+| `joc` | `LIVE-JOC-COORDINATOR-STATE-SCHEMA.json` | `parameters/live-joc-coordinator-v1.json` | `JocDispatchIndex`、`JocWriterIndex` | F05JL | source root | programme full reset | discard JOC stage；`RETIRED` | `OwnerReceipt<Joc>` | `domain/joc/*` |
+| `meter` | `f06-meter-none-drc-whole-state-schema-v1` 的 meter partition | meter K、true-peak、loudness and OAR cold providers | `MeterCallbackIndex` | F06 meter stages | measurement root | programme full reset | discard measurement stage；无 MeasurementReceipt；`RETIRED` | `OwnerReceipt<Meter>` | `domain/meter/k_weight.rs`、`true_peak.rs`、`loudness.rs`、`oar.rs` |
+| `drc` | `f06-meter-none-drc-whole-state-schema-v1` 的 DRC/secondary partition | `parameters/none-drc-authorized-v1.json`、`secondary-inverse-math-v1.json` | `CodecSourceIndex` | F06ND/F06NR/F06NI/F06NF | source root | programme full reset | discard DRC stage；`RETIRED` | `OwnerReceipt<Drc>` | `domain/meter/drc.rs`、`secondary.rs` |
+| `analysis` | `f07-f12-source-state-schema-v1` 的 history/transient/transform/policy partition | F07～F11 selected providers | `CodecSourceIndex`、`CodecBlockIndex` | F07～F11 shared analysis stage | source root | programme full reset | discard analysis clone；`RETIRED` | `OwnerReceipt<Analysis>` | `domain/transform/*`、`domain/codec/converter.rs` |
+| `codec` | `f07-f12-source-state-schema-v1` 的 codec partition | `parameters/codec-wire-selected-v1.json` 和 public BAP provider | `CodecSourceIndex`、`CodecBlockIndex` | F12/F12S | source root | programme full reset | candidate scratch discard；无 best 时 `RETIRED` | `OwnerReceipt<Codec>` | `domain/codec/*` |
+| `metadata` | four queues、timer 和 EMDF assembly | `parameters/joc-timer-order-v1.json` 与 GTC cold queue rules | source、writer、AU join | F13 | source root | programme full reset | discard all four staged queues；`RETIRED` | `OwnerReceipt<Metadata>` | `domain/timeline/payload_queue.rs`、`timer.rs`、`join.rs` |
+| `integrity` | stateless current-frame integrity identity | selected F14K provider；无 cross-frame cold state | `PublishedAuIndex` candidate | F14K | source root | programme full reset | discard current receipt；`RETIRED` | `OwnerReceipt<Integrity>` | `domain/integrity/*` |
+| `output` | `keyless-publication-state-v1`、staging stream、durable ledger | `parameters/keyless-publication-state-v1.json` | `PublishedAuIndex` | F15P proposal；I/O shell stages write | source/finalize root | abandon attempt temp and programme full reset | durable failure abandons temp；`RETIRED` | `OwnerReceipt<Output>` | `domain/publication/proposal.rs`、`ledger.rs`；I/O 在 `atomic_output` |
+
+GTC programme root 只是这 12 个 leaf root 的容器和协调边界，不是额外 leaf owner。Selected overlap projection 仍保持 7 个 field group、7 个 receipt owner label 和 6 个 distinct `commit_owner` label；其中 `none_pure_value` 不属于 committed owner。
 
 ## Receipt 与失败不变量
 

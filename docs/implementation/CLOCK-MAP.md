@@ -1,111 +1,111 @@
 # 时钟映射
 
-时间域关系以 ../architecture/DATAFLOW.md 为准。公共 API 的时间索引必须使用不同 newtype。
+每个域使用独立 newtype。普通时钟转换不包装 heavyweight receipt。
 
-| Functional ID | Clock domain | Typed boundary |
-|---|---|---|
-| STRC | programme/attempt | `programme_attempt_receipt` |
-| GTC | programme/attempt | `programme_attempt_receipt` |
-| XSTJ | programme/attempt | `programme_attempt_receipt` |
-| F01 | callback g | `callback_g_receipt` |
-| F01R | callback g | `callback_g_receipt` |
-| F01G | callback g | `callback_g_receipt` |
-| F01B | callback g | `callback_g_receipt` |
-| F01GL | callback g | `callback_g_receipt` |
-| F01C | callback g | `callback_g_receipt` |
-| F01E | callback g | `callback_g_receipt` |
-| F02 | callback g | `callback_g_receipt` |
-| F03 | callback g | `callback_g_receipt` |
-| F03G | callback g | `callback_g_receipt` |
-| F03C | callback g | `callback_g_receipt` |
-| F03U | callback g | `callback_g_receipt` |
-| F03F | callback g | `callback_g_receipt` |
-| F03FC | callback g | `callback_g_receipt` |
-| F03R | callback g | `callback_g_receipt` |
-| F03P | callback g | `callback_g_receipt` |
-| F03N | callback g | `callback_g_receipt` |
-| F03S | callback g | `callback_g_receipt` |
-| F03FD | callback g | `callback_g_receipt` |
-| F03W | callback g | `callback_g_receipt` |
-| F04 | callback g | `callback_g_receipt` |
-| F04C | callback g | `callback_g_receipt` |
-| F04A | callback g | `callback_g_receipt` |
-| F04F | callback g | `callback_g_receipt` |
-| F04FM | callback g | `callback_g_receipt` |
-| F04FCM | callback g | `callback_g_receipt` |
-| F04G | callback g | `callback_g_receipt` |
-| F04GA | callback g | `callback_g_receipt` |
-| F04P | callback g | `callback_g_receipt` |
-| F04PG | callback g | `callback_g_receipt` |
-| F04R | callback g | `callback_g_receipt` |
-| F04D | callback g | `callback_g_receipt` |
-| F04Q | callback g | `callback_g_receipt` |
-| F04RB | callback g | `callback_g_receipt` |
-| F04QF | callback g | `callback_g_receipt` |
-| F04QP | callback g | `callback_g_receipt` |
-| F05 | dispatch d / writer | `dispatch_d_writer_receipt` |
-| F05Q | dispatch d / writer | `dispatch_d_writer_receipt` |
-| F05QH | dispatch d / writer | `dispatch_d_writer_receipt` |
-| F05J | dispatch d / writer | `dispatch_d_writer_receipt` |
-| F05JC | dispatch d / writer | `dispatch_d_writer_receipt` |
-| F05JL | dispatch d / writer | `dispatch_d_writer_receipt` |
-| F05JS | dispatch d / writer | `dispatch_d_writer_receipt` |
-| F05O | dispatch d / writer | `dispatch_d_writer_receipt` |
-| F05T | dispatch d / writer | `dispatch_d_writer_receipt` |
-| F05H | dispatch d / writer | `dispatch_d_writer_receipt` |
-| F05L | dispatch d / writer | `dispatch_d_writer_receipt` |
-| F05R56 | callback g | `callback_g_receipt` |
-| F06 | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06L | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06I | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06W | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06KG | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06TP | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06ND | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06NR | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06NI | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06NF | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06WH | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06U | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06DG | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06D | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06M | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06OG | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06OM | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06OP | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06OE | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06QT | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06QM | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06QS | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06OD | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06OS | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06OB | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06OR | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06OC | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F06OF | meter callback or source s | `meter_callback_or_source_s_receipt` |
-| F07 | source s / block | `source_s_block_receipt` |
-| F07A | source s / block | `source_s_block_receipt` |
-| F08 | source s / block | `source_s_block_receipt` |
-| F08NZ | source s / block | `source_s_block_receipt` |
-| F09 | source s / block | `source_s_block_receipt` |
-| F09E | source s / block | `source_s_block_receipt` |
-| F09PA | source s / block | `source_s_block_receipt` |
-| F09G | source s / block | `source_s_block_receipt` |
-| F09LB | source s / block | `source_s_block_receipt` |
-| F10 | source s / block | `source_s_block_receipt` |
-| F11 | source s / block | `source_s_block_receipt` |
-| F12 | source s / block | `source_s_block_receipt` |
-| F12S | source s / block | `source_s_block_receipt` |
-| F12SC | source s / block | `source_s_block_receipt` |
-| F12A | source s / block | `source_s_block_receipt` |
-| F13 | source s / writer / AU j | `source_s_writer_AU_j_receipt` |
-| F13F | source s / writer / AU j | `source_s_writer_AU_j_receipt` |
-| F13T | source s / writer / AU j | `source_s_writer_AU_j_receipt` |
-| F13C | source s / writer / AU j | `source_s_writer_AU_j_receipt` |
-| F13D2 | source s / writer / AU j | `source_s_writer_AU_j_receipt` |
-| F14 | source s / AU j | `source_s_AU_j_receipt` |
-| F14K | source s / AU j | `source_s_AU_j_receipt` |
-| F15 | source s / AU j | `source_s_AU_j_receipt` |
-| F15P | source s / AU j | `source_s_AU_j_receipt` |
-| OWNJ | callback g / source s | `callback_g_source_s_receipt` |
+| functional_id | clock_domains | public_index_types | conversion_evidence |
+|---|---|---|---|
+| STRC | `ProgrammeAttempt`<br>`PhaseGeneration` | `ProgrammeAttempt`<br>`PhaseGeneration` | `test-vectors/STATUS-RECONCILIATION-LOCAL-REVIEW-STATUS.json` |
+| GTC | `ProgrammeAttempt`<br>`PhaseGeneration` | `ProgrammeAttempt`<br>`PhaseGeneration` | `specs/00-global-transaction-contract.md` |
+| XSTJ | `FrontendCallbackIndex`<br>`CodecSourceIndex`<br>`PublishedAuIndex` | `FrontendCallbackIndex`<br>`CodecSourceIndex`<br>`PublishedAuIndex` | `specs/00-cross-stage-contract-joins.md` |
+| F01 | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `specs/01-input-and-clock.md` |
+| F01R | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `specs/01-input-and-clock.md` |
+| F01G | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `specs/01-adm-graph-and-time.md` |
+| F01B | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `specs/01-bed-routing-and-source-geometry.md` |
+| F01GL | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `specs/01-selected-geometry-layout-and-bed-routing.md` |
+| F01C | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `specs/01-frontend-config-normalization.md` |
+| F01E | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `specs/01-frontend-config-dbmd-events.md` |
+| F02 | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `specs/01-input-and-clock.md` |
+| F03 | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/03-spatial-and-audio.md` |
+| F03G | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/03-gate-and-target-installation.md` |
+| F03C | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/03-selector-affinity-and-selection.md` |
+| F03U | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/03-u04-refinement-and-projection.md` |
+| F03F | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/03-feature-processor-and-state.md` |
+| F03FC | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/03-feature-configuration-generation.md` |
+| F03R | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/03-source-routing-and-feature-flags.md` |
+| F03P | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/03-point-response-and-target-context.md` |
+| F03N | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/03-rectangular-nnls-initial-fit.md` |
+| F03S | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/03-outer-energy-correction.md` |
+| F03FD | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/03-degenerate-frontier-and-fail-stop.md` |
+| F03W | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/03-adm-installed48-whole.md` |
+| F04 | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/03-spatial-and-audio.md` |
+| F04C | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/04-whole-spatial-chain-composition.md` |
+| F04A | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/04-window-matrix-and-component-audio.md` |
+| F04F | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/04-diffusion-filter-and-lifecycle.md` |
+| F04FM | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/04-diffusion-mathematical-generation.md` |
+| F04FCM | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/04-diffusion-constructor-generation.md` |
+| F04G | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/04-prefix-spread-and-gain.md` |
+| F04GA | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/04-spread-authorized-parameters.md` |
+| F04P | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/04-component-parameter-state.md` |
+| F04PG | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/04-component-parameter-generation.md` |
+| F04R | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/04-receiver-state-and-routing.md` |
+| F04D | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/04-descriptor-control.md` |
+| F04Q | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/04-qmf-analysis-and-synthesis.md` |
+| F04RB | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/04-qmf-receiver-whole-binding.md` |
+| F04QF | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/04-qmf-mathematical-fft.md` |
+| F04QP | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/04-qmf-prototype-source-and-loading.md` |
+| F05 | `JocDispatchIndex`<br>`JocWriterIndex` | `JocDispatchIndex`<br>`JocWriterIndex` | `specs/05-joc-and-object-metadata.md` |
+| F05Q | `JocDispatchIndex`<br>`JocWriterIndex` | `JocDispatchIndex`<br>`JocWriterIndex` | `specs/05-joc-quantization-and-wire.md` |
+| F05QH | `JocDispatchIndex`<br>`JocWriterIndex` | `JocDispatchIndex`<br>`JocWriterIndex` | `specs/05-joc-huffman-codebooks.md` |
+| F05J | `JocDispatchIndex`<br>`JocWriterIndex` | `JocDispatchIndex`<br>`JocWriterIndex` | `specs/05-joc-dispatch-and-commit.md` |
+| F05JC | `JocDispatchIndex`<br>`JocWriterIndex` | `JocDispatchIndex`<br>`JocWriterIndex` | `specs/05-joc-selected-producer-and-commit.md` |
+| F05JL | `JocDispatchIndex`<br>`JocWriterIndex` | `JocDispatchIndex`<br>`JocWriterIndex` | `specs/05-live-joc-coordinator.md` |
+| F05JS | `JocDispatchIndex`<br>`JocWriterIndex` | `JocDispatchIndex`<br>`JocWriterIndex` | `specs/05-joc-score-kernel.md` |
+| F05O | `JocDispatchIndex`<br>`JocWriterIndex` | `JocDispatchIndex`<br>`JocWriterIndex` | `specs/05-oamd-row-and-timing-wire.md` |
+| F05T | `JocDispatchIndex`<br>`JocWriterIndex` | `JocDispatchIndex`<br>`JocWriterIndex` | `specs/05-oamd-dbmd-and-trim.md` |
+| F05H | `JocDispatchIndex`<br>`JocWriterIndex` | `JocDispatchIndex`<br>`JocWriterIndex` | `specs/05-fit-marker-and-metadata-history.md` |
+| F05L | `JocDispatchIndex`<br>`JocWriterIndex` | `JocDispatchIndex`<br>`JocWriterIndex` | `specs/05-oamd-id11-live-producer.md` |
+| F05R56 | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/05-reader56-target-updates-composition.md` |
+| F06 | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-meter-bsi.md` |
+| F06L | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-meter-log-and-peak.md` |
+| F06I | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-integrated-meter-state.md` |
+| F06W | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-meter-window-and-output-clock.md` |
+| F06KG | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-meter-k-matrix-generation.md` |
+| F06TP | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-true-peak-cascade-and-metrics.md` |
+| F06ND | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-none-drc-statistics-and-control.md` |
+| F06NR | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-secondary-reconstruction-clock-and-overlap.md` |
+| F06NI | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-secondary-inverse-spectrum-and-rotations.md` |
+| F06NF | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-secondary-fft64-128.md` |
+| F06WH | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-meter-none-drc-whole-composition.md` |
+| F06U | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-ungated-mean-and-fallback.md` |
+| F06DG | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-shared-dv32-parameter-generation.md` |
+| F06D | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-shared-dv32-state-and-audio.md` |
+| F06M | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-oar-mix-ramp-and-filter-gate.md` |
+| F06OG | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-oar-secondary-geometry-generation.md` |
+| F06OM | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-oar-metadata-and-source-records.md` |
+| F06OP | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-oar-point-target.md` |
+| F06OE | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-oar-extra-state-and-record-comparison.md` |
+| F06QT | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-oar-queue-time-selection.md` |
+| F06QM | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-oar-queue-mutation-and-reference-ownership.md` |
+| F06QS | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-oar-snapshot-copy.md` |
+| F06OD | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-oar-description-generation.md` |
+| F06OS | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-oar-coded-mask-direct-selector.md` |
+| F06OB | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-oar-snapshot-to-record-bridge.md` |
+| F06OR | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-oar-selected-task-routing.md` |
+| F06OC | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-oar-model-callback-state-and-clock.md` |
+| F06OF | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` | `specs/06-oar-frontend-input-and-clock-join.md` |
+| F07 | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` | `specs/07-history-and-transient.md` |
+| F07A | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` | `specs/07-transient-authorized-parameters.md` |
+| F08 | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` | `specs/08-transforms.md` |
+| F08NZ | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` | `specs/08-nonzero-transform-composition.md` |
+| F09 | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` | `specs/09-exponents.md` |
+| F09E | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` | `specs/09-exponents.md` |
+| F09PA | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` | `specs/09-policy-authorized-parameters.md` |
+| F09G | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` | `specs/09-gain-and-db.md` |
+| F09LB | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` | `specs/09-lfe-gate-mantissa-boundaries.md` |
+| F10 | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` | `specs/10-exponent-normalization.md` |
+| F11 | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` | `specs/11-converter.md` |
+| F12 | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` | `specs/12-codec-and-wire.md` |
+| F12S | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` | `specs/12-selected-codec-wire.md` |
+| F12SC | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` | `specs/12-selected-source-frame-composition.md` |
+| F12A | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` | `specs/12-bit-allocation.md` |
+| F13 | `CodecSourceIndex`<br>`JocWriterIndex`<br>`PublishedAuIndex` | `CodecSourceIndex`<br>`JocWriterIndex`<br>`PublishedAuIndex` | `specs/13-emdf-and-timeline.md` |
+| F13F | `CodecSourceIndex`<br>`JocWriterIndex`<br>`PublishedAuIndex` | `CodecSourceIndex`<br>`JocWriterIndex`<br>`PublishedAuIndex` | `specs/13-emdf-and-timeline.md` |
+| F13T | `CodecSourceIndex`<br>`JocWriterIndex`<br>`PublishedAuIndex` | `CodecSourceIndex`<br>`JocWriterIndex`<br>`PublishedAuIndex` | `specs/13-emdf-and-timeline.md` |
+| F13C | `CodecSourceIndex`<br>`JocWriterIndex`<br>`PublishedAuIndex` | `CodecSourceIndex`<br>`JocWriterIndex`<br>`PublishedAuIndex` | `specs/13-emdf-and-timeline.md` |
+| F13D2 | `CodecSourceIndex`<br>`JocWriterIndex`<br>`PublishedAuIndex` | `CodecSourceIndex`<br>`JocWriterIndex`<br>`PublishedAuIndex` | `specs/13-id2-profile-metadata.md` |
+| F14 | `CodecSourceIndex`<br>`PublishedAuIndex` | `CodecSourceIndex`<br>`PublishedAuIndex` | `specs/14-integrity.md` |
+| F14K | `CodecSourceIndex`<br>`PublishedAuIndex` | `CodecSourceIndex`<br>`PublishedAuIndex` | `specs/14-keyless-checksum-profile.md` |
+| F15 | `CodecSourceIndex`<br>`PublishedAuIndex` | `CodecSourceIndex`<br>`PublishedAuIndex` | `PIPELINE-AND-INTERFACES.md` |
+| F15P | `CodecSourceIndex`<br>`PublishedAuIndex` | `CodecSourceIndex`<br>`PublishedAuIndex` | `specs/15-keyless-publication.md` |
+| OWNJ | `FrontendCallbackIndex` | `FrontendCallbackIndex` | `specs/00-selected-owner-projection-and-j05.md` |
 

@@ -1,111 +1,15 @@
-# 阶段计划
+# Phase 1 计划
 
-本表只规划实施顺序。本轮不进入任何 Rust 算法阶段。前一阶段验证和审查未通过时，不得进入下一阶段。
+Phase 1 Rust 实现仍暂停。未来只允许以下四个 slice，每个 slice 独立提交和复审。
 
-| Functional ID | Planned phase | Planned implementation file | Planned test file |
-|---|---|---|---|
-| STRC | pre-implementation mapping | `crates/jocforge-application/src/lib.rs` | `crates/jocforge-domain/tests/strc_contract.rs` |
-| GTC | pre-implementation mapping | `crates/jocforge-application/src/lib.rs` | `crates/jocforge-domain/tests/gtc_contract.rs` |
-| XSTJ | pre-implementation mapping | `crates/jocforge-application/src/lib.rs` | `crates/jocforge-domain/tests/xstj_contract.rs` |
-| F01 | Phase 2 | `crates/jocforge-domain/src/frontend/mod.rs` | `crates/jocforge-domain/tests/f01_contract.rs` |
-| F01R | Phase 2 | `crates/jocforge-domain/src/frontend/mod.rs` | `crates/jocforge-domain/tests/f01r_contract.rs` |
-| F01G | Phase 2 | `crates/jocforge-domain/src/frontend/mod.rs` | `crates/jocforge-domain/tests/f01g_contract.rs` |
-| F01B | Phase 2 | `crates/jocforge-domain/src/frontend/mod.rs` | `crates/jocforge-domain/tests/f01b_contract.rs` |
-| F01GL | Phase 2 | `crates/jocforge-domain/src/frontend/mod.rs` | `crates/jocforge-domain/tests/f01gl_contract.rs` |
-| F01C | Phase 2 | `crates/jocforge-domain/src/frontend/mod.rs` | `crates/jocforge-domain/tests/f01c_contract.rs` |
-| F01E | Phase 2 | `crates/jocforge-domain/src/frontend/mod.rs` | `crates/jocforge-domain/tests/f01e_contract.rs` |
-| F02 | Phase 2 | `crates/jocforge-domain/src/timeline/mod.rs` | `crates/jocforge-domain/tests/f02_contract.rs` |
-| F03 | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f03_contract.rs` |
-| F03G | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f03g_contract.rs` |
-| F03C | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f03c_contract.rs` |
-| F03U | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f03u_contract.rs` |
-| F03F | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f03f_contract.rs` |
-| F03FC | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f03fc_contract.rs` |
-| F03R | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f03r_contract.rs` |
-| F03P | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f03p_contract.rs` |
-| F03N | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f03n_contract.rs` |
-| F03S | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f03s_contract.rs` |
-| F03FD | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f03fd_contract.rs` |
-| F03W | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f03w_contract.rs` |
-| F04 | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f04_contract.rs` |
-| F04C | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f04c_contract.rs` |
-| F04A | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f04a_contract.rs` |
-| F04F | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f04f_contract.rs` |
-| F04FM | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f04fm_contract.rs` |
-| F04FCM | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f04fcm_contract.rs` |
-| F04G | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f04g_contract.rs` |
-| F04GA | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f04ga_contract.rs` |
-| F04P | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f04p_contract.rs` |
-| F04PG | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f04pg_contract.rs` |
-| F04R | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f04r_contract.rs` |
-| F04D | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f04d_contract.rs` |
-| F04Q | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f04q_contract.rs` |
-| F04RB | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f04rb_contract.rs` |
-| F04QF | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f04qf_contract.rs` |
-| F04QP | Phase 3 | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/f04qp_contract.rs` |
-| F05 | Phase 4 | `crates/jocforge-domain/src/joc/oamd.rs` | `crates/jocforge-domain/tests/f05_contract.rs` |
-| F05Q | Phase 4 | `crates/jocforge-domain/src/joc/coefficient_payload.rs` | `crates/jocforge-domain/tests/f05q_contract.rs` |
-| F05QH | Phase 4 | `crates/jocforge-domain/src/joc/huffman.rs` | `crates/jocforge-domain/tests/f05qh_contract.rs` |
-| F05J | Phase 4 | `crates/jocforge-domain/src/joc/coefficient_payload.rs` | `crates/jocforge-domain/tests/f05j_contract.rs` |
-| F05JC | Phase 4 | `crates/jocforge-domain/src/joc/coefficient_payload.rs` | `crates/jocforge-domain/tests/f05jc_contract.rs` |
-| F05JL | Phase 4 | `crates/jocforge-domain/src/joc/coefficient_payload.rs` | `crates/jocforge-domain/tests/f05jl_contract.rs` |
-| F05JS | Phase 4 | `crates/jocforge-domain/src/joc/coefficient_payload.rs` | `crates/jocforge-domain/tests/f05js_contract.rs` |
-| F05O | Phase 4 | `crates/jocforge-domain/src/joc/oamd.rs` | `crates/jocforge-domain/tests/f05o_contract.rs` |
-| F05T | Phase 4 | `crates/jocforge-domain/src/joc/oamd.rs` | `crates/jocforge-domain/tests/f05t_contract.rs` |
-| F05H | Phase 4 | `crates/jocforge-domain/src/joc/oamd.rs` | `crates/jocforge-domain/tests/f05h_contract.rs` |
-| F05L | Phase 4 | `crates/jocforge-domain/src/joc/oamd.rs` | `crates/jocforge-domain/tests/f05l_contract.rs` |
-| F05R56 | Phase 4 | `crates/jocforge-domain/src/joc/oamd.rs` | `crates/jocforge-domain/tests/f05r56_contract.rs` |
-| F06 | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06_contract.rs` |
-| F06L | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06l_contract.rs` |
-| F06I | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06i_contract.rs` |
-| F06W | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06w_contract.rs` |
-| F06KG | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06kg_contract.rs` |
-| F06TP | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06tp_contract.rs` |
-| F06ND | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06nd_contract.rs` |
-| F06NR | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06nr_contract.rs` |
-| F06NI | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06ni_contract.rs` |
-| F06NF | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06nf_contract.rs` |
-| F06WH | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06wh_contract.rs` |
-| F06U | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06u_contract.rs` |
-| F06DG | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06dg_contract.rs` |
-| F06D | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06d_contract.rs` |
-| F06M | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06m_contract.rs` |
-| F06OG | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06og_contract.rs` |
-| F06OM | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06om_contract.rs` |
-| F06OP | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06op_contract.rs` |
-| F06OE | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06oe_contract.rs` |
-| F06QT | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06qt_contract.rs` |
-| F06QM | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06qm_contract.rs` |
-| F06QS | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06qs_contract.rs` |
-| F06OD | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06od_contract.rs` |
-| F06OS | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06os_contract.rs` |
-| F06OB | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06ob_contract.rs` |
-| F06OR | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06or_contract.rs` |
-| F06OC | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06oc_contract.rs` |
-| F06OF | Phase 5 | `crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/f06of_contract.rs` |
-| F07 | Phase 6 | `crates/jocforge-domain/src/transform/mod.rs` | `crates/jocforge-domain/tests/f07_contract.rs` |
-| F07A | Phase 6 | `crates/jocforge-domain/src/transform/mod.rs` | `crates/jocforge-domain/tests/f07a_contract.rs` |
-| F08 | Phase 6 | `crates/jocforge-domain/src/transform/mod.rs` | `crates/jocforge-domain/tests/f08_contract.rs` |
-| F08NZ | Phase 6 | `crates/jocforge-domain/src/transform/mod.rs` | `crates/jocforge-domain/tests/f08nz_contract.rs` |
-| F09 | Phase 6 | `crates/jocforge-domain/src/codec/rate_profile.rs` | `crates/jocforge-domain/tests/f09_contract.rs` |
-| F09E | Phase 6 | `crates/jocforge-domain/src/codec/rate_profile.rs` | `crates/jocforge-domain/tests/f09e_contract.rs` |
-| F09PA | Phase 6 | `crates/jocforge-domain/src/codec/rate_profile.rs` | `crates/jocforge-domain/tests/f09pa_contract.rs` |
-| F09G | Phase 6 | `crates/jocforge-domain/src/codec/rate_profile.rs` | `crates/jocforge-domain/tests/f09g_contract.rs` |
-| F09LB | Phase 6 | `crates/jocforge-domain/src/codec/rate_profile.rs` | `crates/jocforge-domain/tests/f09lb_contract.rs` |
-| F10 | Phase 6 | `crates/jocforge-domain/src/codec/rate_profile.rs` | `crates/jocforge-domain/tests/f10_contract.rs` |
-| F11 | Phase 6 | `crates/jocforge-domain/src/codec/rate_profile.rs` | `crates/jocforge-domain/tests/f11_contract.rs` |
-| F12 | Phase 6 | `crates/jocforge-domain/src/codec/frame_builder.rs` | `crates/jocforge-domain/tests/f12_contract.rs` |
-| F12S | Phase 6 | `crates/jocforge-domain/src/codec/frame_builder.rs` | `crates/jocforge-domain/tests/f12s_contract.rs` |
-| F12SC | Phase 6 | `crates/jocforge-domain/src/codec/frame_builder.rs` | `crates/jocforge-domain/tests/f12sc_contract.rs` |
-| F12A | Phase 6 | `crates/jocforge-domain/src/codec/bap.rs` | `crates/jocforge-domain/tests/f12a_contract.rs` |
-| F13 | Phase 7 | `crates/jocforge-domain/src/joc/emdf.rs` | `crates/jocforge-domain/tests/f13_contract.rs` |
-| F13F | Phase 7 | `crates/jocforge-domain/src/joc/emdf.rs` | `crates/jocforge-domain/tests/f13f_contract.rs` |
-| F13T | Phase 7 | `crates/jocforge-domain/src/joc/emdf.rs` | `crates/jocforge-domain/tests/f13t_contract.rs` |
-| F13C | Phase 7 | `crates/jocforge-domain/src/joc/emdf.rs` | `crates/jocforge-domain/tests/f13c_contract.rs` |
-| F13D2 | Phase 7 | `crates/jocforge-domain/src/joc/emdf.rs` | `crates/jocforge-domain/tests/f13d2_contract.rs` |
-| F14 | Phase 7 | `crates/jocforge-domain/src/integrity/keyless_checksum.rs` | `crates/jocforge-domain/tests/f14_contract.rs` |
-| F14K | Phase 7 | `crates/jocforge-domain/src/integrity/keyless_checksum.rs` | `crates/jocforge-domain/tests/f14k_contract.rs` |
-| F15 | Phase 7 | `crates/jocforge-domain/src/publication/mod.rs` | `crates/jocforge-domain/tests/f15_contract.rs` |
-| F15P | Phase 7 | `crates/jocforge-domain/src/publication/mod.rs` | `crates/jocforge-domain/tests/f15p_contract.rs` |
-| OWNJ | pre-implementation mapping | `crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/ownj_contract.rs` |
+| Slice | Functional IDs | Spec/vector | Planned files | Planned behavioral tests | Expected first failure | Minimal implementation | Targeted verification | Workspace verification | Commit message | Independent review gate | Exit criteria |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| P1.1 typed clocks + selected profile rejection | F02, F01C, XSTJ | `specs/01-input-and-clock.md`<br>`specs/00-cross-stage-contract-joins.md`<br>`test-vectors/unit/vectors.json` | `domain/timeline/indices.rs`<br>`domain/timeline/join.rs`<br>`domain/profile/selected.rs` | `timeline_index_domains.rs`<br>`selected_profile_rejection.rs` | cross-domain index use and unregistered profile are accepted | distinct index newtypes, checked conversions, one selected row and UNSUPPORTED_PROFILE | targeted timeline/profile tests | fmt/check/clippy/test/boundaries | `feat: add typed clocks and selected profile gate` | fresh review: no generic resolver or future variants | all conversions typed; every unregistered combination rejected before staging |
+| P1.2 required numeric primitives | STRC plus consuming IDs registered before implementation | `specs/00-numeric-semantics.md` and each consumer vector | `domain/numeric/<cohesive-primitive>.rs` only when demanded | property/boundary tests grouped by primitive | overflow, rounding, finite-domain or serialization property fails first | smallest pure primitive set required by a scheduled consumer | primitive-specific property tests | fmt/check/clippy/test/boundaries | `feat: add approved numeric primitives` | every primitive has current consumer; no speculative math | no DSP; each primitive has spec, consumer and failing-first test |
+| P1.3 GTC staged-root lifecycle | GTC, STRC, OWNJ | `specs/00-global-transaction-contract.md`<br>`GLOBAL-TRANSACTION-INPUT-VECTORS.json`<br>`GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json` | `domain/state/programme_root.rs`<br>`domain/transaction/staged_root.rs`<br>`application/src/gtc.rs` | `gtc_owner_lifecycle.rs`<br>`gtc_failure_no_commit.rs`<br>`gtc_restart.rs` | abort cannot prove committed identity unchanged or RETIRED guard | typed status, staged root replacement, abort/fail-stop and full restart only | GTC lifecycle/fault tests | fmt/check/clippy/test/boundaries | `feat: add gtc staged root lifecycle` | fresh review checks 12 roots and reset authority | lifecycle vectors pass; no leaf algorithm executes |
+| P1.4 typed parameter/provider contracts | parameter-bearing IDs in PARAMETER-MAP | registry plus selected providers and generation specs | `domain/parameters/identity.rs`<br>`domain/parameters/contracts.rs`<br>`io/parameters/loader.rs` | `parameter_identity_shape.rs`<br>`parameter_provider_rejection.rs` | wrong identity, version, shape or provider kind is accepted | typed identity/shape contracts; file I/O stays in io; generation execution deferred | provider identity/shape tests | fmt/check/clippy/test/boundaries | `feat: add typed parameter provider contracts` | registry is not provider; no gap is masked | every provider kind typed; NO_RUNTIME_PARAMETER creates no loader |
+
+## Phase 1 exclusions
+
+FFT、QMF、BAP、mantissa、Huffman、EMDF/OAMD/JOC payload、frame writer、PCM/ADM reader、DSP 和 future profiles 全部排除。
 

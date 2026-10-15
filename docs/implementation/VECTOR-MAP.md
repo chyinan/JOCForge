@@ -1,111 +1,111 @@
 # Vector 映射
 
-Vector 路径均相对于 IMPLEMENTER_PACKAGE。U-* leaf vector 收录于 test-vectors/unit/vectors.json；控制与覆盖行可绑定 PRE-HANDOFF-EVIDENCE-COVERAGE.json。
+Coverage ledger 不是 authoritative vector。
 
-| Functional ID | Test-vector asset | Exists at mapping time |
-|---|---|---|
-| STRC | `test-vectors/STATUS-RECONCILIATION-LOCAL-REVIEW-STATUS.json` | YES |
-| GTC | `test-vectors/GLOBAL-TRANSACTION-CONTRACT-LOCAL-REVIEW-STATUS.json` | YES |
-| XSTJ | `test-vectors/CROSS-STAGE-CONTRACT-LOCAL-REVIEW-STATUS.json` | YES |
-| F01 | `test-vectors/FRONTEND-CONFIG-EVENT-LOCAL-REVIEW-STATUS.json` | YES |
-| F01R | `test-vectors/unit/vectors.json` | YES |
-| F01G | `test-vectors/unit/vectors.json` | YES |
-| F01B | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F01GL | `test-vectors/GEOMETRY-ACTUAL-LOCAL-REVIEW-STATUS.json` | YES |
-| F01C | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F01E | `test-vectors/FRONTEND-CONFIG-EVENT-LOCAL-REVIEW-STATUS.json` | YES |
-| F02 | `test-vectors/unit/vectors.json` | YES |
-| F03 | `test-vectors/unit/vectors.json` | YES |
-| F03G | `test-vectors/F03-COLD-ATTRIBUTE-LOCAL-REVIEW-STATUS.json` | YES |
-| F03C | `test-vectors/unit/vectors.json` | YES |
-| F03U | `test-vectors/unit/vectors.json` | YES |
-| F03F | `test-vectors/unit/vectors.json` | YES |
-| F03FC | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F03R | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F03P | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F03N | `test-vectors/unit/vectors.json` | YES |
-| F03S | `test-vectors/unit/vectors.json` | YES |
-| F03FD | `test-vectors/DEGENERATE-FRONTIER-LOCAL-REVIEW-STATUS.json` | YES |
-| F03W | `test-vectors/ADM-INSTALLED48-LOCAL-REVIEW-STATUS.json` | YES |
-| F04 | `test-vectors/unit/vectors.json` | YES |
-| F04C | `test-vectors/F04-WHOLE-SPATIAL-CONSUMER-LOCAL-REVIEW-STATUS.json` | YES |
-| F04A | `test-vectors/unit/vectors.json` | YES |
-| F04F | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F04FM | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F04FCM | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F04G | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F04GA | `test-vectors/SPREAD-ACTUAL-LOCAL-REVIEW-STATUS.json` | YES |
-| F04P | `test-vectors/unit/vectors.json` | YES |
-| F04PG | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F04R | `test-vectors/unit/vectors.json` | YES |
-| F04D | `test-vectors/unit/vectors.json` | YES |
-| F04Q | `test-vectors/unit/vectors.json` | YES |
-| F04RB | `test-vectors/QMF-RECEIVER-WHOLE-BINDING-LOCAL-REVIEW-STATUS.json` | YES |
-| F04QF | `test-vectors/unit/vectors.json` | YES |
-| F04QP | `test-vectors/unit/vectors.json` | YES |
-| F05 | `test-vectors/unit/vectors.json` | YES |
-| F05Q | `test-vectors/JOC-HUFFMAN-LOCAL-REVIEW-STATUS.json` | YES |
-| F05QH | `test-vectors/JOC-HUFFMAN-LOCAL-REVIEW-STATUS.json` | YES |
-| F05J | `test-vectors/unit/vectors.json` | YES |
-| F05JC | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F05JL | `test-vectors/LIVE-JOC-COORDINATOR-LOCAL-REVIEW-STATUS.json` | YES |
-| F05JS | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F05O | `test-vectors/unit/vectors.json` | YES |
-| F05T | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F05H | `test-vectors/unit/vectors.json` | YES |
-| F05L | `test-vectors/OAMD-ID11-LIVE-LOCAL-REVIEW-STATUS.json` | YES |
-| F05R56 | `test-vectors/READER56-TARGET-LOCAL-REVIEW-STATUS.json` | YES |
-| F06 | `test-vectors/unit/vectors.json` | YES |
-| F06L | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F06I | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F06W | `test-vectors/METER-K-MATRIX-LOCAL-REVIEW-STATUS.json` | YES |
-| F06KG | `test-vectors/METER-K-MATRIX-LOCAL-REVIEW-STATUS.json` | YES |
-| F06TP | `test-vectors/METER-TRUEPEAK-LOCAL-REVIEW-STATUS.json` | YES |
-| F06ND | `test-vectors/NONE-DRC-ACTUAL-LOCAL-REVIEW-STATUS.json` | YES |
-| F06NR | `test-vectors/SECONDARY-FFT-LOCAL-REVIEW-STATUS.json` | YES |
-| F06NI | `test-vectors/SECONDARY-FFT-LOCAL-REVIEW-STATUS.json` | YES |
-| F06NF | `test-vectors/SECONDARY-FFT-LOCAL-REVIEW-STATUS.json` | YES |
-| F06WH | `test-vectors/F06-METER-NONE-DRC-WHOLE-LOCAL-REVIEW-STATUS.json` | YES |
-| F06U | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F06DG | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F06D | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F06M | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F06OG | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F06OM | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F06OP | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F06OE | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F06QT | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F06QM | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F06QS | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F06OD | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F06OS | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F06OB | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F06OR | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F06OC | `test-vectors/OAR-MODEL-CALLBACK-LOCAL-REVIEW-STATUS.json` | YES |
-| F06OF | `test-vectors/OAR-FRONTEND-CLOCK-LOCAL-REVIEW-STATUS.json` | YES |
-| F07 | `test-vectors/TRANSIENT-PARAMETERIZED-LOCAL-REVIEW-STATUS.json` | YES |
-| F07A | `test-vectors/TRANSIENT-ACTUAL-LOCAL-REVIEW-STATUS.json` | YES |
-| F08 | `test-vectors/unit/vectors.json` | YES |
-| F08NZ | `test-vectors/F08-NONZERO-TRANSFORM-LOCAL-REVIEW-STATUS.json` | YES |
-| F09 | `test-vectors/unit/vectors.json` | YES |
-| F09E | `test-vectors/POLICY-MATH-PARAMETERIZED-LOCAL-REVIEW-STATUS.json` | YES |
-| F09PA | `test-vectors/POLICY-ACTUAL-LOCAL-REVIEW-STATUS.json` | YES |
-| F09G | `test-vectors/unit/vectors.json` | YES |
-| F09LB | `test-vectors/LFE-GATE-MANTISSA-LOCAL-REVIEW-STATUS.json` | YES |
-| F10 | `test-vectors/unit/vectors.json` | YES |
-| F11 | `test-vectors/unit/vectors.json` | YES |
-| F12 | `test-vectors/CODEC-WIRE-SELECTED-LOCAL-REVIEW-STATUS.json` | YES |
-| F12S | `test-vectors/CODEC-WIRE-SELECTED-LOCAL-REVIEW-STATUS.json` | YES |
-| F12SC | `test-vectors/F07-F12-SOURCE-CHAIN-LOCAL-REVIEW-STATUS.json` | YES |
-| F12A | `test-vectors/PUBLIC-BAP-LOCAL-REVIEW-STATUS.json` | YES |
-| F13 | `test-vectors/unit/vectors.json` | YES |
-| F13F | `test-vectors/unit/vectors.json` | YES |
-| F13T | `test-vectors/JOC-TIMER-ORDER-LOCAL-REVIEW-STATUS.json` | YES |
-| F13C | `test-vectors/unit/vectors.json` | YES |
-| F13D2 | `test-vectors/unit/vectors.json` | YES |
-| F14 | `test-vectors/unit/vectors.json` | YES |
-| F14K | `test-vectors/unit/vectors.json` | YES |
-| F15 | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | YES |
-| F15P | `test-vectors/KEYLESS-PUBLICATION-LOCAL-REVIEW-STATUS.json` | YES |
-| OWNJ | `test-vectors/OWNER-PROJECTION-LOCAL-REVIEW-STATUS.json` | YES |
+| functional_id | vector_kind | authoritative_vectors | parent_integration_vectors | review_evidence | coverage_ledger | planned_test_module |
+|---|---|---|---|---|---|---|
+| STRC | NO_DIRECT_VECTOR | — | — | `test-vectors/STATUS-RECONCILIATION-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/gtc_owner_lifecycle.rs` |
+| GTC | DIRECT_VECTOR | `test-vectors/GLOBAL-TRANSACTION-INPUT-VECTORS.json`<br>`test-vectors/CROSS-STAGE-CONTRACT-JOIN-VECTORS.json` | — | `test-vectors/GLOBAL-TRANSACTION-CONTRACT-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/gtc_owner_lifecycle.rs` |
+| XSTJ | DIRECT_VECTOR | `test-vectors/CROSS-STAGE-CONTRACT-JOIN-VECTORS.json` | — | `test-vectors/CROSS-STAGE-CONTRACT-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/gtc_owner_lifecycle.rs` |
+| F01 | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | `test-vectors/FRONTEND-CONFIG-EVENT-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/frontend_clock_contract.rs` |
+| F01R | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-io/tests/bw64_pcm_bounds.rs`<br>`crates/jocforge-domain/tests/frontend_input_contract.rs` |
+| F01G | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/frontend_clock_contract.rs` |
+| F01B | RULE_AND_PROPERTY_TEST | — | `test-vectors/FRONTEND-CONFIG-EVENT-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/frontend_clock_contract.rs` |
+| F01GL | RULE_AND_PROPERTY_TEST | — | `test-vectors/FRONTEND-CONFIG-EVENT-INPUT-VECTORS.json` | `test-vectors/GEOMETRY-ACTUAL-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/frontend_clock_contract.rs` |
+| F01C | RULE_AND_PROPERTY_TEST | — | `test-vectors/FRONTEND-CONFIG-EVENT-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/frontend_clock_contract.rs` |
+| F01E | RULE_AND_PROPERTY_TEST | — | `test-vectors/FRONTEND-CONFIG-EVENT-INPUT-VECTORS.json` | `test-vectors/FRONTEND-CONFIG-EVENT-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/frontend_clock_contract.rs` |
+| F02 | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/frontend_clock_contract.rs` |
+| F03 | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F03G | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | `test-vectors/F03-COLD-ATTRIBUTE-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F03C | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_selector_contract.rs` |
+| F03U | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_selector_contract.rs` |
+| F03F | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F03FC | RULE_AND_PROPERTY_TEST | — | `test-vectors/ADM-INSTALLED48-WHOLE-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F03R | RULE_AND_PROPERTY_TEST | — | `test-vectors/ADM-INSTALLED48-WHOLE-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F03P | RULE_AND_PROPERTY_TEST | — | `test-vectors/ADM-INSTALLED48-WHOLE-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F03N | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F03S | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F03FD | RULE_AND_PROPERTY_TEST | — | `test-vectors/ADM-INSTALLED48-WHOLE-INPUT-VECTORS.json` | `test-vectors/DEGENERATE-FRONTIER-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F03W | DIRECT_VECTOR | `test-vectors/ADM-INSTALLED48-WHOLE-INPUT-VECTORS.json`<br>`test-vectors/READER56-TARGET-UPDATES-VERIFICATION.json` | — | `test-vectors/ADM-INSTALLED48-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F04 | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F04C | DIRECT_VECTOR | `test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json` | — | `test-vectors/F04-WHOLE-SPATIAL-CONSUMER-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F04A | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F04F | RULE_AND_PROPERTY_TEST | — | `test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F04FM | RULE_AND_PROPERTY_TEST | — | `test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F04FCM | RULE_AND_PROPERTY_TEST | — | `test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F04G | RULE_AND_PROPERTY_TEST | — | `test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F04GA | RULE_AND_PROPERTY_TEST | — | `test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json` | `test-vectors/SPREAD-ACTUAL-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F04P | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F04PG | RULE_AND_PROPERTY_TEST | — | `test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F04R | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F04D | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F04Q | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F04RB | RULE_AND_PROPERTY_TEST | — | `test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json` | `test-vectors/QMF-RECEIVER-WHOLE-BINDING-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F04QF | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F04QP | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_state_lifecycle.rs` |
+| F05 | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/joc_owner_transaction.rs` |
+| F05Q | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | `test-vectors/JOC-HUFFMAN-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/joc_owner_transaction.rs` |
+| F05QH | RULE_AND_PROPERTY_TEST | — | `test-vectors/LIVE-JOC-COORDINATOR-INPUT-VECTORS.json` | `test-vectors/JOC-HUFFMAN-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/joc_owner_transaction.rs` |
+| F05J | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/joc_owner_transaction.rs` |
+| F05JC | RULE_AND_PROPERTY_TEST | — | `test-vectors/LIVE-JOC-COORDINATOR-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/joc_owner_transaction.rs` |
+| F05JL | DIRECT_VECTOR | `test-vectors/LIVE-JOC-COORDINATOR-INPUT-VECTORS.json` | — | `test-vectors/LIVE-JOC-COORDINATOR-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/joc_owner_transaction.rs` |
+| F05JS | RULE_AND_PROPERTY_TEST | — | `test-vectors/LIVE-JOC-COORDINATOR-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/joc_owner_transaction.rs` |
+| F05O | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/joc_owner_transaction.rs` |
+| F05T | RULE_AND_PROPERTY_TEST | — | `test-vectors/LIVE-JOC-COORDINATOR-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/joc_owner_transaction.rs` |
+| F05H | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/joc_owner_transaction.rs` |
+| F05L | DIRECT_VECTOR | `test-vectors/OAMD-ID11-LIVE-INPUT-VECTORS.json`<br>`test-vectors/OAMD-ID11-READER-TRANSACTION-VERIFICATION.json` | — | `test-vectors/OAMD-ID11-LIVE-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/joc_owner_transaction.rs` |
+| F05R56 | DIRECT_VECTOR | `test-vectors/READER56-TARGET-UPDATES-VERIFICATION.json` | — | `test-vectors/READER56-TARGET-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/spatial_reader56_contract.rs` |
+| F06 | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06L | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06I | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06W | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | `test-vectors/METER-K-MATRIX-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06KG | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | `test-vectors/METER-K-MATRIX-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06TP | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | `test-vectors/METER-TRUEPEAK-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06ND | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | `test-vectors/NONE-DRC-ACTUAL-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_secondary_drc.rs` |
+| F06NR | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | `test-vectors/SECONDARY-FFT-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_secondary_drc.rs` |
+| F06NI | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | `test-vectors/SECONDARY-FFT-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_secondary_drc.rs` |
+| F06NF | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | `test-vectors/SECONDARY-FFT-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_secondary_drc.rs` |
+| F06WH | PARENT_INTEGRATION_VECTOR | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | `test-vectors/F06-METER-NONE-DRC-WHOLE-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06U | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06DG | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06D | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06M | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06OG | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06OM | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06OP | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06OE | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06QT | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06QM | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06QS | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06OD | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06OS | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06OB | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06OR | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06OC | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | `test-vectors/OAR-MODEL-CALLBACK-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F06OF | RULE_AND_PROPERTY_TEST | — | `test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json` | `test-vectors/OAR-FRONTEND-CLOCK-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/meter_state_lifecycle.rs` |
+| F07 | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | `test-vectors/TRANSIENT-PARAMETERIZED-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/analysis_plan_contract.rs` |
+| F07A | RULE_AND_PROPERTY_TEST | — | `test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json` | `test-vectors/TRANSIENT-ACTUAL-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/analysis_plan_contract.rs` |
+| F08 | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/analysis_plan_contract.rs` |
+| F08NZ | RULE_AND_PROPERTY_TEST | — | `test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json` | `test-vectors/F08-NONZERO-TRANSFORM-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/analysis_plan_contract.rs` |
+| F09 | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/analysis_plan_contract.rs` |
+| F09E | RULE_AND_PROPERTY_TEST | — | `test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json` | `test-vectors/POLICY-MATH-PARAMETERIZED-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/analysis_plan_contract.rs` |
+| F09PA | RULE_AND_PROPERTY_TEST | — | `test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json` | `test-vectors/POLICY-ACTUAL-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/analysis_plan_contract.rs` |
+| F09G | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/analysis_plan_contract.rs` |
+| F09LB | RULE_AND_PROPERTY_TEST | — | `test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json` | `test-vectors/LFE-GATE-MANTISSA-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/analysis_plan_contract.rs` |
+| F10 | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/analysis_plan_contract.rs` |
+| F11 | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/analysis_plan_contract.rs` |
+| F12 | RULE_AND_PROPERTY_TEST | — | `test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json` | `test-vectors/CODEC-WIRE-SELECTED-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/codec_trial_transaction.rs` |
+| F12S | RULE_AND_PROPERTY_TEST | — | `test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json` | `test-vectors/CODEC-WIRE-SELECTED-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/codec_trial_transaction.rs` |
+| F12SC | PARENT_INTEGRATION_VECTOR | — | `test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json` | `test-vectors/F07-F12-SOURCE-CHAIN-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/codec_trial_transaction.rs` |
+| F12A | RULE_AND_PROPERTY_TEST | — | `test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json` | `test-vectors/PUBLIC-BAP-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/codec_trial_transaction.rs` |
+| F13 | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/metadata_queue_transaction.rs` |
+| F13F | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/metadata_queue_transaction.rs` |
+| F13T | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | `test-vectors/JOC-TIMER-ORDER-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/metadata_queue_transaction.rs` |
+| F13C | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/metadata_queue_transaction.rs` |
+| F13D2 | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/metadata_queue_transaction.rs` |
+| F14 | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/integrity_contract.rs` |
+| F14K | DIRECT_VECTOR | `test-vectors/unit/vectors.json` | — | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/integrity_contract.rs` |
+| F15 | PARENT_INTEGRATION_VECTOR | — | `test-vectors/KEYLESS-PUBLICATION-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-io/tests/atomic_publication.rs`<br>`crates/jocforge-domain/tests/publication_ledger.rs` |
+| F15P | DIRECT_VECTOR | `test-vectors/KEYLESS-PUBLICATION-INPUT-VECTORS.json` | — | `test-vectors/KEYLESS-PUBLICATION-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-io/tests/atomic_publication.rs`<br>`crates/jocforge-domain/tests/publication_ledger.rs` |
+| OWNJ | PARENT_INTEGRATION_VECTOR | — | `test-vectors/SELECTED-OWNER-PROJECTION-INPUT-VECTORS.json` | `test-vectors/OWNER-PROJECTION-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/gtc_owner_lifecycle.rs` |
 
