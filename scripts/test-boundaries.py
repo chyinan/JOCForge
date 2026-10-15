@@ -89,7 +89,7 @@ def mutations():
         ),
         (
             "active-slice-status-drift",
-            edit_map(lambda data: data["status"].update(CLOCK_FOUNDATION="LOCALLY_VERIFIED")),
+            edit_map(lambda data: data["status"].update(CLOCK_FOUNDATION="HOLD")),
         ),
         ("p12-not-held", edit_map(lambda data: data["phase_one"].update({"P1.2": "GO"}))),
         ("p13-not-held", edit_map(lambda data: data["phase_one"].update({"P1.3": "GO"}))),
@@ -151,8 +151,12 @@ def mutations():
             edit_map(lambda data: entry(data, "F02").update(test_modules=[])),
         ),
         (
-            "writer-types-merged",
+            "map-writer-types-merged",
             edit_map(lambda data: entry(data, "F02")["clock"].update(domains=["JocWriterIndex"])),
+        ),
+        (
+            "dataflow-writer-types-merged",
+            append_text(pathlib.Path("docs/architecture/DATAFLOW.md"), "\nJocWriterIndex\n"),
         ),
         (
             "future-entry-materialized",
