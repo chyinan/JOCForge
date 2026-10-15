@@ -6,7 +6,7 @@
     "P1.1": "HOLD",
     "CLOCK_FOUNDATION": "LOCALLY_VERIFIED",
     "SELECTED_PROFILE_GATE": "LOCALLY_VERIFIED",
-    "P1.2": "P1.2_A_B_C_LOCALLY_VERIFIED__P1.2_D_GO",
+    "P1.2": "P1.2_A_B_C_D_LOCALLY_VERIFIED__P1.2_E_NOT_OPEN",
     "P1.3": "HOLD",
     "P1.4": "HOLD"
   },
@@ -1362,7 +1362,7 @@
       ],
       "materialization_status": "MATERIALIZED"
     },
-    "P1.2": "P1.2_A_B_C_LOCALLY_VERIFIED__P1.2_D_GO",
+    "P1.2": "P1.2_A_B_C_D_LOCALLY_VERIFIED__P1.2_E_NOT_OPEN",
     "P1.3": "HOLD",
     "P1.4": "HOLD",
     "P1.2-A": {
@@ -1547,7 +1547,7 @@
     },
     "P1.2-D": {
       "task_id": "P1.2-D-NORMALIZE-Q15-COORDINATE",
-      "status": "GO",
+      "status": "LOCALLY_VERIFIED",
       "consumer": {
         "functional_id": "F03P",
         "module": "crates/jocforge-domain/src/numeric/q15_coordinate.rs",
@@ -1611,7 +1611,7 @@
         "crates/jocforge-domain/tests/numeric_q15_normalization.rs",
         "crates/jocforge-domain/tests/numeric_q15_coordinate.rs"
       ],
-      "implementation_status": "NOT_STARTED"
+      "implementation_status": "LOCALLY_VERIFIED"
     }
   }
 }

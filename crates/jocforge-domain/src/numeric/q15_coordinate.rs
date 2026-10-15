@@ -19,6 +19,31 @@ impl Q15Coordinate {
     }
 }
 
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct NormalizedQ15Coordinate(f32);
+
+impl NormalizedQ15Coordinate {
+    pub const fn value(self) -> f32 {
+        self.0
+    }
+
+    pub const fn to_bits(self) -> u32 {
+        self.0.to_bits()
+    }
+}
+
+/// Converts the typed Q15 integer to its normalized binary32 coordinate.
+///
+/// ```compile_fail
+/// use jocforge_domain::numeric::normalize_q15_coordinate;
+/// normalize_q15_coordinate(0_i32);
+/// ```
+pub fn normalize_q15_coordinate(coordinate: Q15Coordinate) -> NormalizedQ15Coordinate {
+    let converted = coordinate.0 as f32;
+    let normalized = converted / 32_768.0_f32;
+    NormalizedQ15Coordinate(normalized)
+}
+
 pub fn quantize_q15_coordinate(input: f32) -> Result<Q15Coordinate, Q15CoordinateError> {
     let input = FiniteF32::new(input).map_err(|_| Q15CoordinateError::NonFiniteInput)?;
 

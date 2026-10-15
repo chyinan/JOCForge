@@ -226,7 +226,7 @@
     "module": "crates/jocforge-domain/src/numeric/q15_coordinate.rs",
     "scope": "F03P.2 quantized integer divided by 32768 and converted to F32 only"
   },
-  "implementation_status": "NOT_STARTED",
+  "implementation_status": "LOCALLY_VERIFIED",
   "planned_files": [
     "crates/jocforge-domain/src/numeric/q15_coordinate.rs",
     "crates/jocforge-domain/src/numeric/mod.rs"
@@ -271,7 +271,7 @@
     ],
     "section": "F03P.2 15-point basis and quantization"
   },
-  "status": "GO",
+  "status": "LOCALLY_VERIFIED",
   "task_id": "P1.2-D-NORMALIZE-Q15-COORDINATE",
   "vectors": {
     "case_pointers": [
