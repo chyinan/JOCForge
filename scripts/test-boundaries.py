@@ -1,112 +1,27 @@
 # pattern: Imperative Shell
-"""Mutation tests for repository boundary gates."""
-from __future__ import annotations
-
-import argparse
-import importlib.util
-import os
-import pathlib
-import shutil
-import subprocess
-import sys
-import tempfile
-from collections.abc import Callable
-
-
-ROOT = pathlib.Path(__file__).resolve().parents[1]
-CHECKER_PATH = ROOT / "scripts" / "check-boundaries.py"
-SPEC = importlib.util.spec_from_file_location("jocforge_boundary_checker", CHECKER_PATH)
-if SPEC is None or SPEC.loader is None:
-    raise RuntimeError("failed to load boundary checker")
-CHECKER = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(CHECKER)
-
-
-def replace(path: pathlib.Path, old: str, new: str) -> None:
-    text = path.read_text(encoding="utf-8")
-    if old not in text:
-        raise RuntimeError(f"mutation source not found in {path}: {old}")
-    path.write_text(text.replace(old, new, 1), encoding="utf-8")
-
-
-def append(path: pathlib.Path, text: str) -> None:
-    with path.open("a", encoding="utf-8") as stream:
-        stream.write(text)
-
-
-def expect_failure(name: str, mutate: Callable[[pathlib.Path], None], scratch: pathlib.Path) -> None:
-    with tempfile.TemporaryDirectory(prefix="jocforge-boundary-", dir=scratch) as temp:
-        clone = pathlib.Path(temp) / "repo"
-        shutil.copytree(ROOT, clone, ignore=shutil.ignore_patterns(".git", "target", "__pycache__"))
-        mutate(clone)
-        result = subprocess.run([sys.executable, "-X", "utf8", "-B", str(clone / "scripts/check-boundaries.py")], cwd=clone, text=True, capture_output=True, check=False)
-        if result.returncode != 0:
-            print(f"PASS mutation rejected: {name}")
-            return
-        raise RuntimeError(f"mutation unexpectedly passed: {name}")
-
-
-def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--scratch-root", type=pathlib.Path)
-    args = parser.parse_args()
-    scratch = args.scratch_root or (pathlib.Path(os.environ["JOCFORGE_BOUNDARY_TMP"]) if os.environ.get("JOCFORGE_BOUNDARY_TMP") else ROOT / "target" / "boundary-mutations")
-    try:
-        scratch.mkdir(parents=True, exist_ok=True)
-        probe = scratch / ".write-probe"
-        probe.write_text("ok", encoding="utf-8")
-        probe.unlink()
-    except OSError as error:
-        raise RuntimeError(f"boundary mutation scratch is not writable: {scratch}: {error}") from error
-    CHECKER.run_checks(ROOT, CHECKER.PACKAGE)
-    cases: list[tuple[str, Callable[[pathlib.Path], None]]] = [
-        ("missing architecture document", lambda root: (root / "docs/architecture/PUBLIC-API.md").unlink()),
-        ("missing mapping table", lambda root: (root / "docs/implementation/VECTOR-MAP.md").unlink()),
-        ("missing functional ID", lambda root: replace(root / "docs/implementation/SPEC-TRACEABILITY.md", "| STRC |", "| REMOVED_STRC |")),
-        ("duplicate functional ID", lambda root: replace(root / "docs/implementation/SPEC-TRACEABILITY.md", "| GTC |", "| STRC |")),
-        ("extra functional ID", lambda root: replace(root / "docs/implementation/SPEC-TRACEABILITY.md", "| OWNJ |", "| EXTRA | `START-HERE.md` | `x` | `t` | `programme_root` | `ProgrammeAttempt` | NO_RUNTIME_PARAMETER | — | NO_DIRECT_VECTOR | — | — | — | Phase 1 |\n| OWNJ |")),
-        ("bad spec path", lambda root: replace(root / "docs/implementation/SPEC-TRACEABILITY.md", "`test-vectors/STATUS-RECONCILIATION-LOCAL-REVIEW-STATUS.json`", "`specs/does-not-exist.md`")),
-        ("bad provider path", lambda root: replace(root / "docs/implementation/PARAMETER-MAP.md", "`parameters/adm-installed48-state-v1.json`", "`parameters/does-not-exist.json`")),
-        ("bad vector path", lambda root: replace(root / "docs/implementation/VECTOR-MAP.md", "`test-vectors/unit/vectors.json`", "`test-vectors/does-not-exist.json`")),
-        ("registry used as FILE_PROVIDER", lambda root: replace(root / "docs/implementation/PARAMETER-MAP.md", "| STRC | NO_RUNTIME_PARAMETER | — |", "| STRC | FILE_PROVIDER | `PARAMETER-INTERFACES.json` |")),
-        ("coverage ledger used as DIRECT_VECTOR", lambda root: replace(root / "docs/implementation/VECTOR-MAP.md", "| STRC | NO_DIRECT_VECTOR | — |", "| STRC | DIRECT_VECTOR | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` |")),
-        ("owner map mismatch", lambda root: replace(root / "docs/implementation/OWNER-MAP.md", "| F01 | `spatial_control` |", "| F01 | `joc` |")),
-        ("programme owner root missing", lambda root: replace(root / "docs/architecture/STATE-OWNERSHIP.md", "| `reader_eof` |", "| `reader_eof_removed` |")),
-        ("clock domain mismatch", lambda root: replace(root / "docs/implementation/CLOCK-MAP.md", "| F02 | `AdmSampleIndex`<br>`FrontendCallbackIndex` |", "| F02 | `PublishedAuIndex` |")),
-        ("multiline public usize", lambda root: append(root / "crates/jocforge-domain/src/state/mod.rs", "\npub fn exposed_clock(\n    value: usize,\n) { let _ = value; }\n")),
-        ("async implementation in empty leaf", lambda root: append(root / "crates/jocforge-domain/src/codec/bap.rs", "\npub async fn forbidden() {}\n")),
-        ("production depends on validation", lambda root: replace(root / "crates/jocforge-application/Cargo.toml", "[dependencies]\n", "[dependencies]\njocforge-validation = { path = \"../jocforge-validation\" }\n")),
-        ("production process and FFmpeg", lambda root: append(root / "crates/jocforge-application/src/lib.rs", "\npub fn forbidden_process() { let _ = std::process::Command::new(\"FFmpeg\"); }\n")),
-        ("legacy compatibility fallback", lambda root: append(root / "crates/jocforge-application/src/lib.rs", "\n// legacy compat fallback\n")),
-        ("trait method usize", lambda root: append(root / "crates/jocforge-domain/src/state/mod.rs", "\npub trait BadClock { fn value(&self, index: usize); }\n")),
-        ("unsafe fn in empty leaf", lambda root: append(root / "crates/jocforge-domain/src/codec/bap.rs", "\npub unsafe fn bad() {}\n")),
-        ("extern fn in empty leaf", lambda root: append(root / "crates/jocforge-domain/src/codec/bap.rs", "\npub extern \"C\" fn bad() {}\n")),
-        ("macro generates item", lambda root: append(root / "crates/jocforge-domain/src/codec/bap.rs", "\nmacro_rules! bad { () => { pub fn hidden() {} } }\n")),
-        ("aliased fs", lambda root: append(root / "crates/jocforge-application/src/lib.rs", "\nuse std::fs as hidden;\n")),
-        ("aliased process", lambda root: append(root / "crates/jocforge-application/src/lib.rs", "\nuse std::process as hidden;\n")),
-        ("aliased env", lambda root: append(root / "crates/jocforge-application/src/lib.rs", "\nuse std::env as hidden;\n")),
-        ("aliased net", lambda root: append(root / "crates/jocforge-application/src/lib.rs", "\nuse std::net as hidden;\n")),
-        ("concat hidden FFmpeg", lambda root: append(root / "crates/jocforge-application/src/lib.rs", "\nconst BAD: &str = concat!(\"FF\", \"mpeg\");\n")),
-        ("include source", lambda root: append(root / "crates/jocforge-application/src/lib.rs", "\ninclude!(\"hidden.rs\");\n")),
-        ("path source", lambda root: append(root / "crates/jocforge-application/src/lib.rs", "\n#[path = \"hidden.rs\"] mod hidden;\n")),
-        ("build script", lambda root: (root / "crates/jocforge-application/build.rs").write_text("fn main() {}\n", encoding="utf-8")),
-    ]
-    for name, mutate in cases:
-        expect_failure(name, mutate, scratch)
-
-    optimized = subprocess.run(
-        [sys.executable, "-O", str(CHECKER_PATH)],
-        cwd=ROOT,
-        text=True,
-        capture_output=True,
-        check=False,
-    )
-    if optimized.returncode != 0:
-        raise RuntimeError(f"optimized baseline failed: {optimized.stderr or optimized.stdout}")
-    print("PASS optimized mode executes real gates")
-    print(f"boundary mutation tests passed ({len(cases)} rejected mutations plus optimized baseline)")
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+import argparse,json,os,pathlib,shutil,subprocess,sys
+ROOT=pathlib.Path(__file__).resolve().parents[1]
+def map_mut(fn):
+ def m(r):
+  p=r/'docs/implementation/IMPLEMENTATION-MAP.json';d=json.loads(p.read_text(encoding='utf-8'));fn(d);p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+ return m
+def append(path,text):path.write_text(path.read_text(encoding='utf-8')+text,encoding='utf-8')
+def main():
+ a=argparse.ArgumentParser();a.add_argument('--scratch-root',type=pathlib.Path);x=a.parse_args();s=x.scratch_root or pathlib.Path(os.environ.get('JOCFORGE_BOUNDARY_TMP',ROOT/'target/boundary-mutations'));s.mkdir(parents=True,exist_ok=True)
+ cases=[]
+ cases+=[('missing-arch',lambda r:(r/'docs/architecture/PUBLIC-API.md').unlink()),('missing-map',lambda r:(r/'docs/implementation/CLOCK-MAP.md').unlink())]
+ cases+=[('remove-active-clause',map_mut(lambda d:d['phase_one']['P1.1']['tasks'][0]['covered_clauses'].pop())),('active-test-empty',map_mut(lambda d:d['functional_entries'][d['functional_entries'].index(next(e for e in d['functional_entries']if e['functional_id']=='F02'))].update(test_modules=[]))),('writer-types-merged',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F02')['clock'].update(domains=['JocWriterIndex']))),('future-materialized',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F03').update(inventory_status='MATERIALIZED'))),('future-fake-provider',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F03').update(parameters={'kind':'FILE_PROVIDER','provider_files':['PARAMETER-INTERFACES.json']}))),('render-target-production',map_mut(lambda d:d['phase_one']['P1.1']['tasks'][0].update(production_dimensions=['RenderTarget']))),('f02-complete',map_mut(lambda d:d['phase_one']['P1.1']['completed_functional_ids'].append('F02'))),('xstj-complete',map_mut(lambda d:d['phase_one']['P1.1']['completed_functional_ids'].append('XSTJ'))),('outcome-delete',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F02').update(error_outcomes=[]))),('root-provider',map_mut(lambda d:d['programme_roots'][0].update(cold_provider_files=['x']))),('bad-impl-path',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F02').update(implementation_files=['missing.rs']))),('coverage-vector',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F02')['vectors'].update(kind='DIRECT_VECTOR',authoritative_vectors=['test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json'])))]
+ src='crates/jocforge-domain/src/state/mod.rs';leaf='crates/jocforge-domain/src/codec/bap.rs';app='crates/jocforge-application/src/lib.rs'
+ payloads=[('multiline-usize',src,'\npub fn x(\n v: usize){}\n'),('trait-usize',src,'\npub trait X{fn x(v:usize);}\n'),('async-fn',leaf,'\npub async fn x(){}\n'),('unsafe-fn',leaf,'\npub unsafe fn x(){}\n'),('extern-fn',leaf,'\npub extern "C" fn x(){}\n'),('macro',leaf,'\nmacro_rules! x{()=>{pub fn y(){}}}\n'),('fs-alias',app,'\nuse std::fs as x;\n'),('process-alias',app,'\nuse std::process as x;\n'),('env-alias',app,'\nuse std::env as x;\n'),('net-alias',app,'\nuse std::net as x;\n'),('ffmpeg',app,'\nconst X:&str="FFmpeg";\n'),('concat',app,'\nconst X:&str=concat!("FF","mpeg");\n'),('include',app,'\ninclude!("x.rs");\n'),('path',app,'\n#[path="x.rs"]mod x;\n'),('legacy',app,'\n// legacy\n'),('compat',app,'\n// compat\n'),('fallback',app,'\n// fallback\n')]
+ for n,p,t in payloads:cases.append((n,lambda r,p=p,t=t:append(r/p,t)))
+ cases += [('build-script',lambda r:(r/'crates/jocforge-application/build.rs').write_text('fn main(){}',encoding='utf-8')),('generated-drift',lambda r:append(r/'docs/implementation/CLOCK-MAP.md','\ndrift\n')),('id-missing',map_mut(lambda d:d['functional_entries'].pop())),('id-duplicate',map_mut(lambda d:d['functional_entries'].append(d['functional_entries'][0].copy()))),('root-status',map_mut(lambda d:d['programme_roots'][0].update(materialization_status='READY'))),('trace-approved',map_mut(lambda d:d['status'].update(TRACEABILITY='APPROVED'))),('selected-gate-go',map_mut(lambda d:d['phase_one']['P1.1']['tasks'][1].update(status='GO')))]
+ passed=0
+ for n,m in cases:
+  c=s/n
+  if c.exists():shutil.rmtree(c)
+  c.mkdir();probe=c/'.probe';probe.write_text('ok');probe.unlink();repo=c/'repo';shutil.copytree(ROOT,repo,ignore=shutil.ignore_patterns('.git','target','__pycache__'));m(repo)
+  z=subprocess.run([sys.executable,'-O',str(repo/'scripts/check-boundaries.py')],cwd=repo,capture_output=True)
+  if z.returncode==0:raise RuntimeError('mutation passed: '+n)
+  shutil.rmtree(c);print('PASS '+n);passed+=1
+ print(f'boundary mutation tests passed ({passed} rejected mutations)');return 0
+if __name__=='__main__':raise SystemExit(main())

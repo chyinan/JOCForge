@@ -1,110 +1,110 @@
 # 时钟映射
 
-covered_clauses 是该 ID 明确覆盖的 scoped 条款。
+由 IMPLEMENTATION-MAP.json 生成，不得手工修改。
 
-| functional_id | domains | covered_clauses |
-|---|---|---|
-| STRC | `ProgrammeAttempt`<br>`PhaseGeneration` | `ProgrammeAttempt`<br>`PhaseGeneration` |
-| GTC | `ProgrammeAttempt`<br>`PhaseGeneration` | `ProgrammeAttempt`<br>`PhaseGeneration` |
-| XSTJ | `FrontendCallbackIndex`<br>`CodecSourceIndex`<br>`PublishedAuIndex` | `FrontendCallbackIndex`<br>`CodecSourceIndex`<br>`PublishedAuIndex` |
-| F01 | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `AdmSampleIndex`<br>`FrontendCallbackIndex` |
-| F01R | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `AdmSampleIndex`<br>`FrontendCallbackIndex` |
-| F01G | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `AdmSampleIndex`<br>`FrontendCallbackIndex` |
-| F01B | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `AdmSampleIndex`<br>`FrontendCallbackIndex` |
-| F01GL | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `AdmSampleIndex`<br>`FrontendCallbackIndex` |
-| F01C | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `AdmSampleIndex`<br>`FrontendCallbackIndex` |
-| F01E | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `AdmSampleIndex`<br>`FrontendCallbackIndex` |
-| F02 | `AdmSampleIndex`<br>`FrontendCallbackIndex` | `AdmSampleIndex`<br>`FrontendCallbackIndex` |
-| F03 | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F03G | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F03C | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F03U | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F03F | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F03FC | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F03R | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F03P | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F03N | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F03S | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F03FD | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F03W | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F04 | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F04C | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F04A | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F04F | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F04FM | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F04FCM | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F04G | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F04GA | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F04P | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F04PG | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F04R | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F04D | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F04Q | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F04RB | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F04QF | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F04QP | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F05 | `JocDispatchIndex`<br>`JocWriterIndex` | `JocDispatchIndex`<br>`JocWriterIndex` |
-| F05Q | `JocDispatchIndex`<br>`JocWriterIndex` | `JocDispatchIndex`<br>`JocWriterIndex` |
-| F05QH | `JocDispatchIndex`<br>`JocWriterIndex` | `JocDispatchIndex`<br>`JocWriterIndex` |
-| F05J | `JocDispatchIndex`<br>`JocWriterIndex` | `JocDispatchIndex`<br>`JocWriterIndex` |
-| F05JC | `JocDispatchIndex`<br>`JocWriterIndex` | `JocDispatchIndex`<br>`JocWriterIndex` |
-| F05JL | `JocDispatchIndex`<br>`JocWriterIndex` | `JocDispatchIndex`<br>`JocWriterIndex` |
-| F05JS | `JocDispatchIndex`<br>`JocWriterIndex` | `JocDispatchIndex`<br>`JocWriterIndex` |
-| F05O | `JocDispatchIndex`<br>`JocWriterIndex` | `JocDispatchIndex`<br>`JocWriterIndex` |
-| F05T | `JocDispatchIndex`<br>`JocWriterIndex` | `JocDispatchIndex`<br>`JocWriterIndex` |
-| F05H | `JocDispatchIndex`<br>`JocWriterIndex` | `JocDispatchIndex`<br>`JocWriterIndex` |
-| F05L | `JocDispatchIndex`<br>`JocWriterIndex` | `JocDispatchIndex`<br>`JocWriterIndex` |
-| F05R56 | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
-| F06 | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06L | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06I | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06W | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06KG | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06TP | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06ND | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06NR | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06NI | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06NF | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06WH | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06U | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06DG | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06D | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06M | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06OG | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06OM | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06OP | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06OE | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06QT | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06QM | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06QS | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06OD | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06OS | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06OB | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06OR | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06OC | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F06OF | `MeterCallbackIndex`<br>`CodecSourceIndex` | `MeterCallbackIndex`<br>`CodecSourceIndex` |
-| F07 | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` |
-| F07A | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` |
-| F08 | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` |
-| F08NZ | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` |
-| F09 | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` |
-| F09E | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` |
-| F09PA | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` |
-| F09G | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` |
-| F09LB | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` |
-| F10 | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` |
-| F11 | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` |
-| F12 | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` |
-| F12S | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` |
-| F12SC | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` |
-| F12A | `CodecSourceIndex`<br>`CodecBlockIndex` | `CodecSourceIndex`<br>`CodecBlockIndex` |
-| F13 | `CodecSourceIndex`<br>`JocWriterIndex`<br>`PublishedAuIndex` | `CodecSourceIndex`<br>`JocWriterIndex`<br>`PublishedAuIndex` |
-| F13F | `CodecSourceIndex`<br>`JocWriterIndex`<br>`PublishedAuIndex` | `CodecSourceIndex`<br>`JocWriterIndex`<br>`PublishedAuIndex` |
-| F13T | `CodecSourceIndex`<br>`JocWriterIndex`<br>`PublishedAuIndex` | `CodecSourceIndex`<br>`JocWriterIndex`<br>`PublishedAuIndex` |
-| F13C | `CodecSourceIndex`<br>`JocWriterIndex`<br>`PublishedAuIndex` | `CodecSourceIndex`<br>`JocWriterIndex`<br>`PublishedAuIndex` |
-| F13D2 | `CodecSourceIndex`<br>`JocWriterIndex`<br>`PublishedAuIndex` | `CodecSourceIndex`<br>`JocWriterIndex`<br>`PublishedAuIndex` |
-| F14 | `CodecSourceIndex`<br>`PublishedAuIndex` | `CodecSourceIndex`<br>`PublishedAuIndex` |
-| F14K | `CodecSourceIndex`<br>`PublishedAuIndex` | `CodecSourceIndex`<br>`PublishedAuIndex` |
-| F15 | `CodecSourceIndex`<br>`PublishedAuIndex` | `CodecSourceIndex`<br>`PublishedAuIndex` |
-| F15P | `CodecSourceIndex`<br>`PublishedAuIndex` | `CodecSourceIndex`<br>`PublishedAuIndex` |
-| OWNJ | `FrontendCallbackIndex` | `FrontendCallbackIndex` |
+| functional_id | domains | covered_clauses | inventory_status |
+|---|---|---|---|
+| STRC | — | — | INVENTORIED |
+| GTC | — | — | INVENTORIED |
+| XSTJ | `AdmSampleCount`<br>`NormalCallbackCount`<br>`FrontendCallbackIndex`<br>`CodecSourceIndex`<br>`JocDispatchIndex`<br>`JocGeneratedWriterIndex`<br>`OrdinaryPayloadWriterIndex`<br>`JocPoppedWriterIndex`<br>`PublishedAuIndex` | `F01/F02 input sample-count clauses`<br>`callback g`<br>`codec source s=g-2`<br>`JOC dispatch d=s+1=g-1`<br>`generated JOC writer=d-1=s`<br>`source0/1 suppression`<br>`source s>=2 to published AU=s-2`<br>`published AU ordinary/JOC writer offsets`<br>`programme count arithmetic` | INVENTORIED |
+| F01 | — | — | INVENTORIED |
+| F01R | — | — | INVENTORIED |
+| F01G | — | — | INVENTORIED |
+| F01B | — | — | INVENTORIED |
+| F01GL | — | — | INVENTORIED |
+| F01C | — | — | INVENTORIED |
+| F01E | — | — | INVENTORIED |
+| F02 | `AdmSampleCount`<br>`NormalCallbackCount`<br>`FrontendCallbackIndex`<br>`CodecSourceIndex`<br>`JocDispatchIndex`<br>`JocGeneratedWriterIndex`<br>`OrdinaryPayloadWriterIndex`<br>`JocPoppedWriterIndex`<br>`PublishedAuIndex` | `F01/F02 input sample-count clauses`<br>`callback g`<br>`codec source s=g-2`<br>`JOC dispatch d=s+1=g-1`<br>`generated JOC writer=d-1=s`<br>`source0/1 suppression`<br>`source s>=2 to published AU=s-2`<br>`published AU ordinary/JOC writer offsets`<br>`programme count arithmetic` | INVENTORIED |
+| F03 | — | — | INVENTORIED |
+| F03G | — | — | INVENTORIED |
+| F03C | — | — | INVENTORIED |
+| F03U | — | — | INVENTORIED |
+| F03F | — | — | INVENTORIED |
+| F03FC | — | — | INVENTORIED |
+| F03R | — | — | INVENTORIED |
+| F03P | — | — | INVENTORIED |
+| F03N | — | — | INVENTORIED |
+| F03S | — | — | INVENTORIED |
+| F03FD | — | — | INVENTORIED |
+| F03W | — | — | INVENTORIED |
+| F04 | — | — | INVENTORIED |
+| F04C | — | — | INVENTORIED |
+| F04A | — | — | INVENTORIED |
+| F04F | — | — | INVENTORIED |
+| F04FM | — | — | INVENTORIED |
+| F04FCM | — | — | INVENTORIED |
+| F04G | — | — | INVENTORIED |
+| F04GA | — | — | INVENTORIED |
+| F04P | — | — | INVENTORIED |
+| F04PG | — | — | INVENTORIED |
+| F04R | — | — | INVENTORIED |
+| F04D | — | — | INVENTORIED |
+| F04Q | — | — | INVENTORIED |
+| F04RB | — | — | INVENTORIED |
+| F04QF | — | — | INVENTORIED |
+| F04QP | — | — | INVENTORIED |
+| F05 | — | — | INVENTORIED |
+| F05Q | — | — | INVENTORIED |
+| F05QH | — | — | INVENTORIED |
+| F05J | — | — | INVENTORIED |
+| F05JC | — | — | INVENTORIED |
+| F05JL | — | — | INVENTORIED |
+| F05JS | — | — | INVENTORIED |
+| F05O | — | — | INVENTORIED |
+| F05T | — | — | INVENTORIED |
+| F05H | — | — | INVENTORIED |
+| F05L | — | — | INVENTORIED |
+| F05R56 | — | — | INVENTORIED |
+| F06 | — | — | INVENTORIED |
+| F06L | — | — | INVENTORIED |
+| F06I | — | — | INVENTORIED |
+| F06W | — | — | INVENTORIED |
+| F06KG | — | — | INVENTORIED |
+| F06TP | — | — | INVENTORIED |
+| F06ND | — | — | INVENTORIED |
+| F06NR | — | — | INVENTORIED |
+| F06NI | — | — | INVENTORIED |
+| F06NF | — | — | INVENTORIED |
+| F06WH | — | — | INVENTORIED |
+| F06U | — | — | INVENTORIED |
+| F06DG | — | — | INVENTORIED |
+| F06D | — | — | INVENTORIED |
+| F06M | — | — | INVENTORIED |
+| F06OG | — | — | INVENTORIED |
+| F06OM | — | — | INVENTORIED |
+| F06OP | — | — | INVENTORIED |
+| F06OE | — | — | INVENTORIED |
+| F06QT | — | — | INVENTORIED |
+| F06QM | — | — | INVENTORIED |
+| F06QS | — | — | INVENTORIED |
+| F06OD | — | — | INVENTORIED |
+| F06OS | — | — | INVENTORIED |
+| F06OB | — | — | INVENTORIED |
+| F06OR | — | — | INVENTORIED |
+| F06OC | — | — | INVENTORIED |
+| F06OF | — | — | INVENTORIED |
+| F07 | — | — | INVENTORIED |
+| F07A | — | — | INVENTORIED |
+| F08 | — | — | INVENTORIED |
+| F08NZ | — | — | INVENTORIED |
+| F09 | — | — | INVENTORIED |
+| F09E | — | — | INVENTORIED |
+| F09PA | — | — | INVENTORIED |
+| F09G | — | — | INVENTORIED |
+| F09LB | — | — | INVENTORIED |
+| F10 | — | — | INVENTORIED |
+| F11 | — | — | INVENTORIED |
+| F12 | — | — | INVENTORIED |
+| F12S | — | — | INVENTORIED |
+| F12SC | — | — | INVENTORIED |
+| F12A | — | — | INVENTORIED |
+| F13 | — | — | INVENTORIED |
+| F13F | — | — | INVENTORIED |
+| F13T | — | — | INVENTORIED |
+| F13C | — | — | INVENTORIED |
+| F13D2 | — | — | INVENTORIED |
+| F14 | — | — | INVENTORIED |
+| F14K | — | — | INVENTORIED |
+| F15 | — | — | INVENTORIED |
+| F15P | — | — | INVENTORIED |
+| OWNJ | — | — | INVENTORIED |
