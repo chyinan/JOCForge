@@ -833,3 +833,225 @@
   }
 }
 ```
+
+## P1.4-A F01E provider contract audit
+
+```json
+{
+  "boundaries": {
+    "application": "coordinate I/O evidence to domain validation; never bypass receipt",
+    "domain": "recompute SHA/length, identity gate, parse typed value, validate, canonicalize, emit typed provider+receipt; no file access",
+    "io": "read immutable bytes and report diagnostic path/observed length only; no JSON interpretation"
+  },
+  "canonical_reconstruction": {
+    "cold_preimage_hex_source": "parameters/f01e-selected-constructor-v1.json#/cold_preimage_hex",
+    "ensure_ascii": false,
+    "expected_bytes": 4402,
+    "expected_sha256": "9c943879cd36cb45bc7538346cfdf4f71d0998d8f261f75c135045fcb59870aa",
+    "number_rule": "decimal integers only; lowercase true/false/null",
+    "relations": [
+      "manifest SHA authenticates complete provider file bytes",
+      "cold_preimage_hex is expected canonical /value bytes",
+      "cold_sha256 authenticates reconstructed canonical /value bytes"
+    ],
+    "separators": [
+      ",",
+      ":"
+    ],
+    "sort_keys": true,
+    "trailing_bytes": "none",
+    "writer": "custom typed F01E canonical writer; do not rely on generic map serializer"
+  },
+  "dependency_candidate": {
+    "archive_bytes": 158079,
+    "archive_sha256": "e7e9cc8b1b85264074fbcc02a88680c4096b1e47df8f739dceb03bf482f04bd6",
+    "cached_archive": "C:/Users/chyinan/.cargo/registry/cache/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.154.crate",
+    "crate": "serde_json",
+    "custom_required": [
+      "typed exact shape/type/range validator",
+      "custom duplicate-key-rejecting visitor as defense in depth",
+      "custom typed canonical writer"
+    ],
+    "exact_version_candidate": "=1.0.154",
+    "features_candidate": {
+      "default_features": false,
+      "features": [
+        "std"
+      ]
+    },
+    "license": "MIT OR Apache-2.0",
+    "not_relied_on": [
+      "duplicate-key policy before identity",
+      "unknown-field policy before identity",
+      "canonical key ordering",
+      "canonical writer",
+      "arbitrary precision numbers"
+    ],
+    "repository": "https://github.com/serde-rs/json",
+    "required_capabilities": [
+      "UTF-8 JSON syntax parse after identity gate",
+      "integer/string/bool/null access",
+      "custom visitor duplicate-field rejection"
+    ],
+    "status": "REQUIRES_SEPARATE_APPROVAL"
+  },
+  "errors": [
+    {
+      "category": "PARAMETER_IDENTITY",
+      "code": "PACKAGE_MANIFEST_IDENTITY_MISMATCH"
+    },
+    {
+      "category": "PARAMETER_IDENTITY",
+      "code": "PROVIDER_LENGTH_MISMATCH"
+    },
+    {
+      "category": "PARAMETER_IDENTITY",
+      "code": "PROVIDER_SHA256_MISMATCH"
+    },
+    {
+      "category": "INPUT_REJECTION",
+      "code": "PROVIDER_UTF8_ERROR"
+    },
+    {
+      "category": "INPUT_REJECTION",
+      "code": "PROVIDER_JSON_SYNTAX"
+    },
+    {
+      "category": "PARAMETER_IDENTITY",
+      "code": "PROVIDER_SCHEMA_MISMATCH"
+    },
+    {
+      "category": "PARAMETER_IDENTITY",
+      "code": "PROVIDER_SHAPE_TYPE_RANGE"
+    },
+    {
+      "category": "PARAMETER_IDENTITY",
+      "code": "PROVIDER_CANONICAL_PREIMAGE_MISMATCH"
+    },
+    {
+      "category": "PARAMETER_IDENTITY",
+      "code": "PROVIDER_CANONICAL_DIGEST_MISMATCH"
+    }
+  ],
+  "failure": "no provider receipt/state; caller fail-stop before P1.3-B stage",
+  "implementation_status": "NOT_STARTED",
+  "input_acceptance": {
+    "bom": "rejected by identity mismatch",
+    "duplicate_keys": "any modified duplicate-key document rejected by identity mismatch before parser; typed visitor must also reject duplicates defensively",
+    "exact_bytes_only": true,
+    "field_order": "only exact provider byte order accepted; canonical output independently sorts keys",
+    "number_syntax": "alternative numeric spellings rejected by identity mismatch; typed values require exact integer ranges and no floats",
+    "ordering": "identity gate before decode/parse",
+    "trailing_whitespace_or_bytes": "rejected by length/SHA identity mismatch",
+    "unicode": "exact UTF-8 bytes accepted; escape/spelling changes rejected by identity mismatch",
+    "unknown_fields": "any modified unknown-field document rejected by identity mismatch; typed validation rejects unknowns defensively",
+    "utf8": "exact asset must decode as UTF-8; decode failure after identity is PROVIDER_UTF8_ERROR"
+  },
+  "io_input": {
+    "fields": [
+      {
+        "name": "bytes",
+        "type": "immutable Arc<[u8]>"
+      },
+      {
+        "name": "diagnostic_path",
+        "type": "optional path display; never identity"
+      },
+      {
+        "name": "actual_byte_length",
+        "type": "u64",
+        "value": 20138
+      },
+      {
+        "name": "actual_sha256",
+        "type": "[u8;32]",
+        "value": "b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb"
+      },
+      {
+        "name": "package_manifest_sha256",
+        "type": "[u8;32]",
+        "value": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+      }
+    ],
+    "type": "ProviderFileEvidence"
+  },
+  "output": {
+    "receipt": {
+      "fields": [
+        "provider_identity",
+        "provider_file_sha256",
+        "provider_file_bytes",
+        "schema_id",
+        "schema_version",
+        "value_pointer",
+        "canonical_sha256",
+        "canonical_bytes",
+        "provider_generation"
+      ],
+      "immutability": "all fields immutable",
+      "provider_generation": 0,
+      "type": "F01EProviderReceipt"
+    },
+    "validated_provider": "ValidatedF01EColdProvider with private typed fields; no serde_json::Value exposure"
+  },
+  "provider_identity": {
+    "equality": "all fields exact; diagnostic path excluded",
+    "fields": {
+      "delivery_scope": "INTERNAL_RESEARCH_AND_INTERNAL_IMPLEMENTATION_ONLY",
+      "manifest_entry_bytes": 20138,
+      "manifest_entry_path": "parameters/f01e-selected-constructor-v1.json",
+      "manifest_entry_sha256": "b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb",
+      "package_manifest_path": "MANIFEST.json",
+      "package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+      "provider_id": "F01E_SELECTED_COLD_V1",
+      "schema_id": "f01e-selected-constructor.v1",
+      "schema_version": 1
+    },
+    "rejection": "any identity field mismatch rejects before UTF-8/JSON parse",
+    "type": "ProviderIdentity<F01E_SELECTED_COLD_V1>"
+  },
+  "scope": "F01E_SELECTED_COLD_V1 provider identity, typed parse, validation and receipt only",
+  "shape_validation": {
+    "bindings": "dbmd/physical null at cold",
+    "normalized_config_fields": [
+      "sample_rate_hz",
+      "channels",
+      "pcm_bits",
+      "source_samples",
+      "bit_rate_kbps",
+      "bit_rate_enum",
+      "layout_enum",
+      "target_capacity",
+      "frame_samples",
+      "spatial_config_mode",
+      "dispatch_mode",
+      "virtual_prefix_count",
+      "bed_count",
+      "object_count",
+      "event_start_samples",
+      "line_drc",
+      "rf_drc",
+      "time_base"
+    ],
+    "objects": "exact array[28], ordinal 0..27 unique/in order, host/event null cold, sampler false, xyz_u32[3] zero",
+    "pointer": "/value",
+    "ranges": "all selected cold constants exact; bool is not integer",
+    "snapshots": "control38 null or U32[38][13]; regular37 null or U32[37][13]",
+    "top_level_fields": [
+      "schema",
+      "callback_index",
+      "normal_callbacks",
+      "remaining_cached_drains",
+      "phase",
+      "objects",
+      "last_control38_snapshot",
+      "last_regular37_snapshot",
+      "dbmd_binding",
+      "physical_binding",
+      "normalized_config"
+    ]
+  },
+  "status": "READY_FOR_DEPENDENCY_APPROVAL",
+  "task_id": "P1.4-A-F01E-PROVIDER-CONTRACT"
+}
+```
