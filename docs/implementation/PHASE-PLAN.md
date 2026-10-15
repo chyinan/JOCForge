@@ -156,3 +156,63 @@
   }
 }
 ```
+
+## P1.2-C finite F32 truncation slice
+
+```json
+{
+  "consumer": {
+    "functional_id": "F03P",
+    "module": "crates/jocforge-domain/src/numeric/q15_coordinate.rs",
+    "scope": "F03P.2 biased finite F32 to I32 truncation only"
+  },
+  "implementation_status": "NOT_STARTED",
+  "planned_files": [
+    "crates/jocforge-domain/src/numeric/trunc_i32.rs",
+    "crates/jocforge-domain/src/numeric/q15_coordinate.rs",
+    "crates/jocforge-domain/src/numeric/mod.rs"
+  ],
+  "planned_tests": [
+    "crates/jocforge-domain/tests/numeric_trunc_i32.rs",
+    "crates/jocforge-domain/tests/numeric_q15_coordinate.rs"
+  ],
+  "primitive": {
+    "name": "trunc_f32_to_i32",
+    "non_finite": "unrepresentable at API because input is FiniteF32",
+    "overflow": "reject truncated values outside I32 range",
+    "rounding": "truncate toward zero; never rne_int",
+    "saturation": "FORBIDDEN",
+    "signature": "trunc_f32_to_i32(FiniteF32) -> Result<TruncatedI32, TruncI32Error>",
+    "signed_zero": "positive and negative zero both produce integer zero",
+    "subnormal": "all finite magnitudes below one produce integer zero",
+    "typed_value": {
+      "accessor": "pub const fn value(self) -> i32",
+      "mutability": "immutable",
+      "name": "TruncatedI32",
+      "representation": "private i32"
+    },
+    "wrap": "FORBIDDEN"
+  },
+  "spec_binding": {
+    "consumer_file": "specs/03-point-response-and-target-context.md",
+    "consumer_section": "F03P.2 15-point basis and quantization",
+    "file": "specs/00-numeric-semantics.md",
+    "section": "N00.1 trunc toward zero"
+  },
+  "status": "GO",
+  "task_id": "P1.2-C-TRUNC-F32-TO-I32",
+  "vectors": {
+    "case_pointers": [
+      "U-PROJ-AXES",
+      "U-PROJ-ZERO"
+    ],
+    "file": "test-vectors/unit/vectors.json",
+    "kind": "PARENT_INTEGRATION_VECTOR",
+    "property_binding": [
+      "fractional signs truncate toward zero",
+      "signed zero and subnormal to zero",
+      "I32 range rejection"
+    ]
+  }
+}
+```
