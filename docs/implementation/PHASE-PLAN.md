@@ -21,3 +21,53 @@
 10. ordinary/JOC publication offsets
 11. pending ordinary 4247/4248 and JOC 4248
 12. callback 4250 source/writer relation
+
+## P1.2-A consumer-driven numeric slice
+
+```json
+{
+  "consumer": {
+    "functional_id": "F03P",
+    "module": "crates/jocforge-domain/src/spatial/point_response.rs",
+    "scope": "F03P.2 Q15 coordinate quantization only"
+  },
+  "implementation_status": "NOT_STARTED",
+  "planned_files": [
+    "crates/jocforge-domain/src/numeric/q15_coordinate.rs",
+    "crates/jocforge-domain/src/numeric/mod.rs"
+  ],
+  "planned_tests": [
+    "crates/jocforge-domain/tests/numeric_q15_coordinate.rs"
+  ],
+  "primitive": {
+    "input": "finite f32",
+    "name": "quantize_q15_coordinate",
+    "negative_zero": "preserve through multiply/add semantics; truncates to integer zero",
+    "non_finite": "reject input or intermediate NaN/Infinity",
+    "output": "Result<i32, Q15CoordinateError>",
+    "overflow": "reject if final truncated value cannot fit i32",
+    "rounding": "binary32 round-to-nearest ties-to-even at multiply and add",
+    "saturation": "positive values above 32767 saturate to 32767; no negative clamp",
+    "shift": "NOT_APPLICABLE"
+  },
+  "spec_binding": {
+    "file": "specs/03-point-response-and-target-context.md",
+    "numeric_file": "specs/00-numeric-semantics.md",
+    "numeric_sections": [
+      "N00.1",
+      "N00.2"
+    ],
+    "section": "F03P.2 15-point basis and quantization"
+  },
+  "status": "GO",
+  "task_id": "P1.2-A-Q15-COORDINATE",
+  "vectors": {
+    "case_pointers": [
+      "U-PROJ-AXES",
+      "U-PROJ-ZERO"
+    ],
+    "file": "test-vectors/unit/vectors.json",
+    "kind": "PARENT_INTEGRATION_VECTOR"
+  }
+}
+```

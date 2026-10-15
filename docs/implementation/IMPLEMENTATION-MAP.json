@@ -6,7 +6,7 @@
     "P1.1": "HOLD",
     "CLOCK_FOUNDATION": "LOCALLY_VERIFIED",
     "SELECTED_PROFILE_GATE": "LOCALLY_VERIFIED",
-    "P1.2": "HOLD",
+    "P1.2": "ACTIVE_P1.2_A_ONLY",
     "P1.3": "HOLD",
     "P1.4": "HOLD"
   },
@@ -1362,8 +1362,53 @@
       ],
       "materialization_status": "MATERIALIZED"
     },
-    "P1.2": "HOLD",
+    "P1.2": "ACTIVE_P1.2_A_ONLY",
     "P1.3": "HOLD",
-    "P1.4": "HOLD"
+    "P1.4": "HOLD",
+    "P1.2-A": {
+      "task_id": "P1.2-A-Q15-COORDINATE",
+      "status": "GO",
+      "consumer": {
+        "functional_id": "F03P",
+        "module": "crates/jocforge-domain/src/spatial/point_response.rs",
+        "scope": "F03P.2 Q15 coordinate quantization only"
+      },
+      "spec_binding": {
+        "file": "specs/03-point-response-and-target-context.md",
+        "section": "F03P.2 15-point basis and quantization",
+        "numeric_file": "specs/00-numeric-semantics.md",
+        "numeric_sections": [
+          "N00.1",
+          "N00.2"
+        ]
+      },
+      "primitive": {
+        "name": "quantize_q15_coordinate",
+        "input": "finite f32",
+        "output": "Result<i32, Q15CoordinateError>",
+        "rounding": "binary32 round-to-nearest ties-to-even at multiply and add",
+        "shift": "NOT_APPLICABLE",
+        "saturation": "positive values above 32767 saturate to 32767; no negative clamp",
+        "overflow": "reject if final truncated value cannot fit i32",
+        "non_finite": "reject input or intermediate NaN/Infinity",
+        "negative_zero": "preserve through multiply/add semantics; truncates to integer zero"
+      },
+      "vectors": {
+        "kind": "PARENT_INTEGRATION_VECTOR",
+        "file": "test-vectors/unit/vectors.json",
+        "case_pointers": [
+          "U-PROJ-AXES",
+          "U-PROJ-ZERO"
+        ]
+      },
+      "planned_files": [
+        "crates/jocforge-domain/src/numeric/q15_coordinate.rs",
+        "crates/jocforge-domain/src/numeric/mod.rs"
+      ],
+      "planned_tests": [
+        "crates/jocforge-domain/tests/numeric_q15_coordinate.rs"
+      ],
+      "implementation_status": "NOT_STARTED"
+    }
   }
 }
