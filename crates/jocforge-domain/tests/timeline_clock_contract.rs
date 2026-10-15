@@ -1,0 +1,92 @@
+// pattern: Functional Core
+use jocforge_domain::timeline::{
+    AdmSampleCount, CodecSourceIndex, FrontendCallbackIndex, PublicationDisposition,
+    programme_counts, publication_for_source, source_for_callback,
+};
+
+#[test]
+fn sample_count_accounting_matches_scoped_contract() {
+    let cases = [
+        (1, (1, 1535, 5, 3, 1, 1)),
+        (1535, (1, 1, 5, 3, 1, 1535)),
+        (1536, (1, 0, 5, 3, 1, 1536)),
+        (1537, (2, 1535, 6, 4, 2, 1)),
+        (6_522_906, (4247, 486, 4251, 4249, 4247, 1050)),
+    ];
+    for (samples, expected) in cases {
+        let actual = programme_counts(AdmSampleCount::new(samples).unwrap()).unwrap();
+        assert_eq!(actual.as_tuple(), expected);
+    }
+    assert!(AdmSampleCount::new(0).is_err());
+    assert!(programme_counts(AdmSampleCount::new(u64::MAX).unwrap()).is_err());
+}
+
+#[test]
+fn callback_source_dispatch_and_generated_writer_are_checked() {
+    assert_eq!(source_for_callback(FrontendCallbackIndex::new(0)), None);
+    assert_eq!(source_for_callback(FrontendCallbackIndex::new(1)), None);
+    let source = source_for_callback(FrontendCallbackIndex::new(2)).unwrap();
+    assert_eq!(source.value(), 0);
+    assert_eq!(source.dispatch().unwrap().value(), 1);
+    assert_eq!(
+        source
+            .dispatch()
+            .unwrap()
+            .generated_writer()
+            .unwrap()
+            .value(),
+        0
+    );
+    let last = source_for_callback(FrontendCallbackIndex::new(4250)).unwrap();
+    assert_eq!(
+        (last.value(), last.dispatch().unwrap().value()),
+        (4248, 4249)
+    );
+}
+
+#[test]
+fn publication_distinguishes_generated_popped_and_ordinary_writers() {
+    assert!(matches!(
+        publication_for_source(CodecSourceIndex::new(0)).unwrap(),
+        PublicationDisposition::Suppressed { joc_popped: None }
+    ));
+    match publication_for_source(CodecSourceIndex::new(1)).unwrap() {
+        PublicationDisposition::Suppressed {
+            joc_popped: Some(writer),
+        } => assert_eq!(writer.value(), 0),
+        other @ PublicationDisposition::Suppressed { joc_popped: None } => {
+            panic!("unexpected disposition: {other:?}")
+        }
+        other @ PublicationDisposition::Published(_) => panic!("unexpected disposition: {other:?}"),
+    }
+    match publication_for_source(CodecSourceIndex::new(2)).unwrap() {
+        PublicationDisposition::Published(x) => assert_eq!(
+            (x.au.value(), x.ordinary.value(), x.joc_popped.value()),
+            (0, 0, 1)
+        ),
+        other @ PublicationDisposition::Suppressed { .. } => {
+            panic!("unexpected disposition: {other:?}")
+        }
+    }
+    match publication_for_source(CodecSourceIndex::new(4248)).unwrap() {
+        PublicationDisposition::Published(x) => assert_eq!(
+            (x.au.value(), x.ordinary.value(), x.joc_popped.value()),
+            (4246, 4246, 4247)
+        ),
+        other @ PublicationDisposition::Suppressed { .. } => {
+            panic!("unexpected disposition: {other:?}")
+        }
+    }
+}
+
+#[test]
+fn terminal_pending_writers_are_explicit() {
+    let counts = programme_counts(AdmSampleCount::new(6_522_906).unwrap()).unwrap();
+    assert_eq!(
+        counts
+            .ordinary_pending()
+            .map(jocforge_domain::timeline::OrdinaryPayloadWriterIndex::value),
+        [4247, 4248]
+    );
+    assert_eq!(counts.joc_pending().value(), 4248);
+}

@@ -6,7 +6,7 @@
 |---|---|---|---|---|---|---|---|
 | STRC | `test-vectors/STATUS-RECONCILIATION-LOCAL-REVIEW-STATUS.json` | `programme_root` | Phase 1 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
 | GTC | `specs/00-global-transaction-contract.md` | `programme_root` | Phase 1 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
-| XSTJ | `specs/00-cross-stage-contract-joins.md` | `programme_root` | Phase 1 | INVENTORIED | NOT_STARTED | `crates/jocforge-domain/src/timeline/index.rs`<br>`crates/jocforge-domain/src/timeline/clock.rs`<br>`crates/jocforge-domain/src/timeline/mod.rs` | `crates/jocforge-domain/tests/timeline_clock_contract.rs` |
+| XSTJ | `specs/00-cross-stage-contract-joins.md` | `programme_root` | Phase 1 | INVENTORIED | SCOPED_CLAUSES_LOCALLY_VERIFIED | `crates/jocforge-domain/src/timeline/index.rs`<br>`crates/jocforge-domain/src/timeline/clock.rs`<br>`crates/jocforge-domain/src/timeline/mod.rs` | `crates/jocforge-domain/tests/timeline_clock_contract.rs` |
 | F01 | `specs/01-input-and-clock.md` | `spatial_control` | Phase 2 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
 | F01R | `specs/01-input-and-clock.md` | `spatial_control` | Phase 2 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
 | F01G | `specs/01-adm-graph-and-time.md` | `spatial_control` | Phase 2 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
@@ -14,7 +14,7 @@
 | F01GL | `specs/01-selected-geometry-layout-and-bed-routing.md` | `spatial_control` | Phase 2 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
 | F01C | `specs/01-frontend-config-normalization.md` | `spatial_control` | Phase 1 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
 | F01E | `specs/01-frontend-config-dbmd-events.md` | `spatial_control` | Phase 2 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
-| F02 | `specs/01-input-and-clock.md` | `spatial_control` | Phase 1 | INVENTORIED | NOT_STARTED | `crates/jocforge-domain/src/timeline/index.rs`<br>`crates/jocforge-domain/src/timeline/clock.rs`<br>`crates/jocforge-domain/src/timeline/mod.rs` | `crates/jocforge-domain/tests/timeline_clock_contract.rs` |
+| F02 | `specs/01-input-and-clock.md` | `spatial_control` | Phase 1 | INVENTORIED | SCOPED_CLAUSES_LOCALLY_VERIFIED | `crates/jocforge-domain/src/timeline/index.rs`<br>`crates/jocforge-domain/src/timeline/clock.rs`<br>`crates/jocforge-domain/src/timeline/mod.rs` | `crates/jocforge-domain/tests/timeline_clock_contract.rs` |
 | F03 | `specs/03-spatial-and-audio.md` | `spatial_control` | Phase 3 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
 | F03G | `specs/03-gate-and-target-installation.md` | `spatial_control` | Phase 3 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
 | F03C | `specs/03-selector-affinity-and-selection.md` | `spatial_control` | Phase 3 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |

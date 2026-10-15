@@ -4,7 +4,7 @@
     "ARCHITECTURE_DESIGN": "APPROVED",
     "TRACEABILITY": "PARTIALLY_MATERIALIZED",
     "P1.1": "HOLD",
-    "CLOCK_FOUNDATION": "GO",
+    "CLOCK_FOUNDATION": "LOCALLY_VERIFIED",
     "SELECTED_PROFILE_GATE": "HOLD",
     "P1.2": "HOLD",
     "P1.3": "HOLD",
@@ -115,7 +115,7 @@
       ],
       "status": "NOT_STARTED",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "NOT_STARTED",
+      "implementation_status": "SCOPED_CLAUSES_LOCALLY_VERIFIED",
       "active_slice_materialization": "MATERIALIZED"
     },
     {
@@ -274,7 +274,7 @@
       ],
       "status": "NOT_STARTED",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "NOT_STARTED",
+      "implementation_status": "SCOPED_CLAUSES_LOCALLY_VERIFIED",
       "active_slice_materialization": "MATERIALIZED"
     },
     {
@@ -1302,7 +1302,7 @@
           "planned_tests": [
             "crates/jocforge-domain/tests/timeline_clock_contract.rs"
           ],
-          "status": "GO"
+          "status": "LOCALLY_VERIFIED"
         },
         {
           "task_id": "SELECTED-PROFILE-GATE",
