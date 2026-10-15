@@ -1,0 +1,13 @@
+name: Windows release scaffold
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo build --workspace --release --locked
+      - run: cargo test --workspace --locked
+      - run: echo "release disabled pending architecture and implementation review"

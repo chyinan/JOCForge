@@ -1,0 +1,12 @@
+[package]
+name = "jocforge"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+jocforge-application = { path = "../jocforge-application" }
+
+[lints]
+workspace = true

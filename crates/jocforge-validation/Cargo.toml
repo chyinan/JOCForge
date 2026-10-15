@@ -1,0 +1,14 @@
+[package]
+name = "jocforge-validation"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+jocforge-application = { path = "../jocforge-application" }
+jocforge-io = { path = "../jocforge-io" }
+jocforge-domain = { path = "../jocforge-domain" }
+
+[lints]
+workspace = true
