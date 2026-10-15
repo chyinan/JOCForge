@@ -289,3 +289,55 @@
   }
 }
 ```
+
+## P1.2 scoped closure
+
+```json
+{
+  "completed_functional_ids": [],
+  "future_consumers": {
+    "implementation_status": "DEFERRED_DETAILED_MAPPING",
+    "inventory_status": "INVENTORIED",
+    "reopen_rule": "each new consumer requires a new independent P1.2 slice with consumer/spec/vector/error binding before implementation"
+  },
+  "global_numeric_complete": false,
+  "materialized_consumers": [
+    {
+      "clause": "F03P.2",
+      "functional_id": "F03P"
+    }
+  ],
+  "scope": "current materialized numeric consumers only",
+  "status": "LOCALLY_VERIFIED",
+  "verified_slices": [
+    {
+      "primitives": [
+        "quantize_q15_coordinate"
+      ],
+      "slice": "P1.2-A"
+    },
+    {
+      "primitives": [
+        "FiniteF32",
+        "r32_mul",
+        "r32_add"
+      ],
+      "slice": "P1.2-B"
+    },
+    {
+      "primitives": [
+        "trunc_f32_to_i32",
+        "TruncatedI32"
+      ],
+      "slice": "P1.2-C"
+    },
+    {
+      "primitives": [
+        "normalize_q15_coordinate",
+        "NormalizedQ15Coordinate"
+      ],
+      "slice": "P1.2-D"
+    }
+  ]
+}
+```

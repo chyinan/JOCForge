@@ -6,7 +6,7 @@
     "P1.1": "HOLD",
     "CLOCK_FOUNDATION": "LOCALLY_VERIFIED",
     "SELECTED_PROFILE_GATE": "LOCALLY_VERIFIED",
-    "P1.2": "P1.2_A_B_C_D_LOCALLY_VERIFIED__P1.2_E_NOT_OPEN",
+    "P1.2": "SCOPED_COMPLETE_CURRENT_MATERIALIZED_CONSUMERS__FUTURE_CONSUMERS_DEFERRED",
     "P1.3": "HOLD",
     "P1.4": "HOLD"
   },
@@ -1362,7 +1362,7 @@
       ],
       "materialization_status": "MATERIALIZED"
     },
-    "P1.2": "P1.2_A_B_C_D_LOCALLY_VERIFIED__P1.2_E_NOT_OPEN",
+    "P1.2": "SCOPED_COMPLETE_CURRENT_MATERIALIZED_CONSUMERS__FUTURE_CONSUMERS_DEFERRED",
     "P1.3": "HOLD",
     "P1.4": "HOLD",
     "P1.2-A": {
@@ -1612,6 +1612,53 @@
         "crates/jocforge-domain/tests/numeric_q15_coordinate.rs"
       ],
       "implementation_status": "LOCALLY_VERIFIED"
+    },
+    "P1.2-closure": {
+      "status": "LOCALLY_VERIFIED",
+      "scope": "current materialized numeric consumers only",
+      "materialized_consumers": [
+        {
+          "functional_id": "F03P",
+          "clause": "F03P.2"
+        }
+      ],
+      "verified_slices": [
+        {
+          "slice": "P1.2-A",
+          "primitives": [
+            "quantize_q15_coordinate"
+          ]
+        },
+        {
+          "slice": "P1.2-B",
+          "primitives": [
+            "FiniteF32",
+            "r32_mul",
+            "r32_add"
+          ]
+        },
+        {
+          "slice": "P1.2-C",
+          "primitives": [
+            "trunc_f32_to_i32",
+            "TruncatedI32"
+          ]
+        },
+        {
+          "slice": "P1.2-D",
+          "primitives": [
+            "normalize_q15_coordinate",
+            "NormalizedQ15Coordinate"
+          ]
+        }
+      ],
+      "completed_functional_ids": [],
+      "future_consumers": {
+        "inventory_status": "INVENTORIED",
+        "implementation_status": "DEFERRED_DETAILED_MAPPING",
+        "reopen_rule": "each new consumer requires a new independent P1.2 slice with consumer/spec/vector/error binding before implementation"
+      },
+      "global_numeric_complete": false
     }
   }
 }
