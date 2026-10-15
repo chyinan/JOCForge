@@ -78,3 +78,81 @@
   }
 }
 ```
+
+## P1.2-B finite R32 add/multiply slice
+
+```json
+{
+  "consumer": {
+    "functional_id": "F03P",
+    "module": "crates/jocforge-domain/src/numeric/q15_coordinate.rs",
+    "scope": "F03P.2 multiply and signed-half add rounding points only"
+  },
+  "implementation_status": "NOT_STARTED",
+  "planned_files": [
+    "crates/jocforge-domain/src/numeric/finite_f32.rs",
+    "crates/jocforge-domain/src/numeric/q15_coordinate.rs",
+    "crates/jocforge-domain/src/numeric/mod.rs"
+  ],
+  "planned_tests": [
+    "crates/jocforge-domain/tests/numeric_r32_primitives.rs",
+    "crates/jocforge-domain/tests/numeric_q15_coordinate.rs"
+  ],
+  "primitives": [
+    {
+      "accessors": [
+        "pub const fn value(self) -> f32",
+        "pub const fn to_bits(self) -> u32"
+      ],
+      "name": "FiniteF32",
+      "representation": "private f32",
+      "semantics": [
+        "reject NaN/Infinity",
+        "preserve positive/negative zero bits",
+        "preserve finite subnormal bits"
+      ],
+      "signature": "FiniteF32::new(f32) -> Result<FiniteF32, FiniteF32Error>"
+    },
+    {
+      "fusion": "FORBIDDEN",
+      "name": "r32_mul",
+      "overflow": "reject non-finite result",
+      "rounding": "one binary32 round-to-nearest ties-to-even point",
+      "signature": "r32_mul(FiniteF32, FiniteF32) -> Result<FiniteF32, R32Error>",
+      "signed_zero": "input signs XOR"
+    },
+    {
+      "fusion": "FORBIDDEN",
+      "name": "r32_add",
+      "overflow": "reject non-finite result",
+      "rounding": "one binary32 round-to-nearest ties-to-even point",
+      "signature": "r32_add(FiniteF32, FiniteF32) -> Result<FiniteF32, R32Error>",
+      "signed_zero": "exact cancellation and opposite zero produce +0; same-sign zeros preserve sign"
+    }
+  ],
+  "spec_binding": {
+    "consumer_file": "specs/03-point-response-and-target-context.md",
+    "consumer_section": "F03P.2 15-point basis and quantization",
+    "file": "specs/00-numeric-semantics.md",
+    "sections": [
+      "N00.1 primitives",
+      "N00.2 boundaries"
+    ]
+  },
+  "status": "GO",
+  "task_id": "P1.2-B-FINITE-R32-ADD-MUL",
+  "vectors": {
+    "case_pointers": [
+      "U-PROJ-AXES",
+      "U-PROJ-ZERO"
+    ],
+    "file": "test-vectors/unit/vectors.json",
+    "kind": "PARENT_INTEGRATION_VECTOR",
+    "property_binding": [
+      "bit-pattern signed-zero cases",
+      "finite subnormal preservation",
+      "separate multiply then add differs from fused result"
+    ]
+  }
+}
+```

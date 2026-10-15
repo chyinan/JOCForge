@@ -11,6 +11,8 @@ def render(d):
  o['ERROR-MAP.md']=tab('错误 outcome 映射',['functional_id','error_code','category','trigger','programme_state_after','caller_action'],er);o['PARAMETER-MAP.md']=tab('参数映射',['functional_id','kind','provider_files','inventory_status'],[[e['functional_id'],e.get('parameters',{}).get('kind','—'),refs(e.get('parameters',{}).get('provider_files',[])),e['inventory_status']]for e in es]);o['VECTOR-MAP.md']=tab('Vector 映射',['functional_id','kind','authoritative_vectors','case_pointers','inventory_status'],[[e['functional_id'],e.get('vectors',{}).get('kind','—'),refs(e.get('vectors',{}).get('authoritative_vectors',[])),refs(e.get('vectors',{}).get('case_pointers',[])),e['inventory_status']]for e in es]);p=d['phase_one']['P1.1'];o['PHASE-PLAN.md']=tab('Phase 1 计划',['task_id','functional_scope','covered_clauses','planned_files','planned_tests','status'],[[t['task_id'],json.dumps(t.get('functional_scope',{}),ensure_ascii=False,sort_keys=True),refs(t.get('covered_clauses',[])),refs(t.get('planned_files',[])),refs(t.get('planned_tests',[])),t['status']]for t in p['tasks']])+'\n## Failing-first tests\n\n'+'\n'.join(f'{i}. {x}'for i,x in enumerate(p['failing_first_tests'],1))+'\n'
  if 'P1.2-A'in d['phase_one']:
   a=d['phase_one']['P1.2-A'];o['PHASE-PLAN.md']+='\n## P1.2-A consumer-driven numeric slice\n\n```json\n'+json.dumps(a,ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
+ if 'P1.2-B'in d['phase_one']:
+  b=d['phase_one']['P1.2-B'];o['PHASE-PLAN.md']+='\n## P1.2-B finite R32 add/multiply slice\n\n```json\n'+json.dumps(b,ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
  return o
 def main():
  a=argparse.ArgumentParser();a.add_argument('--check',action='store_true');x=a.parse_args();d=json.loads(M.read_text(encoding='utf-8'));bad=[]
