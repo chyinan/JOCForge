@@ -15,8 +15,20 @@
       "maxItems": 104,
       "items": {
         "type": "object",
-        "required": ["functional_id", "spec_files", "owner", "planned_phase", "inventory_status", "implementation_status"],
-        "allOf": [{"if": {"properties": {"active_slice_materialization": {"const": "MATERIALIZED"}}}, "then": {"required": ["implementation_files", "test_modules", "clock", "parameters", "vectors", "error_outcomes", "phase_scope"]}}]
+        "required": ["functional_id", "spec_files", "owner", "planned_phase", "status"],
+        "allOf": [
+          {
+            "if": {"properties": {"status": {"const": "DEFERRED_DETAILED_MAPPING"}}},
+            "then": {"maxProperties": 5}
+          },
+          {
+            "if": {"properties": {"active_slice_materialization": {"const": "MATERIALIZED"}}},
+            "then": {
+              "required": ["implementation_files", "test_modules", "clock", "parameters", "vectors", "error_outcomes", "phase_scope", "implementation_status", "inventory_status"],
+              "maxProperties": 15
+            }
+          }
+        ]
       }
     },
     "programme_roots": {
