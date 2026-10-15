@@ -7,6 +7,7 @@ pub mod integrity;
 pub mod joc;
 pub mod meter;
 pub mod numeric;
+pub mod profile;
 pub mod publication;
 pub mod spatial;
 pub mod state;
