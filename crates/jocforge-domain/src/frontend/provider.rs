@@ -184,37 +184,37 @@ pub struct F01EProviderLineage {
 }
 
 #[derive(Clone, Debug)]
-struct ObjectCold {
-    ordinal: u32,
+pub(super) struct ObjectCold {
+    pub(super) ordinal: u32,
 }
 #[derive(Clone, Debug)]
-struct NormalizedConfig {
-    sample_rate_hz: u32,
-    channels: u32,
-    pcm_bits: u32,
-    source_samples: u64,
-    bit_rate_kbps: u32,
-    bit_rate_enum: u32,
-    layout_enum: u32,
-    target_capacity: u32,
-    frame_samples: u32,
-    spatial_config_mode: u32,
-    dispatch_mode: u32,
-    virtual_prefix_count: u32,
-    bed_count: u32,
-    object_count: u32,
-    event_start_samples: u64,
-    line_drc: String,
-    rf_drc: String,
-    time_base: String,
+pub(super) struct NormalizedConfig {
+    pub(super) sample_rate_hz: u32,
+    pub(super) channels: u32,
+    pub(super) pcm_bits: u32,
+    pub(super) source_samples: u64,
+    pub(super) bit_rate_kbps: u32,
+    pub(super) bit_rate_enum: u32,
+    pub(super) layout_enum: u32,
+    pub(super) target_capacity: u32,
+    pub(super) frame_samples: u32,
+    pub(super) spatial_config_mode: u32,
+    pub(super) dispatch_mode: u32,
+    pub(super) virtual_prefix_count: u32,
+    pub(super) bed_count: u32,
+    pub(super) object_count: u32,
+    pub(super) event_start_samples: u64,
+    pub(super) line_drc: String,
+    pub(super) rf_drc: String,
+    pub(super) time_base: String,
 }
 #[derive(Clone, Debug)]
-struct F01ECold {
-    callback_index: u64,
-    normal_callbacks: u64,
-    remaining_cached_drains: u32,
-    objects: Vec<ObjectCold>,
-    config: NormalizedConfig,
+pub(super) struct F01ECold {
+    pub(super) callback_index: u64,
+    pub(super) normal_callbacks: u64,
+    pub(super) remaining_cached_drains: u32,
+    pub(super) objects: Vec<ObjectCold>,
+    pub(super) config: NormalizedConfig,
 }
 
 #[derive(Clone, Debug)]
@@ -346,6 +346,9 @@ impl ValidatedF01EColdProvider {
     }
     pub const fn receipt(&self) -> &F01EProviderReceipt {
         &self.receipt
+    }
+    pub(super) fn into_parts(self) -> (F01ECold, Arc<[u8]>, F01EProviderReceipt) {
+        (self.value, self.canonical, self.receipt)
     }
 }
 
@@ -683,7 +686,15 @@ fn canonical_config(o: &mut Vec<u8>, c: &NormalizedConfig) {
 
 #[cfg(test)]
 mod tests {
-    use super::{F01EProviderError, parse_f01e_manifest_entry};
+    use super::{
+        F01EProviderError, PackageManifestEvidence, ProviderFileEvidence, ProviderSha256,
+        parse_f01e_manifest_entry, validate_f01e_package_manifest, validate_f01e_provider,
+    };
+    use crate::{
+        frontend::{FrontendControlError, FrontendControlMachine},
+        timeline::FrontendCallbackIndex,
+    };
+    use std::path::PathBuf;
 
     const PATH: &str = "parameters/f01e-selected-constructor-v1.json";
     const SHA: &str = "b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb";
@@ -712,5 +723,29 @@ mod tests {
                 Err(F01EProviderError::PackageManifestEntry)
             ));
         }
+    }
+
+    #[test]
+    fn frontend_prepare_rejects_a_receipt_with_different_provider_lineage() {
+        let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/f01e_provider");
+        let manifest = PackageManifestEvidence::new(
+            std::fs::read(root.join("MANIFEST.json")).unwrap().into(),
+            None,
+        );
+        let provider = ProviderFileEvidence::new(
+            std::fs::read(root.join("f01e-selected-constructor-v1.json"))
+                .unwrap()
+                .into(),
+            None,
+        );
+        let manifest = validate_f01e_package_manifest(&manifest).unwrap();
+        let validated = validate_f01e_provider(&provider, &manifest).unwrap();
+        let mut wrong_receipt = validated.receipt().clone();
+        wrong_receipt.lineage.manifest_sha256 = ProviderSha256::digest(b"different manifest");
+        let machine = FrontendControlMachine::from_provider(validated).unwrap();
+        assert!(matches!(
+            machine.prepare("tx", FrontendCallbackIndex::new(0), 0, &wrong_receipt),
+            Err(FrontendControlError::ProviderMismatch)
+        ));
     }
 }

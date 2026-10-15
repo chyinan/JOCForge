@@ -707,7 +707,7 @@
         "type": "immutable selected config record"
       }
     ],
-    "implementation_status": "NOT_STARTED",
+    "implementation_status": "P1.3_B1_LOCALLY_VERIFIED_STAGING_ONLY",
     "linear_capabilities": {
       "machine": {
         "clone": false,
@@ -730,7 +730,7 @@
         "type": "FrontendControlStaged"
       }
     },
-    "materialization_status": "READY_FOR_IMPLEMENTATION",
+    "materialization_status": "PARTIALLY_MATERIALIZED_NO_COMMIT",
     "permissions": {
       "abort": {
         "authority": "future global CallbackTransaction coordinator",
@@ -825,10 +825,10 @@
   },
   "task": {
     "cross_root_atomic_commit": "DEFERRED_NOT_IMPLEMENTED",
-    "implementation_status": "NOT_STARTED",
+    "implementation_status": "P1.3_B1_LOCALLY_VERIFIED_STAGING_ONLY",
     "prerequisite": "P1.4-A-F01E-PROVIDER-CONTRACT LOCALLY_VERIFIED",
     "programme_root": "frontend_control",
-    "status": "SATISFIED_READY_FOR_IMPLEMENTATION",
+    "status": "BLOCKED_ON_CROSS_ROOT_COORDINATOR",
     "task_id": "P1.3-B-FRONTEND-CONTROL-AUDIT"
   }
 }

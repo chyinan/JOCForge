@@ -7,7 +7,7 @@
     "CLOCK_FOUNDATION": "LOCALLY_VERIFIED",
     "SELECTED_PROFILE_GATE": "LOCALLY_VERIFIED",
     "P1.2": "SCOPED_COMPLETE_CURRENT_MATERIALIZED_CONSUMERS__FUTURE_CONSUMERS_DEFERRED",
-    "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B_READY_FOR_IMPLEMENTATION",
+    "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B1_STAGING_ONLY__P1.3_B_BLOCKED_ON_CROSS_ROOT_COORDINATOR",
     "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_NOT_OPEN"
   },
   "functional_entries": [
@@ -1416,7 +1416,7 @@
     },
     {
       "root_id": "frontend_control",
-      "materialization_status": "READY_FOR_IMPLEMENTATION",
+      "materialization_status": "PARTIALLY_MATERIALIZED_NO_COMMIT",
       "schema_file": "parameters/f01e-selected-constructor-v1.json",
       "schema_version": "f01e-selected-constructor.v1",
       "schema_pointer": "/value",
@@ -1631,7 +1631,7 @@
         "specs/00-global-transaction-contract.md",
         "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json"
       ],
-      "implementation_status": "NOT_STARTED",
+      "implementation_status": "P1.3_B1_LOCALLY_VERIFIED_STAGING_ONLY",
       "prerequisite": {
         "task": "P1.4-A-F01E-PROVIDER-CONTRACT",
         "required_status": "LOCALLY_VERIFIED",
@@ -1819,7 +1819,7 @@
       "materialization_status": "MATERIALIZED"
     },
     "P1.2": "SCOPED_COMPLETE_CURRENT_MATERIALIZED_CONSUMERS__FUTURE_CONSUMERS_DEFERRED",
-    "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B_READY_FOR_IMPLEMENTATION",
+    "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B1_STAGING_ONLY__P1.3_B_BLOCKED_ON_CROSS_ROOT_COORDINATOR",
     "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_NOT_OPEN",
     "P1.2-A": {
       "task_id": "P1.2-A-Q15-COORDINATE",
@@ -2124,11 +2124,40 @@
     },
     "P1.3-B": {
       "task_id": "P1.3-B-FRONTEND-CONTROL-AUDIT",
-      "status": "SATISFIED_READY_FOR_IMPLEMENTATION",
+      "status": "BLOCKED_ON_CROSS_ROOT_COORDINATOR",
       "programme_root": "frontend_control",
-      "implementation_status": "NOT_STARTED",
+      "implementation_status": "P1.3_B1_LOCALLY_VERIFIED_STAGING_ONLY",
       "cross_root_atomic_commit": "DEFERRED_NOT_IMPLEMENTED",
       "prerequisite": "P1.4-A-F01E-PROVIDER-CONTRACT LOCALLY_VERIFIED"
+    },
+    "P1.3-B1": {
+      "task_id": "P1.3-B1-FRONTEND-CONTROL-STAGING",
+      "status": "LOCALLY_VERIFIED_STAGING_ONLY",
+      "programme_root": "frontend_control",
+      "scope": "cold root construction plus linear prepare/stage validation only",
+      "implementation_files": [
+        "crates/jocforge-domain/src/frontend/state.rs"
+      ],
+      "test_files": [
+        "crates/jocforge-domain/tests/frontend_control_staging.rs"
+      ],
+      "provider_input": "ValidatedF01EColdProvider consumed exactly once; receipt lineage retained in committed state",
+      "canonical_state": "the provider custom typed canonical /value bytes; SHA-256 recomputed for before and staged after state",
+      "linear_capabilities": [
+        "FrontendControlPrepared non-Clone/non-Copy",
+        "FrontendControlStaged non-Clone/non-Copy",
+        "FrontendControlMachine non-Clone/non-Copy"
+      ],
+      "join_metadata": [
+        "transaction_id",
+        "FrontendCallbackIndex",
+        "before_generation",
+        "before_digest",
+        "provider_manifest_sha256",
+        "provider_file_sha256"
+      ],
+      "public_commit": "FORBIDDEN; future CallbackTransaction coordinator must atomically commit reader_eof and frontend_control",
+      "non_cold_transition": "DEFERRED; no unique runtime serialization contract materialized"
     },
     "P1.4-A": {
       "task_id": "P1.4-A-F01E-PROVIDER-CONTRACT",
