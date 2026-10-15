@@ -23,6 +23,8 @@ def render(d):
   x=d['phase_one']['P1.3-A'];root=next(r for r in d['programme_roots']if r['root_id']==x['programme_root']);o['PHASE-PLAN.md']+='\n## P1.3-A reader_eof materialization audit\n\n```json\n'+json.dumps({'task':x,'programme_root':root},ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
  if 'P1.3-B'in d['phase_one']:
   x=d['phase_one']['P1.3-B'];root=next(r for r in d['programme_roots']if r['root_id']==x['programme_root']);o['PHASE-PLAN.md']+='\n## P1.3-B frontend_control materialization audit\n\n```json\n'+json.dumps({'task':x,'programme_root':root},ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
+ if 'P1.3-C'in d['phase_one']:
+  x=d['phase_one']['P1.3-C'];o['PHASE-PLAN.md']+='\n## P1.3-C two-root callback coordinator mapping\n\n```json\n'+json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
  if 'P1.4-A'in d['phase_one']:
   x=d['phase_one']['P1.4-A'];o['PHASE-PLAN.md']+='\n## P1.4-A F01E provider contract audit\n\n```json\n'+json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
  return o

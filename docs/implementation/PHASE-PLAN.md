@@ -834,6 +834,159 @@
 }
 ```
 
+## P1.3-C two-root callback coordinator mapping
+
+```json
+{
+  "abort_api": "CallbackTransactionCoordinator::abort(&mut self, reader: ReaderEofStaged, frontend: FrontendControlStaged); consumes both tokens and leaves both committed states and generations unchanged",
+  "blockers": [
+    "owner_receipts order is not selected by schema or vectors",
+    "two-root replacement cannot claim the GTC global callback commit while required callback/source roots remain outside this coordinator",
+    "the schema/vector pair does not bind the exact pair-level CallbackTransactionReceipt projection or receipt wrapper canonicalization"
+  ],
+  "callback_receipt": {
+    "canonical_state_digests": {
+      "frontend_control": "SHA-256 over the complete typed canonical bytes bound to its validated provider lineage",
+      "reader_eof": "SHA-256 over the complete reader_eof canonical bytes defined by its owner map",
+      "receipt_wrapper": "the GTC schema defines object shape but no canonical byte encoding or receipt digest"
+    },
+    "owner_receipt_fields": [
+      "owner_id",
+      "before_generation",
+      "before_sha256",
+      "after_generation",
+      "after_sha256",
+      "changed",
+      "commit_count",
+      "transaction_id"
+    ],
+    "owner_receipt_order": {
+      "blocking_evidence": "transactionReceipt.owner_receipts is an unconstrained array of ownerReceipt; GLOBAL-TRANSACTION-INPUT-VECTORS.json contains no owner_receipts values or owner receipt order assertion",
+      "selected_order": null,
+      "status": "UNSPECIFIED_BY_GTC_SCHEMA_AND_VECTORS"
+    },
+    "owner_receipt_semantics": "all owner transaction_id values equal the shared CallbackTransactionId; changed compares each owner's before/after canonical state SHA-256; commit_count is 1 when changed and 0 when unchanged",
+    "owner_schema_pointer": "#/$defs/ownerReceipt",
+    "schema_file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
+    "schema_pointer": "#/$defs/transactionReceipt",
+    "top_level_commit_count": "exactly 1 for a successful global CallbackTransaction",
+    "type": "CallbackTransactionReceipt"
+  },
+  "commit_api": "CallbackTransactionCoordinator::commit(&mut self, reader: ReaderEofStaged, frontend: FrontendControlStaged) -> Result<CallbackTransactionReceipt, CallbackTransactionError>; exclusive &mut self owns the unique mutable access to both machines",
+  "coordinator": {
+    "dynamic_owner_list": false,
+    "generic_roots": false,
+    "owns_exactly": [
+      "ReaderEofMachine",
+      "FrontendControlMachine",
+      "programme_retired_guard"
+    ],
+    "retired_guard": "private coordinator-owned flag; all machine prepare/stage/replacement entry points become crate-private and are reachable only through this coordinator",
+    "trait_registry": false,
+    "type": "CallbackTransactionCoordinator"
+  },
+  "design_only": true,
+  "fatal_api": "CallbackTransactionCoordinator::fatal(&mut self, failure: FatalReceipt, reader: Option<ReaderEofStaged>, frontend: Option<FrontendControlStaged>); consumes any related tokens, records the GTC fatal receipt, sets the coordinator programme-retired guard, and rejects later calls",
+  "gtc_scope_conflict": {
+    "evidence": [
+      "GTC §3.3 callback-only commit atomically replaces reader_eof, frontend_control, spatial_control, and spatial_audio",
+      "GTC §4.4 successful CallbackTransaction also replaces additional source owners and clocks",
+      "the GTC transactionReceipt schema has no pair-only receipt type or rule allowing a two-owner receipt to claim top_level_commit_count=1"
+    ],
+    "resolution_required": "the approved specification must define whether this two-root coordinator returns an intermediate pair receipt or participates in a wider single replacement, and how its receipt maps to transactionReceipt",
+    "status": "BLOCKING"
+  },
+  "implementation_rust": "FORBIDDEN while status=BLOCKED",
+  "join_metadata": {
+    "both_staged_tokens": [
+      "CallbackTransactionId",
+      "FrontendCallbackIndex"
+    ],
+    "frontend_control": [
+      "before_generation",
+      "before_sha256",
+      "provider_manifest_sha256",
+      "provider_file_sha256",
+      "provider_canonical_sha256"
+    ],
+    "matching_rule": "transaction id and callback index must match exactly across both staged tokens",
+    "reader_eof": [
+      "before_generation",
+      "before_sha256"
+    ]
+  },
+  "preflight_order": [
+    "reject if coordinator or either owned machine is retired",
+    "validate each token transaction id and require a nonempty shared CallbackTransactionId",
+    "validate equal typed FrontendCallbackIndex values",
+    "validate each token before_generation against its current machine generation and checked next-generation arithmetic",
+    "recompute both committed before digests and compare them with the token metadata",
+    "recompute both staged after-state digests and compare them with the token metadata",
+    "validate frontend manifest, provider-file, and canonical-cold lineage against the committed frontend_control provider receipt"
+  ],
+  "reader_eof_api_migration": "ReaderEofMachine commit/abort/fatal and machine staging entry points currently public must become crate-private; coordinator-only validated accessors provide join metadata and move-only after-state parts",
+  "replacement": {
+    "fallibility": "replacement phase contains only infallible moves and scalar assignments; no callbacks, allocation, hashing, cloning, or fallible work",
+    "operation": "move both validated after-states into their owned machines and assign both precomputed generations",
+    "precondition": "all token, digest, lineage, and checked generation work finishes before replacement begins",
+    "rollback": "clone-and-rollback is forbidden; preflight failure leaves both committed byte identities and generations unchanged"
+  },
+  "scope": [
+    "reader_eof",
+    "frontend_control"
+  ],
+  "status": "BLOCKED",
+  "success_semantics": "one call consumes both linear tokens, increments both generations by exactly one, and returns one immutable CallbackTransactionReceipt; a single-root success result is forbidden",
+  "task_id": "P1.3-C-TWO-ROOT-CALLBACK-COORDINATOR-MAP",
+  "transaction_receipt_binding": {
+    "field_bindings": {
+      "attempt": "programme attempt generation",
+      "callback_index": "shared FrontendCallbackIndex",
+      "durable_append": "GTC DurableAppendReceipt when the source publishes an AU, otherwise null",
+      "fatal": "null for a committed callback",
+      "kind": "CALLBACK",
+      "owner_receipts": "one OwnerReceipt for every owner replaced by the complete GTC callback",
+      "result": "COMMITTED only after the complete GTC callback replacement",
+      "schema": "selected-profile-transaction-receipt.v1",
+      "source_index_dispatch_au_index": "GTC-derived values when applicable; not derivable from the two-root scope alone",
+      "top_level_commit_count": "1 for the complete callback replacement",
+      "transaction_id": "shared CallbackTransactionId"
+    },
+    "owner_receipt_order": "blocked until approved GTC evidence selects an array order",
+    "schema_fields": [
+      "schema",
+      "transaction_id",
+      "kind",
+      "result",
+      "attempt",
+      "callback_index",
+      "source_index",
+      "dispatch",
+      "au_index",
+      "owner_receipts",
+      "durable_append",
+      "fatal",
+      "top_level_commit_count"
+    ]
+  },
+  "typed_transaction_id": {
+    "representation": "private String",
+    "type": "CallbackTransactionId",
+    "validation": "nonempty, matching transaction_id minLength=1 in the GTC transactionReceipt schema"
+  },
+  "vector_bindings": {
+    "coverage": "committed-state preservation, successful callback counts, fatal retirement, and post-retired rejection; no exact two-owner receipt contents/order",
+    "file": "test-vectors/GLOBAL-TRANSACTION-INPUT-VECTORS.json",
+    "relevant_case_ids": [
+      "continuous_main_prefix_through_au0",
+      "callback_failure_after_f03_selection",
+      "post_retired_calls_rejected",
+      "full_restart_from_retired"
+    ]
+  }
+}
+```
+
 ## P1.4-A F01E provider contract audit
 
 ```json
