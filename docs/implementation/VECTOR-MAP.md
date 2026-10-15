@@ -2,7 +2,7 @@
 
 Coverage ledger 不是 authoritative vector。
 
-| functional_id | vector_kind | authoritative_vectors | parent_integration_vectors | review_evidence | coverage_ledger | planned_test_module |
+| functional_id | kind | authoritative_vectors | parent_vectors | review_evidence | coverage_ledger | test_modules |
 |---|---|---|---|---|---|---|
 | STRC | NO_DIRECT_VECTOR | — | — | `test-vectors/STATUS-RECONCILIATION-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/gtc_owner_lifecycle.rs` |
 | GTC | DIRECT_VECTOR | `test-vectors/GLOBAL-TRANSACTION-INPUT-VECTORS.json`<br>`test-vectors/CROSS-STAGE-CONTRACT-JOIN-VECTORS.json` | — | `test-vectors/GLOBAL-TRANSACTION-CONTRACT-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/gtc_owner_lifecycle.rs` |
@@ -108,4 +108,3 @@ Coverage ledger 不是 authoritative vector。
 | F15 | PARENT_INTEGRATION_VECTOR | — | `test-vectors/KEYLESS-PUBLICATION-INPUT-VECTORS.json` | — | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-io/tests/atomic_publication.rs`<br>`crates/jocforge-domain/tests/publication_ledger.rs` |
 | F15P | DIRECT_VECTOR | `test-vectors/KEYLESS-PUBLICATION-INPUT-VECTORS.json` | — | `test-vectors/KEYLESS-PUBLICATION-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-io/tests/atomic_publication.rs`<br>`crates/jocforge-domain/tests/publication_ledger.rs` |
 | OWNJ | PARENT_INTEGRATION_VECTOR | — | `test-vectors/SELECTED-OWNER-PROJECTION-INPUT-VECTORS.json` | `test-vectors/OWNER-PROJECTION-LOCAL-REVIEW-STATUS.json` | `test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json` | `crates/jocforge-domain/tests/gtc_owner_lifecycle.rs` |
-

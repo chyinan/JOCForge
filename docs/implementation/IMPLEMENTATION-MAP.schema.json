@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:jocforge:implementation-map:v1",
+  "type": "object",
+  "required": ["schema", "status", "functional_entries", "programme_roots", "selected_overlap_projection", "phase_one"],
+  "properties": {
+    "schema": {"const": "jocforge-implementation-map.v1"},
+    "status": {
+      "type": "object",
+      "required": ["ARCHITECTURE_DESIGN", "TRACEABILITY", "P1.1"]
+    },
+    "functional_entries": {
+      "type": "array",
+      "minItems": 104,
+      "maxItems": 104,
+      "items": {
+        "type": "object",
+        "required": ["functional_id", "spec_files", "implementation_files", "test_modules", "owner", "clock", "parameters", "vectors", "error_outcomes", "planned_phase", "phase_scope", "status"]
+      }
+    },
+    "programme_roots": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12
+    },
+    "selected_overlap_projection": {"type": "object"},
+    "phase_one": {"type": "object"}
+  },
+  "additionalProperties": false
+}

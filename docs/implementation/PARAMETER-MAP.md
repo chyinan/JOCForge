@@ -1,111 +1,110 @@
 # 参数映射
 
-PARAMETER-INTERFACES.json 只出现在 registry_entries。NO_RUNTIME_PARAMETER 不建立占位 provider。
+PARAMETER-INTERFACES.json 只允许作为 registry entry。
 
-| functional_id | provider_kind | provider_files | generation_specs | registry_entries | validation_rules | runtime_loader | status |
-|---|---|---|---|---|---|---|---|
-| STRC | NO_RUNTIME_PARAMETER | — | — | — | `test-vectors/STATUS-RECONCILIATION-LOCAL-REVIEW-STATUS.json` | `none` | READY_NO_RUNTIME_PARAMETER |
-| GTC | NO_RUNTIME_PARAMETER | — | — | — | `specs/00-global-transaction-contract.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| XSTJ | NO_RUNTIME_PARAMETER | — | — | — | `specs/00-cross-stage-contract-joins.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F01 | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D11` | `specs/01-input-and-clock.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F01R | NO_RUNTIME_PARAMETER | — | — | — | `specs/01-input-and-clock.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F01G | NO_RUNTIME_PARAMETER | — | — | — | `specs/01-adm-graph-and-time.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F01B | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D10-G`<br>`PARAMETER-INTERFACES.json#D10-LX`<br>`PARAMETER-INTERFACES.json#D10-BP`<br>`PARAMETER-INTERFACES.json#D10-BR` | `specs/01-bed-routing-and-source-geometry.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F01GL | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D10-G-FRONT-SIDE-Y` | `specs/01-selected-geometry-layout-and-bed-routing.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F01C | NO_RUNTIME_PARAMETER | — | — | — | `specs/01-frontend-config-normalization.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F01E | NO_RUNTIME_PARAMETER | — | — | — | `specs/01-frontend-config-dbmd-events.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F02 | NO_RUNTIME_PARAMETER | — | — | — | `specs/01-input-and-clock.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F03 | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D10`<br>`PARAMETER-INTERFACES.json#D11` | `specs/03-spatial-and-audio.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F03G | NO_RUNTIME_PARAMETER | — | — | — | `specs/03-gate-and-target-installation.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F03C | NO_RUNTIME_PARAMETER | — | — | — | `specs/03-selector-affinity-and-selection.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F03U | NO_RUNTIME_PARAMETER | — | — | — | `specs/03-u04-refinement-and-projection.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F03F | NO_RUNTIME_PARAMETER | — | — | — | `specs/03-feature-processor-and-state.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F03FC | NO_RUNTIME_PARAMETER | — | — | — | `specs/03-feature-configuration-generation.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F03R | NO_RUNTIME_PARAMETER | — | — | — | `specs/03-source-routing-and-feature-flags.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F03P | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D10-P15` | `specs/03-point-response-and-target-context.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F03N | NO_RUNTIME_PARAMETER | — | — | — | `specs/03-rectangular-nnls-initial-fit.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F03S | NO_RUNTIME_PARAMETER | — | — | — | `specs/03-outer-energy-correction.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F03FD | NO_RUNTIME_PARAMETER | — | — | — | `specs/03-degenerate-frontier-and-fail-stop.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F03W | COMPOSITE_PROVIDER | `parameters/adm-installed48-state-v1.json` | — | — | `specs/03-adm-installed48-whole.md` | `planned:crates/jocforge-domain/src/spatial/matrix.rs` | READY |
-| F04 | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D10`<br>`PARAMETER-INTERFACES.json#D11` | `specs/03-spatial-and-audio.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F04C | NO_RUNTIME_PARAMETER | — | — | — | `specs/04-whole-spatial-chain-composition.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F04A | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D11` | `specs/04-window-matrix-and-component-audio.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F04F | FILE_PROVIDER | `parameters/diffusion-constructor-mathematical-v1.json` | — | — | `specs/04-diffusion-filter-and-lifecycle.md` | `planned:crates/jocforge-domain/src/spatial/diffusion.rs` | READY |
-| F04FM | GENERATED_PROVIDER | `parameters/diffusion-mathematical-v1.json` | `specs/04-diffusion-mathematical-generation.md` | — | `specs/04-diffusion-mathematical-generation.md` | `planned:crates/jocforge-domain/src/spatial/diffusion.rs` | READY |
-| F04FCM | GENERATED_PROVIDER | `parameters/diffusion-constructor-mathematical-v1.json` | `specs/04-diffusion-constructor-generation.md` | — | `specs/04-diffusion-constructor-generation.md` | `planned:crates/jocforge-domain/src/spatial/diffusion.rs` | READY |
-| F04G | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D10-P11`<br>`PARAMETER-INTERFACES.json#D10-W`<br>`PARAMETER-INTERFACES.json#D10-WK`<br>`PARAMETER-INTERFACES.json#D10-PC`<br>`PARAMETER-INTERFACES.json#D10-SC` | `specs/04-prefix-spread-and-gain.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F04GA | NO_RUNTIME_PARAMETER | — | — | — | `specs/04-spread-authorized-parameters.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F04P | FILE_PROVIDER | `parameters/component-parameter-mathematical-v1.json` | — | — | `specs/04-component-parameter-state.md` | `planned:crates/jocforge-domain/src/spatial/component.rs` | READY |
-| F04PG | GENERATED_PROVIDER | `parameters/component-parameter-mathematical-v1.json` | `specs/04-component-parameter-generation.md` | — | `specs/04-component-parameter-generation.md` | `planned:crates/jocforge-domain/src/spatial/component.rs` | READY |
-| F04R | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D11` | `specs/04-receiver-state-and-routing.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F04D | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D07-P`<br>`PARAMETER-INTERFACES.json#D11-QH` | `specs/04-descriptor-control.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F04Q | FILE_PROVIDER | `parameters/qmf-receiver-functional-v1.json` | — | `PARAMETER-INTERFACES.json#D11-QA`<br>`PARAMETER-INTERFACES.json#D11-QS`<br>`PARAMETER-INTERFACES.json#D11-QBR`<br>`PARAMETER-INTERFACES.json#D11-QBI` | `specs/04-qmf-analysis-and-synthesis.md` | `planned:crates/jocforge-domain/src/spatial/qmf.rs` | READY |
-| F04RB | FILE_PROVIDER | `parameters/qmf-receiver-functional-v1.json` | — | — | `specs/04-qmf-receiver-whole-binding.md` | `planned:crates/jocforge-domain/src/spatial/qmf.rs` | READY |
-| F04QF | GENERATED_PROVIDER | `parameters/qmf-mathematical-fft-v1.json` | `specs/04-qmf-mathematical-fft.md` | — | `specs/04-qmf-mathematical-fft.md` | `planned:crates/jocforge-domain/src/spatial/qmf.rs` | READY |
-| F04QP | FILE_PROVIDER | `parameters/qmf-receiver-functional-v1.json` | — | `PARAMETER-INTERFACES.json#D11-QA`<br>`PARAMETER-INTERFACES.json#D11-QS` | `specs/04-qmf-prototype-source-and-loading.md` | `planned:crates/jocforge-domain/src/spatial/qmf.rs` | READY |
-| F05 | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D11` | `specs/05-joc-and-object-metadata.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F05Q | FILE_PROVIDER | `parameters/joc-functional-authorized-v1.json` | — | `PARAMETER-INTERFACES.json#D11` | `specs/05-joc-quantization-and-wire.md` | `planned:crates/jocforge-domain/src/joc/coefficient_payload.rs` | READY |
-| F05QH | FILE_PROVIDER | `parameters/joc-huffman-v1.json` | — | — | `specs/05-joc-huffman-codebooks.md` | `planned:crates/jocforge-domain/src/joc/huffman.rs` | READY |
-| F05J | FILE_PROVIDER | `parameters/joc-functional-authorized-v1.json` | — | `PARAMETER-INTERFACES.json#D11` | `specs/05-joc-dispatch-and-commit.md` | `planned:crates/jocforge-domain/src/joc/coefficient_payload.rs` | READY |
-| F05JC | FILE_PROVIDER | `parameters/joc-generated-math-v1.json` | — | `PARAMETER-INTERFACES.json#D11-JN`<br>`PARAMETER-INTERFACES.json#D11-JP`<br>`PARAMETER-INTERFACES.json#D11-JL` | `specs/05-joc-selected-producer-and-commit.md` | `planned:crates/jocforge-domain/src/joc/coefficient_payload.rs` | READY |
-| F05JL | COMPOSITE_PROVIDER | `parameters/live-joc-coordinator-v1.json` | — | — | `specs/05-live-joc-coordinator.md` | `planned:crates/jocforge-domain/src/joc/coefficient_payload.rs` | READY |
-| F05JS | GENERATED_PROVIDER | `parameters/joc-generated-math-v1.json` | `specs/05-joc-score-kernel.md` | `PARAMETER-INTERFACES.json#D11-JN` | `specs/05-joc-score-kernel.md` | `planned:crates/jocforge-domain/src/joc/coefficient_payload.rs` | READY |
-| F05O | FILE_PROVIDER | `parameters/oamd-id11-live-v1.json` | — | `PARAMETER-INTERFACES.json#D11-XY`<br>`PARAMETER-INTERFACES.json#D11-Z` | `specs/05-oamd-row-and-timing-wire.md` | `planned:crates/jocforge-domain/src/joc/oamd.rs` | READY |
-| F05T | FILE_PROVIDER | `parameters/oamd-id11-live-v1.json` | — | — | `specs/05-oamd-dbmd-and-trim.md` | `planned:crates/jocforge-domain/src/joc/oamd.rs` | READY |
-| F05H | NO_RUNTIME_PARAMETER | — | — | — | `specs/05-fit-marker-and-metadata-history.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F05L | FILE_PROVIDER | `parameters/oamd-id11-live-v1.json` | — | — | `specs/05-oamd-id11-live-producer.md` | `planned:crates/jocforge-domain/src/joc/oamd.rs` | READY |
-| F05R56 | FILE_PROVIDER | `parameters/reader56-target-profile-v1.json` | — | — | `specs/05-reader56-target-updates-composition.md` | `planned:crates/jocforge-domain/src/joc/oamd.rs` | READY |
-| F06 | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D12` | `specs/06-meter-bsi.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F06L | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-meter-log-and-peak.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F06I | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-integrated-meter-state.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F06W | FILE_PROVIDER | `parameters/meter-k-state-bounds-v1.json` | — | `PARAMETER-INTERFACES.json#D12-K` | `specs/06-meter-window-and-output-clock.md` | `planned:crates/jocforge-domain/src/meter/k_weight.rs` | READY |
-| F06KG | GENERATED_PROVIDER | `parameters/meter-k-matrix-math-v1.json` | `specs/06-meter-k-matrix-generation.md` | — | `specs/06-meter-k-matrix-generation.md` | `planned:crates/jocforge-domain/src/meter/k_weight.rs` | READY |
-| F06TP | FILE_PROVIDER | `parameters/meter-truepeak-authorized-v1.json` | — | `PARAMETER-INTERFACES.json#D12-TP` | `specs/06-true-peak-cascade-and-metrics.md` | `planned:crates/jocforge-domain/src/meter/true_peak.rs` | READY |
-| F06ND | FILE_PROVIDER | `parameters/none-drc-authorized-v1.json` | — | `PARAMETER-INTERFACES.json#D12-DRC` | `specs/06-none-drc-statistics-and-control.md` | `planned:crates/jocforge-domain/src/meter/drc.rs` | READY |
-| F06NR | FILE_PROVIDER | `parameters/secondary-inverse-math-v1.json` | — | — | `specs/06-secondary-reconstruction-clock-and-overlap.md` | `planned:crates/jocforge-domain/src/meter/secondary.rs` | READY |
-| F06NI | FILE_PROVIDER | `parameters/secondary-inverse-math-v1.json` | — | — | `specs/06-secondary-inverse-spectrum-and-rotations.md` | `planned:crates/jocforge-domain/src/meter/secondary.rs` | READY |
-| F06NF | GENERATED_PROVIDER | `parameters/secondary-inverse-math-v1.json` | `specs/06-secondary-fft64-128.md` | — | `specs/06-secondary-fft64-128.md` | `planned:crates/jocforge-domain/src/meter/secondary.rs` | READY |
-| F06WH | COMPOSITE_PROVIDER | `parameters/f06-meter-none-drc-whole-state-schema-v1.json` | — | — | `specs/06-meter-none-drc-whole-composition.md` | `planned:crates/jocforge-domain/src/meter/drc.rs` | READY |
-| F06U | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-ungated-mean-and-fallback.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F06DG | GENERATED_PROVIDER | `parameters/shared-dv32-mathematical-v1.json` | `specs/06-shared-dv32-parameter-generation.md` | — | `specs/06-shared-dv32-parameter-generation.md` | `planned:crates/jocforge-domain/src/meter/dv32.rs` | READY |
-| F06D | FILE_PROVIDER | `parameters/shared-dv32-mathematical-v1.json` | — | — | `specs/06-shared-dv32-state-and-audio.md` | `planned:crates/jocforge-domain/src/meter/dv32.rs` | READY |
-| F06M | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-mix-ramp-and-filter-gate.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F06OG | GENERATED_PROVIDER | `parameters/meter-oar-secondary8-math-v1.json` | `specs/06-oar-secondary-geometry-generation.md` | — | `specs/06-oar-secondary-geometry-generation.md` | `planned:crates/jocforge-domain/src/meter/oar.rs` | READY |
-| F06OM | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-metadata-and-source-records.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F06OP | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-point-target.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F06OE | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-extra-state-and-record-comparison.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F06QT | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-queue-time-selection.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F06QM | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-queue-mutation-and-reference-ownership.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F06QS | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-snapshot-copy.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F06OD | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-description-generation.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F06OS | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-coded-mask-direct-selector.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F06OB | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-snapshot-to-record-bridge.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F06OR | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-selected-task-routing.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F06OC | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-model-callback-state-and-clock.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F06OF | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-frontend-input-and-clock-join.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F07 | FILE_PROVIDER | `parameters/transient-d05-authorized-v1.json` | — | `PARAMETER-INTERFACES.json#D05` | `specs/07-history-and-transient.md` | `planned:crates/jocforge-domain/src/transform/history.rs` | READY |
-| F07A | FILE_PROVIDER | `parameters/transient-d05-authorized-v1.json` | — | — | `specs/07-transient-authorized-parameters.md` | `planned:crates/jocforge-domain/src/transform/history.rs` | READY |
-| F08 | FILE_PROVIDER | `parameters/ordinary-transform-math-v1.json` | — | — | `specs/08-transforms.md` | `planned:crates/jocforge-domain/src/transform/fft.rs` | READY |
-| F08NZ | FILE_PROVIDER | `parameters/ordinary-transform-math-v1.json` | — | — | `specs/08-nonzero-transform-composition.md` | `planned:crates/jocforge-domain/src/transform/fft.rs` | READY |
-| F09 | FILE_PROVIDER | `parameters/policy-authorized-v1.json` | — | `PARAMETER-INTERFACES.json#D06` | `specs/09-exponents.md` | `planned:crates/jocforge-domain/src/transform/exponent.rs` | READY |
-| F09E | GENERATED_PROVIDER | `parameters/exponent-refresh-difference-math-v1.json` | `specs/09-exponents.md` | — | `specs/09-exponents.md` | `planned:crates/jocforge-domain/src/transform/exponent.rs` | READY |
-| F09PA | FILE_PROVIDER | `parameters/policy-authorized-v1.json` | — | — | `specs/09-policy-authorized-parameters.md` | `planned:crates/jocforge-domain/src/transform/policy.rs` | READY |
-| F09G | FILE_PROVIDER | `parameters/policy-authorized-v1.json` | — | `PARAMETER-INTERFACES.json#D07` | `specs/09-gain-and-db.md` | `planned:crates/jocforge-domain/src/transform/policy.rs` | READY |
-| F09LB | FILE_PROVIDER | `parameters/lfe-gate-mantissa-boundaries-v1.json` | — | — | `specs/09-lfe-gate-mantissa-boundaries.md` | `planned:crates/jocforge-domain/src/transform/policy.rs` | READY |
-| F10 | FILE_PROVIDER | `parameters/policy-authorized-v1.json` | — | `PARAMETER-INTERFACES.json#D06-N` | `specs/10-exponent-normalization.md` | `planned:crates/jocforge-domain/src/transform/exponent.rs` | READY |
-| F11 | FILE_PROVIDER | `parameters/codec-wire-cross-module-providers-v1.json` | — | `PARAMETER-INTERFACES.json#D13` | `specs/11-converter.md` | `planned:crates/jocforge-domain/src/codec/converter.rs` | READY |
-| F12 | FILE_PROVIDER | `parameters/codec-wire-selected-v1.json` | — | `PARAMETER-INTERFACES.json#D13` | `specs/12-codec-and-wire.md` | `planned:crates/jocforge-domain/src/codec/frame_syntax.rs` | READY |
-| F12S | FILE_PROVIDER | `parameters/codec-wire-selected-v1.json` | — | — | `specs/12-selected-codec-wire.md` | `planned:crates/jocforge-domain/src/codec/frame_syntax.rs` | READY |
-| F12SC | COMPOSITE_PROVIDER | `parameters/f07-f12-source-provider-manifest-v1.json` | — | — | `specs/12-selected-source-frame-composition.md` | `planned:crates/jocforge-domain/src/codec/frame_syntax.rs` | READY |
-| F12A | FILE_PROVIDER | `parameters/public-bap-48k-v1.json` | — | `PARAMETER-INTERFACES.json#D13` | `specs/12-bit-allocation.md` | `planned:crates/jocforge-domain/src/codec/bap.rs` | READY |
-| F13 | COMPOSITE_PROVIDER | `parameters/joc-timer-order-v1.json` | — | `PARAMETER-INTERFACES.json#D11` | `specs/13-emdf-and-timeline.md` | `planned:crates/jocforge-domain/src/timeline/payload_queue.rs` | READY |
-| F13F | FILE_PROVIDER | `parameters/joc-timer-order-v1.json` | — | — | `specs/13-emdf-and-timeline.md` | `planned:crates/jocforge-domain/src/timeline/payload_queue.rs` | READY |
-| F13T | FILE_PROVIDER | `parameters/joc-timer-order-v1.json` | — | `PARAMETER-INTERFACES.json#D11-TIMER` | `specs/13-emdf-and-timeline.md` | `planned:crates/jocforge-domain/src/timeline/timer.rs` | READY |
-| F13C | FILE_PROVIDER | `parameters/codec-wire-selected-v1.json` | — | — | `specs/13-emdf-and-timeline.md` | `planned:crates/jocforge-domain/src/timeline/payload_queue.rs` | READY |
-| F13D2 | FILE_PROVIDER | `parameters/codec-wire-selected-v1.json` | — | — | `specs/13-id2-profile-metadata.md` | `planned:crates/jocforge-domain/src/timeline/payload_queue.rs` | READY |
-| F14 | FILE_PROVIDER | `parameters/keyless-publication-providers-v1.json` | — | — | `specs/14-integrity.md` | `planned:crates/jocforge-domain/src/integrity/crc16.rs` | READY |
-| F14K | FILE_PROVIDER | `parameters/keyless-publication-providers-v1.json` | — | — | `specs/14-keyless-checksum-profile.md` | `planned:crates/jocforge-domain/src/integrity/crc16.rs` | READY |
-| F15 | NO_RUNTIME_PARAMETER | — | — | — | `PIPELINE-AND-INTERFACES.md` | `none` | READY_NO_RUNTIME_PARAMETER |
-| F15P | COMPOSITE_PROVIDER | `parameters/keyless-publication-state-v1.json` | — | — | `specs/15-keyless-publication.md` | `planned:crates/jocforge-domain/src/publication/proposal.rs` | READY |
-| OWNJ | FILE_PROVIDER | `parameters/selected-owner-projection-v1.json` | — | — | `specs/00-selected-owner-projection-and-j05.md` | `planned:crates/jocforge-domain/src/timeline/join.rs` | READY |
-
+| functional_id | kind | provider_files | generation_specs | registry_entries | validation_files | runtime_loader |
+|---|---|---|---|---|---|---|
+| STRC | NO_RUNTIME_PARAMETER | — | — | — | `test-vectors/STATUS-RECONCILIATION-LOCAL-REVIEW-STATUS.json` | — |
+| GTC | NO_RUNTIME_PARAMETER | — | — | — | `specs/00-global-transaction-contract.md` | — |
+| XSTJ | NO_RUNTIME_PARAMETER | — | — | — | `specs/00-cross-stage-contract-joins.md` | — |
+| F01 | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D11` | `specs/01-input-and-clock.md` | — |
+| F01R | NO_RUNTIME_PARAMETER | — | — | — | `specs/01-input-and-clock.md` | — |
+| F01G | NO_RUNTIME_PARAMETER | — | — | — | `specs/01-adm-graph-and-time.md` | — |
+| F01B | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D10-G`<br>`PARAMETER-INTERFACES.json#D10-LX`<br>`PARAMETER-INTERFACES.json#D10-BP`<br>`PARAMETER-INTERFACES.json#D10-BR` | `specs/01-bed-routing-and-source-geometry.md` | — |
+| F01GL | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D10-G-FRONT-SIDE-Y` | `specs/01-selected-geometry-layout-and-bed-routing.md` | — |
+| F01C | NO_RUNTIME_PARAMETER | — | — | — | `specs/01-frontend-config-normalization.md` | — |
+| F01E | NO_RUNTIME_PARAMETER | — | — | — | `specs/01-frontend-config-dbmd-events.md` | — |
+| F02 | NO_RUNTIME_PARAMETER | — | — | — | `specs/01-input-and-clock.md` | — |
+| F03 | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D10`<br>`PARAMETER-INTERFACES.json#D11` | `specs/03-spatial-and-audio.md` | — |
+| F03G | NO_RUNTIME_PARAMETER | — | — | — | `specs/03-gate-and-target-installation.md` | — |
+| F03C | NO_RUNTIME_PARAMETER | — | — | — | `specs/03-selector-affinity-and-selection.md` | — |
+| F03U | NO_RUNTIME_PARAMETER | — | — | — | `specs/03-u04-refinement-and-projection.md` | — |
+| F03F | NO_RUNTIME_PARAMETER | — | — | — | `specs/03-feature-processor-and-state.md` | — |
+| F03FC | NO_RUNTIME_PARAMETER | — | — | — | `specs/03-feature-configuration-generation.md` | — |
+| F03R | NO_RUNTIME_PARAMETER | — | — | — | `specs/03-source-routing-and-feature-flags.md` | — |
+| F03P | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D10-P15` | `specs/03-point-response-and-target-context.md` | — |
+| F03N | NO_RUNTIME_PARAMETER | — | — | — | `specs/03-rectangular-nnls-initial-fit.md` | — |
+| F03S | NO_RUNTIME_PARAMETER | — | — | — | `specs/03-outer-energy-correction.md` | — |
+| F03FD | NO_RUNTIME_PARAMETER | — | — | — | `specs/03-degenerate-frontier-and-fail-stop.md` | — |
+| F03W | COMPOSITE_PROVIDER | `parameters/adm-installed48-state-v1.json` | — | — | `specs/03-adm-installed48-whole.md` | `planned:crates/jocforge-domain/src/spatial/matrix.rs` |
+| F04 | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D10`<br>`PARAMETER-INTERFACES.json#D11` | `specs/03-spatial-and-audio.md` | — |
+| F04C | NO_RUNTIME_PARAMETER | — | — | — | `specs/04-whole-spatial-chain-composition.md` | — |
+| F04A | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D11` | `specs/04-window-matrix-and-component-audio.md` | — |
+| F04F | FILE_PROVIDER | `parameters/diffusion-constructor-mathematical-v1.json` | — | — | `specs/04-diffusion-filter-and-lifecycle.md` | `planned:crates/jocforge-domain/src/spatial/diffusion.rs` |
+| F04FM | GENERATED_PROVIDER | `parameters/diffusion-mathematical-v1.json` | `specs/04-diffusion-mathematical-generation.md` | — | `specs/04-diffusion-mathematical-generation.md` | `planned:crates/jocforge-domain/src/spatial/diffusion.rs` |
+| F04FCM | GENERATED_PROVIDER | `parameters/diffusion-constructor-mathematical-v1.json` | `specs/04-diffusion-constructor-generation.md` | — | `specs/04-diffusion-constructor-generation.md` | `planned:crates/jocforge-domain/src/spatial/diffusion.rs` |
+| F04G | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D10-P11`<br>`PARAMETER-INTERFACES.json#D10-W`<br>`PARAMETER-INTERFACES.json#D10-WK`<br>`PARAMETER-INTERFACES.json#D10-PC`<br>`PARAMETER-INTERFACES.json#D10-SC` | `specs/04-prefix-spread-and-gain.md` | — |
+| F04GA | NO_RUNTIME_PARAMETER | — | — | — | `specs/04-spread-authorized-parameters.md` | — |
+| F04P | FILE_PROVIDER | `parameters/component-parameter-mathematical-v1.json` | — | — | `specs/04-component-parameter-state.md` | `planned:crates/jocforge-domain/src/spatial/component.rs` |
+| F04PG | GENERATED_PROVIDER | `parameters/component-parameter-mathematical-v1.json` | `specs/04-component-parameter-generation.md` | — | `specs/04-component-parameter-generation.md` | `planned:crates/jocforge-domain/src/spatial/component.rs` |
+| F04R | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D11` | `specs/04-receiver-state-and-routing.md` | — |
+| F04D | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D07-P`<br>`PARAMETER-INTERFACES.json#D11-QH` | `specs/04-descriptor-control.md` | — |
+| F04Q | FILE_PROVIDER | `parameters/qmf-receiver-functional-v1.json` | — | `PARAMETER-INTERFACES.json#D11-QA`<br>`PARAMETER-INTERFACES.json#D11-QS`<br>`PARAMETER-INTERFACES.json#D11-QBR`<br>`PARAMETER-INTERFACES.json#D11-QBI` | `specs/04-qmf-analysis-and-synthesis.md` | `planned:crates/jocforge-domain/src/spatial/qmf.rs` |
+| F04RB | FILE_PROVIDER | `parameters/qmf-receiver-functional-v1.json` | — | — | `specs/04-qmf-receiver-whole-binding.md` | `planned:crates/jocforge-domain/src/spatial/qmf.rs` |
+| F04QF | GENERATED_PROVIDER | `parameters/qmf-mathematical-fft-v1.json` | `specs/04-qmf-mathematical-fft.md` | — | `specs/04-qmf-mathematical-fft.md` | `planned:crates/jocforge-domain/src/spatial/qmf.rs` |
+| F04QP | FILE_PROVIDER | `parameters/qmf-receiver-functional-v1.json` | — | `PARAMETER-INTERFACES.json#D11-QA`<br>`PARAMETER-INTERFACES.json#D11-QS` | `specs/04-qmf-prototype-source-and-loading.md` | `planned:crates/jocforge-domain/src/spatial/qmf.rs` |
+| F05 | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D11` | `specs/05-joc-and-object-metadata.md` | — |
+| F05Q | FILE_PROVIDER | `parameters/joc-functional-authorized-v1.json` | — | `PARAMETER-INTERFACES.json#D11` | `specs/05-joc-quantization-and-wire.md` | `planned:crates/jocforge-domain/src/joc/coefficient_payload.rs` |
+| F05QH | FILE_PROVIDER | `parameters/joc-huffman-v1.json` | — | — | `specs/05-joc-huffman-codebooks.md` | `planned:crates/jocforge-domain/src/joc/huffman.rs` |
+| F05J | FILE_PROVIDER | `parameters/joc-functional-authorized-v1.json` | — | `PARAMETER-INTERFACES.json#D11` | `specs/05-joc-dispatch-and-commit.md` | `planned:crates/jocforge-domain/src/joc/coefficient_payload.rs` |
+| F05JC | FILE_PROVIDER | `parameters/joc-generated-math-v1.json` | — | `PARAMETER-INTERFACES.json#D11-JN`<br>`PARAMETER-INTERFACES.json#D11-JP`<br>`PARAMETER-INTERFACES.json#D11-JL` | `specs/05-joc-selected-producer-and-commit.md` | `planned:crates/jocforge-domain/src/joc/coefficient_payload.rs` |
+| F05JL | COMPOSITE_PROVIDER | `parameters/live-joc-coordinator-v1.json` | — | — | `specs/05-live-joc-coordinator.md` | `planned:crates/jocforge-domain/src/joc/coefficient_payload.rs` |
+| F05JS | GENERATED_PROVIDER | `parameters/joc-generated-math-v1.json` | `specs/05-joc-score-kernel.md` | `PARAMETER-INTERFACES.json#D11-JN` | `specs/05-joc-score-kernel.md` | `planned:crates/jocforge-domain/src/joc/coefficient_payload.rs` |
+| F05O | FILE_PROVIDER | `parameters/oamd-id11-live-v1.json` | — | `PARAMETER-INTERFACES.json#D11-XY`<br>`PARAMETER-INTERFACES.json#D11-Z` | `specs/05-oamd-row-and-timing-wire.md` | `planned:crates/jocforge-domain/src/joc/oamd.rs` |
+| F05T | FILE_PROVIDER | `parameters/oamd-id11-live-v1.json` | — | — | `specs/05-oamd-dbmd-and-trim.md` | `planned:crates/jocforge-domain/src/joc/oamd.rs` |
+| F05H | NO_RUNTIME_PARAMETER | — | — | — | `specs/05-fit-marker-and-metadata-history.md` | — |
+| F05L | FILE_PROVIDER | `parameters/oamd-id11-live-v1.json` | — | — | `specs/05-oamd-id11-live-producer.md` | `planned:crates/jocforge-domain/src/joc/oamd.rs` |
+| F05R56 | FILE_PROVIDER | `parameters/reader56-target-profile-v1.json` | — | — | `specs/05-reader56-target-updates-composition.md` | `planned:crates/jocforge-domain/src/joc/oamd.rs` |
+| F06 | NO_RUNTIME_PARAMETER | — | — | `PARAMETER-INTERFACES.json#D12` | `specs/06-meter-bsi.md` | — |
+| F06L | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-meter-log-and-peak.md` | — |
+| F06I | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-integrated-meter-state.md` | — |
+| F06W | FILE_PROVIDER | `parameters/meter-k-state-bounds-v1.json` | — | `PARAMETER-INTERFACES.json#D12-K` | `specs/06-meter-window-and-output-clock.md` | `planned:crates/jocforge-domain/src/meter/k_weight.rs` |
+| F06KG | GENERATED_PROVIDER | `parameters/meter-k-matrix-math-v1.json` | `specs/06-meter-k-matrix-generation.md` | — | `specs/06-meter-k-matrix-generation.md` | `planned:crates/jocforge-domain/src/meter/k_weight.rs` |
+| F06TP | FILE_PROVIDER | `parameters/meter-truepeak-authorized-v1.json` | — | `PARAMETER-INTERFACES.json#D12-TP` | `specs/06-true-peak-cascade-and-metrics.md` | `planned:crates/jocforge-domain/src/meter/true_peak.rs` |
+| F06ND | FILE_PROVIDER | `parameters/none-drc-authorized-v1.json` | — | `PARAMETER-INTERFACES.json#D12-DRC` | `specs/06-none-drc-statistics-and-control.md` | `planned:crates/jocforge-domain/src/meter/drc.rs` |
+| F06NR | FILE_PROVIDER | `parameters/secondary-inverse-math-v1.json` | — | — | `specs/06-secondary-reconstruction-clock-and-overlap.md` | `planned:crates/jocforge-domain/src/meter/secondary.rs` |
+| F06NI | FILE_PROVIDER | `parameters/secondary-inverse-math-v1.json` | — | — | `specs/06-secondary-inverse-spectrum-and-rotations.md` | `planned:crates/jocforge-domain/src/meter/secondary.rs` |
+| F06NF | GENERATED_PROVIDER | `parameters/secondary-inverse-math-v1.json` | `specs/06-secondary-fft64-128.md` | — | `specs/06-secondary-fft64-128.md` | `planned:crates/jocforge-domain/src/meter/secondary.rs` |
+| F06WH | COMPOSITE_PROVIDER | `parameters/f06-meter-none-drc-whole-state-schema-v1.json` | — | — | `specs/06-meter-none-drc-whole-composition.md` | `planned:crates/jocforge-domain/src/meter/drc.rs` |
+| F06U | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-ungated-mean-and-fallback.md` | — |
+| F06DG | GENERATED_PROVIDER | `parameters/shared-dv32-mathematical-v1.json` | `specs/06-shared-dv32-parameter-generation.md` | — | `specs/06-shared-dv32-parameter-generation.md` | `planned:crates/jocforge-domain/src/meter/dv32.rs` |
+| F06D | FILE_PROVIDER | `parameters/shared-dv32-mathematical-v1.json` | — | — | `specs/06-shared-dv32-state-and-audio.md` | `planned:crates/jocforge-domain/src/meter/dv32.rs` |
+| F06M | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-mix-ramp-and-filter-gate.md` | — |
+| F06OG | GENERATED_PROVIDER | `parameters/meter-oar-secondary8-math-v1.json` | `specs/06-oar-secondary-geometry-generation.md` | — | `specs/06-oar-secondary-geometry-generation.md` | `planned:crates/jocforge-domain/src/meter/oar.rs` |
+| F06OM | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-metadata-and-source-records.md` | — |
+| F06OP | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-point-target.md` | — |
+| F06OE | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-extra-state-and-record-comparison.md` | — |
+| F06QT | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-queue-time-selection.md` | — |
+| F06QM | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-queue-mutation-and-reference-ownership.md` | — |
+| F06QS | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-snapshot-copy.md` | — |
+| F06OD | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-description-generation.md` | — |
+| F06OS | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-coded-mask-direct-selector.md` | — |
+| F06OB | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-snapshot-to-record-bridge.md` | — |
+| F06OR | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-selected-task-routing.md` | — |
+| F06OC | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-model-callback-state-and-clock.md` | — |
+| F06OF | NO_RUNTIME_PARAMETER | — | — | — | `specs/06-oar-frontend-input-and-clock-join.md` | — |
+| F07 | FILE_PROVIDER | `parameters/transient-d05-authorized-v1.json` | — | `PARAMETER-INTERFACES.json#D05` | `specs/07-history-and-transient.md` | `planned:crates/jocforge-domain/src/transform/history.rs` |
+| F07A | FILE_PROVIDER | `parameters/transient-d05-authorized-v1.json` | — | — | `specs/07-transient-authorized-parameters.md` | `planned:crates/jocforge-domain/src/transform/history.rs` |
+| F08 | FILE_PROVIDER | `parameters/ordinary-transform-math-v1.json` | — | — | `specs/08-transforms.md` | `planned:crates/jocforge-domain/src/transform/fft.rs` |
+| F08NZ | FILE_PROVIDER | `parameters/ordinary-transform-math-v1.json` | — | — | `specs/08-nonzero-transform-composition.md` | `planned:crates/jocforge-domain/src/transform/fft.rs` |
+| F09 | FILE_PROVIDER | `parameters/policy-authorized-v1.json` | — | `PARAMETER-INTERFACES.json#D06` | `specs/09-exponents.md` | `planned:crates/jocforge-domain/src/transform/exponent.rs` |
+| F09E | GENERATED_PROVIDER | `parameters/exponent-refresh-difference-math-v1.json` | `specs/09-exponents.md` | — | `specs/09-exponents.md` | `planned:crates/jocforge-domain/src/transform/exponent.rs` |
+| F09PA | FILE_PROVIDER | `parameters/policy-authorized-v1.json` | — | — | `specs/09-policy-authorized-parameters.md` | `planned:crates/jocforge-domain/src/transform/policy.rs` |
+| F09G | FILE_PROVIDER | `parameters/policy-authorized-v1.json` | — | `PARAMETER-INTERFACES.json#D07` | `specs/09-gain-and-db.md` | `planned:crates/jocforge-domain/src/transform/policy.rs` |
+| F09LB | FILE_PROVIDER | `parameters/lfe-gate-mantissa-boundaries-v1.json` | — | — | `specs/09-lfe-gate-mantissa-boundaries.md` | `planned:crates/jocforge-domain/src/transform/policy.rs` |
+| F10 | FILE_PROVIDER | `parameters/policy-authorized-v1.json` | — | `PARAMETER-INTERFACES.json#D06-N` | `specs/10-exponent-normalization.md` | `planned:crates/jocforge-domain/src/transform/exponent.rs` |
+| F11 | FILE_PROVIDER | `parameters/codec-wire-cross-module-providers-v1.json` | — | `PARAMETER-INTERFACES.json#D13` | `specs/11-converter.md` | `planned:crates/jocforge-domain/src/codec/converter.rs` |
+| F12 | FILE_PROVIDER | `parameters/codec-wire-selected-v1.json` | — | `PARAMETER-INTERFACES.json#D13` | `specs/12-codec-and-wire.md` | `planned:crates/jocforge-domain/src/codec/frame_syntax.rs` |
+| F12S | FILE_PROVIDER | `parameters/codec-wire-selected-v1.json` | — | — | `specs/12-selected-codec-wire.md` | `planned:crates/jocforge-domain/src/codec/frame_syntax.rs` |
+| F12SC | COMPOSITE_PROVIDER | `parameters/f07-f12-source-provider-manifest-v1.json` | — | — | `specs/12-selected-source-frame-composition.md` | `planned:crates/jocforge-domain/src/codec/frame_syntax.rs` |
+| F12A | FILE_PROVIDER | `parameters/public-bap-48k-v1.json` | — | `PARAMETER-INTERFACES.json#D13` | `specs/12-bit-allocation.md` | `planned:crates/jocforge-domain/src/codec/bap.rs` |
+| F13 | COMPOSITE_PROVIDER | `parameters/joc-timer-order-v1.json` | — | `PARAMETER-INTERFACES.json#D11` | `specs/13-emdf-and-timeline.md` | `planned:crates/jocforge-domain/src/timeline/payload_queue.rs` |
+| F13F | FILE_PROVIDER | `parameters/joc-timer-order-v1.json` | — | — | `specs/13-emdf-and-timeline.md` | `planned:crates/jocforge-domain/src/timeline/payload_queue.rs` |
+| F13T | FILE_PROVIDER | `parameters/joc-timer-order-v1.json` | — | `PARAMETER-INTERFACES.json#D11-TIMER` | `specs/13-emdf-and-timeline.md` | `planned:crates/jocforge-domain/src/timeline/timer.rs` |
+| F13C | FILE_PROVIDER | `parameters/codec-wire-selected-v1.json` | — | — | `specs/13-emdf-and-timeline.md` | `planned:crates/jocforge-domain/src/timeline/payload_queue.rs` |
+| F13D2 | FILE_PROVIDER | `parameters/codec-wire-selected-v1.json` | — | — | `specs/13-id2-profile-metadata.md` | `planned:crates/jocforge-domain/src/timeline/payload_queue.rs` |
+| F14 | FILE_PROVIDER | `parameters/keyless-publication-providers-v1.json` | — | — | `specs/14-integrity.md` | `planned:crates/jocforge-domain/src/integrity/crc16.rs` |
+| F14K | FILE_PROVIDER | `parameters/keyless-publication-providers-v1.json` | — | — | `specs/14-keyless-checksum-profile.md` | `planned:crates/jocforge-domain/src/integrity/crc16.rs` |
+| F15 | NO_RUNTIME_PARAMETER | — | — | — | `PIPELINE-AND-INTERFACES.md` | — |
+| F15P | COMPOSITE_PROVIDER | `parameters/keyless-publication-state-v1.json` | — | — | `specs/15-keyless-publication.md` | `planned:crates/jocforge-domain/src/publication/proposal.rs` |
+| OWNJ | FILE_PROVIDER | `parameters/selected-owner-projection-v1.json` | — | — | `specs/00-selected-owner-projection-and-j05.md` | `planned:crates/jocforge-domain/src/timeline/join.rs` |

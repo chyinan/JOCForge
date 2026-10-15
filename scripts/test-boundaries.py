@@ -2,7 +2,9 @@
 """Mutation tests for repository boundary gates."""
 from __future__ import annotations
 
+import argparse
 import importlib.util
+import os
 import pathlib
 import shutil
 import subprocess
@@ -32,20 +34,30 @@ def append(path: pathlib.Path, text: str) -> None:
         stream.write(text)
 
 
-def expect_failure(name: str, mutate: Callable[[pathlib.Path], None]) -> None:
-    with tempfile.TemporaryDirectory(prefix="jocforge-boundary-") as temp:
+def expect_failure(name: str, mutate: Callable[[pathlib.Path], None], scratch: pathlib.Path) -> None:
+    with tempfile.TemporaryDirectory(prefix="jocforge-boundary-", dir=scratch) as temp:
         clone = pathlib.Path(temp) / "repo"
         shutil.copytree(ROOT, clone, ignore=shutil.ignore_patterns(".git", "target", "__pycache__"))
         mutate(clone)
-        try:
-            CHECKER.run_checks(clone, CHECKER.PACKAGE)
-        except CHECKER.BoundaryError:
+        result = subprocess.run([sys.executable, "-X", "utf8", "-B", str(clone / "scripts/check-boundaries.py")], cwd=clone, text=True, capture_output=True, check=False)
+        if result.returncode != 0:
             print(f"PASS mutation rejected: {name}")
             return
         raise RuntimeError(f"mutation unexpectedly passed: {name}")
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--scratch-root", type=pathlib.Path)
+    args = parser.parse_args()
+    scratch = args.scratch_root or (pathlib.Path(os.environ["JOCFORGE_BOUNDARY_TMP"]) if os.environ.get("JOCFORGE_BOUNDARY_TMP") else ROOT / "target" / "boundary-mutations")
+    try:
+        scratch.mkdir(parents=True, exist_ok=True)
+        probe = scratch / ".write-probe"
+        probe.write_text("ok", encoding="utf-8")
+        probe.unlink()
+    except OSError as error:
+        raise RuntimeError(f"boundary mutation scratch is not writable: {scratch}: {error}") from error
     CHECKER.run_checks(ROOT, CHECKER.PACKAGE)
     cases: list[tuple[str, Callable[[pathlib.Path], None]]] = [
         ("missing architecture document", lambda root: (root / "docs/architecture/PUBLIC-API.md").unlink()),
@@ -66,9 +78,21 @@ def main() -> int:
         ("production depends on validation", lambda root: replace(root / "crates/jocforge-application/Cargo.toml", "[dependencies]\n", "[dependencies]\njocforge-validation = { path = \"../jocforge-validation\" }\n")),
         ("production process and FFmpeg", lambda root: append(root / "crates/jocforge-application/src/lib.rs", "\npub fn forbidden_process() { let _ = std::process::Command::new(\"FFmpeg\"); }\n")),
         ("legacy compatibility fallback", lambda root: append(root / "crates/jocforge-application/src/lib.rs", "\n// legacy compat fallback\n")),
+        ("trait method usize", lambda root: append(root / "crates/jocforge-domain/src/state/mod.rs", "\npub trait BadClock { fn value(&self, index: usize); }\n")),
+        ("unsafe fn in empty leaf", lambda root: append(root / "crates/jocforge-domain/src/codec/bap.rs", "\npub unsafe fn bad() {}\n")),
+        ("extern fn in empty leaf", lambda root: append(root / "crates/jocforge-domain/src/codec/bap.rs", "\npub extern \"C\" fn bad() {}\n")),
+        ("macro generates item", lambda root: append(root / "crates/jocforge-domain/src/codec/bap.rs", "\nmacro_rules! bad { () => { pub fn hidden() {} } }\n")),
+        ("aliased fs", lambda root: append(root / "crates/jocforge-application/src/lib.rs", "\nuse std::fs as hidden;\n")),
+        ("aliased process", lambda root: append(root / "crates/jocforge-application/src/lib.rs", "\nuse std::process as hidden;\n")),
+        ("aliased env", lambda root: append(root / "crates/jocforge-application/src/lib.rs", "\nuse std::env as hidden;\n")),
+        ("aliased net", lambda root: append(root / "crates/jocforge-application/src/lib.rs", "\nuse std::net as hidden;\n")),
+        ("concat hidden FFmpeg", lambda root: append(root / "crates/jocforge-application/src/lib.rs", "\nconst BAD: &str = concat!(\"FF\", \"mpeg\");\n")),
+        ("include source", lambda root: append(root / "crates/jocforge-application/src/lib.rs", "\ninclude!(\"hidden.rs\");\n")),
+        ("path source", lambda root: append(root / "crates/jocforge-application/src/lib.rs", "\n#[path = \"hidden.rs\"] mod hidden;\n")),
+        ("build script", lambda root: (root / "crates/jocforge-application/build.rs").write_text("fn main() {}\n", encoding="utf-8")),
     ]
     for name, mutate in cases:
-        expect_failure(name, mutate)
+        expect_failure(name, mutate, scratch)
 
     optimized = subprocess.run(
         [sys.executable, "-O", str(CHECKER_PATH)],

@@ -31,7 +31,7 @@ programme root 是顶层协调边界，不是第七个 leaf commit owner。F15 �
 
 ## GTC programme owner roots
 
-本表绑定 `test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json` 的 12 个 required owner root。每个 root 使用 schema 的 `ownerState` 外壳，并通过 `state_ref` 绑定本行的 exact state schema 和 cold provider。
+机器权威位于 `docs/implementation/IMPLEMENTATION-MAP.json.programme_roots`。本表是渲染友好的说明视图。它绑定 `test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json` 的 12 个 required owner root。
 
 | Programme root | Exact state schema | Cold provider | Clock | Stage authority | Commit authority | Reset authority | Fatal behavior | Receipt type | Owning module |
 |---|---|---|---|---|---|---|---|---|---|

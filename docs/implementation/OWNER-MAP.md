@@ -1,111 +1,110 @@
 # Owner 映射
 
-Heavyweight receipt 只用于 committed 或明确 staged owner boundary；普通数值、profile 校验和时钟转换返回普通 typed result。
+Heavyweight receipt 只用于 committed 或明确 staged owner boundary。
 
-| functional_id | owner | receipt_scope | implementation_files |
-|---|---|---|---|
-| STRC | `programme_root` | PLAIN_TYPED_RESULT | `crates/jocforge-domain/src/state/programme_root.rs` |
-| GTC | `programme_root` | PLAIN_TYPED_RESULT | `crates/jocforge-domain/src/state/programme_root.rs`<br>`crates/jocforge-domain/src/transaction/staged_root.rs` |
-| XSTJ | `programme_root` | PLAIN_TYPED_RESULT | `crates/jocforge-domain/src/timeline/join.rs` |
-| F01 | `spatial_control` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/frontend/config.rs`<br>`crates/jocforge-domain/src/frontend/input_clock.rs` |
-| F01R | `spatial_control` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/frontend/input_clock.rs`<br>`crates/jocforge-io/src/bw64/mod.rs`<br>`crates/jocforge-io/src/pcm/mod.rs` |
-| F01G | `spatial_control` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/frontend/adm_graph.rs` |
-| F01B | `spatial_control` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/frontend/bed_routing.rs` |
-| F01GL | `spatial_control` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/frontend/bed_routing.rs` |
-| F01C | `spatial_control` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/frontend/config.rs` |
-| F01E | `spatial_control` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/frontend/events.rs` |
-| F02 | `spatial_control` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/frontend/input_clock.rs`<br>`crates/jocforge-domain/src/timeline/join.rs` |
-| F03 | `spatial_control` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/matrix.rs`<br>`crates/jocforge-domain/src/timeline/join.rs` |
-| F03G | `spatial_control` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/gate.rs` |
-| F03C | `spatial_control` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/selector.rs` |
-| F03U | `spatial_control` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/selector.rs` |
-| F03F | `spatial_control` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/feature.rs` |
-| F03FC | `spatial_control` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/feature.rs` |
-| F03R | `spatial_control` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/feature.rs` |
-| F03P | `spatial_control` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/component.rs` |
-| F03N | `spatial_control` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/nnls.rs` |
-| F03S | `spatial_control` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/outer.rs` |
-| F03FD | `spatial_control` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/outer.rs` |
-| F03W | `spatial_control` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/matrix.rs`<br>`crates/jocforge-domain/src/timeline/join.rs` |
-| F04 | `spatial_audio` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/component.rs`<br>`crates/jocforge-domain/src/spatial/receiver.rs`<br>`crates/jocforge-domain/src/spatial/qmf.rs` |
-| F04C | `spatial_audio` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/component.rs`<br>`crates/jocforge-domain/src/spatial/receiver.rs`<br>`crates/jocforge-domain/src/spatial/qmf.rs` |
-| F04A | `spatial_audio` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/component.rs`<br>`crates/jocforge-domain/src/spatial/matrix.rs` |
-| F04F | `spatial_audio` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/diffusion.rs` |
-| F04FM | `spatial_audio` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/diffusion.rs` |
-| F04FCM | `spatial_audio` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/diffusion.rs` |
-| F04G | `spatial_audio` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/component.rs`<br>`crates/jocforge-domain/src/spatial/matrix.rs` |
-| F04GA | `spatial_audio` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/component.rs`<br>`crates/jocforge-domain/src/spatial/matrix.rs` |
-| F04P | `spatial_audio` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/component.rs`<br>`crates/jocforge-domain/src/spatial/matrix.rs` |
-| F04PG | `spatial_audio` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/component.rs`<br>`crates/jocforge-domain/src/spatial/matrix.rs` |
-| F04R | `spatial_audio` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/receiver.rs` |
-| F04D | `spatial_audio` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/receiver.rs` |
-| F04Q | `spatial_audio` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/qmf.rs` |
-| F04RB | `spatial_audio` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/qmf.rs` |
-| F04QF | `spatial_audio` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/qmf.rs` |
-| F04QP | `spatial_audio` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/qmf.rs` |
-| F05 | `joc` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/joc/oamd.rs` |
-| F05Q | `joc` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/joc/coefficient_payload.rs` |
-| F05QH | `joc` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/joc/huffman.rs` |
-| F05J | `joc` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/joc/coefficient_payload.rs` |
-| F05JC | `joc` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/joc/coefficient_payload.rs` |
-| F05JL | `joc` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/joc/coefficient_payload.rs` |
-| F05JS | `joc` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/joc/coefficient_payload.rs` |
-| F05O | `joc` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/joc/oamd.rs` |
-| F05T | `joc` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/joc/oamd.rs` |
-| F05H | `joc` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/joc/oamd.rs` |
-| F05L | `none_pure_value` | PLAIN_TYPED_RESULT | `crates/jocforge-domain/src/joc/oamd.rs` |
-| F05R56 | `spatial_control` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/spatial/reader56.rs` |
-| F06 | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/bsi.rs` |
-| F06L | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/loudness.rs` |
-| F06I | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/integrated.rs` |
-| F06W | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/k_weight.rs` |
-| F06KG | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/k_weight.rs` |
-| F06TP | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/true_peak.rs` |
-| F06ND | `drc` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/drc.rs` |
-| F06NR | `drc` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/secondary.rs` |
-| F06NI | `drc` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/secondary.rs` |
-| F06NF | `drc` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/secondary.rs` |
-| F06WH | `drc` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/drc.rs` |
-| F06U | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/ungated.rs` |
-| F06DG | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/dv32.rs` |
-| F06D | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/dv32.rs` |
-| F06M | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/oar.rs` |
-| F06OG | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/oar.rs` |
-| F06OM | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/oar.rs` |
-| F06OP | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/oar.rs` |
-| F06OE | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/oar.rs` |
-| F06QT | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/oar.rs` |
-| F06QM | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/oar.rs` |
-| F06QS | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/oar.rs` |
-| F06OD | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/oar.rs` |
-| F06OS | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/oar.rs` |
-| F06OB | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/oar.rs` |
-| F06OR | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/oar.rs` |
-| F06OC | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/oar.rs` |
-| F06OF | `meter` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/meter/oar.rs` |
-| F07 | `analysis` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/transform/history.rs`<br>`crates/jocforge-domain/src/transform/transient.rs` |
-| F07A | `analysis` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/transform/history.rs`<br>`crates/jocforge-domain/src/transform/transient.rs` |
-| F08 | `analysis` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/transform/fft.rs` |
-| F08NZ | `analysis` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/transform/fft.rs` |
-| F09 | `analysis` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/transform/exponent.rs` |
-| F09E | `analysis` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/transform/exponent.rs` |
-| F09PA | `analysis` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/transform/policy.rs` |
-| F09G | `analysis` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/transform/policy.rs` |
-| F09LB | `analysis` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/transform/policy.rs` |
-| F10 | `analysis` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/transform/exponent.rs` |
-| F11 | `analysis` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/codec/converter.rs` |
-| F12 | `codec` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/codec/frame_syntax.rs`<br>`crates/jocforge-domain/src/codec/mantissa.rs`<br>`crates/jocforge-domain/src/codec/frame_builder.rs` |
-| F12S | `codec` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/codec/frame_syntax.rs`<br>`crates/jocforge-domain/src/codec/mantissa.rs`<br>`crates/jocforge-domain/src/codec/frame_builder.rs` |
-| F12SC | `codec` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/codec/frame_syntax.rs`<br>`crates/jocforge-domain/src/codec/mantissa.rs`<br>`crates/jocforge-domain/src/codec/frame_builder.rs` |
-| F12A | `codec` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/codec/bap.rs` |
-| F13 | `metadata` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/timeline/payload_queue.rs`<br>`crates/jocforge-domain/src/timeline/join.rs`<br>`crates/jocforge-domain/src/joc/emdf.rs` |
-| F13F | `metadata` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/timeline/payload_queue.rs` |
-| F13T | `metadata` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/timeline/timer.rs` |
-| F13C | `metadata` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/timeline/payload_queue.rs`<br>`crates/jocforge-domain/src/timeline/join.rs`<br>`crates/jocforge-domain/src/joc/emdf.rs` |
-| F13D2 | `metadata` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/timeline/payload_queue.rs`<br>`crates/jocforge-domain/src/timeline/join.rs`<br>`crates/jocforge-domain/src/joc/emdf.rs` |
-| F14 | `integrity` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/integrity/crc16.rs`<br>`crates/jocforge-domain/src/integrity/keyless_checksum.rs` |
-| F14K | `integrity` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/integrity/crc16.rs`<br>`crates/jocforge-domain/src/integrity/keyless_checksum.rs` |
-| F15 | `output` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/publication/proposal.rs`<br>`crates/jocforge-domain/src/publication/ledger.rs`<br>`crates/jocforge-io/src/atomic_output/mod.rs` |
-| F15P | `output` | STAGED_OR_COMMITTED_OWNER_RECEIPT | `crates/jocforge-domain/src/publication/proposal.rs`<br>`crates/jocforge-domain/src/publication/ledger.rs`<br>`crates/jocforge-io/src/atomic_output/mod.rs` |
-| OWNJ | `programme_root` | PLAIN_TYPED_RESULT | `crates/jocforge-domain/src/timeline/join.rs` |
-
+| functional_id | owner | implementation_files |
+|---|---|---|
+| STRC | `programme_root` | `crates/jocforge-domain/src/state/programme_root.rs` |
+| GTC | `programme_root` | `crates/jocforge-domain/src/state/programme_root.rs`<br>`crates/jocforge-domain/src/transaction/staged_root.rs` |
+| XSTJ | `programme_root` | `crates/jocforge-domain/src/timeline/join.rs` |
+| F01 | `spatial_control` | `crates/jocforge-domain/src/frontend/config.rs`<br>`crates/jocforge-domain/src/frontend/input_clock.rs` |
+| F01R | `spatial_control` | `crates/jocforge-domain/src/frontend/input_clock.rs`<br>`crates/jocforge-io/src/bw64/mod.rs`<br>`crates/jocforge-io/src/pcm/mod.rs` |
+| F01G | `spatial_control` | `crates/jocforge-domain/src/frontend/adm_graph.rs` |
+| F01B | `spatial_control` | `crates/jocforge-domain/src/frontend/bed_routing.rs` |
+| F01GL | `spatial_control` | `crates/jocforge-domain/src/frontend/bed_routing.rs` |
+| F01C | `spatial_control` | `crates/jocforge-domain/src/frontend/config.rs` |
+| F01E | `spatial_control` | `crates/jocforge-domain/src/frontend/events.rs` |
+| F02 | `spatial_control` | `crates/jocforge-domain/src/frontend/input_clock.rs`<br>`crates/jocforge-domain/src/timeline/join.rs` |
+| F03 | `spatial_control` | `crates/jocforge-domain/src/spatial/matrix.rs`<br>`crates/jocforge-domain/src/timeline/join.rs` |
+| F03G | `spatial_control` | `crates/jocforge-domain/src/spatial/gate.rs` |
+| F03C | `spatial_control` | `crates/jocforge-domain/src/spatial/selector.rs` |
+| F03U | `spatial_control` | `crates/jocforge-domain/src/spatial/selector.rs` |
+| F03F | `spatial_control` | `crates/jocforge-domain/src/spatial/feature.rs` |
+| F03FC | `spatial_control` | `crates/jocforge-domain/src/spatial/feature.rs` |
+| F03R | `spatial_control` | `crates/jocforge-domain/src/spatial/feature.rs` |
+| F03P | `spatial_control` | `crates/jocforge-domain/src/spatial/component.rs` |
+| F03N | `spatial_control` | `crates/jocforge-domain/src/spatial/nnls.rs` |
+| F03S | `spatial_control` | `crates/jocforge-domain/src/spatial/outer.rs` |
+| F03FD | `spatial_control` | `crates/jocforge-domain/src/spatial/outer.rs` |
+| F03W | `spatial_control` | `crates/jocforge-domain/src/spatial/matrix.rs`<br>`crates/jocforge-domain/src/timeline/join.rs` |
+| F04 | `spatial_audio` | `crates/jocforge-domain/src/spatial/component.rs`<br>`crates/jocforge-domain/src/spatial/receiver.rs`<br>`crates/jocforge-domain/src/spatial/qmf.rs` |
+| F04C | `spatial_audio` | `crates/jocforge-domain/src/spatial/component.rs`<br>`crates/jocforge-domain/src/spatial/receiver.rs`<br>`crates/jocforge-domain/src/spatial/qmf.rs` |
+| F04A | `spatial_audio` | `crates/jocforge-domain/src/spatial/component.rs`<br>`crates/jocforge-domain/src/spatial/matrix.rs` |
+| F04F | `spatial_audio` | `crates/jocforge-domain/src/spatial/diffusion.rs` |
+| F04FM | `spatial_audio` | `crates/jocforge-domain/src/spatial/diffusion.rs` |
+| F04FCM | `spatial_audio` | `crates/jocforge-domain/src/spatial/diffusion.rs` |
+| F04G | `spatial_audio` | `crates/jocforge-domain/src/spatial/component.rs`<br>`crates/jocforge-domain/src/spatial/matrix.rs` |
+| F04GA | `spatial_audio` | `crates/jocforge-domain/src/spatial/component.rs`<br>`crates/jocforge-domain/src/spatial/matrix.rs` |
+| F04P | `spatial_audio` | `crates/jocforge-domain/src/spatial/component.rs`<br>`crates/jocforge-domain/src/spatial/matrix.rs` |
+| F04PG | `spatial_audio` | `crates/jocforge-domain/src/spatial/component.rs`<br>`crates/jocforge-domain/src/spatial/matrix.rs` |
+| F04R | `spatial_audio` | `crates/jocforge-domain/src/spatial/receiver.rs` |
+| F04D | `spatial_audio` | `crates/jocforge-domain/src/spatial/receiver.rs` |
+| F04Q | `spatial_audio` | `crates/jocforge-domain/src/spatial/qmf.rs` |
+| F04RB | `spatial_audio` | `crates/jocforge-domain/src/spatial/qmf.rs` |
+| F04QF | `spatial_audio` | `crates/jocforge-domain/src/spatial/qmf.rs` |
+| F04QP | `spatial_audio` | `crates/jocforge-domain/src/spatial/qmf.rs` |
+| F05 | `joc` | `crates/jocforge-domain/src/joc/oamd.rs` |
+| F05Q | `joc` | `crates/jocforge-domain/src/joc/coefficient_payload.rs` |
+| F05QH | `joc` | `crates/jocforge-domain/src/joc/huffman.rs` |
+| F05J | `joc` | `crates/jocforge-domain/src/joc/coefficient_payload.rs` |
+| F05JC | `joc` | `crates/jocforge-domain/src/joc/coefficient_payload.rs` |
+| F05JL | `joc` | `crates/jocforge-domain/src/joc/coefficient_payload.rs` |
+| F05JS | `joc` | `crates/jocforge-domain/src/joc/coefficient_payload.rs` |
+| F05O | `joc` | `crates/jocforge-domain/src/joc/oamd.rs` |
+| F05T | `joc` | `crates/jocforge-domain/src/joc/oamd.rs` |
+| F05H | `joc` | `crates/jocforge-domain/src/joc/oamd.rs` |
+| F05L | `none_pure_value` | `crates/jocforge-domain/src/joc/oamd.rs` |
+| F05R56 | `spatial_control` | `crates/jocforge-domain/src/spatial/reader56.rs` |
+| F06 | `meter` | `crates/jocforge-domain/src/meter/bsi.rs` |
+| F06L | `meter` | `crates/jocforge-domain/src/meter/loudness.rs` |
+| F06I | `meter` | `crates/jocforge-domain/src/meter/integrated.rs` |
+| F06W | `meter` | `crates/jocforge-domain/src/meter/k_weight.rs` |
+| F06KG | `meter` | `crates/jocforge-domain/src/meter/k_weight.rs` |
+| F06TP | `meter` | `crates/jocforge-domain/src/meter/true_peak.rs` |
+| F06ND | `drc` | `crates/jocforge-domain/src/meter/drc.rs` |
+| F06NR | `drc` | `crates/jocforge-domain/src/meter/secondary.rs` |
+| F06NI | `drc` | `crates/jocforge-domain/src/meter/secondary.rs` |
+| F06NF | `drc` | `crates/jocforge-domain/src/meter/secondary.rs` |
+| F06WH | `drc` | `crates/jocforge-domain/src/meter/drc.rs` |
+| F06U | `meter` | `crates/jocforge-domain/src/meter/ungated.rs` |
+| F06DG | `meter` | `crates/jocforge-domain/src/meter/dv32.rs` |
+| F06D | `meter` | `crates/jocforge-domain/src/meter/dv32.rs` |
+| F06M | `meter` | `crates/jocforge-domain/src/meter/oar.rs` |
+| F06OG | `meter` | `crates/jocforge-domain/src/meter/oar.rs` |
+| F06OM | `meter` | `crates/jocforge-domain/src/meter/oar.rs` |
+| F06OP | `meter` | `crates/jocforge-domain/src/meter/oar.rs` |
+| F06OE | `meter` | `crates/jocforge-domain/src/meter/oar.rs` |
+| F06QT | `meter` | `crates/jocforge-domain/src/meter/oar.rs` |
+| F06QM | `meter` | `crates/jocforge-domain/src/meter/oar.rs` |
+| F06QS | `meter` | `crates/jocforge-domain/src/meter/oar.rs` |
+| F06OD | `meter` | `crates/jocforge-domain/src/meter/oar.rs` |
+| F06OS | `meter` | `crates/jocforge-domain/src/meter/oar.rs` |
+| F06OB | `meter` | `crates/jocforge-domain/src/meter/oar.rs` |
+| F06OR | `meter` | `crates/jocforge-domain/src/meter/oar.rs` |
+| F06OC | `meter` | `crates/jocforge-domain/src/meter/oar.rs` |
+| F06OF | `meter` | `crates/jocforge-domain/src/meter/oar.rs` |
+| F07 | `analysis` | `crates/jocforge-domain/src/transform/history.rs`<br>`crates/jocforge-domain/src/transform/transient.rs` |
+| F07A | `analysis` | `crates/jocforge-domain/src/transform/history.rs`<br>`crates/jocforge-domain/src/transform/transient.rs` |
+| F08 | `analysis` | `crates/jocforge-domain/src/transform/fft.rs` |
+| F08NZ | `analysis` | `crates/jocforge-domain/src/transform/fft.rs` |
+| F09 | `analysis` | `crates/jocforge-domain/src/transform/exponent.rs` |
+| F09E | `analysis` | `crates/jocforge-domain/src/transform/exponent.rs` |
+| F09PA | `analysis` | `crates/jocforge-domain/src/transform/policy.rs` |
+| F09G | `analysis` | `crates/jocforge-domain/src/transform/policy.rs` |
+| F09LB | `analysis` | `crates/jocforge-domain/src/transform/policy.rs` |
+| F10 | `analysis` | `crates/jocforge-domain/src/transform/exponent.rs` |
+| F11 | `analysis` | `crates/jocforge-domain/src/codec/converter.rs` |
+| F12 | `codec` | `crates/jocforge-domain/src/codec/frame_syntax.rs`<br>`crates/jocforge-domain/src/codec/mantissa.rs`<br>`crates/jocforge-domain/src/codec/frame_builder.rs` |
+| F12S | `codec` | `crates/jocforge-domain/src/codec/frame_syntax.rs`<br>`crates/jocforge-domain/src/codec/mantissa.rs`<br>`crates/jocforge-domain/src/codec/frame_builder.rs` |
+| F12SC | `codec` | `crates/jocforge-domain/src/codec/frame_syntax.rs`<br>`crates/jocforge-domain/src/codec/mantissa.rs`<br>`crates/jocforge-domain/src/codec/frame_builder.rs` |
+| F12A | `codec` | `crates/jocforge-domain/src/codec/bap.rs` |
+| F13 | `metadata` | `crates/jocforge-domain/src/timeline/payload_queue.rs`<br>`crates/jocforge-domain/src/timeline/join.rs`<br>`crates/jocforge-domain/src/joc/emdf.rs` |
+| F13F | `metadata` | `crates/jocforge-domain/src/timeline/payload_queue.rs` |
+| F13T | `metadata` | `crates/jocforge-domain/src/timeline/timer.rs` |
+| F13C | `metadata` | `crates/jocforge-domain/src/timeline/payload_queue.rs`<br>`crates/jocforge-domain/src/timeline/join.rs`<br>`crates/jocforge-domain/src/joc/emdf.rs` |
+| F13D2 | `metadata` | `crates/jocforge-domain/src/timeline/payload_queue.rs`<br>`crates/jocforge-domain/src/timeline/join.rs`<br>`crates/jocforge-domain/src/joc/emdf.rs` |
+| F14 | `integrity` | `crates/jocforge-domain/src/integrity/crc16.rs`<br>`crates/jocforge-domain/src/integrity/keyless_checksum.rs` |
+| F14K | `integrity` | `crates/jocforge-domain/src/integrity/crc16.rs`<br>`crates/jocforge-domain/src/integrity/keyless_checksum.rs` |
+| F15 | `output` | `crates/jocforge-domain/src/publication/proposal.rs`<br>`crates/jocforge-domain/src/publication/ledger.rs`<br>`crates/jocforge-io/src/atomic_output/mod.rs` |
+| F15P | `output` | `crates/jocforge-domain/src/publication/proposal.rs`<br>`crates/jocforge-domain/src/publication/ledger.rs`<br>`crates/jocforge-io/src/atomic_output/mod.rs` |
+| OWNJ | `programme_root` | `crates/jocforge-domain/src/timeline/join.rs` |

@@ -1,15 +1,30 @@
 # Phase 1 计划
 
-Phase 1 Rust 实现仍暂停。未来只允许以下四个 slice，每个 slice 独立提交和复审。
+P1.1 仅含两个 architecture/foundation task；P1.2～P1.4 保持 HOLD。
 
-| Slice | Functional IDs | Spec/vector | Planned files | Planned behavioral tests | Expected first failure | Minimal implementation | Targeted verification | Workspace verification | Commit message | Independent review gate | Exit criteria |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| P1.1 typed clocks + selected profile rejection | F02, F01C, XSTJ | `specs/01-input-and-clock.md`<br>`specs/00-cross-stage-contract-joins.md`<br>`test-vectors/unit/vectors.json` | `domain/timeline/indices.rs`<br>`domain/timeline/join.rs`<br>`domain/profile/selected.rs` | `timeline_index_domains.rs`<br>`selected_profile_rejection.rs` | cross-domain index use and unregistered profile are accepted | distinct index newtypes, checked conversions, one selected row and UNSUPPORTED_PROFILE | targeted timeline/profile tests | fmt/check/clippy/test/boundaries | `feat: add typed clocks and selected profile gate` | fresh review: no generic resolver or future variants | all conversions typed; every unregistered combination rejected before staging |
-| P1.2 required numeric primitives | STRC plus consuming IDs registered before implementation | `specs/00-numeric-semantics.md` and each consumer vector | `domain/numeric/<cohesive-primitive>.rs` only when demanded | property/boundary tests grouped by primitive | overflow, rounding, finite-domain or serialization property fails first | smallest pure primitive set required by a scheduled consumer | primitive-specific property tests | fmt/check/clippy/test/boundaries | `feat: add approved numeric primitives` | every primitive has current consumer; no speculative math | no DSP; each primitive has spec, consumer and failing-first test |
-| P1.3 GTC staged-root lifecycle | GTC, STRC, OWNJ | `specs/00-global-transaction-contract.md`<br>`GLOBAL-TRANSACTION-INPUT-VECTORS.json`<br>`GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json` | `domain/state/programme_root.rs`<br>`domain/transaction/staged_root.rs`<br>`application/src/gtc.rs` | `gtc_owner_lifecycle.rs`<br>`gtc_failure_no_commit.rs`<br>`gtc_restart.rs` | abort cannot prove committed identity unchanged or RETIRED guard | typed status, staged root replacement, abort/fail-stop and full restart only | GTC lifecycle/fault tests | fmt/check/clippy/test/boundaries | `feat: add gtc staged root lifecycle` | fresh review checks 12 roots and reset authority | lifecycle vectors pass; no leaf algorithm executes |
-| P1.4 typed parameter/provider contracts | parameter-bearing IDs in PARAMETER-MAP | registry plus selected providers and generation specs | `domain/parameters/identity.rs`<br>`domain/parameters/contracts.rs`<br>`io/parameters/loader.rs` | `parameter_identity_shape.rs`<br>`parameter_provider_rejection.rs` | wrong identity, version, shape or provider kind is accepted | typed identity/shape contracts; file I/O stays in io; generation execution deferred | provider identity/shape tests | fmt/check/clippy/test/boundaries | `feat: add typed parameter provider contracts` | registry is not provider; no gap is masked | every provider kind typed; NO_RUNTIME_PARAMETER creates no loader |
+| task_id | functional_scope | covered_clauses | production_dimensions | validation_profile | status |
+|---|---|---|---|---|---|
+| CLOCK-FOUNDATION | {"F02": "SCOPED_CLAUSES_ONLY", "XSTJ": "SCOPED_CLAUSES_ONLY"} | `callback g`<br>`source s=g-2`<br>`dispatch d=g-1`<br>`writer=d-1`<br>`published AU=s-2`<br>`source0/1 suppression`<br>`sample-count arithmetic` | — | — | HOLD |
+| SELECTED-PROFILE-GATE | {} | — | `AuthoredInputProfile`<br>`CoreCarrierProfile`<br>`JocDownmixProfile`<br>`SubstreamTopology`<br>`CodecRateProfile`<br>`EmdfCarriageProfile` | `RenderTarget` | HOLD |
 
-## Phase 1 exclusions
+## P1.1 failing-first tests
 
-FFT、QMF、BAP、mantissa、Huffman、EMDF/OAMD/JOC payload、frame writer、PCM/ADM reader、DSP 和 future profiles 全部排除。
+1. compile-fail cross-domain newtype interchange
+2. g=0/1 source underflow rejection
+3. s=0/1 suppression
+4. s=2 to AU0
+5. g-dispatch-writer boundaries
+6. sample counts 1,1535,1536,1537,6522906
+7. 4247 normal plus 4 drain
+8. 4249 sources
+9. 4247 published AUs
+10. both approved carriage modes accepted
+11. each production dimension mutation rejected
+12. RenderTarget does not affect production resolution
+13. profile rejection creates no staged root or temp output and leaves committed state unchanged
 
+## 后续 slice
+
+- P1.2：HOLD。
+- P1.3：HOLD。
+- P1.4：HOLD。
