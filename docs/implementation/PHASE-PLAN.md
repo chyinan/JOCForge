@@ -559,3 +559,277 @@
   }
 }
 ```
+
+## P1.3-B frontend_control materialization audit
+
+```json
+{
+  "programme_root": {
+    "boundaries": {
+      "domain": [
+        "crates/jocforge-domain/src/frontend/config.rs",
+        "crates/jocforge-domain/src/frontend/events.rs"
+      ],
+      "io": [
+        "crates/jocforge-io/src/bw64/mod.rs"
+      ],
+      "io_rule": "I/O gathers bounded metadata bytes only; domain parses/validates and owns state"
+    },
+    "canonical_serialization": {
+      "digest": "SHA-256 over complete canonical /value bytes",
+      "encoding": "UTF-8 JSON",
+      "ensure_ascii": false,
+      "numbers": "JSON decimal integers; booleans/null lowercase",
+      "separators": [
+        ",",
+        ":"
+      ],
+      "sort_keys": true,
+      "trailing_bytes": "none"
+    },
+    "clock": {
+      "advance": "one per committed normal or cached-drain callback",
+      "cold": 0,
+      "join_invariant": "must equal reader_eof callback_index in the same CallbackTransaction",
+      "type": "FrontendCallbackIndex"
+    },
+    "cold_provider": {
+      "file": "parameters/f01e-selected-constructor-v1.json",
+      "identity": "F01E_SELECTED_COLD_V1",
+      "kind": "FILE_PROVIDER",
+      "manifest_sha256": "b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb",
+      "shape": "11 top-level fields; objects[28] fixed records; optional snapshots 38x13 and 37x13",
+      "validation": [
+        "schema/version exact",
+        "cold_preimage_hex decodes to canonical /value",
+        "object ordinals exactly 0..27",
+        "all optional bindings/snapshots null",
+        "normalized_config exact"
+      ]
+    },
+    "cross_root_coordination": {
+      "atomicity_claim": "NOT_IMPLEMENTED; two independent machine commits must never be presented as global atomic success",
+      "peer_root": "reader_eof",
+      "required_checks": [
+        "same transaction_id",
+        "same callback_index",
+        "both before generations current",
+        "all callback roots staged before any root replacement"
+      ],
+      "required_future_interface": "CallbackJoinProposal { transaction_id, callback_index, reader_eof_before_generation, frontend_control_before_generation, reader_eof_staged, frontend_control_staged }",
+      "same_global_transaction": true
+    },
+    "evidence": [
+      "parameters/f01e-selected-constructor-v1.json",
+      "parameters/adm-installed48-state-v1.json",
+      "specs/01-frontend-config-dbmd-events.md",
+      "specs/00-global-transaction-contract.md",
+      "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json"
+    ],
+    "fatal": {
+      "effect": "discard staged frontend_control and set programme RETIRED",
+      "later_stages": "NOT_RUN",
+      "retry": "full restart or destroy only"
+    },
+    "fields": [
+      {
+        "cold": "F01E_SELECTED_COLD_V1",
+        "name": "schema",
+        "type": "const UTF-8 string"
+      },
+      {
+        "cold": 0,
+        "name": "callback_index",
+        "type": "U64"
+      },
+      {
+        "cold": 0,
+        "name": "normal_callbacks",
+        "type": "U64"
+      },
+      {
+        "cold": 4,
+        "name": "remaining_cached_drains",
+        "type": "U32"
+      },
+      {
+        "cold": "BEFORE_FIRST_NORMAL",
+        "name": "phase",
+        "type": "enum string"
+      },
+      {
+        "cold": "ordinal 0..27; host/event null; sampler_previous_present false; xyz_u32 [0,0,0]",
+        "name": "objects",
+        "type": "array[28] object records"
+      },
+      {
+        "cold": null,
+        "name": "last_control38_snapshot",
+        "type": "Option<U32[38][13]>"
+      },
+      {
+        "cold": null,
+        "name": "last_regular37_snapshot",
+        "type": "Option<U32[37][13]>"
+      },
+      {
+        "cold": null,
+        "name": "dbmd_binding",
+        "type": "optional immutable DBMD identity/table"
+      },
+      {
+        "cold": null,
+        "name": "physical_binding",
+        "type": "optional derived 10-bed/28-object/LFE/regular37 binding"
+      },
+      {
+        "cold": {
+          "bed_count": 10,
+          "bit_rate_enum": 5,
+          "bit_rate_kbps": 1024,
+          "channels": 38,
+          "dispatch_mode": 2,
+          "event_start_samples": 0,
+          "frame_samples": 1536,
+          "layout_enum": 8,
+          "line_drc": "none",
+          "object_count": 28,
+          "pcm_bits": 24,
+          "rf_drc": "none",
+          "sample_rate_hz": 48000,
+          "source_samples": 6522906,
+          "spatial_config_mode": 0,
+          "target_capacity": 15,
+          "time_base": "file_position",
+          "virtual_prefix_count": 11
+        },
+        "name": "normalized_config",
+        "type": "immutable selected config record"
+      }
+    ],
+    "implementation_status": "NOT_STARTED",
+    "linear_capabilities": {
+      "machine": {
+        "clone": false,
+        "copy": false,
+        "ownership": "single committed owner",
+        "type": "FrontendControlMachine"
+      },
+      "prepared": {
+        "clone": false,
+        "consumed_by": "stage(self, prepared)",
+        "type": "FrontendControlPrepared"
+      },
+      "staged": {
+        "clone": false,
+        "consumed_by": [
+          "global abort",
+          "global commit",
+          "global fatal"
+        ],
+        "type": "FrontendControlStaged"
+      }
+    },
+    "materialization_status": "MAPPING_COMPLETE_BLOCKED_ON_P1.4_PROVIDER_CONTRACT",
+    "permissions": {
+      "abort": {
+        "authority": "future global CallbackTransaction coordinator",
+        "effect": "discard staged frontend_control; committed bytes/generation unchanged"
+      },
+      "commit": {
+        "authority": "future global CallbackTransaction coordinator",
+        "condition": "reader_eof and frontend_control share transaction_id/callback_index and all callback roots validate",
+        "effect": "future atomic multi-root replacement; NOT implemented in P1.3-B audit"
+      },
+      "prepare": {
+        "authority": "F01E pure config/event/control transition",
+        "inputs": [
+          "committed frontend_control",
+          "validated ADM/config/DBMD/event bytes already gathered by I/O shell",
+          "callback kind and reader_eof clock proposal"
+        ],
+        "mutation": "none",
+        "output": "FrontendControlPrepared"
+      },
+      "stage": {
+        "authority": "F01E",
+        "output": "complete immutable FrontendControlStaged after-state"
+      }
+    },
+    "prerequisite": {
+      "implementation_prohibitions": [
+        "no hardcoded provider value in P1.3-B",
+        "no file I/O in frontend domain",
+        "no serde_json or other JSON dependency before P1.4 approval",
+        "no READY/LOCALLY_VERIFIED before prerequisite passes"
+      ],
+      "required_status": "LOCALLY_VERIFIED",
+      "requirements": [
+        {
+          "name": "provider_identity",
+          "value": "ProviderIdentity<F01E_SELECTED_COLD_V1>"
+        },
+        {
+          "name": "manifest_sha256_pin",
+          "value": "b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb"
+        },
+        {
+          "name": "schema_validation",
+          "value": "f01e-selected-constructor.v1 and /value pointer exact"
+        },
+        {
+          "name": "json_validation",
+          "value": "UTF-8 JSON parse plus exact shape/type/range validation"
+        },
+        {
+          "name": "canonical_preimage",
+          "value": "rebuild canonical bytes and compare cold_preimage_hex plus expected SHA-256"
+        },
+        {
+          "name": "provider_receipt",
+          "value": "immutable typed F01E provider receipt"
+        },
+        {
+          "name": "boundary",
+          "value": "io reads provider bytes; domain parses/validates bytes without file access"
+        }
+      ],
+      "task": "P1.4-A-F01E-PROVIDER-CONTRACT"
+    },
+    "receipt": {
+      "digest": "SHA-256 canonical complete frontend_control bytes",
+      "generation": "cold=0; successful global callback commit increments exactly once",
+      "immutable_fields": [
+        "owner_id=frontend_control",
+        "before_generation",
+        "before_sha256",
+        "after_generation",
+        "after_sha256",
+        "changed",
+        "commit_count",
+        "transaction_id"
+      ],
+      "schema_file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
+      "schema_pointer": "#/$defs/ownerReceipt",
+      "type": "OwnerReceipt<FrontendControl>"
+    },
+    "reset": {
+      "authority": "programme-origin full restart",
+      "effect": "destroy root and reload/validate exact cold provider",
+      "resume": "forbidden within retired attempt"
+    },
+    "root_id": "frontend_control",
+    "schema_file": "parameters/f01e-selected-constructor-v1.json",
+    "schema_pointer": "/value",
+    "schema_version": "f01e-selected-constructor.v1"
+  },
+  "task": {
+    "cross_root_atomic_commit": "DEFERRED_NOT_IMPLEMENTED",
+    "implementation_status": "NOT_STARTED",
+    "prerequisite": "P1.4-A-F01E-PROVIDER-CONTRACT LOCALLY_VERIFIED",
+    "programme_root": "frontend_control",
+    "status": "BLOCKED_ON_P1.4_F01E_PROVIDER_CONTRACT",
+    "task_id": "P1.3-B-FRONTEND-CONTROL-AUDIT"
+  }
+}
+```
