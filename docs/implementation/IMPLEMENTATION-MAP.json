@@ -6,7 +6,7 @@
     "P1.1": "HOLD",
     "CLOCK_FOUNDATION": "LOCALLY_VERIFIED",
     "SELECTED_PROFILE_GATE": "LOCALLY_VERIFIED",
-    "P1.2": "P1.2_A_B_C_LOCALLY_VERIFIED__P1.2_D_NOT_OPEN",
+    "P1.2": "P1.2_A_B_C_LOCALLY_VERIFIED__P1.2_D_GO",
     "P1.3": "HOLD",
     "P1.4": "HOLD"
   },
@@ -1362,7 +1362,7 @@
       ],
       "materialization_status": "MATERIALIZED"
     },
-    "P1.2": "P1.2_A_B_C_LOCALLY_VERIFIED__P1.2_D_NOT_OPEN",
+    "P1.2": "P1.2_A_B_C_LOCALLY_VERIFIED__P1.2_D_GO",
     "P1.3": "HOLD",
     "P1.4": "HOLD",
     "P1.2-A": {
@@ -1544,6 +1544,74 @@
         "crates/jocforge-domain/tests/numeric_q15_coordinate.rs"
       ],
       "implementation_status": "LOCALLY_VERIFIED"
+    },
+    "P1.2-D": {
+      "task_id": "P1.2-D-NORMALIZE-Q15-COORDINATE",
+      "status": "GO",
+      "consumer": {
+        "functional_id": "F03P",
+        "module": "crates/jocforge-domain/src/numeric/q15_coordinate.rs",
+        "scope": "F03P.2 quantized integer divided by 32768 and converted to F32 only"
+      },
+      "spec_binding": {
+        "file": "specs/03-point-response-and-target-context.md",
+        "section": "F03P.2 15-point basis and quantization",
+        "numeric_file": "specs/00-numeric-semantics.md",
+        "numeric_sections": [
+          "N00.1 R32",
+          "N00.2 boundaries"
+        ]
+      },
+      "primitive": {
+        "name": "normalize_q15_coordinate",
+        "signature": "normalize_q15_coordinate(Q15Coordinate) -> NormalizedQ15Coordinate",
+        "typed_input": {
+          "name": "Q15Coordinate",
+          "construction": "private; only quantize_q15_coordinate",
+          "range": "i32 with positive cap 32767; negative values are not clamped",
+          "exact_f32_reconstruction": "all reachable stored integers lie on the originating binary32 integer grid"
+        },
+        "typed_output": {
+          "name": "NormalizedQ15Coordinate",
+          "representation": "private f32",
+          "accessors": [
+            "pub const fn value(self) -> f32",
+            "pub const fn to_bits(self) -> u32"
+          ],
+          "mutability": "immutable"
+        },
+        "conversion": "Q15 integer to binary32 round-to-nearest ties-to-even; exact for reachable Q15Coordinate values",
+        "division": "binary32 divide by exact nonzero 32768.0; exact power-of-two scaling",
+        "multiply_reciprocal": "FORBIDDEN",
+        "signed_zero": "integer zero normalizes to positive zero",
+        "subnormal": "impossible; smallest nonzero magnitude is 2^-15",
+        "division_by_zero": "impossible; fixed divisor 32768",
+        "non_finite": "impossible for typed input and bounded power-of-two scaling",
+        "overflow": "impossible; output range is finite"
+      },
+      "vectors": {
+        "kind": "PARENT_INTEGRATION_VECTOR",
+        "file": "test-vectors/unit/vectors.json",
+        "case_pointers": [
+          "U-PROJ-AXES",
+          "U-PROJ-ZERO"
+        ],
+        "property_binding": [
+          "zero and signed-zero source normalize to +0",
+          "positive and negative Q15 boundaries",
+          "negative no-clamp values below -1",
+          "reachable integer/F32 exactness boundaries"
+        ]
+      },
+      "planned_files": [
+        "crates/jocforge-domain/src/numeric/q15_coordinate.rs",
+        "crates/jocforge-domain/src/numeric/mod.rs"
+      ],
+      "planned_tests": [
+        "crates/jocforge-domain/tests/numeric_q15_normalization.rs",
+        "crates/jocforge-domain/tests/numeric_q15_coordinate.rs"
+      ],
+      "implementation_status": "NOT_STARTED"
     }
   }
 }

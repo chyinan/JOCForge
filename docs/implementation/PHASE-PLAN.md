@@ -216,3 +216,76 @@
   }
 }
 ```
+
+## P1.2-D normalized Q15 coordinate slice
+
+```json
+{
+  "consumer": {
+    "functional_id": "F03P",
+    "module": "crates/jocforge-domain/src/numeric/q15_coordinate.rs",
+    "scope": "F03P.2 quantized integer divided by 32768 and converted to F32 only"
+  },
+  "implementation_status": "NOT_STARTED",
+  "planned_files": [
+    "crates/jocforge-domain/src/numeric/q15_coordinate.rs",
+    "crates/jocforge-domain/src/numeric/mod.rs"
+  ],
+  "planned_tests": [
+    "crates/jocforge-domain/tests/numeric_q15_normalization.rs",
+    "crates/jocforge-domain/tests/numeric_q15_coordinate.rs"
+  ],
+  "primitive": {
+    "conversion": "Q15 integer to binary32 round-to-nearest ties-to-even; exact for reachable Q15Coordinate values",
+    "division": "binary32 divide by exact nonzero 32768.0; exact power-of-two scaling",
+    "division_by_zero": "impossible; fixed divisor 32768",
+    "multiply_reciprocal": "FORBIDDEN",
+    "name": "normalize_q15_coordinate",
+    "non_finite": "impossible for typed input and bounded power-of-two scaling",
+    "overflow": "impossible; output range is finite",
+    "signature": "normalize_q15_coordinate(Q15Coordinate) -> NormalizedQ15Coordinate",
+    "signed_zero": "integer zero normalizes to positive zero",
+    "subnormal": "impossible; smallest nonzero magnitude is 2^-15",
+    "typed_input": {
+      "construction": "private; only quantize_q15_coordinate",
+      "exact_f32_reconstruction": "all reachable stored integers lie on the originating binary32 integer grid",
+      "name": "Q15Coordinate",
+      "range": "i32 with positive cap 32767; negative values are not clamped"
+    },
+    "typed_output": {
+      "accessors": [
+        "pub const fn value(self) -> f32",
+        "pub const fn to_bits(self) -> u32"
+      ],
+      "mutability": "immutable",
+      "name": "NormalizedQ15Coordinate",
+      "representation": "private f32"
+    }
+  },
+  "spec_binding": {
+    "file": "specs/03-point-response-and-target-context.md",
+    "numeric_file": "specs/00-numeric-semantics.md",
+    "numeric_sections": [
+      "N00.1 R32",
+      "N00.2 boundaries"
+    ],
+    "section": "F03P.2 15-point basis and quantization"
+  },
+  "status": "GO",
+  "task_id": "P1.2-D-NORMALIZE-Q15-COORDINATE",
+  "vectors": {
+    "case_pointers": [
+      "U-PROJ-AXES",
+      "U-PROJ-ZERO"
+    ],
+    "file": "test-vectors/unit/vectors.json",
+    "kind": "PARENT_INTEGRATION_VECTOR",
+    "property_binding": [
+      "zero and signed-zero source normalize to +0",
+      "positive and negative Q15 boundaries",
+      "negative no-clamp values below -1",
+      "reachable integer/F32 exactness boundaries"
+    ]
+  }
+}
+```
