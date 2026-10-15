@@ -166,7 +166,7 @@
     "module": "crates/jocforge-domain/src/numeric/q15_coordinate.rs",
     "scope": "F03P.2 biased finite F32 to I32 truncation only"
   },
-  "implementation_status": "NOT_STARTED",
+  "implementation_status": "LOCALLY_VERIFIED",
   "planned_files": [
     "crates/jocforge-domain/src/numeric/trunc_i32.rs",
     "crates/jocforge-domain/src/numeric/q15_coordinate.rs",
@@ -199,7 +199,7 @@
     "file": "specs/00-numeric-semantics.md",
     "section": "N00.1 trunc toward zero"
   },
-  "status": "GO",
+  "status": "LOCALLY_VERIFIED",
   "task_id": "P1.2-C-TRUNC-F32-TO-I32",
   "vectors": {
     "case_pointers": [

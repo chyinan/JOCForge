@@ -1,7 +1,7 @@
 // pattern: Functional Core
 //! F03P.2-only Q15 coordinate quantization.
 
-use super::{FiniteF32, r32_add, r32_mul};
+use super::{FiniteF32, r32_add, r32_mul, trunc_f32_to_i32};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Q15CoordinateError {
@@ -33,13 +33,9 @@ pub fn quantize_q15_coordinate(input: f32) -> Result<Q15Coordinate, Q15Coordinat
     };
     let half = FiniteF32::new(half).map_err(|_| Q15CoordinateError::NonFiniteIntermediate)?;
     let biased = r32_add(scaled, half).map_err(|_| Q15CoordinateError::NonFiniteIntermediate)?;
-    let truncated = biased.value().trunc();
-
-    if truncated > 32_767.0_f32 {
+    if biased.value().trunc() > 32_767.0_f32 {
         return Ok(Q15Coordinate(32_767));
     }
-    if f64::from(truncated) < f64::from(i32::MIN) {
-        return Err(Q15CoordinateError::IntegerRange);
-    }
-    Ok(Q15Coordinate(truncated as i32))
+    let truncated = trunc_f32_to_i32(biased).map_err(|_| Q15CoordinateError::IntegerRange)?;
+    Ok(Q15Coordinate(truncated.value()))
 }
