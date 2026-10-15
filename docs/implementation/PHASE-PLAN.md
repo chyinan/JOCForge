@@ -341,3 +341,174 @@
   ]
 }
 ```
+
+## P1.3-A reader_eof materialization audit
+
+```json
+{
+  "programme_root": {
+    "boundaries": {
+      "domain": "crates/jocforge-domain/src/frontend/input_clock.rs owns pure transition and generated cold constructor",
+      "io": [
+        "crates/jocforge-io/src/bw64/mod.rs",
+        "crates/jocforge-io/src/pcm/mod.rs"
+      ],
+      "io_rule": "seek/chunk/bounded read only; pass bytes and explicit offsets to domain; cannot mutate owner"
+    },
+    "canonical_serialization": {
+      "f32": "exact U32 bits row-major",
+      "field_order": [
+        "callback_index",
+        "source_cursor_samples",
+        "normal_callbacks",
+        "remaining_cached_drains",
+        "last_normal_host38",
+        "last_control_snapshot",
+        "last_phase"
+      ],
+      "integers": "little-endian",
+      "optional": "presence byte then payload",
+      "padding": "none"
+    },
+    "clock": {
+      "advance": "one per committed normal or cached-drain callback",
+      "cold": 0,
+      "type": "FrontendCallbackIndex"
+    },
+    "cold_provider": {
+      "generation_specs": [
+        "parameters/adm-installed48-state-v1.json",
+        "specs/01-input-and-clock.md"
+      ],
+      "identity": "reader-eof-cold.selected-adm-installed48-state.v3",
+      "kind": "GENERATED_PROVIDER",
+      "provider_files": [],
+      "rules": [
+        "all integer clocks zero except remaining_cached_drains=4",
+        "both optional caches absent",
+        "last_phase=UNSET/0"
+      ],
+      "validation": [
+        "schema version exact",
+        "seven schema pointers resolve",
+        "fixed array shapes 38x1536 and 38x13",
+        "last_phase allowed 0/1/2",
+        "remaining drains range 0..4"
+      ]
+    },
+    "evidence": [
+      "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
+      "test-vectors/GLOBAL-TRANSACTION-INPUT-VECTORS.json",
+      "test-vectors/ADM-INSTALLED48-WHOLE-INPUT-VECTORS.json"
+    ],
+    "fatal": {
+      "effect": "discard staged reader_eof and set programme RETIRED",
+      "later_stages": "NOT_RUN",
+      "retry": "full restart or destroy only"
+    },
+    "fields": [
+      {
+        "cold": 0,
+        "name": "callback_index",
+        "type": "U64LE"
+      },
+      {
+        "cold": 0,
+        "name": "source_cursor_samples",
+        "type": "U64LE"
+      },
+      {
+        "cold": 0,
+        "name": "normal_callbacks",
+        "type": "U64LE"
+      },
+      {
+        "cold": 4,
+        "name": "remaining_cached_drains",
+        "type": "U32LE"
+      },
+      {
+        "cold": null,
+        "name": "last_normal_host38",
+        "type": "Option<F32[38][1536]>"
+      },
+      {
+        "cold": null,
+        "name": "last_control_snapshot",
+        "type": "Option<U32[38][13]>"
+      },
+      {
+        "cold": 0,
+        "name": "last_phase",
+        "type": "U8 enum UNSET=0 NORMAL=1 CACHED_DRAIN=2"
+      }
+    ],
+    "materialization_status": "READY_FOR_IMPLEMENTATION",
+    "permissions": {
+      "abort": {
+        "authority": "CallbackTransaction root",
+        "effect": "discard staged reader_eof; committed bytes/generation unchanged"
+      },
+      "commit": {
+        "authority": "CallbackTransaction root",
+        "condition": "all callback stages and generation checks pass",
+        "effect": "atomic root replacement; generation +1"
+      },
+      "prepare": {
+        "authority": "F01R/F02",
+        "inputs": [
+          "committed reader_eof",
+          "explicit source byte/sample offset",
+          "validated host/control proposal"
+        ],
+        "mutation": "none",
+        "output": "ReaderEofStagedProposal"
+      },
+      "stage": {
+        "authority": "F01R/F02",
+        "output": "complete staged reader_eof after-state"
+      }
+    },
+    "receipt": {
+      "canonical_digest": "SHA-256 over canonical serialized complete reader_eof bytes",
+      "generation": "cold=0; successful callback commit increments exactly once",
+      "immutable_fields": [
+        "owner_id=reader_eof",
+        "before_generation",
+        "before_sha256",
+        "after_generation",
+        "after_sha256",
+        "changed",
+        "commit_count",
+        "transaction_id"
+      ],
+      "schema_file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
+      "schema_pointer": "#/$defs/ownerReceipt",
+      "type": "OwnerReceipt<ReaderEof>"
+    },
+    "reset": {
+      "authority": "programme-origin full restart",
+      "effect": "destroy root and rerun generated cold constructor",
+      "resume": "forbidden within retired attempt"
+    },
+    "root_id": "reader_eof",
+    "schema_file": "parameters/adm-installed48-state-v1.json",
+    "schema_pointers": [
+      "/f03w_owned_fields/clocks/callback_index",
+      "/f03w_owned_fields/clocks/source_cursor_samples",
+      "/f03w_owned_fields/clocks/normal_callbacks",
+      "/f03w_owned_fields/clocks/remaining_cached_drains",
+      "/f03w_owned_fields/source_cache/last_normal_host38",
+      "/f03w_owned_fields/source_cache/last_control_snapshot",
+      "/f03w_owned_fields/source_cache/last_phase"
+    ],
+    "schema_version": "selected-adm-installed48-state.v3"
+  },
+  "task": {
+    "implementation_status": "NOT_STARTED",
+    "programme_root": "reader_eof",
+    "status": "READY_FOR_IMPLEMENTATION",
+    "task_id": "P1.3-A-READER-EOF-LIFECYCLE"
+  }
+}
+```
