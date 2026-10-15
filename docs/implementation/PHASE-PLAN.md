@@ -396,6 +396,13 @@
         "remaining drains range 0..4"
       ]
     },
+    "digest_provider": {
+      "api": "sha2::{Digest, Sha256}",
+      "crate": "sha2",
+      "default_features": false,
+      "purpose": "SHA-256 over canonical complete reader_eof bytes only",
+      "version": "=0.10.9"
+    },
     "evidence": [
       "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
       "test-vectors/GLOBAL-TRANSACTION-INPUT-VECTORS.json",
@@ -443,7 +450,36 @@
         "type": "U8 enum UNSET=0 NORMAL=1 CACHED_DRAIN=2"
       }
     ],
-    "materialization_status": "READY_FOR_IMPLEMENTATION",
+    "implementation_status": "LOCALLY_VERIFIED",
+    "linear_capabilities": {
+      "abort_reuse": "impossible after successful abort because staged token is moved",
+      "prepared": {
+        "clone": false,
+        "consumed_by": "stage(self, prepared)",
+        "type": "ReaderEofPrepared"
+      },
+      "staged": {
+        "clone": false,
+        "consumed_by": [
+          "abort(self, staged)",
+          "commit(&mut self, staged)",
+          "fatal(&mut self, staged)"
+        ],
+        "type": "ReaderEofStaged"
+      },
+      "stale_token": "independently prepared stale token is consumed and rejected by generation/digest validation"
+    },
+    "machine_owner_semantics": {
+      "clone": false,
+      "commit_authority": "one machine instance owns committed root/generation/retired flag",
+      "committed_access": "immutable &ReaderEofState only",
+      "copy": false,
+      "mutable_access": "none",
+      "ownership": "linear single committed owner",
+      "restart": "full_restart(self) consumes the unique machine",
+      "type": "ReaderEofMachine"
+    },
+    "materialization_status": "MATERIALIZED",
     "permissions": {
       "abort": {
         "authority": "CallbackTransaction root",
@@ -471,6 +507,16 @@
     },
     "receipt": {
       "canonical_digest": "SHA-256 over canonical serialized complete reader_eof bytes",
+      "field_types": {
+        "after_generation": "u64",
+        "after_sha256": "ReaderEofDigest([u8;32]) / lowercase hex at schema boundary",
+        "before_generation": "u64",
+        "before_sha256": "ReaderEofDigest([u8;32]) / lowercase hex at schema boundary",
+        "changed": "bool",
+        "commit_count": "u8 constrained to 0/1",
+        "owner_id": "ReaderEofOwnerId::ReaderEof",
+        "transaction_id": "immutable String"
+      },
       "generation": "cold=0; successful callback commit increments exactly once",
       "immutable_fields": [
         "owner_id=reader_eof",
@@ -484,6 +530,7 @@
       ],
       "schema_file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
       "schema_pointer": "#/$defs/ownerReceipt",
+      "serialization": "GLOBAL-TRANSACTION schema JSON object; key order is not semantic; no receipt-byte digest is claimed",
       "type": "OwnerReceipt<ReaderEof>"
     },
     "reset": {
@@ -505,9 +552,9 @@
     "schema_version": "selected-adm-installed48-state.v3"
   },
   "task": {
-    "implementation_status": "NOT_STARTED",
+    "implementation_status": "LOCALLY_VERIFIED",
     "programme_root": "reader_eof",
-    "status": "READY_FOR_IMPLEMENTATION",
+    "status": "LOCALLY_VERIFIED",
     "task_id": "P1.3-A-READER-EOF-LIFECYCLE"
   }
 }

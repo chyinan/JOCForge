@@ -7,7 +7,7 @@
     "CLOCK_FOUNDATION": "LOCALLY_VERIFIED",
     "SELECTED_PROFILE_GATE": "LOCALLY_VERIFIED",
     "P1.2": "SCOPED_COMPLETE_CURRENT_MATERIALIZED_CONSUMERS__FUTURE_CONSUMERS_DEFERRED",
-    "P1.3": "HOLD",
+    "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B_NOT_OPEN",
     "P1.4": "HOLD"
   },
   "functional_entries": [
@@ -1211,7 +1211,7 @@
   "programme_roots": [
     {
       "root_id": "reader_eof",
-      "materialization_status": "READY_FOR_IMPLEMENTATION",
+      "materialization_status": "MATERIALIZED",
       "schema_file": "parameters/adm-installed48-state-v1.json",
       "schema_version": "selected-adm-installed48-state.v3",
       "schema_pointers": [
@@ -1336,7 +1336,18 @@
           "transaction_id"
         ],
         "generation": "cold=0; successful callback commit increments exactly once",
-        "canonical_digest": "SHA-256 over canonical serialized complete reader_eof bytes"
+        "canonical_digest": "SHA-256 over canonical serialized complete reader_eof bytes",
+        "field_types": {
+          "owner_id": "ReaderEofOwnerId::ReaderEof",
+          "before_generation": "u64",
+          "before_sha256": "ReaderEofDigest([u8;32]) / lowercase hex at schema boundary",
+          "after_generation": "u64",
+          "after_sha256": "ReaderEofDigest([u8;32]) / lowercase hex at schema boundary",
+          "changed": "bool",
+          "commit_count": "u8 constrained to 0/1",
+          "transaction_id": "immutable String"
+        },
+        "serialization": "GLOBAL-TRANSACTION schema JSON object; key order is not semantic; no receipt-byte digest is claimed"
       },
       "canonical_serialization": {
         "field_order": [
@@ -1365,7 +1376,43 @@
         "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
         "test-vectors/GLOBAL-TRANSACTION-INPUT-VECTORS.json",
         "test-vectors/ADM-INSTALLED48-WHOLE-INPUT-VECTORS.json"
-      ]
+      ],
+      "implementation_status": "LOCALLY_VERIFIED",
+      "digest_provider": {
+        "crate": "sha2",
+        "version": "=0.10.9",
+        "default_features": false,
+        "api": "sha2::{Digest, Sha256}",
+        "purpose": "SHA-256 over canonical complete reader_eof bytes only"
+      },
+      "linear_capabilities": {
+        "prepared": {
+          "type": "ReaderEofPrepared",
+          "clone": false,
+          "consumed_by": "stage(self, prepared)"
+        },
+        "staged": {
+          "type": "ReaderEofStaged",
+          "clone": false,
+          "consumed_by": [
+            "abort(self, staged)",
+            "commit(&mut self, staged)",
+            "fatal(&mut self, staged)"
+          ]
+        },
+        "abort_reuse": "impossible after successful abort because staged token is moved",
+        "stale_token": "independently prepared stale token is consumed and rejected by generation/digest validation"
+      },
+      "machine_owner_semantics": {
+        "type": "ReaderEofMachine",
+        "ownership": "linear single committed owner",
+        "clone": false,
+        "copy": false,
+        "committed_access": "immutable &ReaderEofState only",
+        "mutable_access": "none",
+        "restart": "full_restart(self) consumes the unique machine",
+        "commit_authority": "one machine instance owns committed root/generation/retired flag"
+      }
     },
     {
       "root_id": "frontend_control",
@@ -1517,7 +1564,7 @@
       "materialization_status": "MATERIALIZED"
     },
     "P1.2": "SCOPED_COMPLETE_CURRENT_MATERIALIZED_CONSUMERS__FUTURE_CONSUMERS_DEFERRED",
-    "P1.3": "HOLD",
+    "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B_NOT_OPEN",
     "P1.4": "HOLD",
     "P1.2-A": {
       "task_id": "P1.2-A-Q15-COORDINATE",
@@ -1816,9 +1863,18 @@
     },
     "P1.3-A": {
       "task_id": "P1.3-A-READER-EOF-LIFECYCLE",
-      "status": "READY_FOR_IMPLEMENTATION",
+      "status": "LOCALLY_VERIFIED",
       "programme_root": "reader_eof",
-      "implementation_status": "NOT_STARTED"
+      "implementation_status": "LOCALLY_VERIFIED"
+    }
+  },
+  "approved_dependencies": {
+    "sha2": {
+      "version": "=0.10.9",
+      "default_features": false,
+      "archive_sha256": "a7507d819769d01a365ab707794a4084392c824f54a7a6a7862f8c3d0892b283",
+      "license_choice": "Apache-2.0",
+      "scope": "reader_eof canonical SHA-256 only"
     }
   }
 }

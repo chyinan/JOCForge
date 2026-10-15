@@ -26,6 +26,7 @@
     },
     "selected_overlap_projection": {"type": "object"},
     "phase_one": {"type": "object"}
+    ,"approved_dependencies": {"type": "object"}
   },
   "additionalProperties": false
 }
