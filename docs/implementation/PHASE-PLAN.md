@@ -838,18 +838,49 @@
 
 ```json
 {
-  "abort_api": "CallbackTransactionCoordinator::abort(&mut self, reader: ReaderEofStaged, frontend: FrontendControlStaged); consumes both tokens and leaves both committed states and generations unchanged",
+  "abort_api": "one callback-level abort consumes the CallbackTransactionStaged value; every owner receipt has after=before, changed=false, commit_count=0; no owner state or generation changes",
   "blockers": [
-    "owner_receipts order is not selected by schema or vectors",
-    "two-root replacement cannot claim the GTC global callback commit while required callback/source roots remain outside this coordinator",
-    "the schema/vector pair does not bind the exact pair-level CallbackTransactionReceipt projection or receipt wrapper canonicalization"
+    "the v2 CallbackTransactionReceipt must not be implemented until the missing owner roots and g>=2 source-stage roots are materialized",
+    "MEASUREMENT, FINALIZE, and RESTART receipt semantics remain unresolved"
   ],
+  "callback_owner_ids": [
+    "analysis",
+    "codec",
+    "drc",
+    "frontend_control",
+    "integrity",
+    "joc",
+    "metadata",
+    "meter",
+    "output",
+    "reader_eof",
+    "spatial_audio",
+    "spatial_control"
+  ],
+  "callback_owner_snapshot_semantics": "every CALLBACK receipt carries committed before/after snapshots for all 12 owners, including unchanged owners",
   "callback_receipt": {
+    "ABORTED": "stage fatal sets programme RETIRED; all after values equal before; changed=false; commit_count=0; top_level_commit_count=0",
+    "COMMITTED": "all 12 owner snapshots use actual committed-before and committed-after values; top_level_commit_count=1",
+    "REJECTED": "preflight failure runs no stage and does not retire; all after values equal before; changed=false; commit_count=0; top_level_commit_count=0",
+    "after_values": "actual committed-after snapshots only; discarded staged values never appear",
+    "approved_wrapper_field_count": 13,
+    "base_schema_file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
+    "base_schema_identity": "selected-profile-transaction-receipt.v1",
+    "base_schema_pointer": "#/$defs/transactionReceipt",
+    "canonical_output_order": "owner_receipts sorted by owner_id ASCII ascending; sorting does not change DSP or commit order",
     "canonical_state_digests": {
-      "frontend_control": "SHA-256 over the complete typed canonical bytes bound to its validated provider lineage",
-      "reader_eof": "SHA-256 over the complete reader_eof canonical bytes defined by its owner map",
-      "receipt_wrapper": "the GTC schema defines object shape but no canonical byte encoding or receipt digest"
+      "all_owners": "each before_sha256/after_sha256 uses that owner's complete canonical state bytes",
+      "receipt_wrapper": "no digest or HMAC; stable JSON encoding is a test format only, not execution authority or a DEE compatibility claim"
     },
+    "commit_count_semantics": {
+      "ABORTED_OR_REJECTED": "after values equal before; changed=false; commit_count=0",
+      "COMMITTED": "changed owner=1; unchanged owner=0"
+    },
+    "fatal_receipt_rule": "fatal is present only on ABORTED; preflight REJECTED has no fatal receipt",
+    "field_mapping_status": "RESOLVED_BY_WASH_ERRATUM",
+    "input_validation": "accept arbitrary input array order, then require each known owner_id exactly once; reject missing, duplicate, or unknown IDs",
+    "known_base_v1_field_count": 13,
+    "owner_receipt_count": 12,
     "owner_receipt_fields": [
       "owner_id",
       "before_generation",
@@ -861,99 +892,52 @@
       "transaction_id"
     ],
     "owner_receipt_order": {
-      "blocking_evidence": "transactionReceipt.owner_receipts is an unconstrained array of ownerReceipt; GLOBAL-TRANSACTION-INPUT-VECTORS.json contains no owner_receipts values or owner receipt order assertion",
-      "selected_order": null,
-      "status": "UNSPECIFIED_BY_GTC_SCHEMA_AND_VECTORS"
+      "order": [
+        "analysis",
+        "codec",
+        "drc",
+        "frontend_control",
+        "integrity",
+        "joc",
+        "metadata",
+        "meter",
+        "output",
+        "reader_eof",
+        "spatial_audio",
+        "spatial_control"
+      ],
+      "status": "APPROVED_BY_WASH_SIDE_DESIGN"
     },
-    "owner_receipt_semantics": "all owner transaction_id values equal the shared CallbackTransactionId; changed compares each owner's before/after canonical state SHA-256; commit_count is 1 when changed and 0 when unchanged",
+    "owner_receipt_owner_ids_ascii": [
+      "analysis",
+      "codec",
+      "drc",
+      "frontend_control",
+      "integrity",
+      "joc",
+      "metadata",
+      "meter",
+      "output",
+      "reader_eof",
+      "spatial_audio",
+      "spatial_control"
+    ],
+    "owner_receipt_semantics": "all owner transaction_id values equal the shared CallbackTransactionId; changed is true iff generation or state digest changes",
     "owner_schema_pointer": "#/$defs/ownerReceipt",
-    "schema_file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
-    "schema_pointer": "#/$defs/transactionReceipt",
-    "top_level_commit_count": "exactly 1 for a successful global CallbackTransaction",
-    "type": "CallbackTransactionReceipt"
-  },
-  "commit_api": "CallbackTransactionCoordinator::commit(&mut self, reader: ReaderEofStaged, frontend: FrontendControlStaged) -> Result<CallbackTransactionReceipt, CallbackTransactionError>; exclusive &mut self owns the unique mutable access to both machines",
-  "coordinator": {
-    "dynamic_owner_list": false,
-    "generic_roots": false,
-    "owns_exactly": [
-      "ReaderEofMachine",
-      "FrontendControlMachine",
-      "programme_retired_guard"
-    ],
-    "retired_guard": "private coordinator-owned flag; all machine prepare/stage/replacement entry points become crate-private and are reachable only through this coordinator",
-    "trait_registry": false,
-    "type": "CallbackTransactionCoordinator"
-  },
-  "design_only": true,
-  "fatal_api": "CallbackTransactionCoordinator::fatal(&mut self, failure: FatalReceipt, reader: Option<ReaderEofStaged>, frontend: Option<FrontendControlStaged>); consumes any related tokens, records the GTC fatal receipt, sets the coordinator programme-retired guard, and rejects later calls",
-  "gtc_scope_conflict": {
-    "evidence": [
-      "GTC §3.3 callback-only commit atomically replaces reader_eof, frontend_control, spatial_control, and spatial_audio",
-      "GTC §4.4 successful CallbackTransaction also replaces additional source owners and clocks",
-      "the GTC transactionReceipt schema has no pair-only receipt type or rule allowing a two-owner receipt to claim top_level_commit_count=1"
-    ],
-    "resolution_required": "the approved specification must define whether this two-root coordinator returns an intermediate pair receipt or participates in a wider single replacement, and how its receipt maps to transactionReceipt",
-    "status": "BLOCKING"
-  },
-  "implementation_rust": "FORBIDDEN while status=BLOCKED",
-  "join_metadata": {
-    "both_staged_tokens": [
-      "CallbackTransactionId",
-      "FrontendCallbackIndex"
-    ],
-    "frontend_control": [
-      "before_generation",
-      "before_sha256",
-      "provider_manifest_sha256",
-      "provider_file_sha256",
-      "provider_canonical_sha256"
-    ],
-    "matching_rule": "transaction id and callback index must match exactly across both staged tokens",
-    "reader_eof": [
-      "before_generation",
-      "before_sha256"
-    ]
-  },
-  "preflight_order": [
-    "reject if coordinator or either owned machine is retired",
-    "validate each token transaction id and require a nonempty shared CallbackTransactionId",
-    "validate equal typed FrontendCallbackIndex values",
-    "validate each token before_generation against its current machine generation and checked next-generation arithmetic",
-    "recompute both committed before digests and compare them with the token metadata",
-    "recompute both staged after-state digests and compare them with the token metadata",
-    "validate frontend manifest, provider-file, and canonical-cold lineage against the committed frontend_control provider receipt"
-  ],
-  "reader_eof_api_migration": "ReaderEofMachine commit/abort/fatal and machine staging entry points currently public must become crate-private; coordinator-only validated accessors provide join metadata and move-only after-state parts",
-  "replacement": {
-    "fallibility": "replacement phase contains only infallible moves and scalar assignments; no callbacks, allocation, hashing, cloning, or fallible work",
-    "operation": "move both validated after-states into their owned machines and assign both precomputed generations",
-    "precondition": "all token, digest, lineage, and checked generation work finishes before replacement begins",
-    "rollback": "clone-and-rollback is forbidden; preflight failure leaves both committed byte identities and generations unchanged"
-  },
-  "scope": [
-    "reader_eof",
-    "frontend_control"
-  ],
-  "status": "BLOCKED",
-  "success_semantics": "one call consumes both linear tokens, increments both generations by exactly one, and returns one immutable CallbackTransactionReceipt; a single-root success result is forbidden",
-  "task_id": "P1.3-C-TWO-ROOT-CALLBACK-COORDINATOR-MAP",
-  "transaction_receipt_binding": {
-    "field_bindings": {
-      "attempt": "programme attempt generation",
-      "callback_index": "shared FrontendCallbackIndex",
-      "durable_append": "GTC DurableAppendReceipt when the source publishes an AU, otherwise null",
-      "fatal": "null for a committed callback",
-      "kind": "CALLBACK",
-      "owner_receipts": "one OwnerReceipt for every owner replaced by the complete GTC callback",
-      "result": "COMMITTED only after the complete GTC callback replacement",
-      "schema": "selected-profile-transaction-receipt.v1",
-      "source_index_dispatch_au_index": "GTC-derived values when applicable; not derivable from the two-root scope alone",
-      "top_level_commit_count": "1 for the complete callback replacement",
-      "transaction_id": "shared CallbackTransactionId"
+    "schema_identity": "selected-profile-transaction-receipt.v2",
+    "top_level_commit_count": "1 for a successful CALLBACK; 0 for ABORTED or REJECTED",
+    "type": "CallbackTransactionReceipt",
+    "unidentified_v2_field": null,
+    "wash_side_design_basis": {
+      "authority": "approved internal API design choice; not a DEE/native behavior claim",
+      "findings_sha256": "8eb3ddff2ca02caf0db5f9d6b2d126e586f9d91116efc2b9ed9f748ca5460f69",
+      "input_only_vectors_sha256": "4cf2c0de3a69e8601b0c2e96cf734623316f2d8637dc6bfe7b2e9f5f164aa02a",
+      "materials_verification": "PASS_RESEARCH_MATERIAL_STRUCTURE_AND_IDENTITIES_ONLY",
+      "production_path_reference": null,
+      "source_audit_sha256": "0bc4a6ebcbb9bc9df104cf725dd498c58f73657c3a7bf99027531d4ed6028eba",
+      "whole_execution_and_product_execution": "NOT_RUN"
     },
-    "owner_receipt_order": "blocked until approved GTC evidence selects an array order",
-    "schema_fields": [
+    "wrapper_fields": [
       "schema",
       "transaction_id",
       "kind",
@@ -967,15 +951,176 @@
       "durable_append",
       "fatal",
       "top_level_commit_count"
-    ]
+    ],
+    "wrapper_types": {
+      "attempt": "u64",
+      "au_index": "null unless s>=2; then j=s-2",
+      "callback_index": "u64 for CALLBACK",
+      "dispatch": "null when g<2; d=s+1 when g>=2",
+      "durable_append": "null unless an approved AU publish append succeeded",
+      "fatal": "nonnull only for ABORTED",
+      "kind": "transaction kind enum; only CALLBACK semantics are approved",
+      "owner_receipts": "exactly 12 unique OwnerReceipt values in canonical ASCII owner_id order",
+      "result": "COMMITTED | ABORTED | REJECTED",
+      "schema": "const selected-profile-transaction-receipt.v2",
+      "source_index": "null when g<2; s=g-2 when g>=2",
+      "top_level_commit_count": "COMMITTED=1; ABORTED/REJECTED=0",
+      "transaction_id": "nonempty string; CallbackTransactionId"
+    }
+  },
+  "callback_success_gates": {
+    "dual_root_success": "FORBIDDEN",
+    "g_0_1": "all four callback roots reader_eof, frontend_control, spatial_control, spatial_audio must succeed before the callback commits",
+    "g_ge_2": "wait for every source root required by that callback before the callback commits",
+    "internal_stages": "SOURCE, DISPATCH and AU append do not emit independent top-level success"
+  },
+  "commit_api": "CallbackTransactionCoordinator::commit(&mut self, staged: CallbackTransactionStaged) -> Result<CallbackTransactionReceipt, CallbackTransactionError>; staged contains fixed named owner fields, never a generic root list",
+  "coordinator": {
+    "dynamic_owner_list": false,
+    "fixed_programme_owner_fields": [
+      "reader_eof",
+      "frontend_control",
+      "spatial_control",
+      "spatial_audio",
+      "joc",
+      "meter",
+      "drc",
+      "analysis",
+      "codec",
+      "metadata",
+      "integrity",
+      "output"
+    ],
+    "generic_root_trait": false,
+    "macros": false,
+    "programme_status_and_fatal": "owned by the fixed programme coordinator root",
+    "retired_guard": "programme status RETIRED blocks every public callback path; root machines have no independently callable public commit/abort/fatal success API",
+    "trait_registry": false,
+    "type": "CallbackTransactionCoordinator"
+  },
+  "design_only": true,
+  "fatal_api": "a stage fatal aborts the whole callback, records ABORTED plus the fatal receipt, sets programme status RETIRED, preserves all owner bytes/generations, and rejects subsequent calls",
+  "implementation_rust": "FORBIDDEN until all fixed callback owner roots are materialized and integrated",
+  "join_metadata": {
+    "all staged callback values": [
+      "CallbackTransactionId",
+      "FrontendCallbackIndex"
+    ],
+    "each_owner_snapshot": [
+      "owner_id",
+      "before_generation",
+      "before_sha256",
+      "after_generation",
+      "after_sha256",
+      "changed",
+      "commit_count",
+      "transaction_id"
+    ],
+    "frontend_provider_lineage": [
+      "package_manifest_sha256",
+      "provider_file_sha256",
+      "canonical_cold_sha256"
+    ],
+    "matching_rule": "the same nonempty CallbackTransactionId and FrontendCallbackIndex bind the callback and all owner snapshots"
+  },
+  "owner_receipt_count": 12,
+  "owner_receipt_input_validation": "accept any input order, then require exactly 12 distinct known owner_id values and emit canonical ASCII order; reject missing, duplicate, or unknown IDs",
+  "owner_receipt_order_rule": "fixed ASCII ascending owner_id order; order does not affect DSP stage or replacement order",
+  "owner_root_readiness": {
+    "additional_owner_roots_required_for_12_snapshots": [
+      "joc",
+      "meter",
+      "drc",
+      "analysis",
+      "codec",
+      "metadata",
+      "integrity",
+      "output"
+    ],
+    "currently_materialized_or_mapped": [
+      "reader_eof",
+      "frontend_control",
+      "spatial_control"
+    ],
+    "g_ge_2_source_stage_roots": [
+      "joc",
+      "drc",
+      "analysis",
+      "codec",
+      "metadata",
+      "integrity",
+      "output"
+    ],
+    "missing_callback_root": "spatial_audio",
+    "spatial_control_status": "MAPPING_COMPLETE_BLOCKED_ON_P1.4_B_F03_PROVIDER"
+  },
+  "preflight_order": [
+    "validate programme status and callback g against the committed main callback clock",
+    "validate nonempty CallbackTransactionId and matching callback_index for all present stage receipts",
+    "require owner snapshot set to contain each of the 12 owner_id values exactly once; reject missing, duplicate, or unknown IDs",
+    "validate all before_generation and before_sha256 values against the committed owner roots",
+    "validate all after generations and after_sha256 values against fully prepared staged roots; require unchanged owners to carry after equal to before",
+    "validate F01E and F03 provider lineages, plus all downstream owner receipts required by the selected callback",
+    "checked-compute all next owner generations and final top-level receipt fields before replacement"
+  ],
+  "preflight_rejection": "result=REJECTED; no stage runs and programme status does not become RETIRED",
+  "reader_eof_api_migration": "ReaderEofMachine commit/abort/fatal and per-root success APIs become crate-private coordinator implementation details; no root can independently publish success",
+  "replacement": {
+    "fallibility": "replacement phase contains only infallible moves and scalar assignments; no callbacks, allocation, hashing, cloning, or fallible work",
+    "operation": "move the fixed named after-states into the programme owner fields and assign precomputed generations",
+    "precondition": "all 12 owner checks, digest checks, lineage checks, and generation arithmetic finish before replacement begins",
+    "rollback": "clone-and-rollback is forbidden; any preflight rejection leaves all 12 committed owner identities and generations unchanged"
+  },
+  "scope": "CALLBACK is the only top-level transaction in scope; SOURCE, DISPATCH, and AU append are internal stages; MEASUREMENT, FINALIZE, and RESTART remain unresolved",
+  "status": "CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS",
+  "success_semantics": "one CALLBACK top-level commit consumes the complete staged transaction, atomically replaces all 12 owner snapshots, and emits one immutable receipt; no per-owner or per-source top-level success exists",
+  "task_id": "P1.3-C-CALLBACK-TRANSACTION-CONTRACT-MAP",
+  "transaction_receipt_binding": {
+    "field_bindings": {
+      "attempt": "programme attempt generation",
+      "au_index": "null unless s>=2; then j=s-2",
+      "callback_index": "shared FrontendCallbackIndex",
+      "dispatch": "null when g<2; d=s+1 when g>=2",
+      "durable_append": "null unless an approved AU publish append succeeded; null does not prove that no physical write occurred",
+      "fatal": "nonnull only for ABORTED; if durable append succeeded before root publication failed, record the abandoned physical append in fatal diagnostics",
+      "kind": "CALLBACK; SOURCE, DISPATCH, and AU append are internal stages; MEASUREMENT, FINALIZE, and RESTART remain unresolved",
+      "owner_receipts": "12 complete committed before/after snapshots, including unchanged owners, in the approved ASCII order",
+      "result": "COMMITTED only after full callback replacement; preflight rejection is REJECTED; stage fatal is ABORTED",
+      "schema": "selected-profile-transaction-receipt.v2",
+      "source_index": "null when g<2; s=g-2 when g>=2",
+      "top_level_commit_count": "1 for COMMITTED; 0 for ABORTED or REJECTED; SOURCE, DISPATCH, and AU append are internal stages",
+      "transaction_id": "shared CallbackTransactionId"
+    },
+    "field_count_reconciliation": "RESOLVED_BY_WASH_ERRATUM; the callback wrapper has exactly 13 fields and no field 14",
+    "field_names": [
+      "schema",
+      "transaction_id",
+      "kind",
+      "result",
+      "attempt",
+      "callback_index",
+      "source_index",
+      "dispatch",
+      "au_index",
+      "owner_receipts",
+      "durable_append",
+      "fatal",
+      "top_level_commit_count"
+    ],
+    "json_stability": "stable JSON encoding is only a test format; no wrapper digest/HMAC or DEE compatibility claim"
   },
   "typed_transaction_id": {
     "representation": "private String",
     "type": "CallbackTransactionId",
     "validation": "nonempty, matching transaction_id minLength=1 in the GTC transactionReceipt schema"
   },
+  "unclosed_transaction_kinds": [
+    "MEASUREMENT",
+    "FINALIZE",
+    "RESTART"
+  ],
   "vector_bindings": {
-    "coverage": "committed-state preservation, successful callback counts, fatal retirement, and post-retired rejection; no exact two-owner receipt contents/order",
+    "coverage": "committed-state preservation, callback/source counts, fatal retirement, and post-retired rejection; CALLBACK v2 field and twelve-owner receipt rules are supplied by wash-side design basis",
     "file": "test-vectors/GLOBAL-TRANSACTION-INPUT-VECTORS.json",
     "relevant_case_ids": [
       "continuous_main_prefix_through_au0",
@@ -983,6 +1128,564 @@
       "post_retired_calls_rejected",
       "full_restart_from_retired"
     ]
+  },
+  "wash_side_design_basis": {
+    "authority": "approved internal CALLBACK API design choice; not a DEE/native behavior claim",
+    "findings_sha256": "8eb3ddff2ca02caf0db5f9d6b2d126e586f9d91116efc2b9ed9f748ca5460f69",
+    "input_only_vectors_sha256": "4cf2c0de3a69e8601b0c2e96cf734623316f2d8637dc6bfe7b2e9f5f164aa02a",
+    "materials_verification": "PASS_RESEARCH_MATERIAL_STRUCTURE_AND_IDENTITIES_ONLY",
+    "production_path_reference": null,
+    "source_audit_sha256": "0bc4a6ebcbb9bc9df104cf725dd498c58f73657c3a7bf99027531d4ed6028eba",
+    "whole_execution_and_product_execution": "NOT_RUN"
+  }
+}
+```
+
+## P1.3-D spatial_control root mapping audit
+
+```json
+{
+  "programme_root": {
+    "callback_local_only_fields": [
+      "event_control.derived_control38",
+      "event_control.derived_regular37",
+      "feature.fft4096_work",
+      "selection_outer.f03g_gate_output",
+      "selection_outer.f03a_selector",
+      "selection_outer.f03u_refinement",
+      "selection_outer.f03n_nnls",
+      "selection_outer.f03s_outer"
+    ],
+    "canonical_state": {
+      "arrays": "fixed arrays row-major",
+      "digest": "SHA-256 over the complete serialized f03w_owned_fields state; cold_sha256 is computed from the exact cold constructors and validated provider values",
+      "external_state": "F05R56/F04C/F05JL/F13/F15 states remain under their own owners and are not embedded in this digest",
+      "f32": "exact U32 bit patterns",
+      "field_order": "canonical map in shown f03w_owned_fields order",
+      "integers": "little-endian",
+      "optional": "presence byte then payload",
+      "scratch": "callback-local scratch is excluded from serialized committed state",
+      "serialization_rule": "Canonical map in shown field order; fixed arrays row-major; integers little-endian; F32 exact U32 bits; optional values carry presence byte; variable records carry U32LE count and length. Callback-local scratch is never serialized. No pointers, padding, hash-expanded bytes or zero-filled unknown state.",
+      "serialization_source": "parameters/adm-installed48-state-v1.json#/serialization",
+      "variable_records": "U32LE count and length"
+    },
+    "clock": {
+      "callback_index": {
+        "cold": 0,
+        "serialized": "U64LE",
+        "type": "FrontendCallbackIndex"
+      },
+      "normal_callbacks": {
+        "cold": 0,
+        "serialized": "U64LE",
+        "type": "NormalCallbackCount"
+      },
+      "owner_generation": "cold=0; increments once per successful enclosing main callback transaction",
+      "owner_receipt_callback_generation": "must equal the enclosing CallbackTransaction callback index",
+      "remaining_cached_drains": {
+        "cold": 4,
+        "serialized": "U32LE"
+      },
+      "retired": {
+        "cold": false,
+        "serialized": "U8 bool"
+      },
+      "source_cursor_samples": {
+        "cold": 0,
+        "serialized": "U64LE",
+        "type": "U64 sample cursor"
+      }
+    },
+    "cold_constructors": {
+      "clocks": "all zero except remaining_cached_drains=4",
+      "event_control": "parameters/f01e-selected-constructor-v1.json exact canonical cold",
+      "feature": "source_vector/source_scalar positive zero",
+      "matrix_assignment": "assignment=-1, markers=0, matrix positive zero, writer_set empty",
+      "render_audio": "all numeric histories positive zero and no diffusion instances",
+      "selection_outer": "parameters/f03-selected-target-cold-v1.json plus all declared scratch positive-zero/empty/index-zero constructors",
+      "source_cache": "both optional caches absent; last_phase U8=0 UNSET",
+      "source_flags": "flags are callback output, no independent history"
+    },
+    "external_owner_refs": {
+      "component_lfe_receiver_qmf": {
+        "owner": "F04C",
+        "receipt": "selected-j05-owner-receipt.v1",
+        "state_schema": "test-vectors/F04-WHOLE-SPATIAL-STATE-SCHEMA.json"
+      },
+      "joc_after_j05": {
+        "cold_preimage": "test-vectors/JOC-OWNED-COLD-PREIMAGE.bin",
+        "owner": "F05JL",
+        "receipt": "immutable temporal/geometry/fit/huffman receipt",
+        "state_schema": "test-vectors/JOC-OWNED-STATE-COMPLETE-SCHEMA.json"
+      },
+      "metadata_queues": {
+        "owner": "F13",
+        "receipt": "four-queue metadata receipt",
+        "state_schema": "parameters/keyless-publication-state-v1.json"
+      },
+      "reader_target": {
+        "owner": "F05R56",
+        "receipt": "immutable reader56/target transition receipt",
+        "state_schema": "test-vectors/READER56-TARGET-STATE-SCHEMA.json"
+      },
+      "source_publication": {
+        "owner": "F15",
+        "receipt": "source transaction/durable append receipt",
+        "state_schema": "parameters/keyless-publication-state-v1.json"
+      }
+    },
+    "f03w_owned_field_groups": {
+      "clocks": [
+        "callback_index",
+        "source_cursor_samples",
+        "normal_callbacks",
+        "remaining_cached_drains",
+        "retired"
+      ],
+      "event_control": [
+        "owned_state",
+        "derived_control38",
+        "derived_regular37"
+      ],
+      "feature": [
+        "source_vector",
+        "source_scalar",
+        "fft4096_work",
+        "current_features"
+      ],
+      "matrix_assignment": [
+        "assignment",
+        "markers",
+        "matrix",
+        "writer_set"
+      ],
+      "render_audio": [
+        "regular_raw_history",
+        "previous_pcm",
+        "previous_current_rows",
+        "diffusion_instances",
+        "diffusion_previous_outputs"
+      ],
+      "selection_outer": [
+        "profile_dimensions",
+        "target_current_xyz",
+        "target_current_id",
+        "target_current_attribute",
+        "target_previous_xyz",
+        "target_previous_id",
+        "target_previous_attribute",
+        "target_active",
+        "previous_marker_active",
+        "f03g_gate_output",
+        "f03a_selector",
+        "f03u_refinement",
+        "f03n_nnls",
+        "f03s_outer"
+      ],
+      "source_cache": [
+        "last_normal_host38",
+        "last_control_snapshot",
+        "last_phase"
+      ],
+      "source_flags": [
+        "current_flags"
+      ]
+    },
+    "failure_and_reset": {
+      "failure_source": "parameters/adm-installed48-state-v1.json#/failure",
+      "fatal": "preserve all owner roots' complete before bytes and generation; programme status becomes RETIRED with top-level commit_count=0",
+      "reset": "destroy every owner root and call each referenced cold constructor; a missing constructor is fatal; unknown arrays are not zero-filled",
+      "reset_source": "parameters/adm-installed48-state-v1.json#/reset"
+    },
+    "implementation_status": "NOT_STARTED",
+    "materialization_status": "MAPPING_COMPLETE_BLOCKED_ON_P1.3_C_AND_P1.4_B_F03_PROVIDER",
+    "overlap_projection": {
+      "commit_owner_labels": 6,
+      "field_groups": 7,
+      "file": "parameters/selected-owner-projection-v1.json",
+      "receipt_owner_labels": 7,
+      "role": "cross-owner overlap projection only; not used as the complete f03w_owned_fields schema"
+    },
+    "owner_receipt": {
+      "commit_count": "1 when changed; 0 when unchanged, per GTC",
+      "fields": [
+        "owner_id=spatial_control",
+        "before_generation",
+        "before_sha256",
+        "after_generation",
+        "after_sha256",
+        "changed",
+        "commit_count",
+        "transaction_id"
+      ],
+      "schema_file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
+      "schema_pointer": "#/$defs/ownerReceipt",
+      "serialization": "GTC JSON object; property order is not semantic and no receipt-byte digest is specified",
+      "transaction_id": "same CallbackTransactionId as reader_eof and frontend_control",
+      "type": "OwnerReceipt<SpatialControl>"
+    },
+    "programme_owner_binding": {
+      "layout_file": "parameters/adm-installed48-state-v1.json",
+      "layout_manifest_entry_bytes": 7237,
+      "layout_manifest_entry_sha256": "5138318de304b83d26e47271c1661bcc903cebcd2cea457ae98e0048b161ed46",
+      "layout_pointer": "/f03w_owned_fields",
+      "layout_schema": "selected-adm-installed48-state.v3",
+      "owner_id": "spatial_control",
+      "owner_mapping_basis": [
+        "GTC owner table maps spatial_control to F03 feature, target current/previous, active/marker and main callback generation",
+        "specs/03-adm-installed48-whole.md section 5 maps the F03W production root to f03w_owned_fields and lists external owners",
+        "selected-owner-projection-v1.json is a seven-group cross-owner projection and is not the full owner schema"
+      ],
+      "package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+      "state_ref_value": "parameters/adm-installed48-state-v1.json#/f03w_owned_fields",
+      "wrapper_bindings": {
+        "cold_sha256": "SHA-256 over canonical bytes generated from the complete cold constructor and validated provider values",
+        "generation": "main callback generation; cold=0",
+        "owner_id": "spatial_control",
+        "state_ref": "parameters/adm-installed48-state-v1.json#/f03w_owned_fields",
+        "state_sha256": "SHA-256 over complete canonical f03w_owned_fields bytes"
+      },
+      "wrapper_fields": [
+        "owner_id",
+        "generation",
+        "state_sha256",
+        "cold_sha256",
+        "state_ref"
+      ],
+      "wrapper_ref": "#/$defs/ownerState",
+      "wrapper_schema_file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
+      "wrapper_schema_pointer": "#/properties/owners/properties/spatial_control"
+    },
+    "provider_prerequisites": {
+      "f01e_cold": {
+        "file": "parameters/f01e-selected-constructor-v1.json",
+        "receipt_lineage": "validated MANIFEST and provider entry receipt",
+        "status": "P1.4-A-LOCALLY-VERIFIED"
+      },
+      "f03_target_cold": {
+        "file": "parameters/f03-selected-target-cold-v1.json",
+        "manifest_entry_bytes": 3139,
+        "manifest_entry_sha256": "a4b53854822a5f17a5413d6f2ded127a7366257c2a171377afcea4a84a3eaf00",
+        "package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+        "provider_kind": "exact_parseable_functional_constant",
+        "required_prerequisite": {
+          "required_before": "spatial_control implementation or provider-backed staging",
+          "status": "NOT_OPEN",
+          "task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT"
+        }
+      }
+    },
+    "readiness": {
+      "blockers": [
+        "P1.4-B has not authenticated the F03 selected target cold provider under an approved provider contract",
+        "P1.3-C callback implementation is waiting for all 12 owner roots, including spatial_audio and g>=2 source roots",
+        "P1.3-D must not define any local root commit or top-level COMMITTED receipt"
+      ],
+      "implementation_status": "NOT_STARTED",
+      "mapping_status": "MAPPING_COMPLETE_BLOCKED"
+    },
+    "root_id": "spatial_control",
+    "stage_authority": {
+      "commit_authority": "enclosing CallbackTransaction only; local spatial_control commit is forbidden",
+      "owner": "F03W",
+      "receipt": "SpatialControlReceipt",
+      "receipt_fields": [
+        "feature before/after",
+        "selector/U04/outer scratch identity",
+        "proposed target current/previous/active",
+        "marker proposal and external F05R56 metadata-history receipt",
+        "callback generation",
+        "unique commit_count"
+      ],
+      "receipt_source": "specs/00-global-transaction-evidence-gaps.md#G02"
+    },
+    "transaction_stage": {
+      "capabilities": [
+        "SpatialControlPrepared non-Clone/non-Copy",
+        "SpatialControlStaged non-Clone/non-Copy"
+      ],
+      "join_metadata": [
+        "shared CallbackTransactionId",
+        "same FrontendCallbackIndex as reader_eof and frontend_control",
+        "spatial_control before_generation and before_sha256",
+        "spatial_control after_sha256",
+        "validated F01E provider lineage",
+        "P1.4-B F03 target provider lineage",
+        "external owner receipts"
+      ],
+      "local_commit": "FORBIDDEN",
+      "status": "STAGING_ONLY_WAITING_ON_P1.3_C_OWNER_ROOTS",
+      "top_level_committed": "FORBIDDEN"
+    },
+    "vector_evidence": {
+      "digest_limit": "synthetic full_state_sha256 values and historical AI48ST01 reset payload are not production cold root digests",
+      "files": [
+        "test-vectors/ADM-INSTALLED48-WHOLE-INPUT-VECTORS.json",
+        "test-vectors/F03-COLD-ATTRIBUTE-INPUT-VECTORS.json",
+        "test-vectors/ADM-INSTALLED48-LOCAL-REVIEW-STATUS.json"
+      ],
+      "scope": "7-callback deterministic synthetic selected profile only; real ADM cold replay is NOT_RUN and package whole implementation readiness is NO"
+    }
+  },
+  "task": {
+    "blockers": [
+      "P1.4-B must authenticate and validate f03-selected-target-cold-v1.json",
+      "P1.3-C callback implementation waits for all 12 owner roots, including spatial_audio and g>=2 source roots"
+    ],
+    "callback_local_scratch_not_serialized": [
+      "event_control.derived_control38",
+      "event_control.derived_regular37",
+      "feature.fft4096_work",
+      "selection_outer.f03g_gate_output",
+      "selection_outer.f03a_selector",
+      "selection_outer.f03u_refinement",
+      "selection_outer.f03n_nnls",
+      "selection_outer.f03s_outer"
+    ],
+    "canonical_state": "SHA-256 over the complete serialized f03w_owned_fields map in declared order; callback-local scratch and external owner states are excluded",
+    "capabilities": [
+      "SpatialControlPrepared non-Clone/non-Copy",
+      "SpatialControlStaged non-Clone/non-Copy"
+    ],
+    "clock": "FrontendCallbackIndex main callback clock; source cursor U64 sample position; normal callback count; four cached drains; owner generation increments with the enclosing CallbackTransaction",
+    "cold_providers": {
+      "f01e_cold": {
+        "file": "parameters/f01e-selected-constructor-v1.json",
+        "status": "P1.4-A-LOCALLY-VERIFIED"
+      },
+      "f03_target_cold": {
+        "bytes": 3139,
+        "file": "parameters/f03-selected-target-cold-v1.json",
+        "package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+        "prerequisite_status": "NOT_OPEN",
+        "sha256": "a4b53854822a5f17a5413d6f2ded127a7366257c2a171377afcea4a84a3eaf00"
+      }
+    },
+    "complete_owner_groups": [
+      "clocks",
+      "source_cache",
+      "event_control",
+      "render_audio",
+      "source_flags",
+      "feature",
+      "selection_outer",
+      "matrix_assignment"
+    ],
+    "external_owners_not_embedded": [
+      "F05R56 reader_target",
+      "F04C component_lfe_receiver_qmf",
+      "F05JL joc_after_j05",
+      "F13 metadata_queues",
+      "F15 source_publication"
+    ],
+    "implementation_rust": "FORBIDDEN while status=BLOCKED",
+    "local_commit": "FORBIDDEN",
+    "mapping_status": "MAPPING_COMPLETE_BLOCKED",
+    "owner_receipt_order_and_wrapper": "P1.3-C approves 12-owner ASCII order and schema v2 with 13 fields; wrapper has no digest/HMAC; implementation waits for root availability",
+    "prerequisites": [
+      {
+        "status": "CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS",
+        "task_id": "P1.3-C-CALLBACK-TRANSACTION-CONTRACT-MAP"
+      },
+      {
+        "status": "NOT_OPEN",
+        "task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT"
+      }
+    ],
+    "programme_owner_schema": {
+      "file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
+      "owner_state_fields": [
+        "owner_id",
+        "generation",
+        "state_sha256",
+        "cold_sha256",
+        "state_ref"
+      ],
+      "pointer": "#/properties/owners/properties/spatial_control",
+      "ref": "#/$defs/ownerState"
+    },
+    "programme_root": "spatial_control",
+    "provider_prerequisite": {
+      "identity_source": "approved package MANIFEST.json entry",
+      "required_provider": "parameters/f03-selected-target-cold-v1.json",
+      "status": "NOT_OPEN",
+      "task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT"
+    },
+    "receipt_order": "12-owner ASCII order approved by P1.3-C; v2 wrapper has no digest/HMAC and stable JSON is test-only",
+    "root_audit": "complete F03W committed-field layout is bound from programme_roots[spatial_control].programme_owner_binding.layout_pointer; all eight field groups are listed and checked against the approved package",
+    "stage_authority": "F03W emits SpatialControlReceipt after all F03W leaf stages and downstream receipts pass",
+    "stage_only": {
+      "join_metadata": [
+        "CallbackTransactionId",
+        "FrontendCallbackIndex",
+        "before_generation",
+        "before_sha256",
+        "after_sha256",
+        "F01E provider lineage",
+        "F03 target provider lineage",
+        "external owner receipts"
+      ],
+      "linear": true,
+      "local_commit": "FORBIDDEN",
+      "prepared_type": "SpatialControlPrepared",
+      "required_peer_roots": [
+        "reader_eof",
+        "frontend_control"
+      ],
+      "staged_type": "SpatialControlStaged",
+      "top_level_COMMITTED": "FORBIDDEN"
+    },
+    "state_layout": {
+      "field_group_count": 8,
+      "owner_state_ref": "#/$defs/ownerState",
+      "pointer": "/f03w_owned_fields",
+      "programme_owner_pointer": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json#/properties/owners/properties/spatial_control",
+      "schema": "selected-adm-installed48-state.v3",
+      "schema_file": "parameters/adm-installed48-state-v1.json",
+      "uses_selected_overlap_projection_as_root": false
+    },
+    "status": "BLOCKED",
+    "task_id": "P1.3-D-SPATIAL-CONTROL-ROOT-MAP",
+    "top_level_committed": "FORBIDDEN",
+    "transaction_authority": "same CallbackTransactionId and FrontendCallbackIndex as reader_eof and frontend_control; P1.3-C remains the only eventual commit authority",
+    "vector_evidence": {
+      "programme_root_pointer": "programme_roots[spatial_control].vector_evidence",
+      "scope": "7-callback deterministic synthetic selected profile only; real ADM cold replay is NOT_RUN and package whole implementation readiness is NO"
+    }
+  }
+}
+```
+
+## P1.3-D spatial_control root audit
+
+```json
+{
+  "programme_root_reference": "programme_roots[spatial_control]",
+  "task": {
+    "blockers": [
+      "P1.4-B must authenticate and validate f03-selected-target-cold-v1.json",
+      "P1.3-C callback implementation waits for all 12 owner roots, including spatial_audio and g>=2 source roots"
+    ],
+    "callback_local_scratch_not_serialized": [
+      "event_control.derived_control38",
+      "event_control.derived_regular37",
+      "feature.fft4096_work",
+      "selection_outer.f03g_gate_output",
+      "selection_outer.f03a_selector",
+      "selection_outer.f03u_refinement",
+      "selection_outer.f03n_nnls",
+      "selection_outer.f03s_outer"
+    ],
+    "canonical_state": "SHA-256 over the complete serialized f03w_owned_fields map in declared order; callback-local scratch and external owner states are excluded",
+    "capabilities": [
+      "SpatialControlPrepared non-Clone/non-Copy",
+      "SpatialControlStaged non-Clone/non-Copy"
+    ],
+    "clock": "FrontendCallbackIndex main callback clock; source cursor U64 sample position; normal callback count; four cached drains; owner generation increments with the enclosing CallbackTransaction",
+    "cold_providers": {
+      "f01e_cold": {
+        "file": "parameters/f01e-selected-constructor-v1.json",
+        "status": "P1.4-A-LOCALLY-VERIFIED"
+      },
+      "f03_target_cold": {
+        "bytes": 3139,
+        "file": "parameters/f03-selected-target-cold-v1.json",
+        "package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+        "prerequisite_status": "NOT_OPEN",
+        "sha256": "a4b53854822a5f17a5413d6f2ded127a7366257c2a171377afcea4a84a3eaf00"
+      }
+    },
+    "complete_owner_groups": [
+      "clocks",
+      "source_cache",
+      "event_control",
+      "render_audio",
+      "source_flags",
+      "feature",
+      "selection_outer",
+      "matrix_assignment"
+    ],
+    "external_owners_not_embedded": [
+      "F05R56 reader_target",
+      "F04C component_lfe_receiver_qmf",
+      "F05JL joc_after_j05",
+      "F13 metadata_queues",
+      "F15 source_publication"
+    ],
+    "implementation_rust": "FORBIDDEN while status=BLOCKED",
+    "local_commit": "FORBIDDEN",
+    "mapping_status": "MAPPING_COMPLETE_BLOCKED",
+    "owner_receipt_order_and_wrapper": "P1.3-C approves 12-owner ASCII order and schema v2 with 13 fields; wrapper has no digest/HMAC; implementation waits for root availability",
+    "prerequisites": [
+      {
+        "status": "CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS",
+        "task_id": "P1.3-C-CALLBACK-TRANSACTION-CONTRACT-MAP"
+      },
+      {
+        "status": "NOT_OPEN",
+        "task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT"
+      }
+    ],
+    "programme_owner_schema": {
+      "file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
+      "owner_state_fields": [
+        "owner_id",
+        "generation",
+        "state_sha256",
+        "cold_sha256",
+        "state_ref"
+      ],
+      "pointer": "#/properties/owners/properties/spatial_control",
+      "ref": "#/$defs/ownerState"
+    },
+    "programme_root": "spatial_control",
+    "provider_prerequisite": {
+      "identity_source": "approved package MANIFEST.json entry",
+      "required_provider": "parameters/f03-selected-target-cold-v1.json",
+      "status": "NOT_OPEN",
+      "task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT"
+    },
+    "receipt_order": "12-owner ASCII order approved by P1.3-C; v2 wrapper has no digest/HMAC and stable JSON is test-only",
+    "root_audit": "complete F03W committed-field layout is bound from programme_roots[spatial_control].programme_owner_binding.layout_pointer; all eight field groups are listed and checked against the approved package",
+    "stage_authority": "F03W emits SpatialControlReceipt after all F03W leaf stages and downstream receipts pass",
+    "stage_only": {
+      "join_metadata": [
+        "CallbackTransactionId",
+        "FrontendCallbackIndex",
+        "before_generation",
+        "before_sha256",
+        "after_sha256",
+        "F01E provider lineage",
+        "F03 target provider lineage",
+        "external owner receipts"
+      ],
+      "linear": true,
+      "local_commit": "FORBIDDEN",
+      "prepared_type": "SpatialControlPrepared",
+      "required_peer_roots": [
+        "reader_eof",
+        "frontend_control"
+      ],
+      "staged_type": "SpatialControlStaged",
+      "top_level_COMMITTED": "FORBIDDEN"
+    },
+    "state_layout": {
+      "field_group_count": 8,
+      "owner_state_ref": "#/$defs/ownerState",
+      "pointer": "/f03w_owned_fields",
+      "programme_owner_pointer": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json#/properties/owners/properties/spatial_control",
+      "schema": "selected-adm-installed48-state.v3",
+      "schema_file": "parameters/adm-installed48-state-v1.json",
+      "uses_selected_overlap_projection_as_root": false
+    },
+    "status": "BLOCKED",
+    "task_id": "P1.3-D-SPATIAL-CONTROL-ROOT-MAP",
+    "top_level_committed": "FORBIDDEN",
+    "transaction_authority": "same CallbackTransactionId and FrontendCallbackIndex as reader_eof and frontend_control; P1.3-C remains the only eventual commit authority",
+    "vector_evidence": {
+      "programme_root_pointer": "programme_roots[spatial_control].vector_evidence",
+      "scope": "7-callback deterministic synthetic selected profile only; real ADM cold replay is NOT_RUN and package whole implementation readiness is NO"
+    }
   }
 }
 ```
