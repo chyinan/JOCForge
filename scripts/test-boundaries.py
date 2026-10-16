@@ -6,6 +6,10 @@ def map_mut(fn):
   p=r/'docs/implementation/IMPLEMENTATION-MAP.json';d=json.loads(p.read_text(encoding='utf-8'));fn(d);p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
  return m
 def append(path,text):path.write_text(path.read_text(encoding='utf-8')+text,encoding='utf-8')
+def replace_once(path,old,new):
+ text=path.read_text(encoding='utf-8')
+ if old not in text:raise RuntimeError('mutation source not found: '+str(path))
+ path.write_text(text.replace(old,new,1),encoding='utf-8')
 def main():
  a=argparse.ArgumentParser();a.add_argument('--scratch-root',type=pathlib.Path);a.add_argument('--case-prefix');x=a.parse_args();s=x.scratch_root or pathlib.Path(os.environ.get('JOCFORGE_BOUNDARY_TMP',ROOT/'target/boundary-mutations'));s.mkdir(parents=True,exist_ok=True)
  cases=[]
@@ -50,6 +54,21 @@ def main():
  ('f03b-dependency-scope-drift',map_mut(lambda d:d['phase_one']['P1.4-B']['dependency_scope'].update(canonical_writer='serde_json serializer'))),
  ('f03b-prerequisite-not-ready',map_mut(lambda d:d['phase_one']['P1.3-D']['prerequisites'][1].update(status='NOT_OPEN'))),
  ('f03b-rust-loader-early',lambda r:append(r/'crates/jocforge-domain/src/frontend/provider.rs','\npub struct ValidatedF03TargetColdProvider;\n'))
+ ]
+ f03_source='crates/jocforge-domain/src/frontend/target_cold_provider.rs'
+ f03_fixture='crates/jocforge-domain/tests/fixtures/target_cold/f03-selected-target-cold-v1.json'
+ cases += [
+ ('f03b-manifest-parse-before-sha',lambda r:replace_once(r/f03_source,'let actual_manifest_sha = ProviderSha256::digest(evidence.bytes());','let _premature = parse_f03_manifest_entry(evidence.bytes())?;\n    let actual_manifest_sha = ProviderSha256::digest(evidence.bytes());')),
+ ('f03b-provider-parse-before-identity',lambda r:replace_once(r/f03_source,'let actual_provider_sha = ProviderSha256::digest(evidence.bytes());','let _premature = parse_f03_provider(evidence.bytes())?;\n    let actual_provider_sha = ProviderSha256::digest(evidence.bytes());')),
+ ('f03b-public-value-leak',lambda r:append(r/f03_source,'\npub fn leak_value(value: &Value) -> &Value { value }\n')),
+ ('f03b-serde-canonical-writer',lambda r:append(r/f03_source,'\nfn forbidden_json_writer(value: &Value) { let _ = serde_json::to_vec(value); }\n')),
+ ('f03b-f01e-schema-reuse',lambda r:append(r/f03_source,'\nconst WRONG_SCHEMA: &str = "F01EProviderError";\n')),
+ ('f03b-projection-as-root-hash',lambda r:append(r/f03_source,'\nfn root_sha256_is_not_target_projection() {}\n')),
+ ('f03b-fixture-drift',lambda r:append(r/f03_fixture,'\n')),
+ ('f03b-second-manifest-fixture',lambda r:(r/'crates/jocforge-domain/tests/fixtures/target_cold/MANIFEST.json').write_text('{}\n',encoding='utf-8')),
+ ('f03b-public-cold-field',lambda r:replace_once(r/f03_source,'    current_xyz_u32: [u32; 45],','    pub current_xyz_u32: [u32; 45],')),
+ ('f03b-mutable-cold-accessor',lambda r:append(r/f03_source,'\nimpl ValidatedF03TargetColdProvider { pub fn current_xyz_u32_mut(&mut self) -> &mut [u32; 45] { &mut self.current_xyz_u32 } }\n')),
+ ('f03b-generic-lifetime-mutable-accessor',lambda r:append(r/f03_source,"\nimpl ValidatedF03TargetColdProvider { pub fn current_xyz_u32_mut<'a>(&'a mut self) -> &'a mut [u32; 45] { &mut self.current_xyz_u32 } }\n"))
  ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]

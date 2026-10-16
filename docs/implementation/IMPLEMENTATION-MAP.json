@@ -8,7 +8,7 @@
     "SELECTED_PROFILE_GATE": "LOCALLY_VERIFIED",
     "P1.2": "SCOPED_COMPLETE_CURRENT_MATERIALIZED_CONSUMERS__FUTURE_CONSUMERS_DEFERRED",
     "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B1_STAGING_ONLY__P1.3_C_CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS__P1.3_D_BLOCKED",
-    "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_MAPPING_READY__IMPLEMENTATION_NOT_STARTED"
+    "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_LOCALLY_VERIFIED"
   },
   "functional_entries": [
     {
@@ -1924,7 +1924,7 @@
           "package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
           "required_prerequisite": {
             "task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT",
-            "status": "MAPPING_READY_AFTER_P1.4_B",
+            "status": "SATISFIED_READY_FOR_STAGING_IMPLEMENTATION",
             "required_before": "spatial_control implementation or provider-backed staging"
           }
         }
@@ -2098,7 +2098,7 @@
     },
     "P1.2": "SCOPED_COMPLETE_CURRENT_MATERIALIZED_CONSUMERS__FUTURE_CONSUMERS_DEFERRED",
     "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B1_STAGING_ONLY__P1.3_C_CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS__P1.3_D_BLOCKED",
-    "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_MAPPING_READY__IMPLEMENTATION_NOT_STARTED",
+    "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_LOCALLY_VERIFIED",
     "P1.2-A": {
       "task_id": "P1.2-A-Q15-COORDINATE",
       "status": "LOCALLY_VERIFIED",
@@ -2709,13 +2709,13 @@
           "bytes": 3139,
           "sha256": "a4b53854822a5f17a5413d6f2ded127a7366257c2a171377afcea4a84a3eaf00",
           "package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-          "prerequisite_status": "MAPPING_READY_AFTER_P1.4_B"
+          "prerequisite_status": "SATISFIED_READY_FOR_STAGING_IMPLEMENTATION"
         }
       },
       "receipt_order": "12-owner ASCII order approved by P1.3-C; v2 wrapper has no digest/HMAC and stable JSON is test-only",
       "prerequisites": [
         {"task_id": "P1.3-C-CALLBACK-TRANSACTION-CONTRACT-MAP", "status": "CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS"},
-        {"task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT", "status": "MAPPING_READY"}
+        {"task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT", "status": "SATISFIED_READY_FOR_STAGING_IMPLEMENTATION"}
       ],
       "blockers": [
         "P1.3-C callback implementation waits for all 12 owner roots, including spatial_audio and g>=2 source roots"
@@ -2769,7 +2769,7 @@
       "owner_receipt_order_and_wrapper": "P1.3-C approves 12-owner ASCII order and schema v2 with 13 fields; wrapper has no digest/HMAC; implementation waits for root availability",
       "provider_prerequisite": {
         "task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT",
-        "status": "MAPPING_READY_AFTER_P1.4_B",
+        "status": "SATISFIED_READY_FOR_STAGING_IMPLEMENTATION",
         "required_provider": "parameters/f03-selected-target-cold-v1.json",
         "identity_source": "approved package MANIFEST.json entry"
       },
@@ -2993,9 +2993,9 @@
     },
     "P1.4-B": {
       "task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT",
-      "status": "MAPPING_READY",
-      "implementation_status": "NOT_STARTED",
-      "scope": "F03 selected target cold provider identity, exact shape, committed target-field mapping, and target-only canonical projection; mapping only",
+      "status": "LOCALLY_VERIFIED",
+      "implementation_status": "LOCALLY_VERIFIED",
+      "scope": "F03 selected target cold provider identity, exact shape, committed target-field mapping, and target-only canonical projection; provider implementation and tests only",
       "prerequisites": [
         {
           "task_id": "P1.4-A-F01E-PROVIDER-CONTRACT",
@@ -3162,17 +3162,17 @@
         ],
         "identity_first": true,
         "validation_flow": [
-          "recompute the complete MANIFEST.json SHA-256 before parsing the manifest",
-          "parse the SHA-authenticated manifest and require one unique F03 provider entry",
-          "bind the entry path, byte length and SHA-256 into validated manifest lineage",
-          "validate provider byte observation against that unique manifest entry before UTF-8 or JSON parsing",
-          "after identity validation, reject malformed UTF-8, JSON syntax errors, duplicate keys and unknown top-level fields",
-          "validate exact field types, array lengths and cold-value constraints before producing any validated provider"
+        "recompute and match the complete MANIFEST.json SHA-256 before parsing the manifest",
+        "then validate observed manifest length and SHA-256 against the actual bytes",
+        "parse the authenticated manifest and require one unique F03 provider entry with exact path, byte length and SHA-256",
+        "recompute provider bytes and validate observed length and SHA-256 plus the unique manifest entry before UTF-8 or JSON parsing",
+        "any changed provider bytes, including duplicate-key variants, fail identity before parse; then reject malformed UTF-8, JSON syntax, duplicate keys and unknown top-level fields",
+        "validate exact field types, fixed array lengths and cold-value constraints before producing a validated provider"
         ],
         "diagnostic_path_is_identity": false
       },
       "output": {
-        "validated_provider": "ValidatedF03TargetColdProvider with private typed fields; no serde_json::Value exposure",
+        "validated_provider": "ValidatedF03TargetColdProvider with eight private typed arrays, read-only accessors, and no serde_json::Value exposure",
         "receipt": {
           "type": "F03TargetProviderReceipt",
           "authority": "internal immutable receipt shape following the approved P1.4-A provider-lineage pattern; not a package field schema",
@@ -3181,8 +3181,8 @@
             "provider_file_sha256",
             "provider_file_bytes",
             "schema_id",
-            "canonical_sha256",
-            "canonical_bytes",
+            "target_projection_sha256",
+            "target_projection_bytes",
             "provider_generation"
           ],
           "lineage": "validated_manifest_lineage binds the expected provider identity and recomputed manifest entry; caller constants alone are not proof",
@@ -3219,11 +3219,21 @@
       },
       "failure": "identity, syntax, shape, field, cold-value or projection mismatch yields no validated provider or receipt; caller fails before P1.3-D staging",
       "implementation_prohibitions": [
-        "no Rust provider loader in P1.4-B",
+        "no provider-backed spatial_control staging or commit in P1.4-B",
         "no spatial_control production implementation",
-        "no full spatial_control root digest claim from the target-only projection",
+        "target_projection_sha256 is not a full spatial_control root digest",
         "no private key or external owner state"
-      ]
+      ],
+      "implementation": {
+        "module_file": "crates/jocforge-domain/src/frontend/target_cold_provider.rs",
+        "public_exports_file": "crates/jocforge-domain/src/frontend/mod.rs",
+        "test_file": "crates/jocforge-domain/tests/target_cold_provider.rs",
+        "fixture_file": "crates/jocforge-domain/tests/fixtures/target_cold/f03-selected-target-cold-v1.json",
+        "fixture_bytes": 3139,
+        "fixture_sha256": "a4b53854822a5f17a5413d6f2ded127a7366257c2a171377afcea4a84a3eaf00",
+        "verified_scope": "manifest/provider identity gates, exact target arrays, independent current/previous storage, target-only projection and immutable lineage receipt",
+        "spatial_control_implementation": "NOT_IMPLEMENTED"
+      }
     }
   },
   "approved_dependencies": {
@@ -3232,7 +3242,7 @@
       "default_features": false,
       "archive_sha256": "a7507d819769d01a365ab707794a4084392c824f54a7a6a7862f8c3d0892b283",
       "license_choice": "Apache-2.0",
-      "scope": "reader_eof canonical SHA-256 only"
+      "scope": "reader_eof, F01E and F03 provider identity/projection SHA-256 only"
     },
     "serde_json": {
       "version": "=1.0.154",

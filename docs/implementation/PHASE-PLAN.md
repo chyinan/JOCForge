@@ -1370,7 +1370,7 @@
         "provider_kind": "exact_parseable_functional_constant",
         "required_prerequisite": {
           "required_before": "spatial_control implementation or provider-backed staging",
-          "status": "MAPPING_READY_AFTER_P1.4_B",
+          "status": "SATISFIED_READY_FOR_STAGING_IMPLEMENTATION",
           "task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT"
         }
       }
@@ -1455,7 +1455,7 @@
         "bytes": 3139,
         "file": "parameters/f03-selected-target-cold-v1.json",
         "package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-        "prerequisite_status": "MAPPING_READY_AFTER_P1.4_B",
+        "prerequisite_status": "SATISFIED_READY_FOR_STAGING_IMPLEMENTATION",
         "sha256": "a4b53854822a5f17a5413d6f2ded127a7366257c2a171377afcea4a84a3eaf00"
       }
     },
@@ -1486,7 +1486,7 @@
         "task_id": "P1.3-C-CALLBACK-TRANSACTION-CONTRACT-MAP"
       },
       {
-        "status": "MAPPING_READY",
+        "status": "SATISFIED_READY_FOR_STAGING_IMPLEMENTATION",
         "task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT"
       }
     ],
@@ -1506,7 +1506,7 @@
     "provider_prerequisite": {
       "identity_source": "approved package MANIFEST.json entry",
       "required_provider": "parameters/f03-selected-target-cold-v1.json",
-      "status": "MAPPING_READY_AFTER_P1.4_B",
+      "status": "SATISFIED_READY_FOR_STAGING_IMPLEMENTATION",
       "task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT"
     },
     "receipt_order": "12-owner ASCII order approved by P1.3-C; v2 wrapper has no digest/HMAC and stable JSON is test-only",
@@ -1588,7 +1588,7 @@
         "bytes": 3139,
         "file": "parameters/f03-selected-target-cold-v1.json",
         "package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-        "prerequisite_status": "MAPPING_READY_AFTER_P1.4_B",
+        "prerequisite_status": "SATISFIED_READY_FOR_STAGING_IMPLEMENTATION",
         "sha256": "a4b53854822a5f17a5413d6f2ded127a7366257c2a171377afcea4a84a3eaf00"
       }
     },
@@ -1619,7 +1619,7 @@
         "task_id": "P1.3-C-CALLBACK-TRANSACTION-CONTRACT-MAP"
       },
       {
-        "status": "MAPPING_READY",
+        "status": "SATISFIED_READY_FOR_STAGING_IMPLEMENTATION",
         "task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT"
       }
     ],
@@ -1639,7 +1639,7 @@
     "provider_prerequisite": {
       "identity_source": "approved package MANIFEST.json entry",
       "required_provider": "parameters/f03-selected-target-cold-v1.json",
-      "status": "MAPPING_READY_AFTER_P1.4_B",
+      "status": "SATISFIED_READY_FOR_STAGING_IMPLEMENTATION",
       "task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT"
     },
     "receipt_order": "12-owner ASCII order approved by P1.3-C; v2 wrapper has no digest/HMAC and stable JSON is test-only",
@@ -1935,13 +1935,23 @@
     "0x00000B00 is the selected target cold attribute; do not substitute reader or metadata cold attribute 0",
     "active_u8 remains U8[15]; do not widen it to a U32 ABI field"
   ],
+  "implementation": {
+    "fixture_bytes": 3139,
+    "fixture_file": "crates/jocforge-domain/tests/fixtures/target_cold/f03-selected-target-cold-v1.json",
+    "fixture_sha256": "a4b53854822a5f17a5413d6f2ded127a7366257c2a171377afcea4a84a3eaf00",
+    "module_file": "crates/jocforge-domain/src/frontend/target_cold_provider.rs",
+    "public_exports_file": "crates/jocforge-domain/src/frontend/mod.rs",
+    "spatial_control_implementation": "NOT_IMPLEMENTED",
+    "test_file": "crates/jocforge-domain/tests/target_cold_provider.rs",
+    "verified_scope": "manifest/provider identity gates, exact target arrays, independent current/previous storage, target-only projection and immutable lineage receipt"
+  },
   "implementation_prohibitions": [
-    "no Rust provider loader in P1.4-B",
+    "no provider-backed spatial_control staging or commit in P1.4-B",
     "no spatial_control production implementation",
-    "no full spatial_control root digest claim from the target-only projection",
+    "target_projection_sha256 is not a full spatial_control root digest",
     "no private key or external owner state"
   ],
-  "implementation_status": "NOT_STARTED",
+  "implementation_status": "LOCALLY_VERIFIED",
   "io_input": {
     "diagnostic_path_is_identity": false,
     "identity_first": true,
@@ -1950,12 +1960,12 @@
       "ProviderFileEvidence"
     ],
     "validation_flow": [
-      "recompute the complete MANIFEST.json SHA-256 before parsing the manifest",
-      "parse the SHA-authenticated manifest and require one unique F03 provider entry",
-      "bind the entry path, byte length and SHA-256 into validated manifest lineage",
-      "validate provider byte observation against that unique manifest entry before UTF-8 or JSON parsing",
-      "after identity validation, reject malformed UTF-8, JSON syntax errors, duplicate keys and unknown top-level fields",
-      "validate exact field types, array lengths and cold-value constraints before producing any validated provider"
+      "recompute and match the complete MANIFEST.json SHA-256 before parsing the manifest",
+      "then validate observed manifest length and SHA-256 against the actual bytes",
+      "parse the authenticated manifest and require one unique F03 provider entry with exact path, byte length and SHA-256",
+      "recompute provider bytes and validate observed length and SHA-256 plus the unique manifest entry before UTF-8 or JSON parsing",
+      "any changed provider bytes, including duplicate-key variants, fail identity before parse; then reject malformed UTF-8, JSON syntax, duplicate keys and unknown top-level fields",
+      "validate exact field types, fixed array lengths and cold-value constraints before producing a validated provider"
     ]
   },
   "output": {
@@ -1967,8 +1977,8 @@
         "provider_file_sha256",
         "provider_file_bytes",
         "schema_id",
-        "canonical_sha256",
-        "canonical_bytes",
+        "target_projection_sha256",
+        "target_projection_bytes",
         "provider_generation"
       ],
       "immutability": "all fields immutable",
@@ -1976,7 +1986,7 @@
       "provider_generation": 0,
       "type": "F03TargetProviderReceipt"
     },
-    "validated_provider": "ValidatedF03TargetColdProvider with private typed fields; no serde_json::Value exposure"
+    "validated_provider": "ValidatedF03TargetColdProvider with eight private typed arrays, read-only accessors, and no serde_json::Value exposure"
   },
   "prerequisites": [
     {
@@ -2006,8 +2016,8 @@
     "provider_kind": "exact_parseable_functional_constant",
     "schema_id": "f03-selected-target-cold.v1"
   },
-  "scope": "F03 selected target cold provider identity, exact shape, committed target-field mapping, and target-only canonical projection; mapping only",
-  "status": "MAPPING_READY",
+  "scope": "F03 selected target cold provider identity, exact shape, committed target-field mapping, and target-only canonical projection; provider implementation and tests only",
+  "status": "LOCALLY_VERIFIED",
   "target_only_projection": {
     "bytes": 630,
     "encoding": "concatenate fixed arrays in row-major order; U32 fields little-endian; XYZ values are raw F32 U32 bits; U8 fields are unmodified bytes; no header, tags, counts, padding, or trailing bytes",
