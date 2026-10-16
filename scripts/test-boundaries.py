@@ -1,278 +1,45 @@
 # pattern: Imperative Shell
-import argparse
-import hashlib
-import json
-import pathlib
-import shutil
-import subprocess
-import sys
-
-ROOT = pathlib.Path(__file__).resolve().parents[1]
-MAP_RELATIVE = pathlib.Path("docs/implementation/IMPLEMENTATION-MAP.json")
-
-
-def edit_map(change):
-    def mutate(repository):
-        path = repository / MAP_RELATIVE
-        data = json.loads(path.read_text(encoding="utf-8"))
-        change(data)
-        path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
-
-    return mutate
-
-
-def append_text(relative_path, text):
-    def mutate(repository):
-        path = repository / relative_path
-        path.parent.mkdir(parents=True, exist_ok=True)
-        with path.open("a", encoding="utf-8", newline="\n") as stream:
-            stream.write(text)
-
-    return mutate
-
-
-def write_text(relative_path, text):
-    def mutate(repository):
-        path = repository / relative_path
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(text, encoding="utf-8", newline="\n")
-
-    return mutate
-
-
-def entry(data, functional_id):
-    return next(item for item in data["functional_entries"] if item["functional_id"] == functional_id)
-
-
-def root_entry(data, root_id):
-    return next(item for item in data["programme_roots"] if item["root_id"] == root_id)
-
-
-def tree_digest(directory):
-    digest = hashlib.sha256()
-    for path in sorted(item for item in directory.rglob("*") if item.is_file()):
-        relative_path = path.relative_to(directory)
-        if any(part in {".git", "target", "__pycache__"} for part in relative_path.parts):
-            continue
-        digest.update(relative_path.as_posix().encode("utf-8"))
-        digest.update(b"\0")
-        digest.update(path.read_bytes())
-        digest.update(b"\0")
-    return digest.digest()
-
-
-def mutations():
-    cases = [
-        ("missing-architecture-doc", lambda repo: (repo / "docs/architecture/ARCHITECTURE.md").unlink()),
-        ("missing-generated-map", lambda repo: (repo / "docs/implementation/CLOCK-MAP.md").unlink()),
-        ("functional-id-removed", edit_map(lambda data: data["functional_entries"].pop())),
-        (
-            "functional-id-duplicated",
-            edit_map(
-                lambda data: data["functional_entries"][-1].update(
-                    functional_id=data["functional_entries"][0]["functional_id"]
-                )
-            ),
-        ),
-        ("functional-id-replaced", edit_map(lambda data: data["functional_entries"][-1].update(functional_id="UNKNOWN"))),
-        (
-            "clock-task-not-go",
-            edit_map(lambda data: data["phase_one"]["P1.1"]["tasks"][0].update(status="HOLD")),
-        ),
-        (
-            "clock-spec-drift",
-            edit_map(lambda data: entry(data, "F02").update(spec_files=["specs/missing.md"])),
-        ),
-        (
-            "clock-file-drift",
-            edit_map(lambda data: data["phase_one"]["P1.1"]["tasks"][0]["planned_files"].pop()),
-        ),
-        (
-            "active-slice-status-drift",
-            edit_map(lambda data: data["status"].update(CLOCK_FOUNDATION="LOCALLY_VERIFIED")),
-        ),
-        ("p12-not-held", edit_map(lambda data: data["phase_one"].update({"P1.2": "GO"}))),
-        ("p13-not-held", edit_map(lambda data: data["phase_one"].update({"P1.3": "GO"}))),
-        ("p14-not-held", edit_map(lambda data: data["phase_one"].update({"P1.4": "GO"}))),
-        (
-            "root-materialized",
-            edit_map(lambda data: root_entry(data, "reader_eof").update(materialization_status="MATERIALIZED")),
-        ),
-        (
-            "validation-reverse-dependency",
-            append_text(
-                pathlib.Path("crates/jocforge-domain/Cargo.toml"),
-                '\njocforge-validation = { path = "../jocforge-validation" }\n',
-            ),
-        ),
-        ("domain-file-io", append_text(pathlib.Path("crates/jocforge-domain/src/lib.rs"), "\nuse std::fs;\n")),
-        ("domain-process-io", append_text(pathlib.Path("crates/jocforge-domain/src/lib.rs"), "\nuse std::process;\n")),
-        ("domain-environment-io", append_text(pathlib.Path("crates/jocforge-domain/src/lib.rs"), "\nuse std::env;\n")),
-        ("domain-network-io", append_text(pathlib.Path("crates/jocforge-domain/src/lib.rs"), "\nuse std::net;\n")),
-        ("production-ffmpeg-reference", append_text(pathlib.Path("crates/jocforge-application/src/lib.rs"), "\n// FFmpeg\n")),
-        ("production-legacy-reference", append_text(pathlib.Path("crates/jocforge-application/src/lib.rs"), "\n// legacy\n")),
-        ("production-compat-reference", append_text(pathlib.Path("crates/jocforge-application/src/lib.rs"), "\n// compat\n")),
-        ("production-fallback-reference", append_text(pathlib.Path("crates/jocforge-application/src/lib.rs"), "\n// fallback\n")),
-        ("production-concat-macro", append_text(pathlib.Path("crates/jocforge-application/src/lib.rs"), '\nconst VALUE: &str = concat!("a", "b");\n')),
-        ("production-include-macro", append_text(pathlib.Path("crates/jocforge-application/src/lib.rs"), '\ninclude!("missing.rs");\n')),
-        ("production-path-module", append_text(pathlib.Path("crates/jocforge-application/src/lib.rs"), '\n#[path = "missing.rs"] mod missing;\n')),
-        (
-            "public-usize",
-            append_text(pathlib.Path("crates/jocforge-domain/src/lib.rs"), "\npub fn raw_index(value: usize) -> usize { value }\n"),
-        ),
-        (
-            "trait-usize",
-            append_text(
-                pathlib.Path("crates/jocforge-domain/src/lib.rs"),
-                "\npub trait RawIndex { fn value(&self) -> usize; }\n",
-            ),
-        ),
-        (
-            "unapproved-build-script",
-            write_text(pathlib.Path("crates/jocforge-application/build.rs"), "fn main() {}\n"),
-        ),
-        (
-            "future-provider-detail",
-            edit_map(lambda data: entry(data, "F03").update(cold_provider={"kind": "FILE_PROVIDER"})),
-        ),
-        (
-            "profile-supported-row-added",
-            append_text(
-                pathlib.Path("docs/architecture/PROFILE-DIMENSIONS.md"),
-                "\n| selected ADM BWF / extra | x | x | x | x | x |\n",
-            ),
-        ),
-        (
-            "active-clause-removed",
-            edit_map(lambda data: entry(data, "F02")["clock"]["covered_clauses"].pop()),
-        ),
-        (
-            "active-test-empty",
-            edit_map(lambda data: entry(data, "F02").update(test_modules=[])),
-        ),
-        (
-            "writer-types-merged",
-            edit_map(lambda data: entry(data, "F02")["clock"].update(domains=["JocWriterIndex"])),
-        ),
-        (
-            "future-entry-materialized",
-            edit_map(lambda data: entry(data, "F03").update(status="PARTIALLY_MATERIALIZED", active_slice_materialization="MATERIALIZED")),
-        ),
-        (
-            "render-target-in-production",
-            append_text(
-                pathlib.Path("crates/jocforge-domain/src/profile/production.rs"),
-                "\npub type InvalidProductionProfile = RenderTarget;\n",
-            ),
-        ),
-        (
-            "f02-marked-complete",
-            edit_map(lambda data: data["phase_one"]["P1.1"].update(completed_functional_ids=["F02"])),
-        ),
-        (
-            "xstj-marked-complete",
-            edit_map(lambda data: data["phase_one"]["P1.1"].update(completed_functional_ids=["XSTJ"])),
-        ),
-        (
-            "clock-outcome-removed",
-            edit_map(lambda data: entry(data, "F02")["error_outcomes"].pop()),
-        ),
-        (
-            "clock-outcome-claimed-normative",
-            edit_map(lambda data: entry(data, "F02")["error_outcomes"][0].update(code_authority="PACKAGE_NORMATIVE")),
-        ),
-        (
-            "unrelated-root-provider",
-            edit_map(lambda data: root_entry(data, "spatial_audio").update(cold_provider={"file": "unknown.json"})),
-        ),
-        (
-            "unrelated-direct-vector",
-            edit_map(
-                lambda data: entry(data, "F03").update(
-                    vectors={"kind": "DIRECT_VECTOR", "case_pointers": []}
-                )
-            ),
-        ),
-    ]
-    return cases
-
-
+import argparse,json,os,pathlib,shutil,subprocess,sys
+ROOT=pathlib.Path(__file__).resolve().parents[1]
+def map_mut(fn):
+ def m(r):
+  p=r/'docs/implementation/IMPLEMENTATION-MAP.json';d=json.loads(p.read_text(encoding='utf-8'));fn(d);p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+ return m
+def append(path,text):path.write_text(path.read_text(encoding='utf-8')+text,encoding='utf-8')
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--scratch-root", type=pathlib.Path, required=True)
-    args = parser.parse_args()
-    scratch_root = args.scratch_root.resolve()
-    repository = ROOT.resolve()
-    if scratch_root == repository or repository.is_relative_to(scratch_root):
-        print("scratch root must not be the repository or one of its ancestors", file=sys.stderr)
-        return 2
-
-    created_scratch_root = not scratch_root.exists()
-    scratch_root.mkdir(parents=True, exist_ok=True)
-    cases = mutations()
-    failures = []
-    try:
-        for name, mutate in cases:
-            case_dir = scratch_root / name
-            try:
-                case_dir.mkdir()
-            except FileExistsError:
-                failures.append(f"{name}: case directory already exists; left untouched")
-                continue
-
-            try:
-                probe = case_dir / ".copy-probe"
-                probe.write_text("write permission verified\n", encoding="utf-8")
-                if probe.read_text(encoding="utf-8") != "write permission verified\n":
-                    raise RuntimeError("scratch permission probe did not round-trip")
-                probe.unlink()
-
-                copied_repository = case_dir / "repository"
-                ignore = shutil.ignore_patterns(".git", "target", "__pycache__")
-                shutil.copytree(repository, copied_repository, ignore=ignore)
-                before = tree_digest(copied_repository)
-                mutate(copied_repository)
-                after = tree_digest(copied_repository)
-                if before == after:
-                    raise RuntimeError("mutation did not change the copied repository")
-
-                result = subprocess.run(
-                    [
-                        sys.executable,
-                        "-X",
-                        "utf8",
-                        "-B",
-                        "-O",
-                        str(copied_repository / "scripts" / "check-boundaries.py"),
-                    ],
-                    cwd=copied_repository,
-                    capture_output=True,
-                    text=True,
-                    encoding="utf-8",
-                    errors="replace",
-                    timeout=120,
-                    check=False,
-                )
-                if result.returncode == 0:
-                    raise RuntimeError("boundary checker accepted the mutation")
-                print("PASS " + name)
-            except Exception as error:
-                failures.append(f"{name}: {error}")
-            finally:
-                shutil.rmtree(case_dir)
-    finally:
-        if created_scratch_root and scratch_root.is_dir() and not any(scratch_root.iterdir()):
-            scratch_root.rmdir()
-
-    print(f"boundary mutation cases: {len(cases)}")
-    if failures:
-        for failure in failures:
-            print("FAIL " + failure, file=sys.stderr)
-        print(f"boundary mutation suite failed ({len(failures)} failures)", file=sys.stderr)
-        return 1
-    print(f"boundary mutation suite passed ({len(cases)} rejected mutations)")
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+ a=argparse.ArgumentParser();a.add_argument('--scratch-root',type=pathlib.Path);x=a.parse_args();s=x.scratch_root or pathlib.Path(os.environ.get('JOCFORGE_BOUNDARY_TMP',ROOT/'target/boundary-mutations'));s.mkdir(parents=True,exist_ok=True)
+ cases=[]
+ cases+=[('missing-arch',lambda r:(r/'docs/architecture/PUBLIC-API.md').unlink()),('missing-map',lambda r:(r/'docs/implementation/CLOCK-MAP.md').unlink())]
+ cases+=[('remove-active-clause',map_mut(lambda d:d['phase_one']['P1.1']['tasks'][0]['covered_clauses'].pop())),('active-test-empty',map_mut(lambda d:d['functional_entries'][d['functional_entries'].index(next(e for e in d['functional_entries']if e['functional_id']=='F02'))].update(test_modules=[]))),('writer-types-merged',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F02')['clock'].update(domains=['JocWriterIndex']))),('future-materialized',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F03').update(inventory_status='MATERIALIZED'))),('future-fake-provider',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F03').update(parameters={'kind':'FILE_PROVIDER','provider_files':['PARAMETER-INTERFACES.json']}))),('render-target-production',map_mut(lambda d:d['phase_one']['P1.1']['tasks'][1].update(production_dimensions=['RenderTarget']))),('f02-complete',map_mut(lambda d:d['phase_one']['P1.1']['completed_functional_ids'].append('F02'))),('xstj-complete',map_mut(lambda d:d['phase_one']['P1.1']['completed_functional_ids'].append('XSTJ'))),('outcome-delete',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F02').update(error_outcomes=[]))),('root-provider',map_mut(lambda d:d['programme_roots'][0].update(cold_provider_files=['x']))),('bad-impl-path',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F02').update(implementation_files=['missing.rs']))),('coverage-vector',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F02')['vectors'].update(kind='DIRECT_VECTOR',authoritative_vectors=['test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json']))),('p1-2-go',map_mut(lambda d:d['phase_one'].update({'P1.2':'GO'})))]
+ src='crates/jocforge-domain/src/state/mod.rs';leaf='crates/jocforge-domain/src/codec/bap.rs';app='crates/jocforge-application/src/lib.rs'
+ payloads=[('multiline-usize',src,'\npub fn x(\n v: usize){}\n'),('trait-usize',src,'\npub trait X{fn x(v:usize);}\n'),('async-fn',leaf,'\npub async fn x(){}\n'),('unsafe-fn',leaf,'\npub unsafe fn x(){}\n'),('extern-fn',leaf,'\npub extern "C" fn x(){}\n'),('macro',leaf,'\nmacro_rules! x{()=>{pub fn y(){}}}\n'),('fs-alias',app,'\nuse std::fs as x;\n'),('process-alias',app,'\nuse std::process as x;\n'),('env-alias',app,'\nuse std::env as x;\n'),('net-alias',app,'\nuse std::net as x;\n'),('ffmpeg',app,'\nconst X:&str="FFmpeg";\n'),('concat',app,'\nconst X:&str=concat!("FF","mpeg");\n'),('include',app,'\ninclude!("x.rs");\n'),('path',app,'\n#[path="x.rs"]mod x;\n'),('legacy',app,'\n// legacy\n'),('compat',app,'\n// compat\n'),('fallback',app,'\n// fallback\n')]
+ for n,p,t in payloads:cases.append((n,lambda r,p=p,t=t:append(r/p,t)))
+ cases += [('build-script',lambda r:(r/'crates/jocforge-application/build.rs').write_text('fn main(){}',encoding='utf-8')),('generated-drift',lambda r:append(r/'docs/implementation/CLOCK-MAP.md','\ndrift\n')),('extra-supported-row',lambda r:append(r/'docs/architecture/PROFILE-DIMENSIONS.md','\n| selected ADM BWF / extra | x | x | x | x | x |\n')),('profile-api-render-target',lambda r:append(r/'crates/jocforge-domain/src/profile/production.rs','\n// RenderTarget\n')),('default-carriage-drift',map_mut(lambda d:d['phase_one']['P1.1']['tasks'][1].update(default_carriage='etsi_emdf'))),('unregistered-primitive',map_mut(lambda d:d['phase_one']['P1.2-A']['primitive'].update(name='generic_math'))),('q15-output-naked-i32',map_mut(lambda d:d['phase_one']['P1.2-A']['primitive'].update(output='Result<i32, Q15CoordinateError>'))),('numeric-consumer-missing',map_mut(lambda d:d['phase_one']['P1.2-A'].update(consumer={}))),('numeric-spec-missing',map_mut(lambda d:d['phase_one']['P1.2-A']['spec_binding'].update(file='specs/missing.md'))),('numeric-vector-missing',map_mut(lambda d:d['phase_one']['P1.2-A']['vectors'].update(case_pointers=[]))),('rounding-drift',map_mut(lambda d:d['phase_one']['P1.2-A']['primitive'].update(rounding='round toward zero'))),('saturation-wrap',map_mut(lambda d:d['phase_one']['P1.2-A']['primitive'].update(saturation='wrap'))),('nonfinite-accepted',map_mut(lambda d:d['phase_one']['P1.2-A']['primitive'].update(non_finite='accept'))),('p12b-bare-f32',map_mut(lambda d:d['phase_one']['P1.2-B']['primitives'][0].update(signature='f32'))),('p12b-fma',map_mut(lambda d:d['phase_one']['P1.2-B']['primitives'][1].update(fusion='ALLOWED'))),('p12b-signed-zero-loss',map_mut(lambda d:d['phase_one']['P1.2-B']['primitives'][2].update(signed_zero='canonicalize zero'))),('p12b-consumer-missing',map_mut(lambda d:d['phase_one']['P1.2-B'].update(consumer={}))),('p12b-spec-missing',map_mut(lambda d:d['phase_one']['P1.2-B']['spec_binding'].update(file='specs/missing.md'))),('p12b-vector-missing',map_mut(lambda d:d['phase_one']['P1.2-B']['vectors'].update(case_pointers=[]))),('verified-count-drift',map_mut(lambda d:d['phase_one']['P1.2-B'].update(status='GO'))),('p1-3-go',map_mut(lambda d:d['phase_one'].update({'P1.3':'GO'}))),('p1-4-go',map_mut(lambda d:d['phase_one'].update({'P1.4':'GO'}))),('id-missing',map_mut(lambda d:d['functional_entries'].pop())),('id-duplicate',map_mut(lambda d:d['functional_entries'].append(d['functional_entries'][0].copy()))),('root-status',map_mut(lambda d:d['programme_roots'][0].update(materialization_status='READY'))),('trace-approved',map_mut(lambda d:d['status'].update(TRACEABILITY='APPROVED'))),('selected-gate-go',map_mut(lambda d:d['phase_one']['P1.1']['tasks'][1].update(status='GO')))]
+ cases += [('p12c-naked-i32',map_mut(lambda d:d['phase_one']['P1.2-C']['primitive'].update(signature='FiniteF32 -> i32'))),('p12c-rne-drift',map_mut(lambda d:d['phase_one']['P1.2-C']['primitive'].update(rounding='rne_int'))),('p12c-saturate',map_mut(lambda d:d['phase_one']['P1.2-C']['primitive'].update(saturation='ALLOWED'))),('p12c-wrap',map_mut(lambda d:d['phase_one']['P1.2-C']['primitive'].update(wrap='ALLOWED'))),('p12c-consumer-missing',map_mut(lambda d:d['phase_one']['P1.2-C'].update(consumer={}))),('p12c-spec-missing',map_mut(lambda d:d['phase_one']['P1.2-C']['spec_binding'].update(file='specs/missing.md'))),('p12c-vector-missing',map_mut(lambda d:d['phase_one']['P1.2-C']['vectors'].update(case_pointers=[])))]
+ cases += [('p12d-naked-f32',map_mut(lambda d:d['phase_one']['P1.2-D']['primitive'].update(signature='Q15Coordinate -> f32'))),('p12d-multiply-reciprocal',map_mut(lambda d:d['phase_one']['P1.2-D']['primitive'].update(multiply_reciprocal='ALLOWED'))),('p12d-int-narrowing',map_mut(lambda d:d['phase_one']['P1.2-D']['primitive']['typed_input'].update(range='i16'))),('p12d-signed-zero-drift',map_mut(lambda d:d['phase_one']['P1.2-D']['primitive'].update(signed_zero='negative zero'))),('p12d-consumer-missing',map_mut(lambda d:d['phase_one']['P1.2-D'].update(consumer={}))),('p12d-spec-missing',map_mut(lambda d:d['phase_one']['P1.2-D']['spec_binding'].update(file='specs/missing.md'))),('p12d-vector-missing',map_mut(lambda d:d['phase_one']['P1.2-D']['vectors'].update(case_pointers=[]))),('p12d-verified-count-drift',map_mut(lambda d:d['phase_one']['P1.2-D'].update(status='GO')))]
+ cases += [('p12-closure-global',map_mut(lambda d:d['phase_one']['P1.2-closure'].update(global_numeric_complete=True))),('p12-closure-delete-a',map_mut(lambda d:d['phase_one']['P1.2-closure']['verified_slices'].pop(0))),('p12-closure-delete-b',map_mut(lambda d:d['phase_one']['P1.2-closure']['verified_slices'].pop(1))),('p12-closure-delete-c',map_mut(lambda d:d['phase_one']['P1.2-closure']['verified_slices'].pop(2))),('p12-closure-delete-d',map_mut(lambda d:d['phase_one']['P1.2-closure']['verified_slices'].pop(3))),('p12-closure-unbound-primitive',map_mut(lambda d:d['phase_one']['P1.2-closure']['verified_slices'][0]['primitives'].append('unbound_math')))]
+ cases += [('reader-schema-pointer-drift',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='reader_eof')['schema_pointers'].pop())),('reader-cold-field-missing',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='reader_eof')['fields'].pop())),('reader-provider-file-fake',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='reader_eof')['cold_provider'].update(kind='FILE_PROVIDER',provider_files=['parameters/fake.json']))),('reader-clock-drift',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='reader_eof')['clock'].update(type='CodecSourceIndex'))),('reader-commit-authority-drift',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='reader_eof')['permissions']['commit'].update(authority='F01R'))),('reader-receipt-drift',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='reader_eof')['receipt'].update(type='OwnerReceipt<Other>'))),('reader-early-local-verified',map_mut(lambda d:d['phase_one']['P1.3-A'].update(status='READY_FOR_IMPLEMENTATION'))),('reader-transaction-rust',lambda r:append(r/'crates/jocforge-domain/src/transaction/mod.rs','\npub struct ForbiddenTransaction;\n'))]
+ cases += [('reader-endianness-drift',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='reader_eof')['canonical_serialization'].update(integers='big-endian'))),('reader-option-encoding-drift',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='reader_eof')['canonical_serialization'].update(optional='length only'))),('reader-f32-bits-drift',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='reader_eof')['canonical_serialization'].update(f32='decimal text'))),('reader-generation-drift',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='reader_eof')['receipt'].update(generation='unchecked'))),('reader-abort-mutation',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='reader_eof')['permissions']['abort'].update(effect='commit partial state'))),('reader-fatal-no-retire',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='reader_eof')['fatal'].update(effect='discard only'))),('reader-nonsha-digest',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='reader_eof')['digest_provider'].update(crate='custom'))),('reader-partial-digest',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='reader_eof')['digest_provider'].update(purpose='partial bytes'))),('reader-receipt-field-missing',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='reader_eof')['receipt']['immutable_fields'].pop())),('other-root-materialized',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='frontend_control').update(materialization_status='MATERIALIZED')))]
+ cases += [('reader-staged-clone',lambda r:append(r/'crates/jocforge-domain/src/state/reader_eof.rs','\nimpl Clone for ReaderEofStaged { fn clone(&self)->Self { unreachable!() } }\n')),('reader-prepared-clone',lambda r:append(r/'crates/jocforge-domain/src/state/reader_eof.rs','\nimpl Clone for ReaderEofPrepared { fn clone(&self)->Self { unreachable!() } }\n')),('reader-borrowed-abort',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='reader_eof')['linear_capabilities']['staged'].update(consumed_by=['abort(&self, &staged)','commit(&mut self, staged)','fatal(&mut self, staged)']))),('reader-borrowed-commit',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='reader_eof')['linear_capabilities']['staged'].update(consumed_by=['abort(self, staged)','commit(&mut self, &staged)','fatal(&mut self, staged)']))),('reader-borrowed-fatal',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='reader_eof')['linear_capabilities']['staged'].update(consumed_by=['abort(self, staged)','commit(&mut self, staged)','fatal(&mut self, &staged)']))),('reader-abort-reuse',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='reader_eof')['linear_capabilities'].update(abort_reuse='allowed')))]
+ cases += [('reader-machine-clone-map',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='reader_eof')['machine_owner_semantics'].update(clone=True))),('reader-machine-clone-source',lambda r:append(r/'crates/jocforge-domain/src/state/reader_eof.rs','\nimpl Clone for ReaderEofMachine { fn clone(&self)->Self { unreachable!() } }\n')),('reader-machine-copy-source',lambda r:append(r/'crates/jocforge-domain/src/state/reader_eof.rs','\nimpl Copy for ReaderEofMachine {}\n')),('reader-machine-mutable-access',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='reader_eof')['machine_owner_semantics'].update(mutable_access='&mut ReaderEofState')))]
+ cases += [('frontend-provider-fake',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='frontend_control')['cold_provider'].update(file='parameters/fake.json'))),('frontend-field-missing',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='frontend_control')['fields'].pop())),('frontend-field-order',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='frontend_control')['fields'].reverse())),('frontend-serialization-drift',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='frontend_control')['canonical_serialization'].update(sort_keys=False))),('frontend-clock-drift',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='frontend_control')['clock'].update(type='CodecSourceIndex'))),('frontend-authority-drift',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='frontend_control')['permissions']['commit'].update(authority='F01E'))),('frontend-linear-clone',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='frontend_control')['linear_capabilities']['machine'].update(clone=True))),('frontend-receipt-field-missing',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='frontend_control')['receipt']['immutable_fields'].pop())),('frontend-false-global-atomic',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='frontend_control')['cross_root_coordination'].update(atomicity_claim='IMPLEMENTED'))),('frontend-early-verified',map_mut(lambda d:d['phase_one']['P1.3-B'].update(status='LOCALLY_VERIFIED'))),('frontend-rust-early',lambda r:(r/'crates/jocforge-domain/src/frontend/config.rs').write_text('// pattern: Functional Core\npub struct Forbidden;\n',encoding='utf-8'))]
+ cases += [('frontend-shape-drift',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='frontend_control')['fields'][5].update(type='array[27] object records')))]
+ cases += [('frontend-standalone-commit',lambda r:append(r/'crates/jocforge-domain/src/frontend/state.rs','\nimpl FrontendControlMachine { pub fn commit(&mut self, _: FrontendControlStaged) {} }\n')),('frontend-staged-clone',lambda r:append(r/'crates/jocforge-domain/src/frontend/state.rs','\nimpl Clone for FrontendControlStaged { fn clone(&self)->Self { unreachable!() } }\n')),('frontend-provider-bypass',lambda r:(r/'crates/jocforge-domain/src/frontend/state.rs').write_text((r/'crates/jocforge-domain/src/frontend/state.rs').read_text(encoding='utf-8').replace('provider.into_parts()','unreachable!()'),encoding='utf-8')),('frontend-canonical-drift',map_mut(lambda d:d['phase_one']['P1.3-B1'].update(canonical_state='serde default'))),('frontend-mutable-committed',lambda r:(r/'crates/jocforge-domain/src/frontend/state.rs').write_text((r/'crates/jocforge-domain/src/frontend/state.rs').read_text(encoding='utf-8').replace('pub const fn committed(&self) -> &FrontendControlState','pub fn committed(&mut self) -> &mut FrontendControlState'),encoding='utf-8')),('frontend-b1-false-complete',map_mut(lambda d:d['phase_one']['P1.3-B'].update(status='LOCALLY_VERIFIED')))]
+ cases += [('frontend-readiness-regression',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='frontend_control').update(materialization_status='MAPPING_COMPLETE_BLOCKED_ON_P1.4_PROVIDER_CONTRACT'))),('frontend-prerequisite-missing',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='frontend_control').pop('prerequisite'))),('frontend-hardcoded-provider',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='frontend_control')['prerequisite']['implementation_prohibitions'].remove('no hardcoded provider value in P1.3-B'))),('frontend-json-dependency-drift',lambda r:append(r/'crates/jocforge-domain/Cargo.toml','\nserde_json = "1"\n')),('frontend-domain-file-io',lambda r:(r/'crates/jocforge-domain/src/frontend/config.rs').write_text('// pattern: Functional Core\nuse std::fs;\n',encoding='utf-8'))]
+ cases += [('p14-provider-id-drift',map_mut(lambda d:d['phase_one']['P1.4-A']['provider_identity']['fields'].update(provider_id='OTHER'))),('p14-provider-bytes-drift',map_mut(lambda d:d['phase_one']['P1.4-A']['provider_identity']['fields'].update(manifest_entry_bytes=20139))),('p14-provider-sha-drift',map_mut(lambda d:d['phase_one']['P1.4-A']['provider_identity']['fields'].update(manifest_entry_sha256='00'*32))),('p14-package-sha-drift',map_mut(lambda d:d['phase_one']['P1.4-A']['provider_identity']['fields'].update(package_manifest_sha256='00'*32))),('p14-duplicate-policy',map_mut(lambda d:d['phase_one']['P1.4-A']['input_acceptance'].update(duplicate_keys='last wins'))),('p14-unknown-policy',map_mut(lambda d:d['phase_one']['P1.4-A']['input_acceptance'].update(unknown_fields='ignore'))),('p14-bom-policy',map_mut(lambda d:d['phase_one']['P1.4-A']['input_acceptance'].update(bom='accept'))),('p14-trailing-policy',map_mut(lambda d:d['phase_one']['P1.4-A']['input_acceptance'].update(trailing_whitespace_or_bytes='accept'))),('p14-number-policy',map_mut(lambda d:d['phase_one']['P1.4-A']['input_acceptance'].update(number_syntax='coerce'))),('p14-unicode-policy',map_mut(lambda d:d['phase_one']['P1.4-A']['input_acceptance'].update(unicode='normalize'))),('p14-shape-pointer',map_mut(lambda d:d['phase_one']['P1.4-A']['shape_validation'].update(pointer='/'))),('p14-canonical-writer',map_mut(lambda d:d['phase_one']['P1.4-A']['canonical_reconstruction'].update(writer='serde default'))),('p14-preimage-length',map_mut(lambda d:d['phase_one']['P1.4-A']['canonical_reconstruction'].update(expected_bytes=4401))),('p14-preimage-digest',map_mut(lambda d:d['phase_one']['P1.4-A']['canonical_reconstruction'].update(expected_sha256='00'*32))),('p14-receipt-field',map_mut(lambda d:d['phase_one']['P1.4-A']['output']['receipt']['fields'].pop())),('p14-io-boundary',map_mut(lambda d:d['phase_one']['P1.4-A']['boundaries'].update(domain='domain reads files'))),('p14-serde-dependency-early',lambda r:append(r/'crates/jocforge-domain/Cargo.toml','\nserde_json = "=1.0.154"\n')),('p14-rust-early',lambda r:(r/'crates/jocforge-domain/src/frontend/provider.rs').write_text('// pattern: Functional Core\npub struct Forbidden;\n',encoding='utf-8'))]
+ cases += [('p14-status-regression',map_mut(lambda d:d['phase_one']['P1.4-A'].update(status='READY_FOR_DEPENDENCY_APPROVAL'))),('p14-serde-canonical-writer',lambda r:append(r/'crates/jocforge-domain/src/frontend/provider.rs','\n// serde_json::to_vec is forbidden here\n')),('p14-public-value',lambda r:append(r/'crates/jocforge-domain/src/frontend/provider.rs','\npub use serde_json::Value;\n')),('p14-manifest-input-missing',map_mut(lambda d:d['phase_one']['P1.4-A']['io_input']['types'].pop(0))),('p14-manifest-flow-missing',map_mut(lambda d:d['phase_one']['P1.4-A']['io_input']['validation_flow'].pop(1))),('p14-receipt-lineage-missing',map_mut(lambda d:d['phase_one']['P1.4-A']['output']['receipt']['fields'].__setitem__(0,'provider_identity'))),('p14-manifest-parameter-missing',lambda r:(r/'crates/jocforge-domain/src/frontend/provider.rs').write_text((r/'crates/jocforge-domain/src/frontend/provider.rs').read_text(encoding='utf-8').replace('manifest: &ValidatedF01EPackageManifest','identity: ProviderIdentity'),encoding='utf-8')),('p14-manifest-entry-lookup-missing',lambda r:(r/'crates/jocforge-domain/src/frontend/provider.rs').write_text((r/'crates/jocforge-domain/src/frontend/provider.rs').read_text(encoding='utf-8').replace('let entry = parse_f01e_manifest_entry(evidence.bytes())?;','let entry = ("parameters/f01e-selected-constructor-v1.json", 20138, ProviderSha256(PROVIDER_SHA));'),encoding='utf-8')),('p14-absolute-production-path',lambda r:append(r/'crates/jocforge-domain/src/frontend/provider.rs','\n// C:\\Users\\someone\\package\\MANIFEST.json\n')),('p14-manifest-fixture-tamper',lambda r:append(r/'crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json','\n')),('p14-provider-fixture-tamper',lambda r:append(r/'crates/jocforge-domain/tests/fixtures/f01e_provider/f01e-selected-constructor-v1.json','\n'))]
+ cases += [('p13c-status-ready',map_mut(lambda d:d['phase_one']['P1.3-C'].update(status='READY_FOR_IMPLEMENTATION'))),('p13c-owner-receipt-order',map_mut(lambda d:d['phase_one']['P1.3-C']['callback_receipt']['owner_receipt_order'].update(order=['spatial_control','spatial_audio','reader_eof','output','meter','metadata','joc','integrity','frontend_control','drc','codec','analysis']))),('p13c-generic-owner-list',map_mut(lambda d:d['phase_one']['P1.3-C']['coordinator'].update(fixed_programme_owner_fields=['Vec<OwnerState>']))),('p13c-clone-rollback',map_mut(lambda d:d['phase_one']['P1.3-C']['replacement'].update(rollback='clone all roots and rollback on failure'))),('p13c-partial-replacement',map_mut(lambda d:d['phase_one']['P1.3-C']['replacement'].update(operation='replace reader_eof before validating remaining roots'))),('p13c-transaction-id-mismatch',map_mut(lambda d:d['phase_one']['P1.3-C']['join_metadata'].update(matching_rule='owner transaction IDs may differ'))),('p13c-callback-index-mismatch',map_mut(lambda d:d['phase_one']['P1.3-C']['join_metadata'].update(matching_rule='all owners share transaction id; callback indexes may differ'))),('p13c-retired-guard-bypass',map_mut(lambda d:d['phase_one']['P1.3-C']['coordinator'].update(retired_guard='caller may bypass'))),('p13c-public-single-root-success',map_mut(lambda d:d['phase_one']['P1.3-C'].update(reader_eof_api_migration='public single-root commit remains allowed'))),('p13c-top-level-count-drift',map_mut(lambda d:d['phase_one']['P1.3-C']['callback_receipt'].update(top_level_commit_count='two commits'))),('p13c-fatal-does-not-retire',map_mut(lambda d:d['phase_one']['P1.3-C'].update(fatal_api='discard tokens and continue'))),('p13c-single-root-success-result',map_mut(lambda d:d['phase_one']['P1.3-C'].update(success_semantics='reader_eof alone can report commit success'))),('p13c-receipt-pair-only',map_mut(lambda d:d['phase_one']['P1.3-C']['transaction_receipt_binding']['field_bindings'].update(owner_receipts='only reader_eof and frontend_control'))),('p13c-blockers-removed',map_mut(lambda d:d['phase_one']['P1.3-C'].update(blockers=[]))),('p13c-early-rust',lambda r:(r/'crates/jocforge-domain/src/transaction/callback.rs').write_text('// pattern: Functional Core\npub struct CallbackTransactionCoordinator;\n',encoding='utf-8'))]
+ cases += [('p13d-status-verified',map_mut(lambda d:d['phase_one']['P1.3-D'].update(status='LOCALLY_VERIFIED'))),('p13d-projection-as-root',map_mut(lambda d:d['programme_roots'][next(i for i,r in enumerate(d['programme_roots'])if r['root_id']=='spatial_control')]['f03w_owned_field_groups'].update(field_groups=['frontend_and_installed48','reader56_targets','component_lfe_j05','joc_after_j05','body_proposals','metadata_timeline','codec_and_publication']))),('p13d-field-missing',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_control')['f03w_owned_field_groups']['render_audio'].pop())),('p13d-external-owner-embedded',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_control')['f03w_owned_field_groups']['matrix_assignment'].append('metadata_history'))),('p13d-local-commit',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_control')['stage_authority'].update(commit_authority='local spatial_control commit'))),('p13d-top-level-committed',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_control')['transaction_stage'].update(top_level_committed='COMMITTED'))),('p13d-f03-provider-skip',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_control')['provider_prerequisites']['f03_target_cold']['required_prerequisite'].update(status='LOCALLY_VERIFIED'))),('p13d-provider-sha-drift',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_control')['provider_prerequisites']['f03_target_cold'].update(manifest_entry_sha256='00'*32))),('p13d-owner-order-guessed',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_control').update(owner_receipt_order_and_wrapper='reader_eof then spatial_control'))),('p13d-canonical-drift',map_mut(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_control')['canonical_state'].update(digest='SHA256 over seven overlap projection groups'))),('p13d-prerequisite-removed',map_mut(lambda d:d['phase_one']['P1.3-D']['prerequisites'].pop(1))),('p13d-early-rust',lambda r:(r/'crates/jocforge-domain/src/state/spatial_control.rs').write_text('// pattern: Functional Core\npub struct SpatialControlMachine;\n',encoding='utf-8'))]
+ cases += [('p13c-owner-receipt-missing',map_mut(lambda d:d['phase_one']['P1.3-C']['callback_receipt']['owner_receipt_owner_ids_ascii'].pop())),('p13c-owner-receipt-duplicate',map_mut(lambda d:d['phase_one']['P1.3-C']['callback_receipt']['owner_receipt_owner_ids_ascii'].append('reader_eof'))),('p13c-owner-receipt-unknown',map_mut(lambda d:d['phase_one']['P1.3-C']['callback_receipt']['owner_receipt_owner_ids_ascii'].__setitem__(11,'unknown_owner'))),('p13c-changed-semantic-drift',map_mut(lambda d:d['phase_one']['P1.3-C']['callback_receipt'].update(owner_receipt_semantics='changed only when digest differs'))),('p13c-rejected-retires',map_mut(lambda d:d['phase_one']['P1.3-C']['callback_receipt'].update(REJECTED='preflight rejection retires programme'))),('p13c-after-staged-leaks',map_mut(lambda d:d['phase_one']['P1.3-C']['callback_receipt'].update(after_values='discarded staged values'))),('p13c-wrapper-digest-added',map_mut(lambda d:d['phase_one']['P1.3-C']['callback_receipt']['canonical_state_digests'].update(receipt_wrapper='SHA-256 over sorted JSON'))),('p13c-source-independent-success',map_mut(lambda d:d['phase_one']['P1.3-C']['callback_success_gates'].update(internal_stages='SOURCE has top-level COMMITTED'))),('p13c-durable-null-means-no-write',map_mut(lambda d:d['phase_one']['P1.3-C']['transaction_receipt_binding']['field_bindings'].update(durable_append='null proves no physical write'))),('p13c-other-kind-closed',map_mut(lambda d:d['phase_one']['P1.3-C']['unclosed_transaction_kinds'].remove('FINALIZE'))),('p13c-wrapper-field-count-drift',map_mut(lambda d:d['phase_one']['P1.3-C']['callback_receipt'].update(approved_wrapper_field_count=14))),('p13c-wash-hash-drift',map_mut(lambda d:d['phase_one']['P1.3-C']['callback_receipt']['wash_side_design_basis'].update(findings_sha256='00'*32)))]
+ passed=0
+ for n,m in cases:
+  c=s/n
+  if c.exists():shutil.rmtree(c)
+  c.mkdir();probe=c/'.probe';probe.write_text('ok');probe.unlink();repo=c/'repo';ignored=['.git','target','__pycache__'];
+  if s.resolve().is_relative_to(ROOT):ignored.append(s.resolve().relative_to(ROOT).parts[0])
+  shutil.copytree(ROOT,repo,ignore=shutil.ignore_patterns(*ignored));m(repo)
+  z=subprocess.run([sys.executable,'-O',str(repo/'scripts/check-boundaries.py')],cwd=repo,capture_output=True)
+  if z.returncode==0:raise RuntimeError('mutation passed: '+n)
+  shutil.rmtree(c);print('PASS '+n);passed+=1
+ print(f'boundary mutation tests passed ({passed} rejected mutations)');return 0
+if __name__=='__main__':raise SystemExit(main())

@@ -1,238 +1,44 @@
 # pattern: Imperative Shell
-import argparse
-import json
-import pathlib
-import sys
-
-ROOT = pathlib.Path(__file__).resolve().parents[1]
-DOCS = ROOT / "docs" / "implementation"
-MAP_PATH = DOCS / "IMPLEMENTATION-MAP.json"
-QUOTE = chr(96)
-
-
-def inline(value):
-    return f"{QUOTE}{value}{QUOTE}"
-
-
-def refs(values):
-    if not values:
-        return "—"
-    return "<br>".join(inline(value) for value in values)
-
-
-def table(title, columns, rows):
-    header = f"# {title}\n\nGenerated from IMPLEMENTATION-MAP.json. Do not edit by hand.\n\n"
-    head = "| " + " | ".join(columns) + " |\n"
-    rule = "|" + "|".join("---" for _ in columns) + "|\n"
-    body = "".join(
-        "| " + " | ".join(str(cell).replace("|", "\\|") for cell in row) + " |\n"
-        for row in rows
-    )
-    return header + head + rule + body
-
-
-def render(data):
-    entries = data["functional_entries"]
-    output = {}
-
-    output["SPEC-TRACEABILITY.md"] = table(
-        "Functional specification traceability",
-        [
-            "functional_id",
-            "spec_files",
-            "owner",
-            "planned_phase",
-            "status",
-            "scoped_clauses",
-            "implementation_files",
-            "test_modules",
-        ],
-        [
-            [
-                entry["functional_id"],
-                refs(entry["spec_files"]),
-                inline(entry["owner"]),
-                entry["planned_phase"],
-                entry["status"],
-                refs(entry.get("clock", {}).get("covered_clauses", [])),
-                refs(entry.get("implementation_files", [])),
-                refs(entry.get("test_modules", [])),
-            ]
-            for entry in entries
-        ],
-    )
-
-    output["OWNER-MAP.md"] = table(
-        "Functional owner map",
-        ["functional_id", "owner", "status"],
-        [
-            [entry["functional_id"], inline(entry["owner"]), entry["status"]]
-            for entry in entries
-        ],
-    )
-
-    output["CLOCK-MAP.md"] = table(
-        "Clock scope map",
-        ["functional_id", "domains", "covered_clauses", "status"],
-        [
-            [
-                entry["functional_id"],
-                refs(entry.get("clock", {}).get("domains", [])),
-                refs(entry.get("clock", {}).get("covered_clauses", [])),
-                entry["status"],
-            ]
-            for entry in entries
-        ],
-    )
-
-    error_rows = []
-    for entry in entries:
-        outcomes = entry.get("error_outcomes", [])
-        if outcomes:
-            for outcome in outcomes:
-                error_rows.append(
-                    [
-                        entry["functional_id"],
-                        entry["status"],
-                        inline(outcome["error_code"]),
-                        outcome["code_authority"],
-                        outcome["trigger"],
-                        outcome["category"],
-                        outcome["state_effect"],
-                    ]
-                )
-        elif entry["status"] == "DEFERRED_DETAILED_MAPPING":
-            error_rows.append(
-                [
-                    entry["functional_id"],
-                    "DEFERRED_DETAILED_MAPPING",
-                    "—",
-                    "—",
-                    "—",
-                    "—",
-                    "—",
-                ]
-            )
-        else:
-            error_rows.append(
-                [
-                    entry["functional_id"],
-                    entry["status"],
-                    "—",
-                    "—",
-                    "—",
-                    "—",
-                    "No additional outcome is mapped for this scoped clause.",
-                ]
-            )
-    output["ERROR-MAP.md"] = table(
-        "Error outcome map",
-        [
-            "functional_id",
-            "mapping_status",
-            "local_error_label",
-            "label_authority",
-            "trigger",
-            "category",
-            "state_effect",
-        ],
-        error_rows,
-    )
-
-    output["PARAMETER-MAP.md"] = table(
-        "Parameter scope map",
-        ["functional_id", "mapping_status", "kind", "provider_files"],
-        [
-            [
-                entry["functional_id"],
-                entry["status"],
-                entry.get("parameters", {}).get("kind", "—"),
-                refs(entry.get("parameters", {}).get("provider_files", [])),
-            ]
-            for entry in entries
-        ],
-    )
-
-    output["VECTOR-MAP.md"] = table(
-        "Vector scope map",
-        [
-            "functional_id",
-            "mapping_status",
-            "kind",
-            "parent_vectors",
-            "case_pointers",
-            "direct_package_vector",
-        ],
-        [
-            [
-                entry["functional_id"],
-                entry["status"],
-                entry.get("vectors", {}).get("kind", "—"),
-                refs(entry.get("vectors", {}).get("parent_vectors", [])),
-                refs(entry.get("vectors", {}).get("case_pointers", [])),
-                entry.get("vectors", {}).get("direct_package_vector", "—"),
-            ]
-            for entry in entries
-        ],
-    )
-
-    phase = data["phase_one"]["P1.1"]
-    task_rows = []
-    for task in phase["tasks"]:
-        task_rows.append(
-            [
-                task["task_id"],
-                json.dumps(task.get("functional_scope", {}), ensure_ascii=False),
-                refs(task.get("covered_clauses", [])),
-                refs(task.get("planned_files", [])),
-                refs(task.get("planned_tests", [])),
-                task["status"],
-            ]
-        )
-    plan = table(
-        "Phase 1 plan",
-        [
-            "task_id",
-            "functional_scope",
-            "covered_clauses",
-            "planned_files",
-            "planned_tests",
-            "status",
-        ],
-        task_rows,
-    )
-    plan += "\n## Gate order\n\n"
-    plan += "The documentation gate must pass before CLOCK-FOUNDATION implementation work begins. "
-    plan += "CLOCK-FOUNDATION is the only GO task in this slice.\n\n"
-    plan += "P1.2, P1.3, P1.4, and SELECTED-PROFILE-GATE remain HOLD.\n\n"
-    plan += "## Failing-first tests\n\n"
-    plan += "\n".join(
-        f"{index}. {test}"
-        for index, test in enumerate(phase["failing_first_tests"], start=1)
-    )
-    plan += "\n"
-    output["PHASE-PLAN.md"] = plan
-    return output
-
-
+import argparse,json,pathlib,sys
+R=pathlib.Path(__file__).resolve().parents[1];D=R/'docs/implementation';M=D/'IMPLEMENTATION-MAP.json'
+def q(x):return f'`{x}`'
+def refs(x):return '—'if not x else'<br>'.join(q(v)for v in x)
+def tab(t,c,rs):return f'# {t}\n\n由 IMPLEMENTATION-MAP.json 生成，不得手工修改。\n\n| '+' | '.join(c)+' |\n|'+'|'.join('---'for _ in c)+'|\n'+'\n'.join('| '+' | '.join(str(x).replace('|','\\|')for x in r)+' |'for r in rs)+'\n'
+def render(d):
+ es=d['functional_entries'];o={};o['SPEC-TRACEABILITY.md']=tab('规格追踪',['functional_id','spec_files','owner','planned_phase','inventory_status','implementation_status','implementation_files','test_modules'],[[e['functional_id'],refs(e['spec_files']),q(e['owner']),e['planned_phase'],e['inventory_status'],e['implementation_status'],refs(e.get('implementation_files',[])),refs(e.get('test_modules',[]))]for e in es]);o['OWNER-MAP.md']=tab('Owner 映射',['functional_id','owner','inventory_status'],[[e['functional_id'],q(e['owner']),e['inventory_status']]for e in es]);o['CLOCK-MAP.md']=tab('时钟映射',['functional_id','domains','covered_clauses','inventory_status'],[[e['functional_id'],refs(e.get('clock',{}).get('domains',[])),refs(e.get('clock',{}).get('covered_clauses',[])),e['inventory_status']]for e in es]);er=[]
+ for e in es:
+  for x in e.get('error_outcomes',[]):er.append([e['functional_id'],q(x['error_code']),x['category'],x['trigger'],x['programme_state_after'],x['caller_action']])
+ o['ERROR-MAP.md']=tab('错误 outcome 映射',['functional_id','error_code','category','trigger','programme_state_after','caller_action'],er);o['PARAMETER-MAP.md']=tab('参数映射',['functional_id','kind','provider_files','inventory_status'],[[e['functional_id'],e.get('parameters',{}).get('kind','—'),refs(e.get('parameters',{}).get('provider_files',[])),e['inventory_status']]for e in es]);o['VECTOR-MAP.md']=tab('Vector 映射',['functional_id','kind','authoritative_vectors','case_pointers','inventory_status'],[[e['functional_id'],e.get('vectors',{}).get('kind','—'),refs(e.get('vectors',{}).get('authoritative_vectors',[])),refs(e.get('vectors',{}).get('case_pointers',[])),e['inventory_status']]for e in es]);p=d['phase_one']['P1.1'];o['PHASE-PLAN.md']=tab('Phase 1 计划',['task_id','functional_scope','covered_clauses','planned_files','planned_tests','status'],[[t['task_id'],json.dumps(t.get('functional_scope',{}),ensure_ascii=False,sort_keys=True),refs(t.get('covered_clauses',[])),refs(t.get('planned_files',[])),refs(t.get('planned_tests',[])),t['status']]for t in p['tasks']])+'\n## Failing-first tests\n\n'+'\n'.join(f'{i}. {x}'for i,x in enumerate(p['failing_first_tests'],1))+'\n'
+ if 'P1.2-A'in d['phase_one']:
+  a=d['phase_one']['P1.2-A'];o['PHASE-PLAN.md']+='\n## P1.2-A consumer-driven numeric slice\n\n```json\n'+json.dumps(a,ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
+ if 'P1.2-B'in d['phase_one']:
+  b=d['phase_one']['P1.2-B'];o['PHASE-PLAN.md']+='\n## P1.2-B finite R32 add/multiply slice\n\n```json\n'+json.dumps(b,ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
+ if 'P1.2-C'in d['phase_one']:
+  c=d['phase_one']['P1.2-C'];o['PHASE-PLAN.md']+='\n## P1.2-C finite F32 truncation slice\n\n```json\n'+json.dumps(c,ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
+ if 'P1.2-D'in d['phase_one']:
+  x=d['phase_one']['P1.2-D'];o['PHASE-PLAN.md']+='\n## P1.2-D normalized Q15 coordinate slice\n\n```json\n'+json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
+ if 'P1.2-closure'in d['phase_one']:
+  x=d['phase_one']['P1.2-closure'];o['PHASE-PLAN.md']+='\n## P1.2 scoped closure\n\n```json\n'+json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
+ if 'P1.3-A'in d['phase_one']:
+  x=d['phase_one']['P1.3-A'];root=next(r for r in d['programme_roots']if r['root_id']==x['programme_root']);o['PHASE-PLAN.md']+='\n## P1.3-A reader_eof materialization audit\n\n```json\n'+json.dumps({'task':x,'programme_root':root},ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
+ if 'P1.3-B'in d['phase_one']:
+  x=d['phase_one']['P1.3-B'];root=next(r for r in d['programme_roots']if r['root_id']==x['programme_root']);o['PHASE-PLAN.md']+='\n## P1.3-B frontend_control materialization audit\n\n```json\n'+json.dumps({'task':x,'programme_root':root},ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
+ if 'P1.3-C'in d['phase_one']:
+  x=d['phase_one']['P1.3-C'];o['PHASE-PLAN.md']+='\n## P1.3-C two-root callback coordinator mapping\n\n```json\n'+json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
+ if 'P1.3-D'in d['phase_one']:
+  x=d['phase_one']['P1.3-D'];root=next(r for r in d['programme_roots']if r['root_id']==x['programme_root']);o['PHASE-PLAN.md']+='\n## P1.3-D spatial_control root mapping audit\n\n```json\n'+json.dumps({'task':x,'programme_root':root},ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
+ if 'P1.3-D'in d['phase_one']:
+  x=d['phase_one']['P1.3-D'];o['PHASE-PLAN.md']+='\n## P1.3-D spatial_control root audit\n\n```json\n'+json.dumps({'task':x,'programme_root_reference':f"programme_roots[{x['programme_root']}]"},ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
+ if 'P1.4-A'in d['phase_one']:
+  x=d['phase_one']['P1.4-A'];o['PHASE-PLAN.md']+='\n## P1.4-A F01E provider contract audit\n\n```json\n'+json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
+ return o
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--check", action="store_true")
-    args = parser.parse_args()
-    data = json.loads(MAP_PATH.read_text(encoding="utf-8"))
-    mismatches = []
-    for name, contents in render(data).items():
-        path = DOCS / name
-        if args.check:
-            if not path.is_file() or path.read_text(encoding="utf-8") != contents:
-                mismatches.append(name)
-        else:
-            path.write_text(contents, encoding="utf-8", newline="\n")
-    if mismatches:
-        print("generated maps differ: " + ", ".join(mismatches), file=sys.stderr)
-        return 1
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+ a=argparse.ArgumentParser();a.add_argument('--check',action='store_true');x=a.parse_args();d=json.loads(M.read_text(encoding='utf-8'));bad=[]
+ for n,v in render(d).items():
+  p=D/n
+  if x.check:
+   if not p.is_file()or p.read_text(encoding='utf-8')!=v:bad.append(n)
+  else:p.write_text(v,encoding='utf-8')
+ if bad:print('generated maps differ: '+', '.join(bad),file=sys.stderr);return 1
+ return 0
+if __name__=='__main__':raise SystemExit(main())

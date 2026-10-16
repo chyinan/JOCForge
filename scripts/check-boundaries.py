@@ -1,448 +1,117 @@
 # pattern: Imperative Shell
-import importlib.util
-import json
-import pathlib
-import re
-import sys
-import tomllib
-
-ROOT = pathlib.Path(__file__).resolve().parents[1]
-PACKAGE_ROOT = pathlib.Path(
-    r"C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_PACKAGE"
-)
-
-EXPECTED_ROOT_IDS = [
-    "reader_eof",
-    "frontend_control",
-    "spatial_control",
-    "spatial_audio",
-    "joc",
-    "meter",
-    "drc",
-    "analysis",
-    "codec",
-    "metadata",
-    "integrity",
-    "output",
-]
-EXPECTED_FUNCTIONAL_IDS = set(
-    "STRC,GTC,XSTJ,F01,F01R,F01G,F01B,F01GL,F01C,F01E,F02,F03,F03G,F03C,F03U,F03F,F03FC,F03R,F03P,F03N,F03S,F03FD,F03W,F04,F04C,F04A,F04F,F04FM,F04FCM,F04G,F04GA,F04P,F04PG,F04R,F04D,F04Q,F04RB,F04QF,F04QP,F05,F05Q,F05QH,F05J,F05JC,F05JL,F05JS,F05O,F05T,F05H,F05L,F05R56,F06,F06L,F06I,F06W,F06KG,F06TP,F06ND,F06NR,F06NI,F06NF,F06WH,F06U,F06DG,F06D,F06M,F06OG,F06OM,F06OP,F06OE,F06QT,F06QM,F06QS,F06OD,F06OS,F06OB,F06OR,F06OC,F06OF,F07,F07A,F08,F08NZ,F09,F09E,F09PA,F09G,F09LB,F10,F11,F12,F12S,F12SC,F12A,F13,F13F,F13T,F13C,F13D2,F14,F14K,F15,F15P,OWNJ".split(",")
-)
-CLOCK_FILES = [
-    "crates/jocforge-domain/src/timeline/index.rs",
-    "crates/jocforge-domain/src/timeline/clock.rs",
-    "crates/jocforge-domain/src/timeline/mod.rs",
-]
-CLOCK_TESTS = ["crates/jocforge-domain/tests/timeline_clock_contract.rs"]
-CLOCK_DOMAINS = [
-    "AdmSampleCount",
-    "NormalCallbackCount",
-    "FrontendCallbackIndex",
-    "CodecSourceIndex",
-    "JocDispatchIndex",
-    "JocGeneratedWriterIndex",
-    "OrdinaryPayloadWriterIndex",
-    "JocPoppedWriterIndex",
-    "PublishedAuIndex",
-]
-CLOCK_CLAUSES = [
-    "F02.1: each callback presents a complete 1536-sample host frame; EOF padding is not a codec flush",
-    "F02.2: N>0; A=ceil(N/1536); P=1536*A-N",
-    "F02.2: normal callbacks g=0..A-1; four cached drains g=A..A+3",
-    "F02.2/F02.3: source s=g-2 exists only when g>=2",
-    "XSTJ CLOCK: dispatch d=s+1=g-1; generated JOC writer d-1=s",
-    "XSTJ J03: source 0 and 1 complete queue/source processing but suppress AU publication",
-    "XSTJ J03: source 1 pops JOC writer 0 as CONSUMED_SUPPRESSED",
-    "XSTJ J03: source s>=2 publishes AU j=s-2",
-    "XSTJ CLOCK: publication consumes ordinary writer j and popped JOC writer s-1",
-    "F02.2: A+4 callbacks produce A+2 source frames and A published AUs",
-    "F02.3: EOF adds four cached drains and no codec flush",
-    "F02.4: N=6522906 yields 4247 normal callbacks, 4 drains, 4249 sources, 4247 AUs",
-    "F02.4: for N=6522906, normal callback g=0..4246 and cached drain g=4247..4250",
-    "XSTJ CLOCK: for N=6522906, source s=0..4248; dispatch d=1..4249; generated JOC writer s=0..4248",
-    "XSTJ CLOCK: for N=6522906, published AU j=0..4246; ordinary writer j=0..4246; popped JOC writer s-1=1..4247",
-    "terminal pending writers remain ordinary 4247/4248 and JOC writer 4248",
-]
-ACTIVE_ENTRY_FIELDS = {
-    "functional_id",
-    "spec_files",
-    "implementation_files",
-    "test_modules",
-    "owner",
-    "clock",
-    "parameters",
-    "vectors",
-    "error_outcomes",
-    "planned_phase",
-    "phase_scope",
-    "status",
-    "inventory_status",
-    "implementation_status",
-    "active_slice_materialization",
-}
-DEFERRED_ENTRY_FIELDS = {
-    "functional_id",
-    "spec_files",
-    "owner",
-    "planned_phase",
-    "status",
-}
-
-
-class BoundaryError(RuntimeError):
-    pass
-
-
-def require(condition, message):
-    if not condition:
-        raise BoundaryError(message)
-
-
-def read_json(path):
-    try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as error:
-        raise BoundaryError(f"cannot read JSON {path}: {error}") from error
-
-
-def check_active_mapping(root, package, data):
-    entries = data.get("functional_entries")
-    require(isinstance(entries, list) and len(entries) == 104, "functional ID count must be exactly 104")
-    identifiers = [entry.get("functional_id") for entry in entries]
-    require(len(set(identifiers)) == 104, "functional IDs must be unique")
-    require(set(identifiers) == EXPECTED_FUNCTIONAL_IDS, "functional ID inventory differs from the approved 104 IDs")
-    require(all(isinstance(identifier, str) and identifier for identifier in identifiers), "functional ID is empty")
-
-    active = {"F02", "XSTJ"}
-    require(
-        {entry["functional_id"] for entry in entries if entry.get("active_slice_materialization") == "MATERIALIZED"}
-        == active,
-        "only the scoped F02 and XSTJ clock entries may be materialized",
-    )
-    for entry in entries:
-        identifier = entry["functional_id"]
-        for spec_file in entry.get("spec_files", []):
-            require((package / spec_file).is_file(), f"{identifier} spec file is missing: {spec_file}")
-        if identifier not in active:
-            require(set(entry) == DEFERRED_ENTRY_FIELDS, f"{identifier} future mapping contains unreviewed detail")
-            require(entry["status"] == "DEFERRED_DETAILED_MAPPING", f"{identifier} is not deferred")
-            require(bool(entry["spec_files"]), f"{identifier} has no spec file")
-            continue
-
-        require(set(entry) == ACTIVE_ENTRY_FIELDS, f"{identifier} active mapping field set drift")
-        require(entry["status"] == "PARTIALLY_MATERIALIZED", f"{identifier} claims a complete mapping")
-        require(entry["inventory_status"] == "INVENTORIED", f"{identifier} inventory status drift")
-        require(
-            entry["implementation_status"] == "IMPLEMENTATION_PENDING_A_GATE",
-            f"{identifier} implementation status must wait for the A gate",
-        )
-        require(entry["clock"]["domains"] == CLOCK_DOMAINS, f"{identifier} clock-domain types drift")
-        require(entry["clock"]["covered_clauses"] == CLOCK_CLAUSES, f"{identifier} clock clauses drift")
-        require(entry["implementation_files"] == CLOCK_FILES, f"{identifier} planned file set drift")
-        require(entry["test_modules"] == CLOCK_TESTS, f"{identifier} planned test file set drift")
-        require(entry["phase_scope"] == ["CLOCK-FOUNDATION:SCOPED_CLAUSES_ONLY"], f"{identifier} scope drift")
-        require(
-            entry["parameters"]["kind"] == "NO_RUNTIME_PARAMETER"
-            and entry["parameters"]["provider_files"] == []
-            and entry["parameters"]["runtime_loader"] is None,
-            f"{identifier} must not claim a provider or runtime parameter",
-        )
-        require(
-            entry["vectors"]["kind"] == "RULE_AND_PROPERTY_TEST"
-            and entry["vectors"]["authoritative_vectors"] == []
-            and entry["vectors"]["direct_package_vector"] is None,
-            f"{identifier} must not claim a direct package vector",
-        )
-        require(all((root / path).is_file() for path in CLOCK_FILES + CLOCK_TESTS), f"{identifier} planned files are missing")
-
-    f02 = next(entry for entry in entries if entry["functional_id"] == "F02")
-    xstj = next(entry for entry in entries if entry["functional_id"] == "XSTJ")
-    require(
-        f02["spec_files"] == ["specs/01-input-and-clock.md"]
-        and xstj["spec_files"] == ["specs/00-cross-stage-contract-joins.md"],
-        "active clock spec binding drift",
-    )
-    require(
-        [item["error_code"] for item in f02["error_outcomes"]]
-        == ["ZERO_SAMPLE_COUNT", "CLOCK_CONVERSION_RANGE"],
-        "CLOCK error outcomes must cover only zero count and checked conversion range",
-    )
-    require(
-        all(
-            item["code_authority"] == "LOCAL_TRANSLATION_NOT_PACKAGE_NORMATIVE"
-            for item in f02["error_outcomes"]
-        ),
-        "local CLOCK labels must not be claimed as package-normative codes",
-    )
-    require(xstj["error_outcomes"] == [], "XSTJ must not duplicate F02 input error outcomes")
-    require(
-        xstj["vectors"]["parent_vectors"] == ["test-vectors/CROSS-STAGE-CONTRACT-JOIN-VECTORS.json"]
-        and xstj["vectors"]["case_pointers"]
-        == [
-            "J03_source0_absent_payload",
-            "J03_source1_disposes_joc0",
-            "J03_source2_first_published",
-        ],
-        "XSTJ J03 integration case mapping drift",
-    )
-    vector_file = read_json(package / "test-vectors/CROSS-STAGE-CONTRACT-JOIN-VECTORS.json")
-    vector_cases = {case["case_id"]: case for case in vector_file["cases"]}
-    source_zero = vector_cases["J03_source0_absent_payload"]
-    source_one = vector_cases["J03_source1_disposes_joc0"]
-    source_two = vector_cases["J03_source2_first_published"]
-    require(
-        source_zero["input"]["source"] == 0
-        and source_zero["expected"]["source_committed"] is True
-        and source_zero["expected"]["payload"] == "ABSENT_PUBLISHED_PAYLOAD_V1"
-        and source_zero["expected"]["au_appended"] is False,
-        "XSTJ J03 source-zero expected fields drift",
-    )
-    require(
-        source_one["input"]["source"] == 1
-        and source_one["expected"]["joc_writer0_disposition"] == "CONSUMED_SUPPRESSED"
-        and source_one["expected"]["au_appended"] is False,
-        "XSTJ J03 source-one expected fields drift",
-    )
-    require(
-        source_two["input"]["source"] == 2 and source_two["expected"]["au_index"] == 0,
-        "XSTJ J03 source-two expected fields drift",
-    )
-
-    phase = data["phase_one"]
-    require(
-        data["status"]["TRACEABILITY"] == "PARTIALLY_MATERIALIZED",
-        "traceability must remain partial",
-    )
-    require(
-        data["status"]["CLOCK_FOUNDATION"] == "GO_AFTER_A_GATE"
-        and data["status"]["SELECTED_PROFILE_GATE"] == "HOLD"
-        and phase["P1.1"]["status"] == "A_GATE_REQUIRED_BEFORE_CLOCK_IMPLEMENTATION",
-        "P1.1 active-slice gate status drift",
-    )
-    require(
-        [task["task_id"] for task in phase["P1.1"]["tasks"]]
-        == ["CLOCK-FOUNDATION", "SELECTED-PROFILE-GATE"]
-        and phase["P1.1"]["tasks"][0]["status"] == "GO"
-        and phase["P1.1"]["tasks"][1] == {"task_id": "SELECTED-PROFILE-GATE", "status": "HOLD"},
-        "P1.1 must have CLOCK-FOUNDATION as its only GO task",
-    )
-    require(
-        phase["P1.1"]["tasks"][0]["functional_scope"]
-        == {"F02": "SCOPED_CLAUSES_ONLY", "XSTJ": "SCOPED_CLAUSES_ONLY"}
-        and phase["P1.1"]["tasks"][0]["covered_clauses"] == CLOCK_CLAUSES
-        and phase["P1.1"]["tasks"][0]["planned_files"] == CLOCK_FILES
-        and phase["P1.1"]["tasks"][0]["planned_tests"] == CLOCK_TESTS,
-        "CLOCK-FOUNDATION plan drift",
-    )
-    require(phase["P1.1"]["completed_functional_ids"] == [], "CLOCK slice cannot mark F02 or XSTJ complete")
-    require(
-        all(data["status"][phase_id] == "HOLD" and phase[phase_id] == "HOLD" for phase_id in ("P1.2", "P1.3", "P1.4")),
-        "P1.2, P1.3, and P1.4 must remain HOLD",
-    )
-    require(
-        not {"P1.3-D", "P1.4-A", "P1.4-B"}.intersection(phase),
-        "unreviewed future root/provider details must remain deferred",
-    )
-
-    roots = data.get("programme_roots", [])
-    require(len(roots) == 12, "programme root inventory must contain exactly 12 roots")
-    require([item.get("root_id") for item in roots] == EXPECTED_ROOT_IDS, "programme root inventory order or identity drift")
-    for root_entry in roots:
-        require(
-            root_entry
-            == {
-                "root_id": root_entry["root_id"],
-                "materialization_status": "INVENTORIED_PENDING_P1.3_MATERIALIZATION",
-            },
-            f"{root_entry.get('root_id')} root inventory contains unmaterialized detail",
-        )
-    require(
-        data.get("selected_overlap_projection")
-        == {"status": "INVENTORIED_PENDING_P1.3_MATERIALIZATION"},
-        "overlap projection must remain deferred until P1.3 materialization",
-    )
-
-    test_source = (root / CLOCK_TESTS[0]).read_text(encoding="utf-8")
-    required_test_markers = [
-        "fn sample_count_accounting_matches_scoped_contract()",
-        "fn callback_source_dispatch_and_generated_writer_are_checked()",
-        "fn publication_distinguishes_generated_popped_and_ordinary_writers()",
-        "fn terminal_pending_writers_are_explicit()",
-        "6_522_906",
-        "OrdinaryPayloadWriterIndex",
-    ]
-    require(all(marker in test_source for marker in required_test_markers), "CLOCK-FOUNDATION contract tests are incomplete")
-    index_source = (root / CLOCK_FILES[0]).read_text(encoding="utf-8")
-    require(
-        all(
-            f"index_type!({type_name});" in index_source
-            for type_name in ("JocGeneratedWriterIndex", "OrdinaryPayloadWriterIndex", "JocPoppedWriterIndex")
-        ),
-        "CLOCK writer domains must use distinct newtypes",
-    )
-    return {"functional_ids": len(entries), "active_ids": len(active), "deferred_roots": len(roots)}
-
-
-def check_project_boundaries(root):
-    required_docs = [
-        "docs/architecture/ARCHITECTURE.md",
-        "docs/architecture/MODULE-MAP.md",
-        "docs/architecture/STATE-OWNERSHIP.md",
-        "docs/architecture/DATAFLOW.md",
-        "docs/architecture/DEPENDENCY-RULES.md",
-        "docs/architecture/ERROR-MODEL.md",
-        "docs/architecture/TEST-STRATEGY.md",
-        "docs/architecture/PROFILE-DIMENSIONS.md",
-        "docs/architecture/PUBLIC-API.md",
-        "docs/architecture/ARCHITECTURE-DECISIONS.md",
-        "docs/architecture/APPROVAL.md",
-        "docs/implementation/SPEC-TRACEABILITY.md",
-        "docs/implementation/OWNER-MAP.md",
-        "docs/implementation/CLOCK-MAP.md",
-        "docs/implementation/ERROR-MAP.md",
-        "docs/implementation/PARAMETER-MAP.md",
-        "docs/implementation/VECTOR-MAP.md",
-        "docs/implementation/PHASE-PLAN.md",
-    ]
-    for relative in required_docs:
-        require((root / relative).is_file(), f"required architecture or mapping document is missing: {relative}")
-
-    profile_doc = (root / "docs/architecture/PROFILE-DIMENSIONS.md").read_text(encoding="utf-8")
-    supported_rows = [
-        line for line in profile_doc.splitlines() if line.startswith("| selected ADM BWF /")
-    ]
-    require(len(supported_rows) == 1, "profile dimensions must register exactly one supported row")
-    require("UNSUPPORTED_PROFILE" in profile_doc, "unsupported profile combinations must be rejected explicitly")
-    production_profile = (root / "crates/jocforge-domain/src/profile/production.rs").read_text(encoding="utf-8")
-    require("RenderTarget" not in production_profile, "RenderTarget must remain validation-only")
-    require("fallback" not in production_profile.lower(), "production profile must not add fallback behavior")
-    require(
-        "Self::selected_with_carriage(EmdfCarriageProfile::DeployedCompat)" in production_profile,
-        "deployed_compat must remain the production default",
-    )
-
-    dependency_sets = {
-        "domain": {"sha2", "serde_json"},
-        "application": {"jocforge-domain"},
-        "io": {"jocforge-domain"},
-        "cli": {"jocforge-application"},
-        "validation": {"jocforge-domain", "jocforge-application", "jocforge-io"},
-    }
-    for crate_name, expected_dependencies in dependency_sets.items():
-        crate_path = root / "crates" / f"jocforge-{crate_name}"
-        manifest = tomllib.loads((crate_path / "Cargo.toml").read_text(encoding="utf-8"))
-        dependencies = set(manifest.get("dependencies", {}))
-        require(dependencies == expected_dependencies, f"dependency boundary drift in {crate_name}")
-        require(not (crate_path / "build.rs").exists(), f"unapproved build script in {crate_name}")
-
-        for source_path in (crate_path / "src").rglob("*.rs"):
-            source = source_path.read_text(encoding="utf-8")
-            production = source.split("#[cfg(test)]", 1)[0]
-            lowered = production.lower().replace("deployedcompat", "").replace("deployed_compat", "")
-            forbidden_tokens = [
-                "legacy",
-                "compat",
-                "fallback",
-                "ffmpeg",
-                "concat!(",
-                "include!(",
-                "#[path",
-            ]
-            require(
-                not any(token in lowered for token in forbidden_tokens),
-                f"forbidden production reference in {source_path.relative_to(root)}",
-            )
-            require(
-                not re.search(r"\btrait\b[\s\S]*?\busize\b", production),
-                f"trait exposes a raw usize in {source_path.relative_to(root)}",
-            )
-            require(
-                not re.search(
-                    r"pub\s+(?:(?:async|unsafe)\s+)*(?:extern\s+\"[^\"]+\"\s+)?fn[\s\S]{0,400}\busize\b",
-                    production,
-                ),
-                f"public API exposes a raw usize in {source_path.relative_to(root)}",
-            )
-            require(
-                not re.search(r"\b(?:async|unsafe)\s+pub\s+fn\b|\bpub\s+unsafe\s+extern\b", production),
-                f"unapproved async or unsafe API in {source_path.relative_to(root)}",
-            )
-
-    domain_source = root / "crates" / "jocforge-domain" / "src"
-    forbidden_io_patterns = [
-        r"\bstd::fs\b",
-        r"\bstd::process\b",
-        r"\bstd::env\b",
-        r"\bstd::net\b",
-        r"\bFile::open\b",
-        r"\bCommand::new\b",
-        r"\benv::var\b",
-    ]
-    for source_path in domain_source.rglob("*.rs"):
-        source = source_path.read_text(encoding="utf-8").split("#[cfg(test)]", 1)[0]
-        require(
-            not any(re.search(pattern, source) for pattern in forbidden_io_patterns),
-            f"domain contains file, process, environment, or network I/O: {source_path.relative_to(root)}",
-        )
-
-    for module in ("codec", "integrity", "joc"):
-        module_root = domain_source / module
-        for source_path in module_root.rglob("*.rs"):
-            if source_path.name == "mod.rs":
-                continue
-            code = "\n".join(
-                line
-                for line in source_path.read_text(encoding="utf-8").splitlines()
-                if line.strip() and not line.lstrip().startswith("//")
-            )
-            require(not code, f"algorithm implementation appeared in empty module {source_path.relative_to(root)}")
-
-    transaction_module = domain_source / "transaction" / "mod.rs"
-    transaction_code = "\n".join(
-        line
-        for line in transaction_module.read_text(encoding="utf-8").splitlines()
-        if line.strip() and not line.lstrip().startswith("//")
-    )
-    require(not transaction_code, "callback transaction implementation appeared before its slice")
-    return True
-
-
-def run_checks(root=ROOT, package=PACKAGE_ROOT):
-    require(package.is_dir(), f"approved implementation package is unavailable: {package}")
-    map_path = root / "docs" / "implementation" / "IMPLEMENTATION-MAP.json"
-    data = read_json(map_path)
-    require(data.get("schema") == "jocforge-implementation-map.v1", "implementation map schema identity drift")
-    schema = read_json(root / "docs" / "implementation" / "IMPLEMENTATION-MAP.schema.json")
-    require(schema["properties"]["functional_entries"]["maxItems"] == 104, "map schema no longer pins 104 entries")
-
-    mapping_stats = check_active_mapping(root, package, data)
-    check_project_boundaries(root)
-
-    spec = importlib.util.spec_from_file_location("implementation_map_renderer", root / "scripts" / "render-implementation-maps.py")
-    require(spec is not None and spec.loader is not None, "cannot load implementation map renderer")
-    renderer = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(renderer)
-    for name, contents in renderer.render(data).items():
-        path = root / "docs" / "implementation" / name
-        require(path.is_file() and path.read_text(encoding="utf-8") == contents, f"generated map differs: {name}")
-
-    return mapping_stats
-
-
+import hashlib,importlib.util,json,pathlib,re,sys,tomllib
+class BoundaryError(RuntimeError):pass
+ROOT=pathlib.Path(__file__).resolve().parents[1];PKG=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_PACKAGE')
+PACKAGE=PKG
+def ck(x,m):
+ if not x:raise BoundaryError(m)
+def check_callback_transaction_design(root,d):
+ phase=d['phase_one'];p=phase['P1.3-C'];owners=['analysis','codec','drc','frontend_control','integrity','joc','metadata','meter','output','reader_eof','spatial_audio','spatial_control'];ck(p['task_id']=='P1.3-C-CALLBACK-TRANSACTION-CONTRACT-MAP'and p['status']=='CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS'and p['design_only']is True,'P1.3-C approved callback design status');ck(p['scope']=='CALLBACK is the only top-level transaction in scope; SOURCE, DISPATCH, and AU append are internal stages; MEASUREMENT, FINALIZE, and RESTART remain unresolved','P1.3-C callback-only scope');ck(p['callback_owner_ids']==owners and p['owner_receipt_count']==12 and p['owner_receipt_order_rule']=='fixed ASCII ascending owner_id order; order does not affect DSP stage or replacement order'and p['owner_receipt_input_validation']=='accept any input order, then require exactly 12 distinct known owner_id values and emit canonical ASCII order; reject missing, duplicate, or unknown IDs','P1.3-C twelve owner receipt order');ck(p['typed_transaction_id']=={'type':'CallbackTransactionId','representation':'private String','validation':'nonempty, matching transaction_id minLength=1 in the GTC transactionReceipt schema'},'P1.3-C transaction id');ck(p['coordinator']['fixed_programme_owner_fields']==['reader_eof','frontend_control','spatial_control','spatial_audio','joc','meter','drc','analysis','codec','metadata','integrity','output']and p['coordinator']['generic_root_trait']==False and p['coordinator']['dynamic_owner_list']==False and p['coordinator']['trait_registry']==False and p['coordinator']['macros']==False,'P1.3-C fixed roots only');ck(p['callback_receipt']['schema_identity']=='selected-profile-transaction-receipt.v2'and p['callback_receipt']['approved_wrapper_field_count']==13 and p['callback_receipt']['known_base_v1_field_count']==13 and p['callback_receipt']['field_mapping_status']=='RESOLVED_BY_WASH_ERRATUM','P1.3-C v2 wrapper count');receipt_fields=['schema','transaction_id','kind','result','attempt','callback_index','source_index','dispatch','au_index','owner_receipts','durable_append','fatal','top_level_commit_count'];ck(p['callback_receipt']['wrapper_fields']==receipt_fields and p['transaction_receipt_binding']['field_names']==receipt_fields and len(receipt_fields)==13,'P1.3-C wrapper fields');ck(p['callback_receipt']['owner_receipt_count']==12 and p['callback_receipt']['owner_receipt_owner_ids_ascii']==owners and p['callback_receipt']['owner_receipt_order']=={'status':'APPROVED_BY_WASH_SIDE_DESIGN','order':owners},'P1.3-C canonical owner order');ck(p['callback_receipt']['owner_receipt_semantics']=='all owner transaction_id values equal the shared CallbackTransactionId; changed is true iff generation or state digest changes'and p['callback_receipt']['commit_count_semantics']=={'COMMITTED':'changed owner=1; unchanged owner=0','ABORTED_OR_REJECTED':'after values equal before; changed=false; commit_count=0'}and p['callback_receipt']['after_values']=='actual committed-after snapshots only; discarded staged values never appear','P1.3-C owner receipt semantics');ck(p['callback_receipt']['COMMITTED']=='all 12 owner snapshots use actual committed-before and committed-after values; top_level_commit_count=1'and p['callback_receipt']['ABORTED']=='stage fatal sets programme RETIRED; all after values equal before; changed=false; commit_count=0; top_level_commit_count=0'and p['callback_receipt']['REJECTED']=='preflight failure runs no stage and does not retire; all after values equal before; changed=false; commit_count=0; top_level_commit_count=0','P1.3-C result separation');ck(p['callback_receipt']['owner_receipt_order']['order']==sorted(owners),'P1.3-C ASCII sort');ck(p['callback_receipt']['wash_side_design_basis']=={'authority':'approved internal API design choice; not a DEE/native behavior claim','findings_sha256':'8eb3ddff2ca02caf0db5f9d6b2d126e586f9d91116efc2b9ed9f748ca5460f69','input_only_vectors_sha256':'4cf2c0de3a69e8601b0c2e96cf734623316f2d8637dc6bfe7b2e9f5f164aa02a','source_audit_sha256':'0bc4a6ebcbb9bc9df104cf725dd498c58f73657c3a7bf99027531d4ed6028eba','materials_verification':'PASS_RESEARCH_MATERIAL_STRUCTURE_AND_IDENTITIES_ONLY','whole_execution_and_product_execution':'NOT_RUN','production_path_reference':None},'P1.3-C wash-side design basis');ck(p['unclosed_transaction_kinds']==['MEASUREMENT','FINALIZE','RESTART'],'P1.3-C non-CALLBACK kinds stay unresolved');ck(p['implementation_rust']=='FORBIDDEN until all fixed callback owner roots are materialized and integrated'and p['blockers']==['the v2 CallbackTransactionReceipt must not be implemented until the missing owner roots and g>=2 source-stage roots are materialized','MEASUREMENT, FINALIZE, and RESTART receipt semantics remain unresolved'],'P1.3-C implementation blockers');ck(p['callback_success_gates']=={'g_0_1':'all four callback roots reader_eof, frontend_control, spatial_control, spatial_audio must succeed before the callback commits','g_ge_2':'wait for every source root required by that callback before the callback commits','internal_stages':'SOURCE, DISPATCH and AU append do not emit independent top-level success','dual_root_success':'FORBIDDEN'},'P1.3-C callback success gate');schema=json.loads((PKG/'test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json').read_text(encoding='utf-8'));base=schema['$defs']['transactionReceipt'];ck(base['required']==receipt_fields and p['transaction_receipt_binding']['field_count_reconciliation']=='RESOLVED_BY_WASH_ERRATUM; the callback wrapper has exactly 13 fields and no field 14','P1.3-C base schema field set');ck(p['transaction_receipt_binding']['field_bindings']['schema']=='selected-profile-transaction-receipt.v2'and p['transaction_receipt_binding']['field_bindings']['source_index']=='null when g<2; s=g-2 when g>=2'and p['transaction_receipt_binding']['field_bindings']['dispatch']=='null when g<2; d=s+1 when g>=2'and p['transaction_receipt_binding']['field_bindings']['au_index']=='null unless s>=2; then j=s-2','P1.3-C clock receipt bindings');gtc=(PKG/'specs/00-global-transaction-contract.md').read_text(encoding='utf-8');ck('原子替换 reader_eof、frontend_control、spatial_control、spatial_audio roots'in gtc and'F01–F04 callback owners'in gtc and'joc、drc、analysis、codec、metadata owner after states'in gtc,'P1.3-C GTC callback root set');ck(d['status']['P1.3']=='P1.3_A_LOCALLY_VERIFIED__P1.3_B1_STAGING_ONLY__P1.3_C_CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS__P1.3_D_BLOCKED'and phase['P1.3-C']['status']==p['status'],'P1.3-C high-level status');reader_source=(root/'crates/jocforge-domain/src/state/reader_eof.rs').read_text(encoding='utf-8');ck(all(f'pub fn {name}('in reader_source for name in('commit','abort','fatal'))and'become crate-private coordinator implementation details'in p['reader_eof_api_migration'],'reader single-root API migration remains mapped');ck(not(root/'crates/jocforge-domain/src/transaction/callback.rs').exists(),'P1.3-C Rust coordinator absent')
+def check_callback_pair_success(p):
+ ck(p['success_semantics']=='one CALLBACK top-level commit consumes the complete staged transaction, atomically replaces all 12 owner snapshots, and emits one immutable receipt; no per-owner or per-source top-level success exists','P1.3-C full callback success only')
+ receipt=p['callback_receipt'];fields=['schema','transaction_id','kind','result','attempt','callback_index','source_index','dispatch','au_index','owner_receipts','durable_append','fatal','top_level_commit_count'];types={'schema':'const selected-profile-transaction-receipt.v2','transaction_id':'nonempty string; CallbackTransactionId','kind':'transaction kind enum; only CALLBACK semantics are approved','result':'COMMITTED | ABORTED | REJECTED','attempt':'u64','callback_index':'u64 for CALLBACK','source_index':'null when g<2; s=g-2 when g>=2','dispatch':'null when g<2; d=s+1 when g>=2','au_index':'null unless s>=2; then j=s-2','owner_receipts':'exactly 12 unique OwnerReceipt values in canonical ASCII owner_id order','durable_append':'null unless an approved AU publish append succeeded','fatal':'nonnull only for ABORTED','top_level_commit_count':'COMMITTED=1; ABORTED/REJECTED=0'};ck(receipt['schema_identity']=='selected-profile-transaction-receipt.v2'and receipt['base_schema_identity']=='selected-profile-transaction-receipt.v1'and receipt['approved_wrapper_field_count']==13 and receipt['known_base_v1_field_count']==13 and receipt['unidentified_v2_field']is None and receipt['field_mapping_status']=='RESOLVED_BY_WASH_ERRATUM','P1.3-C v2 wrapper identity/count');ck(receipt['wrapper_fields']==fields and p['transaction_receipt_binding']['field_names']==fields and receipt['wrapper_types']==types,'P1.3-C 13 field/type mapping');owners=['analysis','codec','drc','frontend_control','integrity','joc','metadata','meter','output','reader_eof','spatial_audio','spatial_control'];ck(receipt['owner_receipt_count']==12 and receipt['owner_receipt_owner_ids_ascii']==owners==sorted(owners)and receipt['owner_receipt_order']=={'status':'APPROVED_BY_WASH_SIDE_DESIGN','order':owners}and receipt['input_validation']=='accept arbitrary input array order, then require each known owner_id exactly once; reject missing, duplicate, or unknown IDs','P1.3-C all-owner receipt set/order');ck(receipt['COMMITTED']=='all 12 owner snapshots use actual committed-before and committed-after values; top_level_commit_count=1'and receipt['ABORTED']=='stage fatal sets programme RETIRED; all after values equal before; changed=false; commit_count=0; top_level_commit_count=0'and receipt['REJECTED']=='preflight failure runs no stage and does not retire; all after values equal before; changed=false; commit_count=0; top_level_commit_count=0'and receipt['owner_receipt_semantics']=='all owner transaction_id values equal the shared CallbackTransactionId; changed is true iff generation or state digest changes'and receipt['after_values']=='actual committed-after snapshots only; discarded staged values never appear','P1.3-C owner receipt status bindings');ck(receipt['canonical_state_digests']['receipt_wrapper']=='no digest or HMAC; stable JSON encoding is a test format only, not execution authority or a DEE compatibility claim'and receipt['wash_side_design_basis']['findings_sha256']=='8eb3ddff2ca02caf0db5f9d6b2d126e586f9d91116efc2b9ed9f748ca5460f69'and receipt['wash_side_design_basis']['input_only_vectors_sha256']=='4cf2c0de3a69e8601b0c2e96cf734623316f2d8637dc6bfe7b2e9f5f164aa02a'and receipt['wash_side_design_basis']['source_audit_sha256']=='0bc4a6ebcbb9bc9df104cf725dd498c58f73657c3a7bf99027531d4ed6028eba'and receipt['wash_side_design_basis']['materials_verification']=='PASS_RESEARCH_MATERIAL_STRUCTURE_AND_IDENTITIES_ONLY'and receipt['wash_side_design_basis']['whole_execution_and_product_execution']=='NOT_RUN'and receipt['wash_side_design_basis']['production_path_reference']is None,'P1.3-C design basis provenance')
+ owners=['analysis','codec','drc','frontend_control','integrity','joc','metadata','meter','output','reader_eof','spatial_audio','spatial_control'];receipt=p['callback_receipt'];ck(p['callback_owner_ids']==owners and p['callback_owner_snapshot_semantics']=='every CALLBACK receipt carries committed before/after snapshots for all 12 owners, including unchanged owners','P1.3-C twelve committed snapshots');ck(receipt['owner_receipt_fields']==['owner_id','before_generation','before_sha256','after_generation','after_sha256','changed','commit_count','transaction_id']and len(receipt['owner_receipt_fields'])==8,'P1.3-C owner receipt schema fields');ck(receipt['fatal_receipt_rule']=='fatal is present only on ABORTED; preflight REJECTED has no fatal receipt','P1.3-C fatal field semantics')
+def check_callback_receipt_field_bindings(p):
+ expected={'schema':'selected-profile-transaction-receipt.v2','transaction_id':'shared CallbackTransactionId','kind':'CALLBACK; SOURCE, DISPATCH, and AU append are internal stages; MEASUREMENT, FINALIZE, and RESTART remain unresolved','result':'COMMITTED only after full callback replacement; preflight rejection is REJECTED; stage fatal is ABORTED','attempt':'programme attempt generation','callback_index':'shared FrontendCallbackIndex','source_index':'null when g<2; s=g-2 when g>=2','dispatch':'null when g<2; d=s+1 when g>=2','au_index':'null unless s>=2; then j=s-2','owner_receipts':'12 complete committed before/after snapshots, including unchanged owners, in the approved ASCII order','durable_append':'null unless an approved AU publish append succeeded; null does not prove that no physical write occurred','fatal':'nonnull only for ABORTED; if durable append succeeded before root publication failed, record the abandoned physical append in fatal diagnostics','top_level_commit_count':'1 for COMMITTED; 0 for ABORTED or REJECTED; SOURCE, DISPATCH, and AU append are internal stages'}
+ ck(p['transaction_receipt_binding']['field_bindings']==expected,'P1.3-C wrapper field semantics')
+def check_callback_transaction_control_flow(p):
+ expected_owners=['reader_eof','frontend_control','spatial_control','spatial_audio','joc','meter','drc','analysis','codec','metadata','integrity','output']
+ ck(p['coordinator']['fixed_programme_owner_fields']==expected_owners and p['coordinator']['programme_status_and_fatal']=='owned by the fixed programme coordinator root'and p['coordinator']['retired_guard']=='programme status RETIRED blocks every public callback path; root machines have no independently callable public commit/abort/fatal success API'and p['coordinator']['generic_root_trait']is False and p['coordinator']['dynamic_owner_list']is False and p['coordinator']['trait_registry']is False and p['coordinator']['macros']is False,'P1.3-C fixed roots and retired guard')
+ preflight=['validate programme status and callback g against the committed main callback clock','validate nonempty CallbackTransactionId and matching callback_index for all present stage receipts','require owner snapshot set to contain each of the 12 owner_id values exactly once; reject missing, duplicate, or unknown IDs','validate all before_generation and before_sha256 values against the committed owner roots','validate all after generations and after_sha256 values against fully prepared staged roots; require unchanged owners to carry after equal to before','validate F01E and F03 provider lineages, plus all downstream owner receipts required by the selected callback','checked-compute all next owner generations and final top-level receipt fields before replacement']
+ ck(p['preflight_order']==preflight,'P1.3-C preflight order')
+ replacement={'precondition':'all 12 owner checks, digest checks, lineage checks, and generation arithmetic finish before replacement begins','operation':'move the fixed named after-states into the programme owner fields and assign precomputed generations','fallibility':'replacement phase contains only infallible moves and scalar assignments; no callbacks, allocation, hashing, cloning, or fallible work','rollback':'clone-and-rollback is forbidden; any preflight rejection leaves all 12 committed owner identities and generations unchanged'}
+ ck(p['replacement']==replacement,'P1.3-C infallible replacement')
+ ck(p['commit_api']=='CallbackTransactionCoordinator::commit(&mut self, staged: CallbackTransactionStaged) -> Result<CallbackTransactionReceipt, CallbackTransactionError>; staged contains fixed named owner fields, never a generic root list','P1.3-C single commit API')
+ ck(p['abort_api']=='one callback-level abort consumes the CallbackTransactionStaged value; every owner receipt has after=before, changed=false, commit_count=0; no owner state or generation changes','P1.3-C abort contract')
+ ck(p['fatal_api']=='a stage fatal aborts the whole callback, records ABORTED plus the fatal receipt, sets programme status RETIRED, preserves all owner bytes/generations, and rejects subsequent calls'and p['preflight_rejection']=='result=REJECTED; no stage runs and programme status does not become RETIRED','P1.3-C fatal and rejected distinction')
+ ck(p['callback_success_gates']=={'g_0_1':'all four callback roots reader_eof, frontend_control, spatial_control, spatial_audio must succeed before the callback commits','g_ge_2':'wait for every source root required by that callback before the callback commits','internal_stages':'SOURCE, DISPATCH and AU append do not emit independent top-level success','dual_root_success':'FORBIDDEN'},'P1.3-C callback gates')
+ ck(p['owner_root_readiness']=={'currently_materialized_or_mapped':['reader_eof','frontend_control','spatial_control'],'spatial_control_status':'MAPPING_COMPLETE_BLOCKED_ON_P1.4_B_F03_PROVIDER','missing_callback_root':'spatial_audio','additional_owner_roots_required_for_12_snapshots':['joc','meter','drc','analysis','codec','metadata','integrity','output'],'g_ge_2_source_stage_roots':['joc','drc','analysis','codec','metadata','integrity','output']},'P1.3-C waiting owner root set')
+ ck(p['unclosed_transaction_kinds']==['MEASUREMENT','FINALIZE','RESTART'],'P1.3-C other transaction kinds remain open')
+def check_spatial_control_mapping(root,d):
+ programme=next(x for x in d['programme_roots']if x['root_id']=='spatial_control');p=d['phase_one']['P1.3-D'];ck(p['task_id']=='P1.3-D-SPATIAL-CONTROL-ROOT-MAP'and p['status']in{'READY_FOR_IMPLEMENTATION','BLOCKED'}and p['status']=='BLOCKED'and p['mapping_status']=='MAPPING_COMPLETE_BLOCKED','P1.3-D blocked mapping status');ck(programme['materialization_status']=='MAPPING_COMPLETE_BLOCKED_ON_P1.3_C_AND_P1.4_B_F03_PROVIDER'and programme['implementation_status']=='NOT_STARTED'and'owner_receipt_order_and_wrapper'not in programme,'spatial_control mapping blocked state')
+ layout=json.loads((PKG/'parameters/adm-installed48-state-v1.json').read_text(encoding='utf-8'));owned=layout['f03w_owned_fields'];mapped=programme['f03w_owned_field_groups'];ck(programme['programme_owner_binding']['layout_schema']==layout['schema']and programme['programme_owner_binding']['layout_pointer']=='/f03w_owned_fields','spatial_control owner layout pointer');ck(len(owned)==8 and programme['programme_owner_binding']['owner_id']=='spatial_control'and programme['programme_owner_binding']['state_ref_value']=='parameters/adm-installed48-state-v1.json#/f03w_owned_fields','spatial_control full root identity');ck(mapped=={group:list(fields)for group,fields in owned.items()}and p['state_layout']['field_group_count']==len(owned)and p['complete_owner_groups']==list(owned),'all f03w root fields materialized');scratch=[]
+ for group,fields in owned.items():
+  for name,description in fields.items():
+   if 'callback-local' in str(description).lower():scratch.append(group+'.'+name)
+ ck(programme['callback_local_only_fields']==scratch and programme['f03w_owned_field_groups']['event_control']==['owned_state','derived_control38','derived_regular37'],'scratch excluded from full committed root')
+ ck(programme['external_owner_refs']==layout['external_owner_refs']and p['external_owners_not_embedded']==['F05R56 reader_target','F04C component_lfe_receiver_qmf','F05JL joc_after_j05','F13 metadata_queues','F15 source_publication'],'external owners remain distinct')
+ ck(programme['cold_constructors']==layout['cold_constructors'],'spatial_control cold constructors');ck(programme['canonical_state']['serialization_rule']==layout['serialization']and programme['canonical_state']['serialization_source']=='parameters/adm-installed48-state-v1.json#/serialization'and programme['canonical_state']['digest'].startswith('SHA-256 over the complete serialized f03w_owned_fields'),'spatial_control canonical bytes and digest');ck(programme['failure_and_reset']['failure_source']=='parameters/adm-installed48-state-v1.json#/failure'and programme['failure_and_reset']['reset_source']=='parameters/adm-installed48-state-v1.json#/reset'and'preserve' in programme['failure_and_reset']['fatal']and'unknown arrays are not zero-filled'in programme['failure_and_reset']['reset'],'spatial_control fatal/reset authority')
+ ck(programme['canonical_state']['field_order']=='canonical map in shown f03w_owned_fields order'and programme['canonical_state']['arrays']=='fixed arrays row-major'and programme['canonical_state']['integers']=='little-endian'and programme['canonical_state']['f32']=='exact U32 bit patterns'and programme['canonical_state']['optional']=='presence byte then payload'and programme['canonical_state']['variable_records']=='U32LE count and length'and programme['canonical_state']['scratch']=='callback-local scratch is excluded from serialized committed state'and programme['canonical_state']['digest']=="SHA-256 over the complete serialized f03w_owned_fields state; cold_sha256 is computed from the exact cold constructors and validated provider values"and programme['canonical_state']['external_state']=='F05R56/F04C/F05JL/F13/F15 states remain under their own owners and are not embedded in this digest','spatial_control canonical/digest contract')
+ gtc_schema=json.loads((PKG/'test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json').read_text(encoding='utf-8'));spatial_ref=gtc_schema['properties']['owners']['properties']['spatial_control'];owner_schema=gtc_schema['$defs']['ownerState'];ck(spatial_ref=={'$ref':'#/$defs/ownerState'}and programme['programme_owner_binding']['wrapper_fields']==owner_schema['required']and p['programme_owner_schema']['owner_state_fields']==owner_schema['required'],'programme owner wrapper binding')
+ projection=d['selected_overlap_projection'];ck(projection['source']=='parameters/selected-owner-projection-v1.json'and projection['field_groups']==7 and projection['scope']=='selected cross-owner overlap projection only; not a complete programme owner schema'and programme['f03w_owned_field_groups']!=projection,'overlap projection is not root schema')
+ manifest_path=PKG/'MANIFEST.json';manifest_bytes=manifest_path.read_bytes();manifest=json.loads(manifest_bytes);manifest_sha=hashlib.sha256(manifest_bytes).hexdigest();ck(manifest_sha==programme['programme_owner_binding']['package_manifest_sha256'],'approved package manifest identity');manifest_entries={entry['file']:entry for entry in manifest['files']};state_entry=manifest_entries['parameters/adm-installed48-state-v1.json'];ck(state_entry['bytes']==programme['programme_owner_binding']['layout_manifest_entry_bytes']and state_entry['sha256']==programme['programme_owner_binding']['layout_manifest_entry_sha256']and hashlib.sha256((PKG/state_entry['file']).read_bytes()).hexdigest()==state_entry['sha256'],'full spatial root layout identity')
+ providers=layout['functional_constant_providers'];ck(providers=={'f01e_cold':'parameters/f01e-selected-constructor-v1.json','f03_target_cold':'parameters/f03-selected-target-cold-v1.json'},'spatial root provider set');f03_entry=manifest_entries[providers['f03_target_cold']];f03_provider=json.loads((PKG/providers['f03_target_cold']).read_text(encoding='utf-8'));cold_provider=programme['provider_prerequisites']['f03_target_cold'];ck(f03_provider['provider_kind']=='exact_parseable_functional_constant'and f03_entry['bytes']==cold_provider['manifest_entry_bytes']and f03_entry['sha256']==cold_provider['manifest_entry_sha256']and cold_provider['file']==providers['f03_target_cold'],'F03 cold provider identity');ck(cold_provider['package_manifest_sha256']==manifest_sha and cold_provider['required_prerequisite']['task_id']=='P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT'and cold_provider['required_prerequisite']['status']=='NOT_OPEN'and p['prerequisites'][1]=={'task_id':'P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT','status':'NOT_OPEN'}and d['phase_one']['P1.4']=='P1.4_A_LOCALLY_VERIFIED__P1.4_B_NOT_OPEN','P1.4-B exact prerequisite')
+ f01=p['cold_providers']['f01e_cold'];ck(f01=={'file':providers['f01e_cold'],'status':'P1.4-A-LOCALLY-VERIFIED'},'F01E cold provider prerequisite');ck(programme['stage_authority']['owner']=='F03W'and programme['stage_authority']['receipt']=='SpatialControlReceipt'and programme['stage_authority']['commit_authority']=='enclosing CallbackTransaction only; local spatial_control commit is forbidden','F03W stage authority');ck(programme['transaction_stage']['status']=='STAGING_ONLY_WAITING_ON_P1.3_C_OWNER_ROOTS'and programme['transaction_stage']['join_metadata']==['shared CallbackTransactionId','same FrontendCallbackIndex as reader_eof and frontend_control','spatial_control before_generation and before_sha256','spatial_control after_sha256','validated F01E provider lineage','P1.4-B F03 target provider lineage','external owner receipts']and programme['transaction_stage']['local_commit']=='FORBIDDEN'and programme['transaction_stage']['top_level_committed']=='FORBIDDEN','spatial_control stage-only join')
+ gaps=(PKG/'specs/00-global-transaction-evidence-gaps.md').read_text(encoding='utf-8');receipt_fields=['feature before/after','selector/U04/outer scratch identity','proposed target current/previous/active','marker proposal and external F05R56 metadata-history receipt','callback generation','unique commit_count'];ck(programme['stage_authority']['receipt']=='SpatialControlReceipt'and programme['stage_authority']['receipt_source']=='specs/00-global-transaction-evidence-gaps.md#G02'and programme['stage_authority']['receipt_fields']==receipt_fields and all(term in gaps for term in('feature before/after','selector/U04/outer scratch identity','proposed target current/previous/active','callback generation','commit_count')),'SpatialControlReceipt binding');owner_receipt=programme['owner_receipt'];ck(owner_receipt['schema_pointer']=='#/$defs/ownerReceipt'and owner_receipt['fields']==['owner_id=spatial_control','before_generation','before_sha256','after_generation','after_sha256','changed','commit_count','transaction_id']and owner_receipt['transaction_id']=='same CallbackTransactionId as reader_eof and frontend_control','spatial owner receipt fields');ck(p['receipt_order']=='12-owner ASCII order approved by P1.3-C; v2 wrapper has no digest/HMAC and stable JSON is test-only','P1.3-C receipt contract binding')
+ expected_blockers=['P1.4-B has not authenticated the F03 selected target cold provider under an approved provider contract','P1.3-C callback implementation is waiting for all 12 owner roots, including spatial_audio and g>=2 source roots','P1.3-D must not define any local root commit or top-level COMMITTED receipt'];ck(programme['readiness']['mapping_status']=='MAPPING_COMPLETE_BLOCKED'and programme['readiness']['implementation_status']=='NOT_STARTED'and programme['readiness']['blockers']==expected_blockers and p['blockers']==['P1.4-B must authenticate and validate f03-selected-target-cold-v1.json','P1.3-C callback implementation waits for all 12 owner roots, including spatial_audio and g>=2 source roots']and p['implementation_rust']=='FORBIDDEN while status=BLOCKED','P1.3-D blocker set');ck(p['stage_only']=={'prepared_type':'SpatialControlPrepared','staged_type':'SpatialControlStaged','linear':True,'join_metadata':['CallbackTransactionId','FrontendCallbackIndex','before_generation','before_sha256','after_sha256','F01E provider lineage','F03 target provider lineage','external owner receipts'],'required_peer_roots':['reader_eof','frontend_control'],'local_commit':'FORBIDDEN','top_level_COMMITTED':'FORBIDDEN'}and p['prerequisites']==[{'task_id':'P1.3-C-CALLBACK-TRANSACTION-CONTRACT-MAP','status':'CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS'},{'task_id':'P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT','status':'NOT_OPEN'}]and p['receipt_order']=='12-owner ASCII order approved by P1.3-C; v2 wrapper has no digest/HMAC and stable JSON is test-only','P1.3-D staging prerequisites');ck(d['phase_one']['P1.3-C']['status']=='CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS'and d['phase_one']['P1.3-C']['callback_receipt']['owner_receipt_order']['status']=='APPROVED_BY_WASH_SIDE_DESIGN','P1.3-C approved callback contract');ck(d['phase_one']['P1.4-A']['status']=='LOCALLY_VERIFIED'and not(root/'crates/jocforge-domain/src/state/spatial_control.rs').exists(),'spatial root not implemented');review=json.loads((PKG/'test-vectors/ADM-INSTALLED48-LOCAL-REVIEW-STATUS.json').read_text(encoding='utf-8'));ck(review['decision']['real_adm_cold_whole']=='NO'and review['decision']['whole_package_implementation_ready']=='NO'and p['vector_evidence']['scope']=='7-callback deterministic synthetic selected profile only; real ADM cold replay is NOT_RUN and package whole implementation readiness is NO','spatial vector evidence scope')
+def run(root=ROOT):
+ arch=root/'docs/architecture';req={'APPROVAL.md','ARCHITECTURE.md','ARCHITECTURE-DECISIONS.md','DATAFLOW.md','DEPENDENCY-RULES.md','ERROR-MODEL.md','MODULE-MAP.md','OLD-WIRE-REUSE-MATRIX.md','PROFILE-DIMENSIONS.md','PUBLIC-API.md','STATE-OWNERSHIP.md','TEST-STRATEGY.md'};ck(req<={p.name for p in arch.glob('*.md')},'architecture documents')
+ d=json.loads((root/'docs/implementation/IMPLEMENTATION-MAP.json').read_text(encoding='utf-8'));schema=json.loads((root/'docs/implementation/IMPLEMENTATION-MAP.schema.json').read_text(encoding='utf-8'));ck(all(k in d for k in schema['required']),'schema required');es=d['functional_entries'];ck(len(es)==104 and len({e['functional_id']for e in es})==104 and all(e['inventory_status']=='INVENTORIED'for e in es),'104 inventoried IDs');active={e['functional_id']for e in es if e.get('active_slice_materialization')=='MATERIALIZED'};ck(active=={'F02','XSTJ'},'active IDs');future=[e for e in es if e['functional_id']not in active];ck(len(future)==102,'deferred count')
+ for e in future:
+  ck(e['implementation_status']=='DEFERRED_DETAILED_MAPPING','future status');ck(not any(k in e for k in('implementation_files','parameters','vectors','error_outcomes','clock')),'future fake detail')
+ clauses=['F01/F02 input sample-count clauses','callback g','codec source s=g-2','JOC dispatch d=s+1=g-1','generated JOC writer=d-1=s','source0/1 suppression','source s>=2 to published AU=s-2','published AU ordinary/JOC writer offsets','programme count arithmetic']
+ for e in es:
+  for f in e['spec_files']:ck((PKG/f).is_file(),'spec')
+  if e['functional_id']in active:ck(e['clock']['covered_clauses']==clauses and e['clock']['domains']==['AdmSampleCount','NormalCallbackCount','FrontendCallbackIndex','CodecSourceIndex','JocDispatchIndex','JocGeneratedWriterIndex','OrdinaryPayloadWriterIndex','JocPoppedWriterIndex','PublishedAuIndex']and e['implementation_files']==['crates/jocforge-domain/src/timeline/index.rs','crates/jocforge-domain/src/timeline/clock.rs','crates/jocforge-domain/src/timeline/mod.rs']and e['test_modules']and e['vectors']['kind']=='RULE_AND_PROPERTY_TEST'and e['error_outcomes'],'active materialization')
+ reader=next(r for r in d['programme_roots']if r['root_id']=='reader_eof')
+ frontend=next(r for r in d['programme_roots']if r['root_id']=='frontend_control')
+ others=[r for r in d['programme_roots']if r['root_id']not in{'reader_eof','frontend_control','spatial_control'}]
+ ck(all(r=={'root_id':r['root_id'],'materialization_status':'INVENTORIED_PENDING_P1.3_MATERIALIZATION'}for r in others),'deferred root precision')
+ ck(reader['materialization_status']=='MATERIALIZED'and reader['implementation_status']=='LOCALLY_VERIFIED'and reader['schema_file']=='parameters/adm-installed48-state-v1.json'and reader['schema_version']=='selected-adm-installed48-state.v3','reader_eof schema identity')
+ ck(len(reader['schema_pointers'])==7 and len(reader['fields'])==7,'reader_eof fields/pointers')
+ ck([(f['name'],f['cold'])for f in reader['fields']]==[('callback_index',0),('source_cursor_samples',0),('normal_callbacks',0),('remaining_cached_drains',4),('last_normal_host38',None),('last_control_snapshot',None),('last_phase',0)],'reader_eof cold values')
+ ck(reader['cold_provider']['kind']=='GENERATED_PROVIDER'and reader['cold_provider']['provider_files']==[]and reader['cold_provider']['generation_specs']==['parameters/adm-installed48-state-v1.json','specs/01-input-and-clock.md'],'reader_eof generated cold provider')
+ ck(all((PKG/x).is_file()for x in[reader['schema_file'],*reader['cold_provider']['generation_specs'],*reader['evidence']]),'reader_eof assets')
+ ck(reader['clock']=={'type':'FrontendCallbackIndex','cold':0,'advance':'one per committed normal or cached-drain callback'},'reader_eof clock')
+ ck(reader['permissions']['prepare']['authority']=='F01R/F02'and reader['permissions']['commit']=={'authority':'CallbackTransaction root','condition':'all callback stages and generation checks pass','effect':'atomic root replacement; generation +1'}and reader['permissions']['abort']['effect']=='discard staged reader_eof; committed bytes/generation unchanged','reader_eof permissions')
+ ck(reader['reset']['authority']=='programme-origin full restart'and reader['reset']['resume']=='forbidden within retired attempt'and reader['fatal']['effect']=='discard staged reader_eof and set programme RETIRED'and reader['fatal']['retry']=='full restart or destroy only','reader_eof reset/fatal')
+ expected_fields=['owner_id=reader_eof','before_generation','before_sha256','after_generation','after_sha256','changed','commit_count','transaction_id']
+ ck(reader['receipt']['type']=='OwnerReceipt<ReaderEof>'and reader['receipt']['schema_pointer']=='#/$defs/ownerReceipt'and reader['receipt']['immutable_fields']==expected_fields and reader['receipt']['serialization']=='GLOBAL-TRANSACTION schema JSON object; key order is not semantic; no receipt-byte digest is claimed'and reader['receipt']['generation']=='cold=0; successful callback commit increments exactly once','reader_eof receipt')
+ ck(reader['receipt']['field_types']['owner_id']=='ReaderEofOwnerId::ReaderEof'and reader['receipt']['field_types']['commit_count']=='u8 constrained to 0/1','reader_eof receipt types')
+ serial=reader['canonical_serialization']
+ ck(serial['field_order']==[f['name']for f in reader['fields']]and serial['integers']=='little-endian'and serial['f32']=='exact U32 bits row-major'and serial['optional']=='presence byte then payload'and serial['padding']=='none','reader_eof serialization')
+ ck(reader['digest_provider']=={'crate':'sha2','version':'=0.10.9','default_features':False,'api':'sha2::{Digest, Sha256}','purpose':'SHA-256 over canonical complete reader_eof bytes only'},'reader_eof digest provider')
+ ck(d['phase_one']['P1.3-A']=={'task_id':'P1.3-A-READER-EOF-LIFECYCLE','status':'LOCALLY_VERIFIED','programme_root':'reader_eof','implementation_status':'LOCALLY_VERIFIED'}and d['status']['P1.3']==d['phase_one']['P1.3']=='P1.3_A_LOCALLY_VERIFIED__P1.3_B1_STAGING_ONLY__P1.3_C_CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS__P1.3_D_BLOCKED','P1.3-A/B1/C/D status')
+ ck(d['phase_one']['P1.1']['completed_functional_ids']==[],'completed IDs')
+ ck(d['status']['TRACEABILITY']=='PARTIALLY_MATERIALIZED','trace status')
+ ck(frontend['materialization_status']=='PARTIALLY_MATERIALIZED_NO_COMMIT'and frontend['implementation_status']=='P1.3_B1_LOCALLY_VERIFIED_STAGING_ONLY'and frontend['schema_file']=='parameters/f01e-selected-constructor-v1.json'and frontend['schema_version']=='f01e-selected-constructor.v1'and frontend['schema_pointer']=='/value','frontend_control schema');ck(len(frontend['fields'])==11 and[f['name']for f in frontend['fields']]==['schema','callback_index','normal_callbacks','remaining_cached_drains','phase','objects','last_control38_snapshot','last_regular37_snapshot','dbmd_binding','physical_binding','normalized_config'],'frontend_control fields');ck(frontend['cold_provider']['kind']=='FILE_PROVIDER'and frontend['cold_provider']['identity']=='F01E_SELECTED_COLD_V1'and frontend['cold_provider']['file']=='parameters/f01e-selected-constructor-v1.json'and frontend['cold_provider']['manifest_sha256']=='b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb','frontend_control provider');ck((PKG/frontend['cold_provider']['file']).is_file()and all((PKG/x).is_file()for x in frontend['evidence']),'frontend_control assets');ck(frontend['canonical_serialization']=={'encoding':'UTF-8 JSON','sort_keys':True,'separators':[',',':'],'ensure_ascii':False,'numbers':'JSON decimal integers; booleans/null lowercase','trailing_bytes':'none','digest':'SHA-256 over complete canonical /value bytes'},'frontend_control serialization');ck(frontend['clock']['type']=='FrontendCallbackIndex'and frontend['clock']['cold']==0 and'reader_eof callback_index'in frontend['clock']['join_invariant'],'frontend_control clock');ck(frontend['permissions']['prepare']['authority']=='F01E pure config/event/control transition'and frontend['permissions']['commit']['authority']=='future global CallbackTransaction coordinator'and'NOT implemented'in frontend['permissions']['commit']['effect']and frontend['permissions']['abort']['effect']=='discard staged frontend_control; committed bytes/generation unchanged','frontend_control permissions');ck(frontend['reset']['authority']=='programme-origin full restart'and frontend['fatal']['effect']=='discard staged frontend_control and set programme RETIRED','frontend_control reset/fatal');ck(frontend['linear_capabilities']['prepared']['clone']==False and frontend['linear_capabilities']['staged']['clone']==False and frontend['linear_capabilities']['machine']['ownership']=='single committed owner'and frontend['linear_capabilities']['machine']['clone']==False and frontend['linear_capabilities']['machine']['copy']==False,'frontend_control linear ownership');ck(frontend['receipt']['type']=='OwnerReceipt<FrontendControl>'and len(frontend['receipt']['immutable_fields'])==8 and frontend['receipt']['schema_pointer']=='#/$defs/ownerReceipt','frontend_control receipt');join=frontend['cross_root_coordination'];ck(join['same_global_transaction']==True and join['peer_root']=='reader_eof'and join['atomicity_claim']=='NOT_IMPLEMENTED; two independent machine commits must never be presented as global atomic success'and len(join['required_checks'])==4,'frontend_control cross-root boundary');ck(d['phase_one']['P1.3-B']=={'task_id':'P1.3-B-FRONTEND-CONTROL-AUDIT','status':'BLOCKED_ON_CROSS_ROOT_COORDINATOR','programme_root':'frontend_control','implementation_status':'P1.3_B1_LOCALLY_VERIFIED_STAGING_ONLY','cross_root_atomic_commit':'DEFERRED_NOT_IMPLEMENTED','prerequisite':'P1.4-A-F01E-PROVIDER-CONTRACT LOCALLY_VERIFIED'},'P1.3-B status');b1=d['phase_one']['P1.3-B1'];ck(b1['status']=='LOCALLY_VERIFIED_STAGING_ONLY'and b1['canonical_state']=='the provider custom typed canonical /value bytes; SHA-256 recomputed for before and staged after state'and b1['public_commit'].startswith('FORBIDDEN')and len(b1['join_metadata'])==6 and b1['non_cold_transition'].startswith('DEFERRED'),'P1.3-B1 scope')
+ pre=frontend['prerequisite'];ck(pre['task']=='P1.4-A-F01E-PROVIDER-CONTRACT'and pre['required_status']=='LOCALLY_VERIFIED'and [x['name']for x in pre['requirements']]==['provider_identity','manifest_sha256_pin','schema_validation','json_validation','canonical_preimage','provider_receipt','boundary']and pre['requirements'][1]['value']=='b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb','frontend_control prerequisite');ck(pre['implementation_prohibitions']==['no hardcoded provider value in P1.3-B','no file I/O in frontend domain','no serde_json or other JSON dependency before P1.4 approval','no READY/LOCALLY_VERIFIED before prerequisite passes']and d['phase_one']['P1.4']=='P1.4_A_LOCALLY_VERIFIED__P1.4_B_NOT_OPEN','frontend_control prohibition/P1.4 scope')
+ p14=d['phase_one']['P1.4-A'];ck(p14['task_id']=='P1.4-A-F01E-PROVIDER-CONTRACT'and p14['status']=='LOCALLY_VERIFIED'and p14['implementation_status']=='LOCALLY_VERIFIED'and d['phase_one']['P1.4']=='P1.4_A_LOCALLY_VERIFIED__P1.4_B_NOT_OPEN','P1.4-A status');identity=p14['provider_identity']['fields'];ck(identity['provider_id']=='F01E_SELECTED_COLD_V1'and identity['schema_id']=='f01e-selected-constructor.v1'and identity['manifest_entry_path']=='parameters/f01e-selected-constructor-v1.json'and identity['manifest_entry_bytes']==20138 and identity['manifest_entry_sha256']=='b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb'and identity['package_manifest_sha256']=='c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a'and identity['delivery_scope']=='INTERNAL_RESEARCH_AND_INTERNAL_IMPLEMENTATION_ONLY','P1.4-A identity');accept=p14['input_acceptance'];ck(accept['ordering']=='identity gate before decode/parse'and accept['exact_bytes_only']==True and'identity mismatch'in accept['duplicate_keys']and'identity mismatch'in accept['unknown_fields']and'identity mismatch'in accept['bom']and'identity mismatch'in accept['trailing_whitespace_or_bytes']and'identity mismatch'in accept['number_syntax']and'identity mismatch'in accept['unicode'],'P1.4-A JSON acceptance');shape=p14['shape_validation'];ck(shape['pointer']=='/value'and len(shape['top_level_fields'])==11 and'array[28]'in shape['objects']and len(shape['normalized_config_fields'])==18,'P1.4-A shape');canon=p14['canonical_reconstruction'];ck(canon['writer'].startswith('custom typed')and canon['expected_bytes']==4402 and canon['expected_sha256']=='9c943879cd36cb45bc7538346cfdf4f71d0998d8f261f75c135045fcb59870aa'and len(canon['relations'])==3,'P1.4-A canonical');ck(p14['output']['receipt']['type']=='F01EProviderReceipt'and len(p14['output']['receipt']['fields'])==9 and p14['output']['receipt']['provider_generation']==0 and'no serde_json::Value exposure'in p14['output']['validated_provider'],'P1.4-A output');ck(len(p14['errors'])==11 and p14['failure'].startswith('no provider receipt'),'P1.4-A errors/fail-stop');ck('no file access'in p14['boundaries']['domain']and'no JSON interpretation'in p14['boundaries']['io'],'P1.4-A boundaries');candidate=p14['dependency_candidate'];ck(candidate['status']=='APPROVED_AND_LOCKED'and candidate['crate']=='serde_json'and candidate['exact_version_candidate']=='=1.0.154'and candidate['archive_sha256']=='e7e9cc8b1b85264074fbcc02a88680c4096b1e47df8f739dceb03bf482f04bd6'and candidate['features_candidate']=={'default_features':False,'features':['std']}and'canonical writer'in candidate['not_relied_on']and len(candidate['custom_required'])==3,'P1.4-A dependency approval')
+ io_input=p14['io_input'];ck(io_input['types']==['PackageManifestEvidence','ProviderFileEvidence']and len(io_input['shared_fields'])==4 and len(io_input['validation_flow'])==4 and io_input['validation_flow'][0].startswith('recompute complete MANIFEST.json SHA-256')and'unique F01E entry'in io_input['validation_flow'][1],'P1.4-A manifest evidence flow');receipt=p14['output']['receipt'];ck(receipt['fields'][0]=='validated_manifest_lineage'and len(receipt['fields'])==9 and'recomputed SHA-256'in receipt['lineage'],'P1.4-A receipt manifest lineage');fixture=root/'crates/jocforge-domain/tests/fixtures/f01e_provider';manifest_fixture=(fixture/'MANIFEST.json').read_bytes();provider_fixture=(fixture/'f01e-selected-constructor-v1.json').read_bytes();ck(len(manifest_fixture)==76302 and hashlib.sha256(manifest_fixture).hexdigest()=='c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a','manifest fixture identity');ck(len(provider_fixture)==20138 and hashlib.sha256(provider_fixture).hexdigest()=='b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb','provider fixture identity')
+ ck(frontend['fields'][5]['type']=='array[28] object records'and frontend['fields'][6]['type']=='Option<U32[38][13]>'and frontend['fields'][7]['type']=='Option<U32[37][13]>'and frontend['fields'][5]['cold']=='ordinal 0..27; host/event null; sampler_previous_present false; xyz_u32 [0,0,0]','frontend_control shapes/cold records')
+ linear=reader['linear_capabilities'];ck(linear=={'prepared':{'type':'ReaderEofPrepared','clone':False,'consumed_by':'stage(self, prepared)'},'staged':{'type':'ReaderEofStaged','clone':False,'consumed_by':['abort(self, staged)','commit(&mut self, staged)','fatal(&mut self, staged)']},'abort_reuse':'impossible after successful abort because staged token is moved','stale_token':'independently prepared stale token is consumed and rejected by generation/digest validation'},'reader_eof linear capabilities');reader_source=(root/'crates/jocforge-domain/src/state/reader_eof.rs').read_text(encoding='utf-8');ck('pub fn abort(&self, staged: ReaderEofStaged)'in reader_source and'pub fn commit(&mut self, staged: ReaderEofStaged)'in reader_source and'pub fn fatal(&mut self, staged: ReaderEofStaged)'in reader_source,'reader_eof consuming signatures');ck(not re.search(r'#\[derive\([^\]]*Clone[^\]]*\)\]\s*pub struct ReaderEof(?:Prepared|Staged)',reader_source,re.S)and not re.search(r'impl\s+Clone\s+for\s+ReaderEof(?:Prepared|Staged)',reader_source),'reader_eof token Clone');machine={'type':'ReaderEofMachine','ownership':'linear single committed owner','clone':False,'copy':False,'committed_access':'immutable &ReaderEofState only','mutable_access':'none','restart':'full_restart(self) consumes the unique machine','commit_authority':'one machine instance owns committed root/generation/retired flag'};ck(reader['machine_owner_semantics']==machine,'reader_eof machine ownership');ck(not re.search(r'#\[derive\([^\]]*(?:Clone|Copy)[^\]]*\)\]\s*pub struct ReaderEofMachine',reader_source,re.S)and not re.search(r'impl\s+(?:Clone|Copy)\s+for\s+ReaderEofMachine',reader_source),'reader_eof machine Clone/Copy');ck('pub const fn committed(&self) -> &ReaderEofState'in reader_source and'pub fn full_restart(self) -> Self'in reader_source,'reader_eof machine access/restart')
+ gate=d['phase_one']['P1.1']['tasks'][1];ck(gate['task_id']=='SELECTED-PROFILE-GATE'and gate['status']=='LOCALLY_VERIFIED'and gate['materialization_status']=='MATERIALIZED','selected gate status');ck(gate['production_dimensions']==['AuthoredInputProfile','CoreCarrierProfile','JocDownmixProfile','SubstreamTopology','CodecRateProfile','EmdfCarriageProfile']and gate['validation_profile']==['RenderTarget'],'profile separation');ck(gate['error_outcome']=={'error_code':'UNSUPPORTED_PROFILE','code_authority':'PACKAGE_NORMATIVE','fallback':False},'profile error/fallback');ck(gate['default_carriage']=='deployed_compat'and gate['explicit_carriage_modes']==['deployed_compat','etsi_emdf']and gate['resolved_profile_accessor']=='carriage','carriage default/accessor');p12='SCOPED_COMPLETE_CURRENT_MATERIALIZED_CONSUMERS__FUTURE_CONSUMERS_DEFERRED';ck(d['status']['P1.2']==d['phase_one']['P1.2']==p12,'P1.2 closure')
+ a=d['phase_one']['P1.2-A'];ck(a['task_id']=='P1.2-A-Q15-COORDINATE'and a['status']in{'GO','LOCALLY_VERIFIED'},'P1.2-A task');ck(a['consumer']=={'functional_id':'F03P','module':'crates/jocforge-domain/src/spatial/point_response.rs','scope':'F03P.2 Q15 coordinate quantization only'},'numeric consumer binding');ck(a['spec_binding']['file']=='specs/03-point-response-and-target-context.md'and a['spec_binding']['section']=='F03P.2 15-point basis and quantization'and a['spec_binding']['numeric_file']=='specs/00-numeric-semantics.md','numeric spec binding');ck(all((PKG/x).is_file()for x in(a['spec_binding']['file'],a['spec_binding']['numeric_file'],a['vectors']['file'])),'numeric mapped asset');ck(a['primitive']=={'name':'quantize_q15_coordinate','input':'finite f32','output':'Result<Q15Coordinate, Q15CoordinateError>','rounding':'binary32 round-to-nearest ties-to-even at multiply and add','shift':'NOT_APPLICABLE','saturation':'positive values above 32767 saturate to 32767; no negative clamp','overflow':'reject if final truncated value cannot fit i32','non_finite':'reject input or intermediate NaN/Infinity','negative_zero':'preserve through multiply/add semantics; truncates to integer zero','typed_value':{'name':'Q15Coordinate','scope':'F03P.2 scoped typed value','representation':'private i32','accessor':'pub const fn value(self) -> i32','mutability':'immutable'}},'numeric primitive semantics/type');ck(a['vectors']['kind']=='PARENT_INTEGRATION_VECTOR'and a['vectors']['case_pointers']==['U-PROJ-AXES','U-PROJ-ZERO'],'numeric vector binding')
+ if a['status']=='LOCALLY_VERIFIED':ck(all((root/x).is_file()for x in a['planned_files']+a['planned_tests']),'verified numeric files')
+ b=d['phase_one']['P1.2-B'];ck(b['task_id']=='P1.2-B-FINITE-R32-ADD-MUL'and b['status']in{'GO','LOCALLY_VERIFIED'},'P1.2-B task');ck(b['consumer']=={'functional_id':'F03P','module':'crates/jocforge-domain/src/numeric/q15_coordinate.rs','scope':'F03P.2 multiply and signed-half add rounding points only'},'P1.2-B consumer');ck(b['spec_binding']=={'file':'specs/00-numeric-semantics.md','sections':['N00.1 primitives','N00.2 boundaries'],'consumer_file':'specs/03-point-response-and-target-context.md','consumer_section':'F03P.2 15-point basis and quantization'},'P1.2-B specs');ck(all((PKG/x).is_file()for x in(b['spec_binding']['file'],b['spec_binding']['consumer_file'],b['vectors']['file'])),'P1.2-B assets');ck([x['name']for x in b['primitives']]==['FiniteF32','r32_mul','r32_add'],'P1.2-B primitive registry');ck(b['primitives'][0]['signature']=='FiniteF32::new(f32) -> Result<FiniteF32, FiniteF32Error>'and b['primitives'][0]['representation']=='private f32'and b['primitives'][0]['semantics']==['reject NaN/Infinity','preserve positive/negative zero bits','preserve finite subnormal bits'],'P1.2-B finite wrapper');ck(b['primitives'][1]['fusion']==b['primitives'][2]['fusion']=='FORBIDDEN'and b['primitives'][1]['rounding']==b['primitives'][2]['rounding']=='one binary32 round-to-nearest ties-to-even point'and b['primitives'][2]['signed_zero']=='exact cancellation and opposite zero produce +0; same-sign zeros preserve sign','P1.2-B rounding/fusion/zero');ck(b['vectors']['kind']=='PARENT_INTEGRATION_VECTOR'and b['vectors']['case_pointers']==['U-PROJ-AXES','U-PROJ-ZERO'],'P1.2-B vectors')
+ if b['status']=='LOCALLY_VERIFIED':ck(all((root/x).is_file()for x in b['planned_files']+b['planned_tests']),'verified P1.2-B files')
+ c=d['phase_one']['P1.2-C'];ck(c['task_id']=='P1.2-C-TRUNC-F32-TO-I32'and c['status']in{'GO','LOCALLY_VERIFIED'},'P1.2-C task');ck(c['consumer']=={'functional_id':'F03P','module':'crates/jocforge-domain/src/numeric/q15_coordinate.rs','scope':'F03P.2 biased finite F32 to I32 truncation only'},'P1.2-C consumer');ck(c['spec_binding']=={'file':'specs/00-numeric-semantics.md','section':'N00.1 trunc toward zero','consumer_file':'specs/03-point-response-and-target-context.md','consumer_section':'F03P.2 15-point basis and quantization'},'P1.2-C specs');ck(all((PKG/x).is_file()for x in(c['spec_binding']['file'],c['spec_binding']['consumer_file'],c['vectors']['file'])),'P1.2-C assets');ck(c['primitive']=={'name':'trunc_f32_to_i32','signature':'trunc_f32_to_i32(FiniteF32) -> Result<TruncatedI32, TruncI32Error>','typed_value':{'name':'TruncatedI32','representation':'private i32','accessor':'pub const fn value(self) -> i32','mutability':'immutable'},'rounding':'truncate toward zero; never rne_int','signed_zero':'positive and negative zero both produce integer zero','subnormal':'all finite magnitudes below one produce integer zero','non_finite':'unrepresentable at API because input is FiniteF32','overflow':'reject truncated values outside I32 range','saturation':'FORBIDDEN','wrap':'FORBIDDEN'},'P1.2-C primitive');ck(c['vectors']['kind']=='PARENT_INTEGRATION_VECTOR'and c['vectors']['case_pointers']==['U-PROJ-AXES','U-PROJ-ZERO'],'P1.2-C vectors')
+ if c['status']=='LOCALLY_VERIFIED':ck(all((root/x).is_file()for x in c['planned_files']+c['planned_tests']),'verified P1.2-C files')
+ x=d['phase_one']['P1.2-D'];ck(x['task_id']=='P1.2-D-NORMALIZE-Q15-COORDINATE'and x['status']in{'GO','LOCALLY_VERIFIED'},'P1.2-D task');ck(x['consumer']=={'functional_id':'F03P','module':'crates/jocforge-domain/src/numeric/q15_coordinate.rs','scope':'F03P.2 quantized integer divided by 32768 and converted to F32 only'},'P1.2-D consumer');ck(x['spec_binding']['file']=='specs/03-point-response-and-target-context.md'and x['spec_binding']['section']=='F03P.2 15-point basis and quantization'and x['spec_binding']['numeric_file']=='specs/00-numeric-semantics.md','P1.2-D specs');ck(all((PKG/v).is_file()for v in(x['spec_binding']['file'],x['spec_binding']['numeric_file'],x['vectors']['file'])),'P1.2-D assets');p=x['primitive'];ck(p['name']=='normalize_q15_coordinate'and p['signature']=='normalize_q15_coordinate(Q15Coordinate) -> NormalizedQ15Coordinate'and p['multiply_reciprocal']=='FORBIDDEN'and p['signed_zero']=='integer zero normalizes to positive zero'and p['division_by_zero']=='impossible; fixed divisor 32768'and p['typed_input']['range']=='i32 with positive cap 32767; negative values are not clamped'and p['typed_output']['representation']=='private f32'and p['conversion']=='Q15 integer to binary32 round-to-nearest ties-to-even; exact for reachable Q15Coordinate values'and p['division']=='binary32 divide by exact nonzero 32768.0; exact power-of-two scaling','P1.2-D semantics/signature');ck(x['vectors']['kind']=='PARENT_INTEGRATION_VECTOR'and x['vectors']['case_pointers']==['U-PROJ-AXES','U-PROJ-ZERO'],'P1.2-D vectors')
+ if x['status']=='LOCALLY_VERIFIED':ck(all((root/v).is_file()for v in x['planned_files']+x['planned_tests']),'verified P1.2-D files')
+ closure=d['phase_one']['P1.2-closure'];ck(closure=={'status':'LOCALLY_VERIFIED','scope':'current materialized numeric consumers only','materialized_consumers':[{'functional_id':'F03P','clause':'F03P.2'}],'verified_slices':[{'slice':'P1.2-A','primitives':['quantize_q15_coordinate']},{'slice':'P1.2-B','primitives':['FiniteF32','r32_mul','r32_add']},{'slice':'P1.2-C','primitives':['trunc_f32_to_i32','TruncatedI32']},{'slice':'P1.2-D','primitives':['normalize_q15_coordinate','NormalizedQ15Coordinate']}],'completed_functional_ids':[],'future_consumers':{'inventory_status':'INVENTORIED','implementation_status':'DEFERRED_DETAILED_MAPPING','reopen_rule':'each new consumer requires a new independent P1.2 slice with consumer/spec/vector/error binding before implementation'},'global_numeric_complete':False},'P1.2 closure basis')
+ verified_scopes=sum(t.get('status')=='LOCALLY_VERIFIED'for t in d['phase_one']['P1.1']['tasks'])+sum(d['phase_one'][k].get('status')=='LOCALLY_VERIFIED'for k in('P1.2-A','P1.2-B','P1.2-C','P1.2-D','P1.3-A','P1.4-A'))+(d['phase_one']['P1.3-B1']['status']=='LOCALLY_VERIFIED_STAGING_ONLY');ck(verified_scopes==9,'locally verified scoped-task count')
+ sp=importlib.util.spec_from_file_location('renderer',root/'scripts/render-implementation-maps.py');m=importlib.util.module_from_spec(sp);sp.loader.exec_module(m)
+ for n,v in m.render(d).items():ck((root/'docs/implementation'/n).read_text(encoding='utf-8')==v,'render diff '+n)
+ ck('RenderTarget'not in json.dumps(d['phase_one']['P1.1']['tasks'][0]),'render target clock');profile_doc=(arch/'PROFILE-DIMENSIONS.md').read_text(encoding='utf-8');ck(len([x for x in profile_doc.splitlines()if x.startswith('| selected ADM BWF /')])==1,'supported row count');production=(root/'crates/jocforge-domain/src/profile/production.rs').read_text(encoding='utf-8');ck('RenderTarget'not in production and 'fallback'not in production.lower()and 'Self::selected_with_carriage(EmdfCarriageProfile::DeployedCompat)'in production,'production profile separation/default')
+ dep=d['approved_dependencies']['sha2'];ck(dep=={'version':'=0.10.9','default_features':False,'archive_sha256':'a7507d819769d01a365ab707794a4084392c824f54a7a6a7862f8c3d0892b283','license_choice':'Apache-2.0','scope':'reader_eof canonical SHA-256 only'},'sha2 governance');json_dep=d['approved_dependencies']['serde_json'];ck(json_dep=={'version':'=1.0.154','default_features':False,'features':['std'],'archive_sha256':'e7e9cc8b1b85264074fbcc02a88680c4096b1e47df8f739dceb03bf482f04bd6','license_choice':'Apache-2.0','scope':'F01E provider syntax parsing and private field access after identity gate only'},'serde_json governance');lock=(root/'Cargo.lock').read_text(encoding='utf-8');ck('name = "sha2"'in lock and 'version = "0.10.9"'in lock and 'checksum = "a7507d819769d01a365ab707794a4084392c824f54a7a6a7862f8c3d0892b283"'in lock,'sha2 lock');ck('name = "serde_json"'in lock and 'version = "1.0.154"'in lock and 'checksum = "e7e9cc8b1b85264074fbcc02a88680c4096b1e47df8f739dceb03bf482f04bd6"'in lock,'serde_json lock');manifest=(root/'crates/jocforge-domain/Cargo.toml').read_text(encoding='utf-8');ck('sha2 = { version = "=0.10.9", default-features = false }'in manifest,'sha2 manifest');ck('serde_json = { version = "=1.0.154", default-features = false, features = ["std"] }'in manifest,'serde_json manifest');deps={'domain':{'sha2','serde_json'},'application':{'jocforge-domain'},'io':{'jocforge-domain'},'cli':{'jocforge-application'},'validation':{'jocforge-domain','jocforge-application','jocforge-io'}}
+ for n,w in deps.items():
+  c=root/'crates'/f'jocforge-{n}';cfg=tomllib.loads((c/'Cargo.toml').read_text(encoding='utf-8'));ck(set(cfg.get('dependencies',{}))==w,'dependency '+n);ck(not(c/'build.rs').exists(),'build script')
+  for p in(c/'src').rglob('*.rs'):
+   s=p.read_text(encoding='utf-8').lower();guard=s.replace('deployedcompat','');ck(not any(x in guard for x in('legacy','compat','fallback','ffmpeg','concat!','include!','#[path')),'source token '+str(p));ck(not(re.search(r'\btrait\b',s)and re.search(r'\busize\b',s)),'trait usize');ck(not re.search(r'pub\s+(?:(?:async|unsafe)\s+)*(?:extern\s+"[^"]+"\s+)?fn[\s\S]{0,400}\busize\b',s),'public usize');ck(not re.search(r'use\s+std::(?:fs|process|env|net)\s+as',s),'aliased io');
+   if p.name!='mod.rs'and any(x in p.parts for x in('codec','integrity','joc')):
+    code='\n'.join(x for x in s.splitlines()if x.strip()and not x.lstrip().startswith('//'));ck(not code,'empty leaf item')
+ transaction=(root/'crates/jocforge-domain/src/transaction/mod.rs').read_text(encoding='utf-8');transaction_code='\n'.join(x for x in transaction.splitlines()if x.strip()and not x.lstrip().startswith('//'));ck(not transaction_code,'transaction Rust before P1.3 implementation approval');ck(not(root/'crates/jocforge-domain/src/frontend/config.rs').exists()and not(root/'crates/jocforge-domain/src/frontend/events.rs').exists(),'frontend control Rust before P1.3-B implementation approval');provider_source=(root/'crates/jocforge-domain/src/frontend/provider.rs').read_text(encoding='utf-8');ck('serde_json::to_'not in provider_source and'pub use serde_json::Value'not in provider_source and'#[derive(Serialize'not in provider_source and provider_source.index('let actual = ProviderSha256::digest')<provider_source.index('serde_json::from_slice'),'provider parser/canonical boundary');ck('manifest: &ValidatedF01EPackageManifest'in provider_source and'validate_f01e_package_manifest'in provider_source and'let entry = parse_f01e_manifest_entry(evidence.bytes())?'in provider_source and'manifest.provider_sha256 != actual'in provider_source,'provider manifest proof chain');rust_sources='\n'.join(p.read_text(encoding='utf-8')for p in(root/'crates').rglob('*.rs'));ck('C:\\Users\\'not in rust_sources,'absolute user path in Rust source');production_sources='\n'.join(p.read_text(encoding='utf-8').split('#[cfg(test)]',1)[0]for p in(root/'crates').glob('*/src/**/*.rs'));ck('tests/fixtures/f01e_provider'not in production_sources and'f01e_provider/MANIFEST.json'not in production_sources,'fixture path in production source')
+ frontend_state=(root/'crates/jocforge-domain/src/frontend/state.rs').read_text(encoding='utf-8');ck(not re.search(r'pub\s+fn\s+(?:commit|abort|fatal)\s*\(',frontend_state),'frontend standalone lifecycle API');ck(not re.search(r'#\[derive\([^\]]*(?:Clone|Copy)[^\]]*\)\]\s*pub struct FrontendControl(?:Prepared|Staged|Machine)',frontend_state,re.S),'frontend linear capability clone/copy');ck('pub const fn committed(&self) -> &FrontendControlState'in frontend_state and'provider.into_parts()'in frontend_state and'canonical_sha256()'in frontend_state,'frontend staging ownership/provider binding')
+ check_callback_transaction_design(root,d)
+ check_callback_pair_success(d['phase_one']['P1.3-C'])
+ check_callback_receipt_field_bindings(d['phase_one']['P1.3-C'])
+ check_callback_transaction_control_flow(d['phase_one']['P1.3-C'])
+ check_spatial_control_mapping(root,d)
+ return {'verified_scopes':verified_scopes,'inventoried_ids':len(es),'deferred_roots':sum(r['materialization_status']=='INVENTORIED_PENDING_P1.3_MATERIALIZATION'for r in d['programme_roots'])}
+run_checks=lambda root=ROOT,package=PKG:run(root)
 def main():
-    try:
-        stats = run_checks()
-    except Exception as error:
-        print("boundary check failed: " + str(error), file=sys.stderr)
-        return 1
-    print(
-        "boundary checks passed "
-        f"({stats['functional_ids']} functional IDs: {stats['active_ids']} scoped, "
-        f"{stats['functional_ids'] - stats['active_ids']} deferred; "
-        f"{stats['deferred_roots']} programme roots inventoried)"
-    )
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+ try:stats=run()
+ except(BoundaryError,Exception)as e:print('boundary check failed: '+str(e),file=sys.stderr);return 1
+ print(f"boundary checks passed ({stats['verified_scopes']} locally verified scoped tasks; {stats['inventoried_ids']} inventoried IDs; {stats['deferred_roots']} roots deferred)");return 0
+if __name__=='__main__':raise SystemExit(main())
