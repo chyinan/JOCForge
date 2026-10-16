@@ -13,6 +13,8 @@ This repository records logical schema `selected-adm-installed48-state.v5`. The 
 
 The v3 file remains source evidence; it is not renamed or presented as v5. V4 remains preserved as the previous local amendment. No files referenced by the supplement's `research_basis` are implementation inputs.
 
+The narrower D1 storage/staging scope recorded below was explicitly approved by the user in the current task handoff on 2026-10-16. This is a scope authorization, not an additional washed supplement or a new producer-behavior claim.
+
 ## Persistent root and profile binding
 
 The v5 persistent root excludes `/f03w_owned_fields/selection_outer/profile_dimensions`. It contributes exactly zero bytes: no field, header, null member, presence byte, or other absence tag is serialized; there is no tag for the omitted member. It is immutable admission metadata with `source_count_N=48`, `feature_bands_B=24`, `target_capacity_T=15`, and `axes=3`.
@@ -39,10 +41,14 @@ There is no universal active count. Candidate count, selected count, installed d
 
 The 14 supplement cases are input-only checks. The implementation computes actual results before comparing them to expected values; expected records must not select implementation branches. They cover cold profile binding, cold positive-zero state, packet non-persistence and readiness, feature transpose, flags-before-history behavior, count-domain separation, profile mismatch, parent failure, and reset. They do not establish product root serialization, callback execution, transaction fault execution, FFT/audio replay, or whole-chain conformance; those remain `NOT_RUN`.
 
-## D1 implementation readiness blocker
+## D1 scope amendment and deferred packet producers
 
-P1.3-D1 remains `BLOCKED_ON_SOURCE_FLAGS_PRODUCER_CONTRACT`; no Rust slice has started. The approved `flags_before_history` vector supplies only `same_before_history` and `different_current_input_or_writers` booleans, with expected relation `flags_may_differ`. It does not provide concrete callback input/control/route/writer-set records, the `U8[48][2]` flag-generation rule, or concrete expected flag bytes. The map requires actual evaluation of every approved vector. Implementing this packet producer or claiming the vector passed would require guessing.
+Wash-side coordination has approved a narrower P1.3-D1 scope. D1 may implement the complete v5 persistent cold root, full canonical bytes/digest, immutable non-Clone machine, provider/profile lineage checks, generation/digest and callback/transaction join foundation, and no-local-commit boundary. P1.3-D remains blocked on the source-flags and current-features producers.
 
-The minimum unblock is either (a) an approved producer contract with concrete input/output vectors and an explicit rule that reads before history rather than replaced next history, or (b) an approved D1 scope amendment that makes `SourceFlagsPacket` an opaque input from a separately validated producer, defines its producer lineage/receipt, and explicitly defers packet generation and the `flags_before_history` behavior test. Until one is supplied, do not implement `spatial_control` or partially materialize its root.
+`SourceFlagsPacket` and `CurrentFeaturesPacket` remain future producer-owned opaque linear capabilities. D1 implements neither producer, nor a public raw-array constructor, zero/default packet, or forgeable lineage. The packets are not fields of `SpatialControlState`, contribute no root bytes, and do not enter its digest. Cold/reset packet reads remain `NOT_READY`. If no production producer can supply a complete typed after proposal, the non-cold prepare entry remains crate-private/deferred; no test-only constructor may expose it.
 
-The approved `profile_mismatch` vector exercises provider-lineage mismatch while the state hashes match. D1 must separately test profile-identity mismatch while holding provider lineage equal; this is a local conformance test of the explicit profile-binding rule, not an additional approved supplement vector or support for another profile.
+The approved `flags_before_history` record supplies only `same_before_history` and `different_current_input_or_writers` booleans, with expected relation `flags_may_differ`. It has no concrete callback input/control/route/writer-set records, `U8[48][2]` generation rule, or expected flag bytes. It is therefore classified `DEFERRED_TO_SOURCE_FLAGS_PRODUCER`; it must not be run or reported as PASS/LOCALLY_VERIFIED by D1. The full flags producer contract remains a coordination follow-up in [SPATIAL-CONTROL-STAGING-SPEC-GAP.md](SPATIAL-CONTROL-STAGING-SPEC-GAP.md).
+
+For the same scope reason, `feature_transpose` is `DEFERRED_TO_CURRENT_FEATURES_PRODUCER`. The negative-zero after-proposal validator, F03 transition vectors, parent-failure packet invalidation, and programme reset vectors are outside the cold storage/staging slice and remain deferred to their respective typed producer or coordinator. The complete supplement vector bundle remains `NOT_RUN`; no deferred case is counted as PASS or LOCALLY_VERIFIED.
+
+The approved `profile_mismatch` vector changes provider identity while state hashes match. A separate local input-only vector now changes only the EncodingProfile identity away from the unique selected six-dimensional row, while keeping F01E/F03 receipts, state hash, and generation equal. It must return `REJECT_PROFILE_BINDING` without changing state hash or generation. This negative test does not register or support another profile.

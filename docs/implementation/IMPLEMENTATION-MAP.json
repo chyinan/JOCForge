@@ -8,7 +8,7 @@
     "SELECTED_PROFILE_GATE": "LOCALLY_VERIFIED",
     "P1.2": "SCOPED_COMPLETE_CURRENT_MATERIALIZED_CONSUMERS__FUTURE_CONSUMERS_DEFERRED",
     "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B1_STAGING_ONLY__P1.3_C_CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS__P1.3_D_BLOCKED",
-    "P1.3-D1": "BLOCKED_SPEC_GAP__NOT_STARTED",
+    "P1.3-D1": "MAPPING_READY__NOT_STARTED",
     "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_LOCALLY_VERIFIED"
   },
   "functional_entries": [
@@ -2164,7 +2164,7 @@
     },
     "P1.2": "SCOPED_COMPLETE_CURRENT_MATERIALIZED_CONSUMERS__FUTURE_CONSUMERS_DEFERRED",
     "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B1_STAGING_ONLY__P1.3_C_CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS__P1.3_D_BLOCKED",
-    "P1.3-D1": "BLOCKED_SPEC_GAP__NOT_STARTED",
+    "P1.3-D1": "MAPPING_READY__NOT_STARTED",
     "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_LOCALLY_VERIFIED",
     "P1.2-A": {
       "task_id": "P1.2-A-Q15-COORDINATE",
@@ -2743,12 +2743,18 @@
     },
     "P1.3-D": {
       "task_id": "P1.3-D-SPATIAL-CONTROL-ROOT-MAP",
-      "status": "BLOCKED",
+      "status": "BLOCKED_ON_SOURCE_FLAGS_AND_FEATURE_PRODUCERS",
       "programme_root": "spatial_control",
       "mapping_status": "MAPPING_COMPLETE_BLOCKED",
       "blocked_on": [
+        "SourceFlagsPacket producer",
+        "CurrentFeaturesPacket producer",
         "spatial_audio root",
         "enclosing CallbackTransaction coordinator"
+      ],
+      "packet_producer_blockers": [
+        "SourceFlagsPacket producer",
+        "CurrentFeaturesPacket producer"
       ],
       "root_audit": "source layout selected-adm-installed48-state.v3 remains bound to the approved package; local v4 and approved v5 amendments define the logical persistent root; callback outputs and immutable profile_dimensions are excluded from mutable state and seven persistent groups remain",
       "vector_evidence": {
@@ -2789,6 +2795,7 @@
         {"task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT", "status": "SATISFIED_READY_FOR_STAGING_IMPLEMENTATION"}
       ],
       "blockers": [
+        "SourceFlagsPacket and CurrentFeaturesPacket producers remain deferred; this keeps full P1.3-D blocked while D1 storage/staging is separately authorized",
         "P1.3-C callback implementation waits for all 12 owner roots, including spatial_audio and g>=2 source roots"
       ],
       "state_layout": {
@@ -2869,8 +2876,8 @@
         "source_schema_id": "selected-adm-installed48-state.v3",
         "previous_local_schema_id": "selected-adm-installed48-state.v4",
         "file": "docs/implementation/SPATIAL-CONTROL-STATE-V5-AMENDMENT.md",
-        "document_bytes": 6122,
-        "document_sha256": "294a5068f432d286d9af4aca1f5f0e4e080dcba64a7e0802abac73896f71b60f",
+        "document_bytes": 7315,
+        "document_sha256": "a4ea44a5863580fae991d8626ff11e056866614802f331a2352c94b85dc4bede",
         "authority": "approved supplement selected-adm-installed48-state.v5-wash-amendment; frozen implementer package remains unchanged",
         "supplement_manifest_file": "MANIFEST.json",
         "supplement_manifest_sha256": "c881f9b11c169d29e532a18de38fe1f31c600b0167e18f3c0e7c3bee91945f38",
@@ -2884,31 +2891,47 @@
         "research_basis_files_read": false,
         "product_execution_scope": "full root canonical serializer, product transaction executor, complete callback/audio replay NOT_RUN"
       },
-      "implementation_rust": "FORBIDDEN while status=BLOCKED"
+      "implementation_rust": "full P1.3-D transaction integration remains blocked; P1.3-D1 storage/staging foundation is separately authorized; packet producers remain out of D1"
     },
     "P1.3-D1": {
       "task_id": "P1.3-D1-SPATIAL-CONTROL-STAGING-ONLY",
-      "status": "BLOCKED_ON_SOURCE_FLAGS_PRODUCER_CONTRACT",
+      "status": "MAPPING_READY",
       "implementation_status": "NOT_STARTED",
+      "scope_approval": "user-approved in the current task handoff on 2026-10-16; scope-only, not a packet-producer specification",
       "programme_root": "spatial_control",
       "root_schema": "selected-adm-installed48-state.v5",
       "schema_amendment_file": "docs/implementation/SPATIAL-CONTROL-STATE-V5-AMENDMENT.md",
       "spec_gap_document": {
         "file": "docs/implementation/SPATIAL-CONTROL-STAGING-SPEC-GAP.md",
-        "document_bytes": 1749,
-        "document_sha256": "9547f871d0db006835e351c0aa27062a07a497e6ba44b0f039ae14acb032a469"
+        "document_bytes": 2480,
+        "document_sha256": "424f3cd27d625b2e1809fd06a6a9bae89958d5bc7bccf64170f792947182ead5"
       },
-      "scope": "construct the complete v5 spatial_control cold root and provide linear prepare/stage tokens only; no local commit, abort, fatal or top-level COMMITTED",
+      "scope": "construct the complete v5 persistent spatial_control cold root and canonical digest; provide a non-Clone read-only machine and prepared/staged foundation accepting only a future producer-generated complete typed after proposal; no packet producers and no local commit, abort, fatal or top-level COMMITTED",
       "cold_inputs": [
         "ValidatedF01EColdProvider",
         "ValidatedF03TargetColdProvider",
         "selected EncodingProfile identity",
         "only the GENERATED cold rules recorded in the v5 mapping"
       ],
-      "callback_output_packets": "programme_roots[spatial_control].callback_output_packets; same parent CallbackTransaction; not persistent root state",
+      "callback_output_packets": {
+        "names": [
+          "SourceFlagsPacket",
+          "CurrentFeaturesPacket"
+        ],
+        "producer_status": "FUTURE_PRODUCER_DEFERRED",
+        "capability": "opaque, producer-owned, linear",
+        "public_raw_array_constructor": "FORBIDDEN",
+        "zero_or_default_packet": "FORBIDDEN",
+        "forged_lineage": "FORBIDDEN",
+        "root_member": false,
+        "root_canonical_bytes": 0,
+        "cold_reset_read": "NOT_READY",
+        "parent_transaction": "future producer receipt must bind the packet to the same CallbackTransactionId and FrontendCallbackIndex as the complete typed after proposal"
+      },
       "authority": {
         "prepare": "pure validation against shared CallbackTransactionId, FrontendCallbackIndex, before_generation, before_sha256, selected EncodingProfile identity and both provider receipt lineages",
         "stage": "produce a complete immutable after-state and recomputed full v5 root digest without mutating committed state; equal state hashes do not authorize cross-profile/provider tokens",
+        "noncold_prepare": "crate-private and deferred until a future producer can supply the complete typed after proposal; no test-only constructor",
         "local_commit": "FORBIDDEN",
         "abort_fatal": "FORBIDDEN",
         "top_level_COMMITTED": "FORBIDDEN"
@@ -2933,8 +2956,13 @@
         "provider mismatch and F03 target sentinel/attribute/current-previous independence",
         "same state hash with distinct profile identities and equal F01E/F03 lineages is rejected",
         "same state hash with equal profile identity and a distinct provider lineage is rejected",
-        "all approved v5 input-only vectors compute actual results before expected comparison",
-        "prepare/stage leave committed state unchanged",
+        "same-hash profile-only rejection leaves state hash and generation unchanged",
+        "full cold root excludes callback packets and profile dimensions; profile dimensions contribute zero bytes and no tag",
+        "persistent source_vector and source_scalar have exact F32 shapes and positive-zero bits",
+        "flags_before_history is deferred and is not reported as PASS or locally verified",
+        "packet producer capabilities are opaque, non-defaultable, non-forgeable, and NOT_READY at cold/reset",
+        "noncold prepare remains crate-private/deferred until a complete producer-generated typed after proposal exists",
+        "no test-only constructor exposes the deferred after-proposal path",
         "machine and tokens cannot be cloned or copied",
         "compile-fail proof for public commit/abort/fatal and mutable committed access"
       ],
@@ -2943,17 +2971,51 @@
         "bytes": 2387,
         "sha256": "c5292f9a4dfd607704f4a442963b56b3f239e0bc69b8a9d03619fc65bdbc0d69",
         "case_count": 14,
+        "deferred_cases": [
+          {
+            "id": "flags_before_history",
+            "status": "DEFERRED_TO_SOURCE_FLAGS_PRODUCER"
+          },
+          {
+            "id": "feature_transpose",
+            "status": "DEFERRED_TO_CURRENT_FEATURES_PRODUCER"
+          },
+          {
+            "id": "negative_zero_cold_rejected",
+            "status": "DEFERRED_TO_TYPED_AFTER_PROPOSAL_VALIDATOR"
+          },
+          {
+            "id": "zero_selection_retains_installed",
+            "status": "DEFERRED_TO_F03_TRANSITION_PRODUCER"
+          },
+          {
+            "id": "quiet_changes_committed_active",
+            "status": "DEFERRED_TO_F03_TRANSITION_PRODUCER"
+          },
+          {
+            "id": "parent_failure_discards_packets",
+            "status": "DEFERRED_TO_PARENT_TRANSACTION_COORDINATOR"
+          },
+          {
+            "id": "reset_same_profile",
+            "status": "DEFERRED_TO_PROGRAMME_RESET_COORDINATOR"
+          }
+        ],
         "product_execution": "NOT_RUN",
         "expected_values_as_control_flow": "FORBIDDEN"
       },
-      "blockers": [
-        "flags_before_history has no concrete callback input/control/route/prefix-writer records, U8[48][2] generation rule, or expected flag bytes; D1 cannot compute actual results without guessing",
-        "SourceFlagsPacket cannot be verified as derived from before history and same-callback inputs without the missing producer contract or a scope amendment defining an opaque validated packet input"
-      ],
-      "unblock_options": [
-        "approve an exact SourceFlagsPacket producer contract with concrete input/output vectors and before-history read point",
-        "approve a D1 scope amendment that consumes an opaque SourceFlagsPacket with explicit producer lineage and defers packet generation plus flags_before_history"
-      ],
+      "profile_only_mismatch_vector": {
+        "fixture_file": "crates/jocforge-domain/tests/fixtures/spatial_control_state_v5/PROFILE-IDENTITY-MISMATCH-VECTORS.json",
+        "bytes": 934,
+        "sha256": "c66f867bace11e554f868fe26baa77e528f6af5a5fcece79bd35f5ddb604a642",
+        "case_id": "same_hash_rejects_unselected_profile_identity",
+        "same_state_hash": true,
+        "same_generation": true,
+        "same_f01e_receipt_lineage": true,
+        "same_f03_receipt_lineage": true,
+        "expected_result": "REJECT_PROFILE_BINDING",
+        "profile_is_supported": false
+      },
       "prohibitions": [
         "no read-time filesystem or JSON access",
         "no hard-coded provider JSON values",
@@ -2961,8 +3023,10 @@
         "no zero-fill for unspecified persistent values",
         "no use of the 630-byte target projection as the full root digest",
         "no persistence or canonical encoding for profile_dimensions",
-        "do not implement a SourceFlagsPacket producer without an approved rule",
-        "do not partially materialize the spatial_control root while blocked"
+        "do not implement SourceFlagsPacket or CurrentFeaturesPacket producers",
+        "do not expose public raw-array packet constructors or zero/default packets",
+        "do not forge packet producer lineage",
+        "do not expose a test-only typed-after proposal constructor"
       ]
     },
     "P1.4-A": {

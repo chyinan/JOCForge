@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge-profile-identity-mismatch-vectors.v1",
+  "scope": "input-only negative boundary; does not register another profile",
+  "cases": [
+    {
+      "id": "same_hash_rejects_unselected_profile_identity",
+      "before": {
+        "profile_identity": "unique-selected-six-dimensional-row",
+        "f01e_receipt_lineage": "same-validated-receipt",
+        "f03_receipt_lineage": "same-validated-receipt",
+        "state_sha256": "same-before-sha256",
+        "generation": 7
+      },
+      "proposal": {
+        "profile_identity": "not-the-unique-selected-six-dimensional-row",
+        "f01e_receipt_lineage": "same-validated-receipt",
+        "f03_receipt_lineage": "same-validated-receipt",
+        "state_sha256": "same-before-sha256",
+        "generation": 7
+      },
+      "expected": {
+        "result": "REJECT_PROFILE_BINDING",
+        "state_sha256": "unchanged",
+        "generation": 7
+      }
+    }
+  ]
+}

@@ -74,9 +74,15 @@ def main():
  ('p13d-v5-profile-only-mismatch-test-removed',map_mut_render(lambda d:d['phase_one']['P1.3-D1']['required_verification'].remove('same state hash with distinct profile identities and equal F01E/F03 lineages is rejected'))),
  ('p13d-v5-vector-identity-drift',map_mut_render(lambda d:d['phase_one']['P1.3-D1']['input_only_vectors'].update(sha256='00'*32))),
  ('p13d-v5-claims-product-execution',map_mut_render(lambda d:d['phase_one']['P1.3-D1']['input_only_vectors'].update(product_execution='EXECUTED'))),
- ('p13d-v5-ready-with-open-gap',map_mut_render(lambda d:d['phase_one']['P1.3-D1'].update(status='MAPPING_READY'))),
- ('p13d-v5-gap-first-blocker-removed',map_mut_render(lambda d:d['phase_one']['P1.3-D1']['blockers'].pop(0))),
- ('p13d-v5-gap-blocker-removed',map_mut_render(lambda d:d['phase_one']['P1.3-D1']['blockers'].pop())),
+ ('p13d-v5-unsupported-status',map_mut_render(lambda d:d['phase_one']['P1.3-D1'].update(status='LOCALLY_VERIFIED'))),
+ ('p13d-v5-packet-producer-enabled',map_mut_render(lambda d:d['phase_one']['P1.3-D1']['callback_output_packets'].update(producer_status='IMPLEMENTED'))),
+ ('p13d-v5-packet-public-array-constructor',map_mut_render(lambda d:d['phase_one']['P1.3-D1']['callback_output_packets'].update(public_raw_array_constructor='ALLOWED'))),
+ ('p13d-v5-packet-zero-default',map_mut_render(lambda d:d['phase_one']['P1.3-D1']['callback_output_packets'].update(zero_or_default_packet='ALLOWED'))),
+ ('p13d-v5-packet-forged-lineage',map_mut_render(lambda d:d['phase_one']['P1.3-D1']['callback_output_packets'].update(forged_lineage='ALLOWED'))),
+ ('p13d-v5-profile-vector-identity-drift',map_mut_render(lambda d:d['phase_one']['P1.3-D1'].setdefault('profile_only_mismatch_vector',{}).update(sha256='00'*32))),
+ ('p13d-v5-flags-vector-marked-pass',map_mut_render(lambda d:d['phase_one']['P1.3-D1']['input_only_vectors']['deferred_cases'][0].update(status='PASS'))),
+ ('p13d-v5-source-producer-blocker-removed',map_mut_render(lambda d:d['phase_one']['P1.3-D'].setdefault('packet_producer_blockers',['SourceFlagsPacket producer','CurrentFeaturesPacket producer']).remove('SourceFlagsPacket producer'))),
+ ('p13d-v5-feature-producer-blocker-removed',map_mut_render(lambda d:d['phase_one']['P1.3-D'].setdefault('packet_producer_blockers',['SourceFlagsPacket producer','CurrentFeaturesPacket producer']).remove('CurrentFeaturesPacket producer'))),
  ('p13d-v5-gap-record-contradiction',lambda r:append(r/'docs/implementation/SPATIAL-CONTROL-STAGING-SPEC-GAP.md','\nThe SourceFlagsPacket producer is fully specified and needs no further contract.\n')),
  ('p13d-v5-amendment-contradiction',lambda r:append(r/'docs/implementation/SPATIAL-CONTROL-STATE-V5-AMENDMENT.md','\nContradiction: serialize profile_dimensions, including active_target_count_n, as persistent state.\n'))
  ]
@@ -119,6 +125,11 @@ def main():
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]
   if not cases:raise RuntimeError('no boundary mutations match case prefix: '+x.case_prefix)
+ for optimization in ([],['-O']):
+  baseline=subprocess.run([sys.executable,*optimization,'-X','utf8','-B',str(ROOT/'scripts/check-boundaries.py')],cwd=ROOT,capture_output=True)
+  if baseline.returncode!=0:
+   details=(baseline.stdout+baseline.stderr).decode('utf-8',errors='replace')
+   raise RuntimeError('unmutated boundary baseline failed '+repr(optimization)+': '+details)
  passed=0
  for n,m in cases:
   c=s/n
