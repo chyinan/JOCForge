@@ -1052,7 +1052,7 @@
       "output"
     ],
     "missing_callback_root": "spatial_audio",
-    "spatial_control_status": "MAPPING_COMPLETE_BLOCKED_ON_P1.4_B_F03_PROVIDER"
+    "spatial_control_status": "MAPPING_COMPLETE_BLOCKED_ON_P1.3_C_ROOTS"
   },
   "preflight_order": [
     "validate programme status and callback g against the committed main callback clock",
@@ -1156,9 +1156,38 @@
       "selection_outer.f03n_nnls",
       "selection_outer.f03s_outer"
     ],
+    "callback_output_packets": {
+      "CurrentFeaturesPacket": {
+        "bitwise_relation": "features[band][source] = source_vector_after[source][band]",
+        "callback_index": "g",
+        "cold_read_only_view": "may derive positive-zero transpose from source_vector; this does not mean callback 0 has completed",
+        "cold_reset_read": "NOT_READY",
+        "next_callback_seed": false,
+        "order": "band-major",
+        "payload": "features F32[24][48]",
+        "persistent": false,
+        "presence_tag": false,
+        "root_canonical_bytes": 0
+      },
+      "SourceFlagsPacket": {
+        "callback_index": "g",
+        "cold_reset_read": "NOT_READY",
+        "derived_from": "same callback before history plus current input/control/route/prefix writer set",
+        "next_callback_seed": false,
+        "payload": "flags U8[48][2]",
+        "persistent": false,
+        "presence_tag": false,
+        "root_canonical_bytes": 0
+      },
+      "diagnostics": "packet copies may be recorded externally but are not recovery authority",
+      "next_callback": "recompute flags from current before history and inputs; read features from committed source_vector/source_scalar, never from an older packet",
+      "parent_failure": "invalidate packets and leave committed owner root unchanged",
+      "parent_success": "commit only persistent histories; packet storage stays outside the root",
+      "same_parent_transaction": "Both packets and their corresponding staged-after root belong to the same parent CallbackTransaction"
+    },
     "canonical_state": {
       "arrays": "fixed arrays row-major",
-      "digest": "SHA-256 over the complete serialized f03w_owned_fields state; cold_sha256 is computed from the exact cold constructors and validated provider values",
+      "digest": "SHA-256 over the complete serialized v4 persistent f03w_owned_fields; recompute from the full v4 preimage after the callback-output fields are removed",
       "external_state": "F05R56/F04C/F05JL/F13/F15 states remain under their own owners and are not embedded in this digest",
       "f32": "exact U32 bit patterns",
       "field_order": "canonical map in shown f03w_owned_fields order",
@@ -1199,12 +1228,11 @@
     "cold_constructors": {
       "clocks": "all zero except remaining_cached_drains=4",
       "event_control": "parameters/f01e-selected-constructor-v1.json exact canonical cold",
-      "feature": "source_vector/source_scalar positive zero",
+      "feature": "source_vector F32[48][24] and source_scalar F32[48] all positive-zero bits 0x00000000",
       "matrix_assignment": "assignment=-1, markers=0, matrix positive zero, writer_set empty",
       "render_audio": "all numeric histories positive zero and no diffusion instances",
       "selection_outer": "parameters/f03-selected-target-cold-v1.json plus all declared scratch positive-zero/empty/index-zero constructors",
-      "source_cache": "both optional caches absent; last_phase U8=0 UNSET",
-      "source_flags": "flags are callback output, no independent history"
+      "source_cache": "both optional caches absent; last_phase U8=0 UNSET"
     },
     "external_owner_refs": {
       "component_lfe_receiver_qmf": {
@@ -1250,8 +1278,7 @@
       "feature": [
         "source_vector",
         "source_scalar",
-        "fft4096_work",
-        "current_features"
+        "fft4096_work"
       ],
       "matrix_assignment": [
         "assignment",
@@ -1286,9 +1313,6 @@
         "last_normal_host38",
         "last_control_snapshot",
         "last_phase"
-      ],
-      "source_flags": [
-        "current_flags"
       ]
     },
     "failure_and_reset": {
@@ -1337,7 +1361,9 @@
         "selected-owner-projection-v1.json is a seven-group cross-owner projection and is not the full owner schema"
       ],
       "package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+      "schema_amendment_file": "docs/implementation/CALLBACK-OUTPUT-PERSISTENCE-AMENDMENT.md",
       "state_ref_value": "parameters/adm-installed48-state-v1.json#/f03w_owned_fields",
+      "superseding_logic_schema": "selected-adm-installed48-state.v4",
       "wrapper_bindings": {
         "cold_sha256": "SHA-256 over canonical bytes generated from the complete cold constructor and validated provider values",
         "generation": "main callback generation; cold=0",
@@ -1427,6 +1453,10 @@
     }
   },
   "task": {
+    "blocked_on": [
+      "spatial_audio root",
+      "enclosing CallbackTransaction coordinator"
+    ],
     "blockers": [
       "P1.3-C callback implementation waits for all 12 owner roots, including spatial_audio and g>=2 source roots"
     ],
@@ -1464,7 +1494,6 @@
       "source_cache",
       "event_control",
       "render_audio",
-      "source_flags",
       "feature",
       "selection_outer",
       "matrix_assignment"
@@ -1510,7 +1539,7 @@
       "task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT"
     },
     "receipt_order": "12-owner ASCII order approved by P1.3-C; v2 wrapper has no digest/HMAC and stable JSON is test-only",
-    "root_audit": "complete F03W committed-field layout is bound from programme_roots[spatial_control].programme_owner_binding.layout_pointer; all eight field groups are listed and checked against the approved package",
+    "root_audit": "source layout selected-adm-installed48-state.v3 remains bound to the approved package; the approved CALLBACK-OUTPUT-PERSISTENCE-AMENDMENT.md defines logical v4 by removing callback outputs from persistent state; seven persistent groups are listed and checked",
     "stage_authority": "F03W emits SpatialControlReceipt after all F03W leaf stages and downstream receipts pass",
     "stage_only": {
       "join_metadata": [
@@ -1534,15 +1563,31 @@
       "top_level_COMMITTED": "FORBIDDEN"
     },
     "state_layout": {
-      "field_group_count": 8,
+      "field_group_count": 7,
+      "omitted_empty_group": "source_flags has no persistent bytes and no canonical group/tag",
       "owner_state_ref": "#/$defs/ownerState",
       "pointer": "/f03w_owned_fields",
       "programme_owner_pointer": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json#/properties/owners/properties/spatial_control",
-      "schema": "selected-adm-installed48-state.v3",
+      "schema": "selected-adm-installed48-state.v4",
+      "schema_amendment_file": "docs/implementation/CALLBACK-OUTPUT-PERSISTENCE-AMENDMENT.md",
       "schema_file": "parameters/adm-installed48-state-v1.json",
+      "source_schema": "selected-adm-installed48-state.v3",
+      "source_v3_field_group_count": 8,
       "uses_selected_overlap_projection_as_root": false
     },
     "status": "BLOCKED",
+    "superseding_amendment": {
+      "authority": "approved wash-side clean-room amendment; source package remains immutable v3",
+      "document_bytes": 4366,
+      "document_sha256": "2e55a2e142b6482e456e40a9f3154f82574c2ed4259acab5ebab08369a84d474",
+      "file": "docs/implementation/CALLBACK-OUTPUT-PERSISTENCE-AMENDMENT.md",
+      "findings_sha256": "cf25b05789219c08a02d992032d32bd1cb2822b691a133ce185533a2f2555a1b",
+      "input_only_vectors_sha256": "aea2a6286ba523b7867e474410e44b4a88f1011783c5252f9bcdd98ca24b6678",
+      "research_result_sha256": "fa83260a2e6075e1fb81a439deb7060d715ffa08cfafea352902d608c4bfa4f4",
+      "research_scope": "144-row RESET/CARRY feature transpose and two 48-row flags probes; product root/transaction/first callback/audio NOT_RUN; no key or DLL",
+      "schema_id": "selected-adm-installed48-state.v4",
+      "source_schema_id": "selected-adm-installed48-state.v3"
+    },
     "task_id": "P1.3-D-SPATIAL-CONTROL-ROOT-MAP",
     "top_level_committed": "FORBIDDEN",
     "transaction_authority": "same CallbackTransactionId and FrontendCallbackIndex as reader_eof and frontend_control; P1.3-C remains the only eventual commit authority",
@@ -1560,6 +1605,10 @@
 {
   "programme_root_reference": "programme_roots[spatial_control]",
   "task": {
+    "blocked_on": [
+      "spatial_audio root",
+      "enclosing CallbackTransaction coordinator"
+    ],
     "blockers": [
       "P1.3-C callback implementation waits for all 12 owner roots, including spatial_audio and g>=2 source roots"
     ],
@@ -1597,7 +1646,6 @@
       "source_cache",
       "event_control",
       "render_audio",
-      "source_flags",
       "feature",
       "selection_outer",
       "matrix_assignment"
@@ -1643,7 +1691,7 @@
       "task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT"
     },
     "receipt_order": "12-owner ASCII order approved by P1.3-C; v2 wrapper has no digest/HMAC and stable JSON is test-only",
-    "root_audit": "complete F03W committed-field layout is bound from programme_roots[spatial_control].programme_owner_binding.layout_pointer; all eight field groups are listed and checked against the approved package",
+    "root_audit": "source layout selected-adm-installed48-state.v3 remains bound to the approved package; the approved CALLBACK-OUTPUT-PERSISTENCE-AMENDMENT.md defines logical v4 by removing callback outputs from persistent state; seven persistent groups are listed and checked",
     "stage_authority": "F03W emits SpatialControlReceipt after all F03W leaf stages and downstream receipts pass",
     "stage_only": {
       "join_metadata": [
@@ -1667,15 +1715,31 @@
       "top_level_COMMITTED": "FORBIDDEN"
     },
     "state_layout": {
-      "field_group_count": 8,
+      "field_group_count": 7,
+      "omitted_empty_group": "source_flags has no persistent bytes and no canonical group/tag",
       "owner_state_ref": "#/$defs/ownerState",
       "pointer": "/f03w_owned_fields",
       "programme_owner_pointer": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json#/properties/owners/properties/spatial_control",
-      "schema": "selected-adm-installed48-state.v3",
+      "schema": "selected-adm-installed48-state.v4",
+      "schema_amendment_file": "docs/implementation/CALLBACK-OUTPUT-PERSISTENCE-AMENDMENT.md",
       "schema_file": "parameters/adm-installed48-state-v1.json",
+      "source_schema": "selected-adm-installed48-state.v3",
+      "source_v3_field_group_count": 8,
       "uses_selected_overlap_projection_as_root": false
     },
     "status": "BLOCKED",
+    "superseding_amendment": {
+      "authority": "approved wash-side clean-room amendment; source package remains immutable v3",
+      "document_bytes": 4366,
+      "document_sha256": "2e55a2e142b6482e456e40a9f3154f82574c2ed4259acab5ebab08369a84d474",
+      "file": "docs/implementation/CALLBACK-OUTPUT-PERSISTENCE-AMENDMENT.md",
+      "findings_sha256": "cf25b05789219c08a02d992032d32bd1cb2822b691a133ce185533a2f2555a1b",
+      "input_only_vectors_sha256": "aea2a6286ba523b7867e474410e44b4a88f1011783c5252f9bcdd98ca24b6678",
+      "research_result_sha256": "fa83260a2e6075e1fb81a439deb7060d715ffa08cfafea352902d608c4bfa4f4",
+      "research_scope": "144-row RESET/CARRY feature transpose and two 48-row flags probes; product root/transaction/first callback/audio NOT_RUN; no key or DLL",
+      "schema_id": "selected-adm-installed48-state.v4",
+      "source_schema_id": "selected-adm-installed48-state.v3"
+    },
     "task_id": "P1.3-D-SPATIAL-CONTROL-ROOT-MAP",
     "top_level_committed": "FORBIDDEN",
     "transaction_authority": "same CallbackTransactionId and FrontendCallbackIndex as reader_eof and frontend_control; P1.3-C remains the only eventual commit authority",
@@ -1684,6 +1748,60 @@
       "scope": "7-callback deterministic synthetic selected profile only; real ADM cold replay is NOT_RUN and package whole implementation readiness is NO"
     }
   }
+}
+```
+
+## P1.3-D1 spatial_control staging-only implementation
+
+```json
+{
+  "authority": {
+    "abort_fatal": "FORBIDDEN",
+    "local_commit": "FORBIDDEN",
+    "prepare": "pure validation against shared CallbackTransactionId, FrontendCallbackIndex, before_generation, before_sha256 and both provider lineages",
+    "stage": "produce a complete immutable after-state and recomputed full v4 root digest without mutating committed state",
+    "top_level_COMMITTED": "FORBIDDEN"
+  },
+  "callback_output_packets": "programme_roots[spatial_control].callback_output_packets; same parent CallbackTransaction; not persistent root state",
+  "capabilities": {
+    "SpatialControlMachine": "single owner, non-Clone/non-Copy, immutable committed access",
+    "SpatialControlPrepared": "linear, non-Clone/non-Copy",
+    "SpatialControlStaged": "linear, non-Clone/non-Copy"
+  },
+  "cold_inputs": [
+    "ValidatedF01EColdProvider",
+    "ValidatedF03TargetColdProvider",
+    "only the GENERATED cold rules recorded in the v4 mapping"
+  ],
+  "implementation_status": "NOT_STARTED",
+  "join_metadata": [
+    "shared CallbackTransactionId",
+    "same FrontendCallbackIndex",
+    "before_generation and before_sha256",
+    "complete after_sha256 over the full v4 persistent root",
+    "validated F01E and F03 provider lineages",
+    "SourceFlagsPacket and CurrentFeaturesPacket bound to the same parent transaction"
+  ],
+  "programme_root": "spatial_control",
+  "prohibitions": [
+    "no read-time filesystem or JSON access",
+    "no hard-coded provider JSON values",
+    "no callback-local scratch or external owner state in the persistent root",
+    "no zero-fill for unspecified persistent values",
+    "no use of the 630-byte target projection as the full root digest"
+  ],
+  "required_verification": [
+    "complete v4 cold field values, shapes and canonical digest",
+    "provider mismatch and F03 target sentinel/attribute/current-previous independence",
+    "prepare/stage leave committed state unchanged",
+    "machine and tokens cannot be cloned or copied",
+    "compile-fail proof for public commit/abort/fatal and mutable committed access"
+  ],
+  "root_schema": "selected-adm-installed48-state.v4",
+  "schema_amendment_file": "docs/implementation/CALLBACK-OUTPUT-PERSISTENCE-AMENDMENT.md",
+  "scope": "construct the complete v4 spatial_control cold root and provide linear prepare/stage tokens only; no local commit, abort, fatal or top-level COMMITTED",
+  "status": "MAPPING_READY",
+  "task_id": "P1.3-D1-SPATIAL-CONTROL-STAGING-ONLY"
 }
 ```
 
