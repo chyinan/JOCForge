@@ -9,7 +9,7 @@ pub use clock::{
     publication_for_source, source_for_callback,
 };
 pub use index::{
-    AdmSampleCount, ClockDomainTypeSeparation, CodecSourceIndex, FrontendCallbackIndex,
-    JocDispatchIndex, JocGeneratedWriterIndex, JocPoppedWriterIndex, NormalCallbackCount,
-    OrdinaryPayloadWriterIndex, PublishedAuIndex,
+    AdmSampleCount, AdmSampleIndex, ClockDomainTypeSeparation, CodecSourceIndex,
+    FrontendCallbackIndex, JocDispatchIndex, JocGeneratedWriterIndex, JocPoppedWriterIndex,
+    NormalCallbackCount, OrdinaryPayloadWriterIndex, PublishedAuIndex,
 };

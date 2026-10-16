@@ -8,7 +8,7 @@
     "SELECTED_PROFILE_GATE": "LOCALLY_VERIFIED",
     "P1.2": "SCOPED_COMPLETE_CURRENT_MATERIALIZED_CONSUMERS__FUTURE_CONSUMERS_DEFERRED",
     "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B1_STAGING_ONLY__P1.3_C_CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS__P1.3_D_BLOCKED",
-    "P1.3-D1": "MAPPING_READY__NOT_STARTED",
+    "P1.3-D1": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
     "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_LOCALLY_VERIFIED"
   },
   "functional_entries": [
@@ -1676,8 +1676,8 @@
     },
     {
       "root_id": "spatial_control",
-      "materialization_status": "MAPPING_COMPLETE_BLOCKED_ON_P1.3_C_ROOTS",
-      "implementation_status": "NOT_STARTED",
+      "materialization_status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
+      "implementation_status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
       "programme_owner_binding": {
         "owner_id": "spatial_control",
         "wrapper_schema_file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
@@ -2164,7 +2164,7 @@
     },
     "P1.2": "SCOPED_COMPLETE_CURRENT_MATERIALIZED_CONSUMERS__FUTURE_CONSUMERS_DEFERRED",
     "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B1_STAGING_ONLY__P1.3_C_CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS__P1.3_D_BLOCKED",
-    "P1.3-D1": "MAPPING_READY__NOT_STARTED",
+    "P1.3-D1": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
     "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_LOCALLY_VERIFIED",
     "P1.2-A": {
       "task_id": "P1.2-A-Q15-COORDINATE",
@@ -2895,8 +2895,8 @@
     },
     "P1.3-D1": {
       "task_id": "P1.3-D1-SPATIAL-CONTROL-STAGING-ONLY",
-      "status": "MAPPING_READY",
-      "implementation_status": "NOT_STARTED",
+      "status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
+      "implementation_status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
       "scope_approval": "user-approved in the current task handoff on 2026-10-16; scope-only, not a packet-producer specification",
       "programme_root": "spatial_control",
       "root_schema": "selected-adm-installed48-state.v5",
@@ -3006,8 +3006,8 @@
       },
       "profile_only_mismatch_vector": {
         "fixture_file": "crates/jocforge-domain/tests/fixtures/spatial_control_state_v5/PROFILE-IDENTITY-MISMATCH-VECTORS.json",
-        "bytes": 934,
-        "sha256": "c66f867bace11e554f868fe26baa77e528f6af5a5fcece79bd35f5ddb604a642",
+        "bytes": 2318,
+        "sha256": "42690e9dc752f9366c95ff321d778c433a2c2686b574a7f8a54e74f2b1e67aa2",
         "case_id": "same_hash_rejects_unselected_profile_identity",
         "same_state_hash": true,
         "same_generation": true,
@@ -3015,6 +3015,44 @@
         "same_f03_receipt_lineage": true,
         "expected_result": "REJECT_PROFILE_BINDING",
         "profile_is_supported": false
+      },
+      "implementation": {
+        "status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
+        "module_file": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+        "shared_transaction_id_file": "crates/jocforge-domain/src/transaction/mod.rs",
+        "clock_domain_file": "crates/jocforge-domain/src/timeline/index.rs",
+        "module_export_file": "crates/jocforge-domain/src/spatial/mod.rs",
+        "test_file": "crates/jocforge-domain/tests/spatial_control_foundation.rs",
+        "root_canonical_bytes": 768582,
+        "root_canonical_sha256": "cb9b512e03d82604270a22cf60e288f9ea8f6aa808517a6319a27f860552bcc0",
+        "file_inventory": [
+          {
+            "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+            "bytes": 24578,
+            "sha256": "c88bc155ceb256644dbdf67b1cf571675d580ecd3d9ad7ddb693733f194065dc"
+          },
+          {
+            "path": "crates/jocforge-domain/src/transaction/mod.rs",
+            "bytes": 725,
+            "sha256": "3ca14198acbe03b7dcb431319a63004b1ef68bae80396df930e007d576d85e82"
+          },
+          {
+            "path": "crates/jocforge-domain/src/timeline/index.rs",
+            "bytes": 2041,
+            "sha256": "a4f1c06f0472aa7959016e14059054dbc10e63756ded25b6c11bab892a7e85d6"
+          },
+          {
+            "path": "crates/jocforge-domain/src/spatial/mod.rs",
+            "bytes": 467,
+            "sha256": "c995a79bc41dde3e146532c620b2821dea47670f034739043dde44898c463c1c"
+          },
+          {
+            "path": "crates/jocforge-domain/tests/spatial_control_foundation.rs",
+            "bytes": 9428,
+            "sha256": "da7854c7a5ed2a1651114214d71ca266a3e41fc20ccba1958c74ee62f4264ae1"
+          }
+        ],
+        "verified_scope": "complete v5 persistent cold root, full canonical bytes/digest, read-only machine, provider/profile lineage guards, opaque packet capability types, noncold prepare deferred"
       },
       "prohibitions": [
         "no read-time filesystem or JSON access",

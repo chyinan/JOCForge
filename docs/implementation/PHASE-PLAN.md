@@ -1335,8 +1335,8 @@
       "reset": "destroy every owner root and call each referenced cold constructor; a missing constructor is fatal; unknown arrays are not zero-filled",
       "reset_source": "parameters/adm-installed48-state-v1.json#/reset"
     },
-    "implementation_status": "NOT_STARTED",
-    "materialization_status": "MAPPING_COMPLETE_BLOCKED_ON_P1.3_C_ROOTS",
+    "implementation_status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
+    "materialization_status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
     "overlap_projection": {
       "commit_owner_labels": 6,
       "field_groups": 7,
@@ -1892,7 +1892,45 @@
     "selected EncodingProfile identity",
     "only the GENERATED cold rules recorded in the v5 mapping"
   ],
-  "implementation_status": "NOT_STARTED",
+  "implementation": {
+    "clock_domain_file": "crates/jocforge-domain/src/timeline/index.rs",
+    "file_inventory": [
+      {
+        "bytes": 24578,
+        "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+        "sha256": "c88bc155ceb256644dbdf67b1cf571675d580ecd3d9ad7ddb693733f194065dc"
+      },
+      {
+        "bytes": 725,
+        "path": "crates/jocforge-domain/src/transaction/mod.rs",
+        "sha256": "3ca14198acbe03b7dcb431319a63004b1ef68bae80396df930e007d576d85e82"
+      },
+      {
+        "bytes": 2041,
+        "path": "crates/jocforge-domain/src/timeline/index.rs",
+        "sha256": "a4f1c06f0472aa7959016e14059054dbc10e63756ded25b6c11bab892a7e85d6"
+      },
+      {
+        "bytes": 467,
+        "path": "crates/jocforge-domain/src/spatial/mod.rs",
+        "sha256": "c995a79bc41dde3e146532c620b2821dea47670f034739043dde44898c463c1c"
+      },
+      {
+        "bytes": 9428,
+        "path": "crates/jocforge-domain/tests/spatial_control_foundation.rs",
+        "sha256": "da7854c7a5ed2a1651114214d71ca266a3e41fc20ccba1958c74ee62f4264ae1"
+      }
+    ],
+    "module_export_file": "crates/jocforge-domain/src/spatial/mod.rs",
+    "module_file": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+    "root_canonical_bytes": 768582,
+    "root_canonical_sha256": "cb9b512e03d82604270a22cf60e288f9ea8f6aa808517a6319a27f860552bcc0",
+    "shared_transaction_id_file": "crates/jocforge-domain/src/transaction/mod.rs",
+    "status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
+    "test_file": "crates/jocforge-domain/tests/spatial_control_foundation.rs",
+    "verified_scope": "complete v5 persistent cold root, full canonical bytes/digest, read-only machine, provider/profile lineage guards, opaque packet capability types, noncold prepare deferred"
+  },
+  "implementation_status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
   "input_only_vectors": {
     "bytes": 2387,
     "case_count": 14,
@@ -1942,7 +1980,7 @@
     "SourceFlagsPacket and CurrentFeaturesPacket bound to the same parent transaction"
   ],
   "profile_only_mismatch_vector": {
-    "bytes": 934,
+    "bytes": 2318,
     "case_id": "same_hash_rejects_unselected_profile_identity",
     "expected_result": "REJECT_PROFILE_BINDING",
     "fixture_file": "crates/jocforge-domain/tests/fixtures/spatial_control_state_v5/PROFILE-IDENTITY-MISMATCH-VECTORS.json",
@@ -1951,7 +1989,7 @@
     "same_f03_receipt_lineage": true,
     "same_generation": true,
     "same_state_hash": true,
-    "sha256": "c66f867bace11e554f868fe26baa77e528f6af5a5fcece79bd35f5ddb604a642"
+    "sha256": "42690e9dc752f9366c95ff321d778c433a2c2686b574a7f8a54e74f2b1e67aa2"
   },
   "programme_root": "spatial_control",
   "prohibitions": [
@@ -1990,7 +2028,7 @@
     "document_sha256": "424f3cd27d625b2e1809fd06a6a9bae89958d5bc7bccf64170f792947182ead5",
     "file": "docs/implementation/SPATIAL-CONTROL-STAGING-SPEC-GAP.md"
   },
-  "status": "MAPPING_READY",
+  "status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
   "task_id": "P1.3-D1-SPATIAL-CONTROL-STAGING-ONLY"
 }
 ```

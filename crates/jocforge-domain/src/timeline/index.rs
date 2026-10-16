@@ -16,6 +16,7 @@ macro_rules! index_type {
     };
 }
 
+index_type!(AdmSampleIndex);
 index_type!(NormalCallbackCount);
 index_type!(FrontendCallbackIndex);
 index_type!(CodecSourceIndex);

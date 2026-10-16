@@ -6,22 +6,42 @@
       "id": "same_hash_rejects_unselected_profile_identity",
       "before": {
         "profile_identity": "unique-selected-six-dimensional-row",
-        "f01e_receipt_lineage": "same-validated-receipt",
-        "f03_receipt_lineage": "same-validated-receipt",
-        "state_sha256": "same-before-sha256",
-        "generation": 7
+        "f01e_receipt_lineage": {
+          "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+          "provider_file_sha256": "b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb",
+          "canonical_sha256": "9c943879cd36cb45bc7538346cfdf4f71d0998d8f261f75c135045fcb59870aa",
+          "provider_generation": 0
+        },
+        "f03_receipt_lineage": {
+          "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+          "provider_file_sha256": "a4b53854822a5f17a5413d6f2ded127a7366257c2a171377afcea4a84a3eaf00",
+          "target_projection_sha256": "b1acfa3ce43b6ce987836330a3db3945c81b3d62d96d4973f18b302dc6d2606c",
+          "provider_generation": 0
+        },
+        "state_sha256": "cb9b512e03d82604270a22cf60e288f9ea8f6aa808517a6319a27f860552bcc0",
+        "generation": 0
       },
       "proposal": {
         "profile_identity": "not-the-unique-selected-six-dimensional-row",
-        "f01e_receipt_lineage": "same-validated-receipt",
-        "f03_receipt_lineage": "same-validated-receipt",
-        "state_sha256": "same-before-sha256",
-        "generation": 7
+        "f01e_receipt_lineage": {
+          "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+          "provider_file_sha256": "b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb",
+          "canonical_sha256": "9c943879cd36cb45bc7538346cfdf4f71d0998d8f261f75c135045fcb59870aa",
+          "provider_generation": 0
+        },
+        "f03_receipt_lineage": {
+          "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+          "provider_file_sha256": "a4b53854822a5f17a5413d6f2ded127a7366257c2a171377afcea4a84a3eaf00",
+          "target_projection_sha256": "b1acfa3ce43b6ce987836330a3db3945c81b3d62d96d4973f18b302dc6d2606c",
+          "provider_generation": 0
+        },
+        "state_sha256": "cb9b512e03d82604270a22cf60e288f9ea8f6aa808517a6319a27f860552bcc0",
+        "generation": 0
       },
       "expected": {
         "result": "REJECT_PROFILE_BINDING",
         "state_sha256": "unchanged",
-        "generation": 7
+        "generation": 0
       }
     }
   ]
