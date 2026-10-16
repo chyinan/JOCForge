@@ -8,7 +8,7 @@
     "SELECTED_PROFILE_GATE": "LOCALLY_VERIFIED",
     "P1.2": "SCOPED_COMPLETE_CURRENT_MATERIALIZED_CONSUMERS__FUTURE_CONSUMERS_DEFERRED",
     "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B1_STAGING_ONLY__P1.3_C_CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS__P1.3_D_BLOCKED",
-    "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_NOT_OPEN"
+    "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_MAPPING_READY__IMPLEMENTATION_NOT_STARTED"
   },
   "functional_entries": [
     {
@@ -1675,7 +1675,7 @@
     },
     {
       "root_id": "spatial_control",
-      "materialization_status": "MAPPING_COMPLETE_BLOCKED_ON_P1.3_C_AND_P1.4_B_F03_PROVIDER",
+      "materialization_status": "MAPPING_COMPLETE_BLOCKED_ON_P1.3_C_ROOTS",
       "implementation_status": "NOT_STARTED",
       "programme_owner_binding": {
         "owner_id": "spatial_control",
@@ -1924,7 +1924,7 @@
           "package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
           "required_prerequisite": {
             "task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT",
-            "status": "NOT_OPEN",
+            "status": "MAPPING_READY_AFTER_P1.4_B",
             "required_before": "spatial_control implementation or provider-backed staging"
           }
         }
@@ -1949,7 +1949,6 @@
         "mapping_status": "MAPPING_COMPLETE_BLOCKED",
         "implementation_status": "NOT_STARTED",
         "blockers": [
-          "P1.4-B has not authenticated the F03 selected target cold provider under an approved provider contract",
           "P1.3-C callback implementation is waiting for all 12 owner roots, including spatial_audio and g>=2 source roots",
           "P1.3-D must not define any local root commit or top-level COMMITTED receipt"
         ]
@@ -2099,7 +2098,7 @@
     },
     "P1.2": "SCOPED_COMPLETE_CURRENT_MATERIALIZED_CONSUMERS__FUTURE_CONSUMERS_DEFERRED",
     "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B1_STAGING_ONLY__P1.3_C_CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS__P1.3_D_BLOCKED",
-    "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_NOT_OPEN",
+    "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_MAPPING_READY__IMPLEMENTATION_NOT_STARTED",
     "P1.2-A": {
       "task_id": "P1.2-A-Q15-COORDINATE",
       "status": "LOCALLY_VERIFIED",
@@ -2710,16 +2709,15 @@
           "bytes": 3139,
           "sha256": "a4b53854822a5f17a5413d6f2ded127a7366257c2a171377afcea4a84a3eaf00",
           "package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-          "prerequisite_status": "NOT_OPEN"
+          "prerequisite_status": "MAPPING_READY_AFTER_P1.4_B"
         }
       },
       "receipt_order": "12-owner ASCII order approved by P1.3-C; v2 wrapper has no digest/HMAC and stable JSON is test-only",
       "prerequisites": [
         {"task_id": "P1.3-C-CALLBACK-TRANSACTION-CONTRACT-MAP", "status": "CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS"},
-        {"task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT", "status": "NOT_OPEN"}
+        {"task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT", "status": "MAPPING_READY"}
       ],
       "blockers": [
-        "P1.4-B must authenticate and validate f03-selected-target-cold-v1.json",
         "P1.3-C callback implementation waits for all 12 owner roots, including spatial_audio and g>=2 source roots"
       ],
       "state_layout": {
@@ -2771,7 +2769,7 @@
       "owner_receipt_order_and_wrapper": "P1.3-C approves 12-owner ASCII order and schema v2 with 13 fields; wrapper has no digest/HMAC; implementation waits for root availability",
       "provider_prerequisite": {
         "task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT",
-        "status": "NOT_OPEN",
+        "status": "MAPPING_READY_AFTER_P1.4_B",
         "required_provider": "parameters/f03-selected-target-cold-v1.json",
         "identity_source": "approved package MANIFEST.json entry"
       },
@@ -2992,6 +2990,240 @@
           "custom typed canonical writer"
         ]
       }
+    },
+    "P1.4-B": {
+      "task_id": "P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT",
+      "status": "MAPPING_READY",
+      "implementation_status": "NOT_STARTED",
+      "scope": "F03 selected target cold provider identity, exact shape, committed target-field mapping, and target-only canonical projection; mapping only",
+      "prerequisites": [
+        {
+          "task_id": "P1.4-A-F01E-PROVIDER-CONTRACT",
+          "status": "LOCALLY_VERIFIED"
+        }
+      ],
+      "provider_identity": {
+        "path": "parameters/f03-selected-target-cold-v1.json",
+        "manifest_entry_bytes": 3139,
+        "manifest_entry_sha256": "a4b53854822a5f17a5413d6f2ded127a7366257c2a171377afcea4a84a3eaf00",
+        "package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+        "schema_id": "f03-selected-target-cold.v1",
+        "provider_kind": "exact_parseable_functional_constant",
+        "private_key_required": false,
+        "additional_or_unknown_top_level_fields": "REJECT"
+      },
+      "top_level_fields": [
+        "schema",
+        "profile_dimensions",
+        "provider_kind",
+        "current_xyz_u32",
+        "current_id_u32",
+        "current_attribute_u32",
+        "previous_xyz_u32",
+        "previous_id_u32",
+        "previous_attribute_u32",
+        "active_u8",
+        "previous_marker_active_u8",
+        "source",
+        "private_key_required",
+        "evidence",
+        "local_review"
+      ],
+      "profile_dimensions": {
+        "source_count_N": 48,
+        "feature_bands_B": 24,
+        "target_capacity_T": 15,
+        "axes": 3,
+        "active_target_count_n": {
+          "type": "explanatory string",
+          "value": "runtime integer 0..15; arrays allocate T=15 and consume prefix [0:n]",
+          "state_field": false,
+          "cold_numeric_value": null
+        }
+      },
+      "target_state_fields": [
+        {
+          "provider_field": "current_xyz_u32",
+          "type": "flat U32[45]",
+          "cold": "45 x 0x00000000",
+          "maps_to": "selection_outer.target_current_xyz F32[15][3] raw U32 bits",
+          "index_mapping": "slot*3+X/Y/Z",
+          "canonical_offset": 0,
+          "canonical_bytes": 180,
+          "canonical_encoding": "U32LE"
+        },
+        {
+          "provider_field": "current_id_u32",
+          "type": "U32[15]",
+          "cold": "15 x 0xFFFFFFFF",
+          "maps_to": "selection_outer.target_current_id",
+          "canonical_offset": 180,
+          "canonical_bytes": 60,
+          "canonical_encoding": "U32LE"
+        },
+        {
+          "provider_field": "current_attribute_u32",
+          "type": "U32[15]",
+          "cold": "15 x 0x00000B00 (2816)",
+          "maps_to": "selection_outer.target_current_attribute",
+          "canonical_offset": 240,
+          "canonical_bytes": 60,
+          "canonical_encoding": "U32LE"
+        },
+        {
+          "provider_field": "previous_xyz_u32",
+          "type": "flat U32[45]",
+          "cold": "45 x positive-zero bits 0x00000000",
+          "maps_to": "selection_outer.target_previous_xyz F32[15][3] raw U32 bits",
+          "index_mapping": "slot*3+X/Y/Z",
+          "canonical_offset": 300,
+          "canonical_bytes": 180,
+          "canonical_encoding": "U32LE"
+        },
+        {
+          "provider_field": "previous_id_u32",
+          "type": "U32[15]",
+          "cold": "15 x 0xFFFFFFFF",
+          "maps_to": "selection_outer.target_previous_id",
+          "canonical_offset": 480,
+          "canonical_bytes": 60,
+          "canonical_encoding": "U32LE"
+        },
+        {
+          "provider_field": "previous_attribute_u32",
+          "type": "U32[15]",
+          "cold": "15 x 0x00000B00 (2816)",
+          "maps_to": "selection_outer.target_previous_attribute",
+          "canonical_offset": 540,
+          "canonical_bytes": 60,
+          "canonical_encoding": "U32LE"
+        },
+        {
+          "provider_field": "active_u8",
+          "type": "U8[15]",
+          "cold": "15 x 0",
+          "maps_to": "selection_outer.target_active",
+          "canonical_offset": 600,
+          "canonical_bytes": 15,
+          "canonical_encoding": "U8"
+        },
+        {
+          "provider_field": "previous_marker_active_u8",
+          "type": "U8[15]",
+          "cold": "15 x 0",
+          "maps_to": "selection_outer.previous_marker_active",
+          "canonical_offset": 615,
+          "canonical_bytes": 15,
+          "canonical_encoding": "U8"
+        }
+      ],
+      "field_invariants": [
+        "current and previous target arrays are distinct logical state fields; equal cold values do not permit mutable aliasing",
+        "0xFFFFFFFF is the valid cold target-ID sentinel; do not apply warm-ID range 0..47 validation to cold IDs",
+        "0x00000B00 is the selected target cold attribute; do not substitute reader or metadata cold attribute 0",
+        "active_u8 remains U8[15]; do not widen it to a U32 ABI field"
+      ],
+      "target_only_projection": {
+        "scope": "target-only cold-state identity; not the complete spatial_control root state or root digest",
+        "field_order": [
+          "current_xyz_u32",
+          "current_id_u32",
+          "current_attribute_u32",
+          "previous_xyz_u32",
+          "previous_id_u32",
+          "previous_attribute_u32",
+          "active_u8",
+          "previous_marker_active_u8"
+        ],
+        "encoding": "concatenate fixed arrays in row-major order; U32 fields little-endian; XYZ values are raw F32 U32 bits; U8 fields are unmodified bytes; no header, tags, counts, padding, or trailing bytes",
+        "offsets": [
+          {"field": "current_xyz_u32", "offset": 0, "bytes": 180},
+          {"field": "current_id_u32", "offset": 180, "bytes": 60},
+          {"field": "current_attribute_u32", "offset": 240, "bytes": 60},
+          {"field": "previous_xyz_u32", "offset": 300, "bytes": 180},
+          {"field": "previous_id_u32", "offset": 480, "bytes": 60},
+          {"field": "previous_attribute_u32", "offset": 540, "bytes": 60},
+          {"field": "active_u8", "offset": 600, "bytes": 15},
+          {"field": "previous_marker_active_u8", "offset": 615, "bytes": 15}
+        ],
+        "bytes": 630,
+        "sha256": "b1acfa3ce43b6ce987836330a3db3945c81b3d62d96d4973f18b302dc6d2606c",
+        "excluded": [
+          "profile_dimensions.active_target_count_n explanatory string",
+          "callback-local selector, refinement, NNLS and outer scratch",
+          "provider source, evidence and local_review metadata",
+          "external F05R56, F04C, F05JL, F13 and F15 owner state"
+        ]
+      },
+      "io_input": {
+        "types": [
+          "PackageManifestEvidence",
+          "ProviderFileEvidence"
+        ],
+        "identity_first": true,
+        "validation_flow": [
+          "recompute the complete MANIFEST.json SHA-256 before parsing the manifest",
+          "parse the SHA-authenticated manifest and require one unique F03 provider entry",
+          "bind the entry path, byte length and SHA-256 into validated manifest lineage",
+          "validate provider byte observation against that unique manifest entry before UTF-8 or JSON parsing",
+          "after identity validation, reject malformed UTF-8, JSON syntax errors, duplicate keys and unknown top-level fields",
+          "validate exact field types, array lengths and cold-value constraints before producing any validated provider"
+        ],
+        "diagnostic_path_is_identity": false
+      },
+      "output": {
+        "validated_provider": "ValidatedF03TargetColdProvider with private typed fields; no serde_json::Value exposure",
+        "receipt": {
+          "type": "F03TargetProviderReceipt",
+          "authority": "internal immutable receipt shape following the approved P1.4-A provider-lineage pattern; not a package field schema",
+          "fields": [
+            "validated_manifest_lineage",
+            "provider_file_sha256",
+            "provider_file_bytes",
+            "schema_id",
+            "canonical_sha256",
+            "canonical_bytes",
+            "provider_generation"
+          ],
+          "lineage": "validated_manifest_lineage binds the expected provider identity and recomputed manifest entry; caller constants alone are not proof",
+          "canonical_scope": "the 630-byte target-only projection above; not the complete spatial_control root",
+          "provider_generation": 0,
+          "immutability": "all fields immutable"
+        }
+      },
+      "dependency_scope": {
+        "crate": "serde_json",
+        "version": "=1.0.154",
+        "default_features": false,
+        "features": [
+          "std"
+        ],
+        "archive_sha256": "e7e9cc8b1b85264074fbcc02a88680c4096b1e47df8f739dceb03bf482f04bd6",
+        "allowed_use": "F03 provider syntax parsing and private field access after identity gates only",
+        "canonical_writer": "project-owned typed writer; serde_json serialization is not used"
+      },
+      "wash_side_evidence": {
+        "authority": "approved clean-room mapping basis; not a product-execution claim",
+        "findings_sha256": "851782d973fc40099099a4e76e9ef53399664c2eafa9ce023b120c407b474699",
+        "input_only_vectors_sha256": "c7b451b2d49a358605e31c271d41a21d3a50b204f5043259b04083521a3288b9",
+        "field_mapping_sha256": "8e7e8c8f96abc221f110fbf4fc618c6850682939b83cf11796e145344d399c5b",
+        "schema_basis_sha256": "9ac88011b7e95546b977b2119d4f8b52b8a2d976e39d6edecb812e048d339790",
+        "research_validation": "12 semantic mutations; 14 source pins; PASS_RESEARCH_MATERIAL_STRUCTURE_AND_IDENTITIES_ONLY",
+        "loader_staging_full_root_and_audio_execution": "NOT_RUN",
+        "private_key_present": false
+      },
+      "boundaries": {
+        "io": "read immutable package manifest and provider bytes; diagnostic paths are not identity",
+        "domain": "validate provider identity, parse exact fields, map the eight cold target arrays and form the target-only projection; no file access",
+        "application": "coordinate evidence and validated provider receipt only; no spatial_control staging or commit"
+      },
+      "failure": "identity, syntax, shape, field, cold-value or projection mismatch yields no validated provider or receipt; caller fails before P1.3-D staging",
+      "implementation_prohibitions": [
+        "no Rust provider loader in P1.4-B",
+        "no spatial_control production implementation",
+        "no full spatial_control root digest claim from the target-only projection",
+        "no private key or external owner state"
+      ]
     }
   },
   "approved_dependencies": {
@@ -3010,7 +3242,7 @@
       ],
       "archive_sha256": "e7e9cc8b1b85264074fbcc02a88680c4096b1e47df8f739dceb03bf482f04bd6",
       "license_choice": "Apache-2.0",
-      "scope": "F01E provider syntax parsing and private field access after identity gate only"
+      "scope": "F01E P1.4-A and F03 target P1.4-B provider syntax parsing/private field access after identity gates only; canonical writers remain project-owned"
     }
   }
 }

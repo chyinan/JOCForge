@@ -31,6 +31,8 @@ def render(d):
   x=d['phase_one']['P1.3-D'];o['PHASE-PLAN.md']+='\n## P1.3-D spatial_control root audit\n\n```json\n'+json.dumps({'task':x,'programme_root_reference':f"programme_roots[{x['programme_root']}]"},ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
  if 'P1.4-A'in d['phase_one']:
   x=d['phase_one']['P1.4-A'];o['PHASE-PLAN.md']+='\n## P1.4-A F01E provider contract audit\n\n```json\n'+json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
+ if 'P1.4-B'in d['phase_one']:
+  x=d['phase_one']['P1.4-B'];o['PHASE-PLAN.md']+='\n## P1.4-B F03 selected target cold provider mapping\n\n'+chr(96)*3+'json\n'+json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)+'\n'+chr(96)*3+'\n'
  return o
 def main():
  a=argparse.ArgumentParser();a.add_argument('--check',action='store_true');x=a.parse_args();d=json.loads(M.read_text(encoding='utf-8'));bad=[]
