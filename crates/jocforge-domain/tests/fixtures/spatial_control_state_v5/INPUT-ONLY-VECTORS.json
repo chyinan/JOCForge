@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge-spatial-control-v5-input-vectors.v1",
+  "input_only": true,
+  "product_execution": "NOT_RUN",
+  "cases": [
+    {"id":"cold_profile_binding","input":{"N":48,"B":24,"T":15,"axes":3},"expected":{"serialized_profile_dimensions_bytes":0,"absence_tag":false,"sum_target_active":0}},
+    {"id":"cold_feature_positive_zero","input":{"operation":"COLD"},"expected":{"source_vector_words":1152,"source_scalar_words":48,"all_bits":"0x00000000"}},
+    {"id":"negative_zero_cold_rejected","input":{"source_vector_0_0_bits":"0x80000000"},"expected":{"result":"REJECT_COLD_IDENTITY"}},
+    {"id":"callback_packets_not_persistent","input":{"serialize_fields":["source_flags.current_flags","feature.current_features"]},"expected":{"result":"REJECT_NON_STATE_FIELDS"}},
+    {"id":"feature_transpose","input":{"after_source_vector":"distinct finite bit pattern per source/band"},"expected":{"features_rule":"features[band][source] bits equal source_vector_after[source][band]"}},
+    {"id":"flags_before_history","input":{"same_before_history":true,"different_current_input_or_writers":true},"expected":{"flags_may_differ":true,"next_history_read":false}},
+    {"id":"cold_packet_not_ready","input":{"operation":"READ_PACKET_BEFORE_CALLBACK"},"expected":{"result":"NOT_READY"}},
+    {"id":"zero_selection_retains_installed","input":{"old_installed_active":3,"selected_count":0},"expected":{"installed_active_count":3,"capacity":15}},
+    {"id":"quiet_changes_committed_active","input":{"installed_active_count":3,"quiet_all":true},"expected":{"committed_active_count_if_parent_commits":0,"profile_binding_constant":true}},
+    {"id":"dimensions_not_root_bytes","input":{"extra_u32le":[48,24,15,3]},"expected":{"result":"REJECT_UNAPPROVED_PROJECTION_BYTES"}},
+    {"id":"annotation_not_count","input":{"value":"runtime integer 0..15; arrays allocate T=15 and consume prefix [0:n]"},"expected":{"result":"REJECT_NON_STATE_FIELD"}},
+    {"id":"profile_mismatch","input":{"state_sha256_equal":true,"provider_identity_equal":false},"expected":{"result":"REJECT_PROFILE_BINDING"}},
+    {"id":"parent_failure_discards_packets","input":{"stage_success":true,"parent_commit":false},"expected":{"committed_root":"UNCHANGED","packets":"INVALID"}},
+    {"id":"reset_same_profile","input":{"old_active_count":3},"expected":{"active_count":0,"capacity":15,"profile_binding_constant":true}}
+  ]
+}

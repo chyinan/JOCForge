@@ -8,7 +8,7 @@
     "SELECTED_PROFILE_GATE": "LOCALLY_VERIFIED",
     "P1.2": "SCOPED_COMPLETE_CURRENT_MATERIALIZED_CONSUMERS__FUTURE_CONSUMERS_DEFERRED",
     "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B1_STAGING_ONLY__P1.3_C_CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS__P1.3_D_BLOCKED",
-    "P1.3-D1": "MAPPING_READY__NOT_STARTED",
+    "P1.3-D1": "BLOCKED_SPEC_GAP__NOT_STARTED",
     "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_LOCALLY_VERIFIED"
   },
   "functional_entries": [
@@ -1703,8 +1703,9 @@
         "layout_manifest_entry_sha256": "5138318de304b83d26e47271c1661bcc903cebcd2cea457ae98e0048b161ed46",
         "package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
         "layout_schema": "selected-adm-installed48-state.v3",
-        "superseding_logic_schema": "selected-adm-installed48-state.v4",
-        "schema_amendment_file": "docs/implementation/CALLBACK-OUTPUT-PERSISTENCE-AMENDMENT.md",
+        "superseding_logic_schema": "selected-adm-installed48-state.v5",
+        "previous_schema_amendment_file": "docs/implementation/CALLBACK-OUTPUT-PERSISTENCE-AMENDMENT.md",
+        "schema_amendment_file": "docs/implementation/SPATIAL-CONTROL-STATE-V5-AMENDMENT.md",
         "layout_pointer": "/f03w_owned_fields",
         "owner_mapping_basis": [
           "GTC owner table maps spatial_control to F03 feature, target current/previous, active/marker and main callback generation",
@@ -1743,7 +1744,6 @@
           "fft4096_work"
         ],
         "selection_outer": [
-          "profile_dimensions",
           "target_current_xyz",
           "target_current_id",
           "target_current_attribute",
@@ -1764,6 +1764,45 @@
           "matrix",
           "writer_set"
         ]
+      },
+      "profile_binding": {
+        "schema_identity": "selected-adm-installed48-state.v5",
+        "dimensions": {
+          "source_count_N": 48,
+          "feature_bands_B": 24,
+          "target_capacity_T": 15,
+          "axes": 3
+        },
+        "persistent_state_field": false,
+        "root_canonical_bytes": 0,
+        "presence_tag": false,
+        "binding_sources": [
+          "selected EncodingProfile identity",
+          "validated F01E provider receipt",
+          "validated F03 target provider receipt"
+        ],
+        "active_target_count_n": {
+          "classification": "documentation_only",
+          "numeric_state": false,
+          "canonical_member": false,
+          "cold_numeric_value": null
+        },
+        "authorization": "reject cross-profile token binding even when state hashes are equal"
+      },
+      "count_domains": {
+        "universal_active_count": false,
+        "distinct_domains": [
+          "candidate count",
+          "selected count",
+          "installed destinations",
+          "outer-solver dimension",
+          "committed active flags",
+          "previous-marker flags",
+          "NNLS working-set count"
+        ],
+        "committed_active_count": "derived sum of target_active U8[15]",
+        "target_capacity_T": 15,
+        "persistent_state_field": false
       },
       "callback_local_only_fields": [
         "event_control.derived_control38",
@@ -1878,7 +1917,7 @@
         "optional": "presence byte then payload",
         "variable_records": "U32LE count and length",
         "scratch": "callback-local scratch is excluded from serialized committed state",
-        "digest": "SHA-256 over the complete serialized v4 persistent f03w_owned_fields; recompute from the full v4 preimage after the callback-output fields are removed",
+        "digest": "SHA-256 over the complete serialized v5 persistent f03w_owned_fields; recompute from the full v5 preimage after callback outputs and immutable profile_dimensions are excluded",
         "external_state": "F05R56/F04C/F05JL/F13/F15 states remain under their own owners and are not embedded in this digest"
       },
       "stage_authority": {
@@ -2125,7 +2164,7 @@
     },
     "P1.2": "SCOPED_COMPLETE_CURRENT_MATERIALIZED_CONSUMERS__FUTURE_CONSUMERS_DEFERRED",
     "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B1_STAGING_ONLY__P1.3_C_CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS__P1.3_D_BLOCKED",
-    "P1.3-D1": "MAPPING_READY__NOT_STARTED",
+    "P1.3-D1": "BLOCKED_SPEC_GAP__NOT_STARTED",
     "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_LOCALLY_VERIFIED",
     "P1.2-A": {
       "task_id": "P1.2-A-Q15-COORDINATE",
@@ -2711,7 +2750,7 @@
         "spatial_audio root",
         "enclosing CallbackTransaction coordinator"
       ],
-      "root_audit": "source layout selected-adm-installed48-state.v3 remains bound to the approved package; the approved CALLBACK-OUTPUT-PERSISTENCE-AMENDMENT.md defines logical v4 by removing callback outputs from persistent state; seven persistent groups are listed and checked",
+      "root_audit": "source layout selected-adm-installed48-state.v3 remains bound to the approved package; local v4 and approved v5 amendments define the logical persistent root; callback outputs and immutable profile_dimensions are excluded from mutable state and seven persistent groups remain",
       "vector_evidence": {
         "programme_root_pointer": "programme_roots[spatial_control].vector_evidence",
         "scope": "7-callback deterministic synthetic selected profile only; real ADM cold replay is NOT_RUN and package whole implementation readiness is NO"
@@ -2755,14 +2794,25 @@
       "state_layout": {
         "schema_file": "parameters/adm-installed48-state-v1.json",
         "source_schema": "selected-adm-installed48-state.v3",
-        "schema_amendment_file": "docs/implementation/CALLBACK-OUTPUT-PERSISTENCE-AMENDMENT.md",
-        "schema": "selected-adm-installed48-state.v4",
+        "previous_schema_amendment_file": "docs/implementation/CALLBACK-OUTPUT-PERSISTENCE-AMENDMENT.md",
+        "previous_schema_amendment_id": "selected-adm-installed48-state.v4",
+        "schema_amendment_file": "docs/implementation/SPATIAL-CONTROL-STATE-V5-AMENDMENT.md",
+        "schema": "selected-adm-installed48-state.v5",
         "pointer": "/f03w_owned_fields",
         "programme_owner_pointer": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json#/properties/owners/properties/spatial_control",
         "owner_state_ref": "#/$defs/ownerState",
         "source_v3_field_group_count": 8,
         "field_group_count": 7,
-        "omitted_empty_group": "source_flags has no persistent bytes and no canonical group/tag",
+        "omitted_root_members": [
+          "source_flags has no persistent bytes and no canonical group/tag",
+          "selection_outer.profile_dimensions is immutable admission metadata; zero canonical bytes and no tag"
+        ],
+        "profile_dimensions_persistent_state_field": false,
+        "profile_dimensions_root_canonical_bytes": 0,
+        "profile_dimensions_presence_tag": false,
+        "supplement_manifest_identity": "selected-adm-installed48-state.v5-wash-amendment",
+        "supplement_manifest_sha256": "c881f9b11c169d29e532a18de38fe1f31c600b0167e18f3c0e7c3bee91945f38",
+        "profile_binding": "selected EncodingProfile identity plus validated F01E and F03 provider receipts; not mutable root state",
         "uses_selected_overlap_projection_as_root": false
       },
       "complete_owner_groups": [
@@ -2808,37 +2858,57 @@
         "required_provider": "parameters/f03-selected-target-cold-v1.json",
         "identity_source": "approved package MANIFEST.json entry"
       },
-      "superseding_amendment": {
+      "previous_local_amendment": {
         "schema_id": "selected-adm-installed48-state.v4",
-        "source_schema_id": "selected-adm-installed48-state.v3",
         "file": "docs/implementation/CALLBACK-OUTPUT-PERSISTENCE-AMENDMENT.md",
         "document_bytes": 4366,
-        "document_sha256": "2e55a2e142b6482e456e40a9f3154f82574c2ed4259acab5ebab08369a84d474",
-        "authority": "approved wash-side clean-room amendment; source package remains immutable v3",
-        "findings_sha256": "cf25b05789219c08a02d992032d32bd1cb2822b691a133ce185533a2f2555a1b",
-        "input_only_vectors_sha256": "aea2a6286ba523b7867e474410e44b4a88f1011783c5252f9bcdd98ca24b6678",
-        "research_result_sha256": "fa83260a2e6075e1fb81a439deb7060d715ffa08cfafea352902d608c4bfa4f4",
-        "research_scope": "144-row RESET/CARRY feature transpose and two 48-row flags probes; product root/transaction/first callback/audio NOT_RUN; no key or DLL"
+        "document_sha256": "2e55a2e142b6482e456e40a9f3154f82574c2ed4259acab5ebab08369a84d474"
+      },
+      "superseding_amendment": {
+        "schema_id": "selected-adm-installed48-state.v5-wash-amendment",
+        "source_schema_id": "selected-adm-installed48-state.v3",
+        "previous_local_schema_id": "selected-adm-installed48-state.v4",
+        "file": "docs/implementation/SPATIAL-CONTROL-STATE-V5-AMENDMENT.md",
+        "document_bytes": 6122,
+        "document_sha256": "294a5068f432d286d9af4aca1f5f0e4e080dcba64a7e0802abac73896f71b60f",
+        "authority": "approved supplement selected-adm-installed48-state.v5-wash-amendment; frozen implementer package remains unchanged",
+        "supplement_manifest_file": "MANIFEST.json",
+        "supplement_manifest_sha256": "c881f9b11c169d29e532a18de38fe1f31c600b0167e18f3c0e7c3bee91945f38",
+        "spec_file": "SPEC.md",
+        "spec_sha256": "c7010d04546b7661663e33ea2822d306665487ff303845bdd541a9ce8a0b4411",
+        "schema_file": "SCHEMA-AMENDMENT.json",
+        "schema_sha256": "0bd3be009962e6498c584718e3b63d5aafbdbf423e474c7cf58879385b60fe94",
+        "input_only_vectors_file": "INPUT-ONLY-VECTORS.json",
+        "input_only_vectors_bytes": 2387,
+        "input_only_vectors_sha256": "c5292f9a4dfd607704f4a442963b56b3f239e0bc69b8a9d03619fc65bdbc0d69",
+        "research_basis_files_read": false,
+        "product_execution_scope": "full root canonical serializer, product transaction executor, complete callback/audio replay NOT_RUN"
       },
       "implementation_rust": "FORBIDDEN while status=BLOCKED"
     },
     "P1.3-D1": {
       "task_id": "P1.3-D1-SPATIAL-CONTROL-STAGING-ONLY",
-      "status": "MAPPING_READY",
+      "status": "BLOCKED_ON_SOURCE_FLAGS_PRODUCER_CONTRACT",
       "implementation_status": "NOT_STARTED",
       "programme_root": "spatial_control",
-      "root_schema": "selected-adm-installed48-state.v4",
-      "schema_amendment_file": "docs/implementation/CALLBACK-OUTPUT-PERSISTENCE-AMENDMENT.md",
-      "scope": "construct the complete v4 spatial_control cold root and provide linear prepare/stage tokens only; no local commit, abort, fatal or top-level COMMITTED",
+      "root_schema": "selected-adm-installed48-state.v5",
+      "schema_amendment_file": "docs/implementation/SPATIAL-CONTROL-STATE-V5-AMENDMENT.md",
+      "spec_gap_document": {
+        "file": "docs/implementation/SPATIAL-CONTROL-STAGING-SPEC-GAP.md",
+        "document_bytes": 1749,
+        "document_sha256": "9547f871d0db006835e351c0aa27062a07a497e6ba44b0f039ae14acb032a469"
+      },
+      "scope": "construct the complete v5 spatial_control cold root and provide linear prepare/stage tokens only; no local commit, abort, fatal or top-level COMMITTED",
       "cold_inputs": [
         "ValidatedF01EColdProvider",
         "ValidatedF03TargetColdProvider",
-        "only the GENERATED cold rules recorded in the v4 mapping"
+        "selected EncodingProfile identity",
+        "only the GENERATED cold rules recorded in the v5 mapping"
       ],
       "callback_output_packets": "programme_roots[spatial_control].callback_output_packets; same parent CallbackTransaction; not persistent root state",
       "authority": {
-        "prepare": "pure validation against shared CallbackTransactionId, FrontendCallbackIndex, before_generation, before_sha256 and both provider lineages",
-        "stage": "produce a complete immutable after-state and recomputed full v4 root digest without mutating committed state",
+        "prepare": "pure validation against shared CallbackTransactionId, FrontendCallbackIndex, before_generation, before_sha256, selected EncodingProfile identity and both provider receipt lineages",
+        "stage": "produce a complete immutable after-state and recomputed full v5 root digest without mutating committed state; equal state hashes do not authorize cross-profile/provider tokens",
         "local_commit": "FORBIDDEN",
         "abort_fatal": "FORBIDDEN",
         "top_level_COMMITTED": "FORBIDDEN"
@@ -2851,24 +2921,48 @@
       "join_metadata": [
         "shared CallbackTransactionId",
         "same FrontendCallbackIndex",
+        "selected EncodingProfile identity",
         "before_generation and before_sha256",
-        "complete after_sha256 over the full v4 persistent root",
-        "validated F01E and F03 provider lineages",
+        "complete after_sha256 over the full v5 persistent root",
+        "validated F01E provider receipt lineage",
+        "validated F03 target provider receipt lineage",
         "SourceFlagsPacket and CurrentFeaturesPacket bound to the same parent transaction"
       ],
       "required_verification": [
-        "complete v4 cold field values, shapes and canonical digest",
+        "complete v5 cold field values, shapes and canonical digest",
         "provider mismatch and F03 target sentinel/attribute/current-previous independence",
+        "same state hash with distinct profile identities and equal F01E/F03 lineages is rejected",
+        "same state hash with equal profile identity and a distinct provider lineage is rejected",
+        "all approved v5 input-only vectors compute actual results before expected comparison",
         "prepare/stage leave committed state unchanged",
         "machine and tokens cannot be cloned or copied",
         "compile-fail proof for public commit/abort/fatal and mutable committed access"
+      ],
+      "input_only_vectors": {
+        "fixture_file": "crates/jocforge-domain/tests/fixtures/spatial_control_state_v5/INPUT-ONLY-VECTORS.json",
+        "bytes": 2387,
+        "sha256": "c5292f9a4dfd607704f4a442963b56b3f239e0bc69b8a9d03619fc65bdbc0d69",
+        "case_count": 14,
+        "product_execution": "NOT_RUN",
+        "expected_values_as_control_flow": "FORBIDDEN"
+      },
+      "blockers": [
+        "flags_before_history has no concrete callback input/control/route/prefix-writer records, U8[48][2] generation rule, or expected flag bytes; D1 cannot compute actual results without guessing",
+        "SourceFlagsPacket cannot be verified as derived from before history and same-callback inputs without the missing producer contract or a scope amendment defining an opaque validated packet input"
+      ],
+      "unblock_options": [
+        "approve an exact SourceFlagsPacket producer contract with concrete input/output vectors and before-history read point",
+        "approve a D1 scope amendment that consumes an opaque SourceFlagsPacket with explicit producer lineage and defers packet generation plus flags_before_history"
       ],
       "prohibitions": [
         "no read-time filesystem or JSON access",
         "no hard-coded provider JSON values",
         "no callback-local scratch or external owner state in the persistent root",
         "no zero-fill for unspecified persistent values",
-        "no use of the 630-byte target projection as the full root digest"
+        "no use of the 630-byte target projection as the full root digest",
+        "no persistence or canonical encoding for profile_dimensions",
+        "do not implement a SourceFlagsPacket producer without an approved rule",
+        "do not partially materialize the spatial_control root while blocked"
       ]
     },
     "P1.4-A": {
