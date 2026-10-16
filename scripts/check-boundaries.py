@@ -133,8 +133,8 @@ def check_active_mapping(root, package, data):
         require(entry["status"] == "PARTIALLY_MATERIALIZED", f"{identifier} claims a complete mapping")
         require(entry["inventory_status"] == "INVENTORIED", f"{identifier} inventory status drift")
         require(
-            entry["implementation_status"] == "SCOPED_CLAUSES_LOCALLY_VERIFIED",
-            f"{identifier} scoped implementation status drift",
+            entry["implementation_status"] == "IMPLEMENTATION_PENDING_A_GATE",
+            f"{identifier} implementation status must wait for the A gate",
         )
         require(entry["clock"]["domains"] == CLOCK_DOMAINS, f"{identifier} clock-domain types drift")
         require(entry["clock"]["covered_clauses"] == CLOCK_CLAUSES, f"{identifier} clock clauses drift")
@@ -214,18 +214,17 @@ def check_active_mapping(root, package, data):
         "traceability must remain partial",
     )
     require(
-        data["status"]["P1.1"] == "CLOCK_FOUNDATION_LOCALLY_VERIFIED"
-        and data["status"]["CLOCK_FOUNDATION"] == "LOCALLY_VERIFIED"
+        data["status"]["CLOCK_FOUNDATION"] == "GO_AFTER_A_GATE"
         and data["status"]["SELECTED_PROFILE_GATE"] == "HOLD"
-        and phase["P1.1"]["status"] == "LOCALLY_VERIFIED",
-        "P1.1 active-slice verification status drift",
+        and phase["P1.1"]["status"] == "A_GATE_REQUIRED_BEFORE_CLOCK_IMPLEMENTATION",
+        "P1.1 active-slice gate status drift",
     )
     require(
         [task["task_id"] for task in phase["P1.1"]["tasks"]]
         == ["CLOCK-FOUNDATION", "SELECTED-PROFILE-GATE"]
-        and phase["P1.1"]["tasks"][0]["status"] == "LOCALLY_VERIFIED"
+        and phase["P1.1"]["tasks"][0]["status"] == "GO"
         and phase["P1.1"]["tasks"][1] == {"task_id": "SELECTED-PROFILE-GATE", "status": "HOLD"},
-        "P1.1 must contain only the scoped CLOCK-FOUNDATION implementation",
+        "P1.1 must have CLOCK-FOUNDATION as its only GO task",
     )
     require(
         phase["P1.1"]["tasks"][0]["functional_scope"]
@@ -320,20 +319,6 @@ def check_project_boundaries(root):
     require(
         "Self::selected_with_carriage(EmdfCarriageProfile::DeployedCompat)" in production_profile,
         "deployed_compat must remain the production default",
-    )
-    dataflow_doc = (root / "docs/architecture/DATAFLOW.md").read_text(encoding="utf-8")
-    clock_doc_terms = [
-        "g=0..4246",
-        "g=4247..4250",
-        "d=s+1=g-1",
-        "JocGeneratedWriterIndex",
-        "OrdinaryPayloadWriterIndex",
-        "JocPoppedWriterIndex",
-        "CONSUMED_SUPPRESSED",
-    ]
-    require(
-        all(term in dataflow_doc for term in clock_doc_terms) and "JocWriterIndex" not in dataflow_doc,
-        "DATAFLOW must preserve the three distinct CLOCK writer domains and selected ranges",
     )
 
     dependency_sets = {

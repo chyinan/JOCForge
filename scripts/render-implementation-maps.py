@@ -202,12 +202,8 @@ def render(data):
         task_rows,
     )
     plan += "\n## Gate order\n\n"
-    if phase["status"] == "LOCALLY_VERIFIED":
-        plan += "The A-stage documentation gate passed before CLOCK-FOUNDATION implementation began. "
-        plan += "CLOCK-FOUNDATION is locally verified.\n\n"
-    else:
-        plan += "The documentation gate must pass before CLOCK-FOUNDATION implementation work begins. "
-        plan += "CLOCK-FOUNDATION is the only GO task in this slice.\n\n"
+    plan += "The documentation gate must pass before CLOCK-FOUNDATION implementation work begins. "
+    plan += "CLOCK-FOUNDATION is the only GO task in this slice.\n\n"
     plan += "P1.2, P1.3, P1.4, and SELECTED-PROFILE-GATE remain HOLD.\n\n"
     plan += "## Failing-first tests\n\n"
     plan += "\n".join(

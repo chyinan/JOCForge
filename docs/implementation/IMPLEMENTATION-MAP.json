@@ -3,8 +3,8 @@
   "status": {
     "ARCHITECTURE_DESIGN": "APPROVED",
     "TRACEABILITY": "PARTIALLY_MATERIALIZED",
-    "P1.1": "CLOCK_FOUNDATION_LOCALLY_VERIFIED",
-    "CLOCK_FOUNDATION": "LOCALLY_VERIFIED",
+    "P1.1": "CLOCK_FOUNDATION_AFTER_A_GATE",
+    "CLOCK_FOUNDATION": "GO_AFTER_A_GATE",
     "SELECTED_PROFILE_GATE": "HOLD",
     "P1.2": "HOLD",
     "P1.3": "HOLD",
@@ -106,7 +106,7 @@
       ],
       "status": "PARTIALLY_MATERIALIZED",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "SCOPED_CLAUSES_LOCALLY_VERIFIED",
+      "implementation_status": "IMPLEMENTATION_PENDING_A_GATE",
       "active_slice_materialization": "MATERIALIZED"
     },
     {
@@ -276,7 +276,7 @@
       ],
       "status": "PARTIALLY_MATERIALIZED",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "SCOPED_CLAUSES_LOCALLY_VERIFIED",
+      "implementation_status": "IMPLEMENTATION_PENDING_A_GATE",
       "active_slice_materialization": "MATERIALIZED"
     },
     {
@@ -1172,7 +1172,7 @@
   },
   "phase_one": {
     "P1.1": {
-      "status": "LOCALLY_VERIFIED",
+      "status": "A_GATE_REQUIRED_BEFORE_CLOCK_IMPLEMENTATION",
       "completed_functional_ids": [],
       "tasks": [
         {
@@ -1207,7 +1207,7 @@
           "planned_tests": [
             "crates/jocforge-domain/tests/timeline_clock_contract.rs"
           ],
-          "status": "LOCALLY_VERIFIED"
+          "status": "GO"
         },
         {
           "task_id": "SELECTED-PROFILE-GATE",

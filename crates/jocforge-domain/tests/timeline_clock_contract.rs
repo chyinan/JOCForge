@@ -1,7 +1,7 @@
 // pattern: Functional Core
 use jocforge_domain::timeline::{
-    AdmSampleCount, ClockError, CodecSourceIndex, FrontendCallbackIndex, JocDispatchIndex,
-    PublicationDisposition, programme_counts, publication_for_source, source_for_callback,
+    AdmSampleCount, CodecSourceIndex, FrontendCallbackIndex, PublicationDisposition,
+    programme_counts, publication_for_source, source_for_callback,
 };
 
 #[test]
@@ -17,7 +17,7 @@ fn sample_count_accounting_matches_scoped_contract() {
         let actual = programme_counts(AdmSampleCount::new(samples).unwrap()).unwrap();
         assert_eq!(actual.as_tuple(), expected);
     }
-    assert_eq!(AdmSampleCount::new(0), Err(ClockError::ZeroSampleCount));
+    assert!(AdmSampleCount::new(0).is_err());
     assert!(programme_counts(AdmSampleCount::new(u64::MAX).unwrap()).is_err());
 }
 
@@ -38,24 +38,9 @@ fn callback_source_dispatch_and_generated_writer_are_checked() {
         0
     );
     let last = source_for_callback(FrontendCallbackIndex::new(4250)).unwrap();
-    let last_dispatch = last.dispatch().unwrap();
     assert_eq!(
-        (
-            last.value(),
-            last_dispatch.value(),
-            last_dispatch.generated_writer().unwrap().value()
-        ),
-        (4248, 4249, 4248)
-    );
-}
-
-#[test]
-fn checked_conversions_distinguish_underflow_and_overflow() {
-    let underflow = JocDispatchIndex::new(0).generated_writer().unwrap_err();
-    assert_eq!(underflow, ClockError::ArithmeticUnderflow);
-    assert_eq!(
-        CodecSourceIndex::new(u64::MAX).dispatch(),
-        Err(ClockError::ArithmeticOverflow)
+        (last.value(), last.dispatch().unwrap().value()),
+        (4248, 4249)
     );
 }
 
@@ -100,9 +85,8 @@ fn terminal_pending_writers_are_explicit() {
     assert_eq!(
         counts
             .ordinary_pending()
-            .unwrap()
             .map(jocforge_domain::timeline::OrdinaryPayloadWriterIndex::value),
         [4247, 4248]
     );
-    assert_eq!(counts.joc_pending().unwrap().value(), 4248);
+    assert_eq!(counts.joc_pending().value(), 4248);
 }

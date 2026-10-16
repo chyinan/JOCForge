@@ -13,7 +13,6 @@ const SUPPRESSED_SOURCES: u64 = 2;
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum ClockError {
     ZeroSampleCount,
-    ArithmeticUnderflow,
     ArithmeticOverflow,
 }
 
@@ -37,21 +36,14 @@ impl ProgrammeCounts {
             self.last_real,
         )
     }
-    pub fn ordinary_pending(self) -> Result<[OrdinaryPayloadWriterIndex; 2], ClockError> {
-        let next = self
-            .published
-            .checked_add(1)
-            .ok_or(ClockError::ArithmeticOverflow)?;
-        Ok([
+    pub fn ordinary_pending(self) -> [OrdinaryPayloadWriterIndex; 2] {
+        [
             OrdinaryPayloadWriterIndex::new(self.published),
-            OrdinaryPayloadWriterIndex::new(next),
-        ])
+            OrdinaryPayloadWriterIndex::new(self.published + 1),
+        ]
     }
-    pub fn joc_pending(self) -> Result<JocGeneratedWriterIndex, ClockError> {
-        self.sources
-            .checked_sub(1)
-            .map(JocGeneratedWriterIndex::new)
-            .ok_or(ClockError::ArithmeticUnderflow)
+    pub fn joc_pending(self) -> JocGeneratedWriterIndex {
+        JocGeneratedWriterIndex::new(self.sources - 1)
     }
 }
 
@@ -66,15 +58,13 @@ pub fn programme_counts(samples: AdmSampleCount) -> Result<ProgrammeCounts, Cloc
         .ok_or(ClockError::ArithmeticOverflow)?;
     let sources = total
         .checked_sub(PRIMING_CALLBACKS)
-        .ok_or(ClockError::ArithmeticUnderflow)?;
+        .ok_or(ClockError::ArithmeticOverflow)?;
     let published = sources
         .checked_sub(SUPPRESSED_SOURCES)
-        .ok_or(ClockError::ArithmeticUnderflow)?;
+        .ok_or(ClockError::ArithmeticOverflow)?;
     let rem = n % SAMPLES_PER_CALLBACK;
     let last_real = if rem == 0 { SAMPLES_PER_CALLBACK } else { rem };
-    let padding = SAMPLES_PER_CALLBACK
-        .checked_sub(last_real)
-        .ok_or(ClockError::ArithmeticUnderflow)?;
+    let padding = SAMPLES_PER_CALLBACK - last_real;
     Ok(ProgrammeCounts {
         normal: NormalCallbackCount::new(normal),
         padding,
@@ -102,7 +92,7 @@ impl JocDispatchIndex {
         self.value()
             .checked_sub(1)
             .map(JocGeneratedWriterIndex::new)
-            .ok_or(ClockError::ArithmeticUnderflow)
+            .ok_or(ClockError::ArithmeticOverflow)
     }
 }
 
@@ -126,8 +116,8 @@ pub fn publication_for_source(s: CodecSourceIndex) -> Result<PublicationDisposit
             joc_popped: Some(JocPoppedWriterIndex::new(0)),
         }),
         v => {
-            let j = v.checked_sub(2).ok_or(ClockError::ArithmeticUnderflow)?;
-            let popped = v.checked_sub(1).ok_or(ClockError::ArithmeticUnderflow)?;
+            let j = v.checked_sub(2).ok_or(ClockError::ArithmeticOverflow)?;
+            let popped = v.checked_sub(1).ok_or(ClockError::ArithmeticOverflow)?;
             Ok(PublicationDisposition::Published(PublishedConsumption {
                 au: PublishedAuIndex::new(j),
                 ordinary: OrdinaryPayloadWriterIndex::new(j),
