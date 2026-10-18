@@ -1,6 +1,6 @@
 # CurrentFeatures provider mapping
 
-Status: P1.4-C mapping only. The two provider validators and CurrentFeatures producer are not implemented in Rust.
+Status: P1.4-C exact typed provider validators are implemented and locally verified; the CurrentFeatures producer is ready for implementation but not started.
 
 This mapping binds the washed `current-features-producer.math-route.v1` supplement to the two exact selected math providers. It does not implement the feature algorithm, claim native/SIMD equivalence, or claim product audio acceptance.
 
@@ -75,7 +75,7 @@ Across the 12 stages the provider contains 4,095 complex root pairs, or 8,190 U3
 
 ## Identity-first validator boundary
 
-The future exact validators reuse `PackageManifestEvidence` and `ProviderFileEvidence`; they do not read files in `domain` and do not introduce a generic parameter platform.
+The exact validators reuse `PackageManifestEvidence` and `ProviderFileEvidence`; they do not read files in `domain` and do not introduce a generic parameter platform.
 
 1. Recompute and verify the complete package manifest byte length and SHA-256 before parsing it.
 2. Parse the authenticated `files` array and require exactly one entry for each provider path, with the exact byte length and SHA-256 above.
@@ -129,8 +129,16 @@ The separate numerical-quality file reports five synthetic FFT comparisons to th
 
 The nine input-only negative cases use research-side labels such as `READ_AUDIO_MISSING` and `NONFINITE_INTERMEDIATE`; they are not native codes. Their expected result is no packet and `state_commit_count=0`.
 
+## Implemented validator boundary
+
+The two validators are in `crates/jocforge-domain/src/frontend/current_features_provider.rs`; public exports are limited to the typed validators, private-field provider outputs, read-only accessors, receipts, and the mapped error enum. The domain accepts `PackageManifestEvidence` and `ProviderFileEvidence`; it performs no file I/O. It validates the complete package manifest identity before parsing and then requires one exact entry for each provider. Each provider's observed bytes and SHA must match its entry before UTF-8 or JSON parsing. Parsing rejects duplicate/unknown fields, wrong schema or dimensions, non-integer/bool numeric values, incorrect shapes, and U32 overflow. The FFT validator additionally enforces the selected route, 12 exact stage lengths, all root pair counts and widths, and 4,095 pairs / 8,190 words.
+
+Validated outputs retain coefficient/root words from the authenticated source files; no coefficient/root table is regenerated, compiled in, or replaced. No provider projection digest, canonical writer, or generation value is defined. `serde_json::Value` remains private to the validator implementation and is not part of a public type or receipt.
+
+Tests are in `crates/jocforge-domain/tests/current_features_provider.rs`, with parser-edge tests private to the validator module. The two provider fixtures are byte-for-byte copies under `crates/jocforge-domain/tests/fixtures/current_features/`; tests reuse the only tracked package manifest at `crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json`. No second manifest fixture exists. Fixtures are internal-only and absent from production code.
+
 ## Readiness boundary
 
-`P1.4-C` is mapping-only complete; neither typed validator exists in Rust. `CURRENT_FEATURES_PRODUCER` therefore remains `BLOCKED_ON_P1.4_C_PROVIDER_CONTRACTS`. This map is sufficient to implement the two exact provider validators as a separate future slice, not permission to implement the CurrentFeatures algorithm now.
+`P1.4-C` is `LOCALLY_VERIFIED`. `CURRENT_FEATURES_PRODUCER` is `READY_FOR_IMPLEMENTATION` with `implementation_status=NOT_STARTED`; that status authorizes no algorithm work within the provider-validator slice. Product FFT/feature execution, real-ADM route, codec/EC3, perceptual acceptance, and parent transaction execution remain `NOT_RUN`.
 
 `SourceFlagsPacket` remains `LOCALLY_VERIFIED_NUMERIC_AND_PACKET`. P1.3-D1 remains `LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED`. P1.3-D remains blocked on CurrentFeatures, the `spatial_audio` root, and the enclosing `CallbackTransaction`. Product FFT/feature execution, full provider-loader integration, real-ADM route, codec/EC3, perceptual acceptance, and parent transaction execution remain `NOT_RUN`.

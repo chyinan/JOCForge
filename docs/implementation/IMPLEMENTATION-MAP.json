@@ -10,8 +10,8 @@
     "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B1_STAGING_ONLY__P1.3_C_CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS__P1.3_D_BLOCKED",
     "P1.3-D1": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
     "SOURCE_FLAGS_PRODUCER": "LOCALLY_VERIFIED_NUMERIC_AND_PACKET",
-    "CURRENT_FEATURES_PRODUCER": "BLOCKED_ON_P1.4_C_PROVIDER_CONTRACTS",
-    "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_LOCALLY_VERIFIED__P1.4_C_MAPPED_VALIDATORS_NOT_IMPLEMENTED"
+    "CURRENT_FEATURES_PRODUCER": "READY_FOR_IMPLEMENTATION",
+    "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_LOCALLY_VERIFIED__P1.4_C_LOCALLY_VERIFIED"
   },
   "functional_entries": [
     {
@@ -1843,7 +1843,7 @@
           "payload": "features F32[24][48]",
           "order": "band-major",
           "bitwise_relation": "features[band][source] = source_vector_after[source][band]",
-        "producer_status": "BLOCKED_ON_P1.4_C_PROVIDER_CONTRACTS",
+          "producer_status": "READY_FOR_IMPLEMENTATION_NOT_STARTED",
           "persistent": false,
           "root_canonical_bytes": 0,
           "presence_tag": false,
@@ -2171,7 +2171,7 @@
     "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B1_STAGING_ONLY__P1.3_C_CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS__P1.3_D_BLOCKED",
     "P1.3-D1": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
     "SOURCE_FLAGS_PRODUCER": "LOCALLY_VERIFIED_NUMERIC_AND_PACKET",
-    "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_LOCALLY_VERIFIED__P1.4_C_MAPPED_VALIDATORS_NOT_IMPLEMENTED",
+    "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_LOCALLY_VERIFIED__P1.4_C_LOCALLY_VERIFIED",
     "P1.2-A": {
       "task_id": "P1.2-A-Q15-COORDINATE",
       "status": "LOCALLY_VERIFIED",
@@ -2907,8 +2907,8 @@
       "schema_amendment_file": "docs/implementation/SPATIAL-CONTROL-STATE-V5-AMENDMENT.md",
       "spec_gap_document": {
         "file": "docs/implementation/SPATIAL-CONTROL-STAGING-SPEC-GAP.md",
-        "document_bytes": 2367,
-        "document_sha256": "62fccba767f91780816acf567b1bed77142cba80575ec5a4896537c19c653315"
+        "document_bytes": 2345,
+        "document_sha256": "8047ad6141f98e8a155b9e6b405af642aadb204616ade7b6d9bed6474683c85e"
       },
       "scope": "construct the complete v5 persistent spatial_control cold root and canonical digest; provide a non-Clone read-only machine and prepared/staged foundation accepting only a future producer-generated complete typed after proposal; no packet producers and no local commit, abort, fatal or top-level COMMITTED",
       "cold_inputs": [
@@ -3685,9 +3685,9 @@
     },
     "P1.4-C": {
       "task_id": "P1.4-C-CURRENT-FEATURES-MATH-PROVIDER-CONTRACTS",
-      "status": "MAPPING_COMPLETE_VALIDATORS_NOT_IMPLEMENTED",
-      "implementation_status": "MAPPING_ONLY_DOCS_AND_BOUNDARY_GATES",
-      "scope": "identity-first exact contracts for the two selected CurrentFeatures math providers; no provider Rust, CurrentFeatures algorithm, or product integration",
+      "status": "LOCALLY_VERIFIED",
+      "implementation_status": "LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS",
+      "scope": "identity-first typed validators for the two selected CurrentFeatures math providers; no CurrentFeatures algorithm or product integration",
       "mapping_document": "docs/implementation/CURRENT-FEATURES-PROVIDER-MAP.md",
       "base_package_identity": {
         "manifest_file": "MANIFEST.json",
@@ -3796,17 +3796,19 @@
         "universal_error_bound": false,
         "perceptual_or_real_ADM_acceptance": "NOT_RUN"
       },
-      "planned_validator_modules": ["crates/jocforge-domain/src/frontend/feature_processor_math_provider.rs", "crates/jocforge-domain/src/frontend/feature_fft4096_math_provider.rs"],
-      "planned_provider_tests": ["crates/jocforge-domain/tests/feature_processor_math_provider.rs", "crates/jocforge-domain/tests/feature_fft4096_math_provider.rs"],
-      "algorithm_rust": "FORBIDDEN_IN_P1.4-C_MAPPING_ONLY",
+      "validator_module_files": ["crates/jocforge-domain/src/frontend/current_features_provider.rs"],
+      "provider_test_files": ["crates/jocforge-domain/tests/current_features_provider.rs"],
+      "fixture_files": ["crates/jocforge-domain/tests/fixtures/current_features/feature-processor-math-v1.json", "crates/jocforge-domain/tests/fixtures/current_features/feature-fft4096-math-v1.json", "crates/jocforge-domain/tests/fixtures/current_features/README.md"],
+      "manifest_fixture": "crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json",
+      "algorithm_rust": "FORBIDDEN_IN_P1.4-C_PROVIDER_VALIDATOR_SLICE",
       "direct_unvalidated_provider_consumption": "FORBIDDEN",
       "old_simd_route": "NOT_SELECTED_NO_FALLBACK",
-      "not_run": ["provider validator Rust implementation", "CurrentFeatures algorithm Rust", "real ADM math route", "codec/EC3", "perceptual acceptance", "parent transaction executor", "old SIMD comparison"]
+      "not_run": ["CurrentFeatures algorithm Rust", "real ADM math route", "codec/EC3", "perceptual acceptance", "parent transaction executor", "old SIMD comparison"]
     },
     "CURRENT_FEATURES_PRODUCER": {
       "task_id": "CURRENT-FEATURES-PRODUCER-V1",
-      "status": "BLOCKED_ON_P1.4_C_PROVIDER_CONTRACTS",
-      "implementation_status": "BLOCKED_ON_P1.4_C_PROVIDER_CONTRACTS",
+      "status": "READY_FOR_IMPLEMENTATION",
+      "implementation_status": "NOT_STARTED",
       "selected_route": "REAL_FFT4096_RADIX2_MATH_V1",
       "required_provider_types": ["ValidatedFeatureProcessorMathProvider", "ValidatedFeatureFft4096MathProvider"],
       "raw_provider_evidence_consumption": "FORBIDDEN",
@@ -3816,7 +3818,7 @@
       "source_flags_pair_domain": ["00", "10", "11"],
       "consumer_boundary_open_questions": ["The input-only math vectors include flag pair 01 for reset-priority coverage, but SourceFlags emits only 00/10/11; product policy for rejecting an unreachable forged 01 packet is not assigned by the math provider contract."],
       "outputs": {"after_source_vector": "F32[48][24] source-major proposal", "after_source_scalar": "F32[48] proposal", "CurrentFeaturesPacket": "opaque F32[24][48] band-major; bitwise transpose of after vector", "persistent_packet": false, "local_commit": false, "parent_commit_required": true},
-      "algorithm_rust": "FORBIDDEN_UNTIL_P1.4_C_PROVIDER_CONTRACTS_IMPLEMENTED",
+      "algorithm_rust": "FORBIDDEN_IN_P1.4-C_PROVIDER_VALIDATOR_SLICE",
       "parent_transaction_or_product_execution": "NOT_RUN"
     }
   },

@@ -1167,7 +1167,7 @@
         "payload": "features F32[24][48]",
         "persistent": false,
         "presence_tag": false,
-        "producer_status": "BLOCKED_ON_P1.4_C_PROVIDER_CONTRACTS",
+        "producer_status": "READY_FOR_IMPLEMENTATION_NOT_STARTED",
         "root_canonical_bytes": 0
       },
       "SourceFlagsPacket": {
@@ -2031,8 +2031,8 @@
   "scope": "construct the complete v5 persistent spatial_control cold root and canonical digest; provide a non-Clone read-only machine and prepared/staged foundation accepting only a future producer-generated complete typed after proposal; no packet producers and no local commit, abort, fatal or top-level COMMITTED",
   "scope_approval": "user-approved in the current task handoff on 2026-10-16; scope-only, not a packet-producer specification",
   "spec_gap_document": {
-    "document_bytes": 2367,
-    "document_sha256": "62fccba767f91780816acf567b1bed77142cba80575ec5a4896537c19c653315",
+    "document_bytes": 2345,
+    "document_sha256": "8047ad6141f98e8a155b9e6b405af642aadb204616ade7b6d9bed6474683c85e",
     "file": "docs/implementation/SPATIAL-CONTROL-STAGING-SPEC-GAP.md"
   },
   "status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
@@ -2696,7 +2696,7 @@
 ```json
 {
   "current_features_producer": {
-    "algorithm_rust": "FORBIDDEN_UNTIL_P1.4_C_PROVIDER_CONTRACTS_IMPLEMENTED",
+    "algorithm_rust": "FORBIDDEN_IN_P1.4-C_PROVIDER_VALIDATOR_SLICE",
     "branches": {
       "00": "READ_AUDIO_INPUT",
       "01": "RESET; priority case in consumer vector only, not emitted by SourceFlags producer",
@@ -2711,7 +2711,7 @@
     "consumer_boundary_open_questions": [
       "The input-only math vectors include flag pair 01 for reset-priority coverage, but SourceFlags emits only 00/10/11; product policy for rejecting an unreachable forged 01 packet is not assigned by the math provider contract."
     ],
-    "implementation_status": "BLOCKED_ON_P1.4_C_PROVIDER_CONTRACTS",
+    "implementation_status": "NOT_STARTED",
     "lineage_binding": [
       "programme",
       "attempt",
@@ -2750,11 +2750,11 @@
       "10",
       "11"
     ],
-    "status": "BLOCKED_ON_P1.4_C_PROVIDER_CONTRACTS",
+    "status": "READY_FOR_IMPLEMENTATION",
     "task_id": "CURRENT-FEATURES-PRODUCER-V1"
   },
   "provider_contracts": {
-    "algorithm_rust": "FORBIDDEN_IN_P1.4-C_MAPPING_ONLY",
+    "algorithm_rust": "FORBIDDEN_IN_P1.4-C_PROVIDER_VALIDATOR_SLICE",
     "api_schema_identity": {
       "bytes": 1291,
       "file": "API-SCHEMA.json",
@@ -2864,7 +2864,12 @@
       "synthetic_case_count": 5,
       "universal_error_bound": false
     },
-    "implementation_status": "MAPPING_ONLY_DOCS_AND_BOUNDARY_GATES",
+    "fixture_files": [
+      "crates/jocforge-domain/tests/fixtures/current_features/feature-processor-math-v1.json",
+      "crates/jocforge-domain/tests/fixtures/current_features/feature-fft4096-math-v1.json",
+      "crates/jocforge-domain/tests/fixtures/current_features/README.md"
+    ],
+    "implementation_status": "LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS",
     "io_input": {
       "diagnostic_path_is_identity": false,
       "domain_file_io": false,
@@ -2881,9 +2886,9 @@
         "return only the relevant private typed provider and immutable receipt"
       ]
     },
+    "manifest_fixture": "crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json",
     "mapping_document": "docs/implementation/CURRENT-FEATURES-PROVIDER-MAP.md",
     "not_run": [
-      "provider validator Rust implementation",
       "CurrentFeatures algorithm Rust",
       "real ADM math route",
       "codec/EC3",
@@ -2892,14 +2897,6 @@
       "old SIMD comparison"
     ],
     "old_simd_route": "NOT_SELECTED_NO_FALLBACK",
-    "planned_provider_tests": [
-      "crates/jocforge-domain/tests/feature_processor_math_provider.rs",
-      "crates/jocforge-domain/tests/feature_fft4096_math_provider.rs"
-    ],
-    "planned_validator_modules": [
-      "crates/jocforge-domain/src/frontend/feature_processor_math_provider.rs",
-      "crates/jocforge-domain/src/frontend/feature_fft4096_math_provider.rs"
-    ],
     "provider_contracts": [
       {
         "bytes": 35441,
@@ -3094,10 +3091,13 @@
         "typed_output": "ValidatedFeatureFft4096MathProvider with private typed stages/root pairs and read-only accessors; no serde_json::Value exposure"
       }
     ],
+    "provider_test_files": [
+      "crates/jocforge-domain/tests/current_features_provider.rs"
+    ],
     "receipt_authority": "proposed internal immutable API mapping following P1.4-A/B identity lineage; not a provider JSON field set or native receipt",
-    "scope": "identity-first exact contracts for the two selected CurrentFeatures math providers; no provider Rust, CurrentFeatures algorithm, or product integration",
+    "scope": "identity-first typed validators for the two selected CurrentFeatures math providers; no CurrentFeatures algorithm or product integration",
     "selected_route": "REAL_FFT4096_RADIX2_MATH_V1",
-    "status": "MAPPING_COMPLETE_VALIDATORS_NOT_IMPLEMENTED",
+    "status": "LOCALLY_VERIFIED",
     "supplement": {
       "files": [
         {
@@ -3127,7 +3127,10 @@
       "manifest_sha256": "dcff6c7e009ba1cd5e18a03268eecfc2ac1abeceea319f84830978e68b3271ea",
       "research_basis_files_read": false
     },
-    "task_id": "P1.4-C-CURRENT-FEATURES-MATH-PROVIDER-CONTRACTS"
+    "task_id": "P1.4-C-CURRENT-FEATURES-MATH-PROVIDER-CONTRACTS",
+    "validator_module_files": [
+      "crates/jocforge-domain/src/frontend/current_features_provider.rs"
+    ]
   }
 }
 ```
