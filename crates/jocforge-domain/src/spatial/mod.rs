@@ -5,11 +5,10 @@ pub mod component_parameters_provider;
 #[allow(dead_code)]
 pub mod current_features;
 pub mod descriptor_mathematical_provider;
+pub mod post_window_fanout;
 pub mod qmf_mathematical_fft_provider;
 pub mod qmf_receiver_functional_provider;
 pub mod source_flags;
-#[allow(dead_code)]
-pub(crate) mod spatial_audio;
 pub mod spatial_audio_state;
 pub mod spatial_control;
 pub mod window_q15_provider;

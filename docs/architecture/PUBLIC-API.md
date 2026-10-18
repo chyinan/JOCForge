@@ -30,6 +30,14 @@ owner 的公开边界只接收 immutable input、proposal 或 staged result。�
 
 application 只协调 receipt。它不得计算 FFT、QMF、BAP、mantissa、Huffman、payload 或 frame。CLI 只负责参数和 I/O 组装。validation 不进入 production 依赖图。
 
+## PostWindow fanout capability
+
+`PostWindowRenderProposal` 表示一次 `INSTALLED48_POST_WINDOW_48X3072` render。Future `spatial_control/F03W` renderer 通过内部构造边界创建它；调用者不能提交 raw audio 或默认值。
+
+`fanout(self)` 只返回 `CurrentFeaturesAudioView` 和 `SpatialAudioPostWindowView`。proposal 与两个 view 都不能 `Clone` 或 `Copy`。两个 view 共享同一个只读 `Arc<[FiniteF32]>`，并保留相同 lineage、显式 `CallbackPhase` 和 payload SHA-256。
+
+CurrentFeatures 接受 `Option<CurrentFeaturesAudioView>` 以便对缺失 capability fail closed；`None` 在任何输出或状态 proposal 前都以 `ReadAudioMissing` 拒绝，即使所有 source 都是 RESET/CARRY。正常和 cached-drain 成功路径必须传入显式 proposal view，并同时传入预期 phase。未来 spatial-audio assembler 只消费 `SpatialAudioPostWindowView`，再与同 callback 的 matrix、destination 和 LFE inputs 组合。render producer、assembler 和 parent transaction 仍未实现；这些 view 不授予本地 commit 权限。
+
 ## Reset 与失败
 
 fatal 失败丢弃完整 staged root，并将 programme 标为 `RETIRED`。同一 attempt 不得重试 source。恢复只能从 programme 输入起点执行完整 cold rebuild。未完成 AU、pending payload 或临时文件不得发布。

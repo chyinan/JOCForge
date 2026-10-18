@@ -49,6 +49,10 @@ def render(d):
   x=d['phase_one']['P1.4-D1'];o['PHASE-PLAN.md']+='\n## P1.4-D1 F04 selected component parameter providers\n\n'+chr(96)*3+'json\n'+json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)+'\n'+chr(96)*3+'\n'
  if 'P1.4-D2'in d['phase_one']:
   x=d['phase_one']['P1.4-D2'];o['PHASE-PLAN.md']+='\n## P1.4-D2 F04 remaining provider validators\n\n'+chr(96)*3+'json\n'+json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)+'\n'+chr(96)*3+'\n'
+ if 'POSTWINDOW_FANOUT_FOUNDATION' in d['phase_one']:
+  x=d['phase_one']['POSTWINDOW_FANOUT_FOUNDATION'];block=json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)
+  o['PHASE-PLAN.md']+='\n## PostWindow fanout foundation\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
+  o['POSTWINDOW-FANOUT-MAP.md']='# PostWindow fanout map\n\n由 IMPLEMENTATION-MAP.json 生成，不得手工修改。\n\n'+f"Status: `{x['status']}`. The render producer remains deferred, as do matrix/destination production, F04 assembly, and the parent transaction.\n\n"+'The linear proposal carries one immutable Arc payload. Its two consumer views share that allocation and carry an explicit callback phase.\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
  return o
 def main():
  a=argparse.ArgumentParser();a.add_argument('--check',action='store_true');x=a.parse_args();d=json.loads(M.read_text(encoding='utf-8'));bad=[]

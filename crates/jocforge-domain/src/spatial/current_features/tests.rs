@@ -11,12 +11,15 @@ use crate::{
     },
     profile::{EmdfCarriageProfile, EncodingProfile},
     spatial::{
-        SourceFlagsPacket, SpatialControlMachine,
+        SourceFlagsPacket, SpatialControlJoinMetadata, SpatialControlMachine,
+        post_window_fanout::{
+            CallbackPhase, CurrentFeaturesAudioView, PAYLOAD_BYTE_COUNT, PostWindowFanoutError,
+            tests::{current_features_audio_view_fixture, render_proposal_fixture},
+        },
         source_flags::{
             SourceFlagsAttempt, SourceFlagsParentLineage, SourceFlagsProgrammeId,
             current_features_test_packet,
         },
-        spatial_audio::{PostWindowAudioPacket, tests::fixture as post_window_audio_fixture},
     },
     timeline::FrontendCallbackIndex,
     transaction::CallbackTransactionId,
@@ -69,12 +72,12 @@ const NEGATIVE_CASES: [&str; 9] = [
 ];
 const NEGATIVE_ERROR_LABELS: [&str; 9] = [
     "READ_AUDIO_MISSING",
-    "READ_AUDIO_SHAPE",
-    "SOURCE_SHAPE",
+    "RENDER_PAYLOAD_SHAPE",
+    "RENDER_PAYLOAD_SHAPE",
     "FLAG_DOMAIN",
     "BEFORE_VECTOR_SHAPE",
     "NONFINITE_BEFORE",
-    "NONFINITE_AUDIO",
+    "RENDER_NONFINITE_PAYLOAD",
     "STALE_CALLBACK",
     "NONFINITE_INTERMEDIATE",
 ];
@@ -88,7 +91,8 @@ struct TestContext {
 struct PreparedCase {
     context: TestContext,
     source_flags: SourceFlagsPacket,
-    post_window_audio: Option<PostWindowAudioPacket>,
+    post_window_audio: Option<CurrentFeaturesAudioView>,
+    render_proposal_error: Option<PostWindowFanoutError>,
     callback_index: FrontendCallbackIndex,
 }
 
@@ -210,47 +214,58 @@ fn prepare_case(case: &Value, invalid_before: Option<&str>) -> PreparedCase {
         .and_then(Value::as_u64)
         .map(|count| usize::try_from(count).unwrap());
     let has_audio_recipe = audio_input.is_some_and(|audio| !audio.is_empty());
-    let post_window_audio = if has_audio_recipe || requested_source_count.is_some() {
-        let mut rows = vec![vec![0_u32; 3072]; requested_source_count.unwrap_or(48)];
-        if let Some(audio) = audio_input.filter(|audio| !audio.is_empty()) {
-            for (source, recipe) in audio {
-                let source = source.parse::<usize>().unwrap();
-                if let Some(samples) = recipe.get("samples").and_then(Value::as_u64) {
-                    rows[source].resize(usize::try_from(samples).unwrap(), 0);
-                }
-                if recipe.get("kind").and_then(Value::as_str) == Some("DYADIC_COMB17") {
-                    for (index, word) in rows[source].iter_mut().enumerate() {
-                        let centered = i32::try_from(index % 17).unwrap() - 8;
-                        *word = ((centered as f32) / 4096.0).to_bits();
+    let is_missing_audio_vector = case["case_id"].as_str() == Some("read_missing_audio");
+    let (post_window_audio, render_proposal_error) =
+        if !is_missing_audio_vector || has_audio_recipe || requested_source_count.is_some() {
+            let mut rows = vec![vec![0_u32; 3072]; requested_source_count.unwrap_or(48)];
+            if let Some(audio) = audio_input.filter(|audio| !audio.is_empty()) {
+                for (source, recipe) in audio {
+                    let source = source.parse::<usize>().unwrap();
+                    if let Some(samples) = recipe.get("samples").and_then(Value::as_u64) {
+                        rows[source].resize(usize::try_from(samples).unwrap(), 0);
                     }
-                }
-                if let Some(points) = recipe.get("points_u32").and_then(Value::as_array) {
-                    for point in points {
-                        rows[source][usize::try_from(point[0].as_u64().unwrap()).unwrap()] =
-                            bits(&point[1]);
+                    if recipe.get("kind").and_then(Value::as_str) == Some("DYADIC_COMB17") {
+                        for (index, word) in rows[source].iter_mut().enumerate() {
+                            let centered = i32::try_from(index % 17).unwrap() - 8;
+                            *word = ((centered as f32) / 4096.0).to_bits();
+                        }
+                    }
+                    if let Some(points) = recipe.get("points_u32").and_then(Value::as_array) {
+                        for point in points {
+                            rows[source][usize::try_from(point[0].as_u64().unwrap()).unwrap()] =
+                                bits(&point[1]);
+                        }
                     }
                 }
             }
-        }
-        Some(post_window_audio_fixture(
-            SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
-            SourceFlagsAttempt::new(0),
-            CallbackTransactionId::new(TRANSACTION_ID).unwrap(),
-            packet_callback_index,
-            context.machine.profile(),
-            &context.machine.provider_lineage(),
-            context.machine.generation(),
-            context.machine.digest(),
-            rows,
-        ))
-    } else {
-        None
-    };
+            let spatial_control_join = Arc::new(SpatialControlJoinMetadata::fixture(
+                &context.machine,
+                CallbackTransactionId::new(TRANSACTION_ID).unwrap(),
+                packet_callback_index,
+                context.machine.generation(),
+                None,
+                context.machine.profile(),
+            ));
+            let payload = rows.into_iter().flatten().map(f32::from_bits).collect();
+            match current_features_audio_view_fixture(
+                SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
+                SourceFlagsAttempt::new(0),
+                spatial_control_join,
+                CallbackPhase::Normal,
+                payload,
+            ) {
+                Ok(view) => (Some(view), None),
+                Err(error) => (None, Some(error)),
+            }
+        } else {
+            (None, None)
+        };
 
     PreparedCase {
         context,
         source_flags,
         post_window_audio,
+        render_proposal_error,
         callback_index,
     }
 }
@@ -260,12 +275,16 @@ fn produce(
     invalid_before: Option<&str>,
 ) -> Result<super::CurrentFeaturesProduced, CurrentFeaturesError> {
     let prepared = prepare_case(case, invalid_before);
+    if let Some(error) = prepared.render_proposal_error {
+        panic!("positive CurrentFeatures vector rejected by render boundary: {error:?}");
+    }
     produce_current_features(
         &prepared.context.machine,
         &SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
         SourceFlagsAttempt::new(0),
         &CallbackTransactionId::new(TRANSACTION_ID).unwrap(),
         prepared.callback_index,
+        CallbackPhase::Normal,
         prepared.source_flags,
         prepared.post_window_audio,
         &prepared.context.processor,
@@ -315,7 +334,6 @@ fn error_label(error: CurrentFeaturesError) -> &'static str {
         CurrentFeaturesError::BeforeVectorShape => "BEFORE_VECTOR_SHAPE",
         CurrentFeaturesError::BeforeScalarShape => "BEFORE_SCALAR_SHAPE",
         CurrentFeaturesError::NonFiniteBefore => "NONFINITE_BEFORE",
-        CurrentFeaturesError::NonFiniteAudio => "NONFINITE_AUDIO",
         CurrentFeaturesError::StaleCallback => "STALE_CALLBACK",
         CurrentFeaturesError::NonFiniteIntermediate => "NONFINITE_INTERMEDIATE",
         CurrentFeaturesError::UnsupportedProfile => "PROFILE_BINDING",
@@ -323,6 +341,14 @@ fn error_label(error: CurrentFeaturesError) -> &'static str {
         CurrentFeaturesError::ParentLineageMismatch => "LINEAGE_BINDING",
         CurrentFeaturesError::RootIdentityMismatch => "ROOT_BINDING",
         CurrentFeaturesError::RenderBoundaryMismatch => "RENDER_BOUNDARY",
+        CurrentFeaturesError::RenderPhaseMismatch => "RENDER_PHASE",
+    }
+}
+
+fn fanout_error_label(error: &PostWindowFanoutError) -> &'static str {
+    match error {
+        PostWindowFanoutError::PayloadShape => "RENDER_PAYLOAD_SHAPE",
+        PostWindowFanoutError::NonFinitePayload => "RENDER_NONFINITE_PAYLOAD",
     }
 }
 
@@ -379,25 +405,59 @@ fn all_fifteen_current_features_positive_vectors_match_actual_output_first() {
 }
 
 #[test]
+fn current_features_preserves_shared_render_and_after_proposal_identities() {
+    let case = vectors()["positive_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["case_id"] == "read_impulse_no_extra_window")
+        .unwrap()
+        .clone();
+    let prepared = prepare_case(&case, None);
+    let view = prepared.post_window_audio.as_ref().unwrap();
+    let expected_render_stage_identity = Arc::clone(view.render_stage_identity());
+    let expected_after_proposal_identity =
+        Arc::clone(view.spatial_control_after_proposal_identity());
+    let expected_payload_sha256 = view.payload_sha256();
+
+    let produced = produce_current_features(
+        &prepared.context.machine,
+        &SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
+        SourceFlagsAttempt::new(0),
+        &CallbackTransactionId::new(TRANSACTION_ID).unwrap(),
+        prepared.callback_index,
+        CallbackPhase::Normal,
+        prepared.source_flags,
+        prepared.post_window_audio,
+        &prepared.context.processor,
+        &prepared.context.fft,
+    )
+    .unwrap();
+
+    assert_eq!(produced.lineage.callback_phase, CallbackPhase::Normal);
+    assert_eq!(
+        produced.lineage.audio_payload_sha256,
+        expected_payload_sha256
+    );
+    assert_eq!(
+        produced.lineage.audio_payload_byte_count,
+        PAYLOAD_BYTE_COUNT
+    );
+    assert!(Arc::ptr_eq(
+        &produced.lineage.render_stage_identity,
+        &expected_render_stage_identity
+    ));
+    assert!(Arc::ptr_eq(
+        &produced.lineage.spatial_control_after_proposal_identity,
+        &expected_after_proposal_identity
+    ));
+}
+
+#[test]
 fn all_nine_current_features_error_vectors_reject_without_partial_output() {
     let vectors = vectors();
     assert_eq!(vectors["negative_cases"].as_array().unwrap().len(), 9);
-    let expected_errors = [
-        CurrentFeaturesError::ReadAudioMissing,
-        CurrentFeaturesError::AudioShape,
-        CurrentFeaturesError::SourceShape,
-        CurrentFeaturesError::FlagDomain,
-        CurrentFeaturesError::BeforeVectorShape,
-        CurrentFeaturesError::NonFiniteBefore,
-        CurrentFeaturesError::NonFiniteAudio,
-        CurrentFeaturesError::StaleCallback,
-        CurrentFeaturesError::NonFiniteIntermediate,
-    ];
-    for ((case_id, expected_error), expected_label) in NEGATIVE_CASES
-        .into_iter()
-        .zip(expected_errors)
-        .zip(NEGATIVE_ERROR_LABELS)
-    {
+    for (case_id, expected_label) in NEGATIVE_CASES.into_iter().zip(NEGATIVE_ERROR_LABELS) {
         let case = vectors["negative_cases"]
             .as_array()
             .unwrap()
@@ -407,12 +467,42 @@ fn all_nine_current_features_error_vectors_reject_without_partial_output() {
         let prepared = prepare_case(case, Some(case_id));
         let before_generation = prepared.context.machine.generation();
         let before_digest = prepared.context.machine.digest();
+        if let Some(render_error) = prepared.render_proposal_error {
+            let expected_render_error = match case_id {
+                "read_wrong_audio_extent" | "source_count_47" => {
+                    PostWindowFanoutError::PayloadShape
+                }
+                "NaN_read_audio" => PostWindowFanoutError::NonFinitePayload,
+                _ => panic!("unexpected render proposal error in {case_id}"),
+            };
+            assert_eq!(render_error, expected_render_error, "{case_id}");
+            assert_eq!(
+                fanout_error_label(&render_error),
+                expected_label,
+                "{case_id}"
+            );
+            assert_eq!(prepared.context.machine.generation(), before_generation);
+            assert_eq!(prepared.context.machine.digest(), before_digest);
+            assert!(case["expected"]["packet"].is_null(), "{case_id}");
+            assert_eq!(case["expected"]["state_commit_count"].as_u64(), Some(0));
+            continue;
+        }
+        let expected_error = match case_id {
+            "read_missing_audio" => CurrentFeaturesError::ReadAudioMissing,
+            "wrong_flag_value" => CurrentFeaturesError::FlagDomain,
+            "before_vector_23" => CurrentFeaturesError::BeforeVectorShape,
+            "NaN_before" => CurrentFeaturesError::NonFiniteBefore,
+            "stale_callback" => CurrentFeaturesError::StaleCallback,
+            "finite_audio_intermediate_overflow" => CurrentFeaturesError::NonFiniteIntermediate,
+            _ => panic!("{case_id} should fail at the render proposal boundary"),
+        };
         let result = produce_current_features(
             &prepared.context.machine,
             &SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
             SourceFlagsAttempt::new(0),
             &CallbackTransactionId::new(TRANSACTION_ID).unwrap(),
             prepared.callback_index,
+            CallbackPhase::Normal,
             prepared.source_flags,
             prepared.post_window_audio,
             &prepared.context.processor,
@@ -452,14 +542,13 @@ fn current_features_rejects_parent_render_root_and_flags_lineage_mismatches() {
     ];
     for (mismatch, expected_error) in mismatches {
         let current_owner = context();
-        let mut other_owner = context();
         let mut packet_programme = PROGRAMME_ID;
         let mut packet_attempt = 0;
         let mut packet_transaction = TRANSACTION_ID;
         let mut packet_callback = callback;
         let mut packet_profile = current_owner.machine.profile();
         let mut packet_generation = current_owner.machine.generation();
-        let mut packet_digest = current_owner.machine.digest();
+        let mut packet_before_digest = None;
         let mut flags_transaction = TRANSACTION_ID;
         match mismatch {
             "programme" => packet_programme = "OTHER_PROGRAMME",
@@ -471,28 +560,26 @@ fn current_features_rejects_parent_render_root_and_flags_lineage_mismatches() {
                     EncodingProfile::selected_with_carriage(EmdfCarriageProfile::EtsiEmdf);
             }
             "root_generation" => packet_generation += 1,
-            "root_digest" => {
-                let vector = vec![0x3f80_0000; 48 * 24];
-                let scalar = vec![0; 48];
-                other_owner
-                    .machine
-                    .set_current_features_test_history(&vector, &scalar);
-                packet_digest = other_owner.machine.digest();
-            }
+            "root_digest" => packet_before_digest = Some([0x55; 32]),
             "flags_transaction" => flags_transaction = "OTHER_FLAGS_TRANSACTION",
             _ => unreachable!(),
         }
-        let packet = post_window_audio_fixture(
-            SourceFlagsProgrammeId::new(packet_programme).unwrap(),
-            SourceFlagsAttempt::new(packet_attempt),
+        let spatial_control_join = Arc::new(SpatialControlJoinMetadata::fixture(
+            &current_owner.machine,
             CallbackTransactionId::new(packet_transaction).unwrap(),
             packet_callback,
-            packet_profile,
-            &current_owner.machine.provider_lineage(),
             packet_generation,
-            packet_digest,
-            vec![vec![0; 3072]; 48],
-        );
+            packet_before_digest,
+            packet_profile,
+        ));
+        let audio_view = current_features_audio_view_fixture(
+            SourceFlagsProgrammeId::new(packet_programme).unwrap(),
+            SourceFlagsAttempt::new(packet_attempt),
+            spatial_control_join,
+            CallbackPhase::Normal,
+            vec![0.0; 48 * 3072],
+        )
+        .unwrap();
         let flags = flags_packet(&current_owner.machine, flags_transaction, callback);
         let before_generation = current_owner.machine.generation();
         let before_digest = current_owner.machine.digest();
@@ -502,8 +589,9 @@ fn current_features_rejects_parent_render_root_and_flags_lineage_mismatches() {
             SourceFlagsAttempt::new(0),
             &CallbackTransactionId::new(TRANSACTION_ID).unwrap(),
             callback,
+            CallbackPhase::Normal,
             flags,
-            Some(packet),
+            Some(audio_view),
             &current_owner.processor,
             &current_owner.fft,
         );
@@ -514,4 +602,90 @@ fn current_features_rejects_parent_render_root_and_flags_lineage_mismatches() {
         assert_eq!(current_owner.machine.generation(), before_generation);
         assert_eq!(current_owner.machine.digest(), before_digest);
     }
+}
+
+#[test]
+fn current_features_rejects_a_mismatched_explicit_render_phase_without_staging() {
+    let context = context();
+    let callback = FrontendCallbackIndex::new(0);
+    let join = Arc::new(SpatialControlJoinMetadata::fixture(
+        &context.machine,
+        CallbackTransactionId::new(TRANSACTION_ID).unwrap(),
+        callback,
+        context.machine.generation(),
+        None,
+        context.machine.profile(),
+    ));
+    let proposal = render_proposal_fixture(
+        SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
+        SourceFlagsAttempt::new(0),
+        join,
+        CallbackPhase::CachedDrain,
+        vec![0.0; 48 * 3072],
+    )
+    .unwrap();
+    let (audio_view, spatial_view) = proposal.fanout();
+    let flags = flags_packet(&context.machine, TRANSACTION_ID, callback);
+    let before_generation = context.machine.generation();
+    let before_digest = context.machine.digest();
+
+    let result = produce_current_features(
+        &context.machine,
+        &SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
+        SourceFlagsAttempt::new(0),
+        &CallbackTransactionId::new(TRANSACTION_ID).unwrap(),
+        callback,
+        CallbackPhase::Normal,
+        flags,
+        Some(audio_view),
+        &context.processor,
+        &context.fft,
+    );
+
+    let Err(error) = result else {
+        panic!("a mismatched explicit render phase unexpectedly produced a capability");
+    };
+    assert_eq!(error, CurrentFeaturesError::RenderPhaseMismatch);
+    assert_eq!(context.machine.generation(), before_generation);
+    assert_eq!(context.machine.digest(), before_digest);
+    drop(spatial_view);
+}
+
+#[test]
+fn current_features_rejects_missing_render_proposal_for_reset_sources() {
+    let context = context();
+    let callback = FrontendCallbackIndex::new(0);
+    let transaction = CallbackTransactionId::new(TRANSACTION_ID).unwrap();
+    let programme = SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap();
+    let parent = SourceFlagsParentLineage::new(
+        SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
+        SourceFlagsAttempt::new(0),
+        transaction.clone(),
+        callback,
+        &context.machine,
+    )
+    .unwrap();
+    let source_flags = current_features_test_packet([[0, 1]; 48], parent);
+    let before_generation = context.machine.generation();
+    let before_digest = context.machine.digest();
+
+    let result = produce_current_features(
+        &context.machine,
+        &programme,
+        SourceFlagsAttempt::new(0),
+        &transaction,
+        callback,
+        CallbackPhase::Normal,
+        source_flags,
+        None,
+        &context.processor,
+        &context.fft,
+    );
+
+    let Err(error) = result else {
+        panic!("a missing PostWindow proposal unexpectedly produced output");
+    };
+    assert_eq!(error, CurrentFeaturesError::ReadAudioMissing);
+    assert_eq!(context.machine.generation(), before_generation);
+    assert_eq!(context.machine.digest(), before_digest);
 }

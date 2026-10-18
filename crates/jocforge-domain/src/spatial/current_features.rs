@@ -3,10 +3,14 @@
 
 use super::{
     SourceFlagsPacket,
-    spatial_audio::{
-        AudioPayloadSha256, PostWindowAudioBoundary, PostWindowAudioPacket, RenderReceiptIdentity,
+    post_window_fanout::{
+        AudioPayloadSha256, CallbackPhase, CurrentFeaturesAudioView, PostWindowBoundary,
+        RenderStageIdentity,
     },
-    spatial_control::{SpatialControlDigest, SpatialControlMachine, SpatialControlProviderLineage},
+    spatial_control::{
+        SpatialControlDigest, SpatialControlJoinMetadata, SpatialControlMachine,
+        SpatialControlProviderLineage,
+    },
 };
 use crate::{
     frontend::{
@@ -38,6 +42,7 @@ pub(super) enum CurrentFeaturesError {
     ParentLineageMismatch,
     RootIdentityMismatch,
     RenderBoundaryMismatch,
+    RenderPhaseMismatch,
     ReadAudioMissing,
     AudioShape,
     SourceShape,
@@ -45,7 +50,6 @@ pub(super) enum CurrentFeaturesError {
     BeforeVectorShape,
     BeforeScalarShape,
     NonFiniteBefore,
-    NonFiniteAudio,
     StaleCallback,
     NonFiniteIntermediate,
 }
@@ -97,8 +101,11 @@ pub(super) struct CurrentFeaturesLineage {
     pub(super) provider_lineage: SpatialControlProviderLineage,
     pub(super) before_generation: u64,
     pub(super) before_digest: SpatialControlDigest,
-    pub(super) render_receipt_identity: Option<Arc<RenderReceiptIdentity>>,
-    pub(super) audio_payload_sha256: Option<AudioPayloadSha256>,
+    pub(super) callback_phase: CallbackPhase,
+    pub(super) render_stage_identity: Arc<RenderStageIdentity>,
+    pub(super) spatial_control_after_proposal_identity: Arc<SpatialControlJoinMetadata>,
+    pub(super) audio_payload_sha256: AudioPayloadSha256,
+    pub(super) audio_payload_byte_count: u64,
     pub(super) processor_receipt: FeatureProcessorMathProviderReceipt,
     pub(super) fft_receipt: FeatureFft4096MathProviderReceipt,
 }
@@ -124,20 +131,25 @@ pub(super) fn produce_current_features(
     attempt: SourceFlagsAttempt,
     transaction_id: &CallbackTransactionId,
     callback_index: FrontendCallbackIndex,
+    callback_phase: CallbackPhase,
     source_flags: SourceFlagsPacket,
-    post_window_audio: Option<PostWindowAudioPacket>,
+    post_window_audio: Option<CurrentFeaturesAudioView>,
     processor: &ValidatedFeatureProcessorMathProvider,
     fft_provider: &ValidatedFeatureFft4096MathProvider,
 ) -> Result<CurrentFeaturesProduced, CurrentFeaturesError> {
     validate_provider_shape(processor, fft_provider)?;
+    let Some(audio_view) = post_window_audio.as_ref() else {
+        return Err(CurrentFeaturesError::ReadAudioMissing);
+    };
     validate_parent_identity(
         owner,
         programme_id,
         attempt,
         transaction_id,
         callback_index,
+        callback_phase,
         &source_flags,
-        post_window_audio.as_ref(),
+        audio_view,
     )?;
 
     let before_generation = owner.generation();
@@ -173,17 +185,7 @@ pub(super) fn produce_current_features(
             return Err(CurrentFeaturesError::FlagDomain);
         }
     }
-    if let Some(audio) = post_window_audio.as_ref() {
-        validate_audio_shape(audio)?;
-    }
-    if source_flags
-        .payload()
-        .iter()
-        .any(|pair| pair[0] == 0 && pair[1] == 0)
-        && post_window_audio.is_none()
-    {
-        return Err(CurrentFeaturesError::ReadAudioMissing);
-    }
+    validate_audio_shape(audio_view)?;
 
     let fast_decay = finite_provider_word(processor.fast_decay_u32())?;
     let slow_retain = finite_provider_word(processor.slow_retain_u32())?;
@@ -206,10 +208,7 @@ pub(super) fn produce_current_features(
             }
             after_scalar[source] = next_scalar.to_bits();
         } else {
-            let audio = post_window_audio
-                .as_ref()
-                .ok_or(CurrentFeaturesError::ReadAudioMissing)?;
-            let observed = observed_features(audio, source, processor, fft_provider)?;
+            let observed = observed_features(audio_view, source, processor, fft_provider)?;
             let mut current_sum = zero();
             for observed_band in observed {
                 current_sum = r32_add(current_sum, observed_band).map_err(nonfinite)?;
@@ -249,13 +248,11 @@ pub(super) fn produce_current_features(
         }
     }
 
-    let (render_receipt_identity, audio_payload_sha256) = match post_window_audio {
-        Some(packet) => (
-            Some(packet.render_receipt_identity()),
-            Some(packet.payload_sha256()),
-        ),
-        None => (None, None),
-    };
+    let render_stage_identity = Arc::clone(audio_view.render_stage_identity());
+    let spatial_control_after_proposal_identity =
+        Arc::clone(audio_view.spatial_control_after_proposal_identity());
+    let audio_payload_sha256 = audio_view.payload_sha256();
+    let audio_payload_byte_count = audio_view.payload_byte_count();
     let lineage = CurrentFeaturesLineage {
         programme_id: SourceFlagsProgrammeId::new(programme_id.as_str())
             .map_err(|_| CurrentFeaturesError::ParentLineageMismatch)?,
@@ -266,8 +263,11 @@ pub(super) fn produce_current_features(
         provider_lineage: owner.provider_lineage(),
         before_generation,
         before_digest,
-        render_receipt_identity,
+        callback_phase,
+        render_stage_identity,
+        spatial_control_after_proposal_identity,
         audio_payload_sha256,
+        audio_payload_byte_count,
         processor_receipt: *processor.receipt(),
         fft_receipt: *fft_provider.receipt(),
     };
@@ -286,6 +286,7 @@ pub(super) fn produce_current_features(
     };
     let packet =
         CurrentFeaturesPacket::from_producer(callback_index, transaction_id.clone(), features);
+    drop(post_window_audio);
     Ok(CurrentFeaturesProduced {
         feature_state_proposal,
         packet,
@@ -321,14 +322,16 @@ fn validate_provider_shape(
     Ok(())
 }
 
+#[allow(clippy::too_many_arguments)]
 fn validate_parent_identity(
     owner: &SpatialControlMachine,
     programme_id: &SourceFlagsProgrammeId,
     attempt: SourceFlagsAttempt,
     transaction_id: &CallbackTransactionId,
     callback_index: FrontendCallbackIndex,
+    callback_phase: CallbackPhase,
     source_flags: &SourceFlagsPacket,
-    audio: Option<&PostWindowAudioPacket>,
+    audio: &CurrentFeaturesAudioView,
 ) -> Result<(), CurrentFeaturesError> {
     if callback_index != owner.committed().callback_index() {
         return Err(CurrentFeaturesError::StaleCallback);
@@ -338,30 +341,29 @@ fn validate_parent_identity(
     owner
         .validate_profile_identity(&profile)
         .map_err(|_| CurrentFeaturesError::UnsupportedProfile)?;
-    if let Some(packet) = audio {
-        if packet.boundary() != PostWindowAudioBoundary::Installed48PostWindow48x3072 {
-            return Err(CurrentFeaturesError::RenderBoundaryMismatch);
-        }
-        if packet.callback_index() != callback_index {
-            return Err(CurrentFeaturesError::StaleCallback);
-        }
-        if packet.programme_id().as_str() != programme_id.as_str()
-            || packet.attempt() != attempt
-            || packet.transaction_id().as_str() != transaction_id.as_str()
-        {
-            return Err(CurrentFeaturesError::ParentLineageMismatch);
-        }
-        if packet.profile() != profile {
-            return Err(CurrentFeaturesError::UnsupportedProfile);
-        }
-        if packet.provider_lineage() != owner.provider_lineage() {
-            return Err(CurrentFeaturesError::ProviderMismatch);
-        }
-        if packet.before_generation() != owner.generation()
-            || packet.before_digest() != owner.digest()
-        {
-            return Err(CurrentFeaturesError::RootIdentityMismatch);
-        }
+    if audio.boundary() != PostWindowBoundary::Installed48PostWindow48x3072 {
+        return Err(CurrentFeaturesError::RenderBoundaryMismatch);
+    }
+    if audio.callback_phase() != callback_phase {
+        return Err(CurrentFeaturesError::RenderPhaseMismatch);
+    }
+    if audio.callback_index() != callback_index {
+        return Err(CurrentFeaturesError::StaleCallback);
+    }
+    if audio.programme_id().as_str() != programme_id.as_str()
+        || audio.attempt() != attempt
+        || audio.transaction_id().as_str() != transaction_id.as_str()
+    {
+        return Err(CurrentFeaturesError::ParentLineageMismatch);
+    }
+    if audio.profile_identity() != profile {
+        return Err(CurrentFeaturesError::UnsupportedProfile);
+    }
+    if audio.provider_lineage() != owner.provider_lineage() {
+        return Err(CurrentFeaturesError::ProviderMismatch);
+    }
+    if audio.before_generation() != owner.generation() || audio.before_digest() != owner.digest() {
+        return Err(CurrentFeaturesError::RootIdentityMismatch);
     }
     let parent = SourceFlagsParentLineage::new(
         SourceFlagsProgrammeId::new(programme_id.as_str())
@@ -386,10 +388,12 @@ fn validate_parent_identity(
     Ok(())
 }
 
-fn validate_audio_shape(audio: &PostWindowAudioPacket) -> Result<(), CurrentFeaturesError> {
-    validate_source_count(audio.source_count())?;
+fn validate_audio_shape(audio: &CurrentFeaturesAudioView) -> Result<(), CurrentFeaturesError> {
+    if audio.sample_count() != SOURCE_COUNT * AUDIO_SAMPLES {
+        return Err(CurrentFeaturesError::AudioShape);
+    }
     for source in 0..SOURCE_COUNT {
-        if audio.sample_count(source) != Some(AUDIO_SAMPLES) {
+        if audio.source_samples(source).map(<[_]>::len) != Some(AUDIO_SAMPLES) {
             return Err(CurrentFeaturesError::AudioShape);
         }
     }
@@ -397,13 +401,13 @@ fn validate_audio_shape(audio: &PostWindowAudioPacket) -> Result<(), CurrentFeat
 }
 
 fn observed_features(
-    audio: &PostWindowAudioPacket,
+    audio: &CurrentFeaturesAudioView,
     source: usize,
     processor: &ValidatedFeatureProcessorMathProvider,
     fft_provider: &ValidatedFeatureFft4096MathProvider,
 ) -> Result<[FiniteF32; BAND_COUNT], CurrentFeaturesError> {
     let samples = audio
-        .source_bits(source)
+        .source_samples(source)
         .ok_or(CurrentFeaturesError::AudioShape)?;
     let mut fft_values = vec![
         FftComplex32 {
@@ -413,9 +417,8 @@ fn observed_features(
         FFT_LENGTH
     ]
     .into_boxed_slice();
-    for (index, word) in samples.iter().copied().enumerate() {
-        fft_values[index].real = FiniteF32::new(f32::from_bits(word))
-            .map_err(|_| CurrentFeaturesError::NonFiniteAudio)?;
+    for (index, sample) in samples.iter().copied().enumerate() {
+        fft_values[index].real = sample;
     }
     fft4096(&mut fft_values, fft_provider)?;
 

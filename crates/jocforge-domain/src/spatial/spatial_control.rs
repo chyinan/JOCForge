@@ -482,6 +482,24 @@ pub struct SpatialControlStaged {
     _after_digest: SpatialControlDigest,
 }
 
+/// Opaque constructor authority for the future spatial-control render stage.
+pub(super) struct SpatialControlRenderAuthority {
+    _private: (),
+}
+
+impl SpatialControlRenderAuthority {
+    /// Only descendants of spatial_control can mint production render authority.
+    #[allow(dead_code)]
+    fn from_spatial_control_renderer() -> Self {
+        Self { _private: () }
+    }
+
+    #[cfg(test)]
+    pub(in crate::spatial) fn fixture() -> Self {
+        Self { _private: () }
+    }
+}
+
 #[derive(Debug, Eq, PartialEq)]
 pub struct SpatialControlJoinMetadata {
     transaction_id: CallbackTransactionId,

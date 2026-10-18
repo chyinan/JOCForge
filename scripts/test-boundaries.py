@@ -154,9 +154,9 @@ def main():
  ('p13e-other-owner-overlap',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['ownership_partition']['other_owner_fields'].append('direct-LFE ring and source-generation slots'))),
  ('p13e-provider-shape-drift',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['runtime_providers'][0].update(shape='receiver_blend31 Q15'))),
  ('p13e-provider-permission-drift',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['runtime_providers'][0].update(permission='public redistribution allowed'))),
- ('p13e-postwindow-wrong-owner',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['post_window_audio_packet'].update(producer_owner='spatial_audio'))),
- ('p13e-postwindow-stage-drift',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['post_window_audio_packet'].update(producer_stage='after F04C processing'))),
- ('p13e-postwindow-lineage-drift',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['post_window_audio_packet']['lineage'].pop())),
+ ('p13e-postwindow-wrong-owner',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['post_window_fanout'].update(producer_owner='spatial_audio'))),
+ ('p13e-postwindow-stage-drift',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['post_window_fanout'].update(producer_stage='after F04C processing'))),
+ ('p13e-postwindow-lineage-drift',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['post_window_fanout']['lineage'].pop())),
  ('p13e-false-implementation-complete',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['readiness'].update(implementation_status='LOCALLY_VERIFIED'))),
  ('p13e-p13c-no-longer-waiting',map_mut_render(lambda d:d['phase_one']['P1.3-C'].update(status='READY_FOR_IMPLEMENTATION')))
  ]
@@ -297,13 +297,13 @@ def main():
  ]
  cases += [
  ('currentfeatures-integration-manifest-sha-drift',map_mut_render(lambda d:d['phase_one']['CURRENT_FEATURES_PRODUCER']['integration_contract'].update(manifest_sha256='00'*32))),
- ('currentfeatures-post-window-boundary-drift',map_mut_render(lambda d:d['phase_one']['CURRENT_FEATURES_PRODUCER']['integration_contract']['post_window_audio_packet'].update(boundary='F04C_RECEIVER_6X1536'))),
+ ('currentfeatures-post-window-boundary-drift',map_mut_render(lambda d:d['phase_one']['POSTWINDOW_FANOUT_FOUNDATION'].update(boundary='F04C_RECEIVER_6X1536'))),
  ('currentfeatures-render-not-deferred',map_mut_render(lambda d:d['phase_one']['CURRENT_FEATURES_PRODUCER']['integration_contract']['deferred'].remove('post-window render producer'))),
- ('currentfeatures-public-raw-constructor',map_mut_render(lambda d:d['phase_one']['CURRENT_FEATURES_PRODUCER']['integration_contract']['post_window_audio_packet'].update(public_raw_constructor=True))),
+ ('currentfeatures-public-raw-constructor',map_mut_render(lambda d:d['phase_one']['POSTWINDOW_FANOUT_FOUNDATION']['proposal'].update(production_constructor='public raw constructor'))),
  ('currentfeatures-feature-subdigest-invented',map_mut_render(lambda d:d['phase_one']['CURRENT_FEATURES_PRODUCER']['integration_contract'].update(before_feature_identity=['feature-only generation','feature-substate digest']))),
  ('currentfeatures-sourceflags-public-receipt',map_mut_render(lambda d:d['phase_one']['CURRENT_FEATURES_PRODUCER']['integration_contract'].update(source_flags='new public JSON receipt'))),
  ('currentfeatures-parent-commit-enabled',map_mut_render(lambda d:d['phase_one']['CURRENT_FEATURES_PRODUCER']['integration_contract']['output_capability'].update(local_commit_abort_fatal_or_persistent_packet=True))),
- ('currentfeatures-lineage-field-removed',map_mut_render(lambda d:d['phase_one']['CURRENT_FEATURES_PRODUCER']['integration_contract']['post_window_audio_packet']['binding'].remove('render proposal/receipt identity'))),
+ ('currentfeatures-lineage-field-removed',map_mut_render(lambda d:d['phase_one']['POSTWINDOW_FANOUT_FOUNDATION']['proposal']['lineage'].remove('typed render-stage identity'))),
  ('currentfeatures-vector-fixture-identity-drift',map_mut_render(lambda d:d['phase_one']['CURRENT_FEATURES_PRODUCER']['implementation'].update(literal_vector_fixture_sha256='00'*32))),
  ('currentfeatures-route-drift',map_mut_render(lambda d:d['phase_one']['CURRENT_FEATURES_PRODUCER'].update(selected_route='OLD_SIMD_FFT4096'))),
  ('currentfeatures-bit-reversal-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','let reversed = bit_reverse_12(index);','let reversed = index;')),
@@ -325,11 +325,36 @@ def main():
  ('currentfeatures-local-commit-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','fn zero() -> FiniteF32 {','fn commit_current_features(machine: &mut SpatialControlMachine) { machine.commit(); }\nfn zero() -> FiniteF32 {')),
  ('currentfeatures-public-raw-constructor-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','fn zero() -> FiniteF32 {','pub fn from_raw(_: [[u32; 48]; 24]) {}\nfn zero() -> FiniteF32 {')),
  ('currentfeatures-packet-clone-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','pub struct CurrentFeaturesPacket {','#[derive(Clone)]\npub struct CurrentFeaturesPacket {')),
- ('currentfeatures-render-raw-constructor-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio.rs','#[cfg(test)]\npub(in crate::spatial) mod tests;','pub fn from_raw(_: Vec<Vec<u32>>) {}\n#[cfg(test)]\npub(in crate::spatial) mod tests;')),
- ('currentfeatures-private-render-constructor-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio.rs','#[cfg(test)]\npub(in crate::spatial) mod tests;','impl PostWindowAudioPacket { fn from_render_producer() -> Self { Self { } } }\n#[cfg(test)]\npub(in crate::spatial) mod tests;')),
- ('currentfeatures-explicit-render-constructor-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio.rs','#[cfg(test)]\npub(in crate::spatial) mod tests;','fn from_render_producer() -> PostWindowAudioPacket { PostWindowAudioPacket { programme_id: 0 } }\n#[cfg(test)]\npub(in crate::spatial) mod tests;')),
- ('currentfeatures-shorthand-render-constructor-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio.rs','#[cfg(test)]\npub(in crate::spatial) mod tests;','fn from_render_producer() { let _ = PostWindowAudioPacket { programme_id }; }\n#[cfg(test)]\npub(in crate::spatial) mod tests;')),
- ('currentfeatures-render-packet-literal-in-consumer',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','fn zero() -> FiniteF32 {','fn forge_render_packet() { let _packet = PostWindowAudioPacket { programme_id: }; }\nfn zero() -> FiniteF32 {')),
+ ('currentfeatures-render-raw-constructor-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/post_window_fanout.rs','#[cfg(test)]\npub(in crate::spatial) mod tests;','pub fn from_raw(_: Vec<f32>) {}\n#[cfg(test)]\npub(in crate::spatial) mod tests;')),
+ ('currentfeatures-private-render-constructor-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/post_window_fanout.rs','pub(super) fn try_from_spatial_control_renderer(','pub fn try_from_spatial_control_renderer(')),
+ ('currentfeatures-explicit-render-constructor-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/post_window_fanout.rs','#[cfg(test)]\npub(in crate::spatial) mod tests;','pub fn from_render_producer() -> PostWindowRenderProposal { PostWindowRenderProposal { } }\n#[cfg(test)]\npub(in crate::spatial) mod tests;')),
+ ('currentfeatures-shorthand-render-constructor-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/post_window_fanout.rs','#[cfg(test)]\npub(in crate::spatial) mod tests;','pub fn from_render_producer(payload: Arc<[FiniteF32]>, lineage: PostWindowLineage) -> PostWindowRenderProposal { PostWindowRenderProposal { payload, lineage } }\n#[cfg(test)]\npub(in crate::spatial) mod tests;')),
+ ('currentfeatures-render-packet-literal-in-consumer',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','fn zero() -> FiniteF32 {','fn forge_render_proposal() { let _proposal = PostWindowRenderProposal { payload, lineage }; }\nfn zero() -> FiniteF32 {')),
+ ('postwindow-map-status-overclaim',map_mut_render(lambda d:d['phase_one']['POSTWINDOW_FANOUT_FOUNDATION'].update(status='COMPLETE'))),
+ ('postwindow-map-spatial-view-removed',map_mut_render(lambda d:d['phase_one']['POSTWINDOW_FANOUT_FOUNDATION']['fanout']['returns_exactly'].remove('SpatialAudioPostWindowView'))),
+ ('postwindow-map-shape-drift',map_mut_render(lambda d:d['phase_one']['POSTWINDOW_FANOUT_FOUNDATION']['proposal'].update(shape=[48,3071]))),
+ ('postwindow-map-render-producer-ready',map_mut_render(lambda d:d['phase_one']['POSTWINDOW_FANOUT_FOUNDATION']['verification'].update(render_producer='IMPLEMENTED'))),
+ ('postwindow-map-currentfeatures-phase-implicit',map_mut_render(lambda d:d['phase_one']['POSTWINDOW_FANOUT_FOUNDATION']['current_features_input'].update(callback_phase_input='infer from zero audio'))),
+ ('postwindow-code-one-view-only',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/post_window_fanout.rs','pub fn fanout(self) -> (CurrentFeaturesAudioView, SpatialAudioPostWindowView)','pub fn fanout(self) -> CurrentFeaturesAudioView')),
+ ('postwindow-code-payload-copy',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/post_window_fanout.rs','Arc::clone(&payload)','Arc::from(payload.to_vec().into_boxed_slice())')),
+ ('postwindow-code-phase-check-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','audio.callback_phase() != callback_phase','false')),
+ ('postwindow-code-shape-check-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/post_window_fanout.rs','if payload.len() != PAYLOAD_SAMPLE_COUNT','if false')),
+ ('postwindow-code-finite-check-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/post_window_fanout.rs','FiniteF32::new(sample).map_err(map_finite_error)?','FiniteF32::new(0.0).map_err(map_finite_error)?')),
+ ('postwindow-code-sha-endian-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/post_window_fanout.rs','finite.to_bits().to_le_bytes()','finite.to_bits().to_be_bytes()')),
+ ('postwindow-code-proposal-clone-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/post_window_fanout.rs','#[must_use]\npub struct PostWindowRenderProposal {','#[derive(Clone)]\n#[must_use]\npub struct PostWindowRenderProposal {')),
+ ('postwindow-code-after-proposal-identity-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/post_window_fanout.rs','spatial_control_after_proposal_identity: Arc<SpatialControlJoinMetadata>,','render_stage_identity: Arc<RenderStageIdentity>,')),
+ ('postwindow-code-currentfeatures-view-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','post_window_audio: Option<CurrentFeaturesAudioView>','post_window_audio: Option<SpatialAudioPostWindowView>')),
+ ('postwindow-code-currentfeatures-phase-input-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','    callback_index: FrontendCallbackIndex,\n    callback_phase: CallbackPhase,\n    source_flags: SourceFlagsPacket,','    callback_index: FrontendCallbackIndex,\n    source_flags: SourceFlagsPacket,')),
+ ('postwindow-code-cfg-test-fixture-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/post_window_fanout.rs','#[cfg(test)]\npub(in crate::spatial) mod tests;','pub(in crate::spatial) mod tests;')),
+ ('postwindow-code-parent-failure-state-check-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features/tests.rs','assert_eq!(context.machine.digest(), before_digest);','let _ = before_digest;')),
+ ('postwindow-code-linearity-compile-fail-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/post_window_fanout.rs','requires_clone::<CurrentFeaturesAudioView>();','let _ = 1;')),
+ ('postwindow-code-view-mismatch-compile-fail-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/post_window_fanout.rs','current_features_only(view);','let _ = view;')),
+ ('postwindow-code-proposal-linear-compile-fail-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/post_window_fanout.rs','///     let _ = proposal.fanout();\n///     let _ = proposal.fanout();','///     let _ = proposal.fanout();')),
+ ('postwindow-code-render-authority-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/post_window_fanout.rs','        _authority: SpatialControlRenderAuthority,\n','')),
+ ('postwindow-code-render-authority-mint-public',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_control.rs','    fn from_spatial_control_renderer() -> Self {','    pub(in crate::spatial) fn from_spatial_control_renderer() -> Self {')),
+ ('postwindow-code-currentfeatures-none-accepted',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','        return Err(CurrentFeaturesError::ReadAudioMissing);','        return Ok(unreachable!());')),
+ ('postwindow-code-missing-proposal-test-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features/tests.rs','#[test]\nfn current_features_rejects_missing_render_proposal_for_reset_sources() {','fn current_features_rejects_missing_render_proposal_for_reset_sources() {')),
+ ('postwindow-code-lineage-byte-count-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','    pub(super) audio_payload_byte_count: u64,','')),
  ]
  cases += [
  ('f04d1-provider-id-crosswire',map_mut_render(lambda d:d['phase_one']['P1.4-D1']['provider_contracts'][0].update(provider_id='F04_COMPONENT_PARAMETER_MATH_V1'))),
@@ -489,6 +514,7 @@ def main():
   shutil.copytree(ROOT,repo,ignore=shutil.ignore_patterns(*ignored))
   if n.startswith('f04d1-'):m=f04_parameter_code_mut_render(m)
   elif n.startswith('f04d2-code-'):m=f04_remaining_provider_code_mut_render(m)
+  elif n=='postwindow-code-render-authority-mint-public':m=code_mut_render(m)
   elif n.startswith(('p13d1-','source-flags-')):m=code_mut_render(m)
   m(repo)
   z=subprocess.run([sys.executable,'-O',str(repo/'scripts/check-boundaries.py')],cwd=repo,capture_output=True)

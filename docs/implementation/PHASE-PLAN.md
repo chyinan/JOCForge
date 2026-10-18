@@ -2311,20 +2311,34 @@
         "targets, assignment, markers, and matrix state"
       ]
     },
-    "post_window_audio_packet": {
+    "post_window_fanout": {
       "boundary": "INSTALLED48_POST_WINDOW_48X3072",
-      "construction": "future render producer only; opaque linear packet; consumer cannot construct, clone, or forge lineage",
-      "fanout_status": "UNRESOLVED; no contract authorizes cloning the linear packet or independently reconstructing lineage",
-      "integration_status": "render producer deferred; CurrentFeatures consumes this boundary; F04C also needs the same callback installed48 value",
-      "interface": "PostWindowAudioPacket",
+      "construction": "future spatial_control/F03W renderer only through a private module boundary; no public raw/default constructor",
+      "consumers": {
+        "current_features": "consumes CurrentFeaturesAudioView and an explicit expected CallbackPhase",
+        "future_spatial_audio_assembler": "consumes SpatialAudioPostWindowView with same-callback matrix/destination/LFE inputs; assembler not implemented"
+      },
+      "fanout": {
+        "operation": "fanout(self)",
+        "payload_allocation": "one shared immutable Arc allocation; fanout clones only the Arc handle and never copies samples",
+        "proposal_and_views_clone_copy": false,
+        "returns_exactly": [
+          "CurrentFeaturesAudioView",
+          "SpatialAudioPostWindowView"
+        ]
+      },
+      "fanout_status": "LOCALLY_VERIFIED_ONE_SHOT_TWO_VIEW_CAPABILITY__RENDER_PRODUCER_DEFERRED",
+      "integration_status": "fanout capability locally verified; render producer, matrix/destination producer, F04 assembler, and parent transaction remain deferred",
+      "interface": "PostWindowRenderProposal",
       "lineage": [
         "programme and attempt",
-        "CallbackTransactionId and FrontendCallbackIndex",
+        "CallbackTransactionId, FrontendCallbackIndex, and explicit CallbackPhase NORMAL or CACHED_DRAIN",
         "selected profile and F01E/F03 provider lineage",
         "spatial_control before generation and complete root digest",
-        "render receipt and payload SHA-256"
+        "typed render-stage identity and spatial-control after-proposal identity",
+        "payload byte count and SHA-256 of exact source-major F32 U32LE bytes"
       ],
-      "payload": "finite F32[48][3072], source-major",
+      "payload": "one immutable Arc<[FiniteF32]> of exactly 48x3072 source-major samples",
       "producer_owner": "spatial_control/F03W render producer",
       "producer_stage": "same-callback W3072/post-window installed48 boundary before F04C consumer processing"
     },
@@ -2353,8 +2367,8 @@
     },
     "readiness": {
       "blockers": [
-        "P1.4-D1/D2 locally verify all five F04 parameter providers; remaining F04 DSP, render/fanout, and parent integration are deferred",
-        "PostWindowAudioPacket render producer and exact linear fanout to CurrentFeatures and F04C are deferred/unresolved",
+        "P1.4-D1/D2 locally verify all five F04 parameter providers; remaining F04 DSP, render production, and parent integration are deferred",
+        "PostWindow fanout capability is locally verified; F03W render producer, matrix/destination producer, F04 assembler, and parent CallbackTransaction remain deferred",
         "P1.3-C remains waiting for the other owner roots and g>=2 source-stage roots; no parent CallbackTransaction implementation exists"
       ],
       "implementation_status": "BLOCKED_ON_F04_DSP_RENDER_PARENT",
@@ -2441,7 +2455,7 @@
     "blocker_file": "docs/implementation/SPATIAL-AUDIO-COLD-STAGING-BLOCKER.md",
     "blockers": [
       "P1.3-E1 typed cold construction, byte-level KAT comparison, and staging foundation are locally verified; F04 DSP remains deferred",
-      "P1.4-D1/D2 locally validate all five registered F04 providers; remaining F04 DSP, PostWindowAudioPacket render/fanout, and parent CallbackTransaction remain deferred"
+      "P1.4-D1/D2 locally validate all five registered F04 providers; remaining F04 DSP, PostWindow renderer, matrix/destination producer, F04 assembler, and parent CallbackTransaction remain deferred"
     ],
     "cold_preimage_reconstructed": true,
     "cold_sha256": "35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e",
@@ -2449,7 +2463,7 @@
     "mapping_status": "MAPPING_COMPLETE_BLOCKED",
     "p1_3_c_prerequisite": "P1.3-C remains CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS until the remaining owner roots and g>=2 source-stage roots are materialized",
     "p1_4_prerequisite": "P1.4-D1 and P1.4-D2 locally verify all five registered F04 parameter providers; remaining F04 DSP stays unimplemented",
-    "post_window_packet_prerequisite": "F03W/spatial_control render producer is deferred and linear packet fanout to CurrentFeatures and F04C remains unresolved",
+    "post_window_packet_prerequisite": "typed one-shot two-view fanout capability is locally verified; F03W renderer, matrix/destination producer, F04 assembler, and parent callback transaction remain deferred",
     "programme_root": "spatial_audio",
     "root_field_count": 9,
     "root_schema_pointer": "test-vectors/F04-WHOLE-SPATIAL-STATE-SCHEMA.json#/whole_state_by_boundary/cold",
@@ -2485,9 +2499,9 @@
       "sha256": "b1d8d71000b6d89c2bbfdb4d2a6a521def10736ca734b754669118e0556c0f9a"
     },
     {
-      "bytes": 2097,
+      "bytes": 2075,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "f118d1518a3d1ff76ae4009a9bcdfb9e0288b58a1d915c8d2fff4aa38cf4b5ba"
+      "sha256": "12f5ca4462fb418fee7231426c651c001e46bc16e50acf4bbc37c5e60c0c6834"
     },
     {
       "bytes": 2290,
@@ -2599,9 +2613,9 @@
     "clock_domain_file": "crates/jocforge-domain/src/timeline/index.rs",
     "file_inventory": [
       {
-        "bytes": 25296,
+        "bytes": 25780,
         "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-        "sha256": "e5e1387da7f2000c8fd14deddd6b75db4f3048c4bbde69b23dcdfd09fdde988d"
+        "sha256": "0e2af3c3c8c479732502b7bd7f0f89e8c648dd7c7d6509a3146d609c60d2f8bd"
       },
       {
         "bytes": 725,
@@ -2614,9 +2628,9 @@
         "sha256": "911be2413816ebe1fde51ceda0066e9c088f92ae7c8b045cee49aac37540ec7d"
       },
       {
-        "bytes": 2097,
+        "bytes": 2075,
         "path": "crates/jocforge-domain/src/spatial/mod.rs",
-        "sha256": "f118d1518a3d1ff76ae4009a9bcdfb9e0288b58a1d915c8d2fff4aa38cf4b5ba"
+        "sha256": "12f5ca4462fb418fee7231426c651c001e46bc16e50acf4bbc37c5e60c0c6834"
       },
       {
         "bytes": 9428,
@@ -2727,8 +2741,8 @@
   "scope": "construct the complete v5 persistent spatial_control cold root and canonical digest; provide a non-Clone read-only machine and prepared/staged foundation accepting only a future producer-generated complete typed after proposal; no packet producers and no local commit, abort, fatal or top-level COMMITTED",
   "scope_approval": "user-approved in the current task handoff on 2026-10-16; scope-only, not a packet-producer specification",
   "spec_gap_document": {
-    "document_bytes": 3053,
-    "document_sha256": "271d7ca10f80f76e8d73bd9b8212fbaa9c9438302d76823d00d2e61e99cb8dbc",
+    "document_bytes": 2713,
+    "document_sha256": "f6a172833dce2cb9af5a7774c8bcdfb3e8972404fdf1dff3d8903179288ccbcf",
     "file": "docs/implementation/SPATIAL-CONTROL-STAGING-SPEC-GAP.md"
   },
   "status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
@@ -3406,19 +3420,29 @@
     },
     "consumer_boundary_open_questions": [],
     "implementation": {
+      "fanout_mapping_document": "docs/implementation/POSTWINDOW-FANOUT-MAP.md",
       "literal_vector_fixture": "crates/jocforge-domain/tests/fixtures/current_features/INPUT-ONLY-LITERAL-VECTORS.json",
       "literal_vector_fixture_bytes": 315386,
       "literal_vector_fixture_sha256": "1aaf1f5296569960e188b8d74fc8097b5bfb6099b5a1079366e595011c87bdc3",
       "mapping_document": "docs/implementation/CURRENT-FEATURES-PRODUCER-MAP.md",
       "module_file": "crates/jocforge-domain/src/spatial/current_features.rs",
       "parent_composer_or_commit_implemented": false,
-      "post_window_packet_contract_file": "crates/jocforge-domain/src/spatial/spatial_audio.rs",
-      "post_window_packet_test_file": "crates/jocforge-domain/src/spatial/spatial_audio/tests.rs",
+      "post_window_fanout_contract_file": "crates/jocforge-domain/src/spatial/post_window_fanout.rs",
+      "post_window_fanout_test_file": "crates/jocforge-domain/src/spatial/post_window_fanout/tests.rs",
       "render_producer_implemented": false,
       "unit_test_file": "crates/jocforge-domain/src/spatial/current_features/tests.rs"
     },
     "implementation_status": "LOCALLY_VERIFIED_MATH_AND_CAPABILITY__RENDER_AND_PARENT_DEFERRED",
     "integration_contract": {
+      "active_post_window_fanout": {
+        "expected_callback_phase": "explicit CallbackPhase; never inferred from payload bits",
+        "proposal": "PostWindowRenderProposal",
+        "render_producer_implemented": false,
+        "views": [
+          "CurrentFeaturesAudioView",
+          "SpatialAudioPostWindowView"
+        ]
+      },
       "api_schema_bytes": 786,
       "api_schema_file": "API-SCHEMA.json",
       "api_schema_sha256": "280ebef7034797e7efa84e2e3514cbde05ffd973ac644c5f13e804d057b778c6",
@@ -3432,6 +3456,8 @@
       "contract_sha256": "3cf97a638fbe02dc36edf8a29534493e2b7de8947b858f749eefdef636cae0a5",
       "deferred": [
         "post-window render producer",
+        "matrix/destination producer",
+        "future spatial-audio input assembler",
         "complete spatial-control after-state composer",
         "parent transaction executor",
         "selector/outer",
@@ -3454,14 +3480,19 @@
           "FeatureStateProposal source vector F32[48][24]",
           "FeatureStateProposal source scalar F32[48]",
           "opaque CurrentFeaturesPacket F32[24][48] bitwise transpose",
-          "immutable copied lineage and exact math-provider receipts",
+          "immutable copied callback phase/render-stage/after-proposal/payload lineage and exact math-provider receipts",
           "existing SourceFlagsPacket for future spatial composer"
         ],
         "future_consumer": "spatial-control transition composer only",
         "local_commit_abort_fatal_or_persistent_packet": false,
         "type": "linear CurrentFeaturesProduced"
       },
-      "post_window_audio_packet": {
+      "source_flags_validation": "existing opaque SourceFlagsPacket; crate-private read-only payload/lineage validation against parent, CurrentFeaturesAudioView, selected profile, provider lineage, and spatial-control before identity; no new public receipt or digest",
+      "superseded_by": {
+        "identity": "postwindow-fanout-contract.v1",
+        "manifest_sha256": "2a55e66314d6f2aa37cf792b62068185358b1a4b294e6c7b95e8b8d77d99f107"
+      },
+      "superseded_post_window_packet_contract": {
         "binding": [
           "programme",
           "attempt",
@@ -3479,25 +3510,28 @@
         "payload": "finite F32[48][3072] source-major",
         "public_raw_constructor": false,
         "type": "opaque linear non-Clone PostWindowAudioPacket"
-      },
-      "source_flags_validation": "existing opaque SourceFlagsPacket; crate-private read-only payload/lineage validation against parent, render packet, selected profile, provider lineage, and spatial-control before identity; no new public receipt or digest"
+      }
     },
     "lineage_binding": [
       "programme",
       "attempt",
       "CallbackTransactionId",
       "FrontendCallbackIndex",
+      "CallbackPhase",
       "before feature generation/digest",
-      "render receipt",
+      "spatial-control after-proposal identity",
+      "render-stage identity",
+      "payload byte count and SHA-256",
       "flags receipt",
       "selected profile identity",
+      "validated F01E/F03 provider lineage",
       "validated feature-processor math provider receipt",
       "validated FFT roots provider receipt"
     ],
     "outputs": {
       "CurrentFeaturesPacket": "opaque F32[24][48] band-major; bitwise transpose of after vector",
       "FeatureStateProposal": "F32[48][24] source-major plus F32[48] scalar",
-      "lineage": "same validated parent identity plus exact math-provider receipts",
+      "lineage": "same validated parent identity, explicit phase, render-stage/after-proposal identities, payload SHA-256, and exact math-provider receipts",
       "local_commit": false,
       "parent_commit_required": true,
       "persistent_packet": false,
@@ -3509,7 +3543,8 @@
     "required_context_shapes": {
       "before_source_scalar": "F32[48]",
       "before_source_vector": "F32[48][24] source-major",
-      "post_window_audio": "same-callback F32[48][3072] source-major",
+      "callback_phase": "explicit CallbackPhase NORMAL or CACHED_DRAIN; never inferred from audio bits",
+      "post_window_audio": "CurrentFeaturesAudioView over same-callback immutable FiniteF32[48][3072] source-major payload",
       "source_flags": "same-callback SourceFlagsPacket U8[48][2]"
     },
     "required_provider_types": [
@@ -3531,12 +3566,12 @@
       "negative_count": 9,
       "negative_error_labels": [
         "READ_AUDIO_MISSING",
-        "READ_AUDIO_SHAPE",
-        "SOURCE_SHAPE",
+        "RENDER_PAYLOAD_SHAPE",
+        "RENDER_PAYLOAD_SHAPE",
         "FLAG_DOMAIN",
         "BEFORE_VECTOR_SHAPE",
         "NONFINITE_BEFORE",
-        "NONFINITE_AUDIO",
+        "RENDER_NONFINITE_PAYLOAD",
         "STALE_CALLBACK",
         "NONFINITE_INTERMEDIATE"
       ],
@@ -4006,9 +4041,9 @@
       "sha256": "b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"
     },
     {
-      "bytes": 2097,
+      "bytes": 2075,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "f118d1518a3d1ff76ae4009a9bcdfb9e0288b58a1d915c8d2fff4aa38cf4b5ba"
+      "sha256": "12f5ca4462fb418fee7231426c651c001e46bc16e50acf4bbc37c5e60c0c6834"
     }
   ],
   "implementation_prohibitions": [
@@ -4383,9 +4418,9 @@
       "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"
     },
     {
-      "bytes": 2097,
+      "bytes": 2075,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "f118d1518a3d1ff76ae4009a9bcdfb9e0288b58a1d915c8d2fff4aa38cf4b5ba"
+      "sha256": "12f5ca4462fb418fee7231426c651c001e46bc16e50acf4bbc37c5e60c0c6834"
     }
   ],
   "implementation_prohibitions": [
@@ -4697,6 +4732,139 @@
     "qmf_mathematical_fft_provider_count": 1,
     "qmf_receiver_functional_provider_count": 1,
     "status": "LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS"
+  }
+}
+```
+
+## PostWindow fanout foundation
+
+```json
+{
+  "boundary": "INSTALLED48_POST_WINDOW_48X3072",
+  "current_features_input": {
+    "algorithm_changed": false,
+    "callback_phase_input": "explicit CallbackPhase; never inferred from sample values",
+    "lineage_validation": [
+      "programme",
+      "attempt",
+      "transaction",
+      "callback",
+      "phase",
+      "profile",
+      "provider lineage",
+      "spatial_control before generation/digest"
+    ],
+    "local_commit": false,
+    "none_behavior": "Reject with ReadAudioMissing before output or state proposal for every source-flag combination, including all-reset and all-carry callbacks",
+    "type": "Option<CurrentFeaturesAudioView>"
+  },
+  "fanout": {
+    "operation": "fanout(self)",
+    "returns_exactly": [
+      "CurrentFeaturesAudioView",
+      "SpatialAudioPostWindowView"
+    ],
+    "shared_payload": "both views use the proposal's same immutable Arc allocation; only the Arc handle is cloned",
+    "views_clone_copy": false
+  },
+  "future_spatial_audio_assembler": {
+    "additional_same_callback_inputs": [
+      "matrix",
+      "destinations",
+      "LFE inputs"
+    ],
+    "implemented": false,
+    "input_view": "SpatialAudioPostWindowView"
+  },
+  "implementation_files": [
+    "crates/jocforge-domain/src/spatial/post_window_fanout.rs",
+    "crates/jocforge-domain/src/spatial/current_features.rs",
+    "crates/jocforge-domain/src/spatial/mod.rs"
+  ],
+  "implementation_status": "LOCALLY_VERIFIED__RENDER_PRODUCER_DEFERRED",
+  "mapping_document": "docs/implementation/POSTWINDOW-FANOUT-MAP.md",
+  "mapping_status": "MAPPING_COMPLETE",
+  "not_run": [
+    "render production",
+    "matrix/destination production",
+    "SpatialAudioInputPacket assembler",
+    "F04 DSP",
+    "parent transaction",
+    "real ADM/audio/runtime/listening acceptance"
+  ],
+  "phase": [
+    "NORMAL",
+    "CACHED_DRAIN"
+  ],
+  "proposal": {
+    "clone_copy": false,
+    "lineage": [
+      "programme",
+      "attempt",
+      "CallbackTransactionId",
+      "FrontendCallbackIndex",
+      "CallbackPhase",
+      "selected EncodingProfile",
+      "validated F01E/F03 provider lineage",
+      "spatial_control before generation and complete root digest",
+      "typed render-stage identity",
+      "typed spatial-control after-proposal identity",
+      "payload byte count and SHA-256"
+    ],
+    "payload_byte_count": 589824,
+    "payload_sha256": "SHA-256 over exact source-major F32 U32LE bytes",
+    "payload_type": "Arc<[FiniteF32]>",
+    "production_constructor": "future spatial_control/F03W renderer only; requires opaque SpatialControlRenderAuthority minted only inside spatial_control; no public raw/default constructor",
+    "shape": [
+      48,
+      3072
+    ],
+    "source_major": true,
+    "type": "linear PostWindowRenderProposal"
+  },
+  "status": "LOCALLY_VERIFIED__RENDER_PRODUCER_DEFERRED",
+  "status_non_promotion": {
+    "CURRENT_FEATURES_PRODUCER": "LOCALLY_VERIFIED_MATH_AND_CAPABILITY__RENDER_AND_PARENT_DEFERRED",
+    "P1.3-E": "BLOCKED_ON_F04_DSP_RENDER_AND_PARENT",
+    "P1.3-E2": "LOCALLY_VERIFIED_COMPONENT_PRODUCER__UPSTREAM_AND_PARENT_DEFERRED"
+  },
+  "supplement": {
+    "api_schema_bytes": 732,
+    "api_schema_file": "API-SCHEMA.json",
+    "api_schema_sha256": "1ebf6145695ff88013345b9d68aec3266854d8f482351a10c40ded0a3a5134a1",
+    "contract_bytes": 2835,
+    "contract_file": "CONTRACT.md",
+    "contract_sha256": "b04df4c2badee8cb189c5361ab5a42e248af071e1c92109913a733e1f2a4c729",
+    "identity": "postwindow-fanout-contract.v1",
+    "manifest_sha256": "2a55e66314d6f2aa37cf792b62068185358b1a4b294e6c7b95e8b8d77d99f107",
+    "root": "outputs/IMPLEMENTER_SUPPLEMENTS/POSTWINDOW-FANOUT-CONTRACT-V1"
+  },
+  "task_id": "POSTWINDOW-FANOUT-FOUNDATION-V1",
+  "test_files": [
+    "crates/jocforge-domain/src/spatial/post_window_fanout/tests.rs",
+    "crates/jocforge-domain/src/spatial/current_features/tests.rs"
+  ],
+  "test_scope": [
+    "fixed shape and finite sample admission",
+    "source-major payload byte count and SHA-256",
+    "explicit normal/cached-drain phase",
+    "one-time two-view fanout",
+    "shared Arc payload allocation identity",
+    "different proposal identities despite equal payload hashes",
+    "lineage and view mismatch",
+    "consumer error drops capabilities without state commit",
+    "capabilities remain non-Clone/non-Copy"
+  ],
+  "verification": {
+    "compile_fail_contracts": 5,
+    "current_features_tests": 6,
+    "full_repository_boundary_mutations_rejected": 578,
+    "matrix_destination_producer": "NOT_IMPLEMENTED",
+    "parent_transaction": "NOT_IMPLEMENTED",
+    "post_window_fanout_tests": 5,
+    "render_producer": "NOT_IMPLEMENTED",
+    "spatial_audio_assembler": "NOT_IMPLEMENTED",
+    "targeted_boundary_mutations_rejected": 25
   }
 }
 ```
