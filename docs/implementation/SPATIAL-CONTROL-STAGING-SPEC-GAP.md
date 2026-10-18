@@ -1,27 +1,17 @@
-# Spatial control staging specification gap
+# Spatial-control staging specification gap
 
 ## Status
 
-The user explicitly approved the narrower P1.3-D1 storage/staging scope in the current task handoff on 2026-10-16. This gap remains open for the future `SourceFlagsPacket` producer and keeps P1.3-D blocked; it does not block the approved D1 cold-root and staging-foundation slice. Neither packet producer may be implemented by D1.
+P1.3-D1 remains locally verified as the v5 storage/staging foundation. The separately authorized `SOURCE-FLAGS-PRODUCER-V1` slice has now resolved the `flags_before_history` producer gap and locally verified its numeric packet output. That later producer result does not change D1's status or make D1 the owner of packet generation.
 
-Coordination has since authorized a separate SourceFlags producer supplement. Its manifest and files are deliberately not part of this D1 slice and will be identity-checked only after the D1 storage/staging result is committed and reported. The producer itself, `CurrentFeaturesPacket`, upstream controls/route/writer producers, and the parent transaction coordinator remain outside D1 and are not claimed as run or verified here.
+The full P1.3-D path remains blocked on `CurrentFeaturesPacket`, the `spatial_audio` root, and the parent `CallbackTransaction` integration. CurrentFeatures/FFT, selector/outer transitions, root commits, and parent transaction execution remain outside the SourceFlags slice.
 
-## Evidence
+## SourceFlags evidence
 
-The approved `flags_before_history` case in `crates/jocforge-domain/tests/fixtures/spatial_control_state_v5/INPUT-ONLY-VECTORS.json` provides:
+The identity-verified supplement binds 20 synthetic success vectors, one authorized first-callback WAVE boundary vector, and 11 preflight error vectors. The producer matched all 21 literal success payloads, including the authorized first callback, and rejected all 11 error cases without producing a packet or changing committed history. `flags_before_history` is therefore recorded as `LOCALLY_VERIFIED_NUMERIC_AND_PACKET` only under the separate SourceFlags task.
 
-- `same_before_history: true`;
-- `different_current_input_or_writers: true`;
-- expected relation `flags_may_differ: true`;
-- expected relation `next_history_read: false`.
+The authorized WAVE path is provided to the ignored boundary test through `JOCFORGE_AUTHORIZED_WAV`; the repository stores neither that path nor its PCM. The boundary evidence covers the first 1536-sample callback only. Upstream control/render/writer production, CurrentFeatures/FFT, parent transaction execution, and whole-song product replay remain `NOT_RUN`.
 
-It does not provide concrete callback input/control/route/writer-set records, the rule producing `flags: U8[48][2]`, or concrete expected flag bytes. The v5 contract says the packet is calculated from before history and same-callback input/control/route/prefix writers, but not how those values produce the two flag columns. Therefore an implementation cannot compute the vector's actual result without inventing behavior.
+## Remaining coordination
 
-## Coordination follow-up
-
-Provide either:
-
-1. An approved packet-producer contract with exact inputs, field shapes, the flag-generation rule, history read point, and concrete input/expected-output vectors; or
-2. A later approved producer-boundary amendment treating both packets as opaque inputs from separately validated producers, including their lineages/receipts. The current D1 scope defers packet generation; `flags_before_history` remains `DEFERRED_TO_SOURCE_FLAGS_PRODUCER` and must not be reported as PASS or locally verified.
-
-The separate local profile-binding test varies only the profile identity while holding provider lineage, state hash, and generation equal; the approved `profile_mismatch` vector only varies provider identity. D1 must implement only the complete persistent cold root and approved storage/staging foundation; P1.3-D stays `BLOCKED_ON_SOURCE_FLAGS_AND_FEATURE_PRODUCERS`.
+Provide and verify a separate CurrentFeatures producer contract before implementing that producer. Keep P1.3-D blocked until the CurrentFeatures path, remaining owner roots, and the parent callback transaction are materialized and integrated. Equal payload bytes do not authorize packet reuse across distinct parent, input, profile, provider, route, control, writer, or history lineage.

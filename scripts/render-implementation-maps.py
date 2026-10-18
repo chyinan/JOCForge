@@ -31,6 +31,8 @@ def render(d):
   x=d['phase_one']['P1.3-D'];o['PHASE-PLAN.md']+='\n## P1.3-D spatial_control root audit\n\n```json\n'+json.dumps({'task':x,'programme_root_reference':f"programme_roots[{x['programme_root']}]"},ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
  if 'P1.3-D1'in d['phase_one']:
   x=d['phase_one']['P1.3-D1'];o['PHASE-PLAN.md']+='\n## P1.3-D1 spatial_control staging-only implementation\n\n```json\n'+json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
+ if 'SOURCE_FLAGS_PRODUCER'in d['phase_one']:
+  x=d['phase_one']['SOURCE_FLAGS_PRODUCER'];o['PHASE-PLAN.md']+='\n## SourceFlags producer\n\n```json\n'+json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
  if 'P1.4-A'in d['phase_one']:
   x=d['phase_one']['P1.4-A'];o['PHASE-PLAN.md']+='\n## P1.4-A F01E provider contract audit\n\n```json\n'+json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
  if 'P1.4-B'in d['phase_one']:

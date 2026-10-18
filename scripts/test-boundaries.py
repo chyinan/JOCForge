@@ -1,5 +1,5 @@
 # pattern: Imperative Shell
-import argparse,json,os,pathlib,shutil,subprocess,sys
+import argparse,hashlib,json,os,pathlib,shutil,subprocess,sys
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 def map_mut(fn):
  def m(r):
@@ -12,11 +12,28 @@ def map_mut_render(fn):
   result=subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
   if result.returncode:raise RuntimeError('render failed for mutated implementation map')
  return m
+def code_mut_render(mutate):
+ def m(r):
+  mutate(r)
+  map_path=r/'docs/implementation/IMPLEMENTATION-MAP.json';d=json.loads(map_path.read_text(encoding='utf-8'))
+  for task in d.get('phase_one',{}).values():
+   implementation=task.get('implementation') if isinstance(task,dict) else None
+   if not isinstance(implementation,dict):continue
+   for entry in implementation.get('file_inventory',[]):
+    path=r/entry['path']
+    if path.is_file():
+     content=path.read_bytes();entry['bytes']=len(content);entry['sha256']=hashlib.sha256(content).hexdigest()
+  map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+  result=subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
+  if result.returncode:raise RuntimeError('render failed after refreshing mutated source identities')
+ return m
 def append(path,text):path.write_text(path.read_text(encoding='utf-8')+text,encoding='utf-8')
 def replace_once(path,old,new):
  text=path.read_text(encoding='utf-8')
  if old not in text:raise RuntimeError('mutation source not found: '+str(path))
  path.write_text(text.replace(old,new,1),encoding='utf-8')
+def inject_source_flags_json_macro(r):
+ replace_once(r/'crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs','    fn selected_machine() -> SpatialControlMachine {','    fn selected_machine() -> SpatialControlMachine {\n        let _ = serde_json::json!([]);')
 def main():
  a=argparse.ArgumentParser();a.add_argument('--scratch-root',type=pathlib.Path);a.add_argument('--case-prefix');x=a.parse_args();s=x.scratch_root or pathlib.Path(os.environ.get('JOCFORGE_BOUNDARY_TMP',ROOT/'target/boundary-mutations'));s.mkdir(parents=True,exist_ok=True)
  cases=[]
@@ -81,8 +98,8 @@ def main():
  ('p13d-v5-packet-forged-lineage',map_mut_render(lambda d:d['phase_one']['P1.3-D1']['callback_output_packets'].update(forged_lineage='ALLOWED'))),
  ('p13d-v5-profile-vector-identity-drift',map_mut_render(lambda d:d['phase_one']['P1.3-D1'].setdefault('profile_only_mismatch_vector',{}).update(sha256='00'*32))),
  ('p13d-v5-flags-vector-marked-pass',map_mut_render(lambda d:d['phase_one']['P1.3-D1']['input_only_vectors']['deferred_cases'][0].update(status='PASS'))),
- ('p13d-v5-source-producer-blocker-removed',map_mut_render(lambda d:d['phase_one']['P1.3-D'].setdefault('packet_producer_blockers',['SourceFlagsPacket producer','CurrentFeaturesPacket producer']).remove('SourceFlagsPacket producer'))),
- ('p13d-v5-feature-producer-blocker-removed',map_mut_render(lambda d:d['phase_one']['P1.3-D'].setdefault('packet_producer_blockers',['SourceFlagsPacket producer','CurrentFeaturesPacket producer']).remove('CurrentFeaturesPacket producer'))),
+ ('p13d-v5-source-producer-status-regressed',map_mut_render(lambda d:d['phase_one']['SOURCE_FLAGS_PRODUCER'].update(status='DEFERRED'))),
+ ('p13d-v5-current-features-blocker-removed',map_mut_render(lambda d:d['phase_one']['P1.3-D']['packet_producer_blockers'].remove('CurrentFeaturesPacket producer'))),
  ('p13d-v5-gap-record-contradiction',lambda r:append(r/'docs/implementation/SPATIAL-CONTROL-STAGING-SPEC-GAP.md','\nThe SourceFlagsPacket producer is fully specified and needs no further contract.\n')),
  ('p13d-v5-amendment-contradiction',lambda r:append(r/'docs/implementation/SPATIAL-CONTROL-STATE-V5-AMENDMENT.md','\nContradiction: serialize profile_dimensions, including active_target_count_n, as persistent state.\n'))
  ]
@@ -120,6 +137,50 @@ def main():
  ('p13d1-cold-canonical-sha-drift',map_mut_render(lambda d:d['phase_one']['P1.3-D1']['implementation'].update(root_canonical_sha256='00'*32))),
  ('p13d1-implementation-status-regression',map_mut_render(lambda d:d['phase_one']['P1.3-D1']['implementation'].update(status='NOT_STARTED'))),
  ('p13d1-public-clock-usize',lambda r:append(r/spatial_control_source,'\nimpl SpatialControlMachine { pub fn callback_clock_as_usize(&self) -> usize { self.committed.callback_index().value() as usize } }\n'))
+ ]
+ source_flags_source='crates/jocforge-domain/src/spatial/source_flags.rs'
+ spatial_packet_source='crates/jocforge-domain/src/spatial/spatial_control.rs'
+ cases += [
+  ('source-flags-epsilon-inclusive',lambda r:replace_once(r/source_flags_source,'a.value().abs() > epsilon || b.value().abs() > epsilon','a.value().abs() >= epsilon || b.value().abs() > epsilon')),
+  ('source-flags-width-exclusive',lambda r:replace_once(r/source_flags_source,'control.width.value() >= width_limit','control.width.value() > width_limit')),
+  ('source-flags-uses-next-history',lambda r:replace_once(r/source_flags_source,'let before = &history.rows[row];','let before = &input.current_pcm.rows[row];')),
+  ('source-flags-proposes-processed-history',lambda r:replace_once(r/source_flags_source,'history_proposal.push(raw_frame(current));','history_proposal.push(raw_frame(before));')),
+  ('source-flags-lfe-role-drift',lambda r:replace_once(r/source_flags_source,'match record.role {\n                HostRole::Lfe => {','match record.role {\n                HostRole::Regular => {')),
+  ('source-flags-prefix-uses-amplitude',lambda r:replace_once(r/source_flags_source,'input.prefix_writers.written[source]','input.current_pcm.row(HostId::new(0).unwrap())[0].value() > 0.0')),
+  ('source-flags-public-raw-constructor',lambda r:append(r/source_flags_source,'\nimpl SourceFlagsPacket { pub fn from_raw(payload: [[u8; 2]; 48]) -> Self { todo!() } }\n')),
+  ('source-flags-restricted-visibility-raw-constructor',lambda r:append(r/source_flags_source,'\nimpl SourceFlagsPacket { pub(crate) fn from_raw() -> Self { todo!() } }\n')),
+  ('source-flags-restricted-async-constructor-inside-impl',lambda r:replace_once(r/source_flags_source,'    pub(super) fn validate_parent_binding(','    pub(crate) async fn from_raw() -> Self { todo!() }\n\n    pub(super) fn validate_parent_binding(')),
+  ('source-flags-commented-path-qualified-packet-copy',lambda r:append(r/source_flags_source,'\nimpl /* alias */ crate::spatial::source_flags::SourceFlagsPacket { pub(crate) /* visibility */ async fn duplicate(packet: &Self) -> Self { Self { payload: packet.payload.clone(), lineage: Arc::clone(&packet.lineage) } } }\n')),
+  ('source-flags-macro-generated-packet-copy',lambda r:append(r/source_flags_source,'\nmacro_rules! duplicate_packet { ($packet:ty) => { impl $packet { pub(crate) fn duplicate(packet: &Self) -> Self { Self { payload: packet.payload.clone(), lineage: Arc::clone(&packet.lineage) } } } }; }\nduplicate_packet!(SourceFlagsPacket);\n')),
+  ('source-flags-spaced-macro-packet-copy',lambda r:append(r/source_flags_source,'\nmacro_rules /* split */ ! duplicate_packet { ($packet:ty) => { impl $packet { pub(crate) fn duplicate(packet: &Self) -> Self { Self { payload: packet.payload.clone(), lineage: Arc::clone(&packet.lineage) } } } }; }\nduplicate_packet /* split */ !(SourceFlagsPacket);\n')),
+  ('source-flags-unicode-peer-macro-packet-copy',lambda r:append(r/source_flags_source,'\ncrate::λduplicate /* split */ !(SourceFlagsPacket);\n')),
+  ('source-flags-combining-mark-macro-packet-copy',lambda r:append(r/source_flags_source,'\ncrate::duplicateq\u0301 /* split */ !(SourceFlagsPacket);\n')),
+  ('source-flags-nested-module-packet-copy',lambda r:(append(r/source_flags_source,'\nmod packet_copy;\n'),(r/'crates/jocforge-domain/src/spatial/source_flags/packet_copy.rs').write_text('pub(super) fn duplicate(packet: &super::SourceFlagsPacket) -> super::SourceFlagsPacket { super::SourceFlagsPacket { payload: packet.payload.clone(), lineage: std::sync::Arc::clone(&packet.lineage) } }\n',encoding='utf-8'))),
+  ('source-flags-test-macro-packet-copy',lambda r:append(r/'crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs','\nmacro_rules! duplicate_test_packet { ($packet:ty) => { impl $packet { pub(crate) fn duplicate(packet: &Self) -> Self { Self { payload: packet.payload.clone(), lineage: std::sync::Arc::clone(&packet.lineage) } } } }; }\nduplicate_test_packet!(super::SourceFlagsPacket);\n')),
+  ('source-flags-peer-macro-use-packet-copy',lambda r:(append(r/'crates/jocforge-domain/src/spatial/spatial_control.rs','\nmacro_rules! assert { (matches!($value:expr, $pattern:pat)) => {{ type Packet = crate::spatial::source_flags::SourceFlagsPacket; impl Packet { pub(crate) fn duplicate(packet: &Self) -> Self { Self { payload: packet.payload.clone(), lineage: std::sync::Arc::clone(&packet.lineage) } } }} }; ($condition:expr $(, $($rest:tt)*)?) => { std::assert!($condition $(, $($rest)*)?) }; }\n'),replace_once(r/'crates/jocforge-domain/src/spatial/mod.rs','pub mod source_flags;\npub mod spatial_control;','#[macro_use]\npub mod spatial_control;\npub mod source_flags;'))),
+  ('source-flags-test-external-json-macro-not-allowlisted',lambda r:inject_source_flags_json_macro(r)),
+  ('source-flags-test-pub-use-json-macro-packet-copy',lambda r:(append(r/'crates/jocforge-domain/src/spatial/spatial_control.rs','\n#[macro_export]\nmacro_rules! helper_macro { ($($tokens:tt)*) => {{ type Packet = crate::spatial::source_flags::SourceFlagsPacket; impl Packet { pub(crate) fn duplicate(packet: &Self) -> Self { Self { payload: packet.payload.clone(), lineage: std::sync::Arc::clone(&packet.lineage) } } } ::serde_json::json!($($tokens)*) }}; }\n'),replace_once(r/'crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs','    use serde_json::Value;','    mod serde_json {\n        pub use ::serde_json::Value;\n        pub use crate::helper_macro as json;\n    }'),inject_source_flags_json_macro(r))),
+  ('source-flags-test-module-alias-json-macro-packet-copy',lambda r:(append(r/'crates/jocforge-domain/src/spatial/spatial_control.rs','\n#[macro_export]\nmacro_rules! helper_macro { ($($tokens:tt)*) => {{ type Packet = crate::spatial::source_flags::SourceFlagsPacket; impl Packet { pub(crate) fn duplicate(packet: &Self) -> Self { Self { payload: packet.payload.clone(), lineage: std::sync::Arc::clone(&packet.lineage) } } } ::serde_json::json!($($tokens)*) }}; }\npub mod json_shim { pub use crate::helper_macro as json; }\n'),replace_once(r/'crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs','    use serde_json::Value;','    use ::serde_json::Value;\n    use crate::spatial::spatial_control::json_shim as serde_json;'),inject_source_flags_json_macro(r))),
+  ('source-flags-test-raw-module-alias-json-macro-packet-copy',lambda r:(append(r/'crates/jocforge-domain/src/spatial/spatial_control.rs','\n#[macro_export]\nmacro_rules! helper_macro { ($($tokens:tt)*) => {{ type Packet = crate::spatial::source_flags::SourceFlagsPacket; impl Packet { pub(crate) fn duplicate(packet: &Self) -> Self { Self { payload: packet.payload.clone(), lineage: std::sync::Arc::clone(&packet.lineage) } } } ::serde_json::json!($($tokens)*) }}; }\npub mod json_shim { pub use crate::helper_macro as json; }\n'),replace_once(r/'crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs','    use serde_json::Value;','    use ::serde_json::Value;\n    use crate::spatial::spatial_control::json_shim as r#serde_json;'),inject_source_flags_json_macro(r))),
+  ('source-flags-test-peer-serde-json-module-packet-copy',lambda r:(append(r/'crates/jocforge-domain/src/spatial/spatial_control.rs','\n#[macro_export]\nmacro_rules! helper_macro { ($($tokens:tt)*) => {{ type Packet = crate::spatial::source_flags::SourceFlagsPacket; impl Packet { pub(crate) fn duplicate(packet: &Self) -> Self { Self { payload: packet.payload.clone(), lineage: std::sync::Arc::clone(&packet.lineage) } } } ::serde_json::json!($($tokens)*) }}; }\npub mod serde_json { pub use crate::helper_macro as json; }\n'),replace_once(r/'crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs','    use serde_json::Value;','    use ::serde_json::Value;\n    use crate::spatial::spatial_control::serde_json;'),inject_source_flags_json_macro(r))),
+  ('source-flags-test-generated-peer-serde-json-module-packet-copy',lambda r:(append(r/'crates/jocforge-domain/src/spatial/spatial_control.rs','\n#[macro_export]\nmacro_rules! helper_macro { ($($tokens:tt)*) => {{ type Packet = crate::spatial::source_flags::SourceFlagsPacket; impl Packet { pub(crate) fn duplicate(packet: &Self) -> Self { Self { payload: packet.payload.clone(), lineage: std::sync::Arc::clone(&packet.lineage) } } } ::serde_json::json!($($tokens)*) }}; }\nmacro_rules! declare_json_module { ($name:ident) => { pub mod $name { pub use crate::helper_macro as json; } }; }\ndeclare_json_module!(serde_json);\n'),replace_once(r/'crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs','    use serde_json::Value;','    use ::serde_json::Value;\n    use crate::spatial::spatial_control::serde_json;'),inject_source_flags_json_macro(r))),
+  ('source-flags-test-macro-generated-module-alias-packet-copy',lambda r:(append(r/'crates/jocforge-domain/src/spatial/spatial_control.rs','\n#[macro_export]\nmacro_rules! helper_macro { ($($tokens:tt)*) => {{ type Packet = crate::spatial::source_flags::SourceFlagsPacket; impl Packet { pub(crate) fn duplicate(packet: &Self) -> Self { Self { payload: packet.payload.clone(), lineage: std::sync::Arc::clone(&packet.lineage) } } } ::serde_json::json!($($tokens)*) }}; }\nmacro_rules! declare_json_module { ($name:ident) => { pub mod $name { pub use crate::helper_macro as json; } }; }\ndeclare_json_module!(serde_json);\n'),replace_once(r/'crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs','    use serde_json::Value;','    use ::serde_json::Value;\n    use crate::spatial::spatial_control::serde_json;'),inject_source_flags_json_macro(r))),
+  ('source-flags-test-glob-import-peer-macro-copy',lambda r:(append(r/'crates/jocforge-domain/src/spatial/spatial_control.rs','\n#[macro_export]\nmacro_rules! helper_macro { ($($tokens:tt)*) => {{ type Packet = crate::spatial::source_flags::SourceFlagsPacket; impl Packet { pub(crate) fn duplicate(packet: &Self) -> Self { Self { payload: packet.payload.clone(), lineage: std::sync::Arc::clone(&packet.lineage) } } } }}; }\npub mod assert_shim { pub use crate::helper_macro as assert; }\n'),replace_once(r/'crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs','    use serde_json::Value;','    use serde_json::Value;\n    use crate::spatial::spatial_control::assert_shim::*;'))),
+  ('source-flags-packet-trait-constructor',lambda r:append(r/source_flags_source,'\nimpl From<[[u8; 2]; 48]> for SourceFlagsPacket { fn from(_: [[u8; 2]; 48]) -> Self { todo!() } }\n')),
+  ('source-flags-packet-default',lambda r:append(r/source_flags_source,'\nimpl Default for SourceFlagsPacket { fn default() -> Self { todo!() } }\n')),
+  ('source-flags-packet-clone-derived',lambda r:replace_once(r/source_flags_source,'pub struct SourceFlagsPacket {','#[derive(Clone)]\npub struct SourceFlagsPacket {')),
+  ('source-flags-packet-clone-impl',lambda r:append(r/source_flags_source,'\nimpl Clone for SourceFlagsPacket { fn clone(&self) -> Self { todo!() } }\n')),
+  ('source-flags-test-private-packet-constructor-copy',lambda r:append(r/'crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs','\nmod private_packet_copy_probe {\n    use std::sync::Arc;\n    type Packet = super::super::SourceFlagsPacket;\n    #[allow(dead_code)]\n    fn duplicate(packet: &Packet) -> Packet {\n        Packet::from_producer(*packet.payload.clone(), Arc::clone(&packet.lineage))\n    }\n}\n')),
+  ('source-flags-test-aliased-packet-struct-literal',lambda r:append(r/'crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs','\nmod aliased_packet_literal_probe {\n    use std::sync::Arc;\n    type Packet = super::super::SourceFlagsPacket;\n    #[allow(dead_code)]\n    fn duplicate(packet: &Packet) -> Packet {\n        Packet { payload: packet.payload.clone(), lineage: Arc::clone(&packet.lineage) }\n    }\n}\n')),
+  ('source-flags-test-unsafe-generic-packet-copy',lambda r:append(r/'crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs','\nmod unsafe_packet_copy_probe {\n    #[allow(dead_code)]\n    fn duplicate<T>(value: &T) -> T {\n        unsafe { std::ptr::read(value) }\n    }\n}\n')),
+  ('source-flags-sibling-packet-copy',lambda r:append(r/spatial_packet_source,'\nfn duplicate_source_flags_packet(packet: &SourceFlagsPacket) { let _duplicate = SourceFlagsPacket { payload: packet.payload.clone(), lineage: packet.lineage.clone() }; }\n')),
+  ('source-flags-lineage-current-receipt-omitted',lambda r:replace_once(r/source_flags_source,'    current_pcm_receipt: SourceFlagsDigest,\n','')),
+  ('source-flags-producer-status-overreach',map_mut_render(lambda d:d['phase_one']['P1.3-D'].update(status='LOCALLY_VERIFIED_NUMERIC_AND_PACKET'))),
+  ('source-flags-d1-status-drift',map_mut_render(lambda d:d['phase_one']['P1.3-D1'].update(status='LOCALLY_VERIFIED_NUMERIC_AND_PACKET'))),
+  ('source-flags-current-features-overclaim',map_mut_render(lambda d:next(item for item in d['programme_roots']if item['root_id']=='spatial_control')['callback_output_packets']['CurrentFeaturesPacket'].update(producer_status='LOCALLY_VERIFIED_NUMERIC_AND_PACKET'))),
+  ('source-flags-authorized-media-path-persisted',lambda r:append(r/'crates/jocforge-domain/tests/fixtures/source_flags/INPUT-ONLY-VECTORS.json','\ninput-adm.wav\n')),
+  ('source-flags-vector-id-removed',map_mut_render(lambda d:d['phase_one']['SOURCE_FLAGS_PRODUCER']['vectors']['success_case_ids'].remove('prefix_writer_on_silence'))),
+  ('source-flags-duplicate-checker-definition',lambda r:append(r/'scripts/check-boundaries.py','\ndef check_source_flags_producer(root, d):\n    pass\n'))
  ]
  cases += [('p13c-owner-receipt-missing',map_mut(lambda d:d['phase_one']['P1.3-C']['callback_receipt']['owner_receipt_owner_ids_ascii'].pop())),('p13c-owner-receipt-duplicate',map_mut(lambda d:d['phase_one']['P1.3-C']['callback_receipt']['owner_receipt_owner_ids_ascii'].append('reader_eof'))),('p13c-owner-receipt-unknown',map_mut(lambda d:d['phase_one']['P1.3-C']['callback_receipt']['owner_receipt_owner_ids_ascii'].__setitem__(11,'unknown_owner'))),('p13c-changed-semantic-drift',map_mut(lambda d:d['phase_one']['P1.3-C']['callback_receipt'].update(owner_receipt_semantics='changed only when digest differs'))),('p13c-rejected-retires',map_mut(lambda d:d['phase_one']['P1.3-C']['callback_receipt'].update(REJECTED='preflight rejection retires programme'))),('p13c-after-staged-leaks',map_mut(lambda d:d['phase_one']['P1.3-C']['callback_receipt'].update(after_values='discarded staged values'))),('p13c-wrapper-digest-added',map_mut(lambda d:d['phase_one']['P1.3-C']['callback_receipt']['canonical_state_digests'].update(receipt_wrapper='SHA-256 over sorted JSON'))),('p13c-source-independent-success',map_mut(lambda d:d['phase_one']['P1.3-C']['callback_success_gates'].update(internal_stages='SOURCE has top-level COMMITTED'))),('p13c-durable-null-means-no-write',map_mut(lambda d:d['phase_one']['P1.3-C']['transaction_receipt_binding']['field_bindings'].update(durable_append='null proves no physical write'))),('p13c-other-kind-closed',map_mut(lambda d:d['phase_one']['P1.3-C']['unclosed_transaction_kinds'].remove('FINALIZE'))),('p13c-wrapper-field-count-drift',map_mut(lambda d:d['phase_one']['P1.3-C']['callback_receipt'].update(approved_wrapper_field_count=14))),('p13c-wash-hash-drift',map_mut(lambda d:d['phase_one']['P1.3-C']['callback_receipt']['wash_side_design_basis'].update(findings_sha256='00'*32))),('p13c-transaction-coordinator-early',lambda r:append(r/'crates/jocforge-domain/src/transaction/mod.rs','\npub struct CallbackTransactionCoordinator;\n'))]
  cases += [
@@ -171,7 +232,9 @@ def main():
   if c.exists():shutil.rmtree(c)
   c.mkdir();probe=c/'.probe';probe.write_text('ok');probe.unlink();repo=c/'repo';ignored=['.git','target','__pycache__'];
   if s.resolve().is_relative_to(ROOT):ignored.append(s.resolve().relative_to(ROOT).parts[0])
-  shutil.copytree(ROOT,repo,ignore=shutil.ignore_patterns(*ignored));m(repo)
+  shutil.copytree(ROOT,repo,ignore=shutil.ignore_patterns(*ignored))
+  if n.startswith(('p13d1-','source-flags-')):m=code_mut_render(m)
+  m(repo)
   z=subprocess.run([sys.executable,'-O',str(repo/'scripts/check-boundaries.py')],cwd=repo,capture_output=True)
   if z.returncode==0:raise RuntimeError('mutation passed: '+n)
   shutil.rmtree(c);print('PASS '+n);passed+=1

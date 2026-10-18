@@ -1,0 +1,932 @@
+{
+  "schema": "jocforge-source-flags-input-vectors.v1",
+  "input_only": true,
+  "synthetic_base": {
+    "frame_samples": 1536,
+    "PCM_host_shape": [
+      38,
+      1536
+    ],
+    "history_shape": [
+      37,
+      1536
+    ],
+    "PCM_and_history_word_encoding": "U32 IEEE754 binary32 words; sparse overrides applied to all-positive-zero arrays",
+    "window_rule": "w[i]=R32(R32(i)/R32(1536)); w[1536+i]=R32(R32(1535-i)/R32(1536)); i=0..1535",
+    "window_bytes": 12288,
+    "window_sha256": "134a5a788d42b0532f3ec46112ad978cc14fb3c46cb0d82f02fee5f129b7c919",
+    "default_lfe_host": 3,
+    "default_regular_host_order": [
+      0,
+      1,
+      2,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37
+    ],
+    "mapping_rule": "source=11+index in ascending regular host order; exclude exactly validated semantic LFE host",
+    "default_control": {
+      "mute": 0,
+      "width_u32": 0,
+      "component_enum": 0,
+      "diffuse": 0
+    },
+    "prefix_written_sources": [],
+    "route_enabled": true,
+    "prefix_audio_values": "not consumed numerically by flags; prototype only requires 11-row container",
+    "lineage": {
+      "programme_id": "SYNTHETIC_FLAGS",
+      "attempt": 0,
+      "transaction_id": "FLAGS-CALLBACK-0",
+      "callback_index": 0,
+      "history_before_generation": 0
+    }
+  },
+  "override_semantics": "Omitted sparse overrides are empty. Clone base for each case; override history/current words, control fields, LFE host or prefix writer list; expected bytes are only post-execution assertions.",
+  "positive_cases": [
+    {
+      "case_id": "cold_silent_no_writer",
+      "input": {},
+      "expected": {
+        "flags_u8_48x2_hex": "010101010101010101010101010101010101010101010100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100",
+        "bytes": 96,
+        "sha256": "7e30f0cb81f54065dfaeb48ef99acb86c763e8b5d3342dd1fcb0cc713821c90f",
+        "history_after_rule": "exact raw current PCM at mapped host, before mute/width processing"
+      }
+    },
+    {
+      "case_id": "current_pulse_host0",
+      "input": {
+        "current_overrides": [
+          [
+            0,
+            767,
+            1065353216
+          ]
+        ]
+      },
+      "expected": {
+        "flags_u8_48x2_hex": "010101010101010101010101010101010101010101010000010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100",
+        "bytes": 96,
+        "sha256": "92158336f59f25c5e28029e03a9cf49483b0aa1eb6ad4f3a9b76d5ee5e29d9ce",
+        "history_after_rule": "exact raw current PCM at mapped host, before mute/width processing"
+      }
+    },
+    {
+      "case_id": "negative_current_pulse",
+      "input": {
+        "current_overrides": [
+          [
+            0,
+            767,
+            3212836864
+          ]
+        ]
+      },
+      "expected": {
+        "flags_u8_48x2_hex": "010101010101010101010101010101010101010101010000010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100",
+        "bytes": 96,
+        "sha256": "92158336f59f25c5e28029e03a9cf49483b0aa1eb6ad4f3a9b76d5ee5e29d9ce",
+        "history_after_rule": "exact raw current PCM at mapped host, before mute/width processing"
+      }
+    },
+    {
+      "case_id": "history_pulse_before",
+      "input": {
+        "history_overrides": [
+          [
+            0,
+            768,
+            1065353216
+          ]
+        ]
+      },
+      "expected": {
+        "flags_u8_48x2_hex": "010101010101010101010101010101010101010101010000010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100",
+        "bytes": 96,
+        "sha256": "92158336f59f25c5e28029e03a9cf49483b0aa1eb6ad4f3a9b76d5ee5e29d9ce",
+        "history_after_rule": "exact raw current PCM at mapped host, before mute/width processing"
+      }
+    },
+    {
+      "case_id": "epsilon_product_equal",
+      "input": {
+        "current_overrides": [
+          [
+            0,
+            767,
+            880803840
+          ]
+        ]
+      },
+      "expected": {
+        "flags_u8_48x2_hex": "010101010101010101010101010101010101010101010100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100",
+        "bytes": 96,
+        "sha256": "7e30f0cb81f54065dfaeb48ef99acb86c763e8b5d3342dd1fcb0cc713821c90f",
+        "history_after_rule": "exact raw current PCM at mapped host, before mute/width processing"
+      }
+    },
+    {
+      "case_id": "epsilon_product_below",
+      "input": {
+        "current_overrides": [
+          [
+            0,
+            767,
+            880803839
+          ]
+        ]
+      },
+      "expected": {
+        "flags_u8_48x2_hex": "010101010101010101010101010101010101010101010100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100",
+        "bytes": 96,
+        "sha256": "7e30f0cb81f54065dfaeb48ef99acb86c763e8b5d3342dd1fcb0cc713821c90f",
+        "history_after_rule": "exact raw current PCM at mapped host, before mute/width processing"
+      }
+    },
+    {
+      "case_id": "epsilon_product_above",
+      "input": {
+        "current_overrides": [
+          [
+            0,
+            767,
+            880803841
+          ]
+        ]
+      },
+      "expected": {
+        "flags_u8_48x2_hex": "010101010101010101010101010101010101010101010000010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100",
+        "bytes": 96,
+        "sha256": "92158336f59f25c5e28029e03a9cf49483b0aa1eb6ad4f3a9b76d5ee5e29d9ce",
+        "history_after_rule": "exact raw current PCM at mapped host, before mute/width processing"
+      }
+    },
+    {
+      "case_id": "zero_gain_last_current",
+      "input": {
+        "current_overrides": [
+          [
+            0,
+            1535,
+            1065353216
+          ]
+        ]
+      },
+      "expected": {
+        "flags_u8_48x2_hex": "010101010101010101010101010101010101010101010100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100",
+        "bytes": 96,
+        "sha256": "7e30f0cb81f54065dfaeb48ef99acb86c763e8b5d3342dd1fcb0cc713821c90f",
+        "history_after_rule": "exact raw current PCM at mapped host, before mute/width processing"
+      }
+    },
+    {
+      "case_id": "zero_gain_first_history",
+      "input": {
+        "history_overrides": [
+          [
+            0,
+            0,
+            1065353216
+          ]
+        ]
+      },
+      "expected": {
+        "flags_u8_48x2_hex": "010101010101010101010101010101010101010101010100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100",
+        "bytes": 96,
+        "sha256": "7e30f0cb81f54065dfaeb48ef99acb86c763e8b5d3342dd1fcb0cc713821c90f",
+        "history_after_rule": "exact raw current PCM at mapped host, before mute/width processing"
+      }
+    },
+    {
+      "case_id": "negative_zero_silent",
+      "input": {
+        "current_overrides": [
+          [
+            0,
+            767,
+            2147483648
+          ]
+        ]
+      },
+      "expected": {
+        "flags_u8_48x2_hex": "010101010101010101010101010101010101010101010100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100",
+        "bytes": 96,
+        "sha256": "7e30f0cb81f54065dfaeb48ef99acb86c763e8b5d3342dd1fcb0cc713821c90f",
+        "history_after_rule": "exact raw current PCM at mapped host, before mute/width processing"
+      }
+    },
+    {
+      "case_id": "mute_active_keeps_raw_history",
+      "input": {
+        "current_overrides": [
+          [
+            0,
+            767,
+            1065353216
+          ]
+        ],
+        "control_overrides": {
+          "0": {
+            "mute": 1
+          }
+        }
+      },
+      "expected": {
+        "flags_u8_48x2_hex": "010101010101010101010101010101010101010101010101010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100",
+        "bytes": 96,
+        "sha256": "f9a7e118db279f45737b6a46a913d4d4fd474db63441278bed8ceee32bced1d7",
+        "history_after_rule": "exact raw current PCM at mapped host, before mute/width processing"
+      }
+    },
+    {
+      "case_id": "mute_silent",
+      "input": {
+        "control_overrides": {
+          "0": {
+            "mute": 1
+          }
+        }
+      },
+      "expected": {
+        "flags_u8_48x2_hex": "010101010101010101010101010101010101010101010101010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100",
+        "bytes": 96,
+        "sha256": "f9a7e118db279f45737b6a46a913d4d4fd474db63441278bed8ceee32bced1d7",
+        "history_after_rule": "exact raw current PCM at mapped host, before mute/width processing"
+      }
+    },
+    {
+      "case_id": "width_below_point2_active",
+      "input": {
+        "current_overrides": [
+          [
+            0,
+            767,
+            1065353216
+          ]
+        ],
+        "control_overrides": {
+          "0": {
+            "width_u32": 1045220556
+          }
+        }
+      },
+      "expected": {
+        "flags_u8_48x2_hex": "010101010101010101010101010101010101010101010000010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100",
+        "bytes": 96,
+        "sha256": "92158336f59f25c5e28029e03a9cf49483b0aa1eb6ad4f3a9b76d5ee5e29d9ce",
+        "history_after_rule": "exact raw current PCM at mapped host, before mute/width processing"
+      }
+    },
+    {
+      "case_id": "width_equal_point2_active",
+      "input": {
+        "current_overrides": [
+          [
+            0,
+            767,
+            1065353216
+          ]
+        ],
+        "control_overrides": {
+          "0": {
+            "width_u32": 1045220557
+          }
+        }
+      },
+      "expected": {
+        "flags_u8_48x2_hex": "010101010101010101010101010101010101010101010101010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100",
+        "bytes": 96,
+        "sha256": "f9a7e118db279f45737b6a46a913d4d4fd474db63441278bed8ceee32bced1d7",
+        "history_after_rule": "exact raw current PCM at mapped host, before mute/width processing"
+      }
+    },
+    {
+      "case_id": "width_above_point2_active",
+      "input": {
+        "current_overrides": [
+          [
+            0,
+            767,
+            1065353216
+          ]
+        ],
+        "control_overrides": {
+          "0": {
+            "width_u32": 1045220558
+          }
+        }
+      },
+      "expected": {
+        "flags_u8_48x2_hex": "010101010101010101010101010101010101010101010101010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100",
+        "bytes": 96,
+        "sha256": "f9a7e118db279f45737b6a46a913d4d4fd474db63441278bed8ceee32bced1d7",
+        "history_after_rule": "exact raw current PCM at mapped host, before mute/width processing"
+      }
+    },
+    {
+      "case_id": "width_equal_point2_inactive",
+      "input": {
+        "control_overrides": {
+          "0": {
+            "width_u32": 1045220557
+          }
+        }
+      },
+      "expected": {
+        "flags_u8_48x2_hex": "010101010101010101010101010101010101010101010100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100",
+        "bytes": 96,
+        "sha256": "7e30f0cb81f54065dfaeb48ef99acb86c763e8b5d3342dd1fcb0cc713821c90f",
+        "history_after_rule": "exact raw current PCM at mapped host, before mute/width processing"
+      }
+    },
+    {
+      "case_id": "prefix_writer_on_silence",
+      "input": {
+        "prefix_written_sources": [
+          0,
+          3,
+          10
+        ]
+      },
+      "expected": {
+        "flags_u8_48x2_hex": "000001010101000001010101010101010101010100000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100",
+        "bytes": 96,
+        "sha256": "fd7fa849a0b4efa476e484c62ca0dca57edabe4a4bf4e6d28ff2dc7dc816b935",
+        "history_after_rule": "exact raw current PCM at mapped host, before mute/width processing"
+      }
+    },
+    {
+      "case_id": "LFE_pulse_excluded",
+      "input": {
+        "current_overrides": [
+          [
+            3,
+            767,
+            1065353216
+          ]
+        ]
+      },
+      "expected": {
+        "flags_u8_48x2_hex": "010101010101010101010101010101010101010101010100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100",
+        "bytes": 96,
+        "sha256": "7e30f0cb81f54065dfaeb48ef99acb86c763e8b5d3342dd1fcb0cc713821c90f",
+        "history_after_rule": "exact raw current PCM at mapped host, before mute/width processing"
+      }
+    },
+    {
+      "case_id": "semantic_LFE_rebound_host10",
+      "input": {
+        "lfe_host": 10,
+        "current_overrides": [
+          [
+            3,
+            767,
+            1065353216
+          ]
+        ]
+      },
+      "expected": {
+        "flags_u8_48x2_hex": "010101010101010101010101010101010101010101010100010001000000010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100",
+        "bytes": 96,
+        "sha256": "e465ac5488b75ffe0dfc6377415a37206eebfff67b795007cae00999c97a24f3",
+        "history_after_rule": "exact raw current PCM at mapped host, before mute/width processing"
+      }
+    },
+    {
+      "case_id": "prefix_duplicate_set_member",
+      "input": {
+        "prefix_written_sources": [
+          0,
+          0
+        ]
+      },
+      "expected": {
+        "flags_u8_48x2_hex": "000001010101010101010101010101010101010101010100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100",
+        "bytes": 96,
+        "sha256": "72b7e3d6f2b6c80151df7ced7e972981a538449fdc5154ab4ca951604eba1589",
+        "history_after_rule": "exact raw current PCM at mapped host, before mute/width processing"
+      }
+    }
+  ],
+  "negative_cases": [
+    {
+      "case_id": "stale_packet",
+      "input": {
+        "packet_callback_index": 0,
+        "expected_callback_index": 1
+      },
+      "expected": {
+        "error": "STALE_CALLBACK_GENERATION",
+        "output_packet": null,
+        "committed_history_changes": 0
+      },
+      "provenance": "proposed product boundary check; not native error code"
+    },
+    {
+      "case_id": "next_history_wrong_generation",
+      "input": {
+        "history_owner_generation": 1,
+        "expected_history_generation": 0
+      },
+      "expected": {
+        "error": "WRONG_HISTORY_GENERATION",
+        "output_packet": null,
+        "committed_history_changes": 0
+      },
+      "provenance": "proposed product boundary check; not native error code"
+    },
+    {
+      "case_id": "disabled_route",
+      "input": {
+        "route_enabled": false
+      },
+      "expected": {
+        "error": "UNSUPPORTED_ROUTE_BRANCH",
+        "output_packet": null,
+        "committed_history_changes": 0
+      },
+      "provenance": "proposed product boundary check; not native error code"
+    },
+    {
+      "case_id": "wrong_PCM_shape",
+      "input": {
+        "PCM_shape": [
+          38,
+          1535
+        ]
+      },
+      "expected": {
+        "error": "PCM_SHAPE",
+        "output_packet": null,
+        "committed_history_changes": 0
+      },
+      "provenance": "proposed product boundary check; not native error code"
+    },
+    {
+      "case_id": "nonbijective_mapping",
+      "input": {
+        "mapping_duplicate_destination": true
+      },
+      "expected": {
+        "error": "ROUTE_NOT_BIJECTIVE",
+        "output_packet": null,
+        "committed_history_changes": 0
+      },
+      "provenance": "proposed product boundary check; not native error code"
+    },
+    {
+      "case_id": "missing_before_history",
+      "input": {
+        "missing_history": true
+      },
+      "expected": {
+        "error": "MISSING_BEFORE_HISTORY",
+        "output_packet": null,
+        "committed_history_changes": 0
+      },
+      "provenance": "proposed product boundary check; not native error code"
+    },
+    {
+      "case_id": "unsupported_component",
+      "input": {
+        "control_overrides": {
+          "0": {
+            "component_enum": 1
+          }
+        }
+      },
+      "expected": {
+        "error": "UNSUPPORTED_COMPONENT_OR_DIFFUSE",
+        "output_packet": null,
+        "committed_history_changes": 0
+      },
+      "provenance": "proposed product boundary check; not native error code"
+    },
+    {
+      "case_id": "unsupported_diffuse",
+      "input": {
+        "control_overrides": {
+          "0": {
+            "diffuse": 1
+          }
+        }
+      },
+      "expected": {
+        "error": "UNSUPPORTED_COMPONENT_OR_DIFFUSE",
+        "output_packet": null,
+        "committed_history_changes": 0
+      },
+      "provenance": "proposed product boundary check; not native error code"
+    },
+    {
+      "case_id": "NaN_current_input",
+      "input": {
+        "current_overrides": [
+          [
+            0,
+            767,
+            2143289344
+          ]
+        ]
+      },
+      "expected": {
+        "error": "NONFINITE_PCM",
+        "output_packet": null,
+        "committed_history_changes": 0
+      },
+      "provenance": "proposed product boundary check; not native error code"
+    },
+    {
+      "case_id": "NaN_width",
+      "input": {
+        "control_overrides": {
+          "0": {
+            "width_u32": 2143289344
+          }
+        }
+      },
+      "expected": {
+        "error": "NONFINITE_WIDTH",
+        "output_packet": null,
+        "committed_history_changes": 0
+      },
+      "provenance": "proposed product boundary check; not native error code"
+    },
+    {
+      "case_id": "invalid_prefix_writer",
+      "input": {
+        "prefix_written_sources": [
+          11
+        ]
+      },
+      "expected": {
+        "error": "PREFIX_WRITER_DOMAIN",
+        "output_packet": null,
+        "committed_history_changes": 0
+      },
+      "provenance": "proposed product boundary check; not native error code"
+    }
+  ],
+  "real_first_callback_case": {
+    "input": {
+      "customer_PCM24_WAVE_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "start_sample": 0,
+      "samples": 1536,
+      "channel_count": 38,
+      "PCM24_conversion": "signed24 / 8388608 -> binary32",
+      "history_before": "37x1536 exact positive zero",
+      "window": "synthetic_base.window_rule",
+      "controls": [
+        {
+          "control_row_index": 0,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 1,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 2,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 4,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 5,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 6,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 7,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 8,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 9,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 10,
+          "mute": 0,
+          "width": 0.10000000894069672,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 11,
+          "mute": 0,
+          "width": 0.10000000894069672,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 12,
+          "mute": 0,
+          "width": 0.20000001788139343,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 13,
+          "mute": 0,
+          "width": 0.20000001788139343,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 14,
+          "mute": 0,
+          "width": 0.1899999976158142,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 15,
+          "mute": 0,
+          "width": 0.1899999976158142,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 16,
+          "mute": 0,
+          "width": 0.10000000894069672,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 17,
+          "mute": 0,
+          "width": 0.10000000894069672,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 18,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 19,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 20,
+          "mute": 0,
+          "width": 0.23000000417232513,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 21,
+          "mute": 0,
+          "width": 0.23000000417232513,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 22,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 23,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 24,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 25,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 26,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 27,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 28,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 29,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 30,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 31,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 32,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 33,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 34,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 35,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 36,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        },
+        {
+          "control_row_index": 37,
+          "mute": 0,
+          "width": 0.0,
+          "component_enum": 0,
+          "diffuse": 0
+        }
+      ],
+      "row_to_source": {
+        "0": 11,
+        "1": 12,
+        "2": 13,
+        "4": 14,
+        "5": 15,
+        "6": 16,
+        "7": 17,
+        "8": 18,
+        "9": 19,
+        "10": 20,
+        "11": 21,
+        "12": 22,
+        "13": 23,
+        "14": 24,
+        "15": 25,
+        "16": 26,
+        "17": 27,
+        "18": 28,
+        "19": 29,
+        "20": 30,
+        "21": 31,
+        "22": 32,
+        "23": 33,
+        "24": 34,
+        "25": 35,
+        "26": 36,
+        "27": 37,
+        "28": 38,
+        "29": 39,
+        "30": 40,
+        "31": 41,
+        "32": 42,
+        "33": 43,
+        "34": 44,
+        "35": 45,
+        "36": 46,
+        "37": 47
+      },
+      "prefix_written_sources": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    "expected": {
+      "flags_u8_48x2_hex": "000000000000000000000000000000000000000000000000000000000000000001000100010001000000000001010101010001000000000000000000010001000100010000000000010001000100010001000100000000000000000000000000",
+      "bytes": 96,
+      "sha256": "da2819b893989c93c527a9ecbf2719d03d4a8528d16ccdc3e296d6e80def7cc4"
+    },
+    "scope": "authorized WAV boundary replay with explicit typed control/route/writer inputs; upstream producers and whole callback not executed"
+  }
+}

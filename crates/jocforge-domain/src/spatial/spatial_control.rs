@@ -43,6 +43,7 @@
 //! let _proposal = SpatialControlAfterProposal::new();
 //! ```
 
+use super::source_flags::SourceFlagsPacket;
 use crate::frontend::{
     F01EProviderReceipt, F03TargetProviderReceipt, ProviderIdentity, ProviderSha256,
     ValidatedF01EColdProvider, ValidatedF03TargetColdProvider,
@@ -453,15 +454,6 @@ impl SpatialControlState {
     pub const fn writer_set_record_count(&self) -> u32 {
         self.matrix_assignment.writer_set_record_count
     }
-}
-
-/// Future producer-owned packet capability. Payload and lineage remain private and unconstructible.
-#[allow(dead_code)]
-#[must_use]
-pub struct SourceFlagsPacket {
-    _callback_index: FrontendCallbackIndex,
-    _parent_transaction_id: CallbackTransactionId,
-    _flags_u8_48x2: Box<[[u8; 2]; 48]>,
 }
 
 /// Future producer-owned packet capability. Payload and lineage remain private and unconstructible.

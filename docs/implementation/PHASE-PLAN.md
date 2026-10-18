@@ -1167,16 +1167,19 @@
         "payload": "features F32[24][48]",
         "persistent": false,
         "presence_tag": false,
+        "producer_status": "FUTURE_PRODUCER_DEFERRED",
         "root_canonical_bytes": 0
       },
       "SourceFlagsPacket": {
         "callback_index": "g",
         "cold_reset_read": "NOT_READY",
         "derived_from": "same callback before history plus current input/control/route/prefix writer set",
+        "implementation_file": "crates/jocforge-domain/src/spatial/source_flags.rs",
         "next_callback_seed": false,
         "payload": "flags U8[48][2]",
         "persistent": false,
         "presence_tag": false,
+        "producer_status": "LOCALLY_VERIFIED_NUMERIC_AND_PACKET",
         "root_canonical_bytes": 0
       },
       "diagnostics": "packet copies may be recorded externally but are not recovery authority",
@@ -1493,13 +1496,12 @@
   },
   "task": {
     "blocked_on": [
-      "SourceFlagsPacket producer",
       "CurrentFeaturesPacket producer",
       "spatial_audio root",
       "enclosing CallbackTransaction coordinator"
     ],
     "blockers": [
-      "SourceFlagsPacket and CurrentFeaturesPacket producers remain deferred; this keeps full P1.3-D blocked while D1 storage/staging is separately authorized",
+      "CurrentFeaturesPacket producer and parent CallbackTransaction integration remain deferred; this keeps full P1.3-D blocked after SourceFlagsPacket was independently verified",
       "P1.3-C callback implementation waits for all 12 owner roots, including spatial_audio and g>=2 source roots"
     ],
     "callback_local_scratch_not_serialized": [
@@ -1547,12 +1549,11 @@
       "F13 metadata_queues",
       "F15 source_publication"
     ],
-    "implementation_rust": "full P1.3-D transaction integration remains blocked; P1.3-D1 storage/staging foundation is separately authorized; packet producers remain out of D1",
+    "implementation_rust": "SourceFlagsPacket producer is locally verified; full P1.3-D remains blocked on CurrentFeaturesPacket, spatial_audio and parent CallbackTransaction integration; D1 status is unchanged",
     "local_commit": "FORBIDDEN",
     "mapping_status": "MAPPING_COMPLETE_BLOCKED",
     "owner_receipt_order_and_wrapper": "P1.3-C approves 12-owner ASCII order and schema v2 with 13 fields; wrapper has no digest/HMAC; implementation waits for root availability",
     "packet_producer_blockers": [
-      "SourceFlagsPacket producer",
       "CurrentFeaturesPacket producer"
     ],
     "prerequisites": [
@@ -1638,7 +1639,7 @@
       "supplement_manifest_sha256": "c881f9b11c169d29e532a18de38fe1f31c600b0167e18f3c0e7c3bee91945f38",
       "uses_selected_overlap_projection_as_root": false
     },
-    "status": "BLOCKED_ON_SOURCE_FLAGS_AND_FEATURE_PRODUCERS",
+    "status": "BLOCKED_ON_CURRENT_FEATURES_AND_PARENT_INTEGRATION",
     "superseding_amendment": {
       "authority": "approved supplement selected-adm-installed48-state.v5-wash-amendment; frozen implementer package remains unchanged",
       "document_bytes": 7315,
@@ -1677,13 +1678,12 @@
   "programme_root_reference": "programme_roots[spatial_control]",
   "task": {
     "blocked_on": [
-      "SourceFlagsPacket producer",
       "CurrentFeaturesPacket producer",
       "spatial_audio root",
       "enclosing CallbackTransaction coordinator"
     ],
     "blockers": [
-      "SourceFlagsPacket and CurrentFeaturesPacket producers remain deferred; this keeps full P1.3-D blocked while D1 storage/staging is separately authorized",
+      "CurrentFeaturesPacket producer and parent CallbackTransaction integration remain deferred; this keeps full P1.3-D blocked after SourceFlagsPacket was independently verified",
       "P1.3-C callback implementation waits for all 12 owner roots, including spatial_audio and g>=2 source roots"
     ],
     "callback_local_scratch_not_serialized": [
@@ -1731,12 +1731,11 @@
       "F13 metadata_queues",
       "F15 source_publication"
     ],
-    "implementation_rust": "full P1.3-D transaction integration remains blocked; P1.3-D1 storage/staging foundation is separately authorized; packet producers remain out of D1",
+    "implementation_rust": "SourceFlagsPacket producer is locally verified; full P1.3-D remains blocked on CurrentFeaturesPacket, spatial_audio and parent CallbackTransaction integration; D1 status is unchanged",
     "local_commit": "FORBIDDEN",
     "mapping_status": "MAPPING_COMPLETE_BLOCKED",
     "owner_receipt_order_and_wrapper": "P1.3-C approves 12-owner ASCII order and schema v2 with 13 fields; wrapper has no digest/HMAC; implementation waits for root availability",
     "packet_producer_blockers": [
-      "SourceFlagsPacket producer",
       "CurrentFeaturesPacket producer"
     ],
     "prerequisites": [
@@ -1822,7 +1821,7 @@
       "supplement_manifest_sha256": "c881f9b11c169d29e532a18de38fe1f31c600b0167e18f3c0e7c3bee91945f38",
       "uses_selected_overlap_projection_as_root": false
     },
-    "status": "BLOCKED_ON_SOURCE_FLAGS_AND_FEATURE_PRODUCERS",
+    "status": "BLOCKED_ON_CURRENT_FEATURES_AND_PARENT_INTEGRATION",
     "superseding_amendment": {
       "authority": "approved supplement selected-adm-installed48-state.v5-wash-amendment; frozen implementer package remains unchanged",
       "document_bytes": 7315,
@@ -1892,13 +1891,21 @@
     "selected EncodingProfile identity",
     "only the GENERATED cold rules recorded in the v5 mapping"
   ],
+  "deferred_case_resolutions": [
+    {
+      "evidence_scope": "20 synthetic vectors plus one authorized first-callback boundary literal; this is not D1 evidence",
+      "id": "flags_before_history",
+      "resolved_by": "SOURCE_FLAGS_PRODUCER",
+      "status": "LOCALLY_VERIFIED_NUMERIC_AND_PACKET"
+    }
+  ],
   "implementation": {
     "clock_domain_file": "crates/jocforge-domain/src/timeline/index.rs",
     "file_inventory": [
       {
-        "bytes": 24578,
+        "bytes": 24320,
         "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-        "sha256": "c88bc155ceb256644dbdf67b1cf571675d580ecd3d9ad7ddb693733f194065dc"
+        "sha256": "7157a592e76ccb766c0f957144821ffbf269e4a7589db7b4579b5f5775575e93"
       },
       {
         "bytes": 725,
@@ -1911,9 +1918,9 @@
         "sha256": "a4f1c06f0472aa7959016e14059054dbc10e63756ded25b6c11bab892a7e85d6"
       },
       {
-        "bytes": 467,
+        "bytes": 516,
         "path": "crates/jocforge-domain/src/spatial/mod.rs",
-        "sha256": "c995a79bc41dde3e146532c620b2821dea47670f034739043dde44898c463c1c"
+        "sha256": "d8fa30db1d28480240f631cae0f62b1fd7423b039068c034f8cb18a63dffeea1"
       },
       {
         "bytes": 9428,
@@ -2012,7 +2019,7 @@
     "same-hash profile-only rejection leaves state hash and generation unchanged",
     "full cold root excludes callback packets and profile dimensions; profile dimensions contribute zero bytes and no tag",
     "persistent source_vector and source_scalar have exact F32 shapes and positive-zero bits",
-    "flags_before_history is deferred and is not reported as PASS or locally verified",
+    "flags_before_history is outside D1 and is resolved only by the separate SOURCE_FLAGS_PRODUCER slice; do not attribute that evidence to D1",
     "packet producer capabilities are opaque, non-defaultable, non-forgeable, and NOT_READY at cold/reset",
     "noncold prepare remains crate-private/deferred until a complete producer-generated typed after proposal exists",
     "no test-only constructor exposes the deferred after-proposal path",
@@ -2024,12 +2031,161 @@
   "scope": "construct the complete v5 persistent spatial_control cold root and canonical digest; provide a non-Clone read-only machine and prepared/staged foundation accepting only a future producer-generated complete typed after proposal; no packet producers and no local commit, abort, fatal or top-level COMMITTED",
   "scope_approval": "user-approved in the current task handoff on 2026-10-16; scope-only, not a packet-producer specification",
   "spec_gap_document": {
-    "document_bytes": 2480,
-    "document_sha256": "424f3cd27d625b2e1809fd06a6a9bae89958d5bc7bccf64170f792947182ead5",
+    "document_bytes": 1935,
+    "document_sha256": "a8b319d1518efbf4bd20fc4783a0e6bcec3d69ea165d55a88457e726a49b7307",
     "file": "docs/implementation/SPATIAL-CONTROL-STAGING-SPEC-GAP.md"
   },
   "status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
   "task_id": "P1.3-D1-SPATIAL-CONTROL-STAGING-ONLY"
+}
+```
+
+## SourceFlags producer
+
+```json
+{
+  "authority": "identity-verified approved implementer supplement; error names are isolated-product API choices, not native error-code claims",
+  "implementation": {
+    "file_inventory": [
+      {
+        "bytes": 32566,
+        "path": "crates/jocforge-domain/src/spatial/source_flags.rs",
+        "sha256": "deb4211c572889cd26aabda22a24a27ceec6a974b740db9a8cea1aef1289b2e7"
+      },
+      {
+        "bytes": 29657,
+        "path": "crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs",
+        "sha256": "e813e0cf50e7106ed43c3f6261abb1c89f23494ee5ab2b1c5d2a306bbea16e0e"
+      },
+      {
+        "bytes": 27933,
+        "path": "crates/jocforge-domain/tests/fixtures/source_flags/INPUT-ONLY-VECTORS.json",
+        "sha256": "ba7fb477931bc6f7127b63631b8048e127ecd78514133749ce3b0acdf61d3aaf"
+      }
+    ],
+    "fixture_file": "crates/jocforge-domain/tests/fixtures/source_flags/INPUT-ONLY-VECTORS.json",
+    "module_file": "crates/jocforge-domain/src/spatial/source_flags.rs",
+    "test_file": "crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs",
+    "test_mode": "20 synthetic literal vectors in workspace suite; authorized WAVE boundary vector is explicitly invoked with JOCFORGE_AUTHORIZED_WAV and is ignored otherwise"
+  },
+  "implementation_status": "LOCALLY_VERIFIED_NUMERIC_AND_PACKET",
+  "lineage_binding": [
+    "programme ID",
+    "attempt",
+    "CallbackTransactionId",
+    "FrontendCallbackIndex",
+    "before-history owner generation and digest",
+    "selected EncodingProfile identity",
+    "validated F01E and F03 provider receipt lineage",
+    "current PCM receipt identity",
+    "regular control receipt identity",
+    "semantic route/LFE receipt identity",
+    "prefix writer receipt identity"
+  ],
+  "numeric_contract": {
+    "activity_comparison": "strict >",
+    "activity_epsilon_f32_bits": "0x34000000",
+    "operation_rounding": "each conversion and multiplication has its specified independent R32 point; no FMA, add, energy or RMS path",
+    "output_layout": "source-major U8[48][2], 96 bytes",
+    "triangle_window_bytes": 12288,
+    "triangle_window_sha256": "134a5a788d42b0532f3ec46112ad978cc14fb3c46cb0d82f02fee5f129b7c919",
+    "width_comparison": ">= only when active and unmuted",
+    "width_limit_f32_bits": "0x3e4ccccd"
+  },
+  "output_ownership": {
+    "CurrentFeatures_or_FFT_implemented": false,
+    "SourceFlagsPacket": "opaque linear non-Clone/non-Copy capability; crate-private producer constructor and read-only payload/lineage access; no Default or cold packet",
+    "next_stage_order": "render/writer receipts -> flags -> CurrentFeatures -> selector/outer",
+    "parent_abort": "discard packet and proposal without committed history changes",
+    "parent_transaction_implemented": false,
+    "raw_history_proposal": "exact raw current PCM regular rows in route order; proposal only for the existing owner; no commit or additional state owner",
+    "selector_or_outer_transition_implemented": false
+  },
+  "scope": "pure same-callback SourceFlagsPacket production plus exact raw-current-history proposal for the existing owner; no history commit or parent transaction execution",
+  "status": "LOCALLY_VERIFIED_NUMERIC_AND_PACKET",
+  "supplement": {
+    "files": [
+      {
+        "bytes": 1060,
+        "file": "API-SCHEMA.json",
+        "sha256": "4e9d9e343b836943af9975b5b25e41c906faea684a0f794985eb419253665a8a"
+      },
+      {
+        "bytes": 27933,
+        "file": "INPUT-ONLY-VECTORS.json",
+        "sha256": "ba7fb477931bc6f7127b63631b8048e127ecd78514133749ce3b0acdf61d3aaf"
+      },
+      {
+        "bytes": 4169,
+        "file": "SPEC.md",
+        "sha256": "6dfccb7edb73391ae61a686c0a84373ab64e4a6a7018a6b9b93ac879e1957500"
+      }
+    ],
+    "identity": "source-flags-producer.v1",
+    "manifest_bytes": 1247,
+    "manifest_file": "MANIFEST.json",
+    "manifest_sha256": "164b7d4857922ea7149280968a56fa9206f2fd936e6fd413597548b4b8c70d68",
+    "research_basis_files_read": false
+  },
+  "task_id": "SOURCE-FLAGS-PRODUCER-V1",
+  "typed_inputs": [
+    "finite host-major current PCM F32[38][1536]",
+    "finite before regular history F32[37][1536] in validated regular-host order",
+    "exactly 37 typed regular-host controls",
+    "validated 38-host semantic route with exactly one excluded LFE and ordered 11..47 destinations",
+    "same-callback prefix writer set limited to sources 0..10",
+    "typed programme ID, attempt, CallbackTransactionId, FrontendCallbackIndex, before-history generation/digest, selected profile and validated provider lineage"
+  ],
+  "vectors": {
+    "authorized_boundary_execution": "first 1536-sample callback read from externally supplied JOCFORGE_AUTHORIZED_WAV; exact 96-byte vector matched",
+    "authorized_boundary_success_count": 1,
+    "authorized_wav_path_or_pcm_stored": false,
+    "authorized_wav_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "bytes": 27933,
+    "error_case_ids": [
+      "stale_packet",
+      "next_history_wrong_generation",
+      "disabled_route",
+      "wrong_PCM_shape",
+      "nonbijective_mapping",
+      "missing_before_history",
+      "unsupported_component",
+      "unsupported_diffuse",
+      "NaN_current_input",
+      "NaN_width",
+      "invalid_prefix_writer"
+    ],
+    "error_count": 11,
+    "error_output": "null packet and zero committed history changes",
+    "fixture_file": "crates/jocforge-domain/tests/fixtures/source_flags/INPUT-ONLY-VECTORS.json",
+    "sha256": "ba7fb477931bc6f7127b63631b8048e127ecd78514133749ce3b0acdf61d3aaf",
+    "success_case_ids": [
+      "cold_silent_no_writer",
+      "current_pulse_host0",
+      "negative_current_pulse",
+      "history_pulse_before",
+      "epsilon_product_equal",
+      "epsilon_product_below",
+      "epsilon_product_above",
+      "zero_gain_last_current",
+      "zero_gain_first_history",
+      "negative_zero_silent",
+      "mute_active_keeps_raw_history",
+      "mute_silent",
+      "width_below_point2_active",
+      "width_equal_point2_active",
+      "width_above_point2_active",
+      "width_equal_point2_inactive",
+      "prefix_writer_on_silence",
+      "LFE_pulse_excluded",
+      "semantic_LFE_rebound_host10",
+      "prefix_duplicate_set_member",
+      "real_first_callback_case"
+    ],
+    "success_count": 21,
+    "synthetic_success_count": 20,
+    "whole_song_product_replay": "NOT_RUN"
+  }
 }
 ```
 
