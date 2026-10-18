@@ -4,7 +4,7 @@
 
 P1.3-D1 remains locally verified as the v5 storage/staging foundation. The separately authorized `SOURCE-FLAGS-PRODUCER-V1` slice has now resolved the `flags_before_history` producer gap and locally verified its numeric packet output. That later producer result does not change D1's status or make D1 the owner of packet generation.
 
-The full P1.3-D path remains blocked on the `CurrentFeaturesPacket` producer/algorithm integration, the `spatial_audio` root, and the parent `CallbackTransaction`. P1.4-C's two exact math-provider validators are locally verified; the CurrentFeatures producer is `READY_FOR_IMPLEMENTATION` but `NOT_STARTED`. Selector/outer transitions, root commits, and parent transaction execution remain outside the completed SourceFlags slice.
+The `spatial_audio` programme root is now mapped to the complete F04C `F04CompositionState` and is `READY_FOR_IMPLEMENTATION` as a root mapping only. The full P1.3-D path remains blocked on the deferred post-window render producer and its exact linear packet fanout, F04-specific P1.4 provider contracts, spatial_audio root staging/integration, and the parent `CallbackTransaction`. P1.4-C's two exact math-provider validators and the CurrentFeatures math/capability producer are locally verified; `CurrentFeaturesPacket` math/capability production is complete, but its future PostWindowAudioPacket render input and parent callback transaction remain unintegrated. Render production and parent transaction execution remain `NOT_RUN`. Selector/outer transitions, root commits, and parent transaction execution remain outside the completed SourceFlags slice.
 
 ## SourceFlags evidence
 

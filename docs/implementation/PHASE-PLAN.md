@@ -1158,6 +1158,7 @@
     "currently_materialized_or_mapped": [
       "reader_eof",
       "frontend_control",
+      "spatial_audio",
       "spatial_control"
     ],
     "g_ge_2_source_stage_roots": [
@@ -1169,7 +1170,9 @@
       "integrity",
       "output"
     ],
-    "missing_callback_root": "spatial_audio",
+    "missing_callback_root_implementation": "spatial_audio",
+    "spatial_audio_implementation_status": "NOT_STARTED",
+    "spatial_audio_mapping_status": "READY_FOR_IMPLEMENTATION",
     "spatial_control_status": "MAPPING_COMPLETE_BLOCKED_ON_P1.3_C_ROOTS"
   },
   "preflight_order": [
@@ -1965,6 +1968,320 @@
 }
 ```
 
+## P1.3-E spatial_audio programme-root mapping
+
+```json
+{
+  "programme_root": {
+    "callback_local_only_fields": [
+      "prefix row accumulators and prefix/regular output rows",
+      "matrix[g], destinations[g], current_lfe[g], installed48[g] input views",
+      "Type10[g], final_six[g], target/carrier QMF output windows and all per-callback receipts"
+    ],
+    "canonical_state": {
+      "callback_local_scratch": "excluded",
+      "cold_state_sha256": "35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e",
+      "digest": "SHA-256 over the complete F04CompositionState canonical bytes; cold digest is bound to GTC cold_sha256",
+      "encoding": "F04_STATE_NODE_V1: N/B+U64LE/I+I64LE/F+F32LE/Z+U8/T+U64LE/D+class+declared fields",
+      "encoding_id": "F04_STATE_NODE_V1",
+      "field_order": [
+        "callback_index",
+        "retired",
+        "component_state",
+        "component_parameter_state",
+        "component_filter_history",
+        "lfe_state",
+        "receiver_state",
+        "fitting_qmf_state",
+        "receiver_callback_count"
+      ],
+      "schema_semantic_sha256_is_state_digest": false
+    },
+    "clock": {
+      "callback_index_type": "FrontendCallbackIndex",
+      "generation_rule": "GTC owner generation increments once only when the enclosing CALLBACK commits",
+      "join": "must equal the parent CallbackTransaction FrontendCallbackIndex; it is not an independent clock",
+      "receiver_count_type": "ReceiverCallbackCount",
+      "receiver_rule": "g<2 advances component/LFE only; g>=2 maps r=g-2 and advances receiver/QMF once"
+    },
+    "cold_provider": {
+      "generation_specs": [
+        "specs/04-whole-spatial-chain-composition.md",
+        "specs/04-component-parameter-state.md",
+        "specs/04-receiver-state-and-routing.md",
+        "specs/04-qmf-receiver-whole-binding.md"
+      ],
+      "kind": "GENERATED_PROVIDER",
+      "null_sentinels_are_preserved": true,
+      "provider_files": [],
+      "schema_file": "test-vectors/F04-WHOLE-SPATIAL-STATE-SCHEMA.json",
+      "unknown_cold_arrays_zero_filled": false
+    },
+    "cold_sentinels": {
+      "lfe_input_frame_indexes": "3 x None",
+      "lfe_rows": "3 x None",
+      "receiver_target_coefficients": "None",
+      "reserved_receiver_temporal_slot": "temporal state index 4 remains cold and unconsumed",
+      "zero_fill_policy": "Only arrays explicitly specified positive zero in the pinned constructor may be zero; None sentinels remain None; missing arrays block implementation"
+    },
+    "commit_authority": "enclosing GTC CallbackTransactionCoordinator only; spatial_audio has no independent commit or top-level COMMITTED authority",
+    "eof_drain": "process each actual parent callback including four cached drains; component/LFE advance every callback, receiver/QMF only for g>=2; no extra QMF zero flush or synthetic callback",
+    "excluded_provider_bindings": [
+      {
+        "bytes": 2783,
+        "file": "parameters/spread-authorized-v1.json",
+        "kind": "FILE",
+        "owner": "spatial_control/F03W installed48 producer path; not a spatial_audio persistent field/provider",
+        "sha256": "5611b37f2a997f75da0ba920e394c0e36eddd9477e11ba94d44852d3e12fd0c9"
+      },
+      {
+        "bytes": 1467,
+        "file": "parameters/diffusion-mathematical-v1.json",
+        "kind": "GENERATED",
+        "owner": "spatial_control/F03W; selected D11-DP production config is not supplied by this route",
+        "sha256": "d690512cd204e97fc04a35c03519ed3005e26cb57408432fe30bfde63c2319aa"
+      },
+      {
+        "bytes": 1770,
+        "file": "parameters/diffusion-constructor-mathematical-v1.json",
+        "kind": "GENERATED",
+        "owner": "spatial_control/F03W; not part of F04CompositionState",
+        "sha256": "7a710d68b00c14d6b9b3f9fa3313579c5739ccce408655ea3252ad1ee4acd106"
+      }
+    ],
+    "fatal_behavior": "F04_STATE_ERROR, F04_PIPELINE_RETIRED, F04_CALLBACK_ORDER, F04_INPUT_ERROR, F04_PROFILE_UNSUPPORTED, or F04_NUMERIC_FAILURE yields no normal output or committed after-state; parent callback abort preserves all owner before snapshots and retires the programme",
+    "fields": [
+      {
+        "cold": "0",
+        "name": "callback_index",
+        "runtime_clock_type": "FrontendCallbackIndex",
+        "schema_pointer": "#/whole_state_by_boundary/cold/fields/0",
+        "type": "I64LE"
+      },
+      {
+        "authority": "F04-local fail-stop guard only; GTC programme status and fatal authority remain with CallbackTransactionCoordinator",
+        "cold": "false",
+        "name": "retired",
+        "schema_pointer": "#/whole_state_by_boundary/cold/fields/1",
+        "type": "U8 boolean"
+      },
+      {
+        "cold": "overlap_history_rows=F32[15][1536] positive zero; source_ring_rows=F32[15][1472] positive zero",
+        "name": "component_state",
+        "schema_pointer": "#/whole_state_by_boundary/cold/fields/2",
+        "type": "ComponentAudioState{overlap_history_rows:T15<B6144>,source_ring_rows:T15<B5888>}"
+      },
+      {
+        "cold": "peak=+0; previous_gain=1; hold=0; envelope=1; smoothed_gain=1; target_gain=1; output_level=2^-8; blocks_processed=0",
+        "name": "component_parameter_state",
+        "schema_pointer": "#/whole_state_by_boundary/cold/fields/3",
+        "type": "ComponentFilterParameterState{peak:F32,previous_gain:F32,hold:I64LE,envelope:F32,smoothed_gain:F32,target_gain:F32,output_level:F32,blocks_processed:I64LE}"
+      },
+      {
+        "cold": "F32[15][64] positive zero",
+        "name": "component_filter_history",
+        "schema_pointer": "#/whole_state_by_boundary/cold/fields/4",
+        "type": "T15<B256>"
+      },
+      {
+        "cold": "write_index=0; read_index=1; rows=[None,None,None]; input_frame_indexes=[None,None,None]; model_samples_consumed=0",
+        "name": "lfe_state",
+        "schema_pointer": "#/whole_state_by_boundary/cold/fields/5",
+        "type": "LfeDelayRingState{write_index:I64LE,read_index:I64LE,rows:T3<None>,input_frame_indexes:T3<None>,model_samples_consumed:I64LE}"
+      },
+      {
+        "cold": "All sample/history arrays use their declared positive-zero constructors; RingState indices are write=224/read=0; TemporalState cold spans and buffer lengths are those in F04RB.7; descriptor is cold; target_coefficients=None; temporal slot 4 remains reserved and unconsumed",
+        "name": "receiver_state",
+        "schema_pointer": "#/whole_state_by_boundary/cold/fields/6",
+        "type": "ModelState; exact recursive layout is pinned by the state schema pointer and F04RB.7"
+      },
+      {
+        "cold": "target/history/window/delay/FIR arrays are their declared positive-zero shapes; target_temporal uses its declared cold constructor; mode=0 fitting histories remain distinct from receiver mode=1 histories",
+        "name": "fitting_qmf_state",
+        "schema_pointer": "#/whole_state_by_boundary/cold/fields/7",
+        "type": "QmfWindowState; target_temporal, target_history, previous_targets, previous_carriers, fitting_delay, fitting_fir"
+      },
+      {
+        "cold": "0; increments only when Type10 exists (g>=2)",
+        "name": "receiver_callback_count",
+        "runtime_clock_type": "ReceiverCallbackCount",
+        "schema_pointer": "#/whole_state_by_boundary/cold/fields/8",
+        "type": "I64LE"
+      }
+    ],
+    "implementation_status": "NOT_STARTED",
+    "linear_capabilities": {
+      "machine": "SpatialAudioMachine; one committed root owner; non-Clone and non-Copy",
+      "prepared": "SpatialAudioPrepared; non-Clone/non-Copy; consumed by stage or discard",
+      "staged": "SpatialAudioStaged; non-Clone/non-Copy; consumed by enclosing coordinator commit or abort"
+    },
+    "materialization_status": "READY_FOR_IMPLEMENTATION",
+    "ownership_partition": {
+      "joc_persistent_fields": [
+        "F05JL owns temporal, geometry, fit, retry, Huffman, and ID14 writer state; F05JL consumes the F04C receipt and does not own/recompute F04R/F04RB histories"
+      ],
+      "other_owner_fields": [
+        "F05R56 reader/target histories",
+        "F13 metadata FIFO/timer/EMDF assembly state",
+        "F15 source publication and durable output state"
+      ],
+      "spatial_audio_persistent_fields": [
+        "component overlap/ring/filter histories and component parameter state",
+        "direct-LFE ring and source-generation slots",
+        "receiver ModelState including receiver audio mode=1 QMF histories",
+        "QmfWindowState including distinct mode=0 fitting delay/FIR and target/carrier windows"
+      ],
+      "spatial_control_persistent_fields": [
+        "raw/previous PCM and previous-current48 histories",
+        "installed48 producer histories",
+        "diffusion instances and previous diffusion outputs",
+        "targets, assignment, markers, and matrix state"
+      ]
+    },
+    "post_window_audio_packet": {
+      "boundary": "INSTALLED48_POST_WINDOW_48X3072",
+      "construction": "future render producer only; opaque linear packet; consumer cannot construct, clone, or forge lineage",
+      "fanout_status": "UNRESOLVED; no contract authorizes cloning the linear packet or independently reconstructing lineage",
+      "integration_status": "render producer deferred; CurrentFeatures consumes this boundary; F04C also needs the same callback installed48 value",
+      "interface": "PostWindowAudioPacket",
+      "lineage": [
+        "programme and attempt",
+        "CallbackTransactionId and FrontendCallbackIndex",
+        "selected profile and F01E/F03 provider lineage",
+        "spatial_control before generation and complete root digest",
+        "render receipt and payload SHA-256"
+      ],
+      "payload": "finite F32[48][3072], source-major",
+      "producer_owner": "spatial_control/F03W render producer",
+      "producer_stage": "same-callback W3072/post-window installed48 boundary before F04C consumer processing"
+    },
+    "programme_owner_binding": {
+      "binding_semantics": "The generic GTC OwnerState is bound to the complete F04CompositionState cold-schema pointer. The GTC cold_sha256 equals the verified complete F04 cold-state digest under F04_STATE_NODE_V1; the schema semantic hash is not a state digest.",
+      "cold_sha256": "35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e",
+      "file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
+      "package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+      "pointer": "#/properties/owners/properties/spatial_audio",
+      "ref": "#/$defs/ownerState",
+      "state_ref_value": "test-vectors/F04-WHOLE-SPATIAL-STATE-SCHEMA.json#/whole_state_by_boundary/cold",
+      "state_schema_file": "test-vectors/F04-WHOLE-SPATIAL-STATE-SCHEMA.json",
+      "state_schema_pointer": "#/whole_state_by_boundary/cold",
+      "state_schema_sha256": "4fdab9f591821d7c50e7daca17bc98d4a5b0616e9cb45b5937cae47b26ed657c",
+      "state_schema_type": "F04CompositionState",
+      "state_semantic_sha256": "e1ef560564678a04494a9a563b1e431582fd0a48c8524ff4e4b47cf7a880655c",
+      "uses_f04c_local_receipt_as_root": false,
+      "uses_selected_overlap_projection_as_root": false,
+      "wrapper_fields": [
+        "owner_id",
+        "generation",
+        "state_sha256",
+        "cold_sha256",
+        "state_ref"
+      ]
+    },
+    "readiness": {
+      "blockers": [
+        "F04-specific P1.4 identity/shape/permission contracts are not implemented; existing P1.4-C covers CurrentFeatures math providers only",
+        "PostWindowAudioPacket render producer and exact linear fanout to CurrentFeatures and F04C are deferred/unresolved",
+        "P1.3-C remains waiting for the other owner roots and g>=2 source-stage roots; no parent CallbackTransaction implementation exists"
+      ],
+      "implementation_status": "BLOCKED_ON_F04_P1_4_PROVIDER_CONTRACTS_POSTWINDOW_PACKET_FANOUT_AND_PARENT_TRANSACTION",
+      "mapping_status": "READY_FOR_IMPLEMENTATION"
+    },
+    "receipt": {
+      "fields": [
+        "owner_id",
+        "before_generation",
+        "before_sha256",
+        "after_generation",
+        "after_sha256",
+        "changed",
+        "commit_count",
+        "transaction_id"
+      ],
+      "generation": "cold=0; enclosing successful CALLBACK commit increments exactly once; failed/rejected callback leaves before values unchanged",
+      "schema_file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
+      "schema_pointer": "#/$defs/ownerReceipt",
+      "transaction_id": "same CallbackTransactionId as every other owner snapshot",
+      "type": "OwnerReceipt<SpatialAudio>"
+    },
+    "reset_authority": "programme-origin full restart; reconstruct the complete cold state and discard every staged token; no resume within RETIRED attempt",
+    "root_id": "spatial_audio",
+    "runtime_providers": [
+      {
+        "bytes": 2704,
+        "file": "parameters/window-q15.json",
+        "id": "F04_WINDOW_Q15",
+        "kind": "GENERATED",
+        "p1_4_contract": "F04-specific identity/shape validator not implemented",
+        "permission": "ordinary generated non-secret parameters; private vendor key absent",
+        "sha256": "a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130",
+        "shape": "receiver_blend32 Q15 and component_kernel64 Q15; formula-generated F32LE views are identity-pinned"
+      },
+      {
+        "bytes": 1077,
+        "file": "parameters/component-parameter-mathematical-v1.json",
+        "id": "F04_COMPONENT_PARAMETER_MATH_V1",
+        "kind": "GENERATED",
+        "p1_4_contract": "F04-specific identity/shape validator not implemented",
+        "permission": "internal mathematical generation; implementation_ready=NO; no source table copied",
+        "sha256": "5d0fec6f62a33eeef5c64016760fcbe94a1872a564b6d0e03f959c95c37eb0f5",
+        "shape": "8 Q15 integers and 8 F32 coefficient/pivot/weight words at 48 kHz and 64 samples per block"
+      },
+      {
+        "bytes": 20325,
+        "file": "parameters/qmf-receiver-functional-v1.json",
+        "id": "F04_QMF_RECEIVER_FUNCTIONAL_V1",
+        "kind": "FILE",
+        "p1_4_contract": "F04-specific identity/shape validator not implemented",
+        "permission": "authorized internal isolated implementation only; no secret, source, raw table, compiled image, or address",
+        "sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c",
+        "shape": "829 array F32 words plus 12 scalar F32 words; QWIN synthesis 640, selected band0 real/imag 21 each, LFE postfilter 20, descriptor thresholds 127"
+      },
+      {
+        "bytes": 6983,
+        "file": "parameters/qmf-mathematical-fft-v1.json",
+        "id": "F04_QMF_MATH_V1",
+        "kind": "GENERATED",
+        "p1_4_contract": "F04-specific identity/shape validator not implemented",
+        "permission": "generated mathematical values; compiled values not used",
+        "sha256": "e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431",
+        "shape": "radix-2 stage roots and rotations for QMF_FFT_RADIX2_MATH_V1"
+      },
+      {
+        "bytes": 4861,
+        "file": "parameters/descriptor-mathematical.json",
+        "id": "F04_DESCRIPTOR_MATH_V1",
+        "kind": "GENERATED",
+        "p1_4_contract": "F04-specific identity/shape validator not implemented",
+        "permission": "mathematical generation; audio acceptance pending",
+        "sha256": "a493fbdaf2dab30e940cae9976ed3305f3af083e5614ab0cbd6889c71a02b197",
+        "shape": "128 gain words and 127 threshold words"
+      }
+    ],
+    "stage_authority": {
+      "owner": "F04C",
+      "receipt": "selected-j05-owner-receipt.v1 is a local immutable stage receipt, not the programme root or GTC owner receipt",
+      "stage": "component, direct-LFE, receiver and both QMF state transitions run once; emit PRIMING for g<2 and selected-j05-owner-receipt.v1 for g>=2"
+    }
+  },
+  "task": {
+    "cold_sha256": "35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e",
+    "implementation_status": "NOT_STARTED",
+    "mapping_status": "READY_FOR_IMPLEMENTATION",
+    "p1_3_c_prerequisite": "P1.3-C remains CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS until the remaining owner roots and g>=2 source-stage roots are materialized",
+    "p1_4_prerequisite": "F04-specific identity/shape/permission contracts for selected FILE and GENERATED providers are not implemented; P1.4-C covers CurrentFeatures only",
+    "post_window_packet_prerequisite": "F03W/spatial_control render producer is deferred and linear packet fanout to CurrentFeatures and F04C remains unresolved",
+    "programme_root": "spatial_audio",
+    "root_field_count": 9,
+    "root_schema_pointer": "test-vectors/F04-WHOLE-SPATIAL-STATE-SCHEMA.json#/whole_state_by_boundary/cold",
+    "root_state_type": "F04CompositionState",
+    "scope": "Materialize and audit the complete spatial_audio GTC owner root, its cold constructor, serialization, clocks, ownership, receipts, and provider prerequisites; no DSP or Rust state implementation",
+    "status": "READY_FOR_IMPLEMENTATION",
+    "task_id": "P1.3-E-SPATIAL-AUDIO-PROGRAMME-ROOT-MAP"
+  }
+}
+```
+
 ## P1.3-D1 spatial_control staging-only implementation
 
 ```json
@@ -2143,8 +2460,8 @@
   "scope": "construct the complete v5 persistent spatial_control cold root and canonical digest; provide a non-Clone read-only machine and prepared/staged foundation accepting only a future producer-generated complete typed after proposal; no packet producers and no local commit, abort, fatal or top-level COMMITTED",
   "scope_approval": "user-approved in the current task handoff on 2026-10-16; scope-only, not a packet-producer specification",
   "spec_gap_document": {
-    "document_bytes": 2345,
-    "document_sha256": "8047ad6141f98e8a155b9e6b405af642aadb204616ade7b6d9bed6474683c85e",
+    "document_bytes": 2771,
+    "document_sha256": "a9182768b8d45a37c42cbfe4bc295b3c4687848e115d4b610078343772019c32",
     "file": "docs/implementation/SPATIAL-CONTROL-STAGING-SPEC-GAP.md"
   },
   "status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",

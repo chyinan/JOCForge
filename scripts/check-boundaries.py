@@ -61,7 +61,7 @@ def check_callback_transaction_control_flow(p):
  ck(p['abort_api']=='one callback-level abort consumes the CallbackTransactionStaged value; every owner receipt has after=before, changed=false, commit_count=0; no owner state or generation changes','P1.3-C abort contract')
  ck(p['fatal_api']=='a stage fatal aborts the whole callback, records ABORTED plus the fatal receipt, sets programme status RETIRED, preserves all owner bytes/generations, and rejects subsequent calls'and p['preflight_rejection']=='result=REJECTED; no stage runs and programme status does not become RETIRED','P1.3-C fatal and rejected distinction')
  ck(p['callback_success_gates']=={'g_0_1':'all four callback roots reader_eof, frontend_control, spatial_control, spatial_audio must succeed before the callback commits','g_ge_2':'wait for every source root required by that callback before the callback commits','internal_stages':'SOURCE, DISPATCH and AU append do not emit independent top-level success','dual_root_success':'FORBIDDEN'},'P1.3-C callback gates')
- ck(p['owner_root_readiness']=={'currently_materialized_or_mapped':['reader_eof','frontend_control','spatial_control'],'spatial_control_status':'MAPPING_COMPLETE_BLOCKED_ON_P1.3_C_ROOTS','missing_callback_root':'spatial_audio','additional_owner_roots_required_for_12_snapshots':['joc','meter','drc','analysis','codec','metadata','integrity','output'],'g_ge_2_source_stage_roots':['joc','drc','analysis','codec','metadata','integrity','output']},'P1.3-C waiting owner root set')
+ ck(p['owner_root_readiness']=={'currently_materialized_or_mapped':['reader_eof','frontend_control','spatial_audio','spatial_control'],'spatial_audio_mapping_status':'READY_FOR_IMPLEMENTATION','spatial_audio_implementation_status':'NOT_STARTED','spatial_control_status':'MAPPING_COMPLETE_BLOCKED_ON_P1.3_C_ROOTS','missing_callback_root_implementation':'spatial_audio','additional_owner_roots_required_for_12_snapshots':['joc','meter','drc','analysis','codec','metadata','integrity','output'],'g_ge_2_source_stage_roots':['joc','drc','analysis','codec','metadata','integrity','output']},'P1.3-C waiting owner root set')
  ck(p['unclosed_transaction_kinds']==['MEASUREMENT','FINALIZE','RESTART'],'P1.3-C other transaction kinds remain open')
 def check_spatial_control_mapping(root,d):
  programme=next(x for x in d['programme_roots']if x['root_id']=='spatial_control');p=d['phase_one']['P1.3-D'];ck(p['task_id']=='P1.3-D-SPATIAL-CONTROL-ROOT-MAP'and p['status']=='BLOCKED_ON_SPATIAL_AUDIO_RENDER_AND_PARENT_INTEGRATION'and p['mapping_status']=='MAPPING_COMPLETE_BLOCKED'and p['packet_producer_blockers']==[],'P1.3-D remains blocked after the CurrentFeatures math/capability slice');d1_status='LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED';ck(programme['materialization_status']==d1_status and programme['implementation_status']==d1_status and'owner_receipt_order_and_wrapper'not in programme,'spatial_control D1 materialized while P1.3-C stays blocked')
@@ -87,6 +87,129 @@ def check_spatial_control_mapping(root,d):
  f01=p['cold_providers']['f01e_cold'];ck(f01=={'file':providers['f01e_cold'],'status':'P1.4-A-LOCALLY-VERIFIED'},'F01E cold provider prerequisite');ck(programme['stage_authority']['owner']=='F03W'and programme['stage_authority']['receipt']=='SpatialControlReceipt'and programme['stage_authority']['commit_authority']=='enclosing CallbackTransaction only; local spatial_control commit is forbidden','F03W stage authority');ck(programme['transaction_stage']['status']=='STAGING_ONLY_WAITING_ON_P1.3_C_OWNER_ROOTS'and programme['transaction_stage']['join_metadata']==['shared CallbackTransactionId','same FrontendCallbackIndex as reader_eof and frontend_control','spatial_control before_generation and before_sha256','spatial_control after_sha256','validated F01E provider lineage','P1.4-B F03 target provider lineage','external owner receipts']and programme['transaction_stage']['local_commit']=='FORBIDDEN'and programme['transaction_stage']['top_level_committed']=='FORBIDDEN','spatial_control stage-only join')
  gaps=(PKG/'specs/00-global-transaction-evidence-gaps.md').read_text(encoding='utf-8');receipt_fields=['feature before/after','selector/U04/outer scratch identity','proposed target current/previous/active','marker proposal and external F05R56 metadata-history receipt','callback generation','unique commit_count'];ck(programme['stage_authority']['receipt']=='SpatialControlReceipt'and programme['stage_authority']['receipt_source']=='specs/00-global-transaction-evidence-gaps.md#G02'and programme['stage_authority']['receipt_fields']==receipt_fields and all(term in gaps for term in('feature before/after','selector/U04/outer scratch identity','proposed target current/previous/active','callback generation','commit_count')),'SpatialControlReceipt binding');owner_receipt=programme['owner_receipt'];ck(owner_receipt['schema_pointer']=='#/$defs/ownerReceipt'and owner_receipt['fields']==['owner_id=spatial_control','before_generation','before_sha256','after_generation','after_sha256','changed','commit_count','transaction_id']and owner_receipt['transaction_id']=='same CallbackTransactionId as reader_eof and frontend_control','spatial owner receipt fields');ck(p['receipt_order']=='12-owner ASCII order approved by P1.3-C; v2 wrapper has no digest/HMAC and stable JSON is test-only','P1.3-C receipt contract binding')
  expected_blockers=['P1.3-C callback implementation is waiting for all 12 owner roots, including spatial_audio and g>=2 source roots','P1.3-D must not define any local root commit or top-level COMMITTED receipt'];ck(programme['readiness']['mapping_status']=='MAPPING_COMPLETE_BLOCKED'and programme['readiness']['implementation_status']=='NOT_STARTED'and programme['readiness']['blockers']==expected_blockers and p['blockers']==['CurrentFeatures math and capability production is locally verified; render/post-window audio production, spatial-audio root integration, and parent CallbackTransaction integration remain deferred','P1.3-C callback implementation waits for all 12 owner roots, including spatial_audio and g>=2 source roots']and p['implementation_rust']=='SourceFlagsPacket and CurrentFeatures math/capability producers are locally verified; full P1.3-D remains blocked on spatial_audio render integration and parent CallbackTransaction integration; D1 status is unchanged','P1.3-D blocker set');ck(p['stage_only']=={'prepared_type':'SpatialControlPrepared','staged_type':'SpatialControlStaged','linear':True,'join_metadata':['CallbackTransactionId','FrontendCallbackIndex','before_generation','before_sha256','after_sha256','F01E provider lineage','F03 target provider lineage','external owner receipts'],'required_peer_roots':['reader_eof','frontend_control'],'local_commit':'FORBIDDEN','top_level_COMMITTED':'FORBIDDEN'}and p['prerequisites']==[{'task_id':'P1.3-C-CALLBACK-TRANSACTION-CONTRACT-MAP','status':'CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS'},{'task_id':'P1.4-B-F03-SELECTED-TARGET-COLD-PROVIDER-CONTRACT','status':'SATISFIED_READY_FOR_STAGING_IMPLEMENTATION'}]and p['receipt_order']=='12-owner ASCII order approved by P1.3-C; v2 wrapper has no digest/HMAC and stable JSON is test-only','P1.3-D staging prerequisites');ck(d['phase_one']['P1.3-C']['status']=='CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS'and d['phase_one']['P1.3-C']['callback_receipt']['owner_receipt_order']['status']=='APPROVED_BY_WASH_SIDE_DESIGN','P1.3-C approved callback contract');ck(d['phase_one']['P1.4-A']['status']=='LOCALLY_VERIFIED'and d['phase_one']['P1.4-B']['status']=='LOCALLY_VERIFIED'and d['phase_one']['P1.4-B']['implementation_status']=='LOCALLY_VERIFIED'and not(root/'crates/jocforge-domain/src/state/spatial_control.rs').exists(),'spatial root remains unimplemented');review=json.loads((PKG/'test-vectors/ADM-INSTALLED48-LOCAL-REVIEW-STATUS.json').read_text(encoding='utf-8'));ck(review['decision']['real_adm_cold_whole']=='NO'and review['decision']['whole_package_implementation_ready']=='NO'and p['vector_evidence']['scope']=='7-callback deterministic synthetic selected profile only; real ADM cold replay is NOT_RUN and package whole implementation readiness is NO','spatial vector evidence scope')
+def check_spatial_audio_mapping(root,d):
+ programme=next(r for r in d['programme_roots'] if r['root_id']=='spatial_audio')
+ p=d['phase_one']['P1.3-E']
+ binding=programme['programme_owner_binding']
+ expected_fields=['callback_index','retired','component_state','component_parameter_state','component_filter_history','lfe_state','receiver_state','fitting_qmf_state','receiver_callback_count']
+ ck(p['task_id']=='P1.3-E-SPATIAL-AUDIO-PROGRAMME-ROOT-MAP' and p['status']=='READY_FOR_IMPLEMENTATION' and p['mapping_status']=='READY_FOR_IMPLEMENTATION' and p['implementation_status']=='NOT_STARTED','P1.3-E root mapping ready; implementation not started')
+ ck(programme['materialization_status']=='READY_FOR_IMPLEMENTATION' and programme['implementation_status']=='NOT_STARTED' and p['programme_root']=='spatial_audio','spatial_audio mapping status')
+ manifest_bytes=(PKG/'MANIFEST.json').read_bytes()
+ manifest_sha=hashlib.sha256(manifest_bytes).hexdigest()
+ ck(manifest_sha=='c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a' and binding['package_manifest_sha256']==manifest_sha,'spatial_audio approved package manifest identity')
+ manifest=json.loads(manifest_bytes)
+ entries={x['file']:x for x in manifest['files']}
+ def package_identity(file,size,digest):
+  entry=entries[file]
+  actual=(PKG/file).read_bytes()
+  ck(entry['bytes']==size and entry['sha256']==digest and len(actual)==size and hashlib.sha256(actual).hexdigest()==digest,'spatial_audio package identity '+file)
+ package_identity('test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json',12153,'74c8e4a60600187783e559459b426aada2508ae273f95401c9a4234aee4504b4')
+ package_identity('test-vectors/F04-WHOLE-SPATIAL-STATE-SCHEMA.json',226344,'4fdab9f591821d7c50e7daca17bc98d4a5b0616e9cb45b5937cae47b26ed657c')
+ package_identity('test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json',260481,'ffb1dea3b1e69383312da4059b9d8ddabb4366ed8fc22e7537f750ba041f2d63')
+ package_identity('test-vectors/F04-WHOLE-SPATIAL-CHAIN-RESULT.json',1863,'cbb776edb314ff43f72bb296af63dd02e1b65a73092185e613199d7dd54c5dc4')
+ package_identity('specs/00-selected-owner-projection-and-j05.md',4504,'9ff01aca7b6be6e89511e4d493f9fc9e661a50e2f098065f4a32c3fed777542f')
+ package_identity('parameters/adm-installed48-providers-v1.json',14372,'51305803b05daff498935b3283e56e27bb3e3966f52727bcf803a226871d5e91')
+ package_identity('specs/04-whole-spatial-chain-composition.md',9103,'92325b12128023001e1f3fd4696dcec68bbd47a46acdb7886781b411a10c5d59')
+ package_identity('specs/04-component-parameter-state.md',5792,'3e9b777a36ae722aeccd1054d778484e6a96e44d16f2534159dfe49afc7d1861')
+ package_identity('specs/04-receiver-state-and-routing.md',8332,'74b9b01537eb76a37582535b84426138ee8c8ecdca3486f9f43d0504c7c26306')
+ package_identity('specs/04-qmf-receiver-whole-binding.md',13595,'104d604cf876cc522a85b21f352bd0a09fc20c3171ddcd71da981c8076ea3a75')
+ gtc=json.loads((PKG/binding['file']).read_text(encoding='utf-8'))
+ gtc_slot=gtc['properties']['owners']['properties']['spatial_audio']
+ owner_schema=gtc['$defs']['ownerState']
+ ck(binding['pointer']=='#/properties/owners/properties/spatial_audio' and binding['ref']=='#/$defs/ownerState' and gtc_slot=={'$ref':'#/$defs/ownerState'} and binding['wrapper_fields']==owner_schema['required']==['owner_id','generation','state_sha256','cold_sha256','state_ref'],'spatial_audio GTC OwnerState binding')
+ schema=json.loads((PKG/binding['state_schema_file']).read_text(encoding='utf-8'))
+ cold=schema['whole_state_by_boundary']['cold']
+ schema_fields=[x['name'] for x in cold['fields']]
+ ck(binding['state_ref_value']==binding['state_schema_file']+binding['state_schema_pointer'] and binding['state_schema_pointer']=='#/whole_state_by_boundary/cold' and binding['state_schema_type']=='F04CompositionState' and cold['class_name']=='F04CompositionState' and schema_fields==expected_fields and len(schema_fields)==9,'spatial_audio complete root schema, not a projection')
+ ck(binding['state_schema_sha256']=='4fdab9f591821d7c50e7daca17bc98d4a5b0616e9cb45b5937cae47b26ed657c' and binding['state_semantic_sha256']==schema['sha256']=='e1ef560564678a04494a9a563b1e431582fd0a48c8524ff4e4b47cf7a880655c','spatial_audio schema semantic identity')
+ verification=json.loads((PKG/'test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json').read_text(encoding='utf-8'))
+ cold_sha=verification['reset_check']['cold_state_sha256']
+ ck(binding['cold_sha256']==cold_sha==programme['canonical_state']['cold_state_sha256'],'spatial_audio full cold digest binding')
+ ck(binding['uses_selected_overlap_projection_as_root'] is False and binding['uses_f04c_local_receipt_as_root'] is False and 'complete F04CompositionState' in binding['binding_semantics'],'spatial_audio root identity semantics')
+ projection=d['selected_overlap_projection']
+ ck(projection['source']=='parameters/selected-owner-projection-v1.json' and 'not a complete programme owner schema' in projection['scope'] and 'selected-owner-projection-v1.json' not in binding['state_ref_value'] and 'selected-j05-owner-receipt' not in binding['state_ref_value'],'projection and local receipt are not programme roots')
+ fields=programme['fields']
+ ck([x['name'] for x in fields]==expected_fields and [x['schema_pointer'] for x in fields]==[f'#/whole_state_by_boundary/cold/fields/{i}' for i in range(9)],'spatial_audio ordered field map')
+ ck(fields[0]['runtime_clock_type']=='FrontendCallbackIndex' and fields[0]['cold']=='0' and fields[1]['cold']=='false' and fields[2]['cold']=='overlap_history_rows=F32[15][1536] positive zero; source_ring_rows=F32[15][1472] positive zero','spatial_audio clock/component cold fields')
+ ck(fields[3]['cold']=='peak=+0; previous_gain=1; hold=0; envelope=1; smoothed_gain=1; target_gain=1; output_level=2^-8; blocks_processed=0' and fields[4]['cold']=='F32[15][64] positive zero','spatial_audio parameter/filter cold values')
+ ck(fields[5]['cold']=='write_index=0; read_index=1; rows=[None,None,None]; input_frame_indexes=[None,None,None]; model_samples_consumed=0' and fields[6]['cold']=='All sample/history arrays use their declared positive-zero constructors; RingState indices are write=224/read=0; TemporalState cold spans and buffer lengths are those in F04RB.7; descriptor is cold; target_coefficients=None; temporal slot 4 remains reserved and unconsumed' and fields[7]['type'].startswith('QmfWindowState') and fields[7]['cold']=='target/history/window/delay/FIR arrays are their declared positive-zero shapes; target_temporal uses its declared cold constructor; mode=0 fitting histories remain distinct from receiver mode=1 histories' and fields[8]['runtime_clock_type']=='ReceiverCallbackCount','spatial_audio LFE/receiver/QMF sentinels and types')
+ ck(programme['cold_provider']=={'kind':'GENERATED_PROVIDER','provider_files':[],'schema_file':'test-vectors/F04-WHOLE-SPATIAL-STATE-SCHEMA.json','generation_specs':['specs/04-whole-spatial-chain-composition.md','specs/04-component-parameter-state.md','specs/04-receiver-state-and-routing.md','specs/04-qmf-receiver-whole-binding.md'],'null_sentinels_are_preserved':True,'unknown_cold_arrays_zero_filled':False},'spatial_audio generated cold provider and no zero-fill')
+ ck(programme['cold_sentinels']=={'lfe_rows':'3 x None','lfe_input_frame_indexes':'3 x None','receiver_target_coefficients':'None','reserved_receiver_temporal_slot':'temporal state index 4 remains cold and unconsumed','zero_fill_policy':'Only arrays explicitly specified positive zero in the pinned constructor may be zero; None sentinels remain None; missing arrays block implementation'},'spatial_audio explicit cold sentinels')
+ canonical=programme['canonical_state']
+ ck(canonical['encoding_id']=='F04_STATE_NODE_V1' and canonical['encoding']==schema['encoding'] and canonical['field_order']==expected_fields and canonical['cold_state_sha256']==cold_sha and canonical['schema_semantic_sha256_is_state_digest'] is False and canonical['callback_local_scratch']=='excluded','spatial_audio canonical state encoding')
+ owner_projection=(PKG/'specs/00-selected-owner-projection-and-j05.md').read_text(encoding='utf-8')
+ ck('F04C executes component overlap/filter/ring, direct-LFE ring and J05 receiver/QMF once' in owner_projection and 'F05JL consumes the J05 receipt' in owner_projection and 'does not own their histories' in owner_projection,'selected owner projection resolves F04C/F05JL history ownership')
+ partition=programme['ownership_partition']
+ expected_partition={
+  'spatial_audio_persistent_fields':[
+   'component overlap/ring/filter histories and component parameter state',
+   'direct-LFE ring and source-generation slots',
+   'receiver ModelState including receiver audio mode=1 QMF histories',
+   'QmfWindowState including distinct mode=0 fitting delay/FIR and target/carrier windows'
+  ],
+  'spatial_control_persistent_fields':[
+   'raw/previous PCM and previous-current48 histories',
+   'installed48 producer histories',
+   'diffusion instances and previous diffusion outputs',
+   'targets, assignment, markers, and matrix state'
+  ],
+  'joc_persistent_fields':[
+   'F05JL owns temporal, geometry, fit, retry, Huffman, and ID14 writer state; F05JL consumes the F04C receipt and does not own/recompute F04R/F04RB histories'
+  ],
+  'other_owner_fields':[
+   'F05R56 reader/target histories',
+   'F13 metadata FIFO/timer/EMDF assembly state',
+   'F15 source publication and durable output state'
+  ]
+ }
+ ck(partition==expected_partition,'spatial_audio exact four-way persistent owner partition')
+ owner_fields=[field for owner in ('spatial_audio_persistent_fields','spatial_control_persistent_fields','joc_persistent_fields','other_owner_fields') for field in partition[owner]]
+ ck(len(owner_fields)==len(set(owner_fields)),'spatial_audio persistent owner categories are disjoint')
+ ck(programme['callback_local_only_fields']==['prefix row accumulators and prefix/regular output rows','matrix[g], destinations[g], current_lfe[g], installed48[g] input views','Type10[g], final_six[g], target/carrier QMF output windows and all per-callback receipts'],'spatial_audio callback-local scratch/output excluded')
+ ck(programme['clock']=={'callback_index_type':'FrontendCallbackIndex','join':'must equal the parent CallbackTransaction FrontendCallbackIndex; it is not an independent clock','receiver_count_type':'ReceiverCallbackCount','receiver_rule':'g<2 advances component/LFE only; g>=2 maps r=g-2 and advances receiver/QMF once','generation_rule':'GTC owner generation increments once only when the enclosing CALLBACK commits'},'spatial_audio clock domains and joins')
+ ck(programme['stage_authority']['owner']=='F04C' and 'selected-j05-owner-receipt.v1 is a local immutable stage receipt, not the programme root or GTC owner receipt'==programme['stage_authority']['receipt'] and programme['commit_authority'].startswith('enclosing GTC CallbackTransactionCoordinator only;') and programme['reset_authority'].startswith('programme-origin full restart;') and 'no extra QMF zero flush' in programme['eof_drain'],'spatial_audio stage/commit/reset/drain authority')
+ owner_receipt=gtc['$defs']['ownerReceipt']
+ ck(programme['receipt']['type']=='OwnerReceipt<SpatialAudio>' and programme['receipt']['schema_pointer']=='#/$defs/ownerReceipt' and programme['receipt']['fields']==owner_receipt['required']==['owner_id','before_generation','before_sha256','after_generation','after_sha256','changed','commit_count','transaction_id'] and programme['linear_capabilities']['machine']=='SpatialAudioMachine; one committed root owner; non-Clone and non-Copy' and 'non-Clone/non-Copy' in programme['linear_capabilities']['staged'],'spatial_audio owner receipt and linear machine')
+ providers=programme['runtime_providers']
+ expected_providers=[
+  ('F04_WINDOW_Q15','GENERATED','parameters/window-q15.json',2704,'a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130','receiver_blend32 Q15 and component_kernel64 Q15; formula-generated F32LE views are identity-pinned','ordinary generated non-secret parameters; private vendor key absent'),
+  ('F04_COMPONENT_PARAMETER_MATH_V1','GENERATED','parameters/component-parameter-mathematical-v1.json',1077,'5d0fec6f62a33eeef5c64016760fcbe94a1872a564b6d0e03f959c95c37eb0f5','8 Q15 integers and 8 F32 coefficient/pivot/weight words at 48 kHz and 64 samples per block','internal mathematical generation; implementation_ready=NO; no source table copied'),
+  ('F04_QMF_RECEIVER_FUNCTIONAL_V1','FILE','parameters/qmf-receiver-functional-v1.json',20325,'30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c','829 array F32 words plus 12 scalar F32 words; QWIN synthesis 640, selected band0 real/imag 21 each, LFE postfilter 20, descriptor thresholds 127','authorized internal isolated implementation only; no secret, source, raw table, compiled image, or address'),
+  ('F04_QMF_MATH_V1','GENERATED','parameters/qmf-mathematical-fft-v1.json',6983,'e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431','radix-2 stage roots and rotations for QMF_FFT_RADIX2_MATH_V1','generated mathematical values; compiled values not used'),
+  ('F04_DESCRIPTOR_MATH_V1','GENERATED','parameters/descriptor-mathematical.json',4861,'a493fbdaf2dab30e940cae9976ed3305f3af083e5614ab0cbd6889c71a02b197','128 gain words and 127 threshold words','mathematical generation; audio acceptance pending')
+ ]
+ ck([(x['id'],x['kind'],x['file'],x['bytes'],x['sha256'],x['shape'],x['permission']) for x in providers]==expected_providers and all(x['p1_4_contract']=='F04-specific identity/shape validator not implemented' for x in providers),'spatial_audio exact provider identity, shape, permission, and P1.4 prerequisites')
+ for provider in providers:
+  package_identity(provider['file'],provider['bytes'],provider['sha256'])
+ ck(all((PKG/x).is_file() for x in programme['cold_provider']['generation_specs']),'spatial_audio cold generation specs exist')
+ excluded=programme['excluded_provider_bindings']
+ expected_excluded=[('parameters/spread-authorized-v1.json',2783,'5611b37f2a997f75da0ba920e394c0e36eddd9477e11ba94d44852d3e12fd0c9'),('parameters/diffusion-mathematical-v1.json',1467,'d690512cd204e97fc04a35c03519ed3005e26cb57408432fe30bfde63c2319aa'),('parameters/diffusion-constructor-mathematical-v1.json',1770,'7a710d68b00c14d6b9b3f9fa3313579c5739ccce408655ea3252ad1ee4acd106')]
+ ck([(x['file'],x['bytes'],x['sha256']) for x in excluded]==expected_excluded and excluded[0]['owner'].startswith('spatial_control/F03W') and 'spatial_control/F03W' in excluded[1]['owner'] and 'spatial_control/F03W' in excluded[2]['owner'],'spatial_audio excludes upstream spread/diffusion providers')
+ for item in excluded:
+  package_identity(item['file'],item['bytes'],item['sha256'])
+ packet=programme['post_window_audio_packet']
+ expected_packet_lineage=[
+  'programme and attempt',
+  'CallbackTransactionId and FrontendCallbackIndex',
+  'selected profile and F01E/F03 provider lineage',
+  'spatial_control before generation and complete root digest',
+  'render receipt and payload SHA-256'
+ ]
+ ck(packet['interface']=='PostWindowAudioPacket' and packet['boundary']=='INSTALLED48_POST_WINDOW_48X3072' and packet['payload']=='finite F32[48][3072], source-major' and packet['producer_owner']=='spatial_control/F03W render producer' and packet['producer_stage']=='same-callback W3072/post-window installed48 boundary before F04C consumer processing' and packet['lineage']==expected_packet_lineage and packet['fanout_status'].startswith('UNRESOLVED;') and 'future render producer only' in packet['construction'],'PostWindowAudioPacket exact producer stage/lineage, owner, and fanout blocker')
+ integration_manifest_bytes=(CURRENT_FEATURES_INTEGRATION_SUPPLEMENT/'MANIFEST.json').read_bytes()
+ integration_manifest=json.loads(integration_manifest_bytes)
+ integration_entries={x['file']:x for x in integration_manifest['files']}
+ ck(hashlib.sha256(integration_manifest_bytes).hexdigest()=='e240701f0128877baefb305152f10553de9288dc05298452d3605011e63603ad' and integration_manifest['identity']=='current-features-integration-contract.v1','PostWindowAudioPacket supplement identity')
+ for file,size,digest in [('CONTRACT.md',3919,'3cf97a638fbe02dc36edf8a29534493e2b7de8947b858f749eefdef636cae0a5'),('API-SCHEMA.json',786,'280ebef7034797e7efa84e2e3514cbde05ffd973ac644c5f13e804d057b778c6')]:
+  data=(CURRENT_FEATURES_INTEGRATION_SUPPLEMENT/file).read_bytes()
+  ck(integration_entries[file]['bytes']==size and integration_entries[file]['sha256']==digest and len(data)==size and hashlib.sha256(data).hexdigest()==digest,'PostWindowAudioPacket supplement file '+file)
+ ck(programme['readiness']['mapping_status']=='READY_FOR_IMPLEMENTATION' and programme['readiness']['implementation_status']=='BLOCKED_ON_F04_P1_4_PROVIDER_CONTRACTS_POSTWINDOW_PACKET_FANOUT_AND_PARENT_TRANSACTION' and len(programme['readiness']['blockers'])==3,'spatial_audio mapping readiness does not claim implementation')
+ ck(p['root_schema_pointer']==binding['state_schema_file']+binding['state_schema_pointer'] and p['root_field_count']==9 and p['cold_sha256']==cold_sha and p['p1_4_prerequisite'].startswith('F04-specific identity/shape/permission contracts') and p['post_window_packet_prerequisite'].startswith('F03W/spatial_control render producer') and p['p1_3_c_prerequisite'].startswith('P1.3-C remains CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS'),'P1.3-E task scope and blockers')
+ ck(d['phase_one']['P1.3-C']['status']=='CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS' and d['phase_one']['P1.3-D']['status']=='BLOCKED_ON_SPATIAL_AUDIO_RENDER_AND_PARENT_INTEGRATION','P1.3-C remains waiting; P1.3-D remains blocked')
+ doc=(root/'docs/implementation/SPATIAL-AUDIO-PROGRAMME-ROOT-MAP.md').read_text(encoding='utf-8')
+ ck(all(term in doc for term in ('READY_FOR_IMPLEMENTATION','selected-j05-owner-receipt.v1','None,None,None','P1.4','PostWindowAudioPacket','QMF all-zero flush')),'spatial_audio root map documentation')
+ p13c=d['phase_one']['P1.3-C'];ck(p13c['status']=='CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS','P1.3-C not advanced by P1.3-E root mapping')
+
 def check_spatial_control_v5_amendment(root,d):
  programme=next(x for x in d['programme_roots']if x['root_id']=='spatial_control');p=d['phase_one']['P1.3-D'];d1=d['phase_one']['P1.3-D1']
  expected_packets={
@@ -124,7 +247,7 @@ def check_spatial_control_v5_amendment(root,d):
  expected_d1_packets={'names':['SourceFlagsPacket','CurrentFeaturesPacket'],'producer_status':'FUTURE_PRODUCER_DEFERRED','capability':'opaque, producer-owned, linear','public_raw_array_constructor':'FORBIDDEN','zero_or_default_packet':'FORBIDDEN','forged_lineage':'FORBIDDEN','root_member':False,'root_canonical_bytes':0,'cold_reset_read':'NOT_READY','parent_transaction':'future producer receipt must bind the packet to the same CallbackTransactionId and FrontendCallbackIndex as the complete typed after proposal'}
  expected_profile_only_vector={'fixture_file':'crates/jocforge-domain/tests/fixtures/spatial_control_state_v5/PROFILE-IDENTITY-MISMATCH-VECTORS.json','bytes':2318,'sha256':'42690e9dc752f9366c95ff321d778c433a2c2686b574a7f8a54e74f2b1e67aa2','case_id':'same_hash_rejects_unselected_profile_identity','same_state_hash':True,'same_generation':True,'same_f01e_receipt_lineage':True,'same_f03_receipt_lineage':True,'expected_result':'REJECT_PROFILE_BINDING','profile_is_supported':False}
  expected_d1_prohibitions=['no read-time filesystem or JSON access','no hard-coded provider JSON values','no callback-local scratch or external owner state in the persistent root','no zero-fill for unspecified persistent values','no use of the 630-byte target projection as the full root digest','no persistence or canonical encoding for profile_dimensions','do not implement SourceFlagsPacket or CurrentFeaturesPacket producers','do not expose public raw-array packet constructors or zero/default packets','do not forge packet producer lineage','do not expose a test-only typed-after proposal constructor']
- gap_identity={'file':'docs/implementation/SPATIAL-CONTROL-STAGING-SPEC-GAP.md','document_bytes':2345,'document_sha256':'8047ad6141f98e8a155b9e6b405af642aadb204616ade7b6d9bed6474683c85e'}
+ gap_identity={'file':'docs/implementation/SPATIAL-CONTROL-STAGING-SPEC-GAP.md','document_bytes':2771,'document_sha256':'a9182768b8d45a37c42cbfe4bc295b3c4687848e115d4b610078343772019c32'}
  gap_bytes=(root/gap_identity['file']).read_bytes();gap_text=gap_bytes.decode('utf-8');ck(d1['spec_gap_document']==gap_identity and len(gap_bytes)==gap_identity['document_bytes']and hashlib.sha256(gap_bytes).hexdigest()==gap_identity['document_sha256']and all(term in gap_text for term in('flags_before_history','LOCALLY_VERIFIED_NUMERIC_AND_PACKET','CurrentFeaturesPacket','P1.4-C','READY_FOR_IMPLEMENTATION','NOT_STARTED','spatial_audio','parent callback transaction','whole-song product replay')),'P1.3-D remaining producer and integration gaps')
  ck(d1['scope']=='construct the complete v5 persistent spatial_control cold root and canonical digest; provide a non-Clone read-only machine and prepared/staged foundation accepting only a future producer-generated complete typed after proposal; no packet producers and no local commit, abort, fatal or top-level COMMITTED'and d1['cold_inputs']==['ValidatedF01EColdProvider','ValidatedF03TargetColdProvider','selected EncodingProfile identity','only the GENERATED cold rules recorded in the v5 mapping'],'P1.3-D1 storage/staging scope and cold inputs')
  ck(d1['callback_output_packets']==expected_d1_packets and d1['authority']==expected_d1_authority and d1['capabilities']==expected_d1_capabilities and d1['join_metadata']==expected_d1_join and d1['required_verification']==expected_d1_verification,'P1.3-D1 packet and staging authority boundaries')
@@ -604,7 +727,7 @@ def run(root=ROOT):
   if e['functional_id']in active:ck(e['clock']['covered_clauses']==clauses and e['clock']['domains']==['AdmSampleCount','NormalCallbackCount','FrontendCallbackIndex','CodecSourceIndex','JocDispatchIndex','JocGeneratedWriterIndex','OrdinaryPayloadWriterIndex','JocPoppedWriterIndex','PublishedAuIndex']and e['implementation_files']==['crates/jocforge-domain/src/timeline/index.rs','crates/jocforge-domain/src/timeline/clock.rs','crates/jocforge-domain/src/timeline/mod.rs']and e['test_modules']and e['vectors']['kind']=='RULE_AND_PROPERTY_TEST'and e['error_outcomes'],'active materialization')
  reader=next(r for r in d['programme_roots']if r['root_id']=='reader_eof')
  frontend=next(r for r in d['programme_roots']if r['root_id']=='frontend_control')
- others=[r for r in d['programme_roots']if r['root_id']not in{'reader_eof','frontend_control','spatial_control'}]
+ others=[r for r in d['programme_roots']if r['root_id']not in{'reader_eof','frontend_control','spatial_audio','spatial_control'}]
  ck(all(r=={'root_id':r['root_id'],'materialization_status':'INVENTORIED_PENDING_P1.3_MATERIALIZATION'}for r in others),'deferred root precision')
  ck(reader['materialization_status']=='MATERIALIZED'and reader['implementation_status']=='LOCALLY_VERIFIED'and reader['schema_file']=='parameters/adm-installed48-state-v1.json'and reader['schema_version']=='selected-adm-installed48-state.v3','reader_eof schema identity')
  ck(len(reader['schema_pointers'])==7 and len(reader['fields'])==7,'reader_eof fields/pointers')
@@ -698,6 +821,7 @@ def run(root=ROOT):
  check_callback_receipt_field_bindings(d['phase_one']['P1.3-C'])
  check_callback_transaction_control_flow(d['phase_one']['P1.3-C'])
  check_spatial_control_mapping(root,d)
+ check_spatial_audio_mapping(root,d)
  check_spatial_control_v5_amendment(root,d)
  check_spatial_control_implementation(root,d)
  check_source_flags_producer(root,d)

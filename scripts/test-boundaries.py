@@ -112,6 +112,24 @@ def main():
  ('p13d-v5-gap-record-contradiction',lambda r:append(r/'docs/implementation/SPATIAL-CONTROL-STAGING-SPEC-GAP.md','\nThe SourceFlagsPacket producer is fully specified and needs no further contract.\n')),
  ('p13d-v5-amendment-contradiction',lambda r:append(r/'docs/implementation/SPATIAL-CONTROL-STATE-V5-AMENDMENT.md','\nContradiction: serialize profile_dimensions, including active_target_count_n, as persistent state.\n'))
  ]
+ cases += [
+ ('p13e-overlap-projection-as-root',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['programme_owner_binding'].update(state_ref_value='parameters/selected-owner-projection-v1.json'))),
+ ('p13e-local-j05-receipt-as-root',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['programme_owner_binding'].update(state_ref_value='selected-j05-owner-receipt.v1'))),
+ ('p13e-spatial-control-owner-overlap',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['ownership_partition']['spatial_control_persistent_fields'].append('component_state.overlap_history_rows'))),
+ ('p13e-provider-file-misbound',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['runtime_providers'][0].update(file='parameters/other.json'))),
+ ('p13e-scratch-persisted',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['callback_local_only_fields'].append('prefix_accumulators'))),
+ ('p13e-cold-none-zero-filled',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['cold_sentinels'].update(lfe_rows='3 x positive zero'))),
+ ('p13e-cold-unknown-array-zero-filled',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['fields'][6].update(cold=d['programme_roots'][next(i for i,x in enumerate(d['programme_roots']) if x['root_id']=='spatial_audio')]['fields'][6]['cold']+'; unknown arrays zero-filled'))),
+ ('p13e-joc-owner-overlap',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['ownership_partition']['joc_persistent_fields'].append('receiver ModelState including receiver audio mode=1 QMF histories'))),
+ ('p13e-other-owner-overlap',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['ownership_partition']['other_owner_fields'].append('direct-LFE ring and source-generation slots'))),
+ ('p13e-provider-shape-drift',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['runtime_providers'][0].update(shape='receiver_blend31 Q15'))),
+ ('p13e-provider-permission-drift',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['runtime_providers'][0].update(permission='public redistribution allowed'))),
+ ('p13e-postwindow-wrong-owner',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['post_window_audio_packet'].update(producer_owner='spatial_audio'))),
+ ('p13e-postwindow-stage-drift',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['post_window_audio_packet'].update(producer_stage='after F04C processing'))),
+ ('p13e-postwindow-lineage-drift',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['post_window_audio_packet']['lineage'].pop())),
+ ('p13e-false-implementation-complete',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['readiness'].update(implementation_status='LOCALLY_VERIFIED'))),
+ ('p13e-p13c-no-longer-waiting',map_mut_render(lambda d:d['phase_one']['P1.3-C'].update(status='READY_FOR_IMPLEMENTATION')))
+ ]
  spatial_control_source='crates/jocforge-domain/src/spatial/spatial_control.rs'
  cases += [
   ('p13d1-packet-raw-array-constructor',lambda r:append(r/spatial_control_source,'\nimpl SourceFlagsPacket { pub fn from_raw(flags: [[u8; 2]; 48]) -> Self { todo!() } }\n')),
