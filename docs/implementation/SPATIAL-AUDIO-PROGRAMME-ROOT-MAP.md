@@ -2,9 +2,11 @@
 
 ## Status and scope
 
-`programme_roots.spatial_audio` is mapped to the approved-package `F04CompositionState` cold-schema candidate, but its complete cold preimage is not uniquely reconstructible. Mapping status is `MAPPING_COMPLETE_BLOCKED`; P1.3-E1 has not started implementation. No DSP, Rust state, provider validator, render producer, or CallbackTransaction coordinator was implemented or validated.
+`programme_roots.spatial_audio` maps to the complete approved-package `F04CompositionState` cold schema. The cold specification is `RESOLVED_BY_F04_COLD_SUPPLEMENT`; P1.3-E1 is ready for its cold storage/staging implementation, which is not yet locally verified. No DSP, provider validator, render producer, or CallbackTransaction coordinator was implemented or validated.
 
-The implementation remains blocked on the F04-specific P1.4 provider contracts, the post-window packet producer/fanout contract, and the enclosing callback transaction. P1.3-C remains `CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS` because the other callback roots and g>=2 source-stage roots are still missing.
+The complete spatial_audio integration remains blocked on F04-specific P1.4 provider contracts, the post-window packet producer/fanout contract, and the enclosing callback transaction. P1.3-C remains `CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS` because the other callback roots and g>=2 source-stage roots are still missing.
+
+The cold supplement manifest is `f04-spatial-audio-cold-state.v1`, SHA-256 `77ad0562fcd4efa1e8fe37cc1dc7219570b49b9b332cca1f1273ccda2e2cef9c`. Its 12 file identities were verified without opening `research_basis`; the 813,733-byte KAT was only hashed opaquely for its manifest identity. It may be compared only after a fresh typed constructor and project encoder produce bytes.
 
 ## Identity and GTC binding
 
@@ -18,7 +20,7 @@ The approved-package `MANIFEST.json` identity is SHA-256 `c7cddb7d5ac073c0f410fe
 | Schema semantic identity | same schema file, top-level `sha256` | `e1ef560564678a04494a9a563b1e431582fd0a48c8524ff4e4b47cf7a880655c`; this is not a state digest |
 | Expected cold owner digest | `test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json#/reset_check/cold_state_sha256` | `35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e`; expected identity only, not a reconstructed canonical byte preimage |
 
-The candidate `state_ref` value is `test-vectors/F04-WHOLE-SPATIAL-STATE-SCHEMA.json#/whole_state_by_boundary/cold`. The GTC slot and schema identity are mapped, but `cold_sha256` cannot yet be bound to a locally reconstructed state until the unresolved temporal scalar values and full-root node encoding are specified. The current `selected_overlap_projection` is only a cross-owner projection; `selected-j05-owner-receipt.v1` is a per-stage receipt. Neither is the committed programme root or a substitute for its complete state digest.
+The candidate `state_ref` value is `test-vectors/F04-WHOLE-SPATIAL-STATE-SCHEMA.json#/whole_state_by_boundary/cold`. The GTC slot and schema identity are mapped. The expected `cold_sha256` remains a target until the typed constructor and encoder reproduce it locally. The current `selected_overlap_projection` is only a cross-owner projection; `selected-j05-owner-receipt.v1` is a per-stage receipt. Neither is the committed programme root or a substitute for its complete state digest.
 
 The package F04 chain result is `PASS_CONSUMER_SIDE_COMPOSITION`, limited to the installed48 consumer boundary. Raw38-to-installed48, dynamic matrix/destination production, the complete callback transaction, real ADM execution, and perceptual acceptance remain `OPEN` or `NOT_RUN`; this root map does not upgrade those claims.
 
@@ -34,8 +36,8 @@ The field order is the declared `F04CompositionState` order. Each `schema_pointe
 | 3 | `component_parameter_state` / `fields/3` | `ComponentFilterParameterState`: `peak=+0`, `previous_gain=1`, `hold=0`, `envelope=1`, `smoothed_gain=1`, `target_gain=1`, `output_level=2^-8`, `blocks_processed=0`. |
 | 4 | `component_filter_history` / `fields/4` | `T15<B256>` = `F32[15][64]`, all positive zero. |
 | 5 | `lfe_state` / `fields/5` | `LfeDelayRingState`: `write_index=0`, `read_index=1`, `rows=[None,None,None]`, `input_frame_indexes=[None,None,None]`, `model_samples_consumed=0`. The two `None` arrays are sentinels and must not be zero-filled. |
-| 6 | `receiver_state` / `fields/6` | `ModelState`, recursively pinned below. Numeric/sample histories use specified positive-zero cold constructors; ring indices are `write=224/read=0`; `target_coefficients=None`. Temporal slot 4 remains cold and unconsumed. The exact `stride_bytes`, `index_28`, `index_32` cold values and read/write field crosswalk are not supplied. |
-| 7 | `fitting_qmf_state` / `fields/7` | `QmfWindowState`, recursively pinned below. Target/carrier windows and mode-0 fitting delay/FIR histories are distinct from receiver mode-1 audio histories even where both cold buffers contain zero. `target_temporal` stride/index cold scalars are not supplied. |
+| 6 | `receiver_state` / `fields/6` | `ModelState`, recursively pinned below. Numeric/sample histories use the specified cold constructors; ring indices are `write=224/read=0`; `target_coefficients=None`. Temporal slot 4 remains cold and unconsumed. Its five temporal nodes use `stride_bytes=4`, `index_28=read=span`, `index_32=write=0`, with lane-major raw bytes for `2*span` positive-zero F32 values per lane. |
+| 7 | `fitting_qmf_state` / `fields/7` | `QmfWindowState`, recursively pinned below. Target/carrier windows and mode-0 fitting delay/FIR histories are distinct from receiver mode-1 audio histories. `target_temporal` is a separate span-896 node with the same scalar rule and its own buffers. |
 | 8 | `receiver_callback_count` / `fields/8` | `I64LE`, cold `0`; typed as `ReceiverCallbackCount`, incrementing only for `g>=2` callbacks with Type10. |
 
 The exact recursive shape for `receiver_state` is:
@@ -55,9 +57,11 @@ The exact recursive shape for `fitting_qmf_state` is:
 - `fitting_delay=T5<T10<B512>>`;
 - `fitting_fir=T5<B160>`.
 
-The full schema pins types and shapes, but not every `TemporalState` scalar. F04R.1 supplies semantic `read=span/write=0`; neither F04R nor F04RB maps those values to `index_28/index_32` or gives `stride_bytes`. F04RB.7 gives U16LE class/field-name lengths for its `encode_node-v1` scope, but the package does not explicitly bind that rule to the entire F04CompositionState `F04_STATE_NODE_V1` tree. These missing cold/serialization bindings are not inferred from buffer shapes or the expected digest; they block canonical cold construction.
+The supplement resolves the previous ambiguity for all six temporal nodes: `stride_bytes=4`, `index_28=span`, `index_32=0`, with `2*span` positive-zero F32 values in each lane-major raw-byte buffer. The two span-896 nodes have equal initial contents but remain independent objects and buffers.
 
-Cold-state provider kind is intended to be `GENERATED_PROVIDER`: no runtime parameter file constructs the root. The schema/specs pin most fields and shapes, but the temporal scalar/encoding blocker in [SPATIAL-AUDIO-COLD-STAGING-BLOCKER.md](SPATIAL-AUDIO-COLD-STAGING-BLOCKER.md) must be resolved before a generated constructor can be implemented or its digest verified.
+`F04_STATE_NODE_V1` uses `N`, `B`, `I`, `F`, `Z`, `T`, and `D` tags. `D` encodes an ASCII class name and declaration-ordered ASCII fields with U16LE lengths; `T` and `B` lengths are U64LE; `I` is signed I64LE; `F` is finite R32 then IEEE-754 binary32 little-endian; and `Z` is U8 0/1. `None`, bool, integer, float, and bytes remain distinct. The grammar has no extra D-body length, padding, header, terminator, checksum, or digest.
+
+Cold-state provider kind is `GENERATED_PROVIDER`: no runtime parameter file constructs the root. The complete constructor is now specified; local byte reconstruction and digest verification remain implementation acceptance checks.
 
 ## Ownership, lifecycle, and receipts
 
@@ -86,7 +90,7 @@ The following are algorithm providers, not cold-root byte sources. Every listed 
 | `parameters/qmf-receiver-functional-v1.json` | `FILE`, 20325 bytes, SHA-256 `30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c` | 829 array F32 words plus 12 scalar F32 words: QWIN synthesis 640; selected band0 real/imag 21 each; LFE postfilter 20; descriptor thresholds 127. Authorized for internal isolated use; no secret, source, raw table, compiled image, or address. | F04 P1.4 validator not implemented. |
 | `parameters/qmf-mathematical-fft-v1.json` | `GENERATED`, 6983 bytes, SHA-256 `e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431` | Radix-2 roots/rotations for `QMF_FFT_RADIX2_MATH_V1`; compiled values are not used. | F04 P1.4 validator not implemented. |
 | `parameters/descriptor-mathematical.json` | `GENERATED`, 4861 bytes, SHA-256 `a493fbdaf2dab30e940cae9976ed3305f3af083e5614ab0cbd6889c71a02b197` | 128 gain words and 127 threshold words. | Audio acceptance and F04 P1.4 validation pending. |
-| Cold constructor arrays and sentinels | `NO_RUNTIME_PARAMETER` | No provider JSON is substituted for owner state. Types/shapes and most cold values are pinned, but temporal scalar values/crosswalk and the complete F04 node encoder remain unresolved. | Full constructor is blocked; do not implement. |
+| Cold constructor arrays and sentinels | `NO_RUNTIME_PARAMETER` | Supplement pins all typed values and the full recursive wire grammar. `None` sentinels stay distinct from raw zero bytes. | Implement only from the typed recipe; compare KAT after project encoding. |
 
 `parameters/spread-authorized-v1.json` is an authorized non-secret FILE provider but belongs to the upstream `spatial_control/F03W` installed48 producer path, not this owner root. `parameters/diffusion-mathematical-v1.json` and `parameters/diffusion-constructor-mathematical-v1.json` are GENERATED upstream providers for `spatial_control/F03W`; they do not place diffusion instances in `F04CompositionState`. The selected production diffusion configuration remains unsupplied for that route.
 
@@ -98,4 +102,4 @@ The future producer stage belongs at the F03W `W3072` / installed48 post-window 
 
 ## Gate result
 
-The GTC owner slot, candidate schema, nine top-level fields, owner split, clocks, and receipt boundary are mapped. However, unresolved TemporalState scalars and the lack of an explicit F04 whole-root D-node byte grammar mean the full canonical cold preimage is not unique. The spatial_audio root is therefore `MAPPING_COMPLETE_BLOCKED`, and P1.3-E1 has not implemented cold storage or staging. See [SPATIAL-AUDIO-COLD-STAGING-BLOCKER.md](SPATIAL-AUDIO-COLD-STAGING-BLOCKER.md). Provider contracts, render/fanout, and parent CallbackTransaction remain separate blockers; no full callback, audio-chain, or product readiness is claimed.
+The GTC owner slot, candidate schema, nine top-level fields, owner split, clocks, receipt boundary, six temporal constructors, and full D-node wire grammar are mapped. P1.3-E1 may now implement cold storage and staging. The overall spatial_audio root remains `MAPPING_COMPLETE_BLOCKED` on F04 provider validation, render/fanout, and parent CallbackTransaction. The KAT is not local reconstruction evidence until generated bytes are compared. No full callback, audio-chain, DSP, or product readiness is claimed. See [SPATIAL-AUDIO-COLD-STAGING-BLOCKER.md](SPATIAL-AUDIO-COLD-STAGING-BLOCKER.md) for the resolved spec blocker and implementation boundary.
