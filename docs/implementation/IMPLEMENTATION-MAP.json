@@ -13,7 +13,7 @@
     "P1.3-E1": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__DSP_PRODUCERS_DEFERRED",
     "P1.3-E2": "LOCALLY_VERIFIED_COMPONENT_PRODUCER__UPSTREAM_AND_PARENT_DEFERRED",
     "P1.3-E3": "LOCALLY_VERIFIED_DIRECT_LFE__UPSTREAM_PARENT_DEFERRED",
-    "P1.3-E4": "MAPPING_COMPLETE",
+    "P1.3-E4": "LOCALLY_VERIFIED_TYPE10_ASSEMBLY__RECEIVER_PARENT_DEFERRED",
     "POSTWINDOW_FANOUT_FOUNDATION": "LOCALLY_VERIFIED__RENDER_PRODUCER_DEFERRED",
     "P1.3-D1": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
     "SOURCE_FLAGS_PRODUCER": "LOCALLY_VERIFIED_NUMERIC_AND_PACKET",
@@ -3372,7 +3372,7 @@
         "crates/jocforge-domain/src/timeline/mod.rs"
       ],
       "implementation_inventory": [
-        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 35138, "sha256": "f5db8b2793055ae25dc3872f84b2e7d85b6e38644eb3fae9578cd25462066392"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 35171, "sha256": "6e3154571999492fdf2f881147ee9bb1a111eb191bd9cba9aaace91075840e03"},
         {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2075, "sha256": "12f5ca4462fb418fee7231426c651c001e46bc16e50acf4bbc37c5e60c0c6834"},
         {"path": "crates/jocforge-domain/src/timeline/index.rs", "bytes": 2290, "sha256": "911be2413816ebe1fde51ceda0066e9c088f92ae7c8b045cee49aac37540ec7d"},
         {"path": "crates/jocforge-domain/src/timeline/mod.rs", "bytes": 586, "sha256": "7f2099065d657bdacab116d921a63107a180930086b73a42557881aa3acdb7b2"}
@@ -3637,9 +3637,9 @@
         "crates/jocforge-domain/tests/fixtures/direct_lfe/G1-VECTOR-ERRATUM.json"
       ],
       "implementation_inventory": [
-        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs", "bytes": 14811, "sha256": "1a35e84f02d4374ea4c96df6385c7f031f50bb3ff7183a7881731dccb645d2f5"},
-        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 35138, "sha256": "f5db8b2793055ae25dc3872f84b2e7d85b6e38644eb3fae9578cd25462066392"},
-        {"path": "crates/jocforge-domain/src/spatial/spatial_control.rs", "bytes": 26186, "sha256": "b148d0dbaba305f476451b1a6cc7eef90a54b31e4315b1a443ebc8bcd9792174"}
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs", "bytes": 17056, "sha256": "b30cb63addb5f8ddfe6bf03e65f84e34221929b8cb78180efc1e6c762c6b6bc5"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 35171, "sha256": "6e3154571999492fdf2f881147ee9bb1a111eb191bd9cba9aaace91075840e03"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_control.rs", "bytes": 26347, "sha256": "3c13f67f84698b32d568bf9fda223878eb3925a95c7fcbe30e0d0ef2f1b8fcd2"}
       ],
       "test_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe/tests.rs", "bytes": 19748, "sha256": "974767ddea57685ddf6656a5e46308e47b2a92cefdb7e23827230d6c9f831c66"}
@@ -3667,9 +3667,9 @@
     },
     "P1.3-E4": {
       "task_id": "P1.3-E4-F04-TYPE10-ASSEMBLY",
-      "status": "MAPPING_COMPLETE",
+      "status": "LOCALLY_VERIFIED_TYPE10_ASSEMBLY__RECEIVER_PARENT_DEFERRED",
       "mapping_status": "MAPPING_COMPLETE",
-      "implementation_status": "NOT_STARTED",
+      "implementation_status": "LOCALLY_VERIFIED_TYPE10_ASSEMBLY__RECEIVER_PARENT_DEFERRED",
       "mapping_document": "docs/implementation/TYPE10-ASSEMBLY-MAP.md",
       "programme_root": "spatial_audio",
       "scope": "Consume one same-callback E2 ComponentStageProposal and E3 LfeStageProposal, stage Type10 row assembly for receiver handoff, and preserve both after-states for the parent. Do not implement receiver/QMF, local commit, parent transaction, JOC, or codec.",
@@ -3693,7 +3693,7 @@
       "input_contract": {
         "component": "linear E2 ComponentStageProposal with 15x1536 finite component output and complete after-state",
         "lfe": "linear E3 LfeStageProposal with complete ring after-state, explicit DirectLfeStageLineage, and optional Type10LfeRow0Input",
-        "parent": "SpatialAudioJoinMetadata and explicit CallbackPhase are supplied as expected typed parent identity; both proposal lineages must match programme, attempt, transaction, callback, phase, profile, spatial_audio before generation/digest, and shared spatial_control provider lineage",
+    "parent": "SpatialAudioJoinMetadata and explicit CallbackPhase are supplied as expected typed parent identity from the enclosing coordinator; both proposal lineages must match programme, attempt, transaction, callback, phase, profile, spatial_audio before generation/digest, and shared spatial_control provider lineage",
         "provider_lineage": "preserve both E2 F04 parameter-provider lineages and the common F01E/F03 spatial_control provider lineage in the immutable assembly receipt",
         "phase": "explicit expected NORMAL or CACHED_DRAIN; never inferred from callback index or row content"
       },
@@ -3705,6 +3705,7 @@
         "stage_type": "linear Type10AssemblyProposal",
         "priming_outcome": "Priming plus immutable receipt and both preserved after-states; no packet",
         "ready_outcome": "opaque non-Clone Type10Packet plus immutable receipt and both preserved after-states",
+        "outcome_discriminant": "Type10AssemblyOutcome::Priming/Ready carries the outcome; Type10AssemblyReceipt contains lineage, origins, and fixed shape only",
         "packet_payload": "private immutable Arc<[FiniteF32]> of exactly 16*1536 samples; expose borrowed read-only samples only",
         "capability": "consume both input proposals once; packet has no public/raw/default constructor, Clone, Copy, or persistent owner field",
         "receipt_fields": [
@@ -3718,9 +3719,10 @@
           "spatial_control before generation and digest",
           "spatial_control provider lineage",
           "two F04 parameter-provider lineages",
+          "validated LFE host identity",
           "component origin callback g",
           "optional LFE origin callback g-2",
-          "assembly outcome and fixed 16x1536 shape"
+          "fixed 16x1536 shape"
         ],
         "commit_authority": "none; the parent callback owns any later root replacement"
       },
@@ -3731,7 +3733,6 @@
       "error_translation": {
         "authority": "local translation of the existing F04C.7 error categories; no native error-code claim",
         "priority": [
-          "retired",
           "selected_profile",
           "callback_phase",
           "spatial_audio_before_generation_digest",
@@ -3739,19 +3740,19 @@
           "ring_origin_and_payload_shape"
         ],
         "outcomes": [
-          {"trigger": "retired spatial_audio owner", "error_code": "F04_PIPELINE_RETIRED"},
           {"trigger": "unsupported or proposal/parent profile mismatch", "error_code": "F04_PROFILE_UNSUPPORTED"},
           {"trigger": "callback or explicit phase mismatch", "error_code": "F04_CALLBACK_ORDER"},
           {"trigger": "proposal spatial_audio before generation/digest differs from expected parent", "error_code": "F04_STATE_ERROR"},
           {"trigger": "programme/attempt/transaction/provider lineage mismatch", "error_code": "F04_INPUT_ERROR"},
           {"trigger": "missing row0 after priming, row0 origin/ring disagreement, malformed component or LFE output shape, nonfinite row bits", "error_code": "F04_STATE_ERROR"}
         ],
-        "failure_result": "first applicable local outcome only; no Type10AssemblyProposal or packet; caller-owned committed root unchanged"
+        "failure_result": "first applicable local outcome only; no Type10AssemblyProposal or packet; caller-owned committed root unchanged",
+        "retirement_boundary": "parent/E2/E3 stages reject RETIRED owners before proposals exist; E4 has no programme retirement authority"
       },
       "vectors": {
-        "component_fixture": "crates/jocforge-domain/tests/fixtures/f04_component/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json; use only the E2 component input/row identity; do not take its Type10 expected hash when pairing with the distinct Direct-LFE g1 supplement row",
-        "lfe_fixture": "crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json and G1-VECTOR-ERRATUM.json",
-        "binding_rule": "E4 asserts every output sample bit equals the corresponding consumed proposal row bit; the whole-chain expected Type10 hashes are not cross-paired with the different Direct-LFE g1 row",
+        "component_fixture": "E4 test-only ComponentStageProposal rows with unique finite F32 bit markers; E4 makes no E2 DSP/vector claim",
+        "lfe_fixture": "crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json; consume only the g0..g5 callback/phase/origin assertions",
+        "binding_rule": "E4 asserts every output sample bit equals the corresponding consumed proposal row bit; no whole-chain Type10 expected hash is used as an assembly input or oracle",
         "callbacks": ["g0", "g1", "g2", "g3", "g4", "g5"],
         "cases": [
           "g0_g1_priming_without_packet",
@@ -3788,32 +3789,62 @@
         "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs",
         "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
         "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs",
-        "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs"
+        "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
+        "crates/jocforge-domain/src/spatial/spatial_control.rs"
       ],
       "planned_test_files": [
         "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs",
         "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs"
       ],
       "planned_test_vector_fixtures": [
-        "crates/jocforge-domain/tests/fixtures/f04_component/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json",
-        "crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json",
-        "crates/jocforge-domain/tests/fixtures/direct_lfe/G1-VECTOR-ERRATUM.json"
+        "crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json"
       ],
-      "implementation_files": [],
-      "test_files": [],
-      "fixture_files": [],
-      "implementation_inventory": [],
-      "test_inventory": [],
-      "fixture_inventory": [],
+      "implementation_files": [
+        "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs",
+        "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+        "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs",
+        "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
+        "crates/jocforge-domain/src/spatial/spatial_control.rs"
+      ],
+      "test_files": [
+        "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs",
+        "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs"
+      ],
+      "fixture_files": [
+        "crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json"
+      ],
+      "implementation_inventory": [
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs","bytes":12144,"sha256":"9473ea603741d59955d90f4a58c6c02875f1bba97d45203d6547c9b0c84d8a78"},
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state.rs","bytes":35171,"sha256":"6e3154571999492fdf2f881147ee9bb1a111eb191bd9cba9aaace91075840e03"},
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs","bytes":38627,"sha256":"ff0121d7a2ad16dac2682ae3564b2d4baafff64b622673a05015133253646256"},
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs","bytes":17056,"sha256":"b30cb63addb5f8ddfe6bf03e65f84e34221929b8cb78180efc1e6c762c6b6bc5"},
+        {"path":"crates/jocforge-domain/src/spatial/spatial_control.rs","bytes":26347,"sha256":"3c13f67f84698b32d568bf9fda223878eb3925a95c7fcbe30e0d0ef2f1b8fcd2"}
+      ],
+      "test_inventory": [
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs","bytes":23774,"sha256":"5f83ce89089916e9f588c7b80313234d2d5c999fd527c838f5c5da60d7456964"},
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs","bytes":51413,"sha256":"b501289f41cc2c08dcbc31e4fb9419b4c79c2383b01af2c7eca864dcfd9ab123"}
+      ],
+      "fixture_inventory": [
+        {"path":"crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json","bytes":13306,"sha256":"52c2b1a3b52e53198e47e90e4d6e51e8435fbe660ad996b4005f741107a7eb7f"}
+      ],
       "verification": {
         "planned_test_count": 13,
-        "targeted_mapping_mutations_rejected": 19,
-        "targeted_implementation_mutations_rejected": "NOT_RUN",
-        "full_repository_boundary_mutations_rejected": "NOT_RUN",
-        "type10_packet": "NOT_IMPLEMENTED",
+        "type10_assembly_test_count": 13,
+        "targeted_mapping_mutations_rejected": 20,
+        "targeted_implementation_mutations_rejected": 36,
+        "full_repository_boundary_mutations_rejected": 685,
+        "type10_packet": "LOCALLY_VERIFIED_CALLBACK_LOCAL_NONCLONE",
         "receiver_qmf": "NOT_IMPLEMENTED",
         "local_commit": "NOT_IMPLEMENTED",
-        "parent_transaction": "NOT_IMPLEMENTED"
+        "parent_transaction": "NOT_IMPLEMENTED",
+        "workspace_test_passed": 209,
+        "workspace_test_ignored": 1,
+        "cargo_fmt": "PASS",
+        "cargo_check": "PASS",
+        "cargo_clippy": "PASS",
+        "boundary_normal": "PASS",
+        "boundary_optimized": "PASS",
+        "implementation_map_render": "PASS"
       },
       "not_run": [
         "F04 callback integration and parent transaction fault injection",
@@ -3902,8 +3933,8 @@
       "schema_amendment_file": "docs/implementation/SPATIAL-CONTROL-STATE-V5-AMENDMENT.md",
       "spec_gap_document": {
         "file": "docs/implementation/SPATIAL-CONTROL-STAGING-SPEC-GAP.md",
-        "document_bytes": 2713,
-        "document_sha256": "f6a172833dce2cb9af5a7774c8bcdfb3e8972404fdf1dff3d8903179288ccbcf"
+        "document_bytes": 2796,
+        "document_sha256": "25b37ca27365d4784d35760dadb9ad32476505bdd1919199fd0131ae5e465d2f"
       },
       "scope": "construct the complete v5 persistent spatial_control cold root and canonical digest; provide a non-Clone read-only machine and prepared/staged foundation accepting only a future producer-generated complete typed after proposal; no packet producers and no local commit, abort, fatal or top-level COMMITTED",
       "cold_inputs": [
@@ -4035,8 +4066,8 @@
         "file_inventory": [
           {
             "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-            "bytes": 26186,
-            "sha256": "b148d0dbaba305f476451b1a6cc7eef90a54b31e4315b1a443ebc8bcd9792174"
+            "bytes": 26347,
+            "sha256": "3c13f67f84698b32d568bf9fda223878eb3925a95c7fcbe30e0d0ef2f1b8fcd2"
           },
           {
             "path": "crates/jocforge-domain/src/transaction/mod.rs",

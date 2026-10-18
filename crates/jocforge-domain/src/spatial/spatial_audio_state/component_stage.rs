@@ -109,6 +109,8 @@ pub(super) struct ComponentStageReceipt {
     callback_index: FrontendCallbackIndex,
     phase: ComponentCallbackPhase,
     profile_identity: EncodingProfile,
+    spatial_audio_before_generation: u64,
+    spatial_audio_before_digest: super::SpatialAudioDigest,
     spatial_control_before_generation: u64,
     spatial_control_before_digest: SpatialControlDigest,
     spatial_control_provider_lineage: SpatialControlProviderLineage,
@@ -250,11 +252,102 @@ impl SpatialAudioInputPacket {
 }
 
 impl ComponentStageProposal {
+    #[cfg(test)]
+    pub(in crate::spatial::spatial_audio_state) fn fixture_for_type10(
+        spatial_audio_join: &SpatialAudioJoinMetadata,
+        phase: ComponentCallbackPhase,
+        spatial_control: &SpatialControlMachine,
+        provider_lineage: [F04ParameterProviderLineage; 2],
+        spatial_control_provider_lineage: Option<&SpatialControlProviderLineage>,
+        component_output: Vec<FiniteF32>,
+    ) -> Self {
+        Self {
+            after: ComponentAfterState {
+                audio: ComponentAudioState::cold(),
+                parameters: ComponentFilterParameterState::cold(),
+                filter_history: std::array::from_fn(|_| RawBytes::zeroed(FILTER_HISTORY_BYTES)),
+            },
+            component_output: component_output.into_boxed_slice(),
+            receipt: ComponentStageReceipt {
+                programme_id: SourceFlagsProgrammeId::new(
+                    spatial_audio_join.programme_id().as_str(),
+                )
+                .expect("test join programme id remains non-empty"),
+                attempt: spatial_audio_join.attempt(),
+                transaction_id: CallbackTransactionId::new(
+                    spatial_audio_join.transaction_id().as_str(),
+                )
+                .expect("test join transaction id remains non-empty"),
+                callback_index: spatial_audio_join.callback_index(),
+                phase,
+                profile_identity: spatial_audio_join.profile_identity(),
+                spatial_audio_before_generation: spatial_audio_join.before_generation(),
+                spatial_audio_before_digest: spatial_audio_join.before_digest(),
+                spatial_control_before_generation: spatial_control.generation(),
+                spatial_control_before_digest: spatial_control.digest(),
+                spatial_control_provider_lineage: spatial_control_provider_lineage
+                    .copied()
+                    .unwrap_or_else(|| spatial_control.provider_lineage()),
+                provider_lineage,
+            },
+        }
+    }
+
     #[allow(dead_code)]
     pub(super) fn into_parts(
         self,
     ) -> (ComponentAfterState, Box<[FiniteF32]>, ComponentStageReceipt) {
         (self.after, self.component_output, self.receipt)
+    }
+}
+
+impl ComponentStageReceipt {
+    pub(super) fn programme_id(&self) -> &SourceFlagsProgrammeId {
+        &self.programme_id
+    }
+
+    pub(super) const fn attempt(&self) -> SourceFlagsAttempt {
+        self.attempt
+    }
+
+    pub(super) fn transaction_id(&self) -> &CallbackTransactionId {
+        &self.transaction_id
+    }
+
+    pub(super) const fn callback_index(&self) -> FrontendCallbackIndex {
+        self.callback_index
+    }
+
+    pub(super) const fn phase(&self) -> ComponentCallbackPhase {
+        self.phase
+    }
+
+    pub(super) const fn profile_identity(&self) -> EncodingProfile {
+        self.profile_identity
+    }
+
+    pub(super) const fn spatial_audio_before_generation(&self) -> u64 {
+        self.spatial_audio_before_generation
+    }
+
+    pub(super) const fn spatial_audio_before_digest(&self) -> super::SpatialAudioDigest {
+        self.spatial_audio_before_digest
+    }
+
+    pub(super) const fn spatial_control_before_generation(&self) -> u64 {
+        self.spatial_control_before_generation
+    }
+
+    pub(super) const fn spatial_control_before_digest(&self) -> SpatialControlDigest {
+        self.spatial_control_before_digest
+    }
+
+    pub(super) const fn spatial_control_provider_lineage(&self) -> SpatialControlProviderLineage {
+        self.spatial_control_provider_lineage
+    }
+
+    pub(super) const fn provider_lineage(&self) -> [F04ParameterProviderLineage; 2] {
+        self.provider_lineage
     }
 }
 
@@ -355,6 +448,8 @@ pub(crate) fn produce_component_stage(
         callback_index: packet.callback_index,
         phase: packet.phase,
         profile_identity: packet.profile_identity,
+        spatial_audio_before_generation: spatial_audio_join.before_generation(),
+        spatial_audio_before_digest: spatial_audio_join.before_digest(),
         spatial_control_before_generation: packet.spatial_control_before_generation,
         spatial_control_before_digest: packet.spatial_control_before_digest,
         spatial_control_provider_lineage: packet.spatial_control_provider_lineage,
@@ -928,4 +1023,4 @@ fn apply_source_ring(
 }
 
 #[cfg(test)]
-mod tests;
+pub(in crate::spatial::spatial_audio_state) mod tests;

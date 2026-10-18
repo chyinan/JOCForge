@@ -2,7 +2,7 @@
 
 由 IMPLEMENTATION-MAP.json 生成，不得手工修改。
 
-Mapping status: `MAPPING_COMPLETE`. Implementation status: `NOT_STARTED`. Receiver/QMF and parent transaction remain deferred.
+Mapping status: `MAPPING_COMPLETE`. Implementation status: `LOCALLY_VERIFIED_TYPE10_ASSEMBLY__RECEIVER_PARENT_DEFERRED`. Receiver/QMF and parent transaction remain deferred.
 
 This slice only assembles the E2 component proposal with the E3 delayed LFE row; it does not execute receiver/QMF or commit spatial_audio state.
 
@@ -13,10 +13,6 @@ This slice only assembles the E2 component proposal with the E3 delayed LFE row;
     "authority": "local translation of the existing F04C.7 error categories; no native error-code claim",
     "failure_result": "first applicable local outcome only; no Type10AssemblyProposal or packet; caller-owned committed root unchanged",
     "outcomes": [
-      {
-        "error_code": "F04_PIPELINE_RETIRED",
-        "trigger": "retired spatial_audio owner"
-      },
       {
         "error_code": "F04_PROFILE_UNSUPPORTED",
         "trigger": "unsupported or proposal/parent profile mismatch"
@@ -39,17 +35,25 @@ This slice only assembles the E2 component proposal with the E3 delayed LFE row;
       }
     ],
     "priority": [
-      "retired",
       "selected_profile",
       "callback_phase",
       "spatial_audio_before_generation_digest",
       "cross_proposal_lineage_and_provider",
       "ring_origin_and_payload_shape"
-    ]
+    ],
+    "retirement_boundary": "parent/E2/E3 stages reject RETIRED owners before proposals exist; E4 has no programme retirement authority"
   },
   "fatal_behavior": "return the first local error without a packet or stage proposal; parent owns programme retirement",
-  "fixture_files": [],
-  "fixture_inventory": [],
+  "fixture_files": [
+    "crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json"
+  ],
+  "fixture_inventory": [
+    {
+      "bytes": 13306,
+      "path": "crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json",
+      "sha256": "52c2b1a3b52e53198e47e90e4d6e51e8435fbe660ad996b4005f741107a7eb7f"
+    }
+  ],
   "functional_scope": [
     {
       "clauses": [
@@ -60,8 +64,40 @@ This slice only assembles the E2 component proposal with the E3 delayed LFE row;
       "status": "SCOPED_SUBSET_ONLY"
     }
   ],
-  "implementation_files": [],
-  "implementation_inventory": [],
+  "implementation_files": [
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs",
+    "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs",
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
+    "crates/jocforge-domain/src/spatial/spatial_control.rs"
+  ],
+  "implementation_inventory": [
+    {
+      "bytes": 12144,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs",
+      "sha256": "9473ea603741d59955d90f4a58c6c02875f1bba97d45203d6547c9b0c84d8a78"
+    },
+    {
+      "bytes": 35171,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+      "sha256": "6e3154571999492fdf2f881147ee9bb1a111eb191bd9cba9aaace91075840e03"
+    },
+    {
+      "bytes": 38627,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs",
+      "sha256": "ff0121d7a2ad16dac2682ae3564b2d4baafff64b622673a05015133253646256"
+    },
+    {
+      "bytes": 17056,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
+      "sha256": "b30cb63addb5f8ddfe6bf03e65f84e34221929b8cb78180efc1e6c762c6b6bc5"
+    },
+    {
+      "bytes": 26347,
+      "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+      "sha256": "3c13f67f84698b32d568bf9fda223878eb3925a95c7fcbe30e0d0ef2f1b8fcd2"
+    }
+  ],
   "implementation_prohibitions": [
     "no receiver or QMF implementation",
     "no persistent Type10 packet field",
@@ -72,11 +108,11 @@ This slice only assembles the E2 component proposal with the E3 delayed LFE row;
     "no JOC/codec logic",
     "no whole-chain/product acceptance promotion"
   ],
-  "implementation_status": "NOT_STARTED",
+  "implementation_status": "LOCALLY_VERIFIED_TYPE10_ASSEMBLY__RECEIVER_PARENT_DEFERRED",
   "input_contract": {
     "component": "linear E2 ComponentStageProposal with 15x1536 finite component output and complete after-state",
     "lfe": "linear E3 LfeStageProposal with complete ring after-state, explicit DirectLfeStageLineage, and optional Type10LfeRow0Input",
-    "parent": "SpatialAudioJoinMetadata and explicit CallbackPhase are supplied as expected typed parent identity; both proposal lineages must match programme, attempt, transaction, callback, phase, profile, spatial_audio before generation/digest, and shared spatial_control provider lineage",
+    "parent": "SpatialAudioJoinMetadata and explicit CallbackPhase are supplied as expected typed parent identity from the enclosing coordinator; both proposal lineages must match programme, attempt, transaction, callback, phase, profile, spatial_audio before generation/digest, and shared spatial_control provider lineage",
     "phase": "explicit expected NORMAL or CACHED_DRAIN; never inferred from callback index or row content",
     "provider_lineage": "preserve both E2 F04 parameter-provider lineages and the common F01E/F03 spatial_control provider lineage in the immutable assembly receipt"
   },
@@ -92,6 +128,7 @@ This slice only assembles the E2 component proposal with the E3 delayed LFE row;
   "output_contract": {
     "capability": "consume both input proposals once; packet has no public/raw/default constructor, Clone, Copy, or persistent owner field",
     "commit_authority": "none; the parent callback owns any later root replacement",
+    "outcome_discriminant": "Type10AssemblyOutcome::Priming/Ready carries the outcome; Type10AssemblyReceipt contains lineage, origins, and fixed shape only",
     "packet_payload": "private immutable Arc<[FiniteF32]> of exactly 16*1536 samples; expose borrowed read-only samples only",
     "priming_outcome": "Priming plus immutable receipt and both preserved after-states; no packet",
     "ready_outcome": "opaque non-Clone Type10Packet plus immutable receipt and both preserved after-states",
@@ -106,9 +143,10 @@ This slice only assembles the E2 component proposal with the E3 delayed LFE row;
       "spatial_control before generation and digest",
       "spatial_control provider lineage",
       "two F04 parameter-provider lineages",
+      "validated LFE host identity",
       "component origin callback g",
       "optional LFE origin callback g-2",
-      "assembly outcome and fixed 16x1536 shape"
+      "fixed 16x1536 shape"
     ],
     "stage_type": "linear Type10AssemblyProposal"
   },
@@ -117,16 +155,15 @@ This slice only assembles the E2 component proposal with the E3 delayed LFE row;
     "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs",
     "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
     "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs",
-    "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs"
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
+    "crates/jocforge-domain/src/spatial/spatial_control.rs"
   ],
   "planned_test_files": [
     "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs",
     "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs"
   ],
   "planned_test_vector_fixtures": [
-    "crates/jocforge-domain/tests/fixtures/f04_component/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json",
-    "crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json",
-    "crates/jocforge-domain/tests/fixtures/direct_lfe/G1-VECTOR-ERRATUM.json"
+    "crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json"
   ],
   "programme_root": "spatial_audio",
   "required_e2_lineage_seam": {
@@ -153,12 +190,26 @@ This slice only assembles the E2 component proposal with the E3 delayed LFE row;
     "spec_sha256": "92325b12128023001e1f3fd4696dcec68bbd47a46acdb7886781b411a10c5d59"
   },
   "stage_authority": "F04C E4 callback-local assembly only; consumes E2/E3 proposals and preserves their after-states",
-  "status": "MAPPING_COMPLETE",
+  "status": "LOCALLY_VERIFIED_TYPE10_ASSEMBLY__RECEIVER_PARENT_DEFERRED",
   "task_id": "P1.3-E4-F04-TYPE10-ASSEMBLY",
-  "test_files": [],
-  "test_inventory": [],
+  "test_files": [
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs",
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs"
+  ],
+  "test_inventory": [
+    {
+      "bytes": 23774,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs",
+      "sha256": "5f83ce89089916e9f588c7b80313234d2d5c999fd527c838f5c5da60d7456964"
+    },
+    {
+      "bytes": 51413,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs",
+      "sha256": "b501289f41cc2c08dcbc31e4fb9419b4c79c2383b01af2c7eca864dcfd9ab123"
+    }
+  ],
   "vectors": {
-    "binding_rule": "E4 asserts every output sample bit equals the corresponding consumed proposal row bit; the whole-chain expected Type10 hashes are not cross-paired with the different Direct-LFE g1 row",
+    "binding_rule": "E4 asserts every output sample bit equals the corresponding consumed proposal row bit; no whole-chain Type10 expected hash is used as an assembly input or oracle",
     "callbacks": [
       "g0",
       "g1",
@@ -182,19 +233,28 @@ This slice only assembles the E2 component proposal with the E3 delayed LFE row;
       "malformed_component_output_shape",
       "dropped_stage_preserves_committed_root"
     ],
-    "component_fixture": "crates/jocforge-domain/tests/fixtures/f04_component/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json; use only the E2 component input/row identity; do not take its Type10 expected hash when pairing with the distinct Direct-LFE g1 supplement row",
+    "component_fixture": "E4 test-only ComponentStageProposal rows with unique finite F32 bit markers; E4 makes no E2 DSP/vector claim",
     "expected_values_are_assertions_only": true,
-    "lfe_fixture": "crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json and G1-VECTOR-ERRATUM.json"
+    "lfe_fixture": "crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json; consume only the g0..g5 callback/phase/origin assertions"
   },
   "verification": {
-    "full_repository_boundary_mutations_rejected": "NOT_RUN",
+    "boundary_normal": "PASS",
+    "boundary_optimized": "PASS",
+    "cargo_check": "PASS",
+    "cargo_clippy": "PASS",
+    "cargo_fmt": "PASS",
+    "full_repository_boundary_mutations_rejected": 685,
+    "implementation_map_render": "PASS",
     "local_commit": "NOT_IMPLEMENTED",
     "parent_transaction": "NOT_IMPLEMENTED",
     "planned_test_count": 13,
     "receiver_qmf": "NOT_IMPLEMENTED",
-    "targeted_implementation_mutations_rejected": "NOT_RUN",
-    "targeted_mapping_mutations_rejected": 19,
-    "type10_packet": "NOT_IMPLEMENTED"
+    "targeted_implementation_mutations_rejected": 36,
+    "targeted_mapping_mutations_rejected": 20,
+    "type10_assembly_test_count": 13,
+    "type10_packet": "LOCALLY_VERIFIED_CALLBACK_LOCAL_NONCLONE",
+    "workspace_test_ignored": 1,
+    "workspace_test_passed": 209
   }
 }
 ```

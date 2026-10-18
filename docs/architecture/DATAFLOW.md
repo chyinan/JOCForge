@@ -18,7 +18,7 @@ encode 不读取路径、不启动进程、不打开文件。其余 domain 模�
 
 已物化的 PostWindow fanout capability 位于 F03W `W3072` installed48 输出之后。future renderer 创建一个线性 proposal；`fanout(self)` 生成 CurrentFeatures 和 spatial-audio 两个非 Clone view，并共享同一 immutable `Arc` payload。CurrentFeatures 接收显式 phase。renderer、F04 assembler 和 parent transaction 仍 deferred。
 
-F04C 的 E2 component stage 与 E3 Direct-LFE ring stage 分别消费同 callback 的受限输入并返回不可提交的 proposal。E3 对 `g>=2` 提供带 `g-2` provenance 的 Type10 row0；rows1..15 来自 E2 component15。P1.3-E4 已映射把两份 proposal 组合成 callback-local Type10 边界，映射合同规定 `g=0/1` 为 priming、`g>=2` 才有 packet；实现尚未开始。E3 补充包的六回调 `g0..g5` 是独立 ring test trace，不覆盖本表的生产 phase ranges。receiver/QMF 和 parent root replacement 均未实现。
+F04C 的 E2 component stage 与 E3 Direct-LFE ring stage 分别消费同 callback 的受限输入并返回不可提交的 proposal。E3 对 `g>=2` 提供带 `g-2` provenance 的 Type10 row0；rows1..15 来自 E2 component15。P1.3-E4 Type10 assembly boundary 已在隔离 proposal 输入上本地验证：`g=0/1` 为 Priming 且无 packet，`g>=2` 才组装16×1536只读 packet；它不推进 committed state。E3 补充包的六回调 `g0..g5` 是独立 ring test trace，不覆盖本表的生产 phase ranges。render producer、receiver/QMF 和 parent root replacement 均未实现。
 
 ## Main 时钟
 

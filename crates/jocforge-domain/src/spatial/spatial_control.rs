@@ -178,6 +178,12 @@ impl SpatialControlProviderLineage {
     pub const fn f03_provider_generation(self) -> u64 {
         self.f03_provider_generation
     }
+
+    #[cfg(test)]
+    pub(crate) fn fixture_mismatch_for_type10(mut lineage: Self) -> Self {
+        lineage.f03_provider_generation += 1;
+        lineage
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]

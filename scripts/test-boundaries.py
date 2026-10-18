@@ -25,6 +25,18 @@ def code_mut_render(mutate):
   map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
   subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
  return m
+def type10_code_mut_render(mutate):
+ def m(r):
+  mutate(r)
+  map_path=r/'docs/implementation/IMPLEMENTATION-MAP.json';d=json.loads(map_path.read_text(encoding='utf-8'));task=d['phase_one']['P1.3-E4']
+  for key in ('implementation_inventory','test_inventory'):
+   for entry in task.get(key,[]):
+    path=r/entry['path']
+    if path.is_file():
+     content=path.read_bytes();entry['bytes']=len(content);entry['sha256']=hashlib.sha256(content).hexdigest()
+  map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+  subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
+ return m
 def spatial_audio_code_mut_render(mutate):
  def m(r):
   mutate(r)
@@ -551,13 +563,14 @@ def main():
  ('directlfe-test-cached-row-not-reused',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe/tests.rs','cached_g1.as_deref()','None'))
  ]
  cases += [
- ('type10-map-status-overclaim',map_mut_render(lambda d:(d['phase_one']['P1.3-E4'].update(status='LOCALLY_VERIFIED_TYPE10_ASSEMBLY__RECEIVER_PARENT_DEFERRED',implementation_status='LOCALLY_VERIFIED_TYPE10_ASSEMBLY__RECEIVER_PARENT_DEFERRED'),d['status'].update({'P1.3-E4':'LOCALLY_VERIFIED_TYPE10_ASSEMBLY__RECEIVER_PARENT_DEFERRED'})))),
+ ('type10-map-status-overclaim',map_mut_render(lambda d:(d['phase_one']['P1.3-E4'].update(status='PRODUCT_COMPLETE',implementation_status='PRODUCT_COMPLETE'),d['status'].update({'P1.3-E4':'PRODUCT_COMPLETE'})))),
  ('type10-map-parent-unblocked',map_mut_render(lambda d:d['status'].update({'P1.3-E':'LOCALLY_VERIFIED'}))),
  ('type10-map-e2-lineage-gap',map_mut_render(lambda d:d['phase_one']['P1.3-E4'].pop('required_e2_lineage_seam'))),
  ('type10-map-row-order-drift',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['specification'].update(rows='Type10[g] is component15[g] followed by LFE[g-2]'))),
  ('type10-map-origin-drift',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['specification'].update(rows='row0 is LFE[g-1] and rows1..15 are component15[g]'))),
  ('type10-map-priming-packet',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['specification'].update(priming='g=0 and g=1 produce zero-filled Type10 packets'))),
  ('type10-map-after-state-dropped',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['output_contract'].update(ready_outcome='Type10Packet and receipt only; drop both owner after-states'))),
+ ('type10-map-receipt-outcome-field-drift',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['output_contract']['receipt_fields'].append('assembly outcome'))),
  ('type10-map-receipt-lineage-removed',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['output_contract']['receipt_fields'].remove('spatial_audio before generation and digest'))),
  ('type10-map-error-authority-overclaim',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['error_translation'].update(authority='PACKAGE_NORMATIVE native Type10 errors'))),
  ('type10-map-error-priority-drift',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['error_translation']['priority'].reverse())),
@@ -569,7 +582,45 @@ def main():
  ('type10-map-packet-persistent',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['output_contract'].update(capability='store Type10Packet in persistent spatial_audio state'))),
  ('type10-map-generic-assembler',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['implementation_prohibitions'].remove('no generic row assembler'))),
  ('type10-map-e3-assembler-enabled',map_mut_render(lambda d:d['phase_one']['P1.3-E3']['verification'].update(full_type10_assembler='LOCALLY_VERIFIED'))),
- ('type10-map-malformed-row-error-drift',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['error_translation']['outcomes'][5].update(error_code='F04_NUMERIC_FAILURE')))
+ ('type10-map-malformed-row-error-drift',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['error_translation']['outcomes'][4].update(error_code='F04_NUMERIC_FAILURE')))
+ ]
+ cases += [
+ ('type10-code-row-order-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','payload.extend(component_output.into_vec());','payload.clear();')),
+ ('type10-code-outcome-added-to-receipt',type10_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],\n    outcome: Type10AssemblyOutcome,'))),
+ ('type10-code-assembly-outcome-added-to-receipt',type10_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],\n    assembly_outcome: u8,'))),
+ ('type10-code-outcome-discriminant-added-to-receipt',type10_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],\n    outcome_discriminant: u8,'))),
+ ('type10-code-visible-assembly-outcome-added-to-receipt',type10_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],','lfe_origin_generation: Option<FrontendCallbackIndex>,\n    shape: [usize; 2],\n    pub(super) assembly_outcome: u8,'))),
+ ('type10-code-origin-g1',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','callback_index.value().checked_sub(2)','callback_index.value().checked_sub(1)')),
+ ('type10-code-priming-emits-packet',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','(None, None) => Type10AssemblyOutcome::Priming { receipt },','(None, None) => Type10AssemblyOutcome::Ready { packet: todo!(), receipt },')),
+ ('type10-code-parent-programme-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','component.programme_id().as_str() == expected_parent.programme_id().as_str()','true')),
+ ('type10-code-parent-attempt-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','component.attempt() == expected_parent.attempt()','true')),
+ ('type10-code-parent-transaction-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','component.transaction_id().as_str() == expected_parent.transaction_id().as_str()','true')),
+ ('type10-code-callback-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','component_lineage.callback_index() != expected_parent.callback_index()','false')),
+ ('type10-code-phase-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','!component_phase_matches(component_lineage.phase(), expected_phase)','false')),
+ ('type10-code-profile-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','component_lineage.profile_identity() != expected_parent.profile_identity()','false')),
+ ('type10-code-before-generation-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','component_lineage.spatial_audio_before_generation() != expected_parent.before_generation()','false')),
+ ('type10-code-before-digest-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','lfe_lineage.spatial_audio_before_digest() != expected_parent.before_digest()','false')),
+ ('type10-code-control-provider-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','component.spatial_control_provider_lineage() == lfe.spatial_control_provider_lineage()','true')),
+ ('type10-code-row0-callback-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','row0.callback_generation() != callback_index','false')),
+ ('type10-code-row0-origin-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','row0.origin_generation().value() != expected','false')),
+ ('type10-code-ring-slot-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','if matches != 1 {','if false {')),
+ ('type10-code-row0-finite-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','|| !valid_row_bytes(row0.row_bytes())','|| false')),
+ ('type10-code-component-shape-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','component_output.len() != COMPONENT_ROW_COUNT * FRAME_SAMPLES','false')),
+ ('type10-code-packet-clone-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','#[must_use]\n#[allow(dead_code)]\npub(super) struct Type10Packet','#[derive(Clone)]\n#[must_use]\n#[allow(dead_code)]\npub(super) struct Type10Packet')),
+ ('type10-code-packet-raw-constructor',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','#[cfg(test)]\nmod tests;','impl Type10Packet { pub(super) fn from_raw(_: Vec<FiniteF32>) -> Self { todo!() } }\n#[cfg(test)]\nmod tests;')),
+ ('type10-code-packet-default-constructor',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','#[cfg(test)]\nmod tests;','impl Default for Type10Packet { fn default() -> Self { todo!() } }\n#[cfg(test)]\nmod tests;')),
+ ('type10-code-packet-public-payload',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','    payload: Arc<[FiniteF32]>,','    pub(super) payload: Arc<[FiniteF32]>,')),
+ ('type10-code-packet-mutable-payload',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','pub(super) fn payload(&self) -> &[FiniteF32]','pub(super) fn payload_mut(&mut self) -> &mut [FiniteF32]')),
+ ('type10-code-local-commit-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','#[cfg(test)]\nmod tests;','pub(super) fn commit_type10() {}\n#[cfg(test)]\nmod tests;')),
+ ('type10-code-persistent-packet-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','struct F04CompositionState {','struct F04CompositionState {\n    type10_packet: Option<Type10Packet>,')),
+ ('type10-code-receiver-qmf-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','#[cfg(test)]\nmod tests;','fn receiver_qmf() {}\n#[cfg(test)]\nmod tests;')),
+ ('type10-code-generic-row-assembler-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','#[cfg(test)]\nmod tests;','fn assemble_rows(rows: Vec<Vec<FiniteF32>>) -> Vec<FiniteF32> { rows.into_iter().flatten().collect() }\n#[cfg(test)]\nmod tests;')),
+ ('type10-code-component-after-dropped',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','        component_after,\n        lfe_after,\n        outcome,','        component_after: ComponentAfterState::cold(),\n        lfe_after,\n        outcome,')),
+ ('type10-code-lfe-after-dropped',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs','        component_after,\n        lfe_after,\n        outcome,','        component_after,\n        LfeDelayRingState::cold(),\n        outcome,')),
+ ('type10-code-e2-fixture-production',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs','#[cfg(test)]\n    pub(in crate::spatial::spatial_audio_state) fn fixture_for_type10(','    pub(in crate::spatial::spatial_audio_state) fn fixture_for_type10(')),
+ ('type10-code-e3-fixture-production',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs','#[cfg(test)]\nimpl LfeStageProposal {','impl LfeStageProposal {')),
+ ('type10-code-provider-mismatch-fixture-production',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_control.rs','#[cfg(test)]\n    pub(crate) fn fixture_mismatch_for_type10(','    pub(crate) fn fixture_mismatch_for_type10(')),
+ ('type10-code-g2-test-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs','#[test]\nfn g2_g5_row_order_origins_and_bit_preservation() {','fn g2_g5_row_order_origins_and_bit_preservation() {'))
  ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]

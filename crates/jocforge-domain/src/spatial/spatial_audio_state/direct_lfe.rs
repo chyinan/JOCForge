@@ -391,7 +391,7 @@ fn stage_lfe_ring_transition(
     })
 }
 
-fn validate_lfe_ring_state(
+pub(super) fn validate_lfe_ring_state(
     state: &LfeDelayRingState,
     callback_index: FrontendCallbackIndex,
 ) -> Result<(), DirectLfeError> {
@@ -417,7 +417,7 @@ fn validate_lfe_ring_state(
     Ok(())
 }
 
-fn valid_row_bytes(bytes: &[u8]) -> bool {
+pub(super) fn valid_row_bytes(bytes: &[u8]) -> bool {
     bytes.len() == LFE_ROW_BYTES
         && bytes.chunks_exact(4).all(|word| {
             f32::from_le_bytes(word.try_into().expect("four-byte F32 word")).is_finite()
@@ -426,3 +426,58 @@ fn valid_row_bytes(bytes: &[u8]) -> bool {
 
 #[cfg(test)]
 mod tests;
+
+#[cfg(test)]
+impl Type10LfeRow0Input {
+    pub(in crate::spatial::spatial_audio_state) fn fixture_for_type10(
+        callback_generation: FrontendCallbackIndex,
+        origin_generation: FrontendCallbackIndex,
+        row_bytes: Vec<u8>,
+    ) -> Self {
+        Self {
+            callback_generation,
+            origin_generation,
+            row_bytes: Arc::from(row_bytes.into_boxed_slice()),
+        }
+    }
+}
+
+#[cfg(test)]
+impl LfeStageProposal {
+    pub(in crate::spatial::spatial_audio_state) fn fixture_for_type10(
+        spatial_audio_join: &SpatialAudioJoinMetadata,
+        phase: super::super::post_window_fanout::CallbackPhase,
+        spatial_control: &SpatialControlMachine,
+        lfe_host: HostId,
+        after: LfeDelayRingState,
+        type10_row0: Option<Type10LfeRow0Input>,
+        spatial_control_provider_lineage: Option<&SpatialControlProviderLineage>,
+    ) -> Self {
+        Self {
+            after,
+            type10_row0,
+            lineage: DirectLfeStageLineage {
+                programme_id: SourceFlagsProgrammeId::new(
+                    spatial_audio_join.programme_id().as_str(),
+                )
+                .expect("test join programme id remains non-empty"),
+                attempt: spatial_audio_join.attempt(),
+                transaction_id: CallbackTransactionId::new(
+                    spatial_audio_join.transaction_id().as_str(),
+                )
+                .expect("test join transaction id remains non-empty"),
+                callback_index: spatial_audio_join.callback_index(),
+                phase,
+                profile_identity: spatial_audio_join.profile_identity(),
+                spatial_audio_before_generation: spatial_audio_join.before_generation(),
+                spatial_audio_before_digest: spatial_audio_join.before_digest(),
+                spatial_control_before_generation: spatial_control.generation(),
+                spatial_control_before_digest: spatial_control.digest(),
+                spatial_control_provider_lineage: spatial_control_provider_lineage
+                    .copied()
+                    .unwrap_or_else(|| spatial_control.provider_lineage()),
+                lfe_host,
+            },
+        }
+    }
+}

@@ -94,6 +94,22 @@ fn provider_lineage(context: &TestContext) -> [F04ParameterProviderLineage; 2] {
     ]
 }
 
+pub(in crate::spatial::spatial_audio_state) fn type10_test_context() -> (
+    SpatialAudioMachine,
+    SpatialControlMachine,
+    [F04ParameterProviderLineage; 2],
+    EncodingProfile,
+) {
+    let context = context();
+    let lineage = provider_lineage(&context);
+    (
+        context.spatial_audio,
+        context.spatial_control,
+        lineage,
+        context.profile,
+    )
+}
+
 fn callback_join(context: &TestContext, index: FrontendCallbackIndex) -> SpatialAudioJoinMetadata {
     SpatialAudioJoinMetadata::new(
         SourceFlagsProgrammeId::new("component-test-programme").unwrap(),
@@ -1091,6 +1107,11 @@ fn cold_component_stage_produces_complete_proposal_without_local_commit() {
 
     assert_eq!(context.spatial_audio.generation(), before_generation);
     assert_eq!(context.spatial_audio.digest(), before_digest);
+    assert_eq!(
+        proposal.receipt.spatial_audio_before_generation,
+        before_generation
+    );
+    assert_eq!(proposal.receipt.spatial_audio_before_digest, before_digest);
     assert_eq!(proposal.after.parameters.blocks_processed, 24);
     assert_eq!(proposal.after.parameters.hold, 1);
     assert_eq!(

@@ -12,6 +12,7 @@ use std::sync::Arc;
 
 pub(crate) mod component_stage;
 pub(crate) mod direct_lfe;
+pub(crate) mod type10_assembler;
 
 const EXPECTED_COLD_BYTES: usize = 813_733;
 const NEGATIVE_ZERO_BITS: u32 = 0x8000_0000;

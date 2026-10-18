@@ -33,7 +33,7 @@ callback inputs and never become `spatial_audio` root fields.
 | F04A | F04A.6 matrix accumulation; F04A.7 overlap/ring; F04A.8 64-sample filter consumption | F04A.1-.5 raw38/window/activity/prefix/diffusion/installed48 production; F04A.9 LFE/Type10/receiver |
 | F04P | F04P.1-.5 shared 15-row parameter-state validation and one-block transition | Other sample rates, row counts, block formats, full controller, real ADM or independent product qualification |
 | F04PG | F04PG.1-.5 selected 48 kHz/64-sample constants and its input-only verification runner contract | Regeneration on a platform math library; expected-state seeding; claims about original DEE tables |
-| F04C | F04C.1-.2 component consumer boundary/order; F04C.6 component advancement on normal and cached-drain callbacks; F04C.7 component preflight/error boundary | LFE, Type10, point target, receiver/QMF, full composition receipt, render producer/fanout, parent transaction |
+| F04C | F04C.1-.2 component consumer boundary/order; F04C.6 component advancement on normal and cached-drain callbacks; F04C.7 component preflight/error boundary | E3 owns LFE ring staging; P1.3-E4 separately verifies Type10 row assembly; point target, receiver/QMF, full composition receipt, render producer/fanout, parent transaction remain outside E2 |
 | N00 | N00.1-.4 binary32 rounding, non-fusion, signed-zero, subnormal, and first-argument min/max semantics used by the above clauses | Any numeric behavior not required by the mapped F04 clauses |
 
 ## Runtime inputs and ownership
