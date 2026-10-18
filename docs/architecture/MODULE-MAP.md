@@ -5,7 +5,7 @@
 | domain/numeric | 批准数值语义的未来 Functional Core 边界 | 空壳；本轮不实现 |
 | domain/state | 共享不可变契约和拒绝错误 | 仅 migration rejection；本轮不扩展 |
 | domain/frontend | 输入语义验证与规范化 | 空壳 |
-| domain/spatial | SourceFlags/CurrentFeatures、spatial_control 和 spatial_audio owner boundaries | SourceFlags/CurrentFeatures、spatial_control cold/staging、F04 providers、固定 64 点 QMF FFT primitive、E2 component stage、E3 Direct-LFE ring stage、E4 Type10 assembly boundary 和 typed PostWindow fanout 已按限定切片验证；render producer、QMF receiver/caller processing 和 parent commit 仍 deferred |
+| domain/spatial | SourceFlags/CurrentFeatures、spatial_control 和 spatial_audio owner boundaries | SourceFlags/CurrentFeatures、spatial_control cold/staging、F04 providers、固定 64 点 QMF FFT primitive、E2 component stage、E3 Direct-LFE ring stage、E4 Type10 assembly boundary 和 typed PostWindow fanout 已按限定切片验证；QMF analysis/synthesis core 已映射为可实现切片，但尚未实现；render producer、receiver routing、mode=0 fitting 和 parent commit 仍 deferred |
 | domain/joc/downmix_profile | `JocDownmixProfile` 边界 | 空壳；无常数 |
 | domain/joc/huffman | F05QH traversal 边界 | 空壳；无表和遍历实现 |
 | domain/joc/emdf | F13 EMDF production 边界 | 空壳；无 serializer |

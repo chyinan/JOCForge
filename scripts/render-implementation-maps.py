@@ -53,6 +53,24 @@ def render(d):
   x=d['phase_one']['QMF_FFT_PRIMITIVE'];block=json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)
   o['PHASE-PLAN.md']+='\n## QMF FFT primitive mapping\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
   o['QMF-FFT-PRIMITIVE-MAP.md']='# QMF FFT primitive map\n\n由 IMPLEMENTATION-MAP.json 生成，不得手工修改。\n\n'+f"Status: `{x['status']}`. This covers only the fixed QMF FFT primitive; QMF callers and whole-chain execution remain separate.\n\n"+'The primitive is a 64-point complex transform over 128 interleaved F32 scalar slots. The map keeps input normalization and caller reorder/sign-bit operations outside the butterfly contract.\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
+ if 'QMF_CORE' in d['phase_one']:
+  x=d['phase_one']['QMF_CORE'];block=json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)
+  o['PHASE-PLAN.md']+='\n## QMF analysis/synthesis core mapping\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
+  o['QMF-ANALYSIS-SYNTHESIS-CORE-MAP.md']=(
+   '# QMF analysis/synthesis core map\n\n'
+   '由 IMPLEMENTATION-MAP.json 生成，不得手工修改。\n\n'
+   +f"Status: `{x['status']}`. This is a docs-only readiness gate for the selected fixed QMF core; it does not promote the F04 whole root.\n\n"
+   +'## Processing boundary\n\n'
+   +'Analysis accepts one 64-sample lane slot, that lane’s nine-row history, the selected prototype and rotation, and the fixed FFT provider. The caller has already produced `s09_input`; lane routing and receiver preprocessing stay outside this core.\n\n'
+   +'The receiver mode=1 path applies the ten-slot delay and band0 FIR only to supplied surround lanes. It then performs the inverse reorder, unscaled FFT, postmodulation, and synthesis polyphase step. The core returns after-state slices; only `spatial_audio` may commit them later.\n\n'
+   +'## State and clocks\n\n'
+   +'`ModelState.analysis_history` owns five independent histories in `[L,R,C,Ls,Rs]` order. Receiver mode=1 delay, FIR, and synthesis histories are two independent rows for `[Ls,Rs]`. `QmfWindowState.fitting_delay/fitting_fir` remain separate and mode=0 fitting is excluded.\n\n'
+   +'The parent callback uses `FrontendCallbackIndex g`. The receiver uses its separate `ReceiverCallbackCount r`: no receiver/QMF call for `g<2`, then `r=g-2` and `receiver_generation=r+1`. Each receiver callback processes 24 ordered QMF slots; EOF adds no synthetic QMF flush.\n\n'
+   +'## Provider and vector evidence\n\n'
+   +'The qmf functional provider supplies the selected QWIN and mode=1 band0 taps. The mathematical FFT provider supplies the 63 roots and separate 128-word rotation. `receiver_blend32` is an upstream F04R.5 dependency; QMF does not consume it directly. The current fresh review is static only. Direct unit vectors cover FFT, reorder, synthesis history and surround delay/FIR, while fold/rotation and postmodulation lack isolated direct cases; model-first whole-binding hashes remain assertions, not execution evidence for this implementation.\n\n'
+   +'The machine-readable record below binds the exact formulas, providers, owners, clocks, vectors and exclusions.\n\n'
+   +chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
+  )
  if 'POSTWINDOW_FANOUT_FOUNDATION' in d['phase_one']:
   x=d['phase_one']['POSTWINDOW_FANOUT_FOUNDATION'];block=json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)
   o['PHASE-PLAN.md']+='\n## PostWindow fanout foundation\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'

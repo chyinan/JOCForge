@@ -21,7 +21,8 @@
     "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_LOCALLY_VERIFIED__P1.4_C_LOCALLY_VERIFIED",
     "P1.4-D1": "LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS",
     "P1.4-D2": "LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS",
-    "QMF_FFT_PRIMITIVE": "LOCALLY_VERIFIED_FIXED64_ONLY"
+    "QMF_FFT_PRIMITIVE": "LOCALLY_VERIFIED_FIXED64_ONLY",
+    "QMF_CORE": "READY_FOR_IMPLEMENTATION"
   },
   "functional_entries": [
     {
@@ -5298,9 +5299,145 @@
         "receiver_fitting_execution": "NOT_RUN",
         "product_audio_acceptance": "NOT_RUN",
         "targeted_boundary_mutations_rejected": 43,
-        "full_repository_boundary_mutations_rejected": 728
+        "full_repository_boundary_mutations_rejected": 760
       },
       "aggregate_readiness_unchanged": {"P1.3-E": "BLOCKED_ON_F04_DSP_RENDER_AND_PARENT", "spatial_audio_root": "MAPPING_COMPLETE_BLOCKED"}
+    },
+    "QMF_CORE": {
+      "task_id": "QMF-ANALYSIS-SYNTHESIS-CORE-MAPPING",
+      "status": "READY_FOR_IMPLEMENTATION",
+      "mapping_status": "MAPPING_COMPLETE",
+      "implementation_status": "NOT_STARTED",
+      "mapping_document": "docs/implementation/QMF-ANALYSIS-SYNTHESIS-CORE-MAP.md",
+      "module_export_file": "crates/jocforge-domain/src/spatial/mod.rs",
+      "programme_root": "spatial_audio",
+      "functional_ids": ["F04Q", "F04QF", "F04QP", "F04RB"],
+      "functional_id_scope": "Only the selected fixed QMF analysis/synthesis core and its receiver mode=1 state slices are ready for implementation. Whole F04Q/F04QF functional IDs, receiver routing, mode=0 fitting, descriptor/JOC, J05, F04C parent commit, real ADM and product acceptance remain separate or blocked.",
+      "scope": "Map F04Q.2-.6 using the existing QMF_FFT_RADIX2_MATH_V1 transform and validated providers. Accept one lane's 64-sample slot and its caller-owned before histories; return the slot output and proposed after histories. Define receiver mode=1 delay/FIR/synthesis only as the fixed surround consumer. Do not choose lanes, create s09_input, run F04R, compute descriptor, or commit a spatial_audio root.",
+      "package_identity": {
+        "manifest_file": "MANIFEST.json",
+        "manifest_bytes": 76302,
+        "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+      },
+      "specifications": [
+        {"file": "specs/00-numeric-semantics.md", "bytes": 3369, "sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135", "clauses": ["N00.1", "N00.2"]},
+        {"file": "specs/04-qmf-analysis-and-synthesis.md", "bytes": 5584, "sha256": "13a2907c8e60bd81f948f33b9ad07f2d7dc0552b0b12f53224d27b80af610edf", "clauses": ["F04Q.1", "F04Q.2", "F04Q.3", "F04Q.4", "F04Q.5", "F04Q.6", "F04Q.7"]},
+        {"file": "specs/04-qmf-mathematical-fft.md", "bytes": 3258, "sha256": "e915152a13098a18c4028ef5f3e72ba417341cdf87b17dc76645e73395319823", "clauses": ["F04QF.1", "F04QF.2", "F04QF.4"]},
+        {"file": "specs/04-qmf-prototype-source-and-loading.md", "bytes": 4428, "sha256": "8255e0d95eb91db0c5ecf6b120bab4b7f60796d121bf9249bb51db72bc91811f", "clauses": ["F04QP.1", "F04QP.3", "F04QP.4"]},
+        {"file": "specs/04-receiver-state-and-routing.md", "bytes": 8332, "sha256": "74b9b01537eb76a37582535b84426138ee8c8ecdca3486f9f43d0504c7c26306", "clauses": ["F04R.1", "F04R.2", "F04R.5", "F04R.7"]},
+        {"file": "specs/04-qmf-receiver-whole-binding.md", "bytes": 13595, "sha256": "104d604cf876cc522a85b21f352bd0a09fc20c3171ddcd71da981c8076ea3a75", "clauses": ["F04RB.1", "F04RB.2", "F04RB.5", "F04RB.6", "F04RB.7", "F04RB.8", "F04RB.9"]}
+      ],
+      "algorithm_contract": {
+        "route": "QMF_FFT_RADIX2_MATH_V1",
+        "fft_primitive_binding": {
+          "implementation_file": "crates/jocforge-domain/src/spatial/qmf_fft64.rs",
+          "mapping_document": "docs/implementation/QMF-FFT-PRIMITIVE-MAP.md",
+          "status": "LOCALLY_VERIFIED_FIXED64_ONLY",
+          "typed_api": "QmfFftInput::new(&[f32]) -> Result<QmfFftInput,QmfFftError>; execute_qmf_fft64(&QmfFftInput,&QmfMathematicalFftProvider) -> Result<QmfFftOutput,QmfFftError>",
+          "fixed_contract": {
+            "complex_points": 64,
+            "interleaved_f32_slots": 128,
+            "input_bit_reversal": "work[k]=input[rev6(k)]; preserve each real/imag pair",
+            "stage_lengths": [2,4,8,16,32,64],
+            "stage_iteration": "L ascending; base=0,L,...,64-L; j=0..L/2-1; roots[j] from the current stage",
+            "butterfly_indexing": "For stage L, half=L/2; left=base+j and right=base+half+j; read a=work[left] and b=work[right] before either write; roots[j][0] is real c and roots[j][1] is imaginary d",
+            "butterfly_destinations": "write out_a to work[left] and out_b to work[right]",
+            "exponent": "negative",
+            "butterfly_order": ["tr=(c*b_re)-(d*b_im)", "ti=(c*b_im)+(d*b_re)", "out_a=(a_re+tr,a_im+ti)", "out_b=(a_re-tr,a_im-ti)"],
+            "arithmetic": "each operation separately R32; no FMA or normalization",
+            "output": "64 complex bins in natural order"
+          }
+        },
+        "numeric_rule": "Every F32 multiply/add/subtract is one R32 round-to-nearest-ties-to-even point; do not fuse, regroup, or change loop order. Preserve signed zero and gradual underflow. Nonfinite intermediate or output is fatal per N00.2.",
+        "analysis_input": "One lane supplies x[0..63], H[0..8][0..63] from that lane's before analysis history, qwin_synthesis_640[0..639], rotation[0..63] as 64 complex pairs, and the validated fixed-64 FFT provider.",
+        "analysis_fold": "For k=0..63: e=(H[6,k]*P[128+k])+(H[8,k]*P[k]); then e+=(H[4,k]*P[256+k]); e+=(H[2,k]*P[384+k]); e+=(H[0,k]*P[512+k]); o=(H[5,k]*P[192+k])+(H[7,k]*P[64+k]); then o+=(H[3,k]*P[320+k]); o+=(H[1,k]*P[448+k]); o+=(x[k]*P[576+k]); store fold[126-2*k]=o and fold[127-2*k]=e. Each term follows the displayed left-to-right R32 order.",
+        "analysis_next_history": "After producing all 128 fold scalars, next H=[x,H[0],H[1],...,H[7]] by raw F32 bits; advance once per 64-sample slot, not once per callback.",
+        "analysis_rotation": "For folded complex (r,i) and rotation (a,b): rotated.real=(i*a)-(r*b); rotated.imag=(i*b)+(r*a), with each operation independently R32. Rotation source is math provider rotation_u32, not FFT stage roots.",
+        "analysis_fft_and_reorder": "Prepare R32(v/64) for all 128 rotated F32 scalars before the first FFT butterfly. Call the fixed 64-complex FFT with no mode parameter. For p=0..31 and FFT output U as U32: out[4p]=U[2p]; out[4p+1]=U[2p+1] XOR 0x80000000; out[4p+2]=U[126-2p]; out[4p+3]=U[127-2p]. XOR is bitwise and must preserve signed-zero/subnormal bits.",
+        "receiver_mode1_delay_and_fir": "For a supplied surround lane's 24-slot analysis X[24][128], join old D[10][128]||X and use the first 24 slots as delay output. In mode=1 each delayed complex band (r,i) becomes (i XOR 0x80000000,r); next D is the last 10 slots of the unrotated X. Band0 FIR reads current X band0, not the delay output: A=old 20 complex samples||X band0. For s=0..23, initialize ar=ai=+0 and for t=0..20 ascending let (x,y)=A[s+t], ar=(ar+(R[t]*x))-(I[t]*y), ai=(ai+(R[t]*y))+(I[t]*x). Replace band0 with (2*ar,2*ai); other 63 bands retain the delay output. Next FIR history is the last 20 complex samples of A.",
+        "synthesis_preformat": "For each processed band slot, with reordered input U as U32, p=0..31: V[2p]=U[4p]; V[2p+1]=U[4p+1] XOR 0x80000000; V[126-2p]=U[4p+2]; V[127-2p]=U[4p+3]. This is the inverse analysis bit permutation.",
+        "synthesis_fft_and_postmodulation": "Call the same fixed 64-complex negative-exponent FFT on V without 1/64 input scaling. For each output (r,i) and rotation (a,b): real=((r*b)+(i*a))*2; imag=((i*b)-(r*a))*2. Every multiplication, addition, subtraction, and factor-of-two multiplication has a separate R32 point.",
+        "synthesis_polyphase": "For k=0..63 let poly_group=floor(k/4), lane=k mod 4, h=36*poly_group+lane; all right-hand H references use the old 576-word snapshot. v=(P[k]*r[k])+H[h]; output[k]=v+v. For j=0..7, c=i[k] when (j+1) is odd, otherwise r[k]; nextH[h+4*j]=(P[64*(j+1)+k]*c)+H[h+4*(j+1)]. Then nextH[h+32]=P[576+k]*i[k]. This produces 64 samples per slot and advances one synthesis history per processed slot.",
+        "prototype_binding": "synthesis P[j]=qwin_synthesis_640[j]; analysis P[j]=qwin_synthesis_640[639-j]. The analysis reverse is an index reversal only, not a second provider array."
+      },
+      "consumer_scope": {
+        "receiver_analysis_lanes": [0, 1, 2, 4, 5],
+        "six_lane_order": ["L", "R", "C", "LFE", "Ls", "Rs"],
+        "qmf_analysis_history_row_order": ["L", "R", "C", "Ls", "Rs"],
+        "receiver_mode1_synthesis_lanes": [4, 5],
+        "receiver_surround_history_row_order": ["Ls", "Rs"],
+        "receiver_input_boundary": "Receiver supplies same-generation s09_input after F04R stage 3; QMF_CORE starts at the 64-sample lane/slot and does not produce s09_input or choose lane routing.",
+        "fitting_mode0": "EXCLUDED. F04RB.2 has five independent fitting delay/FIR owners; mode=0 updates fitting delay and 20-complex history, skips tap multiplication, does not overwrite band0, and has no synthesis FFT. It must not alias receiver mode=1 state or be implemented in QMF_CORE.",
+        "mode0_vector_boundary": "U-QMF-SURROUND-RESET may assert the F04Q.4 mode=0 rule, but that does not authorize the F05JC fitting owner or its five-lane consumer implementation.",
+        "receiver_blend32": "Upstream dependency only. parameters/window-q15.json receiver_blend32[32] supplies F04R.5 before s09_input; QMF_CORE does not consume it directly. component_kernel64[64] belongs F04A.8 and is excluded.",
+        "excluded": ["receiver Type10 routing", "F04R stages before s09_input", "descriptor", "F05JC fitting", "J05 owner receipt", "F04C parent commit", "real ADM/audio/listening acceptance"]
+      },
+      "state_ownership": {
+        "single_owner": "spatial_audio; QMF_CORE adds no committed-state owner, root, receipt, or local commit authority.",
+        "analysis_history": {"canonical_field": "ModelState.analysis_history", "shape": "T5<T9<B256>> = 5 lanes x 9 rows x 64 F32", "lane_order": ["L", "R", "C", "Ls", "Rs"], "cold": "all positive zero", "transition": "one [x,H0,...,H7] update per lane per slot"},
+        "receiver_mode1": {"canonical_fields": ["ModelState.qmf_delay_history", "ModelState.qmf_fir_history", "ModelState.synthesis_history"], "shapes": ["T2<T10<B512>> = 2 surround lanes x 10 slots x 128 F32", "T2<B160> = 2 surround lanes x 40 F32 = 20 complex", "T2<B2304> = 2 surround lanes x 576 F32"], "lane_order": ["Ls", "Rs"], "cold": "all positive zero"},
+        "fitting_mode0": {"canonical_fields": ["QmfWindowState.fitting_delay", "QmfWindowState.fitting_fir"], "owner": "spatial_audio fitting_qmf_state; distinct from ModelState receiver histories", "scope": "excluded from QMF_CORE implementation"},
+        "canonical_schema": "test-vectors/F04-WHOLE-SPATIAL-STATE-SCHEMA.json and F04RB.7 encode these fields in the owning ModelState; QMF_CORE introduces no independent serialization root.",
+        "commit_authority": "enclosing spatial_audio root/callback transaction only; QMF_CORE returns proposed after slices and cannot commit, abort, or retire a programme.",
+        "reset_authority": "programme-origin full reset reconstructs all QMF arrays from positive-zero cold state; no local resume after RETIRED.",
+        "eof_drain": "process each actual receiver callback and its 24 slots, including frontend cached drains when Type10 is available; no extra QMF zero flush or synthetic callback.",
+        "fatal_behavior": "invalid dimensions/nonfinite inputs map through the existing F04_INPUT_ERROR boundary; nonfinite intermediate/output maps to F04_NUMERIC_FAILURE. Produce no normal output or accepted after-state; the enclosing I03/parent owner applies retirement. No native error-code equivalence claim."
+      },
+      "error_contract": {
+        "invalid_shape_or_nonfinite_input": "reject before processing per F04Q.1/I03; no normal output and no accepted after-state",
+        "missing_prototype": "QMF_PROTOTYPE_UNAVAILABLE; no unit/identity table fallback",
+        "invalid_prototype_length_or_finite_value": "QMF_PROTOTYPE_INVALID_INPUT",
+        "prototype_identity_mismatch": "QMF_PROTOTYPE_IDENTITY_MISMATCH",
+        "missing_mode1_band0_taps": "RECEIVER_PARAMETER_UNAVAILABLE",
+        "invalid_mode1_band0_taps": "RECEIVER_PARAMETER_INVALID",
+        "typed_fft_or_provider_failure": "return the existing F04ParameterProviderError before QMF work; no native error-code mapping claim",
+        "nonfinite_intermediate_or_output": "fatal F04_NUMERIC_FAILURE per N00.2; no normal output or accepted after-state",
+        "state_effect": "all before slices remain caller-owned and unchanged; QMF_CORE has no local commit, abort, or fatal authority",
+        "outer_policy": "the enclosing F04/I03 callback stops and applies programme retirement; this mapping does not implement or prove parent rollback",
+        "native_error_claim": false
+      },
+      "callback_clock": {
+        "frontend": "FrontendCallbackIndex g is the parent callback identity; phase comes from the parent and is not inferred from content.",
+        "receiver": "ReceiverCallbackCount r is distinct from g. For g<2 Type10 is priming and receiver/QMF does not run; for g>=2, r=g-2 and receiver_generation=r+1. QMF_CORE does not derive either clock from hashes or sample values.",
+        "slot_count": 24,
+        "slot_advance": "Each receiver call consumes 24 ordered 64-sample slots. All five analysis histories advance per slot; the two receiver mode=1 surround delay/FIR/synthesis families advance only for lanes [4,5].",
+        "callback_advance": "ReceiverCallbackCount advances once per successful receiver callback; each history after-slice is handed to the existing spatial_audio owner. QMF_CORE has no callback commit authority.",
+        "eof": "Follow actual parent callback delivery and cached drains; do not append a QMF flush callback."
+      },
+      "provider_bindings": {
+        "qmf_receiver_functional": {"file": "parameters/qmf-receiver-functional-v1.json", "bytes": 20325, "sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c", "typed_provider": "QmfReceiverFunctionalProvider", "fields": [{"name": "qwin_synthesis_640", "count": 640, "f32le_sha256": "870d3c80e4fe7ee368b5da1f7db487dfa84be44c4cf8c82813b78fb06a8e94a2", "consumer": "synthesis QMF prototype"}, {"name": "qwin_analysis_640", "count": 640, "rule": "qwin_synthesis_640[639-j]", "f32le_sha256": "512b2a9f8be3b98afb7fd1bbd7acb777fac06dd5b98eec58ee5e6672c9a58a49", "consumer": "analysis QMF prototype; derived reverse, not a second delivered array"}, {"name": "band0_real_mode1_21", "count": 21, "f32le_sha256": "b352accaefeb0ff0bac1981dcbe9112ff9bd9437e14f1662076b41cf9fd70c70", "consumer": "receiver mode=1 band0 FIR"}, {"name": "band0_imag_mode1_21", "count": 21, "f32le_sha256": "946593788adebf7dd8beafb057c77e167e5b066607306d2a4e31d99244b8b3be", "consumer": "receiver mode=1 band0 FIR"}], "excluded_fields": ["lfe_post_filter_4x5", "descriptor_threshold_127", "12 F04R/F04D scalars"]},
+        "qmf_mathematical_fft": {"file": "parameters/qmf-mathematical-fft-v1.json", "bytes": 6983, "sha256": "e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431", "typed_provider": "QmfMathematicalFftProvider", "route": "QMF_FFT_RADIX2_MATH_V1", "roots": "stages[].length and stages[].roots_u32[][0..1]; six stage lengths [2,4,8,16,32,64], root counts [1,2,4,8,16,32], 63 pairs total", "rotation": "rotation_u32[128] = 64 interleaved F32 words; distinct from root pairs"},
+        "window_q15": {"file": "parameters/window-q15.json", "bytes": 2704, "sha256": "a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130", "necessary_upstream_field": {"name": "receiver_blend32", "count": 32, "representation": "Q15 u16", "generation": "RNE_integer(32768*sin((j+1/2)*pi/(2*32))^2)", "to_F32": "R32(q15_value/32768), exact", "f32le_sha256": "3968b2666444f0395b008e8d8eb9d84eb2663b4d11199a486b8cbadcf5c142b2", "use": "F04R.5 transform delay/double-end blend before the QMF input boundary"}, "direct_qmf_core_consumption": false, "excluded_field": "component_kernel64[64] belongs to F04A.8"},
+        "validation": "Use the existing identity-validated manifest and typed validators before consumer calls; missing or mismatched selected providers fail closed. Do not parse provider JSON in QMF_CORE or regenerate the supplied FFT roots/rotation."
+      },
+      "vector_bindings": [
+        {"file": "test-vectors/unit/ADAPTER-CONTRACT.md", "bytes": 22205, "sha256": "9bce2e35ce47147c76c13e58ee976d44c5109938f0b19e1f3a81f1d8a61fa1ae", "scope": "U00.2 adapter protocol and per-entry outputs; runner sends input/attachments, never expected values"},
+        {"file": "test-vectors/unit/vectors.json", "bytes": 1503142, "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8", "total_cases": 202, "direct_qmf_core_cases": ["U-QMF-FFT-ANALYSIS", "U-QMF-FFT-SYNTHESIS", "U-QMF-REORDER", "U-QMF-SYNTHESIS", "U-QMF-SURROUND-RESET"], "prototype_install_cases": ["U-QMF-PROTOTYPE-OK", "U-QMF-PROTOTYPE-LENGTH", "U-QMF-PROTOTYPE-FINITE", "U-QMF-PROTOTYPE-IDENTITY"], "descriptor_cases_excluded": ["U-QMF-DESCRIPTOR-CONTINUOUS", "U-QMF-DESCRIPTOR-EQUAL", "U-QMF-DESCRIPTOR-LAST"], "qualification": "literal U32 arrays or specified input recipes; expected fields are assertions, never state seeds"},
+        {"file": "test-vectors/QMF-MATHEMATICAL-FFT-VERIFICATION.json", "bytes": 1158, "sha256": "02d93b89be10293f37ae283b80efcca5dfd434d4fd31b0494855e420db004f2f", "scope": "160 synthetic mathematical cases per FFT mode, including 128 basis cases and 20480 compared values per mode; summary only, not raw per-case arrays; production audio NOT_RUN"},
+        {"file": "test-vectors/QMF-RECEIVER-WHOLE-BINDING-VERIFICATION.json", "bytes": 74454, "sha256": "1d809ed24c805a182e9f2ba668562f1f3c8028e4dfc0ce7cd039e1255e4cda07", "scope": "five continuous cold input-only callback recipes; expected stage/state/window hashes are assertions, not seeds; 14400 analysis-history joins"},
+        {"file": "test-vectors/QMF-RECEIVER-WHOLE-BINDING-RESULT.json", "bytes": 1468, "sha256": "cb42de15ce4fa787aa03e511b9f2c6da39a72d3927f00eb020295af8a02862c7", "scope": "PASS_SCOPED_MODEL_FIRST, 5 callbacks; not isolated implementation or product acceptance"},
+        {"file": "test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json", "bytes": 260481, "sha256": "ffb1dea3b1e69383312da4059b9d8ddabb4366ed8fc22e7537f750ba041f2d63", "scope": "six frontend callbacks, two normal and four cached drains; input-only synthetic recipes; target/carrier QMF windows have whole-chain hashes, not QMF-step literal output"}
+      ],
+      "vector_gaps": [
+        "No current direct unit case isolates F04Q.2 fold plus F04Q.3 rotation from the upstream s09_input producer.",
+        "No current direct unit case isolates F04Q.5 postmodulation; provided direct cases cover fixed FFT, U32 reorder, QMF.6 synthesis history, QMF.4 surround delay/FIR/reset, and QWIN installation separately.",
+        "Whole-binding vectors provide recipe inputs and expected hashes, not raw direct arrays for every intermediate QMF step. Fresh F04-CURRENT-FRESH-REVIEW-R1 is static only (44/44) and ran no DSP.",
+        "The older QMF-LOCAL-REVIEW-STATUS reads a prior unit vector hash 05521f8095993ecf9498a807a13099d283758552b386cd73ed1ec69cdac51792; current manifest unit vector hash is a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8. Do not use that review as a current execution pass."
+      ],
+      "review_evidence": {
+        "current_fresh_review": {"source": "outputs/IMPLEMENTER_SUPPLEMENTS/F04-CURRENT-FRESH-REVIEW-R1", "manifest_sha256": "75e7313563c37f79a9afb895704b5eb77e6dda55d41117f820e62c445bbe4999", "review_sha256": "926c8a3c9cd21e68665ac287ad98403481b55adf3cdeef6db7660c0f4fb37a60", "status_sha256": "4aa0f1d9f0fbc718772193159069077618e0c0138c8002798c893d29f0296fb8", "kind": "STATIC_ONLY", "checks": "44/44", "dsp_execution": "NOT_RUN"},
+        "qmf_receiver_r2_attestation": {"source": "test-vectors/QMF-RECEIVER-WHOLE-BINDING-LOCAL-REVIEW-STATUS.json", "numeric_recomputation": "PASS for the scoped synthetic five-callback model", "f04rb_local_ready": "YES", "implementation_ready": "NO", "selected_route_certified_by_fresh_checker": false, "qualification": "model-first package attestation; not current isolated implementation DSP execution"},
+        "f04_consumer_r1_attestation": {"source": "test-vectors/F04-WHOLE-SPATIAL-CONSUMER-LOCAL-REVIEW-STATUS.json", "numeric_recomputation": "PASS for six synthetic frontend callbacks and four receiver/fitting calls", "implementation_ready": "NO", "qualification": "whole-spatial consumer attestation; not product execution"}
+      },
+      "readiness_basis": "Algorithm formulas, operation order, typed parameter identities, state shapes/cold values, caller boundary, callback/slot clocks, and fatal outcomes are explicit in the bound specs. The missing direct intermediate vectors are a verification coverage gap, not an unresolved behavior or constant; implementation may begin only for this fixed route and must add local spec-derived tests while treating all supplied expected values as assertions.",
+      "planned_implementation_files": ["crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs", "crates/jocforge-domain/src/spatial/mod.rs"],
+      "planned_test_files": ["crates/jocforge-domain/tests/qmf_analysis_synthesis.rs"],
+      "implementation_files": [],
+      "test_files": [],
+      "fixture_files": [],
+      "implementation_prohibitions": ["no generic QMF or configurable channel-count plan", "no receiver Type10 routing or s09_input production", "no F04R transform/target/descriptor pipeline", "no mode=0 fitting state or fitting algorithm", "no J05, descriptor, JOC, render, or parent CallbackTransaction", "no local state commit/abort/fatal authority", "no public or third-party provider redistribution", "no DSP execution or product/audio acceptance claim"],
+      "verification": {"package_spec_provider_vector_identities": "PASS", "qmf_core_dsp_execution": "NOT_RUN", "current_fresh_review": "STATIC_ONLY_44_OF_44", "model_first_receiver_review": "SUPPLIED_ATTESTATION_ONLY_IMPLEMENTATION_READY_NO", "targeted_boundary_mutations_rejected": 32, "full_repository_boundary_mutations_rejected": 760, "real_adm_whole_song": "NOT_RUN", "listening_spatial_acceptance": "NOT_RUN"},
+      "aggregate_readiness_unchanged": {"P1.3-E": "BLOCKED_ON_F04_DSP_RENDER_AND_PARENT", "spatial_audio_root": "MAPPING_COMPLETE_BLOCKED", "F04Q": "DEFERRED_DETAILED_MAPPING", "F04QF": "DEFERRED_DETAILED_MAPPING"}
     }
   },
   "approved_dependencies": {

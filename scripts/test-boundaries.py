@@ -97,7 +97,7 @@ def inject_extra_r32_div(r):
 def export_extra_r32_div(r):
  replace_once(r/'crates/jocforge-domain/src/numeric/mod.rs','r32_add, r32_mul, r32_sub};','r32_add, r32_mul, r32_sub, r32_div};')
 def main():
- a=argparse.ArgumentParser();a.add_argument('--scratch-root',type=pathlib.Path);a.add_argument('--case-prefix');x=a.parse_args();s=x.scratch_root or pathlib.Path(os.environ.get('JOCFORGE_BOUNDARY_TMP',ROOT/'target/boundary-mutations'));s.mkdir(parents=True,exist_ok=True)
+ a=argparse.ArgumentParser();a.add_argument('--scratch-root',type=pathlib.Path);a.add_argument('--case-prefix');x=a.parse_args();s=(x.scratch_root or pathlib.Path(os.environ.get('JOCFORGE_BOUNDARY_TMP',ROOT/'target/boundary-mutations'))).resolve();s.mkdir(parents=True,exist_ok=True)
  cases=[]
  cases+=[('missing-arch',lambda r:(r/'docs/architecture/PUBLIC-API.md').unlink()),('missing-map',lambda r:(r/'docs/implementation/CLOCK-MAP.md').unlink())]
  cases+=[('remove-active-clause',map_mut(lambda d:d['phase_one']['P1.1']['tasks'][0]['covered_clauses'].pop())),('active-test-empty',map_mut(lambda d:d['functional_entries'][d['functional_entries'].index(next(e for e in d['functional_entries']if e['functional_id']=='F02'))].update(test_modules=[]))),('writer-types-merged',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F02')['clock'].update(domains=['JocWriterIndex']))),('future-materialized',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F03').update(inventory_status='MATERIALIZED'))),('future-fake-provider',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F03').update(parameters={'kind':'FILE_PROVIDER','provider_files':['PARAMETER-INTERFACES.json']}))),('render-target-production',map_mut(lambda d:d['phase_one']['P1.1']['tasks'][1].update(production_dimensions=['RenderTarget']))),('f02-complete',map_mut(lambda d:d['phase_one']['P1.1']['completed_functional_ids'].append('F02'))),('xstj-complete',map_mut(lambda d:d['phase_one']['P1.1']['completed_functional_ids'].append('XSTJ'))),('outcome-delete',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F02').update(error_outcomes=[]))),('root-provider',map_mut(lambda d:d['programme_roots'][0].update(cold_provider_files=['x']))),('bad-impl-path',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F02').update(implementation_files=['missing.rs']))),('coverage-vector',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F02')['vectors'].update(kind='DIRECT_VECTOR',authoritative_vectors=['test-vectors/PRE-HANDOFF-EVIDENCE-COVERAGE.json']))),('p1-2-go',map_mut(lambda d:d['phase_one'].update({'P1.2':'GO'})))]
@@ -458,6 +458,42 @@ def main():
  ('qmf-fft-unregistered-ready-slice',map_mut_render(lambda d:d['phase_one'].update({'QMF_FFT_PRIMITIVE':{'task_id':'QMF-FFT-PRIMITIVE-MAPPING','status':'READY_FOR_IMPLEMENTATION','mapping_status':'MAPPING_COMPLETE','implementation_status':'NOT_STARTED'}})))
  ]
  cases += [
+ ('qmf-core-ready-without-approved-mapping',map_mut_render(lambda d:(d['phase_one'].update({'QMF_CORE':{'task_id':'QMF-ANALYSIS-SYNTHESIS-CORE-MAPPING','status':'READY_FOR_IMPLEMENTATION'}}),d['status'].update({'QMF_CORE':'READY_FOR_IMPLEMENTATION'}))))
+ ]
+ cases += [
+ ('qmf-core-status-overclaim',map_mut_render(lambda d:(d['phase_one']['QMF_CORE'].update(status='LOCALLY_VERIFIED',implementation_status='LOCALLY_VERIFIED'),d['status'].update({'QMF_CORE':'LOCALLY_VERIFIED'})))),
+ ('qmf-core-scope-wide',map_mut_render(lambda d:d['phase_one']['QMF_CORE'].update(scope='Implement the generic receiver, fitting and complete J05 spatial route'))),
+ ('qmf-core-fold-order-drift',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['algorithm_contract'].update(analysis_fold='reduce all even prototype taps in reverse order'))),
+ ('qmf-core-fft-primitive-binding-drift',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['algorithm_contract']['fft_primitive_binding']['fixed_contract'].update(exponent='positive'))),
+ ('qmf-core-fft-primitive-indexing-drift',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['algorithm_contract']['fft_primitive_binding']['fixed_contract'].update(butterfly_indexing='swap left and right butterfly inputs'))),
+ ('qmf-core-fft-primitive-destinations-drift',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['algorithm_contract']['fft_primitive_binding']['fixed_contract'].update(butterfly_destinations='write out_a to work[right] and out_b to work[left]'))),
+ ('qmf-core-rotation-order-drift',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['algorithm_contract'].update(analysis_rotation='rotated.real=(r*a)+(i*b); rotated.imag=(r*b)-(i*a)'))),
+ ('qmf-core-analysis-scale-drift',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['algorithm_contract'].update(analysis_fft_and_reorder='scale FFT output by 1/64 after execution'))),
+ ('qmf-core-reorder-bitwise-drift',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['algorithm_contract'].update(analysis_fft_and_reorder='perform numeric complex conjugation after the FFT'))),
+ ('qmf-core-synthesis-scale-drift',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['algorithm_contract'].update(synthesis_fft_and_postmodulation='scale FFT input by 1/64 before execution'))),
+ ('qmf-core-synthesis-preformat-drift',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['algorithm_contract'].update(synthesis_preformat='identity order without XOR'))),
+ ('qmf-core-synthesis-history-live-alias',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['algorithm_contract'].update(synthesis_polyphase='read updated history while processing each j'))),
+ ('qmf-core-receiver-lanes-drift',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['consumer_scope'].update(receiver_analysis_lanes=[0,1,2,3,4,5]))),
+ ('qmf-core-surround-lanes-drift',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['consumer_scope'].update(receiver_mode1_synthesis_lanes=[0,1]))),
+ ('qmf-core-mode0-enabled',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['consumer_scope'].update(fitting_mode0='implement fitting mode=0 delay/FIR/synthesis'))),
+ ('qmf-core-state-owner-alias',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['state_ownership'].update(single_owner='qmf_core independent root'))),
+ ('qmf-core-state-shape-drift',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['state_ownership']['analysis_history'].update(shape='T5<T8<B256>>'))),
+ ('qmf-core-cold-negative-zero',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['state_ownership']['receiver_mode1'].update(cold='negative zero'))),
+ ('qmf-core-window-promoted-to-core',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['provider_bindings']['window_q15'].update(direct_qmf_core_consumption=True))),
+ ('qmf-core-provider-sha-drift',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['provider_bindings']['qmf_mathematical_fft'].update(sha256='00'*32))),
+ ('qmf-core-direct-vector-removed',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['vector_bindings'][1]['direct_qmf_core_cases'].remove('U-QMF-REORDER'))),
+ ('qmf-core-vector-gap-hidden',map_mut_render(lambda d:d['phase_one']['QMF_CORE'].update(vector_gaps=[]))),
+ ('qmf-core-fresh-review-promoted',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['review_evidence']['current_fresh_review'].update(dsp_execution='PASS'))),
+ ('qmf-core-model-review-promoted',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['review_evidence']['qmf_receiver_r2_attestation'].update(implementation_ready='YES'))),
+ ('qmf-core-targeted-mutation-count-drift',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['verification'].update(targeted_boundary_mutations_rejected=28))),
+ ('qmf-core-full-mutation-count-drift',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['verification'].update(full_repository_boundary_mutations_rejected=0))),
+ ('qmf-core-parent-unblocked',map_mut_render(lambda d:(d['phase_one']['QMF_CORE']['aggregate_readiness_unchanged'].update({'P1.3-E':'READY_FOR_IMPLEMENTATION'}),d['status'].update({'P1.3-E':'READY_FOR_IMPLEMENTATION'})))),
+ ('qmf-core-functional-id-promoted',map_mut_render(lambda d:next(e for e in d['functional_entries'] if e['functional_id']=='F04Q').update(implementation_status='READY_FOR_IMPLEMENTATION'))),
+ ('qmf-core-fatal-outcome-softened',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['error_contract'].update(nonfinite_intermediate_or_output='clamp and continue'))),
+ ('qmf-core-premature-module',lambda r:(r/'crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs').write_text('pub fn execute_qmf_analysis_synthesis() {}\n',encoding='utf-8')),
+ ('qmf-core-module-export-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/mod.rs','\npub mod qmf_analysis_synthesis;\n'))
+ ]
+ cases += [
  ('qmf-fft-status-overclaim',map_mut_render(lambda d:(d['phase_one']['QMF_FFT_PRIMITIVE'].update(status='LOCALLY_VERIFIED'),d['status'].update({'QMF_FFT_PRIMITIVE':'LOCALLY_VERIFIED'})))),
  ('qmf-fft-scope-wide',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE'].update(scope='Implement the full receiver, fitting and DSP chain'))),
  ('qmf-fft-point-count-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['primitive_contract'].update(complex_point_count=128))),
@@ -704,6 +740,7 @@ def main():
   m(repo)
   z=subprocess.run([sys.executable,'-O',str(repo/'scripts/check-boundaries.py')],cwd=repo,capture_output=True)
   if z.returncode==0:raise RuntimeError('mutation passed: '+n)
+  if n.startswith('qmf-core-'):print((z.stdout+z.stderr).decode('utf-8',errors='replace').strip())
   shutil.rmtree(c);print('PASS '+n);passed+=1
  print(f'boundary mutation tests passed ({passed} rejected mutations)');return 0
 if __name__=='__main__':raise SystemExit(main())

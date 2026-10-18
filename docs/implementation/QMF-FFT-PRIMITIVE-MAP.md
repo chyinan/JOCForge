@@ -280,7 +280,7 @@ The primitive is a 64-point complex transform over 128 interleaved F32 scalar sl
   "verification": {
     "fft_execution": "LOCALLY_VERIFIED_FIXED64_ONLY",
     "fresh_review_scope": "STATIC_ONLY",
-    "full_repository_boundary_mutations_rejected": 728,
+    "full_repository_boundary_mutations_rejected": 760,
     "local_test_vector": "spec-derived dyadic input recipe with exact R32 operation order and the identity-validated provider roots; assertion only, not an audio or product vector",
     "product_audio_acceptance": "NOT_RUN",
     "qmf_fft64_test_count": 10,
