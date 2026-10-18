@@ -5570,9 +5570,9 @@
   "blockers": [
     {
       "id": "refresh-current-review-bindings",
-      "reason": "The supplied QMF R2 and F04 consumer R1 review statuses pin 4 files to hashes that differ from the exact files in the current manifest. Their cold/warm/cached-drain recomputation cannot be attributed to the current freeze without a refreshed review binding.",
-      "required_action": "Wash Agent must issue an updated package-only review/status bound to current manifest c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a, or provide the current attested hashes and rerun results. Do not clear this blocker by editing hash strings alone.",
-      "status": "OPEN"
+      "reason": "R1 verifies the current package and F04RB identities, and separately reviews the new carrier/owner/J05 static contract. The prior stale identities remain recorded above.",
+      "resolution": "F04-CURRENT-FRESH-REVIEW-R1, 44/44 static checks, manifest c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a; cross-stage execution remains NOT_RUN.",
+      "status": "RESOLVED_BY_CURRENT_PACKAGE_FRESH_STATIC_REVIEW"
     }
   ],
   "clock_contract": {
@@ -5584,6 +5584,26 @@
     "receiver_callback": "For g>=2, r=g-2 is the zero-based ReceiverCallbackCount before this receiver call; receiver generation/count after success is r+1=g-1."
   },
   "executor_and_receipt_producer": "F04C",
+  "fresh_review_resolution": {
+    "cross_stage_execution": "NOT_RUN",
+    "current_f04rb_sha256": "104d604cf876cc522a85b21f352bd0a09fc20c3171ddcd71da981c8076ea3a75",
+    "current_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "manifest_sha256": "75e7313563c37f79a9afb895704b5eb77e6dda55d41117f820e62c445bbe4999",
+    "old_review_record_policy": "Retain prior mismatches above as STALE identity evidence; do not count them as current PASS.",
+    "review_sha256": "926c8a3c9cd21e68665ac287ad98403481b55adf3cdeef6db7660c0f4fb37a60",
+    "scope": [
+      "current numerical providers and vectors are identity-checked and unchanged",
+      "receiver state schema and receiver/source/dispatch clocks are unchanged",
+      "carrier order, receiver lanes, unique F04C executor, and selected-J05 receipt rules received fresh static review"
+    ],
+    "source": "outputs/IMPLEMENTER_SUPPLEMENTS/F04-CURRENT-FRESH-REVIEW-R1",
+    "static_checks": {
+      "passed": 44,
+      "total": 44
+    },
+    "status_sha256": "4aa0f1d9f0fbc718772193159069077618e0c0138c8002798c893d29f0296fb8",
+    "verdict": "SCOPED_NUMERIC_AND_STATE_IMPLEMENTATION_ALLOWED; CROSS_STAGE_INTEGRATION_NOT_READY"
+  },
   "implementation_exclusions": [
     "descriptor and threshold selection",
     "mode=0 fitting and QmfWindowState fitting histories",
@@ -5592,7 +5612,7 @@
     "parent CallbackTransaction and spatial_audio commit",
     "real ADM/listening/product acceptance"
   ],
-  "implementation_readiness": "BLOCKED_ON_REFRESHED_REVIEW_BINDINGS",
+  "implementation_readiness": "READY_FOR_IMPLEMENTATION",
   "input_contract": {
     "parent_identity": "FrontendCallbackIndex g and explicit CallbackPhase from the enclosing callback; never infer phase or generation from hashes or samples.",
     "qmf_boundary": "F04R stages produce s09_input[6][1536]; QMF analyzes lanes [0,1,2,4,5]. Lane 3 is LFE and bypasses QMF. QMF_CORE starts at one 64-sample lane slot and does not produce s09_input.",
@@ -5690,7 +5710,7 @@
       "sha256": "a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130"
     }
   ],
-  "readiness_basis": "The routing, state shapes, clocks, errors, and selected-J05 receipt schema are explicit. Implementation readiness remains blocked only because the supplied model-first review records are not bound to the current package files; this map does not promote QMF whole-receiver execution or product readiness.",
+  "readiness_basis": "The routing, state shapes, clocks, errors, and selected-J05 receipt schema are explicit and received fresh static review for the current package. This authorizes only the receiver mode=1 routing/state implementation; it does not claim F04RB/F04C/J05 execution, same-runner F05R56 targets, parent transaction, real ADM/listening, or product acceptance.",
   "review_binding_mismatches": [
     {
       "current_package_sha256": "104d604cf876cc522a85b21f352bd0a09fc20c3171ddcd71da981c8076ea3a75",
@@ -5838,6 +5858,7 @@
     "reset_authority": "Programme-origin full spatial_audio reset reconstructs all four QMF state families from the declared positive-zero cold state.",
     "root_field": "F04CompositionState.receiver_state: ModelState"
   },
+  "status": "READY_FOR_IMPLEMENTATION",
   "task_id": "F04RB-RECEIVER-MODE1-ROUTING-STATE-MAP",
   "vector_coverage": {
     "direct_qmf_vectors": {

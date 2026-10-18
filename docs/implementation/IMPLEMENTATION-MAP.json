@@ -23,7 +23,7 @@
     "P1.4-D2": "LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS",
     "QMF_FFT_PRIMITIVE": "LOCALLY_VERIFIED_FIXED64_ONLY",
     "QMF_CORE": "QMF_CORE_IMPL_WITH_DIRECT_VECTORS__WHOLE_RECEIVER_NOT_RUN",
-    "RECEIVER_MODE1_ROUTING_AUDIT": "BLOCKED_ON_REFRESHED_REVIEW_BINDINGS"
+    "RECEIVER_MODE1_ROUTING_AUDIT": "READY_FOR_IMPLEMENTATION"
   },
   "functional_entries": [
     {
@@ -5460,7 +5460,8 @@
       "task_id": "F04RB-RECEIVER-MODE1-ROUTING-STATE-MAP",
       "mapping_document": "docs/implementation/RECEIVER-MODE1-MAP.md",
       "mapping_status": "MAPPING_COMPLETE",
-      "implementation_readiness": "BLOCKED_ON_REFRESHED_REVIEW_BINDINGS",
+      "status": "READY_FOR_IMPLEMENTATION",
+      "implementation_readiness": "READY_FOR_IMPLEMENTATION",
       "programme_root": "spatial_audio",
       "executor_and_receipt_producer": "F04C",
       "persistent_owner": "spatial_audio",
@@ -5539,11 +5540,24 @@
         {"review_status": "test-vectors/F04-WHOLE-SPATIAL-CONSUMER-LOCAL-REVIEW-STATUS.json", "file": "test-vectors/F04-WHOLE-SPATIAL-GENERATION-JOIN-AUDIT.json", "reviewed_sha256": "5c68e9757a036236495791ab3af67aa1bcab044361419273dbc70a18781f978e", "current_package_sha256": "bc294fd3d2a4cbe25ca7bb9206fd0ef91663213a81ab93c10fd7df84198d595a"},
         {"review_status": "test-vectors/F04-WHOLE-SPATIAL-CONSUMER-LOCAL-REVIEW-STATUS.json", "file": "test-vectors/F04-WHOLE-SPATIAL-GAP-INVENTORY.json", "reviewed_sha256": "587489a691ea10e16a50de641c3650c883c397fa927c1c262824561d4e96d80c", "current_package_sha256": "b3389286e8308e0be04cce3e17a1e8fb1accbbeb2d9530d27d881b71110c3a7a"}
       ],
+      "fresh_review_resolution": {
+        "source": "outputs/IMPLEMENTER_SUPPLEMENTS/F04-CURRENT-FRESH-REVIEW-R1",
+        "manifest_sha256": "75e7313563c37f79a9afb895704b5eb77e6dda55d41117f820e62c445bbe4999",
+        "status_sha256": "4aa0f1d9f0fbc718772193159069077618e0c0138c8002798c893d29f0296fb8",
+        "review_sha256": "926c8a3c9cd21e68665ac287ad98403481b55adf3cdeef6db7660c0f4fb37a60",
+        "current_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+        "current_f04rb_sha256": "104d604cf876cc522a85b21f352bd0a09fc20c3171ddcd71da981c8076ea3a75",
+        "static_checks": {"passed": 44, "total": 44},
+        "verdict": "SCOPED_NUMERIC_AND_STATE_IMPLEMENTATION_ALLOWED; CROSS_STAGE_INTEGRATION_NOT_READY",
+        "scope": ["current numerical providers and vectors are identity-checked and unchanged", "receiver state schema and receiver/source/dispatch clocks are unchanged", "carrier order, receiver lanes, unique F04C executor, and selected-J05 receipt rules received fresh static review"],
+        "cross_stage_execution": "NOT_RUN",
+        "old_review_record_policy": "Retain prior mismatches above as STALE identity evidence; do not count them as current PASS."
+      },
       "blockers": [
-        {"id": "refresh-current-review-bindings", "status": "OPEN", "reason": "The supplied QMF R2 and F04 consumer R1 review statuses pin 4 files to hashes that differ from the exact files in the current manifest. Their cold/warm/cached-drain recomputation cannot be attributed to the current freeze without a refreshed review binding.", "required_action": "Wash Agent must issue an updated package-only review/status bound to current manifest c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a, or provide the current attested hashes and rerun results. Do not clear this blocker by editing hash strings alone."}
+        {"id": "refresh-current-review-bindings", "status": "RESOLVED_BY_CURRENT_PACKAGE_FRESH_STATIC_REVIEW", "reason": "R1 verifies the current package and F04RB identities, and separately reviews the new carrier/owner/J05 static contract. The prior stale identities remain recorded above.", "resolution": "F04-CURRENT-FRESH-REVIEW-R1, 44/44 static checks, manifest c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a; cross-stage execution remains NOT_RUN."}
       ],
       "implementation_exclusions": ["descriptor and threshold selection", "mode=0 fitting and QmfWindowState fitting histories", "post-QMF receiver temporal/descriptor/final-six output tail", "J05/F05JL implementation", "parent CallbackTransaction and spatial_audio commit", "real ADM/listening/product acceptance"],
-      "readiness_basis": "The routing, state shapes, clocks, errors, and selected-J05 receipt schema are explicit. Implementation readiness remains blocked only because the supplied model-first review records are not bound to the current package files; this map does not promote QMF whole-receiver execution or product readiness.",
+      "readiness_basis": "The routing, state shapes, clocks, errors, and selected-J05 receipt schema are explicit and received fresh static review for the current package. This authorizes only the receiver mode=1 routing/state implementation; it does not claim F04RB/F04C/J05 execution, same-runner F05R56 targets, parent transaction, real ADM/listening, or product acceptance.",
       "verification": {
         "targeted_boundary_mutations_rejected": 4,
         "full_repository_boundary_mutations_rejected": 776,

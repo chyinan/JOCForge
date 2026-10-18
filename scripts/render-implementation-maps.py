@@ -80,7 +80,7 @@ def render(d):
    +f"Mapping status: `{x['mapping_status']}`. Implementation readiness: `{x['implementation_readiness']}`.\n\n"
    +'All five carriers `[L,R,C,Ls,Rs]` run 24-slot analysis on receiver lanes `[0,1,2,4,5]`. Only surround lanes `[4,5]` run mode=1 delay/FIR/synthesis. L/R/C update analysis history only in this audio-QMF path; lane 3 LFE bypasses QMF.\n\n'
    +'Frontend callback `g` remains distinct from receiver count `r`: `g<2` is Type10 priming and does not advance receiver/QMF; for `g>=2`, `r=g-2`, receiver after-generation is `r+1=g-1`, and JOC dispatch is `d=g-1`. The callback count is proposed only with the complete `spatial_audio` root.\n\n'
-   +'The route and owner fields are mapped. Implementation readiness remains blocked because the supplied model-first review statuses pin four files to hashes that differ from the current package manifest. The blocker lists the exact identities.\n\n'
+   +'Fresh review R1 is bound to the current package and passes 44/44 static checks. It resolves the old review-binding blocker for this scoped routing/state implementation. The older mismatches remain recorded as stale identities. Cross-stage J05 execution and whole-product acceptance remain NOT_RUN.\n\n'
    +'## Machine-readable contract\n\n'
    +chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
   )
