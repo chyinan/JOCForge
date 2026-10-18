@@ -58,6 +58,24 @@ const CACHED_DRAINS_COLD: u32 = 4;
 const F01E_COLD_BYTES: usize = 4_402;
 const F03_TARGET_PROJECTION_BYTES: u64 = 630;
 
+/// Producer capability reserved for the future F03W direct-LFE ingress path.
+#[derive(Debug)]
+pub(super) struct SpatialControlLfeIngressAuthority {
+    _private: (),
+}
+
+impl SpatialControlLfeIngressAuthority {
+    #[allow(dead_code)]
+    fn for_f03w_lfe_ingress() -> Self {
+        Self { _private: () }
+    }
+
+    #[cfg(test)]
+    pub(super) fn fixture() -> Self {
+        Self { _private: () }
+    }
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct SpatialControlDigest([u8; 32]);
 

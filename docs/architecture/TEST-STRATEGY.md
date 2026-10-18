@@ -6,6 +6,8 @@
 
 权威规格已经选择 48 kHz、1,536 samples/AU 和 4,096 bytes/AU。后续测试按批准包新增：有界输入截断/溢出、PCM 字节与时钟会计、每 owner cold/reset/fatal、receipt 不变性、规范 wire 向量和独立外部解析/解码/最终输出比较。参数、阈值和表必须逐项绑定 `PARAMETER-MAP.md`，缺项则拒绝放行。
 
+Direct-LFE 子阶段使用洗白后的 input-only `g0..g5` trace 和三个失败输入：从输入 recipe fresh 构造 1,536 个 F32，再执行 ring transition 后比较状态/输出；g2..g5 必须 exact-reuse g1 padded row。六回调 phase 标签是隔离 ring trace，不能用来重设生产 `g=0..4246` normal、`g=4247..4250` cached-drain 时钟。它只验证 ring 与 Type10 row0 seam，不代表 raw38 producer、whole callback、receiver/QMF 或产品验收。
+
 公共语法原语还必须覆盖 bit cursor 0/1/31/32/32768、容量溢出、CRC residual=0、单 bit 破坏、frmsiz 边界、header 保留码、非 48 kHz/非 5.1/dependent/非 4,096-byte 拒绝、六个 Huffman 表全部 symbol、两种 EMDF mode、四 payload 顺序、截断和失败零提交。
 
 validation 的 structural parser、channel-map、topology、frame report 和 W04 与 production 分离。parser 成功不代表 codec conformance、音频正确或产品验收通过。

@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge-direct-lfe-g1-vector-erratum.v1",
+  "case_id": "g1",
+  "generation": 1,
+  "sample_count": 1536,
+  "valid_samples": 731,
+  "default_f32_u32": 0,
+  "overrides": [
+    {
+      "sample_index": 270,
+      "f32_u32": 1040187392
+    }
+  ],
+  "padding": {
+    "start": 731,
+    "end_exclusive": 1536,
+    "f32_u32": 0
+  },
+  "expected_bytes": 6144,
+  "expected_sha256": "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7",
+  "cached_drain_generations": [
+    2,
+    3,
+    4,
+    5
+  ],
+  "cached_drain_rule": "reuse exact immutable g1 padded row; do not rerun impulse formula"
+}

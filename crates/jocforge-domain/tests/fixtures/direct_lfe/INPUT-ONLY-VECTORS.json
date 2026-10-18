@@ -1,0 +1,433 @@
+{
+  "schema": "jocforge-direct-lfe-input-vectors.v1",
+  "input_only": true,
+  "cold": {
+    "write_index": 0,
+    "read_index": 1,
+    "row_f32le_sha256": [
+      null,
+      null,
+      null
+    ],
+    "input_frame_indexes": [
+      null,
+      null,
+      null
+    ],
+    "model_samples_consumed": 0
+  },
+  "cases": [
+    {
+      "id": "g0",
+      "input": {
+        "generation": 0,
+        "phase": "NORMAL",
+        "origin": "NORMAL_FULL_G0",
+        "host_valid_samples": 1536,
+        "recipe": "ZERO",
+        "current_lfe_f32le_sha256": "fd9243e1ba57263ed469c3bdbd7ade6ec5254e7ed924a9f5737fa44749933cc0",
+        "current_lfe_bytes": 6144,
+        "regular_source_mute_setting": 1,
+        "mute_semantics": "regular-source mute is out of the direct-LFE path; F04C accepts only explicit current_lfe bytes"
+      },
+      "expected_before": {
+        "write_index": 0,
+        "read_index": 1,
+        "row_f32le_sha256": [
+          null,
+          null,
+          null
+        ],
+        "input_frame_indexes": [
+          null,
+          null,
+          null
+        ],
+        "model_samples_consumed": 0
+      },
+      "expected_after": {
+        "write_index": 1,
+        "read_index": 2,
+        "row_f32le_sha256": [
+          null,
+          "fd9243e1ba57263ed469c3bdbd7ade6ec5254e7ed924a9f5737fa44749933cc0",
+          null
+        ],
+        "input_frame_indexes": [
+          null,
+          0,
+          null
+        ],
+        "model_samples_consumed": 1536
+      },
+      "expected_output": {
+        "output_available": false,
+        "output_origin_generation": null,
+        "output_f32le_sha256": null
+      },
+      "expected_type10": {
+        "available": false,
+        "row0_origin_generation": null,
+        "rows_1_15_origin_generation": null
+      }
+    },
+    {
+      "id": "g1",
+      "input": {
+        "generation": 1,
+        "phase": "NORMAL",
+        "origin": "NORMAL_SHORT_PADDED_G1",
+        "host_valid_samples": 731,
+        "recipe": {
+          "kind": "SPARSE_F32_U32_WORDS",
+          "default_u32": 0,
+          "generation_formula": "index=(generation*257+13)%1536; value=R32((generation+1)/16)",
+          "overrides": [
+            {
+              "sample_index": 270,
+              "f32_u32": 1040187392,
+              "f32_hex": "0x3E000000"
+            }
+          ],
+          "valid_range": [
+            0,
+            731
+          ],
+          "padding_range": [
+            731,
+            1536
+          ],
+          "padding_u32": 0,
+          "negative_zero_indexes": []
+        },
+        "current_lfe_f32le_sha256": "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7",
+        "current_lfe_bytes": 6144,
+        "regular_source_mute_setting": 0,
+        "mute_semantics": "regular-source mute is out of the direct-LFE path; F04C accepts only explicit current_lfe bytes"
+      },
+      "expected_before": {
+        "write_index": 1,
+        "read_index": 2,
+        "row_f32le_sha256": [
+          null,
+          "fd9243e1ba57263ed469c3bdbd7ade6ec5254e7ed924a9f5737fa44749933cc0",
+          null
+        ],
+        "input_frame_indexes": [
+          null,
+          0,
+          null
+        ],
+        "model_samples_consumed": 1536
+      },
+      "expected_after": {
+        "write_index": 2,
+        "read_index": 0,
+        "row_f32le_sha256": [
+          null,
+          "fd9243e1ba57263ed469c3bdbd7ade6ec5254e7ed924a9f5737fa44749933cc0",
+          "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7"
+        ],
+        "input_frame_indexes": [
+          null,
+          0,
+          1
+        ],
+        "model_samples_consumed": 3072
+      },
+      "expected_output": {
+        "output_available": false,
+        "output_origin_generation": null,
+        "output_f32le_sha256": null
+      },
+      "expected_type10": {
+        "available": false,
+        "row0_origin_generation": null,
+        "rows_1_15_origin_generation": null
+      }
+    },
+    {
+      "id": "g2",
+      "input": {
+        "generation": 2,
+        "phase": "CACHED_DRAIN",
+        "origin": "CACHED_G1",
+        "host_valid_samples": 0,
+        "recipe": "CACHED_EXACT_G1",
+        "current_lfe_f32le_sha256": "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7",
+        "current_lfe_bytes": 6144,
+        "regular_source_mute_setting": 0,
+        "mute_semantics": "regular-source mute is out of the direct-LFE path; F04C accepts only explicit current_lfe bytes"
+      },
+      "expected_before": {
+        "write_index": 2,
+        "read_index": 0,
+        "row_f32le_sha256": [
+          null,
+          "fd9243e1ba57263ed469c3bdbd7ade6ec5254e7ed924a9f5737fa44749933cc0",
+          "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7"
+        ],
+        "input_frame_indexes": [
+          null,
+          0,
+          1
+        ],
+        "model_samples_consumed": 3072
+      },
+      "expected_after": {
+        "write_index": 0,
+        "read_index": 1,
+        "row_f32le_sha256": [
+          "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7",
+          "fd9243e1ba57263ed469c3bdbd7ade6ec5254e7ed924a9f5737fa44749933cc0",
+          "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7"
+        ],
+        "input_frame_indexes": [
+          2,
+          0,
+          1
+        ],
+        "model_samples_consumed": 4608
+      },
+      "expected_output": {
+        "output_available": true,
+        "output_origin_generation": 0,
+        "output_f32le_sha256": "fd9243e1ba57263ed469c3bdbd7ade6ec5254e7ed924a9f5737fa44749933cc0"
+      },
+      "expected_type10": {
+        "available": true,
+        "row0_origin_generation": 0,
+        "rows_1_15_origin_generation": 2
+      }
+    },
+    {
+      "id": "g3",
+      "input": {
+        "generation": 3,
+        "phase": "CACHED_DRAIN",
+        "origin": "CACHED_G1",
+        "host_valid_samples": 0,
+        "recipe": "CACHED_EXACT_G1",
+        "current_lfe_f32le_sha256": "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7",
+        "current_lfe_bytes": 6144,
+        "regular_source_mute_setting": 0,
+        "mute_semantics": "regular-source mute is out of the direct-LFE path; F04C accepts only explicit current_lfe bytes"
+      },
+      "expected_before": {
+        "write_index": 0,
+        "read_index": 1,
+        "row_f32le_sha256": [
+          "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7",
+          "fd9243e1ba57263ed469c3bdbd7ade6ec5254e7ed924a9f5737fa44749933cc0",
+          "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7"
+        ],
+        "input_frame_indexes": [
+          2,
+          0,
+          1
+        ],
+        "model_samples_consumed": 4608
+      },
+      "expected_after": {
+        "write_index": 1,
+        "read_index": 2,
+        "row_f32le_sha256": [
+          "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7",
+          "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7",
+          "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7"
+        ],
+        "input_frame_indexes": [
+          2,
+          3,
+          1
+        ],
+        "model_samples_consumed": 6144
+      },
+      "expected_output": {
+        "output_available": true,
+        "output_origin_generation": 1,
+        "output_f32le_sha256": "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7"
+      },
+      "expected_type10": {
+        "available": true,
+        "row0_origin_generation": 1,
+        "rows_1_15_origin_generation": 3
+      }
+    },
+    {
+      "id": "g4",
+      "input": {
+        "generation": 4,
+        "phase": "CACHED_DRAIN",
+        "origin": "CACHED_G1",
+        "host_valid_samples": 0,
+        "recipe": "CACHED_EXACT_G1",
+        "current_lfe_f32le_sha256": "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7",
+        "current_lfe_bytes": 6144,
+        "regular_source_mute_setting": 0,
+        "mute_semantics": "regular-source mute is out of the direct-LFE path; F04C accepts only explicit current_lfe bytes"
+      },
+      "expected_before": {
+        "write_index": 1,
+        "read_index": 2,
+        "row_f32le_sha256": [
+          "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7",
+          "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7",
+          "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7"
+        ],
+        "input_frame_indexes": [
+          2,
+          3,
+          1
+        ],
+        "model_samples_consumed": 6144
+      },
+      "expected_after": {
+        "write_index": 2,
+        "read_index": 0,
+        "row_f32le_sha256": [
+          "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7",
+          "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7",
+          "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7"
+        ],
+        "input_frame_indexes": [
+          2,
+          3,
+          4
+        ],
+        "model_samples_consumed": 7680
+      },
+      "expected_output": {
+        "output_available": true,
+        "output_origin_generation": 2,
+        "output_f32le_sha256": "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7"
+      },
+      "expected_type10": {
+        "available": true,
+        "row0_origin_generation": 2,
+        "rows_1_15_origin_generation": 4
+      }
+    },
+    {
+      "id": "g5",
+      "input": {
+        "generation": 5,
+        "phase": "CACHED_DRAIN",
+        "origin": "CACHED_G1",
+        "host_valid_samples": 0,
+        "recipe": "CACHED_EXACT_G1",
+        "current_lfe_f32le_sha256": "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7",
+        "current_lfe_bytes": 6144,
+        "regular_source_mute_setting": 0,
+        "mute_semantics": "regular-source mute is out of the direct-LFE path; F04C accepts only explicit current_lfe bytes"
+      },
+      "expected_before": {
+        "write_index": 2,
+        "read_index": 0,
+        "row_f32le_sha256": [
+          "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7",
+          "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7",
+          "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7"
+        ],
+        "input_frame_indexes": [
+          2,
+          3,
+          4
+        ],
+        "model_samples_consumed": 7680
+      },
+      "expected_after": {
+        "write_index": 0,
+        "read_index": 1,
+        "row_f32le_sha256": [
+          "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7",
+          "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7",
+          "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7"
+        ],
+        "input_frame_indexes": [
+          5,
+          3,
+          4
+        ],
+        "model_samples_consumed": 9216
+      },
+      "expected_output": {
+        "output_available": true,
+        "output_origin_generation": 3,
+        "output_f32le_sha256": "755447224cb411e85201061e13b79d0b020b08642933c5acb161abc0026624e7"
+      },
+      "expected_type10": {
+        "available": true,
+        "row0_origin_generation": 3,
+        "rows_1_15_origin_generation": 5
+      }
+    }
+  ],
+  "failure_cases": [
+    {
+      "id": "stale_generation",
+      "actual_error": "STALE_OR_OUT_OF_ORDER_GENERATION",
+      "expected_error": "STALE_OR_OUT_OF_ORDER_GENERATION",
+      "state_unchanged": true
+    },
+    {
+      "id": "short_shape",
+      "actual_error": "F04_INPUT_ERROR",
+      "expected_error": "F04_INPUT_ERROR",
+      "state_unchanged": true
+    },
+    {
+      "id": "nonfinite",
+      "actual_error": "F04_INPUT_ERROR",
+      "expected_error": "F04_INPUT_ERROR",
+      "state_unchanged": true
+    }
+  ],
+  "approved_vector_cross_check": [
+    {
+      "generation": 0,
+      "input_hash_match": true,
+      "output_available_match": true,
+      "output_origin_match": true
+    },
+    {
+      "generation": 1,
+      "input_hash_match": true,
+      "output_available_match": true,
+      "output_origin_match": true
+    },
+    {
+      "generation": 2,
+      "input_hash_match": true,
+      "output_available_match": true,
+      "output_origin_match": true
+    },
+    {
+      "generation": 3,
+      "input_hash_match": true,
+      "output_available_match": true,
+      "output_origin_match": true
+    },
+    {
+      "generation": 4,
+      "input_hash_match": true,
+      "output_available_match": true,
+      "output_origin_match": true
+    },
+    {
+      "generation": 5,
+      "input_hash_match": true,
+      "output_available_match": true,
+      "output_origin_match": true
+    }
+  ],
+  "summary": {
+    "success_callbacks": 6,
+    "normal_callbacks": 2,
+    "cached_drains": 4,
+    "type10_outputs": 4,
+    "terminal_model_samples_consumed": 9216,
+    "all_failures_zero_advance": true,
+    "all_approved_checks_match": true
+  }
+}

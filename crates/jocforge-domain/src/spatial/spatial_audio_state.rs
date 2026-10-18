@@ -8,8 +8,10 @@ use crate::{
 };
 use sha2::{Digest, Sha256};
 use std::fmt::Write as FmtWrite;
+use std::sync::Arc;
 
 pub(crate) mod component_stage;
+pub(crate) mod direct_lfe;
 
 const EXPECTED_COLD_BYTES: usize = 813_733;
 const NEGATIVE_ZERO_BITS: u32 = 0x8000_0000;
@@ -397,8 +399,8 @@ struct ComponentFilterParameterState {
 struct LfeDelayRingState {
     write_index: i64,
     read_index: i64,
-    rows: [NoneSentinel; 3],
-    input_frame_indexes: [NoneSentinel; 3],
+    rows: [Option<Arc<[u8]>>; 3],
+    input_frame_indexes: [Option<FrontendCallbackIndex>; 3],
     model_samples_consumed: i64,
 }
 
@@ -533,6 +535,12 @@ impl F04CompositionState {
             || parameters.blocks_processed != 0
             || self.lfe_state.write_index != 0
             || self.lfe_state.read_index != 1
+            || self.lfe_state.rows.iter().any(Option::is_some)
+            || self
+                .lfe_state
+                .input_frame_indexes
+                .iter()
+                .any(Option::is_some)
             || self.lfe_state.model_samples_consumed != 0
             || self.receiver_state.target_coefficients != NoneSentinel
         {
@@ -629,8 +637,8 @@ impl LfeDelayRingState {
         Self {
             write_index: 0,
             read_index: 1,
-            rows: [NoneSentinel; 3],
-            input_frame_indexes: [NoneSentinel; 3],
+            rows: [None, None, None],
+            input_frame_indexes: [None, None, None],
             model_samples_consumed: 0,
         }
     }
@@ -642,9 +650,24 @@ impl LfeDelayRingState {
         encoder.field("read_index")?;
         encoder.encode_i64(self.read_index);
         encoder.field("rows")?;
-        encoder.encode_none_tuple(3)?;
+        encoder.encode_tuple_length(self.rows.len())?;
+        for row in &self.rows {
+            match row {
+                Some(bytes) => encoder.encode_bytes(bytes)?,
+                None => encoder.encode_none(),
+            }
+        }
         encoder.field("input_frame_indexes")?;
-        encoder.encode_none_tuple(3)?;
+        encoder.encode_tuple_length(self.input_frame_indexes.len())?;
+        for index in &self.input_frame_indexes {
+            match index {
+                Some(index) => encoder.encode_i64(
+                    i64::try_from(index.value())
+                        .map_err(|_| SpatialAudioError::EncodingLengthOverflow)?,
+                ),
+                None => encoder.encode_none(),
+            }
+        }
         encoder.field("model_samples_consumed")?;
         encoder.encode_i64(self.model_samples_consumed);
         Ok(())
@@ -1022,14 +1045,6 @@ impl F04StateEncoder {
             u64::try_from(item_count).map_err(|_| SpatialAudioError::EncodingLengthOverflow)?;
         self.bytes.push(b'T');
         self.bytes.extend_from_slice(&count.to_le_bytes());
-        Ok(())
-    }
-
-    fn encode_none_tuple(&mut self, item_count: usize) -> Result<(), SpatialAudioError> {
-        self.encode_tuple_length(item_count)?;
-        for _ in 0..item_count {
-            self.encode_none();
-        }
         Ok(())
     }
 

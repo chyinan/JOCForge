@@ -2494,9 +2494,9 @@
   ],
   "implementation_inventory": [
     {
-      "bytes": 34510,
+      "bytes": 35138,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "b1d8d71000b6d89c2bbfdb4d2a6a521def10736ca734b754669118e0556c0f9a"
+      "sha256": "f5db8b2793055ae25dc3872f84b2e7d85b6e38644eb3fae9578cd25462066392"
     },
     {
       "bytes": 2075,
@@ -2613,9 +2613,9 @@
     "clock_domain_file": "crates/jocforge-domain/src/timeline/index.rs",
     "file_inventory": [
       {
-        "bytes": 25780,
+        "bytes": 26186,
         "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-        "sha256": "0e2af3c3c8c479732502b7bd7f0f89e8c648dd7c7d6509a3146d609c60d2f8bd"
+        "sha256": "b148d0dbaba305f476451b1a6cc7eef90a54b31e4315b1a443ebc8bcd9792174"
       },
       {
         "bytes": 725,
@@ -4930,6 +4930,22 @@
     ]
   },
   "fatal_behavior": "local validation returns the first mapped error with no proposal; any downstream or parent failure discards the staged LFE proposal with the other staged roots and retires the programme",
+  "fixture_files": [
+    "crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json",
+    "crates/jocforge-domain/tests/fixtures/direct_lfe/G1-VECTOR-ERRATUM.json"
+  ],
+  "fixture_inventory": [
+    {
+      "bytes": 13306,
+      "path": "crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json",
+      "sha256": "52c2b1a3b52e53198e47e90e4d6e51e8435fbe660ad996b4005f741107a7eb7f"
+    },
+    {
+      "bytes": 639,
+      "path": "crates/jocforge-domain/tests/fixtures/direct_lfe/G1-VECTOR-ERRATUM.json",
+      "sha256": "b9d8c32b497c2498e3ae1c2a2822fd5cee2dccd456b5dae68bf3fb5ba0f1f307"
+    }
+  ],
   "functional_scope": [
     {
       "functional_id": "F04C",
@@ -4939,6 +4955,28 @@
         "2 three-slot state machine",
         "3 Type10 row0 projection"
       ]
+    }
+  ],
+  "implementation_files": [
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
+    "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+    "crates/jocforge-domain/src/spatial/spatial_control.rs"
+  ],
+  "implementation_inventory": [
+    {
+      "bytes": 14811,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
+      "sha256": "1a35e84f02d4374ea4c96df6385c7f031f50bb3ff7183a7881731dccb645d2f5"
+    },
+    {
+      "bytes": 35138,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+      "sha256": "f5db8b2793055ae25dc3872f84b2e7d85b6e38644eb3fae9578cd25462066392"
+    },
+    {
+      "bytes": 26186,
+      "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+      "sha256": "b148d0dbaba305f476451b1a6cc7eef90a54b31e4315b1a443ebc8bcd9792174"
     }
   ],
   "implementation_prohibitions": [
@@ -4953,7 +4991,7 @@
     "no parent transaction",
     "no F04 full-chain/product acceptance promotion"
   ],
-  "implementation_status": "NOT_STARTED",
+  "implementation_status": "LOCALLY_VERIFIED_DIRECT_LFE__UPSTREAM_PARENT_DEFERRED",
   "input_contract": {
     "cached_drain": "reuse the exact last NORMAL padded LFE row bytes with a new callback generation; do not reread ADM or regenerate samples",
     "host_slot": "typed host identity in 0..37; never hardcode a source/track slot",
@@ -5017,7 +5055,8 @@
   },
   "planned_implementation_files": [
     "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
-    "crates/jocforge-domain/src/spatial/spatial_audio_state.rs"
+    "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+    "crates/jocforge-domain/src/spatial/spatial_control.rs"
   ],
   "planned_test_files": [
     "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe/tests.rs"
@@ -5032,7 +5071,7 @@
   "reset_authority": "programme-origin full restart reconstructing the complete cold root; no resume within RETIRED attempt",
   "scope": "Consume one opaque F03W-owned direct-LFE input and stage only the three-slot delay-ring transition plus optional Type10 row0 input. Do not implement the raw38 producer, component rows, receiver/QMF, full F04 assembler, receipt wrapper, local commit, parent transaction, or codec/JOC logic.",
   "stage_authority": "F04C direct-LFE substage only; future F04 composer joins this proposal with the P1.3-E2 component proposal",
-  "status": "MAPPING_COMPLETE_IMPLEMENTATION_NOT_STARTED",
+  "status": "LOCALLY_VERIFIED_DIRECT_LFE__UPSTREAM_PARENT_DEFERRED",
   "supplement": {
     "api_schema_bytes": 652,
     "api_schema_file": "API-SCHEMA.json",
@@ -5051,6 +5090,16 @@
     "vectors_sha256": "52c2b1a3b52e53198e47e90e4d6e51e8435fbe660ad996b4005f741107a7eb7f"
   },
   "task_id": "P1.3-E3-F04-DIRECT-LFE-RING",
+  "test_files": [
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe/tests.rs"
+  ],
+  "test_inventory": [
+    {
+      "bytes": 19748,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe/tests.rs",
+      "sha256": "974767ddea57685ddf6656a5e46308e47b2a92cefdb7e23827230d6c9f831c66"
+    }
+  ],
   "transition": {
     "failure": "no after proposal and no ring/cursor/index/sample-count advance; enclosing callback retires the programme and same-attempt retry is forbidden",
     "next_read": "(old_read+1)%3",
@@ -5109,6 +5158,19 @@
       "sample_count": 1536,
       "valid_samples": 731
     }
+  },
+  "verification": {
+    "direct_lfe_test_count": 9,
+    "f03w_raw38_producer": "NOT_IMPLEMENTED",
+    "failure_vector_cases": 3,
+    "full_repository_boundary_mutations_rejected": 629,
+    "full_type10_assembler": "NOT_IMPLEMENTED",
+    "local_commit": "NOT_IMPLEMENTED",
+    "parent_transaction": "NOT_IMPLEMENTED",
+    "receiver_qmf": "NOT_IMPLEMENTED",
+    "success_vector_cases": 6,
+    "targeted_implementation_mutations_rejected": 22,
+    "targeted_mapping_mutations_rejected": 22
   }
 }
 ```

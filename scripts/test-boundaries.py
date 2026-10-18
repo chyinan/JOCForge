@@ -506,7 +506,7 @@ def main():
  ]
  cases += [
  ('directlfe-status-overclaim',map_mut_render(lambda d:(d['phase_one']['P1.3-E3'].update(status='COMPLETE'),d['status'].update({'P1.3-E3':'COMPLETE'})))),
- ('directlfe-implementation-premature',map_mut_render(lambda d:(d['phase_one']['P1.3-E3'].update(implementation_status='LOCALLY_VERIFIED_DIRECT_LFE__UPSTREAM_PARENT_DEFERRED'),d['status'].update({'P1.3-E3':'LOCALLY_VERIFIED_DIRECT_LFE__UPSTREAM_PARENT_DEFERRED'})))),
+ ('directlfe-planned-file-omitted',map_mut_render(lambda d:d['phase_one']['P1.3-E3']['planned_implementation_files'].remove('crates/jocforge-domain/src/spatial/spatial_control.rs'))),
  ('directlfe-parent-unblocked',map_mut_render(lambda d:d['status'].update({'P1.3-E':'LOCALLY_VERIFIED'}))),
  ('directlfe-e2-status-rewritten',map_mut_render(lambda d:d['phase_one']['P1.3-E2'].update(implementation_status='LOCALLY_VERIFIED_DIRECT_LFE__UPSTREAM_PARENT_DEFERRED'))),
  ('directlfe-supplement-identity-drift',map_mut_render(lambda d:d['phase_one']['P1.3-E3']['supplement'].update(identity='direct-lfe-ring-v1'))),
@@ -526,7 +526,29 @@ def main():
  ('directlfe-test-file-removed',map_mut_render(lambda d:d['phase_one']['P1.3-E3'].update(planned_test_files=[]))),
  ('directlfe-not-run-promoted',map_mut_render(lambda d:d['phase_one']['P1.3-E3']['not_run'].remove('receiver/QMF'))),
  ('directlfe-error-translation-drift',map_mut_render(lambda d:d['phase_one']['P1.3-E3']['error_translation']['outcomes'][2].update(error_code='F04_INPUT_ERROR'))),
- ('directlfe-fixture-before-implementation',lambda r:((r/'crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json').parent.mkdir(parents=True,exist_ok=True),(r/'crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json').write_text('{}\n',encoding='utf-8')))
+ ('directlfe-fixture-before-implementation',lambda r:((r/'crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json').parent.mkdir(parents=True,exist_ok=True),(r/'crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json').write_text('{}\n',encoding='utf-8'))),
+ ('directlfe-code-public-constructor',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs','pub(in crate::spatial) fn try_from_spatial_control(','pub fn try_from_spatial_control(')),
+ ('directlfe-code-authority-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs','        _authority: SpatialControlLfeIngressAuthority,\n','')),
+ ('directlfe-code-authority-mint-public',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_control.rs','    fn for_f03w_lfe_ingress() -> Self {','    pub(super) fn for_f03w_lfe_ingress() -> Self {')),
+ ('directlfe-code-authority-clone',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_control.rs','\nimpl Clone for SpatialControlLfeIngressAuthority { fn clone(&self) -> Self { Self { _private: () } } }\n')),
+ ('directlfe-code-hardcoded-host',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs','lfe_host: route.lfe_host(),','lfe_host: HostId::new(3).unwrap(),')),
+ ('directlfe-code-input-shape-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs','if samples.len() != LFE_FRAME_SAMPLES {','if false {')),
+ ('directlfe-code-input-finite-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs','FiniteF32::new(sample).map_err(|_| DirectLfeError::Input)?','FiniteF32::new(0.0).map_err(|_| DirectLfeError::Input)?')),
+ ('directlfe-code-ring-finite-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs','f32::from_le_bytes(word.try_into().expect("four-byte F32 word")).is_finite()','true')),
+ ('directlfe-code-phase-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs','|| input.phase != expected_phase','|| false')),
+ ('directlfe-code-before-digest-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs','spatial_audio_join.before_digest() != spatial_audio.digest()','false')),
+ ('directlfe-code-provider-lineage-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs','input.spatial_control_provider_lineage != spatial_control.provider_lineage()','false')),
+ ('directlfe-code-read-slot-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs','let output_row = before.rows[next_read_slot]','let output_row = before.rows[next_write_slot]')),
+ ('directlfe-code-source-origin-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs','.checked_sub(2);','.checked_sub(1);')),
+ ('directlfe-code-sample-increment-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs','const MODEL_SAMPLES_PER_CALLBACK: i64 = 1536;','const MODEL_SAMPLES_PER_CALLBACK: i64 = 1535;')),
+ ('directlfe-code-cursor-coherence-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs','|| state.read_index != (state.write_index + 1) % LFE_DELAY_SLOTS','|| false')),
+ ('directlfe-code-model-count-coherence-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs','|| state.model_samples_consumed != expected_model_samples','|| false')),
+ ('directlfe-code-cold-ring-zero-filled',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','rows: [None, None, None],','rows: [None, Some(Arc::from([])), None],')),
+ ('directlfe-code-none-encoded-as-empty',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','None => encoder.encode_none(),','None => encoder.encode_bytes(&[])?,')),
+ ('directlfe-code-local-commit-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs','#[cfg(test)]\nmod tests;','pub(super) fn commit_lfe() {}\n#[cfg(test)]\nmod tests;')),
+ ('directlfe-code-full-type10-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs','#[cfg(test)]\nmod tests;','pub(super) fn assemble_type10() {}\n#[cfg(test)]\nmod tests;')),
+ ('directlfe-code-qmf-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs','#[cfg(test)]\nmod tests;','fn qmf_receiver() {}\n#[cfg(test)]\nmod tests;')),
+ ('directlfe-test-cached-row-not-reused',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe/tests.rs','cached_g1.as_deref()','None'))
  ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]

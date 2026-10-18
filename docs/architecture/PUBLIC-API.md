@@ -40,6 +40,8 @@ CurrentFeatures 接受 `Option<CurrentFeaturesAudioView>`。当至少一个 sour
 
 PostWindow fanout 仍生成两个 view。若没有 READ source，父级可以丢弃未消费的 `CurrentFeaturesAudioView`，并保留另一个 view 给 assembler。丢弃 view 不会提交 owner state。未来 spatial-audio assembler 只消费 `SpatialAudioPostWindowView`，再与同 callback 的 matrix、destination 和 LFE inputs 组合。render producer、assembler 和 parent transaction 仍未实现；这些 view 不授予本地 commit 权限。
 
+Direct-LFE scoped stage 是 crate-internal F04C seam。`DirectLfeInputView` 只能从 `spatial_control` 的 opaque ingress authority、validated semantic route 和显式 callback phase 构造；stage 返回线性 ring after-proposal 及可选 Type10 row0 input，不构造完整 Type10、不生成 committed receipt，也没有 local commit。
+
 ## Reset 与失败
 
 fatal 失败丢弃完整 staged root，并将 programme 标为 `RETIRED`。同一 attempt 不得重试 source。恢复只能从 programme 输入起点执行完整 cold rebuild。未完成 AU、pending payload 或临时文件不得发布。
