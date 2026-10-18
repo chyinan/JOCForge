@@ -1,0 +1,28 @@
+{
+  "schema": "f04q5-synthesis-direct-literal-result-v1",
+  "status": "PASS_TWO_INDEPENDENT_REFERENCE_PATHS",
+  "vector_sha256": "36f4ba70a9840701f56ae2c90e53b325c390de79b8a7e4b616990f558d4f5843",
+  "approved_parameter_sha256": {
+    "parameters/qmf-receiver-functional-v1.json": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c",
+    "parameters/qmf-mathematical-fft-v1.json": "e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431"
+  },
+  "native_dll_read": false,
+  "future_rust_used": false,
+  "not_run": [
+    "future Rust implementation",
+    "receiver whole chain",
+    "real ADM",
+    "listening/spatial acceptance"
+  ],
+  "independent_checker": "PASS",
+  "independent_words_compared_minimum": 29952,
+  "boundary_checks": {
+    "mode_2": "QMF_MODE_INVALID",
+    "slot_127": "QMF_SYNTHESIS_SHAPE_INVALID",
+    "nan": "QMF_SYNTHESIS_NONFINITE"
+  },
+  "two_paths": {
+    "path_a": "qmf_synthesis_core.py called by build_vectors.py",
+    "path_b": "independent_checker.py separate tuple FFT and loops; imports no path A"
+  }
+}

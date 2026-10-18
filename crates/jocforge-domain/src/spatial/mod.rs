@@ -6,6 +6,7 @@ pub mod component_parameters_provider;
 pub mod current_features;
 pub mod descriptor_mathematical_provider;
 pub mod post_window_fanout;
+pub mod qmf_analysis_synthesis;
 pub mod qmf_fft64;
 pub mod qmf_mathematical_fft_provider;
 pub mod qmf_receiver_functional_provider;

@@ -1,0 +1,64 @@
+{
+  "status": "PASS",
+  "route": "independent_checker_core.py; no import of qmf_analysis_core.py",
+  "actual_loaded_after_independent_inputs_and_provider_load": true,
+  "cases": [
+    {
+      "case_id": "cold_sparse_impulse",
+      "stages_wordwise_equal": [
+        "fold128",
+        "rotated128",
+        "analysis_fft_provider_input128",
+        "analysis_fft_input128_bitrev_scaled",
+        "fft_output128",
+        "final_reorder_output128",
+        "history_before_9x64",
+        "history_after_9x64"
+      ]
+    },
+    {
+      "case_id": "signed_zero_reorder_xor",
+      "stages_wordwise_equal": [
+        "fold128",
+        "rotated128",
+        "analysis_fft_provider_input128",
+        "analysis_fft_input128_bitrev_scaled",
+        "fft_output128",
+        "final_reorder_output128",
+        "history_before_9x64",
+        "history_after_9x64"
+      ]
+    },
+    {
+      "case_id": "analysis_scale_finite_boundary",
+      "stages_wordwise_equal": [
+        "fold128",
+        "rotated128",
+        "analysis_fft_provider_input128",
+        "analysis_fft_input128_bitrev_scaled",
+        "fft_output128",
+        "final_reorder_output128",
+        "history_before_9x64",
+        "history_after_9x64"
+      ]
+    },
+    {
+      "case_id": "warm_history_shift",
+      "stages_wordwise_equal": [
+        "fold128",
+        "rotated128",
+        "analysis_fft_provider_input128",
+        "analysis_fft_input128_bitrev_scaled",
+        "fft_output128",
+        "final_reorder_output128",
+        "history_before_9x64",
+        "history_after_9x64"
+      ]
+    }
+  ],
+  "counts": {
+    "cases": 4,
+    "stage_vectors_compared": 32,
+    "stage_words_compared": 7680
+  }
+}

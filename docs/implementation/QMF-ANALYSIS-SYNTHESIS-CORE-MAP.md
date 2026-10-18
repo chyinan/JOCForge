@@ -2,7 +2,7 @@
 
 由 IMPLEMENTATION-MAP.json 生成，不得手工修改。
 
-Status: `READY_FOR_IMPLEMENTATION`. This is a docs-only readiness gate for the selected fixed QMF core; it does not promote the F04 whole root.
+Status: `QMF_CORE_IMPL_WITH_DIRECT_VECTORS__WHOLE_RECEIVER_NOT_RUN`. This is a docs-only readiness gate for the selected fixed QMF core; it does not promote the F04 whole root.
 
 ## Processing boundary
 
@@ -141,15 +141,66 @@ The machine-readable record below binds the exact formulas, providers, owners, c
     "state_effect": "all before slices remain caller-owned and unchanged; QMF_CORE has no local commit, abort, or fatal authority",
     "typed_fft_or_provider_failure": "return the existing F04ParameterProviderError before QMF work; no native error-code mapping claim"
   },
-  "fixture_files": [],
-  "functional_id_scope": "Only the selected fixed QMF analysis/synthesis core and its receiver mode=1 state slices are ready for implementation. Whole F04Q/F04QF functional IDs, receiver routing, mode=0 fitting, descriptor/JOC, J05, F04C parent commit, real ADM and product acceptance remain separate or blocked.",
+  "fixture_files": [
+    {
+      "bytes": 48429,
+      "file": "crates/jocforge-domain/tests/fixtures/qmf_direct/analysis/F04Q2-ANALYSIS-DIRECT-INPUTS.json",
+      "sha256": "5a05987ec1d2bd3707234d2d7842f7ad8d6e8e18f9d549266ad2447c1aa0b229"
+    },
+    {
+      "bytes": 144743,
+      "file": "crates/jocforge-domain/tests/fixtures/qmf_direct/analysis/F04Q2-ANALYSIS-DIRECT-ACTUAL.json",
+      "sha256": "24bf73c9d5f27f5bd4938155920edc9933b8d7d967e4d2ef84d4154f8515840f"
+    },
+    {
+      "bytes": 1741,
+      "file": "crates/jocforge-domain/tests/fixtures/qmf_direct/analysis/F04Q2-INDEPENDENT-CHECK.json",
+      "sha256": "385f6589dff66c323a4e8e83804343bcb8490a0d1691c860fb51a88fa97f0529"
+    },
+    {
+      "bytes": 1208,
+      "file": "crates/jocforge-domain/tests/fixtures/qmf_direct/analysis/SPEC.md",
+      "sha256": "c67f906eb3cae1f7243696f30f9cd01641883d64c6a5d66afb281a84673ae305"
+    },
+    {
+      "bytes": 1130988,
+      "file": "crates/jocforge-domain/tests/fixtures/qmf_direct/synthesis/F04Q5-SYNTHESIS-DIRECT-LITERALS.json",
+      "sha256": "36f4ba70a9840701f56ae2c90e53b325c390de79b8a7e4b616990f558d4f5843"
+    },
+    {
+      "bytes": 1087,
+      "file": "crates/jocforge-domain/tests/fixtures/qmf_direct/synthesis/ACTUAL-RESULT.json",
+      "sha256": "3b2e494c3b2632afbc53f94e14c93cb6e8ca2f144d4b9c3d760c263cbde2fc20"
+    },
+    {
+      "bytes": 936,
+      "file": "crates/jocforge-domain/tests/fixtures/qmf_direct/synthesis/SPEC.md",
+      "sha256": "3c39ac083d0dd00e0d243580e0bf95d08fa07178b699b3b056acdb7caea35d27"
+    }
+  ],
+  "functional_id_scope": "The selected fixed QMF analysis/synthesis core and its receiver mode=1 state slices are locally implemented and checked against direct literal vectors. Whole F04Q/F04QF functional IDs, receiver routing, mode=0 fitting, descriptor/JOC, J05, F04C parent commit, real ADM and product acceptance remain separate or blocked.",
   "functional_ids": [
     "F04Q",
     "F04QF",
     "F04QP",
     "F04RB"
   ],
-  "implementation_files": [],
+  "implementation_files": [
+    "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs",
+    "crates/jocforge-domain/src/spatial/mod.rs"
+  ],
+  "implementation_inventory": [
+    {
+      "bytes": 21790,
+      "path": "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs",
+      "sha256": "9184b8ca22b5ed89082a92e3027b74c13d7e5424c4504598c3e71c239f2beeaa"
+    },
+    {
+      "bytes": 2206,
+      "path": "crates/jocforge-domain/src/spatial/mod.rs",
+      "sha256": "4559a9054f74e51a5436681b6362b292248476262ca1dd94b6496d2f0f79a9b6"
+    }
+  ],
   "implementation_prohibitions": [
     "no generic QMF or configurable channel-count plan",
     "no receiver Type10 routing or s09_input production",
@@ -158,9 +209,9 @@ The machine-readable record below binds the exact formulas, providers, owners, c
     "no J05, descriptor, JOC, render, or parent CallbackTransaction",
     "no local state commit/abort/fatal authority",
     "no public or third-party provider redistribution",
-    "no DSP execution or product/audio acceptance claim"
+    "no whole receiver/J05/DSP pipeline execution or product/audio acceptance claim"
   ],
-  "implementation_status": "NOT_STARTED",
+  "implementation_status": "QMF_CORE_IMPL_WITH_DIRECT_VECTORS__WHOLE_RECEIVER_NOT_RUN",
   "mapping_document": "docs/implementation/QMF-ANALYSIS-SYNTHESIS-CORE-MAP.md",
   "mapping_status": "MAPPING_COMPLETE",
   "module_export_file": "crates/jocforge-domain/src/spatial/mod.rs",
@@ -174,7 +225,7 @@ The machine-readable record below binds the exact formulas, providers, owners, c
     "crates/jocforge-domain/src/spatial/mod.rs"
   ],
   "planned_test_files": [
-    "crates/jocforge-domain/tests/qmf_analysis_synthesis.rs"
+    "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis/tests.rs"
   ],
   "programme_root": "spatial_audio",
   "provider_bindings": {
@@ -243,7 +294,7 @@ The machine-readable record below binds the exact formulas, providers, owners, c
       "sha256": "a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130"
     }
   },
-  "readiness_basis": "Algorithm formulas, operation order, typed parameter identities, state shapes/cold values, caller boundary, callback/slot clocks, and fatal outcomes are explicit in the bound specs. The missing direct intermediate vectors are a verification coverage gap, not an unresolved behavior or constant; implementation may begin only for this fixed route and must add local spec-derived tests while treating all supplied expected values as assertions.",
+  "readiness_basis": "The fixed analysis/synthesis formulas, operation order, typed parameter identities, state shapes/cold values, caller boundary, callback/slot clocks, and fatal outcomes are explicit in bound specs. The isolated implementation now matches washed direct stage literals for analysis, synthesis, and one mode=1 24-slot callback. This supports only QMF_CORE direct-vector implementation status; whole F04 receiver integration and all product acceptance remain NOT_RUN.",
   "review_evidence": {
     "current_fresh_review": {
       "checks": "44/44",
@@ -260,6 +311,11 @@ The machine-readable record below binds the exact formulas, providers, owners, c
       "qualification": "whole-spatial consumer attestation; not product execution",
       "source": "test-vectors/F04-WHOLE-SPATIAL-CONSUMER-LOCAL-REVIEW-STATUS.json"
     },
+    "qmf_direct_vectors": {
+      "analysis_manifest_sha256": "79830470e3101a10d96852f44c855252c7b78533e0c2b32a73c86d93f74542c6",
+      "qualification": "washed stage literals assert local QMF core computations after fresh execution; whole receiver, J05/parent, real ADM, and listening remain NOT_RUN",
+      "synthesis_manifest_sha256": "bff23be87f4b7ceb27c145ab6106dd1b786aa2e6dbc35d1e4892da73743e9f4a"
+    },
     "qmf_receiver_r2_attestation": {
       "f04rb_local_ready": "YES",
       "implementation_ready": "NO",
@@ -269,7 +325,7 @@ The machine-readable record below binds the exact formulas, providers, owners, c
       "source": "test-vectors/QMF-RECEIVER-WHOLE-BINDING-LOCAL-REVIEW-STATUS.json"
     }
   },
-  "scope": "Map F04Q.2-.6 using the existing QMF_FFT_RADIX2_MATH_V1 transform and validated providers. Accept one lane's 64-sample slot and its caller-owned before histories; return the slot output and proposed after histories. Define receiver mode=1 delay/FIR/synthesis only as the fixed surround consumer. Do not choose lanes, create s09_input, run F04R, compute descriptor, or commit a spatial_audio root.",
+  "scope": "Implement and locally verify F04Q.2-.6 using the existing QMF_FFT_RADIX2_MATH_V1 transform and validated providers. Accept one lane's 64-sample slot and its caller-owned before histories; return the slot output and proposed after histories. The receiver mode=1 callback accepts one supplied surround lane's 24 ordered analysis slots and returns PCM plus delay/FIR/synthesis after slices. Do not choose lanes, create s09_input, run F04R, compute descriptor, or commit a spatial_audio root.",
   "specifications": [
     {
       "bytes": 3369,
@@ -386,9 +442,18 @@ The machine-readable record below binds the exact formulas, providers, owners, c
     "reset_authority": "programme-origin full reset reconstructs all QMF arrays from positive-zero cold state; no local resume after RETIRED.",
     "single_owner": "spatial_audio; QMF_CORE adds no committed-state owner, root, receipt, or local commit authority."
   },
-  "status": "READY_FOR_IMPLEMENTATION",
+  "status": "QMF_CORE_IMPL_WITH_DIRECT_VECTORS__WHOLE_RECEIVER_NOT_RUN",
   "task_id": "QMF-ANALYSIS-SYNTHESIS-CORE-MAPPING",
-  "test_files": [],
+  "test_files": [
+    "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis/tests.rs"
+  ],
+  "test_inventory": [
+    {
+      "bytes": 14759,
+      "path": "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis/tests.rs",
+      "sha256": "64243b2abd6668d321ed0c093bf1a3075ff71f487b282d123fc081a2cba2f037"
+    }
+  ],
   "vector_bindings": [
     {
       "bytes": 22205,
@@ -444,23 +509,52 @@ The machine-readable record below binds the exact formulas, providers, owners, c
       "file": "test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json",
       "scope": "six frontend callbacks, two normal and four cached drains; input-only synthetic recipes; target/carrier QMF windows have whole-chain hashes, not QMF-step literal output",
       "sha256": "ffb1dea3b1e69383312da4059b9d8ddabb4366ed8fc22e7537f750ba041f2d63"
+    },
+    {
+      "actual_file": "crates/jocforge-domain/tests/fixtures/qmf_direct/analysis/F04Q2-ANALYSIS-DIRECT-ACTUAL.json",
+      "actual_sha256": "24bf73c9d5f27f5bd4938155920edc9933b8d7d967e4d2ef84d4154f8515840f",
+      "cases": [
+        "cold_sparse_impulse",
+        "signed_zero_reorder_xor",
+        "analysis_scale_finite_boundary",
+        "warm_history_shift"
+      ],
+      "input_file": "crates/jocforge-domain/tests/fixtures/qmf_direct/analysis/F04Q2-ANALYSIS-DIRECT-INPUTS.json",
+      "input_sha256": "5a05987ec1d2bd3707234d2d7842f7ad8d6e8e18f9d549266ad2447c1aa0b229",
+      "kind": "WASHED_DIRECT_ANALYSIS_LITERALS",
+      "manifest_sha256": "79830470e3101a10d96852f44c855252c7b78533e0c2b32a73c86d93f74542c6",
+      "qualification": "actual-first direct stage assertions for fold, rotation, analysis scale/bitrev, FFT output, reorder, and history; not whole receiver acceptance",
+      "source_supplement": "QMF-ANALYSIS-DIRECT-VECTORS-V1"
+    },
+    {
+      "cases": [
+        "SYNTH-COLD-SPARSE-SIGNEDZERO",
+        "SYNTH-WARM-HISTORY-SHIFT",
+        "MODE1-COLD-24-BAND0-FIR"
+      ],
+      "kind": "WASHED_DIRECT_SYNTHESIS_LITERALS",
+      "literal_file": "crates/jocforge-domain/tests/fixtures/qmf_direct/synthesis/F04Q5-SYNTHESIS-DIRECT-LITERALS.json",
+      "literal_sha256": "36f4ba70a9840701f56ae2c90e53b325c390de79b8a7e4b616990f558d4f5843",
+      "manifest_sha256": "bff23be87f4b7ceb27c145ab6106dd1b786aa2e6dbc35d1e4892da73743e9f4a",
+      "qualification": "actual-first direct stage assertions for mode=1 delay/FIR, preformat, inverse FFT, postmodulation, polyphase, and next states; whole receiver/J05 not run",
+      "source_supplement": "QMF-SYNTHESIS-DIRECT-VECTORS-V1"
     }
   ],
   "vector_gaps": [
-    "No current direct unit case isolates F04Q.2 fold plus F04Q.3 rotation from the upstream s09_input producer.",
-    "No current direct unit case isolates F04Q.5 postmodulation; provided direct cases cover fixed FFT, U32 reorder, QMF.6 synthesis history, QMF.4 surround delay/FIR/reset, and QWIN installation separately.",
-    "Whole-binding vectors provide recipe inputs and expected hashes, not raw direct arrays for every intermediate QMF step. Fresh F04-CURRENT-FRESH-REVIEW-R1 is static only (44/44) and ran no DSP.",
-    "The older QMF-LOCAL-REVIEW-STATUS reads a prior unit vector hash 05521f8095993ecf9498a807a13099d283758552b386cd73ed1ec69cdac51792; current manifest unit vector hash is a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8. Do not use that review as a current execution pass."
+    "No whole F04 receiver integration vector is executed by QMF_CORE. The five-callback whole-binding and six-callback chain hashes remain assertions outside this isolated core test; receiver routing, J05/parent, real ADM, and listening remain NOT_RUN.",
+    "The fresh F04-CURRENT-FRESH-REVIEW-R1 remains static-only (44/44); it is not an implementation execution review."
   ],
   "verification": {
     "current_fresh_review": "STATIC_ONLY_44_OF_44",
-    "full_repository_boundary_mutations_rejected": 760,
+    "full_repository_boundary_mutations_rejected": 772,
     "listening_spatial_acceptance": "NOT_RUN",
     "model_first_receiver_review": "SUPPLIED_ATTESTATION_ONLY_IMPLEMENTATION_READY_NO",
     "package_spec_provider_vector_identities": "PASS",
-    "qmf_core_dsp_execution": "NOT_RUN",
+    "qmf_core_direct_test_count": 7,
+    "qmf_core_dsp_execution": "DIRECT_STAGE_VECTORS_PASS",
+    "qmf_core_whole_receiver_execution": "NOT_RUN",
     "real_adm_whole_song": "NOT_RUN",
-    "targeted_boundary_mutations_rejected": 32
+    "targeted_boundary_mutations_rejected": 44
   }
 }
 ```

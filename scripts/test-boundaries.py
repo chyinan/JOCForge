@@ -482,6 +482,11 @@ def main():
  ('qmf-core-window-promoted-to-core',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['provider_bindings']['window_q15'].update(direct_qmf_core_consumption=True))),
  ('qmf-core-provider-sha-drift',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['provider_bindings']['qmf_mathematical_fft'].update(sha256='00'*32))),
  ('qmf-core-direct-vector-removed',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['vector_bindings'][1]['direct_qmf_core_cases'].remove('U-QMF-REORDER'))),
+ ('qmf-core-analysis-direct-vector-removed',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['vector_bindings'].__setitem__(slice(None),[x for x in d['phase_one']['QMF_CORE']['vector_bindings'] if x.get('kind')!='WASHED_DIRECT_ANALYSIS_LITERALS']))),
+ ('qmf-core-synthesis-direct-vector-removed',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['vector_bindings'].__setitem__(slice(None),[x for x in d['phase_one']['QMF_CORE']['vector_bindings'] if x.get('kind')!='WASHED_DIRECT_SYNTHESIS_LITERALS']))),
+ ('qmf-core-direct-input-sha-drift',map_mut_render(lambda d:next(x for x in d['phase_one']['QMF_CORE']['vector_bindings'] if x.get('kind')=='WASHED_DIRECT_ANALYSIS_LITERALS').update(input_sha256='00'*32))),
+ ('qmf-core-direct-literal-sha-drift',map_mut_render(lambda d:next(x for x in d['phase_one']['QMF_CORE']['vector_bindings'] if x.get('kind')=='WASHED_DIRECT_SYNTHESIS_LITERALS').update(literal_sha256='00'*32))),
+ ('qmf-core-direct-fixture-removed',lambda r:(r/'crates/jocforge-domain/tests/fixtures/qmf_direct/synthesis/F04Q5-SYNTHESIS-DIRECT-LITERALS.json').unlink()),
  ('qmf-core-vector-gap-hidden',map_mut_render(lambda d:d['phase_one']['QMF_CORE'].update(vector_gaps=[]))),
  ('qmf-core-fresh-review-promoted',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['review_evidence']['current_fresh_review'].update(dsp_execution='PASS'))),
  ('qmf-core-model-review-promoted',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['review_evidence']['qmf_receiver_r2_attestation'].update(implementation_ready='YES'))),
@@ -490,8 +495,15 @@ def main():
  ('qmf-core-parent-unblocked',map_mut_render(lambda d:(d['phase_one']['QMF_CORE']['aggregate_readiness_unchanged'].update({'P1.3-E':'READY_FOR_IMPLEMENTATION'}),d['status'].update({'P1.3-E':'READY_FOR_IMPLEMENTATION'})))),
  ('qmf-core-functional-id-promoted',map_mut_render(lambda d:next(e for e in d['functional_entries'] if e['functional_id']=='F04Q').update(implementation_status='READY_FOR_IMPLEMENTATION'))),
  ('qmf-core-fatal-outcome-softened',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['error_contract'].update(nonfinite_intermediate_or_output='clamp and continue'))),
- ('qmf-core-premature-module',lambda r:(r/'crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs').write_text('pub fn execute_qmf_analysis_synthesis() {}\n',encoding='utf-8')),
- ('qmf-core-module-export-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/mod.rs','\npub mod qmf_analysis_synthesis;\n'))
+ ('qmf-core-code-file-io-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs','\nfn qmf_read_file() { let _ = std::fs::read("provider.json"); }\n')),
+ ('qmf-core-code-mode0-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs','\nfn process_mode0_fitting() {}\n')),
+ ('qmf-core-code-lane-routing-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs','\nfn route_receiver_lane() {}\n')),
+ ('qmf-core-code-local-commit-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs','\nfn commit_qmf_after_state() {}\n')),
+ ('qmf-core-code-generic-filter-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs','\ntrait QmfFilterPlan {}\n')),
+ ('qmf-core-code-history-clone-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs','\nimpl Clone for QmfReceiverMode1Histories {}\n')),
+ ('qmf-core-code-provider-json-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs','\nfn parse_qmf_provider(bytes: &[u8]) { let _ = serde_json::from_slice::<u32>(bytes); }\n')),
+ ('qmf-core-test-expected-word-used-as-input',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_analysis_synthesis/tests.rs','let current_words = word_array::<64>(&input_case["current_64"]);','let current_words = word_array::<64>(&actual_case["fold128"]);')),
+ ('qmf-core-module-export-duplicated',lambda r:append(r/'crates/jocforge-domain/src/spatial/mod.rs','\npub mod qmf_analysis_synthesis;\n'))
  ]
  cases += [
  ('qmf-fft-status-overclaim',map_mut_render(lambda d:(d['phase_one']['QMF_FFT_PRIMITIVE'].update(status='LOCALLY_VERIFIED'),d['status'].update({'QMF_FFT_PRIMITIVE':'LOCALLY_VERIFIED'})))),

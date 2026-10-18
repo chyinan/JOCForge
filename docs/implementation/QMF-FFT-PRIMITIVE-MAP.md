@@ -99,9 +99,9 @@ The primitive is a 64-point complex transform over 128 interleaved F32 scalar sl
       "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"
     },
     {
-      "bytes": 2174,
+      "bytes": 2206,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "697124fac06aa7243049d258ede0634d3b5de721743b1238c049ff2b13752afd"
+      "sha256": "4559a9054f74e51a5436681b6362b292248476262ca1dd94b6496d2f0f79a9b6"
     }
   ],
   "implementation_prohibitions": [
@@ -280,7 +280,7 @@ The primitive is a 64-point complex transform over 128 interleaved F32 scalar sl
   "verification": {
     "fft_execution": "LOCALLY_VERIFIED_FIXED64_ONLY",
     "fresh_review_scope": "STATIC_ONLY",
-    "full_repository_boundary_mutations_rejected": 760,
+    "full_repository_boundary_mutations_rejected": 772,
     "local_test_vector": "spec-derived dyadic input recipe with exact R32 operation order and the identity-validated provider roots; assertion only, not an audio or product vector",
     "product_audio_acceptance": "NOT_RUN",
     "qmf_fft64_test_count": 10,

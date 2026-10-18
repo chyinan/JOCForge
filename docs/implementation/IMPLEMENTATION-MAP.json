@@ -22,7 +22,7 @@
     "P1.4-D1": "LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS",
     "P1.4-D2": "LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS",
     "QMF_FFT_PRIMITIVE": "LOCALLY_VERIFIED_FIXED64_ONLY",
-    "QMF_CORE": "READY_FOR_IMPLEMENTATION"
+    "QMF_CORE": "QMF_CORE_IMPL_WITH_DIRECT_VECTORS__WHOLE_RECEIVER_NOT_RUN"
   },
   "functional_entries": [
     {
@@ -3375,7 +3375,7 @@
       ],
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 35171, "sha256": "6e3154571999492fdf2f881147ee9bb1a111eb191bd9cba9aaace91075840e03"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2174, "sha256": "697124fac06aa7243049d258ede0634d3b5de721743b1238c049ff2b13752afd"},
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2206, "sha256": "4559a9054f74e51a5436681b6362b292248476262ca1dd94b6496d2f0f79a9b6"},
         {"path": "crates/jocforge-domain/src/timeline/index.rs", "bytes": 2290, "sha256": "911be2413816ebe1fde51ceda0066e9c088f92ae7c8b045cee49aac37540ec7d"},
         {"path": "crates/jocforge-domain/src/timeline/mod.rs", "bytes": 586, "sha256": "7f2099065d657bdacab116d921a63107a180930086b73a42557881aa3acdb7b2"}
       ],
@@ -4083,8 +4083,8 @@
           },
           {
             "path": "crates/jocforge-domain/src/spatial/mod.rs",
-            "bytes": 2174,
-            "sha256": "697124fac06aa7243049d258ede0634d3b5de721743b1238c049ff2b13752afd"
+            "bytes": 2206,
+            "sha256": "4559a9054f74e51a5436681b6362b292248476262ca1dd94b6496d2f0f79a9b6"
           },
           {
             "path": "crates/jocforge-domain/tests/spatial_control_foundation.rs",
@@ -5023,7 +5023,7 @@
       },
       "dependency_scope": {"crate": "serde_json", "version": "=1.0.154", "default_features": false, "features": ["std"], "archive_sha256": "e7e9cc8b1b85264074fbcc02a88680c4096b1e47df8f739dceb03bf482f04bd6", "allowed_use": "strict identity-gated manifest/provider JSON parsing and private typed field access only", "public_serde_json_value": false, "canonical_writer": "none; exact file identity only"},
       "implementation_files": ["crates/jocforge-domain/src/spatial/window_q15_provider.rs", "crates/jocforge-domain/src/spatial/component_parameters_provider.rs", "crates/jocforge-domain/src/spatial/mod.rs"],
-      "implementation_inventory": [{"path":"crates/jocforge-domain/src/spatial/window_q15_provider.rs","bytes":19312,"sha256":"3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},{"path":"crates/jocforge-domain/src/spatial/component_parameters_provider.rs","bytes":14344,"sha256":"b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"},{"path":"crates/jocforge-domain/src/spatial/mod.rs","bytes":2174,"sha256":"697124fac06aa7243049d258ede0634d3b5de721743b1238c049ff2b13752afd"}],
+      "implementation_inventory": [{"path":"crates/jocforge-domain/src/spatial/window_q15_provider.rs","bytes":19312,"sha256":"3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},{"path":"crates/jocforge-domain/src/spatial/component_parameters_provider.rs","bytes":14344,"sha256":"b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"},{"path":"crates/jocforge-domain/src/spatial/mod.rs","bytes":2206,"sha256":"4559a9054f74e51a5436681b6362b292248476262ca1dd94b6496d2f0f79a9b6"}],
       "test_files": ["crates/jocforge-domain/tests/f04_parameter_providers.rs"],
       "test_inventory": [{"path":"crates/jocforge-domain/tests/f04_parameter_providers.rs","bytes":6325,"sha256":"37d56c997a903e6029828ce41e31c5b27218a1a472a4edf7d53f3fdc38ffeb4b"}],
       "fixture_files": ["crates/jocforge-domain/tests/fixtures/f04_parameters/window-q15.json", "crates/jocforge-domain/tests/fixtures/f04_parameters/component-parameter-mathematical-v1.json"],
@@ -5143,7 +5143,7 @@
         {"path": "crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs", "bytes": 11066, "sha256": "bddb8bd2b775b2cd9fc3e6412981965ef9ca5c5f98d137ff98de31c87dbbb2d8"},
         {"path": "crates/jocforge-domain/src/spatial/descriptor_mathematical_provider.rs", "bytes": 10441, "sha256": "df8612dcdc46fcf2620e2a73d68d26d392bbba02be27af729f8c5ded76cf8639"},
         {"path": "crates/jocforge-domain/src/spatial/window_q15_provider.rs", "bytes": 19312, "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2174, "sha256": "697124fac06aa7243049d258ede0634d3b5de721743b1238c049ff2b13752afd"}
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2206, "sha256": "4559a9054f74e51a5436681b6362b292248476262ca1dd94b6496d2f0f79a9b6"}
       ],
       "test_files": ["crates/jocforge-domain/tests/f04_remaining_provider_validators.rs"],
       "test_inventory": [{"path": "crates/jocforge-domain/tests/f04_remaining_provider_validators.rs", "bytes": 9771, "sha256": "8c0890d03b626bc75bc6daee4150c06d207cba02500778cfbd9288f44ad706a8"}],
@@ -5283,7 +5283,7 @@
       "shared_fixture_dependencies": ["crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json", "crates/jocforge-domain/tests/fixtures/f04_parameters/qmf-mathematical-fft-v1.json"],
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_fft64.rs", "bytes": 3812, "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2174, "sha256": "697124fac06aa7243049d258ede0634d3b5de721743b1238c049ff2b13752afd"}
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2206, "sha256": "4559a9054f74e51a5436681b6362b292248476262ca1dd94b6496d2f0f79a9b6"}
       ],
       "test_inventory": [
         {"path": "crates/jocforge-domain/tests/qmf_fft64.rs", "bytes": 8575, "sha256": "9d53ca5c441352312dfc19e425e990145e0416e3bcb0d733d2642c38fb119014"}
@@ -5299,21 +5299,21 @@
         "receiver_fitting_execution": "NOT_RUN",
         "product_audio_acceptance": "NOT_RUN",
         "targeted_boundary_mutations_rejected": 43,
-        "full_repository_boundary_mutations_rejected": 760
+        "full_repository_boundary_mutations_rejected": 772
       },
       "aggregate_readiness_unchanged": {"P1.3-E": "BLOCKED_ON_F04_DSP_RENDER_AND_PARENT", "spatial_audio_root": "MAPPING_COMPLETE_BLOCKED"}
     },
     "QMF_CORE": {
       "task_id": "QMF-ANALYSIS-SYNTHESIS-CORE-MAPPING",
-      "status": "READY_FOR_IMPLEMENTATION",
+      "status": "QMF_CORE_IMPL_WITH_DIRECT_VECTORS__WHOLE_RECEIVER_NOT_RUN",
       "mapping_status": "MAPPING_COMPLETE",
-      "implementation_status": "NOT_STARTED",
+      "implementation_status": "QMF_CORE_IMPL_WITH_DIRECT_VECTORS__WHOLE_RECEIVER_NOT_RUN",
       "mapping_document": "docs/implementation/QMF-ANALYSIS-SYNTHESIS-CORE-MAP.md",
       "module_export_file": "crates/jocforge-domain/src/spatial/mod.rs",
       "programme_root": "spatial_audio",
       "functional_ids": ["F04Q", "F04QF", "F04QP", "F04RB"],
-      "functional_id_scope": "Only the selected fixed QMF analysis/synthesis core and its receiver mode=1 state slices are ready for implementation. Whole F04Q/F04QF functional IDs, receiver routing, mode=0 fitting, descriptor/JOC, J05, F04C parent commit, real ADM and product acceptance remain separate or blocked.",
-      "scope": "Map F04Q.2-.6 using the existing QMF_FFT_RADIX2_MATH_V1 transform and validated providers. Accept one lane's 64-sample slot and its caller-owned before histories; return the slot output and proposed after histories. Define receiver mode=1 delay/FIR/synthesis only as the fixed surround consumer. Do not choose lanes, create s09_input, run F04R, compute descriptor, or commit a spatial_audio root.",
+      "functional_id_scope": "The selected fixed QMF analysis/synthesis core and its receiver mode=1 state slices are locally implemented and checked against direct literal vectors. Whole F04Q/F04QF functional IDs, receiver routing, mode=0 fitting, descriptor/JOC, J05, F04C parent commit, real ADM and product acceptance remain separate or blocked.",
+      "scope": "Implement and locally verify F04Q.2-.6 using the existing QMF_FFT_RADIX2_MATH_V1 transform and validated providers. Accept one lane's 64-sample slot and its caller-owned before histories; return the slot output and proposed after histories. The receiver mode=1 callback accepts one supplied surround lane's 24 ordered analysis slots and returns PCM plus delay/FIR/synthesis after slices. Do not choose lanes, create s09_input, run F04R, compute descriptor, or commit a spatial_audio root.",
       "package_identity": {
         "manifest_file": "MANIFEST.json",
         "manifest_bytes": 76302,
@@ -5416,27 +5416,43 @@
         {"file": "test-vectors/QMF-MATHEMATICAL-FFT-VERIFICATION.json", "bytes": 1158, "sha256": "02d93b89be10293f37ae283b80efcca5dfd434d4fd31b0494855e420db004f2f", "scope": "160 synthetic mathematical cases per FFT mode, including 128 basis cases and 20480 compared values per mode; summary only, not raw per-case arrays; production audio NOT_RUN"},
         {"file": "test-vectors/QMF-RECEIVER-WHOLE-BINDING-VERIFICATION.json", "bytes": 74454, "sha256": "1d809ed24c805a182e9f2ba668562f1f3c8028e4dfc0ce7cd039e1255e4cda07", "scope": "five continuous cold input-only callback recipes; expected stage/state/window hashes are assertions, not seeds; 14400 analysis-history joins"},
         {"file": "test-vectors/QMF-RECEIVER-WHOLE-BINDING-RESULT.json", "bytes": 1468, "sha256": "cb42de15ce4fa787aa03e511b9f2c6da39a72d3927f00eb020295af8a02862c7", "scope": "PASS_SCOPED_MODEL_FIRST, 5 callbacks; not isolated implementation or product acceptance"},
-        {"file": "test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json", "bytes": 260481, "sha256": "ffb1dea3b1e69383312da4059b9d8ddabb4366ed8fc22e7537f750ba041f2d63", "scope": "six frontend callbacks, two normal and four cached drains; input-only synthetic recipes; target/carrier QMF windows have whole-chain hashes, not QMF-step literal output"}
+        {"file": "test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json", "bytes": 260481, "sha256": "ffb1dea3b1e69383312da4059b9d8ddabb4366ed8fc22e7537f750ba041f2d63", "scope": "six frontend callbacks, two normal and four cached drains; input-only synthetic recipes; target/carrier QMF windows have whole-chain hashes, not QMF-step literal output"},
+        {"kind": "WASHED_DIRECT_ANALYSIS_LITERALS", "source_supplement": "QMF-ANALYSIS-DIRECT-VECTORS-V1", "manifest_sha256": "79830470e3101a10d96852f44c855252c7b78533e0c2b32a73c86d93f74542c6", "input_file": "crates/jocforge-domain/tests/fixtures/qmf_direct/analysis/F04Q2-ANALYSIS-DIRECT-INPUTS.json", "input_sha256": "5a05987ec1d2bd3707234d2d7842f7ad8d6e8e18f9d549266ad2447c1aa0b229", "actual_file": "crates/jocforge-domain/tests/fixtures/qmf_direct/analysis/F04Q2-ANALYSIS-DIRECT-ACTUAL.json", "actual_sha256": "24bf73c9d5f27f5bd4938155920edc9933b8d7d967e4d2ef84d4154f8515840f", "cases": ["cold_sparse_impulse", "signed_zero_reorder_xor", "analysis_scale_finite_boundary", "warm_history_shift"], "qualification": "actual-first direct stage assertions for fold, rotation, analysis scale/bitrev, FFT output, reorder, and history; not whole receiver acceptance"},
+        {"kind": "WASHED_DIRECT_SYNTHESIS_LITERALS", "source_supplement": "QMF-SYNTHESIS-DIRECT-VECTORS-V1", "manifest_sha256": "bff23be87f4b7ceb27c145ab6106dd1b786aa2e6dbc35d1e4892da73743e9f4a", "literal_file": "crates/jocforge-domain/tests/fixtures/qmf_direct/synthesis/F04Q5-SYNTHESIS-DIRECT-LITERALS.json", "literal_sha256": "36f4ba70a9840701f56ae2c90e53b325c390de79b8a7e4b616990f558d4f5843", "cases": ["SYNTH-COLD-SPARSE-SIGNEDZERO", "SYNTH-WARM-HISTORY-SHIFT", "MODE1-COLD-24-BAND0-FIR"], "qualification": "actual-first direct stage assertions for mode=1 delay/FIR, preformat, inverse FFT, postmodulation, polyphase, and next states; whole receiver/J05 not run"}
       ],
       "vector_gaps": [
-        "No current direct unit case isolates F04Q.2 fold plus F04Q.3 rotation from the upstream s09_input producer.",
-        "No current direct unit case isolates F04Q.5 postmodulation; provided direct cases cover fixed FFT, U32 reorder, QMF.6 synthesis history, QMF.4 surround delay/FIR/reset, and QWIN installation separately.",
-        "Whole-binding vectors provide recipe inputs and expected hashes, not raw direct arrays for every intermediate QMF step. Fresh F04-CURRENT-FRESH-REVIEW-R1 is static only (44/44) and ran no DSP.",
-        "The older QMF-LOCAL-REVIEW-STATUS reads a prior unit vector hash 05521f8095993ecf9498a807a13099d283758552b386cd73ed1ec69cdac51792; current manifest unit vector hash is a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8. Do not use that review as a current execution pass."
+        "No whole F04 receiver integration vector is executed by QMF_CORE. The five-callback whole-binding and six-callback chain hashes remain assertions outside this isolated core test; receiver routing, J05/parent, real ADM, and listening remain NOT_RUN.",
+        "The fresh F04-CURRENT-FRESH-REVIEW-R1 remains static-only (44/44); it is not an implementation execution review."
       ],
       "review_evidence": {
         "current_fresh_review": {"source": "outputs/IMPLEMENTER_SUPPLEMENTS/F04-CURRENT-FRESH-REVIEW-R1", "manifest_sha256": "75e7313563c37f79a9afb895704b5eb77e6dda55d41117f820e62c445bbe4999", "review_sha256": "926c8a3c9cd21e68665ac287ad98403481b55adf3cdeef6db7660c0f4fb37a60", "status_sha256": "4aa0f1d9f0fbc718772193159069077618e0c0138c8002798c893d29f0296fb8", "kind": "STATIC_ONLY", "checks": "44/44", "dsp_execution": "NOT_RUN"},
         "qmf_receiver_r2_attestation": {"source": "test-vectors/QMF-RECEIVER-WHOLE-BINDING-LOCAL-REVIEW-STATUS.json", "numeric_recomputation": "PASS for the scoped synthetic five-callback model", "f04rb_local_ready": "YES", "implementation_ready": "NO", "selected_route_certified_by_fresh_checker": false, "qualification": "model-first package attestation; not current isolated implementation DSP execution"},
-        "f04_consumer_r1_attestation": {"source": "test-vectors/F04-WHOLE-SPATIAL-CONSUMER-LOCAL-REVIEW-STATUS.json", "numeric_recomputation": "PASS for six synthetic frontend callbacks and four receiver/fitting calls", "implementation_ready": "NO", "qualification": "whole-spatial consumer attestation; not product execution"}
+        "f04_consumer_r1_attestation": {"source": "test-vectors/F04-WHOLE-SPATIAL-CONSUMER-LOCAL-REVIEW-STATUS.json", "numeric_recomputation": "PASS for six synthetic frontend callbacks and four receiver/fitting calls", "implementation_ready": "NO", "qualification": "whole-spatial consumer attestation; not product execution"},
+        "qmf_direct_vectors": {"analysis_manifest_sha256": "79830470e3101a10d96852f44c855252c7b78533e0c2b32a73c86d93f74542c6", "synthesis_manifest_sha256": "bff23be87f4b7ceb27c145ab6106dd1b786aa2e6dbc35d1e4892da73743e9f4a", "qualification": "washed stage literals assert local QMF core computations after fresh execution; whole receiver, J05/parent, real ADM, and listening remain NOT_RUN"}
       },
-      "readiness_basis": "Algorithm formulas, operation order, typed parameter identities, state shapes/cold values, caller boundary, callback/slot clocks, and fatal outcomes are explicit in the bound specs. The missing direct intermediate vectors are a verification coverage gap, not an unresolved behavior or constant; implementation may begin only for this fixed route and must add local spec-derived tests while treating all supplied expected values as assertions.",
+      "readiness_basis": "The fixed analysis/synthesis formulas, operation order, typed parameter identities, state shapes/cold values, caller boundary, callback/slot clocks, and fatal outcomes are explicit in bound specs. The isolated implementation now matches washed direct stage literals for analysis, synthesis, and one mode=1 24-slot callback. This supports only QMF_CORE direct-vector implementation status; whole F04 receiver integration and all product acceptance remain NOT_RUN.",
       "planned_implementation_files": ["crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs", "crates/jocforge-domain/src/spatial/mod.rs"],
-      "planned_test_files": ["crates/jocforge-domain/tests/qmf_analysis_synthesis.rs"],
-      "implementation_files": [],
-      "test_files": [],
-      "fixture_files": [],
-      "implementation_prohibitions": ["no generic QMF or configurable channel-count plan", "no receiver Type10 routing or s09_input production", "no F04R transform/target/descriptor pipeline", "no mode=0 fitting state or fitting algorithm", "no J05, descriptor, JOC, render, or parent CallbackTransaction", "no local state commit/abort/fatal authority", "no public or third-party provider redistribution", "no DSP execution or product/audio acceptance claim"],
-      "verification": {"package_spec_provider_vector_identities": "PASS", "qmf_core_dsp_execution": "NOT_RUN", "current_fresh_review": "STATIC_ONLY_44_OF_44", "model_first_receiver_review": "SUPPLIED_ATTESTATION_ONLY_IMPLEMENTATION_READY_NO", "targeted_boundary_mutations_rejected": 32, "full_repository_boundary_mutations_rejected": 760, "real_adm_whole_song": "NOT_RUN", "listening_spatial_acceptance": "NOT_RUN"},
+      "planned_test_files": ["crates/jocforge-domain/src/spatial/qmf_analysis_synthesis/tests.rs"],
+      "implementation_files": ["crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs", "crates/jocforge-domain/src/spatial/mod.rs"],
+      "test_files": ["crates/jocforge-domain/src/spatial/qmf_analysis_synthesis/tests.rs"],
+      "fixture_files": [
+        {"file": "crates/jocforge-domain/tests/fixtures/qmf_direct/analysis/F04Q2-ANALYSIS-DIRECT-INPUTS.json", "bytes": 48429, "sha256": "5a05987ec1d2bd3707234d2d7842f7ad8d6e8e18f9d549266ad2447c1aa0b229"},
+        {"file": "crates/jocforge-domain/tests/fixtures/qmf_direct/analysis/F04Q2-ANALYSIS-DIRECT-ACTUAL.json", "bytes": 144743, "sha256": "24bf73c9d5f27f5bd4938155920edc9933b8d7d967e4d2ef84d4154f8515840f"},
+        {"file": "crates/jocforge-domain/tests/fixtures/qmf_direct/analysis/F04Q2-INDEPENDENT-CHECK.json", "bytes": 1741, "sha256": "385f6589dff66c323a4e8e83804343bcb8490a0d1691c860fb51a88fa97f0529"},
+        {"file": "crates/jocforge-domain/tests/fixtures/qmf_direct/analysis/SPEC.md", "bytes": 1208, "sha256": "c67f906eb3cae1f7243696f30f9cd01641883d64c6a5d66afb281a84673ae305"},
+        {"file": "crates/jocforge-domain/tests/fixtures/qmf_direct/synthesis/F04Q5-SYNTHESIS-DIRECT-LITERALS.json", "bytes": 1130988, "sha256": "36f4ba70a9840701f56ae2c90e53b325c390de79b8a7e4b616990f558d4f5843"},
+        {"file": "crates/jocforge-domain/tests/fixtures/qmf_direct/synthesis/ACTUAL-RESULT.json", "bytes": 1087, "sha256": "3b2e494c3b2632afbc53f94e14c93cb6e8ca2f144d4b9c3d760c263cbde2fc20"},
+        {"file": "crates/jocforge-domain/tests/fixtures/qmf_direct/synthesis/SPEC.md", "bytes": 936, "sha256": "3c39ac083d0dd00e0d243580e0bf95d08fa07178b699b3b056acdb7caea35d27"}
+      ],
+      "implementation_inventory": [
+        {"path": "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs", "bytes": 21790, "sha256": "9184b8ca22b5ed89082a92e3027b74c13d7e5424c4504598c3e71c239f2beeaa"},
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2206, "sha256": "4559a9054f74e51a5436681b6362b292248476262ca1dd94b6496d2f0f79a9b6"}
+      ],
+      "test_inventory": [
+        {"path": "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis/tests.rs", "bytes": 14759, "sha256": "64243b2abd6668d321ed0c093bf1a3075ff71f487b282d123fc081a2cba2f037"}
+      ],
+      "implementation_prohibitions": ["no generic QMF or configurable channel-count plan", "no receiver Type10 routing or s09_input production", "no F04R transform/target/descriptor pipeline", "no mode=0 fitting state or fitting algorithm", "no J05, descriptor, JOC, render, or parent CallbackTransaction", "no local state commit/abort/fatal authority", "no public or third-party provider redistribution", "no whole receiver/J05/DSP pipeline execution or product/audio acceptance claim"],
+      "verification": {"package_spec_provider_vector_identities": "PASS", "qmf_core_dsp_execution": "DIRECT_STAGE_VECTORS_PASS", "qmf_core_direct_test_count": 7, "qmf_core_whole_receiver_execution": "NOT_RUN", "current_fresh_review": "STATIC_ONLY_44_OF_44", "model_first_receiver_review": "SUPPLIED_ATTESTATION_ONLY_IMPLEMENTATION_READY_NO", "targeted_boundary_mutations_rejected": 44, "full_repository_boundary_mutations_rejected": 772, "real_adm_whole_song": "NOT_RUN", "listening_spatial_acceptance": "NOT_RUN"},
       "aggregate_readiness_unchanged": {"P1.3-E": "BLOCKED_ON_F04_DSP_RENDER_AND_PARENT", "spatial_audio_root": "MAPPING_COMPLETE_BLOCKED", "F04Q": "DEFERRED_DETAILED_MAPPING", "F04QF": "DEFERRED_DETAILED_MAPPING"}
     }
   },
