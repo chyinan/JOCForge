@@ -296,9 +296,10 @@ fn flags_packet(
     machine: &SpatialControlMachine,
     transaction_id: &str,
     callback_index: FrontendCallbackIndex,
+    flags: [[u8; 2]; 48],
 ) -> SourceFlagsPacket {
     current_features_test_packet(
-        [[1, 1]; 48],
+        flags,
         SourceFlagsParentLineage::new(
             SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
             SourceFlagsAttempt::new(0),
@@ -437,18 +438,22 @@ fn current_features_preserves_shared_render_and_after_proposal_identities() {
     assert_eq!(produced.lineage.callback_phase, CallbackPhase::Normal);
     assert_eq!(
         produced.lineage.audio_payload_sha256,
-        expected_payload_sha256
+        Some(expected_payload_sha256)
     );
     assert_eq!(
         produced.lineage.audio_payload_byte_count,
-        PAYLOAD_BYTE_COUNT
+        Some(PAYLOAD_BYTE_COUNT)
     );
     assert!(Arc::ptr_eq(
-        &produced.lineage.render_stage_identity,
+        produced.lineage.render_stage_identity.as_ref().unwrap(),
         &expected_render_stage_identity
     ));
     assert!(Arc::ptr_eq(
-        &produced.lineage.spatial_control_after_proposal_identity,
+        produced
+            .lineage
+            .spatial_control_after_proposal_identity
+            .as_ref()
+            .unwrap(),
         &expected_after_proposal_identity
     ));
 }
@@ -580,7 +585,12 @@ fn current_features_rejects_parent_render_root_and_flags_lineage_mismatches() {
             vec![0.0; 48 * 3072],
         )
         .unwrap();
-        let flags = flags_packet(&current_owner.machine, flags_transaction, callback);
+        let flags = flags_packet(
+            &current_owner.machine,
+            flags_transaction,
+            callback,
+            [[1, 1]; 48],
+        );
         let before_generation = current_owner.machine.generation();
         let before_digest = current_owner.machine.digest();
         let result = produce_current_features(
@@ -625,7 +635,7 @@ fn current_features_rejects_a_mismatched_explicit_render_phase_without_staging()
     )
     .unwrap();
     let (audio_view, spatial_view) = proposal.fanout();
-    let flags = flags_packet(&context.machine, TRANSACTION_ID, callback);
+    let flags = flags_packet(&context.machine, TRANSACTION_ID, callback, [[1, 1]; 48]);
     let before_generation = context.machine.generation();
     let before_digest = context.machine.digest();
 
@@ -652,7 +662,7 @@ fn current_features_rejects_a_mismatched_explicit_render_phase_without_staging()
 }
 
 #[test]
-fn current_features_rejects_missing_render_proposal_for_reset_sources() {
+fn current_features_accepts_missing_view_for_reset_sources() {
     let context = context();
     let callback = FrontendCallbackIndex::new(0);
     let transaction = CallbackTransactionId::new(TRANSACTION_ID).unwrap();
@@ -682,10 +692,164 @@ fn current_features_rejects_missing_render_proposal_for_reset_sources() {
         &context.fft,
     );
 
+    let Ok(produced) = result else {
+        panic!("all-reset sources unexpectedly required a PostWindow view");
+    };
+    assert!(
+        produced
+            .feature_state_proposal
+            .source_vector_bits
+            .iter()
+            .all(|bits| *bits == 0)
+    );
+    assert!(
+        produced
+            .feature_state_proposal
+            .source_scalar_bits
+            .iter()
+            .all(|bits| *bits == 0)
+    );
+    assert!(produced.lineage.render_stage_identity.is_none());
+    assert!(
+        produced
+            .lineage
+            .spatial_control_after_proposal_identity
+            .is_none()
+    );
+    assert!(produced.lineage.audio_payload_sha256.is_none());
+    assert!(produced.lineage.audio_payload_byte_count.is_none());
+    assert_eq!(context.machine.generation(), before_generation);
+    assert_eq!(context.machine.digest(), before_digest);
+}
+
+#[test]
+fn current_features_accepts_missing_view_for_carry_sources() {
+    let context = context();
+    let callback = FrontendCallbackIndex::new(0);
+    let transaction = CallbackTransactionId::new(TRANSACTION_ID).unwrap();
+    let programme = SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap();
+    let source_flags = flags_packet(&context.machine, TRANSACTION_ID, callback, [[1, 0]; 48]);
+    let before_generation = context.machine.generation();
+    let before_digest = context.machine.digest();
+
+    let result = produce_current_features(
+        &context.machine,
+        &programme,
+        SourceFlagsAttempt::new(0),
+        &transaction,
+        callback,
+        CallbackPhase::Normal,
+        source_flags,
+        None,
+        &context.processor,
+        &context.fft,
+    );
+
+    let Ok(produced) = result else {
+        panic!("all-carry sources unexpectedly required a PostWindow view");
+    };
+    assert!(
+        produced
+            .feature_state_proposal
+            .source_vector_bits
+            .iter()
+            .all(|bits| *bits == 0)
+    );
+    assert!(
+        produced
+            .feature_state_proposal
+            .source_scalar_bits
+            .iter()
+            .all(|bits| *bits == 0)
+    );
+    assert!(produced.lineage.render_stage_identity.is_none());
+    assert!(
+        produced
+            .lineage
+            .spatial_control_after_proposal_identity
+            .is_none()
+    );
+    assert!(produced.lineage.audio_payload_sha256.is_none());
+    assert!(produced.lineage.audio_payload_byte_count.is_none());
+    assert_eq!(context.machine.generation(), before_generation);
+    assert_eq!(context.machine.digest(), before_digest);
+}
+
+#[test]
+fn current_features_requires_audio_for_a_single_read_in_mixed_flags() {
+    let context = context();
+    let callback = FrontendCallbackIndex::new(0);
+    let flags_transaction = CallbackTransactionId::new(TRANSACTION_ID).unwrap();
+    let programme = SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap();
+    let mut flags = [[0, 1]; 48];
+    flags[17] = [0, 0];
+    let source_flags = flags_packet(&context.machine, TRANSACTION_ID, callback, flags);
+    let before_generation = context.machine.generation();
+    let before_digest = context.machine.digest();
+
+    let result = produce_current_features(
+        &context.machine,
+        &programme,
+        SourceFlagsAttempt::new(0),
+        &flags_transaction,
+        callback,
+        CallbackPhase::Normal,
+        source_flags,
+        None,
+        &context.processor,
+        &context.fft,
+    );
+
     let Err(error) = result else {
-        panic!("a missing PostWindow proposal unexpectedly produced output");
+        panic!("one READ source unexpectedly succeeded without a PostWindow view");
     };
     assert_eq!(error, CurrentFeaturesError::ReadAudioMissing);
+    assert_eq!(context.machine.generation(), before_generation);
+    assert_eq!(context.machine.digest(), before_digest);
+}
+
+#[test]
+fn current_features_validates_stale_view_for_all_reset_sources() {
+    let context = context();
+    let callback = FrontendCallbackIndex::new(0);
+    let transaction = CallbackTransactionId::new(TRANSACTION_ID).unwrap();
+    let stale_join = Arc::new(SpatialControlJoinMetadata::fixture(
+        &context.machine,
+        transaction.clone(),
+        callback,
+        context.machine.generation() + 1,
+        None,
+        context.machine.profile(),
+    ));
+    let audio_view = current_features_audio_view_fixture(
+        SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
+        SourceFlagsAttempt::new(0),
+        stale_join,
+        CallbackPhase::Normal,
+        vec![0.0; 48 * 3072],
+    )
+    .unwrap();
+    let source_flags = flags_packet(&context.machine, TRANSACTION_ID, callback, [[0, 1]; 48]);
+    let before_generation = context.machine.generation();
+    let before_digest = context.machine.digest();
+
+    let result = produce_current_features(
+        &context.machine,
+        &SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
+        SourceFlagsAttempt::new(0),
+        &transaction,
+        callback,
+        CallbackPhase::Normal,
+        source_flags,
+        Some(audio_view),
+        &context.processor,
+        &context.fft,
+    );
+
+    let Err(error) = result else {
+        panic!("all-reset sources accepted a stale PostWindow lineage");
+    };
+    assert_eq!(error, CurrentFeaturesError::RootIdentityMismatch);
     assert_eq!(context.machine.generation(), before_generation);
     assert_eq!(context.machine.digest(), before_digest);
 }

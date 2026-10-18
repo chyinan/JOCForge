@@ -36,7 +36,9 @@ application 只协调 receipt。它不得计算 FFT、QMF、BAP、mantissa、Huf
 
 `fanout(self)` 只返回 `CurrentFeaturesAudioView` 和 `SpatialAudioPostWindowView`。proposal 与两个 view 都不能 `Clone` 或 `Copy`。两个 view 共享同一个只读 `Arc<[FiniteF32]>`，并保留相同 lineage、显式 `CallbackPhase` 和 payload SHA-256。
 
-CurrentFeatures 接受 `Option<CurrentFeaturesAudioView>` 以便对缺失 capability fail closed；`None` 在任何输出或状态 proposal 前都以 `ReadAudioMissing` 拒绝，即使所有 source 都是 RESET/CARRY。正常和 cached-drain 成功路径必须传入显式 proposal view，并同时传入预期 phase。未来 spatial-audio assembler 只消费 `SpatialAudioPostWindowView`，再与同 callback 的 matrix、destination 和 LFE inputs 组合。render producer、assembler 和 parent transaction 仍未实现；这些 view 不授予本地 commit 权限。
+CurrentFeatures 接受 `Option<CurrentFeaturesAudioView>`。当至少一个 source 为 READ（`00`）时，必须提供 view；否则以 `ReadAudioMissing` 拒绝。全 RESET/CARRY 时，`None` 合法，CurrentFeatures 不读取音频样本，也不调用 FFT。调用者提供 `Some(view)` 时，即使没有 READ source，CurrentFeatures 仍验证 phase、lineage 和 root identity。正常和 cached-drain 成功路径都接收显式预期 phase，不从音频值推断 phase。
+
+PostWindow fanout 仍生成两个 view。若没有 READ source，父级可以丢弃未消费的 `CurrentFeaturesAudioView`，并保留另一个 view 给 assembler。丢弃 view 不会提交 owner state。未来 spatial-audio assembler 只消费 `SpatialAudioPostWindowView`，再与同 callback 的 matrix、destination 和 LFE inputs 组合。render producer、assembler 和 parent transaction 仍未实现；这些 view 不授予本地 commit 权限。
 
 ## Reset 与失败
 

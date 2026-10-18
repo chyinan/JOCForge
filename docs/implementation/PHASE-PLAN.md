@@ -3519,9 +3519,9 @@
       "FrontendCallbackIndex",
       "CallbackPhase",
       "before feature generation/digest",
-      "spatial-control after-proposal identity",
-      "render-stage identity",
-      "payload byte count and SHA-256",
+      "spatial-control after-proposal identity when a view is supplied",
+      "render-stage identity when a view is supplied",
+      "payload byte count and SHA-256 when a view is supplied",
       "flags receipt",
       "selected profile identity",
       "validated F01E/F03 provider lineage",
@@ -3531,7 +3531,7 @@
     "outputs": {
       "CurrentFeaturesPacket": "opaque F32[24][48] band-major; bitwise transpose of after vector",
       "FeatureStateProposal": "F32[48][24] source-major plus F32[48] scalar",
-      "lineage": "same validated parent identity, explicit phase, render-stage/after-proposal identities, payload SHA-256, and exact math-provider receipts",
+      "lineage": "same validated parent identity and explicit phase; render-stage/after-proposal identities, payload SHA-256 and byte count are optional and present only when a view is supplied; exact math-provider receipts are always present",
       "local_commit": false,
       "parent_commit_required": true,
       "persistent_packet": false,
@@ -3544,7 +3544,7 @@
       "before_source_scalar": "F32[48]",
       "before_source_vector": "F32[48][24] source-major",
       "callback_phase": "explicit CallbackPhase NORMAL or CACHED_DRAIN; never inferred from audio bits",
-      "post_window_audio": "CurrentFeaturesAudioView over same-callback immutable FiniteF32[48][3072] source-major payload",
+      "post_window_audio": "Option<CurrentFeaturesAudioView>; required when any source is READ (00), None is allowed when all sources are RESET/CARRY",
       "source_flags": "same-callback SourceFlagsPacket U8[48][2]"
     },
     "required_provider_types": [
@@ -4755,8 +4755,10 @@
       "spatial_control before generation/digest"
     ],
     "local_commit": false,
-    "none_behavior": "Reject with ReadAudioMissing before output or state proposal for every source-flag combination, including all-reset and all-carry callbacks",
-    "type": "Option<CurrentFeaturesAudioView>"
+    "none_behavior": "Allowed only when every source flag is RESET or CARRY; if any source is READ (00), reject with ReadAudioMissing before state or output proposal",
+    "some_behavior": "Always validate phase, programme, attempt, transaction, callback, profile, provider lineage, and spatial_control before generation/digest, including when no source reads samples",
+    "type": "Option<CurrentFeaturesAudioView>",
+    "unused_view_behavior": "The parent may drop an unconsumed CurrentFeaturesAudioView when no source is READ; dropping the view does not commit owner state"
   },
   "fanout": {
     "operation": "fanout(self)",
@@ -4857,14 +4859,14 @@
   ],
   "verification": {
     "compile_fail_contracts": 5,
-    "current_features_tests": 6,
-    "full_repository_boundary_mutations_rejected": 578,
+    "current_features_tests": 9,
+    "full_repository_boundary_mutations_rejected": 585,
     "matrix_destination_producer": "NOT_IMPLEMENTED",
     "parent_transaction": "NOT_IMPLEMENTED",
     "post_window_fanout_tests": 5,
     "render_producer": "NOT_IMPLEMENTED",
     "spatial_audio_assembler": "NOT_IMPLEMENTED",
-    "targeted_boundary_mutations_rejected": 25
+    "targeted_boundary_mutations_rejected": 32
   }
 }
 ```

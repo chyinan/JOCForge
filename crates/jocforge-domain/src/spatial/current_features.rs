@@ -102,10 +102,10 @@ pub(super) struct CurrentFeaturesLineage {
     pub(super) before_generation: u64,
     pub(super) before_digest: SpatialControlDigest,
     pub(super) callback_phase: CallbackPhase,
-    pub(super) render_stage_identity: Arc<RenderStageIdentity>,
-    pub(super) spatial_control_after_proposal_identity: Arc<SpatialControlJoinMetadata>,
-    pub(super) audio_payload_sha256: AudioPayloadSha256,
-    pub(super) audio_payload_byte_count: u64,
+    pub(super) render_stage_identity: Option<Arc<RenderStageIdentity>>,
+    pub(super) spatial_control_after_proposal_identity: Option<Arc<SpatialControlJoinMetadata>>,
+    pub(super) audio_payload_sha256: Option<AudioPayloadSha256>,
+    pub(super) audio_payload_byte_count: Option<u64>,
     pub(super) processor_receipt: FeatureProcessorMathProviderReceipt,
     pub(super) fft_receipt: FeatureFft4096MathProviderReceipt,
 }
@@ -138,9 +138,6 @@ pub(super) fn produce_current_features(
     fft_provider: &ValidatedFeatureFft4096MathProvider,
 ) -> Result<CurrentFeaturesProduced, CurrentFeaturesError> {
     validate_provider_shape(processor, fft_provider)?;
-    let Some(audio_view) = post_window_audio.as_ref() else {
-        return Err(CurrentFeaturesError::ReadAudioMissing);
-    };
     validate_parent_identity(
         owner,
         programme_id,
@@ -149,8 +146,22 @@ pub(super) fn produce_current_features(
         callback_index,
         callback_phase,
         &source_flags,
-        audio_view,
+        post_window_audio.as_ref(),
     )?;
+
+    let requires_audio =
+        source_flags
+            .payload()
+            .iter()
+            .any(|[processing_inactive, selection_suppressed]| {
+                *processing_inactive == 0 && *selection_suppressed == 0
+            });
+    if requires_audio && post_window_audio.is_none() {
+        return Err(CurrentFeaturesError::ReadAudioMissing);
+    }
+    if let Some(audio_view) = post_window_audio.as_ref() {
+        validate_audio_shape(audio_view)?;
+    }
 
     let before_generation = owner.generation();
     let before_digest = owner.digest();
@@ -180,13 +191,6 @@ pub(super) fn produce_current_features(
             .map_err(|_| CurrentFeaturesError::NonFiniteBefore)?;
     }
 
-    for pair in source_flags.payload() {
-        if pair.iter().any(|flag| *flag > 1) {
-            return Err(CurrentFeaturesError::FlagDomain);
-        }
-    }
-    validate_audio_shape(audio_view)?;
-
     let fast_decay = finite_provider_word(processor.fast_decay_u32())?;
     let slow_retain = finite_provider_word(processor.slow_retain_u32())?;
     let accept = r32_sub(one(), slow_retain).map_err(nonfinite)?;
@@ -208,6 +212,9 @@ pub(super) fn produce_current_features(
             }
             after_scalar[source] = next_scalar.to_bits();
         } else {
+            let audio_view = post_window_audio
+                .as_ref()
+                .ok_or(CurrentFeaturesError::ReadAudioMissing)?;
             let observed = observed_features(audio_view, source, processor, fft_provider)?;
             let mut current_sum = zero();
             for observed_band in observed {
@@ -248,11 +255,18 @@ pub(super) fn produce_current_features(
         }
     }
 
-    let render_stage_identity = Arc::clone(audio_view.render_stage_identity());
-    let spatial_control_after_proposal_identity =
-        Arc::clone(audio_view.spatial_control_after_proposal_identity());
-    let audio_payload_sha256 = audio_view.payload_sha256();
-    let audio_payload_byte_count = audio_view.payload_byte_count();
+    let render_stage_identity = post_window_audio
+        .as_ref()
+        .map(|view| Arc::clone(view.render_stage_identity()));
+    let spatial_control_after_proposal_identity = post_window_audio
+        .as_ref()
+        .map(|view| Arc::clone(view.spatial_control_after_proposal_identity()));
+    let audio_payload_sha256 = post_window_audio
+        .as_ref()
+        .map(CurrentFeaturesAudioView::payload_sha256);
+    let audio_payload_byte_count = post_window_audio
+        .as_ref()
+        .map(CurrentFeaturesAudioView::payload_byte_count);
     let lineage = CurrentFeaturesLineage {
         programme_id: SourceFlagsProgrammeId::new(programme_id.as_str())
             .map_err(|_| CurrentFeaturesError::ParentLineageMismatch)?,
@@ -331,7 +345,7 @@ fn validate_parent_identity(
     callback_index: FrontendCallbackIndex,
     callback_phase: CallbackPhase,
     source_flags: &SourceFlagsPacket,
-    audio: &CurrentFeaturesAudioView,
+    audio: Option<&CurrentFeaturesAudioView>,
 ) -> Result<(), CurrentFeaturesError> {
     if callback_index != owner.committed().callback_index() {
         return Err(CurrentFeaturesError::StaleCallback);
@@ -341,29 +355,33 @@ fn validate_parent_identity(
     owner
         .validate_profile_identity(&profile)
         .map_err(|_| CurrentFeaturesError::UnsupportedProfile)?;
-    if audio.boundary() != PostWindowBoundary::Installed48PostWindow48x3072 {
-        return Err(CurrentFeaturesError::RenderBoundaryMismatch);
-    }
-    if audio.callback_phase() != callback_phase {
-        return Err(CurrentFeaturesError::RenderPhaseMismatch);
-    }
-    if audio.callback_index() != callback_index {
-        return Err(CurrentFeaturesError::StaleCallback);
-    }
-    if audio.programme_id().as_str() != programme_id.as_str()
-        || audio.attempt() != attempt
-        || audio.transaction_id().as_str() != transaction_id.as_str()
-    {
-        return Err(CurrentFeaturesError::ParentLineageMismatch);
-    }
-    if audio.profile_identity() != profile {
-        return Err(CurrentFeaturesError::UnsupportedProfile);
-    }
-    if audio.provider_lineage() != owner.provider_lineage() {
-        return Err(CurrentFeaturesError::ProviderMismatch);
-    }
-    if audio.before_generation() != owner.generation() || audio.before_digest() != owner.digest() {
-        return Err(CurrentFeaturesError::RootIdentityMismatch);
+    if let Some(audio) = audio {
+        if audio.boundary() != PostWindowBoundary::Installed48PostWindow48x3072 {
+            return Err(CurrentFeaturesError::RenderBoundaryMismatch);
+        }
+        if audio.callback_phase() != callback_phase {
+            return Err(CurrentFeaturesError::RenderPhaseMismatch);
+        }
+        if audio.callback_index() != callback_index {
+            return Err(CurrentFeaturesError::StaleCallback);
+        }
+        if audio.programme_id().as_str() != programme_id.as_str()
+            || audio.attempt() != attempt
+            || audio.transaction_id().as_str() != transaction_id.as_str()
+        {
+            return Err(CurrentFeaturesError::ParentLineageMismatch);
+        }
+        if audio.profile_identity() != profile {
+            return Err(CurrentFeaturesError::UnsupportedProfile);
+        }
+        if audio.provider_lineage() != owner.provider_lineage() {
+            return Err(CurrentFeaturesError::ProviderMismatch);
+        }
+        if audio.before_generation() != owner.generation()
+            || audio.before_digest() != owner.digest()
+        {
+            return Err(CurrentFeaturesError::RootIdentityMismatch);
+        }
     }
     let parent = SourceFlagsParentLineage::new(
         SourceFlagsProgrammeId::new(programme_id.as_str())
