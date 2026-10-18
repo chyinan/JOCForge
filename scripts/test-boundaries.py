@@ -504,6 +504,30 @@ def main():
  ('e2-code-public-time-usize',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs','    spatial_audio: &SpatialAudioMachine,','    spatial_audio: &SpatialAudioMachine,\n    callback_index: usize,')),
  ('e2-code-finite-input-check-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs','FiniteF32::new(f32::from_bits(word)).map_err(|_| ComponentStageError::Input)','FiniteF32::new(0.0).map_err(|_| ComponentStageError::Input)'))
  ]
+ cases += [
+ ('directlfe-status-overclaim',map_mut_render(lambda d:(d['phase_one']['P1.3-E3'].update(status='COMPLETE'),d['status'].update({'P1.3-E3':'COMPLETE'})))),
+ ('directlfe-implementation-premature',map_mut_render(lambda d:(d['phase_one']['P1.3-E3'].update(implementation_status='LOCALLY_VERIFIED_DIRECT_LFE__UPSTREAM_PARENT_DEFERRED'),d['status'].update({'P1.3-E3':'LOCALLY_VERIFIED_DIRECT_LFE__UPSTREAM_PARENT_DEFERRED'})))),
+ ('directlfe-parent-unblocked',map_mut_render(lambda d:d['status'].update({'P1.3-E':'LOCALLY_VERIFIED'}))),
+ ('directlfe-e2-status-rewritten',map_mut_render(lambda d:d['phase_one']['P1.3-E2'].update(implementation_status='LOCALLY_VERIFIED_DIRECT_LFE__UPSTREAM_PARENT_DEFERRED'))),
+ ('directlfe-supplement-identity-drift',map_mut_render(lambda d:d['phase_one']['P1.3-E3']['supplement'].update(identity='direct-lfe-ring-v1'))),
+ ('directlfe-vector-hash-drift',map_mut_render(lambda d:d['phase_one']['P1.3-E3']['supplement'].update(vectors_sha256='00'*32))),
+ ('directlfe-g1-position-drift',map_mut_render(lambda d:d['phase_one']['P1.3-E3']['vectors']['g1_erratum'].update(override_index=269))),
+ ('directlfe-g1-padding-drift',map_mut_render(lambda d:d['phase_one']['P1.3-E3']['vectors']['g1_erratum'].update(positive_zero_padding_range=[730,1536]))),
+ ('directlfe-cached-regeneration',map_mut_render(lambda d:d['phase_one']['P1.3-E3']['vectors'].update(cached_rows='regenerate each cached callback'))),
+ ('directlfe-infer-phase',map_mut_render(lambda d:d['phase_one']['P1.3-E3']['clock_contract'].update(production_domain='infer phase from generation'))),
+ ('directlfe-global-clock-drift',map_mut_render(lambda d:d['phase_one']['P1.3-E3']['clock_contract'].update(production_cached_drain='g=2..5'))),
+ ('directlfe-output-origin-drift',map_mut_render(lambda d:d['phase_one']['P1.3-E3']['clock_contract'].update(output_origin='for g>=2, row0 origin is source generation g-1'))),
+ ('directlfe-local-commit',map_mut_render(lambda d:d['phase_one']['P1.3-E3'].update(commit_authority='spatial_audio local commit'))),
+ ('directlfe-full-type10',map_mut_render(lambda d:d['phase_one']['P1.3-E3']['clock_contract'].update(type10='E3 assembles all Type10 rows'))),
+ ('directlfe-hardcoded-host',map_mut_render(lambda d:d['phase_one']['P1.3-E3']['input_contract'].update(host_slot='fixed source slot 3'))),
+ ('directlfe-mute-transform',map_mut_render(lambda d:d['phase_one']['P1.3-E3']['input_contract'].update(mute='zero samples when regular source is muted'))),
+ ('directlfe-failure-advances',map_mut_render(lambda d:d['phase_one']['P1.3-E3']['transition'].update(failure='advance ring and return error'))),
+ ('directlfe-receiver-included',map_mut_render(lambda d:d['phase_one']['P1.3-E3']['implementation_prohibitions'].remove('no receiver/QMF or JOC/codec logic'))),
+ ('directlfe-test-file-removed',map_mut_render(lambda d:d['phase_one']['P1.3-E3'].update(planned_test_files=[]))),
+ ('directlfe-not-run-promoted',map_mut_render(lambda d:d['phase_one']['P1.3-E3']['not_run'].remove('receiver/QMF'))),
+ ('directlfe-error-translation-drift',map_mut_render(lambda d:d['phase_one']['P1.3-E3']['error_translation']['outcomes'][2].update(error_code='F04_INPUT_ERROR'))),
+ ('directlfe-fixture-before-implementation',lambda r:((r/'crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json').parent.mkdir(parents=True,exist_ok=True),(r/'crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json').write_text('{}\n',encoding='utf-8')))
+ ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]
   if not cases:raise RuntimeError('no boundary mutations match case prefix: '+x.case_prefix)
