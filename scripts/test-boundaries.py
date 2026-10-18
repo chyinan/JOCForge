@@ -27,12 +27,25 @@ def code_mut_render(mutate):
   result=subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
   if result.returncode:raise RuntimeError('render failed after refreshing mutated source identities')
  return m
+def spatial_audio_code_mut_render(mutate):
+ def m(r):
+  mutate(r)
+  map_path=r/'docs/implementation/IMPLEMENTATION-MAP.json';d=json.loads(map_path.read_text(encoding='utf-8'))
+  source='crates/jocforge-domain/src/spatial/spatial_audio_state.rs'
+  entry=next(entry for entry in d['phase_one']['P1.3-E1']['implementation_inventory']if entry['path']==source)
+  content=(r/source).read_bytes();entry['bytes']=len(content);entry['sha256']=hashlib.sha256(content).hexdigest()
+  map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+  result=subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
+  if result.returncode:raise RuntimeError('render failed after refreshing mutated spatial_audio source identity')
+ return m
 def append(path,text):path.write_text(path.read_text(encoding='utf-8')+text,encoding='utf-8')
+def flip_first_byte(path):
+ data=path.read_bytes();path.write_bytes(bytes([data[0]^1])+data[1:])
 def replace_once(path,old,new):
  text=path.read_text(encoding='utf-8')
- if old not in text and path.name=='mod.rs' and path.parent.name=='spatial' and old=='pub mod source_flags;\npub mod spatial_control;':
-  old='pub mod source_flags;\n#[allow(dead_code)]\npub(crate) mod spatial_audio;\npub mod spatial_control;'
-  new='#[macro_use]\npub mod spatial_control;\npub mod source_flags;\n#[allow(dead_code)]\npub(crate) mod spatial_audio;'
+ if old not in text and path.name=='mod.rs' and path.parent.name=='spatial' and 'pub mod spatial_control;'in text and '#[macro_use]'not in text:
+  old='pub mod spatial_control;'
+  new='#[macro_use]\npub mod spatial_control;'
  if old not in text:raise RuntimeError('mutation source not found: '+str(path))
  path.write_text(text.replace(old,new,1),encoding='utf-8')
 def inject_source_flags_json_macro(r):
@@ -140,15 +153,22 @@ def main():
  ('p13e1-false-ready-with-cold-blocker',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio').update(materialization_status='READY_FOR_IMPLEMENTATION'))),
  ('p13e1-root-readiness-laundered',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['readiness'].update(mapping_status='READY_FOR_IMPLEMENTATION'))),
  ('p13e1-cold-blocker-regressed',map_mut_render(lambda d:d['phase_one']['P1.3-E1'].update(status='BLOCKED_ON_COLD_STATE_SPEC_DETAILS'))),
+ ('p13e1-cold-staging-status-regressed',map_mut_render(lambda d:d['phase_one']['P1.3-E1'].update(status='READY_FOR_IMPLEMENTATION',implementation_status='NOT_STARTED'))),
  ('p13e1-temporal-scalars-guessed',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['cold_state_resolution']['temporal_fields'].update(index_semantics='guess index_28=index_32'))),
  ('p13e1-node-encoder-assumed',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['cold_state_resolution']['f04_state_node_encoding'].update(status='ASSUMED_FROM_F04RB'))),
  ('p13e1-provider-json-cold',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['cold_provider'].update(kind='FILE_PROVIDER',provider_files=['parameters/qmf-receiver-functional-v1.json']))),
  ('p13e1-clock-domain-mixed',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['clock'].update(callback_index_type='ReceiverCallbackCount'))),
- ('p13e1-machine-added-before-cold-binding',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio.rs','\n// pattern: Functional Core\npub struct SpatialAudioMachine;\n')),
- ('p13e1-state-added-before-cold-binding',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio.rs','\npub struct SpatialAudioState;\n')),
- ('p13e1-clone-machine-added-before-cold-binding',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio.rs','\n#[derive(Clone, Copy)]\npub struct SpatialAudioMachine;\n')),
- ('p13e1-machine-mutable-committed-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio.rs','\nimpl SpatialAudioMachine { pub fn committed_mut(&mut self) -> &mut SpatialAudioState { todo!() } }\n')),
- ('p13e1-local-commit-added-before-cold-binding',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio.rs','\nimpl SpatialAudioMachine { pub fn commit(&mut self) {} }\n'))
+ ('p13e1-machine-duplicate-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','\npub struct SpatialAudioMachine;\n')),
+ ('p13e1-state-duplicate-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','\npub struct SpatialAudioState;\n')),
+ ('p13e1-clone-machine-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','\nimpl Clone for SpatialAudioMachine { fn clone(&self) -> Self { todo!() } }\n')),
+ ('p13e1-machine-mutable-committed-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','\nimpl SpatialAudioMachine { pub fn committed_mut(&mut self) -> &mut SpatialAudioState { todo!() } }\n')),
+ ('p13e1-local-commit-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','\nimpl SpatialAudioMachine { pub fn commit(&mut self, _: SpatialAudioStaged) {} }\n')),
+ ('p13e1-local-abort-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','\nimpl SpatialAudioMachine { pub fn abort(&self, _: SpatialAudioStaged) {} }\n')),
+ ('p13e1-local-fatal-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','\nimpl SpatialAudioMachine { pub fn fatal(&mut self, _: SpatialAudioStaged) {} }\n')),
+ ('p13e1-dsp-helper-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','\npub fn process_audio() {}\n')),
+ ('p13e1-public-const-clock-usize',spatial_audio_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','\npub const fn raw_clock(&self) -> usize { 0 }\n'))),
+ ('p13e1-kat-seeded-in-production',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','\nconst COLD: &[u8] = include_bytes!("F04-COLD-PREIMAGE.bin");\n')),
+ ('p13e1-fixture-kat-identity-drift',lambda r:flip_first_byte(r/'crates/jocforge-domain/tests/fixtures/spatial_audio_cold/F04-COLD-PREIMAGE.bin'))
  ]
  spatial_control_source='crates/jocforge-domain/src/spatial/spatial_control.rs'
  cases += [

@@ -1,10 +1,10 @@
 # P1.3-E1 cold-state/staging blocker
 
-> Status: `RESOLVED_BY_F04_COLD_SUPPLEMENT` for specification completeness. Local typed construction, serialization, and post-construction KAT comparison remain pending P1.3-E1.
+> Status: `RESOLVED_BY_F04_COLD_SUPPLEMENT`. P1.3-E1 locally verified the typed cold construction and byte-for-byte KAT comparison; DSP and integration remain deferred.
 
 ## Decision
 
-`P1.3-E1` was blocked before Rust implementation because the original approved package did not uniquely bind every temporal scalar or the complete D-node grammar. The wash-side supplement below resolves those specification gaps. The expected digest is still not a recoverable preimage: implementation must construct typed state and serialize it before comparing bytes.
+`P1.3-E1` was blocked before Rust implementation because the original approved package did not uniquely bind every temporal scalar or the complete D-node grammar. The wash-side supplement below resolves those specification gaps. The expected digest is not a recoverable preimage; the local implementation constructs typed state, serializes it, then compares the resulting bytes.
 
 The previous machine-readable blocker status `BLOCKED_ON_COLD_STATE_SPEC_DETAILS` is now `RESOLVED_BY_F04_COLD_SUPPLEMENT`. `P1.3-E` remains `BLOCKED_ON_F04_PROVIDERS_RENDER_AND_PARENT`; P1.3-C remains waiting for owner roots.
 
@@ -32,7 +32,11 @@ Approved package manifest SHA-256: `c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469
 1. For `receiver_state.temporal_states[0..4]` and `fitting_qmf_state.target_temporal`, the supplement pins `stride_bytes=4`, `index_28=read=span`, and `index_32=write=0`. Each buffer tuple is lane-major; each lane contains `2*span` F32 positive-zero words as opaque raw bytes. The two span-896 nodes have equal content but own separate buffers.
 2. The supplement defines the complete recursive `F04_STATE_NODE_V1` grammar: `N`, `B`, `I`, `F`, `Z`, `T`, and `D`; all widths, endian rules, ASCII naming, declared field order, type precedence, and exclusions are explicit. D nodes use U16LE class/name lengths and declared field count, with no D body length.
 
-The supplement provides the six-node constructor table and complete byte grammar. Implementation must still build a fresh typed nine-field root, run the project-owned encoder, and only then compare the generated 813,733 bytes with the KAT. It must preserve `None`, bool, signed integer, float, and raw bytes as distinct kinds; keep both span-896 temporal states independent; reject a negative-zero cold float; and never return KAT bytes as encoder output.
+The supplement provides the six-node constructor table and complete byte grammar. P1.3-E1 builds a fresh typed nine-field root, runs the project-owned encoder, and compares the generated 813,733 bytes with the KAT. The resulting bytes match exactly. The implementation preserves `None`, bool, signed integer, float, and raw bytes as distinct kinds; keeps both span-896 temporal states independent; rejects a negative-zero cold float; and never returns KAT bytes as encoder output.
+
+## P1.3-E1 local result
+
+Status: `LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__DSP_PRODUCERS_DEFERRED`. The complete root KAT and all six temporal KATs match byte-for-byte. The washed primitive, mutation, and temporal vectors run actual-first. The machine exposes read-only committed state and non-Clone preparation/staging tokens; it has no local commit, abort, or fatal method.
 
 ## Scope preserved
 

@@ -11,5 +11,5 @@ pub use clock::{
 pub use index::{
     AdmSampleCount, AdmSampleIndex, ClockDomainTypeSeparation, CodecSourceIndex,
     FrontendCallbackIndex, JocDispatchIndex, JocGeneratedWriterIndex, JocPoppedWriterIndex,
-    NormalCallbackCount, OrdinaryPayloadWriterIndex, PublishedAuIndex,
+    NormalCallbackCount, OrdinaryPayloadWriterIndex, PublishedAuIndex, ReceiverCallbackCount,
 };

@@ -1,0 +1,253 @@
+{
+  "schema": "research-f04-cold-serializer-vectors.v1",
+  "input_only": true,
+  "primitive_cases": [
+    {
+      "id": "none",
+      "input_value": "none",
+      "expected_hex": "4e",
+      "expected_bytes": 1
+    },
+    {
+      "id": "int_zero",
+      "input_value": "int_zero",
+      "expected_hex": "490000000000000000",
+      "expected_bytes": 9
+    },
+    {
+      "id": "int_minus_one",
+      "input_value": "int_minus_one",
+      "expected_hex": "49ffffffffffffffff",
+      "expected_bytes": 9
+    },
+    {
+      "id": "bool_false",
+      "input_value": "bool_false",
+      "expected_hex": "5a00",
+      "expected_bytes": 2
+    },
+    {
+      "id": "bool_true",
+      "input_value": "bool_true",
+      "expected_hex": "5a01",
+      "expected_bytes": 2
+    },
+    {
+      "id": "F32_plus_zero",
+      "input_value": "F32_plus_zero",
+      "expected_hex": "4600000000",
+      "expected_bytes": 5
+    },
+    {
+      "id": "F32_minus_zero",
+      "input_value": "F32_minus_zero",
+      "expected_hex": "4600000080",
+      "expected_bytes": 5
+    },
+    {
+      "id": "empty_bytes",
+      "input_value": "empty_bytes",
+      "expected_hex": "420000000000000000",
+      "expected_bytes": 9
+    },
+    {
+      "id": "four_zero_bytes",
+      "input_value": "four_zero_bytes",
+      "expected_hex": "42040000000000000000000000",
+      "expected_bytes": 13
+    },
+    {
+      "id": "empty_tuple",
+      "input_value": "empty_tuple",
+      "expected_hex": "540000000000000000",
+      "expected_bytes": 9
+    },
+    {
+      "id": "three_none_tuple",
+      "input_value": "three_none_tuple",
+      "expected_hex": "5403000000000000004e4e4e",
+      "expected_bytes": 12
+    },
+    {
+      "id": "list_three_none",
+      "input_value": "list_three_none",
+      "expected_hex": "5403000000000000004e4e4e",
+      "expected_bytes": 12
+    }
+  ],
+  "temporal_cases": [
+    {
+      "path": "receiver_state/temporal_states/0",
+      "span": 1217,
+      "stride_bytes": 4,
+      "index_28_read": 1217,
+      "index_32_write": 0,
+      "buffers_shape_F32": [
+        3,
+        2434
+      ],
+      "buffer_bytes_per_lane": 9736,
+      "node_wire_bytes": 29347,
+      "node_wire_sha256": "9246ae1f51e4ecd21b681748f08152276ac4c545961e7c7834c9b087a8707e8b",
+      "position_in_full_preimage": {
+        "offset": 226178,
+        "bytes": 29347,
+        "tag": "D"
+      }
+    },
+    {
+      "path": "receiver_state/temporal_states/1",
+      "span": 63,
+      "stride_bytes": 4,
+      "index_28_read": 63,
+      "index_32_write": 0,
+      "buffers_shape_F32": [
+        5,
+        126
+      ],
+      "buffer_bytes_per_lane": 504,
+      "node_wire_bytes": 2677,
+      "node_wire_sha256": "1cb9a2ccd0c4f24e32d93dd075bf1e75a84e789e53336dd9f7164a116fc4b1d1",
+      "position_in_full_preimage": {
+        "offset": 255525,
+        "bytes": 2677,
+        "tag": "D"
+      }
+    },
+    {
+      "path": "receiver_state/temporal_states/2",
+      "span": 900,
+      "stride_bytes": 4,
+      "index_28_read": 900,
+      "index_32_write": 0,
+      "buffers_shape_F32": [
+        1,
+        1800
+      ],
+      "buffer_bytes_per_lane": 7200,
+      "node_wire_bytes": 7321,
+      "node_wire_sha256": "e6bd6c37dd859a91814b555936b25d230bd776e01867b3d9311dd5c4750f782b",
+      "position_in_full_preimage": {
+        "offset": 258202,
+        "bytes": 7321,
+        "tag": "D"
+      }
+    },
+    {
+      "path": "receiver_state/temporal_states/3",
+      "span": 256,
+      "stride_bytes": 4,
+      "index_28_read": 256,
+      "index_32_write": 0,
+      "buffers_shape_F32": [
+        6,
+        512
+      ],
+      "buffer_bytes_per_lane": 2048,
+      "node_wire_bytes": 12454,
+      "node_wire_sha256": "42e77b078aa82202c9513b0d450b5559ab03b95e145f31cc31493e717793c77e",
+      "position_in_full_preimage": {
+        "offset": 265523,
+        "bytes": 12454,
+        "tag": "D"
+      }
+    },
+    {
+      "path": "receiver_state/temporal_states/4",
+      "span": 896,
+      "stride_bytes": 4,
+      "index_28_read": 896,
+      "index_32_write": 0,
+      "buffers_shape_F32": [
+        15,
+        1792
+      ],
+      "buffer_bytes_per_lane": 7168,
+      "node_wire_bytes": 107767,
+      "node_wire_sha256": "da2284560f5f4567406a95532f87a077a568d0bf67974ebdab5989e6efb36c89",
+      "position_in_full_preimage": {
+        "offset": 277977,
+        "bytes": 107767,
+        "tag": "D"
+      }
+    },
+    {
+      "path": "fitting_qmf_state/target_temporal",
+      "span": 896,
+      "stride_bytes": 4,
+      "index_28_read": 896,
+      "index_32_write": 0,
+      "buffers_shape_F32": [
+        15,
+        1792
+      ],
+      "buffer_bytes_per_lane": 7168,
+      "node_wire_bytes": 107767,
+      "node_wire_sha256": "da2284560f5f4567406a95532f87a077a568d0bf67974ebdab5989e6efb36c89",
+      "position_in_full_preimage": {
+        "offset": 392696,
+        "bytes": 107767,
+        "tag": "D"
+      }
+    }
+  ],
+  "full_cold": {
+    "input_recipe": "COLD-CONSTRUCTOR-RECIPE.json#/root",
+    "expected_preimage_file": "F04-COLD-PREIMAGE.bin",
+    "expected_bytes": 813733,
+    "expected_sha256": "35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e"
+  },
+  "mutation_instructions": [
+    {
+      "id": "class_drift",
+      "operation": "replace root class F04CompositionState with F04CompositionStatx",
+      "expected": "REJECT_SCHEMA_CLASS"
+    },
+    {
+      "id": "field_name_drift",
+      "operation": "replace first root field callback_index with callback_indey",
+      "expected": "REJECT_DECLARED_FIELD"
+    },
+    {
+      "id": "field_order_drift",
+      "operation": "swap first two root declared field records",
+      "expected": "REJECT_DECLARED_ORDER"
+    },
+    {
+      "id": "temporal_indices_swapped",
+      "operation": "receiver.temporal0 index_28=0,index_32=1217",
+      "expected": "REJECT_COLD_CONSTRUCTOR"
+    },
+    {
+      "id": "integer_endian_drift",
+      "operation": "encode temporal0 span I64 as big-endian",
+      "expected": "REJECT_COLD_VALUE"
+    },
+    {
+      "id": "name_length_endian_drift",
+      "operation": "encode root class-name length as big-endian U16",
+      "expected": "REJECT_GRAMMAR_OR_SCHEMA"
+    },
+    {
+      "id": "buffer_length_drift",
+      "operation": "temporal0 first B payload length=9735 instead of9736",
+      "expected": "REJECT_COLD_BUFFER_EXTENT"
+    },
+    {
+      "id": "None_to_int_zero",
+      "operation": "replace lfe.rows[0] N with I(0)",
+      "expected": "REJECT_COLD_NODE_TYPE"
+    },
+    {
+      "id": "None_to_zero_PCM",
+      "operation": "replace lfe.rows[0] N with B6144 zeros",
+      "expected": "REJECT_COLD_NODE_TYPE"
+    },
+    {
+      "id": "float_negative_zero_cold",
+      "operation": "component_parameter_state.peak F32 word=0x80000000",
+      "expected": "REJECT_COLD_BITS"
+    }
+  ],
+  "scope": "constructors and serialization only; mutation validation executed separately, not DSP transitions"
+}

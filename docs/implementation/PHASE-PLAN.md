@@ -1171,7 +1171,7 @@
       "output"
     ],
     "missing_callback_root_implementation": "spatial_audio",
-    "spatial_audio_implementation_status": "COLD_SPEC_RESOLVED__E1_READY_FOR_IMPLEMENTATION",
+    "spatial_audio_implementation_status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__DSP_PRODUCERS_DEFERRED",
     "spatial_audio_mapping_status": "MAPPING_COMPLETE_BLOCKED",
     "spatial_control_status": "MAPPING_COMPLETE_BLOCKED_ON_P1.3_C_ROOTS"
   },
@@ -1981,9 +1981,9 @@
     "canonical_state": {
       "byte_level_encoding_complete": true,
       "callback_local_scratch": "excluded",
-      "cold_preimage_reconstructed": false,
+      "cold_preimage_reconstructed": true,
       "cold_state_sha256": "35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e",
-      "digest": "Expected SHA-256 over the complete F04CompositionState canonical bytes; local byte reconstruction remains pending the P1.3-E1 implementation and post-construction KAT comparison",
+      "digest": "SHA-256 over complete F04CompositionState canonical bytes; fresh typed construction and project encoder output match the complete post-construction KAT byte-for-byte",
       "encoding": "F04_STATE_NODE_V1: N/B+U64LE/I+I64LE/F+F32LE/Z+U8/T+U64LE/D+class+declared fields",
       "encoding_id": "F04_STATE_NODE_V1",
       "expected_cold_bytes": 813733,
@@ -1998,6 +1998,7 @@
         "fitting_qmf_state",
         "receiver_callback_count"
       ],
+      "local_kat_bytes_match": true,
       "schema_semantic_sha256_is_state_digest": false
     },
     "clock": {
@@ -2008,7 +2009,7 @@
       "receiver_rule": "g<2 advances component/LFE only; g>=2 maps r=g-2 and advances receiver/QMF once"
     },
     "cold_provider": {
-      "complete_constructor_status": "READY_FOR_TYPED_COLD_CONSTRUCTION",
+      "complete_constructor_status": "LOCALLY_VERIFIED_TYPED_COLD_CONSTRUCTION",
       "generation_specs": [
         "specs/04-whole-spatial-chain-composition.md",
         "specs/04-component-parameter-state.md",
@@ -2052,7 +2053,8 @@
           "Z": "U8 0 or 1"
         }
       },
-      "local_preimage_reconstructed": false,
+      "local_kat_byte_comparison": "PASS: 813733 actual project-encoder bytes equal the post-construction KAT",
+      "local_preimage_reconstructed": true,
       "status": "RESOLVED_BY_F04_COLD_SUPPLEMENT",
       "supplement": {
         "expected_cold_bytes": 813733,
@@ -2280,7 +2282,7 @@
         "type": "I64LE"
       }
     ],
-    "implementation_status": "COLD_SPEC_RESOLVED__E1_READY_FOR_IMPLEMENTATION",
+    "implementation_status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__DSP_PRODUCERS_DEFERRED",
     "linear_capabilities": {
       "machine": "SpatialAudioMachine; one committed root owner; non-Clone and non-Copy",
       "prepared": "SpatialAudioPrepared; non-Clone/non-Copy; consumed by stage or discard",
@@ -2438,10 +2440,10 @@
   "task": {
     "blocker_file": "docs/implementation/SPATIAL-AUDIO-COLD-STAGING-BLOCKER.md",
     "blockers": [
-      "P1.3-E1 cold-state specification is RESOLVED_BY_F04_COLD_SUPPLEMENT; local construction and byte-level KAT verification remain pending implementation",
+      "P1.3-E1 typed cold construction, byte-level KAT comparison, and staging foundation are locally verified; F04 DSP remains deferred",
       "F04-specific P1.4 provider contracts, PostWindowAudioPacket render/fanout, and parent CallbackTransaction remain deferred"
     ],
-    "cold_preimage_reconstructed": false,
+    "cold_preimage_reconstructed": true,
     "cold_sha256": "35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e",
     "implementation_status": "BLOCKED_ON_F04_PROVIDERS_RENDER_AND_PARENT",
     "mapping_status": "MAPPING_COMPLETE_BLOCKED",
@@ -2466,20 +2468,84 @@
   "blocked_on": [],
   "blocker_file": "docs/implementation/SPATIAL-AUDIO-COLD-STAGING-BLOCKER.md",
   "cold_spec_status": "RESOLVED_BY_F04_COLD_SUPPLEMENT",
+  "cold_state_actual_bytes": 813733,
+  "cold_state_actual_sha256": "35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e",
   "expected_cold_bytes": 813733,
   "expected_cold_sha256": "35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e",
+  "implementation_files": [
+    "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+    "crates/jocforge-domain/src/spatial/mod.rs",
+    "crates/jocforge-domain/src/timeline/index.rs",
+    "crates/jocforge-domain/src/timeline/mod.rs"
+  ],
+  "implementation_inventory": [
+    {
+      "bytes": 34477,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+      "sha256": "2b8aea331e1b54eba84ef40dfb7a2b7ce41062c32ec1eea9706ef348aa070e8c"
+    },
+    {
+      "bytes": 905,
+      "path": "crates/jocforge-domain/src/spatial/mod.rs",
+      "sha256": "fb8722e5e8c087ac83f0994ecca7a0be2076e8754ac68928f40611b938f932f8"
+    },
+    {
+      "bytes": 2290,
+      "path": "crates/jocforge-domain/src/timeline/index.rs",
+      "sha256": "911be2413816ebe1fde51ceda0066e9c088f92ae7c8b045cee49aac37540ec7d"
+    },
+    {
+      "bytes": 586,
+      "path": "crates/jocforge-domain/src/timeline/mod.rs",
+      "sha256": "7f2099065d657bdacab116d921a63107a180930086b73a42557881aa3acdb7b2"
+    }
+  ],
   "implementation_prohibitions": [
     "do not read F04-COLD-PREIMAGE.bin as state input or return its bytes instead of encoder output",
     "do not implement any DSP, F04 provider validator, PostWindow renderer/fanout, or local commit/abort/fatal authority",
     "do not merge the two span=896 temporal nodes or zero-fill LFE None sentinels"
   ],
-  "implementation_status": "NOT_STARTED",
+  "implementation_status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__DSP_PRODUCERS_DEFERRED",
   "mapping_status": "MAPPING_COMPLETE",
   "programme_root": "spatial_audio",
   "scope": "Construct and serialize the complete F04CompositionState cold root with a bounded typed F04_STATE_NODE_V1 encoder, then provide a non-Clone storage/staging foundation; do not implement DSP, provider validation, PostWindow render/fanout, or local commit/abort/fatal",
-  "status": "READY_FOR_IMPLEMENTATION",
+  "status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__DSP_PRODUCERS_DEFERRED",
   "supplement_manifest_sha256": "77ad0562fcd4efa1e8fe37cc1dc7219570b49b9b332cca1f1273ccda2e2cef9c",
-  "task_id": "P1.3-E1-SPATIAL-AUDIO-COLD-STAGING-FOUNDATION"
+  "task_id": "P1.3-E1-SPATIAL-AUDIO-COLD-STAGING-FOUNDATION",
+  "test_files": [
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/tests.rs",
+    "crates/jocforge-domain/tests/spatial_audio_cold_staging.rs"
+  ],
+  "test_inventory": [
+    {
+      "bytes": 6848,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/tests.rs",
+      "sha256": "2cea166d6103a544200268ab1560b53ceec10fc5a190afcb7bf9e0837478186b"
+    },
+    {
+      "bytes": 9923,
+      "path": "crates/jocforge-domain/tests/spatial_audio_cold_staging.rs",
+      "sha256": "0db769e058314f49f35266af6fdcff9c7cf9ba58e126627711a21a722d3a5fa0"
+    }
+  ],
+  "test_vector_fixture_files": [
+    "crates/jocforge-domain/tests/fixtures/spatial_audio_cold/F04-COLD-PREIMAGE.bin",
+    "crates/jocforge-domain/tests/fixtures/spatial_audio_cold/INPUT-ONLY-VECTORS.json",
+    "crates/jocforge-domain/tests/fixtures/spatial_audio_cold/MUTATION-AND-TEMPORAL-VECTORS.json",
+    "crates/jocforge-domain/tests/fixtures/spatial_audio_cold/TEMPORAL-COLD-0.bin",
+    "crates/jocforge-domain/tests/fixtures/spatial_audio_cold/TEMPORAL-COLD-1.bin",
+    "crates/jocforge-domain/tests/fixtures/spatial_audio_cold/TEMPORAL-COLD-2.bin",
+    "crates/jocforge-domain/tests/fixtures/spatial_audio_cold/TEMPORAL-COLD-3.bin",
+    "crates/jocforge-domain/tests/fixtures/spatial_audio_cold/TEMPORAL-COLD-4.bin",
+    "crates/jocforge-domain/tests/fixtures/spatial_audio_cold/TEMPORAL-COLD-5.bin"
+  ],
+  "verification": {
+    "local_commit_abort_fatal": "NOT_IMPLEMENTED",
+    "mutation_vector_case_count": 15,
+    "primitive_input_case_count": 12,
+    "root_kat_byte_comparison": "PASS",
+    "temporal_kat_count": 6
+  }
 }
 ```
 
@@ -2543,14 +2609,14 @@
         "sha256": "3ca14198acbe03b7dcb431319a63004b1ef68bae80396df930e007d576d85e82"
       },
       {
-        "bytes": 2041,
+        "bytes": 2290,
         "path": "crates/jocforge-domain/src/timeline/index.rs",
-        "sha256": "a4f1c06f0472aa7959016e14059054dbc10e63756ded25b6c11bab892a7e85d6"
+        "sha256": "911be2413816ebe1fde51ceda0066e9c088f92ae7c8b045cee49aac37540ec7d"
       },
       {
-        "bytes": 660,
+        "bytes": 905,
         "path": "crates/jocforge-domain/src/spatial/mod.rs",
-        "sha256": "6f43a501e93f4c6093079c02179eca6e63cd9118ed70052c0610b5cb54ae0b3a"
+        "sha256": "fb8722e5e8c087ac83f0994ecca7a0be2076e8754ac68928f40611b938f932f8"
       },
       {
         "bytes": 9428,

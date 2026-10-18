@@ -25,6 +25,7 @@ index_type!(JocGeneratedWriterIndex);
 index_type!(OrdinaryPayloadWriterIndex);
 index_type!(JocPoppedWriterIndex);
 index_type!(PublishedAuIndex);
+index_type!(ReceiverCallbackCount);
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct AdmSampleCount(u64);
@@ -63,5 +64,10 @@ impl AdmSampleCount {
 /// use jocforge_domain::timeline::{JocPoppedWriterIndex, OrdinaryPayloadWriterIndex};
 /// fn takes_joc(_: JocPoppedWriterIndex) {}
 /// takes_joc(OrdinaryPayloadWriterIndex::new(0));
+/// ```
+/// ```compile_fail
+/// use jocforge_domain::timeline::{FrontendCallbackIndex, ReceiverCallbackCount};
+/// fn takes_receiver(_: ReceiverCallbackCount) {}
+/// takes_receiver(FrontendCallbackIndex::new(0));
 /// ```
 pub struct ClockDomainTypeSeparation;

@@ -1,0 +1,172 @@
+{
+  "schema": "research-f04-recursive-wire-mutations.v1",
+  "input_only": true,
+  "base_input_recipe": "COLD-CONSTRUCTOR-RECIPE.json#/root",
+  "temporal_KATs": [
+    {
+      "input_semantic_path": "/root/receiver_state/temporal_states/0",
+      "expected_file": "TEMPORAL-COLD-0.bin",
+      "path": "TEMPORAL-COLD-0.bin",
+      "bytes": 29347,
+      "sha256": "9246ae1f51e4ecd21b681748f08152276ac4c545961e7c7834c9b087a8707e8b"
+    },
+    {
+      "input_semantic_path": "/root/receiver_state/temporal_states/1",
+      "expected_file": "TEMPORAL-COLD-1.bin",
+      "path": "TEMPORAL-COLD-1.bin",
+      "bytes": 2677,
+      "sha256": "1cb9a2ccd0c4f24e32d93dd075bf1e75a84e789e53336dd9f7164a116fc4b1d1"
+    },
+    {
+      "input_semantic_path": "/root/receiver_state/temporal_states/2",
+      "expected_file": "TEMPORAL-COLD-2.bin",
+      "path": "TEMPORAL-COLD-2.bin",
+      "bytes": 7321,
+      "sha256": "e6bd6c37dd859a91814b555936b25d230bd776e01867b3d9311dd5c4750f782b"
+    },
+    {
+      "input_semantic_path": "/root/receiver_state/temporal_states/3",
+      "expected_file": "TEMPORAL-COLD-3.bin",
+      "path": "TEMPORAL-COLD-3.bin",
+      "bytes": 12454,
+      "sha256": "42e77b078aa82202c9513b0d450b5559ab03b95e145f31cc31493e717793c77e"
+    },
+    {
+      "input_semantic_path": "/root/receiver_state/temporal_states/4",
+      "expected_file": "TEMPORAL-COLD-4.bin",
+      "path": "TEMPORAL-COLD-4.bin",
+      "bytes": 107767,
+      "sha256": "da2284560f5f4567406a95532f87a077a568d0bf67974ebdab5989e6efb36c89"
+    },
+    {
+      "input_semantic_path": "/root/fitting_qmf_state/target_temporal",
+      "expected_file": "TEMPORAL-COLD-5.bin",
+      "path": "TEMPORAL-COLD-5.bin",
+      "bytes": 107767,
+      "sha256": "da2284560f5f4567406a95532f87a077a568d0bf67974ebdab5989e6efb36c89"
+    }
+  ],
+  "cases": [
+    {
+      "id": "class_drift",
+      "input_mutation": "root.class=F04CompositionStatx",
+      "expected": {
+        "reject": true,
+        "reason": "SCHEMA_CLASS"
+      }
+    },
+    {
+      "id": "field_name_drift",
+      "input_mutation": "root.fields[0].name=callback_indey",
+      "expected": {
+        "reject": true,
+        "reason": "DECLARED_FIELD_ORDER_OR_NAME"
+      }
+    },
+    {
+      "id": "field_order_drift",
+      "input_mutation": "swap root fields0,1",
+      "expected": {
+        "reject": true,
+        "reason": "DECLARED_FIELD_ORDER_OR_NAME"
+      }
+    },
+    {
+      "id": "field_count_drift",
+      "input_mutation": "remove final receiver_callback_count field and update declared count",
+      "expected": {
+        "reject": true,
+        "reason": "DECLARED_FIELD_COUNT"
+      }
+    },
+    {
+      "id": "temporal_indices_swapped",
+      "input_mutation": "temporal0 index_28=0,index_32=1217",
+      "expected": {
+        "reject": true,
+        "reason": "COLD_SCALAR_VALUE"
+      }
+    },
+    {
+      "id": "buffer_length_drift",
+      "input_mutation": "temporal0 buffer0 length9735 instead9736",
+      "expected": {
+        "reject": true,
+        "reason": "COLD_BUFFER_EXTENT"
+      }
+    },
+    {
+      "id": "None_to_int_zero",
+      "input_mutation": "lfe.rows[0]=I(0)",
+      "expected": {
+        "reject": true,
+        "reason": "COLD_NODE_TYPE"
+      }
+    },
+    {
+      "id": "None_to_zero_PCM",
+      "input_mutation": "lfe.rows[0]=B6144 zero bytes",
+      "expected": {
+        "reject": true,
+        "reason": "COLD_NODE_TYPE"
+      }
+    },
+    {
+      "id": "bool_to_int_zero",
+      "input_mutation": "retired=I(0), not Z(false)",
+      "expected": {
+        "reject": true,
+        "reason": "COLD_NODE_TYPE"
+      }
+    },
+    {
+      "id": "negative_zero_F32",
+      "input_mutation": "peak=F(negative zero)",
+      "expected": {
+        "reject": true,
+        "reason": "COLD_F32_BITS"
+      }
+    },
+    {
+      "id": "F32_endian_drift",
+      "input_mutation": "previous_gain F32 payload bytes reversed",
+      "expected": {
+        "reject": true,
+        "reason": "COLD_F32_BITS"
+      }
+    },
+    {
+      "id": "I64_endian_drift",
+      "input_mutation": "temporal0 span I64 bytes reversed",
+      "expected": {
+        "reject": true,
+        "reason": "COLD_SCALAR_VALUE"
+      }
+    },
+    {
+      "id": "class_length_endian_drift",
+      "input_mutation": "root class U16 length bytes reversed",
+      "expected": {
+        "reject": true,
+        "reason": "TRAILING_BYTES"
+      }
+    },
+    {
+      "id": "trailing_padding",
+      "input_mutation": "append zero byte",
+      "expected": {
+        "reject": true,
+        "reason": "TRAILING_BYTES"
+      }
+    },
+    {
+      "id": "truncated_root",
+      "input_mutation": "remove final byte",
+      "expected": {
+        "reject": true,
+        "reason": "TRUNCATED"
+      }
+    }
+  ],
+  "expected_role": "binary KAT files are post-serialization assertions; never load them as production state seeds"
+}

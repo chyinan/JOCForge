@@ -2,7 +2,7 @@
 
 ## Status and scope
 
-`programme_roots.spatial_audio` maps to the complete approved-package `F04CompositionState` cold schema. The cold specification is `RESOLVED_BY_F04_COLD_SUPPLEMENT`; P1.3-E1 is ready for its cold storage/staging implementation, which is not yet locally verified. No DSP, provider validator, render producer, or CallbackTransaction coordinator was implemented or validated.
+`programme_roots.spatial_audio` maps to the complete approved-package `F04CompositionState` cold schema. The cold specification is `RESOLVED_BY_F04_COLD_SUPPLEMENT`; P1.3-E1 storage and staging are locally verified. No DSP, provider validator, render producer, or CallbackTransaction coordinator was implemented or validated.
 
 The complete spatial_audio integration remains blocked on F04-specific P1.4 provider contracts, the post-window packet producer/fanout contract, and the enclosing callback transaction. P1.3-C remains `CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS` because the other callback roots and g>=2 source-stage roots are still missing.
 
@@ -20,7 +20,7 @@ The approved-package `MANIFEST.json` identity is SHA-256 `c7cddb7d5ac073c0f410fe
 | Schema semantic identity | same schema file, top-level `sha256` | `e1ef560564678a04494a9a563b1e431582fd0a48c8524ff4e4b47cf7a880655c`; this is not a state digest |
 | Expected cold owner digest | `test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json#/reset_check/cold_state_sha256` | `35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e`; expected identity only, not a reconstructed canonical byte preimage |
 
-The candidate `state_ref` value is `test-vectors/F04-WHOLE-SPATIAL-STATE-SCHEMA.json#/whole_state_by_boundary/cold`. The GTC slot and schema identity are mapped. The expected `cold_sha256` remains a target until the typed constructor and encoder reproduce it locally. The current `selected_overlap_projection` is only a cross-owner projection; `selected-j05-owner-receipt.v1` is a per-stage receipt. Neither is the committed programme root or a substitute for its complete state digest.
+The candidate `state_ref` value is `test-vectors/F04-WHOLE-SPATIAL-STATE-SCHEMA.json#/whole_state_by_boundary/cold`. The GTC slot and schema identity are mapped. The fresh typed constructor and project encoder produced 813,733 bytes that match the expected `cold_sha256` byte-for-byte. The current `selected_overlap_projection` is only a cross-owner projection; `selected-j05-owner-receipt.v1` is a per-stage receipt. Neither is the committed programme root or a substitute for its complete state digest.
 
 The package F04 chain result is `PASS_CONSUMER_SIDE_COMPOSITION`, limited to the installed48 consumer boundary. Raw38-to-installed48, dynamic matrix/destination production, the complete callback transaction, real ADM execution, and perceptual acceptance remain `OPEN` or `NOT_RUN`; this root map does not upgrade those claims.
 
@@ -90,7 +90,7 @@ The following are algorithm providers, not cold-root byte sources. Every listed 
 | `parameters/qmf-receiver-functional-v1.json` | `FILE`, 20325 bytes, SHA-256 `30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c` | 829 array F32 words plus 12 scalar F32 words: QWIN synthesis 640; selected band0 real/imag 21 each; LFE postfilter 20; descriptor thresholds 127. Authorized for internal isolated use; no secret, source, raw table, compiled image, or address. | F04 P1.4 validator not implemented. |
 | `parameters/qmf-mathematical-fft-v1.json` | `GENERATED`, 6983 bytes, SHA-256 `e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431` | Radix-2 roots/rotations for `QMF_FFT_RADIX2_MATH_V1`; compiled values are not used. | F04 P1.4 validator not implemented. |
 | `parameters/descriptor-mathematical.json` | `GENERATED`, 4861 bytes, SHA-256 `a493fbdaf2dab30e940cae9976ed3305f3af083e5614ab0cbd6889c71a02b197` | 128 gain words and 127 threshold words. | Audio acceptance and F04 P1.4 validation pending. |
-| Cold constructor arrays and sentinels | `NO_RUNTIME_PARAMETER` | Supplement pins all typed values and the full recursive wire grammar. `None` sentinels stay distinct from raw zero bytes. | Implement only from the typed recipe; compare KAT after project encoding. |
+| Cold constructor arrays and sentinels | `NO_RUNTIME_PARAMETER` | Supplement pins all typed values and the full recursive wire grammar. `None` sentinels stay distinct from raw zero bytes. | Typed constructor and project encoder are locally verified against the KAT. |
 
 `parameters/spread-authorized-v1.json` is an authorized non-secret FILE provider but belongs to the upstream `spatial_control/F03W` installed48 producer path, not this owner root. `parameters/diffusion-mathematical-v1.json` and `parameters/diffusion-constructor-mathematical-v1.json` are GENERATED upstream providers for `spatial_control/F03W`; they do not place diffusion instances in `F04CompositionState`. The selected production diffusion configuration remains unsupplied for that route.
 
@@ -102,4 +102,4 @@ The future producer stage belongs at the F03W `W3072` / installed48 post-window 
 
 ## Gate result
 
-The GTC owner slot, candidate schema, nine top-level fields, owner split, clocks, receipt boundary, six temporal constructors, and full D-node wire grammar are mapped. P1.3-E1 may now implement cold storage and staging. The overall spatial_audio root remains `MAPPING_COMPLETE_BLOCKED` on F04 provider validation, render/fanout, and parent CallbackTransaction. The KAT is not local reconstruction evidence until generated bytes are compared. No full callback, audio-chain, DSP, or product readiness is claimed. See [SPATIAL-AUDIO-COLD-STAGING-BLOCKER.md](SPATIAL-AUDIO-COLD-STAGING-BLOCKER.md) for the resolved spec blocker and implementation boundary.
+The GTC owner slot, candidate schema, nine top-level fields, owner split, clocks, receipt boundary, six temporal constructors, and full D-node wire grammar are mapped. P1.3-E1 cold storage, staging, and post-construction KAT comparison are locally verified. The overall spatial_audio root remains `MAPPING_COMPLETE_BLOCKED` on F04 provider validation, render/fanout, and parent CallbackTransaction. No full callback, audio-chain, DSP, or product readiness is claimed. See [SPATIAL-AUDIO-COLD-STAGING-BLOCKER.md](SPATIAL-AUDIO-COLD-STAGING-BLOCKER.md) for the resolved spec record and implementation boundary.
