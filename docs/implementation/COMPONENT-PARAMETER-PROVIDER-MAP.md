@@ -1,6 +1,6 @@
 # F04 component parameter provider mapping
 
-Mapping status: `MAPPING_COMPLETE`. Implementation status: `LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS`. This slice implements only P1.4-D1 identity-first validators. It does not implement component DSP, receiver/QMF processing, or product acceptance.
+Mapping status: `MAPPING_COMPLETE`. P1.4-D1 status: `LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS`. This document maps the two P1.4-D1 identity-first validators. P1.3-E2 locally verifies scoped consumption of the selected component providers under [COMPONENT-STAGE-MAP.md](COMPONENT-STAGE-MAP.md); the provider receipt's readiness fields remain unchanged and this does not imply receiver/QMF processing or product acceptance.
 
 ## Package identity and permission
 

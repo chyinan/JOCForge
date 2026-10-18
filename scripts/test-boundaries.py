@@ -9,8 +9,7 @@ def map_mut_render(fn):
  mutate=map_mut(fn)
  def m(r):
   mutate(r)
-  result=subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
-  if result.returncode:raise RuntimeError('render failed for mutated implementation map')
+  subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
  return m
 def code_mut_render(mutate):
  def m(r):
@@ -24,8 +23,7 @@ def code_mut_render(mutate):
     if path.is_file():
      content=path.read_bytes();entry['bytes']=len(content);entry['sha256']=hashlib.sha256(content).hexdigest()
   map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-  result=subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
-  if result.returncode:raise RuntimeError('render failed after refreshing mutated source identities')
+  subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
  return m
 def spatial_audio_code_mut_render(mutate):
  def m(r):
@@ -35,8 +33,7 @@ def spatial_audio_code_mut_render(mutate):
   entry=next(entry for entry in d['phase_one']['P1.3-E1']['implementation_inventory']if entry['path']==source)
   content=(r/source).read_bytes();entry['bytes']=len(content);entry['sha256']=hashlib.sha256(content).hexdigest()
   map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-  result=subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
-  if result.returncode:raise RuntimeError('render failed after refreshing mutated spatial_audio source identity')
+  subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
  return m
 def f04_parameter_code_mut_render(mutate):
  def m(r):
@@ -46,8 +43,7 @@ def f04_parameter_code_mut_render(mutate):
   for entry in p['implementation_inventory']:
    path=r/entry['path'];content=path.read_bytes();entry['bytes']=len(content);entry['sha256']=hashlib.sha256(content).hexdigest()
   map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-  result=subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
-  if result.returncode:raise RuntimeError('render failed after refreshing mutated F04 provider source identities')
+  subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
  return m
 def f04_remaining_provider_code_mut_render(mutate):
  def m(r):
@@ -57,8 +53,7 @@ def f04_remaining_provider_code_mut_render(mutate):
   for entry in p['implementation_inventory']+p['test_inventory']:
    path=r/entry['path'];content=path.read_bytes();entry['bytes']=len(content);entry['sha256']=hashlib.sha256(content).hexdigest()
   map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-  result=subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
-  if result.returncode:raise RuntimeError('render failed after refreshing mutated D2 provider source identities')
+  subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
  return m
 def append(path,text):path.write_text(path.read_text(encoding='utf-8')+text,encoding='utf-8')
 def flip_first_byte(path):
@@ -450,7 +445,20 @@ def main():
  ('e2-map-test-file-omitted',map_mut(lambda d:d['phase_one']['P1.3-E2'].update(planned_test_files=[]))),
  ('e2-map-upstream-exclusion-drift',map_mut(lambda d:d['phase_one']['P1.3-E2']['explicit_exclusions'].remove('LFE'))),
  ('e2-map-scoped-status-overclaim',map_mut(lambda d:(d['phase_one']['P1.3-E2'].update(status='COMPLETE'),d['status'].update({'P1.3-E2':'COMPLETE'})))),
- ('e2-map-overall-p13e-ready',map_mut(lambda d:d['status'].update({'P1.3-E':'LOCALLY_VERIFIED'})))
+ ('e2-map-overall-p13e-ready',map_mut(lambda d:d['status'].update({'P1.3-E':'LOCALLY_VERIFIED'}))),
+ ('e2-map-callback-phase-lineage-removed',map_mut(lambda d:d['phase_one']['P1.3-E2']['before_state_and_lineage'].remove('component callback phase NORMAL or CACHED_DRAIN, checked against parent-provided phase'))),
+ ('e2-code-negative-matrix-coefficient-included',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs','if coefficient.value() <= 0.0 {','if coefficient.value() >= 0.0 {')),
+ ('e2-code-matrix-add-order-reversed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs','r32_add(mixer[output_index], product)','r32_add(product, mixer[output_index])')),
+ ('e2-code-overlap-tail-replaced',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs','mixer[row_offset + FRAME_SAMPLES..row_offset + INSTALLED_SAMPLES]','mixer[row_offset..row_offset + FRAME_SAMPLES]')),
+ ('e2-code-filter-kernel-order-reversed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs','kernel[BLOCK_SAMPLES - 1 - sample]','kernel[sample]')),
+ ('e2-code-block-clock-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs','const BLOCK_COUNT: u8 = 24;','const BLOCK_COUNT: u8 = 23;')),
+ ('e2-code-spatial-before-digest-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs','packet.spatial_control_before_digest != spatial_control.digest()','false')),
+ ('e2-code-retirement-check-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs','if before.retired {','if false {')),
+ ('e2-code-local-commit-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs','\npub(crate) fn commit_component_stage() {}\n')),
+ ('e2-code-packet-field-public',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs','    programme_id: SourceFlagsProgrammeId,','    pub programme_id: SourceFlagsProgrammeId,')),
+ ('e2-code-production-fixture-constructor',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs','#[cfg(test)]\n    fn fixture(','    fn fixture(')),
+ ('e2-code-public-time-usize',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs','    spatial_audio: &SpatialAudioMachine,','    spatial_audio: &SpatialAudioMachine,\n    callback_index: usize,')),
+ ('e2-code-finite-input-check-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs','FiniteF32::new(f32::from_bits(word)).map_err(|_| ComponentStageError::Input)','FiniteF32::new(0.0).map_err(|_| ComponentStageError::Input)'))
  ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]

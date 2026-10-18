@@ -9,6 +9,8 @@ use crate::{
 use sha2::{Digest, Sha256};
 use std::fmt::Write as FmtWrite;
 
+pub(crate) mod component_stage;
+
 const EXPECTED_COLD_BYTES: usize = 813_733;
 const NEGATIVE_ZERO_BITS: u32 = 0x8000_0000;
 

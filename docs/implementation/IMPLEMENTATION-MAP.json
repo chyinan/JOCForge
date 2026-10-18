@@ -11,7 +11,7 @@
     "P1.3_ROLLUP_SCOPE": "P1.3 aggregate covers A-D only; E and E1 are tracked independently",
     "P1.3-E": "BLOCKED_ON_F04_DSP_RENDER_AND_PARENT",
     "P1.3-E1": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__DSP_PRODUCERS_DEFERRED",
-    "P1.3-E2": "MAPPING_COMPLETE",
+    "P1.3-E2": "LOCALLY_VERIFIED_COMPONENT_PRODUCER__UPSTREAM_AND_PARENT_DEFERRED",
     "P1.3-D1": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
     "SOURCE_FLAGS_PRODUCER": "LOCALLY_VERIFIED_NUMERIC_AND_PACKET",
     "CURRENT_FEATURES_PRODUCER": "LOCALLY_VERIFIED_MATH_AND_CAPABILITY__RENDER_AND_PARENT_DEFERRED",
@@ -3358,7 +3358,7 @@
         "crates/jocforge-domain/src/timeline/mod.rs"
       ],
       "implementation_inventory": [
-        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 34477, "sha256": "2b8aea331e1b54eba84ef40dfb7a2b7ce41062c32ec1eea9706ef348aa070e8c"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 34510, "sha256": "b1d8d71000b6d89c2bbfdb4d2a6a521def10736ca734b754669118e0556c0f9a"},
         {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2097, "sha256": "f118d1518a3d1ff76ae4009a9bcdfb9e0288b58a1d915c8d2fff4aa38cf4b5ba"},
         {"path": "crates/jocforge-domain/src/timeline/index.rs", "bytes": 2290, "sha256": "911be2413816ebe1fde51ceda0066e9c088f92ae7c8b045cee49aac37540ec7d"},
         {"path": "crates/jocforge-domain/src/timeline/mod.rs", "bytes": 586, "sha256": "7f2099065d657bdacab116d921a63107a180930086b73a42557881aa3acdb7b2"}
@@ -3392,9 +3392,9 @@
     },
     "P1.3-E2": {
       "task_id": "P1.3-E2-F04-COMPONENT-CONSUMER",
-      "status": "MAPPING_COMPLETE",
+      "status": "LOCALLY_VERIFIED_COMPONENT_PRODUCER__UPSTREAM_AND_PARENT_DEFERRED",
       "mapping_status": "MAPPING_COMPLETE",
-      "implementation_status": "NOT_STARTED",
+      "implementation_status": "LOCALLY_VERIFIED_COMPONENT_PRODUCER__UPSTREAM_AND_PARENT_DEFERRED",
       "mapping_document": "docs/implementation/COMPONENT-STAGE-MAP.md",
       "programme_root": "spatial_audio",
       "scope": "Consume an opaque future spatial_control-owned input packet and produce only a complete component-stage proposal: matrix, overlap/ring, shared parameter transition, component filter history, callback-local component output, and local receipt; no commit, fatal authority, upstream producer, LFE, receiver/QMF, or parent transaction",
@@ -3419,7 +3419,7 @@
       ],
       "vectors": [
         {"file": "test-vectors/unit/vectors.json", "bytes": 1503142, "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8", "cases": ["U-FRONT-MATRIX", "U-FRONT-OVERLAP", "U-FRONT-FILTER64", "U-FRONT-PARAMETER64"], "input_pointers": ["cases[id=U-FRONT-MATRIX].input", "cases[id=U-FRONT-OVERLAP].input", "cases[id=U-FRONT-FILTER64].input", "cases[id=U-FRONT-PARAMETER64].input"], "expected_pointers": ["cases[id=U-FRONT-MATRIX].expected.row_sha256", "cases[id=U-FRONT-MATRIX].expected.probes_u32", "cases[id=U-FRONT-OVERLAP].expected.calls", "cases[id=U-FRONT-OVERLAP].expected.terminal_overlap", "cases[id=U-FRONT-OVERLAP].expected.terminal_ring", "cases[id=U-FRONT-FILTER64].expected.blocks", "cases[id=U-FRONT-FILTER64].expected.terminal_history", "cases[id=U-FRONT-PARAMETER64].expected.records", "cases[id=U-FRONT-PARAMETER64].expected.terminal"]},
-        {"file": "test-vectors/COMPONENT-PARAMETER-GENERATION-VERIFICATION.json", "bytes": 55848, "sha256": "819e7cede6f54689a87aad72c8ec3d8a5cb4b14fe41fc6a5556a03973f01ec85", "case_count": 23, "sequence_count": 5, "input_pointers": ["cases[id=*].execution", "cases[id=*].input"], "expected_pointers": ["cases[id=*].expected_before_words", "cases[id=*].expected_after_words", "cases[id=*].expected_state", "cases[id=*].expected_attenuation_word", "cases[id=*].expected_peak_word", "cases[id=*].expected_peak_witness", "cases[id=*].expected_gain_branch"], "expected_are_assertions_only": true},
+        {"file": "test-vectors/COMPONENT-PARAMETER-GENERATION-VERIFICATION.json", "bytes": 55848, "sha256": "819e7cede6f54689a87aad72c8ec3d8a5cb4b14fe41fc6a5556a03973f01ec85", "case_count": 23, "sequence_count": 5, "input_pointers": ["cases[id=*].execution", "cases[id=*].input"], "expected_pointers": ["cases[id=*].expected_before_words", "cases[id=*].expected_after_words", "cases[id=*].expected_state"], "optional_case_specific_expected_pointers": ["cases[id=*].expected_attenuation_word", "cases[id=*].expected_peak_word", "cases[id=*].expected_peak_witness", "cases[id=*].expected_gain_branch"], "expected_are_assertions_only": true},
         {"file": "test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json", "bytes": 260481, "sha256": "ffb1dea3b1e69383312da4059b9d8ddabb4366ed8fc22e7537f750ba041f2d63", "case_ids": ["F04-WHOLE-0", "F04-WHOLE-1", "F04-WHOLE-2", "F04-WHOLE-3", "F04-WHOLE-4", "F04-WHOLE-5"], "input_pointers": ["cases[id=*].input", "recipe_definitions"], "expected_pointers": ["cases[id=*].expected.matrix15x3072_f32le_sha256", "cases[id=*].expected.overlap15x1536_f32le_sha256", "cases[id=*].expected.component15x1536_f32le_sha256", "cases[id=*].expected.component_parameter_blocks_after"], "excluded_expected_fields": ["LFE", "Type10", "receiver", "QMF", "final six"]}
       ],
       "callback_and_block_clock": {
@@ -3434,6 +3434,7 @@
         "SpatialAudioState generation and complete before digest",
         "SpatialAudioJoinMetadata programme id, attempt, transaction, callback, profile, and before generation/digest",
         "SpatialControlJoinMetadata transaction, callback, profile, provider lineage, before generation/digest",
+        "component callback phase NORMAL or CACHED_DRAIN, checked against parent-provided phase",
         "ValidatedWindowQ15Provider manifest/provider receipt lineage",
         "ValidatedComponentParameterProvider manifest/provider receipt lineage"
       ],
@@ -3458,13 +3459,36 @@
         "crates/jocforge-domain/src/spatial/mod.rs"
       ],
       "planned_test_files": [
-        "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage_tests.rs"
+        "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs"
       ],
       "planned_test_fixtures": [
         "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json",
         "crates/jocforge-domain/tests/fixtures/f04_component/COMPONENT-PARAMETER-GENERATION-VERIFICATION.json",
         "crates/jocforge-domain/tests/fixtures/f04_component/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json"
       ],
+      "implementation_files": [
+        "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs",
+        "crates/jocforge-domain/src/spatial/spatial_audio_state.rs"
+      ],
+      "test_files": [
+        "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs"
+      ],
+      "fixture_files": [
+        "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json",
+        "crates/jocforge-domain/tests/fixtures/f04_component/COMPONENT-PARAMETER-GENERATION-VERIFICATION.json",
+        "crates/jocforge-domain/tests/fixtures/f04_component/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json"
+      ],
+      "verification": {
+        "component_stage_tests": 11,
+        "direct_unit_vector_ids": ["U-FRONT-MATRIX", "U-FRONT-OVERLAP", "U-FRONT-FILTER64", "U-FRONT-PARAMETER64"],
+        "parameter_generation_cases": 23,
+        "whole_chain_component_callbacks": 6,
+        "expected_values_are_seeded": false,
+        "targeted_boundary_mutations_rejected": 25,
+        "full_repository_boundary_mutations_rejected": 541,
+        "local_commit_abort_fatal": "NOT_IMPLEMENTED",
+        "upstream_render_lfe_receiver_qmf_and_parent": "DEFERRED"
+      },
       "explicit_exclusions": ["installed48/raw38/window/prefix/diffusion producer", "LFE", "receiver", "QMF", "descriptor", "fitting", "render producer/fanout", "parent CallbackTransaction", "local commit/abort/fatal", "other F04 profiles", "real ADM/audio/perceptual acceptance"],
       "overall_p1_3_e_status_remains": "BLOCKED_ON_F04_DSP_RENDER_AND_PARENT"
     },

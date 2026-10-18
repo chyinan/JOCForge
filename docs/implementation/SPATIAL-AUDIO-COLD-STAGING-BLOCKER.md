@@ -6,7 +6,7 @@
 
 `P1.3-E1` was blocked before Rust implementation because the original approved package did not uniquely bind every temporal scalar or the complete D-node grammar. The wash-side supplement below resolves those specification gaps. The expected digest is not a recoverable preimage; the local implementation constructs typed state, serializes it, then compares the resulting bytes.
 
-The previous machine-readable blocker status `BLOCKED_ON_COLD_STATE_SPEC_DETAILS` is now `RESOLVED_BY_F04_COLD_SUPPLEMENT`. `P1.3-E` remains `BLOCKED_ON_F04_PROVIDERS_RENDER_AND_PARENT`; P1.3-C remains waiting for owner roots.
+The previous machine-readable blocker status `BLOCKED_ON_COLD_STATE_SPEC_DETAILS` is now `RESOLVED_BY_F04_COLD_SUPPLEMENT`. P1.3-E remains `BLOCKED_ON_F04_DSP_RENDER_AND_PARENT`; the provider validators and scoped component consumer are tracked independently in `F04-PROVIDER-VALIDATION-MAP.md` and `COMPONENT-STAGE-MAP.md`. P1.3-C remains waiting for owner roots.
 
 ## Resolution supplement
 
@@ -40,4 +40,4 @@ Status: `LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__DSP_PRODUCERS_DEFERRED
 
 ## Scope preserved
 
-No DSP, F04 provider validation, PostWindowAudioPacket producer/fanout, or local commit/abort/fatal API is authorized by this record. The established F04 owner split, `None` sentinels, callback/receiver clock separation, and GTC-only commit authority remain unchanged.
+This E1 cold-state record authorized no DSP, F04 provider validation, PostWindowAudioPacket producer/fanout, or local commit/abort/fatal API. Later provider validation and P1.3-E2 component-consumer work are separately scoped in the maps linked above. The established F04 owner split, `None` sentinels, callback/receiver clock separation, and GTC-only commit authority remain unchanged.

@@ -1,6 +1,8 @@
 # F04 component consumer slice
 
-Status: `MAPPING_COMPLETE`. This is a scoped consumer mapping for P1.3-E2 only.
+Mapping status: `MAPPING_COMPLETE`.
+Implementation status: `LOCALLY_VERIFIED_COMPONENT_PRODUCER__UPSTREAM_AND_PARENT_DEFERRED`.
+This is a scoped consumer mapping for P1.3-E2 only.
 It does not mark F04A, F04P, F04PG, or F04C globally complete and does not
 change the deferred status of their remaining clauses.
 
@@ -10,8 +12,9 @@ The slice consumes an opaque, linear `SpatialAudioInputPacket` supplied by a
 future `spatial_control` producer. That packet carries the selected callback's
 `installed48` (`F32[48][3072]`), active matrix rows (`n × 48`, `0 <= n <= 15`),
 their distinct destinations, programme/attempt/transaction/callback/profile
-identity, the validated provider lineage, and the `spatial_control` before
-generation/digest. The future producer alone constructs production packets;
+identity, callback phase (`NORMAL` or `CACHED_DRAIN`), the validated provider
+lineage, and the `spatial_control` before generation/digest. The parent supplies
+the expected phase for validation. The future producer alone constructs production packets;
 this slice validates and consumes them. A module-private test fixture is the
 only packet constructor in this slice.
 
@@ -103,7 +106,7 @@ The mapped package vectors are:
 | Vector | Bytes / SHA-256 | Exact input pointer | Exact expected pointer used |
 |---|---|---|---|
 | `test-vectors/unit/vectors.json` | 1,503,142 / `a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8` | `cases[id=U-FRONT-MATRIX].input`; `cases[id=U-FRONT-OVERLAP].input`; `cases[id=U-FRONT-FILTER64].input`; `cases[id=U-FRONT-PARAMETER64].input` | respective `.expected.row_sha256`/`.expected.probes_u32`; `.expected.calls`/terminal overlap and ring; `.expected.blocks`/terminal history; `.expected.records`/terminal state |
-| `test-vectors/COMPONENT-PARAMETER-GENERATION-VERIFICATION.json` | 55,848 / `819e7cede6f54689a87aad72c8ec3d8a5cb4b14fe41fc6a5556a03973f01ec85` | each `cases[id].execution` and `cases[id].input`; execution order follows `execution_plan` | each `cases[id].expected_before_words`, `.expected_after_words`, `.expected_state`, attenuation, peak, witness and branch fields; expected fields are assertions only, never seeds |
+| `test-vectors/COMPONENT-PARAMETER-GENERATION-VERIFICATION.json` | 55,848 / `819e7cede6f54689a87aad72c8ec3d8a5cb4b14fe41fc6a5556a03973f01ec85` | each `cases[id].execution` and `cases[id].input`; execution order follows `execution_plan` | every case's `expected_before_words`, `expected_after_words`, and `expected_state`; attenuation, peak, witness, and branch assertions are case-specific and read only when present. Expected fields are assertions only, never seeds. |
 | `test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json` | 260,481 / `ffb1dea3b1e69383312da4059b9d8ddabb4366ed8fc22e7537f750ba041f2d63` | `cases[id=F04-WHOLE-0..5].input` plus the corresponding `recipe_definitions` | `.expected.matrix15x3072_f32le_sha256`, `.expected.overlap15x1536_f32le_sha256`, `.expected.component15x1536_f32le_sha256`, `.expected.component_parameter_blocks_after`; unrelated LFE/receiver/QMF fields are not consumed |
 
 F04C.8's six callback input recipes are `input_only=true`; they qualify only
@@ -114,7 +117,7 @@ render fanout, the rest of F04, and parent transaction are deferred.
 ## Planned implementation files
 
 - `crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs`
-- `crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage_tests.rs`
+- `crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs`
 - `crates/jocforge-domain/src/spatial/spatial_audio_state.rs`
 - `crates/jocforge-domain/src/spatial/mod.rs`
 - `crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json`
@@ -125,3 +128,9 @@ The three vector fixture files are exact package copies and retain their
 package-manifest identities. They are test-only inputs; production code has no
 file, process, or environment access. The module-private test constructor is
 not a production packet factory.
+
+Verification summary: 11 component-stage tests pass, including all four mapped
+unit vector cases, all 23 parameter-generation cases, and all six whole-chain
+component projections. The full repository boundary suite rejected 541
+mutations; the E2-specific subset rejected 25. Full spatial_audio integration,
+render, LFE, receiver/QMF, real ADM, and parent transaction remain deferred.

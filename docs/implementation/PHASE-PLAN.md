@@ -2480,9 +2480,9 @@
   ],
   "implementation_inventory": [
     {
-      "bytes": 34477,
+      "bytes": 34510,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "2b8aea331e1b54eba84ef40dfb7a2b7ce41062c32ec1eea9706ef348aa070e8c"
+      "sha256": "b1d8d71000b6d89c2bbfdb4d2a6a521def10736ca734b754669118e0556c0f9a"
     },
     {
       "bytes": 2097,
