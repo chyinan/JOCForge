@@ -135,6 +135,6 @@ and owning spatial-control machine before numeric processing.
 
 Verification summary: 12 component-stage tests pass, including all four mapped
 unit vector cases, all 23 parameter-generation cases, and all six whole-chain
-component projections. The full repository boundary suite rejected 552
-mutations; the E2-specific subset rejected 36. Full spatial_audio integration,
+component projections. The full repository boundary suite rejected 553
+mutations; the E2-specific subset rejected 37. Full spatial_audio integration,
 render, LFE, receiver/QMF, real ADM, and parent transaction remain deferred.
