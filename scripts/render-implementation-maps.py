@@ -47,6 +47,8 @@ def render(d):
   x=d['phase_one']['P1.4-C'];producer=d['phase_one'].get('CURRENT_FEATURES_PRODUCER');o['PHASE-PLAN.md']+='\n## P1.4-C CurrentFeatures math provider mapping\n\n'+chr(96)*3+'json\n'+json.dumps({'provider_contracts':x,'current_features_producer':producer},ensure_ascii=False,indent=2,sort_keys=True)+'\n'+chr(96)*3+'\n'
  if 'P1.4-D1'in d['phase_one']:
   x=d['phase_one']['P1.4-D1'];o['PHASE-PLAN.md']+='\n## P1.4-D1 F04 selected component parameter providers\n\n'+chr(96)*3+'json\n'+json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)+'\n'+chr(96)*3+'\n'
+ if 'P1.4-D2'in d['phase_one']:
+  x=d['phase_one']['P1.4-D2'];o['PHASE-PLAN.md']+='\n## P1.4-D2 F04 remaining provider validators\n\n'+chr(96)*3+'json\n'+json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)+'\n'+chr(96)*3+'\n'
  return o
 def main():
  a=argparse.ArgumentParser();a.add_argument('--check',action='store_true');x=a.parse_args();d=json.loads(M.read_text(encoding='utf-8'));bad=[]

@@ -343,6 +343,24 @@ def main():
  ('f04d1-second-manifest-fixture',lambda r:(r/'crates/jocforge-domain/tests/fixtures/f04_parameters/MANIFEST.json').write_text('{}\n',encoding='utf-8'))
  ]
  cases += [
+ ('f04d2-map-status-advanced',map_mut_render(lambda d:d['phase_one']['P1.4-D2'].update(status='LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS'))),
+ ('f04d2-map-manifest-sha',map_mut_render(lambda d:d['phase_one']['P1.4-D2']['base_package_identity'].update(manifest_sha256='00'*32))),
+ ('f04d2-map-provider-path',map_mut_render(lambda d:d['phase_one']['P1.4-D2']['provider_contracts'][0].update(path='parameters/descriptor-mathematical.json'))),
+ ('f04d2-map-provider-size',map_mut_render(lambda d:d['phase_one']['P1.4-D2']['provider_contracts'][1].update(bytes=6982))),
+ ('f04d2-map-provider-sha',map_mut_render(lambda d:d['phase_one']['P1.4-D2']['provider_contracts'][2].update(sha256='00'*32))),
+ ('f04d2-map-functional-id',map_mut_render(lambda d:d['phase_one']['P1.4-D2']['provider_contracts'][1].update(functional_ids=['F04D']))),
+ ('f04d2-map-spec-binding',map_mut_render(lambda d:d['phase_one']['P1.4-D2']['provider_contracts'][2].update(spec_files=['specs/missing.md']))),
+ ('f04d2-map-receiver-source-class',map_mut_render(lambda d:d['phase_one']['P1.4-D2']['provider_contracts'][0]['arrays'][0].update(source_class='GENERATED'))),
+ ('f04d2-map-receiver-scalar-array-mix',map_mut_render(lambda d:d['phase_one']['P1.4-D2']['provider_contracts'][0]['scalar_u32'].update(count=11))),
+ ('f04d2-map-generated-substitution',map_mut_render(lambda d:d['phase_one']['P1.4-D2']['provider_contracts'][0]['generated_providers_reused'].update(QMF_FFT_RADIX2_MATH_V1='parameters/descriptor-mathematical.json'))),
+ ('f04d2-map-fft-route',map_mut_render(lambda d:d['phase_one']['P1.4-D2']['provider_contracts'][1].update(route='QMF_FFT_RADIX2_OTHER_V1'))),
+ ('f04d2-map-fft-shape',map_mut_render(lambda d:d['phase_one']['P1.4-D2']['provider_contracts'][1]['stage_root_counts'].pop())),
+ ('f04d2-map-descriptor-status',map_mut_render(lambda d:d['phase_one']['P1.4-D2']['provider_contracts'][2]['qualification'].update(threshold_route_status='AUDIO_PASS'))),
+ ('f04d2-map-descriptor-count',map_mut_render(lambda d:d['phase_one']['P1.4-D2']['provider_contracts'][2].update(threshold_word_count=128))),
+ ('f04d2-map-second-manifest',lambda r:(r/'crates/jocforge-domain/tests/fixtures/f04_parameters/MANIFEST.json').write_text('{}\n',encoding='utf-8')),
+ ('f04d2-map-early-provider-module',lambda r:(r/'crates/jocforge-domain/src/spatial/qmf_receiver_functional_provider.rs').write_text('pub struct QmfReceiverFunctionalProvider;\n',encoding='utf-8'))
+ ]
+ cases += [
  ('f03b-provider-path-drift',map_mut(lambda d:d['phase_one']['P1.4-B']['provider_identity'].update(path='parameters/other.json'))),
  ('f03b-provider-byte-drift',map_mut(lambda d:d['phase_one']['P1.4-B']['provider_identity'].update(manifest_entry_bytes=3140))),
  ('f03b-provider-sha-drift',map_mut(lambda d:d['phase_one']['P1.4-B']['provider_identity'].update(manifest_entry_sha256='00'*32))),

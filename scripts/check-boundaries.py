@@ -1,5 +1,5 @@
 # pattern: Imperative Shell
-import hashlib,importlib.util,json,pathlib,re,struct,sys,tomllib
+import hashlib,importlib.util,json,math,pathlib,re,struct,sys,tomllib
 class BoundaryError(RuntimeError):pass
 ROOT=pathlib.Path(__file__).resolve().parents[1];PKG=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_PACKAGE');SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\SPATIAL-CONTROL-STATE-V5');SOURCE_FLAGS_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\SOURCE-FLAGS-PRODUCER-V1')
 PACKAGE=PKG
@@ -329,6 +329,75 @@ def check_f04_parameter_providers(root,d):
  ck(p['verification']=={'integration_test_count':7,'module_unit_test_count':11,'window_provider_count':1,'component_provider_count':1,'DSP':'NOT_IMPLEMENTED','provider_validation_is_DSP_PASS':False},'P1.4-D1 exact verification scope')
  p13e=d['phase_one']['P1.3-E'];spatial=next(x for x in d['programme_roots']if x['root_id']=='spatial_audio')
  ck(p13e['status']=='BLOCKED_ON_F04_PROVIDERS_RENDER_AND_PARENT'and p13e['implementation_status']=='BLOCKED_ON_F04_PROVIDERS_RENDER_AND_PARENT'and spatial['readiness']['implementation_status']=='BLOCKED_ON_F04_PROVIDERS_RENDER_PARENT'and all(word in ' '.join(p13e['blockers']+spatial['readiness']['blockers'])for word in('remaining','DSP','render','parent')),'P1.4-D1 does not advance P1.3-E integration readiness')
+
+def check_f04_remaining_provider_mapping(root,d):
+ p=d['phase_one']['P1.4-D2']
+ ck(d['status'].get('P1.4-D2')==p['status'] and p['task_id']=='P1.4-D2-F04-REMAINING-PROVIDER-VALIDATORS' and p['mapping_status']=='MAPPING_COMPLETE' and p['status'] in {'MAPPING_COMPLETE_VALIDATION_NOT_STARTED','LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS'} and p['mapping_document']=='docs/implementation/F04-PROVIDER-VALIDATION-MAP.md','P1.4-D2 mapped status and document')
+ ck(p['scope']=='identity-first typed validation of the QMF receiver functional, QMF mathematical FFT, and descriptor mathematical providers only; no consumer algorithms, DSP, audio, state transition, render, or parent transaction'and p['functional_ids']==['F04Q','F04QF','F04R','F04D']and p['implementation_files']==['crates/jocforge-domain/src/spatial/qmf_receiver_functional_provider.rs','crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs','crates/jocforge-domain/src/spatial/descriptor_mathematical_provider.rs','crates/jocforge-domain/src/spatial/mod.rs']and p['test_files']==['crates/jocforge-domain/tests/f04_remaining_provider_validators.rs']and p['fixture_files']==['crates/jocforge-domain/tests/fixtures/f04_parameters/qmf-receiver-functional-v1.json','crates/jocforge-domain/tests/fixtures/f04_parameters/qmf-mathematical-fft-v1.json','crates/jocforge-domain/tests/fixtures/f04_parameters/descriptor-mathematical.json'],'P1.4-D2 exact planned scope and paths')
+ manifest_path='crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json';manifest_sha='c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a';manifest_bytes=(root/manifest_path).read_bytes()
+ ck(p['base_package_identity']=={'manifest_file':'MANIFEST.json','manifest_bytes':76302,'manifest_sha256':manifest_sha,'manifest_fixture':manifest_path,'manifest_fixture_reused':True,'second_manifest_fixture':False} and len(manifest_bytes)==76302 and hashlib.sha256(manifest_bytes).hexdigest()==manifest_sha,'P1.4-D2 reuses the exact shared package manifest')
+ fixture_root=root/'crates/jocforge-domain/tests/fixtures';manifests=list(fixture_root.rglob('MANIFEST.json'));ck(len(manifests)==1 and manifests[0].resolve()==(root/manifest_path).resolve(),'P1.4-D2 keeps exactly one MANIFEST fixture')
+ package_manifest=(PKG/'MANIFEST.json').read_bytes();ck(len(package_manifest)==76302 and hashlib.sha256(package_manifest).hexdigest()==manifest_sha and package_manifest==manifest_bytes,'P1.4-D2 package manifest identity before parse')
+ package_manifest_data=json.loads(package_manifest,object_pairs_hook=unique_object_pairs)
+ expected_assets=[
+  ('qmf_receiver_functional','parameters/qmf-receiver-functional-v1.json','crates/jocforge-domain/tests/fixtures/f04_parameters/qmf-receiver-functional-v1.json',20325,'30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c'),
+  ('qmf_mathematical_fft','parameters/qmf-mathematical-fft-v1.json','crates/jocforge-domain/tests/fixtures/f04_parameters/qmf-mathematical-fft-v1.json',6983,'e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431'),
+  ('descriptor_mathematical','parameters/descriptor-mathematical.json','crates/jocforge-domain/tests/fixtures/f04_parameters/descriptor-mathematical.json',4861,'a493fbdaf2dab30e940cae9976ed3305f3af083e5614ab0cbd6889c71a02b197')]
+ contracts=p['provider_contracts'];ck(len(contracts)==3 and [(x['asset'],x['path'],x['fixture'],x['bytes'],x['sha256'])for x in contracts]==expected_assets,'P1.4-D2 exact three pinned provider identities')
+ ck(p['fixture_manifest']==manifest_path and p['fixture_manifest_reused'] is True and p['fixture_files']==[x[2] for x in expected_assets],'P1.4-D2 fixture inventory and manifest reuse')
+ expected_spec_bindings=[(['F04Q','F04R','F04D'],['specs/04-qmf-receiver-whole-binding.md','specs/04-qmf-prototype-source-and-loading.md','specs/04-descriptor-control.md']),(['F04QF','F04Q'],['specs/04-qmf-mathematical-fft.md','specs/04-qmf-receiver-whole-binding.md']),(['F04D'],['specs/04-descriptor-control.md','specs/04-qmf-receiver-whole-binding.md'])]
+ for contract,(asset,path,fixture,size,digest),spec_binding in zip(contracts,expected_assets,expected_spec_bindings):
+  ck(contract['functional_ids']==spec_binding[0]and contract['spec_files']==spec_binding[1]and all((PKG/spec).is_file()for spec in spec_binding[1]),'P1.4-D2 specification binding '+asset)
+  source=(PKG/path).read_bytes();entries=[entry for entry in package_manifest_data['files']if entry.get('file')==path]
+  ck(len(entries)==1 and entries[0]=={'file':path,'bytes':size,'sha256':digest} and len(source)==size and hashlib.sha256(source).hexdigest()==digest,'P1.4-D2 unique manifest identity '+path)
+  if p['status']=='LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS':
+   copied=(root/fixture).read_bytes();ck(copied==source,'P1.4-D2 exact fixture copy '+path)
+  else:ck(not(root/fixture).exists(),'P1.4-D2 fixtures are not copied before validator phase '+path)
+  obj=json.loads(source,object_pairs_hook=unique_object_pairs)
+  def finite_word(word,label,positive=False):
+   ck(type(word)is int and 0<=word<=0xffffffff,'P1.4-D2 U32 word '+label)
+   value=struct.unpack('<f',struct.pack('<I',word))[0]
+   ck(math.isfinite(value)and(not positive or value>0.0),'P1.4-D2 finite F32 word '+label)
+  if asset=='qmf_receiver_functional':
+   expected_top=['schema','delivery_scope','authorization','not_included','arrays','scalar_u32','generated_providers_reused','counts']
+   expected_array_map=[('qwin_synthesis_640',640,'PUBLIC_STANDARD_FUNCTIONAL_VALUES_WITH_VERIFIED_EXISTING_COPY','F04Q synthesis prototype; analysis is exact reverse, so no second delivered table','870d3c80e4fe7ee368b5da1f7db487dfa84be44c4cf8c82813b78fb06a8e94a2'),('band0_real_mode1_21',21,'AUTHORIZED_NONSECRET_COMPILED_AUDIO_FUNCTIONAL_CONSTANTS','F04Q mode=1 audio surround band0 FIR and mode=0 fitting history update contract','b352accaefeb0ff0bac1981dcbe9112ff9bd9437e14f1662076b41cf9fd70c70'),('band0_imag_mode1_21',21,'AUTHORIZED_NONSECRET_COMPILED_AUDIO_FUNCTIONAL_CONSTANTS','F04Q mode=1 audio surround band0 FIR; current selected fitting mode=0 does not multiply taps','946593788adebf7dd8beafb057c77e167e5b066607306d2a4e31d99244b8b3be'),('lfe_post_filter_4x5',20,'AUTHORIZED_NONSECRET_FUNCTIONAL_CONSTANTS_BOUND_TO_FROZEN_BITEXACT_MODEL','F04R lane3 four-section pair-order post-filter','ddd163cfb2116be81bf283746b3faf38fe771b0d01cee1bf31ea3b0fd04a16eb'),('descriptor_threshold_127',127,'AUTHORIZED_NONSECRET_COMPILED_AUDIO_FUNCTIONAL_CONSTANTS','F04D strict lookup for ordinals 0..126','5ba787b1ee814e20bbc86290eca1daa6af33968e4e2458b5a3011c87a78fceac')]
+   ck(len(obj)==len(expected_top)and set(obj)==set(expected_top)and contract['schema']=='qmf-receiver-authorized-functional-parameters-v1'and obj['schema']==contract['schema']and contract['top_level_fields']==expected_top,'P1.4-D2 receiver exact schema fields')
+   ck([(x['field'],x['count'],x['source_class'],x['consumer'],x['f32le_sha256'])for x in contract['arrays']]==expected_array_map,'P1.4-D2 receiver array contracts')
+   ck(obj['delivery_scope']==contract['delivery_scope']and obj['authorization']==contract['authorization']and obj['not_included']==contract['not_included'],'P1.4-D2 receiver scope and exclusions')
+   array_fields=[x['field']for x in contract['arrays']];ck(len(obj['arrays'])==len(array_fields)and set(obj['arrays'])==set(array_fields),'P1.4-D2 receiver array field registry')
+   for spec in contract['arrays']:
+    value=obj['arrays'][spec['field']];ck(len(value)==4 and set(value)=={'source_class','consumer','u32_words','f32le_sha256'}and value['source_class']==spec['source_class']and value['consumer']==spec['consumer'],'P1.4-D2 receiver array classification '+spec['field'])
+    words=value['u32_words'];ck(len(words)==spec['count']and value['f32le_sha256']==spec['f32le_sha256'],'P1.4-D2 receiver array shape and digest '+spec['field']);raw=bytearray()
+    for word in words:finite_word(word,spec['field']);raw.extend(struct.pack('<I',word))
+    ck(hashlib.sha256(raw).hexdigest()==spec['f32le_sha256'],'P1.4-D2 receiver array F32LE identity '+spec['field'])
+   expected_scalar_map={'type':'JSON U32 raw finite F32 bits','count':12,'fields':['preconditioning_alpha','preconditioning_beta','preconditioning_tiny_strict','accumulator_magnitude_threshold','accumulator_delta_threshold','accumulator_smoothing','descriptor_level_offset','descriptor_level_linear','descriptor_level_quadratic','descriptor_headroom_step','descriptor_result_scale','descriptor_rise']}
+   scalars=obj['scalar_u32'];ck(contract['scalar_u32']==expected_scalar_map and set(scalars)==set(contract['scalar_u32']['fields'])and len(scalars)==12,'P1.4-D2 receiver scalar field classification')
+   for name,word in scalars.items():finite_word(word,'scalar '+name)
+   expected_generated={'QMF_FFT_RADIX2_MATH_V1':'parameters/qmf-mathematical-fft-v1.json','descriptor_gain_PG03':'parameters/descriptor-mathematical.json','receiver_blend32_PG01':'parameters/window-q15.json'};expected_counts={'delivered_array_f32_words':829,'delivered_scalar_f32_words':12,'excluded_unused_mode_other_imag_words':21}
+   ck(contract['generated_providers_reused']==expected_generated and contract['counts']==expected_counts and obj['generated_providers_reused']==contract['generated_providers_reused']and obj['counts']==contract['counts'],'P1.4-D2 receiver generated routes and totals')
+   ck(contract['qualification']=={'provider_validation_only':True,'consumer_validation':'NOT_RUN','authorization_and_delivery_scope_preserved':True},'P1.4-D2 receiver qualification map')
+  elif asset=='qmf_mathematical_fft':
+   expected_top=['schema','route','source','stages','rotation_u32','audio_acceptance'];ck(len(obj)==len(expected_top)and set(obj)==set(expected_top)and obj['schema']==contract['schema']and obj['route']==contract['route']and obj['source']==contract['source']and obj['audio_acceptance']==contract['audio_acceptance'],'P1.4-D2 FFT schema, route, source, and qualification')
+   ck(contract['top_level_fields']==expected_top and contract['schema']=='qmf-mathematical-fft-parameters.v1'and contract['route']=='QMF_FFT_RADIX2_MATH_V1'and contract['source']=='MATHEMATICAL_GENERATION_NO_COMPILED_VALUES_USED'and contract['stage_lengths']==[2,4,8,16,32,64]and contract['stage_root_counts']==[1,2,4,8,16,32]and contract['stage_fields']==['length','roots_u32']and contract['root_word_shape']==[2]and contract['rotation_word_count']==128 and contract['word_type']=='JSON U32 raw finite F32 bits'and contract['audio_acceptance']=='NOT_RUN'and contract['qualification']=={'provider_validation_only':True,'audio_acceptance':'NOT_RUN','fft_execution':'NOT_RUN'},'P1.4-D2 FFT map contract')
+   ck(len(obj['stages'])==6 and [item['length']for item in obj['stages']]==contract['stage_lengths'],'P1.4-D2 FFT stage order')
+   for item,count,length in zip(obj['stages'],contract['stage_root_counts'],contract['stage_lengths']):
+    ck(len(item)==len(contract['stage_fields'])and set(item)==set(contract['stage_fields'])and item['length']==length and len(item['roots_u32'])==count,'P1.4-D2 FFT root shape '+str(length))
+    for root_index,pair in enumerate(item['roots_u32']):ck(isinstance(pair,list)and len(pair)==2,'P1.4-D2 FFT complex root shape');[finite_word(word,'root '+str(length)+':'+str(root_index))for word in pair]
+   ck(len(obj['rotation_u32'])==128 and contract['rotation_word_count']==128,'P1.4-D2 FFT rotation shape')
+   for index,word in enumerate(obj['rotation_u32']):finite_word(word,'rotation '+str(index))
+  else:
+   expected_top=['schema','origin','gain_formula','gain_u32','threshold_formula','threshold_u32','gain_research_comparison','threshold_research_comparison','threshold_route_status','private_vendor_key_included'];ck(len(obj)==len(expected_top)and set(obj)==set(expected_top)and obj['schema']==contract['schema']and obj['origin']==contract['origin']and obj['gain_formula']==contract['gain_formula']and obj['threshold_formula']==contract['threshold_formula'],'P1.4-D2 descriptor schema and formulas')
+   ck(contract['top_level_fields']==expected_top and contract['schema']=='descriptor-mathematical-parameters.v1'and contract['origin']=='MATHEMATICAL_FORMULAS_GENERATED_IN_THIS_TASK'and contract['gain_formula']=='(32+j%32)*2^(floor(j/32))/512'and contract['gain_word_count']==128 and contract['threshold_formula']=='R32(-log2(16*gain[j])/8), j0..126'and contract['threshold_word_count']==127 and contract['gain_range']=='positive finite F32'and contract['word_type']=='JSON U32 raw finite F32 bits'and contract['private_vendor_key_included'] is False,'P1.4-D2 descriptor map contract')
+   ck(obj['gain_research_comparison']==contract['gain_research_comparison']and obj['threshold_research_comparison']==contract['threshold_research_comparison']and obj['threshold_route_status']==contract['threshold_route_status']and obj['private_vendor_key_included'] is False,'P1.4-D2 descriptor qualification retained')
+   ck(contract['gain_research_comparison']=='PASS_ALL128_WORDS'and contract['threshold_research_comparison']=='36_WORD_DIFFERENCES_NOT_IDENTICAL'and contract['threshold_route_status']=='MATHEMATICAL_CANDIDATE_AUDIO_ACCEPTANCE_PENDING'and contract['qualification']=={'provider_validation_only':True,'gain_research_comparison':'PASS_ALL128_WORDS','threshold_research_comparison':'36_WORD_DIFFERENCES_NOT_IDENTICAL','threshold_route_status':'MATHEMATICAL_CANDIDATE_AUDIO_ACCEPTANCE_PENDING'},'P1.4-D2 descriptor qualification map')
+   ck(len(obj['gain_u32'])==contract['gain_word_count']and len(obj['threshold_u32'])==contract['threshold_word_count'],'P1.4-D2 descriptor word counts')
+   for word in obj['gain_u32']:finite_word(word,'descriptor gain',positive=True)
+   for word in obj['threshold_u32']:finite_word(word,'descriptor threshold')
+ ck(p['identity_flow']==['recompute complete MANIFEST.json bytes/SHA before parsing','require one exact manifest entry for each provider path','verify observed provider length/SHA before UTF-8 or JSON parsing','validate exact schema, route, fields, U32/F32 words, counts, shapes, declared digests, and qualification; construct private typed outputs'],'P1.4-D2 identity-first flow')
+ ck(p['outputs']=={'providers':['private read-only QmfReceiverFunctionalProvider','private read-only QmfMathematicalFftProvider','private read-only DescriptorMathematicalProvider'],'receipt_fields':['validated_manifest_lineage','provider_file_sha256','provider_file_bytes','schema','asset-specific qualification'],'receipt_authority':'immutable identity and typed-provider validation only; never DSP, FFT, QMF, descriptor, audio, or product PASS','public_serde_json_value':False,'projection_digest':False},'P1.4-D2 receipt boundary')
+ doc=' '.join((root/p['mapping_document']).read_text(encoding='utf-8').casefold().split());ck(all(' '.join(term.casefold().split())in doc for term in ('qmf-receiver-functional-v1.json','qmf-mathematical-fft-v1.json','descriptor-mathematical.json','829 array F32 words','12 scalar F32 words','audio_acceptance=NOT_RUN','MATHEMATICAL_CANDIDATE_AUDIO_ACCEPTANCE_PENDING','no provider projection digest')),'P1.4-D2 human-readable provider map')
+ if p['status']=='MAPPING_COMPLETE_VALIDATION_NOT_STARTED':
+  ck(p['implementation_status']=='NOT_STARTED' and p['verification']['status']=='NOT_RUN'and all(not(root/path).exists()for path in p['implementation_files'][:3]+p['test_files']+p['fixture_files']),'P1.4-D2 no implementation before mapping gate commit')
 
 def check_spatial_control_v5_amendment(root,d):
  programme=next(x for x in d['programme_roots']if x['root_id']=='spatial_control');p=d['phase_one']['P1.3-D'];d1=d['phase_one']['P1.3-D1']
@@ -912,9 +981,9 @@ def run(root=ROOT):
  for n,v in m.render(d).items():ck((root/'docs/implementation'/n).read_text(encoding='utf-8')==v,'render diff '+n)
  ck('RenderTarget'not in json.dumps(d['phase_one']['P1.1']['tasks'][0]),'render target clock');profile_doc=(arch/'PROFILE-DIMENSIONS.md').read_text(encoding='utf-8');ck(len([x for x in profile_doc.splitlines()if x.startswith('| selected ADM BWF /')])==1,'supported row count');production=(root/'crates/jocforge-domain/src/profile/production.rs').read_text(encoding='utf-8');ck('RenderTarget'not in production and 'fallback'not in production.lower()and 'Self::selected_with_carriage(EmdfCarriageProfile::DeployedCompat)'in production,'production profile separation/default')
  dep=d['approved_dependencies']['sha2']
- ck(dep=={'version':'=0.10.9','default_features':False,'archive_sha256':'a7507d819769d01a365ab707794a4084392c824f54a7a6a7862f8c3d0892b283','license_choice':'Apache-2.0','scope':'reader_eof, F01E, F03, CurrentFeatures P1.4-C, and F04 P1.4-D1 provider/package-manifest identity SHA-256 only; no math-provider projection digest'},'sha2 governance')
+ ck(dep=={'version':'=0.10.9','default_features':False,'archive_sha256':'a7507d819769d01a365ab707794a4084392c824f54a7a6a7862f8c3d0892b283','license_choice':'Apache-2.0','scope':'reader_eof, F01E, F03, CurrentFeatures P1.4-C, and F04 P1.4-D1/P1.4-D2 provider/package-manifest identity SHA-256 only; no math-provider projection digest'},'sha2 governance')
  json_dep=d['approved_dependencies']['serde_json']
- expected_json_dep={'version':'=1.0.154','default_features':False,'features':['std'],'archive_sha256':'e7e9cc8b1b85264074fbcc02a88680c4096b1e47df8f739dceb03bf482f04bd6','license_choice':'Apache-2.0','scope':'F01E P1.4-A, F03 target P1.4-B, exact CurrentFeatures P1.4-C, and F04 P1.4-D1 provider syntax parsing/private field access after identity gates only; canonical writers remain project-owned'}
+ expected_json_dep={'version':'=1.0.154','default_features':False,'features':['std'],'archive_sha256':'e7e9cc8b1b85264074fbcc02a88680c4096b1e47df8f739dceb03bf482f04bd6','license_choice':'Apache-2.0','scope':'F01E P1.4-A, F03 target P1.4-B, exact CurrentFeatures P1.4-C, and F04 P1.4-D1/P1.4-D2 provider syntax parsing/private field access after identity gates only; canonical writers remain project-owned'}
  ck(json_dep==expected_json_dep,'serde_json governance')
  lock=(root/'Cargo.lock').read_text(encoding='utf-8')
  ck('name = "sha2"'in lock and 'version = "0.10.9"'in lock and 'checksum = "a7507d819769d01a365ab707794a4084392c824f54a7a6a7862f8c3d0892b283"'in lock,'sha2 lock')
@@ -943,6 +1012,7 @@ def run(root=ROOT):
  check_spatial_control_mapping(root,d)
  check_spatial_audio_mapping(root,d)
  check_f04_parameter_providers(root,d)
+ check_f04_remaining_provider_mapping(root,d)
  check_spatial_control_v5_amendment(root,d)
  check_spatial_control_implementation(root,d)
  check_source_flags_producer(root,d)

@@ -4290,3 +4290,331 @@
   }
 }
 ```
+
+## P1.4-D2 F04 remaining provider validators
+
+```json
+{
+  "base_package_identity": {
+    "manifest_bytes": 76302,
+    "manifest_file": "MANIFEST.json",
+    "manifest_fixture": "crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json",
+    "manifest_fixture_reused": true,
+    "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "second_manifest_fixture": false
+  },
+  "boundary_mutations": [
+    "provider identity/path crosswire",
+    "schema or route drift",
+    "array/scalar classification and word-type confusion",
+    "shape/count/digest drift",
+    "generated provider substitution",
+    "descriptor qualification overclaim",
+    "early FFT/QMF/DSP implementation",
+    "public Value or IO leak",
+    "second manifest fixture"
+  ],
+  "dependency_scope": {
+    "serde_json": "exact identity-gated provider parsing and private typed field access only",
+    "sha2": "manifest and provider file identity only; no provider projection digest"
+  },
+  "fixture_files": [
+    "crates/jocforge-domain/tests/fixtures/f04_parameters/qmf-receiver-functional-v1.json",
+    "crates/jocforge-domain/tests/fixtures/f04_parameters/qmf-mathematical-fft-v1.json",
+    "crates/jocforge-domain/tests/fixtures/f04_parameters/descriptor-mathematical.json"
+  ],
+  "fixture_manifest": "crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json",
+  "fixture_manifest_reused": true,
+  "functional_ids": [
+    "F04Q",
+    "F04QF",
+    "F04R",
+    "F04D"
+  ],
+  "identity_flow": [
+    "recompute complete MANIFEST.json bytes/SHA before parsing",
+    "require one exact manifest entry for each provider path",
+    "verify observed provider length/SHA before UTF-8 or JSON parsing",
+    "validate exact schema, route, fields, U32/F32 words, counts, shapes, declared digests, and qualification; construct private typed outputs"
+  ],
+  "implementation_files": [
+    "crates/jocforge-domain/src/spatial/qmf_receiver_functional_provider.rs",
+    "crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs",
+    "crates/jocforge-domain/src/spatial/descriptor_mathematical_provider.rs",
+    "crates/jocforge-domain/src/spatial/mod.rs"
+  ],
+  "implementation_prohibitions": [
+    "no QMF FFT execution",
+    "no receiver or descriptor DSP",
+    "no state transition or audio processing",
+    "no hardcoded or regenerated provider words",
+    "no provider substitution",
+    "no second MANIFEST fixture",
+    "no projection digest",
+    "no public serde_json::Value",
+    "no qualification or acceptance overclaim"
+  ],
+  "implementation_status": "NOT_STARTED",
+  "mapping_document": "docs/implementation/F04-PROVIDER-VALIDATION-MAP.md",
+  "mapping_status": "MAPPING_COMPLETE",
+  "not_run": [
+    "FFT execution",
+    "QMF receiver and synthesis",
+    "descriptor control",
+    "F04 state consumption",
+    "render/fanout",
+    "parent CallbackTransaction",
+    "real ADM execution",
+    "product/listening acceptance"
+  ],
+  "outputs": {
+    "projection_digest": false,
+    "providers": [
+      "private read-only QmfReceiverFunctionalProvider",
+      "private read-only QmfMathematicalFftProvider",
+      "private read-only DescriptorMathematicalProvider"
+    ],
+    "public_serde_json_value": false,
+    "receipt_authority": "immutable identity and typed-provider validation only; never DSP, FFT, QMF, descriptor, audio, or product PASS",
+    "receipt_fields": [
+      "validated_manifest_lineage",
+      "provider_file_sha256",
+      "provider_file_bytes",
+      "schema",
+      "asset-specific qualification"
+    ]
+  },
+  "provider_contracts": [
+    {
+      "arrays": [
+        {
+          "consumer": "F04Q synthesis prototype; analysis is exact reverse, so no second delivered table",
+          "count": 640,
+          "f32le_sha256": "870d3c80e4fe7ee368b5da1f7db487dfa84be44c4cf8c82813b78fb06a8e94a2",
+          "field": "qwin_synthesis_640",
+          "source_class": "PUBLIC_STANDARD_FUNCTIONAL_VALUES_WITH_VERIFIED_EXISTING_COPY"
+        },
+        {
+          "consumer": "F04Q mode=1 audio surround band0 FIR and mode=0 fitting history update contract",
+          "count": 21,
+          "f32le_sha256": "b352accaefeb0ff0bac1981dcbe9112ff9bd9437e14f1662076b41cf9fd70c70",
+          "field": "band0_real_mode1_21",
+          "source_class": "AUTHORIZED_NONSECRET_COMPILED_AUDIO_FUNCTIONAL_CONSTANTS"
+        },
+        {
+          "consumer": "F04Q mode=1 audio surround band0 FIR; current selected fitting mode=0 does not multiply taps",
+          "count": 21,
+          "f32le_sha256": "946593788adebf7dd8beafb057c77e167e5b066607306d2a4e31d99244b8b3be",
+          "field": "band0_imag_mode1_21",
+          "source_class": "AUTHORIZED_NONSECRET_COMPILED_AUDIO_FUNCTIONAL_CONSTANTS"
+        },
+        {
+          "consumer": "F04R lane3 four-section pair-order post-filter",
+          "count": 20,
+          "f32le_sha256": "ddd163cfb2116be81bf283746b3faf38fe771b0d01cee1bf31ea3b0fd04a16eb",
+          "field": "lfe_post_filter_4x5",
+          "source_class": "AUTHORIZED_NONSECRET_FUNCTIONAL_CONSTANTS_BOUND_TO_FROZEN_BITEXACT_MODEL"
+        },
+        {
+          "consumer": "F04D strict lookup for ordinals 0..126",
+          "count": 127,
+          "f32le_sha256": "5ba787b1ee814e20bbc86290eca1daa6af33968e4e2458b5a3011c87a78fceac",
+          "field": "descriptor_threshold_127",
+          "source_class": "AUTHORIZED_NONSECRET_COMPILED_AUDIO_FUNCTIONAL_CONSTANTS"
+        }
+      ],
+      "asset": "qmf_receiver_functional",
+      "authorization": "all ordinary non-secret functional constants may be delivered; vendor-secret credentials remain excluded",
+      "bytes": 20325,
+      "counts": {
+        "delivered_array_f32_words": 829,
+        "delivered_scalar_f32_words": 12,
+        "excluded_unused_mode_other_imag_words": 21
+      },
+      "delivery_scope": "internal isolated implementation only; no public or third-party redistribution",
+      "fixture": "crates/jocforge-domain/tests/fixtures/f04_parameters/qmf-receiver-functional-v1.json",
+      "functional_ids": [
+        "F04Q",
+        "F04R",
+        "F04D"
+      ],
+      "generated_providers_reused": {
+        "QMF_FFT_RADIX2_MATH_V1": "parameters/qmf-mathematical-fft-v1.json",
+        "descriptor_gain_PG03": "parameters/descriptor-mathematical.json",
+        "receiver_blend32_PG01": "parameters/window-q15.json"
+      },
+      "not_included": [
+        "vendor-secret credentials",
+        "authentication secrets",
+        "research source",
+        "raw original table artifacts",
+        "compiled images",
+        "addresses"
+      ],
+      "path": "parameters/qmf-receiver-functional-v1.json",
+      "qualification": {
+        "authorization_and_delivery_scope_preserved": true,
+        "consumer_validation": "NOT_RUN",
+        "provider_validation_only": true
+      },
+      "scalar_u32": {
+        "count": 12,
+        "fields": [
+          "preconditioning_alpha",
+          "preconditioning_beta",
+          "preconditioning_tiny_strict",
+          "accumulator_magnitude_threshold",
+          "accumulator_delta_threshold",
+          "accumulator_smoothing",
+          "descriptor_level_offset",
+          "descriptor_level_linear",
+          "descriptor_level_quadratic",
+          "descriptor_headroom_step",
+          "descriptor_result_scale",
+          "descriptor_rise"
+        ],
+        "type": "JSON U32 raw finite F32 bits"
+      },
+      "schema": "qmf-receiver-authorized-functional-parameters-v1",
+      "sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c",
+      "spec_files": [
+        "specs/04-qmf-receiver-whole-binding.md",
+        "specs/04-qmf-prototype-source-and-loading.md",
+        "specs/04-descriptor-control.md"
+      ],
+      "top_level_fields": [
+        "schema",
+        "delivery_scope",
+        "authorization",
+        "not_included",
+        "arrays",
+        "scalar_u32",
+        "generated_providers_reused",
+        "counts"
+      ]
+    },
+    {
+      "asset": "qmf_mathematical_fft",
+      "audio_acceptance": "NOT_RUN",
+      "bytes": 6983,
+      "fixture": "crates/jocforge-domain/tests/fixtures/f04_parameters/qmf-mathematical-fft-v1.json",
+      "functional_ids": [
+        "F04QF",
+        "F04Q"
+      ],
+      "path": "parameters/qmf-mathematical-fft-v1.json",
+      "qualification": {
+        "audio_acceptance": "NOT_RUN",
+        "fft_execution": "NOT_RUN",
+        "provider_validation_only": true
+      },
+      "root_word_shape": [
+        2
+      ],
+      "rotation_word_count": 128,
+      "route": "QMF_FFT_RADIX2_MATH_V1",
+      "schema": "qmf-mathematical-fft-parameters.v1",
+      "sha256": "e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431",
+      "source": "MATHEMATICAL_GENERATION_NO_COMPILED_VALUES_USED",
+      "spec_files": [
+        "specs/04-qmf-mathematical-fft.md",
+        "specs/04-qmf-receiver-whole-binding.md"
+      ],
+      "stage_fields": [
+        "length",
+        "roots_u32"
+      ],
+      "stage_lengths": [
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "stage_root_counts": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32
+      ],
+      "top_level_fields": [
+        "schema",
+        "route",
+        "source",
+        "stages",
+        "rotation_u32",
+        "audio_acceptance"
+      ],
+      "word_type": "JSON U32 raw finite F32 bits"
+    },
+    {
+      "asset": "descriptor_mathematical",
+      "bytes": 4861,
+      "fixture": "crates/jocforge-domain/tests/fixtures/f04_parameters/descriptor-mathematical.json",
+      "functional_ids": [
+        "F04D"
+      ],
+      "gain_formula": "(32+j%32)*2^(floor(j/32))/512",
+      "gain_range": "positive finite F32",
+      "gain_research_comparison": "PASS_ALL128_WORDS",
+      "gain_word_count": 128,
+      "origin": "MATHEMATICAL_FORMULAS_GENERATED_IN_THIS_TASK",
+      "path": "parameters/descriptor-mathematical.json",
+      "private_vendor_key_included": false,
+      "qualification": {
+        "gain_research_comparison": "PASS_ALL128_WORDS",
+        "provider_validation_only": true,
+        "threshold_research_comparison": "36_WORD_DIFFERENCES_NOT_IDENTICAL",
+        "threshold_route_status": "MATHEMATICAL_CANDIDATE_AUDIO_ACCEPTANCE_PENDING"
+      },
+      "schema": "descriptor-mathematical-parameters.v1",
+      "sha256": "a493fbdaf2dab30e940cae9976ed3305f3af083e5614ab0cbd6889c71a02b197",
+      "spec_files": [
+        "specs/04-descriptor-control.md",
+        "specs/04-qmf-receiver-whole-binding.md"
+      ],
+      "threshold_formula": "R32(-log2(16*gain[j])/8), j0..126",
+      "threshold_research_comparison": "36_WORD_DIFFERENCES_NOT_IDENTICAL",
+      "threshold_route_status": "MATHEMATICAL_CANDIDATE_AUDIO_ACCEPTANCE_PENDING",
+      "threshold_word_count": 127,
+      "top_level_fields": [
+        "schema",
+        "origin",
+        "gain_formula",
+        "gain_u32",
+        "threshold_formula",
+        "threshold_u32",
+        "gain_research_comparison",
+        "threshold_research_comparison",
+        "threshold_route_status",
+        "private_vendor_key_included"
+      ],
+      "word_type": "JSON U32 raw finite F32 bits"
+    }
+  ],
+  "scope": "identity-first typed validation of the QMF receiver functional, QMF mathematical FFT, and descriptor mathematical providers only; no consumer algorithms, DSP, audio, state transition, render, or parent transaction",
+  "status": "MAPPING_COMPLETE_VALIDATION_NOT_STARTED",
+  "task_id": "P1.4-D2-F04-REMAINING-PROVIDER-VALIDATORS",
+  "test_files": [
+    "crates/jocforge-domain/tests/f04_remaining_provider_validators.rs"
+  ],
+  "test_scope": [
+    "manifest and per-provider identity before parsing",
+    "unique exact manifest entries",
+    "exact schemas and fields",
+    "array/scalar U32 classification and finite F32 bits",
+    "counts, stage lengths, root pairs, rotation, and F32LE digests",
+    "generated-provider binding without substitution",
+    "descriptor qualification preservation",
+    "no public Value, IO, DSP, FFT, QMF, descriptor, audio, or render implementation"
+  ],
+  "verification": {
+    "consumer_algorithms": "NOT_IMPLEMENTED",
+    "provider_validation_is_consumer_PASS": false,
+    "status": "NOT_RUN"
+  }
+}
+```
