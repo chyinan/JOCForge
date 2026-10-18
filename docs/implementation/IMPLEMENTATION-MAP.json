@@ -8,6 +8,9 @@
     "SELECTED_PROFILE_GATE": "LOCALLY_VERIFIED",
     "P1.2": "SCOPED_COMPLETE_CURRENT_MATERIALIZED_CONSUMERS__FUTURE_CONSUMERS_DEFERRED",
     "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B1_STAGING_ONLY__P1.3_C_CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS__P1.3_D_BLOCKED",
+    "P1.3_ROLLUP_SCOPE": "P1.3 aggregate covers A-D only; E and E1 are tracked independently",
+    "P1.3-E": "BLOCKED_ON_F04_PROVIDERS_RENDER_AND_PARENT",
+    "P1.3-E1": "BLOCKED_ON_COLD_STATE_SPEC_DETAILS",
     "P1.3-D1": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
     "SOURCE_FLAGS_PRODUCER": "LOCALLY_VERIFIED_NUMERIC_AND_PACKET",
     "CURRENT_FEATURES_PRODUCER": "LOCALLY_VERIFIED_MATH_AND_CAPABILITY__RENDER_AND_PARENT_DEFERRED",
@@ -2027,8 +2030,8 @@
     },
     {
       "root_id": "spatial_audio",
-      "materialization_status": "READY_FOR_IMPLEMENTATION",
-      "implementation_status": "NOT_STARTED",
+      "materialization_status": "MAPPING_COMPLETE_BLOCKED",
+      "implementation_status": "BLOCKED_ON_COLD_STATE_SPEC_DETAILS",
       "programme_owner_binding": {
         "file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
         "pointer": "#/properties/owners/properties/spatial_audio",
@@ -2050,7 +2053,7 @@
         "package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
         "uses_selected_overlap_projection_as_root": false,
         "uses_f04c_local_receipt_as_root": false,
-        "binding_semantics": "The generic GTC OwnerState is bound to the complete F04CompositionState cold-schema pointer. The GTC cold_sha256 equals the verified complete F04 cold-state digest under F04_STATE_NODE_V1; the schema semantic hash is not a state digest."
+        "binding_semantics": "The generic GTC OwnerState points to the complete F04CompositionState cold-schema candidate. The published cold digest is retained as an expected identity only; exact temporal cold scalars and the full F04 D-node byte grammar are not uniquely bound, so the canonical cold preimage and GTC cold_sha256 binding are not yet verified."
       },
       "fields": [
         {
@@ -2095,13 +2098,13 @@
           "name": "receiver_state",
           "schema_pointer": "#/whole_state_by_boundary/cold/fields/6",
           "type": "ModelState; exact recursive layout is pinned by the state schema pointer and F04RB.7",
-          "cold": "All sample/history arrays use their declared positive-zero constructors; RingState indices are write=224/read=0; TemporalState cold spans and buffer lengths are those in F04RB.7; descriptor is cold; target_coefficients=None; temporal slot 4 remains reserved and unconsumed"
+          "cold": "All sample/history arrays use specified positive-zero constructors; RingState indices are write=224/read=0; temporal spans/buffer shapes and semantic read=span/write=0 are documented, but TemporalState stride_bytes and index_28/index_32 binding/value are unresolved; descriptor cold fields are documented; target_coefficients=None; temporal slot 4 remains reserved and unconsumed"
         },
         {
           "name": "fitting_qmf_state",
           "schema_pointer": "#/whole_state_by_boundary/cold/fields/7",
           "type": "QmfWindowState; target_temporal, target_history, previous_targets, previous_carriers, fitting_delay, fitting_fir",
-          "cold": "target/history/window/delay/FIR arrays are their declared positive-zero shapes; target_temporal uses its declared cold constructor; mode=0 fitting histories remain distinct from receiver mode=1 histories"
+          "cold": "target/history/window/delay/FIR arrays are their declared positive-zero shapes; target_temporal span/buffer shape is documented, but stride_bytes and index_28/index_32 cold value binding is unresolved; mode=0 fitting histories remain distinct from receiver mode=1 histories"
         },
         {
           "name": "receiver_callback_count",
@@ -2122,7 +2125,8 @@
           "specs/04-qmf-receiver-whole-binding.md"
         ],
         "null_sentinels_are_preserved": true,
-        "unknown_cold_arrays_zero_filled": false
+        "unknown_cold_arrays_zero_filled": false,
+        "complete_constructor_status": "BLOCKED_ON_TEMPORAL_STATE_SCALARS_AND_F04_NODE_ENCODING"
       },
       "canonical_state": {
         "encoding_id": "F04_STATE_NODE_V1",
@@ -2138,10 +2142,39 @@
           "fitting_qmf_state",
           "receiver_callback_count"
         ],
-        "digest": "SHA-256 over the complete F04CompositionState canonical bytes; cold digest is bound to GTC cold_sha256",
+        "digest": "Expected SHA-256 over the complete F04CompositionState canonical bytes; the canonical preimage cannot be reconstructed until temporal scalars and the F04 D-node grammar are uniquely specified",
         "cold_state_sha256": "35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e",
+        "cold_preimage_reconstructed": false,
+        "byte_level_encoding_complete": false,
         "schema_semantic_sha256_is_state_digest": false,
         "callback_local_scratch": "excluded"
+      },
+      "cold_state_resolution": {
+        "status": "BLOCKED_ON_COLD_STATE_SPEC_DETAILS",
+        "temporal_fields": {
+          "status": "UNBOUND_IN_APPROVED_PACKAGE",
+          "nodes": [
+            "receiver_state.temporal_states[0]",
+            "receiver_state.temporal_states[1]",
+            "receiver_state.temporal_states[2]",
+            "receiver_state.temporal_states[3]",
+            "receiver_state.temporal_states[4]",
+            "fitting_qmf_state.target_temporal"
+          ],
+          "known": "span and buffer shapes are pinned; F04R specifies semantic read=span/write=0 for receiver temporal exchanges",
+          "unresolved": [
+            "exact cold stride_bytes for each node",
+            "whether index_28 or index_32 encodes semantic read versus write",
+            "exact cold values of index_28 and index_32 for each node"
+          ]
+        },
+        "f04_state_node_encoding": {
+          "status": "UNBOUND_FOR_COMPLETE_F04COMPOSITIONSTATE",
+          "declared": "F04_STATE_NODE_V1: N/B+U64LE/I+I64LE/F+F32LE/Z+U8/T+U64LE/D+class+declared fields",
+          "related_rule": "F04RB.7 specifies U16LE class/field-name lengths for encode_node-v1 in its QMF/receiver state scope",
+          "unresolved": "The package does not explicitly bind the F04RB.7 D-node length rule to the full F04CompositionState tree or provide another byte-complete F04 D-node grammar"
+        },
+        "expected_cold_sha256_is_preimage": false
       },
       "clock": {
         "callback_index_type": "FrontendCallbackIndex",
@@ -2308,9 +2341,11 @@
         "fanout_status": "UNRESOLVED; no contract authorizes cloning the linear packet or independently reconstructing lineage"
       },
       "readiness": {
-        "mapping_status": "READY_FOR_IMPLEMENTATION",
-        "implementation_status": "BLOCKED_ON_F04_P1_4_PROVIDER_CONTRACTS_POSTWINDOW_PACKET_FANOUT_AND_PARENT_TRANSACTION",
+        "mapping_status": "MAPPING_COMPLETE_BLOCKED",
+        "implementation_status": "BLOCKED_ON_COLD_STATE_SPEC_DETAILS_AND_F04_PROVIDERS_RENDER_PARENT",
         "blockers": [
+          "Approved cold schema does not uniquely bind TemporalState stride_bytes/index_28/index_32 values for receiver and fitting target temporal nodes",
+          "F04_STATE_NODE_V1 does not provide a byte-complete D-node grammar for the full F04CompositionState tree; F04RB.7 equivalence is not explicitly stated",
           "F04-specific P1.4 identity/shape/permission contracts are not implemented; existing P1.4-C covers CurrentFeatures math providers only",
           "PostWindowAudioPacket render producer and exact linear fanout to CurrentFeatures and F04C are deferred/unresolved",
           "P1.3-C remains waiting for the other owner roots and g>=2 source-stage roots; no parent CallbackTransaction implementation exists"
@@ -2457,6 +2492,7 @@
     },
     "P1.2": "SCOPED_COMPLETE_CURRENT_MATERIALIZED_CONSUMERS__FUTURE_CONSUMERS_DEFERRED",
     "P1.3": "P1.3_A_LOCALLY_VERIFIED__P1.3_B1_STAGING_ONLY__P1.3_C_CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS__P1.3_D_BLOCKED",
+    "P1.3_ROLLUP_SCOPE": "P1.3 aggregate covers A-D only; E and E1 are tracked independently",
     "P1.3-D1": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
     "SOURCE_FLAGS_PRODUCER": "LOCALLY_VERIFIED_NUMERIC_AND_PACKET",
     "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_LOCALLY_VERIFIED__P1.4_C_LOCALLY_VERIFIED",
@@ -3067,8 +3103,8 @@
       },
       "owner_root_readiness": {
         "currently_materialized_or_mapped": ["reader_eof", "frontend_control", "spatial_audio", "spatial_control"],
-        "spatial_audio_mapping_status": "READY_FOR_IMPLEMENTATION",
-        "spatial_audio_implementation_status": "NOT_STARTED",
+        "spatial_audio_mapping_status": "MAPPING_COMPLETE_BLOCKED",
+        "spatial_audio_implementation_status": "BLOCKED_ON_COLD_STATE_SPEC_DETAILS",
         "spatial_control_status": "MAPPING_COMPLETE_BLOCKED_ON_P1.3_C_ROOTS",
         "missing_callback_root_implementation": "spatial_audio",
         "additional_owner_roots_required_for_12_snapshots": ["joc", "meter", "drc", "analysis", "codec", "metadata", "integrity", "output"],
@@ -3249,18 +3285,44 @@
     },
     "P1.3-E": {
       "task_id": "P1.3-E-SPATIAL-AUDIO-PROGRAMME-ROOT-MAP",
-      "status": "READY_FOR_IMPLEMENTATION",
+      "status": "BLOCKED_ON_F04_PROVIDERS_RENDER_AND_PARENT",
       "programme_root": "spatial_audio",
-      "mapping_status": "READY_FOR_IMPLEMENTATION",
-      "implementation_status": "NOT_STARTED",
-      "scope": "Materialize and audit the complete spatial_audio GTC owner root, its cold constructor, serialization, clocks, ownership, receipts, and provider prerequisites; no DSP or Rust state implementation",
+      "mapping_status": "MAPPING_COMPLETE_BLOCKED",
+      "implementation_status": "BLOCKED_ON_COLD_STATE_SPEC_DETAILS",
+      "scope": "Map the spatial_audio GTC owner candidate and its cold/provider prerequisites; the cold byte preimage remains blocked; no DSP or Rust state implementation",
       "root_schema_pointer": "test-vectors/F04-WHOLE-SPATIAL-STATE-SCHEMA.json#/whole_state_by_boundary/cold",
       "root_state_type": "F04CompositionState",
       "root_field_count": 9,
       "cold_sha256": "35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e",
+      "cold_preimage_reconstructed": false,
+      "blocker_file": "docs/implementation/SPATIAL-AUDIO-COLD-STAGING-BLOCKER.md",
       "p1_4_prerequisite": "F04-specific identity/shape/permission contracts for selected FILE and GENERATED providers are not implemented; P1.4-C covers CurrentFeatures only",
       "post_window_packet_prerequisite": "F03W/spatial_control render producer is deferred and linear packet fanout to CurrentFeatures and F04C remains unresolved",
-      "p1_3_c_prerequisite": "P1.3-C remains CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS until the remaining owner roots and g>=2 source-stage roots are materialized"
+      "p1_3_c_prerequisite": "P1.3-C remains CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS until the remaining owner roots and g>=2 source-stage roots are materialized",
+      "blockers": [
+        "P1.3-E1 is blocked because approved cold temporal scalar/index values and the full-root F04 D-node byte grammar are not unique",
+        "F04-specific P1.4 provider contracts, PostWindowAudioPacket render/fanout, and parent CallbackTransaction remain deferred"
+      ]
+    },
+    "P1.3-E1": {
+      "task_id": "P1.3-E1-SPATIAL-AUDIO-COLD-STAGING-FOUNDATION",
+      "status": "BLOCKED_ON_COLD_STATE_SPEC_DETAILS",
+      "programme_root": "spatial_audio",
+      "mapping_status": "MAPPING_COMPLETE_BLOCKED",
+      "implementation_status": "NOT_STARTED",
+      "scope": "Do not create cold root storage, serializer, machine, prepared/staged tokens, or local lifecycle APIs until the approved F04 temporal scalar values and full-root node encoding are unambiguous",
+      "expected_cold_sha256": "35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e",
+      "blocker_file": "docs/implementation/SPATIAL-AUDIO-COLD-STAGING-BLOCKER.md",
+      "blocked_on": [
+        "exact stride_bytes and index_28/index_32 cold values plus semantic index crosswalk for receiver_state.temporal_states[0..5] and fitting_qmf_state.target_temporal",
+        "byte-complete F04_STATE_NODE_V1 D-node grammar or an explicit binding to the F04RB.7 encode_node-v1 D rule"
+      ],
+      "forbidden_while_blocked": [
+        "zero-fill or guess temporal scalar values",
+        "treat expected cold digest as a recoverable canonical preimage",
+        "implement any SpatialAudioState/SpatialAudioMachine/Prepared/Staged type",
+        "add any local commit, abort, or fatal authority"
+      ]
     },
     "P1.3-D1": {
       "task_id": "P1.3-D1-SPATIAL-CONTROL-STAGING-ONLY",
@@ -3272,8 +3334,8 @@
       "schema_amendment_file": "docs/implementation/SPATIAL-CONTROL-STATE-V5-AMENDMENT.md",
       "spec_gap_document": {
         "file": "docs/implementation/SPATIAL-CONTROL-STAGING-SPEC-GAP.md",
-        "document_bytes": 2771,
-        "document_sha256": "a9182768b8d45a37c42cbfe4bc295b3c4687848e115d4b610078343772019c32"
+        "document_bytes": 3053,
+        "document_sha256": "271d7ca10f80f76e8d73bd9b8212fbaa9c9438302d76823d00d2e61e99cb8dbc"
       },
       "scope": "construct the complete v5 persistent spatial_control cold root and canonical digest; provide a non-Clone read-only machine and prepared/staged foundation accepting only a future producer-generated complete typed after proposal; no packet producers and no local commit, abort, fatal or top-level COMMITTED",
       "cold_inputs": [

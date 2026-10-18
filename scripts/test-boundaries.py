@@ -130,6 +130,22 @@ def main():
  ('p13e-false-implementation-complete',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['readiness'].update(implementation_status='LOCALLY_VERIFIED'))),
  ('p13e-p13c-no-longer-waiting',map_mut_render(lambda d:d['phase_one']['P1.3-C'].update(status='READY_FOR_IMPLEMENTATION')))
  ]
+ cases += [
+ ('p13e1-rollup-scope-omits-e1',map_mut_render(lambda d:d['status'].update({'P1.3_ROLLUP_SCOPE':'P1.3 aggregate covers A-D only'}))),
+ ('p13e1-qmf-identity-pin-drift',lambda r:replace_once(r/'scripts/check-boundaries.py','1d809ed24c805a182e9f2ba668562f1f3c8028e4dfc0ce7cd039e1255e4cda07','00'*32)),
+ ('p13e1-false-ready-with-cold-blocker',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio').update(materialization_status='READY_FOR_IMPLEMENTATION'))),
+ ('p13e1-root-readiness-laundered',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['readiness'].update(mapping_status='READY_FOR_IMPLEMENTATION'))),
+ ('p13e1-cold-blocker-removed',map_mut_render(lambda d:d['phase_one']['P1.3-E1']['blocked_on'].pop())),
+ ('p13e1-temporal-scalars-guessed',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['cold_state_resolution']['temporal_fields'].update(status='BOUND_BY_GUESS'))),
+ ('p13e1-node-encoder-assumed',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['cold_state_resolution']['f04_state_node_encoding'].update(status='ASSUMED_FROM_F04RB'))),
+ ('p13e1-provider-json-cold',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['cold_provider'].update(kind='FILE_PROVIDER',provider_files=['parameters/qmf-receiver-functional-v1.json']))),
+ ('p13e1-clock-domain-mixed',map_mut_render(lambda d:next(r for r in d['programme_roots']if r['root_id']=='spatial_audio')['clock'].update(callback_index_type='ReceiverCallbackCount'))),
+ ('p13e1-machine-added-before-cold-binding',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio.rs','\n// pattern: Functional Core\npub struct SpatialAudioMachine;\n')),
+ ('p13e1-state-added-before-cold-binding',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio.rs','\npub struct SpatialAudioState;\n')),
+ ('p13e1-clone-machine-added-before-cold-binding',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio.rs','\n#[derive(Clone, Copy)]\npub struct SpatialAudioMachine;\n')),
+ ('p13e1-machine-mutable-committed-added',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio.rs','\nimpl SpatialAudioMachine { pub fn committed_mut(&mut self) -> &mut SpatialAudioState { todo!() } }\n')),
+ ('p13e1-local-commit-added-before-cold-binding',lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio.rs','\nimpl SpatialAudioMachine { pub fn commit(&mut self) {} }\n'))
+ ]
  spatial_control_source='crates/jocforge-domain/src/spatial/spatial_control.rs'
  cases += [
   ('p13d1-packet-raw-array-constructor',lambda r:append(r/spatial_control_source,'\nimpl SourceFlagsPacket { pub fn from_raw(flags: [[u8; 2]; 48]) -> Self { todo!() } }\n')),
