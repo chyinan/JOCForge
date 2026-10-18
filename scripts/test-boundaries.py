@@ -438,6 +438,20 @@ def main():
  ('f03b-mutable-cold-accessor',lambda r:append(r/f03_source,'\nimpl ValidatedF03TargetColdProvider { pub fn current_xyz_u32_mut(&mut self) -> &mut [u32; 45] { &mut self.current_xyz_u32 } }\n')),
  ('f03b-generic-lifetime-mutable-accessor',lambda r:append(r/f03_source,"\nimpl ValidatedF03TargetColdProvider { pub fn current_xyz_u32_mut<'a>(&'a mut self) -> &'a mut [u32; 45] { &mut self.current_xyz_u32 } }\n"))
  ]
+ cases += [
+ ('e2-map-active-clause-removed',map_mut(lambda d:d['phase_one']['P1.3-E2']['functional_scopes'][0]['clauses'].remove('F04A.8'))),
+ ('e2-map-vector-case-removed',map_mut(lambda d:d['phase_one']['P1.3-E2']['vectors'][0]['cases'].remove('U-FRONT-OVERLAP'))),
+ ('e2-map-component-expected-pointer-removed',map_mut(lambda d:d['phase_one']['P1.3-E2']['vectors'][2]['expected_pointers'].remove('cases[id=*].expected.component15x1536_f32le_sha256'))),
+ ('e2-map-parameter-case-count-drift',map_mut(lambda d:d['phase_one']['P1.3-E2']['vectors'][1].update(case_count=22))),
+ ('e2-map-block-clock-drift',map_mut(lambda d:d['phase_one']['P1.3-E2']['callback_and_block_clock'].update(component_blocks_per_callback=23))),
+ ('e2-map-local-error-category-drift',map_mut(lambda d:d['phase_one']['P1.3-E2']['lineage_error_translation']['outcomes'][4].update(error_code='F04_STATE_ERROR'))),
+ ('e2-map-native-error-overclaim',map_mut(lambda d:d['phase_one']['P1.3-E2']['lineage_error_translation'].update(code_authority='PACKAGE_NORMATIVE'))),
+ ('e2-map-lineage-input-dropped',map_mut(lambda d:d['phase_one']['P1.3-E2']['before_state_and_lineage'].pop(2))),
+ ('e2-map-test-file-omitted',map_mut(lambda d:d['phase_one']['P1.3-E2'].update(planned_test_files=[]))),
+ ('e2-map-upstream-exclusion-drift',map_mut(lambda d:d['phase_one']['P1.3-E2']['explicit_exclusions'].remove('LFE'))),
+ ('e2-map-scoped-status-overclaim',map_mut(lambda d:(d['phase_one']['P1.3-E2'].update(status='COMPLETE'),d['status'].update({'P1.3-E2':'COMPLETE'})))),
+ ('e2-map-overall-p13e-ready',map_mut(lambda d:d['status'].update({'P1.3-E':'LOCALLY_VERIFIED'})))
+ ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]
   if not cases:raise RuntimeError('no boundary mutations match case prefix: '+x.case_prefix)

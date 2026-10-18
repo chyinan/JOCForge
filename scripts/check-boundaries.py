@@ -921,6 +921,78 @@ def check_current_features_producer_implementation(root,d):
  ck('produce_current_features(' in test_source and'expected[' in test_source and test_source.index('produce_current_features(')<test_source.index('expected['),'CurrentFeatures vectors execute actual producer before comparing literal outputs')
  ck((root/implementation['mapping_document']).is_file(),'CurrentFeatures producer traceability document remains present')
 
+def check_component_stage_mapping(root,d):
+ p=d['phase_one'].get('P1.3-E2');ck(isinstance(p,dict),'P1.3-E2 component stage map exists')
+ ck(d['status'].get('P1.3-E2')==p['status'] and p['task_id']=='P1.3-E2-F04-COMPONENT-CONSUMER' and p['mapping_status']=='MAPPING_COMPLETE' and p['mapping_document']=='docs/implementation/COMPONENT-STAGE-MAP.md','P1.3-E2 scoped status/document')
+ allowed_statuses={'MAPPING_COMPLETE','LOCALLY_VERIFIED_COMPONENT_PRODUCER__UPSTREAM_AND_PARENT_DEFERRED'}
+ ck(p['status'] in allowed_statuses and p['implementation_status'] in {'NOT_STARTED','LOCALLY_VERIFIED_COMPONENT_PRODUCER__UPSTREAM_AND_PARENT_DEFERRED'},'P1.3-E2 status is scoped and non-overclaiming')
+ ck(d['status']['P1.3-E']=='BLOCKED_ON_F04_DSP_RENDER_AND_PARENT' and p['overall_p1_3_e_status_remains']==d['status']['P1.3-E'],'P1.3-E2 never closes overall P1.3-E')
+ expected_scope=[('F04A',['F04A.6','F04A.7','F04A.8'],'SCOPED_SUBSET_ONLY'),('F04P',['F04P.1','F04P.2','F04P.3','F04P.4','F04P.5'],'SCOPED_SUBSET_ONLY'),('F04PG',['F04PG.1','F04PG.2','F04PG.3','F04PG.4','F04PG.5'],'SCOPED_SUBSET_ONLY'),('F04C',['F04C.1','F04C.2','F04C.6','F04C.7'],'SCOPED_SUBSET_ONLY'),('N00',['N00.1','N00.2','N00.3','N00.4'],'DEPENDENCY_CLAUSES_ONLY')]
+ ck([(x['functional_id'],x['clauses'],x['status'])for x in p['functional_scopes']]==expected_scope,'P1.3-E2 exact consumer clauses')
+ ck(p['programme_root']=='spatial_audio' and p['scope']=='Consume an opaque future spatial_control-owned input packet and produce only a complete component-stage proposal: matrix, overlap/ring, shared parameter transition, component filter history, callback-local component output, and local receipt; no commit, fatal authority, upstream producer, LFE, receiver/QMF, or parent transaction','P1.3-E2 exact single-owner consumer scope')
+ for functional_id in ('F04','F04A','F04P','F04PG','F04C'):
+  entry=next(x for x in d['functional_entries']if x['functional_id']==functional_id)
+  ck(entry['inventory_status']=='INVENTORIED' and entry['implementation_status']=='DEFERRED_DETAILED_MAPPING','P1.3-E2 scope does not materialize global '+functional_id)
+ manifest_bytes=(PKG/'MANIFEST.json').read_bytes();manifest_sha='c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a'
+ ck(p['approved_package_manifest_sha256']==manifest_sha and len(manifest_bytes)==76302 and hashlib.sha256(manifest_bytes).hexdigest()==manifest_sha,'P1.3-E2 approved package manifest identity')
+ manifest=json.loads(manifest_bytes,object_pairs_hook=unique_object_pairs);entries={x['file']:x for x in manifest['files']}
+ expected_assets={
+  'specs/04-window-matrix-and-component-audio.md':(9190,'350937eadb5da2432ed60723305cdc8de80a139fef803ec3a2aa5a3990ed6334'),
+  'specs/04-component-parameter-state.md':(5792,'3e9b777a36ae722aeccd1054d778484e6a96e44d16f2534159dfe49afc7d1861'),
+  'specs/04-component-parameter-generation.md':(4910,'2564879656a5b0e73975d99ef7a55217440131c5d4e2d6b4dc8117adecef76d8'),
+  'specs/04-whole-spatial-chain-composition.md':(9103,'92325b12128023001e1f3fd4696dcec68bbd47a46acdb7886781b411a10c5d59'),
+  'specs/00-numeric-semantics.md':(3369,'53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135'),
+  'parameters/window-q15.json':(2704,'a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130'),
+  'parameters/component-parameter-mathematical-v1.json':(1077,'5d0fec6f62a33eeef5c64016760fcbe94a1872a564b6d0e03f959c95c37eb0f5'),
+  'test-vectors/unit/vectors.json':(1503142,'a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8'),
+  'test-vectors/COMPONENT-PARAMETER-GENERATION-VERIFICATION.json':(55848,'819e7cede6f54689a87aad72c8ec3d8a5cb4b14fe41fc6a5556a03973f01ec85'),
+  'test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json':(260481,'ffb1dea3b1e69383312da4059b9d8ddabb4366ed8fc22e7537f750ba041f2d63')}
+ mapped={x['path']:(x['bytes'],x['sha256'])for x in p['spec_files']};mapped.update({x['path']:(x['bytes'],x['sha256'])for x in p['providers']});mapped.update({x['file']:(x['bytes'],x['sha256'])for x in p['vectors']})
+ ck(mapped==expected_assets,'P1.3-E2 exact package asset map')
+ for path,(size,digest) in expected_assets.items():
+  source=(PKG/path).read_bytes();matching=[x for x in manifest['files']if x.get('file')==path]
+  ck(len(matching)==1 and matching[0]=={'file':path,'bytes':size,'sha256':digest} and len(source)==size and hashlib.sha256(source).hexdigest()==digest,'P1.3-E2 manifest-pinned source '+path)
+ expected_spec_clauses={'specs/04-window-matrix-and-component-audio.md':['F04A.6','F04A.7','F04A.8'],'specs/04-component-parameter-state.md':['F04P.1','F04P.2','F04P.3','F04P.4','F04P.5'],'specs/04-component-parameter-generation.md':['F04PG.1','F04PG.2','F04PG.3','F04PG.4','F04PG.5'],'specs/04-whole-spatial-chain-composition.md':['F04C.1','F04C.2','F04C.6','F04C.7'],'specs/00-numeric-semantics.md':['N00.1','N00.2','N00.3','N00.4']}
+ ck({x['path']:x['clauses']for x in p['spec_files']}==expected_spec_clauses,'P1.3-E2 exact spec-clause pointers')
+ ck(p['providers']==[{'path':'parameters/window-q15.json','bytes':2704,'sha256':'a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130','typed_input':'ValidatedWindowQ15Provider.component_kernel64','excluded_input':'receiver_blend32'},{'path':'parameters/component-parameter-mathematical-v1.json','bytes':1077,'sha256':'5d0fec6f62a33eeef5c64016760fcbe94a1872a564b6d0e03f959c95c37eb0f5','typed_input':'ValidatedComponentParameterProvider','qualification':{'asset_implementation_ready':False,'dsp_consumption_status':'NOT_YET_VALIDATED','authorized_scope':'INTERNAL_SELECTED_PROFILE_PROVIDER_VALIDATION_AND_FUTURE_CONSUMPTION'}}],'P1.3-E2 exact typed providers and preserved readiness qualification')
+ unit=json.loads((PKG/'test-vectors/unit/vectors.json').read_text(encoding='utf-8'),object_pairs_hook=unique_object_pairs);unit_cases={}
+ for case in unit['cases']:
+  if case.get('id') in ('U-FRONT-MATRIX','U-FRONT-OVERLAP','U-FRONT-FILTER64','U-FRONT-PARAMETER64'):unit_cases.setdefault(case['id'],[]).append(case)
+ ck(set(unit_cases)=={'U-FRONT-MATRIX','U-FRONT-OVERLAP','U-FRONT-FILTER64','U-FRONT-PARAMETER64'} and all(len(v)==1 for v in unit_cases.values()),'P1.3-E2 exact unit-vector IDs')
+ for case_id,inputs,outputs in (
+  ('U-FRONT-MATRIX',{'constant_source_rows','nonzero_coefficients','destinations'},{'row_sha256','probes_u32'}),
+  ('U-FRONT-OVERLAP',{'cold','calls'},{'calls','terminal_overlap','terminal_ring'}),
+  ('U-FRONT-FILTER64',{'parameters','block_amplitudes_u32','cold'},{'blocks','terminal_history'}),
+  ('U-FRONT-PARAMETER64',{'parameters','block_amplitudes_u32','cold'},{'records','terminal'})):
+  case=unit_cases[case_id][0];ck(set(case['input'])==inputs and outputs.issubset(case['expected']),'P1.3-E2 unit-vector pointer '+case_id)
+ pg=json.loads((PKG/'test-vectors/COMPONENT-PARAMETER-GENERATION-VERIFICATION.json').read_text(encoding='utf-8'),object_pairs_hook=unique_object_pairs)
+ pg_cases=pg['cases'];pg_ids=[x['id']for x in pg_cases];plan=pg['execution_plan']
+ ck(len(pg_cases)==23 and len(set(pg_ids))==23 and len(plan)==5 and sum(len(x['case_ids'])for x in plan)==23 and [case for sequence in plan for case in sequence['case_ids']]==pg_ids,'P1.3-E2 PG actual 23 cases and ordered five sequences')
+ ck(all({'input','execution','expected_before_words','expected_after_words','expected_state'}.issubset(set(x)) for x in pg_cases) and all(x.get('expected_state')!=x['input'].get('state') for x in pg_cases if 'state'in x['input']),'P1.3-E2 PG expected-only state evidence')
+ whole=json.loads((PKG/'test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json').read_text(encoding='utf-8'),object_pairs_hook=unique_object_pairs)
+ ck(whole['input_only'] is True and [x['id']for x in whole['cases']]==[f'F04-WHOLE-{i}'for i in range(6)],'P1.3-E2 six input-only whole-chain cases')
+ required_expected={'matrix15x3072_f32le_sha256','overlap15x1536_f32le_sha256','component15x1536_f32le_sha256','component_parameter_blocks_after'}
+ ck(all(required_expected.issubset(set(x['expected'])) for x in whole['cases']) and whole['cached_drain_callbacks']==4 and whole['normal_callbacks']==2,'P1.3-E2 component-only whole-chain assertions and callback phases')
+ expected_vectors=[{'file':'test-vectors/unit/vectors.json','bytes':1503142,'sha256':'a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8','cases':['U-FRONT-MATRIX','U-FRONT-OVERLAP','U-FRONT-FILTER64','U-FRONT-PARAMETER64'],'input_pointers':['cases[id=U-FRONT-MATRIX].input','cases[id=U-FRONT-OVERLAP].input','cases[id=U-FRONT-FILTER64].input','cases[id=U-FRONT-PARAMETER64].input'],'expected_pointers':['cases[id=U-FRONT-MATRIX].expected.row_sha256','cases[id=U-FRONT-MATRIX].expected.probes_u32','cases[id=U-FRONT-OVERLAP].expected.calls','cases[id=U-FRONT-OVERLAP].expected.terminal_overlap','cases[id=U-FRONT-OVERLAP].expected.terminal_ring','cases[id=U-FRONT-FILTER64].expected.blocks','cases[id=U-FRONT-FILTER64].expected.terminal_history','cases[id=U-FRONT-PARAMETER64].expected.records','cases[id=U-FRONT-PARAMETER64].expected.terminal']},{'file':'test-vectors/COMPONENT-PARAMETER-GENERATION-VERIFICATION.json','bytes':55848,'sha256':'819e7cede6f54689a87aad72c8ec3d8a5cb4b14fe41fc6a5556a03973f01ec85','case_count':23,'sequence_count':5,'input_pointers':['cases[id=*].execution','cases[id=*].input'],'expected_pointers':['cases[id=*].expected_before_words','cases[id=*].expected_after_words','cases[id=*].expected_state','cases[id=*].expected_attenuation_word','cases[id=*].expected_peak_word','cases[id=*].expected_peak_witness','cases[id=*].expected_gain_branch'],'expected_are_assertions_only':True},{'file':'test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json','bytes':260481,'sha256':'ffb1dea3b1e69383312da4059b9d8ddabb4366ed8fc22e7537f750ba041f2d63','case_ids':[f'F04-WHOLE-{i}'for i in range(6)],'input_pointers':['cases[id=*].input','recipe_definitions'],'expected_pointers':['cases[id=*].expected.matrix15x3072_f32le_sha256','cases[id=*].expected.overlap15x1536_f32le_sha256','cases[id=*].expected.component15x1536_f32le_sha256','cases[id=*].expected.component_parameter_blocks_after'],'excluded_expected_fields':['LFE','Type10','receiver','QMF','final six']}]
+ ck(p['vectors']==expected_vectors,'P1.3-E2 exact case/input/expected vector pointers')
+ expected_outcomes={'authority':'WASH_APPROVED_LOCAL_TRANSLATION_2026-10-18','code_authority':'LOCAL_TRANSLATION; not a package/native error-code claim','priority':['retired','selected_profile','callback','owner_generation_digest','other_lineage_and_input','numeric'],'outcomes':[{'trigger':'retired owner/programme','error_code':'F04_PIPELINE_RETIRED'},{'trigger':'unsupported or mismatched selected profile','error_code':'F04_PROFILE_UNSUPPORTED'},{'trigger':'callback or callback-phase mismatch','error_code':'F04_CALLBACK_ORDER'},{'trigger':'spatial_audio or spatial_control before-generation/digest mismatch; invalid state shape/cursor/generation','error_code':'F04_STATE_ERROR'},{'trigger':'programme/attempt/transaction/provider-lineage mismatch; input shape/finite/domain/route mismatch','error_code':'F04_INPUT_ERROR'},{'trigger':'binary32 intermediate nonfinite/overflow','error_code':'F04_NUMERIC_FAILURE'}],'single_failure_returns_first_category':True,'failure_result':'no proposal, no normal output, committed state unchanged'}
+ ck(p['lineage_error_translation']==expected_outcomes,'P1.3-E2 wash-approved local error translation and priority')
+ ck(p['callback_and_block_clock']=={'callback_index':'FrontendCallbackIndex; current callback identity from SpatialAudioJoinMetadata','component_blocks_per_callback':24,'block_index_type':'private ComponentBlockIndex newtype over u8, range 0..23','callback_phases':['NORMAL','CACHED_DRAIN'],'advancement':'exactly once per frontend callback including g=0/1 priming and every cached drain','eof_flush':'no synthetic component flush; execute only actual normal/cached callbacks'},'P1.3-E2 callback and block clock')
+ ck(p['before_state_and_lineage']==['SpatialAudioState generation and complete before digest','SpatialAudioJoinMetadata programme id, attempt, transaction, callback, profile, and before generation/digest','SpatialControlJoinMetadata transaction, callback, profile, provider lineage, before generation/digest','ValidatedWindowQ15Provider manifest/provider receipt lineage','ValidatedComponentParameterProvider manifest/provider receipt lineage'],'P1.3-E2 complete input and owner lineage list')
+ expected_impl=['crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs','crates/jocforge-domain/src/spatial/spatial_audio_state.rs','crates/jocforge-domain/src/spatial/mod.rs']
+ expected_tests=['crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage_tests.rs']
+ expected_fixtures=['crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json','crates/jocforge-domain/tests/fixtures/f04_component/COMPONENT-PARAMETER-GENERATION-VERIFICATION.json','crates/jocforge-domain/tests/fixtures/f04_component/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json']
+ ck(p['planned_implementation_files']==expected_impl and p['planned_test_files']==expected_tests and p['planned_test_fixtures']==expected_fixtures,'P1.3-E2 exact planned files and test assets')
+ ck(p['explicit_exclusions']==['installed48/raw38/window/prefix/diffusion producer','LFE','receiver','QMF','descriptor','fitting','render producer/fanout','parent CallbackTransaction','local commit/abort/fatal','other F04 profiles','real ADM/audio/perceptual acceptance'],'P1.3-E2 exact downstream and upstream exclusions')
+ doc=(root/p['mapping_document']).read_text(encoding='utf-8')
+ ck(all(term in doc for term in ('F04A.6','F04A.7','F04A.8','F04P.1-.5','F04PG.1-.5','F04C.1-.2','N00.1-.4','LOCAL_TRANSLATION','F04-WHOLE-0..5','no synthetic flush','complete component after-state','no local commit')),'P1.3-E2 scope map document')
+ if p['implementation_status']=='NOT_STARTED':
+  ck(all(not(root/path).exists()for path in expected_impl[:1]+expected_tests+expected_fixtures),'P1.3-E2 new implementation fixtures absent before implementation phase')
+ else:
+  ck(all((root/path).is_file()for path in expected_impl+expected_tests+expected_fixtures),'P1.3-E2 implemented module/tests/fixtures exist')
+  for source_path,package_path in zip(expected_fixtures,('test-vectors/unit/vectors.json','test-vectors/COMPONENT-PARAMETER-GENERATION-VERIFICATION.json','test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json')):
+   ck((root/source_path).read_bytes()==(PKG/package_path).read_bytes(),'P1.3-E2 exact vector fixture copy '+source_path)
+
 def check_f03_target_provider_implementation(root,d):
  p=d['phase_one']['P1.4-B'];implementation=p['implementation']
  expected={'module_file':'crates/jocforge-domain/src/frontend/target_cold_provider.rs','public_exports_file':'crates/jocforge-domain/src/frontend/mod.rs','test_file':'crates/jocforge-domain/tests/target_cold_provider.rs','fixture_file':'crates/jocforge-domain/tests/fixtures/target_cold/f03-selected-target-cold-v1.json','fixture_bytes':3139,'fixture_sha256':'a4b53854822a5f17a5413d6f2ded127a7366257c2a171377afcea4a84a3eaf00','verified_scope':'manifest/provider identity gates, exact target arrays, independent current/previous storage, target-only projection and immutable lineage receipt','spatial_control_implementation':'NOT_IMPLEMENTED'}
@@ -1060,6 +1132,7 @@ def run(root=ROOT):
  check_spatial_audio_mapping(root,d)
  check_f04_parameter_providers(root,d)
  check_f04_remaining_provider_mapping(root,d)
+ check_component_stage_mapping(root,d)
  check_spatial_control_v5_amendment(root,d)
  check_spatial_control_implementation(root,d)
  check_source_flags_producer(root,d)
