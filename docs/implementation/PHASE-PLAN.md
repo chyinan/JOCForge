@@ -1167,7 +1167,7 @@
         "payload": "features F32[24][48]",
         "persistent": false,
         "presence_tag": false,
-        "producer_status": "FUTURE_PRODUCER_DEFERRED",
+        "producer_status": "BLOCKED_ON_P1.4_C_PROVIDER_CONTRACTS",
         "root_canonical_bytes": 0
       },
       "SourceFlagsPacket": {
@@ -2031,8 +2031,8 @@
   "scope": "construct the complete v5 persistent spatial_control cold root and canonical digest; provide a non-Clone read-only machine and prepared/staged foundation accepting only a future producer-generated complete typed after proposal; no packet producers and no local commit, abort, fatal or top-level COMMITTED",
   "scope_approval": "user-approved in the current task handoff on 2026-10-16; scope-only, not a packet-producer specification",
   "spec_gap_document": {
-    "document_bytes": 1935,
-    "document_sha256": "a8b319d1518efbf4bd20fc4783a0e6bcec3d69ea165d55a88457e726a49b7307",
+    "document_bytes": 2367,
+    "document_sha256": "62fccba767f91780816acf567b1bed77142cba80575ec5a4896537c19c653315",
     "file": "docs/implementation/SPATIAL-CONTROL-STAGING-SPEC-GAP.md"
   },
   "status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
@@ -2687,6 +2687,447 @@
     "private_key_present": false,
     "research_validation": "12 semantic mutations; 14 source pins; PASS_RESEARCH_MATERIAL_STRUCTURE_AND_IDENTITIES_ONLY",
     "schema_basis_sha256": "9ac88011b7e95546b977b2119d4f8b52b8a2d976e39d6edecb812e048d339790"
+  }
+}
+```
+
+## P1.4-C CurrentFeatures math provider mapping
+
+```json
+{
+  "current_features_producer": {
+    "algorithm_rust": "FORBIDDEN_UNTIL_P1.4_C_PROVIDER_CONTRACTS_IMPLEMENTED",
+    "branches": {
+      "00": "READ_AUDIO_INPUT",
+      "01": "RESET; priority case in consumer vector only, not emitted by SourceFlags producer",
+      "01_product_boundary_rule": "UNRESOLVED_COORDINATOR_CONTRACT_DO_NOT_GUESS",
+      "10": "CARRY",
+      "audio_read": "only READ_AUDIO_INPUT reads all 3072 samples; RESET/CARRY do not read audio",
+      "flag_pair_order": [
+        "processing_inactive",
+        "selection_suppressed"
+      ]
+    },
+    "consumer_boundary_open_questions": [
+      "The input-only math vectors include flag pair 01 for reset-priority coverage, but SourceFlags emits only 00/10/11; product policy for rejecting an unreachable forged 01 packet is not assigned by the math provider contract."
+    ],
+    "implementation_status": "BLOCKED_ON_P1.4_C_PROVIDER_CONTRACTS",
+    "lineage_binding": [
+      "programme",
+      "attempt",
+      "CallbackTransactionId",
+      "FrontendCallbackIndex",
+      "before feature generation/digest",
+      "render receipt",
+      "flags receipt",
+      "selected profile identity",
+      "validated feature-processor math provider receipt",
+      "validated FFT roots provider receipt"
+    ],
+    "outputs": {
+      "CurrentFeaturesPacket": "opaque F32[24][48] band-major; bitwise transpose of after vector",
+      "after_source_scalar": "F32[48] proposal",
+      "after_source_vector": "F32[48][24] source-major proposal",
+      "local_commit": false,
+      "parent_commit_required": true,
+      "persistent_packet": false
+    },
+    "parent_transaction_or_product_execution": "NOT_RUN",
+    "raw_provider_evidence_consumption": "FORBIDDEN",
+    "required_context_shapes": {
+      "before_source_scalar": "F32[48]",
+      "before_source_vector": "F32[48][24] source-major",
+      "post_window_audio": "same-callback F32[48][3072] source-major",
+      "source_flags": "same-callback SourceFlagsPacket U8[48][2]"
+    },
+    "required_provider_types": [
+      "ValidatedFeatureProcessorMathProvider",
+      "ValidatedFeatureFft4096MathProvider"
+    ],
+    "selected_route": "REAL_FFT4096_RADIX2_MATH_V1",
+    "source_flags_pair_domain": [
+      "00",
+      "10",
+      "11"
+    ],
+    "status": "BLOCKED_ON_P1.4_C_PROVIDER_CONTRACTS",
+    "task_id": "CURRENT-FEATURES-PRODUCER-V1"
+  },
+  "provider_contracts": {
+    "algorithm_rust": "FORBIDDEN_IN_P1.4-C_MAPPING_ONLY",
+    "api_schema_identity": {
+      "bytes": 1291,
+      "file": "API-SCHEMA.json",
+      "sha256": "6841baa2f7435529316b16388c3a106fadebab7cff3b8f8ecdf394963cdd27d6"
+    },
+    "base_package_identity": {
+      "manifest_bytes": 76302,
+      "manifest_file": "MANIFEST.json",
+      "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+    },
+    "consumer_vectors": {
+      "bytes": 315386,
+      "errors_are_native_codes": false,
+      "file": "INPUT-ONLY-LITERAL-VECTORS.json",
+      "negative_count": 9,
+      "negative_error_labels": [
+        "READ_AUDIO_MISSING",
+        "READ_AUDIO_SHAPE",
+        "SOURCE_SHAPE",
+        "FLAG_DOMAIN",
+        "BEFORE_VECTOR_SHAPE",
+        "NONFINITE_BEFORE",
+        "NONFINITE_AUDIO",
+        "STALE_CALLBACK",
+        "NONFINITE_INTERMEDIATE"
+      ],
+      "negative_outcome": {
+        "packet": null,
+        "state_commit_count": 0
+      },
+      "per_positive_case_output_bytes": {
+        "CurrentFeaturesPacket": 4608,
+        "after_source_scalar": 192,
+        "after_source_vector": 4608
+      },
+      "positive_case_ids": [
+        "cold_suppress",
+        "warm_reset_11",
+        "consumer_reset_priority_01",
+        "carry_recompute_scalar",
+        "read_zero_threshold_equality",
+        "read_impulse_no_extra_window",
+        "read_dyadic_comb",
+        "two_sources_packet_order",
+        "read_repeat_blend_continuation",
+        "read_12x_amplitude_jump",
+        "read_zero_with_warm_history",
+        "threshold_below",
+        "threshold_first_nonjump",
+        "threshold_above",
+        "reset_then_read_replay"
+      ],
+      "positive_count": 15,
+      "route": "REAL_FFT4096_RADIX2_MATH_V1",
+      "sha256": "1aaf1f5296569960e188b8d74fc8097b5bfb6099b5a1079366e595011c87bdc3",
+      "verified_output_f32_words": 35280,
+      "whole_product_execution": "NOT_RUN"
+    },
+    "dependency_scope": {
+      "allowed_use": "identity-gated manifest/provider JSON parsing and private typed field access only",
+      "archive_sha256": "e7e9cc8b1b85264074fbcc02a88680c4096b1e47df8f739dceb03bf482f04bd6",
+      "canonical_writer": "none; exact file identity only",
+      "crate": "serde_json",
+      "default_features": false,
+      "features": [
+        "std"
+      ],
+      "public_serde_json_value": false,
+      "version": "=1.0.154"
+    },
+    "direct_unvalidated_provider_consumption": "FORBIDDEN",
+    "errors": {
+      "authority": "isolated provider-validator API categories; not native error codes",
+      "fft_provider": [
+        "ObservedManifestEvidenceMismatch",
+        "PackageManifestIdentityMismatch",
+        "PackageManifestSyntax",
+        "PackageManifestEntry",
+        "ObservedProviderEvidenceMismatch",
+        "ProviderIdentityMismatch",
+        "Utf8",
+        "JsonSyntax",
+        "Schema",
+        "Shape",
+        "RouteMismatch"
+      ],
+      "processor_provider": [
+        "ObservedManifestEvidenceMismatch",
+        "PackageManifestIdentityMismatch",
+        "PackageManifestSyntax",
+        "PackageManifestEntry",
+        "ObservedProviderEvidenceMismatch",
+        "ProviderIdentityMismatch",
+        "Utf8",
+        "JsonSyntax",
+        "Schema",
+        "Shape"
+      ]
+    },
+    "fft_quality": {
+      "bytes": 3028,
+      "file": "FFT-NUMERICAL-QUALITY.json",
+      "maximum_sampled_relative_l2_error": 1.2336887697203963e-07,
+      "perceptual_or_real_ADM_acceptance": "NOT_RUN",
+      "reference": "NumPy float64 mathematical rfft first 2048 bins; not native",
+      "sha256": "f17440c8ce7534de6baafdee1077c7d7b5d0e8f2fbeaebb30341c018329ccd8d",
+      "synthetic_case_count": 5,
+      "universal_error_bound": false
+    },
+    "implementation_status": "MAPPING_ONLY_DOCS_AND_BOUNDARY_GATES",
+    "io_input": {
+      "diagnostic_path_is_identity": false,
+      "domain_file_io": false,
+      "identity_first": true,
+      "types": [
+        "PackageManifestEvidence",
+        "ProviderFileEvidence"
+      ],
+      "validation_flow": [
+        "recompute and verify complete package MANIFEST.json byte length/SHA before parse",
+        "require exactly one manifest entry per exact provider path with exact bytes/SHA",
+        "verify actual provider byte length/SHA before UTF-8 or JSON parse",
+        "reject duplicate/unknown fields and exact schema/shape/range/route drift",
+        "return only the relevant private typed provider and immutable receipt"
+      ]
+    },
+    "mapping_document": "docs/implementation/CURRENT-FEATURES-PROVIDER-MAP.md",
+    "not_run": [
+      "provider validator Rust implementation",
+      "CurrentFeatures algorithm Rust",
+      "real ADM math route",
+      "codec/EC3",
+      "perceptual acceptance",
+      "parent transaction executor",
+      "old SIMD comparison"
+    ],
+    "old_simd_route": "NOT_SELECTED_NO_FALLBACK",
+    "planned_provider_tests": [
+      "crates/jocforge-domain/tests/feature_processor_math_provider.rs",
+      "crates/jocforge-domain/tests/feature_fft4096_math_provider.rs"
+    ],
+    "planned_validator_modules": [
+      "crates/jocforge-domain/src/frontend/feature_processor_math_provider.rs",
+      "crates/jocforge-domain/src/frontend/feature_fft4096_math_provider.rs"
+    ],
+    "provider_contracts": [
+      {
+        "bytes": 35441,
+        "identity_rule": "full package-manifest SHA plus exactly one manifest entry and exact provider file byte length/SHA; then exact typed shape validation",
+        "metadata_fields": {
+          "real_ADM_new_route_acceptance": "NOT_RUN",
+          "source": "MATHEMATICAL_L3072_FS48000_GENERATION"
+        },
+        "path": "parameters/feature-processor-math-v1.json",
+        "provider_canonical_preimage": "NOT_PRESENT; no provider projection digest or canonical writer is defined",
+        "provider_id": "FEATURE_PROCESSOR_MATH_V1",
+        "receipt": {
+          "fields": [
+            "validated_manifest_lineage",
+            "provider_file_sha256",
+            "provider_file_bytes",
+            "schema_id"
+          ],
+          "type": "FeatureProcessorMathProviderReceipt"
+        },
+        "route": null,
+        "runtime_fields": [
+          {
+            "field": "window_length",
+            "type": "exact JSON integer",
+            "value": 3072
+          },
+          {
+            "field": "sample_rate",
+            "type": "exact JSON integer",
+            "value": 48000
+          },
+          {
+            "field": "fft_length",
+            "type": "exact JSON integer",
+            "value": 4096
+          },
+          {
+            "field": "component_count",
+            "type": "exact JSON integer",
+            "value": 2048
+          },
+          {
+            "field": "vector_count",
+            "type": "exact JSON integer",
+            "value": 24
+          },
+          {
+            "field": "coefficient_u32",
+            "shape": [
+              2048
+            ],
+            "type": "U32 raw F32 bit words"
+          },
+          {
+            "field": "window_counts",
+            "shape": [
+              24
+            ],
+            "sum": 2048,
+            "type": "exact JSON integer counts",
+            "values": [
+              4,
+              5,
+              6,
+              8,
+              9,
+              11,
+              14,
+              17,
+              20,
+              25,
+              30,
+              37,
+              45,
+              54,
+              66,
+              80,
+              97,
+              118,
+              144,
+              175,
+              213,
+              259,
+              315,
+              296
+            ]
+          },
+          {
+            "field": "fast_decay_u32",
+            "type": "U32 raw F32 bits",
+            "value": "0x3F06FCA3"
+          },
+          {
+            "field": "slow_retain_u32",
+            "type": "U32 raw F32 bits",
+            "value": "0x3F4ED1AB"
+          }
+        ],
+        "schema_id": "feature-processor-math-parameters.v1",
+        "schema_id_version_annotation": {
+          "provider_json_field": false,
+          "source": "schema_id suffix",
+          "value": "v1"
+        },
+        "sha256": "c2cc80eed698285a7a022324bfed36e04c3b6e682cb21674b6316b3ec6a2ec0b",
+        "top_level_fields": [
+          "schema",
+          "source",
+          "window_length",
+          "sample_rate",
+          "fft_length",
+          "component_count",
+          "vector_count",
+          "coefficient_u32",
+          "window_counts",
+          "fast_decay_u32",
+          "slow_retain_u32",
+          "real_ADM_new_route_acceptance"
+        ],
+        "typed_output": "ValidatedFeatureProcessorMathProvider with private typed fields and read-only accessors; no serde_json::Value exposure"
+      },
+      {
+        "bytes": 279305,
+        "identity_rule": "full package-manifest SHA plus exactly one manifest entry and exact provider file byte length/SHA; then exact typed shape and selected route validation",
+        "metadata_fields": {
+          "real_ADM_new_route_acceptance": "NOT_RUN",
+          "source": "MATHEMATICAL_ROOT_GENERATION_NO_COMPILED_TABLE_INPUT"
+        },
+        "path": "parameters/feature-fft4096-math-v1.json",
+        "provider_canonical_preimage": "NOT_PRESENT; no provider projection digest or canonical writer is defined",
+        "provider_id": "FEATURE_FFT4096_MATH_V1",
+        "receipt": {
+          "fields": [
+            "validated_manifest_lineage",
+            "provider_file_sha256",
+            "provider_file_bytes",
+            "schema_id",
+            "route"
+          ],
+          "type": "FeatureFft4096MathProviderReceipt"
+        },
+        "route": "REAL_FFT4096_RADIX2_MATH_V1",
+        "runtime_fields": [
+          {
+            "field": "fft_length",
+            "type": "exact JSON integer",
+            "value": 4096
+          },
+          {
+            "field": "stages",
+            "lengths": [
+              2,
+              4,
+              8,
+              16,
+              32,
+              64,
+              128,
+              256,
+              512,
+              1024,
+              2048,
+              4096
+            ],
+            "type": "12 fixed radix-2 stages"
+          },
+          {
+            "field": "stages[i].roots_u32",
+            "pair_order": "j=0..stage_length/2-1",
+            "shape": "[stage_length/2][2]",
+            "total_complex_pairs": 4095,
+            "total_u32_words": 8190,
+            "type": "U32 raw F32 bit pairs (cos,sin)"
+          }
+        ],
+        "schema_id": "feature-fft4096-math-parameters.v1",
+        "schema_id_version_annotation": {
+          "provider_json_field": false,
+          "source": "schema_id suffix",
+          "value": "v1"
+        },
+        "sha256": "aea85e4fb5dcb0354ac11790466d324f1020a8bf5db3f9d981bc46755751fb33",
+        "top_level_fields": [
+          "schema",
+          "route",
+          "source",
+          "fft_length",
+          "stages",
+          "real_ADM_new_route_acceptance"
+        ],
+        "typed_output": "ValidatedFeatureFft4096MathProvider with private typed stages/root pairs and read-only accessors; no serde_json::Value exposure"
+      }
+    ],
+    "receipt_authority": "proposed internal immutable API mapping following P1.4-A/B identity lineage; not a provider JSON field set or native receipt",
+    "scope": "identity-first exact contracts for the two selected CurrentFeatures math providers; no provider Rust, CurrentFeatures algorithm, or product integration",
+    "selected_route": "REAL_FFT4096_RADIX2_MATH_V1",
+    "status": "MAPPING_COMPLETE_VALIDATORS_NOT_IMPLEMENTED",
+    "supplement": {
+      "files": [
+        {
+          "bytes": 1291,
+          "file": "API-SCHEMA.json",
+          "sha256": "6841baa2f7435529316b16388c3a106fadebab7cff3b8f8ecdf394963cdd27d6"
+        },
+        {
+          "bytes": 3028,
+          "file": "FFT-NUMERICAL-QUALITY.json",
+          "sha256": "f17440c8ce7534de6baafdee1077c7d7b5d0e8f2fbeaebb30341c018329ccd8d"
+        },
+        {
+          "bytes": 315386,
+          "file": "INPUT-ONLY-LITERAL-VECTORS.json",
+          "sha256": "1aaf1f5296569960e188b8d74fc8097b5bfb6099b5a1079366e595011c87bdc3"
+        },
+        {
+          "bytes": 14977,
+          "file": "SPEC.md",
+          "sha256": "1c298e21d81a702f8298dabba3f28e01576c9602729f5746d6665c0becfdeaa5"
+        }
+      ],
+      "identity": "current-features-producer.math-route.v1",
+      "manifest_bytes": 1576,
+      "manifest_file": "MANIFEST.json",
+      "manifest_sha256": "dcff6c7e009ba1cd5e18a03268eecfc2ac1abeceea319f84830978e68b3271ea",
+      "research_basis_files_read": false
+    },
+    "task_id": "P1.4-C-CURRENT-FEATURES-MATH-PROVIDER-CONTRACTS"
   }
 }
 ```
