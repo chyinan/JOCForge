@@ -49,6 +49,10 @@ def render(d):
   x=d['phase_one']['P1.4-D1'];o['PHASE-PLAN.md']+='\n## P1.4-D1 F04 selected component parameter providers\n\n'+chr(96)*3+'json\n'+json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)+'\n'+chr(96)*3+'\n'
  if 'P1.4-D2'in d['phase_one']:
   x=d['phase_one']['P1.4-D2'];o['PHASE-PLAN.md']+='\n## P1.4-D2 F04 remaining provider validators\n\n'+chr(96)*3+'json\n'+json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)+'\n'+chr(96)*3+'\n'
+ if 'QMF_FFT_PRIMITIVE' in d['phase_one']:
+  x=d['phase_one']['QMF_FFT_PRIMITIVE'];block=json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)
+  o['PHASE-PLAN.md']+='\n## QMF FFT primitive mapping\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
+  o['QMF-FFT-PRIMITIVE-MAP.md']='# QMF FFT primitive map\n\n由 IMPLEMENTATION-MAP.json 生成，不得手工修改。\n\n'+f"Status: `{x['status']}`. This covers only the fixed QMF FFT primitive; QMF callers and whole-chain execution remain separate.\n\n"+'The primitive is a 64-point complex transform over 128 interleaved F32 scalar slots. The map keeps input normalization and caller reorder/sign-bit operations outside the butterfly contract.\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
  if 'POSTWINDOW_FANOUT_FOUNDATION' in d['phase_one']:
   x=d['phase_one']['POSTWINDOW_FANOUT_FOUNDATION'];block=json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)
   o['PHASE-PLAN.md']+='\n## PostWindow fanout foundation\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'

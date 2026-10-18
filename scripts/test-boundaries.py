@@ -443,6 +443,41 @@ def main():
  ('f04d2-code-manifest-parse-before-hash',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/window_q15_provider.rs','let actual_sha = ProviderSha256::digest(evidence.bytes());','let _premature = serde_json::from_slice::<Value>(evidence.bytes());\n    let actual_sha = ProviderSha256::digest(evidence.bytes());'))
  ]
  cases += [
+ ('qmf-fft-unregistered-ready-slice',map_mut_render(lambda d:d['phase_one'].update({'QMF_FFT_PRIMITIVE':{'task_id':'QMF-FFT-PRIMITIVE-MAPPING','status':'READY_FOR_IMPLEMENTATION','mapping_status':'MAPPING_COMPLETE','implementation_status':'NOT_STARTED'}})))
+ ]
+ cases += [
+ ('qmf-fft-status-overclaim',map_mut_render(lambda d:(d['phase_one']['QMF_FFT_PRIMITIVE'].update(status='LOCALLY_VERIFIED'),d['status'].update({'QMF_FFT_PRIMITIVE':'LOCALLY_VERIFIED'})))),
+ ('qmf-fft-scope-wide',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE'].update(scope='Implement the full receiver, fitting and DSP chain'))),
+ ('qmf-fft-point-count-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['primitive_contract'].update(complex_point_count=128))),
+ ('qmf-fft-input-validation-omitted',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['primitive_contract'].update(input_validation='accept any length and nonfinite scalar'))),
+ ('qmf-fft-rounding-mode-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['primitive_contract'].update(rounding_semantics='round toward zero'))),
+ ('qmf-fft-slot-layout-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['primitive_contract'].update(input_layout='128 interleaved complex pairs'))),
+ ('qmf-fft-exponent-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['primitive_contract'].update(exponent='positive-exponent DFT'))),
+ ('qmf-fft-bit-reversal-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['primitive_contract'].update(input_bit_reversal='identity order'))),
+ ('qmf-fft-stage-order-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['primitive_contract'].update(stage_lengths=[64,32,16,8,4,2]))),
+ ('qmf-fft-root-source-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['provider_binding'].update(provider_sha256='00'*32))),
+ ('qmf-fft-root-count-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['primitive_contract'].update(root_provider_shape='one shared 64-root table'))),
+ ('qmf-fft-butterfly-order-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['primitive_contract']['butterfly_order'].reverse())),
+ ('qmf-fft-fma-allowed',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['primitive_contract'].update(arithmetic_semantics='fused multiply-add permitted'))),
+ ('qmf-fft-analysis-scale-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['analysis_synthesis_boundary'].update(analysis_input_scale='scale outputs after FFT'))),
+ ('qmf-fft-synthesis-scale-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['analysis_synthesis_boundary'].update(synthesis_input_scale='R32(input/64)'))),
+ ('qmf-fft-mode-implicit-bool',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['analysis_synthesis_boundary'].update(mode_scope='single bool mode'))),
+ ('qmf-fft-nonfinite-intermediate-accepted',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['error_contract'].update(nonfinite_intermediate_or_output='clamp and continue'))),
+ ('qmf-fft-caller-reorder-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['caller_boundaries'].update(analysis_after_fft='no permutation or sign-bit operation'))),
+ ('qmf-fft-rotation-absorbed',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['provider_binding']['consumed_fields'].append('rotation_u32'))),
+ ('qmf-fft-provider-path-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['provider_binding'].update(provider_file='parameters/feature-fft4096-math-v1.json'))),
+ ('qmf-fft-vector-identity-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['vector_bindings'][1].update(sha256='00'*32))),
+ ('qmf-fft-mode1-synthesis-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['consumers']['receiver_mode1'].update(common_path='analysis only; no synthesis'))),
+ ('qmf-fft-mode0-synthesis-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['consumers']['fitting_mode0'].update(mode_difference='mode=0 executes synthesis FFT'))),
+ ('qmf-fft-state-owner-alias',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['consumers']['fitting_mode0'].update(state_owner='spatial_audio ModelState.analysis_history'))),
+ ('qmf-fft-fresh-static-promoted',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['fresh_review'].update(execution_or_product_pass=True))),
+ ('qmf-fft-j05-promoted',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['fresh_review'].update(conclusion='J05 cross-stage integration ready'))),
+ ('qmf-fft-aggregate-unblocked',map_mut_render(lambda d:d['status'].update({'P1.3-E':'LOCALLY_VERIFIED'}))),
+ ('qmf-fft-4096-substitution',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['implementation_prohibitions'].remove('no CurrentFeatures 4096-point FFT substitution'))),
+ ('qmf-fft-early-implementation',lambda r:(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs').write_text('pub fn fft_execute() {}\n',encoding='utf-8')),
+ ('qmf-fft-generic-executor-enabled',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE'].update(scope='Provide a generic configurable FFT engine')))
+ ]
+ cases += [
  ('f03b-provider-path-drift',map_mut(lambda d:d['phase_one']['P1.4-B']['provider_identity'].update(path='parameters/other.json'))),
  ('f03b-provider-byte-drift',map_mut(lambda d:d['phase_one']['P1.4-B']['provider_identity'].update(manifest_entry_bytes=3140))),
  ('f03b-provider-sha-drift',map_mut(lambda d:d['phase_one']['P1.4-B']['provider_identity'].update(manifest_entry_sha256='00'*32))),
