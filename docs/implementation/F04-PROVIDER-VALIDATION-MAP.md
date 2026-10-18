@@ -1,6 +1,6 @@
 # F04 remaining provider validation map
 
-Mapping status: `MAPPING_COMPLETE`. Validator status: `NOT_STARTED`. This is the
+Mapping status: `MAPPING_COMPLETE`. Validator status: `LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS`. This is the
 P1.4-D2 boundary for identity-first, typed validation of three F04 parameter
 assets. It does not implement QMF, FFT, descriptor, receiver, audio, state, or
 rendering logic.
@@ -17,8 +17,8 @@ require exactly one entry for the selected provider path; compare observed
 provider bytes and SHA with that entry and the pinned map; only then decode
 UTF-8 and parse JSON. Paths are diagnostic, not identity.
 
-The validator fixtures will be byte-for-byte copies of the three pinned files.
-Providers will use private typed storage and immutable read-only receipts;
+The checked-in validator fixtures are byte-for-byte copies of the three pinned
+files. Providers use private typed storage and immutable read-only receipts;
 `serde_json::Value` does not cross a public interface. No provider projection
 digest or canonical writer is defined. U32 words are raw IEEE-754 binary32 bit
 patterns: parse as unsigned JSON integers, reject booleans/floats/out-of-range
@@ -45,9 +45,13 @@ provider maps to `specs/04-qmf-receiver-whole-binding.md`,
 
 ### QMF receiver functional provider
 
-Require exactly these top-level fields, with no unknown or duplicate fields:
+Require exactly this top-level field set, with no unknown fields:
 `schema`, `delivery_scope`, `authorization`, `not_included`, `arrays`,
-`scalar_u32`, `generated_providers_reused`, `counts`.
+`scalar_u32`, `generated_providers_reused`, `counts`. The public validator
+requires pinned complete-file bytes before parsing; alternate byte sequences,
+including JSON documents with duplicate object members, fail the file identity
+gate and are not accepted as provider inputs. The private parser then checks
+the exact field sets of that identity-pinned document.
 
 `arrays` contains exactly five records. Every `u32_words` element is a JSON
 unsigned 32-bit integer representing finite F32 bits; each array preserves its
@@ -113,6 +117,7 @@ Planned production modules:
 - `crates/jocforge-domain/src/spatial/qmf_receiver_functional_provider.rs`
 - `crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs`
 - `crates/jocforge-domain/src/spatial/descriptor_mathematical_provider.rs`
+- `crates/jocforge-domain/src/spatial/window_q15_provider.rs` (shared F04 manifest identity and exact-entry lookup extension)
 - `crates/jocforge-domain/src/spatial/mod.rs`
 
 Planned integration test:
@@ -123,6 +128,12 @@ provider and receipt with manifest lineage, file SHA/length/schema, and only its
 source qualification fields. No shared receipt may erase differences among
 the three asset qualifications.
 
+The locally verified slice has 7 integration tests and 12 provider-module unit
+tests. The receiver receipt retains `delivery_scope`, `authorization`,
+`not_included`, per-array source classes, and all three generated-provider
+bindings. The FFT receipt retains `route`, `source`, and `audio_acceptance`.
+The descriptor receipt retains `origin`, both formulas, both research
+comparison statuses, threshold route status, and the vendor-key exclusion.
 Tests and boundary mutations cover: manifest/provider identity before parse;
 unique exact manifest entries; exact root/nested fields and schemas; route and
 stage-shape binding; scalar-versus-array classification; unsigned integer

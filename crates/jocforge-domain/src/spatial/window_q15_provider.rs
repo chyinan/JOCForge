@@ -33,6 +33,18 @@ const COMPONENT_PARAMETERS_PATH: &str = "parameters/component-parameter-mathemat
 const COMPONENT_PARAMETERS_BYTES: u64 = 1_077;
 const COMPONENT_PARAMETERS_SHA256: &str =
     "5d0fec6f62a33eeef5c64016760fcbe94a1872a564b6d0e03f959c95c37eb0f5";
+const QMF_RECEIVER_FUNCTIONAL_PATH: &str = "parameters/qmf-receiver-functional-v1.json";
+const QMF_RECEIVER_FUNCTIONAL_BYTES: u64 = 20_325;
+const QMF_RECEIVER_FUNCTIONAL_SHA256: &str =
+    "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c";
+const QMF_MATHEMATICAL_FFT_PATH: &str = "parameters/qmf-mathematical-fft-v1.json";
+const QMF_MATHEMATICAL_FFT_BYTES: u64 = 6_983;
+const QMF_MATHEMATICAL_FFT_SHA256: &str =
+    "e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431";
+const DESCRIPTOR_MATHEMATICAL_PATH: &str = "parameters/descriptor-mathematical.json";
+const DESCRIPTOR_MATHEMATICAL_BYTES: u64 = 4_861;
+const DESCRIPTOR_MATHEMATICAL_SHA256: &str =
+    "a493fbdaf2dab30e940cae9976ed3305f3af083e5614ab0cbd6889c71a02b197";
 
 #[derive(Debug, Eq, PartialEq)]
 pub enum F04ParameterProviderError {
@@ -62,6 +74,9 @@ pub struct ValidatedF04ParameterPackageManifest {
     manifest_sha256: ProviderSha256,
     window_q15: ProviderManifestEntry,
     component_parameters: ProviderManifestEntry,
+    qmf_receiver_functional: ProviderManifestEntry,
+    qmf_mathematical_fft: ProviderManifestEntry,
+    descriptor_mathematical: ProviderManifestEntry,
 }
 
 impl ValidatedF04ParameterPackageManifest {
@@ -75,6 +90,18 @@ impl ValidatedF04ParameterPackageManifest {
 
     pub(crate) const fn component_parameters_entry(&self) -> ProviderManifestEntry {
         self.component_parameters
+    }
+
+    pub(crate) const fn qmf_receiver_functional_entry(&self) -> ProviderManifestEntry {
+        self.qmf_receiver_functional
+    }
+
+    pub(crate) const fn qmf_mathematical_fft_entry(&self) -> ProviderManifestEntry {
+        self.qmf_mathematical_fft
+    }
+
+    pub(crate) const fn descriptor_mathematical_entry(&self) -> ProviderManifestEntry {
+        self.descriptor_mathematical
     }
 }
 
@@ -163,7 +190,7 @@ struct ParsedWindowQ15Provider {
     component_kernel64: [u16; 64],
 }
 
-/// Verifies the complete approved package manifest before parsing either F04 entry.
+/// Verifies the complete approved package manifest before parsing any F04 entry.
 pub fn validate_f04_parameter_package_manifest(
     evidence: &PackageManifestEvidence,
 ) -> Result<ValidatedF04ParameterPackageManifest, F04ParameterProviderError> {
@@ -192,11 +219,32 @@ pub fn validate_f04_parameter_package_manifest(
         COMPONENT_PARAMETERS_BYTES,
         COMPONENT_PARAMETERS_SHA256,
     )?;
+    let qmf_receiver_functional = unique_manifest_entry(
+        files,
+        QMF_RECEIVER_FUNCTIONAL_PATH,
+        QMF_RECEIVER_FUNCTIONAL_BYTES,
+        QMF_RECEIVER_FUNCTIONAL_SHA256,
+    )?;
+    let qmf_mathematical_fft = unique_manifest_entry(
+        files,
+        QMF_MATHEMATICAL_FFT_PATH,
+        QMF_MATHEMATICAL_FFT_BYTES,
+        QMF_MATHEMATICAL_FFT_SHA256,
+    )?;
+    let descriptor_mathematical = unique_manifest_entry(
+        files,
+        DESCRIPTOR_MATHEMATICAL_PATH,
+        DESCRIPTOR_MATHEMATICAL_BYTES,
+        DESCRIPTOR_MATHEMATICAL_SHA256,
+    )?;
 
     Ok(ValidatedF04ParameterPackageManifest {
         manifest_sha256: actual_sha,
         window_q15,
         component_parameters,
+        qmf_receiver_functional,
+        qmf_mathematical_fft,
+        descriptor_mathematical,
     })
 }
 

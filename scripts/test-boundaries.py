@@ -49,6 +49,17 @@ def f04_parameter_code_mut_render(mutate):
   result=subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
   if result.returncode:raise RuntimeError('render failed after refreshing mutated F04 provider source identities')
  return m
+def f04_remaining_provider_code_mut_render(mutate):
+ def m(r):
+  mutate(r)
+  map_path=r/'docs/implementation/IMPLEMENTATION-MAP.json';d=json.loads(map_path.read_text(encoding='utf-8'))
+  p=d['phase_one']['P1.4-D2']
+  for entry in p['implementation_inventory']+p['test_inventory']:
+   path=r/entry['path'];content=path.read_bytes();entry['bytes']=len(content);entry['sha256']=hashlib.sha256(content).hexdigest()
+  map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+  result=subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
+  if result.returncode:raise RuntimeError('render failed after refreshing mutated D2 provider source identities')
+ return m
 def append(path,text):path.write_text(path.read_text(encoding='utf-8')+text,encoding='utf-8')
 def flip_first_byte(path):
  data=path.read_bytes();path.write_bytes(bytes([data[0]^1])+data[1:])
@@ -343,7 +354,7 @@ def main():
  ('f04d1-second-manifest-fixture',lambda r:(r/'crates/jocforge-domain/tests/fixtures/f04_parameters/MANIFEST.json').write_text('{}\n',encoding='utf-8'))
  ]
  cases += [
- ('f04d2-map-status-advanced',map_mut_render(lambda d:d['phase_one']['P1.4-D2'].update(status='LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS'))),
+ ('f04d2-map-status-advanced',map_mut_render(lambda d:d['phase_one']['P1.4-D2'].update(status='DSP_PASS'))),
  ('f04d2-map-manifest-sha',map_mut_render(lambda d:d['phase_one']['P1.4-D2']['base_package_identity'].update(manifest_sha256='00'*32))),
  ('f04d2-map-provider-path',map_mut_render(lambda d:d['phase_one']['P1.4-D2']['provider_contracts'][0].update(path='parameters/descriptor-mathematical.json'))),
  ('f04d2-map-provider-size',map_mut_render(lambda d:d['phase_one']['P1.4-D2']['provider_contracts'][1].update(bytes=6982))),
@@ -359,6 +370,38 @@ def main():
  ('f04d2-map-descriptor-count',map_mut_render(lambda d:d['phase_one']['P1.4-D2']['provider_contracts'][2].update(threshold_word_count=128))),
  ('f04d2-map-second-manifest',lambda r:(r/'crates/jocforge-domain/tests/fixtures/f04_parameters/MANIFEST.json').write_text('{}\n',encoding='utf-8')),
  ('f04d2-map-early-provider-module',lambda r:(r/'crates/jocforge-domain/src/spatial/qmf_receiver_functional_provider.rs').write_text('pub struct QmfReceiverFunctionalProvider;\n',encoding='utf-8'))
+ ]
+ cases += [
+ ('f04d2-code-receiver-parse-before-identity',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_receiver_functional_provider.rs','let provider_sha = validate_provider_identity(evidence, entry)?;\n    let parsed = parse_qmf_receiver_functional_provider(evidence.bytes())?;','let parsed = parse_qmf_receiver_functional_provider(evidence.bytes())?;\n    let provider_sha = validate_provider_identity(evidence, entry)?;')),
+ ('f04d2-code-fft-parse-before-identity',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs','let provider_sha = validate_provider_identity(evidence, entry)?;\n    let (stages, rotation_u32) = parse_qmf_mathematical_fft_provider(evidence.bytes())?;','let (stages, rotation_u32) = parse_qmf_mathematical_fft_provider(evidence.bytes())?;\n    let provider_sha = validate_provider_identity(evidence, entry)?;')),
+ ('f04d2-code-descriptor-parse-before-identity',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/descriptor_mathematical_provider.rs','let provider_sha = validate_provider_identity(evidence, entry)?;\n    let (gain_u32, threshold_u32) = parse_descriptor_mathematical_provider(evidence.bytes())?;','let (gain_u32, threshold_u32) = parse_descriptor_mathematical_provider(evidence.bytes())?;\n    let provider_sha = validate_provider_identity(evidence, entry)?;')),
+ ('f04d2-code-source-class-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_receiver_functional_provider.rs','PUBLIC_STANDARD_FUNCTIONAL_VALUES_WITH_VERIFIED_EXISTING_COPY','GENERATED')),
+ ('f04d2-code-generated-provider-substitution',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_receiver_functional_provider.rs','parameters/qmf-mathematical-fft-v1.json','parameters/descriptor-mathematical.json')),
+ ('f04d2-code-receiver-float-parser',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_receiver_functional_provider.rs','value.as_u64().ok_or(F04ParameterProviderError::Range)?','value.as_f64().ok_or(F04ParameterProviderError::Range)? as u64')),
+ ('f04d2-code-receiver-nonfinite-accepted',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_receiver_functional_provider.rs','if !f32::from_bits(raw).is_finite() {','if false {')),
+ ('f04d2-code-array-digest-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_receiver_functional_provider.rs','ProviderSha256::digest(&f32le).to_hex() != expected_digest','false')),
+ ('f04d2-code-fft-stage-count-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs','roots.len() != ROOT_COUNTS[index]','roots.is_empty()')),
+ ('f04d2-code-fft-route-overclaim',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs','QMF_FFT_RADIX2_MATH_V1','QMF_FFT_OTHER_V1')),
+ ('f04d2-code-fft-acceptance-overclaim',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs','const AUDIO_ACCEPTANCE: &str = "NOT_RUN";','const AUDIO_ACCEPTANCE: &str = "PASS";')),
+ ('f04d2-code-descriptor-status-overclaim',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/descriptor_mathematical_provider.rs','MATHEMATICAL_CANDIDATE_AUDIO_ACCEPTANCE_PENDING','AUDIO_PASS')),
+ ('f04d2-code-descriptor-gain-range-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/descriptor_mathematical_provider.rs','positive && f32_value <= 0.0','false')),
+ ('f04d2-code-descriptor-comparison-overclaim',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/descriptor_mathematical_provider.rs','36_WORD_DIFFERENCES_NOT_IDENTICAL','PASS_ALL_WORDS')),
+ ('f04d2-code-early-fft-implementation',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs','#[cfg(test)]\nmod tests {','pub fn fft_execute() {}\n#[cfg(test)]\nmod tests {')),
+ ('f04d2-code-early-descriptor-control',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/descriptor_mathematical_provider.rs','#[cfg(test)]\nmod tests {','pub fn descriptor_control() {}\n#[cfg(test)]\nmod tests {')),
+ ('f04d2-code-public-value-leak',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_receiver_functional_provider.rs','#[cfg(test)]\nmod tests {','pub fn leak_value(value: &serde_json::Value) -> &serde_json::Value { value }\n#[cfg(test)]\nmod tests {')),
+ ('f04d2-code-filesystem-io',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_receiver_functional_provider.rs','#[cfg(test)]\nmod tests {','use std::fs;\n#[cfg(test)]\nmod tests {')),
+ ('f04d2-code-projection-writer',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/descriptor_mathematical_provider.rs','#[cfg(test)]\nmod tests {','fn provider_projection_digest(value: &Value) { let _ = serde_json::to_vec(value); }\n#[cfg(test)]\nmod tests {')),
+ ('f04d2-code-hardcoded-words',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_receiver_functional_provider.rs','#[cfg(test)]\nmod tests {','const INJECTED_WORDS: [u32; 2] = [0, 1];\n#[cfg(test)]\nmod tests {')),
+ ('f04d2-code-private-fft-implementation',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs','#[cfg(test)]\nmod tests {','fn fft_execute() {}\n#[cfg(test)]\nmod tests {')),
+ ('f04d2-code-private-qmf-transform',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs','#[cfg(test)]\nmod tests {','fn qmf_transform() {}\n#[cfg(test)]\nmod tests {')),
+ ('f04d2-code-private-receiver-process',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_receiver_functional_provider.rs','#[cfg(test)]\nmod tests {','fn receiver_process() {}\n#[cfg(test)]\nmod tests {')),
+ ('f04d2-code-crate-visible-descriptor-implementation',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/descriptor_mathematical_provider.rs','#[cfg(test)]\nmod tests {','pub(crate) fn descriptor_control() {}\n#[cfg(test)]\nmod tests {')),
+ ('f04d2-code-manifest-receiver-lookup-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/window_q15_provider.rs','let qmf_receiver_functional = unique_manifest_entry(','let qmf_receiver_functional = unique_manifest_entry_removed(')),
+ ('f04d2-code-manifest-fft-crosswired',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/window_q15_provider.rs','let qmf_mathematical_fft = unique_manifest_entry(\n        files,\n        QMF_MATHEMATICAL_FFT_PATH','let qmf_mathematical_fft = unique_manifest_entry(\n        files,\n        QMF_RECEIVER_FUNCTIONAL_PATH')),
+ ('f04d2-code-manifest-descriptor-sha-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/window_q15_provider.rs','a493fbdaf2dab30e940cae9976ed3305f3af083e5614ab0cbd6889c71a02b197','00'*32)),
+ ('f04d2-code-manifest-getter-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/window_q15_provider.rs','pub(crate) const fn qmf_receiver_functional_entry','pub(crate) const fn qmf_receiver_functional_entry_removed')),
+ ('f04d2-code-manifest-duplicate-allowed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/window_q15_provider.rs','matching.next().is_some()','false')),
+ ('f04d2-code-manifest-parse-before-hash',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/window_q15_provider.rs','let actual_sha = ProviderSha256::digest(evidence.bytes());','let _premature = serde_json::from_slice::<Value>(evidence.bytes());\n    let actual_sha = ProviderSha256::digest(evidence.bytes());'))
  ]
  cases += [
  ('f03b-provider-path-drift',map_mut(lambda d:d['phase_one']['P1.4-B']['provider_identity'].update(path='parameters/other.json'))),
@@ -411,6 +454,7 @@ def main():
   if s.resolve().is_relative_to(ROOT):ignored.append(s.resolve().relative_to(ROOT).parts[0])
   shutil.copytree(ROOT,repo,ignore=shutil.ignore_patterns(*ignored))
   if n.startswith('f04d1-'):m=f04_parameter_code_mut_render(m)
+  elif n.startswith('f04d2-code-'):m=f04_remaining_provider_code_mut_render(m)
   elif n.startswith(('p13d1-','source-flags-')):m=code_mut_render(m)
   m(repo)
   z=subprocess.run([sys.executable,'-O',str(repo/'scripts/check-boundaries.py')],cwd=repo,capture_output=True)

@@ -4,6 +4,9 @@
 pub mod component_parameters_provider;
 #[allow(dead_code)]
 pub mod current_features;
+pub mod descriptor_mathematical_provider;
+pub mod qmf_mathematical_fft_provider;
+pub mod qmf_receiver_functional_provider;
 pub mod source_flags;
 #[allow(dead_code)]
 pub(crate) mod spatial_audio;
@@ -16,6 +19,19 @@ pub use component_parameters_provider::{
     validate_component_parameter_provider,
 };
 pub use current_features::CurrentFeaturesPacket;
+pub use descriptor_mathematical_provider::{
+    DescriptorMathematicalProvider, DescriptorMathematicalProviderReceipt,
+    validate_descriptor_mathematical_provider,
+};
+pub use qmf_mathematical_fft_provider::{
+    QmfFftRootStage, QmfMathematicalFftProvider, QmfMathematicalFftProviderReceipt,
+    validate_qmf_mathematical_fft_provider,
+};
+pub use qmf_receiver_functional_provider::{
+    QmfFunctionalArraySourceClass, QmfReceiverFunctionalProvider,
+    QmfReceiverFunctionalProviderReceipt, QmfReceiverFunctionalScalars,
+    validate_qmf_receiver_functional_provider,
+};
 pub use source_flags::SourceFlagsPacket;
 pub use spatial_audio_state::{
     SpatialAudioAfterProposal, SpatialAudioDigest, SpatialAudioError, SpatialAudioJoinMetadata,

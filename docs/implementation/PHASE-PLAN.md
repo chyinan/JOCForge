@@ -2353,11 +2353,11 @@
     },
     "readiness": {
       "blockers": [
-        "P1.4-D1 locally verifies only window-q15 and component-parameter providers; three remaining F04 provider validators and F04 DSP are not implemented",
+        "P1.4-D1/D2 locally verify all five F04 parameter providers; remaining F04 DSP, render/fanout, and parent integration are deferred",
         "PostWindowAudioPacket render producer and exact linear fanout to CurrentFeatures and F04C are deferred/unresolved",
         "P1.3-C remains waiting for the other owner roots and g>=2 source-stage roots; no parent CallbackTransaction implementation exists"
       ],
-      "implementation_status": "BLOCKED_ON_F04_PROVIDERS_RENDER_PARENT",
+      "implementation_status": "BLOCKED_ON_F04_DSP_RENDER_PARENT",
       "mapping_status": "MAPPING_COMPLETE_BLOCKED"
     },
     "receipt": {
@@ -2385,7 +2385,7 @@
         "file": "parameters/window-q15.json",
         "id": "F04_WINDOW_Q15",
         "kind": "GENERATED",
-        "p1_4_contract": "P1.4-D1 LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS; DSP consumption NOT_YET_VALIDATED",
+        "p1_4_contract": "P1.4-D1/D2 LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS; DSP consumption NOT_YET_VALIDATED",
         "permission": "ordinary generated non-secret parameters; private vendor key absent",
         "sha256": "a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130",
         "shape": "receiver_blend32 Q15 and component_kernel64 Q15; formula-generated F32LE views are identity-pinned"
@@ -2395,7 +2395,7 @@
         "file": "parameters/component-parameter-mathematical-v1.json",
         "id": "F04_COMPONENT_PARAMETER_MATH_V1",
         "kind": "GENERATED",
-        "p1_4_contract": "P1.4-D1 LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS; DSP consumption NOT_YET_VALIDATED",
+        "p1_4_contract": "P1.4-D1/D2 LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS; DSP consumption NOT_YET_VALIDATED",
         "permission": "internal mathematical generation; implementation_ready=NO; no source table copied",
         "sha256": "5d0fec6f62a33eeef5c64016760fcbe94a1872a564b6d0e03f959c95c37eb0f5",
         "shape": "8 Q15 integers and 8 F32 coefficient/pivot/weight words at 48 kHz and 64 samples per block"
@@ -2405,7 +2405,7 @@
         "file": "parameters/qmf-receiver-functional-v1.json",
         "id": "F04_QMF_RECEIVER_FUNCTIONAL_V1",
         "kind": "FILE",
-        "p1_4_contract": "F04-specific identity/shape validator not implemented",
+        "p1_4_contract": "P1.4-D1/D2 LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS; DSP consumption NOT_YET_VALIDATED",
         "permission": "authorized internal isolated implementation only; no secret, source, raw table, compiled image, or address",
         "sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c",
         "shape": "829 array F32 words plus 12 scalar F32 words; QWIN synthesis 640, selected band0 real/imag 21 each, LFE postfilter 20, descriptor thresholds 127"
@@ -2415,7 +2415,7 @@
         "file": "parameters/qmf-mathematical-fft-v1.json",
         "id": "F04_QMF_MATH_V1",
         "kind": "GENERATED",
-        "p1_4_contract": "F04-specific identity/shape validator not implemented",
+        "p1_4_contract": "P1.4-D1/D2 LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS; DSP consumption NOT_YET_VALIDATED",
         "permission": "generated mathematical values; compiled values not used",
         "sha256": "e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431",
         "shape": "radix-2 stage roots and rotations for QMF_FFT_RADIX2_MATH_V1"
@@ -2425,7 +2425,7 @@
         "file": "parameters/descriptor-mathematical.json",
         "id": "F04_DESCRIPTOR_MATH_V1",
         "kind": "GENERATED",
-        "p1_4_contract": "F04-specific identity/shape validator not implemented",
+        "p1_4_contract": "P1.4-D1/D2 LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS; DSP consumption NOT_YET_VALIDATED",
         "permission": "mathematical generation; audio acceptance pending",
         "sha256": "a493fbdaf2dab30e940cae9976ed3305f3af083e5614ab0cbd6889c71a02b197",
         "shape": "128 gain words and 127 threshold words"
@@ -2441,21 +2441,21 @@
     "blocker_file": "docs/implementation/SPATIAL-AUDIO-COLD-STAGING-BLOCKER.md",
     "blockers": [
       "P1.3-E1 typed cold construction, byte-level KAT comparison, and staging foundation are locally verified; F04 DSP remains deferred",
-      "P1.4-D1 validates only window-q15 and component parameters; three remaining F04 providers, F04 DSP, PostWindowAudioPacket render/fanout, and parent CallbackTransaction remain deferred"
+      "P1.4-D1/D2 locally validate all five registered F04 providers; remaining F04 DSP, PostWindowAudioPacket render/fanout, and parent CallbackTransaction remain deferred"
     ],
     "cold_preimage_reconstructed": true,
     "cold_sha256": "35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e",
-    "implementation_status": "BLOCKED_ON_F04_PROVIDERS_RENDER_AND_PARENT",
+    "implementation_status": "BLOCKED_ON_F04_DSP_RENDER_AND_PARENT",
     "mapping_status": "MAPPING_COMPLETE_BLOCKED",
     "p1_3_c_prerequisite": "P1.3-C remains CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS until the remaining owner roots and g>=2 source-stage roots are materialized",
-    "p1_4_prerequisite": "P1.4-D1 locally verifies window-q15 and component parameters only; remaining QMF receiver, QMF math, and descriptor provider validators are not implemented",
+    "p1_4_prerequisite": "P1.4-D1 and P1.4-D2 locally verify all five registered F04 parameter providers; remaining F04 DSP stays unimplemented",
     "post_window_packet_prerequisite": "F03W/spatial_control render producer is deferred and linear packet fanout to CurrentFeatures and F04C remains unresolved",
     "programme_root": "spatial_audio",
     "root_field_count": 9,
     "root_schema_pointer": "test-vectors/F04-WHOLE-SPATIAL-STATE-SCHEMA.json#/whole_state_by_boundary/cold",
     "root_state_type": "F04CompositionState",
     "scope": "Map the spatial_audio GTC owner candidate and its cold/provider prerequisites; F04 cold serialization is specified by the verified supplement; no DSP or Rust state implementation",
-    "status": "BLOCKED_ON_F04_PROVIDERS_RENDER_AND_PARENT",
+    "status": "BLOCKED_ON_F04_DSP_RENDER_AND_PARENT",
     "task_id": "P1.3-E-SPATIAL-AUDIO-PROGRAMME-ROOT-MAP"
   }
 }
@@ -2485,9 +2485,9 @@
       "sha256": "2b8aea331e1b54eba84ef40dfb7a2b7ce41062c32ec1eea9706ef348aa070e8c"
     },
     {
-      "bytes": 1401,
+      "bytes": 2097,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "1d4d7fbf6f4635669fd802c554284625f16b7972caa28c9ca9d7732b814ec7a1"
+      "sha256": "f118d1518a3d1ff76ae4009a9bcdfb9e0288b58a1d915c8d2fff4aa38cf4b5ba"
     },
     {
       "bytes": 2290,
@@ -2614,9 +2614,9 @@
         "sha256": "911be2413816ebe1fde51ceda0066e9c088f92ae7c8b045cee49aac37540ec7d"
       },
       {
-        "bytes": 1401,
+        "bytes": 2097,
         "path": "crates/jocforge-domain/src/spatial/mod.rs",
-        "sha256": "1d4d7fbf6f4635669fd802c554284625f16b7972caa28c9ca9d7732b814ec7a1"
+        "sha256": "f118d1518a3d1ff76ae4009a9bcdfb9e0288b58a1d915c8d2fff4aa38cf4b5ba"
       },
       {
         "bytes": 9428,
@@ -3996,9 +3996,9 @@
   ],
   "implementation_inventory": [
     {
-      "bytes": 17343,
+      "bytes": 19312,
       "path": "crates/jocforge-domain/src/spatial/window_q15_provider.rs",
-      "sha256": "e7ceca015a050e677d58a51006affa7e9f6a62a54b2bef902c7f57cb6dbb2078"
+      "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"
     },
     {
       "bytes": 14344,
@@ -4006,9 +4006,9 @@
       "sha256": "b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"
     },
     {
-      "bytes": 1401,
+      "bytes": 2097,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "1d4d7fbf6f4635669fd802c554284625f16b7972caa28c9ca9d7732b814ec7a1"
+      "sha256": "f118d1518a3d1ff76ae4009a9bcdfb9e0288b58a1d915c8d2fff4aa38cf4b5ba"
     }
   ],
   "implementation_prohibitions": [
@@ -4323,6 +4323,23 @@
     "crates/jocforge-domain/tests/fixtures/f04_parameters/qmf-mathematical-fft-v1.json",
     "crates/jocforge-domain/tests/fixtures/f04_parameters/descriptor-mathematical.json"
   ],
+  "fixture_inventory": [
+    {
+      "bytes": 20325,
+      "path": "crates/jocforge-domain/tests/fixtures/f04_parameters/qmf-receiver-functional-v1.json",
+      "sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c"
+    },
+    {
+      "bytes": 6983,
+      "path": "crates/jocforge-domain/tests/fixtures/f04_parameters/qmf-mathematical-fft-v1.json",
+      "sha256": "e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431"
+    },
+    {
+      "bytes": 4861,
+      "path": "crates/jocforge-domain/tests/fixtures/f04_parameters/descriptor-mathematical.json",
+      "sha256": "a493fbdaf2dab30e940cae9976ed3305f3af083e5614ab0cbd6889c71a02b197"
+    }
+  ],
   "fixture_manifest": "crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json",
   "fixture_manifest_reused": true,
   "functional_ids": [
@@ -4341,7 +4358,35 @@
     "crates/jocforge-domain/src/spatial/qmf_receiver_functional_provider.rs",
     "crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs",
     "crates/jocforge-domain/src/spatial/descriptor_mathematical_provider.rs",
+    "crates/jocforge-domain/src/spatial/window_q15_provider.rs",
     "crates/jocforge-domain/src/spatial/mod.rs"
+  ],
+  "implementation_inventory": [
+    {
+      "bytes": 22614,
+      "path": "crates/jocforge-domain/src/spatial/qmf_receiver_functional_provider.rs",
+      "sha256": "dc04957542f802fa7a751d88911180cef7575c11033fd9a06b5221e7697e4bff"
+    },
+    {
+      "bytes": 11066,
+      "path": "crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs",
+      "sha256": "bddb8bd2b775b2cd9fc3e6412981965ef9ca5c5f98d137ff98de31c87dbbb2d8"
+    },
+    {
+      "bytes": 10441,
+      "path": "crates/jocforge-domain/src/spatial/descriptor_mathematical_provider.rs",
+      "sha256": "df8612dcdc46fcf2620e2a73d68d26d392bbba02be27af729f8c5ded76cf8639"
+    },
+    {
+      "bytes": 19312,
+      "path": "crates/jocforge-domain/src/spatial/window_q15_provider.rs",
+      "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"
+    },
+    {
+      "bytes": 2097,
+      "path": "crates/jocforge-domain/src/spatial/mod.rs",
+      "sha256": "f118d1518a3d1ff76ae4009a9bcdfb9e0288b58a1d915c8d2fff4aa38cf4b5ba"
+    }
   ],
   "implementation_prohibitions": [
     "no QMF FFT execution",
@@ -4354,7 +4399,7 @@
     "no public serde_json::Value",
     "no qualification or acceptance overclaim"
   ],
-  "implementation_status": "NOT_STARTED",
+  "implementation_status": "LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS",
   "mapping_document": "docs/implementation/F04-PROVIDER-VALIDATION-MAP.md",
   "mapping_status": "MAPPING_COMPLETE",
   "not_run": [
@@ -4375,6 +4420,31 @@
       "private read-only DescriptorMathematicalProvider"
     ],
     "public_serde_json_value": false,
+    "qualification_fields_by_asset": {
+      "descriptor_mathematical": [
+        "origin",
+        "gain_formula",
+        "threshold_formula",
+        "gain_research_comparison",
+        "threshold_research_comparison",
+        "threshold_route_status",
+        "private_vendor_key_included"
+      ],
+      "qmf_mathematical_fft": [
+        "route",
+        "source",
+        "audio_acceptance"
+      ],
+      "qmf_receiver_functional": [
+        "delivery_scope",
+        "authorization",
+        "not_included",
+        "array_source_classes",
+        "qmf_fft_provider",
+        "descriptor_gain_provider",
+        "receiver_blend_provider"
+      ]
+    },
     "receipt_authority": "immutable identity and typed-provider validation only; never DSP, FFT, QMF, descriptor, audio, or product PASS",
     "receipt_fields": [
       "validated_manifest_lineage",
@@ -4596,10 +4666,17 @@
     }
   ],
   "scope": "identity-first typed validation of the QMF receiver functional, QMF mathematical FFT, and descriptor mathematical providers only; no consumer algorithms, DSP, audio, state transition, render, or parent transaction",
-  "status": "MAPPING_COMPLETE_VALIDATION_NOT_STARTED",
+  "status": "LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS",
   "task_id": "P1.4-D2-F04-REMAINING-PROVIDER-VALIDATORS",
   "test_files": [
     "crates/jocforge-domain/tests/f04_remaining_provider_validators.rs"
+  ],
+  "test_inventory": [
+    {
+      "bytes": 9771,
+      "path": "crates/jocforge-domain/tests/f04_remaining_provider_validators.rs",
+      "sha256": "8c0890d03b626bc75bc6daee4150c06d207cba02500778cfbd9288f44ad706a8"
+    }
   ],
   "test_scope": [
     "manifest and per-provider identity before parsing",
@@ -4613,8 +4690,13 @@
   ],
   "verification": {
     "consumer_algorithms": "NOT_IMPLEMENTED",
+    "descriptor_mathematical_provider_count": 1,
+    "integration_test_count": 7,
+    "provider_module_unit_test_count": 12,
     "provider_validation_is_consumer_PASS": false,
-    "status": "NOT_RUN"
+    "qmf_mathematical_fft_provider_count": 1,
+    "qmf_receiver_functional_provider_count": 1,
+    "status": "LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS"
   }
 }
 ```
