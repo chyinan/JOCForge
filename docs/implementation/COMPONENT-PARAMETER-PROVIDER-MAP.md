@@ -1,6 +1,6 @@
 # F04 component parameter provider mapping
 
-Status: `MAPPING_COMPLETE_READY_FOR_VALIDATOR_IMPLEMENTATION`. This mapping authorizes only the P1.4-D1 identity-first validators. It does not authorize component DSP, receiver/QMF processing, or product acceptance.
+Mapping status: `MAPPING_COMPLETE`. Implementation status: `LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS`. This slice implements only P1.4-D1 identity-first validators. It does not implement component DSP, receiver/QMF processing, or product acceptance.
 
 ## Package identity and permission
 
@@ -53,7 +53,7 @@ The receipt proves only identity and typed provider validation. It is not a DSP 
 
 The two validators accept immutable package-manifest and provider-file evidence. Domain code has no file, process, or environment access. JSON parsing is permitted only after both identity gates; outputs use private typed fields and immutable read-only receipts, with no public `serde_json::Value`. Since neither provider has a canonical preimage, do not compute a projection digest.
 
-Planned files:
+Implemented files:
 
 - `crates/jocforge-domain/src/spatial/window_q15_provider.rs`
 - `crates/jocforge-domain/src/spatial/component_parameters_provider.rs`

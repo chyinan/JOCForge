@@ -38,6 +38,17 @@ def spatial_audio_code_mut_render(mutate):
   result=subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
   if result.returncode:raise RuntimeError('render failed after refreshing mutated spatial_audio source identity')
  return m
+def f04_parameter_code_mut_render(mutate):
+ def m(r):
+  mutate(r)
+  map_path=r/'docs/implementation/IMPLEMENTATION-MAP.json';d=json.loads(map_path.read_text(encoding='utf-8'))
+  p=d['phase_one']['P1.4-D1']
+  for entry in p['implementation_inventory']:
+   path=r/entry['path'];content=path.read_bytes();entry['bytes']=len(content);entry['sha256']=hashlib.sha256(content).hexdigest()
+  map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+  result=subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
+  if result.returncode:raise RuntimeError('render failed after refreshing mutated F04 provider source identities')
+ return m
 def append(path,text):path.write_text(path.read_text(encoding='utf-8')+text,encoding='utf-8')
 def flip_first_byte(path):
  data=path.read_bytes();path.write_bytes(bytes([data[0]^1])+data[1:])
@@ -315,6 +326,23 @@ def main():
  ('currentfeatures-render-packet-literal-in-consumer',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','fn zero() -> FiniteF32 {','fn forge_render_packet() { let _packet = PostWindowAudioPacket { programme_id: }; }\nfn zero() -> FiniteF32 {')),
  ]
  cases += [
+ ('f04d1-provider-id-crosswire',map_mut_render(lambda d:d['phase_one']['P1.4-D1']['provider_contracts'][0].update(provider_id='F04_COMPONENT_PARAMETER_MATH_V1'))),
+ ('f04d1-provider-path-crosswire',map_mut_render(lambda d:d['phase_one']['P1.4-D1']['provider_contracts'][0].update(path='parameters/component-parameter-mathematical-v1.json'))),
+ ('f04d1-q15-f32-map-confusion',map_mut_render(lambda d:d['phase_one']['P1.4-D1']['provider_contracts'][0]['record_contracts'][0]['q15_values'].update(type='lowercase eight-hex-digit raw binary32 word'))),
+ ('f04d1-q15-runtime-float',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/window_q15_provider.rs','            .as_u64()','            .as_f64()')),
+ ('f04d1-count-shape-drift',map_mut_render(lambda d:d['phase_one']['P1.4-D1']['provider_contracts'][0]['record_contracts'][0].update(count=31))),
+ ('f04d1-f32-word-contract-drift',map_mut_render(lambda d:d['phase_one']['P1.4-D1']['provider_contracts'][1]['f32_words'].update(type='decimal float'))),
+ ('f04d1-selected-profile-drift',map_mut_render(lambda d:d['phase_one']['P1.4-D1']['provider_contracts'][1]['profile_binding'].update(row_count=14))),
+ ('f04d1-profile-check-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/component_parameters_provider.rs','resolve_selected_profile(profile)','profile')),
+ ('f04d1-regenerate-words',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/component_parameters_provider.rs','#[cfg(test)]\nmod tests {','fn regenerate_q15_word(value: u16) -> u32 { ((value as f32) / 32768.0).to_bits() }\n#[cfg(test)]\nmod tests {')),
+ ('f04d1-hardcoded-q15-table',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/window_q15_provider.rs','#[cfg(test)]\nmod tests {','const HARDCODED_Q15: [u16; 2] = [1, 2];\n#[cfg(test)]\nmod tests {')),
+ ('f04d1-early-dsp',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/component_parameters_provider.rs','#[cfg(test)]\nmod tests {','pub fn process_component_dsp() {}\n#[cfg(test)]\nmod tests {')),
+ ('f04d1-readiness-overclaim',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/component_parameters_provider.rs','const DSP_CONSUMPTION_STATUS: &str = "NOT_YET_VALIDATED";','const DSP_CONSUMPTION_STATUS: &str = "DSP_PASS";')),
+ ('f04d1-public-value-leak',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/component_parameters_provider.rs','#[cfg(test)]\nmod tests {','pub fn leak_provider_value() -> serde_json::Value { serde_json::Value::Null }\n#[cfg(test)]\nmod tests {')),
+ ('f04d1-receipt-dsp-pass',map_mut_render(lambda d:d['phase_one']['P1.4-D1']['outputs']['component_receipt']['qualification'].update(dsp_consumption_status='PASS'))),
+ ('f04d1-second-manifest-fixture',lambda r:(r/'crates/jocforge-domain/tests/fixtures/f04_parameters/MANIFEST.json').write_text('{}\n',encoding='utf-8'))
+ ]
+ cases += [
  ('f03b-provider-path-drift',map_mut(lambda d:d['phase_one']['P1.4-B']['provider_identity'].update(path='parameters/other.json'))),
  ('f03b-provider-byte-drift',map_mut(lambda d:d['phase_one']['P1.4-B']['provider_identity'].update(manifest_entry_bytes=3140))),
  ('f03b-provider-sha-drift',map_mut(lambda d:d['phase_one']['P1.4-B']['provider_identity'].update(manifest_entry_sha256='00'*32))),
@@ -364,7 +392,8 @@ def main():
   c.mkdir();probe=c/'.probe';probe.write_text('ok');probe.unlink();repo=c/'repo';ignored=['.git','target','__pycache__'];
   if s.resolve().is_relative_to(ROOT):ignored.append(s.resolve().relative_to(ROOT).parts[0])
   shutil.copytree(ROOT,repo,ignore=shutil.ignore_patterns(*ignored))
-  if n.startswith(('p13d1-','source-flags-')):m=code_mut_render(m)
+  if n.startswith('f04d1-'):m=f04_parameter_code_mut_render(m)
+  elif n.startswith(('p13d1-','source-flags-')):m=code_mut_render(m)
   m(repo)
   z=subprocess.run([sys.executable,'-O',str(repo/'scripts/check-boundaries.py')],cwd=repo,capture_output=True)
   if z.returncode==0:raise RuntimeError('mutation passed: '+n)

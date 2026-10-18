@@ -2353,7 +2353,7 @@
     },
     "readiness": {
       "blockers": [
-        "F04-specific P1.4 identity/shape/permission contracts are not implemented; existing P1.4-C covers CurrentFeatures math providers only",
+        "P1.4-D1 locally verifies only window-q15 and component-parameter providers; three remaining F04 provider validators and F04 DSP are not implemented",
         "PostWindowAudioPacket render producer and exact linear fanout to CurrentFeatures and F04C are deferred/unresolved",
         "P1.3-C remains waiting for the other owner roots and g>=2 source-stage roots; no parent CallbackTransaction implementation exists"
       ],
@@ -2385,7 +2385,7 @@
         "file": "parameters/window-q15.json",
         "id": "F04_WINDOW_Q15",
         "kind": "GENERATED",
-        "p1_4_contract": "F04-specific identity/shape validator not implemented",
+        "p1_4_contract": "P1.4-D1 LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS; DSP consumption NOT_YET_VALIDATED",
         "permission": "ordinary generated non-secret parameters; private vendor key absent",
         "sha256": "a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130",
         "shape": "receiver_blend32 Q15 and component_kernel64 Q15; formula-generated F32LE views are identity-pinned"
@@ -2395,7 +2395,7 @@
         "file": "parameters/component-parameter-mathematical-v1.json",
         "id": "F04_COMPONENT_PARAMETER_MATH_V1",
         "kind": "GENERATED",
-        "p1_4_contract": "F04-specific identity/shape validator not implemented",
+        "p1_4_contract": "P1.4-D1 LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS; DSP consumption NOT_YET_VALIDATED",
         "permission": "internal mathematical generation; implementation_ready=NO; no source table copied",
         "sha256": "5d0fec6f62a33eeef5c64016760fcbe94a1872a564b6d0e03f959c95c37eb0f5",
         "shape": "8 Q15 integers and 8 F32 coefficient/pivot/weight words at 48 kHz and 64 samples per block"
@@ -2441,14 +2441,14 @@
     "blocker_file": "docs/implementation/SPATIAL-AUDIO-COLD-STAGING-BLOCKER.md",
     "blockers": [
       "P1.3-E1 typed cold construction, byte-level KAT comparison, and staging foundation are locally verified; F04 DSP remains deferred",
-      "F04-specific P1.4 provider contracts, PostWindowAudioPacket render/fanout, and parent CallbackTransaction remain deferred"
+      "P1.4-D1 validates only window-q15 and component parameters; three remaining F04 providers, F04 DSP, PostWindowAudioPacket render/fanout, and parent CallbackTransaction remain deferred"
     ],
     "cold_preimage_reconstructed": true,
     "cold_sha256": "35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e",
     "implementation_status": "BLOCKED_ON_F04_PROVIDERS_RENDER_AND_PARENT",
     "mapping_status": "MAPPING_COMPLETE_BLOCKED",
     "p1_3_c_prerequisite": "P1.3-C remains CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS until the remaining owner roots and g>=2 source-stage roots are materialized",
-    "p1_4_prerequisite": "F04-specific identity/shape/permission contracts for selected FILE and GENERATED providers are not implemented; P1.4-C covers CurrentFeatures only",
+    "p1_4_prerequisite": "P1.4-D1 locally verifies window-q15 and component parameters only; remaining QMF receiver, QMF math, and descriptor provider validators are not implemented",
     "post_window_packet_prerequisite": "F03W/spatial_control render producer is deferred and linear packet fanout to CurrentFeatures and F04C remains unresolved",
     "programme_root": "spatial_audio",
     "root_field_count": 9,
@@ -2485,9 +2485,9 @@
       "sha256": "2b8aea331e1b54eba84ef40dfb7a2b7ce41062c32ec1eea9706ef348aa070e8c"
     },
     {
-      "bytes": 905,
+      "bytes": 1401,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "fb8722e5e8c087ac83f0994ecca7a0be2076e8754ac68928f40611b938f932f8"
+      "sha256": "1d4d7fbf6f4635669fd802c554284625f16b7972caa28c9ca9d7732b814ec7a1"
     },
     {
       "bytes": 2290,
@@ -2614,9 +2614,9 @@
         "sha256": "911be2413816ebe1fde51ceda0066e9c088f92ae7c8b045cee49aac37540ec7d"
       },
       {
-        "bytes": 905,
+        "bytes": 1401,
         "path": "crates/jocforge-domain/src/spatial/mod.rs",
-        "sha256": "fb8722e5e8c087ac83f0994ecca7a0be2076e8754ac68928f40611b938f932f8"
+        "sha256": "1d4d7fbf6f4635669fd802c554284625f16b7972caa28c9ca9d7732b814ec7a1"
       },
       {
         "bytes": 9428,
@@ -3965,6 +3965,22 @@
     "public_serde_json_value": false,
     "version": "=1.0.154"
   },
+  "fixture_files": [
+    "crates/jocforge-domain/tests/fixtures/f04_parameters/window-q15.json",
+    "crates/jocforge-domain/tests/fixtures/f04_parameters/component-parameter-mathematical-v1.json"
+  ],
+  "fixture_inventory": [
+    {
+      "bytes": 2704,
+      "path": "crates/jocforge-domain/tests/fixtures/f04_parameters/window-q15.json",
+      "sha256": "a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130"
+    },
+    {
+      "bytes": 1077,
+      "path": "crates/jocforge-domain/tests/fixtures/f04_parameters/component-parameter-mathematical-v1.json",
+      "sha256": "5d0fec6f62a33eeef5c64016760fcbe94a1872a564b6d0e03f959c95c37eb0f5"
+    }
+  ],
   "fixture_manifest": "crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json",
   "fixture_manifest_reused": true,
   "identity_flow": [
@@ -3972,6 +3988,28 @@
     "require one exact manifest entry for each provider path",
     "verify observed provider length/SHA before UTF-8 or JSON parsing",
     "validate strict exact schema/shape/range/profile and construct private typed output"
+  ],
+  "implementation_files": [
+    "crates/jocforge-domain/src/spatial/window_q15_provider.rs",
+    "crates/jocforge-domain/src/spatial/component_parameters_provider.rs",
+    "crates/jocforge-domain/src/spatial/mod.rs"
+  ],
+  "implementation_inventory": [
+    {
+      "bytes": 17343,
+      "path": "crates/jocforge-domain/src/spatial/window_q15_provider.rs",
+      "sha256": "e7ceca015a050e677d58a51006affa7e9f6a62a54b2bef902c7f57cb6dbb2078"
+    },
+    {
+      "bytes": 14344,
+      "path": "crates/jocforge-domain/src/spatial/component_parameters_provider.rs",
+      "sha256": "b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"
+    },
+    {
+      "bytes": 1401,
+      "path": "crates/jocforge-domain/src/spatial/mod.rs",
+      "sha256": "1d4d7fbf6f4635669fd802c554284625f16b7972caa28c9ca9d7732b814ec7a1"
+    }
   ],
   "implementation_prohibitions": [
     "no component DSP or F04 state transition",
@@ -3984,7 +4022,7 @@
     "no claim that provider validation is DSP PASS",
     "no public or third-party distribution"
   ],
-  "implementation_status": "NOT_STARTED",
+  "implementation_status": "LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS",
   "mapping_document": "docs/implementation/COMPONENT-PARAMETER-PROVIDER-MAP.md",
   "mapping_status": "MAPPING_COMPLETE",
   "not_run": [
@@ -4036,14 +4074,6 @@
     "public_or_third_party_distribution": "NOT_AUTHORIZED",
     "source_table_copied": false
   },
-  "planned_files": [
-    "crates/jocforge-domain/src/spatial/window_q15_provider.rs",
-    "crates/jocforge-domain/src/spatial/component_parameters_provider.rs",
-    "crates/jocforge-domain/src/spatial/mod.rs",
-    "crates/jocforge-domain/tests/f04_parameter_providers.rs",
-    "crates/jocforge-domain/tests/fixtures/f04_parameters/window-q15.json",
-    "crates/jocforge-domain/tests/fixtures/f04_parameters/component-parameter-mathematical-v1.json"
-  ],
   "provider_contracts": [
     {
       "bytes": 2704,
@@ -4220,8 +4250,18 @@
     }
   ],
   "scope": "identity-first typed validation of the two selected F04 component-route parameter providers only; no DSP, receiver/QMF, rendering, or parent integration",
-  "status": "MAPPING_COMPLETE_READY_FOR_VALIDATOR_IMPLEMENTATION",
+  "status": "LOCALLY_VERIFIED",
   "task_id": "P1.4-D1-F04-SELECTED-COMPONENT-PARAMETER-PROVIDER-CONTRACTS",
+  "test_files": [
+    "crates/jocforge-domain/tests/f04_parameter_providers.rs"
+  ],
+  "test_inventory": [
+    {
+      "bytes": 6325,
+      "path": "crates/jocforge-domain/tests/f04_parameter_providers.rs",
+      "sha256": "37d56c997a903e6029828ce41e31c5b27218a1a472a4edf7d53f3fdc38ffeb4b"
+    }
+  ],
   "test_scope": [
     "manifest and provider identity-first gates",
     "exact top-level and record fields",
@@ -4232,6 +4272,14 @@
     "component readiness qualification",
     "malformed JSON rejected only after identity passes"
   ],
+  "verification": {
+    "DSP": "NOT_IMPLEMENTED",
+    "component_provider_count": 1,
+    "integration_test_count": 7,
+    "module_unit_test_count": 11,
+    "provider_validation_is_DSP_PASS": false,
+    "window_provider_count": 1
+  },
   "wash_side_semantic_clarification": {
     "component_provider_implementation_ready": "NO",
     "date": "2026-10-18",

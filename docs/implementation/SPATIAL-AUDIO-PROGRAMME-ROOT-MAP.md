@@ -4,7 +4,7 @@
 
 `programme_roots.spatial_audio` maps to the complete approved-package `F04CompositionState` cold schema. The cold specification is `RESOLVED_BY_F04_COLD_SUPPLEMENT`; P1.3-E1 storage and staging are locally verified. No DSP, provider validator, render producer, or CallbackTransaction coordinator was implemented or validated.
 
-The complete spatial_audio integration remains blocked on F04-specific P1.4 provider contracts, the post-window packet producer/fanout contract, and the enclosing callback transaction. P1.3-C remains `CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS` because the other callback roots and g>=2 source-stage roots are still missing.
+The complete spatial_audio integration remains blocked on the three remaining F04 P1.4 providers, F04 DSP, the post-window packet producer/fanout contract, and the enclosing callback transaction. P1.4-D1 locally verifies only the `window-q15.json` and `component-parameter-mathematical-v1.json` providers; it does not advance F04 DSP readiness. P1.3-C remains `CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS` because the other callback roots and g>=2 source-stage roots are still missing.
 
 The cold supplement manifest is `f04-spatial-audio-cold-state.v1`, SHA-256 `77ad0562fcd4efa1e8fe37cc1dc7219570b49b9b332cca1f1273ccda2e2cef9c`. Its 12 file identities were verified without opening `research_basis`; the 813,733-byte KAT was only hashed opaquely for its manifest identity. It may be compared only after a fresh typed constructor and project encoder produce bytes.
 
@@ -81,12 +81,12 @@ Cold-state provider kind is `GENERATED_PROVIDER`: no runtime parameter file cons
 
 ## Runtime provider inventory and prerequisites
 
-The following are algorithm providers, not cold-root byte sources. Every listed file identity is recorded in the machine map and boundary-checked against the approved package manifest. The required F04-specific P1.4 identity/shape/permission validators do not yet exist; the already verified P1.4-C validators are for CurrentFeatures providers only.
+The following are algorithm providers, not cold-root byte sources. Every listed file identity is recorded in the machine map and boundary-checked against the approved package manifest. P1.4-D1 identity/shape validators are locally verified only for the first two rows; the other three F04 provider validators remain unimplemented. P1.4-C validators cover CurrentFeatures providers only.
 
 | Provider | Kind and identity | Runtime shape / delivery boundary | Status |
 |---|---|---|---|
-| `parameters/window-q15.json` | `GENERATED`, 2704 bytes, SHA-256 `a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130` | `receiver_blend32` and `component_kernel64` Q15 arrays; formula-generated F32LE views. No private key. | F04 P1.4 validator not implemented. |
-| `parameters/component-parameter-mathematical-v1.json` | `GENERATED`, 1077 bytes, SHA-256 `5d0fec6f62a33eeef5c64016760fcbe94a1872a564b6d0e03f959c95c37eb0f5` | Eight Q15 integers and eight F32 words for 48 kHz / 64-sample blocks. No source table copied. Internal mathematical generation; file says implementation readiness `NO`. | F04 P1.4 validator not implemented. |
+| `parameters/window-q15.json` | `GENERATED`, 2704 bytes, SHA-256 `a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130` | `receiver_blend32` and `component_kernel64` Q15 arrays; formula-generated F32LE views. No private key. | P1.4-D1 validator locally verified; no DSP consumption validation. |
+| `parameters/component-parameter-mathematical-v1.json` | `GENERATED`, 1077 bytes, SHA-256 `5d0fec6f62a33eeef5c64016760fcbe94a1872a564b6d0e03f959c95c37eb0f5` | Eight Q15 integers and eight F32 words for 48 kHz / 64-sample blocks. No source table copied. Internal mathematical generation; file says implementation readiness `NO`. | P1.4-D1 validator locally verified; the receipt preserves `implementation_ready = NO` and marks DSP consumption `NOT_YET_VALIDATED`. |
 | `parameters/qmf-receiver-functional-v1.json` | `FILE`, 20325 bytes, SHA-256 `30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c` | 829 array F32 words plus 12 scalar F32 words: QWIN synthesis 640; selected band0 real/imag 21 each; LFE postfilter 20; descriptor thresholds 127. Authorized for internal isolated use; no secret, source, raw table, compiled image, or address. | F04 P1.4 validator not implemented. |
 | `parameters/qmf-mathematical-fft-v1.json` | `GENERATED`, 6983 bytes, SHA-256 `e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431` | Radix-2 roots/rotations for `QMF_FFT_RADIX2_MATH_V1`; compiled values are not used. | F04 P1.4 validator not implemented. |
 | `parameters/descriptor-mathematical.json` | `GENERATED`, 4861 bytes, SHA-256 `a493fbdaf2dab30e940cae9976ed3305f3af083e5614ab0cbd6889c71a02b197` | 128 gain words and 127 threshold words. | Audio acceptance and F04 P1.4 validation pending. |
