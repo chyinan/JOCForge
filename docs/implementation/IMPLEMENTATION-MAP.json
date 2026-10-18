@@ -14,7 +14,8 @@
     "P1.3-D1": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
     "SOURCE_FLAGS_PRODUCER": "LOCALLY_VERIFIED_NUMERIC_AND_PACKET",
     "CURRENT_FEATURES_PRODUCER": "LOCALLY_VERIFIED_MATH_AND_CAPABILITY__RENDER_AND_PARENT_DEFERRED",
-    "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_LOCALLY_VERIFIED__P1.4_C_LOCALLY_VERIFIED"
+    "P1.4": "P1.4_A_LOCALLY_VERIFIED__P1.4_B_LOCALLY_VERIFIED__P1.4_C_LOCALLY_VERIFIED",
+    "P1.4-D1": "MAPPING_COMPLETE_READY_FOR_VALIDATOR_IMPLEMENTATION"
   },
   "functional_entries": [
     {
@@ -4360,6 +4361,126 @@
       },
       "algorithm_rust": "LOCALLY_VERIFIED_IN_CURRENT_FEATURES_PRODUCER_SLICE",
       "parent_transaction_or_product_execution": "NOT_RUN"
+    },
+    "P1.4-D1": {
+      "task_id": "P1.4-D1-F04-SELECTED-COMPONENT-PARAMETER-PROVIDER-CONTRACTS",
+      "status": "MAPPING_COMPLETE_READY_FOR_VALIDATOR_IMPLEMENTATION",
+      "mapping_status": "MAPPING_COMPLETE",
+      "implementation_status": "NOT_STARTED",
+      "scope": "identity-first typed validation of the two selected F04 component-route parameter providers only; no DSP, receiver/QMF, rendering, or parent integration",
+      "mapping_document": "docs/implementation/COMPONENT-PARAMETER-PROVIDER-MAP.md",
+      "wash_side_semantic_clarification": {
+        "date": "2026-10-18",
+        "source": "wash-side authoritative clarification",
+        "provider_file_modified": false,
+        "meaning": "component provider implementation_ready=NO disclaims DSP/full-F04/real-ADM/listening/product readiness; it does not prohibit identity-first provider validation or typed provider construction",
+        "package_manifest_implementation_ready": "YES",
+        "component_provider_implementation_ready": "NO"
+      },
+      "base_package_identity": {
+        "manifest_file": "MANIFEST.json",
+        "manifest_bytes": 76302,
+        "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+        "manifest_fixture": "crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json",
+        "manifest_fixture_reused": true,
+        "second_manifest_fixture": false
+      },
+      "provider_contracts": [
+        {
+          "provider_id": "F04_WINDOW_Q15",
+          "kind": "GENERATED",
+          "path": "parameters/window-q15.json",
+          "bytes": 2704,
+          "sha256": "a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130",
+          "schema": "generated-window-parameters.v1",
+          "schema_version": "v1",
+          "top_level_fields": ["schema", "product_role", "private_vendor_key_included", "parameters"],
+          "metadata": {
+            "product_role": "ALGORITHM_PARAMETER_NOT_SONG_LOOKUP",
+            "private_vendor_key_included": false
+          },
+          "record_fields": ["parameter_id", "count", "representation", "q15_values", "generation", "to_F32", "F32LE_sha256", "origin", "all_words_research_comparison", "raw_asset_or_source_code_copied"],
+          "record_contracts": [
+            {
+              "parameter_id": "receiver_blend32",
+              "count": 32,
+              "q15_values": {"type": "JSON unsigned integer", "shape": [32], "range": "0..=32768", "json_bool_is_integer": false},
+              "representation": "q15_unsigned_integer",
+              "generation": "RNE_integer(32768*sin((j+1/2)*pi/(2*N))^2)",
+              "to_F32": "R32(q15_value/32768), exact",
+              "F32LE_sha256": "3968b2666444f0395b008e8d8eb9d84eb2663b4d11199a486b8cbadcf5c142b2",
+              "consumer": "receiver double-end blend; validator only"
+            },
+            {
+              "parameter_id": "component_kernel64",
+              "count": 64,
+              "q15_values": {"type": "JSON unsigned integer", "shape": [64], "range": "0..=32768", "json_bool_is_integer": false},
+              "representation": "q15_unsigned_integer",
+              "generation": "RNE_integer(32768*sin((j+1/2)*pi/(2*N))^2)",
+              "to_F32": "R32(q15_value/32768), exact",
+              "F32LE_sha256": "19d2e9b70eae909b40027337bda0131132308eabe800cea731ee3e2c1d150b31",
+              "consumer": "F04A.8 component filter kernel"
+            }
+          ],
+          "metadata_fields": {
+            "origin": "MATHEMATICAL_FORMULA_GENERATED_THIS_TASK",
+            "all_words_research_comparison": "PASS",
+            "raw_asset_or_source_code_copied": false
+          },
+          "profile_binding": "N-bound only; this provider file does not declare an independent sample-rate binding",
+          "canonical_preimage": "NOT_PRESENT; identity only; no projection digest"
+        },
+        {
+          "provider_id": "F04_COMPONENT_PARAMETER_MATH_V1",
+          "kind": "GENERATED",
+          "path": "parameters/component-parameter-mathematical-v1.json",
+          "bytes": 1077,
+          "sha256": "5d0fec6f62a33eeef5c64016760fcbe94a1872a564b6d0e03f959c95c37eb0f5",
+          "schema": "component-parameter-mathematical-generation.v1",
+          "schema_version": "v1",
+          "route": "COMPONENT_FIXED_48K_Q15_PARAMETER_MATH_V1",
+          "top_level_fields": ["schema", "route", "sample_rate", "block_samples", "coefficient_rules", "dt_rule", "reciprocal_pivot_rule", "target_pivot_rule", "envelope_weight_rule", "q15_integers", "coefficient_words", "reciprocal_pivot_word", "target_pivot_word", "envelope_weight_word", "original_design_rationale", "source_table_copied", "public_or_third_party_distribution", "implementation_ready"],
+          "profile_binding": {
+            "selected_profile": "supported ADM BWF / 38-channel PCM24 / 48 kHz; 5.1 six-carrier; DEE mode0/phase1/index3; single independent/zero dependent; 1024 kbps; 6 blocks; 1536 samples/AU; 4096 bytes/AU",
+            "sample_rate": 48000,
+            "row_count": 15,
+            "block_samples": 64,
+            "emdf_carriage": "deployed_compat default or etsi_emdf optional",
+            "render_target_binding": false
+          },
+          "coefficient_rules": ["Q15_RNE(2^(-dt/(1/25)))", "1-c0", "Q15_RNE(2^(-dt/(4/25)))", "1-c2", "Q15_RNE(2^(-dt/(1/200)))"],
+          "dt_rule": "64/48000 seconds",
+          "reciprocal_pivot_rule": "ceil(32768/sqrt(2))/32768",
+          "target_pivot_rule": "Q15_RNE(10^(-3/40))",
+          "envelope_weight_rule": "Q15_RNE(0.5*10^(3/40))",
+          "q15_integers": {"type": "JSON unsigned integer", "shape": [8], "semantic_order": ["c0", "c1", "c2", "c3", "c4", "reciprocal_pivot", "target_pivot", "envelope_weight"], "range": "0..=32768", "json_bool_is_integer": false},
+          "f32_words": {"type": "lowercase eight-hex-digit raw binary32 word", "coefficient_words_shape": [5], "scalar_word_count": 3, "semantic_order": ["c0", "c1", "c2", "c3", "c4", "reciprocal_pivot", "target_pivot", "envelope_weight"], "all_finite": true, "ranges": {"c0_to_c4": "[0,1]", "reciprocal_pivot": "[0.5,1)", "target_pivot": "[0,1]", "envelope_weight": "[0,1]"}, "preserve_raw_bits": true},
+          "metadata": {"original_design_rationale": "not claimed; equivalent generation settings only", "source_table_copied": false, "public_or_third_party_distribution": "NOT_AUTHORIZED", "implementation_ready": "NO"},
+          "canonical_preimage": "NOT_PRESENT; identity only; no projection digest"
+        }
+      ],
+      "identity_flow": ["recompute complete MANIFEST.json bytes/SHA before parsing", "require one exact manifest entry for each provider path", "verify observed provider length/SHA before UTF-8 or JSON parsing", "validate strict exact schema/shape/range/profile and construct private typed output"],
+      "permissions": {
+        "delivery_scope": "INTERNAL_RESEARCH_AND_INTERNAL_IMPLEMENTATION_ONLY",
+        "public_or_third_party_distribution": "NOT_AUTHORIZED",
+        "private_vendor_key_included": false,
+        "source_table_copied": false
+      },
+      "outputs": {
+        "window_provider": "private typed read-only WindowQ15Provider",
+        "window_receipt": {"type": "WindowQ15ProviderReceipt", "fields": ["validated_manifest_lineage", "provider_file_sha256", "provider_file_bytes", "schema", "parameter_ids"]},
+        "component_provider": "private typed read-only ComponentParameterProvider; raw F32 bits preserved; no serde_json::Value exposure",
+        "component_receipt": {"type": "ComponentParameterProviderReceipt", "fields": ["validated_manifest_lineage", "provider_file_sha256", "provider_file_bytes", "schema", "route", "selected_profile", "asset_implementation_ready", "authorized_scope", "dsp_consumption_status"], "qualification": {"asset_implementation_ready": false, "authorized_scope": "INTERNAL_SELECTED_PROFILE_PROVIDER_VALIDATION_AND_FUTURE_CONSUMPTION", "dsp_consumption_status": "NOT_YET_VALIDATED"}},
+        "receipt_authority": "immutable identity/typed-validation receipt only; receipt does not imply DSP PASS"
+      },
+      "dependency_scope": {"crate": "serde_json", "version": "=1.0.154", "default_features": false, "features": ["std"], "archive_sha256": "e7e9cc8b1b85264074fbcc02a88680c4096b1e47df8f739dceb03bf482f04bd6", "allowed_use": "strict identity-gated manifest/provider JSON parsing and private typed field access only", "public_serde_json_value": false, "canonical_writer": "none; exact file identity only"},
+      "planned_files": ["crates/jocforge-domain/src/spatial/window_q15_provider.rs", "crates/jocforge-domain/src/spatial/component_parameters_provider.rs", "crates/jocforge-domain/src/spatial/mod.rs", "crates/jocforge-domain/tests/f04_parameter_providers.rs", "crates/jocforge-domain/tests/fixtures/f04_parameters/window-q15.json", "crates/jocforge-domain/tests/fixtures/f04_parameters/component-parameter-mathematical-v1.json"],
+      "fixture_manifest": "crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json",
+      "fixture_manifest_reused": true,
+      "test_scope": ["manifest and provider identity-first gates", "exact top-level and record fields", "Q15 integer versus bool/float", "F32 raw word syntax/finiteness/ranges", "shape, ID uniqueness and provider binding", "selected 48 kHz/15-row/64-sample profile", "component readiness qualification", "malformed JSON rejected only after identity passes"],
+      "boundary_mutations": ["provider-id crosswire", "Q15 integer/F32 word type confusion", "count and shape drift", "F32 word length/case drift", "selected profile drift", "word regeneration or hardcoding", "implementation_ready overclaim", "early DSP/receiver/QMF implementation"],
+      "implementation_prohibitions": ["no component DSP or F04 state transition", "no receiver/QMF code", "no other F04 parameter providers", "no regenerating or hardcoding provider values", "no second MANIFEST fixture", "no projection digest", "no public serde_json::Value", "no claim that provider validation is DSP PASS", "no public or third-party distribution"],
+      "not_run": ["component DSP", "receiver/QMF processing", "F04 root consumption", "render/fanout", "parent CallbackTransaction", "real ADM execution", "product/listening acceptance"]
     }
   },
   "approved_dependencies": {
