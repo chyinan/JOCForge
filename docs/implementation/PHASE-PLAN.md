@@ -2499,9 +2499,9 @@
       "sha256": "6e3154571999492fdf2f881147ee9bb1a111eb191bd9cba9aaace91075840e03"
     },
     {
-      "bytes": 2075,
+      "bytes": 2174,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "12f5ca4462fb418fee7231426c651c001e46bc16e50acf4bbc37c5e60c0c6834"
+      "sha256": "697124fac06aa7243049d258ede0634d3b5de721743b1238c049ff2b13752afd"
     },
     {
       "bytes": 2290,
@@ -2628,9 +2628,9 @@
         "sha256": "911be2413816ebe1fde51ceda0066e9c088f92ae7c8b045cee49aac37540ec7d"
       },
       {
-        "bytes": 2075,
+        "bytes": 2174,
         "path": "crates/jocforge-domain/src/spatial/mod.rs",
-        "sha256": "12f5ca4462fb418fee7231426c651c001e46bc16e50acf4bbc37c5e60c0c6834"
+        "sha256": "697124fac06aa7243049d258ede0634d3b5de721743b1238c049ff2b13752afd"
       },
       {
         "bytes": 9428,
@@ -4041,9 +4041,9 @@
       "sha256": "b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"
     },
     {
-      "bytes": 2075,
+      "bytes": 2174,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "12f5ca4462fb418fee7231426c651c001e46bc16e50acf4bbc37c5e60c0c6834"
+      "sha256": "697124fac06aa7243049d258ede0634d3b5de721743b1238c049ff2b13752afd"
     }
   ],
   "implementation_prohibitions": [
@@ -4418,9 +4418,9 @@
       "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"
     },
     {
-      "bytes": 2075,
+      "bytes": 2174,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "12f5ca4462fb418fee7231426c651c001e46bc16e50acf4bbc37c5e60c0c6834"
+      "sha256": "697124fac06aa7243049d258ede0634d3b5de721743b1238c049ff2b13752afd"
     }
   ],
   "implementation_prohibitions": [
@@ -4745,9 +4745,9 @@
     "spatial_audio_root": "MAPPING_COMPLETE_BLOCKED"
   },
   "analysis_synthesis_boundary": {
-    "analysis_input_scale": "R32(x/64) independently for all 128 scalar inputs before the first butterfly; moving this scale changes intermediate rounding",
-    "mode_scope": "these are the only two QMF FFT call contexts; direction is an explicit enum, not a bool, and there is no generic normalization option",
-    "synthesis_input_scale": "none; copy the 128 scalar inputs unchanged before bit reversal"
+    "analysis_input_preparation": "the caller computes R32(x/64) independently for all 128 scalar inputs before constructing QmfFftInput; this scaling is not part of execute_qmf_fft64",
+    "primitive_api_boundary": "the fixed-size primitive accepts one validated QmfFftInput and QmfMathematicalFftProvider; it has no mode, direction, normalization, or caller-reorder argument",
+    "synthesis_input_preparation": "the caller passes all 128 scalar inputs unchanged before constructing QmfFftInput; no scaling is part of execute_qmf_fft64"
   },
   "caller_boundaries": {
     "analysis_after_fft": "for p=0..31: out[4p]=U[2p]; out[4p+1]=U[2p+1] XOR 0x80000000; out[4p+2]=U[126-2p]; out[4p+3]=U[127-2p]",
@@ -4802,11 +4802,10 @@
     }
   },
   "error_contract": {
-    "invalid_direction": "reject anything other than explicit Analysis or Synthesis; never coerce a bool",
     "native_error_claim": false,
     "nonfinite_intermediate_or_output": "reject as a fatal numeric error per N00.2; do not clamp or continue",
-    "state_effect": "the primitive is stateless; caller stage and programme retirement follow the enclosing F04/I03 contract",
-    "wrong_length_or_nonfinite_input": "reject before transform per F04QF.1/I03; no normal output"
+    "state_effect": "the primitive is stateless and has no commit or retirement authority; callers apply the enclosing F04/I03 outcome",
+    "wrong_length_or_nonfinite_input": "reject before transform per F04QF.1/I03; no output"
   },
   "fixture_files": [],
   "fresh_review": {
@@ -4821,7 +4820,22 @@
   },
   "functional_id": "F04QF",
   "functional_id_scope": "This readiness applies only to the fixed 64-point FFT primitive. F04QF rotation use, F04Q analysis/synthesis, receiver, fitting, and whole spatial_audio remain separately scoped.",
-  "implementation_files": [],
+  "implementation_files": [
+    "crates/jocforge-domain/src/spatial/qmf_fft64.rs",
+    "crates/jocforge-domain/src/spatial/mod.rs"
+  ],
+  "implementation_inventory": [
+    {
+      "bytes": 3812,
+      "path": "crates/jocforge-domain/src/spatial/qmf_fft64.rs",
+      "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"
+    },
+    {
+      "bytes": 2174,
+      "path": "crates/jocforge-domain/src/spatial/mod.rs",
+      "sha256": "697124fac06aa7243049d258ede0634d3b5de721743b1238c049ff2b13752afd"
+    }
+  ],
   "implementation_prohibitions": [
     "no generic FFT",
     "no F04Q fold or rotation implementation",
@@ -4831,9 +4845,10 @@
     "no J05 cross-stage execution or readiness promotion",
     "no product/audio/listening acceptance claim"
   ],
-  "implementation_status": "NOT_STARTED",
+  "implementation_status": "LOCALLY_VERIFIED_FIXED64_ONLY",
   "mapping_document": "docs/implementation/QMF-FFT-PRIMITIVE-MAP.md",
   "mapping_status": "MAPPING_COMPLETE",
+  "module_export_file": "crates/jocforge-domain/src/spatial/mod.rs",
   "package_identity": {
     "manifest_bytes": 76302,
     "manifest_file": "MANIFEST.json",
@@ -4859,10 +4874,10 @@
       "out_b=(a_re-tr,a_im-ti)"
     ],
     "complex_point_count": 64,
-    "exponent": "negative-exponent DFT for both analysis and synthesis calls",
+    "exponent": "negative-exponent DFT; caller mode and scaling are outside this primitive",
     "input_bit_reversal": "rev6(k) reverses the six bits of k; work[k] copies input[rev6(k)] without swapping the real/imag pair",
     "input_layout": "[real0, imag0, real1, imag1, ..., real63, imag63]; finite F32; each real/imag pair stays in that order",
-    "input_validation": "require exactly 128 finite F32 scalar slots and an explicit Analysis/Synthesis enum; wrong length or nonfinite input rejects per F04QF.1/I03 before output",
+    "input_validation": "require exactly 128 finite F32 scalar slots; wrong length or nonfinite input rejects per F04QF.1/I03 before output",
     "output_layout": "64 complex values in natural frequency order k=0..63, interleaved [real0,imag0,...,real63,imag63]",
     "persistent_state": "none; a slot's work buffer is initialized from its own input and never seeded from a prior slot",
     "real_scalar_slot_count": 128,
@@ -4894,7 +4909,7 @@
     ],
     "provider_bytes": 6983,
     "provider_file": "parameters/qmf-mathematical-fft-v1.json",
-    "provider_qualification": "identity and typed shape validation is LOCALLY_VERIFIED; FFT execution is NOT_RUN",
+    "provider_qualification": "identity and typed shape validation is LOCALLY_VERIFIED; fixed64 primitive execution is LOCALLY_VERIFIED_FIXED64_ONLY; no QMF caller is implemented",
     "provider_schema": "qmf-mathematical-fft-parameters.v1",
     "provider_sha256": "e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431",
     "provider_source": "crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs",
@@ -4902,7 +4917,11 @@
     "root_values_source": "the pinned provider file carries exact U32 root words; consume typed stages[].roots without regenerating values",
     "typed_provider": "QmfMathematicalFftProvider"
   },
-  "scope": "Map the selected QMF radix-2 FFT transform and its exact caller boundaries. Do not implement FFT execution, QMF fold/rotation, receiver, descriptor, fitting, state transition, or DSP.",
+  "scope": "Implement and locally verify only the fixed 64-point QMF radix-2 FFT primitive. Do not implement QMF fold/rotation, receiver, descriptor, fitting, state transition, or DSP.",
+  "shared_fixture_dependencies": [
+    "crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json",
+    "crates/jocforge-domain/tests/fixtures/f04_parameters/qmf-mathematical-fft-v1.json"
+  ],
   "specifications": [
     {
       "bytes": 3369,
@@ -4955,9 +4974,18 @@
       "sha256": "104d604cf876cc522a85b21f352bd0a09fc20c3171ddcd71da981c8076ea3a75"
     }
   ],
-  "status": "READY_FOR_IMPLEMENTATION",
+  "status": "LOCALLY_VERIFIED_FIXED64_ONLY",
   "task_id": "QMF-FFT-PRIMITIVE-MAPPING",
-  "test_files": [],
+  "test_files": [
+    "crates/jocforge-domain/tests/qmf_fft64.rs"
+  ],
+  "test_inventory": [
+    {
+      "bytes": 8575,
+      "path": "crates/jocforge-domain/tests/qmf_fft64.rs",
+      "sha256": "9d53ca5c441352312dfc19e425e990145e0416e3bcb0d733d2642c38fb119014"
+    }
+  ],
   "vector_bindings": [
     {
       "bytes": 1158,
@@ -4982,13 +5010,15 @@
     }
   ],
   "verification": {
-    "fft_execution": "NOT_RUN",
+    "fft_execution": "LOCALLY_VERIFIED_FIXED64_ONLY",
     "fresh_review_scope": "STATIC_ONLY",
-    "full_repository_boundary_mutations_rejected": 716,
+    "full_repository_boundary_mutations_rejected": 728,
+    "local_test_vector": "spec-derived dyadic input recipe with exact R32 operation order and the identity-validated provider roots; assertion only, not an audio or product vector",
     "product_audio_acceptance": "NOT_RUN",
+    "qmf_fft64_test_count": 10,
     "receiver_fitting_execution": "NOT_RUN",
     "spec_provider_vector_identities": "PASS",
-    "targeted_boundary_mutations_rejected": 31,
+    "targeted_boundary_mutations_rejected": 43,
     "typed_provider_validator": "LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS"
   }
 }

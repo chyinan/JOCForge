@@ -6,6 +6,7 @@ pub mod component_parameters_provider;
 pub mod current_features;
 pub mod descriptor_mathematical_provider;
 pub mod post_window_fanout;
+pub mod qmf_fft64;
 pub mod qmf_mathematical_fft_provider;
 pub mod qmf_receiver_functional_provider;
 pub mod source_flags;
@@ -22,6 +23,7 @@ pub use descriptor_mathematical_provider::{
     DescriptorMathematicalProvider, DescriptorMathematicalProviderReceipt,
     validate_descriptor_mathematical_provider,
 };
+pub use qmf_fft64::{QmfFftError, QmfFftInput, QmfFftOutput, execute_qmf_fft64};
 pub use qmf_mathematical_fft_provider::{
     QmfFftRootStage, QmfMathematicalFftProvider, QmfMathematicalFftProviderReceipt,
     validate_qmf_mathematical_fft_provider,

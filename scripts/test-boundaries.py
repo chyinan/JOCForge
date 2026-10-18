@@ -67,6 +67,18 @@ def f04_remaining_provider_code_mut_render(mutate):
   map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
   subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
  return m
+def qmf_fft_code_mut_render(mutate):
+ def m(r):
+  mutate(r)
+  map_path=r/'docs/implementation/IMPLEMENTATION-MAP.json';d=json.loads(map_path.read_text(encoding='utf-8'));task=d['phase_one']['QMF_FFT_PRIMITIVE']
+  for key in ('implementation_inventory','test_inventory'):
+   for entry in task.get(key,[]):
+    path=r/entry['path']
+    if path.is_file():
+     content=path.read_bytes();entry['bytes']=len(content);entry['sha256']=hashlib.sha256(content).hexdigest()
+  map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+  subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
+ return m
 def append(path,text):path.write_text(path.read_text(encoding='utf-8')+text,encoding='utf-8')
 def flip_first_byte(path):
  data=path.read_bytes();path.write_bytes(bytes([data[0]^1])+data[1:])
@@ -459,9 +471,9 @@ def main():
  ('qmf-fft-root-count-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['primitive_contract'].update(root_provider_shape='one shared 64-root table'))),
  ('qmf-fft-butterfly-order-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['primitive_contract']['butterfly_order'].reverse())),
  ('qmf-fft-fma-allowed',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['primitive_contract'].update(arithmetic_semantics='fused multiply-add permitted'))),
- ('qmf-fft-analysis-scale-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['analysis_synthesis_boundary'].update(analysis_input_scale='scale outputs after FFT'))),
- ('qmf-fft-synthesis-scale-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['analysis_synthesis_boundary'].update(synthesis_input_scale='R32(input/64)'))),
- ('qmf-fft-mode-implicit-bool',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['analysis_synthesis_boundary'].update(mode_scope='single bool mode'))),
+ ('qmf-fft-analysis-scale-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['analysis_synthesis_boundary'].update(analysis_input_preparation='scale after FFT'))),
+ ('qmf-fft-synthesis-scale-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['analysis_synthesis_boundary'].update(synthesis_input_preparation='R32(input/64)'))),
+ ('qmf-fft-mode-implicit-bool',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['analysis_synthesis_boundary'].update(primitive_api_boundary='single bool mode'))),
  ('qmf-fft-nonfinite-intermediate-accepted',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['error_contract'].update(nonfinite_intermediate_or_output='clamp and continue'))),
  ('qmf-fft-caller-reorder-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['caller_boundaries'].update(analysis_after_fft='no permutation or sign-bit operation'))),
  ('qmf-fft-rotation-absorbed',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['provider_binding']['consumed_fields'].append('rotation_u32'))),
@@ -474,7 +486,19 @@ def main():
  ('qmf-fft-j05-promoted',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['fresh_review'].update(conclusion='J05 cross-stage integration ready'))),
  ('qmf-fft-aggregate-unblocked',map_mut_render(lambda d:d['status'].update({'P1.3-E':'LOCALLY_VERIFIED'}))),
  ('qmf-fft-4096-substitution',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['implementation_prohibitions'].remove('no CurrentFeatures 4096-point FFT substitution'))),
- ('qmf-fft-early-implementation',lambda r:(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs').write_text('pub fn fft_execute() {}\n',encoding='utf-8')),
+ ('qmf-fft-code-generic-length-api',qmf_fft_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','pub fn execute_qmf_fft64(\n','pub fn execute_qmf_fft64<const N: usize>(\n'))),
+ ('qmf-fft-code-root-type-mix',qmf_fft_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','finite(f32::from_bits(root_words[0]))?','finite(root_words[0] as f32)?'))),
+ ('qmf-fft-code-bit-reversal-removed',qmf_fft_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','reverse_six_bits(destination)','destination'))),
+ ('qmf-fft-code-stage-order-drift',qmf_fft_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','[2, 4, 8, 16, 32, 64]','[64, 32, 16, 8, 4, 2]'))),
+ ('qmf-fft-code-fma',qmf_fft_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','r32_sub(r32_mul(c, b_real)?, r32_mul(d, b_imag)?)?','finite(c.value().mul_add(b_real.value(), -(d.value() * b_imag.value())))?'))),
+ ('qmf-fft-code-analysis-scaling-in-core',qmf_fft_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','let mut work = [0.0_f32; SCALAR_COUNT];','let mut work = input.0.map(|value| value / 64.0);'))),
+ ('qmf-fft-code-mode-argument',qmf_fft_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','    provider: &QmfMathematicalFftProvider,','    provider: &QmfMathematicalFftProvider,\n    analysis: bool,'))),
+ ('qmf-fft-code-state-added',qmf_fft_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','\nstatic mut PREVIOUS: [f32; 64] = [0.0; 64];\n'))),
+ ('qmf-fft-code-receiver-route-added',qmf_fft_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','\nfn receiver_route() {}\n'))),
+ ('qmf-fft-code-input-finiteness-bypassed',qmf_fft_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','.find(|(_, value)| !value.is_finite())','.find(|(_, _)| false)'))),
+ ('qmf-fft-code-mutable-output-added',qmf_fft_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','pub const fn interleaved(&self) -> &[f32; SCALAR_COUNT]','pub fn interleaved_mut(&mut self) -> &mut [f32; SCALAR_COUNT]'))),
+ ('qmf-fft-code-read-before-write-drift',qmf_fft_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/qmf_fft64.rs','let b_imag = finite(work[right * 2 + 1])?;','work[left * 2] = 0.0;\n                let b_imag = finite(work[right * 2 + 1])?;'))),
+ ('qmf-fft-code-module-export-removed',qmf_fft_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/mod.rs','pub mod qmf_fft64;',''))),
  ('qmf-fft-generic-executor-enabled',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE'].update(scope='Provide a generic configurable FFT engine')))
  ]
  cases += [
@@ -672,7 +696,8 @@ def main():
   c.mkdir();probe=c/'.probe';probe.write_text('ok');probe.unlink();repo=c/'repo';ignored=['.git','target','__pycache__'];
   if s.resolve().is_relative_to(ROOT):ignored.append(s.resolve().relative_to(ROOT).parts[0])
   shutil.copytree(ROOT,repo,ignore=shutil.ignore_patterns(*ignored))
-  if n.startswith('f04d1-'):m=f04_parameter_code_mut_render(m)
+  if n.startswith('qmf-fft-code-'):m=qmf_fft_code_mut_render(m)
+  elif n.startswith('f04d1-'):m=f04_parameter_code_mut_render(m)
   elif n.startswith('f04d2-code-'):m=f04_remaining_provider_code_mut_render(m)
   elif n=='postwindow-code-render-authority-mint-public':m=code_mut_render(m)
   elif n.startswith(('p13d1-','source-flags-')):m=code_mut_render(m)
