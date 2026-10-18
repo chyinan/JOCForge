@@ -57,6 +57,10 @@ def render(d):
   x=d['phase_one']['P1.3-E3'];block=json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)
   o['PHASE-PLAN.md']+='\n## P1.3-E3 Direct-LFE ring stage\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
   o['DIRECT-LFE-RING-MAP.md']='# Direct-LFE ring map\n\n由 IMPLEMENTATION-MAP.json 生成，不得手工修改。\n\n'+f"Mapping status: `{x['mapping_status']}`. Implementation status: `{x['implementation_status']}`. The full F04 chain and parent transaction remain blocked.\n\n"+'This is only the direct-LFE ring transition and a future Type10 row0 input; it does not construct Type10 or execute receiver/QMF.\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
+ if 'P1.3-E4' in d['phase_one']:
+  x=d['phase_one']['P1.3-E4'];block=json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)
+  o['PHASE-PLAN.md']+='\n## P1.3-E4 Type10 assembly boundary\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
+  o['TYPE10-ASSEMBLY-MAP.md']='# Type10 assembly map\n\n由 IMPLEMENTATION-MAP.json 生成，不得手工修改。\n\n'+f"Mapping status: `{x['mapping_status']}`. Implementation status: `{x['implementation_status']}`. Receiver/QMF and parent transaction remain deferred.\n\n"+'This slice only assembles the E2 component proposal with the E3 delayed LFE row; it does not execute receiver/QMF or commit spatial_audio state.\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
  return o
 def main():
  a=argparse.ArgumentParser();a.add_argument('--check',action='store_true');x=a.parse_args();d=json.loads(M.read_text(encoding='utf-8'));bad=[]

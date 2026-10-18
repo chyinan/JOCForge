@@ -8,6 +8,8 @@
 
 Direct-LFE 子阶段使用洗白后的 input-only `g0..g5` trace 和三个失败输入：从输入 recipe fresh 构造 1,536 个 F32，再执行 ring transition 后比较状态/输出；g2..g5 必须 exact-reuse g1 padded row。六回调 phase 标签是隔离 ring trace，不能用来重设生产 `g=0..4246` normal、`g=4247..4250` cached-drain 时钟。它只验证 ring 与 Type10 row0 seam，不代表 raw38 producer、whole callback、receiver/QMF 或产品验收。
 
+P1.3-E4 assembly tests consume typed E2/E3 proposals for `g0..g5`: g0/g1 must produce Priming without a packet; g2..g5 must preserve row0 LFE bits/origin `g-2` and rows1..15 component bits/origin `g`. Mismatch cases cover callback/phase, programme/attempt/transaction, profile, provider lineage, stale spatial_audio before identity, missing row0, and ring-slot/origin disagreement. Dropping the assembly stage must leave committed state unchanged. Direct-LFE supplement rows and whole-chain Type10 hashes have distinct g1 identities and must not be cross-paired; E4 bit-copy assertions compare each assembled row to its consumed proposal input.
+
 公共语法原语还必须覆盖 bit cursor 0/1/31/32/32768、容量溢出、CRC residual=0、单 bit 破坏、frmsiz 边界、header 保留码、非 48 kHz/非 5.1/dependent/非 4,096-byte 拒绝、六个 Huffman 表全部 symbol、两种 EMDF mode、四 payload 顺序、截断和失败零提交。
 
 validation 的 structural parser、channel-map、topology、frame report 和 W04 与 production 分离。parser 成功不代表 codec conformance、音频正确或产品验收通过。

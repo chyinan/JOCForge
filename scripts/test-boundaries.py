@@ -550,6 +550,27 @@ def main():
  ('directlfe-code-qmf-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs','#[cfg(test)]\nmod tests;','fn qmf_receiver() {}\n#[cfg(test)]\nmod tests;')),
  ('directlfe-test-cached-row-not-reused',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe/tests.rs','cached_g1.as_deref()','None'))
  ]
+ cases += [
+ ('type10-map-status-overclaim',map_mut_render(lambda d:(d['phase_one']['P1.3-E4'].update(status='LOCALLY_VERIFIED_TYPE10_ASSEMBLY__RECEIVER_PARENT_DEFERRED',implementation_status='LOCALLY_VERIFIED_TYPE10_ASSEMBLY__RECEIVER_PARENT_DEFERRED'),d['status'].update({'P1.3-E4':'LOCALLY_VERIFIED_TYPE10_ASSEMBLY__RECEIVER_PARENT_DEFERRED'})))),
+ ('type10-map-parent-unblocked',map_mut_render(lambda d:d['status'].update({'P1.3-E':'LOCALLY_VERIFIED'}))),
+ ('type10-map-e2-lineage-gap',map_mut_render(lambda d:d['phase_one']['P1.3-E4'].pop('required_e2_lineage_seam'))),
+ ('type10-map-row-order-drift',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['specification'].update(rows='Type10[g] is component15[g] followed by LFE[g-2]'))),
+ ('type10-map-origin-drift',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['specification'].update(rows='row0 is LFE[g-1] and rows1..15 are component15[g]'))),
+ ('type10-map-priming-packet',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['specification'].update(priming='g=0 and g=1 produce zero-filled Type10 packets'))),
+ ('type10-map-after-state-dropped',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['output_contract'].update(ready_outcome='Type10Packet and receipt only; drop both owner after-states'))),
+ ('type10-map-receipt-lineage-removed',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['output_contract']['receipt_fields'].remove('spatial_audio before generation and digest'))),
+ ('type10-map-error-authority-overclaim',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['error_translation'].update(authority='PACKAGE_NORMATIVE native Type10 errors'))),
+ ('type10-map-error-priority-drift',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['error_translation']['priority'].reverse())),
+ ('type10-map-cross-vector-identity',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['vectors'].update(binding_rule='use the whole-chain Type10 hashes with the Direct-LFE g1 row'))),
+ ('type10-map-callback-case-removed',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['vectors']['cases'].remove('callback_phase_mismatch'))),
+ ('type10-map-test-file-removed',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['planned_test_files'].remove('crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs'))),
+ ('type10-map-receiver-enabled',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['implementation_prohibitions'].remove('no receiver or QMF implementation'))),
+ ('type10-map-local-commit',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['output_contract'].update(commit_authority='spatial_audio local commit'))),
+ ('type10-map-packet-persistent',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['output_contract'].update(capability='store Type10Packet in persistent spatial_audio state'))),
+ ('type10-map-generic-assembler',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['implementation_prohibitions'].remove('no generic row assembler'))),
+ ('type10-map-e3-assembler-enabled',map_mut_render(lambda d:d['phase_one']['P1.3-E3']['verification'].update(full_type10_assembler='LOCALLY_VERIFIED'))),
+ ('type10-map-malformed-row-error-drift',map_mut_render(lambda d:d['phase_one']['P1.3-E4']['error_translation']['outcomes'][5].update(error_code='F04_NUMERIC_FAILURE')))
+ ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]
   if not cases:raise RuntimeError('no boundary mutations match case prefix: '+x.case_prefix)
