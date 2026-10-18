@@ -17,6 +17,8 @@ def render(d):
   c=d['phase_one']['P1.2-C'];o['PHASE-PLAN.md']+='\n## P1.2-C finite F32 truncation slice\n\n```json\n'+json.dumps(c,ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
  if 'P1.2-D'in d['phase_one']:
   x=d['phase_one']['P1.2-D'];o['PHASE-PLAN.md']+='\n## P1.2-D normalized Q15 coordinate slice\n\n```json\n'+json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
+ if 'P1.2-E'in d['phase_one']:
+  x=d['phase_one']['P1.2-E'];o['PHASE-PLAN.md']+='\n## P1.2-E CurrentFeatures finite R32 subtraction primitive\n\n```json\n'+json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
  if 'P1.2-closure'in d['phase_one']:
   x=d['phase_one']['P1.2-closure'];o['PHASE-PLAN.md']+='\n## P1.2 scoped closure\n\n```json\n'+json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
  if 'P1.3-A'in d['phase_one']:

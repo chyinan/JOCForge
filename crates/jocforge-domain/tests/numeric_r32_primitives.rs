@@ -1,5 +1,5 @@
 // pattern: Functional Core
-use jocforge_domain::numeric::{FiniteF32, FiniteF32Error, R32Error, r32_add, r32_mul};
+use jocforge_domain::numeric::{FiniteF32, FiniteF32Error, R32Error, r32_add, r32_mul, r32_sub};
 
 fn finite(value: f32) -> FiniteF32 {
     FiniteF32::new(value).unwrap()
@@ -76,6 +76,94 @@ fn non_finite_results_are_rejected() {
     );
     assert_eq!(
         r32_add(finite(f32::MAX), finite(f32::MAX)),
+        Err(R32Error::NonFiniteResult)
+    );
+}
+
+#[test]
+fn r32_sub_follows_signed_zero_and_subnormal_semantics() {
+    let zero_cases = [
+        (0x0000_0000, 0x0000_0000, 0x0000_0000),
+        (0x0000_0000, 0x8000_0000, 0x0000_0000),
+        (0x8000_0000, 0x0000_0000, 0x8000_0000),
+        (0x8000_0000, 0x8000_0000, 0x0000_0000),
+    ];
+    for (left, right, expected) in zero_cases {
+        assert_eq!(
+            r32_sub(finite(f32::from_bits(left)), finite(f32::from_bits(right)))
+                .unwrap()
+                .to_bits(),
+            expected
+        );
+    }
+
+    assert_eq!(
+        r32_sub(finite(f32::from_bits(2)), finite(f32::from_bits(1)))
+            .unwrap()
+            .to_bits(),
+        0x0000_0001
+    );
+    assert_eq!(
+        r32_sub(finite(f32::from_bits(1)), finite(f32::from_bits(2)))
+            .unwrap()
+            .to_bits(),
+        0x8000_0001
+    );
+    assert_eq!(
+        r32_sub(finite(-1.0), finite(-1.0)).unwrap().to_bits(),
+        0x0000_0000
+    );
+}
+
+#[test]
+fn r32_sub_rounds_exact_midpoints_to_even_independently() {
+    // 2^-24 is exactly half an ULP at 1.0; ties select the even significand.
+    assert_eq!(
+        r32_sub(
+            finite(f32::from_bits(0x3f80_0000)),
+            finite(f32::from_bits(0xb380_0000))
+        )
+        .unwrap()
+        .to_bits(),
+        0x3f80_0000
+    );
+    assert_eq!(
+        r32_sub(
+            finite(f32::from_bits(0x3f80_0001)),
+            finite(f32::from_bits(0xb380_0000))
+        )
+        .unwrap()
+        .to_bits(),
+        0x3f80_0002
+    );
+    assert_eq!(
+        r32_sub(
+            finite(f32::from_bits(0xbf80_0000)),
+            finite(f32::from_bits(0x3380_0000))
+        )
+        .unwrap()
+        .to_bits(),
+        0xbf80_0000
+    );
+    assert_eq!(
+        r32_sub(
+            finite(f32::from_bits(0xbf80_0001)),
+            finite(f32::from_bits(0x3380_0000))
+        )
+        .unwrap()
+        .to_bits(),
+        0xbf80_0002
+    );
+}
+
+#[test]
+fn r32_sub_rejects_non_finite_overflow() {
+    assert_eq!(
+        r32_sub(finite(f32::MAX), finite(-f32::MAX)),
+        Err(R32Error::NonFiniteResult)
+    );
+    assert_eq!(
+        r32_sub(finite(-f32::MAX), finite(f32::MAX)),
         Err(R32Error::NonFiniteResult)
     );
 }

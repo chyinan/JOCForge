@@ -290,6 +290,114 @@
 }
 ```
 
+## P1.2-E CurrentFeatures finite R32 subtraction primitive
+
+```json
+{
+  "consumer": {
+    "functional_id": "F03F",
+    "module": "crates/jocforge-domain/src/spatial/current_features.rs",
+    "scope": "subtraction primitive dependency only for F03F.2 FFT twiddles/butterflies and F03F.5 accept=1-slow_retain; producer remains NOT_STARTED"
+  },
+  "generic_operator_trait": "FORBIDDEN",
+  "implementation_files": [
+    "crates/jocforge-domain/src/numeric/finite_f32.rs",
+    "crates/jocforge-domain/src/numeric/mod.rs"
+  ],
+  "implementation_status": "LOCALLY_VERIFIED",
+  "primitive": {
+    "definition": "N00 subtraction is one R32 addition after flipping the right operand sign",
+    "name": "r32_sub",
+    "non_finite_input": "not constructible through FiniteF32; FiniteF32::new rejects NaN and infinity",
+    "overflow": "reject non-finite result as R32Error::NonFiniteResult",
+    "rounding": "one binary32 round-to-nearest ties-to-even point; no F64 widening or FMA",
+    "signature": "r32_sub(FiniteF32, FiniteF32) -> Result<FiniteF32, R32Error>",
+    "signed_zero": "right-sign flip followed by r32_add; exact nonzero cancellation is +0; all four zero-sign pairs pinned",
+    "subnormal": "preserve finite subnormal inputs/results; gradual underflow"
+  },
+  "required_runtime_operations": {
+    "F03F.2": [
+      "tr = (c * b.real) - (d * b.imag)",
+      "ti = (c * b.imag) + (d * b.real)",
+      "upper/lower butterfly differences"
+    ],
+    "F03F.5": [
+      "accept = 1 - slow_retain"
+    ],
+    "existing_primitives": [
+      "FiniteF32",
+      "r32_add",
+      "r32_mul"
+    ],
+    "sole_missing_primitive": "r32_sub"
+  },
+  "spec_binding": {
+    "consumer_file": "specs/03-feature-processor-and-state.md",
+    "consumer_sections": [
+      "F03F.2 explicit 4096-point mathematical FFT",
+      "F03F.5 per-source state update"
+    ],
+    "consumer_sha256": "dbd1cf259d2e40013910868d31e38909678d3af8add9d80bd59d15e8cc6e8edd",
+    "numeric_file": "specs/00-numeric-semantics.md",
+    "numeric_sections": [
+      "N00.1 primitives",
+      "N00.2 boundaries"
+    ],
+    "numeric_sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135",
+    "supplement_identity": "current-features-producer.math-route.v1",
+    "supplement_sections": [
+      "6.2 twiddle and butterfly arithmetic",
+      "7 accept computation"
+    ],
+    "supplement_spec_file": "SPEC.md",
+    "supplement_spec_sha256": "1c298e21d81a702f8298dabba3f28e01576c9602729f5746d6665c0becfdeaa5"
+  },
+  "status": "LOCALLY_VERIFIED",
+  "task_id": "P1.2-E-FINITE-R32-SUB",
+  "test_files": [
+    "crates/jocforge-domain/tests/numeric_r32_primitives.rs"
+  ],
+  "vectors": {
+    "case_pointers": [
+      "r32_sub_follows_signed_zero_and_subnormal_semantics",
+      "r32_sub_rounds_exact_midpoints_to_even_independently",
+      "r32_sub_rejects_non_finite_overflow"
+    ],
+    "independent_rne_bits": [
+      {
+        "expected": "0x3F800000",
+        "left": "0x3F800000",
+        "right": "0xB3800000"
+      },
+      {
+        "expected": "0x3F800002",
+        "left": "0x3F800001",
+        "right": "0xB3800000"
+      },
+      {
+        "expected": "0xBF800000",
+        "left": "0xBF800000",
+        "right": "0x33800000"
+      },
+      {
+        "expected": "0xBF800002",
+        "left": "0xBF800001",
+        "right": "0x33800000"
+      }
+    ],
+    "kind": "INDEPENDENT_PRIMITIVE_KNOWN_ANSWERS",
+    "property_binding": [
+      "signed-zero result bits",
+      "finite subnormal preservation",
+      "exact cancellation to positive zero",
+      "ties-to-even on positive and negative midpoints",
+      "overflow rejection"
+    ],
+    "test_file": "crates/jocforge-domain/tests/numeric_r32_primitives.rs"
+  }
+}
+```
+
 ## P1.2 scoped closure
 
 ```json
@@ -305,6 +413,10 @@
     {
       "clause": "F03P.2",
       "functional_id": "F03P"
+    },
+    {
+      "clause": "F03F.2/F03F.5 numeric primitive dependency only; algorithm NOT_STARTED",
+      "functional_id": "F03F"
     }
   ],
   "scope": "current materialized numeric consumers only",
@@ -337,6 +449,12 @@
         "NormalizedQ15Coordinate"
       ],
       "slice": "P1.2-D"
+    },
+    {
+      "primitives": [
+        "r32_sub"
+      ],
+      "slice": "P1.2-E"
     }
   ]
 }
