@@ -3486,8 +3486,8 @@
         "parameter_generation_cases": 23,
         "whole_chain_component_callbacks": 6,
         "expected_values_are_seeded": false,
-        "targeted_boundary_mutations_rejected": 32,
-        "full_repository_boundary_mutations_rejected": 548,
+        "targeted_boundary_mutations_rejected": 36,
+        "full_repository_boundary_mutations_rejected": 552,
         "local_commit_abort_fatal": "NOT_IMPLEMENTED",
         "upstream_render_lfe_receiver_qmf_and_parent": "DEFERRED"
       },

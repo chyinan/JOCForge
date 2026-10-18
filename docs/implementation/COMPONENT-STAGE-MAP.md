@@ -119,6 +119,7 @@ render fanout, the rest of F04, and parent transaction are deferred.
 - `crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs`
 - `crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs`
 - `crates/jocforge-domain/src/spatial/spatial_audio_state.rs`
+- `crates/jocforge-domain/src/spatial/spatial_control.rs` (test-only independent join fixture; no production constructor)
 - `crates/jocforge-domain/src/spatial/mod.rs`
 - `crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json`
 - `crates/jocforge-domain/tests/fixtures/f04_component/COMPONENT-PARAMETER-GENERATION-VERIFICATION.json`
@@ -126,11 +127,14 @@ render fanout, the rest of F04, and parent transaction are deferred.
 
 The three vector fixture files are exact package copies and retain their
 package-manifest identities. They are test-only inputs; production code has no
-file, process, or environment access. The module-private test constructor is
-not a production packet factory.
+file, process, or environment access. The module-private test constructors are
+not production packet factories. `produce_component_stage` independently
+requires `SpatialControlJoinMetadata`; its transaction, callback, profile,
+provider lineage, and before generation/digest are checked against the packet
+and owning spatial-control machine before numeric processing.
 
-Verification summary: 11 component-stage tests pass, including all four mapped
+Verification summary: 12 component-stage tests pass, including all four mapped
 unit vector cases, all 23 parameter-generation cases, and all six whole-chain
-component projections. The full repository boundary suite rejected 541
-mutations; the E2-specific subset rejected 25. Full spatial_audio integration,
+component projections. The full repository boundary suite rejected 552
+mutations; the E2-specific subset rejected 36. Full spatial_audio integration,
 render, LFE, receiver/QMF, real ADM, and parent transaction remain deferred.
