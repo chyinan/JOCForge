@@ -10,8 +10,8 @@ use crate::{
     profile::{EncodingProfile, resolve_selected_profile},
     spatial::source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
     spatial::{
-        F04ParameterProviderLineage, SpatialControlDigest, SpatialControlMachine,
-        SpatialControlProviderLineage, ValidatedComponentParameterProvider,
+        F04ParameterProviderLineage, SpatialControlDigest, SpatialControlJoinMetadata,
+        SpatialControlMachine, SpatialControlProviderLineage, ValidatedComponentParameterProvider,
         ValidatedWindowQ15Provider,
     },
     timeline::FrontendCallbackIndex,
@@ -259,9 +259,11 @@ impl ComponentStageProposal {
 }
 
 #[allow(dead_code)]
+#[allow(clippy::too_many_arguments)]
 pub(crate) fn produce_component_stage(
     spatial_audio: &SpatialAudioMachine,
     spatial_audio_join: &SpatialAudioJoinMetadata,
+    spatial_control_join: &SpatialControlJoinMetadata,
     spatial_control: &SpatialControlMachine,
     expected_phase: ComponentCallbackPhase,
     packet: SpatialAudioInputPacket,
@@ -277,6 +279,7 @@ pub(crate) fn produce_component_stage(
     for profile in [
         selected_profile,
         spatial_audio_join.profile_identity(),
+        spatial_control_join.profile_identity(),
         spatial_control.profile(),
         packet.profile_identity,
     ] {
@@ -286,6 +289,7 @@ pub(crate) fn produce_component_stage(
     }
 
     if spatial_audio_join.callback_index() != before.callback_index
+        || spatial_control_join.callback_index() != before.callback_index
         || packet.callback_index != before.callback_index
         || packet.phase != expected_phase
     {
@@ -296,6 +300,8 @@ pub(crate) fn produce_component_stage(
         || spatial_audio_join.before_digest() != spatial_audio.digest()
         || packet.spatial_control_before_generation != spatial_control.generation()
         || packet.spatial_control_before_digest != spatial_control.digest()
+        || spatial_control_join.before_generation() != spatial_control.generation()
+        || spatial_control_join.before_digest() != spatial_control.digest()
     {
         return Err(ComponentStageError::State);
     }
@@ -310,8 +316,10 @@ pub(crate) fn produce_component_stage(
     if packet.programme_id.as_str() != spatial_audio_join.programme_id().as_str()
         || packet.attempt != spatial_audio_join.attempt()
         || packet.transaction_id.as_str() != spatial_audio_join.transaction_id().as_str()
+        || packet.transaction_id.as_str() != spatial_control_join.transaction_id().as_str()
         || packet.profile_identity != spatial_audio_join.profile_identity()
         || packet.spatial_control_provider_lineage != spatial_control.provider_lineage()
+        || spatial_control_join.provider_lineage() != spatial_control.provider_lineage()
         || packet.provider_lineage
             != [
                 *window.receipt().validated_manifest_lineage(),

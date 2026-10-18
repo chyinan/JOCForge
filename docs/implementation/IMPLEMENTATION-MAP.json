@@ -3456,6 +3456,7 @@
       "planned_implementation_files": [
         "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs",
         "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+        "crates/jocforge-domain/src/spatial/spatial_control.rs",
         "crates/jocforge-domain/src/spatial/mod.rs"
       ],
       "planned_test_files": [
@@ -3468,7 +3469,8 @@
       ],
       "implementation_files": [
         "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs",
-        "crates/jocforge-domain/src/spatial/spatial_audio_state.rs"
+        "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+        "crates/jocforge-domain/src/spatial/spatial_control.rs"
       ],
       "test_files": [
         "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs"
@@ -3479,13 +3481,13 @@
         "crates/jocforge-domain/tests/fixtures/f04_component/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json"
       ],
       "verification": {
-        "component_stage_tests": 11,
+        "component_stage_tests": 12,
         "direct_unit_vector_ids": ["U-FRONT-MATRIX", "U-FRONT-OVERLAP", "U-FRONT-FILTER64", "U-FRONT-PARAMETER64"],
         "parameter_generation_cases": 23,
         "whole_chain_component_callbacks": 6,
         "expected_values_are_seeded": false,
-        "targeted_boundary_mutations_rejected": 25,
-        "full_repository_boundary_mutations_rejected": 541,
+        "targeted_boundary_mutations_rejected": 32,
+        "full_repository_boundary_mutations_rejected": 548,
         "local_commit_abort_fatal": "NOT_IMPLEMENTED",
         "upstream_render_lfe_receiver_qmf_and_parent": "DEFERRED"
       },
@@ -3635,8 +3637,8 @@
         "file_inventory": [
           {
             "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-            "bytes": 24637,
-            "sha256": "c8a29edd9fb750381928187b17c47913f7166a6900718782f18ba9a27021d12d"
+            "bytes": 25296,
+            "sha256": "e5e1387da7f2000c8fd14deddd6b75db4f3048c4bbde69b23dcdfd09fdde988d"
           },
           {
             "path": "crates/jocforge-domain/src/transaction/mod.rs",

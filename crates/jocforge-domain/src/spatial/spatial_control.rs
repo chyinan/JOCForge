@@ -521,6 +521,26 @@ impl SpatialControlJoinMetadata {
     pub const fn provider_lineage(&self) -> SpatialControlProviderLineage {
         self.provider_lineage
     }
+
+    #[cfg(test)]
+    pub(crate) fn fixture(
+        machine: &SpatialControlMachine,
+        transaction_id: CallbackTransactionId,
+        callback_index: FrontendCallbackIndex,
+        before_generation: u64,
+        before_digest: Option<[u8; 32]>,
+        profile_identity: EncodingProfile,
+    ) -> Self {
+        Self {
+            transaction_id,
+            callback_index,
+            before_generation,
+            before_digest: before_digest.map_or_else(|| machine.digest(), SpatialControlDigest),
+            after_digest: machine.digest(),
+            profile_identity,
+            provider_lineage: machine.provider_lineage(),
+        }
+    }
 }
 
 /// Single committed owner for the complete v5 persistent cold root.

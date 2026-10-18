@@ -9,8 +9,8 @@ use crate::{
     profile::{EmdfCarriageProfile, EncodingProfile},
     spatial::source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
     spatial::{
-        validate_component_parameter_provider, validate_f04_parameter_package_manifest,
-        validate_window_q15_provider,
+        SpatialControlJoinMetadata, validate_component_parameter_provider,
+        validate_f04_parameter_package_manifest, validate_window_q15_provider,
     },
     timeline::FrontendCallbackIndex,
     transaction::CallbackTransactionId,
@@ -106,6 +106,35 @@ fn callback_join(context: &TestContext, index: FrontendCallbackIndex) -> Spatial
     )
 }
 
+fn control_join(context: &TestContext, index: FrontendCallbackIndex) -> SpatialControlJoinMetadata {
+    control_join_with(
+        context,
+        "component-test-transaction",
+        index,
+        context.spatial_control.generation(),
+        None,
+        context.profile,
+    )
+}
+
+fn control_join_with(
+    context: &TestContext,
+    transaction_id: &str,
+    callback_index: FrontendCallbackIndex,
+    before_generation: u64,
+    before_digest: Option<[u8; 32]>,
+    profile_identity: EncodingProfile,
+) -> SpatialControlJoinMetadata {
+    SpatialControlJoinMetadata::fixture(
+        &context.spatial_control,
+        CallbackTransactionId::new(transaction_id).unwrap(),
+        callback_index,
+        before_generation,
+        before_digest,
+        profile_identity,
+    )
+}
+
 fn zero_packet(context: &TestContext) -> SpatialAudioInputPacket {
     SpatialAudioInputPacket::fixture(ComponentPacketFixture {
         programme_id: SourceFlagsProgrammeId::new("component-test-programme").unwrap(),
@@ -147,11 +176,30 @@ fn assert_stage_error(
     packet: SpatialAudioInputPacket,
     expected: ComponentStageError,
 ) {
+    assert_stage_error_with_control_join(
+        context,
+        join,
+        &control_join(context, join.callback_index()),
+        phase,
+        packet,
+        expected,
+    );
+}
+
+fn assert_stage_error_with_control_join(
+    context: &TestContext,
+    join: &SpatialAudioJoinMetadata,
+    control_join: &SpatialControlJoinMetadata,
+    phase: ComponentCallbackPhase,
+    packet: SpatialAudioInputPacket,
+    expected: ComponentStageError,
+) {
     let before_generation = context.spatial_audio.generation();
     let before_digest = context.spatial_audio.digest();
     let Err(actual) = produce_component_stage(
         &context.spatial_audio,
         join,
+        control_join,
         &context.spatial_control,
         phase,
         packet,
@@ -1032,6 +1080,7 @@ fn cold_component_stage_produces_complete_proposal_without_local_commit() {
     let proposal = produce_component_stage(
         &context.spatial_audio,
         &join,
+        &control_join(&context, FrontendCallbackIndex::new(0)),
         &context.spatial_control,
         ComponentCallbackPhase::Normal,
         zero_packet(&context),
@@ -1249,6 +1298,91 @@ fn component_stage_rejects_lineage_profile_phase_and_input_mismatches_without_pr
         ComponentCallbackPhase::Normal,
         packet,
         ComponentStageError::Input,
+    );
+}
+
+#[test]
+fn component_stage_validates_independent_spatial_control_join_metadata() {
+    let context = context();
+    let callback = FrontendCallbackIndex::new(0);
+    let audio_join = callback_join(&context, callback);
+
+    let wrong_transaction = control_join_with(
+        &context,
+        "other-transaction",
+        callback,
+        context.spatial_control.generation(),
+        None,
+        context.profile,
+    );
+    assert_stage_error_with_control_join(
+        &context,
+        &audio_join,
+        &wrong_transaction,
+        ComponentCallbackPhase::Normal,
+        zero_packet(&context),
+        ComponentStageError::Input,
+    );
+
+    let wrong_callback = control_join(&context, FrontendCallbackIndex::new(1));
+    assert_stage_error_with_control_join(
+        &context,
+        &audio_join,
+        &wrong_callback,
+        ComponentCallbackPhase::Normal,
+        zero_packet(&context),
+        ComponentStageError::CallbackOrder,
+    );
+
+    let wrong_profile = control_join_with(
+        &context,
+        "component-test-transaction",
+        callback,
+        context.spatial_control.generation(),
+        None,
+        EncodingProfile::selected_with_carriage(EmdfCarriageProfile::EtsiEmdf),
+    );
+    assert_stage_error_with_control_join(
+        &context,
+        &audio_join,
+        &wrong_profile,
+        ComponentCallbackPhase::Normal,
+        zero_packet(&context),
+        ComponentStageError::ProfileUnsupported,
+    );
+
+    let wrong_generation = control_join_with(
+        &context,
+        "component-test-transaction",
+        callback,
+        context.spatial_control.generation() + 1,
+        None,
+        context.profile,
+    );
+    assert_stage_error_with_control_join(
+        &context,
+        &audio_join,
+        &wrong_generation,
+        ComponentCallbackPhase::Normal,
+        zero_packet(&context),
+        ComponentStageError::State,
+    );
+
+    let wrong_digest = control_join_with(
+        &context,
+        "component-test-transaction",
+        callback,
+        context.spatial_control.generation(),
+        Some([0x55; 32]),
+        context.profile,
+    );
+    assert_stage_error_with_control_join(
+        &context,
+        &audio_join,
+        &wrong_digest,
+        ComponentCallbackPhase::Normal,
+        zero_packet(&context),
+        ComponentStageError::State,
     );
 }
 

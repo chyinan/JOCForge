@@ -2599,9 +2599,9 @@
     "clock_domain_file": "crates/jocforge-domain/src/timeline/index.rs",
     "file_inventory": [
       {
-        "bytes": 24637,
+        "bytes": 25296,
         "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-        "sha256": "c8a29edd9fb750381928187b17c47913f7166a6900718782f18ba9a27021d12d"
+        "sha256": "e5e1387da7f2000c8fd14deddd6b75db4f3048c4bbde69b23dcdfd09fdde988d"
       },
       {
         "bytes": 725,
