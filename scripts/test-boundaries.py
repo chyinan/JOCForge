@@ -506,6 +506,12 @@ def main():
  ('qmf-core-module-export-duplicated',lambda r:append(r/'crates/jocforge-domain/src/spatial/mod.rs','\npub mod qmf_analysis_synthesis;\n'))
  ]
  cases += [
+ ('receiver-mode1-readiness-overclaim',map_mut_render(lambda d:d['phase_one']['RECEIVER_MODE1_ROUTING'].update(implementation_readiness='READY_FOR_IMPLEMENTATION'))),
+ ('receiver-mode1-lane-route-drift',map_mut_render(lambda d:d['phase_one']['RECEIVER_MODE1_ROUTING']['lane_routing'].update(mode1_delay_fir_synthesis_lanes=[0,1,2,4,5]))),
+ ('receiver-mode1-priming-count-drift',map_mut_render(lambda d:d['phase_one']['RECEIVER_MODE1_ROUTING']['clock_contract'].update(priming='receiver_callback_count increments at g=0'))),
+ ('receiver-mode1-review-blocker-hidden',map_mut_render(lambda d:d['phase_one']['RECEIVER_MODE1_ROUTING'].update(blockers=[])))
+ ]
+ cases += [
  ('qmf-fft-status-overclaim',map_mut_render(lambda d:(d['phase_one']['QMF_FFT_PRIMITIVE'].update(status='LOCALLY_VERIFIED'),d['status'].update({'QMF_FFT_PRIMITIVE':'LOCALLY_VERIFIED'})))),
  ('qmf-fft-scope-wide',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE'].update(scope='Implement the full receiver, fitting and DSP chain'))),
  ('qmf-fft-point-count-drift',map_mut_render(lambda d:d['phase_one']['QMF_FFT_PRIMITIVE']['primitive_contract'].update(complex_point_count=128))),

@@ -71,6 +71,19 @@ def render(d):
    +'The machine-readable record below binds the exact formulas, providers, owners, clocks, vectors and exclusions.\n\n'
    +chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
   )
+ if 'RECEIVER_MODE1_ROUTING' in d['phase_one']:
+  x=d['phase_one']['RECEIVER_MODE1_ROUTING'];block=json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)
+  o['PHASE-PLAN.md']+='\n## Receiver mode=1 routing and state audit\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
+  o['RECEIVER-MODE1-MAP.md']=(
+   '# Receiver mode=1 route and state map\n\n'
+   +'由 IMPLEMENTATION-MAP.json 生成，不得手工修改。\n\n'
+   +f"Mapping status: `{x['mapping_status']}`. Implementation readiness: `{x['implementation_readiness']}`.\n\n"
+   +'All five carriers `[L,R,C,Ls,Rs]` run 24-slot analysis on receiver lanes `[0,1,2,4,5]`. Only surround lanes `[4,5]` run mode=1 delay/FIR/synthesis. L/R/C update analysis history only in this audio-QMF path; lane 3 LFE bypasses QMF.\n\n'
+   +'Frontend callback `g` remains distinct from receiver count `r`: `g<2` is Type10 priming and does not advance receiver/QMF; for `g>=2`, `r=g-2`, receiver after-generation is `r+1=g-1`, and JOC dispatch is `d=g-1`. The callback count is proposed only with the complete `spatial_audio` root.\n\n'
+   +'The route and owner fields are mapped. Implementation readiness remains blocked because the supplied model-first review statuses pin four files to hashes that differ from the current package manifest. The blocker lists the exact identities.\n\n'
+   +'## Machine-readable contract\n\n'
+   +chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
+  )
  if 'POSTWINDOW_FANOUT_FOUNDATION' in d['phase_one']:
   x=d['phase_one']['POSTWINDOW_FANOUT_FOUNDATION'];block=json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)
   o['PHASE-PLAN.md']+='\n## PostWindow fanout foundation\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'

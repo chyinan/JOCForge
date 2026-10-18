@@ -1245,6 +1245,65 @@ def check_qmf_core_mapping(root,d):
  root_state=next(item for item in d['programme_roots']if item['root_id']=='spatial_audio')
  ck(d['phase_one']['P1.3-E']['status']=='BLOCKED_ON_F04_DSP_RENDER_AND_PARENT'and d['status']['P1.3-E']=='BLOCKED_ON_F04_DSP_RENDER_AND_PARENT'and root_state['readiness']['implementation_status']=='BLOCKED_ON_F04_DSP_RENDER_PARENT','QMF_CORE does not unblock parent spatial_audio root')
 
+def check_receiver_mode1_mapping(root,d):
+ task=d['phase_one'].get('RECEIVER_MODE1_ROUTING');ck(isinstance(task,dict),'receiver mode=1 routing map exists')
+ expected_keys={'task_id','mapping_document','mapping_status','implementation_readiness','programme_root','executor_and_receipt_producer','persistent_owner','package_identity','specifications','input_contract','lane_routing','state_transition','clock_contract','same_callback_lineage','provider_bindings','vector_coverage','review_binding_mismatches','blockers','implementation_exclusions','readiness_basis','verification'}
+ ck(set(task)==expected_keys,'receiver mode=1 map has only audited contract fields')
+ ck(task.get('task_id')=='F04RB-RECEIVER-MODE1-ROUTING-STATE-MAP'and task.get('mapping_document')=='docs/implementation/RECEIVER-MODE1-MAP.md'and task.get('mapping_status')=='MAPPING_COMPLETE'and task.get('implementation_readiness')=='BLOCKED_ON_REFRESHED_REVIEW_BINDINGS'and d['status'].get('RECEIVER_MODE1_ROUTING_AUDIT')==task['implementation_readiness'],'receiver mode=1 mapping and readiness are synchronized')
+ ck(task.get('programme_root')=='spatial_audio'and task.get('executor_and_receipt_producer')=='F04C'and task.get('persistent_owner')=='spatial_audio','receiver mode=1 has the approved F04C executor and spatial_audio owner')
+ package_sha='c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a';manifest_bytes=(PKG/'MANIFEST.json').read_bytes();manifest=json.loads(manifest_bytes,object_pairs_hook=unique_object_pairs)
+ ck(task.get('package_identity')=={'manifest_sha256':package_sha}and hashlib.sha256(manifest_bytes).hexdigest()==package_sha,'receiver mode=1 map pins the current clean implementer package')
+ expected_specs=[{'file':'specs/04-qmf-receiver-whole-binding.md','bytes':13595,'sha256':'104d604cf876cc522a85b21f352bd0a09fc20c3171ddcd71da981c8076ea3a75','clauses':['F04RB.1','F04RB.2','F04RB.5','F04RB.6','F04RB.7','F04RB.8','F04RB.9']},{'file':'specs/04-qmf-analysis-and-synthesis.md','bytes':5584,'sha256':'13a2907c8e60bd81f948f33b9ad07f2d7dc0552b0b12f53224d27b80af610edf','clauses':['F04Q.1','F04Q.2','F04Q.3','F04Q.4','F04Q.5','F04Q.6']},{'file':'specs/04-receiver-state-and-routing.md','bytes':8332,'sha256':'74b9b01537eb76a37582535b84426138ee8c8ecdca3486f9f43d0504c7c26306','clauses':['F04R.1','F04R.2']},{'file':'specs/04-whole-spatial-chain-composition.md','bytes':9103,'sha256':'92325b12128023001e1f3fd4696dcec68bbd47a46acdb7886781b411a10c5d59','clauses':['F04C.3','F04C.4','F04C.5','F04C.6','F04C.7','F04C.8']},{'file':'specs/00-selected-owner-projection-and-j05.md','bytes':4504,'sha256':'9ff01aca7b6be6e89511e4d493f9fc9e661a50e2f098065f4a32c3fed777542f','clauses':['Callback split','J05 receipt','Source timing']}]
+ ck(task.get('specifications')==expected_specs,'receiver mode=1 specification and clause bindings are exact')
+ for item in expected_specs:
+  raw=(PKG/item['file']).read_bytes();entries=[x for x in manifest['files']if x.get('file')==item['file']]
+  ck(len(entries)==1 and entries[0]=={'file':item['file'],'bytes':item['bytes'],'sha256':item['sha256']}and len(raw)==item['bytes']and hashlib.sha256(raw).hexdigest()==item['sha256'],'receiver mode=1 spec identity '+item['file'])
+ route=task.get('lane_routing',{})
+ ck(route.get('six_lane_order')==['L','R','C','LFE','Ls','Rs']and route.get('carrier_order')==['L','R','C','Ls','Rs']and route.get('carrier_receiver_lanes')==[0,1,2,4,5]and route.get('analysis_lanes')==[0,1,2,4,5]and route.get('analysis_history_rows')==['L','R','C','Ls','Rs'],'receiver mode=1 carrier identities and analysis lanes are exact')
+ ck(route.get('analysis_only_receiver_audio_lanes')==[0,1,2]and route.get('mode1_delay_fir_synthesis_lanes')==[4,5]and route.get('surround_state_rows')==['Ls','Rs']and 'Lane 3' in route.get('lfe_lane_contract',''),'front/surround QMF paths are distinct')
+ ck(route.get('slot_contract')=='Each selected lane has 24 ordered 64-sample slots. Analysis produces 24x64 complex bands (24x128 interleaved F32 words). Only lane 4/5 mode=1 output replaces those scratch lanes with 1536 synthesized PCM samples.','receiver QMF slot and output shapes are exact')
+ state=task.get('state_transition',{});fields=state.get('fields',[])
+ ck(state.get('root_field')=='F04CompositionState.receiver_state: ModelState'and state.get('callback_count_field')=='F04CompositionState.receiver_callback_count: ReceiverCallbackCount'and state.get('cold_count')==0,'receiver state and callback counter are bound to the cold spatial_audio root')
+ ck([(x.get('field'),x.get('shape'),x.get('lane_order'),x.get('cold'))for x in fields]==[('ModelState.analysis_history','5x9x64 F32',['L','R','C','Ls','Rs'],'positive zero'),('ModelState.qmf_delay_history','2x10x128 F32',['Ls','Rs'],'positive zero'),('ModelState.qmf_fir_history','2x40 F32 = 2x20 complex',['Ls','Rs'],'positive zero'),('ModelState.synthesis_history','2x576 F32',['Ls','Rs'],'positive zero')],'receiver mode=1 state fields, shapes, row orders and cold values are exact')
+ clock=task.get('clock_contract',{})
+ ck(clock.get('priming')=='At g=0/1 E4 emits Priming with no Type10Packet; component and LFE stages advance, receiver/QMF does not run, and receiver_callback_count remains 0.'and clock.get('receiver_callback')=='For g>=2, r=g-2 is the zero-based ReceiverCallbackCount before this receiver call; receiver generation/count after success is r+1=g-1.'and clock.get('joc_dispatch')=='For g>=2, d=r+1=g-1. First route is g=2, r=0, receiver generation=1, d=1.','receiver, generation and dispatch clocks retain distinct domains')
+ ck('advance receiver_callback_count exactly once' in clock.get('count_transition','')and 'g=4247..4250' in clock.get('cached_drain','')and 'synthetic QMF flush' in clock.get('cached_drain',''),'receiver count, cached drain and EOF rules are explicit')
+ lineage=task.get('same_callback_lineage',{})
+ ck(all(k in lineage for k in ('component_E2','lfe_E3','type10_E4','qmf_core','future_selected_j05'))and 'packet and receipt together' in lineage.get('type10_E4','')and 'carries no g' in lineage.get('qmf_core',''),'component/LFE/Type10/QMF proposal boundary is explicit')
+ ck('F05R56 target-owner receipt' in task.get('input_contract',{}).get('target_updates',''),'receiver targets preserve the same-generation F05R56 lineage')
+ ck('selected-j05-owner-receipt.v1' in lineage.get('future_selected_j05','')and 'g, r=g-2, d=g-1' in lineage.get('future_selected_j05','')and 'Type10 shape 16x1536 F32' in lineage['future_selected_j05']and 'final-six shape 6x1536 F32' in lineage['future_selected_j05']and 'target-QMF shape 5x48x192 complex-F32' in lineage['future_selected_j05']and 'carrier-QMF shape 5x48x64 complex-F32' in lineage['future_selected_j05']and 'creates no such receipt' in lineage.get('future_selected_j05',''),'future selected-J05 receipt identity and shapes are specified without being produced here')
+ expected_providers=[{'file':'parameters/qmf-receiver-functional-v1.json','bytes':20325,'sha256':'30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c','selected_fields':['qwin_synthesis_640','qwin_analysis_640 is the reverse of qwin_synthesis_640','band0_real_mode1_21','band0_imag_mode1_21']},{'file':'parameters/qmf-mathematical-fft-v1.json','bytes':6983,'sha256':'e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431','selected_fields':['63 fixed FFT root pairs','rotation_u32[128]']},{'file':'parameters/window-q15.json','bytes':2704,'sha256':'a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130','selected_fields':['receiver_blend32[32] for upstream F04R.5; not consumed by QMF_CORE']}]
+ ck(task.get('provider_bindings')==expected_providers,'receiver QMF provider identities and selected fields are exact')
+ for item in expected_providers:
+  raw=(PKG/item['file']).read_bytes();entries=[x for x in manifest['files']if x.get('file')==item['file']]
+  ck(len(entries)==1 and entries[0].get('bytes')==item['bytes']and entries[0].get('sha256')==item['sha256']and len(raw)==item['bytes']and hashlib.sha256(raw).hexdigest()==item['sha256'],'receiver QMF provider identity '+item['file'])
+ vectors=task.get('vector_coverage',{})
+ expected_vector_hashes={'qmf_receiver_whole_binding':('test-vectors/QMF-RECEIVER-WHOLE-BINDING-VERIFICATION.json','1d809ed24c805a182e9f2ba668562f1f3c8028e4dfc0ce7cd039e1255e4cda07'),'whole_spatial_chain':('test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json','ffb1dea3b1e69383312da4059b9d8ddabb4366ed8fc22e7537f750ba041f2d63')}
+ for key,(path,digest) in expected_vector_hashes.items():
+  item=vectors.get(key,{});raw=(PKG/path).read_bytes();entries=[x for x in manifest['files']if x.get('file')==path]
+  ck(item.get('file')==path and item.get('sha256')==digest and len(entries)==1 and entries[0].get('sha256')==digest and hashlib.sha256(raw).hexdigest()==digest,'receiver mode=1 vector identity '+path)
+ ck(vectors.get('qmf_receiver_whole_binding',{}).get('cases')==5 and vectors.get('whole_spatial_chain',{}).get('cases')==6 and vectors.get('direct_qmf_vectors',{}).get('analysis_manifest_sha256')=='79830470e3101a10d96852f44c855252c7b78533e0c2b32a73c86d93f74542c6'and vectors.get('direct_qmf_vectors',{}).get('synthesis_manifest_sha256')=='bff23be87f4b7ceb27c145ab6106dd1b786aa2e6dbc35d1e4892da73743e9f4a','receiver mode=1 cold/warm/cached vector coverage is pinned')
+ status_files=['test-vectors/QMF-RECEIVER-WHOLE-BINDING-LOCAL-REVIEW-STATUS.json','test-vectors/F04-WHOLE-SPATIAL-CONSUMER-LOCAL-REVIEW-STATUS.json'];mismatches=[]
+ for status_file in status_files:
+  raw=(PKG/status_file).read_bytes();status=json.loads(raw,object_pairs_hook=unique_object_pairs);entries=[x for x in manifest['files']if x.get('file')==status_file]
+  ck(len(entries)==1 and len(raw)==entries[0].get('bytes')and hashlib.sha256(raw).hexdigest()==entries[0].get('sha256'),'receiver mode=1 review status identity '+status_file)
+  for binding in status.get('reviewed_freeze_bindings',[]):
+   current=next((entry for entry in manifest['files']if entry.get('file')==binding.get('file')),None)
+   if current and current.get('sha256')!=binding.get('sha256'):
+    mismatches.append({'review_status':status_file,'file':binding['file'],'reviewed_sha256':binding['sha256'],'current_package_sha256':current['sha256']})
+ ck(task.get('review_binding_mismatches')==mismatches and len(mismatches)==4,'receiver readiness records every stale frozen-review identity')
+ blockers=task.get('blockers',[])
+ ck(len(blockers)==1 and blockers[0].get('id')=='refresh-current-review-bindings'and blockers[0].get('status')=='OPEN'and 'editing hash strings alone' in blockers[0].get('required_action',''),'receiver readiness has the minimum review-refresh blocker')
+ ck(task.get('implementation_exclusions')==['descriptor and threshold selection','mode=0 fitting and QmfWindowState fitting histories','post-QMF receiver temporal/descriptor/final-six output tail','J05/F05JL implementation','parent CallbackTransaction and spatial_audio commit','real ADM/listening/product acceptance'],'receiver mode=1 exclusions are exact')
+ verification=task.get('verification',{})
+ ck(verification.get('targeted_boundary_mutations_rejected')==4 and verification.get('full_repository_boundary_mutations_rejected')==776 and verification.get('whole_receiver_qmf_execution')=='NOT_RUN'and verification.get('whole_spatial_chain_implementation_execution')=='NOT_RUN','receiver audit verification does not claim implementation execution')
+ qmf_code=(root/'crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs').read_text(encoding='utf-8');state_code=(root/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs').read_text(encoding='utf-8');type10_code=(root/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs').read_text(encoding='utf-8')
+ packet=re.search(r'struct Type10Packet\s*\{(?P<body>[^}]+)\}',type10_code)
+ ck(packet and 'callback_index: FrontendCallbackIndex' in packet.group('body')and 'payload: Arc<[FiniteF32]>' in packet.group('body')and 'Type10AssemblyReceipt' not in packet.group('body'),'current Type10 packet does not carry the assembly receipt internally')
+ ck('Ready {\n        packet: Type10Packet,\n        receipt: Type10AssemblyReceipt,' in type10_code and 'receiver_callback_count: ReceiverCallbackCount,' in state_code and 'receiver_callback_count: ReceiverCallbackCount::new(0)' in state_code,'current code exposes the paired Type10 result and cold receiver count without routing it into QMF')
+ ck(not any(token in qmf_code for token in ('Type10Packet','FrontendCallbackIndex','ReceiverCallbackCount','selected-j05-owner-receipt')),'QMF_CORE remains lane-neutral and has no receiver lineage integration')
+ ck(d['status'].get('P1.3-E')=='BLOCKED_ON_F04_DSP_RENDER_AND_PARENT'and d['phase_one']['P1.3-E']['status']=='BLOCKED_ON_F04_DSP_RENDER_AND_PARENT'and d['phase_one']['QMF_CORE']['status']=='QMF_CORE_IMPL_WITH_DIRECT_VECTORS__WHOLE_RECEIVER_NOT_RUN','receiver mode=1 audit does not promote F04 or QMF whole-receiver readiness')
+
 def check_type10_assembly_mapping(root,d):
  task=d['phase_one'].get('P1.3-E4');ck(isinstance(task,dict),'P1.3-E4 Type10 assembly map exists')
  final_status='LOCALLY_VERIFIED_TYPE10_ASSEMBLY__RECEIVER_PARENT_DEFERRED'
@@ -1587,6 +1646,7 @@ def run(root=ROOT):
  check_postwindow_fanout(root,d)
  check_direct_lfe_mapping(root,d)
  check_type10_assembly_mapping(root,d)
+ check_receiver_mode1_mapping(root,d)
  check_f03_target_provider_implementation(root,d)
  return {'verified_scopes':verified_scopes,'inventoried_ids':len(es),'deferred_roots':sum(r['materialization_status']=='INVENTORIED_PENDING_P1.3_MATERIALIZATION'for r in d['programme_roots'])}
 run_checks=lambda root=ROOT,package=PKG:run(root)
