@@ -30,6 +30,9 @@ def code_mut_render(mutate):
 def append(path,text):path.write_text(path.read_text(encoding='utf-8')+text,encoding='utf-8')
 def replace_once(path,old,new):
  text=path.read_text(encoding='utf-8')
+ if old not in text and path.name=='mod.rs' and path.parent.name=='spatial' and old=='pub mod source_flags;\npub mod spatial_control;':
+  old='pub mod source_flags;\n#[allow(dead_code)]\npub(crate) mod spatial_audio;\npub mod spatial_control;'
+  new='#[macro_use]\npub mod spatial_control;\npub mod source_flags;\n#[allow(dead_code)]\npub(crate) mod spatial_audio;'
  if old not in text:raise RuntimeError('mutation source not found: '+str(path))
  path.write_text(text.replace(old,new,1),encoding='utf-8')
 def inject_source_flags_json_macro(r):
@@ -105,7 +108,7 @@ def main():
  ('p13d-v5-profile-vector-identity-drift',map_mut_render(lambda d:d['phase_one']['P1.3-D1'].setdefault('profile_only_mismatch_vector',{}).update(sha256='00'*32))),
  ('p13d-v5-flags-vector-marked-pass',map_mut_render(lambda d:d['phase_one']['P1.3-D1']['input_only_vectors']['deferred_cases'][0].update(status='PASS'))),
  ('p13d-v5-source-producer-status-regressed',map_mut_render(lambda d:d['phase_one']['SOURCE_FLAGS_PRODUCER'].update(status='DEFERRED'))),
- ('p13d-v5-current-features-blocker-removed',map_mut_render(lambda d:d['phase_one']['P1.3-D']['packet_producer_blockers'].remove('CurrentFeaturesPacket producer'))),
+ ('p13d-current-features-producer-still-blocked',map_mut_render(lambda d:d['phase_one']['P1.3-D']['packet_producer_blockers'].append('CurrentFeaturesPacket producer'))),
  ('p13d-v5-gap-record-contradiction',lambda r:append(r/'docs/implementation/SPATIAL-CONTROL-STAGING-SPEC-GAP.md','\nThe SourceFlagsPacket producer is fully specified and needs no further contract.\n')),
  ('p13d-v5-amendment-contradiction',lambda r:append(r/'docs/implementation/SPATIAL-CONTROL-STATE-V5-AMENDMENT.md','\nContradiction: serialize profile_dimensions, including active_target_count_n, as persistent state.\n'))
  ]
@@ -114,12 +117,12 @@ def main():
   ('p13d1-packet-raw-array-constructor',lambda r:append(r/spatial_control_source,'\nimpl SourceFlagsPacket { pub fn from_raw(flags: [[u8; 2]; 48]) -> Self { todo!() } }\n')),
   ('p13d1-packet-default',lambda r:append(r/spatial_control_source,'\nimpl Default for CurrentFeaturesPacket { fn default() -> Self { todo!() } }\n')),
   ('p13d1-packet-clone',lambda r:append(r/spatial_control_source,'\nimpl Clone for SourceFlagsPacket { fn clone(&self) -> Self { todo!() } }\n')),
-  ('p13d1-current-features-raw-array-constructor',lambda r:append(r/spatial_control_source,'\nimpl CurrentFeaturesPacket { pub fn from_raw(features: [[u32; 48]; 24]) -> Self { todo!() } }\n')),
-  ('p13d1-current-features-trait-constructor',lambda r:append(r/spatial_control_source,'\nimpl From<[[u32; 48]; 24]> for CurrentFeaturesPacket { fn from(_: [[u32; 48]; 24]) -> Self { todo!() } }\n')),
+  ('p13d1-current-features-raw-array-constructor',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','#[cfg(test)]','impl CurrentFeaturesPacket { pub fn from_raw(features: [[u32; 48]; 24]) -> Self { todo!() } }\n#[cfg(test)]')),
+  ('p13d1-current-features-trait-constructor',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','#[cfg(test)]','impl From<[[u32; 48]; 24]> for CurrentFeaturesPacket { fn from(_: [[u32; 48]; 24]) -> Self { todo!() } }\n#[cfg(test)]')),
   ('p13d1-public-proposal-factory',lambda r:append(r/spatial_control_source,'\npub fn forge_after_proposal() -> SpatialControlAfterProposal { todo!() }\n')),
   ('p13d1-test-only-proposal-factory',lambda r:append(r/spatial_control_source,'\n#[cfg(test)] fn test_only_proposal() -> SpatialControlAfterProposal { todo!() }\n')),
   ('p13d1-test-only-prepared-factory',lambda r:append(r/spatial_control_source,'\n#[cfg(test)] impl SpatialControlPrepared { fn test_only() -> Self { todo!() } }\n')),
-  ('p13d1-current-features-derived-clone',lambda r:replace_once(r/spatial_control_source,'#[allow(dead_code)]\n#[must_use]\npub struct CurrentFeaturesPacket {','#[allow(dead_code)]\n#[must_use]\n#[derive(Clone)]\npub struct CurrentFeaturesPacket {')),
+  ('p13d1-current-features-derived-clone',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','#[must_use]\npub struct CurrentFeaturesPacket {','#[must_use]\n#[derive(Clone)]\npub struct CurrentFeaturesPacket {')),
   ('p13d1-staged-derived-clone',lambda r:replace_once(r/spatial_control_source,'#[allow(dead_code)]\n#[must_use]\npub struct SpatialControlStaged {','#[allow(dead_code)]\n#[must_use]\n#[derive(Clone)]\npub struct SpatialControlStaged {')),
   ('p13d1-packet-lineage-forge',lambda r:append(r/spatial_control_source,'\nimpl SourceFlagsPacket { pub fn from_lineage(id: String) -> Self { todo!() } }\n')),
   ('p13d1-machine-clone',lambda r:append(r/spatial_control_source,'\nimpl Clone for SpatialControlMachine { fn clone(&self) -> Self { todo!() } }\n')),
@@ -216,6 +219,42 @@ def main():
  ('p14c-libm-route-substitution',lambda r:(r/'crates/jocforge-domain/src/frontend/current_features_provider.rs').write_text((r/'crates/jocforge-domain/src/frontend/current_features_provider.rs').read_text(encoding='utf-8').replace('#[cfg(test)]','fn regenerated_root() -> f64 { f64::cos(0.0) }\n#[cfg(test)]',1),encoding='utf-8')),
  ('p14c-serde-optional-feature-drift',lambda r:(r/'crates/jocforge-domain/Cargo.toml').write_text((r/'crates/jocforge-domain/Cargo.toml').read_text(encoding='utf-8').replace('features = ["std"]','features = ["std", "preserve_order"]'),encoding='utf-8')),
  ('p14c-current-features-algorithm-rust-early',lambda r:(r/'crates/jocforge-domain/src/spatial/current_features.rs').write_text('// pattern: Functional Core\npub fn produce_current_features() {}\n',encoding='utf-8')),
+ ]
+ cases += [
+ ('currentfeatures-integration-manifest-sha-drift',map_mut_render(lambda d:d['phase_one']['CURRENT_FEATURES_PRODUCER']['integration_contract'].update(manifest_sha256='00'*32))),
+ ('currentfeatures-post-window-boundary-drift',map_mut_render(lambda d:d['phase_one']['CURRENT_FEATURES_PRODUCER']['integration_contract']['post_window_audio_packet'].update(boundary='F04C_RECEIVER_6X1536'))),
+ ('currentfeatures-render-not-deferred',map_mut_render(lambda d:d['phase_one']['CURRENT_FEATURES_PRODUCER']['integration_contract']['deferred'].remove('post-window render producer'))),
+ ('currentfeatures-public-raw-constructor',map_mut_render(lambda d:d['phase_one']['CURRENT_FEATURES_PRODUCER']['integration_contract']['post_window_audio_packet'].update(public_raw_constructor=True))),
+ ('currentfeatures-feature-subdigest-invented',map_mut_render(lambda d:d['phase_one']['CURRENT_FEATURES_PRODUCER']['integration_contract'].update(before_feature_identity=['feature-only generation','feature-substate digest']))),
+ ('currentfeatures-sourceflags-public-receipt',map_mut_render(lambda d:d['phase_one']['CURRENT_FEATURES_PRODUCER']['integration_contract'].update(source_flags='new public JSON receipt'))),
+ ('currentfeatures-parent-commit-enabled',map_mut_render(lambda d:d['phase_one']['CURRENT_FEATURES_PRODUCER']['integration_contract']['output_capability'].update(local_commit_abort_fatal_or_persistent_packet=True))),
+ ('currentfeatures-lineage-field-removed',map_mut_render(lambda d:d['phase_one']['CURRENT_FEATURES_PRODUCER']['integration_contract']['post_window_audio_packet']['binding'].remove('render proposal/receipt identity'))),
+ ('currentfeatures-vector-fixture-identity-drift',map_mut_render(lambda d:d['phase_one']['CURRENT_FEATURES_PRODUCER']['implementation'].update(literal_vector_fixture_sha256='00'*32))),
+ ('currentfeatures-route-drift',map_mut_render(lambda d:d['phase_one']['CURRENT_FEATURES_PRODUCER'].update(selected_route='OLD_SIMD_FFT4096'))),
+ ('currentfeatures-bit-reversal-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','let reversed = bit_reverse_12(index);','let reversed = index;')),
+ ('currentfeatures-stage-count-shortened',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','for stage_index in 0..12 {','for stage_index in 0..11 {')),
+ ('currentfeatures-roots-not-from-provider',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','let roots = stage.roots_u32();','let roots = &[];')),
+ ('currentfeatures-fma-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','fn zero() -> FiniteF32 {','fn rejected_fma(left: f32, right: f32, addend: f32) { let _ = left.mul_add(right, addend); }\nfn zero() -> FiniteF32 {')),
+ ('currentfeatures-window-applied-twice',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','fn zero() -> FiniteF32 {','fn apply_window_again(samples: &[f32]) { let _ = samples[0] * 1.0; }\nfn zero() -> FiniteF32 {')),
+ ('currentfeatures-nyquist-included',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','for frequency_bin in 0..2048 {','for frequency_bin in 0..=2048 {')),
+ ('currentfeatures-band-order-reversed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','processor.window_counts().iter().copied().enumerate()','processor.window_counts().iter().copied().enumerate().rev()')),
+ ('currentfeatures-smoothing-alpha-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','let alpha = finite_literal(0.0001);','let alpha = finite_literal(0.001);')),
+ ('currentfeatures-backward-uses-observed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','grouped[band_index],\n        )\n        .map_err(nonfinite)?;\n    }\n    Ok(observed)','observed[band_index],\n        )\n        .map_err(nonfinite)?;\n    }\n    Ok(observed)')),
+ ('currentfeatures-reset-priority-reversed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','if selection_suppressed == 1 {','if processing_inactive == 1 {')),
+ ('currentfeatures-threshold-inclusive',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','current_sum.value() > before_threshold.value()','current_sum.value() >= before_threshold.value()')),
+ ('currentfeatures-tie-selects-decayed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','observed[band].value() >= decayed.value()','observed[band].value() > decayed.value()')),
+ ('currentfeatures-packet-transpose-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','features[band][source] = after_vector[source][band];','features[source][band] = after_vector[source][band];')),
+ ('currentfeatures-sourceflags-lineage-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','validate_parent_binding(&parent)','validate_lineage(&parent)')),
+ ('currentfeatures-source-count-check-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','validate_source_count(source_flags.payload().len())?;','let _ = source_flags.payload();')),
+ ('currentfeatures-source-count-vector-bypasses-producer',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features/tests.rs','let result = produce_current_features(','let _ = validate_source_count(47);\nlet result = produce_current_features(')),
+ ('currentfeatures-local-commit-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','fn zero() -> FiniteF32 {','fn commit_current_features(machine: &mut SpatialControlMachine) { machine.commit(); }\nfn zero() -> FiniteF32 {')),
+ ('currentfeatures-public-raw-constructor-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','fn zero() -> FiniteF32 {','pub fn from_raw(_: [[u32; 48]; 24]) {}\nfn zero() -> FiniteF32 {')),
+ ('currentfeatures-packet-clone-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','pub struct CurrentFeaturesPacket {','#[derive(Clone)]\npub struct CurrentFeaturesPacket {')),
+ ('currentfeatures-render-raw-constructor-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio.rs','#[cfg(test)]\npub(in crate::spatial) mod tests;','pub fn from_raw(_: Vec<Vec<u32>>) {}\n#[cfg(test)]\npub(in crate::spatial) mod tests;')),
+ ('currentfeatures-private-render-constructor-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio.rs','#[cfg(test)]\npub(in crate::spatial) mod tests;','impl PostWindowAudioPacket { fn from_render_producer() -> Self { Self { } } }\n#[cfg(test)]\npub(in crate::spatial) mod tests;')),
+ ('currentfeatures-explicit-render-constructor-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio.rs','#[cfg(test)]\npub(in crate::spatial) mod tests;','fn from_render_producer() -> PostWindowAudioPacket { PostWindowAudioPacket { programme_id: 0 } }\n#[cfg(test)]\npub(in crate::spatial) mod tests;')),
+ ('currentfeatures-shorthand-render-constructor-added',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio.rs','#[cfg(test)]\npub(in crate::spatial) mod tests;','fn from_render_producer() { let _ = PostWindowAudioPacket { programme_id }; }\n#[cfg(test)]\npub(in crate::spatial) mod tests;')),
+ ('currentfeatures-render-packet-literal-in-consumer',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/current_features.rs','fn zero() -> FiniteF32 {','fn forge_render_packet() { let _packet = PostWindowAudioPacket { programme_id: }; }\nfn zero() -> FiniteF32 {')),
  ]
  cases += [
  ('f03b-provider-path-drift',map_mut(lambda d:d['phase_one']['P1.4-B']['provider_identity'].update(path='parameters/other.json'))),

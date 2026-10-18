@@ -974,5 +974,21 @@ fn hex_encode(bytes: &[u8]) -> String {
     output
 }
 
+/// Isolated consumer-vector fixture; not a production packet constructor.
+#[cfg(test)]
+pub(super) fn current_features_test_packet(
+    payload: [[u8; 2]; SOURCE_COUNT],
+    parent: SourceFlagsParentLineage,
+) -> SourceFlagsPacket {
+    let lineage = Arc::new(SourceFlagsLineage {
+        parent: Arc::new(parent),
+        current_pcm_receipt: SourceFlagsDigest([0; 32]),
+        controls_receipt: SourceFlagsDigest([0; 32]),
+        route_receipt: SourceFlagsDigest([0; 32]),
+        writer_receipt: SourceFlagsDigest([0; 32]),
+    });
+    SourceFlagsPacket::from_producer(payload, lineage)
+}
+
 #[cfg(test)]
 mod source_flags_tests;

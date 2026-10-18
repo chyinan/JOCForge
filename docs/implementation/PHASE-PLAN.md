@@ -1285,7 +1285,7 @@
         "payload": "features F32[24][48]",
         "persistent": false,
         "presence_tag": false,
-        "producer_status": "READY_FOR_IMPLEMENTATION_NOT_STARTED",
+        "producer_status": "LOCALLY_VERIFIED_MATH_AND_CAPABILITY__RENDER_AND_PARENT_DEFERRED",
         "root_canonical_bytes": 0
       },
       "SourceFlagsPacket": {
@@ -1614,12 +1614,11 @@
   },
   "task": {
     "blocked_on": [
-      "CurrentFeaturesPacket producer",
-      "spatial_audio root",
+      "spatial_audio render/audio receipt producer and integration",
       "enclosing CallbackTransaction coordinator"
     ],
     "blockers": [
-      "CurrentFeaturesPacket producer and parent CallbackTransaction integration remain deferred; this keeps full P1.3-D blocked after SourceFlagsPacket was independently verified",
+      "CurrentFeatures math and capability production is locally verified; render/post-window audio production, spatial-audio root integration, and parent CallbackTransaction integration remain deferred",
       "P1.3-C callback implementation waits for all 12 owner roots, including spatial_audio and g>=2 source roots"
     ],
     "callback_local_scratch_not_serialized": [
@@ -1667,13 +1666,11 @@
       "F13 metadata_queues",
       "F15 source_publication"
     ],
-    "implementation_rust": "SourceFlagsPacket producer is locally verified; full P1.3-D remains blocked on CurrentFeaturesPacket, spatial_audio and parent CallbackTransaction integration; D1 status is unchanged",
+    "implementation_rust": "SourceFlagsPacket and CurrentFeatures math/capability producers are locally verified; full P1.3-D remains blocked on spatial_audio render integration and parent CallbackTransaction integration; D1 status is unchanged",
     "local_commit": "FORBIDDEN",
     "mapping_status": "MAPPING_COMPLETE_BLOCKED",
     "owner_receipt_order_and_wrapper": "P1.3-C approves 12-owner ASCII order and schema v2 with 13 fields; wrapper has no digest/HMAC; implementation waits for root availability",
-    "packet_producer_blockers": [
-      "CurrentFeaturesPacket producer"
-    ],
+    "packet_producer_blockers": [],
     "prerequisites": [
       {
         "status": "CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS",
@@ -1757,7 +1754,7 @@
       "supplement_manifest_sha256": "c881f9b11c169d29e532a18de38fe1f31c600b0167e18f3c0e7c3bee91945f38",
       "uses_selected_overlap_projection_as_root": false
     },
-    "status": "BLOCKED_ON_CURRENT_FEATURES_AND_PARENT_INTEGRATION",
+    "status": "BLOCKED_ON_SPATIAL_AUDIO_RENDER_AND_PARENT_INTEGRATION",
     "superseding_amendment": {
       "authority": "approved supplement selected-adm-installed48-state.v5-wash-amendment; frozen implementer package remains unchanged",
       "document_bytes": 7315,
@@ -1796,12 +1793,11 @@
   "programme_root_reference": "programme_roots[spatial_control]",
   "task": {
     "blocked_on": [
-      "CurrentFeaturesPacket producer",
-      "spatial_audio root",
+      "spatial_audio render/audio receipt producer and integration",
       "enclosing CallbackTransaction coordinator"
     ],
     "blockers": [
-      "CurrentFeaturesPacket producer and parent CallbackTransaction integration remain deferred; this keeps full P1.3-D blocked after SourceFlagsPacket was independently verified",
+      "CurrentFeatures math and capability production is locally verified; render/post-window audio production, spatial-audio root integration, and parent CallbackTransaction integration remain deferred",
       "P1.3-C callback implementation waits for all 12 owner roots, including spatial_audio and g>=2 source roots"
     ],
     "callback_local_scratch_not_serialized": [
@@ -1849,13 +1845,11 @@
       "F13 metadata_queues",
       "F15 source_publication"
     ],
-    "implementation_rust": "SourceFlagsPacket producer is locally verified; full P1.3-D remains blocked on CurrentFeaturesPacket, spatial_audio and parent CallbackTransaction integration; D1 status is unchanged",
+    "implementation_rust": "SourceFlagsPacket and CurrentFeatures math/capability producers are locally verified; full P1.3-D remains blocked on spatial_audio render integration and parent CallbackTransaction integration; D1 status is unchanged",
     "local_commit": "FORBIDDEN",
     "mapping_status": "MAPPING_COMPLETE_BLOCKED",
     "owner_receipt_order_and_wrapper": "P1.3-C approves 12-owner ASCII order and schema v2 with 13 fields; wrapper has no digest/HMAC; implementation waits for root availability",
-    "packet_producer_blockers": [
-      "CurrentFeaturesPacket producer"
-    ],
+    "packet_producer_blockers": [],
     "prerequisites": [
       {
         "status": "CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS",
@@ -1939,7 +1933,7 @@
       "supplement_manifest_sha256": "c881f9b11c169d29e532a18de38fe1f31c600b0167e18f3c0e7c3bee91945f38",
       "uses_selected_overlap_projection_as_root": false
     },
-    "status": "BLOCKED_ON_CURRENT_FEATURES_AND_PARENT_INTEGRATION",
+    "status": "BLOCKED_ON_SPATIAL_AUDIO_RENDER_AND_PARENT_INTEGRATION",
     "superseding_amendment": {
       "authority": "approved supplement selected-adm-installed48-state.v5-wash-amendment; frozen implementer package remains unchanged",
       "document_bytes": 7315,
@@ -2021,9 +2015,9 @@
     "clock_domain_file": "crates/jocforge-domain/src/timeline/index.rs",
     "file_inventory": [
       {
-        "bytes": 24320,
+        "bytes": 24637,
         "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-        "sha256": "7157a592e76ccb766c0f957144821ffbf269e4a7589db7b4579b5f5775575e93"
+        "sha256": "c8a29edd9fb750381928187b17c47913f7166a6900718782f18ba9a27021d12d"
       },
       {
         "bytes": 725,
@@ -2036,9 +2030,9 @@
         "sha256": "a4f1c06f0472aa7959016e14059054dbc10e63756ded25b6c11bab892a7e85d6"
       },
       {
-        "bytes": 516,
+        "bytes": 660,
         "path": "crates/jocforge-domain/src/spatial/mod.rs",
-        "sha256": "d8fa30db1d28480240f631cae0f62b1fd7423b039068c034f8cb18a63dffeea1"
+        "sha256": "6f43a501e93f4c6093079c02179eca6e63cd9118ed70052c0610b5cb54ae0b3a"
       },
       {
         "bytes": 9428,
@@ -2053,7 +2047,7 @@
     "shared_transaction_id_file": "crates/jocforge-domain/src/transaction/mod.rs",
     "status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
     "test_file": "crates/jocforge-domain/tests/spatial_control_foundation.rs",
-    "verified_scope": "complete v5 persistent cold root, full canonical bytes/digest, read-only machine, provider/profile lineage guards, opaque packet capability types, noncold prepare deferred"
+    "verified_scope": "complete v5 persistent cold root, full canonical bytes/digest, read-only machine, provider/profile lineage guards, opaque packet capability type reference, CurrentFeatures packet ownership in the separate producer slice, noncold prepare deferred"
   },
   "implementation_status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
   "input_only_vectors": {
@@ -2166,9 +2160,9 @@
   "implementation": {
     "file_inventory": [
       {
-        "bytes": 32566,
+        "bytes": 33161,
         "path": "crates/jocforge-domain/src/spatial/source_flags.rs",
-        "sha256": "deb4211c572889cd26aabda22a24a27ceec6a974b740db9a8cea1aef1289b2e7"
+        "sha256": "8b3318a4ebdeae5a17a4624aaf5e587b42d6737ecdf79d21b8f53f4a95497d63"
       },
       {
         "bytes": 29657,
@@ -2211,7 +2205,7 @@
     "width_limit_f32_bits": "0x3e4ccccd"
   },
   "output_ownership": {
-    "CurrentFeatures_or_FFT_implemented": false,
+    "CurrentFeatures_or_FFT_implemented": true,
     "SourceFlagsPacket": "opaque linear non-Clone/non-Copy capability; crate-private producer constructor and read-only payload/lineage access; no Default or cold packet",
     "next_stage_order": "render/writer receipts -> flags -> CurrentFeatures -> selector/outer",
     "parent_abort": "discard packet and proposal without committed history changes",
@@ -2814,22 +2808,96 @@
 ```json
 {
   "current_features_producer": {
-    "algorithm_rust": "FORBIDDEN_IN_P1.4-C_PROVIDER_VALIDATOR_SLICE",
+    "algorithm_rust": "LOCALLY_VERIFIED_IN_CURRENT_FEATURES_PRODUCER_SLICE",
     "branches": {
       "00": "READ_AUDIO_INPUT",
-      "01": "RESET; priority case in consumer vector only, not emitted by SourceFlags producer",
-      "01_product_boundary_rule": "UNRESOLVED_COORDINATOR_CONTRACT_DO_NOT_GUESS",
+      "01": "RESET; consumer priority branch tested, not emitted by SourceFlags producer",
+      "01_product_boundary_rule": "accepted as reset-priority consumer input; no SourceFlags producer output claim",
       "10": "CARRY",
-      "audio_read": "only READ_AUDIO_INPUT reads all 3072 samples; RESET/CARRY do not read audio",
+      "audio_read": "only READ_AUDIO_INPUT reads sample payloads or calls FFT; RESET/CARRY do not read audio",
       "flag_pair_order": [
         "processing_inactive",
         "selection_suppressed"
       ]
     },
-    "consumer_boundary_open_questions": [
-      "The input-only math vectors include flag pair 01 for reset-priority coverage, but SourceFlags emits only 00/10/11; product policy for rejecting an unreachable forged 01 packet is not assigned by the math provider contract."
-    ],
-    "implementation_status": "NOT_STARTED",
+    "consumer_boundary_open_questions": [],
+    "implementation": {
+      "literal_vector_fixture": "crates/jocforge-domain/tests/fixtures/current_features/INPUT-ONLY-LITERAL-VECTORS.json",
+      "literal_vector_fixture_bytes": 315386,
+      "literal_vector_fixture_sha256": "1aaf1f5296569960e188b8d74fc8097b5bfb6099b5a1079366e595011c87bdc3",
+      "mapping_document": "docs/implementation/CURRENT-FEATURES-PRODUCER-MAP.md",
+      "module_file": "crates/jocforge-domain/src/spatial/current_features.rs",
+      "parent_composer_or_commit_implemented": false,
+      "post_window_packet_contract_file": "crates/jocforge-domain/src/spatial/spatial_audio.rs",
+      "post_window_packet_test_file": "crates/jocforge-domain/src/spatial/spatial_audio/tests.rs",
+      "render_producer_implemented": false,
+      "unit_test_file": "crates/jocforge-domain/src/spatial/current_features/tests.rs"
+    },
+    "implementation_status": "LOCALLY_VERIFIED_MATH_AND_CAPABILITY__RENDER_AND_PARENT_DEFERRED",
+    "integration_contract": {
+      "api_schema_bytes": 786,
+      "api_schema_file": "API-SCHEMA.json",
+      "api_schema_sha256": "280ebef7034797e7efa84e2e3514cbde05ffd973ac644c5f13e804d057b778c6",
+      "authority": "wash-side approved isolated product API; not native receipt compatibility",
+      "before_feature_identity": [
+        "SpatialControlMachine.generation",
+        "SHA-256 of complete committed v5 root canonical bytes"
+      ],
+      "contract_bytes": 3919,
+      "contract_file": "CONTRACT.md",
+      "contract_sha256": "3cf97a638fbe02dc36edf8a29534493e2b7de8947b858f749eefdef636cae0a5",
+      "deferred": [
+        "post-window render producer",
+        "complete spatial-control after-state composer",
+        "parent transaction executor",
+        "selector/outer",
+        "real ADM replay",
+        "codec/EC3",
+        "perceptual acceptance"
+      ],
+      "error_outcomes": {
+        "error_names_are_native_codes": false,
+        "identity_lineage_shape_profile_provider_or_preflight_mismatch": "reject before numeric work; no capability; committed state unchanged",
+        "numeric_nonfinite_or_overflow": "no output or partial proposal; parent applies existing GTC fatal/retirement policy",
+        "parent_failure_after_production": "discard linear capability; committed state unchanged"
+      },
+      "identity": "current-features-integration-contract.v1",
+      "manifest_bytes": 727,
+      "manifest_file": "MANIFEST.json",
+      "manifest_sha256": "e240701f0128877baefb305152f10553de9288dc05298452d3605011e63603ad",
+      "output_capability": {
+        "contains": [
+          "FeatureStateProposal source vector F32[48][24]",
+          "FeatureStateProposal source scalar F32[48]",
+          "opaque CurrentFeaturesPacket F32[24][48] bitwise transpose",
+          "immutable copied lineage and exact math-provider receipts",
+          "existing SourceFlagsPacket for future spatial composer"
+        ],
+        "future_consumer": "spatial-control transition composer only",
+        "local_commit_abort_fatal_or_persistent_packet": false,
+        "type": "linear CurrentFeaturesProduced"
+      },
+      "post_window_audio_packet": {
+        "binding": [
+          "programme",
+          "attempt",
+          "CallbackTransactionId",
+          "FrontendCallbackIndex",
+          "selected EncodingProfile",
+          "validated F01E/F03 provider lineage",
+          "spatial-control before generation and complete-root digest",
+          "render proposal/receipt identity",
+          "SHA-256 of exactly payload F32 U32LE bytes"
+        ],
+        "boundary": "INSTALLED48_POST_WINDOW_48X3072",
+        "construction_authority": "future installed48/render producer only",
+        "current_features_test_fixture_constructor": "module-private cfg(test) only",
+        "payload": "finite F32[48][3072] source-major",
+        "public_raw_constructor": false,
+        "type": "opaque linear non-Clone PostWindowAudioPacket"
+      },
+      "source_flags_validation": "existing opaque SourceFlagsPacket; crate-private read-only payload/lineage validation against parent, render packet, selected profile, provider lineage, and spatial-control before identity; no new public receipt or digest"
+    },
     "lineage_binding": [
       "programme",
       "attempt",
@@ -2844,11 +2912,13 @@
     ],
     "outputs": {
       "CurrentFeaturesPacket": "opaque F32[24][48] band-major; bitwise transpose of after vector",
-      "after_source_scalar": "F32[48] proposal",
-      "after_source_vector": "F32[48][24] source-major proposal",
+      "FeatureStateProposal": "F32[48][24] source-major plus F32[48] scalar",
+      "lineage": "same validated parent identity plus exact math-provider receipts",
       "local_commit": false,
       "parent_commit_required": true,
-      "persistent_packet": false
+      "persistent_packet": false,
+      "producer": "linear CurrentFeaturesProduced",
+      "source_flags_packet_preserved": true
     },
     "parent_transaction_or_product_execution": "NOT_RUN",
     "raw_provider_evidence_consumption": "FORBIDDEN",
@@ -2868,8 +2938,32 @@
       "10",
       "11"
     ],
-    "status": "READY_FOR_IMPLEMENTATION",
-    "task_id": "CURRENT-FEATURES-PRODUCER-V1"
+    "status": "LOCALLY_VERIFIED_MATH_AND_CAPABILITY__RENDER_AND_PARENT_DEFERRED",
+    "task_id": "CURRENT-FEATURES-PRODUCER-V1",
+    "vectors": {
+      "bytes": 315386,
+      "file": "INPUT-ONLY-LITERAL-VECTORS.json",
+      "literal_expected_used_as_input": false,
+      "negative_count": 9,
+      "negative_error_labels": [
+        "READ_AUDIO_MISSING",
+        "READ_AUDIO_SHAPE",
+        "SOURCE_SHAPE",
+        "FLAG_DOMAIN",
+        "BEFORE_VECTOR_SHAPE",
+        "NONFINITE_BEFORE",
+        "NONFINITE_AUDIO",
+        "STALE_CALLBACK",
+        "NONFINITE_INTERMEDIATE"
+      ],
+      "negative_outcome": {
+        "packet": null,
+        "state_commit_count": 0
+      },
+      "positive_count": 15,
+      "sha256": "1aaf1f5296569960e188b8d74fc8097b5bfb6099b5a1079366e595011c87bdc3",
+      "verified_output_f32_words": 35280
+    }
   },
   "provider_contracts": {
     "algorithm_rust": "FORBIDDEN_IN_P1.4-C_PROVIDER_VALIDATOR_SLICE",

@@ -1,6 +1,6 @@
 # CurrentFeatures provider mapping
 
-Status: P1.4-C exact typed provider validators are implemented and locally verified; the CurrentFeatures producer is ready for implementation but not started.
+Status: P1.4-C exact typed provider validators are locally verified. The separate CurrentFeatures producer is `LOCALLY_VERIFIED_MATH_AND_CAPABILITY__RENDER_AND_PARENT_DEFERRED`.
 
 This mapping binds the washed `current-features-producer.math-route.v1` supplement to the two exact selected math providers. It does not implement the feature algorithm, claim native/SIMD equivalence, or claim product audio acceptance.
 
@@ -117,11 +117,11 @@ Each failure returns no validated provider or receipt. These are proposed isolat
 
 ## CurrentFeatures consumer binding
 
-The future producer must accept the two validated typed provider outputs, not raw evidence or an unverified JSON value. Its same-callback context is the committed before feature state (`F32[48][24]` plus `F32[48]`), same-callback `SourceFlagsPacket` (`U8[48][2]` source-major), and post-window audio (`F32[48][3072]` source-major) with render, flags, profile, provider, programme, attempt, transaction, callback, and before-state lineage.
+The separate CurrentFeatures producer accepts only the two validated typed provider outputs, not raw evidence or an unverified JSON value. Its same-callback context is the committed before feature state (`F32[48][24]` plus `F32[48]`), same-callback `SourceFlagsPacket` (`U8[48][2]` source-major), and opaque post-window audio (`F32[48][3072]` source-major) with render, flags, profile, provider, programme, attempt, transaction, callback, and before-state lineage.
 
 The lineage dimensions are programme, attempt, `CallbackTransactionId`, callback index, before-feature generation/digest, render receipt, flags receipt, selected profile, and both provider receipts. The consumer keeps its after-state staged; it has no local commit, and the parent transaction remains the commit authority.
 
-The pair order is `(processing_inactive, selection_suppressed)`: `01` maps to RESET before any carry test; `10` maps to CARRY; `00` maps to READ_AUDIO_INPUT. RESET and CARRY do not read audio; READ_AUDIO_INPUT requires all 3,072 samples. The mathematical consumer includes a `01` priority vector, but the validated SourceFlags producer emits only `00`, `10`, and `11`. Whether the product boundary rejects an unreachable `01` packet is explicitly left to the coordinator contract; do not infer it from the math branch.
+The pair order is `(processing_inactive, selection_suppressed)`: `01` maps to RESET before any carry test; `10` maps to CARRY; `00` maps to READ_AUDIO_INPUT. RESET and CARRY do not read sample payloads or invoke FFT; READ_AUDIO_INPUT requires all 3,072 samples. The consumer accepts `01` for reset-priority semantics, without claiming the SourceFlags producer emits it; the validated SourceFlags producer emits only `00`, `10`, and `11`.
 
 The washed input-only vectors contain 15 positive cases and 9 error cases. Their three positive outputs each contain 4,608 bytes of after-vector, 192 bytes of after-scalar, and 4,608 bytes of band-major packet data: `15 × (1,152 + 48 + 1,152) = 35,280` F32 words. The required bitwise relation is `packet[band][source] == after_source_vector[source][band]` by U32 bits. The nine negative vectors require a null packet and zero state commit count.
 
@@ -139,6 +139,6 @@ Tests are in `crates/jocforge-domain/tests/current_features_provider.rs`, with p
 
 ## Readiness boundary
 
-`P1.4-C` is `LOCALLY_VERIFIED`. `CURRENT_FEATURES_PRODUCER` is `READY_FOR_IMPLEMENTATION` with `implementation_status=NOT_STARTED`; that status authorizes no algorithm work within the provider-validator slice. Product FFT/feature execution, real-ADM route, codec/EC3, perceptual acceptance, and parent transaction execution remain `NOT_RUN`.
+`P1.4-C` is `LOCALLY_VERIFIED`. Its `algorithm_rust=FORBIDDEN_IN_P1.4-C_PROVIDER_VALIDATOR_SLICE` records the provider validator's scope; the CurrentFeatures math is implemented and locally verified in the separate producer slice. Product render execution, real-ADM route, codec/EC3, perceptual acceptance, and parent transaction execution remain `NOT_RUN`.
 
-`SourceFlagsPacket` remains `LOCALLY_VERIFIED_NUMERIC_AND_PACKET`. P1.3-D1 remains `LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED`. P1.3-D remains blocked on CurrentFeatures, the `spatial_audio` root, and the enclosing `CallbackTransaction`. Product FFT/feature execution, full provider-loader integration, real-ADM route, codec/EC3, perceptual acceptance, and parent transaction execution remain `NOT_RUN`.
+`SourceFlagsPacket` remains `LOCALLY_VERIFIED_NUMERIC_AND_PACKET`. P1.3-D1 remains `LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED`. P1.3-D remains blocked on the `spatial_audio`/render producer and the enclosing `CallbackTransaction`; the CurrentFeatures math/capability slice does not claim render or parent integration. Real-ADM route, codec/EC3, perceptual acceptance, and parent transaction execution remain `NOT_RUN`.

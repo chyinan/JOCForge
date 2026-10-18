@@ -1,9 +1,8 @@
 // pattern: Functional Core
 //! Complete v5 persistent cold root and read-only staging capability boundary.
 //!
-//! No callback transition or packet producer is implemented here. A future producer may create
-//! the opaque after-proposal and packet capabilities inside this module boundary; no public
-//! constructor, default packet, or local commit authority exists in this slice.
+//! No callback transition or packet producer is implemented here. CurrentFeatures owns its opaque
+//! packet type; no public constructor, default packet, or local commit authority exists here.
 //!
 //! # Capability guarantees
 //!
@@ -43,7 +42,7 @@
 //! let _proposal = SpatialControlAfterProposal::new();
 //! ```
 
-use super::source_flags::SourceFlagsPacket;
+use super::{current_features::CurrentFeaturesPacket, source_flags::SourceFlagsPacket};
 use crate::frontend::{
     F01EProviderReceipt, F03TargetProviderReceipt, ProviderIdentity, ProviderSha256,
     ValidatedF01EColdProvider, ValidatedF03TargetColdProvider,
@@ -456,15 +455,6 @@ impl SpatialControlState {
     }
 }
 
-/// Future producer-owned packet capability. Payload and lineage remain private and unconstructible.
-#[allow(dead_code)]
-#[must_use]
-pub struct CurrentFeaturesPacket {
-    _callback_index: FrontendCallbackIndex,
-    _parent_transaction_id: CallbackTransactionId,
-    _features_f32_bits_24x48: Box<[[u32; 48]; 24]>,
-}
-
 /// Opaque complete after proposal supplied by future producer-owned capabilities.
 #[allow(dead_code)]
 #[must_use]
@@ -583,6 +573,20 @@ impl SpatialControlMachine {
             profile_identity,
             provider_lineage,
         })
+    }
+
+    /// Installs literal before-feature bits only in isolated unit tests.
+    #[cfg(test)]
+    pub(super) fn set_current_features_test_history(
+        &mut self,
+        source_vector_bits: &[u32],
+        source_scalar_bits: &[u32],
+    ) {
+        self.committed.feature.source_vector_bits = source_vector_bits.to_vec().into_boxed_slice();
+        self.committed.feature.source_scalar_bits = source_scalar_bits.to_vec().into_boxed_slice();
+        let canonical_bytes = self.committed.serialize_v5();
+        self.committed.digest = SpatialControlDigest::digest(&canonical_bytes);
+        self.committed.canonical_bytes = canonical_bytes.into_boxed_slice();
     }
 
     pub const fn committed(&self) -> &SpatialControlState {

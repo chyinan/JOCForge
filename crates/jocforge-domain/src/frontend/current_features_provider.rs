@@ -79,6 +79,7 @@ pub struct ValidatedCurrentFeaturesPackageManifest {
 }
 
 /// Immutable identity lineage for one math provider entry in the approved package manifest.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct CurrentFeaturesProviderLineage {
     manifest_sha256: ProviderSha256,
     provider_path: &'static str,
@@ -105,6 +106,7 @@ impl CurrentFeaturesProviderLineage {
 }
 
 /// Immutable receipt for the exact feature-processor math provider file.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct FeatureProcessorMathProviderReceipt {
     validated_manifest_lineage: CurrentFeaturesProviderLineage,
     provider_file_sha256: ProviderSha256,
@@ -131,6 +133,7 @@ impl FeatureProcessorMathProviderReceipt {
 }
 
 /// Immutable receipt for the exact selected radix-2 FFT roots provider file.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct FeatureFft4096MathProviderReceipt {
     validated_manifest_lineage: CurrentFeaturesProviderLineage,
     provider_file_sha256: ProviderSha256,
