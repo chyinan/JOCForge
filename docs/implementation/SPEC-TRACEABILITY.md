@@ -54,7 +54,7 @@
 | F05T | `specs/05-oamd-dbmd-and-trim.md` | `joc` | Phase 4 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
 | F05H | `specs/05-fit-marker-and-metadata-history.md` | `joc` | Phase 4 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
 | F05L | `specs/05-oamd-id11-live-producer.md` | `none_pure_value` | Phase 4 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
-| F05R56 | `specs/05-reader56-target-updates-composition.md` | `spatial_control` | Phase 4 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
+| F05R56 | `specs/05-reader56-target-updates-composition.md`<br>`specs/05-fit-marker-and-metadata-history.md`<br>`specs/05-oamd-id11-live-producer.md`<br>`specs/05-oamd-row-and-timing-wire.md` | `spatial_control` | Phase 4 | INVENTORIED | MAPPING_COMPLETE_IMPLEMENTATION_READY | `crates/jocforge-domain/src/joc/oamd/reader_target.rs` | `crates/jocforge-domain/src/joc/oamd/reader_target/tests.rs` |
 | F06 | `specs/06-meter-bsi.md` | `meter` | Phase 5 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
 | F06L | `specs/06-meter-log-and-peak.md` | `meter` | Phase 5 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
 | F06I | `specs/06-integrated-meter-state.md` | `meter` | Phase 5 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |

@@ -54,7 +54,7 @@
 | F05T | — | — | INVENTORIED |
 | F05H | — | — | INVENTORIED |
 | F05L | — | — | INVENTORIED |
-| F05R56 | — | — | INVENTORIED |
+| F05R56 | IDENTITY_VALIDATED_SELECTED_PROVIDERS | `parameters/reader56-target-profile-v1.json`<br>`parameters/reader56-main-panner-v1.json`<br>`parameters/oamd-id11-live-v1.json`<br>`parameters/oamd-coordinate-grid-q15.json`<br>`parameters/meter-oar-secondary8-math-v1.json` | INVENTORIED |
 | F06 | — | — | INVENTORIED |
 | F06L | — | — | INVENTORIED |
 | F06I | — | — | INVENTORIED |

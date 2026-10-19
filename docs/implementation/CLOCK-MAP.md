@@ -54,7 +54,7 @@
 | F05T | — | — | INVENTORIED |
 | F05H | — | — | INVENTORIED |
 | F05L | — | — | INVENTORIED |
-| F05R56 | — | — | INVENTORIED |
+| F05R56 | `FrontendCallbackIndex`<br>`ReaderInvocationIndex`<br>`HistoryProducerGeneration` | `g is zero-based FrontendCallbackIndex; g=0,1 advance marker/history and target snapshot only`<br>`reader begins only for g>=2; q is ReaderInvocationIndex(g-2)`<br>`history producer generation is carried independently per delivered regular row; cold generation is -1`<br>`direct history row provenance is current g; regular rows preserve delivered producer generation`<br>`one successful g>=2 callback proposes one receipt with reader invocation q and all 16 row generations`<br>`callback g is advanced only by the enclosing spatial_control transaction; this stage has no commit` | INVENTORIED |
 | F06 | — | — | INVENTORIED |
 | F06L | — | — | INVENTORIED |
 | F06I | — | — | INVENTORIED |

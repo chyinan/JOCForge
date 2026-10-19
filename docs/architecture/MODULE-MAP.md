@@ -10,6 +10,7 @@
 | domain/joc/huffman | F05QH traversal 边界 | 空壳；无表和遍历实现 |
 | domain/joc/emdf | F13 EMDF production 边界 | 空壳；无 serializer |
 | domain/joc/oamd | F05O/F05L OAMD 边界 | 空壳；无 producer |
+| domain/joc/oamd/reader_target | F05R56 marker/history、Type11 wire roundtrip、reader56 和 callback-local target receipt proposal | 已完成规格映射；实现只限 selected profile producer slice；不得本地 commit，不包含 F05L queue/body、F05JC/J05 或 parent transaction |
 | domain/joc/coefficient_payload | F05Q/F05JL coefficient body 边界 | 空壳；无量化或 payload |
 | domain/meter | 计量规则 | 空壳 |
 | domain/transform | 变换领域规则 | 空壳 |

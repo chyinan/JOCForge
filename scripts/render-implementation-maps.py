@@ -175,6 +175,19 @@ def render(d):
   o['PHASE-PLAN.md']+='\n## P1.3-E4 Type10 assembly boundary\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
   receiver=d['phase_one'].get('RECEIVER_MODE1_ROUTING',{});receiver_status=receiver.get('status','NOT_MAPPED')
   o['TYPE10-ASSEMBLY-MAP.md']='# Type10 assembly map\n\n由 IMPLEMENTATION-MAP.json 生成，不得手工修改。\n\n'+f"Mapping status: `{x['mapping_status']}`. Implementation status: `{x['implementation_status']}`. Receiver mode=1 routing/state status: `{receiver_status}`; whole F04 receiver, J05 projection and parent transaction remain deferred.\n\n"+'This E4 slice only assembles the E2 component proposal with the E3 delayed LFE row; it does not invoke the separate receiver mode=1 stage or commit spatial_audio state.\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
+ f05r56=next((e for e in d['functional_entries'] if e['functional_id']=='F05R56'),None)
+ if f05r56 and f05r56.get('mapping_status'):
+  block=json.dumps(f05r56,ensure_ascii=False,indent=2,sort_keys=True)
+  o['PHASE-PLAN.md']+='\n## Reader target updates mapping and implementation gate\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
+  o['READER-TARGET-UPDATES-MAP.md']=(
+   '# Reader target updates map\n\n'
+   +'由 IMPLEMENTATION-MAP.json 生成，不得手工修改。\n\n'
+   +f"Mapping status: `{f05r56['mapping_status']}`. Implementation status: `{f05r56['implementation_status']}`.\n\n"
+   +'F05R56 previews marker/history, the selected Type11 encode/decode boundary, 16 reader56 records, and the 16x6 target payload. The persistent state is exactly the nine fields in `reader56-target-state-schema.v2`; targets and receipts are callback-local and contribute zero canonical state bytes.\n\n'
+   +'The callback clock is `FrontendCallbackIndex g`; callbacks 0 and 1 advance marker/history and target snapshot only. For `g>=2`, the separate `ReaderInvocationIndex q` is `g-2`; delivered row generations remain attached per row. The stage returns a proposal and a pending immutable `ReaderTargetUpdateReceipt`; only the enclosing `spatial_control` transaction may commit state and admit that receipt.\n\n'
+   +'Receipt consumers may use only the admitted same-generation receipt. This mapping does not authorize F05JC/J05, F05L queue/body production, parent transaction implementation, or whole-programme/product acceptance.\n\n'
+   +'## Machine-readable contract\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
+  )
  return o
 def main():
  a=argparse.ArgumentParser();a.add_argument('--check',action='store_true');x=a.parse_args();d=json.loads(M.read_text(encoding='utf-8'));bad=[]

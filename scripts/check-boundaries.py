@@ -1,7 +1,7 @@
 # pattern: Imperative Shell
 import hashlib,importlib.util,json,math,pathlib,re,struct,sys,tomllib
 class BoundaryError(RuntimeError):pass
-ROOT=pathlib.Path(__file__).resolve().parents[1];PKG=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_PACKAGE');SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\SPATIAL-CONTROL-STATE-V5');F04D_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\F04-DESCRIPTOR-CONTROL-V1');SOURCE_FLAGS_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\SOURCE-FLAGS-PRODUCER-V1')
+ROOT=pathlib.Path(__file__).resolve().parents[1];PKG=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_PACKAGE');SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\SPATIAL-CONTROL-STATE-V5');F04D_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\F04-DESCRIPTOR-CONTROL-V1');SOURCE_FLAGS_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\SOURCE-FLAGS-PRODUCER-V1');READER_TARGET_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\READER-TARGET-UPDATES-V1')
 PACKAGE=PKG
 CURRENT_FEATURES_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\CURRENT-FEATURES-PRODUCER-V1')
 CURRENT_FEATURES_INTEGRATION_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\CURRENT-FEATURES-INTEGRATION-CONTRACT-V1')
@@ -1953,6 +1953,34 @@ def check_f04_receiver_pipeline_mapping(root,d):
  ck(task.get('implementation_prohibitions')==['Implement only the direct F04R receiver proposal contract; do not add a local commit or F04C parent transaction.','Do not implement or rerun F04RB, F05R56, F05JC, J05, F05JL, codec, or whole-song behavior.','F05JC/F05JL must not rerun F04R, F04D, or F04RB state transitions.','Do not promote spatial_audio, whole receiver, W04, real ADM, or product acceptance readiness.','Expected after-state and output literals are assertions only and must not seed computation.']and d['phase_one']['P1.3-E']['status']=='BLOCKED_ON_F04_DSP_RENDER_AND_PARENT'and d['phase_one']['RECEIVER_MODE1_ROUTING']['status']=='LOCALLY_VERIFIED_RECEIVER_MODE1_ROUTING_AND_STATE__CROSS_STAGE_J05_EXECUTION_DEFERRED'and d['phase_one']['DESCRIPTOR_CONTROL_AUDIT']['status']=='LOCALLY_VERIFIED_F04D_DIRECT_STAGE_ONLY__WHOLE_RECEIVER_NOT_RUN'and d['phase_one']['MODE0_FITTING_AUDIT']['status']=='LOCALLY_VERIFIED_MODE0_FITTING_DIRECT_KATS__WHOLE_RECEIVER_NOT_RUN','F04R does not promote adjacent slices')
 
 
+def check_reader_target_mapping(root,d):
+ entry=next(e for e in d['functional_entries'] if e['functional_id']=='F05R56')
+ expected_fields=['callback_index','retired','history','previous_active','current_xyz_words','current_ids','current_attributes','reader_records','reader_invocations']
+ ck(entry['owner']=='spatial_control' and entry['mapping_status']=='MAPPING_COMPLETE' and entry['implementation_status']=='MAPPING_COMPLETE_IMPLEMENTATION_READY','F05R56 mapping-only readiness')
+ ck('active_slice_materialization' not in entry,'F05R56 mapping is not implementation evidence')
+ ck(entry['implementation_files']==['crates/jocforge-domain/src/joc/oamd/reader_target.rs'] and entry['test_modules']==['crates/jocforge-domain/src/joc/oamd/reader_target/tests.rs'],'F05R56 semantic source/test paths')
+ ck(entry['phase_scope']['persistent_state_schema']=='reader56-target-state-schema.v2; exactly nine fields; target payload and receipt are not persistent state' and entry['phase_scope']['receipt_type']=='ReaderTargetUpdateReceipt' and entry['phase_scope']['receipt_schema']=='reader-target-update-receipt.v1' and entry['phase_scope']['commit_authority']=='spatial_control parent transaction only; F05R56 exposes a proposal and has no local commit','F05R56 state/receipt/commit boundary')
+ ck(entry['vectors']['kind']=='INPUT_ONLY_RECIPES_WITH_POSTCOMPUTATION_ASSERTIONS' and entry['vectors']['case_pointers'][0].startswith('R56T-CONT-0..7') and entry['clock']['domains']==['FrontendCallbackIndex','ReaderInvocationIndex','HistoryProducerGeneration'],'F05R56 input-only vectors and distinct clocks')
+ ck([e['error_code'] for e in entry['error_outcomes']]==['R56T_STATE_ERROR','R56T_PIPELINE_RETIRED','R56T_CALLBACK_ORDER','R56T_INPUT_ERROR','R56T_PROFILE_UNSUPPORTED','R56T_NUMERIC_FAILURE'],'F05R56 producer error mapping')
+ package_manifest=(PKG/'MANIFEST.json').read_bytes()
+ ck(hashlib.sha256(package_manifest).hexdigest()=='c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a','F05R56 approved package manifest identity')
+ for path in entry['spec_files']+entry['parameters']['provider_files']+entry['vectors']['authoritative_vectors'][:2]:ck((PKG/path).is_file(),'F05R56 package asset '+path)
+ schema=json.loads((PKG/'test-vectors/READER56-TARGET-STATE-SCHEMA.json').read_text(encoding='utf-8'))
+ ck(schema['schema']=='reader56-target-state-schema.v2' and schema['whole_state']['class_name']=='ReaderTargetState' and [f['name'] for f in schema['whole_state']['fields']]==expected_fields,'F05R56 exact persistent schema field order')
+ ck(all('target' not in f['name'] for f in schema['whole_state']['fields']) and schema['cold_preimage']['encoded_bytes']==9047 and hashlib.sha256(bytes.fromhex(schema['cold_preimage']['encoded_hex'])).hexdigest()==schema['cold_preimage']['encoded_sha256'],'F05R56 target output excluded from state and complete cold preimage')
+ supplement_manifest_bytes=(READER_TARGET_SUPPLEMENT/'MANIFEST.json').read_bytes()
+ ck(hashlib.sha256(supplement_manifest_bytes).hexdigest()=='02fcbf7206c261a004ef1bf591ea9f9f1c3dc6fa21023c91ee9d3f5ff3df414c','F05R56 receipt supplement manifest identity')
+ supplement_manifest=json.loads(supplement_manifest_bytes)
+ ck(supplement_manifest['identity']=='reader-target-updates-receipt.v1' and supplement_manifest['current_package_manifest_sha256']=='c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a','F05R56 receipt supplement package binding')
+ for record in supplement_manifest['files']:
+  raw=(READER_TARGET_SUPPLEMENT/record['file']).read_bytes()
+  ck(len(raw)==record['bytes'] and hashlib.sha256(raw).hexdigest()==record['sha256'],'F05R56 supplement asset '+record['file'])
+ receipt_inputs=json.loads((READER_TARGET_SUPPLEMENT/'READER-TARGET-RECEIPT-INPUTS.json').read_text(encoding='utf-8'))
+ receipt_vectors=json.loads((READER_TARGET_SUPPLEMENT/'READER-TARGET-RECEIPT-VECTORS.json').read_text(encoding='utf-8'))
+ ck(receipt_inputs.get('expected_outputs_used_as_input') is False and [case['id'] for case in receipt_inputs['positive_cases']]==[case['id'] for case in receipt_vectors['positive_cases']],'F05R56 receipt expected outputs are assertions only')
+ state_ownership=(root/'docs/architecture/STATE-OWNERSHIP.md').read_text(encoding='utf-8')
+ ck('ReaderTargetUpdateReceipt' in state_ownership and 'target_words_16x6' not in state_ownership and 'F05R56Receipt' not in state_ownership,'F05R56 architecture excludes persistent target array and stale receipt name')
+
 def run(root=ROOT):
  arch=root/'docs/architecture';req={'APPROVAL.md','ARCHITECTURE.md','ARCHITECTURE-DECISIONS.md','DATAFLOW.md','DEPENDENCY-RULES.md','ERROR-MODEL.md','MODULE-MAP.md','OLD-WIRE-REUSE-MATRIX.md','PROFILE-DIMENSIONS.md','PUBLIC-API.md','STATE-OWNERSHIP.md','TEST-STRATEGY.md'};ck(req<={p.name for p in arch.glob('*.md')},'architecture documents')
  d=json.loads((root/'docs/implementation/IMPLEMENTATION-MAP.json').read_text(encoding='utf-8'));schema=json.loads((root/'docs/implementation/IMPLEMENTATION-MAP.schema.json').read_text(encoding='utf-8'));ck(all(k in d for k in schema['required']),'schema required');es=d['functional_entries'];ck(len(es)==104 and len({e['functional_id']for e in es})==104 and all(e['inventory_status']=='INVENTORIED'for e in es),'104 inventoried IDs');active={e['functional_id']for e in es if e.get('active_slice_materialization')=='MATERIALIZED'};ck(active=={'F02','XSTJ'},'active IDs');future=[e for e in es if e['functional_id']not in active];ck(len(future)==102,'deferred count')
@@ -1967,6 +1995,8 @@ def run(root=ROOT):
    ck(e['implementation_status']==audit.get('status')and audit.get('status')in direct_statuses and e.get('parameters',{}).get('kind')=='VALIDATED_PROVIDER'and e.get('vectors',{}).get('authoritative_vectors')[:2]==['crates/jocforge-domain/tests/fixtures/receiver_pipeline/F04R-DIRECT-INPUT-VECTORS.json','crates/jocforge-domain/tests/fixtures/receiver_pipeline/F04R-DIRECT-ACTUAL-LITERALS.json']and e.get('error_outcomes')==audit.get('error_mapping',{}).get('error_outcomes'),'F04R traceability binds the ready direct receiver contract')
    package_paths=e['parameters']['provider_files']+['test-vectors/unit/vectors.json','test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json']
    ck(all((PKG/path).is_file()for path in package_paths),'F04R approved-package providers and historical vectors exist')
+  elif e['functional_id']=='F05R56':
+   check_reader_target_mapping(root,d)
   else:
    ck(e['implementation_status']=='DEFERRED_DETAILED_MAPPING','future status');ck(not any(k in e for k in('implementation_files','parameters','vectors','error_outcomes','clock')),'future fake detail')
  clauses=['F01/F02 input sample-count clauses','callback g','codec source s=g-2','JOC dispatch d=s+1=g-1','generated JOC writer=d-1=s','source0/1 suppression','source s>=2 to published AU=s-2','published AU ordinary/JOC writer offsets','programme count arithmetic']
