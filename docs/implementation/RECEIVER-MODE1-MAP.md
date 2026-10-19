@@ -60,9 +60,9 @@ Fresh review R1 is bound to the current package and passes 44/44 static checks. 
         "sha256": "e871096db3a6780ab467edb07b5670072b2b0eafa40e8414d35a2d3369aa13b5"
       },
       {
-        "bytes": 35237,
+        "bytes": 35267,
         "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-        "sha256": "25dfa43ac32f5083626fa1774aaa5ee89bf174c5934a7016422eba3f47a01469"
+        "sha256": "389994a0786fe8429848ee2ff2341000ed7ad2e13f4a122a20d9a43970aa734d"
       }
     ],
     "s09_lineage_type": "ReceiverS09InputView binds six finite 1536-sample lanes to SpatialAudioJoinMetadata and explicit CallbackPhase; the receiver stage compares it with the Type10 receipt before any QMF processing.",

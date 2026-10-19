@@ -1435,7 +1435,7 @@ def check_descriptor_control_mapping(root,d):
 
 def check_descriptor_control_implementation(root,task):
  status='LOCALLY_VERIFIED_F04D_DIRECT_STAGE_ONLY__WHOLE_RECEIVER_NOT_RUN'
- expected_impl=[{'path':'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','bytes':22467,'sha256':'aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce'},{'path':'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','bytes':35237,'sha256':'25dfa43ac32f5083626fa1774aaa5ee89bf174c5934a7016422eba3f47a01469'}]
+ expected_impl=[{'path':'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','bytes':22467,'sha256':'aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce'},{'path':'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','bytes':35267,'sha256':'389994a0786fe8429848ee2ff2341000ed7ad2e13f4a122a20d9a43970aa734d'}]
  expected_tests=[{'path':'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs','bytes':15524,'sha256':'42fe49df1899e21f796b44a70cbc324b8db9f5a06b5335b6dcc035cbca43e947'}]
  expected_fixtures=[{'path':'crates/jocforge-domain/tests/fixtures/descriptor_control/input-vectors.json','bytes':8878,'sha256':'c622899783197a953fb6c0bcd262b0e7b1a110d605e9301e27782e44cb247528'},{'path':'crates/jocforge-domain/tests/fixtures/descriptor_control/actual-literals.json','bytes':3705450,'sha256':'390cf469a1dde8a4fde9c79de2238f414ea041d6b64630cb669ca4ab26205ad0'}]
  ck(task.get('status')==status and task.get('implementation_status')==status and task.get('fixture_materialization_status')=='MATERIALIZED_AND_HASH_PINNED'and task.get('implementation_files')==[item['path']for item in expected_impl]and task.get('test_files')==[item['path']for item in expected_tests],'F04D local implementation paths and scoped status')
@@ -1830,6 +1830,33 @@ def check_mode0_fitting_mapping(root,d):
   ck(task.get('fixture_materialization_status')=='APPROVED_PACKAGE_BOUND_NOT_YET_COPIED'and not any((root/path).exists()for path in planned_impl+planned_tests+planned_fixtures)and'implementation_inventory'not in task and 'test_inventory'not in task,'F04RB mapping commit has no implementation or copied KAT fixtures')
  else:
   ck(task.get('fixture_materialization_status')=='MATERIALIZED_AND_HASH_PINNED'and all((root/path).is_file()for path in planned_impl+planned_tests+planned_fixtures),'F04RB local implementation and KAT fixtures are present only after verification')
+  expected_impl=planned_impl+['crates/jocforge-domain/src/spatial/spatial_audio_state.rs']
+  ck(task.get('implementation_files')==expected_impl and task.get('test_files')==planned_tests,'F04RB stage and test inventory paths are exact')
+  for inventory_name,paths in [('implementation_inventory',expected_impl),('test_inventory',planned_tests),('fixture_inventory',planned_fixtures)]:
+   entries=task.get(inventory_name)
+   ck(isinstance(entries,list)and [entry.get('path')for entry in entries if isinstance(entry,dict)]==paths,'F04RB '+inventory_name+' paths are exact')
+   if isinstance(entries,list):
+    for entry in entries:
+     if not isinstance(entry,dict)or not isinstance(entry.get('path'),str):continue
+     path=root/entry['path']
+     if path.is_file():
+      raw=path.read_bytes();expected={'path':entry['path'],'bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}
+      ck(entry==expected,'F04RB '+inventory_name+' identity '+entry['path'])
+  expected_verification={'status':verified,'module_test_count':2,'success_case_count':3,'error_case_count':9,'stage_output_words_compared':676800,'after_state_words_compared':310680,'canonical_after_sha256_kats':3,'mode0_boundary_mutations_rejected':42,'repository_boundary_mutations_rejected':857,'whole_receiver_j05_parent_product':'NOT_RUN','w04_execution':'NOT_RUN'}
+  ck(task.get('verification')==expected_verification,'F04RB local direct KAT verification counts and NOT_RUN scope')
+  fitting_source=(root/planned_impl[0]).read_text(encoding='utf-8')
+  parent_source=(root/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs').read_text(encoding='utf-8')
+  fitting_tests=(root/planned_tests[0]).read_text(encoding='utf-8')
+  normalized_fitting=re.sub(r'\s+',' ',rust_code_without_comments(fitting_source))
+  ck('pub(crate) mod fitting_mode0;'in parent_source,'F04RB source module is registered')
+  ck('const CARRIER_LANES: [usize; 5] = [0, 1, 2, 4, 5];'in fitting_source,'F04RB carrier lane routing is the selected five-lane map')
+  forbidden_mode0=['process_qmf_receiver_mode1_callback','qmf_mode1_delay_fir_trace','band0_real_mode1_words','band0_imag_mode1_words','synthesize_qmf_slot','inverse_fft','polyphase','stage_descriptor_control','apply_descriptor_gain','SpatialAudioMachine','CallbackTransactionId','std::fs','std::process','std::env','legacy','compat','fallback','.commit(','.abort(','.fatal(']
+  ck(not any(token in fitting_source for token in forbidden_mode0),'F04RB module excludes mode1/descriptor/parent authority/IO/legacy behavior')
+  ck('if input .s09 .lanes .iter() .any(|lane| lane.iter().any(|sample| !sample.is_finite()))'in normalized_fitting,'F04RB validates finite status across all six S09 input lanes')
+  ck('valid_analysis_histories(input.receiver_analysis_after.histories)'not in normalized_fitting and normalized_fitting.index('if input .s09 .lanes .iter() .any')<normalized_fitting.index('let (carrier_raw_analysis, receiver_analysis_after_join)')<normalized_fitting.index('if !equal_history_rows'),'F04RB receiver-after join failure follows input and numeric preflight')
+  required_mode0_tests=['three_generation_actual_first_kats_match_every_stage_and_complete_after_state','all_nine_input_only_errors_are_fail_stop_with_the_mapped_code','QmfWindowState::cold()','for id in ["cold_normal_g2", "warm_normal_g3", "cached_drain_g4"]','cold_normal_g2','warm_normal_g3','cached_drain_g4','run_error_case("nonfinite_lfe_input").code()','run_error_case("receiver_analysis_after_join_mismatch").code()','target_temporal_output','target_raw_analysis','target_windows48','carrier_raw_analysis','carrier_mode0_current24','carrier_windows48','receiver_analysis_after_join','target_history','previous_targets','previous_carriers','fitting_delay','fitting_fir','&expected_after["target_history"]','&expected_after["previous_targets"]','&expected_after["previous_carriers"]','&expected_after["fitting_delay"]','&expected_after["fitting_fir"]','canonical_after']
+  ck(all(token in fitting_tests for token in required_mode0_tests),'F04RB test module binds all direct KAT stages, six after-state fields, errors, and canonical bytes')
+  ck(fitting_tests.count('let mut fitting_before = QmfWindowState::cold();')==2,'F04RB tests initialize from cold state and never seed expected after-state')
  ck(task.get('readiness_boundary',{}).get('provider_identities')=='BOUND_TO_APPROVED_BASE_PACKAGE_AND_MODE0_SUPPLEMENT'and task['readiness_boundary'].get('direct_mode0_vectors')=='THREE_SUCCESS_NINE_ERROR_CASES_HASH_PINNED'and task['readiness_boundary'].get('whole_receiver')=='NOT_RUN'and task['readiness_boundary'].get('j05_parent')=='NOT_RUN'and task['readiness_boundary'].get('real_adm_and_product_acceptance')=='NOT_RUN'and task['readiness_boundary'].get('direct_mode0_stage_execution')==('NOT_RUN'if status==ready else 'LOCALLY_VERIFIED_DIRECT_KATS'),'F04RB direct stage readiness does not promote whole receiver or product acceptance')
  trace_status=status
  expected_trace_vectors=['outputs/IMPLEMENTER_SUPPLEMENTS/F04RB-MODE0-FITTING-V1/F04RB-MODE0-INPUT-VECTORS.json','outputs/IMPLEMENTER_SUPPLEMENTS/F04RB-MODE0-FITTING-V1/F04RB-MODE0-ACTUAL-LITERALS.json','test-vectors/QMF-RECEIVER-WHOLE-BINDING-VERIFICATION.json','test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json']

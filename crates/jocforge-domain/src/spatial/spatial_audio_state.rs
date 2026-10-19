@@ -13,6 +13,7 @@ use std::sync::Arc;
 pub(crate) mod component_stage;
 pub(crate) mod descriptor_control;
 pub(crate) mod direct_lfe;
+pub(crate) mod fitting_mode0;
 pub(crate) mod receiver_mode1;
 pub(crate) mod type10_assembler;
 

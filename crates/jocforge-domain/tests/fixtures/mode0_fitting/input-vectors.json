@@ -1,0 +1,295 @@
+{
+  "schema": "f04rb-mode0-fitting-input-vectors.v1",
+  "input_only": true,
+  "providers": {
+    "qmf_functional": {
+      "path": "qmf-receiver-functional-v1.json",
+      "bytes": 20325,
+      "sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c"
+    },
+    "qmf_math": {
+      "path": "qmf-mathematical-fft-v1.json",
+      "bytes": 6983,
+      "sha256": "e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431"
+    },
+    "descriptor_gain": {
+      "path": "descriptor-mathematical.json",
+      "bytes": 4861,
+      "sha256": "a493fbdaf2dab30e940cae9976ed3305f3af083e5614ab0cbd6889c71a02b197"
+    }
+  },
+  "initial_state": "complete canonical cold QmfWindowState",
+  "cases": [
+    {
+      "case_id": "cold_normal_g2",
+      "clock": {
+        "frontend_g": 2,
+        "receiver_r": 0,
+        "receiver_generation": 1,
+        "joc_dispatch_d": 1,
+        "phase": "NORMAL"
+      },
+      "s09_input_recipe": {
+        "kind": "SPARSE",
+        "seed": 0,
+        "rows": 6,
+        "samples_per_row": 1536,
+        "formula": "SPARSE: row-specific impulse at (row*37+seed*11)%1536 with R32((row-7)/64), otherwise -0 when (sample+row+seed)%509=0 else +0"
+      },
+      "target_preconditioned_recipe": {
+        "kind": "SPARSE",
+        "seed": 10,
+        "rows": 15,
+        "samples_per_row": 1536,
+        "formula": "SPARSE: row-specific impulse at (row*37+seed*11)%1536 with R32((row-7)/64), otherwise -0 when (sample+row+seed)%509=0 else +0"
+      },
+      "descriptor_after": {
+        "selected_index": 128,
+        "target_gain_u32": 1031798784,
+        "generation": 1
+      },
+      "lineage": {
+        "s09_lanes": [
+          0,
+          1,
+          2,
+          4,
+          5
+        ],
+        "carrier_order": [
+          "L",
+          "R",
+          "C",
+          "Ls",
+          "Rs"
+        ],
+        "receiver_analysis_before_generation": 0,
+        "fitting_before_generation": 0,
+        "parent_transaction": "CALLBACK-2"
+      },
+      "cached_exact_reuse_of_previous_input": false
+    },
+    {
+      "case_id": "warm_normal_g3",
+      "clock": {
+        "frontend_g": 3,
+        "receiver_r": 1,
+        "receiver_generation": 2,
+        "joc_dispatch_d": 2,
+        "phase": "NORMAL"
+      },
+      "s09_input_recipe": {
+        "kind": "DYADIC",
+        "seed": 1,
+        "rows": 6,
+        "samples_per_row": 1536,
+        "formula": "DYADIC: R32((mod(sample*(row+3)+17*row+seed*23,257)-128)/8192)"
+      },
+      "target_preconditioned_recipe": {
+        "kind": "DYADIC",
+        "seed": 11,
+        "rows": 15,
+        "samples_per_row": 1536,
+        "formula": "DYADIC: R32((mod(sample*(row+3)+17*row+seed*23,257)-128)/8192)"
+      },
+      "descriptor_after": {
+        "selected_index": 162,
+        "target_gain_u32": 1040711680,
+        "generation": 2
+      },
+      "lineage": {
+        "s09_lanes": [
+          0,
+          1,
+          2,
+          4,
+          5
+        ],
+        "carrier_order": [
+          "L",
+          "R",
+          "C",
+          "Ls",
+          "Rs"
+        ],
+        "receiver_analysis_before_generation": 1,
+        "fitting_before_generation": 1,
+        "parent_transaction": "CALLBACK-3"
+      },
+      "cached_exact_reuse_of_previous_input": false
+    },
+    {
+      "case_id": "cached_drain_g4",
+      "clock": {
+        "frontend_g": 4,
+        "receiver_r": 2,
+        "receiver_generation": 3,
+        "joc_dispatch_d": 3,
+        "phase": "CACHED_DRAIN"
+      },
+      "s09_input_recipe": {
+        "kind": "DYADIC",
+        "seed": 1,
+        "rows": 6,
+        "samples_per_row": 1536,
+        "formula": "DYADIC: R32((mod(sample*(row+3)+17*row+seed*23,257)-128)/8192)"
+      },
+      "target_preconditioned_recipe": {
+        "kind": "DYADIC",
+        "seed": 11,
+        "rows": 15,
+        "samples_per_row": 1536,
+        "formula": "DYADIC: R32((mod(sample*(row+3)+17*row+seed*23,257)-128)/8192)"
+      },
+      "descriptor_after": {
+        "selected_index": 179,
+        "target_gain_u32": 1045168128,
+        "generation": 3
+      },
+      "lineage": {
+        "s09_lanes": [
+          0,
+          1,
+          2,
+          4,
+          5
+        ],
+        "carrier_order": [
+          "L",
+          "R",
+          "C",
+          "Ls",
+          "Rs"
+        ],
+        "receiver_analysis_before_generation": 2,
+        "fitting_before_generation": 2,
+        "parent_transaction": "CALLBACK-4"
+      },
+      "cached_exact_reuse_of_previous_input": true
+    }
+  ],
+  "error_cases": [
+    {
+      "id": "provider_missing_precedes_stale",
+      "mutation": {
+        "provider": null,
+        "receiver_generation": 99
+      },
+      "expected": {
+        "error": "RECEIVER_PARAMETER_UNAVAILABLE",
+        "proposal": null,
+        "commit_count": 0,
+        "caller": "I03_STAGE_FATAL_RETIRED"
+      }
+    },
+    {
+      "id": "provider_identity_invalid",
+      "mutation": {
+        "provider_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "expected": {
+        "error": "RECEIVER_PARAMETER_INVALID",
+        "proposal": null,
+        "commit_count": 0,
+        "caller": "I03_STAGE_FATAL_RETIRED"
+      }
+    },
+    {
+      "id": "stale_lineage",
+      "mutation": {
+        "receiver_generation": 1,
+        "expected": 2
+      },
+      "expected": {
+        "error": "F04RB_LINEAGE_ERROR",
+        "proposal": null,
+        "commit_count": 0,
+        "caller": "I03_STAGE_FATAL_RETIRED"
+      }
+    },
+    {
+      "id": "descriptor_projection_mismatch",
+      "mutation": {
+        "selected_index": 162,
+        "target_gain_u32": 0
+      },
+      "expected": {
+        "error": "F04RB_DESCRIPTOR_PROJECTION",
+        "proposal": null,
+        "commit_count": 0,
+        "caller": "I03_STAGE_FATAL_RETIRED"
+      }
+    },
+    {
+      "id": "state_delay_shape",
+      "mutation": {
+        "fitting_delay_shape": [
+          5,
+          9,
+          128
+        ]
+      },
+      "expected": {
+        "error": "F04RB_MODE0_STATE_SHAPE",
+        "proposal": null,
+        "commit_count": 0,
+        "caller": "I03_STAGE_FATAL_RETIRED"
+      }
+    },
+    {
+      "id": "s09_shape",
+      "mutation": {
+        "s09_shape": [
+          6,
+          1535
+        ]
+      },
+      "expected": {
+        "error": "F04RB_INPUT_SHAPE",
+        "proposal": null,
+        "commit_count": 0,
+        "caller": "I03_STAGE_FATAL_RETIRED"
+      }
+    },
+    {
+      "id": "target_shape",
+      "mutation": {
+        "target_shape": [
+          14,
+          1536
+        ]
+      },
+      "expected": {
+        "error": "F04RB_TARGET_TEMPORAL_SHAPE",
+        "proposal": null,
+        "commit_count": 0,
+        "caller": "I03_STAGE_FATAL_RETIRED"
+      }
+    },
+    {
+      "id": "nonfinite_input",
+      "mutation": {
+        "s09_point_u32": 2143289344
+      },
+      "expected": {
+        "error": "F04RB_INPUT_NONFINITE",
+        "proposal": null,
+        "commit_count": 0,
+        "caller": "I03_STAGE_FATAL_RETIRED"
+      }
+    },
+    {
+      "id": "finite_numeric_overflow",
+      "mutation": {
+        "s09_point_u32": 2139095039
+      },
+      "expected": {
+        "error": "F04RB_NUMERIC_NONFINITE",
+        "proposal": null,
+        "commit_count": 0,
+        "caller": "I03_STAGE_FATAL_RETIRED"
+      }
+    }
+  ],
+  "expected_use": "execute inputs and approved providers first; compare ACTUAL literals after"
+}

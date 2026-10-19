@@ -2,7 +2,7 @@
 
 由 IMPLEMENTATION-MAP.json 生成，不得手工修改。
 
-Mapping status: MAPPING_COMPLETE. Implementation status: NOT_IMPLEMENTED. Implementation readiness: READY_FOR_IMPLEMENTATION_MODE0_FITTING_ONLY__WHOLE_BINDING_DEFERRED.
+Mapping status: MAPPING_COMPLETE. Implementation status: LOCALLY_VERIFIED_MODE0_FITTING_DIRECT_KATS__WHOLE_RECEIVER_NOT_RUN. Implementation readiness: LOCALLY_VERIFIED_MODE0_FITTING_DIRECT_KATS__WHOLE_RECEIVER_NOT_RUN.
 
 This map authorizes only the F04RB mode=0 fitting stage. The receiver route, F05JC fit, J05/F05JL, final-six tail, and parent transaction remain separate and deferred.
 
@@ -90,8 +90,36 @@ The full provider, state, clock, outcome, KAT, and implementation-scope record f
     ],
     "receiver_analysis_join_error_mapping": "F04RB_LINEAGE_ERROR; API has no separate join code. This is a clean local mapping, not a native error-code claim."
   },
-  "fixture_materialization_status": "APPROVED_PACKAGE_BOUND_NOT_YET_COPIED",
+  "fixture_inventory": [
+    {
+      "bytes": 7696,
+      "path": "crates/jocforge-domain/tests/fixtures/mode0_fitting/input-vectors.json",
+      "sha256": "733a9502491c7d1e1e543b15b36bf34135960e285c8240615f44b63225720a5a"
+    },
+    {
+      "bytes": 19861457,
+      "path": "crates/jocforge-domain/tests/fixtures/mode0_fitting/actual-literals.json",
+      "sha256": "7c5d6b034412c09264117e210fccb270f20550f099df2b00209e762876c30c77"
+    }
+  ],
+  "fixture_materialization_status": "MATERIALIZED_AND_HASH_PINNED",
   "functional_id": "F04RB",
+  "implementation_files": [
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs",
+    "crates/jocforge-domain/src/spatial/spatial_audio_state.rs"
+  ],
+  "implementation_inventory": [
+    {
+      "bytes": 28916,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs",
+      "sha256": "8ef557da15432e8d3a7ab37f84c8ebafa3739d8780703fab5f7a8fa8f445b816"
+    },
+    {
+      "bytes": 35267,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+      "sha256": "389994a0786fe8429848ee2ff2341000ed7ad2e13f4a122a20d9a43970aa734d"
+    }
+  ],
   "implementation_prohibitions": [
     "no receiver mode=1 state aliasing or behavior changes",
     "no F04R producer, target producer integration, or receiver routing implementation",
@@ -100,8 +128,8 @@ The full provider, state, clock, outcome, KAT, and implementation-scope record f
     "no mode0 local commit/abort/fatal authority",
     "no whole-receiver or product acceptance promotion"
   ],
-  "implementation_readiness": "READY_FOR_IMPLEMENTATION_MODE0_FITTING_ONLY__WHOLE_BINDING_DEFERRED",
-  "implementation_status": "NOT_IMPLEMENTED",
+  "implementation_readiness": "LOCALLY_VERIFIED_MODE0_FITTING_DIRECT_KATS__WHOLE_RECEIVER_NOT_RUN",
+  "implementation_status": "LOCALLY_VERIFIED_MODE0_FITTING_DIRECT_KATS__WHOLE_RECEIVER_NOT_RUN",
   "input_contract": {
     "callback_index": "F04RB callback_index_zero_based is the receiver index r, not frontend index g; generation=r+1.",
     "carrier_branch": "Re-analyze same-generation s09_input lanes [0,1,2,4,5] from receiver before analysis histories. Raw analysis after must be wordwise equal to receiver analysis after; fitting does not commit receiver analysis history a second time.",
@@ -294,7 +322,7 @@ The full provider, state, clock, outcome, KAT, and implementation-scope record f
   ],
   "programme_root": "spatial_audio",
   "readiness_boundary": {
-    "direct_mode0_stage_execution": "NOT_RUN",
+    "direct_mode0_stage_execution": "LOCALLY_VERIFIED_DIRECT_KATS",
     "direct_mode0_vectors": "THREE_SUCCESS_NINE_ERROR_CASES_HASH_PINNED",
     "j05_parent": "NOT_RUN",
     "mode0_spec_semantics": "MAPPED",
@@ -361,13 +389,23 @@ The full provider, state, clock, outcome, KAT, and implementation-scope record f
     "stage_authority": "F04Q.4 defines mode0 delay/history behavior; F04RB.2/.3 binds the five-lane fitting path and windows; F04C executes the enclosing receiver callback.",
     "state_type": "QmfWindowState"
   },
-  "status": "READY_FOR_IMPLEMENTATION_MODE0_FITTING_ONLY__WHOLE_BINDING_DEFERRED",
+  "status": "LOCALLY_VERIFIED_MODE0_FITTING_DIRECT_KATS__WHOLE_RECEIVER_NOT_RUN",
   "supplied_review_boundary": {
     "current_binding": "The supplied local-review status carries stale package/spec identities and is not reused as a current isolated execution pass.",
     "reported_f04rb_local_ready": "YES",
     "reported_implementation_ready": "NO"
   },
   "task_id": "F04RB-MODE0-FITTING-MAPPING-AUDIT",
+  "test_files": [
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs"
+  ],
+  "test_inventory": [
+    {
+      "bytes": 23025,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs",
+      "sha256": "842a854b6fb9be7066842559ed07c06ef832ca88012c6d1b8d0fd02a5bffb27f"
+    }
+  ],
   "vector_coverage": {
     "direct_mode0": {
       "actual_bytes": 19861457,
@@ -510,6 +548,19 @@ The full provider, state, clock, outcome, KAT, and implementation-scope record f
       "file": "test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json",
       "sha256": "ffb1dea3b1e69383312da4059b9d8ddabb4366ed8fc22e7537f750ba041f2d63"
     }
+  },
+  "verification": {
+    "after_state_words_compared": 310680,
+    "canonical_after_sha256_kats": 3,
+    "error_case_count": 9,
+    "mode0_boundary_mutations_rejected": 42,
+    "module_test_count": 2,
+    "repository_boundary_mutations_rejected": 857,
+    "stage_output_words_compared": 676800,
+    "status": "LOCALLY_VERIFIED_MODE0_FITTING_DIRECT_KATS__WHOLE_RECEIVER_NOT_RUN",
+    "success_case_count": 3,
+    "w04_execution": "NOT_RUN",
+    "whole_receiver_j05_parent_product": "NOT_RUN"
   },
   "whole_receiver_executor": "F04C"
 }

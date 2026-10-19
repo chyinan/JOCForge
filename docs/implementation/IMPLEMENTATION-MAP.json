@@ -25,7 +25,7 @@
     "QMF_CORE": "QMF_CORE_IMPL_WITH_DIRECT_VECTORS__WHOLE_RECEIVER_NOT_RUN",
     "RECEIVER_MODE1_ROUTING_AUDIT": "LOCALLY_VERIFIED_RECEIVER_MODE1_ROUTING_AND_STATE__CROSS_STAGE_J05_EXECUTION_DEFERRED",
     "F04D_DESCRIPTOR_CONTROL": "LOCALLY_VERIFIED_F04D_DIRECT_STAGE_ONLY__WHOLE_RECEIVER_NOT_RUN",
-    "MODE0_FITTING_AUDIT": "READY_FOR_IMPLEMENTATION_MODE0_FITTING_ONLY__WHOLE_BINDING_DEFERRED"
+    "MODE0_FITTING_AUDIT": "LOCALLY_VERIFIED_MODE0_FITTING_DIRECT_KATS__WHOLE_RECEIVER_NOT_RUN"
   },
   "functional_entries": [
     {
@@ -565,7 +565,7 @@
       "owner": "spatial_audio",
       "planned_phase": "Phase 3",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "READY_FOR_IMPLEMENTATION_MODE0_FITTING_ONLY__WHOLE_BINDING_DEFERRED",
+      "implementation_status": "LOCALLY_VERIFIED_MODE0_FITTING_DIRECT_KATS__WHOLE_RECEIVER_NOT_RUN",
       "parameters": {
         "kind": "IDENTITY_PINNED_VALIDATED_QMF_FFT_AND_DESCRIPTOR_GAIN_PROVIDERS",
         "provider_files": [
@@ -677,6 +677,13 @@
           "programme_state_after": "RETIRED",
           "caller_action": "return no proposal or accepted after-state; commit_count remains zero and I03 retires the programme"
         }
+      ],
+      "implementation_files": [
+        "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs",
+        "crates/jocforge-domain/src/spatial/spatial_audio_state.rs"
+      ],
+      "test_modules": [
+        "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs"
       ]
     },
     {
@@ -3502,7 +3509,7 @@
         "crates/jocforge-domain/src/timeline/mod.rs"
       ],
       "implementation_inventory": [
-        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 35237, "sha256": "25dfa43ac32f5083626fa1774aaa5ee89bf174c5934a7016422eba3f47a01469"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 35267, "sha256": "389994a0786fe8429848ee2ff2341000ed7ad2e13f4a122a20d9a43970aa734d"},
         {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2206, "sha256": "4559a9054f74e51a5436681b6362b292248476262ca1dd94b6496d2f0f79a9b6"},
         {"path": "crates/jocforge-domain/src/timeline/index.rs", "bytes": 2290, "sha256": "911be2413816ebe1fde51ceda0066e9c088f92ae7c8b045cee49aac37540ec7d"},
         {"path": "crates/jocforge-domain/src/timeline/mod.rs", "bytes": 586, "sha256": "7f2099065d657bdacab116d921a63107a180930086b73a42557881aa3acdb7b2"}
@@ -3768,7 +3775,7 @@
       ],
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs", "bytes": 17056, "sha256": "b30cb63addb5f8ddfe6bf03e65f84e34221929b8cb78180efc1e6c762c6b6bc5"},
-        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 35237, "sha256": "25dfa43ac32f5083626fa1774aaa5ee89bf174c5934a7016422eba3f47a01469"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 35267, "sha256": "389994a0786fe8429848ee2ff2341000ed7ad2e13f4a122a20d9a43970aa734d"},
         {"path": "crates/jocforge-domain/src/spatial/spatial_control.rs", "bytes": 26347, "sha256": "3c13f67f84698b32d568bf9fda223878eb3925a95c7fcbe30e0d0ef2f1b8fcd2"}
       ],
       "test_inventory": [
@@ -3945,7 +3952,7 @@
       ],
       "implementation_inventory": [
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs","bytes":12144,"sha256":"9473ea603741d59955d90f4a58c6c02875f1bba97d45203d6547c9b0c84d8a78"},
-        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state.rs","bytes":35237,"sha256":"25dfa43ac32f5083626fa1774aaa5ee89bf174c5934a7016422eba3f47a01469"},
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state.rs","bytes":35267,"sha256":"389994a0786fe8429848ee2ff2341000ed7ad2e13f4a122a20d9a43970aa734d"},
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs","bytes":38627,"sha256":"ff0121d7a2ad16dac2682ae3564b2d4baafff64b622673a05015133253646256"},
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs","bytes":17056,"sha256":"b30cb63addb5f8ddfe6bf03e65f84e34221929b8cb78180efc1e6c762c6b6bc5"},
         {"path":"crates/jocforge-domain/src/spatial/spatial_control.rs","bytes":26347,"sha256":"3c13f67f84698b32d568bf9fda223878eb3925a95c7fcbe30e0d0ef2f1b8fcd2"}
@@ -5665,7 +5672,7 @@
       "implementation_binding": {
         "implementation_files": [
           {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs", "bytes": 17053, "sha256": "e871096db3a6780ab467edb07b5670072b2b0eafa40e8414d35a2d3369aa13b5"},
-          {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 35237, "sha256": "25dfa43ac32f5083626fa1774aaa5ee89bf174c5934a7016422eba3f47a01469"}
+          {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 35267, "sha256": "389994a0786fe8429848ee2ff2341000ed7ad2e13f4a122a20d9a43970aa734d"}
         ],
         "test_files": [
           {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests/receiver_mode1.rs", "bytes": 23195, "sha256": "4c89df1bee27ca2b510d2c4fdb664c623f2c5c7efce22e3a07bab73d9d91f4b3"},
@@ -5946,7 +5953,7 @@
       "fixture_materialization_status": "MATERIALIZED_AND_HASH_PINNED",
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs", "bytes": 22467, "sha256": "aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce"},
-        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 35237, "sha256": "25dfa43ac32f5083626fa1774aaa5ee89bf174c5934a7016422eba3f47a01469"}
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 35267, "sha256": "389994a0786fe8429848ee2ff2341000ed7ad2e13f4a122a20d9a43970aa734d"}
       ],
       "test_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs", "bytes": 15524, "sha256": "42fe49df1899e21f796b44a70cbc324b8db9f5a06b5335b6dcc035cbca43e947"}
@@ -5970,9 +5977,9 @@
       "task_id": "F04RB-MODE0-FITTING-MAPPING-AUDIT",
       "mapping_document": "docs/implementation/MODE0-FITTING-MAP.md",
       "mapping_status": "MAPPING_COMPLETE",
-      "status": "READY_FOR_IMPLEMENTATION_MODE0_FITTING_ONLY__WHOLE_BINDING_DEFERRED",
-      "implementation_status": "NOT_IMPLEMENTED",
-      "implementation_readiness": "READY_FOR_IMPLEMENTATION_MODE0_FITTING_ONLY__WHOLE_BINDING_DEFERRED",
+    "status": "LOCALLY_VERIFIED_MODE0_FITTING_DIRECT_KATS__WHOLE_RECEIVER_NOT_RUN",
+    "implementation_status": "LOCALLY_VERIFIED_MODE0_FITTING_DIRECT_KATS__WHOLE_RECEIVER_NOT_RUN",
+    "implementation_readiness": "LOCALLY_VERIFIED_MODE0_FITTING_DIRECT_KATS__WHOLE_RECEIVER_NOT_RUN",
       "functional_id": "F04RB",
       "programme_root": "spatial_audio",
       "whole_receiver_executor": "F04C",
@@ -6272,7 +6279,58 @@
         "crates/jocforge-domain/tests/fixtures/mode0_fitting/input-vectors.json",
         "crates/jocforge-domain/tests/fixtures/mode0_fitting/actual-literals.json"
       ],
-      "fixture_materialization_status": "APPROVED_PACKAGE_BOUND_NOT_YET_COPIED",
+    "fixture_materialization_status": "MATERIALIZED_AND_HASH_PINNED",
+    "implementation_files": [
+      "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs",
+      "crates/jocforge-domain/src/spatial/spatial_audio_state.rs"
+    ],
+    "test_files": [
+      "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs"
+    ],
+    "implementation_inventory": [
+      {
+        "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs",
+        "bytes": 28916,
+        "sha256": "8ef557da15432e8d3a7ab37f84c8ebafa3739d8780703fab5f7a8fa8f445b816"
+      },
+      {
+        "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+        "bytes": 35267,
+        "sha256": "389994a0786fe8429848ee2ff2341000ed7ad2e13f4a122a20d9a43970aa734d"
+      }
+    ],
+    "test_inventory": [
+      {
+        "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs",
+        "bytes": 23025,
+        "sha256": "842a854b6fb9be7066842559ed07c06ef832ca88012c6d1b8d0fd02a5bffb27f"
+      }
+    ],
+    "fixture_inventory": [
+      {
+        "path": "crates/jocforge-domain/tests/fixtures/mode0_fitting/input-vectors.json",
+        "bytes": 7696,
+        "sha256": "733a9502491c7d1e1e543b15b36bf34135960e285c8240615f44b63225720a5a"
+      },
+      {
+        "path": "crates/jocforge-domain/tests/fixtures/mode0_fitting/actual-literals.json",
+        "bytes": 19861457,
+        "sha256": "7c5d6b034412c09264117e210fccb270f20550f099df2b00209e762876c30c77"
+      }
+    ],
+    "verification": {
+      "status": "LOCALLY_VERIFIED_MODE0_FITTING_DIRECT_KATS__WHOLE_RECEIVER_NOT_RUN",
+      "module_test_count": 2,
+      "success_case_count": 3,
+      "error_case_count": 9,
+      "stage_output_words_compared": 676800,
+      "after_state_words_compared": 310680,
+      "canonical_after_sha256_kats": 3,
+      "mode0_boundary_mutations_rejected": 42,
+      "repository_boundary_mutations_rejected": 857,
+      "whole_receiver_j05_parent_product": "NOT_RUN",
+      "w04_execution": "NOT_RUN"
+    },
       "implementation_prohibitions": [
         "no receiver mode=1 state aliasing or behavior changes",
         "no F04R producer, target producer integration, or receiver routing implementation",
@@ -6285,7 +6343,7 @@
         "mode0_spec_semantics": "MAPPED",
         "provider_identities": "BOUND_TO_APPROVED_BASE_PACKAGE_AND_MODE0_SUPPLEMENT",
         "direct_mode0_vectors": "THREE_SUCCESS_NINE_ERROR_CASES_HASH_PINNED",
-        "direct_mode0_stage_execution": "NOT_RUN",
+      "direct_mode0_stage_execution": "LOCALLY_VERIFIED_DIRECT_KATS",
         "whole_receiver": "NOT_RUN",
         "j05_parent": "NOT_RUN",
         "real_adm_and_product_acceptance": "NOT_RUN"

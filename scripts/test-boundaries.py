@@ -69,6 +69,18 @@ def descriptor_control_code_mut_render(mutate):
   map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
   subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
  return m
+def mode0_fitting_code_mut_render(mutate):
+ def m(r):
+  mutate(r)
+  map_path=r/'docs/implementation/IMPLEMENTATION-MAP.json';d=json.loads(map_path.read_text(encoding='utf-8'));task=d['phase_one']['MODE0_FITTING_AUDIT']
+  for key in ('implementation_inventory','test_inventory','fixture_inventory'):
+   for entry in task.get(key,[]):
+    path=r/entry['path']
+    if path.is_file():
+     content=path.read_bytes();entry['bytes']=len(content);entry['sha256']=hashlib.sha256(content).hexdigest()
+  map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+  subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
+ return m
 def f04_parameter_code_mut_render(mutate):
  def m(r):
   mutate(r)
@@ -558,7 +570,7 @@ def main():
  ('mode0-descriptor-pg03-binding-dropped',map_mut_render(lambda d:d['phase_one']['MODE0_FITTING_AUDIT']['input_contract'].update(descriptor_clip_index='take clip index from audio'))),
  ('mode0-join-error-mapping-drift',map_mut_render(lambda d:d['phase_one']['MODE0_FITTING_AUDIT']['error_mapping'].update(receiver_analysis_join_error_mapping='ignore receiver join mismatch'))),
  ('mode0-blocker-resolution-removed',map_mut_render(lambda d:d['phase_one']['MODE0_FITTING_AUDIT'].update(resolved_prior_blockers=[]))),
- ('mode0-implementation-status-premature',map_mut_render(lambda d:d['phase_one']['MODE0_FITTING_AUDIT'].update(implementation_status='LOCALLY_VERIFIED_MODE0_FITTING_DIRECT_KATS__WHOLE_RECEIVER_NOT_RUN'))),
+ ('mode0-implementation-status-regressed-to-ready',map_mut_render(lambda d:d['phase_one']['MODE0_FITTING_AUDIT'].update(implementation_status='READY_FOR_IMPLEMENTATION_MODE0_FITTING_ONLY__WHOLE_BINDING_DEFERRED'))),
  ('mode0-f04rb-trace-status-promoted',map_mut_render(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F04RB').update(implementation_status='READY_FOR_IMPLEMENTATION'))),
  ('mode0-provider-substituted',map_mut_render(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F04RB')['parameters'].update(provider_files=['parameters/window-q15.json']))),
  ('mode0-implementation-file-added',lambda r:(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs').write_text('// pattern: Functional Core\npub struct UnauthorizedMode0;\n',encoding='utf-8')),
@@ -832,6 +844,21 @@ def main():
   ('descriptor-code-error-outcome-assertion-removed',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs','            error.code(),\n','            "RECEIVER_PARAMETER_INVALID",\n'))),
   ('descriptor-code-parent-module-registration-removed',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','pub(crate) mod descriptor_control;\n',''))),
   ('descriptor-code-inventory-overclaim',descriptor_control_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','\nfn legacy_compatibility_fallback() {}\n')))
+ ]
+ cases += [
+  ('mode0-code-parent-module-registration-removed',mode0_fitting_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','pub(crate) mod fitting_mode0;\n',''))),
+  ('mode0-code-carrier-lane-drift',mode0_fitting_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs','const CARRIER_LANES: [usize; 5] = [0, 1, 2, 4, 5];','const CARRIER_LANES: [usize; 5] = [0, 1, 2, 3, 5];'))),
+  ('mode0-code-mode1-executor-added',mode0_fitting_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs','\nfn mode0_mutation() { process_qmf_receiver_mode1_callback(); }\n'))),
+  ('mode0-code-mode1-fir-taps-added',mode0_fitting_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs','\nfn mode0_mutation(provider: &QmfReceiverFunctionalProvider) { let _ = provider.band0_real_mode1_words(); }\n'))),
+  ('mode0-code-descriptor-rerun-added',mode0_fitting_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs','\nfn mode0_mutation() { stage_descriptor_control(); }\n'))),
+  ('mode0-code-parent-commit-added',mode0_fitting_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs','\nfn mode0_mutation() { parent.commit(); }\n'))),
+  ('mode0-code-filesystem-io-added',mode0_fitting_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs','\nfn mode0_mutation() { let _ = std::fs::read("unexpected"); }\n'))),
+  ('mode0-code-legacy-fallback-added',mode0_fitting_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs','\nfn legacy_compatibility_fallback() {}\n'))),
+  ('mode0-test-cached-drain-case-removed',mode0_fitting_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs','for id in ["cold_normal_g2", "warm_normal_g3", "cached_drain_g4"] {','for id in ["cold_normal_g2", "warm_normal_g3"] {'))),
+  ('mode0-test-cold-state-seed-removed',mode0_fitting_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs','let mut fitting_before = QmfWindowState::cold();','let mut fitting_before = QmfWindowState::new();'))),
+  ('mode0-test-after-fir-literal-removed',mode0_fitting_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs','            &expected_after["fitting_fir"],\n','            &expected_after["fitting_delay"],\n'))),
+  ('mode0-test-lfe-nonfinite-assertion-removed',mode0_fitting_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs','        run_error_case("nonfinite_lfe_input").code(),\n','        "F04RB_INPUT_NONFINITE",\n'))),
+  ('mode0-test-after-join-assertion-removed',mode0_fitting_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs','        run_error_case("receiver_analysis_after_join_mismatch").code(),\n','        "F04RB_LINEAGE_ERROR",\n')))
  ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]
