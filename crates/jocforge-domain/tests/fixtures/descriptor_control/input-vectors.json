@@ -1,0 +1,312 @@
+{
+  "schema": "f04d-direct-input-vectors.v1",
+  "input_only": true,
+  "provider_identities": {
+    "selected_threshold": {
+      "path": "qmf-receiver-functional-v1.json",
+      "bytes": 20325,
+      "sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c",
+      "array_f32le_sha256": "5ba787b1ee814e20bbc86290eca1daa6af33968e4e2458b5a3011c87a78fceac"
+    },
+    "gain_PG03": {
+      "path": "descriptor-mathematical.json",
+      "bytes": 4861,
+      "sha256": "a493fbdaf2dab30e940cae9976ed3305f3af083e5614ab0cbd6889c71a02b197",
+      "gain_f32le_sha256": "9ab2116e004943cba223366ed532283bb9b081b195870d9551c1e73a1214132a"
+    },
+    "selected_vs_unselected_mathematical_threshold_word_differences": 36
+  },
+  "cases": [
+    {
+      "case_id": "cold_zero",
+      "control_scratch_before_temporal3_recipe": {
+        "kind": "ZERO"
+      },
+      "ramp_audio_after_temporal3_recipe": {
+        "kind": "DYADIC",
+        "salt": 1
+      },
+      "before_state": {
+        "tail_peak_u32": 0,
+        "hold_u32": 0,
+        "smoothed_u32": 0,
+        "exponent_u32": 2,
+        "reference_u32": 1026206379,
+        "gain_u32": 1031798784
+      },
+      "provider_refs": {
+        "selected_threshold": "parameters/qmf-receiver-functional-v1.json#/arrays/descriptor_threshold_127",
+        "descriptor_scalars": "parameters/qmf-receiver-functional-v1.json#/scalar_u32/descriptor_*",
+        "gain_PG03": "parameters/descriptor-mathematical.json#/gain_u32"
+      }
+    },
+    {
+      "case_id": "head_tail_lfe_excluded",
+      "control_scratch_before_temporal3_recipe": {
+        "kind": "SPARSE",
+        "points": [
+          [
+            0,
+            10,
+            1048576000
+          ],
+          [
+            0,
+            1300,
+            1056964608
+          ],
+          [
+            3,
+            20,
+            1065353216
+          ],
+          [
+            4,
+            100,
+            1040187392
+          ]
+        ]
+      },
+      "ramp_audio_after_temporal3_recipe": {
+        "kind": "DYADIC",
+        "salt": 2
+      },
+      "before_state": {
+        "tail_peak_u32": 0,
+        "hold_u32": 0,
+        "smoothed_u32": 0,
+        "exponent_u32": 2,
+        "reference_u32": 1026206379,
+        "gain_u32": 1031798784
+      },
+      "provider_refs": {
+        "selected_threshold": "parameters/qmf-receiver-functional-v1.json#/arrays/descriptor_threshold_127",
+        "descriptor_scalars": "parameters/qmf-receiver-functional-v1.json#/scalar_u32/descriptor_*",
+        "gain_PG03": "parameters/descriptor-mathematical.json#/gain_u32"
+      }
+    },
+    {
+      "case_id": "threshold_equal_hold_decrement",
+      "control_scratch_before_temporal3_recipe": {
+        "kind": "ZERO"
+      },
+      "ramp_audio_after_temporal3_recipe": {
+        "kind": "SIGNED_ZERO"
+      },
+      "before_state": {
+        "tail_peak_u32": 0,
+        "hold_u32": 1,
+        "smoothed_u32": 3186902581,
+        "exponent_u32": 2,
+        "reference_u32": 1026206379,
+        "gain_u32": 1031798784
+      },
+      "provider_refs": {
+        "selected_threshold": "parameters/qmf-receiver-functional-v1.json#/arrays/descriptor_threshold_127",
+        "descriptor_scalars": "parameters/qmf-receiver-functional-v1.json#/scalar_u32/descriptor_*",
+        "gain_PG03": "parameters/descriptor-mathematical.json#/gain_u32"
+      }
+    },
+    {
+      "case_id": "lookup_last_ordinal",
+      "control_scratch_before_temporal3_recipe": {
+        "kind": "ZERO"
+      },
+      "ramp_audio_after_temporal3_recipe": {
+        "kind": "DYADIC",
+        "salt": 3
+      },
+      "before_state": {
+        "tail_peak_u32": 0,
+        "hold_u32": 1,
+        "smoothed_u32": 3246391296,
+        "exponent_u32": 2,
+        "reference_u32": 1026206379,
+        "gain_u32": 1031798784
+      },
+      "provider_refs": {
+        "selected_threshold": "parameters/qmf-receiver-functional-v1.json#/arrays/descriptor_threshold_127",
+        "descriptor_scalars": "parameters/qmf-receiver-functional-v1.json#/scalar_u32/descriptor_*",
+        "gain_PG03": "parameters/descriptor-mathematical.json#/gain_u32"
+      }
+    },
+    {
+      "case_id": "attack_and_nontrivial_ramp",
+      "control_scratch_before_temporal3_recipe": {
+        "kind": "ZERO"
+      },
+      "ramp_audio_after_temporal3_recipe": {
+        "kind": "DYADIC",
+        "salt": 4
+      },
+      "before_state": {
+        "tail_peak_u32": 0,
+        "hold_u32": 0,
+        "smoothed_u32": 1065353216,
+        "exponent_u32": 2,
+        "reference_u32": 1026206379,
+        "gain_u32": 1048576000
+      },
+      "provider_refs": {
+        "selected_threshold": "parameters/qmf-receiver-functional-v1.json#/arrays/descriptor_threshold_127",
+        "descriptor_scalars": "parameters/qmf-receiver-functional-v1.json#/scalar_u32/descriptor_*",
+        "gain_PG03": "parameters/descriptor-mathematical.json#/gain_u32"
+      }
+    },
+    {
+      "case_id": "old_tail_peak_carry_current_tail_zero",
+      "control_scratch_before_temporal3_recipe": {
+        "kind": "ZERO"
+      },
+      "ramp_audio_after_temporal3_recipe": {
+        "kind": "SPARSE",
+        "points": [
+          [
+            0,
+            0,
+            1065353216
+          ],
+          [
+            5,
+            255,
+            3212836864
+          ],
+          [
+            2,
+            256,
+            1056964608
+          ]
+        ]
+      },
+      "before_state": {
+        "tail_peak_u32": 1061158912,
+        "hold_u32": 0,
+        "smoothed_u32": 0,
+        "exponent_u32": 2,
+        "reference_u32": 1026206379,
+        "gain_u32": 1031798784
+      },
+      "provider_refs": {
+        "selected_threshold": "parameters/qmf-receiver-functional-v1.json#/arrays/descriptor_threshold_127",
+        "descriptor_scalars": "parameters/qmf-receiver-functional-v1.json#/scalar_u32/descriptor_*",
+        "gain_PG03": "parameters/descriptor-mathematical.json#/gain_u32"
+      }
+    }
+  ],
+  "error_cases": [
+    {
+      "case_id": "missing_threshold_precedes_bad_input",
+      "mutation": {
+        "threshold": null,
+        "control_shape": [
+          5,
+          1536
+        ]
+      },
+      "expected": {
+        "error": "RECEIVER_PARAMETER_UNAVAILABLE",
+        "caller": "I03_STAGE_FATAL_RETIRED",
+        "output": null,
+        "after_state": null
+      }
+    },
+    {
+      "case_id": "threshold_dimension_precedes_bad_state",
+      "mutation": {
+        "threshold_count": 126,
+        "hold": -1
+      },
+      "expected": {
+        "error": "RECEIVER_PARAMETER_INVALID",
+        "caller": "I03_STAGE_FATAL_RETIRED",
+        "output": null,
+        "after_state": null
+      }
+    },
+    {
+      "case_id": "nonpositive_gain_provider",
+      "mutation": {
+        "gain_ordinal": 0,
+        "gain_u32": 0
+      },
+      "expected": {
+        "error": "RECEIVER_PARAMETER_INVALID",
+        "caller": "I03_STAGE_FATAL_RETIRED",
+        "output": null,
+        "after_state": null
+      }
+    },
+    {
+      "case_id": "hold_negative",
+      "mutation": {
+        "hold": -1
+      },
+      "expected": {
+        "error": "F04D_HOLD_RANGE",
+        "caller": "I03_STAGE_FATAL_RETIRED",
+        "output": null,
+        "after_state": null
+      }
+    },
+    {
+      "case_id": "hold_u32_overflow",
+      "mutation": {
+        "hold": 4294967296
+      },
+      "expected": {
+        "error": "F04D_HOLD_RANGE",
+        "caller": "I03_STAGE_FATAL_RETIRED",
+        "output": null,
+        "after_state": null
+      }
+    },
+    {
+      "case_id": "bad_input_shape",
+      "mutation": {
+        "control_shape": [
+          6,
+          1535
+        ]
+      },
+      "expected": {
+        "error": "F04D_INPUT_SHAPE",
+        "caller": "I03_STAGE_FATAL_RETIRED",
+        "output": null,
+        "after_state": null
+      }
+    },
+    {
+      "case_id": "nonfinite_input",
+      "mutation": {
+        "control_point": [
+          0,
+          0,
+          2143289344
+        ]
+      },
+      "expected": {
+        "error": "F04D_INPUT_NONFINITE",
+        "caller": "I03_STAGE_FATAL_RETIRED",
+        "output": null,
+        "after_state": null
+      }
+    },
+    {
+      "case_id": "finite_input_intermediate_overflow",
+      "mutation": {
+        "control_point": [
+          0,
+          0,
+          2139095039
+        ]
+      },
+      "expected": {
+        "error": "NONFINITE_INTERMEDIATE",
+        "caller": "I03_STAGE_FATAL_RETIRED",
+        "output": null,
+        "after_state": null
+      }
+    }
+  ],
+  "expected_use": "execute actual from recipes and approved providers before loading ACTUAL literals"
+}

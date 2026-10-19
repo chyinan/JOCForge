@@ -86,6 +86,11 @@ def render(d):
   )
  if 'DESCRIPTOR_CONTROL_AUDIT' in d['phase_one']:
   x=d['phase_one']['DESCRIPTOR_CONTROL_AUDIT'];block=json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)
+  implementation_summary=(
+   'The two-phase F04D stage is locally verified against six selected-provider direct cases and eight error cases. It compares 55,296 lane-major ramp output words plus control/ramp traces, complete after-state, and canonical hold bytes. The pre-temporal3 selection is a non-Clone result consumed by the post-temporal3 gain input; its after-state and s09_return are proposals only, with no local commit or receipt. Whole receiver, J05/F05JC, real ADM/listening, and W04 execution remain `NOT_RUN`.'
+   if x['implementation_status'].startswith('LOCALLY_VERIFIED_') else
+   'The approved `f04-descriptor-control.v1` supplement binds six selected-provider success vectors, eight error cases, semantic U32-to-I64LE hold encoding, and six local outcomes. This mapping gate is implementation-ready only for the two-phase F04D descriptor-control slice. Whole receiver, J05/F05JC, real ADM/listening, and W04 execution remain `NOT_RUN`.'
+  )
   o['PHASE-PLAN.md']+='\n## F04D descriptor control audit\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
   o['DESCRIPTOR-CONTROL-MAP.md']=(
    '# Descriptor control map\n\n'
@@ -93,7 +98,7 @@ def render(d):
    +f"Mapping status: `{x['mapping_status']}`. Implementation readiness: `{x['implementation_readiness']}`.\n\n"
    +'F04D is a receiver substage owned by `spatial_audio`. It selects descriptor control from the post-temporal0..2 scratch before temporal3, then applies the selected gain to six lanes after temporal3. The mode=1 QMF path, mode=0 fitting state, final-six tail, and selected-J05 projection remain separate consumers and owners.\n\n'
    +'P1.4-D2 validates provider identity and typed values only. The selected F04D lookup threshold comes from the QMF receiver functional provider; the mathematical threshold in the descriptor provider is a candidate that differs in 36 of 127 words and remains pending audio acceptance. No descriptor DSP or W04 audio acceptance is claimed.\n\n'
-   +'The approved `f04-descriptor-control.v1` supplement binds six selected-provider success vectors, eight error cases, semantic U32-to-I64LE hold encoding, and six local outcomes. This mapping gate is implementation-ready only for the two-phase F04D descriptor-control slice; it does not claim that implementation has started or passed. Whole receiver, J05/F05JC, real ADM/listening, and W04 execution remain `NOT_RUN`.\n\n'
+   +implementation_summary+'\n\n'
    +'## Machine-readable contract\n\n'
    +chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
   )

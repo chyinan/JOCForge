@@ -2494,9 +2494,9 @@
   ],
   "implementation_inventory": [
     {
-      "bytes": 35202,
+      "bytes": 35237,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "6a78996295b53ee2c5b6a7695fa011edef7c17e71250259862d6ef74e00ffe1e"
+      "sha256": "25dfa43ac32f5083626fa1774aaa5ee89bf174c5934a7016422eba3f47a01469"
     },
     {
       "bytes": 2206,
@@ -5613,9 +5613,9 @@
         "sha256": "e871096db3a6780ab467edb07b5670072b2b0eafa40e8414d35a2d3369aa13b5"
       },
       {
-        "bytes": 35202,
+        "bytes": 35237,
         "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-        "sha256": "6a78996295b53ee2c5b6a7695fa011edef7c17e71250259862d6ef74e00ffe1e"
+        "sha256": "25dfa43ac32f5083626fa1774aaa5ee89bf174c5934a7016422eba3f47a01469"
       }
     ],
     "s09_lineage_type": "ReceiverS09InputView binds six finite 1536-sample lanes to SpatialAudioJoinMetadata and explicit CallbackPhase; the receiver stage compares it with the Type10 receipt before any QMF processing.",
@@ -6062,9 +6062,36 @@
     "programme_rule": "F04D.6 delegates to I03."
   },
   "executor_and_receipt_producer": "F04C owns the enclosing receiver callback and selected-J05 receipt; F04D is a receiver substage and has no local commit or receipt authority.",
-  "fixture_materialization_status": "NOT_MATERIALIZED_IN_MAPPING_COMMIT",
+  "fixture_inventory": [
+    {
+      "bytes": 8878,
+      "path": "crates/jocforge-domain/tests/fixtures/descriptor_control/input-vectors.json",
+      "sha256": "c622899783197a953fb6c0bcd262b0e7b1a110d605e9301e27782e44cb247528"
+    },
+    {
+      "bytes": 3705450,
+      "path": "crates/jocforge-domain/tests/fixtures/descriptor_control/actual-literals.json",
+      "sha256": "390cf469a1dde8a4fde9c79de2238f414ea041d6b64630cb669ca4ab26205ad0"
+    }
+  ],
+  "fixture_materialization_status": "MATERIALIZED_AND_HASH_PINNED",
   "functional_id": "F04D",
-  "implementation_files": [],
+  "implementation_files": [
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs",
+    "crates/jocforge-domain/src/spatial/spatial_audio_state.rs"
+  ],
+  "implementation_inventory": [
+    {
+      "bytes": 22467,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs",
+      "sha256": "aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce"
+    },
+    {
+      "bytes": 35237,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+      "sha256": "25dfa43ac32f5083626fa1774aaa5ee89bf174c5934a7016422eba3f47a01469"
+    }
+  ],
   "implementation_prohibitions": [
     "no mode=0 fitting implementation",
     "no F04R preprocessing or target producer",
@@ -6072,8 +6099,8 @@
     "no local state commit/abort/fatal authority",
     "no W04 audio or product acceptance promotion"
   ],
-  "implementation_readiness": "READY_FOR_IMPLEMENTATION_F04D_DESCRIPTOR_CONTROL_ONLY__WHOLE_RECEIVER_NOT_RUN",
-  "implementation_status": "NOT_IMPLEMENTED",
+  "implementation_readiness": "LOCALLY_VERIFIED_F04D_DIRECT_STAGE_ONLY__WHOLE_RECEIVER_NOT_RUN",
+  "implementation_status": "LOCALLY_VERIFIED_F04D_DIRECT_STAGE_ONLY__WHOLE_RECEIVER_NOT_RUN",
   "input_contract": {
     "control_scratch": "Six finite F32 lanes of 1536 samples from receiver scratch after temporal0..2 and before temporal3. F04D.2 peak consumes lanes [0,1,2,4,5], head [0,1280), tail [1280,1536), and old tail_peak; it saves only this callback's tail maximum.",
     "gain_scratch": "After temporal3, descriptor F04D.4 applies the selected target across all six lanes, including LFE. F04R then applies its 32-sample post-S09 delay, 0.5 scale, and second ring to form final_six.",
@@ -6183,7 +6210,8 @@
     "crates/jocforge-domain/tests/fixtures/descriptor_control/actual-literals.json"
   ],
   "planned_implementation_files": [
-    "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs"
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs",
+    "crates/jocforge-domain/src/spatial/spatial_audio_state.rs"
   ],
   "planned_test_files": [
     "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs"
@@ -6231,7 +6259,7 @@
     "validation_boundary": "P1.4-D2 identity, schema, shape, finite-word, and qualification validation is PASS. It validates providers only; it does not execute or accept descriptor control, F04D DSP, W04 audio, or product behavior."
   },
   "readiness_boundary": {
-    "descriptor_dsp_execution": "NOT_RUN",
+    "descriptor_dsp_execution": "LOCALLY_VERIFIED_F04D_DIRECT_STAGE_ONLY",
     "provider_validation": "LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS",
     "w04_current_execution": {
       "candidate_encode": "NOT_RUN",
@@ -6374,9 +6402,18 @@
     "schema_pointer": "#/whole_state_by_boundary/cold/fields/6/schema/fields/10/schema",
     "stage_authority": "F04R executes the callback substage; F04D returns a proposal only."
   },
-  "status": "READY_FOR_IMPLEMENTATION_F04D_DESCRIPTOR_CONTROL_ONLY__WHOLE_RECEIVER_NOT_RUN",
+  "status": "LOCALLY_VERIFIED_F04D_DIRECT_STAGE_ONLY__WHOLE_RECEIVER_NOT_RUN",
   "task_id": "F04D-DESCRIPTOR-CONTROL-AUDIT",
-  "test_files": [],
+  "test_files": [
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs"
+  ],
+  "test_inventory": [
+    {
+      "bytes": 15524,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs",
+      "sha256": "42fe49df1899e21f796b44a70cbc324b8db9f5a06b5335b6dcc035cbca43e947"
+    }
+  ],
   "vector_coverage": {
     "approved_supplement_direct_vectors": {
       "actual_comparison": "all six-lane 1536-sample ramp output words, peak/level/hold/index traces, state-after fields, and canonical hold_count I64LE bytes are compared only after computation",
@@ -6440,6 +6477,16 @@
       "file": "test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json",
       "sha256": "ffb1dea3b1e69383312da4059b9d8ddabb4366ed8fc22e7537f750ba041f2d63"
     }
+  },
+  "verification": {
+    "error_case_count": 8,
+    "independent_reference_paths": 2,
+    "module_test_count": 2,
+    "ramp_output_words_compared": 55296,
+    "status": "LOCALLY_VERIFIED_F04D_DIRECT_STAGE_ONLY__WHOLE_RECEIVER_NOT_RUN",
+    "success_case_count": 6,
+    "w04_execution": "NOT_RUN",
+    "whole_receiver_j05_parent_product": "NOT_RUN"
   }
 }
 ```
@@ -6677,9 +6724,9 @@
       "sha256": "b30cb63addb5f8ddfe6bf03e65f84e34221929b8cb78180efc1e6c762c6b6bc5"
     },
     {
-      "bytes": 35202,
+      "bytes": 35237,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "6a78996295b53ee2c5b6a7695fa011edef7c17e71250259862d6ef74e00ffe1e"
+      "sha256": "25dfa43ac32f5083626fa1774aaa5ee89bf174c5934a7016422eba3f47a01469"
     },
     {
       "bytes": 26347,
@@ -6957,9 +7004,9 @@
       "sha256": "9473ea603741d59955d90f4a58c6c02875f1bba97d45203d6547c9b0c84d8a78"
     },
     {
-      "bytes": 35202,
+      "bytes": 35237,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "6a78996295b53ee2c5b6a7695fa011edef7c17e71250259862d6ef74e00ffe1e"
+      "sha256": "25dfa43ac32f5083626fa1774aaa5ee89bf174c5934a7016422eba3f47a01469"
     },
     {
       "bytes": 38627,

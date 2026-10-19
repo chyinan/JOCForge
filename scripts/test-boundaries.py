@@ -57,6 +57,18 @@ def spatial_audio_code_mut_render(mutate):
   map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
   subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
  return m
+def descriptor_control_code_mut_render(mutate):
+ def m(r):
+  mutate(r)
+  map_path=r/'docs/implementation/IMPLEMENTATION-MAP.json';d=json.loads(map_path.read_text(encoding='utf-8'));task=d['phase_one']['DESCRIPTOR_CONTROL_AUDIT']
+  for key in ('implementation_inventory','test_inventory','fixture_inventory'):
+   for entry in task.get(key,[]):
+    path=r/entry['path']
+    if path.is_file():
+     content=path.read_bytes();entry['bytes']=len(content);entry['sha256']=hashlib.sha256(content).hexdigest()
+  map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+  subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
+ return m
 def f04_parameter_code_mut_render(mutate):
  def m(r):
   mutate(r)
@@ -774,6 +786,21 @@ def main():
   ('descriptor-audit-executor-authority-drift',map_mut_render(lambda d:d['phase_one']['DESCRIPTOR_CONTROL_AUDIT'].update(executor_and_receipt_producer='F04D owns local commit and J05 receipt'))),
   ('descriptor-audit-temporal3-split-collapsed',map_mut_render(lambda d:d['phase_one']['DESCRIPTOR_CONTROL_AUDIT']['minimum_implementable_slice'].update(stage_boundary='Select descriptor index and apply gain only after temporal3.'))),
   ('descriptor-audit-unapproved-lineage-types',map_mut_render(lambda d:d['phase_one']['DESCRIPTOR_CONTROL_AUDIT']['input_contract'].update(parent_lineage='Use SpatialAudioJoinMetadata and Type10AssemblyReceipt concrete types even though F04D does not pin them.')))
+ ]
+ cases += [
+  ('descriptor-code-filesystem-io',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','const LANE_COUNT: usize = 6;','fn forbidden_io() { let _ = std::fs::read("unexpected"); }\nconst LANE_COUNT: usize = 6;'))),
+  ('descriptor-code-public-api',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','#[cfg(test)]\nmod tests;','pub fn descriptor_escape_hatch() {}\n#[cfg(test)]\nmod tests;'))),
+  ('descriptor-code-math-threshold-route',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','provider.descriptor_threshold_words()','provider.threshold_words()'))),
+  ('descriptor-code-clone-selection-token',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','#[derive(Debug)]\n#[allow(dead_code)]\npub(super) struct DescriptorControlSelection','#[derive(Clone, Debug)]\n#[allow(dead_code)]\npub(super) struct DescriptorControlSelection'))),
+  ('descriptor-code-borrow-selection-token',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','selection: DescriptorControlSelection<\'parent>,','selection: &\'parent DescriptorControlSelection<\'parent>,'))),
+  ('descriptor-code-local-commit',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','const LANE_COUNT: usize = 6;','pub(super) fn commit_descriptor_control() {}\nconst LANE_COUNT: usize = 6;'))),
+  ('descriptor-code-final-six-alias',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','let s09_return =\n        std::array::from_fn','let final_six =\n        std::array::from_fn'))),
+  ('descriptor-code-actual-output-seeded-as-input',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs','lane_words_to_f32(&literal_input["control_scratch"])','lane_words_to_f32(&literal_input["ramp_output"])'))),
+  ('descriptor-code-output-word-assertion-removed',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs','assert_eq!(output_words, expected_words);','let _ = expected_words;'))),
+  ('descriptor-code-success-vector-removed',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs','        "lookup_last_ordinal",\n',''))),
+  ('descriptor-code-error-outcome-assertion-removed',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs','            error.code(),\n','            "RECEIVER_PARAMETER_INVALID",\n'))),
+  ('descriptor-code-parent-module-registration-removed',descriptor_control_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','pub(crate) mod descriptor_control;\n',''))),
+  ('descriptor-code-inventory-overclaim',descriptor_control_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','\nfn legacy_compatibility_fallback() {}\n')))
  ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]

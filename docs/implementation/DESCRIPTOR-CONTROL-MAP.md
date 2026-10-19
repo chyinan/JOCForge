@@ -2,13 +2,13 @@
 
 由 IMPLEMENTATION-MAP.json 生成，不得手工修改。
 
-Mapping status: `MAPPING_COMPLETE`. Implementation readiness: `READY_FOR_IMPLEMENTATION_F04D_DESCRIPTOR_CONTROL_ONLY__WHOLE_RECEIVER_NOT_RUN`.
+Mapping status: `MAPPING_COMPLETE`. Implementation readiness: `LOCALLY_VERIFIED_F04D_DIRECT_STAGE_ONLY__WHOLE_RECEIVER_NOT_RUN`.
 
 F04D is a receiver substage owned by `spatial_audio`. It selects descriptor control from the post-temporal0..2 scratch before temporal3, then applies the selected gain to six lanes after temporal3. The mode=1 QMF path, mode=0 fitting state, final-six tail, and selected-J05 projection remain separate consumers and owners.
 
 P1.4-D2 validates provider identity and typed values only. The selected F04D lookup threshold comes from the QMF receiver functional provider; the mathematical threshold in the descriptor provider is a candidate that differs in 36 of 127 words and remains pending audio acceptance. No descriptor DSP or W04 audio acceptance is claimed.
 
-The approved `f04-descriptor-control.v1` supplement binds six selected-provider success vectors, eight error cases, semantic U32-to-I64LE hold encoding, and six local outcomes. This mapping gate is implementation-ready only for the two-phase F04D descriptor-control slice; it does not claim that implementation has started or passed. Whole receiver, J05/F05JC, real ADM/listening, and W04 execution remain `NOT_RUN`.
+The two-phase F04D stage is locally verified against six selected-provider direct cases and eight error cases. It compares 55,296 lane-major ramp output words plus control/ramp traces, complete after-state, and canonical hold bytes. The pre-temporal3 selection is a non-Clone result consumed by the post-temporal3 gain input; its after-state and s09_return are proposals only, with no local commit or receipt. Whole receiver, J05/F05JC, real ADM/listening, and W04 execution remain `NOT_RUN`.
 
 ## Machine-readable contract
 
@@ -138,9 +138,36 @@ The approved `f04-descriptor-control.v1` supplement binds six selected-provider 
     "programme_rule": "F04D.6 delegates to I03."
   },
   "executor_and_receipt_producer": "F04C owns the enclosing receiver callback and selected-J05 receipt; F04D is a receiver substage and has no local commit or receipt authority.",
-  "fixture_materialization_status": "NOT_MATERIALIZED_IN_MAPPING_COMMIT",
+  "fixture_inventory": [
+    {
+      "bytes": 8878,
+      "path": "crates/jocforge-domain/tests/fixtures/descriptor_control/input-vectors.json",
+      "sha256": "c622899783197a953fb6c0bcd262b0e7b1a110d605e9301e27782e44cb247528"
+    },
+    {
+      "bytes": 3705450,
+      "path": "crates/jocforge-domain/tests/fixtures/descriptor_control/actual-literals.json",
+      "sha256": "390cf469a1dde8a4fde9c79de2238f414ea041d6b64630cb669ca4ab26205ad0"
+    }
+  ],
+  "fixture_materialization_status": "MATERIALIZED_AND_HASH_PINNED",
   "functional_id": "F04D",
-  "implementation_files": [],
+  "implementation_files": [
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs",
+    "crates/jocforge-domain/src/spatial/spatial_audio_state.rs"
+  ],
+  "implementation_inventory": [
+    {
+      "bytes": 22467,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs",
+      "sha256": "aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce"
+    },
+    {
+      "bytes": 35237,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+      "sha256": "25dfa43ac32f5083626fa1774aaa5ee89bf174c5934a7016422eba3f47a01469"
+    }
+  ],
   "implementation_prohibitions": [
     "no mode=0 fitting implementation",
     "no F04R preprocessing or target producer",
@@ -148,8 +175,8 @@ The approved `f04-descriptor-control.v1` supplement binds six selected-provider 
     "no local state commit/abort/fatal authority",
     "no W04 audio or product acceptance promotion"
   ],
-  "implementation_readiness": "READY_FOR_IMPLEMENTATION_F04D_DESCRIPTOR_CONTROL_ONLY__WHOLE_RECEIVER_NOT_RUN",
-  "implementation_status": "NOT_IMPLEMENTED",
+  "implementation_readiness": "LOCALLY_VERIFIED_F04D_DIRECT_STAGE_ONLY__WHOLE_RECEIVER_NOT_RUN",
+  "implementation_status": "LOCALLY_VERIFIED_F04D_DIRECT_STAGE_ONLY__WHOLE_RECEIVER_NOT_RUN",
   "input_contract": {
     "control_scratch": "Six finite F32 lanes of 1536 samples from receiver scratch after temporal0..2 and before temporal3. F04D.2 peak consumes lanes [0,1,2,4,5], head [0,1280), tail [1280,1536), and old tail_peak; it saves only this callback's tail maximum.",
     "gain_scratch": "After temporal3, descriptor F04D.4 applies the selected target across all six lanes, including LFE. F04R then applies its 32-sample post-S09 delay, 0.5 scale, and second ring to form final_six.",
@@ -259,7 +286,8 @@ The approved `f04-descriptor-control.v1` supplement binds six selected-provider 
     "crates/jocforge-domain/tests/fixtures/descriptor_control/actual-literals.json"
   ],
   "planned_implementation_files": [
-    "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs"
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs",
+    "crates/jocforge-domain/src/spatial/spatial_audio_state.rs"
   ],
   "planned_test_files": [
     "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs"
@@ -307,7 +335,7 @@ The approved `f04-descriptor-control.v1` supplement binds six selected-provider 
     "validation_boundary": "P1.4-D2 identity, schema, shape, finite-word, and qualification validation is PASS. It validates providers only; it does not execute or accept descriptor control, F04D DSP, W04 audio, or product behavior."
   },
   "readiness_boundary": {
-    "descriptor_dsp_execution": "NOT_RUN",
+    "descriptor_dsp_execution": "LOCALLY_VERIFIED_F04D_DIRECT_STAGE_ONLY",
     "provider_validation": "LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS",
     "w04_current_execution": {
       "candidate_encode": "NOT_RUN",
@@ -450,9 +478,18 @@ The approved `f04-descriptor-control.v1` supplement binds six selected-provider 
     "schema_pointer": "#/whole_state_by_boundary/cold/fields/6/schema/fields/10/schema",
     "stage_authority": "F04R executes the callback substage; F04D returns a proposal only."
   },
-  "status": "READY_FOR_IMPLEMENTATION_F04D_DESCRIPTOR_CONTROL_ONLY__WHOLE_RECEIVER_NOT_RUN",
+  "status": "LOCALLY_VERIFIED_F04D_DIRECT_STAGE_ONLY__WHOLE_RECEIVER_NOT_RUN",
   "task_id": "F04D-DESCRIPTOR-CONTROL-AUDIT",
-  "test_files": [],
+  "test_files": [
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs"
+  ],
+  "test_inventory": [
+    {
+      "bytes": 15524,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs",
+      "sha256": "42fe49df1899e21f796b44a70cbc324b8db9f5a06b5335b6dcc035cbca43e947"
+    }
+  ],
   "vector_coverage": {
     "approved_supplement_direct_vectors": {
       "actual_comparison": "all six-lane 1536-sample ramp output words, peak/level/hold/index traces, state-after fields, and canonical hold_count I64LE bytes are compared only after computation",
@@ -516,6 +553,16 @@ The approved `f04-descriptor-control.v1` supplement binds six selected-provider 
       "file": "test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json",
       "sha256": "ffb1dea3b1e69383312da4059b9d8ddabb4366ed8fc22e7537f750ba041f2d63"
     }
+  },
+  "verification": {
+    "error_case_count": 8,
+    "independent_reference_paths": 2,
+    "module_test_count": 2,
+    "ramp_output_words_compared": 55296,
+    "status": "LOCALLY_VERIFIED_F04D_DIRECT_STAGE_ONLY__WHOLE_RECEIVER_NOT_RUN",
+    "success_case_count": 6,
+    "w04_execution": "NOT_RUN",
+    "whole_receiver_j05_parent_product": "NOT_RUN"
   }
 }
 ```
