@@ -2,34 +2,57 @@
 
 由 IMPLEMENTATION-MAP.json 生成，不得手工修改。
 
-Mapping status: MAPPING_COMPLETE. Implementation status: NOT_IMPLEMENTED. Implementation readiness: NO_IMPLEMENTATION.
+Mapping status: MAPPING_COMPLETE. Implementation status: NOT_IMPLEMENTED. Implementation readiness: READY_FOR_IMPLEMENTATION_MODE0_FITTING_ONLY__WHOLE_BINDING_DEFERRED.
 
-This is a documentation-only mapping of the F04RB mode=0 fitting branch. It does not implement a QMF stage, connect the receiver, run the F05JC fit, produce J05, or authorize the parent transaction.
+This map authorizes only the F04RB mode=0 fitting stage. The receiver route, F05JC fit, J05/F05JL, final-six tail, and parent transaction remain separate and deferred.
 
 The carrier path re-analyzes same-generation s09_input in [L,R,C,Ls,Rs] order from the receiver analysis before-state. Its analysis after-state must equal the receiver analysis after-state wordwise, but the fitting branch proposes only its own delay/FIR/window after-state; it has no local commit authority. Mode=0 updates delay and the 20-complex history while skipping phase rotation, tap multiplication, band0 replacement, and synthesis.
 
 Target and carrier windows each join their own previous 24 slots to the current 24 slots. F05JC may consume the resulting 15x48 target and 5x48 carrier only when eligibility, weights, geometry, and the descriptor after index are same-generation ready. s09_return and final_six are not carrier inputs.
 
-The current whole-binding cases are model-first assertions, not isolated implementation execution. U-QMF-SURROUND-RESET is a mode=1 case and is not mode=0 evidence. A direct mode=0 stage vector is absent, and the approved package does not pin the first-failure priority among provider, callback/lineage, state, and input checks; these remain blockers.
+F04RB-MODE0-FITTING-V1 binds cold g2, warm g3, and cached-drain g4 recipes to post-computation literals and complete canonical after-state hashes. Execute all stages from recipes and prior computed state before comparing literals. The g4 drain repeats g3 input, but still advances the fitting state once. U-QMF-SURROUND-RESET remains a mode=1 case. Existing whole-binding assertions remain model-first and do not qualify whole receiver execution.
 
-The complete package, provider, state, clock, error, vector, and scope record follows.
+The API precedence is provider availability, provider identity/shape/finite, callback and projection lineage, before-state, input shape/finite, then numeric or receiver-analysis join. The API has no separate receiver-analysis join code, so this map uses the clean local F04RB_LINEAGE_ERROR outcome; it makes no native error-code claim.
+
+The full provider, state, clock, outcome, KAT, and implementation-scope record follows.
 
 ## Machine-readable contract
 
 ```json
 {
-  "blockers": [
-    {
-      "gap": "No selected mode0 direct input/literal vector binds five-lane delay, band0-history update, carrier current/window output, and canonical fitting after-state.",
-      "id": "mode0-direct-stage-literal",
-      "resolution": "Add an approved mode0 input-only direct-stage vector and post-computation literals before isolated mode0 implementation verification."
-    },
-    {
-      "gap": "The package specifies error categories and fatal outcomes but does not pin the first-failure order among provider, callback/lineage, state, and input checks.",
-      "id": "f04rb-error-precedence",
-      "resolution": "Obtain an approved precedence rule or explicitly authorize a consumer-local order before implementing error selection; until then, map outcomes without claiming priority."
-    }
-  ],
+  "api_schema_shape_binding": "Raw storage shapes are pinned by F04RB.7 and the actual-literal field shapes: previous_targets=[15,24,128] F32 words, previous_carriers=[5,24,128] F32 words, fitting_fir=[5,40] F32 words (20 complex per lane). API-SCHEMA uses compact dimensions; it is not a second serialization schema.",
+  "approved_supplement": {
+    "files": [
+      {
+        "bytes": 8252,
+        "file": "SPEC.md",
+        "sha256": "54f76a4935d7fef0171d71c4422c40d466be5aa0b94df6c4437a7f32422f19da"
+      },
+      {
+        "bytes": 1019,
+        "file": "API-SCHEMA.json",
+        "sha256": "c9ba108c602ab37f24713628b1bcf0e5dcd06189dd89501a70bde04b77c9ba8c"
+      },
+      {
+        "bytes": 7696,
+        "file": "F04RB-MODE0-INPUT-VECTORS.json",
+        "sha256": "733a9502491c7d1e1e543b15b36bf34135960e285c8240615f44b63225720a5a"
+      },
+      {
+        "bytes": 19861457,
+        "file": "F04RB-MODE0-ACTUAL-LITERALS.json",
+        "sha256": "7c5d6b034412c09264117e210fccb270f20550f099df2b00209e762876c30c77"
+      }
+    ],
+    "identity": "f04rb-mode0-fitting.v1",
+    "manifest_bytes": 1192,
+    "manifest_file": "MANIFEST.json",
+    "manifest_sha256": "0f597e960eb98ae6ffb7436ea6ae0c435fb73e942801f2cd2dd3222028152be2",
+    "root": "outputs/IMPLEMENTER_SUPPLEMENTS/F04RB-MODE0-FITTING-V1",
+    "secrets_included": false,
+    "status": "IMPLEMENTATION_SPEC_READY_WHOLE_RECEIVER_NOT_RUN"
+  },
+  "blockers": [],
   "clock_contract": {
     "dispatch_relation": "d=g-1=r+1 for the same callback; mode0 prepares fitting windows and does not itself execute F05JL/J05.",
     "eof": "EOF adds no receiver callback, mode0 flush, or synthetic zero QMF slot.",
@@ -46,34 +69,43 @@ The complete package, provider, state, clock, error, vector, and scope record fo
     "native_error_equivalence": false,
     "out_of_scope": "F04_PROFILE_UNSUPPORTED is resolved by the selected profile gate before a receiver callback; it is not a mode0 stage error.",
     "outcomes": [
-      "RECEIVER_PARAMETER_UNAVAILABLE for missing required selected parameter/provider",
-      "RECEIVER_PARAMETER_INVALID for selected parameter identity, length, or finite-value failure",
-      "QMF_PROTOTYPE_UNAVAILABLE for a missing selected QWIN prototype",
-      "QMF_PROTOTYPE_INVALID_INPUT for QWIN length or finite-word failure",
-      "QMF_PROTOTYPE_IDENTITY_MISMATCH for a QWIN provider identity mismatch",
-      "F04ParameterProviderError for the existing typed fixed-FFT provider failure",
-      "F04_STATE_ERROR for invalid fitting/receiver before-state schema or range",
-      "F04_CALLBACK_ORDER for callback/generation/phase/Type10 lineage mismatch",
-      "F04_PIPELINE_RETIRED for a stage presented after programme retirement",
-      "F04_INPUT_ERROR for PCM/control/QMF input type, shape, or finite preflight rejection",
-      "F04_NUMERIC_FAILURE for a nonfinite numeric intermediate or output after valid preflight"
+      "RECEIVER_PARAMETER_UNAVAILABLE for absent selected QMF/FFT/descriptor provider",
+      "RECEIVER_PARAMETER_INVALID for provider identity, shape, or finite failure",
+      "F04RB_LINEAGE_ERROR for stale callback lineage or receiver-analysis-after join mismatch",
+      "F04RB_DESCRIPTOR_PROJECTION for selected index/PG03 gain/generation mismatch",
+      "F04RB_MODE0_STATE_SHAPE for fitting before-state shape, cursor, or finite failure",
+      "F04RB_INPUT_SHAPE for s09_input shape failure",
+      "F04RB_TARGET_TEMPORAL_SHAPE for target input shape failure",
+      "F04RB_INPUT_NONFINITE for input finite validation failure",
+      "F04RB_NUMERIC_NONFINITE for a nonfinite QMF intermediate or output"
     ],
-    "precedence": "UNSPECIFIED_BY_APPROVED_PACKAGE among provider, lineage/callback, state, and input checks; do not invent a first-failure priority."
+    "precedence": [
+      "provider availability",
+      "provider identity/shape/finite",
+      "programme/attempt/callback/generation/lane/descriptor lineage",
+      "fitting before-state shape/finite",
+      "s09/target input shape/finite",
+      "numeric intermediate or receiver-analysis join",
+      "success"
+    ],
+    "receiver_analysis_join_error_mapping": "F04RB_LINEAGE_ERROR; API has no separate join code. This is a clean local mapping, not a native error-code claim."
   },
+  "fixture_materialization_status": "APPROVED_PACKAGE_BOUND_NOT_YET_COPIED",
   "functional_id": "F04RB",
   "implementation_prohibitions": [
-    "no Rust or DSP implementation in this mapping audit",
     "no receiver mode=1 state aliasing or behavior changes",
     "no F04R producer, target producer integration, or receiver routing implementation",
+    "no descriptor selection/ramp; consume only the selected after index/target projection",
     "no F05JC fit algorithm, J05/F05JL, final-six tail, or parent transaction",
-    "no promotion from model-first assertions to isolated execution or product acceptance"
+    "no mode0 local commit/abort/fatal authority",
+    "no whole-receiver or product acceptance promotion"
   ],
-  "implementation_readiness": "NO_IMPLEMENTATION",
+  "implementation_readiness": "READY_FOR_IMPLEMENTATION_MODE0_FITTING_ONLY__WHOLE_BINDING_DEFERRED",
   "implementation_status": "NOT_IMPLEMENTED",
   "input_contract": {
     "callback_index": "F04RB callback_index_zero_based is the receiver index r, not frontend index g; generation=r+1.",
     "carrier_branch": "Re-analyze same-generation s09_input lanes [0,1,2,4,5] from receiver before analysis histories. Raw analysis after must be wordwise equal to receiver analysis after; fitting does not commit receiver analysis history a second time.",
-    "descriptor_clip_index": "F05JC consumes this generation's descriptor after selected index/target. Do not derive it from the first-256 ramp current, receiver before gain, s09_return, or final_six.",
+    "descriptor_clip_index": "Bind the explicit same-generation descriptor after projection: selected_index is 128..255, target_gain bits equal PG03 gain[selected_index-128], and projection generation is r+1. Emit clip_index=selected_index. Do not derive from the first-256 ramp current, receiver before gain, s09_return, or final_six.",
     "forbidden_audio_aliases": [
       "s09_return",
       "final_six"
@@ -96,6 +128,7 @@ The complete package, provider, state, clock, error, vector, and scope record fo
       "Rs"
     ],
     "carrier_window": "For each of five lanes, carrier_window48 is previous_carrier24 concatenated with current mode0 delayed 24 slots; after-state previous_carrier24 becomes this current24.",
+    "clip_index": "Emit the same selected_index from the explicit descriptor after projection; do not rerun descriptor selection or read ramp/final audio.",
     "delay": "For each lane concatenate fitting before delay 10x128 words with 24 current analysis slots; mode0 emits the first 24 slots and saves the last 10 current slots as fitting delay after.",
     "fitting_output": "Target 15x48x128 F32 plus carrier 5x48x128 F32. F05JC may begin only after both, eligibility, weights, and geometry are ready for the same generation.",
     "j05_relation": "F04RB/mode0 does not produce J05. F04C assembles the selected J05 receipt only after its whole callback; F05JL consumes that projection and does not rerun receiver or fitting histories.",
@@ -194,6 +227,11 @@ The complete package, provider, state, clock, error, vector, and scope record fo
       "sha256": "e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431"
     },
     {
+      "bytes": 4861,
+      "file": "parameters/descriptor-mathematical.json",
+      "sha256": "a493fbdaf2dab30e940cae9976ed3305f3af083e5614ab0cbd6889c71a02b197"
+    },
+    {
       "bytes": 226344,
       "file": "test-vectors/F04-WHOLE-SPATIAL-STATE-SCHEMA.json",
       "schema_pointer": "#/whole_state_by_boundary/cold/fields/7/schema",
@@ -238,6 +276,10 @@ The complete package, provider, state, clock, error, vector, and scope record fo
     "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
   },
   "persistent_owner": "spatial_audio.F04CompositionState.fitting_qmf_state",
+  "planned_fixture_files": [
+    "crates/jocforge-domain/tests/fixtures/mode0_fitting/input-vectors.json",
+    "crates/jocforge-domain/tests/fixtures/mode0_fitting/actual-literals.json"
+  ],
   "planned_implementation_files": [
     "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs"
   ],
@@ -245,18 +287,31 @@ The complete package, provider, state, clock, error, vector, and scope record fo
     "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs"
   ],
   "planned_vector_sources": [
+    "outputs/IMPLEMENTER_SUPPLEMENTS/F04RB-MODE0-FITTING-V1/F04RB-MODE0-INPUT-VECTORS.json",
+    "outputs/IMPLEMENTER_SUPPLEMENTS/F04RB-MODE0-FITTING-V1/F04RB-MODE0-ACTUAL-LITERALS.json",
     "test-vectors/QMF-RECEIVER-WHOLE-BINDING-VERIFICATION.json",
     "test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json"
   ],
   "programme_root": "spatial_audio",
   "readiness_boundary": {
     "direct_mode0_stage_execution": "NOT_RUN",
+    "direct_mode0_vectors": "THREE_SUCCESS_NINE_ERROR_CASES_HASH_PINNED",
     "j05_parent": "NOT_RUN",
     "mode0_spec_semantics": "MAPPED",
-    "provider_identities": "BOUND_TO_APPROVED_PACKAGE",
+    "provider_identities": "BOUND_TO_APPROVED_BASE_PACKAGE_AND_MODE0_SUPPLEMENT",
     "real_adm_and_product_acceptance": "NOT_RUN",
     "whole_receiver": "NOT_RUN"
   },
+  "resolved_prior_blockers": [
+    {
+      "id": "mode0-direct-stage-literal",
+      "resolved_by": "F04RB-MODE0-FITTING-V1; three selected cold/warm/cached direct KATs carry all stages and complete after-state bytes/hash."
+    },
+    {
+      "id": "f04rb-error-precedence",
+      "resolved_by": "F04RB-MODE0-FITTING-V1/API-SCHEMA.json; provider, identity, lineage/projection, state, input, numeric/join, success order and nine input-only error cases."
+    }
+  ],
   "state_ownership": {
     "canonical_encoding": "Use F04RB.7 encode_node-v1 tags N/B/I/T/D, fixed little-endian lengths/integers, ASCII class/field names, and declared field order. Do not invent a parallel serialization root.",
     "canonical_schema_bytes": 226344,
@@ -306,7 +361,7 @@ The complete package, provider, state, clock, error, vector, and scope record fo
     "stage_authority": "F04Q.4 defines mode0 delay/history behavior; F04RB.2/.3 binds the five-lane fitting path and windows; F04C executes the enclosing receiver callback.",
     "state_type": "QmfWindowState"
   },
-  "status": "MAPPED_MODE0_RULES__DIRECT_VECTOR_AND_ERROR_PRECEDENCE_BLOCKED",
+  "status": "READY_FOR_IMPLEMENTATION_MODE0_FITTING_ONLY__WHOLE_BINDING_DEFERRED",
   "supplied_review_boundary": {
     "current_binding": "The supplied local-review status carries stale package/spec identities and is not reused as a current isolated execution pass.",
     "reported_f04rb_local_ready": "YES",
@@ -314,12 +369,121 @@ The complete package, provider, state, clock, error, vector, and scope record fo
   },
   "task_id": "F04RB-MODE0-FITTING-MAPPING-AUDIT",
   "vector_coverage": {
+    "direct_mode0": {
+      "actual_bytes": 19861457,
+      "actual_file": "outputs/IMPLEMENTER_SUPPLEMENTS/F04RB-MODE0-FITTING-V1/F04RB-MODE0-ACTUAL-LITERALS.json",
+      "actual_first_rule": "Compute target/carrier stages and complete after-state from input recipes and validated providers first; compare actual literals and canonical byte hashes only afterward. Never seed any runtime state from expected literals or hashes.",
+      "actual_sha256": "7c5d6b034412c09264117e210fccb270f20550f099df2b00209e762876c30c77",
+      "after_binary_note": "The canonical_after file names in ACTUAL-LITERALS are labels; the package distributes after-state U32 fields and canonical byte count/SHA in ACTUAL-LITERALS, not separate FITTING-AFTER-*.bin files.",
+      "api_shape_binding": "F04RB.7 and actual-literal shapes pin previous target/carrier slots to 128 F32 words and fitting_fir to 40 F32 words (20 complex) per lane.",
+      "cached_drain_rule": "g4 CACHED_DRAIN repeats g3 input recipes exactly and still executes one fitting transition; it is not skipped and does not add a zero flush.",
+      "canonical_after_kats": [
+        {
+          "bytes": 421039,
+          "case_id": "cold_normal_g2",
+          "sha256": "466067702d5054a0e25c231dbdcd53b72c589c3c74a7cf95a6b33abb930786c0",
+          "target_temporal_read": 1792,
+          "target_temporal_write": 896
+        },
+        {
+          "bytes": 421039,
+          "case_id": "warm_normal_g3",
+          "sha256": "46bb20d1e327735dcc03d13a36e36d7ddc3f37b74df7e3abd046ec0fa839fd05",
+          "target_temporal_read": 896,
+          "target_temporal_write": 1792
+        },
+        {
+          "bytes": 421039,
+          "case_id": "cached_drain_g4",
+          "sha256": "9c3cef69fbe4e08d4ce58718cad125c2fcbf54f5fad2bed9e1941f7eac057d32",
+          "target_temporal_read": 1792,
+          "target_temporal_write": 896
+        }
+      ],
+      "descriptor_projections": [
+        {
+          "case_id": "cold_normal_g2",
+          "generation": 1,
+          "selected_index": 128,
+          "target_gain_u32": 1031798784
+        },
+        {
+          "case_id": "warm_normal_g3",
+          "generation": 2,
+          "selected_index": 162,
+          "target_gain_u32": 1040711680
+        },
+        {
+          "case_id": "cached_drain_g4",
+          "generation": 3,
+          "selected_index": 179,
+          "target_gain_u32": 1045168128
+        }
+      ],
+      "error_cases": [
+        "provider_missing_precedes_stale",
+        "provider_identity_invalid",
+        "stale_lineage",
+        "descriptor_projection_mismatch",
+        "state_delay_shape",
+        "s09_shape",
+        "target_shape",
+        "nonfinite_input",
+        "finite_numeric_overflow"
+      ],
+      "input_bytes": 7696,
+      "input_file": "outputs/IMPLEMENTER_SUPPLEMENTS/F04RB-MODE0-FITTING-V1/F04RB-MODE0-INPUT-VECTORS.json",
+      "input_sha256": "733a9502491c7d1e1e543b15b36bf34135960e285c8240615f44b63225720a5a",
+      "literal_output_shapes": {
+        "carrier_mode0_current24": [
+          5,
+          24,
+          128
+        ],
+        "carrier_raw_analysis": [
+          5,
+          24,
+          128
+        ],
+        "carrier_windows48": [
+          5,
+          48,
+          128
+        ],
+        "receiver_analysis_after_join": [
+          5,
+          9,
+          64
+        ],
+        "target_raw_analysis": [
+          15,
+          24,
+          128
+        ],
+        "target_temporal_output": [
+          15,
+          1536
+        ],
+        "target_windows48": [
+          15,
+          48,
+          128
+        ]
+      },
+      "qualification": "Direct mode0 fitting stage KAT only; receiver whole, F05JC/J05, parent transaction, real ADM/listening, native error equivalence, and product acceptance remain NOT_RUN.",
+      "success_cases": [
+        "cold_normal_g2",
+        "warm_normal_g3",
+        "cached_drain_g4"
+      ],
+      "supplement_manifest_sha256": "0f597e960eb98ae6ffb7436ea6ae0c435fb73e942801f2cd2dd3222028152be2"
+    },
     "existing_direct_qmf_supplements": {
       "analysis_manifest_sha256": "79830470e3101a10d96852f44c855252c7b78533e0c2b32a73c86d93f74542c6",
-      "coverage": "shared QMF analysis and mode1 synthesis only; no independent mode0 fitting delay/FIR/window literal",
+      "coverage": "shared QMF analysis and mode1 synthesis only; mode0-specific delay/FIR/window coverage comes from the separately identity-bound F04RB-MODE0-FITTING-V1 supplement",
       "synthesis_manifest_sha256": "bff23be87f4b7ceb27c145ab6106dd1b786aa2e6dbc35d1e4892da73743e9f4a"
     },
-    "mode0_direct_input_and_literal": "NOT_PRESENT",
+    "mode0_direct_input_and_literal": "PRESENT_AND_HASH_PINNED",
     "mode1_negative_case": "U-QMF-SURROUND-RESET is mode=1 only; it cannot satisfy mode0 coverage.",
     "whole_binding": {
       "assertion_counts": {

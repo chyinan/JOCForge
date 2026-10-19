@@ -40,7 +40,7 @@
 | F04R | — | — | INVENTORIED |
 | F04D | `FrontendCallbackIndex`<br>`ReceiverCallbackCount` | `g=0/1 skips descriptor; g>=2 uses r=g-2 once per real receiver callback`<br>`control selection after temporal0..2 and before temporal3`<br>`gain ramp consumes temporal3 after for six lanes`<br>`cached drain is a real callback; no synthetic descriptor flush` | INVENTORIED |
 | F04Q | — | — | INVENTORIED |
-| F04RB | `FrontendCallbackIndex`<br>`ReceiverCallbackCount`<br>`JocDispatchIndex` | `g<2 is Type10 priming; no receiver or mode0 fitting callback`<br>`for g>=2, r=g-2; F04RB callback_index_zero_based is r and generation is r+1=g-1`<br>`the same frontend callback's dispatch index is d=g-1=r+1; fitting does not execute J05`<br>`each receiver callback consumes 24 ordered 64-sample slots and advances each fitting owner once`<br>`cached-drain callbacks with Ready Type10 are real callbacks; no synthetic QMF flush or EOF callback` | INVENTORIED |
+| F04RB | `FrontendCallbackIndex`<br>`ReceiverCallbackCount`<br>`JocDispatchIndex` | `g<2 is Type10 priming; no receiver or mode0 fitting callback`<br>`for g>=2, r=g-2; F04RB callback_index_zero_based is r and generation is r+1=g-1`<br>`the same frontend callback's dispatch index is d=g-1=r+1; fitting does not execute J05`<br>`each receiver callback consumes 24 ordered 64-sample slots and advances each fitting owner once`<br>`KAT cases are g2/r0/gen1/d1, g3/r1/gen2/d2, and g4/r2/gen3/d3`<br>`cached-drain callbacks with Ready Type10 are real callbacks; no synthetic QMF flush or EOF callback` | INVENTORIED |
 | F04QF | — | — | INVENTORIED |
 | F04QP | — | — | INVENTORIED |
 | F05 | — | — | INVENTORIED |

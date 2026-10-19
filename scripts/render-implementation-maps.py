@@ -109,11 +109,12 @@ def render(d):
    '# Mode=0 QMF fitting map\n\n'
    +'由 IMPLEMENTATION-MAP.json 生成，不得手工修改。\n\n'
    +f"Mapping status: {x['mapping_status']}. Implementation status: {x['implementation_status']}. Implementation readiness: {x['implementation_readiness']}.\n\n"
-   +'This is a documentation-only mapping of the F04RB mode=0 fitting branch. It does not implement a QMF stage, connect the receiver, run the F05JC fit, produce J05, or authorize the parent transaction.\n\n'
+   +'This map authorizes only the F04RB mode=0 fitting stage. The receiver route, F05JC fit, J05/F05JL, final-six tail, and parent transaction remain separate and deferred.\n\n'
    +'The carrier path re-analyzes same-generation s09_input in [L,R,C,Ls,Rs] order from the receiver analysis before-state. Its analysis after-state must equal the receiver analysis after-state wordwise, but the fitting branch proposes only its own delay/FIR/window after-state; it has no local commit authority. Mode=0 updates delay and the 20-complex history while skipping phase rotation, tap multiplication, band0 replacement, and synthesis.\n\n'
    +'Target and carrier windows each join their own previous 24 slots to the current 24 slots. F05JC may consume the resulting 15x48 target and 5x48 carrier only when eligibility, weights, geometry, and the descriptor after index are same-generation ready. s09_return and final_six are not carrier inputs.\n\n'
-   +'The current whole-binding cases are model-first assertions, not isolated implementation execution. U-QMF-SURROUND-RESET is a mode=1 case and is not mode=0 evidence. A direct mode=0 stage vector is absent, and the approved package does not pin the first-failure priority among provider, callback/lineage, state, and input checks; these remain blockers.\n\n'
-   +'The complete package, provider, state, clock, error, vector, and scope record follows.\n\n'
+   +'F04RB-MODE0-FITTING-V1 binds cold g2, warm g3, and cached-drain g4 recipes to post-computation literals and complete canonical after-state hashes. Execute all stages from recipes and prior computed state before comparing literals. The g4 drain repeats g3 input, but still advances the fitting state once. U-QMF-SURROUND-RESET remains a mode=1 case. Existing whole-binding assertions remain model-first and do not qualify whole receiver execution.\n\n'
+   +'The API precedence is provider availability, provider identity/shape/finite, callback and projection lineage, before-state, input shape/finite, then numeric or receiver-analysis join. The API has no separate receiver-analysis join code, so this map uses the clean local F04RB_LINEAGE_ERROR outcome; it makes no native error-code claim.\n\n'
+   +'The full provider, state, clock, outcome, KAT, and implementation-scope record follows.\n\n'
    +'## Machine-readable contract\n\n'
    +chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
   )

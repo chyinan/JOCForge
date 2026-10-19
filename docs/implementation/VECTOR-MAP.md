@@ -40,7 +40,7 @@
 | F04R | — | — | — | INVENTORIED |
 | F04D | INPUT_ONLY_RECIPES_AND_POSTCOMPUTATION_LITERALS | `outputs/IMPLEMENTER_SUPPLEMENTS/F04-DESCRIPTOR-CONTROL-V1/F04D-DIRECT-INPUT-VECTORS.json`<br>`outputs/IMPLEMENTER_SUPPLEMENTS/F04-DESCRIPTOR-CONTROL-V1/F04D-DIRECT-ACTUAL-LITERALS.json` | `cold_zero`<br>`head_tail_lfe_excluded`<br>`threshold_equal_hold_decrement`<br>`lookup_last_ordinal`<br>`attack_and_nontrivial_ramp`<br>`old_tail_peak_carry_current_tail_zero`<br>`8 direct error cases; see supplement identity-bound file` | INVENTORIED |
 | F04Q | — | — | — | INVENTORIED |
-| F04RB | MODEL_FIRST_WHOLE_BINDING_ASSERTIONS_NO_MODE0_DIRECT_STAGE_LITERAL | `test-vectors/QMF-RECEIVER-WHOLE-BINDING-VERIFICATION.json`<br>`test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json` | `QRB-CONT-0`<br>`QRB-CONT-1`<br>`QRB-CONT-2`<br>`QRB-CONT-3`<br>`QRB-CONT-4` | INVENTORIED |
+| F04RB | DIRECT_MODE0_INPUT_ONLY_AND_POSTCOMPUTATION_LITERALS_PLUS_MODEL_FIRST_WHOLE_BINDING | `outputs/IMPLEMENTER_SUPPLEMENTS/F04RB-MODE0-FITTING-V1/F04RB-MODE0-INPUT-VECTORS.json`<br>`outputs/IMPLEMENTER_SUPPLEMENTS/F04RB-MODE0-FITTING-V1/F04RB-MODE0-ACTUAL-LITERALS.json`<br>`test-vectors/QMF-RECEIVER-WHOLE-BINDING-VERIFICATION.json`<br>`test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json` | `cold_normal_g2`<br>`warm_normal_g3`<br>`cached_drain_g4`<br>`provider_missing_precedes_stale`<br>`provider_identity_invalid`<br>`stale_lineage`<br>`descriptor_projection_mismatch`<br>`state_delay_shape`<br>`s09_shape`<br>`target_shape`<br>`nonfinite_input`<br>`finite_numeric_overflow`<br>`QRB-CONT-0..4 are whole-binding model-first assertions, not isolated implementation results` | INVENTORIED |
 | F04QF | — | — | — | INVENTORIED |
 | F04QP | — | — | — | INVENTORIED |
 | F05 | — | — | — | INVENTORIED |

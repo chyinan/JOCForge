@@ -94,7 +94,7 @@ The machine-readable record below binds the exact formulas, providers, owners, c
       "real ADM/audio/listening acceptance"
     ],
     "fitting_mode0": "EXCLUDED. F04RB.2 has five independent fitting delay/FIR owners; mode=0 updates fitting delay and 20-complex history, skips tap multiplication, does not overwrite band0, and has no synthesis FFT. It must not alias receiver mode=1 state or be implemented in QMF_CORE.",
-    "mode0_vector_boundary": "U-QMF-SURROUND-RESET is the QMF receiver mode=1 reset case, not mode=0 fitting evidence. The current package has no direct mode=0 fitting-stage input/literal vector; whole-binding hashes are model-first assertions.",
+    "mode0_vector_boundary": "F04RB-MODE0-FITTING-V1 contains direct mode0 fitting KATs, owned by MODE0_FITTING_AUDIT and not QMF_CORE. U-QMF-SURROUND-RESET remains mode=1 only; whole-binding hashes remain model-first assertions.",
     "qmf_analysis_history_row_order": [
       "L",
       "R",
