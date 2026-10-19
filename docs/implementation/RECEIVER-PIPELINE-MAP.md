@@ -2,7 +2,7 @@
 
 由 IMPLEMENTATION-MAP.json 生成，不得手工修改。
 
-Mapping status: `MAPPING_COMPLETE`. Implementation readiness: `YES_F04R_DIRECT_RECEIVER_ONLY`. Audit status: `READY_FOR_IMPLEMENTATION_F04R_DIRECT_RECEIVER_ONLY__WHOLE_RECEIVER_NOT_RUN`.
+Mapping status: `MAPPING_COMPLETE`. Implementation readiness: `LOCALLY_VERIFIED_F04R_DIRECT_RECEIVER_ONLY`. Audit status: `LOCALLY_VERIFIED_F04R_DIRECT_RECEIVER_ONLY__WHOLE_RECEIVER_NOT_RUN`.
 
 This is a mapping-only gate. It does not implement Rust/DSP, JOC/J05, F05JC, codec behavior, a parent transaction, or any root commit. The F04R route is executed once by F04C for each callback whose Type10 outcome is Ready.
 
@@ -60,7 +60,7 @@ Owner: `spatial_audio.F04CompositionState.receiver_state: ModelState`. Canonical
 | qmf_delay_history | 2 rows [Ls,Rs] x 10 x 128 F32 | all positive zero |
 | qmf_fir_history | 2 rows [Ls,Rs] x 40 F32 | all positive zero |
 | synthesis_history | 2 rows [Ls,Rs] x 576 F32 | all positive zero |
-| temporal_states | TemporalState(span:I64LE,stride_bytes:I64LE=4,index_28:I64LE semantic read,index_32:I64LE semantic write,buffers); temporal0=(span1217,3 lanes), temporal1=(span63,5 lanes), temporal2=(span900,1 lane), temporal3=(span256,6 lanes), reserved temporal4=(span896,15 lanes) unchanged. | F04R.1 gives logical read=span/write=0 and two positive-zero buffers per lane; canonical index_28/index_32 correspondence is not specified; temporal4 remains unchanged in the selected route |
+| temporal_states | TemporalState(span:I64LE,stride_bytes:I64LE=4,index_28:I64LE semantic read,index_32:I64LE semantic write,buffers); temporal0=(span1217,3 lanes), temporal1=(span63,5 lanes), temporal2=(span900,1 lane), temporal3=(span256,6 lanes), reserved temporal4=(span896,15 lanes) unchanged. | F04R.1 gives logical read=span/write=0 and two positive-zero buffers per lane; the approved F04R semantic crosswalk maps index_28=read and index_32=write; temporal4 remains unchanged in the selected route |
 | descriptor_state | DescriptorState(tail_peak:F32, hold_count:I64LE, smoothed:F32, exponent:I64LE, reference:F32, gain:F32) | tail_peak=+0, hold=0, smoothed=+0, exponent=2, reference=R32(2/48), gain=1/16 |
 | post_s09_delay | 6 lanes x 32 F32 | all positive zero |
 | second_ring | 6 RingState values; words=225 F32, write_index/read_index are I64LE | words positive zero; write=224, read=0 |
@@ -136,7 +136,7 @@ The full ModelState is staged as one after-state. F04R/F04D/F04RB have no local 
 | F04RB mode=0 fitting | ['F04RB-MODE0-FITTING-V1 cold g2, warm g3, cached-drain g4'] | DIRECT_F04RB_BRANCH_ONLY_NOT_FINAL_SIX |
 | F04R.8 final-six tail | ['case1_cold_normal', 'case2_warm_normal', 'case3_cached_drain'] | DIRECT_F04R_FINAL_SIX_AND_COMPLETE_AFTER_STATE_KAT |
 
-The six whole-chain vectors are model-first assertions only. They do not provide an isolated F04R run, complete post-computation ModelState literals, or a final_six direct KAT. Selected provider values are identity-pinned and present; the current blockers are direct evidence and error outcomes, not missing numeric provider values.
+The six whole-chain vectors remain model-first assertions only and do not qualify the isolated stage. The separate continuous direct KAT computes case1 -> case2 -> case3 from actual after-state, compares intermediate outputs and the complete canonical ModelState after bytes, and is locally verified. The mapped error outcomes, including competing-fault precedence, are also locally verified. Selected provider values are identity-pinned and present.
 
 ## Minimum blockers
 
@@ -144,7 +144,7 @@ The six whole-chain vectors are model-first assertions only. They do not provide
 |---|---|---|
 | f05r56-same-runner-targets | F05R56 same-runner production of target_updates remains outside this direct F04R implementation slice; direct KATs provide explicit same-generation immutable updates. | Separate F04C integration audit of F05R56 target production; direct F04R KATs remain self-contained with explicit same-generation target_updates. |
 
-F04R-specific error labels and first-failure precedence remain unspecified. Do not copy F04D, F04RB, or mode=1 error contracts into F04R. I03 supplies the known fatal parent effect only. Whole receiver integration, same-runner F05R56 targets, J05/F05JC/parent commit, W04, real ADM, and product acceptance remain `NOT_RUN`.
+F04R-specific error labels and first-failure precedence are mapped by the approved direct receiver contract and locally verified; do not copy F04D, F04RB, or mode=1 error contracts into F04R. The remaining integration boundary is same-runner F05R56 target production, which is `NOT_RUN`. Whole receiver integration, J05/F05JC/parent commit, W04, real ADM, and product acceptance also remain `NOT_RUN`.
 
 ## Machine-readable contract
 
@@ -308,7 +308,7 @@ F04R-specific error labels and first-failure precedence remain unspecified. Do n
     "Do not promote spatial_audio, whole receiver, W04, real ADM, or product acceptance readiness.",
     "Expected after-state and output literals are assertions only and must not seed computation."
   ],
-  "implementation_readiness": "YES_F04R_DIRECT_RECEIVER_ONLY",
+  "implementation_readiness": "LOCALLY_VERIFIED_F04R_DIRECT_RECEIVER_ONLY",
   "lane_contract": {
     "center": "Output lane2 is C; it participates in QMF analysis history only, not mode=1 delay/FIR/synthesis.",
     "component_rows": "Rows1..15 contribute through their per-row six-lane coefficients; no extra row-to-output permutation is introduced.",
@@ -509,10 +509,11 @@ F04R-specific error labels and first-failure precedence remain unspecified. Do n
     }
   ],
   "readiness_boundary": {
-    "F04R_direct_contract": "READY_FOR_IMPLEMENTATION",
-    "F04R_direct_pipeline_execution": "NOT_RUN",
-    "F04R_error_outcomes": "MAPPED_WITH_DIRECT_NEGATIVE_CASES",
-    "F04R_final_six_direct_kat": "PRESENT",
+    "F04R_direct_contract": "LOCALLY_VERIFIED_F04R_DIRECT_STAGE_ONLY",
+    "F04R_direct_stage_execution": "LOCALLY_VERIFIED_DIRECT_KAT_ONLY",
+    "F04R_error_outcomes": "LOCALLY_VERIFIED_DIRECT_NEGATIVE_AND_PRECEDENCE_CASES",
+    "F04R_final_six_direct_kat": "LOCALLY_VERIFIED",
+    "F04R_production_callback_integration": "NOT_RUN",
     "J05_F05JC_and_parent_commit": "OUT_OF_SCOPE_AND_NOT_RUN",
     "W04_real_ADM_and_product_acceptance": "NOT_RUN",
     "mapping": "MAPPING_COMPLETE",
@@ -616,7 +617,7 @@ F04R-specific error labels and first-failure precedence remain unspecified. Do n
         "schema": "2 rows [Ls,Rs] x 576 F32"
       },
       {
-        "cold": "F04R.1 gives logical read=span/write=0 and two positive-zero buffers per lane; canonical index_28/index_32 correspondence is not specified; temporal4 remains unchanged in the selected route",
+        "cold": "F04R.1 gives logical read=span/write=0 and two positive-zero buffers per lane; the approved F04R semantic crosswalk maps index_28=read and index_32=write; temporal4 remains unchanged in the selected route",
         "field": "temporal_states",
         "schema": "TemporalState(span:I64LE,stride_bytes:I64LE=4,index_28:I64LE semantic read,index_32:I64LE semantic write,buffers); temporal0=(span1217,3 lanes), temporal1=(span63,5 lanes), temporal2=(span900,1 lane), temporal3=(span256,6 lanes), reserved temporal4=(span896,15 lanes) unchanged."
       },
@@ -709,7 +710,7 @@ F04R-specific error labels and first-failure precedence remain unspecified. Do n
       "semantic_crosswalk_status": "MAPPED_EXPLICITLY_BY_APPROVED_F04R_SPEC"
     }
   },
-  "status": "READY_FOR_IMPLEMENTATION_F04R_DIRECT_RECEIVER_ONLY__WHOLE_RECEIVER_NOT_RUN",
+  "status": "LOCALLY_VERIFIED_F04R_DIRECT_RECEIVER_ONLY__WHOLE_RECEIVER_NOT_RUN",
   "task_id": "F04R-PREPROCESSING-FINAL-SIX-MAPPING-AUDIT",
   "type10_input": {
     "callback_index": "FrontendCallbackIndex g; never substitute receiver count r.",

@@ -26,7 +26,7 @@
     "RECEIVER_MODE1_ROUTING_AUDIT": "LOCALLY_VERIFIED_RECEIVER_MODE1_ROUTING_AND_STATE__CROSS_STAGE_J05_EXECUTION_DEFERRED",
     "F04D_DESCRIPTOR_CONTROL": "LOCALLY_VERIFIED_F04D_DIRECT_STAGE_ONLY__WHOLE_RECEIVER_NOT_RUN",
     "MODE0_FITTING_AUDIT": "LOCALLY_VERIFIED_MODE0_FITTING_DIRECT_KATS__WHOLE_RECEIVER_NOT_RUN",
-    "F04R_RECEIVER_PIPELINE_AUDIT": "READY_FOR_IMPLEMENTATION_F04R_DIRECT_RECEIVER_ONLY__WHOLE_RECEIVER_NOT_RUN"
+    "F04R_RECEIVER_PIPELINE_AUDIT": "LOCALLY_VERIFIED_F04R_DIRECT_RECEIVER_ONLY__WHOLE_RECEIVER_NOT_RUN"
   },
   "functional_entries": [
     {
@@ -523,7 +523,7 @@
       "owner": "spatial_audio",
       "planned_phase": "Phase 3",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "READY_FOR_IMPLEMENTATION_F04R_DIRECT_RECEIVER_ONLY__WHOLE_RECEIVER_NOT_RUN",
+      "implementation_status": "LOCALLY_VERIFIED_F04R_DIRECT_RECEIVER_ONLY__WHOLE_RECEIVER_NOT_RUN",
       "clock": {
         "domains": [
           "FrontendCallbackIndex",
@@ -573,10 +573,10 @@
       "implementation_files": [
         "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
         "crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs",
-        "crates/jocforge-domain/src/spatial/spatial_audio_state/f04r_receiver.rs"
+        "crates/jocforge-domain/src/spatial/spatial_audio_state/spatial_audio_receiver.rs"
       ],
       "test_modules": [
-        "crates/jocforge-domain/src/spatial/spatial_audio_state/f04r_receiver/tests.rs"
+        "crates/jocforge-domain/src/spatial/spatial_audio_state/spatial_audio_receiver/tests.rs"
       ],
       "error_outcomes": [
         {
@@ -3629,7 +3629,7 @@
         "crates/jocforge-domain/src/timeline/mod.rs"
       ],
       "implementation_inventory": [
-        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 35267, "sha256": "389994a0786fe8429848ee2ff2341000ed7ad2e13f4a122a20d9a43970aa734d"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 35306, "sha256": "794c5980f2c6f29f8aad45768a6a8b14e4fc1992b2715171a5f747afdaf4f05b"},
         {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2206, "sha256": "4559a9054f74e51a5436681b6362b292248476262ca1dd94b6496d2f0f79a9b6"},
         {"path": "crates/jocforge-domain/src/timeline/index.rs", "bytes": 2290, "sha256": "911be2413816ebe1fde51ceda0066e9c088f92ae7c8b045cee49aac37540ec7d"},
         {"path": "crates/jocforge-domain/src/timeline/mod.rs", "bytes": 586, "sha256": "7f2099065d657bdacab116d921a63107a180930086b73a42557881aa3acdb7b2"}
@@ -3895,7 +3895,7 @@
       ],
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs", "bytes": 17056, "sha256": "b30cb63addb5f8ddfe6bf03e65f84e34221929b8cb78180efc1e6c762c6b6bc5"},
-        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 35267, "sha256": "389994a0786fe8429848ee2ff2341000ed7ad2e13f4a122a20d9a43970aa734d"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 35306, "sha256": "794c5980f2c6f29f8aad45768a6a8b14e4fc1992b2715171a5f747afdaf4f05b"},
         {"path": "crates/jocforge-domain/src/spatial/spatial_control.rs", "bytes": 26347, "sha256": "3c13f67f84698b32d568bf9fda223878eb3925a95c7fcbe30e0d0ef2f1b8fcd2"}
       ],
       "test_inventory": [
@@ -4072,7 +4072,7 @@
       ],
       "implementation_inventory": [
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs","bytes":12144,"sha256":"9473ea603741d59955d90f4a58c6c02875f1bba97d45203d6547c9b0c84d8a78"},
-        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state.rs","bytes":35267,"sha256":"389994a0786fe8429848ee2ff2341000ed7ad2e13f4a122a20d9a43970aa734d"},
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state.rs","bytes":35306,"sha256":"794c5980f2c6f29f8aad45768a6a8b14e4fc1992b2715171a5f747afdaf4f05b"},
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs","bytes":38627,"sha256":"ff0121d7a2ad16dac2682ae3564b2d4baafff64b622673a05015133253646256"},
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs","bytes":17056,"sha256":"b30cb63addb5f8ddfe6bf03e65f84e34221929b8cb78180efc1e6c762c6b6bc5"},
         {"path":"crates/jocforge-domain/src/spatial/spatial_control.rs","bytes":26347,"sha256":"3c13f67f84698b32d568bf9fda223878eb3925a95c7fcbe30e0d0ef2f1b8fcd2"}
@@ -5791,11 +5791,11 @@
       },
       "implementation_binding": {
         "implementation_files": [
-          {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs", "bytes": 17053, "sha256": "e871096db3a6780ab467edb07b5670072b2b0eafa40e8414d35a2d3369aa13b5"},
-          {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 35267, "sha256": "389994a0786fe8429848ee2ff2341000ed7ad2e13f4a122a20d9a43970aa734d"}
+          {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs", "bytes": 17166, "sha256": "5362379d8c33a2c7ae349c34d1836a083c453c43b61f191a075ecc8f4afd3aca"},
+          {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 35306, "sha256": "794c5980f2c6f29f8aad45768a6a8b14e4fc1992b2715171a5f747afdaf4f05b"}
         ],
         "test_files": [
-          {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests/receiver_mode1.rs", "bytes": 23195, "sha256": "4c89df1bee27ca2b510d2c4fdb664c623f2c5c7efce22e3a07bab73d9d91f4b3"},
+          {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests/receiver_mode1.rs", "bytes": 23303, "sha256": "9bc20e80319c4a5df182a7937f69b28587de85fb3c037825890e300f3c117d53"},
           {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs", "bytes": 23795, "sha256": "5d7bfe329d68793d05e5587c9383eda0c7d503277ec31ba9a00c0221ffe5a043"}
         ],
         "s09_lineage_type": "ReceiverS09InputView binds six finite 1536-sample lanes to SpatialAudioJoinMetadata and explicit CallbackPhase; the receiver stage compares it with the Type10 receipt before any QMF processing.",
@@ -6073,7 +6073,7 @@
       "fixture_materialization_status": "MATERIALIZED_AND_HASH_PINNED",
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs", "bytes": 22467, "sha256": "aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce"},
-        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 35267, "sha256": "389994a0786fe8429848ee2ff2341000ed7ad2e13f4a122a20d9a43970aa734d"}
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 35306, "sha256": "794c5980f2c6f29f8aad45768a6a8b14e4fc1992b2715171a5f747afdaf4f05b"}
       ],
       "test_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs", "bytes": 15524, "sha256": "42fe49df1899e21f796b44a70cbc324b8db9f5a06b5335b6dcc035cbca43e947"}
@@ -6415,8 +6415,8 @@
       },
       {
         "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-        "bytes": 35267,
-        "sha256": "389994a0786fe8429848ee2ff2341000ed7ad2e13f4a122a20d9a43970aa734d"
+        "bytes": 35306,
+        "sha256": "794c5980f2c6f29f8aad45768a6a8b14e4fc1992b2715171a5f747afdaf4f05b"
       }
     ],
     "test_inventory": [
@@ -6473,8 +6473,8 @@
       "task_id": "F04R-PREPROCESSING-FINAL-SIX-MAPPING-AUDIT",
       "mapping_document": "docs/implementation/RECEIVER-PIPELINE-MAP.md",
       "mapping_status": "MAPPING_COMPLETE",
-      "status": "READY_FOR_IMPLEMENTATION_F04R_DIRECT_RECEIVER_ONLY__WHOLE_RECEIVER_NOT_RUN",
-      "implementation_readiness": "YES_F04R_DIRECT_RECEIVER_ONLY",
+      "status": "LOCALLY_VERIFIED_F04R_DIRECT_RECEIVER_ONLY__WHOLE_RECEIVER_NOT_RUN",
+      "implementation_readiness": "LOCALLY_VERIFIED_F04R_DIRECT_RECEIVER_ONLY",
       "functional_id": "F04R",
       "programme_root": "spatial_audio",
       "whole_callback_executor": "F04C",
@@ -6790,7 +6790,7 @@
           {
             "field": "temporal_states",
             "schema": "TemporalState(span:I64LE,stride_bytes:I64LE=4,index_28:I64LE semantic read,index_32:I64LE semantic write,buffers); temporal0=(span1217,3 lanes), temporal1=(span63,5 lanes), temporal2=(span900,1 lane), temporal3=(span256,6 lanes), reserved temporal4=(span896,15 lanes) unchanged.",
-            "cold": "F04R.1 gives logical read=span/write=0 and two positive-zero buffers per lane; canonical index_28/index_32 correspondence is not specified; temporal4 remains unchanged in the selected route"
+            "cold": "F04R.1 gives logical read=span/write=0 and two positive-zero buffers per lane; the approved F04R semantic crosswalk maps index_28=read and index_32=write; temporal4 remains unchanged in the selected route"
           },
           {
             "field": "descriptor_state",
@@ -7221,11 +7221,12 @@
       ],
       "readiness_boundary": {
         "mapping": "MAPPING_COMPLETE",
-        "F04R_direct_contract": "READY_FOR_IMPLEMENTATION",
-        "F04R_direct_pipeline_execution": "NOT_RUN",
-        "F04R_final_six_direct_kat": "PRESENT",
+        "F04R_direct_contract": "LOCALLY_VERIFIED_F04R_DIRECT_STAGE_ONLY",
+        "F04R_direct_stage_execution": "LOCALLY_VERIFIED_DIRECT_KAT_ONLY",
+        "F04R_final_six_direct_kat": "LOCALLY_VERIFIED",
         "temporal_state_field_crosswalk": "MAPPED_EXPLICITLY_BY_APPROVED_F04R_SPEC",
-        "F04R_error_outcomes": "MAPPED_WITH_DIRECT_NEGATIVE_CASES",
+        "F04R_error_outcomes": "LOCALLY_VERIFIED_DIRECT_NEGATIVE_AND_PRECEDENCE_CASES",
+        "F04R_production_callback_integration": "NOT_RUN",
         "same_runner_F05R56_target_production": "NOT_RUN",
         "whole_spatial_receiver": "NOT_RUN",
         "J05_F05JC_and_parent_commit": "OUT_OF_SCOPE_AND_NOT_RUN",

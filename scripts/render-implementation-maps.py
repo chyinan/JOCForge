@@ -157,9 +157,9 @@ def render(d):
    +'## F04C/F04D/F04RB and downstream boundaries\n\n'+matrix(['owner or consumer','boundary'],owner_rows)+'\n'
    +'## Provider and vector evidence\n\n'+matrix(['provider','bytes','SHA-256','bound fields'],provider_rows)+'\n'
    +matrix(['stage','direct coverage','qualification'],vector_rows)+'\n'
-   +'The six whole-chain vectors are model-first assertions only. They do not provide an isolated F04R run, complete post-computation ModelState literals, or a final_six direct KAT. Selected provider values are identity-pinned and present; the current blockers are direct evidence and error outcomes, not missing numeric provider values.\n\n'
+   +'The six whole-chain vectors remain model-first assertions only and do not qualify the isolated stage. The separate continuous direct KAT computes case1 -> case2 -> case3 from actual after-state, compares intermediate outputs and the complete canonical ModelState after bytes, and is locally verified. The mapped error outcomes, including competing-fault precedence, are also locally verified. Selected provider values are identity-pinned and present.\n\n'
    +'## Minimum blockers\n\n'+matrix(['blocker','gap','minimum evidence'],blocker_rows)+'\n'
-   +'F04R-specific error labels and first-failure precedence remain unspecified. Do not copy F04D, F04RB, or mode=1 error contracts into F04R. I03 supplies the known fatal parent effect only. Whole receiver integration, same-runner F05R56 targets, J05/F05JC/parent commit, W04, real ADM, and product acceptance remain `NOT_RUN`.\n\n'
+   +'F04R-specific error labels and first-failure precedence are mapped by the approved direct receiver contract and locally verified; do not copy F04D, F04RB, or mode=1 error contracts into F04R. The remaining integration boundary is same-runner F05R56 target production, which is `NOT_RUN`. Whole receiver integration, J05/F05JC/parent commit, W04, real ADM, and product acceptance also remain `NOT_RUN`.\n\n'
    +'## Machine-readable contract\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
   )
  if 'POSTWINDOW_FANOUT_FOUNDATION' in d['phase_one']:

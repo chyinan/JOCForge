@@ -102,9 +102,9 @@ This is only the direct-LFE ring transition and a future Type10 row0 input; it d
       "sha256": "b30cb63addb5f8ddfe6bf03e65f84e34221929b8cb78180efc1e6c762c6b6bc5"
     },
     {
-      "bytes": 35267,
+      "bytes": 35306,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "389994a0786fe8429848ee2ff2341000ed7ad2e13f4a122a20d9a43970aa734d"
+      "sha256": "794c5980f2c6f29f8aad45768a6a8b14e4fc1992b2715171a5f747afdaf4f05b"
     },
     {
       "bytes": 26347,

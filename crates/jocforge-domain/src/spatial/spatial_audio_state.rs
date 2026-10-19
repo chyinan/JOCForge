@@ -15,6 +15,7 @@ pub(crate) mod descriptor_control;
 pub(crate) mod direct_lfe;
 pub(crate) mod fitting_mode0;
 pub(crate) mod receiver_mode1;
+pub(crate) mod spatial_audio_receiver;
 pub(crate) mod type10_assembler;
 
 const EXPECTED_COLD_BYTES: usize = 813_733;

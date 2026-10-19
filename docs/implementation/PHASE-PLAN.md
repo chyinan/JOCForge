@@ -2494,9 +2494,9 @@
   ],
   "implementation_inventory": [
     {
-      "bytes": 35267,
+      "bytes": 35306,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "389994a0786fe8429848ee2ff2341000ed7ad2e13f4a122a20d9a43970aa734d"
+      "sha256": "794c5980f2c6f29f8aad45768a6a8b14e4fc1992b2715171a5f747afdaf4f05b"
     },
     {
       "bytes": 2206,
@@ -5608,14 +5608,14 @@
     "api": "stage_receiver_mode1 consumes one linear Type10AssemblyProposal and a typed F04R stage-3 ReceiverS09InputView; it returns a linear proposal with preserved E2/E3 after-state, Type10 outcome, five raw analysis spectra, surround PCM, and QMF after slices.",
     "implementation_files": [
       {
-        "bytes": 17053,
+        "bytes": 17166,
         "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs",
-        "sha256": "e871096db3a6780ab467edb07b5670072b2b0eafa40e8414d35a2d3369aa13b5"
+        "sha256": "5362379d8c33a2c7ae349c34d1836a083c453c43b61f191a075ecc8f4afd3aca"
       },
       {
-        "bytes": 35267,
+        "bytes": 35306,
         "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-        "sha256": "389994a0786fe8429848ee2ff2341000ed7ad2e13f4a122a20d9a43970aa734d"
+        "sha256": "794c5980f2c6f29f8aad45768a6a8b14e4fc1992b2715171a5f747afdaf4f05b"
       }
     ],
     "s09_lineage_type": "ReceiverS09InputView binds six finite 1536-sample lanes to SpatialAudioJoinMetadata and explicit CallbackPhase; the receiver stage compares it with the Type10 receipt before any QMF processing.",
@@ -5630,9 +5630,9 @@
     "test_count": 6,
     "test_files": [
       {
-        "bytes": 23195,
+        "bytes": 23303,
         "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests/receiver_mode1.rs",
-        "sha256": "4c89df1bee27ca2b510d2c4fdb664c623f2c5c7efce22e3a07bab73d9d91f4b3"
+        "sha256": "9bc20e80319c4a5df182a7937f69b28587de85fb3c037825890e300f3c117d53"
       },
       {
         "bytes": 23795,
@@ -6087,9 +6087,9 @@
       "sha256": "aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce"
     },
     {
-      "bytes": 35267,
+      "bytes": 35306,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "389994a0786fe8429848ee2ff2341000ed7ad2e13f4a122a20d9a43970aa734d"
+      "sha256": "794c5980f2c6f29f8aad45768a6a8b14e4fc1992b2715171a5f747afdaf4f05b"
     }
   ],
   "implementation_prohibitions": [
@@ -6590,9 +6590,9 @@
       "sha256": "8ef557da15432e8d3a7ab37f84c8ebafa3739d8780703fab5f7a8fa8f445b816"
     },
     {
-      "bytes": 35267,
+      "bytes": 35306,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "389994a0786fe8429848ee2ff2341000ed7ad2e13f4a122a20d9a43970aa734d"
+      "sha256": "794c5980f2c6f29f8aad45768a6a8b14e4fc1992b2715171a5f747afdaf4f05b"
     }
   ],
   "implementation_prohibitions": [
@@ -7203,7 +7203,7 @@
     "Do not promote spatial_audio, whole receiver, W04, real ADM, or product acceptance readiness.",
     "Expected after-state and output literals are assertions only and must not seed computation."
   ],
-  "implementation_readiness": "YES_F04R_DIRECT_RECEIVER_ONLY",
+  "implementation_readiness": "LOCALLY_VERIFIED_F04R_DIRECT_RECEIVER_ONLY",
   "lane_contract": {
     "center": "Output lane2 is C; it participates in QMF analysis history only, not mode=1 delay/FIR/synthesis.",
     "component_rows": "Rows1..15 contribute through their per-row six-lane coefficients; no extra row-to-output permutation is introduced.",
@@ -7404,10 +7404,11 @@
     }
   ],
   "readiness_boundary": {
-    "F04R_direct_contract": "READY_FOR_IMPLEMENTATION",
-    "F04R_direct_pipeline_execution": "NOT_RUN",
-    "F04R_error_outcomes": "MAPPED_WITH_DIRECT_NEGATIVE_CASES",
-    "F04R_final_six_direct_kat": "PRESENT",
+    "F04R_direct_contract": "LOCALLY_VERIFIED_F04R_DIRECT_STAGE_ONLY",
+    "F04R_direct_stage_execution": "LOCALLY_VERIFIED_DIRECT_KAT_ONLY",
+    "F04R_error_outcomes": "LOCALLY_VERIFIED_DIRECT_NEGATIVE_AND_PRECEDENCE_CASES",
+    "F04R_final_six_direct_kat": "LOCALLY_VERIFIED",
+    "F04R_production_callback_integration": "NOT_RUN",
     "J05_F05JC_and_parent_commit": "OUT_OF_SCOPE_AND_NOT_RUN",
     "W04_real_ADM_and_product_acceptance": "NOT_RUN",
     "mapping": "MAPPING_COMPLETE",
@@ -7511,7 +7512,7 @@
         "schema": "2 rows [Ls,Rs] x 576 F32"
       },
       {
-        "cold": "F04R.1 gives logical read=span/write=0 and two positive-zero buffers per lane; canonical index_28/index_32 correspondence is not specified; temporal4 remains unchanged in the selected route",
+        "cold": "F04R.1 gives logical read=span/write=0 and two positive-zero buffers per lane; the approved F04R semantic crosswalk maps index_28=read and index_32=write; temporal4 remains unchanged in the selected route",
         "field": "temporal_states",
         "schema": "TemporalState(span:I64LE,stride_bytes:I64LE=4,index_28:I64LE semantic read,index_32:I64LE semantic write,buffers); temporal0=(span1217,3 lanes), temporal1=(span63,5 lanes), temporal2=(span900,1 lane), temporal3=(span256,6 lanes), reserved temporal4=(span896,15 lanes) unchanged."
       },
@@ -7604,7 +7605,7 @@
       "semantic_crosswalk_status": "MAPPED_EXPLICITLY_BY_APPROVED_F04R_SPEC"
     }
   },
-  "status": "READY_FOR_IMPLEMENTATION_F04R_DIRECT_RECEIVER_ONLY__WHOLE_RECEIVER_NOT_RUN",
+  "status": "LOCALLY_VERIFIED_F04R_DIRECT_RECEIVER_ONLY__WHOLE_RECEIVER_NOT_RUN",
   "task_id": "F04R-PREPROCESSING-FINAL-SIX-MAPPING-AUDIT",
   "type10_input": {
     "callback_index": "FrontendCallbackIndex g; never substitute receiver count r.",
@@ -8042,9 +8043,9 @@
       "sha256": "b30cb63addb5f8ddfe6bf03e65f84e34221929b8cb78180efc1e6c762c6b6bc5"
     },
     {
-      "bytes": 35267,
+      "bytes": 35306,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "389994a0786fe8429848ee2ff2341000ed7ad2e13f4a122a20d9a43970aa734d"
+      "sha256": "794c5980f2c6f29f8aad45768a6a8b14e4fc1992b2715171a5f747afdaf4f05b"
     },
     {
       "bytes": 26347,
@@ -8322,9 +8323,9 @@
       "sha256": "9473ea603741d59955d90f4a58c6c02875f1bba97d45203d6547c9b0c84d8a78"
     },
     {
-      "bytes": 35267,
+      "bytes": 35306,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "389994a0786fe8429848ee2ff2341000ed7ad2e13f4a122a20d9a43970aa734d"
+      "sha256": "794c5980f2c6f29f8aad45768a6a8b14e4fc1992b2715171a5f747afdaf4f05b"
     },
     {
       "bytes": 38627,

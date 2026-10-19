@@ -246,7 +246,8 @@ fn normal_receiver_callback_analyzes_five_carriers_and_synthesizes_only_surround
     let lanes = distinct_s09_lanes(0);
     let s09_lanes = lane_slices(&lanes);
     let s09_input =
-        ReceiverS09InputView::from_f04r_stage3(&parent, CallbackPhase::Normal, s09_lanes).unwrap();
+        ReceiverS09InputView::from_post_lfe_stage(&parent, CallbackPhase::Normal, s09_lanes)
+            .unwrap();
     let (functional, fft) = validated_qmf_providers();
     let expected = expected_analysis(&before, &s09_lanes, &functional, &fft);
 
@@ -333,7 +334,7 @@ fn cached_drain_consumes_warm_histories_once_and_advances_receiver_count_once() 
     let first_lanes = distinct_s09_lanes(0);
     let first_s09_lanes = lane_slices(&first_lanes);
     let (first_parent, first_type10) = receiver_type10_fixture(&context, 2, CallbackPhase::Normal);
-    let first_s09 = ReceiverS09InputView::from_f04r_stage3(
+    let first_s09 = ReceiverS09InputView::from_post_lfe_stage(
         &first_parent,
         CallbackPhase::Normal,
         first_s09_lanes,
@@ -372,7 +373,7 @@ fn cached_drain_consumes_warm_histories_once_and_advances_receiver_count_once() 
     let drain_s09_lanes = lane_slices(&drain_lanes);
     let (drain_parent, drain_type10) =
         receiver_type10_fixture(&context, 3, CallbackPhase::CachedDrain);
-    let drain_s09 = ReceiverS09InputView::from_f04r_stage3(
+    let drain_s09 = ReceiverS09InputView::from_post_lfe_stage(
         &drain_parent,
         CallbackPhase::CachedDrain,
         drain_s09_lanes,
@@ -478,7 +479,8 @@ fn stale_receiver_count_rejects_before_returning_after_state() {
     let lanes = distinct_s09_lanes(0);
     let s09_lanes = lane_slices(&lanes);
     let s09_input =
-        ReceiverS09InputView::from_f04r_stage3(&parent, CallbackPhase::Normal, s09_lanes).unwrap();
+        ReceiverS09InputView::from_post_lfe_stage(&parent, CallbackPhase::Normal, s09_lanes)
+            .unwrap();
     let (functional, fft) = validated_qmf_providers();
     let result = stage_receiver_mode1(
         &parent,
@@ -500,7 +502,8 @@ fn phase_and_type10_callback_mismatch_reject_before_qmf_work() {
     let lanes = distinct_s09_lanes(0);
     let s09_lanes = lane_slices(&lanes);
     let s09_input =
-        ReceiverS09InputView::from_f04r_stage3(&parent, CallbackPhase::Normal, s09_lanes).unwrap();
+        ReceiverS09InputView::from_post_lfe_stage(&parent, CallbackPhase::Normal, s09_lanes)
+            .unwrap();
     let (functional, fft) = validated_qmf_providers();
     let wrong_phase = stage_receiver_mode1(
         &parent,
@@ -520,7 +523,8 @@ fn phase_and_type10_callback_mismatch_reject_before_qmf_work() {
     let (parent, type10) = receiver_type10_fixture(&context, 2, CallbackPhase::CachedDrain);
     let s09_lanes = lane_slices(&lanes);
     let mismatched_phase_s09 =
-        ReceiverS09InputView::from_f04r_stage3(&parent, CallbackPhase::Normal, s09_lanes).unwrap();
+        ReceiverS09InputView::from_post_lfe_stage(&parent, CallbackPhase::Normal, s09_lanes)
+            .unwrap();
     let s09_phase_mismatch = stage_receiver_mode1(
         &parent,
         CallbackPhase::CachedDrain,
@@ -548,7 +552,7 @@ fn phase_and_type10_callback_mismatch_reject_before_qmf_work() {
         context.spatial_audio.digest(),
     );
     let wrong_s09 =
-        ReceiverS09InputView::from_f04r_stage3(&wrong_parent, CallbackPhase::Normal, s09_lanes)
+        ReceiverS09InputView::from_post_lfe_stage(&wrong_parent, CallbackPhase::Normal, s09_lanes)
             .unwrap();
     let wrong_generation = stage_receiver_mode1(
         &parent,
@@ -569,7 +573,8 @@ fn phase_and_type10_callback_mismatch_reject_before_qmf_work() {
     let lanes = distinct_s09_lanes(0);
     let s09_lanes = lane_slices(&lanes);
     let s09_input =
-        ReceiverS09InputView::from_f04r_stage3(&parent, CallbackPhase::Normal, s09_lanes).unwrap();
+        ReceiverS09InputView::from_post_lfe_stage(&parent, CallbackPhase::Normal, s09_lanes)
+            .unwrap();
     let (_, wrong_type10_callback) = receiver_type10_fixture(&context, 3, CallbackPhase::Normal);
     let wrong_type10_callback = stage_receiver_mode1(
         &parent,
@@ -595,7 +600,8 @@ fn priming_and_ready_input_shapes_are_checked_before_qmf_work() {
     let s09_lanes = lane_slices(&lanes);
     let (parent, type10) = receiver_type10_fixture(&context, 0, CallbackPhase::Normal);
     let priming_s09 =
-        ReceiverS09InputView::from_f04r_stage3(&parent, CallbackPhase::Normal, s09_lanes).unwrap();
+        ReceiverS09InputView::from_post_lfe_stage(&parent, CallbackPhase::Normal, s09_lanes)
+            .unwrap();
     let unexpected_priming_audio = stage_receiver_mode1(
         &parent,
         CallbackPhase::Normal,
@@ -632,7 +638,7 @@ fn priming_and_ready_input_shapes_are_checked_before_qmf_work() {
     malformed_lanes[4].pop();
     let malformed_s09 = lane_slices(&malformed_lanes);
     let malformed_ready_audio =
-        ReceiverS09InputView::from_f04r_stage3(&parent, CallbackPhase::Normal, malformed_s09);
+        ReceiverS09InputView::from_post_lfe_stage(&parent, CallbackPhase::Normal, malformed_s09);
     assert!(matches!(
         malformed_ready_audio,
         Err(ReceiverMode1Error::Input)

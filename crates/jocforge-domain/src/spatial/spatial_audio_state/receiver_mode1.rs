@@ -88,7 +88,7 @@ pub(super) struct ReceiverS09InputView<'a> {
 
 impl<'a> ReceiverS09InputView<'a> {
     #[allow(dead_code)]
-    pub(super) fn from_f04r_stage3(
+    pub(super) fn from_post_lfe_stage(
         parent: &'a SpatialAudioJoinMetadata,
         phase: CallbackPhase,
         lanes: [&'a [FiniteF32]; 6],
@@ -286,19 +286,19 @@ fn validate_s09_lineage(
     Ok(())
 }
 
-struct ReceiverAnalysis {
-    spectra: CarrierAnalysisSpectra,
-    history_after: [[RawBytes; 9]; 5],
+pub(super) struct ReceiverAnalysis {
+    pub(super) spectra: CarrierAnalysisSpectra,
+    pub(super) history_after: [[RawBytes; 9]; 5],
 }
 
-struct ReceiverSurroundOutput {
-    pcm: [Box<[FiniteF32]>; 2],
-    delay_after: [[RawBytes; 10]; 2],
-    fir_after: [RawBytes; 2],
-    synthesis_after: [RawBytes; 2],
+pub(super) struct ReceiverSurroundOutput {
+    pub(super) pcm: [Box<[FiniteF32]>; 2],
+    pub(super) delay_after: [[RawBytes; 10]; 2],
+    pub(super) fir_after: [RawBytes; 2],
+    pub(super) synthesis_after: [RawBytes; 2],
 }
 
-fn analyze_receiver_lanes(
+pub(super) fn analyze_receiver_lanes(
     receiver_before: &ModelState,
     s09_input: &[&[FiniteF32]; 6],
     functional_provider: &QmfReceiverFunctionalProvider,
@@ -344,7 +344,7 @@ fn analyze_receiver_lanes(
     })
 }
 
-fn process_surround_lanes(
+pub(super) fn process_surround_lanes(
     receiver_before: &ModelState,
     analysis_spectra: &CarrierAnalysisSpectra,
     functional_provider: &QmfReceiverFunctionalProvider,
