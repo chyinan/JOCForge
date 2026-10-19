@@ -751,6 +751,26 @@ def main():
  ('type10-code-provider-mismatch-fixture-production',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_control.rs','#[cfg(test)]\n    pub(crate) fn fixture_mismatch_for_type10(','    pub(crate) fn fixture_mismatch_for_type10(')),
  ('type10-code-g2-test-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs','#[test]\nfn g2_g5_row_order_origins_and_bit_preservation() {','fn g2_g5_row_order_origins_and_bit_preservation() {'))
  ]
+ cases += [
+  ('descriptor-audit-status-overclaim',map_mut_render(lambda d:d['status'].update(F04D_DESCRIPTOR_CONTROL='LOCALLY_VERIFIED_DESCRIPTOR_DSP'))),
+  ('descriptor-audit-map-status-overclaim',map_mut_render(lambda d:d['phase_one']['DESCRIPTOR_CONTROL_AUDIT'].update(status='LOCALLY_VERIFIED_DESCRIPTOR_DSP'))),
+  ('descriptor-audit-threshold-candidate-selected',map_mut_render(lambda d:d['phase_one']['DESCRIPTOR_CONTROL_AUDIT']['provider_bindings']['mathematical_gain_and_threshold'].update(consumer_rule='Use threshold_u32 as selected production threshold'))),
+  ('descriptor-audit-provider-validation-as-dsp',map_mut_render(lambda d:d['phase_one']['DESCRIPTOR_CONTROL_AUDIT']['readiness_boundary'].update(descriptor_dsp_execution='PASS'))),
+  ('descriptor-audit-direct-vector-promoted',map_mut_render(lambda d:d['phase_one']['DESCRIPTOR_CONTROL_AUDIT']['vector_coverage']['unit_vectors'].update(qualification='PRODUCTION_SELECTED_PROVIDER_VECTOR'))),
+  ('descriptor-audit-blocker-removed',map_mut_render(lambda d:d['phase_one']['DESCRIPTOR_CONTROL_AUDIT']['blockers'].remove(next(b for b in d['phase_one']['DESCRIPTOR_CONTROL_AUDIT']['blockers'] if b['id']=='selected-provider-direct-vector')))),
+  ('descriptor-audit-hold-encoding-guessed',map_mut_render(lambda d:d['phase_one']['DESCRIPTOR_CONTROL_AUDIT']['state_owner'].update(logical_to_canonical_hold_encoding='reinterpret U32 bits as I64LE'))),
+  ('descriptor-audit-error-outcomes-claimed',map_mut_render(lambda d:d['phase_one']['DESCRIPTOR_CONTROL_AUDIT']['error_mapping'].update(error_code_and_precedence_status='MAPPED'))),
+  ('descriptor-audit-mode0-state-aliased',map_mut_render(lambda d:d['phase_one']['DESCRIPTOR_CONTROL_AUDIT']['consumer_boundaries'].update(mode0_fitting='Shares receiver mode=1 delay/FIR state'))),
+  ('descriptor-audit-final-six-reversed',map_mut_render(lambda d:d['phase_one']['DESCRIPTOR_CONTROL_AUDIT']['input_contract'].update(control_scratch='Use final_six as the descriptor peak input'))),
+  ('descriptor-audit-j05-reruns-f04d',map_mut_render(lambda d:d['phase_one']['DESCRIPTOR_CONTROL_AUDIT']['consumer_boundaries'].update(selected_j05='F05JL reruns F04D from final_six'))),
+  ('descriptor-audit-w04-overclaim',map_mut_render(lambda d:d['phase_one']['DESCRIPTOR_CONTROL_AUDIT']['readiness_boundary']['w04_current_execution'].update(final_status='PASS'))),
+  ('descriptor-audit-root-owner-drift',map_mut_render(lambda d:d['phase_one']['DESCRIPTOR_CONTROL_AUDIT']['state_owner'].update(root='qmf_window.fitting_state'))),
+  ('descriptor-audit-programme-root-drift',map_mut_render(lambda d:d['phase_one']['DESCRIPTOR_CONTROL_AUDIT'].update(programme_root='qmf_window'))),
+  ('descriptor-audit-persistent-owner-drift',map_mut_render(lambda d:d['phase_one']['DESCRIPTOR_CONTROL_AUDIT'].update(persistent_owner='qmf_window'))),
+  ('descriptor-audit-executor-authority-drift',map_mut_render(lambda d:d['phase_one']['DESCRIPTOR_CONTROL_AUDIT'].update(executor_and_receipt_producer='F04D owns local commit and J05 receipt'))),
+  ('descriptor-audit-temporal3-split-collapsed',map_mut_render(lambda d:d['phase_one']['DESCRIPTOR_CONTROL_AUDIT']['minimum_implementable_slice'].update(stage_boundary='Select descriptor index and apply gain only after temporal3.'))),
+  ('descriptor-audit-unapproved-lineage-types',map_mut_render(lambda d:d['phase_one']['DESCRIPTOR_CONTROL_AUDIT']['input_contract'].update(parent_lineage='Use SpatialAudioJoinMetadata and Type10AssemblyReceipt concrete types even though F04D does not pin them.')))
+ ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]
   if not cases:raise RuntimeError('no boundary mutations match case prefix: '+x.case_prefix)

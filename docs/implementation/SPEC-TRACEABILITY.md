@@ -38,7 +38,7 @@
 | F04P | `specs/04-component-parameter-state.md` | `spatial_audio` | Phase 3 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
 | F04PG | `specs/04-component-parameter-generation.md` | `spatial_audio` | Phase 3 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
 | F04R | `specs/04-receiver-state-and-routing.md` | `spatial_audio` | Phase 3 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
-| F04D | `specs/04-descriptor-control.md` | `spatial_audio` | Phase 3 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
+| F04D | `specs/04-descriptor-control.md` | `spatial_audio` | Phase 3 | INVENTORIED | BLOCKED_ON_SELECTED_PROVIDER_DIRECT_VECTOR_ERROR_OUTCOMES_AND_STATE_ENCODING | — | — |
 | F04Q | `specs/04-qmf-analysis-and-synthesis.md` | `spatial_audio` | Phase 3 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
 | F04RB | `specs/04-qmf-receiver-whole-binding.md` | `spatial_audio` | Phase 3 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
 | F04QF | `specs/04-qmf-mathematical-fft.md` | `spatial_audio` | Phase 3 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |

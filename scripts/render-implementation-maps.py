@@ -84,6 +84,19 @@ def render(d):
    +'## Machine-readable contract\n\n'
    +chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
   )
+ if 'DESCRIPTOR_CONTROL_AUDIT' in d['phase_one']:
+  x=d['phase_one']['DESCRIPTOR_CONTROL_AUDIT'];block=json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)
+  o['PHASE-PLAN.md']+='\n## F04D descriptor control audit\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
+  o['DESCRIPTOR-CONTROL-MAP.md']=(
+   '# Descriptor control map\n\n'
+   +'由 IMPLEMENTATION-MAP.json 生成，不得手工修改。\n\n'
+   +f"Mapping status: `{x['mapping_status']}`. Implementation readiness: `{x['implementation_readiness']}`.\n\n"
+   +'F04D is a receiver substage owned by `spatial_audio`. It selects descriptor control from the post-temporal0..2 scratch before temporal3, then applies the selected gain to six lanes after temporal3. The mode=1 QMF path, mode=0 fitting state, final-six tail, and selected-J05 projection remain separate consumers and owners.\n\n'
+   +'P1.4-D2 validates provider identity and typed values only. The selected F04D lookup threshold comes from the QMF receiver functional provider; the mathematical threshold in the descriptor provider is a candidate that differs in 36 of 127 words and remains pending audio acceptance. No descriptor DSP or W04 audio acceptance is claimed.\n\n'
+   +'Implementation remains blocked on a direct vector bound to the selected descriptor providers, the hold-field canonical encoding rule, and F04D error-outcome translation. W04 local spec-validator review is 150/150, while encode, decode/render metrics, players, listening, and final W04 status remain `NOT_RUN`.\n\n'
+   +'## Machine-readable contract\n\n'
+   +chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
+  )
  if 'POSTWINDOW_FANOUT_FOUNDATION' in d['phase_one']:
   x=d['phase_one']['POSTWINDOW_FANOUT_FOUNDATION'];block=json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)
   o['PHASE-PLAN.md']+='\n## PostWindow fanout foundation\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
