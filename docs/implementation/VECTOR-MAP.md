@@ -40,7 +40,7 @@
 | F04R | — | — | — | INVENTORIED |
 | F04D | INPUT_ONLY_RECIPES_AND_POSTCOMPUTATION_LITERALS | `outputs/IMPLEMENTER_SUPPLEMENTS/F04-DESCRIPTOR-CONTROL-V1/F04D-DIRECT-INPUT-VECTORS.json`<br>`outputs/IMPLEMENTER_SUPPLEMENTS/F04-DESCRIPTOR-CONTROL-V1/F04D-DIRECT-ACTUAL-LITERALS.json` | `cold_zero`<br>`head_tail_lfe_excluded`<br>`threshold_equal_hold_decrement`<br>`lookup_last_ordinal`<br>`attack_and_nontrivial_ramp`<br>`old_tail_peak_carry_current_tail_zero`<br>`8 direct error cases; see supplement identity-bound file` | INVENTORIED |
 | F04Q | — | — | — | INVENTORIED |
-| F04RB | — | — | — | INVENTORIED |
+| F04RB | MODEL_FIRST_WHOLE_BINDING_ASSERTIONS_NO_MODE0_DIRECT_STAGE_LITERAL | `test-vectors/QMF-RECEIVER-WHOLE-BINDING-VERIFICATION.json`<br>`test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json` | `QRB-CONT-0`<br>`QRB-CONT-1`<br>`QRB-CONT-2`<br>`QRB-CONT-3`<br>`QRB-CONT-4` | INVENTORIED |
 | F04QF | — | — | — | INVENTORIED |
 | F04QP | — | — | — | INVENTORIED |
 | F05 | — | — | — | INVENTORIED |

@@ -534,6 +534,30 @@ def main():
  ('receiver-mode1-stale-review-identities-deleted',map_mut_render(lambda d:d['phase_one']['RECEIVER_MODE1_ROUTING'].update(review_binding_mismatches=[])))
  ]
  cases += [
+ ('mode0-status-overclaim',map_mut_render(lambda d:(d['phase_one']['MODE0_FITTING_AUDIT'].update(status='LOCALLY_VERIFIED'),d['status'].update({'MODE0_FITTING_AUDIT':'LOCALLY_VERIFIED'})))),
+ ('mode0-owner-moved-to-joc',map_mut_render(lambda d:d['phase_one']['MODE0_FITTING_AUDIT'].update(persistent_owner='joc'))),
+ ('mode0-fitting-history-aliased',map_mut_render(lambda d:d['phase_one']['MODE0_FITTING_AUDIT']['mode_difference_and_reuse'].update(not_shareable_state='receiver and fitting delay/FIR histories may alias while cold'))),
+ ('mode0-phase-rotation-enabled',map_mut_render(lambda d:d['phase_one']['MODE0_FITTING_AUDIT']['mode0_contract'].update(phase_rotation='Apply mode1 phase rotation'))),
+ ('mode0-mode1-taps-consumed',map_mut_render(lambda d:d['phase_one']['MODE0_FITTING_AUDIT']['mode_difference_and_reuse'].update(provider_consumption='Mode0 consumes mode1 taps and receiver_blend32 directly'))),
+ ('mode0-synthesis-enabled',map_mut_render(lambda d:d['phase_one']['MODE0_FITTING_AUDIT']['mode0_contract'].update(synthesis='Run inverse FFT and synthesis polyphase'))),
+ ('mode0-carrier-s09-return',map_mut_render(lambda d:d['phase_one']['MODE0_FITTING_AUDIT']['input_contract'].update(forbidden_audio_aliases=['final_six']))),
+ ('mode0-descriptor-from-ramp',map_mut_render(lambda d:d['phase_one']['MODE0_FITTING_AUDIT']['input_contract'].update(descriptor_clip_index='derive from the first-256 ramp current'))),
+ ('mode0-clock-collapsed',map_mut_render(lambda d:d['phase_one']['MODE0_FITTING_AUDIT']['clock_contract'].update(receiver_execution='r=g'))),
+ ('mode0-window-state-shape-drift',map_mut_render(lambda d:d['phase_one']['MODE0_FITTING_AUDIT']['state_ownership']['fields'][4].update(exact_schema='T2<T10<B512>>'))),
+ ('mode0-local-commit-authority',map_mut_render(lambda d:d['phase_one']['MODE0_FITTING_AUDIT']['state_ownership'].update(commit_authority='fitting_mode0 local commit'))),
+ ('mode0-synthetic-eof-flush',map_mut_render(lambda d:d['phase_one']['MODE0_FITTING_AUDIT']['clock_contract'].update(eof='append zero-QMF callback'))),
+ ('mode0-model-first-vector-promoted',map_mut_render(lambda d:d['phase_one']['MODE0_FITTING_AUDIT']['vector_coverage']['whole_binding'].update(execution_status='ISOLATED_IMPLEMENTATION_PASS'))),
+ ('mode0-mode1-unit-vector-relabelled',map_mut_render(lambda d:d['phase_one']['MODE0_FITTING_AUDIT']['vector_coverage'].update(mode1_negative_case='U-QMF-SURROUND-RESET is mode0 evidence'))),
+ ('mode0-error-precedence-invented',map_mut_render(lambda d:d['phase_one']['MODE0_FITTING_AUDIT']['error_mapping'].update(precedence='provider, lineage, state, input'))),
+ ('mode0-error-outcome-trigger-drift',map_mut_render(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F04RB')['error_outcomes'][0].update(trigger='missing parameters silently select zero words'))),
+ ('mode0-error-outcome-order-drift',map_mut_render(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F04RB')['error_outcomes'].reverse())),
+ ('mode0-blockers-removed',map_mut_render(lambda d:d['phase_one']['MODE0_FITTING_AUDIT'].update(blockers=[]))),
+ ('mode0-f04rb-trace-status-promoted',map_mut_render(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F04RB').update(implementation_status='READY_FOR_IMPLEMENTATION'))),
+ ('mode0-provider-substituted',map_mut_render(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F04RB')['parameters'].update(provider_files=['parameters/window-q15.json']))),
+ ('mode0-implementation-file-added',lambda r:(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs').write_text('// pattern: Functional Core\npub struct UnauthorizedMode0;\n',encoding='utf-8')),
+ ('mode0-qmf-core-false-vector-claim',map_mut_render(lambda d:d['phase_one']['QMF_CORE']['consumer_scope'].update(mode0_vector_boundary='U-QMF-SURROUND-RESET proves mode0 fitting')))
+ ]
+ cases += [
  ('receiver-mode1-code-lfe-entered-analysis',receiver_mode1_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs','const CARRIER_LANES: [usize; 5] = [0, 1, 2, 4, 5];','const CARRIER_LANES: [usize; 5] = [0, 1, 2, 3, 4];'))),
  ('receiver-mode1-code-mode0-added',receiver_mode1_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs','\nfn mode0_fitting() {}\n'))),
  ('receiver-mode1-code-descriptor-added',receiver_mode1_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs','\nfn select_descriptor_threshold() {}\n'))),
