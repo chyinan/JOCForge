@@ -185,7 +185,7 @@ def render(d):
    +f"Mapping status: `{f05r56['mapping_status']}`. Implementation status: `{f05r56['implementation_status']}`.\n\n"
    +'F05R56 previews marker/history, the selected Type11 encode/decode boundary, 16 reader56 records, and the 16x6 target payload. The persistent state is exactly the nine fields in `reader56-target-state-schema.v2`; targets and receipts are callback-local and contribute zero canonical state bytes.\n\n'
    +'The callback clock is `FrontendCallbackIndex g`; callbacks 0 and 1 advance marker/history and target snapshot only. For `g>=2`, the separate `ReaderInvocationIndex q` is `g-2`; delivered row generations remain attached per row. The stage returns a proposal and a pending immutable `ReaderTargetUpdateReceipt`; only the enclosing `spatial_control` transaction may commit state and admit that receipt.\n\n'
-   +'Receipt consumers may use only the admitted same-generation receipt. This mapping does not authorize F05JC/J05, F05L queue/body production, parent transaction implementation, or whole-programme/product acceptance.\n\n'
+   +'The selected 8-callback producer chain, six reader invocations, Type11 roundtrips, 96 reader records, 576 target words, and receipt semantic hashes are locally verified against input-only recipes and post-computation assertions. Receipt consumers may use only the admitted same-generation receipt. F05JC/J05, F05L queue/body production, parent transaction implementation, whole-programme execution, and product acceptance remain `NOT_RUN`.\n\n'
    +'## Machine-readable contract\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
   )
  return o

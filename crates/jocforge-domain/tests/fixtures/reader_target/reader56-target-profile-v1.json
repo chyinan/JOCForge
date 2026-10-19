@@ -1,0 +1,119 @@
+{
+  "schema": "reader56-target-selected-profile.v1",
+  "row_count": 16,
+  "regular_rows": 15,
+  "leading_lfe": true,
+  "reader_priming_callbacks": 2,
+  "timing": {
+    "base": 0,
+    "position": 0,
+    "duration": 1536,
+    "precision": 32
+  },
+  "trim": {
+    "mode": 3,
+    "group_flags": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      1,
+      1,
+      0,
+      1
+    ],
+    "groups": [
+      [
+        16,
+        16,
+        16,
+        0,
+        0
+      ],
+      [
+        16,
+        16,
+        16,
+        0,
+        0
+      ],
+      [
+        16,
+        16,
+        16,
+        0,
+        0
+      ],
+      [
+        16,
+        16,
+        16,
+        0,
+        0
+      ],
+      [
+        16,
+        16,
+        16,
+        0,
+        0
+      ],
+      [
+        16,
+        16,
+        16,
+        0,
+        0
+      ],
+      [
+        16,
+        16,
+        16,
+        0,
+        0
+      ],
+      [
+        16,
+        16,
+        16,
+        0,
+        0
+      ],
+      [
+        16,
+        16,
+        16,
+        0,
+        0
+      ]
+    ],
+    "row_flags": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "trim_provider": "test-vectors/REAL-DBMD-TRIM-VERIFICATION.json",
+  "trim_dbmd_chunk_sha256": "ea961b79063bc68f64b1210dba002a5729d1003427196123f93b0890939b75d9",
+  "xy_grid_provider": "parameters/oamd-coordinate-grid-q15.json",
+  "xy_grid_count": 63,
+  "z_grid_count": 16,
+  "target_geometry_provider": "parameters/meter-oar-secondary8-math-v1.json",
+  "target_geometry_i32le_sha256": "3f8b8b5d4880052f66516455883e4c3aee026e2b94f99191bfb0ad74a8f25fc3",
+  "ordinary_nonsecret_constants_only": true,
+  "delivery_scope": "INTERNAL_ONLY"
+}

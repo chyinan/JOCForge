@@ -896,6 +896,27 @@ def main():
   ('f04r-fixture-inventory-shrink',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['vector_coverage']['direct_fixture_inventory'].update(file_count=28))),
   ('f04r-fixture-file-removed',f04r_fixture_mut('crates/jocforge-domain/tests/fixtures/receiver_pipeline/case1_cold_normal_type10_f32le.bin',lambda p:p.unlink()))
  ]
+ cases += [
+  ('f05r56-status-overclaim',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F05R56').update(implementation_status='WHOLE_PROGRAMME_LOCALLY_VERIFIED'))),
+  ('f05r56-owner-crosswire',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F05R56').update(owner='spatial_audio'))),
+  ('f05r56-target-added-to-state',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F05R56')['phase_scope'].update(persistent_state_schema='reader56-target-state-schema.v2 plus persistent target_words_16x6'))),
+  ('f05r56-generic-receipt',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F05R56')['phase_scope'].update(receipt_type='OwnerReceipt<SpatialControl>'))),
+  ('f05r56-clock-domain-merged',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F05R56')['clock'].update(domains=['FrontendCallbackIndex']))),
+  ('f05r56-expected-output-seeded',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F05R56')['vectors'].update(kind='EXPECTED_OUTPUTS_AS_INPUT_SEEDS'))),
+  ('f05r56-error-outcome-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F05R56')['error_outcomes'].pop())),
+  ('f05r56-consumer-rerun-authorized',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F05R56')['phase_scope'].update(consumer_boundary='F05JC reruns the F05R56 producer'))),
+  ('f05r56-profile-provider-kind-drift',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F05R56')['parameters'].update(kind='RUNTIME_FILE_IO'))),
+  ('f05r56-state-field-added',lambda r:replace_once(r/'crates/jocforge-domain/src/joc/oamd/reader_target.rs','    reader_invocations: ReaderInvocationIndex,\n}','    reader_invocations: ReaderInvocationIndex,\n    target_words_16x6: [[f32; 6]; 16],\n}')),
+  ('f05r56-local-commit-added',lambda r:append(r/'crates/jocforge-domain/src/joc/oamd/reader_target.rs','\npub fn commit() {}\n')),
+  ('f05r56-state-cloned',lambda r:replace_once(r/'crates/jocforge-domain/src/joc/oamd/reader_target.rs','#[derive(Debug, Eq, PartialEq)]\npub struct ReaderTargetState','#[derive(Clone, Debug, Eq, PartialEq)]\npub struct ReaderTargetState')),
+  ('f05r56-expected-seed-added',lambda r:replace_once(r/'crates/jocforge-domain/src/joc/oamd/reader_target/tests.rs','fn recipe_data(callback: u64) -> RecipeData {','fn recipe_data(callback: u64) -> RecipeData {\n    let _expected_seed = expected_case;')),
+  ('f05r56-geometry-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/joc/oamd/reader_target/target_panner.rs','[32_767, 0, 0, 35],','[32_766, 0, 0, 35],')),
+  ('f05r56-trim-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/joc/oamd/reader_target/type11.rs','const SELECTED_TRIM_FLAGS: [u8; 9] = [1, 0, 0, 1, 0, 1, 1, 0, 1];','const SELECTED_TRIM_FLAGS: [u8; 9] = [0, 0, 0, 1, 0, 1, 1, 0, 1];')),
+  ('f05r56-wire-roundtrip-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/joc/oamd/reader_target.rs','type11::roundtrip(controls)?','(Default::default(), Vec::new())?')),
+  ('f05r56-domain-io-added',lambda r:append(r/'crates/jocforge-domain/src/joc/oamd/reader_target.rs','\nfn unexpected_io() { let _ = std::fs::read("input"); }\n')),
+  ('f05r56-provider-fixture-tampered',f04r_fixture_mut('crates/jocforge-domain/tests/fixtures/reader_target/reader56-main-panner-v1.json',flip_first_byte)),
+  ('f05r56-receipt-input-fixture-tampered',f04r_fixture_mut('crates/jocforge-domain/tests/fixtures/reader_target/READER-TARGET-RECEIPT-INPUTS.json',flip_first_byte))
+ ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]
   if not cases:raise RuntimeError('no boundary mutations match case prefix: '+x.case_prefix)

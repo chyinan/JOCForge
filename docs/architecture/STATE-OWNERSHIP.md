@@ -14,7 +14,7 @@
 
 E4 的 callback-local `Type10Packet` 不属于 `F04CompositionState`，也不进入 cold/root serialization。E4 线性 stage result 同时保留 E2/E3 after-state。receiver mode=1 stage 消费同代 S09 view，并保留 QMF after slices；它不提交 root，也不产生 J05 receipt。
 
-F05R56 的 persistent schema 是 `reader56-target-state-schema.v2`，恰为上表九字段。`target_updates[16][6]` 和 `ReaderTargetUpdateReceipt` 是同一成功预览产生的回调级输出，不是第十个状态字段；receipt 被 parent `spatial_control` transaction 原子提交并 admission 前不得被消费者使用。接收者使用该 admitted 同代 payload，不得重跑 producer、改写 payload 或保留重复目标数组。F05R56 局部 stage 与向量可以独立验证；F04C/F04R/F05JC 消费、J05 和 parent root integration 仍为 `NOT_RUN`。
+F05R56 的 persistent schema 是 `reader56-target-state-schema.v2`，恰为上表九字段。`target_updates[16][6]` 和 `ReaderTargetUpdateReceipt` 是同一成功预览产生的回调级输出，不是第十个状态字段；receipt 被 parent `spatial_control` transaction 原子提交并 admission 前不得被消费者使用。接收者使用该 admitted 同代 payload，不得重跑 producer、改写 payload 或保留重复目标数组。F05R56 selected producer 的 8-callback input-only chain、reader/target hashes 和 receipt semantic hashes 已局部验证；F04C/F04R/F05JC 消费、J05 和 parent root integration 仍为 `NOT_RUN`。
 
 `QMF_CORE` 实现 `ModelState.analysis_history`、`qmf_delay_history`、`qmf_fir_history` 和 `synthesis_history` 的纯 before/after 计算。receiver mode=1 stage 将五条 analysis 和两条 surround synthesis 路径接到同代 S09 view，并返回线性 after-state 提案。它不新增 owner，也不获得提交权。这些 after slices 仍归 `spatial_audio`。整条 F04 receiver 与 J05 投影尚未运行。
 | `joc_after_j05` | F05JL | `domain/joc` | `temporal`、`geometry`、`fit180`、`profile_retry`、`huffman`、`id14_writer`、`sequence` | `test-vectors/LIVE-JOC-COORDINATOR-STATE-SCHEMA.json` | dispatch `d=g-1=s+1` | F05JL | `joc` | programme full reset | EOF 丢弃 ID14 pending writer 4248 | six-stage fatal 丢弃完整 JOC staged root；programme `RETIRED` | `JOC_COORDINATOR_STATE_V1` | `F05JLReceipt` |

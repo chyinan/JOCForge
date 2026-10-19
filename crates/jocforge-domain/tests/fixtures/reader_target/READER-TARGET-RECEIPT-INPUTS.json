@@ -1,0 +1,116 @@
+{
+  "schema": "reader-target-receipt-input-only-vectors.v1",
+  "expected_outputs_used_as_input": false,
+  "positive_cases": [
+    {
+      "id": "R56T-CONT-0",
+      "callback_generation_g": 0,
+      "reader_invocation_q": null,
+      "source_vector_case": "R56T-CONT-0"
+    },
+    {
+      "id": "R56T-CONT-1",
+      "callback_generation_g": 1,
+      "reader_invocation_q": null,
+      "source_vector_case": "R56T-CONT-1"
+    },
+    {
+      "id": "R56T-CONT-2",
+      "callback_generation_g": 2,
+      "reader_invocation_q": 0,
+      "source_vector_case": "R56T-CONT-2"
+    },
+    {
+      "id": "R56T-CONT-3",
+      "callback_generation_g": 3,
+      "reader_invocation_q": 1,
+      "source_vector_case": "R56T-CONT-3"
+    },
+    {
+      "id": "R56T-CONT-4",
+      "callback_generation_g": 4,
+      "reader_invocation_q": 2,
+      "source_vector_case": "R56T-CONT-4"
+    },
+    {
+      "id": "R56T-CONT-5",
+      "callback_generation_g": 5,
+      "reader_invocation_q": 3,
+      "source_vector_case": "R56T-CONT-5"
+    },
+    {
+      "id": "R56T-CONT-6",
+      "callback_generation_g": 6,
+      "reader_invocation_q": 4,
+      "source_vector_case": "R56T-CONT-6"
+    },
+    {
+      "id": "R56T-CONT-7",
+      "callback_generation_g": 7,
+      "reader_invocation_q": 5,
+      "source_vector_case": "R56T-CONT-7"
+    }
+  ],
+  "negative_cases": [
+    {
+      "id": "stale_callback_generation",
+      "mutation": "receipt.g = consumer.g - 1"
+    },
+    {
+      "id": "wrong_reader_invocation",
+      "mutation": "receipt.q != receipt.g - 2"
+    },
+    {
+      "id": "wrong_programme",
+      "mutation": "programme_id mismatch"
+    },
+    {
+      "id": "wrong_attempt",
+      "mutation": "attempt_id mismatch"
+    },
+    {
+      "id": "wrong_transaction",
+      "mutation": "transaction_id mismatch"
+    },
+    {
+      "id": "wrong_profile",
+      "mutation": "profile_id mismatch"
+    },
+    {
+      "id": "wrong_shape",
+      "mutation": "target_shape != [16,6]"
+    },
+    {
+      "id": "wrong_byte_count",
+      "mutation": "target_bytes != 384"
+    },
+    {
+      "id": "nonfinite_target",
+      "mutation": "replace one F32 word with NaN"
+    },
+    {
+      "id": "payload_hash_mismatch",
+      "mutation": "flip payload bit without updating hash"
+    },
+    {
+      "id": "reader_hash_mismatch",
+      "mutation": "wrong reader_records_sha256"
+    },
+    {
+      "id": "history_generation_mismatch",
+      "mutation": "change one of 16 history producer generations"
+    },
+    {
+      "id": "state_after_mismatch",
+      "mutation": "wrong state_after_sha256"
+    },
+    {
+      "id": "consumer_f04c_wrong_generation",
+      "mutation": "F04C g differs from receipt g"
+    },
+    {
+      "id": "consumer_f05jc_wrong_generation",
+      "mutation": "F05JC g differs from receipt g"
+    }
+  ]
+}

@@ -2,18 +2,19 @@
 
 由 IMPLEMENTATION-MAP.json 生成，不得手工修改。
 
-Mapping status: `MAPPING_COMPLETE`. Implementation status: `MAPPING_COMPLETE_IMPLEMENTATION_READY`.
+Mapping status: `MAPPING_COMPLETE`. Implementation status: `LOCALLY_VERIFIED_F05R56_SELECTED_PRODUCER_ONLY__PARENT_ADMISSION_DEFERRED`.
 
 F05R56 previews marker/history, the selected Type11 encode/decode boundary, 16 reader56 records, and the 16x6 target payload. The persistent state is exactly the nine fields in `reader56-target-state-schema.v2`; targets and receipts are callback-local and contribute zero canonical state bytes.
 
 The callback clock is `FrontendCallbackIndex g`; callbacks 0 and 1 advance marker/history and target snapshot only. For `g>=2`, the separate `ReaderInvocationIndex q` is `g-2`; delivered row generations remain attached per row. The stage returns a proposal and a pending immutable `ReaderTargetUpdateReceipt`; only the enclosing `spatial_control` transaction may commit state and admit that receipt.
 
-Receipt consumers may use only the admitted same-generation receipt. This mapping does not authorize F05JC/J05, F05L queue/body production, parent transaction implementation, or whole-programme/product acceptance.
+The selected 8-callback producer chain, six reader invocations, Type11 roundtrips, 96 reader records, 576 target words, and receipt semantic hashes are locally verified against input-only recipes and post-computation assertions. Receipt consumers may use only the admitted same-generation receipt. F05JC/J05, F05L queue/body production, parent transaction implementation, whole-programme execution, and product acceptance remain `NOT_RUN`.
 
 ## Machine-readable contract
 
 ```json
 {
+  "active_slice_materialization": "MATERIALIZED",
   "clock": {
     "covered_clauses": [
       "g is zero-based FrontendCallbackIndex; g=0,1 advance marker/history and target snapshot only",
@@ -75,21 +76,25 @@ Receipt consumers may use only the admitted same-generation receipt. This mappin
   ],
   "functional_id": "F05R56",
   "implementation_files": [
-    "crates/jocforge-domain/src/joc/oamd/reader_target.rs"
+    "crates/jocforge-domain/src/joc/oamd.rs",
+    "crates/jocforge-domain/src/joc/oamd/reader_target.rs",
+    "crates/jocforge-domain/src/joc/oamd/reader_target/reader_records.rs",
+    "crates/jocforge-domain/src/joc/oamd/reader_target/target_panner.rs",
+    "crates/jocforge-domain/src/joc/oamd/reader_target/type11.rs"
   ],
-  "implementation_status": "MAPPING_COMPLETE_IMPLEMENTATION_READY",
+  "implementation_status": "LOCALLY_VERIFIED_F05R56_SELECTED_PRODUCER_ONLY__PARENT_ADMISSION_DEFERRED",
   "inventory_status": "INVENTORIED",
   "mapping_status": "MAPPING_COMPLETE",
   "owner": "spatial_control",
   "parameters": {
-    "kind": "IDENTITY_VALIDATED_SELECTED_PROVIDERS",
+    "kind": "MANIFEST_PINNED_SELECTED_PROFILE_CONSTANTS",
     "provider_files": [
       "parameters/reader56-target-profile-v1.json",
       "parameters/reader56-main-panner-v1.json",
-      "parameters/oamd-id11-live-v1.json",
       "parameters/oamd-coordinate-grid-q15.json",
       "parameters/meter-oar-secondary8-math-v1.json"
-    ]
+    ],
+    "validation_boundary": "Compile-time selected constants are checked byte-for-byte against approved MANIFEST.json assets by local tests and boundary checks; domain performs no provider file I/O."
   },
   "phase_scope": {
     "commit_authority": "spatial_control parent transaction only; F05R56 exposes a proposal and has no local commit",
@@ -100,6 +105,8 @@ Receipt consumers may use only the admitted same-generation receipt. This mappin
       "No F05L ID11 body/queue owner implementation",
       "No real ADM cold replay, full-programme producer, whole receiver, native rollback, codec, writer, listening, W04, or product acceptance"
     ],
+    "implementation_status": "LOCALLY_VERIFIED_F05R56_SELECTED_PRODUCER_ONLY__PARENT_ADMISSION_DEFERRED",
+    "local_evidence": "Cold schema digest, callbacks g0..g7 actual-first state chain, six Type11 wire roundtrips, reader-record and target hashes, receipt canonical semantic hashes, selected provider identity, and rejection outcomes pass locally.",
     "persistent_state_schema": "reader56-target-state-schema.v2; exactly nine fields; target payload and receipt are not persistent state",
     "receipt_payload": "FiniteF32[16][6], row order [L,R,C,LFE,Ls,Rs], 384-byte F32LE payload, semantic hash over canonical sorted compact JSON including payload hex",
     "receipt_schema": "reader-target-update-receipt.v1",
@@ -129,9 +136,21 @@ Receipt consumers may use only the admitted same-generation receipt. This mappin
       "reader_materializer_cases: previous-state-aware 16x56 records; expected records are postcompute comparisons only",
       "target_leaf_cases: all 16x6 F32 words; expected target words are postcompute comparisons only",
       "receipt vectors: schema, lineage, hashes, finite target payload and semantic digest postcompute checks",
-      "rejection_cases and receipt rejection cases: first-failure and zero-output/zero-state-change assertions"
+      "rejection_cases: BAD_CALLBACK, BAD_READER_GATE, OLD_ROW_COUNT, NEW_ROW_BYTES, SNAPSHOT_KEYS, RETIRED, COMPONENT6_PROFILE",
+      "extra guards: state invocation mismatch and nonfinite numeric intermediate"
     ],
-    "kind": "INPUT_ONLY_RECIPES_WITH_POSTCOMPUTATION_ASSERTIONS"
+    "kind": "INPUT_ONLY_RECIPES_WITH_POSTCOMPUTATION_ASSERTIONS",
+    "local_test_assets": [
+      "crates/jocforge-domain/tests/fixtures/reader_target/READER56-TARGET-UPDATES-VERIFICATION.json",
+      "crates/jocforge-domain/tests/fixtures/reader_target/READER56-TARGET-STATE-SCHEMA.json",
+      "crates/jocforge-domain/tests/fixtures/reader_target/READER-TARGET-RECEIPT-INPUTS.json",
+      "crates/jocforge-domain/tests/fixtures/reader_target/READER-TARGET-RECEIPT-VECTORS.json",
+      "crates/jocforge-domain/tests/fixtures/reader_target/reader56-target-profile-v1.json",
+      "crates/jocforge-domain/tests/fixtures/reader_target/reader56-main-panner-v1.json",
+      "crates/jocforge-domain/tests/fixtures/reader_target/oamd-coordinate-grid-q15.json",
+      "crates/jocforge-domain/tests/fixtures/reader_target/meter-oar-secondary8-math-v1.json",
+      "crates/jocforge-domain/tests/fixtures/reader_target/oamd-id11-live-v1.json"
+    ]
   }
 }
 ```

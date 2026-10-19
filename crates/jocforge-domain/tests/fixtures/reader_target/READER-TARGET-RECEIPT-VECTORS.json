@@ -1,0 +1,401 @@
+{
+  "schema": "reader-target-receipt-input-vectors.v1",
+  "positive_cases": [
+    {
+      "id": "R56T-CONT-0",
+      "g": 0,
+      "q": null,
+      "expected_receipt": null
+    },
+    {
+      "id": "R56T-CONT-1",
+      "g": 1,
+      "q": null,
+      "expected_receipt": null
+    },
+    {
+      "id": "R56T-CONT-2",
+      "g": 2,
+      "q": 0,
+      "expected_receipt": {
+        "schema": "reader-target-update-receipt.v1",
+        "programme_id": "VECTOR-PROGRAMME-0",
+        "attempt_id": "VECTOR-ATTEMPT-0",
+        "transaction_id": "VECTOR-TX-2",
+        "callback_generation_g": 2,
+        "reader_invocation_q": 0,
+        "profile_id": "reader56-main-target-panner.v1",
+        "history_producer_generations": [
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1
+        ],
+        "state_before_sha256": "1bbffe943a6e6e5b8869da60639a2313b1a4888fdce005ec914f75a01b8e1340",
+        "state_after_sha256": "19f2f315e1448456a2f0c49a53c6885df27caba229c15df23f2ee73a1391489a",
+        "reader_records_shape": [
+          16,
+          56
+        ],
+        "reader_records_bytes": 896,
+        "reader_records_sha256": "b77eea6feb75af7279539c982b0ecd0bcc0343908ffd05b441ca3e501bf60c5d",
+        "target_shape": [
+          16,
+          6
+        ],
+        "target_dtype": "F32LE",
+        "target_bytes": 384,
+        "target_sha256": "a27c9d4c06dda892c55a58cd654cd84509f26c19da3267fe0427f84f37c2014a",
+        "target_payload_hex": "0000000000000000000000000000803f00000000000000000000803f0000000000000000000000000000000000000000000000000000803f00000000000000000000000000000000000000000000803f0000000000000000000000000000000000000000000000000000000000000000d703353f0f06353f00000000000000000000000000000000d703353f0f06353f000000000000000000000000000000000000803f00000000000000000000000000000000000000000000803f0000000000000000000000000000000000000000000000000000803f00000000000000000000000000000000000000000000803f00000000000000000000803f00000000000000000000000000000000000000000000803f0000000000000000000000000000803f0000000000000000000000000000000000000000000000000000000000000000000000000000803f0000000000000000000000000000000000000000000000000000803f00000000000000000000000000000000000000000000803f",
+        "persistent_target_state_bytes": 0,
+        "persistent_target_state_tag": null,
+        "receipt_semantic_sha256": "a931bee3cf6f2cc846cdeceb9a25faf494f278c8f9e940197fbbf06e7fb43340"
+      }
+    },
+    {
+      "id": "R56T-CONT-3",
+      "g": 3,
+      "q": 1,
+      "expected_receipt": {
+        "schema": "reader-target-update-receipt.v1",
+        "programme_id": "VECTOR-PROGRAMME-0",
+        "attempt_id": "VECTOR-ATTEMPT-0",
+        "transaction_id": "VECTOR-TX-3",
+        "callback_generation_g": 3,
+        "reader_invocation_q": 1,
+        "profile_id": "reader56-main-target-panner.v1",
+        "history_producer_generations": [
+          3,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1,
+          2,
+          1
+        ],
+        "state_before_sha256": "19f2f315e1448456a2f0c49a53c6885df27caba229c15df23f2ee73a1391489a",
+        "state_after_sha256": "c13e2dadd645cb1f84dba459a2c4a34dcceb133e0232aee1b4a7cd6081055ac2",
+        "reader_records_shape": [
+          16,
+          56
+        ],
+        "reader_records_bytes": 896,
+        "reader_records_sha256": "f69366e400bce98b9d02f29687735b640d6968d69d001e3a5e8f0a6d4d4d208a",
+        "target_shape": [
+          16,
+          6
+        ],
+        "target_dtype": "F32LE",
+        "target_bytes": 384,
+        "target_sha256": "a27c9d4c06dda892c55a58cd654cd84509f26c19da3267fe0427f84f37c2014a",
+        "target_payload_hex": "0000000000000000000000000000803f00000000000000000000803f0000000000000000000000000000000000000000000000000000803f00000000000000000000000000000000000000000000803f0000000000000000000000000000000000000000000000000000000000000000d703353f0f06353f00000000000000000000000000000000d703353f0f06353f000000000000000000000000000000000000803f00000000000000000000000000000000000000000000803f0000000000000000000000000000000000000000000000000000803f00000000000000000000000000000000000000000000803f00000000000000000000803f00000000000000000000000000000000000000000000803f0000000000000000000000000000803f0000000000000000000000000000000000000000000000000000000000000000000000000000803f0000000000000000000000000000000000000000000000000000803f00000000000000000000000000000000000000000000803f",
+        "persistent_target_state_bytes": 0,
+        "persistent_target_state_tag": null,
+        "receipt_semantic_sha256": "afeb18751f783dec7841424aa2148561102cccefa4621dec0fdd876872b1ff52"
+      }
+    },
+    {
+      "id": "R56T-CONT-4",
+      "g": 4,
+      "q": 2,
+      "expected_receipt": {
+        "schema": "reader-target-update-receipt.v1",
+        "programme_id": "VECTOR-PROGRAMME-0",
+        "attempt_id": "VECTOR-ATTEMPT-0",
+        "transaction_id": "VECTOR-TX-4",
+        "callback_generation_g": 4,
+        "reader_invocation_q": 2,
+        "profile_id": "reader56-main-target-panner.v1",
+        "history_producer_generations": [
+          4,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "state_before_sha256": "c13e2dadd645cb1f84dba459a2c4a34dcceb133e0232aee1b4a7cd6081055ac2",
+        "state_after_sha256": "3167205f25c7683fc9afc4e3f5afb92bb0ed1e293d3d594480593ca7035e5a9b",
+        "reader_records_shape": [
+          16,
+          56
+        ],
+        "reader_records_bytes": 896,
+        "reader_records_sha256": "eeae3c7f8f0d797999649307aae079b73e96bec0041b6c71535ac192c5f0c151",
+        "target_shape": [
+          16,
+          6
+        ],
+        "target_dtype": "F32LE",
+        "target_bytes": 384,
+        "target_sha256": "06cd18d25233b37d5645ee8b7b171f5653d740e6a0d9a2ad975c897bc9b749e2",
+        "target_payload_hex": "0000000000000000000000000000803f000000000000000000000000000000000000803f000000000000000000000000000000000000803f000000000000000000000000000000000000803f000000000000000000000000000000000000000000000000000000000000000000000000d703353f0f06353f00000000000000000000000000000000000000000000803f000000000000000000000000000000000000803f0000000000000000000000000000000000000000d703353f0f06353f00000000000000000000000000000000000000000000803f000000000000000000000000000000000000803f0000000000000000000000000000803f000000000000000000000000000000000000803f000000000000000000000000000000000000803f000000000000000000000000000000000000000000000000000000000000000000000000d703353f0f06353f00000000000000000000000000000000000000000000803f000000000000000000000000000000000000803f00000000",
+        "persistent_target_state_bytes": 0,
+        "persistent_target_state_tag": null,
+        "receipt_semantic_sha256": "44098c9b704a8cdbbfcdb70560590c58331f48992b3303acb3099be64b5c93db"
+      }
+    },
+    {
+      "id": "R56T-CONT-5",
+      "g": 5,
+      "q": 3,
+      "expected_receipt": {
+        "schema": "reader-target-update-receipt.v1",
+        "programme_id": "VECTOR-PROGRAMME-0",
+        "attempt_id": "VECTOR-ATTEMPT-0",
+        "transaction_id": "VECTOR-TX-5",
+        "callback_generation_g": 5,
+        "reader_invocation_q": 3,
+        "profile_id": "reader56-main-target-panner.v1",
+        "history_producer_generations": [
+          5,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "state_before_sha256": "3167205f25c7683fc9afc4e3f5afb92bb0ed1e293d3d594480593ca7035e5a9b",
+        "state_after_sha256": "8d673d8ff6e74a327c651559bb43e7de92b4135a0c676dfbfc1bbee77393b5f0",
+        "reader_records_shape": [
+          16,
+          56
+        ],
+        "reader_records_bytes": 896,
+        "reader_records_sha256": "eeae3c7f8f0d797999649307aae079b73e96bec0041b6c71535ac192c5f0c151",
+        "target_shape": [
+          16,
+          6
+        ],
+        "target_dtype": "F32LE",
+        "target_bytes": 384,
+        "target_sha256": "06cd18d25233b37d5645ee8b7b171f5653d740e6a0d9a2ad975c897bc9b749e2",
+        "target_payload_hex": "0000000000000000000000000000803f000000000000000000000000000000000000803f000000000000000000000000000000000000803f000000000000000000000000000000000000803f000000000000000000000000000000000000000000000000000000000000000000000000d703353f0f06353f00000000000000000000000000000000000000000000803f000000000000000000000000000000000000803f0000000000000000000000000000000000000000d703353f0f06353f00000000000000000000000000000000000000000000803f000000000000000000000000000000000000803f0000000000000000000000000000803f000000000000000000000000000000000000803f000000000000000000000000000000000000803f000000000000000000000000000000000000000000000000000000000000000000000000d703353f0f06353f00000000000000000000000000000000000000000000803f000000000000000000000000000000000000803f00000000",
+        "persistent_target_state_bytes": 0,
+        "persistent_target_state_tag": null,
+        "receipt_semantic_sha256": "c7904e368fb454e43ec32347c357191bd8ff1201d910f3b7a1edfccc16001c0c"
+      }
+    },
+    {
+      "id": "R56T-CONT-6",
+      "g": 6,
+      "q": 4,
+      "expected_receipt": {
+        "schema": "reader-target-update-receipt.v1",
+        "programme_id": "VECTOR-PROGRAMME-0",
+        "attempt_id": "VECTOR-ATTEMPT-0",
+        "transaction_id": "VECTOR-TX-6",
+        "callback_generation_g": 6,
+        "reader_invocation_q": 4,
+        "profile_id": "reader56-main-target-panner.v1",
+        "history_producer_generations": [
+          6,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "state_before_sha256": "8d673d8ff6e74a327c651559bb43e7de92b4135a0c676dfbfc1bbee77393b5f0",
+        "state_after_sha256": "8f9527fd9f310a046a8239d2394edbeeb7cc7fee0fd63573a7aae80403c5bc85",
+        "reader_records_shape": [
+          16,
+          56
+        ],
+        "reader_records_bytes": 896,
+        "reader_records_sha256": "9fb174b350264ce13f16a0906e42787e10a03f0bc60c805489c861edb4e255ea",
+        "target_shape": [
+          16,
+          6
+        ],
+        "target_dtype": "F32LE",
+        "target_bytes": 384,
+        "target_sha256": "26526ec88fd90e2f7cdaffede603fea2b8a8693a34cb6f1f1b3c48411e24e0d1",
+        "target_payload_hex": "0000000000000000000000000000803f00000000000000000000803f00000000000000000000000000000000000000000000803f00000000000000000000000000000000000000000000803f00000000000000000000000000000000000000000000803f00000000000000000000000000000000000000000000803f00000000000000000000000000000000000000000000803f00000000000000000000000000000000000000000000803f00000000000000000000000000000000000000000000803f0000000000000000000000000000000000000000000000000000000000000000000000000000803f0000000000000000000000000000803f000000000000000000000000000000000000803f000000000000000000000000000000000000803f000000000000000000000000000000000000000000000000000000000000000000000000d703353f0f06353f00000000000000000000000000000000000000000000803f000000000000000000000000000000000000803f00000000",
+        "persistent_target_state_bytes": 0,
+        "persistent_target_state_tag": null,
+        "receipt_semantic_sha256": "f336599d85cfeb916bfd63580201017fb420d936bb5baa51758f6889fc6caffd"
+      }
+    },
+    {
+      "id": "R56T-CONT-7",
+      "g": 7,
+      "q": 5,
+      "expected_receipt": {
+        "schema": "reader-target-update-receipt.v1",
+        "programme_id": "VECTOR-PROGRAMME-0",
+        "attempt_id": "VECTOR-ATTEMPT-0",
+        "transaction_id": "VECTOR-TX-7",
+        "callback_generation_g": 7,
+        "reader_invocation_q": 5,
+        "profile_id": "reader56-main-target-panner.v1",
+        "history_producer_generations": [
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "state_before_sha256": "8f9527fd9f310a046a8239d2394edbeeb7cc7fee0fd63573a7aae80403c5bc85",
+        "state_after_sha256": "0812bee9338b1808ec7aeaac637d25ea6fcac0a3af264b667a58c433971f688d",
+        "reader_records_shape": [
+          16,
+          56
+        ],
+        "reader_records_bytes": 896,
+        "reader_records_sha256": "eeae3c7f8f0d797999649307aae079b73e96bec0041b6c71535ac192c5f0c151",
+        "target_shape": [
+          16,
+          6
+        ],
+        "target_dtype": "F32LE",
+        "target_bytes": 384,
+        "target_sha256": "06cd18d25233b37d5645ee8b7b171f5653d740e6a0d9a2ad975c897bc9b749e2",
+        "target_payload_hex": "0000000000000000000000000000803f000000000000000000000000000000000000803f000000000000000000000000000000000000803f000000000000000000000000000000000000803f000000000000000000000000000000000000000000000000000000000000000000000000d703353f0f06353f00000000000000000000000000000000000000000000803f000000000000000000000000000000000000803f0000000000000000000000000000000000000000d703353f0f06353f00000000000000000000000000000000000000000000803f000000000000000000000000000000000000803f0000000000000000000000000000803f000000000000000000000000000000000000803f000000000000000000000000000000000000803f000000000000000000000000000000000000000000000000000000000000000000000000d703353f0f06353f00000000000000000000000000000000000000000000803f000000000000000000000000000000000000803f00000000",
+        "persistent_target_state_bytes": 0,
+        "persistent_target_state_tag": null,
+        "receipt_semantic_sha256": "c66e5aea94e9e8b1b6b7a0efcf2e9d7c07011115d02a552421d1c522f7b3a212"
+      }
+    }
+  ],
+  "negative_cases": [
+    {
+      "id": "stale_callback_generation",
+      "mutation": "receipt.g = consumer.g - 1",
+      "expected_error": "READER_TARGET_RECEIPT_STALE"
+    },
+    {
+      "id": "wrong_reader_invocation",
+      "mutation": "receipt.q != receipt.g - 2",
+      "expected_error": "READER_TARGET_RECEIPT_INVOCATION"
+    },
+    {
+      "id": "wrong_programme",
+      "mutation": "programme_id mismatch",
+      "expected_error": "READER_TARGET_RECEIPT_LINEAGE"
+    },
+    {
+      "id": "wrong_attempt",
+      "mutation": "attempt_id mismatch",
+      "expected_error": "READER_TARGET_RECEIPT_LINEAGE"
+    },
+    {
+      "id": "wrong_transaction",
+      "mutation": "transaction_id mismatch",
+      "expected_error": "READER_TARGET_RECEIPT_LINEAGE"
+    },
+    {
+      "id": "wrong_profile",
+      "mutation": "profile_id mismatch",
+      "expected_error": "READER_TARGET_RECEIPT_PROFILE"
+    },
+    {
+      "id": "wrong_shape",
+      "mutation": "target_shape != [16,6]",
+      "expected_error": "READER_TARGET_PAYLOAD_SHAPE"
+    },
+    {
+      "id": "wrong_byte_count",
+      "mutation": "target_bytes != 384",
+      "expected_error": "READER_TARGET_PAYLOAD_SIZE"
+    },
+    {
+      "id": "nonfinite_target",
+      "mutation": "replace one F32 word with NaN",
+      "expected_error": "READER_TARGET_PAYLOAD_NONFINITE"
+    },
+    {
+      "id": "payload_hash_mismatch",
+      "mutation": "flip payload bit without updating hash",
+      "expected_error": "READER_TARGET_PAYLOAD_HASH"
+    },
+    {
+      "id": "reader_hash_mismatch",
+      "mutation": "wrong reader_records_sha256",
+      "expected_error": "READER_TARGET_READER_HASH"
+    },
+    {
+      "id": "history_generation_mismatch",
+      "mutation": "change one of 16 history producer generations",
+      "expected_error": "READER_TARGET_HISTORY_LINEAGE"
+    },
+    {
+      "id": "state_after_mismatch",
+      "mutation": "wrong state_after_sha256",
+      "expected_error": "READER_TARGET_STATE_LINEAGE"
+    },
+    {
+      "id": "consumer_f04c_wrong_generation",
+      "mutation": "F04C g differs from receipt g",
+      "expected_error": "READER_TARGET_RECEIPT_STALE"
+    },
+    {
+      "id": "consumer_f05jc_wrong_generation",
+      "mutation": "F05JC g differs from receipt g",
+      "expected_error": "READER_TARGET_RECEIPT_STALE"
+    }
+  ],
+  "failure_atomicity": "no receipt; no target payload; no next-state proposal; no commit; I03 STAGE_FATAL and RETIRED"
+}

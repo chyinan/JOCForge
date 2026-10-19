@@ -22,7 +22,7 @@ F04C 的 E2 component stage 和 E3 Direct-LFE ring stage 分别消费同代受�
 
 Receiver mode=1 stage 已通过局部测试。它接收同代 Type10 receipt 和带 parent lineage 的 S09 view。它推进五条 analysis history，只对 `[Ls, Rs]` 运行 mode=1 delay/FIR/synthesis。它返回 after-state proposal，不提交 owner root。F04R S09 producer、整条 receiver、J05 receipt 和 parent root replacement 仍 deferred。
 
-F05R56 输入从 `spatial_control` 同代 committed-before root 和 callback inputs 开始。每个 callback 都预览 marker/history 与 target snapshot；`g=0,1` 只返回状态 proposal，不生成 reader invocation 或 receipt。`g>=2` 使用 `q=g-2`，预览 Type11 encode→wire decode、16 条 previous-aware reader56 records 与 16×6 finite target rows。reader records 和 targets 必须来自同一 wire decode/reader preview；target payload 不从 expected literals 或旧 receipt 取值。成功只产生完整 next-state proposal 与 pending `ReaderTargetUpdateReceipt`；parent `spatial_control` transaction 成功 commit 后才 admission。失败返回空输出并保留 committed root。当前实现切片不做 F04C/F04R/F05JC 消费或 parent transaction。
+F05R56 输入从 `spatial_control` 同代 committed-before root 和 callback inputs 开始。每个 callback 都预览 marker/history 与 target snapshot；`g=0,1` 只返回状态 proposal，不生成 reader invocation 或 receipt。`g>=2` 使用 `q=g-2`，预览 Type11 encode→wire decode、16 条 previous-aware reader56 records 与 16×6 finite target rows。reader records 和 targets 必须来自同一 wire decode/reader preview；target payload 不从 expected literals 或旧 receipt 取值。局部 selected producer 已按 8 callback input-only chain 验证；成功只产生完整 next-state proposal 与 pending `ReaderTargetUpdateReceipt`，parent `spatial_control` transaction 成功 commit 后才 admission。失败返回空输出并保留 committed root。F04C/F04R/F05JC 消费或 parent transaction 本轮未运行。
 
 ## Main 时钟
 

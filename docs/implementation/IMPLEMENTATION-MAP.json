@@ -947,10 +947,15 @@
       "owner": "spatial_control",
       "planned_phase": "Phase 4",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "MAPPING_COMPLETE_IMPLEMENTATION_READY",
+      "implementation_status": "LOCALLY_VERIFIED_F05R56_SELECTED_PRODUCER_ONLY__PARENT_ADMISSION_DEFERRED",
       "mapping_status": "MAPPING_COMPLETE",
+      "active_slice_materialization": "MATERIALIZED",
       "implementation_files": [
-        "crates/jocforge-domain/src/joc/oamd/reader_target.rs"
+        "crates/jocforge-domain/src/joc/oamd.rs",
+        "crates/jocforge-domain/src/joc/oamd/reader_target.rs",
+        "crates/jocforge-domain/src/joc/oamd/reader_target/reader_records.rs",
+        "crates/jocforge-domain/src/joc/oamd/reader_target/target_panner.rs",
+        "crates/jocforge-domain/src/joc/oamd/reader_target/type11.rs"
       ],
       "test_modules": [
         "crates/jocforge-domain/src/joc/oamd/reader_target/tests.rs"
@@ -971,14 +976,14 @@
         ]
       },
       "parameters": {
-        "kind": "IDENTITY_VALIDATED_SELECTED_PROVIDERS",
+        "kind": "MANIFEST_PINNED_SELECTED_PROFILE_CONSTANTS",
         "provider_files": [
           "parameters/reader56-target-profile-v1.json",
           "parameters/reader56-main-panner-v1.json",
-          "parameters/oamd-id11-live-v1.json",
           "parameters/oamd-coordinate-grid-q15.json",
           "parameters/meter-oar-secondary8-math-v1.json"
-        ]
+        ],
+        "validation_boundary": "Compile-time selected constants are checked byte-for-byte against approved MANIFEST.json assets by local tests and boundary checks; domain performs no provider file I/O."
       },
       "vectors": {
         "kind": "INPUT_ONLY_RECIPES_WITH_POSTCOMPUTATION_ASSERTIONS",
@@ -993,7 +998,19 @@
           "reader_materializer_cases: previous-state-aware 16x56 records; expected records are postcompute comparisons only",
           "target_leaf_cases: all 16x6 F32 words; expected target words are postcompute comparisons only",
           "receipt vectors: schema, lineage, hashes, finite target payload and semantic digest postcompute checks",
-          "rejection_cases and receipt rejection cases: first-failure and zero-output/zero-state-change assertions"
+          "rejection_cases: BAD_CALLBACK, BAD_READER_GATE, OLD_ROW_COUNT, NEW_ROW_BYTES, SNAPSHOT_KEYS, RETIRED, COMPONENT6_PROFILE",
+          "extra guards: state invocation mismatch and nonfinite numeric intermediate"
+        ],
+        "local_test_assets": [
+          "crates/jocforge-domain/tests/fixtures/reader_target/READER56-TARGET-UPDATES-VERIFICATION.json",
+          "crates/jocforge-domain/tests/fixtures/reader_target/READER56-TARGET-STATE-SCHEMA.json",
+          "crates/jocforge-domain/tests/fixtures/reader_target/READER-TARGET-RECEIPT-INPUTS.json",
+          "crates/jocforge-domain/tests/fixtures/reader_target/READER-TARGET-RECEIPT-VECTORS.json",
+          "crates/jocforge-domain/tests/fixtures/reader_target/reader56-target-profile-v1.json",
+          "crates/jocforge-domain/tests/fixtures/reader_target/reader56-main-panner-v1.json",
+          "crates/jocforge-domain/tests/fixtures/reader_target/oamd-coordinate-grid-q15.json",
+          "crates/jocforge-domain/tests/fixtures/reader_target/meter-oar-secondary8-math-v1.json",
+          "crates/jocforge-domain/tests/fixtures/reader_target/oamd-id11-live-v1.json"
         ]
       },
       "error_outcomes": [
@@ -1042,6 +1059,7 @@
       ],
       "phase_scope": {
         "scope": "F05R56 selected ReaderTargetState transition and callback-local ReaderTargetUpdateReceipt production only",
+        "implementation_status": "LOCALLY_VERIFIED_F05R56_SELECTED_PRODUCER_ONLY__PARENT_ADMISSION_DEFERRED",
         "persistent_state_schema": "reader56-target-state-schema.v2; exactly nine fields; target payload and receipt are not persistent state",
         "receipt_type": "ReaderTargetUpdateReceipt",
         "receipt_schema": "reader-target-update-receipt.v1",
@@ -1049,6 +1067,7 @@
         "stage_authority": "F05R56 previews marker/history, Type11 wire roundtrip, reader56 and target rows",
         "commit_authority": "spatial_control parent transaction only; F05R56 exposes a proposal and has no local commit",
         "consumer_boundary": "F04C/F04R/F05JC may use only the exact same-generation receipt after parent admission; no producer rerun or duplicate target state",
+        "local_evidence": "Cold schema digest, callbacks g0..g7 actual-first state chain, six Type11 wire roundtrips, reader-record and target hashes, receipt canonical semantic hashes, selected provider identity, and rejection outcomes pass locally.",
         "exclusions": [
           "No F05JC or J05 execution",
           "No parent CallbackTransaction or spatial_control commit implementation",
@@ -7351,7 +7370,7 @@
       "default_features": false,
       "archive_sha256": "a7507d819769d01a365ab707794a4084392c824f54a7a6a7862f8c3d0892b283",
       "license_choice": "Apache-2.0",
-      "scope": "reader_eof, F01E, F03, CurrentFeatures P1.4-C, and F04 P1.4-D1/P1.4-D2 provider/package-manifest identity SHA-256 only; no math-provider projection digest"
+      "scope": "reader_eof, F01E, F03, CurrentFeatures P1.4-C, F04 P1.4-D1/P1.4-D2 provider/package-manifest identity SHA-256, and F05R56 canonical state/reader/target/receipt digests"
     },
     "serde_json": {
       "version": "=1.0.154",
@@ -7361,7 +7380,7 @@
       ],
       "archive_sha256": "e7e9cc8b1b85264074fbcc02a88680c4096b1e47df8f739dceb03bf482f04bd6",
       "license_choice": "Apache-2.0",
-      "scope": "F01E P1.4-A, F03 target P1.4-B, exact CurrentFeatures P1.4-C, and F04 P1.4-D1/P1.4-D2 provider syntax parsing/private field access after identity gates only; canonical writers remain project-owned"
+      "scope": "F01E P1.4-A, F03 target P1.4-B, exact CurrentFeatures P1.4-C, F04 P1.4-D1/P1.4-D2 provider syntax parsing/private field access after identity gates, and F05R56 sorted compact semantic-receipt JSON; other canonical writers remain project-owned"
     }
   }
 }

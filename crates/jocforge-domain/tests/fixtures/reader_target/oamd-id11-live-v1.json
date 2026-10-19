@@ -1,0 +1,197 @@
+{
+  "schema": "oamd-id11-live-parameters.v1",
+  "delivery_scope": "internal research and internal implementation",
+  "classification": "ordinary non-secret functional constants and generated rules",
+  "profile": {
+    "sample_rate": 48000,
+    "frame_samples": 1536,
+    "frontend_priming_callbacks": 2,
+    "cached_drain_callbacks": 4,
+    "object_rows": 15,
+    "leading_lfe_rows": 1,
+    "total_rows": 16,
+    "writer_capacity_bytes": 160,
+    "queue_capacity_bytes": 160,
+    "metadata_delay_samples": 3072,
+    "id11_queue_delay_samples": 4608,
+    "queue_slots": 3,
+    "queue_write_slot": 0,
+    "queue_residual_samples": 0
+  },
+  "timing": {
+    "base": 0,
+    "position": 0,
+    "duration": 1536,
+    "precision": 32,
+    "metadata_frames_per_body": 1
+  },
+  "wire": {
+    "version": 0,
+    "shortcut": 1,
+    "leading_lfe": 1,
+    "protected_sections": 0,
+    "section_count": 2,
+    "rowdata_section_kind": 1,
+    "trim_section_kind": 2,
+    "section_control": 0,
+    "row_trailing_extension": 0,
+    "position_extension": 0,
+    "width_mode": 0,
+    "ancillary_presence": 0
+  },
+  "rows": {
+    "lfe": {
+      "kind": 0,
+      "mute": 0,
+      "gain": 4096,
+      "spread": 32767,
+      "z_valid": 0
+    },
+    "object": {
+      "kind": 2,
+      "mute": 0,
+      "gain": 4096,
+      "spread": 32767,
+      "diffuse": 0,
+      "width_q15": 0,
+      "ancillary": 0
+    },
+    "inactive_pair_projection": "keep the object row unmuted and set xyz_q15 to [0,0,0]"
+  },
+  "trim": {
+    "mode": 3,
+    "group_flags": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      1,
+      1,
+      0,
+      1
+    ],
+    "groups": [
+      [
+        16,
+        16,
+        16,
+        0,
+        0
+      ],
+      [
+        16,
+        16,
+        16,
+        0,
+        0
+      ],
+      [
+        16,
+        16,
+        16,
+        0,
+        0
+      ],
+      [
+        16,
+        16,
+        16,
+        0,
+        0
+      ],
+      [
+        16,
+        16,
+        16,
+        0,
+        0
+      ],
+      [
+        16,
+        16,
+        16,
+        0,
+        0
+      ],
+      [
+        16,
+        16,
+        16,
+        0,
+        0
+      ],
+      [
+        16,
+        16,
+        16,
+        0,
+        0
+      ],
+      [
+        16,
+        16,
+        16,
+        0,
+        0
+      ]
+    ],
+    "row_flags": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "reader_target_binding": {
+    "specification": {
+      "file": "specs/05-reader56-target-updates-composition.md",
+      "sha256": "4f4fe2bc3b0dd08bc59e46ea5d3a48e2eafc4051906c2fda258250351261ce0d"
+    },
+    "profile": {
+      "file": "parameters/reader56-target-profile-v1.json",
+      "sha256": "ec4c56549a47d1892655345c036aba822d2f0c8baae6c71b398001e9f90ce5d1"
+    },
+    "state_schema": {
+      "file": "test-vectors/READER56-TARGET-STATE-SCHEMA.json",
+      "sha256": "bb3d9754073fca1173d52c8c80d19f0a2433306004f5b20d0b83ee6c2d3ae510",
+      "semantic_sha256": "d7ff277fea97560d969a5b59ccb19d53d7a7b2ab0c25c1e0d14cab6affbb4045"
+    },
+    "vectors": {
+      "file": "test-vectors/READER56-TARGET-UPDATES-VERIFICATION.json",
+      "sha256": "7e5e54b0005318ea8a5699272ba3e6381ba10d9f17b81d89d01229e68169b34a"
+    },
+    "result": {
+      "file": "test-vectors/READER56-TARGET-UPDATES-RESULT.json",
+      "sha256": "f246be2cff2dcda42c8abcba882cd3de9a58b90802c8c914a776e17219797d85"
+    },
+    "gaps": {
+      "file": "test-vectors/READER56-TARGET-GAPS.json",
+      "sha256": "269d8cfd60a1c078a632c336a3fc8d2e72c2710fdf0608158b24033ca1471018"
+    },
+    "panner": {
+      "file": "parameters/reader56-main-panner-v1.json",
+      "bytes": 1794,
+      "sha256": "b2f2cb31d3ee099db5bf32a8b93c8e1a9c441d84b9246c0908dceabde8e44c47"
+    },
+    "secondary8": {
+      "file": "parameters/meter-oar-secondary8-math-v1.json",
+      "bytes": 1757,
+      "sha256": "d1a2f3d3a7f1a7e67933acc781be406814f63a2e842975d34960d135a5307a77"
+    }
+  },
+  "secret_or_authentication_values": 0,
+  "original_table_or_source_delivery": false
+}
