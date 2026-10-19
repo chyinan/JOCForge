@@ -1,7 +1,7 @@
 # pattern: Imperative Shell
 import hashlib,importlib.util,json,math,pathlib,re,struct,sys,tomllib
 class BoundaryError(RuntimeError):pass
-ROOT=pathlib.Path(__file__).resolve().parents[1];PKG=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_PACKAGE');SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\SPATIAL-CONTROL-STATE-V5');F04D_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\F04-DESCRIPTOR-CONTROL-V1');SOURCE_FLAGS_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\SOURCE-FLAGS-PRODUCER-V1');READER_TARGET_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\READER-TARGET-UPDATES-V1')
+ROOT=pathlib.Path(__file__).resolve().parents[1];PKG=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_PACKAGE');SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\SPATIAL-CONTROL-STATE-V5');F04D_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\F04-DESCRIPTOR-CONTROL-V1');SOURCE_FLAGS_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\SOURCE-FLAGS-PRODUCER-V1');READER_TARGET_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\READER-TARGET-UPDATES-V1');READER_TARGET_HASH_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\READER-TARGET-FIXTURE-HASH-V1');PANNER_TRIGONOMETRY_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\PANNER-TRIGONOMETRY-V1')
 PACKAGE=PKG
 CURRENT_FEATURES_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\CURRENT-FEATURES-PRODUCER-V1')
 CURRENT_FEATURES_INTEGRATION_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\CURRENT-FEATURES-INTEGRATION-CONTRACT-V1')
@@ -792,7 +792,7 @@ def check_current_features_provider_mapping(root,d):
   fixture=fixture_root/pathlib.Path(expected['path']).name;fixture_bytes=fixture.read_bytes();approved_bytes=(PKG/expected['path']).read_bytes()
   ck(len(fixture_bytes)==expected['bytes']and hashlib.sha256(fixture_bytes).hexdigest()==expected['sha256']and fixture_bytes==approved_bytes,'P1.4-C byte-exact fixture '+expected['path'])
  cargo=(root/'crates/jocforge-domain/Cargo.toml').read_text(encoding='utf-8');deps=cargo.split('[dependencies]',1)[1].split('\n[',1)[0].strip().splitlines()
- ck(deps==['sha2 = { version = "=0.10.9", default-features = false }','serde_json = { version = "=1.0.154", default-features = false, features = ["std"] }']and'[features]'not in cargo,'P1.4-C has no new dependencies or optional feature route')
+ ck(deps==['num-bigint = { version = "=0.4.6", default-features = false, features = ["std"] }','sha2 = { version = "=0.10.9", default-features = false }','serde_json = { version = "=1.0.154", default-features = false, features = ["std"] }']and'[features]'not in cargo,'domain has only explicitly pinned dependencies and no optional feature route')
  required_test_terms=('approved_math_providers_yield_exact_typed_words_and_lineage_receipts','package_manifest_identity_rejects_before_json_parsing','observed_manifest_metadata_must_match_actual_bytes','provider_identity_rejects_changed_bytes_before_utf8_or_json_parsing','provider_observation_must_match_actual_bytes','sampled_byte_changes_never_cross_manifest_or_provider_identity_gates','processor_parser_rejects_unknown_and_duplicate_keys','processor_parser_rejects_boolean_float_wrong_dimension_and_counts','processor_parser_rejects_wrong_array_shapes_and_u32_domain','fft_parser_rejects_route_stage_and_root_shape_drift','fft_parser_rejects_boolean_and_out_of_range_root_words','manifest_provider_entries_must_be_unique_and_exact')
  ck(all(term in test_source+source for term in required_test_terms),'P1.4-C identity, lineage, route, shape, integer and receipt tests')
 
@@ -1957,7 +1957,7 @@ def check_reader_target_mapping(root,d):
  entry=next(e for e in d['functional_entries'] if e['functional_id']=='F05R56')
  expected_fields=['callback_index','retired','history','previous_active','current_xyz_words','current_ids','current_attributes','reader_records','reader_invocations']
  expected_status='LOCALLY_VERIFIED_F05R56_SELECTED_PRODUCER_ONLY__PARENT_ADMISSION_DEFERRED'
- implementation_files=['crates/jocforge-domain/src/joc/oamd.rs','crates/jocforge-domain/src/joc/oamd/reader_target.rs','crates/jocforge-domain/src/joc/oamd/reader_target/reader_records.rs','crates/jocforge-domain/src/joc/oamd/reader_target/target_panner.rs','crates/jocforge-domain/src/joc/oamd/reader_target/type11.rs']
+ implementation_files=['crates/jocforge-domain/src/joc/oamd.rs','crates/jocforge-domain/src/joc/oamd/reader_target.rs','crates/jocforge-domain/src/joc/oamd/reader_target/exact_trigonometry.rs','crates/jocforge-domain/src/joc/oamd/reader_target/reader_records.rs','crates/jocforge-domain/src/joc/oamd/reader_target/target_panner.rs','crates/jocforge-domain/src/joc/oamd/reader_target/type11.rs']
  test_modules=['crates/jocforge-domain/src/joc/oamd/reader_target/tests.rs']
  ck(entry['owner']=='spatial_control' and entry['mapping_status']=='MAPPING_COMPLETE' and entry['implementation_status']==expected_status and entry['active_slice_materialization']=='MATERIALIZED','F05R56 selected producer materialization status')
  ck(entry['implementation_files']==implementation_files and entry['test_modules']==test_modules,'F05R56 semantic source/test paths')
@@ -1982,7 +1982,7 @@ def check_reader_target_mapping(root,d):
  supplement_inputs=(READER_TARGET_SUPPLEMENT/'READER-TARGET-RECEIPT-INPUTS.json').read_bytes()
  supplement_vectors=(READER_TARGET_SUPPLEMENT/'READER-TARGET-RECEIPT-VECTORS.json').read_bytes()
  ck((fixture/'READER-TARGET-RECEIPT-INPUTS.json').read_bytes()==supplement_inputs and (fixture/'READER-TARGET-RECEIPT-VECTORS.json').read_bytes()==supplement_vectors,'F05R56 receipt fixture byte identity')
- ck({path.name for path in fixture.iterdir() if path.is_file()}==local_names|{'README.md','READER-TARGET-RECEIPT-INPUTS.json','READER-TARGET-RECEIPT-VECTORS.json','oamd-id11-live-v1.json'},'F05R56 fixture inventory is explicit')
+ ck({path.name for path in fixture.iterdir() if path.is_file()}==local_names|{'README.md','READER-TARGET-RECEIPT-INPUTS.json','READER-TARGET-RECEIPT-VECTORS.json','oamd-id11-live-v1.json','panner-trigonometry-kat.json'},'F05R56 fixture inventory is explicit')
  schema=json.loads((PKG/'test-vectors/READER56-TARGET-STATE-SCHEMA.json').read_text(encoding='utf-8'))
  ck(schema['schema']=='reader56-target-state-schema.v2' and schema['whole_state']['class_name']=='ReaderTargetState' and [f['name'] for f in schema['whole_state']['fields']]==expected_fields,'F05R56 exact persistent schema field order')
  ck(all('target' not in f['name'] for f in schema['whole_state']['fields']) and schema['cold_preimage']['encoded_bytes']==9047 and hashlib.sha256(bytes.fromhex(schema['cold_preimage']['encoded_hex'])).hexdigest()==schema['cold_preimage']['encoded_sha256'],'F05R56 target output excluded from state and complete cold preimage')
@@ -1993,6 +1993,25 @@ def check_reader_target_mapping(root,d):
  for record in supplement_manifest['files']:
   raw=(READER_TARGET_SUPPLEMENT/record['file']).read_bytes()
   ck(len(raw)==record['bytes'] and hashlib.sha256(raw).hexdigest()==record['sha256'],'F05R56 supplement asset '+record['file'])
+ hash_manifest_bytes=(READER_TARGET_HASH_SUPPLEMENT/'MANIFEST.json').read_bytes()
+ ck(hashlib.sha256(hash_manifest_bytes).hexdigest()=='521af0fe82107efd7135debe4c1b0a8b352a319041bc7a97a2b3f3e2c7f1a601','F05R56 fixture-hash erratum manifest identity')
+ hash_manifest=json.loads(hash_manifest_bytes)
+ ck(hash_manifest['identity']=='reader-target-fixture-hash.v1-current-mixer-erratum' and hash_manifest['status']=='FIXTURE_ASSERTION_ONLY','F05R56 fixture hashes remain post-generation assertions only')
+ for record in hash_manifest['files']:
+  raw=(READER_TARGET_HASH_SUPPLEMENT/record['file']).read_bytes()
+  ck(len(raw)==record['bytes'] and hashlib.sha256(raw).hexdigest()==record['sha256'],'F05R56 fixture-hash asset '+record['file'])
+ hash_api=json.loads((READER_TARGET_HASH_SUPPLEMENT/'API-SCHEMA.json').read_text(encoding='utf-8'))
+ mixer_erratum=json.loads((READER_TARGET_HASH_SUPPLEMENT/'CURRENT-MIXER-ERRATUM.json').read_text(encoding='utf-8'))
+ ck(hash_api['preimages']['new_mixer']=='F32LE[15][3072] row-major; marker energy consumes the first 1536 samples only' and mixer_erratum['correction']=='current_mixer is F32LE[15][3072], not F32LE[15][1536]' and mixer_erratum['bytes']==184320,'F05R56 fixture mixer length erratum')
+ trig_manifest_bytes=(PANNER_TRIGONOMETRY_SUPPLEMENT/'MANIFEST.json').read_bytes()
+ ck(hashlib.sha256(trig_manifest_bytes).hexdigest()=='f332b16841fca16fa2435afc93c4a0f86bb70865b81722bcf0777b3aba9b501c','F05R56 panner trigonometry supplement identity')
+ trig_manifest=json.loads(trig_manifest_bytes)
+ ck(trig_manifest['identity']=='selected-panner-trigonometry.v1','F05R56 panner trig supplement identity field')
+ for record in trig_manifest['files']:
+  raw=(PANNER_TRIGONOMETRY_SUPPLEMENT/record['file']).read_bytes()
+  ck(len(raw)==record['bytes'] and hashlib.sha256(raw).hexdigest()==record['sha256'],'F05R56 panner trig asset '+record['file'])
+ trig_kat=(fixture/'panner-trigonometry-kat.json').read_bytes()
+ ck(trig_kat==(PANNER_TRIGONOMETRY_SUPPLEMENT/'KAT.json').read_bytes(),'F05R56 panner KAT fixture byte identity')
  receipt_inputs=json.loads((READER_TARGET_SUPPLEMENT/'READER-TARGET-RECEIPT-INPUTS.json').read_text(encoding='utf-8'))
  receipt_vectors=json.loads((READER_TARGET_SUPPLEMENT/'READER-TARGET-RECEIPT-VECTORS.json').read_text(encoding='utf-8'))
  ck(receipt_inputs.get('expected_outputs_used_as_input') is False and [case['id'] for case in receipt_inputs['positive_cases']]==[case['id'] for case in receipt_vectors['positive_cases']],'F05R56 receipt expected outputs are assertions only')
@@ -2011,6 +2030,7 @@ def check_reader_target_mapping(root,d):
  type11_source=rust_code_without_comments((root/'crates/jocforge-domain/src/joc/oamd/reader_target/type11.rs').read_text(encoding='utf-8'))
  ck('type11::roundtrip' in reader_code and 'reader_records::materialize' in reader_code and 'target_panner::generate_targets' in reader_code,'F05R56 computes from a Type11 wire roundtrip, reader records, and target panner')
  panner_source=rust_code_without_comments((root/'crates/jocforge-domain/src/joc/oamd/reader_target/target_panner.rs').read_text(encoding='utf-8'))
+ trig_source=rust_code_without_comments((root/'crates/jocforge-domain/src/joc/oamd/reader_target/exact_trigonometry.rs').read_text(encoding='utf-8'))
  panner_params=json.loads((fixture/'reader56-main-panner-v1.json').read_text(encoding='utf-8'))
  secondary_params=json.loads((fixture/'meter-oar-secondary8-math-v1.json').read_text(encoding='utf-8'))
  geometry_match=re.search(r'const\s+GEOMETRY\s*:\s*\[\[i32;\s*4\];\s*8\]\s*=\s*\[(.*?)\];',panner_source,re.S)
@@ -2018,14 +2038,19 @@ def check_reader_target_mapping(root,d):
  geometry_rows=[[int(value.replace('_',''))for value in row]for row in re.findall(r'\[\s*(-?\d[\d_]*)\s*,\s*(-?\d[\d_]*)\s*,\s*(-?\d[\d_]*)\s*,\s*(-?\d[\d_]*)\s*\]',geometry_match.group(1))]
  ck(geometry_rows==panner_params['geometry_i32_rows']==secondary_params['generated_i32_rows'],'F05R56 geometry matches approved providers')
  ck('0x3f49_0fdb' in panner_source and '0x3f00_0000' in panner_source and panner_params['quarter_pi_f32_u32']==1061752795 and panner_params['half_f32_u32']==1056964608,'F05R56 equal-power constants match the pinned provider')
+ ck('exact_trigonometry::mathematical_r64_r32' in panner_source and not any(token in panner_source for token in ('f64::sin','f64::cos','.sin()','.cos()')),'F05R56 trigonometry uses the exact-rational route, not host libm')
+ ck('BigInt' in trig_source and 'BigUint' in trig_source and 'round_quotient_to_even' in trig_source and 'total_r64 == next_r64' in trig_source and 'EPSILON' not in trig_source and re.search(r'\b(?:sin|cos)\s*\(',trig_source) is None and re.search(r'\blibm\b',trig_source) is None,'F05R56 trig uses exact rational endpoints with no fixed epsilon, host trig calls, or libm reference')
  profile=json.loads((fixture/'reader56-target-profile-v1.json').read_text(encoding='utf-8'))
  trim_flags=profile['trim']['group_flags'];default_tuple=profile['trim']['groups'][0]
  trim_flag_match=re.search(r'const\s+SELECTED_TRIM_FLAGS\s*:\s*\[u8;\s*9\]\s*=\s*\[([^]]+)\]',type11_source)
  trim_group_match=re.search(r'const\s+DEFAULT_TRIM_GROUP\s*:\s*\[i32;\s*5\]\s*=\s*\[([^]]+)\]',type11_source)
  ck(trim_flag_match is not None and [int(value.strip())for value in trim_flag_match.group(1).split(',')if value.strip()]==trim_flags and trim_group_match is not None and [int(value.strip())for value in trim_group_match.group(1).split(',')if value.strip()]==default_tuple,'F05R56 trim writer matches selected profile provider')
- test_source=rust_code_without_comments((root/'crates/jocforge-domain/src/joc/oamd/reader_target/tests.rs').read_text(encoding='utf-8'))
+ test_source_raw=(root/'crates/jocforge-domain/src/joc/oamd/reader_target/tests.rs').read_text(encoding='utf-8')
+ test_source=rust_code_without_comments(test_source_raw)
  recipe_match=re.search(r'fn\s+recipe_data\([^)]*\)\s*->\s*RecipeData\s*\{(.*?)\n\}',test_source,re.S)
  ck('for callback in 0..8_u64' in test_source and 'assert_eq!(receipt_count, 6)' in test_source and recipe_match is not None and 'expected' not in recipe_match.group(1) and 'expected' not in recipe_match.group(1).lower(),'F05R56 tests run actual-first input recipes without expected-output seeds')
+ hash_recipe_call='assert_fixture_input_hashes(&recipe, &expected_case["input"])'
+ ck('current_mixer: Vec<[f32; 3072]>' in test_source and hash_recipe_call in test_source_raw and all(field in test_source_raw for field in ('snapshot_sha256','matrix_u32le_sha256','old_overlap_f32le_sha256','new_mixer_f32le_sha256')) and test_source_raw.index('let recipe = recipe_data(callback);')<test_source_raw.index(hash_recipe_call)<test_source_raw.index('stage_reader_target(&state, &input)'), 'F05R56 hashes freshly generated fixture inputs only')
  state_ownership=(root/'docs/architecture/STATE-OWNERSHIP.md').read_text(encoding='utf-8')
  ck('ReaderTargetUpdateReceipt' in state_ownership and 'target_words_16x6' not in state_ownership and 'F05R56Receipt' not in state_ownership,'F05R56 architecture excludes persistent target array and stale receipt name')
 
@@ -2122,13 +2147,22 @@ def run(root=ROOT):
  json_dep=d['approved_dependencies']['serde_json']
  expected_json_dep={'version':'=1.0.154','default_features':False,'features':['std'],'archive_sha256':'e7e9cc8b1b85264074fbcc02a88680c4096b1e47df8f739dceb03bf482f04bd6','license_choice':'Apache-2.0','scope':'F01E P1.4-A, F03 target P1.4-B, exact CurrentFeatures P1.4-C, F04 P1.4-D1/P1.4-D2 provider syntax parsing/private field access after identity gates, and F05R56 sorted compact semantic-receipt JSON; other canonical writers remain project-owned'}
  ck(json_dep==expected_json_dep,'serde_json governance')
+ bigint_dep=d['approved_dependencies']['num_bigint']
+ expected_bigint_dep={'version':'=0.4.6','default_features':False,'features':['std'],'archive_sha256':'a5e44f723f1133c9deac646763579fdb3ac745e418f2a7af9cd0c431da1f20b9','license_choice':'Apache-2.0','scope':'F05R56 exact-rational alternating enclosure for selected mathematical R64 then R32 panner trigonometry only; no runtime input or persistent-state ownership'}
+ ck(bigint_dep==expected_bigint_dep,'num-bigint exact-rational dependency governance')
  lock=(root/'Cargo.lock').read_text(encoding='utf-8')
  ck('name = "sha2"'in lock and 'version = "0.10.9"'in lock and 'checksum = "a7507d819769d01a365ab707794a4084392c824f54a7a6a7862f8c3d0892b283"'in lock,'sha2 lock')
  ck('name = "serde_json"'in lock and 'version = "1.0.154"'in lock and 'checksum = "e7e9cc8b1b85264074fbcc02a88680c4096b1e47df8f739dceb03bf482f04bd6"'in lock,'serde_json lock')
+ locked_packages={(package['name'],package['version']):package for package in tomllib.loads(lock)['package']}
+ expected_num_packages={('num-bigint','0.4.6'):'a5e44f723f1133c9deac646763579fdb3ac745e418f2a7af9cd0c431da1f20b9',('num-integer','0.1.47'):'7ce2d95d4b3734dc35aa2f45e1aa22cd416814592a4f9d9205e11affd5b8e10b',('num-traits','0.2.19'):'071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841',('autocfg','1.5.1'):'f2032f911046de80f0a198e0901378627c33f59ea0ac00e363d481118bd70a53'}
+ ck(all(locked_packages.get(key,{}).get('checksum')==checksum for key,checksum in expected_num_packages.items()),'num-bigint locked transitive identities')
  manifest=(root/'crates/jocforge-domain/Cargo.toml').read_text(encoding='utf-8')
+ ck('num-bigint = { version = "=0.4.6", default-features = false, features = ["std"] }'in manifest,'num-bigint manifest scope and features')
  ck('sha2 = { version = "=0.10.9", default-features = false }'in manifest,'sha2 manifest')
  ck('serde_json = { version = "=1.0.154", default-features = false, features = ["std"] }'in manifest,'serde_json manifest')
- deps={'domain':{'sha2','serde_json'},'application':{'jocforge-domain'},'io':{'jocforge-domain'},'cli':{'jocforge-application'},'validation':{'jocforge-domain','jocforge-application','jocforge-io'}}
+ notices=(root/'THIRD_PARTY_NOTICES.md').read_text(encoding='utf-8')
+ ck(all(name in notices and checksum in notices for name,checksum in [('num-bigint','a5e44f723f1133c9deac646763579fdb3ac745e418f2a7af9cd0c431da1f20b9'),('num-integer','7ce2d95d4b3734dc35aa2f45e1aa22cd416814592a4f9d9205e11affd5b8e10b'),('num-traits','071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841'),('autocfg','f2032f911046de80f0a198e0901378627c33f59ea0ac00e363d481118bd70a53')]),'num-bigint third-party and transitive notices')
+ deps={'domain':{'num-bigint','sha2','serde_json'},'application':{'jocforge-domain'},'io':{'jocforge-domain'},'cli':{'jocforge-application'},'validation':{'jocforge-domain','jocforge-application','jocforge-io'}}
  for n,w in deps.items():
   c=root/'crates'/f'jocforge-{n}';cfg=tomllib.loads((c/'Cargo.toml').read_text(encoding='utf-8'));ck(set(cfg.get('dependencies',{}))==w,'dependency '+n);ck(not(c/'build.rs').exists(),'build script')
   for p in(c/'src').rglob('*.rs'):

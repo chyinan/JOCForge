@@ -914,6 +914,8 @@ def main():
   ('f05r56-trim-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/joc/oamd/reader_target/type11.rs','const SELECTED_TRIM_FLAGS: [u8; 9] = [1, 0, 0, 1, 0, 1, 1, 0, 1];','const SELECTED_TRIM_FLAGS: [u8; 9] = [0, 0, 0, 1, 0, 1, 1, 0, 1];')),
   ('f05r56-wire-roundtrip-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/joc/oamd/reader_target.rs','type11::roundtrip(controls)?','(Default::default(), Vec::new())?')),
   ('f05r56-domain-io-added',lambda r:append(r/'crates/jocforge-domain/src/joc/oamd/reader_target.rs','\nfn unexpected_io() { let _ = std::fs::read("input"); }\n')),
+  ('f05r56-host-libm-reintroduced',lambda r:replace_once(r/'crates/jocforge-domain/src/joc/oamd/reader_target/target_panner.rs','    let rounded = super::exact_trigonometry::mathematical_r64_r32(angle)?;','    let _host_trig = f64::from(angle).sin();\n    let rounded = super::exact_trigonometry::mathematical_r64_r32(angle)?;')),
+  ('f05r56-host-method-trig-in-exact-module',lambda r:replace_once(r/'crates/jocforge-domain/src/joc/oamd/reader_target/exact_trigonometry.rs','    let (cosine, cosine_series_steps) =','    let _host_sine = f64::from(angle).sin();\n    let (cosine, cosine_series_steps) =')),
   ('f05r56-provider-fixture-tampered',f04r_fixture_mut('crates/jocforge-domain/tests/fixtures/reader_target/reader56-main-panner-v1.json',flip_first_byte)),
   ('f05r56-receipt-input-fixture-tampered',f04r_fixture_mut('crates/jocforge-domain/tests/fixtures/reader_target/READER-TARGET-RECEIPT-INPUTS.json',flip_first_byte))
  ]

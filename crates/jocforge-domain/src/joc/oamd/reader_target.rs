@@ -1,6 +1,7 @@
 // pattern: Functional Core
 //! F05R56 reader/target transition boundary. The parent spatial_control transaction owns commit.
 
+mod exact_trigonometry;
 mod reader_records;
 mod target_panner;
 #[cfg(test)]

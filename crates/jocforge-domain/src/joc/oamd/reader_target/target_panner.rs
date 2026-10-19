@@ -147,6 +147,16 @@ fn y_weights(y: f32) -> Result<[f32; 3], ReaderTargetError> {
 }
 
 fn equal_power(fraction: f32) -> Result<(f32, f32), ReaderTargetError> {
+    let (angle, swap) = equal_power_angle(fraction)?;
+    let rounded = super::exact_trigonometry::mathematical_r64_r32(angle)?;
+    if swap {
+        Ok((rounded.sine, rounded.cosine))
+    } else {
+        Ok((rounded.cosine, rounded.sine))
+    }
+}
+
+fn equal_power_angle(fraction: f32) -> Result<(f32, bool), ReaderTargetError> {
     if !(0.0..=1.0).contains(&fraction) {
         return Err(ReaderTargetError::ProfileUnsupported);
     }
@@ -158,16 +168,7 @@ fn equal_power(fraction: f32) -> Result<(f32, f32), ReaderTargetError> {
     let scaled = checked_mul(angle_fraction, QUARTER_PI)?;
     let halved = checked_mul(scaled, HALF)?;
     let angle = checked_mul(halved, 4.0)?;
-    let cosine = (f64::from(angle).cos()) as f32;
-    let sine = (f64::from(angle).sin()) as f32;
-    if !cosine.is_finite() || !sine.is_finite() {
-        return Err(ReaderTargetError::NumericFailure);
-    }
-    if swap {
-        Ok((sine, cosine))
-    } else {
-        Ok((cosine, sine))
-    }
+    Ok((angle, swap))
 }
 
 fn point_x(row: usize) -> f32 {
@@ -211,5 +212,66 @@ fn finite(value: f32) -> Result<f32, ReaderTargetError> {
         Ok(value)
     } else {
         Err(ReaderTargetError::NumericFailure)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{equal_power, equal_power_angle};
+    use serde_json::Value;
+
+    const TRIGONOMETRY_KAT: &str =
+        include_str!("../../../../tests/fixtures/reader_target/panner-trigonometry-kat.json");
+
+    #[test]
+    fn selected_equal_power_pairs_match_the_rational_enclosure_kat() {
+        let vectors: Value = serde_json::from_str(TRIGONOMETRY_KAT).unwrap();
+        for case in vectors["panner_fractions"].as_array().unwrap() {
+            let fraction_bits =
+                u32::from_str_radix(case["fraction_f32_hex"].as_str().unwrap(), 16).unwrap();
+            let expected_angle_bits =
+                u32::from_str_radix(case["angle_f32_hex"].as_str().unwrap(), 16).unwrap();
+            let (angle, swap) = equal_power_angle(f32::from_bits(fraction_bits)).unwrap();
+            assert_eq!(
+                angle.to_bits(),
+                expected_angle_bits,
+                "{}",
+                case["fraction_f32_hex"]
+            );
+            let rounded = super::super::exact_trigonometry::mathematical_r64_r32(angle).unwrap();
+            let expected = case["pair_f32_hex"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .map(|word| u32::from_str_radix(word.as_str().unwrap(), 16).unwrap())
+                .collect::<Vec<_>>();
+            let pair = if swap {
+                [rounded.sine.to_bits(), rounded.cosine.to_bits()]
+            } else {
+                [rounded.cosine.to_bits(), rounded.sine.to_bits()]
+            };
+            assert_eq!(pair, expected.as_slice(), "{}", case["fraction_f32_hex"]);
+            assert_eq!(
+                rounded.cosine_series_steps,
+                case["cosine_series_steps"].as_u64().unwrap(),
+                "{}",
+                case["fraction_f32_hex"]
+            );
+            assert_eq!(
+                rounded.sine_series_steps,
+                case["sine_series_steps"].as_u64().unwrap(),
+                "{}",
+                case["fraction_f32_hex"]
+            );
+            assert_eq!(
+                {
+                    let (left, right) = equal_power(f32::from_bits(fraction_bits)).unwrap();
+                    [left.to_bits(), right.to_bits()]
+                },
+                pair,
+                "{}",
+                case["fraction_f32_hex"]
+            );
+        }
     }
 }

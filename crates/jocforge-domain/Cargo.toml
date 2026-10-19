@@ -9,5 +9,6 @@ rust-version.workspace = true
 workspace = true
 
 [dependencies]
+num-bigint = { version = "=0.4.6", default-features = false, features = ["std"] }
 sha2 = { version = "=0.10.9", default-features = false }
 serde_json = { version = "=1.0.154", default-features = false, features = ["std"] }

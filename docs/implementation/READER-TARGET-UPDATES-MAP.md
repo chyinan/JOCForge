@@ -78,6 +78,7 @@ The selected 8-callback producer chain, six reader invocations, Type11 roundtrip
   "implementation_files": [
     "crates/jocforge-domain/src/joc/oamd.rs",
     "crates/jocforge-domain/src/joc/oamd/reader_target.rs",
+    "crates/jocforge-domain/src/joc/oamd/reader_target/exact_trigonometry.rs",
     "crates/jocforge-domain/src/joc/oamd/reader_target/reader_records.rs",
     "crates/jocforge-domain/src/joc/oamd/reader_target/target_panner.rs",
     "crates/jocforge-domain/src/joc/oamd/reader_target/type11.rs"
@@ -129,7 +130,8 @@ The selected 8-callback producer chain, six reader invocations, Type11 roundtrip
       "test-vectors/READER56-TARGET-UPDATES-VERIFICATION.json",
       "test-vectors/READER56-TARGET-STATE-SCHEMA.json",
       "outputs/IMPLEMENTER_SUPPLEMENTS/READER-TARGET-UPDATES-V1/READER-TARGET-RECEIPT-INPUTS.json",
-      "outputs/IMPLEMENTER_SUPPLEMENTS/READER-TARGET-UPDATES-V1/READER-TARGET-RECEIPT-VECTORS.json"
+      "outputs/IMPLEMENTER_SUPPLEMENTS/READER-TARGET-UPDATES-V1/READER-TARGET-RECEIPT-VECTORS.json",
+      "outputs/IMPLEMENTER_SUPPLEMENTS/PANNER-TRIGONOMETRY-V1/KAT.json"
     ],
     "case_pointers": [
       "R56T-CONT-0..7: continuous marker/history callbacks; g0/g1 have no reader receipt; g2..g7 have one receipt each",
@@ -137,7 +139,9 @@ The selected 8-callback producer chain, six reader invocations, Type11 roundtrip
       "target_leaf_cases: all 16x6 F32 words; expected target words are postcompute comparisons only",
       "receipt vectors: schema, lineage, hashes, finite target payload and semantic digest postcompute checks",
       "rejection_cases: BAD_CALLBACK, BAD_READER_GATE, OLD_ROW_COUNT, NEW_ROW_BYTES, SNAPSHOT_KEYS, RETIRED, COMPONENT6_PROFILE",
-      "extra guards: state invocation mismatch and nonfinite numeric intermediate"
+      "extra guards: state invocation mismatch and nonfinite numeric intermediate",
+      "panner_trigonometry_kat: exact-rational direct-angle and equal-power words plus enclosure step counts; no host libm",
+      "fixture_integrity: fresh snapshot, matrix, overlap and 15x3072 mixer inputs are hashed after generation; marker energy consumes only the first 1536 mixer samples; hashes never seed the producer"
     ],
     "kind": "INPUT_ONLY_RECIPES_WITH_POSTCOMPUTATION_ASSERTIONS",
     "local_test_assets": [
@@ -149,7 +153,8 @@ The selected 8-callback producer chain, six reader invocations, Type11 roundtrip
       "crates/jocforge-domain/tests/fixtures/reader_target/reader56-main-panner-v1.json",
       "crates/jocforge-domain/tests/fixtures/reader_target/oamd-coordinate-grid-q15.json",
       "crates/jocforge-domain/tests/fixtures/reader_target/meter-oar-secondary8-math-v1.json",
-      "crates/jocforge-domain/tests/fixtures/reader_target/oamd-id11-live-v1.json"
+      "crates/jocforge-domain/tests/fixtures/reader_target/oamd-id11-live-v1.json",
+      "crates/jocforge-domain/tests/fixtures/reader_target/panner-trigonometry-kat.json"
     ]
   }
 }

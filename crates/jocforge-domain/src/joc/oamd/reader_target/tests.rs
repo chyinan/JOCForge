@@ -229,6 +229,7 @@ fn selected_callback_chain_matches_postcomputation_state_and_receipt_assertions(
         let recipe = recipe_data(callback);
         let input = recipe.inputs(callback);
         let expected_case = &vectors["cases"][callback as usize];
+        assert_fixture_input_hashes(&recipe, &expected_case["input"]);
         let before_sha = hex(&state.canonical_sha256());
         assert_eq!(before_sha, expected_case["expected_before_state_sha256"]);
         let proposal = stage_reader_target(&state, &input).unwrap();
@@ -436,7 +437,7 @@ struct RecipeData {
     matrix: Vec<f32>,
     source_flags: [u8; 48],
     previous_overlap: Vec<[f32; 1536]>,
-    current_mixer: Vec<[f32; 1536]>,
+    current_mixer: Vec<[f32; 3072]>,
     transaction_id: String,
 }
 
@@ -500,7 +501,7 @@ fn recipe_data(callback: u64) -> RecipeData {
     }
     let source_flags = [0_u8; 48];
     let mut previous_overlap = vec![[0.0_f32; 1536]; 15];
-    let mut current_mixer = vec![[0.0_f32; 1536]; 15];
+    let mut current_mixer = vec![[0.0_f32; 3072]; 15];
     for row in 0..15 {
         previous_overlap[row][row] = 1.0;
         current_mixer[row][row] = 1.0;
@@ -523,6 +524,46 @@ fn recipe_data(callback: u64) -> RecipeData {
         current_mixer,
         transaction_id: format!("VECTOR-TX-{callback}"),
     }
+}
+
+fn assert_fixture_input_hashes(recipe: &RecipeData, expected: &Value) {
+    let snapshot_hash = sha256_u32le(
+        recipe
+            .current_xyz_words
+            .iter()
+            .copied()
+            .chain(recipe.current_ids.iter().copied())
+            .chain(recipe.current_attributes.iter().copied())
+            .chain(recipe.assignment_active.iter().copied().map(u32::from)),
+    );
+    assert_eq!(hex(&snapshot_hash), expected["snapshot_sha256"]);
+
+    let matrix_hash = sha256_u32le(recipe.matrix.iter().map(|value| value.to_bits()));
+    assert_eq!(hex(&matrix_hash), expected["matrix_u32le_sha256"]);
+
+    let old_overlap_hash = sha256_u32le(
+        recipe
+            .previous_overlap
+            .iter()
+            .flat_map(|row| row.iter().map(|value| value.to_bits())),
+    );
+    assert_eq!(hex(&old_overlap_hash), expected["old_overlap_f32le_sha256"]);
+
+    let new_mixer_hash = sha256_u32le(
+        recipe
+            .current_mixer
+            .iter()
+            .flat_map(|row| row.iter().map(|value| value.to_bits())),
+    );
+    assert_eq!(hex(&new_mixer_hash), expected["new_mixer_f32le_sha256"]);
+}
+
+fn sha256_u32le(words: impl IntoIterator<Item = u32>) -> [u8; 32] {
+    let mut bytes = Vec::new();
+    for word in words {
+        bytes.extend_from_slice(&word.to_le_bytes());
+    }
+    Sha256::digest(bytes).into()
 }
 
 fn assert_receipt(actual: &ReaderTargetUpdateReceipt, expected: &Value) {
