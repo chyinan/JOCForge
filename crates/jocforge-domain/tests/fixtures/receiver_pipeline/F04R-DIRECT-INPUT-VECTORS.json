@@ -1,0 +1,103 @@
+{
+  "schema": "f04r-preprocessing-final-six-input-vectors.v1",
+  "cases": [
+    {
+      "id": "case1_cold_normal",
+      "receiver_generation": 1,
+      "callback_kind": "cold_normal",
+      "input_lineage": {
+        "type10_generation": 1,
+        "target_updates_generation": 1,
+        "same_runner_join_required": true
+      },
+      "type10": {
+        "file": "case1_cold_normal_type10_f32le.bin",
+        "bytes": 98304,
+        "sha256": "bbd4d16e87107079ce20cff7d70445cbf7733637c043d0f800edd61b58109b24"
+      },
+      "target_updates": {
+        "file": "case1_cold_normal_target_updates_f32le.bin",
+        "bytes": 384,
+        "sha256": "c818e3561c16c558e259533b6f3bba144263edb001b0f36da7d006522862afdb"
+      }
+    },
+    {
+      "id": "case2_warm_normal",
+      "receiver_generation": 2,
+      "callback_kind": "warm_normal",
+      "input_lineage": {
+        "type10_generation": 2,
+        "target_updates_generation": 2,
+        "same_runner_join_required": true
+      },
+      "type10": {
+        "file": "case2_warm_normal_type10_f32le.bin",
+        "bytes": 98304,
+        "sha256": "23b144f83976567a4a4aac28cb12367c2b7569c7a8d7d400923d05ee5e2bfa04"
+      },
+      "target_updates": {
+        "file": "case2_warm_normal_target_updates_f32le.bin",
+        "bytes": 384,
+        "sha256": "d9726e33ea5e3c898bfb20d91944ee800d35966d87d697a2db82bb90e492d02d"
+      }
+    },
+    {
+      "id": "case3_cached_drain",
+      "receiver_generation": 3,
+      "callback_kind": "cached_drain",
+      "input_lineage": {
+        "type10_generation": 3,
+        "target_updates_generation": 3,
+        "same_runner_join_required": true
+      },
+      "type10": {
+        "file": "case3_cached_drain_type10_f32le.bin",
+        "bytes": 98304,
+        "sha256": "23b144f83976567a4a4aac28cb12367c2b7569c7a8d7d400923d05ee5e2bfa04"
+      },
+      "target_updates": {
+        "file": "case3_cached_drain_target_updates_f32le.bin",
+        "bytes": 384,
+        "sha256": "d9726e33ea5e3c898bfb20d91944ee800d35966d87d697a2db82bb90e492d02d"
+      }
+    }
+  ],
+  "negative_cases": [
+    {
+      "id": "missing_provider",
+      "expected_error": "F04R_PROVIDER_MISSING"
+    },
+    {
+      "id": "provider_identity",
+      "expected_error": "F04R_PROVIDER_IDENTITY"
+    },
+    {
+      "id": "stale_target_updates",
+      "expected_error": "F04R_LINEAGE_TARGET_UPDATES"
+    },
+    {
+      "id": "invalid_model_state",
+      "expected_error": "F04R_STATE_SHAPE"
+    },
+    {
+      "id": "invalid_temporal_cursor",
+      "expected_error": "F04R_TEMPORAL_CURSOR"
+    },
+    {
+      "id": "type10_shape",
+      "expected_error": "F04R_TYPE10_SHAPE"
+    },
+    {
+      "id": "target_shape",
+      "expected_error": "F04R_TARGET_SHAPE"
+    },
+    {
+      "id": "nonfinite_input",
+      "expected_error": "F04R_INPUT_NONFINITE"
+    },
+    {
+      "id": "numeric_nonfinite",
+      "expected_error": "F04R_NUMERIC_NONFINITE"
+    }
+  ]
+}

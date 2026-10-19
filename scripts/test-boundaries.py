@@ -11,6 +11,10 @@ def map_mut_render(fn):
   mutate(r)
   subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
  return m
+def f04r_fixture_mut(relative_path,fn):
+ def m(r):
+  fn(r/relative_path)
+ return m
 def code_mut_render(mutate):
  def m(r):
   mutate(r)
@@ -869,8 +873,10 @@ def main():
   ('f04r-descriptor-selection-moved',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['pipeline_order'][6].update(stage='F04D.3 descriptor selection after temporal3'))),
   ('f04r-priming-advances-receiver',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['clock_contract'].update(priming='g=0/1 invokes F04R and advances receiver state.'))),
   ('f04r-drain-is-synthetic',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['clock_contract'].update(eof='EOF adds a synthetic F04R flush callback.'))),
-  ('f04r-final-six-kat-fabricated',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['vector_coverage'].update(direct_full_pipeline_kat='PRESENT'))),
-  ('f04r-full-after-state-fabricated',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['vector_coverage'].update(complete_after_state_literal='PRESENT'))),
+  ('f04r-s09-boundary-before-lfe',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['type10_input'].update(receiver_s09_boundary='s09_input precedes the lane3 post-filter.'))),
+  ('f04r-expected-after-used-as-seed',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['vector_coverage']['state_chain_semantics'].update(expected_after_used_as_next_before_seed=True))),
+  ('f04r-chain-case2-source-drift',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['vector_coverage']['state_chain_semantics']['cases'][1].update(before_state_source='expected_case1_after_literal'))),
+  ('f04r-output-literals-as-inputs',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['vector_coverage'].update(literal_input_policy='Expected after-state files seed later cases.'))),
   ('f04r-error-precedence-guessed',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['error_mapping'].update(first_failure_precedence='provider, lineage, state, input'))),
   ('f04r-neighbor-error-contract-aliased',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['error_mapping'].update(do_not_infer_from=[]))),
   ('f04r-provider-value-missing',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['provider_bindings'][0]['fields'].remove('lfe_post_filter_4x5'))),
@@ -880,10 +886,15 @@ def main():
   ('f04r-f05jc-reruns-receiver',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['owner_and_consumer_boundaries'].update(F05JC='F05JC reruns F04R state for its carrier inputs.'))),
   ('f04r-f05jl-reruns-state',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['owner_and_consumer_boundaries'].update(J05_F05JL='F05JL reruns F04R, F04D, and F04RB state.'))),
   ('f04r-spatial-audio-promoted',map_mut_render(lambda d:d['phase_one']['P1.3-E'].update(status='LOCALLY_VERIFIED_SPATIAL_AUDIO'))),
-  ('f04r-temporal-crosswalk-fabricated',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['state_ownership']['temporal_state_serialization'].update(semantic_crosswalk_status='MAPPED'))),
+  ('f04r-temporal-crosswalk-field-swapped',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['state_ownership']['temporal_state_serialization'].update(semantic_crosswalk='index_28 is write; index_32 is read.'))),
   ('f04r-temporal-schema-field-removed',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['state_ownership']['temporal_state_serialization']['entry_fields'].pop(2))),
   ('f04r-row0-source-generation-removed',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['type10_input'].update(row_order='row0 is LFE; rows1..15 are component rows.'))),
-  ('f04r-target-runner-wiring-overclaimed',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['type10_input'].update(target_updates='F05R56 target_updates are always wired in the same runner.')))
+  ('f04r-target-runner-wiring-overclaimed',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['type10_input'].update(target_updates='F05R56 target_updates are always wired in the same runner.'))),
+  ('f04r-direct-error-outcome-removed',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['error_mapping']['error_outcomes'].pop())),
+  ('f04r-direct-error-order-drift',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['error_mapping']['error_outcomes'].reverse())),
+  ('f04r-supplement-identity-drift',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['vector_coverage']['approved_supplement_identity'].update(manifest_sha256='0'*64))),
+  ('f04r-fixture-inventory-shrink',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['vector_coverage']['direct_fixture_inventory'].update(file_count=28))),
+  ('f04r-fixture-file-removed',f04r_fixture_mut('crates/jocforge-domain/tests/fixtures/receiver_pipeline/case1_cold_normal_type10_f32le.bin',lambda p:p.unlink()))
  ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]

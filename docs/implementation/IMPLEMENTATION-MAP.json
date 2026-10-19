@@ -26,7 +26,7 @@
     "RECEIVER_MODE1_ROUTING_AUDIT": "LOCALLY_VERIFIED_RECEIVER_MODE1_ROUTING_AND_STATE__CROSS_STAGE_J05_EXECUTION_DEFERRED",
     "F04D_DESCRIPTOR_CONTROL": "LOCALLY_VERIFIED_F04D_DIRECT_STAGE_ONLY__WHOLE_RECEIVER_NOT_RUN",
     "MODE0_FITTING_AUDIT": "LOCALLY_VERIFIED_MODE0_FITTING_DIRECT_KATS__WHOLE_RECEIVER_NOT_RUN",
-    "F04R_RECEIVER_PIPELINE_AUDIT": "MAPPING_COMPLETE_BLOCKED_ON_F04R_DIRECT_KATS_TEMPORAL_CROSSWALK_AND_ERROR_OUTCOMES"
+    "F04R_RECEIVER_PIPELINE_AUDIT": "READY_FOR_IMPLEMENTATION_F04R_DIRECT_RECEIVER_ONLY__WHOLE_RECEIVER_NOT_RUN"
   },
   "functional_entries": [
     {
@@ -523,9 +523,13 @@
       "owner": "spatial_audio",
       "planned_phase": "Phase 3",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "MAPPING_COMPLETE_BLOCKED_ON_F04R_DIRECT_KATS_TEMPORAL_CROSSWALK_AND_ERROR_OUTCOMES",
+      "implementation_status": "READY_FOR_IMPLEMENTATION_F04R_DIRECT_RECEIVER_ONLY__WHOLE_RECEIVER_NOT_RUN",
       "clock": {
-        "domains": ["FrontendCallbackIndex", "ReceiverCallbackCount", "SpatialDispatchIndex"],
+        "domains": [
+          "FrontendCallbackIndex",
+          "ReceiverCallbackCount",
+          "SpatialDispatchIndex"
+        ],
         "covered_clauses": [
           "g=0..4246 normal input callbacks; g=4247..4250 cached drain",
           "For g>=2, source s=g-2 and receiver callback r=s; g=0/1 prime Type10 and skip F04R",
@@ -543,22 +547,102 @@
         ]
       },
       "vectors": {
-        "kind": "PARTIAL_DIRECT_UNIT_AND_MODEL_FIRST_WHOLE_CHAIN_ASSERTIONS",
+        "kind": "DIRECT_INPUT_ONLY_RECIPES_AND_POSTEXECUTION_LITERALS_CONTINUOUS_CHAIN_PLUS_MODEL_FIRST_WHOLE_CHAIN",
         "authoritative_vectors": [
+          "crates/jocforge-domain/tests/fixtures/receiver_pipeline/F04R-DIRECT-INPUT-VECTORS.json",
+          "crates/jocforge-domain/tests/fixtures/receiver_pipeline/F04R-DIRECT-ACTUAL-LITERALS.json",
           "test-vectors/unit/vectors.json",
           "test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json"
         ],
         "case_pointers": [
-          "U-RECV-ACC-RAMP",
-          "U-RECV-ACC-TINY",
-          "U-RECV-ACC-SNAP",
-          "U-RECV-RING",
-          "U-RECV-TRANSFORM",
-          "U-RECV-TEMPORAL-3",
-          "U-RECV-TEMPORAL-7",
-          "six F04 whole-chain model-first assertions are not isolated F04R execution or final_six direct KATs"
+          "case1_cold_normal",
+          "case2_warm_normal",
+          "case3_cached_drain",
+          "missing_provider -> F04R_PROVIDER_MISSING",
+          "provider_identity -> F04R_PROVIDER_IDENTITY",
+          "stale_target_updates -> F04R_LINEAGE_TARGET_UPDATES",
+          "invalid_model_state -> F04R_STATE_SHAPE",
+          "invalid_temporal_cursor -> F04R_TEMPORAL_CURSOR",
+          "type10_shape -> F04R_TYPE10_SHAPE",
+          "target_shape -> F04R_TARGET_SHAPE",
+          "nonfinite_input -> F04R_INPUT_NONFINITE",
+          "numeric_nonfinite -> F04R_NUMERIC_NONFINITE",
+          "six F04 whole-chain model-first assertions remain non-authoritative for direct F04R execution"
         ]
-      }
+      },
+      "implementation_files": [
+        "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+        "crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs",
+        "crates/jocforge-domain/src/spatial/spatial_audio_state/f04r_receiver.rs"
+      ],
+      "test_modules": [
+        "crates/jocforge-domain/src/spatial/spatial_audio_state/f04r_receiver/tests.rs"
+      ],
+      "error_outcomes": [
+        {
+          "error_code": "F04R_PROVIDER_MISSING",
+          "category": "provider availability",
+          "trigger": "required selected provider is unavailable",
+          "programme_state_after": "RETIRED",
+          "caller_action": "Return STAGE_FATAL with no preconditioned output, s09_input, final_six, after-state proposal, F04R/F04RB/F04D/J05 receipt, or commit; preserve the committed root byte-identically; do not evaluate later errors for externally visible reporting."
+        },
+        {
+          "error_code": "F04R_PROVIDER_IDENTITY",
+          "category": "provider identity/shape/finite",
+          "trigger": "selected provider identity, shape, or finite validation fails",
+          "programme_state_after": "RETIRED",
+          "caller_action": "Return STAGE_FATAL with no preconditioned output, s09_input, final_six, after-state proposal, F04R/F04RB/F04D/J05 receipt, or commit; preserve the committed root byte-identically; do not evaluate later errors for externally visible reporting."
+        },
+        {
+          "error_code": "F04R_LINEAGE_TARGET_UPDATES",
+          "category": "lineage",
+          "trigger": "programme/attempt/transaction/callback/profile/generation or F05R56 receipt is missing or stale",
+          "programme_state_after": "RETIRED",
+          "caller_action": "Return STAGE_FATAL with no preconditioned output, s09_input, final_six, after-state proposal, F04R/F04RB/F04D/J05 receipt, or commit; preserve the committed root byte-identically; do not evaluate later errors for externally visible reporting."
+        },
+        {
+          "error_code": "F04R_STATE_SHAPE",
+          "category": "state shape",
+          "trigger": "canonical ModelState shape is invalid",
+          "programme_state_after": "RETIRED",
+          "caller_action": "Return STAGE_FATAL with no preconditioned output, s09_input, final_six, after-state proposal, F04R/F04RB/F04D/J05 receipt, or commit; preserve the committed root byte-identically; do not evaluate later errors for externally visible reporting."
+        },
+        {
+          "error_code": "F04R_TEMPORAL_CURSOR",
+          "category": "temporal cursor",
+          "trigger": "temporal span/stride/lane/buffer/cursor validation fails",
+          "programme_state_after": "RETIRED",
+          "caller_action": "Return STAGE_FATAL with no preconditioned output, s09_input, final_six, after-state proposal, F04R/F04RB/F04D/J05 receipt, or commit; preserve the committed root byte-identically; do not evaluate later errors for externally visible reporting."
+        },
+        {
+          "error_code": "F04R_TYPE10_SHAPE",
+          "category": "Type10 shape",
+          "trigger": "Type10 input is not 16 rows x 1536 F32 samples",
+          "programme_state_after": "RETIRED",
+          "caller_action": "Return STAGE_FATAL with no preconditioned output, s09_input, final_six, after-state proposal, F04R/F04RB/F04D/J05 receipt, or commit; preserve the committed root byte-identically; do not evaluate later errors for externally visible reporting."
+        },
+        {
+          "error_code": "F04R_TARGET_SHAPE",
+          "category": "target shape",
+          "trigger": "target updates are not 16 rows x 6 F32 values",
+          "programme_state_after": "RETIRED",
+          "caller_action": "Return STAGE_FATAL with no preconditioned output, s09_input, final_six, after-state proposal, F04R/F04RB/F04D/J05 receipt, or commit; preserve the committed root byte-identically; do not evaluate later errors for externally visible reporting."
+        },
+        {
+          "error_code": "F04R_INPUT_NONFINITE",
+          "category": "input finite",
+          "trigger": "a Type10 or target input is nonfinite",
+          "programme_state_after": "RETIRED",
+          "caller_action": "Return STAGE_FATAL with no preconditioned output, s09_input, final_six, after-state proposal, F04R/F04RB/F04D/J05 receipt, or commit; preserve the committed root byte-identically; do not evaluate later errors for externally visible reporting."
+        },
+        {
+          "error_code": "F04R_NUMERIC_NONFINITE",
+          "category": "numeric intermediate",
+          "trigger": "a post-validation numeric intermediate becomes nonfinite",
+          "programme_state_after": "RETIRED",
+          "caller_action": "Return STAGE_FATAL with no preconditioned output, s09_input, final_six, after-state proposal, F04R/F04RB/F04D/J05 receipt, or commit; preserve the committed root byte-identically; do not evaluate later errors for externally visible reporting."
+        }
+      ]
     },
     {
       "functional_id": "F04D",
@@ -6389,8 +6473,8 @@
       "task_id": "F04R-PREPROCESSING-FINAL-SIX-MAPPING-AUDIT",
       "mapping_document": "docs/implementation/RECEIVER-PIPELINE-MAP.md",
       "mapping_status": "MAPPING_COMPLETE",
-      "status": "MAPPING_COMPLETE_BLOCKED_ON_F04R_DIRECT_KATS_TEMPORAL_CROSSWALK_AND_ERROR_OUTCOMES",
-      "implementation_readiness": "NO_IMPLEMENTATION",
+      "status": "READY_FOR_IMPLEMENTATION_F04R_DIRECT_RECEIVER_ONLY__WHOLE_RECEIVER_NOT_RUN",
+      "implementation_readiness": "YES_F04R_DIRECT_RECEIVER_ONLY",
       "functional_id": "F04R",
       "programme_root": "spatial_audio",
       "whole_callback_executor": "F04C",
@@ -6405,19 +6489,39 @@
           "file": "specs/04-receiver-state-and-routing.md",
           "bytes": 8332,
           "sha256": "74b9b01537eb76a37582535b84426138ee8c8ecdca3486f9f43d0504c7c26306",
-          "clauses": ["F04R.1", "F04R.2", "F04R.3", "F04R.4", "F04R.5", "F04R.6", "F04R.7", "F04R.8"]
+          "clauses": [
+            "F04R.1",
+            "F04R.2",
+            "F04R.3",
+            "F04R.4",
+            "F04R.5",
+            "F04R.6",
+            "F04R.7",
+            "F04R.8"
+          ]
         },
         {
           "file": "specs/04-whole-spatial-chain-composition.md",
           "bytes": 9103,
           "sha256": "92325b12128023001e1f3fd4696dcec68bbd47a46acdb7886781b411a10c5d59",
-          "clauses": ["F04C.3", "F04C.4", "F04C.5", "F04C.6", "F04C.7", "F04C.8"]
+          "clauses": [
+            "F04C.3",
+            "F04C.4",
+            "F04C.5",
+            "F04C.6",
+            "F04C.7",
+            "F04C.8"
+          ]
         },
         {
           "file": "specs/00-selected-owner-projection-and-j05.md",
           "bytes": 4504,
           "sha256": "9ff01aca7b6be6e89511e4d493f9fc9e661a50e2f098065f4a32c3fed777542f",
-          "clauses": ["Callback split", "J05 receipt", "Source timing"]
+          "clauses": [
+            "Callback split",
+            "J05 receipt",
+            "Source timing"
+          ]
         }
       ],
       "type10_input": {
@@ -6427,10 +6531,17 @@
         "row_order": "row0 is the delayed direct-LFE source for source s=g-2; rows1..15 are component15[g][0..14] for the current callback g.",
         "target_updates": "Required contract input is same-callback target_updates[g] from the F05R56 target-owner receipt; same-runner producer wiring is NOT_RUN. Update only each supplied row.target[6], retaining current/slope/remaining; rows without updates retain their old target.",
         "lineage": "Preserve Type10 packet/receipt, parent programme/attempt/transaction, g, explicit phase, selected profile, and the enclosing spatial_audio before-root as one F04C callback.",
-        "receiver_s09_boundary": "The same-generation s09_input view is the six-lane result immediately after ordered receiver step3 (F04R.5 transform-delay/blend/first ring) and before lane3's F04R.6 post-filter. F04RB consumes that view independently. The main F04R path then post-filters lane3 and F04Q analyzes the five non-LFE lanes; no mutable history is shared."
+        "receiver_s09_boundary": "F04R.6 post-filters lane3 first; that filtered lane3 plus the other five unchanged F04R.5 lanes form the same-generation s09_input. F04RB consumes this exact pre-fitting s09_input independently; F04Q then analyzes lanes0/1/2/4/5 and applies mode1 output only to lanes4/5."
       },
       "lane_contract": {
-        "output_order": ["L", "R", "C", "LFE", "Ls", "Rs"],
+        "output_order": [
+          "L",
+          "R",
+          "C",
+          "LFE",
+          "Ls",
+          "Rs"
+        ],
         "component_rows": "Rows1..15 contribute through their per-row six-lane coefficients; no extra row-to-output permutation is introduced.",
         "center": "Output lane2 is C; it participates in QMF analysis history only, not mode=1 delay/FIR/synthesis.",
         "lfe": "Output lane3 is LFE; it receives the dedicated four-section post-filter and bypasses QMF analysis and synthesis.",
@@ -6444,7 +6555,9 @@
           "owner": "F04R producer, called once by F04C for this successful receiver callback",
           "operation": "Run each of 16 rows independently over 1536 samples in six 256-sample chunks; use alpha, beta, strict tiny threshold, and fixed scale 0.25; scalar carries across chunks and callbacks.",
           "input_output": "Type10[16][1536] -> preconditioned[16][1536].",
-          "state_fields": ["ModelState.filter_state"]
+          "state_fields": [
+            "ModelState.filter_state"
+          ]
         },
         {
           "order": 2,
@@ -6452,31 +6565,43 @@
           "owner": "F04R producer",
           "operation": "Install only supplied same-g target values; clear six 1536-sample accumulators; process 48 ordered 32-sample blocks, row0..15 then lane0..5, using the per-row/per-lane ramp state.",
           "input_output": "preconditioned rows plus target_updates[g] -> accumulator[6][1536].",
-          "state_fields": ["ModelState.row_states"]
+          "state_fields": [
+            "ModelState.row_states"
+          ]
         },
         {
           "order": 3,
           "stage": "F04R.5 transform delay, PG01 blend, first ring",
           "owner": "F04R producer",
           "operation": "Per lane emit the prior 32-sample delay, save the current accumulator block, perform the ordered two-ended N32 blend and fixed 256 scaling, then clamp/write/read/advance the independent 225-sample first ring.",
-          "input_output": "accumulator[6][1536] -> s09_input[6][1536] after the first ring.",
-          "state_fields": ["ModelState.transform_delay", "ModelState.first_ring"]
+          "input_output": "accumulator[6][1536] -> six-lane pre-LFE-filter candidate[6][1536].",
+          "state_fields": [
+            "ModelState.transform_delay",
+            "ModelState.first_ring"
+          ]
         },
         {
           "order": 4,
           "stage": "F04R.6 LFE post-filter",
           "owner": "F04R producer",
           "operation": "Process only lane3 as six ordered 256-sample chunks through four coefficient sections in pair order; carry the four section states across chunks and callbacks; do not add a tiny-history clear.",
-          "input_output": "lane3 s09_input -> lane3 filtered output; other five lanes pass unchanged.",
-          "state_fields": ["ModelState.post_filter_state"]
+          "input_output": "pre-LFE-filter candidate lane3 -> filtered lane3; lanes0/1/2/4/5 pass unchanged; combine as s09_input[6][1536].",
+          "state_fields": [
+            "ModelState.post_filter_state"
+          ]
         },
         {
           "order": 5,
           "stage": "F04Q receiver analysis and mode=1 output",
           "owner": "F04R producer through the separate F04Q stage",
           "operation": "Analyze lanes0/1/2/4/5 as 24 ordered 64-sample slots; only lanes4/5 apply ten-slot delay, mode=1 phase transform, 21-tap band0 FIR and synthesis. Lane3 bypasses QMF.",
-          "input_output": "post-filtered main-path six-lane scratch -> QMF analysis histories and updated Ls/Rs PCM scratch.",
-          "state_fields": ["ModelState.analysis_history", "ModelState.qmf_delay_history", "ModelState.qmf_fir_history", "ModelState.synthesis_history"]
+          "input_output": "s09_input[6][1536] with lane3 already post-filtered -> QMF analysis histories and updated Ls/Rs PCM scratch.",
+          "state_fields": [
+            "ModelState.analysis_history",
+            "ModelState.qmf_delay_history",
+            "ModelState.qmf_fir_history",
+            "ModelState.synthesis_history"
+          ]
         },
         {
           "order": 6,
@@ -6484,7 +6609,9 @@
           "owner": "F04R producer",
           "operation": "Run three independent double-span exchanges in this order: temporal0 span1217 lanes[0,1,2], temporal1 span63 lanes[0,1,2,4,5], temporal2 span900 lane[3].",
           "input_output": "QMF/post-filter scratch -> post-temporal0..2 scratch for descriptor selection.",
-          "state_fields": ["ModelState.temporal_states[0..3]"]
+          "state_fields": [
+            "ModelState.temporal_states[0..3]"
+          ]
         },
         {
           "order": 7,
@@ -6492,7 +6619,9 @@
           "owner": "F04D substage, executed within the F04C-owned callback",
           "operation": "Select from post-temporal0..2 scratch and descriptor before-state; peak reads lanes[0,1,2,4,5], excluding LFE lane3. This phase returns a same-callback selection/proposal, not final_six.",
           "input_output": "post-temporal0..2 scratch -> selected index/control proposal carried across temporal3.",
-          "state_fields": ["ModelState.descriptor_state"]
+          "state_fields": [
+            "ModelState.descriptor_state"
+          ]
         },
         {
           "order": 8,
@@ -6500,7 +6629,9 @@
           "owner": "F04R producer",
           "operation": "Run the fourth exchange over all six lanes with span256 after descriptor selection; never combine temporal0..3 into one buffer.",
           "input_output": "post-temporal0..2 six-lane scratch -> post-temporal3 scratch.",
-          "state_fields": ["ModelState.temporal_states[3]"]
+          "state_fields": [
+            "ModelState.temporal_states[3]"
+          ]
         },
         {
           "order": 9,
@@ -6508,7 +6639,9 @@
           "owner": "F04D substage, executed within the F04C-owned callback",
           "operation": "Apply the selected target to all six lanes after temporal3; the first 256 samples share the callback ramp and samples256..1535 use target gain.",
           "input_output": "post-temporal3 scratch -> descriptor-gained six-lane output.",
-          "state_fields": ["ModelState.descriptor_state"]
+          "state_fields": [
+            "ModelState.descriptor_state"
+          ]
         },
         {
           "order": 10,
@@ -6516,7 +6649,9 @@
           "owner": "F04R producer",
           "operation": "Per lane prepend the prior 32-sample tail to current[0..1504], save current[1504..1536] as the next tail, then multiply each sample by 0.5.",
           "input_output": "descriptor-gained six-lane output -> delayed and half-scaled six-lane output.",
-          "state_fields": ["ModelState.post_s09_delay"]
+          "state_fields": [
+            "ModelState.post_s09_delay"
+          ]
         },
         {
           "order": 11,
@@ -6524,13 +6659,15 @@
           "owner": "F04R producer; output remains subordinate to the enclosing F04C callback",
           "operation": "Apply the independent second ring with the same clamp, write-before-read, and 225-slot cursor rules as the first ring.",
           "input_output": "delayed half-scaled lanes -> final_six[6][1536].",
-          "state_fields": ["ModelState.second_ring"]
+          "state_fields": [
+            "ModelState.second_ring"
+          ]
         }
       ],
       "delay_and_ring_rules": {
         "transform_delay_and_blend": "For each lane and 32-sample block, emit the old 32-sample delay and replace it with the current accumulator block. With W=receiver_blend32 and a5=a6=2^-8, evaluate left=(x[j]*a5)*W[31-j], right=(x[j]*a6)*W[j], output=(left+right)*256 using the specified separate F32 operations; do not merge complementary-window products.",
         "first_ring": "Clamp each finite input sample to [-1,1], write at write_index, read at read_index, then advance both independent cursors by one modulo 225. Cold write=224/read=0 yields a 224-sample actual delay; this is a distinct ring owner.",
-        "temporal_exchange": "Each temporal state has two span-sized buffers per lane and independent lane storage; cold read=span/write=0. For each 1536-sample input, write the updated-state segment before reading output, use an input snapshot for memmove semantics, and allow an index equal to 2*span to remain one-past until the next call rather than normalizing it early.",
+        "temporal_exchange": "index_28 is the semantic read cursor; index_32 is the semantic write cursor; stride_bytes is 4. Both cursors use the inclusive range 0..2*span; 2*span is valid and is not eagerly reduced. For N=1536, count=min(span,N), write_first=min(count,2*span-write), read_first=min(count,2*span-read); write the last count input samples with one wrap before reading count outputs from the updated buffer with one wrap, then append input[0:N-count]. next_write=write+count if count==write_first else count-write_first; next_read=read+count if count==read_first else count-read_first.",
         "post_s09_delay_and_half": "After the descriptor ramp, per lane output old_delay[32] followed by current[0..1504]; set next_delay=current[1504..1536], then multiply the complete 1536-sample lane by 0.5.",
         "second_ring": "Apply a second independent ring after half scale, with the same clamp/write-before-read/cursor-modulo-225 rule as the first ring; cold write=224/read=0. Do not alias the two ring states."
       },
@@ -6545,37 +6682,136 @@
         "temporal_state_serialization": {
           "schema_pointer": "#/whole_state_by_boundary/cold/fields/6/schema/fields/9/schema",
           "entry_fields": [
-            {"name":"span","encoding":"I64LE"},
-            {"name":"stride_bytes","encoding":"I64LE"},
-            {"name":"index_28","encoding":"I64LE"},
-            {"name":"index_32","encoding":"I64LE"},
-            {"name":"buffers","encoding":"lane tuple; two span-sized F32 buffers per lane"}
+            {
+              "name": "span",
+              "encoding": "I64LE"
+            },
+            {
+              "name": "stride_bytes",
+              "encoding": "I64LE"
+            },
+            {
+              "name": "index_28",
+              "encoding": "I64LE"
+            },
+            {
+              "name": "index_32",
+              "encoding": "I64LE"
+            },
+            {
+              "name": "buffers",
+              "encoding": "lane tuple; two span-sized F32 buffers per lane"
+            }
           ],
           "instances": [
-            {"name":"temporal0","span":1217,"lanes":3,"buffer_bytes_per_lane":9736},
-            {"name":"temporal1","span":63,"lanes":5,"buffer_bytes_per_lane":504},
-            {"name":"temporal2","span":900,"lanes":1,"buffer_bytes_per_lane":7200},
-            {"name":"temporal3","span":256,"lanes":6,"buffer_bytes_per_lane":2048},
-            {"name":"temporal4","span":896,"lanes":15,"buffer_bytes_per_lane":7168,"route_status":"reserved and unchanged"}
+            {
+              "name": "temporal0",
+              "span": 1217,
+              "lanes": 3,
+              "buffer_bytes_per_lane": 9736
+            },
+            {
+              "name": "temporal1",
+              "span": 63,
+              "lanes": 5,
+              "buffer_bytes_per_lane": 504
+            },
+            {
+              "name": "temporal2",
+              "span": 900,
+              "lanes": 1,
+              "buffer_bytes_per_lane": 7200
+            },
+            {
+              "name": "temporal3",
+              "span": 256,
+              "lanes": 6,
+              "buffer_bytes_per_lane": 2048
+            },
+            {
+              "name": "temporal4",
+              "span": 896,
+              "lanes": 15,
+              "buffer_bytes_per_lane": 7168,
+              "route_status": "reserved and unchanged"
+            }
           ],
-          "semantic_crosswalk_status": "UNRESOLVED_SPEC_GAP",
-          "semantic_crosswalk_gap": "F04R.1/.7 specify logical read/write cursors and cold read=span/write=0; the canonical schema names the two serialized cursor fields index_28/index_32 plus stride_bytes. The approved package does not explicitly map logical read/write or stride semantics to those canonical fields. Do not infer field order from names or model-first literals."
+          "semantic_crosswalk_status": "MAPPED_EXPLICITLY_BY_APPROVED_F04R_SPEC",
+          "semantic_crosswalk_gap": "",
+          "semantic_crosswalk": "index_28 is the semantic read cursor; index_32 is the semantic write cursor; stride_bytes is 4. Both cursors use the inclusive range 0..2*span; 2*span is valid and is not eagerly reduced. For N=1536, count=min(span,N), write_first=min(count,2*span-write), read_first=min(count,2*span-read); write the last count input samples with one wrap before reading count outputs from the updated buffer with one wrap, then append input[0:N-count]. next_write=write+count if count==write_first else count-write_first; next_read=read+count if count==read_first else count-read_first.",
+          "cold_semantics": "index_28=span (read); index_32=0 (write); stride_bytes=4."
         },
         "fields": [
-          {"field":"filter_state","schema":"16 F32 positive-zero scalars","cold":"all positive zero"},
-          {"field":"row_states","schema":"16 RowState values; each current/target/slope is 6 F32 and remaining is 6 U32","cold":"all F32 positive zero; remaining all U32 zero"},
-          {"field":"transform_delay","schema":"6 lanes x 32 F32","cold":"all positive zero"},
-          {"field":"first_ring","schema":"6 RingState values; words=225 F32, write_index/read_index are I64LE","cold":"words positive zero; write=224, read=0"},
-          {"field":"post_filter_state","schema":"4 sections x 2 F32","cold":"all positive zero"},
-          {"field":"analysis_history","schema":"5 rows [L,R,C,Ls,Rs] x 9 x 64 F32","cold":"all positive zero"},
-          {"field":"qmf_delay_history","schema":"2 rows [Ls,Rs] x 10 x 128 F32","cold":"all positive zero"},
-          {"field":"qmf_fir_history","schema":"2 rows [Ls,Rs] x 40 F32","cold":"all positive zero"},
-          {"field":"synthesis_history","schema":"2 rows [Ls,Rs] x 576 F32","cold":"all positive zero"},
-          {"field":"temporal_states","schema":"Dimension summary only: temporal0=(span1217,3 lanes), temporal1=(span63,5 lanes), temporal2=(span900,1 lane), temporal3=(span256,6 lanes), reserved temporal4=(span896,15 lanes); see temporal_state_serialization for canonical fields and unresolved cursor crosswalk.","cold":"F04R.1 gives logical read=span/write=0 and two positive-zero buffers per lane; canonical index_28/index_32 correspondence is not specified; temporal4 remains unchanged in the selected route"},
-          {"field":"descriptor_state","schema":"DescriptorState(tail_peak:F32, hold_count:I64LE, smoothed:F32, exponent:I64LE, reference:F32, gain:F32)","cold":"tail_peak=+0, hold=0, smoothed=+0, exponent=2, reference=R32(2/48), gain=1/16"},
-          {"field":"post_s09_delay","schema":"6 lanes x 32 F32","cold":"all positive zero"},
-          {"field":"second_ring","schema":"6 RingState values; words=225 F32, write_index/read_index are I64LE","cold":"words positive zero; write=224, read=0"},
-          {"field":"target_coefficients","schema":"None in the canonical schema","cold":"diagnostic/reserved sentinel only; not consumed by the selected route"}
+          {
+            "field": "filter_state",
+            "schema": "16 F32 positive-zero scalars",
+            "cold": "all positive zero"
+          },
+          {
+            "field": "row_states",
+            "schema": "16 RowState values; each current/target/slope is 6 F32 and remaining is 6 U32",
+            "cold": "all F32 positive zero; remaining all U32 zero"
+          },
+          {
+            "field": "transform_delay",
+            "schema": "6 lanes x 32 F32",
+            "cold": "all positive zero"
+          },
+          {
+            "field": "first_ring",
+            "schema": "6 RingState values; words=225 F32, write_index/read_index are I64LE",
+            "cold": "words positive zero; write=224, read=0"
+          },
+          {
+            "field": "post_filter_state",
+            "schema": "4 sections x 2 F32",
+            "cold": "all positive zero"
+          },
+          {
+            "field": "analysis_history",
+            "schema": "5 rows [L,R,C,Ls,Rs] x 9 x 64 F32",
+            "cold": "all positive zero"
+          },
+          {
+            "field": "qmf_delay_history",
+            "schema": "2 rows [Ls,Rs] x 10 x 128 F32",
+            "cold": "all positive zero"
+          },
+          {
+            "field": "qmf_fir_history",
+            "schema": "2 rows [Ls,Rs] x 40 F32",
+            "cold": "all positive zero"
+          },
+          {
+            "field": "synthesis_history",
+            "schema": "2 rows [Ls,Rs] x 576 F32",
+            "cold": "all positive zero"
+          },
+          {
+            "field": "temporal_states",
+            "schema": "TemporalState(span:I64LE,stride_bytes:I64LE=4,index_28:I64LE semantic read,index_32:I64LE semantic write,buffers); temporal0=(span1217,3 lanes), temporal1=(span63,5 lanes), temporal2=(span900,1 lane), temporal3=(span256,6 lanes), reserved temporal4=(span896,15 lanes) unchanged.",
+            "cold": "F04R.1 gives logical read=span/write=0 and two positive-zero buffers per lane; canonical index_28/index_32 correspondence is not specified; temporal4 remains unchanged in the selected route"
+          },
+          {
+            "field": "descriptor_state",
+            "schema": "DescriptorState(tail_peak:F32, hold_count:I64LE, smoothed:F32, exponent:I64LE, reference:F32, gain:F32)",
+            "cold": "tail_peak=+0, hold=0, smoothed=+0, exponent=2, reference=R32(2/48), gain=1/16"
+          },
+          {
+            "field": "post_s09_delay",
+            "schema": "6 lanes x 32 F32",
+            "cold": "all positive zero"
+          },
+          {
+            "field": "second_ring",
+            "schema": "6 RingState values; words=225 F32, write_index/read_index are I64LE",
+            "cold": "words positive zero; write=224, read=0"
+          },
+          {
+            "field": "target_coefficients",
+            "schema": "None in the canonical schema",
+            "cold": "diagnostic/reserved sentinel only; not consumed by the selected route"
+          }
         ],
         "stage_authority": "F04R.1-.8 define the receiver route; F04D owns descriptor formulas as a substage; F04C alone executes the complete callback.",
         "commit_authority": "Enclosing spatial_audio callback transaction only; no F04R, F04D, or F04RB local commit.",
@@ -6610,25 +6846,49 @@
           "file": "parameters/qmf-receiver-functional-v1.json",
           "bytes": 20325,
           "sha256": "30e63cc110b63dd88118ad37f02750a39167bd01279a3b40853afdf3151b552c",
-          "fields": ["preconditioning_alpha", "preconditioning_beta", "preconditioning_tiny_strict", "accumulator_magnitude_threshold", "accumulator_delta_threshold", "accumulator_smoothing", "lfe_post_filter_4x5", "qwin_synthesis_640", "band0_real_mode1_21", "band0_imag_mode1_21", "descriptor_threshold_127", "descriptor_level_offset", "descriptor_level_linear", "descriptor_level_quadratic", "descriptor_headroom_step", "descriptor_result_scale", "descriptor_rise"]
+          "fields": [
+            "preconditioning_alpha",
+            "preconditioning_beta",
+            "preconditioning_tiny_strict",
+            "accumulator_magnitude_threshold",
+            "accumulator_delta_threshold",
+            "accumulator_smoothing",
+            "lfe_post_filter_4x5",
+            "qwin_synthesis_640",
+            "band0_real_mode1_21",
+            "band0_imag_mode1_21",
+            "descriptor_threshold_127",
+            "descriptor_level_offset",
+            "descriptor_level_linear",
+            "descriptor_level_quadratic",
+            "descriptor_headroom_step",
+            "descriptor_result_scale",
+            "descriptor_rise"
+          ]
         },
         {
           "file": "parameters/window-q15.json",
           "bytes": 2704,
           "sha256": "a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130",
-          "fields": ["receiver_blend32[32] as Q15 values, converted to F32 exactly for F04R.5"]
+          "fields": [
+            "receiver_blend32[32] as Q15 values, converted to F32 exactly for F04R.5"
+          ]
         },
         {
           "file": "parameters/qmf-mathematical-fft-v1.json",
           "bytes": 6983,
           "sha256": "e8d3fb1514a5ffd857740222eacc8995208a29c3447e48c1b63083af368c0431",
-          "fields": ["QMF FFT roots and rotation used by the separate F04Q stage"]
+          "fields": [
+            "QMF FFT roots and rotation used by the separate F04Q stage"
+          ]
         },
         {
           "file": "parameters/descriptor-mathematical.json",
           "bytes": 4861,
           "sha256": "a493fbdaf2dab30e940cae9976ed3305f3af083e5614ab0cbd6889c71a02b197",
-          "fields": ["PG03 gain[128] for the F04D ramp; its mathematical threshold table is not the selected F04D lookup threshold"]
+          "fields": [
+            "PG03 gain[128] for the F04D ramp; its mathematical threshold table is not the selected F04D lookup threshold"
+          ]
         }
       ],
       "vector_coverage": {
@@ -6638,15 +6898,80 @@
           "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
         },
         "stage_coverage": [
-          {"stage":"F04R.3 scalar preconditioning","direct_cases":[],"classification":"NO_DIRECT_UNIT_VECTOR"},
-          {"stage":"F04R.4 row/lane accumulator","direct_cases":["U-RECV-ACC-RAMP","U-RECV-ACC-TINY","U-RECV-ACC-SNAP"],"classification":"PARTIAL_STAGE_UNIT_VECTORS"},
-          {"stage":"F04R.5 transform/ring","direct_cases":["U-RECV-TRANSFORM","U-RECV-RING"],"classification":"PARTIAL_STAGE_UNIT_VECTORS"},
-          {"stage":"F04R.6 LFE post-filter","direct_cases":[],"classification":"NO_DIRECT_UNIT_VECTOR"},
-          {"stage":"F04Q mode=1 routing/output","direct_cases":["U-QMF-SURROUND-RESET"],"classification":"MODE1_ONLY_NOT_F04R_PREPROCESSING"},
-          {"stage":"F04R.7 temporal exchange","direct_cases":["U-RECV-TEMPORAL-3","U-RECV-TEMPORAL-7"],"classification":"PARTIAL_STAGE_UNIT_VECTORS"},
-          {"stage":"F04D descriptor selection/ramp","direct_cases":["F04-DESCRIPTOR-CONTROL-V1 six selected-provider cases"],"classification":"DIRECT_F04D_STAGE_ONLY_NOT_CONNECTED_TO_F04R_TAIL"},
-          {"stage":"F04RB mode=0 fitting","direct_cases":["F04RB-MODE0-FITTING-V1 cold g2, warm g3, cached-drain g4"],"classification":"DIRECT_F04RB_BRANCH_ONLY_NOT_FINAL_SIX"},
-          {"stage":"F04R.8 final-six tail","direct_cases":[],"classification":"NO_F04R_FINAL_SIX_DIRECT_KAT"}
+          {
+            "stage": "F04R.3 scalar preconditioning",
+            "direct_cases": [
+              "case1_cold_normal",
+              "case2_warm_normal",
+              "case3_cached_drain"
+            ],
+            "classification": "DIRECT_PIPELINE_INTERMEDIATE_LITERALS"
+          },
+          {
+            "stage": "F04R.4 row/lane accumulator",
+            "direct_cases": [
+              "U-RECV-ACC-RAMP",
+              "U-RECV-ACC-TINY",
+              "U-RECV-ACC-SNAP"
+            ],
+            "classification": "DIRECT_F04R_PIPELINE_KAT_PLUS_EXISTING_STAGE_VECTORS"
+          },
+          {
+            "stage": "F04R.5 transform/ring",
+            "direct_cases": [
+              "case1_cold_normal",
+              "case2_warm_normal",
+              "case3_cached_drain"
+            ],
+            "classification": "DIRECT_PIPELINE_INTERMEDIATE_LITERALS"
+          },
+          {
+            "stage": "F04R.6 LFE post-filter",
+            "direct_cases": [
+              "case1_cold_normal",
+              "case2_warm_normal",
+              "case3_cached_drain"
+            ],
+            "classification": "DIRECT_PIPELINE_INTERMEDIATE_LITERALS"
+          },
+          {
+            "stage": "F04Q mode=1 routing/output",
+            "direct_cases": [
+              "U-QMF-SURROUND-RESET"
+            ],
+            "classification": "MODE1_ONLY_NOT_F04R_PREPROCESSING"
+          },
+          {
+            "stage": "F04R.7 temporal exchange",
+            "direct_cases": [
+              "U-RECV-TEMPORAL-3",
+              "U-RECV-TEMPORAL-7"
+            ],
+            "classification": "DIRECT_F04R_PIPELINE_KAT_PLUS_EXISTING_STAGE_VECTORS"
+          },
+          {
+            "stage": "F04D descriptor selection/ramp",
+            "direct_cases": [
+              "F04-DESCRIPTOR-CONTROL-V1 six selected-provider cases"
+            ],
+            "classification": "DIRECT_F04D_STAGE_ONLY_NOT_CONNECTED_TO_F04R_TAIL"
+          },
+          {
+            "stage": "F04RB mode=0 fitting",
+            "direct_cases": [
+              "F04RB-MODE0-FITTING-V1 cold g2, warm g3, cached-drain g4"
+            ],
+            "classification": "DIRECT_F04RB_BRANCH_ONLY_NOT_FINAL_SIX"
+          },
+          {
+            "stage": "F04R.8 final-six tail",
+            "direct_cases": [
+              "case1_cold_normal",
+              "case2_warm_normal",
+              "case3_cached_drain"
+            ],
+            "classification": "DIRECT_F04R_FINAL_SIX_AND_COMPLETE_AFTER_STATE_KAT"
+          }
         ],
         "whole_chain_file": {
           "file": "test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json",
@@ -6655,57 +6980,252 @@
           "cases": 6,
           "qualification": "MODEL_FIRST_ASSERTIONS_ONLY; not isolated F04R execution, not a full final_six direct KAT, and not product acceptance"
         },
-        "direct_full_pipeline_kat": "ABSENT",
-        "complete_after_state_literal": "ABSENT_FOR_F04R_PIPELINE",
-        "literal_input_policy": "Any future direct KAT must seed from input-only recipes and compare post-execution literals; actual outputs/after-state must not seed computation."
+        "direct_full_pipeline_kat": "PRESENT_FOR_DIRECT_F04R_RECEIVER_ONLY",
+        "complete_after_state_literal": "PRESENT_CANONICAL_MODELSTATE_AFTER",
+        "literal_input_policy": "F04R-DIRECT-INPUT-VECTORS.json and its Type10/target binaries are the only input seeds. Actual literals and expected after-state binaries are post-execution assertions only and must never seed this or a later case.",
+        "direct_fixture_inventory": {
+          "directory": "crates/jocforge-domain/tests/fixtures/receiver_pipeline",
+          "file_count": 29,
+          "binary_count": 27,
+          "input_vectors": {
+            "file": "F04R-DIRECT-INPUT-VECTORS.json",
+            "bytes": 3022,
+            "sha256": "77cec5f7e624ad150dbbeeee2e1a43b78bd2ed5d00726a7b35b9302871e53ee3"
+          },
+          "actual_literals": {
+            "file": "F04R-DIRECT-ACTUAL-LITERALS.json",
+            "bytes": 19198,
+            "sha256": "b1f4defcd303c5fd89c05b4c13af5a1a6f7cb1525157b314b2ba63e197baaf41"
+          }
+        },
+        "approved_supplement_identity": {
+          "identity": "f04r-receiver-final-six.v1-current-c7-rebind-chain",
+          "manifest_sha256": "075b90e684c4edc55eb7c8d78cf0c60161ad68d2d585c82a7b7da614cb5dbc3c",
+          "current_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+          "current_rebind_manifest_sha256": "30ac40e7ee6fb2cf23117b112b7095d2266e250e21781c509c1c34bdad9f9b0d",
+          "current_rebind_sha256": "8e359eb3f09bd39e6732ce89655786cd3920c3019a0ba6bee84b5ecfab9e2326",
+          "fresh_actual_builder_sha256": "36e7dfcfd3881dc3479612175a2a663334760ffc3f738f5f1d0cdf582af97b4a",
+          "historical_package_manifest_sha256": "e6279853ee0812c46f788aa4112e81c471ccf6307e6ec1ca45278bcd56a91e70",
+          "historical_role": "historical_generation_provenance_only",
+          "specification": {
+            "file": "SPEC.md",
+            "bytes": 7780,
+            "sha256": "2e76a75a549d5963ee38ccdfc605fa81840b7e944084a288c72076739a136085"
+          },
+          "api_schema": {
+            "file": "API-SCHEMA.json",
+            "bytes": 988,
+            "sha256": "1054e37a3c919fefc0d46398a460b3a96b09247ab05af6ce0533f769d1663c59"
+          }
+        },
+        "state_chain_semantics": {
+          "execution": "one_continuous_chain",
+          "expected_after_used_as_next_before_seed": false,
+          "expected_after_role": "post_execution_assertion_only",
+          "cases": [
+            {
+              "id": "case1_cold_normal",
+              "before_state_source": "fresh_rcold_constructor"
+            },
+            {
+              "id": "case2_warm_normal",
+              "before_state_source": "fresh_computed_case1_after"
+            },
+            {
+              "id": "case3_cached_drain",
+              "before_state_source": "fresh_computed_case2_after"
+            }
+          ]
+        },
+        "direct_cases": [
+          "case1_cold_normal",
+          "case2_warm_normal",
+          "case3_cached_drain"
+        ],
+        "negative_cases": [
+          {
+            "id": "missing_provider",
+            "expected_error": "F04R_PROVIDER_MISSING"
+          },
+          {
+            "id": "provider_identity",
+            "expected_error": "F04R_PROVIDER_IDENTITY"
+          },
+          {
+            "id": "stale_target_updates",
+            "expected_error": "F04R_LINEAGE_TARGET_UPDATES"
+          },
+          {
+            "id": "invalid_model_state",
+            "expected_error": "F04R_STATE_SHAPE"
+          },
+          {
+            "id": "invalid_temporal_cursor",
+            "expected_error": "F04R_TEMPORAL_CURSOR"
+          },
+          {
+            "id": "type10_shape",
+            "expected_error": "F04R_TYPE10_SHAPE"
+          },
+          {
+            "id": "target_shape",
+            "expected_error": "F04R_TARGET_SHAPE"
+          },
+          {
+            "id": "nonfinite_input",
+            "expected_error": "F04R_INPUT_NONFINITE"
+          },
+          {
+            "id": "numeric_nonfinite",
+            "expected_error": "F04R_NUMERIC_NONFINITE"
+          }
+        ]
       },
       "error_mapping": {
-        "authority": "F04R.2 delegates callback failure to I03; this map is clean-room local behavior, not native error-code equivalence.",
-        "field_specific_outcomes": "NOT_SPECIFIED_FOR_F04R",
-        "first_failure_precedence": "NOT_SPECIFIED_FOR_F04R",
-        "known_parent_effect": "On a fatal stage, return no accepted ModelState after or final_six; I03 applies STAGE_FATAL and retires the programme; parent committed root remains unchanged.",
-        "do_not_infer_from": ["F04D direct outcome map", "F04RB mode=0 outcome map", "F04Q mode=1 local outcomes"],
-        "blocking_gap": "An approved F04R-specific error outcome list, precedence, no-partial-output rule, and direct failure vectors are required before implementation readiness."
+        "authority": "Washed direct F04R receiver contract; these clean-room labels are not claims of native package error-code equivalence.",
+        "first_failure_precedence": [
+          "F04R_PROVIDER_MISSING",
+          "F04R_PROVIDER_IDENTITY",
+          "F04R_LINEAGE_TARGET_UPDATES",
+          "F04R_STATE_SHAPE",
+          "F04R_TEMPORAL_CURSOR",
+          "F04R_TYPE10_SHAPE",
+          "F04R_TARGET_SHAPE",
+          "F04R_INPUT_NONFINITE",
+          "F04R_NUMERIC_NONFINITE"
+        ],
+        "error_outcomes": [
+          {
+            "error_code": "F04R_PROVIDER_MISSING",
+            "category": "provider availability",
+            "trigger": "required selected provider is unavailable",
+            "programme_state_after": "RETIRED",
+            "caller_action": "Return STAGE_FATAL with no preconditioned output, s09_input, final_six, after-state proposal, F04R/F04RB/F04D/J05 receipt, or commit; preserve the committed root byte-identically; do not evaluate later errors for externally visible reporting."
+          },
+          {
+            "error_code": "F04R_PROVIDER_IDENTITY",
+            "category": "provider identity/shape/finite",
+            "trigger": "selected provider identity, shape, or finite validation fails",
+            "programme_state_after": "RETIRED",
+            "caller_action": "Return STAGE_FATAL with no preconditioned output, s09_input, final_six, after-state proposal, F04R/F04RB/F04D/J05 receipt, or commit; preserve the committed root byte-identically; do not evaluate later errors for externally visible reporting."
+          },
+          {
+            "error_code": "F04R_LINEAGE_TARGET_UPDATES",
+            "category": "lineage",
+            "trigger": "programme/attempt/transaction/callback/profile/generation or F05R56 receipt is missing or stale",
+            "programme_state_after": "RETIRED",
+            "caller_action": "Return STAGE_FATAL with no preconditioned output, s09_input, final_six, after-state proposal, F04R/F04RB/F04D/J05 receipt, or commit; preserve the committed root byte-identically; do not evaluate later errors for externally visible reporting."
+          },
+          {
+            "error_code": "F04R_STATE_SHAPE",
+            "category": "state shape",
+            "trigger": "canonical ModelState shape is invalid",
+            "programme_state_after": "RETIRED",
+            "caller_action": "Return STAGE_FATAL with no preconditioned output, s09_input, final_six, after-state proposal, F04R/F04RB/F04D/J05 receipt, or commit; preserve the committed root byte-identically; do not evaluate later errors for externally visible reporting."
+          },
+          {
+            "error_code": "F04R_TEMPORAL_CURSOR",
+            "category": "temporal cursor",
+            "trigger": "temporal span/stride/lane/buffer/cursor validation fails",
+            "programme_state_after": "RETIRED",
+            "caller_action": "Return STAGE_FATAL with no preconditioned output, s09_input, final_six, after-state proposal, F04R/F04RB/F04D/J05 receipt, or commit; preserve the committed root byte-identically; do not evaluate later errors for externally visible reporting."
+          },
+          {
+            "error_code": "F04R_TYPE10_SHAPE",
+            "category": "Type10 shape",
+            "trigger": "Type10 input is not 16 rows x 1536 F32 samples",
+            "programme_state_after": "RETIRED",
+            "caller_action": "Return STAGE_FATAL with no preconditioned output, s09_input, final_six, after-state proposal, F04R/F04RB/F04D/J05 receipt, or commit; preserve the committed root byte-identically; do not evaluate later errors for externally visible reporting."
+          },
+          {
+            "error_code": "F04R_TARGET_SHAPE",
+            "category": "target shape",
+            "trigger": "target updates are not 16 rows x 6 F32 values",
+            "programme_state_after": "RETIRED",
+            "caller_action": "Return STAGE_FATAL with no preconditioned output, s09_input, final_six, after-state proposal, F04R/F04RB/F04D/J05 receipt, or commit; preserve the committed root byte-identically; do not evaluate later errors for externally visible reporting."
+          },
+          {
+            "error_code": "F04R_INPUT_NONFINITE",
+            "category": "input finite",
+            "trigger": "a Type10 or target input is nonfinite",
+            "programme_state_after": "RETIRED",
+            "caller_action": "Return STAGE_FATAL with no preconditioned output, s09_input, final_six, after-state proposal, F04R/F04RB/F04D/J05 receipt, or commit; preserve the committed root byte-identically; do not evaluate later errors for externally visible reporting."
+          },
+          {
+            "error_code": "F04R_NUMERIC_NONFINITE",
+            "category": "numeric intermediate",
+            "trigger": "a post-validation numeric intermediate becomes nonfinite",
+            "programme_state_after": "RETIRED",
+            "caller_action": "Return STAGE_FATAL with no preconditioned output, s09_input, final_six, after-state proposal, F04R/F04RB/F04D/J05 receipt, or commit; preserve the committed root byte-identically; do not evaluate later errors for externally visible reporting."
+          }
+        ],
+        "negative_case_pointers": [
+          {
+            "id": "missing_provider",
+            "expected_error": "F04R_PROVIDER_MISSING"
+          },
+          {
+            "id": "provider_identity",
+            "expected_error": "F04R_PROVIDER_IDENTITY"
+          },
+          {
+            "id": "stale_target_updates",
+            "expected_error": "F04R_LINEAGE_TARGET_UPDATES"
+          },
+          {
+            "id": "invalid_model_state",
+            "expected_error": "F04R_STATE_SHAPE"
+          },
+          {
+            "id": "invalid_temporal_cursor",
+            "expected_error": "F04R_TEMPORAL_CURSOR"
+          },
+          {
+            "id": "type10_shape",
+            "expected_error": "F04R_TYPE10_SHAPE"
+          },
+          {
+            "id": "target_shape",
+            "expected_error": "F04R_TARGET_SHAPE"
+          },
+          {
+            "id": "nonfinite_input",
+            "expected_error": "F04R_INPUT_NONFINITE"
+          },
+          {
+            "id": "numeric_nonfinite",
+            "expected_error": "F04R_NUMERIC_NONFINITE"
+          }
+        ],
+        "known_parent_effect": "Each listed error yields STAGE_FATAL; I03 retires the attempt; committed root stays byte-identical; no F04R output/proposal or receipt is accepted.",
+        "do_not_infer_from": [
+          "F04D direct outcome map",
+          "F04RB mode=0 outcome map",
+          "F04Q mode=1 local outcomes"
+        ]
       },
       "blockers": [
         {
-          "id": "f04r-full-direct-kat",
-          "reason": "No isolated input-only recipe plus post-computation literals binds F04R stages through final_six and complete ModelState after; whole-chain vectors are model-first assertions.",
-          "minimum_evidence": "Direct cold/warm/cached-drain cases with stage outputs, complete after-state and canonical bytes/hash."
-        },
-        {
-          "id": "f04r-stage-vector-gaps",
-          "reason": "F04R.3 scalar preconditioning and F04R.6 four-section lane3 post-filter have provider values but no direct unit vectors; F04R.8 has no final_six direct KAT.",
-          "minimum_evidence": "Add direct selected-provider cases for the uncovered stages or include their complete literals in the full F04R KAT."
-        },
-        {
-          "id": "f04r-temporal-state-crosswalk",
-          "reason": "The approved state schema serializes span, stride_bytes, index_28, index_32, and buffers, while F04R describes logical read/write cursors; no approved binding maps the cursor names and stride semantics to those fields.",
-          "minimum_evidence": "Wash an exact semantic-to-canonical TemporalState field mapping, including cold values and one-past cursor behavior; bind it to direct before/after state evidence."
-        },
-        {
-          "id": "f04r-error-outcomes",
-          "reason": "F04R-specific error labels, first-failure order, output suppression and direct failure vectors are not fully specified; the parent I03 retirement behavior alone does not define the stage API outcome contract.",
-          "minimum_evidence": "Washed F04R outcome/precedence matrix and direct error recipes."
-        },
-        {
           "id": "f05r56-same-runner-targets",
-          "reason": "F05R56 target_updates production is upstream and same-runner integration is NOT_RUN; F04R mapping specifies the required immutable same-g input but does not claim the producer is wired.",
-          "minimum_evidence": "Separate future F04C integration audit; not a reason to fabricate an F04R-local target provider."
+          "reason": "F05R56 same-runner production of target_updates remains outside this direct F04R implementation slice; direct KATs provide explicit same-generation immutable updates.",
+          "minimum_evidence": "Separate F04C integration audit of F05R56 target production; direct F04R KATs remain self-contained with explicit same-generation target_updates.",
+          "implementation_effect": "Does not block the standalone F04R proposal contract; full callback wiring remains NOT_RUN."
         }
       ],
       "implementation_prohibitions": [
-        "docs and mapping gates only for this task; no Rust, DSP, codec, JOC, J05, or F05JC implementation",
-        "no F04C parent transaction or spatial_audio commit",
-        "F05JC/F05JL must not rerun F04R, F04D, or F04RB state transitions",
-        "do not promote spatial_audio, whole receiver, W04, real ADM, or product acceptance readiness"
+        "Implement only the direct F04R receiver proposal contract; do not add a local commit or F04C parent transaction.",
+        "Do not implement or rerun F04RB, F05R56, F05JC, J05, F05JL, codec, or whole-song behavior.",
+        "F05JC/F05JL must not rerun F04R, F04D, or F04RB state transitions.",
+        "Do not promote spatial_audio, whole receiver, W04, real ADM, or product acceptance readiness.",
+        "Expected after-state and output literals are assertions only and must not seed computation."
       ],
       "readiness_boundary": {
         "mapping": "MAPPING_COMPLETE",
-        "selected_provider_values": "IDENTITY_PINNED_AND_AVAILABLE",
+        "F04R_direct_contract": "READY_FOR_IMPLEMENTATION",
         "F04R_direct_pipeline_execution": "NOT_RUN",
-        "F04R_final_six_direct_kat": "ABSENT",
-        "temporal_state_field_crosswalk": "UNRESOLVED_SPEC_GAP",
+        "F04R_final_six_direct_kat": "PRESENT",
+        "temporal_state_field_crosswalk": "MAPPED_EXPLICITLY_BY_APPROVED_F04R_SPEC",
+        "F04R_error_outcomes": "MAPPED_WITH_DIRECT_NEGATIVE_CASES",
         "same_runner_F05R56_target_production": "NOT_RUN",
         "whole_spatial_receiver": "NOT_RUN",
         "J05_F05JC_and_parent_commit": "OUT_OF_SCOPE_AND_NOT_RUN",
