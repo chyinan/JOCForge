@@ -38,7 +38,7 @@
 | F04P | — | — | INVENTORIED |
 | F04PG | — | — | INVENTORIED |
 | F04R | — | — | INVENTORIED |
-| F04D | — | — | INVENTORIED |
+| F04D | `FrontendCallbackIndex`<br>`ReceiverCallbackCount` | `g=0/1 skips descriptor; g>=2 uses r=g-2 once per real receiver callback`<br>`control selection after temporal0..2 and before temporal3`<br>`gain ramp consumes temporal3 after for six lanes`<br>`cached drain is a real callback; no synthetic descriptor flush` | INVENTORIED |
 | F04Q | — | — | INVENTORIED |
 | F04RB | — | — | INVENTORIED |
 | F04QF | — | — | INVENTORIED |

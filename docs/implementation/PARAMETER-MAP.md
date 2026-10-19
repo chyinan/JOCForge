@@ -38,7 +38,7 @@
 | F04P | — | — | INVENTORIED |
 | F04PG | — | — | INVENTORIED |
 | F04R | — | — | INVENTORIED |
-| F04D | — | — | INVENTORIED |
+| F04D | VALIDATED_PROVIDER | `parameters/qmf-receiver-functional-v1.json`<br>`parameters/descriptor-mathematical.json` | INVENTORIED |
 | F04Q | — | — | INVENTORIED |
 | F04RB | — | — | INVENTORIED |
 | F04QF | — | — | INVENTORIED |

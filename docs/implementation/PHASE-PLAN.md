@@ -5938,24 +5938,43 @@
 
 ```json
 {
+  "approved_descriptor_supplement": {
+    "actual_literal_file": {
+      "bytes": 3705450,
+      "file": "F04D-DIRECT-ACTUAL-LITERALS.json",
+      "sha256": "390cf469a1dde8a4fde9c79de2238f414ea041d6b64630cb669ca4ab26205ad0"
+    },
+    "api_file": {
+      "bytes": 987,
+      "file": "API-SCHEMA.json",
+      "sha256": "459482727625de393f9b2299b76f76e21f0892ef978f783c2b1d8b4dbc610baa"
+    },
+    "base_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "contract_sha256": "78a94254d47f13a7533e7b329d62f2a889e0f69f35da6307e98a9bc71ce781c6",
+    "directory": "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DESCRIPTOR-CONTROL-V1",
+    "identity": "f04-descriptor-control.v1",
+    "independent_check_file": {
+      "bytes": 2063,
+      "file": "INDEPENDENT-CHECK.json",
+      "sha256": "01ec148eeab548eaafa608daea35c765583289a3c3ed4912508e77746ec3a4a2"
+    },
+    "input_vector_file": {
+      "bytes": 8878,
+      "file": "F04D-DIRECT-INPUT-VECTORS.json",
+      "sha256": "c622899783197a953fb6c0bcd262b0e7b1a110d605e9301e27782e44cb247528"
+    },
+    "manifest_sha256": "40d67c32fdebf97fe8dc249486ce4cb655642146a2470e6bcad553f1639f9e04",
+    "secrets_included": false,
+    "spec_file": {
+      "bytes": 8512,
+      "file": "SPEC.md",
+      "sha256": "ebb493ed913f5b00beddb20b4bb91b3470986ea94a116877a7f2e40314d7ccf2"
+    },
+    "status": "IMPLEMENTATION_SPEC_READY_WHOLE_RECEIVER_NOT_RUN",
+    "whole_receiver_j05_real_adm_listening": "NOT_RUN"
+  },
   "audit_scope": "Map F04D control inputs, provider selection, canonical state, callback timing, downstream consumers, vectors, errors, and the minimum opaque stage boundary. Do not implement descriptor DSP or any neighboring audio/JOC stage.",
-  "blockers": [
-    {
-      "id": "selected-provider-direct-vector",
-      "reason": "No isolated F04D direct vector binds the selected qmf-receiver-functional threshold and six selected descriptor scalars to stage-level peak, level, index, gain output, and after-state literals.",
-      "status": "BLOCKING"
-    },
-    {
-      "id": "canonical-hold-encoding",
-      "reason": "F04D.1 says hold is U32; the canonical owner schema encodes hold_count as I64LE. The logical-to-canonical value mapping is not stated.",
-      "status": "BLOCKING"
-    },
-    {
-      "id": "error-outcome-translation",
-      "reason": "F04D.6 gives reject classes and I03 delegation but no local error labels, precedence, or caller result mapping; ERROR-MAP has no F04D rows.",
-      "status": "BLOCKING"
-    }
-  ],
+  "blockers": [],
   "clock_contract": {
     "cached_drain": "Each actual cached-drain callback with a Ready Type10 packet runs F04D once. EOF adds no synthetic descriptor callback or flush.",
     "frontend_callback": "g is the enclosing zero-based FrontendCallbackIndex.",
@@ -5984,30 +6003,76 @@
     "peak_and_level": "P=max(old.tail_peak, head_max, tail_max); shift is derived from the clamped peak's raw F32 word using the wide-unsigned E expression in F04D.2. P=0 or shift>=48 gives level 1; otherwise evaluate the five supplied F32 polynomial/headroom parameters with the separately rounded operations in F04D.2."
   },
   "error_mapping": {
-    "error_code_and_precedence_status": "NOT_MAPPED",
+    "authority": "Approved clean-room F04D API outcome mapping; not a native DEE error-code equivalence claim.",
+    "error_code_and_precedence_status": "MAPPED_BY_F04_DESCRIPTOR_CONTROL_V1",
     "error_map_file": "docs/implementation/ERROR-MAP.md",
-    "f04d_error_outcome_rows": 0,
-    "programme_rule": "F04D.6 delegates to I03.",
-    "required_wash_mapping": "Map each rejection class to an existing local outcome, precedence, no-output behavior, and I03 programme state. Do not infer error labels from provider-validator failures.",
-    "spec_rejection_conditions": [
-      "dimensions/type mismatch",
-      "missing required parameters",
-      "nonfinite intermediate",
-      "nonpositive gain"
-    ]
+    "f04d_error_outcome_rows": 6,
+    "outcomes": [
+      {
+        "caller_action": "return no index, ramp output, or after proposal; I03 applies STAGE_FATAL and retires the parent; committed descriptor state is unchanged; do not retry the same attempt",
+        "category": "provider availability",
+        "error_code": "RECEIVER_PARAMETER_UNAVAILABLE",
+        "programme_state_after": "RETIRED",
+        "trigger": "selected descriptor threshold, required scalar, or PG03 gain provider is missing"
+      },
+      {
+        "caller_action": "return no index, ramp output, or after proposal; I03 applies STAGE_FATAL and retires the parent; committed descriptor state is unchanged; do not retry the same attempt",
+        "category": "provider identity/shape/finite/gainpositive",
+        "error_code": "RECEIVER_PARAMETER_INVALID",
+        "programme_state_after": "RETIRED",
+        "trigger": "selected threshold/gain/scalar identity, count, finite-word, or positive-gain validation fails"
+      },
+      {
+        "caller_action": "return no index, ramp output, or after proposal; I03 applies STAGE_FATAL and retires the parent; committed descriptor state is unchanged; do not retry the same attempt",
+        "category": "state shape/range",
+        "error_code": "F04D_HOLD_RANGE",
+        "programme_state_after": "RETIRED",
+        "trigger": "canonical hold_count cannot be decoded as a semantic U32 in 0..0xffffffff"
+      },
+      {
+        "caller_action": "return no index, ramp output, or after proposal; I03 applies STAGE_FATAL and retires the parent; committed descriptor state is unchanged; do not retry the same attempt",
+        "category": "input shape",
+        "error_code": "F04D_INPUT_SHAPE",
+        "programme_state_after": "RETIRED",
+        "trigger": "control or post-temporal3 ramp input is not finite F32[6][1536] shape"
+      },
+      {
+        "caller_action": "return no index, ramp output, or after proposal; I03 applies STAGE_FATAL and retires the parent; committed descriptor state is unchanged; do not retry the same attempt",
+        "category": "input finite",
+        "error_code": "F04D_INPUT_NONFINITE",
+        "programme_state_after": "RETIRED",
+        "trigger": "a control or post-temporal3 ramp input sample is not finite"
+      },
+      {
+        "caller_action": "return no index, ramp output, or after proposal; I03 applies STAGE_FATAL and retires the parent; committed descriptor state is unchanged; do not retry the same attempt",
+        "category": "numeric intermediate",
+        "error_code": "NONFINITE_INTERMEDIATE",
+        "programme_state_after": "RETIRED",
+        "trigger": "a descriptor control or gain-ramp intermediate/output becomes nonfinite after finite inputs and valid providers"
+      }
+    ],
+    "precedence": [
+      "provider availability",
+      "provider identity/shape/finite/gainpositive",
+      "state shape/range",
+      "input shape/finite",
+      "numeric intermediate",
+      "success"
+    ],
+    "programme_rule": "F04D.6 delegates to I03."
   },
   "executor_and_receipt_producer": "F04C owns the enclosing receiver callback and selected-J05 receipt; F04D is a receiver substage and has no local commit or receipt authority.",
+  "fixture_materialization_status": "NOT_MATERIALIZED_IN_MAPPING_COMMIT",
   "functional_id": "F04D",
   "implementation_files": [],
   "implementation_prohibitions": [
-    "no descriptor DSP implementation in this audit",
     "no mode=0 fitting implementation",
     "no F04R preprocessing or target producer",
     "no final-six or J05 implementation",
     "no local state commit/abort/fatal authority",
     "no W04 audio or product acceptance promotion"
   ],
-  "implementation_readiness": "NO_IMPLEMENTATION",
+  "implementation_readiness": "READY_FOR_IMPLEMENTATION_F04D_DESCRIPTOR_CONTROL_ONLY__WHOLE_RECEIVER_NOT_RUN",
   "implementation_status": "NOT_IMPLEMENTED",
   "input_contract": {
     "control_scratch": "Six finite F32 lanes of 1536 samples from receiver scratch after temporal0..2 and before temporal3. F04D.2 peak consumes lanes [0,1,2,4,5], head [0,1280), tail [1280,1536), and old tail_peak; it saves only this callback's tail maximum.",
@@ -6113,6 +6178,16 @@
     "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
   },
   "persistent_owner": "spatial_audio.ModelState.descriptor_state",
+  "planned_fixture_files": [
+    "crates/jocforge-domain/tests/fixtures/descriptor_control/input-vectors.json",
+    "crates/jocforge-domain/tests/fixtures/descriptor_control/actual-literals.json"
+  ],
+  "planned_implementation_files": [
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs"
+  ],
+  "planned_test_files": [
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs"
+  ],
   "programme_root": "spatial_audio",
   "provider_bindings": {
     "descriptor_scalars": {
@@ -6175,6 +6250,20 @@
     "w04_review_status_sha256": "9dec871360697077d11f2160734ffe12b40a66b98d656742a0d51685a56f773b",
     "whole_receiver_j05_parent_and_product": "NOT_RUN"
   },
+  "resolved_prior_blockers": [
+    {
+      "id": "selected-provider-direct-vector",
+      "resolved_by": "F04-DESCRIPTOR-CONTROL-V1; six selected-provider success vectors and eight error vectors; independent two-path check PASS"
+    },
+    {
+      "id": "canonical-hold-encoding",
+      "resolved_by": "F04-DESCRIPTOR-CONTROL-V1; semantic U32 is zero-extended to nonnegative I64LE with boundary examples"
+    },
+    {
+      "id": "error-outcome-translation",
+      "resolved_by": "F04-DESCRIPTOR-CONTROL-V1 API-SCHEMA and direct error vectors; six exact local outcome rows are generated into ERROR-MAP"
+    }
+  ],
   "specifications": [
     {
       "bytes": 4009,
@@ -6273,18 +6362,53 @@
         "field": "gain"
       }
     ],
+    "hold_encoding_examples": {
+      "0": "0000000000000000",
+      "4294967295": "ffffffff00000000",
+      "5": "0500000000000000"
+    },
     "logical_cold_spec": "specs/04-descriptor-control.md F04D.1",
-    "logical_to_canonical_hold_encoding": "UNRESOLVED: F04D.1 calls hold U32, while the canonical DescriptorState schema stores hold_count as I64LE. Wash must state the value-preserving logical-to-canonical mapping before implementation; do not guess.",
+    "logical_to_canonical_hold_encoding": "Semantic hold is U32 in 0..0xffffffff. Canonical hold_count is the same nonnegative integer zero-extended into I64 value space, then encoded as signed I64LE; do not reinterpret raw U32 bytes or sign-extend.",
     "reset_authority": "Programme-origin full spatial_audio reset reconstructs the declared cold DescriptorState; do not clear hold on each callback.",
     "root": "spatial_audio.F04CompositionState.receiver_state: ModelState",
     "schema_pointer": "#/whole_state_by_boundary/cold/fields/6/schema/fields/10/schema",
     "stage_authority": "F04R executes the callback substage; F04D returns a proposal only."
   },
-  "status": "BLOCKED_ON_SELECTED_PROVIDER_DIRECT_VECTOR_ERROR_OUTCOMES_AND_STATE_ENCODING",
+  "status": "READY_FOR_IMPLEMENTATION_F04D_DESCRIPTOR_CONTROL_ONLY__WHOLE_RECEIVER_NOT_RUN",
   "task_id": "F04D-DESCRIPTOR-CONTROL-AUDIT",
   "test_files": [],
   "vector_coverage": {
-    "selected_provider_direct_vector_status": "MISSING",
+    "approved_supplement_direct_vectors": {
+      "actual_comparison": "all six-lane 1536-sample ramp output words, peak/level/hold/index traces, state-after fields, and canonical hold_count I64LE bytes are compared only after computation",
+      "actual_file": "F04D-DIRECT-ACTUAL-LITERALS.json",
+      "actual_sha256": "390cf469a1dde8a4fde9c79de2238f414ea041d6b64630cb669ca4ab26205ad0",
+      "error_cases": [
+        "missing_threshold_precedes_bad_input",
+        "threshold_dimension_precedes_bad_state",
+        "nonpositive_gain_provider",
+        "hold_negative",
+        "hold_u32_overflow",
+        "bad_input_shape",
+        "nonfinite_input",
+        "finite_input_intermediate_overflow"
+      ],
+      "error_count": 8,
+      "expected_use": "input recipes and raw input projections are inputs; ACTUAL-LITERALS expected fields are assertions only and never state/provider seeds",
+      "independent_check": "PASS_TWO_INDEPENDENT_PATHS; 57079 minimum stage words compared; primary_core_imported=false",
+      "input_file": "F04D-DIRECT-INPUT-VECTORS.json",
+      "input_sha256": "c622899783197a953fb6c0bcd262b0e7b1a110d605e9301e27782e44cb247528",
+      "success_count": 6,
+      "successful_cases": [
+        "cold_zero",
+        "head_tail_lfe_excluded",
+        "threshold_equal_hold_decrement",
+        "lookup_last_ordinal",
+        "attack_and_nontrivial_ramp",
+        "old_tail_peak_carry_current_tail_zero"
+      ],
+      "supplement_manifest_sha256": "40d67c32fdebf97fe8dc249486ce4cb655642146a2470e6bcad553f1639f9e04"
+    },
+    "selected_provider_direct_vector_status": "PASS_DIRECT_LITERAL_AND_TWO_REFERENCE_PATHS",
     "unit_vectors": {
       "bytes": 1503142,
       "case_count": 3,
