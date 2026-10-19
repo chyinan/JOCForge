@@ -37,7 +37,7 @@
 | F04GA | `specs/04-spread-authorized-parameters.md` | `spatial_audio` | Phase 3 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
 | F04P | `specs/04-component-parameter-state.md` | `spatial_audio` | Phase 3 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
 | F04PG | `specs/04-component-parameter-generation.md` | `spatial_audio` | Phase 3 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
-| F04R | `specs/04-receiver-state-and-routing.md` | `spatial_audio` | Phase 3 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
+| F04R | `specs/04-receiver-state-and-routing.md` | `spatial_audio` | Phase 3 | INVENTORIED | MAPPING_COMPLETE_BLOCKED_ON_F04R_DIRECT_KATS_TEMPORAL_CROSSWALK_AND_ERROR_OUTCOMES | — | — |
 | F04D | `specs/04-descriptor-control.md` | `spatial_audio` | Phase 3 | INVENTORIED | LOCALLY_VERIFIED_F04D_DIRECT_STAGE_ONLY__WHOLE_RECEIVER_NOT_RUN | `crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs`<br>`crates/jocforge-domain/src/spatial/spatial_audio_state.rs` | `crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs` |
 | F04Q | `specs/04-qmf-analysis-and-synthesis.md` | `spatial_audio` | Phase 3 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
 | F04RB | `specs/04-qmf-receiver-whole-binding.md` | `spatial_audio` | Phase 3 | INVENTORIED | LOCALLY_VERIFIED_MODE0_FITTING_DIRECT_KATS__WHOLE_RECEIVER_NOT_RUN | `crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs`<br>`crates/jocforge-domain/src/spatial/spatial_audio_state.rs` | `crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs` |

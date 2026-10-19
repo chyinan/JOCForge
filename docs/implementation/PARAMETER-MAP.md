@@ -37,7 +37,7 @@
 | F04GA | — | — | INVENTORIED |
 | F04P | — | — | INVENTORIED |
 | F04PG | — | — | INVENTORIED |
-| F04R | — | — | INVENTORIED |
+| F04R | VALIDATED_PROVIDER | `parameters/qmf-receiver-functional-v1.json`<br>`parameters/window-q15.json`<br>`parameters/qmf-mathematical-fft-v1.json`<br>`parameters/descriptor-mathematical.json` | INVENTORIED |
 | F04D | VALIDATED_PROVIDER | `parameters/qmf-receiver-functional-v1.json`<br>`parameters/descriptor-mathematical.json` | INVENTORIED |
 | F04Q | — | — | INVENTORIED |
 | F04RB | IDENTITY_PINNED_VALIDATED_QMF_FFT_AND_DESCRIPTOR_GAIN_PROVIDERS | `parameters/qmf-receiver-functional-v1.json`<br>`parameters/qmf-mathematical-fft-v1.json`<br>`parameters/descriptor-mathematical.json` | INVENTORIED |

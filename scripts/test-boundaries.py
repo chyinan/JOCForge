@@ -860,6 +860,31 @@ def main():
   ('mode0-test-lfe-nonfinite-assertion-removed',mode0_fitting_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs','        run_error_case("nonfinite_lfe_input").code(),\n','        "F04RB_INPUT_NONFINITE",\n'))),
   ('mode0-test-after-join-assertion-removed',mode0_fitting_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs','        run_error_case("receiver_analysis_after_join_mismatch").code(),\n','        "F04RB_LINEAGE_ERROR",\n')))
  ]
+ cases += [
+  ('f04r-readiness-overclaim',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT'].update(implementation_readiness='READY_FOR_IMPLEMENTATION'))),
+  ('f04r-status-drift',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT'].update(status='LOCALLY_VERIFIED_F04R'))),
+  ('f04r-lane-order-drift',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['lane_contract'].update(output_order=['L','R','LFE','C','Ls','Rs']))),
+  ('f04r-lfe-enters-qmf',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['lane_contract'].update(lfe='Lane 3 is LFE and receives QMF synthesis.'))),
+  ('f04r-callback-order-drift',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['pipeline_order'].reverse())),
+  ('f04r-descriptor-selection-moved',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['pipeline_order'][6].update(stage='F04D.3 descriptor selection after temporal3'))),
+  ('f04r-priming-advances-receiver',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['clock_contract'].update(priming='g=0/1 invokes F04R and advances receiver state.'))),
+  ('f04r-drain-is-synthetic',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['clock_contract'].update(eof='EOF adds a synthetic F04R flush callback.'))),
+  ('f04r-final-six-kat-fabricated',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['vector_coverage'].update(direct_full_pipeline_kat='PRESENT'))),
+  ('f04r-full-after-state-fabricated',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['vector_coverage'].update(complete_after_state_literal='PRESENT'))),
+  ('f04r-error-precedence-guessed',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['error_mapping'].update(first_failure_precedence='provider, lineage, state, input'))),
+  ('f04r-neighbor-error-contract-aliased',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['error_mapping'].update(do_not_infer_from=[]))),
+  ('f04r-provider-value-missing',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['provider_bindings'][0]['fields'].remove('lfe_post_filter_4x5'))),
+  ('f04r-provider-identity-drift',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['provider_bindings'][0].update(sha256='0'*64))),
+  ('f04r-modelstate-owner-drift',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['state_ownership'].update(owner='qmf_window.receiver_state'))),
+  ('f04r-f04rb-history-alias',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['owner_and_consumer_boundaries'].update(F04RB='F04RB shares receiver mode=1 histories.'))),
+  ('f04r-f05jc-reruns-receiver',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['owner_and_consumer_boundaries'].update(F05JC='F05JC reruns F04R state for its carrier inputs.'))),
+  ('f04r-f05jl-reruns-state',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['owner_and_consumer_boundaries'].update(J05_F05JL='F05JL reruns F04R, F04D, and F04RB state.'))),
+  ('f04r-spatial-audio-promoted',map_mut_render(lambda d:d['phase_one']['P1.3-E'].update(status='LOCALLY_VERIFIED_SPATIAL_AUDIO'))),
+  ('f04r-temporal-crosswalk-fabricated',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['state_ownership']['temporal_state_serialization'].update(semantic_crosswalk_status='MAPPED'))),
+  ('f04r-temporal-schema-field-removed',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['state_ownership']['temporal_state_serialization']['entry_fields'].pop(2))),
+  ('f04r-row0-source-generation-removed',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['type10_input'].update(row_order='row0 is LFE; rows1..15 are component rows.'))),
+  ('f04r-target-runner-wiring-overclaimed',map_mut_render(lambda d:d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT']['type10_input'].update(target_updates='F05R56 target_updates are always wired in the same runner.')))
+ ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]
   if not cases:raise RuntimeError('no boundary mutations match case prefix: '+x.case_prefix)

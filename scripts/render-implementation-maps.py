@@ -118,6 +118,50 @@ def render(d):
    +'## Machine-readable contract\n\n'
    +chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
   )
+ if 'F04R_PREPROCESSING_FINAL_SIX_AUDIT' in d['phase_one']:
+  x=d['phase_one']['F04R_PREPROCESSING_FINAL_SIX_AUDIT'];block=json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)
+  def matrix(columns,rows):return '| '+' | '.join(columns)+' |\n|'+'|'.join('---'for _ in columns)+'|\n'+'\n'.join('| '+' | '.join(str(cell).replace('|','\\|')for cell in row)+' |'for row in rows)+'\n'
+  o['PHASE-PLAN.md']+='\n## F04R preprocessing and final-six mapping audit\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
+  lane_rows=[[i,lane,x['lane_contract'][key]]for i,(lane,key)in enumerate(zip(x['lane_contract']['output_order'],('front','front','center','lfe','surround','surround')))]
+  pipeline_rows=[[item['order'],item['stage'],item['owner'],item['input_output'],item['state_fields']]for item in x['pipeline_order']]
+  delay_rows=[[name,rule]for name,rule in x['delay_and_ring_rules'].items()]
+  state_rows=[[item['field'],item['schema'],item['cold']]for item in x['state_ownership']['fields']]
+  temporal_serialization=x['state_ownership']['temporal_state_serialization']
+  temporal_field_rows=[[item['name'],item['encoding']]for item in temporal_serialization['entry_fields']]
+  temporal_instance_rows=[[item['name'],item['span'],item['lanes'],item['buffer_bytes_per_lane'],item.get('route_status','consumed') ]for item in temporal_serialization['instances']]
+  provider_rows=[[item['file'],item['bytes'],item['sha256'],item['fields']]for item in x['provider_bindings']]
+  vector_rows=[[item['stage'],item['direct_cases'],item['classification']]for item in x['vector_coverage']['stage_coverage']]
+  clock_rows=[[name,value]for name,value in x['clock_contract'].items()]
+  owner_rows=[[name,value]for name,value in x['owner_and_consumer_boundaries'].items()]
+  blocker_rows=[[item['id'],item['reason'],item['minimum_evidence']]for item in x['blockers']]
+  o['RECEIVER-PIPELINE-MAP.md']=(
+   '# F04R receiver pipeline and final-six map\n\n'
+   +'由 IMPLEMENTATION-MAP.json 生成，不得手工修改。\n\n'
+   +f"Mapping status: `{x['mapping_status']}`. Implementation readiness: `{x['implementation_readiness']}`. Audit status: `{x['status']}`.\n\n"
+   +'This is a mapping-only gate. It does not implement Rust/DSP, JOC/J05, F05JC, codec behavior, a parent transaction, or any root commit. The F04R route is executed once by F04C for each callback whose Type10 outcome is Ready.\n\n'
+   +'## Callback and lanes\n\n'
+   +f"The receiver consumes `{x['type10_input']['shape']}` from the E4 packet/receipt pair for `g>=2`. {x['type10_input']['row_order']} {x['type10_input']['target_updates']}\n\n"
+   +matrix(['output lane','identity','route'],lane_rows)+'\n'
+   +'## Ordered callback pipeline\n\n'
+   +matrix(['order','stage','authority','input -> output','state fields'],pipeline_rows)+'\n'
+   +'## Delay, temporal, and ring transitions\n\n'+matrix(['transition','exact rule'],delay_rows)+'\n'
+   +'## Persistent ModelState owner\n\n'
+   +f"Owner: `{x['state_ownership']['owner']}`. Canonical schema: `{x['state_ownership']['canonical_schema_file']}` ({x['state_ownership']['canonical_schema_bytes']} bytes, SHA-256 `{x['state_ownership']['canonical_schema_sha256']}`), pointer `{x['state_ownership']['schema_pointer']}`.\n\n"
+   +matrix(['field','canonical schema / dimension summary','cold/reset'],state_rows)+'\n'
+   +f"TemporalState canonical schema pointer: `{temporal_serialization['schema_pointer']}`.\n\n"
+   +matrix(['TemporalState field','canonical encoding'],temporal_field_rows)+'\n'
+   +matrix(['instance','span','lanes','buffer bytes per lane','route'],temporal_instance_rows)+'\n'
+   +f"Semantic cursor crosswalk: `{temporal_serialization['semantic_crosswalk_status']}`. {temporal_serialization['semantic_crosswalk_gap']}\n\n"
+   +'The full ModelState is staged as one after-state. F04R/F04D/F04RB have no local commit; only the enclosing F04C/spatial_audio transaction may commit it.\n\n'
+   +'## Clocks and drain\n\n'+matrix(['clock','contract'],clock_rows)+'\n'
+   +'## F04C/F04D/F04RB and downstream boundaries\n\n'+matrix(['owner or consumer','boundary'],owner_rows)+'\n'
+   +'## Provider and vector evidence\n\n'+matrix(['provider','bytes','SHA-256','bound fields'],provider_rows)+'\n'
+   +matrix(['stage','direct coverage','qualification'],vector_rows)+'\n'
+   +'The six whole-chain vectors are model-first assertions only. They do not provide an isolated F04R run, complete post-computation ModelState literals, or a final_six direct KAT. Selected provider values are identity-pinned and present; the current blockers are direct evidence and error outcomes, not missing numeric provider values.\n\n'
+   +'## Minimum blockers\n\n'+matrix(['blocker','gap','minimum evidence'],blocker_rows)+'\n'
+   +'F04R-specific error labels and first-failure precedence remain unspecified. Do not copy F04D, F04RB, or mode=1 error contracts into F04R. I03 supplies the known fatal parent effect only. Whole receiver integration, same-runner F05R56 targets, J05/F05JC/parent commit, W04, real ADM, and product acceptance remain `NOT_RUN`.\n\n'
+   +'## Machine-readable contract\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
+  )
  if 'POSTWINDOW_FANOUT_FOUNDATION' in d['phase_one']:
   x=d['phase_one']['POSTWINDOW_FANOUT_FOUNDATION'];block=json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)
   o['PHASE-PLAN.md']+='\n## PostWindow fanout foundation\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
