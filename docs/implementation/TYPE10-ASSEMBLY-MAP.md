@@ -2,9 +2,9 @@
 
 由 IMPLEMENTATION-MAP.json 生成，不得手工修改。
 
-Mapping status: `MAPPING_COMPLETE`. Implementation status: `LOCALLY_VERIFIED_TYPE10_ASSEMBLY__RECEIVER_PARENT_DEFERRED`. Receiver/QMF and parent transaction remain deferred.
+Mapping status: `MAPPING_COMPLETE`. Implementation status: `LOCALLY_VERIFIED_TYPE10_ASSEMBLY__RECEIVER_PARENT_DEFERRED`. Receiver mode=1 routing/state status: `LOCALLY_VERIFIED_RECEIVER_MODE1_ROUTING_AND_STATE__CROSS_STAGE_J05_EXECUTION_DEFERRED`; whole F04 receiver, J05 projection and parent transaction remain deferred.
 
-This slice only assembles the E2 component proposal with the E3 delayed LFE row; it does not execute receiver/QMF or commit spatial_audio state.
+This E4 slice only assembles the E2 component proposal with the E3 delayed LFE row; it does not invoke the separate receiver mode=1 stage or commit spatial_audio state.
 
 ```json
 {
@@ -78,9 +78,9 @@ This slice only assembles the E2 component proposal with the E3 delayed LFE row;
       "sha256": "9473ea603741d59955d90f4a58c6c02875f1bba97d45203d6547c9b0c84d8a78"
     },
     {
-      "bytes": 35171,
+      "bytes": 35202,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "6e3154571999492fdf2f881147ee9bb1a111eb191bd9cba9aaace91075840e03"
+      "sha256": "6a78996295b53ee2c5b6a7695fa011edef7c17e71250259862d6ef74e00ffe1e"
     },
     {
       "bytes": 38627,
@@ -198,9 +198,9 @@ This slice only assembles the E2 component proposal with the E3 delayed LFE row;
   ],
   "test_inventory": [
     {
-      "bytes": 23774,
+      "bytes": 23795,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs",
-      "sha256": "5f83ce89089916e9f588c7b80313234d2d5c999fd527c838f5c5da60d7456964"
+      "sha256": "5d7bfe329d68793d05e5587c9383eda0c7d503277ec31ba9a00c0221ffe5a043"
     },
     {
       "bytes": 51413,

@@ -12,6 +12,8 @@ P1.3-E4 assembly tests consume typed E2/E3 proposals for `g0..g5`: g0/g1 must pr
 
 QMF_CORE direct-vector tests execute the nine-row fold/history, rotation, analysis scale/FFT/reorder, synthesis preformat/FFT/postmodulation/polyphase, and mode=1 24-slot delay/FIR/synthesis transitions. The washed analysis and synthesis literals are assertions after fresh computation; tests never use expected words or hashes as state seeds. The five-callback QMF and six-callback F04 whole-chain records are not run by this slice. Whole receiver routing, J05/parent integration, real ADM, and listening acceptance remain `NOT_RUN`.
 
+Receiver mode=1 stage tests cover g0/g1 Priming, five distinct analysis lanes, surround-only mode=1 synthesis, warm history carry into a cached-drain callback, receiver count, and Type10/S09 phase and lineage rejection. The stage receives S09 as input from the F04R boundary; these tests do not execute F04R, same-runner F05R56 target production, selected-J05 projection, parent commit, or whole receiver output. Those executions remain `NOT_RUN`.
+
 公共语法原语还必须覆盖 bit cursor 0/1/31/32/32768、容量溢出、CRC residual=0、单 bit 破坏、frmsiz 边界、header 保留码、非 48 kHz/非 5.1/dependent/非 4,096-byte 拒绝、六个 Huffman 表全部 symbol、两种 EMDF mode、四 payload 顺序、截断和失败零提交。
 
 validation 的 structural parser、channel-map、topology、frame report 和 W04 与 production 分离。parser 成功不代表 codec conformance、音频正确或产品验收通过。

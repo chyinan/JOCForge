@@ -777,3 +777,5 @@ fn dropped_stage_preserves_committed_root() {
         before_bytes
     );
 }
+
+mod receiver_mode1;

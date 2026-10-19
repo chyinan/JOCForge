@@ -37,6 +37,16 @@ def type10_code_mut_render(mutate):
   map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
   subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
  return m
+def receiver_mode1_code_mut_render(mutate):
+ def m(r):
+  mutate(r)
+  map_path=r/'docs/implementation/IMPLEMENTATION-MAP.json';d=json.loads(map_path.read_text(encoding='utf-8'));task=d['phase_one']['RECEIVER_MODE1_ROUTING']
+  source='crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs'
+  entry=next(entry for entry in task['implementation_binding']['implementation_files']if entry['path']==source)
+  content=(r/source).read_bytes();entry['bytes']=len(content);entry['sha256']=hashlib.sha256(content).hexdigest()
+  map_path.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+  subprocess.run([sys.executable,str(r/'scripts/render-implementation-maps.py')],cwd=r,capture_output=True)
+ return m
 def spatial_audio_code_mut_render(mutate):
  def m(r):
   mutate(r)
@@ -510,6 +520,12 @@ def main():
  ('receiver-mode1-lane-route-drift',map_mut_render(lambda d:d['phase_one']['RECEIVER_MODE1_ROUTING']['lane_routing'].update(mode1_delay_fir_synthesis_lanes=[0,1,2,4,5]))),
  ('receiver-mode1-priming-count-drift',map_mut_render(lambda d:d['phase_one']['RECEIVER_MODE1_ROUTING']['clock_contract'].update(priming='receiver_callback_count increments at g=0'))),
  ('receiver-mode1-stale-review-identities-deleted',map_mut_render(lambda d:d['phase_one']['RECEIVER_MODE1_ROUTING'].update(review_binding_mismatches=[])))
+ ]
+ cases += [
+ ('receiver-mode1-code-lfe-entered-analysis',receiver_mode1_code_mut_render(lambda r:replace_once(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs','const CARRIER_LANES: [usize; 5] = [0, 1, 2, 4, 5];','const CARRIER_LANES: [usize; 5] = [0, 1, 2, 3, 4];'))),
+ ('receiver-mode1-code-mode0-added',receiver_mode1_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs','\nfn mode0_fitting() {}\n'))),
+ ('receiver-mode1-code-descriptor-added',receiver_mode1_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs','\nfn select_descriptor_threshold() {}\n'))),
+ ('receiver-mode1-code-local-commit-added',receiver_mode1_code_mut_render(lambda r:append(r/'crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs','\nfn commit_receiver_qmf() {}\n')))
  ]
  cases += [
  ('qmf-fft-status-overclaim',map_mut_render(lambda d:(d['phase_one']['QMF_FFT_PRIMITIVE'].update(status='LOCALLY_VERIFIED'),d['status'].update({'QMF_FFT_PRIMITIVE':'LOCALLY_VERIFIED'})))),

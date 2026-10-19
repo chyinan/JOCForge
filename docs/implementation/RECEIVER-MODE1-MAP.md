@@ -2,13 +2,13 @@
 
 由 IMPLEMENTATION-MAP.json 生成，不得手工修改。
 
-Mapping status: `MAPPING_COMPLETE`. Implementation readiness: `READY_FOR_IMPLEMENTATION`.
+Mapping status: `MAPPING_COMPLETE`. Implementation readiness: `LOCALLY_VERIFIED_RECEIVER_MODE1_ROUTING_AND_STATE__CROSS_STAGE_J05_EXECUTION_DEFERRED`.
 
 All five carriers `[L,R,C,Ls,Rs]` run 24-slot analysis on receiver lanes `[0,1,2,4,5]`. Only surround lanes `[4,5]` run mode=1 delay/FIR/synthesis. L/R/C update analysis history only in this audio-QMF path; lane 3 LFE bypasses QMF.
 
 Frontend callback `g` remains distinct from receiver count `r`: `g<2` is Type10 priming and does not advance receiver/QMF; for `g>=2`, `r=g-2`, receiver after-generation is `r+1=g-1`, and JOC dispatch is `d=g-1`. The callback count is proposed only with the complete `spatial_audio` root.
 
-Fresh review R1 is bound to the current package and passes 44/44 static checks. It resolves the old review-binding blocker for this scoped routing/state implementation. The older mismatches remain recorded as stale identities. Cross-stage J05 execution and whole-product acceptance remain NOT_RUN.
+Fresh review R1 is bound to the current package and passes 44/44 static checks. Local synthetic tests verify the receiver routing/state stage. The older review mismatches remain recorded as stale identities. F04R production, same-runner F05R56 targets, J05 projection, parent transaction and product acceptance remain NOT_RUN.
 
 ## Machine-readable contract
 
@@ -51,7 +51,45 @@ Fresh review R1 is bound to the current package and passes 44/44 static checks. 
     "status_sha256": "4aa0f1d9f0fbc718772193159069077618e0c0138c8002798c893d29f0296fb8",
     "verdict": "SCOPED_NUMERIC_AND_STATE_IMPLEMENTATION_ALLOWED; CROSS_STAGE_INTEGRATION_NOT_READY"
   },
+  "implementation_binding": {
+    "api": "stage_receiver_mode1 consumes one linear Type10AssemblyProposal and a typed F04R stage-3 ReceiverS09InputView; it returns a linear proposal with preserved E2/E3 after-state, Type10 outcome, five raw analysis spectra, surround PCM, and QMF after slices.",
+    "implementation_files": [
+      {
+        "bytes": 17053,
+        "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs",
+        "sha256": "e871096db3a6780ab467edb07b5670072b2b0eafa40e8414d35a2d3369aa13b5"
+      },
+      {
+        "bytes": 35202,
+        "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+        "sha256": "6a78996295b53ee2c5b6a7695fa011edef7c17e71250259862d6ef74e00ffe1e"
+      }
+    ],
+    "s09_lineage_type": "ReceiverS09InputView binds six finite 1536-sample lanes to SpatialAudioJoinMetadata and explicit CallbackPhase; the receiver stage compares it with the Type10 receipt before any QMF processing.",
+    "test_cases": [
+      "g0_g1_priming_preserves_component_lfe_and_skips_receiver_qmf",
+      "normal_receiver_callback_analyzes_five_carriers_and_synthesizes_only_surrounds",
+      "cached_drain_consumes_warm_histories_once_and_advances_receiver_count_once",
+      "stale_receiver_count_rejects_before_returning_after_state",
+      "phase_and_type10_callback_mismatch_reject_before_qmf_work",
+      "priming_and_ready_input_shapes_are_checked_before_qmf_work"
+    ],
+    "test_count": 6,
+    "test_files": [
+      {
+        "bytes": 23195,
+        "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests/receiver_mode1.rs",
+        "sha256": "4c89df1bee27ca2b510d2c4fdb664c623f2c5c7efce22e3a07bab73d9d91f4b3"
+      },
+      {
+        "bytes": 23795,
+        "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs",
+        "sha256": "5d7bfe329d68793d05e5587c9383eda0c7d503277ec31ba9a00c0221ffe5a043"
+      }
+    ]
+  },
   "implementation_exclusions": [
+    "F04R preprocessing before s09_input",
     "descriptor and threshold selection",
     "mode=0 fitting and QmfWindowState fitting histories",
     "post-QMF receiver temporal/descriptor/final-six output tail",
@@ -59,11 +97,11 @@ Fresh review R1 is bound to the current package and passes 44/44 static checks. 
     "parent CallbackTransaction and spatial_audio commit",
     "real ADM/listening/product acceptance"
   ],
-  "implementation_readiness": "READY_FOR_IMPLEMENTATION",
+  "implementation_readiness": "LOCALLY_VERIFIED_RECEIVER_MODE1_ROUTING_AND_STATE__CROSS_STAGE_J05_EXECUTION_DEFERRED",
   "input_contract": {
     "parent_identity": "FrontendCallbackIndex g and explicit CallbackPhase from the enclosing callback; never infer phase or generation from hashes or samples.",
-    "qmf_boundary": "F04R stages produce s09_input[6][1536]; QMF analyzes lanes [0,1,2,4,5]. Lane 3 is LFE and bypasses QMF. QMF_CORE starts at one 64-sample lane slot and does not produce s09_input.",
-    "target_updates": "The same g supplies immutable target_updates[16][6] from the F05R56 target-owner receipt. Install them before receiver row/lane accumulation.",
+    "qmf_boundary": "F04R stage 3 supplies a typed ReceiverS09InputView over s09_input[6][1536], bound to the same SpatialAudioJoinMetadata and explicit phase as Type10. QMF analyzes lanes [0,1,2,4,5]; lane 3 is LFE and bypasses QMF. This slice does not implement F04R or produce s09_input.",
+    "target_updates": "The full F04R callback requires same-g immutable target_updates[16][6] from the F05R56 target-owner receipt before row/lane accumulation. This receiver mode=1 stage begins at S09 and does not consume target_updates directly; same-runner F05R56 production remains NOT_RUN.",
     "type10": "For g>=2 consume the E4 Ready outcome as a packet-plus-receipt pair. Type10Packet.callback_index is g; shape is 16x1536 F32; row0 is LFE origin g-2; rows1..15 are component output from g."
   },
   "lane_routing": {
@@ -157,7 +195,7 @@ Fresh review R1 is bound to the current package and passes 44/44 static checks. 
       "sha256": "a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130"
     }
   ],
-  "readiness_basis": "The routing, state shapes, clocks, errors, and selected-J05 receipt schema are explicit and received fresh static review for the current package. This authorizes only the receiver mode=1 routing/state implementation; it does not claim F04RB/F04C/J05 execution, same-runner F05R56 targets, parent transaction, real ADM/listening, or product acceptance.",
+  "readiness_basis": "The current package fresh review authorizes the scoped routing/state slice. Six local tests verify five-lane analysis, surround-only mode=1 synthesis, priming, warm cached transition, lineage and input errors. This status does not claim F04RB/F04C/J05 cross-stage execution, same-runner F05R56 targets, parent transaction, real ADM/listening, or product acceptance.",
   "review_binding_mismatches": [
     {
       "current_package_sha256": "104d604cf876cc522a85b21f352bd0a09fc20c3171ddcd71da981c8076ea3a75",
@@ -188,7 +226,8 @@ Fresh review R1 is bound to the current package and passes 44/44 static checks. 
     "component_E2": "ComponentStageReceipt binds programme, attempt, transaction, g, phase, profile, spatial_audio before generation/digest, spatial_control before generation/digest/provider lineage, and F04 provider lineage.",
     "future_selected_j05": "F04C alone produces selected-j05-owner-receipt.v1 for g>=2. Preserve g, r=g-2, d=g-1, component/LFE/target input owner tokens and hashes, Type10 shape 16x1536 F32, final-six shape 6x1536 F32 (its producer is excluded here), target-QMF shape 5x48x192 complex-F32, carrier-QMF shape 5x48x64 complex-F32, and receiver/QMF before/after generations and hashes. F05JL consumes this projection and must not rerun F04R/F04RB. This audit creates no such receipt.",
     "lfe_E3": "DirectLfeStageLineage binds the same parent identity and before-state/provider lineage plus semantic LFE host. Type10LfeRow0Input binds packet callback g and delayed row origin g-2.",
-    "qmf_core": "Current QMF_CORE is a pure numeric stage API with before/after histories only; it carries no g, phase, profile, transaction, or Type10 receipt. The future F04C receiver stage must bind its QMF inputs and after slices to the E4 Ready receipt's g and the same programme/attempt/transaction/phase/profile/spatial_audio before-generation/digest as E2/E3, and preserve F05R56 target receipt lineage.",
+    "qmf_core": "Current QMF_CORE is a pure numeric stage API with before/after histories only; it carries no g, phase, profile, transaction, or Type10 receipt.",
+    "receiver_mode1_stage": "ReceiverS09InputView carries the same parent metadata plus explicit phase and six finite lane slices. The receiver stage validates that view and the E4 Type10 receipt against one parent before analysis. The linear stage proposal returns component/LFE after-state, the Type10 outcome, QMF after slices, and mode=1 surround PCM; it creates no owner receipt and cannot commit.",
     "type10_E4": "Type10AssemblyReceipt retains the E2/E3 lineages, component origin g, optional LFE origin g-2, and 16x1536 shape. Ready returns packet and receipt together; Priming has no packet."
   },
   "specifications": [
@@ -305,7 +344,7 @@ Fresh review R1 is bound to the current package and passes 44/44 static checks. 
     "reset_authority": "Programme-origin full spatial_audio reset reconstructs all four QMF state families from the declared positive-zero cold state.",
     "root_field": "F04CompositionState.receiver_state: ModelState"
   },
-  "status": "READY_FOR_IMPLEMENTATION",
+  "status": "LOCALLY_VERIFIED_RECEIVER_MODE1_ROUTING_AND_STATE__CROSS_STAGE_J05_EXECUTION_DEFERRED",
   "task_id": "F04RB-RECEIVER-MODE1-ROUTING-STATE-MAP",
   "vector_coverage": {
     "direct_qmf_vectors": {
@@ -313,7 +352,7 @@ Fresh review R1 is bound to the current package and passes 44/44 static checks. 
       "coverage": "Cold and warm core stages; mode=1 one supplied surround lane over 24 slots; not five-lane receiver routing.",
       "synthesis_manifest_sha256": "bff23be87f4b7ceb27c145ab6106dd1b786aa2e6dbc35d1e4892da73743e9f4a"
     },
-    "error_coverage": "QMF core tests cover nonfinite input, numeric overflow, and provider identity mismatch; E4 has same-parent/phase/origin mismatch cases; whole consumer model lists 11 preflight rejects. No isolated F04C receiver-mode1 callback error/fatal integration test exists.",
+    "error_coverage": "QMF core tests cover nonfinite input, numeric overflow, and provider identity mismatch. The local receiver stage tests stale receiver count, Type10/S09 callback and phase mismatch, priming/ready input presence, and malformed S09 lane shape. E4 covers same-parent/phase/origin mismatch; whole consumer model lists 11 preflight rejects. Full F04C parent failure/retirement remains NOT_RUN.",
     "qmf_receiver_whole_binding": {
       "cases": 5,
       "coverage": "Cold-to-warm continuous receiver/QMF/target/fitting model; 46080 receiver output words, 14400 carrier analysis-history joins; hashes are assertions, not seeds.",
@@ -330,10 +369,12 @@ Fresh review R1 is bound to the current package and passes 44/44 static checks. 
     }
   },
   "verification": {
-    "full_repository_boundary_mutations_rejected": 776,
+    "full_repository_boundary_mutations_rejected": 780,
     "listening": "NOT_RUN",
     "real_adm": "NOT_RUN",
-    "targeted_boundary_mutations_rejected": 4,
+    "receiver_mode1_stage": "LOCAL_SYNTHETIC_TESTS_PASS",
+    "receiver_mode1_test_count": 6,
+    "targeted_boundary_mutations_rejected": 8,
     "whole_receiver_qmf_execution": "NOT_RUN",
     "whole_spatial_chain_implementation_execution": "NOT_RUN"
   }

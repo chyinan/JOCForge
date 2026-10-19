@@ -80,7 +80,7 @@ def render(d):
    +f"Mapping status: `{x['mapping_status']}`. Implementation readiness: `{x['implementation_readiness']}`.\n\n"
    +'All five carriers `[L,R,C,Ls,Rs]` run 24-slot analysis on receiver lanes `[0,1,2,4,5]`. Only surround lanes `[4,5]` run mode=1 delay/FIR/synthesis. L/R/C update analysis history only in this audio-QMF path; lane 3 LFE bypasses QMF.\n\n'
    +'Frontend callback `g` remains distinct from receiver count `r`: `g<2` is Type10 priming and does not advance receiver/QMF; for `g>=2`, `r=g-2`, receiver after-generation is `r+1=g-1`, and JOC dispatch is `d=g-1`. The callback count is proposed only with the complete `spatial_audio` root.\n\n'
-   +'Fresh review R1 is bound to the current package and passes 44/44 static checks. It resolves the old review-binding blocker for this scoped routing/state implementation. The older mismatches remain recorded as stale identities. Cross-stage J05 execution and whole-product acceptance remain NOT_RUN.\n\n'
+   +'Fresh review R1 is bound to the current package and passes 44/44 static checks. Local synthetic tests verify the receiver routing/state stage. The older review mismatches remain recorded as stale identities. F04R production, same-runner F05R56 targets, J05 projection, parent transaction and product acceptance remain NOT_RUN.\n\n'
    +'## Machine-readable contract\n\n'
    +chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
   )
@@ -95,7 +95,8 @@ def render(d):
  if 'P1.3-E4' in d['phase_one']:
   x=d['phase_one']['P1.3-E4'];block=json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)
   o['PHASE-PLAN.md']+='\n## P1.3-E4 Type10 assembly boundary\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
-  o['TYPE10-ASSEMBLY-MAP.md']='# Type10 assembly map\n\n由 IMPLEMENTATION-MAP.json 生成，不得手工修改。\n\n'+f"Mapping status: `{x['mapping_status']}`. Implementation status: `{x['implementation_status']}`. Receiver/QMF and parent transaction remain deferred.\n\n"+'This slice only assembles the E2 component proposal with the E3 delayed LFE row; it does not execute receiver/QMF or commit spatial_audio state.\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
+  receiver=d['phase_one'].get('RECEIVER_MODE1_ROUTING',{});receiver_status=receiver.get('status','NOT_MAPPED')
+  o['TYPE10-ASSEMBLY-MAP.md']='# Type10 assembly map\n\n由 IMPLEMENTATION-MAP.json 生成，不得手工修改。\n\n'+f"Mapping status: `{x['mapping_status']}`. Implementation status: `{x['implementation_status']}`. Receiver mode=1 routing/state status: `{receiver_status}`; whole F04 receiver, J05 projection and parent transaction remain deferred.\n\n"+'This E4 slice only assembles the E2 component proposal with the E3 delayed LFE row; it does not invoke the separate receiver mode=1 stage or commit spatial_audio state.\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
  return o
 def main():
  a=argparse.ArgumentParser();a.add_argument('--check',action='store_true');x=a.parse_args();d=json.loads(M.read_text(encoding='utf-8'));bad=[]
