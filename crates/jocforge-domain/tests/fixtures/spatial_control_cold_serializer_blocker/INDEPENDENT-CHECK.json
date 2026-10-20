@@ -1,5 +1,5 @@
 {
-  "schema": "spatial-control-cold-serializer-blocker-independent-check.v31",
+  "schema": "spatial-control-cold-serializer-blocker-independent-check.v32",
   "checks": [
     {
       "id": "dll_identity",
@@ -154,6 +154,14 @@
       "pass": true
     },
     {
+      "id": "selected_constructor_prefix_dynamic_join",
+      "pass": true
+    },
+    {
+      "id": "parent_metadata_provider",
+      "pass": true
+    },
+    {
       "id": "no_entrypoint",
       "pass": true
     },
@@ -213,7 +221,9 @@
     "TARGETED-LOUDNESS-TYPE-CROSS-MODULE-NO-HIT.json",
     "DTHD-METER-PIMPL-BOUNDARY.json",
     "PACKED-METADATA-OWNER-CONSTRUCTOR.json",
-    "PACKED-METADATA-DYNAMIC-CURRENT-RUN.json"
+    "PACKED-METADATA-DYNAMIC-CURRENT-RUN.json",
+    "SELECTED-CONSTRUCTOR-PREFIX-DYNAMIC-JOIN.json",
+    "PARENT-METADATA-PROVIDER.json"
   ],
   "research_files_read": false,
   "serializer_execution": false,

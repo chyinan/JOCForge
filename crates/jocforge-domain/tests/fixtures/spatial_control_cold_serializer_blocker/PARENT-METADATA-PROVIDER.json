@@ -1,0 +1,58 @@
+{
+  "schema": "sanitized-parent-metadata-provider.v1",
+  "source_evidence_identity": {
+    "transfer_route_sha256": "20a8cbd677087fc3fc9eb3eb86c22329ff59573ea8592016828fa24b6e2a63a8",
+    "transfer_manifest_sha256": "06243e384f8fcf82e7308aeae1b229608881548d573801428ee3e8bd58506816",
+    "provider_sha256": "6b4026b32437d1a56c5303e16afb301027fefd893f4c7b4b7f53cbeec8294f50",
+    "gap_lineage_sha256": "f35e647ab34cd91579407615a6b5f17df4276643b547758657e2bfef4ccd3a5c",
+    "provider_manifest_sha256": "5c816776db0cff630766d14723e79df0bba6cf52507018b1d9417042f9217585",
+    "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "provider": {
+    "class": "atmos_storage_composite_master",
+    "vtable_rva": "0x809338",
+    "constructor_rva": "0x54c580",
+    "object_bytes": 488,
+    "metadata_owner_offset": 264,
+    "metadata_bytes": 120,
+    "metadata_constructor_rva": "0x4d8020",
+    "getter_slot": "+0x70",
+    "getter_target_rva": "0x54f490",
+    "getter_rule": "return this+264"
+  },
+  "root_to_parent_chain": [
+    "0x1828c0 -> 0x553a60 -> root_collection+80",
+    "0x184150 -> 0x4cba30(*(root_collection+80))",
+    "system object virtual+0x70 -> composite_master+264",
+    "0x186870 -> process_descriptor+48",
+    "0x179ab0 -> 0x1788a0 -> 0x178dc0 unchanged"
+  ],
+  "writer": {
+    "rva": "0x54fa70",
+    "selection": "first active source from composite owner vector",
+    "operation": "selected source virtual+0xc8 writes composite_master+264",
+    "known_sources": [
+      {"class":"atmos_storage::MasterSourceImpl","vtable_rva":"0x806b48","target_rva":"0x536360","underlying_owner_offset":32,"copy":"exact 120 bytes plus name"},
+      {"class":"atmos_storage::BlankMasterSource","target_rva":"0x5d4270","underlying_owner_offset":80,"copy":"exact 120 bytes plus name"}
+    ]
+  },
+  "gap_lineage": {
+    "cold": "0x4d8020 zeros all120 and writes defaults",
+    "cold_values": {"78..79":"zero","80..87":"zero","99":"zero","107":"zero","118..119":"zero"},
+    "post_selection": "whole120 exact copy from selected source; no per-gap normalization",
+    "current_selected_source_class": "NOT_CAPTURED",
+    "same_underlying_master_as_0x4d43c0": "NOT_JOINED",
+    "generation_order_relative_to_0x4d49e8": "NOT_JOINED",
+    "content_equality_is_causality": false
+  },
+  "distinct_object_result": {
+    "producer_owner_plus88_equals_parent_input": false,
+    "same_logical_field_projection_for_offset80": "NOT_PROVEN",
+    "reason": "parent descriptor is provided by composite master; source owner+88 and parent input are distinct object roles"
+  },
+  "minimum_dynamic_join": "capture selected source class/pointer and underlying owner at 0x54fa70, correlate 0x4d49e8 ordinal, and compare partition digests before/after copy and at 0x178dc0; digest equality alone does not prove causality",
+  "separate_27_u32_dictionary_used": false,
+  "raw_metadata_payload_delivered": false,
+  "implementation_ready": false,
+  "production_allowed": false
+}

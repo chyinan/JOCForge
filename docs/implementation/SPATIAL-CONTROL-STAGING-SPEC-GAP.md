@@ -1,6 +1,16 @@
 # Spatial-control staging specification gap
 
-## Current authority: v31 selected-init packed metadata and same-run evidence
+## Current authority: v32 selected constructor prefix and composite metadata provider
+
+The current implementer package is `spatial-control-cold-serializer.blocked.v32`, pinned by fixture manifest SHA-256 `488b2c6fd6665f578438f40c707b7ab37f7be20ccfa35fb261d14c6aecb15354`. The washed research manifest and independent-check hashes are `0afde72fd4863a10ebd2620cd223085322032874b0bb0b0783f3a92ee87705fa` and `8ab24109f1bda62b213b71973ca4230fec2e54fb12aecd729ef4e93347845490`; 46/46 checks pass.
+
+For the selected current run, a same-generation chain joins the selected 104-byte constructor prefix through `0x177E50` → fresh inner instance → descriptor builder `0x178DC0` → parent constructor `0x1A7D50`. Pointer offsets 88 and 92 are zeroed before persistence, the 14 packed metadata gaps have zero mask `16383`, selected raw enum words and consumed fields are closed for this run, and EC3 output matches the baseline. This is a bounded run join, not a general profile contract, portable root, or serialized parent snapshot; pointer-valued fields are explicitly excluded.
+
+The parent-side metadata provider is a separate `atmos_storage_composite_master` object of 488 bytes with metadata owner at `+264`; getter `0x54F490` returns `this+264`, and writer `0x54FA70` copies the complete 120-byte metadata block from the first active source. The current selected source class is `NOT_CAPTURED`; its underlying master identity and generation relationship to the `0x4D49E8` master-start write are `NOT_JOINED`. Provider owner+264 and producer owner+88 are distinct object roles, and the exact transfer object to `0x178DC0` remains `NOT_CAPTURED`. Therefore the selected prefix values do not yet join to the parent provider's selected source or establish a same-master packed dictionary layout.
+
+Even with the selected prefix and provider writer routes observed, canonical schema/digest/receipt, a reference serializer, and portable restore/roundtrip remain undelivered or unrun. `IMPLEMENTATION_READY=NO` and `production_allowed=false` remain in force.
+
+## Historical v31 selected-init packed metadata and same-run evidence
 
 The current implementer package is `spatial-control-cold-serializer.blocked.v31`, pinned by fixture manifest SHA-256 `a92d6a3204dd00858f1d29fa0f66cfbddc83a5819364170ade06df6326b8debc`. The washed research manifest and independent-check hashes are `1b8b1cc6c882c0ad0c79be949bbc38e3b7d0210f30211a2204a1ae0ec459d8d3` and `893fcc6503208fe49734e67fcb2c01d64feba165124f296606ed3a3bbd002305`; 44/44 checks pass.
 

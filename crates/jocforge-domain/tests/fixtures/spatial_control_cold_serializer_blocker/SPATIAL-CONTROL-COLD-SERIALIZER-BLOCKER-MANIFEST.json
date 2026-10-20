@@ -1,10 +1,10 @@
 {
-  "schema": "washed-implementer-blocker-manifest.v26",
-  "identity": "spatial-control-cold-serializer.blocked.v31",
+  "schema": "washed-implementer-blocker-manifest.v27",
+  "identity": "spatial-control-cold-serializer.blocked.v32",
   "status": "BLOCKED_NO_EXECUTABLE_SERIALIZER",
   "source_evidence": {
-    "research_manifest_sha256": "1b8b1cc6c882c0ad0c79be949bbc38e3b7d0210f30211a2204a1ae0ec459d8d3",
-    "research_independent_check_sha256": "893fcc6503208fe49734e67fcb2c01d64feba165124f296606ed3a3bbd002305",
+    "research_manifest_sha256": "0afde72fd4863a10ebd2620cd223085322032874b0bb0b0783f3a92ee87705fa",
+    "research_independent_check_sha256": "8ab24109f1bda62b213b71973ca4230fec2e54fb12aecd729ef4e93347845490",
     "production_allowed": false,
     "implementation_ready": "NO",
     "serializer_execution": "NOT_RUN",
@@ -12,29 +12,25 @@
     "bytes_guessed": false,
     "private_auth": "excluded"
   },
-  "packed_gap_selected_init": {
-    "owner_class": "atmos_storage_master_s",
-    "constructor_zeroes_bytes": 120,
-    "gap_count": 14,
-    "offsets80_87_first_business_write": "0x4d49e8_binary64_master_start_baseline",
-    "other_gap_values": "COLD_ZERO_NO_BUSINESS_WRITE_SELECTED_INIT",
-    "generic_setter_can_replace_all120": true,
-    "cross_profile_generalization_allowed": false
+  "selected_prefix": {
+    "bytes": 104,
+    "pointer_offsets_zeroed": [
+      88,
+      92
+    ],
+    "same_inner_descriptor_join": true,
+    "same_thread_parent_constructor_join": true,
+    "selected_raw_enum_words": "CLOSED_CURRENT_RUN",
+    "reference_ec3_baseline_match": true
   },
-  "dictionary_dynamic": {
-    "serializer_rva": "0x522660",
-    "parser_rva": "0x52a310",
-    "serializer_hits": 0,
-    "parser_hits": 0,
-    "parent_consumer_hits": 1,
-    "identity_join": "NO_HIT_NOT_INVOKED",
-    "reference_ec3_baseline_match_three_runs": true
-  },
-  "fresh_reconstruction": {
-    "native_same_object_restore": false,
-    "new_inner_reconstruction": true,
-    "requires_restart": false,
-    "dynamic_second_run": "NOT_RUN"
+  "parent_metadata_provider": {
+    "class": "atmos_storage_composite_master",
+    "metadata_owner_offset": 264,
+    "getter_rva": "0x54f490",
+    "whole120_writer_rva": "0x54fa70",
+    "selected_source_class": "NOT_CAPTURED",
+    "same_underlying_master": "NOT_JOINED",
+    "per_gap_normalization": false
   },
   "files": [
     {
@@ -99,8 +95,8 @@
     },
     {
       "file": "INDEPENDENT-CHECK.json",
-      "bytes": 5493,
-      "sha256": "893fcc6503208fe49734e67fcb2c01d64feba165124f296606ed3a3bbd002305"
+      "bytes": 5753,
+      "sha256": "8ab24109f1bda62b213b71973ca4230fec2e54fb12aecd729ef4e93347845490"
     },
     {
       "file": "MEASUREMENT-ALIAS-RESOLUTION.json",
@@ -163,6 +159,11 @@
       "sha256": "a2bd0eb000671b95190ed44a1359f4e349981b74a6f191b49e1469793b377edc"
     },
     {
+      "file": "PARENT-METADATA-PROVIDER.json",
+      "bytes": 2982,
+      "sha256": "3b46aa4a778672a9a9233bd72882305498081f31d45fd5c6aa4e792a52afc9ae"
+    },
+    {
       "file": "PARENT-OUTPUT-DATAFLOW.json",
       "bytes": 3513,
       "sha256": "8ec6387277da562610614795459ef03b8c960ea2962a51bb492fcee6fcae3a20"
@@ -196,6 +197,11 @@
       "file": "REQUIRED-FRAMING-RULES.json",
       "bytes": 2801,
       "sha256": "7396aaf144c102db7e395f090bf645e7db2d827d6bf8ecc3a39f870c73e0373d"
+    },
+    {
+      "file": "SELECTED-CONSTRUCTOR-PREFIX-DYNAMIC-JOIN.json",
+      "bytes": 4512,
+      "sha256": "a572639b5263fe5f652dd614ff21bcd3be8bdb4d2e19ec8ab26f69f0ce457cb1"
     },
     {
       "file": "TARGETED-LOUDNESS-TYPE-CROSS-MODULE-NO-HIT.json",
