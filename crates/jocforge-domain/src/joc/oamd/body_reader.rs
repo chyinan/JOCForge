@@ -65,6 +65,36 @@ pub enum OamdBodyReadError {
     InvalidEscapedInteger,
 }
 
+/// Detailed rowdata decode outcomes shared with the two-section assembler.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) enum OamdRowdataDecodeError {
+    SectionControl,
+    Truncated,
+    UnconsumedFields,
+    NonzeroPadding,
+    TimingBase,
+    TimingDomain,
+    TimingDuration,
+    TimingReserved,
+    TimingMultiframe,
+    RowDomain,
+    RowXyz,
+    RowGain,
+    RowSpread,
+    RowExtension,
+    EscapedOverflow,
+}
+
+impl From<OamdBodyReadError> for OamdRowdataDecodeError {
+    fn from(error: OamdBodyReadError) -> Self {
+        match error {
+            OamdBodyReadError::InvalidInput => Self::Truncated,
+            OamdBodyReadError::UnsupportedProfile => Self::RowExtension,
+            OamdBodyReadError::InvalidEscapedInteger => Self::EscapedOverflow,
+        }
+    }
+}
+
 const DURATION_TABLE: [u32; 16] = [
     32, 64, 128, 256, 320, 480, 1000, 1001, 1024, 1600, 1601, 1602, 1920, 2000, 2002, 2048,
 ];
@@ -116,13 +146,14 @@ pub fn decode_oamd_body(
     }
     reader.finish_zero_padding()?;
 
-    let (timing, rows) = decode_rowdata_payload(
+    let (timing, rows, _) = decode_rowdata_payload_with_bits(
         &rowdata_payload,
         row_count,
         leading_lfe,
         xy_table_63,
         z_table_16,
-    )?;
+    )
+    .map_err(map_rowdata_error_to_body_read_error)?;
     Ok(OamdBodyMetadata {
         header: OamdBodyHeader {
             version,
@@ -138,16 +169,16 @@ pub fn decode_oamd_body(
     })
 }
 
-fn decode_rowdata_payload(
+pub(crate) fn decode_rowdata_payload_with_bits(
     payload: &[u8],
     row_count: usize,
     leading_lfe: bool,
     xy_table_63: &[u32; 63],
     z_table_16: &[u32; 16],
-) -> Result<(OamdTiming, Vec<OamdDecodedRow>), OamdBodyReadError> {
+) -> Result<(OamdTiming, Vec<OamdDecodedRow>, u32), OamdRowdataDecodeError> {
     let mut reader = BitReader::new(payload, payload.len().saturating_mul(8));
     if reader.read(1)? != 0 {
-        return Err(OamdBodyReadError::UnsupportedProfile);
+        return Err(OamdRowdataDecodeError::SectionControl);
     }
     let timing = decode_timing(&mut reader)?;
     let mut rows = Vec::with_capacity(row_count);
@@ -178,10 +209,10 @@ fn decode_rowdata_payload(
                 3 if row_index == 0 => 4096,
                 3 if previous_unmuted => previous_gain,
                 1 | 3 => 0,
-                _ => return Err(OamdBodyReadError::UnsupportedProfile),
+                _ => return Err(OamdRowdataDecodeError::RowGain),
             };
             if reader.read(1)? != 1 {
-                return Err(OamdBodyReadError::UnsupportedProfile);
+                return Err(OamdRowdataDecodeError::RowSpread);
             }
             let mut row = OamdDecodedRow {
                 kind,
@@ -205,10 +236,10 @@ fn decode_rowdata_payload(
                 let ancillary_presence = reader.read(1)?;
                 let diffuse = reader.read(1)? != 0;
                 if position_extension != 0 || width_mode != 0 || ancillary_presence != 0 {
-                    return Err(OamdBodyReadError::UnsupportedProfile);
+                    return Err(OamdRowdataDecodeError::RowExtension);
                 }
                 let z_magnitude = i32::try_from(z_table_16[z_code as usize])
-                    .map_err(|_| OamdBodyReadError::InvalidInput)?;
+                    .map_err(|_| OamdRowdataDecodeError::RowXyz)?;
                 let z = if positive_z {
                     z_magnitude
                 } else {
@@ -216,15 +247,15 @@ fn decode_rowdata_payload(
                 };
                 row.xyz_q15 = [
                     i32::try_from(xy_table_63[x_code as usize])
-                        .map_err(|_| OamdBodyReadError::InvalidInput)?,
+                        .map_err(|_| OamdRowdataDecodeError::RowXyz)?,
                     i32::try_from(xy_table_63[y_code as usize])
-                        .map_err(|_| OamdBodyReadError::InvalidInput)?,
+                        .map_err(|_| OamdRowdataDecodeError::RowXyz)?,
                     if z_valid { z } else { 0 },
                 ];
                 row.component = if component_code == 7 {
                     0
                 } else {
-                    u8::try_from(component_code).map_err(|_| OamdBodyReadError::InvalidInput)?
+                    u8::try_from(component_code).map_err(|_| OamdRowdataDecodeError::RowDomain)?
                 };
                 row.z_valid = z_valid;
                 row.diffuse = diffuse;
@@ -233,16 +264,38 @@ fn decode_rowdata_payload(
             row
         };
         if reader.read(1)? != 0 {
-            return Err(OamdBodyReadError::UnsupportedProfile);
+            return Err(OamdRowdataDecodeError::RowExtension);
         }
         previous_unmuted = !mute;
         rows.push(decoded);
     }
-    reader.finish_zero_padding()?;
-    Ok((timing, rows))
+    let valid_bits =
+        u32::try_from(reader.position()).map_err(|_| OamdRowdataDecodeError::RowDomain)?;
+    reader.finish_zero_padding_detailed()?;
+    Ok((timing, rows, valid_bits))
 }
 
-fn decode_timing(reader: &mut BitReader<'_>) -> Result<OamdTiming, OamdBodyReadError> {
+fn map_rowdata_error_to_body_read_error(error: OamdRowdataDecodeError) -> OamdBodyReadError {
+    match error {
+        OamdRowdataDecodeError::Truncated
+        | OamdRowdataDecodeError::UnconsumedFields
+        | OamdRowdataDecodeError::NonzeroPadding
+        | OamdRowdataDecodeError::RowXyz
+        | OamdRowdataDecodeError::RowDomain
+        | OamdRowdataDecodeError::TimingDomain => OamdBodyReadError::InvalidInput,
+        OamdRowdataDecodeError::EscapedOverflow => OamdBodyReadError::InvalidEscapedInteger,
+        OamdRowdataDecodeError::SectionControl
+        | OamdRowdataDecodeError::TimingBase
+        | OamdRowdataDecodeError::TimingDuration
+        | OamdRowdataDecodeError::TimingReserved
+        | OamdRowdataDecodeError::TimingMultiframe
+        | OamdRowdataDecodeError::RowGain
+        | OamdRowdataDecodeError::RowSpread
+        | OamdRowdataDecodeError::RowExtension => OamdBodyReadError::UnsupportedProfile,
+    }
+}
+
+fn decode_timing(reader: &mut BitReader<'_>) -> Result<OamdTiming, OamdRowdataDecodeError> {
     let base = match reader.read(2)? {
         0 => 0,
         1 => match reader.read(2)? {
@@ -255,14 +308,14 @@ fn decode_timing(reader: &mut BitReader<'_>) -> Result<OamdTiming, OamdBodyReadE
         2 => {
             let base = reader.read(5)?;
             if matches!(base, 0 | 8 | 16 | 18 | 24) {
-                return Err(OamdBodyReadError::UnsupportedProfile);
+                return Err(OamdRowdataDecodeError::TimingBase);
             }
             base
         }
-        _ => return Err(OamdBodyReadError::UnsupportedProfile),
+        _ => return Err(OamdRowdataDecodeError::TimingReserved),
     };
     if reader.read(3)? != 0 {
-        return Err(OamdBodyReadError::UnsupportedProfile);
+        return Err(OamdRowdataDecodeError::TimingMultiframe);
     }
     let position = reader.read(6)?;
     let duration = match reader.read(2)? {
@@ -275,7 +328,7 @@ fn decode_timing(reader: &mut BitReader<'_>) -> Result<OamdTiming, OamdBodyReadE
             } else {
                 let duration = reader.read(11)?;
                 if matches!(duration, 0 | 512 | 1536) || DURATION_TABLE.contains(&duration) {
-                    return Err(OamdBodyReadError::UnsupportedProfile);
+                    return Err(OamdRowdataDecodeError::TimingDuration);
                 }
                 duration
             }
@@ -288,10 +341,10 @@ fn decode_timing(reader: &mut BitReader<'_>) -> Result<OamdTiming, OamdBodyReadE
         reader.read(5)?
     };
     Ok(OamdTiming {
-        base: u8::try_from(base).map_err(|_| OamdBodyReadError::InvalidInput)?,
-        position: u8::try_from(position).map_err(|_| OamdBodyReadError::InvalidInput)?,
-        duration: u16::try_from(duration).map_err(|_| OamdBodyReadError::InvalidInput)?,
-        precision: u8::try_from(precision).map_err(|_| OamdBodyReadError::InvalidInput)?,
+        base: u8::try_from(base).map_err(|_| OamdRowdataDecodeError::TimingBase)?,
+        position: u8::try_from(position).map_err(|_| OamdRowdataDecodeError::TimingDomain)?,
+        duration: u16::try_from(duration).map_err(|_| OamdRowdataDecodeError::TimingDuration)?,
+        precision: u8::try_from(precision).map_err(|_| OamdRowdataDecodeError::TimingDomain)?,
     })
 }
 
@@ -354,6 +407,10 @@ impl<'a> BitReader<'a> {
         self.limit.saturating_sub(self.position)
     }
 
+    const fn position(&self) -> usize {
+        self.position
+    }
+
     fn finish_zero_padding(&mut self) -> Result<(), OamdBodyReadError> {
         if self.remaining_bits() > 7 {
             return Err(OamdBodyReadError::InvalidInput);
@@ -361,6 +418,18 @@ impl<'a> BitReader<'a> {
         while self.position < self.limit {
             if self.read(1)? != 0 {
                 return Err(OamdBodyReadError::InvalidInput);
+            }
+        }
+        Ok(())
+    }
+
+    fn finish_zero_padding_detailed(&mut self) -> Result<(), OamdRowdataDecodeError> {
+        if self.remaining_bits() > 7 {
+            return Err(OamdRowdataDecodeError::UnconsumedFields);
+        }
+        while self.position < self.limit {
+            if self.read(1)? != 0 {
+                return Err(OamdRowdataDecodeError::NonzeroPadding);
             }
         }
         Ok(())

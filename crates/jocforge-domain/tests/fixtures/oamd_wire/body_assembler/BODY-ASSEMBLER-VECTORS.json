@@ -1,0 +1,1433 @@
+{
+  "schema": "oamd-body-assembler-vectors.v1",
+  "input_only": true,
+  "success_cases": [
+    {
+      "id": "normal_multiline_trim0",
+      "input": {
+        "timing": {
+          "base": 0,
+          "position": 0,
+          "duration": 1536,
+          "precision": 32
+        },
+        "rows": [
+          {
+            "kind": 0,
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 0,
+            "diffuse": 0,
+            "width_q15": 0,
+            "extra28": 0
+          },
+          {
+            "kind": 2,
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0,
+            "width_q15": 0,
+            "extra28": 0
+          },
+          {
+            "kind": 2,
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0,
+            "width_q15": 0,
+            "extra28": 0
+          },
+          {
+            "kind": 2,
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0,
+            "width_q15": 0,
+            "extra28": 0
+          },
+          {
+            "kind": 2,
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0,
+            "width_q15": 0,
+            "extra28": 0
+          },
+          {
+            "kind": 2,
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0,
+            "width_q15": 0,
+            "extra28": 0
+          },
+          {
+            "kind": 2,
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0,
+            "width_q15": 0,
+            "extra28": 0
+          }
+        ],
+        "trim": {
+          "trim_mode": 0,
+          "group_flags": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "groups": [
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ]
+          ],
+          "row_flags": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "expected": {
+        "body_hex": "0d88432000a2703e8040e07d0081c0fa010381f4020703e8040e07d008020000",
+        "bytes": 32,
+        "valid_bits": 253,
+        "padding_bits": 3,
+        "row_count": 7,
+        "leading_lfe": true,
+        "section_count": 2,
+        "sections": [
+          {
+            "kind": 1,
+            "payload_bytes": 26,
+            "payload_valid_bits": 206,
+            "escaped_value": 25
+          },
+          {
+            "kind": 2,
+            "payload_bytes": 1,
+            "payload_valid_bits": 8,
+            "escaped_value": 0
+          }
+        ],
+        "decode_projection": {
+          "row_count": 7,
+          "leading_lfe": true,
+          "section_count": 2,
+          "timing": {
+            "base": 0,
+            "position": 0,
+            "duration": 1536,
+            "precision": 32
+          },
+          "rows": [
+            {
+              "kind": 0,
+              "mute": 0,
+              "gain": 4096,
+              "spread": 32767,
+              "xyz_q15": [
+                16384,
+                16384,
+                0
+              ],
+              "component": 0,
+              "z_valid": 1,
+              "diffuse": 0
+            },
+            {
+              "kind": 2,
+              "mute": 0,
+              "gain": 4096,
+              "spread": 32767,
+              "xyz_q15": [
+                0,
+                32767,
+                0
+              ],
+              "component": 0,
+              "z_valid": 1,
+              "diffuse": 0
+            },
+            {
+              "kind": 2,
+              "mute": 0,
+              "gain": 4096,
+              "spread": 32767,
+              "xyz_q15": [
+                0,
+                32767,
+                0
+              ],
+              "component": 0,
+              "z_valid": 1,
+              "diffuse": 0
+            },
+            {
+              "kind": 2,
+              "mute": 0,
+              "gain": 4096,
+              "spread": 32767,
+              "xyz_q15": [
+                0,
+                32767,
+                0
+              ],
+              "component": 0,
+              "z_valid": 1,
+              "diffuse": 0
+            },
+            {
+              "kind": 2,
+              "mute": 0,
+              "gain": 4096,
+              "spread": 32767,
+              "xyz_q15": [
+                0,
+                32767,
+                0
+              ],
+              "component": 0,
+              "z_valid": 1,
+              "diffuse": 0
+            },
+            {
+              "kind": 2,
+              "mute": 0,
+              "gain": 4096,
+              "spread": 32767,
+              "xyz_q15": [
+                0,
+                32767,
+                0
+              ],
+              "component": 0,
+              "z_valid": 1,
+              "diffuse": 0
+            },
+            {
+              "kind": 2,
+              "mute": 0,
+              "gain": 4096,
+              "spread": 32767,
+              "xyz_q15": [
+                0,
+                32767,
+                0
+              ],
+              "component": 0,
+              "z_valid": 1,
+              "diffuse": 0
+            }
+          ],
+          "trim": {
+            "trim_mode": 0,
+            "group_flags": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "groups": [
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ]
+            ],
+            "row_flags": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "trim2_sentinel_mask",
+      "input": {
+        "timing": {
+          "base": 18,
+          "position": 63,
+          "duration": 2048,
+          "precision": 31
+        },
+        "rows": [
+          {
+            "kind": 0,
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 0,
+            "diffuse": 0,
+            "width_q15": 0,
+            "extra28": 0
+          },
+          {
+            "kind": 2,
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0,
+            "width_q15": 0,
+            "extra28": 0
+          },
+          {
+            "kind": 2,
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              16384,
+              16384,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0,
+            "width_q15": 0,
+            "extra28": 0
+          }
+        ],
+        "trim": {
+          "trim_mode": 2,
+          "group_flags": [
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "groups": [
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              3,
+              16,
+              12,
+              -16,
+              1
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ]
+          ],
+          "row_flags": [
+            0,
+            1,
+            0
+          ]
+        }
+      },
+      "expected": {
+        "body_hex": "05886c61fff7c4e07d0081df7e01004a449d3c7c3fd0",
+        "bytes": 22,
+        "valid_bits": 176,
+        "padding_bits": 0,
+        "row_count": 3,
+        "leading_lfe": true,
+        "section_count": 2,
+        "sections": [
+          {
+            "kind": 1,
+            "payload_bytes": 12,
+            "payload_valid_bits": 94,
+            "escaped_value": 11
+          },
+          {
+            "kind": 2,
+            "payload_bytes": 6,
+            "payload_valid_bits": 45,
+            "escaped_value": 5
+          }
+        ],
+        "decode_projection": {
+          "row_count": 3,
+          "leading_lfe": true,
+          "section_count": 2,
+          "timing": {
+            "base": 18,
+            "position": 63,
+            "duration": 2048,
+            "precision": 31
+          },
+          "rows": [
+            {
+              "kind": 0,
+              "mute": 0,
+              "gain": 4096,
+              "spread": 32767,
+              "xyz_q15": [
+                16384,
+                16384,
+                0
+              ],
+              "component": 0,
+              "z_valid": 1,
+              "diffuse": 0
+            },
+            {
+              "kind": 2,
+              "mute": 0,
+              "gain": 4096,
+              "spread": 32767,
+              "xyz_q15": [
+                0,
+                32767,
+                0
+              ],
+              "component": 0,
+              "z_valid": 1,
+              "diffuse": 0
+            },
+            {
+              "kind": 2,
+              "mute": 0,
+              "gain": 4096,
+              "spread": 32767,
+              "xyz_q15": [
+                16384,
+                16384,
+                0
+              ],
+              "component": 0,
+              "z_valid": 1,
+              "diffuse": 0
+            }
+          ],
+          "trim": {
+            "trim_mode": 2,
+            "group_flags": [
+              0,
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "groups": [
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                3,
+                16,
+                12,
+                -16,
+                1
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ]
+            ],
+            "row_flags": [
+              0,
+              1,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "escaped_one_group_edge",
+      "input": {
+        "timing": {
+          "base": 0,
+          "position": 0,
+          "duration": 1536,
+          "precision": 32
+        },
+        "rows": [
+          {
+            "kind": 2,
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0,
+            "width_q15": 0,
+            "extra28": 0
+          },
+          {
+            "kind": 2,
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0,
+            "width_q15": 0,
+            "extra28": 0
+          },
+          {
+            "kind": 2,
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0,
+            "width_q15": 0,
+            "extra28": 0
+          }
+        ],
+        "trim": {
+          "trim_mode": 0,
+          "group_flags": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "groups": [
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ]
+          ],
+          "row_flags": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "expected": {
+        "body_hex": "050874001440fa010381f4020703e804004000",
+        "bytes": 19,
+        "valid_bits": 152,
+        "padding_bits": 0,
+        "row_count": 3,
+        "leading_lfe": false,
+        "section_count": 2,
+        "sections": [
+          {
+            "kind": 1,
+            "payload_bytes": 14,
+            "payload_valid_bits": 108,
+            "escaped_value": 13
+          },
+          {
+            "kind": 2,
+            "payload_bytes": 1,
+            "payload_valid_bits": 8,
+            "escaped_value": 0
+          }
+        ],
+        "decode_projection": {
+          "row_count": 3,
+          "leading_lfe": false,
+          "section_count": 2,
+          "timing": {
+            "base": 0,
+            "position": 0,
+            "duration": 1536,
+            "precision": 32
+          },
+          "rows": [
+            {
+              "kind": 2,
+              "mute": 0,
+              "gain": 4096,
+              "spread": 32767,
+              "xyz_q15": [
+                0,
+                32767,
+                0
+              ],
+              "component": 0,
+              "z_valid": 1,
+              "diffuse": 0
+            },
+            {
+              "kind": 2,
+              "mute": 0,
+              "gain": 4096,
+              "spread": 32767,
+              "xyz_q15": [
+                0,
+                32767,
+                0
+              ],
+              "component": 0,
+              "z_valid": 1,
+              "diffuse": 0
+            },
+            {
+              "kind": 2,
+              "mute": 0,
+              "gain": 4096,
+              "spread": 32767,
+              "xyz_q15": [
+                0,
+                32767,
+                0
+              ],
+              "component": 0,
+              "z_valid": 1,
+              "diffuse": 0
+            }
+          ],
+          "trim": {
+            "trim_mode": 0,
+            "group_flags": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "groups": [
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ]
+            ],
+            "row_flags": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "escaped_two_group_edge",
+      "input": {
+        "timing": {
+          "base": 7,
+          "position": 1,
+          "duration": 777,
+          "precision": 0
+        },
+        "rows": [
+          {
+            "kind": 2,
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0,
+            "width_q15": 0,
+            "extra28": 0
+          },
+          {
+            "kind": 2,
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0,
+            "width_q15": 0,
+            "extra28": 0
+          },
+          {
+            "kind": 2,
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0,
+            "width_q15": 0,
+            "extra28": 0
+          },
+          {
+            "kind": 2,
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0,
+            "width_q15": 0,
+            "extra28": 0
+          }
+        ],
+        "trim": {
+          "trim_mode": 0,
+          "group_flags": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "groups": [
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ],
+            [
+              16,
+              16,
+              16,
+              0,
+              0
+            ]
+          ],
+          "row_flags": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "expected": {
+        "body_hex": "07084284700e6120081f4020703e8040e07d0081c0fa0100020000",
+        "bytes": 27,
+        "valid_bits": 213,
+        "padding_bits": 3,
+        "row_count": 4,
+        "leading_lfe": false,
+        "section_count": 2,
+        "sections": [
+          {
+            "kind": 1,
+            "payload_bytes": 21,
+            "payload_valid_bits": 161,
+            "escaped_value": 20
+          },
+          {
+            "kind": 2,
+            "payload_bytes": 1,
+            "payload_valid_bits": 8,
+            "escaped_value": 0
+          }
+        ],
+        "decode_projection": {
+          "row_count": 4,
+          "leading_lfe": false,
+          "section_count": 2,
+          "timing": {
+            "base": 7,
+            "position": 1,
+            "duration": 777,
+            "precision": 0
+          },
+          "rows": [
+            {
+              "kind": 2,
+              "mute": 0,
+              "gain": 4096,
+              "spread": 32767,
+              "xyz_q15": [
+                0,
+                32767,
+                0
+              ],
+              "component": 0,
+              "z_valid": 1,
+              "diffuse": 0
+            },
+            {
+              "kind": 2,
+              "mute": 0,
+              "gain": 4096,
+              "spread": 32767,
+              "xyz_q15": [
+                0,
+                32767,
+                0
+              ],
+              "component": 0,
+              "z_valid": 1,
+              "diffuse": 0
+            },
+            {
+              "kind": 2,
+              "mute": 0,
+              "gain": 4096,
+              "spread": 32767,
+              "xyz_q15": [
+                0,
+                32767,
+                0
+              ],
+              "component": 0,
+              "z_valid": 1,
+              "diffuse": 0
+            },
+            {
+              "kind": 2,
+              "mute": 0,
+              "gain": 4096,
+              "spread": 32767,
+              "xyz_q15": [
+                0,
+                32767,
+                0
+              ],
+              "component": 0,
+              "z_valid": 1,
+              "diffuse": 0
+            }
+          ],
+          "trim": {
+            "trim_mode": 0,
+            "group_flags": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "groups": [
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ],
+              [
+                16,
+                16,
+                16,
+                0,
+                0
+              ]
+            ],
+            "row_flags": [
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "rejection_cases": [
+    {
+      "id": "row_count_zero",
+      "expected_error": "ROW_COUNT"
+    },
+    {
+      "id": "leading_lfe_not_first",
+      "expected_error": "LEADING_LFE"
+    },
+    {
+      "id": "timing_position_64",
+      "expected_error": "TIMING_DOMAIN"
+    },
+    {
+      "id": "timing_duration_2049",
+      "expected_error": "TIMING_DURATION"
+    },
+    {
+      "id": "invalid_trim_signed_balance_17",
+      "expected_error": "TRIM_SIGNED_BALANCE"
+    },
+    {
+      "id": "body_capacity",
+      "expected_error": "BODY_CAPACITY"
+    },
+    {
+      "id": "truncated_body",
+      "expected_error": "SECTION_OVERFLOW"
+    },
+    {
+      "id": "truncated_escaped_length",
+      "expected_error": "TRUNCATED"
+    },
+    {
+      "id": "overflow_escaped_length",
+      "expected_error": "ESCAPED_UNTERMINATED"
+    }
+  ],
+  "expected_used_as_seed": false
+}

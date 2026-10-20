@@ -5,6 +5,7 @@ ROOT=pathlib.Path(__file__).resolve().parents[1];PKG=pathlib.Path(r'C:\Users\chy
 MODE2_CURRENT_PREVIOUS_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\F05R56-MODE2-CURRENT-PREVIOUS-V1')
 F05O_READ_HEADER_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\F05O-ROW-READ-HEADER-V1')
 F05T_TRIM_SECTION_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\F05T-TRIM-SECTION-CODEC-V1')
+F05O_BODY_ASSEMBLER_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\F05O-BODY-ASSEMBLER-V1')
 PACKAGE=PKG
 CURRENT_FEATURES_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\CURRENT-FEATURES-PRODUCER-V1')
 CURRENT_FEATURES_INTEGRATION_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\CURRENT-FEATURES-INTEGRATION-CONTRACT-V1')
@@ -2075,19 +2076,19 @@ def check_reader_target_mapping(root,d):
 def check_oamd_rowdata_mapping(root,d):
  entry=next(e for e in d['functional_entries']if e['functional_id']=='F05O')
  slices=entry.get('direct_slices',[])
- ck(entry['owner']=='joc'and entry['planned_phase']=='Phase 4'and entry['implementation_status']=='DEFERRED_DETAILED_MAPPING'and len(slices)==2 and {item.get('slice_id')for item in slices}=={'oamd-rowdata-body-encoder','oamd-single-rowdata-body-decoder'}and all(item.get('mapping_status')=='MATERIALIZED_DIRECT_SUBSLICE_WHOLE_FUNCTIONAL_ID_DEFERRED'for item in slices),'F05O direct slices are recorded without promoting the whole functional ID')
- by_id={item['slice_id']:item for item in slices};encoder=by_id.get('oamd-rowdata-body-encoder',{});decoder=by_id.get('oamd-single-rowdata-body-decoder',{})
+ ck(entry['owner']=='joc'and entry['planned_phase']=='Phase 4'and entry['implementation_status']=='DEFERRED_DETAILED_MAPPING'and len(slices)==3 and {item.get('slice_id')for item in slices}=={'oamd-rowdata-body-encoder','oamd-single-rowdata-body-decoder','single-frame-oamd-body-assembler'}and all(item.get('mapping_status')=='MATERIALIZED_DIRECT_SUBSLICE_WHOLE_FUNCTIONAL_ID_DEFERRED'for item in slices),'F05O direct slices are recorded without promoting the whole functional ID')
+ by_id={item['slice_id']:item for item in slices};encoder=by_id.get('oamd-rowdata-body-encoder',{});decoder=by_id.get('oamd-single-rowdata-body-decoder',{});assembler=by_id.get('single-frame-oamd-body-assembler',{})
  ck(encoder.get('implementation_status')=='LOCALLY_VERIFIED_ENCODER_ONLY__F05T_TRIM_AND_F05L_LIVE_PRODUCER_DEFERRED'and decoder.get('implementation_status')=='LOCALLY_VERIFIED_SINGLE_ROW_DATA_BODY_DECODER_ONLY__OTHER_LAYOUTS_DEFERRED','F05O encoder and decoder scopes remain distinct')
  encoder_impl=['crates/jocforge-domain/src/joc/oamd.rs','crates/jocforge-domain/src/joc/oamd/rowdata.rs'];encoder_tests=['crates/jocforge-domain/tests/oamd_rowdata.rs']
  decoder_impl=['crates/jocforge-domain/src/joc/oamd.rs','crates/jocforge-domain/src/joc/oamd/body_reader.rs'];decoder_tests=['crates/jocforge-domain/tests/oamd_body_read.rs']
  ck(encoder.get('implementation_files')==encoder_impl and encoder.get('test_modules')==encoder_tests and decoder.get('implementation_files')==decoder_impl and decoder.get('test_modules')==decoder_tests and all((root/path).is_file()for path in encoder_impl+encoder_tests+decoder_impl+decoder_tests),'F05O direct-slice source and test paths')
- encoder_identity=[{'file':encoder_impl[1],'bytes':13356,'sha256':'05a308b608e5a8ed9cda2059d2ba26da5e4bb440139f36aa5565aff43ebd2a1f'}]
- decoder_identity=[{'file':decoder_impl[1],'bytes':12571,'sha256':'913518e0e155b8b5c38034c57483cd808ca4e8577b74f6dc62bc60fb83574103'}]
+ encoder_identity=[{'file':encoder_impl[1],'bytes':14096,'sha256':'277c05193a5b72473ff6d514f5cdd269fff691ac88fe94e15f0aaaf146e12403'}]
+ decoder_identity=[{'file':decoder_impl[1],'bytes':15012,'sha256':'931c11a22156227199d224cdff8ae786de48bb12ec3d1cdc2bcbbfe24171157b'}]
  ck(encoder.get('implementation_file_identities')==encoder_identity and decoder.get('implementation_file_identities')==decoder_identity,'F05O private implementations are byte-pinned by the direct-slice map')
  for path,identity in ((encoder_impl[1],encoder_identity[0]),(decoder_impl[1],decoder_identity[0])):
   raw=(root/path).read_bytes();ck(len(raw)==identity['bytes']and hashlib.sha256(raw).hexdigest()==identity['sha256'],'F05O implementation source identity '+path)
  oamd_source=rust_code_without_comments((root/encoder_impl[0]).read_text(encoding='utf-8'));oamd_modules=[line.strip()for line in oamd_source.splitlines()if line.strip()]
- ck(oamd_modules==['pub mod body_reader;','pub mod reader_target;','pub mod rowdata;','pub mod trim_section;'],'OAMD module boundary declares only the mapped modules')
+ ck(oamd_modules==['pub mod body_assembler;','pub mod body_reader;','pub mod reader_target;','pub mod rowdata;','pub mod trim_section;'],'OAMD module boundary declares only the mapped modules')
  ck(encoder.get('clock')=={'domains':[],'covered_clauses':['The encoder is stateless and consumes no callback, source, writer, or AU clock.']}and encoder.get('parameters')=={'kind':'SPECIFIED_INTEGER_RULES_NO_RUNTIME_PROVIDER','provider_files':[],'validation_boundary':'Uses the F05O integer XYZ and wire formulas. PG06 coordinate-grid decoding remains outside this encoder slice.'},'F05O encoder clock and formula-only parameter mapping')
  ck(decoder.get('clock')=={'domains':[],'covered_clauses':['The body reader is stateless and takes no callback, source, writer, or AU clock.']}and decoder.get('parameters')=={'kind':'CALLER_SUPPLIED_PG06_COORDINATE_TABLES','provider_files':['parameters/oamd-coordinate-grid-q15.json'],'validation_boundary':'decode_oamd_body accepts fixed XY[63] and Z[16] tables as arguments; production domain code does no provider file I/O.'},'F05O decoder clock and coordinate-table parameter mapping')
  expected_cases=['U-OAMD-XYZ','U-OAMD-ESCAPED','U-OAMD-ROWS','U-OAMD-COUNT-31','U-OAMD-COUNT-32','U-OAMD-COUNT-159','U-OAMD-TIME-TABLE','U-OAMD-TIME-EXPLICIT','XYZ transition neighbors and halfway ties derived from the published integer formula']
@@ -2097,11 +2098,11 @@ def check_oamd_rowdata_mapping(root,d):
  ck(decoder_vectors.get('kind')=='INPUT_ONLY_BODY_BYTES_WITH_HEADER_ASSERTIONS_AND_POSTCOMPUTATION_ROWS_PLUS_DERIVED_CASES'and decoder_vectors.get('case_pointers')==['U-OAMD-ROWS-READ: header row_count=7, leading_lfe=true; 1 LFE and 6 OBJECT rows','U-OAMD-TIME-TABLE-READ: header row_count=1, leading_lfe=false; table duration timing decode','U-OAMD-TIME-EXPLICIT-READ: header row_count=1, leading_lfe=false; explicit duration timing decode','Spec-derived writer-reader checks: U-OAMD-COUNT-31/32/159 header count prefix, extension, and decoded row count','Spec-derived timing mutations: dedicated base values 0/8/16/18/24 and dedicated durations plus all duration-table values representable by U11 rejected from the explicit branch','Malformed body checks: truncated/unterminated/overlong escaped lengths, rowdata-section and outer-body nonzero padding, truncation, and unsupported layouts']and decoder_fixture=={'file':'crates/jocforge-domain/tests/fixtures/oamd_wire/body_decoder/unit-read-vectors.json','bytes':4430,'sha256':'696e03400299e8577661e2e6dc1617f09b2547fa232ca9e2a3edab20ffa15ffb'}and decoder_vectors.get('source_manifest_sha256')=='c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a'and decoder_vectors.get('source_asset')=='test-vectors/unit/vectors.json'and decoder_vectors.get('source_asset_bytes')==1503142 and decoder_vectors.get('source_asset_sha256')=='a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8'and header_supplement=={'identity':'f05o-row-read-header-context.v1','manifest_sha256':'3baacf619c265ab636f5e9e3fee2dea19fd837a92fbd833e89922f12dcd95c3a','local_fixture_directory':'crates/jocforge-domain/tests/fixtures/oamd_wire/body_decoder'},'F05O decoder vector and header supplement identities remain exact')
  source=(root/encoder_impl[1]).read_text(encoding='utf-8');source_code=rust_code_without_comments(source)
  public_items=re.findall(r'(?m)^\s*pub(?:\([^)]*\))?\s+(?:(?:async|unsafe)\s+)*(?:const|static|type|mod|use|trait|struct|enum|fn)\s+([A-Za-z0-9_]+)',source_code)
- expected_public=['OamdRowKind','OamdTiming','OamdRow','OamdRowdataError','encode_xyz_codes','encode_escaped_integer','decode_escaped_integer','encode_rowdata_payload','encode_oamd_body']
+ expected_public=['OamdRowKind','OamdTiming','OamdRow','OamdRowdataError','EncodedRowdataPayload','encode_xyz_codes','encode_escaped_integer','decode_escaped_integer','encode_rowdata_payload','encode_rowdata_payload_with_bits','encode_oamd_body']
  ck(public_items==expected_public and not re.search(r'\b(?:decode_rowdata|decode_oamd_body|encode_trim|MetadataQueue|CallbackTransaction)\b',source_code),'F05O encoder API stays inside its mapped slice')
  decoder_source=rust_code_without_comments((root/decoder_impl[1]).read_text(encoding='utf-8'))
  decoder_public=re.findall(r'(?m)^\s*pub(?:\([^)]*\))?\s+(?:(?:async|unsafe)\s+)*(?:const|static|type|mod|use|trait|struct|enum|fn)\s+([A-Za-z0-9_]+)',decoder_source)
- expected_decoder_public=['OamdBodyHeader','OamdDecodedRow','OamdBodyMetadata','OamdBodyReadError','decode_oamd_body']
+ expected_decoder_public=['OamdBodyHeader','OamdDecodedRow','OamdBodyMetadata','OamdBodyReadError','OamdRowdataDecodeError','decode_oamd_body','decode_rowdata_payload_with_bits']
  ck(decoder_public==expected_decoder_public and not re.search(r'\b(?:decode_trim|MetadataQueue|CallbackTransaction|F05L)\b',decoder_source),'F05O decoder public API and private implementation stay inside the mapped slice')
  decoder_signature=re.search(r'pub\s+fn\s+decode_oamd_body\s*\((.*?)\)\s*->',decoder_source,re.S)
  ck(decoder_signature is not None and all(name in decoder_signature.group(1)for name in('payload_bytes','xy_table_63','z_table_16'))and not any(name in decoder_signature.group(1)for name in('row_count','leading_lfe')),'F05O reader takes header context only from body bytes')
@@ -2125,6 +2126,51 @@ def check_oamd_rowdata_mapping(root,d):
  ck(len(grid_bytes)==grid_record['bytes']==1169 and hashlib.sha256(grid_bytes).hexdigest()==grid_record['sha256']=='b1814fec24ac57a45c5bf2eacaba91c0c581df19362c6ca7da4cc911ed336243','F05O decoder PG06 table fixture identity')
 
 
+def check_oamd_body_assembler_mapping(root,d):
+ entry=next(e for e in d['functional_entries']if e['functional_id']=='F05O')
+ slices=entry.get('direct_slices',[])
+ assembler=next(item for item in slices if item.get('slice_id')=='single-frame-oamd-body-assembler')
+ implementation_files=['crates/jocforge-domain/src/joc/oamd.rs','crates/jocforge-domain/src/joc/oamd/body_assembler.rs','crates/jocforge-domain/src/joc/oamd/body_reader.rs','crates/jocforge-domain/src/joc/oamd/rowdata.rs','crates/jocforge-domain/src/joc/oamd/trim_section.rs']
+ test_modules=['crates/jocforge-domain/tests/oamd_body_assembler.rs']
+ expected_identities=[{'file':'crates/jocforge-domain/src/joc/oamd.rs','bytes':227,'sha256':'0f75c43c33b781e928ce6e04797d6f9fa767962d37bacca90a50bf83fd653181'},{'file':'crates/jocforge-domain/src/joc/oamd/body_assembler.rs','bytes':22406,'sha256':'2a99091b308c7022f2afd535fa9b8a546a94abbde47d278795ae4e8ca28a3dcd'},{'file':'crates/jocforge-domain/src/joc/oamd/body_reader.rs','bytes':15012,'sha256':'931c11a22156227199d224cdff8ae786de48bb12ec3d1cdc2bcbbfe24171157b'},{'file':'crates/jocforge-domain/src/joc/oamd/rowdata.rs','bytes':14096,'sha256':'277c05193a5b72473ff6d514f5cdd269fff691ac88fe94e15f0aaaf146e12403'},{'file':'crates/jocforge-domain/src/joc/oamd/trim_section.rs','bytes':17798,'sha256':'2e72ced9d056f4015bc21ccd9eb9ce5781c3e8572e0b9f6368851f208039e5a6'}]
+ ck(assembler.get('mapping_status')=='MATERIALIZED_DIRECT_SUBSLICE_WHOLE_FUNCTIONAL_ID_DEFERRED'and assembler.get('implementation_status')=='LOCALLY_VERIFIED_SINGLE_FRAME_ASSEMBLER__FULL_F05O_F05L_DEFERRED'and assembler.get('implementation_files')==implementation_files and assembler.get('test_modules')==test_modules and assembler.get('implementation_file_identities')==expected_identities and all((root/path).is_file()for path in implementation_files+test_modules),'F05O assembler source mapping and identities')
+ for identity in expected_identities:
+  raw=(root/identity['file']).read_bytes();ck(len(raw)==identity['bytes']and hashlib.sha256(raw).hexdigest()==identity['sha256'],'F05O assembler implementation identity '+identity['file'])
+ ck(assembler.get('clock')=={'domains':[],'covered_clauses':['The single-frame body assembler is stateless and consumes no callback, source, writer, or AU clock.']},'F05O assembler clock boundary')
+ ck(assembler.get('parameters')=={'kind':'CALLER_SUPPLIED_METADATA_AND_PG06_COORDINATE_TABLES','provider_files':['parameters/oamd-coordinate-grid-q15.json'],'validation_boundary':'assemble_body consumes already-resolved rows, timing, and Trim; decode_body consumes fixed XY[63] and Z[16] tables as arguments. Trim remains caller supplied, and production domain code performs no file or environment I/O.'},'F05O assembler parameter boundary')
+ expected_cases=['normal_multiline_trim0: seven rows with leading LFE, complete body bytes, section descriptors, and decode projection','trim2_sentinel_mask: Type11 mode2 sentinel, masked fields, signed balance, and row presence','escaped_one_group_edge: rowdata section length using one bijective base16 group','escaped_two_group_edge: rowdata section length using two bijective base16 groups and outer padding','Declared rejection IDs: row_count_zero, leading_lfe_not_first, timing_position_64, timing_duration_2049, invalid_trim_signed_balance_17, body_capacity, truncated_body, truncated_escaped_length, overflow_escaped_length','Contract-derived decoder boundaries: section count/order/duplicate/missing, nonzero control, section and outer padding']
+ vectors=assembler.get('vectors',{});fixture=vectors.get('local_fixture',{});supplement=vectors.get('supplement',{})
+ ck(vectors.get('kind')=='INPUT_ONLY_ASSEMBLED_BODY_SUCCESS_VECTORS_PLUS_DECLARED_REJECTIONS_AND_CONTRACT_DERIVED_BOUNDARIES'and vectors.get('case_pointers')==expected_cases and fixture=={'file':'crates/jocforge-domain/tests/fixtures/oamd_wire/body_assembler/BODY-ASSEMBLER-VECTORS.json','bytes':30419,'sha256':'6ae2b54fcb3efa7ca716517c0c78e0dfac3eddefd92dc72d1f606c53db25fd2c'}and supplement=={'identity':'single-frame-oamd-body-assembler.v1','manifest_sha256':'d93fbcf46c3e15b08a705645967b6c4a8a2b94cb6b073d23dc01c7cbf5c7e832','local_fixture_directory':'crates/jocforge-domain/tests/fixtures/oamd_wire/body_assembler'},'F05O assembler vector and supplement mapping')
+ expected_errors=['ROW_COUNT','LEADING_LFE','ROW_DOMAIN','ROW_XYZ','ROW_GAIN','ROW_SPREAD','ROW_EXTENSION','TIMING_BASE','TIMING_DOMAIN','TIMING_DURATION','TIMING_RESERVED','TIMING_MULTIFRAME','TRIM_SHAPE','TRIM_DOMAIN','TRIM_U4','TRIM_SIGNED_BALANCE','SECTION_COUNT','SECTION_KIND','DUPLICATE_SECTION','SECTION_MISSING','SECTION_CONTROL','TRUNCATED','SECTION_OVERFLOW','ESCAPED_OVERFLOW','ESCAPED_UNTERMINATED','NONZERO_PADDING','UNCONSUMED_FIELDS','BODY_CAPACITY']
+ ck([item['error_code']for item in assembler.get('error_outcomes',[])]==expected_errors and all(item.get('programme_state_after')=='UNCHANGED_STATELESS'for item in assembler.get('error_outcomes',[])),'F05O assembler errors remain stateless and exact')
+ expected_exclusions=['Complete DBMD parsing and metadata installation.','F05L live owner, ID11 queue, callback clocks, and history.','Parent transaction, cross-root integration, and raw admission.','Real ADM, codec/backend, writer, W04, and product acceptance.']
+ expected_claim='Four washed assembled-body vectors match bytes, valid_bits, padding, section descriptors, and independent decode projections; nine declared rejection cases and contract-derived framing/padding checks pass. Native, product, and W04 execution NOT_RUN.'
+ ck(assembler.get('exclusions')==expected_exclusions and assembler.get('validation_claim')==expected_claim,'F05O assembler scope and validation claim stay bounded')
+
+ fixture_dir=root/'crates/jocforge-domain/tests/fixtures/oamd_wire/body_assembler'
+ asset_identities={'CONTRACT.md':(3522,'bb983fa71ac9468cf4d790047ba9ee6115dbbaac4afaf7eed4d9c30f04dd5b3e'),'MACHINE-MAP.json':(943,'3208c6b3eccfce3c5d74b74f2697b561bdf7753271b69a99be0ad338512c8c19'),'BODY-ASSEMBLER-VECTORS.json':(30419,'6ae2b54fcb3efa7ca716517c0c78e0dfac3eddefd92dc72d1f606c53db25fd2c'),'INDEPENDENT-CHECK.json':(1035,'5bb3c64ce6d7a56feeb968776749c4789d4fc348a8c81dc046db5fcc6de9ebeb')}
+ manifest_bytes=(F05O_BODY_ASSEMBLER_SUPPLEMENT/'MANIFEST.json').read_bytes()
+ ck(hashlib.sha256(manifest_bytes).hexdigest()==supplement['manifest_sha256'],'F05O assembler supplement manifest identity')
+ manifest=json.loads(manifest_bytes)
+ ck(manifest.get('schema')=='washed-implementer-supplement-manifest.v1'and manifest.get('identity')==supplement['identity']and manifest.get('status')=='WASHED_READY_DIRECT_SUBSLICE'and manifest.get('delivery_scope')=='internal implementation only','F05O assembler supplement delivery identity')
+ records={item['file']:item for item in manifest.get('files',[])}
+ ck(set(records)==set(asset_identities)and {path.name for path in fixture_dir.iterdir()if path.is_file()}==set(asset_identities),'F05O assembler local and source fixture inventories')
+ for name,(length,digest) in asset_identities.items():
+  record=records[name];source=(F05O_BODY_ASSEMBLER_SUPPLEMENT/name).read_bytes();local=(fixture_dir/name).read_bytes()
+  ck(record.get('bytes')==length and record.get('sha256')==digest and len(source)==length and hashlib.sha256(source).hexdigest()==digest and local==source,'F05O assembler verified supplement asset '+name)
+ machine=json.loads((fixture_dir/'MACHINE-MAP.json').read_text(encoding='utf-8'));vectors=json.loads((fixture_dir/'BODY-ASSEMBLER-VECTORS.json').read_text(encoding='utf-8'));independent=json.loads((fixture_dir/'INDEPENDENT-CHECK.json').read_text(encoding='utf-8'))
+ ck(machine.get('identity')==supplement['identity']and machine.get('stateful') is False and machine.get('section_count')==2 and machine.get('capacity_bytes')==160 and machine.get('section_order')==['kind1 rowdata','kind2 trim'],'F05O assembler machine-map contract')
+ ck(vectors.get('schema')=='oamd-body-assembler-vectors.v1'and vectors.get('input_only') is True and vectors.get('expected_used_as_seed') is False and [item['id']for item in vectors.get('success_cases',[])]==['normal_multiline_trim0','trim2_sentinel_mask','escaped_one_group_edge','escaped_two_group_edge']and [item['id']for item in vectors.get('rejection_cases',[])]==['row_count_zero','leading_lfe_not_first','timing_position_64','timing_duration_2049','invalid_trim_signed_balance_17','body_capacity','truncated_body','truncated_escaped_length','overflow_escaped_length'],'F05O assembler success and rejection case inventory')
+ ck(independent.get('all_pass') is True and independent.get('expected_used_as_seed') is False and len(independent.get('checks',[]))==4 and all(all(check.get(field) is True for field in ('bytes_match','row_count_match','leading_lfe_match','timing_match','trim_match'))for check in independent.get('checks',[])),'F05O assembler independent vector check')
+ raw_source=(root/'crates/jocforge-domain/src/joc/oamd/body_assembler.rs').read_text(encoding='utf-8');source=rust_code_without_comments(raw_source)
+ public_items=re.findall(r'(?m)^\s*pub(?:\([^)]*\))?\s+(?:(?:async|unsafe)\s+)*(?:const|static|type|mod|use|trait|struct|enum|fn)\s+([A-Za-z0-9_]+)',source)
+ expected_public=['OamdMetadata','OamdSectionDescriptor','OamdBodyResult','DecodedOamdBody','OamdBodyAssemblyError','assemble_body','decode_body']
+ ck(raw_source.startswith('// pattern: Functional Core')and public_items==expected_public and not re.search(r'\b(?:parse_dbmd_sections|selected_trim_from_dbmd_sections|MetadataQueue|CallbackTransaction|F05L|RawCallbackSnapshot)\b',source),'F05O assembler public API and exclusions')
+ test_source=(root/'crates/jocforge-domain/tests/oamd_body_assembler.rs').read_text(encoding='utf-8')
+ test_ids=['normal_multiline_trim0','trim2_sentinel_mask','escaped_one_group_edge','escaped_two_group_edge','row_count_zero','leading_lfe_not_first','timing_position_64','timing_duration_2049','invalid_trim_signed_balance_17','body_capacity','truncated_body','truncated_escaped_length','overflow_escaped_length']
+ ck(test_source.startswith('// pattern: Functional Core')and all(case_id in test_source for case_id in test_ids),'F05O assembler tests pin all washed vector IDs')
+
+
 def check_trim_section_mapping(root,d):
  entry=next(e for e in d['functional_entries']if e['functional_id']=='F05T')
  slices=entry.get('direct_slices',[])
@@ -2133,16 +2179,16 @@ def check_trim_section_mapping(root,d):
  implementation_files=['crates/jocforge-domain/src/joc/oamd.rs','crates/jocforge-domain/src/joc/oamd/trim_section.rs']
  test_modules=['crates/jocforge-domain/tests/trim_section_codec.rs']
  ck(codec.get('implementation_status')=='LOCALLY_VERIFIED_TRIM_SECTION_CODEC_AND_MINIMAL_DBMD_PROJECTION__FULL_F05T_DEFERRED'and codec.get('implementation_files')==implementation_files and codec.get('test_modules')==test_modules and all((root/path).is_file()for path in implementation_files+test_modules),'F05T trim slice paths and status')
- source_identity={'file':implementation_files[1],'bytes':16968,'sha256':'8f62bc040ccbb515c74d5f7940ec830deff6016ed4e66f8834e1975214590057'}
+ source_identity={'file':implementation_files[1],'bytes':17798,'sha256':'2e72ced9d056f4015bc21ccd9eb9ce5781c3e8572e0b9f6368851f208039e5a6'}
  ck(codec.get('implementation_file_identities')==[source_identity],'F05T source identity map')
  source_bytes=(root/implementation_files[1]).read_bytes()
  ck(len(source_bytes)==source_identity['bytes']and hashlib.sha256(source_bytes).hexdigest()==source_identity['sha256'],'F05T source hash')
  module_source=rust_code_without_comments((root/implementation_files[0]).read_text(encoding='utf-8'))
  module_lines=[line.strip()for line in module_source.splitlines()if line.strip()]
- ck(module_lines==['pub mod body_reader;','pub mod reader_target;','pub mod rowdata;','pub mod trim_section;'],'OAMD module declarations match mapped slices')
+ ck(module_lines==['pub mod body_assembler;','pub mod body_reader;','pub mod reader_target;','pub mod rowdata;','pub mod trim_section;'],'OAMD module declarations match mapped slices')
  source_code=rust_code_without_comments((root/implementation_files[1]).read_text(encoding='utf-8'))
  public_items=re.findall(r'(?m)^\s*pub(?:\([^)]*\))?\s+(?:(?:async|unsafe)\s+)*(?:const|static|type|mod|use|trait|struct|enum|fn)\s+([A-Za-z0-9_]+)',source_code)
- expected_public=['Trim','EncodedTrimBody','TrimSectionError','encode_trim_body','decode_trim_body','parse_dbmd_sections','selected_trim_from_dbmd_sections']
+ expected_public=['Trim','EncodedTrimBody','TrimSectionError','encode_trim_body','decode_trim_body','decode_trim_section_payload','parse_dbmd_sections','selected_trim_from_dbmd_sections']
  ck(public_items==expected_public and not re.search(r'\b(?:CallbackTransaction|MetadataQueue|F05L|Audio|AudioBuffer)\b',source_code),'F05T public API stays in the value-only direct slice')
  for name,expected_parameters in [('encode_trim_body',['trim: &Trim','row_count: u32']),('decode_trim_body',['body_bytes: &[u8]','row_count: u32']),('parse_dbmd_sections',['chunk_bytes: &[u8]']),('selected_trim_from_dbmd_sections',['sections: &BTreeMap<u8, Vec<u8>>','row_count: u32'])]:
   signature=re.search(r'pub\s+fn\s+'+name+r'\s*\((.*?)\)\s*->',source_code,re.S)
@@ -2190,6 +2236,7 @@ def run(root=ROOT):
  arch=root/'docs/architecture';req={'APPROVAL.md','ARCHITECTURE.md','ARCHITECTURE-DECISIONS.md','DATAFLOW.md','DEPENDENCY-RULES.md','ERROR-MODEL.md','MODULE-MAP.md','OLD-WIRE-REUSE-MATRIX.md','PROFILE-DIMENSIONS.md','PUBLIC-API.md','STATE-OWNERSHIP.md','TEST-STRATEGY.md'};ck(req<={p.name for p in arch.glob('*.md')},'architecture documents')
  d=json.loads((root/'docs/implementation/IMPLEMENTATION-MAP.json').read_text(encoding='utf-8'));schema=json.loads((root/'docs/implementation/IMPLEMENTATION-MAP.schema.json').read_text(encoding='utf-8'));ck(all(k in d for k in schema['required']),'schema required');es=d['functional_entries'];ck(len(es)==104 and len({e['functional_id']for e in es})==104 and all(e['inventory_status']=='INVENTORIED'for e in es),'104 inventoried IDs');active={e['functional_id']for e in es if e.get('active_slice_materialization')=='MATERIALIZED'};ck(active=={'F02','XSTJ','F05R56'},'active IDs');future=[e for e in es if e['functional_id']not in active];ck(len(future)==101,'deferred count');check_reader_target_mapping(root,d)
  check_oamd_rowdata_mapping(root,d)
+ check_oamd_body_assembler_mapping(root,d)
  check_trim_section_mapping(root,d)
  for e in future:
   if e['functional_id']=='F04D':

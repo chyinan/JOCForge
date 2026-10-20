@@ -49,6 +49,34 @@
 | F05O/oamd-single-rowdata-body-decoder | `INVALID_INPUT` | malformed body framing | The body or rowdata payload is truncated, overpadded, or has nonzero padding bits. | UNCHANGED_STATELESS | Return no metadata; this local parser outcome is not a native error equivalence claim. |
 | F05O/oamd-single-rowdata-body-decoder | `UNSUPPORTED_PROFILE` | unsupported body layout | The body uses a nonzero version, non-shortcut layout, protected sections, section_count other than one, a non-rowdata section, multiple frames, a non-canonical timing branch, or an unsupported row field. | UNCHANGED_STATELESS | Return no metadata and do not attempt fallback or partial interpretation. |
 | F05O/oamd-single-rowdata-body-decoder | `INVALID_ESCAPED_INTEGER` | section length rejection | The section length uses an unterminated, truncated, overlong, or overflowing escaped integer. | UNCHANGED_STATELESS | Return no metadata; this local parser outcome is not a native error equivalence claim. |
+| F05O/single-frame-oamd-body-assembler | `ROW_COUNT` | row shape | rows contains fewer than 1 or more than 159 rows. | UNCHANGED_STATELESS | Return no body or metadata. |
+| F05O/single-frame-oamd-body-assembler | `LEADING_LFE` | row order | An LFE row appears after row zero. | UNCHANGED_STATELESS | Return no body or metadata. |
+| F05O/single-frame-oamd-body-assembler | `ROW_DOMAIN` | row field domain | A row field is outside the selected wire domain. | UNCHANGED_STATELESS | Return no body or metadata. |
+| F05O/single-frame-oamd-body-assembler | `ROW_XYZ` | row coordinates | An object coordinate cannot be represented by the selected XYZ code. | UNCHANGED_STATELESS | Return no body or metadata. |
+| F05O/single-frame-oamd-body-assembler | `ROW_GAIN` | row gain | A gain has no selected value or adjacent-row reuse encoding branch. | UNCHANGED_STATELESS | Return no body or metadata. |
+| F05O/single-frame-oamd-body-assembler | `ROW_SPREAD` | row spread | An unmuted row does not use full spread. | UNCHANGED_STATELESS | Return no body or metadata. |
+| F05O/single-frame-oamd-body-assembler | `ROW_EXTENSION` | row extension | A row extension field is unsupported or nonzero. | UNCHANGED_STATELESS | Return no body or metadata. |
+| F05O/single-frame-oamd-body-assembler | `TIMING_BASE` | timing base | The base has no selected representation. | UNCHANGED_STATELESS | Return no body or metadata. |
+| F05O/single-frame-oamd-body-assembler | `TIMING_DOMAIN` | timing field domain | Position or precision is outside its selected wire width. | UNCHANGED_STATELESS | Return no body or metadata. |
+| F05O/single-frame-oamd-body-assembler | `TIMING_DURATION` | timing duration | Duration has no selected shortcut, table, or explicit U11 representation. | UNCHANGED_STATELESS | Return no body or metadata. |
+| F05O/single-frame-oamd-body-assembler | `TIMING_RESERVED` | timing reserved code | A reserved timing mode is present. | UNCHANGED_STATELESS | Return no metadata. |
+| F05O/single-frame-oamd-body-assembler | `TIMING_MULTIFRAME` | single-frame timing | The body declares more than one metadata frame. | UNCHANGED_STATELESS | Return no metadata. |
+| F05O/single-frame-oamd-body-assembler | `TRIM_SHAPE` | trim shape | Trim row flags do not match the row count or a trim container has invalid shape. | UNCHANGED_STATELESS | Return no body or metadata. |
+| F05O/single-frame-oamd-body-assembler | `TRIM_DOMAIN` | trim domain | A trim mode or one-bit flag is outside its declared domain. | UNCHANGED_STATELESS | Return no body or metadata. |
+| F05O/single-frame-oamd-body-assembler | `TRIM_U4` | trim gain | A changed gain field is outside U4. | UNCHANGED_STATELESS | Return no body or metadata. |
+| F05O/single-frame-oamd-body-assembler | `TRIM_SIGNED_BALANCE` | trim balance | A changed balance is outside [-16,-1] or [1,16]. | UNCHANGED_STATELESS | Return no body or metadata. |
+| F05O/single-frame-oamd-body-assembler | `SECTION_COUNT` | body section count | The header does not declare exactly two sections. | UNCHANGED_STATELESS | Return no metadata. |
+| F05O/single-frame-oamd-body-assembler | `SECTION_KIND` | body section kind | A section kind is unknown or sections are reordered. | UNCHANGED_STATELESS | Return no metadata. |
+| F05O/single-frame-oamd-body-assembler | `DUPLICATE_SECTION` | body section kind | A section kind appears more than once. | UNCHANGED_STATELESS | Return no metadata. |
+| F05O/single-frame-oamd-body-assembler | `SECTION_MISSING` | body section presence | A declared rowdata or trim section is missing. | UNCHANGED_STATELESS | Return no metadata. |
+| F05O/single-frame-oamd-body-assembler | `SECTION_CONTROL` | section control | A section payload control bit is nonzero. | UNCHANGED_STATELESS | Return no metadata. |
+| F05O/single-frame-oamd-body-assembler | `TRUNCATED` | body framing | Required header or escaped-length bits are truncated. | UNCHANGED_STATELESS | Return no metadata. |
+| F05O/single-frame-oamd-body-assembler | `SECTION_OVERFLOW` | section framing | A section payload extends past the available body. | UNCHANGED_STATELESS | Return no metadata. |
+| F05O/single-frame-oamd-body-assembler | `ESCAPED_OVERFLOW` | escaped length | Escaped-length arithmetic exceeds its representable range. | UNCHANGED_STATELESS | Return no metadata. |
+| F05O/single-frame-oamd-body-assembler | `ESCAPED_UNTERMINATED` | escaped length | All four escaped-length groups request continuation. | UNCHANGED_STATELESS | Return no metadata. |
+| F05O/single-frame-oamd-body-assembler | `NONZERO_PADDING` | section/body padding | Section or outer byte padding contains a nonzero bit. | UNCHANGED_STATELESS | Return no metadata. |
+| F05O/single-frame-oamd-body-assembler | `UNCONSUMED_FIELDS` | body termination | More than seven unexplained bits remain after both declared sections. | UNCHANGED_STATELESS | Return no metadata. |
+| F05O/single-frame-oamd-body-assembler | `BODY_CAPACITY` | body capacity | The assembled or supplied body exceeds 160 bytes. | UNCHANGED_STATELESS | Return no body or metadata. |
 | F05T/trim-section-codec | `TRIM_SHAPE` | row-count or body shape | row_flags length differs from the nonnegative U32 row_count, row_count cannot be represented by the platform allocation, or the body has more than seven tail bits. | UNCHANGED_STATELESS | Return no partial Trim or body bytes; do not fall back. |
 | F05T/trim-section-codec | `TRIM_DOMAIN` | trim value domain | trim_mode is outside U2 or group/row flags are not zero or one. | UNCHANGED_STATELESS | Return no partial Trim or body bytes. |
 | F05T/trim-section-codec | `TRIM_U4` | gain field encoding | A changed one of the first three group fields is outside 0..=15 and cannot be represented by U4. | UNCHANGED_STATELESS | Return no body bytes. |

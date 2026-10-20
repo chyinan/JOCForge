@@ -1,0 +1,17 @@
+{
+  "schema": "single-frame-oamd-body-assembler-machine-map.v1",
+  "identity": "single-frame-oamd-body-assembler.v1",
+  "stateful": false,
+  "encode_api": "assemble_body(Metadata{rows,timing,trim})->BodyResult",
+  "decode_api": "decode_body(bytes,xy_table_63,z_table_16)->DecodedBody",
+  "trim_input": "already parsed Trim; DBMD parsing forbidden in this slice",
+  "row_count": "1..159 from row tuple",
+  "leading_lfe": "derived from row0 kind; not an independent conflicting argument",
+  "section_order": ["kind1 rowdata", "kind2 trim"],
+  "section_count": 2,
+  "section_length": "escaped(payload_bytes-1), bijective base16 U4+continuation, max4 groups",
+  "padding": "each section payload zero-padded to bytes; outer body zero-padded after both sections",
+  "capacity_bytes": 160,
+  "partial_output_on_error": false,
+  "excluded": ["F05L live owner", "ID11 queue", "DBMD parser", "parent transaction", "raw snapshot", "product execution"]
+}

@@ -171,6 +171,25 @@ pub fn encode_trim_body(trim: &Trim, row_count: u32) -> Result<EncodedTrimBody, 
 pub fn decode_trim_body(body_bytes: &[u8], row_count: u32) -> Result<Trim, TrimSectionError> {
     let row_count = checked_row_count(row_count)?;
     let mut reader = TrimBitReader::new(body_bytes)?;
+    decode_trim_body_from_reader(&mut reader, row_count).map(|(trim, _)| trim)
+}
+
+pub(crate) fn decode_trim_section_payload(
+    payload_bytes: &[u8],
+    row_count: u32,
+) -> Result<(Trim, u32), TrimSectionError> {
+    let row_count = checked_row_count(row_count)?;
+    let mut reader = TrimBitReader::new(payload_bytes)?;
+    if reader.read(1)? != 0 {
+        return Err(TrimSectionError::TrimReserved);
+    }
+    decode_trim_body_from_reader(&mut reader, row_count)
+}
+
+fn decode_trim_body_from_reader(
+    reader: &mut TrimBitReader<'_>,
+    row_count: usize,
+) -> Result<(Trim, u32), TrimSectionError> {
     let trim_mode = u8::try_from(reader.read(2)?).map_err(|_| TrimSectionError::TrimDomain)?;
     if reader.read(2)? != 0 {
         return Err(TrimSectionError::TrimReserved);
@@ -184,7 +203,7 @@ pub fn decode_trim_body(body_bytes: &[u8], row_count: u32) -> Result<Trim, TrimS
     let (group_flags, groups) = match group_mode {
         0 => ([1; GROUP_COUNT], [DEFAULT_GROUP; GROUP_COUNT]),
         1 => ([0; GROUP_COUNT], [DEFAULT_GROUP; GROUP_COUNT]),
-        2 => decode_explicit_groups(&mut reader)?,
+        2 => decode_explicit_groups(reader)?,
         _ => return Err(TrimSectionError::TrimGroupMode),
     };
 
@@ -198,14 +217,18 @@ pub fn decode_trim_body(body_bytes: &[u8], row_count: u32) -> Result<Trim, TrimS
             *flag = u8::try_from(reader.read(1)?).map_err(|_| TrimSectionError::TrimDomain)?;
         }
     }
+    let valid_bits = u32::try_from(reader.position()).map_err(|_| TrimSectionError::TrimShape)?;
     reader.finish_zero_padding()?;
 
-    Ok(Trim {
-        trim_mode,
-        group_flags,
-        groups,
-        row_flags,
-    })
+    Ok((
+        Trim {
+            trim_mode,
+            group_flags,
+            groups,
+            row_flags,
+        },
+        valid_bits,
+    ))
 }
 
 /// Parses DBMD section framing after its four-byte little-endian header.
@@ -473,6 +496,10 @@ impl<'a> TrimBitReader<'a> {
 
     fn remaining_bits(&self) -> usize {
         self.bit_limit - self.bit_position
+    }
+
+    const fn position(&self) -> usize {
+        self.bit_position
     }
 
     fn finish_zero_padding(&mut self) -> Result<(), TrimSectionError> {

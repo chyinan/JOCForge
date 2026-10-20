@@ -55,6 +55,15 @@ pub enum OamdRowdataError {
     InvalidEscapedInteger,
 }
 
+/// A rowdata payload and its meaningful bits before byte padding.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub(crate) struct EncodedRowdataPayload {
+    /// Payload bytes, including the zero control bit and byte padding.
+    pub bytes: Vec<u8>,
+    /// Meaningful bits through the final row trailing-extension bit.
+    pub valid_bits: u32,
+}
+
 /// Converts one integer XYZ point into the three signed wire-code values.
 ///
 /// The first two outputs are XY codes in `0..=62`; the last is a signed Z code
@@ -127,13 +136,20 @@ pub fn encode_rowdata_payload(
     timing: &OamdTiming,
     rows: &[OamdRow],
 ) -> Result<Vec<u8>, OamdRowdataError> {
+    encode_rowdata_payload_with_bits(*timing, rows).map(|payload| payload.bytes)
+}
+
+pub(crate) fn encode_rowdata_payload_with_bits(
+    timing: OamdTiming,
+    rows: &[OamdRow],
+) -> Result<EncodedRowdataPayload, OamdRowdataError> {
     if !(1..=159).contains(&rows.len()) {
         return Err(OamdRowdataError::UnsupportedProfile);
     }
 
     let mut writer = BitWriter::default();
     writer.write(0, 1)?;
-    encode_timing(&mut writer, *timing)?;
+    encode_timing(&mut writer, timing)?;
 
     let mut previous_unmuted_gain = None;
     for (row_index, row) in rows.iter().enumerate() {
@@ -187,7 +203,11 @@ pub fn encode_rowdata_payload(
         }
         writer.write(0, 1)?;
     }
-    Ok(writer.finish().0)
+    let (bytes, valid_bits) = writer.finish();
+    Ok(EncodedRowdataPayload {
+        bytes,
+        valid_bits: u32::try_from(valid_bits).map_err(|_| OamdRowdataError::InvalidInput)?,
+    })
 }
 
 /// Encodes a complete OAMD body containing one rowdata section and no trim section.

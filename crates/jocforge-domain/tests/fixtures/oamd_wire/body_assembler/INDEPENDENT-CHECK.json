@@ -1,0 +1,40 @@
+{
+  "schema": "oamd-body-assembler-independent-check.v1",
+  "source_sha256": "6b17bf250598dad632deb8a6775f8f0e4166bb88b878f6e1c999378345d77b1b",
+  "checks": [
+    {
+      "id": "normal_multiline_trim0",
+      "bytes_match": true,
+      "row_count_match": true,
+      "leading_lfe_match": true,
+      "timing_match": true,
+      "trim_match": true
+    },
+    {
+      "id": "trim2_sentinel_mask",
+      "bytes_match": true,
+      "row_count_match": true,
+      "leading_lfe_match": true,
+      "timing_match": true,
+      "trim_match": true
+    },
+    {
+      "id": "escaped_one_group_edge",
+      "bytes_match": true,
+      "row_count_match": true,
+      "leading_lfe_match": true,
+      "timing_match": true,
+      "trim_match": true
+    },
+    {
+      "id": "escaped_two_group_edge",
+      "bytes_match": true,
+      "row_count_match": true,
+      "leading_lfe_match": true,
+      "timing_match": true,
+      "trim_match": true
+    }
+  ],
+  "all_pass": true,
+  "expected_used_as_seed": false
+}

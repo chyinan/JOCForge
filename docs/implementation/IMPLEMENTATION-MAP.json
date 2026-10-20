@@ -918,8 +918,8 @@
           "implementation_file_identities": [
             {
               "file": "crates/jocforge-domain/src/joc/oamd/rowdata.rs",
-              "bytes": 13356,
-              "sha256": "05a308b608e5a8ed9cda2059d2ba26da5e4bb440139f36aa5565aff43ebd2a1f"
+              "bytes": 14096,
+              "sha256": "277c05193a5b72473ff6d514f5cdd269fff691ac88fe94e15f0aaaf146e12403"
             }
           ],
           "test_modules": [
@@ -1006,8 +1006,8 @@
           "implementation_file_identities": [
             {
               "file": "crates/jocforge-domain/src/joc/oamd/body_reader.rs",
-              "bytes": 12571,
-              "sha256": "913518e0e155b8b5c38034c57483cd808ca4e8577b74f6dc62bc60fb83574103"
+              "bytes": 15012,
+              "sha256": "931c11a22156227199d224cdff8ae786de48bb12ec3d1cdc2bcbbfe24171157b"
             }
           ],
           "test_modules": [
@@ -1086,6 +1086,126 @@
             "Native error equivalence, whole-programme execution, W04, and product acceptance."
           ],
           "validation_claim": "Three selected direct decoder vectors, deterministic count-extension round trips, canonical timing-branch rejection, and fail-closed malformed/unsupported layout checks; native and product execution NOT_RUN."
+        },
+        {
+          "slice_id": "single-frame-oamd-body-assembler",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_FUNCTIONAL_ID_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_SINGLE_FRAME_ASSEMBLER__FULL_F05O_F05L_DEFERRED",
+          "scope": "Stateless encode/decode of one self-described OAMD body with exactly one rowdata section followed by one Type11 trim section from caller-resolved metadata. This does not complete F05O or F05L.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/joc/oamd.rs",
+            "crates/jocforge-domain/src/joc/oamd/body_assembler.rs",
+            "crates/jocforge-domain/src/joc/oamd/body_reader.rs",
+            "crates/jocforge-domain/src/joc/oamd/rowdata.rs",
+            "crates/jocforge-domain/src/joc/oamd/trim_section.rs"
+          ],
+          "implementation_file_identities": [
+            {
+              "file": "crates/jocforge-domain/src/joc/oamd.rs",
+              "bytes": 227,
+              "sha256": "0f75c43c33b781e928ce6e04797d6f9fa767962d37bacca90a50bf83fd653181"
+            },
+            {
+              "file": "crates/jocforge-domain/src/joc/oamd/body_assembler.rs",
+              "bytes": 22406,
+              "sha256": "2a99091b308c7022f2afd535fa9b8a546a94abbde47d278795ae4e8ca28a3dcd"
+            },
+            {
+              "file": "crates/jocforge-domain/src/joc/oamd/body_reader.rs",
+              "bytes": 15012,
+              "sha256": "931c11a22156227199d224cdff8ae786de48bb12ec3d1cdc2bcbbfe24171157b"
+            },
+            {
+              "file": "crates/jocforge-domain/src/joc/oamd/rowdata.rs",
+              "bytes": 14096,
+              "sha256": "277c05193a5b72473ff6d514f5cdd269fff691ac88fe94e15f0aaaf146e12403"
+            },
+            {
+              "file": "crates/jocforge-domain/src/joc/oamd/trim_section.rs",
+              "bytes": 17798,
+              "sha256": "2e72ced9d056f4015bc21ccd9eb9ce5781c3e8572e0b9f6368851f208039e5a6"
+            }
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/oamd_body_assembler.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The single-frame body assembler is stateless and consumes no callback, source, writer, or AU clock."
+            ]
+          },
+          "parameters": {
+            "kind": "CALLER_SUPPLIED_METADATA_AND_PG06_COORDINATE_TABLES",
+            "provider_files": [
+              "parameters/oamd-coordinate-grid-q15.json"
+            ],
+            "validation_boundary": "assemble_body consumes already-resolved rows, timing, and Trim; decode_body consumes fixed XY[63] and Z[16] tables as arguments. Trim remains caller supplied, and production domain code performs no file or environment I/O."
+          },
+          "vectors": {
+            "kind": "INPUT_ONLY_ASSEMBLED_BODY_SUCCESS_VECTORS_PLUS_DECLARED_REJECTIONS_AND_CONTRACT_DERIVED_BOUNDARIES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F05O-BODY-ASSEMBLER-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F05O-BODY-ASSEMBLER-V1/MACHINE-MAP.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F05O-BODY-ASSEMBLER-V1/BODY-ASSEMBLER-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F05O-BODY-ASSEMBLER-V1/INDEPENDENT-CHECK.json"
+            ],
+            "case_pointers": [
+              "normal_multiline_trim0: seven rows with leading LFE, complete body bytes, section descriptors, and decode projection",
+              "trim2_sentinel_mask: Type11 mode2 sentinel, masked fields, signed balance, and row presence",
+              "escaped_one_group_edge: rowdata section length using one bijective base16 group",
+              "escaped_two_group_edge: rowdata section length using two bijective base16 groups and outer padding",
+              "Declared rejection IDs: row_count_zero, leading_lfe_not_first, timing_position_64, timing_duration_2049, invalid_trim_signed_balance_17, body_capacity, truncated_body, truncated_escaped_length, overflow_escaped_length",
+              "Contract-derived decoder boundaries: section count/order/duplicate/missing, nonzero control, section and outer padding"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/oamd_wire/body_assembler/BODY-ASSEMBLER-VECTORS.json",
+              "bytes": 30419,
+              "sha256": "6ae2b54fcb3efa7ca716517c0c78e0dfac3eddefd92dc72d1f606c53db25fd2c"
+            },
+            "supplement": {
+              "identity": "single-frame-oamd-body-assembler.v1",
+              "manifest_sha256": "d93fbcf46c3e15b08a705645967b6c4a8a2b94cb6b073d23dc01c7cbf5c7e832",
+              "local_fixture_directory": "crates/jocforge-domain/tests/fixtures/oamd_wire/body_assembler"
+            }
+          },
+          "error_outcomes": [
+            {"error_code": "ROW_COUNT", "category": "row shape", "trigger": "rows contains fewer than 1 or more than 159 rows.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no body or metadata."},
+            {"error_code": "LEADING_LFE", "category": "row order", "trigger": "An LFE row appears after row zero.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no body or metadata."},
+            {"error_code": "ROW_DOMAIN", "category": "row field domain", "trigger": "A row field is outside the selected wire domain.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no body or metadata."},
+            {"error_code": "ROW_XYZ", "category": "row coordinates", "trigger": "An object coordinate cannot be represented by the selected XYZ code.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no body or metadata."},
+            {"error_code": "ROW_GAIN", "category": "row gain", "trigger": "A gain has no selected value or adjacent-row reuse encoding branch.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no body or metadata."},
+            {"error_code": "ROW_SPREAD", "category": "row spread", "trigger": "An unmuted row does not use full spread.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no body or metadata."},
+            {"error_code": "ROW_EXTENSION", "category": "row extension", "trigger": "A row extension field is unsupported or nonzero.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no body or metadata."},
+            {"error_code": "TIMING_BASE", "category": "timing base", "trigger": "The base has no selected representation.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no body or metadata."},
+            {"error_code": "TIMING_DOMAIN", "category": "timing field domain", "trigger": "Position or precision is outside its selected wire width.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no body or metadata."},
+            {"error_code": "TIMING_DURATION", "category": "timing duration", "trigger": "Duration has no selected shortcut, table, or explicit U11 representation.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no body or metadata."},
+            {"error_code": "TIMING_RESERVED", "category": "timing reserved code", "trigger": "A reserved timing mode is present.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no metadata."},
+            {"error_code": "TIMING_MULTIFRAME", "category": "single-frame timing", "trigger": "The body declares more than one metadata frame.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no metadata."},
+            {"error_code": "TRIM_SHAPE", "category": "trim shape", "trigger": "Trim row flags do not match the row count or a trim container has invalid shape.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no body or metadata."},
+            {"error_code": "TRIM_DOMAIN", "category": "trim domain", "trigger": "A trim mode or one-bit flag is outside its declared domain.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no body or metadata."},
+            {"error_code": "TRIM_U4", "category": "trim gain", "trigger": "A changed gain field is outside U4.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no body or metadata."},
+            {"error_code": "TRIM_SIGNED_BALANCE", "category": "trim balance", "trigger": "A changed balance is outside [-16,-1] or [1,16].", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no body or metadata."},
+            {"error_code": "SECTION_COUNT", "category": "body section count", "trigger": "The header does not declare exactly two sections.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no metadata."},
+            {"error_code": "SECTION_KIND", "category": "body section kind", "trigger": "A section kind is unknown or sections are reordered.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no metadata."},
+            {"error_code": "DUPLICATE_SECTION", "category": "body section kind", "trigger": "A section kind appears more than once.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no metadata."},
+            {"error_code": "SECTION_MISSING", "category": "body section presence", "trigger": "A declared rowdata or trim section is missing.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no metadata."},
+            {"error_code": "SECTION_CONTROL", "category": "section control", "trigger": "A section payload control bit is nonzero.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no metadata."},
+            {"error_code": "TRUNCATED", "category": "body framing", "trigger": "Required header or escaped-length bits are truncated.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no metadata."},
+            {"error_code": "SECTION_OVERFLOW", "category": "section framing", "trigger": "A section payload extends past the available body.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no metadata."},
+            {"error_code": "ESCAPED_OVERFLOW", "category": "escaped length", "trigger": "Escaped-length arithmetic exceeds its representable range.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no metadata."},
+            {"error_code": "ESCAPED_UNTERMINATED", "category": "escaped length", "trigger": "All four escaped-length groups request continuation.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no metadata."},
+            {"error_code": "NONZERO_PADDING", "category": "section/body padding", "trigger": "Section or outer byte padding contains a nonzero bit.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no metadata."},
+            {"error_code": "UNCONSUMED_FIELDS", "category": "body termination", "trigger": "More than seven unexplained bits remain after both declared sections.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no metadata."},
+            {"error_code": "BODY_CAPACITY", "category": "body capacity", "trigger": "The assembled or supplied body exceeds 160 bytes.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no body or metadata."}
+          ],
+          "exclusions": [
+            "Complete DBMD parsing and metadata installation.",
+            "F05L live owner, ID11 queue, callback clocks, and history.",
+            "Parent transaction, cross-root integration, and raw admission.",
+            "Real ADM, codec/backend, writer, W04, and product acceptance."
+          ],
+          "validation_claim": "Four washed assembled-body vectors match bytes, valid_bits, padding, section descriptors, and independent decode projections; nine declared rejection cases and contract-derived framing/padding checks pass. Native, product, and W04 execution NOT_RUN."
         }
       ]
     },
@@ -1111,8 +1231,8 @@
           "implementation_file_identities": [
             {
               "file": "crates/jocforge-domain/src/joc/oamd/trim_section.rs",
-              "bytes": 16968,
-              "sha256": "8f62bc040ccbb515c74d5f7940ec830deff6016ed4e66f8834e1975214590057"
+              "bytes": 17798,
+              "sha256": "2e72ced9d056f4015bc21ccd9eb9ce5781c3e8572e0b9f6368851f208039e5a6"
             }
           ],
           "test_modules": [
