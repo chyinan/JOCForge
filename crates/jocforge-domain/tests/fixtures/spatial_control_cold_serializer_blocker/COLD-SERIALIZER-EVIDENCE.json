@@ -11,6 +11,19 @@
     "serializer_related_imports": [],
     "schema_magic_strings_found": false
   },
+  "binary_suite_audit": {
+    "pe_files_scanned": 64,
+    "schema_magic_matches": 0,
+    "serializer_snapshot_cold_persist_exports": 0,
+    "irrelevant_state_query_exports": [
+      "Mediainfo.dll!MediaInfoA_State_Get",
+      "Mediainfo.dll!MediaInfoListA_State_Get",
+      "Mediainfo.dll!MediaInfoList_State_Get",
+      "Mediainfo.dll!MediaInfo_State_Get"
+    ],
+    "parse_errors": 0,
+    "conclusion": "no executable spatial-control canonical serializer entrypoint found in authorized DEE binary suite"
+  },
   "ida": {
     "parent_callback_rva": "0x1a7710",
     "direct_call_count": 13,

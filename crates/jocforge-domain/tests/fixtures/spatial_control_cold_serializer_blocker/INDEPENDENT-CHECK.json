@@ -1,5 +1,5 @@
 {
-  "schema": "spatial-control-cold-serializer-blocker-independent-check.v1",
+  "schema": "spatial-control-cold-serializer-blocker-independent-check.v2",
   "checks": [
     {
       "id": "dll_identity",
@@ -7,6 +7,10 @@
     },
     {
       "id": "exports",
+      "pass": true
+    },
+    {
+      "id": "binary_suite",
       "pass": true
     },
     {
@@ -36,12 +40,17 @@
     {
       "id": "field_order",
       "pass": true
+    },
+    {
+      "id": "minimum_external_evidence",
+      "pass": true
     }
   ],
   "all_pass": true,
   "input_files": [
     "COLD-SERIALIZER-EVIDENCE.json",
-    "REQUIRED-FRAMING-RULES.json"
+    "REQUIRED-FRAMING-RULES.json",
+    "MINIMUM-EXTERNAL-EVIDENCE.json"
   ],
   "research_files_read": false,
   "serializer_execution": false,

@@ -5,7 +5,7 @@ use std::fmt::Write as _;
 use std::fs;
 use std::path::PathBuf;
 
-const MANIFEST_SHA256: &str = "aeeb8776b77aa200908978d780b8bf29829bb9a8a70e1b512ebaba81540d4a27";
+const MANIFEST_SHA256: &str = "2ba58412fe9d23bd2c2eb0f262e4b1c05ecda83a7f5980349c6b38d7bcdf8848";
 
 fn fixture_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -39,7 +39,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(manifest["schema"], "washed-implementer-blocker-manifest.v1");
     assert_eq!(
         manifest["identity"],
-        "spatial-control-cold-serializer.blocked.v1"
+        "spatial-control-cold-serializer.blocked.v2"
     );
     assert_eq!(manifest["status"], "BLOCKED_NO_EXECUTABLE_SERIALIZER");
 
@@ -52,6 +52,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         [
             "COLD-SERIALIZER-EVIDENCE.json",
             "REQUIRED-FRAMING-RULES.json",
+            "MINIMUM-EXTERNAL-EVIDENCE.json",
             "INDEPENDENT-CHECK.json"
         ]
     );
@@ -73,7 +74,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let source = &manifest["source_evidence"];
     assert_eq!(
         source["research_manifest_sha256"],
-        "d2c3f30407602acc2544210729b4093736fb7f29c8b08db1fa615cfb8ecc398e"
+        "4aaacedda0677c94b4608dbee0aa15a5a4c89372a82f774e74183905c1ce5837"
     );
     assert_eq!(source["serializer_execution"], "NOT_RUN");
     assert_eq!(source["canonical_preimage"], Value::Null);
@@ -115,6 +116,17 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(evidence["dll"]["serializer_related_imports"], json!([]));
     assert_eq!(evidence["dll"]["schema_magic_strings_found"], false);
     assert_eq!(evidence["ida"]["serializer_call_observed"], false);
+    assert_eq!(evidence["binary_suite_audit"]["pe_files_scanned"], 64);
+    assert_eq!(evidence["binary_suite_audit"]["schema_magic_matches"], 0);
+    assert_eq!(
+        evidence["binary_suite_audit"]["serializer_snapshot_cold_persist_exports"],
+        0
+    );
+    assert_eq!(evidence["binary_suite_audit"]["parse_errors"], 0);
+    assert_eq!(
+        evidence["binary_suite_audit"]["conclusion"],
+        "no executable spatial-control canonical serializer entrypoint found in authorized DEE binary suite"
+    );
 
     let framing = read_json("REQUIRED-FRAMING-RULES.json");
     assert_eq!(framing["status"], "BLOCKED_INCOMPLETE");
@@ -148,16 +160,62 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "writer_set"
         ]
     );
-    assert!(rules.iter().all(|rule| rule["status"] == "MISSING"));
+    assert_eq!(
+        rules
+            .iter()
+            .map(|rule| rule["status"].as_str().unwrap())
+            .collect::<Vec<_>>(),
+        [
+            "MISSING",
+            "MISSING",
+            "PARTIALLY_DEFINED_BLOCKED",
+            "CONFLICT_BLOCKED",
+            "PARTIALLY_DEFINED_BLOCKED"
+        ]
+    );
+    assert!(
+        rules
+            .iter()
+            .all(|rule| rule["required"].as_array().is_some())
+    );
+
+    let minimum = read_json("MINIMUM-EXTERNAL-EVIDENCE.json");
+    assert_eq!(
+        minimum["schema"],
+        "spatial-control-cold-minimum-external-evidence.v1"
+    );
+    let resolution_paths = minimum["accepted_resolution_paths"]
+        .as_array()
+        .expect("accepted resolution paths");
+    assert_eq!(resolution_paths.len(), 2);
+    assert_eq!(
+        resolution_paths
+            .iter()
+            .map(|path| path["id"].as_str().unwrap())
+            .collect::<Vec<_>>(),
+        ["executable_serializer", "normative_framing_spec"]
+    );
+    assert_eq!(minimum["current_resolution_path_available"], Value::Null);
+    assert_eq!(
+        minimum["roundtrip_invariants"],
+        json!([
+            "all declared fields consumed exactly once",
+            "no scratch fields",
+            "no pointers",
+            "no structure padding",
+            "no unknown zero-fill",
+            "re-serialization byte exact"
+        ])
+    );
 
     let independent = read_json("INDEPENDENT-CHECK.json");
     assert_eq!(
         independent["schema"],
-        "spatial-control-cold-serializer-blocker-independent-check.v1"
+        "spatial-control-cold-serializer-blocker-independent-check.v2"
     );
     assert_eq!(independent["all_pass"], true);
     let checks = independent["checks"].as_array().expect("checks array");
-    assert_eq!(checks.len(), 9);
+    assert_eq!(checks.len(), 11);
     assert!(checks.iter().all(|check| check["pass"] == true));
     assert_eq!(
         checks
@@ -167,20 +225,23 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         [
             "dll_identity",
             "exports",
+            "binary_suite",
             "ida_parent",
             "research_evidence_identity",
             "constructors",
             "no_entrypoint",
             "no_bytes",
             "framing_rules",
-            "field_order"
+            "field_order",
+            "minimum_external_evidence"
         ]
     );
     assert_eq!(
         independent["input_files"],
         json!([
             "COLD-SERIALIZER-EVIDENCE.json",
-            "REQUIRED-FRAMING-RULES.json"
+            "REQUIRED-FRAMING-RULES.json",
+            "MINIMUM-EXTERNAL-EVIDENCE.json"
         ])
     );
     assert_eq!(independent["research_files_read"], false);

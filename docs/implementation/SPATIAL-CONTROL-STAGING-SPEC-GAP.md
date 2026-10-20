@@ -18,16 +18,16 @@ P1.4-C validators are complete in `crates/jocforge-domain/src/frontend/current_f
 
 ## Authoritative parent cold-state blocker
 
-The sanitized `SPATIAL-CONTROL-COLD-SERIALIZER-BLOCKER-V1` package is pinned by manifest SHA-256 `aeeb8776b77aa200908978d780b8bf29829bb9a8a70e1b512ebaba81540d4a27`. Its bounded review found no executable authoritative cold serializer in the authorized evidence. Serializer execution remains `NOT_RUN`; canonical preimage, section offsets, authoritative length, and authoritative SHA are absent. No bytes were guessed and `AI48ST01` was not used.
+The sanitized `SPATIAL-CONTROL-COLD-SERIALIZER-BLOCKER-V1` package is pinned by v2 manifest SHA-256 `2ba58412fe9d23bd2c2eb0f262e4b1c05ecda83a7f5980349c6b38d7bcdf8848`. Its bounded review scanned 64 authorized PE files and found no spatial-control canonical serializer entrypoint: there were zero serializer/cold-persist exports, zero schema-magic matches, and no parse errors. The parent callback still has no observed serializer call. Serializer execution remains `NOT_RUN`; canonical preimage, section offsets, authoritative length, and authoritative SHA are absent. No bytes were guessed and `AI48ST01` was not used.
 
-Five framing decisions remain missing:
+The five framing rules have different evidence states:
 
-1. Top-level envelope: magic/version, total length, section identifiers, section-length widths, alignment, and terminal rule.
-2. F01E embedding: representation, presence/version, length framing, and whether the nested value is raw JSON, a binary projection, or a digest reference.
-3. Optional diffusion/source-cache records: absence encoding, presence grouping, snapshot order, and record framing.
-4. `current_flags` / `current_features` persistence: exclusion, zero arrays, or an optional callback snapshot.
-5. Writer-set framing: field order/types, count/length framing, and inline versus referenced owner/generation.
+1. Top-level envelope is missing: magic/version or explicit absence, total-length rule, section identifiers or explicit absence, section-length widths, alignment, and terminal rule.
+2. F01E embedding is missing: representation kind, presence/version, length framing, and whether the nested value is raw JSON, a binary projection, or a digest reference. The exact 4,402-byte F01E JSON preimage is pinned, but its parent embedding is not.
+3. Optional diffusion/source-cache framing is partially defined but blocked. Cold caches and diffusion instances are absent, and generic optional U8 presence is known; grouping, snapshot order, diffusion records, and optional array lengths are not selected.
+4. `current_flags` / `current_features` persistence is conflict-blocked. The root schema includes these owners but also says the values have no independent history; persistence has not been selected.
+5. Writer-set framing is partially defined but blocked. The cold set is empty and variable records generically use U32LE count/length, but the containing section, record schema, and non-empty encoding are not defined.
 
 Parent before/after bytes, `SpatialControlReceipt`, and single-commit authority remain blocked. Spatial render, selector, U04, and outer stages remain `NOT_RUN`; success-vector count is zero and production remains disabled.
 
-The minimum external unlock is one of: (a) an executable authoritative cold serializer with version/build identity, input schema, reproducible cold vector, complete output bytes and offsets, and explicit field inclusion decisions; (b) a complete binary framing specification plus the full cold preimage and hash; or (c) a hash-pinned complete cold fixture with field mapping, section offsets, parsing rules, and a round-trip check. A byte string or digest alone is insufficient. None of these requires a private key, raw PCM, or unrelated research material.
+`MINIMUM-EXTERNAL-EVIDENCE.json` defines two accepted resolution paths. First, an executable serializer must include binary identity and entrypoint, calling convention and cold-constructor-only arguments, proof that render/selector/U04/outer do not execute, complete preimage, section offsets and lengths, total length and SHA-256, and an independent parser round-trip. Second, a normative framing specification must resolve all five rules without alternatives and include an independent reference serializer, a complete cold vector, section offsets and lengths, total length and SHA-256, and an independent parser round-trip. Either path must prove that every declared field is consumed exactly once, with no scratch fields, pointers, structure padding, or unknown zero-fill, and that re-serialization is byte-exact. A byte string or digest alone is insufficient. No private key or raw PCM is needed.

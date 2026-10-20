@@ -1,14 +1,15 @@
 {
   "schema": "washed-implementer-blocker-manifest.v1",
-  "identity": "spatial-control-cold-serializer.blocked.v1",
+  "identity": "spatial-control-cold-serializer.blocked.v2",
   "status": "BLOCKED_NO_EXECUTABLE_SERIALIZER",
   "files": [
-    { "file": "COLD-SERIALIZER-EVIDENCE.json", "bytes": 2171, "sha256": "ee41b98403944554a77bd6ff8cb5bbe54cb3402f1369a09953fe07efc6afbf41" },
-    { "file": "REQUIRED-FRAMING-RULES.json", "bytes": 1152, "sha256": "df8951dccf07ae967106f25279985007c3dd37815a151604b85e966b7bd2f230" },
-    { "file": "INDEPENDENT-CHECK.json", "bytes": 931, "sha256": "96c3114ccb3fddc6d819c2380d66fa23eddd885d4ca2cea7b62468dbabc380c9" }
+    { "file": "COLD-SERIALIZER-EVIDENCE.json", "bytes": 2682, "sha256": "de28922aa7eedf8052fee7363303414d0473269f67e3f199443d255f527a367c" },
+    { "file": "REQUIRED-FRAMING-RULES.json", "bytes": 2801, "sha256": "7396aaf144c102db7e395f090bf645e7db2d827d6bf8ecc3a39f870c73e0373d" },
+    { "file": "MINIMUM-EXTERNAL-EVIDENCE.json", "bytes": 1123, "sha256": "7e078cfa1da60dcf0580a5fe070d6255c4c8cfa2265b862242965342210c922f" },
+    { "file": "INDEPENDENT-CHECK.json", "bytes": 1111, "sha256": "f788bc440c779aa29180a78144457d37c79d4a0ec224f352369e0e8b29a89f6f" }
   ],
   "source_evidence": {
-    "research_manifest_sha256": "d2c3f30407602acc2544210729b4093736fb7f29c8b08db1fa615cfb8ecc398e",
+    "research_manifest_sha256": "4aaacedda0677c94b4608dbee0aa15a5a4c89372a82f774e74183905c1ce5837",
     "serializer_execution": "NOT_RUN",
     "canonical_preimage": null,
     "authoritative_length": null,

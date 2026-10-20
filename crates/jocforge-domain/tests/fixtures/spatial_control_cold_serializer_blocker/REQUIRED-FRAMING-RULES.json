@@ -2,11 +2,46 @@
   "schema": "spatial-control-cold-required-framing-rules.v1",
   "status": "BLOCKED_INCOMPLETE",
   "rules": [
-    {"id": "top_level_envelope", "status": "MISSING", "required": ["magic/version", "total length", "section identifiers", "section length widths", "alignment", "terminal rule"]},
-    {"id": "f01e_embedding", "status": "MISSING", "required": ["representation kind", "presence/version", "length framing", "raw JSON vs binary projection vs digest reference"]},
-    {"id": "optional_diffusion_source_cache", "status": "MISSING", "required": ["absence encoding", "presence grouping", "snapshot order", "diffusion record framing"]},
-    {"id": "current_flags_current_features", "status": "MISSING", "required": ["exclude vs zero arrays vs optional callback snapshot"]},
-    {"id": "writer_set", "status": "MISSING", "required": ["record field order/types", "count/length framing", "inline vs referenced owner/generation"]}
+    {
+      "id": "top_level_envelope",
+      "status": "MISSING",
+      "native_observation": "no serializer call, export, import or schema magic",
+      "frozen_fact": "field order and primitive LE/U32-F32 rules are declared",
+      "clean_room_design": "AI48ST01 defines a synthetic test envelope only and is forbidden",
+      "required": ["magic/version or explicit absence", "total length rule", "section identifiers or explicit absence", "section length widths", "alignment", "terminal rule"]
+    },
+    {
+      "id": "f01e_embedding",
+      "status": "MISSING",
+      "native_observation": "F01E is runtime state; no parent canonical embedding observed",
+      "frozen_fact": "exact 4402-byte sorted compact UTF-8 JSON preimage is pinned",
+      "clean_room_design": "parent schema names exact nested state but does not select an embedding",
+      "required": ["representation kind", "presence/version", "length framing", "raw JSON vs binary projection vs digest reference"]
+    },
+    {
+      "id": "optional_diffusion_source_cache",
+      "status": "PARTIALLY_DEFINED_BLOCKED",
+      "native_observation": "runtime objects contain pointers and are not canonical bytes",
+      "frozen_fact": "cold source caches/snapshots and diffusion instances are absent; generic optional presence U8 is declared",
+      "clean_room_design": "no exact grouping or record order is selected",
+      "required": ["absence encoding per field vs grouped presence", "snapshot order", "diffusion record framing", "optional array length framing"]
+    },
+    {
+      "id": "current_flags_current_features",
+      "status": "CONFLICT_BLOCKED",
+      "native_observation": "values are callback outputs in runtime pipeline",
+      "frozen_fact": "schema places source_flags/feature under owner but says current flags/features have no independent history",
+      "clean_room_design": "no persistence choice is approved",
+      "required": ["exclude vs zero arrays vs optional callback snapshot"]
+    },
+    {
+      "id": "writer_set",
+      "status": "PARTIALLY_DEFINED_BLOCKED",
+      "native_observation": "no canonical writer-set serializer observed",
+      "frozen_fact": "cold set is empty and variable records use U32LE count/length generically",
+      "clean_room_design": "empty count alone does not define containing section or nonempty record schema",
+      "required": ["containing section framing", "record field order/types", "inline vs referenced owner/generation"]
+    }
   ],
   "known_field_order": ["clocks", "source_cache", "event_control", "render_audio", "source_flags", "feature", "selection_outer", "matrix_assignment"],
   "unknown_zero_fill_allowed": false,

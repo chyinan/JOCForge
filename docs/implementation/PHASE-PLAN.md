@@ -2739,8 +2739,8 @@
   "scope": "construct the complete v5 persistent spatial_control cold root and canonical digest; provide a non-Clone read-only machine and prepared/staged foundation accepting only a future producer-generated complete typed after proposal; no packet producers and no local commit, abort, fatal or top-level COMMITTED",
   "scope_approval": "user-approved in the current task handoff on 2026-10-16; scope-only, not a packet-producer specification",
   "spec_gap_document": {
-    "document_bytes": 4951,
-    "document_sha256": "5135e5af63bc8918e29900920e16078c28bebb10c68b5d471ba1d3ee897227a0",
+    "document_bytes": 5978,
+    "document_sha256": "b28f3c122bd9ccd2e3c2b34e188dd169a20b7ca4993c3c87c223c0dd2ba8a2b7",
     "file": "docs/implementation/SPATIAL-CONTROL-STAGING-SPEC-GAP.md"
   },
   "status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",

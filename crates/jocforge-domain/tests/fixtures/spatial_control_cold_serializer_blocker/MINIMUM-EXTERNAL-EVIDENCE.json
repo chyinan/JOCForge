@@ -1,0 +1,37 @@
+{
+  "schema": "spatial-control-cold-minimum-external-evidence.v1",
+  "accepted_resolution_paths": [
+    {
+      "id": "executable_serializer",
+      "required": [
+        "binary identity and entrypoint",
+        "calling convention and cold-constructor-only arguments",
+        "proof no render/selector/U04/outer executes",
+        "complete preimage",
+        "section offsets and lengths",
+        "total length and SHA-256",
+        "independent parser roundtrip"
+      ]
+    },
+    {
+      "id": "normative_framing_spec",
+      "required": [
+        "all five REQUIRED-FRAMING-RULES resolved without alternatives",
+        "reference serializer independent from production implementation",
+        "complete cold vector",
+        "section offsets and lengths",
+        "total length and SHA-256",
+        "independent parser roundtrip"
+      ]
+    }
+  ],
+  "roundtrip_invariants": [
+    "all declared fields consumed exactly once",
+    "no scratch fields",
+    "no pointers",
+    "no structure padding",
+    "no unknown zero-fill",
+    "re-serialization byte exact"
+  ],
+  "current_resolution_path_available": null
+}
