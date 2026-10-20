@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "joc-coordinator-synthetic-validation-receipt.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "mode", "production_allowed", "source_vector_sha256",
+    "dispatch", "callback_zero_based", "callback_one_based", "codec_source",
+    "writer", "published_au", "validated_stage_order", "stage_hashes",
+    "id14_body_bytes", "id14_body_sha256", "producer_execution",
+    "joc_state_delta_committed", "commit_count"
+  ],
+  "properties": {
+    "schema": {"const": "joc-coordinator-synthetic-validation-receipt.v1"},
+    "mode": {"const": "COORDINATOR_ONLY_INPUT_TEST"},
+    "production_allowed": {"const": false},
+    "source_vector_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "dispatch": {"type": "integer", "minimum": 1},
+    "callback_zero_based": {"type": "integer", "minimum": 2},
+    "callback_one_based": {"type": "integer", "minimum": 3},
+    "codec_source": {"type": "integer", "minimum": 0},
+    "writer": {"type": "integer", "minimum": 0},
+    "published_au": {"type": ["integer", "null"], "minimum": 0},
+    "validated_stage_order": {"const": ["receiver_qmf", "temporal", "geometry", "fit180", "profile_retry", "huffman_id14"]},
+    "stage_hashes": {"type": "array", "minItems": 6, "maxItems": 6},
+    "id14_body_bytes": {"type": "integer", "minimum": 1, "maximum": 372},
+    "id14_body_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "producer_execution": {"const": "CALLER_PROVIDED_SYNTHETIC_RECEIPTS_VALIDATED"},
+    "joc_state_delta_committed": {"const": false},
+    "commit_count": {"const": 0}
+  }
+}

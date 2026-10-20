@@ -60,6 +60,18 @@
 
 | slice_id | error_code | category | trigger | programme_state_after | caller_action |
 |---|---|---|---|---|---|
+| F05JL/synthetic-coordinator-receipt-validation | `SYNTHETIC_PROVIDER_IDENTITY` | provider identity | fixed synthetic shape-provider raw/canonical identity differs | NO_STATE_EXISTS | Reject before parsing. |
+| F05JL/synthetic-coordinator-receipt-validation | `SYNTHETIC_SOURCE_IDENTITY` | source vector identity | frozen source-vector path/size/SHA/case differs | NO_STATE_EXISTS | Reject the input; do not substitute another vector. |
+| F05JL/synthetic-coordinator-receipt-validation | `SYNTHETIC_STAGE_ORDER` | receipt set | a required stage receipt is missing or an extra stage is supplied | NO_STATE_EXISTS | Return no receipt or body proposal. |
+| F05JL/synthetic-coordinator-receipt-validation | `SYNTHETIC_NOT_EXECUTED` | stage status | a stage is not PASS and executed=true | NO_STATE_EXISTS | Reject the first invalid stage; synthesize no later stage. |
+| F05JL/synthetic-coordinator-receipt-validation | `SYNTHETIC_GENERATION` | stage generation | stage generation or JSON output material generation differs from dispatch | NO_STATE_EXISTS | Return no validation receipt or proposal. |
+| F05JL/synthetic-coordinator-receipt-validation | `SYNTHETIC_OWNER_TOKEN` | stage owner | owner token differs from JOC_DISPATCH_d:<stage> | NO_STATE_EXISTS | Reject the first mismatched stage. |
+| F05JL/synthetic-coordinator-receipt-validation | `SYNTHETIC_SHAPE` | stage shape | receipt or material shape differs from the pinned provider shape table | NO_STATE_EXISTS | Return no validation receipt or proposal. |
+| F05JL/synthetic-coordinator-receipt-validation | `SYNTHETIC_CHAIN` | upstream lineage | downstream upstream hash differs from the preceding PASS output | NO_STATE_EXISTS | Reject at the first broken chain edge. |
+| F05JL/synthetic-coordinator-receipt-validation | `SYNTHETIC_PROVIDER_HASH` | provider binding | provider file/selector or canonical input/output hash binding differs | NO_STATE_EXISTS | Return no validation receipt or proposal. |
+| F05JL/synthetic-coordinator-receipt-validation | `SYNTHETIC_INPUT_HASH` | canonical input material | receipt input SHA-256 differs from canonical JSON input material | NO_STATE_EXISTS | Return no validation receipt or proposal. |
+| F05JL/synthetic-coordinator-receipt-validation | `SYNTHETIC_BODY` | ID14 output | body bytes, length, SHA, capacity or frozen padding differs | NO_STATE_EXISTS | Return no body proposal or validation receipt. |
+| F05JL/synthetic-coordinator-receipt-validation | `SYNTHETIC_CLOCK` | clock mapping | callback/source/writer/AU values do not match dispatch formulas | NO_STATE_EXISTS | Reject before stage validation. |
 | F05O/oamd-rowdata-body-encoder | `INVALID_INPUT` | local input validation | An XYZ point or timing value lies outside its specified integer domain. | UNCHANGED_STATELESS | Return an error and no encoded payload. This is a local API outcome, not a native error equivalence claim. |
 | F05O/oamd-rowdata-body-encoder | `UNSUPPORTED_PROFILE` | selected branch rejection | Rows, gain, spread, duration, or row ordering request a branch outside the rowdata writer's specified scope. | UNCHANGED_STATELESS | Return an error and no encoded payload; do not normalize or substitute unsupported input. |
 | F05O/oamd-rowdata-body-encoder | `INVALID_ESCAPED_INTEGER` | escaped integer input rejection | An escaped integer is negative, exceeds the four-group limit, is truncated, or has invalid padding. | UNCHANGED_STATELESS | Return an error and no decoded integer or encoded bytes. This is a local API outcome, not a native error equivalence claim. |

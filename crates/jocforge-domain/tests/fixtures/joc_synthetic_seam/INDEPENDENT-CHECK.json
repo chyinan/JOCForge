@@ -1,0 +1,68 @@
+{
+  "schema": "joc-coordinator-synthetic-seam-independent-check.v1",
+  "checks": [
+    {
+      "id": "provider_identity",
+      "pass": true
+    },
+    {
+      "id": "source_identity",
+      "pass": true
+    },
+    {
+      "id": "success_replay",
+      "pass": true
+    },
+    {
+      "id": "success_boundary",
+      "pass": true
+    },
+    {
+      "id": "failure_missing_fit180",
+      "pass": true
+    },
+    {
+      "id": "failure_fit180_status_fail",
+      "pass": true
+    },
+    {
+      "id": "failure_temporal_not_executed",
+      "pass": true
+    },
+    {
+      "id": "failure_geometry_generation",
+      "pass": true
+    },
+    {
+      "id": "failure_profile_owner_token",
+      "pass": true
+    },
+    {
+      "id": "failure_fit180_shape",
+      "pass": true
+    },
+    {
+      "id": "failure_fit180_input_hash",
+      "pass": true
+    },
+    {
+      "id": "failure_geometry_chain",
+      "pass": true
+    },
+    {
+      "id": "failure_temporal_provider_hash",
+      "pass": true
+    },
+    {
+      "id": "failure_id14_body_mismatch",
+      "pass": true
+    },
+    {
+      "id": "failure_source_clock",
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "imports_validator": false,
+  "expected_used_as_seed": false
+}

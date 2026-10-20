@@ -115,6 +115,7 @@
 
 | slice_id | parent_functional_id | owner |
 |---|---|---|
+| F05JL/synthetic-coordinator-receipt-validation | F05JL | `joc` |
 | F05O/oamd-rowdata-body-encoder | F05O | `joc` |
 | F05O/oamd-single-rowdata-body-decoder | F05O | `joc` |
 | F05O/single-frame-oamd-body-assembler | F05O | `joc` |

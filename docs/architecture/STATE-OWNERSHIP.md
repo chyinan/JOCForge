@@ -35,6 +35,8 @@ F05R56 的 persistent schema 是 `reader56-target-state-schema.v2`，恰为上�
 | `codec_and_output` | `codec_and_publication` |
 | `none_pure_value` | `body_proposals`，不属于 committed owner 计数 |
 
+F05JL synthetic coordinator validator 是 `cfg(test)` 输入校验 seam：它只检查六份 caller-provided synthetic receipts 与 ID14 body，不拥有或提交 JOC state，也不改变上表 owner 统计或 `joc` root readiness。
+
 programme root 是顶层协调边界，不是第七个 leaf commit owner。F15 协调一次 source-root commit；leaf executor 每 source 仍只执行一次。
 
 ## GTC programme owner roots

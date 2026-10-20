@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "joc-synthetic-stage-receipt.v1",
+  "type": "object",
+  "required": ["generation", "status", "executed", "owner_token", "provider", "input", "output"],
+  "properties": {
+    "generation": {"type": "integer", "minimum": 1},
+    "status": {"const": "PASS"},
+    "executed": {"const": true},
+    "owner_token": {"type": "string", "pattern": "^JOC_DISPATCH_[1-9][0-9]*:(receiver_qmf|temporal|geometry|fit180|profile_retry|huffman_id14)$"},
+    "provider": {
+      "type": "object",
+      "required": ["file", "selector", "input_sha256", "output_sha256", "canonical_input_object", "canonical_output_object"]
+    },
+    "input": {
+      "type": "object",
+      "required": ["shape", "upstream_output_sha256", "sha256", "encoding", "material"],
+      "properties": {"encoding": {"const": "JSON_CANONICAL_V1"}}
+    },
+    "output": {
+      "type": "object",
+      "required": ["shape", "sha256", "encoding", "material"],
+      "properties": {"encoding": {"enum": ["JSON_CANONICAL_V1", "HEX_BYTES"]}}
+    }
+  }
+}

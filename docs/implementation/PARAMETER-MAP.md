@@ -115,6 +115,7 @@
 
 | slice_id | kind | provider_files | validation_boundary |
 |---|---|---|---|
+| F05JL/synthetic-coordinator-receipt-validation | PINNED_TEST_ONLY_SYNTHETIC_STAGE_SHAPE_PROVIDER | `crates/jocforge-domain/tests/fixtures/joc_synthetic_seam/synthetic-seam-provider.json` | Exact raw and canonical provider identity checked before parsing; production_allowed and persistent_state_commit_allowed must be false. |
 | F05O/oamd-rowdata-body-encoder | SPECIFIED_INTEGER_RULES_NO_RUNTIME_PROVIDER | — | Uses the F05O integer XYZ and wire formulas. PG06 coordinate-grid decoding remains outside this encoder slice. |
 | F05O/oamd-single-rowdata-body-decoder | CALLER_SUPPLIED_PG06_COORDINATE_TABLES | `parameters/oamd-coordinate-grid-q15.json` | decode_oamd_body accepts fixed XY[63] and Z[16] tables as arguments; production domain code does no provider file I/O. |
 | F05O/single-frame-oamd-body-assembler | CALLER_SUPPLIED_METADATA_AND_PG06_COORDINATE_TABLES | `parameters/oamd-coordinate-grid-q15.json` | assemble_body consumes already-resolved rows, timing, and Trim; decode_body consumes fixed XY[63] and Z[16] tables as arguments. Trim remains caller supplied, and production domain code performs no file or environment I/O. |

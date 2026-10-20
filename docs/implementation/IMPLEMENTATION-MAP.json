@@ -884,7 +884,74 @@
       "owner": "joc",
       "planned_phase": "Phase 4",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "synthetic-coordinator-receipt-validation",
+          "mapping_status": "MATERIALIZED_TEST_ONLY_SLICE__WHOLE_F05JL_AND_JOC_ROOT_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_INPUT_ONLY_SYNTHETIC_RECEIPT_VALIDATOR__NO_PRODUCERS_OR_STATE_COMMIT",
+          "scope": "Test-only validator for six caller-provided synthetic stage receipts and the final ID14 body. It validates canonical material, provider bindings, shapes, generation/owner tokens, upstream chain and body identity; it executes no producer and commits no JOC state.",
+          "implementation_files": [
+            "crates/jocforge-domain/Cargo.toml",
+            "crates/jocforge-domain/src/joc/mod.rs",
+            "crates/jocforge-domain/src/joc/synthetic_coordinator.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/src/joc/synthetic_coordinator.rs"
+          ],
+          "clock": {
+            "domains": ["synthetic dispatch", "derived callback/source/writer/AU values"],
+            "covered_clauses": ["source=dispatch-1", "writer=dispatch-1", "callback zero-based=dispatch+1", "callback one-based=dispatch+2", "AU null for dispatch<3 else dispatch-3"]
+          },
+          "parameters": {
+            "kind": "PINNED_TEST_ONLY_SYNTHETIC_STAGE_SHAPE_PROVIDER",
+            "provider_files": ["crates/jocforge-domain/tests/fixtures/joc_synthetic_seam/synthetic-seam-provider.json"],
+            "validation_boundary": "Exact raw and canonical provider identity checked before parsing; production_allowed and persistent_state_commit_allowed must be false."
+          },
+          "vectors": {
+            "kind": "INPUT_ONLY_SYNTHETIC_RECEIPT_SUCCESS_AND_FAILURE_VECTORS",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/joc_synthetic_seam/SYNTHETIC-SEAM-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/joc_synthetic_seam/INDEPENDENT-CHECK.json"
+            ],
+            "case_pointers": ["one six-stage receipt chain success and 267-byte ID14 body", "11 fail-closed mutations", "15/15 independent checks; expected_used_as_seed=false"],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/joc_synthetic_seam/SYNTHETIC-SEAM-VECTORS.json",
+              "bytes": 288049,
+              "sha256": "e097f099cf7bb5f50713f3a3674a6999f948e601a85e03d351f1d5e43fd28a3a"
+            },
+            "source_manifest_sha256": "10017efa3e98c2f6951ee8765fa4fd797cbe747a0ef3401f1ab0901754105975",
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_vector_identity": {
+              "path": "delegated-live-joc-coordinator/CLEAN-DRAFT-LIVE-JOC-COORDINATOR-VECTORS.json",
+              "bytes": 2805177,
+              "sha256": "de22607f2c2d7c957ee201a16a4d9fd6a47ec8c7f718432c0324a4c888153c50",
+              "case": "continuous_success[0]"
+            }
+          },
+          "error_outcomes": [
+            {"error_code": "SYNTHETIC_PROVIDER_IDENTITY", "category": "provider identity", "trigger": "fixed synthetic shape-provider raw/canonical identity differs", "programme_state_after": "NO_STATE_EXISTS", "caller_action": "Reject before parsing."},
+            {"error_code": "SYNTHETIC_SOURCE_IDENTITY", "category": "source vector identity", "trigger": "frozen source-vector path/size/SHA/case differs", "programme_state_after": "NO_STATE_EXISTS", "caller_action": "Reject the input; do not substitute another vector."},
+            {"error_code": "SYNTHETIC_STAGE_ORDER", "category": "receipt set", "trigger": "a required stage receipt is missing or an extra stage is supplied", "programme_state_after": "NO_STATE_EXISTS", "caller_action": "Return no receipt or body proposal."},
+            {"error_code": "SYNTHETIC_NOT_EXECUTED", "category": "stage status", "trigger": "a stage is not PASS and executed=true", "programme_state_after": "NO_STATE_EXISTS", "caller_action": "Reject the first invalid stage; synthesize no later stage."},
+            {"error_code": "SYNTHETIC_GENERATION", "category": "stage generation", "trigger": "stage generation or JSON output material generation differs from dispatch", "programme_state_after": "NO_STATE_EXISTS", "caller_action": "Return no validation receipt or proposal."},
+            {"error_code": "SYNTHETIC_OWNER_TOKEN", "category": "stage owner", "trigger": "owner token differs from JOC_DISPATCH_d:<stage>", "programme_state_after": "NO_STATE_EXISTS", "caller_action": "Reject the first mismatched stage."},
+            {"error_code": "SYNTHETIC_SHAPE", "category": "stage shape", "trigger": "receipt or material shape differs from the pinned provider shape table", "programme_state_after": "NO_STATE_EXISTS", "caller_action": "Return no validation receipt or proposal."},
+            {"error_code": "SYNTHETIC_CHAIN", "category": "upstream lineage", "trigger": "downstream upstream hash differs from the preceding PASS output", "programme_state_after": "NO_STATE_EXISTS", "caller_action": "Reject at the first broken chain edge."},
+            {"error_code": "SYNTHETIC_PROVIDER_HASH", "category": "provider binding", "trigger": "provider file/selector or canonical input/output hash binding differs", "programme_state_after": "NO_STATE_EXISTS", "caller_action": "Return no validation receipt or proposal."},
+            {"error_code": "SYNTHETIC_INPUT_HASH", "category": "canonical input material", "trigger": "receipt input SHA-256 differs from canonical JSON input material", "programme_state_after": "NO_STATE_EXISTS", "caller_action": "Return no validation receipt or proposal."},
+            {"error_code": "SYNTHETIC_BODY", "category": "ID14 output", "trigger": "body bytes, length, SHA, capacity or frozen padding differs", "programme_state_after": "NO_STATE_EXISTS", "caller_action": "Return no body proposal or validation receipt."},
+            {"error_code": "SYNTHETIC_CLOCK", "category": "clock mapping", "trigger": "callback/source/writer/AU values do not match dispatch formulas", "programme_state_after": "NO_STATE_EXISTS", "caller_action": "Reject before stage validation."}
+          ],
+          "exclusions": [
+            "Production F05JL API or state transition",
+            "F04C parent/receiver/QMF execution or selected-j05 owner commit",
+            "F05JC fit producer, profile retry producer, Huffman producer or any other numerical producer",
+            "raw snapshots, real JOC/ADM, global CallbackTransaction, durable output or joc-root readiness"
+          ],
+          "validation_claim": "Test-only input-only synthetic receipt validation. It emits production_allowed=false, commit_count=0 and state_delta=null; the whole F05JL/joc root remains deferred."
+        }
+      ]
     },
     {
       "functional_id": "F05JS",

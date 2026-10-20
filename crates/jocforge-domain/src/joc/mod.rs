@@ -6,3 +6,6 @@ pub mod downmix_profile;
 pub mod emdf;
 pub mod huffman;
 pub mod oamd;
+
+#[cfg(test)]
+mod synthetic_coordinator;

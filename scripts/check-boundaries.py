@@ -2349,6 +2349,59 @@ def check_metadata_owner_root(root,d):
  ck(production.index('if sha256_hex(provider_file)')<production.index('serde_json::from_slice(provider_file)'),'metadata provider file identity checked before parse')
  ck(not any(token in production for token in ('std::fs','std::process','std::env','crate::validation','CallbackTransactionCoordinator','ffmpeg')),'metadata domain has no I/O, validation or global coordinator dependency')
 
+def check_joc_synthetic_coordinator(root,d):
+ entry=next(item for item in d['functional_entries']if item['functional_id']=='F05JL')
+ direct=entry.get('direct_slices',[])
+ ck(entry.get('implementation_status')=='DEFERRED_DETAILED_MAPPING'and len(direct)==1,'F05JL parent remains deferred above its test-only seam')
+ item=direct[0]
+ files=['crates/jocforge-domain/Cargo.toml','crates/jocforge-domain/src/joc/mod.rs','crates/jocforge-domain/src/joc/synthetic_coordinator.rs']
+ ck(item.get('slice_id')=='synthetic-coordinator-receipt-validation'and item.get('mapping_status')=='MATERIALIZED_TEST_ONLY_SLICE__WHOLE_F05JL_AND_JOC_ROOT_DEFERRED'and item.get('implementation_status')=='LOCALLY_VERIFIED_INPUT_ONLY_SYNTHETIC_RECEIPT_VALIDATOR__NO_PRODUCERS_OR_STATE_COMMIT'and item.get('implementation_files')==files and item.get('test_modules')==['crates/jocforge-domain/src/joc/synthetic_coordinator.rs']and all((root/path).is_file()for path in files),'F05JL synthetic slice map and source files')
+ ck(item.get('scope','').startswith('Test-only validator')and 'commits no JOC state' in item.get('scope','')and 'test-only input-only' in item.get('validation_claim','').lower()and 'state_delta=null' in item.get('validation_claim',''),'F05JL slice stays validation-only')
+ expected_errors=['SYNTHETIC_PROVIDER_IDENTITY','SYNTHETIC_SOURCE_IDENTITY','SYNTHETIC_STAGE_ORDER','SYNTHETIC_NOT_EXECUTED','SYNTHETIC_GENERATION','SYNTHETIC_OWNER_TOKEN','SYNTHETIC_SHAPE','SYNTHETIC_CHAIN','SYNTHETIC_PROVIDER_HASH','SYNTHETIC_INPUT_HASH','SYNTHETIC_BODY','SYNTHETIC_CLOCK']
+ ck([item['error_code']for item in item.get('error_outcomes',[])]==expected_errors and all(case['programme_state_after']=='NO_STATE_EXISTS'for case in item['error_outcomes']),'F05JL synthetic error mapping')
+
+ joc_root=next(r for r in d['programme_roots']if r['root_id']=='joc')
+ ck(joc_root=={'root_id':'joc','materialization_status':'INVENTORIED_PENDING_P1.3_MATERIALIZATION'},'synthetic F05JL seam does not promote joc root')
+ module=(root/'crates/jocforge-domain/src/joc/mod.rs').read_text(encoding='utf-8')
+ source=(root/'crates/jocforge-domain/src/joc/synthetic_coordinator.rs').read_text(encoding='utf-8')
+ ck('#[cfg(test)]\nmod synthetic_coordinator;'in module and source.startswith('#![cfg(test)]')and not re.search(r'(?m)^\s*pub\s+(?:fn|struct|enum|mod)\b',source),'F05JL validator is compiled only for tests and exposes no production API')
+ ck('SYNTHETIC_PROVIDER_HASH' in source and 'SYNTHETIC_CHAIN' in source and 'CALLER_PROVIDED_SYNTHETIC_RECEIPTS_VALIDATED' in source and 'joc_state_delta_committed": false' in source and 'commit_count": 0' in source,'F05JL validator keeps no-skip and zero-commit markers')
+ domain_manifest=tomllib.loads((root/'crates/jocforge-domain/Cargo.toml').read_text(encoding='utf-8'))
+ ck(domain_manifest.get('dependencies',{}).get('serde_json')=={'version':'=1.0.154','default-features':False,'features':['std']}and domain_manifest.get('dev-dependencies',{}).get('serde_json')=={'version':'=1.0.154','default-features':False,'features':['std','float_roundtrip']},'F05JL Python-compatible float canonicalization is test-only')
+
+ fixture_dir=root/'crates/jocforge-domain/tests/fixtures/joc_synthetic_seam'
+ expected_assets={
+  'COORDINATOR-ONLY-SYNTHETIC-SEAM.md':(3563,'c405758228d4ea00726e0492e0ea142b56672e310e3ed1e92c4e1bea05bf53a0'),
+  'synthetic-seam-provider.json':(1988,'97ef1034d01802994e4c23744c7fcea084f242c5ffc532cd12b8266433b8e748'),
+  'SYNTHETIC-STAGE-RECEIPT.schema.json':(1076,'f66dff5a5a90a050e32d7a595b38c03cd41db01d59523ff8e9cf47e3605960a5'),
+  'SYNTHETIC-VALIDATION-RECEIPT.schema.json':(1654,'c0f3dbc3a52056b92c944a03a53ec1ce2fc25577fe629e136f395de1d20e9cf7'),
+  'SYNTHETIC-SEAM-VECTORS.json':(288049,'e097f099cf7bb5f50713f3a3674a6999f948e601a85e03d351f1d5e43fd28a3a'),
+  'INDEPENDENT-CHECK.json':(1296,'9c698d60d62593f9a7e957cb7acb2050d6a0bcbb2f32f3aa16823e849a381ea5'),
+ }
+ ck({p.name for p in fixture_dir.iterdir()if p.is_file()}==set(expected_assets),'F05JL local fixture inventory excludes a copied manifest')
+ for name,(length,digest)in expected_assets.items():
+  raw=(fixture_dir/name).read_bytes()
+  ck(len(raw)==length and hashlib.sha256(raw).hexdigest()==digest,'F05JL fixture identity '+name)
+ vectors=json.loads((fixture_dir/'SYNTHETIC-SEAM-VECTORS.json').read_text(encoding='utf-8'))
+ independent=json.loads((fixture_dir/'INDEPENDENT-CHECK.json').read_text(encoding='utf-8'))
+ ck(vectors.get('input_only')is True and vectors.get('expected_used_as_seed')is False and vectors['source_identity']=={'path':'delegated-live-joc-coordinator/CLEAN-DRAFT-LIVE-JOC-COORDINATOR-VECTORS.json','bytes':2805177,'sha256':'de22607f2c2d7c957ee201a16a4d9fd6a47ec8c7f718432c0324a4c888153c50','case':'continuous_success[0]'},'F05JL source vector identity and input-only flags')
+ ck(set(vectors['success_input']['receipts'])=={'receiver_qmf','temporal','geometry','fit180','profile_retry','huffman_id14'}and len(vectors.get('failure_vectors',[]))==11,'F05JL six stage receipts and 11 failures')
+ ck(vectors['success_expected']['receipt']['production_allowed']is False and vectors['success_expected']['receipt']['commit_count']==0 and vectors['success_expected']['receipt']['joc_state_delta_committed']is False and vectors['success_expected']['state_delta']is None,'F05JL test seam zero production/state commit')
+ ck(independent.get('all_pass')is True and independent.get('expected_used_as_seed')is False and independent.get('imports_validator')is False and len(independent.get('checks',[]))==15 and all(c.get('pass')is True for c in independent['checks']),'F05JL independent supplement check 15/15')
+
+ source_entry=next(e for e in d['functional_entries']if e['functional_id']=='F05JL')
+ source_map=source_entry['direct_slices'][0]['vectors']['source_vector_identity']
+ package_manifest=(PKG/'MANIFEST.json').read_bytes()
+ ck(hashlib.sha256(package_manifest).hexdigest()==source_entry['direct_slices'][0]['vectors']['source_package_manifest_sha256'],'F05JL base package manifest identity')
+ package=json.loads(package_manifest)
+ package_entries={e['file']:e for e in package['files']}
+ source_asset='test-vectors/LIVE-JOC-COORDINATOR-INPUT-VECTORS.json'
+ raw=(PKG/source_asset).read_bytes()
+ record=package_entries[source_asset]
+ ck(record.get('bytes')==source_map['bytes']and record.get('sha256')==source_map['sha256']and len(raw)==source_map['bytes']and hashlib.sha256(raw).hexdigest()==source_map['sha256'],'F05JL frozen source vector identity')
+ base_vectors=json.loads(raw)
+ ck(base_vectors['continuous_success'][0]['input']==vectors['success_input'],'F05JL synthetic input is the declared sanitized source case')
+
 def run(root=ROOT):
  arch=root/'docs/architecture';req={'APPROVAL.md','ARCHITECTURE.md','ARCHITECTURE-DECISIONS.md','DATAFLOW.md','DEPENDENCY-RULES.md','ERROR-MODEL.md','MODULE-MAP.md','OLD-WIRE-REUSE-MATRIX.md','PROFILE-DIMENSIONS.md','PUBLIC-API.md','STATE-OWNERSHIP.md','TEST-STRATEGY.md'};ck(req<={p.name for p in arch.glob('*.md')},'architecture documents')
  d=json.loads((root/'docs/implementation/IMPLEMENTATION-MAP.json').read_text(encoding='utf-8'));schema=json.loads((root/'docs/implementation/IMPLEMENTATION-MAP.schema.json').read_text(encoding='utf-8'));ck(all(k in d for k in schema['required']),'schema required');es=d['functional_entries'];ck(len(es)==104 and len({e['functional_id']for e in es})==104 and all(e['inventory_status']=='INVENTORIED'for e in es),'104 inventoried IDs');active={e['functional_id']for e in es if e.get('active_slice_materialization')=='MATERIALIZED'};ck(active=={'F02','XSTJ','F05R56','F13','F13F','F13T'},'active scoped IDs');future=[e for e in es if e['functional_id']not in active];ck(len(future)==98,'deferred count');check_reader_target_mapping(root,d)
@@ -2356,6 +2409,7 @@ def run(root=ROOT):
  check_oamd_body_assembler_mapping(root,d)
  check_trim_section_mapping(root,d)
  check_metadata_owner_root(root,d)
+ check_joc_synthetic_coordinator(root,d)
  check_integrity_owner_root(root,d)
  for e in future:
   if e['functional_id']=='F04D':
@@ -2475,7 +2529,7 @@ def run(root=ROOT):
     code='\n'.join(x for x in s.splitlines()if x.strip()and not x.lstrip().startswith('//'))
     relative=p.relative_to(root).as_posix()
     # F05O rowdata and F05T trim direct slices remain separate from full F05O/F05T and F05L production.
-    approved_joc_source_files={'crates/jocforge-domain/src/joc/oamd.rs',*next(e for e in es if e['functional_id']=='F05R56')['implementation_files'],'crates/jocforge-domain/src/joc/oamd/reader_target/tests.rs',*[path for direct in next(e for e in es if e['functional_id']=='F05O')['direct_slices']for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F05T')['direct_slices']for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F14K')['direct_slices']for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F14K')['direct_slices']for path in direct['test_modules']],*[path for functional_id in ('F13','F13F','F13T')for path in next(e for e in es if e['functional_id']==functional_id).get('implementation_files',[])],*[path for functional_id in ('F13','F13F','F13T')for path in next(e for e in es if e['functional_id']==functional_id).get('test_modules',[])]}
+    approved_joc_source_files={'crates/jocforge-domain/src/joc/oamd.rs',*next(e for e in es if e['functional_id']=='F05R56')['implementation_files'],'crates/jocforge-domain/src/joc/oamd/reader_target/tests.rs',*[path for direct in next(e for e in es if e['functional_id']=='F05O')['direct_slices']for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F05T')['direct_slices']for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F14K')['direct_slices']for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F14K')['direct_slices']for path in direct['test_modules']],*[path for direct in next(e for e in es if e['functional_id']=='F05JL').get('direct_slices',[])for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F05JL').get('direct_slices',[])for path in direct['test_modules']],*[path for functional_id in ('F13','F13F','F13T')for path in next(e for e in es if e['functional_id']==functional_id).get('implementation_files',[])],*[path for functional_id in ('F13','F13F','F13T')for path in next(e for e in es if e['functional_id']==functional_id).get('test_modules',[])]}
     ck(not code or relative in approved_joc_source_files,'empty leaf item '+relative)
  transaction=(root/'crates/jocforge-domain/src/transaction/mod.rs').read_text(encoding='utf-8');transaction_code='\n'.join(x for x in transaction.splitlines()if x.strip()and not x.lstrip().startswith('//'));ck('pub struct CallbackTransactionId(String);' in transaction_code and 'pub enum CallbackTransactionIdError' in transaction_code and 'pub fn new' in transaction_code and 'pub fn as_str' in transaction_code and 'CallbackTransactionCoordinator' not in transaction_code and not any(marker in transaction_code for marker in ('pub fn commit(', 'pub fn abort(', 'pub fn fatal(')) and not (root/'crates/jocforge-domain/src/transaction/callback.rs').exists(),'shared CallbackTransactionId only before coordinator implementation');ck(not(root/'crates/jocforge-domain/src/frontend/config.rs').exists()and not(root/'crates/jocforge-domain/src/frontend/events.rs').exists(),'frontend control Rust before P1.3-B implementation approval');provider_source=(root/'crates/jocforge-domain/src/frontend/provider.rs').read_text(encoding='utf-8');ck('serde_json::to_'not in provider_source and'pub use serde_json::Value'not in provider_source and'#[derive(Serialize'not in provider_source and provider_source.index('let actual = ProviderSha256::digest')<provider_source.index('serde_json::from_slice'),'provider parser/canonical boundary');ck('manifest: &ValidatedF01EPackageManifest'in provider_source and'validate_f01e_package_manifest'in provider_source and'let entry = parse_f01e_manifest_entry(evidence.bytes())?'in provider_source and'manifest.provider_sha256 != actual'in provider_source,'provider manifest proof chain');rust_sources='\n'.join(p.read_text(encoding='utf-8')for p in(root/'crates').rglob('*.rs'));ck('C:\\Users\\'not in rust_sources,'absolute user path in Rust source');production_sources='\n'.join(p.read_text(encoding='utf-8').split('#[cfg(test)]',1)[0]for p in(root/'crates').glob('*/src/**/*.rs')if p.name!='tests.rs'and not p.name.endswith('_tests.rs')and'tests'not in p.parts);ck('tests/fixtures/f01e_provider'not in production_sources and'f01e_provider/MANIFEST.json'not in production_sources,'fixture path in production source')
  frontend_state=(root/'crates/jocforge-domain/src/frontend/state.rs').read_text(encoding='utf-8')

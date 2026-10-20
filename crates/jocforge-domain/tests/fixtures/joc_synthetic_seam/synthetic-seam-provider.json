@@ -1,0 +1,41 @@
+{
+  "schema": "joc-coordinator-synthetic-seam-provider.v1",
+  "profile_id": "selected-f05jl-input-only.v1",
+  "stage_order": ["receiver_qmf", "temporal", "geometry", "fit180", "profile_retry", "huffman_id14"],
+  "canonical_json": {"sort_keys": true, "separators": [",", ":"], "ensure_ascii": false, "encoding": "UTF-8"},
+  "stage_shapes": {
+    "receiver_qmf": {
+      "input": {"receiver_input_f32": [16, 1536], "target_gain_u32": [15], "descriptor_gain_f32": [6]},
+      "output": {"receiver_output_f32": [16, 1536], "target_current_complex_f32": [15, 24, 64, 2], "carrier_current_complex_f32": [5, 24, 64, 2]}
+    },
+    "temporal": {
+      "input": {"target_current_complex_f32": [15, 24, 64, 2], "temporal_state_rows": [15, 16]},
+      "output": {"weights_f32": [48], "target_window_complex_f32": [15, 48, 64, 2]}
+    },
+    "geometry": {
+      "input": {"weights_f32": [48], "receiver_accumulator_f32": [6, 1536], "target_gain_u32": [15]},
+      "output": {"eligibility_bool": [15, 5], "carry_f32": [18, 128], "previous_f32": [24, 128]}
+    },
+    "fit180": {
+      "input": {"target_window_complex_f32": [15, 48, 64, 2], "carrier_window_complex_f32": [5, 48, 64, 2], "eligibility_bool": [15, 5]},
+      "output": {"full_f32": [15, 5, 12], "sparse_f32": [15, 12], "selected_channel_u16": [15, 12]}
+    },
+    "profile_retry": {
+      "input": {"full_f32": [15, 5, 12], "sparse_f32": [15, 12], "selected_channel_u16": [15, 12]},
+      "output": {"object_profiles": [15], "attempt_records": [3]}
+    },
+    "huffman_id14": {
+      "input": {"object_profiles": [15], "sequence_bits": [10]},
+      "output": {"id14_body_bytes": [267], "id14_body_bits": [2136]}
+    }
+  },
+  "clock": {
+    "codec_source": "dispatch - 1",
+    "callback_zero_based": "dispatch + 1",
+    "callback_one_based": "dispatch + 2",
+    "writer": "dispatch - 1",
+    "published_au": "null when dispatch < 3, otherwise dispatch - 3"
+  },
+  "production_allowed": false,
+  "persistent_state_commit_allowed": false
+}

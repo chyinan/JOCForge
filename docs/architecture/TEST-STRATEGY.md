@@ -20,6 +20,10 @@ F05R56 tests reconstruct the selected eight-callback input recipes from input-on
 
 F13 metadata owner tests compare cold canonical bytes, all five continuous source receipts/after-states, all 14 atomic failure vectors, the EOF leaf proposal, cold reset/retry, and selected terminal wire output. The occupied-destination prestate is independently materialized and its SHA is recomputed; the expected after-state is never used as the seed. Cold and first-published terminal fixtures independently bind absolute bit positions from the first sync byte. These tests validate only the selected metadata root; F13C/F13D2 producers, global CallbackTransaction, durable output and whole-song/product acceptance remain `NOT_RUN`.
 
+F05JL synthetic-coordinator tests are `cfg(test)` only. They recompute canonical input/output and provider hashes for six caller-provided synthetic receipts, check the single ID14 body and clock/owner/upstream lineage, and exercise all 11 frozen rejection mutations. The seam returns only `production_allowed=false`, `commit_count=0`, and `state_delta=null`; it executes no producer and does not promote the `joc` root.
+
+F05JL synthetic coordinator tests compile only under `cfg(test)`. They validate the six frozen caller-provided stage receipts, canonical provider/material hashes, stage order, clock/token lineage and complete ID14 bytes; they return `production_allowed=false`, `commit_count=0` and no state delta. The tests do not execute F04C, F05JC or any numerical producer and do not promote `joc` root readiness.
+
 公共语法原语还必须覆盖 bit cursor 0/1/31/32/32768、容量溢出、CRC residual=0、单 bit 破坏、frmsiz 边界、header 保留码、非 48 kHz/非 5.1/dependent/非 4,096-byte 拒绝、六个 Huffman 表全部 symbol、两种 EMDF mode、四 payload 顺序、截断和失败零提交。
 
 validation 的 structural parser、channel-map、topology、frame report 和 W04 与 production 分离。parser 成功不代表 codec conformance、音频正确或产品验收通过。

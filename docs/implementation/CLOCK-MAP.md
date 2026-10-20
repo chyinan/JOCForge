@@ -115,6 +115,7 @@
 
 | slice_id | domains | covered_clauses |
 |---|---|---|
+| F05JL/synthetic-coordinator-receipt-validation | `synthetic dispatch`<br>`derived callback/source/writer/AU values` | `source=dispatch-1`<br>`writer=dispatch-1`<br>`callback zero-based=dispatch+1`<br>`callback one-based=dispatch+2`<br>`AU null for dispatch<3 else dispatch-3` |
 | F05O/oamd-rowdata-body-encoder | — | `The encoder is stateless and consumes no callback, source, writer, or AU clock.` |
 | F05O/oamd-single-rowdata-body-decoder | — | `The body reader is stateless and takes no callback, source, writer, or AU clock.` |
 | F05O/single-frame-oamd-body-assembler | — | `The single-frame body assembler is stateless and consumes no callback, source, writer, or AU clock.` |

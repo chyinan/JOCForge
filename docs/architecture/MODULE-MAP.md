@@ -9,6 +9,8 @@
 | domain/joc/downmix_profile | `JocDownmixProfile` 边界 | 空壳；无常数 |
 | domain/joc/huffman | F05QH traversal 边界 | 空壳；无表和遍历实现 |
 | domain/joc/emdf | F13 metadata owner boundary | Selected 48 kHz/1536-sample metadata root locally stages the ID1 timer, four FIFO push/pop operations, deployed_compat EMDF assembly, source receipt and EOF leaf proposal; F13C complexity, F13D2 body production, global CallbackTransaction and durable output remain deferred |
+| domain/joc/synthetic_coordinator (tests only) | F05JL caller-provided receipt validation | `#[cfg(test)]` only; validates six synthetic stage receipts and the final ID14 body; no producer, production API, JOC state delta or root readiness promotion |
+| domain/joc/synthetic_coordinator (tests only) | F05JL synthetic receipt validation boundary | `#[cfg(test)]` only; validates six caller-provided synthetic receipts and ID14 body, executes no producer, exposes no production API, creates no JOC state delta and does not promote the `joc` root |
 | domain/joc/oamd | F05O rowdata wire/body boundaries, F05T selected trim-section codec, and F05L body/queue boundary | F05O rowdata encoder and single unprotected-body reader plus the F05T stateless trim-body codec/minimal DBMD default projection are locally verified direct slices; whole F05O/F05T semantics and F05L body/queue production remain deferred |
 | domain/joc/oamd/reader_target | F05R56 marker/history、Type11 wire roundtrip、reader56 和 callback-local target receipt proposal | selected producer locally verified；不得本地 commit，不包含 F05L queue/body、F05JC/J05 或 parent transaction |
 | domain/joc/coefficient_payload | F05Q/F05JL coefficient body 边界 | 空壳；无量化或 payload |
