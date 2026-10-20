@@ -1,0 +1,68 @@
+{
+  "schema": "sanitized-parent-filewriter-dynamic-join.v1",
+  "run_identity": "music_rectangular_native_104",
+  "run_scope": "first four nonzero parent outputs and first four FileWriter writes",
+  "capture_accounting": {
+    "original_framework_status": "PARTIAL_CAPTURE",
+    "reason": "the generic capture harness did not perform its post-run MP4 discovery and extraction step",
+    "postrun_output_found": true,
+    "postrun_lossless_extraction_executed": true,
+    "postrun_ec3_baseline_match": true,
+    "observer_errors": 0
+  },
+  "assets": {
+    "dee_exe_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "atmos_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "adm_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "observer_sha256": "9e5fc5273c77e2e73d2bcc0e6c2cdcbfe6852c23028f5ec693ce43b60382588d"
+  },
+  "reference_output": {
+    "mp4_sha256": "77c9440c2001c6d6a4f32516ef16a564f45e569752cc32eb781e89d3b12ab3ab",
+    "extracted_ec3_sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "baseline_match": true,
+    "frames": 4247,
+    "bytes": 17395712,
+    "frame_bytes": 4096
+  },
+  "joined_pairs": [
+    {"parent_generation": 5, "file_writer_frame_ordinal": 0, "byte_count": 4096, "crc32": "e48334d7", "length_match": true, "crc32_match": true},
+    {"parent_generation": 6, "file_writer_frame_ordinal": 1, "byte_count": 4096, "crc32": "88d0f270", "length_match": true, "crc32_match": true},
+    {"parent_generation": 7, "file_writer_frame_ordinal": 2, "byte_count": 4096, "crc32": "6020ebbb", "length_match": true, "crc32_match": true},
+    {"parent_generation": 8, "file_writer_frame_ordinal": 3, "byte_count": 4096, "crc32": "ef5e9494", "length_match": true, "crc32_match": true}
+  ],
+  "join": {
+    "thread_identity_match": true,
+    "parent_stack_and_writer_vector_pointers_distinct": true,
+    "join_basis": "same-thread FIFO plus exact byte count and CRC32 after native owned-vector copy",
+    "all_four_pairs_exact": true
+  },
+  "file_writer": {
+    "core_write_rva": "0x189c80",
+    "single_internal_owner_for_four_writes": true,
+    "closed_before_all_writes": 0,
+    "threshold_count": 1,
+    "file_count": 1,
+    "selected_file_index": 0,
+    "all_four_returned_normally": true,
+    "direct_fwrite_hook": "NOT_CAPTURED"
+  },
+  "NATIVE_OBSERVED": {
+    "fact": "four nonzero parent outputs were copied to distinct vector storage and reached FileWriter with exact length and CRC32 equality; FileWriter returned normally and the extracted EC3 remained byte-exact to baseline",
+    "writer_boundary_reads": ["FileWriter internal object", "encoded byte pointer", "encoded byte count", "frame ordinal"],
+    "writer_boundary_parent_state_pointer": "NOT_PRESENT",
+    "writer_boundary_control_or_target_pointer": "NOT_PRESENT",
+    "parent_state_snapshot_or_receipt_observed": false
+  },
+  "UNKNOWN": [
+    "direct fwrite runtime call identity",
+    "alternate host and job workflow branches",
+    "other DLL consumers",
+    "product-wide snapshot, receipt or serializer existence"
+  ],
+  "NOT_RUN": ["spatial render model", "selector model", "U04 model", "outer model", "model recomposition"],
+  "product_wide_absence_claim": false,
+  "production_allowed": false,
+  "raw_encoded_bytes_delivered": false,
+  "raw_pcm_or_metadata_delivered": false,
+  "private_auth": "EXCLUDED"
+}

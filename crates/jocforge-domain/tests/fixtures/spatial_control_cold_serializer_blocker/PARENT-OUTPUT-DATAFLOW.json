@@ -50,7 +50,7 @@
     "receipt_schema": "DESIGN_ONLY_NOT_NATIVE_OBSERVED"
   },
   "UNKNOWN": {
-    "file_writer_dynamic_hit": "NOT_CAPTURED",
+    "file_writer_dynamic_hit": "CAPTURED_FOUR_EXACT_BYTE_RANGE_JOINS",
     "fwrite_dynamic_hit": "NOT_CAPTURED",
     "other_host_or_wrapper_paths": "UNKNOWN",
     "other_dll_paths": "UNKNOWN",

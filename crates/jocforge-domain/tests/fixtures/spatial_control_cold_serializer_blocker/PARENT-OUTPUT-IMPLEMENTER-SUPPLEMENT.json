@@ -90,10 +90,10 @@
       "0x189c80",
       "0x1898f0"
     ],
-    "dynamic_join_scope": "startup callback 1, reader generation 2, through parent return",
+    "dynamic_join_scope": "startup reader generation 2 plus four exact nonzero parent-output to FileWriter joins",
     "static_writer_scope": "host workflow through FileWriter binary fwrite"
   },
-  "complete_chain_identity_sha256": "72e90b188b9dec89e8933cd74407253816a079960e4f8580ef68d2c4b09f3e39",
+  "complete_chain_identity_sha256": "db114ca682e283dc351551e1a722a91ddaaee1d8f5d90fdf62b36262545cd7f2",
   "observed_storage_boundaries": {
     "temporary_output": {
       "kind": "host stack buffer",
@@ -120,9 +120,9 @@
   },
   "dynamic_evidence": {
     "parent_owner_and_generation_join": "CAPTURED",
-    "file_writer_runtime_hit": "NOT_CAPTURED",
+    "file_writer_runtime_hit": "CAPTURED_FOUR_EXACT_BYTE_RANGE_JOINS",
     "fwrite_runtime_hit": "NOT_CAPTURED",
-    "new_native_run": "NOT_RUN"
+    "new_native_run": "EXECUTED_MUSIC_RECTANGULAR_NATIVE_104"
   },
   "UNKNOWN": [
     "alternate host workflow branches",
@@ -130,7 +130,7 @@
     "wrapper persistence outside this DLL",
     "other bundled DLL consumers",
     "product-wide snapshot, receipt or serializer existence",
-    "runtime FILE selection and write identity for this exact generation"
+    "direct fwrite runtime call identity"
   ],
   "CLEAN_ROOM_DESIGN": {
     "parent_canonical_bytes": "DESIGN_ONLY_UNAPPROVED_AND_NOT_DELIVERED",

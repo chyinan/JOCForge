@@ -1,5 +1,5 @@
 {
-  "schema": "spatial-control-cold-serializer-blocker-independent-check.v7",
+  "schema": "spatial-control-cold-serializer-blocker-independent-check.v8",
   "checks": [
     {
       "id": "dll_identity",
@@ -42,6 +42,10 @@
       "pass": true
     },
     {
+      "id": "dynamic_parent_filewriter_join",
+      "pass": true
+    },
+    {
       "id": "no_entrypoint",
       "pass": true
     },
@@ -73,7 +77,8 @@
     "MINIMUM-EXTERNAL-EVIDENCE.json",
     "UNCHANGED-BLOCKER-AUDIT.json",
     "PARENT-OUTPUT-DATAFLOW.json",
-    "PARENT-OUTPUT-IMPLEMENTER-SUPPLEMENT.json"
+    "PARENT-OUTPUT-IMPLEMENTER-SUPPLEMENT.json",
+    "PARENT-FILEWRITER-DYNAMIC-JOIN.json"
   ],
   "research_files_read": false,
   "serializer_execution": false,
