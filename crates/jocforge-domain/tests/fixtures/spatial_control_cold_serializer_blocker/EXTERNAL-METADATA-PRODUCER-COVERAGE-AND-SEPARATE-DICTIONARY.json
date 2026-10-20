@@ -1,0 +1,63 @@
+{
+  "schema": "sanitized-external-metadata-producer-coverage-and-separate-dictionary.v1",
+  "source_evidence_identity": {
+    "packed_layout_sha256": "4182764fa32b160bd88f51a0e3432a171627cd1515c1227ec417ee0b805db5d4",
+    "field_coverage_sha256": "6c05a6f233e9efe86e482d720dd57c67c199099413c4092921bec78e9572d8b1",
+    "separate_dictionary_sha256": "1339f0b6a1a6cae1fea571bf1ef0034e92296164929912912c8e98a9e1f4ea16",
+    "research_manifest_sha256": "a1ed010a88fda513134e0106046ee716c9c557794b5cc40c9415b0b4c6110d90",
+    "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "packed_descriptor": {
+    "producer_rva": "0x4e0890",
+    "bytes": 120,
+    "owner_offset": 88,
+    "callsites": ["0x4d2a38", "0x4d48fd"],
+    "producer_written_bytes": 106,
+    "producer_not_written_offsets": [78,79,80,81,82,83,84,85,86,87,99,107,118,119],
+    "named_or_partial_fields": [
+      {"offset": 0, "bytes": 1, "name": "presence_or_descriptor_kind", "status": "PARTIAL_SEMANTIC"},
+      {"offset": 1, "bytes": 63, "name": "name_utf8_truncated", "status": "PROVEN"},
+      {"offset": 64, "bytes": 1, "name": "name_nul", "status": "PROVEN"},
+      {"offset": 68, "bytes": 1, "name": "monitor_renderer", "status": "PROVEN"},
+      {"offset": 72, "bytes": 1, "name": "dbmd_master_type", "status": "PROVEN"},
+      {"offset": 76, "bytes": 1, "name": "content_type", "status": "PROVEN"},
+      {"offset": 77, "bytes": 1, "name": "frame_rate", "status": "PROVEN"},
+      {"offset": 88, "bytes": 8, "name": "timecode_seconds", "status": "PROVEN_FORMULA_HOURS_MINUTES_TICKS"},
+      {"offset": 96, "bytes": 1, "name": "timecode_present", "status": "PROVEN"},
+      {"offset": 97, "bytes": 1, "name": "position_smoothed", "status": "PROVEN"},
+      {"offset": 98, "bytes": 1, "name": "monitored_spatial_bed_configuration", "status": "PARTIAL_SEMANTIC"},
+      {"offset": 106, "bytes": 1, "name": "spatial_processing_mode", "status": "PROVEN"},
+      {"offset": 108, "bytes": 4, "name": "monitored_spatial_coding_elements_mask", "status": "PROVEN_TRANSFORM_NAME_PARTIAL"},
+      {"offset": 112, "bytes": 1, "name": "monitored_spatial_coding_elements_code", "status": "PARTIAL_SEMANTIC"},
+      {"offset": 113, "bytes": 1, "name": "downmix_5_0_to_2_0_type", "status": "PROVEN"},
+      {"offset": 114, "bytes": 1, "name": "downmix_5_0_to_2_0_phase_shift", "status": "PROVEN"},
+      {"offset": 115, "bytes": 1, "name": "downmix_7_0_to_5_0_type", "status": "PROVEN"},
+      {"offset": 116, "bytes": 1, "name": "bed_distribution", "status": "PROVEN"},
+      {"offset": 117, "bytes": 1, "name": "warm_mode", "status": "PROVEN"}
+    ],
+    "name_blocked_offsets": [65,66,67,69,70,71,73,74,75,100,102,104],
+    "value_owner_blocked_offsets": [78,79,80,81,82,83,84,85,86,87,99,107,118,119],
+    "downstream_copy": "0x178dc0 copies the complete 120 bytes when metadata is present and source mode is not 1",
+    "semantic_schema_complete": false
+  },
+  "separate_ddp_metadata_dictionary": {
+    "serializer_rva": "0x522660",
+    "parser_rva": "0x52a310",
+    "storage": "27 contiguous U32 words",
+    "field_names_in_index_order": [
+      "program_id","lfeon","bsmod","acmod","cmixlev","surmixlev","dsurmod","langcod_present","copyrightb","origbs","dialnorm_negated","langcod_value","audprodie_present","mixlevel","roomtyp","lorocmixlev","lorosurmixlev","dmixmod","ltrtcmixlev","ltrtsurmixlev","dsurexmod","dheadphonmod","adconvtyp","compr1","dynrng1","stream_type","datarate"
+    ],
+    "identity_join_to_packed_descriptor": "NOT_ESTABLISHED",
+    "offset_transplant_allowed": false
+  },
+  "minimum_next_evidence": [
+    "trace the virtual +0xa0 concrete packed-descriptor constructor and writers",
+    "capture changed-offset masks only under one-key variants",
+    "identify constructor/value-owner writes for the 14 producer gaps",
+    "join the same owner and generation to downstream 0x178dc0"
+  ],
+  "implementation_ready": false,
+  "expected_used_as_seed": false,
+  "raw_metadata_payload_delivered": false,
+  "production_allowed": false
+}

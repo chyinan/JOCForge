@@ -1,0 +1,47 @@
+{
+  "schema": "sanitized-parent-cold-host-lifecycle-boundary.v1",
+  "source_evidence_identity": {
+    "research_result_sha256": "7d1914aed83c0263abae101c9edbadb0bc3302235cbeb79d28f41d9ef9f8dca4",
+    "research_manifest_sha256": "dd7c062e8f9eaf0d576a78ade41aa9f1ae5d5bfcc708eb5e947e9e83d65fc9fc",
+    "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "idb_sha256": "c30d43d0b09d084dfe19179887217c8195297bae749b7e28fa84b945cb426b20"
+  },
+  "host_fields": [
+    {"offset":104,"role":"opened_flag","constructor":"0x177f05 writes U8 0","open_commit":"0x178aa0 writes U8 1","later_zero_write":"NO_HIT"},
+    {"offset":112,"role":"parent_allocation_base","constructor":"0x177f09 writes null QWORD","open_commit":"0x178927 stores allocation","cleanup":"0x178658 load then 0x178661 free","cleanup_zero_write":"NO_HIT"},
+    {"offset":120,"role":"parent_owner","constructor":"0x177f0d writes null QWORD","open_commit":"0x178934 passes address to 0x1a7d50","cleanup":"0x178642 load, 0x17864b calls 0x1a7bf0, 0x178650 writes null QWORD"}
+  ],
+  "empireenc_vtable": {
+    "rva": "0x649a58",
+    "entries": [
+      {"slot":0,"rva":"0x1782b0","role":"deleting destructor"},
+      {"slot":1,"rva":"0x179a80","role":"process thunk"},
+      {"slot":2,"rva":"0x178620","role":"explicit close thunk"}
+    ],
+    "reset_serialize_restore_entry": "NO_HIT"
+  },
+  "lifecycle": {
+    "lazy_open_rva": "0x1788a0",
+    "cleanup_rva": "0x178630",
+    "cleanup_once_guard_offset": 144,
+    "parent_cleanup_rva": "0x1a7bf0",
+    "reopen_after_close": "NOT_SUPPORTED_BY_OBSERVED_STATE_MACHINE",
+    "reason": "cleanup leaves host+104 set to 1 and host+112 dangling/nonzero while host+120 becomes null; no scoped reset writes host+104 back to zero"
+  },
+  "copy_serialization_restore": {
+    "parent_allocation_snapshot_copy": "NO_HIT",
+    "serialization": "NO_HIT",
+    "restore_or_deserialize": "NO_HIT",
+    "persistence_io": "NO_HIT",
+    "observed_copy_scope": "104-byte host configuration prefix and two 6*source_count channel-record construction copies only"
+  },
+  "bounded_no_hit": {
+    "scope": "complete three-entry EmpireEnc vtable, wrapper and inner constructors, lazy initializer and sole direct caller, explicit close and deleting destructor paths, parent constructor and cleanup, direct host-field displacement/xref neighborhoods",
+    "product_wide_absence_claim": false,
+    "dynamic_close_reopen_trace": "NOT_RUN"
+  },
+  "implementation_ready": false,
+  "expected_used_as_seed": false,
+  "raw_parent_or_audio_payload_delivered": false,
+  "production_allowed": false
+}

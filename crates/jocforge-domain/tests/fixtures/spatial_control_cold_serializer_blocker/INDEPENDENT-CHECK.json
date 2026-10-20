@@ -1,5 +1,5 @@
 {
-  "schema": "spatial-control-cold-serializer-blocker-independent-check.v26",
+  "schema": "spatial-control-cold-serializer-blocker-independent-check.v28",
   "checks": [
     {
       "id": "dll_identity",
@@ -110,6 +110,22 @@
       "pass": true
     },
     {
+      "id": "core_measurement_slot_consumer_boundary",
+      "pass": true
+    },
+    {
+      "id": "external_metadata_producer_coverage_and_separate_dictionary",
+      "pass": true
+    },
+    {
+      "id": "parent_cold_host_lifecycle_boundary",
+      "pass": true
+    },
+    {
+      "id": "vendor_adjacent_sdk_debug_no_hit",
+      "pass": true
+    },
+    {
       "id": "no_entrypoint",
       "pass": true
     },
@@ -158,7 +174,11 @@
     "PROPERTY-NAME-AND-PORTABLE-CONTRACT-EXTENDED-NO-HIT.json",
     "POLICY29-36-IDENTITY-JOIN.json",
     "AUTHORIZED-PE-PORTABLE-API-AND-MEASUREMENT-NO-HIT.json",
-    "MEASUREMENT-INTERNAL-STRUCT-EXTENDED-NO-HIT.json"
+    "MEASUREMENT-INTERNAL-STRUCT-EXTENDED-NO-HIT.json",
+    "CORE-MEASUREMENT-SLOT-CONSUMER-BOUNDARY.json",
+    "EXTERNAL-METADATA-PRODUCER-COVERAGE-AND-SEPARATE-DICTIONARY.json",
+    "PARENT-COLD-HOST-LIFECYCLE-BOUNDARY.json",
+    "VENDOR-ADJACENT-SDK-DEBUG-NO-HIT.json"
   ],
   "research_files_read": false,
   "serializer_execution": false,

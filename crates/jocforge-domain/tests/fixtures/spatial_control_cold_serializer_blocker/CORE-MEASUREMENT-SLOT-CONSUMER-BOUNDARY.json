@@ -1,0 +1,74 @@
+{
+  "schema": "sanitized-core-measurement-slot-consumer-boundary.v1",
+  "source_evidence_identity": {
+    "research_result_sha256": "65cf2c1c4d33aa1d0191c6704098c70b1333bdf6761a843c925818805381d62b",
+    "research_manifest_sha256": "ebdf2fea5f56cfb277cd20ff01ad8bc870052aecd7d2d1f516c1b40f670d72b6",
+    "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "native_lineage": {
+    "core_process_rva": "0x1b7d10",
+    "record_stride_bytes": 444,
+    "slot_type": "IEEE-754 binary32",
+    "host_scale": 128.0,
+    "unavailable_internal": -0.9375,
+    "unavailable_host": -120.0,
+    "adapter_rva": "0x1ae790"
+  },
+  "slots": [
+    {
+      "core_offset": 8,
+      "getter_rva": "0x1cb9a0",
+      "write_rva": "0x1b8abd",
+      "public_offset": 12,
+      "getter_rule": "owner+128 bit0x10 selects unavailable sentinel; otherwise F32 at (*(owner+48))+52",
+      "semantic_name": "NOT_CLOSED"
+    },
+    {
+      "core_offset": 12,
+      "getter_rva": "0x1cb9e0",
+      "write_rva": "0x1b8bd0",
+      "public_offset": 16,
+      "getter_rule": "owner+128 bit0x10 selects unavailable sentinel; otherwise selector chooses *(owner+56) or *(owner+64), then reads F32+52",
+      "semantic_name": "NOT_CLOSED"
+    },
+    {
+      "core_offset": 28,
+      "getter_rva": "0x1cb8f0",
+      "write_rva": "0x1b8b13",
+      "public_offset": 8,
+      "getter_rule": "owner+128 bit0x02 selects unavailable sentinel; otherwise F32 at (*(owner+32))+108",
+      "semantic_name": "NOT_CLOSED"
+    }
+  ],
+  "named_logger": {
+    "rva": "0x1769a0",
+    "named_public_fields": [
+      {"offset": 0, "name": "dialogue_loudness", "load_rva": "0x1770d2"},
+      {"offset": 4, "name": "itu_loudness", "load_rva": "0x177109"},
+      {"offset": 20, "name": "measured_loudness", "load_rva": "0x176ecf"},
+      {"offset": 28, "name": "speech_percentage", "load_rva": "0x17709a"},
+      {"offset": 32, "name": "loudness_range", "load_rva": "0x177141"},
+      {"offset": 36, "name": "sample_peak", "load_rva": "0x177179"},
+      {"offset": 40, "name": "true_peak", "load_rva": "0x1771b1"}
+    ],
+    "unnamed_public_offsets": [8, 12, 16]
+  },
+  "rtti_names": [
+    "dee::ddpjoc::MeasurePipeline",
+    "dee::ddpjoc::EmpireLoudnessPrv",
+    "dee::ddpjoc::EmpireLoudness",
+    "dee::ddpjoc::AtmosProcMeasurePrv",
+    "dee::ddpjoc::AtmosProcMeasure",
+    "dlb::dplm::Meter",
+    "dlb::IntelligentLoudness"
+  ],
+  "bounded_no_hit": {
+    "result": "NO_HIT_NAMED_FIELDS_PUBLIC_8_12_16",
+    "scope": "core, two wrappers, adapter, exact named logger, directly related getters and RTTI remnants",
+    "product_wide_absence_claim": false
+  },
+  "implementation_ready": false,
+  "expected_used_as_seed": false,
+  "raw_audio_or_measurement_payload_delivered": false,
+  "production_allowed": false
+}

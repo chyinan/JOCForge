@@ -1,0 +1,26 @@
+{
+  "schema": "sanitized-vendor-adjacent-sdk-debug-no-hit.v1",
+  "source_evidence_identity": {
+    "corrected_inventory_sha256": "f30ce97dd3ed2ca5edbd786188f14ccba2fc65e353340ee2a7d68c0ba1434be9",
+    "superseded_wrong_anchor_sha256": "3a466a3d93b70e7791aa683c5f4e457302f5b7788f0614f149689e7d67c07418",
+    "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "target": "dee_audio_filter_ddp_atmos.dll",
+  "scope": {
+    "root": "E:\\Tools\\Dolby_Encoding_Engine",
+    "traversal": "non-recursive immediate files only",
+    "scope_file_count": 253,
+    "scope_listing_sha256": "82562ee7f3268868dbfec6435cfce615f63382340dfa7b38abbf0a984811f7c2",
+    "extensions": [".pdb",".h",".hpp",".lib",".map",".idl",".tlb"],
+    "excluded_subtrees": ["work","research","build","cargo"]
+  },
+  "result": {
+    "status": "NO_HIT_REPRODUCIBLE",
+    "extension_hit_count": 0,
+    "same_basename_adjacent_count": 0,
+    "only_same_basename_file": "dee_audio_filter_ddp_atmos.dll"
+  },
+  "product_wide_absence_claim": false,
+  "implementation_ready": false,
+  "production_allowed": false
+}

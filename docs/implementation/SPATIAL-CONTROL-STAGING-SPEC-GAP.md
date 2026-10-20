@@ -1,6 +1,18 @@
 # Spatial-control staging specification gap
 
-## Current authority: v26 measurement internal-structure mapping
+## Current authority: v28 expanded blocker evidence and corrected packed metadata coverage
+
+The current implementer package is `spatial-control-cold-serializer.blocked.v28`, pinned by fixture manifest SHA-256 `9d805c47e7431857d76678c4ff7ee27f34b50522693ee1d508bafc81f9c66bb8`. The corrected metadata coverage asset SHA-256 is `e5c34227db9f145e1ca71c3ad13ca5c8693f17368c0207d7381a89f25fbaccbc`; the washed research manifest and independent-check hashes are `58f6e27a493445b53723ae87106e6145a2c3bb1d29b3aa9773a1a640f9072477` and `bbc7387ce9323a1fc6b0c9ca6e4cba4fdfe72dc89aba51bd0ad2e8268af9a540`. It reports 37/37 independent checks passing, `IMPLEMENTATION_READY=NO`, and `production_allowed=false`.
+
+The packed metadata descriptor is 120 bytes: the corrected v28 accounting is 106 producer-written bytes plus 14 producer-unwritten bytes, exactly 120. The unwritten offsets are `78..87`, `99`, `107`, and `118..119`; v27's inconsistent aggregate counters are superseded. The complete 120-byte downstream copy remains conditional on metadata being present and source mode not being 1. A separate 27-contiguous-U32 DDP metadata dictionary has no established identity join to this packed descriptor; offset transplantation is forbidden. Its field names do not name the packed offsets by proximity.
+
+The measurement consumer boundary types the core slots as IEEE-754 binary32 in a 444-byte record and confirms host scale 128: core `+8` maps to public result `+12`, core `+12` to public `+16`, and core `+28` to public `+8`. Getter/source conditions are recorded, but the three core semantic names remain `NOT_CLOSED` and public offsets `+8/+12/+16` remain unnamed. The named logger and related getter/RTTI scope is bounded and is not a product-wide absence claim.
+
+The host lifecycle boundary observes constructor/open/cleanup writes for host fields at `+104`, `+112`, and `+120`, plus the complete three-entry `EmpireEnc` vtable, initializer and close/destructor routes. In that observed state machine close is terminal: the cleared owner field and remaining open flag/pointer state do not support reset/reopen, and no reset-serialize-restore entry is observed. Allocation snapshot copy, serialization, restore/deserialization, and persistence I/O are bounded no-hit results; dynamic close/reopen remains `NOT_RUN`, and this does not imply product-wide absence.
+
+The adjacent SDK/debug inventory is a non-recursive scan of 253 immediate files limited to `.pdb`, `.h`, `.hpp`, `.lib`, `.map`, `.idl`, and `.tlb`, excluding the specified generated/work subtrees. It found zero extension hits and zero same-basename adjacent files beyond the target DLL. This bounded inventory is not a product-wide absence claim. Portable ordering/endian/version/optional/checksum remain `NOT_OBSERVED`; serializer/restore execution and roundtrip remain `NOT_RUN`; production stays blocked.
+
+## Historical v26 measurement internal-structure mapping
 
 The current implementer package is `spatial-control-cold-serializer.blocked.v26`, pinned by fixture manifest SHA-256 `7be31dd9a33f35edd0f7f339c0d33e55a2d0b4103ad6508d6155c14361bf89c2`. The measurement internal-structure no-hit asset SHA-256 is `39a3f6d937fb8c24eb2c1459ec3863ce1ff303bc914cf732778347b3296beb9b`; washed research manifest and independent-check hashes are `9a5e7398a2d0bae99e8caae011ac730167a104679931416ef8a5866f4b68f101` and `8e74aa17c77519e1eb091d23cf937d009077bcbdbba625f1ce318e22230edd06`. The package reports 33/33 independent checks passing and `production_allowed=false`.
 
