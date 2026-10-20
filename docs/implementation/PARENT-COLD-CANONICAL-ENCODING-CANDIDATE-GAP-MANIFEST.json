@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge-parent-cold-canonical-encoding-candidate-gap-manifest.v1",
+  "identity": "jocforge-parent-cold-canonical-encoding-candidate-gap.v1",
+  "status": "BLOCKED_NOT_NORMATIVE_SCHEMA",
+  "source_implementer_manifest_sha256": "43f7fcf730c7c5c321aa884d1810aa039427d0ae2f97f7cc94f93bfc525d404b",
+  "inventory_file": "PARENT-COLD-DESIGN-GAP-MATRIX.md",
+  "inventory_bytes": 31136,
+  "inventory_sha256": "422a5cc9d6ded5befc37f0460941c3993d77207812718bc3ac0ed40941ddc8c6",
+  "candidate_gap_file": "PARENT-COLD-CANONICAL-ENCODING-CANDIDATE-GAP.json",
+  "candidate_gap_bytes": 9604,
+  "candidate_gap_sha256": "7ef18915278d1b5efa38d537cb4a7b5ff440ea663923dfbfbe5c4cf82ead00c3",
+  "inventory_complete": false,
+  "canonical_schema_ready": false,
+  "cold_vector_generated": false,
+  "serializer_implemented": false,
+  "implementation_ready": "NO",
+  "production_allowed": false
+}

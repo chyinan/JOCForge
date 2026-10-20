@@ -515,6 +515,21 @@ def check_spatial_control_v5_amendment(root,d):
  ck(all(sum(key.startswith(prefix)for key in inventory_keys)==count for prefix,count in expected_inventory_counts.items()),'parent cold field and omitted inventory counts')
  prefix_offsets=[int(value)for value in re.findall(r'^\| `prefix\.[^`]+` \| (\d+) /',gap_matrix_text,re.M)]
  ck(prefix_offsets==list(range(0,104,4)),'selected constructor prefix word coverage 0..100')
+ candidate_gap_manifest_path=root/'docs/implementation/PARENT-COLD-CANONICAL-ENCODING-CANDIDATE-GAP-MANIFEST.json'
+ candidate_gap_manifest_bytes=candidate_gap_manifest_path.read_bytes()
+ ck(len(candidate_gap_manifest_bytes)==884 and hashlib.sha256(candidate_gap_manifest_bytes).hexdigest()=='71f36060d9bcfe644e4a772989642c71883e6da0af6f3a46d7b05a82ee2cab1a','canonical encoding candidate gap manifest identity')
+ candidate_gap_manifest=json.loads(candidate_gap_manifest_bytes.decode('utf-8'),object_pairs_hook=unique_object_pairs)
+ candidate_gap_path=root/'docs/implementation/PARENT-COLD-CANONICAL-ENCODING-CANDIDATE-GAP.json'
+ candidate_gap_bytes=candidate_gap_path.read_bytes();candidate_gap=json.loads(candidate_gap_bytes.decode('utf-8'),object_pairs_hook=unique_object_pairs)
+ ck(candidate_gap_manifest['candidate_gap_file']=='PARENT-COLD-CANONICAL-ENCODING-CANDIDATE-GAP.json'and len(candidate_gap_bytes)==candidate_gap_manifest['candidate_gap_bytes']and hashlib.sha256(candidate_gap_bytes).hexdigest()==candidate_gap_manifest['candidate_gap_sha256']and candidate_gap['schema']==candidate_gap_manifest['identity'] and candidate_gap['status']=='BLOCKED_NOT_NORMATIVE_SCHEMA','canonical encoding candidate gap artifact identity and fail-closed status')
+ inventory_file_path=root/'docs/implementation'/candidate_gap_manifest['inventory_file'];inventory_file_bytes=inventory_file_path.read_bytes()
+ ck(len(inventory_file_bytes)==candidate_gap_manifest['inventory_bytes']and hashlib.sha256(inventory_file_bytes).hexdigest()==candidate_gap_manifest['inventory_sha256'],'canonical encoding candidate gap inventory identity')
+ ck(candidate_gap_manifest['source_implementer_manifest_sha256']==hashlib.sha256(v34_fixture_manifest_bytes).hexdigest(),'candidate gap source package matches v34 manifest')
+ for source_file,source_sha in candidate_gap['source_registry'].items():
+  source_path=root/'crates/jocforge-domain/tests/fixtures/spatial_control_cold_serializer_blocker'/source_file
+  source_bytes=source_path.read_bytes();declared=v34_source_files.get(source_file,{})
+  ck(source_file in v34_source_files and declared.get('sha256')==source_sha and hashlib.sha256(source_bytes).hexdigest()==source_sha,'candidate schema evidence source '+source_file)
+ ck(candidate_gap['gates']['field_inventory_complete']==False and candidate_gap['gates']['canonical_schema_ready']==False and candidate_gap['gates']['success_cold_vector_generated']==False and candidate_gap['gates']['serializer_implemented']==False and candidate_gap['gates']['implementation_ready']=='NO' and candidate_gap['gates']['production_allowed']==False,'candidate gap cannot imply readiness or successful vector')
  washed_gap_terms=('洗白设计与验证缺口','Gate 1 的必需逆向依赖数为 0','A. Parent canonical schema 和 digest preimage','完整 logical field inventory','domain-separation literal','F32 的 NaN、负零、有限值和 rounding 规则','canonical vector','B. Reference serializer、parser 和 cold vector','washed reference serializer 和独立 parser 尚未实现','byte-exact roundtrip 未运行','truncation、invalid enum/NaN、unknown field、cross-profile rejection vectors','C. Receipt 和 transaction 合同','success commit 顺序','invalid input 的 zero-commit/abort 边界','destroy → fresh reconstruction','durable append、fsync/rename','receipt 执行','IMPLEMENTATION_READY=NO','production_allowed=false')
  ck(all(term.casefold() in gap_text.casefold() for term in washed_gap_terms),'washed canonical schema, serializer and receipt gaps are explicit and fail closed')
  v22_terms=('Run-scoped property table retained from v22 and confirmed by v23','music_rectangular_native_109','property3=1024','property31=80','property15=0','property13=0','property29=0','property36=0','cross-scope substitution is forbidden','portable ordering/endian/version/optional/checksum as `NOT_OBSERVED`','serializer/restore as `NOT_RUN`','production_allowed=false')
