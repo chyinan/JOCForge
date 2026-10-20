@@ -1,0 +1,91 @@
+{
+  "schema": "jocforge-receipt-transaction-blocked-gap.v1",
+  "status": "BLOCKED_NOT_NORMATIVE_CONTRACT",
+  "scope": "implementation-side gap record; washed design only; no native receipt claim",
+  "implementation_ready": "NO",
+  "production_allowed": false,
+  "source_implementer_manifest_sha256": "43f7fcf730c7c5c321aa884d1810aa039427d0ae2f97f7cc94f93bfc525d404b",
+  "evidence_registry": {
+    "PARENT-COLD-FRESH-RECONSTRUCTION.json": "984bf84e2aa3825bd7380b022eb5c264329e53f21dbaa2eb43466ea7ac606ee6",
+    "MINIMUM-EXTERNAL-EVIDENCE.json": "7e078cfa1da60dcf0580a5fe070d6255c4c8cfa2265b862242965342210c922f",
+    "PARENT-OUTPUT-DATAFLOW.json": "8ec6387277da562610614795459ef03b8c960ea2962a51bb492fcee6fcae3a20",
+    "REQUIRED-FRAMING-RULES.json": "7396aaf144c102db7e395f090bf645e7db2d827d6bf8ecc3a39f870c73e0373d"
+  },
+  "known_facts": [
+    {
+      "id": "native_receipt_schema",
+      "status": "NOT_OBSERVED",
+      "claim": "A callback receipt format is clean-room design only; it is not a native-observed schema."
+    },
+    {
+      "id": "fresh_inner_lifecycle",
+      "status": "NATIVE_OBSERVED_BOUNDED",
+      "claim": "The observed host path closes/destroys an inner object and creates a fresh inner object for a later record; this does not define receipt or restore semantics."
+    },
+    {
+      "id": "parent_commit_route",
+      "status": "NOT_RUN",
+      "claim": "Parent transaction commit/abort execution has not been run."
+    },
+    {
+      "id": "durable_output_relation",
+      "status": "PARTIAL_BOUNDED",
+      "claim": "Encoded-output write observations do not establish parent-state receipt persistence or physical-write rollback semantics."
+    }
+  ],
+  "undefined_contract_items": [
+    {
+      "id": "success_commit_transition",
+      "unknowns": ["prepare/stage/commit ordering", "atomic commit authority", "which owner receipts are required", "receipt bytes and digest", "generation increment rule", "token consumption/retirement"],
+      "minimum_closure": "Define a typed transition contract, exact owner receipt set, generation/token bindings and canonical receipt representation."
+    },
+    {
+      "id": "invalid_input_zero_commit",
+      "unknowns": ["validation boundary", "whether stage may be created", "abort authority", "staged-state disposal", "receipt/error result"],
+      "minimum_closure": "Define invalid-input admission and prove committed state, generation and durable receipt remain unchanged on rejection."
+    },
+    {
+      "id": "fatal_retirement",
+      "unknowns": ["which failures retire the callback token", "which owners are invalidated", "receipt status", "post-fatal admission"],
+      "minimum_closure": "Define fatal classification, owner retirement set, token invalidation and a no-reuse acceptance vector."
+    },
+    {
+      "id": "destroy_fresh_reconstruction",
+      "unknowns": ["old token retirement", "generation reset/advance", "owner reset scope", "fresh-state acceptance", "relation to any receipt"],
+      "minimum_closure": "Define destroy/reset/fresh ordering and prove no prior owner/token/receipt is reused."
+    },
+    {
+      "id": "duplicate_or_stale_done",
+      "unknowns": ["duplicate DONE response", "stale generation handling", "already retired token behavior", "idempotence rule"],
+      "minimum_closure": "Define repeat/stale-token outcomes and vectors for active, committed, retired and unknown generations."
+    },
+    {
+      "id": "durable_write_failure",
+      "unknowns": ["append boundary", "fsync/rename order", "partial physical write", "receipt publication timing", "restart recovery claim"],
+      "minimum_closure": "Define durable-operation ordering and accurately distinguish partial physical writes from unchanged state."
+    }
+  ],
+  "required_vectors": [
+    {"id": "success_commit", "expected_bytes": "NOT_DEFINED", "expected_digest": "NOT_DEFINED", "status": "NOT_RUN"},
+    {"id": "invalid_input_zero_commit", "expected_state_change": "NOT_DEFINED", "status": "NOT_RUN"},
+    {"id": "fatal_retire", "expected_retirement_set": "NOT_DEFINED", "status": "NOT_RUN"},
+    {"id": "destroy_then_fresh", "expected_generation_and_owner_state": "NOT_DEFINED", "status": "NOT_RUN"},
+    {"id": "duplicate_or_stale_done", "expected_result": "NOT_DEFINED", "status": "NOT_RUN"},
+    {"id": "durable_partial_write_failure", "expected_physical_and_receipt_state": "NOT_DEFINED", "status": "NOT_RUN"}
+  ],
+  "no_guessing_rules": [
+    "Do not claim a native receipt format.",
+    "Do not treat fresh reconstruction as portable restore.",
+    "Do not claim disk state is unchanged after a durable partial write unless the contract proves it.",
+    "Do not generate success bytes or digests before the canonical schema is complete."
+  ],
+  "readiness": {
+    "receipt_contract_complete": false,
+    "success_vector_available": false,
+    "invalid_input_zero_commit_verified": false,
+    "destroy_fresh_verified": false,
+    "durable_failure_verified": false,
+    "implementation_ready": "NO",
+    "production_allowed": false
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge-receipt-transaction-blocked-gap-manifest.v1",
+  "identity": "jocforge-receipt-transaction-blocked-gap.v1",
+  "status": "BLOCKED_NOT_NORMATIVE_CONTRACT",
+  "source_implementer_manifest_sha256": "43f7fcf730c7c5c321aa884d1810aa039427d0ae2f97f7cc94f93bfc525d404b",
+  "gap_file": "RECEIPT-TRANSACTION-BLOCKED-GAP.json",
+  "gap_bytes": 5026,
+  "gap_sha256": "38e2543c572948b7c6d796de477e89a27236656b7022be445e1250aca4123179",
+  "receipt_contract_complete": false,
+  "success_vector_available": false,
+  "implementation_ready": "NO",
+  "production_allowed": false
+}

@@ -77,6 +77,8 @@
 
 **未运行**：receipt 执行、invalid-input zero-commit、destroy+fresh acceptance、durable failure 验证。
 
+机器可查的 blocked contract、vector 矩阵和最小关闭条件见 [RECEIPT-TRANSACTION-BLOCKED-GAP.json](RECEIPT-TRANSACTION-BLOCKED-GAP.json)。该文件是实现侧 gap mirror，不是 native receipt schema。
+
 上述任一缺口未闭合前，都不得填入猜测字段、占位值或跨 profile 复用值。不得声称 implementation ready 或 production allowed。
 
 ## Current authority: v34 cross-profile actual-run boundaries
