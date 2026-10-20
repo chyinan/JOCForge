@@ -359,6 +359,14 @@ fn direct_decoder_rejects_protected_layouts_and_truncated_payloads() {
         Err(OamdBodyReadError::InvalidInput)
     );
 
+    let mut nonzero_section_padding = decode_hex(case["payload_hex"].as_str().unwrap());
+    let (_, section_payload_end) = rowdata_payload_bounds(&nonzero_section_padding);
+    set_bit(&mut nonzero_section_padding, section_payload_end - 1, true);
+    assert_eq!(
+        decode_oamd_body(&nonzero_section_padding, &xy_table, &z_table),
+        Err(OamdBodyReadError::InvalidInput)
+    );
+
     let truncated_escape = decode_hex(case["payload_hex"].as_str().unwrap());
     assert_eq!(
         decode_oamd_body(&truncated_escape[..3], &xy_table, &z_table),
@@ -487,14 +495,36 @@ fn set_bits(bytes: &mut [u8], position: usize, width: u8, value: u32) {
 }
 
 fn rowdata_payload_start(body: &[u8]) -> usize {
+    rowdata_payload_bounds(body).0
+}
+
+fn rowdata_payload_bounds(body: &[u8]) -> (usize, usize) {
     let mut position = 18;
-    loop {
-        let continuation = body[position / 8] >> (7 - position % 8) & 1 != 0;
+    let mut escaped_value = 0_u32;
+    for group in 0..4 {
+        let digit = read_bits(body, position, 4);
+        let continuation = read_bits(body, position + 4, 1) != 0;
+        escaped_value = if group == 0 {
+            digit
+        } else {
+            (escaped_value + 1) * 16 + digit
+        };
         position += 5;
         if !continuation {
-            return position;
+            break;
         }
     }
+    let payload_end = position + usize::try_from(escaped_value + 1).unwrap() * 8;
+    (position, payload_end)
+}
+
+fn read_bits(bytes: &[u8], position: usize, width: u8) -> u32 {
+    let mut value = 0_u32;
+    for offset in 0..usize::from(width) {
+        let bit = (bytes[(position + offset) / 8] >> (7 - (position + offset) % 8)) & 1;
+        value = (value << 1) | u32::from(bit);
+    }
+    value
 }
 
 fn body_header_count_extension(body: &[u8]) -> Option<u32> {

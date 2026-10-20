@@ -1038,7 +1038,7 @@
               "U-OAMD-TIME-EXPLICIT-READ: header row_count=1, leading_lfe=false; explicit duration timing decode",
               "Spec-derived writer-reader checks: U-OAMD-COUNT-31/32/159 header count prefix, extension, and decoded row count",
               "Spec-derived timing mutations: dedicated base values 0/8/16/18/24 and dedicated durations plus all duration-table values representable by U11 rejected from the explicit branch",
-              "Malformed body checks: truncated/unterminated/overlong escaped lengths, nonzero padding, truncation, and unsupported layouts"
+              "Malformed body checks: truncated/unterminated/overlong escaped lengths, rowdata-section and outer-body nonzero padding, truncation, and unsupported layouts"
             ],
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/oamd_wire/body_decoder/unit-read-vectors.json",
@@ -1066,7 +1066,7 @@
             {
               "error_code": "UNSUPPORTED_PROFILE",
               "category": "unsupported body layout",
-              "trigger": "The body uses a nonzero version, non-shortcut layout, protected sections, section_count other than one, a non-rowdata section, multiple frames, or an unsupported row field.",
+              "trigger": "The body uses a nonzero version, non-shortcut layout, protected sections, section_count other than one, a non-rowdata section, multiple frames, a non-canonical timing branch, or an unsupported row field.",
               "programme_state_after": "UNCHANGED_STATELESS",
               "caller_action": "Return no metadata and do not attempt fallback or partial interpretation."
             },
