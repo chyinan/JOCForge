@@ -4,6 +4,8 @@
 
 本节记录 Wash Agent 的结构化 gap response，不构成新的原生证据包。Gate 1 的必需逆向依赖数为 0。后续工作只处理洗白设计和独立验证。当前仍为 `IMPLEMENTATION_READY=NO`、`production_allowed=false`。
 
+逐字段事实、未定义项和五个串行关闭节点见 [PARENT-COLD-DESIGN-GAP-MATRIX.md](PARENT-COLD-DESIGN-GAP-MATRIX.md)。
+
 ### A. Parent canonical schema 和 digest preimage
 
 **已知**
