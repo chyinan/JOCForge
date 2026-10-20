@@ -1,0 +1,33 @@
+{
+  "schema": "none-drc-owner-provider.v1",
+  "profile_id": "selected-none-drc-5.1-48k.v1",
+  "sample_rate": 48000,
+  "samples_per_source": 1536,
+  "channels": 6,
+  "blocks": 6,
+  "fbw_channels": 5,
+  "authorized13_u32": [
+    1064933786, 0, 1058223067, 3186329131, 3203106347,
+    1017797591, 1013066698, 1004942814,
+    1043297385, 1059773839, 1065318913,
+    1063188344, 1056621642
+  ],
+  "authorized13_words_sha256": "a1add4c25573697914ea39a048ac7438e4c1fdbb108b79763cc1a5a8ac6980dd",
+  "authorized13_provider_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
+  "mathematical34_provider_sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166",
+  "state_counts": {
+    "ordinary_history_u32": 7680,
+    "secondary_forward_u32": 640,
+    "secondary_inverse_carry_u32": 640,
+    "filter_pairs_u32": 10,
+    "primary_peak_u32": 6,
+    "secondary_peak_u32": 6,
+    "peak_logs_u32": 6,
+    "override_records_u32": 4
+  },
+  "metadata_delay": 3072,
+  "append_slot": 3,
+  "suppressed_sources": 2,
+  "expected_sources": 4249,
+  "production_allowed": false
+}

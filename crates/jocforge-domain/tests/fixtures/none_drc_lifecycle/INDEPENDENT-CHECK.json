@@ -1,0 +1,93 @@
+{
+  "schema": "none-drc-owner-independent-check.v1",
+  "checks": [
+    {
+      "id": "provider_identity",
+      "pass": true
+    },
+    {
+      "id": "authorized13",
+      "pass": true
+    },
+    {
+      "id": "measurement_identity",
+      "pass": true
+    },
+    {
+      "id": "cold_identity",
+      "pass": true
+    },
+    {
+      "id": "source_0",
+      "pass": true
+    },
+    {
+      "id": "source_1",
+      "pass": true
+    },
+    {
+      "id": "source_2",
+      "pass": true
+    },
+    {
+      "id": "failure_source_clock",
+      "pass": true
+    },
+    {
+      "id": "failure_generation",
+      "pass": true
+    },
+    {
+      "id": "failure_provider",
+      "pass": true
+    },
+    {
+      "id": "failure_measurement",
+      "pass": true
+    },
+    {
+      "id": "failure_primary_shape",
+      "pass": true
+    },
+    {
+      "id": "failure_secondary_shape",
+      "pass": true
+    },
+    {
+      "id": "failure_short_shape",
+      "pass": true
+    },
+    {
+      "id": "failure_numeric",
+      "pass": true
+    },
+    {
+      "id": "failure_state_capacity",
+      "pass": true
+    },
+    {
+      "id": "failure_scheduler_generation",
+      "pass": true
+    },
+    {
+      "id": "failure_control_shape",
+      "pass": true
+    },
+    {
+      "id": "reset",
+      "pass": true
+    },
+    {
+      "id": "eof",
+      "pass": true
+    },
+    {
+      "id": "blocked",
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "imports_lifecycle_model": false,
+  "independent_numeric_algorithm_replay": false,
+  "expected_used_as_seed": false
+}

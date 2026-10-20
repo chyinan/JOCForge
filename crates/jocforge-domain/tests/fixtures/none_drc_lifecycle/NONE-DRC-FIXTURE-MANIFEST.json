@@ -1,0 +1,31 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "identity": "none-drc-owner.lifecycle-seam.v1",
+  "status": "NONE_DRC_LIFECYCLE_SEAM_READY_CANDIDATE_TEST_ONLY",
+  "delivery_scope": "internal test seam only",
+  "files": [
+    { "file": "NONE-DRC-OWNER-CONTRACT.md", "bytes": 4291, "sha256": "ccede7a8aa1d97012b23852f7d2cf72d09f50de29960a54dd88f47a9c4fd7d62" },
+    { "file": "none-drc-provider.json", "bytes": 1099, "sha256": "d570f584d493ad678211a3fcbf279318c440dc3a3402b584e9246147a9cc4742" },
+    { "file": "NONE-DRC-MACHINE-MAP.json", "bytes": 820, "sha256": "3e431f59ae45134b8b6edac0e1b21c1d7c3ca3f3bd2fc0f2418dac852326bcba" },
+    { "file": "NONE-DRC-PROPOSALS.schema.json", "bytes": 1214, "sha256": "45c46440194cb8647abb8aad45a9122d96b80e5bc3fd1216c41a8b0574ddd14f" },
+    { "file": "NONE-DRC-RECEIPT.schema.json", "bytes": 1199, "sha256": "f284c9ec3db7306ed16e02255c724261847c02c6096d409a5e10092de23850d2" },
+    { "file": "NONE-DRC-OWNER-VECTORS.json", "bytes": 4406806, "sha256": "c774cd6169d2ee95547b3c4a15afd1bdc841a499b654330fe825b406249770e3" },
+    { "file": "INDEPENDENT-CHECK.json", "bytes": 1635, "sha256": "6151adc13b8998d2fdb546e3dcc720b53ed47610cf5294293cace19a6337300f" }
+  ],
+  "source_evidence": {
+    "research_manifest_sha256": "1e2fee6897bbcd0c92f1bd86027c10a1989bd50fddfcc28dd5b427315211113c",
+    "expected_used_as_seed": false,
+    "independent_numeric_algorithm_replay": false,
+    "native_receipt_schema": "NOT_OBSERVED",
+    "private_vendor_key": "excluded"
+  },
+  "hard_boundaries": {
+    "production_allowed": false,
+    "secondary_production_api": "blocked",
+    "whole_meter_frontend_audio": "NOT_RUN",
+    "real_4249_none_drc": "NOT_RUN",
+    "other_drc_profiles": "blocked",
+    "state_delta": null,
+    "commit_count": 0
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "schema": "none-drc-owner-machine-map.v1",
+  "owner_id": "drc",
+  "profile_id": "selected-none-drc-5.1-48k.v1",
+  "clock": {"source": "s", "generation_after": "s + 1", "priming_sources": [0, 1], "eof_sources": 4249},
+  "stage_order": ["validate provider/measurement/clock", "ordinary delay", "secondary reconstruction", "statistics", "scheduler and quantizer", "override FIFO", "proposal"],
+  "production_inputs": ["SharedAnalysisReceipt", "primary 6x1536 F32", "secondary 6x1536 F32", "short 6x5 I1", "measurement receipt", "authorized13 provider", "mathematical34 provider", "selected FFT/window providers"],
+  "fixture_seam": {"production_allowed": false, "commit_count": 0, "state_delta": null},
+  "blocked": ["whole meter root", "secondary production API", "other DRC profiles", "global CallbackTransaction"]
+}

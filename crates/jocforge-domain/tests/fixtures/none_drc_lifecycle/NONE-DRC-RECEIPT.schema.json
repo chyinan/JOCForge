@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "none-drc-lifecycle-validation-receipt.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "mode", "production_allowed", "source_index", "provider_sha256", "measurement_sha256", "before_sha256", "recorded_after_sha256", "rf_u16", "line_u16", "state_delta_committed", "commit_count"],
+  "properties": {
+    "schema": {"const": "none-drc-lifecycle-validation-receipt.v1"},
+    "mode": {"const": "SYNTHETIC_LIFECYCLE_ONLY"},
+    "production_allowed": {"const": false},
+    "source_index": {"type": "integer", "minimum": 0},
+    "provider_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "measurement_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "before_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "recorded_after_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "rf_u16": {"type": "integer", "minimum": 0, "maximum": 65535},
+    "line_u16": {"type": "array", "minItems": 6, "maxItems": 6, "items": {"type": "integer", "minimum": 0, "maximum": 65535}},
+    "state_delta_committed": {"const": false},
+    "commit_count": {"const": 0}
+  }
+}
