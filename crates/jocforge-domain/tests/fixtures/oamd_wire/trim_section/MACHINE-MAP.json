@@ -1,0 +1,15 @@
+{
+  "schema": "selected-trim-section-machine-map.v1",
+  "identity": "selected-trim-section-codec.v1",
+  "stateful": false,
+  "functions": [
+    {"name": "encode_trim_body", "inputs": ["Trim", "row_count U32"], "output": "bytes + valid_bits + padding_bits + group_mode"},
+    {"name": "decode_trim_body", "inputs": ["bytes", "row_count U32"], "output": "Trim"},
+    {"name": "parse_dbmd_sections", "inputs": ["bytes"], "output": "section map"},
+    {"name": "selected_trim_from_dbmd_sections", "inputs": ["section map", "row_count U32"], "output": "Trim"}
+  ],
+  "byte_order": {"trim_bits": "MSB-first", "dbmd_length": "U16LE", "dbmd_magic": "U32LE"},
+  "padding": "zero bits to byte boundary; decoder rejects nonzero tail",
+  "partial_output_on_error": false,
+  "excluded": ["live queue", "parent transaction", "raw snapshot", "audio", "complete DBMD semantics", "product integration"]
+}

@@ -117,3 +117,4 @@
 |---|---|---|
 | F05O/oamd-rowdata-body-encoder | — | `The encoder is stateless and consumes no callback, source, writer, or AU clock.` |
 | F05O/oamd-single-rowdata-body-decoder | — | `The body reader is stateless and takes no callback, source, writer, or AU clock.` |
+| F05T/trim-section-codec | — | `The trim codec and selected DBMD projection are stateless and consume no callback, source, writer, AU, or transaction clock.` |

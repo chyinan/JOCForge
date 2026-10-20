@@ -9,7 +9,7 @@
 | domain/joc/downmix_profile | `JocDownmixProfile` 边界 | 空壳；无常数 |
 | domain/joc/huffman | F05QH traversal 边界 | 空壳；无表和遍历实现 |
 | domain/joc/emdf | F13 EMDF production 边界 | 空壳；无 serializer |
-| domain/joc/oamd | F05O shared wire and F05L body/queue boundary | F05O shared wire and F05L body/queue production remain deferred; selected reader feedback is isolated in `reader_target` |
+| domain/joc/oamd | F05O rowdata wire/body boundaries, F05T selected trim-section codec, and F05L body/queue boundary | F05O rowdata encoder and single unprotected-body reader plus the F05T stateless trim-body codec/minimal DBMD default projection are locally verified direct slices; whole F05O/F05T semantics and F05L body/queue production remain deferred |
 | domain/joc/oamd/reader_target | F05R56 marker/history、Type11 wire roundtrip、reader56 和 callback-local target receipt proposal | selected producer locally verified；不得本地 commit，不包含 F05L queue/body、F05JC/J05 或 parent transaction |
 | domain/joc/coefficient_payload | F05Q/F05JL coefficient body 边界 | 空壳；无量化或 payload |
 | domain/meter | 计量规则 | 空壳 |

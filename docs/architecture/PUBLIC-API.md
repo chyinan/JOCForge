@@ -1,6 +1,6 @@
 # 公共 API 边界
 
-本轮只定义类型和职责，不定义 Rust 函数实现。
+架构层定义类型和职责；各 direct slice 的具体函数签名以其批准 machine map 为准。
 
 ## Profile API
 
@@ -51,3 +51,7 @@ fatal 失败丢弃完整 staged root，并将 programme 标为 `RETIRED`。同�
 ## Validation API
 
 validation 可以读取最终产物，并调用结构解析、channel-map、topology、frame report 和 W04 检查。validation 不提供 production 参数，也不能被 production crate 依赖。
+
+## F05T selected trim-section API
+
+`domain::joc::oamd::trim_section` 暴露纯函数 `encode_trim_body`、`decode_trim_body`、`parse_dbmd_sections` 和 `selected_trim_from_dbmd_sections`，以及 value-only `Trim`、`EncodedTrimBody` 和 `TrimSectionError`。该 direct slice 只覆盖 Type11 trim body 编解码、DBMD section framing 与 sections 9/10 的 selected default-trim projection；它不解析完整 DBMD 语义、不做非默认 trim 量化、不写入 F05O 外层 section，也不拥有 callback、queue 或 programme state。准确输入/输出与错误边界见 `IMPLEMENTATION-MAP.json` 的 `F05T/trim-section-codec` direct-slice 记录。

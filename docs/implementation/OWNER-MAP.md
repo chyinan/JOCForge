@@ -117,3 +117,4 @@
 |---|---|---|
 | F05O/oamd-rowdata-body-encoder | F05O | `joc` |
 | F05O/oamd-single-rowdata-body-decoder | F05O | `joc` |
+| F05T/trim-section-codec | F05T | `joc` |

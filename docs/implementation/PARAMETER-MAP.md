@@ -117,3 +117,4 @@
 |---|---|---|---|
 | F05O/oamd-rowdata-body-encoder | SPECIFIED_INTEGER_RULES_NO_RUNTIME_PROVIDER | — | Uses the F05O integer XYZ and wire formulas. PG06 coordinate-grid decoding remains outside this encoder slice. |
 | F05O/oamd-single-rowdata-body-decoder | CALLER_SUPPLIED_PG06_COORDINATE_TABLES | `parameters/oamd-coordinate-grid-q15.json` | decode_oamd_body accepts fixed XY[63] and Z[16] tables as arguments; production domain code does no provider file I/O. |
+| F05T/trim-section-codec | CALLER_SUPPLIED_ROW_COUNT_AND_DBMD_SECTION_BYTES | — | row_count is U32 constrained to 0..=159 by the selected F05O row-count domain; zero is covered for standalone trim bodies. DBMD bytes are caller supplied. Production domain code performs no file or environment I/O. |

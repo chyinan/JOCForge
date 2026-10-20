@@ -1097,7 +1097,206 @@
       "owner": "joc",
       "planned_phase": "Phase 4",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "trim-section-codec",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_FUNCTIONAL_ID_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_TRIM_SECTION_CODEC_AND_MINIMAL_DBMD_PROJECTION__FULL_F05T_DEFERRED",
+          "scope": "Pure Type11 trim-body encode/decode plus DBMD section framing and selected default-trim projection from sections 9 and 10. This does not complete F05T or integrate the trim body into F05O section assembly.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/joc/oamd.rs",
+            "crates/jocforge-domain/src/joc/oamd/trim_section.rs"
+          ],
+          "implementation_file_identities": [
+            {
+              "file": "crates/jocforge-domain/src/joc/oamd/trim_section.rs",
+              "bytes": 16237,
+              "sha256": "c631ed772e8a9c61535ec82b0e0afd9b6bcfd339c8d6277b939a9c776a0480e5"
+            }
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/trim_section_codec.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The trim codec and selected DBMD projection are stateless and consume no callback, source, writer, AU, or transaction clock."
+            ]
+          },
+          "parameters": {
+            "kind": "CALLER_SUPPLIED_ROW_COUNT_AND_DBMD_SECTION_BYTES",
+            "provider_files": [],
+            "validation_boundary": "row_count is U32 constrained to 0..=159 by the selected F05O row-count domain; zero is covered for standalone trim bodies. DBMD bytes are caller supplied. Production domain code performs no file or environment I/O."
+          },
+          "vectors": {
+            "kind": "INPUT_ONLY_SUCCESS_VECTORS_PLUS_DECLARED_ERROR_CASES_AND_CONTRACT_DERIVED_REJECTIONS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F05T-TRIM-SECTION-CODEC-V1/TRIM-SECTION-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F05T-TRIM-SECTION-CODEC-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F05T-TRIM-SECTION-CODEC-V1/MACHINE-MAP.json",
+              "specs/05-oamd-dbmd-and-trim.md",
+              "specs/05-oamd-row-and-timing-wire.md"
+            ],
+            "case_pointers": [
+              "group_mode0_all_skip: exact body bytes, valid_bits, padding_bits and decoded Trim",
+              "group_mode1_all_default: exact body bytes, valid_bits, padding_bits and decoded Trim",
+              "group_mode2_mask_signed_rows: field mask, signed balance and row-presence bits",
+              "group_mode2_u4_signed_endpoints: U4 endpoints and signed balance endpoints",
+              "trim_mode3_no_rows: row_count=0 standalone body",
+              "dbmd_selected_default: selected sections 9/10 projection with row_count=16",
+              "Declared rejection IDs: duplicate_section, truncated_header, truncated_payload, nonzero_terminator_tail, checksum_mismatch, nondefault_trim, nonzero_padding, truncated_trim_body",
+              "Contract-derived boundaries: Trim shape/domain/U4/signed balance, reserved/group_mode3, DBMD header/required sections/supplemental/warm mode, signed zero and skipped-record fields"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/oamd_wire/trim_section/TRIM-SECTION-VECTORS.json",
+              "bytes": 18046,
+              "sha256": "d836a336dec4bfad9f624562f761e7b6717e2cad6d6040dfeb105dce639a83fe"
+            },
+            "supplement": {
+              "identity": "selected-trim-section-codec.v1",
+              "manifest_sha256": "f120c61b6e323aa3c7b69676763097b2c4c82dfd1d140a83bdc425f9edd88c95",
+              "local_fixture_directory": "crates/jocforge-domain/tests/fixtures/oamd_wire/trim_section"
+            },
+            "package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "TRIM_SHAPE",
+              "category": "row-count or body shape",
+              "trigger": "row_count is outside 0..=159, row_flags length differs from row_count, or the body has more than seven tail bits.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return no partial Trim or body bytes; do not fall back."
+            },
+            {
+              "error_code": "TRIM_DOMAIN",
+              "category": "trim value domain",
+              "trigger": "trim_mode is outside U2 or group/row flags are not zero or one.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return no partial Trim or body bytes."
+            },
+            {
+              "error_code": "TRIM_U4",
+              "category": "gain field encoding",
+              "trigger": "A changed one of the first three group fields is outside 0..=15 and cannot be represented by U4.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return no body bytes."
+            },
+            {
+              "error_code": "TRIM_SIGNED_BALANCE",
+              "category": "signed balance encoding",
+              "trigger": "A changed balance field is outside [-16,-1] or [1,16].",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return no body bytes."
+            },
+            {
+              "error_code": "TRIM_TRUNCATED",
+              "category": "trim body framing",
+              "trigger": "The body ends before a required mode, group, mask, field, presence, or row-flag bit is available.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return no Trim."
+            },
+            {
+              "error_code": "TRIM_RESERVED",
+              "category": "reserved trim bits",
+              "trigger": "Either reserved bit is nonzero.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return no Trim."
+            },
+            {
+              "error_code": "TRIM_GROUP_MODE",
+              "category": "group mode",
+              "trigger": "The two-bit group mode equals three.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return no Trim."
+            },
+            {
+              "error_code": "TRIM_NONZERO_PADDING",
+              "category": "trim body padding",
+              "trigger": "Any remaining byte-alignment padding bit is nonzero.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return no Trim."
+            },
+            {
+              "error_code": "DBMD_HEADER",
+              "category": "selected DBMD header rejection",
+              "trigger": "The first U32LE equals chunk_length minus four, as rejected by the selected F05T reader contract; no general header semantics are inferred.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return no section map."
+            },
+            {
+              "error_code": "DBMD_TRUNCATED_HEADER",
+              "category": "DBMD framing",
+              "trigger": "The four-byte prefix is truncated or a non-terminator section lacks its U16LE length.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return no section map."
+            },
+            {
+              "error_code": "DBMD_TRUNCATED_PAYLOAD",
+              "category": "DBMD section payload",
+              "trigger": "A declared section body or its checksum is not fully present.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return no section map."
+            },
+            {
+              "error_code": "DBMD_CHECKSUM",
+              "category": "DBMD section checksum",
+              "trigger": "The section checksum differs from negative body_length plus the sum of body bytes modulo 256.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return no section map."
+            },
+            {
+              "error_code": "DBMD_DUPLICATE_SECTION",
+              "category": "DBMD section identity",
+              "trigger": "A section kind appears more than once before termination.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return no section map."
+            },
+            {
+              "error_code": "DBMD_TERMINATOR_TAIL",
+              "category": "DBMD termination",
+              "trigger": "A kind-zero terminator is followed by any nonzero byte.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return no section map."
+            },
+            {
+              "error_code": "DBMD_REQUIRED_SECTIONS",
+              "category": "selected DBMD projection",
+              "trigger": "Either required section 9 or section 10 is absent.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return no Trim."
+            },
+            {
+              "error_code": "DBMD_SUPPLEMENTAL",
+              "category": "selected DBMD section shape",
+              "trigger": "Section 9 length is not 248, section 10 length is less than 142, or the section 10 U32LE magic is not 0xf8726fbd.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return no Trim."
+            },
+            {
+              "error_code": "DBMD_WARM_MODE",
+              "category": "selected warm mode",
+              "trigger": "section9[152] & 7 is greater than three.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return no Trim."
+            },
+            {
+              "error_code": "DBMD_NONDEFAULT_TRIM",
+              "category": "unsupported DBMD trim values",
+              "trigger": "A flag-zero record has a gain not numerically equal to zero or a balance whose low seven bits are nonzero.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return no Trim; do not quantize or substitute a default."
+            }
+          ],
+          "exclusions": [
+            "Nondefault DBMD gain/balance quantization and other DBMD section semantics.",
+            "F05O outer OAMD section assembly and rowdata integration.",
+            "Alternate Type11 profiles, F05L body production, live queues, and callback/parent transactions.",
+            "Raw callback snapshot admission, full programme execution, native/product comparison, W04, and product acceptance."
+          ],
+          "validation_claim": "Five washed trim-body success vectors match expected bytes, valid_bits, padding_bits and decoded values; the selected DBMD default projection matches its input-only vector; direct rejection and contract-derived boundary tests pass. Native/product/W04 execution NOT_RUN."
+        }
+      ]
     },
     {
       "functional_id": "F05H",

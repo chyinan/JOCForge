@@ -1,0 +1,40 @@
+{
+  "schema": "trim-section-independent-verification.v1",
+  "control_source_sha256": "6b17bf250598dad632deb8a6775f8f0e4166bb88b878f6e1c999378345d77b1b",
+  "dbmd_source_sha256": "004fa24c1434802ccac740db289eab0933e4c3e8af22ca21eac11188aa4dc638",
+  "success_checks": [
+    {
+      "id": "group_mode0_all_skip",
+      "bytes_match": true,
+      "valid_bits_match": true,
+      "decode_match": true
+    },
+    {
+      "id": "group_mode1_all_default",
+      "bytes_match": true,
+      "valid_bits_match": true,
+      "decode_match": true
+    },
+    {
+      "id": "group_mode2_mask_signed_rows",
+      "bytes_match": true,
+      "valid_bits_match": true,
+      "decode_match": true
+    },
+    {
+      "id": "group_mode2_u4_signed_endpoints",
+      "bytes_match": true,
+      "valid_bits_match": true,
+      "decode_match": true
+    },
+    {
+      "id": "trim_mode3_no_rows",
+      "bytes_match": true,
+      "valid_bits_match": true,
+      "decode_match": true
+    }
+  ],
+  "dbmd_default_match": true,
+  "all_pass": true,
+  "expected_used_as_seed": false
+}
