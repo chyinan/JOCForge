@@ -3,7 +3,8 @@
   "source_evidence_identity": {
     "source_ordinal_rules_sha256": "31effd86c8c839127564833d780a05e205ec047bc50a6d10507281ee250e0f43",
     "type11_trim_lineage_sha256": "cae143e894727bb7d18c02971827dddf6023e2fa09e45b84a62e3999f2c4c3c4",
-    "host_trim_record_producer_sha256": "3aa4f5d74a366de3b13c72d444925449c91a7b2e3fe1dad8f0cbbe42b17f678b"
+    "host_trim_record_producer_sha256": "3aa4f5d74a366de3b13c72d444925449c91a7b2e3fe1dad8f0cbbe42b17f678b",
+    "trim_payload_consumer_sha256": "49f034257bc48cdb9d03712370c37ba70d4e9486d57b21c974a56875f342dfa4"
   },
   "channel_record_6": {
     "bytes": 6,
@@ -30,6 +31,7 @@
     "field_complete": false
   },
   "trim_lineage": {
+    "supersedes_previous_partial_payload_semantics": true,
     "dbmd_section9_bytes": 248,
     "dbmd_section9_warm_mode": {"offset": 152, "bits": "low3", "observed": 3},
     "dbmd_section10": {
@@ -47,6 +49,16 @@
       "payload_bytes": 24,
       "payload_copy": "0x178dc0 discards the four-byte prefix and copies payload byte-for-byte"
     },
+    "payload_24_fields": [
+      {"offset": 0, "bytes": 1, "type": "u8", "semantic": "trim group flag", "status": "BOUND"},
+      {"offset": 1, "bytes": 3, "type": "padding", "semantic": "unspecified padding", "status": "NOT_SEMANTIC"},
+      {"offset": 4, "bytes": 4, "type": "f32", "semantic": "gain0", "status": "BOUND"},
+      {"offset": 8, "bytes": 4, "type": "f32", "semantic": "gain1", "status": "BOUND"},
+      {"offset": 12, "bytes": 4, "type": "f32", "semantic": "gain2", "status": "BOUND"},
+      {"offset": 16, "bytes": 4, "type": "f32", "semantic": "balance0 converted from signed-magnitude source byte", "status": "BOUND"},
+      {"offset": 20, "bytes": 4, "type": "f32", "semantic": "balance1 converted from signed-magnitude source byte", "status": "BOUND"}
+    ],
+    "payload_consumer_rule": "0x1acfe0 reads the flag, quantizes gain0/gain1/gain2 through 0x1ad700, and quantizes balance0/balance1 to the closed [-16,16] code domain",
     "consumer": "0x1acfe0 installs host ordinal i under the matching permutation, restoring original DBMD ordinal",
     "current_downstream_trim": {
       "mode": 3,
@@ -54,13 +66,13 @@
       "groups": [[16,16,16,0,0],[16,16,16,0,0],[16,16,16,0,0],[16,16,16,0,0],[16,16,16,0,0],[16,16,16,0,0],[16,16,16,0,0],[16,16,16,0,0],[16,16,16,0,0]],
       "per_row_flags": 0
     },
-    "host_payload_field_offsets": "NOT_FIELD_COMPLETE",
-    "field_complete": false
+    "host_payload_field_offsets": "FIELD_COMPLETE",
+    "field_complete": true
   },
   "portable_contract_effect": {
     "channel_record_semantics_complete": true,
     "external_metadata_semantics_complete": false,
-    "trim_payload_semantics_complete": false,
+    "trim_payload_semantics_complete": true,
     "native_portable_order_endian_version_optional_checksum": "NOT_OBSERVED",
     "native_serializer_restore_roundtrip": "NOT_RUN",
     "production_allowed": false
