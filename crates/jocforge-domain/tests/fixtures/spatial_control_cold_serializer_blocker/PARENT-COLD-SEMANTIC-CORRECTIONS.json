@@ -11,7 +11,8 @@
     {"old": "policy+4 bsmod/property35", "new": "policy+4 property36 value; semantic name unknown", "reason": "0x1ab520 pairs this word with property36; bsmod property35 authority is separate"},
     {"old": "policy+32 sourcefscod/control word", "new": "policy+32 byte is property29 value; semantic name unknown", "reason": "0x1ab520 reads only byte+32 and pairs it with property29"},
     {"old": "policy+36 Line and +40 RF", "new": "policy+36 RF/property15 and +40 Line/property13", "reason": "0x1ab520 property pairing and accepted BSI property identities"},
-    {"old": "measurement gating value name partial", "new": "gating enum 0=ungated,1=dialogue,2=level,other=invalid", "reason": "0x1769a0 branch strings bind the complete enum"}
+    {"old": "measurement gating value name partial", "new": "gating enum 0=ungated,1=dialogue,2=level,other=invalid", "reason": "0x1769a0 branch strings bind the complete enum"},
+    {"old": "data rate submitted as property12", "new": "current 0x1ab520 table submits property3=1024; property31=80 is mixlevel", "reason": "run109 captured all16 actual property/value pairs at 0x1b2100"}
   ],
   "measurement_44_layout": [
     {"offset": 0, "semantic": "dialogue loudness", "status": "BOUND"},
@@ -29,7 +30,7 @@
   "remaining_bounded_no_hit": {
     "measurement_unknown_offsets": [8, 12, 16],
     "policy_unknown_property_semantics": [29, 36],
-    "policy_header_byte2_property_identity": "NOT_CAPTURED",
+    "policy_header_byte2_property_identity": 31,
     "channel_record_field_names": "NOT_CAPTURED",
     "external_metadata_full_schema": "NOT_CAPTURED",
     "trim_key_and_payload_semantics": "NOT_CAPTURED",

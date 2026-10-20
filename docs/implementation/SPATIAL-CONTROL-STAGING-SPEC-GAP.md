@@ -1,5 +1,13 @@
 # Spatial-control staging specification gap
 
+## Current authority: v22 run-scoped property table
+
+The current implementer package is `spatial-control-cold-serializer.blocked.v22`, pinned by fixture manifest SHA-256 `03ad57ec2eaa90b01779dc0fa8f462e46a1fe9cc66fa13d9c5e6bb2d86eb735f`. Its authoritative property table is restricted to `music_rectangular_native_109`, `job.xml` SHA-256 `d0a68be5fc5e6046c64a19beb01a23a4c6a7af11ab3dbde6e96ad96b707b6fee`, ADM input SHA-256 `7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1`, 1024 kbps, Line DRC `none`, and RF DRC `none`. The exact observed property/value pairs are: property3=1024 (data rate); property18=17 (dialnorm); property33=1 (copyright); property34=1 (original); property31=80 (mixlevel, policy byte `+2` raw 0 plus 80); property36=0 (name `NOT_CAPTURED`); property25=4 (LoRo center); property26=4 (LoRo surround); property20=2 (preferred LoRo); property23=4 (LtRt center); property24=4 (LtRt surround); property27=0 (dsurexmod); property29=0 (name `NOT_CAPTURED`); property15=0 (RF DRC none); property13=0 (Line DRC none); property7=1 (phase-control literal). This is a bounded run/configuration table, not a general property schema.
+
+This v22 table supersedes all earlier claims that property12 is the data-rate property for this parent cold table, that policy byte `+2` has an unknown property identity, or that the current run uses property15/property13 DRC values 4. The selected run binds data rate to property3 and policy byte `+2` to property31 mixlevel. The older `music_light` values property15=4 and property13=4 remain valid only under their own original run/configuration identity; cross-scope substitution is forbidden. The v20 property29/property36 offset and no-hit findings remain bounded evidence, with both business names `NOT_CAPTURED`. The v22 package still records portable ordering/endian/version/optional/checksum as `NOT_OBSERVED`, serializer/restore as `NOT_RUN`, zero success vectors, and `production_allowed=false`; no product-wide absence claim is made.
+
+The historical package notes below preserve evidence lineage. Where any earlier package label or prose conflicts with this v22 authority, the run-scoped v22 table above is controlling; superseded labels must not be treated as current facts.
+
 ## Status
 
 P1.3-D1 remains locally verified as the v5 storage/staging foundation. The separately authorized `SOURCE-FLAGS-PRODUCER-V1` slice has now resolved the `flags_before_history` producer gap and locally verified its numeric packet output. That later producer result does not change D1's status or make D1 the owner of packet generation.

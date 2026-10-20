@@ -37,19 +37,21 @@
     {"offset": 117, "bytes": 1, "type": "converted u8", "producer": "0x4e1c60(source+200)", "semantic": "warm-mode host enum", "observed": 4},
     {"offset": 118, "bytes": 2, "type": "unwritten in bounded producer", "producer": "no store observed in 0x4e0890", "semantic": "NOT_CAPTURED"}
   ],
-  "property12_resolution": {
-    "property_id": 12,
+  "data_rate_property_resolution": {
+    "property_id": 3,
     "source": "descriptor+40 data_rate_enum",
     "rule": {"0":384,"1":448,"2":576,"3":640,"4":768,"5":1024},
     "current_descriptor_enum": 5,
     "current_property_value": 1024,
-    "policy_header_byte2_is_property12": false
+    "policy_header_byte2_property_id": 31,
+    "supersedes_property12_claim": true
   },
   "policy_remaining": {
     "property29_semantic_name": "NOT_CAPTURED",
     "property36_semantic_name": "NOT_CAPTURED",
-    "policy_header_byte2_property_id": "NOT_CAPTURED",
-    "policy_header_byte2_rule": "observed0 transformed by adding80"
+    "policy_header_byte2_property_id": 31,
+    "policy_header_byte2_semantic": "mixlevel",
+    "policy_header_byte2_rule": "observed0 transformed by adding80 to submitted value80"
   },
   "measurement_remaining": [
     {"measurement_offset": 8, "producer_source": "meter internal result+12", "semantic_name": "NOT_CAPTURED"},

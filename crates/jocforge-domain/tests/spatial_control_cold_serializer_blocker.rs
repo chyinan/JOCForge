@@ -5,7 +5,7 @@ use std::fmt::Write as _;
 use std::fs;
 use std::path::PathBuf;
 
-const MANIFEST_SHA256: &str = "5e1a310bb656a943415e1f5e306796b6e073b750e5502cafba70bee446dcbc29";
+const MANIFEST_SHA256: &str = "03ad57ec2eaa90b01779dc0fa8f462e46a1fe9cc66fa13d9c5e6bb2d86eb735f";
 
 fn fixture_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -38,36 +38,45 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let manifest: Value = serde_json::from_slice(&manifest_bytes).expect("manifest JSON");
     assert_eq!(
         manifest["schema"],
-        "washed-implementer-blocker-manifest.v15"
+        "washed-implementer-blocker-manifest.v17"
     );
     assert_eq!(
         manifest["identity"],
-        "spatial-control-cold-serializer.blocked.v20"
+        "spatial-control-cold-serializer.blocked.v22"
     );
     assert_eq!(manifest["status"], "BLOCKED_NO_EXECUTABLE_SERIALIZER");
     assert_eq!(
-        manifest["semantic_corrections"],
+        manifest["property_pair_scope_identity"],
         json!({
-            "policy_plus2": "property_identity_unknown; raw value transformed by adding80",
-            "policy_plus4": "property36_semantic_name_unknown",
-            "policy_plus32": "property29_semantic_name_unknown",
-            "policy_plus36": "RF_property15",
-            "policy_plus40": "Line_property13",
-            "gating_enum": "0_ungated_1_dialogue_2_level_other_invalid"
-        })
-    );
-    assert_eq!(
-        manifest["external_metadata_and_property12"],
-        json!({
-            "structural_layout_bytes": 120,
-            "structural_layout_complete": true,
-            "semantic_schema_complete": false,
-            "property12_source": "descriptor+40_data_rate_enum",
-            "property12_current_value": 1024,
-            "policy_header_byte2_is_property12": false,
-            "measurement_unknown_offsets": [8, 12, 16],
-            "portable_contract": "NOT_OBSERVED",
-            "serializer_restore_roundtrip": "NOT_RUN"
+            "run_identity": "music_rectangular_native_109",
+            "job_xml_sha256": "d0a68be5fc5e6046c64a19beb01a23a4c6a7af11ab3dbde6e96ad96b707b6fee",
+            "adm_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+            "data_rate_kbps": 1024,
+            "line_drc": "none",
+            "rf_drc": "none",
+            "v20_semantic_labels": "SUPERSEDED",
+            "older_music_light_values4": "RETAIN_ONLY_IN_ORIGINAL_SCOPE",
+            "cross_scope_substitution_allowed": false,
+            "pairs": {
+                "property3_data_rate": 1024,
+                "property18_dialnorm": 17,
+                "property33_copyright": 1,
+                "property34_original": 1,
+                "property31_mixlevel": 80,
+                "property36": 0,
+                "property25_loro_center": 4,
+                "property26_loro_surround": 4,
+                "property20_preferred_downmix_loro": 2,
+                "property23_ltrt_center": 4,
+                "property24_ltrt_surround": 4,
+                "property27_dsurexmod": 0,
+                "property29": 0,
+                "property15_rf_drc": 0,
+                "property13_line_drc": 0,
+                "property7_phase_control": 1
+            },
+            "property29_name": "NOT_CAPTURED",
+            "property36_name": "NOT_CAPTURED"
         })
     );
     assert_eq!(
@@ -80,7 +89,6 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "measurement_names": "NOT_CAPTURED",
             "portable_order_endian_version_optional_checksum": "NOT_OBSERVED",
             "serializer_restore_roundtrip": "NOT_RUN",
-            "coverage": "64 authorized PE files; 73 bounded parent functions/211 edges; 74 constructor-depth2 functions",
             "product_wide_absence_claim": false
         })
     );
@@ -120,6 +128,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "PARENT-FILEWRITER-DYNAMIC-JOIN.json",
             "PARENT-OUTPUT-DATAFLOW.json",
             "PARENT-OUTPUT-IMPLEMENTER-SUPPLEMENT.json",
+            "PARENT-PROPERTY-PAIRS-AUTHORITY.json",
             "PORTABLE-CONTRACT-AND-REMAINING-SEMANTICS-NO-HIT.json",
             "REQUIRED-FRAMING-RULES.json",
             "TRIM-PAYLOAD-PRODUCER-CONSUMER-EVIDENCE.json",
@@ -144,7 +153,8 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         "TRIM-PAYLOAD-PRODUCER-CONSUMER-EVIDENCE.json",
         "EXTERNAL-METADATA-STRUCTURE-AND-REMAINING-FIELDS.json",
         "EXTERNAL-METADATA-HELPER-SEMANTICS.json",
-        "PORTABLE-CONTRACT-AND-REMAINING-SEMANTICS-NO-HIT.json"
+        "PORTABLE-CONTRACT-AND-REMAINING-SEMANTICS-NO-HIT.json",
+        "PARENT-PROPERTY-PAIRS-AUTHORITY.json"
     ]);
     for entry in files {
         let name = entry["file"].as_str().expect("manifest file name");
@@ -163,15 +173,15 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let source = &manifest["source_evidence"];
     assert_eq!(
         source["research_manifest_sha256"],
-        "40f53550223723b9a4f2adeee292bd69f8e6e79a2869a67c9f7ec140c7af96c0"
+        "734e2d340453c4ee9fec1ab285b4f81ce3e7197654cf83440205aaea79a61c87"
     );
     assert_eq!(
         source["research_independent_check_sha256"],
-        "8b608390e7e43579ba6b46ee91fb70202f044044948d7270abc3a8f632ab0ba8"
+        "720811d3b4fb0c67cf70d1e8286f46edf2278be842673b3ac17161984c0bd3d3"
     );
     assert_eq!(
-        source["portable_no_hit_sha256"],
-        "3fd89829a4bc166b4278c27e0d672a3d2ae479c472c076d7ff23bc532ddaa7a2"
+        source["property_pairs_authority_sha256"],
+        "844b6c30aa710041c7966f6604b2047c787b6cca95985fe9314a56385b89e0b8"
     );
     assert_eq!(source["serializer_execution"], "NOT_RUN");
     assert_eq!(source["canonical_preimage"], Value::Null);
@@ -979,15 +989,12 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(policy_fields[1]["observed"], 1);
     assert_eq!(
         policy_fields[2]["semantic"],
-        "policy header byte transformed by adding 80"
+        "mixlevel source byte transformed by adding 80"
     );
     assert_eq!(policy_fields[2]["observed"], 0);
     assert_eq!(policy_fields[2]["submitted_value"], 80);
-    assert_eq!(policy_fields[2]["property_id"], "NOT_CAPTURED");
-    assert_eq!(
-        policy_fields[2]["status"],
-        "TRANSFORM_BOUND_PROPERTY_AND_SEMANTIC_UNKNOWN"
-    );
+    assert_eq!(policy_fields[2]["property_id"], 31);
+    assert_eq!(policy_fields[2]["status"], "BOUND");
     assert_ne!(policy_fields[2]["semantic"], "property12 source byte");
     assert_eq!(policy_fields[3]["semantic"], "padding/reserved");
     assert_eq!(policy_fields[3]["status"], "OBSERVED_ZERO");
@@ -1030,12 +1037,12 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         policy_fields[13]["semantic"],
         "RF DRC profile code / property15"
     );
-    assert_eq!(policy_fields[13]["observed"], 4);
+    assert_eq!(policy_fields[13]["observed"], 0);
     assert_eq!(
         policy_fields[14]["semantic"],
         "Line DRC profile code / property13"
     );
-    assert_eq!(policy_fields[14]["observed"], 4);
+    assert_eq!(policy_fields[14]["observed"], 0);
     assert_eq!(
         cold_semantics["portable_contract_status"]["policy_block_semantics_complete"],
         false
@@ -1453,7 +1460,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         "policy and measurement labels in v12 PARENT-COLD-CONFIG-SEMANTICS.json"
     );
     let corrections = semantic_corrections["corrections"].as_array().unwrap();
-    assert_eq!(corrections.len(), 4);
+    assert_eq!(corrections.len(), 5);
     assert_eq!(corrections[0]["old"], "policy+4 bsmod/property35");
     assert_eq!(
         corrections[0]["new"],
@@ -1472,6 +1479,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(
         corrections[3]["old"],
         "measurement gating value name partial"
+    );
+    assert_eq!(corrections[4]["old"], "data rate submitted as property12");
+    assert_eq!(
+        corrections[4]["new"],
+        "current 0x1ab520 table submits property3=1024; property31=80 is mixlevel"
     );
     assert_eq!(
         corrections[3]["new"],
@@ -1684,29 +1696,27 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     );
     assert_eq!(intervals[27]["semantic"], "warm-mode host enum");
     assert_eq!(intervals[27]["observed"], 4);
-    let property12_resolution = &external_structure["property12_resolution"];
-    assert_eq!(property12_resolution["property_id"], 12);
+    let data_rate_resolution = &external_structure["data_rate_property_resolution"];
+    assert_eq!(data_rate_resolution["property_id"], 3);
     assert_eq!(
-        property12_resolution["source"],
+        data_rate_resolution["source"],
         "descriptor+40 data_rate_enum"
     );
     assert_eq!(
-        property12_resolution["rule"],
+        data_rate_resolution["rule"],
         json!({"0":384,"1":448,"2":576,"3":640,"4":768,"5":1024})
     );
-    assert_eq!(property12_resolution["current_descriptor_enum"], 5);
-    assert_eq!(property12_resolution["current_property_value"], 1024);
-    assert_eq!(
-        property12_resolution["policy_header_byte2_is_property12"],
-        false
-    );
+    assert_eq!(data_rate_resolution["current_descriptor_enum"], 5);
+    assert_eq!(data_rate_resolution["current_property_value"], 1024);
+    assert_eq!(data_rate_resolution["policy_header_byte2_property_id"], 31);
+    assert_eq!(data_rate_resolution["supersedes_property12_claim"], true);
     assert_eq!(
         external_structure["policy_remaining"]["policy_header_byte2_property_id"],
-        "NOT_CAPTURED"
+        31
     );
     assert_eq!(
         external_structure["policy_remaining"]["policy_header_byte2_rule"],
-        "observed0 transformed by adding80"
+        "observed0 transformed by adding80 to submitted value80"
     );
     assert_eq!(
         external_structure["measurement_remaining"]
@@ -1937,6 +1947,100 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(portable_no_hit["production_allowed"], false);
     assert_eq!(portable_no_hit["private_auth"], "EXCLUDED");
 
+    let property_pair_authority = read_json("PARENT-PROPERTY-PAIRS-AUTHORITY.json");
+    assert_eq!(
+        property_pair_authority["schema"],
+        "sanitized-parent-property-pairs-authority.v2"
+    );
+    assert_eq!(
+        property_pair_authority["run_identity"],
+        "music_rectangular_native_109"
+    );
+    assert_eq!(
+        property_pair_authority["config_identity"]["job_xml_sha256"],
+        "d0a68be5fc5e6046c64a19beb01a23a4c6a7af11ab3dbde6e96ad96b707b6fee"
+    );
+    assert_eq!(
+        property_pair_authority["config_identity"]["adm_input_sha256"],
+        "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+    );
+    assert_eq!(
+        property_pair_authority["config_identity"]["data_rate_kbps"],
+        1024
+    );
+    assert_eq!(
+        property_pair_authority["config_identity"]["line_mode_drc_profile"],
+        "none"
+    );
+    assert_eq!(
+        property_pair_authority["config_identity"]["rf_mode_drc_profile"],
+        "none"
+    );
+    assert_eq!(
+        property_pair_authority["native_boundary"]["producer_rva"],
+        "0x1ab520"
+    );
+    assert_eq!(
+        property_pair_authority["native_boundary"]["consumer_rva"],
+        "0x1b2100"
+    );
+    assert_eq!(
+        property_pair_authority["native_boundary"]["callsite_rva"],
+        "0x1ab7ac"
+    );
+    assert_eq!(property_pair_authority["native_boundary"]["pair_count"], 16);
+    assert_eq!(
+        property_pair_authority["pairs"],
+        json!([
+            {"property_id":3,"value":1024,"semantic":"data rate kbps"},
+            {"property_id":18,"value":17,"semantic":"dialnorm derived from current measured loudness"},
+            {"property_id":33,"value":1,"semantic":"copyright flag"},
+            {"property_id":34,"value":1,"semantic":"original flag"},
+            {"property_id":31,"value":80,"semantic":"mixlevel; policy byte+2 observed0 plus80"},
+            {"property_id":36,"value":0,"semantic":"NOT_CAPTURED"},
+            {"property_id":25,"value":4,"semantic":"LoRo center mix code"},
+            {"property_id":26,"value":4,"semantic":"LoRo surround mix code"},
+            {"property_id":20,"value":2,"semantic":"preferred downmix mode LoRo"},
+            {"property_id":23,"value":4,"semantic":"LtRt center mix code"},
+            {"property_id":24,"value":4,"semantic":"LtRt surround mix code"},
+            {"property_id":27,"value":0,"semantic":"dsurexmod"},
+            {"property_id":29,"value":0,"semantic":"NOT_CAPTURED"},
+            {"property_id":15,"value":0,"semantic":"RF DRC profile none"},
+            {"property_id":13,"value":0,"semantic":"Line DRC profile none"},
+            {"property_id":7,"value":1,"semantic":"phase control literal"}
+        ])
+    );
+    assert_eq!(
+        property_pair_authority["property29_semantic_name"],
+        "NOT_CAPTURED"
+    );
+    assert_eq!(
+        property_pair_authority["property36_semantic_name"],
+        "NOT_CAPTURED"
+    );
+    assert_eq!(
+        property_pair_authority["scope_partition"]["current_run109_none_drc"],
+        json!({"property3":1024,"property15":0,"property13":0})
+    );
+    assert_eq!(
+        property_pair_authority["scope_partition"]["older_music_light_scope"]["property15"],
+        4
+    );
+    assert_eq!(
+        property_pair_authority["scope_partition"]["older_music_light_scope"]["property13"],
+        4
+    );
+    assert_eq!(
+        property_pair_authority["scope_partition"]["cross_scope_substitution_allowed"],
+        false
+    );
+    assert_eq!(property_pair_authority["production_allowed"], false);
+    assert_eq!(
+        property_pair_authority["raw_pcm_or_metadata_delivered"],
+        false
+    );
+    assert_eq!(property_pair_authority["private_auth"], "EXCLUDED");
+
     let framing = read_json("REQUIRED-FRAMING-RULES.json");
     assert_eq!(framing["status"], "BLOCKED_INCOMPLETE");
     assert_eq!(
@@ -2020,11 +2124,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let independent = read_json("INDEPENDENT-CHECK.json");
     assert_eq!(
         independent["schema"],
-        "spatial-control-cold-serializer-blocker-independent-check.v20"
+        "spatial-control-cold-serializer-blocker-independent-check.v22"
     );
     assert_eq!(independent["all_pass"], true);
     let checks = independent["checks"].as_array().expect("checks array");
-    assert_eq!(checks.len(), 28);
+    assert_eq!(checks.len(), 29);
     assert!(checks.iter().all(|check| check["pass"] == true));
     assert_eq!(
         checks
@@ -2054,6 +2158,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "external_metadata_structure_and_remaining_fields",
             "external_metadata_helper_semantics",
             "portable_contract_and_remaining_semantics_no_hit",
+            "parent_property_pairs_authority",
             "no_entrypoint",
             "no_bytes",
             "framing_rules",

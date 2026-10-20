@@ -1,0 +1,75 @@
+{
+  "schema": "sanitized-parent-property-pairs-authority.v2",
+  "run_identity": "music_rectangular_native_109",
+  "config_identity": {
+    "job_xml_bytes": 2133,
+    "job_xml_sha256": "d0a68be5fc5e6046c64a19beb01a23a4c6a7af11ab3dbde6e96ad96b707b6fee",
+    "dee_exe_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "atmos_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "adm_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "data_rate_kbps": 1024,
+    "line_mode_drc_profile": "none",
+    "rf_mode_drc_profile": "none",
+    "preferred_downmix_mode": "loro",
+    "mix_levels": "four explicit -3 dB values"
+  },
+  "native_boundary": {
+    "producer_rva": "0x1ab520",
+    "consumer_rva": "0x1b2100",
+    "callsite_rva": "0x1ab7ac",
+    "caller_return_rva": "0x1ab7b1",
+    "pair_count": 16
+  },
+  "pairs": [
+    {"property_id": 3, "value": 1024, "semantic": "data rate kbps"},
+    {"property_id": 18, "value": 17, "semantic": "dialnorm derived from current measured loudness"},
+    {"property_id": 33, "value": 1, "semantic": "copyright flag"},
+    {"property_id": 34, "value": 1, "semantic": "original flag"},
+    {"property_id": 31, "value": 80, "semantic": "mixlevel; policy byte+2 observed0 plus80"},
+    {"property_id": 36, "value": 0, "semantic": "NOT_CAPTURED"},
+    {"property_id": 25, "value": 4, "semantic": "LoRo center mix code"},
+    {"property_id": 26, "value": 4, "semantic": "LoRo surround mix code"},
+    {"property_id": 20, "value": 2, "semantic": "preferred downmix mode LoRo"},
+    {"property_id": 23, "value": 4, "semantic": "LtRt center mix code"},
+    {"property_id": 24, "value": 4, "semantic": "LtRt surround mix code"},
+    {"property_id": 27, "value": 0, "semantic": "dsurexmod"},
+    {"property_id": 29, "value": 0, "semantic": "NOT_CAPTURED"},
+    {"property_id": 15, "value": 0, "semantic": "RF DRC profile none"},
+    {"property_id": 13, "value": 0, "semantic": "Line DRC profile none"},
+    {"property_id": 7, "value": 1, "semantic": "phase control literal"}
+  ],
+  "supersedes": [
+    "property12=data_rate for this parent cold table",
+    "current property15/property13 values4 from a different music_light configuration"
+  ],
+  "scope_partition": {
+    "current_run109_none_drc": {
+      "property3": 1024,
+      "property15": 0,
+      "property13": 0
+    },
+    "older_music_light_scope": {
+      "property15": 4,
+      "property13": 4,
+      "status": "RETAIN_ONLY_WITH_ITS_ORIGINAL_RUN_AND_CONFIG_IDENTITY"
+    },
+    "cross_scope_substitution_allowed": false,
+    "v20_current_semantic_labels": "SUPERSEDED"
+  },
+  "source_evidence_identity": {
+    "dynamic_pairs_sha256": "9b1bc37583c6e95508fcd4a6d643d72d7c4142e764c39930ad1863c02a539fc9",
+    "observer_sha256": "7b745d0bed74ab4fd709f100600ad6c5b82e9b5d47ec8aea6980bbdbf35606bd"
+  },
+  "reference_output": {
+    "mp4_sha256": "f34de8f9af712b439488652cbfdced0f36a50ebb095155753e92a472a1ac5d66",
+    "extracted_ec3_sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "frames": 4247,
+    "bytes": 17395712,
+    "baseline_match": true
+  },
+  "property29_semantic_name": "NOT_CAPTURED",
+  "property36_semantic_name": "NOT_CAPTURED",
+  "production_allowed": false,
+  "raw_pcm_or_metadata_delivered": false,
+  "private_auth": "EXCLUDED"
+}

@@ -6,6 +6,10 @@
     "measurement_export_0x17a830_sha256": "7a8313327e8542ae98193c26b984423deee13040cb3ed213d8c3b15b86fe1d19",
     "measurement_field_names_sha256": "5d971b353699dcefd6a0b0c2a28977ecf920207347c4fd5db09026eaca2cf20c"
   },
+  "superseded_current_property_claims": {
+    "data_rate_property12": "SUPERSEDED_BY_RUN109_PROPERTY3_1024",
+    "property15_property13_value4": "SUPERSEDED_FOR_CURRENT_NONE_DRC_CONFIG_BY_RUN109_VALUES0"
+  },
   "policy_property_dataflow": [
     {
       "property_id": 29,
