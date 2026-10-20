@@ -1,0 +1,26 @@
+{
+  "schema": "output-owner-provider.v1",
+  "profile_id": "keyless-5.1-eac3-4096.v1",
+  "frame_bytes": 4096,
+  "suppressed_sources": 2,
+  "expected_sources": 4249,
+  "expected_published_aus": 4247,
+  "expected_product_bytes": 17395712,
+  "crc16": {
+    "polynomial": 32773,
+    "init": 0,
+    "xorout": 0,
+    "coverage": "frame[2:4096]",
+    "residual": 0
+  },
+  "staging_name_template": "attempt-{attempt_id}.ec3.partial",
+  "intent_name_template": "attempt-{attempt_id}.finalize-intent.json",
+  "append_offset": "au_index * 4096",
+  "ledger_digest": {
+    "domain_prefix_ascii_nul": "OutputDurableLedgerV1\\u0000",
+    "count": "U32LE",
+    "entry_order": ["au_index U64LE", "offset U64LE", "length U32LE", "frame_sha256 raw32", "crc_residual U16LE"]
+  },
+  "finalize_intent_encoding": "UTF-8 JSON, sort_keys=true, separators comma/colon, ensure_ascii=false, no BOM, no newline",
+  "production_allowed": false
+}

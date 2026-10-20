@@ -1,0 +1,30 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "identity": "output-owner-root.keyless-public.test-only.v1",
+  "status": "OUTPUT_PROPOSAL_READY_CANDIDATE_TEST_ONLY",
+  "delivery_scope": "internal test/proposal seam only",
+  "files": [
+    { "file": "OUTPUT-OWNER-CONTRACT.md", "bytes": 6457, "sha256": "9e37b12d64611d19e4980948a22bce40ae20f358b5b503964623140ffa7b5a5b" },
+    { "file": "output-publication-provider.json", "bytes": 915, "sha256": "8ee281ad7c0f524dc956b4a253fb3fa5240c8d2b32f40e99f8c24743de571458" },
+    { "file": "synthetic-output-provider.json", "bytes": 916, "sha256": "0530fd05f6ee0dd0255837bb9eef683be35f65ec7d8a64adbf6667db931637be" },
+    { "file": "OUTPUT-PROPOSALS-AND-RECEIPTS.schema.json", "bytes": 2033, "sha256": "f6e5f5361595515ec6934924b02cc6777789c31816ead4459b14b67611253272" },
+    { "file": "OUTPUT-OWNER-VECTORS.json", "bytes": 120441, "sha256": "1fcc817a439e1212490e53bcd8a0234d91c7a76480ae943de3d6fcd56d9b81ae" },
+    { "file": "LOCAL-FILESYSTEM-PROBE.json", "bytes": 2909, "sha256": "44777dfd8ca429f49db4e4d1cf2a15f5fbb988cdef4955ee95cea256bf27ba8f" },
+    { "file": "INDEPENDENT-CHECK.json", "bytes": 1916, "sha256": "4480400294257a2de5ef250bd8b0a9c92c7b135c12a1ce7a21da32d47e36cb4b" }
+  ],
+  "source_evidence": {
+    "research_manifest_sha256": "b607f207a3d9c3bea636cc0cc913d72b21d4781ca3be498793cdfc7845f1d79a",
+    "expected_used_as_seed": false,
+    "native_receipt_schema": "NOT_OBSERVED",
+    "private_auth_hmac_vendor_key": "excluded"
+  },
+  "hard_boundaries": {
+    "production_allowed": false,
+    "real_4249_source_publication": "NOT_RUN",
+    "power_loss_recovery": "NOT_RUN",
+    "product_execution": "NOT_RUN",
+    "parent_directory_fsync": "UNQUALIFIED",
+    "final_exposure_receipt": "NOT_EMITTED",
+    "metadata_eof_is_durable_receipt": false
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "schema": "local-output-filesystem-probe.v1",
+  "append_successes": 3,
+  "short_write_loop_calls": [
+    257,
+    257,
+    257,
+    257,
+    257,
+    257,
+    257,
+    257,
+    257,
+    257,
+    257,
+    257,
+    257,
+    257,
+    257,
+    241
+  ],
+  "staging_before_finalize_bytes": 12288,
+  "finalize_result": {
+    "status": "ERROR",
+    "error": "PARENT_FSYNC_UNSUPPORTED",
+    "receipt": null,
+    "staging_exists": false,
+    "product_exists": true,
+    "intent_exists": true,
+    "attempt_disposition": "RETIRED_RECOVERY_REQUIRED"
+  },
+  "parent_fsync_qualified": false,
+  "readback_corruption": {
+    "status": "ERROR",
+    "error": "READBACK_HASH",
+    "receipt": null,
+    "writes": [
+      257,
+      257,
+      257,
+      257,
+      257,
+      257,
+      257,
+      257,
+      257,
+      257,
+      257,
+      257,
+      257,
+      257,
+      257,
+      241
+    ],
+    "physical_length": 4096,
+    "physical_sha256": "51d1e9e58f2e45664904c0fea4186ec0a4231ba9660723a0eff5d5c31015d224",
+    "mutation": {
+      "file": "readback_corruption.partial",
+      "absolute_byte_offset": 17,
+      "frame_relative_byte_offset": 17,
+      "operation": "XOR",
+      "operand_hex": "01",
+      "before_hex": "5f",
+      "after_hex": "5e"
+    },
+    "attempt_disposition": "ABANDON"
+  },
+  "production_qualification": false,
+  "work_files": [
+    {
+      "name": "attempt-synthetic-0.finalize-intent.json",
+      "bytes": 217,
+      "sha256": "176207a5d06f604e1aca77ce46e909edb22c96ac153caeece3153eaf25c757b0"
+    },
+    {
+      "name": "flush_failure.partial",
+      "bytes": 4096,
+      "sha256": "59750148f8a0fd149f01c43f58de22efc3dd0bcfd6eaffe41139982588535938"
+    },
+    {
+      "name": "parent-fsync-failure-intent.json",
+      "bytes": 217,
+      "sha256": "176207a5d06f604e1aca77ce46e909edb22c96ac153caeece3153eaf25c757b0"
+    },
+    {
+      "name": "parent-fsync-failure-product.ec3",
+      "bytes": 12288,
+      "sha256": "ce35cd5f6c95f86e70787ebcf7c12c5458f8ef4ef139d80be9cab012cccac3ec"
+    },
+    {
+      "name": "product.ec3",
+      "bytes": 12288,
+      "sha256": "ce35cd5f6c95f86e70787ebcf7c12c5458f8ef4ef139d80be9cab012cccac3ec"
+    },
+    {
+      "name": "readback_corruption.partial",
+      "bytes": 4096,
+      "sha256": "51d1e9e58f2e45664904c0fea4186ec0a4231ba9660723a0eff5d5c31015d224"
+    },
+    {
+      "name": "rename-failure-intent.json",
+      "bytes": 217,
+      "sha256": "176207a5d06f604e1aca77ce46e909edb22c96ac153caeece3153eaf25c757b0"
+    },
+    {
+      "name": "rename-failure.partial",
+      "bytes": 12288,
+      "sha256": "ce35cd5f6c95f86e70787ebcf7c12c5458f8ef4ef139d80be9cab012cccac3ec"
+    },
+    {
+      "name": "zero_write.partial",
+      "bytes": 514,
+      "sha256": "c802ad8785c49a114472d499379d0d5662d5332bfacaca3499b8ddfd026baf40"
+    }
+  ]
+}

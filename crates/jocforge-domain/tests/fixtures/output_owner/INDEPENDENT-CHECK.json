@@ -1,0 +1,112 @@
+{
+  "schema": "output-owner-independent-check.v1",
+  "checks": [
+    {
+      "id": "provider_identity",
+      "pass": true
+    },
+    {
+      "id": "cold_identity",
+      "pass": true
+    },
+    {
+      "id": "source_0",
+      "pass": true
+    },
+    {
+      "id": "source_1",
+      "pass": true
+    },
+    {
+      "id": "source_2",
+      "pass": true
+    },
+    {
+      "id": "source_3",
+      "pass": true
+    },
+    {
+      "id": "source_4",
+      "pass": true
+    },
+    {
+      "id": "terminal_state",
+      "pass": true
+    },
+    {
+      "id": "ledger_preimage",
+      "pass": true
+    },
+    {
+      "id": "ledger_digest",
+      "pass": true
+    },
+    {
+      "id": "intent_canonical",
+      "pass": true
+    },
+    {
+      "id": "intent_observed_file",
+      "pass": true
+    },
+    {
+      "id": "short_write_loop",
+      "pass": true
+    },
+    {
+      "id": "crc_failure",
+      "pass": true
+    },
+    {
+      "id": "hash_failure",
+      "pass": true
+    },
+    {
+      "id": "zero_write",
+      "pass": true
+    },
+    {
+      "id": "readback_corruption",
+      "pass": true
+    },
+    {
+      "id": "flush_failure",
+      "pass": true
+    },
+    {
+      "id": "rename_failure",
+      "pass": true
+    },
+    {
+      "id": "parent_fsync_failure",
+      "pass": true
+    },
+    {
+      "id": "readback_corruption_patch",
+      "pass": true
+    },
+    {
+      "id": "readback_corruption_probe_binding",
+      "pass": true
+    },
+    {
+      "id": "local_finalize_boundary",
+      "pass": true
+    },
+    {
+      "id": "physical_files",
+      "pass": true
+    },
+    {
+      "id": "recovery_classifications",
+      "pass": true
+    },
+    {
+      "id": "not_run_boundaries",
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "imports_output_root": false,
+  "expected_used_as_seed": false
+}

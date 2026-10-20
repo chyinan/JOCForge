@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "output-owner-proposals-and-receipts.v1",
+  "$defs": {
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "append_proposal": {
+      "type": "object",
+      "required": ["schema", "attempt_id", "staging_name", "source_index", "dispatch", "au_index", "expected_offset", "frame_bytes", "frame_sha256", "frame_hex", "before_state_sha256", "proposed_after_sha256", "ledger_entry"],
+      "properties": {"schema": {"const": "output-append-proposal.v1"}, "frame_bytes": {"const": 4096}}
+    },
+    "durable_append_receipt": {
+      "type": "object",
+      "required": ["schema", "proposal_sha256", "attempt_id", "au_index", "offset", "bytes_written", "write_calls", "readback_sha256", "crc_residual", "file_fsync", "durable"],
+      "properties": {"schema": {"const": "durable-append-receipt.v1"}, "bytes_written": {"const": 4096}, "crc_residual": {"const": 0}, "file_fsync": {"const": true}, "durable": {"const": true}}
+    },
+    "finalize_proposal": {
+      "type": "object",
+      "required": ["schema", "attempt_id", "staging_name", "product_name", "state_sha256", "expected_length", "ledger_sha256"],
+      "properties": {"schema": {"const": "output-finalize-proposal.v1"}}
+    },
+    "final_exposure_receipt": {
+      "type": "object",
+      "required": ["schema", "proposal_sha256", "attempt_id", "product_sha256", "product_length", "atomic_replace", "parent_fsync"],
+      "properties": {"schema": {"const": "final-exposure-receipt.v1"}, "atomic_replace": {"const": true}, "parent_fsync": {"const": true}}
+    },
+    "finalize_intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["attempt_id", "product_length", "product_sha256", "state_sha256"],
+      "properties": {
+        "attempt_id": {"type": "string", "minLength": 1},
+        "product_length": {"type": "integer", "minimum": 0},
+        "product_sha256": {"$ref": "#/$defs/sha"},
+        "state_sha256": {"$ref": "#/$defs/sha"}
+      }
+    }
+  }
+}
