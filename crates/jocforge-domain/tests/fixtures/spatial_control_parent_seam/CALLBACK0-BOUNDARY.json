@@ -1,0 +1,266 @@
+{
+  "schema": "spatial-control-callback0-sanitized-boundary.v1",
+  "scope": {
+    "callback": 0,
+    "generation": 1,
+    "phase": "NORMAL",
+    "actual_samples": 1536,
+    "stage_receipt_count": 13,
+    "stage_order": [
+      "source",
+      "controls",
+      "render_installed48",
+      "flags",
+      "feature",
+      "selector",
+      "u04",
+      "outer_assignment",
+      "matrix_writer_set",
+      "component",
+      "lfe_ring",
+      "reader56_target",
+      "receiver"
+    ],
+    "production_allowed": false,
+    "commit_count": 0,
+    "state_delta": null
+  },
+  "stage_receipts": [
+    {
+      "stage": "source",
+      "generation": 1,
+      "input_digest": "bfbf03b0b99ebe5ef3e03fc134e42b4606e1da0ecefb98c3028695e1b9ec9ec3",
+      "output_digest": "28388740d7a569c8d1260f9c7944f13c36cc205f92a96267f0296258592149c4",
+      "input_bytes": 52,
+      "output_bytes": 233472,
+      "status": "PASS"
+    },
+    {
+      "stage": "controls",
+      "generation": 1,
+      "input_digest": "28388740d7a569c8d1260f9c7944f13c36cc205f92a96267f0296258592149c4",
+      "output_digest": "de9e58322a86f38194a8f9529b2c67c2e9bebd8e21e4e55faf04f154cf5681c4",
+      "input_bytes": 233472,
+      "output_bytes": 1976,
+      "status": "PASS"
+    },
+    {
+      "stage": "render_installed48",
+      "generation": 1,
+      "input_digest": "73e7f8a1da4a0009e3ce58644a0a11eeef1b920a74f1b05a9910f82e5cc27844",
+      "output_digest": "b566d26097f9fe1b38ae7225c674b9db013d88bcb26a2b87ed31026eb73ef948",
+      "input_bytes": 235448,
+      "output_bytes": 589824,
+      "status": "PASS"
+    },
+    {
+      "stage": "flags",
+      "generation": 1,
+      "input_digest": "b566d26097f9fe1b38ae7225c674b9db013d88bcb26a2b87ed31026eb73ef948",
+      "output_digest": "5bf90435cd45d0475cbb0ace7e7e3a672ed2a3a4984ad3e8624d8878725a9c2e",
+      "input_bytes": 589824,
+      "output_bytes": 48,
+      "status": "PASS"
+    },
+    {
+      "stage": "feature",
+      "generation": 1,
+      "input_digest": "d5adc44b3eb4f810c70acfb7336f77009362ff02d10221ddf3c0df18b4ccd024",
+      "output_digest": "b26ebf30c610c98c51e945035d08408563fc0cbf7d049f0e43c3205e5d620ade",
+      "input_bytes": 589872,
+      "output_bytes": 3072,
+      "status": "PASS"
+    },
+    {
+      "stage": "selector",
+      "generation": 1,
+      "input_digest": "cb92fb2fd2d6d399af0410980954b249bced34081ff40170441183805d2cab81",
+      "output_digest": "5f47b7e9f37b4d96dfaf4fe0b65cf7004f537eb9ac8eda6babc7204584bfd062",
+      "input_bytes": 3120,
+      "output_bytes": 8,
+      "status": "PASS"
+    },
+    {
+      "stage": "u04",
+      "generation": 1,
+      "input_digest": "5f47b7e9f37b4d96dfaf4fe0b65cf7004f537eb9ac8eda6babc7204584bfd062",
+      "output_digest": "c0228a5db9ec3eeaf647447ff2d6d897c9d50366502a991e90a8c5bbc41fc46b",
+      "input_bytes": 8,
+      "output_bytes": 16,
+      "status": "PASS"
+    },
+    {
+      "stage": "outer_assignment",
+      "generation": 1,
+      "input_digest": "0e340294e74a494414fc93f98d09e4aaa153c1a73a9208f781455c26b267c11a",
+      "output_digest": "c760053c33b4ecd82a61d8f690a205d070d6f4e62a2b637f0b0affd5a83e1d2c",
+      "input_bytes": 64,
+      "output_bytes": 84,
+      "status": "PASS"
+    },
+    {
+      "stage": "matrix_writer_set",
+      "generation": 1,
+      "input_digest": "c760053c33b4ecd82a61d8f690a205d070d6f4e62a2b637f0b0affd5a83e1d2c",
+      "output_digest": "fb356cf79c1312c42e24cc3b4d19395636a0267c3432f99656847018271a1018",
+      "input_bytes": 84,
+      "output_bytes": 3269,
+      "status": "PASS"
+    },
+    {
+      "stage": "component",
+      "generation": 1,
+      "input_digest": "e7c10644b0309aa15a3f350dda2845937f4e94300a42c816d033cb73176c0b86",
+      "output_digest": "ac384aab962c2e95da4e64e58edbdf9a96dda3ebb6d0bc4d77ee2c1df7471059",
+      "input_bytes": 592704,
+      "output_bytes": 92160,
+      "status": "PASS"
+    },
+    {
+      "stage": "lfe_ring",
+      "generation": 1,
+      "input_digest": "28388740d7a569c8d1260f9c7944f13c36cc205f92a96267f0296258592149c4",
+      "output_digest": "ead83831f4e4201cc22c4b71a7962a00020a96bfadef28e4c1035dca4084f533",
+      "input_bytes": 233472,
+      "output_bytes": 6144,
+      "status": "PASS"
+    },
+    {
+      "stage": "reader56_target",
+      "generation": 1,
+      "input_digest": "de9e58322a86f38194a8f9529b2c67c2e9bebd8e21e4e55faf04f154cf5681c4",
+      "output_digest": "55acbabdb51d9f1a2e301f1a468c538d85784583fc538606a643ccd1103f2c97",
+      "input_bytes": 1976,
+      "output_bytes": 1280,
+      "status": "PASS"
+    },
+    {
+      "stage": "receiver",
+      "generation": 1,
+      "input_digest": "b958f4a6943607f4b023c3a14988c3795663326119e0e98a86ab066ca2b21168",
+      "output_digest": "e12263d2ba7ba8865091f61f5bd2fc85386b0c91ade1f596a179ee589e642dfd",
+      "input_bytes": 99584,
+      "output_bytes": 36864,
+      "status": "PASS"
+    }
+  ],
+  "materials": {
+    "installed48": {
+      "shape": [
+        48,
+        3072
+      ],
+      "words": 147456,
+      "sha256": "b566d26097f9fe1b38ae7225c674b9db013d88bcb26a2b87ed31026eb73ef948",
+      "material": "NOT_DELIVERED"
+    },
+    "matrix": {
+      "shape": [
+        15,
+        48
+      ],
+      "words": 720,
+      "sha256": "50c50d73f349ce521e7cf1a3c8f9a8c5e0492c79b68a2a07b97cd90fe02dec08",
+      "material": "NOT_DELIVERED"
+    },
+    "targets": {
+      "shape": [
+        16,
+        6
+      ],
+      "words": 96,
+      "sha256": "094e326d46a6b6229c9b189d7e7cca0b300ad7c0fa513a8d22abf4f7ccaae0d7",
+      "material": "NOT_DELIVERED"
+    },
+    "markers": {
+      "count": 15,
+      "sha256": "855dce434bf916976b315ca7e14fca95223a876e07d2820cc3a644efd206e9fa",
+      "material": "NOT_DELIVERED"
+    },
+    "writer_set": {
+      "count": 4,
+      "sha256": "1b050049ac6f7ceec74fc9b5808636e8d8dbf6d856744319aac06309af8aefda",
+      "material": "NOT_DELIVERED"
+    }
+  },
+  "fixture_state_identity": {
+    "before_sha256": "ed7e8e880e4f5991a9e0c95ed90fa77880da9e8d46f98d1cddb2c70e93e1ee91",
+    "after_sha256": "f93b435390e150cefe77cda84b72f8b150245e5ae085cab7b60e87c448bc8d06",
+    "before_preimage": "NOT_DELIVERED",
+    "after_preimage": "NOT_DELIVERED",
+    "canonical_state_independently_replayable": false
+  },
+  "ownership": {
+    "f04_receiver_qmf": "UNIQUE_OWNER",
+    "parent_receiver_qmf_mutated": false
+  },
+  "failure_vectors": [
+    {
+      "id": "after_selector",
+      "trigger": "after selector proposal, before parent commit",
+      "production_parameter": false,
+      "expected": {
+        "receipt": null,
+        "proposal": null,
+        "parent_state_unchanged": true,
+        "f04_before_unchanged": true,
+        "commit_count": 0,
+        "programme_result": "RETIRED"
+      }
+    },
+    {
+      "id": "after_u04",
+      "trigger": "after u04 proposal, before parent commit",
+      "production_parameter": false,
+      "expected": {
+        "receipt": null,
+        "proposal": null,
+        "parent_state_unchanged": true,
+        "f04_before_unchanged": true,
+        "commit_count": 0,
+        "programme_result": "RETIRED"
+      }
+    },
+    {
+      "id": "after_outer_assignment",
+      "trigger": "after outer_assignment proposal, before parent commit",
+      "production_parameter": false,
+      "expected": {
+        "receipt": null,
+        "proposal": null,
+        "parent_state_unchanged": true,
+        "f04_before_unchanged": true,
+        "commit_count": 0,
+        "programme_result": "RETIRED"
+      }
+    },
+    {
+      "id": "after_reader56_target",
+      "trigger": "after reader56_target proposal, before parent commit",
+      "production_parameter": false,
+      "expected": {
+        "receipt": null,
+        "proposal": null,
+        "parent_state_unchanged": true,
+        "f04_before_unchanged": true,
+        "commit_count": 0,
+        "programme_result": "RETIRED"
+      }
+    }
+  ],
+  "excluded_claims": {
+    "seven_callbacks": "UNVERIFIED_NOT_DELIVERED",
+    "ninety_one_stage_receipts": "UNVERIFIED_NOT_DELIVERED",
+    "cold_preimage": "NOT_DELIVERED",
+    "source_preimage": "NOT_DELIVERED",
+    "numeric_replay": "NOT_RUN",
+    "real_adm": "NOT_RUN",
+    "production_receipt": "BLOCKED",
+    "global_transaction": "BLOCKED"
+  },
+  "verification_boundary": {
+    "kind": "INPUT_IDENTITY_ONLY_NOT_NUMERIC_REPLAY",
+    "expected_used_as_seed": false,
+    "raw_research_material_included": false
+  }
+}

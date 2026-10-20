@@ -1,0 +1,31 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "identity": "spatial-control-parent.callback0-amendment.v1",
+  "status": "SYNTHETIC_BOUNDARY_FIXTURE_READY_TEST_ONLY",
+  "delivery_scope": "internal test seam only",
+  "files": [
+    { "file": "SPATIAL-CONTROL-SEAM-AMENDMENT.md", "bytes": 2071, "sha256": "0f28f6cbc6c8ca53db5e2fcdeb99adc62565a1739a221c1405e296f8f7baab09" },
+    { "file": "IMPLEMENTER-SUPPLEMENT-CANDIDATE.md", "bytes": 420, "sha256": "75f8806256c1fa4e87d3237cc9ad77c808612081b0b77d4cf37f016a7659addf" },
+    { "file": "CALLBACK0-BOUNDARY.json", "bytes": 8544, "sha256": "69bc43048187a59a287b9cdaafdad8d7c9fedd59799bde7ebee4411405148dbb" },
+    { "file": "INDEPENDENT-CHECK.json", "bytes": 930, "sha256": "4974ef1caa7637c9e1fc3a221a7ac742498f7cfac1d5c999a1bbf3d459d9026a" }
+  ],
+  "source_evidence": {
+    "research_manifest_sha256": "42e86e3fdc95f15dc26e6503065c5170f11290782e1d6565e0fc43f5b166c9f6",
+    "expected_used_as_seed": false,
+    "raw_research_accessed": false,
+    "independent_numeric_replay": false,
+    "private_auth": "excluded"
+  },
+  "hard_boundaries": {
+    "scope": "callback0 generation1 NORMAL 13 stage summaries only",
+    "seven_callbacks": "UNVERIFIED_NOT_DELIVERED",
+    "ninety_one_stage_receipts": "UNVERIFIED_NOT_DELIVERED",
+    "cold_preimage": "NOT_DELIVERED",
+    "source_preimage": "NOT_DELIVERED",
+    "production_allowed": false,
+    "commit_count": 0,
+    "state_delta": null,
+    "production_spatial_control_receipt": "blocked",
+    "global_callback_transaction": "blocked"
+  }
+}
