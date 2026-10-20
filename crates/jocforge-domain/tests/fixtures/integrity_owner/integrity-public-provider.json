@@ -1,0 +1,12 @@
+{
+  "schema": "public-integrity-provider.v1",
+  "profile_id": "keyless-crc32-crc8-crc16.v1",
+  "crc32": {"name": "CRC32/ISO-HDLC", "init": 4294967295, "reflected_polynomial": 3988292384, "xorout": 4294967295, "check_123456789": 3421780262},
+  "crc8": {"name": "CRC8/SMBUS", "init": 0, "polynomial": 7, "xorout": 0, "check_123456789": 244},
+  "crc16": {"name": "EAC3 CRC16", "init": 0, "polynomial": 32773, "reflected": false, "xorout": 0, "coverage_generate": "frame[2:4094]", "coverage_verify": "frame[2:4096]", "residual": 0},
+  "frame_bytes": 4096,
+  "suppressed_sources": 2,
+  "primary_bytes": 4,
+  "secondary_bytes": 1,
+  "private_authentication_material": "BLOCKED_AND_EXCLUDED"
+}

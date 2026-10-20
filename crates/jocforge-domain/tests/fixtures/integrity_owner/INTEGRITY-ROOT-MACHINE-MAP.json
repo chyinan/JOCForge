@@ -1,0 +1,57 @@
+{
+  "schema": "integrity-owner-machine-map.v1",
+  "owner_id": "integrity",
+  "profile_id": "keyless-crc32-crc8-crc16.v1",
+  "authority": {
+    "programme_root_owns": [
+      "accepted source order",
+      "source/dispatch/AU clock join",
+      "provider identity",
+      "committed generation",
+      "published AU count",
+      "finalized flag"
+    ],
+    "stage_functions_own": [
+      "public CRC calculation",
+      "checksum slot replacement",
+      "frame carrier insertion",
+      "E-AC-3 CRC generation and residual check"
+    ],
+    "not_owned": [
+      "private authentication key",
+      "vendor HMAC state",
+      "frame construction outside the integrity carrier",
+      "metadata selection policy"
+    ]
+  },
+  "clock": {
+    "source_index": "s",
+    "dispatch": "s + 1",
+    "au_index": "null when s < 2, otherwise s - 2",
+    "suppressed_source_count": 2
+  },
+  "transaction_order": ["SOURCE", "DISPATCH", "AU", "COMMIT"],
+  "commit": {
+    "count_on_success": 1,
+    "count_on_failure": 0,
+    "state_change_before_commit": false,
+    "receipts_visible_before_commit": false
+  },
+  "fatal": {
+    "owner_state_unchanged": true,
+    "receipts_emitted": false,
+    "programme_result": "RETIRED",
+    "same_attempt_retry": "FORBIDDEN",
+    "new_attempt_retry": "REQUIRES_COLD_RESET"
+  },
+  "eof": {
+    "preconditions": [
+      "next_source_index equals expected source count",
+      "published_au_count equals max(0, expected source count - 2)",
+      "finalized is false"
+    ],
+    "state_effect": "generation increments once and finalized becomes true",
+    "extra_integrity_outputs": 0,
+    "metadata_only_flush": false
+  }
+}

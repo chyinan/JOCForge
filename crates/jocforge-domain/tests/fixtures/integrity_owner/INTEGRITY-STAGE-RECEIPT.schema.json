@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "integrity-stage-receipt.v1",
+  "title": "Public integrity stage receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "owner_id", "stage", "programme_id", "attempt",
+    "transaction_id", "source_index", "dispatch", "au_index",
+    "before_generation", "before_sha256", "proposed_after_generation",
+    "proposed_after_sha256", "provider_id", "provider_sha256",
+    "input_sha256", "output_sha256"
+  ],
+  "properties": {
+    "schema": { "const": "integrity-stage-receipt.v1" },
+    "owner_id": { "const": "integrity" },
+    "stage": { "enum": ["SOURCE", "DISPATCH", "AU"] },
+    "programme_id": { "type": "string", "minLength": 1 },
+    "attempt": { "type": "integer", "minimum": 0 },
+    "transaction_id": { "type": "string", "minLength": 1 },
+    "source_index": { "type": "integer", "minimum": 0 },
+    "dispatch": { "type": "integer", "minimum": 1 },
+    "au_index": { "type": ["integer", "null"], "minimum": 0 },
+    "before_generation": { "type": "integer", "minimum": 0 },
+    "before_sha256": { "$ref": "#/$defs/sha256" },
+    "proposed_after_generation": { "type": "integer", "minimum": 1 },
+    "proposed_after_sha256": { "$ref": "#/$defs/sha256" },
+    "provider_id": { "const": "keyless-crc32-crc8-crc16.v1" },
+    "provider_sha256": { "$ref": "#/$defs/sha256" },
+    "input_sha256": { "$ref": "#/$defs/sha256" },
+    "output_sha256": { "$ref": "#/$defs/sha256" },
+    "primary_hex": { "type": "string", "pattern": "^[0-9a-f]{8}$" },
+    "secondary_hex": { "type": "string", "pattern": "^[0-9a-f]{2}$" },
+    "message_sha256": { "$ref": "#/$defs/sha256" },
+    "container_bytes": { "type": "integer", "minimum": 9 },
+    "container_offset": { "type": "integer", "minimum": 2 },
+    "frame_bytes": { "const": 4096 },
+    "crc16": { "type": "integer", "minimum": 0, "maximum": 65535 },
+    "crc_residual": { "const": 0 },
+    "published": { "type": "boolean" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "stage": { "const": "SOURCE" } } },
+      "then": { "required": ["primary_hex", "secondary_hex", "message_sha256", "container_bytes"] }
+    },
+    {
+      "if": { "properties": { "stage": { "const": "DISPATCH" } } },
+      "then": { "required": ["container_offset", "frame_bytes"] }
+    },
+    {
+      "if": { "properties": { "stage": { "const": "AU" } } },
+      "then": { "required": ["crc16", "crc_residual", "published"] }
+    }
+  ],
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

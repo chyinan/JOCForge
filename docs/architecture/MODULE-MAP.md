@@ -23,8 +23,9 @@
 | domain/codec/core_layout | 5.1 六 carrier 边界 | 空壳；无 sample mapping |
 | domain/codec/substream_topology | 1 independent / 0 dependent 边界 | 空壳；无 writer |
 | domain/codec/rate_profile | 1,024 kbps / 6 blocks / 1,536 samples / 4,096 bytes 边界 | 空壳；无 rate plan |
-| domain/integrity/crc16 | 公共 CRC16 production 边界 | 空壳；无多项式或实现 |
-| domain/integrity/keyless_checksum | F14K keyless receipt 边界 | 空壳；无 checksum 实现 |
+| domain/integrity/crc16 | E-AC-3 CRC16 生成和 residual 检查 | 多项式 `0x8005`、初值 0、MSB-first；当前由 F14K keyless root 使用 |
+| domain/integrity/keyless_checksum | 公共 keyless profile 校验、CRC32 和 CRC8 | 仅接受 `keyless-crc32-crc8-crc16.v1`；拒绝其他 profile，不接触认证材料 |
+| domain/integrity/programme_owner | F14K 单 owner 状态、SOURCE/DISPATCH/AU stages 和局部提交 | keyless root 局部验证；全局 CallbackTransaction、私有认证和 native receipt 格式仍未实现 |
 | domain/timeline | 已批准 callback/source/writer/AU 时钟类型边界 | 空壳；关系见 CLOCK-MAP |
 | domain/publication | 不可变待发布结果与声明 | 空壳 |
 | domain/transaction | 纯提交/撤销决策 | 空壳 |

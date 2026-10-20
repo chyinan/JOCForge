@@ -30,4 +30,12 @@ production 不依赖 validation。E-AC-3 structural parser、channel-map validat
 
 ## AD-008 keyless publication
 
-私有厂商 key 不在产品范围。F14K 只产生当前 frame 的公共完整性 receipt。F15 是 staging stream、durable ledger 和发布计数的唯一 commit owner。
+私有厂商 key 不在产品范围。F14K 只支持公开 keyless CRC profile。integrity owner 保留 profile/provider identity、source 进度、published AU count 和 finalized 状态。每次调用依次执行 SOURCE、DISPATCH、AU，并在 AU 校验成功后提交一次本地 owner state。
+
+integrity owner 的局部提交不发布 frame，也不代表全局 CALLBACK commit。F15 仍是 staging stream、durable ledger 和已发布 AU 计数的输出 commit owner。私有认证 profile 和 native receipt 格式保持 blocked。
+
+## AD-009 integrity owner 与 callback 协调分离
+
+keyless integrity root 先作为独立 direct slice 验证。它返回 SOURCE、DISPATCH、AU 三个 provisional stage receipts，并在成功后更新本地 owner state。任何失败都丢弃所有临时输出，保持 committed state 不变，并将 attempt 标记为 `RETIRED`。
+
+此 slice 不接入 CallbackTransaction。未来 coordinator 仍须在 12 个 owner roots 和所需 source-stage roots 完整后，统一提交 CALLBACK receipt。当前局部 commit count 不等于 global top-level commit count。

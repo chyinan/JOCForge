@@ -2111,7 +2111,171 @@
       "owner": "integrity",
       "planned_phase": "Phase 7",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "public-keyless-integrity-owner",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F14_AUTH_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_KEYLESS_PUBLIC_OWNER__PRIVATE_AUTH_BLOCKED",
+          "scope": "Public keyless CRC profile and its programme-local integrity owner only. Private authentication, native receipt wire format, CallbackTransaction integration, and other owner roots are excluded.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/integrity/mod.rs",
+            "crates/jocforge-domain/src/integrity/crc16.rs",
+            "crates/jocforge-domain/src/integrity/keyless_checksum.rs",
+            "crates/jocforge-domain/src/integrity/programme_owner.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/src/integrity/programme_owner/tests.rs"
+          ],
+          "implementation_file_identities": [
+            {
+              "file": "crates/jocforge-domain/src/integrity/mod.rs",
+              "bytes": 253,
+              "sha256": "ac5e628f2fa01d3555c6bbd4ddfaab3d8d56bfe07a7e2292e1b47883c7fcf6b3"
+            },
+            {
+              "file": "crates/jocforge-domain/src/integrity/crc16.rs",
+              "bytes": 478,
+              "sha256": "c642d8bc8bf8a75e736ab7f7c7468d6ede85c25fc70811be4206016333cad8c6"
+            },
+            {
+              "file": "crates/jocforge-domain/src/integrity/keyless_checksum.rs",
+              "bytes": 7188,
+              "sha256": "c927ecf0c91190d349c9f1eef48717f1d92ba186ac0bd3277f76cb18c8ddaa0d"
+            },
+            {
+              "file": "crates/jocforge-domain/src/integrity/programme_owner.rs",
+              "bytes": 24971,
+              "sha256": "9b4e813ea40dfcb4becf096578de8b3f6cd1b702e3e382c9820308c729d975fb"
+            }
+          ],
+          "clock": {
+            "domains": [
+              "CodecSourceIndex",
+              "JocDispatchIndex",
+              "PublishedAuIndex"
+            ],
+            "covered_clauses": [
+              "source_index is the next committed CodecSourceIndex",
+              "dispatch = source_index + 1",
+              "au_index is null for source 0 and 1, then source_index - 2",
+              "the first two source calls execute all three integrity stages with published=false",
+              "source indices >=2 produce published=true and increment published_au_count once",
+              "EOF requires the exact expected source count and publishes max(0, expected_source_count - 2) AUs"
+            ]
+          },
+          "parameters": {
+            "kind": "PINNED_CANONICAL_PUBLIC_KEYLESS_PROVIDER",
+            "provider_files": [
+              "crates/jocforge-domain/tests/fixtures/integrity_owner/integrity-public-provider.json"
+            ],
+            "validation_boundary": "The domain validates the selected provider fields and canonical JSON SHA-256 from caller-supplied bytes. It performs no file/environment access and rejects every profile except keyless-crc32-crc8-crc16.v1."
+          },
+          "vectors": {
+            "kind": "INPUT_ONLY_MATERIALIZED_SUCCESS_FAILURE_RESET_RETRY_AND_FINALIZE_VECTORS",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/integrity_owner/INTEGRITY-ROOT-VECTORS.json"
+            ],
+            "case_pointers": [
+              "5 continuous source calls with complete zero-container and frame-template bytes",
+              "10 exact failure mutations including SOURCE/DISPATCH/AU test-harness fault plans",
+              "cold canonical state and provider digest",
+              "attempt reset and new-attempt retry sequence",
+              "five-call EOF/finalize sequence with no extra flush output",
+              "20 independently checked facts; all_pass=true and expected_used_as_seed=false"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/integrity_owner/INTEGRITY-ROOT-VECTORS.json",
+              "bytes": 190474,
+              "sha256": "cbb4e464e7d710846d486c4ae1e3cdb96d9e95254c168d11560fe9b9531c078a"
+            },
+            "supplement": {
+              "identity": "integrity-owner-root.keyless-crc32-crc8-crc16.v2",
+              "manifest_sha256": "aff36a4ac3d5afdf2a29859cc6406c5568a468bc2be0a1987d3e333c3d3db7dd"
+            }
+          },
+          "error_outcomes": [
+            {
+              "error_code": "INTEGRITY_SOURCE_ORDER",
+              "category": "source clock preflight",
+              "trigger": "source_index is not the next accepted source index",
+              "programme_state_after": "RETIRED; committed state unchanged",
+              "caller_action": "Discard all provisional work and receipts; retry only after cold reset under a distinct attempt."
+            },
+            {
+              "error_code": "INTEGRITY_DISPATCH_ORDER",
+              "category": "dispatch clock preflight",
+              "trigger": "dispatch differs from source_index + 1",
+              "programme_state_after": "RETIRED; committed state unchanged",
+              "caller_action": "Discard all provisional work and receipts; retry only after cold reset under a distinct attempt."
+            },
+            {
+              "error_code": "INTEGRITY_AU_ORDER",
+              "category": "published AU clock preflight",
+              "trigger": "au_index differs from null for source <2 or source_index - 2 otherwise",
+              "programme_state_after": "RETIRED; committed state unchanged",
+              "caller_action": "Discard all provisional work and receipts; retry only after cold reset under a distinct attempt."
+            },
+            {
+              "error_code": "INTEGRITY_PROVIDER_VALUES",
+              "category": "provider identity/values",
+              "trigger": "provider values or canonical provider identity differ from the selected public profile",
+              "programme_state_after": "RETIRED; committed state unchanged",
+              "caller_action": "Discard all provisional work and receipts; retry only after cold reset under a distinct attempt."
+            },
+            {
+              "error_code": "INTEGRITY_CHECKSUM_SLOTS",
+              "category": "container slot shape",
+              "trigger": "primary/secondary slots are out of range, overlap, or contain a nonzero byte",
+              "programme_state_after": "RETIRED; committed state unchanged",
+              "caller_action": "Discard all provisional work and receipts; retry only after cold reset under a distinct attempt."
+            },
+            {
+              "error_code": "INTEGRITY_FRAME_SHAPE",
+              "category": "frame/carrier shape",
+              "trigger": "frame is not 4096 bytes or the zero carrier range is not contained in frame[2:4094]",
+              "programme_state_after": "RETIRED; committed state unchanged",
+              "caller_action": "Discard all provisional work and receipts; retry only after cold reset under a distinct attempt."
+            },
+            {
+              "error_code": "INTEGRITY_SOURCE_FAILED",
+              "category": "test-harness stage fault",
+              "trigger": "test-only fault after SOURCE provisional output/receipt and before commit",
+              "programme_state_after": "RETIRED; committed state unchanged; no receipts published",
+              "caller_action": "Production API has no fault parameter; test the no-commit fatal boundary."
+            },
+            {
+              "error_code": "INTEGRITY_DISPATCH_FAILED",
+              "category": "test-harness stage fault",
+              "trigger": "test-only fault after DISPATCH provisional output/receipt and before commit",
+              "programme_state_after": "RETIRED; committed state unchanged; no receipts published",
+              "caller_action": "Production API has no fault parameter; test the no-commit fatal boundary."
+            },
+            {
+              "error_code": "INTEGRITY_AU_FAILED",
+              "category": "AU residual or test-harness stage fault",
+              "trigger": "AU residual is nonzero or the test-only AU fault fires before commit",
+              "programme_state_after": "RETIRED; committed state unchanged; no receipts published",
+              "caller_action": "Discard all provisional work; retry only after cold reset under a distinct attempt."
+            },
+            {
+              "error_code": "UNSUPPORTED_PROFILE",
+              "category": "profile admission rejection",
+              "trigger": "requested profile is not keyless-crc32-crc8-crc16.v1, including private authentication",
+              "programme_state_after": "OWNER_NOT_ADMITTED",
+              "caller_action": "Reject without substituting public CRC for private authentication."
+            }
+          ],
+          "exclusions": [
+            "Private HMAC/vendor key/authentication profile and all private credential material.",
+            "Native receipt object or wire format; the receipt schema is a clean-room internal contract.",
+            "CallbackTransaction integration and all other unmaterialized owner roots.",
+            "Frame construction outside the selected integrity carrier and metadata selection policy.",
+            "End-to-end codec, product, and W04 acceptance."
+          ],
+          "validation_claim": "Five materialized continuous calls and all ten exact failure cases pass; reset/retry/finalize behavior and the 20-check independent result are verified. Keyless public slice only; native receipt, product, and W04 execution remain NOT_RUN."
+        }
+      ]
     },
     {
       "functional_id": "F15",
@@ -3343,7 +3507,126 @@
     },
     {
       "root_id": "integrity",
-      "materialization_status": "INVENTORIED_PENDING_P1.3_MATERIALIZATION"
+      "materialization_status": "LOCALLY_VERIFIED_KEYLESS_PUBLIC_PROFILE_ONLY__PRIVATE_AUTH_BLOCKED",
+      "implementation_status": "LOCALLY_VERIFIED_KEYLESS_PUBLIC_PROFILE_ONLY__PRIVATE_AUTH_BLOCKED",
+      "selected_profile_id": "keyless-crc32-crc8-crc16.v1",
+      "private_auth_profile": "BLOCKED",
+      "owner_authority": {
+        "programme_root_owns": [
+          "accepted source order",
+          "source/dispatch/AU clock join",
+          "provider identity",
+          "committed generation",
+          "published AU count",
+          "finalized flag"
+        ],
+        "stage_functions_own": [
+          "public CRC calculation",
+          "checksum slot replacement",
+          "frame carrier insertion",
+          "E-AC-3 CRC generation and residual check"
+        ],
+        "not_owned": [
+          "private authentication key",
+          "vendor HMAC state",
+          "frame construction outside the integrity carrier",
+          "metadata selection policy",
+          "CallbackTransaction commit"
+        ]
+      },
+      "committed_state_schema": {
+        "identity": "IntegrityStateV1",
+        "fields_in_order": [
+          {"name": "profile_id", "type": "selected UTF-8 profile string", "cold": "keyless-crc32-crc8-crc16.v1"},
+          {"name": "provider_sha256", "type": "raw SHA-256 bytes[32]", "cold": "canonical provider digest"},
+          {"name": "generation", "type": "u64 little-endian", "cold": 0},
+          {"name": "next_source_index", "type": "CodecSourceIndex encoded u64 little-endian", "cold": 0},
+          {"name": "published_au_count", "type": "u64 little-endian", "cold": 0},
+          {"name": "finalized", "type": "U8 boolean", "cold": false}
+        ],
+        "cold_provider_validation_precedes_admission": true,
+        "cross_frame_checksum_accumulator": false
+      },
+      "cold_provider": {
+        "kind": "PINNED_CANONICAL_PUBLIC_PROVIDER",
+        "identity": "public-integrity-provider.v1/keyless-crc32-crc8-crc16.v1",
+        "file": "crates/jocforge-domain/tests/fixtures/integrity_owner/integrity-public-provider.json",
+        "bytes": 687,
+        "file_sha256": "b0f52c55d38b9fba45ec39fc956cd8cd895ce2cfbc1f77d9493d99d2b8636a4d",
+        "canonical_provider_sha256": "57b117ab76c597ad6f6d65af65eecc17d2df78cf0874d092fe1f67585e47bd75",
+        "supplement_identity": "integrity-owner-root.keyless-crc32-crc8-crc16.v2",
+        "manifest_sha256": "aff36a4ac3d5afdf2a29859cc6406c5568a468bc2be0a1987d3e333c3d3db7dd",
+        "private_authentication_material": "BLOCKED_AND_EXCLUDED"
+      },
+      "canonical_serialization": {
+        "prefix": "ASCII IntegrityStateV1 followed by 0x00",
+        "profile_length": "U16 little-endian byte length",
+        "field_order_after_prefix": [
+          "profile_id UTF-8 bytes",
+          "provider_sha256 raw 32 bytes",
+          "generation U64LE",
+          "next_source_index U64LE",
+          "published_au_count U64LE",
+          "finalized U8 0/1",
+          "reserved U8 zero"
+        ],
+        "digest": "SHA-256 over these bytes; JSON is not used"
+      },
+      "clock": {
+        "domains": ["CodecSourceIndex", "JocDispatchIndex", "PublishedAuIndex"],
+        "source_index": "s; must equal next_source_index",
+        "dispatch": "d=s+1",
+        "au_index": "null when s<2; otherwise j=s-2",
+        "suppressed_source_count": 2,
+        "published": "false for source 0/1; true for source >=2",
+        "expected_source_count": "owner configuration, not committed-state bytes"
+      },
+      "stage_authority": {
+        "order": ["SOURCE", "DISPATCH", "AU", "COMMIT"],
+        "source": "CRC32/ISO-HDLC over zero_slot_container[4:]; primary4 big-endian; CRC8/SMBUS over primary4; secondary1",
+        "dispatch": "insert patched container only into an all-zero carrier fully inside frame[2:4094]",
+        "au": "CRC16 polynomial 0x8005 over frame[2:4094], write big-endian at [4094:4096], require residual zero over frame[2:4096]",
+        "commit": "one owner replacement after AU succeeds; no receipts are visible before commit"
+      },
+      "owner_receipt": {
+        "type": "IntegrityStageReceipt",
+        "schema_file": "crates/jocforge-domain/tests/fixtures/integrity_owner/INTEGRITY-STAGE-RECEIPT.schema.json",
+        "schema_identity": "integrity-stage-receipt.v1",
+        "success_receipt_order": ["SOURCE", "DISPATCH", "AU"],
+        "failed_call_receipts": 0,
+        "receipt_format_claim": "clean-room internal API schema only; no native receipt format was observed"
+      },
+      "fatal_and_reset": {
+        "any_call_failure": "discard provisional bytes and receipts; preserve exact committed state; mark attempt RETIRED",
+        "same_attempt_retry": "FORBIDDEN",
+        "reset": "consume old owner, validate provider, create cold state for a distinct attempt identity",
+        "private_profile": "return UNSUPPORTED_PROFILE; public CRC is never an authentication fallback"
+      },
+      "eof": {
+        "preconditions": [
+          "next_source_index equals expected source count",
+          "published_au_count equals max(0, expected source count - 2)",
+          "finalized is false"
+        ],
+        "state_effect": "generation increments once and finalized becomes true",
+        "integrity_frames": 0,
+        "stage_receipts": 0,
+        "metadata_only_flush": false
+      },
+      "implementation_files": [
+        "crates/jocforge-domain/src/integrity/mod.rs",
+        "crates/jocforge-domain/src/integrity/crc16.rs",
+        "crates/jocforge-domain/src/integrity/keyless_checksum.rs",
+        "crates/jocforge-domain/src/integrity/programme_owner.rs"
+      ],
+      "test_modules": ["crates/jocforge-domain/src/integrity/programme_owner/tests.rs"],
+      "validation": {
+        "fixture_vectors": "5 continuous calls, 10 failures, reset/retry/finalize; all 20 independent checks pass",
+        "expected_used_as_seed": false,
+        "callback_transaction_integration": "NOT_IMPLEMENTED",
+        "native_receipt_validation": "NOT_RUN",
+        "product_and_W04_acceptance": "NOT_RUN"
+      }
     },
     {
       "root_id": "output",
@@ -4067,13 +4350,13 @@
         "dual_root_success": "FORBIDDEN"
       },
       "owner_root_readiness": {
-        "currently_materialized_or_mapped": ["reader_eof", "frontend_control", "spatial_audio", "spatial_control"],
+        "currently_materialized_or_mapped": ["reader_eof", "frontend_control", "spatial_audio", "spatial_control", "integrity"],
         "spatial_audio_mapping_status": "MAPPING_COMPLETE_BLOCKED",
         "spatial_audio_implementation_status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__DSP_PRODUCERS_DEFERRED",
         "spatial_control_status": "MAPPING_COMPLETE_BLOCKED_ON_P1.3_C_ROOTS",
         "missing_callback_root_implementation": "spatial_audio",
-        "additional_owner_roots_required_for_12_snapshots": ["joc", "meter", "drc", "analysis", "codec", "metadata", "integrity", "output"],
-        "g_ge_2_source_stage_roots": ["joc", "drc", "analysis", "codec", "metadata", "integrity", "output"]
+        "additional_owner_roots_required_for_12_snapshots": ["joc", "meter", "drc", "analysis", "codec", "metadata", "output"],
+        "g_ge_2_source_stage_roots": ["joc", "drc", "analysis", "codec", "metadata", "output"]
       },
       "vector_bindings": {
         "file": "test-vectors/GLOBAL-TRANSACTION-INPUT-VECTORS.json",

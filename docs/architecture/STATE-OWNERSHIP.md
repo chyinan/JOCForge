@@ -2,6 +2,8 @@
 
 权威来源是 `parameters/selected-owner-projection-v1.json`、`specs/00-selected-owner-projection-and-j05.md` 和 GTC。当前 projection 有 7 个 field group、7 个 receipt owner 和 6 个 commit owner。`body_proposals` 是纯值，无 committed state。
 
+Selected overlap projection 不等同于 12 个 GTC programme roots。F14K keyless root 的完整状态现记录在 `IMPLEMENTATION-MAP.json.programme_roots.integrity`，不改变上述 projection 计数。这里的 `codec_and_publication.integrity_receipt` 指 stage 输出，不代表完整 integrity root state。
+
 每个 owner 的 state 都保持私有。跨 owner 只传 immutable input、proposal、staged result 或 receipt。接收者不得反向写生产者 state，也不得重新执行已产生 receipt 的 stage。
 
 ## Selected overlap projection
@@ -51,8 +53,10 @@ programme root 是顶层协调边界，不是第七个 leaf commit owner。F15 �
 | `analysis` | `f07-f12-source-state-schema-v1` 的 history/transient/transform/policy partition | F07～F11 selected providers | `CodecSourceIndex`、`CodecBlockIndex` | F07～F11 shared analysis stage | source root | programme full reset | discard analysis clone；`RETIRED` | `OwnerReceipt<Analysis>` | `domain/transform/*`、`domain/codec/converter.rs` |
 | `codec` | `f07-f12-source-state-schema-v1` 的 codec partition | `parameters/codec-wire-selected-v1.json` 和 public BAP provider | `CodecSourceIndex`、`CodecBlockIndex` | F12/F12S | source root | programme full reset | candidate scratch discard；无 best 时 `RETIRED` | `OwnerReceipt<Codec>` | `domain/codec/*` |
 | `metadata` | four queues、timer 和 EMDF assembly | `parameters/joc-timer-order-v1.json` 与 GTC cold queue rules | source、writer、AU join | F13 | source root | programme full reset | discard all four staged queues；`RETIRED` | `OwnerReceipt<Metadata>` | `domain/timeline/payload_queue.rs`、`timer.rs`、`join.rs` |
-| `integrity` | stateless current-frame integrity identity | selected F14K provider；无 cross-frame cold state | `PublishedAuIndex` candidate | F14K | source root | programme full reset | discard current receipt；`RETIRED` | `OwnerReceipt<Integrity>` | `domain/integrity/*` |
+| `integrity` | `profile_id`、`provider_sha256`、`generation`、`next_source_index`、`published_au_count`、`finalized` | selected keyless provider；canonical provider SHA-256 为 `57b117ab76c597ad6f6d65af65eecc17d2df78cf0874d092fe1f67585e47bd75` | `CodecSourceIndex s`、`JocDispatchIndex d=s+1`、`PublishedAuIndex j`（s<2 时为空，否则 j=s-2） | SOURCE 计算 CRC32/CRC8；DISPATCH 插入 carrier；AU 计算 CRC16；三个 stage 完成后做一次 integrity-owner commit | 当前 direct slice 仅提交本地 integrity owner；global CALLBACK 仍须由未来 CallbackTransaction 原子提交 12 个 roots | 消耗旧 attempt，以新 attempt 和重新校验的 provider 建 cold state | 任一失败丢弃临时 bytes 和 receipts，保留 committed state，标记 `RETIRED`；同 attempt 不可重试 | `IntegrityStageReceipt`（SOURCE/DISPATCH/AU）；未来 GTC `OwnerReceipt<Integrity>` 尚未接入 | `domain/integrity/programme_owner.rs`、`keyless_checksum.rs`、`crc16.rs` |
 | `output` | `keyless-publication-state-v1`、staging stream、durable ledger | `parameters/keyless-publication-state-v1.json` | `PublishedAuIndex` | F15P proposal；I/O shell stages write | source/finalize root | abandon attempt temp and programme full reset | durable failure abandons temp；`RETIRED` | `OwnerReceipt<Output>` | `domain/publication/proposal.rs`、`ledger.rs`；I/O 在 `atomic_output` |
+
+F14K EOF 只在 source 和 published-AU 计数都达到预期值后成功。它将 generation 加 1，并把 `finalized` 设为 true；不输出 frame 或 stage receipt。此行为属于独立 integrity owner slice，不是 CALLBACK commit。
 
 GTC programme root 只是这 12 个 leaf root 的容器和协调边界，不是额外 leaf owner。Selected overlap projection 仍保持 7 个 field group、7 个 receipt owner label 和 6 个 distinct `commit_owner` label；其中 `none_pure_value` 不属于 committed owner。
 

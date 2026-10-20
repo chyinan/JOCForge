@@ -1,0 +1,89 @@
+{
+  "schema": "integrity-owner-independent-check.v2",
+  "checks": [
+    {
+      "id": "crc32_check",
+      "pass": true
+    },
+    {
+      "id": "crc8_check",
+      "pass": true
+    },
+    {
+      "id": "cold_digest",
+      "pass": true
+    },
+    {
+      "id": "materialized_source_0",
+      "pass": true
+    },
+    {
+      "id": "materialized_source_1",
+      "pass": true
+    },
+    {
+      "id": "materialized_source_2",
+      "pass": true
+    },
+    {
+      "id": "materialized_source_3",
+      "pass": true
+    },
+    {
+      "id": "materialized_source_4",
+      "pass": true
+    },
+    {
+      "id": "failure_wrong_source",
+      "pass": true
+    },
+    {
+      "id": "failure_wrong_dispatch",
+      "pass": true
+    },
+    {
+      "id": "failure_wrong_au",
+      "pass": true
+    },
+    {
+      "id": "failure_provider_mismatch",
+      "pass": true
+    },
+    {
+      "id": "failure_nonzero_checksum_slot",
+      "pass": true
+    },
+    {
+      "id": "failure_frame_length",
+      "pass": true
+    },
+    {
+      "id": "failure_carrier_overflow",
+      "pass": true
+    },
+    {
+      "id": "failure_injected_source",
+      "pass": true
+    },
+    {
+      "id": "failure_injected_dispatch",
+      "pass": true
+    },
+    {
+      "id": "failure_injected_au",
+      "pass": true
+    },
+    {
+      "id": "retry_sequence",
+      "pass": true
+    },
+    {
+      "id": "finalize_sequence",
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "expected_used_as_seed": false,
+  "materialized_success_calls": 5,
+  "materialized_failure_cases": 10
+}
