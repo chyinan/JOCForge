@@ -20,18 +20,19 @@
       "value": 0,
       "config_offset": 192,
       "candidate_names_seen": ["roomtyp","langcod"],
-      "assigned_name": "NOT_CAPTURED",
-      "reason": "no code-level identity join from either name-table entry to property29/config+192"
+      "assigned_name": "adconvtyp",
+      "reason": "SUPERSEDED: producer0x4e14c0 policy+32 calls named ad conv type converter0x4e1f70"
     },
     {
       "property_id": 36,
       "value": 0,
       "config_offset": 220,
       "candidate_names_seen": ["roomtyp","langcod"],
-      "assigned_name": "NOT_CAPTURED",
-      "reason": "no code-level identity join from either name-table entry to property36/config+220"
+      "assigned_name": "roomtyp",
+      "reason": "SUPERSEDED: producer0x4e14c0 policy+4 calls named room type converter0x4e2c90"
     }
   ],
+  "name_join_status": "SUPERSEDED_BY_POLICY29_36_IDENTITY_JOIN",
   "measurement_name_search": {
     "named_fields_found": [0,4,20,24,28,32,36,40],
     "unresolved_offsets": [8,12,16],

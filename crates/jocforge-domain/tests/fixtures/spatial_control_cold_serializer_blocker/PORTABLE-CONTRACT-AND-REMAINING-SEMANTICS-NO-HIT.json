@@ -8,7 +8,8 @@
   },
   "superseded_current_property_claims": {
     "data_rate_property12": "SUPERSEDED_BY_RUN109_PROPERTY3_1024",
-    "property15_property13_value4": "SUPERSEDED_FOR_CURRENT_NONE_DRC_CONFIG_BY_RUN109_VALUES0"
+    "property15_property13_value4": "SUPERSEDED_FOR_CURRENT_NONE_DRC_CONFIG_BY_RUN109_VALUES0",
+    "property29_property36_names_unknown": "SUPERSEDED_BY_POLICY29_36_IDENTITY_JOIN"
   },
   "policy_property_dataflow": [
     {
@@ -19,7 +20,7 @@
       "config_copy_function_rva": "0x1f3170",
       "copy_source_offset": 200,
       "copy_destination_offset": 192,
-      "semantic_name": "NOT_CAPTURED"
+      "semantic_name": "adconvtyp"
     },
     {
       "property_id": 36,
@@ -29,7 +30,7 @@
       "config_copy_function_rva": "0x1f3170",
       "copy_source_offset": 228,
       "copy_destination_offset": 220,
-      "semantic_name": "NOT_CAPTURED"
+      "semantic_name": "roomtyp"
     }
   ],
   "measurement_dataflow": [

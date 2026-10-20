@@ -1,6 +1,14 @@
 # Spatial-control staging specification gap
 
-## Current authority: v23 extended name and portable-contract no-hit
+## Current authority: v24 policy29/property36 identity joins
+
+The current implementer package is `spatial-control-cold-serializer.blocked.v24`, pinned by fixture manifest SHA-256 `fba860d76197b8e0928226458e20f9b6b699dccff1d8b1fbf080806d087e3047`. The identity-join asset SHA-256 is `a58b22ff25427897dfbabb396d085edb8be2ab9bfa2fef02e4bb4e9e5af2a216`; the washed research manifest and independent-check hashes are `642fd5bfa6a2bea844165e15a8bbc10f4721b96d44f67ba8181ac2013b2cb948` and `b2d890f6bce872935417038b0ce17582105ebf0a248ae60280b74bc76ef57994`, respectively. The package reports 31/31 independent checks passing, but `production_allowed=false`.
+
+For the selected `music_rectangular_native_109` run/configuration, property36 is `roomtyp`, value 0, sourced from policy DWORD `+4`. Producer `0x4E14C0` calls room-type converter `0x4E2C90`; the runtime pair is property36=0; assignment `0x1FF1E0` case `0x24` writes encoder config `+220`. Its mapping is 0=`not_indicated`, 1=`large_room`, 2=`small_room`, other=`not_indicated`. Property29 is `adconvtyp`, value 0, sourced from policy byte `+32`. Producer `0x4E14C0` calls ad-conversion-type converter `0x4E1F70`; the runtime pair is property29=0; assignment `0x1FF1E0` case `0x1D` writes encoder config `+192`. Its mapping is 0=`standard`, 1=`alternate_or_reserved`, other=`standard`. These are closed native identity joins within the run-scoped evidence, not a portable parent-state contract or general cross-configuration guarantee.
+
+The earlier `roomtyp`/`langcod` candidate no-hit is superseded for these two properties by the v24 producer-to-field-to-pair-to-config joins. Measurement result offsets `+8/+12/+16` remain `NOT_CAPTURED`. External-metadata semantic schema remains incomplete. Portable order/endian/version/optional/checksum remain `NOT_OBSERVED`; serializer/restore remains `NOT_RUN`; success-vector count remains zero; no product-wide absence claim is made. Parent canonical bytes, the production spatial-control receipt, and production admission remain blocked.
+
+## Historical v23 extended name and portable-contract no-hit
 
 The current implementer package is `spatial-control-cold-serializer.blocked.v23`, pinned by fixture manifest SHA-256 `032d8a7a79bb162a251979bef33c5ef6510955d311b2171e3f36c2e51bae4dea`. Its extended bounded no-hit package is pinned by SHA-256 `cdb66e7a869a0740973b75556c9a6980b5bc46f9eeaf345974eb4e7686722f75`; the washed research manifest and independent check hashes are `2f9e73f949c1a9ebc4721c71aef1e567fd3ba3f70f00db25b255e962aabc9d77` and `d6046f27820646000578fd603b081eb76977a7e21d1a0dc61263864fea239d51`, respectively. The package reports 30/30 independent checks passing and `production_allowed=false`.
 

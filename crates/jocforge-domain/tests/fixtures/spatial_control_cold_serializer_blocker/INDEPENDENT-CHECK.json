@@ -1,5 +1,5 @@
 {
-  "schema": "spatial-control-cold-serializer-blocker-independent-check.v23",
+  "schema": "spatial-control-cold-serializer-blocker-independent-check.v24",
   "checks": [
     {
       "id": "dll_identity",
@@ -98,6 +98,10 @@
       "pass": true
     },
     {
+      "id": "policy29_36_identity_join",
+      "pass": true
+    },
+    {
       "id": "no_entrypoint",
       "pass": true
     },
@@ -143,7 +147,8 @@
     "EXTERNAL-METADATA-HELPER-SEMANTICS.json",
     "PORTABLE-CONTRACT-AND-REMAINING-SEMANTICS-NO-HIT.json",
     "PARENT-PROPERTY-PAIRS-AUTHORITY.json",
-    "PROPERTY-NAME-AND-PORTABLE-CONTRACT-EXTENDED-NO-HIT.json"
+    "PROPERTY-NAME-AND-PORTABLE-CONTRACT-EXTENDED-NO-HIT.json",
+    "POLICY29-36-IDENTITY-JOIN.json"
   ],
   "research_files_read": false,
   "serializer_execution": false,

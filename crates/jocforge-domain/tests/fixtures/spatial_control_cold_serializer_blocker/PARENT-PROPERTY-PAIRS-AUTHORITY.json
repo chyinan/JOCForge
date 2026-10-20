@@ -26,14 +26,14 @@
     {"property_id": 33, "value": 1, "semantic": "copyright flag"},
     {"property_id": 34, "value": 1, "semantic": "original flag"},
     {"property_id": 31, "value": 80, "semantic": "mixlevel; policy byte+2 observed0 plus80"},
-    {"property_id": 36, "value": 0, "semantic": "NOT_CAPTURED"},
+    {"property_id": 36, "value": 0, "semantic": "roomtyp not_indicated"},
     {"property_id": 25, "value": 4, "semantic": "LoRo center mix code"},
     {"property_id": 26, "value": 4, "semantic": "LoRo surround mix code"},
     {"property_id": 20, "value": 2, "semantic": "preferred downmix mode LoRo"},
     {"property_id": 23, "value": 4, "semantic": "LtRt center mix code"},
     {"property_id": 24, "value": 4, "semantic": "LtRt surround mix code"},
     {"property_id": 27, "value": 0, "semantic": "dsurexmod"},
-    {"property_id": 29, "value": 0, "semantic": "NOT_CAPTURED"},
+    {"property_id": 29, "value": 0, "semantic": "adconvtyp standard"},
     {"property_id": 15, "value": 0, "semantic": "RF DRC profile none"},
     {"property_id": 13, "value": 0, "semantic": "Line DRC profile none"},
     {"property_id": 7, "value": 1, "semantic": "phase control literal"}
@@ -67,8 +67,8 @@
     "bytes": 17395712,
     "baseline_match": true
   },
-  "property29_semantic_name": "NOT_CAPTURED",
-  "property36_semantic_name": "NOT_CAPTURED",
+  "property29_semantic_name": "adconvtyp",
+  "property36_semantic_name": "roomtyp",
   "production_allowed": false,
   "raw_pcm_or_metadata_delivered": false,
   "private_auth": "EXCLUDED"

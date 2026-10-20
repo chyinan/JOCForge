@@ -5,7 +5,7 @@ use std::fmt::Write as _;
 use std::fs;
 use std::path::PathBuf;
 
-const MANIFEST_SHA256: &str = "032d8a7a79bb162a251979bef33c5ef6510955d311b2171e3f36c2e51bae4dea";
+const MANIFEST_SHA256: &str = "fba860d76197b8e0928226458e20f9b6b699dccff1d8b1fbf080806d087e3047";
 
 fn fixture_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -38,34 +38,42 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let manifest: Value = serde_json::from_slice(&manifest_bytes).expect("manifest JSON");
     assert_eq!(
         manifest["schema"],
-        "washed-implementer-blocker-manifest.v18"
+        "washed-implementer-blocker-manifest.v19"
     );
     assert_eq!(
         manifest["identity"],
-        "spatial-control-cold-serializer.blocked.v23"
+        "spatial-control-cold-serializer.blocked.v24"
     );
     assert_eq!(manifest["status"], "BLOCKED_NO_EXECUTABLE_SERIALIZER");
     assert_eq!(
-        manifest["parent_property_pairs"],
+        manifest["policy29_36_identity"],
+        json!({
+            "property29": "adconvtyp",
+            "property29_value": 0,
+            "property29_config_offset": 192,
+            "property36": "roomtyp",
+            "property36_value": 0,
+            "property36_config_offset": 220,
+            "identity_join_status": "CLOSED_CURRENT_RUN109",
+            "prior_candidate_no_hit": "SUPERSEDED"
+        })
+    );
+    assert_eq!(
+        manifest["property_pair_scope_identity"],
         json!({
             "run_identity": "music_rectangular_native_109",
             "property3_data_rate": 1024,
             "property31_mixlevel": 80,
             "property15_rf_drc": 0,
             "property13_line_drc": 0,
-            "property29": 0,
-            "property36": 0,
-            "property29_name": "NOT_CAPTURED",
-            "property36_name": "NOT_CAPTURED",
-            "v20_semantic_labels": "SUPERSEDED"
+            "v20_semantic_labels": "SUPERSEDED",
+            "older_music_light_values4": "RETAIN_ONLY_IN_ORIGINAL_SCOPE",
+            "cross_scope_substitution_allowed": false
         })
     );
     assert_eq!(
         manifest["remaining_semantics_no_hit"],
         json!({
-            "property29_config_offset": 192,
-            "property36_config_offset": 220,
-            "property_names": "NOT_CAPTURED",
             "measurement_result_offsets": [8, 12, 16],
             "measurement_names": "NOT_CAPTURED",
             "portable_order_endian_version_optional_checksum": "NOT_OBSERVED",
@@ -73,6 +81,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "product_wide_absence_claim": false
         })
     );
+    assert_eq!(
+        manifest["measurement_alias_resolution"]["field_id"],
+        "measurement_result.measured_loudness"
+    );
+    assert_eq!(manifest["status"], "BLOCKED_NO_EXECUTABLE_SERIALIZER");
     assert_eq!(
         manifest["measurement_alias_resolution"],
         json!({
@@ -110,6 +123,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "PARENT-OUTPUT-DATAFLOW.json",
             "PARENT-OUTPUT-IMPLEMENTER-SUPPLEMENT.json",
             "PARENT-PROPERTY-PAIRS-AUTHORITY.json",
+            "POLICY29-36-IDENTITY-JOIN.json",
             "PORTABLE-CONTRACT-AND-REMAINING-SEMANTICS-NO-HIT.json",
             "PROPERTY-NAME-AND-PORTABLE-CONTRACT-EXTENDED-NO-HIT.json",
             "REQUIRED-FRAMING-RULES.json",
@@ -137,7 +151,8 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         "EXTERNAL-METADATA-HELPER-SEMANTICS.json",
         "PORTABLE-CONTRACT-AND-REMAINING-SEMANTICS-NO-HIT.json",
         "PARENT-PROPERTY-PAIRS-AUTHORITY.json",
-        "PROPERTY-NAME-AND-PORTABLE-CONTRACT-EXTENDED-NO-HIT.json"
+        "PROPERTY-NAME-AND-PORTABLE-CONTRACT-EXTENDED-NO-HIT.json",
+        "POLICY29-36-IDENTITY-JOIN.json"
     ]);
     for entry in files {
         let name = entry["file"].as_str().expect("manifest file name");
@@ -156,15 +171,15 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let source = &manifest["source_evidence"];
     assert_eq!(
         source["research_manifest_sha256"],
-        "2f9e73f949c1a9ebc4721c71aef1e567fd3ba3f70f00db25b255e962aabc9d77"
+        "642fd5bfa6a2bea844165e15a8bbc10f4721b96d44f67ba8181ac2013b2cb948"
     );
     assert_eq!(
         source["research_independent_check_sha256"],
-        "d6046f27820646000578fd603b081eb76977a7e21d1a0dc61263864fea239d51"
+        "b2d890f6bce872935417038b0ce17582105ebf0a248ae60280b74bc76ef57994"
     );
     assert_eq!(
-        source["property_name_no_hit_sha256"],
-        "cdb66e7a869a0740973b75556c9a6980b5bc46f9eeaf345974eb4e7686722f75"
+        source["policy29_36_identity_join_sha256"],
+        "a58b22ff25427897dfbabb396d085edb8be2ab9bfa2fef02e4bb4e9e5af2a216"
     );
     assert_eq!(source["serializer_execution"], "NOT_RUN");
     assert_eq!(source["canonical_preimage"], Value::Null);
@@ -258,7 +273,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         descriptor_summary["native_serializer_restore_roundtrip"],
         "NOT_RUN"
     );
-    assert_eq!(descriptor_summary["policy_block_semantics_complete"], false);
+    assert_eq!(descriptor_summary["policy_block_semantics_complete"], true);
     assert_eq!(descriptor_summary["measurement_semantics_complete"], false);
     assert_eq!(
         descriptor_summary["channel_record_semantics_complete"],
@@ -981,12 +996,12 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_ne!(policy_fields[2]["semantic"], "property12 source byte");
     assert_eq!(policy_fields[3]["semantic"], "padding/reserved");
     assert_eq!(policy_fields[3]["status"], "OBSERVED_ZERO");
-    assert_eq!(policy_fields[4]["semantic"], "property36 value");
+    assert_eq!(policy_fields[4]["semantic"], "roomtyp / property36");
+    assert_eq!(policy_fields[4]["status"], "BOUND");
     assert_eq!(
-        policy_fields[4]["status"],
-        "PROPERTY_BOUND_SEMANTIC_NAME_UNKNOWN"
+        policy_fields[4]["mapping"],
+        json!({"0":"not_indicated","1":"large_room","2":"small_room","other":"not_indicated"})
     );
-    assert_ne!(policy_fields[4]["semantic"], "bsmod/property35");
     assert_eq!(
         policy_fields[5]["semantic"],
         "LoRo center mix code / property25"
@@ -1007,12 +1022,12 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         "LtRt surround mix code / property24"
     );
     assert_eq!(policy_fields[10]["semantic"], "dsurexmod code / property27");
-    assert_eq!(policy_fields[11]["semantic"], "property29 value");
+    assert_eq!(policy_fields[11]["semantic"], "adconvtyp / property29");
+    assert_eq!(policy_fields[11]["status"], "BOUND");
     assert_eq!(
-        policy_fields[11]["status"],
-        "PROPERTY_BOUND_SEMANTIC_NAME_UNKNOWN"
+        policy_fields[11]["mapping"],
+        json!({"0":"standard","1":"reserved_or_alternate","other":"standard"})
     );
-    assert_ne!(policy_fields[11]["semantic"], "sourcefscod/control word");
     assert_eq!(policy_fields[12]["semantic"], "padding/reserved");
     assert_eq!(policy_fields[12]["bytes"], 3);
     assert_eq!(policy_fields[12]["status"], "OBSERVED_ZERO");
@@ -1028,7 +1043,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(policy_fields[14]["observed"], 0);
     assert_eq!(
         cold_semantics["portable_contract_status"]["policy_block_semantics_complete"],
-        false
+        true
     );
 
     let measurement_fields = cold_semantics["measurement_summary_known_fields"]
@@ -1443,7 +1458,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         "policy and measurement labels in v12 PARENT-COLD-CONFIG-SEMANTICS.json"
     );
     let corrections = semantic_corrections["corrections"].as_array().unwrap();
-    assert_eq!(corrections.len(), 5);
+    assert_eq!(corrections.len(), 7);
     assert_eq!(corrections[0]["old"], "policy+4 bsmod/property35");
     assert_eq!(
         corrections[0]["new"],
@@ -1468,6 +1483,8 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         corrections[4]["new"],
         "current 0x1ab520 table submits property3=1024; property31=80 is mixlevel"
     );
+    assert_eq!(corrections[5]["new"], "property36=roomtyp");
+    assert_eq!(corrections[6]["new"], "property29=adconvtyp");
     assert_eq!(
         corrections[3]["new"],
         "gating enum 0=ungated,1=dialogue,2=level,other=invalid"
@@ -1525,7 +1542,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     );
     assert_eq!(
         semantic_corrections["remaining_bounded_no_hit"]["policy_unknown_property_semantics"],
-        json!([29, 36])
+        json!([])
     );
     assert_eq!(
         semantic_corrections["remaining_bounded_no_hit"]["portable_order_endian_version_optional_checksum"],
@@ -1841,6 +1858,10 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         portable_no_hit["schema"],
         "sanitized-portable-contract-and-remaining-semantics-no-hit.v1"
     );
+    assert_eq!(
+        portable_no_hit["superseded_current_property_claims"]["property29_property36_names_unknown"],
+        "SUPERSEDED_BY_POLICY29_36_IDENTITY_JOIN"
+    );
     let property_flows = portable_no_hit["policy_property_dataflow"]
         .as_array()
         .unwrap();
@@ -1852,13 +1873,13 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(property_flows[0]["config_copy_function_rva"], "0x1f3170");
     assert_eq!(property_flows[0]["copy_source_offset"], 200);
     assert_eq!(property_flows[0]["copy_destination_offset"], 192);
-    assert_eq!(property_flows[0]["semantic_name"], "NOT_CAPTURED");
+    assert_eq!(property_flows[0]["semantic_name"], "adconvtyp");
     assert_eq!(property_flows[1]["property_id"], 36);
     assert_eq!(property_flows[1]["assignment_case"], "0x24");
     assert_eq!(property_flows[1]["encoder_config_offset"], 220);
     assert_eq!(property_flows[1]["copy_source_offset"], 228);
     assert_eq!(property_flows[1]["copy_destination_offset"], 220);
-    assert_eq!(property_flows[1]["semantic_name"], "NOT_CAPTURED");
+    assert_eq!(property_flows[1]["semantic_name"], "roomtyp");
     let measurement_flows = portable_no_hit["measurement_dataflow"].as_array().unwrap();
     assert_eq!(measurement_flows.len(), 3);
     assert_eq!(
@@ -1980,14 +2001,14 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             {"property_id":33,"value":1,"semantic":"copyright flag"},
             {"property_id":34,"value":1,"semantic":"original flag"},
             {"property_id":31,"value":80,"semantic":"mixlevel; policy byte+2 observed0 plus80"},
-            {"property_id":36,"value":0,"semantic":"NOT_CAPTURED"},
+            {"property_id":36,"value":0,"semantic":"roomtyp not_indicated"},
             {"property_id":25,"value":4,"semantic":"LoRo center mix code"},
             {"property_id":26,"value":4,"semantic":"LoRo surround mix code"},
             {"property_id":20,"value":2,"semantic":"preferred downmix mode LoRo"},
             {"property_id":23,"value":4,"semantic":"LtRt center mix code"},
             {"property_id":24,"value":4,"semantic":"LtRt surround mix code"},
             {"property_id":27,"value":0,"semantic":"dsurexmod"},
-            {"property_id":29,"value":0,"semantic":"NOT_CAPTURED"},
+            {"property_id":29,"value":0,"semantic":"adconvtyp standard"},
             {"property_id":15,"value":0,"semantic":"RF DRC profile none"},
             {"property_id":13,"value":0,"semantic":"Line DRC profile none"},
             {"property_id":7,"value":1,"semantic":"phase control literal"}
@@ -1995,11 +2016,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     );
     assert_eq!(
         property_pair_authority["property29_semantic_name"],
-        "NOT_CAPTURED"
+        "adconvtyp"
     );
     assert_eq!(
         property_pair_authority["property36_semantic_name"],
-        "NOT_CAPTURED"
+        "roomtyp"
     );
     assert_eq!(
         property_pair_authority["scope_partition"]["current_run109_none_drc"],
@@ -2024,6 +2045,69 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     );
     assert_eq!(property_pair_authority["private_auth"], "EXCLUDED");
 
+    let policy_identity = read_json("POLICY29-36-IDENTITY-JOIN.json");
+    assert_eq!(
+        policy_identity["schema"],
+        "sanitized-policy29-36-identity-join.v1"
+    );
+    assert_eq!(policy_identity["property29"]["name"], "adconvtyp");
+    assert_eq!(
+        policy_identity["property29"]["source_field"],
+        "policy block byte+32"
+    );
+    assert_eq!(
+        policy_identity["property29"]["producer"],
+        "0x4e14c0 calls ad-conversion-type converter0x4e1f70"
+    );
+    assert_eq!(
+        policy_identity["property29"]["runtime_pair"],
+        json!({"property_id":29,"value":0})
+    );
+    assert_eq!(
+        policy_identity["property29"]["assignment"],
+        "0x1ff1e0 case0x1d -> encoder config+192"
+    );
+    assert_eq!(
+        policy_identity["property29"]["mapping"],
+        json!({"0":"standard","1":"alternate_or_reserved","other":"standard"})
+    );
+    assert_eq!(
+        policy_identity["property29"]["status"],
+        "NATIVE_IDENTITY_JOIN_CLOSED"
+    );
+    assert_eq!(policy_identity["property36"]["name"], "roomtyp");
+    assert_eq!(
+        policy_identity["property36"]["source_field"],
+        "policy block DWORD+4"
+    );
+    assert_eq!(
+        policy_identity["property36"]["producer"],
+        "0x4e14c0 calls room-type converter0x4e2c90"
+    );
+    assert_eq!(
+        policy_identity["property36"]["runtime_pair"],
+        json!({"property_id":36,"value":0})
+    );
+    assert_eq!(
+        policy_identity["property36"]["assignment"],
+        "0x1ff1e0 case0x24 -> encoder config+220"
+    );
+    assert_eq!(
+        policy_identity["property36"]["mapping"],
+        json!({"0":"not_indicated","1":"large_room","2":"small_room","other":"not_indicated"})
+    );
+    assert_eq!(
+        policy_identity["property36"]["status"],
+        "NATIVE_IDENTITY_JOIN_CLOSED"
+    );
+    assert_eq!(
+        policy_identity["scope"]["run_identity"],
+        "music_rectangular_native_109"
+    );
+    assert_eq!(policy_identity["portable_parent_contract"], "NOT_OBSERVED");
+    assert_eq!(policy_identity["serializer_restore_roundtrip"], "NOT_RUN");
+    assert_eq!(policy_identity["production_allowed"], false);
+
     let extended_no_hit = read_json("PROPERTY-NAME-AND-PORTABLE-CONTRACT-EXTENDED-NO-HIT.json");
     assert_eq!(
         extended_no_hit["schema"],
@@ -2034,6 +2118,10 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         "mixlevel"
     );
     assert_eq!(extended_no_hit["confirmed_name_join"]["value"], 80);
+    assert_eq!(
+        extended_no_hit["name_join_status"],
+        "SUPERSEDED_BY_POLICY29_36_IDENTITY_JOIN"
+    );
     let unresolved_names = extended_no_hit["unresolved_name_join"]
         .as_array()
         .expect("unresolved name joins");
@@ -2044,12 +2132,12 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         unresolved_names[0]["candidate_names_seen"],
         json!(["roomtyp", "langcod"])
     );
-    assert_eq!(unresolved_names[0]["assigned_name"], "NOT_CAPTURED");
+    assert_eq!(unresolved_names[0]["assigned_name"], "adconvtyp");
     assert!(
         unresolved_names[0]["reason"]
             .as_str()
             .unwrap()
-            .contains("no code-level identity join")
+            .contains("SUPERSEDED")
     );
     assert_eq!(unresolved_names[1]["property_id"], 36);
     assert_eq!(unresolved_names[1]["config_offset"], 220);
@@ -2057,12 +2145,12 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         unresolved_names[1]["candidate_names_seen"],
         json!(["roomtyp", "langcod"])
     );
-    assert_eq!(unresolved_names[1]["assigned_name"], "NOT_CAPTURED");
+    assert_eq!(unresolved_names[1]["assigned_name"], "roomtyp");
     assert!(
         unresolved_names[1]["reason"]
             .as_str()
             .unwrap()
-            .contains("no code-level identity join")
+            .contains("SUPERSEDED")
     );
     assert_eq!(
         extended_no_hit["measurement_name_search"]["unresolved_offsets"],
@@ -2185,11 +2273,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let independent = read_json("INDEPENDENT-CHECK.json");
     assert_eq!(
         independent["schema"],
-        "spatial-control-cold-serializer-blocker-independent-check.v23"
+        "spatial-control-cold-serializer-blocker-independent-check.v24"
     );
     assert_eq!(independent["all_pass"], true);
     let checks = independent["checks"].as_array().expect("checks array");
-    assert_eq!(checks.len(), 30);
+    assert_eq!(checks.len(), 31);
     assert!(checks.iter().all(|check| check["pass"] == true));
     assert_eq!(
         checks
@@ -2221,6 +2309,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "portable_contract_and_remaining_semantics_no_hit",
             "parent_property_pairs_authority",
             "property_name_and_portable_contract_extended_no_hit",
+            "policy29_36_identity_join",
             "no_entrypoint",
             "no_bytes",
             "framing_rules",
