@@ -1,11 +1,12 @@
 {
-  "schema": "washed-implementer-blocker-manifest.v5",
-  "identity": "spatial-control-cold-serializer.blocked.v10",
+  "schema": "washed-implementer-blocker-manifest.v6",
+  "identity": "spatial-control-cold-serializer.blocked.v11",
   "status": "BLOCKED_NO_EXECUTABLE_SERIALIZER",
   "source_evidence": {
-    "research_manifest_sha256": "280f15171bed8f749810cf0b0c5e75c8353a057bd498e4790043d7815bc1fe98",
-    "research_independent_check_sha256": "8ff7d8ab67cd0554b860f7f6ac75abf80c3bad08d99f7d3116cab358a70a5615",
-    "parent_cold_lifecycle_sha256": "85844b367baaa9e546a4937eb8572a8eb0f4eacecfe1bd620d23390f03afae36",
+    "research_manifest_sha256": "ec6b2283c4c14c101c48249c63577fbf9bce8ce90584656d23e989dd439041f1",
+    "research_independent_check_sha256": "e8d2ca264fcf21ea4a19ed824002e9ddcc2fe701e913de2fb160fea7c918f0ca",
+    "parent_cold_config_boundary_sha256": "7f738cea345e356a22ad7d796c6e5b96db03eb38245331f8373a618de8e006e4",
+    "parent_cold_lifecycle_sha256": "1f2992122f1d271238e59217b25b4139ba9d2b2c70710b9add98430b7282fd5f",
     "serializer_execution": "NOT_RUN",
     "canonical_preimage": null,
     "authoritative_length": null,
@@ -17,9 +18,26 @@
     "product_wide_absence_claim": false
   },
   "evidence_classification": {
-    "native_observed": "bounded parent cold lifecycle plus bounded parent output through FileWriter to DLL-local CRT fwrite",
-    "unknown": "exact constructor first store, other configurations/restart, alternate host/job/wrapper/other DLL paths and product-wide persistence",
+    "native_observed": "bounded cold-config producer/query/constructor boundary, parent cold lifecycle, and parent output through FileWriter to DLL-local CRT fwrite",
+    "unknown": "semantic types of all pointer-free words and referenced blocks, other configurations/restart, alternate host/job/wrapper/other DLL paths and product-wide persistence",
     "clean_room_design": "parent canonical bytes and receipt schema not native observed"
+  },
+  "parent_cold_config_boundary": {
+    "producer_rva": "0x178dc0",
+    "descriptor_bytes": 120,
+    "mode": 0,
+    "source_count": 38,
+    "data_rate_code": 5,
+    "pointer_offsets": [16, 48, 56, 64],
+    "referenced_block_bytes": [228, 44, 120, 216],
+    "pointer_zeroed_diagnostic_projection": "CAPTURED_DIAGNOSTIC_ONLY_NOT_NATIVE_CANONICAL",
+    "projection_crc32": "150fb9d7",
+    "field_complete_semantic_schema": "NOT_CAPTURED",
+    "portable_reconstruction_ready": false,
+    "first_static_nonzero_store_rva": "0x1a7e0e",
+    "first_static_nonzero_store_destination": "allocation_base+0x8d8",
+    "first_static_nonzero_store_value": "allocation_base+0x8e0",
+    "exact_dynamic_first_store": "NOT_CAPTURED"
   },
   "parent_cold_lifecycle": {
     "query_rva": "0x1a8920",
@@ -31,8 +49,7 @@
     "constructor_to_first_consumer_digest_match": true,
     "runtime_cold_instance": "CAPTURED_BY_SIZE_OWNER_OFFSET_AND_FULL_ALLOCATION_DIGEST",
     "portable_canonical_bytes": "NOT_CAPTURED",
-    "raw_allocation_delivered": false,
-    "production_allowed": false
+    "raw_allocation_delivered": false
   },
   "parent_output_dataflow": {
     "file_writer_core_write_rva": "0x189c80",
@@ -63,16 +80,17 @@
     "serializer_execution": "NOT_RUN",
     "parent_canonical_bytes": "NOT_DELIVERED",
     "raw_runtime_allocation": "NOT_DELIVERED",
-    "direct_fwrite_hook": "CAPTURED_DLL_LOCAL_TARGET"
+    "raw_referenced_blocks": "NOT_DELIVERED",
+    "production_allowed": false
   },
-  "production_allowed": false,
   "files": [
     { "file": "COLD-SERIALIZER-EVIDENCE.json", "bytes": 3235, "sha256": "6a0db3edb8a56145c63b3f1d55853f21fe656eb7594d5de9fc9fc00bc5ffed0f" },
     { "file": "COLD-SERIALIZER-FINAL-BLOCKER.md", "bytes": 4159, "sha256": "4017a64a0c27e85b6ee308f6e9848d26a93290c04ff808846b1bbaf7315b322a" },
     { "file": "FILEWRITER-FWRITE-DYNAMIC-JOIN.json", "bytes": 3057, "sha256": "4d77a2fb99ba77d1e0bac1f79bb8d0f638f132a895eee9351c6d46025f2e0298" },
-    { "file": "INDEPENDENT-CHECK.json", "bytes": 2006, "sha256": "8ff7d8ab67cd0554b860f7f6ac75abf80c3bad08d99f7d3116cab358a70a5615" },
+    { "file": "INDEPENDENT-CHECK.json", "bytes": 2126, "sha256": "e8d2ca264fcf21ea4a19ed824002e9ddcc2fe701e913de2fb160fea7c918f0ca" },
     { "file": "MINIMUM-EXTERNAL-EVIDENCE.json", "bytes": 1123, "sha256": "7e078cfa1da60dcf0580a5fe070d6255c4c8cfa2265b862242965342210c922f" },
-    { "file": "PARENT-COLD-LIFECYCLE.json", "bytes": 3786, "sha256": "85844b367baaa9e546a4937eb8572a8eb0f4eacecfe1bd620d23390f03afae36" },
+    { "file": "PARENT-COLD-CONFIG-BOUNDARY.json", "bytes": 3728, "sha256": "7f738cea345e356a22ad7d796c6e5b96db03eb38245331f8373a618de8e006e4" },
+    { "file": "PARENT-COLD-LIFECYCLE.json", "bytes": 3913, "sha256": "1f2992122f1d271238e59217b25b4139ba9d2b2c70710b9add98430b7282fd5f" },
     { "file": "PARENT-FILEWRITER-DYNAMIC-JOIN.json", "bytes": 3442, "sha256": "a2bd0eb000671b95190ed44a1359f4e349981b74a6f191b49e1469793b377edc" },
     { "file": "PARENT-OUTPUT-DATAFLOW.json", "bytes": 3513, "sha256": "8ec6387277da562610614795459ef03b8c960ea2962a51bb492fcee6fcae3a20" },
     { "file": "PARENT-OUTPUT-IMPLEMENTER-SUPPLEMENT.json", "bytes": 5833, "sha256": "90f7cd4e4baba45ac4f7650d92e2963e3d384edcefaa0e2cb99b10dcb6f5bba1" },

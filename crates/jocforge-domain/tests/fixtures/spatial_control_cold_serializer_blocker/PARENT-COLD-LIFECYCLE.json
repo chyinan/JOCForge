@@ -44,7 +44,8 @@
   "first_writer_classification": {
     "full_allocation_zero_writer": "host memset after query and allocation, before constructor",
     "constructor_aggregate_writer": "0x1a7d50",
-    "exact_first_nonzero_store": "NOT_CAPTURED",
+    "exact_first_nonzero_store": "NATIVE_STATIC_OBSERVED_AT_0x1a7e0e",
+    "exact_first_nonzero_store_dynamic_hit": "NOT_CAPTURED",
     "constructor_nested_writer_count": "MULTIPLE_STATICALLY_OBSERVED"
   },
   "cold_material_classification": {
@@ -61,7 +62,7 @@
     "production_allowed": false
   },
   "UNKNOWN": [
-    "exact first nonzero store inside 0x1a7d50",
+    "dynamic instruction-level confirmation of the statically observed first nonzero store",
     "field-complete portable reconstruction of the 7,805,609-byte runtime object",
     "other configurations and allocation sizes",
     "restart lifecycle",

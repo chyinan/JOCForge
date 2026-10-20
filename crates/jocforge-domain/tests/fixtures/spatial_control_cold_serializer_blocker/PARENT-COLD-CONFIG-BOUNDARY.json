@@ -1,0 +1,72 @@
+{
+  "schema": "sanitized-parent-cold-config-boundary.v1",
+  "run_identity": "music_rectangular_native_108",
+  "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "source_evidence_identity": {
+    "dynamic_config_sha256": "5d4dce4810e637f8e806f1c513dd3d05ef019dd819bf9ab60977b48eb8f6f26a",
+    "observer_sha256": "afee8c6309193155341d5fcd4e0575372a95ba016c12f4a66f0954a57aa88af2",
+    "first_nonzero_store_trace_sha256": "8451df44c5f935d887fa75cb51f68c0762451f6c515292d3d572534afe265ca0"
+  },
+  "reference_output": {
+    "mp4_sha256": "b0ded346659a0f64f5f4c2ae948a3d29697df8e16f01bc53e6ea630580dfaf1f",
+    "extracted_ec3_sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "baseline_match": true,
+    "frames": 4247,
+    "bytes": 17395712
+  },
+  "native_descriptor": {
+    "producer_rva": "0x178dc0",
+    "query_consumer_rva": "0x1a8920",
+    "constructor_consumer_rva": "0x1a7d50",
+    "bytes": 120,
+    "mode": 0,
+    "source_count": 38,
+    "data_rate_code": 5,
+    "pointer_offsets": [16, 48, 56, 64],
+    "pointer_zeroed_u32_words": [0,0,38,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,3270508544,3246802816,3270508544,3270508544,3270508544,3246802816,2,3212836864,1085760050,3229876346,3229423024,0],
+    "pointer_zeroed_crc32": "150fb9d7"
+  },
+  "referenced_blocks": {
+    "channel_records": {"shape": "source_count records x 6 bytes", "bytes": 228, "crc32": "d04aae00", "present": true},
+    "policy": {"shape": "44 opaque native bytes", "bytes": 44, "crc32": "83456504", "present": true},
+    "mix": {"shape": "120 opaque native bytes", "bytes": 120, "crc32": "2f7eb001", "present": true},
+    "trim_records": {"shape": "9 records x 24 bytes", "bytes": 216, "crc32": "dc368594", "present": true}
+  },
+  "exact_first_nonzero_store": {
+    "classification": "NATIVE_STATIC_OBSERVED",
+    "preceding_full_region_zero_callsite_rva": "0x1a7df9",
+    "store_rva": "0x1a7e0e",
+    "destination": "allocation_base + 0x8d8",
+    "value": "allocation_base + 0x8e0",
+    "following_nested_zero_callsite_rva": "0x1a7e1e",
+    "dynamic_instruction_hit": "NOT_CAPTURED"
+  },
+  "portable_projection_assessment": {
+    "diagnostic_pointer_zeroed_projection": "CAPTURED",
+    "native_canonical_format_claim": false,
+    "field_complete_semantic_schema": "NOT_CAPTURED",
+    "referenced_block_bytes_delivered": false,
+    "referenced_block_hashes_are_reconstruction_material": false,
+    "portable_reconstruction_ready": false,
+    "reason": "pointer slots and referenced extents are closed, but every scalar/blob semantic and an authoritative portable ordering/version/checksum contract are not established"
+  },
+  "bounded_api_audit": {
+    "constructor_trace_maximum_depth": 2,
+    "constructor_trace_functions_visited": 74,
+    "constructor_code_references": 1,
+    "query_code_references": 1,
+    "serializer_or_restore_api_observed": false,
+    "scope": "0x1788a0 and 0x1a7d50 call trees through depth 2 plus their direct code references",
+    "product_wide_absence_claim": false
+  },
+  "minimum_external_evidence": [
+    "semantic type and meaning for every pointer-free descriptor word and every byte of the four referenced blocks",
+    "authoritative portable field order, endian rule, versioning, optional-field rule and checksum or digest rule",
+    "or an executable canonical serializer and restore API with a cold vector and byte-exact roundtrip"
+  ],
+  "UNKNOWN": ["other configurations", "restart reconstruction", "host persistence outside the bounded constructor path", "product-wide serializer or restore API existence"],
+  "production_allowed": false,
+  "raw_referenced_blocks_delivered": false,
+  "raw_pcm_or_metadata_delivered": false,
+  "private_auth": "EXCLUDED"
+}

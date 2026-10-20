@@ -5429,8 +5429,8 @@
       "schema_amendment_file": "docs/implementation/SPATIAL-CONTROL-STATE-V5-AMENDMENT.md",
       "spec_gap_document": {
         "file": "docs/implementation/SPATIAL-CONTROL-STAGING-SPEC-GAP.md",
-        "document_bytes": 9191,
-        "document_sha256": "d76c545ad44c019f632b1e80bfbfc54b3ee4b655920a38b4468087e1cfca5597"
+        "document_bytes": 10580,
+        "document_sha256": "d4c085ff98578c6f85c31f79b9a875a2d68b56fb59cca8a5063ee8fc5cfe57a5"
       },
       "scope": "construct the complete v5 persistent spatial_control cold root and canonical digest; provide a non-Clone read-only machine and prepared/staged foundation accepting only a future producer-generated complete typed after proposal; no packet producers and no local commit, abort, fatal or top-level COMMITTED",
       "cold_inputs": [
