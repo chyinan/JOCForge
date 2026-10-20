@@ -1,0 +1,45 @@
+{
+  "schema": "research-parent-metadata-causal-join.v1",
+  "source_observation_sha256": "52665510398c59e8042c582e5cd5dfdace3a919473bf484113370fab27745336",
+  "research_manifest_sha256": "9da14599660a98077251619c1b2fbb97775f78052575752d92d9ba74b5f12c8d",
+  "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "job_xml_sha256": "d0a68be5fc5e6046c64a19beb01a23a4c6a7af11ab3dbde6e96ad96b707b6fee",
+  "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "event_order": [
+    "composite_writer_enter ordinal1",
+    "MasterSourceImpl copies completed producer ordinal1 to composite1",
+    "MasterSourceImpl copies completed producer ordinal3 to composite1",
+    "parent 0x178dc0 consumes composite1"
+  ],
+  "identity_join": {
+    "selected_source_class": "atmos_storage::MasterSourceImpl",
+    "source_destination_equals_composite_plus264": true,
+    "underlying_descriptor_equals_producer_owner_plus88": true,
+    "producer_owner_method_completed_before_each_copy": true,
+    "producer_ordinals_copied_in_order": [1,3],
+    "parent_input_equals_composite_plus264": true,
+    "last_writer_before_parent_ordinal": 3,
+    "causal_pointer_owner_generation_join": "CLOSED_CURRENT_RUN"
+  },
+  "offset80_resolution": {
+    "producer_business_write_rva": "0x4d49e8",
+    "write_occurs_before_source_copy": true,
+    "source_copy_is_exact120": true,
+    "parent_offset80_87_bits": "0000000000000000",
+    "inference": "final selected producer ordinal3 stored binary64 positive zero before exact copy",
+    "content_equality_used_as_identity": false
+  },
+  "interference_control": {
+    "container_sha256": "417d7528add711247eeda78115e59ad54049a9ae24db46b4fca8a748d472e95b",
+    "container_bytes": 17413685,
+    "lossless_ec3_sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "frames": 4247,
+    "ec3_bytes": 17395712,
+    "baseline_match": true,
+    "ffmpeg_or_decoder_used": false
+  },
+  "scope": "current ADM/configuration and observed composite generation only",
+  "raw_pointer_metadata_or_pcm_persisted": false,
+  "implementation_ready": false,
+  "production_allowed": false
+}

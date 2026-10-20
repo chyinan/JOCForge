@@ -1,6 +1,24 @@
 # Spatial-control staging specification gap
 
-## Current authority: v32 selected constructor prefix and composite metadata provider
+## Current authority: v34 cross-profile actual-run boundaries
+
+The current implementer package is `spatial-control-cold-serializer.blocked.v34`, pinned by fixture manifest SHA-256 `43f7fcf730c7c5c321aa884d1810aa039427d0ae2f97f7cc94f93bfc525d404b`. The washed research manifest and independent-check hashes are `aa4d77fec66328be58dc2cb723e2ca98552e33f218f9b02605f6ac311805bcae` and `defaa348b63f659d3c87458fdb69df0ae8f23c2f273efd1c312bd2d8b054eabd`; 48/48 checks pass.
+
+Three actual runs separate the accepted read path from two other routes. On the accepted ADM run with embedded DBMD plus a sidecar, the sidecar parser `0x52A310` and serializer `0x522660` had zero hits, while packed producer `0x4E0890` and parent consumer `0x178DC0` each ran once; EC3 output matched the pinned baseline. Removing the terminal 580-byte embedded DBMD while retaining the sidecar caused front-end rejection before the plugin parser (exit 10, `Content was not authored with Dolby tools`); this does not establish product-wide parser absence. A legal `convert_atmos_mezz` v2 `target_format=adm` run completed with exact audio bytes, but its whole-120 setter and the DDP-Atmos setter each had zero hits. These are route-specific findings, not proof that all write-side APIs are absent.
+
+The current causal join remains pointer/owner/order based and scoped to the selected run. The private serializer flag has no legal setter on the observed construction path and stays uninvoked; the generic whole-120 setter is guarded by `owner+312 >= 2`. The cross-profile route facts do not create a portable cold-state serialization contract. Canonical schema/digest/receipt, reference serializer/restore, and byte-exact roundtrip remain unavailable or `NOT_RUN`; `IMPLEMENTATION_READY=NO`, `production_allowed=false`, and no product-wide absence claim are preserved.
+
+## Historical v33 selected source-to-parent causal metadata join
+
+The current implementer package is `spatial-control-cold-serializer.blocked.v33`, pinned by fixture manifest SHA-256 `d9622ddbc57896feb861faa780c6e1b55781c1f10718f4a158af522e0b0ea936`. Its independent research manifest and check hashes are `2e6f355c99a709bb68ab26ecdcdc943b81fd3021313c1a221d3568916b0831ed` and `53203803051ef74b0b6e4d42b122b7f680928047cb88d76860ad0c5b6178b864`; 47/47 checks pass.
+
+For the selected current ADM/configuration and observed composite generation, the causal pointer/owner/order join is now closed: selected source class `atmos_storage::MasterSourceImpl` copies completed producer ordinals `[1,3]` in order to the same `composite_master+264`; the source destination is the same composite address; its underlying descriptor is the exact producer owner `atmos_storage_master_s+88`; and parent `0x178DC0` consumes that composite `+264` input, with ordinal 3 the last writer. This is an object-identity and event-order join, not content-hash equality. It is scoped to this selected run and does not generalize across profiles.
+
+For offset 80, business write `0x4D49E8` occurs before the exact 120-byte source copy. Final selected producer ordinal 3 writes binary64 positive zero to offsets `80..87`, and the parent's final bits are all zero. The 104-byte same-generation constructor-prefix join and 14-gap zero mask remain independently pinned; raw pointers and metadata are not persisted in the evidence package. The current-run EC3 output matched the same baseline across three runs, but this validates output parity only.
+
+The causal join does not provide a portable parent-state representation. Canonical schema/digest/receipt, reference serializer, restore/deserialize contract, and byte-exact roundtrip remain undelivered/unrun. `IMPLEMENTATION_READY=NO` and `production_allowed=false` remain in force.
+
+## Historical v32 selected constructor prefix and composite metadata provider
 
 The current implementer package is `spatial-control-cold-serializer.blocked.v32`, pinned by fixture manifest SHA-256 `488b2c6fd6665f578438f40c707b7ab37f7be20ccfa35fb261d14c6aecb15354`. The washed research manifest and independent-check hashes are `0afde72fd4863a10ebd2620cd223085322032874b0bb0b0783f3a92ee87705fa` and `8ab24109f1bda62b213b71973ca4230fec2e54fb12aecd729ef4e93347845490`; 46/46 checks pass.
 

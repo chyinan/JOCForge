@@ -1,5 +1,5 @@
 {
-  "schema": "spatial-control-cold-serializer-blocker-independent-check.v32",
+  "schema": "spatial-control-cold-serializer-blocker-independent-check.v34",
   "checks": [
     {
       "id": "dll_identity",
@@ -162,6 +162,14 @@
       "pass": true
     },
     {
+      "id": "parent_metadata_causal_join",
+      "pass": true
+    },
+    {
+      "id": "cross_profile_actual_runs",
+      "pass": true
+    },
+    {
       "id": "no_entrypoint",
       "pass": true
     },
@@ -223,7 +231,9 @@
     "PACKED-METADATA-OWNER-CONSTRUCTOR.json",
     "PACKED-METADATA-DYNAMIC-CURRENT-RUN.json",
     "SELECTED-CONSTRUCTOR-PREFIX-DYNAMIC-JOIN.json",
-    "PARENT-METADATA-PROVIDER.json"
+    "PARENT-METADATA-PROVIDER.json",
+    "PARENT-METADATA-CAUSAL-JOIN.json",
+    "CROSS-PROFILE-ACTUAL-RUNS.json"
   ],
   "research_files_read": false,
   "serializer_execution": false,

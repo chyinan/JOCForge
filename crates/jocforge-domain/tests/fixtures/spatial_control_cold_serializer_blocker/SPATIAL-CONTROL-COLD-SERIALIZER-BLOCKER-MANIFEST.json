@@ -1,10 +1,10 @@
 {
-  "schema": "washed-implementer-blocker-manifest.v27",
-  "identity": "spatial-control-cold-serializer.blocked.v32",
+  "schema": "washed-implementer-blocker-manifest.v29",
+  "identity": "spatial-control-cold-serializer.blocked.v34",
   "status": "BLOCKED_NO_EXECUTABLE_SERIALIZER",
   "source_evidence": {
-    "research_manifest_sha256": "0afde72fd4863a10ebd2620cd223085322032874b0bb0b0783f3a92ee87705fa",
-    "research_independent_check_sha256": "8ab24109f1bda62b213b71973ca4230fec2e54fb12aecd729ef4e93347845490",
+    "research_manifest_sha256": "aa4d77fec66328be58dc2cb723e2ca98552e33f218f9b02605f6ac311805bcae",
+    "research_independent_check_sha256": "defaa348b63f659d3c87458fdb69df0ae8f23c2f273efd1c312bd2d8b054eabd",
     "production_allowed": false,
     "implementation_ready": "NO",
     "serializer_execution": "NOT_RUN",
@@ -12,25 +12,20 @@
     "bytes_guessed": false,
     "private_auth": "excluded"
   },
-  "selected_prefix": {
-    "bytes": 104,
-    "pointer_offsets_zeroed": [
-      88,
-      92
-    ],
-    "same_inner_descriptor_join": true,
-    "same_thread_parent_constructor_join": true,
-    "selected_raw_enum_words": "CLOSED_CURRENT_RUN",
-    "reference_ec3_baseline_match": true
+  "cross_profile": {
+    "embedded_sidecar_parser_hits": 0,
+    "stripped_sidecar_rejected_before_parser": true,
+    "convert_adm_audio_exact": true,
+    "convert_setter_hits": 0,
+    "ddp_setter_hits": 0,
+    "product_wide_absence_claim": false
   },
-  "parent_metadata_provider": {
-    "class": "atmos_storage_composite_master",
-    "metadata_owner_offset": 264,
-    "getter_rva": "0x54f490",
-    "whole120_writer_rva": "0x54fa70",
-    "selected_source_class": "NOT_CAPTURED",
-    "same_underlying_master": "NOT_JOINED",
-    "per_gap_normalization": false
+  "causal_join": {
+    "selected_source_class": "atmos_storage::MasterSourceImpl",
+    "same_composite_destination": true,
+    "parent_input_matches_composite": true,
+    "last_writer_ordinal": 3,
+    "join": "CLOSED_CURRENT_RUN"
   },
   "files": [
     {
@@ -64,6 +59,11 @@
       "sha256": "edc5af39dede9931e41491984bc8c02d1c711c7cdc656e7b970f3173e1f0c484"
     },
     {
+      "file": "CROSS-PROFILE-ACTUAL-RUNS.json",
+      "bytes": 3459,
+      "sha256": "13c52fb8b0f0ca0c0f6176165d9993d3a5b5972b56533765098ea09ac4165bcf"
+    },
+    {
       "file": "DTHD-METER-PIMPL-BOUNDARY.json",
       "bytes": 2034,
       "sha256": "7f33cd81e7a35bdf803efbf3de06b9edacb5c65c4e7711c5457c02bc84032cb5"
@@ -95,8 +95,8 @@
     },
     {
       "file": "INDEPENDENT-CHECK.json",
-      "bytes": 5753,
-      "sha256": "8ab24109f1bda62b213b71973ca4230fec2e54fb12aecd729ef4e93347845490"
+      "bytes": 5989,
+      "sha256": "defaa348b63f659d3c87458fdb69df0ae8f23c2f273efd1c312bd2d8b054eabd"
     },
     {
       "file": "MEASUREMENT-ALIAS-RESOLUTION.json",
@@ -157,6 +157,11 @@
       "file": "PARENT-FILEWRITER-DYNAMIC-JOIN.json",
       "bytes": 3442,
       "sha256": "a2bd0eb000671b95190ed44a1359f4e349981b74a6f191b49e1469793b377edc"
+    },
+    {
+      "file": "PARENT-METADATA-CAUSAL-JOIN.json",
+      "bytes": 2165,
+      "sha256": "c8eb0c15506ac018afde203f549418ef9b30ac1302f8f4fab7e6c4b3d84801a2"
     },
     {
       "file": "PARENT-METADATA-PROVIDER.json",

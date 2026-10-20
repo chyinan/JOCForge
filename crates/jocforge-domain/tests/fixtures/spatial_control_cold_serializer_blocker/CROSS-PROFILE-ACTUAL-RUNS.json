@@ -1,0 +1,67 @@
+{
+  "schema": "research-cross-profile-actual-runs.v1",
+  "source_evidence_identity": {
+    "research_result_sha256": "10079fac8623c07155df23e74c4749749dc9b3afa0f3afbe9119671e23a0e7bc",
+    "research_manifest_sha256": "405bb120d1d24804567841b7eee22bbaa4211ec52c441b4b47a983969c7d0068",
+    "ddp_atmos_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "convert_module_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8"
+  },
+  "runs": [
+    {
+      "run_id": "dbmd-sidecar-with-embedded-dbmd-v1",
+      "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "sidecar_sha256": "19545a0bf8eb652f362f514c4aa34e8073797b6495cbbaff8ddd5353ad3dfdea",
+      "job_xml_sha256": "d0a68be5fc5e6046c64a19beb01a23a4c6a7af11ab3dbde6e96ad96b707b6fee",
+      "parser_0x52a310_hits": 0,
+      "serializer_0x522660_hits": 0,
+      "producer_0x4e0890_hits": 1,
+      "parent_0x178dc0_hits": 1,
+      "status": "REFERENCE_ENCODE_COMPLETED",
+      "container_sha256": "f698c16903d80f358adfaba51a494eb1c18f4d7b884ca97c82e02e8d6818b9a1",
+      "container_bytes": 17413685,
+      "lossless_ec3_sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+      "frames": 4247,
+      "conclusion": "sidecar is not parsed on the accepted embedded-DBMD path"
+    },
+    {
+      "run_id": "dbmd-sidecar-with-embedded-dbmd-removed-v1",
+      "fixture_sha256": "55da96132555f44df35ed424b0503f64fcb853ad59beb85325a5c38102b69523",
+      "sidecar_sha256": "19545a0bf8eb652f362f514c4aa34e8073797b6495cbbaff8ddd5353ad3dfdea",
+      "fixture_chunks": ["JUNK","fmt ","data","axml","chna"],
+      "removed_chunk": "terminal dbmd 580 bytes",
+      "audio_data_bytes_unchanged": true,
+      "parser_0x52a310_hits": 0,
+      "serializer_0x522660_hits": 0,
+      "exit_code": 10,
+      "error": "AtmosInfoAppWrapper: Content was not authored with Dolby tools.",
+      "status": "REJECTED_BEFORE_PLUGIN_PARSER",
+      "conclusion": "DEE atmos_mezz front-end blocks this isolated sidecar-only fixture before the legal internal parser path"
+    },
+    {
+      "run_id": "whole120-generic-setter-convert-adm-v1",
+      "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+      "job_xml_sha256": "58d89d4710b96d32aabce68e86bae93f30204de0730e7585c430bd4db31245b5",
+      "filter": "convert_atmos_mezz version2 target_format=adm",
+      "convert_module_setter_rva": "0x289890",
+      "convert_module_setter_hits": 0,
+      "ddp_atmos_setter_rva": "0x4d6410",
+      "ddp_atmos_setter_hits": 0,
+      "status": "CONVERSION_COMPLETED",
+      "output_sha256": "5fe2e220072f1a29c962eab6a06e07f76965f2836f7b0df29f68a5b06e22f5ca",
+      "output_bytes": 743682914,
+      "output_chunks": ["JUNK","fmt ","data","axml","chna","dbmd"],
+      "audio_data_sha256_input": "6df2255787354a6a719fa7596c253f7f3f69937bc37b8a2b69cb27bd9f02677e",
+      "audio_data_sha256_output": "6df2255787354a6a719fa7596c253f7f3f69937bc37b8a2b69cb27bd9f02677e",
+      "conclusion": "this legal convert-to-ADM profile does not invoke either targeted whole120 setter"
+    }
+  ],
+  "static_context": {
+    "parser_internal_legal_path_exists": true,
+    "serializer_private_flag_has_legal_setter": false,
+    "whole120_setter_guard": "owner+312 >= 2",
+    "product_wide_absence_claim": false
+  },
+  "raw_metadata_or_pcm_persisted": false,
+  "implementation_ready": false,
+  "production_allowed": false
+}
