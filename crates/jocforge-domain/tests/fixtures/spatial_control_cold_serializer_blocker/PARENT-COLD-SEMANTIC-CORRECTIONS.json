@@ -1,0 +1,50 @@
+{
+  "schema": "sanitized-parent-cold-semantic-corrections.v1",
+  "supersedes": "policy and measurement labels in v12 PARENT-COLD-CONFIG-SEMANTICS.json",
+  "source_evidence_identity": {
+    "measurement_field_names_asm_sha256": "5d971b353699dcefd6a0b0c2a28977ecf920207347c4fd5db09026eaca2cf20c",
+    "measurement_producer_sha256": "2e7f4afa8cde71c23482fc26d23552fad6e534899bb665ce491282ed468e47a9",
+    "meter_path_contract_sha256": "c4f511341290806f63d1966aedc7f92c9f03ffb6eea664a29b372190dc74bac6",
+    "codec_parameter_consumer_sha256": "5bd183d9df8866489dd000af4b710cadfb7e5714f13477197772ef219f649259"
+  },
+  "corrections": [
+    {"old": "policy+4 bsmod/property35", "new": "policy+4 property36 value; semantic name unknown", "reason": "0x1ab520 pairs this word with property36; bsmod property35 authority is separate"},
+    {"old": "policy+32 sourcefscod/control word", "new": "policy+32 byte is property29 value; semantic name unknown", "reason": "0x1ab520 reads only byte+32 and pairs it with property29"},
+    {"old": "policy+36 Line and +40 RF", "new": "policy+36 RF/property15 and +40 Line/property13", "reason": "0x1ab520 property pairing and accepted BSI property identities"},
+    {"old": "measurement gating value name partial", "new": "gating enum 0=ungated,1=dialogue,2=level,other=invalid", "reason": "0x1769a0 branch strings bind the complete enum"}
+  ],
+  "measurement_44_layout": [
+    {"offset": 0, "semantic": "dialogue loudness", "status": "BOUND"},
+    {"offset": 4, "semantic": "ITU loudness", "status": "BOUND"},
+    {"offset": 8, "semantic": "unknown measurement field", "status": "NOT_CAPTURED"},
+    {"offset": 12, "semantic": "unknown measurement field", "status": "NOT_CAPTURED"},
+    {"offset": 16, "semantic": "unknown measurement field", "status": "NOT_CAPTURED"},
+    {"offset": 20, "descriptor_offset": 92, "field_id": "measurement_result.measured_loudness", "producer_name": "measured_loudness", "consumer_role": "selected_loudness_for_dialnorm", "semantic": "one field with stage-specific aliases", "status": "BOUND_SAME_STORAGE_ROLE_ALIAS"},
+    {"offset": 24, "semantic": "gating enum", "status": "BOUND"},
+    {"offset": 28, "semantic": "speech percentage", "status": "BOUND"},
+    {"offset": 32, "semantic": "loudness range", "status": "BOUND"},
+    {"offset": 36, "semantic": "sample peak", "status": "BOUND"},
+    {"offset": 40, "semantic": "true peak", "status": "BOUND"}
+  ],
+  "remaining_bounded_no_hit": {
+    "measurement_unknown_offsets": [8, 12, 16],
+    "policy_unknown_property_semantics": [12, 29, 36],
+    "channel_record_field_names": "NOT_CAPTURED",
+    "external_metadata_full_schema": "NOT_CAPTURED",
+    "trim_key_and_payload_semantics": "NOT_CAPTURED",
+    "portable_order_endian_version_optional_checksum": "NOT_OBSERVED",
+    "serializer_restore_roundtrip": "NOT_RUN",
+    "product_wide_absence_claim": false
+  },
+  "measurement_alias_resolution": {
+    "same_field": true,
+    "measurement_result_offset": 20,
+    "descriptor_offset": 92,
+    "producer_name": "measured_loudness",
+    "consumer_role": "selected_loudness_for_dialnorm",
+    "stable_field_id": "measurement_result.measured_loudness",
+    "distinct_field_claim": false
+  },
+  "production_allowed": false,
+  "private_auth": "EXCLUDED"
+}

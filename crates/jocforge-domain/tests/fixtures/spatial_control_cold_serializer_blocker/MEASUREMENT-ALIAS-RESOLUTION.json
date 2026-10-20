@@ -1,0 +1,34 @@
+{
+  "schema": "sanitized-measurement-alias-resolution.v1",
+  "field_id": "measurement_result.measured_loudness",
+  "same_storage": true,
+  "producer": {
+    "function_rva": "0x1769a0",
+    "result_offset": 20,
+    "log_name": "measured_loudness"
+  },
+  "adapter": {
+    "function_rva": "0x178dc0",
+    "copy_rule": "measurement result +20 copied unchanged to descriptor +92"
+  },
+  "consumer": {
+    "function_rva": "0x1ab520",
+    "descriptor_offset": 92,
+    "role": "selected_loudness_for_dialnorm"
+  },
+  "observed_f32": -16.784912109375,
+  "alias_policy": {
+    "canonical_field_id": "measurement_result.measured_loudness",
+    "producer_alias": "measured_loudness",
+    "consumer_role_alias": "selected_loudness_for_dialnorm",
+    "must_not_materialize_two_fields": true
+  },
+  "source_evidence_identity": {
+    "measurement_field_names_asm_sha256": "5d971b353699dcefd6a0b0c2a28977ecf920207347c4fd5db09026eaca2cf20c",
+    "measurement_producer_sha256": "2e7f4afa8cde71c23482fc26d23552fad6e534899bb665ce491282ed468e47a9",
+    "bsi_consumer_authority_sha256": "7ec27dc5923ca10ff92486baa4044b22d05010131585b6a3dd12ee48e57c9cd7",
+    "codec_parameter_consumer_sha256": "5bd183d9df8866489dd000af4b710cadfb7e5714f13477197772ef219f649259"
+  },
+  "native_portable_contract_claim": false,
+  "production_allowed": false
+}

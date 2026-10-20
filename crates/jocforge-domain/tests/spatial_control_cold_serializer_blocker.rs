@@ -5,7 +5,7 @@ use std::fmt::Write as _;
 use std::fs;
 use std::path::PathBuf;
 
-const MANIFEST_SHA256: &str = "ba271324c94b53f3aaabe7657c2a0732023c2f6e028418622eef4b5b80e0a2e1";
+const MANIFEST_SHA256: &str = "4506c60b64e39439effc7729d7cbf6402a884681bb0a707e938cf4a7325bb425";
 
 fn fixture_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -36,18 +36,34 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(digest_hex(&manifest_bytes), MANIFEST_SHA256);
 
     let manifest: Value = serde_json::from_slice(&manifest_bytes).expect("manifest JSON");
-    assert_eq!(manifest["schema"], "washed-implementer-blocker-manifest.v7");
+    assert_eq!(manifest["schema"], "washed-implementer-blocker-manifest.v9");
     assert_eq!(
         manifest["identity"],
-        "spatial-control-cold-serializer.blocked.v12"
+        "spatial-control-cold-serializer.blocked.v14"
     );
     assert_eq!(manifest["status"], "BLOCKED_NO_EXECUTABLE_SERIALIZER");
     assert_eq!(
-        manifest["evidence_classification"],
+        manifest["semantic_corrections"],
         json!({
-            "native_observed": "bounded descriptor semantics and consumer reads, parent cold lifecycle, and parent output through FileWriter to DLL-local CRT fwrite",
-            "unknown": "unresolved field semantics, portable order/endian/version/optional/checksum contract, other configurations/restart, alternate host/job/wrapper/other DLL paths and product-wide persistence",
-            "clean_room_design": "parent canonical bytes and receipt schema not native observed"
+            "policy_plus4": "property36_semantic_name_unknown",
+            "policy_plus32": "property29_semantic_name_unknown",
+            "policy_plus36": "RF_property15",
+            "policy_plus40": "Line_property13",
+            "gating_enum": "0_ungated_1_dialogue_2_level_other_invalid",
+            "measurement_unknown_offsets": [8, 12, 16]
+        })
+    );
+    assert_eq!(
+        manifest["measurement_alias_resolution"],
+        json!({
+            "field_id": "measurement_result.measured_loudness",
+            "measurement_result_offset": 20,
+            "descriptor_offset": 92,
+            "producer_alias": "measured_loudness",
+            "consumer_role_alias": "selected_loudness_for_dialnorm",
+            "same_storage": true,
+            "distinct_field_claim": false,
+            "implementer_rule": "materialize one field only"
         })
     );
 
@@ -62,10 +78,12 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "COLD-SERIALIZER-FINAL-BLOCKER.md",
             "FILEWRITER-FWRITE-DYNAMIC-JOIN.json",
             "INDEPENDENT-CHECK.json",
+            "MEASUREMENT-ALIAS-RESOLUTION.json",
             "MINIMUM-EXTERNAL-EVIDENCE.json",
             "PARENT-COLD-CONFIG-BOUNDARY.json",
             "PARENT-COLD-CONFIG-SEMANTICS.json",
             "PARENT-COLD-LIFECYCLE.json",
+            "PARENT-COLD-SEMANTIC-CORRECTIONS.json",
             "PARENT-FILEWRITER-DYNAMIC-JOIN.json",
             "PARENT-OUTPUT-DATAFLOW.json",
             "PARENT-OUTPUT-IMPLEMENTER-SUPPLEMENT.json",
@@ -84,7 +102,9 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         "FILEWRITER-FWRITE-DYNAMIC-JOIN.json",
         "PARENT-COLD-LIFECYCLE.json",
         "PARENT-COLD-CONFIG-BOUNDARY.json",
-        "PARENT-COLD-CONFIG-SEMANTICS.json"
+        "PARENT-COLD-CONFIG-SEMANTICS.json",
+        "PARENT-COLD-SEMANTIC-CORRECTIONS.json",
+        "MEASUREMENT-ALIAS-RESOLUTION.json"
     ]);
     for entry in files {
         let name = entry["file"].as_str().expect("manifest file name");
@@ -103,15 +123,15 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let source = &manifest["source_evidence"];
     assert_eq!(
         source["research_manifest_sha256"],
-        "5aff4e4f94615b590c49c730de6ed35403441be244e40eed91e25a7ad5da2aa7"
+        "fbf3eb707d0058e3e97dc24557f1397c683864578e9a5afce2c6dace8deb73b5"
     );
     assert_eq!(
         source["research_independent_check_sha256"],
-        "5e6f42926d323fa8ff0d1877eec1ded35019c938c3e6d16c5a73cd1cf0a482d3"
+        "291f157c813afdf9cd086d22951784ca489296e510c9d1aa49c675b0edaca2e1"
     );
     assert_eq!(
-        source["parent_cold_config_semantics_sha256"],
-        "58cb57ddd5797609156c6a9b1465c14e650161296638fd0611e6e1a797452a34"
+        source["measurement_alias_resolution_sha256"],
+        "b1608911f6c00d42c648cfb26962bc014743351d4feed8fd49bb00220826f5d1"
     );
     assert_eq!(source["serializer_execution"], "NOT_RUN");
     assert_eq!(source["canonical_preimage"], Value::Null);
@@ -196,24 +216,16 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let descriptor_summary = &manifest["descriptor_semantics"];
     assert_eq!(descriptor_summary["descriptor_bytes"], 120);
     assert_eq!(descriptor_summary["layout_complete"], true);
-    assert_eq!(descriptor_summary["mode"], 0);
-    assert_eq!(descriptor_summary["source_count"], 38);
-    assert_eq!(descriptor_summary["data_rate_code"], 5);
-    assert_eq!(
-        descriptor_summary["pointer_offsets"],
-        json!([16, 48, 56, 64])
-    );
-    assert_eq!(
-        descriptor_summary["known_measurement_fields"],
-        json!([92, 96, 100, 104, 108, 112])
-    );
-    assert_eq!(
-        descriptor_summary["pointer_zeroed_projection"],
-        "DIAGNOSTIC_ONLY_NOT_NATIVE_CANONICAL"
-    );
-    assert_eq!(descriptor_summary["portable_semantic_schema"], "INCOMPLETE");
     assert_eq!(descriptor_summary["portable_reconstruction_ready"], false);
-    assert_eq!(descriptor_summary["policy_semantics_complete"], false);
+    assert_eq!(
+        descriptor_summary["native_portable_contract"],
+        "NOT_OBSERVED"
+    );
+    assert_eq!(
+        descriptor_summary["native_serializer_restore_roundtrip"],
+        "NOT_RUN"
+    );
+    assert_eq!(descriptor_summary["policy_block_semantics_complete"], false);
     assert_eq!(descriptor_summary["measurement_semantics_complete"], false);
     assert_eq!(
         descriptor_summary["channel_record_semantics_complete"],
@@ -225,38 +237,12 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     );
     assert_eq!(descriptor_summary["trim_record_semantics_complete"], false);
     assert_eq!(
-        manifest["referenced_blocks"]["channel_records"]["record_shape"],
-        "38 x 6-byte u32+u16 copy"
+        descriptor_summary["native_portable_contract"],
+        "NOT_OBSERVED"
     );
     assert_eq!(
-        manifest["referenced_blocks"]["channel_records"]["raw_values_delivered"],
-        false
-    );
-    assert_eq!(
-        manifest["referenced_blocks"]["codec_policy"]["known_fields_partial"],
-        true
-    );
-    assert_eq!(
-        manifest["referenced_blocks"]["external_metadata_control"]["copy_rule_partial"],
-        true
-    );
-    assert_eq!(
-        manifest["referenced_blocks"]["trim_payloads"]["input_record_shape"],
-        "9 x 28-byte"
-    );
-    assert_eq!(
-        manifest["referenced_blocks"]["trim_payloads"]["first_4_byte_key_discarded"],
-        true
-    );
-    assert_eq!(manifest["first_store"]["static_store_rva"], "0x1a7e0e");
-    assert_eq!(
-        manifest["first_store"]["destination"],
-        "allocation_base+0x8d8"
-    );
-    assert_eq!(manifest["first_store"]["value"], "allocation_base+0x8e0");
-    assert_eq!(
-        manifest["first_store"]["dynamic_instruction_hit"],
-        "NOT_CAPTURED"
+        descriptor_summary["native_serializer_restore_roundtrip"],
+        "NOT_RUN"
     );
     assert_eq!(
         manifest["reference_output"]["extracted_ec3_sha256"],
@@ -901,16 +887,75 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(descriptor_fields[11]["status"], "PARTIALLY_BOUND");
 
     let policy_fields = cold_semantics["policy_block_44"].as_array().unwrap();
-    assert_eq!(policy_fields.len(), 13);
+    assert_eq!(policy_fields.len(), 15);
+    assert_eq!(
+        policy_fields
+            .iter()
+            .map(|field| field["offset"].as_u64().unwrap())
+            .collect::<Vec<_>>(),
+        [0, 1, 2, 3, 4, 8, 12, 16, 20, 24, 28, 32, 33, 36, 40]
+    );
     assert_eq!(policy_fields[0]["semantic"], "copyright flag / property33");
     assert_eq!(policy_fields[0]["observed"], 1);
     assert_eq!(policy_fields[1]["semantic"], "original flag / property34");
     assert_eq!(policy_fields[1]["observed"], 1);
-    assert_eq!(policy_fields[2]["status"], "PARTIAL");
-    assert_eq!(policy_fields[4]["semantic"], "LoRo center mix code");
-    assert_eq!(policy_fields[4]["observed"], 4);
-    assert_eq!(policy_fields[12]["semantic"], "RF DRC profile code");
-    assert_eq!(policy_fields[12]["observed"], 4);
+    assert_eq!(
+        policy_fields[2]["semantic"],
+        "property12 source byte transformed by adding 80"
+    );
+    assert_eq!(policy_fields[2]["observed"], 0);
+    assert_eq!(policy_fields[2]["submitted_value"], 80);
+    assert_eq!(
+        policy_fields[2]["status"],
+        "PROPERTY_BOUND_SEMANTIC_NAME_UNKNOWN"
+    );
+    assert_eq!(policy_fields[3]["semantic"], "padding/reserved");
+    assert_eq!(policy_fields[3]["status"], "OBSERVED_ZERO");
+    assert_eq!(policy_fields[4]["semantic"], "property36 value");
+    assert_eq!(
+        policy_fields[4]["status"],
+        "PROPERTY_BOUND_SEMANTIC_NAME_UNKNOWN"
+    );
+    assert_ne!(policy_fields[4]["semantic"], "bsmod/property35");
+    assert_eq!(
+        policy_fields[5]["semantic"],
+        "LoRo center mix code / property25"
+    );
+    assert_eq!(policy_fields[5]["observed"], 4);
+    assert_eq!(
+        policy_fields[6]["semantic"],
+        "LoRo surround mix code / property26"
+    );
+    assert_eq!(policy_fields[7]["semantic"], "preferred downmix mode code");
+    assert_eq!(policy_fields[7]["observed"], 2);
+    assert_eq!(
+        policy_fields[8]["semantic"],
+        "LtRt center mix code / property23"
+    );
+    assert_eq!(
+        policy_fields[9]["semantic"],
+        "LtRt surround mix code / property24"
+    );
+    assert_eq!(policy_fields[10]["semantic"], "dsurexmod code / property27");
+    assert_eq!(policy_fields[11]["semantic"], "property29 value");
+    assert_eq!(
+        policy_fields[11]["status"],
+        "PROPERTY_BOUND_SEMANTIC_NAME_UNKNOWN"
+    );
+    assert_ne!(policy_fields[11]["semantic"], "sourcefscod/control word");
+    assert_eq!(policy_fields[12]["semantic"], "padding/reserved");
+    assert_eq!(policy_fields[12]["bytes"], 3);
+    assert_eq!(policy_fields[12]["status"], "OBSERVED_ZERO");
+    assert_eq!(
+        policy_fields[13]["semantic"],
+        "RF DRC profile code / property15"
+    );
+    assert_eq!(policy_fields[13]["observed"], 4);
+    assert_eq!(
+        policy_fields[14]["semantic"],
+        "Line DRC profile code / property13"
+    );
+    assert_eq!(policy_fields[14]["observed"], 4);
     assert_eq!(
         cold_semantics["portable_contract_status"]["policy_block_semantics_complete"],
         false
@@ -919,19 +964,61 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let measurement_fields = cold_semantics["measurement_summary_known_fields"]
         .as_array()
         .unwrap();
-    assert_eq!(measurement_fields.len(), 6);
-    assert_eq!(measurement_fields[0]["descriptor_offset"], 92);
-    assert_eq!(measurement_fields[0]["observed"], -16.784912109375);
-    assert_eq!(measurement_fields[1]["descriptor_offset"], 96);
-    assert_eq!(measurement_fields[1]["status"], "BOUND_VALUE_NAME_PARTIAL");
-    assert_eq!(measurement_fields[2]["descriptor_offset"], 100);
-    assert_eq!(measurement_fields[2]["observed"], -1.0);
-    assert_eq!(measurement_fields[3]["descriptor_offset"], 104);
-    assert_eq!(measurement_fields[3]["observed"], 5.73073673248291);
-    assert_eq!(measurement_fields[4]["descriptor_offset"], 108);
-    assert_eq!(measurement_fields[4]["observed"], -4.125058174133301);
-    assert_eq!(measurement_fields[5]["descriptor_offset"], 112);
-    assert_eq!(measurement_fields[5]["observed"], -3.954448699951172);
+    assert_eq!(measurement_fields.len(), 11);
+    assert_eq!(measurement_fields[0]["descriptor_offset"], 72);
+    assert_eq!(measurement_fields[0]["semantic"], "dialogue loudness");
+    assert_eq!(measurement_fields[0]["observed"], -120.0);
+    assert_eq!(measurement_fields[1]["descriptor_offset"], 76);
+    assert_eq!(measurement_fields[1]["semantic"], "ITU loudness");
+    assert_eq!(measurement_fields[1]["observed"], -16.784912109375);
+    assert_eq!(measurement_fields[2]["descriptor_offset"], 80);
+    assert_eq!(
+        measurement_fields[2]["semantic"],
+        "measurement result field"
+    );
+    assert_eq!(
+        measurement_fields[2]["status"],
+        "SEMANTIC_NAME_NOT_CAPTURED"
+    );
+    assert_eq!(measurement_fields[3]["descriptor_offset"], 84);
+    assert_eq!(
+        measurement_fields[3]["status"],
+        "SEMANTIC_NAME_NOT_CAPTURED"
+    );
+    assert_eq!(measurement_fields[4]["descriptor_offset"], 88);
+    assert_eq!(
+        measurement_fields[4]["status"],
+        "SEMANTIC_NAME_NOT_CAPTURED"
+    );
+    assert_eq!(measurement_fields[5]["descriptor_offset"], 92);
+    assert_eq!(measurement_fields[5]["measurement_result_offset"], 20);
+    assert_eq!(
+        measurement_fields[5]["field_id"],
+        "measurement_result.measured_loudness"
+    );
+    assert_eq!(measurement_fields[5]["producer_name"], "measured_loudness");
+    assert_eq!(
+        measurement_fields[5]["consumer_role"],
+        "selected_loudness_for_dialnorm"
+    );
+    assert_eq!(
+        measurement_fields[5]["status"],
+        "BOUND_SAME_STORAGE_ROLE_ALIAS"
+    );
+    assert_eq!(measurement_fields[5]["observed"], -16.784912109375);
+    assert_eq!(measurement_fields[6]["descriptor_offset"], 96);
+    assert_eq!(
+        measurement_fields[6]["mapping"],
+        json!({"0":"ungated","1":"dialogue","2":"level","other":"invalid"})
+    );
+    assert_eq!(measurement_fields[7]["descriptor_offset"], 100);
+    assert_eq!(measurement_fields[7]["observed"], -1.0);
+    assert_eq!(measurement_fields[8]["descriptor_offset"], 104);
+    assert_eq!(measurement_fields[8]["observed"], 5.73073673248291);
+    assert_eq!(measurement_fields[9]["descriptor_offset"], 108);
+    assert_eq!(measurement_fields[9]["observed"], -4.125058174133301);
+    assert_eq!(measurement_fields[10]["descriptor_offset"], 112);
+    assert_eq!(measurement_fields[10]["observed"], -3.954448699951172);
     assert_eq!(
         cold_semantics["portable_contract_status"]["measurement_semantics_complete"],
         false
@@ -1004,6 +1091,141 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(cold_semantics["production_allowed"], false);
     assert_eq!(cold_semantics["raw_referenced_blocks_delivered"], false);
     assert_eq!(cold_semantics["private_auth"], "EXCLUDED");
+
+    let semantic_corrections = read_json("PARENT-COLD-SEMANTIC-CORRECTIONS.json");
+    assert_eq!(
+        semantic_corrections["schema"],
+        "sanitized-parent-cold-semantic-corrections.v1"
+    );
+    assert_eq!(
+        semantic_corrections["supersedes"],
+        "policy and measurement labels in v12 PARENT-COLD-CONFIG-SEMANTICS.json"
+    );
+    let corrections = semantic_corrections["corrections"].as_array().unwrap();
+    assert_eq!(corrections.len(), 4);
+    assert_eq!(corrections[0]["old"], "policy+4 bsmod/property35");
+    assert_eq!(
+        corrections[0]["new"],
+        "policy+4 property36 value; semantic name unknown"
+    );
+    assert_eq!(corrections[1]["old"], "policy+32 sourcefscod/control word");
+    assert_eq!(
+        corrections[1]["new"],
+        "policy+32 byte is property29 value; semantic name unknown"
+    );
+    assert_eq!(corrections[2]["old"], "policy+36 Line and +40 RF");
+    assert_eq!(
+        corrections[2]["new"],
+        "policy+36 RF/property15 and +40 Line/property13"
+    );
+    assert_eq!(
+        corrections[3]["old"],
+        "measurement gating value name partial"
+    );
+    assert_eq!(
+        corrections[3]["new"],
+        "gating enum 0=ungated,1=dialogue,2=level,other=invalid"
+    );
+    assert_eq!(
+        semantic_corrections["measurement_44_layout"]
+            .as_array()
+            .unwrap()
+            .len(),
+        11
+    );
+    assert_eq!(
+        semantic_corrections["measurement_44_layout"][2]["semantic"],
+        "unknown measurement field"
+    );
+    assert_eq!(
+        semantic_corrections["measurement_44_layout"][2]["status"],
+        "NOT_CAPTURED"
+    );
+    assert_eq!(
+        semantic_corrections["measurement_44_layout"][6]["semantic"],
+        "gating enum"
+    );
+    assert_eq!(
+        semantic_corrections["measurement_44_layout"][5]["offset"],
+        20
+    );
+    assert_eq!(
+        semantic_corrections["measurement_44_layout"][5]["semantic"],
+        "one field with stage-specific aliases"
+    );
+    assert_eq!(
+        semantic_corrections["measurement_44_layout"][5]["field_id"],
+        "measurement_result.measured_loudness"
+    );
+    assert_eq!(
+        semantic_corrections["measurement_alias_resolution"]["distinct_field_claim"],
+        false
+    );
+    assert_eq!(
+        semantic_corrections["measurement_alias_resolution"]["stable_field_id"],
+        "measurement_result.measured_loudness"
+    );
+    assert_eq!(
+        semantic_corrections["measurement_alias_resolution"]["same_field"],
+        true
+    );
+    assert_eq!(
+        semantic_corrections["measurement_alias_resolution"]["measurement_result_offset"],
+        20
+    );
+    assert_eq!(
+        semantic_corrections["measurement_alias_resolution"]["descriptor_offset"],
+        92
+    );
+    assert_eq!(
+        semantic_corrections["remaining_bounded_no_hit"]["policy_unknown_property_semantics"],
+        json!([12, 29, 36])
+    );
+    assert_eq!(
+        semantic_corrections["remaining_bounded_no_hit"]["portable_order_endian_version_optional_checksum"],
+        "NOT_OBSERVED"
+    );
+    assert_eq!(semantic_corrections["production_allowed"], false);
+    assert_eq!(semantic_corrections["private_auth"], "EXCLUDED");
+
+    let measurement_alias = read_json("MEASUREMENT-ALIAS-RESOLUTION.json");
+    assert_eq!(
+        measurement_alias["schema"],
+        "sanitized-measurement-alias-resolution.v1"
+    );
+    assert_eq!(
+        measurement_alias["field_id"],
+        "measurement_result.measured_loudness"
+    );
+    assert_eq!(measurement_alias["same_storage"], true);
+    assert_eq!(measurement_alias["producer"]["function_rva"], "0x1769a0");
+    assert_eq!(measurement_alias["producer"]["result_offset"], 20);
+    assert_eq!(
+        measurement_alias["producer"]["log_name"],
+        "measured_loudness"
+    );
+    assert_eq!(measurement_alias["adapter"]["function_rva"], "0x178dc0");
+    assert_eq!(
+        measurement_alias["adapter"]["copy_rule"],
+        "measurement result +20 copied unchanged to descriptor +92"
+    );
+    assert_eq!(measurement_alias["consumer"]["function_rva"], "0x1ab520");
+    assert_eq!(measurement_alias["consumer"]["descriptor_offset"], 92);
+    assert_eq!(
+        measurement_alias["consumer"]["role"],
+        "selected_loudness_for_dialnorm"
+    );
+    assert_eq!(measurement_alias["observed_f32"], -16.784912109375);
+    assert_eq!(
+        measurement_alias["alias_policy"]["canonical_field_id"],
+        "measurement_result.measured_loudness"
+    );
+    assert_eq!(
+        measurement_alias["alias_policy"]["must_not_materialize_two_fields"],
+        true
+    );
+    assert_eq!(measurement_alias["native_portable_contract_claim"], false);
+    assert_eq!(measurement_alias["production_allowed"], false);
 
     let framing = read_json("REQUIRED-FRAMING-RULES.json");
     assert_eq!(framing["status"], "BLOCKED_INCOMPLETE");
@@ -1088,11 +1310,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let independent = read_json("INDEPENDENT-CHECK.json");
     assert_eq!(
         independent["schema"],
-        "spatial-control-cold-serializer-blocker-independent-check.v12"
+        "spatial-control-cold-serializer-blocker-independent-check.v14"
     );
     assert_eq!(independent["all_pass"], true);
     let checks = independent["checks"].as_array().expect("checks array");
-    assert_eq!(checks.len(), 21);
+    assert_eq!(checks.len(), 23);
     assert!(checks.iter().all(|check| check["pass"] == true));
     assert_eq!(
         checks
@@ -1115,6 +1337,8 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "dynamic_parent_cold_lifecycle",
             "parent_cold_config_boundary",
             "parent_cold_config_semantics",
+            "semantic_corrections",
+            "measurement_alias_resolution",
             "no_entrypoint",
             "no_bytes",
             "framing_rules",

@@ -1,11 +1,11 @@
 {
-  "schema": "washed-implementer-blocker-manifest.v7",
-  "identity": "spatial-control-cold-serializer.blocked.v12",
+  "schema": "washed-implementer-blocker-manifest.v9",
+  "identity": "spatial-control-cold-serializer.blocked.v14",
   "status": "BLOCKED_NO_EXECUTABLE_SERIALIZER",
   "source_evidence": {
-    "research_manifest_sha256": "5aff4e4f94615b590c49c730de6ed35403441be244e40eed91e25a7ad5da2aa7",
-    "research_independent_check_sha256": "5e6f42926d323fa8ff0d1877eec1ded35019c938c3e6d16c5a73cd1cf0a482d3",
-    "parent_cold_config_semantics_sha256": "58cb57ddd5797609156c6a9b1465c14e650161296638fd0611e6e1a797452a34",
+    "research_manifest_sha256": "fbf3eb707d0058e3e97dc24557f1397c683864578e9a5afce2c6dace8deb73b5",
+    "research_independent_check_sha256": "291f157c813afdf9cd086d22951784ca489296e510c9d1aa49c675b0edaca2e1",
+    "measurement_alias_resolution_sha256": "b1608911f6c00d42c648cfb26962bc014743351d4feed8fd49bb00220826f5d1",
     "serializer_execution": "NOT_RUN",
     "canonical_preimage": null,
     "authoritative_length": null,
@@ -16,39 +16,35 @@
     "private_auth": "excluded",
     "product_wide_absence_claim": false
   },
-  "evidence_classification": {
-    "native_observed": "bounded descriptor semantics and consumer reads, parent cold lifecycle, and parent output through FileWriter to DLL-local CRT fwrite",
-    "unknown": "unresolved field semantics, portable order/endian/version/optional/checksum contract, other configurations/restart, alternate host/job/wrapper/other DLL paths and product-wide persistence",
-    "clean_room_design": "parent canonical bytes and receipt schema not native observed"
+  "measurement_alias_resolution": {
+    "field_id": "measurement_result.measured_loudness",
+    "measurement_result_offset": 20,
+    "descriptor_offset": 92,
+    "producer_alias": "measured_loudness",
+    "consumer_role_alias": "selected_loudness_for_dialnorm",
+    "same_storage": true,
+    "distinct_field_claim": false,
+    "implementer_rule": "materialize one field only"
+  },
+  "semantic_corrections": {
+    "policy_plus4": "property36_semantic_name_unknown",
+    "policy_plus32": "property29_semantic_name_unknown",
+    "policy_plus36": "RF_property15",
+    "policy_plus40": "Line_property13",
+    "gating_enum": "0_ungated_1_dialogue_2_level_other_invalid",
+    "measurement_unknown_offsets": [8, 12, 16]
   },
   "descriptor_semantics": {
     "descriptor_bytes": 120,
     "layout_complete": true,
-    "mode": 0,
-    "source_count": 38,
-    "data_rate_code": 5,
-    "pointer_offsets": [16, 48, 56, 64],
-    "known_measurement_fields": [92, 96, 100, 104, 108, 112],
-    "policy_semantics_complete": false,
+    "policy_block_semantics_complete": false,
     "measurement_semantics_complete": false,
     "channel_record_semantics_complete": false,
     "external_metadata_semantics_complete": false,
     "trim_record_semantics_complete": false,
-    "pointer_zeroed_projection": "DIAGNOSTIC_ONLY_NOT_NATIVE_CANONICAL",
-    "portable_semantic_schema": "INCOMPLETE",
+    "native_portable_contract": "NOT_OBSERVED",
+    "native_serializer_restore_roundtrip": "NOT_RUN",
     "portable_reconstruction_ready": false
-  },
-  "referenced_blocks": {
-    "channel_records": { "extent_bytes": 228, "record_shape": "38 x 6-byte u32+u16 copy", "raw_values_delivered": false },
-    "codec_policy": { "extent_bytes": 44, "known_fields_partial": true, "raw_values_delivered": false },
-    "external_metadata_control": { "extent_bytes": 120, "copy_rule_partial": true, "raw_values_delivered": false },
-    "trim_payloads": { "input_record_shape": "9 x 28-byte", "copied_payload_bytes": 216, "first_4_byte_key_discarded": true, "raw_values_delivered": false }
-  },
-  "first_store": {
-    "static_store_rva": "0x1a7e0e",
-    "destination": "allocation_base+0x8d8",
-    "value": "allocation_base+0x8e0",
-    "dynamic_instruction_hit": "NOT_CAPTURED"
   },
   "parent_cold_lifecycle": {
     "query_rva": "0x1a8920",
@@ -96,11 +92,13 @@
     { "file": "COLD-SERIALIZER-EVIDENCE.json", "bytes": 3235, "sha256": "6a0db3edb8a56145c63b3f1d55853f21fe656eb7594d5de9fc9fc00bc5ffed0f" },
     { "file": "COLD-SERIALIZER-FINAL-BLOCKER.md", "bytes": 4159, "sha256": "4017a64a0c27e85b6ee308f6e9848d26a93290c04ff808846b1bbaf7315b322a" },
     { "file": "FILEWRITER-FWRITE-DYNAMIC-JOIN.json", "bytes": 3057, "sha256": "4d77a2fb99ba77d1e0bac1f79bb8d0f638f132a895eee9351c6d46025f2e0298" },
-    { "file": "INDEPENDENT-CHECK.json", "bytes": 2248, "sha256": "5e6f42926d323fa8ff0d1877eec1ded35019c938c3e6d16c5a73cd1cf0a482d3" },
+    { "file": "INDEPENDENT-CHECK.json", "bytes": 2488, "sha256": "291f157c813afdf9cd086d22951784ca489296e510c9d1aa49c675b0edaca2e1" },
+    { "file": "MEASUREMENT-ALIAS-RESOLUTION.json", "bytes": 1318, "sha256": "b1608911f6c00d42c648cfb26962bc014743351d4feed8fd49bb00220826f5d1" },
     { "file": "MINIMUM-EXTERNAL-EVIDENCE.json", "bytes": 1123, "sha256": "7e078cfa1da60dcf0580a5fe070d6255c4c8cfa2265b862242965342210c922f" },
     { "file": "PARENT-COLD-CONFIG-BOUNDARY.json", "bytes": 3728, "sha256": "7f738cea345e356a22ad7d796c6e5b96db03eb38245331f8373a618de8e006e4" },
-    { "file": "PARENT-COLD-CONFIG-SEMANTICS.json", "bytes": 6611, "sha256": "58cb57ddd5797609156c6a9b1465c14e650161296638fd0611e6e1a797452a34" },
+    { "file": "PARENT-COLD-CONFIG-SEMANTICS.json", "bytes": 7928, "sha256": "82a0ed0671d0a2c320e156ef80950c196a0d1a05fe9c293aaa6df0e7781b0cb7" },
     { "file": "PARENT-COLD-LIFECYCLE.json", "bytes": 3913, "sha256": "1f2992122f1d271238e59217b25b4139ba9d2b2c70710b9add98430b7282fd5f" },
+    { "file": "PARENT-COLD-SEMANTIC-CORRECTIONS.json", "bytes": 3264, "sha256": "42142c4cad7f1cbd2e5f0c2810327ccdcabcf7055dde99be6466cb3610bbcdc4" },
     { "file": "PARENT-FILEWRITER-DYNAMIC-JOIN.json", "bytes": 3442, "sha256": "a2bd0eb000671b95190ed44a1359f4e349981b74a6f191b49e1469793b377edc" },
     { "file": "PARENT-OUTPUT-DATAFLOW.json", "bytes": 3513, "sha256": "8ec6387277da562610614795459ef03b8c960ea2962a51bb492fcee6fcae3a20" },
     { "file": "PARENT-OUTPUT-IMPLEMENTER-SUPPLEMENT.json", "bytes": 5833, "sha256": "90f7cd4e4baba45ac4f7650d92e2963e3d384edcefaa0e2cb99b10dcb6f5bba1" },
