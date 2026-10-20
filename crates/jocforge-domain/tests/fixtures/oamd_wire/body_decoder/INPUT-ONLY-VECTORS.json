@@ -1,0 +1,53 @@
+{
+  "schema": "f05o-row-read-header-context.v1",
+  "status": "DIRECT_DECODER_INPUT_CLOSED",
+  "api": "decode(payload_bytes, xy_table_63, z_table_16)",
+  "cases": [
+    {
+      "id": "U-OAMD-ROWS-READ",
+      "payload_hex": "0d8442c000a2703e7840efbf0080c0fa010381f4020840fa010000",
+      "grid_route": "PG06",
+      "header_assertions": {
+        "version": 0,
+        "count_code": 6,
+        "row_count": 7,
+        "shortcut": 1,
+        "leading_lfe": true,
+        "protected_sections": 0,
+        "section_count": 1
+      },
+      "row_order": "LFE, then 6 OBJECT rows"
+    },
+    {
+      "id": "U-OAMD-TIME-TABLE-READ",
+      "payload_hex": "01045c61fff7c40fa01000",
+      "grid_route": "PG06",
+      "header_assertions": {
+        "version": 0,
+        "count_code": 0,
+        "row_count": 1,
+        "shortcut": 1,
+        "leading_lfe": false,
+        "protected_sections": 0,
+        "section_count": 1
+      },
+      "row_order": "1 OBJECT row"
+    },
+    {
+      "id": "U-OAMD-TIME-EXPLICIT-READ",
+      "payload_hex": "0104608e01cc240103e80400",
+      "grid_route": "PG06",
+      "header_assertions": {
+        "version": 0,
+        "count_code": 0,
+        "row_count": 1,
+        "shortcut": 1,
+        "leading_lfe": false,
+        "protected_sections": 0,
+        "section_count": 1
+      },
+      "row_order": "1 OBJECT row"
+    }
+  ],
+  "expected_verification": "header_decode_only; rows remain the existing approved expected projections"
+}

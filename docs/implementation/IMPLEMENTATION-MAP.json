@@ -909,7 +909,7 @@
         {
           "slice_id": "oamd-rowdata-body-encoder",
           "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_FUNCTIONAL_ID_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_ENCODER_ONLY__ROW_DATA_READER_TRIM_AND_LIVE_PRODUCER_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_ENCODER_ONLY__F05T_TRIM_AND_F05L_LIVE_PRODUCER_DEFERRED",
           "scope": "Stateless F05O integer XYZ wire-code conversion, escaped integer encode/decode, rowdata payload encoding, and one-rowdata-section OAMD body encoding. This does not complete the F05O functional ID.",
           "implementation_files": [
             "crates/jocforge-domain/src/joc/oamd.rs",
@@ -986,13 +986,103 @@
             }
           ],
           "exclusions": [
-            "OAMD rowdata decoding; the delivered U-OAMD-ROWS-READ vector omits the required row_count and leading_lfe inputs.",
+            "OAMD rowdata decoding is implemented as a separate direct sub-slice; the encoder API exposes no decode operation.",
             "F05T DBMD trim parsing and trim-section encoding.",
             "Multiple sections, protected sections, or producer-specific body composition.",
             "F05L callback lifecycle, live history, queue ownership, and transaction integration.",
             "Native error equivalence, whole-programme execution, codec execution, W04, and product acceptance."
           ],
           "validation_claim": "Direct unit-vector and spec-formula checks only; native and product execution NOT_RUN."
+        },
+        {
+          "slice_id": "oamd-single-rowdata-body-decoder",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_FUNCTIONAL_ID_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_SINGLE_ROW_DATA_BODY_DECODER_ONLY__OTHER_LAYOUTS_DEFERRED",
+          "scope": "Stateless F05O body decoding for a self-described header and exactly one unprotected rowdata section, including single-frame timing and row projections through caller-supplied PG06 XY/Z tables.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/joc/oamd.rs",
+            "crates/jocforge-domain/src/joc/oamd/body_reader.rs"
+          ],
+          "implementation_file_identities": [
+            {
+              "file": "crates/jocforge-domain/src/joc/oamd/body_reader.rs",
+              "bytes": 12227,
+              "sha256": "4da86db837e6cd5a57219c23f8d526640ba389f1aa8b850afb61c8b02c49f5af"
+            }
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/oamd_body_read.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The body reader is stateless and takes no callback, source, writer, or AU clock."
+            ]
+          },
+          "parameters": {
+            "kind": "CALLER_SUPPLIED_PG06_COORDINATE_TABLES",
+            "provider_files": [
+              "parameters/oamd-coordinate-grid-q15.json"
+            ],
+            "validation_boundary": "decode_oamd_body accepts fixed XY[63] and Z[16] tables as arguments; production domain code does no provider file I/O."
+          },
+          "vectors": {
+            "kind": "INPUT_ONLY_BODY_BYTES_WITH_HEADER_ASSERTIONS_AND_POSTCOMPUTATION_ROWS",
+            "authoritative_vectors": [
+              "test-vectors/unit/vectors.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F05O-ROW-READ-HEADER-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "U-OAMD-ROWS-READ: header row_count=7, leading_lfe=true; 1 LFE and 6 OBJECT rows",
+              "U-OAMD-TIME-TABLE-READ: header row_count=1, leading_lfe=false; table duration timing decode",
+              "U-OAMD-TIME-EXPLICIT-READ: header row_count=1, leading_lfe=false; explicit duration timing decode"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/oamd_wire/body_decoder/unit-read-vectors.json",
+              "bytes": 4430,
+              "sha256": "696e03400299e8577661e2e6dc1617f09b2547fa232ca9e2a3edab20ffa15ffb"
+            },
+            "header_supplement": {
+              "identity": "f05o-row-read-header-context.v1",
+              "manifest_sha256": "3baacf619c265ab636f5e9e3fee2dea19fd837a92fbd833e89922f12dcd95c3a",
+              "local_fixture_directory": "crates/jocforge-domain/tests/fixtures/oamd_wire/body_decoder"
+            },
+            "source_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_asset": "test-vectors/unit/vectors.json",
+            "source_asset_bytes": 1503142,
+            "source_asset_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "INVALID_INPUT",
+              "category": "malformed body framing",
+              "trigger": "The body or rowdata payload is truncated, overpadded, or has nonzero padding bits.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return no metadata; this local parser outcome is not a native error equivalence claim."
+            },
+            {
+              "error_code": "UNSUPPORTED_PROFILE",
+              "category": "unsupported body layout",
+              "trigger": "The body uses a nonzero version, non-shortcut layout, protected sections, section_count other than one, a non-rowdata section, multiple frames, or an unsupported row field.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return no metadata and do not attempt fallback or partial interpretation."
+            },
+            {
+              "error_code": "INVALID_ESCAPED_INTEGER",
+              "category": "section length rejection",
+              "trigger": "The section length uses an unterminated, truncated, overlong, or overflowing escaped integer.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return no metadata; this local parser outcome is not a native error equivalence claim."
+            }
+          ],
+          "exclusions": [
+            "Protected sections, alternate shortcut layouts, section counts other than one, and multi-frame payloads.",
+            "F05T trim parsing and trim-section decoding.",
+            "F05L body production, live state, queues, callback clocks, and transaction integration.",
+            "F05R56 parent receipt admission, raw callback snapshot validation, and rollback claims.",
+            "Native error equivalence, whole-programme execution, W04, and product acceptance."
+          ],
+          "validation_claim": "Three selected direct decoder vectors plus fail-closed malformed/unsupported layout checks; native and product execution NOT_RUN."
         }
       ]
     },
@@ -1083,7 +1173,8 @@
           "test-vectors/READER56-TARGET-STATE-SCHEMA.json",
           "outputs/IMPLEMENTER_SUPPLEMENTS/READER-TARGET-UPDATES-V1/READER-TARGET-RECEIPT-INPUTS.json",
           "outputs/IMPLEMENTER_SUPPLEMENTS/READER-TARGET-UPDATES-V1/READER-TARGET-RECEIPT-VECTORS.json",
-          "outputs/IMPLEMENTER_SUPPLEMENTS/PANNER-TRIGONOMETRY-V1/KAT.json"
+          "outputs/IMPLEMENTER_SUPPLEMENTS/PANNER-TRIGONOMETRY-V1/KAT.json",
+          "outputs/IMPLEMENTER_SUPPLEMENTS/F05R56-MODE2-CURRENT-PREVIOUS-V1/OBSERVED-VECTORS.json"
         ],
         "case_pointers": [
           "R56T-CONT-0..7: continuous marker/history callbacks; g0/g1 have no reader receipt; g2..g7 have one receipt each",
@@ -1093,7 +1184,8 @@
           "rejection_cases: BAD_CALLBACK, BAD_READER_GATE, OLD_ROW_COUNT, NEW_ROW_BYTES, SNAPSHOT_KEYS, RETIRED, COMPONENT6_PROFILE",
           "extra guards: state invocation mismatch and nonfinite numeric intermediate",
           "panner_trigonometry_kat: exact-rational direct-angle and equal-power words plus enclosure step counts; no host libm",
-          "fixture_integrity: fresh snapshot, matrix, overlap and 15x3072 mixer inputs are hashed after generation; marker energy consumes only the first 1536 mixer samples; hashes never seed the producer"
+          "fixture_integrity: fresh snapshot, matrix, overlap and 15x3072 mixer inputs are hashed after generation; marker energy consumes only the first 1536 mixer samples; hashes never seed the producer",
+          "mode2_current_previous: fit-record words6..8 copy current XYZ words; a separate generated recipe asserts the direct copy property. Observed output words are identity-pinned only because raw current_xyz input bytes were not delivered."
         ],
         "local_test_assets": [
           "crates/jocforge-domain/tests/fixtures/reader_target/READER56-TARGET-UPDATES-VERIFICATION.json",
@@ -1105,8 +1197,27 @@
           "crates/jocforge-domain/tests/fixtures/reader_target/oamd-coordinate-grid-q15.json",
           "crates/jocforge-domain/tests/fixtures/reader_target/meter-oar-secondary8-math-v1.json",
           "crates/jocforge-domain/tests/fixtures/reader_target/oamd-id11-live-v1.json",
-          "crates/jocforge-domain/tests/fixtures/reader_target/panner-trigonometry-kat.json"
-        ]
+          "crates/jocforge-domain/tests/fixtures/reader_target/panner-trigonometry-kat.json",
+          "crates/jocforge-domain/tests/fixtures/reader_target/mode2_current_previous/API-SCHEMA.json",
+          "crates/jocforge-domain/tests/fixtures/reader_target/mode2_current_previous/CONTRACT.md",
+          "crates/jocforge-domain/tests/fixtures/reader_target/mode2_current_previous/OBSERVED-VECTORS.json"
+        ],
+        "mode2_current_previous_binding": {
+          "identity": "f05r56-mode2-current-previous-direct-stage.v1",
+          "status": "DIRECT_STAGE_ONLY",
+          "source_manifest_sha256": "5d03dde26dd149d9c7b62ba5f9efb90d5b02481cbc99e8284f0f3bc5051341f9",
+          "local_fixture_directory": "crates/jocforge-domain/tests/fixtures/reader_target/mode2_current_previous",
+          "input_recipe_status": "OBSERVED_OUTPUTS_ONLY_RAW_CURRENT_XYZ_INPUT_NOT_DELIVERED",
+          "active_owner_mapping_status": "OPEN_CURRENT_ACTIVE_U32_16_TO_F05RT_OWNER_ACTIVE_I64_15",
+          "observed_scope": "selected normal mode2; frame_samples=3072; source_count=48; target_count=15; active indices 0..5",
+          "observed_projection": "record words6..8 equal current_xyz[row] byte-for-byte",
+          "not_run": [
+            "invalid input injection",
+            "exception rollback",
+            "programme/attempt/transaction/profile/callback lineage",
+            "publication and product integration"
+          ]
+        }
       },
       "error_outcomes": [
         {

@@ -1,0 +1,53 @@
+{
+  "schema": "f05r56-mode2-current-previous-direct-stage.v1",
+  "status": "DIRECT_STAGE_ONLY",
+  "source_evidence_manifest_sha256": "b0d76829f82ac9de41b57d90147b5a20bf0b40b26b6d54ae755bd98a6abe6583",
+  "run": {
+    "dee_release": "5.2.1-5994839",
+    "profile": "48kHz/1024kbps/5.1 JOC",
+    "frame_samples": 3072,
+    "source_count": 48,
+    "target_count": 15,
+    "selected_mode": 2,
+    "active_indices": [0, 1, 2, 3, 4, 5]
+  },
+  "record_projection": {
+    "record_bytes": 56,
+    "xyz_byte_offset": 24,
+    "xyz_word_count": 3,
+    "source": "current_xyz[row]",
+    "previous_is_source": false,
+    "observed_rows_words6_to_8": {
+      "0": ["00000000", "00000000", "00000000"],
+      "1": ["00000000", "3f000000", "00000000"],
+      "2": ["00000000", "3f7ffe00", "00000000"],
+      "3": ["3f800000", "00000000", "00000000"],
+      "4": ["3f800000", "3f000000", "00000000"],
+      "5": ["3f7ffe00", "3f7ffe00", "00000000"],
+      "6": ["00000000", "00000000", "00000000"],
+      "7": ["00000000", "00000000", "00000000"],
+      "8": ["00000000", "00000000", "00000000"],
+      "9": ["00000000", "00000000", "00000000"],
+      "10": ["00000000", "00000000", "00000000"],
+      "11": ["00000000", "00000000", "00000000"],
+      "12": ["00000000", "00000000", "00000000"],
+      "13": ["00000000", "00000000", "00000000"],
+      "14": ["00000000", "00000000", "00000000"]
+    }
+  },
+  "state_update": {
+    "current_xyz_copied_to_previous_before_return": true,
+    "current_active_copied_to_previous_before_return": true,
+    "current_xyz_sha256_before": "e134ff4536aab7abf734482413314485fe8774bbc98f5ea10bf254d381d197b2",
+    "previous_xyz_sha256_before": "10b2a66888c58a54b277fe2e68fb6e87150c3cd2c537b7f6a2d84559017438c7",
+    "current_active_sha256_before": "b617ea72345802ed6fc9725235ed73b350b8cb458cc47c96e2dc917b7b6cdd4d",
+    "previous_active_sha256_before": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b"
+  },
+  "not_run": [
+    "invalid_input_injection",
+    "exception_rollback",
+    "programme_attempt_transaction_profile_lineage",
+    "publication",
+    "whole_programme_acceptance"
+  ]
+}

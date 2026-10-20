@@ -116,3 +116,4 @@
 | slice_id | domains | covered_clauses |
 |---|---|---|
 | F05O/oamd-rowdata-body-encoder | — | `The encoder is stateless and consumes no callback, source, writer, or AU clock.` |
+| F05O/oamd-single-rowdata-body-decoder | — | `The body reader is stateless and takes no callback, source, writer, or AU clock.` |

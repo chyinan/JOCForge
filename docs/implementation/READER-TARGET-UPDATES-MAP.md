@@ -131,7 +131,8 @@ The selected 8-callback producer chain, six reader invocations, Type11 roundtrip
       "test-vectors/READER56-TARGET-STATE-SCHEMA.json",
       "outputs/IMPLEMENTER_SUPPLEMENTS/READER-TARGET-UPDATES-V1/READER-TARGET-RECEIPT-INPUTS.json",
       "outputs/IMPLEMENTER_SUPPLEMENTS/READER-TARGET-UPDATES-V1/READER-TARGET-RECEIPT-VECTORS.json",
-      "outputs/IMPLEMENTER_SUPPLEMENTS/PANNER-TRIGONOMETRY-V1/KAT.json"
+      "outputs/IMPLEMENTER_SUPPLEMENTS/PANNER-TRIGONOMETRY-V1/KAT.json",
+      "outputs/IMPLEMENTER_SUPPLEMENTS/F05R56-MODE2-CURRENT-PREVIOUS-V1/OBSERVED-VECTORS.json"
     ],
     "case_pointers": [
       "R56T-CONT-0..7: continuous marker/history callbacks; g0/g1 have no reader receipt; g2..g7 have one receipt each",
@@ -141,7 +142,8 @@ The selected 8-callback producer chain, six reader invocations, Type11 roundtrip
       "rejection_cases: BAD_CALLBACK, BAD_READER_GATE, OLD_ROW_COUNT, NEW_ROW_BYTES, SNAPSHOT_KEYS, RETIRED, COMPONENT6_PROFILE",
       "extra guards: state invocation mismatch and nonfinite numeric intermediate",
       "panner_trigonometry_kat: exact-rational direct-angle and equal-power words plus enclosure step counts; no host libm",
-      "fixture_integrity: fresh snapshot, matrix, overlap and 15x3072 mixer inputs are hashed after generation; marker energy consumes only the first 1536 mixer samples; hashes never seed the producer"
+      "fixture_integrity: fresh snapshot, matrix, overlap and 15x3072 mixer inputs are hashed after generation; marker energy consumes only the first 1536 mixer samples; hashes never seed the producer",
+      "mode2_current_previous: fit-record words6..8 copy current XYZ words; a separate generated recipe asserts the direct copy property. Observed output words are identity-pinned only because raw current_xyz input bytes were not delivered."
     ],
     "kind": "INPUT_ONLY_RECIPES_WITH_POSTCOMPUTATION_ASSERTIONS",
     "local_test_assets": [
@@ -154,8 +156,27 @@ The selected 8-callback producer chain, six reader invocations, Type11 roundtrip
       "crates/jocforge-domain/tests/fixtures/reader_target/oamd-coordinate-grid-q15.json",
       "crates/jocforge-domain/tests/fixtures/reader_target/meter-oar-secondary8-math-v1.json",
       "crates/jocforge-domain/tests/fixtures/reader_target/oamd-id11-live-v1.json",
-      "crates/jocforge-domain/tests/fixtures/reader_target/panner-trigonometry-kat.json"
-    ]
+      "crates/jocforge-domain/tests/fixtures/reader_target/panner-trigonometry-kat.json",
+      "crates/jocforge-domain/tests/fixtures/reader_target/mode2_current_previous/API-SCHEMA.json",
+      "crates/jocforge-domain/tests/fixtures/reader_target/mode2_current_previous/CONTRACT.md",
+      "crates/jocforge-domain/tests/fixtures/reader_target/mode2_current_previous/OBSERVED-VECTORS.json"
+    ],
+    "mode2_current_previous_binding": {
+      "active_owner_mapping_status": "OPEN_CURRENT_ACTIVE_U32_16_TO_F05RT_OWNER_ACTIVE_I64_15",
+      "identity": "f05r56-mode2-current-previous-direct-stage.v1",
+      "input_recipe_status": "OBSERVED_OUTPUTS_ONLY_RAW_CURRENT_XYZ_INPUT_NOT_DELIVERED",
+      "local_fixture_directory": "crates/jocforge-domain/tests/fixtures/reader_target/mode2_current_previous",
+      "not_run": [
+        "invalid input injection",
+        "exception rollback",
+        "programme/attempt/transaction/profile/callback lineage",
+        "publication and product integration"
+      ],
+      "observed_projection": "record words6..8 equal current_xyz[row] byte-for-byte",
+      "observed_scope": "selected normal mode2; frame_samples=3072; source_count=48; target_count=15; active indices 0..5",
+      "source_manifest_sha256": "5d03dde26dd149d9c7b62ba5f9efb90d5b02481cbc99e8284f0f3bc5051341f9",
+      "status": "DIRECT_STAGE_ONLY"
+    }
   }
 }
 ```

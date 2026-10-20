@@ -116,3 +116,4 @@
 | slice_id | kind | provider_files | validation_boundary |
 |---|---|---|---|
 | F05O/oamd-rowdata-body-encoder | SPECIFIED_INTEGER_RULES_NO_RUNTIME_PROVIDER | — | Uses the F05O integer XYZ and wire formulas. PG06 coordinate-grid decoding remains outside this encoder slice. |
+| F05O/oamd-single-rowdata-body-decoder | CALLER_SUPPLIED_PG06_COORDINATE_TABLES | `parameters/oamd-coordinate-grid-q15.json` | decode_oamd_body accepts fixed XY[63] and Z[16] tables as arguments; production domain code does no provider file I/O. |

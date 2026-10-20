@@ -1,0 +1,24 @@
+{
+  "schema": "f05r56-mode2-current-previous-api.v1",
+  "input": {
+    "frame_samples": "u32",
+    "source_count": "u32",
+    "target_count": "u32",
+    "current_xyz": "[[u32; 3]; 15]",
+    "current_active": "[u32; 16]",
+    "owner_previous_xyz": "[[u32; 3]; 15]",
+    "owner_previous_active": "[u32; 16]"
+  },
+  "output": {
+    "records": "[[u32; 14]; 15]",
+    "next_owner_previous_xyz": "[[u32; 3]; 15]",
+    "next_owner_previous_active": "[u32; 16]"
+  },
+  "rules": [
+    "accept only the selected normal direct-stage shape",
+    "copy current_xyz row bytes into record words 6..8",
+    "copy current arrays to owner previous state before successful return",
+    "do not expose or accept a caller-owned conflicting previous snapshot",
+    "do not infer raw admission, rollback, or programme lineage"
+  ]
+}

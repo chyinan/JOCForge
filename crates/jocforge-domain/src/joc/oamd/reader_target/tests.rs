@@ -2,8 +2,8 @@
 use super::ReaderTargetState;
 use super::{
     READER_ROWS, RECORD_BYTES, ReaderInvocationIndex, ReaderTargetCallbackInputs,
-    ReaderTargetError, ReaderTargetUpdateReceipt, SELECTED_PROFILE_ID, hex, read_record_word,
-    stage_reader_target,
+    ReaderTargetError, ReaderTargetUpdateReceipt, SELECTED_PROFILE_ID, hex, make_fit_record,
+    read_record_word, stage_reader_target,
 };
 use crate::timeline::FrontendCallbackIndex;
 use serde_json::Value;
@@ -15,6 +15,14 @@ const CONTINUOUS_VECTORS: &str = include_str!(
 );
 const RECEIPT_VECTORS: &str =
     include_str!("../../../../tests/fixtures/reader_target/READER-TARGET-RECEIPT-VECTORS.json");
+const MODE2_API_SCHEMA: &[u8] = include_bytes!(
+    "../../../../tests/fixtures/reader_target/mode2_current_previous/API-SCHEMA.json"
+);
+const MODE2_CONTRACT: &[u8] =
+    include_bytes!("../../../../tests/fixtures/reader_target/mode2_current_previous/CONTRACT.md");
+const MODE2_OBSERVED_VECTORS: &[u8] = include_bytes!(
+    "../../../../tests/fixtures/reader_target/mode2_current_previous/OBSERVED-VECTORS.json"
+);
 const PACKAGE_MANIFEST: &str =
     include_str!("../../../../tests/fixtures/f01e_provider/MANIFEST.json");
 const PACKAGE_MANIFEST_SHA256: &str =
@@ -27,6 +35,69 @@ fn cold_state_digest_matches_the_complete_schema_preimage() {
     assert_eq!(
         actual,
         "309a342e6fcb4d6dee13b8da144c7e61880ce1fbd4a5e555291bd3c62470a588"
+    );
+}
+
+#[test]
+fn mode2_supplement_assets_match_the_washed_manifest_entries() {
+    for (name, bytes, expected_size, expected_sha256) in [
+        (
+            "API-SCHEMA.json",
+            MODE2_API_SCHEMA,
+            810,
+            "f9d5e6762de238dc64531a55bc087384306ac72e61cc0dcc92a50ab8160ea45e",
+        ),
+        (
+            "CONTRACT.md",
+            MODE2_CONTRACT,
+            2038,
+            "5d137597e61970255097bd3140c45cc3af40e2aba2216175bdb9e73d5f5bff36",
+        ),
+        (
+            "OBSERVED-VECTORS.json",
+            MODE2_OBSERVED_VECTORS,
+            2125,
+            "39c3e212eed8c636a52cbb01f304c9b460f5bef19123d7d2f4cb4bb8f9f6a84d",
+        ),
+    ] {
+        assert_eq!(bytes.len(), expected_size, "{name}");
+        assert_eq!(hex(&Sha256::digest(bytes)), expected_sha256, "{name}");
+    }
+}
+
+#[test]
+fn direct_fit_record_projection_copies_current_xyz_from_an_independent_recipe() {
+    let observed: Value = serde_json::from_slice(MODE2_OBSERVED_VECTORS).unwrap();
+    let run = &observed["run"];
+    assert_eq!(run["frame_samples"].as_u64(), Some(3072));
+    assert_eq!(run["source_count"].as_u64(), Some(48));
+    assert_eq!(run["target_count"].as_u64(), Some(15));
+    assert_eq!(run["selected_mode"].as_u64(), Some(2));
+    assert_eq!(run["active_indices"], serde_json::json!([0, 1, 2, 3, 4, 5]));
+
+    // Use an independent local input recipe; observed output words are assertions only.
+    let recipe = recipe_data(2);
+    let input = recipe.inputs(2);
+    for row in 0..15 {
+        let record = make_fit_record(&input, row, false, input.assignment_active[row], 0);
+        assert_eq!(
+            &record[6..9],
+            &input.current_xyz_words[row * 3..row * 3 + 3],
+            "fit record row {row} copies the current XYZ words"
+        );
+    }
+}
+
+#[test]
+fn successful_direct_stage_carries_current_xyz_into_the_next_owner_state() {
+    let recipe = recipe_data(2);
+    let committed = state_after_priming();
+    let input = recipe.inputs(2);
+    assert_ne!(input.current_xyz_words, &committed.current_xyz_words);
+    let proposal = stage_reader_target(&committed, &input).unwrap();
+    assert_eq!(
+        proposal.next_state.current_xyz_words,
+        *input.current_xyz_words
     );
 }
 

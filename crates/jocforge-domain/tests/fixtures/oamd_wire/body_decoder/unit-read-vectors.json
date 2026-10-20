@@ -1,0 +1,189 @@
+{
+  "schema": "oamd-row-read-unit-vectors.v1",
+  "source_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_asset": "test-vectors/unit/vectors.json",
+  "source_asset_bytes": 1503142,
+  "source_asset_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8",
+  "cases": [
+    {
+      "id": "U-OAMD-ROWS-READ",
+      "input": {
+        "payload_hex": "0d8442c000a2703e7840efbf0080c0fa010381f4020840fa010000",
+        "grid_route": "PG06"
+      },
+      "expected": {
+        "timing": {
+          "base": 0,
+          "position": 0,
+          "duration": 1536,
+          "precision": 32
+        },
+        "rows": [
+          {
+            "kind": "LFE",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              16384,
+              16384,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              -32767
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              16384,
+              16384,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 0,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 0,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 1,
+            "gain": 0,
+            "spread": 0,
+            "xyz_q15": [
+              16384,
+              16384,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          }
+        ],
+        "trim_present": false
+      }
+    },
+    {
+      "id": "U-OAMD-TIME-TABLE-READ",
+      "input": {
+        "payload_hex": "01045c61fff7c40fa01000",
+        "grid_route": "PG06"
+      },
+      "expected": {
+        "timing": {
+          "base": 18,
+          "position": 63,
+          "duration": 2048,
+          "precision": 31
+        },
+        "rows": [
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          }
+        ],
+        "trim_present": false
+      }
+    },
+    {
+      "id": "U-OAMD-TIME-EXPLICIT-READ",
+      "input": {
+        "payload_hex": "0104608e01cc240103e80400",
+        "grid_route": "PG06"
+      },
+      "expected": {
+        "timing": {
+          "base": 7,
+          "position": 1,
+          "duration": 777,
+          "precision": 0
+        },
+        "rows": [
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          }
+        ],
+        "trim_present": false
+      }
+    }
+  ]
+}
