@@ -1,0 +1,32 @@
+{
+  "schema": "washed-implementer-blocker-manifest.v1",
+  "identity": "spatial-control-cold-serializer.blocked.v1",
+  "status": "BLOCKED_NO_EXECUTABLE_SERIALIZER",
+  "files": [
+    { "file": "COLD-SERIALIZER-EVIDENCE.json", "bytes": 2171, "sha256": "ee41b98403944554a77bd6ff8cb5bbe54cb3402f1369a09953fe07efc6afbf41" },
+    { "file": "REQUIRED-FRAMING-RULES.json", "bytes": 1152, "sha256": "df8951dccf07ae967106f25279985007c3dd37815a151604b85e966b7bd2f230" },
+    { "file": "INDEPENDENT-CHECK.json", "bytes": 931, "sha256": "96c3114ccb3fddc6d819c2380d66fa23eddd885d4ca2cea7b62468dbabc380c9" }
+  ],
+  "source_evidence": {
+    "research_manifest_sha256": "d2c3f30407602acc2544210729b4093736fb7f29c8b08db1fa615cfb8ecc398e",
+    "serializer_execution": "NOT_RUN",
+    "canonical_preimage": null,
+    "authoritative_length": null,
+    "authoritative_sha256": null,
+    "bytes_guessed": false,
+    "AI48ST01_used": false,
+    "private_auth": "excluded"
+  },
+  "missing_framing": [
+    "top_level_envelope",
+    "F01E_embedding",
+    "optional_diffusion_source_cache",
+    "current_flags_current_features_persistence",
+    "writer_set_framing"
+  ],
+  "hard_boundaries": {
+    "spatial_render_selector_u04_outer": "NOT_RUN",
+    "production_spatial_control_receipt": "BLOCKED",
+    "success_vectors": 0
+  }
+}

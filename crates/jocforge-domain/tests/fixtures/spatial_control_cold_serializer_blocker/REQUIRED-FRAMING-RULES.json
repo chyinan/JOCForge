@@ -1,0 +1,14 @@
+{
+  "schema": "spatial-control-cold-required-framing-rules.v1",
+  "status": "BLOCKED_INCOMPLETE",
+  "rules": [
+    {"id": "top_level_envelope", "status": "MISSING", "required": ["magic/version", "total length", "section identifiers", "section length widths", "alignment", "terminal rule"]},
+    {"id": "f01e_embedding", "status": "MISSING", "required": ["representation kind", "presence/version", "length framing", "raw JSON vs binary projection vs digest reference"]},
+    {"id": "optional_diffusion_source_cache", "status": "MISSING", "required": ["absence encoding", "presence grouping", "snapshot order", "diffusion record framing"]},
+    {"id": "current_flags_current_features", "status": "MISSING", "required": ["exclude vs zero arrays vs optional callback snapshot"]},
+    {"id": "writer_set", "status": "MISSING", "required": ["record field order/types", "count/length framing", "inline vs referenced owner/generation"]}
+  ],
+  "known_field_order": ["clocks", "source_cache", "event_control", "render_audio", "source_flags", "feature", "selection_outer", "matrix_assignment"],
+  "unknown_zero_fill_allowed": false,
+  "scratch_allowed": false
+}

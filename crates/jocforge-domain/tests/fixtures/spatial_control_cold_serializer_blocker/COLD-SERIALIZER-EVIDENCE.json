@@ -1,0 +1,50 @@
+{
+  "schema": "sanitized-spatial-control-cold-serializer-evidence.v1",
+  "dll": {
+    "bytes": 10942464,
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "export_count": 2,
+    "exports": [
+      {"name": "dlb_phoenix_get_audio_filter_handle", "rva": "0x1547d0"},
+      {"name": "dlb_phoenix_get_version_handle", "rva": "0x1547e0"}
+    ],
+    "serializer_related_imports": [],
+    "schema_magic_strings_found": false
+  },
+  "ida": {
+    "parent_callback_rva": "0x1a7710",
+    "direct_call_count": 13,
+    "serializer_call_observed": false,
+    "bounded_candidates": [
+      {"rva": "0x1aa8a0", "classification": "runtime descriptor/processing"},
+      {"rva": "0x1ab800", "classification": "runtime receiver/processing"},
+      {"rva": "0x1ac490", "classification": "runtime descriptor construction"},
+      {"rva": "0x1acd10", "classification": "control38 writer"},
+      {"rva": "0x1ad9d0", "classification": "runtime ADM/control materializer"}
+    ],
+    "research_evidence_sha256": {
+      "parent_call_map": "988a8e39af0e252aea2abd3e451733be6d1ca5603204c5ddee0c1c54e07471b2",
+      "parent_decompile": "76990fc61b3d201280d28f5a27f6059c1f3347fdef654c074e1a795a95d6d20d",
+      "candidate_index": "6cbc1b2a5c1cf71a2f767c0516dd81595b2c1526523a84958997f1be59bda527"
+    }
+  },
+  "constructors": {
+    "f01e_cold": {
+      "canonical_bytes": 4402,
+      "canonical_sha256": "9c943879cd36cb45bc7538346cfdf4f71d0998d8f261f75c135045fcb59870aa",
+      "provider_file_sha256": "b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb"
+    },
+    "selected_target_cold_provider_sha256": "d9cd904b23aebc72e008f5aaacd06c095e4906acdd6de16fe7358421b4769073",
+    "parent_provider_manifest_sha256": "32cdd7d80f62db4f2eb5e53f9bcd28b83bfc2b3b9fac23f8bef6143b9668ee0a",
+    "parent_state_schema_sha256": "5138318de304b83d26e47271c1661bcc903cebcd2cea457ae98e0048b161ed46"
+  },
+  "entrypoint": null,
+  "minimum_run_method": null,
+  "serializer_execution": "NOT_RUN",
+  "canonical_preimage": null,
+  "section_offsets": null,
+  "authoritative_length": null,
+  "authoritative_sha256": null,
+  "bytes_guessed": false,
+  "ai48st01_used": false
+}
