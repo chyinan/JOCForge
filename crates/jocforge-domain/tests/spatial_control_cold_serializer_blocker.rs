@@ -5,7 +5,7 @@ use std::fmt::Write as _;
 use std::fs;
 use std::path::PathBuf;
 
-const MANIFEST_SHA256: &str = "d6bd47eb6c9d19942b6dcc6c41716986d52151107ca0534c90608fae743264cd";
+const MANIFEST_SHA256: &str = "9354e839bdf08d5af1a87fc13b15fc222cc5965e2d37b3f68016db9bedfc4d16";
 
 fn fixture_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -36,18 +36,18 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(digest_hex(&manifest_bytes), MANIFEST_SHA256);
 
     let manifest: Value = serde_json::from_slice(&manifest_bytes).expect("manifest JSON");
-    assert_eq!(manifest["schema"], "washed-implementer-blocker-manifest.v1");
+    assert_eq!(manifest["schema"], "washed-implementer-blocker-manifest.v2");
     assert_eq!(
         manifest["identity"],
-        "spatial-control-cold-serializer.blocked.v5"
+        "spatial-control-cold-serializer.blocked.v7"
     );
     assert_eq!(manifest["status"], "BLOCKED_NO_EXECUTABLE_SERIALIZER");
     assert_eq!(
         manifest["evidence_classification"],
         json!({
-            "native_observed": "bounded_parent_path_73_functions_211_edges_memory_advancement",
-            "unknown": "host_wrapper_other_dlls_product_wide_behavior_outside_bounded_path",
-            "clean_room_design": "parent_canonical_bytes_and_receipt_schema_not_native_observed"
+            "native_observed": "bounded parent output and FileWriter static dataflow",
+            "unknown": "host wrapper other DLLs and product-wide behavior outside bounded path",
+            "clean_room_design": "parent canonical bytes and receipt schema not native observed"
         })
     );
 
@@ -59,17 +59,22 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             .collect::<Vec<_>>(),
         [
             "COLD-SERIALIZER-EVIDENCE.json",
-            "REQUIRED-FRAMING-RULES.json",
+            "COLD-SERIALIZER-FINAL-BLOCKER.md",
+            "INDEPENDENT-CHECK.json",
             "MINIMUM-EXTERNAL-EVIDENCE.json",
-            "UNCHANGED-BLOCKER-AUDIT.json",
-            "INDEPENDENT-CHECK.json"
+            "PARENT-OUTPUT-DATAFLOW.json",
+            "PARENT-OUTPUT-IMPLEMENTER-SUPPLEMENT.json",
+            "REQUIRED-FRAMING-RULES.json",
+            "UNCHANGED-BLOCKER-AUDIT.json"
         ]
     );
     let declared_independent_inputs = json!([
         "COLD-SERIALIZER-EVIDENCE.json",
         "REQUIRED-FRAMING-RULES.json",
         "MINIMUM-EXTERNAL-EVIDENCE.json",
-        "UNCHANGED-BLOCKER-AUDIT.json"
+        "UNCHANGED-BLOCKER-AUDIT.json",
+        "PARENT-OUTPUT-DATAFLOW.json",
+        "PARENT-OUTPUT-IMPLEMENTER-SUPPLEMENT.json"
     ]);
     for entry in files {
         let name = entry["file"].as_str().expect("manifest file name");
@@ -85,16 +90,14 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "{name}"
         );
     }
-    let unchanged_audit_sha = files
-        .iter()
-        .find(|entry| entry["file"] == "UNCHANGED-BLOCKER-AUDIT.json")
-        .expect("unchanged blocker audit is manifested")["sha256"]
-        .clone();
-
     let source = &manifest["source_evidence"];
     assert_eq!(
         source["research_manifest_sha256"],
-        "a520564d0e7d04c19e83a59a4b463256fc02a165645cd2514b40ca5c0d5eb148"
+        "736b1f29a4d8e3bb8e60c4ef1922026f67ca4744979e05fe72095420d1f1efe7"
+    );
+    assert_eq!(
+        source["research_independent_check_sha256"],
+        "cee42c4d75562c9b7342bbf005613c4cb45e182d8f4885b2a13fd6b053ffe7af"
     );
     assert_eq!(source["serializer_execution"], "NOT_RUN");
     assert_eq!(source["canonical_preimage"], Value::Null);
@@ -104,10 +107,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(source["AI48ST01_used"], false);
     assert_eq!(source["private_auth"], "excluded");
     assert_eq!(source["native_research_artifacts_in_package"], false);
-    assert_eq!(
-        source["unchanged_blocker_audit_sha256"],
-        unchanged_audit_sha
-    );
+    assert_eq!(source["product_wide_absence_claim"], false);
     assert_eq!(
         manifest["missing_framing"],
         json!([
@@ -221,6 +221,129 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     );
     assert_eq!(audit["bytes_guessed"], false);
 
+    let dataflow = read_json("PARENT-OUTPUT-DATAFLOW.json");
+    assert_eq!(
+        dataflow["schema"],
+        "sanitized-spatial-control-parent-output-dataflow.v1"
+    );
+    assert_eq!(dataflow["module"]["sha256"], evidence["dll"]["sha256"]);
+    assert_eq!(
+        dataflow["NATIVE_OBSERVED"]["dynamic_owner_join"]["frame_samples"],
+        1536
+    );
+    assert_eq!(
+        dataflow["NATIVE_OBSERVED"]["dynamic_owner_join"]["raw_audio_or_metadata_persisted"],
+        false
+    );
+    let output_flow = &dataflow["NATIVE_OBSERVED"]["static_dataflow"];
+    assert_eq!(output_flow["host_process_rva"], "0x179ab0");
+    assert_eq!(output_flow["parent_api_rva"], "0x1a8840");
+    assert_eq!(output_flow["parent_callback_rva"], "0x1a7710");
+    assert_eq!(output_flow["runtime_packet_builder_rva"], "0x1b1590");
+    assert_eq!(
+        output_flow["parent_output_storage"],
+        "4096-byte host stack buffer plus returned byte count"
+    );
+    assert_eq!(
+        output_flow["immediate_host_action"],
+        "copy produced byte range into a transient owned byte vector"
+    );
+    assert_eq!(output_flow["file_writer_forwarder_rva"], "0x189c70");
+    assert_eq!(output_flow["file_writer_core_write_rva"], "0x189c80");
+    assert_eq!(
+        output_flow["file_writer_action"],
+        "select FILE by frame-ordinal thresholds and require fwrite(encoded_pointer,1,encoded_size,selected_file) to equal encoded_size"
+    );
+    assert_eq!(output_flow["parent_state_object_persisted"], false);
+    assert_eq!(
+        dataflow["NATIVE_OBSERVED"]["bounded_chain_conclusion"],
+        "the joined parent owner advances in memory and returns encoded bytes; the traced host chain forwards those bytes to its sink rather than saving the parent state object"
+    );
+    assert_eq!(dataflow["raw_pcm_or_metadata_delivered"], false);
+    assert_eq!(
+        dataflow["NATIVE_OBSERVED"]["bounded_chain_snapshot_receipt_persistence_calls"],
+        0
+    );
+    assert_eq!(
+        dataflow["UNKNOWN"]["product_wide_snapshot_or_serializer_existence"],
+        "UNKNOWN"
+    );
+    assert_eq!(
+        dataflow["UNKNOWN"]["file_writer_dynamic_hit"],
+        "NOT_CAPTURED"
+    );
+    assert_eq!(dataflow["UNKNOWN"]["fwrite_dynamic_hit"], "NOT_CAPTURED");
+    assert_eq!(dataflow["UNKNOWN"]["product_wide_absence_claim"], false);
+    assert_eq!(
+        dataflow["CLEAN_ROOM_DESIGN"]["canonical_parent_bytes"],
+        "DESIGN_ONLY_UNAPPROVED_AND_NOT_DELIVERED"
+    );
+    assert!(
+        dataflow["NOT_RUN"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|item| item == "new native execution")
+    );
+
+    let output_supplement = read_json("PARENT-OUTPUT-IMPLEMENTER-SUPPLEMENT.json");
+    assert_eq!(
+        output_supplement["schema"],
+        "sanitized-parent-output-implementer-supplement.v1"
+    );
+    let chain_identity = &output_supplement["complete_chain_identity"];
+    assert_eq!(chain_identity["module_sha256"], evidence["dll"]["sha256"]);
+    assert_eq!(chain_identity["ordered_rvas"].as_array().unwrap().len(), 13);
+    assert_eq!(chain_identity["ordered_rvas"][10], "0x189c70");
+    assert_eq!(chain_identity["ordered_rvas"][11], "0x189c80");
+    assert_eq!(
+        output_supplement["chain_nodes"][10]["classification"],
+        "FILE_WRITER_FORWARDER"
+    );
+    assert_eq!(
+        output_supplement["chain_nodes"][11]["classification"],
+        "FILE_WRITER_CORE_WRITE"
+    );
+    assert_eq!(
+        output_supplement["complete_chain_identity_sha256"],
+        "72e90b188b9dec89e8933cd74407253816a079960e4f8580ef68d2c4b09f3e39"
+    );
+    assert_eq!(
+        output_supplement["observed_storage_boundaries"]["temporary_output"]["capacity_bytes"],
+        4096
+    );
+    assert_eq!(
+        output_supplement["observed_storage_boundaries"]["file_output"]["write_rule"],
+        "fwrite(encoded_pointer, 1, encoded_size, selected_file) must equal encoded_size"
+    );
+    assert_eq!(
+        output_supplement["state_and_persistence_scope"]["bounded_chain_parent_state_persistence_calls_observed"],
+        0
+    );
+    assert_eq!(
+        output_supplement["state_and_persistence_scope"]["encoded_bitstream_file_persistence_observed_statically"],
+        true
+    );
+    assert_eq!(
+        output_supplement["state_and_persistence_scope"]["product_wide_absence_claim"],
+        false
+    );
+    assert_eq!(output_supplement["UNKNOWN"].as_array().unwrap().len(), 6);
+    assert_eq!(
+        output_supplement["CLEAN_ROOM_DESIGN"]["parent_canonical_bytes"],
+        "DESIGN_ONLY_UNAPPROVED_AND_NOT_DELIVERED"
+    );
+    assert_eq!(output_supplement["production_allowed"], false);
+    let final_blocker = fs::read_to_string(root.join("COLD-SERIALIZER-FINAL-BLOCKER.md"))
+        .expect("human-readable blocker is manifested");
+    let normalized_final_blocker = final_blocker
+        .split_whitespace()
+        .collect::<Vec<_>>()
+        .join(" ");
+    assert!(
+        normalized_final_blocker
+            .contains("This does not prove that no internal serialization could ever be written")
+    );
     let framing = read_json("REQUIRED-FRAMING-RULES.json");
     assert_eq!(framing["status"], "BLOCKED_INCOMPLETE");
     assert_eq!(
@@ -304,11 +427,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let independent = read_json("INDEPENDENT-CHECK.json");
     assert_eq!(
         independent["schema"],
-        "spatial-control-cold-serializer-blocker-independent-check.v5"
+        "spatial-control-cold-serializer-blocker-independent-check.v7"
     );
     assert_eq!(independent["all_pass"], true);
     let checks = independent["checks"].as_array().expect("checks array");
-    assert_eq!(checks.len(), 14);
+    assert_eq!(checks.len(), 16);
     assert!(checks.iter().all(|check| check["pass"] == true));
     assert_eq!(
         checks
@@ -324,6 +447,8 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "constructors",
             "incremental_ida_audit",
             "evidence_classification",
+            "parent_output_dataflow",
+            "implementer_supplement",
             "no_entrypoint",
             "no_bytes",
             "framing_rules",
@@ -337,4 +462,5 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(independent["serializer_execution"], false);
     assert_eq!(independent["bytes_guessed"], false);
     assert_eq!(independent["expected_used_as_seed"], false);
+    assert_eq!(independent["production_allowed"], false);
 }

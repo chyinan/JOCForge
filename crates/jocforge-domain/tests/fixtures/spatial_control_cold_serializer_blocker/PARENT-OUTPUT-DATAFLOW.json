@@ -1,0 +1,70 @@
+{
+  "schema": "sanitized-spatial-control-parent-output-dataflow.v1",
+  "module": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "bytes": 10942464,
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "source_evidence_identity": {
+    "dynamic_owner_event_log_sha256": "9385b863c53973dfbdb5fdf03ffd6ab1a31a1436fdb26ca78b18095368fe8398",
+    "dynamic_owner_qualification_sha256": "7674e3f1ceb3b4213d755778004cc70d5b249e231c077c7a5e2821bf1ae8fb88",
+    "static_parent_output_trace_sha256": "d210e1375617f7b411ea890a781e34b4354045c4221f1268ba8d882a32b6c65d",
+    "static_parent_api_owner_trace_sha256": "2b23c5c5a917c9240919842a7e96780d9b5caabbebf28979e56a598059dca526",
+    "static_file_writer_trace_sha256": "b5b50f01221e9f3fa2d8635f3a90f552e5121536e48f97613e69d98bd2ea2061"
+  },
+  "NATIVE_OBSERVED": {
+    "dynamic_owner_join": {
+      "generation_scope": "startup callback 1, reader generation 2",
+      "host_to_frontend_owner_join": "host lazy frontend pointer equals actual RVA 0x1a8840 owner argument",
+      "parent_call_join": "RVA 0x1a8840 calls parent RVA 0x1a7710 at callsite RVA 0x1a890a",
+      "parent_return_caller_rva": "0x1a890f",
+      "frame_samples": 1536,
+      "raw_audio_or_metadata_persisted": false
+    },
+    "static_dataflow": {
+      "host_process_rva": "0x179ab0",
+      "parent_api_rva": "0x1a8840",
+      "parent_callback_rva": "0x1a7710",
+      "parent_output_builder_rva": "0x1ab800",
+      "runtime_packet_builder_rva": "0x1b1590",
+      "file_writer_wrapper_constructor_rva": "0x189600",
+      "file_writer_core_constructor_rva": "0x189670",
+      "output_file_selector_rva": "0x189c00",
+      "file_writer_forwarder_rva": "0x189c70",
+      "file_writer_core_write_rva": "0x189c80",
+      "file_writer_destructor_rva": "0x1898f0",
+      "parent_output_storage": "4096-byte host stack buffer plus returned byte count",
+      "immediate_host_action": "copy produced byte range into a transient owned byte vector",
+      "orchestration_action": "pass each nonempty returned byte vector, its byte count and frame ordinal to dlb::atmos::FileWriter",
+      "file_writer_construction": "open configured output file names in binary write mode and store FILE pointers",
+      "file_writer_action": "select FILE by frame-ordinal thresholds and require fwrite(encoded_pointer,1,encoded_size,selected_file) to equal encoded_size",
+      "parent_state_object_persisted": false,
+      "encoded_output_bytes_forwarded": true
+    },
+    "bounded_chain_snapshot_receipt_persistence_calls": 0,
+    "bounded_chain_conclusion": "the joined parent owner advances in memory and returns encoded bytes; the traced host chain forwards those bytes to its sink rather than saving the parent state object"
+  },
+  "CLEAN_ROOM_DESIGN": {
+    "parent_state_snapshot": "NOT_NATIVE_OBSERVED",
+    "canonical_parent_bytes": "DESIGN_ONLY_UNAPPROVED_AND_NOT_DELIVERED",
+    "receipt_schema": "DESIGN_ONLY_NOT_NATIVE_OBSERVED"
+  },
+  "UNKNOWN": {
+    "file_writer_dynamic_hit": "NOT_CAPTURED",
+    "fwrite_dynamic_hit": "NOT_CAPTURED",
+    "other_host_or_wrapper_paths": "UNKNOWN",
+    "other_dll_paths": "UNKNOWN",
+    "product_wide_snapshot_or_serializer_existence": "UNKNOWN",
+    "product_wide_absence_claim": false
+  },
+  "NOT_RUN": [
+    "new native execution",
+    "spatial render",
+    "selector",
+    "U04",
+    "outer",
+    "model recomposition"
+  ],
+  "private_auth": "EXCLUDED",
+  "raw_pcm_or_metadata_delivered": false
+}

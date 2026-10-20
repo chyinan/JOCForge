@@ -1,0 +1,149 @@
+{
+  "schema": "sanitized-parent-output-implementer-supplement.v1",
+  "scope": "bounded native parent-output to file-writer dataflow",
+  "module": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "bytes": 10942464,
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "chain_nodes": [
+    {
+      "rva": "0x179ab0",
+      "classification": "HOST_FRAME_ORCHESTRATION",
+      "responsibility": "owns the 4096-byte temporary output buffer, invokes the parent API, and copies the returned byte range into an owned vector"
+    },
+    {
+      "rva": "0x1a8840",
+      "classification": "PARENT_API",
+      "responsibility": "validates the live owner and frame inputs, invokes the parent callback, and returns produced byte count"
+    },
+    {
+      "rva": "0x1a7710",
+      "classification": "PARENT_CALLBACK",
+      "responsibility": "advances live descriptors, controls and runtime state in memory and invokes the output builder"
+    },
+    {
+      "rva": "0x1ab800",
+      "classification": "PARENT_OUTPUT_BUILDER",
+      "responsibility": "prepares the runtime packet request and returns the produced byte count"
+    },
+    {
+      "rva": "0x1b1590",
+      "classification": "RUNTIME_PACKET_BUILDER",
+      "responsibility": "builds the encoded packet from runtime inputs and writes it into the supplied output buffer"
+    },
+    {
+      "rva": "0x1776b0",
+      "classification": "OWNED_BYTE_VECTOR_COPY",
+      "responsibility": "copies the half-open produced byte range from the temporary buffer into an owned vector"
+    },
+    {
+      "rva": "0x175500",
+      "classification": "ENCODE_WORKFLOW",
+      "responsibility": "iterates frames and forwards each nonempty owned encoded byte vector with its frame ordinal to FileWriter"
+    },
+    {
+      "rva": "0x189600",
+      "classification": "FILE_WRITER_WRAPPER_CONSTRUCTOR",
+      "responsibility": "constructs dlb::atmos::FileWriter and allocates its 80-byte internal object"
+    },
+    {
+      "rva": "0x189670",
+      "classification": "FILE_WRITER_CORE_CONSTRUCTOR",
+      "responsibility": "opens configured output file names in binary write mode and stores FILE pointers"
+    },
+    {
+      "rva": "0x189c00",
+      "classification": "OUTPUT_FILE_SELECTOR",
+      "responsibility": "selects the output FILE index from frame-ordinal thresholds"
+    },
+    {
+      "rva": "0x189c70",
+      "classification": "FILE_WRITER_FORWARDER",
+      "responsibility": "loads the internal FileWriter object and tail-forwards the encoded byte pointer, size pointer and frame ordinal"
+    },
+    {
+      "rva": "0x189c80",
+      "classification": "FILE_WRITER_CORE_WRITE",
+      "responsibility": "rejects closed writer state, selects the FILE, and writes exactly the encoded byte range with fwrite"
+    },
+    {
+      "rva": "0x1898f0",
+      "classification": "FILE_WRITER_DESTRUCTOR",
+      "responsibility": "destroys and frees the internal FileWriter object"
+    }
+  ],
+  "complete_chain_identity": {
+    "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "ordered_rvas": [
+      "0x179ab0",
+      "0x1a8840",
+      "0x1a7710",
+      "0x1ab800",
+      "0x1b1590",
+      "0x1776b0",
+      "0x175500",
+      "0x189600",
+      "0x189670",
+      "0x189c00",
+      "0x189c70",
+      "0x189c80",
+      "0x1898f0"
+    ],
+    "dynamic_join_scope": "startup callback 1, reader generation 2, through parent return",
+    "static_writer_scope": "host workflow through FileWriter binary fwrite"
+  },
+  "complete_chain_identity_sha256": "72e90b188b9dec89e8933cd74407253816a079960e4f8580ef68d2c4b09f3e39",
+  "observed_storage_boundaries": {
+    "temporary_output": {
+      "kind": "host stack buffer",
+      "capacity_bytes": 4096,
+      "valid_bytes": "returned byte count"
+    },
+    "transient_output": {
+      "kind": "owned byte vector",
+      "construction": "copy half-open range [stack_buffer, stack_buffer + returned_byte_count)"
+    },
+    "file_output": {
+      "kind": "binary FILE stream",
+      "write_rule": "fwrite(encoded_pointer, 1, encoded_size, selected_file) must equal encoded_size"
+    },
+    "file_selection": "single output selects index 0; multiple outputs use ordered frame-ordinal thresholds and otherwise select the final output"
+  },
+  "state_and_persistence_scope": {
+    "bounded_chain_snapshot_calls_observed": 0,
+    "bounded_chain_receipt_calls_observed": 0,
+    "bounded_chain_parent_state_persistence_calls_observed": 0,
+    "encoded_bitstream_file_persistence_observed_statically": true,
+    "strict_scope": "only the listed native functions and joined startup parent generation",
+    "product_wide_absence_claim": false
+  },
+  "dynamic_evidence": {
+    "parent_owner_and_generation_join": "CAPTURED",
+    "file_writer_runtime_hit": "NOT_CAPTURED",
+    "fwrite_runtime_hit": "NOT_CAPTURED",
+    "new_native_run": "NOT_RUN"
+  },
+  "UNKNOWN": [
+    "alternate host workflow branches",
+    "DEE job orchestration outside this DLL",
+    "wrapper persistence outside this DLL",
+    "other bundled DLL consumers",
+    "product-wide snapshot, receipt or serializer existence",
+    "runtime FILE selection and write identity for this exact generation"
+  ],
+  "CLEAN_ROOM_DESIGN": {
+    "parent_canonical_bytes": "DESIGN_ONLY_UNAPPROVED_AND_NOT_DELIVERED",
+    "receipt_schema": "DESIGN_ONLY_NOT_NATIVE_OBSERVED"
+  },
+  "NOT_RUN": [
+    "spatial render",
+    "selector",
+    "U04",
+    "outer",
+    "model recomposition"
+  ],
+  "production_allowed": false,
+  "private_auth": "EXCLUDED",
+  "raw_pcm_or_metadata_delivered": false
+}
