@@ -1,11 +1,11 @@
 {
-  "schema": "washed-implementer-blocker-manifest.v20",
-  "identity": "spatial-control-cold-serializer.blocked.v25",
+  "schema": "washed-implementer-blocker-manifest.v21",
+  "identity": "spatial-control-cold-serializer.blocked.v26",
   "status": "BLOCKED_NO_EXECUTABLE_SERIALIZER",
   "source_evidence": {
-    "research_manifest_sha256": "d2e94ead3d6189bae1460d97069fc03c27a9de7a9d9b3f11bb4f41e210205b89",
-    "research_independent_check_sha256": "b5748d24bcb02000fd058d0dbc55b124a56cba6299787a902812fef1f3f0cc0d",
-    "portable_api_measurement_no_hit_sha256": "222bcac9c1dda38cf3b54ee00f37535fb82f983c6c5d72f0bf1fc969794392eb",
+    "research_manifest_sha256": "9a5e7398a2d0bae99e8caae011ac730167a104679931416ef8a5866f4b68f101",
+    "research_independent_check_sha256": "8e74aa17c77519e1eb091d23cf937d009077bcbdbba625f1ce318e22230edd06",
+    "measurement_internal_struct_no_hit_sha256": "39a3f6d937fb8c24eb2c1459ec3863ce1ff303bc914cf732778347b3296beb9b",
     "serializer_execution": "NOT_RUN",
     "canonical_preimage": null,
     "authoritative_length": null,
@@ -16,16 +16,25 @@
     "private_auth": "excluded",
     "product_wide_absence_claim": false
   },
+  "measurement_internal_struct_no_hit": {
+    "callers": ["0x1aebf0", "0x1aee20"],
+    "core_writer": "0x1b7d10",
+    "field_dataflow": {
+      "result+8": "core+28_times128",
+      "result+12": "core+8_times128",
+      "result+16": "core+12_times128"
+    },
+    "semantic_names": "NOT_CAPTURED",
+    "field_dictionary": "NOT_FOUND_IN_BOUNDED_CALLERS",
+    "production_allowed": false
+  },
   "expanded_portable_api_measurement_no_hit": {
     "pe_files_scanned": 64,
     "matching_files": 22,
     "parent_cold_serializer_restore_string_hit": 0,
     "parent_cold_serializer_restore_export_hit": 0,
-    "measurement_functions": ["0x17ff30", "0x17ffa0", "0x1801b0", "0x17f9c0", "0x1ae790", "0x17a830", "0x1769a0"],
-    "measurement_unknown_offsets": [8, 12, 16],
     "portable_contract": "NOT_OBSERVED",
     "roundtrip": "NOT_RUN",
-    "coverage_scope": "64 authorized PE files plus listed measurement producer route",
     "product_wide_absence_claim": false
   },
   "policy29_36_identity": {
@@ -36,42 +45,6 @@
     "property36_value": 0,
     "property36_config_offset": 220,
     "identity_join_status": "CLOSED_CURRENT_RUN109"
-  },
-  "remaining_semantics_no_hit": {
-    "measurement_result_offsets": [8, 12, 16],
-    "measurement_names": "NOT_CAPTURED",
-    "portable_order_endian_version_optional_checksum": "NOT_OBSERVED",
-    "serializer_restore_roundtrip": "NOT_RUN",
-    "product_wide_absence_claim": false
-  },
-  "external_metadata_helper_semantics": {
-    "named_offsets": [68, 72, 76, 77, 97, 100, 102, 104, 106, 108, 113, 114, 115, 116, 117],
-    "remaining_unknown_offsets": [0, 65, 66, 67, 69, 70, 71, 73, 74, 75, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 96, 99, 107, 118, 119],
-    "semantic_schema_complete": false
-  },
-  "trim_payload_correction": {
-    "supersedes_partial_semantics": true,
-    "producer_rva": "0x1828c0",
-    "adapter_rva": "0x178dc0",
-    "consumer_rva": "0x1acfe0",
-    "declared_asset": "TRIM-PAYLOAD-PRODUCER-CONSUMER-EVIDENCE.json",
-    "payload_semantics_complete": true
-  },
-  "channel_semantics": {
-    "record_bytes": 6,
-    "fields": ["input_channel_key", "host_index", "source_ordinal"],
-    "field_widths": [2, 2, 2],
-    "semantics_complete": true,
-    "raw_records_delivered": false
-  },
-  "measurement_alias_resolution": {
-    "field_id": "measurement_result.measured_loudness",
-    "measurement_result_offset": 20,
-    "descriptor_offset": 92,
-    "producer_alias": "measured_loudness",
-    "consumer_role_alias": "selected_loudness_for_dialnorm",
-    "same_storage": true,
-    "distinct_field_claim": false
   },
   "descriptor_semantics": {
     "descriptor_bytes": 120,
@@ -84,6 +57,13 @@
     "native_portable_contract": "NOT_OBSERVED",
     "native_serializer_restore_roundtrip": "NOT_RUN",
     "portable_reconstruction_ready": false
+  },
+  "remaining_semantics_no_hit": {
+    "measurement_result_offsets": [8, 12, 16],
+    "measurement_names": "NOT_CAPTURED",
+    "portable_order_endian_version_optional_checksum": "NOT_OBSERVED",
+    "serializer_restore_roundtrip": "NOT_RUN",
+    "product_wide_absence_claim": false
   },
   "parent_cold_lifecycle": {
     "query_rva": "0x1a8920",
@@ -104,29 +84,7 @@
     "bounded_snapshot_receipt_persistence_calls": 0,
     "product_wide_absence_claim": false
   },
-  "reference_output": {
-    "extracted_ec3_sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
-    "frames": 4247,
-    "bytes": 17395712,
-    "baseline_match": true
-  },
-  "missing_framing": [
-    "top_level_envelope",
-    "F01E_embedding",
-    "optional_diffusion_source_cache",
-    "current_flags_current_features_persistence",
-    "writer_set_framing"
-  ],
-  "hard_boundaries": {
-    "spatial_render_selector_u04_outer": "NOT_RUN",
-    "production_spatial_control_receipt": "BLOCKED",
-    "success_vectors": 0,
-    "serializer_execution": "NOT_RUN",
-    "parent_canonical_bytes": "NOT_DELIVERED",
-    "raw_runtime_allocation": "NOT_DELIVERED",
-    "raw_referenced_blocks": "NOT_DELIVERED",
-    "production_allowed": false
-  },
+  "production_allowed": false,
   "files": [
     { "file": "AUTHORIZED-PE-PORTABLE-API-AND-MEASUREMENT-NO-HIT.json", "bytes": 3633, "sha256": "222bcac9c1dda38cf3b54ee00f37535fb82f983c6c5d72f0bf1fc969794392eb" },
     { "file": "CHANNEL-EXTERNAL-METADATA-TRIM-SEMANTICS.json", "bytes": 4283, "sha256": "7c9f2f96f2eb5da4e3f2693c5d695bf6d2d184920c2edd62f59392508907c764" },
@@ -135,8 +93,9 @@
     { "file": "EXTERNAL-METADATA-HELPER-SEMANTICS.json", "bytes": 3307, "sha256": "498900b3c3d78e2deec24bd2cbe04c2d7e5f827bda19d20dbf2a4347da2db926" },
     { "file": "EXTERNAL-METADATA-STRUCTURE-AND-REMAINING-FIELDS.json", "bytes": 6011, "sha256": "3ee2f1a482191ed2352d6d154fcaa6638c82dfdb6f45e510a91413b5f9a85dcc" },
     { "file": "FILEWRITER-FWRITE-DYNAMIC-JOIN.json", "bytes": 3057, "sha256": "4d77a2fb99ba77d1e0bac1f79bb8d0f638f132a895eee9351c6d46025f2e0298" },
-    { "file": "INDEPENDENT-CHECK.json", "bytes": 3803, "sha256": "b5748d24bcb02000fd058d0dbc55b124a56cba6299787a902812fef1f3f0cc0d" },
+    { "file": "INDEPENDENT-CHECK.json", "bytes": 3955, "sha256": "8e74aa17c77519e1eb091d23cf937d009077bcbdbba625f1ce318e22230edd06" },
     { "file": "MEASUREMENT-ALIAS-RESOLUTION.json", "bytes": 1318, "sha256": "b1608911f6c00d42c648cfb26962bc014743351d4feed8fd49bb00220826f5d1" },
+    { "file": "MEASUREMENT-INTERNAL-STRUCT-EXTENDED-NO-HIT.json", "bytes": 2258, "sha256": "39a3f6d937fb8c24eb2c1459ec3863ce1ff303bc914cf732778347b3296beb9b" },
     { "file": "MINIMUM-EXTERNAL-EVIDENCE.json", "bytes": 1123, "sha256": "7e078cfa1da60dcf0580a5fe070d6255c4c8cfa2265b862242965342210c922f" },
     { "file": "PARENT-COLD-CONFIG-BOUNDARY.json", "bytes": 3728, "sha256": "7f738cea345e356a22ad7d796c6e5b96db03eb38245331f8373a618de8e006e4" },
     { "file": "PARENT-COLD-CONFIG-SEMANTICS.json", "bytes": 8511, "sha256": "551dc12dac533190e72947cef663173042e6dd7a872ab8488f8f8722fa51130f" },

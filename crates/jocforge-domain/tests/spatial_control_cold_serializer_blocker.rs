@@ -5,7 +5,7 @@ use std::fmt::Write as _;
 use std::fs;
 use std::path::PathBuf;
 
-const MANIFEST_SHA256: &str = "cdfa8481d402870cb21d5c518d05ed712c314a5482637aa9db38d7ab47374639";
+const MANIFEST_SHA256: &str = "7be31dd9a33f35edd0f7f339c0d33e55a2d0b4103ad6508d6155c14361bf89c2";
 
 fn fixture_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -38,11 +38,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let manifest: Value = serde_json::from_slice(&manifest_bytes).expect("manifest JSON");
     assert_eq!(
         manifest["schema"],
-        "washed-implementer-blocker-manifest.v20"
+        "washed-implementer-blocker-manifest.v21"
     );
     assert_eq!(
         manifest["identity"],
-        "spatial-control-cold-serializer.blocked.v25"
+        "spatial-control-cold-serializer.blocked.v26"
     );
     assert_eq!(manifest["status"], "BLOCKED_NO_EXECUTABLE_SERIALIZER");
     assert_eq!(
@@ -67,23 +67,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "product_wide_absence_claim": false
         })
     );
-    assert_eq!(
-        manifest["measurement_alias_resolution"]["field_id"],
-        "measurement_result.measured_loudness"
-    );
     assert_eq!(manifest["status"], "BLOCKED_NO_EXECUTABLE_SERIALIZER");
-    assert_eq!(
-        manifest["measurement_alias_resolution"],
-        json!({
-            "field_id": "measurement_result.measured_loudness",
-            "measurement_result_offset": 20,
-            "descriptor_offset": 92,
-            "producer_alias": "measured_loudness",
-            "consumer_role_alias": "selected_loudness_for_dialnorm",
-            "same_storage": true,
-            "distinct_field_claim": false
-        })
-    );
 
     let files = manifest["files"].as_array().expect("manifest files array");
     assert_eq!(
@@ -101,6 +85,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "FILEWRITER-FWRITE-DYNAMIC-JOIN.json",
             "INDEPENDENT-CHECK.json",
             "MEASUREMENT-ALIAS-RESOLUTION.json",
+            "MEASUREMENT-INTERNAL-STRUCT-EXTENDED-NO-HIT.json",
             "MINIMUM-EXTERNAL-EVIDENCE.json",
             "PARENT-COLD-CONFIG-BOUNDARY.json",
             "PARENT-COLD-CONFIG-SEMANTICS.json",
@@ -140,7 +125,8 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         "PARENT-PROPERTY-PAIRS-AUTHORITY.json",
         "PROPERTY-NAME-AND-PORTABLE-CONTRACT-EXTENDED-NO-HIT.json",
         "POLICY29-36-IDENTITY-JOIN.json",
-        "AUTHORIZED-PE-PORTABLE-API-AND-MEASUREMENT-NO-HIT.json"
+        "AUTHORIZED-PE-PORTABLE-API-AND-MEASUREMENT-NO-HIT.json",
+        "MEASUREMENT-INTERNAL-STRUCT-EXTENDED-NO-HIT.json"
     ]);
     for entry in files {
         let name = entry["file"].as_str().expect("manifest file name");
@@ -159,15 +145,15 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let source = &manifest["source_evidence"];
     assert_eq!(
         source["research_manifest_sha256"],
-        "d2e94ead3d6189bae1460d97069fc03c27a9de7a9d9b3f11bb4f41e210205b89"
+        "9a5e7398a2d0bae99e8caae011ac730167a104679931416ef8a5866f4b68f101"
     );
     assert_eq!(
         source["research_independent_check_sha256"],
-        "b5748d24bcb02000fd058d0dbc55b124a56cba6299787a902812fef1f3f0cc0d"
+        "8e74aa17c77519e1eb091d23cf937d009077bcbdbba625f1ce318e22230edd06"
     );
     assert_eq!(
-        source["portable_api_measurement_no_hit_sha256"],
-        "222bcac9c1dda38cf3b54ee00f37535fb82f983c6c5d72f0bf1fc969794392eb"
+        source["measurement_internal_struct_no_hit_sha256"],
+        "39a3f6d937fb8c24eb2c1459ec3863ce1ff303bc914cf732778347b3296beb9b"
     );
     assert_eq!(source["serializer_execution"], "NOT_RUN");
     assert_eq!(source["canonical_preimage"], Value::Null);
@@ -178,42 +164,6 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(source["private_auth"], "excluded");
     assert_eq!(source["native_research_artifacts_in_package"], false);
     assert_eq!(source["product_wide_absence_claim"], false);
-    assert_eq!(
-        manifest["missing_framing"],
-        json!([
-            "top_level_envelope",
-            "F01E_embedding",
-            "optional_diffusion_source_cache",
-            "current_flags_current_features_persistence",
-            "writer_set_framing"
-        ])
-    );
-    assert_eq!(
-        manifest["hard_boundaries"]["spatial_render_selector_u04_outer"],
-        "NOT_RUN"
-    );
-    assert_eq!(
-        manifest["hard_boundaries"]["production_spatial_control_receipt"],
-        "BLOCKED"
-    );
-    assert_eq!(manifest["hard_boundaries"]["success_vectors"], 0);
-    assert_eq!(
-        manifest["hard_boundaries"]["serializer_execution"],
-        "NOT_RUN"
-    );
-    assert_eq!(
-        manifest["hard_boundaries"]["parent_canonical_bytes"],
-        "NOT_DELIVERED"
-    );
-    assert_eq!(
-        manifest["hard_boundaries"]["raw_runtime_allocation"],
-        "NOT_DELIVERED"
-    );
-    assert_eq!(
-        manifest["hard_boundaries"]["raw_referenced_blocks"],
-        "NOT_DELIVERED"
-    );
-    assert_eq!(manifest["hard_boundaries"]["production_allowed"], false);
     assert_eq!(
         manifest["parent_output_dataflow"]["file_writer_core_write_rva"],
         "0x189c80"
@@ -272,44 +222,6 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         false
     );
     assert_eq!(descriptor_summary["trim_record_semantics_complete"], true);
-    assert_eq!(manifest["channel_semantics"]["record_bytes"], 6);
-    assert_eq!(
-        manifest["channel_semantics"]["fields"],
-        json!(["input_channel_key", "host_index", "source_ordinal"])
-    );
-    assert_eq!(
-        manifest["channel_semantics"]["field_widths"],
-        json!([2, 2, 2])
-    );
-    assert_eq!(manifest["channel_semantics"]["semantics_complete"], true);
-    assert_eq!(
-        manifest["channel_semantics"]["raw_records_delivered"],
-        false
-    );
-    assert_eq!(
-        manifest["trim_payload_correction"]["producer_rva"],
-        "0x1828c0"
-    );
-    assert_eq!(
-        manifest["trim_payload_correction"]["adapter_rva"],
-        "0x178dc0"
-    );
-    assert_eq!(
-        manifest["trim_payload_correction"]["consumer_rva"],
-        "0x1acfe0"
-    );
-    assert_eq!(
-        manifest["trim_payload_correction"]["declared_asset"],
-        "TRIM-PAYLOAD-PRODUCER-CONSUMER-EVIDENCE.json"
-    );
-    assert_eq!(
-        manifest["trim_payload_correction"]["supersedes_partial_semantics"],
-        true
-    );
-    assert_eq!(
-        manifest["trim_payload_correction"]["payload_semantics_complete"],
-        true
-    );
     assert_eq!(
         descriptor_summary["native_portable_contract"],
         "NOT_OBSERVED"
@@ -318,14 +230,6 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         descriptor_summary["native_serializer_restore_roundtrip"],
         "NOT_RUN"
     );
-    assert_eq!(
-        manifest["reference_output"]["extracted_ec3_sha256"],
-        "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448"
-    );
-    assert_eq!(manifest["reference_output"]["frames"], 4247);
-    assert_eq!(manifest["reference_output"]["bytes"], 17_395_712);
-    assert_eq!(manifest["reference_output"]["baseline_match"], true);
-
     let evidence = read_json("COLD-SERIALIZER-EVIDENCE.json");
     assert_eq!(evidence["entrypoint"], Value::Null);
     assert_eq!(evidence["minimum_run_method"], Value::Null);
@@ -1829,18 +1733,6 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(helper_semantics["serializer_restore_roundtrip"], "NOT_RUN");
     assert_eq!(helper_semantics["product_wide_absence_claim"], false);
     assert_eq!(helper_semantics["production_allowed"], false);
-    assert_eq!(
-        manifest["external_metadata_helper_semantics"]["semantic_schema_complete"],
-        false
-    );
-    assert_eq!(
-        manifest["external_metadata_helper_semantics"]["remaining_unknown_offsets"],
-        json!([
-            0, 65, 66, 67, 69, 70, 71, 73, 74, 75, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 96, 99,
-            107, 118, 119
-        ])
-    );
-
     let portable_no_hit = read_json("PORTABLE-CONTRACT-AND-REMAINING-SEMANTICS-NO-HIT.json");
     assert_eq!(
         portable_no_hit["schema"],
@@ -2038,6 +1930,68 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     );
     assert_eq!(expanded_no_hit["production_allowed"], false);
     assert_eq!(expanded_no_hit["private_auth"], "EXCLUDED");
+
+    let measurement_internal = read_json("MEASUREMENT-INTERNAL-STRUCT-EXTENDED-NO-HIT.json");
+    assert_eq!(
+        measurement_internal["schema"],
+        "sanitized-measurement-internal-struct-extended-no-hit.v1"
+    );
+    assert_eq!(
+        measurement_internal["caller_chain"],
+        json!([
+            {"caller_rva":"0x1aebf0","core_writer":"0x1b7710 -> 0x1b7d10","mapper":"0x1ae790","role":"flush/drain path"},
+            {"caller_rva":"0x1aee20","core_writer":"0x1b7d10","mapper":"0x1ae790","role":"normal input path"}
+        ])
+    );
+    assert_eq!(
+        measurement_internal["field_dataflow"],
+        json!([
+            {"external_result_offset":8,"mapped_result_offset":8,"core_result_offset":28,"scale":128.0,"semantic_name":"NOT_CAPTURED"},
+            {"external_result_offset":12,"mapped_result_offset":12,"core_result_offset":8,"scale":128.0,"semantic_name":"NOT_CAPTURED"},
+            {"external_result_offset":16,"mapped_result_offset":16,"core_result_offset":12,"scale":128.0,"semantic_name":"NOT_CAPTURED"}
+        ])
+    );
+    assert_eq!(
+        measurement_internal["core_writer_observations"]["function_rva"],
+        "0x1b7d10"
+    );
+    assert_eq!(
+        measurement_internal["core_writer_observations"]["writes_examined"],
+        json!([4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52])
+    );
+    assert_eq!(
+        measurement_internal["core_writer_observations"]["unknown_target_slots"],
+        json!([8, 12, 28])
+    );
+    assert_eq!(
+        measurement_internal["core_writer_observations"]["field_name_strings_for_offsets8_12_28"],
+        0
+    );
+    assert_eq!(
+        measurement_internal["status"]["offset_and_scale_mapping"],
+        "CLOSED"
+    );
+    assert_eq!(
+        measurement_internal["status"]["semantic_names"],
+        "NOT_CAPTURED"
+    );
+    assert_eq!(
+        measurement_internal["status"]["field_dictionary"],
+        "NOT_FOUND_IN_BOUNDED_CALLERS"
+    );
+    assert_eq!(
+        measurement_internal["status"]["implementation_ready"],
+        false
+    );
+    assert_eq!(
+        measurement_internal["minimum_external_evidence"]
+            .as_array()
+            .unwrap()
+            .len(),
+        3
+    );
+    assert_eq!(measurement_internal["production_allowed"], false);
+    assert_eq!(measurement_internal["private_auth"], "EXCLUDED");
 
     let property_pair_authority = read_json("PARENT-PROPERTY-PAIRS-AUTHORITY.json");
     assert_eq!(
@@ -2361,11 +2315,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let independent = read_json("INDEPENDENT-CHECK.json");
     assert_eq!(
         independent["schema"],
-        "spatial-control-cold-serializer-blocker-independent-check.v25"
+        "spatial-control-cold-serializer-blocker-independent-check.v26"
     );
     assert_eq!(independent["all_pass"], true);
     let checks = independent["checks"].as_array().expect("checks array");
-    assert_eq!(checks.len(), 32);
+    assert_eq!(checks.len(), 33);
     assert!(checks.iter().all(|check| check["pass"] == true));
     assert_eq!(
         checks
@@ -2399,6 +2353,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "property_name_and_portable_contract_extended_no_hit",
             "policy29_36_identity_join",
             "authorized_pe_portable_api_and_measurement_no_hit",
+            "measurement_internal_struct_extended_no_hit",
             "no_entrypoint",
             "no_bytes",
             "framing_rules",

@@ -1,0 +1,43 @@
+{
+  "schema": "sanitized-measurement-internal-struct-extended-no-hit.v1",
+  "source_evidence_identity": {
+    "flush_wrapper_0x1b7710_sha256": "3db21bec54f2326f7ea3336637fa34d45725be7ca50a4b0b361a6457d84b9cbd",
+    "core_writer_0x1b7d10_sha256": "e0a20ec57564d3f7d5c9dbde40dd87f68ce94101e23cd7ab8e69cb94c130bd2b",
+    "core_writer_part2_sha256": "50b39227113512beaf4ee84bff4d4886b967abc18ad44dbb15d3a3331c1ecb39",
+    "caller_trace_sha256": "c49fdc3475a684a51e1d7971220b4d15969e3ce7cfe6fa33e5473f546769373c",
+    "mapper_0x1ae790_sha256": "54331e8c67bf20c7e7ffe0c1db3e1ee06e51325f7bf2dd7a422b9fea8814f762"
+  },
+  "caller_chain": [
+    {"caller_rva": "0x1aebf0", "core_writer": "0x1b7710 -> 0x1b7d10", "mapper": "0x1ae790", "role": "flush/drain path"},
+    {"caller_rva": "0x1aee20", "core_writer": "0x1b7d10", "mapper": "0x1ae790", "role": "normal input path"}
+  ],
+  "field_dataflow": [
+    {"external_result_offset": 8, "mapped_result_offset": 8, "core_result_offset": 28, "scale": 128.0, "semantic_name": "NOT_CAPTURED"},
+    {"external_result_offset": 12, "mapped_result_offset": 12, "core_result_offset": 8, "scale": 128.0, "semantic_name": "NOT_CAPTURED"},
+    {"external_result_offset": 16, "mapped_result_offset": 16, "core_result_offset": 12, "scale": 128.0, "semantic_name": "NOT_CAPTURED"}
+  ],
+  "core_writer_observations": {
+    "function_rva": "0x1b7d10",
+    "writes_examined": [4,8,12,16,20,24,28,32,36,40,44,48,52],
+    "unknown_target_slots": [8,12,28],
+    "branch_relations": [
+      "core+16 may copy core+8 or core+12 depending gating branches",
+      "core+32 selects among core+20/core+24/core+28 based threshold and dialogue conditions"
+    ],
+    "field_name_strings_for_offsets8_12_28": 0
+  },
+  "status": {
+    "producer_chain": "NATIVE_STATIC_OBSERVED",
+    "offset_and_scale_mapping": "CLOSED",
+    "semantic_names": "NOT_CAPTURED",
+    "field_dictionary": "NOT_FOUND_IN_BOUNDED_CALLERS",
+    "implementation_ready": false
+  },
+  "minimum_external_evidence": [
+    "named dplm internal result structure covering core offsets8,12,28",
+    "debug symbols or public SDK header for the meter result type",
+    "or an independent named consumer of all three fields"
+  ],
+  "production_allowed": false,
+  "private_auth": "EXCLUDED"
+}

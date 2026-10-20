@@ -1,6 +1,12 @@
 # Spatial-control staging specification gap
 
-## Current authority: v25 expanded portable API and measurement no-hit
+## Current authority: v26 measurement internal-structure mapping
+
+The current implementer package is `spatial-control-cold-serializer.blocked.v26`, pinned by fixture manifest SHA-256 `7be31dd9a33f35edd0f7f339c0d33e55a2d0b4103ad6508d6155c14361bf89c2`. The measurement internal-structure no-hit asset SHA-256 is `39a3f6d937fb8c24eb2c1459ec3863ce1ff303bc914cf732778347b3296beb9b`; washed research manifest and independent-check hashes are `9a5e7398a2d0bae99e8caae011ac730167a104679931416ef8a5866f4b68f101` and `8e74aa17c77519e1eb091d23cf937d009077bcbdbba625f1ce318e22230edd06`. The package reports 33/33 independent checks passing and `production_allowed=false`.
+
+The deeper measurement route establishes two bounded callers of mapper `0x1AE790`: flush/drain caller `0x1AEBF0` reaches core writer `0x1B7D10` through wrapper `0x1B7710`, while normal-input caller `0x1AEE20` reaches `0x1B7D10` directly. The external-result mapping is `result+8 <- core+28 * 128`, `result+12 <- core+8 * 128`, and `result+16 <- core+12 * 128`. Core writer stores at offsets 8, 12, and 28 were examined; no field-name strings were found for those slots, and the bounded caller route found no field dictionary. Branch-dependent copies/selection are observed but do not name fields. The structural offsets and scaling are therefore closed; semantic names remain `NOT_CAPTURED`, and no names are inferred from numeric behavior. The v25 bounded portable scan remains in force: portable order/endian/version/optional/checksum are `NOT_OBSERVED`, serializer/restore roundtrip is `NOT_RUN`, and this is not a product-wide absence claim. `IMPLEMENTATION_READY=NO` and production remain blocked.
+
+## Historical v25 expanded portable API and measurement no-hit
 
 The current implementer package is `spatial-control-cold-serializer.blocked.v25`, pinned by fixture manifest SHA-256 `cdfa8481d402870cb21d5c518d05ed712c314a5482637aa9db38d7ab47374639`. The expanded no-hit asset SHA-256 is `222bcac9c1dda38cf3b54ee00f37535fb82f983c6c5d72f0bf1fc969794392eb`; washed research manifest and independent-check hashes are `d2e94ead3d6189bae1460d97069fc03c27a9de7a9d9b3f11bb4f41e210205b89` and `b5748d24bcb02000fd058d0dbc55b124a56cba6299787a902812fef1f3f0cc0d`. The package reports 32/32 independent checks passing, `IMPLEMENTATION_READY=NO`, and `production_allowed=false`.
 
