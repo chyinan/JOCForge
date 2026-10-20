@@ -1,0 +1,56 @@
+{
+  "schema": "spatial-control-production-admission-independent-check.v1",
+  "checks": [
+    {
+      "id": "file_identity",
+      "pass": true
+    },
+    {
+      "id": "wave_extent",
+      "pass": true
+    },
+    {
+      "id": "chunk_identity",
+      "pass": true
+    },
+    {
+      "id": "control_owner",
+      "pass": true
+    },
+    {
+      "id": "providers",
+      "pass": true
+    },
+    {
+      "id": "success_not_run",
+      "pass": true
+    },
+    {
+      "id": "admission_failures",
+      "pass": true
+    },
+    {
+      "id": "fault_plans",
+      "pass": true
+    },
+    {
+      "id": "blocked_material",
+      "pass": true
+    },
+    {
+      "id": "schema_valid",
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "input_files": [
+    "REAL-ADM-INPUT-IDENTITY.json",
+    "PROVIDER-IDENTITIES.json",
+    "PRODUCTION-ADMISSION-VECTORS.json",
+    "SPATIAL-CONTROL-PRODUCTION.schema.json"
+  ],
+  "raw_adm_read": false,
+  "research_material_accessed": false,
+  "production_execution": false,
+  "expected_used_as_seed": false
+}

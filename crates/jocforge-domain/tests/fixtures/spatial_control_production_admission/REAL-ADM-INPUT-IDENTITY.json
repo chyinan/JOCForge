@@ -1,0 +1,29 @@
+{
+  "schema": "sanitized-real-adm-input-identity.v1",
+  "input_id": "adm-sha256-7826dcbef37ef696",
+  "file_bytes": 743696526,
+  "file_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "wave": {
+    "format": "PCM",
+    "channels": 38,
+    "sample_rate": 48000,
+    "byte_rate": 5472000,
+    "block_align": 114,
+    "bits_per_sample": 24,
+    "sample_frames": 6522906
+  },
+  "chunks": {
+    "data": {"bytes": 743611284, "sha256": "6df2255787354a6a719fa7596c253f7f3f69937bc37b8a2b69cb27bd9f02677e"},
+    "axml": {"bytes": 82997, "sha256": "7e4e61d4e2bec581ff2b05133281198a220602290597950e301a6079701c1659"},
+    "chna": {"bytes": 1524, "sha256": "f82b14e4c1b5b3b1750ed4104aa53f1d595e3ff2d4dbaef76a76c0e35f31b7a6"},
+    "dbmd": {"bytes": 580, "sha256": "ea961b79063bc68f64b1210dba002a5729d1003427196123f93b0890939b75d9"}
+  },
+  "control_identity": {
+    "owner": "frontend_control",
+    "source_chunks": ["axml", "chna", "dbmd"],
+    "parsed_callback0_control38_sha256": null,
+    "status": "NOT_RUN"
+  },
+  "pcm_material_included": false,
+  "metadata_material_included": false
+}

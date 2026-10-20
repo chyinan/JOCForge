@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "spatial-control-production-admission.v1",
+  "$defs": {
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "material": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["material_id", "encoding", "shape", "bytes", "sha256"],
+      "properties": {
+        "material_id": {"type": "string", "minLength": 1},
+        "encoding": {"type": "string", "minLength": 1},
+        "shape": {"type": "array", "items": {"type": "integer", "minimum": 0}},
+        "bytes": {"type": "integer", "minimum": 0},
+        "sha256": {"$ref": "#/$defs/sha"}
+      }
+    },
+    "callback0_input": {
+      "type": "object",
+      "required": ["schema", "programme_sha256", "input_sha256", "config_sha256", "callback", "generation", "phase", "host38", "control38", "parent_before_state", "provider_sha256"],
+      "properties": {
+        "schema": {"const": "spatial-control-callback0-input.v1"},
+        "callback": {"const": 0},
+        "generation": {"const": 1},
+        "phase": {"const": "NORMAL"},
+        "host38": {"$ref": "#/$defs/material"},
+        "control38": {"$ref": "#/$defs/material"},
+        "parent_before_state": {"$ref": "#/$defs/material"}
+      }
+    },
+    "spatial_control_receipt": {
+      "type": "object",
+      "required": ["schema", "callback", "generation", "before_state_sha256", "installed48", "selector", "u04", "outer", "matrix", "destinations", "markers", "writer_set", "targets", "after_state", "commit_authority", "digest"],
+      "properties": {
+        "schema": {"const": "spatial-control-receipt.v1"},
+        "callback": {"const": 0},
+        "generation": {"const": 1},
+        "installed48": {"$ref": "#/$defs/material"},
+        "matrix": {"$ref": "#/$defs/material"},
+        "after_state": {"$ref": "#/$defs/material"},
+        "destinations": {"type": "array", "minItems": 15, "maxItems": 15},
+        "markers": {"type": "array", "minItems": 15, "maxItems": 15},
+        "commit_authority": {"const": "ENCLOSING_CALLBACK_TRANSACTION_ONCE"}
+      }
+    },
+    "spatial_audio_proposal": {
+      "type": "object",
+      "required": ["schema", "callback", "generation", "spatial_control_receipt_sha256", "installed48", "matrix", "destinations_sha256", "targets_sha256", "f04_before_token", "receiver_qmf_mutated"],
+      "properties": {"schema": {"const": "spatial-audio-proposal.v1"}, "callback": {"const": 0}, "generation": {"const": 1}, "receiver_qmf_mutated": {"const": false}}
+    }
+  }
+}

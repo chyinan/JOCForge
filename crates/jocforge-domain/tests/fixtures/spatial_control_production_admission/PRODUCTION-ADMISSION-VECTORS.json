@@ -1,0 +1,48 @@
+{
+  "schema": "spatial-control-production-admission-vectors.v1",
+  "success_recipe": {
+    "status": "NOT_RUN",
+    "callback": 0,
+    "generation": 1,
+    "required_input_schema": "spatial-control-callback0-input.v1",
+    "required_outputs": ["SpatialControlReceipt", "SpatialAudioProposal"],
+    "expected_output_oracle_included": false
+  },
+  "admission_failures": [
+    {"id": "missing_control38", "error": "SPATIAL_CONTROL_INPUT_MATERIAL", "commit_count": 0},
+    {"id": "missing_parent_before_state", "error": "SPATIAL_CONTROL_INPUT_MATERIAL", "commit_count": 0},
+    {"id": "generation_mismatch", "error": "SPATIAL_CONTROL_CLOCK", "commit_count": 0},
+    {"id": "provider_mismatch", "error": "SPATIAL_CONTROL_PROVIDER", "commit_count": 0},
+    {"id": "installed48_shape", "error": "SPATIAL_CONTROL_SHAPE", "commit_count": 0},
+    {"id": "missing_u04_material", "error": "SPATIAL_CONTROL_STAGE_MATERIAL", "commit_count": 0},
+    {"id": "missing_outer_material", "error": "SPATIAL_CONTROL_STAGE_MATERIAL", "commit_count": 0},
+    {"id": "destination_count", "error": "SPATIAL_CONTROL_SHAPE", "commit_count": 0},
+    {"id": "missing_target_transition", "error": "SPATIAL_CONTROL_STAGE_MATERIAL", "commit_count": 0},
+    {"id": "receiver_owner_violation", "error": "SPATIAL_AUDIO_OWNER_VIOLATION", "commit_count": 0}
+  ],
+  "execution_fault_plans": [
+    {"id": "after_selector", "trigger": "after selector proposal, before parent commit"},
+    {"id": "after_u04", "trigger": "after U04 proposal, before parent commit"},
+    {"id": "after_outer", "trigger": "after outer proposal, before parent commit"},
+    {"id": "after_target", "trigger": "after target proposal, before parent commit"}
+  ],
+  "fault_expected": {
+    "test_harness_only": true,
+    "production_parameter": false,
+    "parent_state_unchanged": true,
+    "f04_before_unchanged": true,
+    "spatial_control_receipt": null,
+    "spatial_audio_proposal": null,
+    "commit_count": 0,
+    "programme_result": "RETIRED"
+  },
+  "blocked_material": [
+    "parsed callback0 control38",
+    "authoritative parent before-state bytes",
+    "installed48 full bytes",
+    "selector/U04/outer complete materials",
+    "matrix/destinations/targets complete materials",
+    "authoritative parent after-state bytes"
+  ],
+  "expected_used_as_seed": false
+}
