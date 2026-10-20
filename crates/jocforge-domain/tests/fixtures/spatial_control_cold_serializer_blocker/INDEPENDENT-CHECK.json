@@ -1,5 +1,5 @@
 {
-  "schema": "spatial-control-cold-serializer-blocker-independent-check.v34",
+  "schema": "spatial-control-cold-serializer-blocker-independent-check.v35",
   "checks": [
     {
       "id": "dll_identity",
@@ -170,6 +170,22 @@
       "pass": true
     },
     {
+      "id": "parent_admission_evidence_matrix",
+      "pass": true
+    },
+    {
+      "id": "parent_cold_root_participation",
+      "pass": true
+    },
+    {
+      "id": "parent_lifecycle_contract",
+      "pass": true
+    },
+    {
+      "id": "selected_parent_cold_block_inventory",
+      "pass": true
+    },
+    {
       "id": "no_entrypoint",
       "pass": true
     },
@@ -233,7 +249,11 @@
     "SELECTED-CONSTRUCTOR-PREFIX-DYNAMIC-JOIN.json",
     "PARENT-METADATA-PROVIDER.json",
     "PARENT-METADATA-CAUSAL-JOIN.json",
-    "CROSS-PROFILE-ACTUAL-RUNS.json"
+    "CROSS-PROFILE-ACTUAL-RUNS.json",
+    "PARENT-ADMISSION-EVIDENCE-MATRIX.json",
+    "PARENT-COLD-ROOT-PARTICIPATION-AUDIT.json",
+    "PARENT-LIFECYCLE-CONTRACT.json",
+    "SELECTED-PARENT-COLD-BLOCK-INVENTORY.json"
   ],
   "research_files_read": false,
   "serializer_execution": false,

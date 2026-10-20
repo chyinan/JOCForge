@@ -1,10 +1,10 @@
 {
-  "schema": "washed-implementer-blocker-manifest.v29",
-  "identity": "spatial-control-cold-serializer.blocked.v34",
+  "schema": "washed-implementer-blocker-manifest.v30",
+  "identity": "spatial-control-cold-serializer.blocked.v35",
   "status": "BLOCKED_NO_EXECUTABLE_SERIALIZER",
   "source_evidence": {
-    "research_manifest_sha256": "aa4d77fec66328be58dc2cb723e2ca98552e33f218f9b02605f6ac311805bcae",
-    "research_independent_check_sha256": "defaa348b63f659d3c87458fdb69df0ae8f23c2f273efd1c312bd2d8b054eabd",
+    "research_manifest_sha256": "d969333307e690303be5f2428d68b66ddf2e350b254da2d544e0e9074adcea10",
+    "research_independent_check_sha256": "099a6d5438ae305dccb591ce2ed36131cc0d98e4d17d032245c1b4af41e2dc40",
     "production_allowed": false,
     "implementation_ready": "NO",
     "serializer_execution": "NOT_RUN",
@@ -12,20 +12,12 @@
     "bytes_guessed": false,
     "private_auth": "excluded"
   },
-  "cross_profile": {
-    "embedded_sidecar_parser_hits": 0,
-    "stripped_sidecar_rejected_before_parser": true,
-    "convert_adm_audio_exact": true,
-    "convert_setter_hits": 0,
-    "ddp_setter_hits": 0,
-    "product_wide_absence_claim": false
-  },
-  "causal_join": {
-    "selected_source_class": "atmos_storage::MasterSourceImpl",
-    "same_composite_destination": true,
-    "parent_input_matches_composite": true,
-    "last_writer_ordinal": 3,
-    "join": "CLOSED_CURRENT_RUN"
+  "parent_admission": {
+    "selected_gate1_reverse_dependencies": 0,
+    "gate1_closed": false,
+    "m1_canonical_schema_and_digest": "CLEAN_ROOM_DESIGN_REQUIRED",
+    "m2_serializer_parser_cold_roundtrip": "NOT_RUN",
+    "m3_receipt_transaction_vectors": "NOT_RUN"
   },
   "files": [
     {
@@ -95,8 +87,8 @@
     },
     {
       "file": "INDEPENDENT-CHECK.json",
-      "bytes": 5989,
-      "sha256": "defaa348b63f659d3c87458fdb69df0ae8f23c2f273efd1c312bd2d8b054eabd"
+      "bytes": 6505,
+      "sha256": "099a6d5438ae305dccb591ce2ed36131cc0d98e4d17d032245c1b4af41e2dc40"
     },
     {
       "file": "MEASUREMENT-ALIAS-RESOLUTION.json",
@@ -124,6 +116,11 @@
       "sha256": "c6c466a769c39fd553ef9e43de234d0fa00b50c6c9848c8c59134f92ff9be7ee"
     },
     {
+      "file": "PARENT-ADMISSION-EVIDENCE-MATRIX.json",
+      "bytes": 13382,
+      "sha256": "b89102c2d538f345bf53216778fccf86023b6301521aa2b27316426146204284"
+    },
+    {
       "file": "PARENT-COLD-CONFIG-BOUNDARY.json",
       "bytes": 3728,
       "sha256": "7f738cea345e356a22ad7d796c6e5b96db03eb38245331f8373a618de8e006e4"
@@ -149,6 +146,11 @@
       "sha256": "1f2992122f1d271238e59217b25b4139ba9d2b2c70710b9add98430b7282fd5f"
     },
     {
+      "file": "PARENT-COLD-ROOT-PARTICIPATION-AUDIT.json",
+      "bytes": 8300,
+      "sha256": "eb0890100771de8aa3d2e1d8ba5d4c22180320e5239acbc1729fad8b380db82d"
+    },
+    {
       "file": "PARENT-COLD-SEMANTIC-CORRECTIONS.json",
       "bytes": 3833,
       "sha256": "dc8088d13fbe1efa7af9647e604e7e06395a58ae69c1954e759dd4ab8e0290ed"
@@ -157,6 +159,11 @@
       "file": "PARENT-FILEWRITER-DYNAMIC-JOIN.json",
       "bytes": 3442,
       "sha256": "a2bd0eb000671b95190ed44a1359f4e349981b74a6f191b49e1469793b377edc"
+    },
+    {
+      "file": "PARENT-LIFECYCLE-CONTRACT.json",
+      "bytes": 4425,
+      "sha256": "426abb5e31c6ae8574574176fd5fe44ca173f77de488cb2aaf0207b85c6ba80c"
     },
     {
       "file": "PARENT-METADATA-CAUSAL-JOIN.json",
@@ -207,6 +214,11 @@
       "file": "SELECTED-CONSTRUCTOR-PREFIX-DYNAMIC-JOIN.json",
       "bytes": 4512,
       "sha256": "a572639b5263fe5f652dd614ff21bcd3be8bdb4d2e19ec8ab26f69f0ce457cb1"
+    },
+    {
+      "file": "SELECTED-PARENT-COLD-BLOCK-INVENTORY.json",
+      "bytes": 8776,
+      "sha256": "5c2a84d278e3c9c450fd9c1a6d43bda37e16bce78e939962ae5b412fce2ab640"
     },
     {
       "file": "TARGETED-LOUDNESS-TYPE-CROSS-MODULE-NO-HIT.json",

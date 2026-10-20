@@ -6,6 +6,14 @@
 
 逐字段事实、未定义项和五个串行关闭节点见 [PARENT-COLD-DESIGN-GAP-MATRIX.md](PARENT-COLD-DESIGN-GAP-MATRIX.md)。
 
+### v35 selected parent admission review
+
+当前实现侧 package 为 `spatial-control-cold-serializer.blocked.v35`，manifest SHA-256 `71ca9bb30c2129019a76ecb703df47a88f5384582bb65a53faee92103e9dcd0b`。研究 manifest SHA-256 为 `d969333307e690303be5f2428d68b66ddf2e350b254da2d544e0e9074adcea10`；研究侧 independent check SHA-256 为 `099a6d5438ae305dccb591ce2ed36131cc0d98e4d17d032245c1b4af41e2dc40`，52/52 检查通过。package 包含 44 个 hash-pinned assets。
+
+selected profile 的 parent admission 必需逆向依赖为 0，但 `gate1_closed=false`。v35 bounded audit 识别出 7,805,609-byte、pointer-rich 的 native runtime owner，并覆盖其构造、首个 consumer、selected input 与生命周期；bounded scope 未观察到 canonical serializer/parser/digest/root receipt。该 no-hit 不代表产品级永久不存在，也不构成 portable schema。
+
+剩余工作仅为 clean-room 设计与验证：M1 canonical schema/framing/digest 与字段投影；M2 完整 cold vector 和独立 serializer/parser byte-exact roundtrip；M3 typed root receipt、commit/failure/fresh-reconstruction vectors。全部仍 `NOT_RUN` 或 `CLEAN_ROOM_DESIGN_REQUIRED`，因此 `IMPLEMENTATION_READY=NO`、`production_allowed=false`。被 v35 复用的字段证据资产保留其 v34 内部来源身份；本段只陈述 v35 package 的审查结论。
+
 ### A. Parent canonical schema 和 digest preimage
 
 **已知**
@@ -81,13 +89,13 @@
 
 上述任一缺口未闭合前，都不得填入猜测字段、占位值或跨 profile 复用值。不得声称 implementation ready 或 production allowed。
 
-## Current authority: v34 cross-profile actual-run boundaries
+## Historical v34 cross-profile actual-run boundaries
 
-The current implementer package is `spatial-control-cold-serializer.blocked.v34`, pinned by fixture manifest SHA-256 `43f7fcf730c7c5c321aa884d1810aa039427d0ae2f97f7cc94f93bfc525d404b`. The washed research manifest and independent-check hashes are `aa4d77fec66328be58dc2cb723e2ca98552e33f218f9b02605f6ac311805bcae` and `defaa348b63f659d3c87458fdb69df0ae8f23c2f273efd1c312bd2d8b054eabd`; 48/48 checks pass.
+The historical implementer package was `spatial-control-cold-serializer.blocked.v34`, pinned by fixture manifest SHA-256 `43f7fcf730c7c5c321aa884d1810aa039427d0ae2f97f7cc94f93bfc525d404b`. Its washed research manifest and independent-check hashes were `aa4d77fec66328be58dc2cb723e2ca98552e33f218f9b02605f6ac311805bcae` and `defaa348b63f659d3c87458fdb69df0ae8f23c2f273efd1c312bd2d8b054eabd`; 48/48 checks passed.
 
 Three actual runs separate the accepted read path from two other routes. On the accepted ADM run with embedded DBMD plus a sidecar, the sidecar parser `0x52A310` and serializer `0x522660` had zero hits, while packed producer `0x4E0890` and parent consumer `0x178DC0` each ran once; EC3 output matched the pinned baseline. Removing the terminal 580-byte embedded DBMD while retaining the sidecar caused front-end rejection before the plugin parser (exit 10, `Content was not authored with Dolby tools`); this does not establish product-wide parser absence. A legal `convert_atmos_mezz` v2 `target_format=adm` run completed with exact audio bytes, but its whole-120 setter and the DDP-Atmos setter each had zero hits. These are route-specific findings, not proof that all write-side APIs are absent.
 
-The current causal join remains pointer/owner/order based and scoped to the selected run. The private serializer flag has no legal setter on the observed construction path and stays uninvoked; the generic whole-120 setter is guarded by `owner+312 >= 2`. The cross-profile route facts do not create a portable cold-state serialization contract. Canonical schema/digest/receipt, reference serializer/restore, and byte-exact roundtrip remain unavailable or `NOT_RUN`; `IMPLEMENTATION_READY=NO`, `production_allowed=false`, and no product-wide absence claim are preserved.
+The v34 causal join was pointer/owner/order based and scoped to the selected run. The private serializer flag had no legal setter on the observed construction path and stayed uninvoked; the generic whole-120 setter was guarded by `owner+312 >= 2`. The cross-profile route facts do not create a portable cold-state serialization contract. Canonical schema/digest/receipt, reference serializer/restore, and byte-exact roundtrip remain unavailable or `NOT_RUN`; `IMPLEMENTATION_READY=NO`, `production_allowed=false`, and no product-wide absence claim are preserved.
 
 ## Historical v33 selected source-to-parent causal metadata join
 

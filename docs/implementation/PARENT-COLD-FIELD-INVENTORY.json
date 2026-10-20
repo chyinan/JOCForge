@@ -1,6 +1,6 @@
 {
   "schema": "jocforge-parent-cold-field-inventory.v1",
-  "identity": "parent-cold-field-inventory.v34",
+  "identity": "parent-cold-field-inventory.v35",
   "status": "INVENTORY_INCOMPLETE_NOT_NORMATIVE_SCHEMA",
   "implementation_ready": "NO",
   "production_allowed": false,
@@ -9,8 +9,8 @@
     "cross_profile_generalization": false
   },
   "source_implementer_manifest": {
-    "sha256": "43f7fcf730c7c5c321aa884d1810aa039427d0ae2f97f7cc94f93bfc525d404b",
-    "identity": "spatial-control-cold-serializer.blocked.v34"
+    "sha256": "71ca9bb30c2129019a76ecb703df47a88f5384582bb65a53faee92103e9dcd0b",
+    "identity": "spatial-control-cold-serializer.blocked.v35"
   },
   "source_assets": [
     {
@@ -44,6 +44,11 @@
       "bytes": 6011
     },
     {
+      "file": "INDEPENDENT-CHECK.json",
+      "sha256": "099a6d5438ae305dccb591ce2ed36131cc0d98e4d17d032245c1b4af41e2dc40",
+      "bytes": 6505
+    },
+    {
       "file": "PACKED-METADATA-DYNAMIC-CURRENT-RUN.json",
       "sha256": "55c8897315fac17890a0efa1c0548cf629e1e4ef75ed8616b5080c224259b1bd",
       "bytes": 2140
@@ -52,6 +57,11 @@
       "file": "PACKED-METADATA-OWNER-CONSTRUCTOR.json",
       "sha256": "c6c466a769c39fd553ef9e43de234d0fa00b50c6c9848c8c59134f92ff9be7ee",
       "bytes": 2408
+    },
+    {
+      "file": "PARENT-ADMISSION-EVIDENCE-MATRIX.json",
+      "sha256": "b89102c2d538f345bf53216778fccf86023b6301521aa2b27316426146204284",
+      "bytes": 13382
     },
     {
       "file": "PARENT-COLD-CONFIG-SEMANTICS.json",
@@ -69,6 +79,16 @@
       "bytes": 2597
     },
     {
+      "file": "PARENT-COLD-ROOT-PARTICIPATION-AUDIT.json",
+      "sha256": "eb0890100771de8aa3d2e1d8ba5d4c22180320e5239acbc1729fad8b380db82d",
+      "bytes": 8300
+    },
+    {
+      "file": "PARENT-LIFECYCLE-CONTRACT.json",
+      "sha256": "426abb5e31c6ae8574574176fd5fe44ca173f77de488cb2aaf0207b85c6ba80c",
+      "bytes": 4425
+    },
+    {
       "file": "PARENT-METADATA-CAUSAL-JOIN.json",
       "sha256": "c8eb0c15506ac018afde203f549418ef9b30ac1302f8f4fab7e6c4b3d84801a2",
       "bytes": 2165
@@ -80,8 +100,8 @@
     },
     {
       "file": "RECEIPT-TRANSACTION-BLOCKED-GAP.json",
-      "sha256": "38e2543c572948b7c6d796de477e89a27236656b7022be445e1250aca4123179",
-      "bytes": 5026
+      "sha256": "811c5c06cac906916543015ff12c8c4666babcd14d22920c2836747bac7ca26c",
+      "bytes": 5481
     },
     {
       "file": "REQUIRED-FRAMING-RULES.json",
@@ -92,6 +112,11 @@
       "file": "SELECTED-CONSTRUCTOR-PREFIX-DYNAMIC-JOIN.json",
       "sha256": "a572639b5263fe5f652dd614ff21bcd3be8bdb4d2e19ec8ab26f69f0ce457cb1",
       "bytes": 4512
+    },
+    {
+      "file": "SELECTED-PARENT-COLD-BLOCK-INVENTORY.json",
+      "sha256": "5c2a84d278e3c9c450fd9c1a6d43bda37e16bce78e939962ae5b412fce2ab640",
+      "bytes": 8776
     },
     {
       "file": "TARGETED-LOUDNESS-TYPE-CROSS-MODULE-NO-HIT.json",
@@ -4761,7 +4786,7 @@
       "group": "receipt_contract",
       "source": {
         "asset": "RECEIPT-TRANSACTION-BLOCKED-GAP.json",
-        "sha256": "38e2543c572948b7c6d796de477e89a27236656b7022be445e1250aca4123179",
+        "sha256": "811c5c06cac906916543015ff12c8c4666babcd14d22920c2836747bac7ca26c",
         "json_pointer": "/undefined_contract_items/0"
       },
       "native_observation": {
@@ -4805,7 +4830,7 @@
       "group": "receipt_contract",
       "source": {
         "asset": "RECEIPT-TRANSACTION-BLOCKED-GAP.json",
-        "sha256": "38e2543c572948b7c6d796de477e89a27236656b7022be445e1250aca4123179",
+        "sha256": "811c5c06cac906916543015ff12c8c4666babcd14d22920c2836747bac7ca26c",
         "json_pointer": "/undefined_contract_items/1"
       },
       "native_observation": {
@@ -4847,7 +4872,7 @@
       "group": "receipt_contract",
       "source": {
         "asset": "RECEIPT-TRANSACTION-BLOCKED-GAP.json",
-        "sha256": "38e2543c572948b7c6d796de477e89a27236656b7022be445e1250aca4123179",
+        "sha256": "811c5c06cac906916543015ff12c8c4666babcd14d22920c2836747bac7ca26c",
         "json_pointer": "/undefined_contract_items/2"
       },
       "native_observation": {
@@ -4887,7 +4912,7 @@
       "group": "receipt_contract",
       "source": {
         "asset": "RECEIPT-TRANSACTION-BLOCKED-GAP.json",
-        "sha256": "38e2543c572948b7c6d796de477e89a27236656b7022be445e1250aca4123179",
+        "sha256": "811c5c06cac906916543015ff12c8c4666babcd14d22920c2836747bac7ca26c",
         "json_pointer": "/undefined_contract_items/3"
       },
       "native_observation": {
@@ -4929,7 +4954,7 @@
       "group": "receipt_contract",
       "source": {
         "asset": "RECEIPT-TRANSACTION-BLOCKED-GAP.json",
-        "sha256": "38e2543c572948b7c6d796de477e89a27236656b7022be445e1250aca4123179",
+        "sha256": "811c5c06cac906916543015ff12c8c4666babcd14d22920c2836747bac7ca26c",
         "json_pointer": "/undefined_contract_items/4"
       },
       "native_observation": {
@@ -4969,7 +4994,7 @@
       "group": "receipt_contract",
       "source": {
         "asset": "RECEIPT-TRANSACTION-BLOCKED-GAP.json",
-        "sha256": "38e2543c572948b7c6d796de477e89a27236656b7022be445e1250aca4123179",
+        "sha256": "811c5c06cac906916543015ff12c8c4666babcd14d22920c2836747bac7ca26c",
         "json_pointer": "/undefined_contract_items/5"
       },
       "native_observation": {
@@ -5027,6 +5052,38 @@
       "status": "ROUTE_SCOPED",
       "normative": false,
       "summary": "accepted embedded DBMD, stripped-sidecar rejection, and legal convert-to-ADM route are separate runs"
+    },
+    {
+      "overlay_id": "v35_selected_parent_admission_review",
+      "sources": [
+        "PARENT-ADMISSION-EVIDENCE-MATRIX.json",
+        "PARENT-COLD-ROOT-PARTICIPATION-AUDIT.json",
+        "PARENT-LIFECYCLE-CONTRACT.json",
+        "SELECTED-PARENT-COLD-BLOCK-INVENTORY.json",
+        "INDEPENDENT-CHECK.json"
+      ],
+      "status": "SELECTED_SCOPE_REVERSE_ENGINEERING_CLOSED_DESIGN_AND_VALIDATION_BLOCKED",
+      "normative": false,
+      "package_identity": "spatial-control-cold-serializer.blocked.v35",
+      "research_manifest_sha256": "d969333307e690303be5f2428d68b66ddf2e350b254da2d544e0e9074adcea10",
+      "research_independent_check_sha256": "099a6d5438ae305dccb591ce2ed36131cc0d98e4d17d032245c1b4af41e2dc40",
+      "independent_check_count": 52,
+      "independent_check_all_pass": true,
+      "selected_gate1_reverse_dependencies": 0,
+      "gate1_closed": false,
+      "native_runtime_root_understood_for_selected_scope": true,
+      "native_canonical_root_participation_observed": false,
+      "remaining_clean_room_design": [
+        "approved canonical framing and digest domain",
+        "field projection and optional-state choices",
+        "typed constructor/root receipt schema"
+      ],
+      "remaining_clean_room_validation": [
+        "complete cold vector",
+        "independent parse-reserialize equality",
+        "success/failure/fresh-reconstruction receipt vectors"
+      ],
+      "inherited_asset_identity_note": "The v35 package carries unchanged selected-run evidence assets whose internal source identities remain v34; package identity and admission review are v35."
     }
   ],
   "omitted_field_ledger": [
@@ -5035,38 +5092,61 @@
       "source_asset": "PARENT-COLD-CONFIG-SEMANTICS.json",
       "source_sha256": "551dc12dac533190e72947cef663173042e6dd7a872ab8488f8f8722fa51130f",
       "status": "PARTIAL",
-      "blocks_canonical_vector": true,
-      "minimum_evidence": "per-word source, consumer and type for mode 1"
+      "candidate_disposition": "EXCLUDED_CANDIDATE_SELECTED_MODE0_ONLY",
+      "candidate_basis": "selected profile observes mode 0 and mode tuple zero; this does not generalize to mode 1",
+      "normative": false,
+      "profile_scope": "selected run only",
+      "blocks_canonical_vector": false,
+      "minimum_evidence": "mode-1 per-word source, consumer and type only if mode 1 enters scope"
     },
     {
       "omitted_id": "external_metadata_other_profile_gap_writes",
       "source_asset": "PACKED-METADATA-DYNAMIC-CURRENT-RUN.json",
       "source_sha256": "55c8897315fac17890a0efa1c0548cf629e1e4ef75ed8616b5080c224259b1bd",
       "status": "NOT_RUN_OR_NOT_JOINED",
-      "blocks_cross_profile_schema": true,
-      "minimum_evidence": "per-profile first-writer/owner/generation traces"
+      "candidate_disposition": "EXCLUDED_CANDIDATE_OUTSIDE_SELECTED_PROFILE",
+      "candidate_basis": "other profiles are outside the single selected profile; no cross-profile rule is inferred",
+      "normative": false,
+      "profile_scope": "selected run only",
+      "blocks_canonical_vector": false,
+      "minimum_evidence": "per-profile first-writer/owner/generation traces if profile scope expands"
     },
     {
       "omitted_id": "measurement_public_8_12_16_semantic_names",
       "source_asset": "CORE-MEASUREMENT-SLOT-CONSUMER-BOUNDARY.json",
       "source_sha256": "edc5af39dede9931e41491984bc8c02d1c711c7cdc656e7b970f3173e1f0c484",
       "status": "NOT_CLOSED",
+      "candidate_disposition": "BLOCKED_UNKNOWN",
+      "candidate_basis": "three present measurement slots lack semantic names",
+      "normative": false,
+      "profile_scope": "selected run",
       "blocks_complete_field_inventory": true,
+      "blocks_canonical_vector": true,
       "minimum_evidence": "named public-field owner or consumer binding"
     },
     {
       "omitted_id": "packed120_dictionary_same_owner_generation_join",
       "source_asset": "EXTERNAL-METADATA-PRODUCER-COVERAGE-AND-SEPARATE-DICTIONARY.json",
       "source_sha256": "e5c34227db9f145e1ca71c3ad13ca5c8693f17368c0207d7381a89f25fbaccbc",
+      "additional_source_asset": "CROSS-PROFILE-ACTUAL-RUNS.json",
+      "additional_source_sha256": "13c52fb8b0f0ca0c0f6176165d9993d3a5b5972b56533765098ea09ac4165bcf",
       "status": "NO_HIT_NOT_INVOKED",
-      "blocks_offset_mapping": true,
-      "minimum_evidence": "same-owner/same-generation identity join"
+      "candidate_disposition": "EXCLUDED_CANDIDATE_ACCEPTED_PATH_ONLY",
+      "candidate_basis": "accepted embedded-DBMD path invokes packed producer/parent consumer but does not invoke the separate dictionary serializer/parser",
+      "normative": false,
+      "profile_scope": "accepted selected run only",
+      "blocks_canonical_vector": false,
+      "minimum_evidence": "same-owner/same-generation identity join if a different route requires the dictionary"
     },
     {
       "omitted_id": "f01e_parent_embedding",
       "source_asset": "REQUIRED-FRAMING-RULES.json",
       "source_sha256": "7396aaf144c102db7e395f090bf645e7db2d827d6bf8ecc3a39f870c73e0373d",
       "status": "MISSING",
+      "candidate_disposition": "BLOCKED_UNKNOWN",
+      "candidate_basis": "parent embedding is not specified",
+      "normative": false,
+      "profile_scope": "selected parent schema",
       "blocks_canonical_vector": true,
       "minimum_evidence": "presence/version/length/representation in parent envelope"
     },
@@ -5075,14 +5155,23 @@
       "source_asset": "REQUIRED-FRAMING-RULES.json",
       "source_sha256": "7396aaf144c102db7e395f090bf645e7db2d827d6bf8ecc3a39f870c73e0373d",
       "status": "PARTIAL_OR_CONFLICT_BLOCKED",
+      "candidate_disposition": "BLOCKED_UNKNOWN",
+      "candidate_basis": "cold absence does not define optional or non-empty representations",
+      "normative": false,
+      "profile_scope": "selected parent schema",
       "blocks_canonical_vector": true,
       "minimum_evidence": "presence, grouping, order, length and non-empty encoding"
     },
     {
       "omitted_id": "receipt_transition_fields_and_vectors",
       "source_asset": "RECEIPT-TRANSACTION-BLOCKED-GAP.json",
-      "source_sha256": "38e2543c572948b7c6d796de477e89a27236656b7022be445e1250aca4123179",
+      "source_sha256": "811c5c06cac906916543015ff12c8c4666babcd14d22920c2836747bac7ca26c",
       "status": "NOT_DEFINED_NOT_RUN",
+      "candidate_disposition": "BLOCKED_UNKNOWN",
+      "candidate_basis": "no typed receipt/transaction contract or executable vectors",
+      "normative": false,
+      "profile_scope": "selected parent transaction",
+      "blocks_canonical_vector": true,
       "blocks_transaction_acceptance": true,
       "minimum_evidence": "typed receipt/token contract and required success/failure vectors"
     }

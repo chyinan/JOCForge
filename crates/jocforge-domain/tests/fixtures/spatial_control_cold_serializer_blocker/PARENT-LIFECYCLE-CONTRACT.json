@@ -1,0 +1,110 @@
+{
+  "schema": "selected-parent-native-lifecycle.v1",
+  "receipt_schema": "NOT_DEFINED_OR_INFERRED",
+  "wrapper": {
+    "constructor": "0x177e50",
+    "inner_constructor": "0x177eb0",
+    "process_thunk": "0x179a80",
+    "close_thunk": "0x178620",
+    "destructor": "0x178260"
+  },
+  "host_fields": [
+    {
+      "offset": 104,
+      "width": 1,
+      "role": "opened_flag",
+      "cold": "0x177eb0 writes 0",
+      "commit": "0x1788a0 writes 1 only after parent open plus audio/pointer allocations complete",
+      "cleanup": "unchanged; remains 1"
+    },
+    {
+      "offset": 112,
+      "width": 8,
+      "role": "parent_allocation_base",
+      "cold": "null",
+      "stage": "0x1788a0 stores malloc result before memset and parent construction",
+      "cleanup": "0x178630 frees but does not null; dangling afterwards"
+    },
+    {
+      "offset": 120,
+      "width": 8,
+      "role": "parent_owner",
+      "cold": "null",
+      "stage": "address passed to 0x1a7d50 output",
+      "commit": "non-null only on successful 0x1a7d50 terminal assignment",
+      "cleanup": "0x178630 calls 0x1a7bf0 then writes null"
+    },
+    {
+      "offset": 144,
+      "width": 1,
+      "role": "cleanup_once_guard",
+      "cold": "0",
+      "cleanup": "0x178630 sets 1 after all frees; repeated cleanup is no-op"
+    },
+    {
+      "offset": 145,
+      "width": 1,
+      "role": "flush_complete",
+      "cold": "0",
+      "eof": "0x179ab0 sets 1 when 0x1a7c80 returns zero output; repeated size0 process returns empty"
+    }
+  ],
+  "open_sequence": [
+    "0x1788a0 checks host+104; nonzero skips open",
+    "0x178dc0 builds local 128-byte descriptor",
+    "0x1a8920 query_mem obtains allocation size",
+    "malloc -> host+112, then zero allocation",
+    "0x1a7d50 constructs parent and assigns host+120 only at successful end",
+    "allocate/zero 1536*channel_count*4 audio at host+128",
+    "allocate channel pointer table at host+136",
+    "write host+104=1 as final open commit"
+  ],
+  "parent_constructor": {
+    "rva": "0x1a7d50",
+    "memory": "caller-owned zero allocation",
+    "owner": "allocation base",
+    "success": "returns0 and writes output owner pointer",
+    "error": "nonzero code; no snapshot rollback",
+    "observed_fresh_constructor_to_first_consumer_hash_match": true
+  },
+  "normal_process": {
+    "rva": "0x1a8840",
+    "validation": "requires parent,input,consumed pointer,output buffer,length pointer; sets output length0 and consumed=1",
+    "terminal_rejection": "parent+13592 nonzero -> 0xfffffffd",
+    "stages": [
+      "0x1ac850 imports input into parent+13616",
+      "0x1a7710 advances encoder and produces bytes"
+    ],
+    "success": "return0",
+    "failure_atomicity": "NOT_PROVEN; no clone/rollback in function"
+  },
+  "eof_flush": {
+    "rva": "0x1a7c80",
+    "validation": "parent/output/length required; length set0",
+    "condition": "only acts while parent+13588 pending count >0",
+    "first_action": "parent+13592 terminal flag =1 before 0x1a7710",
+    "success": "decrement parent+13588 after successful 0x1a7710",
+    "failure": "returns 0xfffffff6 and leaves terminal flag set; rollback NOT_OBSERVED",
+    "host_terminal": "0x179ab0 sets host+145 when returned output length is zero"
+  },
+  "close_cleanup": {
+    "explicit_close": "0x178620 -> 0x178630",
+    "parent_cleanup": "0x1a7bf0 closes six owned subsystems in fixed order",
+    "outer_cleanup": "0x178630 nulls host+120, frees host+112/+136/+128/+152, then sets host+144=1",
+    "destructor": "0x178260 calls 0x178630 then frees inner"
+  },
+  "reset": {
+    "in_place_reset": "NO_HIT",
+    "reopen_same_inner": "NOT_SUPPORTED by observed flags/pointers",
+    "fresh_reconstruction": "0x175500 creates fresh EmpireEnc via 0x177e50 for next record; previous inner is closed and destroyed",
+    "second_dynamic_record": "NOT_RUN"
+  },
+  "fatal_boundary": {
+    "native_error_codes": "checked by 0x1783c0 and raised to caller",
+    "open_failure": "host+104 remains0 but partial host+112 may exist; cleanup required",
+    "process_failure": "parent state mutation before error possible; retry/rollback not evidenced",
+    "flush_failure": "terminal flag is already set before failed 0x1a7710",
+    "fault_injection": "NOT_RUN"
+  },
+  "status": "STATIC_LIFECYCLE_CLOSED_FAILURE_ATOMICITY_AND_SECOND_RECONSTRUCTION_NOT_RUN"
+}

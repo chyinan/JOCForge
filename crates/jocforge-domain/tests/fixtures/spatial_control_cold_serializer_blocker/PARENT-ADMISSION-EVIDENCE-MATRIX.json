@@ -1,0 +1,222 @@
+{
+  "schema": "parent-admission-evidence-matrix.v1",
+  "source_package": {
+    "identity": "spatial-control-cold-serializer.blocked.v34",
+    "research_manifest_sha256": "aa4d77fec66328be58dc2cb723e2ca98552e33f218f9b02605f6ac311805bcae",
+    "washed_manifest_file_sha256": "43f7fcf730c7c5c321aa884d1810aa039427d0ae2f97f7cc94f93bfc525d404b",
+    "read_scope": "sanitized v34 package only"
+  },
+  "admission_status": "NOT_READY",
+  "production_allowed": false,
+  "columns": ["required_parent_field_or_section", "native_fact", "current_selected_value", "authority", "wash_design_decision_needed", "test_vector_availability", "status"],
+  "rows": [
+    {
+      "required_parent_field_or_section": "top_level_envelope",
+      "native_fact": "No serializer call, portable API, schema magic, import or export observed.",
+      "current_selected_value": "NOT_DELIVERED",
+      "authority": "NATIVE_NO_HIT_DIAGNOSTIC",
+      "wash_design_decision_needed": ["magic/version or explicit absence", "total-length rule", "section identifiers", "section-length widths", "alignment", "terminal rule"],
+      "test_vector_availability": "NONE",
+      "status": "NOT_READY"
+    },
+    {
+      "required_parent_field_or_section": "clocks",
+      "native_fact": "Listed first in the frozen logical parent field order; selected native constructor/first-consumer lifecycle is joined.",
+      "current_selected_value": "LOGICAL_VALUE_BYTES_NOT_DELIVERED",
+      "authority": "NORMATIVE_LOGICAL_ORDER_PLUS_NATIVE_LIFECYCLE",
+      "wash_design_decision_needed": ["field schema", "primitive widths", "canonical byte encoding"],
+      "test_vector_availability": "NO_CANONICAL_SECTION_VECTOR",
+      "status": "NOT_READY"
+    },
+    {
+      "required_parent_field_or_section": "source_cache",
+      "native_fact": "Runtime caches use pointers; cold caches/snapshots are absent.",
+      "current_selected_value": "ABSENT_AT_COLD_LOGICAL_STATE",
+      "authority": "NORMATIVE_COLD_VALUE; NATIVE_RUNTIME_LAYOUT_DIAGNOSTIC",
+      "wash_design_decision_needed": ["per-field versus grouped presence", "snapshot order", "array length framing"],
+      "test_vector_availability": "ABSENCE_VALUE_ONLY_NO_BYTES",
+      "status": "NOT_READY"
+    },
+    {
+      "required_parent_field_or_section": "event_control",
+      "native_fact": "Listed in frozen logical order; runtime parent is constructed and consumed in memory.",
+      "current_selected_value": "NOT_DELIVERED",
+      "authority": "NORMATIVE_LOGICAL_ORDER_ONLY",
+      "wash_design_decision_needed": ["complete logical fields", "canonical encoding"],
+      "test_vector_availability": "NONE",
+      "status": "NOT_READY"
+    },
+    {
+      "required_parent_field_or_section": "render_audio",
+      "native_fact": "Listed in frozen logical order; render execution is outside cold admission.",
+      "current_selected_value": "COLD_LOGICAL_VALUE_NOT_DELIVERED",
+      "authority": "NORMATIVE_LOGICAL_ORDER_ONLY",
+      "wash_design_decision_needed": ["cold representation", "exclude scratch and PCM", "canonical encoding"],
+      "test_vector_availability": "NONE",
+      "status": "NOT_READY"
+    },
+    {
+      "required_parent_field_or_section": "source_flags_current_flags",
+      "native_fact": "Current flags are callback outputs with no independently proven history; logical schema nevertheless lists source_flags under parent.",
+      "current_selected_value": "COLD_PERSISTENCE_UNDECIDED",
+      "authority": "NATIVE_RUNTIME_FACT_PLUS_SCHEMA_CONFLICT",
+      "wash_design_decision_needed": ["exclude", "include zero array", "or optional callback snapshot"],
+      "test_vector_availability": "NO_APPROVED_EXPECTED_FORM",
+      "status": "NOT_READY_CONFLICT"
+    },
+    {
+      "required_parent_field_or_section": "feature_current_features",
+      "native_fact": "Current features are callback outputs with no independently proven history; logical schema lists feature under parent.",
+      "current_selected_value": "COLD_PERSISTENCE_UNDECIDED",
+      "authority": "NATIVE_RUNTIME_FACT_PLUS_SCHEMA_CONFLICT",
+      "wash_design_decision_needed": ["exclude", "include zero array", "or optional callback snapshot"],
+      "test_vector_availability": "NO_APPROVED_EXPECTED_FORM",
+      "status": "NOT_READY_CONFLICT"
+    },
+    {
+      "required_parent_field_or_section": "selection_outer",
+      "native_fact": "Listed in frozen logical order; selector and outer execution are NOT_RUN for this admission slice.",
+      "current_selected_value": "COLD_LOGICAL_VALUE_NOT_DELIVERED",
+      "authority": "NORMATIVE_LOGICAL_ORDER; EXECUTION_NOT_RUN",
+      "wash_design_decision_needed": ["complete cold fields", "canonical encoding"],
+      "test_vector_availability": "NONE",
+      "status": "NOT_READY"
+    },
+    {
+      "required_parent_field_or_section": "matrix_assignment",
+      "native_fact": "Listed last in frozen logical order; U04/model recomposition is NOT_RUN.",
+      "current_selected_value": "COLD_LOGICAL_VALUE_NOT_DELIVERED",
+      "authority": "NORMATIVE_LOGICAL_ORDER; EXECUTION_NOT_RUN",
+      "wash_design_decision_needed": ["complete cold fields", "canonical encoding"],
+      "test_vector_availability": "NONE",
+      "status": "NOT_READY"
+    },
+    {
+      "required_parent_field_or_section": "f01e_nested_state",
+      "native_fact": "F01E is runtime state; no parent portable embedding observed.",
+      "current_selected_value": {"canonical_json_bytes": 4402, "sha256": "9c943879cd36cb45bc7538346cfdf4f71d0998d8f261f75c135045fcb59870aa"},
+      "authority": "NORMATIVE_F01E_PREIMAGE",
+      "wash_design_decision_needed": ["raw JSON versus binary projection versus digest reference", "presence/version", "length framing"],
+      "test_vector_availability": "F01E_VECTOR_AVAILABLE_PARENT_EMBEDDING_VECTOR_MISSING",
+      "status": "NOT_READY"
+    },
+    {
+      "required_parent_field_or_section": "diffusion_optional_state",
+      "native_fact": "Cold diffusion instances and previous-output arrays are absent; runtime form is pointer-rich.",
+      "current_selected_value": "ABSENT_AT_COLD_LOGICAL_STATE",
+      "authority": "NORMATIVE_COLD_VALUE",
+      "wash_design_decision_needed": ["presence grouping", "record order", "record length framing"],
+      "test_vector_availability": "ABSENCE_VALUE_ONLY_NO_BYTES",
+      "status": "NOT_READY"
+    },
+    {
+      "required_parent_field_or_section": "writer_set",
+      "native_fact": "Cold writer set is empty; no canonical writer-set serializer observed.",
+      "current_selected_value": {"count": 0},
+      "authority": "NORMATIVE_COLD_VALUE",
+      "wash_design_decision_needed": ["containing section framing", "nonempty record field order and types", "inline versus referenced owner/generation"],
+      "test_vector_availability": "EMPTY_LOGICAL_VALUE_ONLY_NO_SECTION_BYTES",
+      "status": "NOT_READY"
+    },
+    {
+      "required_parent_field_or_section": "parent_config_descriptor",
+      "native_fact": "120-byte native descriptor, mode0, source_count38, data-rate code5; pointer offsets16/48/56/64. Native memory image is not portable.",
+      "current_selected_value": {"mode": 0, "source_count": 38, "data_rate_code": 5, "data_rate_kbps": 1024},
+      "authority": "NATIVE_SELECTED_FACT_DIAGNOSTIC",
+      "wash_design_decision_needed": ["logical projection versus exclusion", "portable field schema"],
+      "test_vector_availability": "POINTER_ZEROED_DIAGNOSTIC_CRC_ONLY_NOT_RECONSTRUCTION_MATERIAL",
+      "status": "NOT_READY"
+    },
+    {
+      "required_parent_field_or_section": "channel_records",
+      "native_fact": "38 records of six bytes; U16 input_channel_key, host_index, source_ordinal; source ordering rule is closed.",
+      "current_selected_value": {"count": 38, "record_bytes": 6, "diagnostic_crc32": "d04aae00"},
+      "authority": "NATIVE_LAYOUT_AND_SEMANTICS_FACT",
+      "wash_design_decision_needed": ["parent section inclusion", "count/length framing"],
+      "test_vector_availability": "RAW_BYTES_NOT_DELIVERED_DIAGNOSTIC_HASH_ONLY",
+      "status": "NOT_READY"
+    },
+    {
+      "required_parent_field_or_section": "codec_policy_44",
+      "native_fact": "All 44 bytes have selected semantics; actual 16 property/value consumers are bound.",
+      "current_selected_value": {"copyright":1,"original":1,"mixlevel":80,"roomtyp":0,"loro_center":4,"loro_surround":4,"preferred_downmix":2,"ltrt_center":4,"ltrt_surround":4,"dsurexmod":0,"adconvtyp":0,"rf_drc":0,"line_drc":0},
+      "authority": "NATIVE_SELECTED_FACT",
+      "wash_design_decision_needed": ["parent section inclusion", "portable encoding rather than native struct bytes"],
+      "test_vector_availability": "PROPERTY_PAIR_VECTOR_AVAILABLE_RAW_BLOCK_NOT_DELIVERED",
+      "status": "NOT_READY"
+    },
+    {
+      "required_parent_field_or_section": "external_metadata_control_120",
+      "native_fact": "Selected MasterSourceImpl copies an exact 120-byte completed producer record into composite parent input; current causal owner/generation join is closed.",
+      "current_selected_value": "14 constructor gaps zero; offsets80..87 positive-zero after ordinal3; remaining complete bytes not delivered",
+      "authority": "NATIVE_CURRENT_RUN_FACT",
+      "wash_design_decision_needed": ["logical field-complete projection or explicit exclusion", "portable encoding"],
+      "test_vector_availability": "PARTITION_IDENTITIES_ONLY_RAW_BYTES_NOT_DELIVERED",
+      "status": "NOT_READY"
+    },
+    {
+      "required_parent_field_or_section": "trim_records",
+      "native_fact": "Nine input records; discard four-byte prefix and copy 24-byte payload in key order0..8. Payload semantics are complete.",
+      "current_selected_value": {"count":9,"portable_candidate_record_bytes":24,"diagnostic_crc32":"dc368594"},
+      "authority": "NATIVE_LAYOUT_AND_SEMANTICS_FACT",
+      "wash_design_decision_needed": ["parent section inclusion", "count/record framing"],
+      "test_vector_availability": "PRODUCER_CONSUMER_VECTORS_EXIST_RAW_SELECTED_BLOCK_NOT_DELIVERED",
+      "status": "NOT_READY"
+    },
+    {
+      "required_parent_field_or_section": "measurement_summary_44",
+      "native_fact": "Named fields and selected values are bound except offsets8/12/16; native summary is runtime input.",
+      "current_selected_value": {"dialogue":-120.0,"itu":-16.784912109375,"offset8":"UNKNOWN_NAME","offset12":"UNKNOWN_NAME","offset16":"UNKNOWN_NAME","measured":-16.784912109375,"gating":2,"speech_percentage":-1.0,"loudness_range":5.73073673248291,"sample_peak":-4.125058174133301,"true_peak":-3.954448699951172},
+      "authority": "NATIVE_SELECTED_FACT; UNKNOWN_NAMES_DIAGNOSTIC_NONBLOCKER",
+      "wash_design_decision_needed": ["include or exclude diagnostic unnamed fields", "portable binary32/enum encoding"],
+      "test_vector_availability": "VALUES_AVAILABLE_NO_APPROVED_PARENT_SECTION_BYTES",
+      "status": "NOT_READY"
+    },
+    {
+      "required_parent_field_or_section": "selected_constructor_prefix_104",
+      "native_fact": "Generation1 prefix is dynamically joined; runtime pointers at88/92 are zeroed/excluded.",
+      "current_selected_value": "Complete 26-word selected list exists in v34; three measurement semantics remain unnamed.",
+      "authority": "NATIVE_SELECTED_FACT_DIAGNOSTIC",
+      "wash_design_decision_needed": ["whether this prefix is an input/provider binding or serialized section", "canonical encoding"],
+      "test_vector_availability": "COMPLETE_WORD_LIST_AVAILABLE_NOT_CANONICAL_PARENT_VECTOR",
+      "status": "NOT_READY"
+    },
+    {
+      "required_parent_field_or_section": "state_digest",
+      "native_fact": "No canonical parent preimage or digest domain observed.",
+      "current_selected_value": null,
+      "authority": "NATIVE_NO_HIT_DIAGNOSTIC",
+      "wash_design_decision_needed": ["digest algorithm", "domain prefix", "exact preimage", "whether envelope headers are included"],
+      "test_vector_availability": "NONE",
+      "status": "NOT_READY"
+    },
+    {
+      "required_parent_field_or_section": "cold_constructor_receipt",
+      "native_fact": "Native constructor and first consumer join is closed; no native receipt call observed.",
+      "current_selected_value": {"owner_offset":0,"allocation_bytes":7805609,"generation":1,"portable_digest":null},
+      "authority": "NATIVE_LIFECYCLE_FACT_PLUS_WASH_DESIGN_REQUIRED",
+      "wash_design_decision_needed": ["receipt schema", "provider/input identity fields", "owner token", "generation-zero versus observed runtime generation1 convention", "commit/failure semantics"],
+      "test_vector_availability": "NO_POSITIVE_OR_NEGATIVE_RECEIPT_VECTORS",
+      "status": "NOT_READY"
+    }
+  ],
+  "not_ready_gaps": [
+    "normative top-level envelope and section framing",
+    "field-complete canonical schemas for ordered parent sections",
+    "F01E embedding rule",
+    "optional source-cache and diffusion encoding",
+    "current flags/features persistence decision",
+    "writer-set containing section and nonempty record schema",
+    "digest domain and exact preimage",
+    "complete cold bytes with offsets/length/SHA and parse-reserialize equality",
+    "cold constructor receipt success/failure/reset vectors"
+  ],
+  "boundaries": {
+    "serializer_execution": "NOT_RUN",
+    "canonical_preimage": "NOT_DELIVERED",
+    "expected_used_as_seed": false,
+    "bytes_guessed": false,
+    "implementation_side_accessed": false,
+    "private_auth": "EXCLUDED"
+  }
+}

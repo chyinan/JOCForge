@@ -8,7 +8,7 @@
     "cross_profile_generalization": false,
     "source_implementer_manifest": {
       "file": "crates/jocforge-domain/tests/fixtures/spatial_control_cold_serializer_blocker/SPATIAL-CONTROL-COLD-SERIALIZER-BLOCKER-MANIFEST.json",
-      "sha256": "43f7fcf730c7c5c321aa884d1810aa039427d0ae2f97f7cc94f93bfc525d404b"
+      "sha256": "71ca9bb30c2129019a76ecb703df47a88f5384582bb65a53faee92103e9dcd0b"
     },
     "field_inventory_document": "docs/implementation/PARENT-COLD-DESIGN-GAP-MATRIX.md"
   },
@@ -25,7 +25,12 @@
     "PARENT-METADATA-CAUSAL-JOIN.json": "c8eb0c15506ac018afde203f549418ef9b30ac1302f8f4fab7e6c4b3d84801a2",
     "REQUIRED-FRAMING-RULES.json": "7396aaf144c102db7e395f090bf645e7db2d827d6bf8ecc3a39f870c73e0373d",
     "MINIMUM-EXTERNAL-EVIDENCE.json": "7e078cfa1da60dcf0580a5fe070d6255c4c8cfa2265b862242965342210c922f",
-    "CROSS-PROFILE-ACTUAL-RUNS.json": "13c52fb8b0f0ca0c0f6176165d9993d3a5b5972b56533765098ea09ac4165bcf"
+    "CROSS-PROFILE-ACTUAL-RUNS.json": "13c52fb8b0f0ca0c0f6176165d9993d3a5b5972b56533765098ea09ac4165bcf",
+    "PARENT-ADMISSION-EVIDENCE-MATRIX.json": "b89102c2d538f345bf53216778fccf86023b6301521aa2b27316426146204284",
+    "PARENT-COLD-ROOT-PARTICIPATION-AUDIT.json": "eb0890100771de8aa3d2e1d8ba5d4c22180320e5239acbc1729fad8b380db82d",
+    "PARENT-LIFECYCLE-CONTRACT.json": "426abb5e31c6ae8574574176fd5fe44ca173f77de488cb2aaf0207b85c6ba80c",
+    "SELECTED-PARENT-COLD-BLOCK-INVENTORY.json": "5c2a84d278e3c9c450fd9c1a6d43bda37e16bce78e939962ae5b412fce2ab640",
+    "INDEPENDENT-CHECK.json": "099a6d5438ae305dccb591ce2ed36131cc0d98e4d17d032245c1b4af41e2dc40"
   },
   "closed_native_facts_clean_room_candidates": [
     {
@@ -181,6 +186,37 @@
     "domain_separator": "NOT_DEFINED",
     "digest_algorithm_input_preimage_length": "NOT_DEFINED",
     "digest_value": "NOT_DELIVERED"
+  },
+  "washed_design_review": {
+    "review_package_identity": "spatial-control-cold-serializer.blocked.v35",
+    "review_package_manifest_sha256": "71ca9bb30c2129019a76ecb703df47a88f5384582bb65a53faee92103e9dcd0b",
+    "research_manifest_sha256": "d969333307e690303be5f2428d68b66ddf2e350b254da2d544e0e9074adcea10",
+    "research_independent_check_sha256": "099a6d5438ae305dccb591ce2ed36131cc0d98e4d17d032245c1b4af41e2dc40",
+    "package_asset_count": 44,
+    "research_check_count": 52,
+    "research_checks_all_pass": true,
+    "selected_scope_required_reverse_dependencies": 0,
+    "gate1_closed": false,
+    "native_runtime_root_understood_for_selected_scope": true,
+    "native_canonical_root_participation_observed": false,
+    "product_wide_absence_claim": false,
+    "remaining_clean_room_nodes": ["M1 canonical schema/framing/digest", "M2 cold vector and independent roundtrip", "M3 typed root receipt and transaction vectors"],
+    "reused_field_evidence_internal_identity": "v34 assets remain v34; v35 is the current package and review identity",
+    "normative_encoding_rules_selected": [],
+    "closed_field_fragment_status": "NON_NORMATIVE_CANDIDATE_ONLY",
+    "complete_parent_root_unique": false,
+    "candidate_fragment_may_be_used_as_success_schema": false,
+    "unknown_field_identity_or_value_may_be_zero_filled": false,
+    "blocking_field_groups": [
+      "descriptor.mode1_tuple_full_semantics",
+      "measurement_public_8_12_16_semantic_names",
+      "external_metadata_remaining_fields_and_profile_scope",
+      "packed120_dictionary_same_owner_generation_join",
+      "F01E_parent_embedding",
+      "optional_cache_current_flags_writer_set_framing",
+      "receipt_transition_fields_and_vectors"
+    ],
+    "clean_room_rule": "Only record candidate representations for closed fields; do not select order, framing, digest, or bytes until every blocking field and branch is resolved."
   },
   "validation_not_run": [
     "canonical schema independent digest recomputation",

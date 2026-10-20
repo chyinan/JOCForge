@@ -1,0 +1,173 @@
+{
+  "schema": "selected-parent-cold-root-participation-audit.v1",
+  "scope": "selected parent cold canonical serialization and root participation",
+  "baseline": {
+    "package_identity": "spatial-control-cold-serializer.blocked.v34",
+    "authoritative_source_manifest_sha256": "aa4d77fec66328be58dc2cb723e2ca98552e33f218f9b02605f6ac311805bcae",
+    "washed_manifest_file_sha256": "43f7fcf730c7c5c321aa884d1810aa039427d0ae2f97f7cc94f93bfc525d404b",
+    "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "result": {
+    "native_runtime_root": "OBSERVED_POINTER_RICH_IN_MEMORY_OWNER",
+    "native_canonical_serializer_participation": "NOT_OBSERVED_IN_BOUNDED_SCOPE",
+    "native_canonical_parser_participation": "NOT_OBSERVED_IN_BOUNDED_SCOPE",
+    "native_digest_participation": "NOT_OBSERVED_IN_BOUNDED_SCOPE",
+    "native_root_receipt_participation": "NOT_OBSERVED_IN_BOUNDED_SCOPE",
+    "encoded_output_persistence": "OBSERVED",
+    "parent_state_persistence": "NOT_OBSERVED_IN_BOUNDED_SCOPE",
+    "product_wide_absence_claim": false,
+    "production_allowed": false
+  },
+  "NATIVE_OBSERVED": {
+    "runtime_root": {
+      "host_lazy_initializer_rva": "0x1788a0",
+      "memory_query_rva": "0x1a8920",
+      "parent_constructor_rva": "0x1a7d50",
+      "first_consumer_rva": "0x1a8840",
+      "allocation_bytes": 7805609,
+      "owner_offset_bytes": 0,
+      "owner_equals_allocation_base": true,
+      "constructor_entry_allocation_all_zero": true,
+      "constructor_changed_allocation": true,
+      "constructor_to_first_consumer_digest_match": true,
+      "lifecycle": "query, allocate, full-zero, construct pointer-rich owner, consume in memory, terminal close and destroy"
+    },
+    "pointer_rich_state": {
+      "description": "The runtime allocation contains process-relative pointers, nested runtime owners, working buffers, descriptors and scratch-like state.",
+      "portable_memory_image_claim": false,
+      "raw_allocation_delivered": false,
+      "canonical_digest_suitability": "REJECTED_UNLESS_A_SEPARATE_LOGICAL_PROJECTION_IS_DEFINED"
+    },
+    "constructor_inputs": {
+      "selected_prefix_bytes": 104,
+      "pointer_offsets_zeroed_for_portable_reporting": [88, 92],
+      "parent_descriptor_bytes": 120,
+      "source_count": 38,
+      "data_rate_code": 5,
+      "referenced_blocks": [
+        {"name": "channel_records", "bytes": 228},
+        {"name": "codec_policy", "bytes": 44},
+        {"name": "external_metadata", "bytes": 120},
+        {"name": "trim_records", "bytes": 216}
+      ],
+      "metadata_causal_join": "CLOSED_CURRENT_RUN",
+      "metadata_selected_source_class": "atmos_storage::MasterSourceImpl",
+      "metadata_last_writer_ordinal": 3,
+      "selected_init_gap_values": "CLOSED",
+      "separate_27_u32_dictionary_current_run": "NOT_INVOKED"
+    },
+    "fresh_reconstruction": {
+      "same_object_restore": false,
+      "new_inner_object": true,
+      "previous_parent_state_used": false,
+      "serialized_parent_state_used": false,
+      "process_or_job_restart_required": false
+    },
+    "output_persistence": {
+      "parent_output_capacity_bytes": 4096,
+      "valid_range": "[temporary_buffer, temporary_buffer + returned_byte_count)",
+      "owned_vector_copy": true,
+      "file_writer": "binary FILE stream",
+      "write_rule": "fwrite(encoded_pointer,1,encoded_size,selected_file) equals encoded_size",
+      "dynamic_parent_to_writer_joins": 4,
+      "dynamic_writer_to_fwrite_joins": 4,
+      "persisted_object": "encoded output bytes only",
+      "parent_state_persisted": false
+    }
+  },
+  "BOUNDED_NO_HIT": {
+    "serializer": {
+      "observed_exports_or_imports": 0,
+      "parent_callback_call_graph_hit": false,
+      "constructor_call_graph_hit": false,
+      "schema_magic_hit": false
+    },
+    "parser_or_restore": {
+      "same_object_restore_hit": false,
+      "parent_snapshot_or_deserializer_input_hit": false,
+      "separate_27_u32_parser_current_reference_hits": 0,
+      "separate_27_u32_serializer_current_reference_hits": 0
+    },
+    "digest_or_receipt": {
+      "bounded_chain_snapshot_calls": 0,
+      "bounded_chain_receipt_calls": 0,
+      "bounded_chain_parent_state_persistence_calls": 0,
+      "native_parent_root_digest_call": "NO_HIT",
+      "native_root_receipt_object": "NO_HIT"
+    },
+    "cross_profile_actual_runs": {
+      "embedded_sidecar_parser_hits": 0,
+      "embedded_sidecar_serializer_hits": 0,
+      "convert_profile_target_setter_hits": 0,
+      "ddp_profile_target_setter_hits": 0,
+      "limit": "Only the executed profiles and exact target functions are covered."
+    },
+    "claim_limit": "No-hit evidence is bounded evidence. It does not prove that canonical serialization, parsing, digests, receipts or persistence are permanently absent from every binary, workflow, build or profile."
+  },
+  "UNKNOWN": [
+    "serializer, parser, digest or receipt behavior in unexecuted workflows, other builds and other configurations",
+    "alternate consumers in other bundled DLLs outside the bounded call graphs and executed profiles",
+    "whether a product-wide orchestration layer persists a different logical state representation",
+    "human semantic names for measurement offsets 8, 12 and 16",
+    "cross-profile behavior of the generic whole120 setter when its guard is satisfied",
+    "any vendor-defined portable parent state format outside the admitted evidence"
+  ],
+  "CLEAN_ROOM_DESIGN": {
+    "logical_root_purpose": "Provide deterministic comparison, transaction ownership, failure atomicity and fresh reconstruction identity without copying native runtime memory.",
+    "native_format_claim": false,
+    "required_schema_decisions": [
+      "top-level magic and version",
+      "section identifiers, order and lengths",
+      "primitive endian, alignment and terminal rule",
+      "F01E embedding representation",
+      "optional source-cache and diffusion encoding",
+      "current_flags/current_features persistence choice",
+      "writer-set framing and record schema",
+      "digest domain and exact canonical preimage"
+    ],
+    "required_validation": [
+      "independent reference serializer and parser",
+      "complete cold vector with per-section offsets, total length and SHA-256",
+      "byte-exact parse and reserialize equality",
+      "positive constructor receipt with one commit",
+      "invalid-provider and invalid-schema receipts with zero commit",
+      "terminal destroy followed by fresh-object reconstruction equality"
+    ]
+  },
+  "minimum_missing_facts": [
+    {
+      "id": "M1",
+      "class": "CLEAN_ROOM_DESIGN_DECISION",
+      "fact": "One approved canonical logical-state framing resolving all five open framing categories without alternatives.",
+      "blocking_impact": "Without it there is no authoritative preimage, length, section map or state SHA for the parent root."
+    },
+    {
+      "id": "M2",
+      "class": "CLEAN_ROOM_VALIDATION_ARTIFACT",
+      "fact": "A complete cold vector and independent parser/serializer roundtrip derived from the approved schema and selected v34 logical inputs.",
+      "blocking_impact": "Without it the schema cannot be shown executable, unambiguous or free of pointers, padding and scratch."
+    },
+    {
+      "id": "M3",
+      "class": "CLEAN_ROOM_ROOT_CONTRACT",
+      "fact": "Typed constructor and root receipt schemas with owner token, generation, provider identity, before/after digest and commit/failure rules.",
+      "blocking_impact": "Without them the runtime parent cannot participate in the clean global root transaction even though native construction and fresh reconstruction are understood."
+    }
+  ],
+  "admission_conclusion": {
+    "native_runtime_root_understood_for_selected_scope": true,
+    "native_canonical_root_participation_observed": false,
+    "native_output_byte_persistence_observed": true,
+    "remaining_required_reverse_engineering": 0,
+    "remaining_blockers_are_clean_room_design_or_validation": true,
+    "gate1_closed": false
+  },
+  "boundaries": {
+    "implementation_repository_access": false,
+    "implementation_thread_contact": false,
+    "algorithm_implementation": "NOT_PERFORMED",
+    "native_execution": "NOT_PERFORMED_THIS_AUDIT",
+    "private_auth": "EXCLUDED",
+    "expected_used_as_seed": false
+  }
+}

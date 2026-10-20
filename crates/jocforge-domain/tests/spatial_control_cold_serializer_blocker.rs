@@ -5,7 +5,7 @@ use std::fmt::Write as _;
 use std::fs;
 use std::path::PathBuf;
 
-const MANIFEST_SHA256: &str = "43f7fcf730c7c5c321aa884d1810aa039427d0ae2f97f7cc94f93bfc525d404b";
+const MANIFEST_SHA256: &str = "71ca9bb30c2129019a76ecb703df47a88f5384582bb65a53faee92103e9dcd0b";
 
 fn fixture_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -38,32 +38,21 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let manifest: Value = serde_json::from_slice(&manifest_bytes).expect("manifest JSON");
     assert_eq!(
         manifest["schema"],
-        "washed-implementer-blocker-manifest.v29"
+        "washed-implementer-blocker-manifest.v30"
     );
     assert_eq!(
         manifest["identity"],
-        "spatial-control-cold-serializer.blocked.v34"
+        "spatial-control-cold-serializer.blocked.v35"
     );
     assert_eq!(manifest["status"], "BLOCKED_NO_EXECUTABLE_SERIALIZER");
     assert_eq!(
-        manifest["causal_join"],
+        manifest["parent_admission"],
         json!({
-            "selected_source_class": "atmos_storage::MasterSourceImpl",
-            "same_composite_destination": true,
-            "parent_input_matches_composite": true,
-            "last_writer_ordinal": 3,
-            "join": "CLOSED_CURRENT_RUN"
-        })
-    );
-    assert_eq!(
-        manifest["cross_profile"],
-        json!({
-            "embedded_sidecar_parser_hits": 0,
-            "stripped_sidecar_rejected_before_parser": true,
-            "convert_adm_audio_exact": true,
-            "convert_setter_hits": 0,
-            "ddp_setter_hits": 0,
-            "product_wide_absence_claim": false
+            "selected_gate1_reverse_dependencies": 0,
+            "gate1_closed": false,
+            "m1_canonical_schema_and_digest": "CLEAN_ROOM_DESIGN_REQUIRED",
+            "m2_serializer_parser_cold_roundtrip": "NOT_RUN",
+            "m3_receipt_transaction_vectors": "NOT_RUN"
         })
     );
     let files = manifest["files"].as_array().expect("manifest files array");
@@ -92,13 +81,16 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "MINIMUM-EXTERNAL-EVIDENCE.json",
             "PACKED-METADATA-DYNAMIC-CURRENT-RUN.json",
             "PACKED-METADATA-OWNER-CONSTRUCTOR.json",
+            "PARENT-ADMISSION-EVIDENCE-MATRIX.json",
             "PARENT-COLD-CONFIG-BOUNDARY.json",
             "PARENT-COLD-CONFIG-SEMANTICS.json",
             "PARENT-COLD-FRESH-RECONSTRUCTION.json",
             "PARENT-COLD-HOST-LIFECYCLE-BOUNDARY.json",
             "PARENT-COLD-LIFECYCLE.json",
+            "PARENT-COLD-ROOT-PARTICIPATION-AUDIT.json",
             "PARENT-COLD-SEMANTIC-CORRECTIONS.json",
             "PARENT-FILEWRITER-DYNAMIC-JOIN.json",
+            "PARENT-LIFECYCLE-CONTRACT.json",
             "PARENT-METADATA-CAUSAL-JOIN.json",
             "PARENT-METADATA-PROVIDER.json",
             "PARENT-OUTPUT-DATAFLOW.json",
@@ -109,6 +101,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "PROPERTY-NAME-AND-PORTABLE-CONTRACT-EXTENDED-NO-HIT.json",
             "REQUIRED-FRAMING-RULES.json",
             "SELECTED-CONSTRUCTOR-PREFIX-DYNAMIC-JOIN.json",
+            "SELECTED-PARENT-COLD-BLOCK-INVENTORY.json",
             "TARGETED-LOUDNESS-TYPE-CROSS-MODULE-NO-HIT.json",
             "TRIM-PAYLOAD-PRODUCER-CONSUMER-EVIDENCE.json",
             "UNCHANGED-BLOCKER-AUDIT.json",
@@ -153,7 +146,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         "SELECTED-CONSTRUCTOR-PREFIX-DYNAMIC-JOIN.json",
         "PARENT-METADATA-PROVIDER.json",
         "PARENT-METADATA-CAUSAL-JOIN.json",
-        "CROSS-PROFILE-ACTUAL-RUNS.json"
+        "CROSS-PROFILE-ACTUAL-RUNS.json",
+        "PARENT-ADMISSION-EVIDENCE-MATRIX.json",
+        "PARENT-COLD-ROOT-PARTICIPATION-AUDIT.json",
+        "PARENT-LIFECYCLE-CONTRACT.json",
+        "SELECTED-PARENT-COLD-BLOCK-INVENTORY.json"
     ]);
     for entry in files {
         let name = entry["file"].as_str().expect("manifest file name");
@@ -169,14 +166,34 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "{name}"
         );
     }
+    let root_audit = read_json("PARENT-COLD-ROOT-PARTICIPATION-AUDIT.json");
+    assert_eq!(
+        root_audit["NATIVE_OBSERVED"]["runtime_root"]["allocation_bytes"],
+        7_805_609
+    );
+    assert_eq!(
+        root_audit["admission_conclusion"]["native_runtime_root_understood_for_selected_scope"],
+        true
+    );
+    assert_eq!(
+        root_audit["admission_conclusion"]["remaining_required_reverse_engineering"],
+        0
+    );
+    assert_eq!(root_audit["admission_conclusion"]["gate1_closed"], false);
+    assert_eq!(root_audit["result"]["product_wide_absence_claim"], false);
+    let selected_blockers = read_json("SELECTED-PARENT-COLD-BLOCK-INVENTORY.json");
+    assert_eq!(
+        selected_blockers["remaining"]["reverse_engineering_required_selected_scope"],
+        0
+    );
     let source = &manifest["source_evidence"];
     assert_eq!(
         source["research_manifest_sha256"],
-        "aa4d77fec66328be58dc2cb723e2ca98552e33f218f9b02605f6ac311805bcae"
+        "d969333307e690303be5f2428d68b66ddf2e350b254da2d544e0e9074adcea10"
     );
     assert_eq!(
         source["research_independent_check_sha256"],
-        "defaa348b63f659d3c87458fdb69df0ae8f23c2f273efd1c312bd2d8b054eabd"
+        "099a6d5438ae305dccb591ce2ed36131cc0d98e4d17d032245c1b4af41e2dc40"
     );
     assert_eq!(source["implementation_ready"], "NO");
     assert_eq!(source["serializer_execution"], "NOT_RUN");
@@ -3174,11 +3191,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let independent = read_json("INDEPENDENT-CHECK.json");
     assert_eq!(
         independent["schema"],
-        "spatial-control-cold-serializer-blocker-independent-check.v34"
+        "spatial-control-cold-serializer-blocker-independent-check.v35"
     );
     assert_eq!(independent["all_pass"], true);
     let checks = independent["checks"].as_array().expect("checks array");
-    assert_eq!(checks.len(), 48);
+    assert_eq!(checks.len(), 52);
     assert!(checks.iter().all(|check| check["pass"] == true));
     assert_eq!(
         checks
@@ -3228,6 +3245,10 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "parent_metadata_provider",
             "parent_metadata_causal_join",
             "cross_profile_actual_runs",
+            "parent_admission_evidence_matrix",
+            "parent_cold_root_participation",
+            "parent_lifecycle_contract",
+            "selected_parent_cold_block_inventory",
             "no_entrypoint",
             "no_bytes",
             "framing_rules",

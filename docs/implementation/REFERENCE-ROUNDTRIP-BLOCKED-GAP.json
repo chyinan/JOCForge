@@ -1,14 +1,23 @@
 {
   "schema": "jocforge-reference-roundtrip-blocked-gap.v1",
   "status": "BLOCKED_NOT_NORMATIVE_CONTRACT",
-  "scope": "implementation-side gap record; no new native or washed observation",
-  "source_implementer_manifest_sha256": "43f7fcf730c7c5c321aa884d1810aa039427d0ae2f97f7cc94f93bfc525d404b",
+  "scope": "implementation-side gap record; no new serializer/parser/vector observation; references the v35 selected-scope admission review",
+  "source_implementer_manifest_sha256": "71ca9bb30c2129019a76ecb703df47a88f5384582bb65a53faee92103e9dcd0b",
+  "parent_admission_review": {
+    "source_asset": "PARENT-COLD-ROOT-PARTICIPATION-AUDIT.json",
+    "source_sha256": "eb0890100771de8aa3d2e1d8ba5d4c22180320e5239acbc1729fad8b380db82d",
+    "selected_scope_required_reverse_dependencies": 0,
+    "gate1_closed": false,
+    "implementation_ready": "NO",
+    "production_allowed": false
+  },
   "source_registry": {
     "COLD-SERIALIZER-EVIDENCE.json": "6a0db3edb8a56145c63b3f1d55853f21fe656eb7594d5de9fc9fc00bc5ffed0f",
     "REQUIRED-FRAMING-RULES.json": "7396aaf144c102db7e395f090bf645e7db2d827d6bf8ecc3a39f870c73e0373d",
     "MINIMUM-EXTERNAL-EVIDENCE.json": "7e078cfa1da60dcf0580a5fe070d6255c4c8cfa2265b862242965342210c922f",
-    "PARENT-COLD-DESIGN-GAP-MATRIX.md": "48c93bd8774b7de45b5d2c86481fee255a17068928fb593b40eeb761a9930f76",
-    "PARENT-COLD-CANONICAL-ENCODING-CANDIDATE-GAP.json": "7ef18915278d1b5efa38d537cb4a7b5ff440ea663923dfbfbe5c4cf82ead00c3"
+    "PARENT-COLD-DESIGN-GAP-MATRIX.md": "3702c319817a6c663025f14932f88c929cf172c6d2a11e9478e75108f7e202b0",
+    "PARENT-COLD-CANONICAL-ENCODING-CANDIDATE-GAP.json": "d71b05163878214e0cce105efee4567051fe60d3236997e6c568273d3abbd932",
+    "PARENT-COLD-ROOT-PARTICIPATION-AUDIT.json": "eb0890100771de8aa3d2e1d8ba5d4c22180320e5239acbc1729fad8b380db82d"
   },
   "serializer_boundary": {
     "implementation": "NOT_IMPLEMENTED",

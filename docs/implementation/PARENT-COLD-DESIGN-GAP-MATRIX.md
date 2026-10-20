@@ -2,9 +2,19 @@
 
 ## 状态
 
-本文件是实现侧 inventory，不是 canonical schema。它整理 v34 洗白资产和 Wash Agent 的 structured gap response。当前唯一完整 profile 仍是 selected ADM/configuration。Gate 1 必需逆向依赖数为 0。设计和验证未完成前，保持 `IMPLEMENTATION_READY=NO`、`production_allowed=false`。
+本文件是实现侧 inventory，不是 canonical schema。它以 v35 洗白 package 作为当前审查边界；字段级 selected-run 资产中仍有来源身份为 v34 的未变文件。当前唯一完整 profile 仍是 selected ADM/configuration。Gate 1 必需逆向依赖数为 0，但 Gate 1 尚未关闭。设计和验证未完成前，保持 `IMPLEMENTATION_READY=NO`、`production_allowed=false`。
 
 机器目录见 [PARENT-COLD-FIELD-INVENTORY.json](PARENT-COLD-FIELD-INVENTORY.json)，其哈希清单见 [PARENT-COLD-FIELD-INVENTORY-MANIFEST.json](PARENT-COLD-FIELD-INVENTORY-MANIFEST.json)。独立覆盖检查由 `scripts/check-parent-cold-field-inventory.py` 执行。目录状态仍为 `INVENTORY_INCOMPLETE_NOT_NORMATIVE_SCHEMA`。
+
+## v35 selected parent admission review
+
+当前 washed package 是 `spatial-control-cold-serializer.blocked.v35`，manifest SHA-256 为 `71ca9bb30c2129019a76ecb703df47a88f5384582bb65a53faee92103e9dcd0b`。它列出 44 个资产；研究 manifest SHA-256 为 `d969333307e690303be5f2428d68b66ddf2e350b254da2d544e0e9074adcea10`，研究侧独立检查 SHA-256 为 `099a6d5438ae305dccb591ce2ed36131cc0d98e4d17d032245c1b4af41e2dc40`，52/52 检查通过。
+
+在 selected profile admission 范围内，必需逆向依赖为 0；这表示后续 blocker 属于 clean-room 设计或验证，不表示 `gate1_closed=true`。Wash 明确保留 `gate1_closed=false`、`IMPLEMENTATION_READY=NO` 和 `production_allowed=false`。v35 的 review 引用部分 v34 来源身份的字段证据；本文件不把这些来源资产改标为 v35。
+
+bounded root audit 已理解 selected scope 的 native runtime root：7,805,609-byte pointer-rich in-memory owner，构造后在内存中消费；输出落盘的是编码输出字节，不是 parent state。bounded scope 未观察到 native canonical serializer、parser、digest 或 root receipt。该 no-hit 不是产品级永久不存在结论。
+
+剩余 blocker 固定为三组：M1 canonical framing、字段投影和 digest domain 的 clean-room 决策；M2 完整 cold vector 与独立 parse-reserialize byte-exact 验证；M3 typed constructor/root receipt 及 success/failure/fresh-reconstruction vectors。当前不生成 canonical root、serializer 或成功向量。
 
 ## 字段和对象 inventory
 
@@ -193,16 +203,16 @@
 
 ### Omitted fields 和完整性结论
 
-本 inventory 只枚举 v34 sanitized evidence 中可定位的字段组。下表列出未能完整展开的项目，不能默认为“无字段”。
+本 inventory 只枚举 v35 package 中可定位的字段组；字段级来源文件保留其原有 v34 内部身份和 hash。下表列出未能完整展开的项目，不能默认为“无字段”。
 
-| Omitted inventory key | Source/hash | 缺口 | 关闭条件 |
+| Omitted inventory key | Source/hash | clean-room candidate disposition（非规范） | 缺口与关闭条件 |
 | --- | --- | --- | --- |
-| `omitted.mode1_source_tuple` | S2 | descriptor `+24..+39` 的 mode 1 语义 partial。 | mode 1 每个 word 的来源、消费者、类型和值域闭合。 |
-| `omitted.metadata_gap_other_profiles` | S6、S8、S14 | 14 个 gap 的其他 generation/profile 写入规则未知。 | 每个目标 profile 独立 owner/write trace；不得从 selected run 外推。 |
-| `omitted.measurement_public_names` | S7 | public result `+8/+12/+16` 名称未捕获。 | named owner/consumer 或 debug/PDB binding；RTTI 家族名不够。 |
-| `omitted.dictionary_identity_join` | S6、S14 | 27×U32 dictionary 与 packed120 的同 owner/generation join 未建立。 | 同一输入运行捕获 parser/serializer invocation、owner pointer 和 generation。 |
-| `omitted.parent_framing` | S9 | F01E embedding、optional caches、current flags/features、writer-set 非空编码未定义。 | 每项明确 presence、order、length、section 和 empty/non-empty 表示。 |
-| `omitted.canonical_root_receipt` | S12 | 完整 logical root、digest preimage、receipt fields 和 transition vectors 缺失。 | 先关闭字段 inventory，再按依赖节点定义并独立验证 schema/vector/receipt。 |
+| `omitted.mode1_source_tuple` | S2 | `EXCLUDED_CANDIDATE_SELECTED_MODE0_ONLY`。依据：当前selected row为mode 0，tuple观测为zero；非规范候选。 | descriptor `+24..+39` 的mode 1语义partial。只有mode 1进入scope时，才需闭合每个word的来源、消费者、类型和值域。 |
+| `omitted.metadata_gap_other_profiles` | S6、S8、S14 | `EXCLUDED_CANDIDATE_OUTSIDE_SELECTED_PROFILE`。依据：其他profiles不属于当前selected row；不作跨profile推断。 | 14个gap的其他generation/profile写入规则未知。若扩展profile scope，需每个目标profile独立owner/write trace。 |
+| `omitted.measurement_public_names` | S7 | `BLOCKED_UNKNOWN`。 | public result `+8/+12/+16`名称未捕获。需named owner/consumer或debug/PDB binding；RTTI家族名不够。 |
+| `omitted.dictionary_identity_join` | S6、S14 | `EXCLUDED_CANDIDATE_ACCEPTED_PATH_ONLY`。依据：accepted path未调用单独dictionary serializer/parser；不外推其他路径。 | 27×U32 dictionary与packed120的same-owner/generation join未建立。若另一路径需要dictionary，需同run捕获parser/serializer invocation、owner pointer和generation。 |
+| `omitted.parent_framing` | S9 | `BLOCKED_UNKNOWN`。 | F01E embedding、optional caches、current flags/features、writer-set非空编码未定义。需逐项明确presence、order、length、section和empty/non-empty表示。 |
+| `omitted.canonical_root_receipt` | S12 | `BLOCKED_UNKNOWN`。 | 完整logical root、digest preimage、receipt fields和transition vectors缺失。需先关闭field inventory，再按依赖节点定义并独立验证schema/vector/receipt。 |
 
 因此字段 inventory 自身标记 `INVENTORY_INCOMPLETE`。它可用于阻塞审查，不可作为执行schema或成功cold vector。
 
@@ -220,4 +230,4 @@
 
 ## 结论
 
-v34 的跨 profile actual runs 只覆盖三个指定 route。sidecar parser rejection 和 setter no-hit 不是产品级 absence。selected-run causal join 也不补足 canonical schema、reference serializer、receipt 或 round-trip。全部五个依赖节点未关闭，因此实现和生产门槛仍为 NO。
+v34 的跨 profile actual runs 只覆盖三个指定 route。sidecar parser rejection 和 setter no-hit 不是产品级 absence。selected-run causal join 也不补足 canonical schema、reference serializer、receipt 或 round-trip。v35 将 selected-scope 所需逆向工作归零，但没有关闭 Gate 1；clean-room 设计与验证节点仍阻塞，因此实现和生产门槛仍为 NO。
