@@ -5,7 +5,7 @@
   "source_implementer_manifest_sha256": "43f7fcf730c7c5c321aa884d1810aa039427d0ae2f97f7cc94f93bfc525d404b",
   "gap_file": "REFERENCE-ROUNDTRIP-BLOCKED-GAP.json",
   "gap_bytes": 5053,
-  "gap_sha256": "4bbff0b99c410e1591b2a666691c61e755ce41842d51f35442cd032ab9f6380e",
+  "gap_sha256": "a9216846951ea1707dec76e9636a1b9b6ba04b2be4285c49df8fdb7977df2fc2",
   "successful_cold_vector_generated": false,
   "serializer_implemented": false,
   "parser_implemented": false,

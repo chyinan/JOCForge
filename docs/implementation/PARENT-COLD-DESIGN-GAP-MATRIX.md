@@ -4,6 +4,8 @@
 
 本文件是实现侧 inventory，不是 canonical schema。它整理 v34 洗白资产和 Wash Agent 的 structured gap response。当前唯一完整 profile 仍是 selected ADM/configuration。Gate 1 必需逆向依赖数为 0。设计和验证未完成前，保持 `IMPLEMENTATION_READY=NO`、`production_allowed=false`。
 
+机器目录见 [PARENT-COLD-FIELD-INVENTORY.json](PARENT-COLD-FIELD-INVENTORY.json)，其哈希清单见 [PARENT-COLD-FIELD-INVENTORY-MANIFEST.json](PARENT-COLD-FIELD-INVENTORY-MANIFEST.json)。独立覆盖检查由 `scripts/check-parent-cold-field-inventory.py` 执行。目录状态仍为 `INVENTORY_INCOMPLETE_NOT_NORMATIVE_SCHEMA`。
+
 ## 字段和对象 inventory
 
 | 区域 | 已洗白事实 | 当前分类 | 缺口与关闭条件 |

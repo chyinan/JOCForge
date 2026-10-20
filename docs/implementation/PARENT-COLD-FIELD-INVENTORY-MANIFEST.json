@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge-parent-cold-field-inventory-manifest.v1",
+  "identity": "parent-cold-field-inventory.v34",
+  "status": "INVENTORY_INCOMPLETE_NOT_NORMATIVE_SCHEMA",
+  "source_implementer_manifest_sha256": "43f7fcf730c7c5c321aa884d1810aa039427d0ae2f97f7cc94f93bfc525d404b",
+  "inventory_file": "PARENT-COLD-FIELD-INVENTORY.json",
+  "inventory_bytes": 211934,
+  "inventory_sha256": "4549273750bcd6013165ae35f3de3371f96bd1c40db9644ea75f7897a4c25050",
+  "source_asset_count": 18,
+  "field_entry_count": 152,
+  "omitted_field_count": 7,
+  "implementation_ready": "NO",
+  "production_allowed": false
+}
