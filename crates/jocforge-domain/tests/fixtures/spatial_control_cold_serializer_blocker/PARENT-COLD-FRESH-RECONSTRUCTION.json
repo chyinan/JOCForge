@@ -1,0 +1,50 @@
+{
+  "schema": "sanitized-parent-cold-fresh-reconstruction.v1",
+  "source_evidence_identity": {
+    "research_result_sha256": "aef929e433e094cc445e57e9a65c18b4e0e7e563347b93516c597f133be3e2ce",
+    "research_manifest_sha256": "e782b827d3906fb8135982c0774d6d6b8d781b7875885ba8bff8b8b574712748",
+    "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "idb_sha256": "c30d43d0b09d084dfe19179887217c8195297bae749b7e28fa84b945cb426b20"
+  },
+  "status": "NEW_OBJECT_RECONSTRUCTION_CLOSED_FOR_SCOPED_NATIVE_RUN_PATH",
+  "classification": {
+    "native_same_object_restore": false,
+    "new_empireenc_inner_reconstruction": true,
+    "requires_process_or_job_restart": false,
+    "dynamic_second_run": "NOT_RUN"
+  },
+  "higher_owner_chain": [
+    "vtable 0x640c20 -> run 0x13e970",
+    "higher_owner+184 persistent Priv* -> 0x14f1f0",
+    "0x14f1f0 -> encode state 0x1475f0",
+    "0x1475f0 -> fresh config builder 0x1535b0",
+    "CBI strategy 0x1754f0 -> 0x175500",
+    "0x175500 constructs, processes, closes, and destroys EmpireEnc instances"
+  ],
+  "per_record_sequence": [
+    "0x177e50 installs EmpireEnc vtable, allocates fresh 0x238-byte inner, calls 0x177eb0",
+    "0x179a80 processes and flushes",
+    "0x178620 performs terminal close",
+    "0x178260 destroys wrapper and frees inner through guarded 0x178630",
+    "next encode record calls 0x177e50 again for a new object"
+  ],
+  "configuration_rebuild": {
+    "builder_rva": "0x1535b0",
+    "consumer_rva": "0x175500",
+    "copied_prefix": "config[216..320), exactly 104 bytes",
+    "fresh_sources": ["selected output record key","current Priv workflow parameters","current backend and mode fields","current higher-owner reporting pointer"],
+    "previous_parent_state_used": false,
+    "serialized_parent_state_used": false
+  },
+  "bounded_no_hit": {
+    "same_object_restore": "NO_HIT",
+    "parent_snapshot_or_deserializer_input": "NO_HIT",
+    "retained_empireenc_inner_in_higher_owner": "NO_HIT",
+    "product_wide_absence_claim": false
+  },
+  "portable_implication": "A washed logical constructor schema and fresh reconstruction model match the observed lifecycle; a native runtime snapshot format is not an observed prerequisite.",
+  "implementation_ready": false,
+  "expected_used_as_seed": false,
+  "raw_parent_or_audio_payload_delivered": false,
+  "production_allowed": false
+}

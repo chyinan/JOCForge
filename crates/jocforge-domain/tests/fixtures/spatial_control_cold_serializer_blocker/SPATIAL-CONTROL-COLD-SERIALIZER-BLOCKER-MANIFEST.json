@@ -1,10 +1,10 @@
 {
-  "schema": "washed-implementer-blocker-manifest.v23",
-  "identity": "spatial-control-cold-serializer.blocked.v28",
+  "schema": "washed-implementer-blocker-manifest.v24",
+  "identity": "spatial-control-cold-serializer.blocked.v29",
   "status": "BLOCKED_NO_EXECUTABLE_SERIALIZER",
   "source_evidence": {
-    "research_manifest_sha256": "58f6e27a493445b53723ae87106e6145a2c3bb1d29b3aa9773a1a640f9072477",
-    "research_independent_check_sha256": "bbc7387ce9323a1fc6b0c9ca6e4cba4fdfe72dc89aba51bd0ad2e8268af9a540",
+    "research_manifest_sha256": "ba3c376afa4249babe796483dfb0f0308b9566ab5bfd00e863e3df7553730b44",
+    "research_independent_check_sha256": "14e2dd8464e201a382d0d6df47c5084412c135c9ad2132b21c45292f30554ae7",
     "production_allowed": false,
     "implementation_ready": "NO",
     "serializer_execution": "NOT_RUN",
@@ -12,11 +12,37 @@
     "bytes_guessed": false,
     "private_auth": "excluded"
   },
-  "packed_metadata": {
-    "bytes": 120,
-    "producer_written_bytes": 106,
-    "gap_bytes": 14,
-    "invariant": "written+gaps=120"
+  "fresh_reconstruction": {
+    "native_same_object_restore": false,
+    "new_inner_reconstruction": true,
+    "requires_restart": false,
+    "dynamic_second_run": "NOT_RUN",
+    "canonical_schema": false
+  },
+  "metadata_owner": {
+    "class": "atmos_storage::GenericPrintmasterStorageDesc",
+    "virtual_target": "0x28fa90",
+    "embedded_offset": 112,
+    "gap_count": 14,
+    "gap_value_owner": "NO_HIT",
+    "dictionary_join": "NOT_ESTABLISHED"
+  },
+  "measurement_owner": {
+    "chain_closed": true,
+    "selected_rows": [
+      48000,
+      6,
+      1,
+      10,
+      0
+    ],
+    "child_offsets": [
+      32,
+      48,
+      56,
+      64
+    ],
+    "semantic_names": "NOT_CLOSED"
   },
   "files": [
     {
@@ -40,9 +66,19 @@
       "sha256": "4017a64a0c27e85b6ee308f6e9848d26a93290c04ff808846b1bbaf7315b322a"
     },
     {
+      "file": "CORE-MEASUREMENT-OWNER-CONSTRUCTION.json",
+      "bytes": 2317,
+      "sha256": "b271539531aacc7558a44cf4fc37ac0d2326079b428ec4a17923d2e852f1ffc5"
+    },
+    {
       "file": "CORE-MEASUREMENT-SLOT-CONSUMER-BOUNDARY.json",
       "bytes": 2786,
       "sha256": "edc5af39dede9931e41491984bc8c02d1c711c7cdc656e7b970f3173e1f0c484"
+    },
+    {
+      "file": "EXTERNAL-METADATA-CONCRETE-SOURCE-OWNER.json",
+      "bytes": 2439,
+      "sha256": "09ee90bce6d93f9199ecfe388129bd0fd3239a853dee2d0971e63ca0a7bb959c"
     },
     {
       "file": "EXTERNAL-METADATA-HELPER-SEMANTICS.json",
@@ -66,8 +102,8 @@
     },
     {
       "file": "INDEPENDENT-CHECK.json",
-      "bytes": 4549,
-      "sha256": "bbc7387ce9323a1fc6b0c9ca6e4cba4fdfe72dc89aba51bd0ad2e8268af9a540"
+      "bytes": 5109,
+      "sha256": "14e2dd8464e201a382d0d6df47c5084412c135c9ad2132b21c45292f30554ae7"
     },
     {
       "file": "MEASUREMENT-ALIAS-RESOLUTION.json",
@@ -93,6 +129,11 @@
       "file": "PARENT-COLD-CONFIG-SEMANTICS.json",
       "bytes": 8511,
       "sha256": "551dc12dac533190e72947cef663173042e6dd7a872ab8488f8f8722fa51130f"
+    },
+    {
+      "file": "PARENT-COLD-FRESH-RECONSTRUCTION.json",
+      "bytes": 2378,
+      "sha256": "984bf84e2aa3825bd7380b022eb5c264329e53f21dbaa2eb43466ea7ac606ee6"
     },
     {
       "file": "PARENT-COLD-HOST-LIFECYCLE-BOUNDARY.json",
@@ -148,6 +189,11 @@
       "file": "REQUIRED-FRAMING-RULES.json",
       "bytes": 2801,
       "sha256": "7396aaf144c102db7e395f090bf645e7db2d827d6bf8ecc3a39f870c73e0373d"
+    },
+    {
+      "file": "TARGETED-LOUDNESS-TYPE-CROSS-MODULE-NO-HIT.json",
+      "bytes": 1243,
+      "sha256": "055cb28aad6e0073873026e60b4ddf3f1a1143b445d0cca62ea8467ae22b337d"
     },
     {
       "file": "TRIM-PAYLOAD-PRODUCER-CONSUMER-EVIDENCE.json",

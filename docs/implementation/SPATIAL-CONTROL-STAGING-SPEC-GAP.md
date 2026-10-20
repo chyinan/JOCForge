@@ -1,6 +1,16 @@
 # Spatial-control staging specification gap
 
-## Current authority: v28 expanded blocker evidence and corrected packed metadata coverage
+## Current authority: v29 fresh-construction, owner, and cross-module boundaries
+
+The current implementer package is `spatial-control-cold-serializer.blocked.v29`, pinned by fixture manifest SHA-256 `edadcf5041e5515920bf1b3cad38a02e1cb02a973c8e05b76ba410b2efb717e3`. The washed research manifest and independent-check hashes are `ba3c376afa4249babe796483dfb0f0308b9566ab5bfd00e863e3df7553730b44` and `14e2dd8464e201a382d0d6df47c5084412c135c9ad2132b21c45292f30554ae7`; 41/41 independent checks pass. `IMPLEMENTATION_READY=NO` and `production_allowed=false` remain authoritative.
+
+The packed metadata source owner is concretely identified as `atmos_storage::GenericPrintmasterStorageDesc`: vtable `0x7025F0`, virtual slot offset `0xA0`, target `0x28FA90`, returning `this+112`; the producer `0x4E0890` writes its 120-byte destination at owner offset `+88`. However, the 14 destination gap values still have no observed store or constructor/first-writer owner, and the separate 27×U32 dictionary still has no same-owner/same-generation join. The v28 accounting remains 106 producer-written + 14 producer-unwritten = 120; offset transplantation and zero-fill assumptions remain forbidden.
+
+The measurement-owner construction chain is closed for the selected run and selects rows `[48000,6,1,10,0]`; child owners at offsets 32, 48, 56, and 64 have no RTTI or named consumer, so their names remain `NOT_CLOSED`. Targeted loudness cross-module inventory found six RTTI hits across 228 candidate files but no targeted export name hits; it does not corroborate the public result offsets `+8/+12/+16` or close their semantics. RTTI confirms wrapper families only, not field layout.
+
+The parent lifecycle evidence now distinguishes fresh object construction from restore. The observed route `0x13E970 → 0x14F1F0 → 0x1475F0 → 0x1535B0 → 0x1754F0 → 0x175500` builds configuration from current inputs and constructs a fresh `EmpireEnc` inner object for each record; after processing, flush, terminal close, destruction, and free, the next record allocates a new object. In this scoped native path, same-object restore is false and process/job restart is not required, while a dynamic second run remains `NOT_RUN`. The rebuilt `config[216..320)` prefix is 104 bytes and does not use prior parent or serialized state. This is fresh reconstruction, not a portable serialization/deserialization contract: canonical schema, bytes, receipt, and roundtrip remain undelivered/unrun, so implementation and production gates remain closed.
+
+## Historical v28 expanded blocker evidence and corrected packed metadata coverage
 
 The current implementer package is `spatial-control-cold-serializer.blocked.v28`, pinned by fixture manifest SHA-256 `9d805c47e7431857d76678c4ff7ee27f34b50522693ee1d508bafc81f9c66bb8`. The corrected metadata coverage asset SHA-256 is `e5c34227db9f145e1ca71c3ad13ca5c8693f17368c0207d7381a89f25fbaccbc`; the washed research manifest and independent-check hashes are `58f6e27a493445b53723ae87106e6145a2c3bb1d29b3aa9773a1a640f9072477` and `bbc7387ce9323a1fc6b0c9ca6e4cba4fdfe72dc89aba51bd0ad2e8268af9a540`. It reports 37/37 independent checks passing, `IMPLEMENTATION_READY=NO`, and `production_allowed=false`.
 

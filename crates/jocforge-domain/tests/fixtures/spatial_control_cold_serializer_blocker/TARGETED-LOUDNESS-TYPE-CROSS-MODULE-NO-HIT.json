@@ -1,0 +1,27 @@
+{
+  "schema": "sanitized-targeted-loudness-type-cross-module-no-hit.v1",
+  "source_evidence_identity": {
+    "research_result_sha256": "53b7a1f8e646bd6b42cc32a176ca8377e34c699945a4894dc5012b95962b056e",
+    "target_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "dthd_module_sha256": "e4453f92d28b766378b121a34afae50ffb9d9f5a39db533767c3e179fa2937a7"
+  },
+  "scope": {
+    "pe_files": 64,
+    "adjacent_text_files": 164,
+    "candidate_files": 228,
+    "candidate_listing_sha256": "9085b3325f4361ad459aca03658d5531146872c5647536f7c5a305a5fb27c9af",
+    "exact_terms": ["dlb::dplm::Meter","EmpireLoudness","IntelligentLoudness"],
+    "full_string_or_export_scan": false
+  },
+  "result": {
+    "rtti_hits": 6,
+    "targeted_export_name_hits": 0,
+    "target_module_types": ["dlb::dplm::Meter","EmpireLoudnessPrv","EmpireLoudness","dlb::IntelligentLoudness"],
+    "dthd_module_types": ["dlb::dplm::Meter","dlb::IntelligentLoudness"],
+    "public_offsets_8_12_16_corroborated": false,
+    "semantic_names_closed": false
+  },
+  "bounded_no_hit": "RTTI corroborates wrapper families only and provides no public-offset layout or field names.",
+  "implementation_ready": false,
+  "production_allowed": false
+}

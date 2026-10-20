@@ -1,5 +1,5 @@
 {
-  "schema": "spatial-control-cold-serializer-blocker-independent-check.v28",
+  "schema": "spatial-control-cold-serializer-blocker-independent-check.v29",
   "checks": [
     {
       "id": "dll_identity",
@@ -126,6 +126,22 @@
       "pass": true
     },
     {
+      "id": "core_measurement_owner_construction",
+      "pass": true
+    },
+    {
+      "id": "external_metadata_concrete_source_owner",
+      "pass": true
+    },
+    {
+      "id": "parent_cold_fresh_reconstruction",
+      "pass": true
+    },
+    {
+      "id": "targeted_loudness_type_cross_module_no_hit",
+      "pass": true
+    },
+    {
       "id": "no_entrypoint",
       "pass": true
     },
@@ -178,7 +194,11 @@
     "CORE-MEASUREMENT-SLOT-CONSUMER-BOUNDARY.json",
     "EXTERNAL-METADATA-PRODUCER-COVERAGE-AND-SEPARATE-DICTIONARY.json",
     "PARENT-COLD-HOST-LIFECYCLE-BOUNDARY.json",
-    "VENDOR-ADJACENT-SDK-DEBUG-NO-HIT.json"
+    "VENDOR-ADJACENT-SDK-DEBUG-NO-HIT.json",
+    "CORE-MEASUREMENT-OWNER-CONSTRUCTION.json",
+    "EXTERNAL-METADATA-CONCRETE-SOURCE-OWNER.json",
+    "PARENT-COLD-FRESH-RECONSTRUCTION.json",
+    "TARGETED-LOUDNESS-TYPE-CROSS-MODULE-NO-HIT.json"
   ],
   "research_files_read": false,
   "serializer_execution": false,

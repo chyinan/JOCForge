@@ -1,0 +1,56 @@
+{
+  "schema": "sanitized-external-metadata-concrete-source-owner.v1",
+  "source_evidence_identity": {
+    "concrete_owner_sha256": "45c7273d2e736e9d91459ab42c342bec39d56f4bca822ce1a099fb8940ef1713",
+    "precise_no_hit_sha256": "43f300d639e6f038d19ffbbb4fbbd4cf0175f55f0aeed789855837642e482759",
+    "research_manifest_sha256": "cf5d415035e9128d6fb9e09f27092bbb9fd4bdfca1056773c7beecf4bd423cda",
+    "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "source_owner": {
+    "concrete_class": "atmos_storage::GenericPrintmasterStorageDesc",
+    "vtable_rva": "0x7025f0",
+    "virtual_slot_offset": "0xa0",
+    "concrete_target_rva": "0x28fa90",
+    "return_rule": "this+112",
+    "embedded_descriptor_offset": 112,
+    "constructor_chain": ["0x3eeef0","0x4dba00","0x4f8b70"],
+    "identity_status": "CONCRETE_TARGET_AND_COLD_CONSTRUCTOR_PROVEN"
+  },
+  "producer_join": {
+    "producer_rva": "0x4e0890",
+    "callsites": ["0x4d2a38","0x4d48fd"],
+    "destination_owner_offset": 88,
+    "source_offsets_cold_owner_closed": "0..200",
+    "source_to_output_mapping_closed_for_blocked_fields": true
+  },
+  "name_blocked_source_to_output": [
+    [72,65,1],[76,66,1],[80,67,1],[88,69,1],[92,70,1],[96,71,1],[104,73,1],[108,74,1],[112,75,1],[148,100,2],[156,102,2],[164,104,2]
+  ],
+  "room_dimension_helper": {
+    "rva": "0x4deb10",
+    "conversion": "U64 represented as two U32 halves to U16 value 100*low+high",
+    "diagnostic": "Room length value out of range",
+    "distinct_dimension_names": "NOT_CLOSED_BECAUSE_THE_SAME_HELPER_SERVES_ALL_THREE_SOURCES"
+  },
+  "packed_destination_gaps": {
+    "count": 14,
+    "offsets": [78,79,80,81,82,83,84,85,86,87,99,107,118,119],
+    "producer_store": "NO_HIT",
+    "destination_constructor_or_first_writer": "NO_HIT",
+    "values": "BLOCKED",
+    "zero_fill_claim": false
+  },
+  "separate_27_u32_dictionary": {
+    "same_owner_same_generation_join": "NOT_ESTABLISHED",
+    "used_for_packed_offsets": false
+  },
+  "minimum_dynamic_evidence": [
+    "at 0x4e0890 record one-key changed source/output offset masks only",
+    "hardware-watch only the 14 destination gap bytes for first-writer RVA and containing-owner identity",
+    "join the same containing owner+88 to 0x178dc0 in the same initialization generation"
+  ],
+  "implementation_ready": false,
+  "expected_used_as_seed": false,
+  "raw_metadata_payload_delivered": false,
+  "production_allowed": false
+}

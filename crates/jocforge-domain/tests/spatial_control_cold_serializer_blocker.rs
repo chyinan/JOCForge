@@ -5,7 +5,7 @@ use std::fmt::Write as _;
 use std::fs;
 use std::path::PathBuf;
 
-const MANIFEST_SHA256: &str = "9d805c47e7431857d76678c4ff7ee27f34b50522693ee1d508bafc81f9c66bb8";
+const MANIFEST_SHA256: &str = "edadcf5041e5515920bf1b3cad38a02e1cb02a973c8e05b76ba410b2efb717e3";
 
 fn fixture_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -38,17 +38,34 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let manifest: Value = serde_json::from_slice(&manifest_bytes).expect("manifest JSON");
     assert_eq!(
         manifest["schema"],
-        "washed-implementer-blocker-manifest.v23"
+        "washed-implementer-blocker-manifest.v24"
     );
     assert_eq!(
         manifest["identity"],
-        "spatial-control-cold-serializer.blocked.v28"
+        "spatial-control-cold-serializer.blocked.v29"
     );
     assert_eq!(manifest["status"], "BLOCKED_NO_EXECUTABLE_SERIALIZER");
     assert_eq!(manifest["status"], "BLOCKED_NO_EXECUTABLE_SERIALIZER");
     assert_eq!(
-        manifest["packed_metadata"],
-        json!({"bytes":120,"producer_written_bytes":106,"gap_bytes":14,"invariant":"written+gaps=120"})
+        manifest["fresh_reconstruction"],
+        json!({
+            "native_same_object_restore": false,
+            "new_inner_reconstruction": true,
+            "requires_restart": false,
+            "dynamic_second_run": "NOT_RUN",
+            "canonical_schema": false
+        })
+    );
+    assert_eq!(
+        manifest["metadata_owner"],
+        json!({
+            "class": "atmos_storage::GenericPrintmasterStorageDesc",
+            "virtual_target": "0x28fa90",
+            "embedded_offset": 112,
+            "gap_count": 14,
+            "gap_value_owner": "NO_HIT",
+            "dictionary_join": "NOT_ESTABLISHED"
+        })
     );
 
     let files = manifest["files"].as_array().expect("manifest files array");
@@ -62,7 +79,9 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "CHANNEL-EXTERNAL-METADATA-TRIM-SEMANTICS.json",
             "COLD-SERIALIZER-EVIDENCE.json",
             "COLD-SERIALIZER-FINAL-BLOCKER.md",
+            "CORE-MEASUREMENT-OWNER-CONSTRUCTION.json",
             "CORE-MEASUREMENT-SLOT-CONSUMER-BOUNDARY.json",
+            "EXTERNAL-METADATA-CONCRETE-SOURCE-OWNER.json",
             "EXTERNAL-METADATA-HELPER-SEMANTICS.json",
             "EXTERNAL-METADATA-PRODUCER-COVERAGE-AND-SEPARATE-DICTIONARY.json",
             "EXTERNAL-METADATA-STRUCTURE-AND-REMAINING-FIELDS.json",
@@ -73,6 +92,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "MINIMUM-EXTERNAL-EVIDENCE.json",
             "PARENT-COLD-CONFIG-BOUNDARY.json",
             "PARENT-COLD-CONFIG-SEMANTICS.json",
+            "PARENT-COLD-FRESH-RECONSTRUCTION.json",
             "PARENT-COLD-HOST-LIFECYCLE-BOUNDARY.json",
             "PARENT-COLD-LIFECYCLE.json",
             "PARENT-COLD-SEMANTIC-CORRECTIONS.json",
@@ -84,6 +104,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "PORTABLE-CONTRACT-AND-REMAINING-SEMANTICS-NO-HIT.json",
             "PROPERTY-NAME-AND-PORTABLE-CONTRACT-EXTENDED-NO-HIT.json",
             "REQUIRED-FRAMING-RULES.json",
+            "TARGETED-LOUDNESS-TYPE-CROSS-MODULE-NO-HIT.json",
             "TRIM-PAYLOAD-PRODUCER-CONSUMER-EVIDENCE.json",
             "UNCHANGED-BLOCKER-AUDIT.json",
             "VENDOR-ADJACENT-SDK-DEBUG-NO-HIT.json"
@@ -116,7 +137,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         "CORE-MEASUREMENT-SLOT-CONSUMER-BOUNDARY.json",
         "EXTERNAL-METADATA-PRODUCER-COVERAGE-AND-SEPARATE-DICTIONARY.json",
         "PARENT-COLD-HOST-LIFECYCLE-BOUNDARY.json",
-        "VENDOR-ADJACENT-SDK-DEBUG-NO-HIT.json"
+        "VENDOR-ADJACENT-SDK-DEBUG-NO-HIT.json",
+        "CORE-MEASUREMENT-OWNER-CONSTRUCTION.json",
+        "EXTERNAL-METADATA-CONCRETE-SOURCE-OWNER.json",
+        "PARENT-COLD-FRESH-RECONSTRUCTION.json",
+        "TARGETED-LOUDNESS-TYPE-CROSS-MODULE-NO-HIT.json"
     ]);
     for entry in files {
         let name = entry["file"].as_str().expect("manifest file name");
@@ -135,11 +160,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let source = &manifest["source_evidence"];
     assert_eq!(
         source["research_manifest_sha256"],
-        "58f6e27a493445b53723ae87106e6145a2c3bb1d29b3aa9773a1a640f9072477"
+        "ba3c376afa4249babe796483dfb0f0308b9566ab5bfd00e863e3df7553730b44"
     );
     assert_eq!(
         source["research_independent_check_sha256"],
-        "bbc7387ce9323a1fc6b0c9ca6e4cba4fdfe72dc89aba51bd0ad2e8268af9a540"
+        "14e2dd8464e201a382d0d6df47c5084412c135c9ad2132b21c45292f30554ae7"
     );
     assert_eq!(source["implementation_ready"], "NO");
     assert_eq!(source["serializer_execution"], "NOT_RUN");
@@ -2102,6 +2127,216 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(vendor_no_hit["implementation_ready"], false);
     assert_eq!(vendor_no_hit["production_allowed"], false);
 
+    let measurement_owner = read_json("CORE-MEASUREMENT-OWNER-CONSTRUCTION.json");
+    assert_eq!(
+        measurement_owner["schema"],
+        "sanitized-core-measurement-owner-construction.v1"
+    );
+    assert_eq!(
+        measurement_owner["construction_chain"]
+            .as_array()
+            .unwrap()
+            .len(),
+        7
+    );
+    assert_eq!(
+        measurement_owner["selected_configuration"]["normalized_vector"],
+        json!([7, 48000, 2, 15, 10, 1, 1, 0, 1])
+    );
+    assert_eq!(
+        measurement_owner["selected_configuration"]["row_owner_parameters"],
+        json!({"sample_rate":48000,"table_value":6,"boolean_mode":1,"profile_or_window":10,"disable_mask":0})
+    );
+    assert_eq!(
+        measurement_owner["selected_configuration"]["core_owner_table"],
+        "core+480+row*8"
+    );
+    assert_eq!(
+        measurement_owner["row_children"].as_array().unwrap().len(),
+        4
+    );
+    assert_eq!(
+        measurement_owner["row_children"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|child| child["owner_offset"].as_u64().unwrap())
+            .collect::<Vec<_>>(),
+        [32, 48, 56, 64]
+    );
+    assert!(
+        measurement_owner["row_children"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .all(|child| child["semantic_name"] == "NOT_CLOSED")
+    );
+    assert_eq!(
+        measurement_owner["bounded_no_hit"]["value_equality_sufficient_for_naming"],
+        false
+    );
+    assert_eq!(
+        measurement_owner["bounded_no_hit"]["product_wide_absence_claim"],
+        false
+    );
+    assert_eq!(measurement_owner["implementation_ready"], false);
+    assert_eq!(measurement_owner["expected_used_as_seed"], false);
+    assert_eq!(measurement_owner["production_allowed"], false);
+
+    let metadata_owner = read_json("EXTERNAL-METADATA-CONCRETE-SOURCE-OWNER.json");
+    assert_eq!(
+        metadata_owner["schema"],
+        "sanitized-external-metadata-concrete-source-owner.v1"
+    );
+    assert_eq!(
+        metadata_owner["source_owner"]["concrete_class"],
+        "atmos_storage::GenericPrintmasterStorageDesc"
+    );
+    assert_eq!(metadata_owner["source_owner"]["vtable_rva"], "0x7025f0");
+    assert_eq!(
+        metadata_owner["source_owner"]["virtual_slot_offset"],
+        "0xa0"
+    );
+    assert_eq!(
+        metadata_owner["source_owner"]["concrete_target_rva"],
+        "0x28fa90"
+    );
+    assert_eq!(
+        metadata_owner["source_owner"]["embedded_descriptor_offset"],
+        112
+    );
+    assert_eq!(
+        metadata_owner["source_owner"]["identity_status"],
+        "CONCRETE_TARGET_AND_COLD_CONSTRUCTOR_PROVEN"
+    );
+    assert_eq!(metadata_owner["producer_join"]["producer_rva"], "0x4e0890");
+    assert_eq!(
+        metadata_owner["producer_join"]["destination_owner_offset"],
+        88
+    );
+    assert_eq!(metadata_owner["packed_destination_gaps"]["count"], 14);
+    assert_eq!(
+        metadata_owner["packed_destination_gaps"]["offsets"],
+        json!([78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 99, 107, 118, 119])
+    );
+    assert_eq!(
+        metadata_owner["packed_destination_gaps"]["producer_store"],
+        "NO_HIT"
+    );
+    assert_eq!(
+        metadata_owner["packed_destination_gaps"]["destination_constructor_or_first_writer"],
+        "NO_HIT"
+    );
+    assert_eq!(
+        metadata_owner["separate_27_u32_dictionary"]["same_owner_same_generation_join"],
+        "NOT_ESTABLISHED"
+    );
+    assert_eq!(
+        metadata_owner["separate_27_u32_dictionary"]["used_for_packed_offsets"],
+        false
+    );
+    assert_eq!(metadata_owner["implementation_ready"], false);
+    assert_eq!(metadata_owner["expected_used_as_seed"], false);
+    assert_eq!(metadata_owner["raw_metadata_payload_delivered"], false);
+    assert_eq!(metadata_owner["production_allowed"], false);
+
+    let fresh_reconstruction = read_json("PARENT-COLD-FRESH-RECONSTRUCTION.json");
+    assert_eq!(
+        fresh_reconstruction["schema"],
+        "sanitized-parent-cold-fresh-reconstruction.v1"
+    );
+    assert_eq!(
+        fresh_reconstruction["status"],
+        "NEW_OBJECT_RECONSTRUCTION_CLOSED_FOR_SCOPED_NATIVE_RUN_PATH"
+    );
+    assert_eq!(
+        fresh_reconstruction["classification"]["native_same_object_restore"],
+        false
+    );
+    assert_eq!(
+        fresh_reconstruction["classification"]["new_empireenc_inner_reconstruction"],
+        true
+    );
+    assert_eq!(
+        fresh_reconstruction["classification"]["requires_process_or_job_restart"],
+        false
+    );
+    assert_eq!(
+        fresh_reconstruction["classification"]["dynamic_second_run"],
+        "NOT_RUN"
+    );
+    assert_eq!(
+        fresh_reconstruction["higher_owner_chain"]
+            .as_array()
+            .unwrap()
+            .len(),
+        6
+    );
+    assert_eq!(
+        fresh_reconstruction["per_record_sequence"]
+            .as_array()
+            .unwrap()
+            .len(),
+        5
+    );
+    assert_eq!(
+        fresh_reconstruction["configuration_rebuild"]["copied_prefix"],
+        "config[216..320), exactly 104 bytes"
+    );
+    assert_eq!(
+        fresh_reconstruction["configuration_rebuild"]["previous_parent_state_used"],
+        false
+    );
+    assert_eq!(
+        fresh_reconstruction["configuration_rebuild"]["serialized_parent_state_used"],
+        false
+    );
+    assert_eq!(
+        fresh_reconstruction["bounded_no_hit"]["same_object_restore"],
+        "NO_HIT"
+    );
+    assert_eq!(
+        fresh_reconstruction["bounded_no_hit"]["parent_snapshot_or_deserializer_input"],
+        "NO_HIT"
+    );
+    assert_eq!(
+        fresh_reconstruction["bounded_no_hit"]["product_wide_absence_claim"],
+        false
+    );
+    assert_eq!(
+        fresh_reconstruction["portable_implication"],
+        "A washed logical constructor schema and fresh reconstruction model match the observed lifecycle; a native runtime snapshot format is not an observed prerequisite."
+    );
+    assert_eq!(fresh_reconstruction["implementation_ready"], false);
+    assert_eq!(fresh_reconstruction["expected_used_as_seed"], false);
+    assert_eq!(
+        fresh_reconstruction["raw_parent_or_audio_payload_delivered"],
+        false
+    );
+    assert_eq!(fresh_reconstruction["production_allowed"], false);
+
+    let targeted_loudness = read_json("TARGETED-LOUDNESS-TYPE-CROSS-MODULE-NO-HIT.json");
+    assert_eq!(
+        targeted_loudness["schema"],
+        "sanitized-targeted-loudness-type-cross-module-no-hit.v1"
+    );
+    assert_eq!(targeted_loudness["scope"]["pe_files"], 64);
+    assert_eq!(targeted_loudness["scope"]["adjacent_text_files"], 164);
+    assert_eq!(targeted_loudness["scope"]["candidate_files"], 228);
+    assert_eq!(
+        targeted_loudness["scope"]["full_string_or_export_scan"],
+        false
+    );
+    assert_eq!(targeted_loudness["result"]["rtti_hits"], 6);
+    assert_eq!(targeted_loudness["result"]["targeted_export_name_hits"], 0);
+    assert_eq!(
+        targeted_loudness["result"]["public_offsets_8_12_16_corroborated"],
+        false
+    );
+    assert_eq!(targeted_loudness["result"]["semantic_names_closed"], false);
+    assert_eq!(targeted_loudness["implementation_ready"], false);
+    assert_eq!(targeted_loudness["production_allowed"], false);
+
     let property_pair_authority = read_json("PARENT-PROPERTY-PAIRS-AUTHORITY.json");
     assert_eq!(
         property_pair_authority["schema"],
@@ -2424,11 +2659,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let independent = read_json("INDEPENDENT-CHECK.json");
     assert_eq!(
         independent["schema"],
-        "spatial-control-cold-serializer-blocker-independent-check.v28"
+        "spatial-control-cold-serializer-blocker-independent-check.v29"
     );
     assert_eq!(independent["all_pass"], true);
     let checks = independent["checks"].as_array().expect("checks array");
-    assert_eq!(checks.len(), 37);
+    assert_eq!(checks.len(), 41);
     assert!(checks.iter().all(|check| check["pass"] == true));
     assert_eq!(
         checks
@@ -2467,6 +2702,10 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "external_metadata_producer_coverage_and_separate_dictionary",
             "parent_cold_host_lifecycle_boundary",
             "vendor_adjacent_sdk_debug_no_hit",
+            "core_measurement_owner_construction",
+            "external_metadata_concrete_source_owner",
+            "parent_cold_fresh_reconstruction",
+            "targeted_loudness_type_cross_module_no_hit",
             "no_entrypoint",
             "no_bytes",
             "framing_rules",

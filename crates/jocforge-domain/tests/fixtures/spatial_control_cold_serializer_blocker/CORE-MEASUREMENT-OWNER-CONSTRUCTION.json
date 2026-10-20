@@ -1,0 +1,37 @@
+{
+  "schema": "sanitized-core-measurement-owner-construction.v1",
+  "source_evidence_identity": {
+    "research_result_sha256": "1a146b5ec9000983e66f1c78ac1ede7006dc2e9d826154e4bf2c7067f34495bd",
+    "research_manifest_sha256": "6667a28975a461d4849f9f0928df97006644d93b1c24833e794b814b59606c8f",
+    "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "construction_chain": [
+    {"role":"AtmosProcMeasure constructor","rva":"0x17a110"},
+    {"role":"AtmosProcMeasurePrv constructor","rva":"0x17a170"},
+    {"role":"dlb::dplm::Meter constructor","rva":"0x17ec00"},
+    {"role":"376-byte meter private constructor","rva":"0x17ecc0"},
+    {"role":"low-level open","rva":"0xfd5c0"},
+    {"role":"core factory","rva":"0xfe530"},
+    {"role":"per-row owner factory","rva":"0x100f00"}
+  ],
+  "selected_configuration": {
+    "normalized_vector": [7,48000,2,15,10,1,1,0,1],
+    "row_owner_parameters": {"sample_rate":48000,"table_value":6,"boolean_mode":1,"profile_or_window":10,"disable_mask":0},
+    "core_owner_table": "core+480+row*8"
+  },
+  "row_children": [
+    {"owner_offset":32,"initializer_rva":"0x1052f0","getter_rva":"0x1cb8f0","getter_source":"child F32+108","family":"large accumulator","rtti":"NONE_OBSERVED","semantic_name":"NOT_CLOSED"},
+    {"owner_offset":48,"initializer_rva":"0x104900","getter_rva":"0x1cb9a0","getter_source":"child F32+52","family":"common accumulator","rtti":"NONE_OBSERVED","semantic_name":"NOT_CLOSED"},
+    {"owner_offset":56,"initializer_rva":"0x104900","getter_rva":"0x1cb9e0 selector0","getter_source":"child F32+52","family":"common accumulator","rtti":"NONE_OBSERVED","semantic_name":"NOT_CLOSED"},
+    {"owner_offset":64,"initializer_rva":"0x104900","getter_rva":"0x1cb9e0 selector1","getter_source":"child F32+52","family":"common accumulator","rtti":"NONE_OBSERVED","semantic_name":"NOT_CLOSED"}
+  ],
+  "bounded_no_hit": {
+    "result": "NO_RTTI_OR_NAMED_CONSUMER_FOR_ROW_CHILDREN_32_48_56_64",
+    "value_equality_sufficient_for_naming": false,
+    "minimum_evidence": "independent callsite, schema/property table, debug label, or PDB binding one child or public offset 8/12/16 to a name",
+    "product_wide_absence_claim": false
+  },
+  "implementation_ready": false,
+  "expected_used_as_seed": false,
+  "production_allowed": false
+}
