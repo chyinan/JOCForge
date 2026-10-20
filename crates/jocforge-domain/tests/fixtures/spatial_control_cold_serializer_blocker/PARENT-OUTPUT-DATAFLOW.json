@@ -51,7 +51,7 @@
   },
   "UNKNOWN": {
     "file_writer_dynamic_hit": "CAPTURED_FOUR_EXACT_BYTE_RANGE_JOINS",
-    "fwrite_dynamic_hit": "NOT_CAPTURED",
+    "fwrite_dynamic_hit": "CAPTURED_FOUR_EXACT_FULL_WRITES",
     "other_host_or_wrapper_paths": "UNKNOWN",
     "other_dll_paths": "UNKNOWN",
     "product_wide_snapshot_or_serializer_existence": "UNKNOWN",

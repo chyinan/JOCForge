@@ -1,0 +1,74 @@
+{
+  "schema": "sanitized-parent-cold-lifecycle.v1",
+  "run_identity": "music_rectangular_native_107",
+  "module": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "bytes": 10942464,
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "source_evidence_identity": {
+    "constructor_static_trace_sha256": "89c2bbab8122c017c0fe438cdce068766e04aa6d78cd85c84669599e46e54751",
+    "dynamic_lifecycle_join_sha256": "1f62e315fbe4497b521510afd5d43bbadeb7a36539d952aeedc668f4f123e9c4",
+    "observer_sha256": "b80b8db176e4d1ec5f9419e84bc5cb14e73af1edcb9dd2b4f178576fbb45c20d"
+  },
+  "reference_output": {
+    "mp4_sha256": "eb0658c8cfa1acb777962a4c4aebb51346c21ec5fc6af46e9bbddd01ab9d9739",
+    "extracted_ec3_sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "baseline_match": true,
+    "frames": 4247,
+    "bytes": 17395712
+  },
+  "native_chain": [
+    {"rva": "0x1788a0", "classification": "HOST_LAZY_INITIALIZER", "responsibility": "query required bytes, allocate, zero the full allocation, invoke the parent constructor, store the returned owner and finish host-side planar-buffer setup"},
+    {"rva": "0x1a8920", "classification": "PARENT_MEMORY_QUERY", "responsibility": "compute the required parent allocation size from the cold configuration"},
+    {"rva": "0x1a7d50", "classification": "PARENT_CONSTRUCTOR", "responsibility": "construct the complete pointer-rich runtime parent object and nested components inside the supplied zero allocation"},
+    {"rva": "0x1a8840", "classification": "PARENT_FIRST_CONSUMER", "responsibility": "consume the constructed owner for the first 1536-sample processing call"}
+  ],
+  "NATIVE_OBSERVED": {
+    "query_return": 0,
+    "allocation_bytes": 7805609,
+    "constructor_entry_allocation_all_zero": true,
+    "constructor_entry_crc32": "f97e2af0",
+    "constructor_return": 0,
+    "owner_offset_bytes": 0,
+    "owner_equals_allocation_base": true,
+    "owner_inside_allocation": true,
+    "constructor_return_crc32": "83714dd6",
+    "constructor_changed_allocation": true,
+    "first_consumer_rva": "0x1a8840",
+    "first_consumer_count": 1,
+    "first_consumer_crc32": "83714dd6",
+    "constructor_to_first_consumer_crc32_match": true,
+    "same_thread_lifecycle": true
+  },
+  "first_writer_classification": {
+    "full_allocation_zero_writer": "host memset after query and allocation, before constructor",
+    "constructor_aggregate_writer": "0x1a7d50",
+    "exact_first_nonzero_store": "NOT_CAPTURED",
+    "constructor_nested_writer_count": "MULTIPLE_STATICALLY_OBSERVED"
+  },
+  "cold_material_classification": {
+    "authoritative_runtime_cold_instance": "CAPTURED_BY_SIZE_OWNER_OFFSET_AND_FULL_ALLOCATION_DIGEST",
+    "portable_canonical_bytes": "NOT_CAPTURED",
+    "reason": "the runtime allocation contains process-relative pointers and nested runtime objects; its memory image is not established as a portable canonical serialization",
+    "raw_allocation_delivered": false
+  },
+  "admission_boundary": {
+    "constructor_and_first_consumer_join": "CLOSED_FOR_THIS_RUN_AND_CONFIGURATION",
+    "canonical_parent_preimage": "NOT_DELIVERED",
+    "canonical_parent_serializer": "NOT_RUN",
+    "production_receipt": "NOT_GENERATED",
+    "production_allowed": false
+  },
+  "UNKNOWN": [
+    "exact first nonzero store inside 0x1a7d50",
+    "field-complete portable reconstruction of the 7,805,609-byte runtime object",
+    "other configurations and allocation sizes",
+    "restart lifecycle",
+    "product-wide snapshot, receipt or serializer existence"
+  ],
+  "NOT_RUN": ["spatial render model", "selector model", "U04 model", "outer model", "model recomposition"],
+  "product_wide_absence_claim": false,
+  "raw_pcm_or_metadata_delivered": false,
+  "private_auth": "EXCLUDED"
+}

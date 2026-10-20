@@ -44,7 +44,7 @@
     "file_count": 1,
     "selected_file_index": 0,
     "all_four_returned_normally": true,
-    "direct_fwrite_hook": "NOT_CAPTURED"
+    "direct_fwrite_hook": "CAPTURED_SEPARATE_RUN_106"
   },
   "NATIVE_OBSERVED": {
     "fact": "four nonzero parent outputs were copied to distinct vector storage and reached FileWriter with exact length and CRC32 equality; FileWriter returned normally and the extracted EC3 remained byte-exact to baseline",

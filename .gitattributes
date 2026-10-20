@@ -1,0 +1,2 @@
+# Hash-bound washed fixtures must retain their delivered bytes across checkout.
+crates/jocforge-domain/tests/fixtures/spatial_control_cold_serializer_blocker/** -text whitespace=cr-at-eol

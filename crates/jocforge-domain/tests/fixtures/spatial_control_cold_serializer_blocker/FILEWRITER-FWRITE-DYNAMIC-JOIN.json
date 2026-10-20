@@ -1,0 +1,54 @@
+{
+  "schema": "sanitized-filewriter-fwrite-dynamic-join.v1",
+  "run_identity": "music_rectangular_native_106",
+  "capture_accounting": {
+    "original_framework_status": "PARTIAL_CAPTURE",
+    "reason": "generic harness did not perform its post-run MP4 discovery and extraction step",
+    "postrun_output_found": true,
+    "postrun_lossless_extraction_executed": true,
+    "postrun_ec3_baseline_match": true,
+    "observer_errors": 0
+  },
+  "assets": {
+    "dee_exe_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "atmos_dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "adm_input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "observer_sha256": "18115c4cb33aa079d78b58892422eadd11afefe4b10f07e4d24828522f3d1fa6",
+    "research_join_sha256": "9d60dbf0b39e6521c5ea9170e1f099d8d44947e6b859890a43c5f1ab81a06482"
+  },
+  "reference_output": {
+    "mp4_sha256": "c8126fd822ac3577e44009bf7f09507964ce2e91e306f622496c7f4b88c9a221",
+    "extracted_ec3_sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "baseline_match": true,
+    "frames": 4247,
+    "bytes": 17395712,
+    "frame_bytes": 4096
+  },
+  "native_boundaries": {
+    "file_writer_core_rva": "0x189c80",
+    "fwrite_local_crt_rva": "0x5aea6c",
+    "fwrite_caller_return_rva": "0x189d3a",
+    "scope": "first four FileWriter writes and their immediately nested local fwrite calls"
+  },
+  "joined_writes": [
+    {"frame_ordinal": 0, "byte_count": 4096, "crc32": "e48334d7", "buffer_pointer_match": true, "length_match": true, "crc32_match": true, "file_pointer_match": true, "returned_items": 4096, "full_write": true},
+    {"frame_ordinal": 1, "byte_count": 4096, "crc32": "88d0f270", "buffer_pointer_match": true, "length_match": true, "crc32_match": true, "file_pointer_match": true, "returned_items": 4096, "full_write": true},
+    {"frame_ordinal": 2, "byte_count": 4096, "crc32": "6020ebbb", "buffer_pointer_match": true, "length_match": true, "crc32_match": true, "file_pointer_match": true, "returned_items": 4096, "full_write": true},
+    {"frame_ordinal": 3, "byte_count": 4096, "crc32": "ef5e9494", "buffer_pointer_match": true, "length_match": true, "crc32_match": true, "file_pointer_match": true, "returned_items": 4096, "full_write": true}
+  ],
+  "NATIVE_OBSERVED": {
+    "fact": "the first four FileWriter byte ranges reached the module-local fwrite target with exact buffer pointer, length, CRC32 and selected FILE pointer identity, and fwrite returned the full item count",
+    "encoded_bitstream_file_persistence": "DYNAMICALLY_CAPTURED",
+    "parent_state_snapshot_or_receipt_at_writer_boundary": false
+  },
+  "UNKNOWN": [
+    "alternate host and job workflow branches",
+    "other DLL writer consumers",
+    "product-wide snapshot, receipt or serializer existence"
+  ],
+  "product_wide_absence_claim": false,
+  "production_allowed": false,
+  "raw_encoded_bytes_delivered": false,
+  "raw_pcm_or_metadata_delivered": false,
+  "private_auth": "EXCLUDED"
+}
