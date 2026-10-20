@@ -119,4 +119,5 @@
 | F05O/oamd-single-rowdata-body-decoder | F05O | `joc` |
 | F05O/single-frame-oamd-body-assembler | F05O | `joc` |
 | F05T/trim-section-codec | F05T | `joc` |
+| F13/selected-metadata-owner-source-stage | F13 | `metadata` |
 | F14K/public-keyless-integrity-owner | F14K | `integrity` |

@@ -98,9 +98,9 @@
 | F12S | — | — | INVENTORIED |
 | F12SC | — | — | INVENTORIED |
 | F12A | — | — | INVENTORIED |
-| F13 | — | — | INVENTORIED |
-| F13F | — | — | INVENTORIED |
-| F13T | — | — | INVENTORIED |
+| F13 | PINNED_SELECTED_PROFILE_AND_WRAPPER_CONFIGURATION | `crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json`<br>`crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-wrapper-config.json` | INVENTORIED |
+| F13F | FIXED_SELECTED_QUEUE_CAPACITY_DELAY_AND_SLOT_PROVIDER | `crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json` | INVENTORIED |
+| F13T | FIXED_TIMER_PERIODS_FROM_SELECTED_PROVIDER | `crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json` | INVENTORIED |
 | F13C | — | — | INVENTORIED |
 | F13D2 | — | — | INVENTORIED |
 | F14 | — | — | INVENTORIED |
@@ -119,4 +119,5 @@
 | F05O/oamd-single-rowdata-body-decoder | CALLER_SUPPLIED_PG06_COORDINATE_TABLES | `parameters/oamd-coordinate-grid-q15.json` | decode_oamd_body accepts fixed XY[63] and Z[16] tables as arguments; production domain code does no provider file I/O. |
 | F05O/single-frame-oamd-body-assembler | CALLER_SUPPLIED_METADATA_AND_PG06_COORDINATE_TABLES | `parameters/oamd-coordinate-grid-q15.json` | assemble_body consumes already-resolved rows, timing, and Trim; decode_body consumes fixed XY[63] and Z[16] tables as arguments. Trim remains caller supplied, and production domain code performs no file or environment I/O. |
 | F05T/trim-section-codec | CALLER_SUPPLIED_ROW_COUNT_AND_DBMD_SECTION_BYTES | — | Standalone trim-body encode/decode accepts nonnegative U32 row_count, including zero. DBMD-to-Type11 projection requires row_count 1..=159 from the F05O count contract. DBMD bytes are caller supplied; production domain code performs no file or environment I/O. |
+| F13/selected-metadata-owner-source-stage | FIXED_SELECTED_PROVIDER_AND_WRAPPER_ASSETS | `crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json`<br>`crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-wrapper-config.json` | Raw SHA identity is checked before JSON parsing; canonical provider and wrapper SHA identities admit only selected deployed_compat profile. |
 | F14K/public-keyless-integrity-owner | PINNED_CANONICAL_PUBLIC_KEYLESS_PROVIDER | `crates/jocforge-domain/tests/fixtures/integrity_owner/integrity-public-provider.json` | The domain validates the selected provider fields and canonical JSON SHA-256 from caller-supplied bytes. It performs no file/environment access and rejects every profile except keyless-crc32-crc8-crc16.v1. |

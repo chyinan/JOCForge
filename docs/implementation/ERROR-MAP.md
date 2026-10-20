@@ -36,6 +36,23 @@
 | F05R56 | `R56T_INPUT_ERROR` | input shape or value | snapshot, matrix, source flags, overlap, mixer, or reader rows violate the selected input contract | RETIRED | Return STAGE_FATAL with no receipt, payload, proposal, or commit; preserve committed bytes and generation. |
 | F05R56 | `R56T_PROFILE_UNSUPPORTED` | selected-profile preflight | Type11 branch, reader row, component, coordinate, trim, or target panner value is outside the selected profile | RETIRED | Reject before state replacement; return no receipt, target payload, proposal, or commit. |
 | F05R56 | `R56T_NUMERIC_FAILURE` | numeric intermediate | required finite R32 or mathematical-function result becomes nonfinite or cannot be represented | RETIRED | Return STAGE_FATAL with no receipt, payload, proposal, or commit; preserve committed bytes and generation. |
+| F13 | `METADATA_PROVIDER_IDENTITY` | provider identity | provider raw or canonical SHA-256 differs from the approved selected asset | OWNER_NOT_ADMITTED | Reject provider bytes before parsing or creating state. |
+| F13 | `METADATA_WRAPPER_IDENTITY` | wrapper identity | wrapper raw or canonical SHA-256 differs from the approved selected asset | OWNER_NOT_ADMITTED | Reject wrapper bytes before parsing or creating state. |
+| F13 | `METADATA_PROGRAMME_IDENTITY` | programme attempt lineage | source call programme_id or attempt differs from this owner | RETIRED; committed state unchanged | Discard the attempt; do not reuse the source call. |
+| F13 | `METADATA_WRAPPER_CONFIGURATION` | wrapper configuration | per-call wrapper configuration differs from the approved fixed profile | RETIRED; committed state unchanged | Discard the attempt before queue mutation. |
+| F13 | `METADATA_SOURCE_ORDER` | source clock | source index differs from the next accepted source | RETIRED; committed state unchanged | Discard the attempt; start a full new attempt from cold state. |
+| F13 | `METADATA_DISPATCH_ORDER` | dispatch clock | dispatch is not source+1 | RETIRED; committed state unchanged | Discard the attempt; do not repair or reuse the receipt. |
+| F13 | `METADATA_AU_ORDER` | publication clock | AU index does not match the source suppression/join rule | RETIRED; committed state unchanged | Discard the attempt; do not publish an AU. |
+| F13 | `METADATA_BODY_READINESS` | readiness barrier | ID11, ID2 or ID14 body is absent before the first queue mutation | RETIRED; committed state unchanged | Discard the attempt; do not mutate any queue. |
+| F13 | `METADATA_WRITER_GENERATION` | writer lineage | input or popped writer generation does not match its source/AU join | RETIRED; committed state unchanged | Discard the attempt and all staged queue operations. |
+| F13 | `METADATA_TIMER` | timer input/state | timer config is not nine integer values or timer mode/counter is unsupported | RETIRED; committed state unchanged | Discard the attempt; emit no ID1 body. |
+| F13 | `METADATA_WIRE_FIELD` | ID1 wire field | ID1 field cannot be represented in its selected bit width | RETIRED; committed state unchanged | Discard the attempt before any queue mutation. |
+| F13 | `METADATA_CAPACITY` | payload capacity | an input body exceeds its selected FIFO capacity | RETIRED; committed state unchanged | Discard the attempt before any queue mutation. |
+| F13 | `METADATA_QUEUE_OCCUPIED` | queue destination | the selected write slot is occupied | RETIRED; committed state unchanged | Discard the cloned four-queue stage and receipt. |
+| F13 | `METADATA_EMDF_SERIALIZATION` | EMDF wire output | container wire length or selected payload configuration cannot be represented | RETIRED; committed state unchanged | Discard all staged queue operations and the EMDF proposal. |
+| F13 | `METADATA_EOF_SOURCE_COUNT` | EOF lifecycle | EOF source count differs from both the expected and accepted source count | RETIRED; committed state unchanged | Discard the EOF proposal and retire the attempt. |
+| F13 | `METADATA_FINALIZED` | lifecycle | source processing is attempted after the final state | RETIRED; committed state unchanged | Reject the source; restart from programme input for a new attempt. |
+| F13 | `METADATA_RETIRED` | lifecycle | source processing is attempted after an earlier fatal error | RETIRED; committed state unchanged | Reject the call; start a new attempt from cold state. |
 
 ## Direct sub-slice local outcomes
 

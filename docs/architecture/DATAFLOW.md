@@ -24,6 +24,8 @@ Receiver mode=1 stage 已通过局部测试。它接收同代 Type10 receipt 和
 
 F05R56 输入从 `spatial_control` 同代 committed-before root 和 callback inputs 开始。每个 callback 都预览 marker/history 与 target snapshot；`g=0,1` 只返回状态 proposal，不生成 reader invocation 或 receipt。`g>=2` 使用 `q=g-2`，预览 Type11 encode→wire decode、16 条 previous-aware reader56 records 与 16×6 finite target rows。reader records 和 targets 必须来自同一 wire decode/reader preview；target payload 不从 expected literals 或旧 receipt 取值。局部 selected producer 已按 8 callback input-only chain 验证；成功只产生完整 next-state proposal 与 pending `ReaderTargetUpdateReceipt`，parent `spatial_control` transaction 成功 commit 后才 admission。失败返回空输出并保留 committed root。F04C/F04R/F05JC 消费或 parent transaction 本轮未运行。
 
+F13 metadata owner selected slice 接收 ID11/ID2/ID14 immutable bodies 与当前 source config；owner 内生成 ID1 timer/wire body，按 ID11→ID1→ID2→ID14 完成四队列 push/pop，再按 ID11→ID14→ID2→ID1 生成 source2+ EMDF proposal。source/dispatch/AU clock 分别为 `s`、`s+1`、`null (s<2) or s-2`。本地 source receipt 和 EOF leaf proposal 已通过洗白 fixture；F13C/F13D2、global CallbackTransaction、完整 programme 调用和 durable publication 仍 deferred。
+
 ## Main 时钟
 
 | 域 | 范围或关系 | 行为 |

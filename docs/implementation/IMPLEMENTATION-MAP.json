@@ -2051,7 +2051,127 @@
       "owner": "metadata",
       "planned_phase": "Phase 7",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "active_slice_materialization": "MATERIALIZED",
+      "implementation_status": "LOCALLY_VERIFIED_SELECTED_SOURCE_PROPOSAL_AND_RECEIPT__GLOBAL_TRANSACTION_BLOCKED",
+      "implementation_files": [
+        "crates/jocforge-domain/src/joc/emdf.rs",
+        "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
+        "crates/jocforge-domain/src/joc/emdf/metadata_owner/emdf_serializer.rs"
+      ],
+      "test_modules": [
+        "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs"
+      ],
+      "clock": {
+        "domains": ["CodecSourceIndex", "JocDispatchIndex", "PublishedAuIndex"],
+        "covered_clauses": [
+          "source s advances dispatch s+1; AU is absent for s<2 and s-2 otherwise",
+          "ordinary payload writers join AU j=s-2; ID14 writer joins as s-1",
+          "source 0 and 1 complete queue/timer work without publication"
+        ]
+      },
+      "parameters": {
+        "kind": "PINNED_SELECTED_PROFILE_AND_WRAPPER_CONFIGURATION",
+        "provider_files": [
+          "crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json",
+          "crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-wrapper-config.json"
+        ],
+        "validation_boundary": "Exact raw file SHA-256 is checked before JSON parsing; canonical JSON SHA-256 then pins the selected profile and deployed_compat wrapper. Other profiles are rejected."
+      },
+      "vectors": {
+        "kind": "INPUT_ONLY_CONTINUOUS_FAILURE_RESET_EOF_AND_INDEPENDENT_TERMINAL_FIXTURES",
+        "authoritative_vectors": [
+          "crates/jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json",
+          "crates/jocforge-domain/tests/fixtures/metadata_owner/REPLAY-CHECK.json",
+          "crates/jocforge-domain/tests/fixtures/metadata_owner/EMDF-TERMINAL-FIXTURES.json",
+          "crates/jocforge-domain/tests/fixtures/metadata_owner/EMDF-TERMINAL-INDEPENDENT-CHECK.json",
+          "crates/jocforge-domain/tests/fixtures/metadata_owner/OCCUPIED-DESTINATION-INDEPENDENT-CHECK.json"
+        ],
+        "case_pointers": [
+          "5 continuous source calls with complete state and receipt comparisons",
+          "14 failure cases with unchanged committed bytes and RETIRED attempt",
+          "EOF proposal with no queue operation, timer advance, frame or receipt",
+          "occupied destination prestate canonical bytes and independent 9/9 check",
+          "cold and source2-published EMDF terminal wire/bit-position fixtures"
+        ],
+        "local_fixture": {
+          "file": "crates/jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json",
+          "bytes": 227297,
+          "sha256": "4271ce47e911ba107c1f76931cf872d8240e7152381d0f12bd5b17bf3e2eb023"
+        },
+        "source_manifest_sha256": "94774c412ce8457f3220d84e4b3386c0b48c21837d4a4943570791bb66f034b3"
+      },
+      "error_outcomes": [
+        {"error_code": "METADATA_PROVIDER_IDENTITY", "category": "provider identity", "trigger": "provider raw or canonical SHA-256 differs from the approved selected asset", "programme_state_after": "OWNER_NOT_ADMITTED", "caller_action": "Reject provider bytes before parsing or creating state."},
+        {"error_code": "METADATA_WRAPPER_IDENTITY", "category": "wrapper identity", "trigger": "wrapper raw or canonical SHA-256 differs from the approved selected asset", "programme_state_after": "OWNER_NOT_ADMITTED", "caller_action": "Reject wrapper bytes before parsing or creating state."},
+        {"error_code": "METADATA_PROGRAMME_IDENTITY", "category": "programme attempt lineage", "trigger": "source call programme_id or attempt differs from this owner", "programme_state_after": "RETIRED; committed state unchanged", "caller_action": "Discard the attempt; do not reuse the source call."},
+        {"error_code": "METADATA_WRAPPER_CONFIGURATION", "category": "wrapper configuration", "trigger": "per-call wrapper configuration differs from the approved fixed profile", "programme_state_after": "RETIRED; committed state unchanged", "caller_action": "Discard the attempt before queue mutation."},
+        {"error_code": "METADATA_SOURCE_ORDER", "category": "source clock", "trigger": "source index differs from the next accepted source", "programme_state_after": "RETIRED; committed state unchanged", "caller_action": "Discard the attempt; start a full new attempt from cold state."},
+        {"error_code": "METADATA_DISPATCH_ORDER", "category": "dispatch clock", "trigger": "dispatch is not source+1", "programme_state_after": "RETIRED; committed state unchanged", "caller_action": "Discard the attempt; do not repair or reuse the receipt."},
+        {"error_code": "METADATA_AU_ORDER", "category": "publication clock", "trigger": "AU index does not match the source suppression/join rule", "programme_state_after": "RETIRED; committed state unchanged", "caller_action": "Discard the attempt; do not publish an AU."},
+        {"error_code": "METADATA_BODY_READINESS", "category": "readiness barrier", "trigger": "ID11, ID2 or ID14 body is absent before the first queue mutation", "programme_state_after": "RETIRED; committed state unchanged", "caller_action": "Discard the attempt; do not mutate any queue."},
+        {"error_code": "METADATA_WRITER_GENERATION", "category": "writer lineage", "trigger": "input or popped writer generation does not match its source/AU join", "programme_state_after": "RETIRED; committed state unchanged", "caller_action": "Discard the attempt and all staged queue operations."},
+        {"error_code": "METADATA_TIMER", "category": "timer input/state", "trigger": "timer config is not nine integer values or timer mode/counter is unsupported", "programme_state_after": "RETIRED; committed state unchanged", "caller_action": "Discard the attempt; emit no ID1 body."},
+        {"error_code": "METADATA_WIRE_FIELD", "category": "ID1 wire field", "trigger": "ID1 field cannot be represented in its selected bit width", "programme_state_after": "RETIRED; committed state unchanged", "caller_action": "Discard the attempt before any queue mutation."},
+        {"error_code": "METADATA_CAPACITY", "category": "payload capacity", "trigger": "an input body exceeds its selected FIFO capacity", "programme_state_after": "RETIRED; committed state unchanged", "caller_action": "Discard the attempt before any queue mutation."},
+        {"error_code": "METADATA_QUEUE_OCCUPIED", "category": "queue destination", "trigger": "the selected write slot is occupied", "programme_state_after": "RETIRED; committed state unchanged", "caller_action": "Discard the cloned four-queue stage and receipt."},
+        {"error_code": "METADATA_EMDF_SERIALIZATION", "category": "EMDF wire output", "trigger": "container wire length or selected payload configuration cannot be represented", "programme_state_after": "RETIRED; committed state unchanged", "caller_action": "Discard all staged queue operations and the EMDF proposal."},
+        {"error_code": "METADATA_EOF_SOURCE_COUNT", "category": "EOF lifecycle", "trigger": "EOF source count differs from both the expected and accepted source count", "programme_state_after": "RETIRED; committed state unchanged", "caller_action": "Discard the EOF proposal and retire the attempt."},
+        {"error_code": "METADATA_FINALIZED", "category": "lifecycle", "trigger": "source processing is attempted after the final state", "programme_state_after": "RETIRED; committed state unchanged", "caller_action": "Reject the source; restart from programme input for a new attempt."},
+        {"error_code": "METADATA_RETIRED", "category": "lifecycle", "trigger": "source processing is attempted after an earlier fatal error", "programme_state_after": "RETIRED; committed state unchanged", "caller_action": "Reject the call; start a new attempt from cold state."}
+      ],
+      "direct_slices": [
+        {
+          "slice_id": "selected-metadata-owner-source-stage",
+          "mapping_status": "MATERIALIZED_SELECTED_SOURCE_STAGE__GLOBAL_CALLBACK_BLOCKED",
+          "implementation_status": "LOCALLY_VERIFIED_FOUR_QUEUE_TIMER_EMDF_AND_SOURCE_RECEIPT__GLOBAL_CALLBACK_BLOCKED",
+          "scope": "Selected 48 kHz/1536-sample profile only: private timer and four-queue state, local source receipt, source2+ EMDF proposal, and EOF leaf proposal. No producer-side ID11/ID2/ID14 algorithms, complexity BSI, global callback receipt, or durable output.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
+            "crates/jocforge-domain/src/joc/emdf/metadata_owner/timer.rs",
+            "crates/jocforge-domain/src/joc/emdf/metadata_owner/payload_queue.rs",
+            "crates/jocforge-domain/src/joc/emdf/metadata_owner/emdf_serializer.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs"
+          ],
+          "clock": {
+            "domains": ["CodecSourceIndex", "JocDispatchIndex", "PublishedAuIndex"],
+            "covered_clauses": ["source s", "dispatch s+1", "AU absent for s<2 else s-2", "ordinary writer s-2", "ID14 writer s-1"]
+          },
+          "parameters": {
+            "kind": "FIXED_SELECTED_PROVIDER_AND_WRAPPER_ASSETS",
+            "provider_files": [
+              "crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json",
+              "crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-wrapper-config.json"
+            ],
+            "validation_boundary": "Raw SHA identity is checked before JSON parsing; canonical provider and wrapper SHA identities admit only selected deployed_compat profile."
+          },
+          "vectors": {
+            "kind": "INPUT_ONLY_CONTINUOUS_SUCCESS_FAILURE_EOF_RESET_AND_TERMINAL_VECTORS",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/metadata_owner/EMDF-TERMINAL-FIXTURES.json",
+              "crates/jocforge-domain/tests/fixtures/metadata_owner/OCCUPIED-DESTINATION-INDEPENDENT-CHECK.json"
+            ],
+            "case_pointers": ["5 source calls", "14 failures", "EOF", "reset/retry", "cold and source2 terminal fixtures", "occupied destination 9/9"],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json",
+              "bytes": 227297,
+              "sha256": "4271ce47e911ba107c1f76931cf872d8240e7152381d0f12bd5b17bf3e2eb023"
+            },
+            "source_manifest_sha256": "94774c412ce8457f3220d84e4b3386c0b48c21837d4a4943570791bb66f034b3"
+          },
+          "error_outcomes": []
+        }
+      ],
+      "exclusions": [
+        "F13C JOC complexity BSI producer",
+        "F13D2 ID2 body producer and DRC mapping",
+        "MEASUREMENT, FINALIZE and RESTART owner receipts",
+        "global CallbackTransaction and durable output",
+        "whole-song or external decoder/product acceptance"
+      ],
+      "validation_claim": "Local selected-profile vectors and independent terminal/prestate fixtures only; full-chain execution and product acceptance remain NOT_RUN."
     },
     {
       "functional_id": "F13F",
@@ -2061,7 +2181,28 @@
       "owner": "metadata",
       "planned_phase": "Phase 7",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "active_slice_materialization": "MATERIALIZED",
+      "implementation_status": "LOCALLY_VERIFIED_SELECTED_FOUR_QUEUE_PUSH_POP__OTHER_PRODUCERS_DEFERRED",
+      "implementation_files": [
+        "crates/jocforge-domain/src/joc/emdf/metadata_owner/payload_queue.rs",
+        "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs"
+      ],
+      "test_modules": ["crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs"],
+      "clock": {
+        "domains": ["CodecSourceIndex", "PublishedAuIndex"],
+        "covered_clauses": ["push then immediate pop in ID11/ID1/ID2/ID14 order", "ordinary pop writer s-2", "ID14 pop writer s-1"]
+      },
+      "parameters": {
+        "kind": "FIXED_SELECTED_QUEUE_CAPACITY_DELAY_AND_SLOT_PROVIDER",
+        "provider_files": ["crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json"],
+        "validation_boundary": "Selected queue capacities, delays, slot counts, source length and orders are pinned; unregistered queue variants are rejected."
+      },
+      "vectors": {
+        "kind": "INPUT_ONLY_FOUR_QUEUE_CONTINUOUS_AND_FAILURE_VECTORS",
+        "authoritative_vectors": ["crates/jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json"],
+        "case_pointers": ["5 continuous calls x four ordered push/pop operations", "capacity ID11/ID2/ID14", "occupied ID11 slot0", "writer generation failures"],
+        "local_fixture": {"file": "crates/jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json", "bytes": 227297, "sha256": "4271ce47e911ba107c1f76931cf872d8240e7152381d0f12bd5b17bf3e2eb023"}
+      }
     },
     {
       "functional_id": "F13T",
@@ -2071,7 +2212,28 @@
       "owner": "metadata",
       "planned_phase": "Phase 7",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "active_slice_materialization": "MATERIALIZED",
+      "implementation_status": "LOCALLY_VERIFIED_SELECTED_ID1_TIMER_AND_WIRE__MEASUREMENT_PRODUCER_DEFERRED",
+      "implementation_files": [
+        "crates/jocforge-domain/src/joc/emdf/metadata_owner/timer.rs",
+        "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs"
+      ],
+      "test_modules": ["crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs"],
+      "clock": {
+        "domains": ["CodecSourceIndex"],
+        "covered_clauses": ["one ID1 timer update per 1536-sample source s including priming sources", "six timer periods and input/output field mappings"]
+      },
+      "parameters": {
+        "kind": "FIXED_TIMER_PERIODS_FROM_SELECTED_PROVIDER",
+        "provider_files": ["crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json"],
+        "validation_boundary": "Only approved period_samples [24000,48000,48000,4800,24000,48000], mode 1 and counter -513 are admitted."
+      },
+      "vectors": {
+        "kind": "INPUT_ONLY_TIMER_RECEIPT_AND_ID1_WIRE_VECTORS",
+        "authoritative_vectors": ["crates/jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json", "crates/jocforge-domain/tests/fixtures/metadata_owner/TIMER-DIGEST-INDEPENDENT-CHECK.json"],
+        "case_pointers": ["cold timer", "source0..4 timer advances", "timer type rejection", "ID1 U4 overflow rejection"],
+        "local_fixture": {"file": "crates/jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json", "bytes": 227297, "sha256": "4271ce47e911ba107c1f76931cf872d8240e7152381d0f12bd5b17bf3e2eb023"}
+      }
     },
     {
       "functional_id": "F13C",
@@ -3503,7 +3665,67 @@
     },
     {
       "root_id": "metadata",
-      "materialization_status": "INVENTORIED_PENDING_P1.3_MATERIALIZATION"
+      "materialization_status": "LOCALLY_VERIFIED_SELECTED_SOURCE_STAGE__GLOBAL_CALLBACK_RECEIPT_BLOCKED",
+      "implementation_status": "LOCALLY_VERIFIED_SELECTED_SOURCE_STAGE__GLOBAL_CALLBACK_RECEIPT_BLOCKED",
+      "selected_profile_id": "selected-48k-1536-four-queue.v1",
+      "owning_module": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
+      "field_groups": [
+        "programme-fixed deployed_compat wrapper configuration identity",
+        "ID1 six-period timer state",
+        "ID11, ID1, ID2 and ID14 FIFO slots and buffer identities",
+        "source generation and finalized/pending EOF disposition"
+      ],
+      "committed_state_schema": {
+        "identity": "MetadataStateV1",
+        "field_order": [
+          "profile_id",
+          "provider_sha256",
+          "generation",
+          "next_source_index",
+          "carriage_mode",
+          "timer.remaining[6]",
+          "timer.cached[6]",
+          "timer.mode",
+          "timer.counter",
+          "queues[ID1,ID2,ID11,ID14]",
+          "finalized",
+          "pending disposition"
+        ],
+        "cold": "selected provider SHA; generation=0; source=0; deployed_compat; timer periods [24000,48000,48000,4800,24000,48000]; cached [-1,-1024,-1024,-1024,-1024,-1024]; four cold queues with empty slots and ascending buffer IDs; finalized=false; pending=[]",
+        "canonical_encoding": "MetadataStateV1 NUL prefix; U16LE length-prefixed profile/mode; raw provider SHA; U64LE generations; S64LE timer fields; queues in ID1/ID2/ID11/ID14 order with typed writer generations and payload bytes; finalized U8; pending records sorted by queue and slot with raw payload SHA-256",
+        "digest": "SHA-256 over complete canonical state bytes"
+      },
+      "clock": {
+        "types": ["CodecSourceIndex s", "JocDispatchIndex d=s+1", "PublishedAuIndex j"],
+        "publication": "j absent for s<2; otherwise j=s-2",
+        "writer_join": "ID11/ID1/ID2 pop s-2; ID14 pop s-1",
+        "eof": "exact expected source count; no timer advance, queue push/pop, EMDF or AU"
+      },
+      "stage_authority": "F13 selected-profile metadata source staging and receipt construction only",
+      "commit_authority": "metadata owner replaces its private source root once after all body readiness, timer, four queue operations, lineage and EMDF assembly succeed; this is not a global CallbackTransaction or durable commit",
+      "reset_authority": "new attempt revalidates exact provider and wrapper assets, then rebuilds the complete cold timer and four-queue root",
+      "fatal_behavior": "Discard the staged clone and receipt; committed canonical state remains unchanged; mark the programme attempt RETIRED",
+      "eof_behavior": "MetadataEofProposal is a leaf after-state proposal; pending payloads become DROP_AT_DONE and queue storage is cleared in the proposed state; no source receipt, flush, durable output, global FINALIZE or RESTART receipt",
+      "receipt": {
+        "local_source_receipt": "MetadataSourceReceipt, metadata-source-receipt.v1; before/proposed-after digests, source/dispatch/AU clocks, timer digests, four ordered queue operations, publication lineage, EMDF and terminal layout when published",
+        "global_owner_receipt": "NOT_IMPLEMENTED; must be admitted by a future source/callback coordinator"
+      },
+      "fixture_manifest_sha256": "94774c412ce8457f3220d84e4b3386c0b48c21837d4a4943570791bb66f034b3",
+      "verification": {
+        "continuous_source_calls": 5,
+        "failure_cases": 14,
+        "occupied_prestate_independent_checks": "9/9 PASS; expected_used_as_seed=false",
+        "terminal_independent_checks": "4/4 PASS; expected_used_as_seed=false",
+        "eof": "leaf proposal only; no extra queue/timer/output operations",
+        "whole_song_and_product_acceptance": "NOT_RUN"
+      },
+      "blocked": [
+        "F13C JOC complexity BSI producer",
+        "F13D2 ID2 producer",
+        "MEASUREMENT, FINALIZE and RESTART owner receipts",
+        "global CallbackTransaction integration",
+        "durable output and whole-programme/product validation"
+      ]
     },
     {
       "root_id": "integrity",
@@ -4350,13 +4572,13 @@
         "dual_root_success": "FORBIDDEN"
       },
       "owner_root_readiness": {
-        "currently_materialized_or_mapped": ["reader_eof", "frontend_control", "spatial_audio", "spatial_control", "integrity"],
+        "currently_materialized_or_mapped": ["reader_eof", "frontend_control", "spatial_audio", "spatial_control", "integrity", "metadata"],
         "spatial_audio_mapping_status": "MAPPING_COMPLETE_BLOCKED",
         "spatial_audio_implementation_status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__DSP_PRODUCERS_DEFERRED",
         "spatial_control_status": "MAPPING_COMPLETE_BLOCKED_ON_P1.3_C_ROOTS",
         "missing_callback_root_implementation": "spatial_audio",
-        "additional_owner_roots_required_for_12_snapshots": ["joc", "meter", "drc", "analysis", "codec", "metadata", "output"],
-        "g_ge_2_source_stage_roots": ["joc", "drc", "analysis", "codec", "metadata", "output"]
+        "additional_owner_roots_required_for_12_snapshots": ["joc", "meter", "drc", "analysis", "codec", "output"],
+        "g_ge_2_source_stage_roots": ["joc", "drc", "analysis", "codec", "output"]
       },
       "vector_bindings": {
         "file": "test-vectors/GLOBAL-TRANSACTION-INPUT-VECTORS.json",

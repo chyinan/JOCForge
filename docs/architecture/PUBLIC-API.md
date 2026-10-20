@@ -28,6 +28,12 @@ owner 的公开边界只接收 immutable input、proposal 或 staged result。�
 
 完整 owner receipt 元数据只用于 committed state owner 和明确登记的 staged owner boundary。纯 numeric 结果、profile 校验和普通时间转换返回轻量 typed value 或 conversion result，不得为了统一框架包装 heavyweight receipt。
 
+## Metadata owner selected source API
+
+`domain::joc::emdf::metadata_owner::MetadataOwner` 只接受已批准的 selected provider/wrapper bytes、programme identity 和 typed source/dispatch/AU indices。`MetadataSourceCall` 以完整 ID11/ID2/ID14 body readiness barrier 和九个 JSON integer config field 驱动本地 timer/queue stage；时间域使用 `CodecSourceIndex`、`JocDispatchIndex`、`PublishedAuIndex`，不接受裸 `usize`。
+
+成功返回 `MetadataSourceReceipt` 与可选 source2+ EMDF proposal，并在本 owner 内一次替换 cloned metadata root；EOF 只返回 `MetadataEofProposal`，不生成 receipt、codec flush 或 durable output。该本地 source receipt 不是 global `OwnerReceipt<Metadata>`，也不表示 `CallbackTransaction` 已实现。只支持 `deployed_compat` selected wrapper；`etsi_emdf` serializer、F13C complexity producer、F13D2 ID2 producer 和全局协调仍 deferred。
+
 application 只协调 receipt。它不得计算 FFT、QMF、BAP、mantissa、Huffman、payload 或 frame。CLI 只负责参数和 I/O 组装。validation 不进入 production 依赖图。
 
 ## PostWindow fanout capability

@@ -8,7 +8,7 @@
 | domain/spatial | SourceFlags/CurrentFeatures、spatial_control 和 spatial_audio owner boundaries | SourceFlags/CurrentFeatures、spatial_control cold/staging、F04 providers、固定 64 点 QMF FFT primitive、E2 component stage、E3 Direct-LFE ring stage、E4 Type10 assembly boundary、typed PostWindow fanout、固定 QMF analysis/synthesis core 和 receiver mode=1 routing/state stage 已按限定切片验证；F04R 到 s09_input 的生产、整条 F04 receiver、mode=0 fitting、J05 投影执行和 parent commit 仍 deferred |
 | domain/joc/downmix_profile | `JocDownmixProfile` 边界 | 空壳；无常数 |
 | domain/joc/huffman | F05QH traversal 边界 | 空壳；无表和遍历实现 |
-| domain/joc/emdf | F13 EMDF production 边界 | 空壳；无 serializer |
+| domain/joc/emdf | F13 metadata owner boundary | Selected 48 kHz/1536-sample metadata root locally stages the ID1 timer, four FIFO push/pop operations, deployed_compat EMDF assembly, source receipt and EOF leaf proposal; F13C complexity, F13D2 body production, global CallbackTransaction and durable output remain deferred |
 | domain/joc/oamd | F05O rowdata wire/body boundaries, F05T selected trim-section codec, and F05L body/queue boundary | F05O rowdata encoder and single unprotected-body reader plus the F05T stateless trim-body codec/minimal DBMD default projection are locally verified direct slices; whole F05O/F05T semantics and F05L body/queue production remain deferred |
 | domain/joc/oamd/reader_target | F05R56 marker/history、Type11 wire roundtrip、reader56 和 callback-local target receipt proposal | selected producer locally verified；不得本地 commit，不包含 F05L queue/body、F05JC/J05 或 parent transaction |
 | domain/joc/coefficient_payload | F05Q/F05JL coefficient body 边界 | 空壳；无量化或 payload |

@@ -1151,7 +1151,6 @@
       "drc",
       "analysis",
       "codec",
-      "metadata",
       "output"
     ],
     "currently_materialized_or_mapped": [
@@ -1159,14 +1158,14 @@
       "frontend_control",
       "spatial_audio",
       "spatial_control",
-      "integrity"
+      "integrity",
+      "metadata"
     ],
     "g_ge_2_source_stage_roots": [
       "joc",
       "drc",
       "analysis",
       "codec",
-      "metadata",
       "output"
     ],
     "missing_callback_root_implementation": "spatial_audio",
@@ -8684,4 +8683,5 @@
 | F05O/oamd-single-rowdata-body-decoder | Phase 4 | Stateless F05O body decoding for a self-described header and exactly one unprotected rowdata section, including single-frame timing and row projections through caller-supplied PG06 XY/Z tables. | `crates/jocforge-domain/src/joc/oamd.rs`<br>`crates/jocforge-domain/src/joc/oamd/body_reader.rs` | `crates/jocforge-domain/tests/oamd_body_read.rs` | LOCALLY_VERIFIED_SINGLE_ROW_DATA_BODY_DECODER_ONLY__OTHER_LAYOUTS_DEFERRED |
 | F05O/single-frame-oamd-body-assembler | Phase 4 | Stateless encode/decode of one self-described OAMD body with exactly one rowdata section followed by one Type11 trim section from caller-resolved metadata. This does not complete F05O or F05L. | `crates/jocforge-domain/src/joc/oamd.rs`<br>`crates/jocforge-domain/src/joc/oamd/body_assembler.rs`<br>`crates/jocforge-domain/src/joc/oamd/body_reader.rs`<br>`crates/jocforge-domain/src/joc/oamd/rowdata.rs`<br>`crates/jocforge-domain/src/joc/oamd/trim_section.rs` | `crates/jocforge-domain/tests/oamd_body_assembler.rs` | LOCALLY_VERIFIED_SINGLE_FRAME_ASSEMBLER__FULL_F05O_F05L_DEFERRED |
 | F05T/trim-section-codec | Phase 4 | Pure Type11 trim-body encode/decode plus DBMD section framing and selected default-trim projection from sections 9 and 10. This does not complete F05T or integrate the trim body into F05O section assembly. | `crates/jocforge-domain/src/joc/oamd.rs`<br>`crates/jocforge-domain/src/joc/oamd/trim_section.rs` | `crates/jocforge-domain/tests/trim_section_codec.rs` | LOCALLY_VERIFIED_TRIM_SECTION_CODEC_AND_MINIMAL_DBMD_PROJECTION__FULL_F05T_DEFERRED |
+| F13/selected-metadata-owner-source-stage | Phase 7 | Selected 48 kHz/1536-sample profile only: private timer and four-queue state, local source receipt, source2+ EMDF proposal, and EOF leaf proposal. No producer-side ID11/ID2/ID14 algorithms, complexity BSI, global callback receipt, or durable output. | `crates/jocforge-domain/src/joc/emdf/metadata_owner.rs`<br>`crates/jocforge-domain/src/joc/emdf/metadata_owner/timer.rs`<br>`crates/jocforge-domain/src/joc/emdf/metadata_owner/payload_queue.rs`<br>`crates/jocforge-domain/src/joc/emdf/metadata_owner/emdf_serializer.rs` | `crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs` | LOCALLY_VERIFIED_FOUR_QUEUE_TIMER_EMDF_AND_SOURCE_RECEIPT__GLOBAL_CALLBACK_BLOCKED |
 | F14K/public-keyless-integrity-owner | Phase 7 | Public keyless CRC profile and its programme-local integrity owner only. Private authentication, native receipt wire format, CallbackTransaction integration, and other owner roots are excluded. | `crates/jocforge-domain/src/integrity/mod.rs`<br>`crates/jocforge-domain/src/integrity/crc16.rs`<br>`crates/jocforge-domain/src/integrity/keyless_checksum.rs`<br>`crates/jocforge-domain/src/integrity/programme_owner.rs` | `crates/jocforge-domain/src/integrity/programme_owner/tests.rs` | LOCALLY_VERIFIED_KEYLESS_PUBLIC_OWNER__PRIVATE_AUTH_BLOCKED |

@@ -1,0 +1,59 @@
+{
+  "schema": "metadata-owner-machine-map.v1",
+  "owner_id": "metadata",
+  "profile_id": "selected-48k-1536-four-queue.v1",
+  "wrapper_config": {
+    "profile_id": "selected-deployed-compat.v1",
+    "canonical_sha256": "e5d4a8f50324b4d1a7af7631b76244ea91da12cf9fa1f1b668c045c2ac6ad352",
+    "file_sha256": "722e93ad671e4faab6ae9f33125bd49f8f369f717db0c9a3600cd861cdbd5a56",
+    "asset": "metadata-wrapper-config.json",
+    "inference_from_output_forbidden": true
+  },
+  "clock": {
+    "source": "s",
+    "dispatch": "s + 1",
+    "au": "null for s < 2, otherwise s - 2",
+    "source_samples": 1536
+  },
+  "orders": {
+    "queue_mutation": [11, 1, 2, 14],
+    "emdf_serialization": [11, 14, 2, 1]
+  },
+  "id1": {
+    "timer_owns": "payload body fields and payload bytes",
+    "wrapper_owns": "outer duration presence and value",
+    "wrapper_duration_samples": 1536,
+    "duration_derived_from_timer": false
+  },
+  "timer_digest": {
+    "domain_prefix_ascii_nul": "MetadataTimerStateV1\\u0000",
+    "field_order": ["remaining[0..5]", "cached[0..5]", "mode", "counter"],
+    "field_encoding": "signed 64-bit little-endian",
+    "runtime_state_only": true,
+    "includes_provider_or_config": false,
+    "includes_generation_or_clock_identity": false
+  },
+  "emdf_terminal": {
+    "bit_order": "MSB-first",
+    "field_order": ["terminal ID0 U5", "primary length code U2", "secondary length code U2", "primary protection bytes", "secondary protection bytes", "zero terminal padding"],
+    "primary_code_to_bytes": {"1": 1, "2": 4, "3": 16},
+    "secondary_code_to_bytes": {"0": 0, "1": 1, "2": 4, "3": 16},
+    "selected_codes": {"primary": 2, "secondary": 1},
+    "section_padding_before_terminal": false,
+    "terminal_padding_after_protection": true
+  },
+  "blocked_global_receipts": ["MEASUREMENT", "FINALIZE", "RESTART"],
+  "occupied_destination_vector": {
+    "prestate_materialized": true,
+    "queue_id": 11,
+    "slot": 0,
+    "writer_generation": 99,
+    "payload_hex": "aa",
+    "call": {"source": 0, "dispatch": 1, "au": null},
+    "first_queue_operation": 11,
+    "expected_commit_count": 0,
+    "expected_receipt": null,
+    "expected_programme_result": "RETIRED"
+  },
+  "native_receipt_schema_observed": false
+}

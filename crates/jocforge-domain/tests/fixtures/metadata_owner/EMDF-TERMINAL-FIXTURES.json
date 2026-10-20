@@ -1,0 +1,170 @@
+{
+  "schema": "emdf-terminal-layout-fixtures.v1",
+  "provider_sha256": "0132eef416f50c029fc248b0580b2b20fef27688c9dee75210ee4ea1547aed3b",
+  "cold_empty": {
+    "construction": {
+      "version": 0,
+      "key_id": 0,
+      "payloads": [],
+      "terminal_id": 0,
+      "primary_code": 2,
+      "secondary_code": 1,
+      "primary_protection_hex": "00000000",
+      "secondary_protection_hex": "00"
+    },
+    "trace": {
+      "terminal_id_start_bit": 37,
+      "primary_code_start_bit": 42,
+      "secondary_code_start_bit": 44,
+      "primary_protection_range_bits": [
+        46,
+        78
+      ],
+      "secondary_protection_range_bits": [
+        78,
+        86
+      ],
+      "padding_range_bits": [
+        86,
+        88
+      ],
+      "padding_bits": 2
+    },
+    "wire_hex": "5838000700240000000000",
+    "wire_sha256": "8e2b57027cee5547e895438968a1c64995c61e11c221bc4cd0997930a0478935"
+  },
+  "first_published": {
+    "source_index": 2,
+    "construction": {
+      "payload_order": [
+        11,
+        14,
+        2,
+        1
+      ],
+      "payloads": [
+        {
+          "id": 11,
+          "writer_generation": 0,
+          "payload_hex": "0b000b"
+        },
+        {
+          "id": 14,
+          "writer_generation": 1,
+          "payload_hex": "0f0111"
+        },
+        {
+          "id": 2,
+          "writer_generation": 0,
+          "payload_hex": "020002"
+        },
+        {
+          "id": 1,
+          "writer_generation": 0,
+          "payload_hex": "0300"
+        }
+      ],
+      "wrapper_config": {
+        "schema": "metadata-wrapper-config.v1",
+        "profile_id": "selected-deployed-compat.v1",
+        "payloads": {
+          "11": {
+            "sample_offset": null,
+            "duration": null,
+            "group_id": 0,
+            "codec_data_present": false,
+            "discard_unknown_payload": false,
+            "payload_frame_aligned": false,
+            "create_duplicate": null,
+            "remove_duplicate": null,
+            "priority": null,
+            "processing_allowed": null
+          },
+          "1": {
+            "sample_offset": null,
+            "duration": 1536,
+            "group_id": null,
+            "codec_data_present": false,
+            "discard_unknown_payload": false,
+            "payload_frame_aligned": false,
+            "create_duplicate": null,
+            "remove_duplicate": null,
+            "priority": null,
+            "processing_allowed": null
+          },
+          "2": {
+            "sample_offset": null,
+            "duration": null,
+            "group_id": null,
+            "codec_data_present": false,
+            "discard_unknown_payload": true,
+            "payload_frame_aligned": null,
+            "create_duplicate": null,
+            "remove_duplicate": null,
+            "priority": null,
+            "processing_allowed": null
+          },
+          "14": {
+            "sample_offset": null,
+            "duration": null,
+            "group_id": 0,
+            "codec_data_present": false,
+            "discard_unknown_payload": false,
+            "payload_frame_aligned": true,
+            "create_duplicate": false,
+            "remove_duplicate": false,
+            "priority": 0,
+            "processing_allowed": 0
+          }
+        },
+        "id1_relation": {
+          "timer_output": "ID1 payload body fields and bytes",
+          "wrapper_duration": 1536,
+          "relationship": "independent fixed wrapper duration; not read from timer output and not encoded inside the timer payload fields",
+          "clock": "one ID1 body per 1536-sample codec source call, including two priming calls"
+        }
+      },
+      "wrapper_config_sha256": "e5d4a8f50324b4d1a7af7631b76244ea91da12cf9fa1f1b668c045c2ac6ad352",
+      "primary_protection_hex": "00000000",
+      "secondary_protection_hex": "00"
+    },
+    "trace": {
+      "bit_order": "MSB-first",
+      "terminal_id": {
+        "value": 0,
+        "start_bit": 231,
+        "width_bits": 5
+      },
+      "primary_length_code": {
+        "value": 2,
+        "start_bit": 236,
+        "width_bits": 2,
+        "byte_count": 4
+      },
+      "secondary_length_code": {
+        "value": 1,
+        "start_bit": 238,
+        "width_bits": 2,
+        "byte_count": 1
+      },
+      "primary_protection_range_bits": [
+        240,
+        272
+      ],
+      "secondary_protection_range_bits": [
+        272,
+        280
+      ],
+      "terminal_padding_range_bits": [
+        280,
+        280
+      ],
+      "terminal_padding_bits": 0,
+      "wire_bytes": 35,
+      "body_bytes": 31
+    },
+    "wire_hex": "5838001f02c80060b000b710400060f01111040c040004170000080600090000000000",
+    "wire_sha256": "e91d0514fd9f899a55589bfccd988c9feeb174630542bc978c65992e617d39c6"
+  },
+  "expected_used_as_seed": false
+}

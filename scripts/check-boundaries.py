@@ -71,7 +71,7 @@ def check_callback_transaction_control_flow(p):
  ck(p['abort_api']=='one callback-level abort consumes the CallbackTransactionStaged value; every owner receipt has after=before, changed=false, commit_count=0; no owner state or generation changes','P1.3-C abort contract')
  ck(p['fatal_api']=='a stage fatal aborts the whole callback, records ABORTED plus the fatal receipt, sets programme status RETIRED, preserves all owner bytes/generations, and rejects subsequent calls'and p['preflight_rejection']=='result=REJECTED; no stage runs and programme status does not become RETIRED','P1.3-C fatal and rejected distinction')
  ck(p['callback_success_gates']=={'g_0_1':'all four callback roots reader_eof, frontend_control, spatial_control, spatial_audio must succeed before the callback commits','g_ge_2':'wait for every source root required by that callback before the callback commits','internal_stages':'SOURCE, DISPATCH and AU append do not emit independent top-level success','dual_root_success':'FORBIDDEN'},'P1.3-C callback gates')
- ck(p['owner_root_readiness']=={'currently_materialized_or_mapped':['reader_eof','frontend_control','spatial_audio','spatial_control','integrity'],'spatial_audio_mapping_status':'MAPPING_COMPLETE_BLOCKED','spatial_audio_implementation_status':'LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__DSP_PRODUCERS_DEFERRED','spatial_control_status':'MAPPING_COMPLETE_BLOCKED_ON_P1.3_C_ROOTS','missing_callback_root_implementation':'spatial_audio','additional_owner_roots_required_for_12_snapshots':['joc','meter','drc','analysis','codec','metadata','output'],'g_ge_2_source_stage_roots':['joc','drc','analysis','codec','metadata','output']},'P1.3-C waiting owner root set after integrity root')
+ ck(p['owner_root_readiness']=={'currently_materialized_or_mapped':['reader_eof','frontend_control','spatial_audio','spatial_control','integrity','metadata'],'spatial_audio_mapping_status':'MAPPING_COMPLETE_BLOCKED','spatial_audio_implementation_status':'LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__DSP_PRODUCERS_DEFERRED','spatial_control_status':'MAPPING_COMPLETE_BLOCKED_ON_P1.3_C_ROOTS','missing_callback_root_implementation':'spatial_audio','additional_owner_roots_required_for_12_snapshots':['joc','meter','drc','analysis','codec','output'],'g_ge_2_source_stage_roots':['joc','drc','analysis','codec','output']},'P1.3-C waiting owner root set after integrity and metadata local roots')
  ck(p['unclosed_transaction_kinds']==['MEASUREMENT','FINALIZE','RESTART'],'P1.3-C other transaction kinds remain open')
 def check_spatial_control_mapping(root,d):
  programme=next(x for x in d['programme_roots']if x['root_id']=='spatial_control');p=d['phase_one']['P1.3-D'];ck(p['task_id']=='P1.3-D-SPATIAL-CONTROL-ROOT-MAP'and p['status']=='BLOCKED_ON_SPATIAL_AUDIO_RENDER_AND_PARENT_INTEGRATION'and p['mapping_status']=='MAPPING_COMPLETE_BLOCKED'and p['packet_producer_blockers']==[],'P1.3-D remains blocked after the CurrentFeatures math/capability slice');d1_status='LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED';ck(programme['materialization_status']==d1_status and programme['implementation_status']==d1_status and'owner_receipt_order_and_wrapper'not in programme,'spatial_control D1 materialized while P1.3-C stays blocked')
@@ -2261,6 +2261,7 @@ def check_integrity_owner_root(root,d):
  ck(root_entry.get('canonical_serialization',{}).get('digest')=='SHA-256 over these bytes; JSON is not used'and root_entry.get('owner_receipt',{}).get('schema_identity')=='integrity-stage-receipt.v1'and root_entry.get('owner_receipt',{}).get('success_receipt_order')==['SOURCE','DISPATCH','AU']and root_entry.get('owner_receipt',{}).get('failed_call_receipts')==0,'integrity state digest and ordered receipt contract')
  readiness=d['phase_one']['P1.3-C']['owner_root_readiness']
  ck('integrity'in readiness['currently_materialized_or_mapped']and'integrity'not in readiness['additional_owner_roots_required_for_12_snapshots']and'integrity'not in readiness['g_ge_2_source_stage_roots'],'P1.3-C excludes locally materialized integrity root from its missing set')
+ ck('metadata'in readiness['currently_materialized_or_mapped']and'metadata'not in readiness['additional_owner_roots_required_for_12_snapshots']and'metadata'not in readiness['g_ge_2_source_stage_roots'],'P1.3-C excludes locally materialized metadata source root from its missing set')
  ck(d['phase_one']['P1.3-C']['status']=='CALLBACK_CONTRACT_APPROVED_WAITING_OWNER_ROOTS'and'BLOCKED' in d['status']['P1.3'],'integrity root does not promote CallbackTransaction readiness')
 
  fixture_dir=root/'crates/jocforge-domain/tests/fixtures/integrity_owner'
@@ -2285,12 +2286,76 @@ def check_integrity_owner_root(root,d):
  ck('pub fn finalize(&mut self) -> Result<(), IntegrityError>'in owner_code and'IntegrityFinalizeResult'not in owner_code,'integrity EOF emits no receipt type')
  ck('CodecSourceIndex' in owner_code and 'JocDispatchIndex' in owner_code and 'PublishedAuIndex' in owner_code and 'CallbackTransactionCoordinator'not in owner_code and'crate::transaction'not in owner_code,'integrity distinct clock types and no CallbackTransaction integration')
 
+def check_metadata_owner_root(root,d):
+ entries={entry['functional_id']:entry for entry in d['functional_entries']}
+ expected_statuses={
+  'F13':'LOCALLY_VERIFIED_SELECTED_SOURCE_PROPOSAL_AND_RECEIPT__GLOBAL_TRANSACTION_BLOCKED',
+  'F13F':'LOCALLY_VERIFIED_SELECTED_FOUR_QUEUE_PUSH_POP__OTHER_PRODUCERS_DEFERRED',
+  'F13T':'LOCALLY_VERIFIED_SELECTED_ID1_TIMER_AND_WIRE__MEASUREMENT_PRODUCER_DEFERRED',
+ }
+ for functional_id,status in expected_statuses.items():
+  entry=entries[functional_id]
+  ck(entry.get('implementation_status')==status and entry.get('active_slice_materialization')=='MATERIALIZED','metadata scoped functional status '+functional_id)
+  ck(all((root/path).is_file()for path in entry.get('implementation_files',[])+entry.get('test_modules',[])),'metadata mapped implementation/test files '+functional_id)
+  ck(entry.get('clock',{}).get('domains')and entry.get('parameters',{}).get('provider_files')and entry.get('vectors',{}).get('authoritative_vectors'),'metadata clock/parameter/vector map '+functional_id)
+ ck(entries['F13']['clock']['domains']==['CodecSourceIndex','JocDispatchIndex','PublishedAuIndex']and entries['F13T']['clock']['domains']==['CodecSourceIndex'],'metadata uses distinct public source/dispatch/AU types')
+ ck([item['error_code']for item in entries['F13'].get('error_outcomes',[])]==['METADATA_PROVIDER_IDENTITY','METADATA_WRAPPER_IDENTITY','METADATA_PROGRAMME_IDENTITY','METADATA_WRAPPER_CONFIGURATION','METADATA_SOURCE_ORDER','METADATA_DISPATCH_ORDER','METADATA_AU_ORDER','METADATA_BODY_READINESS','METADATA_WRITER_GENERATION','METADATA_TIMER','METADATA_WIRE_FIELD','METADATA_CAPACITY','METADATA_QUEUE_OCCUPIED','METADATA_EMDF_SERIALIZATION','METADATA_EOF_SOURCE_COUNT','METADATA_FINALIZED','METADATA_RETIRED'],'metadata exact local error outcomes')
+ ck(entries['F13C'].get('implementation_status')=='DEFERRED_DETAILED_MAPPING'and entries['F13D2'].get('implementation_status')=='DEFERRED_DETAILED_MAPPING','F13C and F13D2 remain deferred')
+
+ metadata_root=next(item for item in d['programme_roots']if item.get('root_id')=='metadata')
+ root_status='LOCALLY_VERIFIED_SELECTED_SOURCE_STAGE__GLOBAL_CALLBACK_RECEIPT_BLOCKED'
+ ck(metadata_root.get('materialization_status')==root_status and metadata_root.get('implementation_status')==root_status and metadata_root.get('owning_module')=='crates/jocforge-domain/src/joc/emdf/metadata_owner.rs','metadata root implementation boundary')
+ state=metadata_root.get('committed_state_schema',{})
+ ck(state.get('identity')=='MetadataStateV1'and state.get('field_order')==['profile_id','provider_sha256','generation','next_source_index','carriage_mode','timer.remaining[6]','timer.cached[6]','timer.mode','timer.counter','queues[ID1,ID2,ID11,ID14]','finalized','pending disposition'],'metadata canonical state field order')
+ ck(metadata_root.get('clock',{}).get('types')==['CodecSourceIndex s','JocDispatchIndex d=s+1','PublishedAuIndex j']and metadata_root.get('receipt',{}).get('global_owner_receipt')=='NOT_IMPLEMENTED; must be admitted by a future source/callback coordinator','metadata clock and receipt boundary')
+ ck('not a global CallbackTransaction' in metadata_root.get('commit_authority','')and metadata_root.get('blocked')==['F13C JOC complexity BSI producer','F13D2 ID2 producer','MEASUREMENT, FINALIZE and RESTART owner receipts','global CallbackTransaction integration','durable output and whole-programme/product validation'],'metadata blocked integration scopes')
+
+ fixture_dir=root/'crates/jocforge-domain/tests/fixtures/metadata_owner'
+ expected_assets={
+  'METADATA-OWNER-CONTRACT.md':(8767,'6b5584a57c0fc22b0f3b7a9f4d101f5a92404468c96ad7d0270b52f46dc467c2'),
+  'METADATA-OWNER-MACHINE-MAP.json':(2221,'499e155c55cd770f0184477a02ced516d07f1b3cc0010ba5ac5aba431b1b7e72'),
+  'metadata-public-provider.json':(1399,'6d94c55c8c011fd4762e60ec92ed491f19b17540c72ba82094a36f6e666f2ef7'),
+  'metadata-wrapper-config.json':(1754,'722e93ad671e4faab6ae9f33125bd49f8f369f717db0c9a3600cd861cdbd5a56'),
+  'METADATA-SOURCE-RECEIPT.schema.json':(1940,'3ce5bf0eda0f32bf387241ba3255160791f6ecb3cc40de7781cff375123f7510'),
+  'METADATA-OWNER-VECTORS.json':(227297,'4271ce47e911ba107c1f76931cf872d8240e7152381d0f12bd5b17bf3e2eb023'),
+  'REPLAY-CHECK.json':(1940,'14eb467adc2d7c61db8169698610f149735dd6c1767d6273f302891d97a92c91'),
+  'EMDF-TERMINAL-FIXTURES.json':(4953,'18081b8176e969ff37fe6d6134d843b4a8057e152ac6ea6ddd57da435ebea924'),
+  'EMDF-TERMINAL-INDEPENDENT-CHECK.json':(455,'f8c45a1100ec6b53cbe120eb0a06291148774c2664e0f6331d4feb40575532f0'),
+  'TIMER-DIGEST-INDEPENDENT-CHECK.json':(1370,'187c8678158b3f4e10dac14a237fca2ef2638b99d7a65fded049cf9eda99364c'),
+  'OCCUPIED-DESTINATION-INDEPENDENT-CHECK.json':(2325,'596175ddc8db659eef8e73bb3ed58d3551e72762c11fbb3588071b2586380dda'),
+ }
+ ck({path.name for path in fixture_dir.iterdir()if path.is_file()}==set(expected_assets),'metadata fixture inventory excludes a copied MANIFEST')
+ for name,(length,digest) in expected_assets.items():
+  raw=(fixture_dir/name).read_bytes()
+  ck(len(raw)==length and hashlib.sha256(raw).hexdigest()==digest,'metadata fixture identity '+name)
+
+ vectors=json.loads((fixture_dir/'METADATA-OWNER-VECTORS.json').read_text(encoding='utf-8'))
+ ck(len(vectors.get('continuous_calls',[]))==5 and len(vectors.get('failure_cases',[]))==14 and vectors.get('expected_used_as_seed')is False,'metadata success/failure vector inventory')
+ occupied=next(case for case in vectors['failure_cases']if case.get('id')=='occupied_destination')
+ occupied_check=json.loads((fixture_dir/'OCCUPIED-DESTINATION-INDEPENDENT-CHECK.json').read_text(encoding='utf-8'))
+ occupied_prestate=occupied.get('prestate',{})
+ occupied_hex=bytes.fromhex(occupied_prestate.get('canonical_hex',''))
+ ck(occupied_prestate.get('state',{}).get('queues',{}).get('11',{}).get('slots',[None])[0]=={'writer_generation':99,'payload_hex':'aa'}and hashlib.sha256(occupied_hex).hexdigest()==occupied_prestate.get('sha256')==occupied['expected'].get('before_sha256')==occupied['expected'].get('after_sha256')==occupied_check.get('before_sha256')==occupied_check.get('after_sha256'),'metadata occupied input prestate and digest')
+ ck(occupied_check.get('all_pass')is True and occupied_check.get('expected_used_as_seed')is False and len(occupied_check.get('checks',[]))==9,'metadata occupied independent check 9/9')
+ terminal_check=json.loads((fixture_dir/'EMDF-TERMINAL-INDEPENDENT-CHECK.json').read_text(encoding='utf-8'))
+ timer_check=json.loads((fixture_dir/'TIMER-DIGEST-INDEPENDENT-CHECK.json').read_text(encoding='utf-8'))
+ replay_check=json.loads((fixture_dir/'REPLAY-CHECK.json').read_text(encoding='utf-8'))
+ ck(terminal_check.get('all_pass')is True and terminal_check.get('expected_used_as_seed')is False and len(terminal_check.get('checks',[]))==4,'metadata terminal check 4/4')
+ ck(timer_check.get('all_pass')is True and timer_check.get('expected_used_as_seed')is False and len(timer_check.get('checks',[]))==6,'metadata timer digest check 6/6')
+ ck(replay_check.get('all_pass')is True and replay_check.get('expected_used_as_seed')is False and replay_check.get('independent_implementation')is False and len(replay_check.get('checks',[]))==24,'metadata replay evidence preserves the independent-implementation boundary')
+
+ owner_source=(root/'crates/jocforge-domain/src/joc/emdf/metadata_owner.rs').read_text(encoding='utf-8')
+ production=owner_source
+ ck(production.index('if sha256_hex(provider_file)')<production.index('serde_json::from_slice(provider_file)'),'metadata provider file identity checked before parse')
+ ck(not any(token in production for token in ('std::fs','std::process','std::env','crate::validation','CallbackTransactionCoordinator','ffmpeg')),'metadata domain has no I/O, validation or global coordinator dependency')
+
 def run(root=ROOT):
  arch=root/'docs/architecture';req={'APPROVAL.md','ARCHITECTURE.md','ARCHITECTURE-DECISIONS.md','DATAFLOW.md','DEPENDENCY-RULES.md','ERROR-MODEL.md','MODULE-MAP.md','OLD-WIRE-REUSE-MATRIX.md','PROFILE-DIMENSIONS.md','PUBLIC-API.md','STATE-OWNERSHIP.md','TEST-STRATEGY.md'};ck(req<={p.name for p in arch.glob('*.md')},'architecture documents')
- d=json.loads((root/'docs/implementation/IMPLEMENTATION-MAP.json').read_text(encoding='utf-8'));schema=json.loads((root/'docs/implementation/IMPLEMENTATION-MAP.schema.json').read_text(encoding='utf-8'));ck(all(k in d for k in schema['required']),'schema required');es=d['functional_entries'];ck(len(es)==104 and len({e['functional_id']for e in es})==104 and all(e['inventory_status']=='INVENTORIED'for e in es),'104 inventoried IDs');active={e['functional_id']for e in es if e.get('active_slice_materialization')=='MATERIALIZED'};ck(active=={'F02','XSTJ','F05R56'},'active IDs');future=[e for e in es if e['functional_id']not in active];ck(len(future)==101,'deferred count');check_reader_target_mapping(root,d)
+ d=json.loads((root/'docs/implementation/IMPLEMENTATION-MAP.json').read_text(encoding='utf-8'));schema=json.loads((root/'docs/implementation/IMPLEMENTATION-MAP.schema.json').read_text(encoding='utf-8'));ck(all(k in d for k in schema['required']),'schema required');es=d['functional_entries'];ck(len(es)==104 and len({e['functional_id']for e in es})==104 and all(e['inventory_status']=='INVENTORIED'for e in es),'104 inventoried IDs');active={e['functional_id']for e in es if e.get('active_slice_materialization')=='MATERIALIZED'};ck(active=={'F02','XSTJ','F05R56','F13','F13F','F13T'},'active scoped IDs');future=[e for e in es if e['functional_id']not in active];ck(len(future)==98,'deferred count');check_reader_target_mapping(root,d)
  check_oamd_rowdata_mapping(root,d)
  check_oamd_body_assembler_mapping(root,d)
  check_trim_section_mapping(root,d)
+ check_metadata_owner_root(root,d)
  check_integrity_owner_root(root,d)
  for e in future:
   if e['functional_id']=='F04D':
@@ -2310,10 +2375,14 @@ def run(root=ROOT):
   for f in e['spec_files']:ck((PKG/f).is_file(),'spec')
   if e['functional_id']=='F05R56':
    ck(e['clock']['domains']==['FrontendCallbackIndex','ReaderInvocationIndex','HistoryProducerGeneration']and e['clock']['covered_clauses'] and e['vectors']['kind']=='INPUT_ONLY_RECIPES_WITH_POSTCOMPUTATION_ASSERTIONS'and e['parameters']['kind']=='MANIFEST_PINNED_SELECTED_PROFILE_CONSTANTS'and e['error_outcomes'] and e['phase_scope']['consumer_boundary'].startswith('F04C/F04R/F05JC may use only'),'F05R56 scoped active materialization')
-  elif e['functional_id']in active:ck(e['clock']['covered_clauses']==clauses and e['clock']['domains']==['AdmSampleCount','NormalCallbackCount','FrontendCallbackIndex','CodecSourceIndex','JocDispatchIndex','JocGeneratedWriterIndex','OrdinaryPayloadWriterIndex','JocPoppedWriterIndex','PublishedAuIndex']and e['implementation_files']==['crates/jocforge-domain/src/timeline/index.rs','crates/jocforge-domain/src/timeline/clock.rs','crates/jocforge-domain/src/timeline/mod.rs']and e['test_modules']and e['vectors']['kind']=='RULE_AND_PROPERTY_TEST'and e['error_outcomes'],'active materialization')
+  elif e['functional_id']in {'F02','XSTJ'}:ck(e['clock']['covered_clauses']==clauses and e['clock']['domains']==['AdmSampleCount','NormalCallbackCount','FrontendCallbackIndex','CodecSourceIndex','JocDispatchIndex','JocGeneratedWriterIndex','OrdinaryPayloadWriterIndex','JocPoppedWriterIndex','PublishedAuIndex']and e['implementation_files']==['crates/jocforge-domain/src/timeline/index.rs','crates/jocforge-domain/src/timeline/clock.rs','crates/jocforge-domain/src/timeline/mod.rs']and e['test_modules']and e['vectors']['kind']=='RULE_AND_PROPERTY_TEST'and e['error_outcomes'],'active clock materialization')
+  elif e['functional_id']in {'F13','F13F','F13T'}:
+   ck(e.get('active_slice_materialization')=='MATERIALIZED'and e.get('implementation_status') in {'LOCALLY_VERIFIED_SELECTED_SOURCE_PROPOSAL_AND_RECEIPT__GLOBAL_TRANSACTION_BLOCKED','LOCALLY_VERIFIED_SELECTED_FOUR_QUEUE_PUSH_POP__OTHER_PRODUCERS_DEFERRED','LOCALLY_VERIFIED_SELECTED_ID1_TIMER_AND_WIRE__MEASUREMENT_PRODUCER_DEFERRED'},'metadata source slice status '+e['functional_id'])
+   ck(e.get('implementation_files')and e.get('test_modules')==['crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs']and all((root/path).is_file()for path in e['implementation_files']+e['test_modules']),'metadata source slice files '+e['functional_id'])
+   ck(e.get('clock',{}).get('domains')and e.get('parameters',{}).get('provider_files')and e.get('vectors',{}).get('authoritative_vectors')and e.get('error_outcomes') if e['functional_id']=='F13' else e.get('clock',{}).get('domains')and e.get('parameters',{}).get('provider_files')and e.get('vectors',{}).get('authoritative_vectors'),'metadata source slice maps '+e['functional_id'])
  reader=next(r for r in d['programme_roots']if r['root_id']=='reader_eof')
  frontend=next(r for r in d['programme_roots']if r['root_id']=='frontend_control')
- others=[r for r in d['programme_roots']if r['root_id']not in{'reader_eof','frontend_control','spatial_audio','spatial_control','integrity'}]
+ others=[r for r in d['programme_roots']if r['root_id']not in{'reader_eof','frontend_control','spatial_audio','spatial_control','integrity','metadata'}]
  ck(all(r=={'root_id':r['root_id'],'materialization_status':'INVENTORIED_PENDING_P1.3_MATERIALIZATION'}for r in others),'deferred root precision')
  ck(reader['materialization_status']=='MATERIALIZED'and reader['implementation_status']=='LOCALLY_VERIFIED'and reader['schema_file']=='parameters/adm-installed48-state-v1.json'and reader['schema_version']=='selected-adm-installed48-state.v3','reader_eof schema identity')
  ck(len(reader['schema_pointers'])==7 and len(reader['fields'])==7,'reader_eof fields/pointers')
@@ -2401,12 +2470,12 @@ def run(root=ROOT):
  for n,w in deps.items():
   c=root/'crates'/f'jocforge-{n}';cfg=tomllib.loads((c/'Cargo.toml').read_text(encoding='utf-8'));ck(set(cfg.get('dependencies',{}))==w,'dependency '+n);ck(not(c/'build.rs').exists(),'build script')
   for p in(c/'src').rglob('*.rs'):
-   s=p.read_text(encoding='utf-8').lower();guard=s.replace('deployedcompat','');ck(not any(x in guard for x in('legacy','compat','fallback','ffmpeg','concat!','include!','#[path')),'source token '+str(p));ck(not(re.search(r'\btrait\b',s)and re.search(r'\busize\b',s)),'trait usize');ck(not re.search(r'pub\s+(?:(?:async|unsafe)\s+)*(?:extern\s+"[^"]+"\s+)?fn[^\{]*\busize\b[^\{]*\{',s),'public usize');ck(not re.search(r'use\s+std::(?:fs|process|env|net)\s+as',s),'aliased io');
+   s=p.read_text(encoding='utf-8').lower();guard=s.replace('deployed_compat','').replace('deployedcompat','');ck(not any(x in guard for x in('legacy','compat','fallback','ffmpeg','concat!','include!','#[path')),'source token '+str(p));ck(not(re.search(r'\btrait\b',s)and re.search(r'\busize\b',s)),'trait usize');ck(not re.search(r'pub\s+(?:(?:async|unsafe)\s+)*(?:extern\s+"[^"]+"\s+)?fn[^\{]*\busize\b[^\{]*\{',s),'public usize');ck(not re.search(r'use\s+std::(?:fs|process|env|net)\s+as',s),'aliased io');
    if p.name!='mod.rs'and any(x in p.parts for x in('codec','integrity','joc')):
     code='\n'.join(x for x in s.splitlines()if x.strip()and not x.lstrip().startswith('//'))
     relative=p.relative_to(root).as_posix()
     # F05O rowdata and F05T trim direct slices remain separate from full F05O/F05T and F05L production.
-    approved_joc_source_files={'crates/jocforge-domain/src/joc/oamd.rs',*next(e for e in es if e['functional_id']=='F05R56')['implementation_files'],'crates/jocforge-domain/src/joc/oamd/reader_target/tests.rs',*[path for direct in next(e for e in es if e['functional_id']=='F05O')['direct_slices']for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F05T')['direct_slices']for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F14K')['direct_slices']for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F14K')['direct_slices']for path in direct['test_modules']]}
+    approved_joc_source_files={'crates/jocforge-domain/src/joc/oamd.rs',*next(e for e in es if e['functional_id']=='F05R56')['implementation_files'],'crates/jocforge-domain/src/joc/oamd/reader_target/tests.rs',*[path for direct in next(e for e in es if e['functional_id']=='F05O')['direct_slices']for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F05T')['direct_slices']for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F14K')['direct_slices']for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F14K')['direct_slices']for path in direct['test_modules']],*[path for functional_id in ('F13','F13F','F13T')for path in next(e for e in es if e['functional_id']==functional_id).get('implementation_files',[])],*[path for functional_id in ('F13','F13F','F13T')for path in next(e for e in es if e['functional_id']==functional_id).get('test_modules',[])]}
     ck(not code or relative in approved_joc_source_files,'empty leaf item '+relative)
  transaction=(root/'crates/jocforge-domain/src/transaction/mod.rs').read_text(encoding='utf-8');transaction_code='\n'.join(x for x in transaction.splitlines()if x.strip()and not x.lstrip().startswith('//'));ck('pub struct CallbackTransactionId(String);' in transaction_code and 'pub enum CallbackTransactionIdError' in transaction_code and 'pub fn new' in transaction_code and 'pub fn as_str' in transaction_code and 'CallbackTransactionCoordinator' not in transaction_code and not any(marker in transaction_code for marker in ('pub fn commit(', 'pub fn abort(', 'pub fn fatal(')) and not (root/'crates/jocforge-domain/src/transaction/callback.rs').exists(),'shared CallbackTransactionId only before coordinator implementation');ck(not(root/'crates/jocforge-domain/src/frontend/config.rs').exists()and not(root/'crates/jocforge-domain/src/frontend/events.rs').exists(),'frontend control Rust before P1.3-B implementation approval');provider_source=(root/'crates/jocforge-domain/src/frontend/provider.rs').read_text(encoding='utf-8');ck('serde_json::to_'not in provider_source and'pub use serde_json::Value'not in provider_source and'#[derive(Serialize'not in provider_source and provider_source.index('let actual = ProviderSha256::digest')<provider_source.index('serde_json::from_slice'),'provider parser/canonical boundary');ck('manifest: &ValidatedF01EPackageManifest'in provider_source and'validate_f01e_package_manifest'in provider_source and'let entry = parse_f01e_manifest_entry(evidence.bytes())?'in provider_source and'manifest.provider_sha256 != actual'in provider_source,'provider manifest proof chain');rust_sources='\n'.join(p.read_text(encoding='utf-8')for p in(root/'crates').rglob('*.rs'));ck('C:\\Users\\'not in rust_sources,'absolute user path in Rust source');production_sources='\n'.join(p.read_text(encoding='utf-8').split('#[cfg(test)]',1)[0]for p in(root/'crates').glob('*/src/**/*.rs')if p.name!='tests.rs'and not p.name.endswith('_tests.rs')and'tests'not in p.parts);ck('tests/fixtures/f01e_provider'not in production_sources and'f01e_provider/MANIFEST.json'not in production_sources,'fixture path in production source')
  frontend_state=(root/'crates/jocforge-domain/src/frontend/state.rs').read_text(encoding='utf-8')

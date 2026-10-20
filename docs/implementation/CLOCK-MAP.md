@@ -98,9 +98,9 @@
 | F12S | — | — | INVENTORIED |
 | F12SC | — | — | INVENTORIED |
 | F12A | — | — | INVENTORIED |
-| F13 | — | — | INVENTORIED |
-| F13F | — | — | INVENTORIED |
-| F13T | — | — | INVENTORIED |
+| F13 | `CodecSourceIndex`<br>`JocDispatchIndex`<br>`PublishedAuIndex` | `source s advances dispatch s+1; AU is absent for s<2 and s-2 otherwise`<br>`ordinary payload writers join AU j=s-2; ID14 writer joins as s-1`<br>`source 0 and 1 complete queue/timer work without publication` | INVENTORIED |
+| F13F | `CodecSourceIndex`<br>`PublishedAuIndex` | `push then immediate pop in ID11/ID1/ID2/ID14 order`<br>`ordinary pop writer s-2`<br>`ID14 pop writer s-1` | INVENTORIED |
+| F13T | `CodecSourceIndex` | `one ID1 timer update per 1536-sample source s including priming sources`<br>`six timer periods and input/output field mappings` | INVENTORIED |
 | F13C | — | — | INVENTORIED |
 | F13D2 | — | — | INVENTORIED |
 | F14 | — | — | INVENTORIED |
@@ -119,4 +119,5 @@
 | F05O/oamd-single-rowdata-body-decoder | — | `The body reader is stateless and takes no callback, source, writer, or AU clock.` |
 | F05O/single-frame-oamd-body-assembler | — | `The single-frame body assembler is stateless and consumes no callback, source, writer, or AU clock.` |
 | F05T/trim-section-codec | — | `The trim codec and selected DBMD projection are stateless and consume no callback, source, writer, AU, or transaction clock.` |
+| F13/selected-metadata-owner-source-stage | `CodecSourceIndex`<br>`JocDispatchIndex`<br>`PublishedAuIndex` | `source s`<br>`dispatch s+1`<br>`AU absent for s<2 else s-2`<br>`ordinary writer s-2`<br>`ID14 writer s-1` |
 | F14K/public-keyless-integrity-owner | `CodecSourceIndex`<br>`JocDispatchIndex`<br>`PublishedAuIndex` | `source_index is the next committed CodecSourceIndex`<br>`dispatch = source_index + 1`<br>`au_index is null for source 0 and 1, then source_index - 2`<br>`the first two source calls execute all three integrity stages with published=false`<br>`source indices >=2 produce published=true and increment published_au_count once`<br>`EOF requires the exact expected source count and publishes max(0, expected_source_count - 2) AUs` |

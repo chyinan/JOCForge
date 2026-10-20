@@ -10,4 +10,6 @@ F05R56 producer errors retain the selected contract labels `R56T_STATE_ERROR`, `
 
 F14K 的 integrity direct slice 只接受 `keyless-crc32-crc8-crc16.v1`。其他 profile（包括私有认证）返回 `UNSUPPORTED_PROFILE`，不会回退到公开 CRC。`INTEGRITY_SOURCE_ORDER`、`INTEGRITY_DISPATCH_ORDER`、`INTEGRITY_AU_ORDER`、provider、slot、frame 或 CRC 错误都会丢弃 provisional outputs 和 receipts，保留 committed state，并将本地 attempt 标记为 `RETIRED`。该 slice 的 owner-local commit 不代表 global CALLBACK commit；精确 outcome 见 `ERROR-MAP.md`。
 
+F13 selected metadata owner 的本地错误码还覆盖 provider/wrapper identity、programme/wrapper lineage、source/dispatch/AU order、readiness、writer generation、timer、ID1 wire field、capacity、occupied queue、EMDF serialization、EOF source count、finalized 和 retired 状态。stage fatal 丢弃 cloned timer/queue/serializer work 与 receipt，保持 canonical committed bytes 不变并将 attempt 标为 `RETIRED`；constructor identity error 则在 owner admission 前拒绝。所有标签都是 clean-room local outcomes，不声明与 native 错误码等价；MEASUREMENT/FINALIZE/RESTART 和 global CallbackTransaction outcome 尚未开放。
+
 发布规则已经由 GTC 和 F15P 定义：所有校验完成前不替换目标；短写循环必须达到 4,096 bytes；零进展、readback、durability 或 replace 失败均为 fatal。失败 attempt 的 temp artifact 标为 abandoned。同一 attempt 不得通过 truncate 后继续。当前仍没有发布实现。
