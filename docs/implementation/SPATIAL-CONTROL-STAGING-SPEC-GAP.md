@@ -53,6 +53,8 @@
 
 **未运行**：全部 serializer、parser 和 roundtrip vectors。
 
+逐项输入、验收矩阵和阻塞条件见 [REFERENCE-ROUNDTRIP-BLOCKED-GAP.json](REFERENCE-ROUNDTRIP-BLOCKED-GAP.json)，其文件 hash 由配套 manifest 固定。
+
 ### C. Receipt 和 transaction 合同
 
 **已知**

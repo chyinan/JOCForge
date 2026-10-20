@@ -1,0 +1,120 @@
+{
+  "schema": "jocforge-reference-roundtrip-blocked-gap.v1",
+  "status": "BLOCKED_NOT_NORMATIVE_CONTRACT",
+  "scope": "implementation-side gap record; no new native or washed observation",
+  "source_implementer_manifest_sha256": "43f7fcf730c7c5c321aa884d1810aa039427d0ae2f97f7cc94f93bfc525d404b",
+  "source_registry": {
+    "COLD-SERIALIZER-EVIDENCE.json": "6a0db3edb8a56145c63b3f1d55853f21fe656eb7594d5de9fc9fc00bc5ffed0f",
+    "REQUIRED-FRAMING-RULES.json": "7396aaf144c102db7e395f090bf645e7db2d827d6bf8ecc3a39f870c73e0373d",
+    "MINIMUM-EXTERNAL-EVIDENCE.json": "7e078cfa1da60dcf0580a5fe070d6255c4c8cfa2265b862242965342210c922f",
+    "PARENT-COLD-DESIGN-GAP-MATRIX.md": "422a5cc9d6ded5befc37f0460941c3993d77207812718bc3ac0ed40941ddc8c6",
+    "PARENT-COLD-CANONICAL-ENCODING-CANDIDATE-GAP.json": "7ef18915278d1b5efa38d537cb4a7b5ff440ea663923dfbfbe5c4cf82ead00c3"
+  },
+  "serializer_boundary": {
+    "implementation": "NOT_IMPLEMENTED",
+    "input_schema": "NOT_DEFINED",
+    "canonical_preimage": "NOT_DELIVERED",
+    "expected_bytes": "NOT_DELIVERED",
+    "expected_length": "NOT_DEFINED",
+    "expected_sha256": "NOT_DELIVERED",
+    "private_auth": "EXCLUDED"
+  },
+  "parser_boundary": {
+    "independent_parser": "NOT_IMPLEMENTED",
+    "input_grammar": "NOT_DEFINED",
+    "field_consumption_exactly_once": "NOT_VERIFIED",
+    "reserialization_byte_exact": "NOT_RUN"
+  },
+  "cold_vector": {
+    "complete_logical_input": "NOT_DEFINED",
+    "expected_preimage_bytes": "NOT_DELIVERED",
+    "expected_length": "NOT_DEFINED",
+    "domain_separator": "NOT_DEFINED",
+    "expected_digest": "NOT_DELIVERED",
+    "expected_values_used_as_control_flow": false
+  },
+  "positive_acceptance": {
+    "required": [
+      "serializer output bytes equal the complete cold vector",
+      "serialized length and digest equal the vector",
+      "independent parser consumes each declared field exactly once",
+      "parse then reserialize is byte-exact",
+      "no scratch fields, pointers, structure padding, or unknown zero-fill"
+    ],
+    "status": "NOT_RUN",
+    "missing_inputs": [
+      "normative complete field inventory",
+      "canonical field order and framing",
+      "integer width and endian rules",
+      "F32 NaN, negative-zero, finite-value, and rounding rules",
+      "null, presence, optional, reserved, and padding rules",
+      "domain separator and digest preimage rule",
+      "complete cold input and expected bytes, length, digest"
+    ]
+  },
+  "negative_vector_matrix": [
+    {
+      "case": "truncated input",
+      "expected_behavior": "reject before accepting a complete parsed state",
+      "exact_error": "NOT_DEFINED",
+      "vector": "NOT_RUN"
+    },
+    {
+      "case": "invalid enum",
+      "expected_behavior": "reject according to a normative enum domain",
+      "exact_error": "NOT_DEFINED",
+      "vector": "NOT_RUN"
+    },
+    {
+      "case": "NaN or unsupported F32 encoding",
+      "expected_behavior": "must follow a normative F32 rule; no encoding may be guessed",
+      "exact_error": "NOT_DEFINED",
+      "vector": "NOT_RUN"
+    },
+    {
+      "case": "unknown field or section",
+      "expected_behavior": "must follow a normative version/unknown-field policy; zero-fill is forbidden",
+      "exact_error": "NOT_DEFINED",
+      "vector": "NOT_RUN"
+    },
+    {
+      "case": "cross-profile identity",
+      "expected_behavior": "reject a profile binding that differs from the selected row",
+      "serializer_parser_vector": "NOT_RUN",
+      "existing_state_binding_evidence_scope": "does not prove serializer/parser behavior"
+    }
+  ],
+  "receipt_transaction_boundary": {
+    "success_commit_vector": "NOT_RUN",
+    "invalid_input_zero_commit_vector": "NOT_RUN",
+    "fatal_retirement_vector": "NOT_RUN",
+    "destroy_fresh_reconstruction_vector": "NOT_RUN",
+    "disk_partial_write_contract": "NOT_DEFINED"
+  },
+  "omitted_or_unresolved_field_groups": [
+    "descriptor mode-1 tuple",
+    "public measurement fields +8/+12/+16 names",
+    "external-metadata unnamed fields and profile-specific owner writes",
+    "27xU32 dictionary identity join to packed metadata",
+    "F01E parent embedding",
+    "optional diffusion/source-cache framing",
+    "current_flags/current_features persistence",
+    "non-empty writer-set encoding",
+    "receipt owner/token/generation fields"
+  ],
+  "minimum_closure_conditions": [
+    "complete field inventory with every field consumed, excluded, zeroed, or explicitly unresolved",
+    "one normative schema with no alternative field orders or encodings",
+    "complete canonical preimage vector with bytes, length, domain separator, and digest",
+    "independent serializer and parser implementing only the washed contract",
+    "positive byte-exact roundtrip and the listed negative vectors",
+    "receipt and commit/failure vectors with generation and durable-write rules"
+  ],
+  "gates": {
+    "implementation_ready": "NO",
+    "production_allowed": false,
+    "successful_cold_vector_generated": false,
+    "serializer_implemented": false,
+    "parser_implemented": false
+  }
+}
