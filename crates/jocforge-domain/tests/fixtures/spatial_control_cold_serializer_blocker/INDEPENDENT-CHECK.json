@@ -1,5 +1,5 @@
 {
-  "schema": "spatial-control-cold-serializer-blocker-independent-check.v14",
+  "schema": "spatial-control-cold-serializer-blocker-independent-check.v15",
   "checks": [
     {
       "id": "dll_identity",
@@ -70,6 +70,10 @@
       "pass": true
     },
     {
+      "id": "channel_external_trim_semantics",
+      "pass": true
+    },
+    {
       "id": "no_entrypoint",
       "pass": true
     },
@@ -108,7 +112,8 @@
     "PARENT-COLD-CONFIG-BOUNDARY.json",
     "PARENT-COLD-CONFIG-SEMANTICS.json",
     "PARENT-COLD-SEMANTIC-CORRECTIONS.json",
-    "MEASUREMENT-ALIAS-RESOLUTION.json"
+    "MEASUREMENT-ALIAS-RESOLUTION.json",
+    "CHANNEL-EXTERNAL-METADATA-TRIM-SEMANTICS.json"
   ],
   "research_files_read": false,
   "serializer_execution": false,

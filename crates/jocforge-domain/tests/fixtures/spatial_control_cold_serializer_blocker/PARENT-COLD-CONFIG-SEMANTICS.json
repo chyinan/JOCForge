@@ -53,15 +53,15 @@
     {"descriptor_offset": 112, "type": "f32", "semantic": "true peak", "observed": -3.954448699951172, "status": "BOUND"}
   ],
   "referenced_record_semantics": {
-    "channel_records": {"record_bytes": 6, "layout": "u32 plus u16 copied byte-for-byte", "semantic_names": "NOT_FIELD_COMPLETE"},
-    "external_metadata_control": {"bytes": 120, "copy_rule": "copied byte-for-byte when external metadata is present and mode is not one", "known_read": "byte117 influences dsurexmod conversion before the copy", "semantic_names": "NOT_FIELD_COMPLETE"},
-    "trim_records": {"input_record_bytes": 28, "count": 9, "portable_candidate_payload_bytes": 24, "copy_rule": "discard each input record's first four bytes and copy the following 24 bytes in input order", "key_semantic": "NOT_CAPTURED", "payload_semantics": "NOT_FIELD_COMPLETE"}
+    "channel_records": {"record_bytes": 6, "layout": "U16 input_channel_key, U16 host_index, U16 source_ordinal", "source_ordinal_rule": "object ordinal follows ascending TrackUID byte-string order; bed ordinal follows resolver encounter order", "semantic_names": "FIELD_COMPLETE"},
+    "external_metadata_control": {"bytes": 120, "copy_rule": "copied byte-for-byte when external metadata is present and mode is not one", "known_read": "byte117 is warm-mode host enum; current4 derives from DBMD section9 byte152 low3 current3 and converts to Type11 trim mode3", "semantic_names": "NOT_FIELD_COMPLETE"},
+    "trim_records": {"input_record_bytes": 28, "count": 9, "record_prefix": "byte0 key plus three unspecified padding bytes", "portable_candidate_payload_bytes": 24, "copy_rule": "discard each input record's first four bytes and copy the following 24 bytes in input order", "key_order": [0,1,2,3,4,5,6,7,8], "upstream_dbmd_permutation": [0,3,6,1,4,7,2,5,8], "payload_semantics": "PARTIAL_FROM_FLAG_THREE_GAINS_TWO_BALANCES"}
   },
   "portable_contract_status": {
     "descriptor_layout_complete": true,
     "policy_block_semantics_complete": false,
     "measurement_semantics_complete": false,
-    "channel_record_semantics_complete": false,
+    "channel_record_semantics_complete": true,
     "external_metadata_semantics_complete": false,
     "trim_record_semantics_complete": false,
     "native_portable_field_order": "NOT_OBSERVED",

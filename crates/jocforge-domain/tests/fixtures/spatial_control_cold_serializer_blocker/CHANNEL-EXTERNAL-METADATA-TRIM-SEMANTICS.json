@@ -1,0 +1,70 @@
+{
+  "schema": "sanitized-channel-external-metadata-trim-semantics.v1",
+  "source_evidence_identity": {
+    "source_ordinal_rules_sha256": "31effd86c8c839127564833d780a05e205ec047bc50a6d10507281ee250e0f43",
+    "type11_trim_lineage_sha256": "cae143e894727bb7d18c02971827dddf6023e2fa09e45b84a62e3999f2c4c3c4",
+    "host_trim_record_producer_sha256": "3aa4f5d74a366de3b13c72d444925449c91a7b2e3fe1dad8f0cbbe42b17f678b"
+  },
+  "channel_record_6": {
+    "bytes": 6,
+    "fields": [
+      {"offset": 0, "bytes": 2, "type": "u16", "semantic": "input_channel_key", "consumer": "0x426e80 raw96-to-DTO adapter", "status": "BOUND"},
+      {"offset": 2, "bytes": 2, "type": "u16", "semantic": "host_index", "consumer": "not read by 0x426e80", "status": "BOUND_NOT_CURRENT_ADAPTER_CONSUMED"},
+      {"offset": 4, "bytes": 2, "type": "u16", "semantic": "source_ordinal", "consumer": "not read by 0x426e80", "status": "BOUND_NOT_CURRENT_ADAPTER_CONSUMED"}
+    ],
+    "source_ordinal_order": {
+      "objects": "ascending resolved TrackUID byte-string order, stable for equal keys",
+      "beds": "resolver encounter order"
+    },
+    "field_complete": true
+  },
+  "external_metadata_120": {
+    "copy_rule": "0x178dc0 copies all 120 bytes byte-for-byte when metadata is present and source mode is not one",
+    "known_field": {
+      "offset": 117,
+      "semantic": "warm-mode host enum",
+      "observed": 4,
+      "lineage": "DBMD section9 byte152 low3 value3 -> host enum4 -> Type11 trim mode3"
+    },
+    "full_field_schema": "NOT_CAPTURED",
+    "field_complete": false
+  },
+  "trim_lineage": {
+    "dbmd_section9_bytes": 248,
+    "dbmd_section9_warm_mode": {"offset": 152, "bits": "low3", "observed": 3},
+    "dbmd_section10": {
+      "record_count": 9,
+      "record_bytes": 15,
+      "record_offset": 7,
+      "known_fields": ["flag byte", "three F32 gains", "two signed-magnitude balance bytes"]
+    },
+    "dbmd_install_key_permutation": [0,3,6,1,4,7,2,5,8],
+    "host_record_28": {
+      "count": 9,
+      "prefix_bytes": 4,
+      "prefix_layout": "byte0 key plus bytes1..3 unspecified padding",
+      "emitted_key_order": [0,1,2,3,4,5,6,7,8],
+      "payload_bytes": 24,
+      "payload_copy": "0x178dc0 discards the four-byte prefix and copies payload byte-for-byte"
+    },
+    "consumer": "0x1acfe0 installs host ordinal i under the matching permutation, restoring original DBMD ordinal",
+    "current_downstream_trim": {
+      "mode": 3,
+      "flags": [1,0,0,1,0,1,1,0,1],
+      "groups": [[16,16,16,0,0],[16,16,16,0,0],[16,16,16,0,0],[16,16,16,0,0],[16,16,16,0,0],[16,16,16,0,0],[16,16,16,0,0],[16,16,16,0,0],[16,16,16,0,0]],
+      "per_row_flags": 0
+    },
+    "host_payload_field_offsets": "NOT_FIELD_COMPLETE",
+    "field_complete": false
+  },
+  "portable_contract_effect": {
+    "channel_record_semantics_complete": true,
+    "external_metadata_semantics_complete": false,
+    "trim_payload_semantics_complete": false,
+    "native_portable_order_endian_version_optional_checksum": "NOT_OBSERVED",
+    "native_serializer_restore_roundtrip": "NOT_RUN",
+    "production_allowed": false
+  },
+  "product_wide_absence_claim": false,
+  "raw_metadata_or_blocks_delivered": false
+}

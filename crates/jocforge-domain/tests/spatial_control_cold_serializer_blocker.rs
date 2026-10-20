@@ -5,7 +5,7 @@ use std::fmt::Write as _;
 use std::fs;
 use std::path::PathBuf;
 
-const MANIFEST_SHA256: &str = "4506c60b64e39439effc7729d7cbf6402a884681bb0a707e938cf4a7325bb425";
+const MANIFEST_SHA256: &str = "8ed92a7633f0b3196b15ed40066117e8e8ccbb5076f303f661b4512e54f618bf";
 
 fn fixture_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -36,10 +36,13 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(digest_hex(&manifest_bytes), MANIFEST_SHA256);
 
     let manifest: Value = serde_json::from_slice(&manifest_bytes).expect("manifest JSON");
-    assert_eq!(manifest["schema"], "washed-implementer-blocker-manifest.v9");
+    assert_eq!(
+        manifest["schema"],
+        "washed-implementer-blocker-manifest.v10"
+    );
     assert_eq!(
         manifest["identity"],
-        "spatial-control-cold-serializer.blocked.v14"
+        "spatial-control-cold-serializer.blocked.v15"
     );
     assert_eq!(manifest["status"], "BLOCKED_NO_EXECUTABLE_SERIALIZER");
     assert_eq!(
@@ -62,8 +65,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "producer_alias": "measured_loudness",
             "consumer_role_alias": "selected_loudness_for_dialnorm",
             "same_storage": true,
-            "distinct_field_claim": false,
-            "implementer_rule": "materialize one field only"
+            "distinct_field_claim": false
         })
     );
 
@@ -74,6 +76,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             .map(|entry| entry["file"].as_str().unwrap())
             .collect::<Vec<_>>(),
         [
+            "CHANNEL-EXTERNAL-METADATA-TRIM-SEMANTICS.json",
             "COLD-SERIALIZER-EVIDENCE.json",
             "COLD-SERIALIZER-FINAL-BLOCKER.md",
             "FILEWRITER-FWRITE-DYNAMIC-JOIN.json",
@@ -104,7 +107,8 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         "PARENT-COLD-CONFIG-BOUNDARY.json",
         "PARENT-COLD-CONFIG-SEMANTICS.json",
         "PARENT-COLD-SEMANTIC-CORRECTIONS.json",
-        "MEASUREMENT-ALIAS-RESOLUTION.json"
+        "MEASUREMENT-ALIAS-RESOLUTION.json",
+        "CHANNEL-EXTERNAL-METADATA-TRIM-SEMANTICS.json"
     ]);
     for entry in files {
         let name = entry["file"].as_str().expect("manifest file name");
@@ -123,15 +127,15 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let source = &manifest["source_evidence"];
     assert_eq!(
         source["research_manifest_sha256"],
-        "fbf3eb707d0058e3e97dc24557f1397c683864578e9a5afce2c6dace8deb73b5"
+        "4c20aa510d3905075c06f741c87ee2b69479921b5e49c3f958bd87ad8dea75b3"
     );
     assert_eq!(
         source["research_independent_check_sha256"],
-        "291f157c813afdf9cd086d22951784ca489296e510c9d1aa49c675b0edaca2e1"
+        "33083ce43a8be71e2aeb035b77f3b6db2d3a02dbaff73d969f57276d7f7bd2a9"
     );
     assert_eq!(
-        source["measurement_alias_resolution_sha256"],
-        "b1608911f6c00d42c648cfb26962bc014743351d4feed8fd49bb00220826f5d1"
+        source["channel_external_trim_semantics_sha256"],
+        "3be6b6060ada3485212bde2fbb581581f251240c47b6b2a8832c121e9214e764"
     );
     assert_eq!(source["serializer_execution"], "NOT_RUN");
     assert_eq!(source["canonical_preimage"], Value::Null);
@@ -229,13 +233,50 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(descriptor_summary["measurement_semantics_complete"], false);
     assert_eq!(
         descriptor_summary["channel_record_semantics_complete"],
-        false
+        true
     );
     assert_eq!(
         descriptor_summary["external_metadata_semantics_complete"],
         false
     );
     assert_eq!(descriptor_summary["trim_record_semantics_complete"], false);
+    assert_eq!(manifest["channel_semantics"]["record_bytes"], 6);
+    assert_eq!(
+        manifest["channel_semantics"]["fields"],
+        json!(["input_channel_key", "host_index", "source_ordinal"])
+    );
+    assert_eq!(
+        manifest["channel_semantics"]["field_widths"],
+        json!([2, 2, 2])
+    );
+    assert_eq!(manifest["channel_semantics"]["semantics_complete"], true);
+    assert_eq!(
+        manifest["channel_semantics"]["raw_records_delivered"],
+        false
+    );
+    assert_eq!(manifest["external_metadata"]["extent_bytes"], 120);
+    assert_eq!(
+        manifest["external_metadata"]["copy_condition"],
+        "metadata present and mode != 1"
+    );
+    assert_eq!(
+        manifest["external_metadata"]["byte117"],
+        "warm_mode_host_enum4"
+    );
+    assert_eq!(manifest["external_metadata"]["full_schema"], "NOT_CAPTURED");
+    assert_eq!(manifest["trim_semantics"]["dbmd_section10_records"], 9);
+    assert_eq!(manifest["trim_semantics"]["dbmd_record_bytes"], 15);
+    assert_eq!(
+        manifest["trim_semantics"]["install_key_permutation"],
+        json!([0, 3, 6, 1, 4, 7, 2, 5, 8])
+    );
+    assert_eq!(manifest["trim_semantics"]["host_record_bytes"], 28);
+    assert_eq!(manifest["trim_semantics"]["payload_bytes"], 24);
+    assert_eq!(
+        manifest["trim_semantics"]["payload_field_offsets"],
+        "NOT_FIELD_COMPLETE"
+    );
+    assert_eq!(manifest["trim_semantics"]["raw_payload_delivered"], false);
     assert_eq!(
         descriptor_summary["native_portable_contract"],
         "NOT_OBSERVED"
@@ -1028,11 +1069,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(record_semantics["channel_records"]["record_bytes"], 6);
     assert_eq!(
         record_semantics["channel_records"]["layout"],
-        "u32 plus u16 copied byte-for-byte"
+        "U16 input_channel_key, U16 host_index, U16 source_ordinal"
     );
     assert_eq!(
         record_semantics["channel_records"]["semantic_names"],
-        "NOT_FIELD_COMPLETE"
+        "FIELD_COMPLETE"
     );
     assert_eq!(record_semantics["external_metadata_control"]["bytes"], 120);
     assert_eq!(
@@ -1050,20 +1091,25 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         "discard each input record's first four bytes and copy the following 24 bytes in input order"
     );
     assert_eq!(
-        record_semantics["trim_records"]["key_semantic"],
-        "NOT_CAPTURED"
+        record_semantics["trim_records"]["record_prefix"],
+        "byte0 key plus three unspecified padding bytes"
+    );
+    assert_eq!(
+        record_semantics["trim_records"]["key_order"],
+        json!([0, 1, 2, 3, 4, 5, 6, 7, 8])
+    );
+    assert_eq!(
+        record_semantics["trim_records"]["upstream_dbmd_permutation"],
+        json!([0, 3, 6, 1, 4, 7, 2, 5, 8])
     );
     assert_eq!(
         record_semantics["trim_records"]["payload_semantics"],
-        "NOT_FIELD_COMPLETE"
+        "PARTIAL_FROM_FLAG_THREE_GAINS_TWO_BALANCES"
     );
 
     let portable_contract = &cold_semantics["portable_contract_status"];
     assert_eq!(portable_contract["descriptor_layout_complete"], true);
-    assert_eq!(
-        portable_contract["channel_record_semantics_complete"],
-        false
-    );
+    assert_eq!(portable_contract["channel_record_semantics_complete"], true);
     assert_eq!(
         portable_contract["external_metadata_semantics_complete"],
         false
@@ -1091,6 +1137,142 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(cold_semantics["production_allowed"], false);
     assert_eq!(cold_semantics["raw_referenced_blocks_delivered"], false);
     assert_eq!(cold_semantics["private_auth"], "EXCLUDED");
+
+    let channel_external_trim = read_json("CHANNEL-EXTERNAL-METADATA-TRIM-SEMANTICS.json");
+    assert_eq!(
+        channel_external_trim["schema"],
+        "sanitized-channel-external-metadata-trim-semantics.v1"
+    );
+    let channel_record = &channel_external_trim["channel_record_6"];
+    assert_eq!(channel_record["bytes"], 6);
+    assert_eq!(channel_record["fields"].as_array().unwrap().len(), 3);
+    assert_eq!(channel_record["fields"][0]["offset"], 0);
+    assert_eq!(channel_record["fields"][0]["semantic"], "input_channel_key");
+    assert_eq!(channel_record["fields"][1]["offset"], 2);
+    assert_eq!(channel_record["fields"][1]["semantic"], "host_index");
+    assert_eq!(
+        channel_record["fields"][1]["status"],
+        "BOUND_NOT_CURRENT_ADAPTER_CONSUMED"
+    );
+    assert_eq!(channel_record["fields"][2]["offset"], 4);
+    assert_eq!(channel_record["fields"][2]["semantic"], "source_ordinal");
+    assert_eq!(
+        channel_record["fields"][2]["status"],
+        "BOUND_NOT_CURRENT_ADAPTER_CONSUMED"
+    );
+    assert_eq!(
+        channel_record["source_ordinal_order"]["objects"],
+        "ascending resolved TrackUID byte-string order, stable for equal keys"
+    );
+    assert_eq!(
+        channel_record["source_ordinal_order"]["beds"],
+        "resolver encounter order"
+    );
+    assert_eq!(channel_record["field_complete"], true);
+
+    let external_metadata = &channel_external_trim["external_metadata_120"];
+    assert_eq!(
+        external_metadata["copy_rule"],
+        "0x178dc0 copies all 120 bytes byte-for-byte when metadata is present and source mode is not one"
+    );
+    assert_eq!(external_metadata["known_field"]["offset"], 117);
+    assert_eq!(
+        external_metadata["known_field"]["semantic"],
+        "warm-mode host enum"
+    );
+    assert_eq!(external_metadata["known_field"]["observed"], 4);
+    assert_eq!(external_metadata["full_field_schema"], "NOT_CAPTURED");
+    assert_eq!(external_metadata["field_complete"], false);
+
+    let trim_lineage = &channel_external_trim["trim_lineage"];
+    assert_eq!(trim_lineage["dbmd_section9_bytes"], 248);
+    assert_eq!(trim_lineage["dbmd_section9_warm_mode"]["offset"], 152);
+    assert_eq!(trim_lineage["dbmd_section9_warm_mode"]["bits"], "low3");
+    assert_eq!(trim_lineage["dbmd_section9_warm_mode"]["observed"], 3);
+    assert_eq!(trim_lineage["dbmd_section10"]["record_count"], 9);
+    assert_eq!(trim_lineage["dbmd_section10"]["record_bytes"], 15);
+    assert_eq!(trim_lineage["dbmd_section10"]["record_offset"], 7);
+    assert_eq!(
+        trim_lineage["dbmd_section10"]["known_fields"],
+        json!([
+            "flag byte",
+            "three F32 gains",
+            "two signed-magnitude balance bytes"
+        ])
+    );
+    assert_eq!(
+        trim_lineage["dbmd_install_key_permutation"],
+        json!([0, 3, 6, 1, 4, 7, 2, 5, 8])
+    );
+    assert_eq!(trim_lineage["host_record_28"]["count"], 9);
+    assert_eq!(trim_lineage["host_record_28"]["prefix_bytes"], 4);
+    assert_eq!(
+        trim_lineage["host_record_28"]["prefix_layout"],
+        "byte0 key plus bytes1..3 unspecified padding"
+    );
+    assert_eq!(
+        trim_lineage["host_record_28"]["emitted_key_order"],
+        json!([0, 1, 2, 3, 4, 5, 6, 7, 8])
+    );
+    assert_eq!(trim_lineage["host_record_28"]["payload_bytes"], 24);
+    assert_eq!(
+        trim_lineage["consumer"],
+        "0x1acfe0 installs host ordinal i under the matching permutation, restoring original DBMD ordinal"
+    );
+    assert_eq!(trim_lineage["current_downstream_trim"]["mode"], 3);
+    assert_eq!(
+        trim_lineage["current_downstream_trim"]["flags"],
+        json!([1, 0, 0, 1, 0, 1, 1, 0, 1])
+    );
+    assert_eq!(
+        trim_lineage["current_downstream_trim"]["groups"]
+            .as_array()
+            .unwrap()
+            .len(),
+        9
+    );
+    assert!(
+        trim_lineage["current_downstream_trim"]["groups"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .all(|group| group == &json!([16, 16, 16, 0, 0]))
+    );
+    assert_eq!(trim_lineage["current_downstream_trim"]["per_row_flags"], 0);
+    assert_eq!(
+        trim_lineage["host_payload_field_offsets"],
+        "NOT_FIELD_COMPLETE"
+    );
+    assert_eq!(trim_lineage["field_complete"], false);
+    assert_eq!(
+        channel_external_trim["portable_contract_effect"]["channel_record_semantics_complete"],
+        true
+    );
+    assert_eq!(
+        channel_external_trim["portable_contract_effect"]["external_metadata_semantics_complete"],
+        false
+    );
+    assert_eq!(
+        channel_external_trim["portable_contract_effect"]["trim_payload_semantics_complete"],
+        false
+    );
+    assert_eq!(
+        channel_external_trim["portable_contract_effect"]["native_portable_order_endian_version_optional_checksum"],
+        "NOT_OBSERVED"
+    );
+    assert_eq!(
+        channel_external_trim["portable_contract_effect"]["native_serializer_restore_roundtrip"],
+        "NOT_RUN"
+    );
+    assert_eq!(
+        channel_external_trim["portable_contract_effect"]["production_allowed"],
+        false
+    );
+    assert_eq!(channel_external_trim["product_wide_absence_claim"], false);
+    assert_eq!(
+        channel_external_trim["raw_metadata_or_blocks_delivered"],
+        false
+    );
 
     let semantic_corrections = read_json("PARENT-COLD-SEMANTIC-CORRECTIONS.json");
     assert_eq!(
@@ -1310,11 +1492,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let independent = read_json("INDEPENDENT-CHECK.json");
     assert_eq!(
         independent["schema"],
-        "spatial-control-cold-serializer-blocker-independent-check.v14"
+        "spatial-control-cold-serializer-blocker-independent-check.v15"
     );
     assert_eq!(independent["all_pass"], true);
     let checks = independent["checks"].as_array().expect("checks array");
-    assert_eq!(checks.len(), 23);
+    assert_eq!(checks.len(), 24);
     assert!(checks.iter().all(|check| check["pass"] == true));
     assert_eq!(
         checks
@@ -1339,6 +1521,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "parent_cold_config_semantics",
             "semantic_corrections",
             "measurement_alias_resolution",
+            "channel_external_trim_semantics",
             "no_entrypoint",
             "no_bytes",
             "framing_rules",

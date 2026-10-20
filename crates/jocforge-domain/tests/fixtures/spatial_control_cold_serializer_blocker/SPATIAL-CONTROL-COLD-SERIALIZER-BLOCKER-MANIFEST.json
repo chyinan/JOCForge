@@ -1,11 +1,11 @@
 {
-  "schema": "washed-implementer-blocker-manifest.v9",
-  "identity": "spatial-control-cold-serializer.blocked.v14",
+  "schema": "washed-implementer-blocker-manifest.v10",
+  "identity": "spatial-control-cold-serializer.blocked.v15",
   "status": "BLOCKED_NO_EXECUTABLE_SERIALIZER",
   "source_evidence": {
-    "research_manifest_sha256": "fbf3eb707d0058e3e97dc24557f1397c683864578e9a5afce2c6dace8deb73b5",
-    "research_independent_check_sha256": "291f157c813afdf9cd086d22951784ca489296e510c9d1aa49c675b0edaca2e1",
-    "measurement_alias_resolution_sha256": "b1608911f6c00d42c648cfb26962bc014743351d4feed8fd49bb00220826f5d1",
+    "research_manifest_sha256": "4c20aa510d3905075c06f741c87ee2b69479921b5e49c3f958bd87ad8dea75b3",
+    "research_independent_check_sha256": "33083ce43a8be71e2aeb035b77f3b6db2d3a02dbaff73d969f57276d7f7bd2a9",
+    "channel_external_trim_semantics_sha256": "3be6b6060ada3485212bde2fbb581581f251240c47b6b2a8832c121e9214e764",
     "serializer_execution": "NOT_RUN",
     "canonical_preimage": null,
     "authoritative_length": null,
@@ -16,6 +16,34 @@
     "private_auth": "excluded",
     "product_wide_absence_claim": false
   },
+  "channel_semantics": {
+    "record_bytes": 6,
+    "fields": ["input_channel_key", "host_index", "source_ordinal"],
+    "field_widths": [2, 2, 2],
+    "ordering": "tracks ascending resolved TrackUID byte-string stable on equal keys; beds resolver encounter order",
+    "semantics_complete": true,
+    "raw_records_delivered": false
+  },
+  "external_metadata": {
+    "extent_bytes": 120,
+    "copy_condition": "metadata present and mode != 1",
+    "byte117": "warm_mode_host_enum4",
+    "lineage": "DBMD section9 byte152 low3=3 -> host byte117=4 -> Type11 trim mode3",
+    "full_schema": "NOT_CAPTURED",
+    "raw_block_delivered": false
+  },
+  "trim_semantics": {
+    "dbmd_section10_records": 9,
+    "dbmd_record_bytes": 15,
+    "dbmd_record_fields": "flag, three F32 gains, two signed-magnitude balance bytes",
+    "install_key_permutation": [0, 3, 6, 1, 4, 7, 2, 5, 8],
+    "host_record_bytes": 28,
+    "host_prefix": "key byte plus three unspecified padding bytes",
+    "payload_bytes": 24,
+    "copied_payload_order": "input order after discarding four-byte prefix",
+    "payload_field_offsets": "NOT_FIELD_COMPLETE",
+    "raw_payload_delivered": false
+  },
   "measurement_alias_resolution": {
     "field_id": "measurement_result.measured_loudness",
     "measurement_result_offset": 20,
@@ -23,8 +51,7 @@
     "producer_alias": "measured_loudness",
     "consumer_role_alias": "selected_loudness_for_dialnorm",
     "same_storage": true,
-    "distinct_field_claim": false,
-    "implementer_rule": "materialize one field only"
+    "distinct_field_claim": false
   },
   "semantic_corrections": {
     "policy_plus4": "property36_semantic_name_unknown",
@@ -39,7 +66,7 @@
     "layout_complete": true,
     "policy_block_semantics_complete": false,
     "measurement_semantics_complete": false,
-    "channel_record_semantics_complete": false,
+    "channel_record_semantics_complete": true,
     "external_metadata_semantics_complete": false,
     "trim_record_semantics_complete": false,
     "native_portable_contract": "NOT_OBSERVED",
@@ -89,14 +116,15 @@
     "production_allowed": false
   },
   "files": [
+    { "file": "CHANNEL-EXTERNAL-METADATA-TRIM-SEMANTICS.json", "bytes": 3176, "sha256": "3be6b6060ada3485212bde2fbb581581f251240c47b6b2a8832c121e9214e764" },
     { "file": "COLD-SERIALIZER-EVIDENCE.json", "bytes": 3235, "sha256": "6a0db3edb8a56145c63b3f1d55853f21fe656eb7594d5de9fc9fc00bc5ffed0f" },
     { "file": "COLD-SERIALIZER-FINAL-BLOCKER.md", "bytes": 4159, "sha256": "4017a64a0c27e85b6ee308f6e9848d26a93290c04ff808846b1bbaf7315b322a" },
     { "file": "FILEWRITER-FWRITE-DYNAMIC-JOIN.json", "bytes": 3057, "sha256": "4d77a2fb99ba77d1e0bac1f79bb8d0f638f132a895eee9351c6d46025f2e0298" },
-    { "file": "INDEPENDENT-CHECK.json", "bytes": 2488, "sha256": "291f157c813afdf9cd086d22951784ca489296e510c9d1aa49c675b0edaca2e1" },
+    { "file": "INDEPENDENT-CHECK.json", "bytes": 2625, "sha256": "33083ce43a8be71e2aeb035b77f3b6db2d3a02dbaff73d969f57276d7f7bd2a9" },
     { "file": "MEASUREMENT-ALIAS-RESOLUTION.json", "bytes": 1318, "sha256": "b1608911f6c00d42c648cfb26962bc014743351d4feed8fd49bb00220826f5d1" },
     { "file": "MINIMUM-EXTERNAL-EVIDENCE.json", "bytes": 1123, "sha256": "7e078cfa1da60dcf0580a5fe070d6255c4c8cfa2265b862242965342210c922f" },
     { "file": "PARENT-COLD-CONFIG-BOUNDARY.json", "bytes": 3728, "sha256": "7f738cea345e356a22ad7d796c6e5b96db03eb38245331f8373a618de8e006e4" },
-    { "file": "PARENT-COLD-CONFIG-SEMANTICS.json", "bytes": 7928, "sha256": "82a0ed0671d0a2c320e156ef80950c196a0d1a05fe9c293aaa6df0e7781b0cb7" },
+    { "file": "PARENT-COLD-CONFIG-SEMANTICS.json", "bytes": 8290, "sha256": "88dadbef5ebe189b196ab9b10992c6ad4c12c291947cf68da3f0971b0f1ae7a8" },
     { "file": "PARENT-COLD-LIFECYCLE.json", "bytes": 3913, "sha256": "1f2992122f1d271238e59217b25b4139ba9d2b2c70710b9add98430b7282fd5f" },
     { "file": "PARENT-COLD-SEMANTIC-CORRECTIONS.json", "bytes": 3264, "sha256": "42142c4cad7f1cbd2e5f0c2810327ccdcabcf7055dde99be6466cb3610bbcdc4" },
     { "file": "PARENT-FILEWRITER-DYNAMIC-JOIN.json", "bytes": 3442, "sha256": "a2bd0eb000671b95190ed44a1359f4e349981b74a6f191b49e1469793b377edc" },
