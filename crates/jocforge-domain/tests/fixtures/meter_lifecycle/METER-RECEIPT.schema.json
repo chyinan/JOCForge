@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "meter-fixture-validation-receipt.v1",
+  "type": "object",
+  "required": ["schema", "kind", "production_allowed", "callback", "before_state_sha256", "recorded_after_state_sha256", "provider_sha256", "state_delta_committed", "commit_count"],
+  "properties": {
+    "schema": {"const": "meter-fixture-validation-receipt.v1"},
+    "kind": {"enum": ["CALLBACK", "FINALIZE"]},
+    "production_allowed": {"const": false},
+    "callback": {"type": "integer", "minimum": 0},
+    "before_state_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "recorded_after_state_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "provider_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "measurement_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "state_delta_committed": {"const": false},
+    "commit_count": {"const": 0}
+  }
+}

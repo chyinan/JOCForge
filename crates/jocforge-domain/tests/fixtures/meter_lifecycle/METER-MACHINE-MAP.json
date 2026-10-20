@@ -1,0 +1,10 @@
+{
+  "schema": "meter-owner-machine-map.v1",
+  "owner_id": "meter",
+  "profile_id": "bs1770-4-di-off-selected.v1",
+  "owner_order": ["lifecycle", "meter_frontend_oar", "shared_dv32", "window_k_energy", "true_peak", "integrated", "ungated", "programme_measurement"],
+  "callback_order": ["frontend", "OAR", "DV32", "valid-audio scheduler", "peaks and K-energy", "integrated and ungated", "proposal"],
+  "eof": {"zero_drains": 3, "private_flushes": 0},
+  "fixture_seam": {"production_allowed": false, "commit_count": 0, "state_delta": null},
+  "blocked": ["real ADM frontend/render", "real filter and true-peak whole execution", "production meter API", "global CallbackTransaction"]
+}

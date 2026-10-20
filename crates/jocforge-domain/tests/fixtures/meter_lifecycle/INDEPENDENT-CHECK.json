@@ -1,0 +1,101 @@
+{
+  "schema": "meter-owner-independent-check.v1",
+  "checks": [
+    {
+      "id": "identity_cold",
+      "pass": true
+    },
+    {
+      "id": "identity_input",
+      "pass": true
+    },
+    {
+      "id": "identity_results",
+      "pass": true
+    },
+    {
+      "id": "provider",
+      "pass": true
+    },
+    {
+      "id": "cold",
+      "pass": true
+    },
+    {
+      "id": "success_0",
+      "pass": true
+    },
+    {
+      "id": "success_1",
+      "pass": true
+    },
+    {
+      "id": "success_2",
+      "pass": true
+    },
+    {
+      "id": "success_3",
+      "pass": true
+    },
+    {
+      "id": "success_4",
+      "pass": true
+    },
+    {
+      "id": "failure_callback_clock",
+      "pass": true
+    },
+    {
+      "id": "failure_negative_blocks",
+      "pass": true
+    },
+    {
+      "id": "failure_energy_exceeds_blocks",
+      "pass": true
+    },
+    {
+      "id": "failure_count_after",
+      "pass": true
+    },
+    {
+      "id": "failure_events",
+      "pass": true
+    },
+    {
+      "id": "failure_owner_identity",
+      "pass": true
+    },
+    {
+      "id": "failure_finalize_early",
+      "pass": true
+    },
+    {
+      "id": "failure_measurement_digest",
+      "pass": true
+    },
+    {
+      "id": "failure_dialnorm",
+      "pass": true
+    },
+    {
+      "id": "failure_numeric_type",
+      "pass": true
+    },
+    {
+      "id": "reset",
+      "pass": true
+    },
+    {
+      "id": "eof",
+      "pass": true
+    },
+    {
+      "id": "scope",
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "imports_fixture_validator": false,
+  "independent_dsp_replay": false,
+  "expected_used_as_seed": false
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "meter-owner-provider.v1",
+  "profile_id": "bs1770-4-di-off-selected.v1",
+  "sample_rate": 48000,
+  "callback_samples": 1536,
+  "complete_peak_block_samples": 1024,
+  "energy_window_samples": 960,
+  "meter_zero_drains": 3,
+  "dialogue_intelligence": false,
+  "speech_threshold": 100,
+  "provider_bindings": {
+    "k_matrix": "c8b4ffd52fffd62f5d0fdeba36a993f02188933a43593abe6969243f44f7f536",
+    "k_state": "2faaa9d0aeefb105a913589590fcbafb97362a54192b0b21c5fdda7da1974e68",
+    "true_peak": "f67e6fe86533af74acc261bf3908890e77a461198116c64b624dc91b69049757",
+    "shared_dv32": "af189ffb34f703fdebe9a37bc46ffe972d97432b7f2e3f2a463b82682c96d4fa",
+    "log": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266",
+    "integrated": "d63511c0c281d00ce2ad835244db07bade8fd4e983283770263d449f1b6c3407",
+    "programme_peaks": "19bbabc700476e46f99511659e209e5c394922b8b914f3e5464c631ceb8e4d57"
+  },
+  "production_allowed": false
+}

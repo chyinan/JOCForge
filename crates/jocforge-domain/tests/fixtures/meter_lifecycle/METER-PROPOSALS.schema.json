@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "meter-owner-proposals.v1",
+  "$defs": {
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "callback_proposal": {
+      "type": "object",
+      "required": ["schema", "callback", "provider_sha256", "before_sha256", "proposed_after_sha256", "complete_1024_blocks", "energy_records", "state_material_complete"],
+      "properties": {
+        "schema": {"const": "meter-callback-proposal.v1"},
+        "callback": {"type": "integer", "minimum": 0},
+        "provider_sha256": {"$ref": "#/$defs/sha"},
+        "before_sha256": {"$ref": "#/$defs/sha"},
+        "proposed_after_sha256": {"$ref": "#/$defs/sha"},
+        "complete_1024_blocks": {"type": "integer", "minimum": 0},
+        "energy_records": {"type": "integer", "minimum": 0},
+        "state_material_complete": {"const": true}
+      }
+    },
+    "measurement_receipt": {
+      "type": "object",
+      "required": ["programme_id", "config_sha256", "input_sha256", "terminal_meter_sha256", "dialogue", "speech_percentage", "itu", "ungated", "true_peak", "sample_peak", "selected", "gating_kind", "dialnorm", "digest"]
+    }
+  },
+  "production_schema_status": "BLOCKED_UNTIL_REAL_ADM_AND_DSP_EXECUTION"
+}

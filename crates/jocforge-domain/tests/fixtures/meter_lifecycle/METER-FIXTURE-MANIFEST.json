@@ -1,0 +1,32 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "identity": "meter-owner.lifecycle-seam.v1",
+  "status": "METER_LIFECYCLE_SEAM_READY_CANDIDATE_TEST_ONLY",
+  "delivery_scope": "internal test seam only",
+  "files": [
+    { "file": "METER-OWNER-CONTRACT.md", "bytes": 4632, "sha256": "22d7024b2d0a25a8269d95b33bee8021bf1b98acecf919820024113467ab93d7" },
+    { "file": "meter-selected-provider.json", "bytes": 954, "sha256": "72f9aec949d92200f10543247805238839b2063ff1ec6dc3eefc25dd6c99c6cf" },
+    { "file": "METER-MACHINE-MAP.json", "bytes": 682, "sha256": "161eed5ea2a8dae7a6a25cad8c64a26c4d0970b020550c51f182554e97b776e1" },
+    { "file": "METER-PROPOSALS.schema.json", "bytes": 1246, "sha256": "f041fc19b96e8a0941fa0dc10e17781fdfb38dc1123fa9882c42655fbd0c7433" },
+    { "file": "METER-RECEIPT.schema.json", "bytes": 931, "sha256": "26f3c6b7d2409373e000502a852ac43c25d89a99b83213729be78785aca630b7" },
+    { "file": "METER-OWNER-VECTORS.json", "bytes": 1332069, "sha256": "52ad5ddf329e85bb6dfdf1da3a0f1c419145ebef1b7000d2399ffb53d99dde78" },
+    { "file": "INDEPENDENT-CHECK.json", "bytes": 1727, "sha256": "8e1f288ce368c11e6ab9559843ae08bcbd3a8fd4cae06369e9e2c4e0bbf8f049" }
+  ],
+  "source_evidence": {
+    "research_manifest_sha256": "e6a2a166963835a4c1ee7aa321e9ba7cd9fcfae815c4179441ecc4fa7a745e18",
+    "expected_used_as_seed": false,
+    "independent_dsp_replay": false,
+    "native_receipt_schema": "NOT_OBSERVED",
+    "private_key_auth": "excluded"
+  },
+  "hard_boundaries": {
+    "production_allowed": false,
+    "real_adm_frontend_render": "NOT_RUN",
+    "real_filter_true_peak_execution": "NOT_RUN",
+    "production_meter_api": "blocked",
+    "none_drc_owner": "excluded_separate",
+    "real_4249_none_drc": "NOT_RUN",
+    "commit_count": 0,
+    "state_delta": null
+  }
+}
