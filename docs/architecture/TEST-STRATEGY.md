@@ -2,6 +2,8 @@
 
 旧行为测试全部退役。新测试只使用独立批准的规范、公共事实和独立构造的输入；旧 expected、阈值、表和输出变化断言不具有权威。
 
+F05O rowdata 与 F05T trim-section direct-slice 测试只验证各自 machine-map 登记的洗白向量和拒绝边界。它们不表示完整 codec/JOC/E-AC-3 conformance、产品音频正确性、W04 或最终产品验收；这些仍为 `NOT_RUN`。
+
 当前 3 个 CLI 集成测试验证 help/version、编码拒绝且已有文件不变、旧命令拒绝。边界脚本检查当前 crate 依赖、算法根隔离与 domain 的 I/O 词法违规。它是工程防护，不是形式化的 Rust 语义证明。
 
 权威规格已经选择 48 kHz、1,536 samples/AU 和 4,096 bytes/AU。后续测试按批准包新增：有界输入截断/溢出、PCM 字节与时钟会计、每 owner cold/reset/fatal、receipt 不变性、规范 wire 向量和独立外部解析/解码/最终输出比较。参数、阈值和表必须逐项绑定 `PARAMETER-MAP.md`，缺项则拒绝放行。

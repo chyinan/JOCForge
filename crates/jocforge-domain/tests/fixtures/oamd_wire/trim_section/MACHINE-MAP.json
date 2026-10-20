@@ -10,6 +10,10 @@
   ],
   "byte_order": {"trim_bits": "MSB-first", "dbmd_length": "U16LE", "dbmd_magic": "U32LE"},
   "padding": "zero bits to byte boundary; decoder rejects nonzero tail",
+  "row_count_domains": {
+    "standalone_trim_body": "integer >= 0; zero is valid",
+    "selected_dbmd_to_type11_projection": "1..159 inclusive"
+  },
   "partial_output_on_error": false,
   "excluded": ["live queue", "parent transaction", "raw snapshot", "audio", "complete DBMD semantics", "product integration"]
 }

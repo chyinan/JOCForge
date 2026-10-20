@@ -21,13 +21,13 @@ const TRIM_INDEPENDENT_CHECK: &[u8] =
 const PACKAGE_MANIFEST_SHA256: &str =
     "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a";
 const TRIM_CONTRACT_SHA256: &str =
-    "d2c57bb0df05f0a50ca1950114d87a42802e677dcb5a5364e336e3b3ae8b7ace";
+    "731e4cb3e73f39002e6d0b59165d1dda992f6a891cf01f59541f64c8bbc8ad51";
 const TRIM_MACHINE_MAP_SHA256: &str =
-    "0887a4d9358b6e9f85ebb269860956da5ff54b94663ca9cea2d20d1cd84d92a8";
+    "e712c0e51cd299a9a1cf6826c4b8320e1e7fefe3af0694ccc9f5e5d8b246db77";
 const TRIM_VECTORS_SHA256: &str =
-    "d836a336dec4bfad9f624562f761e7b6717e2cad6d6040dfeb105dce639a83fe";
+    "86f0085aa0d9ab39a7d79e053136cce49efc504f59d971179c57fe793d990957";
 const TRIM_INDEPENDENT_CHECK_SHA256: &str =
-    "bf175664350f678f9a948df5a5a17a4141151dd4fbcf897230ac7acbbfa8472a";
+    "4afef548a5fcca9ed8a0b1cc8934e1fcfefc6dcdde86c375f8ea0e0bd30ad5b1";
 
 fn sha256_hex(bytes: &[u8]) -> String {
     let mut output = String::with_capacity(64);
@@ -123,6 +123,7 @@ fn expected_error_name(error: TrimSectionError) -> &'static str {
         TrimSectionError::DbmdSupplemental => "DBMD_SUPPLEMENTAL",
         TrimSectionError::DbmdWarmMode => "DBMD_WARM_MODE",
         TrimSectionError::DbmdNondefaultTrim => "DBMD_NONDEFAULT_TRIM",
+        TrimSectionError::DbmdRowCount => "DBMD_ROW_COUNT",
     }
 }
 
@@ -165,6 +166,14 @@ fn trim_fixture_assets_match_the_approved_package_and_supplement_identities() {
     let machine_map: Value = serde_json::from_slice(TRIM_MACHINE_MAP).expect("machine map is JSON");
     assert_eq!(machine_map["identity"], "selected-trim-section-codec.v1");
     assert_eq!(machine_map["stateful"], false);
+    assert_eq!(
+        machine_map["row_count_domains"]["standalone_trim_body"],
+        "integer >= 0; zero is valid"
+    );
+    assert_eq!(
+        machine_map["row_count_domains"]["selected_dbmd_to_type11_projection"],
+        "1..159 inclusive"
+    );
 
     let vector_file = vectors();
     assert_eq!(vector_file["schema"], "trim-section-direct-vectors.v1");
@@ -173,6 +182,7 @@ fn trim_fixture_assets_match_the_approved_package_and_supplement_identities() {
     let independent: Value =
         serde_json::from_slice(TRIM_INDEPENDENT_CHECK).expect("independent check is JSON");
     assert_eq!(independent["all_pass"], true);
+    assert_eq!(independent["success_checks"].as_array().unwrap().len(), 6);
     assert_eq!(independent["expected_used_as_seed"], false);
 }
 
@@ -182,7 +192,7 @@ fn trim_body_success_vectors_match_bytes_valid_bits_and_decoded_values() {
     let cases = vector_file["success_cases"]
         .as_array()
         .expect("success cases are an array");
-    assert_eq!(cases.len(), 5);
+    assert_eq!(cases.len(), 6);
 
     for case in cases {
         let input = &case["input"];
@@ -248,7 +258,7 @@ fn trim_rejection_cases_match_their_declared_error_categories() {
     let rejection_cases = vector_file["rejection_cases"]
         .as_array()
         .expect("rejection cases are an array");
-    assert_eq!(rejection_cases.len(), 8);
+    assert_eq!(rejection_cases.len(), 10);
 
     for case in rejection_cases {
         let expected = case["expected_error"].as_str().unwrap();
@@ -283,6 +293,16 @@ fn trim_rejection_cases_match_their_declared_error_categories() {
                     .copy_from_slice(&1.0_f32.to_le_bytes());
                 selected_trim_from_dbmd_sections(&changed_sections, 16).map(|_| ())
             }
+            "dbmd_row_count_zero" | "dbmd_row_count_160" => {
+                let sections = parse_dbmd_sections(&selected_dbmd_chunk(&vector_file))
+                    .expect("selected DBMD sections are valid");
+                let row_count = if case["id"] == "dbmd_row_count_zero" {
+                    0
+                } else {
+                    160
+                };
+                selected_trim_from_dbmd_sections(&sections, row_count).map(|_| ())
+            }
             "nonzero_padding" => {
                 let success = trim_case(&vector_file["success_cases"], "group_mode0_all_skip");
                 let mut body = decode_hex(success["expected"]["body_hex"].as_str().unwrap());
@@ -307,15 +327,6 @@ fn trim_encoder_rejects_shape_domain_u4_and_signed_balance_errors() {
 
     trim.row_flags.pop();
     assert_error("TRIM_SHAPE", encode_trim_body(&trim, 3));
-
-    let oversized_trim = Trim {
-        trim_mode: 0,
-        group_flags: [1; 9],
-        groups: [[16, 16, 16, 0, 0]; 9],
-        row_flags: vec![0; 160],
-    };
-    assert_error("TRIM_SHAPE", encode_trim_body(&oversized_trim, 160));
-    assert_error("TRIM_SHAPE", decode_trim_body(&[0], 160));
 
     let mut trim = trim_from_json(&case["input"]);
     trim.trim_mode = 4;
@@ -342,6 +353,21 @@ fn trim_decoder_rejects_reserved_bits_and_group_mode_three() {
 }
 
 #[test]
+fn standalone_trim_body_row_count_is_not_limited_by_the_enclosing_type11_header() {
+    let trim = Trim {
+        trim_mode: 0,
+        group_flags: [1; 9],
+        groups: [[16, 16, 16, 0, 0]; 9],
+        row_flags: vec![0; 160],
+    };
+    let encoded = encode_trim_body(&trim, 160).expect("standalone trim count is not bounded here");
+    assert_eq!(encoded.body_bytes, [0]);
+    assert_eq!(encoded.valid_bits, 7);
+    assert_eq!(encoded.padding_bits, 1);
+    assert_eq!(decode_trim_body(&encoded.body_bytes, 160).unwrap(), trim);
+}
+
+#[test]
 fn selected_dbmd_projection_rejects_header_required_section_and_supplement_errors() {
     assert_error(
         "DBMD_HEADER",
@@ -349,7 +375,7 @@ fn selected_dbmd_projection_rejects_header_required_section_and_supplement_error
     );
     assert_error(
         "DBMD_REQUIRED_SECTIONS",
-        selected_trim_from_dbmd_sections(&BTreeMap::new(), 0),
+        selected_trim_from_dbmd_sections(&BTreeMap::new(), 1),
     );
 
     let vector_file = vectors();
@@ -405,4 +431,25 @@ fn selected_dbmd_projection_accepts_ignored_values_and_signed_zero() {
         selected_trim_from_dbmd_sections(&ignored_record_sections, row_count).unwrap(),
         expected
     );
+}
+
+#[test]
+fn selected_dbmd_projection_accepts_both_type11_row_count_boundaries() {
+    let vector_file = vectors();
+    let sections = parse_dbmd_sections(&selected_dbmd_chunk(&vector_file)).unwrap();
+    let boundary_success = vector_file["row_count_contract"]["selected_dbmd_to_type11_projection"]
+        ["boundary_success"]
+        .as_array()
+        .unwrap();
+    assert_eq!(boundary_success.len(), 2);
+
+    for case in boundary_success {
+        let row_count = u32::try_from(case["row_count"].as_u64().unwrap()).unwrap();
+        let trim = selected_trim_from_dbmd_sections(&sections, row_count).unwrap();
+        assert_eq!(
+            trim.row_flags.len(),
+            usize::try_from(case["row_flags_count"].as_u64().unwrap()).unwrap()
+        );
+        assert!(trim.row_flags.iter().all(|flag| *flag == 0));
+    }
 }

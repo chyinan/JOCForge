@@ -11,7 +11,7 @@ const DBMD_SECTION9_LENGTH: usize = 248;
 const DBMD_SECTION10_MIN_LENGTH: usize = 142;
 const DBMD_TRIM_RECORD_START: usize = 7;
 const DBMD_TRIM_RECORD_LENGTH: usize = 15;
-const MAX_ROW_COUNT: u32 = 159;
+const MAX_TYPE11_ROW_COUNT: u32 = 159;
 const DBMD_SUPPLEMENTAL_MAGIC: u32 = 0xf872_6fbd;
 
 /// One value-only Type11 trim configuration for a supplied row count.
@@ -79,6 +79,8 @@ pub enum TrimSectionError {
     DbmdWarmMode,
     /// A default-trim record contains nonzero gain or balance data.
     DbmdNondefaultTrim,
+    /// A selected DBMD-to-Type11 projection count is outside 1..=159.
+    DbmdRowCount,
 }
 
 /// Encodes one standalone trim body using the selected MSB-first Type11 rules.
@@ -187,7 +189,10 @@ pub fn decode_trim_body(body_bytes: &[u8], row_count: u32) -> Result<Trim, TrimS
     };
 
     let row_presence = reader.read(1)? != 0;
-    let mut row_flags = vec![0_u8; row_count];
+    if row_presence && reader.remaining_bits() < row_count {
+        return Err(TrimSectionError::TrimTruncated);
+    }
+    let mut row_flags = zero_row_flags(row_count)?;
     if row_presence {
         for flag in &mut row_flags {
             *flag = u8::try_from(reader.read(1)?).map_err(|_| TrimSectionError::TrimDomain)?;
@@ -271,7 +276,7 @@ pub fn selected_trim_from_dbmd_sections(
     sections: &BTreeMap<u8, Vec<u8>>,
     row_count: u32,
 ) -> Result<Trim, TrimSectionError> {
-    let row_count = checked_row_count(row_count)?;
+    let row_count = checked_dbmd_row_count(row_count)?;
     let section_nine = sections
         .get(&9)
         .ok_or(TrimSectionError::DbmdRequiredSections)?;
@@ -337,10 +342,23 @@ pub fn selected_trim_from_dbmd_sections(
 }
 
 fn checked_row_count(row_count: u32) -> Result<usize, TrimSectionError> {
-    if row_count > MAX_ROW_COUNT {
-        return Err(TrimSectionError::TrimShape);
-    }
     usize::try_from(row_count).map_err(|_| TrimSectionError::TrimShape)
+}
+
+fn checked_dbmd_row_count(row_count: u32) -> Result<usize, TrimSectionError> {
+    if row_count == 0 || row_count > MAX_TYPE11_ROW_COUNT {
+        return Err(TrimSectionError::DbmdRowCount);
+    }
+    checked_row_count(row_count)
+}
+
+fn zero_row_flags(row_count: usize) -> Result<Vec<u8>, TrimSectionError> {
+    let mut row_flags = Vec::new();
+    row_flags
+        .try_reserve_exact(row_count)
+        .map_err(|_| TrimSectionError::TrimShape)?;
+    row_flags.resize(row_count, 0);
+    Ok(row_flags)
 }
 
 fn validate_trim_shape_and_flags(trim: &Trim, row_count: usize) -> Result<(), TrimSectionError> {
@@ -451,6 +469,10 @@ impl<'a> TrimBitReader<'a> {
             self.bit_position += 1;
         }
         Ok(value)
+    }
+
+    fn remaining_bits(&self) -> usize {
+        self.bit_limit - self.bit_position
     }
 
     fn finish_zero_padding(&mut self) -> Result<(), TrimSectionError> {

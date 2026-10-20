@@ -22,6 +22,12 @@
       "decode_match": true
     },
     {
+      "id": "group_mode2_default_sentinel_and_mask",
+      "bytes_match": true,
+      "valid_bits_match": true,
+      "decode_match": true
+    },
+    {
       "id": "group_mode2_u4_signed_endpoints",
       "bytes_match": true,
       "valid_bits_match": true,

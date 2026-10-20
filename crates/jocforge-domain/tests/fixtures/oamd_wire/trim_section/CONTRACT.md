@@ -22,6 +22,12 @@ selected_trim_from_dbmd_sections(sections, row_count)
 
 `Trim` contains `trim_mode: U2`, `group_flags: U1[9]`, `groups: tuple[9][5]`, and `row_flags: U1[row_count]`. Default group is `[16,16,16,0,0]`.
 
+### row_count domains
+
+Standalone `encode_trim_body` and `decode_trim_body` accept nonnegative `row_count`; zero is valid. Frozen `_write_trim/_read_trim` use the count only to validate or read row flags and contain no positive-minimum check. The `trim_mode3_no_rows` vector is therefore a valid standalone body case.
+
+The enclosing Type11 wire count has a separate recovered domain: frozen `_write_count` explicitly requires `1 <= count <= 159`, and `_read_count` represents that range. Consequently `selected_trim_from_dbmd_sections`, when exposed as a selected DBMD-to-Type11 projection, requires `row_count` 1..159. The frozen DBMD helper by itself merely constructs `(0,) * row_count` and lacks this check; the washed API boundary combines its output role with the authoritative Type11 count contract rather than treating that omission as permission for a zero-row Type11 body. Boundary vectors accept 1 and 159 and reject 0 and 160 with `DBMD_ROW_COUNT`.
+
 ## Trim body bits
 
 MSB first:
@@ -62,6 +68,7 @@ Selected default trim projection requires section 9 body length 248 and section 
 - `DBMD_HEADER`, `DBMD_TRUNCATED_HEADER`, `DBMD_TRUNCATED_PAYLOAD`
 - `DBMD_CHECKSUM`, `DBMD_DUPLICATE_SECTION`, `DBMD_TERMINATOR_TAIL`
 - `DBMD_REQUIRED_SECTIONS`, `DBMD_SUPPLEMENTAL`, `DBMD_WARM_MODE`, `DBMD_NONDEFAULT_TRIM`
+- `DBMD_ROW_COUNT` for selected DBMD-to-Type11 projection outside 1..159
 
 Failures return no partial Trim or bytes. This pure slice owns no state and has no commit/rollback behavior.
 
