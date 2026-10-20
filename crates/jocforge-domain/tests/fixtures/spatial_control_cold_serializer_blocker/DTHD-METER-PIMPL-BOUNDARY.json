@@ -1,0 +1,47 @@
+{
+  "schema": "sanitized-dthd-meter-pimpl-boundary.v1",
+  "source_evidence_identity": {
+    "research_result_sha256": "8046dad2a202330b1bfeb6c15d8d8528dae2df201f051ec17e42f813f465b99c",
+    "research_manifest_sha256": "6334e1f1b2f4fa7d79e0f1cf54c1ec7921b9b83c37ae8575a4c95ebb53e710b3",
+    "module_sha256": "e4453f92d28b766378b121a34afae50ffb9d9f5a39db533767c3e179fa2937a7",
+    "idb_sha256": "4274c5d188a446a76b46f8c284437560d5bd81979ec3fa15ebe84b8df039765d"
+  },
+  "meter": {
+    "type_descriptor_ea": "0x1810e64c0",
+    "complete_object_locator_ea": "0x180eeed58",
+    "col_offset": 0,
+    "vtable_ea": "0x180baba18",
+    "constructor_ea": "0x1802fd3d0",
+    "destructor_ea": "0x1802fd7e0",
+    "public_layout": "vptr@0 plus pimpl@8",
+    "observed_public_extent_bytes": 16,
+    "pimpl_members": [0,8,16]
+  },
+  "intelligent_loudness": {
+    "type_descriptor_ea": "0x1810e6320",
+    "complete_object_locator_ea": "0x180eee870",
+    "col_offset": 0,
+    "vtable_ea": "0x180baa360",
+    "constructor_ea": "0x1802f7d70",
+    "destructor_eas": ["0x1802f7df0","0x1802f7e30"],
+    "public_layout": "vptr@0 plus pimpl@8",
+    "pimpl_members": [0,8,16,24,32]
+  },
+  "adapter_and_logger": {
+    "meter_adapters": ["0x1802fea50","0x1802fea70","0x1802feae0"],
+    "intelligent_adapter": ["0x1802f7ea0","0x1802f7ee0","0x1802f81a0"],
+    "typed_meter_callers": ["0x1802d5a10","0x1802d8100"],
+    "logger_is_public_meter_subobject": "NOT_ESTABLISHED"
+  },
+  "public_offset_conclusion": {
+    "offset8": "PIMPL_POINTER_ONLY_IN_PUBLIC_WRAPPERS",
+    "offset12": "NO_DISTINCT_TYPED_ACCESS",
+    "offset16": "OUTSIDE_OBSERVED_16_BYTE_PUBLIC_METER_ALLOCATION",
+    "three_scalar_layout_8_12_16": "NOT_CORROBORATED",
+    "pimpl_offsets_may_be_transplanted_to_public": false
+  },
+  "bounded_scope": "exact RTTI to type descriptor, COL, vtable, constructors, ten wrapper/pimpl functions, direct callers, observed adapters and narrow local method range",
+  "semantic_names_closed": false,
+  "implementation_ready": false,
+  "production_allowed": false
+}

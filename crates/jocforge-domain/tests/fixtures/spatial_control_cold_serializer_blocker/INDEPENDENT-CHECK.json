@@ -1,5 +1,5 @@
 {
-  "schema": "spatial-control-cold-serializer-blocker-independent-check.v29",
+  "schema": "spatial-control-cold-serializer-blocker-independent-check.v30",
   "checks": [
     {
       "id": "dll_identity",
@@ -142,6 +142,10 @@
       "pass": true
     },
     {
+      "id": "dthd_meter_pimpl_boundary",
+      "pass": true
+    },
+    {
       "id": "no_entrypoint",
       "pass": true
     },
@@ -198,7 +202,8 @@
     "CORE-MEASUREMENT-OWNER-CONSTRUCTION.json",
     "EXTERNAL-METADATA-CONCRETE-SOURCE-OWNER.json",
     "PARENT-COLD-FRESH-RECONSTRUCTION.json",
-    "TARGETED-LOUDNESS-TYPE-CROSS-MODULE-NO-HIT.json"
+    "TARGETED-LOUDNESS-TYPE-CROSS-MODULE-NO-HIT.json",
+    "DTHD-METER-PIMPL-BOUNDARY.json"
   ],
   "research_files_read": false,
   "serializer_execution": false,

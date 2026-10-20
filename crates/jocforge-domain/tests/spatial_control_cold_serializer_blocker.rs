@@ -5,7 +5,7 @@ use std::fmt::Write as _;
 use std::fs;
 use std::path::PathBuf;
 
-const MANIFEST_SHA256: &str = "edadcf5041e5515920bf1b3cad38a02e1cb02a973c8e05b76ba410b2efb717e3";
+const MANIFEST_SHA256: &str = "4840ae014335d983a70936447e23ab66228924662c68ac69453004c40a2234e6";
 
 fn fixture_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -38,11 +38,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let manifest: Value = serde_json::from_slice(&manifest_bytes).expect("manifest JSON");
     assert_eq!(
         manifest["schema"],
-        "washed-implementer-blocker-manifest.v24"
+        "washed-implementer-blocker-manifest.v25"
     );
     assert_eq!(
         manifest["identity"],
-        "spatial-control-cold-serializer.blocked.v29"
+        "spatial-control-cold-serializer.blocked.v30"
     );
     assert_eq!(manifest["status"], "BLOCKED_NO_EXECUTABLE_SERIALIZER");
     assert_eq!(manifest["status"], "BLOCKED_NO_EXECUTABLE_SERIALIZER");
@@ -52,19 +52,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "native_same_object_restore": false,
             "new_inner_reconstruction": true,
             "requires_restart": false,
-            "dynamic_second_run": "NOT_RUN",
-            "canonical_schema": false
-        })
-    );
-    assert_eq!(
-        manifest["metadata_owner"],
-        json!({
-            "class": "atmos_storage::GenericPrintmasterStorageDesc",
-            "virtual_target": "0x28fa90",
-            "embedded_offset": 112,
-            "gap_count": 14,
-            "gap_value_owner": "NO_HIT",
-            "dictionary_join": "NOT_ESTABLISHED"
+            "dynamic_second_run": "NOT_RUN"
         })
     );
 
@@ -81,6 +69,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "COLD-SERIALIZER-FINAL-BLOCKER.md",
             "CORE-MEASUREMENT-OWNER-CONSTRUCTION.json",
             "CORE-MEASUREMENT-SLOT-CONSUMER-BOUNDARY.json",
+            "DTHD-METER-PIMPL-BOUNDARY.json",
             "EXTERNAL-METADATA-CONCRETE-SOURCE-OWNER.json",
             "EXTERNAL-METADATA-HELPER-SEMANTICS.json",
             "EXTERNAL-METADATA-PRODUCER-COVERAGE-AND-SEPARATE-DICTIONARY.json",
@@ -141,7 +130,8 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         "CORE-MEASUREMENT-OWNER-CONSTRUCTION.json",
         "EXTERNAL-METADATA-CONCRETE-SOURCE-OWNER.json",
         "PARENT-COLD-FRESH-RECONSTRUCTION.json",
-        "TARGETED-LOUDNESS-TYPE-CROSS-MODULE-NO-HIT.json"
+        "TARGETED-LOUDNESS-TYPE-CROSS-MODULE-NO-HIT.json",
+        "DTHD-METER-PIMPL-BOUNDARY.json"
     ]);
     for entry in files {
         let name = entry["file"].as_str().expect("manifest file name");
@@ -160,11 +150,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let source = &manifest["source_evidence"];
     assert_eq!(
         source["research_manifest_sha256"],
-        "ba3c376afa4249babe796483dfb0f0308b9566ab5bfd00e863e3df7553730b44"
+        "d827a8299c310a8363b1a8286a1bc0cb7a1c8071e5d9913e8eb8869fa863453b"
     );
     assert_eq!(
         source["research_independent_check_sha256"],
-        "14e2dd8464e201a382d0d6df47c5084412c135c9ad2132b21c45292f30554ae7"
+        "e9418be08214062d499e7c00b99192ecbbaff0ab641d9831c85a87b1cff4fbe3"
     );
     assert_eq!(source["implementation_ready"], "NO");
     assert_eq!(source["serializer_execution"], "NOT_RUN");
@@ -2337,6 +2327,50 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(targeted_loudness["implementation_ready"], false);
     assert_eq!(targeted_loudness["production_allowed"], false);
 
+    let dthd_meter = read_json("DTHD-METER-PIMPL-BOUNDARY.json");
+    assert_eq!(
+        dthd_meter["schema"],
+        "sanitized-dthd-meter-pimpl-boundary.v1"
+    );
+    assert_eq!(dthd_meter["meter"]["public_layout"], "vptr@0 plus pimpl@8");
+    assert_eq!(dthd_meter["meter"]["observed_public_extent_bytes"], 16);
+    assert_eq!(dthd_meter["meter"]["pimpl_members"], json!([0, 8, 16]));
+    assert_eq!(
+        dthd_meter["intelligent_loudness"]["public_layout"],
+        "vptr@0 plus pimpl@8"
+    );
+    assert_eq!(
+        dthd_meter["intelligent_loudness"]["pimpl_members"],
+        json!([0, 8, 16, 24, 32])
+    );
+    assert_eq!(
+        dthd_meter["adapter_and_logger"]["logger_is_public_meter_subobject"],
+        "NOT_ESTABLISHED"
+    );
+    assert_eq!(
+        dthd_meter["public_offset_conclusion"]["offset8"],
+        "PIMPL_POINTER_ONLY_IN_PUBLIC_WRAPPERS"
+    );
+    assert_eq!(
+        dthd_meter["public_offset_conclusion"]["offset12"],
+        "NO_DISTINCT_TYPED_ACCESS"
+    );
+    assert_eq!(
+        dthd_meter["public_offset_conclusion"]["offset16"],
+        "OUTSIDE_OBSERVED_16_BYTE_PUBLIC_METER_ALLOCATION"
+    );
+    assert_eq!(
+        dthd_meter["public_offset_conclusion"]["three_scalar_layout_8_12_16"],
+        "NOT_CORROBORATED"
+    );
+    assert_eq!(
+        dthd_meter["public_offset_conclusion"]["pimpl_offsets_may_be_transplanted_to_public"],
+        false
+    );
+    assert_eq!(dthd_meter["semantic_names_closed"], false);
+    assert_eq!(dthd_meter["implementation_ready"], false);
+    assert_eq!(dthd_meter["production_allowed"], false);
+
     let property_pair_authority = read_json("PARENT-PROPERTY-PAIRS-AUTHORITY.json");
     assert_eq!(
         property_pair_authority["schema"],
@@ -2659,11 +2693,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let independent = read_json("INDEPENDENT-CHECK.json");
     assert_eq!(
         independent["schema"],
-        "spatial-control-cold-serializer-blocker-independent-check.v29"
+        "spatial-control-cold-serializer-blocker-independent-check.v30"
     );
     assert_eq!(independent["all_pass"], true);
     let checks = independent["checks"].as_array().expect("checks array");
-    assert_eq!(checks.len(), 41);
+    assert_eq!(checks.len(), 42);
     assert!(checks.iter().all(|check| check["pass"] == true));
     assert_eq!(
         checks
@@ -2706,6 +2740,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "external_metadata_concrete_source_owner",
             "parent_cold_fresh_reconstruction",
             "targeted_loudness_type_cross_module_no_hit",
+            "dthd_meter_pimpl_boundary",
             "no_entrypoint",
             "no_bytes",
             "framing_rules",

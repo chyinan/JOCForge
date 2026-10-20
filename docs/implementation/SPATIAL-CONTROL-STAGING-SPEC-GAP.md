@@ -1,6 +1,14 @@
 # Spatial-control staging specification gap
 
-## Current authority: v29 fresh-construction, owner, and cross-module boundaries
+## Current authority: v30 DTHD Meter public/PIMPL boundary
+
+The current implementer package is `spatial-control-cold-serializer.blocked.v30`, pinned by fixture manifest SHA-256 `4840ae014335d983a70936447e23ab66228924662c68ac69453004c40a2234e6`. The DTHD Meter PIMPL boundary asset SHA-256 is `7f33cd81e7a35bdf803efbf3de06b9edacb5c65c4e7711c5457c02bc84032cb5`; washed research manifest and independent-check hashes are `d827a8299c310a8363b1a8286a1bc0cb7a1c8071e5d9913e8eb8869fa863453b` and `e9418be08214062d499e7c00b99192ecbbaff0ab641d9831c85a87b1cff4fbe3`, with 42/42 checks passing.
+
+The DTHD module's public `dlb::dplm::Meter` wrapper is observed only as `vptr@0` plus `pimpl@8`, with 16 bytes of public extent. Public offset `+12` has no distinct typed access, and `+16` is outside the observed public allocation. Its PIMPL has members at internal offsets `[0,8,16]`, but those offsets may not be transplanted into a public wrapper or the separate DEE DDP layout. Public offsets `+8/+12/+16` therefore remain `NOT_CORROBORATED`, semantic names remain unclosed, and the logger-to-public-subobject identity is not established. DTHD RTTI/type evidence is an adjacent-module boundary only; it does not name DEE measurement fields. No product-wide absence claim is made.
+
+The v29 fresh-construction and metadata-owner findings remain in force. In particular, fresh per-record object reconstruction is not portable serialization/restore; the canonical schema, parent receipt, serialization bytes, and byte-exact roundtrip remain unavailable. `IMPLEMENTATION_READY=NO` and `production_allowed=false` remain unchanged.
+
+## Historical v29 fresh-construction, owner, and cross-module boundaries
 
 The current implementer package is `spatial-control-cold-serializer.blocked.v29`, pinned by fixture manifest SHA-256 `edadcf5041e5515920bf1b3cad38a02e1cb02a973c8e05b76ba410b2efb717e3`. The washed research manifest and independent-check hashes are `ba3c376afa4249babe796483dfb0f0308b9566ab5bfd00e863e3df7553730b44` and `14e2dd8464e201a382d0d6df47c5084412c135c9ad2132b21c45292f30554ae7`; 41/41 independent checks pass. `IMPLEMENTATION_READY=NO` and `production_allowed=false` remain authoritative.
 
