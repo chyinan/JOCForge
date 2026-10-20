@@ -1,0 +1,70 @@
+{
+  "schema": "sanitized-property-name-and-portable-contract-extended-no-hit.v1",
+  "source_evidence_identity": {
+    "property_consumer_trace_sha256": "5e606c1eddd8e1c9e084d97b226031200fd15fc20e06086f738063472e33487e",
+    "metadata_name_table_sha256": "83ec08ea1e80cf789a288c016819e09898d291daad34e9da847dd5f70653a07d",
+    "metadata_name_xrefs_sha256": "fb29a589f270c280f1373eac93546a6afc49d4f10446959b3c7db8c03a7b653d",
+    "runtime_property_pairs_sha256": "9b1bc37583c6e95508fcd4a6d643d72d7c4142e764c39930ad1863c02a539fc9"
+  },
+  "native_metadata_name_table": [
+    "lfeon","bsmod","acmod","cmixlev","surmixlev","dsurmod","copyrightb","origbs","dialnorm","mixlevel","roomtyp","langcod","lorocmixlev","lorosurmixlev","dmixmod","ltrtcmixlev"
+  ],
+  "confirmed_name_join": {
+    "property31": "mixlevel",
+    "value": 80,
+    "basis": "runtime pair plus policy byte+2 add80 rule and native field-name table"
+  },
+  "unresolved_name_join": [
+    {
+      "property_id": 29,
+      "value": 0,
+      "config_offset": 192,
+      "candidate_names_seen": ["roomtyp","langcod"],
+      "assigned_name": "NOT_CAPTURED",
+      "reason": "no code-level identity join from either name-table entry to property29/config+192"
+    },
+    {
+      "property_id": 36,
+      "value": 0,
+      "config_offset": 220,
+      "candidate_names_seen": ["roomtyp","langcod"],
+      "assigned_name": "NOT_CAPTURED",
+      "reason": "no code-level identity join from either name-table entry to property36/config+220"
+    }
+  ],
+  "measurement_name_search": {
+    "named_fields_found": [0,4,20,24,28,32,36,40],
+    "unresolved_offsets": [8,12,16],
+    "candidate_name_assignment": "NONE",
+    "status": "NOT_CAPTURED"
+  },
+  "coverage": {
+    "metadata_name_table_rva_range": ["0x9f7d00","0x9f7d80"],
+    "name_table_xref_functions": ["0x6ae40","0x522660","0x52a310","0x525a70"],
+    "property_assignment_function": "0x1ff1e0",
+    "property_copy_function": "0x1f3170",
+    "property29_config_offset": 192,
+    "property36_config_offset": 220,
+    "measurement_export_function": "0x17a830",
+    "authorized_pe_files_scanned": 64
+  },
+  "portable_contract": {
+    "order": "NOT_OBSERVED",
+    "endian": "NOT_OBSERVED",
+    "version": "NOT_OBSERVED",
+    "optional_fields": "NOT_OBSERVED",
+    "checksum": "NOT_OBSERVED",
+    "serializer_entrypoint": "NOT_FOUND_IN_BOUNDED_AUTHORIZED_EVIDENCE",
+    "restore_entrypoint": "NOT_FOUND_IN_BOUNDED_AUTHORIZED_EVIDENCE",
+    "roundtrip": "NOT_RUN",
+    "product_wide_absence_claim": false
+  },
+  "minimum_next_evidence": [
+    "a code-level join from roomtyp/langcod parser storage to property29 or36",
+    "a named property enum table for IDs29 and36",
+    "a named meter result structure for offsets8,12,16",
+    "or an authoritative portable serializer/restore contract and cold vector"
+  ],
+  "production_allowed": false,
+  "private_auth": "EXCLUDED"
+}
