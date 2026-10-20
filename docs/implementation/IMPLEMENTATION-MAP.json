@@ -1006,8 +1006,8 @@
           "implementation_file_identities": [
             {
               "file": "crates/jocforge-domain/src/joc/oamd/body_reader.rs",
-              "bytes": 12227,
-              "sha256": "4da86db837e6cd5a57219c23f8d526640ba389f1aa8b850afb61c8b02c49f5af"
+              "bytes": 12571,
+              "sha256": "913518e0e155b8b5c38034c57483cd808ca4e8577b74f6dc62bc60fb83574103"
             }
           ],
           "test_modules": [
@@ -1027,7 +1027,7 @@
             "validation_boundary": "decode_oamd_body accepts fixed XY[63] and Z[16] tables as arguments; production domain code does no provider file I/O."
           },
           "vectors": {
-            "kind": "INPUT_ONLY_BODY_BYTES_WITH_HEADER_ASSERTIONS_AND_POSTCOMPUTATION_ROWS",
+            "kind": "INPUT_ONLY_BODY_BYTES_WITH_HEADER_ASSERTIONS_AND_POSTCOMPUTATION_ROWS_PLUS_DERIVED_CASES",
             "authoritative_vectors": [
               "test-vectors/unit/vectors.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F05O-ROW-READ-HEADER-V1/INPUT-ONLY-VECTORS.json"
@@ -1035,7 +1035,10 @@
             "case_pointers": [
               "U-OAMD-ROWS-READ: header row_count=7, leading_lfe=true; 1 LFE and 6 OBJECT rows",
               "U-OAMD-TIME-TABLE-READ: header row_count=1, leading_lfe=false; table duration timing decode",
-              "U-OAMD-TIME-EXPLICIT-READ: header row_count=1, leading_lfe=false; explicit duration timing decode"
+              "U-OAMD-TIME-EXPLICIT-READ: header row_count=1, leading_lfe=false; explicit duration timing decode",
+              "Spec-derived writer-reader checks: U-OAMD-COUNT-31/32/159 header count prefix, extension, and decoded row count",
+              "Spec-derived timing mutations: dedicated base values 0/8/16/18/24 and dedicated durations plus all duration-table values representable by U11 rejected from the explicit branch",
+              "Malformed body checks: truncated/unterminated/overlong escaped lengths, nonzero padding, truncation, and unsupported layouts"
             ],
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/oamd_wire/body_decoder/unit-read-vectors.json",
@@ -1082,7 +1085,7 @@
             "F05R56 parent receipt admission, raw callback snapshot validation, and rollback claims.",
             "Native error equivalence, whole-programme execution, W04, and product acceptance."
           ],
-          "validation_claim": "Three selected direct decoder vectors plus fail-closed malformed/unsupported layout checks; native and product execution NOT_RUN."
+          "validation_claim": "Three selected direct decoder vectors, deterministic count-extension round trips, canonical timing-branch rejection, and fail-closed malformed/unsupported layout checks; native and product execution NOT_RUN."
         }
       ]
     },

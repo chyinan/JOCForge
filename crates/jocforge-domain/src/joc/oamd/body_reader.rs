@@ -65,6 +65,10 @@ pub enum OamdBodyReadError {
     InvalidEscapedInteger,
 }
 
+const DURATION_TABLE: [u32; 16] = [
+    32, 64, 128, 256, 320, 480, 1000, 1001, 1024, 1600, 1601, 1602, 1920, 2000, 2002, 2048,
+];
+
 /// Decodes a single unprotected rowdata-section OAMD body.
 ///
 /// `row_count` and `leading_lfe` come only from the MSB-first body header.
@@ -248,7 +252,13 @@ fn decode_timing(reader: &mut BitReader<'_>) -> Result<OamdTiming, OamdBodyReadE
             3 => 24,
             _ => unreachable!("two-bit base ordinal is in range"),
         },
-        2 => reader.read(5)?,
+        2 => {
+            let base = reader.read(5)?;
+            if matches!(base, 0 | 8 | 16 | 18 | 24) {
+                return Err(OamdBodyReadError::UnsupportedProfile);
+            }
+            base
+        }
         _ => return Err(OamdBodyReadError::UnsupportedProfile),
     };
     if reader.read(3)? != 0 {
@@ -261,13 +271,13 @@ fn decode_timing(reader: &mut BitReader<'_>) -> Result<OamdTiming, OamdBodyReadE
         2 => 1536,
         3 => {
             if reader.read(1)? != 0 {
-                const DURATION_TABLE: [u32; 16] = [
-                    32, 64, 128, 256, 320, 480, 1000, 1001, 1024, 1600, 1601, 1602, 1920, 2000,
-                    2002, 2048,
-                ];
                 DURATION_TABLE[reader.read(4)? as usize]
             } else {
-                reader.read(11)?
+                let duration = reader.read(11)?;
+                if matches!(duration, 0 | 512 | 1536) || DURATION_TABLE.contains(&duration) {
+                    return Err(OamdBodyReadError::UnsupportedProfile);
+                }
+                duration
             }
         }
         _ => unreachable!("two-bit duration mode is in range"),
