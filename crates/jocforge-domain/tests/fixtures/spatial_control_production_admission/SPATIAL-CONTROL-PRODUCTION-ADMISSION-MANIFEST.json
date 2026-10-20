@@ -1,42 +1,103 @@
 {
-  "schema": "washed-implementer-supplement-manifest.v1",
-  "identity": "spatial-control.production-admission.callback0.v7",
-  "status": "PRODUCTION_ADMISSION_IDENTITY_READY_BUT_EXECUTION_BLOCKED",
-  "delivery_scope": "internal admission contract only",
+  "schema": "sanitized-spatial-control-production-admission-manifest.v10",
+  "scope": "real cold callback0 direct preconditions",
+  "raw_adm_identity": "PINNED",
+  "callback0_input_lineage": "BOUND_TO_PINNED_REAL_ADM_BY_BYTES_AND_SHA256",
+  "control38_material_file": "CONTROL38-CALLBACK0-MATERIAL.json",
+  "semantic_mapping_file": "CONTROL38-SEMANTIC-MAPPING.json",
+  "admission_failure_vectors": 10,
+  "execution_fault_plans": 4,
+  "native_receipt_schema": "NOT_OBSERVED",
+  "private_auth": "EXCLUDED",
+  "remaining_blocked_material_count": 6,
+  "next_action": "provide executable authoritative cold-state serializer or exact missing framing rules; do not execute spatial render",
   "files": [
-    { "file": "SPATIAL-CONTROL-PRODUCTION-ADMISSION.md", "bytes": 5655, "sha256": "3ac97df2461f36772cf963de63cfd0758a40ca3ef90facb05050fb98144f736c" },
-    { "file": "REAL-ADM-INPUT-IDENTITY.json", "bytes": 1605, "sha256": "887ad7a015dc1695b11d620822d02fbdc0ad265d5d10eadf64cb22bc5aed43e5" },
-    { "file": "PROVIDER-IDENTITIES.json", "bytes": 695, "sha256": "ab17851d3c29a98a00fe6ae485245ac49f0e377b55ffe610da97ee3ff0b75aa4" },
-    { "file": "SPATIAL-CONTROL-PRODUCTION.schema.json", "bytes": 2534, "sha256": "5784e65710820ad935f8a4c1702473241f335ab2e562656585ccec2e21642bf6" },
-    { "file": "PRODUCTION-ADMISSION-VECTORS.json", "bytes": 3514, "sha256": "c384bf6c8c2b095003a5145004d2421783fb8c991d1095452abd76873079d1d5" },
-    { "file": "INDEPENDENT-CHECK.json", "bytes": 1609, "sha256": "3eb96312e72e2e3495a9599503bd3efb50d7731053dc713bff0078d991a9a377" },
-    { "file": "DIRECT-PRECONDITIONS.md", "bytes": 3120, "sha256": "10ce815ce73a8f996fa22c7aa388aa546a1538bdec938fb8b6c98ec9e980872f" },
-    { "file": "CONTROL38-MATERIAL-STATUS.json", "bytes": 1941, "sha256": "0efa4d9727ac0620e98b9744799a17180c840c0e1d559ea3b02fe7d04d18dfa9" },
-    { "file": "COLD-PARENT-STATE-STATUS.json", "bytes": 1587, "sha256": "82da53366395b160d73f7cd5a771f22f3c57965f7753e6ec91914ba27692eee0" },
-    { "file": "CONTROL38-CALLBACK0-MATERIAL.json", "bytes": 8329, "sha256": "56c68015e125920157d5906bdae507e38c6deafd7f6219ab8736e7c2f7364cf4" },
-    { "file": "CONTROL38-INPUT-LINEAGE.json", "bytes": 1923, "sha256": "4626001b24d599fdf1da5d27628afcebfaca0e393f37c87e2d760057792fa6ad" },
-    { "file": "COLD-SERIALIZER-ACTION.json", "bytes": 1079, "sha256": "3e09c61ff184ac2d55fad8398459001324f9577e2e22df4809e27268af134b13" }
+    {
+      "path": "COLD-PARENT-STATE-STATUS.json",
+      "bytes": 1587,
+      "sha256": "82da53366395b160d73f7cd5a771f22f3c57965f7753e6ec91914ba27692eee0"
+    },
+    {
+      "path": "CONTROL38-CALLBACK0-MATERIAL.json",
+      "bytes": 8643,
+      "sha256": "01b579e4670da1208c9daf27dcdd96f3871da7e20f5544f0129dc44f9c4184a2"
+    },
+    {
+      "path": "CONTROL38-INPUT-LINEAGE.json",
+      "bytes": 1923,
+      "sha256": "4626001b24d599fdf1da5d27628afcebfaca0e393f37c87e2d760057792fa6ad"
+    },
+    {
+      "path": "CONTROL38-MATERIAL-STATUS.json",
+      "bytes": 2463,
+      "sha256": "5c4573b66c3e0febcf29695f5b86ec56bf16d359eb2f8db1567d0e728110aacc"
+    },
+    {
+      "path": "CONTROL38-SEMANTIC-MAPPING.json",
+      "bytes": 39054,
+      "sha256": "439a14cd0899b0daddb1052157360f6463e323ec58a720020decd40cccea26e0"
+    },
+    {
+      "path": "DIRECT-PRECONDITIONS.md",
+      "bytes": 3852,
+      "sha256": "8d019b11384eefa1f3653f9fb3538e4e9343913202e5896b8a03af734ae0d1cd"
+    },
+    {
+      "path": "IMPLEMENTER-SUPPLEMENT-CANDIDATE.md",
+      "bytes": 487,
+      "sha256": "53054f953a171c364a772cd9804409e377d2119dab7af949769a7e8378f07e65"
+    },
+    {
+      "path": "PRODUCTION-ADMISSION-VECTORS.json",
+      "bytes": 3936,
+      "sha256": "c90cd1e0da0df171220867da2cdd4e0a197cf9780d23b1ed37be9649448d0d77"
+    },
+    {
+      "path": "PROVIDER-IDENTITIES.json",
+      "bytes": 695,
+      "sha256": "ab17851d3c29a98a00fe6ae485245ac49f0e377b55ffe610da97ee3ff0b75aa4"
+    },
+    {
+      "path": "REAL-ADM-INPUT-IDENTITY.json",
+      "bytes": 1774,
+      "sha256": "5d57c83a8497c86a33fa714f570b472f37065849ab33a80fabaf99c9688d2dbd"
+    },
+    {
+      "path": "SPATIAL-CONTROL-PRODUCTION-ADMISSION.md",
+      "bytes": 6120,
+      "sha256": "aa89bab15d8ffecdf52327a75f98e1ab96eb8b74eaf2bb3fe55c96483696cd2e"
+    },
+    {
+      "path": "SPATIAL-CONTROL-PRODUCTION.schema.json",
+      "bytes": 2534,
+      "sha256": "5784e65710820ad935f8a4c1702473241f335ab2e562656585ccec2e21642bf6"
+    }
   ],
-  "source_evidence": {
-    "research_manifest_sha256": "4ab75f27eafca61d4124f565fc1a570265d25fbf9a92360bc0ba5f3620ae2ade",
-    "raw_adm_bytes": 743696526,
-    "raw_adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
-    "private_key_auth": "excluded",
-    "raw_pcm_material": "not_delivered"
-  },
   "hard_boundaries": {
     "raw_adm_input_identity": "PINNED",
+    "callback0_input_lineage": "BOUND_TO_PINNED_REAL_ADM_BY_BYTES_AND_SHA256",
     "physical_control38_material": "CAPTURED_NATIVE_CALLBACK0_INPUT_LINEAGE_BOUND",
-    "dbmd_track_to_bed_object_semantic_binding_map": "BLOCKED_HASH_ONLY_NO_SEMANTIC_MAP",
-    "callback_numerical_execution": "NOT_RUN",
-    "control_semantic_admission": "NOT_RUN",
-    "authoritative_parent_before_state": "BLOCKED",
+    "dbmd_track_to_bed_object_semantic_binding_map": "CAPTURED_NATIVE_PLUS_ADM_DBMD_JOIN",
     "callback0_numerical_execution": "NOT_RUN",
+    "callback_semantic_admission": "NOT_RUN",
+    "control_mapping_admission_boundary": "MAPPING_CAPTURED_ADMISSION_NOT_RUN",
+    "parent_cold_serializer": "BLOCKED_NO_EXECUTABLE_SERIALIZER",
+    "authoritative_parent_before_state": "BLOCKED",
     "authoritative_parent_after_state": "BLOCKED",
-    "spatial_control_receipt": "BLOCKED",
+    "production_spatial_control_receipt": "BLOCKED",
     "spatial_audio_proposal": "BLOCKED",
-    "production_allowed": false,
+    "spatial_render_selector_u04_outer": "BLOCKED_NOT_RUN",
+    "global_transaction": "BLOCKED",
+    "native_receipt_schema": "NOT_OBSERVED",
+    "private_auth": "EXCLUDED",
     "success_vectors": 0,
-    "global_callback_transaction": "BLOCKED"
+    "production_allowed": false
+  },
+  "hard_boundaries_sha256": "8301ff69fd12fb3d4c8ed97f4e79b83bc9885283c4aec1d4914246e54b47c374",
+  "detached_independent_check": {
+    "path": "INDEPENDENT-CHECK.json",
+    "reads_manifest": "SPATIAL-CONTROL-PRODUCTION-ADMISSION-MANIFEST.json",
+    "included_in_manifest_files": false,
+    "reason": "checker reads frozen semantic manifest hard_boundaries; exclusion avoids hash cycle"
   }
 }

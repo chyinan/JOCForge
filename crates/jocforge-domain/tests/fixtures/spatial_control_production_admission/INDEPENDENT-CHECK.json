@@ -1,5 +1,5 @@
 {
-  "schema": "spatial-control-production-admission-independent-check.v7",
+  "schema": "spatial-control-production-admission-independent-check.v10",
   "checks": [
     {
       "id": "file_identity",
@@ -38,7 +38,7 @@
       "pass": true
     },
     {
-      "id": "unified_status_v7",
+      "id": "unified_status_v10",
       "pass": true
     },
     {
@@ -50,7 +50,7 @@
       "pass": true
     },
     {
-      "id": "control38_semantic_blocker",
+      "id": "control38_semantic_mapping",
       "pass": true
     },
     {
@@ -60,10 +60,37 @@
     {
       "id": "cold_state_blocker",
       "pass": true
+    },
+    {
+      "id": "manifest_hard_boundary_projection",
+      "pass": true
     }
   ],
   "all_pass": true,
+  "manifest_file": "SPATIAL-CONTROL-PRODUCTION-ADMISSION-MANIFEST.json",
+  "manifest_hard_boundaries": {
+    "raw_adm_input_identity": "PINNED",
+    "callback0_input_lineage": "BOUND_TO_PINNED_REAL_ADM_BY_BYTES_AND_SHA256",
+    "physical_control38_material": "CAPTURED_NATIVE_CALLBACK0_INPUT_LINEAGE_BOUND",
+    "dbmd_track_to_bed_object_semantic_binding_map": "CAPTURED_NATIVE_PLUS_ADM_DBMD_JOIN",
+    "callback0_numerical_execution": "NOT_RUN",
+    "callback_semantic_admission": "NOT_RUN",
+    "control_mapping_admission_boundary": "MAPPING_CAPTURED_ADMISSION_NOT_RUN",
+    "parent_cold_serializer": "BLOCKED_NO_EXECUTABLE_SERIALIZER",
+    "authoritative_parent_before_state": "BLOCKED",
+    "authoritative_parent_after_state": "BLOCKED",
+    "production_spatial_control_receipt": "BLOCKED",
+    "spatial_audio_proposal": "BLOCKED",
+    "spatial_render_selector_u04_outer": "BLOCKED_NOT_RUN",
+    "global_transaction": "BLOCKED",
+    "native_receipt_schema": "NOT_OBSERVED",
+    "private_auth": "EXCLUDED",
+    "success_vectors": 0,
+    "production_allowed": false
+  },
+  "manifest_hard_boundaries_sha256": "8301ff69fd12fb3d4c8ed97f4e79b83bc9885283c4aec1d4914246e54b47c374",
   "input_files": [
+    "SPATIAL-CONTROL-PRODUCTION-ADMISSION-MANIFEST.json",
     "REAL-ADM-INPUT-IDENTITY.json",
     "CONTROL38-INPUT-LINEAGE.json",
     "PROVIDER-IDENTITIES.json",
@@ -71,6 +98,7 @@
     "SPATIAL-CONTROL-PRODUCTION.schema.json",
     "CONTROL38-MATERIAL-STATUS.json",
     "CONTROL38-CALLBACK0-MATERIAL.json",
+    "CONTROL38-SEMANTIC-MAPPING.json",
     "COLD-PARENT-STATE-STATUS.json"
   ],
   "raw_adm_read": false,

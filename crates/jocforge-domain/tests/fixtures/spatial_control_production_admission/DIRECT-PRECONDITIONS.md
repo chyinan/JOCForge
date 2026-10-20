@@ -25,11 +25,23 @@ returned success. The observer was read-only. The extracted 4247-frame EC3
 remained byte-identical to the accepted baseline. No old fixture hash or
 default host mapping was used.
 
-Capture of physical words and mapping does not prove the semantic association
-of DBMD tracks to bed/object rows or event/sampler records to object ordinals.
-Those two semantic maps remain BLOCKED_HASH_ONLY_NO_SEMANTIC_MAP. The derived
-record hash is an identity for the observed records, not a substitute for an
-explicit semantic map.
+Input lineage is bound by CONTROL38-INPUT-LINEAGE.json. The DEE -a input was a
+native-safe alias with the same 743,696,526-byte length and SHA-256 as the
+pinned REAL-ADM identity. The original fixture identity and alias identity were
+both checked before and after capture, and the run record reports stable
+assets. Paths and raw input bytes are not included.
+
+The DBMD track-to-bed/object semantic binding map is now delivered. Native
+mapping codes, CHNA/AXML track and object identity, parsed DBMD track fields,
+event/sampler ordinals and control-row identities are joined per physical row.
+The derived record hash alone was not treated as proof; closure requires the
+combined mapping and 28 object control rows matching word for word.
+
+Semantic mapping capture is distinct from callback semantic admission and
+callback numerical admission. Both admission steps remain NOT_RUN. Remaining
+evidence is a frontend_control callback0 after-state/snapshot commit identity
+and a callback-level semantic admission receipt/owner token. The row mapping
+itself is not blocked.
 
 ## Authoritative parent cold state
 

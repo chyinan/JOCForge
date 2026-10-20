@@ -641,8 +641,13 @@
     "sha256": "259cf246c0b35b2985b04ff74321a3a6076496ff2be3a8ea5e39f4d5d47ab48f",
     "material": "NOT_DELIVERED",
     "identity_kind": "DERIVED_RUNTIME_RECORDS_HASH_ONLY",
-    "dbmd_track_object_semantic_map": "BLOCKED",
-    "event_sampler_object_ordinal_semantic_map": "BLOCKED"
+    "dbmd_track_to_bed_object_semantic_binding_map": "CAPTURED_NATIVE_PLUS_ADM_DBMD_JOIN",
+    "semantic_mapping_file": "CONTROL38-SEMANTIC-MAPPING.json",
+    "semantic_mapping_rows_sha256": "531ae8b82dc12501cd40b58eab5ca5a485f6a2a2e6576a9b9e21468684d612bc",
+    "semantic_scope": {
+      "bed_rows": "semantic bed plus DBMD track",
+      "object_rows": "object ordinal plus event plus sampler plus DBMD track"
+    }
   },
   "producer": {
     "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",

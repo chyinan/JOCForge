@@ -25,7 +25,9 @@
     "parsed_callback0_control38_sha256": "2f1b942f1306700de77c987241e5f7a0b759cc906b601e153e667e3f58b4a679",
     "physical_mapping_sha256": "d61e31ecfed16405bf7854e0c0e6872585c47a7a9beb2311c1f97c4b653ceb9b",
     "physical_status": "CAPTURED_NATIVE_CALLBACK0",
-    "semantic_binding_status": "BLOCKED_HASH_ONLY_NO_SEMANTIC_MAP"
+    "semantic_binding_status": "MAPPING_CAPTURED_ADMISSION_NOT_RUN",
+    "semantic_mapping_file": "CONTROL38-SEMANTIC-MAPPING.json",
+    "semantic_mapping_rows_sha256": "531ae8b82dc12501cd40b58eab5ca5a485f6a2a2e6576a9b9e21468684d612bc"
   },
   "capture_lineage": {
     "lineage_id": "control38-lineage-adm-7826dcbef37ef696-run102",

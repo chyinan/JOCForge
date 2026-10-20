@@ -23,21 +23,28 @@
   "sha256": "2f1b942f1306700de77c987241e5f7a0b759cc906b601e153e667e3f58b4a679",
   "producer_address": "dee_audio_filter_ddp_atmos.dll+0x1acd10",
   "producer_caller": "dee_audio_filter_ddp_atmos.dll+0x1a780d",
-  "status": "PHYSICAL_CONTROL_CAPTURED_SEMANTIC_BINDING_BLOCKED",
+  "status": "PHYSICAL_CONTROL_AND_SEMANTIC_MAPPING_CAPTURED",
   "physical_control38_status": "CAPTURED_NATIVE_CALLBACK0",
   "physical_mapping_status": "CAPTURED_NATIVE_CALLBACK0",
-  "dbmd_track_to_bed_object_semantic_binding_map_status": "BLOCKED_HASH_ONLY_NO_SEMANTIC_MAP",
+  "dbmd_track_to_bed_object_semantic_binding_map_status": "CAPTURED_NATIVE_PLUS_ADM_DBMD_JOIN",
   "dbmd_track_to_bed_object_semantic_binding_map_definition": {
     "bed_rows": "physical bed row -> semantic bed identity and DBMD track binding",
     "object_rows": "physical object row -> object ordinal, event, sampler and DBMD track binding"
   },
-  "missing": [
-    "DBMD track-to-bed/object semantic binding map"
+  "missing": [],
+  "callback_control_semantic_admission_status": "NOT_RUN",
+  "callback_numerical_admission_status": "NOT_RUN",
+  "remaining_associations": [
+    "frontend_control callback0 after-state and snapshot commit identity",
+    "callback-level semantic admission receipt and owner token"
   ],
   "old_fixture_hash_accepted": false,
   "default_host_mapping_accepted": false,
   "physical_binding_sha256": "d61e31ecfed16405bf7854e0c0e6872585c47a7a9beb2311c1f97c4b653ceb9b",
   "derived_binding_records_sha256": "259cf246c0b35b2985b04ff74321a3a6076496ff2be3a8ea5e39f4d5d47ab48f",
   "derived_binding_records_are_semantic_proof": false,
+  "semantic_mapping_file": "CONTROL38-SEMANTIC-MAPPING.json",
+  "semantic_mapping_rows_sha256": "531ae8b82dc12501cd40b58eab5ca5a485f6a2a2e6576a9b9e21468684d612bc",
+  "semantic_mapping_combined_evidence": "native U16 mapping + CHNA/AXML/DBMD join + 28 object control rows wordwise equal",
   "material_file": "CONTROL38-CALLBACK0-MATERIAL.json"
 }

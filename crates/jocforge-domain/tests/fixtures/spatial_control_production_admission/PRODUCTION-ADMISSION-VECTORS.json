@@ -1,17 +1,26 @@
 {
   "schema": "spatial-control-production-admission-vectors.v1",
-  "unified_status_v7": {
+  "unified_status_v10": {
+    "raw_adm_input_identity": "PINNED",
+    "callback0_input_lineage": "BOUND_TO_PINNED_REAL_ADM_BY_BYTES_AND_SHA256",
     "physical_control38_material": "CAPTURED_NATIVE_CALLBACK0_INPUT_LINEAGE_BOUND",
-    "dbmd_track_to_bed_object_semantic_binding_map": "BLOCKED_HASH_ONLY_NO_SEMANTIC_MAP",
-    "callback_numerical_execution": "NOT_RUN",
-    "control_semantic_admission": "NOT_RUN",
+    "dbmd_track_to_bed_object_semantic_binding_map": "CAPTURED_NATIVE_PLUS_ADM_DBMD_JOIN",
+    "callback0_numerical_execution": "NOT_RUN",
+    "callback_semantic_admission": "NOT_RUN",
+    "control_mapping_admission_boundary": "MAPPING_CAPTURED_ADMISSION_NOT_RUN",
     "parent_cold_serializer": "BLOCKED_NO_EXECUTABLE_SERIALIZER",
-    "authoritative_before_state": "BLOCKED",
-    "authoritative_after_state": "BLOCKED",
+    "authoritative_parent_before_state": "BLOCKED",
+    "authoritative_parent_after_state": "BLOCKED",
     "production_spatial_control_receipt": "BLOCKED",
+    "spatial_audio_proposal": "BLOCKED",
+    "spatial_render_selector_u04_outer": "BLOCKED_NOT_RUN",
+    "global_transaction": "BLOCKED",
+    "native_receipt_schema": "NOT_OBSERVED",
+    "private_auth": "EXCLUDED",
     "success_vectors": 0,
     "production_allowed": false
   },
+  "unified_status_v10_sha256": "8301ff69fd12fb3d4c8ed97f4e79b83bc9885283c4aec1d4914246e54b47c374",
   "success_recipe": {
     "status": "NOT_RUN",
     "callback": 0,
@@ -57,7 +66,6 @@
     "programme_result": "RETIRED"
   },
   "blocked_material": [
-    "DBMD track-to-bed/object semantic binding map covering bed rows and object ordinal/event/sampler rows",
     "authoritative cold parent serializer and before-state preimage",
     "installed48 full bytes",
     "selector/U04/outer complete materials",
