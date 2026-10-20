@@ -51,6 +51,19 @@
     "parent_provider_manifest_sha256": "32cdd7d80f62db4f2eb5e53f9bcd28b83bfc2b3b9fac23f8bef6143b9668ee0a",
     "parent_state_schema_sha256": "5138318de304b83d26e47271c1661bcc903cebcd2cea457ae98e0048b161ed46"
   },
+  "incremental_audit": {
+    "ida_direct_execution": true,
+    "root_rva": "0x1a7710",
+    "maximum_call_depth": 3,
+    "functions_visited": 73,
+    "call_edges_observed": 211,
+    "serialization_entrypoint_observed": false,
+    "only_memory_primitives_observed": ["memset", "memmove"],
+    "excluded_downstream_serializer_pointer_audit_sha256": "143bd4b8e05d17a9d761a59cbfa442d8257b1fd3f79b371f5c330c6d671b7094",
+    "new_authoritative_serializer_evidence_count": 0,
+    "new_complete_framing_evidence_count": 0,
+    "blocker_status": "UNCHANGED"
+  },
   "entrypoint": null,
   "minimum_run_method": null,
   "serializer_execution": "NOT_RUN",

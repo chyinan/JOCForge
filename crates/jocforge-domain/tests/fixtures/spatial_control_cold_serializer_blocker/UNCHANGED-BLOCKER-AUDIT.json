@@ -1,0 +1,71 @@
+{
+  "schema": "sanitized-spatial-control-cold-serializer-incremental-audit.v1",
+  "audit_date": "2026-10-21",
+  "classification": "NATIVE_OBSERVED_PLUS_AUTHORIZED_EVIDENCE_NO_HIT",
+  "evidence_classification": {
+    "NATIVE_OBSERVED": {
+      "scope": "bounded parent callback path rooted at RVA 0x1a7710",
+      "coverage": {
+        "maximum_call_depth": 3,
+        "functions_visited": 73,
+        "call_edges_observed": 211
+      },
+      "fact": "the observed path advances descriptors, controls, planar working buffers and downstream runtime processing in memory; no serializer entrypoint was observed inside this bounded path"
+    },
+    "UNKNOWN": {
+      "scope": "host, wrapper, other DLLs and product-wide behavior outside the bounded parent path",
+      "serializer_existence": "UNKNOWN",
+      "product_wide_absence_claim": false
+    },
+    "CLEAN_ROOM_DESIGN": {
+      "parent_canonical_bytes": "DESIGN_ONLY_UNAPPROVED_AND_NOT_DELIVERED",
+      "receipt_schema": "DESIGN_ONLY_NOT_NATIVE_OBSERVED",
+      "native_format_claim": false
+    }
+  },
+  "ida_direct_execution": {
+    "ida_installation": "E:/Tools/IDA Pro",
+    "database_sha256": "5b236193d987fea2276604b70a4732c1faa9fabdf74b0fee8695c6b56e305447",
+    "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "root_rva": "0x1a7710",
+    "maximum_call_depth": 3,
+    "functions_visited": 73,
+    "call_edges_observed": 211,
+    "audit_sha256": "13168f9d1b6e89f1550e47bf4fe723b4755554e1cc5d6ab6c392b2f761f502ed",
+    "serialization_entrypoint_observed": false,
+    "only_memory_primitive_hits": [
+      "memset",
+      "memmove"
+    ],
+    "native_behavior": "parent callback advances descriptors, control rows, planar working buffers and downstream runtime processing in memory"
+  },
+  "excluded_authorized_candidate": {
+    "source_class": "older downstream serializer pointer audit",
+    "sha256": "143bd4b8e05d17a9d761a59cbfa442d8257b1fd3f79b371f5c330c6d671b7094",
+    "classification": "EXCLUDED_DOWNSTREAM_PAYLOAD_AND_SPATIAL_OUTPUT_SERIALIZER",
+    "reason": "documents fit, selector, response, payload builder and spatial output assembly over 15-record pointer tables; it does not serialize the spatial-control parent cold state"
+  },
+  "other_match_classes_excluded": [
+    {
+      "class": "S10/S11 wire serialization",
+      "reason": "different downstream wire objects"
+    },
+    {
+      "class": "OAMD serialization",
+      "reason": "metadata transport rather than the spatial-control parent state"
+    },
+    {
+      "class": "model checkpoints and descriptors",
+      "reason": "clean-room design artifacts are not native authoritative serialization evidence"
+    }
+  ],
+  "new_authoritative_serializer_evidence_count": 0,
+  "new_complete_framing_evidence_count": 0,
+  "blocker_status": "UNCHANGED_BLOCKED_NO_EXECUTABLE_SERIALIZER_OR_COMPLETE_FRAMING",
+  "minimum_external_resolution_paths": [
+    "executable authoritative serializer entrypoint with calling convention, cold arguments and output",
+    "normative framing specification resolving all five open categories plus an independent reference serializer or vector"
+  ],
+  "bytes_guessed": false,
+  "private_auth": "EXCLUDED"
+}

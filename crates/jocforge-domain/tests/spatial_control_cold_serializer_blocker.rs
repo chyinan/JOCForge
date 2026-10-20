@@ -5,7 +5,7 @@ use std::fmt::Write as _;
 use std::fs;
 use std::path::PathBuf;
 
-const MANIFEST_SHA256: &str = "2ba58412fe9d23bd2c2eb0f262e4b1c05ecda83a7f5980349c6b38d7bcdf8848";
+const MANIFEST_SHA256: &str = "d6bd47eb6c9d19942b6dcc6c41716986d52151107ca0534c90608fae743264cd";
 
 fn fixture_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -39,9 +39,17 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(manifest["schema"], "washed-implementer-blocker-manifest.v1");
     assert_eq!(
         manifest["identity"],
-        "spatial-control-cold-serializer.blocked.v2"
+        "spatial-control-cold-serializer.blocked.v5"
     );
     assert_eq!(manifest["status"], "BLOCKED_NO_EXECUTABLE_SERIALIZER");
+    assert_eq!(
+        manifest["evidence_classification"],
+        json!({
+            "native_observed": "bounded_parent_path_73_functions_211_edges_memory_advancement",
+            "unknown": "host_wrapper_other_dlls_product_wide_behavior_outside_bounded_path",
+            "clean_room_design": "parent_canonical_bytes_and_receipt_schema_not_native_observed"
+        })
+    );
 
     let files = manifest["files"].as_array().expect("manifest files array");
     assert_eq!(
@@ -53,9 +61,16 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "COLD-SERIALIZER-EVIDENCE.json",
             "REQUIRED-FRAMING-RULES.json",
             "MINIMUM-EXTERNAL-EVIDENCE.json",
+            "UNCHANGED-BLOCKER-AUDIT.json",
             "INDEPENDENT-CHECK.json"
         ]
     );
+    let declared_independent_inputs = json!([
+        "COLD-SERIALIZER-EVIDENCE.json",
+        "REQUIRED-FRAMING-RULES.json",
+        "MINIMUM-EXTERNAL-EVIDENCE.json",
+        "UNCHANGED-BLOCKER-AUDIT.json"
+    ]);
     for entry in files {
         let name = entry["file"].as_str().expect("manifest file name");
         let bytes = fs::read(root.join(name)).expect("manifested blocker asset exists");
@@ -70,11 +85,16 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "{name}"
         );
     }
+    let unchanged_audit_sha = files
+        .iter()
+        .find(|entry| entry["file"] == "UNCHANGED-BLOCKER-AUDIT.json")
+        .expect("unchanged blocker audit is manifested")["sha256"]
+        .clone();
 
     let source = &manifest["source_evidence"];
     assert_eq!(
         source["research_manifest_sha256"],
-        "4aaacedda0677c94b4608dbee0aa15a5a4c89372a82f774e74183905c1ce5837"
+        "a520564d0e7d04c19e83a59a4b463256fc02a165645cd2514b40ca5c0d5eb148"
     );
     assert_eq!(source["serializer_execution"], "NOT_RUN");
     assert_eq!(source["canonical_preimage"], Value::Null);
@@ -83,6 +103,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(source["bytes_guessed"], false);
     assert_eq!(source["AI48ST01_used"], false);
     assert_eq!(source["private_auth"], "excluded");
+    assert_eq!(source["native_research_artifacts_in_package"], false);
+    assert_eq!(
+        source["unchanged_blocker_audit_sha256"],
+        unchanged_audit_sha
+    );
     assert_eq!(
         manifest["missing_framing"],
         json!([
@@ -127,6 +152,74 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         evidence["binary_suite_audit"]["conclusion"],
         "no executable spatial-control canonical serializer entrypoint found in authorized DEE binary suite"
     );
+
+    let audit = read_json("UNCHANGED-BLOCKER-AUDIT.json");
+    assert_eq!(
+        audit["schema"],
+        "sanitized-spatial-control-cold-serializer-incremental-audit.v1"
+    );
+    assert_eq!(
+        audit["classification"],
+        "NATIVE_OBSERVED_PLUS_AUTHORIZED_EVIDENCE_NO_HIT"
+    );
+    assert_eq!(
+        audit["evidence_classification"]["NATIVE_OBSERVED"]["scope"],
+        "bounded parent callback path rooted at RVA 0x1a7710"
+    );
+    assert_eq!(
+        audit["evidence_classification"]["NATIVE_OBSERVED"]["coverage"]["functions_visited"],
+        73
+    );
+    assert_eq!(
+        audit["evidence_classification"]["NATIVE_OBSERVED"]["coverage"]["call_edges_observed"],
+        211
+    );
+    assert_eq!(
+        audit["evidence_classification"]["UNKNOWN"]["serializer_existence"],
+        "UNKNOWN"
+    );
+    assert_eq!(
+        audit["evidence_classification"]["UNKNOWN"]["product_wide_absence_claim"],
+        false
+    );
+    assert_eq!(
+        audit["evidence_classification"]["CLEAN_ROOM_DESIGN"]["parent_canonical_bytes"],
+        "DESIGN_ONLY_UNAPPROVED_AND_NOT_DELIVERED"
+    );
+    assert_eq!(
+        audit["evidence_classification"]["CLEAN_ROOM_DESIGN"]["receipt_schema"],
+        "DESIGN_ONLY_NOT_NATIVE_OBSERVED"
+    );
+    assert_eq!(
+        audit["evidence_classification"]["CLEAN_ROOM_DESIGN"]["native_format_claim"],
+        false
+    );
+    let ida = &audit["ida_direct_execution"];
+    assert_eq!(ida["module_sha256"], evidence["dll"]["sha256"]);
+    assert_eq!(ida["root_rva"], "0x1a7710");
+    assert_eq!(ida["maximum_call_depth"], 3);
+    assert_eq!(ida["functions_visited"], 73);
+    assert_eq!(ida["call_edges_observed"], 211);
+    assert_eq!(ida["serialization_entrypoint_observed"], false);
+    assert_eq!(
+        ida["only_memory_primitive_hits"],
+        json!(["memset", "memmove"])
+    );
+    assert_eq!(
+        ida["native_behavior"],
+        "parent callback advances descriptors, control rows, planar working buffers and downstream runtime processing in memory"
+    );
+    assert_eq!(
+        audit["excluded_authorized_candidate"]["classification"],
+        "EXCLUDED_DOWNSTREAM_PAYLOAD_AND_SPATIAL_OUTPUT_SERIALIZER"
+    );
+    assert_eq!(audit["new_authoritative_serializer_evidence_count"], 0);
+    assert_eq!(audit["new_complete_framing_evidence_count"], 0);
+    assert_eq!(
+        audit["blocker_status"],
+        "UNCHANGED_BLOCKED_NO_EXECUTABLE_SERIALIZER_OR_COMPLETE_FRAMING"
+    );
+    assert_eq!(audit["bytes_guessed"], false);
 
     let framing = read_json("REQUIRED-FRAMING-RULES.json");
     assert_eq!(framing["status"], "BLOCKED_INCOMPLETE");
@@ -211,11 +304,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let independent = read_json("INDEPENDENT-CHECK.json");
     assert_eq!(
         independent["schema"],
-        "spatial-control-cold-serializer-blocker-independent-check.v2"
+        "spatial-control-cold-serializer-blocker-independent-check.v5"
     );
     assert_eq!(independent["all_pass"], true);
     let checks = independent["checks"].as_array().expect("checks array");
-    assert_eq!(checks.len(), 11);
+    assert_eq!(checks.len(), 14);
     assert!(checks.iter().all(|check| check["pass"] == true));
     assert_eq!(
         checks
@@ -229,21 +322,17 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "ida_parent",
             "research_evidence_identity",
             "constructors",
+            "incremental_ida_audit",
+            "evidence_classification",
             "no_entrypoint",
             "no_bytes",
             "framing_rules",
             "field_order",
-            "minimum_external_evidence"
+            "minimum_external_evidence",
+            "declared_inputs_present"
         ]
     );
-    assert_eq!(
-        independent["input_files"],
-        json!([
-            "COLD-SERIALIZER-EVIDENCE.json",
-            "REQUIRED-FRAMING-RULES.json",
-            "MINIMUM-EXTERNAL-EVIDENCE.json"
-        ])
-    );
+    assert_eq!(independent["input_files"], declared_independent_inputs);
     assert_eq!(independent["research_files_read"], false);
     assert_eq!(independent["serializer_execution"], false);
     assert_eq!(independent["bytes_guessed"], false);

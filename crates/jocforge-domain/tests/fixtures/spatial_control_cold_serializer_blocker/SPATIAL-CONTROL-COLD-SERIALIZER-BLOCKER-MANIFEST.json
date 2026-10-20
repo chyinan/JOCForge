@@ -1,22 +1,30 @@
 {
   "schema": "washed-implementer-blocker-manifest.v1",
-  "identity": "spatial-control-cold-serializer.blocked.v2",
+  "identity": "spatial-control-cold-serializer.blocked.v5",
   "status": "BLOCKED_NO_EXECUTABLE_SERIALIZER",
   "files": [
-    { "file": "COLD-SERIALIZER-EVIDENCE.json", "bytes": 2682, "sha256": "de28922aa7eedf8052fee7363303414d0473269f67e3f199443d255f527a367c" },
+    { "file": "COLD-SERIALIZER-EVIDENCE.json", "bytes": 3235, "sha256": "6a0db3edb8a56145c63b3f1d55853f21fe656eb7594d5de9fc9fc00bc5ffed0f" },
     { "file": "REQUIRED-FRAMING-RULES.json", "bytes": 2801, "sha256": "7396aaf144c102db7e395f090bf645e7db2d827d6bf8ecc3a39f870c73e0373d" },
     { "file": "MINIMUM-EXTERNAL-EVIDENCE.json", "bytes": 1123, "sha256": "7e078cfa1da60dcf0580a5fe070d6255c4c8cfa2265b862242965342210c922f" },
-    { "file": "INDEPENDENT-CHECK.json", "bytes": 1111, "sha256": "f788bc440c779aa29180a78144457d37c79d4a0ec224f352369e0e8b29a89f6f" }
+    { "file": "UNCHANGED-BLOCKER-AUDIT.json", "bytes": 3205, "sha256": "71864fa661270a97f284a6fb6ca43e520a81ebcc004869a9d205a9697fe67b78" },
+    { "file": "INDEPENDENT-CHECK.json", "bytes": 1371, "sha256": "528d76f31342ca7001014b9412b4c4284cd0e49dd8aa306a16aa3adaa1e5c588" }
   ],
   "source_evidence": {
-    "research_manifest_sha256": "4aaacedda0677c94b4608dbee0aa15a5a4c89372a82f774e74183905c1ce5837",
+    "research_manifest_sha256": "a520564d0e7d04c19e83a59a4b463256fc02a165645cd2514b40ca5c0d5eb148",
+    "unchanged_blocker_audit_sha256": "71864fa661270a97f284a6fb6ca43e520a81ebcc004869a9d205a9697fe67b78",
     "serializer_execution": "NOT_RUN",
     "canonical_preimage": null,
     "authoritative_length": null,
     "authoritative_sha256": null,
     "bytes_guessed": false,
     "AI48ST01_used": false,
+    "native_research_artifacts_in_package": false,
     "private_auth": "excluded"
+  },
+  "evidence_classification": {
+    "native_observed": "bounded_parent_path_73_functions_211_edges_memory_advancement",
+    "unknown": "host_wrapper_other_dlls_product_wide_behavior_outside_bounded_path",
+    "clean_room_design": "parent_canonical_bytes_and_receipt_schema_not_native_observed"
   },
   "missing_framing": [
     "top_level_envelope",
