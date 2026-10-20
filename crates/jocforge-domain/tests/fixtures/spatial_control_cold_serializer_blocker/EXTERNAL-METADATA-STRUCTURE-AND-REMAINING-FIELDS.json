@@ -1,0 +1,70 @@
+{
+  "schema": "sanitized-external-metadata-structure-and-remaining-fields.v1",
+  "source_evidence_identity": {
+    "external_metadata_producer_sha256": "dfafe0382999089c1b798770f6ccaacd11b9e6805ad63aa2a5fd31fd22212027",
+    "property12_authority_sha256": "c91947962d018a06ffd821737be4f03fc1207eebc64177d297674fbc72413598",
+    "measurement_path_contract_sha256": "c4f511341290806f63d1966aedc7f92c9f03ffb6eea664a29b372190dc74bac6",
+    "measurement_mapper_sha256": "7a8313327e8542ae98193c26b984423deee13040cb3ed213d8c3b15b86fe1d19"
+  },
+  "external_metadata_120_structure": [
+    {"offset": 0, "bytes": 1, "type": "u8", "producer": "copy source+0", "semantic": "NOT_CAPTURED"},
+    {"offset": 1, "bytes": 63, "type": "char[63]", "producer": "strncpy source+4", "semantic": "text field name NOT_CAPTURED"},
+    {"offset": 64, "bytes": 1, "type": "u8", "producer": "literal zero terminator", "semantic": "string terminator"},
+    {"offset": 65, "bytes": 3, "type": "three u8", "producer": "copy source+72,+76,+80", "semantic": "NOT_CAPTURED"},
+    {"offset": 68, "bytes": 1, "type": "converted u8", "producer": "0x4dfd30(source+84)", "semantic": "NOT_CAPTURED"},
+    {"offset": 69, "bytes": 3, "type": "three u8", "producer": "copy source+88,+92,+96", "semantic": "NOT_CAPTURED"},
+    {"offset": 72, "bytes": 1, "type": "converted u8", "producer": "0x4dfae0(source+100)", "semantic": "NOT_CAPTURED"},
+    {"offset": 73, "bytes": 3, "type": "three u8", "producer": "copy source+104,+108,+112", "semantic": "NOT_CAPTURED"},
+    {"offset": 76, "bytes": 1, "type": "converted u8", "producer": "0x4def80(source+116)", "semantic": "NOT_CAPTURED"},
+    {"offset": 77, "bytes": 1, "type": "converted u8", "producer": "0x4df640(source+120)", "semantic": "NOT_CAPTURED"},
+    {"offset": 78, "bytes": 10, "type": "unwritten in bounded producer", "producer": "no store observed in 0x4e0890", "semantic": "NOT_CAPTURED"},
+    {"offset": 88, "bytes": 8, "type": "f64", "producer": "hours*3600 + minutes*60 + fractional units/100000, or -1", "semantic": "time value; source unit names NOT_CAPTURED"},
+    {"offset": 96, "bytes": 1, "type": "bool", "producer": "source+124 != 0", "semantic": "NOT_CAPTURED"},
+    {"offset": 97, "bytes": 1, "type": "converted u8", "producer": "0x4df8b0(source+140)", "semantic": "NOT_CAPTURED"},
+    {"offset": 98, "bytes": 1, "type": "u8", "producer": "source+144 clamped to0 when >255", "semantic": "dialog normalization value"},
+    {"offset": 99, "bytes": 1, "type": "unwritten in bounded producer", "producer": "no store observed in 0x4e0890", "semantic": "NOT_CAPTURED"},
+    {"offset": 100, "bytes": 2, "type": "converted u16", "producer": "0x4deb10(pointer source+148)", "semantic": "NOT_CAPTURED"},
+    {"offset": 102, "bytes": 2, "type": "converted u16", "producer": "0x4deb10(pointer source+156)", "semantic": "NOT_CAPTURED"},
+    {"offset": 104, "bytes": 2, "type": "converted u16", "producer": "0x4deb10(pointer source+164)", "semantic": "NOT_CAPTURED"},
+    {"offset": 106, "bytes": 1, "type": "converted u8", "producer": "0x4e0650(source+172)", "semantic": "NOT_CAPTURED"},
+    {"offset": 107, "bytes": 1, "type": "unwritten in bounded producer", "producer": "no store observed in 0x4e0890", "semantic": "NOT_CAPTURED"},
+    {"offset": 108, "bytes": 4, "type": "u32 enum", "producer": "0x4e1eb0(source+176), invalid default8", "semantic": "monitored spatial coding bed configuration"},
+    {"offset": 112, "bytes": 1, "type": "u8", "producer": "source+180, invalid default0", "semantic": "monitored spatial coding elements"},
+    {"offset": 113, "bytes": 1, "type": "converted u8", "producer": "0x4df1b0(source+184)", "semantic": "NOT_CAPTURED"},
+    {"offset": 114, "bytes": 1, "type": "converted u8", "producer": "0x4dff70(source+188)", "semantic": "NOT_CAPTURED"},
+    {"offset": 115, "bytes": 1, "type": "converted u8", "producer": "0x4df400(source+192)", "semantic": "NOT_CAPTURED"},
+    {"offset": 116, "bytes": 1, "type": "converted u8", "producer": "0x4ded50(source+196)", "semantic": "NOT_CAPTURED"},
+    {"offset": 117, "bytes": 1, "type": "converted u8", "producer": "0x4e1c60(source+200)", "semantic": "warm-mode host enum", "observed": 4},
+    {"offset": 118, "bytes": 2, "type": "unwritten in bounded producer", "producer": "no store observed in 0x4e0890", "semantic": "NOT_CAPTURED"}
+  ],
+  "property12_resolution": {
+    "property_id": 12,
+    "source": "descriptor+40 data_rate_enum",
+    "rule": {"0":384,"1":448,"2":576,"3":640,"4":768,"5":1024},
+    "current_descriptor_enum": 5,
+    "current_property_value": 1024,
+    "policy_header_byte2_is_property12": false
+  },
+  "policy_remaining": {
+    "property29_semantic_name": "NOT_CAPTURED",
+    "property36_semantic_name": "NOT_CAPTURED",
+    "policy_header_byte2_property_id": "NOT_CAPTURED",
+    "policy_header_byte2_rule": "observed0 transformed by adding80"
+  },
+  "measurement_remaining": [
+    {"measurement_offset": 8, "producer_source": "meter internal result+12", "semantic_name": "NOT_CAPTURED"},
+    {"measurement_offset": 12, "producer_source": "meter internal result+16", "semantic_name": "NOT_CAPTURED"},
+    {"measurement_offset": 16, "producer_source": "meter internal result+20", "semantic_name": "NOT_CAPTURED"}
+  ],
+  "bounded_no_hit": {
+    "external_metadata_structural_layout_complete": true,
+    "external_metadata_semantic_schema_complete": false,
+    "portable_order_endian_version_optional_checksum": "NOT_OBSERVED",
+    "serializer_restore_roundtrip": "NOT_RUN",
+    "scope": "0x4e0890 producer, helper callsites, 0x178dc0 copy, property12 0x1ab520 authority, measurement 0x17a830 export",
+    "product_wide_absence_claim": false
+  },
+  "production_allowed": false,
+  "raw_external_metadata_delivered": false,
+  "private_auth": "EXCLUDED"
+}

@@ -1,11 +1,11 @@
 {
-  "schema": "washed-implementer-blocker-manifest.v12",
-  "identity": "spatial-control-cold-serializer.blocked.v17",
+  "schema": "washed-implementer-blocker-manifest.v13",
+  "identity": "spatial-control-cold-serializer.blocked.v18",
   "status": "BLOCKED_NO_EXECUTABLE_SERIALIZER",
   "source_evidence": {
-    "research_manifest_sha256": "1ab36caef00a88830e32c9aaf1ed1399b88e4a3bc525ff7bd4ffb31347d3316e",
-    "research_independent_check_sha256": "78d2272f5f7cf22572620b4216aedc33e1aa84f7afb1c7ed272bf3f796d9a5bb",
-    "trim_payload_producer_consumer_sha256": "be74fda055d1b93aefa263750421de68103dfebda4f2266421dbf30bda27d1ae",
+    "research_manifest_sha256": "5d36078d97619574c2f386bed25ffa0ca7aa5768a1d9928a79f439cded8b98d3",
+    "research_independent_check_sha256": "d2516abfcf1f127584a67650eb5bf976fcbee39684461a0245a55f5fb4ac06d4",
+    "external_metadata_structure_sha256": "17d0b6132fe27f1a70501da1092583ae097a20fb6ed897b65874057af69389a1",
     "serializer_execution": "NOT_RUN",
     "canonical_preimage": null,
     "authoritative_length": null,
@@ -15,6 +15,44 @@
     "native_research_artifacts_in_package": false,
     "private_auth": "excluded",
     "product_wide_absence_claim": false
+  },
+  "external_metadata_and_property12": {
+    "structural_layout_bytes": 120,
+    "structural_layout_complete": true,
+    "semantic_schema_complete": false,
+    "property12_source": "descriptor+40_data_rate_enum",
+    "property12_mapping": "0=384;1=448;2=576;3=640;4=768;5=1024",
+    "property12_current_value": 1024,
+    "policy_header_byte2_is_property12": false,
+    "measurement_unknown_offsets": [8, 12, 16],
+    "portable_contract": "NOT_OBSERVED",
+    "serializer_restore_roundtrip": "NOT_RUN"
+  },
+  "external_metadata_structure": {
+    "plus0": "U8 unknown semantic",
+    "plus1_to_63": "char[63] from source+4",
+    "plus64": "zero terminator",
+    "plus65_to_67": "three U8 unknown",
+    "plus68": "converted U8",
+    "plus69_to_71": "three U8 unknown",
+    "plus72": "converted U8",
+    "plus73_to_75": "three U8 unknown",
+    "plus76_to_77": "converted U8",
+    "plus78_to_87": "no store observed in bounded producer",
+    "plus88": "F64 time or -1",
+    "plus96": "bool from source+124 != 0",
+    "plus97": "converted U8",
+    "plus98": "dialog normalization U8 with >255 fallback 0",
+    "plus99": "no store observed",
+    "plus100_104": "three converted U16",
+    "plus106": "converted U8",
+    "plus107": "no store observed",
+    "plus108": "U32 spatial coding bed config with invalid default 8",
+    "plus112": "U8 spatial coding elements with invalid default 0",
+    "plus113_to_116": "converted U8",
+    "plus117": "warm-mode host enum current 4",
+    "plus118_to_119": "no store observed",
+    "semantic_field_names": "INCOMPLETE"
   },
   "trim_payload_correction": {
     "supersedes_partial_semantics": true,
@@ -28,25 +66,8 @@
     "record_bytes": 6,
     "fields": ["input_channel_key", "host_index", "source_ordinal"],
     "field_widths": [2, 2, 2],
-    "ordering": "tracks ascending resolved TrackUID byte-string stable on equal keys; beds resolver encounter order",
     "semantics_complete": true,
     "raw_records_delivered": false
-  },
-  "external_metadata": {
-    "extent_bytes": 120,
-    "copy_condition": "metadata present and mode != 1",
-    "byte117": "warm_mode_host_enum4",
-    "lineage": "DBMD section9 byte152 low3=3 -> host byte117=4 -> Type11 trim mode3",
-    "full_schema": "NOT_CAPTURED",
-    "raw_block_delivered": false
-  },
-  "trim_semantics": {
-    "payload_bytes": 24,
-    "payload_fields": ["flag_u8", "padding3", "gain0_f32", "gain1_f32", "gain2_f32", "balance0_f32", "balance1_f32"],
-    "payload_field_offsets": { "flag_u8": 0, "padding3": "1..3", "gain0_f32": 4, "gain1_f32": 8, "gain2_f32": 12, "balance0_f32": 16, "balance1_f32": 20 },
-    "consumer": "0x1acfe0 reads flag, quantizes gains through 0x1ad700, quantizes balances in closed [-16,16] domain, installs using permutation [0,3,6,1,4,7,2,5,8]",
-    "record_semantics_complete": true,
-    "raw_payload_delivered": false
   },
   "measurement_alias_resolution": {
     "field_id": "measurement_result.measured_loudness",
@@ -58,12 +79,12 @@
     "distinct_field_claim": false
   },
   "semantic_corrections": {
+    "policy_plus2": "property_identity_unknown; raw value transformed by adding80",
     "policy_plus4": "property36_semantic_name_unknown",
     "policy_plus32": "property29_semantic_name_unknown",
     "policy_plus36": "RF_property15",
     "policy_plus40": "Line_property13",
-    "gating_enum": "0_ungated_1_dialogue_2_level_other_invalid",
-    "measurement_unknown_offsets": [8, 12, 16]
+    "gating_enum": "0_ungated_1_dialogue_2_level_other_invalid"
   },
   "descriptor_semantics": {
     "descriptor_bytes": 120,
@@ -123,14 +144,15 @@
     { "file": "CHANNEL-EXTERNAL-METADATA-TRIM-SEMANTICS.json", "bytes": 4283, "sha256": "7c9f2f96f2eb5da4e3f2693c5d695bf6d2d184920c2edd62f59392508907c764" },
     { "file": "COLD-SERIALIZER-EVIDENCE.json", "bytes": 3235, "sha256": "6a0db3edb8a56145c63b3f1d55853f21fe656eb7594d5de9fc9fc00bc5ffed0f" },
     { "file": "COLD-SERIALIZER-FINAL-BLOCKER.md", "bytes": 4159, "sha256": "4017a64a0c27e85b6ee308f6e9848d26a93290c04ff808846b1bbaf7315b322a" },
+    { "file": "EXTERNAL-METADATA-STRUCTURE-AND-REMAINING-FIELDS.json", "bytes": 5766, "sha256": "17d0b6132fe27f1a70501da1092583ae097a20fb6ed897b65874057af69389a1" },
     { "file": "FILEWRITER-FWRITE-DYNAMIC-JOIN.json", "bytes": 3057, "sha256": "4d77a2fb99ba77d1e0bac1f79bb8d0f638f132a895eee9351c6d46025f2e0298" },
-    { "file": "INDEPENDENT-CHECK.json", "bytes": 2769, "sha256": "78d2272f5f7cf22572620b4216aedc33e1aa84f7afb1c7ed272bf3f796d9a5bb" },
+    { "file": "INDEPENDENT-CHECK.json", "bytes": 2931, "sha256": "d2516abfcf1f127584a67650eb5bf976fcbee39684461a0245a55f5fb4ac06d4" },
     { "file": "MEASUREMENT-ALIAS-RESOLUTION.json", "bytes": 1318, "sha256": "b1608911f6c00d42c648cfb26962bc014743351d4feed8fd49bb00220826f5d1" },
     { "file": "MINIMUM-EXTERNAL-EVIDENCE.json", "bytes": 1123, "sha256": "7e078cfa1da60dcf0580a5fe070d6255c4c8cfa2265b862242965342210c922f" },
     { "file": "PARENT-COLD-CONFIG-BOUNDARY.json", "bytes": 3728, "sha256": "7f738cea345e356a22ad7d796c6e5b96db03eb38245331f8373a618de8e006e4" },
-    { "file": "PARENT-COLD-CONFIG-SEMANTICS.json", "bytes": 8368, "sha256": "a48d0500f53059878bf15fb77b9460f9d615f39092245123f980b7d0f9f89b9d" },
+    { "file": "PARENT-COLD-CONFIG-SEMANTICS.json", "bytes": 8404, "sha256": "998d69d4029b435abd01f89ba0cdcba47d334afaa6710a7da3d2856d342fefce" },
     { "file": "PARENT-COLD-LIFECYCLE.json", "bytes": 3913, "sha256": "1f2992122f1d271238e59217b25b4139ba9d2b2c70710b9add98430b7282fd5f" },
-    { "file": "PARENT-COLD-SEMANTIC-CORRECTIONS.json", "bytes": 3264, "sha256": "42142c4cad7f1cbd2e5f0c2810327ccdcabcf7055dde99be6466cb3610bbcdc4" },
+    { "file": "PARENT-COLD-SEMANTIC-CORRECTIONS.json", "bytes": 3321, "sha256": "021220b63e969b5add02cdb527470873f82e2b9bf20391605cce6d4a02d53eee" },
     { "file": "PARENT-FILEWRITER-DYNAMIC-JOIN.json", "bytes": 3442, "sha256": "a2bd0eb000671b95190ed44a1359f4e349981b74a6f191b49e1469793b377edc" },
     { "file": "PARENT-OUTPUT-DATAFLOW.json", "bytes": 3513, "sha256": "8ec6387277da562610614795459ef03b8c960ea2962a51bb492fcee6fcae3a20" },
     { "file": "PARENT-OUTPUT-IMPLEMENTER-SUPPLEMENT.json", "bytes": 5833, "sha256": "90f7cd4e4baba45ac4f7650d92e2963e3d384edcefaa0e2cb99b10dcb6f5bba1" },

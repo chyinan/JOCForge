@@ -25,7 +25,7 @@
   "policy_block_44": [
     {"offset": 0, "bytes": 1, "semantic": "copyright flag / property33", "observed": 1, "status": "BOUND"},
     {"offset": 1, "bytes": 1, "semantic": "original flag / property34", "observed": 1, "status": "BOUND"},
-    {"offset": 2, "bytes": 1, "semantic": "property12 source byte transformed by adding 80", "observed": 0, "submitted_value": 80, "status": "PROPERTY_BOUND_SEMANTIC_NAME_UNKNOWN"},
+    {"offset": 2, "bytes": 1, "semantic": "policy header byte transformed by adding 80", "observed": 0, "submitted_value": 80, "property_id": "NOT_CAPTURED", "status": "TRANSFORM_BOUND_PROPERTY_AND_SEMANTIC_UNKNOWN"},
     {"offset": 3, "bytes": 1, "semantic": "padding/reserved", "observed": 0, "status": "OBSERVED_ZERO"},
     {"offset": 4, "bytes": 4, "semantic": "property36 value", "observed": 0, "status": "PROPERTY_BOUND_SEMANTIC_NAME_UNKNOWN"},
     {"offset": 8, "bytes": 4, "semantic": "LoRo center mix code / property25", "observed": 4, "status": "BOUND"},

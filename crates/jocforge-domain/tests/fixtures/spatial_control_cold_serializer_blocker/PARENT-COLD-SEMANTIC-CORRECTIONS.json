@@ -28,7 +28,8 @@
   ],
   "remaining_bounded_no_hit": {
     "measurement_unknown_offsets": [8, 12, 16],
-    "policy_unknown_property_semantics": [12, 29, 36],
+    "policy_unknown_property_semantics": [29, 36],
+    "policy_header_byte2_property_identity": "NOT_CAPTURED",
     "channel_record_field_names": "NOT_CAPTURED",
     "external_metadata_full_schema": "NOT_CAPTURED",
     "trim_key_and_payload_semantics": "NOT_CAPTURED",
