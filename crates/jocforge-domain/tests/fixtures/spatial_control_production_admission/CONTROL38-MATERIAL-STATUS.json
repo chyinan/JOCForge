@@ -4,17 +4,40 @@
   "callback": 0,
   "generation": 1,
   "type": "U32LE",
-  "shape": [38, 13],
+  "shape": [
+    38,
+    13
+  ],
   "word_count": 494,
   "byte_count": 1976,
   "row_order": "physical host index 0..37",
-  "known_derivation": ["physical binding preflight", "bed semantic/DBMD rule", "object ordinal event/sampler plus DBMD track"],
-  "material_id": null,
-  "sha256": null,
-  "producer_address": null,
-  "producer_caller": null,
-  "status": "BLOCKED_NOT_CAPTURED",
-  "missing": ["real physical binding", "DBMD track binding", "callback0 event/sampler values", "494 U32 words", "native or model producer boundary"],
+  "known_derivation": [
+    "physical binding preflight",
+    "bed semantic/DBMD rule",
+    "object ordinal event/sampler plus DBMD track"
+  ],
+  "material_id": "control38-callback0-2f1b942f1306700d",
+  "input_lineage_id": "control38-lineage-adm-7826dcbef37ef696-run102",
+  "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "input_lineage_status": "BOUND_TO_PINNED_REAL_ADM_BY_BYTES_AND_SHA256",
+  "sha256": "2f1b942f1306700de77c987241e5f7a0b759cc906b601e153e667e3f58b4a679",
+  "producer_address": "dee_audio_filter_ddp_atmos.dll+0x1acd10",
+  "producer_caller": "dee_audio_filter_ddp_atmos.dll+0x1a780d",
+  "status": "PHYSICAL_CONTROL_CAPTURED_SEMANTIC_BINDING_BLOCKED",
+  "physical_control38_status": "CAPTURED_NATIVE_CALLBACK0",
+  "physical_mapping_status": "CAPTURED_NATIVE_CALLBACK0",
+  "dbmd_track_to_bed_object_semantic_binding_map_status": "BLOCKED_HASH_ONLY_NO_SEMANTIC_MAP",
+  "dbmd_track_to_bed_object_semantic_binding_map_definition": {
+    "bed_rows": "physical bed row -> semantic bed identity and DBMD track binding",
+    "object_rows": "physical object row -> object ordinal, event, sampler and DBMD track binding"
+  },
+  "missing": [
+    "DBMD track-to-bed/object semantic binding map"
+  ],
   "old_fixture_hash_accepted": false,
-  "default_host_mapping_accepted": false
+  "default_host_mapping_accepted": false,
+  "physical_binding_sha256": "d61e31ecfed16405bf7854e0c0e6872585c47a7a9beb2311c1f97c4b653ceb9b",
+  "derived_binding_records_sha256": "259cf246c0b35b2985b04ff74321a3a6076496ff2be3a8ea5e39f4d5d47ab48f",
+  "derived_binding_records_are_semantic_proof": false,
+  "material_file": "CONTROL38-CALLBACK0-MATERIAL.json"
 }

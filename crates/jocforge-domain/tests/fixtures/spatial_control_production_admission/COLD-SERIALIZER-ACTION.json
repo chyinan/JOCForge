@@ -1,0 +1,29 @@
+{
+  "schema": "research-spatial-control-cold-serializer-action.v1",
+  "action": "run authoritative cold constructor serializer only",
+  "status": "BLOCKED_NO_EXECUTABLE_SERIALIZER",
+  "native_dll_static_check": {
+    "parent_callback_rva": "0x1a7710",
+    "call_map_captured": true,
+    "decompiled_frontend_candidates": ["0x1aa8a0", "0x1ab800", "0x1ac490", "0x1acd10", "0x1ad9d0"],
+    "schema_magic_strings_found": false,
+    "runtime_parent_calls_serializer": false
+  },
+  "clean_room_schema": {
+    "field_order_known": true,
+    "constructors_pinned": true,
+    "executable_serializer_entrypoint": null,
+    "authoritative_runtime_state_instance": null
+  },
+  "not_run": ["spatial render", "selector", "U04", "outer"],
+  "missing_for_execution": [
+    "top-level binary envelope and section framing",
+    "nested F01E embedding/framing",
+    "optional record framing",
+    "persistent inclusion decision for current_flags/current_features",
+    "writer-set record framing",
+    "executable authoritative serializer"
+  ],
+  "bytes_guessed": false,
+  "ai48st01_used": false
+}

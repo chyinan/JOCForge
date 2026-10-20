@@ -1,5 +1,5 @@
 {
-  "schema": "spatial-control-production-admission-independent-check.v2",
+  "schema": "spatial-control-production-admission-independent-check.v7",
   "checks": [
     {
       "id": "file_identity",
@@ -38,11 +38,23 @@
       "pass": true
     },
     {
+      "id": "unified_status_v7",
+      "pass": true
+    },
+    {
       "id": "schema_valid",
       "pass": true
     },
     {
-      "id": "control38_blocker",
+      "id": "control38_material",
+      "pass": true
+    },
+    {
+      "id": "control38_semantic_blocker",
+      "pass": true
+    },
+    {
+      "id": "control38_input_lineage",
       "pass": true
     },
     {
@@ -53,10 +65,12 @@
   "all_pass": true,
   "input_files": [
     "REAL-ADM-INPUT-IDENTITY.json",
+    "CONTROL38-INPUT-LINEAGE.json",
     "PROVIDER-IDENTITIES.json",
     "PRODUCTION-ADMISSION-VECTORS.json",
     "SPATIAL-CONTROL-PRODUCTION.schema.json",
     "CONTROL38-MATERIAL-STATUS.json",
+    "CONTROL38-CALLBACK0-MATERIAL.json",
     "COLD-PARENT-STATE-STATUS.json"
   ],
   "raw_adm_read": false,

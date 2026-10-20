@@ -4,7 +4,15 @@
 
 RAW_ADM_INPUT_IDENTITY=PINNED
 
-CALLBACK0_CONTROL_MATERIAL=NOT_RUN
+CALLBACK0_PHYSICAL_CONTROL_MATERIAL=CAPTURED_NATIVE_CALLBACK0_INPUT_LINEAGE_BOUND
+
+CALLBACK0_INPUT_LINEAGE=BOUND_TO_PINNED_REAL_ADM_BY_BYTES_AND_SHA256
+
+CALLBACK0_CONTROL_SEMANTIC_BINDING=BLOCKED_HASH_ONLY_NO_SEMANTIC_MAP
+
+CALLBACK0_CONTROL_SEMANTIC_ADMISSION=NOT_RUN
+
+AUTHORITATIVE_PARENT_COLD_SERIALIZER=BLOCKED_NO_EXECUTABLE_SERIALIZER
 
 AUTHORITATIVE_PARENT_BEFORE_STATE_BYTES=BLOCKED
 
@@ -16,10 +24,23 @@ SPATIAL_CONTROL_RECEIPT=BLOCKED
 
 SPATIAL_AUDIO_PROPOSAL=BLOCKED
 
+SUCCESS_VECTORS=0
+
 PRODUCTION_ALLOWED=NO
 
 The real ADM file, PCM extent and ADM-related chunk identities are pinned in
 REAL-ADM-INPUT-IDENTITY.json. No PCM or metadata content is included.
+Derived callback0 control material is delivered separately in
+CONTROL38-CALLBACK0-MATERIAL.json.
+Its physical rows and physical mapping are complete. DBMD/object and
+event/sampler semantic mappings remain blocked and must be supplied before the
+material becomes an authoritative semantic control input.
+CONTROL38-INPUT-LINEAGE.json proves that the actual DEE -a input and the pinned
+REAL-ADM identity have identical byte length and SHA-256, with stable
+before/after asset checks. It contains no raw paths or input bytes.
+Physical capture is not semantic parse success. It is not callback numerical
+execution, control semantic admission, parent state commit or production
+receipt.
 
 ## Owner and input boundary
 
@@ -102,9 +123,9 @@ programme still requires normal callbacks plus four cached drains.
 
 ## Exact blocker
 
-No production success vector is delivered. The missing bounded execution is:
+No production success vector is delivered. The remaining bounded execution is:
 
-real ADM identity -> parsed callback0 control38 -> authoritative cold bytes ->
+real ADM identity -> captured callback0 control38 -> authoritative cold bytes ->
 installed48/selector/U04/outer/matrix/target full material -> authoritative
 after bytes.
 

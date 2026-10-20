@@ -5,7 +5,7 @@ use sha2::{Digest, Sha256};
 use std::fs;
 use std::path::PathBuf;
 
-const MANIFEST_SHA256: &str = "8ab62bd6089e82d85e52eff2ee144b31d03874fddda9e73e681dc4cf97abe02e";
+const MANIFEST_SHA256: &str = "f38e1db8f92af21e621f5c7a51f5feb19f06a062c4f166d300e17ac35f3aa2d9";
 const ADMISSION_FAILURES: &[(&str, &str)] = &[
     ("missing_control38", "SPATIAL_CONTROL_INPUT_MATERIAL"),
     (
@@ -26,11 +26,12 @@ const ADMISSION_FAILURES: &[(&str, &str)] = &[
 ];
 const EXECUTION_FAULTS: &[&str] = &["after_selector", "after_u04", "after_outer", "after_target"];
 const BLOCKED_MATERIAL: &[&str] = &[
-    "parsed callback0 control38",
-    "authoritative parent before-state bytes",
+    "DBMD track-to-bed/object semantic binding map covering bed rows and object ordinal/event/sampler rows",
+    "authoritative cold parent serializer and before-state preimage",
     "installed48 full bytes",
     "selector/U04/outer complete materials",
-    "matrix/destinations/targets complete materials",
+    "matrix/destinations/markers/writer-set complete materials",
+    "target previous/current/active and transition complete materials",
     "authoritative parent after-state bytes",
 ];
 
@@ -64,6 +65,34 @@ fn is_sha256(value: &Value) -> bool {
     })
 }
 
+fn u32le_rows(rows: &Value) -> Vec<u8> {
+    let rows = rows.as_array().expect("control38 rows array");
+    assert_eq!(rows.len(), 38);
+    let mut bytes = Vec::with_capacity(38 * 13 * 4);
+    for row in rows {
+        let words = row.as_array().expect("control38 row array");
+        assert_eq!(words.len(), 13);
+        for word in words {
+            let value =
+                u32::try_from(word.as_u64().expect("U32 word")).expect("control38 word fits U32");
+            bytes.extend_from_slice(&value.to_le_bytes());
+        }
+    }
+    bytes
+}
+
+fn u16le_values(values: &Value) -> Vec<u8> {
+    let values = values.as_array().expect("physical mapping values");
+    assert_eq!(values.len(), 38);
+    let mut bytes = Vec::with_capacity(38 * 2);
+    for value in values {
+        let value = u16::try_from(value.as_u64().expect("physical mapping U16"))
+            .expect("physical mapping value fits U16");
+        bytes.extend_from_slice(&value.to_le_bytes());
+    }
+    bytes
+}
+
 fn assert_package_manifest() {
     let root = fixture_root();
     let manifest_bytes = fs::read(root.join("SPATIAL-CONTROL-PRODUCTION-ADMISSION-MANIFEST.json"))
@@ -76,7 +105,7 @@ fn assert_package_manifest() {
     );
     assert_eq!(
         manifest["identity"],
-        "spatial-control.production-admission.callback0.v1"
+        "spatial-control.production-admission.callback0.v7"
     );
     assert_eq!(
         manifest["status"],
@@ -88,7 +117,7 @@ fn assert_package_manifest() {
     );
 
     let files = manifest["files"].as_array().expect("manifest files array");
-    assert_eq!(files.len(), 9);
+    assert_eq!(files.len(), 12);
     for entry in files {
         let name = entry["file"].as_str().expect("manifest file name");
         let bytes = fs::read(root.join(name)).expect("manifested admission file exists");
@@ -117,9 +146,17 @@ fn assert_package_manifest() {
 
     let boundaries = &manifest["hard_boundaries"];
     assert_eq!(boundaries["raw_adm_input_identity"], "PINNED");
-    assert_eq!(boundaries["parsed_callback0_control38"], "NOT_RUN");
+    assert_eq!(
+        boundaries["physical_control38_material"],
+        "CAPTURED_NATIVE_CALLBACK0_INPUT_LINEAGE_BOUND"
+    );
+    assert_eq!(
+        boundaries["dbmd_track_to_bed_object_semantic_binding_map"],
+        "BLOCKED_HASH_ONLY_NO_SEMANTIC_MAP"
+    );
     assert_eq!(boundaries["authoritative_parent_before_state"], "BLOCKED");
     assert_eq!(boundaries["callback0_numerical_execution"], "NOT_RUN");
+    assert_eq!(boundaries["control_semantic_admission"], "NOT_RUN");
     assert_eq!(boundaries["authoritative_parent_after_state"], "BLOCKED");
     assert_eq!(boundaries["spatial_control_receipt"], "BLOCKED");
     assert_eq!(boundaries["spatial_audio_proposal"], "BLOCKED");
@@ -137,7 +174,10 @@ fn real_adm_identity_is_pinned_but_parent_execution_remains_blocked() {
     let vectors = read_fixture("PRODUCTION-ADMISSION-VECTORS.json");
     let independent = read_fixture("INDEPENDENT-CHECK.json");
     let control_status = read_fixture("CONTROL38-MATERIAL-STATUS.json");
+    let control_material = read_fixture("CONTROL38-CALLBACK0-MATERIAL.json");
+    let control_lineage = read_fixture("CONTROL38-INPUT-LINEAGE.json");
     let cold_status = read_fixture("COLD-PARENT-STATE-STATUS.json");
+    let cold_action = read_fixture("COLD-SERIALIZER-ACTION.json");
 
     assert_eq!(input["schema"], "sanitized-real-adm-input-identity.v1");
     assert_eq!(input["input_id"], "adm-sha256-7826dcbef37ef696");
@@ -159,10 +199,30 @@ fn real_adm_identity_is_pinned_but_parent_execution_remains_blocked() {
             * input["wave"]["block_align"].as_u64().unwrap()
     );
     assert_eq!(input["control_identity"]["owner"], "frontend_control");
-    assert_eq!(input["control_identity"]["status"], "NOT_RUN");
     assert_eq!(
         input["control_identity"]["parsed_callback0_control38_sha256"],
-        Value::Null
+        "2f1b942f1306700de77c987241e5f7a0b759cc906b601e153e667e3f58b4a679"
+    );
+    assert_eq!(
+        input["control_identity"]["physical_mapping_sha256"],
+        "d61e31ecfed16405bf7854e0c0e6872585c47a7a9beb2311c1f97c4b653ceb9b"
+    );
+    assert_eq!(
+        input["control_identity"]["physical_status"],
+        "CAPTURED_NATIVE_CALLBACK0"
+    );
+    assert_eq!(
+        input["control_identity"]["semantic_binding_status"],
+        "BLOCKED_HASH_ONLY_NO_SEMANTIC_MAP"
+    );
+    assert_eq!(input["capture_lineage"]["same_input_sha256_proven"], true);
+    assert_eq!(
+        input["capture_lineage"]["lineage_id"],
+        "control38-lineage-adm-7826dcbef37ef696-run102"
+    );
+    assert_eq!(
+        input["capture_lineage"]["lineage_file"],
+        "CONTROL38-INPUT-LINEAGE.json"
     );
     assert_eq!(input["pcm_material_included"], false);
     assert_eq!(input["metadata_material_included"], false);
@@ -205,23 +265,186 @@ fn real_adm_identity_is_pinned_but_parent_execution_remains_blocked() {
     assert_eq!(control_status["word_count"], 494);
     assert_eq!(control_status["byte_count"], 1976);
     assert_eq!(control_status["row_order"], "physical host index 0..37");
-    assert_eq!(control_status["material_id"], Value::Null);
-    assert_eq!(control_status["sha256"], Value::Null);
-    assert_eq!(control_status["producer_address"], Value::Null);
-    assert_eq!(control_status["producer_caller"], Value::Null);
-    assert_eq!(control_status["status"], "BLOCKED_NOT_CAPTURED");
+    assert_eq!(
+        control_status["material_id"],
+        "control38-callback0-2f1b942f1306700d"
+    );
+    assert_eq!(
+        control_status["sha256"],
+        "2f1b942f1306700de77c987241e5f7a0b759cc906b601e153e667e3f58b4a679"
+    );
+    assert_eq!(
+        control_status["producer_address"],
+        "dee_audio_filter_ddp_atmos.dll+0x1acd10"
+    );
+    assert_eq!(
+        control_status["producer_caller"],
+        "dee_audio_filter_ddp_atmos.dll+0x1a780d"
+    );
+    assert_eq!(
+        control_status["status"],
+        "PHYSICAL_CONTROL_CAPTURED_SEMANTIC_BINDING_BLOCKED"
+    );
+    assert_eq!(
+        control_status["physical_control38_status"],
+        "CAPTURED_NATIVE_CALLBACK0"
+    );
+    assert_eq!(
+        control_status["physical_mapping_status"],
+        "CAPTURED_NATIVE_CALLBACK0"
+    );
+    assert_eq!(
+        control_status["dbmd_track_to_bed_object_semantic_binding_map_status"],
+        "BLOCKED_HASH_ONLY_NO_SEMANTIC_MAP"
+    );
+    assert_eq!(
+        control_status["dbmd_track_to_bed_object_semantic_binding_map_definition"]["bed_rows"],
+        "physical bed row -> semantic bed identity and DBMD track binding"
+    );
+    assert_eq!(
+        control_status["dbmd_track_to_bed_object_semantic_binding_map_definition"]["object_rows"],
+        "physical object row -> object ordinal, event, sampler and DBMD track binding"
+    );
     assert_eq!(
         control_status["missing"],
-        json!([
-            "real physical binding",
-            "DBMD track binding",
-            "callback0 event/sampler values",
-            "494 U32 words",
-            "native or model producer boundary"
-        ])
+        json!(["DBMD track-to-bed/object semantic binding map"])
     );
     assert_eq!(control_status["old_fixture_hash_accepted"], false);
     assert_eq!(control_status["default_host_mapping_accepted"], false);
+    assert_eq!(
+        control_status["derived_binding_records_are_semantic_proof"],
+        false
+    );
+
+    assert_eq!(
+        control_material["schema"],
+        "sanitized-callback0-control38-material.v1"
+    );
+    assert_eq!(
+        control_material["material_id"],
+        control_status["material_id"]
+    );
+    assert_eq!(
+        control_material["input_lineage_id"],
+        input["capture_lineage"]["lineage_id"]
+    );
+    assert_eq!(control_material["input_id"], input["input_id"]);
+    assert_eq!(control_material["input_sha256"], input["file_sha256"]);
+    assert_eq!(control_material["callback"], 0);
+    assert_eq!(control_material["generation"], 1);
+    assert_eq!(control_material["owner"], "frontend_control");
+    assert_eq!(control_material["type"], "U32LE");
+    assert_eq!(control_material["shape"], json!([38, 13]));
+    assert_eq!(control_material["row_stride_bytes"], 52);
+    assert_eq!(control_material["word_count"], 494);
+    assert_eq!(control_material["byte_count"], 1976);
+    let control_bytes = u32le_rows(&control_material["u32_rows"]);
+    assert_eq!(control_bytes.len(), 1976);
+    assert_eq!(digest_hex(&control_bytes), control_material["sha256"]);
+    let physical_bytes = u16le_values(&control_material["physical_binding"]["values"]);
+    assert_eq!(physical_bytes.len(), 76);
+    assert_eq!(
+        digest_hex(&physical_bytes),
+        control_material["physical_binding"]["sha256"]
+    );
+    assert_eq!(control_material["dbmd_event_binding"]["record_count"], 28);
+    assert_eq!(control_material["dbmd_event_binding"]["record_bytes"], 2464);
+    assert_eq!(
+        control_material["dbmd_event_binding"]["record_stride_bytes"],
+        88
+    );
+    assert_eq!(
+        control_material["dbmd_event_binding"]["material"],
+        "NOT_DELIVERED"
+    );
+    assert_eq!(
+        control_material["dbmd_event_binding"]["identity_kind"],
+        "DERIVED_RUNTIME_RECORDS_HASH_ONLY"
+    );
+    assert_eq!(
+        control_material["dbmd_event_binding"]["dbmd_track_object_semantic_map"],
+        "BLOCKED"
+    );
+    assert_eq!(
+        control_material["dbmd_event_binding"]["event_sampler_object_ordinal_semantic_map"],
+        "BLOCKED"
+    );
+    assert_eq!(control_material["producer"]["function_rva"], "0x1acd10");
+    assert_eq!(control_material["producer"]["caller_rva"], "0x1a780d");
+    assert_eq!(control_material["producer"]["parent_rva"], "0x1a7710");
+    assert_eq!(control_material["producer"]["return_value"], "0x0");
+    assert_eq!(control_material["capture"]["observer_errors"], 0);
+    assert_eq!(control_material["capture"]["business_memory_writes"], false);
+    assert_eq!(
+        control_material["capture"]["raw_adm_pcm_metadata_delivered"],
+        false
+    );
+    assert_eq!(control_material["capture"]["reference_frames"], 4247);
+    assert_eq!(
+        control_material["capture"]["interference_control"],
+        "BYTE_EXACT_BASELINE_MATCH"
+    );
+
+    assert_eq!(
+        control_lineage["schema"],
+        "sanitized-control38-input-lineage.v1"
+    );
+    assert_eq!(
+        control_lineage["lineage_id"],
+        input["capture_lineage"]["lineage_id"]
+    );
+    assert_eq!(
+        control_lineage["pinned_input"]["input_id"],
+        input["input_id"]
+    );
+    assert_eq!(
+        control_lineage["pinned_input"]["bytes"],
+        input["file_bytes"]
+    );
+    assert_eq!(
+        control_lineage["pinned_input"]["sha256"],
+        input["file_sha256"]
+    );
+    assert_eq!(
+        control_lineage["capture_command_input"]["byte_identical_alias"],
+        true
+    );
+    assert_eq!(
+        control_lineage["capture_command_input"]["sha256"],
+        input["file_sha256"]
+    );
+    assert_eq!(
+        control_lineage["original_fixture_identity_in_run_preflight"]["sha256"],
+        input["file_sha256"]
+    );
+    assert_eq!(
+        control_lineage["asset_identity"]["before_capture_matches"],
+        true
+    );
+    assert_eq!(
+        control_lineage["asset_identity"]["after_capture_matches"],
+        true
+    );
+    assert_eq!(
+        control_lineage["asset_identity"]["asset_identity_stable"],
+        true
+    );
+    assert_eq!(control_lineage["capture_event"]["callback"], 0);
+    assert_eq!(control_lineage["capture_event"]["generation"], 1);
+    assert_eq!(
+        control_lineage["capture_event"]["control_material_id"],
+        control_material["material_id"]
+    );
+    assert_eq!(
+        control_lineage["capture_event"]["control_sha256"],
+        control_material["sha256"]
+    );
+    assert_eq!(
+        control_lineage["interference_control"]["accepted_baseline_match"],
+        true
+    );
+    assert_eq!(control_lineage["raw_paths_included"], false);
+    assert_eq!(control_lineage["raw_input_material_included"], false);
 
     assert_eq!(
         cold_status["schema"],
@@ -248,7 +471,7 @@ fn real_adm_identity_is_pinned_but_parent_execution_remains_blocked() {
     assert_eq!(cold_status["canonical_preimage_hex"], Value::Null);
     assert_eq!(cold_status["canonical_bytes"], Value::Null);
     assert_eq!(cold_status["sha256"], Value::Null);
-    assert_eq!(cold_status["status"], "BLOCKED_SCHEMA_ONLY");
+    assert_eq!(cold_status["status"], "BLOCKED_NO_EXECUTABLE_SERIALIZER");
     assert_eq!(
         cold_status["missing"],
         json!([
@@ -257,12 +480,36 @@ fn real_adm_identity_is_pinned_but_parent_execution_remains_blocked() {
             "optional diffusion/source-cache record framing",
             "persistent serialization decision for current_flags/current_features",
             "writer-set record framing",
-            "authoritative serializer execution with section offsets"
+            "authoritative serializer execution with section offsets",
+            "executable serializer entrypoint"
         ])
+    );
+    assert_eq!(
+        cold_status["static_ida_evidence"]["serializer_call_observed"],
+        false
+    );
+    assert_eq!(
+        cold_status["static_ida_evidence"]["schema_magic_strings_found"],
+        false
     );
     assert_eq!(cold_status["scratch_included"], false);
     assert_eq!(cold_status["unknown_zero_fill_allowed"], false);
     assert_eq!(cold_status["ai48st01_accepted"], false);
+    assert_eq!(
+        cold_action["schema"],
+        "research-spatial-control-cold-serializer-action.v1"
+    );
+    assert_eq!(cold_action["status"], "BLOCKED_NO_EXECUTABLE_SERIALIZER");
+    assert_eq!(cold_action["bytes_guessed"], false);
+    assert_eq!(cold_action["ai48st01_used"], false);
+    assert_eq!(
+        cold_action["native_dll_static_check"]["runtime_parent_calls_serializer"],
+        false
+    );
+    assert_eq!(
+        cold_action["clean_room_schema"]["executable_serializer_entrypoint"],
+        Value::Null
+    );
 
     assert_eq!(schema["$id"], "spatial-control-production-admission.v1");
     assert_eq!(
@@ -311,6 +558,41 @@ fn real_adm_identity_is_pinned_but_parent_execution_remains_blocked() {
         vectors["success_recipe"]["expected_output_oracle_included"],
         false
     );
+    assert_eq!(
+        vectors["unified_status_v7"]["physical_control38_material"],
+        "CAPTURED_NATIVE_CALLBACK0_INPUT_LINEAGE_BOUND"
+    );
+    assert_eq!(
+        vectors["unified_status_v7"]["dbmd_track_to_bed_object_semantic_binding_map"],
+        "BLOCKED_HASH_ONLY_NO_SEMANTIC_MAP"
+    );
+    assert_eq!(
+        vectors["unified_status_v7"]["callback_numerical_execution"],
+        "NOT_RUN"
+    );
+    assert_eq!(
+        vectors["unified_status_v7"]["control_semantic_admission"],
+        "NOT_RUN"
+    );
+    assert_eq!(
+        vectors["unified_status_v7"]["parent_cold_serializer"],
+        "BLOCKED_NO_EXECUTABLE_SERIALIZER"
+    );
+    assert_eq!(vectors["unified_status_v7"]["success_vectors"], 0);
+    assert_eq!(vectors["unified_status_v7"]["production_allowed"], false);
+    let captured = &vectors["captured_precondition"];
+    assert_eq!(captured["input_id"], input["input_id"]);
+    assert_eq!(captured["input_sha256"], input["file_sha256"]);
+    assert_eq!(captured["input_lineage_id"], control_lineage["lineage_id"]);
+    assert_eq!(
+        captured["control_material_id"],
+        control_material["material_id"]
+    );
+    assert_eq!(captured["control_sha256"], control_material["sha256"]);
+    assert_eq!(
+        captured["status"],
+        "CAPTURED_NATIVE_CALLBACK0_INPUT_LINEAGE_BOUND"
+    );
     let failures = vectors["admission_failures"].as_array().unwrap();
     assert_eq!(failures.len(), ADMISSION_FAILURES.len());
     for ((expected_id, expected_error), failure) in ADMISSION_FAILURES.iter().zip(failures) {
@@ -346,21 +628,23 @@ fn real_adm_identity_is_pinned_but_parent_execution_remains_blocked() {
     assert_eq!(vectors["expected_used_as_seed"], false);
 
     let checks = independent["checks"].as_array().unwrap();
-    assert_eq!(checks.len(), 12);
+    assert_eq!(checks.len(), 15);
     assert!(checks.iter().all(|check| check["pass"] == true));
     assert_eq!(
         independent["schema"],
-        "spatial-control-production-admission-independent-check.v2"
+        "spatial-control-production-admission-independent-check.v7"
     );
     assert_eq!(independent["all_pass"], true);
     assert_eq!(
         independent["input_files"],
         json!([
             "REAL-ADM-INPUT-IDENTITY.json",
+            "CONTROL38-INPUT-LINEAGE.json",
             "PROVIDER-IDENTITIES.json",
             "PRODUCTION-ADMISSION-VECTORS.json",
             "SPATIAL-CONTROL-PRODUCTION.schema.json",
             "CONTROL38-MATERIAL-STATUS.json",
+            "CONTROL38-CALLBACK0-MATERIAL.json",
             "COLD-PARENT-STATE-STATUS.json"
         ])
     );

@@ -14,17 +14,22 @@ Known facts:
 - regular37 is a view excluding the resolved LFE host and is not independent
   sampler state.
 
-The real callback0 material is BLOCKED. Missing evidence is the parsed physical
-binding for this ADM, DBMD track binding, callback0 event/sampler values, the
-actual 494 written U32 words and a confirmed producer boundary. No old fixture
-hash or default host mapping may substitute.
+The physical callback0 material is captured in
+CONTROL38-CALLBACK0-MATERIAL.json. It contains all 494 U32 values and the
+38-entry physical binding. DBMD/event binding is represented by the SHA-256 of
+28 derived 88-byte runtime records; those record bytes are not delivered.
 
-The blocker is evidence, not permission to invent values. The minimum capture
-is a read-only observation immediately after the frontend writer completes and
-before installed48 consumption. It must record callback/generation, buffer
-base/count/row stride, complete control38 content or authorized
-content-addressed material, SHA-256, physical binding identity, DBMD binding
-identity and producer/caller identity. Raw ADM chunks and PCM stay in-process.
+The producer is dee_audio_filter_ddp_atmos.dll RVA 0x1ACD10, called from RVA
+0x1A780D under parent RVA 0x1A7710. It reported 38 rows with 52-byte stride and
+returned success. The observer was read-only. The extracted 4247-frame EC3
+remained byte-identical to the accepted baseline. No old fixture hash or
+default host mapping was used.
+
+Capture of physical words and mapping does not prove the semantic association
+of DBMD tracks to bed/object rows or event/sampler records to object ordinals.
+Those two semantic maps remain BLOCKED_HASH_ONLY_NO_SEMANTIC_MAP. The derived
+record hash is an identity for the observed records, not a substitute for an
+explicit semantic map.
 
 ## Authoritative parent cold state
 

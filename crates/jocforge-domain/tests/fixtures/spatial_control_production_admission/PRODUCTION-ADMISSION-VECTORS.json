@@ -1,5 +1,17 @@
 {
   "schema": "spatial-control-production-admission-vectors.v1",
+  "unified_status_v7": {
+    "physical_control38_material": "CAPTURED_NATIVE_CALLBACK0_INPUT_LINEAGE_BOUND",
+    "dbmd_track_to_bed_object_semantic_binding_map": "BLOCKED_HASH_ONLY_NO_SEMANTIC_MAP",
+    "callback_numerical_execution": "NOT_RUN",
+    "control_semantic_admission": "NOT_RUN",
+    "parent_cold_serializer": "BLOCKED_NO_EXECUTABLE_SERIALIZER",
+    "authoritative_before_state": "BLOCKED",
+    "authoritative_after_state": "BLOCKED",
+    "production_spatial_control_receipt": "BLOCKED",
+    "success_vectors": 0,
+    "production_allowed": false
+  },
   "success_recipe": {
     "status": "NOT_RUN",
     "callback": 0,
@@ -7,6 +19,14 @@
     "required_input_schema": "spatial-control-callback0-input.v1",
     "required_outputs": ["SpatialControlReceipt", "SpatialAudioProposal"],
     "expected_output_oracle_included": false
+  },
+  "captured_precondition": {
+    "input_id": "adm-sha256-7826dcbef37ef696",
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "input_lineage_id": "control38-lineage-adm-7826dcbef37ef696-run102",
+    "control_material_id": "control38-callback0-2f1b942f1306700d",
+    "control_sha256": "2f1b942f1306700de77c987241e5f7a0b759cc906b601e153e667e3f58b4a679",
+    "status": "CAPTURED_NATIVE_CALLBACK0_INPUT_LINEAGE_BOUND"
   },
   "admission_failures": [
     {"id": "missing_control38", "error": "SPATIAL_CONTROL_INPUT_MATERIAL", "commit_count": 0},
@@ -37,11 +57,12 @@
     "programme_result": "RETIRED"
   },
   "blocked_material": [
-    "parsed callback0 control38",
-    "authoritative parent before-state bytes",
+    "DBMD track-to-bed/object semantic binding map covering bed rows and object ordinal/event/sampler rows",
+    "authoritative cold parent serializer and before-state preimage",
     "installed48 full bytes",
     "selector/U04/outer complete materials",
-    "matrix/destinations/targets complete materials",
+    "matrix/destinations/markers/writer-set complete materials",
+    "target previous/current/active and transition complete materials",
     "authoritative parent after-state bytes"
   ],
   "expected_used_as_seed": false

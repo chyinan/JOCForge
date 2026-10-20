@@ -14,15 +14,22 @@
   "canonical_preimage_hex": null,
   "canonical_bytes": null,
   "sha256": null,
-  "status": "BLOCKED_SCHEMA_ONLY",
+  "status": "BLOCKED_NO_EXECUTABLE_SERIALIZER",
   "missing": [
     "top-level envelope/version and section framing",
     "nested F01E embedding/framing",
     "optional diffusion/source-cache record framing",
     "persistent serialization decision for current_flags/current_features",
     "writer-set record framing",
-    "authoritative serializer execution with section offsets"
+    "authoritative serializer execution with section offsets",
+    "executable serializer entrypoint"
   ],
+  "static_ida_evidence": {
+    "parent_callback_rva": "0x1a7710",
+    "candidate_functions_decompiled": ["0x1aa8a0", "0x1ab800", "0x1ac490", "0x1acd10", "0x1ad9d0"],
+    "serializer_call_observed": false,
+    "schema_magic_strings_found": false
+  },
   "scratch_included": false,
   "unknown_zero_fill_allowed": false,
   "ai48st01_accepted": false
