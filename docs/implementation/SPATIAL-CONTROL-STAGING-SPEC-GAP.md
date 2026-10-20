@@ -1,6 +1,12 @@
 # Spatial-control staging specification gap
 
-## Current authority: v24 policy29/property36 identity joins
+## Current authority: v25 expanded portable API and measurement no-hit
+
+The current implementer package is `spatial-control-cold-serializer.blocked.v25`, pinned by fixture manifest SHA-256 `cdfa8481d402870cb21d5c518d05ed712c314a5482637aa9db38d7ab47374639`. The expanded no-hit asset SHA-256 is `222bcac9c1dda38cf3b54ee00f37535fb82f983c6c5d72f0bf1fc969794392eb`; washed research manifest and independent-check hashes are `d2e94ead3d6189bae1460d97069fc03c27a9de7a9d9b3f11bb4f41e210205b89` and `b5748d24bcb02000fd058d0dbc55b124a56cba6299787a902812fef1f3f0cc0d`. The package reports 32/32 independent checks passing, `IMPLEMENTATION_READY=NO`, and `production_allowed=false`.
+
+The expanded bounded route scans 64 authorized PE files; 22 matching files are classified as XML DOM, EVO encoded-frame, timecode, MediaInfo language-tag, or video-metadata serialization, all excluded from parent cold-state relevance. Within that bounded scan, parent cold serializer/restore string hits and export hits are both zero. This cannot prove absence of unnamed internal APIs and is not a product-wide absence claim. The additional measurement route covers `0x17FF30`, `0x17FFA0`, `0x1801B0`, `0x17F9C0`, `0x1AE790`, `0x17A830`, and `0x1769A0`; it confirms only result `+8 <- internal +12`, `+12 <- internal +16`, and `+16 <- internal +20`. No names were found for those fields. Scaling at `0x1AE790` is numeric behavior only and does not establish field semantics. The remaining measurement names stay `NOT_CAPTURED`; portable order/endian/version/optional/checksum stay `NOT_OBSERVED`; serializer/restore roundtrip stays `NOT_RUN`.
+
+## Historical v24 policy29/property36 identity joins
 
 The current implementer package is `spatial-control-cold-serializer.blocked.v24`, pinned by fixture manifest SHA-256 `fba860d76197b8e0928226458e20f9b6b699dccff1d8b1fbf080806d087e3047`. The identity-join asset SHA-256 is `a58b22ff25427897dfbabb396d085edb8be2ab9bfa2fef02e4bb4e9e5af2a216`; the washed research manifest and independent-check hashes are `642fd5bfa6a2bea844165e15a8bbc10f4721b96d44f67ba8181ac2013b2cb948` and `b2d890f6bce872935417038b0ce17582105ebf0a248ae60280b74bc76ef57994`, respectively. The package reports 31/31 independent checks passing, but `production_allowed=false`.
 

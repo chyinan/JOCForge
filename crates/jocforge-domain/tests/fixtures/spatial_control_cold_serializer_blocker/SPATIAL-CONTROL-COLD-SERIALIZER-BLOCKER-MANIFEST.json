@@ -1,11 +1,11 @@
 {
-  "schema": "washed-implementer-blocker-manifest.v19",
-  "identity": "spatial-control-cold-serializer.blocked.v24",
+  "schema": "washed-implementer-blocker-manifest.v20",
+  "identity": "spatial-control-cold-serializer.blocked.v25",
   "status": "BLOCKED_NO_EXECUTABLE_SERIALIZER",
   "source_evidence": {
-    "research_manifest_sha256": "642fd5bfa6a2bea844165e15a8bbc10f4721b96d44f67ba8181ac2013b2cb948",
-    "research_independent_check_sha256": "b2d890f6bce872935417038b0ce17582105ebf0a248ae60280b74bc76ef57994",
-    "policy29_36_identity_join_sha256": "a58b22ff25427897dfbabb396d085edb8be2ab9bfa2fef02e4bb4e9e5af2a216",
+    "research_manifest_sha256": "d2e94ead3d6189bae1460d97069fc03c27a9de7a9d9b3f11bb4f41e210205b89",
+    "research_independent_check_sha256": "b5748d24bcb02000fd058d0dbc55b124a56cba6299787a902812fef1f3f0cc0d",
+    "portable_api_measurement_no_hit_sha256": "222bcac9c1dda38cf3b54ee00f37535fb82f983c6c5d72f0bf1fc969794392eb",
     "serializer_execution": "NOT_RUN",
     "canonical_preimage": null,
     "authoritative_length": null,
@@ -16,6 +16,18 @@
     "private_auth": "excluded",
     "product_wide_absence_claim": false
   },
+  "expanded_portable_api_measurement_no_hit": {
+    "pe_files_scanned": 64,
+    "matching_files": 22,
+    "parent_cold_serializer_restore_string_hit": 0,
+    "parent_cold_serializer_restore_export_hit": 0,
+    "measurement_functions": ["0x17ff30", "0x17ffa0", "0x1801b0", "0x17f9c0", "0x1ae790", "0x17a830", "0x1769a0"],
+    "measurement_unknown_offsets": [8, 12, 16],
+    "portable_contract": "NOT_OBSERVED",
+    "roundtrip": "NOT_RUN",
+    "coverage_scope": "64 authorized PE files plus listed measurement producer route",
+    "product_wide_absence_claim": false
+  },
   "policy29_36_identity": {
     "property29": "adconvtyp",
     "property29_value": 0,
@@ -23,18 +35,7 @@
     "property36": "roomtyp",
     "property36_value": 0,
     "property36_config_offset": 220,
-    "identity_join_status": "CLOSED_CURRENT_RUN109",
-    "prior_candidate_no_hit": "SUPERSEDED"
-  },
-  "property_pair_scope_identity": {
-    "run_identity": "music_rectangular_native_109",
-    "property3_data_rate": 1024,
-    "property31_mixlevel": 80,
-    "property15_rf_drc": 0,
-    "property13_line_drc": 0,
-    "v20_semantic_labels": "SUPERSEDED",
-    "older_music_light_values4": "RETAIN_ONLY_IN_ORIGINAL_SCOPE",
-    "cross_scope_substitution_allowed": false
+    "identity_join_status": "CLOSED_CURRENT_RUN109"
   },
   "remaining_semantics_no_hit": {
     "measurement_result_offsets": [8, 12, 16],
@@ -127,13 +128,14 @@
     "production_allowed": false
   },
   "files": [
+    { "file": "AUTHORIZED-PE-PORTABLE-API-AND-MEASUREMENT-NO-HIT.json", "bytes": 3633, "sha256": "222bcac9c1dda38cf3b54ee00f37535fb82f983c6c5d72f0bf1fc969794392eb" },
     { "file": "CHANNEL-EXTERNAL-METADATA-TRIM-SEMANTICS.json", "bytes": 4283, "sha256": "7c9f2f96f2eb5da4e3f2693c5d695bf6d2d184920c2edd62f59392508907c764" },
     { "file": "COLD-SERIALIZER-EVIDENCE.json", "bytes": 3235, "sha256": "6a0db3edb8a56145c63b3f1d55853f21fe656eb7594d5de9fc9fc00bc5ffed0f" },
     { "file": "COLD-SERIALIZER-FINAL-BLOCKER.md", "bytes": 4159, "sha256": "4017a64a0c27e85b6ee308f6e9848d26a93290c04ff808846b1bbaf7315b322a" },
     { "file": "EXTERNAL-METADATA-HELPER-SEMANTICS.json", "bytes": 3307, "sha256": "498900b3c3d78e2deec24bd2cbe04c2d7e5f827bda19d20dbf2a4347da2db926" },
     { "file": "EXTERNAL-METADATA-STRUCTURE-AND-REMAINING-FIELDS.json", "bytes": 6011, "sha256": "3ee2f1a482191ed2352d6d154fcaa6638c82dfdb6f45e510a91413b5f9a85dcc" },
     { "file": "FILEWRITER-FWRITE-DYNAMIC-JOIN.json", "bytes": 3057, "sha256": "4d77a2fb99ba77d1e0bac1f79bb8d0f638f132a895eee9351c6d46025f2e0298" },
-    { "file": "INDEPENDENT-CHECK.json", "bytes": 3639, "sha256": "b2d890f6bce872935417038b0ce17582105ebf0a248ae60280b74bc76ef57994" },
+    { "file": "INDEPENDENT-CHECK.json", "bytes": 3803, "sha256": "b5748d24bcb02000fd058d0dbc55b124a56cba6299787a902812fef1f3f0cc0d" },
     { "file": "MEASUREMENT-ALIAS-RESOLUTION.json", "bytes": 1318, "sha256": "b1608911f6c00d42c648cfb26962bc014743351d4feed8fd49bb00220826f5d1" },
     { "file": "MINIMUM-EXTERNAL-EVIDENCE.json", "bytes": 1123, "sha256": "7e078cfa1da60dcf0580a5fe070d6255c4c8cfa2265b862242965342210c922f" },
     { "file": "PARENT-COLD-CONFIG-BOUNDARY.json", "bytes": 3728, "sha256": "7f738cea345e356a22ad7d796c6e5b96db03eb38245331f8373a618de8e006e4" },

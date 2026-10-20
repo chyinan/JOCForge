@@ -5,7 +5,7 @@ use std::fmt::Write as _;
 use std::fs;
 use std::path::PathBuf;
 
-const MANIFEST_SHA256: &str = "fba860d76197b8e0928226458e20f9b6b699dccff1d8b1fbf080806d087e3047";
+const MANIFEST_SHA256: &str = "cdfa8481d402870cb21d5c518d05ed712c314a5482637aa9db38d7ab47374639";
 
 fn fixture_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -38,11 +38,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let manifest: Value = serde_json::from_slice(&manifest_bytes).expect("manifest JSON");
     assert_eq!(
         manifest["schema"],
-        "washed-implementer-blocker-manifest.v19"
+        "washed-implementer-blocker-manifest.v20"
     );
     assert_eq!(
         manifest["identity"],
-        "spatial-control-cold-serializer.blocked.v24"
+        "spatial-control-cold-serializer.blocked.v25"
     );
     assert_eq!(manifest["status"], "BLOCKED_NO_EXECUTABLE_SERIALIZER");
     assert_eq!(
@@ -54,21 +54,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "property36": "roomtyp",
             "property36_value": 0,
             "property36_config_offset": 220,
-            "identity_join_status": "CLOSED_CURRENT_RUN109",
-            "prior_candidate_no_hit": "SUPERSEDED"
-        })
-    );
-    assert_eq!(
-        manifest["property_pair_scope_identity"],
-        json!({
-            "run_identity": "music_rectangular_native_109",
-            "property3_data_rate": 1024,
-            "property31_mixlevel": 80,
-            "property15_rf_drc": 0,
-            "property13_line_drc": 0,
-            "v20_semantic_labels": "SUPERSEDED",
-            "older_music_light_values4": "RETAIN_ONLY_IN_ORIGINAL_SCOPE",
-            "cross_scope_substitution_allowed": false
+            "identity_join_status": "CLOSED_CURRENT_RUN109"
         })
     );
     assert_eq!(
@@ -106,6 +92,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             .map(|entry| entry["file"].as_str().unwrap())
             .collect::<Vec<_>>(),
         [
+            "AUTHORIZED-PE-PORTABLE-API-AND-MEASUREMENT-NO-HIT.json",
             "CHANNEL-EXTERNAL-METADATA-TRIM-SEMANTICS.json",
             "COLD-SERIALIZER-EVIDENCE.json",
             "COLD-SERIALIZER-FINAL-BLOCKER.md",
@@ -152,7 +139,8 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         "PORTABLE-CONTRACT-AND-REMAINING-SEMANTICS-NO-HIT.json",
         "PARENT-PROPERTY-PAIRS-AUTHORITY.json",
         "PROPERTY-NAME-AND-PORTABLE-CONTRACT-EXTENDED-NO-HIT.json",
-        "POLICY29-36-IDENTITY-JOIN.json"
+        "POLICY29-36-IDENTITY-JOIN.json",
+        "AUTHORIZED-PE-PORTABLE-API-AND-MEASUREMENT-NO-HIT.json"
     ]);
     for entry in files {
         let name = entry["file"].as_str().expect("manifest file name");
@@ -171,15 +159,15 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let source = &manifest["source_evidence"];
     assert_eq!(
         source["research_manifest_sha256"],
-        "642fd5bfa6a2bea844165e15a8bbc10f4721b96d44f67ba8181ac2013b2cb948"
+        "d2e94ead3d6189bae1460d97069fc03c27a9de7a9d9b3f11bb4f41e210205b89"
     );
     assert_eq!(
         source["research_independent_check_sha256"],
-        "b2d890f6bce872935417038b0ce17582105ebf0a248ae60280b74bc76ef57994"
+        "b5748d24bcb02000fd058d0dbc55b124a56cba6299787a902812fef1f3f0cc0d"
     );
     assert_eq!(
-        source["policy29_36_identity_join_sha256"],
-        "a58b22ff25427897dfbabb396d085edb8be2ab9bfa2fef02e4bb4e9e5af2a216"
+        source["portable_api_measurement_no_hit_sha256"],
+        "222bcac9c1dda38cf3b54ee00f37535fb82f983c6c5d72f0bf1fc969794392eb"
     );
     assert_eq!(source["serializer_execution"], "NOT_RUN");
     assert_eq!(source["canonical_preimage"], Value::Null);
@@ -1951,6 +1939,106 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(portable_no_hit["production_allowed"], false);
     assert_eq!(portable_no_hit["private_auth"], "EXCLUDED");
 
+    let expanded_no_hit = read_json("AUTHORIZED-PE-PORTABLE-API-AND-MEASUREMENT-NO-HIT.json");
+    assert_eq!(
+        expanded_no_hit["schema"],
+        "sanitized-authorized-pe-portable-api-and-measurement-no-hit.v1"
+    );
+    assert_eq!(
+        expanded_no_hit["authorized_pe_scan"]["pe_files_scanned"],
+        64
+    );
+    assert_eq!(expanded_no_hit["authorized_pe_scan"]["matching_files"], 22);
+    assert_eq!(
+        expanded_no_hit["authorized_pe_scan"]["parent_cold_serializer_restore_string_hit"],
+        0
+    );
+    assert_eq!(
+        expanded_no_hit["authorized_pe_scan"]["parent_cold_serializer_restore_export_hit"],
+        0
+    );
+    assert_eq!(
+        expanded_no_hit["authorized_pe_scan"]["classifications"]
+            .as_array()
+            .unwrap()
+            .len(),
+        5
+    );
+    assert!(
+        expanded_no_hit["authorized_pe_scan"]["classifications"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .all(|classification| classification["parent_cold_state_relevance"] != "INCLUDED")
+    );
+    assert_eq!(
+        expanded_no_hit["authorized_pe_scan"]["limitation"],
+        "string and export no-hit cannot prove absence of unnamed internal APIs"
+    );
+    assert_eq!(
+        expanded_no_hit["authorized_pe_scan"]["product_wide_absence_claim"],
+        false
+    );
+    assert_eq!(
+        expanded_no_hit["measurement_new_route"]["functions_covered"],
+        json!([
+            "0x17ff30", "0x17ffa0", "0x1801b0", "0x17f9c0", "0x1ae790", "0x17a830", "0x1769a0"
+        ])
+    );
+    assert_eq!(
+        expanded_no_hit["measurement_new_route"]["result_sources"],
+        json!([
+            {"result_offset":8,"internal_source_offset":12,"semantic_name":"NOT_CAPTURED"},
+            {"result_offset":12,"internal_source_offset":16,"semantic_name":"NOT_CAPTURED"},
+            {"result_offset":16,"internal_source_offset":20,"semantic_name":"NOT_CAPTURED"}
+        ])
+    );
+    assert_eq!(
+        expanded_no_hit["measurement_new_route"]["named_string_reads_found_for_unknown_offsets"],
+        0
+    );
+    assert_eq!(
+        expanded_no_hit["measurement_new_route"]["status"],
+        "BOUNDED_NO_HIT"
+    );
+    assert_eq!(
+        expanded_no_hit["portable_contract_status"]["native_order"],
+        "NOT_OBSERVED"
+    );
+    assert_eq!(
+        expanded_no_hit["portable_contract_status"]["native_endian"],
+        "NOT_OBSERVED"
+    );
+    assert_eq!(
+        expanded_no_hit["portable_contract_status"]["native_version"],
+        "NOT_OBSERVED"
+    );
+    assert_eq!(
+        expanded_no_hit["portable_contract_status"]["native_optional_fields"],
+        "NOT_OBSERVED"
+    );
+    assert_eq!(
+        expanded_no_hit["portable_contract_status"]["native_checksum"],
+        "NOT_OBSERVED"
+    );
+    assert_eq!(
+        expanded_no_hit["portable_contract_status"]["roundtrip"],
+        "NOT_RUN"
+    );
+    assert_eq!(
+        expanded_no_hit["portable_contract_status"]["implementation_ready"],
+        false
+    );
+    assert_eq!(
+        expanded_no_hit["minimum_external_evidence"]
+            .as_array()
+            .unwrap()
+            .len(),
+        3
+    );
+    assert_eq!(expanded_no_hit["production_allowed"], false);
+    assert_eq!(expanded_no_hit["private_auth"], "EXCLUDED");
+
     let property_pair_authority = read_json("PARENT-PROPERTY-PAIRS-AUTHORITY.json");
     assert_eq!(
         property_pair_authority["schema"],
@@ -2273,11 +2361,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let independent = read_json("INDEPENDENT-CHECK.json");
     assert_eq!(
         independent["schema"],
-        "spatial-control-cold-serializer-blocker-independent-check.v24"
+        "spatial-control-cold-serializer-blocker-independent-check.v25"
     );
     assert_eq!(independent["all_pass"], true);
     let checks = independent["checks"].as_array().expect("checks array");
-    assert_eq!(checks.len(), 31);
+    assert_eq!(checks.len(), 32);
     assert!(checks.iter().all(|check| check["pass"] == true));
     assert_eq!(
         checks
@@ -2310,6 +2398,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "parent_property_pairs_authority",
             "property_name_and_portable_contract_extended_no_hit",
             "policy29_36_identity_join",
+            "authorized_pe_portable_api_and_measurement_no_hit",
             "no_entrypoint",
             "no_bytes",
             "framing_rules",

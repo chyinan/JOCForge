@@ -1,5 +1,5 @@
 {
-  "schema": "spatial-control-cold-serializer-blocker-independent-check.v24",
+  "schema": "spatial-control-cold-serializer-blocker-independent-check.v25",
   "checks": [
     {
       "id": "dll_identity",
@@ -102,6 +102,10 @@
       "pass": true
     },
     {
+      "id": "authorized_pe_portable_api_and_measurement_no_hit",
+      "pass": true
+    },
+    {
       "id": "no_entrypoint",
       "pass": true
     },
@@ -148,7 +152,8 @@
     "PORTABLE-CONTRACT-AND-REMAINING-SEMANTICS-NO-HIT.json",
     "PARENT-PROPERTY-PAIRS-AUTHORITY.json",
     "PROPERTY-NAME-AND-PORTABLE-CONTRACT-EXTENDED-NO-HIT.json",
-    "POLICY29-36-IDENTITY-JOIN.json"
+    "POLICY29-36-IDENTITY-JOIN.json",
+    "AUTHORIZED-PE-PORTABLE-API-AND-MEASUREMENT-NO-HIT.json"
   ],
   "research_files_read": false,
   "serializer_execution": false,

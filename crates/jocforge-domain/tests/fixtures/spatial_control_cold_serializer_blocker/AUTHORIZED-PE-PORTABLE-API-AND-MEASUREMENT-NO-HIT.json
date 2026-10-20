@@ -1,0 +1,55 @@
+{
+  "schema": "sanitized-authorized-pe-portable-api-and-measurement-no-hit.v1",
+  "source_evidence_identity": {
+    "authorized_pe_string_scan_sha256": "e69b918c404408a7d7ade79a0478709cfc1eeef9774ebfbbea803c02002d9dfc",
+    "measurement_flush_wrapper_sha256": "7922d86969524e291eb06ccc31e13e7b00e426ec083b8e00ecb536e6221c80a0",
+    "measurement_process_wrapper_sha256": "33d1fe0adb90dbdb988ce3efcb07aabddea97f3d9a076bd40bc4ed4e1033945a",
+    "measurement_export_mapper_sha256": "fa69000ff97dbd3b9d407728c651c7b667e7cf5062482ab568ba8993ac5f0df9",
+    "measurement_flush_core_sha256": "10c0d4d115ca350ca073ea68ac543f5c39e9df16071f4802de4d5b668a068a76",
+    "measurement_internal_mapper_sha256": "54331e8c67bf20c7e7ffe0c1db3e1ee06e51325f7bf2dd7a422b9fea8814f762"
+  },
+  "authorized_pe_scan": {
+    "pe_files_scanned": 64,
+    "matching_files": 22,
+    "classifications": [
+      {"class": "Xerces XML DOM serialization", "files": ["atmos_info.exe","dactlib.dll","dee_audio_filter_convert_atmos_mezz.dll","dee_audio_filter_ddp.dll","dee_audio_filter_ddp_atmos.dll","dee_audio_filter_ddp_single_pass.dll","dee_audio_filter_dthd.dll","dee_convert_sample_rate.exe"], "parent_cold_state_relevance": "EXCLUDED"},
+      {"class": "EVO encoded-frame serialization", "files": ["dee_audio_filter_ddp_single_pass.dll","dee_ddp_encoder.exe"], "parent_cold_state_relevance": "EXCLUDED"},
+      {"class": "timecode serialization", "files": ["dee_dv5_preproc.exe","dee_dv7_preproc.exe","dee_dv8_preproc.exe","dee_dv_cm.exe","dee_dv_mdgen.exe","dee_dv_parse_mezz.exe","libmezzanine.dll","libpreproc.dll"], "parent_cold_state_relevance": "EXCLUDED"},
+      {"class": "MediaInfo serialized language tag", "files": ["Mediainfo.dll","MediaInfo.exe"], "parent_cold_state_relevance": "EXCLUDED"},
+      {"class": "video metadata full_frame_snapshot", "files": ["metadata_postproc.exe"], "parent_cold_state_relevance": "EXCLUDED_DIFFERENT_VIDEO_PIPELINE"}
+    ],
+    "parent_cold_serializer_restore_string_hit": 0,
+    "parent_cold_serializer_restore_export_hit": 0,
+    "limitation": "string and export no-hit cannot prove absence of unnamed internal APIs",
+    "product_wide_absence_claim": false
+  },
+  "measurement_new_route": {
+    "functions_covered": ["0x17ff30","0x17ffa0","0x1801b0","0x17f9c0","0x1ae790","0x17a830","0x1769a0"],
+    "result_sources": [
+      {"result_offset": 8, "internal_source_offset": 12, "semantic_name": "NOT_CAPTURED"},
+      {"result_offset": 12, "internal_source_offset": 16, "semantic_name": "NOT_CAPTURED"},
+      {"result_offset": 16, "internal_source_offset": 20, "semantic_name": "NOT_CAPTURED"}
+    ],
+    "named_string_reads_found_for_unknown_offsets": 0,
+    "numeric_scaling_observed": "0x1ae790 maps multiple internal floats by multiplying by128, but this does not name the three fields",
+    "status": "BOUNDED_NO_HIT"
+  },
+  "portable_contract_status": {
+    "native_order": "NOT_OBSERVED",
+    "native_endian": "NOT_OBSERVED",
+    "native_version": "NOT_OBSERVED",
+    "native_optional_fields": "NOT_OBSERVED",
+    "native_checksum": "NOT_OBSERVED",
+    "serializer_entrypoint": "NOT_FOUND_IN_EXPANDED_64_PE_STRING_EXPORT_SCAN",
+    "restore_entrypoint": "NOT_FOUND_IN_EXPANDED_64_PE_STRING_EXPORT_SCAN",
+    "roundtrip": "NOT_RUN",
+    "implementation_ready": false
+  },
+  "minimum_external_evidence": [
+    "named meter result structure for internal offsets12,16,20",
+    "symbol or call-level identity for an unnamed serializer/restore API",
+    "or authoritative portable state contract with versioned cold vector and byte-exact roundtrip"
+  ],
+  "production_allowed": false,
+  "private_auth": "EXCLUDED"
+}
