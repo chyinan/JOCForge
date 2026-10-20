@@ -22,7 +22,7 @@
 
 ## 逐项来源和字段状态
 
-下表的 inventory key 只用于追踪，不是 canonical field ID。`candidate` 列是待审 clean-room 处置，不是规范合同。未知值保持 `NOT_CAPTURED` 或 `NOT_DEFINED`。
+下表的 inventory key 只用于追踪，不是 canonical field ID。每行的 source key 映射到上表 SHA-256，stage/source 列提供 candidate disposition 的证据依据。`candidate` 列是待审 clean-room 处置，不是规范合同。未观测的值写 `NOT_CAPTURED`，未定的类型或规则写 `NOT_DEFINED`。
 
 ### Source register
 
@@ -50,7 +50,7 @@
 
 本表只描述当前 selected run。producer/consumer 由 S1 的同代调用链限定。offset 88、92 是运行期指针，不能编码进 portable state。
 
-| Inventory key | Offset / type | Selected value 或语义 | Stage / source | Candidate disposition | Blocker |
+| Inventory key | Offset / type | Selected value 或语义 | Stage / source key（basis） | Candidate disposition | Blocker |
 | --- | --- | --- | --- | --- | --- |
 | `prefix.data_rate` | 0 / U32 enum | 5，1024 kbps | selected constructor → descriptor builder / S1 | candidate consumed | 仅当前 run。 |
 | `prefix.line_drc` | 4 / U32 enum | 5，none | 同上 / S1 | candidate consumed | 仅当前 run。 |
@@ -81,7 +81,7 @@
 
 ### Descriptor、policy 和 measurement fields
 
-| Inventory key | Offset / type | Selected value 或语义 | Stage / source | Candidate disposition | Blocker |
+| Inventory key | Offset / type | Selected value 或语义 | Stage / source keys（basis） | Candidate disposition | Blocker |
 | --- | --- | --- | --- | --- | --- |
 | `descriptor.mode` | 0 / U32 | mode 0 | descriptor producer → parent constructor / S2 | candidate consumed | mode 1 tuple仅partial。 |
 | `descriptor.reserved_4` | 4 / U32 | zero | descriptor producer / S2 | candidate excluded/zeroed | 需 canonical zero rule。 |
@@ -127,13 +127,16 @@
 
 | Inventory key | Storage / type | Selected fact | Stage / source | Candidate disposition | Blocker |
 | --- | --- | --- | --- | --- | --- |
-| `channel_record.input_channel_key` | record+0 / U16 | field name闭合 | resolver/DTO / S4 | candidate consumed | 原始记录未交付。 |
-| `channel_record.host_index` | record+2 / U16 | field name闭合 | channel record copy / S4 | candidate unresolved | 当前DTO不消费此字段。 |
-| `channel_record.source_ordinal` | record+4 / U16 | field name闭合 | channel record copy / S4 | candidate unresolved | 序号来源分对象/bed；portable order未定。 |
-| `trim.flag` | payload+0 / U8 | group flag | trim adapter/consumer / S5 | candidate consumed | parent framing未定义。 |
-| `trim.padding` | payload+1..3 / bytes | unspecified padding | trim adapter / S5 | candidate excluded/zeroed | canonical padding规则需明确。 |
-| `trim.gains` | payload+4,+8,+12 / F32 | three gains | trim producer/consumer / S5 | candidate consumed | canonical F32规则未定义。 |
-| `trim.balances` | payload+16,+20 / F32 | signed-magnitude source conversion | trim producer/consumer / S5 | candidate consumed | 编码和 rounding规则需 canonicalize。 |
+| `channel_record.input_channel_key` | record+0 / U16 | field name闭合；selected value `NOT_CAPTURED` | resolver/DTO / S4 | candidate consumed | 原始记录未交付。 |
+| `channel_record.host_index` | record+2 / U16 | field name闭合；selected value `NOT_CAPTURED` | channel record copy / S4 | candidate unresolved | 当前DTO不消费此字段。 |
+| `channel_record.source_ordinal` | record+4 / U16 | field name闭合；selected value `NOT_CAPTURED` | channel record copy / S4 | candidate unresolved | 序号来源分对象/bed；portable order未定。 |
+| `trim.flag` | payload+0 / U8 | group flag；selected value `NOT_CAPTURED` | trim adapter/consumer / S5 | candidate consumed | parent framing未定义。 |
+| `trim.padding` | payload+1..3 / bytes | unspecified padding；raw bytes `NOT_CAPTURED` | trim adapter / S5 | candidate excluded/zeroed | canonical padding规则需明确。 |
+| `trim.gain_0` | payload+4 / F32 | gain0；selected value `NOT_CAPTURED` | trim producer/consumer / S5 | candidate consumed | canonical F32规则未定义。 |
+| `trim.gain_1` | payload+8 / F32 | gain1；selected value `NOT_CAPTURED` | trim producer/consumer / S5 | candidate consumed | canonical F32规则未定义。 |
+| `trim.gain_2` | payload+12 / F32 | gain2；selected value `NOT_CAPTURED` | trim producer/consumer / S5 | candidate consumed | canonical F32规则未定义。 |
+| `trim.balance_0` | payload+16 / F32 | balance0 from signed-magnitude byte；selected value `NOT_CAPTURED` | trim producer/consumer / S5 | candidate consumed | 编码和 rounding规则未定义。 |
+| `trim.balance_1` | payload+20 / F32 | balance1 from signed-magnitude byte；selected value `NOT_CAPTURED` | trim producer/consumer / S5 | candidate consumed | 编码和 rounding规则未定义。 |
 | `external_metadata.kind` | packed+0 / U8 | `NOT_CAPTURED`，presence/kind partial | producer `0x4E0890` → copy `0x178DC0` / S6 | blocked partial | presence semantics未闭合。 |
 | `external_metadata.name` | packed+1..63 / char[63] | truncated UTF-8 field | producer / S6,S17 | candidate partial | business name和portable encoding未闭合。 |
 | `external_metadata.name_nul` | packed+64 / U8 | literal zero terminator | producer / S6 | candidate consumed | 与name字段绑定，portable string规则未定义。 |
