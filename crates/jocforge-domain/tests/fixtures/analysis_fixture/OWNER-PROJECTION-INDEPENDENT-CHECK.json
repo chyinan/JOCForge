@@ -1,0 +1,44 @@
+{
+  "schema": "analysis-owner-projection-independent-check.v1",
+  "checks": [
+    {
+      "id": "source_identity",
+      "pass": true
+    },
+    {
+      "id": "before_input_history",
+      "pass": true
+    },
+    {
+      "id": "before_transient",
+      "pass": true
+    },
+    {
+      "id": "before_primary_companion_lfe",
+      "pass": true
+    },
+    {
+      "id": "before_policy",
+      "pass": true
+    },
+    {
+      "id": "after_input_history",
+      "pass": true
+    },
+    {
+      "id": "after_transient",
+      "pass": true
+    },
+    {
+      "id": "after_primary_companion_lfe",
+      "pass": true
+    },
+    {
+      "id": "after_policy",
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "imports_analysis_model": false,
+  "expected_used_as_seed": false
+}

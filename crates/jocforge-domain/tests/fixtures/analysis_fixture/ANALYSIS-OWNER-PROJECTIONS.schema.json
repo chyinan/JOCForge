@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "analysis-owner-projections.v1",
+  "$defs": {
+    "u64": {"type": "integer", "minimum": 0},
+    "u32": {"type": "integer", "minimum": 0, "maximum": 4294967295},
+    "u16": {"type": "integer", "minimum": 0, "maximum": 65535},
+    "i1": {"type": "integer", "minimum": 0, "maximum": 1},
+    "input_history": {
+      "type": "object", "additionalProperties": false,
+      "required": ["generation", "history_u32_words"],
+      "properties": {"generation": {"$ref": "#/$defs/u64"}, "history_u32_words": {"type": "array", "minItems": 7680, "maxItems": 7680, "items": {"$ref": "#/$defs/u32"}}}
+    },
+    "transient": {
+      "type": "object", "additionalProperties": false,
+      "required": ["generation", "two_history_u32_words", "three_history_u32_words", "peak_statistics_u32_words", "previous_mean_u32_words", "short_queue_i1", "other_queue_i1"],
+      "properties": {
+        "generation": {"$ref": "#/$defs/u64"},
+        "two_history_u32_words": {"type": "array", "minItems": 20, "maxItems": 20, "items": {"$ref": "#/$defs/u32"}},
+        "three_history_u32_words": {"type": "array", "minItems": 30, "maxItems": 30, "items": {"$ref": "#/$defs/u32"}},
+        "peak_statistics_u32_words": {"type": "array", "minItems": 90, "maxItems": 90, "items": {"$ref": "#/$defs/u32"}},
+        "previous_mean_u32_words": {"type": "array", "minItems": 5, "maxItems": 5, "items": {"$ref": "#/$defs/u32"}},
+        "short_queue_i1": {"type": "array", "minItems": 20, "maxItems": 20, "items": {"$ref": "#/$defs/i1"}},
+        "other_queue_i1": {"type": "array", "minItems": 20, "maxItems": 20, "items": {"$ref": "#/$defs/i1"}}
+      }
+    },
+    "primary_companion_lfe": {
+      "type": "object", "additionalProperties": false,
+      "required": ["generation", "primary_fbw_history_u32_words", "companion_fbw_history_u32_words", "primary_lfe_history_u32_words", "companion_lfe_history_u32_words"],
+      "properties": {
+        "generation": {"$ref": "#/$defs/u64"},
+        "primary_fbw_history_u32_words": {"type": "array", "minItems": 640, "maxItems": 640, "items": {"$ref": "#/$defs/u32"}},
+        "companion_fbw_history_u32_words": {"type": "array", "minItems": 640, "maxItems": 640, "items": {"$ref": "#/$defs/u32"}},
+        "primary_lfe_history_u32_words": {"type": "array", "minItems": 128, "maxItems": 128, "items": {"$ref": "#/$defs/u32"}},
+        "companion_lfe_history_u32_words": {"type": "array", "minItems": 128, "maxItems": 128, "items": {"$ref": "#/$defs/u32"}}
+      }
+    },
+    "policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["generation", "gain_db_history_u32_words", "exponent_refresh_history_u16_words", "normalized_anchor_u16_words"],
+      "properties": {
+        "generation": {"$ref": "#/$defs/u64"},
+        "gain_db_history_u32_words": {"type": "array", "minItems": 64, "maxItems": 64, "items": {"$ref": "#/$defs/u32"}},
+        "exponent_refresh_history_u16_words": {"type": "array", "minItems": 30, "maxItems": 30, "items": {"$ref": "#/$defs/u16"}},
+        "normalized_anchor_u16_words": {"type": "array", "minItems": 30, "maxItems": 30, "items": {"$ref": "#/$defs/u16"}}
+      }
+    }
+  }
+}

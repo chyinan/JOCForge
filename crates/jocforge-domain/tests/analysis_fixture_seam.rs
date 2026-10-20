@@ -5,7 +5,7 @@ use std::fs;
 use std::path::PathBuf;
 
 const FIXTURE_MANIFEST_SHA256: &str =
-    "33d9244e1583417d04d93c4f8816594c8d20bc5a0ea9e47e124d09091ca5ca23";
+    "0fd24d23ca4237e8bdd2283671293dfa0b54755ea74e84316234b4cc4c195912";
 const PROVIDER_FILE: &str = "analysis-selected-provider.json";
 const VECTORS_FILE: &str = "ANALYSIS-OWNER-VECTORS.json";
 const SOURCE_IDENTITIES: &[(&str, u64, &str)] = &[
@@ -62,6 +62,25 @@ fn hex(bytes: &[u8]) -> String {
     text
 }
 
+fn hex_nibble(byte: u8) -> Option<u8> {
+    match byte {
+        b'0'..=b'9' => Some(byte - b'0'),
+        b'a'..=b'f' => Some(byte - b'a' + 10),
+        _ => None,
+    }
+}
+
+fn decode_lower_hex(text: &str) -> Option<Vec<u8>> {
+    let bytes = text.as_bytes();
+    if bytes.len() % 2 != 0 {
+        return None;
+    }
+    bytes
+        .chunks_exact(2)
+        .map(|pair| Some((hex_nibble(pair[0])? << 4) | hex_nibble(pair[1])?))
+        .collect()
+}
+
 fn canonical_json_sha256(value: &Value) -> String {
     digest_hex(&serde_json::to_vec(value).expect("canonical fixture JSON"))
 }
@@ -78,7 +97,7 @@ fn assert_fixture_manifest() {
     assert_eq!(digest_hex(&bytes), FIXTURE_MANIFEST_SHA256);
     let manifest: Value = serde_json::from_slice(&bytes).expect("manifest JSON");
     let files = manifest["files"].as_array().expect("manifest files array");
-    assert_eq!(files.len(), 7);
+    assert_eq!(files.len(), 11);
     for entry in files {
         let name = entry["file"].as_str().expect("manifest file name");
         let bytes = fs::read(root.join(name)).expect("manifested file exists");
@@ -148,6 +167,201 @@ fn i1_words(value: &Value, expected_len: usize) -> bool {
                     .is_some_and(|number| (-1..=1).contains(&number))
             })
     })
+}
+
+fn i1_projection_words(value: &Value, expected_len: usize) -> bool {
+    value.as_array().is_some_and(|words| {
+        words.len() == expected_len
+            && words
+                .iter()
+                .all(|word| word.as_u64().is_some_and(|number| number <= 1))
+    })
+}
+
+fn owner_projection(state: &Value, owner: &str) -> Option<Value> {
+    match owner {
+        "input_history" => Some(json!({
+            "generation": state["input_history_generation"],
+            "history_u32_words": state["input_history_u32_words"],
+        })),
+        "transient" => Some(json!({
+            "generation": state["transient_generation"],
+            "two_history_u32_words": state["transient_two_history_u32_words"],
+            "three_history_u32_words": state["transient_three_history_u32_words"],
+            "peak_statistics_u32_words": state["transient_peak_statistics_u32_words"],
+            "previous_mean_u32_words": state["transient_previous_mean_u32_words"],
+            "short_queue_i1": state["transient_short_queue_i1"],
+            "other_queue_i1": state["transient_other_queue_i1"],
+        })),
+        "primary_companion_lfe" => Some(json!({
+            "generation": state["transform_generation"],
+            "primary_fbw_history_u32_words": state["primary_fbw_history_u32_words"],
+            "companion_fbw_history_u32_words": state["companion_fbw_history_u32_words"],
+            "primary_lfe_history_u32_words": state["primary_lfe_history_u32_words"],
+            "companion_lfe_history_u32_words": state["companion_lfe_history_u32_words"],
+        })),
+        "policy" => Some(json!({
+            "generation": state["policy_generation"],
+            "gain_db_history_u32_words": state["gain_db_history_u32_words"],
+            "exponent_refresh_history_u16_words": state["exponent_refresh_history_u16_words"],
+            "normalized_anchor_u16_words": state["normalized_anchor_u16_words"],
+        })),
+        _ => None,
+    }
+}
+
+fn owner_projection_shape_valid(owner: &str, value: &Value) -> bool {
+    match owner {
+        "input_history" => {
+            has_exact_keys(value, &["generation", "history_u32_words"])
+                && value["generation"].as_u64().is_some()
+                && u32_words(&value["history_u32_words"], 7680)
+        }
+        "transient" => {
+            has_exact_keys(
+                value,
+                &[
+                    "generation",
+                    "two_history_u32_words",
+                    "three_history_u32_words",
+                    "peak_statistics_u32_words",
+                    "previous_mean_u32_words",
+                    "short_queue_i1",
+                    "other_queue_i1",
+                ],
+            ) && value["generation"].as_u64().is_some()
+                && u32_words(&value["two_history_u32_words"], 20)
+                && u32_words(&value["three_history_u32_words"], 30)
+                && u32_words(&value["peak_statistics_u32_words"], 90)
+                && u32_words(&value["previous_mean_u32_words"], 5)
+                && i1_projection_words(&value["short_queue_i1"], 20)
+                && i1_projection_words(&value["other_queue_i1"], 20)
+        }
+        "primary_companion_lfe" => {
+            has_exact_keys(
+                value,
+                &[
+                    "generation",
+                    "primary_fbw_history_u32_words",
+                    "companion_fbw_history_u32_words",
+                    "primary_lfe_history_u32_words",
+                    "companion_lfe_history_u32_words",
+                ],
+            ) && value["generation"].as_u64().is_some()
+                && u32_words(&value["primary_fbw_history_u32_words"], 640)
+                && u32_words(&value["companion_fbw_history_u32_words"], 640)
+                && u32_words(&value["primary_lfe_history_u32_words"], 128)
+                && u32_words(&value["companion_lfe_history_u32_words"], 128)
+        }
+        "policy" => {
+            has_exact_keys(
+                value,
+                &[
+                    "generation",
+                    "gain_db_history_u32_words",
+                    "exponent_refresh_history_u16_words",
+                    "normalized_anchor_u16_words",
+                ],
+            ) && value["generation"].as_u64().is_some()
+                && u32_words(&value["gain_db_history_u32_words"], 64)
+                && u16_words(&value["exponent_refresh_history_u16_words"], 30)
+                && u16_words(&value["normalized_anchor_u16_words"], 30)
+        }
+        _ => false,
+    }
+}
+
+fn append_canonical_projection(value: &Value, output: &mut Vec<u8>) {
+    match value {
+        Value::Null => output.extend_from_slice(b"null"),
+        Value::Bool(boolean) => output.extend_from_slice(if *boolean { b"true" } else { b"false" }),
+        Value::Number(_) | Value::String(_) => {
+            output.extend_from_slice(serde_json::to_string(value).unwrap().as_bytes());
+        }
+        Value::Array(items) => {
+            output.push(b'[');
+            for (index, item) in items.iter().enumerate() {
+                if index != 0 {
+                    output.push(b',');
+                }
+                append_canonical_projection(item, output);
+            }
+            output.push(b']');
+        }
+        Value::Object(object) => {
+            let mut entries = object.iter().collect::<Vec<_>>();
+            entries.sort_by(|left, right| left.0.cmp(right.0));
+            output.push(b'{');
+            for (index, (key, item)) in entries.iter().enumerate() {
+                if index != 0 {
+                    output.push(b',');
+                }
+                output.extend_from_slice(serde_json::to_string(key).unwrap().as_bytes());
+                output.push(b':');
+                append_canonical_projection(item, output);
+            }
+            output.push(b'}');
+        }
+    }
+}
+
+fn canonical_projection_bytes(value: &Value) -> Vec<u8> {
+    let mut output = Vec::new();
+    append_canonical_projection(value, &mut output);
+    output
+}
+
+fn canonical_projection_sha256(value: &Value) -> String {
+    digest_hex(&canonical_projection_bytes(value))
+}
+
+fn assert_source_zero_projection_vectors(
+    projection_vectors: &Value,
+    before_state: &Value,
+    after_state: &Value,
+) {
+    assert_eq!(
+        projection_vectors["schema"],
+        "analysis-owner-projection-hash-vectors.v1"
+    );
+    assert_eq!(projection_vectors["expected_used_as_seed"], false);
+    assert_eq!(projection_vectors["source_identity"]["bytes"], 2_871_144);
+    assert_eq!(
+        projection_vectors["source_identity"]["sha256"],
+        "ada7e443a21299dbdbc527f05f705c65cbe2b674d785b20ad8b339aa7347766a"
+    );
+    let vectors = projection_vectors["vectors"].as_array().unwrap();
+    assert_eq!(vectors.len(), 8);
+    for vector in vectors {
+        let owner = vector["owner"].as_str().unwrap();
+        let side = vector["side"].as_str().unwrap();
+        let state = match side {
+            "before" => before_state,
+            "after" => after_state,
+            _ => panic!("unknown projection side"),
+        };
+        assert_eq!(vector["source"], 0);
+        assert_eq!(vector["id"], format!("source0_{side}_{owner}"));
+        let projection = owner_projection(state, owner).expect("known analysis owner");
+        assert!(owner_projection_shape_valid(owner, &projection));
+        assert_eq!(vector["value"], projection);
+
+        let canonical_bytes = canonical_projection_bytes(&projection);
+        let preimage = decode_lower_hex(vector["preimage_hex"].as_str().unwrap())
+            .expect("owner projection preimage uses lowercase hex");
+        assert_eq!(preimage, canonical_bytes);
+        assert_eq!(
+            preimage.len() as u64,
+            vector["preimage_bytes"].as_u64().unwrap()
+        );
+        assert_eq!(digest_hex(&preimage), vector["sha256"]);
+        assert_eq!(vector["frozen_row_sha256"], vector["sha256"]);
+        assert_eq!(vector["canonicalization"]["encoding"], "UTF-8");
+        assert_eq!(vector["canonicalization"]["sort_keys"], true);
+        assert_eq!(vector["canonicalization"]["separators"], json!([",", ":"]));
+        assert_eq!(vector["canonicalization"]["ensure_ascii"], false);
+        assert_eq!(vector["canonicalization"]["domain_prefix"], Value::Null);
+    }
 }
 
 fn analysis_state_shape_valid(state: &Value) -> bool {
@@ -303,6 +517,16 @@ fn validate_record(record: &Value, provider_sha256: &str) -> Value {
     {
         return error_result("ANALYSIS_LINEAGE");
     }
+    for owner in OWNER_KEYS {
+        let Some(projection) = owner_projection(after_state, owner) else {
+            return error_result("ANALYSIS_LINEAGE");
+        };
+        if !owner_projection_shape_valid(owner, &projection)
+            || owner_hashes[*owner] != canonical_projection_sha256(&projection)
+        {
+            return error_result("ANALYSIS_LINEAGE");
+        }
+    }
     if numeric["shared_receipt_sha256"] != canonical_json_sha256(shared) {
         return error_result("ANALYSIS_LINEAGE");
     }
@@ -356,6 +580,9 @@ fn shared_analysis_and_numeric_plan_receipts_are_bound_without_commit() {
     let machine_map = read_fixture("ANALYSIS-MACHINE-MAP.json");
     let vectors = read_fixture(VECTORS_FILE);
     let independent = read_fixture("INDEPENDENT-CHECK.json");
+    let projection_contract = read_fixture("ANALYSIS-OWNER-PROJECTIONS.schema.json");
+    let projection_vectors = read_fixture("ANALYSIS-OWNER-PROJECTION-VECTORS.json");
+    let projection_independent = read_fixture("OWNER-PROJECTION-INDEPENDENT-CHECK.json");
     let provider_sha256 = vectors["provider"]["canonical_sha256"]
         .as_str()
         .expect("provider canonical SHA-256");
@@ -382,6 +609,75 @@ fn shared_analysis_and_numeric_plan_receipts_are_bound_without_commit() {
         .as_array()
         .expect("success records");
     assert_eq!(success_records.len(), 3);
+    assert_eq!(
+        projection_vectors["source_identity"]["bytes"],
+        vectors["source_identities"]["result"]["bytes"]
+    );
+    assert_eq!(
+        projection_vectors["source_identity"]["sha256"],
+        vectors["source_identities"]["result"]["sha256"]
+    );
+
+    let projection_defs = &projection_contract["$defs"];
+    assert_eq!(projection_contract["$id"], "analysis-owner-projections.v1");
+    assert_eq!(projection_defs["u64"]["minimum"], 0);
+    assert_eq!(projection_defs["u32"]["minimum"], 0);
+    assert_eq!(projection_defs["u32"]["maximum"], 4_294_967_295_u64);
+    assert_eq!(projection_defs["u16"]["minimum"], 0);
+    assert_eq!(projection_defs["u16"]["maximum"], 65_535);
+    assert_eq!(projection_defs["i1"]["minimum"], 0);
+    assert_eq!(projection_defs["i1"]["maximum"], 1);
+    for (owner, required_fields) in [
+        ("input_history", json!(["generation", "history_u32_words"])),
+        (
+            "transient",
+            json!([
+                "generation",
+                "two_history_u32_words",
+                "three_history_u32_words",
+                "peak_statistics_u32_words",
+                "previous_mean_u32_words",
+                "short_queue_i1",
+                "other_queue_i1"
+            ]),
+        ),
+        (
+            "primary_companion_lfe",
+            json!([
+                "generation",
+                "primary_fbw_history_u32_words",
+                "companion_fbw_history_u32_words",
+                "primary_lfe_history_u32_words",
+                "companion_lfe_history_u32_words"
+            ]),
+        ),
+        (
+            "policy",
+            json!([
+                "generation",
+                "gain_db_history_u32_words",
+                "exponent_refresh_history_u16_words",
+                "normalized_anchor_u16_words"
+            ]),
+        ),
+    ] {
+        assert_eq!(projection_defs[owner]["type"], "object");
+        assert_eq!(projection_defs[owner]["additionalProperties"], false);
+        assert_eq!(projection_defs[owner]["required"], required_fields);
+    }
+    assert_source_zero_projection_vectors(
+        &projection_vectors,
+        &success_records[0]["record"]["before_state"],
+        &success_records[0]["record"]["after_state"],
+    );
+
+    let projection_checks = projection_independent["checks"].as_array().unwrap();
+    assert_eq!(projection_checks.len(), 9);
+    assert!(projection_checks.iter().all(|check| check["pass"] == true));
+    assert_eq!(projection_independent["all_pass"], true);
+    assert_eq!(projection_independent["imports_analysis_model"], false);
+    assert_eq!(projection_independent["expected_used_as_seed"], false);
+
     let mut previous_after_state = cold_state.clone();
     for (expected_source, step) in success_records.iter().enumerate() {
         let record = &step["record"];
@@ -405,6 +701,17 @@ fn shared_analysis_and_numeric_plan_receipts_are_bound_without_commit() {
     ] {
         let mut record = success_records[0]["record"].clone();
         record[receipt_key]["schema"] = json!(invalid_schema);
+        let result = validate_record(&record, provider_sha256);
+        assert_eq!(result["status"], "ERROR");
+        assert_eq!(result["error"], "ANALYSIS_LINEAGE");
+        assert_eq!(result["receipt"], Value::Null);
+        assert_eq!(result["state_delta"], Value::Null);
+        assert_eq!(result["commit_count"], 0);
+    }
+
+    for owner in OWNER_KEYS {
+        let mut record = success_records[0]["record"].clone();
+        record["shared_receipt"]["owner_after_sha256"][*owner] = json!("0".repeat(64));
         let result = validate_record(&record, provider_sha256);
         assert_eq!(result["status"], "ERROR");
         assert_eq!(result["error"], "ANALYSIS_LINEAGE");
