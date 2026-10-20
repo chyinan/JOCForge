@@ -5,7 +5,7 @@ use std::fmt::Write as _;
 use std::fs;
 use std::path::PathBuf;
 
-const MANIFEST_SHA256: &str = "0a3e168991908058b39c00578ce72a1088d82d8fd92a045c952738c758f49c5b";
+const MANIFEST_SHA256: &str = "568e8a23381514142c0044a2e1b6672217b07498a758999009addd84d1472798";
 
 fn fixture_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -38,11 +38,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let manifest: Value = serde_json::from_slice(&manifest_bytes).expect("manifest JSON");
     assert_eq!(
         manifest["schema"],
-        "washed-implementer-blocker-manifest.v13"
+        "washed-implementer-blocker-manifest.v14"
     );
     assert_eq!(
         manifest["identity"],
-        "spatial-control-cold-serializer.blocked.v18"
+        "spatial-control-cold-serializer.blocked.v19"
     );
     assert_eq!(manifest["status"], "BLOCKED_NO_EXECUTABLE_SERIALIZER");
     assert_eq!(
@@ -63,7 +63,6 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "structural_layout_complete": true,
             "semantic_schema_complete": false,
             "property12_source": "descriptor+40_data_rate_enum",
-            "property12_mapping": "0=384;1=448;2=576;3=640;4=768;5=1024",
             "property12_current_value": 1024,
             "policy_header_byte2_is_property12": false,
             "measurement_unknown_offsets": [8, 12, 16],
@@ -94,6 +93,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "CHANNEL-EXTERNAL-METADATA-TRIM-SEMANTICS.json",
             "COLD-SERIALIZER-EVIDENCE.json",
             "COLD-SERIALIZER-FINAL-BLOCKER.md",
+            "EXTERNAL-METADATA-HELPER-SEMANTICS.json",
             "EXTERNAL-METADATA-STRUCTURE-AND-REMAINING-FIELDS.json",
             "FILEWRITER-FWRITE-DYNAMIC-JOIN.json",
             "INDEPENDENT-CHECK.json",
@@ -127,7 +127,8 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         "MEASUREMENT-ALIAS-RESOLUTION.json",
         "CHANNEL-EXTERNAL-METADATA-TRIM-SEMANTICS.json",
         "TRIM-PAYLOAD-PRODUCER-CONSUMER-EVIDENCE.json",
-        "EXTERNAL-METADATA-STRUCTURE-AND-REMAINING-FIELDS.json"
+        "EXTERNAL-METADATA-STRUCTURE-AND-REMAINING-FIELDS.json",
+        "EXTERNAL-METADATA-HELPER-SEMANTICS.json"
     ]);
     for entry in files {
         let name = entry["file"].as_str().expect("manifest file name");
@@ -146,15 +147,15 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let source = &manifest["source_evidence"];
     assert_eq!(
         source["research_manifest_sha256"],
-        "5d36078d97619574c2f386bed25ffa0ca7aa5768a1d9928a79f439cded8b98d3"
+        "364f8ccf6f08533ec7d3fca38eef6bc7dd9b525994e300fdb0bb0a78483a3bdd"
     );
     assert_eq!(
         source["research_independent_check_sha256"],
-        "d2516abfcf1f127584a67650eb5bf976fcbee39684461a0245a55f5fb4ac06d4"
+        "364101b9c5ba22361bbdc523ba3178791ca569904afc8b8344a687cc516a7449"
     );
     assert_eq!(
-        source["external_metadata_structure_sha256"],
-        "17d0b6132fe27f1a70501da1092583ae097a20fb6ed897b65874057af69389a1"
+        source["external_metadata_helper_semantics_sha256"],
+        "498900b3c3d78e2deec24bd2cbe04c2d7e5f827bda19d20dbf2a4347da2db926"
     );
     assert_eq!(source["serializer_execution"], "NOT_RUN");
     assert_eq!(source["canonical_preimage"], Value::Null);
@@ -272,18 +273,6 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(
         manifest["channel_semantics"]["raw_records_delivered"],
         false
-    );
-    assert_eq!(
-        manifest["external_metadata_structure"]["plus1_to_63"],
-        "char[63] from source+4"
-    );
-    assert_eq!(
-        manifest["external_metadata_structure"]["plus117"],
-        "warm-mode host enum current 4"
-    );
-    assert_eq!(
-        manifest["external_metadata_structure"]["semantic_field_names"],
-        "INCOMPLETE"
     );
     assert_eq!(
         manifest["trim_payload_correction"]["producer_rva"],
@@ -1750,6 +1739,94 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(external_structure["raw_external_metadata_delivered"], false);
     assert_eq!(external_structure["private_auth"], "EXCLUDED");
 
+    let helper_semantics = read_json("EXTERNAL-METADATA-HELPER-SEMANTICS.json");
+    assert_eq!(
+        helper_semantics["schema"],
+        "sanitized-external-metadata-helper-semantics.v1"
+    );
+    let helpers = helper_semantics["helpers"].as_array().unwrap();
+    assert_eq!(helpers.len(), 13);
+    assert_eq!(helpers[0]["output_offset"], 68);
+    assert_eq!(helpers[0]["rva"], "0x4dfd30");
+    assert_eq!(helpers[0]["semantic"], "monitor renderer");
+    assert_eq!(
+        helpers[0]["mapping"],
+        json!({"0":0,"1":1,"3":2,"5":3,"other":0})
+    );
+    assert_eq!(helpers[1]["output_offset"], 72);
+    assert_eq!(helpers[1]["semantic"], "DBMD master type");
+    assert_eq!(
+        helpers[1]["mapping"],
+        json!({"0":0,"1":1,"3":2,"5":6,"7":7,"other":0})
+    );
+    assert_eq!(helpers[2]["output_offset"], 76);
+    assert_eq!(helpers[2]["mapping"], json!({"0":0,"1":1,"2":2,"other":0}));
+    assert_eq!(helpers[3]["output_offset"], 77);
+    assert_eq!(
+        helpers[3]["mapping"],
+        json!({"0":0,"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"other":0})
+    );
+    assert_eq!(helpers[4]["output_offset"], 97);
+    assert_eq!(helpers[4]["mapping"], json!({"0":1,"1":2,"3":0,"other":0}));
+    assert_eq!(helpers[5]["output_offsets"], json!([100, 102, 104]));
+    assert_eq!(
+        helpers[5]["rule"],
+        "100*low32 + high32, values above65535 become0"
+    );
+    assert_eq!(helpers[6]["output_offset"], 106);
+    assert_eq!(
+        helpers[6]["mapping"],
+        json!({"0":1,"1":2,"14":3,"15":0,"other":0})
+    );
+    assert_eq!(helpers[7]["output_offset"], 108);
+    assert_eq!(
+        helpers[7]["rule"],
+        "bit remap defined by helper; invalid source handled by caller as default8"
+    );
+    assert_eq!(helpers[8]["output_offset"], 113);
+    assert_eq!(
+        helpers[8]["mapping"],
+        json!({"0":0,"1":1,"2":2,"3":3,"4":4,"other":0})
+    );
+    assert_eq!(helpers[9]["output_offset"], 114);
+    assert_eq!(helpers[9]["mapping"], json!({"0":1,"1":2,"3":0,"other":0}));
+    assert_eq!(helpers[10]["output_offset"], 115);
+    assert_eq!(
+        helpers[10]["mapping"],
+        json!({"0":0,"1":1,"2":2,"3":3,"other":0})
+    );
+    assert_eq!(helpers[11]["output_offset"], 116);
+    assert_eq!(helpers[11]["mapping"], json!({"0":1,"1":2,"2":0,"other":0}));
+    assert_eq!(helpers[12]["output_offset"], 117);
+    assert_eq!(
+        helpers[12]["mapping"],
+        json!({"0":1,"1":2,"2":3,"3":4,"4":0,"other":0})
+    );
+    assert_eq!(
+        helper_semantics["remaining_unknown_offsets"],
+        json!([
+            0, 65, 66, 67, 69, 70, 71, 73, 74, 75, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 96, 99,
+            107, 118, 119
+        ])
+    );
+    assert_eq!(helper_semantics["text_field_name_at_1_63"], "NOT_CAPTURED");
+    assert_eq!(helper_semantics["semantic_schema_complete"], false);
+    assert_eq!(helper_semantics["portable_contract"], "NOT_OBSERVED");
+    assert_eq!(helper_semantics["serializer_restore_roundtrip"], "NOT_RUN");
+    assert_eq!(helper_semantics["product_wide_absence_claim"], false);
+    assert_eq!(helper_semantics["production_allowed"], false);
+    assert_eq!(
+        manifest["external_metadata_helper_semantics"]["semantic_schema_complete"],
+        false
+    );
+    assert_eq!(
+        manifest["external_metadata_helper_semantics"]["remaining_unknown_offsets"],
+        json!([
+            0, 65, 66, 67, 69, 70, 71, 73, 74, 75, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 96, 99,
+            107, 118, 119
+        ])
+    );
+
     let framing = read_json("REQUIRED-FRAMING-RULES.json");
     assert_eq!(framing["status"], "BLOCKED_INCOMPLETE");
     assert_eq!(
@@ -1833,11 +1910,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let independent = read_json("INDEPENDENT-CHECK.json");
     assert_eq!(
         independent["schema"],
-        "spatial-control-cold-serializer-blocker-independent-check.v18"
+        "spatial-control-cold-serializer-blocker-independent-check.v19"
     );
     assert_eq!(independent["all_pass"], true);
     let checks = independent["checks"].as_array().expect("checks array");
-    assert_eq!(checks.len(), 26);
+    assert_eq!(checks.len(), 27);
     assert!(checks.iter().all(|check| check["pass"] == true));
     assert_eq!(
         checks
@@ -1865,6 +1942,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "channel_external_trim_semantics",
             "trim_payload_producer_consumer_evidence",
             "external_metadata_structure_and_remaining_fields",
+            "external_metadata_helper_semantics",
             "no_entrypoint",
             "no_bytes",
             "framing_rules",
