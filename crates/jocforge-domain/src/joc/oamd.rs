@@ -2,3 +2,4 @@
 //! Boundary for immutable OAMD body proposals. Queue state belongs to the metadata owner.
 
 pub mod reader_target;
+pub mod rowdata;

@@ -1,0 +1,3512 @@
+{
+  "schema": "oamd-rowdata-writer-vectors.v1",
+  "source_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_asset": "test-vectors/unit/vectors.json",
+  "source_asset_bytes": 1503142,
+  "source_asset_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8",
+  "cases": [
+    {
+      "id": "U-OAMD-XYZ",
+      "input": {
+        "xyz_q15": [
+          [
+            0,
+            32767,
+            -32767
+          ],
+          [
+            16384,
+            16384,
+            0
+          ],
+          [
+            32767,
+            0,
+            32767
+          ],
+          [
+            16383,
+            16385,
+            -1
+          ],
+          [
+            -1,
+            0,
+            0
+          ],
+          [
+            0,
+            32768,
+            0
+          ],
+          [
+            0,
+            0,
+            -32768
+          ]
+        ]
+      },
+      "expected": {
+        "points": [
+          {
+            "status": "ACCEPTED",
+            "codes": [
+              0,
+              62,
+              -15
+            ]
+          },
+          {
+            "status": "ACCEPTED",
+            "codes": [
+              31,
+              31,
+              0
+            ]
+          },
+          {
+            "status": "ACCEPTED",
+            "codes": [
+              62,
+              0,
+              15
+            ]
+          },
+          {
+            "status": "ACCEPTED",
+            "codes": [
+              31,
+              31,
+              0
+            ]
+          },
+          {
+            "status": "REJECTED",
+            "error_class": "INVALID_OAMD_XYZ"
+          },
+          {
+            "status": "REJECTED",
+            "error_class": "INVALID_OAMD_XYZ"
+          },
+          {
+            "status": "REJECTED",
+            "error_class": "INVALID_OAMD_XYZ"
+          }
+        ]
+      }
+    },
+    {
+      "id": "U-OAMD-ESCAPED",
+      "input": {
+        "values": [
+          0,
+          15,
+          16,
+          271,
+          272,
+          4367,
+          4368,
+          69903,
+          69904,
+          -1
+        ]
+      },
+      "expected": {
+        "values": [
+          {
+            "status": "ACCEPTED",
+            "hex": "00",
+            "valid_bits": 5,
+            "decoded": 0
+          },
+          {
+            "status": "ACCEPTED",
+            "hex": "f0",
+            "valid_bits": 5,
+            "decoded": 15
+          },
+          {
+            "status": "ACCEPTED",
+            "hex": "0800",
+            "valid_bits": 10,
+            "decoded": 16
+          },
+          {
+            "status": "ACCEPTED",
+            "hex": "ff80",
+            "valid_bits": 10,
+            "decoded": 271
+          },
+          {
+            "status": "ACCEPTED",
+            "hex": "0840",
+            "valid_bits": 15,
+            "decoded": 272
+          },
+          {
+            "status": "ACCEPTED",
+            "hex": "fffc",
+            "valid_bits": 15,
+            "decoded": 4367
+          },
+          {
+            "status": "ACCEPTED",
+            "hex": "084200",
+            "valid_bits": 20,
+            "decoded": 4368
+          },
+          {
+            "status": "ACCEPTED",
+            "hex": "ffffe0",
+            "valid_bits": 20,
+            "decoded": 69903
+          },
+          {
+            "status": "REJECTED",
+            "error_class": "INVALID_OAMD_ESCAPED_INTEGER"
+          },
+          {
+            "status": "REJECTED",
+            "error_class": "INVALID_OAMD_ESCAPED_INTEGER"
+          }
+        ]
+      }
+    },
+    {
+      "id": "U-OAMD-ROWS",
+      "input": {
+        "timing": {
+          "base": 0,
+          "position": 0,
+          "duration": 1536,
+          "precision": 32
+        },
+        "rows": [
+          {
+            "kind": "LFE",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 0,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              -32767
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              16384,
+              16384,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 0,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 0,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 1,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          }
+        ]
+      },
+      "expected": {
+        "payload_hex": "0d8442c000a2703e7840efbf0080c0fa010381f4020840fa010000",
+        "bytes": 27
+      }
+    },
+    {
+      "id": "U-OAMD-COUNT-31",
+      "input": {
+        "timing": {
+          "base": 0,
+          "position": 0,
+          "duration": 1536,
+          "precision": 32
+        },
+        "rows": [
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          }
+        ]
+      },
+      "expected": {
+        "payload_hex": "3d045b2000a207d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f40200",
+        "bytes": 126
+      }
+    },
+    {
+      "id": "U-OAMD-COUNT-32",
+      "input": {
+        "timing": {
+          "base": 0,
+          "position": 0,
+          "duration": 1536,
+          "precision": 32
+        },
+        "rows": [
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          }
+        ]
+      },
+      "expected": {
+        "payload_hex": "3e0208b74001440fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d00800",
+        "bytes": 131
+      }
+    },
+    {
+      "id": "U-OAMD-COUNT-159",
+      "input": {
+        "timing": {
+          "base": 0,
+          "position": 0,
+          "duration": 1536,
+          "precision": 32
+        },
+        "rows": [
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          },
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          }
+        ]
+      },
+      "expected": {
+        "payload_hex": "3ffe088d72000a207d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020703e8040e07d0081c0fa010381f4020",
+        "bytes": 623
+      }
+    },
+    {
+      "id": "U-OAMD-TIME-TABLE",
+      "input": {
+        "timing": {
+          "base": 18,
+          "position": 63,
+          "duration": 2048,
+          "precision": 31
+        },
+        "rows": [
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          }
+        ]
+      },
+      "expected": {
+        "payload_hex": "01045c61fff7c40fa01000",
+        "bytes": 11
+      }
+    },
+    {
+      "id": "U-OAMD-TIME-EXPLICIT",
+      "input": {
+        "timing": {
+          "base": 7,
+          "position": 1,
+          "duration": 777,
+          "precision": 0
+        },
+        "rows": [
+          {
+            "kind": "OBJECT",
+            "mute": 0,
+            "gain": 4096,
+            "spread": 32767,
+            "xyz_q15": [
+              0,
+              32767,
+              0
+            ],
+            "component": 0,
+            "z_valid": 1,
+            "diffuse": 0
+          }
+        ]
+      },
+      "expected": {
+        "payload_hex": "0104608e01cc240103e80400",
+        "bytes": 12
+      }
+    }
+  ]
+}
