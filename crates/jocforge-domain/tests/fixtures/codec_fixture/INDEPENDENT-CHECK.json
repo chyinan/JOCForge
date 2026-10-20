@@ -1,0 +1,69 @@
+{
+  "schema": "codec-owner-fixture-independent-check.v1",
+  "checks": [
+    {
+      "id": "source_identity",
+      "pass": true
+    },
+    {
+      "id": "verification_identity",
+      "pass": true
+    },
+    {
+      "id": "provider_identity",
+      "pass": true
+    },
+    {
+      "id": "cold_projection",
+      "pass": true
+    },
+    {
+      "id": "fixture_all_long_no_payload",
+      "pass": true
+    },
+    {
+      "id": "fixture_mixed_short_actual_keyless_joc",
+      "pass": true
+    },
+    {
+      "id": "fixture_deployed_compat_synthetic_carrier",
+      "pass": true
+    },
+    {
+      "id": "fixture_etsi_emdf_synthetic_carrier",
+      "pass": true
+    },
+    {
+      "id": "failure_frame_hash",
+      "pass": true
+    },
+    {
+      "id": "failure_frame_crc",
+      "pass": true
+    },
+    {
+      "id": "failure_short_shape",
+      "pass": true
+    },
+    {
+      "id": "failure_plan_alias",
+      "pass": true
+    },
+    {
+      "id": "payload_512",
+      "pass": true
+    },
+    {
+      "id": "dependency_boundary",
+      "pass": true
+    },
+    {
+      "id": "not_run",
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "imports_fixture_validator": false,
+  "independent_codec_algorithm_replay": false,
+  "expected_used_as_seed": false
+}

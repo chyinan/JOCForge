@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codec-fixture-validation-receipt.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "mode", "production_allowed", "source_vector_sha256", "case_id", "input_sha256", "frame_bytes", "frame_sha256", "crc_residual", "recorded_model_state_commit_count", "codec_state_delta_committed", "commit_count"],
+  "properties": {
+    "schema": {"const": "codec-fixture-validation-receipt.v1"},
+    "mode": {"const": "SUPPLIED_FIXTURE_ONLY"},
+    "production_allowed": {"const": false},
+    "source_vector_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "case_id": {"type": "string"},
+    "input_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "frame_bytes": {"const": 4096},
+    "frame_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "crc_residual": {"const": 0},
+    "recorded_model_state_commit_count": {"const": 1},
+    "codec_state_delta_committed": {"const": false},
+    "commit_count": {"const": 0}
+  }
+}

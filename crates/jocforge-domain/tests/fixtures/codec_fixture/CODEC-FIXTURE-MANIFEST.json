@@ -1,0 +1,33 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "identity": "codec-owner.keyless-fixture-seam.v1",
+  "status": "CODEC_FIXTURE_SEAM_READY_CANDIDATE_TEST_ONLY",
+  "delivery_scope": "internal test seam only",
+  "files": [
+    { "file": "CODEC-OWNER-CONTRACT.md", "bytes": 3828, "sha256": "39785f70bdfb88575580a8d294d41d30a52f50657f60fe87b73e905cde130d56" },
+    { "file": "codec-selected-provider.json", "bytes": 730, "sha256": "b5dde9241af96b72f936e7b91080188e2fcc34a346abfded1cd657c2cf1a8065" },
+    { "file": "CODEC-OWNER-MACHINE-MAP.json", "bytes": 1140, "sha256": "ae9d3981863433953e01d08b732870f5ce477bd8d35eb8ff798fb890f88edf1b" },
+    { "file": "CODEC-PROPOSALS-AND-RECEIPTS.schema.json", "bytes": 1603, "sha256": "a6a9324fd8f3d1f1b54e2c1a6b89ee666428d0d793edbf4303cc2ce7af8f61a5" },
+    { "file": "CODEC-FIXTURE-RECEIPT.schema.json", "bytes": 1043, "sha256": "c103e37bc67a33f52bfc90577516164283e5182fbc66519ca4545ef9c271df93" },
+    { "file": "CODEC-OWNER-VECTORS.json", "bytes": 10880173, "sha256": "0d107905a9cafb3ec64a0437c96b41a9d8652256789a468e7d4bceb2d0e26740" },
+    { "file": "INDEPENDENT-CHECK.json", "bytes": 1323, "sha256": "f6f1e48e0338114bcf19eaf5d73c4ab116291fcf4a933e7dc8981880a4a30157" }
+  ],
+  "source_evidence": {
+    "research_manifest_sha256": "29a326b77e74efb4421b7ad36177b5f5f294d13212894c81c0f355c055d3f51a",
+    "frozen_source_vector_sha256": "698c2ec69a8250251a3b3295ce135d1178079a5a2750a9ea5381c4e688db527a",
+    "expected_used_as_seed": false,
+    "independent_codec_algorithm_replay": false,
+    "native_receipt_schema": "NOT_OBSERVED",
+    "private_vendor_key": "excluded"
+  },
+  "hard_boundaries": {
+    "production_allowed": false,
+    "codec_state_delta_committed": false,
+    "commit_count": 0,
+    "state_delta": null,
+    "production_codec_root": "blocked",
+    "state_identity_reconciliation": "blocked",
+    "real_4249_source_replay": "NOT_RUN",
+    "product_acceptance": "NOT_RUN"
+  }
+}

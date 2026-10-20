@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codec-owner-proposals-and-receipts.v1",
+  "$defs": {
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "codec_source_proposal": {
+      "type": "object",
+      "required": ["schema", "source_index", "dispatch", "au_index", "before_state_sha256", "proposed_after_sha256", "input_receipt_sha256", "frame_bytes", "frame_sha256", "crc_residual", "best_candidate", "state_material_complete"],
+      "properties": {
+        "schema": {"const": "codec-source-proposal.v1"},
+        "source_index": {"type": "integer", "minimum": 0},
+        "dispatch": {"type": "integer", "minimum": 1},
+        "au_index": {"type": ["integer", "null"], "minimum": 0},
+        "before_state_sha256": {"$ref": "#/$defs/sha"},
+        "proposed_after_sha256": {"$ref": "#/$defs/sha"},
+        "input_receipt_sha256": {"type": "array", "minItems": 5},
+        "frame_bytes": {"const": 4096},
+        "frame_sha256": {"$ref": "#/$defs/sha"},
+        "crc_residual": {"const": 0},
+        "best_candidate": {"type": "integer", "minimum": 0, "maximum": 1023},
+        "state_material_complete": {"const": true}
+      }
+    },
+    "codec_owner_commit_receipt": {
+      "type": "object",
+      "required": ["schema", "owner_id", "source_index", "before_sha256", "after_sha256", "commit_count"],
+      "properties": {
+        "schema": {"const": "codec-owner-commit-receipt.v1"},
+        "owner_id": {"const": "codec"},
+        "commit_count": {"const": 1}
+      }
+    }
+  },
+  "production_schema_status": "BLOCKED_UNTIL_COMPLETE_STATE_IDENTITY"
+}

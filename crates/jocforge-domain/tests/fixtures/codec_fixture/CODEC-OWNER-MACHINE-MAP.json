@@ -1,0 +1,29 @@
+{
+  "schema": "codec-owner-machine-map.v1",
+  "owner_id": "codec",
+  "profile_id": "eac3-5.1-48k-1024-deployed-compat.v1",
+  "clock": {"source": "s", "dispatch": "s + 1", "au": "null for s < 2, otherwise s - 2"},
+  "production_stage_order": [
+    "validate provider and complete codec state",
+    "validate F06ND receipt",
+    "validate SharedAnalysis and NumericPlan receipts",
+    "validate F05JL and F13 metadata receipts",
+    "clone codec state",
+    "advance transform and previous_short once",
+    "run candidate trials on scratch",
+    "validate complete 4096-byte frame and CRC",
+    "emit CodecSourceProposal",
+    "enclosing source transaction commits once"
+  ],
+  "production_required_receipts": ["F06NDReceipt", "SharedAnalysisReceipt", "NumericPlanReceipt", "F05JLReceipt", "F13MetadataReceipt"],
+  "fixture_seam": {
+    "production_allowed": false,
+    "commit_count": 0,
+    "state_delta": null,
+    "recorded_model_commit_is_observation": true
+  },
+  "production_root": {
+    "status": "BLOCKED",
+    "blocker": "selected 256-word codec projection is not reconciled with the six transform histories required by F12S"
+  }
+}
