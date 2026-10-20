@@ -1,0 +1,81 @@
+{
+  "schema": "spatial-control-boundary-independent-check.v1",
+  "checks": [
+    {
+      "id": "identity_provider",
+      "pass": true
+    },
+    {
+      "id": "identity_state",
+      "pass": true
+    },
+    {
+      "id": "identity_input",
+      "pass": true
+    },
+    {
+      "id": "identity_verification",
+      "pass": true
+    },
+    {
+      "id": "verification_scope",
+      "pass": true
+    },
+    {
+      "id": "cold",
+      "pass": true
+    },
+    {
+      "id": "stage_chain",
+      "pass": true
+    },
+    {
+      "id": "materials",
+      "pass": true
+    },
+    {
+      "id": "writer_set",
+      "pass": true
+    },
+    {
+      "id": "full_state",
+      "pass": true
+    },
+    {
+      "id": "seam_boundary",
+      "pass": true
+    },
+    {
+      "id": "failure_after_selector",
+      "pass": true
+    },
+    {
+      "id": "failure_after_u04",
+      "pass": true
+    },
+    {
+      "id": "failure_after_outer_assignment",
+      "pass": true
+    },
+    {
+      "id": "failure_after_reader56_target",
+      "pass": true
+    },
+    {
+      "id": "production_recipe",
+      "pass": true
+    },
+    {
+      "id": "clock",
+      "pass": true
+    },
+    {
+      "id": "scope",
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "imports_spatial_model": false,
+  "independent_real_adm_replay": false,
+  "expected_used_as_seed": false
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "identity": "spatial-control-parent.test-only-seam.v1",
+  "status": "SYNTHETIC_BOUNDARY_FIXTURE_READY_CANDIDATE_TEST_ONLY",
+  "delivery_scope": "internal test seam only",
+  "files": [
+    { "file": "SPATIAL-CONTROL-PARENT-CONTRACT.md", "bytes": 4730, "sha256": "605470e9f3ff1712109fe09ecc8475346d2cbb6509400ad01fde46e3cca1196f" },
+    { "file": "SPATIAL-CONTROL-RECEIPTS.schema.json", "bytes": 1650, "sha256": "d5ebf3333a6108be38c08ebcd240824f0087b72d1729dae5c7b19c2ede8c1f0a" },
+    { "file": "SPATIAL-CONTROL-BOUNDARY-VECTORS.json", "bytes": 37353, "sha256": "4ca1cee3ca27e9247414663511f21531296372b945e384c4bc2405062324637f" },
+    { "file": "INDEPENDENT-CHECK.json", "bytes": 1421, "sha256": "87ca6782ef6c71a94c50b7a30fa3b2b442e7edc8dd312c8309ace0dcdebb1812" },
+    { "file": "spatial-control-production-provider.json", "bytes": 1101, "sha256": "1cd94614ff2fe274765fc0acf501e607fc895724d2ad8126665011534e2647f0" }
+  ],
+  "source_evidence": {
+    "research_manifest_sha256": "5f7325881f711804b4339d59c11d04ac2f4194987f0f7473adb386dac7e5d27c",
+    "expected_used_as_seed": false,
+    "independent_real_adm_replay": false,
+    "native_receipt_schema": "NOT_OBSERVED",
+    "private_auth": "excluded"
+  },
+  "hard_boundaries": {
+    "production_allowed": false,
+    "real_adm_cold_installed48": "NOT_RUN",
+    "production_spatial_control_receipt": "blocked",
+    "f04_receiver_qmf_owner": "unique_consumer_owner",
+    "receiver_qmf_mutated": false,
+    "commit_count": 0,
+    "state_delta": null,
+    "f04c_parent": "excluded",
+    "global_callback_transaction": "blocked"
+  }
+}
