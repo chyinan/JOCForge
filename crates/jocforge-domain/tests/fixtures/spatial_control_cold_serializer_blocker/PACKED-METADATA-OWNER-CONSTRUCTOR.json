@@ -1,0 +1,45 @@
+{
+  "schema": "sanitized-packed-metadata-owner-constructor.v1",
+  "source_evidence_identity": {
+    "research_result_sha256": "963f78f9c2cf6ff9ecc82b7c2d2b8aa8ded9e38042e0a24da1a5429af1fe3ee2",
+    "research_manifest_sha256": "f8ffe496eb2ddfddcf08cb01e401e4cb83c465999e8d04a8a938fab454cd2b69",
+    "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "correction": {
+    "rva_0x995a10": "EXCEPTION_UNWIND_METADATA_NOT_VTABLE",
+    "dynamic_vtable_rva": "0x7f9bc8"
+  },
+  "owner": {
+    "class": "atmos_storage_master_s",
+    "complete_object_locator_rva": "0x8d0df0",
+    "vtable_rva": "0x7f9bc8",
+    "constructor_rva": "0x4cfc80",
+    "packed_block_constructor": "0x4d8020(owner+88)",
+    "first_rule": "memset(owner+88,0,120)"
+  },
+  "selected_initialization_gap_attribution": [
+    {"offsets":"78..79","constructor_value":"zero","later_business_writer":"NO_HIT","role":"alignment_or_reserved","status":"CLOSED_SELECTED_INIT"},
+    {"offsets":"80..87","constructor_value":"zero","first_business_writer_rva":"0x4d49e8","write":"binary64 from storage vtable slot +0x38","role":"master-start baseline compared with FFoA and used for relative offset","vendor_member_name":"NOT_CLOSED","status":"OWNER_AND_FIRST_WRITE_CLOSED_SEMANTIC_PARTIAL"},
+    {"offsets":"99","constructor_value":"zero","later_business_writer":"NO_HIT","role":"alignment_or_reserved","status":"CLOSED_SELECTED_INIT"},
+    {"offsets":"107","constructor_value":"zero","later_business_writer":"NO_HIT","role":"alignment_or_reserved","status":"CLOSED_SELECTED_INIT"},
+    {"offsets":"118..119","constructor_value":"zero","later_business_writer":"NO_HIT","role":"tail_alignment_or_reserved","status":"CLOSED_SELECTED_INIT"}
+  ],
+  "generic_setter": {
+    "rva": "0x4d6410",
+    "condition": "owner+312 >= 2",
+    "behavior": "copies all 120 bytes from caller input then reimports consumed fields through 0x4dcf10",
+    "selected_initialization_route_invoked": false,
+    "generic_input_must_validate_or_normalize_reserved_bytes": true
+  },
+  "inverse_importer": {
+    "rva": "0x4dcf10",
+    "reads_offsets_80_87": false,
+    "reads_other_gap_bytes": false
+  },
+  "selected_initialization_gap_values_closed": true,
+  "cross_profile_generalization_allowed": false,
+  "expected_used_as_seed": false,
+  "raw_metadata_payload_delivered": false,
+  "implementation_ready": false,
+  "production_allowed": false
+}

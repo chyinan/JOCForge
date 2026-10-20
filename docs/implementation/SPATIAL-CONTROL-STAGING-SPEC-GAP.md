@@ -1,6 +1,16 @@
 # Spatial-control staging specification gap
 
-## Current authority: v30 DTHD Meter public/PIMPL boundary
+## Current authority: v31 selected-init packed metadata and same-run evidence
+
+The current implementer package is `spatial-control-cold-serializer.blocked.v31`, pinned by fixture manifest SHA-256 `a92d6a3204dd00858f1d29fa0f66cfbddc83a5819364170ade06df6326b8debc`. The washed research manifest and independent-check hashes are `1b8b1cc6c882c0ad0c79be949bbc38e3b7d0210f30211a2204a1ae0ec459d8d3` and `893fcc6503208fe49734e67fcb2c01d64feba165124f296606ed3a3bbd002305`; 44/44 checks pass.
+
+The selected-init packed metadata owner is `atmos_storage_master_s`. Constructor `0x4CFC80` reaches packed-block constructor `0x4D8020` at owner `+88`, which zeroes 120 bytes. For this selected initialization only, the 14 previously unresolved destination gap bytes are now attributed as follows: offsets `80..87` receive their first business write at `0x4D49E8`, an eight-byte binary64 master-start baseline loaded from storage vtable slot `+0x38`, used for comparison with FFoA and a relative offset; the vendor member name remains `NOT_CLOSED`. Other offsets `78..79`, `99`, `107`, and `118..119` stay cold zero with no business write observed in the selected initialization. The generic setter at `0x4D6410` can replace all 120 bytes when `owner+312 >= 2`, and its inverse importer does not read the gap bytes. This does not generalize across profiles; caller-provided reserved bytes still require validation or normalization.
+
+Three dynamic encodes in the selected current run observed all 14 bytes zero at owner-method and packed-producer entry; `80..87` later received the first write above, while other gaps had no business write before free. Parent consumer `0x178DC0` read process descriptor `+56`; its pointer was not equal to the producer destination and the exact transfer object was not captured. At consumer entry all 14 gaps were zero. The separate serializer `0x522660` and parser `0x52A310` were not invoked in the complete reference run; the parent consumer ran once, so the 27×U32 dictionary-to-packed-descriptor identity join remains `NO_HIT_NOT_INVOKED` and offset transplant remains forbidden. Three output runs matched the reference EC3 hash/frame/byte baseline; this validates output repeatability only, not a serializer or portable root.
+
+Portable canonical schema/receipt/serializer/restore remains unobserved or unrun. Keep `IMPLEMENTATION_READY=NO`, `production_allowed=false`, and do not call the selected-init rule a cross-profile contract.
+
+## Historical v30 DTHD Meter public/PIMPL boundary
 
 The current implementer package is `spatial-control-cold-serializer.blocked.v30`, pinned by fixture manifest SHA-256 `4840ae014335d983a70936447e23ab66228924662c68ac69453004c40a2234e6`. The DTHD Meter PIMPL boundary asset SHA-256 is `7f33cd81e7a35bdf803efbf3de06b9edacb5c65c4e7711c5457c02bc84032cb5`; washed research manifest and independent-check hashes are `d827a8299c310a8363b1a8286a1bc0cb7a1c8071e5d9913e8eb8869fa863453b` and `e9418be08214062d499e7c00b99192ecbbaff0ab641d9831c85a87b1cff4fbe3`, with 42/42 checks passing.
 

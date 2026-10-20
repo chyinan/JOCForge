@@ -1,0 +1,50 @@
+{
+  "schema": "sanitized-packed-metadata-dynamic-current-run.v1",
+  "source_evidence_identity": {
+    "research_result_sha256": "c0e1485dcaeb0ce23488ae183cca6683b0d479dfcae9c692897df379356b1a8d",
+    "research_manifest_sha256": "5c288c2fd769a3b511582667e32818182bb1fef0bd5c38f6b5b91c434767139a",
+    "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "job_xml_sha256": "d0a68be5fc5e6046c64a19beb01a23a4c6a7af11ab3dbde6e96ad96b707b6fee",
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+  },
+  "observation": {
+    "native_runs": 3,
+    "tool": "WinDbg MCP hardware data breakpoints and code breakpoints",
+    "producer_owner_vtable_rva": "0x7f9bc8",
+    "producer_rva": "0x4e0890",
+    "producer_destination": "containing owner+88",
+    "all_14_zero_at_owner_method_entry": true,
+    "all_14_zero_at_producer_entry": true,
+    "offsets80_87_first_business_writer_rva": "0x4d49e8",
+    "other_gap_business_write_before_free": "NO_HIT"
+  },
+  "parent_consumer": {
+    "rva": "0x178dc0",
+    "descriptor_relation": "process descriptor+56",
+    "pointer_equal_to_producer_destination": false,
+    "all_14_gap_bytes_zero_at_entry": true,
+    "exact_transfer_object_between_producer_and_consumer": "NOT_CAPTURED"
+  },
+  "separate_27_u32_dictionary": {
+    "serializer_rva": "0x522660",
+    "parser_rva": "0x52a310",
+    "serializer_hits_complete_reference_run": 0,
+    "parser_hits_complete_reference_run": 0,
+    "parent_consumer_hits_same_run": 1,
+    "current_run_identity_join": "NO_HIT_NOT_INVOKED",
+    "offset_transplant_allowed": false
+  },
+  "interference_control": {
+    "reference_runs": 3,
+    "lossless_ec3_sha256_each_run": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "frames_each_run": 4247,
+    "bytes_each_run": 17395712,
+    "baseline_match_each_run": true,
+    "ffmpeg_or_decoder_used": false
+  },
+  "scope": "current ADM/configuration and observed initialization generation only",
+  "expected_used_as_seed": false,
+  "raw_metadata_or_pcm_delivered": false,
+  "implementation_ready": false,
+  "production_allowed": false
+}
