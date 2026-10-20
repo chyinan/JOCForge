@@ -1,0 +1,70 @@
+{
+  "schema": "sanitized-portable-contract-and-remaining-semantics-no-hit.v1",
+  "source_evidence_identity": {
+    "property_assignment_0x1ff1e0_sha256": "2f06a2dc929d1acc1ce4eab39ea04b8fc151a62e67f4f2ca075a8a290d37ca96",
+    "config_copy_0x1f3170_sha256": "00ebb80e3890b64975f19b27ff9881984eca56e3fa94a3021f7f320e198614a9",
+    "measurement_export_0x17a830_sha256": "7a8313327e8542ae98193c26b984423deee13040cb3ed213d8c3b15b86fe1d19",
+    "measurement_field_names_sha256": "5d971b353699dcefd6a0b0c2a28977ecf920207347c4fd5db09026eaca2cf20c"
+  },
+  "policy_property_dataflow": [
+    {
+      "property_id": 29,
+      "assignment_function_rva": "0x1ff1e0",
+      "assignment_case": "0x1d",
+      "encoder_config_offset": 192,
+      "config_copy_function_rva": "0x1f3170",
+      "copy_source_offset": 200,
+      "copy_destination_offset": 192,
+      "semantic_name": "NOT_CAPTURED"
+    },
+    {
+      "property_id": 36,
+      "assignment_function_rva": "0x1ff1e0",
+      "assignment_case": "0x24",
+      "encoder_config_offset": 220,
+      "config_copy_function_rva": "0x1f3170",
+      "copy_source_offset": 228,
+      "copy_destination_offset": 220,
+      "semantic_name": "NOT_CAPTURED"
+    }
+  ],
+  "measurement_dataflow": [
+    {"result_offset": 8, "export_function_rva": "0x17a830", "internal_source_offset": 12, "semantic_name": "NOT_CAPTURED"},
+    {"result_offset": 12, "export_function_rva": "0x17a830", "internal_source_offset": 16, "semantic_name": "NOT_CAPTURED"},
+    {"result_offset": 16, "export_function_rva": "0x17a830", "internal_source_offset": 20, "semantic_name": "NOT_CAPTURED"}
+  ],
+  "external_metadata_coverage": {
+    "producer_rva": "0x4e0890",
+    "structural_bytes_covered": 120,
+    "helper_semantic_offsets_closed": [68,72,76,77,97,100,102,104,106,108,113,114,115,116,117],
+    "remaining_unknown_offsets": [0,65,66,67,69,70,71,73,74,75,78,79,80,81,82,83,84,85,86,87,96,99,107,118,119],
+    "text_field_offset": 1,
+    "text_field_bytes": 63,
+    "text_field_semantic_name": "NOT_CAPTURED",
+    "semantic_schema_complete": false
+  },
+  "portable_contract_audit": {
+    "authorized_pe_files_scanned": 64,
+    "bounded_parent_functions_visited": 73,
+    "bounded_parent_call_edges": 211,
+    "constructor_depth_two_functions_visited": 74,
+    "native_portable_order": "NOT_OBSERVED",
+    "native_endian_contract": "NOT_OBSERVED",
+    "native_version_contract": "NOT_OBSERVED",
+    "native_optional_field_contract": "NOT_OBSERVED",
+    "native_checksum_contract": "NOT_OBSERVED",
+    "canonical_serializer_entrypoint": "NOT_FOUND_IN_BOUNDED_AUTHORIZED_EVIDENCE",
+    "restore_entrypoint": "NOT_FOUND_IN_BOUNDED_AUTHORIZED_EVIDENCE",
+    "serializer_restore_roundtrip": "NOT_RUN",
+    "product_wide_absence_claim": false
+  },
+  "minimum_external_evidence": [
+    "named property authority for IDs29 and36 or downstream field definition tying config offsets192 and220 to public semantics",
+    "named meter result schema for internal offsets12,16 and20",
+    "field dictionary for remaining external metadata offsets",
+    "authoritative portable order/endian/version/optional/checksum contract",
+    "or executable serializer and restore entrypoints with a cold vector and byte-exact roundtrip"
+  ],
+  "production_allowed": false,
+  "private_auth": "EXCLUDED"
+}

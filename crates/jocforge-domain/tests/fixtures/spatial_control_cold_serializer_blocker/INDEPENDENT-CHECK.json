@@ -1,5 +1,5 @@
 {
-  "schema": "spatial-control-cold-serializer-blocker-independent-check.v19",
+  "schema": "spatial-control-cold-serializer-blocker-independent-check.v20",
   "checks": [
     {
       "id": "dll_identity",
@@ -86,6 +86,10 @@
       "pass": true
     },
     {
+      "id": "portable_contract_and_remaining_semantics_no_hit",
+      "pass": true
+    },
+    {
       "id": "no_entrypoint",
       "pass": true
     },
@@ -128,7 +132,8 @@
     "CHANNEL-EXTERNAL-METADATA-TRIM-SEMANTICS.json",
     "TRIM-PAYLOAD-PRODUCER-CONSUMER-EVIDENCE.json",
     "EXTERNAL-METADATA-STRUCTURE-AND-REMAINING-FIELDS.json",
-    "EXTERNAL-METADATA-HELPER-SEMANTICS.json"
+    "EXTERNAL-METADATA-HELPER-SEMANTICS.json",
+    "PORTABLE-CONTRACT-AND-REMAINING-SEMANTICS-NO-HIT.json"
   ],
   "research_files_read": false,
   "serializer_execution": false,
