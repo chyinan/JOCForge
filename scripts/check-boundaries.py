@@ -2061,6 +2061,11 @@ def check_oamd_rowdata_mapping(root,d):
  ck(entry['owner']=='joc'and entry['planned_phase']=='Phase 4'and entry['implementation_status']=='DEFERRED_DETAILED_MAPPING'and len(slices)==1 and slices[0].get('slice_id')==expected_slice_id and slices[0].get('mapping_status')=='MATERIALIZED_DIRECT_SUBSLICE_WHOLE_FUNCTIONAL_ID_DEFERRED'and slices[0].get('implementation_status')=='LOCALLY_VERIFIED_ENCODER_ONLY__ROW_DATA_READER_TRIM_AND_LIVE_PRODUCER_DEFERRED','F05O rowdata encoder is materialized without promoting the whole functional ID')
  direct=slices[0]if slices else{}
  ck(direct.get('implementation_files')==expected_impl and direct.get('test_modules')==expected_tests and all((root/path).is_file()for path in expected_impl+expected_tests),'F05O direct-slice source and test paths')
+ source_identity=[{'file':expected_impl[1],'bytes':13356,'sha256':'05a308b608e5a8ed9cda2059d2ba26da5e4bb440139f36aa5565aff43ebd2a1f'}]
+ ck(direct.get('implementation_file_identities')==source_identity,'F05O private implementation is byte-pinned by the direct-slice map')
+ rowdata_bytes=(root/expected_impl[1]).read_bytes();ck(len(rowdata_bytes)==13356 and hashlib.sha256(rowdata_bytes).hexdigest()==source_identity[0]['sha256'],'F05O encoder source identity matches the reviewed implementation')
+ oamd_source=rust_code_without_comments((root/expected_impl[0]).read_text(encoding='utf-8'));oamd_modules=[line.strip()for line in oamd_source.splitlines()if line.strip()]
+ ck(oamd_modules==['pub mod reader_target;','pub mod rowdata;'],'OAMD module boundary declares only the mapped modules')
  ck(direct.get('clock')=={'domains':[],'covered_clauses':['The encoder is stateless and consumes no callback, source, writer, or AU clock.']}and direct.get('parameters')=={'kind':'SPECIFIED_INTEGER_RULES_NO_RUNTIME_PROVIDER','provider_files':[],'validation_boundary':'Uses the F05O integer XYZ and wire formulas. PG06 coordinate-grid decoding remains outside this encoder slice.'},'F05O stateless clock and formula-only parameter mapping')
  expected_cases=['U-OAMD-XYZ','U-OAMD-ESCAPED','U-OAMD-ROWS','U-OAMD-COUNT-31','U-OAMD-COUNT-32','U-OAMD-COUNT-159','U-OAMD-TIME-TABLE','U-OAMD-TIME-EXPLICIT','XYZ transition neighbors and halfway ties derived from the published integer formula']
  vectors=direct.get('vectors',{});fixture=vectors.get('local_fixture',{})

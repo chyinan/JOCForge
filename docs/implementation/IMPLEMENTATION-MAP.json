@@ -915,6 +915,13 @@
             "crates/jocforge-domain/src/joc/oamd.rs",
             "crates/jocforge-domain/src/joc/oamd/rowdata.rs"
           ],
+          "implementation_file_identities": [
+            {
+              "file": "crates/jocforge-domain/src/joc/oamd/rowdata.rs",
+              "bytes": 13356,
+              "sha256": "05a308b608e5a8ed9cda2059d2ba26da5e4bb440139f36aa5565aff43ebd2a1f"
+            }
+          ],
           "test_modules": [
             "crates/jocforge-domain/tests/oamd_rowdata.rs"
           ],
