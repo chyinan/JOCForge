@@ -108,3 +108,11 @@
 | F15 | — | — | INVENTORIED |
 | F15P | — | — | INVENTORIED |
 | OWNJ | — | — | INVENTORIED |
+
+## Direct sub-slice parameter bindings
+
+由 IMPLEMENTATION-MAP.json 生成，不得手工修改。
+
+| slice_id | kind | provider_files | validation_boundary |
+|---|---|---|---|
+| F05O/oamd-rowdata-body-encoder | SPECIFIED_INTEGER_RULES_NO_RUNTIME_PROVIDER | — | Uses the F05O integer XYZ and wire formulas. PG06 coordinate-grid decoding remains outside this encoder slice. |

@@ -151,6 +151,32 @@ fn xyz_codes_match_the_independent_wire_vectors() {
 }
 
 #[test]
+fn xyz_codes_pin_transition_neighbors_and_halfway_ties() {
+    // Literal outputs follow the F05O integer formula, including floor after half-scale offset.
+    let cases = [
+        ([8191, 16384, 0], [15, 31, 0]),
+        ([8192, 16384, 0], [15, 31, 0]),
+        ([8193, 16384, 0], [16, 31, 0]),
+        ([24575, 16384, 0], [46, 31, 0]),
+        ([24576, 16384, 0], [47, 31, 0]),
+        ([24577, 16384, 0], [47, 31, 0]),
+        ([16384, 16384, 1092], [31, 31, 0]),
+        ([16384, 16384, 1093], [31, 31, 1]),
+        ([16384, 16384, 1094], [31, 31, 1]),
+        ([16384, 16384, -16385], [31, 31, -8]),
+        ([16384, 16384, -16384], [31, 31, -8]),
+        ([16384, 16384, -16383], [31, 31, -7]),
+        ([16384, 16384, 16383], [31, 31, 7]),
+        ([16384, 16384, 16384], [31, 31, 8]),
+        ([16384, 16384, 16385], [31, 31, 8]),
+    ];
+
+    for (input, expected) in cases {
+        assert_eq!(encode_xyz_codes(input).unwrap().map(i32::from), expected);
+    }
+}
+
+#[test]
 fn escaped_integers_match_the_independent_wire_vectors() {
     let case = vector_case("U-OAMD-ESCAPED");
     let values = case["input"]["values"]

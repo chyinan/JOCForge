@@ -108,3 +108,11 @@
 | F15 | — | — | — | INVENTORIED |
 | F15P | — | — | — | INVENTORIED |
 | OWNJ | — | — | — | INVENTORIED |
+
+## Direct sub-slice vectors
+
+由 IMPLEMENTATION-MAP.json 生成，不得手工修改。
+
+| slice_id | kind | authoritative_vectors | case_pointers | local_fixture |
+|---|---|---|---|---|
+| F05O/oamd-rowdata-body-encoder | INPUT_ONLY_UNIT_VECTORS_PLUS_SPEC_DERIVED_TRANSITION_CASES | `test-vectors/unit/vectors.json` | `U-OAMD-XYZ`<br>`U-OAMD-ESCAPED`<br>`U-OAMD-ROWS`<br>`U-OAMD-COUNT-31`<br>`U-OAMD-COUNT-32`<br>`U-OAMD-COUNT-159`<br>`U-OAMD-TIME-TABLE`<br>`U-OAMD-TIME-EXPLICIT`<br>`XYZ transition neighbors and halfway ties derived from the published integer formula` | `crates/jocforge-domain/tests/fixtures/oamd_wire/unit-vectors.json`<br>8428fd8a52cb018c00fff87c7324d4dbcc47e5e1720c76b79476d45e6bd21129 |

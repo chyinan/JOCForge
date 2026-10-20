@@ -108,3 +108,11 @@
 | F15 | — | — | INVENTORIED |
 | F15P | — | — | INVENTORIED |
 | OWNJ | — | — | INVENTORIED |
+
+## Direct sub-slice clocks
+
+由 IMPLEMENTATION-MAP.json 生成，不得手工修改。
+
+| slice_id | domains | covered_clauses |
+|---|---|---|
+| F05O/oamd-rowdata-body-encoder | — | `The encoder is stateless and consumes no callback, source, writer, or AU clock.` |

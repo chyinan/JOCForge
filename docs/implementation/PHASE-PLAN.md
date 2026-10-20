@@ -8653,3 +8653,11 @@
   }
 }
 ```
+
+## Materialized non-Phase-1 direct sub-slices
+
+由 IMPLEMENTATION-MAP.json 生成，不得手工修改。
+
+| slice_id | planned_phase | scope | implementation_files | test_modules | status |
+|---|---|---|---|---|---|
+| F05O/oamd-rowdata-body-encoder | Phase 4 | Stateless F05O integer XYZ wire-code conversion, escaped integer encode/decode, rowdata payload encoding, and one-rowdata-section OAMD body encoding. This does not complete the F05O functional ID. | `crates/jocforge-domain/src/joc/oamd.rs`<br>`crates/jocforge-domain/src/joc/oamd/rowdata.rs` | `crates/jocforge-domain/tests/oamd_rowdata.rs` | LOCALLY_VERIFIED_ENCODER_ONLY__ROW_DATA_READER_TRIM_AND_LIVE_PRODUCER_DEFERRED |

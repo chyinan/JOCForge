@@ -904,7 +904,90 @@
       "owner": "joc",
       "planned_phase": "Phase 4",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "oamd-rowdata-body-encoder",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_FUNCTIONAL_ID_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_ENCODER_ONLY__ROW_DATA_READER_TRIM_AND_LIVE_PRODUCER_DEFERRED",
+          "scope": "Stateless F05O integer XYZ wire-code conversion, escaped integer encode/decode, rowdata payload encoding, and one-rowdata-section OAMD body encoding. This does not complete the F05O functional ID.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/joc/oamd.rs",
+            "crates/jocforge-domain/src/joc/oamd/rowdata.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/oamd_rowdata.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The encoder is stateless and consumes no callback, source, writer, or AU clock."
+            ]
+          },
+          "parameters": {
+            "kind": "SPECIFIED_INTEGER_RULES_NO_RUNTIME_PROVIDER",
+            "provider_files": [],
+            "validation_boundary": "Uses the F05O integer XYZ and wire formulas. PG06 coordinate-grid decoding remains outside this encoder slice."
+          },
+          "vectors": {
+            "kind": "INPUT_ONLY_UNIT_VECTORS_PLUS_SPEC_DERIVED_TRANSITION_CASES",
+            "authoritative_vectors": [
+              "test-vectors/unit/vectors.json"
+            ],
+            "case_pointers": [
+              "U-OAMD-XYZ",
+              "U-OAMD-ESCAPED",
+              "U-OAMD-ROWS",
+              "U-OAMD-COUNT-31",
+              "U-OAMD-COUNT-32",
+              "U-OAMD-COUNT-159",
+              "U-OAMD-TIME-TABLE",
+              "U-OAMD-TIME-EXPLICIT",
+              "XYZ transition neighbors and halfway ties derived from the published integer formula"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/oamd_wire/unit-vectors.json",
+              "bytes": 81492,
+              "sha256": "8428fd8a52cb018c00fff87c7324d4dbcc47e5e1720c76b79476d45e6bd21129"
+            },
+            "source_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_asset": "test-vectors/unit/vectors.json",
+            "source_asset_bytes": 1503142,
+            "source_asset_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "INVALID_INPUT",
+              "category": "local input validation",
+              "trigger": "An XYZ point or timing value lies outside its specified integer domain.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return an error and no encoded payload. This is a local API outcome, not a native error equivalence claim."
+            },
+            {
+              "error_code": "UNSUPPORTED_PROFILE",
+              "category": "selected branch rejection",
+              "trigger": "Rows, gain, spread, duration, or row ordering request a branch outside the rowdata writer's specified scope.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return an error and no encoded payload; do not normalize or substitute unsupported input."
+            },
+            {
+              "error_code": "INVALID_ESCAPED_INTEGER",
+              "category": "escaped integer input rejection",
+              "trigger": "An escaped integer is negative, exceeds the four-group limit, is truncated, or has invalid padding.",
+              "programme_state_after": "UNCHANGED_STATELESS",
+              "caller_action": "Return an error and no decoded integer or encoded bytes. This is a local API outcome, not a native error equivalence claim."
+            }
+          ],
+          "exclusions": [
+            "OAMD rowdata decoding; the delivered U-OAMD-ROWS-READ vector omits the required row_count and leading_lfe inputs.",
+            "F05T DBMD trim parsing and trim-section encoding.",
+            "Multiple sections, protected sections, or producer-specific body composition.",
+            "F05L callback lifecycle, live history, queue ownership, and transaction integration.",
+            "Native error equivalence, whole-programme execution, codec execution, W04, and product acceptance."
+          ],
+          "validation_claim": "Direct unit-vector and spec-formula checks only; native and product execution NOT_RUN."
+        }
+      ]
     },
     {
       "functional_id": "F05T",

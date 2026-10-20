@@ -4,6 +4,7 @@ R=pathlib.Path(__file__).resolve().parents[1];D=R/'docs/implementation';M=D/'IMP
 def q(x):return f'`{x}`'
 def refs(x):return '—'if not x else'<br>'.join(q(v)for v in x)
 def tab(t,c,rs):return f'# {t}\n\n由 IMPLEMENTATION-MAP.json 生成，不得手工修改。\n\n| '+' | '.join(c)+' |\n|'+'|'.join('---'for _ in c)+'|\n'+'\n'.join('| '+' | '.join(str(x).replace('|','\\|')for x in r)+' |'for r in rs)+'\n'
+def appendix(t,c,rs):return '' if not rs else '\n'+tab(t,c,rs).replace(f'# {t}\n',f'## {t}\n',1)
 def render(d):
  es=d['functional_entries'];o={};o['SPEC-TRACEABILITY.md']=tab('规格追踪',['functional_id','spec_files','owner','planned_phase','inventory_status','implementation_status','implementation_files','test_modules'],[[e['functional_id'],refs(e['spec_files']),q(e['owner']),e['planned_phase'],e['inventory_status'],e['implementation_status'],refs(e.get('implementation_files',[])),refs(e.get('test_modules',[]))]for e in es]);o['OWNER-MAP.md']=tab('Owner 映射',['functional_id','owner','inventory_status'],[[e['functional_id'],q(e['owner']),e['inventory_status']]for e in es]);o['CLOCK-MAP.md']=tab('时钟映射',['functional_id','domains','covered_clauses','inventory_status'],[[e['functional_id'],refs(e.get('clock',{}).get('domains',[])),refs(e.get('clock',{}).get('covered_clauses',[])),e['inventory_status']]for e in es]);er=[]
  for e in es:
@@ -188,6 +189,16 @@ def render(d):
    +'The selected 8-callback producer chain, six reader invocations, Type11 roundtrips, 96 reader records, 576 target words, and receipt semantic hashes are locally verified against input-only recipes and post-computation assertions. Receipt consumers may use only the admitted same-generation receipt. F05JC/J05, F05L queue/body production, parent transaction implementation, whole-programme execution, and product acceptance remain `NOT_RUN`.\n\n'
    +'## Machine-readable contract\n\n'+chr(96)*3+'json\n'+block+'\n'+chr(96)*3+'\n'
   )
+ direct_slices=[(e,s)for e in es for s in e.get('direct_slices',[])]
+ if direct_slices:
+  label=lambda e,s:f"{e['functional_id']}/{s['slice_id']}"
+  o['SPEC-TRACEABILITY.md']+=appendix('Materialized direct sub-slices; parent functional IDs remain deferred',['slice_id','parent_functional_id','planned_phase','mapping_status','implementation_status','scope','implementation_files','test_modules'],[[label(e,s),e['functional_id'],e['planned_phase'],s['mapping_status'],s['implementation_status'],s['scope'],refs(s['implementation_files']),refs(s['test_modules'])]for e,s in direct_slices])
+  o['OWNER-MAP.md']+=appendix('Direct sub-slice owner',['slice_id','parent_functional_id','owner'],[[label(e,s),e['functional_id'],q(e['owner'])]for e,s in direct_slices])
+  o['CLOCK-MAP.md']+=appendix('Direct sub-slice clocks',['slice_id','domains','covered_clauses'],[[label(e,s),refs(s['clock']['domains']),refs(s['clock']['covered_clauses'])]for e,s in direct_slices])
+  o['ERROR-MAP.md']+=appendix('Direct sub-slice local outcomes',['slice_id','error_code','category','trigger','programme_state_after','caller_action'],[[label(e,s),q(x['error_code']),x['category'],x['trigger'],x['programme_state_after'],x['caller_action']]for e,s in direct_slices for x in s['error_outcomes']])
+  o['PARAMETER-MAP.md']+=appendix('Direct sub-slice parameter bindings',['slice_id','kind','provider_files','validation_boundary'],[[label(e,s),s['parameters']['kind'],refs(s['parameters']['provider_files']),s['parameters']['validation_boundary']]for e,s in direct_slices])
+  o['VECTOR-MAP.md']+=appendix('Direct sub-slice vectors',['slice_id','kind','authoritative_vectors','case_pointers','local_fixture'],[[label(e,s),s['vectors']['kind'],refs(s['vectors']['authoritative_vectors']),refs(s['vectors']['case_pointers']),q(s['vectors']['local_fixture']['file'])+'<br>'+s['vectors']['local_fixture']['sha256']]for e,s in direct_slices])
+  o['PHASE-PLAN.md']+=appendix('Materialized non-Phase-1 direct sub-slices',['slice_id','planned_phase','scope','implementation_files','test_modules','status'],[[label(e,s),e['planned_phase'],s['scope'],refs(s['implementation_files']),refs(s['test_modules']),s['implementation_status']]for e,s in direct_slices])
  return o
 def main():
  a=argparse.ArgumentParser();a.add_argument('--check',action='store_true');x=a.parse_args();d=json.loads(M.read_text(encoding='utf-8'));bad=[]

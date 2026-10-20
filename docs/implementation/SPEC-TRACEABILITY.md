@@ -108,3 +108,11 @@
 | F15 | `PIPELINE-AND-INTERFACES.md` | `output` | Phase 7 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
 | F15P | `specs/15-keyless-publication.md` | `output` | Phase 7 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
 | OWNJ | `specs/00-selected-owner-projection-and-j05.md` | `programme_root` | Phase 1 | INVENTORIED | DEFERRED_DETAILED_MAPPING | — | — |
+
+## Materialized direct sub-slices; parent functional IDs remain deferred
+
+由 IMPLEMENTATION-MAP.json 生成，不得手工修改。
+
+| slice_id | parent_functional_id | planned_phase | mapping_status | implementation_status | scope | implementation_files | test_modules |
+|---|---|---|---|---|---|---|---|
+| F05O/oamd-rowdata-body-encoder | F05O | Phase 4 | MATERIALIZED_DIRECT_SUBSLICE_WHOLE_FUNCTIONAL_ID_DEFERRED | LOCALLY_VERIFIED_ENCODER_ONLY__ROW_DATA_READER_TRIM_AND_LIVE_PRODUCER_DEFERRED | Stateless F05O integer XYZ wire-code conversion, escaped integer encode/decode, rowdata payload encoding, and one-rowdata-section OAMD body encoding. This does not complete the F05O functional ID. | `crates/jocforge-domain/src/joc/oamd.rs`<br>`crates/jocforge-domain/src/joc/oamd/rowdata.rs` | `crates/jocforge-domain/tests/oamd_rowdata.rs` |

@@ -108,3 +108,11 @@
 | F15 | `output` | INVENTORIED |
 | F15P | `output` | INVENTORIED |
 | OWNJ | `programme_root` | INVENTORIED |
+
+## Direct sub-slice owner
+
+由 IMPLEMENTATION-MAP.json 生成，不得手工修改。
+
+| slice_id | parent_functional_id | owner |
+|---|---|---|
+| F05O/oamd-rowdata-body-encoder | F05O | `joc` |

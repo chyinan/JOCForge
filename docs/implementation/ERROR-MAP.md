@@ -36,3 +36,13 @@
 | F05R56 | `R56T_INPUT_ERROR` | input shape or value | snapshot, matrix, source flags, overlap, mixer, or reader rows violate the selected input contract | RETIRED | Return STAGE_FATAL with no receipt, payload, proposal, or commit; preserve committed bytes and generation. |
 | F05R56 | `R56T_PROFILE_UNSUPPORTED` | selected-profile preflight | Type11 branch, reader row, component, coordinate, trim, or target panner value is outside the selected profile | RETIRED | Reject before state replacement; return no receipt, target payload, proposal, or commit. |
 | F05R56 | `R56T_NUMERIC_FAILURE` | numeric intermediate | required finite R32 or mathematical-function result becomes nonfinite or cannot be represented | RETIRED | Return STAGE_FATAL with no receipt, payload, proposal, or commit; preserve committed bytes and generation. |
+
+## Direct sub-slice local outcomes
+
+由 IMPLEMENTATION-MAP.json 生成，不得手工修改。
+
+| slice_id | error_code | category | trigger | programme_state_after | caller_action |
+|---|---|---|---|---|---|
+| F05O/oamd-rowdata-body-encoder | `INVALID_INPUT` | local input validation | An XYZ point or timing value lies outside its specified integer domain. | UNCHANGED_STATELESS | Return an error and no encoded payload. This is a local API outcome, not a native error equivalence claim. |
+| F05O/oamd-rowdata-body-encoder | `UNSUPPORTED_PROFILE` | selected branch rejection | Rows, gain, spread, duration, or row ordering request a branch outside the rowdata writer's specified scope. | UNCHANGED_STATELESS | Return an error and no encoded payload; do not normalize or substitute unsupported input. |
+| F05O/oamd-rowdata-body-encoder | `INVALID_ESCAPED_INTEGER` | escaped integer input rejection | An escaped integer is negative, exceeds the four-group limit, is truncated, or has invalid padding. | UNCHANGED_STATELESS | Return an error and no decoded integer or encoded bytes. This is a local API outcome, not a native error equivalence claim. |
