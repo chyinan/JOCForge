@@ -1,0 +1,29 @@
+{
+  "schema": "analysis-owner-provider.v1",
+  "profile_id": "selected-f07-f11-5.1-48k.v1",
+  "sample_rate": 48000,
+  "samples_per_source": 1536,
+  "blocks": 6,
+  "fbw_channels": 5,
+  "fbw_bins": 217,
+  "lfe_bins": 7,
+  "state_counts": {
+    "input_history_u32": 7680,
+    "transient_two_u32": 20,
+    "transient_three_u32": 30,
+    "transient_peak_u32": 90,
+    "transient_mean_u32": 5,
+    "short_queue_i1": 20,
+    "other_queue_i1": 20,
+    "primary_fbw_u32": 640,
+    "companion_fbw_u32": 640,
+    "primary_lfe_u32": 128,
+    "companion_lfe_u32": 128,
+    "gain_db_u32": 64,
+    "refresh_u16": 30,
+    "anchor_u16": 30
+  },
+  "suppressed_sources": 2,
+  "expected_sources": 4249,
+  "production_allowed": false
+}

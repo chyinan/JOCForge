@@ -1,0 +1,31 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "identity": "analysis-owner.fixture-seam.v1",
+  "status": "ANALYSIS_FIXTURE_SEAM_READY_CANDIDATE_TEST_ONLY",
+  "delivery_scope": "internal test seam only",
+  "files": [
+    { "file": "ANALYSIS-OWNER-CONTRACT.md", "bytes": 3610, "sha256": "159b392b4f1bbfe0d7e33b1b878e9b605b63748a90e08c9017a25137f1cdfdb6" },
+    { "file": "analysis-selected-provider.json", "bytes": 714, "sha256": "4b1be760d80778aff5b15455a60972ce68aa60f3d61f86f5b9193edc26fda7cd" },
+    { "file": "ANALYSIS-MACHINE-MAP.json", "bytes": 680, "sha256": "1eb7fff9c7f09148bf3e1aeaecb910735ceade06b4dbfd58af9e12429e22a487" },
+    { "file": "ANALYSIS-PROPOSALS.schema.json", "bytes": 1217, "sha256": "3192e1427d8c07f94a67efe95c81a761bc1cefc002f7ef6de79cd6f82bb793aa" },
+    { "file": "ANALYSIS-RECEIPT.schema.json", "bytes": 681, "sha256": "a61ea059680b8f24dcaf2762148f2a622c578cc666f1f599e05bf944aa341bbf" },
+    { "file": "ANALYSIS-OWNER-VECTORS.json", "bytes": 6740385, "sha256": "06d2db604ee5d04c8f3851c8493737008139c8e26f82114762084982b8a2f598" },
+    { "file": "INDEPENDENT-CHECK.json", "bytes": 1859, "sha256": "3655dfe01e01b1ae55c760a15e9864899d094cb7dd513813bae012f6499e53da" }
+  ],
+  "source_evidence": {
+    "research_manifest_sha256": "f796243f3945ccc3a7ce82679d7451a90dd6e2710f2d7d106d13e3432585d8ec",
+    "expected_used_as_seed": false,
+    "independent_transform_replay": false,
+    "native_receipt_schema": "NOT_OBSERVED",
+    "private_auth": "excluded"
+  },
+  "hard_boundaries": {
+    "production_allowed": false,
+    "actual_fft_transform": "NOT_RUN",
+    "real_adm_execution": "NOT_RUN",
+    "production_analysis_api": "blocked",
+    "commit_count": 0,
+    "state_delta": null,
+    "codec_previous_short_publication": "excluded"
+  }
+}

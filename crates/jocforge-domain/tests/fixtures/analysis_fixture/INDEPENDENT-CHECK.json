@@ -1,0 +1,109 @@
+{
+  "schema": "analysis-owner-independent-check.v1",
+  "checks": [
+    {
+      "id": "identity_input",
+      "pass": true
+    },
+    {
+      "id": "identity_result",
+      "pass": true
+    },
+    {
+      "id": "identity_provider_manifest",
+      "pass": true
+    },
+    {
+      "id": "identity_state_schema",
+      "pass": true
+    },
+    {
+      "id": "provider",
+      "pass": true
+    },
+    {
+      "id": "cold",
+      "pass": true
+    },
+    {
+      "id": "source_0",
+      "pass": true
+    },
+    {
+      "id": "source_1",
+      "pass": true
+    },
+    {
+      "id": "source_2",
+      "pass": true
+    },
+    {
+      "id": "failure_source",
+      "pass": true
+    },
+    {
+      "id": "failure_generation",
+      "pass": true
+    },
+    {
+      "id": "failure_provider",
+      "pass": true
+    },
+    {
+      "id": "failure_input_shape",
+      "pass": true
+    },
+    {
+      "id": "failure_short_shape",
+      "pass": true
+    },
+    {
+      "id": "failure_numeric",
+      "pass": true
+    },
+    {
+      "id": "failure_advancement",
+      "pass": true
+    },
+    {
+      "id": "failure_state_shape",
+      "pass": true
+    },
+    {
+      "id": "failure_lineage",
+      "pass": true
+    },
+    {
+      "id": "failure_stage_count",
+      "pass": true
+    },
+    {
+      "id": "failure_plan_alias",
+      "pass": true
+    },
+    {
+      "id": "failure_after_generation",
+      "pass": true
+    },
+    {
+      "id": "fatal",
+      "pass": true
+    },
+    {
+      "id": "reset",
+      "pass": true
+    },
+    {
+      "id": "eof",
+      "pass": true
+    },
+    {
+      "id": "scope",
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "imports_fixture_validator": false,
+  "independent_transform_replay": false,
+  "expected_used_as_seed": false
+}

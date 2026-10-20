@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "analysis-owner-proposals.v1",
+  "$defs": {
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "shared_analysis_receipt": {
+      "type": "object",
+      "required": ["schema", "source", "generation", "provider_sha256", "before_sha256", "after_sha256", "advancement_count", "input_shape", "short_shape", "finite", "audio_recipe_sha256", "spectra_sha256", "owner_after_sha256"],
+      "properties": {"schema": {"const": "shared-analysis-receipt.v1"}, "advancement_count": {"const": 1}, "input_shape": {"const": [6, 1536]}, "short_shape": {"const": [6, 5]}, "finite": {"const": true}}
+    },
+    "numeric_plan_receipt": {
+      "type": "object",
+      "required": ["schema", "source", "generation", "provider_sha256", "shared_receipt_sha256", "six_stage_complete", "power_sha256", "expanded_exponents_sha256", "plan_sha256", "main_frame_codes", "converter_frame_codes", "converter_snr_offset"],
+      "properties": {"schema": {"const": "numeric-plan-receipt.v1"}, "six_stage_complete": {"const": [true, true, true, true, true, true]}}
+    }
+  },
+  "production_schema_status": "BLOCKED_UNTIL_ACTUAL_TRANSFORM_AND_REAL_ADM_EXECUTION"
+}

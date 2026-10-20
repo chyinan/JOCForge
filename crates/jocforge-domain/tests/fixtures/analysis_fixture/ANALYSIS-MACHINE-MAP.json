@@ -1,0 +1,9 @@
+{
+  "schema": "analysis-owner-machine-map.v1",
+  "owner_order": ["input_history", "transient", "primary_companion_lfe", "policy"],
+  "stage_order": ["F07 history", "F07A transient", "F08/F08NZ transform", "F09 family policy", "F10 normalize", "F11 converter"],
+  "clock": {"source": "s", "generation_after": "s + 1", "priming_sources": [0, 1], "eof_sources": 4249},
+  "consumers": {"F06ND": "SharedAnalysisReceipt", "F12": "SharedAnalysisReceipt + NumericPlanReceipt", "F05JL": "no direct ownership"},
+  "fixture_seam": {"production_allowed": false, "commit_count": 0, "state_delta": null},
+  "blocked": ["actual FFT/transform", "real ADM execution", "production analysis API"]
+}

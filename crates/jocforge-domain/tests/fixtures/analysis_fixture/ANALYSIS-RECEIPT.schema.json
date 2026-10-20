@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "analysis-fixture-validation-receipt.v1",
+  "type": "object",
+  "required": ["schema", "production_allowed", "source", "generation", "provider_sha256", "before_sha256", "recorded_after_sha256", "shared_receipt_sha256", "numeric_plan_receipt_sha256", "state_delta_committed", "commit_count"],
+  "properties": {
+    "schema": {"const": "analysis-fixture-validation-receipt.v1"},
+    "production_allowed": {"const": false},
+    "source": {"type": "integer", "minimum": 0},
+    "generation": {"type": "integer", "minimum": 1},
+    "state_delta_committed": {"const": false},
+    "commit_count": {"const": 0}
+  }
+}
