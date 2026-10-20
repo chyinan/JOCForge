@@ -1,5 +1,80 @@
 # Spatial-control staging specification gap
 
+## 洗白设计与验证缺口
+
+本节记录 Wash Agent 的结构化 gap response，不构成新的原生证据包。Gate 1 的必需逆向依赖数为 0。后续工作只处理洗白设计和独立验证。当前仍为 `IMPLEMENTATION_READY=NO`、`production_allowed=false`。
+
+### A. Parent canonical schema 和 digest preimage
+
+**已知**
+
+- 当前 selected run 的 120-byte descriptor 布局已有 hash-bound 证据。
+- selected 104-byte constructor prefix 已闭合。
+- `+88`、`+92` 是运行期指针，排除在持久字段之外。
+- cold allocation 含进程内指针和嵌套对象，不能直接序列化。
+- raw allocation、referenced blocks、private auth 均未交付。
+
+**未闭合**
+
+- 尚无完整 logical field inventory。
+- 每个字段的 consumed/excluded/zeroed 分类未全部确定。
+- 字段顺序、section、版本、长度编码和终止规则未定义。
+- domain-separation literal 未定义。
+- 整数宽度和 endian 合同未完成。
+- F32 的 NaN、负零、有限值和 rounding 规则未定义。
+- null、presence、optional、reserved、padding 规则未定义。
+- pointer、PIMPL、opaque 字段的规范排除规则未固化。
+- digest preimage 顺序、长度编码、算法输入和 digest 值未定义。
+
+**关闭条件**：逐字段规范必须明确类型、宽度、顺序、endian、presence、rounding 和 consumed/excluded/zeroed 状态。完整 canonical vector 必须包含 preimage bytes、长度、domain separator 和 digest。独立实现必须从 schema 重算出相同 digest。
+
+**未运行**：schema 独立重算、跨配置 vector、production receipt 验证。
+
+### B. Reference serializer、parser 和 cold vector
+
+**已知**
+
+- native evidence 观察到 fresh-object reconstruction。
+- native same-object restore 为 false。
+- bounded search 未交付可执行 native serializer。
+- EC3 baseline 相等只验证输出路径，不验证 parent serialization。
+
+**未闭合**
+
+- washed reference serializer 和独立 parser 尚未实现。
+- 完整 cold vector 的输入、expected bytes、长度和 digest 均缺失。
+- parser 后 reserialize 的 byte-exact roundtrip 未运行。
+- truncation、invalid enum/NaN、unknown field、cross-profile rejection vectors 未定义。
+- 未知字段禁止 zero-fill 或使用占位值。
+
+**关闭条件**：独立 serializer/parser 只能读取 washed contract。完整 cold vector 固定 bytes、长度和 digest。成功用例必须 byte-exact roundtrip。负向用例覆盖 truncation、invalid enum/NaN、unknown field 和 cross-profile rejection。
+
+**未运行**：全部 serializer、parser 和 roundtrip vectors。
+
+### C. Receipt 和 transaction 合同
+
+**已知**
+
+- receipt/transaction 只能作为 washed design，不能标为 native receipt schema。
+- fresh reconstruction 仅覆盖已观察的 host lifecycle。
+- fresh reconstruction 不定义 receipt 或 restore 合同。
+
+**未闭合**
+
+- success commit 顺序、owner receipt 集合、generation/token join 未定义。
+- canonical receipt bytes 和 digest 未定义。
+- invalid input 的 zero-commit/abort 边界未定义。
+- staged state 的保留或丢弃规则未定义。
+- destroy → fresh reconstruction 的 token retirement、state reset 和 receipt 关系未定义。
+- success、failure、retired、重复 `DONE` 提交向量缺失。
+- durable append、fsync/rename、partial physical write 与 receipt 的关系未闭合。
+
+**关闭条件**：交付 typed token/receipt schema，以及 prepare/stage/commit/abort/retired/reset 顺序。提供 success、invalid-input zero-commit、fatal-retire、destroy+fresh vectors。独立执行必须验证 committed digest、receipt bytes 和 generation 规则。明确部分磁盘写入失败时不得声称“未改变”。
+
+**未运行**：receipt 执行、invalid-input zero-commit、destroy+fresh acceptance、durable failure 验证。
+
+上述任一缺口未闭合前，都不得填入猜测字段、占位值或跨 profile 复用值。不得声称 implementation ready 或 production allowed。
+
 ## Current authority: v34 cross-profile actual-run boundaries
 
 The current implementer package is `spatial-control-cold-serializer.blocked.v34`, pinned by fixture manifest SHA-256 `43f7fcf730c7c5c321aa884d1810aa039427d0ae2f97f7cc94f93bfc525d404b`. The washed research manifest and independent-check hashes are `aa4d77fec66328be58dc2cb723e2ca98552e33f218f9b02605f6ac311805bcae` and `defaa348b63f659d3c87458fdb69df0ae8f23c2f273efd1c312bd2d8b054eabd`; 48/48 checks pass.
