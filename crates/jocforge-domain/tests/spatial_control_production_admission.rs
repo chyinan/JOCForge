@@ -5,7 +5,7 @@ use sha2::{Digest, Sha256};
 use std::fs;
 use std::path::PathBuf;
 
-const MANIFEST_SHA256: &str = "593648f7d63ce3e595510e16a067cf19e2d5c2a56a53a68c5bea6eb014c96d61";
+const MANIFEST_SHA256: &str = "8ab62bd6089e82d85e52eff2ee144b31d03874fddda9e73e681dc4cf97abe02e";
 const ADMISSION_FAILURES: &[(&str, &str)] = &[
     ("missing_control38", "SPATIAL_CONTROL_INPUT_MATERIAL"),
     (
@@ -88,7 +88,7 @@ fn assert_package_manifest() {
     );
 
     let files = manifest["files"].as_array().expect("manifest files array");
-    assert_eq!(files.len(), 6);
+    assert_eq!(files.len(), 9);
     for entry in files {
         let name = entry["file"].as_str().expect("manifest file name");
         let bytes = fs::read(root.join(name)).expect("manifested admission file exists");
@@ -136,6 +136,8 @@ fn real_adm_identity_is_pinned_but_parent_execution_remains_blocked() {
     let schema = read_fixture("SPATIAL-CONTROL-PRODUCTION.schema.json");
     let vectors = read_fixture("PRODUCTION-ADMISSION-VECTORS.json");
     let independent = read_fixture("INDEPENDENT-CHECK.json");
+    let control_status = read_fixture("CONTROL38-MATERIAL-STATUS.json");
+    let cold_status = read_fixture("COLD-PARENT-STATE-STATUS.json");
 
     assert_eq!(input["schema"], "sanitized-real-adm-input-identity.v1");
     assert_eq!(input["input_id"], "adm-sha256-7826dcbef37ef696");
@@ -190,6 +192,77 @@ fn real_adm_identity_is_pinned_but_parent_execution_remains_blocked() {
         providers["authoritative_parent_callback0_after_bytes"],
         "NOT_DELIVERED"
     );
+
+    assert_eq!(
+        control_status["schema"],
+        "sanitized-control38-material-status.v1"
+    );
+    assert_eq!(control_status["owner"], "frontend_control");
+    assert_eq!(control_status["callback"], 0);
+    assert_eq!(control_status["generation"], 1);
+    assert_eq!(control_status["type"], "U32LE");
+    assert_eq!(control_status["shape"], json!([38, 13]));
+    assert_eq!(control_status["word_count"], 494);
+    assert_eq!(control_status["byte_count"], 1976);
+    assert_eq!(control_status["row_order"], "physical host index 0..37");
+    assert_eq!(control_status["material_id"], Value::Null);
+    assert_eq!(control_status["sha256"], Value::Null);
+    assert_eq!(control_status["producer_address"], Value::Null);
+    assert_eq!(control_status["producer_caller"], Value::Null);
+    assert_eq!(control_status["status"], "BLOCKED_NOT_CAPTURED");
+    assert_eq!(
+        control_status["missing"],
+        json!([
+            "real physical binding",
+            "DBMD track binding",
+            "callback0 event/sampler values",
+            "494 U32 words",
+            "native or model producer boundary"
+        ])
+    );
+    assert_eq!(control_status["old_fixture_hash_accepted"], false);
+    assert_eq!(control_status["default_host_mapping_accepted"], false);
+
+    assert_eq!(
+        cold_status["schema"],
+        "sanitized-spatial-control-cold-state-status.v1"
+    );
+    assert_eq!(
+        cold_status["field_order"],
+        json!([
+            "clocks",
+            "source_cache",
+            "event_control",
+            "render_audio",
+            "source_flags",
+            "feature",
+            "selection_outer",
+            "matrix_assignment"
+        ])
+    );
+    assert_eq!(cold_status["known_constructor"]["f01e_cold_bytes"], 4402);
+    assert_eq!(
+        cold_status["known_constructor"]["f01e_cold_sha256"],
+        "9c943879cd36cb45bc7538346cfdf4f71d0998d8f261f75c135045fcb59870aa"
+    );
+    assert_eq!(cold_status["canonical_preimage_hex"], Value::Null);
+    assert_eq!(cold_status["canonical_bytes"], Value::Null);
+    assert_eq!(cold_status["sha256"], Value::Null);
+    assert_eq!(cold_status["status"], "BLOCKED_SCHEMA_ONLY");
+    assert_eq!(
+        cold_status["missing"],
+        json!([
+            "top-level envelope/version and section framing",
+            "nested F01E embedding/framing",
+            "optional diffusion/source-cache record framing",
+            "persistent serialization decision for current_flags/current_features",
+            "writer-set record framing",
+            "authoritative serializer execution with section offsets"
+        ])
+    );
+    assert_eq!(cold_status["scratch_included"], false);
+    assert_eq!(cold_status["unknown_zero_fill_allowed"], false);
+    assert_eq!(cold_status["ai48st01_accepted"], false);
 
     assert_eq!(schema["$id"], "spatial-control-production-admission.v1");
     assert_eq!(
@@ -273,9 +346,24 @@ fn real_adm_identity_is_pinned_but_parent_execution_remains_blocked() {
     assert_eq!(vectors["expected_used_as_seed"], false);
 
     let checks = independent["checks"].as_array().unwrap();
-    assert_eq!(checks.len(), 10);
+    assert_eq!(checks.len(), 12);
     assert!(checks.iter().all(|check| check["pass"] == true));
+    assert_eq!(
+        independent["schema"],
+        "spatial-control-production-admission-independent-check.v2"
+    );
     assert_eq!(independent["all_pass"], true);
+    assert_eq!(
+        independent["input_files"],
+        json!([
+            "REAL-ADM-INPUT-IDENTITY.json",
+            "PROVIDER-IDENTITIES.json",
+            "PRODUCTION-ADMISSION-VECTORS.json",
+            "SPATIAL-CONTROL-PRODUCTION.schema.json",
+            "CONTROL38-MATERIAL-STATUS.json",
+            "COLD-PARENT-STATE-STATUS.json"
+        ])
+    );
     assert_eq!(independent["raw_adm_read"], false);
     assert_eq!(independent["research_material_accessed"], false);
     assert_eq!(independent["production_execution"], false);

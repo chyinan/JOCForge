@@ -1,0 +1,29 @@
+{
+  "schema": "sanitized-spatial-control-cold-state-status.v1",
+  "field_order": ["clocks", "source_cache", "event_control", "render_audio", "source_flags", "feature", "selection_outer", "matrix_assignment"],
+  "known_constructor": {
+    "f01e_cold_bytes": 4402,
+    "f01e_cold_sha256": "9c943879cd36cb45bc7538346cfdf4f71d0998d8f261f75c135045fcb59870aa",
+    "clocks": "zero; remaining_cached_drains=4",
+    "source_cache": "optional values absent; last_phase=UNSET/0",
+    "render_audio": "positive-zero histories; diffusion absent",
+    "feature": "source vector/scalar positive zero",
+    "selection_outer": "selected target cold provider pinned",
+    "matrix_assignment": "assignment=-1; markers/matrix zero; writer_set empty"
+  },
+  "canonical_preimage_hex": null,
+  "canonical_bytes": null,
+  "sha256": null,
+  "status": "BLOCKED_SCHEMA_ONLY",
+  "missing": [
+    "top-level envelope/version and section framing",
+    "nested F01E embedding/framing",
+    "optional diffusion/source-cache record framing",
+    "persistent serialization decision for current_flags/current_features",
+    "writer-set record framing",
+    "authoritative serializer execution with section offsets"
+  ],
+  "scratch_included": false,
+  "unknown_zero_fill_allowed": false,
+  "ai48st01_accepted": false
+}

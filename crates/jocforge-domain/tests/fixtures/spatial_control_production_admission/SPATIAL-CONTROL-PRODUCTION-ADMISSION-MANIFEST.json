@@ -9,10 +9,13 @@
     { "file": "PROVIDER-IDENTITIES.json", "bytes": 695, "sha256": "ab17851d3c29a98a00fe6ae485245ac49f0e377b55ffe610da97ee3ff0b75aa4" },
     { "file": "SPATIAL-CONTROL-PRODUCTION.schema.json", "bytes": 2534, "sha256": "5784e65710820ad935f8a4c1702473241f335ab2e562656585ccec2e21642bf6" },
     { "file": "PRODUCTION-ADMISSION-VECTORS.json", "bytes": 2310, "sha256": "f186d9f84a0de6dfee2d5e3a44fbb81cedf5fdac3171d913f76da623dbc13154" },
-    { "file": "INDEPENDENT-CHECK.json", "bytes": 1091, "sha256": "a088126c932bfdf7dd07578061828b9599e2a8c3db90e332136b15d8814cc71d" }
+    { "file": "INDEPENDENT-CHECK.json", "bytes": 1307, "sha256": "62151000addcce0b3650f02da76d1b710f59755f14e31f363810573fa0eaae11" },
+    { "file": "DIRECT-PRECONDITIONS.md", "bytes": 2908, "sha256": "ff53e95cd46e0eb5983aafa27d476081da413b8ca8edef5fc7bb42bfa85a2164" },
+    { "file": "CONTROL38-MATERIAL-STATUS.json", "bytes": 741, "sha256": "e9c52f98518d498332ab19e972c7942f2ff6aa2e9d6f844f7f0661a845ba4e99" },
+    { "file": "COLD-PARENT-STATE-STATUS.json", "bytes": 1284, "sha256": "e4002f9830cb1fa53ed0d602d1784c30a7b57c00c54973fcf5179a8e4c2dd20b" }
   ],
   "source_evidence": {
-    "research_manifest_sha256": "e0bb33e9399579bd0b0d3b4292b7540c3ac271237b10defe671b64de2d924959",
+    "research_manifest_sha256": "845f76c34231ed47236f81672f0afa892545da63e0e1ff919610f24b5f6f42da",
     "raw_adm_bytes": 743696526,
     "raw_adm_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
     "private_key_auth": "excluded",

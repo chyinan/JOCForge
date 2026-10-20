@@ -1,0 +1,20 @@
+{
+  "schema": "sanitized-control38-material-status.v1",
+  "owner": "frontend_control",
+  "callback": 0,
+  "generation": 1,
+  "type": "U32LE",
+  "shape": [38, 13],
+  "word_count": 494,
+  "byte_count": 1976,
+  "row_order": "physical host index 0..37",
+  "known_derivation": ["physical binding preflight", "bed semantic/DBMD rule", "object ordinal event/sampler plus DBMD track"],
+  "material_id": null,
+  "sha256": null,
+  "producer_address": null,
+  "producer_caller": null,
+  "status": "BLOCKED_NOT_CAPTURED",
+  "missing": ["real physical binding", "DBMD track binding", "callback0 event/sampler values", "494 U32 words", "native or model producer boundary"],
+  "old_fixture_hash_accepted": false,
+  "default_host_mapping_accepted": false
+}
