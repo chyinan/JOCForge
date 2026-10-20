@@ -1,0 +1,81 @@
+{
+  "schema": "sanitized-parent-cold-config-semantics.v1",
+  "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "source_evidence_identity": {
+    "bsi_authority_sha256": "7ec27dc5923ca10ff92486baa4044b22d05010131585b6a3dd12ee48e57c9cd7",
+    "trim_producer_sha256": "4a96b4a1209dd7b76786abbbe10ca52913afd4f510d7d8c38e223f481f82a383",
+    "policy_mix_consumer_sha256": "3a163c917fb02ca50bcb8ff39fed7658fc6cdabebd3a22415c7e36ce0877f696",
+    "codec_parameter_consumer_sha256": "5bd183d9df8866489dd000af4b710cadfb7e5714f13477197772ef219f649259"
+  },
+  "descriptor_fields": [
+    {"offset": 0, "bytes": 4, "type": "u32", "semantic": "source descriptor mode flag", "status": "BOUND_BRANCH_SEMANTIC"},
+    {"offset": 4, "bytes": 4, "type": "zero/reserved", "semantic": "reserved in observed mode", "status": "OBSERVED_ZERO"},
+    {"offset": 8, "bytes": 4, "type": "u32", "semantic": "source record count", "status": "BOUND", "observed": 38},
+    {"offset": 12, "bytes": 4, "type": "zero/reserved", "semantic": "reserved", "status": "OBSERVED_ZERO"},
+    {"offset": 16, "bytes": 8, "type": "native pointer", "semantic": "source_count records of six bytes", "status": "POINTER_BOUND"},
+    {"offset": 24, "bytes": 16, "type": "four u32 words", "semantic": "mode-specific source conversion tuple", "status": "MODE0_OBSERVED_ZERO_MODE1_PARTIAL"},
+    {"offset": 40, "bytes": 4, "type": "u32 enum", "semantic": "data-rate code", "status": "BOUND", "mapping": {"0": 384, "1": 448, "2": 576, "3": 640, "4": 768, "5": 1024}, "observed": 5},
+    {"offset": 44, "bytes": 4, "type": "zero/reserved", "semantic": "reserved", "status": "OBSERVED_ZERO"},
+    {"offset": 48, "bytes": 8, "type": "native pointer", "semantic": "44-byte codec policy block", "status": "POINTER_BOUND"},
+    {"offset": 56, "bytes": 8, "type": "native pointer", "semantic": "120-byte external metadata control block", "status": "POINTER_BOUND_SEMANTICS_PARTIAL"},
+    {"offset": 64, "bytes": 8, "type": "native pointer", "semantic": "nine 24-byte trim payload records", "status": "POINTER_BOUND_SEMANTICS_PARTIAL"},
+    {"offset": 72, "bytes": 44, "type": "measurement summary", "semantic": "loudness and peak measurement fields", "status": "PARTIALLY_BOUND"},
+    {"offset": 116, "bytes": 4, "type": "zero/reserved", "semantic": "reserved", "status": "OBSERVED_ZERO"}
+  ],
+  "policy_block_44": [
+    {"offset": 0, "bytes": 1, "semantic": "copyright flag / property33", "observed": 1, "status": "BOUND"},
+    {"offset": 1, "bytes": 1, "semantic": "original flag / property34", "observed": 1, "status": "BOUND"},
+    {"offset": 2, "bytes": 2, "semantic": "remaining header bytes", "observed": 0, "status": "PARTIAL"},
+    {"offset": 4, "bytes": 4, "semantic": "bsmod / property35", "observed": 0, "status": "BOUND"},
+    {"offset": 8, "bytes": 4, "semantic": "LoRo center mix code", "observed": 4, "status": "BOUND"},
+    {"offset": 12, "bytes": 4, "semantic": "LoRo surround mix code", "observed": 4, "status": "BOUND"},
+    {"offset": 16, "bytes": 4, "semantic": "preferred downmix mode code", "observed": 2, "status": "BOUND"},
+    {"offset": 20, "bytes": 4, "semantic": "LtRt center mix code", "observed": 4, "status": "BOUND"},
+    {"offset": 24, "bytes": 4, "semantic": "LtRt surround mix code", "observed": 4, "status": "BOUND"},
+    {"offset": 28, "bytes": 4, "semantic": "dsurexmod code", "observed": 0, "status": "BOUND"},
+    {"offset": 32, "bytes": 4, "semantic": "sourcefscod/control word", "observed": 0, "status": "PARTIALLY_BOUND_LOW_BYTE"},
+    {"offset": 36, "bytes": 4, "semantic": "Line DRC profile code", "observed": 4, "status": "BOUND"},
+    {"offset": 40, "bytes": 4, "semantic": "RF DRC profile code", "observed": 4, "status": "BOUND"}
+  ],
+  "measurement_summary_known_fields": [
+    {"descriptor_offset": 92, "type": "f32", "semantic": "selected loudness", "observed": -16.784912109375, "status": "BOUND"},
+    {"descriptor_offset": 96, "type": "u32 enum", "semantic": "gating mode", "observed": 2, "status": "BOUND_VALUE_NAME_PARTIAL"},
+    {"descriptor_offset": 100, "type": "f32", "semantic": "speech percentage", "observed": -1.0, "status": "BOUND"},
+    {"descriptor_offset": 104, "type": "f32", "semantic": "loudness range", "observed": 5.73073673248291, "status": "BOUND"},
+    {"descriptor_offset": 108, "type": "f32", "semantic": "sample peak", "observed": -4.125058174133301, "status": "BOUND"},
+    {"descriptor_offset": 112, "type": "f32", "semantic": "true peak", "observed": -3.954448699951172, "status": "BOUND"}
+  ],
+  "referenced_record_semantics": {
+    "channel_records": {"record_bytes": 6, "layout": "u32 plus u16 copied byte-for-byte", "semantic_names": "NOT_FIELD_COMPLETE"},
+    "external_metadata_control": {"bytes": 120, "copy_rule": "copied byte-for-byte when external metadata is present and mode is not one", "known_read": "byte117 influences dsurexmod conversion before the copy", "semantic_names": "NOT_FIELD_COMPLETE"},
+    "trim_records": {"input_record_bytes": 28, "count": 9, "portable_candidate_payload_bytes": 24, "copy_rule": "discard each input record's first four bytes and copy the following 24 bytes in input order", "key_semantic": "NOT_CAPTURED", "payload_semantics": "NOT_FIELD_COMPLETE"}
+  },
+  "portable_contract_status": {
+    "descriptor_layout_complete": true,
+    "policy_block_semantics_complete": false,
+    "measurement_semantics_complete": false,
+    "channel_record_semantics_complete": false,
+    "external_metadata_semantics_complete": false,
+    "trim_record_semantics_complete": false,
+    "native_portable_field_order": "NOT_OBSERVED",
+    "native_endian_contract": "NOT_OBSERVED",
+    "native_version_contract": "NOT_OBSERVED",
+    "native_optional_field_contract": "NOT_OBSERVED",
+    "native_checksum_contract": "NOT_OBSERVED",
+    "native_serializer_restore_roundtrip": "NOT_RUN",
+    "implementation_ready": false
+  },
+  "bounded_no_hit": {
+    "scope": "0x178dc0 producer, 0x1aa730 policy/mix consumer, 0x1ab520 codec-property consumer, constructor depth-two graph and current run108 descriptor",
+    "canonical_serializer_or_restore_api_observed": false,
+    "product_wide_absence_claim": false
+  },
+  "minimum_external_evidence": [
+    "semantic definitions for the unresolved source-record, external-metadata and trim fields",
+    "authoritative portable ordering, endian, version, optional and checksum rules",
+    "or executable serializer and restore entrypoints with a cold vector and byte-exact roundtrip"
+  ],
+  "production_allowed": false,
+  "raw_referenced_blocks_delivered": false,
+  "private_auth": "EXCLUDED"
+}

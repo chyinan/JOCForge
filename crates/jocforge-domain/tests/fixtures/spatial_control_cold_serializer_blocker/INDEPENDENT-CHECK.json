@@ -1,5 +1,5 @@
 {
-  "schema": "spatial-control-cold-serializer-blocker-independent-check.v11",
+  "schema": "spatial-control-cold-serializer-blocker-independent-check.v12",
   "checks": [
     {
       "id": "dll_identity",
@@ -58,6 +58,10 @@
       "pass": true
     },
     {
+      "id": "parent_cold_config_semantics",
+      "pass": true
+    },
+    {
       "id": "no_entrypoint",
       "pass": true
     },
@@ -93,7 +97,8 @@
     "PARENT-FILEWRITER-DYNAMIC-JOIN.json",
     "FILEWRITER-FWRITE-DYNAMIC-JOIN.json",
     "PARENT-COLD-LIFECYCLE.json",
-    "PARENT-COLD-CONFIG-BOUNDARY.json"
+    "PARENT-COLD-CONFIG-BOUNDARY.json",
+    "PARENT-COLD-CONFIG-SEMANTICS.json"
   ],
   "research_files_read": false,
   "serializer_execution": false,

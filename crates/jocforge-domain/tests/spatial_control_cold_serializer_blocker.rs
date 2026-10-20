@@ -5,7 +5,7 @@ use std::fmt::Write as _;
 use std::fs;
 use std::path::PathBuf;
 
-const MANIFEST_SHA256: &str = "b70535cda1049e60e9f4490d10496f8e3b1a51f6eff18ed146f66488f3b78923";
+const MANIFEST_SHA256: &str = "ba271324c94b53f3aaabe7657c2a0732023c2f6e028418622eef4b5b80e0a2e1";
 
 fn fixture_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -36,17 +36,17 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(digest_hex(&manifest_bytes), MANIFEST_SHA256);
 
     let manifest: Value = serde_json::from_slice(&manifest_bytes).expect("manifest JSON");
-    assert_eq!(manifest["schema"], "washed-implementer-blocker-manifest.v6");
+    assert_eq!(manifest["schema"], "washed-implementer-blocker-manifest.v7");
     assert_eq!(
         manifest["identity"],
-        "spatial-control-cold-serializer.blocked.v11"
+        "spatial-control-cold-serializer.blocked.v12"
     );
     assert_eq!(manifest["status"], "BLOCKED_NO_EXECUTABLE_SERIALIZER");
     assert_eq!(
         manifest["evidence_classification"],
         json!({
-            "native_observed": "bounded cold-config producer/query/constructor boundary, parent cold lifecycle, and parent output through FileWriter to DLL-local CRT fwrite",
-            "unknown": "semantic types of all pointer-free words and referenced blocks, other configurations/restart, alternate host/job/wrapper/other DLL paths and product-wide persistence",
+            "native_observed": "bounded descriptor semantics and consumer reads, parent cold lifecycle, and parent output through FileWriter to DLL-local CRT fwrite",
+            "unknown": "unresolved field semantics, portable order/endian/version/optional/checksum contract, other configurations/restart, alternate host/job/wrapper/other DLL paths and product-wide persistence",
             "clean_room_design": "parent canonical bytes and receipt schema not native observed"
         })
     );
@@ -64,6 +64,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "INDEPENDENT-CHECK.json",
             "MINIMUM-EXTERNAL-EVIDENCE.json",
             "PARENT-COLD-CONFIG-BOUNDARY.json",
+            "PARENT-COLD-CONFIG-SEMANTICS.json",
             "PARENT-COLD-LIFECYCLE.json",
             "PARENT-FILEWRITER-DYNAMIC-JOIN.json",
             "PARENT-OUTPUT-DATAFLOW.json",
@@ -82,7 +83,8 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
         "PARENT-FILEWRITER-DYNAMIC-JOIN.json",
         "FILEWRITER-FWRITE-DYNAMIC-JOIN.json",
         "PARENT-COLD-LIFECYCLE.json",
-        "PARENT-COLD-CONFIG-BOUNDARY.json"
+        "PARENT-COLD-CONFIG-BOUNDARY.json",
+        "PARENT-COLD-CONFIG-SEMANTICS.json"
     ]);
     for entry in files {
         let name = entry["file"].as_str().expect("manifest file name");
@@ -101,19 +103,15 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let source = &manifest["source_evidence"];
     assert_eq!(
         source["research_manifest_sha256"],
-        "ec6b2283c4c14c101c48249c63577fbf9bce8ce90584656d23e989dd439041f1"
+        "5aff4e4f94615b590c49c730de6ed35403441be244e40eed91e25a7ad5da2aa7"
     );
     assert_eq!(
         source["research_independent_check_sha256"],
-        "e8d2ca264fcf21ea4a19ed824002e9ddcc2fe701e913de2fb160fea7c918f0ca"
+        "5e6f42926d323fa8ff0d1877eec1ded35019c938c3e6d16c5a73cd1cf0a482d3"
     );
     assert_eq!(
-        source["parent_cold_config_boundary_sha256"],
-        "7f738cea345e356a22ad7d796c6e5b96db03eb38245331f8373a618de8e006e4"
-    );
-    assert_eq!(
-        source["parent_cold_lifecycle_sha256"],
-        "1f2992122f1d271238e59217b25b4139ba9d2b2c70710b9add98430b7282fd5f"
+        source["parent_cold_config_semantics_sha256"],
+        "58cb57ddd5797609156c6a9b1465c14e650161296638fd0611e6e1a797452a34"
     );
     assert_eq!(source["serializer_execution"], "NOT_RUN");
     assert_eq!(source["canonical_preimage"], Value::Null);
@@ -185,62 +183,79 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(cold_lifecycle_summary["constructor_rva"], "0x1a7d50");
     assert_eq!(cold_lifecycle_summary["first_consumer_rva"], "0x1a8840");
     assert_eq!(cold_lifecycle_summary["allocation_bytes"], 7_805_609);
-    assert_eq!(
-        cold_lifecycle_summary["allocation_zero_before_constructor"],
-        true
-    );
     assert_eq!(cold_lifecycle_summary["owner_offset_bytes"], 0);
     assert_eq!(
         cold_lifecycle_summary["constructor_to_first_consumer_digest_match"],
         true
     );
     assert_eq!(
-        cold_lifecycle_summary["runtime_cold_instance"],
-        "CAPTURED_BY_SIZE_OWNER_OFFSET_AND_FULL_ALLOCATION_DIGEST"
-    );
-    assert_eq!(
         cold_lifecycle_summary["portable_canonical_bytes"],
         "NOT_CAPTURED"
     );
     assert_eq!(cold_lifecycle_summary["raw_allocation_delivered"], false);
-    let cold_config_summary = &manifest["parent_cold_config_boundary"];
-    assert_eq!(cold_config_summary["producer_rva"], "0x178dc0");
-    assert_eq!(cold_config_summary["descriptor_bytes"], 120);
-    assert_eq!(cold_config_summary["mode"], 0);
-    assert_eq!(cold_config_summary["source_count"], 38);
-    assert_eq!(cold_config_summary["data_rate_code"], 5);
+    let descriptor_summary = &manifest["descriptor_semantics"];
+    assert_eq!(descriptor_summary["descriptor_bytes"], 120);
+    assert_eq!(descriptor_summary["layout_complete"], true);
+    assert_eq!(descriptor_summary["mode"], 0);
+    assert_eq!(descriptor_summary["source_count"], 38);
+    assert_eq!(descriptor_summary["data_rate_code"], 5);
     assert_eq!(
-        cold_config_summary["pointer_offsets"],
+        descriptor_summary["pointer_offsets"],
         json!([16, 48, 56, 64])
     );
     assert_eq!(
-        cold_config_summary["referenced_block_bytes"],
-        json!([228, 44, 120, 216])
+        descriptor_summary["known_measurement_fields"],
+        json!([92, 96, 100, 104, 108, 112])
     );
     assert_eq!(
-        cold_config_summary["pointer_zeroed_diagnostic_projection"],
-        "CAPTURED_DIAGNOSTIC_ONLY_NOT_NATIVE_CANONICAL"
+        descriptor_summary["pointer_zeroed_projection"],
+        "DIAGNOSTIC_ONLY_NOT_NATIVE_CANONICAL"
     );
-    assert_eq!(cold_config_summary["projection_crc32"], "150fb9d7");
+    assert_eq!(descriptor_summary["portable_semantic_schema"], "INCOMPLETE");
+    assert_eq!(descriptor_summary["portable_reconstruction_ready"], false);
+    assert_eq!(descriptor_summary["policy_semantics_complete"], false);
+    assert_eq!(descriptor_summary["measurement_semantics_complete"], false);
     assert_eq!(
-        cold_config_summary["field_complete_semantic_schema"],
-        "NOT_CAPTURED"
-    );
-    assert_eq!(cold_config_summary["portable_reconstruction_ready"], false);
-    assert_eq!(
-        cold_config_summary["first_static_nonzero_store_rva"],
-        "0x1a7e0e"
+        descriptor_summary["channel_record_semantics_complete"],
+        false
     );
     assert_eq!(
-        cold_config_summary["first_static_nonzero_store_destination"],
+        descriptor_summary["external_metadata_semantics_complete"],
+        false
+    );
+    assert_eq!(descriptor_summary["trim_record_semantics_complete"], false);
+    assert_eq!(
+        manifest["referenced_blocks"]["channel_records"]["record_shape"],
+        "38 x 6-byte u32+u16 copy"
+    );
+    assert_eq!(
+        manifest["referenced_blocks"]["channel_records"]["raw_values_delivered"],
+        false
+    );
+    assert_eq!(
+        manifest["referenced_blocks"]["codec_policy"]["known_fields_partial"],
+        true
+    );
+    assert_eq!(
+        manifest["referenced_blocks"]["external_metadata_control"]["copy_rule_partial"],
+        true
+    );
+    assert_eq!(
+        manifest["referenced_blocks"]["trim_payloads"]["input_record_shape"],
+        "9 x 28-byte"
+    );
+    assert_eq!(
+        manifest["referenced_blocks"]["trim_payloads"]["first_4_byte_key_discarded"],
+        true
+    );
+    assert_eq!(manifest["first_store"]["static_store_rva"], "0x1a7e0e");
+    assert_eq!(
+        manifest["first_store"]["destination"],
         "allocation_base+0x8d8"
     );
+    assert_eq!(manifest["first_store"]["value"], "allocation_base+0x8e0");
     assert_eq!(
-        cold_config_summary["first_static_nonzero_store_value"],
-        "allocation_base+0x8e0"
-    );
-    assert_eq!(
-        cold_config_summary["exact_dynamic_first_store"],
+        manifest["first_store"]["dynamic_instruction_hit"],
         "NOT_CAPTURED"
     );
     assert_eq!(
@@ -838,6 +853,158 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     assert_eq!(cold_config["raw_pcm_or_metadata_delivered"], false);
     assert_eq!(cold_config["private_auth"], "EXCLUDED");
 
+    let cold_semantics = read_json("PARENT-COLD-CONFIG-SEMANTICS.json");
+    assert_eq!(
+        cold_semantics["schema"],
+        "sanitized-parent-cold-config-semantics.v1"
+    );
+    assert_eq!(cold_semantics["module_sha256"], evidence["dll"]["sha256"]);
+    let descriptor_fields = cold_semantics["descriptor_fields"].as_array().unwrap();
+    assert_eq!(descriptor_fields.len(), 13);
+    assert_eq!(
+        descriptor_fields
+            .iter()
+            .map(|field| field["offset"].as_u64().unwrap())
+            .collect::<Vec<_>>(),
+        [0, 4, 8, 12, 16, 24, 40, 44, 48, 56, 64, 72, 116]
+    );
+    assert_eq!(
+        descriptor_fields[0]["semantic"],
+        "source descriptor mode flag"
+    );
+    assert_eq!(descriptor_fields[0]["status"], "BOUND_BRANCH_SEMANTIC");
+    assert_eq!(descriptor_fields[2]["semantic"], "source record count");
+    assert_eq!(descriptor_fields[2]["observed"], 38);
+    assert_eq!(
+        descriptor_fields[4]["semantic"],
+        "source_count records of six bytes"
+    );
+    assert_eq!(descriptor_fields[4]["status"], "POINTER_BOUND");
+    assert_eq!(
+        descriptor_fields[5]["status"],
+        "MODE0_OBSERVED_ZERO_MODE1_PARTIAL"
+    );
+    assert_eq!(descriptor_fields[6]["semantic"], "data-rate code");
+    assert_eq!(
+        descriptor_fields[6]["mapping"],
+        json!({"0":384,"1":448,"2":576,"3":640,"4":768,"5":1024})
+    );
+    assert_eq!(descriptor_fields[6]["observed"], 5);
+    assert_eq!(
+        descriptor_fields[9]["status"],
+        "POINTER_BOUND_SEMANTICS_PARTIAL"
+    );
+    assert_eq!(
+        descriptor_fields[10]["status"],
+        "POINTER_BOUND_SEMANTICS_PARTIAL"
+    );
+    assert_eq!(descriptor_fields[11]["status"], "PARTIALLY_BOUND");
+
+    let policy_fields = cold_semantics["policy_block_44"].as_array().unwrap();
+    assert_eq!(policy_fields.len(), 13);
+    assert_eq!(policy_fields[0]["semantic"], "copyright flag / property33");
+    assert_eq!(policy_fields[0]["observed"], 1);
+    assert_eq!(policy_fields[1]["semantic"], "original flag / property34");
+    assert_eq!(policy_fields[1]["observed"], 1);
+    assert_eq!(policy_fields[2]["status"], "PARTIAL");
+    assert_eq!(policy_fields[4]["semantic"], "LoRo center mix code");
+    assert_eq!(policy_fields[4]["observed"], 4);
+    assert_eq!(policy_fields[12]["semantic"], "RF DRC profile code");
+    assert_eq!(policy_fields[12]["observed"], 4);
+    assert_eq!(
+        cold_semantics["portable_contract_status"]["policy_block_semantics_complete"],
+        false
+    );
+
+    let measurement_fields = cold_semantics["measurement_summary_known_fields"]
+        .as_array()
+        .unwrap();
+    assert_eq!(measurement_fields.len(), 6);
+    assert_eq!(measurement_fields[0]["descriptor_offset"], 92);
+    assert_eq!(measurement_fields[0]["observed"], -16.784912109375);
+    assert_eq!(measurement_fields[1]["descriptor_offset"], 96);
+    assert_eq!(measurement_fields[1]["status"], "BOUND_VALUE_NAME_PARTIAL");
+    assert_eq!(measurement_fields[2]["descriptor_offset"], 100);
+    assert_eq!(measurement_fields[2]["observed"], -1.0);
+    assert_eq!(measurement_fields[3]["descriptor_offset"], 104);
+    assert_eq!(measurement_fields[3]["observed"], 5.73073673248291);
+    assert_eq!(measurement_fields[4]["descriptor_offset"], 108);
+    assert_eq!(measurement_fields[4]["observed"], -4.125058174133301);
+    assert_eq!(measurement_fields[5]["descriptor_offset"], 112);
+    assert_eq!(measurement_fields[5]["observed"], -3.954448699951172);
+    assert_eq!(
+        cold_semantics["portable_contract_status"]["measurement_semantics_complete"],
+        false
+    );
+
+    let record_semantics = &cold_semantics["referenced_record_semantics"];
+    assert_eq!(record_semantics["channel_records"]["record_bytes"], 6);
+    assert_eq!(
+        record_semantics["channel_records"]["layout"],
+        "u32 plus u16 copied byte-for-byte"
+    );
+    assert_eq!(
+        record_semantics["channel_records"]["semantic_names"],
+        "NOT_FIELD_COMPLETE"
+    );
+    assert_eq!(record_semantics["external_metadata_control"]["bytes"], 120);
+    assert_eq!(
+        record_semantics["external_metadata_control"]["semantic_names"],
+        "NOT_FIELD_COMPLETE"
+    );
+    assert_eq!(record_semantics["trim_records"]["input_record_bytes"], 28);
+    assert_eq!(record_semantics["trim_records"]["count"], 9);
+    assert_eq!(
+        record_semantics["trim_records"]["portable_candidate_payload_bytes"],
+        24
+    );
+    assert_eq!(
+        record_semantics["trim_records"]["copy_rule"],
+        "discard each input record's first four bytes and copy the following 24 bytes in input order"
+    );
+    assert_eq!(
+        record_semantics["trim_records"]["key_semantic"],
+        "NOT_CAPTURED"
+    );
+    assert_eq!(
+        record_semantics["trim_records"]["payload_semantics"],
+        "NOT_FIELD_COMPLETE"
+    );
+
+    let portable_contract = &cold_semantics["portable_contract_status"];
+    assert_eq!(portable_contract["descriptor_layout_complete"], true);
+    assert_eq!(
+        portable_contract["channel_record_semantics_complete"],
+        false
+    );
+    assert_eq!(
+        portable_contract["external_metadata_semantics_complete"],
+        false
+    );
+    assert_eq!(portable_contract["trim_record_semantics_complete"], false);
+    assert_eq!(
+        portable_contract["native_portable_field_order"],
+        "NOT_OBSERVED"
+    );
+    assert_eq!(portable_contract["native_endian_contract"], "NOT_OBSERVED");
+    assert_eq!(portable_contract["native_version_contract"], "NOT_OBSERVED");
+    assert_eq!(
+        portable_contract["native_optional_field_contract"],
+        "NOT_OBSERVED"
+    );
+    assert_eq!(
+        portable_contract["native_checksum_contract"],
+        "NOT_OBSERVED"
+    );
+    assert_eq!(
+        portable_contract["native_serializer_restore_roundtrip"],
+        "NOT_RUN"
+    );
+    assert_eq!(portable_contract["implementation_ready"], false);
+    assert_eq!(cold_semantics["production_allowed"], false);
+    assert_eq!(cold_semantics["raw_referenced_blocks_delivered"], false);
+    assert_eq!(cold_semantics["private_auth"], "EXCLUDED");
+
     let framing = read_json("REQUIRED-FRAMING-RULES.json");
     assert_eq!(framing["status"], "BLOCKED_INCOMPLETE");
     assert_eq!(
@@ -921,11 +1088,11 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
     let independent = read_json("INDEPENDENT-CHECK.json");
     assert_eq!(
         independent["schema"],
-        "spatial-control-cold-serializer-blocker-independent-check.v11"
+        "spatial-control-cold-serializer-blocker-independent-check.v12"
     );
     assert_eq!(independent["all_pass"], true);
     let checks = independent["checks"].as_array().expect("checks array");
-    assert_eq!(checks.len(), 20);
+    assert_eq!(checks.len(), 21);
     assert!(checks.iter().all(|check| check["pass"] == true));
     assert_eq!(
         checks
@@ -947,6 +1114,7 @@ fn missing_authoritative_serializer_keeps_parent_state_blocked_without_guessing(
             "dynamic_filewriter_fwrite_join",
             "dynamic_parent_cold_lifecycle",
             "parent_cold_config_boundary",
+            "parent_cold_config_semantics",
             "no_entrypoint",
             "no_bytes",
             "framing_rules",
