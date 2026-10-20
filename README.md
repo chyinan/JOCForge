@@ -1,6 +1,6 @@
 # JOCForge
 
-Backend migration baseline. Encoding is deliberately unavailable. No audio, JOC or E-AC-3 algorithm is implemented.
+Backend migration baseline. Selected independent audio and metadata processing components are implemented and undergoing isolated validation. End-to-end E-AC-3 JOC encoding remains unavailable in this experimental branch.
 
 Rust 2024 workspace: domain, application, io, CLI and independent validation. See [architecture](docs/architecture/ARCHITECTURE.md).
 
