@@ -14,6 +14,8 @@ selected profile 的 parent admission 必需逆向依赖为 0，但 `gate1_close
 
 剩余工作仅为 clean-room 设计与验证：M1 canonical schema/framing/digest 与字段投影；M2 完整 cold vector 和独立 serializer/parser byte-exact roundtrip；M3 typed root receipt、commit/failure/fresh-reconstruction vectors。全部仍 `NOT_RUN` 或 `CLEAN_ROOM_DESIGN_REQUIRED`，因此 `IMPLEMENTATION_READY=NO`、`production_allowed=false`。被 v35 复用的字段证据资产保留其 v34 内部来源身份；本段只陈述 v35 package 的审查结论。
 
+M1 候选与 blocker matrix 见 [PARENT-COLD-CANONICAL-ENCODING-PROPOSAL.json](PARENT-COLD-CANONICAL-ENCODING-PROPOSAL.json)，hash manifest 为 [PARENT-COLD-CANONICAL-ENCODING-PROPOSAL-MANIFEST.json](PARENT-COLD-CANONICAL-ENCODING-PROPOSAL-MANIFEST.json)。该文件全部标记为 `CLEAN_ROOM_DESIGN_PROPOSAL_NOT_APPROVED` 或 `BLOCKED`，不是规范；需要用户逐项批准，且不构成 M1 完成。
+
 ### A. Parent canonical schema 和 digest preimage
 
 **已知**

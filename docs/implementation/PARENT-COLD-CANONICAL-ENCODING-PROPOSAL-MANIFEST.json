@@ -1,0 +1,35 @@
+{
+  "schema": "jocforge-parent-cold-canonical-encoding-proposal-manifest.v1",
+  "identity": "parent-cold-canonical-encoding-proposal.v1",
+  "status": "CLEAN_ROOM_DESIGN_PROPOSAL_NOT_APPROVED",
+  "proposal_file": "PARENT-COLD-CANONICAL-ENCODING-PROPOSAL.json",
+  "proposal_bytes": 10748,
+  "proposal_sha256": "f3cd69679f486ff7a679b901bdc40b8e3e0770c74ba5ad157ba15bdfca6c493e",
+  "source_package": {
+    "identity": "spatial-control-cold-serializer.blocked.v35",
+    "manifest_sha256": "71ca9bb30c2129019a76ecb703df47a88f5384582bb65a53faee92103e9dcd0b"
+  },
+  "source_assets": {
+    "REQUIRED-FRAMING-RULES.json": "7396aaf144c102db7e395f090bf645e7db2d827d6bf8ecc3a39f870c73e0373d",
+    "MINIMUM-EXTERNAL-EVIDENCE.json": "7e078cfa1da60dcf0580a5fe070d6255c4c8cfa2265b862242965342210c922f",
+    "PARENT-COLD-ROOT-PARTICIPATION-AUDIT.json": "eb0890100771de8aa3d2e1d8ba5d4c22180320e5239acbc1729fad8b380db82d",
+    "SELECTED-PARENT-COLD-BLOCK-INVENTORY.json": "5c2a84d278e3c9c450fd9c1a6d43bda37e16bce78e939962ae5b412fce2ab640",
+    "CORE-MEASUREMENT-SLOT-CONSUMER-BOUNDARY.json": "edc5af39dede9931e41491984bc8c02d1c711c7cdc656e7b970f3173e1f0c484",
+    "EXTERNAL-METADATA-STRUCTURE-AND-REMAINING-FIELDS.json": "3ee2f1a482191ed2352d6d154fcaa6638c82dfdb6f45e510a91413b5f9a85dcc",
+    "PARENT-COLD-CONFIG-SEMANTICS.json": "551dc12dac533190e72947cef663173042e6dd7a872ab8488f8f8722fa51130f"
+  },
+  "outputs": {
+    "normative_schema": false,
+    "canonical_preimage": false,
+    "expected_bytes": false,
+    "expected_digest": false,
+    "serializer": false,
+    "parser": false,
+    "cold_vector": false,
+    "m2": "NOT_RUN",
+    "m3": "NOT_RUN",
+    "implementation_ready": "NO",
+    "production_allowed": false
+  },
+  "expected_used_as_seed": false
+}

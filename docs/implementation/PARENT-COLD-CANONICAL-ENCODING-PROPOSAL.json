@@ -1,0 +1,220 @@
+{
+  "schema": "jocforge-parent-cold-canonical-encoding-proposal.v1",
+  "identity": "parent-cold-canonical-encoding-proposal.v1",
+  "status": "CLEAN_ROOM_DESIGN_PROPOSAL_NOT_APPROVED",
+  "scope": "selected ADM parent cold logical state only",
+  "authority": {
+    "native_format_claim": false,
+    "approved_schema": false,
+    "implementation_ready": "NO",
+    "production_allowed": false,
+    "serializer_implemented": false,
+    "parser_implemented": false,
+    "cold_vector_generated": false,
+    "expected_bytes_or_digest_generated": false,
+    "m2_status": "NOT_RUN",
+    "m3_status": "NOT_RUN"
+  },
+  "source_package": {
+    "identity": "spatial-control-cold-serializer.blocked.v35",
+    "manifest_sha256": "71ca9bb30c2129019a76ecb703df47a88f5384582bb65a53faee92103e9dcd0b",
+    "research_manifest_sha256": "d969333307e690303be5f2428d68b66ddf2e350b254da2d544e0e9074adcea10",
+    "research_independent_check_sha256": "099a6d5438ae305dccb591ce2ed36131cc0d98e4d17d032245c1b4af41e2dc40"
+  },
+  "proposal_rules": [
+    {
+      "id": "envelope_header",
+      "status": "CLEAN_ROOM_DESIGN_NOT_NATIVE",
+      "candidate": "Four-byte ASCII magic JOCF followed by U16LE major=1 and U16LE minor=0.",
+      "rationale": "A fixed identity and explicit version let a parser reject unrelated or unsupported data before reading sections.",
+      "alternatives_not_selected": [
+        "No magic and infer format from the first section tag.",
+        "A text or JSON top-level envelope."
+      ],
+      "approval_required": [
+        "Approve or replace the literal magic.",
+        "Approve major/minor version widths and initial values."
+      ],
+      "blockers": ["The proposal is not approved and does not define an executable grammar."]
+    },
+    {
+      "id": "section_order_and_identifiers",
+      "status": "CLEAN_ROOM_DESIGN_NOT_NATIVE",
+      "candidate": "Use the frozen logical order clocks, source_cache, event_control, render_audio, source_flags, feature, selection_outer, matrix_assignment; assign stable U16LE identifiers 1 through 8 in that order.",
+      "rationale": "Fixed order avoids map-order dependence; stable IDs let the parser detect duplicates and unsupported sections.",
+      "alternatives_not_selected": [
+        "Sort sections lexically by field name.",
+        "Use unordered tagged sections."
+      ],
+      "approval_required": [
+        "Approve the section order and numeric IDs.",
+        "Resolve whether source_flags and feature are persisted or excluded before assigning their IDs in an approved schema."
+      ],
+      "blockers": [
+        "The field inventory has unresolved inclusion choices.",
+        "Unknown fields cannot be omitted, synthesized, or zero-filled by this proposal."
+      ]
+    },
+    {
+      "id": "lengths_alignment_and_terminal_rule",
+      "status": "CLEAN_ROOM_DESIGN_NOT_NATIVE",
+      "candidate": "Encode total envelope length and each section payload length as U32LE byte counts; concatenate header and sections without implicit alignment or padding; require exact end-of-input after the final section.",
+      "rationale": "Explicit lengths make truncation and trailing data detectable; byte packing avoids ABI and platform alignment dependence.",
+      "alternatives_not_selected": [
+        "U64LE lengths.",
+        "Implicit section lengths inferred from the next tag.",
+        "Alignment padding between sections."
+      ],
+      "approval_required": [
+        "Approve U32LE bounds and overflow rejection.",
+        "Approve no-padding layout and exact-EOF parsing."
+      ],
+      "blockers": [
+        "Section membership and non-empty payload schemas are incomplete.",
+        "This candidate produces no section offsets or total length."
+      ]
+    },
+    {
+      "id": "primitive_integer_and_float_encoding",
+      "status": "BLOCKED",
+      "candidate": "Retain only already-declared primitive widths and little-endian integer encoding; represent F32 as its IEEE-754 binary32 bit pattern in little-endian byte order, preserving signed zero.",
+      "rationale": "This follows the washed package's declared primitive endian/width facts without treating native memory layout as portable bytes.",
+      "alternatives_not_selected": [
+        "Host-native struct layout or alignment.",
+        "Decimal text for floating-point values.",
+        "Canonicalize negative zero to positive zero."
+      ],
+      "approval_required": [
+        "Approve F32 bit-preservation and signed-zero behavior.",
+        "Define finite, infinity, NaN, and subnormal acceptance for every included F32 field."
+      ],
+      "blockers": [
+        "Field-specific F32 domains and canonicalization rules are not complete.",
+        "The proposal does not select widths for fields whose type is unresolved."
+      ]
+    },
+    {
+      "id": "f01e_embedding",
+      "status": "CLEAN_ROOM_DESIGN_NOT_NATIVE",
+      "candidate": "Embed the pinned 4,402-byte sorted compact UTF-8 JSON preimage as a dedicated section payload, preceded by the section's U32LE byte length.",
+      "rationale": "Embedding the exact pinned preimage preserves the complete washed nested value and avoids inventing a second projection.",
+      "alternatives_not_selected": [
+        "Store only a digest reference.",
+        "Define a new binary projection for the nested value."
+      ],
+      "approval_required": [
+        "Approve raw canonical JSON embedding rather than a digest reference or binary projection.",
+        "Approve the section presence and version rule."
+      ],
+      "blockers": [
+        "No parent embedding is currently selected.",
+        "No complete parent preimage or vector is generated."
+      ]
+    },
+    {
+      "id": "optional_cache_and_diffusion_state",
+      "status": "BLOCKED",
+      "candidate": "Use one U8 presence tag per independently optional logical field; encode absent as 0 and present as 1 followed by an explicitly length-delimited value.",
+      "rationale": "Per-field presence keeps independent optional owners distinguishable and avoids treating a cold absence as a permanent omission.",
+      "alternatives_not_selected": [
+        "One grouped presence tag for several cache owners.",
+        "Encode absence as a zero-length record without a presence tag."
+      ],
+      "approval_required": [
+        "Approve per-field versus grouped presence.",
+        "Define snapshot order, array lengths, and diffusion record schema."
+      ],
+      "blockers": [
+        "Cold absence does not define non-empty or cross-generation representation.",
+        "Exact optional field groups and record order are not closed."
+      ]
+    },
+    {
+      "id": "current_flags_and_current_features",
+      "status": "BLOCKED",
+      "candidate": "Exclude callback-output current_flags and current_features from persistent canonical bytes because the washed evidence says they have no independent history.",
+      "rationale": "Persisting callback outputs could turn transient data into committed cold state without an independent state owner.",
+      "alternatives_not_selected": [
+        "Persist zero arrays at cold state.",
+        "Persist optional callback snapshots."
+      ],
+      "approval_required": [
+        "Resolve the conflict between the logical owner listing and the callback-output/no-history evidence.",
+        "Approve explicit exclusion before any section IDs or root digest are frozen."
+      ],
+      "blockers": ["The schema conflict remains unresolved; exclusion is only a candidate."]
+    },
+    {
+      "id": "writer_set",
+      "status": "BLOCKED",
+      "candidate": "Encode the writer count as U32LE; encode each non-empty record as U32LE byte length followed by record bytes.",
+      "rationale": "This extends the washed generic count/length convention while keeping each record independently bounded.",
+      "alternatives_not_selected": [
+        "Inline fixed-width records without record lengths.",
+        "Serialize process-local owner pointers or generations."
+      ],
+      "approval_required": [
+        "Approve count and record-length framing.",
+        "Define record fields, order, types, and whether owner/generation are logical data."
+      ],
+      "blockers": [
+        "Cold count zero does not define non-empty records.",
+        "Containing section and record schema remain unresolved."
+      ]
+    },
+    {
+      "id": "digest_domain_and_preimage",
+      "status": "CLEAN_ROOM_DESIGN_NOT_NATIVE",
+      "candidate": "Use SHA-256 over ASCII domain bytes JOCForge.parent-cold.v1 followed by one NUL byte and then the exact approved envelope bytes.",
+      "rationale": "An explicit domain prevents accidental cross-purpose digest reuse; hashing the complete envelope binds version, sections, and lengths.",
+      "alternatives_not_selected": [
+        "Hash only concatenated field payloads without the envelope.",
+        "Hash a JSON rendering of the envelope.",
+        "Reuse an unspecified native digest."
+      ],
+      "approval_required": [
+        "Approve the exact domain literal and NUL terminator.",
+        "Approve SHA-256 and the exact envelope-byte preimage."
+      ],
+      "blockers": [
+        "The logical field projection and envelope are not approved or complete.",
+        "No digest value is defined or generated."
+      ]
+    },
+    {
+      "id": "unknown_field_identity_and_projection",
+      "status": "BLOCKED",
+      "candidate": null,
+      "rationale": "Encoding choices cannot identify fields whose semantics, inclusion, or values are unknown.",
+      "alternatives_not_selected": [
+        "Opaque placeholders.",
+        "Zero-fill unknown values.",
+        "Infer names from numeric behavior."
+      ],
+      "approval_required": [
+        "Resolve measurement public offsets +8/+12/+16 or explicitly exclude them with authority.",
+        "Resolve remaining external-metadata field identities and selected-profile projection.",
+        "Resolve every included/excluded/zeroed field before defining a unique preimage."
+      ],
+      "blockers": [
+        "Measurement public semantic names are unknown.",
+        "External-metadata semantic schema is incomplete.",
+        "Complete parent field projection is not unique."
+      ]
+    }
+  ],
+  "m1_exit_criteria": [
+    "Every candidate above is explicitly approved or replaced by the user.",
+    "Every BLOCKED field identity/value/inclusion choice is closed without guessing.",
+    "The full logical field projection and exact digest preimage are uniquely defined.",
+    "No native format claim is introduced."
+  ],
+  "next_gates": {
+    "m1": "CLEAN_ROOM_DESIGN_PROPOSAL_NOT_APPROVED",
+    "m2": "NOT_RUN",
+    "m3": "NOT_RUN",
+    "implementation_ready": "NO",
+    "production_allowed": false
+  },
+  "expected_used_as_seed": false
+}
