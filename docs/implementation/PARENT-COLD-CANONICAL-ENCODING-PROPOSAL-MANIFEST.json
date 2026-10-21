@@ -3,8 +3,8 @@
   "identity": "parent-cold-canonical-encoding-proposal.v1",
   "status": "CLEAN_ROOM_DESIGN_PROPOSAL_NOT_APPROVED",
   "proposal_file": "PARENT-COLD-CANONICAL-ENCODING-PROPOSAL.json",
-  "proposal_bytes": 12027,
-  "proposal_sha256": "6ee98ddb883ad5101cd16b1542b87e92cded0a6e2daee57a8d75f2aadddc9fbf",
+  "proposal_bytes": 14157,
+  "proposal_sha256": "217b651de73eb307d0587c69b1c89692728bcd9a75d34998f66d34a7919c3d9e",
   "source_package": {
     "identity": "spatial-control-cold-serializer.blocked.v35",
     "manifest_sha256": "71ca9bb30c2129019a76ecb703df47a88f5384582bb65a53faee92103e9dcd0b"

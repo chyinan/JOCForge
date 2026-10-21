@@ -35,7 +35,7 @@
     {
       "id": "envelope_header",
       "status": "CLEAN_ROOM_DESIGN_NOT_NATIVE",
-      "candidate": "Four-byte ASCII magic JOCF followed by U16LE major=1 and U16LE minor=0.",
+      "candidate": "A 12-byte prefix: four ASCII bytes JOCF, U16LE major=1, U16LE minor=0, then U32LE total_length as defined by the length rule.",
       "rationale": "A fixed identity and explicit version let a parser reject unrelated or unsupported data before reading sections.",
       "alternatives_not_selected": [
         "No magic and infer format from the first section tag.",
@@ -43,14 +43,15 @@
       ],
       "approval_required": [
         "Approve or replace the literal magic.",
-        "Approve major/minor version widths and initial values."
+        "Approve major/minor version widths and initial values.",
+        "Approve the total_length field placement as the final prefix member."
       ],
       "blockers": ["The proposal is not approved and does not define an executable grammar."]
     },
     {
       "id": "section_order_and_identifiers",
       "status": "CLEAN_ROOM_DESIGN_NOT_NATIVE",
-      "candidate": "Use the frozen logical order clocks, source_cache, event_control, render_audio, source_flags, feature, selection_outer, matrix_assignment; assign stable U16LE identifiers 1 through 8 in that order.",
+      "candidate": "Use the frozen logical order and assign U16LE IDs: 1 clocks, 2 source_cache, 3 event_control, 4 render_audio, 5 source_flags, 6 feature, 7 selection_outer, 8 matrix_assignment. F01E is not assigned a separate section ID unless its parent owner is first established.",
       "rationale": "Fixed order avoids map-order dependence; stable IDs let the parser detect duplicates and unsupported sections.",
       "alternatives_not_selected": [
         "Sort sections lexically by field name.",
@@ -62,14 +63,35 @@
       ],
       "blockers": [
         "The field inventory has unresolved inclusion choices.",
+        "F01E parent owner/section membership is not closed.",
         "Unknown fields cannot be omitted, synthesized, or zero-filled by this proposal."
+      ]
+    },
+    {
+      "id": "section_presence_and_empty_representation",
+      "status": "BLOCKED",
+      "candidate": null,
+      "rationale": "A stable order and identifier set do not determine whether an absent optional owner omits its section, emits an explicit absent marker, or emits an empty payload.",
+      "alternatives_not_selected": [
+        "Require every declared section exactly once and encode absence inside its payload.",
+        "Omit absent optional sections while preserving the relative order of present sections.",
+        "Emit an explicit section presence tag and an empty payload for absent values."
+      ],
+      "approval_required": [
+        "Select the occurrence and empty/absent encoding for every optional section.",
+        "Define whether IDs 5 and 6 remain reserved if source_flags and feature are excluded."
+      ],
+      "blockers": [
+        "Optional cache grouping is unresolved.",
+        "source_flags and feature persistence conflicts remain unresolved.",
+        "F01E parent owner and section membership are unresolved."
       ]
     },
     {
       "id": "lengths_alignment_and_terminal_rule",
       "status": "CLEAN_ROOM_DESIGN_NOT_NATIVE",
-      "candidate": "Encode total envelope length and each section payload length as U32LE byte counts; concatenate header and sections without implicit alignment or padding; require exact end-of-input after the final section.",
-      "rationale": "Explicit lengths make truncation and trailing data detectable; byte packing avoids ABI and platform alignment dependence.",
+      "candidate": "The U32LE total_length counts every byte from the first magic byte through the last payload byte. Each section record is U16LE section_id, then U32LE payload_length excluding that six-byte record header, then exactly payload_length bytes. Records follow the frozen order with no implicit padding. Parsing requires consumed_bytes == total_length == input_length and rejects truncation, trailing bytes, duplicate IDs, out-of-order IDs, or unknown IDs.",
+      "rationale": "Explicitly scoped lengths make truncation and trailing data detectable; byte-packed records avoid ABI and platform alignment dependence.",
       "alternatives_not_selected": [
         "U64LE lengths.",
         "Implicit section lengths inferred from the next tag.",
@@ -77,6 +99,7 @@
       ],
       "approval_required": [
         "Approve U32LE bounds and overflow rejection.",
+        "Approve total_length including the header, payload_length excluding its six-byte section header, and strict ordering/unknown-ID rejection.",
         "Approve no-padding layout and exact-EOF parsing."
       ],
       "blockers": [
@@ -106,18 +129,18 @@
     {
       "id": "f01e_embedding",
       "status": "CLEAN_ROOM_DESIGN_NOT_NATIVE",
-      "candidate": "Embed the pinned 4,402-byte sorted compact UTF-8 JSON preimage as a dedicated section payload, preceded by the section's U32LE byte length.",
-      "rationale": "Embedding the exact pinned preimage preserves the complete washed nested value and avoids inventing a second projection.",
+      "candidate": "If and only if F01E inclusion and its parent owner are approved, use the pinned 4,402-byte sorted compact UTF-8 JSON value as a length-delimited payload inside that owning section; this proposal does not create a separate F01E section.",
+      "rationale": "Using the pinned JSON representation avoids inventing a second nested projection, while deferring parent placement until ownership is known.",
       "alternatives_not_selected": [
         "Store only a digest reference.",
         "Define a new binary projection for the nested value."
       ],
       "approval_required": [
-        "Approve raw canonical JSON embedding rather than a digest reference or binary projection.",
-        "Approve the section presence and version rule."
+        "Approve raw canonical JSON bytes rather than a digest reference or binary projection.",
+        "Resolve F01E parent owner, inclusion, presence, and version before assigning a location."
       ],
       "blockers": [
-        "No parent embedding is currently selected.",
+        "No parent owner, section membership, or embedding is currently selected.",
         "No complete parent preimage or vector is generated."
       ]
     },
@@ -175,8 +198,8 @@
     {
       "id": "digest_domain_and_preimage",
       "status": "CLEAN_ROOM_DESIGN_NOT_NATIVE",
-      "candidate": "Use SHA-256 over ASCII domain bytes JOCForge.parent-cold.v1 followed by one NUL byte and then the exact approved envelope bytes.",
-      "rationale": "An explicit domain prevents accidental cross-purpose digest reuse; hashing the complete envelope binds version, sections, and lengths.",
+      "candidate": "Compute SHA-256 over ASCII domain bytes JOCForge.parent-cold.v1 followed by one NUL byte and then the exact approved envelope bytes. Keep the resulting digest outside the envelope to avoid a self-referential preimage; a later M3 receipt may carry it.",
+      "rationale": "An explicit domain prevents accidental cross-purpose digest reuse; hashing the complete envelope binds version, sections, and lengths without a circular digest field.",
       "alternatives_not_selected": [
         "Hash only concatenated field payloads without the envelope.",
         "Hash a JSON rendering of the envelope.",
@@ -184,7 +207,7 @@
       ],
       "approval_required": [
         "Approve the exact domain literal and NUL terminator.",
-        "Approve SHA-256 and the exact envelope-byte preimage."
+        "Approve SHA-256, the exact envelope-byte preimage, and keeping the digest out of envelope bytes."
       ],
       "blockers": [
         "The logical field projection and envelope are not approved or complete.",
