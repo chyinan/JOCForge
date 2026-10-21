@@ -2,7 +2,17 @@
   "schema": "jocforge-parent-cold-canonical-encoding-proposal.v1",
   "identity": "parent-cold-canonical-encoding-proposal.v1",
   "status": "CLEAN_ROOM_DESIGN_PROPOSAL_NOT_APPROVED",
-  "scope": "selected ADM parent cold logical state only",
+  "scope": "selected ADM to 1024 kbps 5.1 E-AC-3 JOC parent cold admission only",
+  "selected_profile": {
+    "source_count": 38,
+    "data_rate_code": 5,
+    "data_rate_kbps": 1024,
+    "line_drc": "none",
+    "rf_drc": "none",
+    "preferred_downmix": "loro",
+    "mix_levels_db": [-3, -3, -3, -3],
+    "trim_5_1": ["auto", "auto"]
+  },
   "authority": {
     "native_format_claim": false,
     "approved_schema": false,
@@ -201,6 +211,26 @@
         "External-metadata semantic schema is incomplete.",
         "Complete parent field projection is not unique."
       ]
+    }
+  ],
+  "scope_limits": [
+    {
+      "id": "descriptor_mode1_tuple",
+      "status": "EXCLUDED_CANDIDATE_SELECTED_MODE0_ONLY",
+      "basis": "The selected profile uses mode 0; this proposal does not generalize to mode 1.",
+      "reopen_if": "A mode-1 profile enters the admitted scope; then every tuple word needs its source, type, consumer and value domain."
+    },
+    {
+      "id": "separate_27_u32_dictionary",
+      "status": "EXCLUDED_CANDIDATE_ACCEPTED_PATH_ONLY",
+      "basis": "The accepted selected route did not invoke the separate dictionary serializer/parser.",
+      "reopen_if": "A route requiring that dictionary enters scope; then establish a same-owner, same-generation join."
+    },
+    {
+      "id": "other_profile_gap_writes",
+      "status": "EXCLUDED_CANDIDATE_OUTSIDE_SELECTED_PROFILE",
+      "basis": "Other profiles are outside this proposal's single selected profile.",
+      "reopen_if": "The profile scope expands; no cross-profile behavior is inferred here."
     }
   ],
   "m1_exit_criteria": [
