@@ -1,0 +1,169 @@
+{
+  "schema": "meter-ungated-local-review-status.v1",
+  "verdict": "PASS_FIXED_PROFILE_LOCAL_NO_NEW_ISSUES",
+  "manifest_sha256": "68f442819e658ad87d239c9f3270652823851a42a804dd7477a2f9b19696e244",
+  "content_files_verified": 12,
+  "recalculation": {
+    "independent_cold": true,
+    "state_seed_source": "normative cold plus input.state_patch/input.reset_before_blocks only",
+    "expected_states_or_words_or_hashes_used_as_seed": false,
+    "mean_state_bytes": 40,
+    "mean_cold_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+    "sequences": 10,
+    "blocks": 102,
+    "coupled_cases": 4,
+    "coupled_terminal_hashes_checked": 8,
+    "entry_rejections": 4,
+    "legacy_valid_getter_cases": 4,
+    "legacy_config_rejections": 3,
+    "mismatches": 0,
+    "all_before_next_full_state_metric_called_comparisons_pass": true,
+    "real_energy_records": 6794,
+    "real_energy_admitted_count": 6678,
+    "real_energy_gate_not_admitted_count": 116,
+    "real_energy_all_state_digests_result_words_writer_called_counts_match": true,
+    "real_energy_cold_and_full_terminal_match": true,
+    "real_input_sha256_verified": true
+  },
+  "current_bindings": [
+    {
+      "file": "specs/00-numeric-semantics.md",
+      "reviewed_sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135",
+      "current_sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135",
+      "same_bytes": true
+    },
+    {
+      "file": "specs/06-meter-bsi.md",
+      "reviewed_sha256": "2cb47f2dbe501fc5f4affb57aa9c62bda0fd50ffc9be4aad7efdbeb842a051b1",
+      "current_sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752",
+      "same_bytes": false,
+      "prior_current_sha256": "553cfecc176dfe6ad14077ea35363fad8a8b477381038550d35d15905b264cab"
+    },
+    {
+      "file": "specs/06-ungated-mean-and-fallback.md",
+      "reviewed_sha256": "f94782cc72fc62108faced438d40179f5cc423e21b459970a97194796213d989",
+      "current_sha256": "07c850be31dbe42a1396634bd96dfd4a54fbd80aa27b3d39a36998545cdc3b9e",
+      "same_bytes": false
+    },
+    {
+      "file": "specs/06-meter-log-and-peak.md",
+      "reviewed_sha256": "0d316d3a6202b681d49475db23a586a1fe2f0213682794acf2cd1b9c3d17ac81",
+      "current_sha256": "c8a9aec8c931391bfbb4ecaca01a8e5cbec3ba680899f516727c6574a170e38f",
+      "same_bytes": false,
+      "prior_current_sha256": "0d316d3a6202b681d49475db23a586a1fe2f0213682794acf2cd1b9c3d17ac81"
+    },
+    {
+      "file": "specs/06-integrated-meter-state.md",
+      "reviewed_sha256": "e5caf84805cb24850dd0cf85e18d1dc4a4ee91fcb9e334cfc6f9881952efdb72",
+      "current_sha256": "e5caf84805cb24850dd0cf85e18d1dc4a4ee91fcb9e334cfc6f9881952efdb72",
+      "same_bytes": true
+    },
+    {
+      "file": "parameters/meter-log-mathematical-v1.json",
+      "reviewed_sha256": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266",
+      "current_sha256": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266",
+      "same_bytes": true
+    },
+    {
+      "file": "test-vectors/METER-UNGATED-FALLBACK-VERIFICATION.json",
+      "reviewed_sha256": "7dc8f1405d6d1cbbcadba19b498e5d0fcb95a11cc221af58a64c81acb2a89d41",
+      "current_sha256": "7dc8f1405d6d1cbbcadba19b498e5d0fcb95a11cc221af58a64c81acb2a89d41",
+      "same_bytes": true
+    },
+    {
+      "file": "test-vectors/METER-DI-OFF-GETTER-VERIFICATION.json",
+      "reviewed_sha256": "78c9834a428a2f2385e15a22505b26870c603485821bafecada13feeda003dd9",
+      "current_sha256": "78c9834a428a2f2385e15a22505b26870c603485821bafecada13feeda003dd9",
+      "same_bytes": true
+    },
+    {
+      "file": "PIPELINE-AND-INTERFACES.md",
+      "reviewed_sha256": "3cc1f0b2ccd9ee28efbf8bb4e044e1d4995935e074067b126fe0f6a07af5ee24",
+      "current_sha256": "61e4f4a968c93a2dc074656db656cf757246a5f316a1ca06502ebc9d4d842e12",
+      "same_bytes": false,
+      "prior_current_sha256": "0a722f1aacfb4dba0834b012c2baedd9a03e12908238677f956e7d64fd73e373"
+    },
+    {
+      "file": "SCOPE-AND-ACCEPTANCE.md",
+      "reviewed_sha256": "e5f844056b02770cd5c9187a34aae8b88c7176da72c74403e6055765a09e7e60",
+      "current_sha256": "0a0644a3e0bb13d6f2eda7a97162394bc2f969acededd2a652367eefe5d509a4",
+      "same_bytes": false,
+      "prior_current_sha256": "1601f7de3790dfbe8ca0c0ee844d797cb8c0e93a2e55ec7736beb10b2bcfd08d"
+    },
+    {
+      "file": "test-vectors/REAL-MUSIC-METER-ENERGY-INPUTS.json",
+      "reviewed_sha256": "4eccfa9a2a89501e9539b3092ef61b211d94e9ded470f2d766a9c2e931f63f0d",
+      "current_sha256": "4eccfa9a2a89501e9539b3092ef61b211d94e9ded470f2d766a9c2e931f63f0d",
+      "same_bytes": true
+    },
+    {
+      "file": "test-vectors/REAL-MUSIC-METER-MEAN-VERIFICATION.json",
+      "reviewed_sha256": "cc8c829b8a606dd091471238d795bc7f04f37557673eb5611d4e7f7f242a56aa",
+      "current_sha256": "cc8c829b8a606dd091471238d795bc7f04f37557673eb5611d4e7f7f242a56aa",
+      "same_bytes": true
+    }
+  ],
+  "research_source_guest_bytes_or_original_tables_read_by_reviewer": false,
+  "network_used": false,
+  "os_allowlist": "NOT_ENFORCED",
+  "readset_qualification": "fresh no inherited turns; package-only snapshots and own generated checker; task-content reads audited, no OS-level filesystem whitelist claim",
+  "delivery_scope": "INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION",
+  "does_not_cover": [
+    "original compiled code identity or complete native execution",
+    "new real ADM/render/filter",
+    "all meter FIFO/getter finalize and failure commits",
+    "production K/FIR/whole package readiness"
+  ],
+  "implementation_ready": "NO",
+  "post_review_edits": "F06U.6 final review-status paragraph only; numeric rules and vectors unchanged",
+  "subsequent_current_binding_refreshes": [
+    {
+      "file": "specs/06-meter-bsi.md",
+      "prior_current_sha256": "553cfecc176dfe6ad14077ea35363fad8a8b477381038550d35d15905b264cab",
+      "reason": "Current package binding refresh; reviewed_sha256 and original review scope unchanged. Meter overview now references separately reviewed F06OC/F06OF/F06KG/F06TP providers; local review-status prose added. This does not certify global composition.",
+      "same_bytes": false,
+      "historical_replacement_sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
+    },
+    {
+      "file": "specs/06-meter-bsi.md",
+      "prior_current_sha256": "553cfecc176dfe6ad14077ea35363fad8a8b477381038550d35d15905b264cab",
+      "reason": "Current package binding refresh; reviewed_sha256 and original review scope unchanged. Meter overview now references separately reviewed F06OC/F06OF/F06KG/F06TP providers; local review-status prose added. This does not certify global composition.",
+      "same_bytes": false,
+      "historical_replacement_sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
+    },
+    {
+      "file": "SCOPE-AND-ACCEPTANCE.md",
+      "prior_current_sha256": "6f35c0bc698ce7ca19c4c76eb8c4738113d47d769f409b5cb1876f2eed692c2b",
+      "reason": "Current package identity refresh only; historical reviewed_sha256, review scope, algorithms, and readiness are unchanged.",
+      "historical_replacement_sha256": "111c32ab2981c94fa0dc796c65a66106f87cf7367e1061f9693fd65e9b5b204c"
+    },
+    {
+      "file": "SCOPE-AND-ACCEPTANCE.md",
+      "prior_current_sha256": "111c32ab2981c94fa0dc796c65a66106f87cf7367e1061f9693fd65e9b5b204c",
+      "replacement_sha256": "0a0644a3e0bb13d6f2eda7a97162394bc2f969acededd2a652367eefe5d509a4",
+      "reason": "Current package identity refresh only; historical reviewed_sha256, review scope, algorithms, and readiness are unchanged."
+    },
+    {
+      "file": "specs/06-meter-log-and-peak.md",
+      "prior_current_sha256": "7bcfe6b7e93c723816f5e5fb9edbde9be10ffedbb32d347720c9db58b3ceb8f8",
+      "replacement_sha256": "c8a9aec8c931391bfbb4ecaca01a8e5cbec3ba680899f516727c6574a170e38f",
+      "reason": "Current package identity refresh only; historical reviewed_sha256, review scope, algorithms, and readiness are unchanged."
+    },
+    {
+      "file": "PIPELINE-AND-INTERFACES.md",
+      "prior_current_sha256": "45b46a04d5b15230691d5ab6fbfe1efabe8266b35ffa15b02c0d1cb304698063",
+      "replacement_sha256": "61e4f4a968c93a2dc074656db656cf757246a5f316a1ca06502ebc9d4d842e12",
+      "reason": "Current package identity refresh only; historical reviewed_sha256, review scope, algorithms, and readiness are unchanged."
+    }
+  ],
+  "status_reconciliation": {
+    "current_identity_refresh": {
+      "revision": "status-reconciliation-r1",
+      "files": [
+        "PIPELINE-AND-INTERFACES.md"
+      ],
+      "historical_review_identity_preserved": true,
+      "algorithm_changed": false
+    }
+  }
+}

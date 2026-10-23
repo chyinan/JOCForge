@@ -1,0 +1,581 @@
+{
+  "schema": "joc-huffman-verification-result.v1",
+  "parameter_file": "parameters/joc-huffman-v1.json",
+  "parameter_file_sha256": "515d635adc6099493dfd27f787bdf2b9f19a4b4bb1180860b0e820a23fb5d5ae",
+  "input_vector_file": "test-vectors/JOC-HUFFMAN-INPUT-VECTORS.json",
+  "input_vector_file_sha256": "e014850ec3dfe5be89a5dc9a45563d95532185410c182cfc51993f835f1fcf18",
+  "codebooks": {
+    "full_coarse": {
+      "symbol_count": 96,
+      "node_count": 95,
+      "prefix_free": true,
+      "complete_binary_tree": true,
+      "minimum_width": 1,
+      "maximum_width": 23,
+      "kraft_numerator": 8388608,
+      "kraft_denominator": 8388608,
+      "maximum_code": 5751073,
+      "stable_binary_format": "repeat U16LE(symbol),U8(bit_length),U32LE(code)",
+      "stable_binary_bytes": 672,
+      "stable_binary_sha256": "1c0c56a7871b6005b30385a1d7abbe5004b3172f4710afe461184c23465ac657",
+      "codeword_json_sha256": "a66a95bf144c4a571c30dde966dbce136c55b930f06a3d43169a7814e781adee",
+      "canonical_length_only_reconstruction_matches_actual": false,
+      "public_tree_to_model_codeword_mismatch_count": 0
+    },
+    "full_fine": {
+      "symbol_count": 192,
+      "node_count": 191,
+      "prefix_free": true,
+      "complete_binary_tree": true,
+      "minimum_width": 1,
+      "maximum_width": 24,
+      "kraft_numerator": 16777216,
+      "kraft_denominator": 16777216,
+      "maximum_code": 12751421,
+      "stable_binary_format": "repeat U16LE(symbol),U8(bit_length),U32LE(code)",
+      "stable_binary_bytes": 1344,
+      "stable_binary_sha256": "53d0a1bc06b0093f7a9b96215e040a62027a0affedf5391911c485b4363c88b9",
+      "codeword_json_sha256": "4d72854d34615c610d400c3e5d75cc4192c1fc3c216888daf991afc55c7a10e2",
+      "canonical_length_only_reconstruction_matches_actual": false,
+      "public_tree_to_model_codeword_mismatch_count": 0
+    },
+    "sparse_coarse": {
+      "symbol_count": 96,
+      "node_count": 95,
+      "prefix_free": true,
+      "complete_binary_tree": true,
+      "minimum_width": 1,
+      "maximum_width": 16,
+      "kraft_numerator": 65536,
+      "kraft_denominator": 65536,
+      "maximum_code": 65335,
+      "stable_binary_format": "repeat U16LE(symbol),U8(bit_length),U32LE(code)",
+      "stable_binary_bytes": 672,
+      "stable_binary_sha256": "d02ed19ab8d57774bbb1b0da5a34913cc518197dc53665d1760feb18dc8035f1",
+      "codeword_json_sha256": "e18d3a8d77f9fc35a6a08b724972fa42a9c12133537c9164bac70c904abf2646",
+      "canonical_length_only_reconstruction_matches_actual": false,
+      "public_tree_to_model_codeword_mismatch_count": 0
+    },
+    "sparse_fine": {
+      "symbol_count": 192,
+      "node_count": 191,
+      "prefix_free": true,
+      "complete_binary_tree": true,
+      "minimum_width": 1,
+      "maximum_width": 18,
+      "kraft_numerator": 262144,
+      "kraft_denominator": 262144,
+      "maximum_code": 105517,
+      "stable_binary_format": "repeat U16LE(symbol),U8(bit_length),U32LE(code)",
+      "stable_binary_bytes": 1344,
+      "stable_binary_sha256": "6579fd9aef85d1170191227d6755570bc046d6b56d66e249edd3d9d3048b370d",
+      "codeword_json_sha256": "cdef8a1f88fbb74ed37fe4f6a26972f94302ab1011a7589e8f49002c8a4ae081",
+      "canonical_length_only_reconstruction_matches_actual": false,
+      "public_tree_to_model_codeword_mismatch_count": 0
+    },
+    "position_5": {
+      "symbol_count": 5,
+      "node_count": 4,
+      "prefix_free": true,
+      "complete_binary_tree": true,
+      "minimum_width": 1,
+      "maximum_width": 3,
+      "kraft_numerator": 8,
+      "kraft_denominator": 8,
+      "maximum_code": 7,
+      "stable_binary_format": "repeat U16LE(symbol),U8(bit_length),U32LE(code)",
+      "stable_binary_bytes": 35,
+      "stable_binary_sha256": "7c664dcc4fbc479b392996d61c228f149c7fdfb21a73b1efedd73a7f80bd7ac0",
+      "codeword_json_sha256": "90ab31f1ddb75c2d3a2b16b21cb4ed87ea0cacf3cbe490c0bc650578448229c7",
+      "canonical_length_only_reconstruction_matches_actual": false,
+      "public_tree_to_model_codeword_mismatch_count": 0
+    },
+    "position_7": {
+      "symbol_count": 7,
+      "node_count": 6,
+      "prefix_free": true,
+      "complete_binary_tree": true,
+      "minimum_width": 1,
+      "maximum_width": 4,
+      "kraft_numerator": 16,
+      "kraft_denominator": 16,
+      "maximum_code": 11,
+      "stable_binary_format": "repeat U16LE(symbol),U8(bit_length),U32LE(code)",
+      "stable_binary_bytes": 49,
+      "stable_binary_sha256": "36ebfe8297aae7b7715dca9e4235301a12badd033eda8d6b37bdf5436592ce98",
+      "codeword_json_sha256": "a5b1fdc57bfe595db90f2f53eb8518f0c8deda28b3a52f130c1d3882c3929898",
+      "canonical_length_only_reconstruction_matches_actual": false,
+      "public_tree_to_model_codeword_mismatch_count": 0
+    }
+  },
+  "totals": {
+    "codebooks": 6,
+    "tree_nodes": 582,
+    "codewords": 588,
+    "public_tree_to_model_codeword_mismatches": 0,
+    "exhaustive_single_symbol_roundtrips": 588,
+    "stream_cases": 18,
+    "stream_symbols": 1224,
+    "capacity_cases": 12,
+    "invalid_symbol_rejections": 18,
+    "truncated_codeword_rejections": 6,
+    "malformed_tree_rejections": 3
+  },
+  "stream_results": [
+    {
+      "case_id": "full_coarse-all-ascending",
+      "codebook": "full_coarse",
+      "symbol_count": 96,
+      "valid_bit_count": 1810,
+      "padded_byte_count": 227,
+      "padding_zero_bits": 6,
+      "msb_padded_bytes_sha256": "061e9e9770afeff10a0d5dd75cf87238dba6fd30629dd6a689f503479b34cc4e",
+      "decoded_symbols_sha256": "be20e492b6d2d2b877e54518c309ae985e6f8fa3486814c44bb4e74630737f24"
+    },
+    {
+      "case_id": "full_coarse-all-descending",
+      "codebook": "full_coarse",
+      "symbol_count": 96,
+      "valid_bit_count": 1810,
+      "padded_byte_count": 227,
+      "padding_zero_bits": 6,
+      "msb_padded_bytes_sha256": "0ffdf4f2b879a2f07669153a30a623819cea1d3b9f7d076b37218493456400df",
+      "decoded_symbols_sha256": "366325884843f2e1a1912c4ad9f1d90294937d686afc15b3fb741bd72ea2b498"
+    },
+    {
+      "case_id": "full_coarse-edges-and-centre",
+      "codebook": "full_coarse",
+      "symbol_count": 8,
+      "valid_bit_count": 61,
+      "padded_byte_count": 8,
+      "padding_zero_bits": 3,
+      "msb_padded_bytes_sha256": "f8d88dbe12b675c8a3eda1378927b3cdf4dd7a833ac5c657c03e3d78979040c5",
+      "decoded_symbols_sha256": "0e27af7d554e2f994e2d413d11a621937bba6c663ad3bdd70971d4c88a37a2ce"
+    },
+    {
+      "case_id": "full_fine-all-ascending",
+      "codebook": "full_fine",
+      "symbol_count": 192,
+      "valid_bit_count": 3907,
+      "padded_byte_count": 489,
+      "padding_zero_bits": 5,
+      "msb_padded_bytes_sha256": "5ea1dc7fcc287a099f27a80c88195ca4e4c595dabdb3e771fee0051655b74d2b",
+      "decoded_symbols_sha256": "466de8dea462b793e3d2923d92834a6759c81ac739872f6fe938d4303990dc25"
+    },
+    {
+      "case_id": "full_fine-all-descending",
+      "codebook": "full_fine",
+      "symbol_count": 192,
+      "valid_bit_count": 3907,
+      "padded_byte_count": 489,
+      "padding_zero_bits": 5,
+      "msb_padded_bytes_sha256": "40368dc99a680d565197da10f72e70777c04787e9d56848b4baf2135a606a5ce",
+      "decoded_symbols_sha256": "315b61a9ecbfa1d400021172289a3d68cf443f92bbc603253292957ab221479b"
+    },
+    {
+      "case_id": "full_fine-edges-and-centre",
+      "codebook": "full_fine",
+      "symbol_count": 8,
+      "valid_bit_count": 63,
+      "padded_byte_count": 8,
+      "padding_zero_bits": 1,
+      "msb_padded_bytes_sha256": "8e47f5946e0702c23abef075ae79c996604ef9a68c9e0b575845c84381753e1e",
+      "decoded_symbols_sha256": "1eae3ed18b92404b4352362c355f6ae69f8766f5d92c4b1bb384f73ef9ea87a9"
+    },
+    {
+      "case_id": "sparse_coarse-all-ascending",
+      "codebook": "sparse_coarse",
+      "symbol_count": 96,
+      "valid_bit_count": 1207,
+      "padded_byte_count": 151,
+      "padding_zero_bits": 1,
+      "msb_padded_bytes_sha256": "1bdcc8a5daae54482dd6e546602e75273c5349a376a5a7e9e765666dc018f6e5",
+      "decoded_symbols_sha256": "be20e492b6d2d2b877e54518c309ae985e6f8fa3486814c44bb4e74630737f24"
+    },
+    {
+      "case_id": "sparse_coarse-all-descending",
+      "codebook": "sparse_coarse",
+      "symbol_count": 96,
+      "valid_bit_count": 1207,
+      "padded_byte_count": 151,
+      "padding_zero_bits": 1,
+      "msb_padded_bytes_sha256": "0fe5b36062f2fdb510e65b44a5589224afc01ccff3287ea25a32d31c9cb1064b",
+      "decoded_symbols_sha256": "366325884843f2e1a1912c4ad9f1d90294937d686afc15b3fb741bd72ea2b498"
+    },
+    {
+      "case_id": "sparse_coarse-edges-and-centre",
+      "codebook": "sparse_coarse",
+      "symbol_count": 8,
+      "valid_bit_count": 43,
+      "padded_byte_count": 6,
+      "padding_zero_bits": 5,
+      "msb_padded_bytes_sha256": "8fee9d8d89499a1cb2cd9c9b13f92298ac5a06cf6aebafd8af5972cd54d8c958",
+      "decoded_symbols_sha256": "0e27af7d554e2f994e2d413d11a621937bba6c663ad3bdd70971d4c88a37a2ce"
+    },
+    {
+      "case_id": "sparse_fine-all-ascending",
+      "codebook": "sparse_fine",
+      "symbol_count": 192,
+      "valid_bit_count": 2752,
+      "padded_byte_count": 344,
+      "padding_zero_bits": 0,
+      "msb_padded_bytes_sha256": "053e30b82d118de76022cae81694513fea19138e376efe8481fffa7ada0076af",
+      "decoded_symbols_sha256": "466de8dea462b793e3d2923d92834a6759c81ac739872f6fe938d4303990dc25"
+    },
+    {
+      "case_id": "sparse_fine-all-descending",
+      "codebook": "sparse_fine",
+      "symbol_count": 192,
+      "valid_bit_count": 2752,
+      "padded_byte_count": 344,
+      "padding_zero_bits": 0,
+      "msb_padded_bytes_sha256": "d9da74ae0434457a7f798346552137ea28be97dc8a60f801dc3f806e99634f05",
+      "decoded_symbols_sha256": "315b61a9ecbfa1d400021172289a3d68cf443f92bbc603253292957ab221479b"
+    },
+    {
+      "case_id": "sparse_fine-edges-and-centre",
+      "codebook": "sparse_fine",
+      "symbol_count": 8,
+      "valid_bit_count": 48,
+      "padded_byte_count": 6,
+      "padding_zero_bits": 0,
+      "msb_padded_bytes_sha256": "056e3147a5f013cf87615879b7a3a4788fedccf1d8ce0754ccb130278424ec54",
+      "decoded_symbols_sha256": "1eae3ed18b92404b4352362c355f6ae69f8766f5d92c4b1bb384f73ef9ea87a9"
+    },
+    {
+      "case_id": "position_5-all-ascending",
+      "codebook": "position_5",
+      "symbol_count": 5,
+      "valid_bit_count": 13,
+      "padded_byte_count": 2,
+      "padding_zero_bits": 3,
+      "msb_padded_bytes_sha256": "5a3df89da7bf23d71ec63f111d9171c3f05047380a17812f20248e63cfded4fb",
+      "decoded_symbols_sha256": "092977d86764722166958b9307b445c3054aab39bd8f9dddc80363777cecc197"
+    },
+    {
+      "case_id": "position_5-all-descending",
+      "codebook": "position_5",
+      "symbol_count": 5,
+      "valid_bit_count": 13,
+      "padded_byte_count": 2,
+      "padding_zero_bits": 3,
+      "msb_padded_bytes_sha256": "e5e29899563684fe56a8fa03b064920d41aa676f0a6565424c06cde56fc5a086",
+      "decoded_symbols_sha256": "59237a4a48a51cf0003009a28750a51191639c98189789f0fb54d7d0a35ae831"
+    },
+    {
+      "case_id": "position_5-edges-and-centre",
+      "codebook": "position_5",
+      "symbol_count": 8,
+      "valid_bit_count": 20,
+      "padded_byte_count": 3,
+      "padding_zero_bits": 4,
+      "msb_padded_bytes_sha256": "7f0facd15e34697249d5c1a2ab5109babcc8792524d8bfc70ba7f418f72aa2f4",
+      "decoded_symbols_sha256": "df2caf8c526f30ce20fec3a846e75f54357cbafb74c0a3c01ad8d5e74e5babe6"
+    },
+    {
+      "case_id": "position_7-all-ascending",
+      "codebook": "position_7",
+      "symbol_count": 7,
+      "valid_bit_count": 23,
+      "padded_byte_count": 3,
+      "padding_zero_bits": 1,
+      "msb_padded_bytes_sha256": "418484f356cfcfe83109d3a86df7d86aaa94bba63ca5c1cb459e019bcc7267c1",
+      "decoded_symbols_sha256": "aab9ab6716b55ed7e91249bdddb2ec1cf10305f552c1ea1f42674b7c022b8fa6"
+    },
+    {
+      "case_id": "position_7-all-descending",
+      "codebook": "position_7",
+      "symbol_count": 7,
+      "valid_bit_count": 23,
+      "padded_byte_count": 3,
+      "padding_zero_bits": 1,
+      "msb_padded_bytes_sha256": "2bde44cac99fdfd52255e357d8482b6a515e4d78904216bd51f833f383e08c06",
+      "decoded_symbols_sha256": "7758c705f6c5839ae6058ee605b4175730edffe03e728aa80a3208b913712e04"
+    },
+    {
+      "case_id": "position_7-edges-and-centre",
+      "codebook": "position_7",
+      "symbol_count": 8,
+      "valid_bit_count": 24,
+      "padded_byte_count": 3,
+      "padding_zero_bits": 0,
+      "msb_padded_bytes_sha256": "6363c75113fc4898aaeacab0cf52ddc144defa60b5b2d346e01afd3c4fa72275",
+      "decoded_symbols_sha256": "c3e2b6c0a71106749d31a2b62bac94978b4430a6fd087cd71e318fd31b6522de"
+    }
+  ],
+  "capacity_results": [
+    {
+      "case_id": "full_coarse-exact-byte-capacity",
+      "codebook": "full_coarse",
+      "symbol_count": 28,
+      "coefficient_bits": 350,
+      "header_bits": 37,
+      "total_valid_bits": 387,
+      "total_padded_bytes": 49,
+      "fits_coefficient_scratch": true,
+      "fits_final_byte_capacity": true,
+      "fits_both": true
+    },
+    {
+      "case_id": "full_coarse-one-byte-short",
+      "codebook": "full_coarse",
+      "symbol_count": 28,
+      "coefficient_bits": 350,
+      "header_bits": 37,
+      "total_valid_bits": 387,
+      "total_padded_bytes": 49,
+      "fits_coefficient_scratch": true,
+      "fits_final_byte_capacity": false,
+      "fits_both": false
+    },
+    {
+      "case_id": "full_coarse-scratch-overflow",
+      "codebook": "full_coarse",
+      "symbol_count": 189,
+      "coefficient_bits": 4347,
+      "header_bits": 0,
+      "total_valid_bits": 4347,
+      "total_padded_bytes": 544,
+      "fits_coefficient_scratch": false,
+      "fits_final_byte_capacity": false,
+      "fits_both": false
+    },
+    {
+      "case_id": "full_fine-exact-byte-capacity",
+      "codebook": "full_fine",
+      "symbol_count": 28,
+      "coefficient_bits": 364,
+      "header_bits": 37,
+      "total_valid_bits": 401,
+      "total_padded_bytes": 51,
+      "fits_coefficient_scratch": true,
+      "fits_final_byte_capacity": true,
+      "fits_both": true
+    },
+    {
+      "case_id": "full_fine-one-byte-short",
+      "codebook": "full_fine",
+      "symbol_count": 28,
+      "coefficient_bits": 364,
+      "header_bits": 37,
+      "total_valid_bits": 401,
+      "total_padded_bytes": 51,
+      "fits_coefficient_scratch": true,
+      "fits_final_byte_capacity": false,
+      "fits_both": false
+    },
+    {
+      "case_id": "full_fine-scratch-overflow",
+      "codebook": "full_fine",
+      "symbol_count": 182,
+      "coefficient_bits": 4368,
+      "header_bits": 0,
+      "total_valid_bits": 4368,
+      "total_padded_bytes": 546,
+      "fits_coefficient_scratch": false,
+      "fits_final_byte_capacity": false,
+      "fits_both": false
+    },
+    {
+      "case_id": "sparse_coarse-exact-byte-capacity",
+      "codebook": "sparse_coarse",
+      "symbol_count": 28,
+      "coefficient_bits": 238,
+      "header_bits": 37,
+      "total_valid_bits": 275,
+      "total_padded_bytes": 35,
+      "fits_coefficient_scratch": true,
+      "fits_final_byte_capacity": true,
+      "fits_both": true
+    },
+    {
+      "case_id": "sparse_coarse-one-byte-short",
+      "codebook": "sparse_coarse",
+      "symbol_count": 28,
+      "coefficient_bits": 238,
+      "header_bits": 37,
+      "total_valid_bits": 275,
+      "total_padded_bytes": 35,
+      "fits_coefficient_scratch": true,
+      "fits_final_byte_capacity": false,
+      "fits_both": false
+    },
+    {
+      "case_id": "sparse_coarse-scratch-overflow",
+      "codebook": "sparse_coarse",
+      "symbol_count": 272,
+      "coefficient_bits": 4352,
+      "header_bits": 0,
+      "total_valid_bits": 4352,
+      "total_padded_bytes": 544,
+      "fits_coefficient_scratch": false,
+      "fits_final_byte_capacity": false,
+      "fits_both": false
+    },
+    {
+      "case_id": "sparse_fine-exact-byte-capacity",
+      "codebook": "sparse_fine",
+      "symbol_count": 28,
+      "coefficient_bits": 266,
+      "header_bits": 37,
+      "total_valid_bits": 303,
+      "total_padded_bytes": 38,
+      "fits_coefficient_scratch": true,
+      "fits_final_byte_capacity": true,
+      "fits_both": true
+    },
+    {
+      "case_id": "sparse_fine-one-byte-short",
+      "codebook": "sparse_fine",
+      "symbol_count": 28,
+      "coefficient_bits": 266,
+      "header_bits": 37,
+      "total_valid_bits": 303,
+      "total_padded_bytes": 38,
+      "fits_coefficient_scratch": true,
+      "fits_final_byte_capacity": false,
+      "fits_both": false
+    },
+    {
+      "case_id": "sparse_fine-scratch-overflow",
+      "codebook": "sparse_fine",
+      "symbol_count": 242,
+      "coefficient_bits": 4356,
+      "header_bits": 0,
+      "total_valid_bits": 4356,
+      "total_padded_bytes": 545,
+      "fits_coefficient_scratch": false,
+      "fits_final_byte_capacity": false,
+      "fits_both": false
+    }
+  ],
+  "invalid_symbol_results": [
+    {
+      "case_id": "full_coarse-negative",
+      "rejected": true,
+      "error": "Huffman symbol -1 outside 0..95"
+    },
+    {
+      "case_id": "full_coarse-upper-bound",
+      "rejected": true,
+      "error": "Huffman symbol 96 outside 0..95"
+    },
+    {
+      "case_id": "full_coarse-boolean",
+      "rejected": true,
+      "error": "Huffman symbol must be an integer"
+    },
+    {
+      "case_id": "full_fine-negative",
+      "rejected": true,
+      "error": "Huffman symbol -1 outside 0..191"
+    },
+    {
+      "case_id": "full_fine-upper-bound",
+      "rejected": true,
+      "error": "Huffman symbol 192 outside 0..191"
+    },
+    {
+      "case_id": "full_fine-boolean",
+      "rejected": true,
+      "error": "Huffman symbol must be an integer"
+    },
+    {
+      "case_id": "sparse_coarse-negative",
+      "rejected": true,
+      "error": "Huffman symbol -1 outside 0..95"
+    },
+    {
+      "case_id": "sparse_coarse-upper-bound",
+      "rejected": true,
+      "error": "Huffman symbol 96 outside 0..95"
+    },
+    {
+      "case_id": "sparse_coarse-boolean",
+      "rejected": true,
+      "error": "Huffman symbol must be an integer"
+    },
+    {
+      "case_id": "sparse_fine-negative",
+      "rejected": true,
+      "error": "Huffman symbol -1 outside 0..191"
+    },
+    {
+      "case_id": "sparse_fine-upper-bound",
+      "rejected": true,
+      "error": "Huffman symbol 192 outside 0..191"
+    },
+    {
+      "case_id": "sparse_fine-boolean",
+      "rejected": true,
+      "error": "Huffman symbol must be an integer"
+    },
+    {
+      "case_id": "position_5-negative",
+      "rejected": true,
+      "error": "Huffman symbol -1 outside 0..4"
+    },
+    {
+      "case_id": "position_5-upper-bound",
+      "rejected": true,
+      "error": "Huffman symbol 5 outside 0..4"
+    },
+    {
+      "case_id": "position_5-boolean",
+      "rejected": true,
+      "error": "Huffman symbol must be an integer"
+    },
+    {
+      "case_id": "position_7-negative",
+      "rejected": true,
+      "error": "Huffman symbol -1 outside 0..6"
+    },
+    {
+      "case_id": "position_7-upper-bound",
+      "rejected": true,
+      "error": "Huffman symbol 7 outside 0..6"
+    },
+    {
+      "case_id": "position_7-boolean",
+      "rejected": true,
+      "error": "Huffman symbol must be an integer"
+    }
+  ],
+  "truncation_results": [
+    {
+      "case_id": "full_coarse-longest-minus-one-bit",
+      "rejected": true,
+      "error": "truncated Huffman codeword"
+    },
+    {
+      "case_id": "full_fine-longest-minus-one-bit",
+      "rejected": true,
+      "error": "truncated Huffman codeword"
+    },
+    {
+      "case_id": "sparse_coarse-longest-minus-one-bit",
+      "rejected": true,
+      "error": "truncated Huffman codeword"
+    },
+    {
+      "case_id": "sparse_fine-longest-minus-one-bit",
+      "rejected": true,
+      "error": "truncated Huffman codeword"
+    },
+    {
+      "case_id": "position_5-longest-minus-one-bit",
+      "rejected": true,
+      "error": "truncated Huffman codeword"
+    },
+    {
+      "case_id": "position_7-longest-minus-one-bit",
+      "rejected": true,
+      "error": "truncated Huffman codeword"
+    }
+  ],
+  "scope": {
+    "closed": "six actual F05Q Huffman table identities, symbol domains, MSB-first codewords, decoder traversal, local bit counts",
+    "not_closed": "fit producer, quantizer, profile retry, QMF, full JOC payload and end-to-end player validation",
+    "implementation_ready_global": "NO"
+  }
+}

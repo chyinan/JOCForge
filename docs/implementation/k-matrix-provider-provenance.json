@@ -1,0 +1,43 @@
+{
+  "schema": "f06kg-k-matrix-provider-provenance.v1",
+  "package_base_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_assets": {
+    "specs/06-meter-k-matrix-generation.md": {
+      "bytes": 5811,
+      "sha256": "d6287e17dec2a4b93b5756eb25345fd41cc4329eebeacefabd8e71ad84d33e31"
+    },
+    "parameters/meter-k-matrix-math-v1.json": {
+      "bytes": 3985,
+      "sha256": "c8b4ffd52fffd62f5d0fdeba36a993f02188933a43593abe6969243f44f7f536"
+    },
+    "parameters/meter-k-state-bounds-v1.json": {
+      "bytes": 970,
+      "sha256": "2faaa9d0aeefb105a913589590fcbafb97362a54192b0b21c5fdda7da1974e68"
+    },
+    "test-vectors/METER-K-MATRIX-GENERATION-VERIFICATION.json": {
+      "bytes": 3617,
+      "sha256": "88bfb0d0b9041d41ddf5ae30a0de18ac9b7be22ff06f45713b6601489eeda8b5"
+    },
+    "test-vectors/METER-K-MATRIX-LOCAL-REVIEW-STATUS.json": {
+      "bytes": 4581,
+      "sha256": "1816539047fcac1c62f604e3975ffc3fcae49617dd763a60f0842f0bc8153c44"
+    }
+  },
+  "production_input_subset": {
+    "file": "crates/jocforge-domain/src/meter/k_matrix_parameters.json",
+    "bytes": 1960,
+    "sha256": "7396e0a9e54b97ac7c6cd02ae8e4b519815a195fdeda3042f1a46b30691ba363",
+    "expected_generated_words_included": false
+  },
+  "scope": {
+    "matrix_words": 64,
+    "cold_words": 8,
+    "complete_f32le_bytes": 288,
+    "complete_sha256": "08dc825e016f703df13b023bf29486996cba7c1eac2ebc1c7741da54ef98fb1a",
+    "provider_generator_only": true,
+    "continuous_consumer": "NOT_IMPLEMENTED",
+    "whole_meter_ready": false,
+    "whole_product_implementation_ready": "NO",
+    "public_or_third_party_distribution": "NOT_AUTHORIZED"
+  }
+}

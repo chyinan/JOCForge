@@ -1,0 +1,66 @@
+{
+  "package": "selected-target-attribute-lineage-washed-v1",
+  "status": "RELATION_ONLY_NOT_PRODUCTION_READY",
+  "production_usable": false,
+  "vectors": [
+    {
+      "id": "cold_initialization",
+      "kind": "direct_behavior",
+      "input": {"capacity": 15},
+      "expected_relations": [
+        "current_ids == 0xffffffff repeated 15 times",
+        "previous_ids == 0xffffffff repeated 15 times",
+        "current_attributes == 0x00000b00 repeated 15 times",
+        "previous_attributes == 0x00000b00 repeated 15 times",
+        "active_flags == false repeated 15 times"
+      ],
+      "runtime_status": "CONFIRMED_SELECTED_PATH"
+    },
+    {
+      "id": "shortage_does_not_fail",
+      "kind": "discriminating_relation",
+      "input": {"selected_count": "greater_than_retained_count", "attributes": "mixed_symbolic_values"},
+      "expected_relations": [
+        "shortage_check_is_true",
+        "operation_continues_to_assignment",
+        "no_unsupported_attribute_multiplicity_error"
+      ],
+      "runtime_status": "STATIC_ONLY_NOT_RUN"
+    },
+    {
+      "id": "multiplicity_mask",
+      "kind": "discriminating_relation",
+      "input": {"new_attribute": "symbolic_A_or_B", "old_attribute": "symbolic_A_or_B"},
+      "expected_relations": [
+        "mask == 1 when new_attribute equals old_attribute",
+        "mask == 0 otherwise",
+        "cost_includes_50_times_mask_when_shortage_path_is_active"
+      ],
+      "runtime_status": "STATIC_ONLY_NOT_RUN"
+    },
+    {
+      "id": "greedy_tie_order",
+      "kind": "discriminating_relation",
+      "input": {"candidate_costs": "two_or_more_equal_minima"},
+      "expected_relations": [
+        "strictly_better_only_replaces_best",
+        "equal_cost_uses_ascending_row_then_column"
+      ],
+      "runtime_status": "STATIC_ONLY_NOT_RUN"
+    },
+    {
+      "id": "commit_projection",
+      "kind": "direct_behavior",
+      "input": {"mapped_slots": "subset", "unmapped_slots": "remainder"},
+      "expected_relations": [
+        "mapped_slot_previous_receives_old_current",
+        "mapped_slot_current_receives_selected_values",
+        "mapped_slot_active_is_true",
+        "unmapped_slot_active_is_false",
+        "unmapped_slot_fields_are_retained"
+      ],
+      "runtime_status": "SELECTED_PATH_CONFIRMED"
+    }
+  ]
+}
+

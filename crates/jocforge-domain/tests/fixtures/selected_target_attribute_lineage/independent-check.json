@@ -1,0 +1,12 @@
+{
+  "schema": "washed-native-behavior-check.v1",
+  "manifest_sha256": "207c9f33d2ec921c7a13c90f015133aba543edde8f88a557b71acb659073568f",
+  "file_count": 3,
+  "checks": {
+    "all_hashes_match": true,
+    "no_research_addresses_in_washed_spec": true,
+    "no_private_key_material": true,
+    "status_is_not_ready": true
+  }
+}
+

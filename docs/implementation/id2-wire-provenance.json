@@ -1,0 +1,37 @@
+{
+  "schema": "f13d2-id2-wire-provenance.v1",
+  "package_base_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_assets": {
+    "specs/13-id2-profile-metadata.md": {
+      "bytes": 3236,
+      "sha256": "35aa89d0dd67fb0133c4898c1007c84d48b39c5df6683dd88a173600975b48cc"
+    },
+    "test-vectors/unit/ADAPTER-CONTRACT.md": {
+      "bytes": 22205,
+      "sha256": "9bce2e35ce47147c76c13e58ee976d44c5109938f0b19e1f3a81f1d8a61fa1ae"
+    },
+    "test-vectors/unit/vectors.json": {
+      "bytes": 1503142,
+      "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
+    }
+  },
+  "selected_vector_entries": [
+    "id2-profile-enums",
+    "id2-profile-from-header",
+    "id2-field-wire"
+  ],
+  "local_fixture": {
+    "file": "crates/jocforge-domain/tests/fixtures/id2_wire/input-vectors.json",
+    "bytes": 3417,
+    "sha256": "b3b5cf65d35a77a0df31ff0211949e6805882c0d79ad1c7e975daded0d91f8cf",
+    "case_count": 7
+  },
+  "scope": {
+    "production_usable": "SLICE_ONLY",
+    "programme_drc_profile_admission_expanded": false,
+    "whole_f13_ready": false,
+    "whole_product_implementation_ready": "NO",
+    "native_runtime": "NOT_RUN",
+    "source_au_replay": "NOT_RUN"
+  }
+}

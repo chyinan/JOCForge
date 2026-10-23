@@ -1,0 +1,66 @@
+{
+  "schema": "f06i-synthetic-integrated-meter-state-local-mapping.v1",
+  "delivery_scope": "INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION",
+  "source_package": {
+    "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "spec": {
+      "file": "specs/06-integrated-meter-state.md",
+      "bytes": 9368,
+      "sha256": "e5caf84805cb24850dd0cf85e18d1dc4a4ee91fcb9e334cfc6f9881952efdb72"
+    },
+    "vectors": {
+      "file": "test-vectors/METER-INTEGRATED-SCHEDULE-VERIFICATION.json",
+      "bytes": 2051223,
+      "sha256": "a565e513970670967aa3aebd0372f9dbb5f9bbab670a54744ae454926b3f2671"
+    },
+    "review": {
+      "file": "test-vectors/METER-STATE-CLOCK-LOCAL-REVIEW-STATUS.json",
+      "bytes": 10646,
+      "sha256": "020f88cafa892119bac5fea5bc808d251798e98aec69897c6ab068da80637307"
+    }
+  },
+  "local_fixtures": [
+    {
+      "file": "crates/jocforge-domain/tests/fixtures/integrated_meter/METER-INTEGRATED-SCHEDULE-VERIFICATION.json",
+      "bytes": 2051223,
+      "sha256": "a565e513970670967aa3aebd0372f9dbb5f9bbab670a54744ae454926b3f2671"
+    },
+    {
+      "file": "crates/jocforge-domain/tests/fixtures/integrated_meter/METER-STATE-CLOCK-LOCAL-REVIEW-STATUS.json",
+      "bytes": 10646,
+      "sha256": "020f88cafa892119bac5fea5bc808d251798e98aec69897c6ab068da80637307"
+    },
+    {
+      "file": "crates/jocforge-domain/src/meter/truepeak_log_parameters.json",
+      "bytes": 780,
+      "sha256": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266"
+    }
+  ],
+  "verified_scope": {
+    "synthetic_cases": 10,
+    "ordered_energy_blocks": 345,
+    "full_canonical_state_bytes": 24512,
+    "bin_boundary_cases": 7,
+    "contract_derived_input_and_state_boundary_checks": 7,
+    "schedule_cases_executed": 0,
+    "real_music_energy_inputs_executed": 0
+  },
+  "excluded_assets": [
+    {
+      "file": "test-vectors/REAL-MUSIC-METER-ENERGY-INPUTS.json",
+      "use": "Historical attestation only; not copied or used as implementation/runtime/test input."
+    },
+    {
+      "file": "test-vectors/REAL-MUSIC-METER-INTEGRATED-VERIFICATION.json",
+      "use": "Historical attestation only; not copied or used as implementation/runtime/test input."
+    }
+  ],
+  "implementation_boundary": {
+    "F06I_synthetic_state_and_event": "LOCALLY_VERIFIED",
+    "F06I_bin_mapping": "LOCALLY_VERIFIED",
+    "F06W_schedule_cases": "NOT_RUN",
+    "real_ADM_meter_frontend": "NOT_RUN",
+    "whole_meter_and_parent_transaction": "NOT_RUN",
+    "product_acceptance": "NOT_RUN"
+  }
+}

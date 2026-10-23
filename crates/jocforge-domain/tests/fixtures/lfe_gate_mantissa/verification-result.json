@@ -1,0 +1,260 @@
+{
+  "schema": "lfe-gate-mantissa-verification.v1",
+  "status": "PASS",
+  "checks": 37,
+  "passed": 37,
+  "details": [
+    {
+      "id": "selected_gate",
+      "pass": true,
+      "actual": 0
+    },
+    {
+      "id": "gate_selected",
+      "pass": true,
+      "actual": 0
+    },
+    {
+      "id": "gate_writer_one",
+      "pass": true,
+      "actual": 1
+    },
+    {
+      "id": "gate_writer_other",
+      "pass": true,
+      "actual": 0
+    },
+    {
+      "id": "gate_writer_two",
+      "pass": true,
+      "actual": 0
+    },
+    {
+      "id": "gate_wrong_blocks",
+      "pass": true,
+      "actual": 0
+    },
+    {
+      "id": "normalizer_gate_zero",
+      "pass": true,
+      "actual": {
+        "base": 0,
+        "groups": [
+          62,
+          62
+        ],
+        "decoded": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "second_pass": true
+      }
+    },
+    {
+      "id": "normalizer_gate_nonzero_positive",
+      "pass": true,
+      "actual": {
+        "base": 0,
+        "groups": [
+          62,
+          62
+        ],
+        "decoded": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "second_pass": false
+      }
+    },
+    {
+      "id": "normalizer_gate_nonzero_negative_one",
+      "pass": true,
+      "actual": {
+        "base": 0,
+        "groups": [
+          62,
+          62
+        ],
+        "decoded": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "second_pass": false
+      }
+    },
+    {
+      "id": "normalizer_gate_nonzero_negative",
+      "pass": true,
+      "actual": {
+        "base": 0,
+        "groups": [
+          62,
+          62
+        ],
+        "decoded": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "second_pass": false
+      }
+    },
+    {
+      "id": "normalizer_gate_nonzero_max",
+      "pass": true,
+      "actual": {
+        "base": 0,
+        "groups": [
+          62,
+          62
+        ],
+        "decoded": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "second_pass": false
+      }
+    },
+    {
+      "id": "primary_oracle_all_boundaries",
+      "pass": true
+    },
+    {
+      "id": "lfe_shared_primitive",
+      "pass": true
+    },
+    {
+      "id": "coefficient_positive_zero",
+      "pass": true
+    },
+    {
+      "id": "coefficient_negative_zero",
+      "pass": true
+    },
+    {
+      "id": "coefficient_min_subnormal",
+      "pass": true
+    },
+    {
+      "id": "coefficient_below_half",
+      "pass": true
+    },
+    {
+      "id": "coefficient_half",
+      "pass": true
+    },
+    {
+      "id": "coefficient_inside_positive",
+      "pass": true
+    },
+    {
+      "id": "coefficient_positive_equal",
+      "pass": true
+    },
+    {
+      "id": "coefficient_positive_over",
+      "pass": true
+    },
+    {
+      "id": "coefficient_positive_max",
+      "pass": true
+    },
+    {
+      "id": "coefficient_inside_negative",
+      "pass": true
+    },
+    {
+      "id": "coefficient_negative_equal",
+      "pass": true
+    },
+    {
+      "id": "coefficient_negative_over",
+      "pass": true
+    },
+    {
+      "id": "coefficient_negative_max",
+      "pass": true
+    },
+    {
+      "id": "reject_nan",
+      "pass": true,
+      "actual_error": "MANTISSA_INPUT_ERROR"
+    },
+    {
+      "id": "reject_infinity_lfe",
+      "pass": true,
+      "actual_error": "MANTISSA_INPUT_ERROR"
+    },
+    {
+      "id": "reject_lfe_wrong_count",
+      "pass": true,
+      "actual_error": "MANTISSA_INPUT_ERROR"
+    },
+    {
+      "id": "reject_gate_bool",
+      "pass": true,
+      "actual_error": "LFE_GATE_INPUT_ERROR"
+    },
+    {
+      "id": "reject_gate_outside_i16",
+      "pass": true,
+      "actual_error": "LFE_GATE_INPUT_ERROR"
+    },
+    {
+      "id": "reject_raw_outside",
+      "pass": true,
+      "actual_error": "EXPONENT_INPUT_ERROR"
+    },
+    {
+      "id": "map_normalizer_numeric_failure",
+      "pass": true,
+      "actual": "NUMERIC_FAILURE"
+    },
+    {
+      "id": "map_normalizer_input_failure",
+      "pass": true,
+      "actual": "EXPONENT_INPUT_ERROR"
+    },
+    {
+      "id": "failure_zero_commit",
+      "pass": true
+    },
+    {
+      "id": "retired_reject",
+      "pass": true
+    },
+    {
+      "id": "reset_retry_commit",
+      "pass": true
+    }
+  ],
+  "dll_runtime_observation_used": false,
+  "private_key_used": false,
+  "pcm_used": false,
+  "scope": "selected 48kHz 1024kbps acmod7 six-block profile boundary rules",
+  "research_source_paths_included": false
+}

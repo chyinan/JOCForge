@@ -1,0 +1,2303 @@
+{
+  "schema": "joc-huffman-consumer-connection-verification.v1",
+  "parameter_file": "parameters/joc-huffman-v1.json",
+  "parameter_file_sha256": "515d635adc6099493dfd27f787bdf2b9f19a4b4bb1180860b0e820a23fb5d5ae",
+  "success_cases": [
+    {
+      "case_id": "consumer-mode0-full-coarse-channel-point-resets",
+      "input": {
+        "case_id": "consumer-mode0-full-coarse-channel-point-resets",
+        "mode": 0,
+        "channel_count": 5,
+        "points": [
+          {
+            "quantized_rows": [
+              [
+                48,
+                49,
+                47
+              ],
+              [
+                49,
+                49,
+                48
+              ],
+              [
+                0,
+                95,
+                48
+              ],
+              [
+                47,
+                47,
+                47
+              ],
+              [
+                95,
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "quantized_rows": [
+              [
+                48,
+                48,
+                48
+              ],
+              [
+                47,
+                48,
+                49
+              ],
+              [
+                95,
+                94,
+                93
+              ],
+              [
+                1,
+                0,
+                95
+              ],
+              [
+                50,
+                49,
+                48
+              ]
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "selected_coefficient_codebook": "full_coarse",
+        "selected_position_codebook": null,
+        "steps": 96,
+        "initial_previous": 48,
+        "reset_events": [
+          {
+            "point": 0,
+            "channel": 0,
+            "previous": 48,
+            "reason": "FULL_POINT_CHANNEL_START"
+          },
+          {
+            "point": 0,
+            "channel": 1,
+            "previous": 48,
+            "reason": "FULL_POINT_CHANNEL_START"
+          },
+          {
+            "point": 0,
+            "channel": 2,
+            "previous": 48,
+            "reason": "FULL_POINT_CHANNEL_START"
+          },
+          {
+            "point": 0,
+            "channel": 3,
+            "previous": 48,
+            "reason": "FULL_POINT_CHANNEL_START"
+          },
+          {
+            "point": 0,
+            "channel": 4,
+            "previous": 48,
+            "reason": "FULL_POINT_CHANNEL_START"
+          },
+          {
+            "point": 1,
+            "channel": 0,
+            "previous": 48,
+            "reason": "FULL_POINT_CHANNEL_START"
+          },
+          {
+            "point": 1,
+            "channel": 1,
+            "previous": 48,
+            "reason": "FULL_POINT_CHANNEL_START"
+          },
+          {
+            "point": 1,
+            "channel": 2,
+            "previous": 48,
+            "reason": "FULL_POINT_CHANNEL_START"
+          },
+          {
+            "point": 1,
+            "channel": 3,
+            "previous": 48,
+            "reason": "FULL_POINT_CHANNEL_START"
+          },
+          {
+            "point": 1,
+            "channel": 4,
+            "previous": 48,
+            "reason": "FULL_POINT_CHANNEL_START"
+          }
+        ],
+        "write_events": [
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 0,
+            "channel": 0,
+            "band": 0,
+            "quantized": 48,
+            "previous_before": 48,
+            "symbol": 0,
+            "code": 0,
+            "bit_length": 1,
+            "bits": "0"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 0,
+            "channel": 0,
+            "band": 1,
+            "quantized": 49,
+            "previous_before": 48,
+            "symbol": 1,
+            "code": 3,
+            "bit_length": 2,
+            "bits": "11"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 0,
+            "channel": 0,
+            "band": 2,
+            "quantized": 47,
+            "previous_before": 49,
+            "symbol": 94,
+            "code": 20,
+            "bit_length": 5,
+            "bits": "10100"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 0,
+            "channel": 1,
+            "band": 0,
+            "quantized": 49,
+            "previous_before": 48,
+            "symbol": 1,
+            "code": 3,
+            "bit_length": 2,
+            "bits": "11"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 0,
+            "channel": 1,
+            "band": 1,
+            "quantized": 49,
+            "previous_before": 49,
+            "symbol": 0,
+            "code": 0,
+            "bit_length": 1,
+            "bits": "0"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 0,
+            "channel": 1,
+            "band": 2,
+            "quantized": 48,
+            "previous_before": 49,
+            "symbol": 95,
+            "code": 4,
+            "bit_length": 3,
+            "bits": "100"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 0,
+            "channel": 2,
+            "band": 0,
+            "quantized": 0,
+            "previous_before": 48,
+            "symbol": 48,
+            "code": 5751027,
+            "bit_length": 23,
+            "bits": "10101111100000011110011"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 0,
+            "channel": 2,
+            "band": 1,
+            "quantized": 95,
+            "previous_before": 0,
+            "symbol": 95,
+            "code": 4,
+            "bit_length": 3,
+            "bits": "100"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 0,
+            "channel": 2,
+            "band": 2,
+            "quantized": 48,
+            "previous_before": 95,
+            "symbol": 49,
+            "code": 5751024,
+            "bit_length": 23,
+            "bits": "10101111100000011110000"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 0,
+            "channel": 3,
+            "band": 0,
+            "quantized": 47,
+            "previous_before": 48,
+            "symbol": 95,
+            "code": 4,
+            "bit_length": 3,
+            "bits": "100"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 0,
+            "channel": 3,
+            "band": 1,
+            "quantized": 47,
+            "previous_before": 47,
+            "symbol": 0,
+            "code": 0,
+            "bit_length": 1,
+            "bits": "0"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 0,
+            "channel": 3,
+            "band": 2,
+            "quantized": 47,
+            "previous_before": 47,
+            "symbol": 0,
+            "code": 0,
+            "bit_length": 1,
+            "bits": "0"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 0,
+            "channel": 4,
+            "band": 0,
+            "quantized": 95,
+            "previous_before": 48,
+            "symbol": 47,
+            "code": 5751026,
+            "bit_length": 23,
+            "bits": "10101111100000011110010"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 0,
+            "channel": 4,
+            "band": 1,
+            "quantized": 0,
+            "previous_before": 95,
+            "symbol": 1,
+            "code": 3,
+            "bit_length": 2,
+            "bits": "11"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 0,
+            "channel": 4,
+            "band": 2,
+            "quantized": 1,
+            "previous_before": 0,
+            "symbol": 1,
+            "code": 3,
+            "bit_length": 2,
+            "bits": "11"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 1,
+            "channel": 0,
+            "band": 0,
+            "quantized": 48,
+            "previous_before": 48,
+            "symbol": 0,
+            "code": 0,
+            "bit_length": 1,
+            "bits": "0"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 1,
+            "channel": 0,
+            "band": 1,
+            "quantized": 48,
+            "previous_before": 48,
+            "symbol": 0,
+            "code": 0,
+            "bit_length": 1,
+            "bits": "0"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 1,
+            "channel": 0,
+            "band": 2,
+            "quantized": 48,
+            "previous_before": 48,
+            "symbol": 0,
+            "code": 0,
+            "bit_length": 1,
+            "bits": "0"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 1,
+            "channel": 1,
+            "band": 0,
+            "quantized": 47,
+            "previous_before": 48,
+            "symbol": 95,
+            "code": 4,
+            "bit_length": 3,
+            "bits": "100"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 1,
+            "channel": 1,
+            "band": 1,
+            "quantized": 48,
+            "previous_before": 47,
+            "symbol": 1,
+            "code": 3,
+            "bit_length": 2,
+            "bits": "11"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 1,
+            "channel": 1,
+            "band": 2,
+            "quantized": 49,
+            "previous_before": 48,
+            "symbol": 1,
+            "code": 3,
+            "bit_length": 2,
+            "bits": "11"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 1,
+            "channel": 2,
+            "band": 0,
+            "quantized": 95,
+            "previous_before": 48,
+            "symbol": 47,
+            "code": 5751026,
+            "bit_length": 23,
+            "bits": "10101111100000011110010"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 1,
+            "channel": 2,
+            "band": 1,
+            "quantized": 94,
+            "previous_before": 95,
+            "symbol": 95,
+            "code": 4,
+            "bit_length": 3,
+            "bits": "100"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 1,
+            "channel": 2,
+            "band": 2,
+            "quantized": 93,
+            "previous_before": 94,
+            "symbol": 95,
+            "code": 4,
+            "bit_length": 3,
+            "bits": "100"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 1,
+            "channel": 3,
+            "band": 0,
+            "quantized": 1,
+            "previous_before": 48,
+            "symbol": 49,
+            "code": 5751024,
+            "bit_length": 23,
+            "bits": "10101111100000011110000"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 1,
+            "channel": 3,
+            "band": 1,
+            "quantized": 0,
+            "previous_before": 1,
+            "symbol": 95,
+            "code": 4,
+            "bit_length": 3,
+            "bits": "100"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 1,
+            "channel": 3,
+            "band": 2,
+            "quantized": 95,
+            "previous_before": 0,
+            "symbol": 95,
+            "code": 4,
+            "bit_length": 3,
+            "bits": "100"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 1,
+            "channel": 4,
+            "band": 0,
+            "quantized": 50,
+            "previous_before": 48,
+            "symbol": 2,
+            "code": 11,
+            "bit_length": 4,
+            "bits": "1011"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 1,
+            "channel": 4,
+            "band": 1,
+            "quantized": 49,
+            "previous_before": 50,
+            "symbol": 95,
+            "code": 4,
+            "bit_length": 3,
+            "bits": "100"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_coarse",
+            "point": 1,
+            "channel": 4,
+            "band": 2,
+            "quantized": 48,
+            "previous_before": 49,
+            "symbol": 95,
+            "code": 4,
+            "bit_length": 3,
+            "bits": "100"
+          }
+        ],
+        "valid_bit_count": 173,
+        "padding_zero_bits": 3,
+        "padded_bytes_hex": "74d2be079caf81e10af81e5e27d7c0f292be07849720",
+        "padded_bytes_sha256": "3ae11f8ed405a8de3238241b7b6bfc3a0827511667e94a52f0bed0de6aa2d119"
+      }
+    },
+    {
+      "case_id": "consumer-mode1-full-fine-channel-point-resets",
+      "input": {
+        "case_id": "consumer-mode1-full-fine-channel-point-resets",
+        "mode": 1,
+        "channel_count": 7,
+        "points": [
+          {
+            "quantized_rows": [
+              [
+                96,
+                97
+              ],
+              [
+                95,
+                96
+              ],
+              [
+                0,
+                191
+              ],
+              [
+                191,
+                0
+              ],
+              [
+                100,
+                99
+              ],
+              [
+                1,
+                2
+              ],
+              [
+                190,
+                189
+              ]
+            ]
+          },
+          {
+            "quantized_rows": [
+              [
+                96,
+                96
+              ],
+              [
+                97,
+                95
+              ],
+              [
+                191,
+                190
+              ],
+              [
+                0,
+                1
+              ],
+              [
+                99,
+                100
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                189,
+                190
+              ]
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "selected_coefficient_codebook": "full_fine",
+        "selected_position_codebook": null,
+        "steps": 192,
+        "initial_previous": 96,
+        "reset_events": [
+          {
+            "point": 0,
+            "channel": 0,
+            "previous": 96,
+            "reason": "FULL_POINT_CHANNEL_START"
+          },
+          {
+            "point": 0,
+            "channel": 1,
+            "previous": 96,
+            "reason": "FULL_POINT_CHANNEL_START"
+          },
+          {
+            "point": 0,
+            "channel": 2,
+            "previous": 96,
+            "reason": "FULL_POINT_CHANNEL_START"
+          },
+          {
+            "point": 0,
+            "channel": 3,
+            "previous": 96,
+            "reason": "FULL_POINT_CHANNEL_START"
+          },
+          {
+            "point": 0,
+            "channel": 4,
+            "previous": 96,
+            "reason": "FULL_POINT_CHANNEL_START"
+          },
+          {
+            "point": 0,
+            "channel": 5,
+            "previous": 96,
+            "reason": "FULL_POINT_CHANNEL_START"
+          },
+          {
+            "point": 0,
+            "channel": 6,
+            "previous": 96,
+            "reason": "FULL_POINT_CHANNEL_START"
+          },
+          {
+            "point": 1,
+            "channel": 0,
+            "previous": 96,
+            "reason": "FULL_POINT_CHANNEL_START"
+          },
+          {
+            "point": 1,
+            "channel": 1,
+            "previous": 96,
+            "reason": "FULL_POINT_CHANNEL_START"
+          },
+          {
+            "point": 1,
+            "channel": 2,
+            "previous": 96,
+            "reason": "FULL_POINT_CHANNEL_START"
+          },
+          {
+            "point": 1,
+            "channel": 3,
+            "previous": 96,
+            "reason": "FULL_POINT_CHANNEL_START"
+          },
+          {
+            "point": 1,
+            "channel": 4,
+            "previous": 96,
+            "reason": "FULL_POINT_CHANNEL_START"
+          },
+          {
+            "point": 1,
+            "channel": 5,
+            "previous": 96,
+            "reason": "FULL_POINT_CHANNEL_START"
+          },
+          {
+            "point": 1,
+            "channel": 6,
+            "previous": 96,
+            "reason": "FULL_POINT_CHANNEL_START"
+          }
+        ],
+        "write_events": [
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 0,
+            "channel": 0,
+            "band": 0,
+            "quantized": 96,
+            "previous_before": 96,
+            "symbol": 0,
+            "code": 0,
+            "bit_length": 1,
+            "bits": "0"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 0,
+            "channel": 0,
+            "band": 1,
+            "quantized": 97,
+            "previous_before": 96,
+            "symbol": 1,
+            "code": 4,
+            "bit_length": 3,
+            "bits": "100"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 0,
+            "channel": 1,
+            "band": 0,
+            "quantized": 95,
+            "previous_before": 96,
+            "symbol": 191,
+            "code": 5,
+            "bit_length": 3,
+            "bits": "101"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 0,
+            "channel": 1,
+            "band": 1,
+            "quantized": 96,
+            "previous_before": 95,
+            "symbol": 1,
+            "code": 4,
+            "bit_length": 3,
+            "bits": "100"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 0,
+            "channel": 2,
+            "band": 0,
+            "quantized": 0,
+            "previous_before": 96,
+            "symbol": 96,
+            "code": 12751205,
+            "bit_length": 24,
+            "bits": "110000101001000101100101"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 0,
+            "channel": 2,
+            "band": 1,
+            "quantized": 191,
+            "previous_before": 0,
+            "symbol": 191,
+            "code": 5,
+            "bit_length": 3,
+            "bits": "101"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 0,
+            "channel": 3,
+            "band": 0,
+            "quantized": 191,
+            "previous_before": 96,
+            "symbol": 95,
+            "code": 12751204,
+            "bit_length": 24,
+            "bits": "110000101001000101100100"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 0,
+            "channel": 3,
+            "band": 1,
+            "quantized": 0,
+            "previous_before": 191,
+            "symbol": 1,
+            "code": 4,
+            "bit_length": 3,
+            "bits": "100"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 0,
+            "channel": 4,
+            "band": 0,
+            "quantized": 100,
+            "previous_before": 96,
+            "symbol": 4,
+            "code": 50,
+            "bit_length": 6,
+            "bits": "110010"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 0,
+            "channel": 4,
+            "band": 1,
+            "quantized": 99,
+            "previous_before": 100,
+            "symbol": 191,
+            "code": 5,
+            "bit_length": 3,
+            "bits": "101"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 0,
+            "channel": 5,
+            "band": 0,
+            "quantized": 1,
+            "previous_before": 96,
+            "symbol": 97,
+            "code": 12751226,
+            "bit_length": 24,
+            "bits": "110000101001000101111010"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 0,
+            "channel": 5,
+            "band": 1,
+            "quantized": 2,
+            "previous_before": 1,
+            "symbol": 1,
+            "code": 4,
+            "bit_length": 3,
+            "bits": "100"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 0,
+            "channel": 6,
+            "band": 0,
+            "quantized": 190,
+            "previous_before": 96,
+            "symbol": 94,
+            "code": 12751207,
+            "bit_length": 24,
+            "bits": "110000101001000101100111"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 0,
+            "channel": 6,
+            "band": 1,
+            "quantized": 189,
+            "previous_before": 190,
+            "symbol": 191,
+            "code": 5,
+            "bit_length": 3,
+            "bits": "101"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 1,
+            "channel": 0,
+            "band": 0,
+            "quantized": 96,
+            "previous_before": 96,
+            "symbol": 0,
+            "code": 0,
+            "bit_length": 1,
+            "bits": "0"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 1,
+            "channel": 0,
+            "band": 1,
+            "quantized": 96,
+            "previous_before": 96,
+            "symbol": 0,
+            "code": 0,
+            "bit_length": 1,
+            "bits": "0"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 1,
+            "channel": 1,
+            "band": 0,
+            "quantized": 97,
+            "previous_before": 96,
+            "symbol": 1,
+            "code": 4,
+            "bit_length": 3,
+            "bits": "100"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 1,
+            "channel": 1,
+            "band": 1,
+            "quantized": 95,
+            "previous_before": 97,
+            "symbol": 190,
+            "code": 14,
+            "bit_length": 4,
+            "bits": "1110"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 1,
+            "channel": 2,
+            "band": 0,
+            "quantized": 191,
+            "previous_before": 96,
+            "symbol": 95,
+            "code": 12751204,
+            "bit_length": 24,
+            "bits": "110000101001000101100100"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 1,
+            "channel": 2,
+            "band": 1,
+            "quantized": 190,
+            "previous_before": 191,
+            "symbol": 191,
+            "code": 5,
+            "bit_length": 3,
+            "bits": "101"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 1,
+            "channel": 3,
+            "band": 0,
+            "quantized": 0,
+            "previous_before": 96,
+            "symbol": 96,
+            "code": 12751205,
+            "bit_length": 24,
+            "bits": "110000101001000101100101"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 1,
+            "channel": 3,
+            "band": 1,
+            "quantized": 1,
+            "previous_before": 0,
+            "symbol": 1,
+            "code": 4,
+            "bit_length": 3,
+            "bits": "100"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 1,
+            "channel": 4,
+            "band": 0,
+            "quantized": 99,
+            "previous_before": 96,
+            "symbol": 3,
+            "code": 30,
+            "bit_length": 5,
+            "bits": "11110"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 1,
+            "channel": 4,
+            "band": 1,
+            "quantized": 100,
+            "previous_before": 99,
+            "symbol": 1,
+            "code": 4,
+            "bit_length": 3,
+            "bits": "100"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 1,
+            "channel": 5,
+            "band": 0,
+            "quantized": 2,
+            "previous_before": 96,
+            "symbol": 98,
+            "code": 12751227,
+            "bit_length": 24,
+            "bits": "110000101001000101111011"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 1,
+            "channel": 5,
+            "band": 1,
+            "quantized": 1,
+            "previous_before": 2,
+            "symbol": 191,
+            "code": 5,
+            "bit_length": 3,
+            "bits": "101"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 1,
+            "channel": 6,
+            "band": 0,
+            "quantized": 189,
+            "previous_before": 96,
+            "symbol": 93,
+            "code": 12751206,
+            "bit_length": 24,
+            "bits": "110000101001000101100110"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "full_fine",
+            "point": 1,
+            "channel": 6,
+            "band": 1,
+            "quantized": 190,
+            "previous_before": 189,
+            "symbol": 1,
+            "code": 4,
+            "bit_length": 3,
+            "bits": "100"
+          }
+        ],
+        "valid_bit_count": 252,
+        "padding_zero_bits": 4,
+        "padded_bytes_hex": "4b30a4596e148b24cae148bd4c29167a4ec29164b8522cb3d30a45eee148b340",
+        "padded_bytes_sha256": "600efaa6bbf59eee7fb15984ff73c0baef0e3c5d7774284af67d1d8ed8682859"
+      }
+    },
+    {
+      "case_id": "consumer-mode2-sparse-coarse-position5-initial50",
+      "input": {
+        "case_id": "consumer-mode2-sparse-coarse-position5-initial50",
+        "mode": 2,
+        "channel_count": 5,
+        "points": [
+          {
+            "selected_channels": [
+              4,
+              0,
+              2,
+              1,
+              3
+            ],
+            "quantized_coefficients": [
+              50,
+              49,
+              51,
+              0,
+              95
+            ]
+          },
+          {
+            "selected_channels": [
+              0,
+              4,
+              3,
+              2,
+              1
+            ],
+            "quantized_coefficients": [
+              50,
+              50,
+              49,
+              48,
+              47
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "selected_coefficient_codebook": "sparse_coarse",
+        "selected_position_codebook": "position_5",
+        "steps": 96,
+        "initial_previous": 50,
+        "reset_events": [
+          {
+            "point": 0,
+            "channel": null,
+            "previous": 50,
+            "reason": "SPARSE_POINT_START"
+          },
+          {
+            "point": 1,
+            "channel": null,
+            "previous": 50,
+            "reason": "SPARSE_POINT_START"
+          }
+        ],
+        "write_events": [
+          {
+            "event_kind": "DIRECT_CHANNEL_3BIT",
+            "point": 0,
+            "band": 0,
+            "channel": 4,
+            "bits": "100",
+            "bit_length": 3
+          },
+          {
+            "event_kind": "POSITION_HUFFMAN",
+            "codebook": "position_5",
+            "point": 0,
+            "band": 1,
+            "previous_channel": 4,
+            "current_channel": 0,
+            "symbol": 1,
+            "code": 6,
+            "bit_length": 3,
+            "bits": "110"
+          },
+          {
+            "event_kind": "POSITION_HUFFMAN",
+            "codebook": "position_5",
+            "point": 0,
+            "band": 2,
+            "previous_channel": 0,
+            "current_channel": 2,
+            "symbol": 2,
+            "code": 5,
+            "bit_length": 3,
+            "bits": "101"
+          },
+          {
+            "event_kind": "POSITION_HUFFMAN",
+            "codebook": "position_5",
+            "point": 0,
+            "band": 3,
+            "previous_channel": 2,
+            "current_channel": 1,
+            "symbol": 4,
+            "code": 7,
+            "bit_length": 3,
+            "bits": "111"
+          },
+          {
+            "event_kind": "POSITION_HUFFMAN",
+            "codebook": "position_5",
+            "point": 0,
+            "band": 4,
+            "previous_channel": 1,
+            "current_channel": 3,
+            "symbol": 2,
+            "code": 5,
+            "bit_length": 3,
+            "bits": "101"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "sparse_coarse",
+            "point": 0,
+            "selected_channel": 4,
+            "band": 0,
+            "quantized": 50,
+            "previous_before": 50,
+            "symbol": 0,
+            "code": 0,
+            "bit_length": 1,
+            "bits": "0"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "sparse_coarse",
+            "point": 0,
+            "selected_channel": 0,
+            "band": 1,
+            "quantized": 49,
+            "previous_before": 50,
+            "symbol": 95,
+            "code": 5,
+            "bit_length": 3,
+            "bits": "101"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "sparse_coarse",
+            "point": 0,
+            "selected_channel": 2,
+            "band": 2,
+            "quantized": 51,
+            "previous_before": 49,
+            "symbol": 2,
+            "code": 14,
+            "bit_length": 4,
+            "bits": "1110"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "sparse_coarse",
+            "point": 0,
+            "selected_channel": 1,
+            "band": 3,
+            "quantized": 0,
+            "previous_before": 51,
+            "symbol": 45,
+            "code": 25196,
+            "bit_length": 15,
+            "bits": "110001001101100"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "sparse_coarse",
+            "point": 0,
+            "selected_channel": 3,
+            "band": 4,
+            "quantized": 95,
+            "previous_before": 0,
+            "symbol": 95,
+            "code": 5,
+            "bit_length": 3,
+            "bits": "101"
+          },
+          {
+            "event_kind": "DIRECT_CHANNEL_3BIT",
+            "point": 1,
+            "band": 0,
+            "channel": 0,
+            "bits": "000",
+            "bit_length": 3
+          },
+          {
+            "event_kind": "POSITION_HUFFMAN",
+            "codebook": "position_5",
+            "point": 1,
+            "band": 1,
+            "previous_channel": 0,
+            "current_channel": 4,
+            "symbol": 4,
+            "code": 7,
+            "bit_length": 3,
+            "bits": "111"
+          },
+          {
+            "event_kind": "POSITION_HUFFMAN",
+            "codebook": "position_5",
+            "point": 1,
+            "band": 2,
+            "previous_channel": 4,
+            "current_channel": 3,
+            "symbol": 4,
+            "code": 7,
+            "bit_length": 3,
+            "bits": "111"
+          },
+          {
+            "event_kind": "POSITION_HUFFMAN",
+            "codebook": "position_5",
+            "point": 1,
+            "band": 3,
+            "previous_channel": 3,
+            "current_channel": 2,
+            "symbol": 4,
+            "code": 7,
+            "bit_length": 3,
+            "bits": "111"
+          },
+          {
+            "event_kind": "POSITION_HUFFMAN",
+            "codebook": "position_5",
+            "point": 1,
+            "band": 4,
+            "previous_channel": 2,
+            "current_channel": 1,
+            "symbol": 4,
+            "code": 7,
+            "bit_length": 3,
+            "bits": "111"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "sparse_coarse",
+            "point": 1,
+            "selected_channel": 0,
+            "band": 0,
+            "quantized": 50,
+            "previous_before": 50,
+            "symbol": 0,
+            "code": 0,
+            "bit_length": 1,
+            "bits": "0"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "sparse_coarse",
+            "point": 1,
+            "selected_channel": 4,
+            "band": 1,
+            "quantized": 50,
+            "previous_before": 50,
+            "symbol": 0,
+            "code": 0,
+            "bit_length": 1,
+            "bits": "0"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "sparse_coarse",
+            "point": 1,
+            "selected_channel": 3,
+            "band": 2,
+            "quantized": 49,
+            "previous_before": 50,
+            "symbol": 95,
+            "code": 5,
+            "bit_length": 3,
+            "bits": "101"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "sparse_coarse",
+            "point": 1,
+            "selected_channel": 2,
+            "band": 3,
+            "quantized": 48,
+            "previous_before": 49,
+            "symbol": 95,
+            "code": 5,
+            "bit_length": 3,
+            "bits": "101"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "sparse_coarse",
+            "point": 1,
+            "selected_channel": 1,
+            "band": 4,
+            "quantized": 47,
+            "previous_before": 48,
+            "symbol": 95,
+            "code": 5,
+            "bit_length": 3,
+            "bits": "101"
+          }
+        ],
+        "valid_bit_count": 67,
+        "padding_zero_bits": 5,
+        "padded_bytes_hex": "9afabd89b28fff2da0",
+        "padded_bytes_sha256": "09db33c3fb09fb97faa2313558ad9480a19a0c5c61ad50a871f583642a95ffcf"
+      }
+    },
+    {
+      "case_id": "consumer-mode3-sparse-fine-position7-initial100",
+      "input": {
+        "case_id": "consumer-mode3-sparse-fine-position7-initial100",
+        "mode": 3,
+        "channel_count": 7,
+        "points": [
+          {
+            "selected_channels": [
+              6,
+              0,
+              3,
+              1,
+              5,
+              2
+            ],
+            "quantized_coefficients": [
+              100,
+              99,
+              101,
+              0,
+              191,
+              100
+            ]
+          },
+          {
+            "selected_channels": [
+              1,
+              6,
+              2,
+              4,
+              0,
+              3
+            ],
+            "quantized_coefficients": [
+              100,
+              100,
+              99,
+              98,
+              97,
+              96
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "selected_coefficient_codebook": "sparse_fine",
+        "selected_position_codebook": "position_7",
+        "steps": 192,
+        "initial_previous": 100,
+        "reset_events": [
+          {
+            "point": 0,
+            "channel": null,
+            "previous": 100,
+            "reason": "SPARSE_POINT_START"
+          },
+          {
+            "point": 1,
+            "channel": null,
+            "previous": 100,
+            "reason": "SPARSE_POINT_START"
+          }
+        ],
+        "write_events": [
+          {
+            "event_kind": "DIRECT_CHANNEL_3BIT",
+            "point": 0,
+            "band": 0,
+            "channel": 6,
+            "bits": "110",
+            "bit_length": 3
+          },
+          {
+            "event_kind": "POSITION_HUFFMAN",
+            "codebook": "position_7",
+            "point": 0,
+            "band": 1,
+            "previous_channel": 6,
+            "current_channel": 0,
+            "symbol": 1,
+            "code": 8,
+            "bit_length": 4,
+            "bits": "1000"
+          },
+          {
+            "event_kind": "POSITION_HUFFMAN",
+            "codebook": "position_7",
+            "point": 0,
+            "band": 2,
+            "previous_channel": 0,
+            "current_channel": 3,
+            "symbol": 3,
+            "code": 6,
+            "bit_length": 3,
+            "bits": "110"
+          },
+          {
+            "event_kind": "POSITION_HUFFMAN",
+            "codebook": "position_7",
+            "point": 0,
+            "band": 3,
+            "previous_channel": 3,
+            "current_channel": 1,
+            "symbol": 5,
+            "code": 10,
+            "bit_length": 4,
+            "bits": "1010"
+          },
+          {
+            "event_kind": "POSITION_HUFFMAN",
+            "codebook": "position_7",
+            "point": 0,
+            "band": 4,
+            "previous_channel": 1,
+            "current_channel": 5,
+            "symbol": 4,
+            "code": 9,
+            "bit_length": 4,
+            "bits": "1001"
+          },
+          {
+            "event_kind": "POSITION_HUFFMAN",
+            "codebook": "position_7",
+            "point": 0,
+            "band": 5,
+            "previous_channel": 5,
+            "current_channel": 2,
+            "symbol": 4,
+            "code": 9,
+            "bit_length": 4,
+            "bits": "1001"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "sparse_fine",
+            "point": 0,
+            "selected_channel": 6,
+            "band": 0,
+            "quantized": 100,
+            "previous_before": 100,
+            "symbol": 0,
+            "code": 1,
+            "bit_length": 1,
+            "bits": "1"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "sparse_fine",
+            "point": 0,
+            "selected_channel": 0,
+            "band": 1,
+            "quantized": 99,
+            "previous_before": 100,
+            "symbol": 191,
+            "code": 2,
+            "bit_length": 3,
+            "bits": "010"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "sparse_fine",
+            "point": 0,
+            "selected_channel": 3,
+            "band": 2,
+            "quantized": 101,
+            "previous_before": 99,
+            "symbol": 2,
+            "code": 7,
+            "bit_length": 4,
+            "bits": "0111"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "sparse_fine",
+            "point": 0,
+            "selected_channel": 1,
+            "band": 3,
+            "quantized": 0,
+            "previous_before": 101,
+            "symbol": 91,
+            "code": 7150,
+            "bit_length": 17,
+            "bits": "00001101111101110"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "sparse_fine",
+            "point": 0,
+            "selected_channel": 5,
+            "band": 4,
+            "quantized": 191,
+            "previous_before": 0,
+            "symbol": 191,
+            "code": 2,
+            "bit_length": 3,
+            "bits": "010"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "sparse_fine",
+            "point": 0,
+            "selected_channel": 2,
+            "band": 5,
+            "quantized": 100,
+            "previous_before": 191,
+            "symbol": 101,
+            "code": 7057,
+            "bit_length": 17,
+            "bits": "00001101110010001"
+          },
+          {
+            "event_kind": "DIRECT_CHANNEL_3BIT",
+            "point": 1,
+            "band": 0,
+            "channel": 1,
+            "bits": "001",
+            "bit_length": 3
+          },
+          {
+            "event_kind": "POSITION_HUFFMAN",
+            "codebook": "position_7",
+            "point": 1,
+            "band": 1,
+            "previous_channel": 1,
+            "current_channel": 6,
+            "symbol": 5,
+            "code": 10,
+            "bit_length": 4,
+            "bits": "1010"
+          },
+          {
+            "event_kind": "POSITION_HUFFMAN",
+            "codebook": "position_7",
+            "point": 1,
+            "band": 2,
+            "previous_channel": 6,
+            "current_channel": 2,
+            "symbol": 3,
+            "code": 6,
+            "bit_length": 3,
+            "bits": "110"
+          },
+          {
+            "event_kind": "POSITION_HUFFMAN",
+            "codebook": "position_7",
+            "point": 1,
+            "band": 3,
+            "previous_channel": 2,
+            "current_channel": 4,
+            "symbol": 2,
+            "code": 7,
+            "bit_length": 3,
+            "bits": "111"
+          },
+          {
+            "event_kind": "POSITION_HUFFMAN",
+            "codebook": "position_7",
+            "point": 1,
+            "band": 4,
+            "previous_channel": 4,
+            "current_channel": 0,
+            "symbol": 3,
+            "code": 6,
+            "bit_length": 3,
+            "bits": "110"
+          },
+          {
+            "event_kind": "POSITION_HUFFMAN",
+            "codebook": "position_7",
+            "point": 1,
+            "band": 5,
+            "previous_channel": 0,
+            "current_channel": 3,
+            "symbol": 3,
+            "code": 6,
+            "bit_length": 3,
+            "bits": "110"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "sparse_fine",
+            "point": 1,
+            "selected_channel": 1,
+            "band": 0,
+            "quantized": 100,
+            "previous_before": 100,
+            "symbol": 0,
+            "code": 1,
+            "bit_length": 1,
+            "bits": "1"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "sparse_fine",
+            "point": 1,
+            "selected_channel": 6,
+            "band": 1,
+            "quantized": 100,
+            "previous_before": 100,
+            "symbol": 0,
+            "code": 1,
+            "bit_length": 1,
+            "bits": "1"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "sparse_fine",
+            "point": 1,
+            "selected_channel": 2,
+            "band": 2,
+            "quantized": 99,
+            "previous_before": 100,
+            "symbol": 191,
+            "code": 2,
+            "bit_length": 3,
+            "bits": "010"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "sparse_fine",
+            "point": 1,
+            "selected_channel": 4,
+            "band": 3,
+            "quantized": 98,
+            "previous_before": 99,
+            "symbol": 191,
+            "code": 2,
+            "bit_length": 3,
+            "bits": "010"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "sparse_fine",
+            "point": 1,
+            "selected_channel": 0,
+            "band": 4,
+            "quantized": 97,
+            "previous_before": 98,
+            "symbol": 191,
+            "code": 2,
+            "bit_length": 3,
+            "bits": "010"
+          },
+          {
+            "event_kind": "COEFFICIENT_HUFFMAN",
+            "codebook": "sparse_fine",
+            "point": 1,
+            "selected_channel": 3,
+            "band": 5,
+            "quantized": 96,
+            "previous_before": 97,
+            "symbol": 191,
+            "code": 2,
+            "bit_length": 3,
+            "bits": "010"
+          }
+        ],
+        "valid_bit_count": 100,
+        "padding_zero_bits": 4,
+        "padded_bytes_hex": "d1aa669c37dc837226b7db4920",
+        "padded_bytes_sha256": "cf130fa75aafc63aa12e4fd52472647b4b54d7a44926de25363bf3b3ee2bd464"
+      }
+    }
+  ],
+  "failure_cases": [
+    {
+      "case_id": "transaction-invalid-symbol-no-commit",
+      "input": {
+        "case_id": "transaction-invalid-symbol-no-commit",
+        "operation": "ENCODE_INVALID_SYMBOL",
+        "codebook": "full_coarse",
+        "symbol": 96,
+        "writer_before": {
+          "bits": "101011",
+          "valid_bit_count": 6,
+          "padded_bytes_hex": "ac"
+        },
+        "cursor_before": {
+          "bit_offset": 5,
+          "available_bits": 29
+        },
+        "state_before": {
+          "tag": "invalid-symbol",
+          "point": 3,
+          "channel": 2,
+          "previous": 17,
+          "generation": 41
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "error_code": "HUFFMAN_SYMBOL_OUT_OF_RANGE",
+        "writer_before": {
+          "bits": "101011",
+          "valid_bit_count": 6,
+          "padded_bytes_hex": "ac"
+        },
+        "writer_after": {
+          "bits": "101011",
+          "valid_bit_count": 6,
+          "padded_bytes_hex": "ac"
+        },
+        "cursor_before": {
+          "bit_offset": 5,
+          "available_bits": 29
+        },
+        "cursor_after": {
+          "bit_offset": 5,
+          "available_bits": 29
+        },
+        "state_before": {
+          "tag": "invalid-symbol",
+          "point": 3,
+          "channel": 2,
+          "previous": 17,
+          "generation": 41
+        },
+        "state_after": {
+          "tag": "invalid-symbol",
+          "point": 3,
+          "channel": 2,
+          "previous": 17,
+          "generation": 41
+        },
+        "output_present": false,
+        "commit_count": 0
+      }
+    },
+    {
+      "case_id": "transaction-final-capacity-no-commit",
+      "input": {
+        "case_id": "transaction-final-capacity-no-commit",
+        "operation": "FINAL_CAPACITY_CHECK",
+        "codebook": "full_coarse",
+        "symbols": [
+          0,
+          23,
+          95
+        ],
+        "header_bits": 37,
+        "coefficient_bits_before": 6,
+        "scratch_limit_bits": 4344,
+        "capacity_bytes": 7,
+        "writer_before": {
+          "bits": "101011",
+          "valid_bit_count": 6,
+          "padded_bytes_hex": "ac"
+        },
+        "cursor_before": {
+          "bit_offset": 5,
+          "available_bits": 29
+        },
+        "state_before": {
+          "tag": "final-capacity",
+          "point": 3,
+          "channel": 2,
+          "previous": 17,
+          "generation": 41
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "error_code": "JOC_PAYLOAD_CAPACITY_EXCEEDED",
+        "writer_before": {
+          "bits": "101011",
+          "valid_bit_count": 6,
+          "padded_bytes_hex": "ac"
+        },
+        "writer_after": {
+          "bits": "101011",
+          "valid_bit_count": 6,
+          "padded_bytes_hex": "ac"
+        },
+        "cursor_before": {
+          "bit_offset": 5,
+          "available_bits": 29
+        },
+        "cursor_after": {
+          "bit_offset": 5,
+          "available_bits": 29
+        },
+        "state_before": {
+          "tag": "final-capacity",
+          "point": 3,
+          "channel": 2,
+          "previous": 17,
+          "generation": 41
+        },
+        "state_after": {
+          "tag": "final-capacity",
+          "point": 3,
+          "channel": 2,
+          "previous": 17,
+          "generation": 41
+        },
+        "output_present": false,
+        "commit_count": 0
+      }
+    },
+    {
+      "case_id": "transaction-coefficient-scratch-no-commit",
+      "input": {
+        "case_id": "transaction-coefficient-scratch-no-commit",
+        "operation": "FINAL_CAPACITY_CHECK",
+        "codebook": "full_fine",
+        "symbols": [
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39,
+          39
+        ],
+        "header_bits": 0,
+        "coefficient_bits_before": 0,
+        "scratch_limit_bits": 4344,
+        "capacity_bytes": 543,
+        "writer_before": {
+          "bits": "101011",
+          "valid_bit_count": 6,
+          "padded_bytes_hex": "ac"
+        },
+        "cursor_before": {
+          "bit_offset": 5,
+          "available_bits": 29
+        },
+        "state_before": {
+          "tag": "scratch-capacity",
+          "point": 3,
+          "channel": 2,
+          "previous": 17,
+          "generation": 41
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "error_code": "JOC_COEFFICIENT_SCRATCH_EXCEEDED",
+        "writer_before": {
+          "bits": "101011",
+          "valid_bit_count": 6,
+          "padded_bytes_hex": "ac"
+        },
+        "writer_after": {
+          "bits": "101011",
+          "valid_bit_count": 6,
+          "padded_bytes_hex": "ac"
+        },
+        "cursor_before": {
+          "bit_offset": 5,
+          "available_bits": 29
+        },
+        "cursor_after": {
+          "bit_offset": 5,
+          "available_bits": 29
+        },
+        "state_before": {
+          "tag": "scratch-capacity",
+          "point": 3,
+          "channel": 2,
+          "previous": 17,
+          "generation": 41
+        },
+        "state_after": {
+          "tag": "scratch-capacity",
+          "point": 3,
+          "channel": 2,
+          "previous": 17,
+          "generation": 41
+        },
+        "output_present": false,
+        "commit_count": 0
+      }
+    },
+    {
+      "case_id": "transaction-truncated-decode-no-commit",
+      "input": {
+        "case_id": "transaction-truncated-decode-no-commit",
+        "operation": "DECODE_TRUNCATED_CODEWORD",
+        "codebook": "sparse_fine",
+        "symbol": 66,
+        "drop_tail_bits": 1,
+        "writer_before": {
+          "bits": "101011",
+          "valid_bit_count": 6,
+          "padded_bytes_hex": "ac"
+        },
+        "cursor_before": {
+          "bit_offset": 5,
+          "available_bits": 29
+        },
+        "state_before": {
+          "tag": "truncated-decode",
+          "point": 3,
+          "channel": 2,
+          "previous": 17,
+          "generation": 41
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "error_code": "HUFFMAN_TRUNCATED_CODEWORD",
+        "writer_before": {
+          "bits": "101011",
+          "valid_bit_count": 6,
+          "padded_bytes_hex": "ac"
+        },
+        "writer_after": {
+          "bits": "101011",
+          "valid_bit_count": 6,
+          "padded_bytes_hex": "ac"
+        },
+        "cursor_before": {
+          "bit_offset": 5,
+          "available_bits": 29
+        },
+        "cursor_after": {
+          "bit_offset": 5,
+          "available_bits": 29
+        },
+        "state_before": {
+          "tag": "truncated-decode",
+          "point": 3,
+          "channel": 2,
+          "previous": 17,
+          "generation": 41
+        },
+        "state_after": {
+          "tag": "truncated-decode",
+          "point": 3,
+          "channel": 2,
+          "previous": 17,
+          "generation": 41
+        },
+        "output_present": false,
+        "commit_count": 0
+      }
+    },
+    {
+      "case_id": "transaction-invalid-table-no-commit",
+      "input": {
+        "case_id": "transaction-invalid-table-no-commit",
+        "operation": "INSTALL_INVALID_TABLE",
+        "codebook": "position_5",
+        "mutation": "replace_symbol1_codeword_with_symbol0_codeword",
+        "writer_before": {
+          "bits": "101011",
+          "valid_bit_count": 6,
+          "padded_bytes_hex": "ac"
+        },
+        "cursor_before": {
+          "bit_offset": 5,
+          "available_bits": 29
+        },
+        "state_before": {
+          "tag": "invalid-table",
+          "point": 3,
+          "channel": 2,
+          "previous": 17,
+          "generation": 41
+        }
+      },
+      "expected": {
+        "status": "ERROR",
+        "error_code": "HUFFMAN_TABLE_INVALID",
+        "writer_before": {
+          "bits": "101011",
+          "valid_bit_count": 6,
+          "padded_bytes_hex": "ac"
+        },
+        "writer_after": {
+          "bits": "101011",
+          "valid_bit_count": 6,
+          "padded_bytes_hex": "ac"
+        },
+        "cursor_before": {
+          "bit_offset": 5,
+          "available_bits": 29
+        },
+        "cursor_after": {
+          "bit_offset": 5,
+          "available_bits": 29
+        },
+        "state_before": {
+          "tag": "invalid-table",
+          "point": 3,
+          "channel": 2,
+          "previous": 17,
+          "generation": 41
+        },
+        "state_after": {
+          "tag": "invalid-table",
+          "point": 3,
+          "channel": 2,
+          "previous": 17,
+          "generation": 41
+        },
+        "output_present": false,
+        "commit_count": 0
+      }
+    }
+  ],
+  "error_codes": {
+    "HUFFMAN_SYMBOL_OUT_OF_RANGE": "symbol type or range is invalid",
+    "HUFFMAN_TRUNCATED_CODEWORD": "available input ends at an internal Huffman node",
+    "HUFFMAN_TABLE_INVALID": "provider table fails exact structural validation",
+    "JOC_COEFFICIENT_SCRATCH_EXCEEDED": "candidate coefficient bits exceed 4344 before final payload capacity",
+    "JOC_PAYLOAD_CAPACITY_EXCEEDED": "candidate padded body bytes exceed selected capacity",
+    "JOC_MINIMUM_REPRESENTATION_EXCEEDS_CAPACITY": "all deterministic retry states were exhausted after retryable capacity errors"
+  },
+  "transaction_contract": {
+    "writer": "build and validate the complete candidate in local scratch; swap writer bytes/cursor and consumer state only on success",
+    "decoder": "walk with a local cursor and local target; commit both only after one complete leaf",
+    "failure": "error returns no output and preserves writer, cursor, and consumer state byte-for-byte",
+    "retry": "the two capacity errors are attempt-local and trigger F05Q.7 retry; only retry exhaustion becomes JOC_MINIMUM_REPRESENTATION_EXCEEDS_CAPACITY"
+  },
+  "coverage": {
+    "mode_to_coefficient_table": {
+      "0": "full_coarse",
+      "1": "full_fine",
+      "2": "sparse_coarse",
+      "3": "sparse_fine"
+    },
+    "channel_count_to_position_table": {
+      "5": "position_5",
+      "7": "position_7"
+    },
+    "full_reset_granularity": "each point and channel",
+    "sparse_initial_previous": {
+      "mode2": 50,
+      "mode3": 100
+    },
+    "success_cases": 4,
+    "failure_cases": 5,
+    "success_write_events": 102,
+    "success_reset_events": 28,
+    "failure_zero_commit_cases": 5
+  },
+  "scope": {
+    "closed": "F05Q mode/table selection, full reset boundaries, sparse initial values and local transaction errors",
+    "not_closed": "audio-to-coefficient fit, quantizer inputs, full profile retry integration, whole JOC payload and end-to-end playback",
+    "implementation_ready_global": "NO"
+  }
+}

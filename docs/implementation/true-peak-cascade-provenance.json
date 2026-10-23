@@ -1,0 +1,48 @@
+{
+  "schema": "f06tp-true-peak-cascade-provenance.v1",
+  "package_base_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_assets": {
+    "specs/06-true-peak-cascade-and-metrics.md": {
+      "bytes": 9824,
+      "sha256": "e0491288c3a9beb59ecb7b017d505ee16eb9f401d53bd0fd918573644c1876b3"
+    },
+    "parameters/meter-truepeak-authorized-v1.json": {
+      "bytes": 2584,
+      "sha256": "f67e6fe86533af74acc261bf3908890e77a461198116c64b624dc91b69049757"
+    },
+    "test-vectors/METER-TRUEPEAK-AUTHORIZED-VERIFICATION.json": {
+      "bytes": 2078540,
+      "sha256": "510b980acf92519e0fbced2cf79b6b9f72dc47dcc8316f59506048288982d528"
+    },
+    "test-vectors/METER-TRUEPEAK-AUTHORIZED-RESULT.json": {
+      "bytes": 2198,
+      "sha256": "337c80ee3826f83ca5ca4b769200b3d370b5ba3a69b85a185360f3bf3d038bd8"
+    },
+    "test-vectors/METER-TRUEPEAK-LOCAL-REVIEW-STATUS.json": {
+      "bytes": 43052,
+      "sha256": "261e043ba80c2d8011ae638c345fd811aa26d60838696553bd8f80f4c9b032c4"
+    },
+    "specs/06-meter-log-and-peak.md": {
+      "bytes": 7525,
+      "sha256": "c8a9aec8c931391bfbb4ecaca01a8e5cbec3ba680899f516727c6574a170e38f"
+    },
+    "parameters/meter-log-mathematical-v1.json": {
+      "bytes": 780,
+      "sha256": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266"
+    }
+  },
+  "scope": {
+    "continuous_blocks": 8,
+    "independent_reset_case": 1,
+    "output_words_checked_by_full_lane_sha256": 193536,
+    "complete_state_words_compared": 249912,
+    "peak_fields_compared": 540,
+    "programme_fields_compared": 126,
+    "internal_implementation_authorized": true,
+    "public_or_third_party_distribution": "NOT_AUTHORIZED",
+    "whole_f06tp_ready": false,
+    "whole_product_implementation_ready": "NO",
+    "real_adm_render": "NOT_RUN",
+    "source_au_replay": "NOT_RUN"
+  }
+}

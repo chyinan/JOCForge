@@ -1,0 +1,59 @@
+{
+  "schema": "huffman-table-provenance.v1",
+  "metadata_record_contains_table_data": false,
+  "user_authorized_public_repo_use": true,
+  "license_clearance": "UNKNOWN",
+  "table_data_materialized_in_repository": true,
+  "production_usable_scope": "F05QH_TABLE_SCOPE_ONLY",
+  "implementation_ready": "NO",
+  "table_data_included_in_this_record": false,
+  "codeword_data_included_in_this_record": false,
+  "derived_tree_data_included_in_this_record": false,
+  "test_vector_data_included_in_this_record": false,
+  "user_intent": {
+    "agent_added_internal_only_label_lifted": true,
+    "third_party_redistribution_permission_granted": false,
+    "third_party_license_clearance_status": "UNKNOWN"
+  },
+  "normative_identity": {
+    "standard": "ETSI TS 103 420 V1.2.1 (2018-10)",
+    "clauses": ["6.6.3", "Annex A.1"],
+    "pdf_url": "https://www.etsi.org/deliver/etsi_ts/103400_103499/103420/01.02.01_60/ts_103420v010201p.pdf",
+    "companion_url": "https://www.etsi.org/deliver/etsi_ts/103400_103499/103420/01.02.01_60/ts_103420v010201p0.zip",
+    "companion_zip_sha256": "a79cf108c4529b7d9ca9525c871183a70b1732ed6df03a3d85b2f31be46eeced",
+    "companion_source_file_sha256": "4db8ae83e3c2e9269e88365be92a1a3ed6a9e6ee3851afac8ca03902723b1fcd"
+  },
+  "table_set_identity": [
+    "full_coarse",
+    "full_fine",
+    "sparse_coarse",
+    "sparse_fine",
+    "position_5",
+    "position_7"
+  ],
+  "source_provenance": {
+    "washed_package_manifest_sha256": "9fc3a5459885a1f1126e223e238c832c69b9d4df84f5d6179c328ce7a2a4b5a1",
+    "washed_metadata_sha256": "cbad0fa2e8fb26f7ec11bf348c641a0689cf5629a9059cd981721e010515e20d",
+    "washed_independent_check_sha256": "528308005e3d69d8768fe8c1df8f88b44116abf290b27bddd8b6e5c72c7c63d7",
+    "source_audit_sha256": "b33857fe3dc2c9d5a730b7a8cd86b242bf445e9c3f80f692ac7024f40bbd66a3",
+    "verification_result_sha256": "efca20f2d46565a42909d8d248d551947f36ae80c9388d51c7470f751f760c6a",
+    "public_generated_copy_sha256": "77201e1e8c78aebe03431bcd29c9ae730a51d22feda52ded0e5ea11f52a44572",
+    "public_generated_copies_byte_identical": true,
+    "model_postcompare": "588_OF_588_MATCHED",
+    "official_archive_hash_retrieval": "VERIFIED",
+    "openjoc_archive_import_replay": "NOT_RUN"
+  },
+  "third_party_rights_status": {
+    "clearance": "UNKNOWN",
+    "basis": "The ETSI PDF copyright notice says reproduction or use requires written ETSI permission. The verified companion archive contains no independent redistribution license. The user separately authorized public-repository use and accepts responsibility; this is not represented as ETSI permission.",
+    "minimum_evidence": [
+      "Written permission from ETSI or the relevant rights holder covering redistribution of these table values in public chyinan/JOCForge.",
+      "Or an explicit public companion/license term covering redistribution of these specific values."
+    ]
+  },
+  "verification_limits": [
+    "The 588-of-588 result is a model post-compare, not native runtime verification.",
+    "The OpenJOC archive import replay is not run.",
+    "No permission to reproduce table values or normative text is asserted."
+  ]
+}

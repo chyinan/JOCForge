@@ -1,0 +1,54 @@
+{
+  "schema": "f06w-output-sample-schedule-local-mapping.v1",
+  "delivery_scope": "INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION",
+  "source_package": {
+    "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "spec": {
+      "file": "specs/06-meter-window-and-output-clock.md",
+      "bytes": 7388,
+      "sha256": "c08dd41c42dd231ef23a683415f59b9b7db60375a3da2b8140501969933d073c"
+    },
+    "referenced_but_not_consumed": {
+      "file": "parameters/meter-k-state-bounds-v1.json",
+      "bytes": 970,
+      "sha256": "2faaa9d0aeefb105a913589590fcbafb97362a54192b0b21c5fdda7da1974e68",
+      "reason": "State bounds belong to deferred F06W.3 K-filter, not this sample ledger."
+    },
+    "vectors": {
+      "file": "test-vectors/METER-INTEGRATED-SCHEDULE-VERIFICATION.json",
+      "bytes": 2051223,
+      "sha256": "a565e513970670967aa3aebd0372f9dbb5f9bbab670a54744ae454926b3f2671"
+    },
+    "review": {
+      "file": "test-vectors/METER-STATE-CLOCK-LOCAL-REVIEW-STATUS.json",
+      "bytes": 10646,
+      "sha256": "020f88cafa892119bac5fea5bc808d251798e98aec69897c6ab068da80637307"
+    }
+  },
+  "local_fixtures": [
+    {
+      "file": "crates/jocforge-domain/tests/fixtures/meter_output_schedule/METER-INTEGRATED-SCHEDULE-VERIFICATION.json",
+      "bytes": 2051223,
+      "sha256": "a565e513970670967aa3aebd0372f9dbb5f9bbab670a54744ae454926b3f2671"
+    },
+    {
+      "file": "crates/jocforge-domain/tests/fixtures/meter_output_schedule/METER-STATE-CLOCK-LOCAL-REVIEW-STATUS.json",
+      "bytes": 10646,
+      "sha256": "020f88cafa892119bac5fea5bc808d251798e98aec69897c6ab068da80637307"
+    }
+  ],
+  "verified_scope": {
+    "schedule_cases": 5,
+    "normal_drain_span_outputs": 4257,
+    "drain_callback_count": 3,
+    "complete_1024_accounting": "VERIFIED",
+    "complete_960_window_and_remainder_counts": "VERIFIED_AS_COUNTS_ONLY"
+  },
+  "excluded": [
+    "F06W.3 K-filter and matrix consumer",
+    "F06W.4 power_sum",
+    "F06W.5 six-lane window state and F06I record emission",
+    "Ten F06I state cases and seven bin cases in the shared vector file are not executed by this schedule slice",
+    "F06I state, F06U getter, real audio/ADM/frontend, real historical meter input, parent transaction, and product acceptance"
+  ]
+}

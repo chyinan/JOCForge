@@ -1,0 +1,142 @@
+{
+  "schema": "meter-k-matrix-generation-verification.v1",
+  "functional_id": "F06KG",
+  "parameter_file": "parameters/meter-k-matrix-math-v1.json",
+  "matrix_words": 64,
+  "cold_state_words": 8,
+  "generated_complete_bytes": 288,
+  "expected_complete_sha256": "08dc825e016f703df13b023bf29486996cba7c1eac2ebc1c7741da54ef98fb1a",
+  "initial_state_words": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "continuous_cases": [
+    {
+      "block_index": 0,
+      "input": {
+        "samples": 128,
+        "sample_rule": "IMPULSE"
+      },
+      "expected_output_sha256": "43005e7bef08e38e72fd81b2dc9c30f12983c436d6be1b47361a362d609a0636",
+      "expected_state_words": [
+        507307272,
+        507307272,
+        2917116112,
+        2919873610,
+        2917116112,
+        2919873610,
+        3113853260,
+        3113940770
+      ],
+      "expected_power_word": 931403995
+    },
+    {
+      "block_index": 1,
+      "input": {
+        "samples": 1024,
+        "sample_rule": "MOD37_101_OVER64"
+      },
+      "expected_output_sha256": "53578a4952a1bb4f17d2cf105ce36f16fa858c99d7edf4332dc0799ec04fc9f7",
+      "expected_state_words": [
+        1029177344,
+        3164602368,
+        1030315784,
+        3162975280,
+        1030315784,
+        3162975280,
+        1030541952,
+        3162608288
+      ],
+      "expected_power_word": 996510769
+    },
+    {
+      "block_index": 2,
+      "input": {
+        "samples": 960,
+        "sample_rule": "ALTERNATING3"
+      },
+      "expected_output_sha256": "52b3c13618bd2410a98141b03595c64ea0942c845f6fe08ef2dd402892fa8774",
+      "expected_state_words": [
+        1052770304,
+        3200253952,
+        1053225750,
+        3200709436,
+        1053225750,
+        3200709436,
+        1053254968,
+        3200810460
+      ],
+      "expected_power_word": 1041393049
+    },
+    {
+      "block_index": 3,
+      "input": {
+        "samples": 64,
+        "sample_rule": "ZERO"
+      },
+      "expected_output_sha256": "3cabff441a2c0f43b0b021404e4d16e644afa1aea8f544b7ecc458a02c8581d7",
+      "expected_state_words": [
+        507307272,
+        507307272,
+        894980074,
+        896813570,
+        894980074,
+        896813570,
+        3135896476,
+        3135955616
+      ],
+      "expected_power_word": 900445679
+    },
+    {
+      "block_index": 4,
+      "input": {
+        "samples": 1024,
+        "sample_rule": "HALF"
+      },
+      "expected_output_sha256": "2d694f9145865295f3eb6f1f60a22dc20a9b27d3c1a8ad3433b4ebd25fbfc65f",
+      "expected_state_words": [
+        1031798784,
+        1031798784,
+        1025990634,
+        1025990632,
+        1025990634,
+        1025990632,
+        3127012496,
+        3127081128
+      ],
+      "expected_power_word": 950371671
+    },
+    {
+      "block_index": 5,
+      "input": {
+        "samples": 960,
+        "sample_rule": "MOD71_193_OVER32"
+      },
+      "expected_output_sha256": "de26eeb6292826f7d8d1eddd78a56ba7bfce72207c72b259432e9d0ca7afc9d5",
+      "expected_state_words": [
+        1046740992,
+        3177185280,
+        1047417416,
+        3175615680,
+        1047417416,
+        3175615680,
+        1047605704,
+        3174989664
+      ],
+      "expected_power_word": 1027934480
+    }
+  ],
+  "matched_output_words": 4160,
+  "matched_state_words": 48,
+  "matched_power_words": 6,
+  "independent_review": "NOT_RUN_FOR_THIS_REVISION",
+  "original_table_values_included": false,
+  "whole_meter_or_real_audio_not_rerun": true,
+  "implementation_ready": "NO"
+}

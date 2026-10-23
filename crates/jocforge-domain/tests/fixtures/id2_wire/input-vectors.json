@@ -1,0 +1,88 @@
+{
+  "schema": "f13d2-id2-wire-input-vectors.v1",
+  "input_only_synthetic": true,
+  "source_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_asset": "test-vectors/unit/vectors.json",
+  "source_asset_bytes": 1503142,
+  "source_asset_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8",
+  "source_spec_sha256": "35aa89d0dd67fb0133c4898c1007c84d48b39c5df6683dd88a173600975b48cc",
+  "source_adapter_contract_sha256": "9bce2e35ce47147c76c13e58ee976d44c5109938f0b19e1f3a81f1d8a61fa1ae",
+  "selected_entry_ids": [
+    "id2-profile-enums",
+    "id2-profile-from-header",
+    "id2-field-wire"
+  ],
+  "cases": [
+    {
+      "id": "U-ID2-ENUMS",
+      "entry_id": "id2-profile-enums",
+      "input": {
+        "profiles": [
+          "film_light",
+          "film_standard",
+          "music_light",
+          "music_standard",
+          "speech",
+          "none",
+          "unknown"
+        ]
+      },
+      "expected": {
+        "profiles": [
+          {"status": "ACCEPTED", "external_enum": 0, "internal_code": 2},
+          {"status": "ACCEPTED", "external_enum": 1, "internal_code": 1},
+          {"status": "ACCEPTED", "external_enum": 2, "internal_code": 4},
+          {"status": "ACCEPTED", "external_enum": 3, "internal_code": 3},
+          {"status": "ACCEPTED", "external_enum": 4, "internal_code": 5},
+          {"status": "ACCEPTED", "external_enum": 5, "internal_code": 0},
+          {"status": "REJECTED", "error_class": "UNSUPPORTED_DRC_PROFILE"}
+        ]
+      }
+    },
+    {
+      "id": "U-ID2-LFE",
+      "entry_id": "id2-profile-from-header",
+      "input": {"line_profile": "none", "rf_profile": "none", "type11_header_hex": "1f80"},
+      "expected": {"status": "ACCEPTED", "configuration": [1, 1, 1, 0, 0], "payload_hex": "059000", "valid_bits": 21}
+    },
+    {
+      "id": "U-ID2-NO-LFE",
+      "entry_id": "id2-profile-from-header",
+      "input": {"line_profile": "none", "rf_profile": "none", "type11_header_hex": "0100"},
+      "expected": {"status": "ACCEPTED", "configuration": [1, 1, 0, 0, 0], "payload_hex": "051000", "valid_bits": 21}
+    },
+    {
+      "id": "U-ID2-EXTENDED",
+      "entry_id": "id2-profile-from-header",
+      "input": {"line_profile": "none", "rf_profile": "none", "type11_header_hex": "3e83"},
+      "expected": {"status": "ACCEPTED", "configuration": [1, 1, 1, 0, 0], "payload_hex": "059000", "valid_bits": 21}
+    },
+    {
+      "id": "U-ID2-VERSION",
+      "entry_id": "id2-profile-from-header",
+      "input": {"line_profile": "none", "rf_profile": "none", "type11_header_hex": "5f80"},
+      "expected": {"status": "REJECTED", "error_class": "INVALID_ID2_PROFILE_OR_TYPE11_HEADER"}
+    },
+    {
+      "id": "U-ID2-SHORTCUT",
+      "entry_id": "id2-profile-from-header",
+      "input": {"line_profile": "none", "rf_profile": "none", "type11_header_hex": "1e80"},
+      "expected": {"status": "REJECTED", "error_class": "INVALID_ID2_PROFILE_OR_TYPE11_HEADER"}
+    },
+    {
+      "id": "U-ID2-BITWISE-AND",
+      "entry_id": "id2-field-wire",
+      "input": {
+        "asset_kind": "SYNTHETIC_WIRE_FIELD_INPUT_NOT_PRODUCTION_CONFIG",
+        "parameters": {
+          "phase_indicator": 7,
+          "format_mask": 2,
+          "lfe_mask": 1,
+          "line_code": 5,
+          "rf_code": 7
+        }
+      },
+      "expected": {"payload_hex": "051bc0", "valid_bits": 21, "bytes": 3}
+    }
+  ]
+}

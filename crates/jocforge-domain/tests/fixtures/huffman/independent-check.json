@@ -1,0 +1,9 @@
+{
+  "schema": "f05qh-public-authorized-check.v1",
+  "manifest_sha256": "d0a96531cdd3029fbed633aa9b6df83e26519014ab145365dd0fa41237495355",
+  "payload_count": 8,
+  "all_payload_hashes_match": true,
+  "user_authorization_recorded": true,
+  "license_clearance_unknown": true,
+  "native_runtime_not_run_preserved": true
+}

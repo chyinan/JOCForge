@@ -1,0 +1,47 @@
+{
+  "schema": "f03g-target-slot-install-local-mapping.v1",
+  "scope": "F03G.2-F03G.4 explicit-state target-slot installation only",
+  "source_package": {
+    "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "spec_file": "specs/03-gate-and-target-installation.md",
+    "spec_bytes": 5475,
+    "spec_sha256": "aeb6791967413e71518cfb1c5853c52cd8e6e7e7174f60afa611cc0e0fa8d9dc",
+    "adapter_file": "test-vectors/unit/ADAPTER-CONTRACT.md",
+    "adapter_bytes": 22205,
+    "adapter_sha256": "9bce2e35ce47147c76c13e58ee976d44c5109938f0b19e1f3a81f1d8a61fa1ae",
+    "vector_file": "test-vectors/unit/vectors.json",
+    "vector_bytes": 1503142,
+    "vector_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8",
+    "review_file": "test-vectors/OUTER-LOCAL-REVIEW-STATUS.json",
+    "review_sha256": "b462c5614d26bded5abc66134606c34d0a85c1ab21802057150e17b229e79fca"
+  },
+  "local_inputs": {
+    "fixture": "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json",
+    "fixture_bytes": 1503142,
+    "fixture_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8",
+    "shared_manifest_fixture": "crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json",
+    "shared_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+  },
+  "verified_cases": [
+    "U-FRONT-INSTALL-EMPTY",
+    "U-FRONT-INSTALL-RECT",
+    "U-FRONT-INSTALL-TIES",
+    "U-FRONT-INSTALL-ATTR"
+  ],
+  "verification_boundary": {
+    "four_source_vectors": "LOCALLY_VERIFIED",
+    "malformed_shape_and_nonfinite_rejection": "LOCALLY_VERIFIED_BY_BOUNDARY_TESTS",
+    "full_F03G": "DEFERRED",
+    "parent_transaction": "NOT_RUN",
+    "real_ADM_or_product_acceptance": "NOT_RUN"
+  },
+  "excluded": [
+    "cold target constructor",
+    "source gate and feature producer",
+    "candidate selector",
+    "U04 projection/geometry/fit producer",
+    "marker/history",
+    "programme parent state and transaction",
+    "real ADM and whole-programme acceptance"
+  ]
+}

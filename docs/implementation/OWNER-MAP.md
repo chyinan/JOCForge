@@ -115,10 +115,35 @@
 
 | slice_id | parent_functional_id | owner |
 |---|---|---|
+| F03G/target-slot-install | F03G | `spatial_control` |
+| F03C/candidate-selector | F03C | `spatial_control` |
+| F03C/selector-score-choice | F03C | `spatial_control` |
+| F03C/selector-pairwise-affinity | F03C | `spatial_control` |
+| F03U/u04-membership-projection | F03U | `spatial_control` |
+| F03U/u04-refinement-admission-gate | F03U | `spatial_control` |
+| F03N/rectangular-nnls-solver | F03N | `spatial_control` |
+| F03S/outer-coefficient-postprocess | F03S | `spatial_control` |
+| F03S/outer-energy-fallback | F03S | `spatial_control` |
+| F03S/outer-geometric-correction | F03S | `spatial_control` |
+| F03S/outer-active-update | F03S | `spatial_control` |
+| F03S/outer-empty-matrix-skip | F03S | `spatial_control` |
+| F05Q/quantized-huffman-body-writer | F05Q | `joc` |
+| F05Q/id14-header-body-writer | F05Q | `joc` |
+| F05QH/huffman-codebook-table-provider | F05QH | `joc` |
 | F05JL/synthetic-coordinator-receipt-validation | F05JL | `joc` |
 | F05O/oamd-rowdata-body-encoder | F05O | `joc` |
 | F05O/oamd-single-rowdata-body-decoder | F05O | `joc` |
 | F05O/single-frame-oamd-body-assembler | F05O | `joc` |
 | F05T/trim-section-codec | F05T | `joc` |
+| F06L/ordered-log-energy-peak-accumulator-window-and-reduction | F06L | `meter` |
+| F06I/integrated-meter-synthetic-state-and-event-transition | F06I | `meter` |
+| F06W/meter-output-sample-accounting-and-span-ledger | F06W | `meter` |
+| F06KG/selected-k-matrix-provider-generator | F06KG | `meter` |
+| F06TP/selected-six-channel-true-peak-block-cascade | F06TP | `meter` |
+| F06U/ungated-single-slot-mean-and-di-off-getter | F06U | `meter` |
+| F09LB/selected-lfe-gate-and-mantissa-boundary | F09LB | `analysis` |
+| F12/grouped-quantizer-helper | F12 | `codec` |
+| F12S/mantissa-quantizer | F12S | `codec` |
 | F13/selected-metadata-owner-source-stage | F13 | `metadata` |
+| F13D2/id2-profile-header-and-body-wire | F13D2 | `metadata` |
 | F14K/public-keyless-integrity-owner | F14K | `integrity` |

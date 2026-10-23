@@ -1,0 +1,23 @@
+{
+  "schema": "lfe-gate-mantissa-boundaries.v1",
+  "selected_profile": {"sample_rate": 48000, "bit_rate_kbps": 1024, "acmod": 7, "blocks": 6, "aht_enabled": false},
+  "gate": {
+    "type": "I16",
+    "cold": 0,
+    "selected_value": 0,
+    "conditional_one": "aht_enabled && blocks==6 && writer_value==1",
+    "normalizer_equivalence_classes": ["zero", "nonzero"]
+  },
+  "clip": {
+    "lower_f32_u32": "bf800000",
+    "upper_f32_u32": "3f800000",
+    "comparisons": ["value < -1", "value > 1"],
+    "equal_preserves_input_word": true,
+    "lfe_count": 7,
+    "primary_max_count": 253,
+    "mantissa_consumes_clipped_row": true
+  },
+  "private_key_required": false,
+  "pcm_required": false,
+  "delivery_scope": "internal isolated implementation"
+}

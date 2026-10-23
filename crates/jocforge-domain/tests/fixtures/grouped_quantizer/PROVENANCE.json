@@ -1,0 +1,24 @@
+{
+  "schema": "f12-grouped-quantizer-local-provenance.v1",
+  "package": "F12-GROUPED-QUANTIZER-LOCAL",
+  "user_authorized_public_repo_use": false,
+  "delivery_scope": "INTERNAL_ONLY",
+  "production_usable": "SLICE_ONLY",
+  "implementation_ready": "NO",
+  "source_evidence": {
+    "r18_vectors_sha256": "2227c98e31699ae3a6759a32385e665d8e8aaf487c5629495b92707ad1667388",
+    "r15_capacity_vectors_sha256": "2c1f9c645866d7bb6f413ae2b86faa2b9400203acef2b06fddc8cbda8bf6eef3",
+    "r17_lineage_check_sha256": "d8819f6730500b47ea1d6ed73f4ef16db42f0dcb76a5bf8da82f97470d893448",
+    "r17_run_sha256": "066d7e20151f3666a57a4bc4f99122584ecc17a55beafe0443775e07f69f9d05"
+  },
+  "classification": {
+    "static_group_formulas": "STATIC_ONLY",
+    "controlled_vectors": "RUNTIME_CONFIRMED",
+    "provider_lineage": "RUNTIME_CONFIRMED_BOUNDED",
+    "out_of_domain_bap": "NOT_OBSERVED_IN_BOUNDED_COVERAGE",
+    "caller_capacity": "NOT_CLOSED",
+    "higher_retry_rollback": "NOT_OBSERVED"
+  },
+  "excluded": ["DLL", "IDA", "RVA", "pointer", "private_key", "HMAC", "raw_PCM", "research_capture_files"]
+}
+

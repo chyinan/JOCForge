@@ -1,0 +1,48 @@
+{
+  "schema": "lfe-gate-mantissa-input-vectors.v1",
+  "gate_producer_cases": [
+    {"id":"selected","input":{"aht_enabled":false,"blocks":6,"writer_value":1},"expected_gate":0},
+    {"id":"writer_one","input":{"aht_enabled":true,"blocks":6,"writer_value":1},"expected_gate":1},
+    {"id":"writer_other","input":{"aht_enabled":true,"blocks":6,"writer_value":0},"expected_gate":0},
+    {"id":"writer_two","input":{"aht_enabled":true,"blocks":6,"writer_value":2},"expected_gate":0},
+    {"id":"wrong_blocks","input":{"aht_enabled":true,"blocks":5,"writer_value":1},"expected_gate":0}
+  ],
+  "normalizer_cases": [
+    {"id":"gate_zero","raw":[0,0,0,0,0,0,0],"span":1,"option":1,"gate":0,"expected":{"base":0,"groups":[62,62],"decoded":[0,0,0,0,0,0,0],"second_pass":true}},
+    {"id":"gate_nonzero_positive","raw":[0,0,0,0,0,0,0],"span":1,"option":1,"gate":1,"expected":{"base":0,"groups":[62,62],"decoded":[0,0,0,0,0,0,0],"second_pass":false}},
+    {"id":"gate_nonzero_negative_one","raw":[0,0,0,0,0,0,0],"span":1,"option":1,"gate":-1,"expected":{"base":0,"groups":[62,62],"decoded":[0,0,0,0,0,0,0],"second_pass":false}},
+    {"id":"gate_nonzero_negative","raw":[0,0,0,0,0,0,0],"span":1,"option":1,"gate":-32768,"expected":{"base":0,"groups":[62,62],"decoded":[0,0,0,0,0,0,0],"second_pass":false}},
+    {"id":"gate_nonzero_max","raw":[0,0,0,0,0,0,0],"span":1,"option":1,"gate":32767,"expected":{"base":0,"groups":[62,62],"decoded":[0,0,0,0,0,0,0],"second_pass":false}}
+  ],
+  "coefficient_cases": [
+    {"id":"positive_zero","input_u32":"00000000","expected_clipped_u32":"00000000","expected_exponent":24,"clipped":false},
+    {"id":"negative_zero","input_u32":"80000000","expected_clipped_u32":"80000000","expected_exponent":24,"clipped":false},
+    {"id":"min_subnormal","input_u32":"00000001","expected_clipped_u32":"00000001","expected_exponent":24,"clipped":false},
+    {"id":"below_half","input_u32":"3effffff","expected_clipped_u32":"3effffff","expected_exponent":1,"clipped":false},
+    {"id":"half","input_u32":"3f000000","expected_clipped_u32":"3f000000","expected_exponent":0,"clipped":false},
+    {"id":"inside_positive","input_u32":"3f7fffff","expected_clipped_u32":"3f7fffff","expected_exponent":0,"clipped":false},
+    {"id":"positive_equal","input_u32":"3f800000","expected_clipped_u32":"3f800000","expected_exponent":0,"clipped":false},
+    {"id":"positive_over","input_u32":"3f800001","expected_clipped_u32":"3f800000","expected_exponent":0,"clipped":true},
+    {"id":"positive_max","input_u32":"7f7fffff","expected_clipped_u32":"3f800000","expected_exponent":0,"clipped":true},
+    {"id":"inside_negative","input_u32":"bf7fffff","expected_clipped_u32":"bf7fffff","expected_exponent":0,"clipped":false},
+    {"id":"negative_equal","input_u32":"bf800000","expected_clipped_u32":"bf800000","expected_exponent":0,"clipped":false},
+    {"id":"negative_over","input_u32":"bf800001","expected_clipped_u32":"bf800000","expected_exponent":0,"clipped":true},
+    {"id":"negative_max","input_u32":"ff7fffff","expected_clipped_u32":"bf800000","expected_exponent":0,"clipped":true}
+  ],
+  "rejection_cases": [
+    {"id":"nan","kind":"coefficient","input_u32":["7fc00000"],"route":"PRIMARY","expected_error":"MANTISSA_INPUT_ERROR"},
+    {"id":"infinity_lfe","kind":"coefficient","input_u32":["7f800000","00000000","00000000","00000000","00000000","00000000","00000000"],"route":"LFE","expected_error":"MANTISSA_INPUT_ERROR"},
+    {"id":"lfe_wrong_count","kind":"coefficient","input_u32":["00000000"],"route":"LFE","expected_error":"MANTISSA_INPUT_ERROR"},
+    {"id":"gate_bool","kind":"normalizer","raw":[0,0,0,0,0,0,0],"span":1,"option":1,"gate":true,"expected_error":"LFE_GATE_INPUT_ERROR"},
+    {"id":"gate_outside_i16","kind":"normalizer","raw":[0,0,0,0,0,0,0],"span":1,"option":1,"gate":32768,"expected_error":"LFE_GATE_INPUT_ERROR"},
+    {"id":"raw_outside","kind":"normalizer","raw":[0,0,0,0,0,0,25],"span":1,"option":1,"gate":0,"expected_error":"EXPONENT_INPUT_ERROR"}
+  ],
+  "error_mapping_cases": [
+    {"id":"normalizer_numeric_failure","leaf_error":"NUMERIC_FAILURE","expected_boundary_error":"NUMERIC_FAILURE"},
+    {"id":"normalizer_input_failure","leaf_error":"EXPONENT_INPUT_ERROR","expected_boundary_error":"EXPONENT_INPUT_ERROR"}
+  ],
+  "transaction_cases": [
+    {"id":"downstream_fail","initial_words":["3f800001","bf800001","00000000","00000001","3f000000","3effffff","7f7fffff"],"expected_clipped_words":["3f800000","bf800000","00000000","00000001","3f000000","3effffff","3f800000"],"expected_raw_exponents":[0,0,24,24,0,1,0],"downstream_status":"FAIL","expected_commit_count":0,"expected_retired":true},
+    {"id":"reset_retry","initial_words":["3f800001","bf800001","00000000","00000001","3f000000","3effffff","7f7fffff"],"expected_clipped_words":["3f800000","bf800000","00000000","00000001","3f000000","3effffff","3f800000"],"expected_raw_exponents":[0,0,24,24,0,1,0],"downstream_status":"PASS","expected_commit_count":1,"expected_retired":false}
+  ]
+}

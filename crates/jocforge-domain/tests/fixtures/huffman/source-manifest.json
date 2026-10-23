@@ -1,0 +1,50 @@
+{
+  "schema": "f05qh-public-authorized-manifest.v1",
+  "package": "F05QH-PUBLIC-AUTHORIZED",
+  "user_authorized_public_repo_use": true,
+  "license_clearance": "UNKNOWN",
+  "production_usable": "F05QH_TABLE_SCOPE_ONLY",
+  "implementation_ready": "NO",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 869,
+      "sha256": "3cc565db409b621df1449eb02437a2e3d649b2f7417f8e0fcc390bb237aaa3ce"
+    },
+    {
+      "path": "PROVENANCE.json",
+      "bytes": 1909,
+      "sha256": "8013bfb702318db18e46d1cb736c54a0e45911dd4bdc9cfc2c84f9700c1ab011"
+    },
+    {
+      "path": "spec/05-joc-huffman-codebooks.md",
+      "bytes": 6000,
+      "sha256": "1b593718504078e9fba296a120bd7bc7d180a8c77b4887a060d5ae1f3fa77857"
+    },
+    {
+      "path": "parameters/joc-huffman-v1.json",
+      "bytes": 92323,
+      "sha256": "515d635adc6099493dfd27f787bdf2b9f19a4b4bb1180860b0e820a23fb5d5ae"
+    },
+    {
+      "path": "vectors/JOC-HUFFMAN-CONSUMER-CONNECTION-VERIFICATION.json",
+      "bytes": 61912,
+      "sha256": "a444bb9dca33bc921cd0930a0f7bedb0160408247c2ec061adf9dfdb8037f79f"
+    },
+    {
+      "path": "vectors/JOC-HUFFMAN-INPUT-VECTORS.json",
+      "bytes": 38645,
+      "sha256": "e014850ec3dfe5be89a5dc9a45563d95532185410c182cfc51993f835f1fcf18"
+    },
+    {
+      "path": "vectors/JOC-HUFFMAN-LOCAL-REVIEW-STATUS.json",
+      "bytes": 7114,
+      "sha256": "55fd903c3332183579fbbb6ed9cf66c6afd10bbae4c8c0ae5fcab968cea3be2a"
+    },
+    {
+      "path": "vectors/JOC-HUFFMAN-VERIFICATION-RESULT.json",
+      "bytes": 20746,
+      "sha256": "99d7462acb03d54ae043737f2eb2fb07d16809e0ed512841685bca8e9c2cee11"
+    }
+  ]
+}

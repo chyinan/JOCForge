@@ -1,0 +1,37 @@
+{
+  "schema": "f03u-u04-projection-provenance.v1",
+  "package_base_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_assets": {
+    "specs/03-u04-refinement-and-projection.md": {
+      "bytes": 5458,
+      "sha256": "ca235e2f373d95d5c628ca61c651d01805bb9cb14a7c3457d9a77b1d87941879"
+    },
+    "test-vectors/unit/ADAPTER-CONTRACT.md": {
+      "bytes": 22205,
+      "sha256": "9bce2e35ce47147c76c13e58ee976d44c5109938f0b19e1f3a81f1d8a61fa1ae"
+    },
+    "test-vectors/unit/vectors.json": {
+      "bytes": 1503142,
+      "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
+    },
+    "test-vectors/OUTER-LOCAL-REVIEW-STATUS.json": {
+      "bytes": 21337,
+      "sha256": "b462c5614d26bded5abc66134606c34d0a85c1ab21802057150e17b229e79fca"
+    }
+  },
+  "selected_vector_ids": [
+    "U-PROJ-AXES",
+    "U-PROJ-PROTECTED",
+    "U-PROJ-ZERO",
+    "U-PROJ-ADMIT-CAPACITY_REACHED-15",
+    "U-PROJ-ADMIT-CANDIDATES_EXHAUSTED-3",
+    "U-PROJ-ADMIT-CANDIDATES_EXHAUSTED-15"
+  ],
+  "scope": {
+    "projection_and_admission_primitives_only": true,
+    "complete_geometry_or_target_producer": "NOT_IMPLEMENTED",
+    "whole_f03u_ready": false,
+    "whole_f03_or_product_ready": "NO",
+    "real_adm_spatial_acceptance": "NOT_RUN"
+  }
+}

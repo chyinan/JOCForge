@@ -1,0 +1,1091 @@
+{
+  "schema": "f12-controlled-native-grouped-vectors.v1",
+  "run_sha256": "0b1b04167db5046a0d59eb1372d98f0e3f9781d3e1cbf9822a3d47c6f96caf7a",
+  "vectors": [
+    {
+      "name": "nonfinite_all_grouped",
+      "input": {
+        "baps": [
+          1,
+          1,
+          1,
+          2,
+          2,
+          2,
+          4,
+          4
+        ],
+        "coefficients_f32": [
+          "NaN",
+          "Infinity",
+          "-Infinity",
+          "NaN",
+          "Infinity",
+          "-Infinity",
+          "NaN",
+          "Infinity"
+        ],
+        "logical_capacity_bytes": null
+      },
+      "capacity_exceeded_without_error": false,
+      "observed_items": [
+        {
+          "bap": 1,
+          "code": 0,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 0,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 0,
+          "width": 5
+        },
+        {
+          "bap": 2,
+          "code": 0,
+          "width": 7
+        },
+        {
+          "bap": 2,
+          "code": 0,
+          "width": 7
+        },
+        {
+          "bap": 2,
+          "code": 0,
+          "width": 7
+        },
+        {
+          "bap": 4,
+          "code": 0,
+          "width": 7
+        },
+        {
+          "bap": 4,
+          "code": 0,
+          "width": 7
+        }
+      ],
+      "observed_packs": [
+        {
+          "value": 0,
+          "width": 5,
+          "start_bits": 0
+        },
+        {
+          "value": 0,
+          "width": 7,
+          "start_bits": 5
+        },
+        {
+          "value": 0,
+          "width": 7,
+          "start_bits": 12
+        }
+      ],
+      "quantizer_return": 0,
+      "state_counts_after_quantizer": [
+        0,
+        0,
+        0
+      ],
+      "pending_bits_after_quantizer": 3,
+      "pending_accumulator_after_quantizer": 0,
+      "emitted_bytes_after_quantizer": 2,
+      "flush_return": null,
+      "emitted_word_memory_bytes": [
+        0,
+        0
+      ],
+      "pending_bit_count": 3,
+      "pending_accumulator_u16": 0,
+      "state_counts": [
+        0,
+        0,
+        0
+      ],
+      "emitted_word_memory_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+      "effective_bits": 19
+    },
+    {
+      "name": "incomplete_groups_no_flush",
+      "input": {
+        "baps": [
+          1,
+          2,
+          4
+        ],
+        "coefficients_f32": [
+          0.5,
+          1,
+          1
+        ],
+        "logical_capacity_bytes": null
+      },
+      "capacity_exceeded_without_error": false,
+      "observed_items": [
+        {
+          "bap": 1,
+          "code": 2,
+          "width": 5
+        },
+        {
+          "bap": 2,
+          "code": 4,
+          "width": 7
+        },
+        {
+          "bap": 4,
+          "code": 10,
+          "width": 7
+        }
+      ],
+      "observed_packs": [],
+      "quantizer_return": 0,
+      "state_counts_after_quantizer": [
+        1,
+        1,
+        1
+      ],
+      "pending_bits_after_quantizer": 3,
+      "pending_accumulator_after_quantizer": 0,
+      "emitted_bytes_after_quantizer": 2,
+      "flush_return": null,
+      "emitted_word_memory_bytes": [
+        0,
+        0
+      ],
+      "pending_bit_count": 3,
+      "pending_accumulator_u16": 0,
+      "state_counts": [
+        1,
+        1,
+        1
+      ],
+      "emitted_word_memory_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+      "effective_bits": 19
+    },
+    {
+      "name": "nan_inf_bap1",
+      "input": {
+        "baps": [
+          1,
+          1,
+          1
+        ],
+        "coefficients_f32": [
+          "NaN",
+          "Infinity",
+          "-Infinity"
+        ],
+        "logical_capacity_bytes": null
+      },
+      "capacity_exceeded_without_error": false,
+      "observed_items": [
+        {
+          "bap": 1,
+          "code": 0,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 0,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 0,
+          "width": 5
+        }
+      ],
+      "observed_packs": [
+        {
+          "value": 0,
+          "width": 5,
+          "start_bits": 0
+        }
+      ],
+      "quantizer_return": 0,
+      "state_counts_after_quantizer": [
+        0,
+        0,
+        0
+      ],
+      "pending_bits_after_quantizer": 5,
+      "pending_accumulator_after_quantizer": 0,
+      "emitted_bytes_after_quantizer": 0,
+      "flush_return": null,
+      "emitted_word_memory_bytes": [],
+      "pending_bit_count": 5,
+      "pending_accumulator_u16": 0,
+      "state_counts": [
+        0,
+        0,
+        0
+      ],
+      "emitted_word_memory_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "effective_bits": 5
+    },
+    {
+      "name": "finite_float_overflow",
+      "input": {
+        "baps": [
+          1,
+          1,
+          1,
+          2,
+          2,
+          2,
+          4,
+          4
+        ],
+        "coefficients_f32": [
+          -3.4028234663852886e+38,
+          0,
+          3.4028234663852886e+38,
+          -3.4028234663852886e+38,
+          0,
+          3.4028234663852886e+38,
+          -3.4028234663852886e+38,
+          3.4028234663852886e+38
+        ],
+        "logical_capacity_bytes": null
+      },
+      "capacity_exceeded_without_error": false,
+      "observed_items": [
+        {
+          "bap": 1,
+          "code": 0,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 1,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 0,
+          "width": 5
+        },
+        {
+          "bap": 2,
+          "code": 0,
+          "width": 7
+        },
+        {
+          "bap": 2,
+          "code": 2,
+          "width": 7
+        },
+        {
+          "bap": 2,
+          "code": 0,
+          "width": 7
+        },
+        {
+          "bap": 4,
+          "code": 0,
+          "width": 7
+        },
+        {
+          "bap": 4,
+          "code": 0,
+          "width": 7
+        }
+      ],
+      "observed_packs": [
+        {
+          "value": 3,
+          "width": 5,
+          "start_bits": 0
+        },
+        {
+          "value": 10,
+          "width": 7,
+          "start_bits": 5
+        },
+        {
+          "value": 0,
+          "width": 7,
+          "start_bits": 12
+        }
+      ],
+      "quantizer_return": 0,
+      "state_counts_after_quantizer": [
+        0,
+        0,
+        0
+      ],
+      "pending_bits_after_quantizer": 3,
+      "pending_accumulator_after_quantizer": 0,
+      "emitted_bytes_after_quantizer": 2,
+      "flush_return": null,
+      "emitted_word_memory_bytes": [
+        160,
+        24
+      ],
+      "pending_bit_count": 3,
+      "pending_accumulator_u16": 0,
+      "state_counts": [
+        0,
+        0,
+        0
+      ],
+      "emitted_word_memory_sha256": "91a9c5eaa0c0fb119bb49cb67e24530ab952cf4df863a84e81c03823af4185db",
+      "effective_bits": 19
+    },
+    {
+      "name": "logical_capacity_one_byte",
+      "input": {
+        "baps": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "coefficients_f32": [
+          -1,
+          0,
+          0.5,
+          -1,
+          0,
+          0.5,
+          -1,
+          0,
+          0.5,
+          -1,
+          0,
+          0.5
+        ],
+        "logical_capacity_bytes": 1
+      },
+      "capacity_exceeded_without_error": true,
+      "observed_items": [
+        {
+          "bap": 1,
+          "code": 0,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 1,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 2,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 0,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 1,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 2,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 0,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 1,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 2,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 0,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 1,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 2,
+          "width": 5
+        }
+      ],
+      "observed_packs": [
+        {
+          "value": 5,
+          "width": 5,
+          "start_bits": 0
+        },
+        {
+          "value": 5,
+          "width": 5,
+          "start_bits": 5
+        },
+        {
+          "value": 5,
+          "width": 5,
+          "start_bits": 10
+        },
+        {
+          "value": 5,
+          "width": 5,
+          "start_bits": 15
+        }
+      ],
+      "quantizer_return": 0,
+      "state_counts_after_quantizer": [
+        0,
+        0,
+        0
+      ],
+      "pending_bits_after_quantizer": 4,
+      "pending_accumulator_after_quantizer": 20480,
+      "emitted_bytes_after_quantizer": 2,
+      "flush_return": null,
+      "emitted_word_memory_bytes": [
+        74,
+        41
+      ],
+      "pending_bit_count": 4,
+      "pending_accumulator_u16": 20480,
+      "state_counts": [
+        0,
+        0,
+        0
+      ],
+      "emitted_word_memory_sha256": "e07830ed0221bf002ecfad092375fecfb6633795b58dfbc058e20d252aec74d9",
+      "effective_bits": 20
+    },
+    {
+      "name": "all_finite_clamp_edges",
+      "input": {
+        "baps": [
+          1,
+          1,
+          1,
+          2,
+          2,
+          2,
+          4,
+          4
+        ],
+        "coefficients_f32": [
+          -100,
+          0,
+          100,
+          -100,
+          0,
+          100,
+          -100,
+          100
+        ],
+        "logical_capacity_bytes": null
+      },
+      "capacity_exceeded_without_error": false,
+      "observed_items": [
+        {
+          "bap": 1,
+          "code": 0,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 1,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 2,
+          "width": 5
+        },
+        {
+          "bap": 2,
+          "code": 0,
+          "width": 7
+        },
+        {
+          "bap": 2,
+          "code": 2,
+          "width": 7
+        },
+        {
+          "bap": 2,
+          "code": 4,
+          "width": 7
+        },
+        {
+          "bap": 4,
+          "code": 0,
+          "width": 7
+        },
+        {
+          "bap": 4,
+          "code": 10,
+          "width": 7
+        }
+      ],
+      "observed_packs": [
+        {
+          "value": 5,
+          "width": 5,
+          "start_bits": 0
+        },
+        {
+          "value": 14,
+          "width": 7,
+          "start_bits": 5
+        },
+        {
+          "value": 10,
+          "width": 7,
+          "start_bits": 12
+        }
+      ],
+      "quantizer_return": 0,
+      "state_counts_after_quantizer": [
+        0,
+        0,
+        0
+      ],
+      "pending_bits_after_quantizer": 3,
+      "pending_accumulator_after_quantizer": 16384,
+      "emitted_bytes_after_quantizer": 2,
+      "flush_return": null,
+      "emitted_word_memory_bytes": [
+        225,
+        40
+      ],
+      "pending_bit_count": 3,
+      "pending_accumulator_u16": 16384,
+      "state_counts": [
+        0,
+        0,
+        0
+      ],
+      "emitted_word_memory_sha256": "a8cd65dc4f88bb11eb0801354caaef96caa9d73dde77c2712fce177661d30f94",
+      "effective_bits": 19
+    },
+    {
+      "name": "bap1_complete",
+      "input": {
+        "baps": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "coefficients_f32": [
+          -1,
+          0,
+          0.5,
+          -1,
+          0,
+          0.5,
+          -1,
+          0,
+          0.5,
+          -1,
+          0,
+          0.5
+        ],
+        "logical_capacity_bytes": null
+      },
+      "capacity_exceeded_without_error": false,
+      "observed_items": [
+        {
+          "bap": 1,
+          "code": 0,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 1,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 2,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 0,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 1,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 2,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 0,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 1,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 2,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 0,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 1,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 2,
+          "width": 5
+        }
+      ],
+      "observed_packs": [
+        {
+          "value": 5,
+          "width": 5,
+          "start_bits": 0
+        },
+        {
+          "value": 5,
+          "width": 5,
+          "start_bits": 5
+        },
+        {
+          "value": 5,
+          "width": 5,
+          "start_bits": 10
+        },
+        {
+          "value": 5,
+          "width": 5,
+          "start_bits": 15
+        }
+      ],
+      "quantizer_return": 0,
+      "state_counts_after_quantizer": [
+        0,
+        0,
+        0
+      ],
+      "pending_bits_after_quantizer": 4,
+      "pending_accumulator_after_quantizer": 20480,
+      "emitted_bytes_after_quantizer": 2,
+      "flush_return": null,
+      "emitted_word_memory_bytes": [
+        74,
+        41
+      ],
+      "pending_bit_count": 4,
+      "pending_accumulator_u16": 20480,
+      "state_counts": [
+        0,
+        0,
+        0
+      ],
+      "emitted_word_memory_sha256": "e07830ed0221bf002ecfad092375fecfb6633795b58dfbc058e20d252aec74d9",
+      "effective_bits": 20
+    },
+    {
+      "name": "bap2_complete",
+      "input": {
+        "baps": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "coefficients_f32": [
+          1,
+          0.5,
+          0,
+          1,
+          0.5,
+          0,
+          1,
+          0.5,
+          0
+        ],
+        "logical_capacity_bytes": null
+      },
+      "capacity_exceeded_without_error": false,
+      "observed_items": [
+        {
+          "bap": 2,
+          "code": 4,
+          "width": 7
+        },
+        {
+          "bap": 2,
+          "code": 3,
+          "width": 7
+        },
+        {
+          "bap": 2,
+          "code": 2,
+          "width": 7
+        },
+        {
+          "bap": 2,
+          "code": 4,
+          "width": 7
+        },
+        {
+          "bap": 2,
+          "code": 3,
+          "width": 7
+        },
+        {
+          "bap": 2,
+          "code": 2,
+          "width": 7
+        },
+        {
+          "bap": 2,
+          "code": 4,
+          "width": 7
+        },
+        {
+          "bap": 2,
+          "code": 3,
+          "width": 7
+        },
+        {
+          "bap": 2,
+          "code": 2,
+          "width": 7
+        }
+      ],
+      "observed_packs": [
+        {
+          "value": 117,
+          "width": 7,
+          "start_bits": 0
+        },
+        {
+          "value": 117,
+          "width": 7,
+          "start_bits": 7
+        },
+        {
+          "value": 117,
+          "width": 7,
+          "start_bits": 14
+        }
+      ],
+      "quantizer_return": 0,
+      "state_counts_after_quantizer": [
+        0,
+        0,
+        0
+      ],
+      "pending_bits_after_quantizer": 5,
+      "pending_accumulator_after_quantizer": 43008,
+      "emitted_bytes_after_quantizer": 2,
+      "flush_return": null,
+      "emitted_word_memory_bytes": [
+        215,
+        235
+      ],
+      "pending_bit_count": 5,
+      "pending_accumulator_u16": 43008,
+      "state_counts": [
+        0,
+        0,
+        0
+      ],
+      "emitted_word_memory_sha256": "b4b47bbedd11838670d1ae5580a60445464bfd351e7a0bb1aaa6c35fda63b7f9",
+      "effective_bits": 21
+    },
+    {
+      "name": "bap4_complete",
+      "input": {
+        "baps": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "coefficients_f32": [
+          1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          1,
+          0
+        ],
+        "logical_capacity_bytes": null
+      },
+      "capacity_exceeded_without_error": false,
+      "observed_items": [
+        {
+          "bap": 4,
+          "code": 10,
+          "width": 7
+        },
+        {
+          "bap": 4,
+          "code": 5,
+          "width": 7
+        },
+        {
+          "bap": 4,
+          "code": 10,
+          "width": 7
+        },
+        {
+          "bap": 4,
+          "code": 5,
+          "width": 7
+        },
+        {
+          "bap": 4,
+          "code": 10,
+          "width": 7
+        },
+        {
+          "bap": 4,
+          "code": 5,
+          "width": 7
+        },
+        {
+          "bap": 4,
+          "code": 10,
+          "width": 7
+        },
+        {
+          "bap": 4,
+          "code": 5,
+          "width": 7
+        }
+      ],
+      "observed_packs": [
+        {
+          "value": 115,
+          "width": 7,
+          "start_bits": 0
+        },
+        {
+          "value": 115,
+          "width": 7,
+          "start_bits": 7
+        },
+        {
+          "value": 115,
+          "width": 7,
+          "start_bits": 14
+        },
+        {
+          "value": 115,
+          "width": 7,
+          "start_bits": 5
+        }
+      ],
+      "quantizer_return": 0,
+      "state_counts_after_quantizer": [
+        0,
+        0,
+        0
+      ],
+      "pending_bits_after_quantizer": 12,
+      "pending_accumulator_after_quantizer": 40752,
+      "emitted_bytes_after_quantizer": 2,
+      "flush_return": null,
+      "emitted_word_memory_bytes": [
+        207,
+        231
+      ],
+      "pending_bit_count": 12,
+      "pending_accumulator_u16": 40752,
+      "state_counts": [
+        0,
+        0,
+        0
+      ],
+      "emitted_word_memory_sha256": "7f9edd27780f6dd853dad2bca879d647a6ba50f74755ce6bca4c35afaf84cc73",
+      "effective_bits": 28
+    },
+    {
+      "name": "mixed_tail_fill",
+      "input": {
+        "baps": [
+          1,
+          2,
+          4
+        ],
+        "coefficients_f32": [
+          0.5,
+          1,
+          1
+        ],
+        "logical_capacity_bytes": null
+      },
+      "capacity_exceeded_without_error": false,
+      "observed_items": [
+        {
+          "bap": 1,
+          "code": 2,
+          "width": 5
+        },
+        {
+          "bap": 2,
+          "code": 4,
+          "width": 7
+        },
+        {
+          "bap": 4,
+          "code": 10,
+          "width": 7
+        },
+        {
+          "bap": 1,
+          "code": 1,
+          "width": 5
+        },
+        {
+          "bap": 1,
+          "code": 1,
+          "width": 5
+        },
+        {
+          "bap": 2,
+          "code": 2,
+          "width": 7
+        },
+        {
+          "bap": 2,
+          "code": 2,
+          "width": 7
+        }
+      ],
+      "observed_packs": [
+        {
+          "value": 22,
+          "width": 5,
+          "start_bits": 0
+        },
+        {
+          "value": 112,
+          "width": 7,
+          "start_bits": 5
+        },
+        {
+          "value": 115,
+          "width": 7,
+          "start_bits": 12
+        }
+      ],
+      "quantizer_return": 0,
+      "state_counts_after_quantizer": [
+        1,
+        1,
+        1
+      ],
+      "pending_bits_after_quantizer": 3,
+      "pending_accumulator_after_quantizer": 0,
+      "emitted_bytes_after_quantizer": 2,
+      "flush_return": 0,
+      "emitted_word_memory_bytes": [
+        14,
+        183
+      ],
+      "pending_bit_count": 3,
+      "pending_accumulator_u16": 24576,
+      "state_counts": [
+        0,
+        0,
+        0
+      ],
+      "emitted_word_memory_sha256": "d4aa30404b3c4ca254d4e21caeb7ee67654bfba4fa1331c60769e88092b1511c",
+      "effective_bits": 19
+    },
+    {
+      "name": "empty_flush",
+      "input": {
+        "baps": [],
+        "coefficients_f32": [],
+        "logical_capacity_bytes": null
+      },
+      "capacity_exceeded_without_error": false,
+      "observed_items": [],
+      "observed_packs": [],
+      "quantizer_return": null,
+      "state_counts_after_quantizer": [
+        0,
+        0,
+        0
+      ],
+      "pending_bits_after_quantizer": 0,
+      "pending_accumulator_after_quantizer": 0,
+      "emitted_bytes_after_quantizer": 0,
+      "flush_return": 0,
+      "emitted_word_memory_bytes": [],
+      "pending_bit_count": 0,
+      "pending_accumulator_u16": 0,
+      "state_counts": [
+        0,
+        0,
+        0
+      ],
+      "emitted_word_memory_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "effective_bits": 0
+    }
+  ]
+}

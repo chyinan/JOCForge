@@ -1,0 +1,102 @@
+{
+  "status": "PASS_LOCAL_NUMERIC_NO_OPEN_FINDINGS",
+  "scope": "F06KG generation + F06W.3/.4 only",
+  "gain_exact_power_comparisons": [
+    -1,
+    1
+  ],
+  "matrix_words_matched": 64,
+  "cold_words_matched": 8,
+  "complete_words": 72,
+  "complete_bytes": 288,
+  "complete_sha256": "08dc825e016f703df13b023bf29486996cba7c1eac2ebc1c7741da54ef98fb1a",
+  "output_words_verified_by_full_sequence_hash": 4160,
+  "state_words_matched": 48,
+  "power_words_matched": 6,
+  "boundary_probes": [
+    "decimal ties even positive/negative",
+    "binary32 ties even",
+    "gradual subnormal and signed underflow zero",
+    "signed-zero add/multiply",
+    "shortest positive 8-sample zero block/noise",
+    "state clamp at block end with above-one output",
+    "cold reset reproducibility"
+  ],
+  "findings": [],
+  "closed_findings": [
+    {
+      "severity": "P2",
+      "location": "parameters/meter-k-state-bounds-v1.json: matrix_64_effective_entries / matrix_provider",
+      "status": "CLOSED",
+      "reason": "Explicit F06KG generated availability and exact parameter provider now agree with F06KG.4/.5 and F06W.3; whole-package NO is retained."
+    }
+  ],
+  "local_generation_and_consumption_implementable": true,
+  "limitations": [
+    "source attribution is supplied and not independently browsed",
+    "no SDK or original table identity certification",
+    "no original vendor normalization design rationale certification",
+    "no true audio, six-channel frontend, full meter, or entire bundle validation"
+  ],
+  "schema": "k-matrix-local-review-status.v1",
+  "revision": "r2",
+  "manifest_sha256": "505eeb71676d870b4627322f79e96a8f1ba28972c90269600a81e1a11ebc8ca0",
+  "content_files_verified": 6,
+  "current_bindings": [
+    {
+      "file": "specs/00-numeric-semantics.md",
+      "reviewed_sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135",
+      "current_sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135",
+      "same_bytes": true
+    },
+    {
+      "file": "specs/06-meter-k-matrix-generation.md",
+      "reviewed_sha256": "2e8d316c3171b8bf8e36c65884d13e8e00e49bc84af4c030dda49b0434c43685",
+      "current_sha256": "d6287e17dec2a4b93b5756eb25345fd41cc4329eebeacefabd8e71ad84d33e31",
+      "same_bytes": false
+    },
+    {
+      "file": "specs/06-meter-window-and-output-clock.md",
+      "reviewed_sha256": "709641bfb0d5c31968a816c1d6b0ba9a2bfbd584147552e5d723601ed2060782",
+      "current_sha256": "c08dd41c42dd231ef23a683415f59b9b7db60375a3da2b8140501969933d073c",
+      "same_bytes": false
+    },
+    {
+      "file": "parameters/meter-k-matrix-math-v1.json",
+      "reviewed_sha256": "c8b4ffd52fffd62f5d0fdeba36a993f02188933a43593abe6969243f44f7f536",
+      "current_sha256": "c8b4ffd52fffd62f5d0fdeba36a993f02188933a43593abe6969243f44f7f536",
+      "same_bytes": true
+    },
+    {
+      "file": "parameters/meter-k-state-bounds-v1.json",
+      "reviewed_sha256": "2faaa9d0aeefb105a913589590fcbafb97362a54192b0b21c5fdda7da1974e68",
+      "current_sha256": "2faaa9d0aeefb105a913589590fcbafb97362a54192b0b21c5fdda7da1974e68",
+      "same_bytes": true
+    },
+    {
+      "file": "test-vectors/METER-K-MATRIX-GENERATION-VERIFICATION.json",
+      "reviewed_sha256": "88bfb0d0b9041d41ddf5ae30a0de18ac9b7be22ff06f45713b6601489eeda8b5",
+      "current_sha256": "88bfb0d0b9041d41ddf5ae30a0de18ac9b7be22ff06f45713b6601489eeda8b5",
+      "same_bytes": true
+    }
+  ],
+  "post_review_edits": "F06KG.5 and F06W.6 review-status sentences only; generation rules, public coefficients, provider, consumption numeric rules and vectors unchanged.",
+  "task_content_readset_audited": true,
+  "policy_file_role": "USER_RTK_POLICY_NOT_ALGORITHM_INPUT",
+  "own_prior_package_only_checker_reused": true,
+  "research_sources_read_by_reviewer": false,
+  "network_used": false,
+  "complete_process_filesystem_trace": "NOT_CAPTURED",
+  "os_allowlist": "NOT_ENFORCED",
+  "sandbox_claim": false,
+  "delivery_scope": "INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION",
+  "implementation_ready": "NO",
+  "subsequent_current_binding_refreshes": [
+    {
+      "file": "specs/06-meter-k-matrix-generation.md",
+      "prior_current_sha256": "6cb032968b9689feeb17eb306af664a346a29553f87de4f930c9064be55c2062",
+      "replacement_sha256": "d6287e17dec2a4b93b5756eb25345fd41cc4329eebeacefabd8e71ad84d33e31",
+      "reason": "Current package identity refresh only; historical reviewed_sha256, review scope, algorithms, and readiness are unchanged."
+    }
+  ]
+}

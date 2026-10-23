@@ -1,0 +1,44 @@
+{
+  "schema": "meter-truepeak-authorized-verification.v1",
+  "status": "AUTHORIZED_PARAMETERS_AND_LOCAL_RULES_VERIFIED",
+  "delivery_scope": "INTERNAL_ONLY",
+  "public_or_third_party_distribution": "NOT_AUTHORIZED",
+  "parameter_classification": "AUTHORIZED_COMPILED_FUNCTIONAL_CONSTANTS",
+  "parameter_unique_words": 11,
+  "parameter_expanded_words": 24,
+  "parameter_sha256": "f67e6fe86533af74acc261bf3908890e77a461198116c64b624dc91b69049757",
+  "expanded_a_then_b_f32le_sha256": "f4878bb808821078480754d676a94191954771757c07010982e97be8c571e84c",
+  "vectors_sha256": "510b980acf92519e0fbced2cf79b6b9f72dc47dcc8316f59506048288982d528",
+  "cases": 9,
+  "continuous_sequence_steps": 8,
+  "independent_lfe_preservation_cases": 1,
+  "checked": {
+    "output_words": 193536,
+    "state_words": 249912,
+    "peak_fields": 540,
+    "programme_fields": 126
+  },
+  "mismatches": {
+    "output_words": 0,
+    "state_words": 0,
+    "peak_fields": 0,
+    "programme_fields": 0
+  },
+  "first_difference": null,
+  "actual_state_used_for_continuation": true,
+  "expected_state_used_as_input": false,
+  "runtime_FIR_supplier": "Only the authorized eleven-value parameter artifact, expanded by explicit mirror and zero-tail rules",
+  "original_table_or_native_output_used_as_runtime_prediction_input": false,
+  "audio_comparison_scope": "Complete interpolation arrays for generated synthetic input only. Includes compensated peak and full state; no original/native PCM, real ADM render, or new encoded-stream listening test.",
+  "production_parameter_identity": "Reconstruction matches previously verified selected 24-word parameter identity; no independent mathematical design claim",
+  "independent_package_review": "NOT_RUN_FOR_THIS_REVISION",
+  "full_package_implementation_ready": "NO",
+  "scope_limits": [
+    "Nine explicit synthetic cases are not all finite-input conformance",
+    "No exact-upper-truepeak-log boundary claim beyond F06L scope",
+    "No entire meter/frontend/DRC/codec readiness claim",
+    "No public or third-party delivery authorization"
+  ],
+  "root_scalar_recomputed_cases": 9,
+  "root_recomputation_uses_expected_state_as_input": false
+}

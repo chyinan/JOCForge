@@ -1,5 +1,14 @@
 {
   "schema": "jocforge-implementation-map.v1",
+  "public_distribution_authorization": {
+    "record": "docs/implementation/PUBLIC-DISTRIBUTION-AUTHORIZATION.md",
+    "authorized_by_user": true,
+    "authorized_at": "2026-10-23",
+    "target": "chyinan/JOCForge:experimental/independent-encoder",
+    "scope": "Current isolated-worktree changes and their local implementation artifacts, excluding vendor private keys",
+    "washed_package_scope_labels_preserved": true,
+    "third_party_license_clearance": "UNKNOWN"
+  },
   "status": {
     "ARCHITECTURE_DESIGN": "APPROVED",
     "TRACEABILITY": "PARTIALLY_MATERIALIZED",
@@ -310,30 +319,404 @@
       "spec_files": [
         "specs/03-gate-and-target-installation.md"
       ],
+      "local_mapping_files": [
+        "docs/implementation/selected-target-attribute-lineage.md"
+      ],
+      "test_modules": [
+        "crates/jocforge-domain/tests/selected_target_attribute_relations.rs"
+      ],
       "owner": "spatial_control",
       "planned_phase": "Phase 3",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "mapping_status": "SELECTED_PATH_RELATIONS_MAPPED",
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "implementation_files": [
+        "crates/jocforge-domain/src/spatial/target_slot_install.rs"
+      ],
+      "test_modules": [
+        "crates/jocforge-domain/tests/target_slot_install.rs",
+        "crates/jocforge-domain/tests/selected_target_attribute_relations.rs"
+      ],
+      "clock": {
+        "domains": [],
+        "covered_clauses": [
+          "Target-slot installation is a pure per-callback value transition and owns no callback/source/AU clock."
+        ]
+      },
+      "parameters": {
+        "kind": "EXPLICIT_15_SLOT_STATE_AND_SELECTED_TARGET_PROPOSAL",
+        "provider_files": [],
+        "validation_boundary": "Consumes an explicit prior target-slot state and same-generation selected XYZ/ID/attribute arrays; does not construct cold state, produce selector/projection inputs, or own marker/history state."
+      },
+      "vectors": {
+        "kind": "HASH_BOUND_TARGET_SLOT_INSTALL_MAPPING_AND_STATE_PROJECTIONS",
+        "authoritative_vectors": [
+          "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json"
+        ],
+        "case_pointers": [
+          "U-FRONT-INSTALL-EMPTY",
+          "U-FRONT-INSTALL-RECT",
+          "U-FRONT-INSTALL-TIES",
+          "U-FRONT-INSTALL-ATTR"
+        ],
+        "local_fixture": {
+          "file": "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json",
+          "bytes": 1503142,
+          "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
+        },
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+      },
+      "error_outcomes": [
+        {
+          "error_code": "TARGET_INSTALL_INPUT_ERROR",
+          "category": "target-slot input shape/domain",
+          "trigger": "Selected XYZ/ID/attribute lengths differ, selected count exceeds 15, current/selected XYZ contains a nonfinite F32 word, or an active flag is not 0/1.",
+          "programme_state_after": "No mapping, cost, or next-state projection is returned; the function owns no persistent state.",
+          "caller_action": "Reject the local target-install input without exposing a partial state."
+        },
+        {
+          "error_code": "UNSUPPORTED_ATTRIBUTE_MULTIPLICITY",
+          "category": "selected target attributes",
+          "trigger": "Any selected attribute occurs more often than it occurs in the full old 15-slot state, including inactive slots.",
+          "programme_state_after": "No mapping, cost, or next-state projection is returned.",
+          "caller_action": "Reject as unsupported; do not use a first-install exemption or guess a special cost branch."
+        },
+        {
+          "error_code": "TARGET_INSTALL_NUMERIC_FAILURE",
+          "category": "R32 distance/cost range",
+          "trigger": "A specified separately-rounded R32 operation is nonfinite, or a cost is not strictly below the largest finite F32 value.",
+          "programme_state_after": "No mapping or next state is returned.",
+          "caller_action": "Fail the local target-install operation; do not substitute NaN, infinity, or the maximum finite word as a valid cost."
+        },
+        {
+          "error_code": "TARGET_INSTALL_NO_FINITE_ASSIGNMENT",
+          "category": "greedy assignment",
+          "trigger": "A greedy pass cannot find an unmasked cost strictly below the maximum finite F32 sentinel.",
+          "programme_state_after": "No mapping or next state is returned.",
+          "caller_action": "Reject the local install; do not fall back to another assignment algorithm."
+        }
+      ],
+      "direct_slices": [
+        {
+          "slice_id": "target-slot-install",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F03G_AND_PRODUCT_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_F03G_2_4_COST_GREEDY_MAPPING_AND_STATE_PROJECTION",
+          "scope": "Explicit prior 15-slot state and selected XYZ/ID/attribute proposal to original row-major cost words, exact n-pass greedy tie order, and complete next-state projection. Empty selection preserves old state. Constructor, source gate, selector, projection/fit producers, marker/history, parent commit, and product integration are excluded.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/spatial/mod.rs",
+            "crates/jocforge-domain/src/spatial/target_slot_install.rs"
+          ],
+          "local_mapping_files": [
+            "docs/implementation/target-slot-install.md",
+            "docs/implementation/target-slot-install-provenance.json"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Pure per-callback value transition; no clock or committed state is owned."
+            ]
+          },
+          "parameters": {
+            "kind": "EXPLICIT_SYNTHETIC_OLD_STATE_AND_SELECTED_PROPOSAL",
+            "provider_files": [],
+            "validation_boundary": "The local vectors provide explicit synthetic old/new state. No production cold provider or selector is called."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/target_slot_install.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_EXPLICIT_TARGET_SLOT_INSTALL_CASES",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json"
+            ],
+            "case_pointers": [
+              "U-FRONT-INSTALL-EMPTY",
+              "U-FRONT-INSTALL-RECT",
+              "U-FRONT-INSTALL-TIES",
+              "U-FRONT-INSTALL-ATTR"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json",
+              "bytes": 1503142,
+              "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "TARGET_INSTALL_INPUT_ERROR",
+              "category": "target-slot input shape/domain",
+              "trigger": "Selected XYZ/ID/attribute lengths differ, selected count exceeds 15, current/selected XYZ contains a nonfinite F32 word, or an active flag is not 0/1.",
+              "programme_state_after": "No mapping, cost, or next-state projection is returned; the function owns no persistent state.",
+              "caller_action": "Reject the local target-install input without exposing a partial state."
+            },
+            {
+              "error_code": "UNSUPPORTED_ATTRIBUTE_MULTIPLICITY",
+              "category": "selected target attributes",
+              "trigger": "Any selected attribute occurs more often than it occurs in the full old 15-slot state, including inactive slots.",
+              "programme_state_after": "No mapping, cost, or next-state projection is returned.",
+              "caller_action": "Reject as unsupported; do not use a first-install exemption or guess a special cost branch."
+            },
+            {
+              "error_code": "TARGET_INSTALL_NUMERIC_FAILURE",
+              "category": "R32 distance/cost range",
+              "trigger": "A specified separately-rounded R32 operation is nonfinite, or a cost is not strictly below the largest finite F32 value.",
+              "programme_state_after": "No mapping or next state is returned.",
+              "caller_action": "Fail the local target-install operation; do not substitute NaN, infinity, or the maximum finite word as a valid cost."
+            },
+            {
+              "error_code": "TARGET_INSTALL_NO_FINITE_ASSIGNMENT",
+              "category": "greedy assignment",
+              "trigger": "A greedy pass cannot find an unmasked cost strictly below the maximum finite F32 sentinel.",
+              "programme_state_after": "No mapping or next state is returned.",
+              "caller_action": "Reject the local install; do not fall back to another assignment algorithm."
+            }
+          ],
+          "not_run": [
+            "F03G source gate and producer path",
+            "F03C selector and F03U projection/geometry/fit producer integration",
+            "cold constructor and marker/history updates",
+            "parent transaction, real ADM, product integration, and whole-programme acceptance"
+          ]
+        }
+      ],
+      "production_usable": false,
+      "not_run": [
+        "attribute packer width and overflow behavior",
+        "other dispatch modes or target capacities",
+        "source gate, cold constructor, and F03G producer path",
+        "F03G parent state/transaction and product integration"
+      ]
     },
     {
       "functional_id": "F03C",
       "spec_files": [
         "specs/03-selector-affinity-and-selection.md"
       ],
+      "local_mapping_files": [
+        "docs/implementation/candidate-selector.md",
+        "docs/implementation/candidate-selector-provenance.json"
+      ],
       "owner": "spatial_control",
       "planned_phase": "Phase 3",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "candidate-selector",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F03C_AND_PRODUCT_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_COLD_CANDIDATE_SELECTION__FEATURE_AND_TARGET_PRODUCERS_DEFERRED",
+          "scope": "Cold candidate selector over explicit feature/position/response/width/attribute/previous-ID inputs; affinity/complement, fixed Q/T/W, previous-ID boost, slot gate, tie resolution, feature/coverage/support updates, survivor compression, and selected output diagnostics.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/spatial/mod.rs",
+            "crates/jocforge-domain/src/spatial/candidate_selector.rs"
+          ],
+          "local_mapping_files": [
+            "docs/implementation/candidate-selector.md",
+            "docs/implementation/candidate-selector-provenance.json"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Each selector call initializes cold scratch; no callback/source/AU counter or cross-call selector state is owned."
+            ]
+          },
+          "parameters": {
+            "kind": "CALLER_SUPPLIED_F03C_FEATURE_RESPONSE_AND_TARGET_INPUTS",
+            "provider_files": [],
+            "validation_boundary": "Consumes caller-provided same-callback feature, position, response, width, attribute, global candidate IDs, and previous IDs; it does not produce FFT features, geometry responses, or targets."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/candidate_selector.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_COLD_SELECTOR_CONTINUOUS_ROUND_PROJECTIONS",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json"
+            ],
+            "case_pointers": [
+              "U-SEL-SINGLE",
+              "U-SEL-COMPLEMENT",
+              "U-SEL-PREVIOUS-ID",
+              "U-SEL-CAPACITY"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json",
+              "bytes": 1503142,
+              "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "SELECTOR_INPUT_ERROR",
+              "category": "selector input shape/domain",
+              "trigger": "Candidate IDs/arrays differ in shape, IDs are not unique increasing values in 0..47, fixed band/slot counts differ, or a value is nonfinite/out of domain.",
+              "programme_state_after": "No selection result is returned; the call owns no persistent state.",
+              "caller_action": "Reject the call before selector scratch is exposed to a target installer."
+            },
+            {
+              "error_code": "SELECTOR_NUMERIC_FAILURE",
+              "category": "F32 selection math",
+              "trigger": "A specified F32 operation or local libm power/cos operation produces a nonfinite value.",
+              "programme_state_after": "No partial selected output is returned.",
+              "caller_action": "Fail the enclosing source attempt; target installation remains external."
+            }
+          ],
+          "not_run": [
+            "feature FFT and feature producer",
+            "geometry response producer, U04, target slot installation and metadata history",
+            "callback/source/AU clock, parent transaction, real ADM and spatial acceptance"
+          ]
+        },
+        {
+          "slice_id": "selector-score-choice",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F03C_AND_PRODUCT_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_PRIMARY_WINDOW_AND_SECONDARY_TIE_PRIMITIVE",
+          "scope": "Stateless primary maximum, 0.01 F32 tie window, and earliest secondary-maximum selection over explicit same-length primary/secondary score arrays.",
+          "implementation_files": ["crates/jocforge-domain/src/spatial/candidate_selector.rs"],
+          "local_mapping_files": ["docs/implementation/candidate-selector.md"],
+          "clock": {"domains": [], "covered_clauses": ["No state or clock is owned."]},
+          "parameters": {"kind": "FIXED_F03C_SCORE_TIE_WINDOW", "provider_files": [], "validation_boundary": "Consumes caller-supplied finite F32 score bit words only."},
+          "test_modules": ["crates/jocforge-domain/tests/candidate_selector.rs"],
+          "vectors": {
+            "kind": "HASH_BOUND_PRIMARY_BOUNDARY_AND_SECONDARY_TIE_VECTORS",
+            "authoritative_vectors": ["crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json"],
+            "case_pointers": ["U-SEL-CHOICE-BOUNDARY", "U-SEL-CHOICE-BELOW", "U-SEL-CHOICE-SECONDARY-TIE"],
+            "local_fixture": {"file": "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json", "bytes": 1503142, "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"},
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "error_outcomes": [
+            {"error_code": "SELECTOR_CHOICE_INPUT_ERROR", "category": "score arrays", "trigger": "Arrays are empty, have different lengths, or contain nonfinite F32 values.", "programme_state_after": "No choice is returned.", "caller_action": "Reject the local score-choice input."},
+            {"error_code": "SELECTOR_CHOICE_UNDEFINED", "category": "tie set", "trigger": "No finite candidate belongs to the primary tie window or the secondary tie set cannot be resolved.", "programme_state_after": "No choice is returned.", "caller_action": "Reject; do not invent an ordinal fallback."}
+          ],
+          "not_run": ["Whole F03C and target installation"]
+        },
+        {
+          "slice_id": "selector-pairwise-affinity",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F03C_AND_PRODUCT_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_ORDERED_WIDTH_ASYMMETRIC_AFFINITY_PRIMITIVE",
+          "scope": "Stateless ordered pairwise affinity from explicit positions, attributes, and widths; preserves candidate-column width asymmetry and selected trigonometric route.",
+          "implementation_files": ["crates/jocforge-domain/src/spatial/candidate_selector.rs"],
+          "local_mapping_files": ["docs/implementation/candidate-selector.md"],
+          "clock": {"domains": [], "covered_clauses": ["No state or clock is owned."]},
+          "parameters": {"kind": "FIXED_F03C_AFFINITY_FORMULA", "provider_files": [], "validation_boundary": "Consumes finite positions, U32 attributes, and finite nonnegative F32 widths; does not produce geometry or width."},
+          "test_modules": ["crates/jocforge-domain/tests/candidate_selector.rs"],
+          "vectors": {
+            "kind": "HASH_BOUND_ORDERED_AFFINITY_WIDTH_ASYMMETRY_VECTOR",
+            "authoritative_vectors": ["crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json"],
+            "case_pointers": ["U-SEL-AFFINITY-WIDTH"],
+            "local_fixture": {"file": "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json", "bytes": 1503142, "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"},
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "error_outcomes": [
+            {"error_code": "SELECTOR_AFFINITY_INPUT_ERROR", "category": "affinity input", "trigger": "Position/attribute/width counts differ, count is outside 1..48, or a word is nonfinite/width negative.", "programme_state_after": "No affinity matrix is returned.", "caller_action": "Reject before complement or selection logic."},
+            {"error_code": "SELECTOR_NUMERIC_FAILURE", "category": "F32 affinity math", "trigger": "A distance, power, division, or cosine operation is nonfinite.", "programme_state_after": "No affinity matrix is returned.", "caller_action": "Reject; do not substitute a fallback distance or affinity."}
+          ],
+          "not_run": ["Whole F03C, selector survivor chain, and target installation"]
+        }
+      ]
     },
     {
       "functional_id": "F03U",
       "spec_files": [
         "specs/03-u04-refinement-and-projection.md"
       ],
+      "local_mapping_files": [
+        "docs/implementation/u04-projection.md",
+        "docs/implementation/u04-projection-provenance.json"
+      ],
       "owner": "spatial_control",
       "planned_phase": "Phase 3",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "u04-membership-projection",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F03U_AND_PRODUCT_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_TWO_LAYER_U04_PROJECTION__GEOMETRY_AND_INSTALL_DEFERRED",
+          "scope": "Stateless F03U.4/.5 projection from explicit source XYZ/weights, target XYZ/attributes and gain[N][T]; two reciprocal normalization layers, F32 projection, and exact protected-anchor preservation. Gain/weights/geometry are caller-supplied.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/spatial/mod.rs",
+            "crates/jocforge-domain/src/spatial/u04_projection.rs"
+          ],
+          "local_mapping_files": [
+            "docs/implementation/u04-projection.md",
+            "docs/implementation/u04-projection-provenance.json"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Projection is a stateless local value transform; it does not own callback/source/AU clocks."
+            ]
+          },
+          "parameters": {
+            "kind": "CALLER_SUPPLIED_U04_GAIN_WEIGHT_AND_TARGET_VALUES",
+            "provider_files": [],
+            "validation_boundary": "Consumes explicit synthetic or caller-owned finite XYZ, gain, weight and attribute values; it does not produce or admit geometry or target membership."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/u04_projection.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_U04_TWO_LAYER_PROJECTION_AND_ANCHOR_VECTORS",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json"
+            ],
+            "case_pointers": ["U-PROJ-AXES", "U-PROJ-PROTECTED", "U-PROJ-ZERO"],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json",
+              "bytes": 1503142,
+              "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "U04_PROJECTION_INPUT_ERROR",
+              "category": "projection input shape/domain",
+              "trigger": "Source/target/gain/weight/attribute shapes differ, count exceeds selected bounds, or an input word is nonfinite/negative where required.",
+              "programme_state_after": "No normalized matrix or projected target is returned; the function owns no state.",
+              "caller_action": "Reject before F03G target installation or owner mutation."
+            },
+            {
+              "error_code": "U04_PROJECTION_NUMERIC_FAILURE",
+              "category": "F32 reciprocal/projection arithmetic",
+              "trigger": "An R32 sum, reciprocal, multiply, or projection becomes nonfinite or cannot be represented.",
+              "programme_state_after": "No partial projection result is returned.",
+              "caller_action": "Reject the local projection; do not substitute another normalization order."
+            }
+          ],
+          "not_run": [
+            "F03U.1 refinement solver/admission integration and F03U.2 duplicate processing",
+            "F03U.3 geometry solve, F03G producer, target installation and owner state",
+            "selector producer, parent transaction, real ADM/spatial acceptance and whole product"
+          ]
+        },
+        {
+          "slice_id": "u04-refinement-admission-gate",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F03U_AND_PRODUCT_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_SELECTOR_STATUS_ADMISSION_GATE__REFINEMENT_DEFERRED",
+          "scope": "Stateless F03U.1 caller gate: only CAPACITY_REACHED triggers refinement; CANDIDATES_EXHAUSTED preserves initial positions even with count 15. Does not run refinement.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/spatial/u04_projection.rs"
+          ],
+          "clock": {"domains": [], "covered_clauses": ["The gate has no state or clock ownership."]},
+          "parameters": {"kind": "SELECTOR_STATUS_AND_COUNT", "provider_files": [], "validation_boundary": "Consumes selector terminal status and selected_count 0..=15 only."},
+          "test_modules": ["crates/jocforge-domain/tests/u04_projection.rs"],
+          "vectors": {
+            "kind": "HASH_BOUND_CAPACITY_STATUS_CALLER_GATE_VECTORS",
+            "authoritative_vectors": ["crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json"],
+            "case_pointers": ["U-PROJ-ADMIT-CAPACITY_REACHED-15", "U-PROJ-ADMIT-CANDIDATES_EXHAUSTED-3", "U-PROJ-ADMIT-CANDIDATES_EXHAUSTED-15"],
+            "local_fixture": {"file": "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json", "bytes": 1503142, "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"},
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "error_outcomes": [
+            {"error_code": "U04_SELECTED_COUNT_INVALID", "category": "admission input", "trigger": "selected_count exceeds capacity 15.", "programme_state_after": "No admission receipt is returned.", "caller_action": "Reject without calling refinement or mutating positions."}
+          ],
+          "not_run": ["F03U refinement producer, F03G install/owner state, parent transaction, and product acceptance"]
+        }
+      ]
     },
     {
       "functional_id": "F03F",
@@ -380,20 +763,430 @@
       "spec_files": [
         "specs/03-rectangular-nnls-initial-fit.md"
       ],
+      "local_mapping_files": [
+        "docs/implementation/rectangular-nnls.md",
+        "docs/implementation/rectangular-nnls-provenance.json"
+      ],
       "owner": "spatial_control",
       "planned_phase": "Phase 3",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "rectangular-nnls-solver",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F03N_AND_PRODUCT_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_COLD_RECTANGULAR_NNLS__OUTER_AND_PRODUCERS_DEFERRED",
+          "scope": "Stateless 15-row, 1..=15-column F32 matrix plus F32 response to F64 nonnegative solution, R32 seed, active-set diagnostics, and SOLVED/ITERATION_LIMIT status. No F03S outer solver, selector, U04, context/response producer, warm state, parent transaction, or n=0 outer skip integration.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/spatial/rectangular_nnls.rs"
+          ],
+          "local_mapping_files": [
+            "docs/implementation/rectangular-nnls.md",
+            "docs/implementation/rectangular-nnls-provenance.json"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Every solve starts cold and owns no callback, source, AU, or cross-call NNLS state."
+            ]
+          },
+          "parameters": {
+            "kind": "SPECIFIED_F03N_ALGORITHM_NO_RUNTIME_PROVIDER",
+            "provider_files": [],
+            "validation_boundary": "Consumes explicit 15-row F32 bit-word matrix and 15-element F32 response; rejects malformed/ragged/nonfinite input before solver work."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/rectangular_nnls.rs",
+            "crates/jocforge-domain/src/spatial/rectangular_nnls/tests.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_SELECTED_F03N_ACTIVE_SET_SUCCESS_RANK_REMOVAL_AND_LIMIT_VECTORS",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json"
+            ],
+            "case_pointers": [
+              "9 exact F03N cases: U-OUT-NNLS-1, U-OUT-NNLS-3, U-OUT-NNLS-15, U-OUT-NNLS-REMOVE, U-OUT-NNLS-FRACTIONAL, U-OUT-NNLS-RANK, U-OUT-NNLS-NONPOSITIVE-TRIAL, U-OUT-NNLS-LAST-POP, U-OUT-NNLS-ITERATION-LIMIT",
+              "Full F64 solution bytes, R32 seed words, passive/inactive/permutation, accepted/rejected/removals order, secondary iteration count, and status"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json",
+              "bytes": 1503142,
+              "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "NNLS_INVALID_INPUT",
+              "category": "solver input shape/type/domain",
+              "trigger": "Matrix is not 15×n for 1≤n≤15, response is not 15 entries, or any F32 word is nonfinite.",
+              "programme_state_after": "No solver result or state is returned; the solver owns no persistent state.",
+              "caller_action": "Reject the input before active-set mutation; n=0 must be handled by the outer caller."
+            },
+            {
+              "error_code": "NNLS_NUMERIC_FAILURE",
+              "category": "F64 active-set arithmetic",
+              "trigger": "A required intermediate is nonfinite, a pivot diagonal or feasibility denominator is zero, or the final seed cannot be represented as finite F32.",
+              "programme_state_after": "No solver result is returned; no warm state is committed.",
+              "caller_action": "Propagate failure to the outer F03S source stage; do not substitute epsilon or a generic-library result."
+            }
+          ],
+          "not_run": [
+            "F03S energy/correction/post-process and selector integration",
+            "U04/geometry/response/context producers",
+            "n=0 outer skip integration and parent transaction",
+            "real ADM, source/AU execution, and product acceptance"
+          ]
+        }
+      ]
     },
     {
       "functional_id": "F03S",
       "spec_files": [
         "specs/03-outer-energy-correction.md"
       ],
+      "local_mapping_files": [
+        "docs/implementation/outer-postprocess.md",
+        "docs/implementation/outer-postprocess-provenance.json"
+      ],
       "owner": "spatial_control",
       "planned_phase": "Phase 3",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "outer-coefficient-postprocess",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F03S_AND_PRODUCT_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_F03S_5_FLOOR_DOMINANCE_AND_TIE_RULES__OUTER_DEFERRED",
+          "scope": "Stateless F03S.5 strict floor, sequential R32 total, dominance comparison, earliest-maximum tie, and one-hot cap. Does not run F03S.1-.4 or any solver/geometry/outer pipeline.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/spatial/outer_postprocess.rs"
+          ],
+          "local_mapping_files": [
+            "docs/implementation/outer-postprocess.md",
+            "docs/implementation/outer-postprocess-provenance.json"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The postprocess is stateless and has no source, callback, AU, or parent transaction clock."
+            ]
+          },
+          "parameters": {
+            "kind": "CALLER_SUPPLIED_F32_FLOOR_AND_DOMINANCE_RATIO",
+            "provider_files": [],
+            "validation_boundary": "Consumes finite F32 coefficient/floor/ratio bit words only; this direct primitive does not select or produce F03S parameters."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/outer_postprocess.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_FLOOR_DOMINANCE_EQUALITY_AND_EARLIEST_TIE_VECTORS",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json"
+            ],
+            "case_pointers": [
+              "U-OUT-POST-FLOOR",
+              "U-OUT-POST-DOMINANCE-EQUAL",
+              "U-OUT-POST-TIE",
+              "empty-vector and non-finite local rejection boundaries"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json",
+              "bytes": 1503142,
+              "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "OUTER_POSTPROCESS_INPUT_ERROR",
+              "category": "postprocess input",
+              "trigger": "The coefficient vector is empty or a coefficient, floor, or dominance ratio is nonfinite.",
+              "programme_state_after": "No result is returned; the function owns no state.",
+              "caller_action": "Reject before mutating an outer source candidate."
+            },
+            {
+              "error_code": "OUTER_POSTPROCESS_NUMERIC_FAILURE",
+              "category": "R32 accumulation",
+              "trigger": "Sequential total accumulation or the dominance product produces a nonfinite F32 value.",
+              "programme_state_after": "No result is returned; no partial coefficient vector is committed.",
+              "caller_action": "Fail the enclosing F03S source attempt; do not use an approximate or F64 accumulator."
+            }
+          ],
+          "not_run": [
+            "F03S.1 n=0 outer skip and energy/fallback",
+            "F03N solver integration, F03S.3 geometry, F03S.4 active update",
+            "selector/U04/context/response producers, parent transaction, real ADM, and product acceptance"
+          ]
+    },
+    {
+      "slice_id": "outer-energy-fallback",
+      "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F03S_AND_PRODUCT_DEFERRED",
+      "implementation_status": "LOCALLY_VERIFIED_F03S_2_BRANCH_AND_FALLBACK_DIAGNOSTICS__ACTIVE_ROUTE_DEFERRED",
+      "scope": "Stateless F03S.2 projection/energy branch, threshold and fallback scale. Active cases return the input seed unchanged for branch diagnostics only; fallback scales the seed and calls the existing F03S.5 postprocess. No F03S.3/.4 active correction.",
+      "implementation_files": [
+          "crates/jocforge-domain/src/spatial/mod.rs",
+        "crates/jocforge-domain/src/spatial/outer_energy_fallback.rs",
+        "crates/jocforge-domain/src/spatial/outer_postprocess.rs"
+      ],
+      "local_mapping_files": [
+        "docs/implementation/outer-energy-fallback.md",
+        "docs/implementation/outer-energy-fallback-provenance.json"
+      ],
+      "clock": {
+        "domains": [],
+        "covered_clauses": [
+          "The function is stateless and owns no source, callback, AU, or parent transaction clock."
+        ]
+      },
+      "parameters": {
+        "kind": "FIXED_F03S_2_FORMULA_CONSTANTS",
+        "provider_files": [],
+        "validation_boundary": "Uses the exact selected F32 energy ratio and epsilon bit patterns in F03S.1; floor/dominance postprocess delegates to the existing F03S.5 direct slice. No parameter selection or whole F03S producer is implemented."
+      },
+      "test_modules": [
+        "crates/jocforge-domain/tests/outer_energy_fallback.rs",
+        "crates/jocforge-domain/tests/outer_postprocess.rs"
+      ],
+      "vectors": {
+        "kind": "HASH_BOUND_ENERGY_BRANCH_EQUALITY_AND_FALLBACK_VECTORS",
+        "authoritative_vectors": [
+          "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json"
+        ],
+        "case_pointers": [
+          "U-OUT-ENERGY-ZERO",
+          "U-OUT-ENERGY-MATCH",
+          "U-OUT-ENERGY-EQUAL",
+          "empty-shape/non-finite/numeric-overflow local rejections"
+        ],
+        "local_fixture": {
+          "file": "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json",
+          "bytes": 1503142,
+          "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
+        },
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+      },
+      "error_outcomes": [
+        {
+          "error_code": "OUTER_ENERGY_INPUT_ERROR",
+          "category": "context/response/seed input",
+          "trigger": "The matrix is not 15×n for 1≤n≤15, response/seed shape differs, or any input word is nonfinite.",
+          "programme_state_after": "No result is returned; the operation owns no state.",
+          "caller_action": "Reject before the enclosing F03S source attempt mutates state."
+        },
+        {
+          "error_code": "OUTER_ENERGY_NUMERIC_FAILURE",
+          "category": "R32 energy/fallback frontier",
+          "trigger": "A separately rounded product, sum, divide, square root, scale, or postprocess operation becomes nonfinite.",
+          "programme_state_after": "No result or partially scaled seed is returned.",
+          "caller_action": "Fail-stop the enclosing source attempt; do not approximate or continue to geometry."
+        }
+      ],
+      "not_run": [
+        "F03S.3 geometry, F03S.4 active update, and complete F03S source pipeline",
+        "F03N solver orchestration, selector/U04 and context/response producers",
+        "parent transaction, real ADM, and product acceptance"
+      ]
+    },
+    {
+      "slice_id": "outer-geometric-correction",
+      "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F03S_AND_PRODUCT_DEFERRED",
+      "implementation_status": "LOCALLY_VERIFIED_F03S_3_F32_GEOMETRY_SYSTEM_AND_CORRECTION__ACTIVE_UPDATE_DEFERRED",
+      "scope": "Stateless F03S.3 target/source XYZ geometry, distance/flag diagonal penalty, B/L/H construction, lower F32 Cholesky, ordered forward/back substitution, and nonnegative correction. No F03S.4 active update or outer pipeline.",
+      "implementation_files": [
+        "crates/jocforge-domain/src/spatial/mod.rs",
+        "crates/jocforge-domain/src/spatial/outer_geometric_correction.rs"
+      ],
+      "local_mapping_files": [
+        "docs/implementation/outer-geometric-correction.md",
+        "docs/implementation/outer-geometric-correction-provenance.json"
+      ],
+      "clock": {
+        "domains": [],
+        "covered_clauses": [
+          "The geometry primitive is stateless and owns no source, callback, AU, or parent transaction clock."
+        ]
+      },
+      "parameters": {
+        "kind": "FIXED_F03S_3_R32_PENALTIES_NO_RUNTIME_PROVIDER",
+        "provider_files": [],
+        "validation_boundary": "Consumes explicit finite U32 F32 XYZ words, scalar_flag, and index_state values; uses the specified R32 0.1/0.01 penalties without producing geometry or active-set inputs."
+      },
+      "test_modules": [
+        "crates/jocforge-domain/tests/outer_geometric_correction.rs"
+      ],
+      "vectors": {
+        "kind": "HASH_BOUND_ONE_AND_TWO_TARGET_GEOMETRY_SYSTEMS",
+        "authoritative_vectors": [
+          "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json"
+        ],
+        "case_pointers": [
+          "U-OUT-CORRECTION-ONE",
+          "U-OUT-CORRECTION-TWO",
+          "empty/mismatched shape and non-finite local rejection boundaries"
+        ],
+        "local_fixture": {
+          "file": "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json",
+          "bytes": 1503142,
+          "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
+        },
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+      },
+      "error_outcomes": [
+        {
+          "error_code": "OUTER_GEOMETRY_INPUT_ERROR",
+          "category": "geometry input shape/domain",
+          "trigger": "Target count is empty or exceeds 15, target/source XYZ shape differs, index_state length differs, or any word is nonfinite.",
+          "programme_state_after": "No left/system/correction proposal is returned; the function owns no state.",
+          "caller_action": "Reject before the enclosing source attempt can update state."
+        },
+        {
+          "error_code": "OUTER_GEOMETRY_NUMERIC_FAILURE",
+          "category": "F32 Cholesky/solve",
+          "trigger": "An R32 intermediate is nonfinite, a Cholesky diagonal is zero, or a required division is singular.",
+          "programme_state_after": "No partial geometry or correction result is returned.",
+          "caller_action": "Fail the enclosing F03S source attempt; do not add epsilon or substitute a pseudoinverse."
+        }
+      ],
+      "not_run": [
+        "F03S.2 branch/fallback orchestration and F03S.4 active update",
+        "F03N solver/NNLS integration and selector/U04/context/response/geometry producers",
+        "parent transaction, real ADM, spatial rendering, and product acceptance"
+      ]
+    },
+    {
+      "slice_id": "outer-active-update",
+      "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F03S_AND_PRODUCT_DEFERRED",
+      "implementation_status": "LOCALLY_VERIFIED_F03S_4_DISCRIMINANT_STEP_AND_OUTPUT__OUTER_DEFERRED",
+      "scope": "Stateless F03S.4 active quadratic-energy update from explicit context/response/seed/correction inputs. Returns discriminant, step, scaled seed, and output; does not generate correction, choose branch, run NNLS, or apply floor/prune.",
+      "implementation_files": [
+        "crates/jocforge-domain/src/spatial/mod.rs",
+        "crates/jocforge-domain/src/spatial/outer_active_update.rs"
+      ],
+      "local_mapping_files": [
+        "docs/implementation/outer-active-update.md",
+        "docs/implementation/outer-active-update-provenance.json"
+      ],
+      "clock": {
+        "domains": [],
+        "covered_clauses": [
+          "The active-update primitive is stateless and owns no source, callback, AU, or parent transaction clock."
+        ]
+      },
+      "parameters": {
+        "kind": "FIXED_F03S_4_FORMULA_CONSTANTS",
+        "provider_files": [],
+        "validation_boundary": "Uses the specified initial-scale and epsilon F32 words; consumes caller-supplied correction and performs no parameter selection or geometry production."
+      },
+      "test_modules": [
+        "crates/jocforge-domain/tests/outer_active_update.rs"
+      ],
+      "vectors": {
+        "kind": "HASH_BOUND_ACTIVE_UPDATE_SUCCESS_AND_NEGATIVE_DISCRIMINANT_REJECTION",
+        "authoritative_vectors": [
+          "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json"
+        ],
+        "case_pointers": [
+          "U-OUT-ACTIVE-UPDATE",
+          "U-OUT-REJECT-NEGATIVE-D",
+          "empty-shape/non-finite local rejection boundaries"
+        ],
+        "local_fixture": {
+          "file": "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json",
+          "bytes": 1503142,
+          "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
+        },
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+      },
+      "error_outcomes": [
+        {
+          "error_code": "OUTER_ACTIVE_UPDATE_INPUT_ERROR",
+          "category": "context/response/seed/correction input",
+          "trigger": "Shapes differ from 15×n/15/n/n or any input word is nonfinite.",
+          "programme_state_after": "No discriminant/step/output is returned; the operation owns no state.",
+          "caller_action": "Reject before an outer source candidate mutates state."
+        },
+        {
+          "error_code": "OUTER_ACTIVE_UPDATE_NEGATIVE_DISCRIMINANT",
+          "category": "active quadratic frontier",
+          "trigger": "The separately rounded discriminant is negative.",
+          "programme_state_after": "No step or updated coefficient vector is returned.",
+          "caller_action": "Reject; do not clamp the discriminant or claim a completed active route."
+        },
+        {
+          "error_code": "OUTER_ACTIVE_UPDATE_NUMERIC_FAILURE",
+          "category": "R32 arithmetic frontier",
+          "trigger": "An intermediate, square root, denominator, division, or output becomes nonfinite/unrepresentable.",
+          "programme_state_after": "No partial result is returned.",
+          "caller_action": "Fail the enclosing F03S source attempt."
+        }
+      ],
+      "not_run": [
+        "F03S.2 branch/fallback orchestration and F03S.3 geometry producer",
+        "NNLS, selector/U04/context/response producer and F03S.5 postprocess in the active path",
+        "parent transaction, real ADM, and product acceptance"
+      ]
+    },
+    {
+      "slice_id": "outer-empty-matrix-skip",
+      "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F03S_AND_PRODUCT_DEFERRED",
+      "implementation_status": "LOCALLY_VERIFIED_N_ZERO_EMPTY_MATRIX_SKIP__NONEMPTY_OUTER_DEFERRED",
+      "scope": "F03S.1 n=0 branch only: validate the explicit source-call order and return a zero-row/48-column matrix without reading response/XYZ or invoking NNLS. Nonempty target matrix production is excluded.",
+      "implementation_files": [
+        "crates/jocforge-domain/src/spatial/mod.rs",
+        "crates/jocforge-domain/src/spatial/outer_empty_matrix.rs"
+      ],
+      "local_mapping_files": [
+        "docs/implementation/outer-empty-matrix.md",
+        "docs/implementation/outer-empty-matrix-provenance.json"
+      ],
+      "clock": {
+        "domains": [],
+        "covered_clauses": [
+          "The empty matrix skip owns no source, callback, AU, or parent transaction clock."
+        ]
+      },
+      "parameters": {
+        "kind": "F03S_1_EMPTY_MATRIX_FIXED_SHAPE_NO_RUNTIME_PROVIDER",
+        "provider_files": [],
+        "validation_boundary": "Consumes only target_count=0 and the explicit unique source_call_order subset of 0..47; it has no response, XYZ, solver, or coefficient inputs."
+      },
+      "test_modules": [
+        "crates/jocforge-domain/tests/outer_empty_matrix.rs"
+      ],
+      "vectors": {
+        "kind": "HASH_BOUND_ZERO_TARGET_EMPTY_MATRIX_VECTOR",
+        "authoritative_vectors": [
+          "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json"
+        ],
+        "case_pointers": [
+          "U-OUT-EMPTY: source_call_order [0,2], matrix [], shape [0,48], solver_calls 0, empty_targets_skipped true",
+          "nonempty-target, duplicate-source-call, and out-of-range source-call local rejects"
+        ],
+        "local_fixture": {
+          "file": "crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json",
+          "bytes": 1503142,
+          "sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
+        },
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+      },
+      "error_outcomes": [
+        {
+          "error_code": "OUTER_EMPTY_MATRIX_INPUT_ERROR",
+          "category": "empty branch admission",
+          "trigger": "Target count is nonzero or source_call_order contains a duplicate or a source ordinal outside 0..47.",
+          "programme_state_after": "No matrix proposal is returned; the function owns no state.",
+          "caller_action": "Reject this call rather than padding to 15 variables or invoking NNLS."
+        }
+      ],
+      "not_run": [
+        "nonempty F03S.1 source matrices and NNLS invocation",
+        "F03S.2 energy/fallback, F03S.3 geometry, F03S.4 active update, and F03S.5 postprocess composition",
+        "selector/U04, producers, parent transaction, real ADM, and product acceptance"
+      ]
+    }
+      ]
     },
     {
       "functional_id": "F03FD",
@@ -841,20 +1634,291 @@
       "spec_files": [
         "specs/05-joc-quantization-and-wire.md"
       ],
+      "local_mapping_files": [
+        "docs/implementation/quantized-huffman-body-writer.md",
+        "docs/implementation/id14-header-framing.md",
+        "docs/implementation/id14-header-framing-provenance.json"
+      ],
       "owner": "joc",
       "planned_phase": "Phase 4",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "quantized-huffman-body-writer",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F05Q_AND_PRODUCT_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_BODY_BITS__SECTION_PRODUCER_AND_PARENT_DEFERRED",
+          "scope": "Already-quantized coefficient and selected-channel inputs to exact F05Q Huffman body bits, including codebook selection, reset rules, position deltas, MSB-first writes, padding, and local capacity checks. Excludes fit/quantizer, retry, header/body composition, parent commit, and whole JOC integration; the selected ID14 header/body writer is tracked separately.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/joc/huffman.rs"
+          ],
+          "local_mapping_files": [
+            "docs/implementation/quantized-huffman-body-writer.md"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The body writer is stateless across programme callbacks and emits one local proposal from the supplied point sequence; no programme/source/AU clock or parent commit is owned here."
+            ]
+          },
+          "parameters": {
+            "kind": "USER_AUTHORIZED_HASH_PINNED_CODEBOOK_TABLES",
+            "provider_files": [
+              "crates/jocforge-domain/src/joc/huffman/codebooks.json"
+            ],
+            "validation_boundary": "Uses the hash-pinned six-table provider from F05QH. Table identity and tree structure validate before any consumer symbols are processed."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/huffman_codebooks.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_F05Q_CONSUMER_AND_CAPACITY_ASSERTIONS",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/huffman/consumer-connection-vectors.json",
+              "crates/jocforge-domain/tests/fixtures/huffman/input-vectors.json",
+              "crates/jocforge-domain/tests/fixtures/huffman/verification-result.json"
+            ],
+            "case_pointers": [
+              "4 F05Q consumer cases: modes 0..3, table mapping, per-point/channel reset, sparse 50/100 previous and exact padded body bytes",
+              "12 capacity cases: exact byte fit, one-byte-short, and coefficient scratch overflow",
+              "5 local zero-commit failure paths across writer, decoder and provider installation"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/huffman/consumer-connection-vectors.json",
+              "bytes": 61912,
+              "sha256": "a444bb9dca33bc921cd0930a0f7bedb0160408247c2ec061adf9dfdb8037f79f"
+            },
+            "base_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "F05QH_supplement_manifest_sha256": "d0a96531cdd3029fbed633aa9b6df83e26519014ab145365dd0fa41237495355"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "HUFFMAN_SYMBOL_OUT_OF_RANGE",
+              "category": "quantized coefficient/position symbol",
+              "trigger": "A derived integer symbol is negative or outside the selected codebook symbol count.",
+              "programme_state_after": "No body proposal is returned; caller-owned state is unchanged.",
+              "caller_action": "Reject the local body candidate without committing writer or consumer state."
+            },
+            {
+              "error_code": "JOC_COEFFICIENT_SCRATCH_EXCEEDED",
+              "category": "F05Q coefficient capacity",
+              "trigger": "Coefficient codeword bits exceed the selected scratch limit (4,344 bits in the supplied cases).",
+              "programme_state_after": "No body proposal is returned; caller-owned state is unchanged.",
+              "caller_action": "Return the attempt-local capacity error to the deferred enclosing F05Q retry owner."
+            },
+            {
+              "error_code": "JOC_PAYLOAD_CAPACITY_EXCEEDED",
+              "category": "F05Q padded body capacity",
+              "trigger": "The ceiling of total valid bits divided by eight exceeds the selected byte capacity.",
+              "programme_state_after": "No body proposal is returned; caller-owned state is unchanged.",
+              "caller_action": "Return the attempt-local capacity error to the deferred enclosing F05Q retry owner."
+            }
+          ],
+          "user_authorized_public_repo_use": true,
+          "third_party_license_clearance": "UNKNOWN",
+          "not_run": [
+            "OpenJOC archive import replay",
+            "native/runtime replay",
+            "all-profile upstream source mapping",
+            "parent retry rollback for every JOC state field",
+            "fit producer, quantizer, profile retry, parent transaction, QMF, and whole-product acceptance"
+          ]
+        },
+        {
+          "slice_id": "id14-header-body-writer",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F05Q_AND_PRODUCT_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_SELECTED_ID14_WRITER__UPSTREAM_AND_PARENT_DEFERRED",
+          "scope": "Selected ID14 writer controls, descriptor bit fields, body splice, optional extension trailer, padding, writer return code, status word, output length, and attempt-buffer partial writes. This is not the full upstream section producer or whole ID14 transaction.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/joc/huffman/id14_header.rs"
+          ],
+          "local_mapping_files": [
+            "docs/implementation/id14-header-framing.md",
+            "docs/implementation/id14-header-framing-provenance.json"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The selected ID14 writer is a stateless bitstream stage; sequence_count is a wire field, not an owned programme clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_SELECTED_WRITER_CONTRACT",
+            "provider_files": [],
+            "validation_boundary": "Consumes caller-supplied selected header values, descriptor records, body bytes, valid-bit count and output buffer; performs no file/environment I/O and infers no kind/mode enum meanings."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/id14_header_framing.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_RUNTIME_CONFIRMED_SUCCESS_FAILURE_AND_LIVE_WRITER_VECTORS",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/id14_header_framing/input-vectors.json"
+            ],
+            "case_pointers": [
+              "14 success and 10 failure writer cases with separate return/status assertions",
+              "4 exact expanded descriptor templates: one, 15, and 64 records in object order",
+              "3 live writer header bit sequences match the captured payload positions",
+              "header-only, header/body splice, extension trailer, final padding and capacity boundaries",
+              "failure initial output buffers are hash-bound 0xAA sentinels; partial writes and unchanged output length are checked separately"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/id14_header_framing/input-vectors.json",
+              "bytes": 40940,
+              "sha256": "0f114104bf59eacc6650f40e6644093a617a16945752ead13916dce36957b17f"
+            },
+            "source_package_manifest_sha256": "60f778ba40c6bd6fe65e85d7ae500dc4d9ee6527d976f3a241b41b360743968e",
+            "source_independent_check_sha256": "1bac23f5bb459d750e1643798701c4cce4076e9d6164272e726e4783c67f3044"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "ID14_WRITER_RETURN_CODE_1",
+              "category": "descriptor input availability",
+              "trigger": "The descriptor-list pointer is absent after earlier fixed header fields have been written.",
+              "programme_state_after": "Output length remains the original capacity; prior attempt-buffer bits may remain.",
+              "caller_action": "Discard the attempt buffer and let only the enclosing selected retry policy decide whether to retry."
+            },
+            {
+              "error_code": "ID14_WRITER_RETURN_CODE_2",
+              "category": "bitstream capacity",
+              "trigger": "A fixed field, body bit, trailer, or final padding exceeds the output buffer capacity.",
+              "programme_state_after": "Output length remains the original capacity; bits written before failure may remain in scratch.",
+              "caller_action": "Discard/rebuild in the deferred parent retry path; do not treat the partial buffer as output."
+            },
+            {
+              "error_code": "ID14_WRITER_RETURN_CODE_3",
+              "category": "field validation",
+              "trigger": "A control or descriptor field is outside its wire range; precedence follows the washed validation order.",
+              "programme_state_after": "Output length remains the original capacity; earlier fields may remain in scratch.",
+              "caller_action": "Reject the attempt and preserve the distinction between writer return code and status word."
+            }
+          ],
+          "user_authorized_public_repo_use": true,
+          "third_party_license_clearance": "UNKNOWN",
+          "not_run": [
+            "kind_code and mode_code semantic meanings beyond wire ranges",
+            "all-profile upstream descriptor mapping",
+            "full rollback of every parent JOC state field",
+            "MODEL_POSTCOMPARE",
+            "whole ID14 section producer and whole-product acceptance"
+          ]
+        }
+      ]
     },
     {
       "functional_id": "F05QH",
       "spec_files": [
         "specs/05-joc-huffman-codebooks.md"
       ],
+      "local_mapping_files": [
+        "docs/implementation/huffman-table-provenance.md",
+        "docs/implementation/huffman-table-provenance.json",
+        "docs/implementation/huffman-codebooks.md",
+        "docs/implementation/huffman-codebooks-provenance.json",
+        "crates/jocforge-domain/src/joc/huffman.rs",
+        "crates/jocforge-domain/src/joc/huffman/codebooks.json",
+        "crates/jocforge-domain/tests/huffman_codebooks.rs",
+        "crates/jocforge-domain/tests/fixtures/huffman"
+      ],
       "owner": "joc",
       "planned_phase": "Phase 4",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "user_authorized_public_repo_use": true,
+      "license_clearance": "UNKNOWN",
+      "production_usable": "F05QH_TABLE_SCOPE_ONLY",
+      "third_party_rights_status": "LICENSE_CLEARANCE_UNKNOWN_USER_AUTHORIZED_USE",
+      "not_run": [
+        "OpenJOC archive import replay",
+        "native Huffman runtime validation",
+        "full F05QH production integration"
+      ],
+      "direct_slices": [
+        {
+          "slice_id": "huffman-codebook-table-provider",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F05QH_AND_PRODUCT_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_SIX_CODEBOOKS_AND_LOCAL_BITSTREAM_PRIMITIVES__OPENJOC_REPLAY_NOT_RUN",
+          "scope": "Six hash-pinned codebooks, structural validation, MSB-first table-level encoding/decoding, and local transactional writer/reader primitives. F05Q consumer mapping is tracked as a separate direct slice; no F05Q section framing, parent commit, or full JOC integration.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/joc/huffman.rs"
+          ],
+          "local_mapping_files": [
+            "docs/implementation/huffman-codebooks.md",
+            "docs/implementation/huffman-codebooks-provenance.json"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Codebook validation and table-level encoding/decoding have no callback/source/AU clock and perform no parent commit."
+            ]
+          },
+          "parameters": {
+            "kind": "USER_AUTHORIZED_HASH_PINNED_CODEBOOK_TABLES",
+            "provider_files": [
+              "crates/jocforge-domain/src/joc/huffman/codebooks.json"
+            ],
+            "validation_boundary": "The embedded JSON SHA is checked before parsing; the exact six-table name/order, symbol ranges, code widths, MSB bit strings, prefix-free complete trees, per-table stable hashes, and aggregate stable hash are validated without runtime file or environment I/O."
+          },
+          "parameter_files": [
+            "crates/jocforge-domain/src/joc/huffman/codebooks.json"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/huffman_codebooks.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_WASHED_INPUT_AND_POSTCOMPUTATION_ASSERTIONS",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/huffman/input-vectors.json",
+              "crates/jocforge-domain/tests/fixtures/huffman/verification-result.json"
+            ],
+            "case_pointers": [
+              "588 single-symbol roundtrips across six tables",
+              "18 ascending, descending, and boundary stream cases",
+              "18 invalid symbol/type cases, including all six table domains",
+              "6 truncated-codeword cases",
+              "Table validation rejects duplicate/prefix-conflicting codewords before use"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/huffman/input-vectors.json",
+              "bytes": 38645,
+              "sha256": "e014850ec3dfe5be89a5dc9a45563d95532185410c182cfc51993f835f1fcf18"
+            },
+            "source_package_manifest_sha256": "d0a96531cdd3029fbed633aa9b6df83e26519014ab145365dd0fa41237495355",
+            "source_independent_check_sha256": "42f2384934451929f19e48cf9cd8b7ead4c69a89ad38d90e2f5adbed017d3c55"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "HUFFMAN_TABLE_INVALID",
+              "category": "codebook installation",
+              "trigger": "The selected table set fails source identity or structural validation.",
+              "programme_state_after": "No table set is returned; caller writer and state are unchanged.",
+              "caller_action": "Reject before symbol, payload, or consumer processing."
+            },
+            {
+              "error_code": "HUFFMAN_SYMBOL_OUT_OF_RANGE",
+              "category": "symbol input",
+              "trigger": "A typed integer symbol is negative or is greater than or equal to the selected table symbol count.",
+              "programme_state_after": "Writer proposal is not returned; writer state is unchanged.",
+              "caller_action": "Reject the candidate write without commit."
+            },
+            {
+              "error_code": "HUFFMAN_TRUNCATED_CODEWORD",
+              "category": "decoder input",
+              "trigger": "Available valid bits end while the decode cursor is at an internal node.",
+              "programme_state_after": "Reader cursor and partial symbol target remain unchanged.",
+              "caller_action": "Reject without consuming the truncated codeword."
+            }
+          ],
+          "user_authorized_public_repo_use": true,
+          "third_party_license_clearance": "UNKNOWN",
+          "not_run": [
+            "OpenJOC archive import replay",
+            "native/runtime replay",
+            "whole ID14 transaction and programme integration",
+            "fit producer, quantizer, retry, QMF, spatial and whole-product acceptance"
+          ]
+        }
+      ]
     },
     {
       "functional_id": "F05J",
@@ -1695,50 +2759,638 @@
       "spec_files": [
         "specs/06-meter-log-and-peak.md"
       ],
+      "local_mapping_files": [
+        "docs/implementation/log-metrics.md",
+        "docs/implementation/log-metrics-provenance.json"
+      ],
       "owner": "meter",
       "planned_phase": "Phase 5",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "implementation_files": [
+        "crates/jocforge-domain/src/meter/true_peak.rs",
+        "crates/jocforge-domain/src/meter/truepeak_log_parameters.json"
+      ],
+      "test_modules": [
+        "crates/jocforge-domain/src/meter/true_peak/tests.rs"
+      ],
+      "clock": {
+        "domains": [],
+        "covered_clauses": [
+          "Ordered log, energy metric, and per-row peak metrics are pure scalar/row operations and own no window, callback, source, or AU clock."
+        ]
+      },
+      "parameters": {
+        "kind": "HASH_BOUND_INTERNAL_ONLY_F06L_MATHEMATICAL_LOG_CONSTANTS",
+        "provider_files": [
+          "crates/jocforge-domain/src/meter/truepeak_log_parameters.json"
+        ],
+        "validation_boundary": "Reuses the selected hash-bound internal F06L constants; no FIR, K-matrix, or meter-window provider is loaded by the scalar functions."
+      },
+      "vectors": {
+        "kind": "HASH_BOUND_F06L_LOG_ENERGY_SAMPLE_AND_TRUE_PEAK_SCALAR_VECTORS",
+        "authoritative_vectors": [
+          "crates/jocforge-domain/tests/fixtures/meter_log/METER-LOG-GENERATION-VERIFICATION.json"
+        ],
+        "case_pointers": [
+          "14 ordered-log cases",
+          "8 energy-metric cases",
+          "6 sample-peak cases over 1024-word zero rows with negative/equal positive peak placements",
+          "8 true-peak metric cases",
+          "7 F06L.7 normalized-energy accumulator cases",
+          "6 F06L.8 window-normalization cases",
+          "7 F06L.9 ordered-reduction cases"
+        ],
+        "local_fixtures": [
+          {
+            "file": "crates/jocforge-domain/tests/fixtures/meter_log/METER-LOG-GENERATION-VERIFICATION.json",
+            "bytes": 18188,
+            "sha256": "909ea8e6abc24f37a9e180871b1c9d4b67e151bb4dc70b439a68d40d06f077f9"
+          },
+          {
+            "file": "crates/jocforge-domain/tests/fixtures/meter_log/METER-LOG-LOCAL-REVIEW-STATUS.json",
+            "bytes": 8941,
+            "sha256": "66d5d1cffac1f60066747ba8dbd4647e7403958c8002c04ae488095bf527d1b0"
+          }
+        ],
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+      },
+      "error_outcomes": [],
+      "direct_slices": [
+        {
+          "slice_id": "ordered-log-energy-peak-accumulator-window-and-reduction",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F06_AND_PRODUCT_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_F06L_LOG_ENERGY_SAMPLE_TRUE_PEAK_ACCUMULATOR_WINDOW_AND_REDUCTION__WHOLE_METER_DEFERRED",
+          "scope": "Direct-vector verification of existing pure ordered-log, energy_metric, sample-peak, and true-peak metric functions plus F06L.7 normalized-energy accumulation, F06L.8 window-end normalization, and F06L.9 stateless ordered reduction. Does not add a duplicate log/peak network, maintain meter-window state, or run FIR or K-weighting.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/meter/true_peak.rs",
+            "crates/jocforge-domain/src/meter/truepeak_log_parameters.json"
+          ],
+          "local_mapping_files": [
+            "docs/implementation/log-metrics.md",
+            "docs/implementation/log-metrics-provenance.json"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Pure scalar and one-row operations; no meter window or programme clock is owned."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INTERNAL_ONLY_F06L_MATHEMATICAL_LOG_CONSTANTS",
+            "provider_files": [
+              "crates/jocforge-domain/src/meter/truepeak_log_parameters.json"
+            ],
+            "validation_boundary": "Uses the existing selected constant validator and log network; no K/FIR parameter is consumed."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/src/meter/true_peak/tests.rs"
+          ],
+          "vectors": {
+            "kind": "DIRECT_F06L_SELECTED_SCALAR_CASES_ONLY",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/meter_log/METER-LOG-GENERATION-VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "log_0..log_13",
+              "energy_0..energy_7",
+              "sample_peak_0..sample_peak_5",
+              "true_peak_0..true_peak_7",
+              "accumulator_0..accumulator_6",
+              "window_0..window_5",
+              "reduction_0..reduction_6"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/meter_log/METER-LOG-GENERATION-VERIFICATION.json",
+              "bytes": 18188,
+              "sha256": "909ea8e6abc24f37a9e180871b1c9d4b67e151bb4dc70b439a68d40d06f077f9"
+            },
+            "additional_fixtures": [
+              {
+                "file": "crates/jocforge-domain/tests/fixtures/meter_log/METER-LOG-LOCAL-REVIEW-STATUS.json",
+                "bytes": 8941,
+                "sha256": "66d5d1cffac1f60066747ba8dbd4647e7403958c8002c04ae488095bf527d1b0"
+              }
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "error_outcomes": [
+            {"error_code":"F06L_ACCUMULATOR_INPUT_ERROR","category":"normalized-energy input domain","trigger":"Old mantissa or power_sum is negative or nonfinite.","programme_state_after":"No normalized result is returned; the function owns no persistent state.","caller_action":"Reject before publishing a normalized accumulator output."},
+            {"error_code":"F06L_ACCUMULATOR_NUMERIC_FAILURE","category":"R32/P(k) arithmetic","trigger":"A separately-rounded intermediate is nonfinite or a required P(k) exponent is outside the supported normal F32 range.","programme_state_after":"No normalized result is returned.","caller_action":"Reject the local primitive result; do not continue with partial normalization."},
+            {"error_code":"F06L_WINDOW_INPUT_ERROR","category":"window-end normalization input domain","trigger":"Mantissa is negative/nonfinite or integer window_samples is outside 1..=48000; fractional exponent is rejected at the typed adapter boundary.","programme_state_after":"No normalized output/exponent is returned.","caller_action":"Reject before F06L.8 arithmetic."},
+            {"error_code":"F06L_WINDOW_NUMERIC_FAILURE","category":"window-end R32/P(k) arithmetic","trigger":"A separately-rounded operation is nonfinite, exponent arithmetic overflows, or a required P(k) is outside the supported normal exponent range.","programme_state_after":"No normalized output/exponent is returned.","caller_action":"Reject this pure window-end normalization result."},
+            {"error_code":"F06L_REDUCTION_INPUT_ERROR","category":"ordered reduction input domain","trigger":"exponents, weights and energies lengths differ, count exceeds 16, a source_exponent is outside 0..=60, or weight/energy is negative/nonfinite.","programme_state_after":"No normalized reduction pair is returned; the function owns no persistent state.","caller_action":"Reject before reduction arithmetic; preserve input order for valid rows."},
+            {"error_code":"F06L_REDUCTION_NUMERIC_FAILURE","category":"ordered reduction R32/P(k) arithmetic","trigger":"A separately-rounded intermediate is nonfinite, checked exponent arithmetic fails, or a required P(k) exponent is outside the supported normal F32 range.","programme_state_after":"No normalized reduction pair is returned.","caller_action":"Reject the local ordered reduction; do not sort or partially publish the sum."}
+          ],
+          "not_run": [
+            "F06TP cascade and FIR/history state (separate slice)",
+            "complete F06 meter, F06U/F06I/F06W, audio frontend, real ADM, parent transaction, and product acceptance"
+          ],
+          "delivery_scope": "INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION"
+        }
+      ],
+      "production_usable": false,
+      "not_run": [
+        "F06TP FIR cascade, meter frontend/window, and full F06 composition",
+        "real ADM, parent transaction, and product acceptance"
+      ],
+      "delivery_scope": "INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION"
     },
     {
       "functional_id": "F06I",
       "spec_files": [
         "specs/06-integrated-meter-state.md"
       ],
+      "local_mapping_files": [
+        "docs/implementation/integrated-meter.md",
+        "docs/implementation/integrated-meter-provenance.json"
+      ],
       "owner": "meter",
       "planned_phase": "Phase 5",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "implementation_files": [
+        "crates/jocforge-domain/src/meter/mod.rs",
+        "crates/jocforge-domain/src/meter/integrated_meter.rs",
+        "crates/jocforge-domain/src/meter/true_peak.rs",
+        "crates/jocforge-domain/src/meter/truepeak_log_parameters.json"
+      ],
+      "test_modules": [
+        "crates/jocforge-domain/tests/integrated_meter_state.rs"
+      ],
+      "clock": {
+        "domains": [],
+        "covered_clauses": [
+          "This slice owns only its internal energy-pair counter: event at count 20, then every five accepted pairs; it does not own F06W meter/sample scheduling or programme clocks."
+        ]
+      },
+      "parameters": {
+        "kind": "FIXED_48KHZ_F06I_PERIOD_DERIVATION_AND_HASH_BOUND_INTERNAL_F06L_LOG_CONSTANTS",
+        "provider_files": [
+          "crates/jocforge-domain/src/meter/truepeak_log_parameters.json"
+        ],
+        "validation_boundary": "Derives and verifies period=5 from the selected 48 kHz formula; consumes no FIR, K-matrix, frontend, or meter-window parameters."
+      },
+      "vectors": {
+        "kind": "HASH_BOUND_SYNTHETIC_F06I_FULL_STATE_EVENT_AND_BIN_CASES",
+        "authoritative_vectors": [
+          "crates/jocforge-domain/tests/fixtures/integrated_meter/METER-INTEGRATED-SCHEDULE-VERIFICATION.json"
+        ],
+        "case_pointers": [
+          "silence40",
+          "steady_high45",
+          "steady_low40",
+          "steady_below_gate40",
+          "rise_fall60",
+          "histogram_halving",
+          "histogram_threshold25",
+          "absolute_counter_limit",
+          "absolute_exponent_alternate",
+          "reset_repro35",
+          "7 F06I.2 bin boundaries"
+        ],
+        "local_fixtures": [
+          {
+            "file": "crates/jocforge-domain/tests/fixtures/integrated_meter/METER-INTEGRATED-SCHEDULE-VERIFICATION.json",
+            "bytes": 2051223,
+            "sha256": "a565e513970670967aa3aebd0372f9dbb5f9bbab670a54744ae454926b3f2671"
+          },
+          {
+            "file": "crates/jocforge-domain/tests/fixtures/integrated_meter/METER-STATE-CLOCK-LOCAL-REVIEW-STATUS.json",
+            "bytes": 10646,
+            "sha256": "020f88cafa892119bac5fea5bc808d251798e98aec69897c6ab068da80637307"
+          }
+        ],
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+      },
+      "error_outcomes": [
+        {"error_code":"METER_INTEGRATED_INPUT_ERROR","category":"normalized energy pair","trigger":"Mantissa is negative/nonfinite or exponent is outside the selected F06L output domain 0..=30.","programme_state_after":"No transition or event is returned; caller state remains unchanged.","caller_action":"Reject before staging the pair and propagate the selected fail-stop."},
+        {"error_code":"METER_INTEGRATED_STATE_ERROR","category":"integrated state schema/profile","trigger":"State period/counter is outside the selected period=5/event range, absolute_count exceeds its selected bound, or a persistent F32 state field is invalid.","programme_state_after":"No transition is returned; caller state remains unchanged.","caller_action":"Reject the malformed state; do not substitute a cold or partially reset histogram."},
+        {"error_code":"METER_INTEGRATED_PARAMETER_UNAVAILABLE","category":"fixed profile/log provider","trigger":"Generated period differs from five or selected F06L log-constant identity/scope is unavailable.","programme_state_after":"No transition is returned.","caller_action":"Reject before processing; do not select another sample rate or logarithm provider."},
+        {"error_code":"METER_INTEGRATED_NUMERIC_FAILURE","category":"R32/P(k)/integer event arithmetic","trigger":"A separately-rounded operation is nonfinite, a checked counter/exponent operation overflows, or P(k) is outside the supported normal range.","programme_state_after":"No partial next state or event is returned.","caller_action":"Discard the local transition and fail-stop the enclosing measurement."}
+      ],
+      "direct_slices": [
+        {
+          "slice_id": "integrated-meter-synthetic-state-and-event-transition",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F06_AND_PRODUCT_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_F06I_SYNTHETIC_STATE_EVENTS_AND_BIN_MAPPING__METER_CLOCK_AND_INTEGRATION_DEFERRED",
+          "scope": "Selected fixed 48 kHz F06I period, cold/reset 24,512-byte state, ordered energy-pair appends, 20-pair event, recent-group movement, histogram/bin update, absolute gate, and result. Tests ten synthetic schedules plus seven bin cases against complete state hashes. Excludes the five F06W schedule cases, historical real-music inputs, F06U getter/fallback, frontend/ADM, and whole meter.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/meter/mod.rs",
+            "crates/jocforge-domain/src/meter/integrated_meter.rs",
+            "crates/jocforge-domain/src/meter/true_peak.rs",
+            "crates/jocforge-domain/src/meter/truepeak_log_parameters.json"
+          ],
+          "local_mapping_files": [
+            "docs/implementation/integrated-meter.md",
+            "docs/implementation/integrated-meter-provenance.json"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Only the state-local energy-pair counter and period=5 group/event transitions are implemented; no meter sample/window scheduler is included."
+            ]
+          },
+          "parameters": {
+            "kind": "SELECTED_48KHZ_PERIOD_AND_INTERNAL_HASH_BOUND_F06L_LOG",
+            "provider_files": [
+              "crates/jocforge-domain/src/meter/truepeak_log_parameters.json"
+            ],
+            "validation_boundary": "Period is generated by the selected fixed formula and checked as five; the shared F06L metric uses only the selected internal log constants."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/integrated_meter_state.rs"
+          ],
+          "vectors": {
+            "kind": "DIRECT_SYNTHETIC_F06I_FULL_STATE_AND_BIN_BOUNDARIES",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/integrated_meter/METER-INTEGRATED-SCHEDULE-VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "silence40",
+              "steady_high45",
+              "steady_low40",
+              "steady_below_gate40",
+              "rise_fall60",
+              "histogram_halving",
+              "histogram_threshold25",
+              "absolute_counter_limit",
+              "absolute_exponent_alternate",
+              "reset_repro35",
+              "7 F06I.2 bin boundary metric/index pairs"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/integrated_meter/METER-INTEGRATED-SCHEDULE-VERIFICATION.json",
+              "bytes": 2051223,
+              "sha256": "a565e513970670967aa3aebd0372f9dbb5f9bbab670a54744ae454926b3f2671"
+            },
+            "additional_fixtures": [
+              {
+                "file": "crates/jocforge-domain/tests/fixtures/integrated_meter/METER-STATE-CLOCK-LOCAL-REVIEW-STATUS.json",
+                "bytes": 10646,
+                "sha256": "020f88cafa892119bac5fea5bc808d251798e98aec69897c6ab068da80637307"
+              }
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "error_outcomes": [
+            {"error_code":"METER_INTEGRATED_INPUT_ERROR","category":"normalized energy pair","trigger":"Mantissa is negative/nonfinite or exponent is outside 0..=30.","programme_state_after":"No transition/event is returned.","caller_action":"Reject the pair before state projection."},
+            {"error_code":"METER_INTEGRATED_STATE_ERROR","category":"state schema/profile","trigger":"Period/counter is not a valid selected state or an F32 state value is invalid.","programme_state_after":"No next state/event is returned; input state remains unchanged.","caller_action":"Reject; do not silently replace state with cold."},
+            {"error_code":"METER_INTEGRATED_PARAMETER_UNAVAILABLE","category":"selected period/F06L provider","trigger":"Generated fixed period is not five or selected log constants do not pass identity/scope validation.","programme_state_after":"No transition is returned.","caller_action":"Reject; do not substitute sample rate or log constants."},
+            {"error_code":"METER_INTEGRATED_NUMERIC_FAILURE","category":"R32/P(k)/counter arithmetic","trigger":"A required R32 operation is nonfinite, checked arithmetic overflows, or P(k) is outside the supported normal range.","programme_state_after":"No partial state/event is returned.","caller_action":"Discard this pure transition and let the enclosing measurement fail-stop."}
+          ],
+          "not_run": [
+            "5 schedule_cases and F06W callback/sample clock",
+            "REAL-MUSIC-METER-INTEGRATED historical inputs/verification as implementation or runtime inputs",
+            "F06U getter/fallback, complete F06 meter, true-peak cascade, K-filter and frontend/ADM",
+            "measurement owner/finalize, source/AU parent transaction, W04, and product acceptance"
+          ],
+          "delivery_scope": "INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION"
+        }
+      ],
+      "production_usable": false,
+      "not_run": [
+        "F06W scheduling/window and callback sample clock",
+        "F06U getter/fallback and full none-DRC composition",
+        "historical real-music integration input/replay, frontend/ADM, true-peak/K-filter",
+        "measurement owner, source/AU parent transaction, W04 and product acceptance"
+      ],
+      "delivery_scope": "INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION"
     },
     {
       "functional_id": "F06W",
       "spec_files": [
         "specs/06-meter-window-and-output-clock.md"
       ],
+      "local_mapping_files": [
+        "docs/implementation/meter-output-schedule.md",
+        "docs/implementation/meter-output-schedule-provenance.json"
+      ],
       "owner": "meter",
       "planned_phase": "Phase 5",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "implementation_files": [
+        "crates/jocforge-domain/src/meter/mod.rs",
+        "crates/jocforge-domain/src/meter/output_schedule.rs"
+      ],
+      "test_modules": [
+        "crates/jocforge-domain/tests/meter_output_schedule.rs"
+      ],
+      "clock": {
+        "domains": [],
+        "covered_clauses": [
+          "Stateless accounting derives normal/drain callback spans for an explicit positive source sample count; it does not own an audio callback or programme clock."
+        ]
+      },
+      "parameters": {
+        "kind": "FIXED_F06W_1_2_SAMPLE_LEDGER_CONSTANTS_NO_RUNTIME_PROVIDER",
+        "provider_files": [],
+        "validation_boundary": "Uses H=1536, latency=3104, complete PCM block=1024, and 960-window count boundaries from F06W.1/.2. The K-state-bounds parameter is identity-recorded but not consumed; it belongs to deferred F06W.3."
+      },
+      "vectors": {
+        "kind": "HASH_BOUND_SYNTHETIC_SAMPLE_ACCOUNTING_AND_SPAN_CASES",
+        "authoritative_vectors": [
+          "crates/jocforge-domain/tests/fixtures/meter_output_schedule/METER-INTEGRATED-SCHEDULE-VERIFICATION.json"
+        ],
+        "case_pointers": [
+          "schedule_cases[0] input_source_samples=1",
+          "schedule_cases[1] input_source_samples=1024",
+          "schedule_cases[2] input_source_samples=1536",
+          "schedule_cases[3] input_source_samples=1537",
+          "schedule_cases[4] input_source_samples=6522906"
+        ],
+        "local_fixture": {
+          "file": "crates/jocforge-domain/tests/fixtures/meter_output_schedule/METER-INTEGRATED-SCHEDULE-VERIFICATION.json",
+          "bytes": 2051223,
+          "sha256": "a565e513970670967aa3aebd0372f9dbb5f9bbab670a54744ae454926b3f2671"
+        },
+        "additional_fixtures": [
+          {
+            "file": "crates/jocforge-domain/tests/fixtures/meter_output_schedule/METER-STATE-CLOCK-LOCAL-REVIEW-STATUS.json",
+            "bytes": 10646,
+            "sha256": "020f88cafa892119bac5fea5bc808d251798e98aec69897c6ab068da80637307"
+          }
+        ],
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+      },
+      "error_outcomes": [
+        {"error_code":"METER_OUTPUT_SOURCE_LENGTH_INVALID","category":"source sample count","trigger":"input_source_samples is zero.","programme_state_after":"No schedule is returned; the function owns no persistent state.","caller_action":"Reject the invalid source length before callback accounting."},
+        {"error_code":"METER_OUTPUT_SCHEDULE_OVERFLOW","category":"span/counter arithmetic","trigger":"Ceiling, sample-count, callback-count, or checked span arithmetic overflows u64, or span capacity cannot be represented/allocated.","programme_state_after":"No partial schedule is returned.","caller_action":"Reject this ledger request; do not wrap counters."},
+        {"error_code":"METER_OUTPUT_ACCOUNTING_INVARIANT","category":"ledger completion","trigger":"After the fixed drain callbacks startup or pending samples remain, or processed samples differ from normal_callbacks×1536.","programme_state_after":"No partial schedule is returned.","caller_action":"Reject the derived ledger rather than fabricating a tail or flush."}
+      ],
+      "direct_slices": [
+        {
+          "slice_id": "meter-output-sample-accounting-and-span-ledger",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F06W_AND_METER_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_F06W_1_2_SYNTHETIC_SPANS_AND_SAMPLE_COUNTS__WINDOW_STATE_DEFERRED",
+          "scope": "F06W.1/.2 only: stateless normal/drain callback span accounting, startup/pending/processed invariants, 1536-sample output padding, complete-1024 PCM consumption count, and count-only complete-960 window/remainder totals. Does not consume PCM or execute F06W.3 K-filter/F06W.4 power sum/F06W.5 six-lane window state or emit F06I records.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/meter/mod.rs",
+            "crates/jocforge-domain/src/meter/output_schedule.rs"
+          ],
+          "local_mapping_files": [
+            "docs/implementation/meter-output-schedule.md",
+            "docs/implementation/meter-output-schedule-provenance.json"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The computed callback_index is local to a stateless ledger call; no live sample, audio callback, or programme clock is owned."
+            ]
+          },
+          "parameters": {
+            "kind": "F06W_1_2_FIXED_SAMPLE_LEDGER_RULES",
+            "provider_files": [],
+            "validation_boundary": "No K-filter or state-bound parameter is consumed. K-state-bounds manifest identity is recorded only as a deferred F06W.3 asset."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/meter_output_schedule.rs"
+          ],
+          "vectors": {
+            "kind": "FIVE_SYNTHETIC_SOURCE_LENGTH_SPAN_AND_INTEGER_ACCOUNTING_CASES",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/meter_output_schedule/METER-INTEGRATED-SCHEDULE-VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "schedule_cases[0] input_source_samples=1",
+              "schedule_cases[1] input_source_samples=1024",
+              "schedule_cases[2] input_source_samples=1536",
+              "schedule_cases[3] input_source_samples=1537",
+              "schedule_cases[4] input_source_samples=6522906"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/meter_output_schedule/METER-INTEGRATED-SCHEDULE-VERIFICATION.json",
+              "bytes": 2051223,
+              "sha256": "a565e513970670967aa3aebd0372f9dbb5f9bbab670a54744ae454926b3f2671"
+            },
+            "additional_fixtures": [
+              {
+                "file": "crates/jocforge-domain/tests/fixtures/meter_output_schedule/METER-STATE-CLOCK-LOCAL-REVIEW-STATUS.json",
+                "bytes": 10646,
+                "sha256": "020f88cafa892119bac5fea5bc808d251798e98aec69897c6ab068da80637307"
+              }
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "error_outcomes": [
+            {"error_code":"METER_OUTPUT_SOURCE_LENGTH_INVALID","category":"source sample count","trigger":"input_source_samples is zero.","programme_state_after":"No schedule is returned.","caller_action":"Reject before callback accounting."},
+            {"error_code":"METER_OUTPUT_SCHEDULE_OVERFLOW","category":"checked arithmetic/output capacity","trigger":"A sample/callback count overflows or the span vector cannot be represented/allocated.","programme_state_after":"No partial schedule is returned.","caller_action":"Reject rather than wrapping or returning partial spans."},
+            {"error_code":"METER_OUTPUT_ACCOUNTING_INVARIANT","category":"final drained ledger","trigger":"After three fixed drain callbacks startup/pending remain or processed differs from normal_callbacks×1536.","programme_state_after":"No schedule is returned.","caller_action":"Reject; do not synthesize additional drains or audio samples."}
+          ],
+          "not_run": [
+            "F06W.3 K-filter and its matrix consumer",
+            "F06W.4 power_sum",
+            "F06W.5 960-window lane state and F06I record production",
+            "F06I meter state (separately sliced), F06U getter, real audio/ADM/frontend, parent transaction and product acceptance"
+          ],
+          "delivery_scope": "INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION"
+        }
+      ],
+      "production_usable": false,
+      "not_run": [
+        "F06W.3 K-filter, F06W.4 power_sum, and F06W.5 window state/F06I output",
+        "F06I/F06U composition, frontend/audio/ADM, full meter, parent transaction and product acceptance"
+      ],
+      "delivery_scope": "INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION"
     },
     {
       "functional_id": "F06KG",
       "spec_files": [
         "specs/06-meter-k-matrix-generation.md"
       ],
+      "local_mapping_files": [
+        "docs/implementation/k-matrix-provider.md",
+        "docs/implementation/k-matrix-provider-provenance.json"
+      ],
       "owner": "meter",
       "planned_phase": "Phase 5",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "selected-k-matrix-provider-generator",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F06KG_AND_PRODUCT_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_EXACT_RATIONAL_MATRIX_AND_BOUNDS_PROVIDER__CONSUMER_DEFERRED",
+          "scope": "Selected 48 kHz modern two-stage exact-rational K-matrix generator, 64 matrix words, eight cold words, and selected state-bound values. It does not implement F06W.3/.4 sample consumption, windowing, meter output, audio frontend, or whole F06.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/meter/k_matrix.rs",
+            "crates/jocforge-domain/src/meter/k_matrix_parameters.json",
+            "crates/jocforge-domain/src/meter/k_matrix_bounds.json"
+          ],
+          "local_mapping_files": [
+            "docs/implementation/k-matrix-provider.md",
+            "docs/implementation/k-matrix-provider-provenance.json"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The provider/generator is immutable and owns no window, callback, source, AU, or per-block meter clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INTERNAL_ONLY_EXACT_RATIONAL_K_MATRIX_INPUTS",
+            "provider_files": [
+              "crates/jocforge-domain/src/meter/k_matrix_parameters.json",
+              "crates/jocforge-domain/src/meter/k_matrix_bounds.json"
+            ],
+            "validation_boundary": "Validates exact embedded parameter identities and selected profile/schema before computation; the production input subset omits generated expected matrix words and performs no filesystem/environment access."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/k_matrix_provider.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_EXACT_MATRIX_AND_STATE_BOUNDS_EXPECTATIONS",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/k_matrix/source-matrix-parameters.json",
+              "crates/jocforge-domain/tests/fixtures/k_matrix/source-state-bounds.json",
+              "crates/jocforge-domain/tests/fixtures/k_matrix/generation-verification.json"
+            ],
+            "case_pointers": [
+              "all 64 generated matrix words and eight cold words in stage/row/lane F32LE order",
+              "complete 72-word/288-byte identity SHA-256",
+              "selected lower/upper/noise state-bound provider identity",
+              "unsupported sample-rate, mode, and stage-count rejection"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/k_matrix/source-matrix-parameters.json",
+              "bytes": 3985,
+              "sha256": "c8b4ffd52fffd62f5d0fdeba36a993f02188933a43593abe6969243f44f7f536"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "METER_K_MATRIX_UNSUPPORTED_PROFILE",
+              "category": "profile selection",
+              "trigger": "Sample rate is not 48 kHz, mode is not modern, or stage count is not two.",
+              "programme_state_after": "No provider is returned; this pure generator owns no state.",
+              "caller_action": "Reject; do not substitute another matrix or frequency."
+            },
+            {
+              "error_code": "METER_K_MATRIX_PARAMETER_UNAVAILABLE",
+              "category": "parameter identity or schema",
+              "trigger": "Embedded input/bounds identity, exact-rational schema, basis order, profile data, or cold/bounds shape differs.",
+              "programme_state_after": "No partial provider is returned.",
+              "caller_action": "Reject the parameter provider before consumption."
+            },
+            {
+              "error_code": "METER_K_MATRIX_NUMERIC_FAILURE",
+              "category": "exact-rational quantization",
+              "trigger": "Exact rational result cannot be represented as a finite binary32 word in the selected output format.",
+              "programme_state_after": "No partial provider is returned.",
+              "caller_action": "Reject; do not approximate with binary64 or use expected words as input."
+            }
+          ],
+          "not_run": [
+            "6-block F06W.3/.4 continuous sample consumption, state evolution, and power outputs",
+            "window clock, frontend/getter, none-DRC composition, real ADM/audio/render",
+            "source/AU clock, parent transaction, complete meter, and whole-product acceptance",
+            "public or third-party distribution of the internal-only parameter assets"
+          ],
+          "delivery_scope": "INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION"
+        }
+      ]
     },
     {
       "functional_id": "F06TP",
       "spec_files": [
         "specs/06-true-peak-cascade-and-metrics.md"
       ],
+      "local_mapping_files": [
+        "docs/implementation/true-peak-cascade.md",
+        "docs/implementation/true-peak-cascade-provenance.json"
+      ],
       "owner": "meter",
       "planned_phase": "Phase 5",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "selected-six-channel-true-peak-block-cascade",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F06TP_AND_PRODUCT_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_AUTHORIZED_4X_CASCADE_STATE_AND_LOCAL_PEAKS__FRONTEND_DEFERRED",
+          "scope": "Selected six-channel 48 kHz/1024-sample block only: authorized 12-tap coefficients, 12-tap FIR, two-stage 4x interpolation, LFE ordinal-3 bypass, complete per-lane FIR history, per-block sample/true-peak metrics, and programme maxima. No frontend, sample-window scheduler, full F06 meter, or product chain.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/meter/true_peak.rs",
+            "crates/jocforge-domain/src/meter/truepeak_parameters.json",
+            "crates/jocforge-domain/src/meter/truepeak_log_parameters.json"
+          ],
+          "local_mapping_files": [
+            "docs/implementation/true-peak-cascade.md",
+            "docs/implementation/true-peak-cascade-provenance.json"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/src/meter/true_peak/tests.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Each call consumes one explicit 1024-sample six-channel source block; block/callback/source/AU scheduling and EOF accounting remain external. FIR state advances only through the returned next state."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INTERNAL_ONLY_AUTHORIZED_TRUEPEAK_AND_LOG_CONSTANTS",
+            "provider_files": [
+              "crates/jocforge-domain/src/meter/truepeak_parameters.json",
+              "crates/jocforge-domain/src/meter/truepeak_log_parameters.json"
+            ],
+            "validation_boundary": "Checks embedded raw parameter-file SHA-256, 6+5 authorized words, expanded mirrored/tail identity, and F06L log-constant identity before processing. No external file/environment I/O."
+          },
+          "vectors": {
+            "kind": "HASH_BOUND_NINE_INPUT_RECIPE_CONTINUOUS_STATE_AND_METRIC_VECTORS",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/meter_true_peak/input-vectors.json",
+              "crates/jocforge-domain/tests/fixtures/meter_true_peak/verification-result.json"
+            ],
+            "case_pointers": [
+              "9 reproducible cases: 8 continuous blocks plus an independent reset with nonzero LFE history",
+              "193,536 measured output words validated by per-channel full-output hashes",
+              "249,912 complete per-lane FIR state words compared against complete serialized next-state fixtures",
+              "540 per-lane peak fields and 126 programme fields compared exactly",
+              "LFE bypass output and bit-preserved state; sample/true peak local metric branches"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/meter_true_peak/input-vectors.json",
+              "bytes": 2078540,
+              "sha256": "510b980acf92519e0fbced2cf79b6b9f72dc47dcc8316f59506048288982d528"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "truepeak_parameter_sha256": "f67e6fe86533af74acc261bf3908890e77a461198116c64b624dc91b69049757",
+            "log_parameter_sha256": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "TRUE_PEAK_INPUT_ERROR",
+              "category": "block/state shape and finite domain",
+              "trigger": "Input is not six rows of 1024 finite F32 values, or a held FIR/programme state has malformed shape or non-finite words.",
+              "programme_state_after": "No output or next state is returned; caller's prior state is unchanged.",
+              "caller_action": "Reject the block and fail-stop the caller-owned meter pipeline."
+            },
+            {
+              "error_code": "TRUE_PEAK_PARAMETER_UNAVAILABLE",
+              "category": "authorized parameter identity",
+              "trigger": "True-peak/log parameter assets fail their exact hash, schema, tap count, mirror expansion, or F32LE identity checks.",
+              "programme_state_after": "No output or next state is returned.",
+              "caller_action": "Reject the meter block before processing; do not substitute another FIR or log provider."
+            },
+            {
+              "error_code": "TRUE_PEAK_NUMERIC_FAILURE",
+              "category": "R32 FIR/metric intermediate",
+              "trigger": "A validated input/state produces a non-finite R32 intermediate or output.",
+              "programme_state_after": "No partial output or next state is returned.",
+              "caller_action": "Discard the attempt and let the enclosing programme lifecycle fail-stop and reset."
+            }
+          ],
+          "not_run": [
+            "frontend audio acquisition, measurement ring and 1024 window clock",
+            "F06W K-weight cascade, none-DRC whole composition, getter/DRC, ID1 timer/FIFO/EMDF",
+            "source/AU accounting, parent transaction, real ADM/render, player/listening and product acceptance",
+            "public or third-party distribution of the internally authorized functional constants"
+          ],
+          "delivery_scope": "INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION"
+        }
+      ]
     },
     {
       "functional_id": "F06ND",
@@ -1795,10 +3447,198 @@
       "spec_files": [
         "specs/06-ungated-mean-and-fallback.md"
       ],
+      "local_mapping_files": [
+        "docs/implementation/ungated-mean.md",
+        "docs/implementation/ungated-mean-provenance.json"
+      ],
       "owner": "meter",
       "planned_phase": "Phase 5",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "implementation_files": [
+        "crates/jocforge-domain/src/meter/mod.rs",
+        "crates/jocforge-domain/src/meter/ungated_mean.rs",
+        "crates/jocforge-domain/src/meter/true_peak.rs",
+        "crates/jocforge-domain/src/meter/truepeak_log_parameters.json"
+      ],
+      "test_modules": [
+        "crates/jocforge-domain/tests/ungated_mean.rs"
+      ],
+      "clock": {
+        "domains": [],
+        "covered_clauses": [
+          "One explicit accepted energy pair is one period-one event; F06U owns no callback, frame, window, source, or AU clock."
+        ]
+      },
+      "parameters": {
+        "kind": "HASH_BOUND_INTERNAL_ONLY_F06L_LOG_METRIC_CONSTANTS_AND_FIXED_F06U_PROFILE",
+        "provider_files": [
+          "crates/jocforge-domain/src/meter/truepeak_log_parameters.json"
+        ],
+        "validation_boundary": "Validates the embedded selected log-constant identity and INTERNAL_ONLY scope; does not load or depend on FIR/K parameters. F06U profile is fixed to period=1, capacity=1, minimum_density=+0, ungated enabled."
+      },
+      "vectors": {
+        "kind": "HASH_BOUND_UNGATED_MEAN_STATE_AND_DI_OFF_GETTER_VECTORS",
+        "authoritative_vectors": [
+          "crates/jocforge-domain/tests/fixtures/ungated_mean/METER-UNGATED-FALLBACK-VERIFICATION.json",
+          "crates/jocforge-domain/tests/fixtures/ungated_mean/METER-DI-OFF-GETTER-VERIFICATION.json"
+        ],
+        "case_pointers": [
+          "10 independent mean sequences / 102 event steps including reset and signed-count boundary",
+          "4 coupled cases; compare F06U terminal state for all, and coupled getter/fallback only when ITU is unavailable",
+          "4 input rejections",
+          "4 valid DI-off ITU getter cases and 3 unsupported-configuration rejections",
+          "legacy missing-mean observation is resolved using the actual F06U cold result; no legacy helper output is used"
+        ],
+        "local_fixtures": [
+          {
+            "file": "crates/jocforge-domain/tests/fixtures/ungated_mean/METER-UNGATED-FALLBACK-VERIFICATION.json",
+            "bytes": 135066,
+            "sha256": "7dc8f1405d6d1cbbcadba19b498e5d0fcb95a11cc221af58a64c81acb2a89d41"
+          },
+          {
+            "file": "crates/jocforge-domain/tests/fixtures/ungated_mean/METER-UNGATED-LOCAL-REVIEW-STATUS.json",
+            "bytes": 8828,
+            "sha256": "e1ae098cacd11d8c36bb7b1b370371bba87a5ce405c1f95d99b25f8a6ccb5fac"
+          },
+          {
+            "file": "crates/jocforge-domain/tests/fixtures/ungated_mean/METER-DI-OFF-GETTER-VERIFICATION.json",
+            "bytes": 5845,
+            "sha256": "78c9834a428a2f2385e15a22505b26870c603485821bafecada13feeda003dd9"
+          }
+        ],
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+      },
+      "error_outcomes": [
+        {
+          "error_code": "METER_UNGATED_INPUT_INVALID",
+          "category": "mean input type/domain",
+          "trigger": "Mantissa is negative/nonfinite, exponent is not a supported integer 0..=30, or F32 conversion overflows.",
+          "programme_state_after": "No metric, writer result, or next state is returned.",
+          "caller_action": "Reject before mean state mutation; fail-stop the enclosing measurement as required by I03."
+        },
+        {
+          "error_code": "METER_UNGATED_PROFILE_UNSUPPORTED",
+          "category": "fixed ungated writer configuration",
+          "trigger": "The selected ungated writer is disabled; configurations other than period=1/capacity=1/minimum_density=+0 are not admitted by this slice.",
+          "programme_state_after": "No writer result or next state is returned.",
+          "caller_action": "Reject this profile; do not use the older getter-only helper as a replacement."
+        },
+        {
+          "error_code": "METER_UNGATED_STATE_INVALID",
+          "category": "single-slot committed state",
+          "trigger": "Count exceeds 2^31-1, phase/cursor are nonzero, filled is outside 0..=1, or state F32 fields are nonfinite/negative where the state schema requires nonnegative values.",
+          "programme_state_after": "No metric or next state is returned; caller state remains unchanged.",
+          "caller_action": "Reject the invalid state and fail-stop its enclosing measurement."
+        },
+        {
+          "error_code": "METER_UNGATED_PARAMETER_UNAVAILABLE",
+          "category": "selected log parameter identity/scope",
+          "trigger": "The embedded F06L log-constant hash, schema, or internal-only delivery scope differs from the selected provider identity.",
+          "programme_state_after": "No mean operation is performed.",
+          "caller_action": "Reject before state processing; do not substitute system logarithms or FIR parameters."
+        },
+        {
+          "error_code": "METER_UNGATED_NUMERIC_FAILURE",
+          "category": "R32/F06L intermediate domain",
+          "trigger": "A specified R32 operation becomes nonfinite or required P(k)/signed-count arithmetic is outside its supported domain.",
+          "programme_state_after": "No output or next state is returned.",
+          "caller_action": "Fail-stop this local mean attempt; do not publish partially updated state."
+        },
+        {
+          "error_code": "METER_DI_OFF_GETTER_UNSUPPORTED_CONFIGURATION",
+          "category": "selected getter profile",
+          "trigger": "Metering mode is not 1770-4, dialogue intelligence is enabled, or R32(speech_threshold) differs from 100.",
+          "programme_state_after": "No getter projection is returned.",
+          "caller_action": "Reject without invoking a speech classifier or substituting another mode."
+        }
+      ],
+      "direct_slices": [
+        {
+          "slice_id": "ungated-single-slot-mean-and-di-off-getter",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F06_AND_PRODUCT_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_F06U_SINGLE_SLOT_MEAN_AND_DI_OFF_SELECTION__INTEGRATED_METER_DEFERRED",
+          "scope": "Fixed period-one/capacity-one F06U admission, mean update, normalized event result, full eight-field state projection, and selected 1770-4 DI-off getter. Consumes explicit energy mantissa/exponent pairs. Reuses the selected F06L log network only; no meter frontend, F06I integrated state, F06W scheduling, K/FIR processing, measurement owner, source/AU parent, or full none-DRC path.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/meter/mod.rs",
+            "crates/jocforge-domain/src/meter/ungated_mean.rs",
+            "crates/jocforge-domain/src/meter/true_peak.rs",
+            "crates/jocforge-domain/src/meter/truepeak_log_parameters.json"
+          ],
+          "local_mapping_files": [
+            "docs/implementation/ungated-mean.md",
+            "docs/implementation/ungated-mean-provenance.json"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Each explicitly supplied, admitted energy pair causes one period-one event; no callback/window/source/AU clock is owned."
+            ]
+          },
+          "parameters": {
+            "kind": "INTERNAL_ONLY_HASH_BOUND_F06L_LOG_CONSTANTS_AND_FIXED_F06U_PROFILE",
+            "provider_files": [
+              "crates/jocforge-domain/src/meter/truepeak_log_parameters.json"
+            ],
+            "validation_boundary": "Uses the exact selected F06L energy_metric/log network and validates its embedded internal-only constants; no FIR/K data is loaded or used."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/ungated_mean.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_102_MEAN_STEPS_AND_DI_OFF_GETTER_CASES",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/ungated_mean/METER-UNGATED-FALLBACK-VERIFICATION.json",
+              "crates/jocforge-domain/tests/fixtures/ungated_mean/METER-DI-OFF-GETTER-VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "all 10 mean sequences and all 102 trace steps from explicit ordered energy pairs",
+              "all four coupled mean-state terminal projections; getter comparison only for the three unavailable-ITU fallback cases",
+              "all four primary vector input rejections",
+              "all four valid ITU getters and all three unsupported-config rejections",
+              "legacy -120 getter observation checked against actual F06U cold state, not a legacy output seed"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/ungated_mean/METER-UNGATED-FALLBACK-VERIFICATION.json",
+              "bytes": 135066,
+              "sha256": "7dc8f1405d6d1cbbcadba19b498e5d0fcb95a11cc221af58a64c81acb2a89d41"
+            },
+            "additional_fixtures": [
+              {"file":"crates/jocforge-domain/tests/fixtures/ungated_mean/METER-UNGATED-LOCAL-REVIEW-STATUS.json","bytes":8828,"sha256":"e1ae098cacd11d8c36bb7b1b370371bba87a5ce405c1f95d99b25f8a6ccb5fac"},
+              {"file":"crates/jocforge-domain/tests/fixtures/ungated_mean/METER-DI-OFF-GETTER-VERIFICATION.json","bytes":5845,"sha256":"78c9834a428a2f2385e15a22505b26870c603485821bafecada13feeda003dd9"}
+            ],
+            "local_fixtures": [
+              {"file":"crates/jocforge-domain/tests/fixtures/ungated_mean/METER-UNGATED-FALLBACK-VERIFICATION.json","bytes":135066,"sha256":"7dc8f1405d6d1cbbcadba19b498e5d0fcb95a11cc221af58a64c81acb2a89d41"},
+              {"file":"crates/jocforge-domain/tests/fixtures/ungated_mean/METER-UNGATED-LOCAL-REVIEW-STATUS.json","bytes":8828,"sha256":"e1ae098cacd11d8c36bb7b1b370371bba87a5ce405c1f95d99b25f8a6ccb5fac"},
+              {"file":"crates/jocforge-domain/tests/fixtures/ungated_mean/METER-DI-OFF-GETTER-VERIFICATION.json","bytes":5845,"sha256":"78c9834a428a2f2385e15a22505b26870c603485821bafecada13feeda003dd9"}
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "error_outcomes": [
+            {"error_code":"METER_UNGATED_INPUT_INVALID","category":"mean input type/domain","trigger":"Mantissa is negative/nonfinite, exponent is outside integer 0..=30, or conversion to F32 overflows.","programme_state_after":"No metric or next state is returned.","caller_action":"Reject before state mutation and propagate the enclosing I03 fail-stop."},
+            {"error_code":"METER_UNGATED_PROFILE_UNSUPPORTED","category":"fixed writer profile","trigger":"Ungated is disabled or a nonselected period/capacity/minimum-density configuration is requested.","programme_state_after":"No writer result or next state is returned.","caller_action":"Reject; do not use the legacy getter helper as a mean producer."},
+            {"error_code":"METER_UNGATED_STATE_INVALID","category":"eight-field state schema","trigger":"Count exceeds 2^31-1, phase/cursor are nonzero, filled is outside 0..=1, or a required finite/nonnegative state field is invalid.","programme_state_after":"No metric or next state is returned; caller state is unchanged.","caller_action":"Fail-stop the selected measurement; do not continue from malformed state."},
+            {"error_code":"METER_UNGATED_PARAMETER_UNAVAILABLE","category":"embedded F06L log provider","trigger":"The selected log-constant hash, schema, or internal-only scope does not match the approved provider identity.","programme_state_after":"No mean operation is performed.","caller_action":"Reject before processing; do not substitute system logarithms or another provider."},
+            {"error_code":"METER_UNGATED_NUMERIC_FAILURE","category":"R32/F06L intermediate","trigger":"A separately-rounded operation is nonfinite, signed count division is zero, or P(k) leaves the normal exponent domain.","programme_state_after":"No output or next state is returned.","caller_action":"Discard the local attempt; never expose partial state."},
+            {"error_code":"METER_DI_OFF_GETTER_UNSUPPORTED_CONFIGURATION","category":"getter config","trigger":"Metering mode is not 1770-4, dialogue intelligence is true, or the F32 speech threshold is not exactly 100.","programme_state_after":"No getter projection is returned.","caller_action":"Reject without invoking the speech classifier."}
+          ],
+          "not_run": [
+            "F06I integrated meter state/producer and available-ITU coupled selection branch",
+            "real ADM/meter frontend, K-matrix, FIR/secondary processing, and F06W scheduler/window",
+            "REAL-MUSIC-METER-ENERGY-INPUTS and REAL-MUSIC-METER-MEAN-VERIFICATION as implementation/runtime inputs or local test fixtures",
+            "whole none-DRC measurement, immutable programme measurement, source/AU parent transaction, W04, and product acceptance"
+          ],
+          "delivery_scope": "INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION"
+        }
+      ],
+      "production_usable": false,
+      "not_run": [
+        "F06I integrated meter and available-ITU branch",
+        "F06W clock/window and meter frontend",
+        "K/FIR/secondary and complete none-DRC composition",
+        "real historical song inputs, real ADM, measurement parent, and product acceptance"
+      ],
+      "delivery_scope": "INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION"
     },
     {
       "functional_id": "F06DG",
@@ -2045,10 +3885,102 @@
       "spec_files": [
         "specs/09-lfe-gate-mantissa-boundaries.md"
       ],
+      "local_mapping_files": [
+        "docs/implementation/lfe-mantissa-boundary.md",
+        "docs/implementation/lfe-mantissa-boundary-provenance.json"
+      ],
       "owner": "analysis",
       "planned_phase": "Phase 6",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "selected-lfe-gate-and-mantissa-boundary",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F09LB_AND_PRODUCT_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_SELECTED_GATE_CLIP_EXPONENT_AND_STAGED_ROW__F10_NORMALIZER_DEFERRED",
+          "scope": "Selected-profile gate zero producer, shared finite-F32 PRIMARY/LFE strict clip and raw-exponent scan, and atomic staged seven-word LFE row/exponent commit, retire, and reset seam. F10.4 LFE normalization and full F09/F10 planning are excluded.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/mantissa.rs"
+          ],
+          "local_mapping_files": [
+            "docs/implementation/lfe-mantissa-boundary.md",
+            "docs/implementation/lfe-mantissa-boundary-provenance.json"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The selected coefficient stage owns no source/AU counter; each explicit stage/finish pair describes one local candidate transaction."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_SELECTED_LFE_GATE_PROFILE_RULES",
+            "provider_files": [
+              "crates/jocforge-domain/tests/fixtures/lfe_gate_mantissa/parameters.json"
+            ],
+            "validation_boundary": "Admits only 48 kHz/1024 kbps/acmod 7/six-block/AHT-disabled gate profile. It does not bind or consume D06-N, F09PA, or F10 normalization parameters."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/lfe_mantissa_boundary.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_LFE_GATE_CLIP_EXPONENT_AND_STAGED_ROW_VECTORS",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/lfe_gate_mantissa/input-vectors.json"
+            ],
+            "case_pointers": [
+              "13 finite coefficient words: signed zero, subnormal, ±1 equality, adjacent clip values, and maximum finite values",
+              "Primary and seven-word LFE routes share the same clip/exponent primitive",
+              "Shape/nonfinite rejections for NaN, infinity, wrong LFE count, and PRIMARY lengths 0/253/254",
+              "Selected profile gate=0; unsupported AHT, block-count, and sample-rate profiles reject",
+              "Two seven-word staged source cases cover zero commit on downstream failure, retirement, reset retry, and one successful row+exponent commit",
+              "F10 normalizer cases are retained in the fixture but explicitly excluded from the implemented/tested slice"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/lfe_gate_mantissa/input-vectors.json",
+              "bytes": 4979,
+              "sha256": "70d63104353ff6f721ae521be4469a9dda15e48d27e22030b3c46f0220c9b6be"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "LFE_GATE_PROFILE_UNSUPPORTED",
+              "category": "selected profile admission",
+              "trigger": "Sample rate, bitrate, acmod, block count, or AHT state differs from the selected fixed profile.",
+              "programme_state_after": "No gate owner is created or changed.",
+              "caller_action": "Reject the unsupported profile; do not enable the bounded AHT research-writer path."
+            },
+            {
+              "error_code": "MANTISSA_INPUT_ERROR",
+              "category": "coefficient scan",
+              "trigger": "PRIMARY count is outside 0..=253, LFE count is not seven, or a coefficient word is nonfinite.",
+              "programme_state_after": "No clipped row or exponent proposal is returned; committed bank remains unchanged.",
+              "caller_action": "Reject before staging any coefficient or exponent values."
+            },
+            {
+              "error_code": "LFE_MANTISSA_RETIRED",
+              "category": "local source lifecycle",
+              "trigger": "A new LFE coefficient stage is attempted after a downstream source failure retired this seam.",
+              "programme_state_after": "Previous committed row/exponents are unchanged; retired remains true.",
+              "caller_action": "Reject until a complete reset recreates the cold selected gate and empty coefficient bank."
+            },
+            {
+              "error_code": "LFE_MANTISSA_DOWNSTREAM_FAILURE",
+              "category": "staged source completion",
+              "trigger": "The enclosing selected downstream stage reports failure after row/exponent staging.",
+              "programme_state_after": "Zero commit for the staged pair; prior committed pair is preserved; seam becomes retired.",
+              "caller_action": "Discard the staged pair and stop this source/programme attempt; do not retry without reset."
+            }
+          ],
+          "not_run": [
+            "F10.4 LFE normalization numeric path and signed-I16 zero-factor primitive",
+            "D06-N/F09PA parameter provider binding",
+            "AHT-enabled profiles and conditional writer support",
+            "full F09/F10 power, exponent-refresh, grouping, reuse, and frame-plan producers",
+            "F12 quantizer/bitstream, source/AU clocks, parent transaction, real ADM/render, and whole-product replay"
+          ]
+        }
+      ]
     },
     {
       "functional_id": "F10",
@@ -2078,17 +4010,181 @@
       "owner": "codec",
       "planned_phase": "Phase 6",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "grouped-quantizer-helper",
+          "mapping_status": "MATERIALIZED_INTERNAL_DIRECT_SUBSLICE_WHOLE_F12_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_GROUPED_QUANTIZER_HELPER__WHOLE_F12_DEFERRED",
+          "scope": "Internal-only valid BAP1/2/4 grouped quantizer helper. It reserves item widths, compacts completed groups in place, and flushes only existing reservations. It does not implement caller capacity ownership, BAP values outside the selected domain, higher retry/rollback, producer identity, or full frame/EC3 behavior.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/grouped_quantizer.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Consumes an explicitly ordered item slice; owns no callback, source, AU, or retry clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_GROUPED_QUANTIZER_SELECTED_BAP_RULES",
+            "provider_files": [
+              "crates/jocforge-domain/tests/fixtures/grouped_quantizer/SCOPE.md"
+            ],
+            "validation_boundary": "Only valid BAP1/2/4 helper inputs are accepted; radix, arity, width, and fill behavior are scoped by the bound SCOPE payload and transition contract."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/grouped_quantizer.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_R18_R15_GROUPED_QUANTIZER_VECTORS",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/grouped_quantizer/R18-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/grouped_quantizer/R15-CAPACITY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "R18 covers valid-domain item, grouping, flush, writer-state, pending-accumulator, and byte-hash observations.",
+              "R15 covers the supplied logical-capacity observation only; no caller-capacity ownership or overrun contract is inferred."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/grouped_quantizer/SCOPE.md",
+              "bytes": 1324,
+              "sha256": "4c43b1102934f37f74a1e4a6895885f00989c91fc5bd99cfbdbec9b7c850ddbc"
+            }
+          },
+          "error_outcomes": [
+            {
+              "error_code": "GROUPED_QUANTIZER_UNOBSERVED_SCALAR_FAILURE",
+              "category": "local helper boundary",
+              "trigger": "The scalar quantizer reports an error outside the washed non-finite cases.",
+              "programme_state_after": "Earlier items in the call may already have mutated this helper state; rollback is not promised.",
+              "caller_action": "Treat the condition as outside this slice; do not infer native BAP-domain or enclosing retry behavior."
+            },
+            {
+              "error_code": "GROUPED_QUANTIZER_BIT_COUNT_OVERFLOW",
+              "category": "local representation boundary",
+              "trigger": "The local effective-bit counter cannot represent the next transition.",
+              "programme_state_after": "Prior transitions in the same call may already have mutated this helper state; rollback is not promised.",
+              "caller_action": "Reject this local helper operation without claiming an observed native outcome."
+            }
+          ],
+          "not_run": [
+            "caller capacity ownership and native overrun contract",
+            "safe BAP values outside 1, 2, and 4",
+            "upstream source-plane producer identity",
+            "higher-level trial search, retry, and rollback",
+            "complete frame, EC3 stream, real audio, and whole-product validation"
+          ]
+        }
+      ]
     },
     {
       "functional_id": "F12S",
       "spec_files": [
         "specs/12-selected-codec-wire.md"
       ],
+      "local_mapping_files": [
+        "docs/implementation/mantissa-quantizer.md",
+        "docs/implementation/mantissa-quantizer-provenance.json"
+      ],
       "owner": "codec",
       "planned_phase": "Phase 6",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "mantissa-quantizer",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F12S_AND_PRODUCT_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_STATELESS_MANTISSA_QUANTIZER__WHOLE_F12S_DEFERRED",
+          "scope": "Pure finite binary32 word plus BAP to mantissa code or candidate-local error for F12S.5. Input is already exponent-scaled; no transform, fit, exponent/BAP producer, grouping, trial search, bitstream/frame, programme state, or source/AU clock is implemented.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/mantissa.rs"
+          ],
+          "local_mapping_files": [
+            "docs/implementation/mantissa-quantizer.md",
+            "docs/implementation/mantissa-quantizer-provenance.json"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The quantizer is stateless and has no callback, source, AU, or trial-search clock ownership."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F12S_MANTISSA_QUANTIZER_PARAMETERS",
+            "provider_files": [
+              "crates/jocforge-domain/tests/fixtures/mantissa_quantizer/parameters.json"
+            ],
+            "validation_boundary": "Consumes one caller-supplied finite F32 bit word and BAP 0..15; uses the delivered F12S.5 quantizer constants and the existing R32/truncation primitives. It does not derive or validate the upstream exponent, coefficient, or BAP producer."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/mantissa_quantizer.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_F12S_QUANTIZER_SUCCESS_AND_SENTINEL_VECTORS",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/mantissa_quantizer/input-vectors.json",
+              "crates/jocforge-domain/tests/fixtures/mantissa_quantizer/verification.json"
+            ],
+            "case_pointers": [
+              "208 exact quantizer cases: 204 code outputs and 4 BAP 3/5 reserved-sentinel failures",
+              "All selected BAP values 0..15 are exercised across the delivered finite F32 words",
+              "Local boundary cases reject non-finite inputs, unsupported BAP, and non-finite intermediates"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/mantissa_quantizer/input-vectors.json",
+              "bytes": 23808,
+              "sha256": "8333a23ccd093659dd0f4b296528a3f44120f78caf41546991ed9113ce14d017"
+            },
+            "source_package_manifest_sha256": "2f50ddb6f894d26d3a87390b0fb5d48021afe90e4fa5e7cff976e02ae83e0ae5",
+            "source_independent_check_sha256": "ed62b615af423b0ce98fbae9c7876c7ca7d60fa1853e7e95fd8ce68684492210"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "MANTISSA_NONFINITE_INPUT",
+              "category": "quantizer input",
+              "trigger": "The supplied F32 word encodes NaN or infinity.",
+              "programme_state_after": "No quantized code is returned; this function owns no state.",
+              "caller_action": "Mark the current candidate invalid; only the enclosing F12 trial contract may decide what follows."
+            },
+            {
+              "error_code": "MANTISSA_UNSUPPORTED_BAP",
+              "category": "quantizer input",
+              "trigger": "The supplied BAP is outside 0..15.",
+              "programme_state_after": "No quantized code is returned; this function owns no state.",
+              "caller_action": "Reject the malformed quantizer input without inferring a BAP allocation."
+            },
+            {
+              "error_code": "MANTISSA_NONFINITE_INTERMEDIATE",
+              "category": "quantizer arithmetic",
+              "trigger": "A separately rounded binary32 addition or multiplication produces a non-finite result.",
+              "programme_state_after": "No quantized code is returned; this function owns no state.",
+              "caller_action": "Mark only the current candidate invalid; do not commit enclosing state."
+            },
+            {
+              "error_code": "MANTISSA_INTEGER_OUT_OF_RANGE",
+              "category": "quantizer arithmetic",
+              "trigger": "The truncation input cannot be represented as the specified signed integer intermediate.",
+              "programme_state_after": "No quantized code is returned; this function owns no state.",
+              "caller_action": "Mark only the current candidate invalid; do not substitute saturation for the specified conversion."
+            },
+            {
+              "error_code": "MANTISSA_RESERVED_CODE_SENTINEL",
+              "category": "BAP 3/5 sentinel",
+              "trigger": "The masked code equals the reserved all-ones sentinel for BAP 3 or BAP 5.",
+              "programme_state_after": "No quantized code is returned; this function owns no state.",
+              "caller_action": "Mark only the current candidate invalid; enclosing retry and source failure remain external."
+            }
+          ],
+          "not_run": [
+            "coefficient exponent scaling and source producer input validation",
+            "F09 exponent and BAP production",
+            "F12 quantizer grouping, trial search, retry, and bit packing",
+            "frame construction, CRC, EMDF, programme transaction, and source/AU publication",
+            "native/runtime replay, real ADM chain, and whole-product acceptance"
+          ]
+        }
+      ]
     },
     {
       "functional_id": "F12SC",
@@ -2317,10 +4413,92 @@
       "spec_files": [
         "specs/13-id2-profile-metadata.md"
       ],
+      "local_mapping_files": [
+        "docs/implementation/id2-wire.md",
+        "docs/implementation/id2-wire-provenance.json"
+      ],
       "owner": "metadata",
       "planned_phase": "Phase 7",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "id2-profile-header-and-body-wire",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F13D2_AND_PRODUCT_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_ID2_PROFILE_HEADER_AND_BODY_WIRE__PROGRAMME_PRODUCER_DEFERRED",
+          "scope": "Stateless exact profile-label to ID2 U3-code mapping, strict local Type11 LFE-header read, and five-input ID2 body serialization to 21 valid bits/3 bytes. No live DRC producer, programme profile admission, complete Type11 validation, FIFO, EMDF container, source/AU clock, or programme transaction.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/joc/emdf/id2_wire.rs"
+          ],
+          "local_mapping_files": [
+            "docs/implementation/id2-wire.md",
+            "docs/implementation/id2-wire-provenance.json"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The profile mapper, local Type11 prefix reader, and ID2 body serializer own no source, dispatch, AU, or persistent clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F13D2_WIRE_RULES_NO_RUNTIME_PROVIDER",
+            "provider_files": [],
+            "validation_boundary": "Consumes external profile labels, a caller-supplied Type11 header prefix, or five explicit U32 configuration values. It does not produce or expand programme-level DRC support."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/id2_wire.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_SELECTED_ID2_PROFILE_HEADER_AND_BODY_CASES",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/id2_wire/input-vectors.json"
+            ],
+            "case_pointers": [
+              "7 selected cases from id2-profile-enums, id2-profile-from-header, and id2-field-wire",
+              "six exact profile-name mappings plus unknown-name rejection",
+              "Type11 LFE/no-LFE/extended-count success and invalid-version/shortcut rejection",
+              "21-bit, three-byte serializer output with integer bitwise-AND distinction"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/id2_wire/input-vectors.json",
+              "bytes": 3417,
+              "sha256": "b3b5cf65d35a77a0df31ff0211949e6805882c0d79ad1c7e975daded0d91f8cf"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_vector_bytes": 1503142,
+            "source_vector_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "ID2_UNSUPPORTED_DRC_PROFILE",
+              "category": "external profile label",
+              "trigger": "The supplied profile string does not exactly match one of the six specified labels.",
+              "programme_state_after": "No ID2 body is returned; the functions own no state.",
+              "caller_action": "Reject the local profile value; do not lowercase, fallback, or infer programme DRC support."
+            },
+            {
+              "error_code": "ID2_INVALID_TYPE11_HEADER",
+              "category": "Type11 LFE prefix",
+              "trigger": "The supplied prefix is truncated or has an unsupported version, shortcut, or count/LFE relation.",
+              "programme_state_after": "No LFE-derived ID2 body is returned; no historical bit is retained.",
+              "caller_action": "Reject this local header read; do not substitute reference or prior-source state."
+            },
+            {
+              "error_code": "ID2_FIELD_OUT_OF_RANGE",
+              "category": "wire code input",
+              "trigger": "A line or RF profile code exceeds its U3 field.",
+              "programme_state_after": "No serialized body is returned; the serializer owns no state.",
+              "caller_action": "Reject the malformed local serialization input without truncating the code."
+            }
+          ],
+          "not_run": [
+            "line/RF dynamic DRC producer and programme profile admission",
+            "complete Type11 OAMD producer and parser",
+            "ID2 FIFO, EMDF composition, source/AU clocks, and parent transaction",
+            "whole F13, source/AU replay, and product acceptance"
+          ]
+        }
+      ]
     },
     {
       "functional_id": "F14",
@@ -4869,7 +7047,7 @@
       ],
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 35306, "sha256": "794c5980f2c6f29f8aad45768a6a8b14e4fc1992b2715171a5f747afdaf4f05b"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2206, "sha256": "4559a9054f74e51a5436681b6362b292248476262ca1dd94b6496d2f0f79a9b6"},
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2464, "sha256": "9e01e235ef2e9c5925a54fadcfbc3357da6a014794b900fd340ac0e03744ff35"},
         {"path": "crates/jocforge-domain/src/timeline/index.rs", "bytes": 2290, "sha256": "911be2413816ebe1fde51ceda0066e9c088f92ae7c8b045cee49aac37540ec7d"},
         {"path": "crates/jocforge-domain/src/timeline/mod.rs", "bytes": 586, "sha256": "7f2099065d657bdacab116d921a63107a180930086b73a42557881aa3acdb7b2"}
       ],
@@ -5577,8 +7755,8 @@
           },
           {
             "path": "crates/jocforge-domain/src/spatial/mod.rs",
-            "bytes": 2206,
-            "sha256": "4559a9054f74e51a5436681b6362b292248476262ca1dd94b6496d2f0f79a9b6"
+            "bytes": 2464,
+            "sha256": "9e01e235ef2e9c5925a54fadcfbc3357da6a014794b900fd340ac0e03744ff35"
           },
           {
             "path": "crates/jocforge-domain/tests/spatial_control_foundation.rs",
@@ -6517,7 +8695,7 @@
       },
       "dependency_scope": {"crate": "serde_json", "version": "=1.0.154", "default_features": false, "features": ["std"], "archive_sha256": "e7e9cc8b1b85264074fbcc02a88680c4096b1e47df8f739dceb03bf482f04bd6", "allowed_use": "strict identity-gated manifest/provider JSON parsing and private typed field access only", "public_serde_json_value": false, "canonical_writer": "none; exact file identity only"},
       "implementation_files": ["crates/jocforge-domain/src/spatial/window_q15_provider.rs", "crates/jocforge-domain/src/spatial/component_parameters_provider.rs", "crates/jocforge-domain/src/spatial/mod.rs"],
-      "implementation_inventory": [{"path":"crates/jocforge-domain/src/spatial/window_q15_provider.rs","bytes":19312,"sha256":"3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},{"path":"crates/jocforge-domain/src/spatial/component_parameters_provider.rs","bytes":14344,"sha256":"b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"},{"path":"crates/jocforge-domain/src/spatial/mod.rs","bytes":2206,"sha256":"4559a9054f74e51a5436681b6362b292248476262ca1dd94b6496d2f0f79a9b6"}],
+      "implementation_inventory": [{"path":"crates/jocforge-domain/src/spatial/window_q15_provider.rs","bytes":19312,"sha256":"3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},{"path":"crates/jocforge-domain/src/spatial/component_parameters_provider.rs","bytes":14344,"sha256":"b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"},{"path":"crates/jocforge-domain/src/spatial/mod.rs","bytes":2464,"sha256":"9e01e235ef2e9c5925a54fadcfbc3357da6a014794b900fd340ac0e03744ff35"}],
       "test_files": ["crates/jocforge-domain/tests/f04_parameter_providers.rs"],
       "test_inventory": [{"path":"crates/jocforge-domain/tests/f04_parameter_providers.rs","bytes":6325,"sha256":"37d56c997a903e6029828ce41e31c5b27218a1a472a4edf7d53f3fdc38ffeb4b"}],
       "fixture_files": ["crates/jocforge-domain/tests/fixtures/f04_parameters/window-q15.json", "crates/jocforge-domain/tests/fixtures/f04_parameters/component-parameter-mathematical-v1.json"],
@@ -6637,7 +8815,7 @@
         {"path": "crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs", "bytes": 11066, "sha256": "bddb8bd2b775b2cd9fc3e6412981965ef9ca5c5f98d137ff98de31c87dbbb2d8"},
         {"path": "crates/jocforge-domain/src/spatial/descriptor_mathematical_provider.rs", "bytes": 10441, "sha256": "df8612dcdc46fcf2620e2a73d68d26d392bbba02be27af729f8c5ded76cf8639"},
         {"path": "crates/jocforge-domain/src/spatial/window_q15_provider.rs", "bytes": 19312, "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2206, "sha256": "4559a9054f74e51a5436681b6362b292248476262ca1dd94b6496d2f0f79a9b6"}
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2464, "sha256": "9e01e235ef2e9c5925a54fadcfbc3357da6a014794b900fd340ac0e03744ff35"}
       ],
       "test_files": ["crates/jocforge-domain/tests/f04_remaining_provider_validators.rs"],
       "test_inventory": [{"path": "crates/jocforge-domain/tests/f04_remaining_provider_validators.rs", "bytes": 9771, "sha256": "8c0890d03b626bc75bc6daee4150c06d207cba02500778cfbd9288f44ad706a8"}],
@@ -6777,7 +8955,7 @@
       "shared_fixture_dependencies": ["crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json", "crates/jocforge-domain/tests/fixtures/f04_parameters/qmf-mathematical-fft-v1.json"],
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_fft64.rs", "bytes": 3812, "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2206, "sha256": "4559a9054f74e51a5436681b6362b292248476262ca1dd94b6496d2f0f79a9b6"}
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2464, "sha256": "9e01e235ef2e9c5925a54fadcfbc3357da6a014794b900fd340ac0e03744ff35"}
       ],
       "test_inventory": [
         {"path": "crates/jocforge-domain/tests/qmf_fft64.rs", "bytes": 8575, "sha256": "9d53ca5c441352312dfc19e425e990145e0416e3bcb0d733d2642c38fb119014"}
@@ -6940,7 +9118,7 @@
       ],
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs", "bytes": 21790, "sha256": "9184b8ca22b5ed89082a92e3027b74c13d7e5424c4504598c3e71c239f2beeaa"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2206, "sha256": "4559a9054f74e51a5436681b6362b292248476262ca1dd94b6496d2f0f79a9b6"}
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2464, "sha256": "9e01e235ef2e9c5925a54fadcfbc3357da6a014794b900fd340ac0e03744ff35"}
       ],
       "test_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis/tests.rs", "bytes": 14759, "sha256": "64243b2abd6668d321ed0c093bf1a3075ff71f487b282d123fc081a2cba2f037"}

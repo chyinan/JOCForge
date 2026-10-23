@@ -1,0 +1,28 @@
+{
+  "schema": "f05q-id14-header-framing-manifest.v4",
+  "package": "F05Q-ID14-HEADER-FRAMING",
+  "production_usable": false,
+  "implementation_ready": "NO",
+  "files": [
+    {
+      "path": "ID14-HEADER-FRAMING.md",
+      "bytes": 7499,
+      "sha256": "e63178292a593043fd4047aa96488b49d48db4b8d7c9413d14f37e8274156f00"
+    },
+    {
+      "path": "ID14-HEADER-FRAMING-VECTORS.json",
+      "bytes": 40940,
+      "sha256": "0f114104bf59eacc6650f40e6644093a617a16945752ead13916dce36957b17f"
+    },
+    {
+      "path": "BOUNDED-COVERAGE.md",
+      "bytes": 1572,
+      "sha256": "d4b6eb2cad57f90847a3c1c8cfe94073ca8a8abef4126fce09b9a0148730c77c"
+    },
+    {
+      "path": "PROVENANCE.json",
+      "bytes": 1341,
+      "sha256": "7beb8ba2b2d116f01a5f3acf770535463d6911138e352f8e0c12e026012571b1"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "schema": "meter-k-basic-state-and-bounds.v1",
+  "stage_count": 2,
+  "cold_state_rule": "positive zero for every stage/lane",
+  "lower_rule": "-1 for each lane",
+  "upper_rule": "+1 for each lane",
+  "noise_rule": "R32(1/10^20)",
+  "cold_state_words": [
+    [
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000"
+    ],
+    [
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000"
+    ]
+  ],
+  "lower_words": [
+    "bf800000",
+    "bf800000",
+    "bf800000",
+    "bf800000"
+  ],
+  "upper_words": [
+    "3f800000",
+    "3f800000",
+    "3f800000",
+    "3f800000"
+  ],
+  "noise_word": "1e3ce508",
+  "generated_entries": 17,
+  "original_matrix_values_delivered": false,
+  "matrix_64_effective_entries": "GENERATED_BY_F06KG_IN_PARAMETERS_METER_K_MATRIX_MATH_V1",
+  "matrix_provider": "parameters/meter-k-matrix-math-v1.json",
+  "delivery_scope": "INTERNAL_ONLY",
+  "implementation_ready": "NO"
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "f09lb-lfe-mantissa-boundary-provenance.v1",
+  "package_base_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_assets": {
+    "specs/09-lfe-gate-mantissa-boundaries.md": {
+      "bytes": 4786,
+      "sha256": "9aff19192a8b5cba7db8bec26b05106edf214b4149a5f1c9d4be040691c80951"
+    },
+    "test-vectors/LFE-GATE-MANTISSA-INPUT-VECTORS.json": {
+      "bytes": 4979,
+      "sha256": "70d63104353ff6f721ae521be4469a9dda15e48d27e22030b3c46f0220c9b6be"
+    },
+    "test-vectors/LFE-GATE-MANTISSA-VERIFICATION-RESULT.json": {
+      "bytes": 4930,
+      "sha256": "deb5d1037aef990b39596af96ad79bab3085d5fe1623da8b6de7111d87f9da20"
+    },
+    "test-vectors/LFE-GATE-MANTISSA-LOCAL-REVIEW-STATUS.json": {
+      "bytes": 2019,
+      "sha256": "fddeabae5f51da3d78a5e3659d445d691e527dc1a264ebeece1a5b119c57e5c8"
+    },
+    "parameters/lfe-gate-mantissa-boundaries-v1.json": {
+      "bytes": 747,
+      "sha256": "310afbab35e19096e19433a40fee3a69271b18e8b70f6977380a6e7cba590962"
+    }
+  },
+  "scope": {
+    "selected_gate_and_coefficient_boundary_only": true,
+    "f10_lfe_normalizer": "NOT_IMPLEMENTED",
+    "full_f09_f10_producer": "NOT_IMPLEMENTED",
+    "whole_f09lb_ready": false,
+    "whole_product_implementation_ready": "NO",
+    "native_runtime": "NOT_RUN",
+    "source_au_replay": "NOT_RUN"
+  }
+}

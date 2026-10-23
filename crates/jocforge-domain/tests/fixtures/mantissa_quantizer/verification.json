@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "frozen_quantizer_cases": 208,
+  "frozen_quantizer_value_matches": 208,
+  "frozen_quantizer_mismatches": [],
+  "grouping_input_items": 12,
+  "grouping_emitted_fields": 7,
+  "grouping_emitted_bits": 51,
+  "crc_vectors": 1,
+  "crc_residual_zero": true,
+  "search_vectors": 3,
+  "package_provider_identity_checks": 25,
+  "provider_identities": {
+    "cross_module_manifest": "67b5d997be1ddcfe911612072c27bb751502a84c07597d628a2d4f284851dd37",
+    "public_bap": "eb913038a89d853db453831d64df34c19f8ea8a89d04a72c0ef43733619545a3"
+  },
+  "vector_identity": {
+    "bytes": 23808,
+    "sha256": "8333a23ccd093659dd0f4b296528a3f44120f78caf41546991ed9113ce14d017"
+  },
+  "research_oracle_scope": "Research-side direct execution compared 208 accepted quantizer cases. Package-side reproducibility uses the delivered equations, inputs and expected outputs; it does not require or claim access to a frozen research source.",
+  "private_key_used": false
+}

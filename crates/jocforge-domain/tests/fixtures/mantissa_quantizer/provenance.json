@@ -1,0 +1,29 @@
+{
+  "schema": "f12-mantissa-quantizer-provenance.v1",
+  "package": "F12-MANTISSA-QUANTIZER",
+  "source_base_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_files": {
+    "SPEC-SELECTED-CODEC-WIRE.md": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448",
+    "PARAMETERS-CODEC-WIRE-SELECTED.json": "a7a0a721a9e515d197a2d12fc0c9cb942b2b393f9019383a66ce2635f7aaa0dd",
+    "QUANTIZER-INPUT-VECTORS.json": "8333a23ccd093659dd0f4b296528a3f44120f78caf41546991ed9113ce14d017",
+    "QUANTIZER-VERIFICATION.json": "20a7f9743845391b3d2d1dd98940282ffcda5d8b058fc49b4d2950e98047ac5b",
+    "LOCAL-REVIEW-STATUS.json": "f3655d4433e8b8e8a9c4260c2c8c4f59d9751ca689998fced6829a4775977225"
+  },
+  "evidence": {
+    "quantizer_cases": 208,
+    "quantizer_exact_matches": 208,
+    "sentinel_error_cases": 4,
+    "package_only_review": "PASS"
+  },
+  "scope": {
+    "stateless_quantizer_only": true,
+    "production_usable": "SLICE_ONLY",
+    "whole_f12_ready": false,
+    "whole_product_implementation_ready": "NO",
+    "native_runtime": "NOT_RUN",
+    "real_adm_chain": "NOT_RUN",
+    "source_au_replay": "NOT_RUN"
+  },
+  "excluded": ["DLL", "IDA", "RVA", "pointer", "private_key", "HMAC", "raw_PCM", "reference_song_data"]
+}
+

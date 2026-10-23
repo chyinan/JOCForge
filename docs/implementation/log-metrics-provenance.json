@@ -1,0 +1,78 @@
+{
+  "schema": "f06l-direct-log-and-peak-metrics-local-mapping.v1",
+  "delivery_scope": "INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION",
+  "source_package": {
+    "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "specifications": [
+      {
+        "file": "specs/00-numeric-semantics.md",
+        "bytes": 3369,
+        "sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135"
+      },
+      {
+        "file": "specs/06-meter-log-and-peak.md",
+        "bytes": 7525,
+        "sha256": "c8a9aec8c931391bfbb4ecaca01a8e5cbec3ba680899f516727c6574a170e38f"
+      }
+    ],
+    "parameter": {
+      "file": "parameters/meter-log-mathematical-v1.json",
+      "bytes": 780,
+      "sha256": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266"
+    },
+    "vectors": [
+      {
+        "file": "test-vectors/METER-LOG-GENERATION-VERIFICATION.json",
+        "bytes": 18188,
+        "sha256": "909ea8e6abc24f37a9e180871b1c9d4b67e151bb4dc70b439a68d40d06f077f9"
+      },
+      {
+        "file": "test-vectors/METER-LOG-LOCAL-REVIEW-STATUS.json",
+        "bytes": 8941,
+        "sha256": "66d5d1cffac1f60066747ba8dbd4647e7403958c8002c04ae488095bf527d1b0"
+      }
+    ]
+  },
+  "local_fixtures": [
+    {
+      "file": "crates/jocforge-domain/tests/fixtures/meter_log/METER-LOG-GENERATION-VERIFICATION.json",
+      "bytes": 18188,
+      "sha256": "909ea8e6abc24f37a9e180871b1c9d4b67e151bb4dc70b439a68d40d06f077f9"
+    },
+    {
+      "file": "crates/jocforge-domain/tests/fixtures/meter_log/METER-LOG-LOCAL-REVIEW-STATUS.json",
+      "bytes": 8941,
+      "sha256": "66d5d1cffac1f60066747ba8dbd4647e7403958c8002c04ae488095bf527d1b0"
+    },
+    {
+      "file": "crates/jocforge-domain/src/meter/truepeak_log_parameters.json",
+      "bytes": 780,
+      "sha256": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266"
+    }
+  ],
+  "verified_scope": {
+    "ordered_log_cases": 14,
+    "energy_metric_cases": 8,
+    "sample_peak_cases": 6,
+    "true_peak_metric_cases": 8,
+    "normalized_energy_accumulator_cases": 7,
+    "normalized_energy_accumulator_invalid_input_checks": 4,
+    "window_normalization_cases": 6,
+    "window_entry_rejections": 3,
+    "window_contract_boundary_checks": 3,
+    "ordered_reduction_cases": 7,
+    "ordered_reduction_input_boundary_checks": 9,
+    "verified_total": 56,
+    "excluded_normalized_energy_cases": 0
+  },
+  "implementation_boundary": {
+    "algorithm_source": "EXISTING_LOCAL_F06L_FUNCTIONS_REUSED",
+    "new_parallel_network": false,
+    "whole_F06": "DEFERRED",
+    "F06TP_cascade": "SEPARATE_SLICE",
+    "F06L_7_normalized_energy_accumulator": "LOCALLY_VERIFIED",
+    "F06L_8_window_normalization": "LOCALLY_VERIFIED",
+    "F06L_9_ordered_reduction": "LOCALLY_VERIFIED",
+    "complete_meter_and_product_acceptance": "NOT_RUN"
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "schema": "f06u-single-slot-mean-internal-local-mapping.v1",
+  "delivery_scope": "INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION",
+  "source_package": {
+    "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "specifications": [
+      {
+        "file": "specs/00-numeric-semantics.md",
+        "bytes": 3369,
+        "sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135"
+      },
+      {
+        "file": "specs/06-ungated-mean-and-fallback.md",
+        "bytes": 8673,
+        "sha256": "07c850be31dbe42a1396634bd96dfd4a54fbd80aa27b3d39a36998545cdc3b9e"
+      },
+      {
+        "file": "specs/06-meter-bsi.md",
+        "bytes": 6337,
+        "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
+      },
+      {
+        "file": "specs/06-meter-log-and-peak.md",
+        "bytes": 7525,
+        "sha256": "c8a9aec8c931391bfbb4ecaca01a8e5cbec3ba680899f516727c6574a170e38f"
+      },
+      {
+        "file": "parameters/meter-log-mathematical-v1.json",
+        "bytes": 780,
+        "sha256": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266"
+      }
+    ],
+    "vectors": [
+      {
+        "file": "test-vectors/METER-UNGATED-FALLBACK-VERIFICATION.json",
+        "bytes": 135066,
+        "sha256": "7dc8f1405d6d1cbbcadba19b498e5d0fcb95a11cc221af58a64c81acb2a89d41"
+      },
+      {
+        "file": "test-vectors/METER-UNGATED-LOCAL-REVIEW-STATUS.json",
+        "bytes": 8828,
+        "sha256": "e1ae098cacd11d8c36bb7b1b370371bba87a5ce405c1f95d99b25f8a6ccb5fac"
+      },
+      {
+        "file": "test-vectors/METER-DI-OFF-GETTER-VERIFICATION.json",
+        "bytes": 5845,
+        "sha256": "78c9834a428a2f2385e15a22505b26870c603485821bafecada13feeda003dd9"
+      }
+    ]
+  },
+  "local_fixtures": [
+    {
+      "file": "crates/jocforge-domain/tests/fixtures/ungated_mean/METER-UNGATED-FALLBACK-VERIFICATION.json",
+      "bytes": 135066,
+      "sha256": "7dc8f1405d6d1cbbcadba19b498e5d0fcb95a11cc221af58a64c81acb2a89d41"
+    },
+    {
+      "file": "crates/jocforge-domain/tests/fixtures/ungated_mean/METER-UNGATED-LOCAL-REVIEW-STATUS.json",
+      "bytes": 8828,
+      "sha256": "e1ae098cacd11d8c36bb7b1b370371bba87a5ce405c1f95d99b25f8a6ccb5fac"
+    },
+    {
+      "file": "crates/jocforge-domain/tests/fixtures/ungated_mean/METER-DI-OFF-GETTER-VERIFICATION.json",
+      "bytes": 5845,
+      "sha256": "78c9834a428a2f2385e15a22505b26870c603485821bafecada13feeda003dd9"
+    },
+    {
+      "file": "crates/jocforge-domain/src/meter/truepeak_log_parameters.json",
+      "bytes": 780,
+      "sha256": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266"
+    }
+  ],
+  "verified_scope": {
+    "primary_sequence_count": 10,
+    "primary_event_step_count": 102,
+    "coupled_cases": 4,
+    "coupled_getter_cases_compared": 3,
+    "entry_rejections": 4,
+    "valid_di_off_getters": 4,
+    "unsupported_getter_configurations": 3,
+    "legacy_minus_120_observation": "RESOLVED_WITH_ACTUAL_F06U_COLD_RESULT"
+  },
+  "excluded_historical_assets": [
+    {
+      "file": "test-vectors/REAL-MUSIC-METER-ENERGY-INPUTS.json",
+      "sha256": "4eccfa9a2a89501e9539b3092ef61b211d94e9ded470f2d766a9c2e931f63f0d",
+      "use": "Independent historical acceptance artifact only; not copied, not an implementation/runtime input, and not a test fixture."
+    },
+    {
+      "file": "test-vectors/REAL-MUSIC-METER-MEAN-VERIFICATION.json",
+      "sha256": "cc8c829b8a606dd091471238d795bc7f04f37557673eb5611d4e7f7f242a56aa",
+      "use": "Independent historical acceptance artifact only; not copied, not an implementation/runtime input, and not a test fixture."
+    }
+  ],
+  "implementation_boundary": {
+    "F06U_local_slice": "LOCALLY_VERIFIED",
+    "F06I_integrated_meter": "NOT_RUN",
+    "F06W_scheduler_window": "NOT_RUN",
+    "real_ADM_and_meter_frontend": "NOT_RUN",
+    "whole_none_DRC_and_parent_transaction": "NOT_RUN",
+    "product_acceptance": "NOT_RUN"
+  }
+}

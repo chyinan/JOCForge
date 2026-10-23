@@ -1,0 +1,61 @@
+{
+  "schema": "lfe-gate-mantissa-local-review-status.v1",
+  "revision": "r2",
+  "review_target": "review-input-v0.3.0-lfe-gate-boundary-r2",
+  "decision": {
+    "boundary_numeric_recomputation": "PASS",
+    "supplemental_connection_checks": "PASS",
+    "r1_findings": [
+      "LGB-REV-01",
+      "LGB-ADJ-01"
+    ],
+    "r1_findings_closed": true,
+    "nonblocking_p3": "LGB-R2-01_FIXED_IN_CURRENT_PACKAGE",
+    "local_selected_Q06_IMPLEMENTATION_READY": "YES",
+    "whole_package_IMPLEMENTATION_READY": "NO"
+  },
+  "input_integrity": {
+    "manifest_sha256": "4e4cce019233eb40abee6b6fc2451ae4085edd1245f933f27386d201f95ce1e2",
+    "manifest_content_files": 15,
+    "manifest_content_files_passed": 15,
+    "read_set_files_including_manifest": 16,
+    "research_model_dll_old_checker_used": false,
+    "os_allowlist": "NOT_ENFORCED"
+  },
+  "evidence": {
+    "boundary_cases": 37,
+    "boundary_cases_passed": 37,
+    "supplemental_checks": 9,
+    "supplemental_checks_passed": 9,
+    "reported_ids_match": true,
+    "all_fail_sequence": [
+      16,
+      400,
+      208,
+      112,
+      64,
+      40,
+      28,
+      22,
+      19,
+      17
+    ],
+    "full_frozen_numeric_state_equality_checked": true
+  },
+  "review_artifacts": {
+    "review_status_sha256": "1304430e59b33841887bf29cd88a105ac8d2078f42b425a4a1d579e432740a62",
+    "recomputation_sha256": "eff07df50323bd59aa4380313f76d8ed5f0cd6609c4a268a1827dbdf0e1f8f3a",
+    "review_markdown_sha256": "b3f6e1b9d0827820df68e38fcfc8dd5e3830141723e128248d7312f7e4b1f97d"
+  },
+  "p3_registry_fix": {
+    "field": "F12SC.actual_rule_by_rule_coverage",
+    "before_suffix": "11_TRIAL_FATAL",
+    "after_suffix": "10_TRIAL_FATAL",
+    "algorithm_changed": false
+  },
+  "known_limits": [
+    "AHT-enabled product profile remains outside the selected scope.",
+    "No production executor, full-frame BAP/CRC, canonical owner digest, 4249-source replay, render, player, quality or whole-chain failure execution was rerun by this review."
+  ],
+  "implementation_ready": "NO"
+}

@@ -1,0 +1,912 @@
+{
+  "schema": "meter-log-generation-verification.v2",
+  "constant_entries": 11,
+  "constant_mismatches": 0,
+  "cases": [
+    {
+      "id": "log_0",
+      "input": {
+        "value": 0.0,
+        "offset": 0
+      },
+      "expected": 3212836864,
+      "actual": 3212836864,
+      "pass": true
+    },
+    {
+      "id": "log_1",
+      "input": {
+        "value": -1.0,
+        "offset": 0
+      },
+      "expected": 3212836864,
+      "actual": 3212836864,
+      "pass": true
+    },
+    {
+      "id": "log_2",
+      "input": {
+        "value": 1.0,
+        "offset": 0
+      },
+      "expected": 0,
+      "actual": 0,
+      "pass": true
+    },
+    {
+      "id": "log_3",
+      "input": {
+        "value": 0.5,
+        "offset": 0
+      },
+      "expected": 3165739028,
+      "actual": 3165739028,
+      "pass": true
+    },
+    {
+      "id": "log_4",
+      "input": {
+        "value": 0.75,
+        "offset": 0
+      },
+      "expected": 3155380990,
+      "actual": 3155380990,
+      "pass": true
+    },
+    {
+      "id": "log_5",
+      "input": {
+        "value": 9.313225746154785e-10,
+        "offset": 0
+      },
+      "expected": 3206961703,
+      "actual": 3206961703,
+      "pass": true
+    },
+    {
+      "id": "log_6",
+      "input": {
+        "value": 4.656612873077393e-10,
+        "offset": 0
+      },
+      "expected": 3207325111,
+      "actual": 3207325111,
+      "pass": true
+    },
+    {
+      "id": "log_7",
+      "input": {
+        "value": 2.3283064365386963e-10,
+        "offset": 0
+      },
+      "expected": 3207325319,
+      "actual": 3207325319,
+      "pass": true
+    },
+    {
+      "id": "log_8",
+      "input": {
+        "value": 7.105427357601002e-15,
+        "offset": 0
+      },
+      "expected": 3212776450,
+      "actual": 3212776450,
+      "pass": true
+    },
+    {
+      "id": "log_9",
+      "input": {
+        "value": 3.552713678800501e-15,
+        "offset": 0
+      },
+      "expected": 3212836864,
+      "actual": 3212836864,
+      "pass": true
+    },
+    {
+      "id": "log_10",
+      "input": {
+        "value": 8.673617379884035e-19,
+        "offset": 14
+      },
+      "expected": 3212413042,
+      "actual": 3212413042,
+      "pass": true
+    },
+    {
+      "id": "log_11",
+      "input": {
+        "value": 8.673617379884035e-19,
+        "offset": 13
+      },
+      "expected": 3212776450,
+      "actual": 3212776450,
+      "pass": true
+    },
+    {
+      "id": "log_12",
+      "input": {
+        "value": 0.25,
+        "offset": 2
+      },
+      "expected": 927997952,
+      "actual": 927997952,
+      "pass": true
+    },
+    {
+      "id": "log_13",
+      "input": {
+        "value": 0.125,
+        "offset": -2
+      },
+      "expected": 3185428509,
+      "actual": 3185428509,
+      "pass": true
+    },
+    {
+      "id": "energy_0",
+      "input": {
+        "mantissa": 0.0,
+        "offset": 0
+      },
+      "expected": 3211788288,
+      "actual": 3211788288,
+      "pass": true
+    },
+    {
+      "id": "energy_1",
+      "input": {
+        "mantissa": 0.5,
+        "offset": -38
+      },
+      "expected": 3211052932,
+      "actual": 3211052932,
+      "pass": true
+    },
+    {
+      "id": "energy_2",
+      "input": {
+        "mantissa": 0.5,
+        "offset": -37
+      },
+      "expected": 3210658367,
+      "actual": 3210658367,
+      "pass": true
+    },
+    {
+      "id": "energy_3",
+      "input": {
+        "mantissa": 0.5,
+        "offset": -32
+      },
+      "expected": 3208685536,
+      "actual": 3208685536,
+      "pass": true
+    },
+    {
+      "id": "energy_4",
+      "input": {
+        "mantissa": 0.5,
+        "offset": -31
+      },
+      "expected": 3208290969,
+      "actual": 3208290969,
+      "pass": true
+    },
+    {
+      "id": "energy_5",
+      "input": {
+        "mantissa": 9.094947017729282e-13,
+        "offset": 1
+      },
+      "expected": 3211052932,
+      "actual": 3211052932,
+      "pass": true
+    },
+    {
+      "id": "energy_6",
+      "input": {
+        "mantissa": 0.25,
+        "offset": 0
+      },
+      "expected": 3166735490,
+      "actual": 3166735490,
+      "pass": true
+    },
+    {
+      "id": "energy_7",
+      "input": {
+        "mantissa": 1.0,
+        "offset": 0
+      },
+      "expected": 1019259074,
+      "actual": 1019259074,
+      "pass": true
+    },
+    {
+      "id": "sample_peak_0",
+      "input": {
+        "peak": 0.0,
+        "negative_position": 3,
+        "positive_equal_position": 5,
+        "sample_count": 1024
+      },
+      "expected": {
+        "maximum_abs_sample_word": 0,
+        "internal_word": 3211788288,
+        "host_word": 3270508544,
+        "first_index": 0
+      },
+      "actual": {
+        "maximum_abs_sample_word": 0,
+        "internal_word": 3211788288,
+        "host_word": 3270508544,
+        "first_index": 0
+      },
+      "pass": true
+    },
+    {
+      "id": "sample_peak_1",
+      "input": {
+        "peak": 9.99999883788405e-07,
+        "negative_position": 3,
+        "positive_equal_position": 5,
+        "sample_count": 1024
+      },
+      "expected": {
+        "maximum_abs_sample_word": 897988540,
+        "internal_word": 3211788288,
+        "host_word": 3270508544,
+        "first_index": 3
+      },
+      "actual": {
+        "maximum_abs_sample_word": 897988540,
+        "internal_word": 3211788288,
+        "host_word": 3270508544,
+        "first_index": 3
+      },
+      "pass": true
+    },
+    {
+      "id": "sample_peak_2",
+      "input": {
+        "peak": 9.999999974752427e-07,
+        "negative_position": 3,
+        "positive_equal_position": 5,
+        "sample_count": 1024
+      },
+      "expected": {
+        "maximum_abs_sample_word": 897988541,
+        "internal_word": 3211788010,
+        "host_word": 3270508266,
+        "first_index": 3
+      },
+      "actual": {
+        "maximum_abs_sample_word": 897988541,
+        "internal_word": 3211788010,
+        "host_word": 3270508266,
+        "first_index": 3
+      },
+      "pass": true
+    },
+    {
+      "id": "sample_peak_3",
+      "input": {
+        "peak": 0.5,
+        "negative_position": 3,
+        "positive_equal_position": 5,
+        "sample_count": 1024
+      },
+      "expected": {
+        "maximum_abs_sample_word": 1056964608,
+        "internal_word": 3175124098,
+        "host_word": 3233844354,
+        "first_index": 3
+      },
+      "actual": {
+        "maximum_abs_sample_word": 1056964608,
+        "internal_word": 3175124098,
+        "host_word": 3233844354,
+        "first_index": 3
+      },
+      "pass": true
+    },
+    {
+      "id": "sample_peak_4",
+      "input": {
+        "peak": 1.0,
+        "negative_position": 3,
+        "positive_equal_position": 5,
+        "sample_count": 1024
+      },
+      "expected": {
+        "maximum_abs_sample_word": 1065353216,
+        "internal_word": 0,
+        "host_word": 0,
+        "first_index": 3
+      },
+      "actual": {
+        "maximum_abs_sample_word": 1065353216,
+        "internal_word": 0,
+        "host_word": 0,
+        "first_index": 3
+      },
+      "pass": true
+    },
+    {
+      "id": "sample_peak_5",
+      "input": {
+        "peak": 2.0,
+        "negative_position": 3,
+        "positive_equal_position": 5,
+        "sample_count": 1024
+      },
+      "expected": {
+        "maximum_abs_sample_word": 1073741824,
+        "internal_word": 0,
+        "host_word": 0,
+        "first_index": 3
+      },
+      "actual": {
+        "maximum_abs_sample_word": 1073741824,
+        "internal_word": 0,
+        "host_word": 0,
+        "first_index": 3
+      },
+      "pass": true
+    },
+    {
+      "id": "true_peak_0",
+      "input": {
+        "raw_peak": 0.0
+      },
+      "expected": {
+        "internal_word": 3211788288,
+        "host_word": 3270508544
+      },
+      "actual": {
+        "internal_word": 3211788288,
+        "host_word": 3270508544
+      },
+      "pass": true
+    },
+    {
+      "id": "true_peak_1",
+      "input": {
+        "raw_peak": 9.99999883788405e-07
+      },
+      "expected": {
+        "internal_word": 3211788288,
+        "host_word": 3270508544
+      },
+      "actual": {
+        "internal_word": 3211788288,
+        "host_word": 3270508544
+      },
+      "pass": true
+    },
+    {
+      "id": "true_peak_2",
+      "input": {
+        "raw_peak": 9.999999974752427e-07
+      },
+      "expected": {
+        "internal_word": 3211788010,
+        "host_word": 3270508266
+      },
+      "actual": {
+        "internal_word": 3211788010,
+        "host_word": 3270508266
+      },
+      "pass": true
+    },
+    {
+      "id": "true_peak_3",
+      "input": {
+        "raw_peak": 0.25
+      },
+      "expected": {
+        "internal_word": 3183516322,
+        "host_word": 3242236578
+      },
+      "actual": {
+        "internal_word": 3183516322,
+        "host_word": 3242236578
+      },
+      "pass": true
+    },
+    {
+      "id": "true_peak_4",
+      "input": {
+        "raw_peak": 0.5
+      },
+      "expected": {
+        "internal_word": 3175124098,
+        "host_word": 3233844354
+      },
+      "actual": {
+        "internal_word": 3175124098,
+        "host_word": 3233844354
+      },
+      "pass": true
+    },
+    {
+      "id": "true_peak_5",
+      "input": {
+        "raw_peak": 1.0
+      },
+      "expected": {
+        "internal_word": 937555975,
+        "host_word": 996276231
+      },
+      "actual": {
+        "internal_word": 937555975,
+        "host_word": 996276231
+      },
+      "pass": true
+    },
+    {
+      "id": "true_peak_6",
+      "input": {
+        "raw_peak": 2.0
+      },
+      "expected": {
+        "internal_word": 1027654913,
+        "host_word": 1086375169
+      },
+      "actual": {
+        "internal_word": 1027654913,
+        "host_word": 1086375169
+      },
+      "pass": true
+    },
+    {
+      "id": "true_peak_7",
+      "input": {
+        "raw_peak": 1000001.0
+      },
+      "expected": {
+        "internal_word": 1064304640,
+        "host_word": 1123024896
+      },
+      "actual": {
+        "internal_word": 1064304640,
+        "host_word": 1123024896
+      },
+      "pass": true
+    },
+    {
+      "id": "accumulator_0",
+      "input": {
+        "mantissa": 0.0,
+        "exponent": 48,
+        "power_sum": 0.0
+      },
+      "expected": [
+        0,
+        47
+      ],
+      "actual": [
+        0,
+        47
+      ],
+      "pass": true
+    },
+    {
+      "id": "accumulator_1",
+      "input": {
+        "mantissa": 0.5,
+        "exponent": 4,
+        "power_sum": 0.125
+      },
+      "expected": [
+        1050673152,
+        1
+      ],
+      "actual": [
+        1050673152,
+        1
+      ],
+      "pass": true
+    },
+    {
+      "id": "accumulator_2",
+      "input": {
+        "mantissa": 0.5,
+        "exponent": 0,
+        "power_sum": 2.0
+      },
+      "expected": [
+        1067450368,
+        -1
+      ],
+      "actual": [
+        1067450368,
+        -1
+      ],
+      "pass": true
+    },
+    {
+      "id": "accumulator_3",
+      "input": {
+        "mantissa": 0.5,
+        "exponent": 32,
+        "power_sum": 1.0
+      },
+      "expected": [
+        1056964608,
+        -1
+      ],
+      "actual": [
+        1056964608,
+        -1
+      ],
+      "pass": true
+    },
+    {
+      "id": "accumulator_4",
+      "input": {
+        "mantissa": 0.5,
+        "exponent": 33,
+        "power_sum": 1.0
+      },
+      "expected": [
+        1056964608,
+        -1
+      ],
+      "actual": [
+        1056964608,
+        -1
+      ],
+      "pass": true
+    },
+    {
+      "id": "accumulator_5",
+      "input": {
+        "mantissa": 0.0,
+        "exponent": 48,
+        "power_sum": 1.0
+      },
+      "expected": [
+        1056964608,
+        -1
+      ],
+      "actual": [
+        1056964608,
+        -1
+      ],
+      "pass": true
+    },
+    {
+      "id": "accumulator_6",
+      "input": {
+        "mantissa": 0.0,
+        "exponent": 48,
+        "power_sum": 8.673617379884035e-19
+      },
+      "expected": [
+        956301312,
+        47
+      ],
+      "actual": [
+        956301312,
+        47
+      ],
+      "pass": true
+    },
+    {
+      "id": "window_0",
+      "input": {
+        "mantissa": 0.5,
+        "exponent": 48,
+        "window_samples": 1
+      },
+      "expected": [
+        1056964608,
+        32
+      ],
+      "actual": [
+        1056964608,
+        32
+      ],
+      "pass": true
+    },
+    {
+      "id": "window_1",
+      "input": {
+        "mantissa": 0.5,
+        "exponent": 0,
+        "window_samples": 48000
+      },
+      "expected": [
+        1060029246,
+        0
+      ],
+      "actual": [
+        1060029246,
+        0
+      ],
+      "pass": true
+    },
+    {
+      "id": "window_2",
+      "input": {
+        "mantissa": 0.25,
+        "exponent": 16,
+        "window_samples": 1024
+      },
+      "expected": [
+        1040187392,
+        9
+      ],
+      "actual": [
+        1040187392,
+        9
+      ],
+      "pass": true
+    },
+    {
+      "id": "window_3",
+      "input": {
+        "mantissa": 0.125,
+        "exponent": 20,
+        "window_samples": 4800
+      },
+      "expected": [
+        1037726734,
+        16
+      ],
+      "actual": [
+        1037726734,
+        16
+      ],
+      "pass": true
+    },
+    {
+      "id": "window_4",
+      "input": {
+        "mantissa": 0.0,
+        "exponent": 48,
+        "window_samples": 48000
+      },
+      "expected": [
+        0,
+        47
+      ],
+      "actual": [
+        0,
+        47
+      ],
+      "pass": true
+    },
+    {
+      "id": "window_5",
+      "input": {
+        "mantissa": -0.0,
+        "exponent": 48,
+        "window_samples": 1
+      },
+      "expected": [
+        2147483648,
+        32
+      ],
+      "actual": [
+        2147483648,
+        32
+      ],
+      "pass": true
+    },
+    {
+      "id": "reduction_0",
+      "input": {
+        "exponents": [],
+        "weights": [],
+        "energies": []
+      },
+      "expected": [
+        0,
+        30
+      ],
+      "actual": [
+        0,
+        30
+      ],
+      "pass": true
+    },
+    {
+      "id": "reduction_1",
+      "input": {
+        "exponents": [
+          48
+        ],
+        "weights": [
+          1.0
+        ],
+        "energies": [
+          0.5
+        ]
+      },
+      "expected": [
+        880803840,
+        30
+      ],
+      "actual": [
+        880803840,
+        30
+      ],
+      "pass": true
+    },
+    {
+      "id": "reduction_2",
+      "input": {
+        "exponents": [
+          0
+        ],
+        "weights": [
+          1.0
+        ],
+        "energies": [
+          0.5
+        ]
+      },
+      "expected": [
+        1056964608,
+        3
+      ],
+      "actual": [
+        1056964608,
+        3
+      ],
+      "pass": true
+    },
+    {
+      "id": "reduction_3",
+      "input": {
+        "exponents": [
+          48,
+          48
+        ],
+        "weights": [
+          1.0,
+          1.0
+        ],
+        "energies": [
+          0.5,
+          0.25
+        ]
+      },
+      "expected": [
+        884998144,
+        30
+      ],
+      "actual": [
+        884998144,
+        30
+      ],
+      "pass": true
+    },
+    {
+      "id": "reduction_4",
+      "input": {
+        "exponents": [
+          60,
+          0
+        ],
+        "weights": [
+          1.0,
+          1.0
+        ],
+        "energies": [
+          0.5,
+          0.25
+        ]
+      },
+      "expected": [
+        1056964608,
+        4
+      ],
+      "actual": [
+        1056964608,
+        4
+      ],
+      "pass": true
+    },
+    {
+      "id": "reduction_5",
+      "input": {
+        "exponents": [
+          0,
+          60
+        ],
+        "weights": [
+          1.0,
+          1.0
+        ],
+        "energies": [
+          0.5,
+          0.25
+        ]
+      },
+      "expected": [
+        1056964608,
+        3
+      ],
+      "actual": [
+        1056964608,
+        3
+      ],
+      "pass": true
+    },
+    {
+      "id": "reduction_6",
+      "input": {
+        "exponents": [
+          16,
+          16,
+          16
+        ],
+        "weights": [
+          1.0,
+          1.5,
+          0.0
+        ],
+        "energies": [
+          0.5,
+          0.25,
+          1.0
+        ]
+      },
+      "expected": [
+        1063256064,
+        19
+      ],
+      "actual": [
+        1063256064,
+        19
+      ],
+      "pass": true
+    }
+  ],
+  "case_count": 56,
+  "rejection_cases": [
+    {
+      "id": "window_negative_m",
+      "input": {
+        "mantissa": -1.0,
+        "exponent": 48,
+        "window_samples": 1
+      },
+      "expected_rejected": true,
+      "actual_rejected": true,
+      "scope": "normative entry validation; native out-of-domain equivalence not claimed"
+    },
+    {
+      "id": "window_fractional_e",
+      "input": {
+        "mantissa": 0.5,
+        "exponent": 0.5,
+        "window_samples": 1
+      },
+      "expected_rejected": true,
+      "actual_rejected": true,
+      "scope": "normative entry validation; native out-of-domain equivalence not claimed"
+    },
+    {
+      "id": "window_conversion_overflow",
+      "input": {
+        "mantissa": 3.5e+38,
+        "exponent": 48,
+        "window_samples": 1
+      },
+      "expected_rejected": true,
+      "actual_rejected": true,
+      "scope": "normative entry validation; native out-of-domain equivalence not claimed"
+    }
+  ],
+  "failures": 0,
+  "independent_isolated_review": "REVISION_PENDING",
+  "complete_meter_pipeline": "NOT_RUN",
+  "true_peak_fir": "NOT_DELIVERED",
+  "nonfinite_intermediate_or_full_domain": "NOT_PROVED",
+  "implementation_ready": "NO"
+}

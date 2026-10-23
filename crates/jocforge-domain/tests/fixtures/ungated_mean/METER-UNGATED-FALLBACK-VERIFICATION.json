@@ -1,0 +1,4041 @@
+{
+  "schema": "meter-ungated-single-slot-verification.v1",
+  "scope": "fixed single-slot mean, admission and DIoff fallback; writer SSE/control/memory code slice emulated, metric/rounding leaves supplied by verified mathematical specs",
+  "cold_state": {
+    "count": 0,
+    "mean": 0.0,
+    "exponent": 30,
+    "phase": 0,
+    "cursor": 0,
+    "filled": 0,
+    "linear_energy": 0.0,
+    "result": -0.9375
+  },
+  "cold_state_bytes": 40,
+  "cold_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+  "cases": [
+    {
+      "id": "silence10",
+      "input": {
+        "initial_state": "COLD",
+        "state_patch": {},
+        "reset_before_blocks": [
+          0
+        ],
+        "ordered_energy_pairs": [
+          [
+            0.0,
+            30
+          ],
+          [
+            0.0,
+            30
+          ],
+          [
+            0.0,
+            30
+          ],
+          [
+            0.0,
+            30
+          ],
+          [
+            0.0,
+            30
+          ],
+          [
+            0.0,
+            30
+          ],
+          [
+            0.0,
+            30
+          ],
+          [
+            0.0,
+            30
+          ],
+          [
+            0.0,
+            30
+          ],
+          [
+            0.0,
+            30
+          ]
+        ]
+      },
+      "trace": [
+        {
+          "block_index": 0,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 1,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 2,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 3,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 4,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 5,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 6,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 7,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 8,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 9,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "below_gate10",
+      "input": {
+        "initial_state": "COLD",
+        "state_patch": {},
+        "reset_before_blocks": [
+          0
+        ],
+        "ordered_energy_pairs": [
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ]
+        ]
+      },
+      "trace": [
+        {
+          "block_index": 0,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3206318140,
+          "actual_input_metric_word": 3206318140,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 1,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3206318140,
+          "actual_input_metric_word": 3206318140,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 2,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3206318140,
+          "actual_input_metric_word": 3206318140,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 3,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3206318140,
+          "actual_input_metric_word": 3206318140,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 4,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3206318140,
+          "actual_input_metric_word": 3206318140,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 5,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3206318140,
+          "actual_input_metric_word": 3206318140,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 6,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3206318140,
+          "actual_input_metric_word": 3206318140,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 7,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3206318140,
+          "actual_input_metric_word": 3206318140,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 8,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3206318140,
+          "actual_input_metric_word": 3206318140,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 9,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3206318140,
+          "actual_input_metric_word": 3206318140,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "above_gate25",
+      "input": {
+        "initial_state": "COLD",
+        "state_patch": {},
+        "reset_before_blocks": [
+          0
+        ],
+        "ordered_energy_pairs": [
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ]
+        ]
+      },
+      "trace": [
+        {
+          "block_index": 0,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "f336e31c7349e16f81283dd4e6157bbdbb6b15f22f2c5fcd462ff0801e082222",
+          "actual_state_sha256": "f336e31c7349e16f81283dd4e6157bbdbb6b15f22f2c5fcd462ff0801e082222",
+          "expected_state": {
+            "count": 1,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 1,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 1,
+          "before_state_sha256": "f336e31c7349e16f81283dd4e6157bbdbb6b15f22f2c5fcd462ff0801e082222",
+          "expected_state_sha256": "c064300751a31f04105d45b6d657119e80eaacbe385eff27454ab86149f1c450",
+          "actual_state_sha256": "c064300751a31f04105d45b6d657119e80eaacbe385eff27454ab86149f1c450",
+          "expected_state": {
+            "count": 2,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 2,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 2,
+          "before_state_sha256": "c064300751a31f04105d45b6d657119e80eaacbe385eff27454ab86149f1c450",
+          "expected_state_sha256": "0624e05d43694baa74896ba8143ce9eb5a377e73abab965f50a8ed4050b5a898",
+          "actual_state_sha256": "0624e05d43694baa74896ba8143ce9eb5a377e73abab965f50a8ed4050b5a898",
+          "expected_state": {
+            "count": 3,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 3,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 3,
+          "before_state_sha256": "0624e05d43694baa74896ba8143ce9eb5a377e73abab965f50a8ed4050b5a898",
+          "expected_state_sha256": "65148a418ec5af97f580713e17b2aa745209d8de44d4837d41f8508222308c72",
+          "actual_state_sha256": "65148a418ec5af97f580713e17b2aa745209d8de44d4837d41f8508222308c72",
+          "expected_state": {
+            "count": 4,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 4,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 4,
+          "before_state_sha256": "65148a418ec5af97f580713e17b2aa745209d8de44d4837d41f8508222308c72",
+          "expected_state_sha256": "53f5a9c341030564cc7907cad4cf8235e36bba9d9407858996228b0db6dfdb2c",
+          "actual_state_sha256": "53f5a9c341030564cc7907cad4cf8235e36bba9d9407858996228b0db6dfdb2c",
+          "expected_state": {
+            "count": 5,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 5,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 5,
+          "before_state_sha256": "53f5a9c341030564cc7907cad4cf8235e36bba9d9407858996228b0db6dfdb2c",
+          "expected_state_sha256": "950da2e9b72f8d6628971196dfa4f36ec83ef47464c2e04fd2233497e334a8cb",
+          "actual_state_sha256": "950da2e9b72f8d6628971196dfa4f36ec83ef47464c2e04fd2233497e334a8cb",
+          "expected_state": {
+            "count": 6,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 6,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 6,
+          "before_state_sha256": "950da2e9b72f8d6628971196dfa4f36ec83ef47464c2e04fd2233497e334a8cb",
+          "expected_state_sha256": "0d60e81be6a893ef6ecfc8c316fc99d05d20669b6fcdbce3f4348eefd3abe390",
+          "actual_state_sha256": "0d60e81be6a893ef6ecfc8c316fc99d05d20669b6fcdbce3f4348eefd3abe390",
+          "expected_state": {
+            "count": 7,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 7,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 7,
+          "before_state_sha256": "0d60e81be6a893ef6ecfc8c316fc99d05d20669b6fcdbce3f4348eefd3abe390",
+          "expected_state_sha256": "5eda95c91997f980b2b3f84cd1fd18e9c5b26af53c8cabfdb7c061d2a84dbc3a",
+          "actual_state_sha256": "5eda95c91997f980b2b3f84cd1fd18e9c5b26af53c8cabfdb7c061d2a84dbc3a",
+          "expected_state": {
+            "count": 8,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 8,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 8,
+          "before_state_sha256": "5eda95c91997f980b2b3f84cd1fd18e9c5b26af53c8cabfdb7c061d2a84dbc3a",
+          "expected_state_sha256": "b422e534056bfe4274f347b1daafb25aa340c9c7682411c3d931a44ba9d569d3",
+          "actual_state_sha256": "b422e534056bfe4274f347b1daafb25aa340c9c7682411c3d931a44ba9d569d3",
+          "expected_state": {
+            "count": 9,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 9,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 9,
+          "before_state_sha256": "b422e534056bfe4274f347b1daafb25aa340c9c7682411c3d931a44ba9d569d3",
+          "expected_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "actual_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 10,
+          "before_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state_sha256": "d0c2be801f3048867a28a931bda30a196ed73dfd6f5c9ec7470a81e7f6a36075",
+          "actual_state_sha256": "d0c2be801f3048867a28a931bda30a196ed73dfd6f5c9ec7470a81e7f6a36075",
+          "expected_state": {
+            "count": 11,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 11,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 11,
+          "before_state_sha256": "d0c2be801f3048867a28a931bda30a196ed73dfd6f5c9ec7470a81e7f6a36075",
+          "expected_state_sha256": "453bf2fc66ec71dc8bd58052e3e03f8e2294c1e6430e47b965de54135dc4854f",
+          "actual_state_sha256": "453bf2fc66ec71dc8bd58052e3e03f8e2294c1e6430e47b965de54135dc4854f",
+          "expected_state": {
+            "count": 12,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 12,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 12,
+          "before_state_sha256": "453bf2fc66ec71dc8bd58052e3e03f8e2294c1e6430e47b965de54135dc4854f",
+          "expected_state_sha256": "6f97b4debbca1ebf33554004f904db53051477b2225dba2f0f76228950191859",
+          "actual_state_sha256": "6f97b4debbca1ebf33554004f904db53051477b2225dba2f0f76228950191859",
+          "expected_state": {
+            "count": 13,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 13,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 13,
+          "before_state_sha256": "6f97b4debbca1ebf33554004f904db53051477b2225dba2f0f76228950191859",
+          "expected_state_sha256": "faef7655cfe01b5b4f457b813b458f3cc6ffd04e916a988bcbaddeef61beda87",
+          "actual_state_sha256": "faef7655cfe01b5b4f457b813b458f3cc6ffd04e916a988bcbaddeef61beda87",
+          "expected_state": {
+            "count": 14,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 14,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 14,
+          "before_state_sha256": "faef7655cfe01b5b4f457b813b458f3cc6ffd04e916a988bcbaddeef61beda87",
+          "expected_state_sha256": "ca744791a5f8e36832a61ff05a997983a2f1d15fcff31291154cf91bcc12e9d5",
+          "actual_state_sha256": "ca744791a5f8e36832a61ff05a997983a2f1d15fcff31291154cf91bcc12e9d5",
+          "expected_state": {
+            "count": 15,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 15,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 15,
+          "before_state_sha256": "ca744791a5f8e36832a61ff05a997983a2f1d15fcff31291154cf91bcc12e9d5",
+          "expected_state_sha256": "f915abdcc1fd4d8ea9f9f1725bba152b96e526a219757d3a5857b052243efc83",
+          "actual_state_sha256": "f915abdcc1fd4d8ea9f9f1725bba152b96e526a219757d3a5857b052243efc83",
+          "expected_state": {
+            "count": 16,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 16,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 16,
+          "before_state_sha256": "f915abdcc1fd4d8ea9f9f1725bba152b96e526a219757d3a5857b052243efc83",
+          "expected_state_sha256": "fd2032ad7763486df5e240c3bff08120afc12d1cc4c3162d64372e0a8250d4dd",
+          "actual_state_sha256": "fd2032ad7763486df5e240c3bff08120afc12d1cc4c3162d64372e0a8250d4dd",
+          "expected_state": {
+            "count": 17,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 17,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 17,
+          "before_state_sha256": "fd2032ad7763486df5e240c3bff08120afc12d1cc4c3162d64372e0a8250d4dd",
+          "expected_state_sha256": "2efb68791689fd0966adda0e645cfbe59581b20ba3f10d9e6104e22e8f9a8737",
+          "actual_state_sha256": "2efb68791689fd0966adda0e645cfbe59581b20ba3f10d9e6104e22e8f9a8737",
+          "expected_state": {
+            "count": 18,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 18,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 18,
+          "before_state_sha256": "2efb68791689fd0966adda0e645cfbe59581b20ba3f10d9e6104e22e8f9a8737",
+          "expected_state_sha256": "13ffd1de0b67993dc512de107e032205b02b3a6ae9d63f8604c7b8815d4596bc",
+          "actual_state_sha256": "13ffd1de0b67993dc512de107e032205b02b3a6ae9d63f8604c7b8815d4596bc",
+          "expected_state": {
+            "count": 19,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 19,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 19,
+          "before_state_sha256": "13ffd1de0b67993dc512de107e032205b02b3a6ae9d63f8604c7b8815d4596bc",
+          "expected_state_sha256": "8641f3f9e01748d348715836b3354a1ca92cbe170b8fc7274a95e516f256576c",
+          "actual_state_sha256": "8641f3f9e01748d348715836b3354a1ca92cbe170b8fc7274a95e516f256576c",
+          "expected_state": {
+            "count": 20,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 20,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 20,
+          "before_state_sha256": "8641f3f9e01748d348715836b3354a1ca92cbe170b8fc7274a95e516f256576c",
+          "expected_state_sha256": "eee5a1f03162576598ebf88cc9dbc349d96ae089e6f96345bffe96ffe88dcf16",
+          "actual_state_sha256": "eee5a1f03162576598ebf88cc9dbc349d96ae089e6f96345bffe96ffe88dcf16",
+          "expected_state": {
+            "count": 21,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 21,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 21,
+          "before_state_sha256": "eee5a1f03162576598ebf88cc9dbc349d96ae089e6f96345bffe96ffe88dcf16",
+          "expected_state_sha256": "1b53e62e279900f7614be01582a2866b56f6bf67deee4ca8d2ff23bae440db00",
+          "actual_state_sha256": "1b53e62e279900f7614be01582a2866b56f6bf67deee4ca8d2ff23bae440db00",
+          "expected_state": {
+            "count": 22,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 22,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 22,
+          "before_state_sha256": "1b53e62e279900f7614be01582a2866b56f6bf67deee4ca8d2ff23bae440db00",
+          "expected_state_sha256": "dbc717611103a8a478a2184559b784cf7cefd805de4e7af27657759dca90feeb",
+          "actual_state_sha256": "dbc717611103a8a478a2184559b784cf7cefd805de4e7af27657759dca90feeb",
+          "expected_state": {
+            "count": 23,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 23,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 23,
+          "before_state_sha256": "dbc717611103a8a478a2184559b784cf7cefd805de4e7af27657759dca90feeb",
+          "expected_state_sha256": "1abe8b237c5cd95082e91d74de1ff5616b4ca461d3b88d22048488120c265397",
+          "actual_state_sha256": "1abe8b237c5cd95082e91d74de1ff5616b4ca461d3b88d22048488120c265397",
+          "expected_state": {
+            "count": 24,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 24,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 24,
+          "before_state_sha256": "1abe8b237c5cd95082e91d74de1ff5616b4ca461d3b88d22048488120c265397",
+          "expected_state_sha256": "e25f2e872a254e6ab30232753fc6c7b0c83df01828f6b6ba158a4e65eba12246",
+          "actual_state_sha256": "e25f2e872a254e6ab30232753fc6c7b0c83df01828f6b6ba158a4e65eba12246",
+          "expected_state": {
+            "count": 25,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 25,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "mixed40",
+      "input": {
+        "initial_state": "COLD",
+        "state_patch": {},
+        "reset_before_blocks": [
+          0
+        ],
+        "ordered_energy_pairs": [
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.0,
+            30
+          ],
+          [
+            0.0,
+            30
+          ],
+          [
+            0.0,
+            30
+          ],
+          [
+            0.0,
+            30
+          ],
+          [
+            0.0,
+            30
+          ],
+          [
+            0.0,
+            30
+          ],
+          [
+            0.0,
+            30
+          ],
+          [
+            0.0,
+            30
+          ],
+          [
+            0.0,
+            30
+          ],
+          [
+            0.0,
+            30
+          ],
+          [
+            0.5,
+            4
+          ],
+          [
+            0.5,
+            4
+          ],
+          [
+            0.5,
+            4
+          ],
+          [
+            0.5,
+            4
+          ],
+          [
+            0.5,
+            4
+          ],
+          [
+            0.5,
+            4
+          ],
+          [
+            0.5,
+            4
+          ],
+          [
+            0.5,
+            4
+          ],
+          [
+            0.5,
+            4
+          ],
+          [
+            0.5,
+            4
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ]
+        ]
+      },
+      "trace": [
+        {
+          "block_index": 0,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "f336e31c7349e16f81283dd4e6157bbdbb6b15f22f2c5fcd462ff0801e082222",
+          "actual_state_sha256": "f336e31c7349e16f81283dd4e6157bbdbb6b15f22f2c5fcd462ff0801e082222",
+          "expected_state": {
+            "count": 1,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 1,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 1,
+          "before_state_sha256": "f336e31c7349e16f81283dd4e6157bbdbb6b15f22f2c5fcd462ff0801e082222",
+          "expected_state_sha256": "c064300751a31f04105d45b6d657119e80eaacbe385eff27454ab86149f1c450",
+          "actual_state_sha256": "c064300751a31f04105d45b6d657119e80eaacbe385eff27454ab86149f1c450",
+          "expected_state": {
+            "count": 2,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 2,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 2,
+          "before_state_sha256": "c064300751a31f04105d45b6d657119e80eaacbe385eff27454ab86149f1c450",
+          "expected_state_sha256": "0624e05d43694baa74896ba8143ce9eb5a377e73abab965f50a8ed4050b5a898",
+          "actual_state_sha256": "0624e05d43694baa74896ba8143ce9eb5a377e73abab965f50a8ed4050b5a898",
+          "expected_state": {
+            "count": 3,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 3,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 3,
+          "before_state_sha256": "0624e05d43694baa74896ba8143ce9eb5a377e73abab965f50a8ed4050b5a898",
+          "expected_state_sha256": "65148a418ec5af97f580713e17b2aa745209d8de44d4837d41f8508222308c72",
+          "actual_state_sha256": "65148a418ec5af97f580713e17b2aa745209d8de44d4837d41f8508222308c72",
+          "expected_state": {
+            "count": 4,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 4,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 4,
+          "before_state_sha256": "65148a418ec5af97f580713e17b2aa745209d8de44d4837d41f8508222308c72",
+          "expected_state_sha256": "53f5a9c341030564cc7907cad4cf8235e36bba9d9407858996228b0db6dfdb2c",
+          "actual_state_sha256": "53f5a9c341030564cc7907cad4cf8235e36bba9d9407858996228b0db6dfdb2c",
+          "expected_state": {
+            "count": 5,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 5,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 5,
+          "before_state_sha256": "53f5a9c341030564cc7907cad4cf8235e36bba9d9407858996228b0db6dfdb2c",
+          "expected_state_sha256": "950da2e9b72f8d6628971196dfa4f36ec83ef47464c2e04fd2233497e334a8cb",
+          "actual_state_sha256": "950da2e9b72f8d6628971196dfa4f36ec83ef47464c2e04fd2233497e334a8cb",
+          "expected_state": {
+            "count": 6,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 6,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 6,
+          "before_state_sha256": "950da2e9b72f8d6628971196dfa4f36ec83ef47464c2e04fd2233497e334a8cb",
+          "expected_state_sha256": "0d60e81be6a893ef6ecfc8c316fc99d05d20669b6fcdbce3f4348eefd3abe390",
+          "actual_state_sha256": "0d60e81be6a893ef6ecfc8c316fc99d05d20669b6fcdbce3f4348eefd3abe390",
+          "expected_state": {
+            "count": 7,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 7,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 7,
+          "before_state_sha256": "0d60e81be6a893ef6ecfc8c316fc99d05d20669b6fcdbce3f4348eefd3abe390",
+          "expected_state_sha256": "5eda95c91997f980b2b3f84cd1fd18e9c5b26af53c8cabfdb7c061d2a84dbc3a",
+          "actual_state_sha256": "5eda95c91997f980b2b3f84cd1fd18e9c5b26af53c8cabfdb7c061d2a84dbc3a",
+          "expected_state": {
+            "count": 8,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 8,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 8,
+          "before_state_sha256": "5eda95c91997f980b2b3f84cd1fd18e9c5b26af53c8cabfdb7c061d2a84dbc3a",
+          "expected_state_sha256": "b422e534056bfe4274f347b1daafb25aa340c9c7682411c3d931a44ba9d569d3",
+          "actual_state_sha256": "b422e534056bfe4274f347b1daafb25aa340c9c7682411c3d931a44ba9d569d3",
+          "expected_state": {
+            "count": 9,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 9,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 9,
+          "before_state_sha256": "b422e534056bfe4274f347b1daafb25aa340c9c7682411c3d931a44ba9d569d3",
+          "expected_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "actual_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3203453229,
+          "actual_input_metric_word": 3203453229,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 10,
+          "before_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "actual_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 11,
+          "before_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "actual_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 12,
+          "before_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "actual_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 13,
+          "before_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "actual_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 14,
+          "before_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "actual_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 15,
+          "before_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "actual_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 16,
+          "before_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "actual_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 17,
+          "before_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "actual_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 18,
+          "before_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "actual_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 19,
+          "before_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "actual_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "actual_state": {
+            "count": 10,
+            "mean": 0.25,
+            "exponent": 23,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 5.960464477539063e-08,
+            "result": -0.4703458845615387
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 20,
+          "before_state_sha256": "897bac55b18db35ed3d03e9286ceb4e8855d4d2a8e60cd622e3aeb8aa0abefd4",
+          "expected_state_sha256": "d28b4919b9bfab5b5d996943c7b644debb16491bb7e9c6480754e21d353403e9",
+          "actual_state_sha256": "d28b4919b9bfab5b5d996943c7b644debb16491bb7e9c6480754e21d353403e9",
+          "expected_state": {
+            "count": 11,
+            "mean": 0.022727489471435547,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.005681872367858887,
+            "result": -0.08135844022035599
+          },
+          "actual_state": {
+            "count": 11,
+            "mean": 0.022727489471435547,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.005681872367858887,
+            "result": -0.08135844022035599
+          },
+          "expected_input_metric_word": 929167367,
+          "actual_input_metric_word": 929167367,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 21,
+          "before_state_sha256": "d28b4919b9bfab5b5d996943c7b644debb16491bb7e9c6480754e21d353403e9",
+          "expected_state_sha256": "d484cb2184e43fa486ebda44d3da19a34ef0f323f440066477193b06f8ee186e",
+          "actual_state_sha256": "d484cb2184e43fa486ebda44d3da19a34ef0f323f440066477193b06f8ee186e",
+          "expected_state": {
+            "count": 12,
+            "mean": 0.04166686534881592,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.01041671633720398,
+            "result": -0.06079263240098953
+          },
+          "actual_state": {
+            "count": 12,
+            "mean": 0.04166686534881592,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.01041671633720398,
+            "result": -0.06079263240098953
+          },
+          "expected_input_metric_word": 929167367,
+          "actual_input_metric_word": 929167367,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 22,
+          "before_state_sha256": "d484cb2184e43fa486ebda44d3da19a34ef0f323f440066477193b06f8ee186e",
+          "expected_state_sha256": "14c92dceec1dee8bb0136fa90830ed0f10f7dd4eed0025fd29f0fe265f924c75",
+          "actual_state_sha256": "14c92dceec1dee8bb0136fa90830ed0f10f7dd4eed0025fd29f0fe265f924c75",
+          "expected_state": {
+            "count": 13,
+            "mean": 0.05769249051809311,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.014423122629523277,
+            "result": -0.04975162073969841
+          },
+          "actual_state": {
+            "count": 13,
+            "mean": 0.05769249051809311,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.014423122629523277,
+            "result": -0.04975162073969841
+          },
+          "expected_input_metric_word": 929167367,
+          "actual_input_metric_word": 929167367,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 23,
+          "before_state_sha256": "14c92dceec1dee8bb0136fa90830ed0f10f7dd4eed0025fd29f0fe265f924c75",
+          "expected_state_sha256": "636aa5cf22a897fe6c46557024b34ae19bb9d615560f19074c008f9b3e829ea8",
+          "actual_state_sha256": "636aa5cf22a897fe6c46557024b34ae19bb9d615560f19074c008f9b3e829ea8",
+          "expected_state": {
+            "count": 14,
+            "mean": 0.07142873853445053,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.017857184633612633,
+            "result": -0.042502231895923615
+          },
+          "actual_state": {
+            "count": 14,
+            "mean": 0.07142873853445053,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.017857184633612633,
+            "result": -0.042502231895923615
+          },
+          "expected_input_metric_word": 929167367,
+          "actual_input_metric_word": 929167367,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 24,
+          "before_state_sha256": "636aa5cf22a897fe6c46557024b34ae19bb9d615560f19074c008f9b3e829ea8",
+          "expected_state_sha256": "ce8f51f5d2f8b5781e190fd6dc0635bf2e9ad0232be673c7cde703fd35039c94",
+          "actual_state_sha256": "ce8f51f5d2f8b5781e190fd6dc0635bf2e9ad0232be673c7cde703fd35039c94",
+          "expected_state": {
+            "count": 15,
+            "mean": 0.08333349227905273,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.020833373069763184,
+            "result": -0.03727475926280022
+          },
+          "actual_state": {
+            "count": 15,
+            "mean": 0.08333349227905273,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.020833373069763184,
+            "result": -0.03727475926280022
+          },
+          "expected_input_metric_word": 929167367,
+          "actual_input_metric_word": 929167367,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 25,
+          "before_state_sha256": "ce8f51f5d2f8b5781e190fd6dc0635bf2e9ad0232be673c7cde703fd35039c94",
+          "expected_state_sha256": "29f3212b0a7311173ca610946f559df943b773fa6ab96e471636561e88466273",
+          "actual_state_sha256": "29f3212b0a7311173ca610946f559df943b773fa6ab96e471636561e88466273",
+          "expected_state": {
+            "count": 16,
+            "mean": 0.09375014901161194,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.023437537252902985,
+            "result": -0.03327873349189758
+          },
+          "actual_state": {
+            "count": 16,
+            "mean": 0.09375014901161194,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.023437537252902985,
+            "result": -0.03327873349189758
+          },
+          "expected_input_metric_word": 929167367,
+          "actual_input_metric_word": 929167367,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 26,
+          "before_state_sha256": "29f3212b0a7311173ca610946f559df943b773fa6ab96e471636561e88466273",
+          "expected_state_sha256": "11696df719e06f03abd01d38c1b77fb14a46a5ae20faaab1709f928498b9bb16",
+          "actual_state_sha256": "11696df719e06f03abd01d38c1b77fb14a46a5ae20faaab1709f928498b9bb16",
+          "expected_state": {
+            "count": 17,
+            "mean": 0.10294131934642792,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.02573532983660698,
+            "result": -0.03010549023747444
+          },
+          "actual_state": {
+            "count": 17,
+            "mean": 0.10294131934642792,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.02573532983660698,
+            "result": -0.03010549023747444
+          },
+          "expected_input_metric_word": 929167367,
+          "actual_input_metric_word": 929167367,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 27,
+          "before_state_sha256": "11696df719e06f03abd01d38c1b77fb14a46a5ae20faaab1709f928498b9bb16",
+          "expected_state_sha256": "3ab2ba359fa7718eb53a9c61077e03786b18820725f54a5321ba334119395706",
+          "actual_state_sha256": "3ab2ba359fa7718eb53a9c61077e03786b18820725f54a5321ba334119395706",
+          "expected_state": {
+            "count": 18,
+            "mean": 0.11111124604940414,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.027777811512351036,
+            "result": -0.027514219284057617
+          },
+          "actual_state": {
+            "count": 18,
+            "mean": 0.11111124604940414,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.027777811512351036,
+            "result": -0.027514219284057617
+          },
+          "expected_input_metric_word": 929167367,
+          "actual_input_metric_word": 929167367,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 28,
+          "before_state_sha256": "3ab2ba359fa7718eb53a9c61077e03786b18820725f54a5321ba334119395706",
+          "expected_state_sha256": "21321b56963dfb77d987c1ab41999cefba6935591c1d65ffdda34e539311faab",
+          "actual_state_sha256": "21321b56963dfb77d987c1ab41999cefba6935591c1d65ffdda34e539311faab",
+          "expected_state": {
+            "count": 19,
+            "mean": 0.11842118203639984,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.02960529550909996,
+            "result": -0.025352392345666885
+          },
+          "actual_state": {
+            "count": 19,
+            "mean": 0.11842118203639984,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.02960529550909996,
+            "result": -0.025352392345666885
+          },
+          "expected_input_metric_word": 929167367,
+          "actual_input_metric_word": 929167367,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 29,
+          "before_state_sha256": "21321b56963dfb77d987c1ab41999cefba6935591c1d65ffdda34e539311faab",
+          "expected_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "actual_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "expected_state": {
+            "count": 20,
+            "mean": 0.12500011920928955,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.03125002980232239,
+            "result": -0.0235044676810503
+          },
+          "actual_state": {
+            "count": 20,
+            "mean": 0.12500011920928955,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.03125002980232239,
+            "result": -0.0235044676810503
+          },
+          "expected_input_metric_word": 929167367,
+          "actual_input_metric_word": 929167367,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 30,
+          "before_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "expected_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "actual_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "expected_state": {
+            "count": 20,
+            "mean": 0.12500011920928955,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.03125002980232239,
+            "result": -0.0235044676810503
+          },
+          "actual_state": {
+            "count": 20,
+            "mean": 0.12500011920928955,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.03125002980232239,
+            "result": -0.0235044676810503
+          },
+          "expected_input_metric_word": 3206318140,
+          "actual_input_metric_word": 3206318140,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 31,
+          "before_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "expected_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "actual_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "expected_state": {
+            "count": 20,
+            "mean": 0.12500011920928955,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.03125002980232239,
+            "result": -0.0235044676810503
+          },
+          "actual_state": {
+            "count": 20,
+            "mean": 0.12500011920928955,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.03125002980232239,
+            "result": -0.0235044676810503
+          },
+          "expected_input_metric_word": 3206318140,
+          "actual_input_metric_word": 3206318140,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 32,
+          "before_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "expected_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "actual_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "expected_state": {
+            "count": 20,
+            "mean": 0.12500011920928955,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.03125002980232239,
+            "result": -0.0235044676810503
+          },
+          "actual_state": {
+            "count": 20,
+            "mean": 0.12500011920928955,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.03125002980232239,
+            "result": -0.0235044676810503
+          },
+          "expected_input_metric_word": 3206318140,
+          "actual_input_metric_word": 3206318140,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 33,
+          "before_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "expected_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "actual_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "expected_state": {
+            "count": 20,
+            "mean": 0.12500011920928955,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.03125002980232239,
+            "result": -0.0235044676810503
+          },
+          "actual_state": {
+            "count": 20,
+            "mean": 0.12500011920928955,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.03125002980232239,
+            "result": -0.0235044676810503
+          },
+          "expected_input_metric_word": 3206318140,
+          "actual_input_metric_word": 3206318140,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 34,
+          "before_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "expected_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "actual_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "expected_state": {
+            "count": 20,
+            "mean": 0.12500011920928955,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.03125002980232239,
+            "result": -0.0235044676810503
+          },
+          "actual_state": {
+            "count": 20,
+            "mean": 0.12500011920928955,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.03125002980232239,
+            "result": -0.0235044676810503
+          },
+          "expected_input_metric_word": 3206318140,
+          "actual_input_metric_word": 3206318140,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 35,
+          "before_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "expected_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "actual_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "expected_state": {
+            "count": 20,
+            "mean": 0.12500011920928955,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.03125002980232239,
+            "result": -0.0235044676810503
+          },
+          "actual_state": {
+            "count": 20,
+            "mean": 0.12500011920928955,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.03125002980232239,
+            "result": -0.0235044676810503
+          },
+          "expected_input_metric_word": 3206318140,
+          "actual_input_metric_word": 3206318140,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 36,
+          "before_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "expected_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "actual_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "expected_state": {
+            "count": 20,
+            "mean": 0.12500011920928955,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.03125002980232239,
+            "result": -0.0235044676810503
+          },
+          "actual_state": {
+            "count": 20,
+            "mean": 0.12500011920928955,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.03125002980232239,
+            "result": -0.0235044676810503
+          },
+          "expected_input_metric_word": 3206318140,
+          "actual_input_metric_word": 3206318140,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 37,
+          "before_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "expected_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "actual_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "expected_state": {
+            "count": 20,
+            "mean": 0.12500011920928955,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.03125002980232239,
+            "result": -0.0235044676810503
+          },
+          "actual_state": {
+            "count": 20,
+            "mean": 0.12500011920928955,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.03125002980232239,
+            "result": -0.0235044676810503
+          },
+          "expected_input_metric_word": 3206318140,
+          "actual_input_metric_word": 3206318140,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 38,
+          "before_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "expected_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "actual_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "expected_state": {
+            "count": 20,
+            "mean": 0.12500011920928955,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.03125002980232239,
+            "result": -0.0235044676810503
+          },
+          "actual_state": {
+            "count": 20,
+            "mean": 0.12500011920928955,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.03125002980232239,
+            "result": -0.0235044676810503
+          },
+          "expected_input_metric_word": 3206318140,
+          "actual_input_metric_word": 3206318140,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 39,
+          "before_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "expected_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "actual_state_sha256": "c74be29514cb2ffd97a19b3ad43c1e7697de7d324d4baaad36c320ef4f086301",
+          "expected_state": {
+            "count": 20,
+            "mean": 0.12500011920928955,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.03125002980232239,
+            "result": -0.0235044676810503
+          },
+          "actual_state": {
+            "count": 20,
+            "mean": 0.12500011920928955,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.03125002980232239,
+            "result": -0.0235044676810503
+          },
+          "expected_input_metric_word": 3206318140,
+          "actual_input_metric_word": 3206318140,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "gate_equal3",
+      "input": {
+        "initial_state": "COLD",
+        "state_patch": {},
+        "reset_before_blocks": [
+          0
+        ],
+        "ordered_energy_pairs": [
+          [
+            0.4194299280643463,
+            27
+          ],
+          [
+            0.4194299280643463,
+            27
+          ],
+          [
+            0.4194299280643463,
+            27
+          ]
+        ]
+      },
+      "trace": [
+        {
+          "block_index": 0,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "848fe7443caef9bee98121710ecc0fe8125acbb404b7bd7020fb4584310ed4c0",
+          "actual_state_sha256": "848fe7443caef9bee98121710ecc0fe8125acbb404b7bd7020fb4584310ed4c0",
+          "expected_state": {
+            "count": 1,
+            "mean": 0.20971496403217316,
+            "exponent": 26,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 6.249992967610751e-09,
+            "result": -0.546875
+          },
+          "actual_state": {
+            "count": 1,
+            "mean": 0.20971496403217316,
+            "exponent": 26,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 6.249992967610751e-09,
+            "result": -0.546875
+          },
+          "expected_input_metric_word": 3205234688,
+          "actual_input_metric_word": 3205234688,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 1,
+          "before_state_sha256": "848fe7443caef9bee98121710ecc0fe8125acbb404b7bd7020fb4584310ed4c0",
+          "expected_state_sha256": "fb9d0de23f37da54b0a0e1919bbd5021536c3b8386ade07b7b42df8e586c27fb",
+          "actual_state_sha256": "fb9d0de23f37da54b0a0e1919bbd5021536c3b8386ade07b7b42df8e586c27fb",
+          "expected_state": {
+            "count": 2,
+            "mean": 0.20971496403217316,
+            "exponent": 26,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 6.249992967610751e-09,
+            "result": -0.546875
+          },
+          "actual_state": {
+            "count": 2,
+            "mean": 0.20971496403217316,
+            "exponent": 26,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 6.249992967610751e-09,
+            "result": -0.546875
+          },
+          "expected_input_metric_word": 3205234688,
+          "actual_input_metric_word": 3205234688,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 2,
+          "before_state_sha256": "fb9d0de23f37da54b0a0e1919bbd5021536c3b8386ade07b7b42df8e586c27fb",
+          "expected_state_sha256": "703d0aca49ebfe447145e4b0ac4a165e1582b14caf675dd80e130de6d7566c9a",
+          "actual_state_sha256": "703d0aca49ebfe447145e4b0ac4a165e1582b14caf675dd80e130de6d7566c9a",
+          "expected_state": {
+            "count": 3,
+            "mean": 0.20971496403217316,
+            "exponent": 26,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 6.249992967610751e-09,
+            "result": -0.546875
+          },
+          "actual_state": {
+            "count": 3,
+            "mean": 0.20971496403217316,
+            "exponent": 26,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 6.249992967610751e-09,
+            "result": -0.546875
+          },
+          "expected_input_metric_word": 3205234688,
+          "actual_input_metric_word": 3205234688,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "gate_below3",
+      "input": {
+        "initial_state": "COLD",
+        "state_patch": {},
+        "reset_before_blocks": [
+          0
+        ],
+        "ordered_energy_pairs": [
+          [
+            0.4194298982620239,
+            27
+          ],
+          [
+            0.4194298982620239,
+            27
+          ],
+          [
+            0.4194298982620239,
+            27
+          ]
+        ]
+      },
+      "trace": [
+        {
+          "block_index": 0,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3205234689,
+          "actual_input_metric_word": 3205234689,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 1,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3205234689,
+          "actual_input_metric_word": 3205234689,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 2,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3205234689,
+          "actual_input_metric_word": 3205234689,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "gate_above3",
+      "input": {
+        "initial_state": "COLD",
+        "state_patch": {},
+        "reset_before_blocks": [
+          0
+        ],
+        "ordered_energy_pairs": [
+          [
+            0.4194307327270508,
+            27
+          ],
+          [
+            0.4194307327270508,
+            27
+          ],
+          [
+            0.4194307327270508,
+            27
+          ]
+        ]
+      },
+      "trace": [
+        {
+          "block_index": 0,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "2f860206bf42ad46e8eefe513ea62191361451d8a9122c9d1fdc8752524a004f",
+          "actual_state_sha256": "2f860206bf42ad46e8eefe513ea62191361451d8a9122c9d1fdc8752524a004f",
+          "expected_state": {
+            "count": 1,
+            "mean": 0.2097153663635254,
+            "exponent": 26,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 6.250004958019417e-09,
+            "result": -0.5468749403953552
+          },
+          "actual_state": {
+            "count": 1,
+            "mean": 0.2097153663635254,
+            "exponent": 26,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 6.250004958019417e-09,
+            "result": -0.5468749403953552
+          },
+          "expected_input_metric_word": 3205234687,
+          "actual_input_metric_word": 3205234687,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 1,
+          "before_state_sha256": "2f860206bf42ad46e8eefe513ea62191361451d8a9122c9d1fdc8752524a004f",
+          "expected_state_sha256": "a22c31e54dd9391308b4493b2f972c74546cb25d172b37f2af4ab76d95cf2b4a",
+          "actual_state_sha256": "a22c31e54dd9391308b4493b2f972c74546cb25d172b37f2af4ab76d95cf2b4a",
+          "expected_state": {
+            "count": 2,
+            "mean": 0.2097153663635254,
+            "exponent": 26,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 6.250004958019417e-09,
+            "result": -0.5468749403953552
+          },
+          "actual_state": {
+            "count": 2,
+            "mean": 0.2097153663635254,
+            "exponent": 26,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 6.250004958019417e-09,
+            "result": -0.5468749403953552
+          },
+          "expected_input_metric_word": 3205234687,
+          "actual_input_metric_word": 3205234687,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 2,
+          "before_state_sha256": "a22c31e54dd9391308b4493b2f972c74546cb25d172b37f2af4ab76d95cf2b4a",
+          "expected_state_sha256": "449de51edda433d556cd6c2eacda95546e818664da3e1e02ee8c04b8e781ab0a",
+          "actual_state_sha256": "449de51edda433d556cd6c2eacda95546e818664da3e1e02ee8c04b8e781ab0a",
+          "expected_state": {
+            "count": 3,
+            "mean": 0.2097153663635254,
+            "exponent": 26,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 6.250004958019417e-09,
+            "result": -0.5468749403953552
+          },
+          "actual_state": {
+            "count": 3,
+            "mean": 0.2097153663635254,
+            "exponent": 26,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 6.250004958019417e-09,
+            "result": -0.5468749403953552
+          },
+          "expected_input_metric_word": 3205234687,
+          "actual_input_metric_word": 3205234687,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "count_signed_boundary",
+      "input": {
+        "initial_state": "COLD",
+        "state_patch": {
+          "count": 2147483647,
+          "mean": 0.25,
+          "exponent": 3,
+          "filled": 1
+        },
+        "reset_before_blocks": [
+          0
+        ],
+        "ordered_energy_pairs": [
+          [
+            0.5,
+            4
+          ]
+        ]
+      },
+      "trace": [
+        {
+          "block_index": 0,
+          "before_state_sha256": "e95b73b9a8c4addc790c08c8c9bbb19eff85b2f641b100cf7588dbb7958c079b",
+          "expected_state_sha256": "9912d7383b8e6d032dadd04bdb491bd61443b19bd5d86e6aa0bbcc9ea4b8f7bc",
+          "actual_state_sha256": "9912d7383b8e6d032dadd04bdb491bd61443b19bd5d86e6aa0bbcc9ea4b8f7bc",
+          "expected_state": {
+            "count": 1073741824,
+            "mean": 0.25,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.0625,
+            "result": 1.3468793440551963e-05
+          },
+          "actual_state": {
+            "count": 1073741824,
+            "mean": 0.25,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.0625,
+            "result": 1.3468793440551963e-05
+          },
+          "expected_input_metric_word": 929167367,
+          "actual_input_metric_word": 929167367,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "count_before_boundary",
+      "input": {
+        "initial_state": "COLD",
+        "state_patch": {
+          "count": 2147483646,
+          "mean": 0.25,
+          "exponent": 3,
+          "filled": 1
+        },
+        "reset_before_blocks": [
+          0
+        ],
+        "ordered_energy_pairs": [
+          [
+            0.5,
+            4
+          ]
+        ]
+      },
+      "trace": [
+        {
+          "block_index": 0,
+          "before_state_sha256": "225ec9d43fc7307ec7e59087c8f6d256fafd2bb1cc36fd51b545c5e5874a64dd",
+          "expected_state_sha256": "ec5b862199656936775e580c67fb83ee2bfb85ae4c15c87dc24a0c3b7544d74e",
+          "actual_state_sha256": "ec5b862199656936775e580c67fb83ee2bfb85ae4c15c87dc24a0c3b7544d74e",
+          "expected_state": {
+            "count": 2147483647,
+            "mean": 0.25,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.0625,
+            "result": 1.3468793440551963e-05
+          },
+          "actual_state": {
+            "count": 2147483647,
+            "mean": 0.25,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.0625,
+            "result": 1.3468793440551963e-05
+          },
+          "expected_input_metric_word": 929167367,
+          "actual_input_metric_word": 929167367,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "reset_after3",
+      "input": {
+        "initial_state": "COLD",
+        "state_patch": {},
+        "reset_before_blocks": [
+          0,
+          3
+        ],
+        "ordered_energy_pairs": [
+          [
+            0.5,
+            4
+          ],
+          [
+            0.5,
+            4
+          ],
+          [
+            0.5,
+            4
+          ],
+          [
+            0.0,
+            30
+          ],
+          [
+            0.0,
+            30
+          ],
+          [
+            0.0,
+            30
+          ]
+        ]
+      },
+      "trace": [
+        {
+          "block_index": 0,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "3edb03d614d789ce82f400157965dd27ee3d73b1e0e0b7bedb20c5dc32e71121",
+          "actual_state_sha256": "3edb03d614d789ce82f400157965dd27ee3d73b1e0e0b7bedb20c5dc32e71121",
+          "expected_state": {
+            "count": 1,
+            "mean": 0.25,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.0625,
+            "result": 1.3468793440551963e-05
+          },
+          "actual_state": {
+            "count": 1,
+            "mean": 0.25,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.0625,
+            "result": 1.3468793440551963e-05
+          },
+          "expected_input_metric_word": 929167367,
+          "actual_input_metric_word": 929167367,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 1,
+          "before_state_sha256": "3edb03d614d789ce82f400157965dd27ee3d73b1e0e0b7bedb20c5dc32e71121",
+          "expected_state_sha256": "b18f0f9516c85bfcb5590bbbe92796ab24f9e5c329720053d87e98fbd5099de3",
+          "actual_state_sha256": "b18f0f9516c85bfcb5590bbbe92796ab24f9e5c329720053d87e98fbd5099de3",
+          "expected_state": {
+            "count": 2,
+            "mean": 0.25,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.0625,
+            "result": 1.3468793440551963e-05
+          },
+          "actual_state": {
+            "count": 2,
+            "mean": 0.25,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.0625,
+            "result": 1.3468793440551963e-05
+          },
+          "expected_input_metric_word": 929167367,
+          "actual_input_metric_word": 929167367,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 2,
+          "before_state_sha256": "b18f0f9516c85bfcb5590bbbe92796ab24f9e5c329720053d87e98fbd5099de3",
+          "expected_state_sha256": "fc0cd86c5a888e7a03ba8196366d122a814f15e97f6e2961b6203cfba7b3195c",
+          "actual_state_sha256": "fc0cd86c5a888e7a03ba8196366d122a814f15e97f6e2961b6203cfba7b3195c",
+          "expected_state": {
+            "count": 3,
+            "mean": 0.25,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.0625,
+            "result": 1.3468793440551963e-05
+          },
+          "actual_state": {
+            "count": 3,
+            "mean": 0.25,
+            "exponent": 3,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 1,
+            "linear_energy": 0.0625,
+            "result": 1.3468793440551963e-05
+          },
+          "expected_input_metric_word": 929167367,
+          "actual_input_metric_word": 929167367,
+          "expected_writer_called": true,
+          "actual_writer_called": true
+        },
+        {
+          "block_index": 3,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 4,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        },
+        {
+          "block_index": 5,
+          "before_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "actual_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+          "expected_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "actual_state": {
+            "count": 0,
+            "mean": 0.0,
+            "exponent": 30,
+            "phase": 0,
+            "cursor": 0,
+            "filled": 0,
+            "linear_energy": 0.0,
+            "result": -0.9375
+          },
+          "expected_input_metric_word": 3211788288,
+          "actual_input_metric_word": 3211788288,
+          "expected_writer_called": false,
+          "actual_writer_called": false
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "continuous_blocks": 102,
+  "coupled_cases": [
+    {
+      "id": "no_energy",
+      "input": {
+        "initial_states": "BOTH_COLD",
+        "ordered_energy_pairs": [],
+        "metering_mode": "1770-4",
+        "dialogue_intelligence": false,
+        "speech_threshold_percent": 100
+      },
+      "expected": {
+        "dialogue_word": 3270508544,
+        "speech_percentage_word": 3212836864,
+        "selected_internal_word": 3211788288,
+        "selected_host_word": 3270508544,
+        "internal_gating_kind": 0,
+        "public_gating_kind": 0
+      },
+      "actual": {
+        "dialogue_word": 3270508544,
+        "speech_percentage_word": 3212836864,
+        "selected_internal_word": 3211788288,
+        "selected_host_word": 3270508544,
+        "internal_gating_kind": 0,
+        "public_gating_kind": 0
+      },
+      "terminal_integrated_state_sha256": "9dd358961c3001655c577a03814c446f9394d75a0dfe2f67a3d0257e4d80f4d6",
+      "terminal_ungated_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+      "unavailable_itu_fallback_used": true,
+      "pass": true
+    },
+    {
+      "id": "short_normal",
+      "input": {
+        "initial_states": "BOTH_COLD",
+        "ordered_energy_pairs": [
+          [
+            0.5,
+            4
+          ],
+          [
+            0.5,
+            4
+          ],
+          [
+            0.5,
+            4
+          ]
+        ],
+        "metering_mode": "1770-4",
+        "dialogue_intelligence": false,
+        "speech_threshold_percent": 100
+      },
+      "expected": {
+        "dialogue_word": 3270508544,
+        "speech_percentage_word": 3212836864,
+        "selected_internal_word": 929167367,
+        "selected_host_word": 987887623,
+        "internal_gating_kind": 0,
+        "public_gating_kind": 0
+      },
+      "actual": {
+        "dialogue_word": 3270508544,
+        "speech_percentage_word": 3212836864,
+        "selected_internal_word": 929167367,
+        "selected_host_word": 987887623,
+        "internal_gating_kind": 0,
+        "public_gating_kind": 0
+      },
+      "terminal_integrated_state_sha256": "21c1bf0a13b7555e69403377a86f8a349b9e6a071e6f699365134af1cb199575",
+      "terminal_ungated_state_sha256": "fc0cd86c5a888e7a03ba8196366d122a814f15e97f6e2961b6203cfba7b3195c",
+      "unavailable_itu_fallback_used": true,
+      "pass": true
+    },
+    {
+      "id": "below_gate",
+      "input": {
+        "initial_states": "BOTH_COLD",
+        "ordered_energy_pairs": [
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ],
+          [
+            0.5,
+            30
+          ]
+        ],
+        "metering_mode": "1770-4",
+        "dialogue_intelligence": false,
+        "speech_threshold_percent": 100
+      },
+      "expected": {
+        "dialogue_word": 3270508544,
+        "speech_percentage_word": 3212836864,
+        "selected_internal_word": 3211788288,
+        "selected_host_word": 3270508544,
+        "internal_gating_kind": 0,
+        "public_gating_kind": 0
+      },
+      "actual": {
+        "dialogue_word": 3270508544,
+        "speech_percentage_word": 3212836864,
+        "selected_internal_word": 3211788288,
+        "selected_host_word": 3270508544,
+        "internal_gating_kind": 0,
+        "public_gating_kind": 0
+      },
+      "terminal_integrated_state_sha256": "5ee80631ebb415d26879a6c87143e4eb0d31543ae17b8333be7c07feb339fa45",
+      "terminal_ungated_state_sha256": "b88b758653c4d20b30f6cddce816b1260da2ae85d739e60303821eaf4507386e",
+      "unavailable_itu_fallback_used": true,
+      "pass": true
+    },
+    {
+      "id": "normal_integrated",
+      "input": {
+        "initial_states": "BOTH_COLD",
+        "ordered_energy_pairs": [
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ],
+          [
+            0.5,
+            24
+          ]
+        ],
+        "metering_mode": "1770-4",
+        "dialogue_intelligence": false,
+        "speech_threshold_percent": 100
+      },
+      "expected": {
+        "dialogue_word": 3270508544,
+        "speech_percentage_word": 3212836864,
+        "selected_internal_word": 3203453229,
+        "selected_host_word": 3262173485,
+        "internal_gating_kind": 1,
+        "public_gating_kind": 2
+      },
+      "actual": {
+        "dialogue_word": 3270508544,
+        "speech_percentage_word": 3212836864,
+        "selected_internal_word": 3203453229,
+        "selected_host_word": 3262173485,
+        "internal_gating_kind": 1,
+        "public_gating_kind": 2
+      },
+      "terminal_integrated_state_sha256": "f7f7aef4ce7574d73ec5bdf83f3a11aeada5b92ee767fb28fa449850560fea7d",
+      "terminal_ungated_state_sha256": "e25f2e872a254e6ab30232753fc6c7b0c83df01828f6b6ba158a4e65eba12246",
+      "unavailable_itu_fallback_used": false,
+      "pass": true
+    }
+  ],
+  "rejection_cases": [
+    {
+      "id": "negative_m",
+      "input": {
+        "initial_state": "COLD",
+        "mantissa": -1.0,
+        "exponent": 4,
+        "ungated_enabled": true
+      },
+      "expected_rejected": true,
+      "actual_rejected": true,
+      "scope": "normative entry guard, native out-of-domain equivalence not claimed"
+    },
+    {
+      "id": "fractional_e",
+      "input": {
+        "initial_state": "COLD",
+        "mantissa": 0.5,
+        "exponent": 0.5,
+        "ungated_enabled": true
+      },
+      "expected_rejected": true,
+      "actual_rejected": true,
+      "scope": "normative entry guard, native out-of-domain equivalence not claimed"
+    },
+    {
+      "id": "conversion_overflow",
+      "input": {
+        "initial_state": "COLD",
+        "mantissa": 3.5e+38,
+        "exponent": 4,
+        "ungated_enabled": true
+      },
+      "expected_rejected": true,
+      "actual_rejected": true,
+      "scope": "normative entry guard, native out-of-domain equivalence not claimed"
+    },
+    {
+      "id": "unsupported_disable",
+      "input": {
+        "initial_state": "COLD",
+        "mantissa": 0.5,
+        "exponent": 4,
+        "ungated_enabled": false
+      },
+      "expected_rejected": true,
+      "actual_rejected": true,
+      "scope": "normative entry guard, native out-of-domain equivalence not claimed"
+    }
+  ],
+  "guest_bytecode_delivered": false,
+  "complete_native_execution": "NOT_RUN",
+  "real_new_adm_or_full_meter": "NOT_RUN",
+  "independent_isolated_review": "NOT_RUN",
+  "failures": 0,
+  "implementation_ready": "NO"
+}

@@ -1,0 +1,1402 @@
+{
+  "schema": "codec-wire-selected-vectors.draft.v1",
+  "input_only_synthetic": true,
+  "quantizer_cases": [
+    {
+      "f32_word": "bf800000",
+      "bap": 0,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "bf800000",
+      "bap": 1,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "bf800000",
+      "bap": 2,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "bf800000",
+      "bap": 3,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "bf800000",
+      "bap": 4,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "bf800000",
+      "bap": 5,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "bf800000",
+      "bap": 6,
+      "status": "OK",
+      "code": 16
+    },
+    {
+      "f32_word": "bf800000",
+      "bap": 7,
+      "status": "OK",
+      "code": 32
+    },
+    {
+      "f32_word": "bf800000",
+      "bap": 8,
+      "status": "OK",
+      "code": 64
+    },
+    {
+      "f32_word": "bf800000",
+      "bap": 9,
+      "status": "OK",
+      "code": 128
+    },
+    {
+      "f32_word": "bf800000",
+      "bap": 10,
+      "status": "OK",
+      "code": 256
+    },
+    {
+      "f32_word": "bf800000",
+      "bap": 11,
+      "status": "OK",
+      "code": 512
+    },
+    {
+      "f32_word": "bf800000",
+      "bap": 12,
+      "status": "OK",
+      "code": 1024
+    },
+    {
+      "f32_word": "bf800000",
+      "bap": 13,
+      "status": "OK",
+      "code": 2048
+    },
+    {
+      "f32_word": "bf800000",
+      "bap": 14,
+      "status": "OK",
+      "code": 8192
+    },
+    {
+      "f32_word": "bf800000",
+      "bap": 15,
+      "status": "OK",
+      "code": 32768
+    },
+    {
+      "f32_word": "bf400000",
+      "bap": 0,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "bf400000",
+      "bap": 1,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "bf400000",
+      "bap": 2,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "bf400000",
+      "bap": 3,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "bf400000",
+      "bap": 4,
+      "status": "OK",
+      "code": 1
+    },
+    {
+      "f32_word": "bf400000",
+      "bap": 5,
+      "status": "OK",
+      "code": 1
+    },
+    {
+      "f32_word": "bf400000",
+      "bap": 6,
+      "status": "OK",
+      "code": 20
+    },
+    {
+      "f32_word": "bf400000",
+      "bap": 7,
+      "status": "OK",
+      "code": 40
+    },
+    {
+      "f32_word": "bf400000",
+      "bap": 8,
+      "status": "OK",
+      "code": 80
+    },
+    {
+      "f32_word": "bf400000",
+      "bap": 9,
+      "status": "OK",
+      "code": 160
+    },
+    {
+      "f32_word": "bf400000",
+      "bap": 10,
+      "status": "OK",
+      "code": 320
+    },
+    {
+      "f32_word": "bf400000",
+      "bap": 11,
+      "status": "OK",
+      "code": 640
+    },
+    {
+      "f32_word": "bf400000",
+      "bap": 12,
+      "status": "OK",
+      "code": 1280
+    },
+    {
+      "f32_word": "bf400000",
+      "bap": 13,
+      "status": "OK",
+      "code": 2560
+    },
+    {
+      "f32_word": "bf400000",
+      "bap": 14,
+      "status": "OK",
+      "code": 10240
+    },
+    {
+      "f32_word": "bf400000",
+      "bap": 15,
+      "status": "OK",
+      "code": 40960
+    },
+    {
+      "f32_word": "bf000000",
+      "bap": 0,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "bf000000",
+      "bap": 1,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "bf000000",
+      "bap": 2,
+      "status": "OK",
+      "code": 1
+    },
+    {
+      "f32_word": "bf000000",
+      "bap": 3,
+      "status": "OK",
+      "code": 1
+    },
+    {
+      "f32_word": "bf000000",
+      "bap": 4,
+      "status": "OK",
+      "code": 2
+    },
+    {
+      "f32_word": "bf000000",
+      "bap": 5,
+      "status": "OK",
+      "code": 3
+    },
+    {
+      "f32_word": "bf000000",
+      "bap": 6,
+      "status": "OK",
+      "code": 24
+    },
+    {
+      "f32_word": "bf000000",
+      "bap": 7,
+      "status": "OK",
+      "code": 48
+    },
+    {
+      "f32_word": "bf000000",
+      "bap": 8,
+      "status": "OK",
+      "code": 96
+    },
+    {
+      "f32_word": "bf000000",
+      "bap": 9,
+      "status": "OK",
+      "code": 192
+    },
+    {
+      "f32_word": "bf000000",
+      "bap": 10,
+      "status": "OK",
+      "code": 384
+    },
+    {
+      "f32_word": "bf000000",
+      "bap": 11,
+      "status": "OK",
+      "code": 768
+    },
+    {
+      "f32_word": "bf000000",
+      "bap": 12,
+      "status": "OK",
+      "code": 1536
+    },
+    {
+      "f32_word": "bf000000",
+      "bap": 13,
+      "status": "OK",
+      "code": 3072
+    },
+    {
+      "f32_word": "bf000000",
+      "bap": 14,
+      "status": "OK",
+      "code": 12288
+    },
+    {
+      "f32_word": "bf000000",
+      "bap": 15,
+      "status": "OK",
+      "code": 49152
+    },
+    {
+      "f32_word": "be800000",
+      "bap": 0,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "be800000",
+      "bap": 1,
+      "status": "OK",
+      "code": 1
+    },
+    {
+      "f32_word": "be800000",
+      "bap": 2,
+      "status": "OK",
+      "code": 1
+    },
+    {
+      "f32_word": "be800000",
+      "bap": 3,
+      "status": "OK",
+      "code": 2
+    },
+    {
+      "f32_word": "be800000",
+      "bap": 4,
+      "status": "OK",
+      "code": 4
+    },
+    {
+      "f32_word": "be800000",
+      "bap": 5,
+      "status": "OK",
+      "code": 5
+    },
+    {
+      "f32_word": "be800000",
+      "bap": 6,
+      "status": "OK",
+      "code": 28
+    },
+    {
+      "f32_word": "be800000",
+      "bap": 7,
+      "status": "OK",
+      "code": 56
+    },
+    {
+      "f32_word": "be800000",
+      "bap": 8,
+      "status": "OK",
+      "code": 112
+    },
+    {
+      "f32_word": "be800000",
+      "bap": 9,
+      "status": "OK",
+      "code": 224
+    },
+    {
+      "f32_word": "be800000",
+      "bap": 10,
+      "status": "OK",
+      "code": 448
+    },
+    {
+      "f32_word": "be800000",
+      "bap": 11,
+      "status": "OK",
+      "code": 896
+    },
+    {
+      "f32_word": "be800000",
+      "bap": 12,
+      "status": "OK",
+      "code": 1792
+    },
+    {
+      "f32_word": "be800000",
+      "bap": 13,
+      "status": "OK",
+      "code": 3584
+    },
+    {
+      "f32_word": "be800000",
+      "bap": 14,
+      "status": "OK",
+      "code": 14336
+    },
+    {
+      "f32_word": "be800000",
+      "bap": 15,
+      "status": "OK",
+      "code": 57344
+    },
+    {
+      "f32_word": "80000000",
+      "bap": 0,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "80000000",
+      "bap": 1,
+      "status": "OK",
+      "code": 1
+    },
+    {
+      "f32_word": "80000000",
+      "bap": 2,
+      "status": "OK",
+      "code": 2
+    },
+    {
+      "f32_word": "80000000",
+      "bap": 3,
+      "status": "OK",
+      "code": 3
+    },
+    {
+      "f32_word": "80000000",
+      "bap": 4,
+      "status": "OK",
+      "code": 5
+    },
+    {
+      "f32_word": "80000000",
+      "bap": 5,
+      "status": "OK",
+      "code": 7
+    },
+    {
+      "f32_word": "80000000",
+      "bap": 6,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "80000000",
+      "bap": 7,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "80000000",
+      "bap": 8,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "80000000",
+      "bap": 9,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "80000000",
+      "bap": 10,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "80000000",
+      "bap": 11,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "80000000",
+      "bap": 12,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "80000000",
+      "bap": 13,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "80000000",
+      "bap": 14,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "80000000",
+      "bap": 15,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "00000000",
+      "bap": 0,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "00000000",
+      "bap": 1,
+      "status": "OK",
+      "code": 1
+    },
+    {
+      "f32_word": "00000000",
+      "bap": 2,
+      "status": "OK",
+      "code": 2
+    },
+    {
+      "f32_word": "00000000",
+      "bap": 3,
+      "status": "OK",
+      "code": 3
+    },
+    {
+      "f32_word": "00000000",
+      "bap": 4,
+      "status": "OK",
+      "code": 5
+    },
+    {
+      "f32_word": "00000000",
+      "bap": 5,
+      "status": "OK",
+      "code": 7
+    },
+    {
+      "f32_word": "00000000",
+      "bap": 6,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "00000000",
+      "bap": 7,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "00000000",
+      "bap": 8,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "00000000",
+      "bap": 9,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "00000000",
+      "bap": 10,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "00000000",
+      "bap": 11,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "00000000",
+      "bap": 12,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "00000000",
+      "bap": 13,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "00000000",
+      "bap": 14,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "00000000",
+      "bap": 15,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "3dcccccd",
+      "bap": 0,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "3dcccccd",
+      "bap": 1,
+      "status": "OK",
+      "code": 1
+    },
+    {
+      "f32_word": "3dcccccd",
+      "bap": 2,
+      "status": "OK",
+      "code": 2
+    },
+    {
+      "f32_word": "3dcccccd",
+      "bap": 3,
+      "status": "OK",
+      "code": 3
+    },
+    {
+      "f32_word": "3dcccccd",
+      "bap": 4,
+      "status": "OK",
+      "code": 6
+    },
+    {
+      "f32_word": "3dcccccd",
+      "bap": 5,
+      "status": "OK",
+      "code": 8
+    },
+    {
+      "f32_word": "3dcccccd",
+      "bap": 6,
+      "status": "OK",
+      "code": 2
+    },
+    {
+      "f32_word": "3dcccccd",
+      "bap": 7,
+      "status": "OK",
+      "code": 3
+    },
+    {
+      "f32_word": "3dcccccd",
+      "bap": 8,
+      "status": "OK",
+      "code": 6
+    },
+    {
+      "f32_word": "3dcccccd",
+      "bap": 9,
+      "status": "OK",
+      "code": 13
+    },
+    {
+      "f32_word": "3dcccccd",
+      "bap": 10,
+      "status": "OK",
+      "code": 26
+    },
+    {
+      "f32_word": "3dcccccd",
+      "bap": 11,
+      "status": "OK",
+      "code": 51
+    },
+    {
+      "f32_word": "3dcccccd",
+      "bap": 12,
+      "status": "OK",
+      "code": 102
+    },
+    {
+      "f32_word": "3dcccccd",
+      "bap": 13,
+      "status": "OK",
+      "code": 205
+    },
+    {
+      "f32_word": "3dcccccd",
+      "bap": 14,
+      "status": "OK",
+      "code": 819
+    },
+    {
+      "f32_word": "3dcccccd",
+      "bap": 15,
+      "status": "OK",
+      "code": 3277
+    },
+    {
+      "f32_word": "3e800000",
+      "bap": 0,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "3e800000",
+      "bap": 1,
+      "status": "OK",
+      "code": 1
+    },
+    {
+      "f32_word": "3e800000",
+      "bap": 2,
+      "status": "OK",
+      "code": 3
+    },
+    {
+      "f32_word": "3e800000",
+      "bap": 3,
+      "status": "OK",
+      "code": 4
+    },
+    {
+      "f32_word": "3e800000",
+      "bap": 4,
+      "status": "OK",
+      "code": 6
+    },
+    {
+      "f32_word": "3e800000",
+      "bap": 5,
+      "status": "OK",
+      "code": 9
+    },
+    {
+      "f32_word": "3e800000",
+      "bap": 6,
+      "status": "OK",
+      "code": 4
+    },
+    {
+      "f32_word": "3e800000",
+      "bap": 7,
+      "status": "OK",
+      "code": 8
+    },
+    {
+      "f32_word": "3e800000",
+      "bap": 8,
+      "status": "OK",
+      "code": 16
+    },
+    {
+      "f32_word": "3e800000",
+      "bap": 9,
+      "status": "OK",
+      "code": 32
+    },
+    {
+      "f32_word": "3e800000",
+      "bap": 10,
+      "status": "OK",
+      "code": 64
+    },
+    {
+      "f32_word": "3e800000",
+      "bap": 11,
+      "status": "OK",
+      "code": 128
+    },
+    {
+      "f32_word": "3e800000",
+      "bap": 12,
+      "status": "OK",
+      "code": 256
+    },
+    {
+      "f32_word": "3e800000",
+      "bap": 13,
+      "status": "OK",
+      "code": 512
+    },
+    {
+      "f32_word": "3e800000",
+      "bap": 14,
+      "status": "OK",
+      "code": 2048
+    },
+    {
+      "f32_word": "3e800000",
+      "bap": 15,
+      "status": "OK",
+      "code": 8192
+    },
+    {
+      "f32_word": "3f000000",
+      "bap": 0,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "3f000000",
+      "bap": 1,
+      "status": "OK",
+      "code": 2
+    },
+    {
+      "f32_word": "3f000000",
+      "bap": 2,
+      "status": "OK",
+      "code": 3
+    },
+    {
+      "f32_word": "3f000000",
+      "bap": 3,
+      "status": "OK",
+      "code": 5
+    },
+    {
+      "f32_word": "3f000000",
+      "bap": 4,
+      "status": "OK",
+      "code": 8
+    },
+    {
+      "f32_word": "3f000000",
+      "bap": 5,
+      "status": "OK",
+      "code": 11
+    },
+    {
+      "f32_word": "3f000000",
+      "bap": 6,
+      "status": "OK",
+      "code": 8
+    },
+    {
+      "f32_word": "3f000000",
+      "bap": 7,
+      "status": "OK",
+      "code": 16
+    },
+    {
+      "f32_word": "3f000000",
+      "bap": 8,
+      "status": "OK",
+      "code": 32
+    },
+    {
+      "f32_word": "3f000000",
+      "bap": 9,
+      "status": "OK",
+      "code": 64
+    },
+    {
+      "f32_word": "3f000000",
+      "bap": 10,
+      "status": "OK",
+      "code": 128
+    },
+    {
+      "f32_word": "3f000000",
+      "bap": 11,
+      "status": "OK",
+      "code": 256
+    },
+    {
+      "f32_word": "3f000000",
+      "bap": 12,
+      "status": "OK",
+      "code": 512
+    },
+    {
+      "f32_word": "3f000000",
+      "bap": 13,
+      "status": "OK",
+      "code": 1024
+    },
+    {
+      "f32_word": "3f000000",
+      "bap": 14,
+      "status": "OK",
+      "code": 4096
+    },
+    {
+      "f32_word": "3f000000",
+      "bap": 15,
+      "status": "OK",
+      "code": 16384
+    },
+    {
+      "f32_word": "3f400000",
+      "bap": 0,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "3f400000",
+      "bap": 1,
+      "status": "OK",
+      "code": 2
+    },
+    {
+      "f32_word": "3f400000",
+      "bap": 2,
+      "status": "OK",
+      "code": 4
+    },
+    {
+      "f32_word": "3f400000",
+      "bap": 3,
+      "status": "OK",
+      "code": 6
+    },
+    {
+      "f32_word": "3f400000",
+      "bap": 4,
+      "status": "OK",
+      "code": 9
+    },
+    {
+      "f32_word": "3f400000",
+      "bap": 5,
+      "status": "OK",
+      "code": 13
+    },
+    {
+      "f32_word": "3f400000",
+      "bap": 6,
+      "status": "OK",
+      "code": 12
+    },
+    {
+      "f32_word": "3f400000",
+      "bap": 7,
+      "status": "OK",
+      "code": 24
+    },
+    {
+      "f32_word": "3f400000",
+      "bap": 8,
+      "status": "OK",
+      "code": 48
+    },
+    {
+      "f32_word": "3f400000",
+      "bap": 9,
+      "status": "OK",
+      "code": 96
+    },
+    {
+      "f32_word": "3f400000",
+      "bap": 10,
+      "status": "OK",
+      "code": 192
+    },
+    {
+      "f32_word": "3f400000",
+      "bap": 11,
+      "status": "OK",
+      "code": 384
+    },
+    {
+      "f32_word": "3f400000",
+      "bap": 12,
+      "status": "OK",
+      "code": 768
+    },
+    {
+      "f32_word": "3f400000",
+      "bap": 13,
+      "status": "OK",
+      "code": 1536
+    },
+    {
+      "f32_word": "3f400000",
+      "bap": 14,
+      "status": "OK",
+      "code": 6144
+    },
+    {
+      "f32_word": "3f400000",
+      "bap": 15,
+      "status": "OK",
+      "code": 24576
+    },
+    {
+      "f32_word": "3f7fffff",
+      "bap": 0,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "3f7fffff",
+      "bap": 1,
+      "status": "OK",
+      "code": 2
+    },
+    {
+      "f32_word": "3f7fffff",
+      "bap": 2,
+      "status": "OK",
+      "code": 4
+    },
+    {
+      "f32_word": "3f7fffff",
+      "bap": 3,
+      "status": "ERROR",
+      "code": null
+    },
+    {
+      "f32_word": "3f7fffff",
+      "bap": 4,
+      "status": "OK",
+      "code": 10
+    },
+    {
+      "f32_word": "3f7fffff",
+      "bap": 5,
+      "status": "ERROR",
+      "code": null
+    },
+    {
+      "f32_word": "3f7fffff",
+      "bap": 6,
+      "status": "OK",
+      "code": 15
+    },
+    {
+      "f32_word": "3f7fffff",
+      "bap": 7,
+      "status": "OK",
+      "code": 31
+    },
+    {
+      "f32_word": "3f7fffff",
+      "bap": 8,
+      "status": "OK",
+      "code": 63
+    },
+    {
+      "f32_word": "3f7fffff",
+      "bap": 9,
+      "status": "OK",
+      "code": 127
+    },
+    {
+      "f32_word": "3f7fffff",
+      "bap": 10,
+      "status": "OK",
+      "code": 255
+    },
+    {
+      "f32_word": "3f7fffff",
+      "bap": 11,
+      "status": "OK",
+      "code": 511
+    },
+    {
+      "f32_word": "3f7fffff",
+      "bap": 12,
+      "status": "OK",
+      "code": 1023
+    },
+    {
+      "f32_word": "3f7fffff",
+      "bap": 13,
+      "status": "OK",
+      "code": 2047
+    },
+    {
+      "f32_word": "3f7fffff",
+      "bap": 14,
+      "status": "OK",
+      "code": 8191
+    },
+    {
+      "f32_word": "3f7fffff",
+      "bap": 15,
+      "status": "OK",
+      "code": 32767
+    },
+    {
+      "f32_word": "3f800000",
+      "bap": 0,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "3f800000",
+      "bap": 1,
+      "status": "OK",
+      "code": 2
+    },
+    {
+      "f32_word": "3f800000",
+      "bap": 2,
+      "status": "OK",
+      "code": 4
+    },
+    {
+      "f32_word": "3f800000",
+      "bap": 3,
+      "status": "ERROR",
+      "code": null
+    },
+    {
+      "f32_word": "3f800000",
+      "bap": 4,
+      "status": "OK",
+      "code": 10
+    },
+    {
+      "f32_word": "3f800000",
+      "bap": 5,
+      "status": "ERROR",
+      "code": null
+    },
+    {
+      "f32_word": "3f800000",
+      "bap": 6,
+      "status": "OK",
+      "code": 15
+    },
+    {
+      "f32_word": "3f800000",
+      "bap": 7,
+      "status": "OK",
+      "code": 31
+    },
+    {
+      "f32_word": "3f800000",
+      "bap": 8,
+      "status": "OK",
+      "code": 63
+    },
+    {
+      "f32_word": "3f800000",
+      "bap": 9,
+      "status": "OK",
+      "code": 127
+    },
+    {
+      "f32_word": "3f800000",
+      "bap": 10,
+      "status": "OK",
+      "code": 255
+    },
+    {
+      "f32_word": "3f800000",
+      "bap": 11,
+      "status": "OK",
+      "code": 511
+    },
+    {
+      "f32_word": "3f800000",
+      "bap": 12,
+      "status": "OK",
+      "code": 1023
+    },
+    {
+      "f32_word": "3f800000",
+      "bap": 13,
+      "status": "OK",
+      "code": 2047
+    },
+    {
+      "f32_word": "3f800000",
+      "bap": 14,
+      "status": "OK",
+      "code": 8191
+    },
+    {
+      "f32_word": "3f800000",
+      "bap": 15,
+      "status": "OK",
+      "code": 32767
+    },
+    {
+      "f32_word": "40000000",
+      "bap": 0,
+      "status": "OK",
+      "code": 0
+    },
+    {
+      "f32_word": "40000000",
+      "bap": 1,
+      "status": "OK",
+      "code": 2
+    },
+    {
+      "f32_word": "40000000",
+      "bap": 2,
+      "status": "OK",
+      "code": 4
+    },
+    {
+      "f32_word": "40000000",
+      "bap": 3,
+      "status": "OK",
+      "code": 2
+    },
+    {
+      "f32_word": "40000000",
+      "bap": 4,
+      "status": "OK",
+      "code": 10
+    },
+    {
+      "f32_word": "40000000",
+      "bap": 5,
+      "status": "OK",
+      "code": 6
+    },
+    {
+      "f32_word": "40000000",
+      "bap": 6,
+      "status": "OK",
+      "code": 15
+    },
+    {
+      "f32_word": "40000000",
+      "bap": 7,
+      "status": "OK",
+      "code": 31
+    },
+    {
+      "f32_word": "40000000",
+      "bap": 8,
+      "status": "OK",
+      "code": 63
+    },
+    {
+      "f32_word": "40000000",
+      "bap": 9,
+      "status": "OK",
+      "code": 127
+    },
+    {
+      "f32_word": "40000000",
+      "bap": 10,
+      "status": "OK",
+      "code": 255
+    },
+    {
+      "f32_word": "40000000",
+      "bap": 11,
+      "status": "OK",
+      "code": 511
+    },
+    {
+      "f32_word": "40000000",
+      "bap": 12,
+      "status": "OK",
+      "code": 1023
+    },
+    {
+      "f32_word": "40000000",
+      "bap": 13,
+      "status": "OK",
+      "code": 2047
+    },
+    {
+      "f32_word": "40000000",
+      "bap": 14,
+      "status": "OK",
+      "code": 8191
+    },
+    {
+      "f32_word": "40000000",
+      "bap": 15,
+      "status": "OK",
+      "code": 32767
+    }
+  ],
+  "grouping_case": {
+    "input_items": [
+      [
+        1,
+        0
+      ],
+      [
+        6,
+        17
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        4,
+        10
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        5,
+        9
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        4,
+        6
+      ],
+      [
+        15,
+        65535
+      ]
+    ],
+    "emitted_fields": [
+      [
+        0,
+        7,
+        5
+      ],
+      [
+        1,
+        17,
+        5
+      ],
+      [
+        2,
+        103,
+        7
+      ],
+      [
+        3,
+        110,
+        7
+      ],
+      [
+        5,
+        9,
+        4
+      ],
+      [
+        10,
+        71,
+        7
+      ],
+      [
+        11,
+        65535,
+        16
+      ]
+    ],
+    "packed_msb_hex": "3c73ee98ffffe0",
+    "packed_bit_length": 51
+  },
+  "crc_case": {
+    "payload_hex": "0b7700007ff03f10a55ac33c",
+    "crc_be_hex": "ee79",
+    "residual": 0
+  },
+  "main_search_cases": [
+    {
+      "case": "all_feasible",
+      "visited": [
+        16,
+        400,
+        592,
+        688,
+        736,
+        760,
+        772,
+        778,
+        781,
+        782,
+        783
+      ],
+      "best": 783
+    },
+    {
+      "case": "threshold_527",
+      "visited": [
+        16,
+        400,
+        592,
+        496,
+        544,
+        520,
+        532,
+        526,
+        529,
+        527,
+        528
+      ],
+      "best": 527
+    },
+    {
+      "case": "none_feasible",
+      "visited": [
+        16,
+        400,
+        208,
+        112,
+        64,
+        40,
+        28,
+        22,
+        19,
+        17
+      ],
+      "best": null
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "f12-mantissa-quantizer-manifest.v1",
+  "package": "F12-MANTISSA-QUANTIZER",
+  "production_usable": "SLICE_ONLY",
+  "implementation_ready": "NO",
+  "files": [
+    {
+      "path": "SCOPE.md",
+      "bytes": 891,
+      "sha256": "c1603bbd337586ac645d0106be9adde50652d6977c42701bec566b0253b5ab8f"
+    },
+    {
+      "path": "PROVENANCE.json",
+      "bytes": 1269,
+      "sha256": "4f845f0a390768d1661b77b2dd08af5d8ca08e0dcc254d0a7e6d9985673aa1b1"
+    },
+    {
+      "path": "SPEC-SELECTED-CODEC-WIRE.md",
+      "bytes": 14760,
+      "sha256": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448"
+    },
+    {
+      "path": "PARAMETERS-CODEC-WIRE-SELECTED.json",
+      "bytes": 3081,
+      "sha256": "a7a0a721a9e515d197a2d12fc0c9cb942b2b393f9019383a66ce2635f7aaa0dd"
+    },
+    {
+      "path": "QUANTIZER-INPUT-VECTORS.json",
+      "bytes": 23808,
+      "sha256": "8333a23ccd093659dd0f4b296528a3f44120f78caf41546991ed9113ce14d017"
+    },
+    {
+      "path": "QUANTIZER-VERIFICATION.json",
+      "bytes": 989,
+      "sha256": "20a7f9743845391b3d2d1dd98940282ffcda5d8b058fc49b4d2950e98047ac5b"
+    },
+    {
+      "path": "LOCAL-REVIEW-STATUS.json",
+      "bytes": 7247,
+      "sha256": "f3655d4433e8b8e8a9c4260c2c8c4f59d9751ca689998fced6829a4775977225"
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "schema": "codec-wire-selected-local-review-status.v1",
+  "revision": "r2b",
+  "review_target": "review-input-v0.3.0-codec-wire-selected-r2b",
+  "supersedes": [
+    "codec-wire selected r1 local review",
+    "review-input-v0.3.0-codec-wire-selected-r2 (superseded before review)"
+  ],
+  "decision": {
+    "numeric_recomputation": "PASS",
+    "complete_frame_recomputation": "PASS",
+    "provider_identity_recomputation": "PASS",
+    "manual_static_review": "PASS_WITH_EXTERNAL_BLOCKERS",
+    "f12_supplied_fixture_boundary_ready": "YES",
+    "cross_module_production_ready": "NO",
+    "whole_package_implementation_ready": "NO",
+    "numeric_does_not_override_manual": true
+  },
+  "input_integrity": {
+    "manifest_sha256": "4bb2157a7c068e1c7e1f85876e50f5bca4199ca349cb1b46878a14d5f2c177c5",
+    "manifest_match": true,
+    "manifest_entries": 38,
+    "read_set_files_including_manifest": 39,
+    "all_manifest_entry_sizes_and_hashes_match": true,
+    "cross_module_provider_manifest_sha256": "67b5d997be1ddcfe911612072c27bb751502a84c07597d628a2d4f284851dd37",
+    "cross_module_provider_files": 25,
+    "cross_module_provider_identities_matching": 25,
+    "prohibited_material_read": false,
+    "research_source_model_dll_or_other_checker_read": false,
+    "os_allowlist": "NOT_ENFORCED"
+  },
+  "review_artifacts": {
+    "checker_sha256": "4ae52cb69c17c6151c9ed36cdd03715235c2ac8b1af4d18bcd1526f92c165623",
+    "checker_result_sha256": "f1fb937b82087e6eebaedeb9292efc55106ce128cfdf0b9925734ff51973277d",
+    "review_json_sha256": "f6a08146b768cfa29039d4e5d680f1cd1788b47edbcfa051eb011c6812feebf9",
+    "review_markdown_sha256": "969f9be99d1bac2ac2487d38ce4393ce2ddc94cc24ece4d5cf9e21b0434fc4d6",
+    "expected_loaded_after_actual": true
+  },
+  "evidence": {
+    "quantizer_cases": 208,
+    "quantizer_exact_matches": 208,
+    "quantizer_sentinel_error_cases": 4,
+    "quantizer_sentinel_baps": [3, 5],
+    "grouping_input_items": 12,
+    "grouping_emitted_fields": 7,
+    "grouping_emitted_bits": 51,
+    "grouping_packed_msb_hex": "3c73ee98ffffe0",
+    "standalone_crc_vectors": 1,
+    "standalone_crc_be_hex": "ee79",
+    "standalone_crc_residual": 0,
+    "abstract_search_vectors": 3,
+    "complete_frames": 4,
+    "complete_frame_exact_matches": 4,
+    "frame_bytes_each": 4096,
+    "complete_frame_crc_residual_zero": 4,
+    "distinct_main_converter_code_cases": 4,
+    "short_syntax_omitted_cases": 1,
+    "short_syntax_present_cases": 3,
+    "failed_trials_observed": 25,
+    "failed_trial_state_commit_count": 0,
+    "successful_source_state_commit_count": 4,
+    "pretrial_512_byte_payload_rejections": 1,
+    "pretrial_rejection_trial_count": 0,
+    "pretrial_rejection_state_commit_count": 0,
+    "emdf_mode_vectors": 2,
+    "emdf_mode_vector_exact_matches": 2,
+    "paired_semantic_audio_match": true,
+    "paired_semantic_audio_bit_length": 32487,
+    "paired_semantic_audio_sha256": "f723c2dda166cc02697fbfecf11cd02bd30402d2c808f11cb5ff331839bf26a0",
+    "paired_complete_frame_hashes_differ": true,
+    "actual_keyless_joc_fixture_bytes": 288,
+    "actual_keyless_joc_fixture_sha256": "d268feb0981c2119e0d88c3152c42e8b82000d6a0f0a2446a899d92e10298ce1",
+    "transient_provider_words": 33,
+    "transient_provider_bytes": 132,
+    "transient_provider_canonical_sha256": "05bd7906942e0d786a4e31bcd7ca4352b1bb41d63e30e14b723c1c6ab4f86eee",
+    "policy_provider_scalars": 19,
+    "policy_provider_bytes": 76,
+    "policy_provider_canonical_sha256": "3dd2300224d0e459d1c4353fa2fc809f8c188775031f6a74cc64bbb1694fdc29",
+    "exponent_refresh_entries": 32,
+    "exponent_refresh_bytes": 64,
+    "exponent_refresh_canonical_sha256": "a0e75dafa9f3c1627ec36351ed857711c5a79f60fd7fda0b9f988f0505a4a070"
+  },
+  "frame_results": [
+    {
+      "case_id": "all_long_no_payload",
+      "candidate": 422,
+      "failed_trials": 5,
+      "used_bits_before_padding": 31751,
+      "frame_sha256": "36d662ab12881ee58ff032c76486d165cd92a8c26c44285a3ec98c5367cf6395",
+      "crc_residual": 0
+    },
+    {
+      "case_id": "mixed_short_actual_keyless_joc",
+      "candidate": 414,
+      "failed_trials": 6,
+      "used_bits_before_padding": 32548,
+      "frame_sha256": "ddabcde5638c579ff598f426304fa67a6e5cee3fbde7320ddaf0ad40a83d4fa0",
+      "crc_residual": 0
+    },
+    {
+      "case_id": "deployed_compat_synthetic_carrier",
+      "candidate": 424,
+      "failed_trials": 7,
+      "used_bits_before_padding": 32686,
+      "frame_sha256": "9a1aa510e5a2ef7cfbf4d3e20cfe34030f3ef08f7bf11da777fd9e45578e1647",
+      "crc_residual": 0
+    },
+    {
+      "case_id": "etsi_emdf_synthetic_carrier",
+      "candidate": 424,
+      "failed_trials": 7,
+      "used_bits_before_padding": 32710,
+      "frame_sha256": "da64b6b742dc232ccb58deb53eb7c4fe6be141a18c71313f6b3fcdf9b22eba7b",
+      "crc_residual": 0
+    }
+  ],
+  "prior_issue_disposition": [
+    {"id": "CW-R1-001", "status": "CLOSED"},
+    {"id": "CW-R1-002", "status": "CLOSED"},
+    {"id": "CW-R1-003", "status": "CLOSED_FOR_F12_BOUNDARY"},
+    {"id": "CW-R1-004", "status": "CLOSED_FOR_IDENTITY_AND_BOUNDARY_BINDING_ONLY"},
+    {"id": "CW-R1-005", "status": "CLOSED_FOR_LOCAL_SYNTHETIC_SCOPE"}
+  ],
+  "external_blockers": [
+    {
+      "id": "R2B-001",
+      "module": "F06",
+      "status": "BLOCKER",
+      "reason": "Complete meter/getter and none-DRC secondary production from OWN audio remain partial; supplied BSI/DRC are boundary fixtures."
+    },
+    {
+      "id": "R2B-002",
+      "module": "F08",
+      "status": "BLOCKER",
+      "reason": "The math-generated transform provider has not run new encoded audio or JOC render; zero-spectrum frame fixtures do not validate declared window/LFE differences."
+    },
+    {
+      "id": "R2B-003",
+      "module": "F13",
+      "status": "BLOCKER",
+      "reason": "Production ID11/ID2/ID14 bodies and ID1 period assets remain incomplete; mode vectors use synthetic bodies and do not validate JOC render."
+    },
+    {
+      "id": "R2B-004",
+      "module": "whole pipeline",
+      "status": "BLOCKER",
+      "reason": "No fresh actual OWN 4249-source to 4247-AU decode/CRC/JOC/spatial replay was performed."
+    }
+  ],
+  "reviewed_freeze_bindings": [
+    {"file": "specs/12-selected-codec-wire.md", "sha256": "5779c9b12c9c4f225f8f0f9c29904f559cefdbf5c5f9f390e3b3309306ad5908"},
+    {"file": "specs/12-codec-and-wire.md", "sha256": "221444d37ff152c7f8bbb33a9013c78f65e7f4953b8c427c4c82300ead269c5d"},
+    {"file": "parameters/codec-wire-cross-module-providers-v1.json", "sha256": "67b5d997be1ddcfe911612072c27bb751502a84c07597d628a2d4f284851dd37"},
+    {"file": "test-vectors/CODEC-WIRE-COMPLETE-FRAME-INPUT-VECTORS.json", "sha256": "698c2ec69a8250251a3b3295ce135d1178079a5a2750a9ea5381c4e688db527a"},
+    {"file": "test-vectors/CODEC-WIRE-COMPLETE-FRAME-VERIFICATION.json", "sha256": "4615b59e39dfd1606f205e833b95f3f99b135c502ad15f5b8ebd94c7f7261fff"},
+    {"file": "test-vectors/CODEC-WIRE-EMDF-MODE-INPUT-VECTORS.json", "sha256": "aa18b1bffacfc665b19dd12c279896118e1ddad9f0d7169da245f6cc876404b8"}
+  ],
+  "scope": "Selected F12 supplied-fixture boundary only. This record does not certify F06/F08/F13 production, actual ADM/JOC generation, decoder compatibility, spatial render, or whole-programme execution.",
+  "implementation_ready": "NO"
+}

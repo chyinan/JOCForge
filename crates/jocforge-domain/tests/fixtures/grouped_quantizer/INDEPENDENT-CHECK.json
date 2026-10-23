@@ -1,0 +1,10 @@
+{
+  "schema": "f12-grouped-quantizer-local-check.v2",
+  "manifest_sha256": "59d070c4678fcf3a4d63d6e9d746c454a59050ba0dc8fdb14fa1c20cab642a96",
+  "payload_count": 5,
+  "all_payload_hashes_match": true,
+  "transition_contract_bound": true,
+  "out_of_domain_bap_not_claimed": true,
+  "caller_capacity_not_closed": true,
+  "whole_status_not_ready": true
+}

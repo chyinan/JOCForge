@@ -2497,9 +2497,9 @@
       "sha256": "794c5980f2c6f29f8aad45768a6a8b14e4fc1992b2715171a5f747afdaf4f05b"
     },
     {
-      "bytes": 2206,
+      "bytes": 2464,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "4559a9054f74e51a5436681b6362b292248476262ca1dd94b6496d2f0f79a9b6"
+      "sha256": "9e01e235ef2e9c5925a54fadcfbc3357da6a014794b900fd340ac0e03744ff35"
     },
     {
       "bytes": 2290,
@@ -2626,9 +2626,9 @@
         "sha256": "911be2413816ebe1fde51ceda0066e9c088f92ae7c8b045cee49aac37540ec7d"
       },
       {
-        "bytes": 2206,
+        "bytes": 2464,
         "path": "crates/jocforge-domain/src/spatial/mod.rs",
-        "sha256": "4559a9054f74e51a5436681b6362b292248476262ca1dd94b6496d2f0f79a9b6"
+        "sha256": "9e01e235ef2e9c5925a54fadcfbc3357da6a014794b900fd340ac0e03744ff35"
       },
       {
         "bytes": 9428,
@@ -4039,9 +4039,9 @@
       "sha256": "b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"
     },
     {
-      "bytes": 2206,
+      "bytes": 2464,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "4559a9054f74e51a5436681b6362b292248476262ca1dd94b6496d2f0f79a9b6"
+      "sha256": "9e01e235ef2e9c5925a54fadcfbc3357da6a014794b900fd340ac0e03744ff35"
     }
   ],
   "implementation_prohibitions": [
@@ -4416,9 +4416,9 @@
       "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"
     },
     {
-      "bytes": 2206,
+      "bytes": 2464,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "4559a9054f74e51a5436681b6362b292248476262ca1dd94b6496d2f0f79a9b6"
+      "sha256": "9e01e235ef2e9c5925a54fadcfbc3357da6a014794b900fd340ac0e03744ff35"
     }
   ],
   "implementation_prohibitions": [
@@ -4829,9 +4829,9 @@
       "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"
     },
     {
-      "bytes": 2206,
+      "bytes": 2464,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "4559a9054f74e51a5436681b6362b292248476262ca1dd94b6496d2f0f79a9b6"
+      "sha256": "9e01e235ef2e9c5925a54fadcfbc3357da6a014794b900fd340ac0e03744ff35"
     }
   ],
   "implementation_prohibitions": [
@@ -5198,9 +5198,9 @@
       "sha256": "9184b8ca22b5ed89082a92e3027b74c13d7e5424c4504598c3e71c239f2beeaa"
     },
     {
-      "bytes": 2206,
+      "bytes": 2464,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "4559a9054f74e51a5436681b6362b292248476262ca1dd94b6496d2f0f79a9b6"
+      "sha256": "9e01e235ef2e9c5925a54fadcfbc3357da6a014794b900fd340ac0e03744ff35"
     }
   ],
   "implementation_prohibitions": [
@@ -8679,10 +8679,35 @@
 
 | slice_id | planned_phase | scope | implementation_files | test_modules | status |
 |---|---|---|---|---|---|
+| F03G/target-slot-install | Phase 3 | Explicit prior 15-slot state and selected XYZ/ID/attribute proposal to original row-major cost words, exact n-pass greedy tie order, and complete next-state projection. Empty selection preserves old state. Constructor, source gate, selector, projection/fit producers, marker/history, parent commit, and product integration are excluded. | `crates/jocforge-domain/src/spatial/mod.rs`<br>`crates/jocforge-domain/src/spatial/target_slot_install.rs` | `crates/jocforge-domain/tests/target_slot_install.rs` | LOCALLY_VERIFIED_F03G_2_4_COST_GREEDY_MAPPING_AND_STATE_PROJECTION |
+| F03C/candidate-selector | Phase 3 | Cold candidate selector over explicit feature/position/response/width/attribute/previous-ID inputs; affinity/complement, fixed Q/T/W, previous-ID boost, slot gate, tie resolution, feature/coverage/support updates, survivor compression, and selected output diagnostics. | `crates/jocforge-domain/src/spatial/mod.rs`<br>`crates/jocforge-domain/src/spatial/candidate_selector.rs` | `crates/jocforge-domain/tests/candidate_selector.rs` | LOCALLY_VERIFIED_COLD_CANDIDATE_SELECTION__FEATURE_AND_TARGET_PRODUCERS_DEFERRED |
+| F03C/selector-score-choice | Phase 3 | Stateless primary maximum, 0.01 F32 tie window, and earliest secondary-maximum selection over explicit same-length primary/secondary score arrays. | `crates/jocforge-domain/src/spatial/candidate_selector.rs` | `crates/jocforge-domain/tests/candidate_selector.rs` | LOCALLY_VERIFIED_PRIMARY_WINDOW_AND_SECONDARY_TIE_PRIMITIVE |
+| F03C/selector-pairwise-affinity | Phase 3 | Stateless ordered pairwise affinity from explicit positions, attributes, and widths; preserves candidate-column width asymmetry and selected trigonometric route. | `crates/jocforge-domain/src/spatial/candidate_selector.rs` | `crates/jocforge-domain/tests/candidate_selector.rs` | LOCALLY_VERIFIED_ORDERED_WIDTH_ASYMMETRIC_AFFINITY_PRIMITIVE |
+| F03U/u04-membership-projection | Phase 3 | Stateless F03U.4/.5 projection from explicit source XYZ/weights, target XYZ/attributes and gain[N][T]; two reciprocal normalization layers, F32 projection, and exact protected-anchor preservation. Gain/weights/geometry are caller-supplied. | `crates/jocforge-domain/src/spatial/mod.rs`<br>`crates/jocforge-domain/src/spatial/u04_projection.rs` | `crates/jocforge-domain/tests/u04_projection.rs` | LOCALLY_VERIFIED_TWO_LAYER_U04_PROJECTION__GEOMETRY_AND_INSTALL_DEFERRED |
+| F03U/u04-refinement-admission-gate | Phase 3 | Stateless F03U.1 caller gate: only CAPACITY_REACHED triggers refinement; CANDIDATES_EXHAUSTED preserves initial positions even with count 15. Does not run refinement. | `crates/jocforge-domain/src/spatial/u04_projection.rs` | `crates/jocforge-domain/tests/u04_projection.rs` | LOCALLY_VERIFIED_SELECTOR_STATUS_ADMISSION_GATE__REFINEMENT_DEFERRED |
+| F03N/rectangular-nnls-solver | Phase 3 | Stateless 15-row, 1..=15-column F32 matrix plus F32 response to F64 nonnegative solution, R32 seed, active-set diagnostics, and SOLVED/ITERATION_LIMIT status. No F03S outer solver, selector, U04, context/response producer, warm state, parent transaction, or n=0 outer skip integration. | `crates/jocforge-domain/src/spatial/rectangular_nnls.rs` | `crates/jocforge-domain/tests/rectangular_nnls.rs`<br>`crates/jocforge-domain/src/spatial/rectangular_nnls/tests.rs` | LOCALLY_VERIFIED_COLD_RECTANGULAR_NNLS__OUTER_AND_PRODUCERS_DEFERRED |
+| F03S/outer-coefficient-postprocess | Phase 3 | Stateless F03S.5 strict floor, sequential R32 total, dominance comparison, earliest-maximum tie, and one-hot cap. Does not run F03S.1-.4 or any solver/geometry/outer pipeline. | `crates/jocforge-domain/src/spatial/outer_postprocess.rs` | `crates/jocforge-domain/tests/outer_postprocess.rs` | LOCALLY_VERIFIED_F03S_5_FLOOR_DOMINANCE_AND_TIE_RULES__OUTER_DEFERRED |
+| F03S/outer-energy-fallback | Phase 3 | Stateless F03S.2 projection/energy branch, threshold and fallback scale. Active cases return the input seed unchanged for branch diagnostics only; fallback scales the seed and calls the existing F03S.5 postprocess. No F03S.3/.4 active correction. | `crates/jocforge-domain/src/spatial/mod.rs`<br>`crates/jocforge-domain/src/spatial/outer_energy_fallback.rs`<br>`crates/jocforge-domain/src/spatial/outer_postprocess.rs` | `crates/jocforge-domain/tests/outer_energy_fallback.rs`<br>`crates/jocforge-domain/tests/outer_postprocess.rs` | LOCALLY_VERIFIED_F03S_2_BRANCH_AND_FALLBACK_DIAGNOSTICS__ACTIVE_ROUTE_DEFERRED |
+| F03S/outer-geometric-correction | Phase 3 | Stateless F03S.3 target/source XYZ geometry, distance/flag diagonal penalty, B/L/H construction, lower F32 Cholesky, ordered forward/back substitution, and nonnegative correction. No F03S.4 active update or outer pipeline. | `crates/jocforge-domain/src/spatial/mod.rs`<br>`crates/jocforge-domain/src/spatial/outer_geometric_correction.rs` | `crates/jocforge-domain/tests/outer_geometric_correction.rs` | LOCALLY_VERIFIED_F03S_3_F32_GEOMETRY_SYSTEM_AND_CORRECTION__ACTIVE_UPDATE_DEFERRED |
+| F03S/outer-active-update | Phase 3 | Stateless F03S.4 active quadratic-energy update from explicit context/response/seed/correction inputs. Returns discriminant, step, scaled seed, and output; does not generate correction, choose branch, run NNLS, or apply floor/prune. | `crates/jocforge-domain/src/spatial/mod.rs`<br>`crates/jocforge-domain/src/spatial/outer_active_update.rs` | `crates/jocforge-domain/tests/outer_active_update.rs` | LOCALLY_VERIFIED_F03S_4_DISCRIMINANT_STEP_AND_OUTPUT__OUTER_DEFERRED |
+| F03S/outer-empty-matrix-skip | Phase 3 | F03S.1 n=0 branch only: validate the explicit source-call order and return a zero-row/48-column matrix without reading response/XYZ or invoking NNLS. Nonempty target matrix production is excluded. | `crates/jocforge-domain/src/spatial/mod.rs`<br>`crates/jocforge-domain/src/spatial/outer_empty_matrix.rs` | `crates/jocforge-domain/tests/outer_empty_matrix.rs` | LOCALLY_VERIFIED_N_ZERO_EMPTY_MATRIX_SKIP__NONEMPTY_OUTER_DEFERRED |
+| F05Q/quantized-huffman-body-writer | Phase 4 | Already-quantized coefficient and selected-channel inputs to exact F05Q Huffman body bits, including codebook selection, reset rules, position deltas, MSB-first writes, padding, and local capacity checks. Excludes fit/quantizer, retry, header/body composition, parent commit, and whole JOC integration; the selected ID14 header/body writer is tracked separately. | `crates/jocforge-domain/src/joc/huffman.rs` | `crates/jocforge-domain/tests/huffman_codebooks.rs` | LOCALLY_VERIFIED_BODY_BITS__SECTION_PRODUCER_AND_PARENT_DEFERRED |
+| F05Q/id14-header-body-writer | Phase 4 | Selected ID14 writer controls, descriptor bit fields, body splice, optional extension trailer, padding, writer return code, status word, output length, and attempt-buffer partial writes. This is not the full upstream section producer or whole ID14 transaction. | `crates/jocforge-domain/src/joc/huffman/id14_header.rs` | `crates/jocforge-domain/tests/id14_header_framing.rs` | LOCALLY_VERIFIED_SELECTED_ID14_WRITER__UPSTREAM_AND_PARENT_DEFERRED |
+| F05QH/huffman-codebook-table-provider | Phase 4 | Six hash-pinned codebooks, structural validation, MSB-first table-level encoding/decoding, and local transactional writer/reader primitives. F05Q consumer mapping is tracked as a separate direct slice; no F05Q section framing, parent commit, or full JOC integration. | `crates/jocforge-domain/src/joc/huffman.rs` | `crates/jocforge-domain/tests/huffman_codebooks.rs` | LOCALLY_VERIFIED_SIX_CODEBOOKS_AND_LOCAL_BITSTREAM_PRIMITIVES__OPENJOC_REPLAY_NOT_RUN |
 | F05JL/synthetic-coordinator-receipt-validation | Phase 4 | Test-only validator for six caller-provided synthetic stage receipts and the final ID14 body. It validates canonical material, provider bindings, shapes, generation/owner tokens, upstream chain and body identity; it executes no producer and commits no JOC state. | `crates/jocforge-domain/Cargo.toml`<br>`crates/jocforge-domain/src/joc/mod.rs`<br>`crates/jocforge-domain/src/joc/synthetic_coordinator.rs` | `crates/jocforge-domain/src/joc/synthetic_coordinator.rs` | LOCALLY_VERIFIED_INPUT_ONLY_SYNTHETIC_RECEIPT_VALIDATOR__NO_PRODUCERS_OR_STATE_COMMIT |
 | F05O/oamd-rowdata-body-encoder | Phase 4 | Stateless F05O integer XYZ wire-code conversion, escaped integer encode/decode, rowdata payload encoding, and one-rowdata-section OAMD body encoding. This does not complete the F05O functional ID. | `crates/jocforge-domain/src/joc/oamd.rs`<br>`crates/jocforge-domain/src/joc/oamd/rowdata.rs` | `crates/jocforge-domain/tests/oamd_rowdata.rs` | LOCALLY_VERIFIED_ENCODER_ONLY__F05T_TRIM_AND_F05L_LIVE_PRODUCER_DEFERRED |
 | F05O/oamd-single-rowdata-body-decoder | Phase 4 | Stateless F05O body decoding for a self-described header and exactly one unprotected rowdata section, including single-frame timing and row projections through caller-supplied PG06 XY/Z tables. | `crates/jocforge-domain/src/joc/oamd.rs`<br>`crates/jocforge-domain/src/joc/oamd/body_reader.rs` | `crates/jocforge-domain/tests/oamd_body_read.rs` | LOCALLY_VERIFIED_SINGLE_ROW_DATA_BODY_DECODER_ONLY__OTHER_LAYOUTS_DEFERRED |
 | F05O/single-frame-oamd-body-assembler | Phase 4 | Stateless encode/decode of one self-described OAMD body with exactly one rowdata section followed by one Type11 trim section from caller-resolved metadata. This does not complete F05O or F05L. | `crates/jocforge-domain/src/joc/oamd.rs`<br>`crates/jocforge-domain/src/joc/oamd/body_assembler.rs`<br>`crates/jocforge-domain/src/joc/oamd/body_reader.rs`<br>`crates/jocforge-domain/src/joc/oamd/rowdata.rs`<br>`crates/jocforge-domain/src/joc/oamd/trim_section.rs` | `crates/jocforge-domain/tests/oamd_body_assembler.rs` | LOCALLY_VERIFIED_SINGLE_FRAME_ASSEMBLER__FULL_F05O_F05L_DEFERRED |
 | F05T/trim-section-codec | Phase 4 | Pure Type11 trim-body encode/decode plus DBMD section framing and selected default-trim projection from sections 9 and 10. This does not complete F05T or integrate the trim body into F05O section assembly. | `crates/jocforge-domain/src/joc/oamd.rs`<br>`crates/jocforge-domain/src/joc/oamd/trim_section.rs` | `crates/jocforge-domain/tests/trim_section_codec.rs` | LOCALLY_VERIFIED_TRIM_SECTION_CODEC_AND_MINIMAL_DBMD_PROJECTION__FULL_F05T_DEFERRED |
+| F06L/ordered-log-energy-peak-accumulator-window-and-reduction | Phase 5 | Direct-vector verification of existing pure ordered-log, energy_metric, sample-peak, and true-peak metric functions plus F06L.7 normalized-energy accumulation, F06L.8 window-end normalization, and F06L.9 stateless ordered reduction. Does not add a duplicate log/peak network, maintain meter-window state, or run FIR or K-weighting. | `crates/jocforge-domain/src/meter/true_peak.rs`<br>`crates/jocforge-domain/src/meter/truepeak_log_parameters.json` | `crates/jocforge-domain/src/meter/true_peak/tests.rs` | LOCALLY_VERIFIED_F06L_LOG_ENERGY_SAMPLE_TRUE_PEAK_ACCUMULATOR_WINDOW_AND_REDUCTION__WHOLE_METER_DEFERRED |
+| F06I/integrated-meter-synthetic-state-and-event-transition | Phase 5 | Selected fixed 48 kHz F06I period, cold/reset 24,512-byte state, ordered energy-pair appends, 20-pair event, recent-group movement, histogram/bin update, absolute gate, and result. Tests ten synthetic schedules plus seven bin cases against complete state hashes. Excludes the five F06W schedule cases, historical real-music inputs, F06U getter/fallback, frontend/ADM, and whole meter. | `crates/jocforge-domain/src/meter/mod.rs`<br>`crates/jocforge-domain/src/meter/integrated_meter.rs`<br>`crates/jocforge-domain/src/meter/true_peak.rs`<br>`crates/jocforge-domain/src/meter/truepeak_log_parameters.json` | `crates/jocforge-domain/tests/integrated_meter_state.rs` | LOCALLY_VERIFIED_F06I_SYNTHETIC_STATE_EVENTS_AND_BIN_MAPPING__METER_CLOCK_AND_INTEGRATION_DEFERRED |
+| F06W/meter-output-sample-accounting-and-span-ledger | Phase 5 | F06W.1/.2 only: stateless normal/drain callback span accounting, startup/pending/processed invariants, 1536-sample output padding, complete-1024 PCM consumption count, and count-only complete-960 window/remainder totals. Does not consume PCM or execute F06W.3 K-filter/F06W.4 power sum/F06W.5 six-lane window state or emit F06I records. | `crates/jocforge-domain/src/meter/mod.rs`<br>`crates/jocforge-domain/src/meter/output_schedule.rs` | `crates/jocforge-domain/tests/meter_output_schedule.rs` | LOCALLY_VERIFIED_F06W_1_2_SYNTHETIC_SPANS_AND_SAMPLE_COUNTS__WINDOW_STATE_DEFERRED |
+| F06KG/selected-k-matrix-provider-generator | Phase 5 | Selected 48 kHz modern two-stage exact-rational K-matrix generator, 64 matrix words, eight cold words, and selected state-bound values. It does not implement F06W.3/.4 sample consumption, windowing, meter output, audio frontend, or whole F06. | `crates/jocforge-domain/src/meter/k_matrix.rs`<br>`crates/jocforge-domain/src/meter/k_matrix_parameters.json`<br>`crates/jocforge-domain/src/meter/k_matrix_bounds.json` | `crates/jocforge-domain/tests/k_matrix_provider.rs` | LOCALLY_VERIFIED_EXACT_RATIONAL_MATRIX_AND_BOUNDS_PROVIDER__CONSUMER_DEFERRED |
+| F06TP/selected-six-channel-true-peak-block-cascade | Phase 5 | Selected six-channel 48 kHz/1024-sample block only: authorized 12-tap coefficients, 12-tap FIR, two-stage 4x interpolation, LFE ordinal-3 bypass, complete per-lane FIR history, per-block sample/true-peak metrics, and programme maxima. No frontend, sample-window scheduler, full F06 meter, or product chain. | `crates/jocforge-domain/src/meter/true_peak.rs`<br>`crates/jocforge-domain/src/meter/truepeak_parameters.json`<br>`crates/jocforge-domain/src/meter/truepeak_log_parameters.json` | `crates/jocforge-domain/src/meter/true_peak/tests.rs` | LOCALLY_VERIFIED_AUTHORIZED_4X_CASCADE_STATE_AND_LOCAL_PEAKS__FRONTEND_DEFERRED |
+| F06U/ungated-single-slot-mean-and-di-off-getter | Phase 5 | Fixed period-one/capacity-one F06U admission, mean update, normalized event result, full eight-field state projection, and selected 1770-4 DI-off getter. Consumes explicit energy mantissa/exponent pairs. Reuses the selected F06L log network only; no meter frontend, F06I integrated state, F06W scheduling, K/FIR processing, measurement owner, source/AU parent, or full none-DRC path. | `crates/jocforge-domain/src/meter/mod.rs`<br>`crates/jocforge-domain/src/meter/ungated_mean.rs`<br>`crates/jocforge-domain/src/meter/true_peak.rs`<br>`crates/jocforge-domain/src/meter/truepeak_log_parameters.json` | `crates/jocforge-domain/tests/ungated_mean.rs` | LOCALLY_VERIFIED_F06U_SINGLE_SLOT_MEAN_AND_DI_OFF_SELECTION__INTEGRATED_METER_DEFERRED |
+| F09LB/selected-lfe-gate-and-mantissa-boundary | Phase 6 | Selected-profile gate zero producer, shared finite-F32 PRIMARY/LFE strict clip and raw-exponent scan, and atomic staged seven-word LFE row/exponent commit, retire, and reset seam. F10.4 LFE normalization and full F09/F10 planning are excluded. | `crates/jocforge-domain/src/codec/mantissa.rs` | `crates/jocforge-domain/tests/lfe_mantissa_boundary.rs` | LOCALLY_VERIFIED_SELECTED_GATE_CLIP_EXPONENT_AND_STAGED_ROW__F10_NORMALIZER_DEFERRED |
+| F12/grouped-quantizer-helper | Phase 6 | Internal-only valid BAP1/2/4 grouped quantizer helper. It reserves item widths, compacts completed groups in place, and flushes only existing reservations. It does not implement caller capacity ownership, BAP values outside the selected domain, higher retry/rollback, producer identity, or full frame/EC3 behavior. | `crates/jocforge-domain/src/codec/grouped_quantizer.rs` | `crates/jocforge-domain/tests/grouped_quantizer.rs` | LOCALLY_VERIFIED_GROUPED_QUANTIZER_HELPER__WHOLE_F12_DEFERRED |
+| F12S/mantissa-quantizer | Phase 6 | Pure finite binary32 word plus BAP to mantissa code or candidate-local error for F12S.5. Input is already exponent-scaled; no transform, fit, exponent/BAP producer, grouping, trial search, bitstream/frame, programme state, or source/AU clock is implemented. | `crates/jocforge-domain/src/codec/mantissa.rs` | `crates/jocforge-domain/tests/mantissa_quantizer.rs` | LOCALLY_VERIFIED_STATELESS_MANTISSA_QUANTIZER__WHOLE_F12S_DEFERRED |
 | F13/selected-metadata-owner-source-stage | Phase 7 | Selected 48 kHz/1536-sample profile only: private timer and four-queue state, local source receipt, source2+ EMDF proposal, and EOF leaf proposal. No producer-side ID11/ID2/ID14 algorithms, complexity BSI, global callback receipt, or durable output. | `crates/jocforge-domain/src/joc/emdf/metadata_owner.rs`<br>`crates/jocforge-domain/src/joc/emdf/metadata_owner/timer.rs`<br>`crates/jocforge-domain/src/joc/emdf/metadata_owner/payload_queue.rs`<br>`crates/jocforge-domain/src/joc/emdf/metadata_owner/emdf_serializer.rs` | `crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs` | LOCALLY_VERIFIED_FOUR_QUEUE_TIMER_EMDF_AND_SOURCE_RECEIPT__GLOBAL_CALLBACK_BLOCKED |
+| F13D2/id2-profile-header-and-body-wire | Phase 7 | Stateless exact profile-label to ID2 U3-code mapping, strict local Type11 LFE-header read, and five-input ID2 body serialization to 21 valid bits/3 bytes. No live DRC producer, programme profile admission, complete Type11 validation, FIFO, EMDF container, source/AU clock, or programme transaction. | `crates/jocforge-domain/src/joc/emdf/id2_wire.rs` | `crates/jocforge-domain/tests/id2_wire.rs` | LOCALLY_VERIFIED_ID2_PROFILE_HEADER_AND_BODY_WIRE__PROGRAMME_PRODUCER_DEFERRED |
 | F14K/public-keyless-integrity-owner | Phase 7 | Public keyless CRC profile and its programme-local integrity owner only. Private authentication, native receipt wire format, CallbackTransaction integration, and other owner roots are excluded. | `crates/jocforge-domain/src/integrity/mod.rs`<br>`crates/jocforge-domain/src/integrity/crc16.rs`<br>`crates/jocforge-domain/src/integrity/keyless_checksum.rs`<br>`crates/jocforge-domain/src/integrity/programme_owner.rs` | `crates/jocforge-domain/src/integrity/programme_owner/tests.rs` | LOCALLY_VERIFIED_KEYLESS_PUBLIC_OWNER__PRIVATE_AUTH_BLOCKED |

@@ -1,0 +1,32 @@
+{
+  "schema": "f05qh-public-authorized-provenance.v1",
+  "user_authorized_public_repo_use": true,
+  "target_repository": "chyinan/JOCForge",
+  "license_clearance": "UNKNOWN",
+  "authorization_basis": "Explicit user instruction to use the Huffman tables in the public repository and accept publication responsibility.",
+  "normative_identity": {
+    "standard": "ETSI TS 103 420 V1.2.1 (2018-10)",
+    "clauses": ["6.6.3", "Annex A.1"],
+    "pdf_url": "https://www.etsi.org/deliver/etsi_ts/103400_103499/103420/01.02.01_60/ts_103420v010201p.pdf",
+    "companion_url": "https://www.etsi.org/deliver/etsi_ts/103400_103499/103420/01.02.01_60/ts_103420v010201p0.zip",
+    "companion_zip_sha256": "a79cf108c4529b7d9ca9525c871183a70b1732ed6df03a3d85b2f31be46eeced",
+    "companion_source_sha256": "4db8ae83e3c2e9269e88365be92a1a3ed6a9e6ee3851afac8ca03902723b1fcd"
+  },
+  "source_assets": {
+    "washed_parameter_sha256": "515d635adc6099493dfd27f787bdf2b9f19a4b4bb1180860b0e820a23fb5d5ae",
+    "washed_input_vectors_sha256": "e014850ec3dfe5be89a5dc9a45563d95532185410c182cfc51993f835f1fcf18",
+    "washed_consumer_vectors_sha256": "a444bb9dca33bc921cd0930a0f7bedb0160408247c2ec061adf9dfdb8037f79f",
+    "washed_verification_result_sha256": "99d7462acb03d54ae043737f2eb2fb07d16809e0ed512841685bca8e9c2cee11",
+    "washed_local_review_sha256": "55fd903c3332183579fbbb6ed9cf66c6afd10bbae4c8c0ae5fcab968cea3be2a",
+    "public_generated_copy_sha256": "77201e1e8c78aebe03431bcd29c9ae730a51d22feda52ded0e5ea11f52a44572",
+    "model_postcompare": "588_OF_588_MATCHED"
+  },
+  "verification_boundaries": {
+    "table_and_consumer_static_checks": "RECORDED_IN_INCLUDED_REVIEW_FILES",
+    "native_runtime": "NOT_RUN",
+    "openjoc_archive_import_replay": "NOT_RUN",
+    "whole_product_implementation_ready": false
+  },
+  "excluded": ["DLL", "IDA", "RVA", "pointer", "private_key", "HMAC", "raw_PCM", "private_research_files"]
+}
+

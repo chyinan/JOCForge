@@ -1,0 +1,10 @@
+{
+  "schema": "f12-mantissa-quantizer-check.v1",
+  "manifest_sha256": "2f50ddb6f894d26d3a87390b0fb5d48021afe90e4fa5e7cff976e02ae83e0ae5",
+  "payload_count": 7,
+  "all_payload_hashes_match": true,
+  "quantizer_cases": 208,
+  "exact_matches": 208,
+  "scope_is_stateless_only": true,
+  "whole_status_not_ready": true
+}

@@ -1,0 +1,185 @@
+{
+  "schema": "meter-di-off-getter-verification.v1",
+  "cases": [
+    {
+      "id": "valid_itu_0",
+      "input": {
+        "ITU_host": -24.0,
+        "metering_mode": "1770-4",
+        "dialogue_intelligence": false,
+        "speech_threshold_percent": 100.0
+      },
+      "expected": {
+        "dialogue_word": 3270508544,
+        "speech_percentage_word": 3212836864,
+        "selected_word": 3250585600,
+        "internal_selected_word": 3191865344,
+        "internal_gating_kind": 1,
+        "public_gating_kind": 2,
+        "wrapper_config_mode": 2,
+        "normalized_mode": 3,
+        "speech_classifier_executed": false
+      },
+      "actual": {
+        "dialogue_word": 3270508544,
+        "speech_percentage_word": 3212836864,
+        "selected_word": 3250585600,
+        "internal_selected_word": 3191865344,
+        "internal_gating_kind": 1,
+        "public_gating_kind": 2,
+        "wrapper_config_mode": 2,
+        "normalized_mode": 3,
+        "speech_classifier_executed": false
+      },
+      "pass": true
+    },
+    {
+      "id": "valid_itu_1",
+      "input": {
+        "ITU_host": -70.0,
+        "metering_mode": "1770-4",
+        "dialogue_intelligence": false,
+        "speech_threshold_percent": 100.0
+      },
+      "expected": {
+        "dialogue_word": 3270508544,
+        "speech_percentage_word": 3212836864,
+        "selected_word": 3263954944,
+        "internal_selected_word": 3205234688,
+        "internal_gating_kind": 1,
+        "public_gating_kind": 2,
+        "wrapper_config_mode": 2,
+        "normalized_mode": 3,
+        "speech_classifier_executed": false
+      },
+      "actual": {
+        "dialogue_word": 3270508544,
+        "speech_percentage_word": 3212836864,
+        "selected_word": 3263954944,
+        "internal_selected_word": 3205234688,
+        "internal_gating_kind": 1,
+        "public_gating_kind": 2,
+        "wrapper_config_mode": 2,
+        "normalized_mode": 3,
+        "speech_classifier_executed": false
+      },
+      "pass": true
+    },
+    {
+      "id": "valid_itu_2",
+      "input": {
+        "ITU_host": -119.0,
+        "metering_mode": "1770-4",
+        "dialogue_intelligence": false,
+        "speech_threshold_percent": 100.0
+      },
+      "expected": {
+        "dialogue_word": 3270508544,
+        "speech_percentage_word": 3212836864,
+        "selected_word": 3270377472,
+        "internal_selected_word": 3211657216,
+        "internal_gating_kind": 1,
+        "public_gating_kind": 2,
+        "wrapper_config_mode": 2,
+        "normalized_mode": 3,
+        "speech_classifier_executed": false
+      },
+      "actual": {
+        "dialogue_word": 3270508544,
+        "speech_percentage_word": 3212836864,
+        "selected_word": 3270377472,
+        "internal_selected_word": 3211657216,
+        "internal_gating_kind": 1,
+        "public_gating_kind": 2,
+        "wrapper_config_mode": 2,
+        "normalized_mode": 3,
+        "speech_classifier_executed": false
+      },
+      "pass": true
+    },
+    {
+      "id": "valid_itu_3",
+      "input": {
+        "ITU_host": 0.0,
+        "metering_mode": "1770-4",
+        "dialogue_intelligence": false,
+        "speech_threshold_percent": 100.0
+      },
+      "expected": {
+        "dialogue_word": 3270508544,
+        "speech_percentage_word": 3212836864,
+        "selected_word": 0,
+        "internal_selected_word": 0,
+        "internal_gating_kind": 1,
+        "public_gating_kind": 2,
+        "wrapper_config_mode": 2,
+        "normalized_mode": 3,
+        "speech_classifier_executed": false
+      },
+      "actual": {
+        "dialogue_word": 3270508544,
+        "speech_percentage_word": 3212836864,
+        "selected_word": 0,
+        "internal_selected_word": 0,
+        "internal_gating_kind": 1,
+        "public_gating_kind": 2,
+        "wrapper_config_mode": 2,
+        "normalized_mode": 3,
+        "speech_classifier_executed": false
+      },
+      "pass": true
+    }
+  ],
+  "rejection_cases": [
+    {
+      "id": "wrong_mode",
+      "input": {
+        "ITU_host": -24.0,
+        "metering_mode": "1770-3",
+        "dialogue_intelligence": false,
+        "speech_threshold_percent": 100.0
+      },
+      "expected_rejected": true,
+      "actual_rejected": true
+    },
+    {
+      "id": "di_enabled",
+      "input": {
+        "ITU_host": -24.0,
+        "metering_mode": "1770-4",
+        "dialogue_intelligence": true,
+        "speech_threshold_percent": 100.0
+      },
+      "expected_rejected": true,
+      "actual_rejected": true
+    },
+    {
+      "id": "wrong_threshold",
+      "input": {
+        "ITU_host": -24.0,
+        "metering_mode": "1770-4",
+        "dialogue_intelligence": false,
+        "speech_threshold_percent": 99.0
+      },
+      "expected_rejected": true,
+      "actual_rejected": true
+    }
+  ],
+  "failures": 0,
+  "scope": "selected1770-4 DIoff threshold100 getter and valid ITU selection only; legacy missing-mean observation preserved; current F06U supplies fallback separately",
+  "independent_isolated_review": "NOT_RUN",
+  "implementation_ready": "NO",
+  "legacy_helper_dependency_observation": {
+    "input": {
+      "ITU_host": -120.0,
+      "metering_mode": "1770-4",
+      "dialogue_intelligence": false,
+      "speech_threshold_percent": 100.0
+    },
+    "dependency": "UNGATED_CONTINUOUS_MEAN_PRODUCER",
+    "current_research_producer_rejects_without_fabricated_result": true,
+    "full_selected_loudness_for_this_input": "HISTORICAL_V1_HELPER_LIMITATION; SUPERSEDED_BY_F06U_AND_METER-UNGATED-FALLBACK-VERIFICATION",
+    "available_to_legacy_research_helper": false,
+    "current_package_dependency_status": "NORMATIVE_MEAN_AND_FALLBACK_PROVIDED_F06U; SEPARATE_LOCAL_REVIEW_PENDING"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "washed-native-behavior-package.v1",
+  "package": "selected-target-attribute-lineage-washed-v1",
+  "production_usable": false,
+  "implementation_ready": "NO",
+  "source_research_manifest_sha256": "3fad26f60c232832ad53eea10383b25e42cc60f0eea84d7c4f8be2bf56a5d63e",
+  "files": [
+    {
+      "path": "BOUNDED-COVERAGE.md",
+      "bytes": 781,
+      "sha256": "42dbb6ee931248f3ab4bb3a96a534bc6922779e552d537f63e03558902b8d6e1"
+    },
+    {
+      "path": "WASHED-SPEC.md",
+      "bytes": 3943,
+      "sha256": "29177b0bfc6bdd4f1d7e641c53fa6afafd4be238e4df383cc964c808fd236867"
+    },
+    {
+      "path": "WASHED-VECTORS.json",
+      "bytes": 2294,
+      "sha256": "dde8e489895978087eca37c070acc30220b805984fa3924fa17f521bbf868408"
+    }
+  ]
+}
+

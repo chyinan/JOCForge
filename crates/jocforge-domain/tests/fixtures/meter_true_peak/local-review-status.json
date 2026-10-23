@@ -1,0 +1,1141 @@
+{
+  "schema": "truepeak-local-review-status.v1",
+  "local_algorithm_result": "PASS",
+  "IMPLEMENTATION_READY": "NO",
+  "os_allowlist": "NOT_ENFORCED",
+  "manifest_entries_verified": 9,
+  "cases": 9,
+  "continuous_sequence_steps": 8,
+  "parameter_compact_sha256": "f9bdfb75951c9660c2d5498c1997e234880ac6b4f27bcb64f3e02af91d711cb4",
+  "parameter_expanded_sha256": "f4878bb808821078480754d676a94191954771757c07010982e97be8c571e84c",
+  "counts": {
+    "input_hashes": 9,
+    "output_array_hashes": 54,
+    "output_words_covered_by_hash": 193536,
+    "state_words_compared": 249912,
+    "peak_fields": 540,
+    "programme_fields": 126,
+    "lfe_preservation_cases": 9
+  },
+  "mismatch_count": 0,
+  "first_difference": null,
+  "actual_state_used_for_continuation": true,
+  "expected_state_used_as_input": false,
+  "output_comparison": "54 full-array SHA-256 comparisons, not output-word first-divergence tracing",
+  "findings": [
+    {
+      "id": "SCOPE-01",
+      "severity": "INFO",
+      "local_blocker": false,
+      "description": "ID1 half-dB quantization/timer/FIFO, full spatial frontend, K parameters and integrated-meter specs are referenced but outside this nine-file isolated bundle. Full package readiness remains NO."
+    },
+    {
+      "id": "SCOPE-02",
+      "severity": "INFO",
+      "local_blocker": false,
+      "description": "I03 and TP input/numeric fail-stop contracts are explicit; nine vectors do not verify invalid-input rejection, transactional failure, all-finite numerical domain or exact-upper log boundary."
+    }
+  ],
+  "authorization_scope": "User-stated internal implementation/delivery authorization for eleven nonsecret FIR values only; no independent provenance or rights authentication.",
+  "excluded_claims": [
+    "native/original asset equivalence",
+    "SDK certification",
+    "frozen-model certification",
+    "real audio",
+    "full meter or codec readiness",
+    "public or third-party authorization"
+  ],
+  "clock_formula_cases": [
+    {
+      "source_samples": 1,
+      "published": 1536,
+      "consumed": 1024,
+      "unconsumed_pcm": 512,
+      "energy_windows": 1,
+      "unsubmitted_energy_samples": 64
+    },
+    {
+      "source_samples": 1024,
+      "published": 1536,
+      "consumed": 1024,
+      "unconsumed_pcm": 512,
+      "energy_windows": 1,
+      "unsubmitted_energy_samples": 64
+    },
+    {
+      "source_samples": 1536,
+      "published": 1536,
+      "consumed": 1024,
+      "unconsumed_pcm": 512,
+      "energy_windows": 1,
+      "unsubmitted_energy_samples": 64
+    },
+    {
+      "source_samples": 1537,
+      "published": 3072,
+      "consumed": 3072,
+      "unconsumed_pcm": 0,
+      "energy_windows": 3,
+      "unsubmitted_energy_samples": 192
+    },
+    {
+      "source_samples": 6522906,
+      "published": 6523392,
+      "consumed": 6522880,
+      "unconsumed_pcm": 512,
+      "energy_windows": 6794,
+      "unsubmitted_energy_samples": 640
+    }
+  ],
+  "case_results": [
+    {
+      "case_id": 0,
+      "source_sha256": "2460bf729c7d80c99bf955e6425b4095a6ff8d9999fd9530db580d269d417814",
+      "actual_output_sha256s": [
+        "f90c4ec457076201a4bb69e68775e859d9b04654601f171bea6e10df2490fb1e",
+        "f90c4ec457076201a4bb69e68775e859d9b04654601f171bea6e10df2490fb1e",
+        "f90c4ec457076201a4bb69e68775e859d9b04654601f171bea6e10df2490fb1e",
+        "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+        "f90c4ec457076201a4bb69e68775e859d9b04654601f171bea6e10df2490fb1e",
+        "f90c4ec457076201a4bb69e68775e859d9b04654601f171bea6e10df2490fb1e"
+      ],
+      "actual_state_sha256": "297643e2aa753b008b7b911a848aa7c4dc961f9878fbad91eafe04bc3db6cd27",
+      "actual_peak_projection": [
+        {
+          "raw_peak_word": 525635257,
+          "first_absolute_maximum_index": 33,
+          "grouped_reported_index": 1,
+          "factor": 4,
+          "true_peak_internal_word": 3211788288,
+          "true_peak_host_word": 3270508544,
+          "sample_peak_raw_word": 0,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        },
+        {
+          "raw_peak_word": 525635257,
+          "first_absolute_maximum_index": 33,
+          "grouped_reported_index": 1,
+          "factor": 4,
+          "true_peak_internal_word": 3211788288,
+          "true_peak_host_word": 3270508544,
+          "sample_peak_raw_word": 0,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        },
+        {
+          "raw_peak_word": 525635257,
+          "first_absolute_maximum_index": 33,
+          "grouped_reported_index": 1,
+          "factor": 4,
+          "true_peak_internal_word": 3211788288,
+          "true_peak_host_word": 3270508544,
+          "sample_peak_raw_word": 0,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        },
+        {
+          "raw_peak_word": 0,
+          "first_absolute_maximum_index": 0,
+          "grouped_reported_index": -7,
+          "factor": 1,
+          "true_peak_internal_word": 3211788288,
+          "true_peak_host_word": 3270508544,
+          "sample_peak_raw_word": 0,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        },
+        {
+          "raw_peak_word": 525635257,
+          "first_absolute_maximum_index": 33,
+          "grouped_reported_index": 1,
+          "factor": 4,
+          "true_peak_internal_word": 3211788288,
+          "true_peak_host_word": 3270508544,
+          "sample_peak_raw_word": 0,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        },
+        {
+          "raw_peak_word": 525635257,
+          "first_absolute_maximum_index": 33,
+          "grouped_reported_index": 1,
+          "factor": 4,
+          "true_peak_internal_word": 3211788288,
+          "true_peak_host_word": 3270508544,
+          "sample_peak_raw_word": 0,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        }
+      ],
+      "actual_programme_after": {
+        "true_peak_internal_words": [
+          3211788288,
+          3211788288,
+          3211788288,
+          3211788288,
+          3211788288,
+          3211788288
+        ],
+        "sample_peak_internal_words": [
+          3211788288,
+          3211788288,
+          3211788288,
+          3211788288,
+          3211788288,
+          3211788288
+        ],
+        "true_peak_host_word": 3270508544,
+        "sample_peak_host_word": 3270508544
+      }
+    },
+    {
+      "case_id": 1,
+      "source_sha256": "b3d9db7630fa81aff5597b1d1bcb4258031f9b81adc16aa5f3ecfadcd328a443",
+      "actual_output_sha256s": [
+        "75dc996f5235d470700e4a5ece3c86a6780b945a51ce226554cb3c5dc8893e08",
+        "6266a26f0f471a88053675c176a3f5639c9230d6b2c3bc87059bef611ee60e81",
+        "25abf56de6ab05fb88f9192c179145c711b3c8ab37287e1c4cda0848f90436a1",
+        "0b79466e9e9e77d1ea15231229123d3b4aafafee8fcbcbd080cf087ba2966063",
+        "a8f23f6911a754a683e77b91b6bd85cb674548ab6f18c6bc3bfac68b27614cb2",
+        "b7935f94de4055364b925c8c1e0097a3b304f39345456e6b25e90573f7c51a8f"
+      ],
+      "actual_state_sha256": "9a5d8dbc59cfb169ba43538f56c0e345ff4210e0894bc7879a4d3b773f0e0bcb",
+      "actual_peak_projection": [
+        {
+          "raw_peak_word": 1065353216,
+          "first_absolute_maximum_index": 31,
+          "grouped_reported_index": 0,
+          "factor": 4,
+          "true_peak_internal_word": 937555975,
+          "true_peak_host_word": 996276231,
+          "sample_peak_raw_word": 1065353216,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 0,
+          "sample_peak_host_word": 0
+        },
+        {
+          "raw_peak_word": 1061158912,
+          "first_absolute_maximum_index": 31,
+          "grouped_reported_index": 0,
+          "factor": 4,
+          "true_peak_internal_word": 3164597209,
+          "true_peak_host_word": 3223317465,
+          "sample_peak_raw_word": 1061158912,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3164597209,
+          "sample_peak_host_word": 3223317465
+        },
+        {
+          "raw_peak_word": 1056964608,
+          "first_absolute_maximum_index": 31,
+          "grouped_reported_index": 0,
+          "factor": 4,
+          "true_peak_internal_word": 3175124098,
+          "true_peak_host_word": 3233844354,
+          "sample_peak_raw_word": 1056964608,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3175124098,
+          "sample_peak_host_word": 3233844354
+        },
+        {
+          "raw_peak_word": 1048576000,
+          "first_absolute_maximum_index": 0,
+          "grouped_reported_index": -7,
+          "factor": 1,
+          "true_peak_internal_word": 3183516322,
+          "true_peak_host_word": 3242236578,
+          "sample_peak_raw_word": 1048576000,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3183516322,
+          "sample_peak_host_word": 3242236578
+        },
+        {
+          "raw_peak_word": 1069547520,
+          "first_absolute_maximum_index": 31,
+          "grouped_reported_index": 0,
+          "factor": 4,
+          "true_peak_internal_word": 1021404586,
+          "true_peak_host_word": 1080124842,
+          "sample_peak_raw_word": 1069547520,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 0,
+          "sample_peak_host_word": 0
+        },
+        {
+          "raw_peak_word": 1073741824,
+          "first_absolute_maximum_index": 31,
+          "grouped_reported_index": 0,
+          "factor": 4,
+          "true_peak_internal_word": 1027654913,
+          "true_peak_host_word": 1086375169,
+          "sample_peak_raw_word": 1073741824,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 0,
+          "sample_peak_host_word": 0
+        }
+      ],
+      "actual_programme_after": {
+        "true_peak_internal_words": [
+          937555975,
+          3164597209,
+          3175124098,
+          3183516322,
+          1021404586,
+          1027654913
+        ],
+        "sample_peak_internal_words": [
+          0,
+          3164597209,
+          3175124098,
+          3183516322,
+          0,
+          0
+        ],
+        "true_peak_host_word": 1086375169,
+        "sample_peak_host_word": 0
+      }
+    },
+    {
+      "case_id": 2,
+      "source_sha256": "9aefb9fc39ec840fe7b263ea7403168891e82a8edba2de393355e2b2b6bc0330",
+      "actual_output_sha256s": [
+        "d2d5a0740a7ac27c390c4334e1a8968686b0fdd2e845d9655429d25b070f650e",
+        "a9e276cbba04a65fd5b619798c1b3a7d087f02d07227a09129e35c09108a923a",
+        "15bb9d36ef8688488e37ace1ecb15c2e0319d9f69d9c724231e67e556be699d5",
+        "32cf42adda965b7a9d52dcdf9d16593ae7920e85f98871c6c53adb8b5b6eb88c",
+        "c9a6d4c44e5b31565e4747e6e8f8f74a654d7ef1e5eebdace62918203d2850be",
+        "36275a01e3ba94debbab705171f5bfe09621d827ad8edb2002a42676a8f26921"
+      ],
+      "actual_state_sha256": "0d4e520123136e7079c2c9864845d48515c30b972c41531c2107856106d47936",
+      "actual_peak_projection": [
+        {
+          "raw_peak_word": 950426595,
+          "first_absolute_maximum_index": 4094,
+          "grouped_reported_index": 1016,
+          "factor": 4,
+          "true_peak_internal_word": 3206809068,
+          "true_peak_host_word": 3265529324,
+          "sample_peak_raw_word": 1061158912,
+          "sample_peak_first_index": 1023,
+          "sample_peak_internal_word": 3164597209,
+          "sample_peak_host_word": 3223317465
+        },
+        {
+          "raw_peak_word": 947489237,
+          "first_absolute_maximum_index": 4094,
+          "grouped_reported_index": 1016,
+          "factor": 4,
+          "true_peak_internal_word": 3207136602,
+          "true_peak_host_word": 3265856858,
+          "sample_peak_raw_word": 1058013184,
+          "sample_peak_first_index": 1023,
+          "sample_peak_internal_word": 3172983869,
+          "sample_peak_host_word": 3231704125
+        },
+        {
+          "raw_peak_word": 942037987,
+          "first_absolute_maximum_index": 4094,
+          "grouped_reported_index": 1016,
+          "factor": 4,
+          "true_peak_internal_word": 3207598200,
+          "true_peak_host_word": 3266318456,
+          "sample_peak_raw_word": 1052770304,
+          "sample_peak_first_index": 1023,
+          "sample_peak_internal_word": 3179827031,
+          "sample_peak_host_word": 3238547287
+        },
+        {
+          "raw_peak_word": 1044381696,
+          "first_absolute_maximum_index": 1023,
+          "grouped_reported_index": 1013,
+          "factor": 1,
+          "true_peak_internal_word": 3186140088,
+          "true_peak_host_word": 3244860344,
+          "sample_peak_raw_word": 1044381696,
+          "sample_peak_first_index": 1023,
+          "sample_peak_internal_word": 3186140088,
+          "sample_peak_host_word": 3244860344
+        },
+        {
+          "raw_peak_word": 955877845,
+          "first_absolute_maximum_index": 4094,
+          "grouped_reported_index": 1016,
+          "factor": 4,
+          "true_peak_internal_word": 3206347470,
+          "true_peak_host_word": 3265067726,
+          "sample_peak_raw_word": 1066401792,
+          "sample_peak_first_index": 1023,
+          "sample_peak_internal_word": 0,
+          "sample_peak_host_word": 0
+        },
+        {
+          "raw_peak_word": 958815203,
+          "first_absolute_maximum_index": 4094,
+          "grouped_reported_index": 1016,
+          "factor": 4,
+          "true_peak_internal_word": 3206019936,
+          "true_peak_host_word": 3264740192,
+          "sample_peak_raw_word": 1069547520,
+          "sample_peak_first_index": 1023,
+          "sample_peak_internal_word": 0,
+          "sample_peak_host_word": 0
+        }
+      ],
+      "actual_programme_after": {
+        "true_peak_internal_words": [
+          937555975,
+          3164597209,
+          3175124098,
+          3183516322,
+          1021404586,
+          1027654913
+        ],
+        "sample_peak_internal_words": [
+          0,
+          3164597209,
+          3175124098,
+          3183516322,
+          0,
+          0
+        ],
+        "true_peak_host_word": 1086375169,
+        "sample_peak_host_word": 0
+      }
+    },
+    {
+      "case_id": 3,
+      "source_sha256": "2460bf729c7d80c99bf955e6425b4095a6ff8d9999fd9530db580d269d417814",
+      "actual_output_sha256s": [
+        "14a0365f83461f042ab2bbaf8e93fa21345b31c958303a46bda7b9fc42a0eea6",
+        "3b727e991afe0f2a515cd5a8581fc24c4fb7fc495fe771256caa30e0d7b700ce",
+        "28de06f8ff12b74f7d5b34cd97bca035804b7f30cbf2b4f251445080176857da",
+        "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+        "fb3643853d7923b7866c47c96b7297d8747ad28d117ca0c61e43331f721ed56b",
+        "6c78f6012e31d66e76894bf2a5b3f12de4a4ca8cfb2bd1a92d63d4daa16bd1d3"
+      ],
+      "actual_state_sha256": "358f173fb883f964b54caf23334cc390bcdaebaba7ec29c15ad53fedcb4c72e0",
+      "actual_peak_projection": [
+        {
+          "raw_peak_word": 1061158912,
+          "first_absolute_maximum_index": 27,
+          "grouped_reported_index": -1,
+          "factor": 4,
+          "true_peak_internal_word": 3164597209,
+          "true_peak_host_word": 3223317465,
+          "sample_peak_raw_word": 0,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        },
+        {
+          "raw_peak_word": 1058013184,
+          "first_absolute_maximum_index": 27,
+          "grouped_reported_index": -1,
+          "factor": 4,
+          "true_peak_internal_word": 3172983869,
+          "true_peak_host_word": 3231704125,
+          "sample_peak_raw_word": 0,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        },
+        {
+          "raw_peak_word": 1052770304,
+          "first_absolute_maximum_index": 27,
+          "grouped_reported_index": -1,
+          "factor": 4,
+          "true_peak_internal_word": 3179827031,
+          "true_peak_host_word": 3238547287,
+          "sample_peak_raw_word": 0,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        },
+        {
+          "raw_peak_word": 0,
+          "first_absolute_maximum_index": 0,
+          "grouped_reported_index": -7,
+          "factor": 1,
+          "true_peak_internal_word": 3211788288,
+          "true_peak_host_word": 3270508544,
+          "sample_peak_raw_word": 0,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        },
+        {
+          "raw_peak_word": 1066401792,
+          "first_absolute_maximum_index": 27,
+          "grouped_reported_index": -1,
+          "factor": 4,
+          "true_peak_internal_word": 1006834193,
+          "true_peak_host_word": 1065554449,
+          "sample_peak_raw_word": 0,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        },
+        {
+          "raw_peak_word": 1069547520,
+          "first_absolute_maximum_index": 27,
+          "grouped_reported_index": -1,
+          "factor": 4,
+          "true_peak_internal_word": 1021404586,
+          "true_peak_host_word": 1080124842,
+          "sample_peak_raw_word": 0,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        }
+      ],
+      "actual_programme_after": {
+        "true_peak_internal_words": [
+          937555975,
+          3164597209,
+          3175124098,
+          3183516322,
+          1021404586,
+          1027654913
+        ],
+        "sample_peak_internal_words": [
+          0,
+          3164597209,
+          3175124098,
+          3183516322,
+          0,
+          0
+        ],
+        "true_peak_host_word": 1086375169,
+        "sample_peak_host_word": 0
+      }
+    },
+    {
+      "case_id": 4,
+      "source_sha256": "3b7d87df277b8850f1a086f458ea64abce65db8f5139f4f0da3b149d914615fa",
+      "actual_output_sha256s": [
+        "b46ad0f33b5ca01b257d10e3a58c74b1982b84fd87833d79b75676e95a573694",
+        "48d5e35346cd29bd02cd0f5b40a9be3dfdc0b0dc6295e4b510f46efc0544a252",
+        "03a3e017232efc29f68de3b7a1017ab6cd599e68b2c8664bc0fc740a2b4eab76",
+        "d258d28c59bb63ba8f7526352f8cd2332d70f48f7b2cad40f47b1f246fe729fd",
+        "7bab318d300b0d10ba6663c3e4acef99d6416a593eccaeb184a1ad3759af5d94",
+        "d6b88b6307fa1f0fdbe7377d68e6e3ee6ce8fcc4104d4302f9205457f876e0aa"
+      ],
+      "actual_state_sha256": "7fafa9d4358774c40786e070fb8c2310707d4103997ac4faec9df2575c946c5a",
+      "actual_peak_projection": [
+        {
+          "raw_peak_word": 1058274560,
+          "first_absolute_maximum_index": 392,
+          "grouped_reported_index": 91,
+          "factor": 4,
+          "true_peak_internal_word": 3172486803,
+          "true_peak_host_word": 3231207059,
+          "sample_peak_raw_word": 1056964608,
+          "sample_peak_first_index": 90,
+          "sample_peak_internal_word": 3175124098,
+          "sample_peak_host_word": 3233844354
+        },
+        {
+          "raw_peak_word": 1054735231,
+          "first_absolute_maximum_index": 392,
+          "grouped_reported_index": 91,
+          "factor": 4,
+          "true_peak_internal_word": 3177728502,
+          "true_peak_host_word": 3236448758,
+          "sample_peak_raw_word": 1052770304,
+          "sample_peak_first_index": 90,
+          "sample_peak_internal_word": 3179827031,
+          "sample_peak_host_word": 3238547287
+        },
+        {
+          "raw_peak_word": 1049885952,
+          "first_absolute_maximum_index": 392,
+          "grouped_reported_index": 91,
+          "factor": 4,
+          "true_peak_internal_word": 3182197674,
+          "true_peak_host_word": 3240917930,
+          "sample_peak_raw_word": 1048576000,
+          "sample_peak_first_index": 90,
+          "sample_peak_internal_word": 3183516322,
+          "sample_peak_host_word": 3242236578
+        },
+        {
+          "raw_peak_word": 1040187392,
+          "first_absolute_maximum_index": 90,
+          "grouped_reported_index": 81,
+          "factor": 1,
+          "true_peak_internal_word": 3188750210,
+          "true_peak_host_word": 3247470466,
+          "sample_peak_raw_word": 1040187392,
+          "sample_peak_first_index": 90,
+          "sample_peak_internal_word": 3188750210,
+          "sample_peak_host_word": 3247470466
+        },
+        {
+          "raw_peak_word": 1063123839,
+          "first_absolute_maximum_index": 392,
+          "grouped_reported_index": 91,
+          "factor": 4,
+          "true_peak_internal_word": 3156116689,
+          "true_peak_host_word": 3214836945,
+          "sample_peak_raw_word": 1061158912,
+          "sample_peak_first_index": 90,
+          "sample_peak_internal_word": 3164597209,
+          "sample_peak_host_word": 3223317465
+        },
+        {
+          "raw_peak_word": 1066663168,
+          "first_absolute_maximum_index": 392,
+          "grouped_reported_index": 91,
+          "factor": 4,
+          "true_peak_internal_word": 1008822458,
+          "true_peak_host_word": 1067542714,
+          "sample_peak_raw_word": 1065353216,
+          "sample_peak_first_index": 90,
+          "sample_peak_internal_word": 0,
+          "sample_peak_host_word": 0
+        }
+      ],
+      "actual_programme_after": {
+        "true_peak_internal_words": [
+          937555975,
+          3164597209,
+          3175124098,
+          3183516322,
+          1021404586,
+          1027654913
+        ],
+        "sample_peak_internal_words": [
+          0,
+          3164597209,
+          3175124098,
+          3183516322,
+          0,
+          0
+        ],
+        "true_peak_host_word": 1086375169,
+        "sample_peak_host_word": 0
+      }
+    },
+    {
+      "case_id": 5,
+      "source_sha256": "a62efa4c990999ccd615ee41261ce4e989828fe3b87160cc271295728bc3cadd",
+      "actual_output_sha256s": [
+        "8036a074e55cae964ccd405040817dc16b845670820baf5e351180d032cbef7e",
+        "3c6b49e73f4e868e85d518a918136d693b3a5022e95ba230bdabc69d191ccc56",
+        "24e3d413619e348866f8e687c82b02289e685fe225bac407d27c039c6b861c56",
+        "02c8725db8230c7f28824b5238c9cb77fd4d539243c78a9dc7d195d79dd92df9",
+        "984037e9807180c524139cc88ce03bbca97fff661712dfff8219e78ab67630d9",
+        "b66fc400aaebed03bf54b45dc0d6e82df6073922da5dd1e2dea93c3fc73f24ef"
+      ],
+      "actual_state_sha256": "ea051501ef19bbb023b0ca62378c6e2503d512c014c1e06ad4ecc6ab71c379f4",
+      "actual_peak_projection": [
+        {
+          "raw_peak_word": 1057679287,
+          "first_absolute_maximum_index": 30,
+          "grouped_reported_index": 0,
+          "factor": 4,
+          "true_peak_internal_word": 3173638975,
+          "true_peak_host_word": 3232359231,
+          "sample_peak_raw_word": 1056964608,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3175124098,
+          "sample_peak_host_word": 3233844354
+        },
+        {
+          "raw_peak_word": 1053842322,
+          "first_absolute_maximum_index": 30,
+          "grouped_reported_index": 0,
+          "factor": 4,
+          "true_peak_internal_word": 3178882312,
+          "true_peak_host_word": 3237602568,
+          "sample_peak_raw_word": 1052770304,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3179827031,
+          "sample_peak_host_word": 3238547287
+        },
+        {
+          "raw_peak_word": 1049290679,
+          "first_absolute_maximum_index": 30,
+          "grouped_reported_index": 0,
+          "factor": 4,
+          "true_peak_internal_word": 3182773760,
+          "true_peak_host_word": 3241494016,
+          "sample_peak_raw_word": 1048576000,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3183516322,
+          "sample_peak_host_word": 3242236578
+        },
+        {
+          "raw_peak_word": 1040187392,
+          "first_absolute_maximum_index": 0,
+          "grouped_reported_index": -7,
+          "factor": 1,
+          "true_peak_internal_word": 3188750210,
+          "true_peak_host_word": 3247470466,
+          "sample_peak_raw_word": 1040187392,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3188750210,
+          "sample_peak_host_word": 3247470466
+        },
+        {
+          "raw_peak_word": 1062230930,
+          "first_absolute_maximum_index": 30,
+          "grouped_reported_index": 0,
+          "factor": 4,
+          "true_peak_internal_word": 3160731932,
+          "true_peak_host_word": 3219452188,
+          "sample_peak_raw_word": 1061158912,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3164597209,
+          "sample_peak_host_word": 3223317465
+        },
+        {
+          "raw_peak_word": 1066067895,
+          "first_absolute_maximum_index": 30,
+          "grouped_reported_index": 0,
+          "factor": 4,
+          "true_peak_internal_word": 1001794586,
+          "true_peak_host_word": 1060514842,
+          "sample_peak_raw_word": 1065353216,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 0,
+          "sample_peak_host_word": 0
+        }
+      ],
+      "actual_programme_after": {
+        "true_peak_internal_words": [
+          937555975,
+          3164597209,
+          3175124098,
+          3183516322,
+          1021404586,
+          1027654913
+        ],
+        "sample_peak_internal_words": [
+          0,
+          3164597209,
+          3175124098,
+          3183516322,
+          0,
+          0
+        ],
+        "true_peak_host_word": 1086375169,
+        "sample_peak_host_word": 0
+      }
+    },
+    {
+      "case_id": 6,
+      "source_sha256": "7be2daf34cbfb1aa730b400e8ee2216c099da330ffdc619688ae1f0fcd17d2fc",
+      "actual_output_sha256s": [
+        "289fb7b014472eb8e53cba0a571fe8a7cd2dfcda307f63c06e7d99b674b50c7c",
+        "10a487cc14dd0d7b87b523b2e94e72004f697faa79b57997cc04eabb245e0df5",
+        "72615dd08b092a2015796f1c426431c22a70d5a3c948459b4ecaca8abb15baa2",
+        "c413b987ce5953e4b495afa3937a62bc85ba5b5e5c02dffca2835b4a9afb5c8c",
+        "cb3a3f6a958b0e3a416669fe0b5bb739f206dce26c1eab3aed4e577b165a2a1d",
+        "04964bf601d40f0b6ffb6d6a01ea120d0425595ca9083592083bdd633c4ea6b6"
+      ],
+      "actual_state_sha256": "1467aabd59937605f67ce8006429f2104796d06808bc3bfdfcec044efe690189",
+      "actual_peak_projection": [
+        {
+          "raw_peak_word": 1058460370,
+          "first_absolute_maximum_index": 28,
+          "grouped_reported_index": 0,
+          "factor": 4,
+          "true_peak_internal_word": 3172141432,
+          "true_peak_host_word": 3230861688,
+          "sample_peak_raw_word": 0,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        },
+        {
+          "raw_peak_word": 1055013948,
+          "first_absolute_maximum_index": 28,
+          "grouped_reported_index": 0,
+          "factor": 4,
+          "true_peak_internal_word": 3177382815,
+          "true_peak_host_word": 3236103071,
+          "sample_peak_raw_word": 0,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        },
+        {
+          "raw_peak_word": 1050071762,
+          "first_absolute_maximum_index": 28,
+          "grouped_reported_index": 0,
+          "factor": 4,
+          "true_peak_internal_word": 3182024989,
+          "true_peak_host_word": 3240745245,
+          "sample_peak_raw_word": 0,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        },
+        {
+          "raw_peak_word": 0,
+          "first_absolute_maximum_index": 0,
+          "grouped_reported_index": -7,
+          "factor": 1,
+          "true_peak_internal_word": 3211788288,
+          "true_peak_host_word": 3270508544,
+          "sample_peak_raw_word": 0,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        },
+        {
+          "raw_peak_word": 1063402556,
+          "first_absolute_maximum_index": 28,
+          "grouped_reported_index": 0,
+          "factor": 4,
+          "true_peak_internal_word": 3154733945,
+          "true_peak_host_word": 3213454201,
+          "sample_peak_raw_word": 0,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        },
+        {
+          "raw_peak_word": 1066848978,
+          "first_absolute_maximum_index": 28,
+          "grouped_reported_index": 0,
+          "factor": 4,
+          "true_peak_internal_word": 1010203941,
+          "true_peak_host_word": 1068924197,
+          "sample_peak_raw_word": 0,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        }
+      ],
+      "actual_programme_after": {
+        "true_peak_internal_words": [
+          937555975,
+          3164597209,
+          3175124098,
+          3183516322,
+          1021404586,
+          1027654913
+        ],
+        "sample_peak_internal_words": [
+          0,
+          3164597209,
+          3175124098,
+          3183516322,
+          0,
+          0
+        ],
+        "true_peak_host_word": 1086375169,
+        "sample_peak_host_word": 0
+      }
+    },
+    {
+      "case_id": 7,
+      "source_sha256": "329b99f43d96a64e7fa1df69747261485dab28374357419d700f9e984afaf6c7",
+      "actual_output_sha256s": [
+        "3b9769ddd90e624a5b5e7927888129dc1350cb810084e8a4614f0824ef8481d6",
+        "3f03bea8b1f42df59bc02cc824c650c2838862c8082a17e11c5328783638a660",
+        "7274a5d8d421b7e130da18bf10a4333a18509d13c88535c14644304606c5338a",
+        "eac7f21a96d60b038b4168c67da7ba118e80ca137e54d41b81ea3bfe5ba76ad1",
+        "83bc982f57cc7ad0d3f55d3b5ad890456027cfb9b46124aff02b5edec87326d1",
+        "2213b73a83855f8a4ae61b4dd75a586eb103e152f69e8cafd31c2218c0046e23"
+      ],
+      "actual_state_sha256": "f9e3bb8c6d3b6c528a739499cea0dda8585056286ca5b5c36db452e9303722c5",
+      "actual_peak_projection": [
+        {
+          "raw_peak_word": 524096474,
+          "first_absolute_maximum_index": 54,
+          "grouped_reported_index": 6,
+          "factor": 4,
+          "true_peak_internal_word": 3211788288,
+          "true_peak_host_word": 3270508544,
+          "sample_peak_raw_word": 409476383,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        },
+        {
+          "raw_peak_word": 524096200,
+          "first_absolute_maximum_index": 54,
+          "grouped_reported_index": 6,
+          "factor": 4,
+          "true_peak_internal_word": 3211788288,
+          "true_peak_host_word": 3270508544,
+          "sample_peak_raw_word": 405673431,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        },
+        {
+          "raw_peak_word": 524095925,
+          "first_absolute_maximum_index": 60,
+          "grouped_reported_index": 8,
+          "factor": 4,
+          "true_peak_internal_word": 3211788288,
+          "true_peak_host_word": 3270508544,
+          "sample_peak_raw_word": 401087775,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        },
+        {
+          "raw_peak_word": 392699167,
+          "first_absolute_maximum_index": 0,
+          "grouped_reported_index": -7,
+          "factor": 1,
+          "true_peak_internal_word": 3211788288,
+          "true_peak_host_word": 3270508544,
+          "sample_peak_raw_word": 392699167,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        },
+        {
+          "raw_peak_word": 524097024,
+          "first_absolute_maximum_index": 60,
+          "grouped_reported_index": 8,
+          "factor": 4,
+          "true_peak_internal_word": 3211788288,
+          "true_peak_host_word": 3270508544,
+          "sample_peak_raw_word": 414062039,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        },
+        {
+          "raw_peak_word": 524097572,
+          "first_absolute_maximum_index": 54,
+          "grouped_reported_index": 6,
+          "factor": 4,
+          "true_peak_internal_word": 3211788288,
+          "true_peak_host_word": 3270508544,
+          "sample_peak_raw_word": 417864991,
+          "sample_peak_first_index": 0,
+          "sample_peak_internal_word": 3211788288,
+          "sample_peak_host_word": 3270508544
+        }
+      ],
+      "actual_programme_after": {
+        "true_peak_internal_words": [
+          937555975,
+          3164597209,
+          3175124098,
+          3183516322,
+          1021404586,
+          1027654913
+        ],
+        "sample_peak_internal_words": [
+          0,
+          3164597209,
+          3175124098,
+          3183516322,
+          0,
+          0
+        ],
+        "true_peak_host_word": 1086375169,
+        "sample_peak_host_word": 0
+      }
+    },
+    {
+      "case_id": 8,
+      "source_sha256": "3b7d87df277b8850f1a086f458ea64abce65db8f5139f4f0da3b149d914615fa",
+      "actual_output_sha256s": [
+        "6f5a4ee0a9e9116f0c1c0487183e59e20c694993ec9cd61b206aecf9b50c59be",
+        "a1a31c9d264a8332071b44677e17ee8fa84bbc1514413e5cb65f61afc55e9334",
+        "4d2b0dd2338952576c60779f1026e4280f63cf63e1a0e6841486e95f0dd5b81c",
+        "d258d28c59bb63ba8f7526352f8cd2332d70f48f7b2cad40f47b1f246fe729fd",
+        "a4441c9223ba4091a01775a635026aedaac5fe7958e9a3e12296dedbe056dfe3",
+        "279b0d1f9e82882a00ee0a13302c1cb7a6643c618cf9ee0790dc16598991eba0"
+      ],
+      "actual_state_sha256": "b99ff6407c5e357db10a8cd91aeb202929f32b7bda679a00599eb133836e86db",
+      "actual_peak_projection": [
+        {
+          "raw_peak_word": 1058274560,
+          "first_absolute_maximum_index": 392,
+          "grouped_reported_index": 91,
+          "factor": 4,
+          "true_peak_internal_word": 3172486803,
+          "true_peak_host_word": 3231207059,
+          "sample_peak_raw_word": 1056964608,
+          "sample_peak_first_index": 90,
+          "sample_peak_internal_word": 3175124098,
+          "sample_peak_host_word": 3233844354
+        },
+        {
+          "raw_peak_word": 1054735231,
+          "first_absolute_maximum_index": 392,
+          "grouped_reported_index": 91,
+          "factor": 4,
+          "true_peak_internal_word": 3177728502,
+          "true_peak_host_word": 3236448758,
+          "sample_peak_raw_word": 1052770304,
+          "sample_peak_first_index": 90,
+          "sample_peak_internal_word": 3179827031,
+          "sample_peak_host_word": 3238547287
+        },
+        {
+          "raw_peak_word": 1049885952,
+          "first_absolute_maximum_index": 392,
+          "grouped_reported_index": 91,
+          "factor": 4,
+          "true_peak_internal_word": 3182197674,
+          "true_peak_host_word": 3240917930,
+          "sample_peak_raw_word": 1048576000,
+          "sample_peak_first_index": 90,
+          "sample_peak_internal_word": 3183516322,
+          "sample_peak_host_word": 3242236578
+        },
+        {
+          "raw_peak_word": 1040187392,
+          "first_absolute_maximum_index": 90,
+          "grouped_reported_index": 81,
+          "factor": 1,
+          "true_peak_internal_word": 3188750210,
+          "true_peak_host_word": 3247470466,
+          "sample_peak_raw_word": 1040187392,
+          "sample_peak_first_index": 90,
+          "sample_peak_internal_word": 3188750210,
+          "sample_peak_host_word": 3247470466
+        },
+        {
+          "raw_peak_word": 1063123839,
+          "first_absolute_maximum_index": 392,
+          "grouped_reported_index": 91,
+          "factor": 4,
+          "true_peak_internal_word": 3156116689,
+          "true_peak_host_word": 3214836945,
+          "sample_peak_raw_word": 1061158912,
+          "sample_peak_first_index": 90,
+          "sample_peak_internal_word": 3164597209,
+          "sample_peak_host_word": 3223317465
+        },
+        {
+          "raw_peak_word": 1066663168,
+          "first_absolute_maximum_index": 392,
+          "grouped_reported_index": 91,
+          "factor": 4,
+          "true_peak_internal_word": 1008822458,
+          "true_peak_host_word": 1067542714,
+          "sample_peak_raw_word": 1065353216,
+          "sample_peak_first_index": 90,
+          "sample_peak_internal_word": 0,
+          "sample_peak_host_word": 0
+        }
+      ],
+      "actual_programme_after": {
+        "true_peak_internal_words": [
+          3172486803,
+          3177728502,
+          3182197674,
+          3188750210,
+          3156116689,
+          1008822458
+        ],
+        "sample_peak_internal_words": [
+          3175124098,
+          3179827031,
+          3183516322,
+          3188750210,
+          3164597209,
+          0
+        ],
+        "true_peak_host_word": 1067542714,
+        "sample_peak_host_word": 0
+      }
+    }
+  ],
+  "revision": "r1",
+  "manifest_sha256": "e5e518333effbc1e767ab33704ac5b21b3ebe7b6e8df65797f78f772002ba9cb",
+  "content_files_verified": 9,
+  "post_review_changes": "Only local review-status prose; numerical parameter/vector/result bytes unchanged. F06W local review-status prose subsequently updated separately; its reviewed computation and timing remain fixed.",
+  "current_bindings": [
+    {
+      "file": "specs/00-numeric-semantics.md",
+      "reviewed_sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135",
+      "current_sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135",
+      "same_bytes": true
+    },
+    {
+      "file": "specs/06-true-peak-cascade-and-metrics.md",
+      "reviewed_sha256": "15e2e7cd3bd38ce52a7f57a27b954ef4b103640f5442729d3eff2fa838029a4e",
+      "current_sha256": "e0491288c3a9beb59ecb7b017d505ee16eb9f401d53bd0fd918573644c1876b3",
+      "same_bytes": false
+    },
+    {
+      "file": "specs/06-meter-log-and-peak.md",
+      "reviewed_sha256": "0d316d3a6202b681d49475db23a586a1fe2f0213682794acf2cd1b9c3d17ac81",
+      "current_sha256": "c8a9aec8c931391bfbb4ecaca01a8e5cbec3ba680899f516727c6574a170e38f",
+      "same_bytes": false,
+      "prior_current_sha256": "0d316d3a6202b681d49475db23a586a1fe2f0213682794acf2cd1b9c3d17ac81"
+    },
+    {
+      "file": "specs/06-meter-window-and-output-clock.md",
+      "reviewed_sha256": "709641bfb0d5c31968a816c1d6b0ba9a2bfbd584147552e5d723601ed2060782",
+      "current_sha256": "c08dd41c42dd231ef23a683415f59b9b7db60375a3da2b8140501969933d073c",
+      "same_bytes": false
+    },
+    {
+      "file": "PIPELINE-AND-INTERFACES.md",
+      "reviewed_sha256": "3cc1f0b2ccd9ee28efbf8bb4e044e1d4995935e074067b126fe0f6a07af5ee24",
+      "current_sha256": "61e4f4a968c93a2dc074656db656cf757246a5f316a1ca06502ebc9d4d842e12",
+      "same_bytes": false,
+      "prior_current_sha256": "0a722f1aacfb4dba0834b012c2baedd9a03e12908238677f956e7d64fd73e373"
+    },
+    {
+      "file": "parameters/meter-truepeak-authorized-v1.json",
+      "reviewed_sha256": "f67e6fe86533af74acc261bf3908890e77a461198116c64b624dc91b69049757",
+      "current_sha256": "f67e6fe86533af74acc261bf3908890e77a461198116c64b624dc91b69049757",
+      "same_bytes": true
+    },
+    {
+      "file": "parameters/meter-log-mathematical-v1.json",
+      "reviewed_sha256": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266",
+      "current_sha256": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266",
+      "same_bytes": true
+    },
+    {
+      "file": "test-vectors/METER-TRUEPEAK-AUTHORIZED-VERIFICATION.json",
+      "reviewed_sha256": "510b980acf92519e0fbced2cf79b6b9f72dc47dcc8316f59506048288982d528",
+      "current_sha256": "510b980acf92519e0fbced2cf79b6b9f72dc47dcc8316f59506048288982d528",
+      "same_bytes": true
+    },
+    {
+      "file": "test-vectors/METER-TRUEPEAK-AUTHORIZED-RESULT.json",
+      "reviewed_sha256": "337c80ee3826f83ca5ca4b769200b3d370b5ba3a69b85a185360f3bf3d038bd8",
+      "current_sha256": "337c80ee3826f83ca5ca4b769200b3d370b5ba3a69b85a185360f3bf3d038bd8",
+      "same_bytes": true
+    }
+  ],
+  "status_reconciliation": {
+    "current_identity_refresh": {
+      "revision": "status-reconciliation-r1",
+      "files": [
+        "PIPELINE-AND-INTERFACES.md"
+      ],
+      "historical_review_identity_preserved": true,
+      "algorithm_changed": false
+    }
+  },
+  "subsequent_current_binding_refreshes": [
+    {
+      "file": "specs/06-meter-log-and-peak.md",
+      "prior_current_sha256": "7bcfe6b7e93c723816f5e5fb9edbde9be10ffedbb32d347720c9db58b3ceb8f8",
+      "replacement_sha256": "c8a9aec8c931391bfbb4ecaca01a8e5cbec3ba680899f516727c6574a170e38f",
+      "reason": "Current package identity refresh only; historical reviewed_sha256, review scope, algorithms, and readiness are unchanged."
+    },
+    {
+      "file": "PIPELINE-AND-INTERFACES.md",
+      "prior_current_sha256": "45b46a04d5b15230691d5ab6fbfe1efabe8266b35ffa15b02c0d1cb304698063",
+      "replacement_sha256": "61e4f4a968c93a2dc074656db656cf757246a5f316a1ca06502ebc9d4d842e12",
+      "reason": "Current package identity refresh only; historical reviewed_sha256, review scope, algorithms, and readiness are unchanged."
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "schema": "meter-k-matrix-mathematical-parameter.v1",
+  "parameter_route": "K_MATRIX_PUBLIC_BIQUAD_RATIONAL_DECIMAL_V1",
+  "stages": [
+    {
+      "name": "shelf",
+      "b0": "1.53512485958697",
+      "b1": "-2.69169618940638",
+      "b2": "1.19839281085285",
+      "a1": "-1.69065929318241",
+      "a2": "0.73248077421585",
+      "numerator_scale": "nearest_decimal_1e-6(10^(-(3+691/1000)/20))",
+      "scale_integer_rounding": "nearest, ties to even",
+      "scale_parameter_three_role": "independent fixed-profile normalization parameter, validated by all selected coefficient identities; original vendor rationale unproved"
+    },
+    {
+      "name": "highpass",
+      "b0": "1",
+      "b1": "-2",
+      "b2": "1",
+      "a1": "-1.99004745483398",
+      "a2": "0.99007225036621",
+      "numerator_scale": "1"
+    }
+  ],
+  "matrix_generation": {
+    "recurrence": "y[n]=b0*x[n]+b1*x[n-1]+b2*x[n-2]-a1*y[n-1]-a2*y[n-2]",
+    "basis_order": [
+      "x0",
+      "x1",
+      "x2",
+      "x3",
+      "x_minus1",
+      "x_minus2",
+      "y_minus1",
+      "y_minus2"
+    ],
+    "column_order": ["y0", "y1", "y2", "y3"],
+    "basis_initialization": "one selected basis input equals 1, other seven equal 0; derive y0..y3 in order from recurrence",
+    "intermediate_arithmetic": "exact rational",
+    "entry_quantization": "nearest decimal 1e-8 ties to even, then exact F32 round to nearest ties to even",
+    "cold_row": ["positive_zero", "positive_zero", "positive_zero", "positive_zero"],
+    "result_shape": [2, 9, 4],
+    "storage_order": "stage, row, lane; F32LE"
+  },
+  "shelf_gain_rounding_proof": {
+    "expression": "nearest_decimal_1e-6(10^(-3691/20000))",
+    "exact_rational_result": "653808/1000000",
+    "lower_midpoint": "261523/400000",
+    "upper_midpoint": "1307617/2000000",
+    "lower_power_comparison": -1,
+    "upper_power_comparison": 1,
+    "method": "exact integer powers: compare bound^20000 * 10^3691 with 1",
+    "tie": false
+  }
+}

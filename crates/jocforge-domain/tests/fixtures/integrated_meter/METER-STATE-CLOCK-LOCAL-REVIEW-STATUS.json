@@ -1,0 +1,204 @@
+{
+  "schema": "meter-state-clock-local-review-status.v1",
+  "verdict": "MST_REV_001_CLOSED_LOCAL_SCOPE_NO_NEW_LOCAL_ISSUES",
+  "manifest_sha256": "f1a31db7bf5373cd9d5ed8fad70331961440666c1394f57d867330448ccd05de",
+  "content_files_verified": 14,
+  "recalculation": {
+    "mismatches": 0,
+    "integrated_sequences": 10,
+    "integrated_blocks": 345,
+    "bin_cases": 7,
+    "schedule_cases": 5,
+    "k_continuous_blocks": 3,
+    "k_output_words": 2048,
+    "basic_generated_entries": 17,
+    "getter_valid": 4,
+    "getter_config_rejections": 3,
+    "unavailable_itu_ungated": "UNRESOLVED_NOT_PASS",
+    "real_energy_records": 6794,
+    "real_trace_fields_all_compared": true,
+    "real_cold_state_checked": true,
+    "real_computed_state_checkpoints": 1375,
+    "real_checkpoint_selection_independently_verified": true,
+    "real_original_full_state_parity": "NOT_RUN_ORIGINAL_NOT_SAVED",
+    "new_adm_render_filter": "NOT_RUN"
+  },
+  "closed_issues": [
+    {
+      "id": "MST-REV-001",
+      "status": "CLOSED",
+      "location": {
+        "file": "specs/06-integrated-meter-state.md",
+        "line": 25,
+        "section": "F06I.3"
+      },
+      "closure_evidence": "r2 expressly moves groups from work state after current input write, includes the fifth item and excludes call-entry snapshot. Existing 345-block full-state fixture recomputation remains zero mismatch. No ambiguity remains."
+    }
+  ],
+  "new_issues": [],
+  "current_bindings": [
+    {
+      "file": "specs/00-numeric-semantics.md",
+      "reviewed_sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135",
+      "current_sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135",
+      "same_bytes": true
+    },
+    {
+      "file": "specs/06-meter-bsi.md",
+      "reviewed_sha256": "d7d8a683558c557b9b25081d70336e0cf9184bad087ae349564cae669de4e6c5",
+      "current_sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752",
+      "same_bytes": false,
+      "prior_current_sha256": "553cfecc176dfe6ad14077ea35363fad8a8b477381038550d35d15905b264cab"
+    },
+    {
+      "file": "specs/06-meter-log-and-peak.md",
+      "reviewed_sha256": "0d316d3a6202b681d49475db23a586a1fe2f0213682794acf2cd1b9c3d17ac81",
+      "current_sha256": "c8a9aec8c931391bfbb4ecaca01a8e5cbec3ba680899f516727c6574a170e38f",
+      "same_bytes": false,
+      "prior_current_sha256": "0d316d3a6202b681d49475db23a586a1fe2f0213682794acf2cd1b9c3d17ac81"
+    },
+    {
+      "file": "specs/06-integrated-meter-state.md",
+      "reviewed_sha256": "65621483abe7646b5c34a5da546baf58211322367cfb8f69d60eadba0d45b78c",
+      "current_sha256": "e5caf84805cb24850dd0cf85e18d1dc4a4ee91fcb9e334cfc6f9881952efdb72",
+      "same_bytes": false
+    },
+    {
+      "file": "specs/06-meter-window-and-output-clock.md",
+      "reviewed_sha256": "1b69022c794faee6655ed7adcbc099eeddbecef65bacad4591741988416b6f69",
+      "current_sha256": "c08dd41c42dd231ef23a683415f59b9b7db60375a3da2b8140501969933d073c",
+      "same_bytes": false
+    },
+    {
+      "file": "parameters/meter-log-mathematical-v1.json",
+      "reviewed_sha256": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266",
+      "current_sha256": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266",
+      "same_bytes": true
+    },
+    {
+      "file": "parameters/meter-k-state-bounds-v1.json",
+      "reviewed_sha256": "073b990bc1aba3b65c857ba1546c4a4cca924035db3105c22353ae9809c5cdde",
+      "current_sha256": "2faaa9d0aeefb105a913589590fcbafb97362a54192b0b21c5fdda7da1974e68",
+      "same_bytes": false
+    },
+    {
+      "file": "test-vectors/METER-INTEGRATED-SCHEDULE-VERIFICATION.json",
+      "reviewed_sha256": "a565e513970670967aa3aebd0372f9dbb5f9bbab670a54744ae454926b3f2671",
+      "current_sha256": "a565e513970670967aa3aebd0372f9dbb5f9bbab670a54744ae454926b3f2671",
+      "same_bytes": true
+    },
+    {
+      "file": "test-vectors/METER-K-PARAMETERIZED-VERIFICATION.json",
+      "reviewed_sha256": "66a11e0751975ff619a9711943834fb52070655e6c3ec71f5ae318766b36080a",
+      "current_sha256": "66a11e0751975ff619a9711943834fb52070655e6c3ec71f5ae318766b36080a",
+      "same_bytes": true
+    },
+    {
+      "file": "test-vectors/METER-DI-OFF-GETTER-VERIFICATION.json",
+      "reviewed_sha256": "c0bb5cfe6f3234266c5962fb463cbd7beb6fa7b38e696509f83f32260df7fbd4",
+      "current_sha256": "78c9834a428a2f2385e15a22505b26870c603485821bafecada13feeda003dd9",
+      "same_bytes": false
+    },
+    {
+      "file": "PIPELINE-AND-INTERFACES.md",
+      "reviewed_sha256": "3cc1f0b2ccd9ee28efbf8bb4e044e1d4995935e074067b126fe0f6a07af5ee24",
+      "current_sha256": "61e4f4a968c93a2dc074656db656cf757246a5f316a1ca06502ebc9d4d842e12",
+      "same_bytes": false,
+      "prior_current_sha256": "0a722f1aacfb4dba0834b012c2baedd9a03e12908238677f956e7d64fd73e373"
+    },
+    {
+      "file": "SCOPE-AND-ACCEPTANCE.md",
+      "reviewed_sha256": "e5f844056b02770cd5c9187a34aae8b88c7176da72c74403e6055765a09e7e60",
+      "current_sha256": "0a0644a3e0bb13d6f2eda7a97162394bc2f969acededd2a652367eefe5d509a4",
+      "same_bytes": false,
+      "prior_current_sha256": "1601f7de3790dfbe8ca0c0ee844d797cb8c0e93a2e55ec7736beb10b2bcfd08d"
+    },
+    {
+      "file": "test-vectors/REAL-MUSIC-METER-ENERGY-INPUTS.json",
+      "reviewed_sha256": "4eccfa9a2a89501e9539b3092ef61b211d94e9ded470f2d766a9c2e931f63f0d",
+      "current_sha256": "4eccfa9a2a89501e9539b3092ef61b211d94e9ded470f2d766a9c2e931f63f0d",
+      "same_bytes": true
+    },
+    {
+      "file": "test-vectors/REAL-MUSIC-METER-INTEGRATED-VERIFICATION.json",
+      "reviewed_sha256": "818aa81ae1db38dcebf7bf458078b0aebb728b9b97d40c293d2d0e911530543c",
+      "current_sha256": "818aa81ae1db38dcebf7bf458078b0aebb728b9b97d40c293d2d0e911530543c",
+      "same_bytes": true
+    }
+  ],
+  "post_review_edits": "F06I.7 review-status paragraph only. F06W.3 and meter-k-state-bounds availability/provider now reference separately reviewed F06KG, and F06W.6 now records that review. Existing 17 basic functional values and state/clock numeric rules unchanged. F06.2 now connects F06U fallback, and the old getter unavailable-mean observation is explicitly historical; these two current files were separately reviewed in METER-UNGATED-LOCAL-REVIEW-STATUS.json, without changing their normal numeric vector cases. Original meter state/clock review scope is retained.",
+  "research_source_read_by_reviewer": false,
+  "network_used": false,
+  "os_allowlist": "NOT_ENFORCED",
+  "delivery_scope": "INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION",
+  "not_covered": [
+    "production64 K matrix identity/provider",
+    "true peak FIR",
+    "new ADM/render/filter/meter frontend",
+    "original real-energy complete-state parity",
+    "ungated/getter finalize",
+    "native all-domain failures and whole package READY"
+  ],
+  "implementation_ready": "NO",
+  "separately_reviewed_parameter_provider": {
+    "status_file": "test-vectors/METER-K-MATRIX-LOCAL-REVIEW-STATUS.json",
+    "manifest_sha256": "505eeb71676d870b4627322f79e96a8f1ba28972c90269600a81e1a11ebc8ca0",
+    "scope": "F06KG generation + F06W.3/.4 only",
+    "does_not_expand_original_meter_state_clock_review_scope": true
+  },
+  "separately_reviewed_ungated_fallback": {
+    "status_file": "test-vectors/METER-UNGATED-LOCAL-REVIEW-STATUS.json",
+    "manifest_sha256": "68f442819e658ad87d239c9f3270652823851a42a804dd7477a2f9b19696e244",
+    "does_not_expand_original_meter_state_clock_review_scope": true
+  },
+  "subsequent_current_binding_refreshes": [
+    {
+      "file": "specs/06-meter-bsi.md",
+      "prior_current_sha256": "553cfecc176dfe6ad14077ea35363fad8a8b477381038550d35d15905b264cab",
+      "reason": "Current package binding refresh; reviewed_sha256 and original review scope unchanged. Meter overview now references separately reviewed F06OC/F06OF/F06KG/F06TP providers; local review-status prose added. This does not certify global composition.",
+      "same_bytes": false,
+      "historical_replacement_sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
+    },
+    {
+      "file": "specs/06-meter-bsi.md",
+      "prior_current_sha256": "553cfecc176dfe6ad14077ea35363fad8a8b477381038550d35d15905b264cab",
+      "reason": "Current package binding refresh; reviewed_sha256 and original review scope unchanged. Meter overview now references separately reviewed F06OC/F06OF/F06KG/F06TP providers; local review-status prose added. This does not certify global composition.",
+      "same_bytes": false,
+      "historical_replacement_sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
+    },
+    {
+      "file": "SCOPE-AND-ACCEPTANCE.md",
+      "prior_current_sha256": "6f35c0bc698ce7ca19c4c76eb8c4738113d47d769f409b5cb1876f2eed692c2b",
+      "reason": "Current package identity refresh only; historical reviewed_sha256, review scope, algorithms, and readiness are unchanged.",
+      "historical_replacement_sha256": "111c32ab2981c94fa0dc796c65a66106f87cf7367e1061f9693fd65e9b5b204c"
+    },
+    {
+      "file": "SCOPE-AND-ACCEPTANCE.md",
+      "prior_current_sha256": "111c32ab2981c94fa0dc796c65a66106f87cf7367e1061f9693fd65e9b5b204c",
+      "replacement_sha256": "0a0644a3e0bb13d6f2eda7a97162394bc2f969acededd2a652367eefe5d509a4",
+      "reason": "Current package identity refresh only; historical reviewed_sha256, review scope, algorithms, and readiness are unchanged."
+    },
+    {
+      "file": "specs/06-meter-log-and-peak.md",
+      "prior_current_sha256": "7bcfe6b7e93c723816f5e5fb9edbde9be10ffedbb32d347720c9db58b3ceb8f8",
+      "replacement_sha256": "c8a9aec8c931391bfbb4ecaca01a8e5cbec3ba680899f516727c6574a170e38f",
+      "reason": "Current package identity refresh only; historical reviewed_sha256, review scope, algorithms, and readiness are unchanged."
+    },
+    {
+      "file": "PIPELINE-AND-INTERFACES.md",
+      "prior_current_sha256": "45b46a04d5b15230691d5ab6fbfe1efabe8266b35ffa15b02c0d1cb304698063",
+      "replacement_sha256": "61e4f4a968c93a2dc074656db656cf757246a5f316a1ca06502ebc9d4d842e12",
+      "reason": "Current package identity refresh only; historical reviewed_sha256, review scope, algorithms, and readiness are unchanged."
+    }
+  ],
+  "status_reconciliation": {
+    "current_identity_refresh": {
+      "revision": "status-reconciliation-r1",
+      "files": [
+        "PIPELINE-AND-INTERFACES.md"
+      ],
+      "historical_review_identity_preserved": true,
+      "algorithm_changed": false
+    }
+  }
+}

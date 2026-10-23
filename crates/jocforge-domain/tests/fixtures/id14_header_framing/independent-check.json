@@ -1,0 +1,13 @@
+{
+  "schema": "f05q-id14-header-framing-check.v4",
+  "manifest_sha256": "60f778ba40c6bd6fe65e85d7ae500dc4d9ee6527d976f3a241b41b360743968e",
+  "payload_count": 4,
+  "all_payload_hashes_match": true,
+  "sanitized_scan_pass": true,
+  "reference_filenames_consistent": true,
+  "status_return_word_distinguished": true,
+  "object_count_64_template_explicit": true,
+  "object_count_15_templates_explicit": 4,
+  "failure_initial_buffer_recipe_explicit": true,
+  "whole_status_not_ready": true
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "f05q-id14-header-framing-washed-provenance.v1",
+  "package": "F05Q-ID14-HEADER-FRAMING",
+  "source_wash_manifest_sha256": "10bbe6f51ce896b19ace160565063cc7a24897c685e7916b107089ac8b732231",
+  "source_wash_independent_check_sha256": "86e1e07dd6f07648e3e39e1817dce9d0005aa90b0d0db4b3720194b82f05db94",
+  "source_files": {
+    "ID14-HEADER-FRAMING.md": "b1245c9e05f08b5f298f8d9e395062a629ca1a8026fe7a02dbfcea7474842972",
+    "ID14-HEADER-FRAMING-VECTORS.json": "220e5a9fc246fa56cc0891d4f69b9207671fd127bd670513acca1c2994ae6a69",
+    "BOUNDED-COVERAGE.md": "d4b6eb2cad57f90847a3c1c8cfe94073ca8a8abef4126fce09b9a0148730c77c"
+  },
+  "evidence": {
+    "selected_vectors": "14_SUCCESS_10_FAILURE",
+    "successful_bytes_rebuilt_exactly": true,
+    "live_writer_headers_matching_native": 3,
+    "reference_ec3_baseline_exact": true,
+    "observer_errors": 0,
+    "model_postcompare": "NOT_RUN"
+  },
+  "scope": {
+    "selected_writer_contract_only": true,
+    "production_usable": false,
+    "implementation_ready": "NO",
+    "kind_code_meanings": "STATIC_ONLY",
+    "mode_code_meanings": "STATIC_ONLY",
+    "upstream_source_mapping": "NOT_CLOSED",
+    "parent_retry_rollback": "NOT_PROVEN",
+    "whole_id14_readiness": "NO"
+  },
+  "excluded": ["DLL", "IDA", "RVA", "pointer", "native_event_files", "private_key", "HMAC", "raw_PCM"]
+}
+
