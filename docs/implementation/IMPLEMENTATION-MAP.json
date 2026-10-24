@@ -1831,7 +1831,7 @@
           "slice_id": "selected-primary-installed48-source-map-and-activity",
           "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_FUNCTIONAL_ID_DEFERRED",
           "implementation_status": "LOCALLY_VERIFIED_STATIC_ROUTE_AND_REAL_ADM_G0_ACTIVITY_PROPOSAL__F03R_TYPED_CONTROL_JOIN_OPEN",
-          "scope": "Keeps the detached static projection path and adds a dynamic selected-ADM resource identity binding that reuses the same 48-source row mapping. The authorized full WAV was parsed in memory and produced a source map plus a g0 primary-activity proposal; F03R's typed feature-control inputs remain unresolved, so no callback state was committed and no flags/render consumer ran.",
+          "scope": "Keeps the detached static projection path and adds a dynamic selected-ADM resource identity binding that reuses the same 48-source row mapping. The authorized full WAV was parsed in memory and produced a source map plus a g0 primary-activity proposal. A temporary pre-F04 Source56 adapter candidate was rejected at host14 but is not a normative F03R input mapping. F03R's typed feature-control inputs remain unresolved, so no callback state was committed and no flags/render consumer ran.",
           "implementation_files": [
             "crates/jocforge-domain/src/frontend/job_configuration.rs",
             "crates/jocforge-domain/src/frontend/primary_metadata_control.rs",
@@ -1883,7 +1883,8 @@
               "4,251 callback rows: phase, host-frame, source sample cursor, actual/advertised counts, quiet flags, writer indices and field0/field4 masks",
               "5,695 field transition receipts derived from recomputed masks",
               "96 selected post-route variants; V2 specifies active width>=R32(0.2) clears Z at byte offset32 after the normalizer disables field52",
-              "The admitted validation WAV was read in memory at its whole-resource identity; the g0 source/activity proposals were dropped at the unresolved F03R typed-control input join"
+              "The admitted validation WAV was read in memory at its whole-resource identity; the g0 source/activity proposals were dropped at the unresolved F03R typed-control input join",
+              "A temporary Source56 candidate rejected host14 with mute0/width+0/component_enum0/diffuse_flag1; Wash marks this candidate nonnormative pending frozen-caller mapping"
             ],
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/primary_installed48/CALLBACK-ACTIVITY-OUTPUTS.jsonl",
@@ -1900,7 +1901,9 @@
             "washed_reference_manifest_sha256": {
               "prepared_job_input_identity_v1": "cefd573075ef181f5a5f9f2929bbdeeb9b348468dea750f61018e65c8e98bd9f",
               "meter_frontend_g0_g2_starter_v1": "9e63f9ee657d9267ba21a57099c16f410f484d9ff9926cabc3a2eb9a7bebc0f6",
-              "meter_frontend_producer_chain_v1": "9de1440ebb9bc1d1e119b1f2bbb80577a0ae885f722264a52d837c28f9c8e95f"
+              "meter_frontend_producer_chain_v1": "9de1440ebb9bc1d1e119b1f2bbb80577a0ae885f722264a52d837c28f9c8e95f",
+              "f03r_diffuse_field_boundary_v1": "d57ba77c725ba0a54be624854b069cf96cc27f4daa9811a990c60c50b4b55efa",
+              "f03r_diffuse_candidate_probe_scope_v1": "e5f51f3763df70d0f830102214d862cc530e43a7cdeb43b2c637a3c9dfe9f0ff"
             }
           },
           "error_outcomes": [
@@ -1978,7 +1981,9 @@
             },
             "washed_reference_manifest_sha256": {
               "meter_frontend_g0_g2_starter_v1": "9e63f9ee657d9267ba21a57099c16f410f484d9ff9926cabc3a2eb9a7bebc0f6",
-              "meter_frontend_producer_chain_v1": "9de1440ebb9bc1d1e119b1f2bbb80577a0ae885f722264a52d837c28f9c8e95f"
+              "meter_frontend_producer_chain_v1": "9de1440ebb9bc1d1e119b1f2bbb80577a0ae885f722264a52d837c28f9c8e95f",
+              "f03r_diffuse_field_boundary_v1": "d57ba77c725ba0a54be624854b069cf96cc27f4daa9811a990c60c50b4b55efa",
+              "f03r_diffuse_candidate_probe_scope_v1": "e5f51f3763df70d0f830102214d862cc530e43a7cdeb43b2c637a3c9dfe9f0ff"
             }
           },
           "error_outcomes": [

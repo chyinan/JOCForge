@@ -14,9 +14,14 @@ use jocforge_domain::{
     },
     meter::sample_block_queue::{MeterCallbackIndex, MeterSourceSampleCount},
     spatial::{
-        installed48_activity::{PrimaryActivityInput, PrimaryInstalled48ActivityProducer},
-        installed48_source_map::build_meter_installed48_source_map,
+        installed48_activity::{
+            PrimaryActivityInput, PrimaryActivityOutput, PrimaryInstalled48ActivityProducer,
+        },
+        installed48_source_map::{Installed48SourceMap, build_meter_installed48_source_map},
         selected_p11_geometry::generate_selected_p11_geometry,
+        source_flags::{
+            HostRole, HostRouteRecord, RegularControl, RegularControls, ValidatedSemanticRoute,
+        },
     },
     timeline::{AdmSampleCount, AdmSampleIndex, FrontendCallbackIndex},
 };
@@ -224,10 +229,85 @@ fn main() -> Result<(), Box<dyn Error>> {
         activity_output.prefix_writer_indices(),
         membership_route.contributions().len(),
     );
-    println!("pipeline_stop_stage=F03R_TYPED_CONTROL_INPUT");
-    println!("pipeline_stop_reason=F01E_5_TO_F03R_FIELD_MAPPING_UNRESOLVED");
+    match validate_source56_candidate_shape(&activity_output, &source_map) {
+        Ok(rows) => println!(
+            "source56_adapter=NONNORMATIVE_CANDIDATE_SHAPE_VALIDATED rows={rows}; source flags values not run"
+        ),
+        Err(error) => {
+            println!("source56_adapter=NONNORMATIVE_CANDIDATE_REJECTED");
+            println!("candidate_source56_error={error}");
+        }
+    }
+    println!("pipeline_stop_stage=F03R_SOURCE56_ADAPTER_AWAITING_WASH_CONFIRMATION");
+    println!("source_flags_values=NOT_RUN");
+    println!("pipeline_commit=NOT_RUN");
     println!("callback_commit=NOT_COMMITTED");
     Ok(())
+}
+
+// LOCAL DIAGNOSTIC ONLY: this Source56-to-F03R field mapping is not Wash-approved.
+fn validate_source56_candidate_shape(
+    activity: &PrimaryActivityOutput,
+    source_map: &Installed48SourceMap,
+) -> Result<usize, io::Error> {
+    let mut controls = Vec::with_capacity(37);
+    let mut regular_hosts = Vec::with_capacity(37);
+    for binding in source_map.physical_to_global_source() {
+        let host = binding.physical_host().value();
+        let row = activity
+            .postroute_rows()
+            .iter()
+            .find(|row| row.source_index() == binding.source_index())
+            .ok_or_else(|| io::Error::other("Source56 row for installed source is missing"))?;
+        let metadata = row.metadata_words_8_to_55();
+        let mute = u8::try_from(row.field4())
+            .map_err(|_| io::Error::other("Source56 field4 mute value is out of range"))?;
+        let width = f32::from_bits(metadata[8]);
+        let diffuse = u8::try_from(metadata[9])
+            .map_err(|_| io::Error::other("Source56 diffuse-control field is out of range"))?;
+        let component = u8::try_from(metadata[10])
+            .map_err(|_| io::Error::other("Source56 spatial enum is out of range"))?;
+        let control =
+            RegularControl::from_raw(host, mute, width, component, diffuse).map_err(|error| {
+                io::Error::other(format!(
+                    "candidate Source56 host {host} fields rejected: mute={mute} width_bits=0x{:08x} component_enum={component} diffuse_control_flag={diffuse} error={}",
+                    width.to_bits(),
+                    error.code()
+                ))
+            })?;
+        controls.push(control);
+        regular_hosts.push(host);
+    }
+    let controls = RegularControls::new(controls).map_err(|error| {
+        io::Error::other(format!("candidate Source56 controls: {}", error.code()))
+    })?;
+    let mut records = Vec::with_capacity(38);
+    for host in 0..38_u8 {
+        if regular_hosts.contains(&host) {
+            let binding = source_map
+                .physical_to_global_source()
+                .iter()
+                .find(|binding| binding.physical_host().value() == host)
+                .ok_or_else(|| io::Error::other("Source56 physical host binding is missing"))?;
+            let destination = u8::try_from(binding.source_index().value())
+                .map_err(|_| io::Error::other("Source56 destination index is out of range"))?;
+            records.push(
+                HostRouteRecord::new(host, HostRole::Regular, true, Some(destination)).map_err(
+                    |error| io::Error::other(format!("Source56 route: {}", error.code())),
+                )?,
+            );
+        } else {
+            records.push(
+                HostRouteRecord::new(host, HostRole::Lfe, true, None).map_err(|error| {
+                    io::Error::other(format!("Source56 LFE route: {}", error.code()))
+                })?,
+            );
+        }
+    }
+    let route = ValidatedSemanticRoute::new(records)
+        .map_err(|error| io::Error::other(format!("Source56 semantic route: {}", error.code())))?;
+    let _ = (controls, route);
+    Ok(regular_hosts.len())
 }
 
 fn hex_lower(bytes: &[u8]) -> String {
