@@ -12,6 +12,8 @@ The authorized internal validation WAV was read in memory under its whole-resour
 
 An earlier isolated run produced three 48×3072 values from source intervals `[0,1536)`, `[1536,3072)`, and `[3072,4608)`. A subsequent numeric audit found that the filtered-prefix weights had been promoted from F32 instead of using the specified binary64 constants. Those pre-correction output hashes are invalidated and are not accepted as verification. The implementation now uses `sqrt64(R64(0.85/0.15))` before the F32 conversion; the corrected leaf has not been replayed.
 
+The workspace test `crates/jocforge-domain/tests/meter_installed48_renderer.rs` covers the cold zero-input frame shape, positive-zero output, and proposal clock only. It does not validate the corrected nonzero real-source branch.
+
 The isolated probe did not persist PCM or use an output hash as a later input. No leaf values have been joined to SourceFlags, CurrentFeatures, selector/U04, component, direct LFE, SCP16/control16, an F06 owner, or a measurement receipt.
 
 ## First full-chain stop

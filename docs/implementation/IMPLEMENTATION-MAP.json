@@ -596,13 +596,15 @@
             "crates/jocforge-application/src/lib.rs",
             "crates/jocforge-domain/src/frontend/job_configuration.rs",
             "crates/jocforge-domain/src/frontend/selected_adm_graph.rs",
-            "crates/jocforge-domain/src/frontend/dbmd_sections.rs"
+            "crates/jocforge-domain/src/frontend/dbmd_sections.rs",
+            "crates/jocforge-io/src/pcm/riff_pcm24.rs"
           ],
           "local_mapping_files": [
             "docs/implementation/prepared-job-input-identity.md"
           ],
           "test_modules": [
-            "crates/jocforge-application/tests/prepared_job_input.rs"
+            "crates/jocforge-application/tests/prepared_job_input.rs",
+            "crates/jocforge-io/tests/riff_pcm24.rs"
           ],
           "clock": {
             "domains": [
@@ -1837,6 +1839,8 @@
             "crates/jocforge-domain/src/spatial/installed48_activity.rs",
             "crates/jocforge-domain/src/spatial/selected_p11_geometry.rs",
             "crates/jocforge-domain/src/spatial/source_flags.rs",
+            "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
+            "crates/jocforge-io/src/pcm/riff_pcm24.rs",
             "crates/jocforge-io/examples/meter_input_probe.rs"
           ],
           "test_modules": [
@@ -1931,7 +1935,9 @@
             "crates/jocforge-domain/src/meter/installed48_renderer.rs",
             "crates/jocforge-domain/src/meter/mod.rs"
           ],
-          "test_modules": [],
+          "test_modules": [
+            "crates/jocforge-domain/tests/meter_installed48_renderer.rs"
+          ],
           "local_mapping_files": [
             "docs/implementation/meter-installed48-leaf.md"
           ],

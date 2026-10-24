@@ -237,3 +237,89 @@ fn riff_pcm24_cases_match_the_ten_selected_unit_vectors() {
         }
     }
 }
+
+#[test]
+fn selected_adm_payloads_are_unique_borrowed_spans_from_one_riff() {
+    let mut bytes = b"RIFF\0\0\0\0WAVE".to_vec();
+    append_chunk(&mut bytes, *b"fmt ", &selected_format_payload());
+    append_chunk(&mut bytes, *b"data", &[0_u8; 114]);
+    append_chunk(&mut bytes, *b"axml", b"<a/>");
+    append_chunk(&mut bytes, *b"chna", &[1, 2, 3, 4]);
+    append_chunk(&mut bytes, *b"dbmd", &[5, 6, 7]);
+    let riff_size = u32::try_from(bytes.len() - 8).unwrap();
+    bytes[4..8].copy_from_slice(&riff_size.to_le_bytes());
+
+    let parsed = parse_selected_riff_pcm24(&bytes, None).unwrap();
+    let payloads = parsed.selected_adm_payloads().unwrap();
+    assert_eq!(payloads.axml(), b"<a/>");
+    assert_eq!(payloads.chna(), &[1, 2, 3, 4]);
+    assert_eq!(payloads.dbmd(), &[5, 6, 7]);
+    assert!(is_subslice(&bytes, payloads.axml()));
+    assert!(is_subslice(&bytes, payloads.chna()));
+    assert!(is_subslice(&bytes, payloads.dbmd()));
+}
+
+#[test]
+fn selected_adm_payloads_reject_missing_or_duplicate_metadata_chunks() {
+    let missing_dbmd = selected_riff_with_metadata(false, false);
+    assert_eq!(
+        parse_selected_riff_pcm24(&missing_dbmd, None)
+            .unwrap()
+            .selected_adm_payloads()
+            .unwrap_err(),
+        RiffPcm24Error::InvalidInput
+    );
+
+    let duplicate_axml = selected_riff_with_metadata(true, true);
+    assert_eq!(
+        parse_selected_riff_pcm24(&duplicate_axml, None)
+            .unwrap()
+            .selected_adm_payloads()
+            .unwrap_err(),
+        RiffPcm24Error::InvalidInput
+    );
+}
+
+fn selected_riff_with_metadata(include_dbmd: bool, duplicate_axml: bool) -> Vec<u8> {
+    let mut bytes = b"RIFF\0\0\0\0WAVE".to_vec();
+    append_chunk(&mut bytes, *b"fmt ", &selected_format_payload());
+    append_chunk(&mut bytes, *b"data", &[0_u8; 114]);
+    append_chunk(&mut bytes, *b"axml", b"<a/>");
+    if duplicate_axml {
+        append_chunk(&mut bytes, *b"axml", b"<b/>");
+    }
+    append_chunk(&mut bytes, *b"chna", &[1, 2, 3, 4]);
+    if include_dbmd {
+        append_chunk(&mut bytes, *b"dbmd", &[5, 6, 7]);
+    }
+    let riff_size = u32::try_from(bytes.len() - 8).unwrap();
+    bytes[4..8].copy_from_slice(&riff_size.to_le_bytes());
+    bytes
+}
+
+fn selected_format_payload() -> Vec<u8> {
+    let mut format = Vec::with_capacity(16);
+    format.extend_from_slice(&1_u16.to_le_bytes());
+    format.extend_from_slice(&38_u16.to_le_bytes());
+    format.extend_from_slice(&48_000_u32.to_le_bytes());
+    format.extend_from_slice(&5_472_000_u32.to_le_bytes());
+    format.extend_from_slice(&114_u16.to_le_bytes());
+    format.extend_from_slice(&24_u16.to_le_bytes());
+    format
+}
+
+fn append_chunk(bytes: &mut Vec<u8>, chunk_id: [u8; 4], payload: &[u8]) {
+    bytes.extend_from_slice(&chunk_id);
+    bytes.extend_from_slice(&u32::try_from(payload.len()).unwrap().to_le_bytes());
+    bytes.extend_from_slice(payload);
+    if payload.len() % 2 != 0 {
+        bytes.push(0);
+    }
+}
+
+fn is_subslice(resource: &[u8], payload: &[u8]) -> bool {
+    let start = (payload.as_ptr() as usize).checked_sub(resource.as_ptr() as usize);
+    start
+        .and_then(|start| start.checked_add(payload.len()).map(|end| (start, end)))
+        .is_some_and(|(start, end)| resource.get(start..end) == Some(payload))
+}

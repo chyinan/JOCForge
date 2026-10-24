@@ -6,7 +6,7 @@
 - `job_xml_sha256` hashes the raw admitted UTF-8 job document.
 - `config_sha256` hashes the canonical identity envelope with the XML digest, selected input label, and complete normalized F01E configuration.
 
-The input adapter still owns RIFF validation. `prepare_selected_job_input` receives the validated immutable allocation and its AXML, CHNA, and DBMD payload views. It checks that each view is a subslice of that allocation and that the preceding RIFF chunk header has the matching ID and payload length. It parses the graph and DBMD from those same views, then stores their offsets, lengths, payload digests, and parent `ResourceIdentity` together.
+The input adapter still owns RIFF validation. `ParsedRiffPcm24::selected_adm_payloads()` returns unique borrowed AXML, CHNA, and DBMD payload spans from one parsed RIFF resource. `prepare_selected_job_input` receives those views with the same immutable allocation. It checks that each view is a subslice of that allocation and that the preceding RIFF chunk header has the matching ID and payload length. It parses the graph and DBMD from those same views, then stores their offsets, lengths, payload digests, and parent `ResourceIdentity` together.
 
 The dynamic primary-control binding carries that same resource identity, data extent, metadata hashes, job digest, and config digest into the selected installed48 source-map builder. The detached historical projection path retains its own admission checks; the selected ADM path uses the same row mapping after its admitted runtime identity checks.
 

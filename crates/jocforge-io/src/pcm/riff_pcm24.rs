@@ -50,6 +50,28 @@ impl<'a> RiffMetadataPayload<'a> {
     }
 }
 
+/// Unique ADM metadata payloads borrowed from one parsed RIFF resource.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct SelectedAdmRiffPayloads<'a> {
+    axml: &'a [u8],
+    chna: &'a [u8],
+    dbmd: &'a [u8],
+}
+
+impl<'a> SelectedAdmRiffPayloads<'a> {
+    pub const fn axml(&self) -> &'a [u8] {
+        self.axml
+    }
+
+    pub const fn chna(&self) -> &'a [u8] {
+        self.chna
+    }
+
+    pub const fn dbmd(&self) -> &'a [u8] {
+        self.dbmd
+    }
+}
+
 /// Parsed selected RIFF/PCM24 metadata and a borrowed data payload.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ParsedRiffPcm24<'a> {
@@ -66,7 +88,7 @@ pub struct ParsedRiffPcm24<'a> {
     has_adm_chunks: bool,
 }
 
-impl ParsedRiffPcm24<'_> {
+impl<'a> ParsedRiffPcm24<'a> {
     pub const fn sample_rate_hz(&self) -> u32 {
         self.sample_rate_hz
     }
@@ -106,6 +128,15 @@ impl ParsedRiffPcm24<'_> {
 
     pub const fn has_adm_chunks(&self) -> bool {
         self.has_adm_chunks
+    }
+
+    /// Selects one AXML, CHNA and DBMD payload, each borrowed from this RIFF resource.
+    pub fn selected_adm_payloads(&self) -> Result<SelectedAdmRiffPayloads<'a>, RiffPcm24Error> {
+        Ok(SelectedAdmRiffPayloads {
+            axml: unique_metadata_payload(&self.metadata_payloads, *b"axml")?,
+            chna: unique_metadata_payload(&self.metadata_payloads, *b"chna")?,
+            dbmd: unique_metadata_payload(&self.metadata_payloads, *b"dbmd")?,
+        })
     }
 
     /// Converts one validated sample hop to 38 planar binary32 bit rows.
@@ -160,6 +191,23 @@ impl ParsedRiffPcm24<'_> {
         }
         Ok(planar)
     }
+}
+
+fn unique_metadata_payload<'a>(
+    metadata: &[RiffMetadataPayload<'a>],
+    wanted_id: [u8; 4],
+) -> Result<&'a [u8], RiffPcm24Error> {
+    let mut matches = metadata
+        .iter()
+        .filter(|chunk| chunk.chunk_id().as_bytes() == wanted_id);
+    let payload = matches
+        .next()
+        .map(RiffMetadataPayload::payload)
+        .ok_or(RiffPcm24Error::InvalidInput)?;
+    if matches.next().is_some() {
+        return Err(RiffPcm24Error::InvalidInput);
+    }
+    Ok(payload)
 }
 
 /// Parses the selected 48 kHz, 38-channel PCM24 RIFF model-reader contract.

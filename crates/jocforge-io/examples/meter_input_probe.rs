@@ -24,7 +24,7 @@ use jocforge_io::pcm::{
     meter_source_cursor::{
         MeterPcmSourceCursor, MeterPcmSourceIdentity, stage_meter_pcm_source_frame,
     },
-    riff_pcm24::{ParsedRiffPcm24, RiffMetadataPayload, parse_selected_riff_pcm24},
+    riff_pcm24::parse_selected_riff_pcm24,
 };
 use serde_json::Value;
 use sha2::{Digest, Sha256};
@@ -42,10 +42,12 @@ fn main() -> Result<(), Box<dyn Error>> {
         MeterPcmSourceIdentity::from_selected_resource_sha256(parsed.source_sha256());
     let source_samples = MeterSourceSampleCount::new(parsed.total_samples())
         .map_err(|_| io::Error::other("invalid selected PCM source extent"))?;
-    let metadata = |chunk_id: &str| unique_metadata_payload(&parsed, chunk_id);
-    let axml = metadata("axml")?;
-    let chna = metadata("chna")?;
-    let dbmd_payload = metadata("dbmd")?;
+    let metadata = parsed
+        .selected_adm_payloads()
+        .map_err(|_| io::Error::other("selected AXML/CHNA/DBMD spans are missing or duplicated"))?;
+    let axml = metadata.axml();
+    let chna = metadata.chna();
+    let dbmd_payload = metadata.dbmd();
     let graph = parse_selected_adm_graph(axml, chna)
         .map_err(|_| io::Error::other("selected ADM graph parse failed"))?;
     let dbmd = parse_selected_dbmd_sections(dbmd_payload)
@@ -226,26 +228,6 @@ fn main() -> Result<(), Box<dyn Error>> {
     println!("pipeline_stop_reason=F01E_5_TO_F03R_FIELD_MAPPING_UNRESOLVED");
     println!("callback_commit=NOT_COMMITTED");
     Ok(())
-}
-
-fn unique_metadata_payload<'a>(
-    parsed: &'a ParsedRiffPcm24<'_>,
-    wanted_id: &str,
-) -> Result<&'a [u8], io::Error> {
-    let mut matches = parsed
-        .metadata_payloads()
-        .iter()
-        .filter(|chunk| chunk.chunk_id() == wanted_id);
-    let payload = matches
-        .next()
-        .map(RiffMetadataPayload::payload)
-        .ok_or_else(|| io::Error::other(format!("missing {wanted_id} metadata chunk")))?;
-    if matches.next().is_some() {
-        return Err(io::Error::other(format!(
-            "duplicate {wanted_id} metadata chunk"
-        )));
-    }
-    Ok(payload)
 }
 
 fn hex_lower(bytes: &[u8]) -> String {
