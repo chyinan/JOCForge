@@ -1,0 +1,17 @@
+{
+  "slice": "GAIN-HISTORY-PEAK-STATE",
+  "package_manifest_sha256": "32a5d555edbb83123e17a51843ce2d3d905944815eee3d70924854a23ddbb419",
+  "independent_check_sha256": "dc49214b761ead381a230f9a10a7ec44ffe95691391230105fe1b520c44333c2",
+  "source_manifest_sha256": "7acbd2cba5ce0f8c67738a9915d7f98484854aedd66007930526339cb8b5bd68",
+  "source_independent_check_sha256": "dcff19c3a9996ef8e7cd60faf3b5815711b9e6d514693f8098fc1b6ecb3ea37a",
+  "parameter_sha256": "af1eb3e483f984fb78df870119c34ad211f531e875750a76557c4ad0d2ceb027",
+  "input_sha256": "8987d512edbea6a977f9a9327556b5d3f54cc84a27f08b20870559382d31a744",
+  "expected_sha256": "9ce8d4a339642bc3694f041d2884ec80dce846c3a42c338d5a9e94baa62547c2",
+  "derived_trace_sha256": "bf54157d2c8bfafd3ae070f3f2eff73f519342ca9c85f8b1c89852717c8f2fd2",
+  "native_lane_register_capture": "NOT_RUN",
+  "filter_state_numerics": "NOT_VALIDATED_IN_THIS_SLICE",
+  "reset_eof_absolute_clock": "NOT_RUN",
+  "implementation_status": "LOCAL_GAIN_HISTORY_DIRECT_SLICE__WHOLE_F09_DEFERRED",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO"
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "four-lane-mean-square-check.v1",
+  "package": "FOUR-LANE-MEAN-SQUARE",
+  "manifest_sha256": "7a5da39f1b20b8ffcebfe0925dd236df36c2d29552362985680c3f3b8505dbd1",
+  "payload_count": 6,
+  "payload_hashes_match": true,
+  "source_manifest_check_and_payloads_match": true,
+  "module_file_identity_runtime_bound": true,
+  "input_recipes": 7,
+  "input_words_replayed": 1792,
+  "lane_accumulation_steps_replayed": 1792,
+  "native_final_mean_calls": 7,
+  "independent_formula_replay": "PASS all lane and reduction bits",
+  "native_lane_register_capture": "NOT_RUN",
+  "independent_product_audio_integration": "NOT_RUN",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO"
+}

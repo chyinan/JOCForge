@@ -8,7 +8,10 @@ mod target_panner;
 mod tests;
 mod type11;
 
-use crate::timeline::FrontendCallbackIndex;
+use crate::{
+    joc::emdf::metadata_owner::MetadataPayloadBody,
+    timeline::{CodecSourceIndex, FrontendCallbackIndex},
+};
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 use std::collections::BTreeMap;
@@ -19,7 +22,7 @@ const RECORD_BYTES: usize = 56;
 const TARGET_ROW_IDENTITIES: [i64; 15] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 const SAMPLES_PER_ENERGY_ROW: usize = 1536;
 const SOURCE_COUNT: usize = 48;
-const SELECTED_PROFILE_ID: &str = "reader56-main-target-panner.v1";
+pub(crate) const SELECTED_PROFILE_ID: &str = "reader56-main-target-panner.v1";
 const READER_PRIMING_CALLBACKS: u64 = 2;
 
 /// Reader callback count; distinct from the frontend callback index.
@@ -154,6 +157,7 @@ pub struct ReaderTargetUpdateReceipt {
     target_payload_f32le: [u8; 384],
     target_sha256: [u8; 32],
     semantic_sha256: [u8; 32],
+    id11_body: Vec<u8>,
 }
 
 struct MarkerHistoryPreview {
@@ -166,6 +170,7 @@ struct ReaderTargetComputedRows {
     reader_records: [[u8; RECORD_BYTES]; READER_ROWS],
     targets: [[u32; 6]; READER_ROWS],
     history_producer_generations: [HistoryProducerGeneration; READER_ROWS],
+    id11_body: Vec<u8>,
 }
 
 impl ReaderTargetState {
@@ -301,6 +306,7 @@ pub fn stage_reader_target(
         &staged,
         &computed.reader_records,
         &computed.targets,
+        &computed.id11_body,
     )?;
     Ok(ReaderTargetStageProposal {
         next_state: staged,
@@ -317,16 +323,39 @@ impl ReaderTargetStageProposal {
     pub(crate) const fn pending_receipt(&self) -> Option<&ReaderTargetUpdateReceipt> {
         self.pending_receipt.as_ref()
     }
+
+    #[cfg(test)]
+    pub(crate) fn into_parts_for_test(
+        self,
+    ) -> (ReaderTargetState, Option<ReaderTargetUpdateReceipt>) {
+        (self.next_state, self.pending_receipt)
+    }
 }
 
 #[allow(dead_code)] // Receipt admission and downstream use are outside this producer slice.
 impl ReaderTargetUpdateReceipt {
+    pub(crate) fn programme_id(&self) -> &str {
+        &self.programme_id
+    }
+
+    pub(crate) fn attempt_id(&self) -> &str {
+        &self.attempt_id
+    }
+
+    pub(crate) fn transaction_id(&self) -> &str {
+        &self.transaction_id
+    }
+
     pub(crate) const fn callback_generation(&self) -> FrontendCallbackIndex {
         self.callback_generation
     }
 
     pub(crate) const fn reader_invocation(&self) -> ReaderInvocationIndex {
         self.reader_invocation
+    }
+
+    pub(crate) const fn profile_id(&self) -> &str {
+        self.profile_id
     }
 
     pub(crate) const fn history_producer_generations(
@@ -339,8 +368,45 @@ impl ReaderTargetUpdateReceipt {
         &self.target_payload_f32le
     }
 
+    pub(crate) fn target_words(&self) -> [u32; READER_ROWS * 6] {
+        std::array::from_fn(|index| {
+            let offset = index * 4;
+            u32::from_le_bytes(
+                self.target_payload_f32le[offset..offset + 4]
+                    .try_into()
+                    .expect("fixed target payload words are four bytes"),
+            )
+        })
+    }
+
+    pub(crate) const fn target_sha256(&self) -> &[u8; 32] {
+        &self.target_sha256
+    }
+
     pub(crate) const fn semantic_sha256(&self) -> &[u8; 32] {
         &self.semantic_sha256
+    }
+
+    pub(crate) const fn state_before_sha256(&self) -> &[u8; 32] {
+        &self.state_before_sha256
+    }
+
+    pub(crate) const fn state_after_sha256(&self) -> &[u8; 32] {
+        &self.state_after_sha256
+    }
+
+    pub(crate) fn id11_body(&self) -> &[u8] {
+        &self.id11_body
+    }
+
+    pub(crate) fn id11_metadata_body(
+        &self,
+        writer_generation: CodecSourceIndex,
+    ) -> MetadataPayloadBody {
+        MetadataPayloadBody {
+            writer_generation,
+            bytes: self.id11_body.clone(),
+        }
     }
 }
 
@@ -625,7 +691,7 @@ fn preview_reader_and_targets(
     input: &ReaderTargetCallbackInputs<'_>,
     controls: &[[u32; 13]; TARGET_ROWS],
 ) -> Result<ReaderTargetComputedRows, ReaderTargetError> {
-    let (decoded_rows, _wire_body) = type11::roundtrip(controls)?;
+    let (decoded_rows, id11_body) = type11::roundtrip(controls)?;
     let reader_records = reader_records::materialize(&committed.reader_records, &decoded_rows)?;
     let targets = target_panner::generate_targets(&reader_records)?;
     let mut row_generations = [HistoryProducerGeneration::Cold; READER_ROWS];
@@ -637,9 +703,11 @@ fn preview_reader_and_targets(
         reader_records,
         targets,
         history_producer_generations: row_generations,
+        id11_body,
     })
 }
 
+#[allow(clippy::too_many_arguments)] // Receipt binds all independently owned producer values.
 fn build_receipt(
     input: &ReaderTargetCallbackInputs<'_>,
     reader_invocation: ReaderInvocationIndex,
@@ -648,7 +716,11 @@ fn build_receipt(
     after_state: &ReaderTargetState,
     reader_records: &[[u8; RECORD_BYTES]; READER_ROWS],
     targets: &[[u32; 6]; READER_ROWS],
+    id11_body: &[u8],
 ) -> Result<ReaderTargetUpdateReceipt, ReaderTargetError> {
+    if id11_body.len() > 160 {
+        return Err(ReaderTargetError::StateError);
+    }
     let state_before_sha256 = before_state.canonical_sha256();
     let state_after_sha256 = after_state.canonical_sha256();
     let mut reader_bytes = Vec::with_capacity(READER_ROWS * RECORD_BYTES);
@@ -753,6 +825,7 @@ fn build_receipt(
         target_payload_f32le,
         target_sha256,
         semantic_sha256,
+        id11_body: id11_body.to_vec(),
     })
 }
 

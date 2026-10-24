@@ -1,0 +1,34 @@
+{
+  "schema": "washed-f13c-id11-boundary-provenance.v1",
+  "delivery_scope": "INTERNAL_ISOLATED_IMPLEMENTATION_ONLY",
+  "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_sealed_manifest_sha256": "46b6a7418f759a134fd722a50979440b9fcc75e41552b557388ffddd85ffcfbe",
+  "source_independent_check_sha256": "7662fdaf34cf26d75a559f1494bb681148c8d9abe823d1e7b308d386e2cf9525",
+  "source_delivery_envelope_sha256": "aac8fc56991ffc55423f1b4cd90ccd5c47d38b008363a63b33f162b226880c0a",
+  "source_payloads": {
+    "ID11-PARSER-INPUTS.json": {
+      "artifact": "ID11-INPUT-ONLY.json",
+      "sha256": "b2075d6f15fe5966908516e8396a8749e708ca6b5ecff3c0f65d9096b745c31c"
+    },
+    "ID11-PARSER-OBSERVATIONS.json": {
+      "artifact": "ID11-NATIVE-OBSERVATIONS.json",
+      "sha256": "61ec995678833171c064e79e068a46ece69dea442bd54336ac3312e3ade06acf"
+    },
+    "GENERIC-COLLECTOR-INPUTS.json": {
+      "artifact": "INPUT-ONLY-VECTORS.json",
+      "sha256": "e4116654db79c0f3a183611aa133e0954ad2dee81b65ab27c95338f87eee923f"
+    },
+    "GENERIC-COLLECTOR-OBSERVATIONS.json": {
+      "artifact": "NATIVE-OBSERVATIONS.json",
+      "sha256": "7d83657a44308aa11a3ae1ad473cb0202d14d6969b64227627cbfcf0d50dc368"
+    },
+    "F13C-BOUNDARY-SCOPE.json": {
+      "artifact": "REPORT.json",
+      "sha256": "c6269768961ba8b2462f2b74558492bbfe4249e2f786667d5356587f8eca7bb1"
+    }
+  },
+  "scope_status": false,
+  "private_source_included": false,
+  "private_key_included": false,
+  "pcm_payload_or_hash_included": false
+}

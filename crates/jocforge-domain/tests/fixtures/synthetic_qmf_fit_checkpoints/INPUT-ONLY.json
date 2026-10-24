@@ -1,0 +1,100 @@
+{
+  "schema": "synthetic-selected-qmf-fit-input.v1",
+  "origin": "DETERMINISTIC_SELF_OWNED_COMPLEX_QMF_NOT_REAL_AUDIO",
+  "band_boundaries": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    6,
+    8,
+    11,
+    14,
+    18,
+    23,
+    35,
+    64
+  ],
+  "clip_index": 128,
+  "target_control_carriers": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      3
+    ],
+    [
+      4,
+      1
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      1
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      3,
+      0
+    ],
+    [
+      4
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      2
+    ],
+    [
+      3,
+      0
+    ],
+    [
+      4,
+      1
+    ]
+  ],
+  "generations": [
+    {
+      "amplitude": 0.0625,
+      "transient_slot": 12,
+      "transient_multiplier": 4
+    },
+    {
+      "amplitude": 0.0625,
+      "transient_slot": 12,
+      "transient_multiplier": 4
+    },
+    {
+      "amplitude": 0.0625,
+      "transient_slot": 12,
+      "transient_multiplier": 4
+    }
+  ],
+  "cold": "selected temporal/geometry/row-state cold; previous target24/carrier24 complex positive zero",
+  "carrier_recipe": "C[c,s,b]: real=a*(1+(b%3)/4)*(-1)^bit(s,k); imag=a/2*(-1)^bit(s+1,(k+1)%5); k=0 for b0,c1 else c; round components F32",
+  "target_recipe": "object o uses carriers o%5,(o+2)%5; coefficients (.75,0),(.75,.5),(.5,-.25) by o%3; F32 product/add order; generation1 object0 slots>=12 multiplied4",
+  "diagnostic_capacity_bytes": 80,
+  "diagnostic_capacity_scope": "HELPER_DISCRIMINATOR_ONLY; selected profile remains372"
+}

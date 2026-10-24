@@ -1,0 +1,25 @@
+{
+  "producer_output_sha256": "b376d0eb236a9e26e615d682743c063bcd415d151713670d5b55e0e0b623cd5c",
+  "producer_code_sha256": "63044d5af6b624820f42ae94e94d8a80ac368fedc0e682fd498e58d842e7f2ce",
+  "producer_data_files_read": 3,
+  "allowed_data_roles": [
+    "primary AXML",
+    "primary CHNA",
+    "primary DBMD"
+  ],
+  "native_data_read": false,
+  "expected_vectors_read": false,
+  "pcm_data_read": false,
+  "phase_order": [
+    "Produce independent owned control metadata under a three-data-file read guard.",
+    "Persist and hash owned model result.",
+    "Open F01E expected vector data and compare."
+  ],
+  "own_control_rows": 38,
+  "own_object_control_words": 364,
+  "expected_object_rows": 28,
+  "object_control_word_mismatches": 0,
+  "native_primary_control_replay": "NOT_RUN",
+  "source_field0": "NOT_EVALUATED_BY_THIS_METADATA_ONLY_PRODUCER",
+  "source_skip4": "Only control mute input is produced; later route transitions are separate."
+}

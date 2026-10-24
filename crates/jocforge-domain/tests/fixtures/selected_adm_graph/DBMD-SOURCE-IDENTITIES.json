@@ -1,0 +1,17 @@
+[
+  {
+    "role": "frozen_supplemental_model",
+    "bytes": 11970,
+    "sha256": "551d2bb5810c1a1185aa811ac9a72bf61a66bd198f766286964dd6ff6356e64b"
+  },
+  {
+    "role": "global_section_parser",
+    "bytes": 5351,
+    "sha256": "22ec2bb954d9e5f2d66e23f270d0ceda7cb2ccb0f485495f52cdc3e405dc5281"
+  },
+  {
+    "role": "authored_mode_converter",
+    "bytes": 3262,
+    "sha256": "c7f6dd0516607736e9ed396aeb7c664f6b94f4d65183c8f6fd5a564756ca2747"
+  }
+]

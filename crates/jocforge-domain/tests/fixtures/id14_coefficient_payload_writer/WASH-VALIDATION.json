@@ -1,0 +1,28 @@
+{
+  "schema": "washed-id14-coefficient-payload-writer.v1",
+  "status": "SCOPED_WRITER_SLICE_READY_UPSTREAM_AND_FULL_F13C_NOT_READY",
+  "source_candidate_manifest_sha256": "1f3d6fac145d9b6185dbe3dd34809f6a0af526abff2c82b44c572a3180feb32d",
+  "source_candidate_independent_check_sha256": "cf75ff461ad90b15f22bab1f19a2b6863a9bb705bcd2f856be7801fb413ce16e",
+  "independent_validation": {
+    "exact_candidate_file_set_and_hashes": "PASS",
+    "candidate_envelope_manifest_and_check_binding": "PASS",
+    "normal_checker": "15 cases, 588 codebook symbols, PASS",
+    "optimized_checker": "15 cases, 588 codebook symbols, PASS",
+    "approved_codebook_all_symbol_match": "PASS",
+    "dll_file_identity": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "binary_payloads": 0,
+    "raw_PCM_or_private_authentication_values": 0
+  },
+  "model_comparison": {
+    "frozen_model_postcompare_result": "PASS_WITH_EXPLICIT_CONTRACT_DIFFERENCES",
+    "native_outputs_used_as_model_inputs": false,
+    "selected_scope": "controlled fitting valid-domain payloads; explicit offsets24/32/duplicate-offset differences remain"
+  },
+  "open_edges": [
+    "native peak/hold clip producer versus model target-gain clip producer",
+    "upstream coefficient/fit producer and full audio-path equivalence",
+    "production owner/cold/generation composition",
+    "semantic carrier transport and final AU/file publication",
+    "whole F13C readiness and product acceptance"
+  ]
+}

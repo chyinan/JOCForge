@@ -1,0 +1,15 @@
+{
+  "scope": "TYPE11_LENGTH_FORMULA_FROM_METADATA_PLUS_NATIVE_IDENTITY_RECEIPTS",
+  "model_outputs": 4249,
+  "unique_metadata_inputs": 3735,
+  "minimum_bytes": 69,
+  "maximum_bytes": 69,
+  "model_above160": 0,
+  "native_natural_outputs": 69,
+  "native_maximum_bytes": 69,
+  "native_above160": 0,
+  "mismatches": [],
+  "expected_loaded_after_length_calculation": true,
+  "standalone_checker_regenerates_payload_bytes": false,
+  "upstream_or_native_full_song_replayed": false
+}

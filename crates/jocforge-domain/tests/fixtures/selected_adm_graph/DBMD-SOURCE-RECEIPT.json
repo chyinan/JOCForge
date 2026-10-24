@@ -1,0 +1,26 @@
+{
+  "source_file_name": "hanabi.wav",
+  "source_file_bytes": 1583325474,
+  "source_graph_receipt_sha256": "b284151464f0174d8e10a178991209cc7d4d28174e027116975ec5a12f7c957e",
+  "source_graph_manifest_sha256": "a2bb9bd62cc80391085297f012188c7dcc628f90e013ba762262f08046ac6e0b",
+  "dbmd_payload_offset": 1583324894,
+  "dbmd_bytes": 580,
+  "dbmd_sha256": "bc3f7199da679b43d1fd6f770c2caae08250d6ee545858e759fc12afc2232194",
+  "metadata_source_bytes_read": 580,
+  "pcm_bytes_read": 0,
+  "pcm_content_digest_computed": false,
+  "other_metadata_identities": [
+    {
+      "id": "axml",
+      "payload_offset": 1583240218,
+      "bytes": 83135,
+      "metadata_sha256": "5973f94db1bc995465b33f6d9be7fd55d3e1bd3941130a913c58e7e5cf57bbfc"
+    },
+    {
+      "id": "chna",
+      "payload_offset": 1583323362,
+      "bytes": 1524,
+      "metadata_sha256": "f82b14e4c1b5b3b1750ed4104aa53f1d595e3ff2d4dbaef76a76c0e35f31b7a6"
+    }
+  ]
+}

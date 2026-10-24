@@ -1,0 +1,122 @@
+{
+  "schema": "coefficient-power-producer-inputs.v1",
+  "recipes": [
+    {
+      "name": "zero253",
+      "kind": "zero",
+      "producer_count": 253,
+      "consumer_count": 217,
+      "blocks": 1,
+      "channels": 1,
+      "initial_bias": 17
+    },
+    {
+      "name": "periodic253",
+      "kind": "periodic",
+      "producer_count": 253,
+      "consumer_count": 217,
+      "blocks": 1,
+      "channels": 1,
+      "initial_bias": 17
+    },
+    {
+      "name": "tail_impulse253",
+      "kind": "tail_impulse",
+      "producer_count": 253,
+      "consumer_count": 217,
+      "blocks": 1,
+      "channels": 1,
+      "initial_bias": 17
+    },
+    {
+      "kind": "periodic_multi",
+      "blocks": 2,
+      "channels": 2,
+      "producer_count": 253,
+      "consumer_count": 217,
+      "phase_rule": "(bin+block+2*channel+call)%6",
+      "real_cycle": [
+        0,
+        0.125,
+        0.25,
+        -0.5,
+        1,
+        2
+      ],
+      "imag_cycle": [
+        0,
+        0.25,
+        0,
+        0.5,
+        0,
+        0
+      ],
+      "initial_bias": 17,
+      "reuse_storage": true,
+      "call": 0
+    },
+    {
+      "kind": "periodic_multi",
+      "blocks": 2,
+      "channels": 2,
+      "producer_count": 253,
+      "consumer_count": 217,
+      "phase_rule": "(bin+block+2*channel+call)%6",
+      "real_cycle": [
+        0,
+        0.125,
+        0.25,
+        -0.5,
+        1,
+        2
+      ],
+      "imag_cycle": [
+        0,
+        0.25,
+        0,
+        0.5,
+        0,
+        0
+      ],
+      "initial_bias": 18,
+      "reuse_storage": true,
+      "call": 1
+    },
+    {
+      "producer_count": 253,
+      "real_bits_cycle": [
+        1060439282,
+        1060439283,
+        1060439284,
+        1065353215,
+        1065353216,
+        1065353217,
+        3204448256,
+        2147483648
+      ],
+      "imaginary_bits_cycle": [
+        1060439282,
+        1060439283,
+        1060439284,
+        0,
+        0,
+        0,
+        1056964608,
+        0
+      ],
+      "initial_bias": -7,
+      "kind": "rounding_edge_cycle",
+      "blocks": 1,
+      "channels": 1
+    }
+  ],
+  "expected_used_as_seed": false,
+  "reconstruction": {
+    "zero": "253 real and imaginary F32 zero values",
+    "periodic": "real cycle[0,.25,-.25,.5,1,2], imaginary cycle[0,0,.25,.5,0,0], bin modulo6",
+    "tail_impulse": "All zero except real[252]=1",
+    "periodic_multi": "Use supplied cycles at (bin+block+2*channel+call)%6; reuse previous buffers in call1, replace coefficient entries and bias with supplied inputs before next call",
+    "rounding_edge_cycle": "Write exact supplied U32 binary32 cycles, bin modulo8"
+  },
+  "row_order": "Arrays indexed by explicit block/channel/bin; count253 generated, count217 consumed by following raw call."
+}

@@ -1,0 +1,161 @@
+{
+  "model_source_sha256": "4e54b546f8d1cf0bc9db2e39558713507c1bc16408971ea6cf55ed56d93994a9",
+  "model_behavior": "exact descriptor gain F32 word lookup in128-entry attenuation table; no peak/hold/release history",
+  "model_execution": "TRANSCRIBED_MAPPING_ONLY_NOT_FULL_FROZEN_SCRIPT_RUN",
+  "native_behavior": "current/previous-tail sample peak plus persistent envelope; output128..255",
+  "counterexamples_are_controlled_alternative_input_sources_not_same_natural_capture": true,
+  "counterexamples": [
+    {
+      "case": "positive_prefix_and_release",
+      "generation": 0,
+      "native_clip": 194,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "positive_prefix_and_release",
+      "generation": 1,
+      "native_clip": 194,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "positive_prefix_and_release",
+      "generation": 2,
+      "native_clip": 194,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "positive_prefix_and_release",
+      "generation": 3,
+      "native_clip": 194,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "positive_prefix_and_release",
+      "generation": 4,
+      "native_clip": 194,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "positive_prefix_and_release",
+      "generation": 5,
+      "native_clip": 194,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "positive_prefix_and_release",
+      "generation": 6,
+      "native_clip": 193,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "positive_prefix_and_release",
+      "generation": 7,
+      "native_clip": 193,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "positive_prefix_and_release",
+      "generation": 8,
+      "native_clip": 193,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "positive_prefix_and_release",
+      "generation": 9,
+      "native_clip": 193,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "positive_prefix_and_release",
+      "generation": 10,
+      "native_clip": 192,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "positive_prefix_and_release",
+      "generation": 11,
+      "native_clip": 192,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "positive_prefix_and_release",
+      "generation": 12,
+      "native_clip": 191,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "negative_prefix",
+      "generation": 0,
+      "native_clip": 194,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "negative_prefix",
+      "generation": 1,
+      "native_clip": 194,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "tail_retained_next_generation",
+      "generation": 0,
+      "native_clip": 179,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "tail_retained_next_generation",
+      "generation": 1,
+      "native_clip": 179,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "tail_retained_next_generation",
+      "generation": 2,
+      "native_clip": 179,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "prefix_tail_boundary",
+      "generation": 0,
+      "native_clip": 130,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "prefix_tail_boundary",
+      "generation": 1,
+      "native_clip": 162,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "prefix_tail_boundary",
+      "generation": 2,
+      "native_clip": 162,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "last_channel_included",
+      "generation": 0,
+      "native_clip": 194,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "last_channel_included",
+      "generation": 1,
+      "native_clip": 194,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "over_unity_finite",
+      "generation": 0,
+      "native_clip": 193,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    },
+    {
+      "case": "over_unity_finite",
+      "generation": 1,
+      "native_clip": 193,
+      "model_mapping_if_explicit_descriptor_gain_is_1_over_16": 128
+    }
+  ],
+  "wire_width": "8bits unchanged",
+  "production_compatibility": "DO_NOT_REPLACE_APPROVED_JL_TARGET_GAIN_RULE_WITH_NATIVE_RULE_WITHOUT_WASH_SCOPE_DECISION"
+}

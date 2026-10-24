@@ -1,0 +1,3986 @@
+{
+  "observations": [
+    {
+      "event": "input_workspace_size",
+      "status": "OBSERVED",
+      "bytes": 7805609
+    },
+    {
+      "event": "input_owner_initialized",
+      "status": "OBSERVED",
+      "initialization_invocation": 1,
+      "owner_token": 1,
+      "state": {
+        "gate_threshold": 3072,
+        "gate_progress": 0,
+        "flush_remaining": 4,
+        "flush_started": 0,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 0,
+          "first_block": 0,
+          "segments": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "counter": 0,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 0,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "external_input_enter",
+      "status": "OBSERVED",
+      "kind": "external_process",
+      "call": 1,
+      "owner_token": 1,
+      "input_descriptor_token": 4,
+      "source_channels": 38,
+      "control_record_count": 38,
+      "pcm_table_token": 5,
+      "before": {
+        "gate_threshold": 3072,
+        "gate_progress": 0,
+        "flush_remaining": 4,
+        "flush_started": 0,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 0,
+          "first_block": 0,
+          "segments": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "counter": 0,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 0,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 0
+            }
+          ]
+        }
+      },
+      "control_positions": [
+        {
+          "source_index_u16": 0,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 1,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 2,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 3,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 4,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 5,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 6,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 7,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 8,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 9,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 10,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 11,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 12,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 13,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 14,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 15,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 16,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 17,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 18,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 19,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 20,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 21,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 22,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 23,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 24,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 25,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 26,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 27,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 28,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 29,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 30,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 31,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 32,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 33,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 34,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 35,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 36,
+          "position_u64": "0"
+        },
+        {
+          "source_index_u16": 37,
+          "position_u64": "0"
+        }
+      ],
+      "pcm_row_pointer_tokens": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43
+      ],
+      "pcm_row_offsets_bytes": [
+        0,
+        4,
+        8,
+        12,
+        16,
+        20,
+        24,
+        28,
+        32,
+        36,
+        40,
+        44,
+        48,
+        52,
+        56,
+        60,
+        64,
+        68,
+        72,
+        76,
+        80,
+        84,
+        88,
+        92,
+        96,
+        100,
+        104,
+        108,
+        112,
+        116,
+        120,
+        124,
+        128,
+        132,
+        136,
+        140,
+        144,
+        148
+      ]
+    },
+    {
+      "event": "input_work_join",
+      "status": "OBSERVED",
+      "work_invocation": 1,
+      "origin": {
+        "kind": "external_process",
+        "call": 1,
+        "owner_token": 1
+      },
+      "input_pair_token": 44,
+      "pcm_table_token": 5,
+      "external_pcm_table_alias": true
+    },
+    {
+      "event": "selected_source_route",
+      "status": "OBSERVED",
+      "work_invocation": 1,
+      "origin": {
+        "kind": "external_process",
+        "call": 1,
+        "owner_token": 1
+      },
+      "route_owner_token": 45,
+      "input_stride_words": 38,
+      "output_rows": 38,
+      "object_direct_copy_enabled": 28,
+      "object_row_map": [
+        {
+          "target_row": 10,
+          "selected_source_index": 10
+        },
+        {
+          "target_row": 11,
+          "selected_source_index": 11
+        },
+        {
+          "target_row": 12,
+          "selected_source_index": 12
+        },
+        {
+          "target_row": 13,
+          "selected_source_index": 13
+        },
+        {
+          "target_row": 14,
+          "selected_source_index": 14
+        },
+        {
+          "target_row": 15,
+          "selected_source_index": 15
+        },
+        {
+          "target_row": 16,
+          "selected_source_index": 16
+        },
+        {
+          "target_row": 17,
+          "selected_source_index": 17
+        },
+        {
+          "target_row": 18,
+          "selected_source_index": 18
+        },
+        {
+          "target_row": 19,
+          "selected_source_index": 19
+        },
+        {
+          "target_row": 20,
+          "selected_source_index": 20
+        },
+        {
+          "target_row": 21,
+          "selected_source_index": 21
+        },
+        {
+          "target_row": 22,
+          "selected_source_index": 22
+        },
+        {
+          "target_row": 23,
+          "selected_source_index": 23
+        },
+        {
+          "target_row": 24,
+          "selected_source_index": 24
+        },
+        {
+          "target_row": 25,
+          "selected_source_index": 25
+        },
+        {
+          "target_row": 26,
+          "selected_source_index": 26
+        },
+        {
+          "target_row": 27,
+          "selected_source_index": 27
+        },
+        {
+          "target_row": 28,
+          "selected_source_index": 28
+        },
+        {
+          "target_row": 29,
+          "selected_source_index": 29
+        },
+        {
+          "target_row": 30,
+          "selected_source_index": 30
+        },
+        {
+          "target_row": 31,
+          "selected_source_index": 31
+        },
+        {
+          "target_row": 32,
+          "selected_source_index": 32
+        },
+        {
+          "target_row": 33,
+          "selected_source_index": 33
+        },
+        {
+          "target_row": 34,
+          "selected_source_index": 34
+        },
+        {
+          "target_row": 35,
+          "selected_source_index": 35
+        },
+        {
+          "target_row": 36,
+          "selected_source_index": 36
+        },
+        {
+          "target_row": 37,
+          "selected_source_index": 37
+        }
+      ],
+      "input_pcm_table_alias": true,
+      "samples_per_row_from_loop": 1536
+    },
+    {
+      "event": "renderer_output_span",
+      "status": "OBSERVED",
+      "work_invocation": 1,
+      "origin": {
+        "kind": "external_process",
+        "call": 1,
+        "owner_token": 1
+      },
+      "return_i32": 0,
+      "samples": 0,
+      "before": {
+        "threshold": 3072,
+        "progress": 0
+      },
+      "progress_after": 1536,
+      "descriptor_token": 46
+    },
+    {
+      "event": "input_work_return",
+      "status": "OBSERVED",
+      "work_invocation": 1,
+      "return_i32": 0
+    },
+    {
+      "event": "external_input_return",
+      "status": "OBSERVED",
+      "call": 1,
+      "owner_token": 1,
+      "return_i32": 0,
+      "consumed_flag_i32": 1,
+      "valid_output_bytes": 0,
+      "after": {
+        "gate_threshold": 3072,
+        "gate_progress": 0,
+        "flush_remaining": 4,
+        "flush_started": 0,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 0,
+          "first_block": 0,
+          "segments": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "counter": 0,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 0,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "external_input_enter",
+      "status": "OBSERVED",
+      "kind": "external_process",
+      "call": 2,
+      "owner_token": 1,
+      "input_descriptor_token": 4,
+      "source_channels": 38,
+      "control_record_count": 38,
+      "pcm_table_token": 5,
+      "before": {
+        "gate_threshold": 3072,
+        "gate_progress": 0,
+        "flush_remaining": 4,
+        "flush_started": 0,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 0,
+          "first_block": 0,
+          "segments": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "counter": 0,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 0,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 0
+            }
+          ]
+        }
+      },
+      "control_positions": [
+        {
+          "source_index_u16": 0,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 1,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 2,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 3,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 4,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 5,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 6,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 7,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 8,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 9,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 10,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 11,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 12,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 13,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 14,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 15,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 16,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 17,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 18,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 19,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 20,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 21,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 22,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 23,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 24,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 25,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 26,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 27,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 28,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 29,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 30,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 31,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 32,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 33,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 34,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 35,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 36,
+          "position_u64": "1536"
+        },
+        {
+          "source_index_u16": 37,
+          "position_u64": "1536"
+        }
+      ],
+      "pcm_row_pointer_tokens": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43
+      ],
+      "pcm_row_offsets_bytes": [
+        0,
+        4,
+        8,
+        12,
+        16,
+        20,
+        24,
+        28,
+        32,
+        36,
+        40,
+        44,
+        48,
+        52,
+        56,
+        60,
+        64,
+        68,
+        72,
+        76,
+        80,
+        84,
+        88,
+        92,
+        96,
+        100,
+        104,
+        108,
+        112,
+        116,
+        120,
+        124,
+        128,
+        132,
+        136,
+        140,
+        144,
+        148
+      ]
+    },
+    {
+      "event": "input_work_join",
+      "status": "OBSERVED",
+      "work_invocation": 2,
+      "origin": {
+        "kind": "external_process",
+        "call": 2,
+        "owner_token": 1
+      },
+      "input_pair_token": 44,
+      "pcm_table_token": 5,
+      "external_pcm_table_alias": true
+    },
+    {
+      "event": "selected_source_route",
+      "status": "OBSERVED",
+      "work_invocation": 2,
+      "origin": {
+        "kind": "external_process",
+        "call": 2,
+        "owner_token": 1
+      },
+      "route_owner_token": 45,
+      "input_stride_words": 38,
+      "output_rows": 38,
+      "object_direct_copy_enabled": 28,
+      "object_row_map": [
+        {
+          "target_row": 10,
+          "selected_source_index": 10
+        },
+        {
+          "target_row": 11,
+          "selected_source_index": 11
+        },
+        {
+          "target_row": 12,
+          "selected_source_index": 12
+        },
+        {
+          "target_row": 13,
+          "selected_source_index": 13
+        },
+        {
+          "target_row": 14,
+          "selected_source_index": 14
+        },
+        {
+          "target_row": 15,
+          "selected_source_index": 15
+        },
+        {
+          "target_row": 16,
+          "selected_source_index": 16
+        },
+        {
+          "target_row": 17,
+          "selected_source_index": 17
+        },
+        {
+          "target_row": 18,
+          "selected_source_index": 18
+        },
+        {
+          "target_row": 19,
+          "selected_source_index": 19
+        },
+        {
+          "target_row": 20,
+          "selected_source_index": 20
+        },
+        {
+          "target_row": 21,
+          "selected_source_index": 21
+        },
+        {
+          "target_row": 22,
+          "selected_source_index": 22
+        },
+        {
+          "target_row": 23,
+          "selected_source_index": 23
+        },
+        {
+          "target_row": 24,
+          "selected_source_index": 24
+        },
+        {
+          "target_row": 25,
+          "selected_source_index": 25
+        },
+        {
+          "target_row": 26,
+          "selected_source_index": 26
+        },
+        {
+          "target_row": 27,
+          "selected_source_index": 27
+        },
+        {
+          "target_row": 28,
+          "selected_source_index": 28
+        },
+        {
+          "target_row": 29,
+          "selected_source_index": 29
+        },
+        {
+          "target_row": 30,
+          "selected_source_index": 30
+        },
+        {
+          "target_row": 31,
+          "selected_source_index": 31
+        },
+        {
+          "target_row": 32,
+          "selected_source_index": 32
+        },
+        {
+          "target_row": 33,
+          "selected_source_index": 33
+        },
+        {
+          "target_row": 34,
+          "selected_source_index": 34
+        },
+        {
+          "target_row": 35,
+          "selected_source_index": 35
+        },
+        {
+          "target_row": 36,
+          "selected_source_index": 36
+        },
+        {
+          "target_row": 37,
+          "selected_source_index": 37
+        }
+      ],
+      "input_pcm_table_alias": true,
+      "samples_per_row_from_loop": 1536
+    },
+    {
+      "event": "renderer_output_span",
+      "status": "OBSERVED",
+      "work_invocation": 2,
+      "origin": {
+        "kind": "external_process",
+        "call": 2,
+        "owner_token": 1
+      },
+      "return_i32": 0,
+      "samples": 0,
+      "before": {
+        "threshold": 3072,
+        "progress": 1536
+      },
+      "progress_after": 3072,
+      "descriptor_token": 46
+    },
+    {
+      "event": "input_work_return",
+      "status": "OBSERVED",
+      "work_invocation": 2,
+      "return_i32": 0
+    },
+    {
+      "event": "external_input_return",
+      "status": "OBSERVED",
+      "call": 2,
+      "owner_token": 1,
+      "return_i32": 0,
+      "consumed_flag_i32": 1,
+      "valid_output_bytes": 0,
+      "after": {
+        "gate_threshold": 3072,
+        "gate_progress": 0,
+        "flush_remaining": 4,
+        "flush_started": 0,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 0,
+          "first_block": 0,
+          "segments": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "counter": 0,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 0,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "external_input_enter",
+      "status": "OBSERVED",
+      "kind": "external_process",
+      "call": 3,
+      "owner_token": 1,
+      "input_descriptor_token": 4,
+      "source_channels": 38,
+      "control_record_count": 38,
+      "pcm_table_token": 5,
+      "before": {
+        "gate_threshold": 3072,
+        "gate_progress": 0,
+        "flush_remaining": 4,
+        "flush_started": 0,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 0,
+          "first_block": 0,
+          "segments": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "counter": 0,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 0,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 0
+            }
+          ]
+        }
+      },
+      "control_positions": [
+        {
+          "source_index_u16": 0,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 1,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 2,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 3,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 4,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 5,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 6,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 7,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 8,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 9,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 10,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 11,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 12,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 13,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 14,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 15,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 16,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 17,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 18,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 19,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 20,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 21,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 22,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 23,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 24,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 25,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 26,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 27,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 28,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 29,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 30,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 31,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 32,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 33,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 34,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 35,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 36,
+          "position_u64": "3072"
+        },
+        {
+          "source_index_u16": 37,
+          "position_u64": "3072"
+        }
+      ],
+      "pcm_row_pointer_tokens": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43
+      ],
+      "pcm_row_offsets_bytes": [
+        0,
+        4,
+        8,
+        12,
+        16,
+        20,
+        24,
+        28,
+        32,
+        36,
+        40,
+        44,
+        48,
+        52,
+        56,
+        60,
+        64,
+        68,
+        72,
+        76,
+        80,
+        84,
+        88,
+        92,
+        96,
+        100,
+        104,
+        108,
+        112,
+        116,
+        120,
+        124,
+        128,
+        132,
+        136,
+        140,
+        144,
+        148
+      ]
+    },
+    {
+      "event": "input_work_join",
+      "status": "OBSERVED",
+      "work_invocation": 3,
+      "origin": {
+        "kind": "external_process",
+        "call": 3,
+        "owner_token": 1
+      },
+      "input_pair_token": 44,
+      "pcm_table_token": 5,
+      "external_pcm_table_alias": true
+    },
+    {
+      "event": "selected_source_route",
+      "status": "OBSERVED",
+      "work_invocation": 3,
+      "origin": {
+        "kind": "external_process",
+        "call": 3,
+        "owner_token": 1
+      },
+      "route_owner_token": 45,
+      "input_stride_words": 38,
+      "output_rows": 38,
+      "object_direct_copy_enabled": 28,
+      "object_row_map": [
+        {
+          "target_row": 10,
+          "selected_source_index": 10
+        },
+        {
+          "target_row": 11,
+          "selected_source_index": 11
+        },
+        {
+          "target_row": 12,
+          "selected_source_index": 12
+        },
+        {
+          "target_row": 13,
+          "selected_source_index": 13
+        },
+        {
+          "target_row": 14,
+          "selected_source_index": 14
+        },
+        {
+          "target_row": 15,
+          "selected_source_index": 15
+        },
+        {
+          "target_row": 16,
+          "selected_source_index": 16
+        },
+        {
+          "target_row": 17,
+          "selected_source_index": 17
+        },
+        {
+          "target_row": 18,
+          "selected_source_index": 18
+        },
+        {
+          "target_row": 19,
+          "selected_source_index": 19
+        },
+        {
+          "target_row": 20,
+          "selected_source_index": 20
+        },
+        {
+          "target_row": 21,
+          "selected_source_index": 21
+        },
+        {
+          "target_row": 22,
+          "selected_source_index": 22
+        },
+        {
+          "target_row": 23,
+          "selected_source_index": 23
+        },
+        {
+          "target_row": 24,
+          "selected_source_index": 24
+        },
+        {
+          "target_row": 25,
+          "selected_source_index": 25
+        },
+        {
+          "target_row": 26,
+          "selected_source_index": 26
+        },
+        {
+          "target_row": 27,
+          "selected_source_index": 27
+        },
+        {
+          "target_row": 28,
+          "selected_source_index": 28
+        },
+        {
+          "target_row": 29,
+          "selected_source_index": 29
+        },
+        {
+          "target_row": 30,
+          "selected_source_index": 30
+        },
+        {
+          "target_row": 31,
+          "selected_source_index": 31
+        },
+        {
+          "target_row": 32,
+          "selected_source_index": 32
+        },
+        {
+          "target_row": 33,
+          "selected_source_index": 33
+        },
+        {
+          "target_row": 34,
+          "selected_source_index": 34
+        },
+        {
+          "target_row": 35,
+          "selected_source_index": 35
+        },
+        {
+          "target_row": 36,
+          "selected_source_index": 36
+        },
+        {
+          "target_row": 37,
+          "selected_source_index": 37
+        }
+      ],
+      "input_pcm_table_alias": true,
+      "samples_per_row_from_loop": 1536
+    },
+    {
+      "event": "renderer_output_span",
+      "status": "OBSERVED",
+      "work_invocation": 3,
+      "origin": {
+        "kind": "external_process",
+        "call": 3,
+        "owner_token": 1
+      },
+      "return_i32": 0,
+      "samples": 1536,
+      "before": {
+        "threshold": 3072,
+        "progress": 3072
+      },
+      "progress_after": 4608,
+      "descriptor_token": 46
+    },
+    {
+      "event": "frontend_input_origin",
+      "status": "OBSERVED",
+      "frontend_invocation": 1,
+      "work_invocation": 3,
+      "origin": {
+        "kind": "external_process",
+        "call": 3,
+        "owner_token": 1
+      },
+      "renderer_descriptor_alias": true,
+      "before": {
+        "gate_threshold": 3072,
+        "gate_progress": 0,
+        "flush_remaining": 4,
+        "flush_started": 0,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 0,
+          "first_block": 0,
+          "segments": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "counter": 0,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 0,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "frontend_origin_return",
+      "status": "OBSERVED",
+      "frontend_invocation": 1,
+      "work_invocation": 3,
+      "origin": {
+        "kind": "external_process",
+        "call": 3,
+        "owner_token": 1
+      },
+      "return_i32": 0,
+      "valid_output_bytes": 0,
+      "after": {
+        "gate_threshold": 3072,
+        "gate_progress": 1536,
+        "flush_remaining": 4,
+        "flush_started": 0,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 0,
+          "first_block": 0,
+          "segments": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "counter": 1,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 0,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 47,
+              "payload_bytes": 132,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "input_work_return",
+      "status": "OBSERVED",
+      "work_invocation": 3,
+      "return_i32": 0
+    },
+    {
+      "event": "external_input_return",
+      "status": "OBSERVED",
+      "call": 3,
+      "owner_token": 1,
+      "return_i32": 0,
+      "consumed_flag_i32": 1,
+      "valid_output_bytes": 0,
+      "after": {
+        "gate_threshold": 3072,
+        "gate_progress": 1536,
+        "flush_remaining": 4,
+        "flush_started": 0,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 0,
+          "first_block": 0,
+          "segments": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "counter": 1,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 0,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 47,
+              "payload_bytes": 132,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "external_input_enter",
+      "status": "OBSERVED",
+      "kind": "external_process",
+      "call": 4,
+      "owner_token": 1,
+      "input_descriptor_token": 4,
+      "source_channels": 38,
+      "control_record_count": 38,
+      "pcm_table_token": 5,
+      "before": {
+        "gate_threshold": 3072,
+        "gate_progress": 1536,
+        "flush_remaining": 4,
+        "flush_started": 0,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 0,
+          "first_block": 0,
+          "segments": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "counter": 1,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 0,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 47,
+              "payload_bytes": 132,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      },
+      "control_positions": [
+        {
+          "source_index_u16": 0,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 1,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 2,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 3,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 4,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 5,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 6,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 7,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 8,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 9,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 10,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 11,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 12,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 13,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 14,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 15,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 16,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 17,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 18,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 19,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 20,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 21,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 22,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 23,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 24,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 25,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 26,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 27,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 28,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 29,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 30,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 31,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 32,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 33,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 34,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 35,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 36,
+          "position_u64": "4608"
+        },
+        {
+          "source_index_u16": 37,
+          "position_u64": "4608"
+        }
+      ],
+      "pcm_row_pointer_tokens": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43
+      ],
+      "pcm_row_offsets_bytes": [
+        0,
+        4,
+        8,
+        12,
+        16,
+        20,
+        24,
+        28,
+        32,
+        36,
+        40,
+        44,
+        48,
+        52,
+        56,
+        60,
+        64,
+        68,
+        72,
+        76,
+        80,
+        84,
+        88,
+        92,
+        96,
+        100,
+        104,
+        108,
+        112,
+        116,
+        120,
+        124,
+        128,
+        132,
+        136,
+        140,
+        144,
+        148
+      ]
+    },
+    {
+      "event": "input_work_join",
+      "status": "OBSERVED",
+      "work_invocation": 4,
+      "origin": {
+        "kind": "external_process",
+        "call": 4,
+        "owner_token": 1
+      },
+      "input_pair_token": 44,
+      "pcm_table_token": 5,
+      "external_pcm_table_alias": true
+    },
+    {
+      "event": "selected_source_route",
+      "status": "OBSERVED",
+      "work_invocation": 4,
+      "origin": {
+        "kind": "external_process",
+        "call": 4,
+        "owner_token": 1
+      },
+      "route_owner_token": 45,
+      "input_stride_words": 38,
+      "output_rows": 38,
+      "object_direct_copy_enabled": 28,
+      "object_row_map": [
+        {
+          "target_row": 10,
+          "selected_source_index": 10
+        },
+        {
+          "target_row": 11,
+          "selected_source_index": 11
+        },
+        {
+          "target_row": 12,
+          "selected_source_index": 12
+        },
+        {
+          "target_row": 13,
+          "selected_source_index": 13
+        },
+        {
+          "target_row": 14,
+          "selected_source_index": 14
+        },
+        {
+          "target_row": 15,
+          "selected_source_index": 15
+        },
+        {
+          "target_row": 16,
+          "selected_source_index": 16
+        },
+        {
+          "target_row": 17,
+          "selected_source_index": 17
+        },
+        {
+          "target_row": 18,
+          "selected_source_index": 18
+        },
+        {
+          "target_row": 19,
+          "selected_source_index": 19
+        },
+        {
+          "target_row": 20,
+          "selected_source_index": 20
+        },
+        {
+          "target_row": 21,
+          "selected_source_index": 21
+        },
+        {
+          "target_row": 22,
+          "selected_source_index": 22
+        },
+        {
+          "target_row": 23,
+          "selected_source_index": 23
+        },
+        {
+          "target_row": 24,
+          "selected_source_index": 24
+        },
+        {
+          "target_row": 25,
+          "selected_source_index": 25
+        },
+        {
+          "target_row": 26,
+          "selected_source_index": 26
+        },
+        {
+          "target_row": 27,
+          "selected_source_index": 27
+        },
+        {
+          "target_row": 28,
+          "selected_source_index": 28
+        },
+        {
+          "target_row": 29,
+          "selected_source_index": 29
+        },
+        {
+          "target_row": 30,
+          "selected_source_index": 30
+        },
+        {
+          "target_row": 31,
+          "selected_source_index": 31
+        },
+        {
+          "target_row": 32,
+          "selected_source_index": 32
+        },
+        {
+          "target_row": 33,
+          "selected_source_index": 33
+        },
+        {
+          "target_row": 34,
+          "selected_source_index": 34
+        },
+        {
+          "target_row": 35,
+          "selected_source_index": 35
+        },
+        {
+          "target_row": 36,
+          "selected_source_index": 36
+        },
+        {
+          "target_row": 37,
+          "selected_source_index": 37
+        }
+      ],
+      "input_pcm_table_alias": true,
+      "samples_per_row_from_loop": 1536
+    },
+    {
+      "event": "renderer_output_span",
+      "status": "OBSERVED",
+      "work_invocation": 4,
+      "origin": {
+        "kind": "external_process",
+        "call": 4,
+        "owner_token": 1
+      },
+      "return_i32": 0,
+      "samples": 1536,
+      "before": {
+        "threshold": 3072,
+        "progress": 4608
+      },
+      "progress_after": 4608,
+      "descriptor_token": 46
+    },
+    {
+      "event": "frontend_input_origin",
+      "status": "OBSERVED",
+      "frontend_invocation": 2,
+      "work_invocation": 4,
+      "origin": {
+        "kind": "external_process",
+        "call": 4,
+        "owner_token": 1
+      },
+      "renderer_descriptor_alias": true,
+      "before": {
+        "gate_threshold": 3072,
+        "gate_progress": 1536,
+        "flush_remaining": 4,
+        "flush_started": 0,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 0,
+          "first_block": 0,
+          "segments": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "counter": 1,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 0,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 47,
+              "payload_bytes": 132,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "frontend_origin_return",
+      "status": "OBSERVED",
+      "frontend_invocation": 2,
+      "work_invocation": 4,
+      "origin": {
+        "kind": "external_process",
+        "call": 4,
+        "owner_token": 1
+      },
+      "return_i32": 0,
+      "valid_output_bytes": 0,
+      "after": {
+        "gate_threshold": 3072,
+        "gate_progress": 3072,
+        "flush_remaining": 4,
+        "flush_started": 0,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 0,
+          "first_block": 0,
+          "segments": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "counter": 2,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 0,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 48,
+              "payload_bytes": 326,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "input_work_return",
+      "status": "OBSERVED",
+      "work_invocation": 4,
+      "return_i32": 0
+    },
+    {
+      "event": "external_input_return",
+      "status": "OBSERVED",
+      "call": 4,
+      "owner_token": 1,
+      "return_i32": 0,
+      "consumed_flag_i32": 1,
+      "valid_output_bytes": 0,
+      "after": {
+        "gate_threshold": 3072,
+        "gate_progress": 3072,
+        "flush_remaining": 4,
+        "flush_started": 0,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 0,
+          "first_block": 0,
+          "segments": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "counter": 2,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 0,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 48,
+              "payload_bytes": 326,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "flush_enter",
+      "status": "OBSERVED",
+      "kind": "flush",
+      "call": 1,
+      "owner_token": 1,
+      "before": {
+        "gate_threshold": 3072,
+        "gate_progress": 3072,
+        "flush_remaining": 4,
+        "flush_started": 0,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 0,
+          "first_block": 0,
+          "segments": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "counter": 2,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 0,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 48,
+              "payload_bytes": 326,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "input_work_join",
+      "status": "OBSERVED",
+      "work_invocation": 5,
+      "origin": {
+        "kind": "flush",
+        "call": 1,
+        "owner_token": 1
+      },
+      "input_pair_token": 44,
+      "pcm_table_token": 5,
+      "external_pcm_table_alias": false
+    },
+    {
+      "event": "selected_source_route",
+      "status": "OBSERVED",
+      "work_invocation": 5,
+      "origin": {
+        "kind": "flush",
+        "call": 1,
+        "owner_token": 1
+      },
+      "route_owner_token": 45,
+      "input_stride_words": 38,
+      "output_rows": 38,
+      "object_direct_copy_enabled": 28,
+      "object_row_map": [
+        {
+          "target_row": 10,
+          "selected_source_index": 10
+        },
+        {
+          "target_row": 11,
+          "selected_source_index": 11
+        },
+        {
+          "target_row": 12,
+          "selected_source_index": 12
+        },
+        {
+          "target_row": 13,
+          "selected_source_index": 13
+        },
+        {
+          "target_row": 14,
+          "selected_source_index": 14
+        },
+        {
+          "target_row": 15,
+          "selected_source_index": 15
+        },
+        {
+          "target_row": 16,
+          "selected_source_index": 16
+        },
+        {
+          "target_row": 17,
+          "selected_source_index": 17
+        },
+        {
+          "target_row": 18,
+          "selected_source_index": 18
+        },
+        {
+          "target_row": 19,
+          "selected_source_index": 19
+        },
+        {
+          "target_row": 20,
+          "selected_source_index": 20
+        },
+        {
+          "target_row": 21,
+          "selected_source_index": 21
+        },
+        {
+          "target_row": 22,
+          "selected_source_index": 22
+        },
+        {
+          "target_row": 23,
+          "selected_source_index": 23
+        },
+        {
+          "target_row": 24,
+          "selected_source_index": 24
+        },
+        {
+          "target_row": 25,
+          "selected_source_index": 25
+        },
+        {
+          "target_row": 26,
+          "selected_source_index": 26
+        },
+        {
+          "target_row": 27,
+          "selected_source_index": 27
+        },
+        {
+          "target_row": 28,
+          "selected_source_index": 28
+        },
+        {
+          "target_row": 29,
+          "selected_source_index": 29
+        },
+        {
+          "target_row": 30,
+          "selected_source_index": 30
+        },
+        {
+          "target_row": 31,
+          "selected_source_index": 31
+        },
+        {
+          "target_row": 32,
+          "selected_source_index": 32
+        },
+        {
+          "target_row": 33,
+          "selected_source_index": 33
+        },
+        {
+          "target_row": 34,
+          "selected_source_index": 34
+        },
+        {
+          "target_row": 35,
+          "selected_source_index": 35
+        },
+        {
+          "target_row": 36,
+          "selected_source_index": 36
+        },
+        {
+          "target_row": 37,
+          "selected_source_index": 37
+        }
+      ],
+      "input_pcm_table_alias": true,
+      "samples_per_row_from_loop": 1536
+    },
+    {
+      "event": "renderer_output_span",
+      "status": "OBSERVED",
+      "work_invocation": 5,
+      "origin": {
+        "kind": "flush",
+        "call": 1,
+        "owner_token": 1
+      },
+      "return_i32": 0,
+      "samples": 1536,
+      "before": {
+        "threshold": 3072,
+        "progress": 4608
+      },
+      "progress_after": 4608,
+      "descriptor_token": 49
+    },
+    {
+      "event": "frontend_input_origin",
+      "status": "OBSERVED",
+      "frontend_invocation": 3,
+      "work_invocation": 5,
+      "origin": {
+        "kind": "flush",
+        "call": 1,
+        "owner_token": 1
+      },
+      "renderer_descriptor_alias": true,
+      "before": {
+        "gate_threshold": 3072,
+        "gate_progress": 3072,
+        "flush_remaining": 4,
+        "flush_started": 1,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 0,
+          "first_block": 0,
+          "segments": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "counter": 2,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 0,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 48,
+              "payload_bytes": 326,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "frontend_origin_return",
+      "status": "OBSERVED",
+      "frontend_invocation": 3,
+      "work_invocation": 5,
+      "origin": {
+        "kind": "flush",
+        "call": 1,
+        "owner_token": 1
+      },
+      "return_i32": 0,
+      "valid_output_bytes": 4096,
+      "after": {
+        "gate_threshold": 3072,
+        "gate_progress": 4608,
+        "flush_remaining": 4,
+        "flush_started": 1,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 1,
+          "first_block": 2,
+          "segments": [
+            0,
+            0,
+            422,
+            0,
+            0,
+            0
+          ],
+          "counter": 3,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 422,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 47,
+              "payload_bytes": 222,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "input_work_return",
+      "status": "OBSERVED",
+      "work_invocation": 5,
+      "return_i32": 0
+    },
+    {
+      "event": "flush_return",
+      "status": "OBSERVED",
+      "kind": "flush",
+      "call": 1,
+      "owner_token": 1,
+      "return_i32": 0,
+      "valid_output_bytes": 4096,
+      "after": {
+        "gate_threshold": 3072,
+        "gate_progress": 4608,
+        "flush_remaining": 3,
+        "flush_started": 1,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 1,
+          "first_block": 2,
+          "segments": [
+            0,
+            0,
+            422,
+            0,
+            0,
+            0
+          ],
+          "counter": 3,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 422,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 47,
+              "payload_bytes": 222,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "flush_enter",
+      "status": "OBSERVED",
+      "kind": "flush",
+      "call": 2,
+      "owner_token": 1,
+      "before": {
+        "gate_threshold": 3072,
+        "gate_progress": 4608,
+        "flush_remaining": 3,
+        "flush_started": 1,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 1,
+          "first_block": 2,
+          "segments": [
+            0,
+            0,
+            422,
+            0,
+            0,
+            0
+          ],
+          "counter": 3,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 422,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 47,
+              "payload_bytes": 222,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "input_work_join",
+      "status": "OBSERVED",
+      "work_invocation": 6,
+      "origin": {
+        "kind": "flush",
+        "call": 2,
+        "owner_token": 1
+      },
+      "input_pair_token": 44,
+      "pcm_table_token": 5,
+      "external_pcm_table_alias": false
+    },
+    {
+      "event": "selected_source_route",
+      "status": "OBSERVED",
+      "work_invocation": 6,
+      "origin": {
+        "kind": "flush",
+        "call": 2,
+        "owner_token": 1
+      },
+      "route_owner_token": 45,
+      "input_stride_words": 38,
+      "output_rows": 38,
+      "object_direct_copy_enabled": 28,
+      "object_row_map": [
+        {
+          "target_row": 10,
+          "selected_source_index": 10
+        },
+        {
+          "target_row": 11,
+          "selected_source_index": 11
+        },
+        {
+          "target_row": 12,
+          "selected_source_index": 12
+        },
+        {
+          "target_row": 13,
+          "selected_source_index": 13
+        },
+        {
+          "target_row": 14,
+          "selected_source_index": 14
+        },
+        {
+          "target_row": 15,
+          "selected_source_index": 15
+        },
+        {
+          "target_row": 16,
+          "selected_source_index": 16
+        },
+        {
+          "target_row": 17,
+          "selected_source_index": 17
+        },
+        {
+          "target_row": 18,
+          "selected_source_index": 18
+        },
+        {
+          "target_row": 19,
+          "selected_source_index": 19
+        },
+        {
+          "target_row": 20,
+          "selected_source_index": 20
+        },
+        {
+          "target_row": 21,
+          "selected_source_index": 21
+        },
+        {
+          "target_row": 22,
+          "selected_source_index": 22
+        },
+        {
+          "target_row": 23,
+          "selected_source_index": 23
+        },
+        {
+          "target_row": 24,
+          "selected_source_index": 24
+        },
+        {
+          "target_row": 25,
+          "selected_source_index": 25
+        },
+        {
+          "target_row": 26,
+          "selected_source_index": 26
+        },
+        {
+          "target_row": 27,
+          "selected_source_index": 27
+        },
+        {
+          "target_row": 28,
+          "selected_source_index": 28
+        },
+        {
+          "target_row": 29,
+          "selected_source_index": 29
+        },
+        {
+          "target_row": 30,
+          "selected_source_index": 30
+        },
+        {
+          "target_row": 31,
+          "selected_source_index": 31
+        },
+        {
+          "target_row": 32,
+          "selected_source_index": 32
+        },
+        {
+          "target_row": 33,
+          "selected_source_index": 33
+        },
+        {
+          "target_row": 34,
+          "selected_source_index": 34
+        },
+        {
+          "target_row": 35,
+          "selected_source_index": 35
+        },
+        {
+          "target_row": 36,
+          "selected_source_index": 36
+        },
+        {
+          "target_row": 37,
+          "selected_source_index": 37
+        }
+      ],
+      "input_pcm_table_alias": true,
+      "samples_per_row_from_loop": 1536
+    },
+    {
+      "event": "renderer_output_span",
+      "status": "OBSERVED",
+      "work_invocation": 6,
+      "origin": {
+        "kind": "flush",
+        "call": 2,
+        "owner_token": 1
+      },
+      "return_i32": 0,
+      "samples": 1536,
+      "before": {
+        "threshold": 3072,
+        "progress": 4608
+      },
+      "progress_after": 4608,
+      "descriptor_token": 49
+    },
+    {
+      "event": "frontend_input_origin",
+      "status": "OBSERVED",
+      "frontend_invocation": 4,
+      "work_invocation": 6,
+      "origin": {
+        "kind": "flush",
+        "call": 2,
+        "owner_token": 1
+      },
+      "renderer_descriptor_alias": true,
+      "before": {
+        "gate_threshold": 3072,
+        "gate_progress": 4608,
+        "flush_remaining": 3,
+        "flush_started": 1,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 1,
+          "first_block": 2,
+          "segments": [
+            0,
+            0,
+            422,
+            0,
+            0,
+            0
+          ],
+          "counter": 3,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 422,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 47,
+              "payload_bytes": 222,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "frontend_origin_return",
+      "status": "OBSERVED",
+      "frontend_invocation": 4,
+      "work_invocation": 6,
+      "origin": {
+        "kind": "flush",
+        "call": 2,
+        "owner_token": 1
+      },
+      "return_i32": 0,
+      "valid_output_bytes": 4096,
+      "after": {
+        "gate_threshold": 3072,
+        "gate_progress": 4608,
+        "flush_remaining": 3,
+        "flush_started": 1,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 1,
+          "first_block": 2,
+          "segments": [
+            0,
+            0,
+            316,
+            0,
+            0,
+            0
+          ],
+          "counter": 4,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 316,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 48,
+              "payload_bytes": 226,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "input_work_return",
+      "status": "OBSERVED",
+      "work_invocation": 6,
+      "return_i32": 0
+    },
+    {
+      "event": "flush_return",
+      "status": "OBSERVED",
+      "kind": "flush",
+      "call": 2,
+      "owner_token": 1,
+      "return_i32": 0,
+      "valid_output_bytes": 4096,
+      "after": {
+        "gate_threshold": 3072,
+        "gate_progress": 4608,
+        "flush_remaining": 2,
+        "flush_started": 1,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 1,
+          "first_block": 2,
+          "segments": [
+            0,
+            0,
+            316,
+            0,
+            0,
+            0
+          ],
+          "counter": 4,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 316,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 48,
+              "payload_bytes": 226,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "flush_enter",
+      "status": "OBSERVED",
+      "kind": "flush",
+      "call": 3,
+      "owner_token": 1,
+      "before": {
+        "gate_threshold": 3072,
+        "gate_progress": 4608,
+        "flush_remaining": 2,
+        "flush_started": 1,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 1,
+          "first_block": 2,
+          "segments": [
+            0,
+            0,
+            316,
+            0,
+            0,
+            0
+          ],
+          "counter": 4,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 316,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 48,
+              "payload_bytes": 226,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "input_work_join",
+      "status": "OBSERVED",
+      "work_invocation": 7,
+      "origin": {
+        "kind": "flush",
+        "call": 3,
+        "owner_token": 1
+      },
+      "input_pair_token": 44,
+      "pcm_table_token": 5,
+      "external_pcm_table_alias": false
+    },
+    {
+      "event": "selected_source_route",
+      "status": "OBSERVED",
+      "work_invocation": 7,
+      "origin": {
+        "kind": "flush",
+        "call": 3,
+        "owner_token": 1
+      },
+      "route_owner_token": 45,
+      "input_stride_words": 38,
+      "output_rows": 38,
+      "object_direct_copy_enabled": 28,
+      "object_row_map": [
+        {
+          "target_row": 10,
+          "selected_source_index": 10
+        },
+        {
+          "target_row": 11,
+          "selected_source_index": 11
+        },
+        {
+          "target_row": 12,
+          "selected_source_index": 12
+        },
+        {
+          "target_row": 13,
+          "selected_source_index": 13
+        },
+        {
+          "target_row": 14,
+          "selected_source_index": 14
+        },
+        {
+          "target_row": 15,
+          "selected_source_index": 15
+        },
+        {
+          "target_row": 16,
+          "selected_source_index": 16
+        },
+        {
+          "target_row": 17,
+          "selected_source_index": 17
+        },
+        {
+          "target_row": 18,
+          "selected_source_index": 18
+        },
+        {
+          "target_row": 19,
+          "selected_source_index": 19
+        },
+        {
+          "target_row": 20,
+          "selected_source_index": 20
+        },
+        {
+          "target_row": 21,
+          "selected_source_index": 21
+        },
+        {
+          "target_row": 22,
+          "selected_source_index": 22
+        },
+        {
+          "target_row": 23,
+          "selected_source_index": 23
+        },
+        {
+          "target_row": 24,
+          "selected_source_index": 24
+        },
+        {
+          "target_row": 25,
+          "selected_source_index": 25
+        },
+        {
+          "target_row": 26,
+          "selected_source_index": 26
+        },
+        {
+          "target_row": 27,
+          "selected_source_index": 27
+        },
+        {
+          "target_row": 28,
+          "selected_source_index": 28
+        },
+        {
+          "target_row": 29,
+          "selected_source_index": 29
+        },
+        {
+          "target_row": 30,
+          "selected_source_index": 30
+        },
+        {
+          "target_row": 31,
+          "selected_source_index": 31
+        },
+        {
+          "target_row": 32,
+          "selected_source_index": 32
+        },
+        {
+          "target_row": 33,
+          "selected_source_index": 33
+        },
+        {
+          "target_row": 34,
+          "selected_source_index": 34
+        },
+        {
+          "target_row": 35,
+          "selected_source_index": 35
+        },
+        {
+          "target_row": 36,
+          "selected_source_index": 36
+        },
+        {
+          "target_row": 37,
+          "selected_source_index": 37
+        }
+      ],
+      "input_pcm_table_alias": true,
+      "samples_per_row_from_loop": 1536
+    },
+    {
+      "event": "renderer_output_span",
+      "status": "OBSERVED",
+      "work_invocation": 7,
+      "origin": {
+        "kind": "flush",
+        "call": 3,
+        "owner_token": 1
+      },
+      "return_i32": 0,
+      "samples": 1536,
+      "before": {
+        "threshold": 3072,
+        "progress": 4608
+      },
+      "progress_after": 4608,
+      "descriptor_token": 49
+    },
+    {
+      "event": "frontend_input_origin",
+      "status": "OBSERVED",
+      "frontend_invocation": 5,
+      "work_invocation": 7,
+      "origin": {
+        "kind": "flush",
+        "call": 3,
+        "owner_token": 1
+      },
+      "renderer_descriptor_alias": true,
+      "before": {
+        "gate_threshold": 3072,
+        "gate_progress": 4608,
+        "flush_remaining": 2,
+        "flush_started": 1,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 1,
+          "first_block": 2,
+          "segments": [
+            0,
+            0,
+            316,
+            0,
+            0,
+            0
+          ],
+          "counter": 4,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 316,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 48,
+              "payload_bytes": 226,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "frontend_origin_return",
+      "status": "OBSERVED",
+      "frontend_invocation": 5,
+      "work_invocation": 7,
+      "origin": {
+        "kind": "flush",
+        "call": 3,
+        "owner_token": 1
+      },
+      "return_i32": 0,
+      "valid_output_bytes": 4096,
+      "after": {
+        "gate_threshold": 3072,
+        "gate_progress": 4608,
+        "flush_remaining": 2,
+        "flush_started": 1,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 1,
+          "first_block": 2,
+          "segments": [
+            0,
+            0,
+            320,
+            0,
+            0,
+            0
+          ],
+          "counter": 5,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 320,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 47,
+              "payload_bytes": 222,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "input_work_return",
+      "status": "OBSERVED",
+      "work_invocation": 7,
+      "return_i32": 0
+    },
+    {
+      "event": "flush_return",
+      "status": "OBSERVED",
+      "kind": "flush",
+      "call": 3,
+      "owner_token": 1,
+      "return_i32": 0,
+      "valid_output_bytes": 4096,
+      "after": {
+        "gate_threshold": 3072,
+        "gate_progress": 4608,
+        "flush_remaining": 1,
+        "flush_started": 1,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 1,
+          "first_block": 2,
+          "segments": [
+            0,
+            0,
+            320,
+            0,
+            0,
+            0
+          ],
+          "counter": 5,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 320,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 47,
+              "payload_bytes": 222,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "flush_enter",
+      "status": "OBSERVED",
+      "kind": "flush",
+      "call": 4,
+      "owner_token": 1,
+      "before": {
+        "gate_threshold": 3072,
+        "gate_progress": 4608,
+        "flush_remaining": 1,
+        "flush_started": 1,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 1,
+          "first_block": 2,
+          "segments": [
+            0,
+            0,
+            320,
+            0,
+            0,
+            0
+          ],
+          "counter": 5,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 320,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 47,
+              "payload_bytes": 222,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "input_work_join",
+      "status": "OBSERVED",
+      "work_invocation": 8,
+      "origin": {
+        "kind": "flush",
+        "call": 4,
+        "owner_token": 1
+      },
+      "input_pair_token": 44,
+      "pcm_table_token": 5,
+      "external_pcm_table_alias": false
+    },
+    {
+      "event": "selected_source_route",
+      "status": "OBSERVED",
+      "work_invocation": 8,
+      "origin": {
+        "kind": "flush",
+        "call": 4,
+        "owner_token": 1
+      },
+      "route_owner_token": 45,
+      "input_stride_words": 38,
+      "output_rows": 38,
+      "object_direct_copy_enabled": 28,
+      "object_row_map": [
+        {
+          "target_row": 10,
+          "selected_source_index": 10
+        },
+        {
+          "target_row": 11,
+          "selected_source_index": 11
+        },
+        {
+          "target_row": 12,
+          "selected_source_index": 12
+        },
+        {
+          "target_row": 13,
+          "selected_source_index": 13
+        },
+        {
+          "target_row": 14,
+          "selected_source_index": 14
+        },
+        {
+          "target_row": 15,
+          "selected_source_index": 15
+        },
+        {
+          "target_row": 16,
+          "selected_source_index": 16
+        },
+        {
+          "target_row": 17,
+          "selected_source_index": 17
+        },
+        {
+          "target_row": 18,
+          "selected_source_index": 18
+        },
+        {
+          "target_row": 19,
+          "selected_source_index": 19
+        },
+        {
+          "target_row": 20,
+          "selected_source_index": 20
+        },
+        {
+          "target_row": 21,
+          "selected_source_index": 21
+        },
+        {
+          "target_row": 22,
+          "selected_source_index": 22
+        },
+        {
+          "target_row": 23,
+          "selected_source_index": 23
+        },
+        {
+          "target_row": 24,
+          "selected_source_index": 24
+        },
+        {
+          "target_row": 25,
+          "selected_source_index": 25
+        },
+        {
+          "target_row": 26,
+          "selected_source_index": 26
+        },
+        {
+          "target_row": 27,
+          "selected_source_index": 27
+        },
+        {
+          "target_row": 28,
+          "selected_source_index": 28
+        },
+        {
+          "target_row": 29,
+          "selected_source_index": 29
+        },
+        {
+          "target_row": 30,
+          "selected_source_index": 30
+        },
+        {
+          "target_row": 31,
+          "selected_source_index": 31
+        },
+        {
+          "target_row": 32,
+          "selected_source_index": 32
+        },
+        {
+          "target_row": 33,
+          "selected_source_index": 33
+        },
+        {
+          "target_row": 34,
+          "selected_source_index": 34
+        },
+        {
+          "target_row": 35,
+          "selected_source_index": 35
+        },
+        {
+          "target_row": 36,
+          "selected_source_index": 36
+        },
+        {
+          "target_row": 37,
+          "selected_source_index": 37
+        }
+      ],
+      "input_pcm_table_alias": true,
+      "samples_per_row_from_loop": 1536
+    },
+    {
+      "event": "renderer_output_span",
+      "status": "OBSERVED",
+      "work_invocation": 8,
+      "origin": {
+        "kind": "flush",
+        "call": 4,
+        "owner_token": 1
+      },
+      "return_i32": 0,
+      "samples": 1536,
+      "before": {
+        "threshold": 3072,
+        "progress": 4608
+      },
+      "progress_after": 4608,
+      "descriptor_token": 49
+    },
+    {
+      "event": "frontend_input_origin",
+      "status": "OBSERVED",
+      "frontend_invocation": 6,
+      "work_invocation": 8,
+      "origin": {
+        "kind": "flush",
+        "call": 4,
+        "owner_token": 1
+      },
+      "renderer_descriptor_alias": true,
+      "before": {
+        "gate_threshold": 3072,
+        "gate_progress": 4608,
+        "flush_remaining": 1,
+        "flush_started": 1,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 1,
+          "first_block": 2,
+          "segments": [
+            0,
+            0,
+            320,
+            0,
+            0,
+            0
+          ],
+          "counter": 5,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 320,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 47,
+              "payload_bytes": 222,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "frontend_origin_return",
+      "status": "OBSERVED",
+      "frontend_invocation": 6,
+      "work_invocation": 8,
+      "origin": {
+        "kind": "flush",
+        "call": 4,
+        "owner_token": 1
+      },
+      "return_i32": 0,
+      "valid_output_bytes": 4096,
+      "after": {
+        "gate_threshold": 3072,
+        "gate_progress": 4608,
+        "flush_remaining": 1,
+        "flush_started": 1,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 1,
+          "first_block": 2,
+          "segments": [
+            0,
+            0,
+            316,
+            0,
+            0,
+            0
+          ],
+          "counter": 6,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 316,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 48,
+              "payload_bytes": 218,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "input_work_return",
+      "status": "OBSERVED",
+      "work_invocation": 8,
+      "return_i32": 0
+    },
+    {
+      "event": "flush_return",
+      "status": "OBSERVED",
+      "kind": "flush",
+      "call": 4,
+      "owner_token": 1,
+      "return_i32": 0,
+      "valid_output_bytes": 4096,
+      "after": {
+        "gate_threshold": 3072,
+        "gate_progress": 4608,
+        "flush_remaining": 0,
+        "flush_started": 1,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 1,
+          "first_block": 2,
+          "segments": [
+            0,
+            0,
+            316,
+            0,
+            0,
+            0
+          ],
+          "counter": 6,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 316,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 48,
+              "payload_bytes": 218,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "flush_enter",
+      "status": "OBSERVED",
+      "kind": "flush",
+      "call": 5,
+      "owner_token": 1,
+      "before": {
+        "gate_threshold": 3072,
+        "gate_progress": 4608,
+        "flush_remaining": 0,
+        "flush_started": 1,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 1,
+          "first_block": 2,
+          "segments": [
+            0,
+            0,
+            316,
+            0,
+            0,
+            0
+          ],
+          "counter": 6,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 316,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 48,
+              "payload_bytes": 218,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "flush_return",
+      "status": "OBSERVED",
+      "kind": "flush",
+      "call": 5,
+      "owner_token": 1,
+      "return_i32": 0,
+      "valid_output_bytes": 0,
+      "after": {
+        "gate_threshold": 3072,
+        "gate_progress": 4608,
+        "flush_remaining": 0,
+        "flush_started": 1,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 1,
+          "first_block": 2,
+          "segments": [
+            0,
+            0,
+            316,
+            0,
+            0,
+            0
+          ],
+          "counter": 6,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 316,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 48,
+              "payload_bytes": 218,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "input_owner_close_enter",
+      "status": "OBSERVED",
+      "owner_token": 1,
+      "state": {
+        "gate_threshold": 3072,
+        "gate_progress": 4608,
+        "flush_remaining": 0,
+        "flush_started": 1,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": true,
+        "planner": {
+          "enabled": 1,
+          "first_block": 2,
+          "segments": [
+            0,
+            0,
+            316,
+            0,
+            0,
+            0
+          ],
+          "counter": 6,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 316,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 48,
+              "payload_bytes": 218,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "event": "input_owner_close_return",
+      "status": "OBSERVED",
+      "owner_token": 1,
+      "return_i32": 0,
+      "state": {
+        "gate_threshold": 3072,
+        "gate_progress": 4608,
+        "flush_remaining": 0,
+        "flush_started": 1,
+        "pipeline_token": 2,
+        "stream_count": 1,
+        "joc_runtime_present": false,
+        "planner": {
+          "enabled": 1,
+          "first_block": 2,
+          "segments": [
+            0,
+            0,
+            316,
+            0,
+            0,
+            0
+          ],
+          "counter": 6,
+          "period": 62
+        },
+        "last_prepared_reservation_bytes": 316,
+        "id14_queue": {
+          "queue_token": 3,
+          "slots": 2,
+          "occupied": [
+            {
+              "slot": 0,
+              "occupied": 0
+            },
+            {
+              "slot": 1,
+              "occupied": 1,
+              "descriptor_token": 48,
+              "payload_bytes": 218,
+              "descriptor_inside_owner_allocation": true,
+              "payload_inside_owner_allocation": true
+            }
+          ]
+        }
+      },
+      "owner_logically_closed": true
+    },
+    {
+      "event": "input_workspace_free_enter",
+      "status": "OBSERVED",
+      "owner_token": 1,
+      "bytes": 7805609,
+      "close_seen": true
+    },
+    {
+      "event": "input_workspace_free_return",
+      "status": "OBSERVED",
+      "owner_token": 1,
+      "bytes": 7805609,
+      "allocation_retired": true,
+      "post_free_memory_read": false
+    }
+  ],
+  "token_scope": "Pointer equality aliases within this capture only. Reused buffers do not establish equal sample content or logical generation by themselves.",
+  "PCM_values_read": false,
+  "PCM_hashes_taken": false,
+  "external_control_position_is_absolute_file_position": false
+}

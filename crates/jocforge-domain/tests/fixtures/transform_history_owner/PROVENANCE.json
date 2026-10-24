@@ -1,0 +1,95 @@
+{
+  "schema": "transform-history-owner-continuity-provenance.v1",
+  "package": "TRANSFORM-HISTORY-OWNER-CONTINUITY",
+  "source_wash_package": "SANITIZED_F09_OWNER_HISTORY_CONTINUITY_R1",
+  "source_manifest_sha256": "ff0b6bffdabd4de66b261008de05030543f3946bd12ca8274bb073e5079ce22f",
+  "source_independent_check_sha256": "55ebec5c8765e11694aee5ae1114c7100fcc30edfd0841e9d35d7df74464b5c6",
+  "source_payloads": [
+    {
+      "path": "INPUTS.json",
+      "bytes": 1990,
+      "sha256": "d473035fd6f3ca0f69dddd4ff99e1160b749f01e2fa6421697f553868a467fa7"
+    },
+    {
+      "path": "EXPECTED.json",
+      "bytes": 218868,
+      "sha256": "7841824f2339e3beb36c37471befb50ed89f9a0c91b4c8ba66eba79a98173af2"
+    },
+    {
+      "path": "PARAMETERS.json",
+      "bytes": 4662,
+      "sha256": "a247fb0e0c595edf0b53cf4a943bf701223f13c663924814f549ec6da7ba4a18"
+    },
+    {
+      "path": "CONTRACT.json",
+      "bytes": 4555,
+      "sha256": "7a6e4286234c6fb3c9a082e10da256981de2ff6f254b34264217de505db595a1"
+    }
+  ],
+  "native_lineage_digest_only": {
+    "bytes": 196094,
+    "sha256": "3d9c6f13ecb25ef8f148c47be5b04ee89fcba73ab1a6557df87cb57fb4d20ac2",
+    "delivered": false
+  },
+  "reference_module": {
+    "file_bytes_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "qualification": "Loaded-path module file hash measured inside target and matched by host rehash; not relocated-memory digest."
+  },
+  "verified_dependency": {
+    "package": "LONG-TRANSFORM-REFRESH-COMPOSITION",
+    "manifest_sha256": "4eaa2690e30ed0705404d7a6cd835e8637c2f933319d60be8812d900cb6521c1",
+    "check_sha256": "0574d3f4aff6460340709216fd1d0c141c47baa68367f2c43abbc446ba2157b5"
+  },
+  "evidence": {
+    "constructor": "STATIC_CONFIRMED_PLUS_RUNTIME_OBSERVED: return 0 and 12 initial zero-state digests",
+    "history_vectors": "Wash independently replayed 1536 state words from six synthetic sequences",
+    "native_continuity": "432 fold calls, 12 cold slots, 420 same-owner/same-slot carries with zero digest mismatches",
+    "workspace_initializer": "RUNTIME_CONFIRMED from independent 0xA5 fill recipe; numeric arrays zero, current bindings null, canaries intact",
+    "full_reset_eof": "NOT_RUN"
+  },
+  "source_evidence_digests_only": [
+    {
+      "alias": "runtime_hook",
+      "bytes": 33601,
+      "sha256": "a60a37fb134a03c75cac320d030d4d064d28bd81f575db749468cee1fe9c24d2"
+    },
+    {
+      "alias": "private_trace_digest_only",
+      "bytes": 1179770,
+      "sha256": "cd6651980f4e755817f0a93f89b30893874cb39c88162c3e7df7a8c8bad5c6f8"
+    },
+    {
+      "alias": "controlled_history_private_digest_only",
+      "bytes": 737821,
+      "sha256": "10d1a2f69ed7b87f7bcbdd6187a349010aebb336ddf7dfceaba385801564aef3"
+    },
+    {
+      "alias": "static_owner_constructor_a",
+      "bytes": 7709,
+      "sha256": "369e1ea0eb7c2cb009535efc8e8c3b72352910d19734065d5b779927f13ae416"
+    },
+    {
+      "alias": "static_owner_constructor_b",
+      "bytes": 8118,
+      "sha256": "e2ce7b9858eaf32c44be7eb21de9069ef2c19772962c5222861fc83ad33630a0"
+    },
+    {
+      "alias": "static_workspace_initializer",
+      "bytes": 3879,
+      "sha256": "ebd28a7fb9250f83677c587ad72b5f5503dffde77ffce63fd04799b541cf8a82"
+    }
+  ],
+  "delivery_scope": "INTERNAL_IMPLEMENTATION_HANDOFF",
+  "private_vendor_key": "EXCLUDED",
+  "public_third_party_license_status": "NOT_ASSESSED",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO",
+  "explicitly_not_delivered": [
+    "raw PCM or ADM",
+    "raw runtime traces",
+    "binary contents",
+    "addresses or disassembly identifiers",
+    "vendor private key or authentication material",
+    "full NATIVE-LINEAGE payload"
+  ]
+}

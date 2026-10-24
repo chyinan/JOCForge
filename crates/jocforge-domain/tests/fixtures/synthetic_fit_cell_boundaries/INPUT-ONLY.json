@@ -1,0 +1,136 @@
+{
+  "cases": [
+    {
+      "name": "duplicate_tie",
+      "amplitude": 0.0625,
+      "band": 0,
+      "trial_mode": 1,
+      "target_mix": [
+        0.75,
+        0,
+        0,
+        0,
+        0
+      ],
+      "eligibility": [
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "duplicate01": true,
+      "recipe": "carrier0 constant; carrier c1..4 sign bit(c-1) of slot0..47; duplicate01 aliases values only when requested; imag0; all other bands0; F32 component/mixture order"
+    },
+    {
+      "name": "low_band_eligibility_seed",
+      "amplitude": 0.0625,
+      "band": 0,
+      "trial_mode": 1,
+      "target_mix": [
+        0.75,
+        0.5,
+        0,
+        0,
+        0
+      ],
+      "eligibility": [
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "duplicate01": false,
+      "recipe": "carrier0 constant; carrier c1..4 sign bit(c-1) of slot0..47; duplicate01 aliases values only when requested; imag0; all other bands0; F32 component/mixture order"
+    },
+    {
+      "name": "high_band_reselection",
+      "amplitude": 0.0625,
+      "band": 18,
+      "trial_mode": 3,
+      "target_mix": [
+        0.75,
+        0,
+        0,
+        0,
+        0
+      ],
+      "eligibility": [
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "duplicate01": false,
+      "recipe": "carrier0 constant; carrier c1..4 sign bit(c-1) of slot0..47; duplicate01 aliases values only when requested; imag0; all other bands0; F32 component/mixture order"
+    },
+    {
+      "name": "negative_and_backup",
+      "amplitude": 0.0625,
+      "band": 0,
+      "trial_mode": 1,
+      "target_mix": [
+        0.75,
+        -0.5,
+        0,
+        0,
+        0
+      ],
+      "eligibility": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "duplicate01": false,
+      "recipe": "carrier0 constant; carrier c1..4 sign bit(c-1) of slot0..47; duplicate01 aliases values only when requested; imag0; all other bands0; F32 component/mixture order"
+    },
+    {
+      "name": "zero_target_order",
+      "amplitude": 0.0625,
+      "band": 0,
+      "trial_mode": 1,
+      "target_mix": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "eligibility": [
+        0,
+        1,
+        0,
+        0,
+        1
+      ],
+      "duplicate01": false,
+      "recipe": "carrier0 constant; carrier c1..4 sign bit(c-1) of slot0..47; duplicate01 aliases values only when requested; imag0; all other bands0; F32 component/mixture order"
+    },
+    {
+      "name": "empty_eligibility",
+      "amplitude": 0.0625,
+      "band": 0,
+      "trial_mode": 1,
+      "target_mix": [
+        0.75,
+        0,
+        0,
+        0,
+        0
+      ],
+      "eligibility": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "duplicate01": false,
+      "recipe": "carrier0 constant; carrier c1..4 sign bit(c-1) of slot0..47; duplicate01 aliases values only when requested; imag0; all other bands0; F32 component/mixture order"
+    }
+  ]
+}

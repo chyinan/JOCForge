@@ -15,6 +15,10 @@ use sha2::{Digest, Sha256};
 use std::collections::BTreeMap;
 use timer::{TimerState, encode_id1_payload};
 
+use super::{
+    id1_configuration::Id1MeasurementConfiguration,
+    metadata_bodies::{MetadataBodiesLineage, MetadataBodiesProposal},
+};
 use crate::timeline::{CodecSourceIndex, JocDispatchIndex, PublishedAuIndex};
 
 const PROFILE_ID: &str = "selected-48k-1536-four-queue.v1";
@@ -110,6 +114,147 @@ pub struct MetadataSourceCall {
     pub wrapper_configuration: Value,
 }
 
+/// Typed production input. Wrapper configuration is constructor-pinned and is
+/// therefore not retransmitted by the caller on each source.
+pub struct MetadataStageInput {
+    pub au_index: Option<PublishedAuIndex>,
+    pub id1_configuration: Id1MeasurementConfiguration,
+    pub bodies: MetadataBodiesProposal,
+}
+
+#[must_use]
+pub struct MetadataSourceProposal {
+    after_owner: MetadataOwner,
+    receipt: MetadataSourceReceipt,
+    emdf: Option<Vec<u8>>,
+    bodies_lineage: MetadataBodiesLineage,
+    before_snapshot: MetadataOwnerSnapshot,
+    after_snapshot: MetadataOwnerSnapshot,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[allow(dead_code)] // Read by the future twelve-root source preflight.
+pub(crate) struct MetadataOwnerSnapshot {
+    generation: u64,
+    state_sha256: [u8; 32],
+    next_source_index: CodecSourceIndex,
+}
+
+#[allow(dead_code)] // Read by the future twelve-root source preflight.
+impl MetadataOwnerSnapshot {
+    pub(crate) const fn generation(self) -> u64 {
+        self.generation
+    }
+
+    pub(crate) const fn state_sha256(self) -> [u8; 32] {
+        self.state_sha256
+    }
+
+    pub(crate) const fn next_source_index(self) -> CodecSourceIndex {
+        self.next_source_index
+    }
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+#[allow(dead_code)] // Immutable bridge for the selected JOC root view adapter.
+pub(crate) struct MetadataQueueBodyView {
+    writer_generation: CodecSourceIndex,
+    bytes: Box<[u8]>,
+}
+
+#[allow(dead_code)] // Immutable bridge for the selected JOC root view adapter.
+impl MetadataQueueBodyView {
+    pub(crate) const fn writer_generation(&self) -> CodecSourceIndex {
+        self.writer_generation
+    }
+
+    pub(crate) fn bytes(&self) -> &[u8] {
+        &self.bytes
+    }
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+#[allow(dead_code)] // Immutable bridge for the selected JOC root view adapter.
+pub(crate) struct MetadataId14QueueView {
+    slots: [Option<MetadataQueueBodyView>; 2],
+    buffer_ids: [u16; 2],
+    next_writer: CodecSourceIndex,
+}
+
+#[allow(dead_code)] // Immutable bridge for the selected JOC root view adapter.
+impl MetadataId14QueueView {
+    pub(crate) const fn slots(&self) -> &[Option<MetadataQueueBodyView>; 2] {
+        &self.slots
+    }
+
+    pub(crate) const fn buffer_ids(&self) -> &[u16; 2] {
+        &self.buffer_ids
+    }
+
+    pub(crate) const fn next_writer(&self) -> CodecSourceIndex {
+        self.next_writer
+    }
+}
+
+impl MetadataSourceProposal {
+    pub const fn receipt(&self) -> &MetadataSourceReceipt {
+        &self.receipt
+    }
+
+    pub fn emdf(&self) -> Option<&[u8]> {
+        self.emdf.as_deref()
+    }
+
+    pub const fn bodies_lineage(&self) -> &MetadataBodiesLineage {
+        &self.bodies_lineage
+    }
+
+    #[allow(dead_code)] // Read by the future twelve-root source preflight.
+    pub(crate) const fn before_snapshot(&self) -> MetadataOwnerSnapshot {
+        self.before_snapshot
+    }
+
+    #[allow(dead_code)] // Read by the future twelve-root source preflight.
+    pub(crate) const fn after_snapshot(&self) -> MetadataOwnerSnapshot {
+        self.after_snapshot
+    }
+
+    #[allow(dead_code)] // Read by the selected JOC root view adapter.
+    pub(crate) fn id14_queue_view(&self) -> Result<MetadataId14QueueView, MetadataOwnerError> {
+        self.after_owner.id14_queue_view()
+    }
+
+    pub fn proposed_after_sha256(&self) -> String {
+        self.after_owner.state.sha256_hex()
+    }
+
+    #[allow(dead_code)] // Consumed only by the future programme source transaction installer.
+    pub(crate) fn into_after_owner(self) -> MetadataOwner {
+        self.after_owner
+    }
+
+    #[allow(dead_code)] // Consumed by the future programme source transaction preflight.
+    pub(crate) fn into_parts(
+        self,
+    ) -> (
+        MetadataOwner,
+        MetadataSourceReceipt,
+        Option<Vec<u8>>,
+        MetadataBodiesLineage,
+        MetadataOwnerSnapshot,
+        MetadataOwnerSnapshot,
+    ) {
+        (
+            self.after_owner,
+            self.receipt,
+            self.emdf,
+            self.bodies_lineage,
+            self.before_snapshot,
+            self.after_snapshot,
+        )
+    }
+}
+
 #[derive(Debug)]
 pub struct MetadataSourceResult {
     pub receipt: MetadataSourceReceipt,
@@ -118,6 +263,9 @@ pub struct MetadataSourceResult {
 
 #[derive(Debug)]
 pub struct MetadataSourceReceipt {
+    programme_id: String,
+    attempt: u64,
+    transaction_id: String,
     source_index: CodecSourceIndex,
     dispatch: JocDispatchIndex,
     au_index: Option<PublishedAuIndex>,
@@ -137,6 +285,18 @@ pub struct MetadataSourceReceipt {
 }
 
 impl MetadataSourceReceipt {
+    pub fn programme_id(&self) -> &str {
+        &self.programme_id
+    }
+
+    pub const fn attempt(&self) -> u64 {
+        self.attempt
+    }
+
+    pub fn transaction_id(&self) -> &str {
+        &self.transaction_id
+    }
+
     pub fn as_json(&self) -> Value {
         json!({
             "schema": "metadata-source-receipt.v1",
@@ -283,6 +443,10 @@ impl MetadataState {
         sha256_hex(&self.canonical_bytes())
     }
 
+    fn digest(&self) -> [u8; 32] {
+        Sha256::digest(self.canonical_bytes()).into()
+    }
+
     fn as_json(&self) -> Value {
         let queues = self
             .queues
@@ -382,6 +546,100 @@ impl MetadataOwner {
         })
     }
 
+    /// Stages one complete metadata source on a private clone. It neither
+    /// replaces the committed leaf state nor retires the programme on failure.
+    pub fn stage_source(
+        &self,
+        input: MetadataStageInput,
+    ) -> Result<MetadataSourceProposal, MetadataOwnerError> {
+        if self.retired {
+            return Err(MetadataOwnerError::Retired);
+        }
+        let (bodies_lineage, bodies) = input.bodies.into_parts();
+        if input.id1_configuration.programme_id() != bodies_lineage.programme_id()
+            || input.id1_configuration.attempt() != bodies_lineage.attempt()
+        {
+            return Err(MetadataOwnerError::ProgrammeIdentity);
+        }
+        let call = MetadataSourceCall {
+            programme_id: bodies_lineage.programme_id().to_owned(),
+            attempt: bodies_lineage.attempt(),
+            transaction_id: bodies_lineage.transaction_id().to_owned(),
+            source_index: bodies_lineage.source_index(),
+            dispatch: bodies_lineage.dispatch(),
+            au_index: input.au_index,
+            config: input.id1_configuration.json_values(),
+            bodies,
+            wrapper_configuration: self.wrapper_configuration.clone(),
+        };
+        let before_snapshot = self.snapshot();
+        let (after_state, receipt, emdf) = self.process_source_inner(call)?;
+        let after_owner = self.with_after_state(after_state);
+        let after_snapshot = after_owner.snapshot();
+        Ok(MetadataSourceProposal {
+            after_owner,
+            receipt,
+            emdf,
+            bodies_lineage,
+            before_snapshot,
+            after_snapshot,
+        })
+    }
+
+    pub(crate) fn snapshot(&self) -> MetadataOwnerSnapshot {
+        MetadataOwnerSnapshot {
+            generation: self.state.generation,
+            state_sha256: self.state.digest(),
+            next_source_index: CodecSourceIndex::new(self.state.next_source_index),
+        }
+    }
+
+    #[allow(dead_code)] // Read through MetadataSourceProposal by the selected JOC root adapter.
+    fn id14_queue_view(&self) -> Result<MetadataId14QueueView, MetadataOwnerError> {
+        let queue = self
+            .state
+            .queues
+            .get(&14)
+            .ok_or(MetadataOwnerError::EmdfSerialization)?;
+        let slots: [Option<MetadataQueueBodyView>; 2] = queue
+            .slots
+            .iter()
+            .map(|slot| {
+                slot.as_ref().map(|body| MetadataQueueBodyView {
+                    writer_generation: body.writer_generation,
+                    bytes: body.payload.clone().into_boxed_slice(),
+                })
+            })
+            .collect::<Vec<_>>()
+            .try_into()
+            .map_err(|_| MetadataOwnerError::EmdfSerialization)?;
+        let buffer_ids: [u16; 2] = queue
+            .buffer_ids
+            .clone()
+            .try_into()
+            .map_err(|_| MetadataOwnerError::EmdfSerialization)?;
+        Ok(MetadataId14QueueView {
+            slots,
+            buffer_ids,
+            next_writer: CodecSourceIndex::new(self.state.next_source_index),
+        })
+    }
+
+    fn with_after_state(&self, state: MetadataState) -> Self {
+        Self {
+            programme_id: self.programme_id.clone(),
+            attempt: self.attempt,
+            expected_sources: self.expected_sources,
+            provider_file: self.provider_file.clone(),
+            wrapper_file: self.wrapper_file.clone(),
+            provider_sha256: self.provider_sha256,
+            wrapper_configuration: self.wrapper_configuration.clone(),
+            wrapper_config_sha256: self.wrapper_config_sha256.clone(),
+            state,
+            retired: self.retired,
+        }
+    }
+
     pub fn process_source(
         &mut self,
         call: MetadataSourceCall,
@@ -449,7 +707,7 @@ impl MetadataOwner {
         }
 
         let timer_before_sha256 = hex_encode(&self.state.timer.digest());
-        let timer_advance = self.state.timer.advance(&call.config)?;
+        let timer_advance = self.state.timer.advance(&call.config, 1536, false)?;
         let id1_payload = encode_id1_payload(&timer_advance.output)?;
         if id1_payload.len() > 10 {
             return Err(MetadataOwnerError::Capacity);
@@ -568,6 +826,9 @@ impl MetadataOwner {
         let emdf = emdf_output.map(|output| output.bytes);
 
         let receipt = MetadataSourceReceipt {
+            programme_id: call.programme_id,
+            attempt: call.attempt,
+            transaction_id: call.transaction_id,
             source_index: call.source_index,
             dispatch: call.dispatch,
             au_index: call.au_index,

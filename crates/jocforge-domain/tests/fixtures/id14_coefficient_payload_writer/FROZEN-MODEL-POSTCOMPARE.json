@@ -1,0 +1,151 @@
+{
+  "result": "PASS_WITH_EXPLICIT_CONTRACT_DIFFERENCES",
+  "encoder_source_sha256": "0d94e44c377fa231a060c8c322fb04788003c411fb26df3675f18faaa19e24ff",
+  "native_outputs_used_as_model_inputs": false,
+  "rows": [
+    {
+      "name": "selected_zero_full_fine",
+      "model": "ENCODED",
+      "header_bits": 150,
+      "coefficient_bits": 900,
+      "bits": 1050,
+      "payload_sha256": "53d0bea077bc95c89df6eb346d4473a89e6acf18b858416ca6776694186f5436",
+      "native_capacity_fits": true,
+      "native_payload_match": true
+    },
+    {
+      "name": "mode_0_rounding_clamps",
+      "model": "ENCODED",
+      "header_bits": 46,
+      "coefficient_bits": 841,
+      "bits": 887,
+      "payload_sha256": "457ec41f71a06bbaae9d72ae6d04ce819dbb9d042fb37ad5d366b76e23e6c5f4",
+      "native_capacity_fits": true,
+      "native_payload_match": true
+    },
+    {
+      "name": "mode_1_rounding_clamps",
+      "model": "ENCODED",
+      "header_bits": 46,
+      "coefficient_bits": 957,
+      "bits": 1003,
+      "payload_sha256": "5ab37fbf80e28607cc1ad9083ac15fe20abc968597c330c40deb88c4a3813bde",
+      "native_capacity_fits": true,
+      "native_payload_match": true
+    },
+    {
+      "name": "mode_2_rounding_clamps",
+      "model": "ENCODED",
+      "header_bits": 46,
+      "coefficient_bits": 299,
+      "bits": 345,
+      "payload_sha256": "482ff62d350e5b3274d392d0f62e0db5c1e124cb07a2c2effa6171a8298b1d31",
+      "native_capacity_fits": true,
+      "native_payload_match": true
+    },
+    {
+      "name": "mode_3_rounding_clamps",
+      "model": "ENCODED",
+      "header_bits": 46,
+      "coefficient_bits": 346,
+      "bits": 392,
+      "payload_sha256": "3f34b7f01d22bbc89629c694377529fea89551e81443e2e52e93200bb71daed0",
+      "native_capacity_fits": true,
+      "native_payload_match": true
+    },
+    {
+      "name": "selected_mixed_presence",
+      "model": "ENCODED",
+      "header_bits": 73,
+      "coefficient_bits": 673,
+      "bits": 746,
+      "payload_sha256": "7d893dfb1dbbc4c70ae8e5907f043d7a3c086e05a78b5c8a0caa2853ca479863",
+      "native_capacity_fits": true,
+      "native_payload_match": true
+    },
+    {
+      "name": "steep_two_points",
+      "model": "ENCODED",
+      "header_bits": 66,
+      "coefficient_bits": 537,
+      "bits": 603,
+      "payload_sha256": "ea6c040dddc6562a22415128b56ac4e5e102f048434eee3764f76f2bdd5c1c9f",
+      "native_capacity_fits": true,
+      "native_payload_match": true
+    },
+    {
+      "name": "seven_channel_sparse",
+      "model": "ENCODED",
+      "header_bits": 46,
+      "coefficient_bits": 566,
+      "bits": 612,
+      "payload_sha256": "d7345d2a93906fd9f1a940ebcdd25c52dbfff8d27391955adb01b3d8bbb45549",
+      "native_capacity_fits": true,
+      "native_payload_match": true
+    },
+    {
+      "name": "all_absent",
+      "model": "ENCODED",
+      "header_bits": 45,
+      "coefficient_bits": 0,
+      "bits": 45,
+      "payload_sha256": "cde6a26736125f758cf4a25348487c8553abdced154fe23c45e72f7f27ee48de",
+      "native_capacity_fits": true,
+      "native_payload_match": true
+    },
+    {
+      "name": "capacity_one_short",
+      "model": "ENCODED",
+      "header_bits": 150,
+      "coefficient_bits": 900,
+      "bits": 1050,
+      "payload_sha256": "53d0bea077bc95c89df6eb346d4473a89e6acf18b858416ca6776694186f5436",
+      "native_capacity_fits": false,
+      "native_payload_match": null
+    },
+    {
+      "name": "capacity_exact",
+      "model": "ENCODED",
+      "header_bits": 150,
+      "coefficient_bits": 900,
+      "bits": 1050,
+      "payload_sha256": "53d0bea077bc95c89df6eb346d4473a89e6acf18b858416ca6776694186f5436",
+      "native_capacity_fits": true,
+      "native_payload_match": true
+    },
+    {
+      "name": "coefficient_scratch_overflow",
+      "model": "ENCODED",
+      "header_bits": 150,
+      "coefficient_bits": 25562,
+      "bits": 25712,
+      "payload_sha256": "975559cdab5803c5bfa7169cb659a0f3c60ccf7fa7b5fc8e376ff57a62f2d825",
+      "native_capacity_fits": false,
+      "native_payload_match": null
+    },
+    {
+      "name": "offset_at_slot_limit",
+      "model": "REJECTED",
+      "reason": "steep offset outside current24timeslots",
+      "native_return": 0,
+      "native_status": 0
+    },
+    {
+      "name": "offset_wire_overflow",
+      "model": "REJECTED",
+      "reason": "steep offset outside current24timeslots",
+      "native_return": 3,
+      "native_status": 1
+    },
+    {
+      "name": "nonascending_offsets",
+      "model": "ENCODED",
+      "header_bits": 48,
+      "coefficient_bits": 10,
+      "bits": 58,
+      "payload_sha256": "b62dea89c39b7ba4c924afc64ac02ddb345853a9144fdb6dd5d46782d1f64c1b",
+      "native_capacity_fits": true,
+      "native_payload_match": true
+    }
+  ]
+}

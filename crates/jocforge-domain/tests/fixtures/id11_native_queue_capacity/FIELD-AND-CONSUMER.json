@@ -1,0 +1,59 @@
+{
+  "ID11": {
+    "native_selected_parameter": 2103,
+    "type": "U32",
+    "unit": "bytes per descriptor payload buffer and enqueue admission limit",
+    "producer": "ID11 owner constructor computes a serialized-payload capacity bound from configured object/frame capacities, then passes that value into the generic queue constructor.",
+    "constructor_formula": "floor((123*object_capacity*frame_capacity +20*frame_capacity +object_capacity +903)/8)+1",
+    "selected_inputs": {
+      "object_capacity": 16,
+      "frame_capacity": 8
+    },
+    "selected_result": 2103,
+    "valid_owner_constructor_domain": {
+      "objects": "1..159",
+      "frames": "1..8"
+    },
+    "separate_parser_state_allocation": {
+      "formula": "object_capacity*(30*frame_capacity+28)+475",
+      "selected_bytes": 4763,
+      "relation": "Separate parser-state allocation, not queue payload limit."
+    },
+    "consumer": "Generic enqueue compares its U32 queue payload limit against descriptor U32 declared payload byte length. If declared length exceeds limit, returns5 before copy or queue flag publication. Otherwise copies exactly declared bytes into one destination descriptor payload buffer.",
+    "layout": {
+      "queue_limit": "U32 payload byte capacity",
+      "descriptor_length": "U32 declared payload bytes",
+      "descriptor_body": "Pointer to source bytes; ownership preserved by copy into queue storage"
+    },
+    "not_aggregate": "The selected queue has3 separately owned payload buffers, each with2103-byte capacity. Aggregate payload allocation is at least6309 bytes plus descriptors, tables and alignment. The number2103 is not the total arena extent.",
+    "wrapper_failure_mapping": "ID11 ingress recognizes queue status4 as occupied and maps it to2, but does not reject queue status5 before continuing parse/validation. This selected valid seed with2104 supplied bytes yields queue5, ingress0, empty queue and owner-valid1."
+  },
+  "ID6": {
+    "type": "U32",
+    "unit": "bytes per descriptor payload limit",
+    "native_selected_limit": 3,
+    "owner_role": "Optional generic metadata-group queue routed by payload ID6, in the same group that contains ID1. It is not the dedicated ID2 owner/queue.",
+    "constructor_group_arguments": {
+      "payload_ids": [
+        1,
+        6
+      ],
+      "byte_capacities": [
+        10,
+        3
+      ],
+      "base_delay": 3072,
+      "period": 1536
+    },
+    "effective_queue_delay": 4608,
+    "descriptor_count": 3,
+    "consumer": "General-group push locates ID6 queue, delegates to the same generic enqueue byte comparison, maps queue status5 to group status3 and occupied4 to2.",
+    "observed_boundary": "Lengths0,2,3 admitted; length4 yields queue5/group3 without publication.",
+    "semantic_payload_identity": "NOT_BOUND_BEYOND_GENERIC_ID6_ROUTE; opaque boundary bytes are not semantic payload-generation evidence."
+  },
+  "ID2_distinction": {
+    "owner_role": "Separate auxiliary owner",
+    "selected_capacity_bytes": 8,
+    "native_owner_identity": "Distinct in prior production-cold evidence; not relabeled from ID6."
+  }
+}

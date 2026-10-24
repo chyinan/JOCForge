@@ -1,0 +1,8 @@
+{
+  "schema": "washed-implementer-supplement-independent-check.v1",
+  "manifest_sha256": "4af8b1c919d7627749bc5dd10610c1268830185c90b1c28e41aba71320c03315",
+  "status": "PASS",
+  "cases": 15,
+  "codebook_symbols": 588,
+  "whole_F13C_ready": false
+}

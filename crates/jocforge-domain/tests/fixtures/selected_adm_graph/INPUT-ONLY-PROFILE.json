@@ -1,0 +1,38 @@
+{
+  "profile": "Selected eleven-point virtual prefix, positive Q15 saturation endpoints, enabled upper-point rectangular adjustment",
+  "endpoint_q15": 32767,
+  "midpoint_q15": 16384,
+  "scale_denominator": 32768,
+  "point_recipe": [
+    "lower front left",
+    "lower front right",
+    "lower front center",
+    "lower side left",
+    "lower side right",
+    "lower rear left",
+    "lower rear right",
+    "upper front left",
+    "upper front right",
+    "upper rear left",
+    "upper rear right"
+  ],
+  "attribute_components": [
+    0,
+    0,
+    0,
+    3,
+    2
+  ],
+  "attribute_pack_shifts": [
+    0,
+    1,
+    4,
+    8,
+    10
+  ],
+  "renderer_window_samples": 3072,
+  "host_frame_samples": 1536,
+  "source_count": 11,
+  "source_stride_bytes": 56,
+  "numeric_scope": "Generate only selected ordinary geometry. No original full table, fallback records, secrets or arbitrary layout support implied."
+}

@@ -1,0 +1,190 @@
+{
+  "attenuation_rule": "R32((32+i%32)*2**floor(i/32)/512)",
+  "attenuation_all128_exact": true,
+  "threshold_hypothesis": "R32(-log2(16*attenuation[i])/8)",
+  "threshold_generation_result": "NOT_BIT_EXACT_USE_EXPLICIT_APPROVED_FUNCTIONAL_PROVIDER",
+  "threshold_mismatches": [
+    {
+      "index": 1,
+      "generated_word": 3149256348,
+      "native_word": 3149256347
+    },
+    {
+      "index": 3,
+      "generated_word": 3162792644,
+      "native_word": 3162792645
+    },
+    {
+      "index": 8,
+      "generated_word": 3173307330,
+      "native_word": 3173307331
+    },
+    {
+      "index": 9,
+      "generated_word": 3174502670,
+      "native_word": 3174502671
+    },
+    {
+      "index": 11,
+      "generated_word": 3176808288,
+      "native_word": 3176808287
+    },
+    {
+      "index": 13,
+      "generated_word": 3179009067,
+      "native_word": 3179009068
+    },
+    {
+      "index": 18,
+      "generated_word": 3181695938,
+      "native_word": 3181695939
+    },
+    {
+      "index": 19,
+      "generated_word": 3182175249,
+      "native_word": 3182175250
+    },
+    {
+      "index": 20,
+      "generated_word": 3182645252,
+      "native_word": 3182645253
+    },
+    {
+      "index": 28,
+      "generated_word": 3186108923,
+      "native_word": 3186108924
+    },
+    {
+      "index": 30,
+      "generated_word": 3186902582,
+      "native_word": 3186902581
+    },
+    {
+      "index": 31,
+      "generated_word": 3187289860,
+      "native_word": 3187289861
+    },
+    {
+      "index": 35,
+      "generated_word": 3188755545,
+      "native_word": 3188755544
+    },
+    {
+      "index": 41,
+      "generated_word": 3190670404,
+      "native_word": 3190670403
+    },
+    {
+      "index": 47,
+      "generated_word": 3192323268,
+      "native_word": 3192323269
+    },
+    {
+      "index": 52,
+      "generated_word": 3193546754,
+      "native_word": 3193546755
+    },
+    {
+      "index": 53,
+      "generated_word": 3193777279,
+      "native_word": 3193777280
+    },
+    {
+      "index": 55,
+      "generated_word": 3194225560,
+      "native_word": 3194225561
+    },
+    {
+      "index": 61,
+      "generated_word": 3195478631,
+      "native_word": 3195478630
+    },
+    {
+      "index": 62,
+      "generated_word": 3195675419,
+      "native_word": 3195675418
+    },
+    {
+      "index": 65,
+      "generated_word": 3196245850,
+      "native_word": 3196245851
+    },
+    {
+      "index": 72,
+      "generated_word": 3197409912,
+      "native_word": 3197409913
+    },
+    {
+      "index": 74,
+      "generated_word": 3197705147,
+      "native_word": 3197705146
+    },
+    {
+      "index": 77,
+      "generated_word": 3198122629,
+      "native_word": 3198122630
+    },
+    {
+      "index": 94,
+      "generated_word": 3200061837,
+      "native_word": 3200061838
+    },
+    {
+      "index": 97,
+      "generated_word": 3200440154,
+      "native_word": 3200440155
+    },
+    {
+      "index": 99,
+      "generated_word": 3200796204,
+      "native_word": 3200796205
+    },
+    {
+      "index": 105,
+      "generated_word": 3201753634,
+      "native_word": 3201753633
+    },
+    {
+      "index": 107,
+      "generated_word": 3202041836,
+      "native_word": 3202041835
+    },
+    {
+      "index": 110,
+      "generated_word": 3202449930,
+      "native_word": 3202449929
+    },
+    {
+      "index": 112,
+      "generated_word": 3202707463,
+      "native_word": 3202707462
+    },
+    {
+      "index": 114,
+      "generated_word": 3202954481,
+      "native_word": 3202954480
+    },
+    {
+      "index": 115,
+      "generated_word": 3203074308,
+      "native_word": 3203074309
+    },
+    {
+      "index": 121,
+      "generated_word": 3203747346,
+      "native_word": 3203747347
+    },
+    {
+      "index": 124,
+      "generated_word": 3204057727,
+      "native_word": 3204057728
+    },
+    {
+      "index": 125,
+      "generated_word": 3204157747,
+      "native_word": 3204157748
+    }
+  ],
+  "threshold_source": "128 bounded native functional words; no authentication data",
+  "thresholds_are_required_explicit_parameters": true
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "selected-configuration-import-check.v2",
+  "package": "SELECTED-CONFIGURATION-IMPORT",
+  "manifest_sha256": "8ad92e6a0372414c4f2319f996399a5167379922ff3ebaa3d29467f339bd61b1",
+  "payload_count": 8,
+  "payload_hashes_match": true,
+  "source_manifest_check_and_payloads_match": true,
+  "module_file_identity_runtime_bound": true,
+  "controlled_cases": 7,
+  "reconstructed_source_records": 7,
+  "owner_bytes_replayed": 28672,
+  "metadata_bytes_replayed": 448,
+  "return_values": [0, 0, 0, 0, 140, 140, 59],
+  "independent_copy_and_numeric_replay": "PASS all owner and metadata bytes",
+  "natural_owner_imports": 6,
+  "controlled_imports_excluded_from_natural_count": 7,
+  "partial_mutation_on_return_59": true,
+  "channel_map_return_161": "STATIC_ONLY; no rejecting runtime vector",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO"
+}

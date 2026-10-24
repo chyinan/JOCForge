@@ -1,0 +1,93 @@
+{
+  "schema": "washed-primary-installed48-activity-provenance.v1",
+  "delivery_scope": "INTERNAL_ISOLATED_IMPLEMENTATION_ONLY; NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION",
+  "approved_implementer_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "research_side_sealed_source_manifest_sha256": "5e7c05de3f908d36c3d0d7ca78fd98d5d7b3ea15ae1d75d18c8930401b39c2f9",
+  "research_side_external_envelope_sha256": "a8cfb8e84d9fead33fdbddc7a03eaae9b85d87205c915a479aeb2113d5abfdcc",
+  "authorized_validation_wav": {
+    "file": "test-vectors/full-song/input-adm.wav",
+    "bytes": 743696526,
+    "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+  },
+  "derived_payload_sources": {
+    "ACTIVITY-AND-ROUTING-RULES.json": {
+      "source_artifact": "NORMATIVE-RULES.json",
+      "source_sha256": "6d8c0bbe3078124ebeb7e3480e9a09d0f3ada95f8eb1c9ca0b5c989501aa474e"
+    },
+    "INSTALLED48-SOURCE-MAP.json": {
+      "source_artifact": "OWN-INSTALLED48-METADATA.json",
+      "source_sha256": "1e02c7db8f9d66bdb2174c7389dd75f21157604fe3c5589444445a08e8f1cc54"
+    },
+    "CONTROL38-DEFINED-RANGES.json": {
+      "source_artifact": "OWN-CONTROL38-DEFINED.json",
+      "source_sha256": "b0c208b368ca2f6792e600f95f4e3512d99105fb90a0d06c9b7120c0aefe1a35"
+    },
+    "CALLBACK-ACTIVITY-OUTPUTS.jsonl": {
+      "source_artifact": "OWN-ACTIVITY-CALLBACKS.jsonl",
+      "source_sha256": "120066a8ff1e836a2f0c79e725c49361ff35a1f2323d6ab8fc69a2e94d451ad6"
+    },
+    "FLAG-TRANSITIONS.json": {
+      "source_artifact": "OWN-FLAG-TRANSITIONS.json",
+      "source_sha256": "5ed7ff141a723c266500d6da0e4ce5a7ad7fcb2bf4118622219451232a762c35"
+    },
+    "POSTROUTE-VARIANTS.json": {
+      "source_artifact": "POSTROUTE-VARIANTS.json",
+      "source_sha256": "4e41b01b7dcb5940ee91a59a7a222d445b8637e2a494188a175dfc6ad9910016"
+    },
+    "MEMBERSHIP-PROVENANCE.json": {
+      "source_artifact": "MEMBERSHIP-PROVENANCE.json",
+      "source_sha256": "06cd213878576e47436a9b5b570726b6774ab5d279db86d23c73119c6b1d386f"
+    },
+    "P11-SOURCE-BINDING.json": {
+      "source_artifact": "P11-SOURCE-BINDING.json",
+      "source_sha256": "b14ba3e4b9125638204b28b9a8d6ca5da258017ccd9112357c32d57931bc8e56"
+    },
+    "MEMBERSHIP-PARAMETERS.json": {
+      "source_artifact": "approved_spread_parameters.json",
+      "source_sha256": "5611b37f2a997f75da0ba920e394c0e36eddd9477e11ba94d44852d3e12fd0c9"
+    },
+    "MEMBERSHIP-INPUT-ONLY.json": {
+      "source_artifact": "APPROVED-SPREAD-INPUT-ONLY.json",
+      "source_sha256": "cddce66ef00a91b3de1c4db88350df7a18fa460d361aa572cb4f293887fcc75c"
+    },
+    "MEMBERSHIP-EXPECTED.json": {
+      "source_artifact": "APPROVED-SPREAD-EXPECTED.json",
+      "source_sha256": "f1d29a8000c38e6dc1bde846c1b3f906464bfeed216b3c7d104fe2c0570b1221"
+    },
+    "SELECTED-GEOMETRY-VECTORS.json": {
+      "source_artifact": "APPROVED-SELECTED-GEOMETRY-VECTORS.json",
+      "source_sha256": "755290873e1ddec1cbb389ceb16967c20a5ced9bbc8449a42cbb2a412b245017"
+    },
+    "REVERSE-REPORTED-MUTATION-VALIDATION.json": {
+      "source_artifact": "CRITICAL-MUTATION-VALIDATION.json",
+      "source_sha256": "e6e6cd2469d0756283a2e0aa940771142108315d640ef3d6035e540551f0978b"
+    },
+    "MEMBERSHIP-SPECIFICATION.md": {
+      "source_artifact": "MEMBERSHIP-SPECIFICATION.md",
+      "source_sha256": "aa86e3889e0290080e072d9d65d64a97b441ac896cafe2decc20c369a3ff6f77",
+      "wash_changes": [
+        "clarified implementation normativity and native-validation boundary",
+        "replaced stale local-vector paragraph with independently replayed R2 results",
+        "removed research-process wording"
+      ]
+    },
+    "PRIMARY-INPUT-IDENTITY.json": {
+      "source_artifact": "PRIMARY-SOURCE-RECEIPT.json plus approved IMPLEMENTER_PACKAGE manifest",
+      "source_sha256": "c60c45033ee40592b9fc82c9c68edf94c4ee1676f27d9df34634291b2cb0f7ad"
+    }
+  },
+  "exclusions": [
+    "native producer source code",
+    "DLL or binary implementation",
+    "PCM/audio payload",
+    "private vendor key or authentication material",
+    "unapproved identifier-derived routing key",
+    "absolute research paths"
+  ],
+  "unresolved_but_nonblocking_for_this_specified_slice": [
+    "primary native gain11 comparison",
+    "native primary acceptance",
+    "full PCM identity of the separate primary source file"
+  ],
+  "implementation_rule": "Implement every activity and membership rule in this supplement and the approved package. Do not substitute expected outputs as inputs or infer unsupported profiles."
+}

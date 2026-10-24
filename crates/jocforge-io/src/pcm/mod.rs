@@ -1,2 +1,6 @@
 // pattern: Imperative Shell
-//! Reserved pcm adapter. Implementation awaits an approved contract.
+//! PCM input adapters.
+
+pub mod meter_source_cursor;
+pub mod reader_input_padding;
+pub mod riff_pcm24;

@@ -1,0 +1,13 @@
+{
+  "schema": "f13c-container-length-scope-conflict.v1",
+  "approved_f13_1_rule": "Complete selected carrier frame beyond its 9-bit length range fails.",
+  "R19_scratch_observation": "Serialized-container buffer lengths 507/508/511/512 were accepted with a caller-owned public provider; 512 bytes produced transport wire fragments 511 and 5.",
+  "classification": "SCOPED_SCRATCH_OBSERVATION_NOT_YET_APPLICABLE_TO_APPROVED_SELECTED_PRODUCTION_PATH",
+  "reason": "R19 does not establish production-cold equivalence or semantic carrier_block mapping; scratch serializer-to-planner composition differs from production order.",
+  "required_next_evidence": [
+    "Agent 3 semantic carrier_block producer/consumer mapping",
+    "same selected production path and cold owner graph",
+    "full codec and durable publication failure roots"
+  ],
+  "interim_implementation_rule": "Do not remove the approved F13.1 limit or substitute transport-fragment fields for semantic carrier_block until the missing mapping is closed."
+}

@@ -1,0 +1,6443 @@
+[
+  {
+    "name": "cold_zero",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": null,
+    "kind": "wrapper",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "positive_prefix_and_release",
+    "frames": [
+      {
+        "spikes": [
+          [
+            0,
+            0,
+            1065353216
+          ]
+        ]
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      }
+    ],
+    "initial": null,
+    "kind": "wrapper",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "negative_prefix",
+    "frames": [
+      {
+        "spikes": [
+          [
+            0,
+            0,
+            3212836864
+          ]
+        ]
+      },
+      {
+        "spikes": []
+      }
+    ],
+    "initial": null,
+    "kind": "wrapper",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "tail_retained_next_generation",
+    "frames": [
+      {
+        "spikes": [
+          [
+            0,
+            1535,
+            3208642560
+          ]
+        ]
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      }
+    ],
+    "initial": null,
+    "kind": "wrapper",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "prefix_tail_boundary",
+    "frames": [
+      {
+        "spikes": [
+          [
+            0,
+            1279,
+            1048576000
+          ]
+        ]
+      },
+      {
+        "spikes": [
+          [
+            0,
+            1280,
+            1056964608
+          ]
+        ]
+      },
+      {
+        "spikes": []
+      }
+    ],
+    "initial": null,
+    "kind": "wrapper",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "lfe_only_excluded",
+    "frames": [
+      {
+        "spikes": [
+          [
+            3,
+            0,
+            1082130432
+          ]
+        ]
+      },
+      {
+        "spikes": [
+          [
+            3,
+            1535,
+            3229614080
+          ]
+        ]
+      }
+    ],
+    "initial": null,
+    "kind": "wrapper",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "last_channel_included",
+    "frames": [
+      {
+        "spikes": [
+          [
+            5,
+            0,
+            1065353216
+          ]
+        ]
+      },
+      {
+        "spikes": []
+      }
+    ],
+    "initial": null,
+    "kind": "wrapper",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "over_unity_finite",
+    "frames": [
+      {
+        "spikes": [
+          [
+            0,
+            0,
+            1073741824
+          ]
+        ]
+      },
+      {
+        "spikes": []
+      }
+    ],
+    "initial": null,
+    "kind": "wrapper",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_0_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 2147483648,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_1_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3149256346,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_1_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3149256347,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_1_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3149256348,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_2_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3157467063,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_2_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3157467064,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_2_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3157467065,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_3_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3162792644,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_3_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3162792645,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_3_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3162792646,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_4_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3165520081,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_4_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3165520082,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_4_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3165520083,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_5_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3168172784,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_5_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3168172785,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_5_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3168172786,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_6_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3170754741,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_6_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3170754742,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_6_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3170754743,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_7_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3172081724,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_7_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3172081725,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_7_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3172081726,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_8_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3173307330,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_8_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3173307331,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_8_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3173307332,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_9_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3174502670,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_9_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3174502671,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_9_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3174502672,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_10_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3175669203,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_10_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3175669204,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_10_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3175669205,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_11_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3176808286,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_11_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3176808287,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_11_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3176808288,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_12_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3177921182,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_12_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3177921183,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_12_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3177921184,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_13_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3179009067,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_13_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3179009068,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_13_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3179009069,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_14_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3179677735,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_14_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3179677736,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_14_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3179677737,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_15_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3180198280,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_15_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3180198281,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_15_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3180198282,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_16_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3180707865,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_16_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3180707866,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_16_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3180707867,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_17_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3181206943,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_17_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3181206944,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_17_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3181206945,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_18_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3181695938,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_18_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3181695939,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_18_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3181695940,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_19_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3182175249,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_19_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3182175250,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_19_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3182175251,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_20_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3182645252,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_20_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3182645253,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_20_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3182645254,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_21_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3183106302,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_21_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3183106303,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_21_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3183106304,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_22_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3183558734,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_22_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3183558735,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_22_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3183558736,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_23_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3184002864,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_23_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3184002865,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_23_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3184002866,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_24_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3184438991,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_24_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3184438992,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_24_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3184438993,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_25_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3184867399,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_25_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3184867400,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_25_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3184867401,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_26_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3185288355,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_26_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3185288356,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_26_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3185288357,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_27_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3185702116,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_27_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3185702117,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_27_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3185702118,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_28_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3186108923,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_28_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3186108924,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_28_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3186108925,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_29_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3186509004,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_29_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3186509005,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_29_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3186509006,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_30_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3186902580,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_30_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3186902581,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_30_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3186902582,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_31_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3187289860,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_31_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3187289861,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_31_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3187289862,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_32_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3187671039,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_32_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3187671040,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_32_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3187671041,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_33_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3188043444,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_33_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3188043445,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_33_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3188043446,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_34_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3188404730,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_34_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3188404731,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_34_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3188404732,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_35_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3188755543,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_35_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3188755544,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_35_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3188755545,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_36_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3189096473,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_36_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3189096474,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_36_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3189096475,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_37_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3189428061,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_37_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3189428062,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_37_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3189428063,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_38_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3189750806,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_38_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3189750807,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_38_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3189750808,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_39_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3190065166,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_39_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3190065167,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_39_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3190065168,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_40_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3190371568,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_40_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3190371569,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_40_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3190371570,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_41_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3190670402,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_41_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3190670403,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_41_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3190670404,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_42_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3190962036,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_42_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3190962037,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_42_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3190962038,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_43_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3191246807,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_43_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3191246808,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_43_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3191246809,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_44_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3191525031,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_44_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3191525032,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_44_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3191525033,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_45_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3191797002,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_45_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3191797003,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_45_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3191797004,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_46_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3192062995,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_46_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3192062996,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_46_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3192062997,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_47_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3192323268,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_47_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3192323269,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_47_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3192323270,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_48_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3192578060,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_48_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3192578061,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_48_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3192578062,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_49_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3192827599,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_49_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3192827600,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_49_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3192827601,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_50_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3193072096,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_50_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3193072097,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_50_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3193072098,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_51_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3193311752,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_51_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3193311753,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_51_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3193311754,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_52_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3193546754,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_52_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3193546755,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_52_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3193546756,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_53_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3193777279,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_53_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3193777280,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_53_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3193777281,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_54_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3194003494,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_54_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3194003495,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_54_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3194003496,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_55_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3194225560,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_55_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3194225561,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_55_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3194225562,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_56_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3194443623,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_56_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3194443624,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_56_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3194443625,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_57_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3194657827,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_57_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3194657828,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_57_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3194657829,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_58_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3194868305,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_58_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3194868306,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_58_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3194868307,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_59_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3195075186,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_59_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3195075187,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_59_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3195075188,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_60_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3195278589,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_60_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3195278590,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_60_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3195278591,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_61_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3195478629,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_61_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3195478630,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_61_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3195478631,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_62_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3195675417,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_62_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3195675418,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_62_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3195675419,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_63_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3195869057,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_63_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3195869058,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_63_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3195869059,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_64_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3196059647,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_64_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3196059648,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_64_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3196059649,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_65_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3196245850,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_65_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3196245851,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_65_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3196245852,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_66_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3196426493,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_66_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3196426494,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_66_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3196426495,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_67_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3196601899,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_67_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3196601900,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_67_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3196601901,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_68_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3196772364,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_68_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3196772365,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_68_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3196772366,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_69_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3196938158,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_69_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3196938159,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_69_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3196938160,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_70_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3197099530,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_70_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3197099531,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_70_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3197099532,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_71_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3197256711,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_71_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3197256712,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_71_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3197256713,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_72_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3197409912,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_72_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3197409913,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_72_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3197409914,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_73_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3197559329,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_73_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3197559330,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_73_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3197559331,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_74_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3197705145,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_74_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3197705146,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_74_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3197705147,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_75_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3197847531,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_75_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3197847532,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_75_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3197847533,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_76_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3197986643,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_76_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3197986644,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_76_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3197986645,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_77_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198122629,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_77_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198122630,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_77_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198122631,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_78_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198255625,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_78_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198255626,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_78_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198255627,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_79_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198385761,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_79_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198385762,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_79_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198385763,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_80_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198513158,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_80_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198513159,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_80_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198513160,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_81_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198637927,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_81_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198637928,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_81_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198637929,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_82_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198760176,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_82_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198760177,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_82_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198760178,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_83_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198880003,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_83_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198880004,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_83_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198880005,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_84_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198997504,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_84_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198997505,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_84_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3198997506,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_85_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199112767,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_85_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199112768,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_85_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199112769,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_86_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199225875,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_86_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199225876,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_86_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199225877,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_87_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199336907,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_87_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199336908,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_87_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199336909,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_88_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199445939,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_88_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199445940,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_88_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199445941,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_89_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199553041,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_89_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199553042,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_89_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199553043,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_90_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199658280,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_90_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199658281,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_90_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199658282,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_91_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199761720,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_91_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199761721,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_91_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199761722,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_92_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199863422,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_92_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199863423,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_92_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199863424,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_93_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199963442,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_93_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199963443,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_93_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3199963444,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_94_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3200061837,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_94_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3200061838,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_94_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3200061839,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_95_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3200158656,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_95_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3200158657,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_95_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3200158658,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_96_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3200253951,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_96_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3200253952,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_96_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3200253953,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_97_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3200440154,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_97_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3200440155,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_97_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3200440156,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_98_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3200620797,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_98_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3200620798,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_98_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3200620799,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_99_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3200796204,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_99_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3200796205,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_99_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3200796206,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_100_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3200966668,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_100_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3200966669,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_100_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3200966670,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_101_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3201132462,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_101_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3201132463,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_101_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3201132464,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_102_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3201293834,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_102_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3201293835,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_102_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3201293836,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_103_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3201451015,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_103_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3201451016,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_103_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3201451017,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_104_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3201604215,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_104_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3201604216,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_104_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3201604217,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_105_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3201753632,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_105_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3201753633,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_105_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3201753634,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_106_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3201899450,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_106_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3201899451,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_106_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3201899452,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_107_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202041834,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_107_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202041835,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_107_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202041836,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_108_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202180947,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_108_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202180948,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_108_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202180949,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_109_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202316932,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_109_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202316933,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_109_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202316934,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_110_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202449928,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_110_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202449929,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_110_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202449930,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_111_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202580065,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_111_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202580066,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_111_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202580067,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_112_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202707461,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_112_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202707462,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_112_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202707463,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_113_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202832231,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_113_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202832232,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_113_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202832233,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_114_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202954479,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_114_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202954480,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_114_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3202954481,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_115_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203074308,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_115_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203074309,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_115_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203074310,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_116_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203191808,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_116_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203191809,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_116_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203191810,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_117_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203307071,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_117_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203307072,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_117_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203307073,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_118_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203420179,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_118_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203420180,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_118_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203420181,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_119_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203531211,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_119_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203531212,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_119_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203531213,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_120_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203640243,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_120_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203640244,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_120_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203640245,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_121_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203747346,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_121_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203747347,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_121_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203747348,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_122_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203852584,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_122_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203852585,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_122_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203852586,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_123_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203956024,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_123_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203956025,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_123_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3203956026,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_124_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3204057727,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_124_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3204057728,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_124_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3204057729,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_125_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3204157747,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_125_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3204157748,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_125_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3204157749,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_126_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3204256140,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_126_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3204256141,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_126_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3204256142,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_127_0",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3204352960,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_127_1",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3204352961,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "threshold_127_2",
+    "frames": [
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3204352962,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "explicit_hold_0",
+    "frames": [
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3196059648,
+      "hold": 0
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "explicit_hold_1",
+    "frames": [
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3196059648,
+      "hold": 1
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  },
+  {
+    "name": "explicit_hold_5",
+    "frames": [
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      },
+      {
+        "spikes": []
+      }
+    ],
+    "initial": {
+      "level_word": 3196059648,
+      "hold": 5
+    },
+    "kind": "producer",
+    "gain_exponent": 2,
+    "channels": 6,
+    "samples": 1536
+  }
+]

@@ -1,0 +1,31 @@
+{
+  "schema": "lfe-transform-raw-inputs.v1",
+  "recipes": [
+    {
+      "kind": "zero",
+      "calls": 2,
+      "input_count": 256,
+      "initial_histories_zero": true,
+      "short_flag": 0,
+      "lfe_count": 7
+    },
+    {
+      "kind": "impulse",
+      "calls": 2,
+      "input_count": 256,
+      "initial_histories_zero": true,
+      "short_flag": 0,
+      "lfe_count": 7
+    },
+    {
+      "kind": "periodic",
+      "calls": 2,
+      "input_count": 256,
+      "initial_histories_zero": true,
+      "short_flag": 0,
+      "lfe_count": 7
+    }
+  ],
+  "construction": "Per256-word input block: zero all; impulse0.5 at word index=call; periodic cycle[0,.125,-.25,.5,-.5,.25][(word+call)%6]. Separate primary/companion128-word histories initiallyzero, retained over call0 and1. Short flag0. Native output arrays feed directly to LFE raw wrapper, no expected seed.",
+  "expected_used_as_seed": false
+}

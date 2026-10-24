@@ -1,0 +1,14 @@
+{
+  "result": "PASS",
+  "cases": 393,
+  "generations": 434,
+  "branches": {
+    "RELEASE": 28,
+    "ATTACK": 9,
+    "HOLD": 397
+  },
+  "all_native_producer_indices_128_through_255": true,
+  "full_synthetic_compensation_hashes": true,
+  "real_pcm_read_or_hashed": false,
+  "scope": "SELF_OWNED_CLIP_OWNER_CONTINUITY_AND_SAME_CONTEXT_WRITER; NOT_FULL_PRODUCTION_PARENT"
+}

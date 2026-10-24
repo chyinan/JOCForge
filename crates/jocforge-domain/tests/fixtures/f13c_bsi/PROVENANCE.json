@@ -1,0 +1,15 @@
+{
+  "slice": "F13C_SELECTED_BSI_COUNT_AND_LITERAL_IMPORT_COPY_ONLY",
+  "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "bsi_supplement_handoff_manifest_sha256": "70f90cd5472299f66bba22c362e87fe2645b6f480d71dfeb763fab2eb769fe00",
+  "bsi_supplement_handoff_check_sha256": "ad609b6e1e0f4975d900320c50d7e405f97324db88e7ffacc5c9e8c250cf8a1e",
+  "id14_r2_handoff_manifest_sha256": "9985e8f321741d596a1675499d8764765fc9ecc864dc9824e979da4559b5d684",
+  "id14_r2_handoff_check_sha256": "16abeaa22363cb4726d1a1220843fe50db64a713056fabd5fb9e9dd7efb7e0f8",
+  "superseded_base_claim": "Section 1 EMDF/ID14-derived complexity producer and ID14-presence gate",
+  "replacement_claim": "selected BSI count comes from validated configuration; encoded ID14 is not an input dependency of this producer",
+  "scope_limit": "Selected scalar producer, count admission outcome projection, two-byte payload update, and 64-byte literal import copy only.",
+  "constructor_prefix_bytes_materialized": false,
+  "id14_parser_implemented": false,
+  "whole_f13c_ready": false,
+  "whole_f13_ready": false
+}

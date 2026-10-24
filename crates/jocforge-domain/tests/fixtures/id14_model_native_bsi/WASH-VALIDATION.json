@@ -1,0 +1,33 @@
+{
+  "schema": "washed-f13c-id14-model-native-clarification.v1",
+  "status": "SCOPED_CLARIFICATION_READY_WHOLE_F13C_NOT_READY",
+  "independent_checks": {
+    "candidate_manifest_and_payload_hashes": "PASS",
+    "candidate_exact_file_set_and_envelope": "PASS",
+    "model_helper_source_sha256": "MATCH",
+    "model_entry_source_sha256": "MATCH",
+    "native_module_sha256": "MATCH",
+    "approved_complexity_spec_identity": "MATCH",
+    "prior_BSI_count_package_hashes": "MATCH",
+    "prior_selected_ID14_R2_normal_and_optimized_replays": "PASS",
+    "model_debug_release_recorded_outputs_equal": true
+  },
+  "model_observation_limits": [
+    "The included model checker verifies the stored debug/release records, not a fresh parser execution.",
+    "Historical identity of the current OpenJOC dependency sources is not established.",
+    "A complete valid selected OAMD+ID14 model wrapper success case was not run."
+  ],
+  "native_limits": [
+    "Native malformed/full-container semantic ID14 parser cases NOT_RUN.",
+    "No global native parser absence claim.",
+    "No production cold end-to-end encode or product acceptance.",
+    "Whole F13C NOT_READY."
+  ],
+  "excluded_material": {
+    "binary": false,
+    "decompiled_source": false,
+    "private_key": false,
+    "authentication_secret": false,
+    "PCM": false
+  }
+}

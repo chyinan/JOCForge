@@ -1,0 +1,29 @@
+{
+  "schema": "gain-history-natural-context.v1",
+  "domains": [
+    {
+      "pass": 0,
+      "summary_gate": 1,
+      "format": 7,
+      "fullband_channels": 5,
+      "sample_rate_code": 0,
+      "input_alignment_mod16": 8,
+      "calls": 216
+    },
+    {
+      "pass": 1,
+      "summary_gate": 1,
+      "format": 7,
+      "fullband_channels": 5,
+      "sample_rate_code": 0,
+      "input_alignment_mod16": 0,
+      "calls": 150
+    }
+  ],
+  "gain_summary_pointer_hash_joins": 180,
+  "gain_masks": {
+    "7": 180
+  },
+  "gain_to_fold_same_input_pointer_hash_joins": 432,
+  "role": "Natural selected-boundary identity only, not a replacement for synthetic input-only vectors; no native sample data included."
+}

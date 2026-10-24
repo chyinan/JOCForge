@@ -1,0 +1,20 @@
+{
+  "sources": [
+    {
+      "alias": "recipe_generator",
+      "bytes": 18094,
+      "sha256": "45ca0c6d6083cb5c2dcb48632c3f3304c99b8c547bbef94e3809dcdd0fe0d409"
+    },
+    {
+      "alias": "independent_checker",
+      "bytes": 32479,
+      "sha256": "472b9fa1281861046196cdaf672c0f83d0ffa0be5b97fabadd9c03f729793391"
+    },
+    {
+      "alias": "native_normalization_static",
+      "bytes": 6370,
+      "sha256": "e48838238a78be848a8c66cdd6f0f294c6acaa287d26f1590b4cd56c3d09289a"
+    }
+  ],
+  "private_sources_included": false
+}

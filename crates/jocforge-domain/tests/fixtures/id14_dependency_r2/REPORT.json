@@ -1,0 +1,84 @@
+{
+  "schema": "selected-encoder-id14-consumption-decision.v1",
+  "selected_path_decision": "ENCODED_ID14_SEMANTIC_PARSE_NOT_REQUIRED_BY_CONFIRMED_BSI_COUNT_PRODUCER",
+  "whole_F13C_ready": false,
+  "positive_dataflow": [
+    {
+      "edge": "JOC producer output -> ID14 enqueue",
+      "evidence": "Actual producer body pointer obtained at ID14 enqueue boundary; queue copies declared body bytes into one of two owned cached buffers."
+    },
+    {
+      "edge": "ID14 queue -> reservation descriptor list",
+      "evidence": "Earlier same-parent pair capture observes ID11+ID14 descriptors. The body remains opaque through the generic descriptor interface."
+    },
+    {
+      "edge": "Queue body -> protected EMDF serializer",
+      "evidence": "Thirty-two direct cached-header byte loads: sixteen per cached allocation. All load sites belong to the payload writer byte loop; its output is sent to the bit-writing callback."
+    },
+    {
+      "edge": "Source storage reuse -> next JOC body",
+      "evidence": "Two hundred seventy header-region read-modify-write events belong to the output bit writer; these are writes of later bodies, not parser reads."
+    },
+    {
+      "edge": "Selected codec BSI count",
+      "evidence": "Separate configuration constructor -> validated count -> two-byte producer -> literal importer chain is bound in the BSI producer package. Its controlled private owner has no ID14 queue/body, but validated inputs1/16 still succeed."
+    }
+  ],
+  "selected_parent_order": [
+    "Prepare metadata reservation descriptors",
+    "Execute ordinary codec using configured BSI values",
+    "Serialize protected EMDF into outgoing transport storage",
+    "Publish encoded frame storage"
+  ],
+  "spec_attribution_correction": "The recovered native BSI count source is validated startup configuration and wrapper synthesis/LFE counts. A requirement to parse current serialized ID14 bytes before deriving this count is not the recovered native producer contract. An independent model may intentionally add semantic validation, but that would be a separate design requirement.",
+  "controlled_dependency_evidence": {
+    "artifact_alias": "validated-bsi-pipeline",
+    "id14_queue_field_in_private_owner": "NULL_ZERO_INITIALIZED",
+    "id14_body_allocated_for_private_call": false,
+    "emdf_serializer_field_in_private_owner": "NULL_ZERO_INITIALIZED",
+    "native_producer_return_i32": [
+      0,
+      0
+    ],
+    "validated_input_i32": [
+      1,
+      16
+    ],
+    "payload_prefixes_hex": [
+      "0101",
+      "0110"
+    ],
+    "scope": "Single BSI count producer invocation only. Not a complete encoder execution with missing ID14.",
+    "direct_before_after_null_field_observation": true,
+    "native_result_vector_file": "NO-ID14-EXPECTED.json",
+    "input_only_vector_file": "NO-ID14-INPUTS.json",
+    "native_statuses_all_zero": true,
+    "owner_scope": "Fresh private graph; real selected option metadata is diagnostic context. The full native graph constructor is not delivered."
+  },
+  "not_observed": {
+    "ID14_specific_parser": "No semantic body consumer observed at watched selected header regions. No global absence proof.",
+    "parsed_ID14_output_schema": "NOT_CAPTURED",
+    "ID14_parser_malformed_cases": "NOT_RUN_NO_VERIFIED_PARSER_ABI",
+    "parent_queue_no_commit": "NOT_RUN",
+    "common_immutable_ID11_ID14_identity": "NOT_CLOSED_BY_CONFIG_ALIAS_OR_HASH_EQUALITY",
+    "carrier_block_source": "NOT_CLOSED"
+  },
+  "safe_next_actions": [
+    "Follow the serializer outgoing storage through authenticated EMDF transport into frame carrier placement, recording actual carrier selector and block/frame generation.",
+    "If another native semantic reader is found, bind its exact owner/ABI before valid/malformed calls; do not reuse a serializer as parser."
+  ],
+  "implementation_contacted": false,
+  "selected_dependency_claim_closed": true,
+  "independent_body_chain_retained": {
+    "body_generation": "SEPARATE_REQUIRED_CHAIN_NOT_WAIVED",
+    "queue_and_serialization": "SEPARATE_REQUIRED_CHAIN_NOT_WAIVED",
+    "carrier_placement": "OPEN_IN_THIS_PACKAGE",
+    "common_ID11_ID14_semantic_identity": "OPEN_IN_THIS_PACKAGE"
+  },
+  "claim_limits": [
+    "Only the confirmed selected BSI count producer and literal importer dependency are closed.",
+    "No claim that the entire encoder succeeds without an ID14 body.",
+    "No claim that the whole module or all modes lack a semantic parser.",
+    "No native semantic ID14 malformed/no-commit contract is inferred from transport or configuration behavior."
+  ]
+}

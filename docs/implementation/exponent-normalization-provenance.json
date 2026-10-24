@@ -1,0 +1,26 @@
+{
+  "slice": "F10_FULLBAND_CONSTANT_INPUT_DIRECT_ROWS_ONLY",
+  "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_spec_sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc",
+  "source_numeric_semantics_sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135",
+  "source_parameter_sha256": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a",
+  "source_input_vectors_sha256": "afed7b0fdd7b80374a63cfb0b5922d6c988ea0c4a4417f09d2f28af5de462bc5",
+  "source_result_sha256": "2cbca405e9af2cf6f95e8bc36546a387ed7f26ff73afd222715e9bf720136849",
+  "source_review_status_sha256": "4ee71cd301c607b953f0dfc1a4f19894a1a97939925bbce1e1fa3fa4d67f151d",
+  "verified_case_count": 4,
+  "case_ids": [
+    "norm-level0-span1-option1-gate0",
+    "norm-level8-span2-option1-gate0",
+    "norm-level24-span4-option1-gate0",
+    "norm-level16-span1-option1-gate1"
+  ],
+  "deferred_recipe_kinds": [
+    "mod25",
+    "zigzag24"
+  ],
+  "r4_reviewed_f10_spec_sha256": "eea5ed9833a6ca19d859df21f68f3b08e34407ace846f94e64ac5416957c59fb",
+  "r4_current_f10_spec_sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc",
+  "r4_reviews_current_f10_spec": false,
+  "whole_f10_ready": false,
+  "whole_f09_ready": false
+}

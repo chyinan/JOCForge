@@ -1,0 +1,69 @@
+{
+  "schema": "shared-gain-delay-continuous-callbacks.v1",
+  "source_vector": {
+    "file": "test-vectors/SHARED-DV32-CONTINUOUS-VERIFICATION.json",
+    "bytes": 609266,
+    "sha256": "07b60bee788fe755161bd68ca38d35c6afb9ec32a89ad2b2e9c282b7bb82327d"
+  },
+  "parameter_file": {
+    "file": "parameters/shared-dv32-mathematical-v1.json",
+    "bytes": 1236,
+    "sha256": "af189ffb34f703fdebe9a37bc46ffe972d97432b7f2e3f2a463b82682c96d4fa"
+  },
+  "input_role": "input recipes and post-computation digests only",
+  "source_rule": "R32(R32((row+1)*((sample mod17)-8)/16)*scale)",
+  "row_count": 6,
+  "samples_per_row": 1536,
+  "cases": [
+    {
+      "callback_index": 0,
+      "reset_before": true,
+      "scale": 1.0,
+      "before_state_sha256": "5a9d82f8512d28168642b8cac4596eeca269dd8d0d40d8d6806fdb1a6f6b0956",
+      "output_sha256": "abe9694d2b6a063d2902cd1ecab55f68da91288acc15e4197bdaf40a6df47a15",
+      "after_state_sha256": "a4e69241df83db8f0d251c099f53271ddb92624391e8e80c23802179c5e64510"
+    },
+    {
+      "callback_index": 1,
+      "reset_before": false,
+      "scale": 0.0,
+      "before_state_sha256": "a4e69241df83db8f0d251c099f53271ddb92624391e8e80c23802179c5e64510",
+      "output_sha256": "387731a8c79cc1ce276badff2093e8d6eb6088cc568e5173294a5d80b1c33613",
+      "after_state_sha256": "e7c90b101b777b34c841c15650bb50a739051c7bfb76e551c8ef4d119f086dae"
+    },
+    {
+      "callback_index": 2,
+      "reset_before": false,
+      "scale": 0.125,
+      "before_state_sha256": "e7c90b101b777b34c841c15650bb50a739051c7bfb76e551c8ef4d119f086dae",
+      "output_sha256": "27941548ede9c2842246817cc1094a2c635685e7bfb7300d22077bc193b8539e",
+      "after_state_sha256": "049aceef664e23badc9d303b790971b8c79563117e1e2270a11475f01b5c2e61"
+    },
+    {
+      "callback_index": 3,
+      "reset_before": false,
+      "scale": 0.0,
+      "before_state_sha256": "049aceef664e23badc9d303b790971b8c79563117e1e2270a11475f01b5c2e61",
+      "output_sha256": "30e74ab03245909f5d5ab55e938e378080b33b6a4d68643ed17d44b3db892fb3",
+      "after_state_sha256": "591d540e243136d6a659f578a7f6a1a667840782b21237360716c98909ad8388"
+    },
+    {
+      "callback_index": 4,
+      "reset_before": false,
+      "scale": 0.0,
+      "before_state_sha256": "591d540e243136d6a659f578a7f6a1a667840782b21237360716c98909ad8388",
+      "output_sha256": "ad97c242789062f85ddef4a71c350d21b596f6627f7bb10240bdf44f8d7db45b",
+      "after_state_sha256": "35222ecd81eec505f5c39d0640bb17cce0a03d03f09cab21e0d77efb9af32bf1"
+    },
+    {
+      "callback_index": 5,
+      "reset_before": true,
+      "scale": 0.0,
+      "before_state_sha256": "5a9d82f8512d28168642b8cac4596eeca269dd8d0d40d8d6806fdb1a6f6b0956",
+      "output_sha256": "45e39793c4f30aca9241e82c4fe0acd5ca6dab7a48909b8aac62b38ebbe51330",
+      "after_state_sha256": "25c7181b6a014d4541d6a959d35f520af81aac0888e153b0d7b81de04055b150"
+    }
+  ],
+  "whole_meter_pipeline": "NOT_RUN",
+  "real_new_adm_meter": "NOT_RUN"
+}

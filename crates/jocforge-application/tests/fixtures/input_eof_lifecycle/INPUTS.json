@@ -1,0 +1,133 @@
+{
+  "schema": "input-eof-lifecycle-input-only.v1",
+  "input_only": true,
+  "source_channels": 38,
+  "external_control_positions": [
+    0,
+    1536,
+    3072,
+    4608
+  ],
+  "external_source_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37
+  ],
+  "hop_samples": 1536,
+  "renderer_threshold": 3072,
+  "backend_threshold": 3072,
+  "initial_flush_remaining": 4,
+  "native_boundary_id14_body_lengths": [
+    132,
+    326,
+    222,
+    226,
+    222,
+    218
+  ],
+  "native_boundary_planner_requests": [
+    0,
+    0,
+    422,
+    316,
+    320,
+    316
+  ],
+  "upstream_fixture_role": "Producer input lengths come from separately hash-bound native producer/planner INPUT boundaries; they are diagnostic external inputs, not independently model-generated JOC data.",
+  "actions": [
+    {
+      "kind": "process",
+      "call": 1
+    },
+    {
+      "kind": "process",
+      "call": 2
+    },
+    {
+      "kind": "process",
+      "call": 3
+    },
+    {
+      "kind": "process",
+      "call": 4
+    },
+    {
+      "kind": "flush",
+      "call": 1
+    },
+    {
+      "kind": "flush",
+      "call": 2
+    },
+    {
+      "kind": "flush",
+      "call": 3
+    },
+    {
+      "kind": "flush",
+      "call": 4
+    },
+    {
+      "kind": "flush",
+      "call": 5
+    }
+  ],
+  "early_return_cases": [
+    {
+      "kind": "process_after_flush_started",
+      "flush_started": 1,
+      "remaining": 0,
+      "output_length_before_u64": "1234605616436508552",
+      "consumed_flag_before": -99
+    },
+    {
+      "kind": "empty_flush",
+      "flush_started": 0,
+      "remaining": 0,
+      "output_length_before_u64": "1234605616436508552",
+      "consumed_flag_before": -99
+    },
+    {
+      "kind": "empty_flush",
+      "flush_started": 1,
+      "remaining": 0,
+      "output_length_before_u64": "1234605616436508552",
+      "consumed_flag_before": -99
+    }
+  ]
+}

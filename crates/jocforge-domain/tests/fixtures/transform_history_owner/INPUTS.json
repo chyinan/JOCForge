@@ -1,0 +1,68 @@
+{
+  "schema": "owner-history-input-recipes.v1",
+  "history_sequences": [
+    {
+      "kind": "zero",
+      "branch": "primary",
+      "calls": 2,
+      "input_count": 256,
+      "history_count": 128,
+      "initial_history_zero": true,
+      "input_rule": "zero"
+    },
+    {
+      "kind": "zero",
+      "branch": "companion",
+      "calls": 2,
+      "input_count": 256,
+      "history_count": 128,
+      "initial_history_zero": true,
+      "input_rule": "zero"
+    },
+    {
+      "kind": "impulse",
+      "branch": "primary",
+      "calls": 2,
+      "input_count": 256,
+      "history_count": 128,
+      "initial_history_zero": true,
+      "input_rule": "0.5 at index=call, else zero"
+    },
+    {
+      "kind": "impulse",
+      "branch": "companion",
+      "calls": 2,
+      "input_count": 256,
+      "history_count": 128,
+      "initial_history_zero": true,
+      "input_rule": "0.5 at index=call, else zero"
+    },
+    {
+      "kind": "periodic",
+      "branch": "primary",
+      "calls": 2,
+      "input_count": 256,
+      "history_count": 128,
+      "initial_history_zero": true,
+      "input_rule": "cycle[0,.125,-.25,.5,-.5,.25][(index+call)%6]"
+    },
+    {
+      "kind": "periodic",
+      "branch": "companion",
+      "calls": 2,
+      "input_count": 256,
+      "history_count": 128,
+      "initial_history_zero": true,
+      "input_rule": "cycle[0,.125,-.25,.5,-.5,.25][(index+call)%6]"
+    }
+  ],
+  "workspace_initializer": {
+    "descriptor_bytes": 1320,
+    "arena_bytes": 65536,
+    "fill_byte": 165,
+    "blocks": 6,
+    "channels": 5
+  },
+  "construction": "History sequence inputs: zero/impulse0.5 at word=call/periodic cycle[0,.125,-.25,.5,-.5,.25][(word+call)%6], two256-word calls, separate128-word history initiallyzero. Workspace initializer: independently allocate declared descriptor/arena extents and fill every byte165 before invoking native initialization.",
+  "expected_used_as_seed": false
+}

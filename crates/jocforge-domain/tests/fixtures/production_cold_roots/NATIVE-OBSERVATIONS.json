@@ -1,0 +1,2601 @@
+{
+  "events": [
+    {
+      "event": "production_cold_root_observer_ready"
+    },
+    {
+      "event": "production_top_constructor_enter",
+      "constructor_invocation": 1,
+      "configuration_owner": 1,
+      "arena_descriptor_owner": 2,
+      "configuration_bytes_read": 0
+    },
+    {
+      "event": "native_queue_constructed",
+      "capacity_argument": 10,
+      "delay_argument": 4608,
+      "period_argument": 1536,
+      "queue": {
+        "owner": 3,
+        "capacity_bytes": 10,
+        "write_selector": 0,
+        "read_index": 2,
+        "phase": 0,
+        "period": 1536,
+        "owned_descriptor_count": 3,
+        "occupied": [
+          0,
+          0,
+          0
+        ],
+        "descriptor_tokens": [
+          4,
+          5,
+          6
+        ]
+      }
+    },
+    {
+      "event": "native_queue_constructed",
+      "capacity_argument": 3,
+      "delay_argument": 4608,
+      "period_argument": 1536,
+      "queue": {
+        "owner": 7,
+        "capacity_bytes": 3,
+        "write_selector": 0,
+        "read_index": 2,
+        "phase": 0,
+        "period": 1536,
+        "owned_descriptor_count": 3,
+        "occupied": [
+          0,
+          0,
+          0
+        ],
+        "descriptor_tokens": [
+          8,
+          9,
+          10
+        ]
+      }
+    },
+    {
+      "event": "general_fifo_group_constructed",
+      "delay_argument": 3072,
+      "period_argument": 1536,
+      "payload_ids": [
+        1,
+        6
+      ],
+      "capacity_arguments": [
+        10,
+        3
+      ],
+      "owner": 11
+    },
+    {
+      "event": "protection_owner_initialized",
+      "owner": 12,
+      "mode": 1,
+      "history_capacity_argument": 1,
+      "provider_identity": 13,
+      "provider_content_read": false,
+      "return_status": 0
+    },
+    {
+      "event": "serializer_history_constructed",
+      "delay_callbacks": 2,
+      "input_storage_capacity_bytes": 8192,
+      "stream_capacity": 2,
+      "owner": 14,
+      "held_header_present": 0,
+      "history_read_index": 2
+    },
+    {
+      "event": "native_queue_constructed",
+      "capacity_argument": 2103,
+      "delay_argument": 4608,
+      "period_argument": 1536,
+      "queue": {
+        "owner": 15,
+        "capacity_bytes": 2103,
+        "write_selector": 0,
+        "read_index": 2,
+        "phase": 0,
+        "period": 1536,
+        "owned_descriptor_count": 3,
+        "occupied": [
+          0,
+          0,
+          0
+        ],
+        "descriptor_tokens": [
+          16,
+          17,
+          18
+        ]
+      }
+    },
+    {
+      "event": "ID11_owner_constructed",
+      "object_capacity": 16,
+      "frame_capacity": 8,
+      "delay_argument": 3072,
+      "period_argument": 1536,
+      "owner": 19,
+      "queue": {
+        "owner": 15,
+        "capacity_bytes": 2103,
+        "write_selector": 0,
+        "read_index": 2,
+        "phase": 0,
+        "period": 1536,
+        "owned_descriptor_count": 3,
+        "occupied": [
+          0,
+          0,
+          0
+        ],
+        "descriptor_tokens": [
+          16,
+          17,
+          18
+        ]
+      }
+    },
+    {
+      "event": "native_queue_constructed",
+      "capacity_argument": 543,
+      "delay_argument": 3072,
+      "period_argument": 1536,
+      "queue": {
+        "owner": 20,
+        "capacity_bytes": 543,
+        "write_selector": 0,
+        "read_index": 1,
+        "phase": 0,
+        "period": 1536,
+        "owned_descriptor_count": 2,
+        "occupied": [
+          0,
+          0
+        ],
+        "descriptor_tokens": [
+          21,
+          22
+        ]
+      }
+    },
+    {
+      "event": "native_queue_constructed",
+      "capacity_argument": 8,
+      "delay_argument": 4608,
+      "period_argument": 1536,
+      "queue": {
+        "owner": 23,
+        "capacity_bytes": 8,
+        "write_selector": 0,
+        "read_index": 2,
+        "phase": 0,
+        "period": 1536,
+        "owned_descriptor_count": 3,
+        "occupied": [
+          0,
+          0,
+          0
+        ],
+        "descriptor_tokens": [
+          24,
+          25,
+          26
+        ]
+      }
+    },
+    {
+      "event": "production_top_constructor_leave",
+      "constructor_invocation": 1,
+      "return_status": 0,
+      "top_owner": 27,
+      "parent_count": 1,
+      "parents": [
+        {
+          "parent_owner": 28,
+          "profile_selector": 10,
+          "initial_delay_callbacks": 2,
+          "metadata_slot_control": 2,
+          "assembly_tolerance": 2,
+          "configured_codec_instances": 2,
+          "active_substreams": 1,
+          "failure_marker": 0,
+          "warning_bits": 0,
+          "general_queue_owner": 11,
+          "general_queues": [
+            {
+              "payload_id": 1,
+              "queue": {
+                "owner": 3,
+                "capacity_bytes": 10,
+                "write_selector": 0,
+                "read_index": 2,
+                "phase": 0,
+                "period": 1536,
+                "owned_descriptor_count": 3,
+                "occupied": [
+                  0,
+                  0,
+                  0
+                ],
+                "descriptor_tokens": [
+                  4,
+                  5,
+                  6
+                ]
+              }
+            },
+            {
+              "payload_id": 6,
+              "queue": {
+                "owner": 7,
+                "capacity_bytes": 3,
+                "write_selector": 0,
+                "read_index": 2,
+                "phase": 0,
+                "period": 1536,
+                "owned_descriptor_count": 3,
+                "occupied": [
+                  0,
+                  0,
+                  0
+                ],
+                "descriptor_tokens": [
+                  8,
+                  9,
+                  10
+                ]
+              }
+            }
+          ],
+          "ID11_owner": 19,
+          "ID11_queue": {
+            "owner": 15,
+            "capacity_bytes": 2103,
+            "write_selector": 0,
+            "read_index": 2,
+            "phase": 0,
+            "period": 1536,
+            "owned_descriptor_count": 3,
+            "occupied": [
+              0,
+              0,
+              0
+            ],
+            "descriptor_tokens": [
+              16,
+              17,
+              18
+            ]
+          },
+          "ID14_owner": 29,
+          "ID14_queue": {
+            "owner": 20,
+            "capacity_bytes": 543,
+            "write_selector": 0,
+            "read_index": 1,
+            "phase": 0,
+            "period": 1536,
+            "owned_descriptor_count": 2,
+            "occupied": [
+              0,
+              0
+            ],
+            "descriptor_tokens": [
+              21,
+              22
+            ]
+          },
+          "ID2_owner": 30,
+          "ID2_queue": {
+            "owner": 23,
+            "capacity_bytes": 8,
+            "write_selector": 0,
+            "read_index": 2,
+            "phase": 0,
+            "period": 1536,
+            "owned_descriptor_count": 3,
+            "occupied": [
+              0,
+              0,
+              0
+            ],
+            "descriptor_tokens": [
+              24,
+              25,
+              26
+            ]
+          },
+          "serializer_owner": 14,
+          "serializer_held_header_present": 0,
+          "serializer_history_read_index": 2,
+          "serializer_history_occupied": 0,
+          "codecs": [
+            {
+              "record_owner": 31,
+              "codec_owner": 32,
+              "planner_owner": 33,
+              "planner_enabled": 0,
+              "planner_first_block": 0,
+              "planner_counter": 0,
+              "planner_period": 62,
+              "planner_segments": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "record_owner": 34,
+              "codec_owner": 35,
+              "planner_owner": 36,
+              "planner_enabled": 0,
+              "planner_first_block": 0,
+              "planner_counter": 0,
+              "planner_period": 62,
+              "planner_segments": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "event": "frontend_cold_initialized",
+      "gate_owner": 37,
+      "top_owner": 27,
+      "threshold_samples": 3072,
+      "progress": 0,
+      "return_status": 0
+    },
+    {
+      "event": "independent_queue_cold_case",
+      "input": {
+        "capacity": 10,
+        "delay": 4608,
+        "period": 1536
+      },
+      "queue": {
+        "owner": 38,
+        "capacity_bytes": 10,
+        "write_selector": 0,
+        "read_index": 2,
+        "phase": 0,
+        "period": 1536,
+        "owned_descriptor_count": 3,
+        "occupied": [
+          0,
+          0,
+          0
+        ],
+        "descriptor_tokens": [
+          39,
+          40,
+          41
+        ]
+      },
+      "all_queue_graph_storage_owned": true,
+      "arena_used_bytes": 410,
+      "guard_unchanged": true,
+      "production_parent_equivalence_claimed": false
+    },
+    {
+      "event": "independent_queue_cold_case",
+      "input": {
+        "capacity": 3,
+        "delay": 4608,
+        "period": 1536
+      },
+      "queue": {
+        "owner": 42,
+        "capacity_bytes": 3,
+        "write_selector": 0,
+        "read_index": 2,
+        "phase": 0,
+        "period": 1536,
+        "owned_descriptor_count": 3,
+        "occupied": [
+          0,
+          0,
+          0
+        ],
+        "descriptor_tokens": [
+          43,
+          44,
+          45
+        ]
+      },
+      "all_queue_graph_storage_owned": true,
+      "arena_used_bytes": 403,
+      "guard_unchanged": true,
+      "production_parent_equivalence_claimed": false
+    },
+    {
+      "event": "independent_queue_cold_case",
+      "input": {
+        "capacity": 2103,
+        "delay": 4608,
+        "period": 1536
+      },
+      "queue": {
+        "owner": 42,
+        "capacity_bytes": 2103,
+        "write_selector": 0,
+        "read_index": 2,
+        "phase": 0,
+        "period": 1536,
+        "owned_descriptor_count": 3,
+        "occupied": [
+          0,
+          0,
+          0
+        ],
+        "descriptor_tokens": [
+          43,
+          44,
+          45
+        ]
+      },
+      "all_queue_graph_storage_owned": true,
+      "arena_used_bytes": 6663,
+      "guard_unchanged": true,
+      "production_parent_equivalence_claimed": false
+    },
+    {
+      "event": "independent_queue_cold_case",
+      "input": {
+        "capacity": 543,
+        "delay": 3072,
+        "period": 1536
+      },
+      "queue": {
+        "owner": 42,
+        "capacity_bytes": 543,
+        "write_selector": 0,
+        "read_index": 1,
+        "phase": 0,
+        "period": 1536,
+        "owned_descriptor_count": 2,
+        "occupied": [
+          0,
+          0
+        ],
+        "descriptor_tokens": [
+          43,
+          44
+        ]
+      },
+      "all_queue_graph_storage_owned": true,
+      "arena_used_bytes": 1359,
+      "guard_unchanged": true,
+      "production_parent_equivalence_claimed": false
+    },
+    {
+      "event": "independent_queue_cold_case",
+      "input": {
+        "capacity": 8,
+        "delay": 4608,
+        "period": 1536
+      },
+      "queue": {
+        "owner": 42,
+        "capacity_bytes": 8,
+        "write_selector": 0,
+        "read_index": 2,
+        "phase": 0,
+        "period": 1536,
+        "owned_descriptor_count": 3,
+        "occupied": [
+          0,
+          0,
+          0
+        ],
+        "descriptor_tokens": [
+          43,
+          44,
+          45
+        ]
+      },
+      "all_queue_graph_storage_owned": true,
+      "arena_used_bytes": 408,
+      "guard_unchanged": true,
+      "production_parent_equivalence_claimed": false
+    },
+    {
+      "event": "independent_queue_cold_complete",
+      "cases": 5
+    },
+    {
+      "event": "frontend_gate_enter",
+      "frontend_invocation": 1,
+      "gate_owner": 37,
+      "top_owner": 27,
+      "threshold_samples": 3072,
+      "progress": 0
+    },
+    {
+      "event": "selected_parent_enter",
+      "parent_invocation": 1,
+      "frontend_invocation": 1,
+      "roots": {
+        "parent_owner": 28,
+        "profile_selector": 10,
+        "initial_delay_callbacks": 2,
+        "metadata_slot_control": 2,
+        "assembly_tolerance": 2,
+        "configured_codec_instances": 2,
+        "active_substreams": 1,
+        "failure_marker": 0,
+        "warning_bits": 0,
+        "general_queue_owner": 11,
+        "general_queues": [
+          {
+            "payload_id": 1,
+            "queue": {
+              "owner": 3,
+              "capacity_bytes": 10,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                1,
+                0,
+                0
+              ],
+              "descriptor_tokens": [
+                4,
+                5,
+                6
+              ]
+            }
+          },
+          {
+            "payload_id": 6,
+            "queue": {
+              "owner": 7,
+              "capacity_bytes": 3,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                0,
+                0,
+                0
+              ],
+              "descriptor_tokens": [
+                8,
+                9,
+                10
+              ]
+            }
+          }
+        ],
+        "ID11_owner": 19,
+        "ID11_queue": {
+          "owner": 15,
+          "capacity_bytes": 2103,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            1,
+            0,
+            0
+          ],
+          "descriptor_tokens": [
+            16,
+            17,
+            18
+          ]
+        },
+        "ID14_owner": 29,
+        "ID14_queue": {
+          "owner": 20,
+          "capacity_bytes": 543,
+          "write_selector": 0,
+          "read_index": 1,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 2,
+          "occupied": [
+            1,
+            0
+          ],
+          "descriptor_tokens": [
+            21,
+            22
+          ]
+        },
+        "ID2_owner": 30,
+        "ID2_queue": {
+          "owner": 23,
+          "capacity_bytes": 8,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            1,
+            0,
+            0
+          ],
+          "descriptor_tokens": [
+            24,
+            25,
+            26
+          ]
+        },
+        "serializer_owner": 14,
+        "serializer_held_header_present": 0,
+        "serializer_history_read_index": 2,
+        "serializer_history_occupied": 0,
+        "codecs": [
+          {
+            "record_owner": 31,
+            "codec_owner": 32,
+            "planner_owner": 33,
+            "planner_enabled": 0,
+            "planner_first_block": 0,
+            "planner_counter": 0,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "record_owner": 34,
+            "codec_owner": 35,
+            "planner_owner": 36,
+            "planner_enabled": 0,
+            "planner_first_block": 0,
+            "planner_counter": 0,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "event": "assembly_readiness_return",
+      "parent_invocation": 1,
+      "return_status": 221
+    },
+    {
+      "event": "selected_parent_leave",
+      "parent_invocation": 1,
+      "frontend_invocation": 1,
+      "return_status": 0,
+      "roots": {
+        "parent_owner": 28,
+        "profile_selector": 10,
+        "initial_delay_callbacks": 2,
+        "metadata_slot_control": 2,
+        "assembly_tolerance": 1,
+        "configured_codec_instances": 2,
+        "active_substreams": 1,
+        "failure_marker": 0,
+        "warning_bits": 0,
+        "general_queue_owner": 11,
+        "general_queues": [
+          {
+            "payload_id": 1,
+            "queue": {
+              "owner": 3,
+              "capacity_bytes": 10,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                0,
+                1,
+                0
+              ],
+              "descriptor_tokens": [
+                6,
+                4,
+                5
+              ]
+            }
+          },
+          {
+            "payload_id": 6,
+            "queue": {
+              "owner": 7,
+              "capacity_bytes": 3,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                0,
+                0,
+                0
+              ],
+              "descriptor_tokens": [
+                10,
+                8,
+                9
+              ]
+            }
+          }
+        ],
+        "ID11_owner": 19,
+        "ID11_queue": {
+          "owner": 15,
+          "capacity_bytes": 2103,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            0,
+            1,
+            0
+          ],
+          "descriptor_tokens": [
+            18,
+            16,
+            17
+          ]
+        },
+        "ID14_owner": 29,
+        "ID14_queue": {
+          "owner": 20,
+          "capacity_bytes": 543,
+          "write_selector": 0,
+          "read_index": 1,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 2,
+          "occupied": [
+            0,
+            1
+          ],
+          "descriptor_tokens": [
+            22,
+            21
+          ]
+        },
+        "ID2_owner": 30,
+        "ID2_queue": {
+          "owner": 23,
+          "capacity_bytes": 8,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            0,
+            1,
+            0
+          ],
+          "descriptor_tokens": [
+            26,
+            24,
+            25
+          ]
+        },
+        "serializer_owner": 14,
+        "serializer_held_header_present": 0,
+        "serializer_history_read_index": 2,
+        "serializer_history_occupied": 0,
+        "codecs": [
+          {
+            "record_owner": 31,
+            "codec_owner": 32,
+            "planner_owner": 33,
+            "planner_enabled": 0,
+            "planner_first_block": 0,
+            "planner_counter": 1,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "record_owner": 34,
+            "codec_owner": 35,
+            "planner_owner": 36,
+            "planner_enabled": 0,
+            "planner_first_block": 0,
+            "planner_counter": 0,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "event": "frontend_gate_leave",
+      "frontend_invocation": 1,
+      "gate_owner": 37,
+      "return_status": 0,
+      "progress": 1536,
+      "caller_visible_bytes": "0",
+      "durable_file_commit": "NOT_OBSERVED"
+    },
+    {
+      "event": "frontend_gate_enter",
+      "frontend_invocation": 2,
+      "gate_owner": 37,
+      "top_owner": 27,
+      "threshold_samples": 3072,
+      "progress": 1536
+    },
+    {
+      "event": "selected_parent_enter",
+      "parent_invocation": 2,
+      "frontend_invocation": 2,
+      "roots": {
+        "parent_owner": 28,
+        "profile_selector": 10,
+        "initial_delay_callbacks": 2,
+        "metadata_slot_control": 2,
+        "assembly_tolerance": 1,
+        "configured_codec_instances": 2,
+        "active_substreams": 1,
+        "failure_marker": 0,
+        "warning_bits": 0,
+        "general_queue_owner": 11,
+        "general_queues": [
+          {
+            "payload_id": 1,
+            "queue": {
+              "owner": 3,
+              "capacity_bytes": 10,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                1,
+                1,
+                0
+              ],
+              "descriptor_tokens": [
+                6,
+                4,
+                5
+              ]
+            }
+          },
+          {
+            "payload_id": 6,
+            "queue": {
+              "owner": 7,
+              "capacity_bytes": 3,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                0,
+                0,
+                0
+              ],
+              "descriptor_tokens": [
+                10,
+                8,
+                9
+              ]
+            }
+          }
+        ],
+        "ID11_owner": 19,
+        "ID11_queue": {
+          "owner": 15,
+          "capacity_bytes": 2103,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            1,
+            1,
+            0
+          ],
+          "descriptor_tokens": [
+            18,
+            16,
+            17
+          ]
+        },
+        "ID14_owner": 29,
+        "ID14_queue": {
+          "owner": 20,
+          "capacity_bytes": 543,
+          "write_selector": 0,
+          "read_index": 1,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 2,
+          "occupied": [
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            22,
+            21
+          ]
+        },
+        "ID2_owner": 30,
+        "ID2_queue": {
+          "owner": 23,
+          "capacity_bytes": 8,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            1,
+            1,
+            0
+          ],
+          "descriptor_tokens": [
+            26,
+            24,
+            25
+          ]
+        },
+        "serializer_owner": 14,
+        "serializer_held_header_present": 0,
+        "serializer_history_read_index": 2,
+        "serializer_history_occupied": 0,
+        "codecs": [
+          {
+            "record_owner": 31,
+            "codec_owner": 32,
+            "planner_owner": 33,
+            "planner_enabled": 0,
+            "planner_first_block": 0,
+            "planner_counter": 1,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "record_owner": 34,
+            "codec_owner": 35,
+            "planner_owner": 36,
+            "planner_enabled": 0,
+            "planner_first_block": 0,
+            "planner_counter": 0,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "event": "assembly_readiness_return",
+      "parent_invocation": 2,
+      "return_status": 221
+    },
+    {
+      "event": "selected_parent_leave",
+      "parent_invocation": 2,
+      "frontend_invocation": 2,
+      "return_status": 0,
+      "roots": {
+        "parent_owner": 28,
+        "profile_selector": 10,
+        "initial_delay_callbacks": 2,
+        "metadata_slot_control": 2,
+        "assembly_tolerance": 0,
+        "configured_codec_instances": 2,
+        "active_substreams": 1,
+        "failure_marker": 0,
+        "warning_bits": 0,
+        "general_queue_owner": 11,
+        "general_queues": [
+          {
+            "payload_id": 1,
+            "queue": {
+              "owner": 3,
+              "capacity_bytes": 10,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                0,
+                1,
+                1
+              ],
+              "descriptor_tokens": [
+                5,
+                6,
+                4
+              ]
+            }
+          },
+          {
+            "payload_id": 6,
+            "queue": {
+              "owner": 7,
+              "capacity_bytes": 3,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                0,
+                0,
+                0
+              ],
+              "descriptor_tokens": [
+                9,
+                10,
+                8
+              ]
+            }
+          }
+        ],
+        "ID11_owner": 19,
+        "ID11_queue": {
+          "owner": 15,
+          "capacity_bytes": 2103,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            0,
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            17,
+            18,
+            16
+          ]
+        },
+        "ID14_owner": 29,
+        "ID14_queue": {
+          "owner": 20,
+          "capacity_bytes": 543,
+          "write_selector": 0,
+          "read_index": 1,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 2,
+          "occupied": [
+            0,
+            1
+          ],
+          "descriptor_tokens": [
+            21,
+            22
+          ]
+        },
+        "ID2_owner": 30,
+        "ID2_queue": {
+          "owner": 23,
+          "capacity_bytes": 8,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            0,
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            25,
+            26,
+            24
+          ]
+        },
+        "serializer_owner": 14,
+        "serializer_held_header_present": 0,
+        "serializer_history_read_index": 2,
+        "serializer_history_occupied": 1,
+        "codecs": [
+          {
+            "record_owner": 31,
+            "codec_owner": 32,
+            "planner_owner": 33,
+            "planner_enabled": 0,
+            "planner_first_block": 0,
+            "planner_counter": 2,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "record_owner": 34,
+            "codec_owner": 35,
+            "planner_owner": 36,
+            "planner_enabled": 0,
+            "planner_first_block": 0,
+            "planner_counter": 0,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "event": "frontend_gate_leave",
+      "frontend_invocation": 2,
+      "gate_owner": 37,
+      "return_status": 0,
+      "progress": 3072,
+      "caller_visible_bytes": "0",
+      "durable_file_commit": "NOT_OBSERVED"
+    },
+    {
+      "event": "frontend_gate_enter",
+      "frontend_invocation": 3,
+      "gate_owner": 37,
+      "top_owner": 27,
+      "threshold_samples": 3072,
+      "progress": 3072
+    },
+    {
+      "event": "selected_parent_enter",
+      "parent_invocation": 3,
+      "frontend_invocation": 3,
+      "roots": {
+        "parent_owner": 28,
+        "profile_selector": 10,
+        "initial_delay_callbacks": 2,
+        "metadata_slot_control": 2,
+        "assembly_tolerance": 0,
+        "configured_codec_instances": 2,
+        "active_substreams": 1,
+        "failure_marker": 0,
+        "warning_bits": 0,
+        "general_queue_owner": 11,
+        "general_queues": [
+          {
+            "payload_id": 1,
+            "queue": {
+              "owner": 3,
+              "capacity_bytes": 10,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                1,
+                1,
+                1
+              ],
+              "descriptor_tokens": [
+                5,
+                6,
+                4
+              ]
+            }
+          },
+          {
+            "payload_id": 6,
+            "queue": {
+              "owner": 7,
+              "capacity_bytes": 3,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                0,
+                0,
+                0
+              ],
+              "descriptor_tokens": [
+                9,
+                10,
+                8
+              ]
+            }
+          }
+        ],
+        "ID11_owner": 19,
+        "ID11_queue": {
+          "owner": 15,
+          "capacity_bytes": 2103,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            1,
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            17,
+            18,
+            16
+          ]
+        },
+        "ID14_owner": 29,
+        "ID14_queue": {
+          "owner": 20,
+          "capacity_bytes": 543,
+          "write_selector": 0,
+          "read_index": 1,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 2,
+          "occupied": [
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            21,
+            22
+          ]
+        },
+        "ID2_owner": 30,
+        "ID2_queue": {
+          "owner": 23,
+          "capacity_bytes": 8,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            1,
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            25,
+            26,
+            24
+          ]
+        },
+        "serializer_owner": 14,
+        "serializer_held_header_present": 0,
+        "serializer_history_read_index": 2,
+        "serializer_history_occupied": 1,
+        "codecs": [
+          {
+            "record_owner": 31,
+            "codec_owner": 32,
+            "planner_owner": 33,
+            "planner_enabled": 0,
+            "planner_first_block": 0,
+            "planner_counter": 2,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "record_owner": 34,
+            "codec_owner": 35,
+            "planner_owner": 36,
+            "planner_enabled": 0,
+            "planner_first_block": 0,
+            "planner_counter": 0,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "event": "assembly_readiness_return",
+      "parent_invocation": 3,
+      "return_status": 0
+    },
+    {
+      "event": "selected_parent_leave",
+      "parent_invocation": 3,
+      "frontend_invocation": 3,
+      "return_status": 0,
+      "roots": {
+        "parent_owner": 28,
+        "profile_selector": 10,
+        "initial_delay_callbacks": 2,
+        "metadata_slot_control": 2,
+        "assembly_tolerance": 0,
+        "configured_codec_instances": 2,
+        "active_substreams": 1,
+        "failure_marker": 0,
+        "warning_bits": 0,
+        "general_queue_owner": 11,
+        "general_queues": [
+          {
+            "payload_id": 1,
+            "queue": {
+              "owner": 3,
+              "capacity_bytes": 10,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                0,
+                1,
+                1
+              ],
+              "descriptor_tokens": [
+                4,
+                5,
+                6
+              ]
+            }
+          },
+          {
+            "payload_id": 6,
+            "queue": {
+              "owner": 7,
+              "capacity_bytes": 3,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                0,
+                0,
+                0
+              ],
+              "descriptor_tokens": [
+                8,
+                9,
+                10
+              ]
+            }
+          }
+        ],
+        "ID11_owner": 19,
+        "ID11_queue": {
+          "owner": 15,
+          "capacity_bytes": 2103,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            0,
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            16,
+            17,
+            18
+          ]
+        },
+        "ID14_owner": 29,
+        "ID14_queue": {
+          "owner": 20,
+          "capacity_bytes": 543,
+          "write_selector": 0,
+          "read_index": 1,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 2,
+          "occupied": [
+            0,
+            1
+          ],
+          "descriptor_tokens": [
+            22,
+            21
+          ]
+        },
+        "ID2_owner": 30,
+        "ID2_queue": {
+          "owner": 23,
+          "capacity_bytes": 8,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            0,
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            24,
+            25,
+            26
+          ]
+        },
+        "serializer_owner": 14,
+        "serializer_held_header_present": 1,
+        "serializer_history_read_index": 2,
+        "serializer_history_occupied": 1,
+        "codecs": [
+          {
+            "record_owner": 31,
+            "codec_owner": 32,
+            "planner_owner": 33,
+            "planner_enabled": 1,
+            "planner_first_block": 2,
+            "planner_counter": 3,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              422,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "record_owner": 34,
+            "codec_owner": 35,
+            "planner_owner": 36,
+            "planner_enabled": 0,
+            "planner_first_block": 0,
+            "planner_counter": 0,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "event": "frontend_gate_leave",
+      "frontend_invocation": 3,
+      "gate_owner": 37,
+      "return_status": 0,
+      "progress": 4608,
+      "caller_visible_bytes": "4096",
+      "durable_file_commit": "NOT_OBSERVED"
+    },
+    {
+      "event": "frontend_gate_enter",
+      "frontend_invocation": 4,
+      "gate_owner": 37,
+      "top_owner": 27,
+      "threshold_samples": 3072,
+      "progress": 4608
+    },
+    {
+      "event": "selected_parent_enter",
+      "parent_invocation": 4,
+      "frontend_invocation": 4,
+      "roots": {
+        "parent_owner": 28,
+        "profile_selector": 10,
+        "initial_delay_callbacks": 2,
+        "metadata_slot_control": 2,
+        "assembly_tolerance": 0,
+        "configured_codec_instances": 2,
+        "active_substreams": 1,
+        "failure_marker": 0,
+        "warning_bits": 0,
+        "general_queue_owner": 11,
+        "general_queues": [
+          {
+            "payload_id": 1,
+            "queue": {
+              "owner": 3,
+              "capacity_bytes": 10,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                1,
+                1,
+                1
+              ],
+              "descriptor_tokens": [
+                4,
+                5,
+                6
+              ]
+            }
+          },
+          {
+            "payload_id": 6,
+            "queue": {
+              "owner": 7,
+              "capacity_bytes": 3,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                0,
+                0,
+                0
+              ],
+              "descriptor_tokens": [
+                8,
+                9,
+                10
+              ]
+            }
+          }
+        ],
+        "ID11_owner": 19,
+        "ID11_queue": {
+          "owner": 15,
+          "capacity_bytes": 2103,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            1,
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            16,
+            17,
+            18
+          ]
+        },
+        "ID14_owner": 29,
+        "ID14_queue": {
+          "owner": 20,
+          "capacity_bytes": 543,
+          "write_selector": 0,
+          "read_index": 1,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 2,
+          "occupied": [
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            22,
+            21
+          ]
+        },
+        "ID2_owner": 30,
+        "ID2_queue": {
+          "owner": 23,
+          "capacity_bytes": 8,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            1,
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            24,
+            25,
+            26
+          ]
+        },
+        "serializer_owner": 14,
+        "serializer_held_header_present": 1,
+        "serializer_history_read_index": 2,
+        "serializer_history_occupied": 1,
+        "codecs": [
+          {
+            "record_owner": 31,
+            "codec_owner": 32,
+            "planner_owner": 33,
+            "planner_enabled": 1,
+            "planner_first_block": 2,
+            "planner_counter": 3,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              422,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "record_owner": 34,
+            "codec_owner": 35,
+            "planner_owner": 36,
+            "planner_enabled": 0,
+            "planner_first_block": 0,
+            "planner_counter": 0,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "event": "assembly_readiness_return",
+      "parent_invocation": 4,
+      "return_status": 0
+    },
+    {
+      "event": "selected_parent_leave",
+      "parent_invocation": 4,
+      "frontend_invocation": 4,
+      "return_status": 0,
+      "roots": {
+        "parent_owner": 28,
+        "profile_selector": 10,
+        "initial_delay_callbacks": 2,
+        "metadata_slot_control": 2,
+        "assembly_tolerance": 0,
+        "configured_codec_instances": 2,
+        "active_substreams": 1,
+        "failure_marker": 0,
+        "warning_bits": 0,
+        "general_queue_owner": 11,
+        "general_queues": [
+          {
+            "payload_id": 1,
+            "queue": {
+              "owner": 3,
+              "capacity_bytes": 10,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                0,
+                1,
+                1
+              ],
+              "descriptor_tokens": [
+                6,
+                4,
+                5
+              ]
+            }
+          },
+          {
+            "payload_id": 6,
+            "queue": {
+              "owner": 7,
+              "capacity_bytes": 3,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                0,
+                0,
+                0
+              ],
+              "descriptor_tokens": [
+                10,
+                8,
+                9
+              ]
+            }
+          }
+        ],
+        "ID11_owner": 19,
+        "ID11_queue": {
+          "owner": 15,
+          "capacity_bytes": 2103,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            0,
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            18,
+            16,
+            17
+          ]
+        },
+        "ID14_owner": 29,
+        "ID14_queue": {
+          "owner": 20,
+          "capacity_bytes": 543,
+          "write_selector": 0,
+          "read_index": 1,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 2,
+          "occupied": [
+            0,
+            1
+          ],
+          "descriptor_tokens": [
+            21,
+            22
+          ]
+        },
+        "ID2_owner": 30,
+        "ID2_queue": {
+          "owner": 23,
+          "capacity_bytes": 8,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            0,
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            26,
+            24,
+            25
+          ]
+        },
+        "serializer_owner": 14,
+        "serializer_held_header_present": 1,
+        "serializer_history_read_index": 2,
+        "serializer_history_occupied": 1,
+        "codecs": [
+          {
+            "record_owner": 31,
+            "codec_owner": 32,
+            "planner_owner": 33,
+            "planner_enabled": 1,
+            "planner_first_block": 2,
+            "planner_counter": 4,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              316,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "record_owner": 34,
+            "codec_owner": 35,
+            "planner_owner": 36,
+            "planner_enabled": 0,
+            "planner_first_block": 0,
+            "planner_counter": 0,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "event": "frontend_gate_leave",
+      "frontend_invocation": 4,
+      "gate_owner": 37,
+      "return_status": 0,
+      "progress": 4608,
+      "caller_visible_bytes": "4096",
+      "durable_file_commit": "NOT_OBSERVED"
+    },
+    {
+      "event": "frontend_gate_enter",
+      "frontend_invocation": 5,
+      "gate_owner": 37,
+      "top_owner": 27,
+      "threshold_samples": 3072,
+      "progress": 4608
+    },
+    {
+      "event": "selected_parent_enter",
+      "parent_invocation": 5,
+      "frontend_invocation": 5,
+      "roots": {
+        "parent_owner": 28,
+        "profile_selector": 10,
+        "initial_delay_callbacks": 2,
+        "metadata_slot_control": 2,
+        "assembly_tolerance": 0,
+        "configured_codec_instances": 2,
+        "active_substreams": 1,
+        "failure_marker": 0,
+        "warning_bits": 0,
+        "general_queue_owner": 11,
+        "general_queues": [
+          {
+            "payload_id": 1,
+            "queue": {
+              "owner": 3,
+              "capacity_bytes": 10,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                1,
+                1,
+                1
+              ],
+              "descriptor_tokens": [
+                6,
+                4,
+                5
+              ]
+            }
+          },
+          {
+            "payload_id": 6,
+            "queue": {
+              "owner": 7,
+              "capacity_bytes": 3,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                0,
+                0,
+                0
+              ],
+              "descriptor_tokens": [
+                10,
+                8,
+                9
+              ]
+            }
+          }
+        ],
+        "ID11_owner": 19,
+        "ID11_queue": {
+          "owner": 15,
+          "capacity_bytes": 2103,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            1,
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            18,
+            16,
+            17
+          ]
+        },
+        "ID14_owner": 29,
+        "ID14_queue": {
+          "owner": 20,
+          "capacity_bytes": 543,
+          "write_selector": 0,
+          "read_index": 1,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 2,
+          "occupied": [
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            21,
+            22
+          ]
+        },
+        "ID2_owner": 30,
+        "ID2_queue": {
+          "owner": 23,
+          "capacity_bytes": 8,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            1,
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            26,
+            24,
+            25
+          ]
+        },
+        "serializer_owner": 14,
+        "serializer_held_header_present": 1,
+        "serializer_history_read_index": 2,
+        "serializer_history_occupied": 1,
+        "codecs": [
+          {
+            "record_owner": 31,
+            "codec_owner": 32,
+            "planner_owner": 33,
+            "planner_enabled": 1,
+            "planner_first_block": 2,
+            "planner_counter": 4,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              316,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "record_owner": 34,
+            "codec_owner": 35,
+            "planner_owner": 36,
+            "planner_enabled": 0,
+            "planner_first_block": 0,
+            "planner_counter": 0,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "event": "assembly_readiness_return",
+      "parent_invocation": 5,
+      "return_status": 0
+    },
+    {
+      "event": "selected_parent_leave",
+      "parent_invocation": 5,
+      "frontend_invocation": 5,
+      "return_status": 0,
+      "roots": {
+        "parent_owner": 28,
+        "profile_selector": 10,
+        "initial_delay_callbacks": 2,
+        "metadata_slot_control": 2,
+        "assembly_tolerance": 0,
+        "configured_codec_instances": 2,
+        "active_substreams": 1,
+        "failure_marker": 0,
+        "warning_bits": 0,
+        "general_queue_owner": 11,
+        "general_queues": [
+          {
+            "payload_id": 1,
+            "queue": {
+              "owner": 3,
+              "capacity_bytes": 10,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                0,
+                1,
+                1
+              ],
+              "descriptor_tokens": [
+                5,
+                6,
+                4
+              ]
+            }
+          },
+          {
+            "payload_id": 6,
+            "queue": {
+              "owner": 7,
+              "capacity_bytes": 3,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                0,
+                0,
+                0
+              ],
+              "descriptor_tokens": [
+                9,
+                10,
+                8
+              ]
+            }
+          }
+        ],
+        "ID11_owner": 19,
+        "ID11_queue": {
+          "owner": 15,
+          "capacity_bytes": 2103,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            0,
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            17,
+            18,
+            16
+          ]
+        },
+        "ID14_owner": 29,
+        "ID14_queue": {
+          "owner": 20,
+          "capacity_bytes": 543,
+          "write_selector": 0,
+          "read_index": 1,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 2,
+          "occupied": [
+            0,
+            1
+          ],
+          "descriptor_tokens": [
+            22,
+            21
+          ]
+        },
+        "ID2_owner": 30,
+        "ID2_queue": {
+          "owner": 23,
+          "capacity_bytes": 8,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            0,
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            25,
+            26,
+            24
+          ]
+        },
+        "serializer_owner": 14,
+        "serializer_held_header_present": 1,
+        "serializer_history_read_index": 2,
+        "serializer_history_occupied": 1,
+        "codecs": [
+          {
+            "record_owner": 31,
+            "codec_owner": 32,
+            "planner_owner": 33,
+            "planner_enabled": 1,
+            "planner_first_block": 2,
+            "planner_counter": 5,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              320,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "record_owner": 34,
+            "codec_owner": 35,
+            "planner_owner": 36,
+            "planner_enabled": 0,
+            "planner_first_block": 0,
+            "planner_counter": 0,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "event": "frontend_gate_leave",
+      "frontend_invocation": 5,
+      "gate_owner": 37,
+      "return_status": 0,
+      "progress": 4608,
+      "caller_visible_bytes": "4096",
+      "durable_file_commit": "NOT_OBSERVED"
+    },
+    {
+      "event": "frontend_gate_enter",
+      "frontend_invocation": 6,
+      "gate_owner": 37,
+      "top_owner": 27,
+      "threshold_samples": 3072,
+      "progress": 4608
+    },
+    {
+      "event": "selected_parent_enter",
+      "parent_invocation": 6,
+      "frontend_invocation": 6,
+      "roots": {
+        "parent_owner": 28,
+        "profile_selector": 10,
+        "initial_delay_callbacks": 2,
+        "metadata_slot_control": 2,
+        "assembly_tolerance": 0,
+        "configured_codec_instances": 2,
+        "active_substreams": 1,
+        "failure_marker": 0,
+        "warning_bits": 0,
+        "general_queue_owner": 11,
+        "general_queues": [
+          {
+            "payload_id": 1,
+            "queue": {
+              "owner": 3,
+              "capacity_bytes": 10,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                1,
+                1,
+                1
+              ],
+              "descriptor_tokens": [
+                5,
+                6,
+                4
+              ]
+            }
+          },
+          {
+            "payload_id": 6,
+            "queue": {
+              "owner": 7,
+              "capacity_bytes": 3,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                0,
+                0,
+                0
+              ],
+              "descriptor_tokens": [
+                9,
+                10,
+                8
+              ]
+            }
+          }
+        ],
+        "ID11_owner": 19,
+        "ID11_queue": {
+          "owner": 15,
+          "capacity_bytes": 2103,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            1,
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            17,
+            18,
+            16
+          ]
+        },
+        "ID14_owner": 29,
+        "ID14_queue": {
+          "owner": 20,
+          "capacity_bytes": 543,
+          "write_selector": 0,
+          "read_index": 1,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 2,
+          "occupied": [
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            22,
+            21
+          ]
+        },
+        "ID2_owner": 30,
+        "ID2_queue": {
+          "owner": 23,
+          "capacity_bytes": 8,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            1,
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            25,
+            26,
+            24
+          ]
+        },
+        "serializer_owner": 14,
+        "serializer_held_header_present": 1,
+        "serializer_history_read_index": 2,
+        "serializer_history_occupied": 1,
+        "codecs": [
+          {
+            "record_owner": 31,
+            "codec_owner": 32,
+            "planner_owner": 33,
+            "planner_enabled": 1,
+            "planner_first_block": 2,
+            "planner_counter": 5,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              320,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "record_owner": 34,
+            "codec_owner": 35,
+            "planner_owner": 36,
+            "planner_enabled": 0,
+            "planner_first_block": 0,
+            "planner_counter": 0,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "event": "assembly_readiness_return",
+      "parent_invocation": 6,
+      "return_status": 0
+    },
+    {
+      "event": "selected_parent_leave",
+      "parent_invocation": 6,
+      "frontend_invocation": 6,
+      "return_status": 0,
+      "roots": {
+        "parent_owner": 28,
+        "profile_selector": 10,
+        "initial_delay_callbacks": 2,
+        "metadata_slot_control": 2,
+        "assembly_tolerance": 0,
+        "configured_codec_instances": 2,
+        "active_substreams": 1,
+        "failure_marker": 0,
+        "warning_bits": 0,
+        "general_queue_owner": 11,
+        "general_queues": [
+          {
+            "payload_id": 1,
+            "queue": {
+              "owner": 3,
+              "capacity_bytes": 10,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                0,
+                1,
+                1
+              ],
+              "descriptor_tokens": [
+                4,
+                5,
+                6
+              ]
+            }
+          },
+          {
+            "payload_id": 6,
+            "queue": {
+              "owner": 7,
+              "capacity_bytes": 3,
+              "write_selector": 0,
+              "read_index": 2,
+              "phase": 0,
+              "period": 1536,
+              "owned_descriptor_count": 3,
+              "occupied": [
+                0,
+                0,
+                0
+              ],
+              "descriptor_tokens": [
+                8,
+                9,
+                10
+              ]
+            }
+          }
+        ],
+        "ID11_owner": 19,
+        "ID11_queue": {
+          "owner": 15,
+          "capacity_bytes": 2103,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            0,
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            16,
+            17,
+            18
+          ]
+        },
+        "ID14_owner": 29,
+        "ID14_queue": {
+          "owner": 20,
+          "capacity_bytes": 543,
+          "write_selector": 0,
+          "read_index": 1,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 2,
+          "occupied": [
+            0,
+            1
+          ],
+          "descriptor_tokens": [
+            21,
+            22
+          ]
+        },
+        "ID2_owner": 30,
+        "ID2_queue": {
+          "owner": 23,
+          "capacity_bytes": 8,
+          "write_selector": 0,
+          "read_index": 2,
+          "phase": 0,
+          "period": 1536,
+          "owned_descriptor_count": 3,
+          "occupied": [
+            0,
+            1,
+            1
+          ],
+          "descriptor_tokens": [
+            24,
+            25,
+            26
+          ]
+        },
+        "serializer_owner": 14,
+        "serializer_held_header_present": 1,
+        "serializer_history_read_index": 2,
+        "serializer_history_occupied": 1,
+        "codecs": [
+          {
+            "record_owner": 31,
+            "codec_owner": 32,
+            "planner_owner": 33,
+            "planner_enabled": 1,
+            "planner_first_block": 2,
+            "planner_counter": 6,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              316,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "record_owner": 34,
+            "codec_owner": 35,
+            "planner_owner": 36,
+            "planner_enabled": 0,
+            "planner_first_block": 0,
+            "planner_counter": 0,
+            "planner_period": 62,
+            "planner_segments": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "event": "frontend_gate_leave",
+      "frontend_invocation": 6,
+      "gate_owner": 37,
+      "return_status": 0,
+      "progress": 4608,
+      "caller_visible_bytes": "4096",
+      "durable_file_commit": "NOT_OBSERVED"
+    }
+  ],
+  "label_corrections": [
+    "metadata_slot_control is a stable native control field observed2 throughout; it is not an advancing source/sample generation clock.",
+    "Serializer history constructor third argument8192 is input-storage capacity bytes, not the1536 queue period.",
+    "The generic metadata group contains IDs1 and6. The separate auxiliary ID2 owner has capacity8; do not relabel generic ID6 as ID2."
+  ]
+}

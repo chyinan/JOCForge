@@ -1,0 +1,8 @@
+{
+  "schema": "washed-implementer-supplement-independent-check.v1",
+  "manifest_sha256": "b9f31a89a26b567e9f004580b4c5a90cfadad8e38bea3d0def92fda4d0d09328",
+  "status": "PASS",
+  "model_outputs": 4249,
+  "native_natural_outputs": 69,
+  "whole_F13C_ready": false
+}

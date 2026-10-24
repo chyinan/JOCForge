@@ -1,0 +1,9 @@
+{
+  "schema": "f13c-input-eof-lifecycle-handoff-check.v1",
+  "handoff_manifest_sha256": "ef7fa983440fd11784fe9f24f64284240f00fd053853dc1cc28067d3b1cf0d42",
+  "source_package_manifest_sha256": "139c118dd722fc1fe4e65bc23c82bc448fa80a00c4d9731a638582e9879b23e7",
+  "base_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "payload_hashes_match": true,
+  "whole_F13C_ready": false,
+  "implementation_ready": false
+}

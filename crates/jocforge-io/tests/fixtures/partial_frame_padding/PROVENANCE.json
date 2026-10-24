@@ -1,0 +1,56 @@
+{
+  "schema": "f13c-partial-frame-padding-fixture-provenance.v1",
+  "source_package": "IMPLEMENTER_SUPPLEMENTS/F13C-PARTIAL-FRAME-PADDING",
+  "base_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_package_manifest_sha256": "47dd26dc64d91de60a8735ee8cc9885da386a58b0c56a9cabc23d97e1303f0d9",
+  "handoff_manifest_sha256": "7e839dd2c4ff414651754056c40075360b1cb896422b926a64f4619b8af314f2",
+  "handoff_check_sha256": "d15b4f168cbb16d4041a8190a3898cf287f003aff2bcaf4bfc5c093c1313c768",
+  "related_reader_handoff_manifest_sha256": "7f6adb938741b61ac15c7aeca1dac759504e291af302ab3d460bd41fc64aa7b6",
+  "related_lifecycle_handoff_manifest_sha256": "ef7fa983440fd11784fe9f24f64284240f00fd053853dc1cc28067d3b1cf0d42",
+  "input_boundary_only": true,
+  "valid_prefix_numeric_acceptance": false,
+  "DSP_output_tail_padding": false,
+  "whole_F13C_ready": false,
+  "fixtures": [
+    {
+      "file": "INPUTS.json",
+      "bytes": 296,
+      "sha256": "0d56752d8209b8ffd059b570584877ca839c709dde108cd26a89da2a0ffcff95"
+    },
+    {
+      "file": "EXPECTED.json",
+      "bytes": 1077,
+      "sha256": "4a73df403f85d54479cfdeed5f4b16b9d7d7d93bf8527b16c27e7a54e75cfbd0"
+    },
+    {
+      "file": "NATIVE-STATISTICS.json",
+      "bytes": 18959,
+      "sha256": "88131d97c64fbafbfd878177d4f5c20a600d1fcbadbd28d54a8c452b629853cb"
+    },
+    {
+      "file": "CONTRACT.json",
+      "bytes": 3142,
+      "sha256": "f2465b42ab59d89186251f8d45e2ea42a42f2e514a2c41d53d1740c1ab5291eb"
+    },
+    {
+      "file": "PADDING-ADDENDUM.md",
+      "bytes": 1551,
+      "sha256": "a1bb0fbdfae85e3d8519c31c2a417d75bf6604f8c83904fc16bf3938eb52f968"
+    },
+    {
+      "file": "CURRENT-OVERLAY.json",
+      "bytes": 673,
+      "sha256": "c76492f4e17a7c03aa634d8828093b3e51fdc67d09c717e515c204d800c9b1ed"
+    },
+    {
+      "file": "INDEPENDENT-CHECK.json",
+      "bytes": 642,
+      "sha256": "40ba347262e276d347c87d2ac7b35b3f8058899c030321e221a7f1ee610d438d"
+    },
+    {
+      "file": "WASH-INDEPENDENT-CHECK.json",
+      "bytes": 1365,
+      "sha256": "8bb91b3f4f7ebc6e851198d8b9994f0a482d2151e52ce9d7c13615636ca8edfe"
+    }
+  ]
+}

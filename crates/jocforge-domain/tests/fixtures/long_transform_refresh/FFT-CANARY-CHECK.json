@@ -1,0 +1,12 @@
+{
+  "schema": "fft-group-index-canary-check.v1",
+  "native_values": 32,
+  "closed_form_match": true,
+  "incorrect_variant_mismatch_counts": {
+    "preincrement": 24,
+    "per_pair": 16,
+    "no_stage_reset": 24
+  },
+  "replay_grade": "INDEPENDENT_CLOSED_FORM_ARITHMETIC",
+  "expected_used_as_seed": false
+}

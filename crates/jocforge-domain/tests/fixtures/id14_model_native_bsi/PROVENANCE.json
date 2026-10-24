@@ -1,0 +1,17 @@
+{
+  "schema": "f13c-id14-parser-native-bsi-provenance.v1",
+  "approved_complexity_spec_sha256": "09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b",
+  "candidate_manifest_sha256": "2f2c58dc7d5083c71948353e358b1613fb6a3659d5ef5fa8afd0d008557e7ca4",
+  "native_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "model_helper_source_sha256": "7f7b7179cac59b510f0b5a0e71f3d97d3cd7e602181ccbe7174e191f6f2c056d",
+  "model_entry_source_sha256": "b3b9cbbd9a22308e5a3f0e4b4118b628dbcf27a16d00caf5fedaedbfe8242ce7",
+  "model_dependency_hashes": {
+    "emdf_parser": "2f9493f0037de4819bf24fee2454afbde2ad9ec9a7627c05cd748c01f6940cc7",
+    "joc_parser": "52246154159c57808928c563d1cb9b9d15f6fcb9d8542ecb292ad25eec69a553"
+  },
+  "bsi_count_producer_manifest_sha256": "cdc1d781cfb19a8b935cc64cf66524926f76b667e0747ab0ac83ac603bcdcb3a",
+  "bsi_count_producer_check_sha256": "02971722c6deee824f1f908c4e2e929110215a2579dca3401ea7aa9e5426ecae",
+  "selected_id14_consumption_r2_manifest_sha256": "294dc82380bf9b8cb9a60094e973debc6b075801a46a64e33313e2766d65d778",
+  "selected_id14_consumption_r2_check_sha256": "a2800e112088927f22e4ad16b96b6b99b0317db3683d5780e10aec42e3bb0567",
+  "historical_model_dependency_identity": "NOT_ESTABLISHED_BEYOND_FROZEN_HELPER_DEPENDENCY_REFERENCES"
+}

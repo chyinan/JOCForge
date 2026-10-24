@@ -1,0 +1,61 @@
+{
+  "schema": "f13c-input-eof-lifecycle-fixture-provenance.v1",
+  "source_package": "IMPLEMENTER_SUPPLEMENTS/F13C-INPUT-EOF-LIFECYCLE",
+  "base_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_package_manifest_sha256": "139c118dd722fc1fe4e65bc23c82bc448fa80a00c4d9731a638582e9879b23e7",
+  "handoff_manifest_sha256": "ef7fa983440fd11784fe9f24f64284240f00fd053853dc1cc28067d3b1cf0d42",
+  "handoff_check_sha256": "70c91dcf7c42ae0c57184af165d60df65de49482445bb22e1e9584011174ad51",
+  "related_bsi_handoff_manifest_sha256": "70f90cd5472299f66bba22c362e87fe2645b6f480d71dfeb763fab2eb769fe00",
+  "related_carrier_handoff_manifest_sha256": "9c136d43219ccd8fc5623066864d27959f079c9cfe9dfcd10a5726e7fb20f049",
+  "absolute_ADM_WAV_offset": "NOT_BOUND",
+  "same_owner_reset": "NOT_RUN",
+  "whole_F13C_ready": false,
+  "fixtures": [
+    {
+      "file": "INPUTS.json",
+      "bytes": 2235,
+      "sha256": "a0638d3b966690406fb2b49f6a367cd3a488711c69afa86457d9e2bf073968e0"
+    },
+    {
+      "file": "EXPECTED.json",
+      "bytes": 9685,
+      "sha256": "b97e71ef1cdf595fe8510443cdd047a085215eed0cb80616bf7f2138baa20a09"
+    },
+    {
+      "file": "CONTRACT.json",
+      "bytes": 3281,
+      "sha256": "f5acc4e8fc01d70176174cb3e2443ce30759eb4a76e96927025dd95ceab26995"
+    },
+    {
+      "file": "EOF-ADDENDUM.md",
+      "bytes": 2046,
+      "sha256": "ffe72f781d8fc2b5c43eb68533fbf69d3318cc374de824b37afc508a48b8d260"
+    },
+    {
+      "file": "NATIVE-OBSERVATIONS.json",
+      "bytes": 91428,
+      "sha256": "8c14e40ae8790d30cf8a1414b4550780e41ebeb83a2f29947cea6e160105f724"
+    },
+    {
+      "file": "CURRENT-OVERLAY.json",
+      "bytes": 951,
+      "sha256": "48599cf1e73444f676ca4d6ce01394e64bbb5ccd6b00e080fc69552a12604bb7"
+    },
+    {
+      "file": "INDEPENDENT-CHECK.json",
+      "bytes": 805,
+      "sha256": "d735993a4518f1c449e132c235b2fd1423cae5ec19deebb433b468c2e689ecb5"
+    },
+    {
+      "file": "WASH-INDEPENDENT-CHECK.json",
+      "bytes": 1338,
+      "sha256": "ccd638683fc2d2835bfebda5bd816cd7743091bc39b6b47d08369f6173b13f8e"
+    },
+    {
+      "file": "CARRIER-NATIVE-AU-JOINS.json",
+      "bytes": 23777,
+      "sha256": "cebe647028b976ac3de9d23fb92cc946922ce8a0b1c2b5a79bae1fd135d41d65",
+      "source_handoff_manifest_sha256": "9c136d43219ccd8fc5623066864d27959f079c9cfe9dfcd10a5726e7fb20f049"
+    }
+  ]
+}

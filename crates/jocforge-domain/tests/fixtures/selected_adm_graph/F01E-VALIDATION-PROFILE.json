@@ -1,0 +1,51 @@
+{
+  "profile_id": "song-48k-5p1-1024-v1",
+  "input": {
+    "file": "test-vectors/full-song/input-adm.wav",
+    "kind": "ADM_BWF",
+    "sample_rate_hz": 48000,
+    "channels": 38,
+    "pcm_bits": 24,
+    "source_samples_per_channel": 6522906,
+    "offset": "auto",
+    "ffoa": "auto",
+    "timecode_frame_rate": "not_indicated"
+  },
+  "loudness": {
+    "mode": "measure_only",
+    "metering_mode": "1770-4",
+    "dialogue_intelligence": false,
+    "speech_threshold": 100
+  },
+  "encoder": {
+    "sample_rate_hz": 48000,
+    "bit_rate_kbps": 1024,
+    "acmod": 7,
+    "lfe_present": true,
+    "blocks_per_source_frame": 6,
+    "frame_samples_per_channel": 1536,
+    "line_drc_profile": "none",
+    "rf_drc_profile": "none",
+    "preferred_downmix_mode": "loro",
+    "ltrt_center_mix_level_db": -3,
+    "ltrt_surround_mix_level_db": -3,
+    "loro_center_mix_level_db": -3,
+    "loro_surround_mix_level_db": -3,
+    "surround_trim_5_1": "auto",
+    "height_trim_5_1": "auto"
+  },
+  "time": {
+    "start": "",
+    "end": "",
+    "time_base": "file_position",
+    "prepend_silence_seconds": 0,
+    "append_silence_seconds": 0,
+    "timecode_frame_rate": "not_indicated"
+  },
+  "output": {
+    "format": "EC3",
+    "independent_substreams": 1,
+    "dependent_substreams": 0,
+    "joc_carrier": "EMDF"
+  }
+}

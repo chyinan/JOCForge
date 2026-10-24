@@ -1,0 +1,232 @@
+{
+  "schema": "configuration-natural-owner-lineage.v1",
+  "scope": "Natural owner observations only; controlled fake owners excluded",
+  "imports": [
+    {
+      "epoch": 0,
+      "owner": "encoder_owner0",
+      "source_version_tag": 789,
+      "source_mode": 0,
+      "source_format": 7,
+      "source_lfe": 1,
+      "matched_default_writer_code": 0,
+      "source_default_pointer_join": true,
+      "return_value": "0x0",
+      "before": {
+        "mode": 0,
+        "format": 7,
+        "lfe": 1
+      },
+      "after": {
+        "mode": 0,
+        "format": 7,
+        "lfe": 1
+      }
+    },
+    {
+      "epoch": 1,
+      "owner": "encoder_owner0",
+      "source_version_tag": 789,
+      "source_mode": 0,
+      "source_format": 7,
+      "source_lfe": 1,
+      "matched_default_writer_code": 0,
+      "source_default_pointer_join": true,
+      "return_value": "0x0",
+      "before": {
+        "mode": 0,
+        "format": 7,
+        "lfe": 1
+      },
+      "after": {
+        "mode": 0,
+        "format": 7,
+        "lfe": 1
+      }
+    },
+    {
+      "epoch": 2,
+      "owner": "encoder_owner0",
+      "source_version_tag": 789,
+      "source_mode": 0,
+      "source_format": 7,
+      "source_lfe": 1,
+      "matched_default_writer_code": 0,
+      "source_default_pointer_join": true,
+      "return_value": "0x0",
+      "before": {
+        "mode": 0,
+        "format": 7,
+        "lfe": 1
+      },
+      "after": {
+        "mode": 0,
+        "format": 7,
+        "lfe": 1
+      }
+    },
+    {
+      "epoch": 3,
+      "owner": "encoder_owner0",
+      "source_version_tag": 789,
+      "source_mode": 0,
+      "source_format": 7,
+      "source_lfe": 1,
+      "matched_default_writer_code": 0,
+      "source_default_pointer_join": true,
+      "return_value": "0x0",
+      "before": {
+        "mode": 0,
+        "format": 7,
+        "lfe": 1
+      },
+      "after": {
+        "mode": 0,
+        "format": 7,
+        "lfe": 1
+      }
+    },
+    {
+      "epoch": 4,
+      "owner": "encoder_owner0",
+      "source_version_tag": 789,
+      "source_mode": 0,
+      "source_format": 7,
+      "source_lfe": 1,
+      "matched_default_writer_code": 0,
+      "source_default_pointer_join": true,
+      "return_value": "0x0",
+      "before": {
+        "mode": 0,
+        "format": 7,
+        "lfe": 1
+      },
+      "after": {
+        "mode": 0,
+        "format": 7,
+        "lfe": 1
+      }
+    },
+    {
+      "epoch": 5,
+      "owner": "encoder_owner0",
+      "source_version_tag": 789,
+      "source_mode": 0,
+      "source_format": 7,
+      "source_lfe": 1,
+      "matched_default_writer_code": 0,
+      "source_default_pointer_join": true,
+      "return_value": "0x0",
+      "before": {
+        "mode": 0,
+        "format": 7,
+        "lfe": 1
+      },
+      "after": {
+        "mode": 0,
+        "format": 7,
+        "lfe": 1
+      }
+    }
+  ],
+  "consumers": [
+    {
+      "owner": "encoder_owner0",
+      "outer_generation": 1,
+      "mode": 0,
+      "format": 7,
+      "lfe": 1,
+      "derived": {
+        "format": 7,
+        "lfe": 1,
+        "fullband_channels": 5,
+        "total_channels": 6,
+        "blocks": 6
+      },
+      "return_value": "0x0"
+    },
+    {
+      "owner": "encoder_owner0",
+      "outer_generation": 2,
+      "mode": 0,
+      "format": 7,
+      "lfe": 1,
+      "derived": {
+        "format": 7,
+        "lfe": 1,
+        "fullband_channels": 5,
+        "total_channels": 6,
+        "blocks": 6
+      },
+      "return_value": "0x0"
+    },
+    {
+      "owner": "encoder_owner0",
+      "outer_generation": 3,
+      "mode": 0,
+      "format": 7,
+      "lfe": 1,
+      "derived": {
+        "format": 7,
+        "lfe": 1,
+        "fullband_channels": 5,
+        "total_channels": 6,
+        "blocks": 6
+      },
+      "return_value": "0x0"
+    },
+    {
+      "owner": "encoder_owner0",
+      "outer_generation": 4,
+      "mode": 0,
+      "format": 7,
+      "lfe": 1,
+      "derived": {
+        "format": 7,
+        "lfe": 1,
+        "fullband_channels": 5,
+        "total_channels": 6,
+        "blocks": 6
+      },
+      "return_value": "0x0"
+    },
+    {
+      "owner": "encoder_owner0",
+      "outer_generation": 5,
+      "mode": 0,
+      "format": 7,
+      "lfe": 1,
+      "derived": {
+        "format": 7,
+        "lfe": 1,
+        "fullband_channels": 5,
+        "total_channels": 6,
+        "blocks": 6
+      },
+      "return_value": "0x0"
+    },
+    {
+      "owner": "encoder_owner0",
+      "outer_generation": 6,
+      "mode": 0,
+      "format": 7,
+      "lfe": 1,
+      "derived": {
+        "format": 7,
+        "lfe": 1,
+        "fullband_channels": 5,
+        "total_channels": 6,
+        "blocks": 6
+      },
+      "return_value": "0x0"
+    }
+  ],
+  "hardware_write_watch": {
+    "total_field_writes": 21,
+    "constructor": 3,
+    "active_import": 18,
+    "private_log_sha256": "d754747d30f2ab5a71b74dea14301661d1375bb2159564b23a4ecc523906f459",
+    "reference_ec3_control_match": true
+  },
+  "grade": "RUNTIME_PRODUCER_CONSUMER_IDENTITY_DIAGNOSTIC_NOT_A_PREDICTION_SEED"
+}

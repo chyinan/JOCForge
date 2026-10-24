@@ -1,0 +1,45 @@
+{
+  "schema": "washed-primary-route-semantics-provenance.v2",
+  "delivery_scope": "INTERNAL_ISOLATED_IMPLEMENTATION_ONLY",
+  "base_primary_activity_manifest_sha256": "ca2bc4aff5c81dfc9159177326ddf1db2630a8dc26634a3a761bbbc2a4798332",
+  "width_erratum_manifest_sha256": "a77333ef0916eca7e739c9b12c2d6c87e8dbe1441e5d0a017e286f2772ffea8d",
+  "sealed_r2_source_manifest_sha256": "5e7c05de3f908d36c3d0d7ca78fd98d5d7b3ea15ae1d75d18c8930401b39c2f9",
+  "evidence_payloads": {
+    "activity_rules_sha256": "6d8c0bbe3078124ebeb7e3480e9a09d0f3ada95f8eb1c9ca0b5c989501aa474e",
+    "installed48_source_map_sha256": "1e02c7db8f9d66bdb2174c7389dd75f21157604fe3c5589444445a08e8f1cc54",
+    "postroute_variants_sha256": "4e41b01b7dcb5940ee91a59a7a222d445b8637e2a494188a175dfc6ad9910016"
+  },
+  "source22_projection": {
+    "source_index": 22,
+    "physical_host": 12,
+    "semantic_object_id": "AO_100D",
+    "z_f32_bits": 1036831949,
+    "z_f32": 0.10000000149011612,
+    "width_f32_bits": 1045220558,
+    "width_f32": 0.20000001788139343,
+    "threshold_f32": 0.20000000298023224,
+    "offset44_u32": 1,
+    "offset52_u32": 1
+  },
+  "variant44_decoded_u32_offsets": {
+    "0": 1,
+    "4": 1,
+    "32": 0,
+    "36": 0,
+    "40": 0,
+    "44": 0,
+    "48": 0,
+    "52": 0
+  },
+  "variant45_decoded_u32_offsets": {
+    "0": 1,
+    "4": 0,
+    "32": 1036831949,
+    "36": 0,
+    "40": 0,
+    "44": 1,
+    "48": 0,
+    "52": 1
+  },
+  "private_vendor_key": "EXCLUDED"
+}

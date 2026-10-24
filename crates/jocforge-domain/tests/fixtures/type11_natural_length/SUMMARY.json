@@ -1,0 +1,59 @@
+{
+  "model": {
+    "source": "Authorized primary song frozen delivered metadata, not newly read PCM.",
+    "source_samples": 6522906,
+    "frontend_callbacks": 4251,
+    "normal_callbacks": 4247,
+    "cached_drains": 4,
+    "callbacks_without_Type11_output": [
+      0,
+      1
+    ],
+    "natural_Type11_outputs": 4249,
+    "normal_output_callbacks": 4245,
+    "cached_drain_outputs": 4,
+    "output_callback_range": [
+      2,
+      4250
+    ],
+    "unique_metadata_inputs": 3735,
+    "fresh_frozen_writer_invocations": 4249,
+    "archive_byte_mismatches": 0,
+    "minimum_payload_bytes": 69,
+    "maximum_payload_bytes": 69,
+    "all_above160_cases": [],
+    "generation_binding": "Contiguous model output indices0..4248 bind callback indices2..4250 and frozen control-input hashes; one frozen programme owner. Raw trace/report and exporter identities are bound.",
+    "upstream_producer_reexecuted": false,
+    "queue_execution_in_model_replay": false
+  },
+  "native": {
+    "source": "Original selected1024kbps bounded secondary fixture; not primary-song native verification.",
+    "source_invocations": 71,
+    "natural_producer_outputs": 69,
+    "producer_source_invocation_range": [
+      3,
+      71
+    ],
+    "frontend_invocations": 69,
+    "minimum_payload_bytes": 69,
+    "maximum_payload_bytes": 69,
+    "all_above160_cases": [],
+    "producer_output_buffer_capacity_bytes": [
+      375
+    ],
+    "ID11_queue_capacity_bytes": [
+      2103
+    ],
+    "queue_and_ingress_statuses": [
+      [
+        0,
+        0
+      ]
+    ]
+  },
+  "assessment": "No natural output exceeds160 in the complete frozen selected primary metadata programme or this bounded native secondary run. These results do not establish a universal160-byte bound across every ADM/profile or unsupported Type11 branch.",
+  "contract_layers": "Observed producer output-buffer capacity375, native ID11 queue limit2103, approved selected API policy160 and actual natural payload length69 are separate quantities. This sample does not require raising160. R21 physical admission fact remains unchanged.",
+  "approved_spec_changed": false,
+  "implementation_contacted": false,
+  "other_research_agents_contacted": false
+}

@@ -1,0 +1,537 @@
+{
+  "schema": "diffusion-local-verification.v1",
+  "production_parameters_used": false,
+  "synthetic_state": {
+    "sample_rate_hz": 48000,
+    "coefficients_f32": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "filter_banks_f32": [
+      [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    ],
+    "bank_indexes": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "delay_ring": {
+      "samples_f32": [
+        0.0,
+        0.0
+      ],
+      "read_index": 0,
+      "write_index": 0
+    },
+    "sub240290": {
+      "gain0": 1.0,
+      "gain1": 1.0,
+      "gain_smoothing0": 0.0,
+      "gain_smoothing1": 0.0,
+      "envelope_slow": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "envelope_fast": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "input_smoother": [
+        0.5,
+        0.0
+      ]
+    },
+    "fade_in_next_block": false
+  },
+  "synthetic_envelope_epsilon": 0.125,
+  "synthetic_envelope_limit": 1.25,
+  "cases": [
+    {
+      "id": "zero_coefficient_delay",
+      "input": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "expected_each_lane_words": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1065353216,
+        1073741824,
+        1077936128,
+        1082130432,
+        1084227584,
+        1086324736
+      ],
+      "actual_lane_words": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1065353216,
+          1073741824,
+          1077936128,
+          1082130432,
+          1084227584,
+          1086324736
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1065353216,
+          1073741824,
+          1077936128,
+          1082130432,
+          1084227584,
+          1086324736
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1065353216,
+          1073741824,
+          1077936128,
+          1082130432,
+          1084227584,
+          1086324736
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1065353216,
+          1073741824,
+          1077936128,
+          1082130432,
+          1084227584,
+          1086324736
+        ]
+      ],
+      "expected_ring": [
+        11.0,
+        12.0
+      ],
+      "expected_stage_values": [
+        10.0,
+        9.0,
+        8.0,
+        7.0
+      ],
+      "actual_state": {
+        "sample_rate_hz": 48000,
+        "coefficients_f32": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "filter_banks_f32": [
+          [
+            [
+              10.0,
+              10.0,
+              10.0,
+              10.0
+            ]
+          ],
+          [
+            [
+              9.0,
+              9.0,
+              9.0,
+              9.0
+            ]
+          ],
+          [
+            [
+              8.0,
+              8.0,
+              8.0,
+              8.0
+            ]
+          ],
+          [
+            [
+              7.0,
+              7.0,
+              7.0,
+              7.0
+            ]
+          ]
+        ],
+        "bank_indexes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "delay_ring": {
+          "samples_f32": [
+            11.0,
+            12.0
+          ],
+          "read_index": 0,
+          "write_index": 0
+        },
+        "sub240290": {
+          "gain0": 1.0,
+          "gain1": 1.0,
+          "gain_smoothing0": 0.0,
+          "gain_smoothing1": 0.0,
+          "envelope_slow": [
+            0.0,
+            1.0,
+            1.124755859375
+          ],
+          "envelope_fast": [
+            0.0,
+            1.0,
+            1.124755859375
+          ],
+          "input_smoother": [
+            0.5,
+            -11.000244140625
+          ]
+        },
+        "fade_in_next_block": false
+      },
+      "input_state_unchanged": true,
+      "pass": true
+    },
+    {
+      "id": "warm_split_5_7",
+      "input": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "split_samples": [
+        5,
+        7
+      ],
+      "output_bitwise_equal_to_unsplit": true,
+      "entire_state_equal_to_unsplit": true,
+      "pass": true
+    },
+    {
+      "id": "cold_fade_length_6",
+      "input": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "fade_pending": true,
+      "expected_each_lane_words": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1051372203,
+        1065353216,
+        1073741824,
+        1079334230,
+        1084227584
+      ],
+      "actual_lane_words": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1051372203,
+          1065353216,
+          1073741824,
+          1079334230,
+          1084227584
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1051372203,
+          1065353216,
+          1073741824,
+          1079334230,
+          1084227584
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1051372203,
+          1065353216,
+          1073741824,
+          1079334230,
+          1084227584
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1051372203,
+          1065353216,
+          1073741824,
+          1079334230,
+          1084227584
+        ]
+      ],
+      "actual_state": {
+        "sample_rate_hz": 48000,
+        "coefficients_f32": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "filter_banks_f32": [
+          [
+            [
+              10.0,
+              10.0,
+              10.0,
+              10.0
+            ]
+          ],
+          [
+            [
+              9.0,
+              9.0,
+              9.0,
+              9.0
+            ]
+          ],
+          [
+            [
+              8.0,
+              8.0,
+              8.0,
+              8.0
+            ]
+          ],
+          [
+            [
+              7.0,
+              7.0,
+              7.0,
+              7.0
+            ]
+          ]
+        ],
+        "bank_indexes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "delay_ring": {
+          "samples_f32": [
+            11.0,
+            12.0
+          ],
+          "read_index": 0,
+          "write_index": 0
+        },
+        "sub240290": {
+          "gain0": 1.0,
+          "gain1": 1.0,
+          "gain_smoothing0": 0.0,
+          "gain_smoothing1": 0.0,
+          "envelope_slow": [
+            0.0,
+            1.0,
+            1.14599609375
+          ],
+          "envelope_fast": [
+            0.0,
+            1.0,
+            1.14599609375
+          ],
+          "input_smoother": [
+            0.5,
+            -10.97900390625
+          ]
+        },
+        "fade_in_next_block": false
+      },
+      "pass": true
+    },
+    {
+      "id": "empty_clears_fade",
+      "input": [],
+      "fade_pending": true,
+      "expected_outputs": [
+        [],
+        [],
+        [],
+        []
+      ],
+      "expected_only_state_change": "fade_pending=false",
+      "pass": true
+    }
+  ],
+  "case_count": 4,
+  "failures": 0,
+  "accelerated_worker_recheck": "NOT_RUN",
+  "production_constructor_and_real_audio": "NOT_RUN",
+  "independent_implementer_review": "NOT_RUN",
+  "implementation_ready": "NO"
+}

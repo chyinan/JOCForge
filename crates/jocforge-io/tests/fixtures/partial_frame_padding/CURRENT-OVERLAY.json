@@ -1,0 +1,11 @@
+{
+  "schema": "implementer-package-authority-overlay.v1",
+  "base_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "base_spec_file": "specs/13-joc-complexity-timer-payload-order.md",
+  "base_spec_sha256": "09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b",
+  "reader_padding_rule": "clear entire selected input row before read; 1392 actual samples plus 144 positive-zero samples per channel in 1536-sample packet",
+  "DSP_output_tail": "not implied; observed DSP output tail is generally nonzero",
+  "PCM_values": "NOT_EXPORTED",
+  "whole_F13C_ready": "NO",
+  "overall_implementation_ready": "NO"
+}

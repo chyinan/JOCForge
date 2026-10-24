@@ -1,0 +1,12 @@
+{
+  "scope": "COLD_QUEUE_RULES_GATE_TOLERANCE_AND_OWNER_JOIN_ONLY",
+  "queue_constructs_per_mode": 5,
+  "frontend_calls": 6,
+  "parent_boundary_replays": 6,
+  "mismatches": [],
+  "expected_loaded_after_calculation": true,
+  "assembly_statuses_are_measured_boundary_inputs": true,
+  "complete_parent_or_codec_reimplemented": false,
+  "production_cold_parent_equivalence": false,
+  "failure_injection_or_durable_file_commit_replayed": false
+}

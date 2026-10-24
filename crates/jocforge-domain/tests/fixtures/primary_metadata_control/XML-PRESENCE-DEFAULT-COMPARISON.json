@@ -1,0 +1,1490 @@
+{
+  "objects": [
+    {
+      "physical_host": 10,
+      "track_uid": "ATU_0000000B",
+      "channel_format_id": "AC_0003100b",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": -1.0,
+          "constructor_default_used": false,
+          "normalized_input": -1.0,
+          "vector_input": -1.0,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": -0.852,
+          "constructor_default_used": false,
+          "normalized_input": -0.852,
+          "vector_input": -0.852,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": true,
+          "xml_value": 0.1,
+          "constructor_default_used": false,
+          "normalized_input": 0.1,
+          "vector_input": 0.1,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 11,
+      "track_uid": "ATU_0000000C",
+      "channel_format_id": "AC_0003100c",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1.0,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": -0.853,
+          "constructor_default_used": false,
+          "normalized_input": -0.853,
+          "vector_input": -0.853,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": true,
+          "xml_value": 0.1,
+          "constructor_default_used": false,
+          "normalized_input": 0.1,
+          "vector_input": 0.1,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 12,
+      "track_uid": "ATU_0000000D",
+      "channel_format_id": "AC_0003100d",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": -0.930316,
+          "constructor_default_used": false,
+          "normalized_input": -0.930316,
+          "vector_input": -0.930316,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": -0.51204,
+          "constructor_default_used": false,
+          "normalized_input": -0.51204,
+          "vector_input": -0.51204,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": true,
+          "xml_value": 0.1,
+          "constructor_default_used": false,
+          "normalized_input": 0.1,
+          "vector_input": 0.1,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": true,
+          "xml_value": 0.2,
+          "constructor_default_used": false,
+          "normalized_input": 0.2,
+          "vector_input": 0.2,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 13,
+      "track_uid": "ATU_0000000E",
+      "channel_format_id": "AC_0003100e",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": 0.930316,
+          "constructor_default_used": false,
+          "normalized_input": 0.930316,
+          "vector_input": 0.930316,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": -0.512041,
+          "constructor_default_used": false,
+          "normalized_input": -0.512041,
+          "vector_input": -0.512041,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": true,
+          "xml_value": 0.1,
+          "constructor_default_used": false,
+          "normalized_input": 0.1,
+          "vector_input": 0.1,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": true,
+          "xml_value": 0.2,
+          "constructor_default_used": false,
+          "normalized_input": 0.2,
+          "vector_input": 0.2,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 14,
+      "track_uid": "ATU_0000000F",
+      "channel_format_id": "AC_0003100f",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": -1.0,
+          "constructor_default_used": false,
+          "normalized_input": -1.0,
+          "vector_input": -1.0,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": 0.582817,
+          "constructor_default_used": false,
+          "normalized_input": 0.582817,
+          "vector_input": 0.582817,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": true,
+          "xml_value": 0.19,
+          "constructor_default_used": false,
+          "normalized_input": 0.19,
+          "vector_input": 0.19,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 15,
+      "track_uid": "ATU_00000010",
+      "channel_format_id": "AC_00031010",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1.0,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": 0.582818,
+          "constructor_default_used": false,
+          "normalized_input": 0.582818,
+          "vector_input": 0.582818,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": true,
+          "xml_value": 0.19,
+          "constructor_default_used": false,
+          "normalized_input": 0.19,
+          "vector_input": 0.19,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 16,
+      "track_uid": "ATU_00000011",
+      "channel_format_id": "AC_00031011",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": -1.0,
+          "constructor_default_used": false,
+          "normalized_input": -1.0,
+          "vector_input": -1.0,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": 0.804,
+          "constructor_default_used": false,
+          "normalized_input": 0.804,
+          "vector_input": 0.804,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": true,
+          "xml_value": 0.1,
+          "constructor_default_used": false,
+          "normalized_input": 0.1,
+          "vector_input": 0.1,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": true,
+          "xml_value": 0.1,
+          "constructor_default_used": false,
+          "normalized_input": 0.1,
+          "vector_input": 0.1,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 17,
+      "track_uid": "ATU_00000012",
+      "channel_format_id": "AC_00031012",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1.0,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": 0.804,
+          "constructor_default_used": false,
+          "normalized_input": 0.804,
+          "vector_input": 0.804,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": true,
+          "xml_value": 0.1,
+          "constructor_default_used": false,
+          "normalized_input": 0.1,
+          "vector_input": 0.1,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": true,
+          "xml_value": 0.1,
+          "constructor_default_used": false,
+          "normalized_input": 0.1,
+          "vector_input": 0.1,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 18,
+      "track_uid": "ATU_00000013",
+      "channel_format_id": "AC_00031013",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": -1.0,
+          "constructor_default_used": false,
+          "normalized_input": -1.0,
+          "vector_input": -1.0,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": 0.813,
+          "constructor_default_used": false,
+          "normalized_input": 0.813,
+          "vector_input": 0.813,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 19,
+      "track_uid": "ATU_00000014",
+      "channel_format_id": "AC_00031014",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1.0,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": 0.824,
+          "constructor_default_used": false,
+          "normalized_input": 0.824,
+          "vector_input": 0.824,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 20,
+      "track_uid": "ATU_00000015",
+      "channel_format_id": "AC_00031015",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": -0.188939,
+          "constructor_default_used": false,
+          "normalized_input": -0.188939,
+          "vector_input": -0.188939,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": -0.151216,
+          "constructor_default_used": false,
+          "normalized_input": -0.151216,
+          "vector_input": -0.151216,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": true,
+          "xml_value": 0.23,
+          "constructor_default_used": false,
+          "normalized_input": 0.23,
+          "vector_input": 0.23,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 21,
+      "track_uid": "ATU_00000016",
+      "channel_format_id": "AC_00031016",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": 0.188938,
+          "constructor_default_used": false,
+          "normalized_input": 0.188938,
+          "vector_input": 0.188938,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": -0.151216,
+          "constructor_default_used": false,
+          "normalized_input": -0.151216,
+          "vector_input": -0.151216,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": true,
+          "xml_value": 0.23,
+          "constructor_default_used": false,
+          "normalized_input": 0.23,
+          "vector_input": 0.23,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 22,
+      "track_uid": "ATU_00000017",
+      "channel_format_id": "AC_00031017",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": -0.819,
+          "constructor_default_used": false,
+          "normalized_input": -0.819,
+          "vector_input": -0.819,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": 0.12,
+          "constructor_default_used": false,
+          "normalized_input": 0.12,
+          "vector_input": 0.12,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 23,
+      "track_uid": "ATU_00000018",
+      "channel_format_id": "AC_00031018",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": 0.821,
+          "constructor_default_used": false,
+          "normalized_input": 0.821,
+          "vector_input": 0.821,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": 0.121,
+          "constructor_default_used": false,
+          "normalized_input": 0.121,
+          "vector_input": 0.121,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 24,
+      "track_uid": "ATU_00000019",
+      "channel_format_id": "AC_00031019",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": -0.583,
+          "constructor_default_used": false,
+          "normalized_input": -0.583,
+          "vector_input": -0.583,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": 0.315,
+          "constructor_default_used": false,
+          "normalized_input": 0.315,
+          "vector_input": 0.315,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 25,
+      "track_uid": "ATU_0000001A",
+      "channel_format_id": "AC_0003101a",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": 0.455,
+          "constructor_default_used": false,
+          "normalized_input": 0.455,
+          "vector_input": 0.455,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": 0.288,
+          "constructor_default_used": false,
+          "normalized_input": 0.288,
+          "vector_input": 0.288,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 26,
+      "track_uid": "ATU_0000001B",
+      "channel_format_id": "AC_0003101b",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": -0.975753,
+          "constructor_default_used": false,
+          "normalized_input": -0.975753,
+          "vector_input": -0.975753,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1.0,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 27,
+      "track_uid": "ATU_0000001C",
+      "channel_format_id": "AC_0003101c",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": 0.975752,
+          "constructor_default_used": false,
+          "normalized_input": 0.975752,
+          "vector_input": 0.975752,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1.0,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 28,
+      "track_uid": "ATU_0000001D",
+      "channel_format_id": "AC_0003101d",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": -0.975753,
+          "constructor_default_used": false,
+          "normalized_input": -0.975753,
+          "vector_input": -0.975753,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1.0,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 29,
+      "track_uid": "ATU_0000001E",
+      "channel_format_id": "AC_0003101e",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": 0.975752,
+          "constructor_default_used": false,
+          "normalized_input": 0.975752,
+          "vector_input": 0.975752,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1.0,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 30,
+      "track_uid": "ATU_0000001F",
+      "channel_format_id": "AC_0003101f",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": -0.844851,
+          "constructor_default_used": false,
+          "normalized_input": -0.844851,
+          "vector_input": -0.844851,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": 0.31404,
+          "constructor_default_used": false,
+          "normalized_input": 0.31404,
+          "vector_input": 0.31404,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 31,
+      "track_uid": "ATU_00000020",
+      "channel_format_id": "AC_00031020",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": 0.844851,
+          "constructor_default_used": false,
+          "normalized_input": 0.844851,
+          "vector_input": 0.844851,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": 0.31404,
+          "constructor_default_used": false,
+          "normalized_input": 0.31404,
+          "vector_input": 0.31404,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 32,
+      "track_uid": "ATU_00000021",
+      "channel_format_id": "AC_00031021",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": -0.975753,
+          "constructor_default_used": false,
+          "normalized_input": -0.975753,
+          "vector_input": -0.975753,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1.0,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 33,
+      "track_uid": "ATU_00000022",
+      "channel_format_id": "AC_00031022",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": 0.975752,
+          "constructor_default_used": false,
+          "normalized_input": 0.975752,
+          "vector_input": 0.975752,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1.0,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 34,
+      "track_uid": "ATU_00000023",
+      "channel_format_id": "AC_00031023",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": -0.975753,
+          "constructor_default_used": false,
+          "normalized_input": -0.975753,
+          "vector_input": -0.975753,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1.0,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 35,
+      "track_uid": "ATU_00000024",
+      "channel_format_id": "AC_00031024",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": 0.975752,
+          "constructor_default_used": false,
+          "normalized_input": 0.975752,
+          "vector_input": 0.975752,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1.0,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 36,
+      "track_uid": "ATU_00000025",
+      "channel_format_id": "AC_00031025",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": -0.975753,
+          "constructor_default_used": false,
+          "normalized_input": -0.975753,
+          "vector_input": -0.975753,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1.0,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0,
+          "normalized_equal": true
+        }
+      }
+    },
+    {
+      "physical_host": 37,
+      "track_uid": "ATU_00000026",
+      "channel_format_id": "AC_00031026",
+      "fields": {
+        "x": {
+          "xml_present": true,
+          "xml_value": 0.975752,
+          "constructor_default_used": false,
+          "normalized_input": 0.975752,
+          "vector_input": 0.975752,
+          "normalized_equal": true
+        },
+        "y": {
+          "xml_present": true,
+          "xml_value": 1.0,
+          "constructor_default_used": false,
+          "normalized_input": 1.0,
+          "vector_input": 1.0,
+          "normalized_equal": true
+        },
+        "z": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "duration": {
+          "source_text": "00:02:15.89388",
+          "source_samples_rounded": 6522906,
+          "vector_samples": 6522906,
+          "equal": true
+        },
+        "width": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0.0,
+          "normalized_equal": true
+        },
+        "diffuse": {
+          "xml_present": false,
+          "xml_value": null,
+          "constructor_default_used": true,
+          "normalized_input": 0,
+          "vector_input": 0,
+          "normalized_equal": true
+        }
+      }
+    }
+  ],
+  "raw_absence_vs_vector_zero_count": 60,
+  "explanation": "24 absent Z coordinates, 18 absent width sets, 18 absent diffuse fields are completed by existing constructor/cache defaults; absent XML is not relabeled as explicit zero."
+}

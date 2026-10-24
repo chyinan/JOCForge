@@ -1,0 +1,14 @@
+{
+  "schema": "f10-exponent-digit-packing-input.v1",
+  "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_spec_sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc",
+  "input_only": true,
+  "valid_exhaustive_domain": {
+    "minimum_difference": -2,
+    "maximum_difference": 2,
+    "differences_per_group": 3
+  },
+  "partial_groups": [[-2], [0], [2], [-2, 2], [0, 0], [2, 2]],
+  "invalid_groups": [[], [-3], [3], [0, 0, 0, 0]],
+  "forbidden_seed_fields": ["expected", "actual", "result", "output"]
+}

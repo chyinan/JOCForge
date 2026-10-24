@@ -1,0 +1,71 @@
+{
+  "schema": "washed-implementer-supplement-delivery-envelope.v1",
+  "artifact_id": "F13C-TYPE11-NATURAL-LENGTH-BOUND-V1",
+  "bindings": [
+    {
+      "file": "CHECK-NORMAL.json",
+      "bytes": 491,
+      "sha256": "7bc243a94a8bcd2343dfd8f98897fea18b14eda099f1a4a1aa0d059231a631fc"
+    },
+    {
+      "file": "CHECK-OPTIMIZED.json",
+      "bytes": 491,
+      "sha256": "7bc243a94a8bcd2343dfd8f98897fea18b14eda099f1a4a1aa0d059231a631fc"
+    },
+    {
+      "file": "CONTRACT.md",
+      "bytes": 2503,
+      "sha256": "f21d27eee23d9e29d00f0d13f356c6e5991e64f88ba443c003287bb4f04a0cd9"
+    },
+    {
+      "file": "COVERAGE-AND-LIMITS.json",
+      "bytes": 2507,
+      "sha256": "cbba633d8dfe6f3ad4b889123b4e09e23bce9d020e9d1ea87f3acae2340fede4"
+    },
+    {
+      "file": "EXECUTION-RECEIPT.json",
+      "bytes": 766,
+      "sha256": "df3e22fe917d08c151b7a0784555d5fec577fd18e4a1756a1432bc760fed346f"
+    },
+    {
+      "file": "INDEPENDENT-CHECK.json",
+      "bytes": 264,
+      "sha256": "81a7665442610af89365b03edea6f3ec8c42479e77ccfd59046fe91f5ce7d466"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 2024,
+      "sha256": "b9f31a89a26b567e9f004580b4c5a90cfadad8e38bea3d0def92fda4d0d09328"
+    },
+    {
+      "file": "MODEL-OBSERVATIONS.json.gz",
+      "bytes": 76038,
+      "sha256": "bf2320f09dad4f6f3b060f24e8e95c083cc65066e467e968e9ddf399fcd3d81e"
+    },
+    {
+      "file": "NATIVE-OBSERVATIONS.json",
+      "bytes": 113226,
+      "sha256": "505c85807accb0065618d4a6f482eafc889b3cc104ed2b5946c039c9fccc339c"
+    },
+    {
+      "file": "PROVENANCE.json",
+      "bytes": 814,
+      "sha256": "8e7e3508c1e2e72bfdcd2fa893c3d56ec61132a541822d54349a7973088f8366"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 2329,
+      "sha256": "140261811b8400035d1acca3bd870a8502e484b9bae45a23b213e8ed5cdb9b14"
+    },
+    {
+      "file": "SUMMARY.json",
+      "bytes": 2256,
+      "sha256": "bbca8d474171b24e79457fa8c097bd7b75b24ef97b8bd94b91392d5741ebf933"
+    },
+    {
+      "file": "WASH-VALIDATION.json",
+      "bytes": 960,
+      "sha256": "de531d6a339540e6704caaaa5833d5c4dbc6b79ee3835987f5fe5bc2b85360b0"
+    }
+  ]
+}

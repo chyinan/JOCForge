@@ -1,0 +1,2933 @@
+{
+  "events": [
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000001",
+      "found": true,
+      "track_index_1based": 1,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 2,
+      "speaker_enum_arg": 0,
+      "semantic_key_arg": 0,
+      "physical_host_arg": 0,
+      "track_uid": "ATU_00000001",
+      "installed_key": 0,
+      "installed_speaker_enum": 0,
+      "installed_host": 0,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000002",
+      "found": true,
+      "track_index_1based": 2,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 3,
+      "speaker_enum_arg": 1,
+      "semantic_key_arg": 1,
+      "physical_host_arg": 1,
+      "track_uid": "ATU_00000002",
+      "installed_key": 1,
+      "installed_speaker_enum": 1,
+      "installed_host": 1,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000003",
+      "found": true,
+      "track_index_1based": 3,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 4,
+      "speaker_enum_arg": 2,
+      "semantic_key_arg": 2,
+      "physical_host_arg": 2,
+      "track_uid": "ATU_00000003",
+      "installed_key": 2,
+      "installed_speaker_enum": 2,
+      "installed_host": 2,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000004",
+      "found": true,
+      "track_index_1based": 4,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 5,
+      "speaker_enum_arg": 3,
+      "semantic_key_arg": 3,
+      "physical_host_arg": 3,
+      "track_uid": "ATU_00000004",
+      "installed_key": 3,
+      "installed_speaker_enum": 3,
+      "installed_host": 3,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000005",
+      "found": true,
+      "track_index_1based": 5,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 6,
+      "speaker_enum_arg": 6,
+      "semantic_key_arg": 4,
+      "physical_host_arg": 4,
+      "track_uid": "ATU_00000005",
+      "installed_key": 4,
+      "installed_speaker_enum": 6,
+      "installed_host": 4,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000006",
+      "found": true,
+      "track_index_1based": 6,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 7,
+      "speaker_enum_arg": 7,
+      "semantic_key_arg": 5,
+      "physical_host_arg": 5,
+      "track_uid": "ATU_00000006",
+      "installed_key": 5,
+      "installed_speaker_enum": 7,
+      "installed_host": 5,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000007",
+      "found": true,
+      "track_index_1based": 7,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 8,
+      "speaker_enum_arg": 8,
+      "semantic_key_arg": 6,
+      "physical_host_arg": 6,
+      "track_uid": "ATU_00000007",
+      "installed_key": 6,
+      "installed_speaker_enum": 8,
+      "installed_host": 6,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000008",
+      "found": true,
+      "track_index_1based": 8,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 9,
+      "speaker_enum_arg": 9,
+      "semantic_key_arg": 7,
+      "physical_host_arg": 7,
+      "track_uid": "ATU_00000008",
+      "installed_key": 7,
+      "installed_speaker_enum": 9,
+      "installed_host": 7,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000009",
+      "found": true,
+      "track_index_1based": 9,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 10,
+      "speaker_enum_arg": 12,
+      "semantic_key_arg": 8,
+      "physical_host_arg": 8,
+      "track_uid": "ATU_00000009",
+      "installed_key": 8,
+      "installed_speaker_enum": 12,
+      "installed_host": 8,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_0000000A",
+      "found": true,
+      "track_index_1based": 10,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 11,
+      "speaker_enum_arg": 13,
+      "semantic_key_arg": 9,
+      "physical_host_arg": 9,
+      "track_uid": "ATU_0000000A",
+      "installed_key": 9,
+      "installed_speaker_enum": 13,
+      "installed_host": 9,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_0000000B",
+      "found": true,
+      "track_index_1based": 11,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 12,
+      "semantic_key_arg": 10,
+      "physical_host_arg": 10,
+      "track_uid": "ATU_0000000B",
+      "installed_key": 10,
+      "installed_host": 10,
+      "installed_track_uid": "ATU_0000000B",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_0000000C",
+      "found": true,
+      "track_index_1based": 12,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 13,
+      "semantic_key_arg": 11,
+      "physical_host_arg": 11,
+      "track_uid": "ATU_0000000C",
+      "installed_key": 11,
+      "installed_host": 11,
+      "installed_track_uid": "ATU_0000000C",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_0000000D",
+      "found": true,
+      "track_index_1based": 13,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 14,
+      "semantic_key_arg": 12,
+      "physical_host_arg": 12,
+      "track_uid": "ATU_0000000D",
+      "installed_key": 12,
+      "installed_host": 12,
+      "installed_track_uid": "ATU_0000000D",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_0000000E",
+      "found": true,
+      "track_index_1based": 14,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 15,
+      "semantic_key_arg": 13,
+      "physical_host_arg": 13,
+      "track_uid": "ATU_0000000E",
+      "installed_key": 13,
+      "installed_host": 13,
+      "installed_track_uid": "ATU_0000000E",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_0000000F",
+      "found": true,
+      "track_index_1based": 15,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 16,
+      "semantic_key_arg": 14,
+      "physical_host_arg": 14,
+      "track_uid": "ATU_0000000F",
+      "installed_key": 14,
+      "installed_host": 14,
+      "installed_track_uid": "ATU_0000000F",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000010",
+      "found": true,
+      "track_index_1based": 16,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 17,
+      "semantic_key_arg": 15,
+      "physical_host_arg": 15,
+      "track_uid": "ATU_00000010",
+      "installed_key": 15,
+      "installed_host": 15,
+      "installed_track_uid": "ATU_00000010",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000011",
+      "found": true,
+      "track_index_1based": 17,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 18,
+      "semantic_key_arg": 16,
+      "physical_host_arg": 16,
+      "track_uid": "ATU_00000011",
+      "installed_key": 16,
+      "installed_host": 16,
+      "installed_track_uid": "ATU_00000011",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000012",
+      "found": true,
+      "track_index_1based": 18,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 19,
+      "semantic_key_arg": 17,
+      "physical_host_arg": 17,
+      "track_uid": "ATU_00000012",
+      "installed_key": 17,
+      "installed_host": 17,
+      "installed_track_uid": "ATU_00000012",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000013",
+      "found": true,
+      "track_index_1based": 19,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 20,
+      "semantic_key_arg": 18,
+      "physical_host_arg": 18,
+      "track_uid": "ATU_00000013",
+      "installed_key": 18,
+      "installed_host": 18,
+      "installed_track_uid": "ATU_00000013",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000014",
+      "found": true,
+      "track_index_1based": 20,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 21,
+      "semantic_key_arg": 19,
+      "physical_host_arg": 19,
+      "track_uid": "ATU_00000014",
+      "installed_key": 19,
+      "installed_host": 19,
+      "installed_track_uid": "ATU_00000014",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000015",
+      "found": true,
+      "track_index_1based": 21,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 22,
+      "semantic_key_arg": 20,
+      "physical_host_arg": 20,
+      "track_uid": "ATU_00000015",
+      "installed_key": 20,
+      "installed_host": 20,
+      "installed_track_uid": "ATU_00000015",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000016",
+      "found": true,
+      "track_index_1based": 22,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 23,
+      "semantic_key_arg": 21,
+      "physical_host_arg": 21,
+      "track_uid": "ATU_00000016",
+      "installed_key": 21,
+      "installed_host": 21,
+      "installed_track_uid": "ATU_00000016",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000017",
+      "found": true,
+      "track_index_1based": 23,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 24,
+      "semantic_key_arg": 22,
+      "physical_host_arg": 22,
+      "track_uid": "ATU_00000017",
+      "installed_key": 22,
+      "installed_host": 22,
+      "installed_track_uid": "ATU_00000017",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000018",
+      "found": true,
+      "track_index_1based": 24,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 25,
+      "semantic_key_arg": 23,
+      "physical_host_arg": 23,
+      "track_uid": "ATU_00000018",
+      "installed_key": 23,
+      "installed_host": 23,
+      "installed_track_uid": "ATU_00000018",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000019",
+      "found": true,
+      "track_index_1based": 25,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 26,
+      "semantic_key_arg": 24,
+      "physical_host_arg": 24,
+      "track_uid": "ATU_00000019",
+      "installed_key": 24,
+      "installed_host": 24,
+      "installed_track_uid": "ATU_00000019",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_0000001A",
+      "found": true,
+      "track_index_1based": 26,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 27,
+      "semantic_key_arg": 25,
+      "physical_host_arg": 25,
+      "track_uid": "ATU_0000001A",
+      "installed_key": 25,
+      "installed_host": 25,
+      "installed_track_uid": "ATU_0000001A",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_0000001B",
+      "found": true,
+      "track_index_1based": 27,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 28,
+      "semantic_key_arg": 26,
+      "physical_host_arg": 26,
+      "track_uid": "ATU_0000001B",
+      "installed_key": 26,
+      "installed_host": 26,
+      "installed_track_uid": "ATU_0000001B",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_0000001C",
+      "found": true,
+      "track_index_1based": 28,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 29,
+      "semantic_key_arg": 27,
+      "physical_host_arg": 27,
+      "track_uid": "ATU_0000001C",
+      "installed_key": 27,
+      "installed_host": 27,
+      "installed_track_uid": "ATU_0000001C",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_0000001D",
+      "found": true,
+      "track_index_1based": 29,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 30,
+      "semantic_key_arg": 28,
+      "physical_host_arg": 28,
+      "track_uid": "ATU_0000001D",
+      "installed_key": 28,
+      "installed_host": 28,
+      "installed_track_uid": "ATU_0000001D",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_0000001E",
+      "found": true,
+      "track_index_1based": 30,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 31,
+      "semantic_key_arg": 29,
+      "physical_host_arg": 29,
+      "track_uid": "ATU_0000001E",
+      "installed_key": 29,
+      "installed_host": 29,
+      "installed_track_uid": "ATU_0000001E",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_0000001F",
+      "found": true,
+      "track_index_1based": 31,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 32,
+      "semantic_key_arg": 30,
+      "physical_host_arg": 30,
+      "track_uid": "ATU_0000001F",
+      "installed_key": 30,
+      "installed_host": 30,
+      "installed_track_uid": "ATU_0000001F",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000020",
+      "found": true,
+      "track_index_1based": 32,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 33,
+      "semantic_key_arg": 31,
+      "physical_host_arg": 31,
+      "track_uid": "ATU_00000020",
+      "installed_key": 31,
+      "installed_host": 31,
+      "installed_track_uid": "ATU_00000020",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000021",
+      "found": true,
+      "track_index_1based": 33,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 34,
+      "semantic_key_arg": 32,
+      "physical_host_arg": 32,
+      "track_uid": "ATU_00000021",
+      "installed_key": 32,
+      "installed_host": 32,
+      "installed_track_uid": "ATU_00000021",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000022",
+      "found": true,
+      "track_index_1based": 34,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 35,
+      "semantic_key_arg": 33,
+      "physical_host_arg": 33,
+      "track_uid": "ATU_00000022",
+      "installed_key": 33,
+      "installed_host": 33,
+      "installed_track_uid": "ATU_00000022",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000023",
+      "found": true,
+      "track_index_1based": 35,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 36,
+      "semantic_key_arg": 34,
+      "physical_host_arg": 34,
+      "track_uid": "ATU_00000023",
+      "installed_key": 34,
+      "installed_host": 34,
+      "installed_track_uid": "ATU_00000023",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000024",
+      "found": true,
+      "track_index_1based": 36,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 37,
+      "semantic_key_arg": 35,
+      "physical_host_arg": 35,
+      "track_uid": "ATU_00000024",
+      "installed_key": 35,
+      "installed_host": 35,
+      "installed_track_uid": "ATU_00000024",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000025",
+      "found": true,
+      "track_index_1based": 37,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 38,
+      "semantic_key_arg": 36,
+      "physical_host_arg": 36,
+      "track_uid": "ATU_00000025",
+      "installed_key": 36,
+      "installed_host": 36,
+      "installed_track_uid": "ATU_00000025",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 1,
+      "track_uid": "ATU_00000026",
+      "found": true,
+      "track_index_1based": 38,
+      "load_invocation": 1
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 39,
+      "semantic_key_arg": 37,
+      "physical_host_arg": 37,
+      "track_uid": "ATU_00000026",
+      "installed_key": 37,
+      "installed_host": 37,
+      "installed_track_uid": "ATU_00000026",
+      "load_invocation": 1
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000001",
+      "found": true,
+      "track_index_1based": 1,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 41,
+      "speaker_enum_arg": 0,
+      "semantic_key_arg": 0,
+      "physical_host_arg": 0,
+      "track_uid": "ATU_00000001",
+      "installed_key": 0,
+      "installed_speaker_enum": 0,
+      "installed_host": 0,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000002",
+      "found": true,
+      "track_index_1based": 2,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 42,
+      "speaker_enum_arg": 1,
+      "semantic_key_arg": 1,
+      "physical_host_arg": 1,
+      "track_uid": "ATU_00000002",
+      "installed_key": 1,
+      "installed_speaker_enum": 1,
+      "installed_host": 1,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000003",
+      "found": true,
+      "track_index_1based": 3,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 43,
+      "speaker_enum_arg": 2,
+      "semantic_key_arg": 2,
+      "physical_host_arg": 2,
+      "track_uid": "ATU_00000003",
+      "installed_key": 2,
+      "installed_speaker_enum": 2,
+      "installed_host": 2,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000004",
+      "found": true,
+      "track_index_1based": 4,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 44,
+      "speaker_enum_arg": 3,
+      "semantic_key_arg": 3,
+      "physical_host_arg": 3,
+      "track_uid": "ATU_00000004",
+      "installed_key": 3,
+      "installed_speaker_enum": 3,
+      "installed_host": 3,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000005",
+      "found": true,
+      "track_index_1based": 5,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 45,
+      "speaker_enum_arg": 6,
+      "semantic_key_arg": 4,
+      "physical_host_arg": 4,
+      "track_uid": "ATU_00000005",
+      "installed_key": 4,
+      "installed_speaker_enum": 6,
+      "installed_host": 4,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000006",
+      "found": true,
+      "track_index_1based": 6,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 46,
+      "speaker_enum_arg": 7,
+      "semantic_key_arg": 5,
+      "physical_host_arg": 5,
+      "track_uid": "ATU_00000006",
+      "installed_key": 5,
+      "installed_speaker_enum": 7,
+      "installed_host": 5,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000007",
+      "found": true,
+      "track_index_1based": 7,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 47,
+      "speaker_enum_arg": 8,
+      "semantic_key_arg": 6,
+      "physical_host_arg": 6,
+      "track_uid": "ATU_00000007",
+      "installed_key": 6,
+      "installed_speaker_enum": 8,
+      "installed_host": 6,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000008",
+      "found": true,
+      "track_index_1based": 8,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 48,
+      "speaker_enum_arg": 9,
+      "semantic_key_arg": 7,
+      "physical_host_arg": 7,
+      "track_uid": "ATU_00000008",
+      "installed_key": 7,
+      "installed_speaker_enum": 9,
+      "installed_host": 7,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000009",
+      "found": true,
+      "track_index_1based": 9,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 49,
+      "speaker_enum_arg": 12,
+      "semantic_key_arg": 8,
+      "physical_host_arg": 8,
+      "track_uid": "ATU_00000009",
+      "installed_key": 8,
+      "installed_speaker_enum": 12,
+      "installed_host": 8,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000000A",
+      "found": true,
+      "track_index_1based": 10,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 50,
+      "speaker_enum_arg": 13,
+      "semantic_key_arg": 9,
+      "physical_host_arg": 9,
+      "track_uid": "ATU_0000000A",
+      "installed_key": 9,
+      "installed_speaker_enum": 13,
+      "installed_host": 9,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000000B",
+      "found": true,
+      "track_index_1based": 11,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 17,
+      "semantic_key_arg": 10,
+      "physical_host_arg": 10,
+      "track_uid": "ATU_0000000B",
+      "installed_key": 10,
+      "installed_host": 10,
+      "installed_track_uid": "ATU_0000000B",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000000C",
+      "found": true,
+      "track_index_1based": 12,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 19,
+      "semantic_key_arg": 11,
+      "physical_host_arg": 11,
+      "track_uid": "ATU_0000000C",
+      "installed_key": 11,
+      "installed_host": 11,
+      "installed_track_uid": "ATU_0000000C",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000000D",
+      "found": true,
+      "track_index_1based": 13,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 25,
+      "semantic_key_arg": 12,
+      "physical_host_arg": 12,
+      "track_uid": "ATU_0000000D",
+      "installed_key": 12,
+      "installed_host": 12,
+      "installed_track_uid": "ATU_0000000D",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000000E",
+      "found": true,
+      "track_index_1based": 14,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 51,
+      "semantic_key_arg": 13,
+      "physical_host_arg": 13,
+      "track_uid": "ATU_0000000E",
+      "installed_key": 13,
+      "installed_host": 13,
+      "installed_track_uid": "ATU_0000000E",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000000F",
+      "found": true,
+      "track_index_1based": 15,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 52,
+      "semantic_key_arg": 14,
+      "physical_host_arg": 14,
+      "track_uid": "ATU_0000000F",
+      "installed_key": 14,
+      "installed_host": 14,
+      "installed_track_uid": "ATU_0000000F",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000010",
+      "found": true,
+      "track_index_1based": 16,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 53,
+      "semantic_key_arg": 15,
+      "physical_host_arg": 15,
+      "track_uid": "ATU_00000010",
+      "installed_key": 15,
+      "installed_host": 15,
+      "installed_track_uid": "ATU_00000010",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000011",
+      "found": true,
+      "track_index_1based": 17,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 54,
+      "semantic_key_arg": 16,
+      "physical_host_arg": 16,
+      "track_uid": "ATU_00000011",
+      "installed_key": 16,
+      "installed_host": 16,
+      "installed_track_uid": "ATU_00000011",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000012",
+      "found": true,
+      "track_index_1based": 18,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 12,
+      "semantic_key_arg": 17,
+      "physical_host_arg": 17,
+      "track_uid": "ATU_00000012",
+      "installed_key": 17,
+      "installed_host": 17,
+      "installed_track_uid": "ATU_00000012",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000013",
+      "found": true,
+      "track_index_1based": 19,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 15,
+      "semantic_key_arg": 18,
+      "physical_host_arg": 18,
+      "track_uid": "ATU_00000013",
+      "installed_key": 18,
+      "installed_host": 18,
+      "installed_track_uid": "ATU_00000013",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000014",
+      "found": true,
+      "track_index_1based": 20,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 14,
+      "semantic_key_arg": 19,
+      "physical_host_arg": 19,
+      "track_uid": "ATU_00000014",
+      "installed_key": 19,
+      "installed_host": 19,
+      "installed_track_uid": "ATU_00000014",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000015",
+      "found": true,
+      "track_index_1based": 21,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 55,
+      "semantic_key_arg": 20,
+      "physical_host_arg": 20,
+      "track_uid": "ATU_00000015",
+      "installed_key": 20,
+      "installed_host": 20,
+      "installed_track_uid": "ATU_00000015",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000016",
+      "found": true,
+      "track_index_1based": 22,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 21,
+      "semantic_key_arg": 21,
+      "physical_host_arg": 21,
+      "track_uid": "ATU_00000016",
+      "installed_key": 21,
+      "installed_host": 21,
+      "installed_track_uid": "ATU_00000016",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000017",
+      "found": true,
+      "track_index_1based": 23,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 24,
+      "semantic_key_arg": 22,
+      "physical_host_arg": 22,
+      "track_uid": "ATU_00000017",
+      "installed_key": 22,
+      "installed_host": 22,
+      "installed_track_uid": "ATU_00000017",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000018",
+      "found": true,
+      "track_index_1based": 24,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 56,
+      "semantic_key_arg": 23,
+      "physical_host_arg": 23,
+      "track_uid": "ATU_00000018",
+      "installed_key": 23,
+      "installed_host": 23,
+      "installed_track_uid": "ATU_00000018",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000019",
+      "found": true,
+      "track_index_1based": 25,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 57,
+      "semantic_key_arg": 24,
+      "physical_host_arg": 24,
+      "track_uid": "ATU_00000019",
+      "installed_key": 24,
+      "installed_host": 24,
+      "installed_track_uid": "ATU_00000019",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000001A",
+      "found": true,
+      "track_index_1based": 26,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 58,
+      "semantic_key_arg": 25,
+      "physical_host_arg": 25,
+      "track_uid": "ATU_0000001A",
+      "installed_key": 25,
+      "installed_host": 25,
+      "installed_track_uid": "ATU_0000001A",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000001B",
+      "found": true,
+      "track_index_1based": 27,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 59,
+      "semantic_key_arg": 26,
+      "physical_host_arg": 26,
+      "track_uid": "ATU_0000001B",
+      "installed_key": 26,
+      "installed_host": 26,
+      "installed_track_uid": "ATU_0000001B",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000001C",
+      "found": true,
+      "track_index_1based": 28,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 60,
+      "semantic_key_arg": 27,
+      "physical_host_arg": 27,
+      "track_uid": "ATU_0000001C",
+      "installed_key": 27,
+      "installed_host": 27,
+      "installed_track_uid": "ATU_0000001C",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000001D",
+      "found": true,
+      "track_index_1based": 29,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 61,
+      "semantic_key_arg": 28,
+      "physical_host_arg": 28,
+      "track_uid": "ATU_0000001D",
+      "installed_key": 28,
+      "installed_host": 28,
+      "installed_track_uid": "ATU_0000001D",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000001E",
+      "found": true,
+      "track_index_1based": 30,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 62,
+      "semantic_key_arg": 29,
+      "physical_host_arg": 29,
+      "track_uid": "ATU_0000001E",
+      "installed_key": 29,
+      "installed_host": 29,
+      "installed_track_uid": "ATU_0000001E",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000001F",
+      "found": true,
+      "track_index_1based": 31,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 63,
+      "semantic_key_arg": 30,
+      "physical_host_arg": 30,
+      "track_uid": "ATU_0000001F",
+      "installed_key": 30,
+      "installed_host": 30,
+      "installed_track_uid": "ATU_0000001F",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000020",
+      "found": true,
+      "track_index_1based": 32,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 64,
+      "semantic_key_arg": 31,
+      "physical_host_arg": 31,
+      "track_uid": "ATU_00000020",
+      "installed_key": 31,
+      "installed_host": 31,
+      "installed_track_uid": "ATU_00000020",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000021",
+      "found": true,
+      "track_index_1based": 33,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 65,
+      "semantic_key_arg": 32,
+      "physical_host_arg": 32,
+      "track_uid": "ATU_00000021",
+      "installed_key": 32,
+      "installed_host": 32,
+      "installed_track_uid": "ATU_00000021",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000022",
+      "found": true,
+      "track_index_1based": 34,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 66,
+      "semantic_key_arg": 33,
+      "physical_host_arg": 33,
+      "track_uid": "ATU_00000022",
+      "installed_key": 33,
+      "installed_host": 33,
+      "installed_track_uid": "ATU_00000022",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000023",
+      "found": true,
+      "track_index_1based": 35,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 67,
+      "semantic_key_arg": 34,
+      "physical_host_arg": 34,
+      "track_uid": "ATU_00000023",
+      "installed_key": 34,
+      "installed_host": 34,
+      "installed_track_uid": "ATU_00000023",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000024",
+      "found": true,
+      "track_index_1based": 36,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 68,
+      "semantic_key_arg": 35,
+      "physical_host_arg": 35,
+      "track_uid": "ATU_00000024",
+      "installed_key": 35,
+      "installed_host": 35,
+      "installed_track_uid": "ATU_00000024",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000025",
+      "found": true,
+      "track_index_1based": 37,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 69,
+      "semantic_key_arg": 36,
+      "physical_host_arg": 36,
+      "track_uid": "ATU_00000025",
+      "installed_key": 36,
+      "installed_host": 36,
+      "installed_track_uid": "ATU_00000025",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000026",
+      "found": true,
+      "track_index_1based": 38,
+      "load_invocation": 2
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 70,
+      "semantic_key_arg": 37,
+      "physical_host_arg": 37,
+      "track_uid": "ATU_00000026",
+      "installed_key": 37,
+      "installed_host": 37,
+      "installed_track_uid": "ATU_00000026",
+      "load_invocation": 2
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000001",
+      "found": true,
+      "track_index_1based": 1,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 71,
+      "speaker_enum_arg": 0,
+      "semantic_key_arg": 0,
+      "physical_host_arg": 0,
+      "track_uid": "ATU_00000001",
+      "installed_key": 0,
+      "installed_speaker_enum": 0,
+      "installed_host": 0,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000002",
+      "found": true,
+      "track_index_1based": 2,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 72,
+      "speaker_enum_arg": 1,
+      "semantic_key_arg": 1,
+      "physical_host_arg": 1,
+      "track_uid": "ATU_00000002",
+      "installed_key": 1,
+      "installed_speaker_enum": 1,
+      "installed_host": 1,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000003",
+      "found": true,
+      "track_index_1based": 3,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 73,
+      "speaker_enum_arg": 2,
+      "semantic_key_arg": 2,
+      "physical_host_arg": 2,
+      "track_uid": "ATU_00000003",
+      "installed_key": 2,
+      "installed_speaker_enum": 2,
+      "installed_host": 2,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000004",
+      "found": true,
+      "track_index_1based": 4,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 74,
+      "speaker_enum_arg": 3,
+      "semantic_key_arg": 3,
+      "physical_host_arg": 3,
+      "track_uid": "ATU_00000004",
+      "installed_key": 3,
+      "installed_speaker_enum": 3,
+      "installed_host": 3,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000005",
+      "found": true,
+      "track_index_1based": 5,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 75,
+      "speaker_enum_arg": 6,
+      "semantic_key_arg": 4,
+      "physical_host_arg": 4,
+      "track_uid": "ATU_00000005",
+      "installed_key": 4,
+      "installed_speaker_enum": 6,
+      "installed_host": 4,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000006",
+      "found": true,
+      "track_index_1based": 6,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 76,
+      "speaker_enum_arg": 7,
+      "semantic_key_arg": 5,
+      "physical_host_arg": 5,
+      "track_uid": "ATU_00000006",
+      "installed_key": 5,
+      "installed_speaker_enum": 7,
+      "installed_host": 5,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000007",
+      "found": true,
+      "track_index_1based": 7,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 77,
+      "speaker_enum_arg": 8,
+      "semantic_key_arg": 6,
+      "physical_host_arg": 6,
+      "track_uid": "ATU_00000007",
+      "installed_key": 6,
+      "installed_speaker_enum": 8,
+      "installed_host": 6,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000008",
+      "found": true,
+      "track_index_1based": 8,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 78,
+      "speaker_enum_arg": 9,
+      "semantic_key_arg": 7,
+      "physical_host_arg": 7,
+      "track_uid": "ATU_00000008",
+      "installed_key": 7,
+      "installed_speaker_enum": 9,
+      "installed_host": 7,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000009",
+      "found": true,
+      "track_index_1based": 9,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 79,
+      "speaker_enum_arg": 12,
+      "semantic_key_arg": 8,
+      "physical_host_arg": 8,
+      "track_uid": "ATU_00000009",
+      "installed_key": 8,
+      "installed_speaker_enum": 12,
+      "installed_host": 8,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000000A",
+      "found": true,
+      "track_index_1based": 10,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 80,
+      "speaker_enum_arg": 13,
+      "semantic_key_arg": 9,
+      "physical_host_arg": 9,
+      "track_uid": "ATU_0000000A",
+      "installed_key": 9,
+      "installed_speaker_enum": 13,
+      "installed_host": 9,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000000B",
+      "found": true,
+      "track_index_1based": 11,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 23,
+      "semantic_key_arg": 10,
+      "physical_host_arg": 10,
+      "track_uid": "ATU_0000000B",
+      "installed_key": 10,
+      "installed_host": 10,
+      "installed_track_uid": "ATU_0000000B",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000000C",
+      "found": true,
+      "track_index_1based": 12,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 53,
+      "semantic_key_arg": 11,
+      "physical_host_arg": 11,
+      "track_uid": "ATU_0000000C",
+      "installed_key": 11,
+      "installed_host": 11,
+      "installed_track_uid": "ATU_0000000C",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000000D",
+      "found": true,
+      "track_index_1based": 13,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 81,
+      "semantic_key_arg": 12,
+      "physical_host_arg": 12,
+      "track_uid": "ATU_0000000D",
+      "installed_key": 12,
+      "installed_host": 12,
+      "installed_track_uid": "ATU_0000000D",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000000E",
+      "found": true,
+      "track_index_1based": 14,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 15,
+      "semantic_key_arg": 13,
+      "physical_host_arg": 13,
+      "track_uid": "ATU_0000000E",
+      "installed_key": 13,
+      "installed_host": 13,
+      "installed_track_uid": "ATU_0000000E",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000000F",
+      "found": true,
+      "track_index_1based": 15,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 82,
+      "semantic_key_arg": 14,
+      "physical_host_arg": 14,
+      "track_uid": "ATU_0000000F",
+      "installed_key": 14,
+      "installed_host": 14,
+      "installed_track_uid": "ATU_0000000F",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000010",
+      "found": true,
+      "track_index_1based": 16,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 12,
+      "semantic_key_arg": 15,
+      "physical_host_arg": 15,
+      "track_uid": "ATU_00000010",
+      "installed_key": 15,
+      "installed_host": 15,
+      "installed_track_uid": "ATU_00000010",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000011",
+      "found": true,
+      "track_index_1based": 17,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 83,
+      "semantic_key_arg": 16,
+      "physical_host_arg": 16,
+      "track_uid": "ATU_00000011",
+      "installed_key": 16,
+      "installed_host": 16,
+      "installed_track_uid": "ATU_00000011",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000012",
+      "found": true,
+      "track_index_1based": 18,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 84,
+      "semantic_key_arg": 17,
+      "physical_host_arg": 17,
+      "track_uid": "ATU_00000012",
+      "installed_key": 17,
+      "installed_host": 17,
+      "installed_track_uid": "ATU_00000012",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000013",
+      "found": true,
+      "track_index_1based": 19,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 52,
+      "semantic_key_arg": 18,
+      "physical_host_arg": 18,
+      "track_uid": "ATU_00000013",
+      "installed_key": 18,
+      "installed_host": 18,
+      "installed_track_uid": "ATU_00000013",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000014",
+      "found": true,
+      "track_index_1based": 20,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 13,
+      "semantic_key_arg": 19,
+      "physical_host_arg": 19,
+      "track_uid": "ATU_00000014",
+      "installed_key": 19,
+      "installed_host": 19,
+      "installed_track_uid": "ATU_00000014",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000015",
+      "found": true,
+      "track_index_1based": 21,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 85,
+      "semantic_key_arg": 20,
+      "physical_host_arg": 20,
+      "track_uid": "ATU_00000015",
+      "installed_key": 20,
+      "installed_host": 20,
+      "installed_track_uid": "ATU_00000015",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000016",
+      "found": true,
+      "track_index_1based": 22,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 86,
+      "semantic_key_arg": 21,
+      "physical_host_arg": 21,
+      "track_uid": "ATU_00000016",
+      "installed_key": 21,
+      "installed_host": 21,
+      "installed_track_uid": "ATU_00000016",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000017",
+      "found": true,
+      "track_index_1based": 23,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 14,
+      "semantic_key_arg": 22,
+      "physical_host_arg": 22,
+      "track_uid": "ATU_00000017",
+      "installed_key": 22,
+      "installed_host": 22,
+      "installed_track_uid": "ATU_00000017",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000018",
+      "found": true,
+      "track_index_1based": 24,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 26,
+      "semantic_key_arg": 23,
+      "physical_host_arg": 23,
+      "track_uid": "ATU_00000018",
+      "installed_key": 23,
+      "installed_host": 23,
+      "installed_track_uid": "ATU_00000018",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000019",
+      "found": true,
+      "track_index_1based": 25,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 56,
+      "semantic_key_arg": 24,
+      "physical_host_arg": 24,
+      "track_uid": "ATU_00000019",
+      "installed_key": 24,
+      "installed_host": 24,
+      "installed_track_uid": "ATU_00000019",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000001A",
+      "found": true,
+      "track_index_1based": 26,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 27,
+      "semantic_key_arg": 25,
+      "physical_host_arg": 25,
+      "track_uid": "ATU_0000001A",
+      "installed_key": 25,
+      "installed_host": 25,
+      "installed_track_uid": "ATU_0000001A",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000001B",
+      "found": true,
+      "track_index_1based": 27,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 87,
+      "semantic_key_arg": 26,
+      "physical_host_arg": 26,
+      "track_uid": "ATU_0000001B",
+      "installed_key": 26,
+      "installed_host": 26,
+      "installed_track_uid": "ATU_0000001B",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000001C",
+      "found": true,
+      "track_index_1based": 28,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 88,
+      "semantic_key_arg": 27,
+      "physical_host_arg": 27,
+      "track_uid": "ATU_0000001C",
+      "installed_key": 27,
+      "installed_host": 27,
+      "installed_track_uid": "ATU_0000001C",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000001D",
+      "found": true,
+      "track_index_1based": 29,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 89,
+      "semantic_key_arg": 28,
+      "physical_host_arg": 28,
+      "track_uid": "ATU_0000001D",
+      "installed_key": 28,
+      "installed_host": 28,
+      "installed_track_uid": "ATU_0000001D",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000001E",
+      "found": true,
+      "track_index_1based": 30,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 90,
+      "semantic_key_arg": 29,
+      "physical_host_arg": 29,
+      "track_uid": "ATU_0000001E",
+      "installed_key": 29,
+      "installed_host": 29,
+      "installed_track_uid": "ATU_0000001E",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000001F",
+      "found": true,
+      "track_index_1based": 31,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 91,
+      "semantic_key_arg": 30,
+      "physical_host_arg": 30,
+      "track_uid": "ATU_0000001F",
+      "installed_key": 30,
+      "installed_host": 30,
+      "installed_track_uid": "ATU_0000001F",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000020",
+      "found": true,
+      "track_index_1based": 32,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 92,
+      "semantic_key_arg": 31,
+      "physical_host_arg": 31,
+      "track_uid": "ATU_00000020",
+      "installed_key": 31,
+      "installed_host": 31,
+      "installed_track_uid": "ATU_00000020",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000021",
+      "found": true,
+      "track_index_1based": 33,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 93,
+      "semantic_key_arg": 32,
+      "physical_host_arg": 32,
+      "track_uid": "ATU_00000021",
+      "installed_key": 32,
+      "installed_host": 32,
+      "installed_track_uid": "ATU_00000021",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000022",
+      "found": true,
+      "track_index_1based": 34,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 94,
+      "semantic_key_arg": 33,
+      "physical_host_arg": 33,
+      "track_uid": "ATU_00000022",
+      "installed_key": 33,
+      "installed_host": 33,
+      "installed_track_uid": "ATU_00000022",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000023",
+      "found": true,
+      "track_index_1based": 35,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 95,
+      "semantic_key_arg": 34,
+      "physical_host_arg": 34,
+      "track_uid": "ATU_00000023",
+      "installed_key": 34,
+      "installed_host": 34,
+      "installed_track_uid": "ATU_00000023",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000024",
+      "found": true,
+      "track_index_1based": 36,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 96,
+      "semantic_key_arg": 35,
+      "physical_host_arg": 35,
+      "track_uid": "ATU_00000024",
+      "installed_key": 35,
+      "installed_host": 35,
+      "installed_track_uid": "ATU_00000024",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000025",
+      "found": true,
+      "track_index_1based": 37,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 97,
+      "semantic_key_arg": 36,
+      "physical_host_arg": 36,
+      "track_uid": "ATU_00000025",
+      "installed_key": 36,
+      "installed_host": 36,
+      "installed_track_uid": "ATU_00000025",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000026",
+      "found": true,
+      "track_index_1based": 38,
+      "load_invocation": 3
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 98,
+      "semantic_key_arg": 37,
+      "physical_host_arg": 37,
+      "track_uid": "ATU_00000026",
+      "installed_key": 37,
+      "installed_host": 37,
+      "installed_track_uid": "ATU_00000026",
+      "load_invocation": 3
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000001",
+      "found": true,
+      "track_index_1based": 1,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 99,
+      "speaker_enum_arg": 0,
+      "semantic_key_arg": 0,
+      "physical_host_arg": 0,
+      "track_uid": "ATU_00000001",
+      "installed_key": 0,
+      "installed_speaker_enum": 0,
+      "installed_host": 0,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000002",
+      "found": true,
+      "track_index_1based": 2,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 100,
+      "speaker_enum_arg": 1,
+      "semantic_key_arg": 1,
+      "physical_host_arg": 1,
+      "track_uid": "ATU_00000002",
+      "installed_key": 1,
+      "installed_speaker_enum": 1,
+      "installed_host": 1,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000003",
+      "found": true,
+      "track_index_1based": 3,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 101,
+      "speaker_enum_arg": 2,
+      "semantic_key_arg": 2,
+      "physical_host_arg": 2,
+      "track_uid": "ATU_00000003",
+      "installed_key": 2,
+      "installed_speaker_enum": 2,
+      "installed_host": 2,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000004",
+      "found": true,
+      "track_index_1based": 4,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 102,
+      "speaker_enum_arg": 3,
+      "semantic_key_arg": 3,
+      "physical_host_arg": 3,
+      "track_uid": "ATU_00000004",
+      "installed_key": 3,
+      "installed_speaker_enum": 3,
+      "installed_host": 3,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000005",
+      "found": true,
+      "track_index_1based": 5,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 103,
+      "speaker_enum_arg": 6,
+      "semantic_key_arg": 4,
+      "physical_host_arg": 4,
+      "track_uid": "ATU_00000005",
+      "installed_key": 4,
+      "installed_speaker_enum": 6,
+      "installed_host": 4,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000006",
+      "found": true,
+      "track_index_1based": 6,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 104,
+      "speaker_enum_arg": 7,
+      "semantic_key_arg": 5,
+      "physical_host_arg": 5,
+      "track_uid": "ATU_00000006",
+      "installed_key": 5,
+      "installed_speaker_enum": 7,
+      "installed_host": 5,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000007",
+      "found": true,
+      "track_index_1based": 7,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 105,
+      "speaker_enum_arg": 8,
+      "semantic_key_arg": 6,
+      "physical_host_arg": 6,
+      "track_uid": "ATU_00000007",
+      "installed_key": 6,
+      "installed_speaker_enum": 8,
+      "installed_host": 6,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000008",
+      "found": true,
+      "track_index_1based": 8,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 106,
+      "speaker_enum_arg": 9,
+      "semantic_key_arg": 7,
+      "physical_host_arg": 7,
+      "track_uid": "ATU_00000008",
+      "installed_key": 7,
+      "installed_speaker_enum": 9,
+      "installed_host": 7,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000009",
+      "found": true,
+      "track_index_1based": 9,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 107,
+      "speaker_enum_arg": 12,
+      "semantic_key_arg": 8,
+      "physical_host_arg": 8,
+      "track_uid": "ATU_00000009",
+      "installed_key": 8,
+      "installed_speaker_enum": 12,
+      "installed_host": 8,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000000A",
+      "found": true,
+      "track_index_1based": 10,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_bed_channel_construct",
+      "descriptor_owner": 108,
+      "speaker_enum_arg": 13,
+      "semantic_key_arg": 9,
+      "physical_host_arg": 9,
+      "track_uid": "ATU_0000000A",
+      "installed_key": 9,
+      "installed_speaker_enum": 13,
+      "installed_host": 9,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000000B",
+      "found": true,
+      "track_index_1based": 11,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 82,
+      "semantic_key_arg": 10,
+      "physical_host_arg": 10,
+      "track_uid": "ATU_0000000B",
+      "installed_key": 10,
+      "installed_host": 10,
+      "installed_track_uid": "ATU_0000000B",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000000C",
+      "found": true,
+      "track_index_1based": 12,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 23,
+      "semantic_key_arg": 11,
+      "physical_host_arg": 11,
+      "track_uid": "ATU_0000000C",
+      "installed_key": 11,
+      "installed_host": 11,
+      "installed_track_uid": "ATU_0000000C",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000000D",
+      "found": true,
+      "track_index_1based": 13,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 109,
+      "semantic_key_arg": 12,
+      "physical_host_arg": 12,
+      "track_uid": "ATU_0000000D",
+      "installed_key": 12,
+      "installed_host": 12,
+      "installed_track_uid": "ATU_0000000D",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000000E",
+      "found": true,
+      "track_index_1based": 14,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 26,
+      "semantic_key_arg": 13,
+      "physical_host_arg": 13,
+      "track_uid": "ATU_0000000E",
+      "installed_key": 13,
+      "installed_host": 13,
+      "installed_track_uid": "ATU_0000000E",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000000F",
+      "found": true,
+      "track_index_1based": 15,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 85,
+      "semantic_key_arg": 14,
+      "physical_host_arg": 14,
+      "track_uid": "ATU_0000000F",
+      "installed_key": 14,
+      "installed_host": 14,
+      "installed_track_uid": "ATU_0000000F",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000010",
+      "found": true,
+      "track_index_1based": 16,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 110,
+      "semantic_key_arg": 15,
+      "physical_host_arg": 15,
+      "track_uid": "ATU_00000010",
+      "installed_key": 15,
+      "installed_host": 15,
+      "installed_track_uid": "ATU_00000010",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000011",
+      "found": true,
+      "track_index_1based": 17,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 81,
+      "semantic_key_arg": 16,
+      "physical_host_arg": 16,
+      "track_uid": "ATU_00000011",
+      "installed_key": 16,
+      "installed_host": 16,
+      "installed_track_uid": "ATU_00000011",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000012",
+      "found": true,
+      "track_index_1based": 18,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 84,
+      "semantic_key_arg": 17,
+      "physical_host_arg": 17,
+      "track_uid": "ATU_00000012",
+      "installed_key": 17,
+      "installed_host": 17,
+      "installed_track_uid": "ATU_00000012",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000013",
+      "found": true,
+      "track_index_1based": 19,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 19,
+      "semantic_key_arg": 18,
+      "physical_host_arg": 18,
+      "track_uid": "ATU_00000013",
+      "installed_key": 18,
+      "installed_host": 18,
+      "installed_track_uid": "ATU_00000013",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000014",
+      "found": true,
+      "track_index_1based": 20,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 22,
+      "semantic_key_arg": 19,
+      "physical_host_arg": 19,
+      "track_uid": "ATU_00000014",
+      "installed_key": 19,
+      "installed_host": 19,
+      "installed_track_uid": "ATU_00000014",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000015",
+      "found": true,
+      "track_index_1based": 21,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 111,
+      "semantic_key_arg": 20,
+      "physical_host_arg": 20,
+      "track_uid": "ATU_00000015",
+      "installed_key": 20,
+      "installed_host": 20,
+      "installed_track_uid": "ATU_00000015",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000016",
+      "found": true,
+      "track_index_1based": 22,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 53,
+      "semantic_key_arg": 21,
+      "physical_host_arg": 21,
+      "track_uid": "ATU_00000016",
+      "installed_key": 21,
+      "installed_host": 21,
+      "installed_track_uid": "ATU_00000016",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000017",
+      "found": true,
+      "track_index_1based": 23,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 54,
+      "semantic_key_arg": 22,
+      "physical_host_arg": 22,
+      "track_uid": "ATU_00000017",
+      "installed_key": 22,
+      "installed_host": 22,
+      "installed_track_uid": "ATU_00000017",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000018",
+      "found": true,
+      "track_index_1based": 24,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 14,
+      "semantic_key_arg": 23,
+      "physical_host_arg": 23,
+      "track_uid": "ATU_00000018",
+      "installed_key": 23,
+      "installed_host": 23,
+      "installed_track_uid": "ATU_00000018",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000019",
+      "found": true,
+      "track_index_1based": 25,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 112,
+      "semantic_key_arg": 24,
+      "physical_host_arg": 24,
+      "track_uid": "ATU_00000019",
+      "installed_key": 24,
+      "installed_host": 24,
+      "installed_track_uid": "ATU_00000019",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000001A",
+      "found": true,
+      "track_index_1based": 26,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 113,
+      "semantic_key_arg": 25,
+      "physical_host_arg": 25,
+      "track_uid": "ATU_0000001A",
+      "installed_key": 25,
+      "installed_host": 25,
+      "installed_track_uid": "ATU_0000001A",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000001B",
+      "found": true,
+      "track_index_1based": 27,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 114,
+      "semantic_key_arg": 26,
+      "physical_host_arg": 26,
+      "track_uid": "ATU_0000001B",
+      "installed_key": 26,
+      "installed_host": 26,
+      "installed_track_uid": "ATU_0000001B",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000001C",
+      "found": true,
+      "track_index_1based": 28,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 115,
+      "semantic_key_arg": 27,
+      "physical_host_arg": 27,
+      "track_uid": "ATU_0000001C",
+      "installed_key": 27,
+      "installed_host": 27,
+      "installed_track_uid": "ATU_0000001C",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000001D",
+      "found": true,
+      "track_index_1based": 29,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 116,
+      "semantic_key_arg": 28,
+      "physical_host_arg": 28,
+      "track_uid": "ATU_0000001D",
+      "installed_key": 28,
+      "installed_host": 28,
+      "installed_track_uid": "ATU_0000001D",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000001E",
+      "found": true,
+      "track_index_1based": 30,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 117,
+      "semantic_key_arg": 29,
+      "physical_host_arg": 29,
+      "track_uid": "ATU_0000001E",
+      "installed_key": 29,
+      "installed_host": 29,
+      "installed_track_uid": "ATU_0000001E",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_0000001F",
+      "found": true,
+      "track_index_1based": 31,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 118,
+      "semantic_key_arg": 30,
+      "physical_host_arg": 30,
+      "track_uid": "ATU_0000001F",
+      "installed_key": 30,
+      "installed_host": 30,
+      "installed_track_uid": "ATU_0000001F",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000020",
+      "found": true,
+      "track_index_1based": 32,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 119,
+      "semantic_key_arg": 31,
+      "physical_host_arg": 31,
+      "track_uid": "ATU_00000020",
+      "installed_key": 31,
+      "installed_host": 31,
+      "installed_track_uid": "ATU_00000020",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000021",
+      "found": true,
+      "track_index_1based": 33,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 120,
+      "semantic_key_arg": 32,
+      "physical_host_arg": 32,
+      "track_uid": "ATU_00000021",
+      "installed_key": 32,
+      "installed_host": 32,
+      "installed_track_uid": "ATU_00000021",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000022",
+      "found": true,
+      "track_index_1based": 34,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 121,
+      "semantic_key_arg": 33,
+      "physical_host_arg": 33,
+      "track_uid": "ATU_00000022",
+      "installed_key": 33,
+      "installed_host": 33,
+      "installed_track_uid": "ATU_00000022",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000023",
+      "found": true,
+      "track_index_1based": 35,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 122,
+      "semantic_key_arg": 34,
+      "physical_host_arg": 34,
+      "track_uid": "ATU_00000023",
+      "installed_key": 34,
+      "installed_host": 34,
+      "installed_track_uid": "ATU_00000023",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000024",
+      "found": true,
+      "track_index_1based": 36,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 123,
+      "semantic_key_arg": 35,
+      "physical_host_arg": 35,
+      "track_uid": "ATU_00000024",
+      "installed_key": 35,
+      "installed_host": 35,
+      "installed_track_uid": "ATU_00000024",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000025",
+      "found": true,
+      "track_index_1based": 37,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 124,
+      "semantic_key_arg": 36,
+      "physical_host_arg": 36,
+      "track_uid": "ATU_00000025",
+      "installed_key": 36,
+      "installed_host": 36,
+      "installed_track_uid": "ATU_00000025",
+      "load_invocation": 4
+    },
+    {
+      "event": "native_channel_track_lookup",
+      "owner": 40,
+      "track_uid": "ATU_00000026",
+      "found": true,
+      "track_index_1based": 38,
+      "load_invocation": 4
+    },
+    {
+      "event": "native_object_channel_construct",
+      "descriptor_owner": 125,
+      "semantic_key_arg": 37,
+      "physical_host_arg": 37,
+      "track_uid": "ATU_00000026",
+      "installed_key": 37,
+      "installed_host": 37,
+      "installed_track_uid": "ATU_00000026",
+      "load_invocation": 4
+    }
+  ],
+  "naming_correction": "Observed ATU identifiers are audioTrackUIDs. They are not audioChannelFormatIDs; earlier temporary hook-field naming is withdrawn."
+}

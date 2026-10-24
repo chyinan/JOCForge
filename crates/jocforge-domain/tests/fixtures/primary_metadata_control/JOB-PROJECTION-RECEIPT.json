@@ -1,0 +1,61 @@
+{
+  "schema": "job-functional-projection-receipt.v1",
+  "original_job_bytes": 1933,
+  "original_job_sha256": "ef156c2480a5691d17f0c2d3742f50ded160041fccac0319095c891520fbe8c3",
+  "original_job_identity_scope": "Research-side declaration of original bytes identity; original document is not distributed.",
+  "projection_file": "JOB-FIELD-PROJECTION.json",
+  "projection_sha256": "b710150f1b8357ca417d3fe705c88334b9c9bbd418656b458e49f8ffa3faba82",
+  "declared_fields": {
+    "schema": "selected-job-functional-field-projection.v1",
+    "input": {
+      "kind": "atmos_mezz",
+      "version": "1",
+      "file_name": "\u4eba\u662f\u732b - \u5f20\u5361\u65af, \u6d1b\u5929\u4f9d.wav",
+      "source_root": "D:/",
+      "timecode_frame_rate": "not_indicated",
+      "offset": "auto",
+      "ffoa": "auto"
+    },
+    "encode": {
+      "version": "1",
+      "data_rate_kbps": 1024,
+      "loudness": {
+        "mode": "measure_only",
+        "metering_mode": "1770-4",
+        "dialogue_intelligence": "false",
+        "speech_threshold": 100
+      },
+      "timecode_frame_rate": "not_indicated",
+      "time_controls": {
+        "start": "",
+        "end": "",
+        "time_base": "file_position",
+        "prepend_silence_duration": "0.0",
+        "append_silence_duration": "0.0"
+      },
+      "drc": {
+        "line_mode_drc_profile": "none",
+        "rf_mode_drc_profile": "none"
+      },
+      "downmix": {
+        "loro_center_mix_level": "-3",
+        "loro_surround_mix_level": "-3",
+        "ltrt_center_mix_level": "-3",
+        "ltrt_surround_mix_level": "-3",
+        "preferred_downmix_mode": "loro"
+      },
+      "custom_trims": {
+        "surround_trim_5_1": "auto",
+        "height_trim_5_1": "auto"
+      }
+    },
+    "output": {
+      "kind": "ec3",
+      "version": "1"
+    }
+  },
+  "primary_source_receipt_file": "PRIMARY-SOURCE-RECEIPT.json",
+  "primary_source_receipt_sha256": "c60c45033ee40592b9fc82c9c68edf94c4ee1676f27d9df34634291b2cb0f7ad",
+  "original_fields_verified_during_packaging": true,
+  "portable_verification_scope": "Projection consistency, selected field domain, receipt identities and source name. Original document extraction cannot be independently reconstructed from its digest alone."
+}

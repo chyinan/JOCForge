@@ -1,0 +1,72 @@
+{
+  "schema": "authorized-policy-input-vectors.v1",
+  "parameter_artifact": "parameters/policy-authorized-v1.json",
+  "parameter_artifact_sha256": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a",
+  "selected_profile_id": "eac3-joc-48k-1024k-acmod7-uncoupled-nonspx-policy-v1",
+  "input_only": true,
+  "cases": {
+    "refresh": [
+      {"case_id": "refresh-marker-copy-7", "length": 7, "current_recipe": {"kind": "mod25", "mul": 5, "add": 3}, "work_recipe": {"kind": "mod25", "mul": 7, "add": 1}, "marker": 1, "mode": 1},
+      {"case_id": "refresh-mode1-weighted-128", "length": 217, "active_length": 128, "current_recipe": {"kind": "mod25", "mul": 11, "add": 4}, "work_recipe": {"kind": "mod25", "mul": 3, "add": 17}, "marker": 0, "mode": 1},
+      {"case_id": "refresh-mode0-lfe-7", "length": 7, "current_recipe": {"kind": "explicit", "values": [2, 8, 9, 18, 4, 24, 1]}, "work_recipe": {"kind": "explicit", "values": [3, 1, 17, 2, 22, 0, 12]}, "marker": 0, "mode": 0}
+    ],
+    "mean_square": [
+      {"case_id": "mean-zero", "sample_recipe": {"kind": "constant", "numerator": 0, "denominator": 1}},
+      {"case_id": "mean-impulse", "sample_recipe": {"kind": "impulse", "index": 0, "numerator": 1, "denominator": 1}},
+      {"case_id": "mean-alternating-half", "sample_recipe": {"kind": "alternating", "numerator": 1, "denominator": 2}},
+      {"case_id": "mean-modular", "sample_recipe": {"kind": "modular", "mul": 37, "add": 13, "modulus": 511, "center": 255, "denominator": 256}}
+    ],
+    "db_selector": [
+      {"case_id": "db-zero-from-0", "mean_f32_words_hex": ["0x00000000", "0x00000000", "0x00000000", "0x00000000", "0x00000000", "0x00000000"], "selector_before": 0},
+      {"case_id": "db-subnormal-from-3", "mean_f32_words_hex": ["0x00000001", "0x00000000", "0x00000000", "0x00000000", "0x00000000", "0x3f800000"], "selector_before": 3},
+      {"case_id": "db-quarter-from-2", "mean_f32_words_hex": ["0x3e800000", "0x00000000", "0x00000000", "0x00000000", "0x00000000", "0x41200000"], "selector_before": 2},
+      {"case_id": "db-two-from-1", "mean_f32_words_hex": ["0x40000000", "0x3f000000", "0x3f800000", "0x40400000", "0x40800000", "0x7a000000"], "selector_before": 1}
+    ],
+    "normalization": [
+      {"case_id": "norm-level0-span1-option1-gate0", "raw_recipe": {"kind": "constant", "level": 0}, "span": 1, "option": 1, "gate": 0},
+      {"case_id": "norm-level8-span2-option1-gate0", "raw_recipe": {"kind": "constant", "level": 8}, "span": 2, "option": 1, "gate": 0},
+      {"case_id": "norm-level24-span4-option1-gate0", "raw_recipe": {"kind": "constant", "level": 24}, "span": 4, "option": 1, "gate": 0},
+      {"case_id": "norm-level16-span1-option1-gate1", "raw_recipe": {"kind": "constant", "level": 16}, "span": 1, "option": 1, "gate": 1},
+      {"case_id": "norm-ramp-span2-option1-gate0", "raw_recipe": {"kind": "mod25", "mul": 7, "add": 3}, "span": 2, "option": 1, "gate": 0},
+      {"case_id": "norm-zigzag-span4-option0-gate0", "raw_recipe": {"kind": "zigzag24"}, "span": 4, "option": 0, "gate": 0}
+    ],
+    "lifecycle": [
+      {
+        "case_id": "plan-trial-commit-retry-reset-eof",
+        "events": [
+          {"op": "plan", "source_frame": 0, "installed_consumers": ["transient", "structural_refresh"], "delayed_consumers": ["gain", "db_per_bit", "primary", "companion", "lfe"]},
+          {"op": "trial", "candidate": 16, "feasible": false},
+          {"op": "retry", "candidate": 400, "feasible": false},
+          {"op": "retry", "candidate": 592, "feasible": true},
+          {"op": "commit"},
+          {"op": "plan", "source_frame": 1, "installed_consumers": ["transient", "structural_refresh"], "delayed_consumers": ["gain", "db_per_bit", "primary", "companion", "lfe"]},
+          {"op": "trial", "candidate": 16, "feasible": false},
+          {"op": "fail_frame"},
+          {"op": "retry", "candidate": 400, "feasible": true},
+          {"op": "reset"},
+          {"op": "plan", "source_frame": 0, "installed_consumers": ["transient", "structural_refresh"], "delayed_consumers": ["gain", "db_per_bit", "primary", "companion", "lfe"]},
+          {"op": "trial", "candidate": 16, "feasible": true},
+          {"op": "commit"},
+          {"op": "eof"}
+        ]
+      }
+    ]
+  },
+  "forbidden_seed_fields": ["expected", "actual", "result", "output"],
+  "profile_rejections": [
+    {
+      "case_id": "reject-wrong-profile-id",
+      "profile_id": "eac3-joc-48k-1024k-acmod7-uncoupled-nonspx-policy-v2",
+      "expected_error": "UNSUPPORTED_PROFILE",
+      "state_advance": false
+    },
+    {
+      "case_id": "reject-coupling-enabled",
+      "profile_id": "eac3-joc-48k-1024k-acmod7-uncoupled-nonspx-policy-v1",
+      "override": {"coupling": true},
+      "expected_error": "UNSUPPORTED_PROFILE",
+      "state_advance": false
+    }
+  ],
+  "whole_song_normalization_trace_is_not_an_independent_equivalence_proof": true
+}

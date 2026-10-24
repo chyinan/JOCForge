@@ -1,0 +1,294 @@
+{
+  "synthetic_basis_points": [
+    [
+      0.0,
+      0.20000000298023224,
+      0.25
+    ],
+    [
+      0.5,
+      0.20000000298023224,
+      0.25
+    ],
+    [
+      1.0,
+      0.20000000298023224,
+      0.25
+    ],
+    [
+      0.0,
+      0.800000011920929,
+      0.25
+    ],
+    [
+      0.5,
+      0.800000011920929,
+      0.25
+    ],
+    [
+      1.0,
+      0.800000011920929,
+      0.25
+    ],
+    [
+      0.0,
+      0.20000000298023224,
+      0.75
+    ],
+    [
+      0.5,
+      0.20000000298023224,
+      0.75
+    ],
+    [
+      1.0,
+      0.20000000298023224,
+      0.75
+    ],
+    [
+      0.0,
+      0.800000011920929,
+      0.75
+    ],
+    [
+      1.0,
+      0.800000011920929,
+      0.75
+    ]
+  ],
+  "recipes": [
+    {
+      "id": "WIDTH-Q15",
+      "q_first": 0,
+      "q_last": 32767,
+      "input": "value=R32(q/32768)",
+      "output": "width map",
+      "output_order": "q ascending",
+      "count": 32768
+    },
+    {
+      "id": "POWER-FIXED",
+      "q_first": 1,
+      "q_last": 32767,
+      "input": "value=R32(q/32768); power in [2,6]",
+      "output_order": "q ascending, then power 2/6",
+      "count": 65534
+    },
+    {
+      "id": "POWER-MAPPED",
+      "q_first": 3,
+      "q_last": 32767,
+      "input": "value=R32(q/32768); mapped=width_map(value); p=power(mapped); power in [p,R32(1/p)]",
+      "output_order": "q ascending, then p/reciprocal",
+      "count": 65530
+    }
+  ],
+  "full_gain_cases": [
+    {
+      "case_id": "GAIN-0",
+      "input": {
+        "xyz_words": [
+          "3f000000",
+          "3f000000",
+          "3f000000"
+        ],
+        "raw_width_word": "38c00000",
+        "uniform_width_mode": 0,
+        "component_enum": 0,
+        "enabled": 1,
+        "extra": 0
+      }
+    },
+    {
+      "case_id": "GAIN-1",
+      "input": {
+        "xyz_words": [
+          "00000000",
+          "00000000",
+          "00000000"
+        ],
+        "raw_width_word": "38c00000",
+        "uniform_width_mode": 0,
+        "component_enum": 0,
+        "enabled": 1,
+        "extra": 0
+      }
+    },
+    {
+      "case_id": "GAIN-2",
+      "input": {
+        "xyz_words": [
+          "3e99999a",
+          "3f400000",
+          "3f800000"
+        ],
+        "raw_width_word": "3c23d70a",
+        "uniform_width_mode": 0,
+        "component_enum": 0,
+        "enabled": 1,
+        "extra": 0
+      }
+    },
+    {
+      "case_id": "GAIN-3",
+      "input": {
+        "xyz_words": [
+          "3f800000",
+          "3f800000",
+          "3f800000"
+        ],
+        "raw_width_word": "3f800000",
+        "uniform_width_mode": 0,
+        "component_enum": 0,
+        "enabled": 1,
+        "extra": 0
+      }
+    },
+    {
+      "case_id": "GAIN-4",
+      "input": {
+        "xyz_words": [
+          "3f000000",
+          "3f000000",
+          "3f000000"
+        ],
+        "raw_width_word": "3d4ccccd",
+        "uniform_width_mode": 0,
+        "component_enum": 0,
+        "enabled": 1,
+        "extra": 0
+      }
+    },
+    {
+      "case_id": "GAIN-5",
+      "input": {
+        "xyz_words": [
+          "3e4ccccd",
+          "3f19999a",
+          "3ecccccd"
+        ],
+        "raw_width_word": "3e000000",
+        "uniform_width_mode": 0,
+        "component_enum": 0,
+        "enabled": 1,
+        "extra": 0
+      }
+    },
+    {
+      "case_id": "GAIN-6",
+      "input": {
+        "xyz_words": [
+          "3f000000",
+          "3f000000",
+          "3f000000"
+        ],
+        "raw_width_word": "3e4ccccd",
+        "uniform_width_mode": 0,
+        "component_enum": 0,
+        "enabled": 1,
+        "extra": 0
+      }
+    },
+    {
+      "case_id": "GAIN-7",
+      "input": {
+        "xyz_words": [
+          "80000000",
+          "3f000000",
+          "3f800000"
+        ],
+        "raw_width_word": "3f400000",
+        "uniform_width_mode": 0,
+        "component_enum": 0,
+        "enabled": 1,
+        "extra": 0
+      }
+    },
+    {
+      "case_id": "GAIN-8",
+      "input": {
+        "xyz_words": [
+          "3f000000",
+          "3f000000",
+          "3f000000"
+        ],
+        "raw_width_word": "38c00000",
+        "uniform_width_mode": 0,
+        "component_enum": 0,
+        "enabled": 1,
+        "extra": 0
+      }
+    }
+  ],
+  "rejections": [
+    {
+      "q": 0,
+      "width_rational": [
+        1,
+        1048576
+      ],
+      "xyz_rationals": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "expected_error": "MAPPED_WIDTH_BELOW_THRESHOLD",
+      "scope": "Parameter-bound full producer after positive-raw-width protocol/domain preflight; first positive width quantizes to q0"
+    },
+    {
+      "q": 1,
+      "width_rational": [
+        1,
+        32768
+      ],
+      "xyz_rationals": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "expected_error": "MAPPED_WIDTH_BELOW_THRESHOLD",
+      "scope": "Parameter-bound full producer after positive-raw-width protocol/domain preflight; width quantizes to q1 and mapped width remains below threshold"
+    },
+    {
+      "q": 2,
+      "width_rational": [
+        2,
+        32768
+      ],
+      "xyz_rationals": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "expected_error": "MAPPED_WIDTH_BELOW_THRESHOLD",
+      "scope": "Parameter-bound full producer after positive-raw-width protocol/domain preflight; width quantizes to q2 and mapped width remains below threshold"
+    }
+  ]
+}

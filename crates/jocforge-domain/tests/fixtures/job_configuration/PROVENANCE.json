@@ -1,0 +1,11 @@
+{
+  "schema": "f01e-job-configuration-vectors-provenance.v1",
+  "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_file": "test-vectors/FRONTEND-CONFIG-EVENT-INPUT-VECTORS.json",
+  "source_bytes": 943694,
+  "source_sha256": "493eb904467d22f9ca6dc50b86bf05bcd9f6643f16fa352766cac26d15e156eb",
+  "local_file": "job-configuration-vectors.json",
+  "local_bytes": 943694,
+  "local_sha256": "493eb904467d22f9ca6dc50b86bf05bcd9f6643f16fa352766cac26d15e156eb",
+  "scope": "Selected F01E.1 job XML normalization and selected profile gate only. No file I/O, ADM graph/CHNA parsing, DBMD, object event/control rows, or whole F01E/F01 claim."
+}

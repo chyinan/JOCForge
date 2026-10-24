@@ -14,17 +14,21 @@ flowchart TD
 
 encode 不读取路径、不启动进程、不打开文件。其余 domain 模块、io 和 validation 均不在当前调用图中。
 
+已验证的 F01G candidate 子路径是调用者显式提供 AXML/CHNA metadata payload → `selected_adm_graph` 的 typed physical graph/ATU UID/source-index identity receipt → candidate `adm_object_events` 零起点/单block/样本域 admission → 同candidate raw DBMD payload 经现有parser → physical-host join → candidate control52 set。它不在 CLI `encode` 调用图内，且 SOURCE_BINDING_TO_SELECTED_JOB 仍为 `UNRESOLVED`；F01E job vectors 的 N=6,522,906 与 candidate WAV receipt 的 N=13,888,071 不可合并。它不读取WAV/data/PCM内容，不产生prefix11 geometry、installed48 numeric state 或control38。
+
 批准后的职责流：CLI 收集有界输入 → io 产生输入字节 → frontend 生成不可变语义输入 → application 按 GTC 协调 owner → 各 domain 产生 staged result → publication 产生完整发布提案 → CLI 调用 atomic_output 提交。本轮只物化边界，不启用这条生产路径。
 
 已物化的 PostWindow fanout capability 位于 F03W `W3072` installed48 输出之后。future renderer 创建一个线性 proposal；`fanout(self)` 生成 CurrentFeatures 和 spatial-audio 两个非 Clone view，并共享同一 immutable `Arc` payload。CurrentFeatures 接收显式 phase。renderer、F04 assembler 和 parent transaction 仍 deferred。
 
 F04C 的 E2 component stage 和 E3 Direct-LFE ring stage 分别消费同代受限输入，并返回不可提交的 proposal。E3 在 `g>=2` 提供 provenance 为 `g-2` 的 Type10 row0。rows1..15 来自当前 callback 的 E2 component15。E4 将两个 proposal 组装为只读的 16×1536 packet。
 
-Receiver mode=1 stage 已通过局部测试。它接收同代 Type10 receipt 和带 parent lineage 的 S09 view。它推进五条 analysis history，只对 `[Ls, Rs]` 运行 mode=1 delay/FIR/synthesis。它返回 after-state proposal，不提交 owner root。F04R S09 producer、整条 receiver、J05 receipt 和 parent root replacement 仍 deferred。
+`spatial_audio_composer` 现消费 E4 proposal 和 admitted `ReaderTargetUpdateReceipt`。它在执行 receiver 前验证 programme/attempt/transaction、完整 F04 before root、phase、component origin g、LFE origin g-2、target envelope g、reader invocation g-2 及每行 producer generation。g0/g1 只安装 component/LFE after 值并产生完整 F04 root g+1；g>=2 才各执行一次 receiver 和 mode0 fitting，得到 final-six、target/carrier QMF、实际 target words 和 J05 lineage。完整 after root 仍只是 `SpatialAudioAfterProposal`，只能由 parent transaction 安装。
 
-F05R56 输入从 `spatial_control` 同代 committed-before root 和 callback inputs 开始。每个 callback 都预览 marker/history 与 target snapshot；`g=0,1` 只返回状态 proposal，不生成 reader invocation 或 receipt。`g>=2` 使用 `q=g-2`，预览 Type11 encode→wire decode、16 条 previous-aware reader56 records 与 16×6 finite target rows。reader records 和 targets 必须来自同一 wire decode/reader preview；target payload 不从 expected literals 或旧 receipt 取值。局部 selected producer 已按 8 callback input-only chain 验证；成功只产生完整 next-state proposal 与 pending `ReaderTargetUpdateReceipt`，parent `spatial_control` transaction 成功 commit 后才 admission。失败返回空输出并保留 committed root。F04C/F04R/F05JC 消费或 parent transaction 本轮未运行。
+F05R56 输入从 `spatial_control` 同代 committed-before root 和 callback inputs 开始。每个 callback 都预览 marker/history 与 target snapshot；`g=0,1` 只返回状态 proposal，不生成 reader invocation 或 receipt。`g>=2` 使用 `q=g-2`，同一次 Type11 encode→wire decode 产生 ID11 body、16 条 previous-aware reader56 records 与 16×6 finite target rows。reader records、targets 和 ID11 必须来自同一预览；target payload 不从 expected literals 或旧 receipt 取值。pending receipt admission 后，F04C 直接消费其实际 target words/逐行 generation，F13 body barrier 原样消费同一 ID11 bytes；两个消费者都不得重跑 reader。
 
-F13 metadata owner selected slice 接收 ID11/ID2/ID14 immutable bodies 与当前 source config；owner 内生成 ID1 timer/wire body，按 ID11→ID1→ID2→ID14 完成四队列 push/pop，再按 ID11→ID14→ID2→ID1 生成 source2+ EMDF proposal。source/dispatch/AU clock 分别为 `s`、`s+1`、`null (s<2) or s-2`。本地 source receipt 和 EOF leaf proposal 已通过洗白 fixture；F13C/F13D2、global CallbackTransaction、完整 programme 调用和 durable publication 仍 deferred。
+J05 projection 进入 F05JL 值级链后，依次推进 temporal、geometry 和 180-cell fit。full/sparse/channel 只在本 callback 内作为 retry 输入，不成为 persistent coefficient seed。所有 retry 共用同一个 sequence 与同次 F04D selected index；完整 ID14 成功后才提出 next dispatch/sequence/writer state，失败不推进。temporal、geometry、fit-generation 和 dispatch state 仍等待 programme parent 的一次安装。
+
+F13 先用 `MetadataBodiesProposal` 校验 ID11/ID2/ID14 与同一 J05 source lineage；ID2 必须读取同代完整 ID11 header。`ProgrammeMeasurementReceipt` 只接受 case-sensitive `UNGATED`、`DIALOGUE`、`LEVEL`，对应 public semantic 0/1/2；ID1 config[2] 仅在 DIALOGUE 时为1。selected DI-off 只准入 UNGATED/LEVEL，不能用 false 掩盖 DIALOGUE receipt，也不能使用 internal enum顺序、job downmix字符串或裸数字。`MetadataOwner::stage_source` 使用 constructor-pinned wrapper，在 owned clone 内推进六 timer、生成 ID1，并按 ID11→ID1→ID2→ID14 push/pop，随后按 ID11→ID14→ID2→ID1 生成 source2+ EMDF。返回值保留 owned replacement owner、specialized receipt 和 bodies lineage；parent source transaction 在 F12/integrity/durable 条件全部成功后才可安装。
 
 ## Main 时钟
 

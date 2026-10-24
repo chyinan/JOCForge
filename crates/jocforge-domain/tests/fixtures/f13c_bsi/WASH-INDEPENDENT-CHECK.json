@@ -1,0 +1,18 @@
+{
+  "schema": "wash-bsi-count-producer-review.v1",
+  "result": "PASS_FOR_SELECTED_SCALAR_PRODUCER_AND_IMPORT_COPY_ONLY",
+  "source_manifest_sha256": "cdc1d781cfb19a8b935cc64cf66524926f76b667e0747ab0ac83ac603bcdcb3a",
+  "source_independent_check_sha256": "02971722c6deee824f1f908c4e2e929110215a2579dca3401ea7aa9e5426ecae",
+  "base_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "superseded_base_spec_sha256": "09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b",
+  "wash_replay_sha256": "cd8911207503a502957b850a8ffcfcfc26784bb438e1f28123f43df9d38d7901",
+  "ordinary_cases": 3,
+  "configuration_cases": 7,
+  "validated_pipeline_cases": 2,
+  "validation_bypassed_diagnostic_cases": 5,
+  "total_case_mismatches": 0,
+  "selected_natural_count": 16,
+  "id14_semantic_parser_closed": false,
+  "whole_F13C_ready": false,
+  "implementation_ready": false
+}

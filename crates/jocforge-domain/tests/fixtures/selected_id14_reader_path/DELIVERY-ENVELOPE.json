@@ -1,0 +1,36 @@
+{
+  "schema": "washed-implementer-supplement-delivery-envelope.v1",
+  "artifact_id": "F13C-SELECTED-ID14-READER-PATH-V1",
+  "bindings": [
+    {
+      "file": "CANDIDATE-AUDIT-SUMMARY.json",
+      "bytes": 474,
+      "sha256": "4767cce222d90e1f138e688fc96f56590a02ed2bac3e48ed36f0ac464e2d7b23"
+    },
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1963,
+      "sha256": "178e0decf9e363399c8afd837d0e0ba12489c25b417076e8fc51adb0de30c616"
+    },
+    {
+      "file": "INDEPENDENT-CHECK.json",
+      "bytes": 296,
+      "sha256": "de90ae59a29aba2ba2afbfb96d8a0da00ca6a395c00c894d4fae0f35bcfb179f"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 956,
+      "sha256": "9a0b164c09d467e42b838bf6290ecfb7b660f21564b67315961241793113c41f"
+    },
+    {
+      "file": "SELECTED-PATH-READER-STATUS.json",
+      "bytes": 2861,
+      "sha256": "f08f7ba76b75fbd847a136a63f145737299f70b1e7e32bc2b2b978b8edd64db4"
+    },
+    {
+      "file": "WASH-VALIDATION.json",
+      "bytes": 1619,
+      "sha256": "749dd66d1554857727d42d7b0ba2e98dbf87d82bde8006a30a7fb565971b7b13"
+    }
+  ]
+}

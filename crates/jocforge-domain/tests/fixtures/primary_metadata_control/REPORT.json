@@ -1,0 +1,16 @@
+{
+  "primary_source": "Current user-provided music WAV, full-file frozen job, 6522906 PCM frames by data extent, 4247 normal callbacks.",
+  "frozen_job_sha256": "ef156c2480a5691d17f0c2d3742f50ded160041fccac0319095c891520fbe8c3",
+  "current_full_pcm_byte_identity": "NOT_REHASHED",
+  "primary_metadata_binding": "CONFIRMED_TO_SOURCE_DECLARATION_EXTENT_AND_METADATA_IDENTITIES",
+  "model_and_f01e_vector_match": "28 objects / 364 owned control words / 28 physical DBMD records, all exact after explicit constructor defaults.",
+  "hanabi_scope": "SECONDARY_REFERENCE_ONLY; prior Hanabi graph/DBMD/native probes must not be admitted as primary source inputs.",
+  "remaining_single_next_action": "Resolve normal original-encoder reference workflow for the same primary file and unchanged filter semantics, then bind its real source/owner generation to reference output; do not substitute Hanabi or an alternate recorded WAVE hash.",
+  "limits": [
+    "No whole-file PCM hash or PCM byte comparison was performed.",
+    "No successful new primary native encode or primary native control capture is claimed.",
+    "Bed undefined padding is omitted; no value is invented for bytes24..51.",
+    "General graph reorder/malformed policy and source activity flags are outside this metadata-only handoff."
+  ],
+  "job_delivery": "Functional field projection only; original job digest is a research-side source identity declaration."
+}

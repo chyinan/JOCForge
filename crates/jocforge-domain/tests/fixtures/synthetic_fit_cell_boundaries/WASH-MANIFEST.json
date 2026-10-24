@@ -1,0 +1,25 @@
+{
+  "schema": "washed-spec-manifest.v1",
+  "payloads": [
+    {
+      "file": "approved-joc-math.json",
+      "bytes": 39081,
+      "sha256": "d42b7e8ebaabf27bdf519148986b70aa6de56f4eb6bfd0179cd0bd011e284fe7"
+    },
+    {
+      "file": "CONTRACT.md",
+      "bytes": 2660,
+      "sha256": "15f1cc508ff85d24e002abcc987d7ee2611f43b0adf292d7e464495aa68dc1ef"
+    },
+    {
+      "file": "EXPECTED.json",
+      "bytes": 81500,
+      "sha256": "c4f643d8986ac2cc795b1a6bf156b888b31719dd10c4880a9aba92fa679e175f"
+    },
+    {
+      "file": "INPUT-ONLY.json",
+      "bytes": 3150,
+      "sha256": "ffdd3130a597f4772db0cdc4dc76cf170cda9444fd10cac4a31f53b8a0ff3d68"
+    }
+  ]
+}

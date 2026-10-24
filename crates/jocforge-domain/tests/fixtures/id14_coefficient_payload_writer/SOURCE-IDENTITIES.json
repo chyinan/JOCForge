@@ -1,0 +1,49 @@
+{
+  "schema": "washed-id14-payload-writer-source-identities.v1",
+  "dll": {
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "local_copies": {
+    "approved-codebooks.json": "515d635adc6099493dfd27f787bdf2b9f19a4b4bb1180860b0e820a23fb5d5ae"
+  },
+  "approved_source_roles": [
+    {
+      "role": "APPROVED_SPEC_OR_PARAMETERS",
+      "sha256": "91fde215d0a6d5d1e820a2e29b467afd2b1fc78a5fa8f87300cc42a346152143"
+    },
+    {
+      "role": "APPROVED_SPEC_OR_PARAMETERS",
+      "sha256": "92d7be8c41adf94056c81d98514b66318b3a38b006db3426bf56919effd9f012"
+    },
+    {
+      "role": "APPROVED_SPEC_OR_PARAMETERS",
+      "sha256": "49c3e07298262e2d5867d936eab0ddf6d746a17a9ce844358a0966d1b5d4d779"
+    },
+    {
+      "role": "APPROVED_SPEC_OR_PARAMETERS",
+      "sha256": "1b593718504078e9fba296a120bd7bc7d180a8c77b4887a060d5ae1f3fa77857"
+    },
+    {
+      "role": "APPROVED_SPEC_OR_PARAMETERS",
+      "sha256": "af08ef531f8708ab81cd6af0bf8ae71504ffb19ba76d5fb8571b1ae8db53c747"
+    },
+    {
+      "role": "APPROVED_SPEC_OR_PARAMETERS",
+      "sha256": "515d635adc6099493dfd27f787bdf2b9f19a4b4bb1180860b0e820a23fb5d5ae"
+    },
+    {
+      "role": "FROZEN_RESEARCH_MODEL",
+      "sha256": "e15f159cf0da5560519e74029f9eddfeb626ca9f1ac5d2c8777ab812c67017ea"
+    },
+    {
+      "role": "FROZEN_RESEARCH_MODEL",
+      "sha256": "0d94e44c377fa231a060c8c322fb04788003c411fb26df3675f18faaa19e24ff"
+    },
+    {
+      "role": "FROZEN_RESEARCH_MODEL",
+      "sha256": "3ac9a61ad264625c643110da53e5e7aebf87de574a4a54a4c640306e1706b0d1"
+    }
+  ],
+  "source_paths_or_addresses_included": false,
+  "raw_dll_or_disassembly_included": false
+}

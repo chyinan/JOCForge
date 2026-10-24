@@ -1,0 +1,17 @@
+{
+  "source_package": "R2 preserved unchanged",
+  "receipt_pointer": {
+    "old_sha256": "9c676c2e933f76b6675a1ab44db878c423881c04af8487229176c955ffb9849e",
+    "target": "PRIMARY-SOURCE-RECEIPT.json",
+    "corrected_sha256": "c60c45033ee40592b9fc82c9c68edf94c4ee1676f27d9df34634291b2cb0f7ad",
+    "explanation": "R2 referenced research-side serialization; R3 binds the actual delivered serialization."
+  },
+  "integrity_layout": "Manifest binds payloads; detached check binds manifest; delivery envelope binds manifest, detached check and executable checker. Envelope SHA is externally supplied in the delivery message. No self-hash cycle.",
+  "dbmd_checks": [
+    "All 38 decoded rows recomputed from raw section10 and compared.",
+    "Four authored fields recomputed.",
+    "Optional terminator and every following byte must be zero."
+  ],
+  "full_pcm_identity": "NOT_REHASHED",
+  "new_primary_native_encode": "NOT_ESTABLISHED"
+}

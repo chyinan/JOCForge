@@ -1,0 +1,78 @@
+{
+  "schema": "washed-selected-adm-graph-identity.v1",
+  "delivery_scope": "INTERNAL_IMPLEMENTATION_ONLY",
+  "contains_pcm": false,
+  "contains_audio_digest": false,
+  "contains_private_key": false,
+  "contains_authentication_material": false,
+  "contains_dll_or_disassembly": false,
+  "source_metadata": {
+    "source_name": "hanabi.wav",
+    "source_bytes": 1583325474,
+    "sample_rate": 48000,
+    "physical_channels": 38,
+    "pcm_bits": 24,
+    "metadata_only_bytes_read": 84735,
+    "pcm_bytes_read": 0,
+    "pcm_digest_computed": false,
+    "axml_sha256": "5973f94db1bc995465b33f6d9be7fd55d3e1bd3941130a913c58e7e5cf57bbfc",
+    "chna_sha256": "f82b14e4c1b5b3b1750ed4104aa53f1d595e3ff2d4dbaef76a76c0e35f31b7a6"
+  },
+  "target_job_binding": {
+    "candidate_source_frames": 13888071,
+    "f01e_vector_source_samples": 6522906,
+    "f01e_normal_callbacks": 4247,
+    "same_wave_or_trim_relationship": "UNRESOLVED",
+    "selected_critical_path_use": "DO_NOT_JOIN_UNTIL_WASH_CONFIRMS_SOURCE_IDENTITY"
+  },
+  "evidence_packages": [
+    {
+      "role": "real selected source metadata and independent 38-row graph projection",
+      "manifest_sha256": "a2bb9bd62cc80391085297f012188c7dcc628f90e013ba762262f08046ac6e0b",
+      "check_sha256": "02dd71556f80618e41ee903a72f653937be52f1c396d23c85803cac461c845c0"
+    },
+    {
+      "role": "corrected native ATU UID descriptors and regular source-field boundary",
+      "manifest_sha256": "b339bb996fd027f1c47e80c8ca077c865110a05ea335d3b8937df242cc673485",
+      "check_sha256": "86347163541c5e30db82089cb59c56e665e203c94b96f0f7453ec7b82a6f97fc"
+    },
+    {
+      "role": "selected prefix11 Q15 geometry and same-table main consumers",
+      "manifest_sha256": "a6f7cbda90d2daae9995fe72342804a704a3173551e3e7f5761b30ce316a87f8",
+      "check_sha256": "33754d81f5625f426a989c77ebbc973f23fbe93aeaf56ff93c9828e5723da032"
+    },
+    {
+      "role": "actual selected source DBMD chunk and frozen parser output",
+      "manifest_sha256": "b8e55142458026d71cc18d192072cdb25db4617f6c00dfb96826ee7b70de815e",
+      "check_sha256": "aa3daed09e1b90a220184757d4f8c7a7ec390cad2d84a42b95c4a063d5a88244"
+    }
+  ],
+  "wash_replay": {
+    "real_source_graph_tracks": 38,
+    "native_load_calls": 4,
+    "native_uid_lookups": 152,
+    "native_descriptor_stores": 152,
+    "regular_source_rows": 296,
+    "defined_u32_words": 3848,
+    "object_id_cases": 17,
+    "uid_lookup_cases": 5,
+    "prefix_q15_points": 11,
+    "prefix_xyz_words": 33,
+    "prefix_defined_metadata_words": 143,
+    "prefix_same_table_consumers": 8,
+    "prefix_runtime_xyz_words": 264,
+    "prefix_attribute_components": 440,
+    "source_dbmd_bytes": 580,
+    "source_dbmd_authored_fields": 4,
+    "source_dbmd_track_records": 38,
+    "source_dbmd_parse_mismatches": 0,
+    "normal_mode": "PASS",
+    "optimized_mode": "PASS",
+    "semantic_mutations_rejected_normal_and_optimized": 3,
+    "full_installed48_numeric_scope": "NOT_EVALUATED",
+    "source_field0": "NOT_RECONSTRUCTED",
+    "skip_field4_transition": "PARTIALLY_OBSERVED",
+    "earlier_measurement_prefix_consumers": "NOT_JOINED"
+  },
+  "scope": "Source-local valid graph, ATU UID identity, prefix geometry, source DBMD parse, and regular source-field boundary. Main selected job identity, full F01G, and product chain remain open."
+}

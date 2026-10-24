@@ -1,4 +1,14 @@
 use super::*;
+use crate::{
+    joc::emdf::{
+        id1_configuration::Id1MeasurementConfiguration, metadata_bodies::MetadataBodiesProposal,
+    },
+    joc::{
+        emdf_carrier::{CarrierBitCursor, CarrierPlannerState},
+        metadata_carrier::stage_metadata_carrier,
+    },
+    meter::measurement_receipt::{ProgrammeMeasurementReceipt, ProgrammeMeasurementReceiptInput},
+};
 use serde_json::{Value, json};
 use std::path::PathBuf;
 
@@ -108,6 +118,129 @@ fn cold_state_and_five_source_receipts_match_the_complete_vectors() {
         vectors["continuous_calls"][2]["expected"]["receipt"]["emdf_sha256"],
         first_published["first_published"]["wire_sha256"]
     );
+}
+
+#[test]
+fn typed_stage_uses_pinned_wrapper_and_leaves_committed_leaf_unchanged() {
+    let vectors = vectors();
+    let case = &vectors["continuous_calls"][0];
+    let call = source_call(case);
+    let before = owner();
+    let before_bytes = before.state.canonical_bytes();
+    let measurement =
+        ProgrammeMeasurementReceipt::from_verified_prepass(ProgrammeMeasurementReceiptInput {
+            programme_id: &call.programme_id,
+            attempt: call.attempt,
+            input_sha256: [0x11; 32],
+            config_sha256: [0x22; 32],
+            dialogue_word: (-18.0_f32).to_bits(),
+            itu_word: (-17.0_f32).to_bits(),
+            true_peak_word: (-4.0_f32).to_bits(),
+            gating_kind: "DIALOGUE",
+            selected_lufs_word: (-17.0_f32).to_bits(),
+            meter_terminal_sha256: [0x33; 32],
+            normal_callbacks: 4_247,
+            zero_drains: 3,
+            energy_windows: 6_794,
+        })
+        .unwrap();
+    let id1_configuration =
+        Id1MeasurementConfiguration::from_measurement_for_test(&measurement).unwrap();
+    assert_eq!(id1_configuration.json_values(), call.config);
+    let bodies = MetadataBodiesProposal::for_test(
+        &call.programme_id,
+        call.attempt,
+        &call.transaction_id,
+        call.source_index,
+        call.bodies,
+    );
+    let proposal = before
+        .stage_source(MetadataStageInput {
+            au_index: call.au_index,
+            id1_configuration,
+            bodies,
+        })
+        .unwrap();
+    assert_eq!(before.state.canonical_bytes(), before_bytes);
+    assert_eq!(proposal.receipt().as_json(), case["expected"]["receipt"]);
+    assert_eq!(
+        proposal.proposed_after_sha256(),
+        case["expected"]["after_sha256"]
+    );
+    assert_eq!(proposal.bodies_lineage().transaction_id(), "META-0");
+    assert_eq!(proposal.before_snapshot().generation(), 0);
+    assert_eq!(proposal.before_snapshot().next_source_index().value(), 0);
+    assert_eq!(proposal.after_snapshot().generation(), 1);
+    assert_eq!(proposal.after_snapshot().next_source_index().value(), 1);
+    assert_ne!(
+        proposal.before_snapshot().state_sha256(),
+        proposal.after_snapshot().state_sha256()
+    );
+    let id14 = proposal.id14_queue_view().unwrap();
+    assert_eq!(id14.buffer_ids(), &[1, 0]);
+    assert_eq!(id14.next_writer().value(), 1);
+    assert!(id14.slots()[0].is_none());
+    let writer0 = id14.slots()[1].as_ref().unwrap();
+    assert_eq!(writer0.writer_generation().value(), 0);
+    assert_eq!(writer0.bytes(), &[0x0e, 0x00, 0x0e]);
+}
+
+#[test]
+fn published_metadata_proposal_stages_into_the_selected_carrier() {
+    let vectors = vectors();
+    let calls = vectors["continuous_calls"].as_array().unwrap();
+    let mut metadata = owner();
+    for call in &calls[..2] {
+        metadata.process_source(source_call(call)).unwrap();
+    }
+    let call = source_call(&calls[2]);
+    let measurement =
+        ProgrammeMeasurementReceipt::from_verified_prepass(ProgrammeMeasurementReceiptInput {
+            programme_id: &call.programme_id,
+            attempt: call.attempt,
+            input_sha256: [0x11; 32],
+            config_sha256: [0x22; 32],
+            dialogue_word: (-18.0_f32).to_bits(),
+            itu_word: (-17.0_f32).to_bits(),
+            true_peak_word: (-4.0_f32).to_bits(),
+            gating_kind: "DIALOGUE",
+            selected_lufs_word: (-17.0_f32).to_bits(),
+            meter_terminal_sha256: [0x33; 32],
+            normal_callbacks: 4_247,
+            zero_drains: 3,
+            energy_windows: 6_794,
+        })
+        .unwrap();
+    let id1_configuration =
+        Id1MeasurementConfiguration::from_measurement_for_test(&measurement).unwrap();
+    let bodies = MetadataBodiesProposal::for_test(
+        &call.programme_id,
+        call.attempt,
+        &call.transaction_id,
+        call.source_index,
+        call.bodies,
+    );
+    let metadata_proposal = metadata
+        .stage_source(MetadataStageInput {
+            au_index: call.au_index,
+            id1_configuration,
+            bodies,
+        })
+        .unwrap();
+    let emdf = metadata_proposal.emdf().expect("source2 publishes EMDF");
+    let carrier = stage_metadata_carrier(
+        &CarrierPlannerState::cold(),
+        emdf,
+        &[0xa5; 4_096],
+        CarrierBitCursor::new(10_048),
+    )
+    .unwrap();
+    assert_eq!(carrier.complete_container(), emdf);
+    assert_eq!(
+        carrier.plan().segment_lengths()[2],
+        u16::try_from(emdf.len() - 4).unwrap()
+    );
+    assert_eq!(carrier.payload_cursor().bit_offset(), 10_058);
 }
 
 #[test]

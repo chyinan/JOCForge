@@ -1,0 +1,49 @@
+{
+  "queue_constructor_inputs": [
+    {
+      "capacity": 10,
+      "delay": 4608,
+      "period": 1536
+    },
+    {
+      "capacity": 3,
+      "delay": 4608,
+      "period": 1536
+    },
+    {
+      "capacity": 2103,
+      "delay": 4608,
+      "period": 1536
+    },
+    {
+      "capacity": 543,
+      "delay": 3072,
+      "period": 1536
+    },
+    {
+      "capacity": 8,
+      "delay": 4608,
+      "period": 1536
+    }
+  ],
+  "gate": {
+    "cold_progress": 0,
+    "threshold_samples": 3072,
+    "hop_samples": 1536,
+    "bitrate_kbps": 1024,
+    "sample_rate_hz": 48000,
+    "calls": 6
+  },
+  "parent": {
+    "cold_tolerance": 2,
+    "measured_assembly_return_boundary_inputs": [
+      221,
+      221,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "scope": "Constructor arguments and measured child-return boundary inputs, never expected queue/tolerance/gate state seeds."
+}

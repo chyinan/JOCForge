@@ -1,0 +1,455 @@
+{
+  "initial_state": {
+    "gate_progress": 0,
+    "flush_remaining": 4,
+    "flush_started": 0,
+    "planner_counter": 0,
+    "planner_enabled": 0,
+    "planner_first_block": 0,
+    "planner_segments": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "last_prepared_reservation_bytes": 0,
+    "pending_id14_payload_bytes": [],
+    "joc_runtime_present": true
+  },
+  "actions": [
+    {
+      "kind": "process",
+      "call": 1,
+      "return_i32": 0,
+      "consumed_flag": 1,
+      "valid_bytes": 0,
+      "after": {
+        "gate_progress": 0,
+        "flush_remaining": 4,
+        "flush_started": 0,
+        "planner_counter": 0,
+        "planner_enabled": 0,
+        "planner_first_block": 0,
+        "planner_segments": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "last_prepared_reservation_bytes": 0,
+        "pending_id14_payload_bytes": [],
+        "joc_runtime_present": true
+      }
+    },
+    {
+      "kind": "process",
+      "call": 2,
+      "return_i32": 0,
+      "consumed_flag": 1,
+      "valid_bytes": 0,
+      "after": {
+        "gate_progress": 0,
+        "flush_remaining": 4,
+        "flush_started": 0,
+        "planner_counter": 0,
+        "planner_enabled": 0,
+        "planner_first_block": 0,
+        "planner_segments": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "last_prepared_reservation_bytes": 0,
+        "pending_id14_payload_bytes": [],
+        "joc_runtime_present": true
+      }
+    },
+    {
+      "kind": "process",
+      "call": 3,
+      "return_i32": 0,
+      "consumed_flag": 1,
+      "valid_bytes": 0,
+      "after": {
+        "gate_progress": 1536,
+        "flush_remaining": 4,
+        "flush_started": 0,
+        "planner_counter": 1,
+        "planner_enabled": 0,
+        "planner_first_block": 0,
+        "planner_segments": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "last_prepared_reservation_bytes": 0,
+        "pending_id14_payload_bytes": [
+          132
+        ],
+        "joc_runtime_present": true
+      }
+    },
+    {
+      "kind": "process",
+      "call": 4,
+      "return_i32": 0,
+      "consumed_flag": 1,
+      "valid_bytes": 0,
+      "after": {
+        "gate_progress": 3072,
+        "flush_remaining": 4,
+        "flush_started": 0,
+        "planner_counter": 2,
+        "planner_enabled": 0,
+        "planner_first_block": 0,
+        "planner_segments": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "last_prepared_reservation_bytes": 0,
+        "pending_id14_payload_bytes": [
+          326
+        ],
+        "joc_runtime_present": true
+      }
+    },
+    {
+      "kind": "flush",
+      "call": 1,
+      "return_i32": 0,
+      "valid_bytes": 4096,
+      "after": {
+        "gate_progress": 4608,
+        "flush_remaining": 3,
+        "flush_started": 1,
+        "planner_counter": 3,
+        "planner_enabled": 1,
+        "planner_first_block": 2,
+        "planner_segments": [
+          0,
+          0,
+          422,
+          0,
+          0,
+          0
+        ],
+        "last_prepared_reservation_bytes": 422,
+        "pending_id14_payload_bytes": [
+          222
+        ],
+        "joc_runtime_present": true
+      }
+    },
+    {
+      "kind": "flush",
+      "call": 2,
+      "return_i32": 0,
+      "valid_bytes": 4096,
+      "after": {
+        "gate_progress": 4608,
+        "flush_remaining": 2,
+        "flush_started": 1,
+        "planner_counter": 4,
+        "planner_enabled": 1,
+        "planner_first_block": 2,
+        "planner_segments": [
+          0,
+          0,
+          316,
+          0,
+          0,
+          0
+        ],
+        "last_prepared_reservation_bytes": 316,
+        "pending_id14_payload_bytes": [
+          226
+        ],
+        "joc_runtime_present": true
+      }
+    },
+    {
+      "kind": "flush",
+      "call": 3,
+      "return_i32": 0,
+      "valid_bytes": 4096,
+      "after": {
+        "gate_progress": 4608,
+        "flush_remaining": 1,
+        "flush_started": 1,
+        "planner_counter": 5,
+        "planner_enabled": 1,
+        "planner_first_block": 2,
+        "planner_segments": [
+          0,
+          0,
+          320,
+          0,
+          0,
+          0
+        ],
+        "last_prepared_reservation_bytes": 320,
+        "pending_id14_payload_bytes": [
+          222
+        ],
+        "joc_runtime_present": true
+      }
+    },
+    {
+      "kind": "flush",
+      "call": 4,
+      "return_i32": 0,
+      "valid_bytes": 4096,
+      "after": {
+        "gate_progress": 4608,
+        "flush_remaining": 0,
+        "flush_started": 1,
+        "planner_counter": 6,
+        "planner_enabled": 1,
+        "planner_first_block": 2,
+        "planner_segments": [
+          0,
+          0,
+          316,
+          0,
+          0,
+          0
+        ],
+        "last_prepared_reservation_bytes": 316,
+        "pending_id14_payload_bytes": [
+          218
+        ],
+        "joc_runtime_present": true
+      }
+    },
+    {
+      "kind": "flush",
+      "call": 5,
+      "return_i32": 0,
+      "valid_bytes": 0,
+      "after": {
+        "gate_progress": 4608,
+        "flush_remaining": 0,
+        "flush_started": 1,
+        "planner_counter": 6,
+        "planner_enabled": 1,
+        "planner_first_block": 2,
+        "planner_segments": [
+          0,
+          0,
+          316,
+          0,
+          0,
+          0
+        ],
+        "last_prepared_reservation_bytes": 316,
+        "pending_id14_payload_bytes": [
+          218
+        ],
+        "joc_runtime_present": true
+      }
+    }
+  ],
+  "frontend_origins": [
+    {
+      "frontend_invocation": 1,
+      "origin_kind": "external_process",
+      "origin_call": 3,
+      "valid_bytes": 0
+    },
+    {
+      "frontend_invocation": 2,
+      "origin_kind": "external_process",
+      "origin_call": 4,
+      "valid_bytes": 0
+    },
+    {
+      "frontend_invocation": 3,
+      "origin_kind": "flush",
+      "origin_call": 1,
+      "valid_bytes": 4096,
+      "published_au_ordinal": 0
+    },
+    {
+      "frontend_invocation": 4,
+      "origin_kind": "flush",
+      "origin_call": 2,
+      "valid_bytes": 4096,
+      "published_au_ordinal": 1
+    },
+    {
+      "frontend_invocation": 5,
+      "origin_kind": "flush",
+      "origin_call": 3,
+      "valid_bytes": 4096,
+      "published_au_ordinal": 2
+    },
+    {
+      "frontend_invocation": 6,
+      "origin_kind": "flush",
+      "origin_call": 4,
+      "valid_bytes": 4096,
+      "published_au_ordinal": 3
+    }
+  ],
+  "renderer_spans": [
+    {
+      "work_invocation": 1,
+      "samples": 0,
+      "progress_after": 1536
+    },
+    {
+      "work_invocation": 2,
+      "samples": 0,
+      "progress_after": 3072
+    },
+    {
+      "work_invocation": 3,
+      "samples": 1536,
+      "progress_after": 4608
+    },
+    {
+      "work_invocation": 4,
+      "samples": 1536,
+      "progress_after": 4608
+    },
+    {
+      "work_invocation": 5,
+      "samples": 1536,
+      "progress_after": 4608
+    },
+    {
+      "work_invocation": 6,
+      "samples": 1536,
+      "progress_after": 4608
+    },
+    {
+      "work_invocation": 7,
+      "samples": 1536,
+      "progress_after": 4608
+    },
+    {
+      "work_invocation": 8,
+      "samples": 1536,
+      "progress_after": 4608
+    }
+  ],
+  "close_return_i32": 0,
+  "close_state": {
+    "gate_progress": 4608,
+    "flush_remaining": 0,
+    "flush_started": 1,
+    "planner_counter": 6,
+    "planner_enabled": 1,
+    "planner_first_block": 2,
+    "planner_segments": [
+      0,
+      0,
+      316,
+      0,
+      0,
+      0
+    ],
+    "last_prepared_reservation_bytes": 316,
+    "pending_id14_payload_bytes": [
+      218
+    ],
+    "joc_runtime_present": false
+  },
+  "workspace_retirement": {
+    "owner_closed_before_free": true,
+    "allocation_retired": true,
+    "post_free_memory_read": false
+  },
+  "pcm_offsets_from_first_row_bytes": [
+    0,
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    28,
+    32,
+    36,
+    40,
+    44,
+    48,
+    52,
+    56,
+    60,
+    64,
+    68,
+    72,
+    76,
+    80,
+    84,
+    88,
+    92,
+    96,
+    100,
+    104,
+    108,
+    112,
+    116,
+    120,
+    124,
+    128,
+    132,
+    136,
+    140,
+    144,
+    148
+  ],
+  "early_returns": [
+    {
+      "event": "eof_early_return",
+      "status": "CAPTURED",
+      "kind": "process_after_flush_started",
+      "input_flush_started": 1,
+      "return_raw": 4294967293,
+      "return_i32": -3,
+      "consumed_flag_after": 1,
+      "output_length_after": "0",
+      "flush_started_after": 1,
+      "remaining_after": 0
+    },
+    {
+      "event": "eof_early_return",
+      "status": "CAPTURED",
+      "kind": "empty_flush",
+      "input_flush_started": 0,
+      "input_remaining": 0,
+      "return_raw": 0,
+      "return_i32": 0,
+      "output_length_after": "0",
+      "flush_started_after": 0,
+      "remaining_after": 0
+    },
+    {
+      "event": "eof_early_return",
+      "status": "CAPTURED",
+      "kind": "empty_flush",
+      "input_flush_started": 1,
+      "input_remaining": 0,
+      "return_raw": 0,
+      "return_i32": 0,
+      "output_length_after": "0",
+      "flush_started_after": 1,
+      "remaining_after": 0
+    }
+  ]
+}

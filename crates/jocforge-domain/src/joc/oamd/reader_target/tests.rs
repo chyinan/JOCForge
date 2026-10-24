@@ -350,6 +350,7 @@ fn selected_callback_chain_matches_postcomputation_state_and_receipt_assertions(
                 });
                 let (decoded_rows, wire) = super::type11::roundtrip(&controls).unwrap();
                 assert_eq!(decoded_rows.len(), READER_ROWS);
+                assert_eq!(receipt.id11_body(), wire.as_slice());
                 assert_eq!(hex(&wire), expected_case["expected"]["type11_wire_hex"]);
                 assert_eq!(wire.len(), expected_case["expected"]["type11_wire_bytes"]);
                 assert_eq!(

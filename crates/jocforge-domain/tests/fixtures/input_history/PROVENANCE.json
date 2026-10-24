@@ -1,0 +1,24 @@
+{
+  "slice": "F07_1_SIX_LANE_INPUT_HISTORY_BYTE_COPY_ONLY",
+  "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_spec_sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac",
+  "source_unit_vectors_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8",
+  "source_adapter_contract_sha256": "9bce2e35ce47147c76c13e58ee976d44c5109938f0b19e1f3a81f1d8a61fa1ae",
+  "source_unit_readme_sha256": "a455c6b33e582b0d359face09667e91622404fd203d376e446d615f9a52bbcce",
+  "case_id": "U-HISTORY-01",
+  "frames": 2,
+  "lanes": 6,
+  "samples_per_frame_per_lane": 1536,
+  "samples_per_history_per_lane": 1280,
+  "cold": true,
+  "frame_layout": "frame-major, then six external lane slots L/R/C/LFE/Ls/Rs, then F32LE samples",
+  "input_sha256": "489c73405f5fdc1e078901fc555650d4d46cc5c7beb9e9e2a7159f3eb83e0124",
+  "delayed_output_sha256": "e81243dc815fa9f324bf10ccb37723251c171036f00b5e08c5469e1f4e447371",
+  "terminal_state_sha256": "2d6fb9249269bca846da5d32f82cbec3ffaed04032886bcc489b437a07eac1eb",
+  "scope_exclusions": [
+    "F07 transient filtering and flags",
+    "F08 transform histories",
+    "source-frame and callback ownership",
+    "programme reset/fatal/EOF transaction"
+  ]
+}

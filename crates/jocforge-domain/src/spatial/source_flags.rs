@@ -731,24 +731,13 @@ impl SourceFlagsProducer {
             };
         }
 
-        let epsilon = f32::from_bits(ACTIVITY_EPSILON_BITS);
         let width_limit = f32::from_bits(WIDTH_LIMIT_BITS);
         let mut history_proposal = Vec::with_capacity(REGULAR_HOSTS);
         for (row, host) in input.route.regular_hosts.iter().copied().enumerate() {
             let current = input.current_pcm.row(host);
             let before = &history.rows[row];
             let control = input.controls.for_host(host)?;
-            let mut witness = false;
-            for sample_index in 0..FRAME_SAMPLES {
-                let a = r32_mul(before[sample_index], window[sample_index])
-                    .map_err(map_product_error)?;
-                let b = r32_mul(current[sample_index], window[FRAME_SAMPLES + sample_index])
-                    .map_err(map_product_error)?;
-                if a.value().abs() > epsilon || b.value().abs() > epsilon {
-                    witness = true;
-                    break;
-                }
-            }
+            let witness = triangle_activity_witness(&before[..], &current[..], &window)?;
 
             let activity = witness && !control.muted;
             let processing_inactive = !activity;
@@ -854,7 +843,7 @@ fn preflight(
     Ok(())
 }
 
-fn triangle_window() -> Result<Box<[FiniteF32]>, SourceFlagsError> {
+pub(crate) fn triangle_window() -> Result<Box<[FiniteF32]>, SourceFlagsError> {
     let divisor =
         FiniteF32::new(1536.0).map_err(|_| SourceFlagsError::WindowKnownAnswerMismatch)?;
     let mut window = Vec::with_capacity(WINDOW_WORDS);
@@ -882,6 +871,30 @@ fn triangle_window() -> Result<Box<[FiniteF32]>, SourceFlagsError> {
         return Err(SourceFlagsError::WindowKnownAnswerMismatch);
     }
     Ok(window.into_boxed_slice())
+}
+
+pub(crate) fn triangle_activity_witness(
+    before: &[FiniteF32],
+    current: &[FiniteF32],
+    window: &[FiniteF32],
+) -> Result<bool, SourceFlagsError> {
+    if before.len() != FRAME_SAMPLES || current.len() != FRAME_SAMPLES {
+        return Err(SourceFlagsError::HistoryShape);
+    }
+    if window.len() != WINDOW_WORDS {
+        return Err(SourceFlagsError::WindowKnownAnswerMismatch);
+    }
+    let epsilon = f32::from_bits(ACTIVITY_EPSILON_BITS);
+    for sample_index in 0..FRAME_SAMPLES {
+        let previous_product =
+            r32_mul(before[sample_index], window[sample_index]).map_err(map_product_error)?;
+        let current_product = r32_mul(current[sample_index], window[FRAME_SAMPLES + sample_index])
+            .map_err(map_product_error)?;
+        if previous_product.value().abs() > epsilon || current_product.value().abs() > epsilon {
+            return Ok(true);
+        }
+    }
+    Ok(false)
 }
 
 fn make_lineage(

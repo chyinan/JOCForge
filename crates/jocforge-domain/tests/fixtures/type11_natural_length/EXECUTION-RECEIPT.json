@@ -1,0 +1,13 @@
+{
+  "native_started_utc": "2026-10-23T15:31:48.963086+00:00",
+  "native_observer_sha256": "d8f684d9aef37669bb574f08e44845ee638d29ee9f546b4d6ca425d4b132d67f",
+  "native_job_sha256": "f853041671dc6809d8e606916ba100fc5f6a78c98d5b7bc481f6a7485c430285",
+  "native_trace_sha256": "38eda2861c8dd74705a79f64b5f39aacc15e60b3823c6bda95dbdf2970a4bb99",
+  "native_observer_errors": 0,
+  "reference_EC3_bytes": 274432,
+  "reference_EC3_sha256": "6ab4423990103ec01515d6e4cd99f3fbf9717f00427c155483ed03f28545b330",
+  "reference_matches_extended_baseline": true,
+  "model_replay_script_sha256": "457d24bd6e2f4a9300b64aee04150641df11f8b450ba6a9c62b212f5a43980c0",
+  "raw_PCM_private_keys_or_authentication_results_read": false,
+  "live_business_state_modified": false
+}

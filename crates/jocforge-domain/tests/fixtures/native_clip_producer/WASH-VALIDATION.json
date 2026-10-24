@@ -1,0 +1,19 @@
+{
+  "schema": "washed-native-clip-validation.v1",
+  "status": "SAMPLE_BOUNDARY_ALGORITHM_READY_NATURAL_SOURCE_MAPPING_OPEN",
+  "source_candidate_manifest_sha256": "00692e369043e05c06f475bd390ae0476d729da15990489f17b84140df0c6ca2",
+  "independent_checks": {
+    "candidate_payload_hashes_and_envelope": "PASS",
+    "normal_checker": "393 cases, 434 generations, PASS",
+    "optimized_checker": "393 cases, 434 generations, PASS",
+    "threshold_values": 128,
+    "attenuation_values": 128,
+    "native_output_indices": "128..255 all exercised",
+    "raw_PCM_or_authentication_data": false
+  },
+  "remaining": {
+    "model_native_clip_origin": "No same-natural-capture correlation; descriptor target-gain remains separate.",
+    "production_parent_and_upstream_fit": "NOT_RUN",
+    "whole_F13C": "NOT_READY"
+  }
+}

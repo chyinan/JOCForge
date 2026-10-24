@@ -1,0 +1,36 @@
+{
+  "schema": "f07-selected-frame-flag-inputs.v1",
+  "input_only": true,
+  "source_spec_sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac",
+  "source_verification_sha256": "7aa92b4c0dee80910c8b9c52100bc2ca933903e33efde081e568aafc8ed854d7",
+  "structure_refresh": {
+    "profile_spx": 0,
+    "profile_end_bin": 217,
+    "blocks": 6,
+    "short_mask_min": 0,
+    "short_mask_max": 63,
+    "other_mask_min": 0,
+    "other_mask_max": 63,
+    "loop_order": "short_mask outer ascending, other_mask inner ascending",
+    "bit_order": "bit b supplies block b",
+    "serialized_input_order": "six block flags in block order, each as ASCII 0 or 1"
+  },
+  "dither": {
+    "selected_profile": {
+      "selector": 7,
+      "acmod": 7,
+      "coupling": false,
+      "gate": true
+    },
+    "blocks": 6,
+    "fullband_lanes": 5,
+    "previous_mask_min": 0,
+    "previous_mask_max": 31,
+    "pattern_min": 0,
+    "pattern_max": 63,
+    "loop_order": "previous_mask outer ascending, pattern inner ascending",
+    "previous_short_bit_order": "bit lane supplies lane 0 through 4",
+    "current_short_recipe": "short[b][lane]=(pattern>>((b+lane)%6))&1",
+    "serialized_output_order": "30 block-major flags, syntax flag, five next previous_short flags; each as ASCII 0 or 1"
+  }
+}

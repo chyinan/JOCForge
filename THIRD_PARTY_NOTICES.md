@@ -6,10 +6,13 @@ JOCForge uses `serde_json` 1.0.154 only for F01E provider JSON syntax parsing an
 
 JOCForge uses `num-bigint` 0.4.6 only for the F05R56 selected panner's exact-rational alternating trigonometry enclosure. It is configured with `default-features = false` and `features = ["std"]`; the selected license is Apache-2.0 from its `MIT OR Apache-2.0` offer; repository: https://github.com/rust-num/num-bigint. It does not read runtime files or own persistent codec state. Its locked transitive dependencies are `num-integer`, `num-traits`, and the `num-traits` build dependency `autocfg`.
 
+JOCForge uses `roxmltree` 0.21.1 only to parse caller-supplied F01E.1 UTF-8 job XML into a read-only DOM. The selected license is Apache-2.0 from its `MIT OR Apache-2.0` offer; repository: https://github.com/RazrFalcon/roxmltree. The parser does not open files or perform network access; F01E rejects `DOCTYPE` and `ENTITY` declarations before DOM parsing. It is not used for general ADM graph parsing.
+
 Locked transitive Rust packages are listed below. Checksums are the crates.io checksums recorded by Cargo.lock.
 
 | Package | Version | License | Checksum |
 |---|---:|---|---|
+| roxmltree | 0.21.1 | MIT OR Apache-2.0 | `f1964b10c76125c36f8afe190065a4bf9a87bf324842c05701330bba9f1cacbb` |
 | autocfg | 1.5.1 | Apache-2.0 OR MIT | `f2032f911046de80f0a198e0901378627c33f59ea0ac00e363d481118bd70a53` |
 | block-buffer | 0.10.4 | MIT OR Apache-2.0 | `3078c7629b62d3f0439517fa394996acacc5cbc91c5a20d8c658e77abd503a71` |
 | cfg-if | 1.0.5 | MIT OR Apache-2.0 | `4e7648175b45a9a48536d676f68d918270699102aa8dab5496df06904c914600` |

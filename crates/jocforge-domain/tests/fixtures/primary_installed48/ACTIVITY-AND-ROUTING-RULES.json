@@ -1,0 +1,103 @@
+{
+  "source_mapping": [
+    "Admit this primary R4 metadata set and selected full-file job. Bind CHNA track_index minus one to the physical host; resolve UID, track, stream, channel, pack and object explicitly.",
+    "Prefix source0..10 is the selected P11 geometry, not physical host0..10. Prefix audio has a per-callback contributor set, not a single DBMD track owner.",
+    "Exclude the one semantic direct LFE from regular rows. Sort remaining physical hosts ascending; global source=11+regular ordinal. DBMD owner remains the physical host, never the global source index.",
+    "Bed coordinates use exact normalized 0/0.5/1 literals by semantic role. Prefix endpoints are 32767/32768, not 1. Object coordinates and attributes come from metadata/control production."
+  ],
+  "normative_activity": {
+    "format": "Signed little-endian PCM24 normalized by exact factor2^-23 into F32. This fixed input format is finite.",
+    "frame_samples": 1536,
+    "history": "One distinct full previous frame per regular physical host; initial positive zeros.",
+    "window": "3072 F32 coefficients: first[i]=R32(R32(i)/R32(1536)); second[i]=R32(R32(1535-i)/R32(1536)); i0..1535.",
+    "products": "For each sample i compute R32(previous[i]*first[i]) and R32(current[i]*second[i]) separately.",
+    "comparison": "Witness iff either absolute F32 product is strictly greater than exact2^-23. Equality is not active. OR over sample pairs, then OR over all1536 samples; no sum or cross-channel reduction.",
+    "quiet": "0 if a witness exists and mute is0; otherwise1. Primary mute is0 on all rows.",
+    "history_update": "Always copy unmodified current full frame to history before mute-window clearing. When mute and a witness exist, clear the2N working audio window; already-below-threshold tiny windows are not forcibly cleared.",
+    "alternate": "Integer PCM24 times exact F32 window represented as F64 is a cross-check only: compare magnitude to1+2^-24, the midpoint above1. It does not replace the normative F32 operations."
+  },
+  "writer_order": [
+    "Generate primary control38; regular window activity result becomes source field0. Source field4 initially copies control mute. Source index is a separate identity.",
+    "Reset every prefix field0/field4 to1/1 for each source callback.",
+    "Visit regular rows in ascending physical-host order. With quiet0 and positive width, recompute owned gains and visit eligible prefix destinations ascending; gain>=R32(1e-6) and gain>0 executes a route writer and clears that prefix field0/4 to0/0, independently of the actual mixed sample values.",
+    "For an active positive-width regular row clear fields36/40/44. At width>=R32(0.2), direct component disappears: setfield0/4=1/1 and clear48/52. Otherwise preserve the initialquiet/mute flags.",
+    "On the quiet or nonpositive-width route, clear40 only. With selected spatial enum0, the subsequent normalizer preservesY and preservesZ iff field52 is nonzero; otherwise writesZ=0.",
+    "Selected metadata fields8/12/16 remain0/3/2. Pack attribute from fields36/48/8/12/16 with shifts0/1/4/8/10; this primary profile yields2816.",
+    "Only after routing does selected F03 inspect field4; nonzero skips the source column. Field0 alone does not suppress that point-column call. F04 pre-route width must not be replaced by the post-route zero width."
+  ],
+  "field_schema": [
+    {
+      "offset": 0,
+      "type": "U32",
+      "name": "quiet_or_routed_state"
+    },
+    {
+      "offset": 4,
+      "type": "U32",
+      "name": "skip"
+    },
+    {
+      "offset": 8,
+      "type": "U32",
+      "name": "attribute_component2"
+    },
+    {
+      "offset": 12,
+      "type": "U32",
+      "name": "attribute_component3"
+    },
+    {
+      "offset": 16,
+      "type": "U32",
+      "name": "attribute_component4"
+    },
+    {
+      "offset": 20,
+      "type": "U32",
+      "name": "selected_zero"
+    },
+    {
+      "offset": 24,
+      "type": "F32[3]",
+      "name": "position_xyz"
+    },
+    {
+      "offset": 36,
+      "type": "U32",
+      "name": "source_mode"
+    },
+    {
+      "offset": 40,
+      "type": "F32",
+      "name": "width"
+    },
+    {
+      "offset": 44,
+      "type": "U32",
+      "name": "diffuse_control_flag"
+    },
+    {
+      "offset": 48,
+      "type": "U32",
+      "name": "spatial_enum"
+    },
+    {
+      "offset": 52,
+      "type": "U32",
+      "name": "z_enabled"
+    }
+  ],
+  "lifecycle": [
+    "Normal callbacks0..4246 read source positions1536*g; final actual read is1050, then pad486 positive zeros. Source PCM extent is6522906 while advertised reader end is6523392; these domains differ.",
+    "Callbacks4247..4250 reuse the last full padded frame and held control metadata. They do not read additional source samples or advance ADM event time. History is still updated by each activity call.",
+    "A fifth empty drain does not generate another activity callback. Close does not fabricate zero flag records.",
+    "Model reset clears histories, cursor, cached input and callback clock; static metadata is recreated from the admitted source. Fresh-model first3 callback replay is checked. Native same-owner/programme reset is NOT_RUN."
+  ],
+  "domains": "4251 audio/source callbacks, 4247 actual input reads and4 cached flushes are model domains; no native consumer-generation join or encoded AU equivalence is asserted.",
+  "limits": [
+    "Native primary field/consumer acceptance and native encode NOT_RUN.",
+    "No PCM samples, waveform, reversible checkpoint, or PCM-content hash is delivered.",
+    "This fixed profile has mute0/source-mode0/spatial-enum0; no general malformed graph or alternate-mode claim.",
+    "Replay uses frozen mathematical gain primitives, not an independently rewritten spread engine; activity arithmetic has independent F64 and scalar F32 checks."
+  ]
+}

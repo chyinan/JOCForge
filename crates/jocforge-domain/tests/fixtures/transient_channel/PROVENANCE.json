@@ -1,0 +1,17 @@
+{
+  "slice": "F07A_HASH_PINNED_SELECTED_D05_PROVIDER_AND_F07_SINGLE_CHANNEL_STATEFUL_BLOCKS",
+  "delivery_scope": "INTERNAL_RESEARCH_AND_INTERNAL_IMPLEMENTATION_ONLY",
+  "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_f07_spec_sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac",
+  "source_f07a_spec_sha256": "7d3e85c1281653dfa8228b3162f6df95f0b53b367ce85d9333b4c0151d9dbe1f",
+  "source_parameters_sha256": "130cd1a446ea8413a1d0d4c5eea631e890b7f1cd675975efa92697e258402991",
+  "source_input_vectors_sha256": "ddf9a4d0344f7f03f12768c5bac62cc7622f8691bf9e7c27b02bf4eedc6bda98",
+  "source_expected_results_sha256": "0c6f3350631c0f54770e75f1a16a8d77cb46042f7f87cbfcf6002e89eb38ff64",
+  "source_actual_review_sha256": "db32255a7b66f7b96f61fdc3989a7f9c6153557efeddff301c886b0674bf1fe2",
+  "actual_reviewed_f07_spec_sha256": "ab59cb962673315bfa9b8be3018aaffa778e8d29bb92903de0c4165224dd1530",
+  "current_f07_spec_sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac",
+  "review_scope": "PASS_FOR_DECLARED_LOCAL_SCOPE; R3 review spec hash predates current F07 spec hash",
+  "input_scope": "36 input-only blocks in one continuous single-channel sequence from cold state",
+  "whole_f07_ready": false,
+  "whole_audio_pipeline_ready": false
+}

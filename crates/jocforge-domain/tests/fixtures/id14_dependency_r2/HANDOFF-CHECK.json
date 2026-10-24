@@ -1,0 +1,10 @@
+{
+  "schema": "f13c-selected-id14-consumption-handoff-check.v2",
+  "handoff_manifest_sha256": "9985e8f321741d596a1675499d8764765fc9ecc864dc9824e979da4559b5d684",
+  "source_package_manifest_sha256": "294dc82380bf9b8cb9a60094e973debc6b075801a46a64e33313e2766d65d778",
+  "base_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "related_bsi_handoff_manifest_sha256": "70f90cd5472299f66bba22c362e87fe2645b6f480d71dfeb763fab2eb769fe00",
+  "payload_hashes_match": true,
+  "whole_F13C_ready": false,
+  "implementation_ready": false
+}

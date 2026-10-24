@@ -1,0 +1,123 @@
+{
+  "result": "PASS",
+  "cases": 15,
+  "codebook_symbols": 588,
+  "rows": [
+    {
+      "name": "selected_zero_full_fine",
+      "result": "PASS",
+      "header_bits": 150,
+      "coefficient_bits": 900,
+      "effective_bits": 1050,
+      "writer_return": 0
+    },
+    {
+      "name": "mode_0_rounding_clamps",
+      "result": "PASS",
+      "header_bits": 46,
+      "coefficient_bits": 841,
+      "effective_bits": 887,
+      "writer_return": 0
+    },
+    {
+      "name": "mode_1_rounding_clamps",
+      "result": "PASS",
+      "header_bits": 46,
+      "coefficient_bits": 957,
+      "effective_bits": 1003,
+      "writer_return": 0
+    },
+    {
+      "name": "mode_2_rounding_clamps",
+      "result": "PASS",
+      "header_bits": 46,
+      "coefficient_bits": 299,
+      "effective_bits": 345,
+      "writer_return": 0
+    },
+    {
+      "name": "mode_3_rounding_clamps",
+      "result": "PASS",
+      "header_bits": 46,
+      "coefficient_bits": 346,
+      "effective_bits": 392,
+      "writer_return": 0
+    },
+    {
+      "name": "selected_mixed_presence",
+      "result": "PASS",
+      "header_bits": 73,
+      "coefficient_bits": 673,
+      "effective_bits": 746,
+      "writer_return": 0
+    },
+    {
+      "name": "steep_two_points",
+      "result": "PASS",
+      "header_bits": 66,
+      "coefficient_bits": 537,
+      "effective_bits": 603,
+      "writer_return": 0
+    },
+    {
+      "name": "seven_channel_sparse",
+      "result": "PASS",
+      "header_bits": 46,
+      "coefficient_bits": 566,
+      "effective_bits": 612,
+      "writer_return": 0
+    },
+    {
+      "name": "all_absent",
+      "result": "PASS",
+      "header_bits": 45,
+      "coefficient_bits": 0,
+      "effective_bits": 45,
+      "writer_return": 0
+    },
+    {
+      "name": "capacity_one_short",
+      "result": "PASS",
+      "header_bits": 150,
+      "coefficient_bits": 900,
+      "effective_bits": 1050,
+      "writer_return": 2
+    },
+    {
+      "name": "capacity_exact",
+      "result": "PASS",
+      "header_bits": 150,
+      "coefficient_bits": 900,
+      "effective_bits": 1050,
+      "writer_return": 0
+    },
+    {
+      "name": "coefficient_scratch_overflow",
+      "result": "PASS",
+      "boundary": "COEFFICIENT_SCRATCH_OVERFLOW"
+    },
+    {
+      "name": "offset_at_slot_limit",
+      "result": "PASS",
+      "header_bits": 43,
+      "coefficient_bits": 5,
+      "effective_bits": 48,
+      "writer_return": 0
+    },
+    {
+      "name": "offset_wire_overflow",
+      "result": "PASS",
+      "boundary": "OFFSET_WIRE_DOMAIN_REJECTED_AFTER_PREFIX",
+      "writer_return": 3
+    },
+    {
+      "name": "nonascending_offsets",
+      "result": "PASS",
+      "header_bits": 48,
+      "coefficient_bits": 10,
+      "effective_bits": 58,
+      "writer_return": 0
+    }
+  ],
+  "scope": "SELF_OWNED_NATIVE_QUANTIZER_BODY_WRITER_AND_DESCRIPTOR_COPY; NOT_FULL_PRODUCTION_PARENT"
+}

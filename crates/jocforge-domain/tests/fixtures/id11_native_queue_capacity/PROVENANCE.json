@@ -1,0 +1,17 @@
+{
+  "schema": "washed-f13c-id11-capacity-provenance.v1",
+  "source_candidate_manifest_sha256": "db7b47ca272ca211939f4d49561681bdf2cebf3d9089c0cb7869d68ff6cea115",
+  "production_cold_roots_wash_manifest_sha256": "986ea528cda6687c14cc87f790b7eec90b4e10567bef1e547a07ecc226de5928",
+  "approved_F13_4_spec_sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd",
+  "selected_constructor_inputs": {
+    "object_capacity": 16,
+    "frame_capacity": 8
+  },
+  "native_ID11_per_descriptor_limit_bytes": 2103,
+  "approved_API_payload_limit_bytes": 160,
+  "native_high_water_boundary": {
+    "admitted": 2103,
+    "rejected": 2104
+  },
+  "whole_F13C_ready": false
+}

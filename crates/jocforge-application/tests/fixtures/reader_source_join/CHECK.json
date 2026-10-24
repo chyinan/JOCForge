@@ -1,0 +1,7 @@
+{
+  "schema": "selected-reader-source-join-check-v1",
+  "status": "PASS",
+  "manifest_sha256": "2276298e21d58276650062466941455f5ebadd0be4542ecbfae25588a71d1899",
+  "payload_file_count": 6,
+  "verification": "PASS: manifest hashes, 4 reader/API rows, 152 control records, no PCM"
+}

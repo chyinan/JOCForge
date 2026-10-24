@@ -1,0 +1,40 @@
+{
+  "schema": "selected-input-eof-lifecycle-contract.v1",
+  "external_input": "Four process calls, each with38 source-index/control-position records. Native positions0,1536,3072,4608 are selected input control positions; absolute file/chunk sample origin remains unbound.",
+  "input_storage": "PCM row pointers are observed only as tokens/offsets: offsets4*i,38-word interleaved stride in the route consumer. No sample value or PCM hash was read. Object rows10..37 map to actual source indices10..37; bed mixing is not reconstructed by this package.",
+  "two_delays": "Renderer and backend gate each have selected3072 threshold and1536 hop. Both progress counters saturate at4608 and are not advancing source clocks.",
+  "causal_origins": "Frontend1/2 execute inside external process3/4. Frontend3..6 execute inside active flush1..4. First two external process calls produce renderer span0 and never call frontend.",
+  "source_time_limit": "This is an input-consumption CALL CONTEXT join. It does not assert renderer output samples have the same positions as the current input packet; renderer delay/history remains a separate data-generation relation.",
+  "flush_initialization": "Selected cold owner records flush_remaining4; current constructor derives it from selected renderer/backend delays. General alternate-delay formula is not qualified here.",
+  "eof_order": [
+    "Process sets consumed flag1 and output length0 before checking flush-started. Once flush has started it returns rawU32 4294967293 (I32 -3).",
+    "Flush always sets output length0. If remaining>0, set flush-started1, perform one work call, decrement remaining only after successful child return.",
+    "Four active flush calls each yield a1536 frontend source step and4096-byte actual AU. Fifth empty flush returns0/length0 without work/frontend/planner advancement.",
+    "Flush remaining0 does not clear existing gate/planner/queue state. Empty flush preserves either tested flag0 or flag1."
+  ],
+  "residual_state_after_eof": {
+    "gate_progress": 4608,
+    "planner_counter": 6,
+    "planner_first_block": 2,
+    "last_reservation_bytes": 316,
+    "pending_id14_payload_bytes": 218,
+    "queue_occupied_count": 1,
+    "flush_started": 1,
+    "flush_remaining": 0
+  },
+  "close_and_free": [
+    "Close returns0 and removes the internal JOC runtime. It leaves the recorded gate/planner/queue scalar bytes unchanged.",
+    "Pending descriptor and218-byte body were dynamically inside the same host workspace that was then passed to native free and observed returning.",
+    "After allocation retirement no memory was read. Memory release is not a semantic queue-clear or byte-zeroing event.",
+    "One cold initialization and one close/free lifetime were observed. Same-owner reset/recreate was NOT_RUN; do not treat cross-process freshness or leftover memory as reset."
+  ],
+  "not_closed": [
+    "Selected reader/CompositeMaster start offset to absolute ADM/WAV sample position",
+    "Raw audio contents/zero-padding during flush",
+    "Bed mixing and renderer-history sample generation",
+    "Same-owner reset/recreate native event",
+    "Independent JOC body length/content generation"
+  ],
+  "whole_F13C_ready": false,
+  "implementation_contacted": false
+}

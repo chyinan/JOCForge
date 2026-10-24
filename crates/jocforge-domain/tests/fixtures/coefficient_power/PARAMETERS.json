@@ -1,0 +1,20 @@
+{
+  "schema": "coefficient-to-power-row-parameters.v1",
+  "power_cap_f32_bits": 1065353216,
+  "power_cap_f32": 1.0,
+  "producer_bias_i16": 0,
+  "producer_row_bins": 253,
+  "downstream_raw_exponent_bins": 217,
+  "downstream_raw_exponent_cap_i16": 48,
+  "downstream_mode_i16": 1,
+  "downstream_format_i16": 7,
+  "native_block_width": 8,
+  "native_full_groups": 31,
+  "native_tail_values": 5,
+  "runtime_mxcsr_before": 8096,
+  "runtime_mxcsr_after": 8096,
+  "rounding_control": "round to nearest even",
+  "flush_to_zero": false,
+  "denormals_are_zero": false,
+  "mxcsr_note": "The helper does not set the floating-point environment. These fields describe the recorded runtime profile, not a guarantee for every caller environment."
+}

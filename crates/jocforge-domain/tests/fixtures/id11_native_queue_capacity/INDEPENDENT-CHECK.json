@@ -1,0 +1,7 @@
+{
+  "schema": "washed-implementer-supplement-independent-check.v1",
+  "manifest_sha256": "6697b548bd66c108180b8d1d084b287c275e8bdb1816192bf812d59bdb86d098",
+  "status": "PASS",
+  "cases": 18,
+  "native_parser_reimplemented": false
+}

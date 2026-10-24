@@ -1,0 +1,20 @@
+{
+  "job_bytes": 1933,
+  "job_sha256": "ef156c2480a5691d17f0c2d3742f50ded160041fccac0319095c891520fbe8c3",
+  "primary_source_file_name": "\u4eba\u662f\u732b - \u5f20\u5361\u65af, \u6d1b\u5929\u4f9d.wav",
+  "primary_source_receipt_sha256": "c60c45033ee40592b9fc82c9c68edf94c4ee1676f27d9df34634291b2cb0f7ad",
+  "time_controls": {
+    "start": "",
+    "end": "",
+    "time_base": "file_position",
+    "prepend_silence_duration": "0.0",
+    "append_silence_duration": "0.0"
+  },
+  "binding": "Functional input file name and source drive root agree with the declared original job and admitted source metadata; no source crop.",
+  "full_pcm_file_hash_recomputed": false,
+  "primary_source_receipt_file": "PRIMARY-SOURCE-RECEIPT.json",
+  "job_field_projection_file": "JOB-FIELD-PROJECTION.json",
+  "job_projection_receipt_file": "JOB-PROJECTION-RECEIPT.json",
+  "original_job_distributed": false,
+  "original_job_identity_scope": "Research-side original-bytes identity declaration"
+}

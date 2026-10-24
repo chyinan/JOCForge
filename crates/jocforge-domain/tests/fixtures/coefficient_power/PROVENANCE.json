@@ -1,0 +1,84 @@
+{
+  "schema": "coefficient-to-power-row-provenance.v1",
+  "package": "COEFFICIENT-TO-POWER-ROW",
+  "source_wash_package": "SANITIZED_F09_COEFFICIENT_POWER_PRODUCER_R1",
+  "source_manifest_sha256": "41048ac8e86f390553d657a8e333d244fdee13889dbc43be29456310fe8c04ea",
+  "source_independent_check_sha256": "a7bc69b038f90358e266718ee38b3e46454bba448e566c3fe07f87e43cf1ea5a",
+  "source_payloads": [
+    {
+      "path": "INPUTS.json",
+      "bytes": 2873,
+      "sha256": "76bfff2673c035a5a2c360fb0b2de146f7a0141d6cf7d44c5313c92696c03bdc"
+    },
+    {
+      "path": "EXPECTED.json",
+      "bytes": 103124,
+      "sha256": "0c0516b60fb3b1cab23856ca8c3d5fdf16d93c1f492b1c0c618008288796345c"
+    },
+    {
+      "path": "CONTRACT.json",
+      "bytes": 4583,
+      "sha256": "d6b23162f65dbd47e43934fe61b14b68b1a4e504894f0ffcf444b63a31818b4d"
+    }
+  ],
+  "reference_module": {
+    "file_bytes_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "qualification": "Target-side hash of actual loaded module-path file bytes matched by a host rehash; not a relocated memory-image digest."
+  },
+  "evidence": {
+    "formula": "STATIC_CONFIRMED",
+    "native_runtime": "RUNTIME_CONFIRMED: 6 invocations; 3036 POWER words; 2387 subsequent raw exponents",
+    "wash_independent_replay": "PASS: all 3036 POWER words and 2387 raw exponents recomputed from INPUTS and formulas; EXPECTED was not used to construct inputs",
+    "native_consumer_joins": "150 same-generation pointer/count/content matches; 30 all-zero first-generation rows excluded",
+    "independent_product_audio_integration": "NOT_RUN"
+  },
+  "source_evidence_digests_only": [
+    {
+      "alias": "runtime_hook",
+      "bytes": 14592,
+      "sha256": "9410d4eb8d1a43d89b95a37c465fe5e9cc7f806cbfcedfff0cb34c3925289433"
+    },
+    {
+      "alias": "private_runtime_digest_only",
+      "bytes": 387055,
+      "sha256": "a4e37ac2d4c3604a8095ed82e5c85be3cbb18a357683ef942409801a6650e355"
+    },
+    {
+      "alias": "reference_run_receipt",
+      "bytes": 602,
+      "sha256": "1d00c5d32a56d6a4d96db7bc0975d6bcebc2f4590a108c72f6c3c05dde31261b"
+    },
+    {
+      "alias": "static_power_producer",
+      "bytes": 3186,
+      "sha256": "2b21aa92c218a1cbf3c73051a10b9e4f247a01ea0f6edb314bb2d57aedb671d9"
+    },
+    {
+      "alias": "static_power_instructions",
+      "bytes": 23934,
+      "sha256": "b09c6848418d4cc9d3db017e6a66131bca344c9794d76370349306ec2ed8d135"
+    },
+    {
+      "alias": "static_consumer",
+      "bytes": 2811,
+      "sha256": "f1535cb0cc1e99aa4f702fac34ba20ccff96c79bc32684c75dfe33dae686dda1"
+    },
+    {
+      "alias": "static_raw_kernel",
+      "bytes": 2663,
+      "sha256": "55f9b99addfc8a541938f3367ba6ce73b238f068fe1e1afcf634bdf3ef18dfd3"
+    }
+  ],
+  "delivery_scope": "INTERNAL_IMPLEMENTATION_HANDOFF",
+  "private_vendor_key": "EXCLUDED",
+  "public_third_party_license_status": "NOT_ASSESSED",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO",
+  "explicitly_not_delivered": [
+    "raw PCM or ADM",
+    "raw runtime traces",
+    "binary contents",
+    "addresses or disassembly identifiers",
+    "vendor private key or authentication material"
+  ]
+}

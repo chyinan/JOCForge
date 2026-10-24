@@ -1,0 +1,31 @@
+{
+  "schema": "washed-id1-metadata-timer-local-provenance.v1",
+  "source_directory": "IMPLEMENTER_SUPPLEMENTS/id1-metadata-timer-native-contract",
+  "source_manifest_sha256": "521cea92f4a9a45f0c084d7b78d5699567b2f8c6eb92bd1076ce60079df1a6b7",
+  "source_handoff_check_sha256": "59188e86ee8e75fb1d3c9fb795b6877f7a4e0baf841d84324667421bfd8558ac",
+  "source_files": {
+    "PRIMITIVE-INPUTS.json": {
+      "bytes": 14878,
+      "sha256": "70a94a3ac292fe0342ffccaffc7ee024431da30260ad0a1d6210404ac786a445"
+    },
+    "PRIMITIVE-OBSERVATIONS.json": {
+      "bytes": 19890,
+      "sha256": "3d1bedb70bb7edca6427a3dbcd703d92ab0b6f4e57e08651f244a418ad7442d9"
+    },
+    "CONTINUOUS-INPUT.json": {
+      "bytes": 693,
+      "sha256": "f8f34e9ea015941682ea4b0298fdf8293e469cb63532bb72cfd410308c38f168"
+    },
+    "CONTINUOUS-OBSERVATIONS.json": {
+      "bytes": 50035,
+      "sha256": "7055ee26d6b95102ff8d1a3b8765b4fdacbe57eb16fe84495d10c4f98fdf776a"
+    }
+  },
+  "limits": [
+    "internal implementation only",
+    "external measurement producer is not included",
+    "general counter-enabled ID1 serializer cases are not qualified",
+    "same-owner constructor reinitialization is observed; automatic programme reset is not observed",
+    "no parent-wide rollback or complete ADM-to-AU run is claimed"
+  ]
+}

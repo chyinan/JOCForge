@@ -1,0 +1,48 @@
+{
+  "schema": "energy-window-local-mapping.v1",
+  "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_assets": {
+    "specs/06-meter-window-and-output-clock.md": {
+      "bytes": 7388,
+      "sha256": "c08dd41c42dd231ef23a683415f59b9b7db60375a3da2b8140501969933d073c"
+    },
+    "parameters/meter-k-matrix-math-v1.json": {
+      "bytes": 3985,
+      "sha256": "c8b4ffd52fffd62f5d0fdeba36a993f02188933a43593abe6969243f44f7f536"
+    },
+    "parameters/meter-k-state-bounds-v1.json": {
+      "bytes": 970,
+      "sha256": "2faaa9d0aeefb105a913589590fcbafb97362a54192b0b21c5fdda7da1974e68"
+    },
+    "test-vectors/METER-K-PARAMETERIZED-VERIFICATION.json": {
+      "bytes": 3693,
+      "sha256": "66a11e0751975ff619a9711943834fb52070655e6c3ec71f5ae318766b36080a"
+    },
+    "test-vectors/METER-STATE-CLOCK-LOCAL-REVIEW-STATUS.json": {
+      "bytes": 10646,
+      "sha256": "020f88cafa892119bac5fea5bc808d251798e98aec69897c6ab068da80637307"
+    }
+  },
+  "production_provider_files": [
+    "crates/jocforge-domain/src/meter/k_matrix_parameters.json",
+    "crates/jocforge-domain/src/meter/k_matrix_bounds.json"
+  ],
+  "local_fixture": {
+    "file": "crates/jocforge-domain/tests/fixtures/energy_window/parameterized_filter_sequences.json",
+    "bytes": 1798,
+    "sha256": "f114a8ab4ca8c5a6045195daddf5fe26b0e24da0beb6680f2de72a1455ee6eaf",
+    "role": "synthetic input recipes and post-computation assertions"
+  },
+  "verified_scope": {
+    "parameterized_sequences": 3,
+    "complete_block_samples": 1024,
+    "energy_window_samples": 960,
+    "continuous_window_residuals": [64, 128],
+    "whole_meter_ready": false
+  },
+  "excluded": [
+    "pending six-row PCM queue and lifecycle clock",
+    "meter frontend, OAR and shared gain-delay composition",
+    "whole meter root, finalize transaction and product acceptance"
+  ]
+}

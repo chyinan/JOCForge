@@ -1,0 +1,148 @@
+{
+  "ID11_seed_hex": "1f884b8000a270008040e00d1081c0620103be04020701f8040e07d0081c003e103fc040207f868840ff310081fe7e0103fdf4020703ef840ff01f081fefbe1002232add80",
+  "ID11_seed_sha256": "e0708adcc3cfa9762482f042c674fe64caa4de882e5e9c4beb6ea5b2a85f74f6",
+  "ID11_body_recipe": "Exact observed69-byte seed followed by zero bytes to supplied_bytes. No semantic field is inferred or changed.",
+  "ID6_body_recipe": "Caller-owned opaque byte90 repeated supplied_bytes times; not a semantic ID6 producer claim.",
+  "cases": [
+    {
+      "case_id": 1,
+      "payload_id": 11,
+      "entry": "GENERIC_ENQUEUE",
+      "supplied_bytes": 69,
+      "object_capacity": 16,
+      "frame_capacity": 8
+    },
+    {
+      "case_id": 2,
+      "payload_id": 11,
+      "entry": "GENERIC_ENQUEUE",
+      "supplied_bytes": 159,
+      "object_capacity": 16,
+      "frame_capacity": 8
+    },
+    {
+      "case_id": 3,
+      "payload_id": 11,
+      "entry": "GENERIC_ENQUEUE",
+      "supplied_bytes": 160,
+      "object_capacity": 16,
+      "frame_capacity": 8
+    },
+    {
+      "case_id": 4,
+      "payload_id": 11,
+      "entry": "GENERIC_ENQUEUE",
+      "supplied_bytes": 161,
+      "object_capacity": 16,
+      "frame_capacity": 8
+    },
+    {
+      "case_id": 5,
+      "payload_id": 11,
+      "entry": "GENERIC_ENQUEUE",
+      "supplied_bytes": 2102,
+      "object_capacity": 16,
+      "frame_capacity": 8
+    },
+    {
+      "case_id": 6,
+      "payload_id": 11,
+      "entry": "GENERIC_ENQUEUE",
+      "supplied_bytes": 2103,
+      "object_capacity": 16,
+      "frame_capacity": 8
+    },
+    {
+      "case_id": 7,
+      "payload_id": 11,
+      "entry": "GENERIC_ENQUEUE",
+      "supplied_bytes": 2104,
+      "object_capacity": 16,
+      "frame_capacity": 8
+    },
+    {
+      "case_id": 8,
+      "payload_id": 11,
+      "entry": "ID11_INGRESS",
+      "supplied_bytes": 69,
+      "object_capacity": 16,
+      "frame_capacity": 8
+    },
+    {
+      "case_id": 9,
+      "payload_id": 11,
+      "entry": "ID11_INGRESS",
+      "supplied_bytes": 159,
+      "object_capacity": 16,
+      "frame_capacity": 8
+    },
+    {
+      "case_id": 10,
+      "payload_id": 11,
+      "entry": "ID11_INGRESS",
+      "supplied_bytes": 160,
+      "object_capacity": 16,
+      "frame_capacity": 8
+    },
+    {
+      "case_id": 11,
+      "payload_id": 11,
+      "entry": "ID11_INGRESS",
+      "supplied_bytes": 161,
+      "object_capacity": 16,
+      "frame_capacity": 8
+    },
+    {
+      "case_id": 12,
+      "payload_id": 11,
+      "entry": "ID11_INGRESS",
+      "supplied_bytes": 2102,
+      "object_capacity": 16,
+      "frame_capacity": 8
+    },
+    {
+      "case_id": 13,
+      "payload_id": 11,
+      "entry": "ID11_INGRESS",
+      "supplied_bytes": 2103,
+      "object_capacity": 16,
+      "frame_capacity": 8
+    },
+    {
+      "case_id": 14,
+      "payload_id": 11,
+      "entry": "ID11_INGRESS",
+      "supplied_bytes": 2104,
+      "object_capacity": 16,
+      "frame_capacity": 8
+    },
+    {
+      "case_id": 15,
+      "payload_id": 6,
+      "entry": "GENERAL_GROUP_PUSH",
+      "supplied_bytes": 0,
+      "queue_capacity": 3
+    },
+    {
+      "case_id": 16,
+      "payload_id": 6,
+      "entry": "GENERAL_GROUP_PUSH",
+      "supplied_bytes": 2,
+      "queue_capacity": 3
+    },
+    {
+      "case_id": 17,
+      "payload_id": 6,
+      "entry": "GENERAL_GROUP_PUSH",
+      "supplied_bytes": 3,
+      "queue_capacity": 3
+    },
+    {
+      "case_id": 18,
+      "payload_id": 6,
+      "entry": "GENERAL_GROUP_PUSH",
+      "supplied_bytes": 4,
+      "queue_capacity": 3
+    }
+  ]
+}

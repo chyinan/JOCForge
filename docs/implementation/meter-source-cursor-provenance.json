@@ -1,0 +1,43 @@
+{
+  "schema": "independent-meter-source-cursor-local-mapping.v1",
+  "classification": "IN_MEMORY_SELECTED_RIFF_PCM24_SOURCE_CURSOR_SUBSLICE",
+  "source_spec": {
+    "file": "specs/06-oar-frontend-input-and-clock-join.md",
+    "bytes": 9427,
+    "sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423"
+  },
+  "implementation_files": [
+    "crates/jocforge-io/Cargo.toml",
+    "crates/jocforge-io/src/pcm/mod.rs",
+    "crates/jocforge-io/src/pcm/riff_pcm24.rs",
+    "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
+    "crates/jocforge-application/src/lib.rs"
+  ],
+  "local_fixture": {
+    "file": "crates/jocforge-io/tests/fixtures/meter_source_cursor/input_only.json",
+    "bytes": 681,
+    "sha256": "6f16eb8f4047b0a4f590f813c69a2469a45e0d51a66288e964f81d4d7fbf46ed",
+    "role": "synthetic in-memory PCM24 byte-generation recipe; no PCM bytes are stored"
+  },
+  "identity_binding": "Cursor cold requires both the selected job resource SHA-256 and selected source sample count. The parsed byte slice must match both.",
+  "verified_scope": {
+    "sample_rate_hz": 48000,
+    "channels": 38,
+    "bits_per_sample": 24,
+    "frame_samples": 1536,
+    "source_samples": 1537,
+    "normal_callbacks": 2,
+    "zero_input_drains": 3,
+    "last_normal_host_samples": 1,
+    "last_normal_padding_samples": 1535,
+    "source_identity_mismatch_rejected": true,
+    "source_extent_mismatch_rejected": true
+  },
+  "not_run": [
+    "PCM physical hosts mapped through ADM graph into logical component/LFE routes",
+    "independent event/render/feature/selection/component execution",
+    "same-callback SCP16/control16 production",
+    "whole meter root and production MeasurementReceipt",
+    "real ADM and product acceptance"
+  ]
+}

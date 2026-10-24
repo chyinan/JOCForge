@@ -1,0 +1,25 @@
+{
+  "schema": "washed-f13c-production-cold-roots.v1",
+  "status": "SCOPED_OBSERVATION_READY_FULL_PRODUCTION_GRAPH_NOT_READY",
+  "source_candidate_manifest_sha256": "715f3a0b4d9e10f604b1ff8aeb74ab7880a9dcd166ce7dff069ccf2659319aab",
+  "approved_F13_4_spec_sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd",
+  "washed_R18_configuration_layout_manifest_sha256": "093c374aa37ae4233f70354761b31f65053b30f5e39cedb195ce452dc313ff1d",
+  "independent_checks": {
+    "candidate_payload_and_envelope_hashes": "PASS",
+    "normal_checker": "5 queue + 6 frontend + 6 parent boundary cases; zero mismatches",
+    "optimized_checker": "5 queue + 6 frontend + 6 parent boundary cases; zero mismatches",
+    "actual_selected_top_constructor_observed": true,
+    "independent_queue_graph_ownership_and_guards": "PASS for five scratch queue roots",
+    "binary_payloads": 0,
+    "key_auth_or_PCM_content": 0
+  },
+  "evidence_levels": {
+    "selected_native_constructor_roots": "OBSERVED",
+    "queue_control_initializer": "RECONSTRUCTED_WITHIN_CAPTURED_FIELDS",
+    "production_cold_parent_equivalence": "NO",
+    "full_parent_failure_injection": "NOT_RUN",
+    "durable_publication_transaction": "NOT_OBSERVED"
+  },
+  "open_capacity_semantics": "ID11 constructor capacity field 2103 bytes has not been reconciled with approved per-payload capacity 160 bytes; implementation must not treat them as the same field.",
+  "whole_F13C_ready": false
+}

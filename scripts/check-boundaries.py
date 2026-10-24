@@ -754,11 +754,11 @@ def check_source_flags_producer(root,d):
  ck(not re.search(r'\bfrom_producer\b',test_source_code),'SourceFlags tests cannot call the private packet constructor')
  ck('JOCFORGE_AUTHORIZED_WAV'in test_source and'authorized_wav_boundary_matches_the_literal_96_byte_vector'in test_source and'read_authorized_first_pcm'in test_source and'input-adm.wav'not in test_source and'IMPLEMENTER_PACKAGE'not in test_source and'C:\\Users\\'not in test_source,'SourceFlags boundary test uses no checked-in media path')
  ck(source.startswith('// pattern: Functional Core')and 'r32_mul('in source_code and 'r32_add('not in source_code and '.mul_add('not in source_code and 'energy'not in lower and 'rms'not in lower,'SourceFlags R32-only numeric boundary')
- ck('a.value().abs() > epsilon || b.value().abs() > epsilon'in source_code and 'control.width.value() >= width_limit'in source_code,'SourceFlags strict activity and inclusive width thresholds')
+ ck('previous_product.value().abs() > epsilon || current_product.value().abs() > epsilon'in source_code and 'triangle_activity_witness(&before[..], &current[..], &window)?'in source_code and 'control.width.value() >= width_limit'in source_code,'SourceFlags shared strict activity and inclusive width thresholds')
  ck('WINDOW_SHA256: &str = "134a5a788d42b0532f3ec46112ad978cc14fb3c46cb0d82f02fee5f129b7c919"'in source and 'fn triangle_window()'in source_code,'SourceFlags triangle window KAT')
  ck('history_proposal.push(raw_frame(current))'in source_code and 'let before = &history.rows[row]'in source_code and bool(re.search(r'match\s+record\.role\s*\{\s*HostRole::Lfe\s*=>\s*\{',source_code)),'SourceFlags before-history, raw history and semantic LFE rules')
  prefix_start=source_code.find('for (source, pair) in payload[..PREFIX_SOURCE_COUNT]')
- prefix_end=source_code.find('let epsilon =',prefix_start)
+ prefix_end=source_code.find('let width_limit =',prefix_start)
  ck(prefix_start>=0 and prefix_end>prefix_start and 'input.prefix_writers.written[source]'in source_code[prefix_start:prefix_end]and'current_pcm'not in source_code[prefix_start:prefix_end],'SourceFlags prefix writer output does not inspect PCM amplitude')
  lineage_decl=re.search(r'pub\(super\) struct SourceFlagsLineage\s*\{([^}]*)\}',source_code,re.S)
  lineage_fields=[line.strip().rstrip(',')for line in lineage_decl.group(1).splitlines()if line.strip()]if lineage_decl is not None else []
@@ -949,7 +949,7 @@ def check_current_features_provider_mapping(root,d):
   fixture=fixture_root/pathlib.Path(expected['path']).name;fixture_bytes=fixture.read_bytes();approved_bytes=(PKG/expected['path']).read_bytes()
   ck(len(fixture_bytes)==expected['bytes']and hashlib.sha256(fixture_bytes).hexdigest()==expected['sha256']and fixture_bytes==approved_bytes,'P1.4-C byte-exact fixture '+expected['path'])
  cargo=(root/'crates/jocforge-domain/Cargo.toml').read_text(encoding='utf-8');deps=cargo.split('[dependencies]',1)[1].split('\n[',1)[0].strip().splitlines()
- ck(deps==['num-bigint = { version = "=0.4.6", default-features = false, features = ["std"] }','sha2 = { version = "=0.10.9", default-features = false }','serde_json = { version = "=1.0.154", default-features = false, features = ["std"] }']and'[features]'not in cargo,'domain has only explicitly pinned dependencies and no optional feature route')
+ ck(deps==['num-bigint = { version = "=0.4.6", default-features = false, features = ["std"] }','sha2 = { version = "=0.10.9", default-features = false }','serde_json = { version = "=1.0.154", default-features = false, features = ["std"] }','roxmltree = { version = "=0.21.1", default-features = true }']and'[features]'not in cargo,'domain has only explicitly pinned dependencies and no optional feature route')
  required_test_terms=('approved_math_providers_yield_exact_typed_words_and_lineage_receipts','package_manifest_identity_rejects_before_json_parsing','observed_manifest_metadata_must_match_actual_bytes','provider_identity_rejects_changed_bytes_before_utf8_or_json_parsing','provider_observation_must_match_actual_bytes','sampled_byte_changes_never_cross_manifest_or_provider_identity_gates','processor_parser_rejects_unknown_and_duplicate_keys','processor_parser_rejects_boolean_float_wrong_dimension_and_counts','processor_parser_rejects_wrong_array_shapes_and_u32_domain','fft_parser_rejects_route_stage_and_root_shape_drift','fft_parser_rejects_boolean_and_out_of_range_root_words','manifest_provider_entries_must_be_unique_and_exact')
  ck(all(term in test_source+source for term in required_test_terms),'P1.4-C identity, lineage, route, shape, integer and receipt tests')
 
@@ -1592,7 +1592,7 @@ def check_descriptor_control_mapping(root,d):
 
 def check_descriptor_control_implementation(root,task):
  status='LOCALLY_VERIFIED_F04D_DIRECT_STAGE_ONLY__WHOLE_RECEIVER_NOT_RUN'
- expected_impl=[{'path':'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','bytes':22467,'sha256':'aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce'},{'path':'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','bytes':35306,'sha256':'794c5980f2c6f29f8aad45768a6a8b14e4fc1992b2715171a5f747afdaf4f05b'}]
+ expected_impl=[{'path':'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs','bytes':22467,'sha256':'aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce'},{'path':'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','bytes':37519,'sha256':'dc5516d1bef5b18983b469116c3f8c959d12931dc10af18b5233794865587621'}]
  expected_tests=[{'path':'crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs','bytes':15524,'sha256':'42fe49df1899e21f796b44a70cbc324b8db9f5a06b5335b6dcc035cbca43e947'}]
  expected_fixtures=[{'path':'crates/jocforge-domain/tests/fixtures/descriptor_control/input-vectors.json','bytes':8878,'sha256':'c622899783197a953fb6c0bcd262b0e7b1a110d605e9301e27782e44cb247528'},{'path':'crates/jocforge-domain/tests/fixtures/descriptor_control/actual-literals.json','bytes':3705450,'sha256':'390cf469a1dde8a4fde9c79de2238f414ea041d6b64630cb669ca4ab26205ad0'}]
  ck(task.get('status')==status and task.get('implementation_status')==status and task.get('fixture_materialization_status')=='MATERIALIZED_AND_HASH_PINNED'and task.get('implementation_files')==[item['path']for item in expected_impl]and task.get('test_files')==[item['path']for item in expected_tests],'F04D local implementation paths and scoped status')
@@ -1728,7 +1728,8 @@ def check_component_stage_mapping(root,d):
  ck(p['programme_root']=='spatial_audio' and p['scope']=='Consume an opaque future spatial_control-owned input packet and produce only a complete component-stage proposal: matrix, overlap/ring, shared parameter transition, component filter history, callback-local component output, and local receipt; no commit, fatal authority, upstream producer, LFE, receiver/QMF, or parent transaction','P1.3-E2 exact single-owner consumer scope')
  for functional_id in ('F04','F04A','F04P','F04PG','F04C'):
   entry=next(x for x in d['functional_entries']if x['functional_id']==functional_id)
-  ck(entry['inventory_status']=='INVENTORIED' and entry['implementation_status']=='DEFERRED_DETAILED_MAPPING','P1.3-E2 scope does not materialize global '+functional_id)
+  expected_status='LOCALLY_VERIFIED_G0_G1_PRIMING_AND_G2_WHOLE_ROOT_J05_PROPOSAL__PARENT_INSTALL_NOT_RUN'if functional_id=='F04C'else'DEFERRED_DETAILED_MAPPING'
+  ck(entry['inventory_status']=='INVENTORIED' and entry['implementation_status']==expected_status,'P1.3-E2 scope stays distinct from current global '+functional_id+' status')
  manifest_bytes=(PKG/'MANIFEST.json').read_bytes();manifest_sha='c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a'
  ck(p['approved_package_manifest_sha256']==manifest_sha and len(manifest_bytes)==76302 and hashlib.sha256(manifest_bytes).hexdigest()==manifest_sha,'P1.3-E2 approved package manifest identity')
  manifest=json.loads(manifest_bytes,object_pairs_hook=unique_object_pairs);entries={x['file']:x for x in manifest['files']}
@@ -2394,7 +2395,7 @@ def check_integrity_owner_root(root,d):
  item=direct[0]
  implementation_files=['crates/jocforge-domain/src/integrity/mod.rs','crates/jocforge-domain/src/integrity/crc16.rs','crates/jocforge-domain/src/integrity/keyless_checksum.rs','crates/jocforge-domain/src/integrity/programme_owner.rs']
  test_files=['crates/jocforge-domain/src/integrity/programme_owner/tests.rs']
- identities=[{'file':'crates/jocforge-domain/src/integrity/mod.rs','bytes':253,'sha256':'ac5e628f2fa01d3555c6bbd4ddfaab3d8d56bfe07a7e2292e1b47883c7fcf6b3'},{'file':'crates/jocforge-domain/src/integrity/crc16.rs','bytes':478,'sha256':'c642d8bc8bf8a75e736ab7f7c7468d6ede85c25fc70811be4206016333cad8c6'},{'file':'crates/jocforge-domain/src/integrity/keyless_checksum.rs','bytes':7188,'sha256':'c927ecf0c91190d349c9f1eef48717f1d92ba186ac0bd3277f76cb18c8ddaa0d'},{'file':'crates/jocforge-domain/src/integrity/programme_owner.rs','bytes':24971,'sha256':'9b4e813ea40dfcb4becf096578de8b3f6cd1b702e3e382c9820308c729d975fb'}]
+ identities=[{'file':'crates/jocforge-domain/src/integrity/mod.rs','bytes':253,'sha256':'ac5e628f2fa01d3555c6bbd4ddfaab3d8d56bfe07a7e2292e1b47883c7fcf6b3'},{'file':'crates/jocforge-domain/src/integrity/crc16.rs','bytes':478,'sha256':'c642d8bc8bf8a75e736ab7f7c7468d6ede85c25fc70811be4206016333cad8c6'},{'file':'crates/jocforge-domain/src/integrity/keyless_checksum.rs','bytes':7188,'sha256':'c927ecf0c91190d349c9f1eef48717f1d92ba186ac0bd3277f76cb18c8ddaa0d'},{'file':'crates/jocforge-domain/src/integrity/programme_owner.rs','bytes':26987,'sha256':'afc3f08896f2a60d28ac606ab53175d6064d7766d5155e796785c4189783c0a6'}]
  expected_errors=['INTEGRITY_SOURCE_ORDER','INTEGRITY_DISPATCH_ORDER','INTEGRITY_AU_ORDER','INTEGRITY_PROVIDER_VALUES','INTEGRITY_CHECKSUM_SLOTS','INTEGRITY_FRAME_SHAPE','INTEGRITY_SOURCE_FAILED','INTEGRITY_DISPATCH_FAILED','INTEGRITY_AU_FAILED','UNSUPPORTED_PROFILE']
  ck(item.get('slice_id')=='public-keyless-integrity-owner'and item.get('mapping_status')=='MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F14_AUTH_DEFERRED'and item.get('implementation_status')=='LOCALLY_VERIFIED_KEYLESS_PUBLIC_OWNER__PRIVATE_AUTH_BLOCKED'and item.get('implementation_files')==implementation_files and item.get('test_modules')==test_files and item.get('implementation_file_identities')==identities and all((root/path).is_file()for path in implementation_files+test_files),'integrity keyless direct-slice mapping and source identities')
  for identity in identities:
@@ -2441,9 +2442,9 @@ def check_integrity_owner_root(root,d):
 def check_metadata_owner_root(root,d):
  entries={entry['functional_id']:entry for entry in d['functional_entries']}
  expected_statuses={
-  'F13':'LOCALLY_VERIFIED_SELECTED_SOURCE_PROPOSAL_AND_RECEIPT__GLOBAL_TRANSACTION_BLOCKED',
+  'F13':'LOCALLY_VERIFIED_TYPED_BODIES_AND_NONCOMMITTING_SOURCE_PROPOSAL__PARENT_INSTALL_NOT_RUN',
   'F13F':'LOCALLY_VERIFIED_SELECTED_FOUR_QUEUE_PUSH_POP__OTHER_PRODUCERS_DEFERRED',
-  'F13T':'LOCALLY_VERIFIED_SELECTED_ID1_TIMER_AND_WIRE__MEASUREMENT_PRODUCER_DEFERRED',
+  'F13T':'LOCALLY_VERIFIED_17_TIMER_PRIMITIVES_AND_40_ID1_BODY_CALLS__MEASUREMENT_DEFERRED',
  }
  for functional_id,status in expected_statuses.items():
   entry=entries[functional_id]
@@ -2455,12 +2456,12 @@ def check_metadata_owner_root(root,d):
  ck(entries['F13C'].get('implementation_status')=='DEFERRED_DETAILED_MAPPING'and entries['F13D2'].get('implementation_status')=='DEFERRED_DETAILED_MAPPING','F13C and F13D2 remain deferred')
 
  metadata_root=next(item for item in d['programme_roots']if item.get('root_id')=='metadata')
- root_status='LOCALLY_VERIFIED_SELECTED_SOURCE_STAGE__GLOBAL_CALLBACK_RECEIPT_BLOCKED'
+ root_status='LOCALLY_VERIFIED_NONCOMMITTING_SOURCE_AFTER_PROPOSAL__PARENT_INSTALL_NOT_RUN'
  ck(metadata_root.get('materialization_status')==root_status and metadata_root.get('implementation_status')==root_status and metadata_root.get('owning_module')=='crates/jocforge-domain/src/joc/emdf/metadata_owner.rs','metadata root implementation boundary')
  state=metadata_root.get('committed_state_schema',{})
  ck(state.get('identity')=='MetadataStateV1'and state.get('field_order')==['profile_id','provider_sha256','generation','next_source_index','carriage_mode','timer.remaining[6]','timer.cached[6]','timer.mode','timer.counter','queues[ID1,ID2,ID11,ID14]','finalized','pending disposition'],'metadata canonical state field order')
  ck(metadata_root.get('clock',{}).get('types')==['CodecSourceIndex s','JocDispatchIndex d=s+1','PublishedAuIndex j']and metadata_root.get('receipt',{}).get('global_owner_receipt')=='NOT_IMPLEMENTED; must be admitted by a future source/callback coordinator','metadata clock and receipt boundary')
- ck('not a global CallbackTransaction' in metadata_root.get('commit_authority','')and metadata_root.get('blocked')==['F13C JOC complexity BSI producer','F13D2 ID2 producer','MEASUREMENT, FINALIZE and RESTART owner receipts','global CallbackTransaction integration','durable output and whole-programme/product validation'],'metadata blocked integration scopes')
+ ck('Production stage_source returns an owned after-state proposal' in metadata_root.get('commit_authority','')and metadata_root.get('blocked')==['F13C JOC complexity BSI producer','whole meter prepass execution and terminal MeasurementReceipt production','FINALIZE and RESTART parent receipts','parent CallbackTransaction installation','durable output and whole-programme/product validation'],'metadata staged-parent and blocked integration scopes')
 
  fixture_dir=root/'crates/jocforge-domain/tests/fixtures/metadata_owner'
  expected_assets={
@@ -2504,16 +2505,19 @@ def check_metadata_owner_root(root,d):
 def check_joc_synthetic_coordinator(root,d):
  entry=next(item for item in d['functional_entries']if item['functional_id']=='F05JL')
  direct=entry.get('direct_slices',[])
- ck(entry.get('implementation_status')=='DEFERRED_DETAILED_MAPPING'and len(direct)==1,'F05JL parent remains deferred above its test-only seam')
- item=direct[0]
+ ck(entry.get('implementation_status')=='LOCALLY_VERIFIED_SELECTED_FIT_DISPATCH_PAYLOAD_PROPOSAL__PROGRAMME_ROOT_INSTALL_NOT_RUN'and len(direct)==2,'F05JL keeps the test seam and one production component proposal')
+ item=next(candidate for candidate in direct if candidate.get('slice_id')=='synthetic-coordinator-receipt-validation')
  files=['crates/jocforge-domain/Cargo.toml','crates/jocforge-domain/src/joc/mod.rs','crates/jocforge-domain/src/joc/synthetic_coordinator.rs']
  ck(item.get('slice_id')=='synthetic-coordinator-receipt-validation'and item.get('mapping_status')=='MATERIALIZED_TEST_ONLY_SLICE__WHOLE_F05JL_AND_JOC_ROOT_DEFERRED'and item.get('implementation_status')=='LOCALLY_VERIFIED_INPUT_ONLY_SYNTHETIC_RECEIPT_VALIDATOR__NO_PRODUCERS_OR_STATE_COMMIT'and item.get('implementation_files')==files and item.get('test_modules')==['crates/jocforge-domain/src/joc/synthetic_coordinator.rs']and all((root/path).is_file()for path in files),'F05JL synthetic slice map and source files')
  ck(item.get('scope','').startswith('Test-only validator')and 'commits no JOC state' in item.get('scope','')and 'test-only input-only' in item.get('validation_claim','').lower()and 'state_delta=null' in item.get('validation_claim',''),'F05JL slice stays validation-only')
  expected_errors=['SYNTHETIC_PROVIDER_IDENTITY','SYNTHETIC_SOURCE_IDENTITY','SYNTHETIC_STAGE_ORDER','SYNTHETIC_NOT_EXECUTED','SYNTHETIC_GENERATION','SYNTHETIC_OWNER_TOKEN','SYNTHETIC_SHAPE','SYNTHETIC_CHAIN','SYNTHETIC_PROVIDER_HASH','SYNTHETIC_INPUT_HASH','SYNTHETIC_BODY','SYNTHETIC_CLOCK']
  ck([item['error_code']for item in item.get('error_outcomes',[])]==expected_errors and all(case['programme_state_after']=='NO_STATE_EXISTS'for case in item['error_outcomes']),'F05JL synthetic error mapping')
 
+ production_slice=next(candidate for candidate in direct if candidate.get('slice_id')=='selected-fit-dispatch-and-id14-proposal')
+ production_files=['crates/jocforge-domain/src/joc/coefficient_fitting.rs','crates/jocforge-domain/src/joc/coefficient_geometry.rs','crates/jocforge-domain/src/joc/temporal_weights.rs','crates/jocforge-domain/src/joc/coefficient_representation.rs','crates/jocforge-domain/src/joc/dispatch_state.rs','crates/jocforge-domain/src/joc/source_stage.rs','crates/jocforge-domain/src/joc/programme_state.rs']
+ ck(production_slice.get('implementation_status')=='LOCALLY_VERIFIED_THREE_GENERATION_FIT_SEQUENCE_RETRY_AND_ID14_PROPOSAL__PARENT_INSTALL_NOT_RUN'and production_slice.get('implementation_files')==production_files and all((root/path).is_file()for path in production_files),'F05JL selected fit dispatch proposal mapping')
  joc_root=next(r for r in d['programme_roots']if r['root_id']=='joc')
- ck(joc_root=={'root_id':'joc','materialization_status':'INVENTORIED_PENDING_P1.3_MATERIALIZATION'},'synthetic F05JL seam does not promote joc root')
+ ck(joc_root.get('materialization_status')=='LOCALLY_VERIFIED_SELECTED_JOC_ROOT_JOCSEL01__PARENT_INSTALL_NOT_RUN'and'JOCSEL01' in joc_root.get('canonical_boundary','')and'F04C remains the sole receiver/QMF executor' in joc_root.get('authority_boundary','')and joc_root.get('parent_install_status','').startswith('NOT_RUN'),'selected JOC root is materialized without claiming parent install')
  module=(root/'crates/jocforge-domain/src/joc/mod.rs').read_text(encoding='utf-8')
  source=(root/'crates/jocforge-domain/src/joc/synthetic_coordinator.rs').read_text(encoding='utf-8')
  ck('#[cfg(test)]\nmod synthetic_coordinator;'in module and source.startswith('#![cfg(test)]')and not re.search(r'(?m)^\s*pub\s+(?:fn|struct|enum|mod)\b',source),'F05JL validator is compiled only for tests and exposes no production API')
@@ -2554,9 +2558,148 @@ def check_joc_synthetic_coordinator(root,d):
  base_vectors=json.loads(raw)
  ck(base_vectors['continuous_success'][0]['input']==vectors['success_input'],'F05JL synthetic input is the declared sanitized source case')
 
+def check_selected_adm_graph(root,d):
+ entry=next(item for item in d['functional_entries']if item['functional_id']=='F01G')
+ slices=entry.get('direct_slices',[])
+ ck(entry['implementation_status']=='DEFERRED_DETAILED_MAPPING'and len(slices)==1,'F01G remains deferred outside its selected graph identity subslice')
+ if not slices:return
+ selected=slices[0]
+ ck(selected['slice_id']=='selected-real-axml-chna-host-identity-and-source-join'and selected['implementation_status']=='LOCALLY_VERIFIED_CANDIDATE_GRAPH_EVENTS_ACTUAL_DBMD_AND_224_BOUNDARY_WORDS__SOURCE_BINDING_UNRESOLVED','selected candidate graph/event/DBMD slice status')
+ ck(selected['clock']['domains']==['CodecSourceIndex']and selected['parameters']['provider_files']==[]and selected['source_binding_to_selected_job'].startswith('UNRESOLVED:')and selected['vectors']['source_supplement_manifest_sha256']=='cd8722821ec6080de94b02df0f00e31c48f462423007aaa0b1124c1782365d55'and selected['vectors']['wash_handoff_check_sha256']=='fc8fbcef2352d3f10d9b5a0c7cb6a463db38a38a4853e1cc2f4128305ba35373'and selected['vectors']['source_dbmd_sha256']=='bc3f7199da679b43d1fd6f770c2caae08250d6ee545858e759fc12afc2232194','selected candidate graph identity and source-binding gate')
+ ck('does not read WAV/data/PCM'in selected['scope']and'installed48'in selected['scope']and'no production encode path'in selected['scope']and any('skip+4 transition'in text for text in selected['vectors']['case_pointers']),'selected graph exclusions remain explicit')
+ fixture=root/'crates/jocforge-domain/tests/fixtures/selected_adm_graph'
+ expected={
+  'source_metadata.xml':(83135,'5973f94db1bc995465b33f6d9be7fd55d3e1bd3941130a913c58e7e5cf57bbfc'),
+  'source_track_associations.bin':(1524,'f82b14e4c1b5b3b1750ed4104aa53f1d595e3ff2d4dbaef76a76c0e35f31b7a6'),
+  'REAL-GRAPH-TRACK-IDENTITIES.json':(19792,'f573a280401ba43a312bea65f793899965bdca62800c1e716677701c1bca7269'),
+  'NATIVE-UID-DESCRIPTOR-OBSERVATIONS.json':(80919,'ae6223a3e8f6c0976f04f5c1ef4c839d08b2074201b7177ee83b52d15c445be9'),
+  'UID-LOOKUP-INPUT-ONLY.json':(562,'7c98671657db6459af45b02a82f08fe5d32e9f76659363f4d14b2b667fa35468'),
+  'UID-LOOKUP-NATIVE-OBSERVATIONS.json':(1486,'077c16450bf45d1a60ecd541307f13b32e02723f2244455afbe488c7c42f7111'),
+  'SOURCE-METADATA-RECEIPT.json':(1470,'b284151464f0174d8e10a178991209cc7d4d28174e027116975ec5a12f7c957e'),
+  'source_metadata.dbmd':(580,'bc3f7199da679b43d1fd6f770c2caae08250d6ee545858e759fc12afc2232194'),
+  'DBMD-PARSER-EXPECTED.json':(9511,'dafc7ab91530da6716c20a239ba1e4a510458a0fb8208311c84c7eb7047e7075'),
+  'DBMD-PARSER-INPUT.json':(281,'53e5f89e37f3a99175bd54e1e91ac8613b3b492b88244d9062ae5ce0d60e14ee'),
+  'NATIVE-CONSTRUCTOR-OBSERVATIONS.json':(6372,'c9be7ccf99936f9fa75482604bcab699d1906461b2c92c1c7d7cfbf4ead0bf0d'),
+  'DBMD-SOURCE-RECEIPT.json':(948,'bbb780669d0bf9c112dbb8f8a60f12807f12d9c7562a61809917adeaff1d14e9'),
+  'INPUT-ONLY-PROFILE.json':(945,'1c9d6ae0e4437eab2a1ee1587f37d8dfe620bf4876d822eaa47eda04d41fa822'),
+  'SOURCE-FIELD-BOUNDARY-VECTORS.json':(155369,'ebba56bc0228b8ce6cc7aa218106c7304222ceb66bb1e73a1bc8d830fcedab43'),
+  'NATIVE-BOUND-CONSUMERS.json':(31113,'c434ed9276b6674c941748e398b149f77a9331172813cff91261cfdaa846db04'),
+  'F01E-VALIDATION-FIXTURE-IDENTITIES.json':(577,'551c8202aaae33efbad0cc2fa47cecb2908df1f2d7436dac92186482cf154fc9'),
+  'F01E-VALIDATION-PROFILE.json':(1301,'5d0fa84a3bf01182f933a066d59c9db874bff4dc84b51755061e85e60ece6ebf'),
+  'PROVENANCE.json':(3300,'6a00fdda59d66f78cc992ba6731c9560f41fc7d98d10888e562bd220f99ef776'),
+ }
+ ck(not(fixture/'MANIFEST.json').exists()and all((fixture/name).is_file()for name in expected),'selected graph fixtures reuse the tracked manifest policy')
+ for name,(length,digest)in expected.items():
+  raw=(fixture/name).read_bytes();ck(len(raw)==length and hashlib.sha256(raw).hexdigest()==digest,'selected graph fixture identity '+name)
+ application=(root/'crates/jocforge-application/src/lib.rs').read_text(encoding='utf-8')
+ ck('BackendUnavailable'in application and'parse_selected_adm_graph'not in application and'build_candidate_object_controls'not in application,'candidate graph remains outside main encode')
+ ck(all((root/path).is_file()for path in selected['implementation_files']+selected['test_modules']+selected['local_mapping_files']),'selected graph mapped files exist')
+
+def check_primary_metadata_control(root,d):
+ entry=next(item for item in d['functional_entries']if item['functional_id']=='F01E')
+ slices=entry.get('direct_slices',[])
+ selected=next((item for item in slices if item.get('slice_id')=='primary-source-bound-control38-value-production'),None)
+ ck(selected is not None,'R4 primary metadata/control slice is mapped separately from candidate graph')
+ if selected is None:return
+ ck(selected['implementation_status']=='LOCALLY_VERIFIED_R4_PRIMARY_METADATA_BOUND_38_ROWS_364_OBJECT_WORDS_BED_TAIL_UNPRODUCED__NO_MAIN_ENCODE'and 'NOT_REHASHED' in selected['scope']and 'No application::encode connection' in selected['scope'],'R4 slice status preserves source identity and product boundaries')
+ ck(selected['vectors']['source_supplement_manifest_sha256']=='f210abc9fb0d92f239ebef228cb3c3e15b9f55a820623aecf650b96d537102f4'and selected['vectors']['detached_delivery_envelope_sha256']=='a6a3bc2b970cb4e90bc1b28c18744e7742c5e1004331a66ab20dbba257542273'and selected['vectors']['checker_sha256']=='79432f90aa594615eb6506f914ed409917e6684d8b7a279463f195ab962ee76a','R4 package identities are pinned in the map')
+ fixture=root/'crates/jocforge-domain/tests/fixtures/primary_metadata_control'
+ expected={
+  'JOB-FIELD-PROJECTION.json':(1283,'b710150f1b8357ca417d3fe705c88334b9c9bbd418656b458e49f8ffa3faba82'),
+  'JOB-PROJECTION-RECEIPT.json':(2289,'3c342e34dd5519f752a3f58cafcd0710e6dfb6137631baabf369a2221a08a2b8'),
+  'FROZEN-JOB-BINDING.json':(997,'ad28d54ef72bf0c1af1f3315ccca74f27cd02de61f9006b25565acb49352361f'),
+  'PRIMARY-SOURCE-RECEIPT.json':(1329,'c60c45033ee40592b9fc82c9c68edf94c4ee1676f27d9df34634291b2cb0f7ad'),
+  'source_metadata.xml':(82997,'7e4e61d4e2bec581ff2b05133281198a220602290597950e301a6079701c1659'),
+  'source_track_associations.bin':(1524,'f82b14e4c1b5b3b1750ed4104aa53f1d595e3ff2d4dbaef76a76c0e35f31b7a6'),
+  'source_metadata.dbmd':(580,'ea961b79063bc68f64b1210dba002a5729d1003427196123f93b0890939b75d9'),
+  'F01E-EXPECTED-COMPARISON-DATA.json':(20207,'1265db0d87ce83204c34831f9ddde0e958705b171e9b05ee3e71c4ebda0b44c4'),
+  'MODEL-DEFINED-CONTROL38.json':(18668,'7b73e633a64f4cfeac6cc4acf63ed66c507012b7b9ab1885dc39ec7265ca00ee'),
+  'PRIMARY-DBMD-DECODED.json':(6336,'0f40de6dcc7100d1652d315abafb7aa0fc9abd72723cfb2e48d0f3a416073bb6'),
+ }
+ ck(not(fixture/'MANIFEST.json').exists()and all((fixture/name).is_file()for name in expected),'R4 fixture reuses the repository manifest policy and includes required payloads')
+ for name,(length,digest)in expected.items():
+  raw=(fixture/name).read_bytes();ck(len(raw)==length and hashlib.sha256(raw).hexdigest()==digest,'R4 fixture identity '+name)
+ provenance=json.loads((fixture/'PROVENANCE.json').read_text(encoding='utf-8'))
+ disclosure=json.loads((fixture/'PATH-DISCLOSURE-REVIEW.json').read_text(encoding='utf-8'))
+ ck(provenance['source_identity']['full_pcm_identity']=='NOT_REHASHED'and provenance['source_identity']['original_job_identity']=='RESEARCH_DECLARATION_ONLY'and provenance['source_identity']['raw_job_document_distributed'] is False and provenance['source_identity']['candidate_hanabi_is_primary'] is False,'R4 evidence scope and candidate role')
+ ck(disclosure['raw_job_document_distributed'] is False and disclosure['forbidden_location_matches']==0,'R4 path-disclosure review remains clean')
+ names={path.name.casefold()for path in fixture.iterdir()if path.is_file()}
+ ck('frozen_selected_job.xml'not in names and not any(name.endswith('.wav')for name in names),'R4 contains no original job XML or WAVE/PCM file')
+ producer=(root/'crates/jocforge-domain/src/frontend/primary_metadata_control.rs').read_text(encoding='utf-8')
+ test=(root/'crates/jocforge-domain/tests/primary_metadata_control.rs').read_text(encoding='utf-8')
+ application=(root/'crates/jocforge-application/src/lib.rs').read_text(encoding='utf-8')
+ ck('validate_source_metadata_identity' in producer and 'unproduced_tail' in producer and 'produce_primary_metadata_control_rows' in test and 'compared_object_words, 364' in test,'R4 producer tests actual-first 38-row output and preserves bed tail boundary')
+ ck('BackendUnavailable'in application and 'produce_primary_metadata_control_rows'not in application,'R4 metadata producer is not connected to application encode')
+
+def check_candidate_source_geometry(root,d):
+ entries={item['functional_id']:item for item in d['functional_entries']}
+ expected_ids={'F01B':'candidate-normalized-bed-source-points','F01GL':'candidate-virtual-prefix-q15-geometry'}
+ for functional_id,slice_id in expected_ids.items():
+  entry=entries[functional_id];slices=entry.get('direct_slices',[])
+  ck(entry['implementation_status']=='DEFERRED_DETAILED_MAPPING'and len(slices)==1,'candidate source geometry remains a direct sub-slice '+functional_id)
+  selected=slices[0]
+  ck(selected['slice_id']==slice_id and selected['vectors']['source_binding_to_selected_job']=='UNRESOLVED','candidate source geometry status/source identity '+functional_id)
+  ck(selected['clock']['domains']==[]and selected['parameters']['provider_files']==[]and all((root/path).is_file()for path in selected['implementation_files']+selected['test_modules']+selected['local_mapping_files']),'candidate source geometry files and pure-value boundaries '+functional_id)
+ if expected_ids['F01B'] in [s['slice_id']for s in entries['F01B'].get('direct_slices',[])]:
+  bed=entries['F01B']['direct_slices'][0]
+  ck(bed['implementation_status']=='LOCALLY_VERIFIED_NINE_BED_ROLE_POINTS_AND_72_SOURCE_BOUNDARY_VALUES__SOURCE_BINDING_UNRESOLVED'and 'bed id3' in bed['scope'].casefold(),'candidate bed point slice boundary')
+ prefix=entries['F01GL']['direct_slices'][0]
+ ck(prefix['implementation_status']=='LOCALLY_VERIFIED_11_Q15_POINTS_33_XYZ_WORDS_143_METADATA_WORDS_AND_8_CONSUMER_VALUE_JOINS__SOURCE_BINDING_UNRESOLVED'and 'does not claim pointer/table alias' in prefix['vectors']['case_pointers'][1],'candidate virtual prefix value-only boundary')
+
+def check_primary_installed48_slice(root,d):
+ fixture=root/'crates/jocforge-domain/tests/fixtures/primary_installed48';clarification=fixture/'route_semantics_v2';expected_manifest='c24f2202b3d90c6b739e5e09210106fedfe5b01ba94132bde44012de535d7258';expected_files={'CLARIFICATIONS.md':(2373,'dd4c795961d03ada2b8dfc8d839fba913d7d564cabaa751c8134ff1ffc64f268'),'PROVENANCE.json':(1493,'083b388efb916cf74e17d2066f1919a67dfc79c579dc05e134d2871e99af1303'),'WASH-VALIDATION.json':(326,'2f3e675ece7db64b5b74f9523886ed233d203c174c4374fd6b34cce409b878a1')}
+ provenance=json.loads((clarification/'PROVENANCE.json').read_text(encoding='utf-8'),object_pairs_hook=unique_object_pairs);validation=json.loads((clarification/'WASH-VALIDATION.json').read_text(encoding='utf-8'),object_pairs_hook=unique_object_pairs)
+ ck(provenance['schema']=='washed-primary-route-semantics-provenance.v2'and provenance['base_primary_activity_manifest_sha256']=='ca2bc4aff5c81dfc9159177326ddf1db2630a8dc26634a3a761bbbc2a4798332'and provenance['sealed_r2_source_manifest_sha256']=='5e7c05de3f908d36c3d0d7ca78fd98d5d7b3ea15ae1d75d18c8930401b39c2f9'and validation=={'schema':'washed-primary-route-semantics-validation.v2','source22_width_ge_threshold':True,'variant44_active_z_zero':True,'variant44_field44_zero':True,'variant45_quiet_field44_preserved':True,'variant45_quiet_z_preserved':True,'mismatches':0,'native_primary_acceptance':'NOT_RUN'},'selected installed48 route clarification v2 evidence binding')
+ ck({path.name for path in clarification.iterdir()if path.is_file()}==set(expected_files),'selected installed48 clarification exact file set; reuse existing package manifest')
+ for name,(length,digest) in expected_files.items():
+  content=(clarification/name).read_bytes();ck(len(content)==length and hashlib.sha256(content).hexdigest()==digest,'selected installed48 clarification payload identity '+name)
+ entries={entry['functional_id']:entry for entry in d['functional_entries']};f03=entries['F03W']['direct_slices'];f04=entries['F04G']['direct_slices'];ck(len(f03)==1 and f03[0]['slice_id']=='selected-primary-installed48-source-map-and-activity'and f03[0]['implementation_status']=='LOCALLY_VERIFIED_SELECTED_ACTIVITY_AND_ALL_POSTROUTE_VARIANTS','selected installed48 source/activity direct-slice mapping');ck(len(f04)==1 and f04[0]['slice_id']=='selected-p11-prefix-membership-producer'and f04[0]['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_AND_SEALED_SELECTED_MEMBERSHIP_VECTORS','selected P11 membership direct-slice mapping')
+ for direct in (f03[0],f04[0]):
+  ck(all((root/path).is_file()for path in direct['implementation_files']+direct['test_modules']+direct['parameters']['provider_files']+direct['vectors']['authoritative_vectors']),'selected installed48 direct-slice paths exist '+direct['slice_id'])
+  ck(direct['vectors']['r2_manifest_sha256']=='ca2bc4aff5c81dfc9159177326ddf1db2630a8dc26634a3a761bbbc2a4798332'and direct['vectors']['route_clarification_v2_manifest_sha256']==expected_manifest,'selected installed48 direct-slice Wash manifest identities '+direct['slice_id'])
+ source=(root/'crates/jocforge-domain/src/spatial/installed48_source_map.rs').read_text(encoding='utf-8');membership=(root/'crates/jocforge-domain/src/spatial/prefix_membership.rs').read_text(encoding='utf-8');test=(root/'crates/jocforge-domain/tests/installed48_source_map.rs').read_text(encoding='utf-8')
+ ck('pre_route_width >= SELECTED_WIDE_OBJECT_THRESHOLD'in source and 'metadata[6] = 0;'in source and 'metadata[10] = 0;'in source and 'metadata[11] = 0;'in source,'selected wide-route Z and field52 normalization binding')
+ ck('for_selected_primary_p11' in membership and 'SelectedP11Geometry' in membership and not re.search(r'pub\s+fn\s+(?:new|from_basis)\s*\(',membership),'F04G membership basis is bound to selected P11')
+ ck('fn selected_postroute_variants_match_all_defined_bytes()'in test and 'variant_id' in test and 'assert_eq!(\n        actual,\n        expected_bytes' in test,'all defined selected postroute bytes are checked after computation')
+ ck(not any(path.suffix.lower()in{'.wav','.pcm','.bin'}for path in fixture.rglob('*')if path.is_file()),'selected installed48 fixtures contain no media/PCM payload')
+
+def check_diffusion_filter_slice(root,d):
+ entries={entry['functional_id']:entry for entry in d['functional_entries']};slices=entries['F04F']['direct_slices'];ck(len(slices)==2 and slices[0]['slice_id']=='single-tail-diffusion-filter-block-preview'and slices[0]['implementation_status']=='LOCALLY_VERIFIED_SELECTED_F04F_BLOCK_PREVIEW__TAIL_LIFECYCLE_DEFERRED'and slices[1]['slice_id']=='single-tail-active-inactive-callback-lifecycle'and slices[1]['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_F04F_5_TAIL_TRANSITIONS__PRIMARY_CALLBACK_JOIN_DEFERRED','F04F block and local tail-lifecycle direct slices')
+ direct=slices[0];tail=slices[1];fixture=root/'crates/jocforge-domain/tests/fixtures/diffusion_filter';manifest_fixture=root/'crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json';expected_manifest_sha='c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a'
+ ck(direct['parameters']['package_manifest_fixture_reused']is True and direct['parameters']['package_manifest_sha256']==expected_manifest_sha and direct['parameters']['provider_files'][2]=='crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json'and manifest_fixture.is_file(),'diffusion provider reuses the existing package manifest fixture')
+ ck(not(fixture/'MANIFEST.json').exists(),'diffusion fixtures do not introduce a second manifest')
+ for item in direct['fixture_payload_identities']:
+  content=(root/item['file']).read_bytes();ck(len(content)==item['bytes']and hashlib.sha256(content).hexdigest()==item['sha256'],'diffusion fixture payload identity '+item['file'])
+ manifest_bytes=manifest_fixture.read_bytes();ck(hashlib.sha256(manifest_bytes).hexdigest()==expected_manifest_sha and len(manifest_bytes)==76302,'diffusion reuses the exact approved package manifest bytes')
+ for item in tail['fixture_payload_identities']:
+  content=(root/item['file']).read_bytes();ck(len(content)==item['bytes']and hashlib.sha256(content).hexdigest()==item['sha256'],'diffusion tail fixture payload identity '+item['file'])
+ ck(all((root/path).is_file()for slice_map in slices for path in slice_map['implementation_files']+slice_map['test_modules']+slice_map['vectors']['authoritative_vectors']+slice_map['parameters']['provider_files']),'F04F direct-slice paths exist')
+ source=(root/'crates/jocforge-domain/src/spatial/diffusion_filter.rs').read_text(encoding='utf-8');tests=(root/'crates/jocforge-domain/src/spatial/diffusion_filter/tests.rs').read_text(encoding='utf-8');code=rust_code_without_comments(source).split('#[cfg(test)]',1)[0]
+ ck(source.startswith('// pattern: Functional Core')and 'pub fn preview_filter_block' in code and 'DSTATE1\\0' in source and 'r32_add(' in code and 'r32_sub(' in code and 'r32_mul(' in code and 'r32_div(' in code and '.mul_add('not in code,'F04F block preview uses explicit ordered R32 operations and DSTATE1 serialization')
+ ck('F04F.5'not in code and not re.search(r'impl\s+Clone\s+for\s+DiffusionFilterState',code)and not re.search(r'#\[derive\([^\]]*Clone[^\]]*\)\]\s*pub struct DiffusionFilterState',code),'F04F preview does not expose tail lifecycle or cloneable committed state')
+ ck(all(case in tests for case in ('zero_coefficient_delay','cold_fade_length_6','empty_clears_fade','warm_split_5_7','selected_continuous_block_recipes_match_lane_and_complete_state_digests'))and 'DIFFUSION_STATE_V1'not in code,'F04F tests compare actual lane/state outputs to sealed vectors; state encoding is not misrepresented as native')
+ ck('std::fs'not in code and 'std::env'not in code and 'std::process'not in code and 'read_to_string'not in code,'F04F domain provider performs no filesystem, environment, or process I/O')
+ tail_source=(root/'crates/jocforge-domain/src/spatial/diffusion_tail.rs').read_text(encoding='utf-8');tail_tests=(root/'crates/jocforge-domain/src/spatial/diffusion_tail/tests.rs').read_text(encoding='utf-8');tail_code=rust_code_without_comments(tail_source).split('#[cfg(test)]',1)[0]
+ ck(tail_source.startswith('// pattern: Functional Core')and 'pub fn preview_diffusion_tail' in tail_code and 'DiffusionTailTransition::Removed' in tail_code and 'DiffusionTailError::StateIncomplete' in tail_code and 'cold_state()' in tail_code and 'preview_filter_block(' in tail_code,'F04F tail preview handles remove/cold/warm paths without owning a callback map')
+ ck(all(name in tail_tests for name in ('cold_tail_filters_previous_then_current_and_caches_current_outputs','warm_tail_uses_cached_previous_output_and_processes_current_pcm_only','inactive_removes_the_tail_and_reactivation_restarts_from_cold','warm_tail_without_the_same_instance_output_cache_fails_closed')),'F04F tail synthetic lifecycle coverage')
+ ck('std::fs'not in tail_code and 'std::env'not in tail_code and 'std::process'not in tail_code and not re.search(r'pub\s+fn\s+.*\busize\b',tail_code),'F04F tail domain boundary has no I/O or public platform-size clock')
+
+def check_id11_parser_boundary_evidence(root,d):
+ entries={entry['functional_id']:entry for entry in d['functional_entries']};slices=entries['F13C']['direct_slices'];matches=[item for item in slices if item.get('slice_id')=='selected-id11-parser-boundary-evidence'];ck(len(matches)==1,'one bounded ID11 parser-boundary evidence slice');direct=matches[0]
+ ck(direct['implementation_status']=='LOCALLY_VERIFIED_WASHED_BOUNDARY_RECEIPTS_ONLY__NO_ID11_PARSER_IMPLEMENTATION'and direct['implementation_files']==[],'ID11 boundary evidence does not claim a semantic parser implementation')
+ fixture=root/'crates/jocforge-domain/tests/fixtures/id11_parser_boundary';manifest_fixture=root/'crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json';expected_base='c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a'
+ ck(direct['parameters']['package_manifest_fixture_reused']is True and direct['parameters']['boundary_supplement_manifest_sha256']=='fe024547d78ff6f9a87fc3cb89fe6a0eb68d90a86406bb3d5c06cdb79fadfb55'and direct['parameters']['boundary_supplement_check_sha256']=='6ffd413c7b5dac9f79f82c47af49bb81fac174d82c445db64d326a1518f7ca65'and direct['parameters']['boundary_supplement_envelope_sha256']=='54649759580d1a813bbd58b9a278820c9509d387ed5746973cbb76e1106ccdec'and manifest_fixture.is_file(),'ID11 boundary supplement seals and reused base manifest')
+ ck(not(fixture/'MANIFEST.json').exists(),'ID11 boundary fixtures do not add a second manifest')
+ for item in direct['fixture_payload_identities']:
+  content=(root/item['file']).read_bytes();ck(len(content)==item['bytes']and hashlib.sha256(content).hexdigest()==item['sha256'],'ID11 boundary fixture identity '+item['file'])
+ manifest_bytes=manifest_fixture.read_bytes();ck(len(manifest_bytes)==76302 and hashlib.sha256(manifest_bytes).hexdigest()==expected_base,'ID11 evidence reuses the exact approved package manifest')
+ test=(root/'crates/jocforge-domain/tests/id11_parser_boundary_evidence.rs').read_text(encoding='utf-8');code=rust_code_without_comments(test)
+ ck('washed_id11_boundary_payloads_keep_the_sealed_identities'in code and 'selected_id11_prefix_and_trailing_byte_observations_are_self_consistent'in code and 'implementation_ready' in test and 'semantic_parse_bits_selected_seed' in test,'ID11 evidence test covers hashes and bounded cursor/status observations')
+ ck(all((root/path).is_file()for path in direct['test_modules']+direct['vectors']['authoritative_vectors']+direct['parameters']['provider_files']),'ID11 evidence mapping paths exist')
+
 def run(root=ROOT):
  arch=root/'docs/architecture';req={'APPROVAL.md','ARCHITECTURE.md','ARCHITECTURE-DECISIONS.md','DATAFLOW.md','DEPENDENCY-RULES.md','ERROR-MODEL.md','MODULE-MAP.md','OLD-WIRE-REUSE-MATRIX.md','PROFILE-DIMENSIONS.md','PUBLIC-API.md','STATE-OWNERSHIP.md','TEST-STRATEGY.md'};ck(req<={p.name for p in arch.glob('*.md')},'architecture documents')
- d=json.loads((root/'docs/implementation/IMPLEMENTATION-MAP.json').read_text(encoding='utf-8'));schema=json.loads((root/'docs/implementation/IMPLEMENTATION-MAP.schema.json').read_text(encoding='utf-8'));ck(all(k in d for k in schema['required']),'schema required');es=d['functional_entries'];ck(len(es)==104 and len({e['functional_id']for e in es})==104 and all(e['inventory_status']=='INVENTORIED'for e in es),'104 inventoried IDs');active={e['functional_id']for e in es if e.get('active_slice_materialization')=='MATERIALIZED'};ck(active=={'F02','XSTJ','F05R56','F13','F13F','F13T'},'active scoped IDs');future=[e for e in es if e['functional_id']not in active];ck(len(future)==98,'deferred count');check_reader_target_mapping(root,d)
+ d=json.loads((root/'docs/implementation/IMPLEMENTATION-MAP.json').read_text(encoding='utf-8'));schema=json.loads((root/'docs/implementation/IMPLEMENTATION-MAP.schema.json').read_text(encoding='utf-8'));ck(all(k in d for k in schema['required']),'schema required');es=d['functional_entries'];ck(len(es)==104 and len({e['functional_id']for e in es})==104 and all(e['inventory_status']=='INVENTORIED'for e in es),'104 inventoried IDs');active={e['functional_id']for e in es if e.get('active_slice_materialization')=='MATERIALIZED'};ck(active=={'F02','XSTJ','F05R56','F13','F13F','F13T'},'active scoped IDs');future=[e for e in es if e['functional_id']not in active];ck(len(future)==98,'deferred count');check_selected_adm_graph(root,d);check_primary_metadata_control(root,d);check_candidate_source_geometry(root,d);check_reader_target_mapping(root,d)
  check_oamd_rowdata_mapping(root,d)
  check_oamd_body_assembler_mapping(root,d)
  check_trim_section_mapping(root,d)
@@ -2574,6 +2717,13 @@ def run(root=ROOT):
    ck(e['implementation_status']==audit.get('status')and audit.get('status')in direct_statuses and e.get('parameters',{}).get('kind')=='VALIDATED_PROVIDER'and e.get('vectors',{}).get('authoritative_vectors')[:2]==['crates/jocforge-domain/tests/fixtures/receiver_pipeline/F04R-DIRECT-INPUT-VECTORS.json','crates/jocforge-domain/tests/fixtures/receiver_pipeline/F04R-DIRECT-ACTUAL-LITERALS.json']and e.get('error_outcomes')==audit.get('error_mapping',{}).get('error_outcomes'),'F04R traceability binds the ready direct receiver contract')
    package_paths=e['parameters']['provider_files']+['test-vectors/unit/vectors.json','test-vectors/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json']
    ck(all((PKG/path).is_file()for path in package_paths),'F04R approved-package providers and historical vectors exist')
+  elif e['functional_id']=='F04C':
+   direct=e.get('direct_slices',[])
+   ck(e['implementation_status']=='LOCALLY_VERIFIED_G0_G1_PRIMING_AND_G2_WHOLE_ROOT_J05_PROPOSAL__PARENT_INSTALL_NOT_RUN'and len(direct)==1,'F04C whole-root J05 composer is one bounded direct slice')
+   if direct:
+    s=direct[0];ck(s.get('slice_id')=='whole-spatial-audio-j05-composer'and s.get('implementation_status')=='LOCALLY_VERIFIED_CONTINUOUS_G0_G1_G2_ROOT_AND_J05_PROPOSALS__PARENT_INSTALL_NOT_RUN'and all((root/path).is_file()for path in s.get('implementation_files',[])+s.get('test_modules',[])),'F04C composer files and status')
+  elif e['functional_id']=='F05JL':
+   ck(e['implementation_status']=='LOCALLY_VERIFIED_SELECTED_FIT_DISPATCH_PAYLOAD_PROPOSAL__PROGRAMME_ROOT_INSTALL_NOT_RUN'and len(e.get('direct_slices',[]))==2,'F05JL production component and synthetic seam remain mapped')
   elif e['functional_id']=='F03G':
    direct=e.get('direct_slices',[]);expected_cases=['U-FRONT-INSTALL-EMPTY','U-FRONT-INSTALL-RECT','U-FRONT-INSTALL-TIES','U-FRONT-INSTALL-ATTR'];expected_errors={'TARGET_INSTALL_INPUT_ERROR','UNSUPPORTED_ATTRIBUTE_MULTIPLICITY','TARGET_INSTALL_NUMERIC_FAILURE','TARGET_INSTALL_NO_FINITE_ASSIGNMENT'}
    ck(e['implementation_status']=='DEFERRED_DETAILED_MAPPING'and len(direct)==1,'F03G remains deferred outside its one direct slice')
@@ -2583,6 +2733,44 @@ def run(root=ROOT):
     ck(s['implementation_files']==files and s['test_modules']==tests and s['vectors']['case_pointers']==expected_cases and s['vectors']['local_fixture']=={'file':fixture,'bytes':1503142,'sha256':'a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8'}and s['vectors']['source_package_manifest_sha256']=='c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a','F03G target-slot-install source vectors and files')
     ck({x['error_code']for x in s['error_outcomes']}==expected_errors and e['error_outcomes']==s['error_outcomes'],'F03G target-slot-install mapped failures')
     ck(s['clock']['domains']==[]and s['parameters']['provider_files']==[]and 'constructor' in s['scope'].casefold() and all((root/path).is_file()for path in files+tests+[fixture]+s['local_mapping_files']),'F03G target-slot-install boundaries and evidence files')
+  elif e['functional_id']=='F06':
+   direct=e.get('direct_slices',[]);ck(e['implementation_status']=='DEFERRED_DETAILED_MAPPING'and len(direct)==2,'F06 keeps programme finalize and post-render callbacks as bounded slices')
+   if direct:
+    measurement=direct[0];ck(measurement['slice_id']=='programme-measurement-finalize-projection'and 'whole-meter terminal identity' in measurement['scope']and 'whole terminal-state hash construction' in measurement['exclusions'],'F06 programme measurement still requires a whole meter terminal identity')
+    s=direct[1];files=['crates/jocforge-domain/src/meter/mod.rs','crates/jocforge-domain/src/meter/post_render_meter.rs','crates/jocforge-domain/src/meter/object_renderer.rs','crates/jocforge-domain/src/meter/object_render_metadata.rs','crates/jocforge-domain/src/meter/object_gain_mixer.rs','crates/jocforge-domain/src/meter/lfe_delay_ring.rs','crates/jocforge-domain/src/meter/shared_gain_delay.rs','crates/jocforge-domain/src/meter/sample_block_queue.rs','crates/jocforge-domain/src/meter/energy_window.rs','crates/jocforge-domain/src/meter/true_peak.rs','crates/jocforge-domain/src/meter/integrated_meter.rs','crates/jocforge-domain/src/meter/ungated_mean.rs'];maps=['docs/implementation/post-render-meter.md','docs/implementation/post-render-meter-provenance.json','docs/implementation/meter-lfe-delay.md','docs/implementation/meter-lfe-delay-provenance.json'];fixture={'file':'crates/jocforge-domain/tests/fixtures/post_render_meter/zero_programme.json','bytes':1037,'sha256':'fbb1ba5bb6d027d4b7663bbf6219fd4b79555e53deb0042fd106cc2a1f543de9'};lfe_fixture={'file':'crates/jocforge-domain/tests/fixtures/meter_frontend_oar/lfe_delay_inputs.json','bytes':922,'sha256':'8e940cef901862086fb858e940cd74faf6f091693bfb7917037584b861bea2f7'}
+    expected_clocks=['ObjectRenderCallbackIndex','ObjectRenderCallbackGeneration','SharedGainDelayCallbackIndex','MeterCallbackIndex','MeterUpstreamGeneration','MeterSamplePosition','MeterBlockIndex','EnergyRecordCount']
+    ck(s['slice_id']=='post-render-meter-callback-composition'and s['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_OAR_PACKET_TO_NUMERIC_LEAVES__FRONTEND_AND_METER_ROOT_DEFERRED'and s['mapping_status']=='MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F06_AND_METER_ROOT_DEFERRED','F06 post-render callback slice status')
+    ck(s['implementation_files']==files and s['test_modules']==['crates/jocforge-domain/src/meter/post_render_meter.rs','crates/jocforge-domain/src/meter/lfe_delay_ring.rs','crates/jocforge-domain/src/meter/object_renderer.rs','crates/jocforge-domain/src/meter/object_gain_mixer.rs','crates/jocforge-domain/src/meter/object_render_metadata.rs']and s['local_mapping_files']==maps,'F06 post-render source/test/doc mapping')
+    ck(s['clock']['domains']==expected_clocks and len(s['clock']['covered_clauses'])==4 and 'after values as proposals' in s['clock']['covered_clauses'][3],'F06 post-render typed clocks and stage boundary')
+    ck(s['vectors']['local_fixture']==fixture and s['vectors']['additional_fixtures']==[lfe_fixture]and s['vectors']['kind']=='SYNTHETIC_TYPED_FRONTEND_AND_POST_RENDER_CHAIN_INPUTS'and len(s['vectors']['case_pointers'])==3,'F06 synthetic post-render input fixture mapping')
+    local=root/fixture['file'];ck(local.is_file()and local.stat().st_size==fixture['bytes']and hashlib.sha256(local.read_bytes()).hexdigest()==fixture['sha256'],'F06 post-render input fixture identity')
+    lfe_local=root/lfe_fixture['file'];ck(lfe_local.is_file()and lfe_local.stat().st_size==lfe_fixture['bytes']and hashlib.sha256(lfe_local.read_bytes()).hexdigest()==lfe_fixture['sha256'],'F06 post-render LFE input fixture identity')
+    fixture_value=json.loads(local.read_text(encoding='utf-8'));ck(fixture_value['scope']=='SYNTHETIC_TYPED_OAR_PACKET_TO_NUMERIC_METER_LEAVES'and fixture_value['not_claimed']==['independent ADM frontend','real OAR packet producer','whole meter terminal root','MeasurementReceipt','real programme validation'],'F06 synthetic fixture exclusions')
+    error_codes={item['error_code']for item in s['error_outcomes']};ck(error_codes=={'POST_RENDER_METER_CLOCK_MISMATCH','POST_RENDER_METER_STAGE_ERROR'},'F06 post-render propagated error mapping')
+    code=(root/'crates/jocforge-domain/src/meter/post_render_meter.rs').read_text(encoding='utf-8');clean=rust_code_without_comments(code);ck('pub fn stage_independent_meter_callback('in clean and 'stage_meter_frontend_oar_packet('in clean and 'stage_object_render_callback('in clean and 'stage_shared_gain_delay_callback('in clean and 'stage_sample_block_queue_callback('in clean and 'process_true_peak_block('in clean and 'stage_energy_window_block('in clean and 'process_integrated_meter('in clean and 'process_ungated_mean('in clean,'F06 post-render actual staged leaf connection')
+    ck(any('independent ADM frontend' in item for item in s['not_run'])and any('whole eight-owner meter root' in item for item in s['not_run'])and any('verified MeasurementReceipt' in item for item in s['not_run'])and any('MetadataOwner::stage_source' in item for item in s['not_run']),'F06 post-render frontend/root/metadata receipt boundary')
+  elif e['functional_id']=='F06OF':
+   direct=e.get('direct_slices',[]);fixture={'file':'crates/jocforge-domain/tests/fixtures/meter_frontend_oar/lfe_delay_inputs.json','bytes':922,'sha256':'8e940cef901862086fb858e940cd74faf6f091693bfb7917037584b861bea2f7'};files=['crates/jocforge-domain/src/meter/mod.rs','crates/jocforge-domain/src/meter/lfe_delay_ring.rs','crates/jocforge-domain/src/meter/object_renderer.rs'];maps=['docs/implementation/meter-lfe-delay.md','docs/implementation/meter-lfe-delay-provenance.json']
+   ck(e['implementation_status']=='DEFERRED_DETAILED_MAPPING'and len(direct)==2,'F06OF retains bounded LFE packet and PCM cursor slices')
+   if direct:
+    s=direct[0];ck(s['slice_id']=='meter-lfe-delay-and-oar-packet-assembly'and s['mapping_status']=='MATERIALIZED_DIRECT_SUBSLICE_F06OF_AND_FRONTEND_DEFERRED'and s['implementation_status']=='LOCALLY_VERIFIED_TWO_CALLBACK_LFE_RING_AND_PACKET_ASSEMBLY__UPSTREAM_FRONTEND_DEFERRED','F06OF LFE direct-slice status')
+    ck(s['implementation_files']==files and s['local_mapping_files']==maps and s['test_modules']==['crates/jocforge-domain/src/meter/lfe_delay_ring.rs','crates/jocforge-domain/src/meter/post_render_meter.rs'],'F06OF implementation/test/docs mapping')
+    ck(s['clock']['domains']==['MeterCallbackIndex','ObjectRenderCallbackGeneration','MeterLfeCallbackOrigin']and len(s['clock']['covered_clauses'])==4 and s['parameters']['provider_files']==[],'F06OF typed clocks and selected fixed ring')
+    ck(s['vectors']['kind']=='HASH_BOUND_SEVEN_SYNTHETIC_LFE_INPUT_FRAMES_AND_PACKET_JOIN'and s['vectors']['local_fixture']==fixture and len(s['vectors']['case_pointers'])==3,'F06OF vector shape and local fixture')
+    local=root/fixture['file'];source=PKG/'test-vectors/OAR-FRONTEND-CLOCK-JOIN-VERIFICATION.json'
+    ck(local.is_file()and local.stat().st_size==fixture['bytes']and hashlib.sha256(local.read_bytes()).hexdigest()==fixture['sha256'],'F06OF local input recipe identity')
+    ck(source.is_file()and source.stat().st_size==466502 and hashlib.sha256(source.read_bytes()).hexdigest()=='d4800930c462693720527ed4aab1e0fb973bfa0751cb45bf9d332da72d5a06ad','F06OF washed source vector identity')
+    source_code=(root/files[1]).read_text(encoding='utf-8');clean=rust_code_without_comments(source_code);ck('pub fn stage_meter_lfe_delay('in clean and 'pub fn stage_meter_frontend_oar_packet('in clean and 'ObjectRenderCallbackGeneration' in clean and 'MeterCallbackPhase::ZeroInputDrain' in clean,'F06OF ring and same-generation packet code')
+    ck(all((root/path).is_file()for path in files+maps)and s['delivery_scope']=='PUBLIC_CLEANROOM_NO_PRIVATE_KEY'and any('independent meter frontend' in item for item in s['not_run'])and any('whole meter root' in item for item in s['not_run']),'F06OF remaining upstream/frontend boundary')
+    cursor=direct[1];cursor_files=['crates/jocforge-io/Cargo.toml','crates/jocforge-io/src/pcm/mod.rs','crates/jocforge-io/src/pcm/riff_pcm24.rs','crates/jocforge-io/src/pcm/meter_source_cursor.rs','crates/jocforge-application/src/lib.rs'];cursor_maps=['docs/implementation/meter-source-cursor.md','docs/implementation/meter-source-cursor-provenance.json'];cursor_fixture={'file':'crates/jocforge-io/tests/fixtures/meter_source_cursor/input_only.json','bytes':681,'sha256':'6f16eb8f4047b0a4f590f813c69a2469a45e0d51a66288e964f81d4d7fbf46ed'}
+    ck(cursor['slice_id']=='meter-in-memory-pcm24-source-cursor'and cursor['mapping_status']=='MATERIALIZED_DIRECT_INPUT_SUBSLICE_F06OF_AND_FRONTEND_DEFERRED'and cursor['implementation_status']=='LOCALLY_VERIFIED_BORROWED_PCM24_TO_RAW_INPUT_FRAMES__SCP_CONTROL_PRODUCER_DEFERRED','F06OF in-memory source cursor status')
+    ck(cursor['implementation_files']==cursor_files and cursor['local_mapping_files']==cursor_maps and cursor['test_modules']==[cursor_files[3]]and cursor['vectors']['local_fixture']==cursor_fixture,'F06OF source cursor files and recipe')
+    ck(cursor['clock']['domains']==['MeterSourceSampleCount','MeterSourcePosition','MeterCallbackIndex','MeterUpstreamGeneration','MeterCallbackCount']and cursor['parameters']['provider_files']==[]and 'selected job resource SHA-256' in cursor['parameters']['validation_boundary'],'F06OF source cursor typed clocks/profile')
+    cursor_local=root/cursor_fixture['file'];source_vector=PKG/'specs/01-input-and-clock.md';join_spec=PKG/'specs/06-oar-frontend-input-and-clock-join.md'
+    ck(cursor_local.is_file()and cursor_local.stat().st_size==cursor_fixture['bytes']and hashlib.sha256(cursor_local.read_bytes()).hexdigest()==cursor_fixture['sha256']and source_vector.is_file()and hashlib.sha256(source_vector.read_bytes()).hexdigest()=='6bd78ebe23536c3a55ec54f2e13c2e8b98c2ee245ae5a886e47bc9580520b93a'and join_spec.is_file()and hashlib.sha256(join_spec.read_bytes()).hexdigest()=='2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423','F06OF source cursor input/source bindings')
+    cursor_source=(root/cursor_files[3]).read_text(encoding='utf-8');cursor_code=rust_code_without_comments(cursor_source);riff_source=(root/cursor_files[2]).read_text(encoding='utf-8');riff_code=rust_code_without_comments(riff_source)
+    ck('pub fn stage_meter_pcm_source_frame('in cursor_code and 'selected_resource_identity: MeterPcmSourceIdentity' in cursor_code and 'read_pcm24_hop(first_sample, actual)' in cursor_code and 'source bytes enter the cursor state' in cursor_source and 'source_sha256: [u8; 32]' in riff_code and 'source_sha256: Sha256::digest(bytes).into()' in riff_code,'F06OF cursor binds borrowed source bytes and extracts actual PCM hops')
+    ck({item['error_code']for item in cursor['error_outcomes']}=={'METER_SOURCE_EXTENT_INVALID','METER_SOURCE_PROFILE_MISMATCH','METER_SOURCE_EXTENT_MISMATCH','METER_SOURCE_IDENTITY_MISMATCH','METER_SOURCE_CALLBACK_ORDER','METER_SOURCE_READER_ERROR'}and any('SCP16/control16' in item for item in cursor['not_run'])and cursor['delivery_scope']=='PUBLIC_CLEANROOM_NO_PRIVATE_KEY','F06OF source cursor outcomes and remaining producer boundary')
   elif e['functional_id']=='F06U':
    direct=e.get('direct_slices',[]);expected_delivery='INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION';expected_manifest='c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a'
    ck(e['implementation_status']=='DEFERRED_DETAILED_MAPPING'and len(direct)==1,'F06U remains deferred outside its internal direct slice')
@@ -2620,16 +2808,36 @@ def run(root=ROOT):
     ck({x['error_code']for x in s['error_outcomes']}=={'METER_INTEGRATED_INPUT_ERROR','METER_INTEGRATED_STATE_ERROR','METER_INTEGRATED_PARAMETER_UNAVAILABLE','METER_INTEGRATED_NUMERIC_FAILURE'}and all((root/path).is_file()for path in files+tests+s['local_mapping_files']+[x['file']for x in fixtures]),'F06I mapped outcomes and files')
     historical=(root/'crates/jocforge-domain/tests/fixtures/integrated_meter').glob('REAL-MUSIC-METER-*')
     ck(not list(historical),'F06I historical integrated-meter inputs are not local fixtures')
+  elif e['functional_id']=='F06D':
+   direct=e.get('direct_slices',[]);expected_manifest='c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a';files=['crates/jocforge-domain/src/meter/mod.rs','crates/jocforge-domain/src/meter/shared_gain_delay.rs'];maps=['docs/implementation/shared-gain-delay.md','docs/implementation/shared-gain-delay-provenance.json'];fixture={'file':'crates/jocforge-domain/tests/fixtures/shared_gain_delay/continuous_callbacks.json','bytes':2942,'sha256':'a857a18fdbc6a820edd07fe4105feb82ebf8cd87528122879a4d9d847064bd64'}
+   ck(e['implementation_status']=='DEFERRED_DETAILED_MAPPING'and len(direct)==1,'F06D remains deferred outside its selected leaf slice')
+   if direct:
+    s=direct[0];ck(s['slice_id']=='selected-shared-gain-delay-state-and-callback-transition'and s['mapping_status']=='MATERIALIZED_DIRECT_SUBSLICE_WHOLE_METER_DEFERRED'and s['implementation_status']=='LOCALLY_VERIFIED_F06D_SELECTED_STATE_AND_SIX_CONTINUOUS_CALLBACKS__UPSTREAM_OAR_AND_PARENT_DEFERRED','F06D selected leaf status')
+    ck(e['implementation_files']==files and e['test_modules']==[files[1]]and e['local_mapping_files']==maps and s['implementation_files']==files and s['test_modules']==[files[1]]and s['local_mapping_files']==maps,'F06D semantic implementation and mapping files')
+    ck(e['clock']['domains']==['SharedGainDelayCallbackIndex']and s['clock']['domains']==['SharedGainDelayCallbackIndex']and e['parameters']['source_parameter_file']=='parameters/shared-dv32-mathematical-v1.json'and s['parameters']['source_parameter_file']==e['parameters']['source_parameter_file'],'F06D typed clock and selected parameter binding')
+    ck(e['vectors']['local_fixture']==fixture and s['vectors']['local_fixture']==fixture and e['vectors']['source_package_manifest_sha256']==expected_manifest and s['vectors']['source_package_manifest_sha256']==expected_manifest,'F06D vector binding')
+    local=root/fixture['file'];source_parameter=PKG/e['parameters']['source_parameter_file'];source_vector=PKG/e['vectors']['authoritative_vectors'][0]
+    ck(local.is_file()and local.stat().st_size==fixture['bytes']and hashlib.sha256(local.read_bytes()).hexdigest()==fixture['sha256']and source_parameter.is_file()and source_vector.is_file(),'F06D local and package evidence files')
+    ck(source_parameter.stat().st_size==1236 and hashlib.sha256(source_parameter.read_bytes()).hexdigest()=='af189ffb34f703fdebe9a37bc46ffe972d97432b7f2e3f2a463b82682c96d4fa'and source_vector.stat().st_size==609266 and hashlib.sha256(source_vector.read_bytes()).hexdigest()=='07b60bee788fe755161bd68ca38d35c6afb9ec32a89ad2b2e9c282b7bb82327d','F06D approved source identities')
+    codes={x['error_code']for x in e['error_outcomes']};ck(codes=={'SHARED_GAIN_DELAY_PARAMETER_UNAVAILABLE','SHARED_GAIN_DELAY_INPUT_SHAPE','SHARED_GAIN_DELAY_INPUT_NONFINITE','SHARED_GAIN_DELAY_STATE_INVALID','SHARED_GAIN_DELAY_COUNTER_OVERFLOW','SHARED_GAIN_DELAY_NUMERIC_FAILURE'}and{x['error_code']for x in s['error_outcomes']}==codes,'F06D mapped outcomes')
+    source=(root/files[1]).read_text(encoding='utf-8');code=rust_code_without_comments(source);ck('pub struct SharedGainDelayCallbackIndex(u32);'in code and'pub const fn callback_index(&self) -> SharedGainDelayCallbackIndex'in code and'pub fn stage_shared_gain_delay_callback('in code and'approved_continuous_callbacks_match_all_six_hash_bound_cases'in source,'F06D typed API and hash-bound execution test')
+    ck(all((root/path).is_file()for path in files+maps)and s['delivery_scope']=='PUBLIC_CLEANROOM_NO_PRIVATE_KEY'and any('OAR producer' in item for item in s['not_run'])and any('whole meter root' in item for item in s['not_run']),'F06D files, release scope and exclusions')
   elif e['functional_id']=='F06W':
    direct=e.get('direct_slices',[]);expected_delivery='INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION';expected_manifest='c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a';fixture='crates/jocforge-domain/tests/fixtures/meter_output_schedule/METER-INTEGRATED-SCHEDULE-VERIFICATION.json'
-   ck(e['implementation_status']=='DEFERRED_DETAILED_MAPPING'and len(direct)==1,'F06W remains deferred outside its schedule ledger')
+   ck(e['implementation_status']=='DEFERRED_DETAILED_MAPPING'and len(direct)==2,'F06W remains deferred outside its two bounded slices')
    if direct:
     s=direct[0];files=['crates/jocforge-domain/src/meter/mod.rs','crates/jocforge-domain/src/meter/output_schedule.rs'];tests=['crates/jocforge-domain/tests/meter_output_schedule.rs'];fixtures=[{'file':fixture,'bytes':2051223,'sha256':'a565e513970670967aa3aebd0372f9dbb5f9bbab670a54744ae454926b3f2671'},{'file':'crates/jocforge-domain/tests/fixtures/meter_output_schedule/METER-STATE-CLOCK-LOCAL-REVIEW-STATUS.json','bytes':10646,'sha256':'020f88cafa892119bac5fea5bc808d251798e98aec69897c6ab068da80637307'}];expected_cases=['schedule_cases[0] input_source_samples=1','schedule_cases[1] input_source_samples=1024','schedule_cases[2] input_source_samples=1536','schedule_cases[3] input_source_samples=1537','schedule_cases[4] input_source_samples=6522906']
-    ck(s['slice_id']=='meter-output-sample-accounting-and-span-ledger'and s['mapping_status']=='MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F06W_AND_METER_DEFERRED'and s['implementation_status']=='LOCALLY_VERIFIED_F06W_1_2_SYNTHETIC_SPANS_AND_SAMPLE_COUNTS__WINDOW_STATE_DEFERRED','F06W direct-slice status')
-    ck(e['delivery_scope']==expected_delivery and s['delivery_scope']==expected_delivery,'F06W internal-only delivery scope')
+    ck(s['slice_id']=='meter-output-sample-accounting-and-span-ledger'and s['mapping_status']=='MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F06W_AND_METER_DEFERRED'and s['implementation_status']=='LOCALLY_VERIFIED_F06W_1_2_SYNTHETIC_SPANS_AND_SAMPLE_COUNTS__WINDOW_STATE_DEFERRED','F06W schedule direct-slice status')
+    ck(e['delivery_scope']==expected_delivery and s['delivery_scope']==expected_delivery,'F06W schedule delivery scope')
     ck(s['implementation_files']==files and s['test_modules']==tests and s['vectors']['case_pointers']==expected_cases and s['vectors']['local_fixture']==fixtures[0]and s['vectors']['additional_fixtures']==fixtures[1:]and s['vectors']['source_package_manifest_sha256']==expected_manifest,'F06W schedule-vector identities')
     ck(s['clock']['domains']==[]and s['parameters']['provider_files']==[]and any('F06W.3' in item for item in s['not_run'])and any('F06W.4' in item for item in s['not_run'])and any('F06W.5' in item for item in s['not_run']),'F06W stateless boundary and exclusions')
-    ck({x['error_code']for x in s['error_outcomes']}=={'METER_OUTPUT_SOURCE_LENGTH_INVALID','METER_OUTPUT_SCHEDULE_OVERFLOW','METER_OUTPUT_ACCOUNTING_INVARIANT'}and all((root/path).is_file()for path in files+tests+s['local_mapping_files']+[x['file']for x in fixtures]),'F06W mapped outcomes and files')
+    ck({x['error_code']for x in s['error_outcomes']}=={'METER_OUTPUT_SOURCE_LENGTH_INVALID','METER_OUTPUT_SCHEDULE_OVERFLOW','METER_OUTPUT_ACCOUNTING_INVARIANT'}and all((root/path).is_file()for path in files+tests+s['local_mapping_files']+[x['file']for x in fixtures]),'F06W schedule outcomes and files')
+    w=direct[1];wfiles=['crates/jocforge-domain/src/meter/mod.rs','crates/jocforge-domain/src/meter/k_matrix.rs','crates/jocforge-domain/src/meter/k_matrix_parameters.json','crates/jocforge-domain/src/meter/k_matrix_bounds.json','crates/jocforge-domain/src/meter/true_peak.rs','crates/jocforge-domain/src/meter/energy_window.rs'];wmaps=['docs/implementation/energy-window.md','docs/implementation/energy-window-provenance.json'];wfixture={'file':'crates/jocforge-domain/tests/fixtures/energy_window/parameterized_filter_sequences.json','bytes':1798,'sha256':'f114a8ab4ca8c5a6045195daddf5fe26b0e24da0beb6680f2de72a1455ee6eaf'}
+    ck(w['slice_id']=='k-weighted-complete-block-and-energy-window'and w['mapping_status']=='MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F06W_AND_METER_DEFERRED'and w['implementation_status']=='LOCALLY_VERIFIED_F06W_3_5_COMPLETE_BLOCK_K_FILTER_AND_WINDOW__LIFECYCLE_QUEUE_DEFERRED','F06W energy-window direct-slice status')
+    ck(w['implementation_files']==wfiles and w['test_modules']==[wfiles[-1]]and w['local_mapping_files']==wmaps and w['clock']['domains']==[]and w['parameters']['provider_files']==wfiles[2:4]and w['vectors']['local_fixture']==wfixture and w['vectors']['source_package_manifest_sha256']==expected_manifest,'F06W energy-window mapping')
+    local=root/wfixture['file'];source_vector=PKG/w['vectors']['authoritative_vectors'][0];ck(local.is_file()and local.stat().st_size==wfixture['bytes']and hashlib.sha256(local.read_bytes()).hexdigest()==wfixture['sha256']and source_vector.is_file()and source_vector.stat().st_size==3693 and hashlib.sha256(source_vector.read_bytes()).hexdigest()=='66a11e0751975ff619a9711943834fb52070655e6c3ec71f5ae318766b36080a','F06W energy-window vector identities')
+    ck({x['error_code']for x in w['error_outcomes']}=={'METER_ENERGY_WINDOW_INPUT_SHAPE','METER_ENERGY_WINDOW_INPUT_NONFINITE','METER_ENERGY_WINDOW_STATE_INVALID','METER_ENERGY_WINDOW_PARAMETER_INVALID','METER_ENERGY_WINDOW_NUMERIC_FAILURE'}and all((root/path).is_file()for path in wfiles+wmaps+[wfixture['file']]),'F06W energy-window outcomes and files')
+    wsource=(root/wfiles[-1]).read_text(encoding='utf-8');ck('pub fn stage_energy_window_block('in rust_code_without_comments(wsource)and'approved_parameterized_k_filter_sequence_matches_all_three_input_recipes'in wsource and'complete_blocks_cross_960_boundaries_without_resetting_k_state'in wsource and w['delivery_scope']=='PUBLIC_CLEANROOM_NO_PRIVATE_KEY','F06W energy-window execution and release boundary')
     historical=(root/'crates/jocforge-domain/tests/fixtures/meter_output_schedule').glob('REAL-MUSIC-*')
     ck(not list(historical),'F06W real audio/history assets are not local fixtures')
   else:
@@ -2641,12 +2849,13 @@ def run(root=ROOT):
    ck(e['clock']['domains']==['FrontendCallbackIndex','ReaderInvocationIndex','HistoryProducerGeneration']and e['clock']['covered_clauses'] and e['vectors']['kind']=='INPUT_ONLY_RECIPES_WITH_POSTCOMPUTATION_ASSERTIONS'and e['parameters']['kind']=='MANIFEST_PINNED_SELECTED_PROFILE_CONSTANTS'and e['error_outcomes'] and e['phase_scope']['consumer_boundary'].startswith('F04C/F04R/F05JC may use only'),'F05R56 scoped active materialization')
   elif e['functional_id']in {'F02','XSTJ'}:ck(e['clock']['covered_clauses']==clauses and e['clock']['domains']==['AdmSampleCount','NormalCallbackCount','FrontendCallbackIndex','CodecSourceIndex','JocDispatchIndex','JocGeneratedWriterIndex','OrdinaryPayloadWriterIndex','JocPoppedWriterIndex','PublishedAuIndex']and e['implementation_files']==['crates/jocforge-domain/src/timeline/index.rs','crates/jocforge-domain/src/timeline/clock.rs','crates/jocforge-domain/src/timeline/mod.rs']and e['test_modules']and e['vectors']['kind']=='RULE_AND_PROPERTY_TEST'and e['error_outcomes'],'active clock materialization')
   elif e['functional_id']in {'F13','F13F','F13T'}:
-   ck(e.get('active_slice_materialization')=='MATERIALIZED'and e.get('implementation_status') in {'LOCALLY_VERIFIED_SELECTED_SOURCE_PROPOSAL_AND_RECEIPT__GLOBAL_TRANSACTION_BLOCKED','LOCALLY_VERIFIED_SELECTED_FOUR_QUEUE_PUSH_POP__OTHER_PRODUCERS_DEFERRED','LOCALLY_VERIFIED_SELECTED_ID1_TIMER_AND_WIRE__MEASUREMENT_PRODUCER_DEFERRED'},'metadata source slice status '+e['functional_id'])
-   ck(e.get('implementation_files')and e.get('test_modules')==['crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs']and all((root/path).is_file()for path in e['implementation_files']+e['test_modules']),'metadata source slice files '+e['functional_id'])
+   ck(e.get('active_slice_materialization')=='MATERIALIZED'and e.get('implementation_status') in {'LOCALLY_VERIFIED_TYPED_BODIES_AND_NONCOMMITTING_SOURCE_PROPOSAL__PARENT_INSTALL_NOT_RUN','LOCALLY_VERIFIED_SELECTED_FOUR_QUEUE_PUSH_POP__OTHER_PRODUCERS_DEFERRED','LOCALLY_VERIFIED_17_TIMER_PRIMITIVES_AND_40_ID1_BODY_CALLS__MEASUREMENT_DEFERRED'},'metadata source slice status '+e['functional_id'])
+   expected_tests=['crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs']+(['crates/jocforge-domain/src/joc/emdf/metadata_owner/timer/timer_vectors.rs']if e['functional_id']=='F13T' else [])
+   ck(e.get('implementation_files')and e.get('test_modules')==expected_tests and all((root/path).is_file()for path in e['implementation_files']+e['test_modules']),'metadata source slice files '+e['functional_id'])
    ck(e.get('clock',{}).get('domains')and e.get('parameters',{}).get('provider_files')and e.get('vectors',{}).get('authoritative_vectors')and e.get('error_outcomes') if e['functional_id']=='F13' else e.get('clock',{}).get('domains')and e.get('parameters',{}).get('provider_files')and e.get('vectors',{}).get('authoritative_vectors'),'metadata source slice maps '+e['functional_id'])
  reader=next(r for r in d['programme_roots']if r['root_id']=='reader_eof')
  frontend=next(r for r in d['programme_roots']if r['root_id']=='frontend_control')
- others=[r for r in d['programme_roots']if r['root_id']not in{'reader_eof','frontend_control','spatial_audio','spatial_control','integrity','metadata'}]
+ others=[r for r in d['programme_roots']if r['root_id']not in{'reader_eof','frontend_control','spatial_audio','spatial_control','joc','integrity','metadata'}]
  ck(all(r=={'root_id':r['root_id'],'materialization_status':'INVENTORIED_PENDING_P1.3_MATERIALIZATION'}for r in others),'deferred root precision')
  ck(reader['materialization_status']=='MATERIALIZED'and reader['implementation_status']=='LOCALLY_VERIFIED'and reader['schema_file']=='parameters/adm-installed48-state-v1.json'and reader['schema_version']=='selected-adm-installed48-state.v3','reader_eof schema identity')
  ck(len(reader['schema_pointers'])==7 and len(reader['fields'])==7,'reader_eof fields/pointers')
@@ -2718,9 +2927,13 @@ def run(root=ROOT):
  bigint_dep=d['approved_dependencies']['num_bigint']
  expected_bigint_dep={'version':'=0.4.6','default_features':False,'features':['std'],'archive_sha256':'a5e44f723f1133c9deac646763579fdb3ac745e418f2a7af9cd0c431da1f20b9','license_choice':'Apache-2.0','scope':'F05R56 exact-rational alternating enclosure for selected mathematical R64 then R32 panner trigonometry only; no runtime input or persistent-state ownership'}
  ck(bigint_dep==expected_bigint_dep,'num-bigint exact-rational dependency governance')
+ xml_dep=d['approved_dependencies']['roxmltree']
+ expected_xml_dep={'version':'=0.21.1','default_features':True,'archive_sha256':'f1964b10c76125c36f8afe190065a4bf9a87bf324842c05701330bba9f1cacbb','license_choice':'Apache-2.0','scope':'F01E.1 selected UTF-8 job XML input parsing only; read-only tree over caller-provided bytes, after rejecting DOCTYPE/ENTITY; no file/network I/O or general ADM graph parsing'}
+ ck(xml_dep==expected_xml_dep,'roxmltree selected F01E XML parser dependency governance')
  lock=(root/'Cargo.lock').read_text(encoding='utf-8')
  ck('name = "sha2"'in lock and 'version = "0.10.9"'in lock and 'checksum = "a7507d819769d01a365ab707794a4084392c824f54a7a6a7862f8c3d0892b283"'in lock,'sha2 lock')
  ck('name = "serde_json"'in lock and 'version = "1.0.154"'in lock and 'checksum = "e7e9cc8b1b85264074fbcc02a88680c4096b1e47df8f739dceb03bf482f04bd6"'in lock,'serde_json lock')
+ ck('name = "roxmltree"'in lock and 'version = "0.21.1"'in lock and 'checksum = "f1964b10c76125c36f8afe190065a4bf9a87bf324842c05701330bba9f1cacbb"'in lock,'roxmltree lock')
  locked_packages={(package['name'],package['version']):package for package in tomllib.loads(lock)['package']}
  expected_num_packages={('num-bigint','0.4.6'):'a5e44f723f1133c9deac646763579fdb3ac745e418f2a7af9cd0c431da1f20b9',('num-integer','0.1.47'):'7ce2d95d4b3734dc35aa2f45e1aa22cd416814592a4f9d9205e11affd5b8e10b',('num-traits','0.2.19'):'071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841',('autocfg','1.5.1'):'f2032f911046de80f0a198e0901378627c33f59ea0ac00e363d481118bd70a53'}
  ck(all(locked_packages.get(key,{}).get('checksum')==checksum for key,checksum in expected_num_packages.items()),'num-bigint locked transitive identities')
@@ -2728,27 +2941,43 @@ def run(root=ROOT):
  ck('num-bigint = { version = "=0.4.6", default-features = false, features = ["std"] }'in manifest,'num-bigint manifest scope and features')
  ck('sha2 = { version = "=0.10.9", default-features = false }'in manifest,'sha2 manifest')
  ck('serde_json = { version = "=1.0.154", default-features = false, features = ["std"] }'in manifest,'serde_json manifest')
+ ck('roxmltree = { version = "=0.21.1", default-features = true }'in manifest,'roxmltree selected F01E XML parser manifest')
  notices=(root/'THIRD_PARTY_NOTICES.md').read_text(encoding='utf-8')
- ck(all(name in notices and checksum in notices for name,checksum in [('num-bigint','a5e44f723f1133c9deac646763579fdb3ac745e418f2a7af9cd0c431da1f20b9'),('num-integer','7ce2d95d4b3734dc35aa2f45e1aa22cd416814592a4f9d9205e11affd5b8e10b'),('num-traits','071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841'),('autocfg','f2032f911046de80f0a198e0901378627c33f59ea0ac00e363d481118bd70a53')]),'num-bigint third-party and transitive notices')
- deps={'domain':{'num-bigint','sha2','serde_json'},'application':{'jocforge-domain'},'io':{'jocforge-domain'},'cli':{'jocforge-application'},'validation':{'jocforge-domain','jocforge-application','jocforge-io'}}
+ ck(all(name in notices and checksum in notices for name,checksum in [('num-bigint','a5e44f723f1133c9deac646763579fdb3ac745e418f2a7af9cd0c431da1f20b9'),('num-integer','7ce2d95d4b3734dc35aa2f45e1aa22cd416814592a4f9d9205e11affd5b8e10b'),('num-traits','071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841'),('autocfg','f2032f911046de80f0a198e0901378627c33f59ea0ac00e363d481118bd70a53'),('roxmltree','f1964b10c76125c36f8afe190065a4bf9a87bf324842c05701330bba9f1cacbb')]),'third-party and transitive dependency notices')
+ deps={'domain':{'num-bigint','sha2','serde_json','roxmltree'},'application':{'jocforge-domain','sha2'},'io':{'jocforge-domain','sha2'},'cli':{'jocforge-application'},'validation':{'jocforge-domain','jocforge-application','jocforge-io'}}
  approved_fallback_source_files={path for entry in es if entry['functional_id']=='F03S' for direct in entry.get('direct_slices',[]) if direct.get('slice_id')=='outer-energy-fallback' for path in direct.get('implementation_files',[])}
+ approved_configuration_import_sources={path for entry in es if entry['functional_id']=='F09' for direct in entry.get('direct_slices',[]) if direct.get('slice_id')=='selected-configuration-record-import' for path in direct.get('implementation_files',[])}
  for n,w in deps.items():
   c=root/'crates'/f'jocforge-{n}';cfg=tomllib.loads((c/'Cargo.toml').read_text(encoding='utf-8'));ck(set(cfg.get('dependencies',{}))==w,'dependency '+n);ck(not(c/'build.rs').exists(),'build script')
   for p in(c/'src').rglob('*.rs'):
    relative_source=p.relative_to(root).as_posix();s=p.read_text(encoding='utf-8').lower();guard=s.replace('deployed_compat','').replace('deployedcompat','')
    if relative_source in approved_fallback_source_files:guard=guard.replace('fallback','')
+   if relative_source in approved_configuration_import_sources:guard=guard.replace('compatibility','')
    ck(not any(x in guard for x in('legacy','compat','fallback','ffmpeg','concat!','include!','#[path')),'source token '+str(p));ck(not(re.search(r'\btrait\b',s)and re.search(r'\busize\b',s)),'trait usize');ck(not re.search(r'pub\s+(?:(?:async|unsafe)\s+)*(?:extern\s+"[^"]+"\s+)?fn[^\{]*\busize\b[^\{]*\{',s),'public usize');ck(not re.search(r'use\s+std::(?:fs|process|env|net)\s+as',s),'aliased io');
-   if p.name!='mod.rs'and any(x in p.parts for x in('codec','integrity','joc')):
+   if p.name!='mod.rs'and any(x in p.parts for x in('analysis','codec','integrity','joc')):
     code='\n'.join(x for x in s.splitlines()if x.strip()and not x.lstrip().startswith('//'))
     relative=p.relative_to(root).as_posix()
     # F05O rowdata and F05T trim direct slices remain separate from full F05O/F05T and F05L production.
     approved_joc_source_files={'crates/jocforge-domain/src/joc/oamd.rs',*next(e for e in es if e['functional_id']=='F05R56')['implementation_files'],'crates/jocforge-domain/src/joc/oamd/reader_target/tests.rs',*[path for direct in next(e for e in es if e['functional_id']=='F05O')['direct_slices']for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F05T')['direct_slices']for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F14K')['direct_slices']for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F14K')['direct_slices']for path in direct['test_modules']],*[path for direct in next(e for e in es if e['functional_id']=='F05JL').get('direct_slices',[])for path in direct['implementation_files']],*[path for direct in next(e for e in es if e['functional_id']=='F05JL').get('direct_slices',[])for path in direct['test_modules']],*[path for functional_id in ('F13','F13F','F13T')for path in next(e for e in es if e['functional_id']==functional_id).get('implementation_files',[])],*[path for functional_id in ('F13','F13F','F13T')for path in next(e for e in es if e['functional_id']==functional_id).get('test_modules',[])]}
     approved_joc_source_files.update(path for direct in next(e for e in es if e['functional_id']=='F05QH').get('direct_slices',[]) for path in direct.get('implementation_files',[]))
     approved_joc_source_files.update(path for direct in next(e for e in es if e['functional_id']=='F05Q').get('direct_slices',[]) for path in direct.get('implementation_files',[]))
+    approved_joc_source_files.update(path for direct in next(e for e in es if e['functional_id']=='F05').get('direct_slices',[]) for path in direct.get('implementation_files',[]))
+    approved_joc_source_files.update(path for direct in next(e for e in es if e['functional_id']=='F05JC').get('direct_slices',[]) for path in direct.get('implementation_files',[]))
     approved_joc_source_files.update(path for direct in next(e for e in es if e['functional_id']=='F12').get('direct_slices',[]) for path in direct.get('implementation_files',[]))
     approved_joc_source_files.update(path for direct in next(e for e in es if e['functional_id']=='F12S').get('direct_slices',[]) for path in direct.get('implementation_files',[]))
     approved_joc_source_files.update(path for direct in next(e for e in es if e['functional_id']=='F13D2').get('direct_slices',[]) for path in direct.get('implementation_files',[]))
+    approved_joc_source_files.add('crates/jocforge-domain/src/joc/emdf/configuration_writer.rs')
+    approved_joc_source_files.add('crates/jocforge-domain/src/joc/coefficient_payload.rs')
+    approved_joc_source_files.add('crates/jocforge-domain/src/joc/clip_producer.rs')
     approved_joc_source_files.update(path for direct in next(e for e in es if e['functional_id']=='F09LB').get('direct_slices',[]) for path in direct.get('implementation_files',[]))
+    approved_joc_source_files.update(path for direct in next(e for e in es if e['functional_id']=='F07').get('direct_slices',[]) for path in direct.get('implementation_files',[]))
+    approved_joc_source_files.update(path for direct in next(e for e in es if e['functional_id']=='F07A').get('direct_slices',[]) for path in direct.get('implementation_files',[]))
+    approved_joc_source_files.update(path for direct in next(e for e in es if e['functional_id']=='F09E').get('direct_slices',[]) for path in direct.get('implementation_files',[]))
+    approved_joc_source_files.update(path for direct in next(e for e in es if e['functional_id']=='F09PA').get('direct_slices',[]) for path in direct.get('implementation_files',[]))
+    approved_joc_source_files.update(path for direct in next(e for e in es if e['functional_id']=='F09G').get('direct_slices',[]) for path in direct.get('implementation_files',[]))
+    approved_joc_source_files.update(path for direct in next(e for e in es if e['functional_id']=='F10').get('direct_slices',[]) for path in direct.get('implementation_files',[]))
+    approved_joc_source_files.update(path for direct in next(e for e in es if e['functional_id']=='F09').get('direct_slices',[]) for path in direct.get('implementation_files',[]))
+    approved_joc_source_files.update(path for direct in next(e for e in es if e['functional_id']=='F13C').get('direct_slices',[]) for path in direct.get('implementation_files',[]))
     ck(not code or relative in approved_joc_source_files,'empty leaf item '+relative)
  transaction=(root/'crates/jocforge-domain/src/transaction/mod.rs').read_text(encoding='utf-8');transaction_code='\n'.join(x for x in transaction.splitlines()if x.strip()and not x.lstrip().startswith('//'));ck('pub struct CallbackTransactionId(String);' in transaction_code and 'pub enum CallbackTransactionIdError' in transaction_code and 'pub fn new' in transaction_code and 'pub fn as_str' in transaction_code and 'CallbackTransactionCoordinator' not in transaction_code and not any(marker in transaction_code for marker in ('pub fn commit(', 'pub fn abort(', 'pub fn fatal(')) and not (root/'crates/jocforge-domain/src/transaction/callback.rs').exists(),'shared CallbackTransactionId only before coordinator implementation');ck(not(root/'crates/jocforge-domain/src/frontend/config.rs').exists()and not(root/'crates/jocforge-domain/src/frontend/events.rs').exists(),'frontend control Rust before P1.3-B implementation approval');provider_source=(root/'crates/jocforge-domain/src/frontend/provider.rs').read_text(encoding='utf-8');ck('serde_json::to_'not in provider_source and'pub use serde_json::Value'not in provider_source and'#[derive(Serialize'not in provider_source and provider_source.index('let actual = ProviderSha256::digest')<provider_source.index('serde_json::from_slice'),'provider parser/canonical boundary');ck('manifest: &ValidatedF01EPackageManifest'in provider_source and'validate_f01e_package_manifest'in provider_source and'let entry = parse_f01e_manifest_entry(evidence.bytes())?'in provider_source and'manifest.provider_sha256 != actual'in provider_source,'provider manifest proof chain');rust_sources='\n'.join(p.read_text(encoding='utf-8')for p in(root/'crates').rglob('*.rs'));ck('C:\\Users\\'not in rust_sources,'absolute user path in Rust source');production_sources='\n'.join(p.read_text(encoding='utf-8').split('#[cfg(test)]',1)[0]for p in(root/'crates').glob('*/src/**/*.rs')if p.name!='tests.rs'and not p.name.endswith('_tests.rs')and'tests'not in p.parts);ck('tests/fixtures/f01e_provider'not in production_sources and'f01e_provider/MANIFEST.json'not in production_sources,'fixture path in production source')
  frontend_state=(root/'crates/jocforge-domain/src/frontend/state.rs').read_text(encoding='utf-8')
@@ -2783,6 +3012,9 @@ def run(root=ROOT):
  check_mode0_fitting_mapping(root,d)
  check_f04_receiver_pipeline_mapping(root,d)
  check_f03_target_provider_implementation(root,d)
+ check_primary_installed48_slice(root,d)
+ check_diffusion_filter_slice(root,d)
+ check_id11_parser_boundary_evidence(root,d)
  return {'verified_scopes':verified_scopes,'inventoried_ids':len(es),'deferred_roots':sum(r['materialization_status']=='INVENTORIED_PENDING_P1.3_MATERIALIZATION'for r in d['programme_roots'])}
 run_checks=lambda root=ROOT,package=PKG:run(root)
 def main():

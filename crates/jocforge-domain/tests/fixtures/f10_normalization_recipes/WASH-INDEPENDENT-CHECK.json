@@ -1,0 +1,42 @@
+{
+  "schema": "wash-independent-normalization-replay.v1",
+  "result": "PASS",
+  "source_package_manifest_sha256": "8e03bcbcec78c17e1bc8305e889bd1d2dae083f49de13b8f7570d5f196bd7ffd",
+  "source_independent_check_sha256": "999a0e8a2770e00e5f2d10229906397f240abe21a2027cd2fe54bd9252fb7faa",
+  "current_spec_sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc",
+  "authorized_policy_parameter_sha256": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a",
+  "wash_replay_sha256": "8e0e7a98e91f2673c8a7f2a86219fb41031211cda7cdac56e6d18eb9a4b6a0c3",
+  "recipe_scope": "two authored full-bandwidth test recipes only; not a natural producer",
+  "cases": [
+    {
+      "case_id": "mod25",
+      "formula": "raw[i]=(7*i+3)%25, i=0..216",
+      "input_words": 217,
+      "output_words": 217,
+      "native_output_sha256": "40ded5c47c45130cd2fa255ae0ea6e3389c4bc95c801affafd75f8ed1ad0c243",
+      "initial_sum_i32": 1514,
+      "first_pass_square_error_i32": 8006,
+      "error_shift_i32": 524681216,
+      "scaled_count_f32_bits": "0x39accccd",
+      "threshold_i32": 707789,
+      "second_pass_triggered": false,
+      "scratch_match": true,
+      "tail_canaries_match": true
+    },
+    {
+      "case_id": "zigzag24",
+      "formula": "q=i//25; t=i%25; raw[i]=t if q%2==0 else 24-t, i=0..216",
+      "input_words": 217,
+      "output_words": 217,
+      "native_output_sha256": "7eae5ccd093cef1f4a746aa7035e4523b1b0492de2d65a8ecbe027acc882e011",
+      "option": 0,
+      "scratch_untouched": true,
+      "tail_canaries_match": true
+    }
+  ],
+  "total_input_words": 434,
+  "total_native_output_words": 434,
+  "total_scratch_word_mismatches": 0,
+  "total_native_output_mismatches": 0,
+  "whole_F10_ready": false
+}

@@ -1,0 +1,120 @@
+{
+  "schema": "transform-refresh-inputs.v1",
+  "standalone": [
+    {
+      "kind": "zero",
+      "branch": "primary",
+      "calls": 2,
+      "input_count": 256,
+      "history_count": 128,
+      "initial_history_zero": true,
+      "input_rule": "zero"
+    },
+    {
+      "kind": "zero",
+      "branch": "companion",
+      "calls": 2,
+      "input_count": 256,
+      "history_count": 128,
+      "initial_history_zero": true,
+      "input_rule": "zero"
+    },
+    {
+      "kind": "impulse",
+      "branch": "primary",
+      "calls": 2,
+      "input_count": 256,
+      "history_count": 128,
+      "initial_history_zero": true,
+      "input_rule": "0.5 at index=call, else zero"
+    },
+    {
+      "kind": "impulse",
+      "branch": "companion",
+      "calls": 2,
+      "input_count": 256,
+      "history_count": 128,
+      "initial_history_zero": true,
+      "input_rule": "0.5 at index=call, else zero"
+    },
+    {
+      "kind": "periodic",
+      "branch": "primary",
+      "calls": 2,
+      "input_count": 256,
+      "history_count": 128,
+      "initial_history_zero": true,
+      "input_rule": "cycle[0,.125,-.25,.5,-.5,.25][(index+call)%6]"
+    },
+    {
+      "kind": "periodic",
+      "branch": "companion",
+      "calls": 2,
+      "input_count": 256,
+      "history_count": 128,
+      "initial_history_zero": true,
+      "input_rule": "cycle[0,.125,-.25,.5,-.5,.25][(index+call)%6]"
+    }
+  ],
+  "composition": [
+    {
+      "kind": "zero",
+      "calls": 2,
+      "block_words": 256,
+      "initial_histories_zero": true,
+      "initial_work_zero": true,
+      "marker_schedule": [
+        1,
+        0
+      ],
+      "mode": 1,
+      "format": 7,
+      "refresh_mode": 1,
+      "refresh_special": 0,
+      "refresh_begin": 0,
+      "refresh_end": 128,
+      "raw_count": 217,
+      "power_count": 253
+    },
+    {
+      "kind": "impulse",
+      "calls": 2,
+      "block_words": 256,
+      "initial_histories_zero": true,
+      "initial_work_zero": true,
+      "marker_schedule": [
+        1,
+        0
+      ],
+      "mode": 1,
+      "format": 7,
+      "refresh_mode": 1,
+      "refresh_special": 0,
+      "refresh_begin": 0,
+      "refresh_end": 128,
+      "raw_count": 217,
+      "power_count": 253
+    },
+    {
+      "kind": "periodic",
+      "calls": 2,
+      "block_words": 256,
+      "initial_histories_zero": true,
+      "initial_work_zero": true,
+      "marker_schedule": [
+        1,
+        0
+      ],
+      "mode": 1,
+      "format": 7,
+      "refresh_mode": 1,
+      "refresh_special": 0,
+      "refresh_begin": 0,
+      "refresh_end": 128,
+      "raw_count": 217,
+      "power_count": 253
+    }
+  ],
+  "generation": "Zero: all256 input words zero. Impulse: input[index=call]=0.5, all others zero. Periodic: cycle[0,.125,-.25,.5,-.5,.25][(index+call)%6]. Initialize two separate128-word histories and217-word refresh work to zero; retain them between calls. Recompute all inputs from recipe without reading EXPECTED.",
+  "expected_used_as_seed": false
+}

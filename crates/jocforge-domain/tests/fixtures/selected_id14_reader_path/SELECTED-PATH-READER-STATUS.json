@@ -1,0 +1,85 @@
+{
+  "schema": "washed-selected-id14-semantic-reader-applicability.v1",
+  "selected_outgoing_path": "NOT_APPLICABLE_NO_SEMANTIC_READER_IN_RECOVERED_PATH",
+  "native_id14_reader_invocations": 0,
+  "native_id14_malformed_vectors": [],
+  "ingress_dispatch": {
+    "ID11": "semantic parser adapter and ID11 reader family",
+    "ID14": "generic route/queue-copy branch; no semantic body dispatch observed",
+    "other_ids": "generic route-or-reject behavior, not a global reader claim"
+  },
+  "generic_reader_classification": {
+    "container_reader": "counts/materializes descriptors",
+    "payload_reader": "copies/skips declared body bytes",
+    "output_writer": "copies descriptor body bytes to output callback; no semantic ID14 dispatch"
+  },
+  "four_prior_lineage_cases": [
+    {
+      "parent_invocation": 3,
+      "id14_producer_invocation": 2,
+      "serializer_invocation": 2,
+      "id14_declared_body_bytes": 326,
+      "observed_payload_order": [
+        11,
+        14,
+        2,
+        1
+      ],
+      "queue_descriptor_identity_join": true,
+      "queue_and_serialized_body_hash_equal": true,
+      "classification": "REHASHED_PRIOR_NATIVE_SERIALIZER_LINEAGE_NOT_PARSER_TEST"
+    },
+    {
+      "parent_invocation": 4,
+      "id14_producer_invocation": 3,
+      "serializer_invocation": 4,
+      "id14_declared_body_bytes": 222,
+      "observed_payload_order": [
+        11,
+        14,
+        2,
+        1
+      ],
+      "queue_descriptor_identity_join": true,
+      "queue_and_serialized_body_hash_equal": true,
+      "classification": "REHASHED_PRIOR_NATIVE_SERIALIZER_LINEAGE_NOT_PARSER_TEST"
+    },
+    {
+      "parent_invocation": 5,
+      "id14_producer_invocation": 4,
+      "serializer_invocation": 6,
+      "id14_declared_body_bytes": 226,
+      "observed_payload_order": [
+        11,
+        14,
+        2,
+        1
+      ],
+      "queue_descriptor_identity_join": true,
+      "queue_and_serialized_body_hash_equal": true,
+      "classification": "REHASHED_PRIOR_NATIVE_SERIALIZER_LINEAGE_NOT_PARSER_TEST"
+    },
+    {
+      "parent_invocation": 6,
+      "id14_producer_invocation": 5,
+      "serializer_invocation": 8,
+      "id14_declared_body_bytes": 222,
+      "observed_payload_order": [
+        11,
+        14,
+        2,
+        1
+      ],
+      "queue_descriptor_identity_join": true,
+      "queue_and_serialized_body_hash_equal": true,
+      "classification": "REHASHED_PRIOR_NATIVE_SERIALIZER_LINEAGE_NOT_PARSER_TEST"
+    }
+  ],
+  "model_helper_role": {
+    "producer": "main.rs loads EMDF list and calls validated_at_block before codec loop",
+    "consumer": "encode_frame_with_bsi consumes AncillaryPayload.joc_complexity; codec_core.rs211-214 writes additional BSI",
+    "role": "MODEL_ENCODER_INPUT_ADMISSION_AND_BSI_PARAMETER_PRODUCER",
+    "not_just_readback": true
+  },
+  "global_DLL_parser_absence": "NOT_CLAIMED"
+}

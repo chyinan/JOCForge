@@ -1,6 +1,8 @@
 // pattern: Functional Core
 //! Stateless F13D2 profile-code mapping, local Type11 LFE-header read, and ID2 wire body.
 
+use crate::{joc::emdf::metadata_owner::MetadataPayloadBody, timeline::CodecSourceIndex};
+
 const ID2_BODY_VALID_BITS: u8 = 21;
 const ID2_BODY_BYTES: usize = 3;
 
@@ -24,6 +26,15 @@ impl Id2ProfileCode {
 pub struct Id2Body {
     pub bytes: [u8; ID2_BODY_BYTES],
     pub valid_bits: u8,
+}
+
+impl Id2Body {
+    pub fn into_metadata_body(self, writer_generation: CodecSourceIndex) -> MetadataPayloadBody {
+        MetadataPayloadBody {
+            writer_generation,
+            bytes: self.bytes.to_vec(),
+        }
+    }
 }
 
 /// Maps one exact external profile name to its selected ID2 U3 code.

@@ -1,0 +1,12 @@
+{
+  "schema": "implementer-package-authority-overlay.v2",
+  "base_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "base_spec_file": "specs/13-joc-complexity-timer-payload-order.md",
+  "base_spec_sha256": "09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b",
+  "superseded_claim": "Selected BSI count must be derived by parsing serialized EMDF/ID14",
+  "replacement": "Selected BSI count comes from validated configuration; encoded ID14 is not an input dependency of this producer",
+  "claim_scope": "Selected BSI producer only; no complete-encoder-without-ID14 or global parser-absence claim",
+  "id14_body_generation_and_serialization": "REQUIRED_SEPARATE_CHAIN",
+  "f13c_parent_status": "IMPLEMENTATION_READY=NO",
+  "overall_implementation_ready": "NO"
+}

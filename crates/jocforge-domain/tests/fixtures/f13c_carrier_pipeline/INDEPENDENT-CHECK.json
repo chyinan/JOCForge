@@ -1,0 +1,24 @@
+{
+  "manifest_sha256": "8edaa695dc53fd9f7de96693b16259b08b7399141f266bded7e4115029f9794e",
+  "payload_hashes_match": true,
+  "checker_sha256": "beabec6e4eaf7c2f20abe2296617c1c67c61fdbe788e42f9d8d6dda3d9d89cea",
+  "replay": {
+    "boundary_cases": 18,
+    "same_owner_sequence_steps": 4,
+    "controlled_full_buffer_bytes_compared": 23936,
+    "publication_gate_calls": 6,
+    "natural_published_aus": 4,
+    "natural_fragment_bytes_compared": 1390,
+    "mismatch_count": 0,
+    "expected_loaded_after_actual_calculation": true,
+    "ordinary_codec_audio_frame_reproduction": false,
+    "absolute_ADM_host_clock_binding": false
+  },
+  "descriptor_token_joins": 4,
+  "serialized_storage_pointer_joins": 4,
+  "carrier_to_parent_and_frontend_output_pointer_joins": 4,
+  "actual_frontend_publication_gates_observed": 6,
+  "file_frame_byte_hash_checks": 4,
+  "forbidden_material_scan_hits": [],
+  "whole_F13C_ready": false
+}

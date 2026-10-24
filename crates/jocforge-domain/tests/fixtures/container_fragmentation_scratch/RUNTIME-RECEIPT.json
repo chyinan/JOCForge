@@ -1,0 +1,20 @@
+{
+  "started_utc": "2026-10-23T14:54:17.011421+00:00",
+  "native_capture_executed": true,
+  "parent_cases": 16,
+  "direct_raw_reservation_cases": 2,
+  "completed": true,
+  "observer_errors": 0,
+  "observer_sha256": "3f9123614d637a9c34810afa1ea432263e65674acf3e061499d53806c7f91302",
+  "job_sha256": "4a0f58340d81ec3a29a2037b1eb253cc783bb3ca8f9d77b6e424b3ccbc1ab014",
+  "trace_sha256": "00ebef1bb2dadd0641e1558aa06f350cc4428b05a2790981ec2b8cded47775c3",
+  "reference_EC3_sha256": "5ee3c8a39ba421fae56bdc7d77103909644bb419a6b7f87b3f31205a2e8d0987",
+  "reference_EC3_bytes": 16384,
+  "reference_matches_baseline": true,
+  "private_probe_vendor_default_initializer_calls": 0,
+  "private_probe_provider_inputs": "Only empty list or explicit caller-owned public zero test input. No vendor keys read/copied/used by these calls.",
+  "authentication_result_bytes_or_hashes_delivered": false,
+  "raw_PCM_read_or_persisted": false,
+  "live_business_parameters_modified": false,
+  "outer_codec_failure_injected": false
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "coefficient-to-power-row-check.v1",
+  "package": "COEFFICIENT-TO-POWER-ROW",
+  "manifest_sha256": "4af64c87e7a40c3990075a3aa07d052ea0178c99ef1f1264847dfeaa7265c2d8",
+  "payload_count": 5,
+  "payload_hashes_match": true,
+  "upstream_manifest_check_and_payloads_match": true,
+  "module_file_identity_runtime_bound": true,
+  "controlled_invocations": 6,
+  "independent_power_replay_u32": 3036,
+  "independent_raw_exponent_replay_i16": 2387,
+  "formula_replay": "PASS all values",
+  "native_consumer_joins": 150,
+  "independent_product_audio_integration": "NOT_RUN",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO"
+}

@@ -1,0 +1,59 @@
+{
+  "receipts": [
+    {
+      "alias": "R12",
+      "start_utc": "2026-10-23T05:51:42.512103+00:00",
+      "job_sha256": "5315a4d4634a5f2eddcd437d3fa9566b8a4f34656ed9d45d4a5eb9ac507d8b68",
+      "observer_sha256": "f76669728ae3b8852e23c02a88a755c875a6ef19a296845ef1b74bf4a94f5c93",
+      "trace_sha256": "5ee9f8eb8abcf7a0ef475d2799da371257dafb0f571b0ca530b869d85c6a0f39",
+      "reference_bytes": 16384,
+      "reference_sha256": "5ee3c8a39ba421fae56bdc7d77103909644bb419a6b7f87b3f31205a2e8d0987",
+      "baseline_match": true
+    },
+    {
+      "alias": "R10",
+      "start_utc": "2026-10-23T05:49:16.474750+00:00",
+      "job_sha256": "fdda12a1fd4a7aa0ebfc405b8c72e38abbea4b11e012338891cf3cd4fd3b5eba",
+      "observer_sha256": "2dad5e2c619808719766985acb77fe0b1fed09f0a52780df1fe0018bdc3b5ce4",
+      "trace_sha256": "fa63c1fb474f36f2f65d106c763f9a74e8dc07d1de157dbffc3130d0bbabbaa5",
+      "reference_bytes": 16384,
+      "reference_sha256": "5ee3c8a39ba421fae56bdc7d77103909644bb419a6b7f87b3f31205a2e8d0987",
+      "baseline_match": true
+    },
+    {
+      "alias": "R11",
+      "start_utc": "2026-10-23T05:51:11.517450+00:00",
+      "job_sha256": "6270ffade430213358a9aeb0e9c532cbd30f1923a07c854236a453f4708c000b",
+      "observer_sha256": "bd087a07026cc564a2aaaf799779b164da50330cd649bcb984c5d494b23789ce",
+      "trace_sha256": "709d75edb83d5dddb6aadbe2f03f5665125c55284dee230fa1749a67f304fd16",
+      "reference_bytes": 16384,
+      "reference_sha256": "5ee3c8a39ba421fae56bdc7d77103909644bb419a6b7f87b3f31205a2e8d0987",
+      "baseline_match": true
+    },
+    {
+      "alias": "R13",
+      "start_utc": "2026-10-23T05:52:54.422650+00:00",
+      "job_sha256": "5f1be72dd60fb1874624c7300668d30e1dfe4e7299bd2fc6a4c2d0084dc21a41",
+      "observer_sha256": "7e9f64c7ed4ddba75aaa885ace4cc3324c35a0ccba8b1f3cbcf3e8ffeeb82af3",
+      "trace_sha256": "9f7bf4ffd23aa9cd5d2f640ea4956f4bd1de31cd8414af60e8587a83efddaac1",
+      "reference_bytes": 16384,
+      "reference_sha256": "5ee3c8a39ba421fae56bdc7d77103909644bb419a6b7f87b3f31205a2e8d0987",
+      "baseline_match": true
+    },
+    {
+      "alias": "validated-pipeline",
+      "start_utc": "2026-10-23T05:54:52.890816+00:00",
+      "job_sha256": "2033786545bc7717d0910caa6e109cfa7148adb71d585213b09771894df203ae",
+      "observer_sha256": "dae39412e44cecd126bc6798b676eada1e4d42f225aaf5c9c0dd80d1fb84f37d",
+      "trace_sha256": "c260bc1640e5fa26e2578f4c386094bd97aa99813db6daa25fbbec7fd8a6eec2",
+      "reference_bytes": 16384,
+      "reference_sha256": "5ee3c8a39ba421fae56bdc7d77103909644bb419a6b7f87b3f31205a2e8d0987",
+      "baseline_match": true
+    }
+  ],
+  "native_business_parameters_modified": false,
+  "controlled_calls_on_private_owned_graphs": true,
+  "private_test_context_uses_native_option_record": "YES_DIAGNOSTIC_ONLY_NOT_INDEPENDENT_NATIVE_OWNER_CONSTRUCTION",
+  "model_replay_native_prediction_inputs": "NONE_CORE_RULE_USES_INPUTS_ONLY",
+  "raw_pcm_persisted": false
+}

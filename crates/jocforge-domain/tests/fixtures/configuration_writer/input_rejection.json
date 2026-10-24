@@ -1,0 +1,26 @@
+{
+  "schema": "f13c-configuration-input-rejection.v1",
+  "source_erratum_manifest_sha256": "c153044e8ad76af843b51ba97c4eafb5cd847943087fac455a12f2cdd82e38b2",
+  "outcome": {
+    "identity": "INPUT_REJECTION",
+    "classification": "LOCAL_TRANSLATION",
+    "native_status_equivalence": false,
+    "writer_output_created": false,
+    "owner_state_staged": false,
+    "programme_retired": false
+  },
+  "rejected_conditions": [
+    "sample_offset outside 0..=2047",
+    "duration above 4196351",
+    "group_id above 87379",
+    "priority outside U5",
+    "processing_allowed outside U2",
+    "presence value outside Boolean",
+    "inconsistent presence/gated-field projection"
+  ],
+  "not_covered": [
+    "whole protected-container overlength status",
+    "parent rollback",
+    "native error-code equivalence"
+  ]
+}

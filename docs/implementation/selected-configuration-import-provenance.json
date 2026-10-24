@@ -1,0 +1,21 @@
+{
+  "slice": "SELECTED-CONFIGURATION-IMPORT",
+  "package_manifest_sha256": "8ad92e6a0372414c4f2319f996399a5167379922ff3ebaa3d29467f339bd61b1",
+  "independent_check_sha256": "ffed91e451eb8eb58a41a46d2412e32a64551f80d149dd2b526d5fc225576ff8",
+  "source_manifest_sha256": "51931af77f7264d8b38037b90c52fa874323a60493214aed584233e332ce3d3e",
+  "source_independent_check_sha256": "408583cb04f4b0ca76e4565bef20fd61c2e8d005d440bf86d9caa9bdd0caf766",
+  "payload_hashes": {
+    "CONTRACT.md": "35781fb548beef5e54409d2f1458cfc759121ad33f8fbc968d2e4da9330f37c1",
+    "CONTRACT.json": "4f9bbed8c90fbac996d82cf4b0ed61f177fc396644c866ae2e1b9a57aa2b1906",
+    "INPUTS.json": "ea2b7ab2bede4924e60f069b8632b4e7c1102dd63bb30c5f7e0dd03ff3cd8c44",
+    "EXPECTED.json": "fee6e9d8d10bed3eaa54c86f77084ec0cfe569dd3e6ce6a8bfa3eeb775084a71",
+    "PARAMETERS.json": "7155f238fe62097490addbaf6893d6386bf7a6cdbac928c74ebf252e5553998f",
+    "RUNTIME-RECEIPT.json": "a95bdcf94ad79551fc7fe7ed82eb58f791bdef6a8a8fc1d579dd52e3410abaad",
+    "NATIVE-LINEAGE.json": "72342c45d45cd77b01336ead87aa1150de3f13db89abe1a2ae3b6215b2559f53",
+    "PROVENANCE.json": "6513c5acd36c2c42c8a04a5fde1380b0594a12ed7fea86b6a27e839d67af4bd9"
+  },
+  "implementation_status": "LOCAL_SELECTED_CONFIG_COPY_AND_DERIVED_FIELDS__WHOLE_F09_DEFERRED",
+  "channel_map_161_runtime_rejection_vector": "NOT_PROVIDED; static formula only",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO"
+}

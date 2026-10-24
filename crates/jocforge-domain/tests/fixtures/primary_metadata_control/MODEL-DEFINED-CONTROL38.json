@@ -1,0 +1,664 @@
+{
+  "rows": [
+    {
+      "physical_host": 0,
+      "track_uid": "ATU_00000001",
+      "channel_format_id": "AC_00011001",
+      "object_id": "AO_1001",
+      "kind": "DirectSpeakers",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 24,
+          "hex": "000000000000000003000000020000000100000000000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [
+        {
+          "offset": 24,
+          "bytes": 28
+        }
+      ],
+      "defined_u32_words": 6
+    },
+    {
+      "physical_host": 1,
+      "track_uid": "ATU_00000002",
+      "channel_format_id": "AC_00011002",
+      "object_id": "AO_1001",
+      "kind": "DirectSpeakers",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 24,
+          "hex": "000000000000000003000000020000000100000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [
+        {
+          "offset": 24,
+          "bytes": 28
+        }
+      ],
+      "defined_u32_words": 6
+    },
+    {
+      "physical_host": 2,
+      "track_uid": "ATU_00000003",
+      "channel_format_id": "AC_00011003",
+      "object_id": "AO_1001",
+      "kind": "DirectSpeakers",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 24,
+          "hex": "000000000000000003000000020000000100000002000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [
+        {
+          "offset": 24,
+          "bytes": 28
+        }
+      ],
+      "defined_u32_words": 6
+    },
+    {
+      "physical_host": 3,
+      "track_uid": "ATU_00000004",
+      "channel_format_id": "AC_00011004",
+      "object_id": "AO_1001",
+      "kind": "DirectSpeakers",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 24,
+          "hex": "000000000000000003000000020000000100000003000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [
+        {
+          "offset": 24,
+          "bytes": 28
+        }
+      ],
+      "defined_u32_words": 6
+    },
+    {
+      "physical_host": 4,
+      "track_uid": "ATU_00000005",
+      "channel_format_id": "AC_00011005",
+      "object_id": "AO_1001",
+      "kind": "DirectSpeakers",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 24,
+          "hex": "000000000000000003000000020000000100000004000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [
+        {
+          "offset": 24,
+          "bytes": 28
+        }
+      ],
+      "defined_u32_words": 6
+    },
+    {
+      "physical_host": 5,
+      "track_uid": "ATU_00000006",
+      "channel_format_id": "AC_00011006",
+      "object_id": "AO_1001",
+      "kind": "DirectSpeakers",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 24,
+          "hex": "000000000000000003000000020000000100000005000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [
+        {
+          "offset": 24,
+          "bytes": 28
+        }
+      ],
+      "defined_u32_words": 6
+    },
+    {
+      "physical_host": 6,
+      "track_uid": "ATU_00000007",
+      "channel_format_id": "AC_00011007",
+      "object_id": "AO_1001",
+      "kind": "DirectSpeakers",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 24,
+          "hex": "000000000000000003000000020000000100000006000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [
+        {
+          "offset": 24,
+          "bytes": 28
+        }
+      ],
+      "defined_u32_words": 6
+    },
+    {
+      "physical_host": 7,
+      "track_uid": "ATU_00000008",
+      "channel_format_id": "AC_00011008",
+      "object_id": "AO_1001",
+      "kind": "DirectSpeakers",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 24,
+          "hex": "000000000000000003000000020000000100000007000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [
+        {
+          "offset": 24,
+          "bytes": 28
+        }
+      ],
+      "defined_u32_words": 6
+    },
+    {
+      "physical_host": 8,
+      "track_uid": "ATU_00000009",
+      "channel_format_id": "AC_00011009",
+      "object_id": "AO_1001",
+      "kind": "DirectSpeakers",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 24,
+          "hex": "000000000000000003000000020000000100000008000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [
+        {
+          "offset": 24,
+          "bytes": 28
+        }
+      ],
+      "defined_u32_words": 6
+    },
+    {
+      "physical_host": 9,
+      "track_uid": "ATU_0000000A",
+      "channel_format_id": "AC_0001100a",
+      "object_id": "AO_1001",
+      "kind": "DirectSpeakers",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 24,
+          "hex": "000000000000000003000000020000000100000009000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [
+        {
+          "offset": 24,
+          "bytes": 28
+        }
+      ],
+      "defined_u32_words": 6
+    },
+    {
+      "physical_host": 10,
+      "track_uid": "ATU_0000000B",
+      "channel_format_id": "AC_0003100b",
+      "object_id": "AO_100B",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "000000000000000003000000020000000000000000000000560e6d3f0000000000000000cecccc3d010000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 11,
+      "track_uid": "ATU_0000000C",
+      "channel_format_id": "AC_0003100c",
+      "object_id": "AO_100C",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "00000000000000000300000002000000000000000000803f1c2f6d3f0000000000000000cecccc3d010000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 12,
+      "track_uid": "ATU_0000000D",
+      "channel_format_id": "AC_0003100d",
+      "object_id": "AO_100D",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "00000000000000000300000002000000000000007cb60e3d878a413fcdcccc3d00000000cecc4c3e010000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 13,
+      "track_uid": "ATU_0000000E",
+      "channel_format_id": "AC_0003100e",
+      "object_id": "AO_100E",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "00000000000000000300000002000000000000009814773f8f8a413fcdcccc3d00000000cecc4c3e010000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 14,
+      "track_uid": "ATU_0000000F",
+      "channel_format_id": "AC_0003100f",
+      "object_id": "AO_100F",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "0000000000000000030000000200000000000000000000000499553e00000000000000005c8f423e010000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 15,
+      "track_uid": "ATU_00000010",
+      "channel_format_id": "AC_00031010",
+      "object_id": "AO_1010",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "00000000000000000300000002000000000000000000803fe098553e00000000000000005c8f423e010000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 16,
+      "track_uid": "ATU_00000011",
+      "channel_format_id": "AC_00031011",
+      "object_id": "AO_1011",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "00000000000000000300000002000000000000000000000039b4c83dcdcccc3d00000000cecccc3d010000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 17,
+      "track_uid": "ATU_00000012",
+      "channel_format_id": "AC_00031012",
+      "object_id": "AO_1012",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "00000000000000000300000002000000000000000000803f39b4c83dcdcccc3d00000000cecccc3d010000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 18,
+      "track_uid": "ATU_00000013",
+      "channel_format_id": "AC_00031013",
+      "object_id": "AO_1013",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "000000000000000003000000020000000000000000000000ee7cbf3d000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 19,
+      "track_uid": "ATU_00000014",
+      "channel_format_id": "AC_00031014",
+      "object_id": "AO_1014",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "00000000000000000300000002000000000000000000803f5839b43d000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 20,
+      "track_uid": "ATU_00000015",
+      "channel_format_id": "AC_00031015",
+      "object_id": "AO_1015",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "0000000000000000030000000200000000000000b2a1cf3e0c5b133f00000000000000001f856b3e010000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 21,
+      "track_uid": "ATU_00000016",
+      "channel_format_id": "AC_00031016",
+      "object_id": "AO_1016",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "00000000000000000300000002000000000000001f2f183f0c5b133f00000000000000001f856b3e010000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 22,
+      "track_uid": "ATU_00000017",
+      "channel_format_id": "AC_00031017",
+      "object_id": "AO_1017",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "00000000000000000300000002000000000000001058b93dae47e13e000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 23,
+      "track_uid": "ATU_00000018",
+      "channel_format_id": "AC_00031018",
+      "object_id": "AO_1018",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "00000000000000000300000002000000000000008816693f2406e13e000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 24,
+      "track_uid": "ATU_00000019",
+      "channel_format_id": "AC_00031019",
+      "object_id": "AO_1019",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "00000000000000000300000002000000000000000681553e295caf3e000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 25,
+      "track_uid": "ATU_0000001A",
+      "channel_format_id": "AC_0003101a",
+      "object_id": "AO_101A",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "0000000000000000030000000200000000000000713d3a3fa245b63e000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 26,
+      "track_uid": "ATU_0000001B",
+      "channel_format_id": "AC_0003101b",
+      "object_id": "AO_101B",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "0000000000000000030000000200000000000000a4a1463c00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 27,
+      "track_uid": "ATU_0000001C",
+      "channel_format_id": "AC_0003101c",
+      "object_id": "AO_101C",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "000000000000000003000000020000000000000071e57c3f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 28,
+      "track_uid": "ATU_0000001D",
+      "channel_format_id": "AC_0003101d",
+      "object_id": "AO_101D",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "0000000000000000030000000200000000000000a4a1463c00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 29,
+      "track_uid": "ATU_0000001E",
+      "channel_format_id": "AC_0003101e",
+      "object_id": "AO_101E",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "000000000000000003000000020000000000000071e57c3f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 30,
+      "track_uid": "ATU_0000001F",
+      "channel_format_id": "AC_0003101f",
+      "object_id": "AO_101F",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "000000000000000003000000020000000000000061df9e3d139baf3e000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 31,
+      "track_uid": "ATU_00000020",
+      "channel_format_id": "AC_00031020",
+      "object_id": "AO_1020",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "000000000000000003000000020000000000000014246c3f139baf3e000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 32,
+      "track_uid": "ATU_00000021",
+      "channel_format_id": "AC_00031021",
+      "object_id": "AO_1021",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "0000000000000000030000000200000000000000a4a1463c00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 33,
+      "track_uid": "ATU_00000022",
+      "channel_format_id": "AC_00031022",
+      "object_id": "AO_1022",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "000000000000000003000000020000000000000071e57c3f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 34,
+      "track_uid": "ATU_00000023",
+      "channel_format_id": "AC_00031023",
+      "object_id": "AO_1023",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "0000000000000000030000000200000000000000a4a1463c00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 35,
+      "track_uid": "ATU_00000024",
+      "channel_format_id": "AC_00031024",
+      "object_id": "AO_1024",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "000000000000000003000000020000000000000071e57c3f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 36,
+      "track_uid": "ATU_00000025",
+      "channel_format_id": "AC_00031025",
+      "object_id": "AO_1025",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "0000000000000000030000000200000000000000a4a1463c00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    },
+    {
+      "physical_host": 37,
+      "track_uid": "ATU_00000026",
+      "channel_format_id": "AC_00031026",
+      "object_id": "AO_1026",
+      "kind": "Objects",
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 52,
+          "hex": "000000000000000003000000020000000000000071e57c3f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_unconsumed_ranges": [],
+      "defined_u32_words": 13
+    }
+  ],
+  "bed_defined_bytes": 24,
+  "object_defined_bytes": 52
+}

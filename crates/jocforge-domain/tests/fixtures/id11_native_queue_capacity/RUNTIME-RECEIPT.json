@@ -1,0 +1,17 @@
+{
+  "native_capture_executed": true,
+  "started_utc": "2026-10-23T15:16:28.137386+00:00",
+  "cases": 18,
+  "errors": 0,
+  "observer_sha256": "340928886185f3061b187c1bb96393b32efa21f955899c173b4c6b6864bbbd44",
+  "job_sha256": "b3c663cfdb400da1c93a142287e00190088984a6bcad3b9cea57b21e5751c1a7",
+  "trace_sha256": "d78efb9b25295d9ad6bc73a1915b032d0fcb272ad26c019d933b53ab2f946a3d",
+  "reference_EC3_bytes": 16384,
+  "reference_EC3_sha256": "5ee3c8a39ba421fae56bdc7d77103909644bb419a6b7f87b3f31205a2e8d0987",
+  "reference_matches_baseline": true,
+  "reference_fixture": "BOUNDED_SECONDARY_NOT_PRIMARY_SONG",
+  "raw_PCM_key_or_authentication_content_read": false,
+  "live_state_modified": false,
+  "approved_contract_modified": false,
+  "implementation_or_other_agents_contacted": false
+}

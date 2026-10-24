@@ -1,0 +1,18 @@
+{
+  "manifest_sha256": "47dd26dc64d91de60a8735ee8cc9885da386a58b0c56a9cabc23d97e1303f0d9",
+  "payload_hashes_match": true,
+  "replay": {
+    "expected_positive_zero_words": 5472,
+    "zero_tail_observations_checked": 11,
+    "frontend_row_table_joins": 6,
+    "mismatch_count": 0,
+    "PCM_values_exported": false,
+    "PCM_content_digests_exported": false,
+    "native_sample_reclassification_by_checker": false,
+    "DSP_tail_model_comparison": false
+  },
+  "frozen_model_hash_binding_verified": true,
+  "native_PCM_content_digest_fields_removed": true,
+  "forbidden_material_scan_hits": [],
+  "whole_F13C_ready": false
+}

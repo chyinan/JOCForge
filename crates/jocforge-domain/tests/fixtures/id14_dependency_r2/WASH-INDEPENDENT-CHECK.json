@@ -1,0 +1,33 @@
+{
+  "schema": "wash-selected-id14-dependency-review.v2",
+  "result": "PASS_FOR_SELECTED_BSI_DEPENDENCY_SCOPE_ONLY",
+  "source_manifest_sha256": "294dc82380bf9b8cb9a60094e973debc6b075801a46a64e33313e2766d65d778",
+  "source_independent_check_sha256": "a2800e112088927f22e4ad16b96b6b99b0317db3683d5780e10aec42e3bb0567",
+  "base_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "superseded_base_spec_sha256": "09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b",
+  "related_bsi_handoff_manifest_sha256": "70f90cd5472299f66bba22c362e87fe2645b6f480d71dfeb763fab2eb769fe00",
+  "wash_replay_sha256": "5622cbe4821208ae51d2c97c865aadcec8e6a96ad46430a13d2b53651ee3e87a",
+  "direct_no_id14_cases": 2,
+  "direct_case_mismatches": 0,
+  "constructor_producer_import_statuses": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "header_access_events": 392,
+  "header_access_classification": {
+    "queue_copy_routine_context": 90,
+    "output_bit_writer_read_modify_write": 270,
+    "opaque_payload_serializer_byte_load": 32,
+    "unclassified": 0
+  },
+  "selected_bsi_count_requires_encoded_id14": false,
+  "global_parser_absence_claim": false,
+  "id14_body_generation_required": true,
+  "carrier_block_source_closed": false,
+  "whole_F13C_ready": false,
+  "implementation_ready": false
+}

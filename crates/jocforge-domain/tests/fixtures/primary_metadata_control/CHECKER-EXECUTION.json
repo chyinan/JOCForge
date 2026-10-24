@@ -1,0 +1,44 @@
+[
+  {
+    "optimized": false,
+    "exit_code": 0,
+    "output": {
+      "primary_samples": 6522906,
+      "normal_callbacks": 4247,
+      "own_control_rows": 38,
+      "own_object_control_words": 364,
+      "expected_control_mismatches": 0,
+      "pcm_read": 0,
+      "full_pcm_identity": "NOT_REHASHED",
+      "dbmd_track_rows": 38,
+      "dbmd_track_mismatches": 0,
+      "dbmd_zero_tail_bytes": 2,
+      "receipt_pointer_verified": true,
+      "detached_check_envelope_verified": true,
+      "job_projection_verified": true,
+      "original_job_identity_scope": "RESEARCH_DECLARATION_ONLY"
+    },
+    "stdout_sha256": "c8e0107afb0b02751367076303e8ff83e13a0bf2917443500d4c9a02e533f61a"
+  },
+  {
+    "optimized": true,
+    "exit_code": 0,
+    "output": {
+      "primary_samples": 6522906,
+      "normal_callbacks": 4247,
+      "own_control_rows": 38,
+      "own_object_control_words": 364,
+      "expected_control_mismatches": 0,
+      "pcm_read": 0,
+      "full_pcm_identity": "NOT_REHASHED",
+      "dbmd_track_rows": 38,
+      "dbmd_track_mismatches": 0,
+      "dbmd_zero_tail_bytes": 2,
+      "receipt_pointer_verified": true,
+      "detached_check_envelope_verified": true,
+      "job_projection_verified": true,
+      "original_job_identity_scope": "RESEARCH_DECLARATION_ONLY"
+    },
+    "stdout_sha256": "c8e0107afb0b02751367076303e8ff83e13a0bf2917443500d4c9a02e533f61a"
+  }
+]

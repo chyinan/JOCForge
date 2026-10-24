@@ -1,0 +1,9 @@
+{
+  "schema": "detached-primary-metadata-check.v4",
+  "manifest_file": "MANIFEST.json",
+  "manifest_sha256": "f210abc9fb0d92f239ebef228cb3c3e15b9f55a820623aecf650b96d537102f4",
+  "execution_evidence_file": "CHECKER-EXECUTION.json",
+  "full_pcm_identity": "NOT_REHASHED",
+  "new_primary_native_encode": "NOT_ESTABLISHED",
+  "job_identity_scope": "Research-side original digest declaration; functional projection verified."
+}

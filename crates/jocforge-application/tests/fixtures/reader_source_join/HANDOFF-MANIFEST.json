@@ -1,0 +1,76 @@
+{
+  "schema": "f13c-reader-source-join-handoff-manifest.v1",
+  "source_package_manifest_sha256": "2276298e21d58276650062466941455f5ebadd0be4542ecbfae25588a71d1899",
+  "base_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "related_bsi_handoff_manifest_sha256": "70f90cd5472299f66bba22c362e87fe2645b6f480d71dfeb763fab2eb769fe00",
+  "related_id14_handoff_manifest_sha256": "9985e8f321741d596a1675499d8764765fc9ecc864dc9824e979da4559b5d684",
+  "related_carrier_handoff_manifest_sha256": "9c136d43219ccd8fc5623066864d27959f079c9cfe9dfcd10a5726e7fb20f049",
+  "related_eof_handoff_manifest_sha256": "ef7fa983440fd11784fe9f24f64284240f00fd053853dc1cc28067d3b1cf0d42",
+  "files": [
+    {
+      "path": "CHECK.json",
+      "bytes": 289,
+      "sha256": "0f87ea3e4f3db7c87b87a75947e3ad3558656f59260831ae9a38974132876825"
+    },
+    {
+      "path": "CONTRACT.json",
+      "bytes": 1799,
+      "sha256": "78536aa19c8f8e8120e955da2d6d3b0bf62dc67cf581764de6309ac7e9147447"
+    },
+    {
+      "path": "CURRENT-OVERLAY.json",
+      "bytes": 665,
+      "sha256": "8f42546a440ed9cc91845a6c0a6e375425eb4ff0371812d66f64f32ad4d4b288"
+    },
+    {
+      "path": "HANDOFF-README.md",
+      "bytes": 510,
+      "sha256": "38e7b9912353f99a7c1a40e77261fc217b579e13fcc33ddb5a1331fa4ef70cf5"
+    },
+    {
+      "path": "INPUTS.json",
+      "bytes": 19223,
+      "sha256": "300f201215d3713b4e8eed212dacfb1d8fa78a3cd8fd88b8b23bd11f6191ce89"
+    },
+    {
+      "path": "MANIFEST.json",
+      "bytes": 1024,
+      "sha256": "2276298e21d58276650062466941455f5ebadd0be4542ecbfae25588a71d1899"
+    },
+    {
+      "path": "NATIVE-OBSERVATIONS.json",
+      "bytes": 19161,
+      "sha256": "2e2a88054872d4a530c07b807537113550fcc093428c4a77f7b4da58d6ed4dbf"
+    },
+    {
+      "path": "READER-SOURCE-ADDENDUM.md",
+      "bytes": 1526,
+      "sha256": "ac2c9dbbe2a702d80e3ef920298e6033f83b1125be5723b3e2657b6b678f65f7"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1038,
+      "sha256": "b89bda26b27a39965e48c7ce00662d672ac2a1ee6e25e434c763b41d1d04c70d"
+    },
+    {
+      "path": "SOURCE-AUDIT.json",
+      "bytes": 1260,
+      "sha256": "aabc7da7087f25a410e2d90fd8508452abf9054dda788ba66738ef6400c2506e"
+    },
+    {
+      "path": "WASH-INDEPENDENT-CHECK.json",
+      "bytes": 1545,
+      "sha256": "81b661ed79c1c91cf76215bafa6738c2d7498cefe37923e6a1874c49bac8db05"
+    },
+    {
+      "path": "verify_reader_source_join.py",
+      "bytes": 2383,
+      "sha256": "908c8dbf29df3552ac600fc0279e3fc7acc04ca7e405b5693767922bd7a0d681"
+    },
+    {
+      "path": "wash_replay.py",
+      "bytes": 4605,
+      "sha256": "c3dbe4474750f7e07dbe90f00160ce529f995a655a5306123b29f4f1f0cdf50e"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "slice": "TRANSFORM-HISTORY-OWNER-CONTINUITY",
+  "package_manifest_sha256": "d21eef82d1b135c0219c7e6cb9b40da8052016f907e27813eb2de823af275327",
+  "independent_check_sha256": "19d81e5342e46910d83b358e60de513c3a7de084417ec8434c95b6da6833544b",
+  "source_manifest_sha256": "6d8208dfce9d1310d13021a6e9f772da38649b38acf3cfd9d5f5f779bd51c068",
+  "source_independent_check_sha256": "9716d502ef3c060daff9c6f69ff1e6251ed967f2481692221e9093b9466c44e6",
+  "verified_transform_dependency_manifest_sha256": "4eaa2690e30ed0705404d7a6cd835e8637c2f933319d60be8812d900cb6521c1",
+  "verified_transform_dependency_check_sha256": "0574d3f4aff6460340709216fd1d0c141c47baa68367f2c43abbc446ba2157b5",
+  "scope": "typed six-source primary/companion history owner plus bounded typed workspace initializer",
+  "native_abi_or_pointer_layout_reproduced": false,
+  "reset_eof_fatal_and_absolute_clock": "OPEN",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO"
+}

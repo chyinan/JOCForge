@@ -1,0 +1,70 @@
+{
+  "production_constructor_observed": true,
+  "entry_role": "Selected wrapper profile constructor -> actual selected top codec constructor -> metadata FIFO group, serializer/history/protection owner, ID11 owner, ID14 owner, ID2 owner and codec-instance constructors.",
+  "actual_entry_binding": "Native accurate call stacks from all five queue constructions and protection initialization resolve to the same actual top constructor; that top constructor returns the same top/parent owners later consumed by frontend and codec calls.",
+  "correction": "An earlier compatibility constructor found in static corpus was not entered by this selected run. It is not the production constructor for this fixture.",
+  "cold_observed": {
+    "top_owners": 1,
+    "codec_parents": 1,
+    "profile_selector": 10,
+    "initial_delay_callbacks": 2,
+    "initial_assembly_tolerance": 2,
+    "configured_codec_instances": 2,
+    "active_substreams": 1,
+    "failure_marker": 0,
+    "warning_bits": 0,
+    "serializer_history_read_index": 2,
+    "serializer_held_header_present": 0,
+    "serializer_input_storage_capacity_bytes": 8192,
+    "serializer_stream_capacity": 2,
+    "protection_mode": 1,
+    "protection_history_capacity": 1,
+    "provider_content_read": false,
+    "codec_planner_counter": 0,
+    "codec_planner_period": 62
+  },
+  "queue_roots": [
+    {
+      "role": "ID1",
+      "capacity_bytes": 10,
+      "constructor_delay": 4608,
+      "period": 1536,
+      "descriptor_count": 3
+    },
+    {
+      "role": "generic ID6",
+      "capacity_bytes": 3,
+      "constructor_delay": 4608,
+      "period": 1536,
+      "descriptor_count": 3
+    },
+    {
+      "role": "ID11",
+      "capacity_bytes": 2103,
+      "constructor_delay": 4608,
+      "period": 1536,
+      "descriptor_count": 3
+    },
+    {
+      "role": "ID14",
+      "capacity_bytes": 543,
+      "constructor_delay": 3072,
+      "period": 1536,
+      "descriptor_count": 2
+    },
+    {
+      "role": "ID2",
+      "capacity_bytes": 8,
+      "constructor_delay": 4608,
+      "period": 1536,
+      "descriptor_count": 3
+    }
+  ],
+  "cold_rule": "descriptor_count=ceil(delay/period), phase=delay%period, read_index=count-1, write_selector=(phase!=0), all occupied flags0. Original actual constructor and fully owned independent constructor runs both observed.",
+  "codec_and_output_roots": [
+    "Both configured codec records have distinct codec/planner owners; cold planners disabled, all6 segments0,counter0,period62.",
+    "Metadata/header-history and four payload-owner queues are distinct roots; source and payload generation are not inferred from equal body content.",
+    "Frontend wrapper initializes progress0 and references the same top owner; threshold3072 and hop1536 are separately bound."
+  ],
+  "generation_limits": "Observed constructor invocation and nested frontend/parent invocations are identity domains, not absolute ADM position or an invented native generation counter."
+}

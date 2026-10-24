@@ -1,0 +1,2679 @@
+{
+  "schema": "washed-id1-timer-continuous-observations.v1",
+  "constructor_return": 0,
+  "cold": {
+    "remaining": [
+      24000,
+      48000,
+      48000,
+      4800,
+      24000,
+      48000
+    ],
+    "mode": 1,
+    "cached": [
+      -1,
+      -1024,
+      -1024,
+      -1024,
+      -1024,
+      -1024
+    ],
+    "counter_low_s16": -513,
+    "counter_extra_u16": 0,
+    "group_s16": -1,
+    "codec_s16": -1
+  },
+  "calls": [
+    {
+      "call": 0,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          48000,
+          48000,
+          4800,
+          24000,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -1024,
+          -1024,
+          -1024,
+          -1024,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          46464,
+          46464,
+          4800,
+          22464,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 1,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          46464,
+          46464,
+          4800,
+          22464,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          44928,
+          44928,
+          4800,
+          20928,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 2,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          44928,
+          44928,
+          4800,
+          20928,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          43392,
+          43392,
+          4800,
+          19392,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 3,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          43392,
+          43392,
+          4800,
+          19392,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          41856,
+          41856,
+          4800,
+          17856,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 4,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          41856,
+          41856,
+          4800,
+          17856,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          40320,
+          40320,
+          4800,
+          16320,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 5,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          40320,
+          40320,
+          4800,
+          16320,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          38784,
+          38784,
+          4800,
+          14784,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 6,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          38784,
+          38784,
+          4800,
+          14784,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          37248,
+          37248,
+          4800,
+          13248,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 7,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          37248,
+          37248,
+          4800,
+          13248,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          35712,
+          35712,
+          4800,
+          11712,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 8,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          35712,
+          35712,
+          4800,
+          11712,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          34176,
+          34176,
+          4800,
+          10176,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 9,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          34176,
+          34176,
+          4800,
+          10176,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          32640,
+          32640,
+          4800,
+          8640,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 10,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          32640,
+          32640,
+          4800,
+          8640,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          31104,
+          31104,
+          4800,
+          7104,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 11,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          31104,
+          31104,
+          4800,
+          7104,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          29568,
+          29568,
+          4800,
+          5568,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 12,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          29568,
+          29568,
+          4800,
+          5568,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          28032,
+          28032,
+          4800,
+          4032,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 13,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          28032,
+          28032,
+          4800,
+          4032,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          26496,
+          26496,
+          4800,
+          2496,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 14,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          26496,
+          26496,
+          4800,
+          2496,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          24960,
+          24960,
+          4800,
+          960,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 15,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          24960,
+          24960,
+          4800,
+          960,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          23424,
+          23424,
+          4800,
+          24000,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -1024,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -12,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 3,
+      "body_hex": "020ee0",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 16,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          23424,
+          23424,
+          4800,
+          24000,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -1024,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          21888,
+          21888,
+          4800,
+          22464,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 17,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          21888,
+          21888,
+          4800,
+          22464,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          20352,
+          20352,
+          4800,
+          20928,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 18,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          20352,
+          20352,
+          4800,
+          20928,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          18816,
+          18816,
+          4800,
+          19392,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 19,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          18816,
+          18816,
+          4800,
+          19392,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          17280,
+          17280,
+          4800,
+          17856,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 20,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          17280,
+          17280,
+          4800,
+          17856,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          15744,
+          15744,
+          4800,
+          16320,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 21,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          15744,
+          15744,
+          4800,
+          16320,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          14208,
+          14208,
+          4800,
+          14784,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 22,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          14208,
+          14208,
+          4800,
+          14784,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          12672,
+          12672,
+          4800,
+          13248,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 23,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          12672,
+          12672,
+          4800,
+          13248,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          11136,
+          11136,
+          4800,
+          11712,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 24,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          11136,
+          11136,
+          4800,
+          11712,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          9600,
+          9600,
+          4800,
+          10176,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 25,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          9600,
+          9600,
+          4800,
+          10176,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          8064,
+          8064,
+          4800,
+          8640,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 26,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          8064,
+          8064,
+          4800,
+          8640,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          6528,
+          6528,
+          4800,
+          7104,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 27,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          6528,
+          6528,
+          4800,
+          7104,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          4992,
+          4992,
+          4800,
+          5568,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 28,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          4992,
+          4992,
+          4800,
+          5568,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          3456,
+          3456,
+          4800,
+          4032,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 29,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          3456,
+          3456,
+          4800,
+          4032,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          1920,
+          1920,
+          4800,
+          2496,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 30,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          1920,
+          1920,
+          4800,
+          2496,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          384,
+          384,
+          4800,
+          960,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 31,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          384,
+          384,
+          4800,
+          960,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          48000,
+          -1152,
+          4800,
+          -576,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -1024,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -60,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 3,
+      "body_hex": "022e00",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 32,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          48000,
+          -1152,
+          4800,
+          -576,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -1024,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          46464,
+          48000,
+          4800,
+          -2112,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -1024,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -40,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 3,
+      "body_hex": "026600",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 33,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          46464,
+          48000,
+          4800,
+          -2112,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -1024,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          44928,
+          46464,
+          4800,
+          24000,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -1024,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -12,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 3,
+      "body_hex": "020ee0",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 34,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          44928,
+          46464,
+          4800,
+          24000,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -1024,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          43392,
+          44928,
+          4800,
+          22464,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 35,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          43392,
+          44928,
+          4800,
+          22464,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          41856,
+          43392,
+          4800,
+          20928,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 36,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          41856,
+          43392,
+          4800,
+          20928,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          40320,
+          41856,
+          4800,
+          19392,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 37,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          40320,
+          41856,
+          4800,
+          19392,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          38784,
+          40320,
+          4800,
+          17856,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 38,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          38784,
+          40320,
+          4800,
+          17856,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          37248,
+          38784,
+          4800,
+          16320,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    },
+    {
+      "call": 39,
+      "return_i32": 0,
+      "state_before": {
+        "remaining": [
+          24000,
+          37248,
+          38784,
+          4800,
+          16320,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "state_after": {
+        "remaining": [
+          24000,
+          35712,
+          37248,
+          4800,
+          14784,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -60,
+          -40,
+          -1024,
+          -12,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config_after": [
+        -2,
+        1,
+        0,
+        0,
+        -512,
+        -512,
+        -512,
+        -512,
+        -512
+      ],
+      "payload_id": 1,
+      "encoded_bytes": 2,
+      "body_hex": "0200",
+      "guard16_unchanged": true
+    }
+  ],
+  "same_owner_reinit": {
+    "state_before": {
+      "remaining": [
+        24000,
+        35712,
+        37248,
+        4800,
+        14784,
+        48000
+      ],
+      "mode": 1,
+      "cached": [
+        -1,
+        -60,
+        -40,
+        -1024,
+        -12,
+        -1024
+      ],
+      "counter_low_s16": -513,
+      "counter_extra_u16": 0,
+      "group_s16": -1,
+      "codec_s16": -1
+    },
+    "return_i32": 0,
+    "state_after": {
+      "remaining": [
+        24000,
+        48000,
+        48000,
+        4800,
+        24000,
+        48000
+      ],
+      "mode": 1,
+      "cached": [
+        -1,
+        -1024,
+        -1024,
+        -1024,
+        -1024,
+        -1024
+      ],
+      "counter_low_s16": -513,
+      "counter_extra_u16": 0,
+      "group_s16": -1,
+      "codec_s16": -1
+    },
+    "owner_identity_preserved": true
+  }
+}

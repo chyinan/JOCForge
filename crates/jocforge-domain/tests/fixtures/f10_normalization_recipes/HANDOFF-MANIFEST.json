@@ -1,0 +1,71 @@
+{
+  "schema": "f10-normalization-recipe-handoff-manifest.v1",
+  "source_package_manifest_sha256": "8e03bcbcec78c17e1bc8305e889bd1d2dae083f49de13b8f7570d5f196bd7ffd",
+  "files": [
+    {
+      "path": "CHECKER-REPLAY.json",
+      "bytes": 301,
+      "sha256": "6700d90812e5338f3b3f8b2b9f3f2daa658eaf0f116a7b54c6c60617f7d6cd30"
+    },
+    {
+      "path": "CONTRACT.json",
+      "bytes": 1752,
+      "sha256": "a70789d492fabc2a2b6f0ea086c5141e00f9ed6f05457b6aa0b4a2ebfd5b8d4a"
+    },
+    {
+      "path": "CURRENT-SPEC-REVIEW.json",
+      "bytes": 5054,
+      "sha256": "c2f3a6c318abf705b041c99f151947facc355dc6724d3966369ebb7b8f775572"
+    },
+    {
+      "path": "EXPECTED.json",
+      "bytes": 14475,
+      "sha256": "a93d4c68181f6cf5a16cdcaff74a06dd2fa27152ae2351ced4de9fb61f008179"
+    },
+    {
+      "path": "INDEPENDENT-CHECK.json",
+      "bytes": 621,
+      "sha256": "999a0e8a2770e00e5f2d10229906397f240abe21a2027cd2fe54bd9252fb7faa"
+    },
+    {
+      "path": "INPUTS.json",
+      "bytes": 7969,
+      "sha256": "bfde8f605857982bcdf02996f382cc872a58f3faca093e8ccb1e5b8d4b197524"
+    },
+    {
+      "path": "MANIFEST.json",
+      "bytes": 1348,
+      "sha256": "8e03bcbcec78c17e1bc8305e889bd1d2dae083f49de13b8f7570d5f196bd7ffd"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1361,
+      "sha256": "cf29ace13f3c8764e8865ea2df77bae5938bd6355e1c4a3720f37b269cc88ed4"
+    },
+    {
+      "path": "RUNTIME-RECEIPT.json",
+      "bytes": 630,
+      "sha256": "bed589cc628e0f14b2d9f9f20a3feb66c274b251064ea79f90ade24f8e6bad6d"
+    },
+    {
+      "path": "SOURCE-IDENTITIES.json",
+      "bytes": 551,
+      "sha256": "1b5bbca4ac4fc28e4fb19a84c7434d5de7409267edb3274ff1ecf1c967ed175f"
+    },
+    {
+      "path": "WASH-INDEPENDENT-CHECK.json",
+      "bytes": 1780,
+      "sha256": "ce8c21da4ad08b857a94b274a3e44fa73ebb7d7e6bcc0316ced4837853e64b15"
+    },
+    {
+      "path": "replay_normalization_recipes.py",
+      "bytes": 8738,
+      "sha256": "dd348489f8db54bf76dc1dedd8ccb6df85803eba6de75a3ce294b9d70317fe25"
+    },
+    {
+      "path": "wash_replay.py",
+      "bytes": 7612,
+      "sha256": "8e0e7a98e91f2673c8a7f2a86219fb41031211cda7cdac56e6d18eb9a4b6a0c3"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "schema": "washed-type11-source-identities.v1",
+  "sources": [
+    {
+      "role": "frozen_programme_manifest",
+      "bytes": 2533,
+      "sha256": "8edefe038a00b1591a8b7e1f3c8c95f100c17422e8c783d2c3539aaef2fe54fe"
+    },
+    {
+      "role": "frozen_prediction_report",
+      "bytes": 8164116,
+      "sha256": "3be563fc9c627479d21b5e2ddef786e4608e45ba13df841c541be9ddcf9eff73"
+    },
+    {
+      "role": "frozen_Type11_outputs",
+      "bytes": 2401745,
+      "sha256": "1beffc263fb1e6d7430041cb4e62288aacff7b84cf136dd076c8b3fbf641c4d0"
+    },
+    {
+      "role": "primary_DBMD_metadata",
+      "bytes": 580,
+      "sha256": "ea961b79063bc68f64b1210dba002a5729d1003427196123f93b0890939b75d9"
+    },
+    {
+      "role": "type11_control_wire_core",
+      "bytes": 13732,
+      "sha256": "6b17bf250598dad632deb8a6775f8f0e4166bb88b878f6e1c999378345d77b1b"
+    },
+    {
+      "role": "type11_bitstream_core",
+      "bytes": 3639,
+      "sha256": "edae71ba848b572a8be8a3ab692883d47e943276687d0d4c5936b14913566691"
+    },
+    {
+      "role": "type11_dbmd_trim_core",
+      "bytes": 3815,
+      "sha256": "004fa24c1434802ccac740db289eab0933e4c3e8af22ca21eac11188aa4dc638"
+    },
+    {
+      "role": "native_Type11_producer_wrapper",
+      "bytes": 410,
+      "sha256": "e812aab7130cbd7fd5b2200746d28e3ed1037f182e883c7805426a16467e5776"
+    },
+    {
+      "role": "native_Type11_wire_writer",
+      "bytes": 447,
+      "sha256": "ab90ef5b5bc7537b8f8b6bc6dd1ef7ad83a0df49e9b6f6cc75a8ec097df16346"
+    },
+    {
+      "role": "source_callback_formatter_frontend_chain",
+      "bytes": 6835,
+      "sha256": "dc875ff2b4712f92481a451749d9a2909e992510e81fa5734217988da62a167f"
+    },
+    {
+      "role": "metadata_formatter",
+      "bytes": 764,
+      "sha256": "386bac316a223f78dff07499075a2bb50b88c76807a4bfaf6969d33639a66b91"
+    },
+    {
+      "role": "collector_descriptor_getter",
+      "bytes": 664,
+      "sha256": "e357f11025943736394062ed207356427ee8ba784b37e554dbc77eecf68d337a"
+    },
+    {
+      "role": "ID11_ingress",
+      "bytes": 702,
+      "sha256": "33fadf5bf7d306af8f6d40de3803e671f5908658eb9a9dd38674e79999c4f377"
+    },
+    {
+      "role": "queue_copy",
+      "bytes": 1172,
+      "sha256": "11aadf9a56b5b6f6f12cefc690c6f18a6608389fdfa70c6f736a2187bedaf86d"
+    }
+  ],
+  "source_paths_or_addresses_included": false
+}

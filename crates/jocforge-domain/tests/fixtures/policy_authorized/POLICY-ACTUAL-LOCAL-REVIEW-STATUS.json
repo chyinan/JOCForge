@@ -1,0 +1,219 @@
+{
+  "schema": "policy-actual-local-review-status.v1",
+  "review_target": "review-input-v0.3.0-policy-actual-r4",
+  "review_mode": "fresh independent final short review",
+  "os_allowlist": "NOT_ENFORCED",
+  "decision": {
+    "numeric_recomputation": "PASS",
+    "selected_profile_rejections": "PASS",
+    "artifact_cross_reference_integrity": "PASS",
+    "manual_static_review": "PASS",
+    "localized_policy_actual_ready": "YES",
+    "whole_package_implementation_ready": "NO",
+    "numeric_does_not_override_manual": true
+  },
+  "input_integrity": {
+    "manifest_sha256": "3263a36104b1209ca1a8c7e520074ce42bd8f2d7c79a985fbb1a540dbb72b91e",
+    "manifest_match": true,
+    "manifest_entries": 11,
+    "read_set_files_including_manifest": 12,
+    "read_set_total_bytes": 68171,
+    "all_manifest_entry_sizes_and_hashes_match": true,
+    "prohibited_material_read": false,
+    "read_set_detail": "checker-result.json:read_set"
+  },
+  "independence": {
+    "computed_from": [
+      "r4 input-only recipes",
+      "19 authorized scalar parameters",
+      "D06-E mathematical generator",
+      "normative F32/W16/W32 and lifecycle rules",
+      "selected_profile identity and field contract"
+    ],
+    "expected_result_used_as_input": false,
+    "expected_result_use": "post-comparison only, after actual outputs were complete",
+    "input_forbidden_seed_field_count": 0,
+    "research_source_model_dll_or_other_checker_read": false,
+    "prior_self_authored_checker_reused": true,
+    "r4_full_recomputation_performed": true
+  },
+  "evidence": {
+    "checker_sha256": "472b9fa1281861046196cdaf672c0f83d0ffa0be5b97fabadd9c03f729793391",
+    "checker_pass": true,
+    "parameter_scalar_count": 19,
+    "parameter_byte_count": 76,
+    "parameter_field_order": [
+      "D06-T-NORMAL",
+      "D06-W",
+      "D06-N",
+      "D07-P",
+      "D07-A",
+      "D07-T",
+      "D07-H"
+    ],
+    "parameter_i32_f32le_sha256": "3dd2300224d0e459d1c4353fa2fc809f8c188775031f6a74cc64bbb1694fdc29",
+    "d06e_entries": 32,
+    "d06e_i16le_bytes": 64,
+    "d06e_i16le_sha256": "a0e75dafa9f3c1627ec36351ed857711c5a79f60fd7fda0b9f988f0505a4a070",
+    "case_counts": {
+      "refresh": 3,
+      "mean_square": 4,
+      "db_selector": 4,
+      "normalization": 6,
+      "lifecycle": 1
+    },
+    "numeric_post_comparisons": 17,
+    "numeric_mismatches": 0,
+    "parameter_and_domain_rejection_checks": 12,
+    "parameter_and_domain_rejection_failures": 0,
+    "selected_profile_rejection_vectors": 2,
+    "selected_profile_rejection_failures": 0,
+    "all_profile_rejections_preserved_state": true,
+    "artifact_linkage": {
+      "verification_referenced_sha256": "6cf3ae8d899b334d5aa87e0744e4c58b7dba1d92177ca07738726f8ea0ee2c6d",
+      "actual_d06e_artifact_sha256": "6cf3ae8d899b334d5aa87e0744e4c58b7dba1d92177ca07738726f8ea0ee2c6d",
+      "pass": true
+    },
+    "manual_checks": {
+      "installed_vs_delayed_audio_consumers": "PASS",
+      "F32_W16_W32_semantics": "PASS",
+      "parameter_field_order_shape_type_bits_hash_validation": "PASS",
+      "missing_profile_mismatch_corrupt_error_partition": "PASS",
+      "cold_reset_retry_commit_fail_stop_eof": "PASS",
+      "resolved_provider_metadata": "PASS"
+    }
+  },
+  "prior_issue_disposition": [
+    {
+      "issue": "POLICY-ACTUAL-R1-001",
+      "status": "CLOSED",
+      "evidence": "Selected-policy parameters are consistently declared supplied and resolved through policy-authorized-v1.json."
+    },
+    {
+      "issue": "POLICY-ACTUAL-R1-002",
+      "status": "CLOSED",
+      "evidence": "Stable selected-profile identity and fields plus two fail-closed no-state-advance vectors are present."
+    },
+    {
+      "issue": "POLICY-ACTUAL-R2-001",
+      "status": "CLOSED",
+      "evidence": "Missing, profile mismatch, and malformed provider failures consistently map to PARAMETER_UNAVAILABLE, UNSUPPORTED_PROFILE, and POLICY_PARAMETER_ERROR."
+    },
+    {
+      "issue": "POLICY-ACTUAL-R2-002",
+      "status": "CLOSED",
+      "evidence": "F09.7 and D06-E metadata identify the authorized provider as resolving all 19 selected parameters."
+    },
+    {
+      "issue": "POLICY-ACTUAL-R3-001",
+      "status": "CLOSED",
+      "evidence": "The D06-E verification artifact now references the current D06-E artifact SHA-256 and the checker confirms equality."
+    }
+  ],
+  "issues": [],
+  "known_limits": [
+    "The older 72-combination normalization trace remains an existing-model trace, not an independent full-domain equivalence proof.",
+    "No real PCM or full-song recomputation was run in this review.",
+    "No native SDK, DLL or compiled-container execution was run.",
+    "The result is scoped to the selected policy actual parameters and supplied synthetic vectors; it is not a whole-pipeline or bit-exact claim."
+  ],
+  "revision": "r4",
+  "content_files_verified": 11,
+  "post_review_changes": "Local status only; reviewed content unchanged.",
+  "current_bindings": [
+    {
+      "file": "specs/00-numeric-semantics.md",
+      "reviewed_sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135",
+      "current_sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135",
+      "same_bytes": true
+    },
+    {
+      "file": "specs/09-exponents.md",
+      "reviewed_sha256": "51e5866f4e1bc3ac6566641d794d950fa8ee3f3339f1042693c02fed21f79862",
+      "current_sha256": "41cd157140d0deaab51fa9a895c33758cb49eb46cf5844a2883c1d6e8bb81739",
+      "same_bytes": false,
+      "prior_current_sha256": "51e5866f4e1bc3ac6566641d794d950fa8ee3f3339f1042693c02fed21f79862"
+    },
+    {
+      "file": "specs/09-gain-and-db.md",
+      "reviewed_sha256": "f6e73ca2e361c06413974f4b7725fdc94f8e1d13a6a299062edde9dc3a7e6c12",
+      "current_sha256": "f6e73ca2e361c06413974f4b7725fdc94f8e1d13a6a299062edde9dc3a7e6c12",
+      "same_bytes": true
+    },
+    {
+      "file": "specs/10-exponent-normalization.md",
+      "reviewed_sha256": "eea5ed9833a6ca19d859df21f68f3b08e34407ace846f94e64ac5416957c59fb",
+      "current_sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc",
+      "same_bytes": false,
+      "prior_current_sha256": "eea5ed9833a6ca19d859df21f68f3b08e34407ace846f94e64ac5416957c59fb"
+    },
+    {
+      "file": "specs/09-policy-authorized-parameters.md",
+      "reviewed_sha256": "235ff3340a41b270db2cf55dcb1b09dba4ccc9555aada3c85abdc8e83dc77171",
+      "current_sha256": "62a4b893d68001065e16693d9d489b845808320d3bc2ada98e569a47224a243d",
+      "same_bytes": false,
+      "prior_current_sha256": "235ff3340a41b270db2cf55dcb1b09dba4ccc9555aada3c85abdc8e83dc77171"
+    },
+    {
+      "file": "PIPELINE-AND-INTERFACES.md",
+      "reviewed_sha256": "3cc1f0b2ccd9ee28efbf8bb4e044e1d4995935e074067b126fe0f6a07af5ee24",
+      "current_sha256": "61e4f4a968c93a2dc074656db656cf757246a5f316a1ca06502ebc9d4d842e12",
+      "same_bytes": false,
+      "prior_current_sha256": "0a722f1aacfb4dba0834b012c2baedd9a03e12908238677f956e7d64fd73e373"
+    },
+    {
+      "file": "parameters/policy-authorized-v1.json",
+      "reviewed_sha256": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a",
+      "current_sha256": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a",
+      "same_bytes": true
+    },
+    {
+      "file": "parameters/exponent-refresh-difference-math-v1.json",
+      "reviewed_sha256": "6cf3ae8d899b334d5aa87e0744e4c58b7dba1d92177ca07738726f8ea0ee2c6d",
+      "current_sha256": "6cf3ae8d899b334d5aa87e0744e4c58b7dba1d92177ca07738726f8ea0ee2c6d",
+      "same_bytes": true
+    },
+    {
+      "file": "test-vectors/POLICY-AUTHORIZED-INPUT-VECTORS.json",
+      "reviewed_sha256": "afed7b0fdd7b80374a63cfb0b5922d6c988ea0c4a4417f09d2f28af5de462bc5",
+      "current_sha256": "afed7b0fdd7b80374a63cfb0b5922d6c988ea0c4a4417f09d2f28af5de462bc5",
+      "same_bytes": true
+    },
+    {
+      "file": "test-vectors/POLICY-AUTHORIZED-RESULT.json",
+      "reviewed_sha256": "2cbca405e9af2cf6f95e8bc36546a387ed7f26ff73afd222715e9bf720136849",
+      "current_sha256": "2cbca405e9af2cf6f95e8bc36546a387ed7f26ff73afd222715e9bf720136849",
+      "same_bytes": true
+    },
+    {
+      "file": "test-vectors/EXPONENT-REFRESH-DIFFERENCE-MATH-VERIFICATION.json",
+      "reviewed_sha256": "bc8841bce23069d392d67f59bf06ae5ab7e6e6b7fb6ae0f17396e03c2a8767b8",
+      "current_sha256": "bc8841bce23069d392d67f59bf06ae5ab7e6e6b7fb6ae0f17396e03c2a8767b8",
+      "same_bytes": true
+    }
+  ],
+  "status_reconciliation": {
+    "current_identity_refresh": {
+      "revision": "status-reconciliation-r1",
+      "files": [
+        "PIPELINE-AND-INTERFACES.md"
+      ],
+      "historical_review_identity_preserved": true,
+      "algorithm_changed": false
+    }
+  },
+  "subsequent_current_binding_refreshes": [
+    {
+      "file": "specs/09-policy-authorized-parameters.md",
+      "prior_current_sha256": "7b2e659e558af1332e310e4511d37eef1e12dd44cf73fcc4b22d67db494e0ba5",
+      "replacement_sha256": "62a4b893d68001065e16693d9d489b845808320d3bc2ada98e569a47224a243d",
+      "reason": "Current package identity refresh only; historical reviewed_sha256, review scope, algorithms, and readiness are unchanged."
+    },
+    {
+      "file": "PIPELINE-AND-INTERFACES.md",
+      "prior_current_sha256": "45b46a04d5b15230691d5ab6fbfe1efabe8266b35ffa15b02c0d1cb304698063",
+      "replacement_sha256": "61e4f4a968c93a2dc074656db656cf757246a5f316a1ca06502ebc9d4d842e12",
+      "reason": "Current package identity refresh only; historical reviewed_sha256, review scope, algorithms, and readiness are unchanged."
+    }
+  ]
+}

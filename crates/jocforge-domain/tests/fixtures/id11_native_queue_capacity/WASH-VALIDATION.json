@@ -1,0 +1,21 @@
+{
+  "schema": "washed-f13c-id11-queue-capacity.v1",
+  "status": "SCOPED_NATIVE_QUEUE_LIMIT_RESOLVED_API_POLICY_PRESERVED_WHOLE_F13C_NOT_READY",
+  "source_candidate_manifest_sha256": "db7b47ca272ca211939f4d49561681bdf2cebf3d9089c0cb7869d68ff6cea115",
+  "approved_F13_4_spec_sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd",
+  "independent_checks": {
+    "candidate_payload_hashes_exact_set_envelope": "PASS",
+    "normal_replay": "18 cases, zero mismatches",
+    "optimized_replay": "18 cases, zero mismatches",
+    "native_Dll_identity": "MATCHED_TO_R20_AND_R21_CAPTURE",
+    "private_material_or_PCM": false
+  },
+  "conclusions": {
+    "native_ID11_queue_capacity": "2103 bytes per descriptor for selected O=16,F=8 constructor",
+    "approved_public_ID11_limit": "160 bytes, separate narrower interface policy",
+    "natural_selected_producer_over160": "NOT_PROVEN",
+    "ID6_semantic_name": "NOT_ESTABLISHED",
+    "ID2_distinction": "SEPARATE_OWNER_CAPACITY_8",
+    "whole_F13C_ready": false
+  }
+}

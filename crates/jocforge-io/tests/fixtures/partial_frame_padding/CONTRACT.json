@@ -1,0 +1,42 @@
+{
+  "schema": "selected-partial-frame-tail-contract.v2",
+  "scope": "Selected38-channel48kHz reader frame, last actual read1392 samples, advertised/consumed1536. No PCM words or sample values are delivered.",
+  "native_rule": [
+    "The actual reader calls a whole-row clear writer before every read. Owner metadata proves38 rows and1536-sample row capacity.",
+    "At last partial read, the measured144-sample tail initially contained3725 finite nonzero words and1747 positive-zero words. After the clear it contains5472 positive zeros.",
+    "Actual read count1392 does not overwrite the cleared tail. Reader packet still advertises1536, in the same cleared storage.",
+    "Interleave preserves the144-sample/38-channel zero tail; external API and renderer input consumer see the same tail. Four cached-input flush consumers also see positive zero in that tail.",
+    "The DSP/renderer continues processing normally. Its16-row output tail is generally nonzero; zeroing that output is not the input padding rule.",
+    "Renderer output descriptor is copied into a different descriptor. The row table is shared and all six writer-to-frontend in-process comparison results match."
+  ],
+  "zero_tail_model_rule": "For each decoded row of1392 F32LE words, preserve those bytes and append144 positive-zero F32 words. No sign/rounding operation is used for the clear.",
+  "layouts": "Reader tails are row-major and the downstream input is interleaved. Only aggregate bit-pattern classes, shapes and pointer-identity predicates are exported. No PCM values or content digests are included.",
+  "controlled_native_read_budget": {
+    "cap_bytes": 524288,
+    "actual_bytes": 413568,
+    "stages_are_bounded": true,
+    "raw_PCM_persisted": false
+  },
+  "evidence_source_binding": {
+    "reader_source_manifest_sha256": "2276298e21d58276650062466941455f5ebadd0be4542ecbfae25588a71d1899",
+    "reader_source_check_sha256": "0f87ea3e4f3db7c87b87a75947e3ad3558656f59260831ae9a38974132876825",
+    "reader_source_payloads_reverified": 6
+  },
+  "limits": [
+    "Only tail144 positive-zero input padding and its consumer flow are independently replayed.",
+    "Valid1392-sample prefix is not compared numerically by this tail-only package.",
+    "Full renderer/component tail model output is NOT_RUN; its nonzero tails are native diagnostics.",
+    "Flush cached-table/tail identity does not alone prove equality of all1536 sample contents.",
+    "JOC body generation is a separate necessary chain; native bodies cannot seed its model."
+  ],
+  "tail_padding_rule_status": "CLOSED_SELECTED_INPUT_SCOPE",
+  "whole_F13C_ready": false,
+  "implementation_contacted": false,
+  "privacy": {
+    "PCM_sample_values_exported": false,
+    "PCM_content_hashes_exported": false,
+    "private_in_process_digest_comparison_used": true,
+    "only_comparison_boolean_exported": true
+  },
+  "independent_checker_scope": "Recompute the expected zero-tail shape and bitwise positive-zero class from the clear rule, then compare native aggregate counts. It does not reclassify unexported native samples or recreate DSP tail values."
+}

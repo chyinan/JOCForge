@@ -1,0 +1,14 @@
+{
+  "schema": "delivery-path-disclosure-review.v1",
+  "raw_job_document_distributed": false,
+  "functional_input_location": "Drive root plus source filename only",
+  "output_and_working_locations_distributed": false,
+  "all_delivered_file_bytes_scanned": true,
+  "encoding_views": [
+    "Raw bytes",
+    "UTF-8 text",
+    "Decoded JSON string values and normalized path separators"
+  ],
+  "forbidden_location_matches": 0,
+  "original_job_sha256_scope": "Research-side identity declaration, not independent verification of undistributed bytes."
+}

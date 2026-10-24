@@ -1,0 +1,176 @@
+{
+  "schema": "geometry-selected-authorized-verification.v2",
+  "delivery_scope": "INTERNAL_RESEARCH_AND_INTERNAL_ISOLATED_IMPLEMENTATION_ONLY",
+  "parameter_artifact": "parameters/geometry-front-side-y-v1.json",
+  "parameter_artifact_sha256": "5d2346dd39671aae7f7d3b56396fb1dea05da363a218a0efbd926dbab046c185",
+  "serialization": "Basis index order, X/Y/Z per row; each word is F32 original bits, encoded little endian",
+  "cases": [
+    {
+      "case_id": "selected_P11",
+      "input": {
+        "layout": 4379,
+        "profile_enabled": true,
+        "parameter_artifact": "parameters/geometry-front-side-y-v1.json"
+      },
+      "expected_point_count": 11,
+      "expected_f32_word_count": 33,
+      "expected_basis_words_hex": [
+        [
+          "00000000",
+          "00000000",
+          "00000000"
+        ],
+        [
+          "3f7ffe00",
+          "00000000",
+          "00000000"
+        ],
+        [
+          "3f000000",
+          "00000000",
+          "00000000"
+        ],
+        [
+          "00000000",
+          "3f000000",
+          "00000000"
+        ],
+        [
+          "3f7ffe00",
+          "3f000000",
+          "00000000"
+        ],
+        [
+          "00000000",
+          "3f7ffe00",
+          "00000000"
+        ],
+        [
+          "3f7ffe00",
+          "3f7ffe00",
+          "00000000"
+        ],
+        [
+          "00000000",
+          "00000000",
+          "3f7ffe00"
+        ],
+        [
+          "3f7ffe00",
+          "00000000",
+          "3f7ffe00"
+        ],
+        [
+          "00000000",
+          "3f7ffe00",
+          "3f7ffe00"
+        ],
+        [
+          "3f7ffe00",
+          "3f7ffe00",
+          "3f7ffe00"
+        ]
+      ],
+      "expected_basis_f32le_hex": "00000000000000000000000000fe7f3f00000000000000000000003f0000000000000000000000000000003f0000000000fe7f3f0000003f000000000000000000fe7f3f0000000000fe7f3f00fe7f3f00000000000000000000000000fe7f3f00fe7f3f0000000000fe7f3f0000000000fe7f3f00fe7f3f00fe7f3f00fe7f3f00fe7f3f",
+      "expected_basis_f32le_sha256": "ea7577cf5fa0bce6ab76aeb81447c452cbac498fa79bd039a11149d970d7de68",
+      "producer_equivalence": "Previously verified frozen Python producer static selected output; no new native or whole frontend execution"
+    },
+    {
+      "case_id": "selected_P15",
+      "input": {
+        "layout": 5531,
+        "profile_enabled": true,
+        "parameter_artifact": "parameters/geometry-front-side-y-v1.json"
+      },
+      "expected_point_count": 15,
+      "expected_f32_word_count": 45,
+      "expected_basis_words_hex": [
+        [
+          "00000000",
+          "00000000",
+          "00000000"
+        ],
+        [
+          "3f7ffe00",
+          "00000000",
+          "00000000"
+        ],
+        [
+          "3f000000",
+          "00000000",
+          "00000000"
+        ],
+        [
+          "00000000",
+          "3f000000",
+          "00000000"
+        ],
+        [
+          "3f7ffe00",
+          "3f000000",
+          "00000000"
+        ],
+        [
+          "00000000",
+          "3f7ffe00",
+          "00000000"
+        ],
+        [
+          "3f7ffe00",
+          "3f7ffe00",
+          "00000000"
+        ],
+        [
+          "00000000",
+          "3e252800",
+          "00000000"
+        ],
+        [
+          "3f7ffe00",
+          "3e252800",
+          "00000000"
+        ],
+        [
+          "00000000",
+          "00000000",
+          "3f7ffe00"
+        ],
+        [
+          "3f7ffe00",
+          "00000000",
+          "3f7ffe00"
+        ],
+        [
+          "00000000",
+          "3f000000",
+          "3f7ffe00"
+        ],
+        [
+          "3f7ffe00",
+          "3f000000",
+          "3f7ffe00"
+        ],
+        [
+          "00000000",
+          "3f7ffe00",
+          "3f7ffe00"
+        ],
+        [
+          "3f7ffe00",
+          "3f7ffe00",
+          "3f7ffe00"
+        ]
+      ],
+      "expected_basis_f32le_hex": "00000000000000000000000000fe7f3f00000000000000000000003f0000000000000000000000000000003f0000000000fe7f3f0000003f000000000000000000fe7f3f0000000000fe7f3f00fe7f3f00000000000000000028253e0000000000fe7f3f0028253e00000000000000000000000000fe7f3f00fe7f3f0000000000fe7f3f000000000000003f00fe7f3f00fe7f3f0000003f00fe7f3f0000000000fe7f3f00fe7f3f00fe7f3f00fe7f3f00fe7f3f",
+      "expected_basis_f32le_sha256": "ac82fb195a748642715db4314a7c67e13b5d49a42d3123b05537eda4cf1b5c93",
+      "producer_equivalence": "Previously verified frozen Python producer static selected output; no new native or whole frontend execution"
+    }
+  ],
+  "point_count": 26,
+  "f32_word_count": 78,
+  "comparison_mismatches": 0,
+  "whole_frontend_execution": "NOT_RUN",
+  "spatial_quality_acceptance": "NOT_RUN",
+  "independent_no_research_context_review": "NOT_RUN",
+  "remaining": "Bed pack/physical ordering and complete upstream input/geometry/audio composition remain separate open items"
+}

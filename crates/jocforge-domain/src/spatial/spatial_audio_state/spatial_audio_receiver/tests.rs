@@ -1,6 +1,9 @@
 // pattern: Imperative Shell
 
 use super::*;
+use crate::spatial::spatial_audio_state::fitting_mode0::{
+    Mode0FittingProviderInput, assemble_selected_joc_qmf, stage_mode0_fitting_from_receiver,
+};
 use crate::{
     frontend::{PackageManifestEvidence, ProviderFileEvidence},
     profile::EncodingProfile,
@@ -9,7 +12,7 @@ use crate::{
         ValidatedWindowQ15Provider,
         post_window_fanout::CallbackPhase,
         source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
-        spatial_audio_state::{F04StateEncoder, SpatialAudioMachine},
+        spatial_audio_state::{F04StateEncoder, QmfWindowState, SpatialAudioMachine},
         validate_descriptor_mathematical_provider, validate_f04_parameter_package_manifest,
         validate_qmf_mathematical_fft_provider, validate_qmf_receiver_functional_provider,
         validate_window_q15_provider,
@@ -361,6 +364,28 @@ fn direct_receiver_kat_compares_literals_after_one_continuous_actual_state_chain
 
     for case in DIRECT_CASES {
         let proposal = run_case(case, before, &providers);
+        for object in 0..15 {
+            let expected_start = (object + 1) * FRAME_SAMPLES;
+            assert_eq!(
+                proposal.target_qmf_input[object].as_ref(),
+                &proposal.trace.preconditioned[expected_start..expected_start + FRAME_SAMPLES]
+            );
+        }
+        assert_eq!(
+            proposal.callback_index.value(),
+            proposal.source_index.value() + 2
+        );
+        assert_eq!(proposal.dispatch.value(), proposal.source_index.value() + 1);
+        assert_eq!(
+            proposal.dispatch.generated_writer().unwrap().value(),
+            proposal.source_index.value()
+        );
+        assert_eq!(
+            proposal.descriptor_target_gain_word,
+            u32::from_le_bytes(proposal.after.descriptor_state.gain.0)
+        );
+        assert!(proposal.descriptor_selected_index >= 128);
+        assert!(proposal.s09_return.iter().all(|row| row.len() == 1_536));
         assert_f32_fixture(
             "preconditioned",
             &proposal.trace.preconditioned,
@@ -394,6 +419,52 @@ fn direct_receiver_kat_compares_literals_after_one_continuous_actual_state_chain
         assert_eq!(encode_model_state(&proposal.after), case.after_model_state);
         before = proposal.after;
     }
+}
+
+#[test]
+fn actual_receiver_output_feeds_one_qmf_projection_without_receiver_reexecution() {
+    let providers = validated_providers();
+    let receiver_before = ModelState::cold();
+    let fitting_before = QmfWindowState::cold();
+    let parent = parent(2);
+    let receiver = run_case(DIRECT_CASES[0], ModelState::cold(), &providers);
+    let fitting = stage_mode0_fitting_from_receiver(
+        &parent,
+        &fitting_before,
+        &receiver_before,
+        &receiver,
+        Mode0FittingProviderInput::Ready {
+            functional: &providers.functional,
+            fft: &providers.fft,
+            descriptor: &providers.descriptor,
+        },
+    )
+    .expect("actual receiver values satisfy fitting-QMF lineage");
+    let proposal =
+        assemble_selected_joc_qmf(receiver, fitting).expect("same-generation QMF values assemble");
+    let projection = &proposal.projection;
+    assert_eq!(projection.callback_index().value(), 2);
+    assert_eq!(projection.source_index().value(), 0);
+    assert_eq!(projection.dispatch().value(), 1);
+    assert_eq!(projection.receiver_generation_after().value(), 1);
+    assert!(projection.descriptor_selected_index() >= 128);
+    assert!(f32::from_bits(projection.descriptor_target_gain_word()).is_finite());
+    assert!(projection.s09_return().iter().all(|row| row.len() == 1_536));
+    assert!(projection.final_six().iter().all(|row| row.len() == 1_536));
+    for object in 0..15 {
+        for slot in 0..48 {
+            for bin in 0..64 {
+                assert_eq!(
+                    projection.target_object_complex(object, slot, bin),
+                    projection.target_packed_complex(object / 3, slot, (object % 3) * 64 + bin)
+                );
+            }
+        }
+    }
+    assert!(projection.target_packed_complex(5, 0, 0).is_none());
+    assert!(projection.carrier_complex(5, 0, 0).is_none());
+    assert_eq!(proposal.receiver_after.analysis_history.len(), 5);
+    assert_eq!(proposal.fitting_after.previous_targets.len(), 15);
 }
 
 fn run_case_with_expected_after(

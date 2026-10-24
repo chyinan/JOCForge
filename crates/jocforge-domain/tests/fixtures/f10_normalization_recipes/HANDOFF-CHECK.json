@@ -1,0 +1,10 @@
+{
+  "schema": "f10-normalization-recipe-handoff-check.v1",
+  "handoff_manifest_sha256": "84240832bceebb711605e6c0b56016fc2948e309ec17d03d3805b82ab815df95",
+  "source_package_manifest_sha256": "8e03bcbcec78c17e1bc8305e889bd1d2dae083f49de13b8f7570d5f196bd7ffd",
+  "current_spec_sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc",
+  "authorized_policy_parameter_sha256": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a",
+  "payload_hashes_match": true,
+  "recipe_scope_ready": true,
+  "whole_F10_ready": false
+}

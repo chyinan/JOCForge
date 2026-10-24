@@ -1,0 +1,43 @@
+{
+  "schema": "washed-primary-input-identity.v1",
+  "approved_validation_input": {
+    "package_file": "test-vectors/full-song/input-adm.wav",
+    "bytes": 743696526,
+    "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "classification": "VALIDATION_ONLY_INTERNAL_USE"
+  },
+  "primary_source_format": {
+    "sample_rate_hz": 48000,
+    "physical_channels": 38,
+    "pcm_bits": 24,
+    "block_align_bytes": 114,
+    "source_samples": 6522906,
+    "data_bytes": 743611284,
+    "source_file_bytes": 743696526
+  },
+  "primary_source_metadata_chunks": [
+    {
+      "id": "fmt ",
+      "bytes": 16,
+      "sha256": "f5c3ad7fe9d719260f7e56a62755244fb3cc77f697589b19fe8130d99216039e"
+    },
+    {
+      "id": "axml",
+      "bytes": 82997,
+      "sha256": "7e4e61d4e2bec581ff2b05133281198a220602290597950e301a6079701c1659"
+    },
+    {
+      "id": "chna",
+      "bytes": 1524,
+      "sha256": "f82b14e4c1b5b3b1750ed4104aa53f1d595e3ff2d4dbaef76a76c0e35f31b7a6"
+    },
+    {
+      "id": "dbmd",
+      "bytes": 580,
+      "sha256": "ea961b79063bc68f64b1210dba002a5729d1003427196123f93b0890939b75d9"
+    }
+  ],
+  "primary_full_pcm_identity": "NOT_REHASHED",
+  "relationship_to_validation_copy": "Metadata/extent and activity-flag output matched during Wash replay; this does not establish byte-identical PCM between the primary file and validation copy."
+}

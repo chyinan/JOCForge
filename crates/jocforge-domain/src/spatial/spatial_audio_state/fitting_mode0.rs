@@ -2,15 +2,23 @@
 #![allow(dead_code)] // F04RB remains a standalone proposal until parent transaction integration is authorized.
 //! Selected mode=0 fitting window and history proposal. This stage cannot commit state.
 
-use super::{QmfWindowState, RawBytes, SpatialAudioJoinMetadata, TemporalState, zero_raw_matrix};
+use super::{
+    JocGeometryRowState, ModelState, QmfWindowState, RawBytes, SpatialAudioJoinMetadata,
+    TemporalState, spatial_audio_receiver::SpatialAudioReceiverProposal, zero_raw_matrix,
+};
 use crate::{
+    joc::oamd::reader_target::{HistoryProducerGeneration, ReaderInvocationIndex},
+    numeric::FiniteF32,
     profile::resolve_selected_profile,
     spatial::{
         DescriptorMathematicalProvider, QmfMathematicalFftProvider, QmfReceiverFunctionalProvider,
         post_window_fanout::CallbackPhase,
         qmf_analysis_synthesis::{QmfAnalysisHistory, QmfAnalysisSynthesisError, analyze_qmf_slot},
     },
-    timeline::{JocDispatchIndex, ReceiverCallbackCount},
+    timeline::{
+        CodecSourceIndex, FrontendCallbackIndex, JocDispatchIndex, ReceiverCallbackCount,
+        source_for_callback,
+    },
 };
 
 const CARRIER_LANES: [usize; 5] = [0, 1, 2, 4, 5];
@@ -144,6 +152,327 @@ pub(super) struct Mode0FittingProposal {
     pub(super) carrier_windows48: Vec<u32>,
     pub(super) receiver_analysis_after_join: [[RawBytes; ANALYSIS_HISTORY_ROWS]; 5],
     pub(super) after_state: QmfWindowState,
+}
+
+/// Immutable same-generation QMF values prepared for the JOC coefficient stage.
+/// This projection carries actual buffers and cannot advance receiver/QMF state.
+#[derive(Debug)]
+pub struct SelectedJocQmfProjection {
+    programme_id: Box<str>,
+    attempt: u64,
+    transaction_id: Box<str>,
+    spatial_before_generation: u64,
+    spatial_before_digest: super::SpatialAudioDigest,
+    callback_index: FrontendCallbackIndex,
+    source_index: CodecSourceIndex,
+    receiver_generation_after: ReceiverCallbackCount,
+    dispatch: JocDispatchIndex,
+    component_origin_generation: FrontendCallbackIndex,
+    lfe_origin_generation: FrontendCallbackIndex,
+    target_reader_invocation: ReaderInvocationIndex,
+    target_history_producer_generations: [HistoryProducerGeneration; 16],
+    target_state_before_sha256: [u8; 32],
+    target_state_after_sha256: [u8; 32],
+    target_sha256: [u8; 32],
+    target_semantic_sha256: [u8; 32],
+    target_update_words: [u32; 96],
+    descriptor_selected_index: u8,
+    descriptor_target_gain_word: u32,
+    s09_return: [Box<[FiniteF32]>; 6],
+    final_six: [Box<[FiniteF32]>; 6],
+    target_object_windows48: Box<[u32]>,
+    carrier_windows48: Box<[u32]>,
+    geometry_rows_before: [JocGeometryRowState; 16],
+    geometry_rows_after: [JocGeometryRowState; 16],
+}
+
+impl SelectedJocQmfProjection {
+    pub(crate) fn programme_id(&self) -> &str {
+        &self.programme_id
+    }
+
+    pub(crate) const fn attempt(&self) -> u64 {
+        self.attempt
+    }
+
+    pub(crate) fn transaction_id(&self) -> &str {
+        &self.transaction_id
+    }
+
+    pub(crate) const fn spatial_before_generation(&self) -> u64 {
+        self.spatial_before_generation
+    }
+
+    pub(crate) const fn spatial_before_digest(&self) -> super::SpatialAudioDigest {
+        self.spatial_before_digest
+    }
+
+    pub(crate) const fn callback_index(&self) -> FrontendCallbackIndex {
+        self.callback_index
+    }
+
+    pub(crate) const fn source_index(&self) -> CodecSourceIndex {
+        self.source_index
+    }
+
+    pub(crate) const fn receiver_generation_after(&self) -> ReceiverCallbackCount {
+        self.receiver_generation_after
+    }
+
+    pub(crate) const fn dispatch(&self) -> JocDispatchIndex {
+        self.dispatch
+    }
+
+    pub(crate) const fn component_origin_generation(&self) -> FrontendCallbackIndex {
+        self.component_origin_generation
+    }
+
+    pub(crate) const fn lfe_origin_generation(&self) -> FrontendCallbackIndex {
+        self.lfe_origin_generation
+    }
+
+    pub(crate) const fn target_reader_invocation(&self) -> ReaderInvocationIndex {
+        self.target_reader_invocation
+    }
+
+    pub(crate) const fn target_history_producer_generations(
+        &self,
+    ) -> &[HistoryProducerGeneration; 16] {
+        &self.target_history_producer_generations
+    }
+
+    pub(crate) const fn target_state_before_sha256(&self) -> &[u8; 32] {
+        &self.target_state_before_sha256
+    }
+
+    pub(crate) const fn target_state_after_sha256(&self) -> &[u8; 32] {
+        &self.target_state_after_sha256
+    }
+
+    pub(crate) const fn target_sha256(&self) -> &[u8; 32] {
+        &self.target_sha256
+    }
+
+    pub(crate) const fn target_semantic_sha256(&self) -> &[u8; 32] {
+        &self.target_semantic_sha256
+    }
+
+    pub(crate) const fn target_update_words(&self) -> &[u32; 96] {
+        &self.target_update_words
+    }
+
+    pub(crate) const fn descriptor_selected_index(&self) -> u8 {
+        self.descriptor_selected_index
+    }
+
+    pub(crate) const fn descriptor_target_gain_word(&self) -> u32 {
+        self.descriptor_target_gain_word
+    }
+
+    pub(crate) const fn s09_return(&self) -> &[Box<[FiniteF32]>; 6] {
+        &self.s09_return
+    }
+
+    pub(crate) const fn final_six(&self) -> &[Box<[FiniteF32]>; 6] {
+        &self.final_six
+    }
+
+    pub(crate) fn target_object_complex(
+        &self,
+        object: usize,
+        slot: usize,
+        bin: usize,
+    ) -> Option<[u32; 2]> {
+        complex_pair(&self.target_object_windows48, object, 15, slot, bin)
+    }
+
+    pub(crate) fn target_object_window_words(&self) -> &[u32] {
+        &self.target_object_windows48
+    }
+
+    pub(crate) fn carrier_window_words(&self) -> &[u32] {
+        &self.carrier_windows48
+    }
+
+    /// Reads the approved packed 5x48x192 view without copying or transposing.
+    pub(crate) fn target_packed_complex(
+        &self,
+        group: usize,
+        slot: usize,
+        packed_bin: usize,
+    ) -> Option<[u32; 2]> {
+        if group >= 5 || packed_bin >= 192 {
+            return None;
+        }
+        let object = group * 3 + packed_bin / 64;
+        self.target_object_complex(object, slot, packed_bin % 64)
+    }
+
+    pub(crate) fn carrier_complex(
+        &self,
+        carrier: usize,
+        slot: usize,
+        bin: usize,
+    ) -> Option<[u32; 2]> {
+        complex_pair(&self.carrier_windows48, carrier, 5, slot, bin)
+    }
+
+    pub(crate) const fn geometry_rows_before(&self) -> &[JocGeometryRowState; 16] {
+        &self.geometry_rows_before
+    }
+
+    pub(crate) const fn geometry_rows_after(&self) -> &[JocGeometryRowState; 16] {
+        &self.geometry_rows_after
+    }
+}
+
+fn complex_pair(
+    words: &[u32],
+    row: usize,
+    row_count: usize,
+    slot: usize,
+    bin: usize,
+) -> Option<[u32; 2]> {
+    if row >= row_count || slot >= 48 || bin >= 64 {
+        return None;
+    }
+    let offset = ((row * 48 + slot) * 64 + bin) * 2;
+    Some([*words.get(offset)?, *words.get(offset + 1)?])
+}
+
+/// Owner-private staged states plus the immutable downstream QMF projection.
+#[derive(Debug)]
+pub(super) struct SelectedJocQmfProposal {
+    pub(super) receiver_after: ModelState,
+    pub(super) fitting_after: QmfWindowState,
+    pub(super) projection: SelectedJocQmfProjection,
+}
+
+/// Executes the fitting QMF stage from one already-executed receiver proposal.
+/// It converts validated finite values to callback-local F32 slices but does not
+/// rerun the receiver or descriptor stages.
+pub(super) fn stage_mode0_fitting_from_receiver(
+    expected_parent: &SpatialAudioJoinMetadata,
+    fitting_before: &QmfWindowState,
+    receiver_before: &ModelState,
+    receiver: &SpatialAudioReceiverProposal,
+    provider_input: Mode0FittingProviderInput<'_>,
+) -> Result<Mode0FittingProposal, Mode0FittingError> {
+    let Some(expected_source) = source_for_callback(expected_parent.callback_index()) else {
+        return Err(Mode0FittingError::Lineage);
+    };
+    let expected_dispatch = expected_source
+        .dispatch()
+        .map_err(|_| Mode0FittingError::Lineage)?;
+    if receiver.callback_index != expected_parent.callback_index()
+        || receiver.source_index != expected_source
+        || receiver.dispatch != expected_dispatch
+    {
+        return Err(Mode0FittingError::Lineage);
+    }
+
+    let s09_values: [Vec<f32>; 6] = std::array::from_fn(|lane| {
+        receiver.s09_input[lane]
+            .iter()
+            .map(|sample| sample.value())
+            .collect()
+    });
+    let s09_lanes: [&[f32]; 6] = std::array::from_fn(|lane| s09_values[lane].as_slice());
+    let target_rows: [&[f32]; 15] =
+        std::array::from_fn(|object| receiver.target_qmf_input[object].as_ref());
+    let receiver_index = ReceiverCallbackCount::new(expected_source.value());
+    let generation_after = ReceiverCallbackCount::new(
+        expected_source
+            .value()
+            .checked_add(1)
+            .ok_or(Mode0FittingError::Lineage)?,
+    );
+    stage_mode0_fitting(
+        Mode0FittingInput {
+            expected_parent,
+            expected_phase: receiver.phase,
+            fitting_before,
+            fitting_before_generation: receiver_index,
+            receiver_analysis_before: &receiver_before.analysis_history,
+            receiver_analysis_before_generation: receiver_index,
+            receiver_analysis_after: ReceiverAnalysisAfterView {
+                parent: expected_parent,
+                phase: receiver.phase,
+                generation: generation_after,
+                histories: &receiver.after.analysis_history,
+            },
+            s09: S09InputView {
+                parent: expected_parent,
+                phase: receiver.phase,
+                lanes: &s09_lanes,
+            },
+            targets: TargetInputView {
+                parent: expected_parent,
+                phase: receiver.phase,
+                rows: &target_rows,
+            },
+            descriptor_after: DescriptorAfterView {
+                parent: expected_parent,
+                phase: receiver.phase,
+                generation: generation_after,
+                selected_index: receiver.descriptor_selected_index,
+                target_gain_u32: receiver.descriptor_target_gain_word,
+            },
+        },
+        provider_input,
+    )
+}
+
+pub(super) fn assemble_selected_joc_qmf(
+    receiver: SpatialAudioReceiverProposal,
+    fitting: Mode0FittingProposal,
+) -> Result<SelectedJocQmfProposal, Mode0FittingError> {
+    let expected_generation_after = receiver
+        .source_index
+        .value()
+        .checked_add(1)
+        .ok_or(Mode0FittingError::Lineage)?;
+    if fitting.receiver_index.value() != receiver.source_index.value()
+        || fitting.receiver_generation_after.value() != expected_generation_after
+        || fitting.dispatch != receiver.dispatch
+        || fitting.clip_index != receiver.descriptor_selected_index
+        || fitting.target_windows48.len() != 15 * 48 * 64 * 2
+        || fitting.carrier_windows48.len() != 5 * 48 * 64 * 2
+    {
+        return Err(Mode0FittingError::Lineage);
+    }
+    Ok(SelectedJocQmfProposal {
+        receiver_after: receiver.after,
+        fitting_after: fitting.after_state,
+        projection: SelectedJocQmfProjection {
+            programme_id: receiver.programme_id,
+            attempt: receiver.attempt,
+            transaction_id: receiver.transaction_id,
+            spatial_before_generation: receiver.spatial_before_generation,
+            spatial_before_digest: receiver.spatial_before_digest,
+            callback_index: receiver.callback_index,
+            source_index: receiver.source_index,
+            receiver_generation_after: fitting.receiver_generation_after,
+            dispatch: receiver.dispatch,
+            component_origin_generation: receiver.component_origin_generation,
+            lfe_origin_generation: receiver.lfe_origin_generation,
+            target_reader_invocation: receiver.target_reader_invocation,
+            target_history_producer_generations: receiver.target_history_producer_generations,
+            target_state_before_sha256: receiver.target_state_before_sha256,
+            target_state_after_sha256: receiver.target_state_after_sha256,
+            target_sha256: receiver.target_sha256,
+            target_semantic_sha256: receiver.target_semantic_sha256,
+            target_update_words: receiver.target_update_words,
+            descriptor_selected_index: receiver.descriptor_selected_index,
+            descriptor_target_gain_word: receiver.descriptor_target_gain_word,
+            s09_return: receiver.s09_return,
+            final_six: receiver.final_six,
+            target_object_windows48: fitting.target_windows48.into_boxed_slice(),
+            carrier_windows48: fitting.carrier_windows48.into_boxed_slice(),
+            geometry_rows_before: receiver.geometry_rows_before,
+            geometry_rows_after: receiver.geometry_rows_after,
+        },
+    })
 }
 
 /// Stages one same-generation mode=0 fitting callback and returns its immutable after proposal.

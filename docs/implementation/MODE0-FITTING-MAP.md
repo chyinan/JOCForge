@@ -110,14 +110,14 @@ The full provider, state, clock, outcome, KAT, and implementation-scope record f
   ],
   "implementation_inventory": [
     {
-      "bytes": 28916,
+      "bytes": 40594,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs",
-      "sha256": "8ef557da15432e8d3a7ab37f84c8ebafa3739d8780703fab5f7a8fa8f445b816"
+      "sha256": "b90dd8904d7c93ef258871edcebf3f4ffd8b6d5347f39a7fdc964af4b4f2e2ff"
     },
     {
-      "bytes": 35306,
+      "bytes": 37519,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "794c5980f2c6f29f8aad45768a6a8b14e4fc1992b2715171a5f747afdaf4f05b"
+      "sha256": "dc5516d1bef5b18983b469116c3f8c959d12931dc10af18b5233794865587621"
     }
   ],
   "implementation_prohibitions": [

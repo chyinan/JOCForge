@@ -1,8 +1,16 @@
 // pattern: Functional Core
 //! Pure frontend contracts and provider validation.
 
+pub mod adm_object_events;
+pub mod bed_channel_join;
 mod current_features_provider;
+pub mod dbmd_sections;
+pub mod job_configuration;
+pub mod object_control;
+pub mod output_publication_gate;
+pub mod primary_metadata_control;
 mod provider;
+pub mod selected_adm_graph;
 mod state;
 mod target_cold_provider;
 

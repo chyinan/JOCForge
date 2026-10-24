@@ -1,0 +1,61 @@
+{
+  "center_f32_bits": 1060437492,
+  "side_mono_f32_bits": 1056959542,
+  "filter_coeff_f32_bits": [
+    1064933786,
+    0,
+    1058223067,
+    3186329131,
+    3203106347
+  ],
+  "source_map_i16": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "identities": [
+    {
+      "name": "center_f32_bits",
+      "bytes": 4,
+      "sha256": "1b2d34ca4f611ab1f252da99dfeb92e3cac1c370a3cbd47e9d6933ce20d387a0"
+    },
+    {
+      "name": "side_mono_f32_bits",
+      "bytes": 4,
+      "sha256": "62242f5ccc904eba9ca1e830f3311c08b2b4e5d71ea0162ee96908e04cb1a631"
+    },
+    {
+      "name": "filter_coeff_f32_bits",
+      "bytes": 20,
+      "sha256": "25e082c4ac741f588126048736947afbdc6e77fd0a64d386813188ef4992b95e"
+    },
+    {
+      "name": "source_map_i16",
+      "bytes": 12,
+      "sha256": "d19c56fe954b4adbb040580d9ae4e98a692b51f8e2cab91d7ddecb903cec9204"
+    }
+  ],
+  "bounds": {
+    "samples": 256,
+    "native_channels": 6,
+    "fullband_channels": 5,
+    "blocks": 6,
+    "primary_pass": 0,
+    "summary_gate": 1,
+    "gain_codes": [
+      0,
+      3
+    ],
+    "selected_profile_masks_tested": [
+      0,
+      1,
+      3,
+      4,
+      5,
+      7
+    ]
+  }
+}

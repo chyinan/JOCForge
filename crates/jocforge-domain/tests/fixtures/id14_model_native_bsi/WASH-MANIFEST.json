@@ -1,0 +1,36 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "artifact_id": "F13C-ID14-MODEL-PARSER-NATIVE-BSI-SOURCE-V1",
+  "predecessor_spec_sha256": "09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b",
+  "payloads": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 3040,
+      "sha256": "cdfd16629e92ec381a31909254fc8f5c1c29e30739b44c14884c919d8d17b4de"
+    },
+    {
+      "file": "MODEL-PARSER-VECTORS.json",
+      "bytes": 4806,
+      "sha256": "2bc5edbdb3d92e767c3f8c6d210546f696c60dd9328b7792c2c2b87cfb51da7a"
+    },
+    {
+      "file": "NATIVE-BSI-SOURCE.json",
+      "bytes": 1670,
+      "sha256": "e496c82a9a514581bd845678fb0af3b113671e9d752bace87016c84272e074ce"
+    },
+    {
+      "file": "PROVENANCE.json",
+      "bytes": 1315,
+      "sha256": "179779944ab7eef8e44e2e8d2de3e189438effd56576fda00951698c1922f80e"
+    },
+    {
+      "file": "WASH-VALIDATION.json",
+      "bytes": 1325,
+      "sha256": "b2dd60e7a33496d00b9fb381e4d8fc58b67ec1b0fe0f4c7591cb4a9908ea3948"
+    }
+  ],
+  "detached_files": [
+    "INDEPENDENT-CHECK.json",
+    "DELIVERY-ENVELOPE.json"
+  ]
+}

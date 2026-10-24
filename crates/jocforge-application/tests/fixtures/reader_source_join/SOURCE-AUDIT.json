@@ -1,0 +1,39 @@
+{
+  "schema": "selected-reader-source-join-provenance-v1",
+  "source_artifacts": [
+    {
+      "opaque_id": "capture-job",
+      "sha256": "b31534682ee41f1917d7bc3c536550a3524aa87134ec3a628841eb3201f2a413",
+      "bytes": 1774
+    },
+    {
+      "opaque_id": "capture-observer",
+      "sha256": "682c8c57a06671d94380aac7a6cdc895df2ad117b10a2ee0e583929dcd4a03c6",
+      "bytes": 6668
+    },
+    {
+      "opaque_id": "native-observations",
+      "sha256": "d0156ec73ed77a53d3e05541f5b0524e89e1578ff64151d86ad739c129d05513",
+      "bytes": 69654
+    },
+    {
+      "opaque_id": "capture-run-receipt",
+      "sha256": "57a0342eeae3795f24c14b5bc2cdc98adb24d7f695b0bb017102a995a390a263",
+      "bytes": 1201
+    }
+  ],
+  "capture_identity": {
+    "job_sha256": "b31534682ee41f1917d7bc3c536550a3524aa87134ec3a628841eb3201f2a413",
+    "observer_sha256": "682c8c57a06671d94380aac7a6cdc895df2ad117b10a2ee0e583929dcd4a03c6",
+    "observed_event_count": 33,
+    "all_events_observed": true
+  },
+  "exposure": {
+    "research_paths_included": false,
+    "addresses_included": false,
+    "disassembly_included": false,
+    "pcm_values_included": false,
+    "pcm_content_hashes_included": false,
+    "vendor_keys_included": false
+  }
+}

@@ -1,0 +1,330 @@
+{
+  "schema": "configuration-transfer-contract.v2",
+  "scope": "Actual active configuration record to owner plus metadata import;7 current controlled cases. Full F09/ADM integration remains OPEN.",
+  "notation": "All offsets are bytes relative to the supplied buffers, not code addresses. Copy exact little-endian bytes at indicated widths. I16/I32/I64 are signed two-complement; U types are unsigned. Unwritten destination bytes retain caller input state. R(x)=binary32 rounding; controlled arithmetic uses RNE.",
+  "buffers": "Source2752 bytes, owner4096, metadata64 in current recipes;16 extra canary bytes each target. Source U16 at0 gives2752; source I16 at2 is a layout/version tag (nominal789), not byte count. Version prefix is read before all writes.",
+  "admission": "Caller must provide valid disjoint buffers and table indexes (frequency0..2, format within supplied table, explicit block selector1/2/3/6 or-1). Native does not check pointer/length safety. Full native enum/input domain not claimed from7cases; canonical target is mode0/format7/LFE1/rate1024.",
+  "basic_copy_order": [
+    {
+      "owner_offset": 4,
+      "source_offset": 12,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 8,
+      "source_offset": 16,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 12,
+      "source_offset": 20,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 16,
+      "source_offset": 24,
+      "bytes": 2
+    },
+    {
+      "owner_offset": 20,
+      "source_offset": 28,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 24,
+      "source_offset": 32,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 28,
+      "source_offset": 36,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 32,
+      "source_offset": 40,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 36,
+      "source_offset": 44,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 44,
+      "source_offset": 52,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 48,
+      "source_offset": 56,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 52,
+      "source_offset": 60,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 56,
+      "source_offset": 64,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 60,
+      "source_offset": 68,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 128,
+      "source_offset": 136,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 64,
+      "source_offset": 72,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 68,
+      "source_offset": 76,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 72,
+      "source_offset": 80,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 76,
+      "source_offset": 84,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 80,
+      "source_offset": 88,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 84,
+      "source_offset": 92,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 88,
+      "source_offset": 96,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 92,
+      "source_offset": 100,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 96,
+      "source_offset": 104,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 100,
+      "source_offset": 108,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 104,
+      "source_offset": 112,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 108,
+      "source_offset": 116,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 112,
+      "source_offset": 120,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 116,
+      "source_offset": 124,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 120,
+      "source_offset": 128,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 124,
+      "source_offset": 132,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 136,
+      "source_offset": 144,
+      "bytes": 4
+    }
+  ],
+  "basic_normalization_after_copy": "Write ownerI32[140] from sourceI32[148], substituting51 if source is-1; likewise owner144 fromsource152.",
+  "basic_tail_order": [
+    {
+      "owner_offset": 148,
+      "source_offset": 156,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 132,
+      "source_offset": 140,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 152,
+      "source_offset": 160,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 156,
+      "source_offset": 164,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 160,
+      "source_offset": 168,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 164,
+      "source_offset": 172,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 168,
+      "source_offset": 176,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 172,
+      "source_offset": 180,
+      "bytes": 4
+    },
+    {
+      "owner_offset": 176,
+      "source_offset": 184,
+      "bytes": 2
+    },
+    {
+      "owner_offset": 180,
+      "source_offset": 188,
+      "bytes": 4
+    }
+  ],
+  "basic_extension": "If sourceI16[2]>=514, copy DWORDs owner188,192,...228 from source offsets each owner_offset+8.",
+  "advanced_bases": {
+    "owner": 272,
+    "source": 280
+  },
+  "advanced_ordered_dword_offsets": [
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    32,
+    28,
+    36,
+    40,
+    44,
+    48,
+    52,
+    56,
+    64,
+    60,
+    68,
+    72,
+    76,
+    80,
+    84,
+    88,
+    244
+  ],
+  "advanced_matrix_copy": "For i0..5 copy I16 advanced offsets92+2i and248+2i; for each i and j0..5 copy I16 offsets104+2*(6i+j) and260+2*(6i+j), same relative offsets in both advanced regions.",
+  "advanced_extension": "If version>=514: repeat DWORD244, I16 rows248[6], I16 matrix260[36]; copy I16 offsets332,334;64bytes336..399; I16 offsets400,402;2048bytes404..2451. These are exact byte-copy operations, not numeric conversions.",
+  "advanced_final_copy_order": [
+    {
+      "offset": 176,
+      "bytes": 4
+    },
+    {
+      "offset": 180,
+      "bytes": 12
+    },
+    {
+      "offset": 192,
+      "bytes": 2
+    },
+    {
+      "offset": 196,
+      "bytes": 4
+    },
+    {
+      "offset": 200,
+      "bytes": 2
+    },
+    {
+      "offset": 208,
+      "bytes": 8
+    },
+    {
+      "offset": 236,
+      "bytes": 4
+    },
+    {
+      "offset": 240,
+      "bytes": 4
+    },
+    {
+      "offset": 2456,
+      "bytes": 4
+    },
+    {
+      "offset": 2452,
+      "bytes": 4
+    },
+    {
+      "offset": 2460,
+      "bytes": 4
+    }
+  ],
+  "derived_rules": [
+    "Define compatibility_class = ((U32(owner4)-1)&4294967293)==0, i.e.mode1 or3.",
+    "If ownerAdvancedI32[84]==-1, first set it0. If compatibility_class set6; else set i=3, rate=ownerI16[16], frequency=ownerI32[12]. While rate>block_threshold[4*frequency+i], decrement i; if i<0 return59 immediately. Set selector=i+1, except i==3 sets6. This failure occurs after configuration copies but before metadata.",
+    "Let selector=ownerAdvancedI32[84]. Write metadataI16[0]=block_size[selector-1].",
+    "Compare ownerI32 offsets152,156,160,164. Write metadataI32[4]=0 if all equal else1; metadataI32[8]=common value if all equal else0. If ownerAdvancedU32[88]!=0 overwrite metadata bytes4..11 with zero.",
+    "Write metadataI16[12]=3 when selector6, otherwise selector-1.",
+    "scale=F32 bits rate_scale[ownerI32[12]]. If scale<1, q=lrint_RNE(max(R(-2147483600),R(scale*R(2147483600)))); else q=2147483647. Multiply selector*ownerI16[16] in signed32 then sign-extend and multiply by q in signed64. Let whole=product arithmetic>>31 and fractional=product&2147483647. Write metadataI32[16]=low32(whole), metadataI16[24]=low16(whole), metadataF32[20]=R(R(F32(fractional))*R(2^-31)).",
+    "If not compatibility_class, write metadataI16[26]=-1. Otherwise search compatibility_rates[0..18] for ownerI16[16]; write matching index to metadataI16[26]. If not found return59 without writing this WORD; prior owner/metadata writes remain.",
+    "Write ownerI32[188]=0 if every ownerI32 offset196,200,...228 equals-1; otherwise write3.",
+    "If ownerU32[132]!=1 or ownerAdvancedI16[192]==0, return0.",
+    "Else set count0, mask=ownerAdvancedI16[192]. For i0..13: if mask<0 increment count and increment again when ((32768>>i)&1652)!=0; then mask=wrap_I16(mask*2). Compare count with channel_count_a[ownerI32[44]]+channel_count_b[same]. Return0 on equality, else161. All earlier writes remain."
+  ],
+  "return_prefix": "If sourceI16[2]<512 return140 before owner or metadata mutation. Otherwise execute all ordered copies and derived rules above; success0. Native errors are not transactional/no-commit.",
+  "field_meanings": {
+    "mode": "sourceDWORD12 to ownerDWORD4; later POWER-class mode1 iff (U32mode&~4)==0, i.e.0/4",
+    "format": "sourceDWORD52 to ownerDWORD44; frame preparation consumes its low16 signed field",
+    "lfe": "sourceDWORD56 to ownerDWORD48; frame preparation consumes low16, nonzero addsLFE",
+    "rate": "sourceWORD24 to ownerWORD16; positive signedI16 in controlled recipes"
+  },
+  "selected_production": "6 actual imports use source default record pointer relation, values0/7/1 and produce5full-band+1LFE,6blocks. Raw cap48 is a separate wrapper literal;format2 or mode0 selects full-band coefficient route;LFE always coefficient route7bins.",
+  "case_grade": "All7 owner4096 and metadata64 outputs plus return independently reconstructed byte-for-byte from input patches and parameters. Auto selector, optional channel-map and version-extension branch variants not independently runtime-covered by these7 R38 cases; static formulas are included and extra research vectors are separate.",
+  "failure_cases": "Tag511 and32768bits return140 with unchanged owner/metadata. Class1 rate123 returns59 after copied fields and preceding metadata writes, preserving partial mutations. No ABORT/no-commit claim.",
+  "raw_input_provenance": "Input patches were frozen before native import from fresh synthetic records, default initialization and explicit edits; no real job record or expected byte is used as seed. They reconstruct exact inputs without DLL.",
+  "upstream_remaining": [
+    "External job to complete configuration record writer",
+    "Actual current-exponent row binding",
+    "Input scheduling/preprocessing",
+    "Reset/EOF and whole independent audio chain"
+  ],
+  "whole_f09_closed": false
+}

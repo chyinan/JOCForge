@@ -1,0 +1,773 @@
+{
+  "schema": "selected-reader-source-join-inputs-v1",
+  "selected_source": {
+    "selection_index": 0,
+    "channels": 38,
+    "sample_rate_hz": 48000,
+    "item_token": 1,
+    "prepend_samples": 0,
+    "start_sample": 2880000,
+    "end_sample": 2886000,
+    "append_samples": 0,
+    "encoder_master_token": 11,
+    "encoder_master_item_descriptor_token": 12,
+    "encoder_reader_token": 14,
+    "duration_samples": 6000,
+    "frame_samples": 1536,
+    "force_full_frame": 1
+  },
+  "external_input_calls": [
+    {
+      "input_api_call_ordinal": 0,
+      "native_reader_frame_invocation": 5,
+      "capture_local_tokens": {
+        "selected_composite_item": 1,
+        "composite_master": 11,
+        "master_item_descriptor": 12,
+        "reader": 14,
+        "read_float_stream": 7,
+        "returned_packet": 15,
+        "packet_pcm_table": 16,
+        "packet_control_records": 17,
+        "external_process_owner": 19,
+        "external_input_pcm_table": 20
+      },
+      "direct_join_receipts": {
+        "reader_to_master": true,
+        "packet_to_reader_frame": true,
+        "outer_encoder_to_packet": true,
+        "packet_pcm_table_to_interleave_source": true,
+        "packet_control_records_to_external_api": true,
+        "external_interleave_buffer_alias": true
+      },
+      "selected_segment_relative_control_position_samples": 0,
+      "derived_source_sample_start": 2880000,
+      "reader_cursor_before_samples": 0,
+      "reader_cursor_after_samples": 1536,
+      "reader_requested_samples": 1536,
+      "read_float_requested_samples": 1536,
+      "read_float_actual_samples": 1536,
+      "read_float_return_u8": 0,
+      "returned_packet_channels": 38,
+      "returned_packet_samples": 1536,
+      "control_records": [
+        {
+          "source_index": 0,
+          "position_samples": 0
+        },
+        {
+          "source_index": 1,
+          "position_samples": 0
+        },
+        {
+          "source_index": 2,
+          "position_samples": 0
+        },
+        {
+          "source_index": 3,
+          "position_samples": 0
+        },
+        {
+          "source_index": 4,
+          "position_samples": 0
+        },
+        {
+          "source_index": 5,
+          "position_samples": 0
+        },
+        {
+          "source_index": 6,
+          "position_samples": 0
+        },
+        {
+          "source_index": 7,
+          "position_samples": 0
+        },
+        {
+          "source_index": 8,
+          "position_samples": 0
+        },
+        {
+          "source_index": 9,
+          "position_samples": 0
+        },
+        {
+          "source_index": 10,
+          "position_samples": 0
+        },
+        {
+          "source_index": 11,
+          "position_samples": 0
+        },
+        {
+          "source_index": 12,
+          "position_samples": 0
+        },
+        {
+          "source_index": 13,
+          "position_samples": 0
+        },
+        {
+          "source_index": 14,
+          "position_samples": 0
+        },
+        {
+          "source_index": 15,
+          "position_samples": 0
+        },
+        {
+          "source_index": 16,
+          "position_samples": 0
+        },
+        {
+          "source_index": 17,
+          "position_samples": 0
+        },
+        {
+          "source_index": 18,
+          "position_samples": 0
+        },
+        {
+          "source_index": 19,
+          "position_samples": 0
+        },
+        {
+          "source_index": 20,
+          "position_samples": 0
+        },
+        {
+          "source_index": 21,
+          "position_samples": 0
+        },
+        {
+          "source_index": 22,
+          "position_samples": 0
+        },
+        {
+          "source_index": 23,
+          "position_samples": 0
+        },
+        {
+          "source_index": 24,
+          "position_samples": 0
+        },
+        {
+          "source_index": 25,
+          "position_samples": 0
+        },
+        {
+          "source_index": 26,
+          "position_samples": 0
+        },
+        {
+          "source_index": 27,
+          "position_samples": 0
+        },
+        {
+          "source_index": 28,
+          "position_samples": 0
+        },
+        {
+          "source_index": 29,
+          "position_samples": 0
+        },
+        {
+          "source_index": 30,
+          "position_samples": 0
+        },
+        {
+          "source_index": 31,
+          "position_samples": 0
+        },
+        {
+          "source_index": 32,
+          "position_samples": 0
+        },
+        {
+          "source_index": 33,
+          "position_samples": 0
+        },
+        {
+          "source_index": 34,
+          "position_samples": 0
+        },
+        {
+          "source_index": 35,
+          "position_samples": 0
+        },
+        {
+          "source_index": 36,
+          "position_samples": 0
+        },
+        {
+          "source_index": 37,
+          "position_samples": 0
+        }
+      ]
+    },
+    {
+      "input_api_call_ordinal": 1,
+      "native_reader_frame_invocation": 6,
+      "capture_local_tokens": {
+        "selected_composite_item": 1,
+        "composite_master": 11,
+        "master_item_descriptor": 12,
+        "reader": 14,
+        "read_float_stream": 7,
+        "returned_packet": 15,
+        "packet_pcm_table": 16,
+        "packet_control_records": 17,
+        "external_process_owner": 19,
+        "external_input_pcm_table": 20
+      },
+      "direct_join_receipts": {
+        "reader_to_master": true,
+        "packet_to_reader_frame": true,
+        "outer_encoder_to_packet": true,
+        "packet_pcm_table_to_interleave_source": true,
+        "packet_control_records_to_external_api": true,
+        "external_interleave_buffer_alias": true
+      },
+      "selected_segment_relative_control_position_samples": 1536,
+      "derived_source_sample_start": 2881536,
+      "reader_cursor_before_samples": 1536,
+      "reader_cursor_after_samples": 3072,
+      "reader_requested_samples": 1536,
+      "read_float_requested_samples": 1536,
+      "read_float_actual_samples": 1536,
+      "read_float_return_u8": 0,
+      "returned_packet_channels": 38,
+      "returned_packet_samples": 1536,
+      "control_records": [
+        {
+          "source_index": 0,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 1,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 2,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 3,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 4,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 5,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 6,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 7,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 8,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 9,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 10,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 11,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 12,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 13,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 14,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 15,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 16,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 17,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 18,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 19,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 20,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 21,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 22,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 23,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 24,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 25,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 26,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 27,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 28,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 29,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 30,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 31,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 32,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 33,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 34,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 35,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 36,
+          "position_samples": 1536
+        },
+        {
+          "source_index": 37,
+          "position_samples": 1536
+        }
+      ]
+    },
+    {
+      "input_api_call_ordinal": 2,
+      "native_reader_frame_invocation": 7,
+      "capture_local_tokens": {
+        "selected_composite_item": 1,
+        "composite_master": 11,
+        "master_item_descriptor": 12,
+        "reader": 14,
+        "read_float_stream": 7,
+        "returned_packet": 15,
+        "packet_pcm_table": 16,
+        "packet_control_records": 17,
+        "external_process_owner": 19,
+        "external_input_pcm_table": 20
+      },
+      "direct_join_receipts": {
+        "reader_to_master": true,
+        "packet_to_reader_frame": true,
+        "outer_encoder_to_packet": true,
+        "packet_pcm_table_to_interleave_source": true,
+        "packet_control_records_to_external_api": true,
+        "external_interleave_buffer_alias": true
+      },
+      "selected_segment_relative_control_position_samples": 3072,
+      "derived_source_sample_start": 2883072,
+      "reader_cursor_before_samples": 3072,
+      "reader_cursor_after_samples": 4608,
+      "reader_requested_samples": 1536,
+      "read_float_requested_samples": 1536,
+      "read_float_actual_samples": 1536,
+      "read_float_return_u8": 0,
+      "returned_packet_channels": 38,
+      "returned_packet_samples": 1536,
+      "control_records": [
+        {
+          "source_index": 0,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 1,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 2,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 3,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 4,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 5,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 6,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 7,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 8,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 9,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 10,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 11,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 12,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 13,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 14,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 15,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 16,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 17,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 18,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 19,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 20,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 21,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 22,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 23,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 24,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 25,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 26,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 27,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 28,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 29,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 30,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 31,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 32,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 33,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 34,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 35,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 36,
+          "position_samples": 3072
+        },
+        {
+          "source_index": 37,
+          "position_samples": 3072
+        }
+      ]
+    },
+    {
+      "input_api_call_ordinal": 3,
+      "native_reader_frame_invocation": 8,
+      "capture_local_tokens": {
+        "selected_composite_item": 1,
+        "composite_master": 11,
+        "master_item_descriptor": 12,
+        "reader": 14,
+        "read_float_stream": 7,
+        "returned_packet": 15,
+        "packet_pcm_table": 16,
+        "packet_control_records": 17,
+        "external_process_owner": 19,
+        "external_input_pcm_table": 20
+      },
+      "direct_join_receipts": {
+        "reader_to_master": true,
+        "packet_to_reader_frame": true,
+        "outer_encoder_to_packet": true,
+        "packet_pcm_table_to_interleave_source": true,
+        "packet_control_records_to_external_api": true,
+        "external_interleave_buffer_alias": true
+      },
+      "selected_segment_relative_control_position_samples": 4608,
+      "derived_source_sample_start": 2884608,
+      "reader_cursor_before_samples": 4608,
+      "reader_cursor_after_samples": 6144,
+      "reader_requested_samples": 1536,
+      "read_float_requested_samples": 1392,
+      "read_float_actual_samples": 1392,
+      "read_float_return_u8": 0,
+      "returned_packet_channels": 38,
+      "returned_packet_samples": 1536,
+      "control_records": [
+        {
+          "source_index": 0,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 1,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 2,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 3,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 4,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 5,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 6,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 7,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 8,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 9,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 10,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 11,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 12,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 13,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 14,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 15,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 16,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 17,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 18,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 19,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 20,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 21,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 22,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 23,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 24,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 25,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 26,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 27,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 28,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 29,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 30,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 31,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 32,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 33,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 34,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 35,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 36,
+          "position_samples": 4608
+        },
+        {
+          "source_index": 37,
+          "position_samples": 4608
+        }
+      ]
+    }
+  ]
+}

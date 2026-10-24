@@ -1,0 +1,41 @@
+{
+  "schema": "gain-history-direct-contract.v1",
+  "scope": "Primary pass0 summary gate1 gain peak/history and gain code plus six-block reuse-min projection. This is not FFT history, whole statistics-wrapper replacement, or fullF09 closure.",
+  "input_domain": "Six native-order rows of256 finite binary32 values per block; six blocks per frame. Current recipes |sample|<=1.5, previous peak finite numerically>=0 including negativezero and<=3, q15max0..32767. Masks are raw16-bit; representative predicate-complete masks0/1/3/4/5/7 exercised. Other gates/passes/format/frequency are outside numeric direct scope.",
+  "owner_shape": {
+    "previous_peak": "F32[6], native current field after each call becomes previous for next same-channel call",
+    "summary": "F32[6blocks][6channels], overwritten by new primary block even across frame wrap",
+    "q15_max": "I16[6], cumulative across calls until reset, initializedzero",
+    "gain_output": "I16[6blocks][5fullband], overwritten per block; no LFE gain field/call",
+    "cold": "All above +0/0. Native statistics constructor clears its defined8680-byte state; selected fields' zero initialization observed. Controlled separate filter context beginszero.",
+    "clock": "Caller supplies frame/block/channel iteration. Previous and q15max persist across frame boundary; no implicit reset at block0. Frame and completed-block labels are caller metadata, not recovered native counters. No ADM time/AU mapping."
+  },
+  "finite_selection_primitives": "MAX(a,b)=a if a>b else b; MIN(a,b)=a if a<b else b. Equal finite operands select second exactly, preserving its sign bits. The SSE instructions also select second on unordered comparisons; NaN payload/exception behavior is not part of this finite API and was not runtime-tested.",
+  "aligned_peak": {
+    "lane_updates": "Initialize four minimum and maximum lanes from samples0..3 exactly. For groups starting4,8,..252: low[j]=MIN(low[j],sample[start+j]); high[j]=MAX(high[j],sample[start+j]), j0..3.",
+    "horizontal": "l0=MIN(low0,low2), l1=MIN(low1,low3); minAll=MIN(l0,l1). h0=MAX(high0,high2), h1=MAX(high1,high3); maxAll=MAX(h0,h1). peak=MAX(signbit_flip(minAll),maxAll). This exact operand order matters for signedzero.",
+    "state_grade": "Intermediate lane/horizontal bits in DERIVED-TRACES are computed, not native register captures. Native resulting peak/current/summary sign is captured and checked."
+  },
+  "unaligned_peak": "For exactly256 finite samples: lo=hi=sample0; for i1..255, lo=MIN(lo,sample[i]), hi=MAX(sample[i],hi) (reversed operands for maximum, so equal maximum retains earlierhi). peak=MAX(signbit_flip(lo),hi). This reproduces scalar-group/tail order for finite samples; do not use the aligned or max(abs()) rule.",
+  "selected_native_profiles": "Natural primary pass0/gate1/format7/fullband5/frequency0 is8-mod16 and uses UNALIGNED_SCALAR (216 observed). Secondary pass1 is16-aligned (150 observed) but its state aggregation algorithm is outside controlled pass0 scope. A safe functional API must pass or fix the logical reduction profile explicitly rather than accidentally inherit a different Rust allocation alignment.",
+  "peak_update": "current=R(2.0*peak). summary=MAX(previous[channel],current), with current as second operand. Write previous[channel]=current. Write summary[block][channel]=summary. For pass0 gate1 there is no secondary-summary max. Update q=lrint_RNE(R(summary*32768.0)); clamp integer q to[-32768,32767]; q15_max[channel]=max_signed(old,q). R means binary32 rounding. Q15 half-tie vectors verify effective RNE; control register bits were not read in successful capture.",
+  "gain_rule": [
+    "p=summary[block][0..5], v=p[channel], channel0..4 only. If channel0or2 and(mask&1)==0: v=R(R(p1*CENTER)+v).",
+    "If channel2 and(mask&4)==0: v=R(R(p4*CENTER)+v). Else if channel1 andmask==1 exactly: v=R(R(p3*SIDE)+v);v=R(v+R(p4*SIDE));v=R(v+R(p0*CENTER));v=R(v+R(p2*CENTER)). Else if channel0 and(mask&4)==0: v=R(R(p3*CENTER)+v).",
+    "clipped=MIN(MAX(-1.0,v),1.0). word=(2*U32bits(clipped)) modulo2^32. binade=(word>>24)-126 if word!=0 else-127. h=clamp(-binade,0,60). code=max(0,min(4,h)-1). Write gain_output[block][channel]. Constants are exact F32 bits in PARAMETERS.",
+    "LFE channel5 still updates previous/current/summary/q15 statistics but is never passed to gain emitter by the fullband loop, and no weighted formula reads p5. LFE-only vectors prove statistics change while fullband gain stays unaffected."
+  ],
+  "reuse_min": "Inputs are gainI16[6][5] in0..3 and strategyI16[6][5], first block per channel nonzero. A nonzero strategy1/2/3 starts an anchor; each later zero strategy min-merges its gain into that anchor (strict signed< before overwrite). After all merges, copy final anchor gain to each reuse block until next nonzero. Per-channel loops independent. Native planner control uses dummy zero exponent rows/endcount1 and normalizationoption0 to isolate gain projection; exponent/packing outputs are not validated by this slice.",
+  "canaries_and_side_effects": "Inputs unchanged, stats tail165 and gain-tail12345 preserved, LFE filter reserved bytes remainzero. Statistics methods also update filter/energy fields and external filter state; those auxiliary effects are listed separately and not silently treated as validated gain outputs. The gain projection does not consume their numeric outputs.",
+  "errors_and_transactions": "Native methods provide no recovered error status for invalid samples/shape/pointers; incidental return registers are ignored. Domain/shape checks and pre-call validation are a safe adapter design choice, not native statuses. Valid calls mutate state incrementally per channel; do not infer six-channel no-commit/rollback. Nonfinite/overflow/underflow/malformed-memory tests NOT_RUN. Reset, restart/EOF/partial-block lifecycle NOT_RUN; ordinary multiblock and frame carry are covered.",
+  "tie_vector_meaning": "Aligned zero_permutations compares one-0 at251 versus255 (same lane) and254 versus255 (crosslane). Unaligned supplement includes the same values with the native-primary reduction. SIGNED_ZERO case preserves exact signword2147483648. No argmax sample index is exposed by this native API, so none is invented.",
+  "reuse_boundaries": "This package gain history is independent of primary/companion FFT128 histories. Approved delayed_six layout may feed it only at the matching prepared-input clock. Natural180 summary consumers and432 fold input joins are identity evidence, not numeric seeds.",
+  "reset_eof_next_actions": "Observe actual encoder drain/reset entry and state before/after; use a normal reference job ending at a nonmultiple-of256 input length. Until then these lifecycle domains remain unclaimed.",
+  "grades": {
+    "peak_gain_final_fields": "RUNTIME_CONFIRMED",
+    "lane_and_weighted_intermediates": "INDEPENDENT_INPUT_STATIC_RULE_REPLAY",
+    "ordinary_source_preserved": "Earlier8ordinary cases and3reuse results crosschecked against current capture",
+    "whole_audio": "NOT_RUN"
+  },
+  "whole_f09_closed": false
+}

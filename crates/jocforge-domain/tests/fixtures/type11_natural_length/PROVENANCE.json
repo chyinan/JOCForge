@@ -1,0 +1,23 @@
+{
+  "schema": "washed-natural-type11-length-provenance.v1",
+  "source_candidate_manifest_sha256": "c33784aecff1f08c3b7fd831c32f2e84be13d52de61806f4ac9ca66b406d213d",
+  "approved_F13_4_spec_sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd",
+  "native_queue_capacity_wash_manifest_sha256": "6697b548bd66c108180b8d1d084b287c275e8bdb1816192bf812d59bdb86d098",
+  "model_primary_metadata": {
+    "callbacks": 4251,
+    "outputs": 4249,
+    "unique_metadata_inputs": 3735,
+    "output_length_min": 69,
+    "output_length_max": 69,
+    "above160": 0
+  },
+  "native_secondary": {
+    "source_invocations": 71,
+    "natural_outputs": 69,
+    "output_length_min": 69,
+    "output_length_max": 69,
+    "above160": 0
+  },
+  "primary_native_full_run": "NOT_RUN",
+  "raw_PCM_read_or_persisted": false
+}

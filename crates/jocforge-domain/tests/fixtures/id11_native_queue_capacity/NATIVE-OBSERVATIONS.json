@@ -1,0 +1,618 @@
+{
+  "cases": [
+    {
+      "event": "metadata_capacity_case",
+      "case_id": 1,
+      "payload_id": 11,
+      "entry": "GENERIC_ENQUEUE",
+      "input_recipe": "OBSERVED_VALID69_BYTE_ID11_PLUS_ZERO_TRAILING_BYTES",
+      "supplied_bytes": 69,
+      "constructor_object_capacity": 16,
+      "constructor_frame_capacity": 8,
+      "queue_capacity_before": 2103,
+      "queue_occupied_before": [
+        0,
+        0,
+        0
+      ],
+      "owner_valid_before": 0,
+      "native_compared_capacity": 2103,
+      "native_compared_payload_bytes": 69,
+      "queue_return": 0,
+      "return_status": 0,
+      "queue_occupied_after": [
+        1,
+        0,
+        0
+      ],
+      "owner_valid_after": 0,
+      "cached": [
+        {
+          "slot": 0,
+          "declared_body_bytes": 69,
+          "stored_body_equals_supplied": true
+        }
+      ],
+      "guard_unchanged": true
+    },
+    {
+      "event": "metadata_capacity_case",
+      "case_id": 2,
+      "payload_id": 11,
+      "entry": "GENERIC_ENQUEUE",
+      "input_recipe": "OBSERVED_VALID69_BYTE_ID11_PLUS_ZERO_TRAILING_BYTES",
+      "supplied_bytes": 159,
+      "constructor_object_capacity": 16,
+      "constructor_frame_capacity": 8,
+      "queue_capacity_before": 2103,
+      "queue_occupied_before": [
+        0,
+        0,
+        0
+      ],
+      "owner_valid_before": 0,
+      "native_compared_capacity": 2103,
+      "native_compared_payload_bytes": 159,
+      "queue_return": 0,
+      "return_status": 0,
+      "queue_occupied_after": [
+        1,
+        0,
+        0
+      ],
+      "owner_valid_after": 0,
+      "cached": [
+        {
+          "slot": 0,
+          "declared_body_bytes": 159,
+          "stored_body_equals_supplied": true
+        }
+      ],
+      "guard_unchanged": true
+    },
+    {
+      "event": "metadata_capacity_case",
+      "case_id": 3,
+      "payload_id": 11,
+      "entry": "GENERIC_ENQUEUE",
+      "input_recipe": "OBSERVED_VALID69_BYTE_ID11_PLUS_ZERO_TRAILING_BYTES",
+      "supplied_bytes": 160,
+      "constructor_object_capacity": 16,
+      "constructor_frame_capacity": 8,
+      "queue_capacity_before": 2103,
+      "queue_occupied_before": [
+        0,
+        0,
+        0
+      ],
+      "owner_valid_before": 0,
+      "native_compared_capacity": 2103,
+      "native_compared_payload_bytes": 160,
+      "queue_return": 0,
+      "return_status": 0,
+      "queue_occupied_after": [
+        1,
+        0,
+        0
+      ],
+      "owner_valid_after": 0,
+      "cached": [
+        {
+          "slot": 0,
+          "declared_body_bytes": 160,
+          "stored_body_equals_supplied": true
+        }
+      ],
+      "guard_unchanged": true
+    },
+    {
+      "event": "metadata_capacity_case",
+      "case_id": 4,
+      "payload_id": 11,
+      "entry": "GENERIC_ENQUEUE",
+      "input_recipe": "OBSERVED_VALID69_BYTE_ID11_PLUS_ZERO_TRAILING_BYTES",
+      "supplied_bytes": 161,
+      "constructor_object_capacity": 16,
+      "constructor_frame_capacity": 8,
+      "queue_capacity_before": 2103,
+      "queue_occupied_before": [
+        0,
+        0,
+        0
+      ],
+      "owner_valid_before": 0,
+      "native_compared_capacity": 2103,
+      "native_compared_payload_bytes": 161,
+      "queue_return": 0,
+      "return_status": 0,
+      "queue_occupied_after": [
+        1,
+        0,
+        0
+      ],
+      "owner_valid_after": 0,
+      "cached": [
+        {
+          "slot": 0,
+          "declared_body_bytes": 161,
+          "stored_body_equals_supplied": true
+        }
+      ],
+      "guard_unchanged": true
+    },
+    {
+      "event": "metadata_capacity_case",
+      "case_id": 5,
+      "payload_id": 11,
+      "entry": "GENERIC_ENQUEUE",
+      "input_recipe": "OBSERVED_VALID69_BYTE_ID11_PLUS_ZERO_TRAILING_BYTES",
+      "supplied_bytes": 2102,
+      "constructor_object_capacity": 16,
+      "constructor_frame_capacity": 8,
+      "queue_capacity_before": 2103,
+      "queue_occupied_before": [
+        0,
+        0,
+        0
+      ],
+      "owner_valid_before": 0,
+      "native_compared_capacity": 2103,
+      "native_compared_payload_bytes": 2102,
+      "queue_return": 0,
+      "return_status": 0,
+      "queue_occupied_after": [
+        1,
+        0,
+        0
+      ],
+      "owner_valid_after": 0,
+      "cached": [
+        {
+          "slot": 0,
+          "declared_body_bytes": 2102,
+          "stored_body_equals_supplied": true
+        }
+      ],
+      "guard_unchanged": true
+    },
+    {
+      "event": "metadata_capacity_case",
+      "case_id": 6,
+      "payload_id": 11,
+      "entry": "GENERIC_ENQUEUE",
+      "input_recipe": "OBSERVED_VALID69_BYTE_ID11_PLUS_ZERO_TRAILING_BYTES",
+      "supplied_bytes": 2103,
+      "constructor_object_capacity": 16,
+      "constructor_frame_capacity": 8,
+      "queue_capacity_before": 2103,
+      "queue_occupied_before": [
+        0,
+        0,
+        0
+      ],
+      "owner_valid_before": 0,
+      "native_compared_capacity": 2103,
+      "native_compared_payload_bytes": 2103,
+      "queue_return": 0,
+      "return_status": 0,
+      "queue_occupied_after": [
+        1,
+        0,
+        0
+      ],
+      "owner_valid_after": 0,
+      "cached": [
+        {
+          "slot": 0,
+          "declared_body_bytes": 2103,
+          "stored_body_equals_supplied": true
+        }
+      ],
+      "guard_unchanged": true
+    },
+    {
+      "event": "metadata_capacity_case",
+      "case_id": 7,
+      "payload_id": 11,
+      "entry": "GENERIC_ENQUEUE",
+      "input_recipe": "OBSERVED_VALID69_BYTE_ID11_PLUS_ZERO_TRAILING_BYTES",
+      "supplied_bytes": 2104,
+      "constructor_object_capacity": 16,
+      "constructor_frame_capacity": 8,
+      "queue_capacity_before": 2103,
+      "queue_occupied_before": [
+        0,
+        0,
+        0
+      ],
+      "owner_valid_before": 0,
+      "native_compared_capacity": 2103,
+      "native_compared_payload_bytes": 2104,
+      "queue_return": 5,
+      "return_status": 5,
+      "queue_occupied_after": [
+        0,
+        0,
+        0
+      ],
+      "owner_valid_after": 0,
+      "cached": [],
+      "guard_unchanged": true
+    },
+    {
+      "event": "metadata_capacity_case",
+      "case_id": 8,
+      "payload_id": 11,
+      "entry": "ID11_INGRESS",
+      "input_recipe": "OBSERVED_VALID69_BYTE_ID11_PLUS_ZERO_TRAILING_BYTES",
+      "supplied_bytes": 69,
+      "constructor_object_capacity": 16,
+      "constructor_frame_capacity": 8,
+      "queue_capacity_before": 2103,
+      "queue_occupied_before": [
+        0,
+        0,
+        0
+      ],
+      "owner_valid_before": 0,
+      "native_compared_capacity": 2103,
+      "native_compared_payload_bytes": 69,
+      "queue_return": 0,
+      "parser_return": 0,
+      "parser_consumed_bits": 552,
+      "parser_remaining_bits": 0,
+      "return_status": 0,
+      "queue_occupied_after": [
+        1,
+        0,
+        0
+      ],
+      "owner_valid_after": 1,
+      "cached": [
+        {
+          "slot": 0,
+          "declared_body_bytes": 69,
+          "stored_body_equals_supplied": true
+        }
+      ],
+      "guard_unchanged": true
+    },
+    {
+      "event": "metadata_capacity_case",
+      "case_id": 9,
+      "payload_id": 11,
+      "entry": "ID11_INGRESS",
+      "input_recipe": "OBSERVED_VALID69_BYTE_ID11_PLUS_ZERO_TRAILING_BYTES",
+      "supplied_bytes": 159,
+      "constructor_object_capacity": 16,
+      "constructor_frame_capacity": 8,
+      "queue_capacity_before": 2103,
+      "queue_occupied_before": [
+        0,
+        0,
+        0
+      ],
+      "owner_valid_before": 0,
+      "native_compared_capacity": 2103,
+      "native_compared_payload_bytes": 159,
+      "queue_return": 0,
+      "parser_return": 0,
+      "parser_consumed_bits": 552,
+      "parser_remaining_bits": 720,
+      "return_status": 0,
+      "queue_occupied_after": [
+        1,
+        0,
+        0
+      ],
+      "owner_valid_after": 1,
+      "cached": [
+        {
+          "slot": 0,
+          "declared_body_bytes": 159,
+          "stored_body_equals_supplied": true
+        }
+      ],
+      "guard_unchanged": true
+    },
+    {
+      "event": "metadata_capacity_case",
+      "case_id": 10,
+      "payload_id": 11,
+      "entry": "ID11_INGRESS",
+      "input_recipe": "OBSERVED_VALID69_BYTE_ID11_PLUS_ZERO_TRAILING_BYTES",
+      "supplied_bytes": 160,
+      "constructor_object_capacity": 16,
+      "constructor_frame_capacity": 8,
+      "queue_capacity_before": 2103,
+      "queue_occupied_before": [
+        0,
+        0,
+        0
+      ],
+      "owner_valid_before": 0,
+      "native_compared_capacity": 2103,
+      "native_compared_payload_bytes": 160,
+      "queue_return": 0,
+      "parser_return": 0,
+      "parser_consumed_bits": 552,
+      "parser_remaining_bits": 728,
+      "return_status": 0,
+      "queue_occupied_after": [
+        1,
+        0,
+        0
+      ],
+      "owner_valid_after": 1,
+      "cached": [
+        {
+          "slot": 0,
+          "declared_body_bytes": 160,
+          "stored_body_equals_supplied": true
+        }
+      ],
+      "guard_unchanged": true
+    },
+    {
+      "event": "metadata_capacity_case",
+      "case_id": 11,
+      "payload_id": 11,
+      "entry": "ID11_INGRESS",
+      "input_recipe": "OBSERVED_VALID69_BYTE_ID11_PLUS_ZERO_TRAILING_BYTES",
+      "supplied_bytes": 161,
+      "constructor_object_capacity": 16,
+      "constructor_frame_capacity": 8,
+      "queue_capacity_before": 2103,
+      "queue_occupied_before": [
+        0,
+        0,
+        0
+      ],
+      "owner_valid_before": 0,
+      "native_compared_capacity": 2103,
+      "native_compared_payload_bytes": 161,
+      "queue_return": 0,
+      "parser_return": 0,
+      "parser_consumed_bits": 552,
+      "parser_remaining_bits": 736,
+      "return_status": 0,
+      "queue_occupied_after": [
+        1,
+        0,
+        0
+      ],
+      "owner_valid_after": 1,
+      "cached": [
+        {
+          "slot": 0,
+          "declared_body_bytes": 161,
+          "stored_body_equals_supplied": true
+        }
+      ],
+      "guard_unchanged": true
+    },
+    {
+      "event": "metadata_capacity_case",
+      "case_id": 12,
+      "payload_id": 11,
+      "entry": "ID11_INGRESS",
+      "input_recipe": "OBSERVED_VALID69_BYTE_ID11_PLUS_ZERO_TRAILING_BYTES",
+      "supplied_bytes": 2102,
+      "constructor_object_capacity": 16,
+      "constructor_frame_capacity": 8,
+      "queue_capacity_before": 2103,
+      "queue_occupied_before": [
+        0,
+        0,
+        0
+      ],
+      "owner_valid_before": 0,
+      "native_compared_capacity": 2103,
+      "native_compared_payload_bytes": 2102,
+      "queue_return": 0,
+      "parser_return": 0,
+      "parser_consumed_bits": 552,
+      "parser_remaining_bits": 16264,
+      "return_status": 0,
+      "queue_occupied_after": [
+        1,
+        0,
+        0
+      ],
+      "owner_valid_after": 1,
+      "cached": [
+        {
+          "slot": 0,
+          "declared_body_bytes": 2102,
+          "stored_body_equals_supplied": true
+        }
+      ],
+      "guard_unchanged": true
+    },
+    {
+      "event": "metadata_capacity_case",
+      "case_id": 13,
+      "payload_id": 11,
+      "entry": "ID11_INGRESS",
+      "input_recipe": "OBSERVED_VALID69_BYTE_ID11_PLUS_ZERO_TRAILING_BYTES",
+      "supplied_bytes": 2103,
+      "constructor_object_capacity": 16,
+      "constructor_frame_capacity": 8,
+      "queue_capacity_before": 2103,
+      "queue_occupied_before": [
+        0,
+        0,
+        0
+      ],
+      "owner_valid_before": 0,
+      "native_compared_capacity": 2103,
+      "native_compared_payload_bytes": 2103,
+      "queue_return": 0,
+      "parser_return": 0,
+      "parser_consumed_bits": 552,
+      "parser_remaining_bits": 16272,
+      "return_status": 0,
+      "queue_occupied_after": [
+        1,
+        0,
+        0
+      ],
+      "owner_valid_after": 1,
+      "cached": [
+        {
+          "slot": 0,
+          "declared_body_bytes": 2103,
+          "stored_body_equals_supplied": true
+        }
+      ],
+      "guard_unchanged": true
+    },
+    {
+      "event": "metadata_capacity_case",
+      "case_id": 14,
+      "payload_id": 11,
+      "entry": "ID11_INGRESS",
+      "input_recipe": "OBSERVED_VALID69_BYTE_ID11_PLUS_ZERO_TRAILING_BYTES",
+      "supplied_bytes": 2104,
+      "constructor_object_capacity": 16,
+      "constructor_frame_capacity": 8,
+      "queue_capacity_before": 2103,
+      "queue_occupied_before": [
+        0,
+        0,
+        0
+      ],
+      "owner_valid_before": 0,
+      "native_compared_capacity": 2103,
+      "native_compared_payload_bytes": 2104,
+      "queue_return": 5,
+      "parser_return": 0,
+      "parser_consumed_bits": 552,
+      "parser_remaining_bits": 16280,
+      "return_status": 0,
+      "queue_occupied_after": [
+        0,
+        0,
+        0
+      ],
+      "owner_valid_after": 1,
+      "cached": [],
+      "guard_unchanged": true
+    },
+    {
+      "event": "metadata_capacity_case",
+      "case_id": 15,
+      "payload_id": 6,
+      "entry": "GENERAL_GROUP_PUSH",
+      "input_recipe": "OWNED_OPAQUE_BYTES_NOT_SEMANTIC_ID6_PRODUCER",
+      "supplied_bytes": 0,
+      "queue_capacity_before": 3,
+      "queue_occupied_before": [
+        0,
+        0,
+        0
+      ],
+      "native_compared_capacity": 3,
+      "native_compared_payload_bytes": 0,
+      "queue_return": 0,
+      "return_status": 0,
+      "queue_occupied_after": [
+        1,
+        0,
+        0
+      ],
+      "cached": [
+        {
+          "slot": 0,
+          "declared_body_bytes": 0
+        }
+      ],
+      "guard_unchanged": true
+    },
+    {
+      "event": "metadata_capacity_case",
+      "case_id": 16,
+      "payload_id": 6,
+      "entry": "GENERAL_GROUP_PUSH",
+      "input_recipe": "OWNED_OPAQUE_BYTES_NOT_SEMANTIC_ID6_PRODUCER",
+      "supplied_bytes": 2,
+      "queue_capacity_before": 3,
+      "queue_occupied_before": [
+        0,
+        0,
+        0
+      ],
+      "native_compared_capacity": 3,
+      "native_compared_payload_bytes": 2,
+      "queue_return": 0,
+      "return_status": 0,
+      "queue_occupied_after": [
+        1,
+        0,
+        0
+      ],
+      "cached": [
+        {
+          "slot": 0,
+          "declared_body_bytes": 2
+        }
+      ],
+      "guard_unchanged": true
+    },
+    {
+      "event": "metadata_capacity_case",
+      "case_id": 17,
+      "payload_id": 6,
+      "entry": "GENERAL_GROUP_PUSH",
+      "input_recipe": "OWNED_OPAQUE_BYTES_NOT_SEMANTIC_ID6_PRODUCER",
+      "supplied_bytes": 3,
+      "queue_capacity_before": 3,
+      "queue_occupied_before": [
+        0,
+        0,
+        0
+      ],
+      "native_compared_capacity": 3,
+      "native_compared_payload_bytes": 3,
+      "queue_return": 0,
+      "return_status": 0,
+      "queue_occupied_after": [
+        1,
+        0,
+        0
+      ],
+      "cached": [
+        {
+          "slot": 0,
+          "declared_body_bytes": 3
+        }
+      ],
+      "guard_unchanged": true
+    },
+    {
+      "event": "metadata_capacity_case",
+      "case_id": 18,
+      "payload_id": 6,
+      "entry": "GENERAL_GROUP_PUSH",
+      "input_recipe": "OWNED_OPAQUE_BYTES_NOT_SEMANTIC_ID6_PRODUCER",
+      "supplied_bytes": 4,
+      "queue_capacity_before": 3,
+      "queue_occupied_before": [
+        0,
+        0,
+        0
+      ],
+      "native_compared_capacity": 3,
+      "native_compared_payload_bytes": 4,
+      "queue_return": 5,
+      "return_status": 3,
+      "queue_occupied_after": [
+        0,
+        0,
+        0
+      ],
+      "cached": [],
+      "guard_unchanged": true
+    }
+  ]
+}

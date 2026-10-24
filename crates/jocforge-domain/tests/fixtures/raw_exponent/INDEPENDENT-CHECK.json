@@ -1,0 +1,17 @@
+{
+  "schema": "raw-exponent-from-power-bits-check.v1",
+  "package": "RAW-EXPONENT-FROM-POWER-BITS",
+  "manifest_sha256": "f1acb6d4321e3b7fdb746bf7fd0e3b1ce7db179a5ecb5fe37201b429587158fb",
+  "payload_count": 5,
+  "payload_hashes_match": true,
+  "upstream_manifest_check_and_payloads_match": true,
+  "module_file_identity_runtime_bound": true,
+  "valid_recipes": 5,
+  "values_compared": 50,
+  "formula_replay": "PASS 50/50",
+  "expected_used_as_seed": false,
+  "count_pointer_error_behavior": "OUT_OF_SCOPE_AND_NOT_RUN",
+  "independent_product_implementation": "NOT_RUN",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO"
+}

@@ -1,0 +1,76 @@
+{
+  "schema": "washed-implementer-supplement-delivery-envelope.v1",
+  "artifact_id": "F13C-PRODUCTION-COLD-ROOTS-V1",
+  "bindings": [
+    {
+      "file": "CHECK-NORMAL.json",
+      "bytes": 453,
+      "sha256": "3d2547d1fef11257daf8bee109d5dbd6f69c9e6df5b6612ac4fe8ea987c8e8a3"
+    },
+    {
+      "file": "CHECK-OPTIMIZED.json",
+      "bytes": 453,
+      "sha256": "3d2547d1fef11257daf8bee109d5dbd6f69c9e6df5b6612ac4fe8ea987c8e8a3"
+    },
+    {
+      "file": "CONSTRUCTION-GRAPH.json",
+      "bytes": 3019,
+      "sha256": "4961f0bb8cf611d7dda18351db226cc8548b9579e21ffa22ed6fa1c89736d305"
+    },
+    {
+      "file": "CONTRACT.md",
+      "bytes": 2905,
+      "sha256": "9f29f450869e6ca80435e30859011294d8b6ce60cfb415dbb17abb7e649edaba"
+    },
+    {
+      "file": "FAILURE-AND-PUBLICATION.json",
+      "bytes": 1466,
+      "sha256": "cec806dea3fa89eb55fda9165182bbb3aea94dced8d6efbf772c6a6a302bd116"
+    },
+    {
+      "file": "INDEPENDENT-CHECK.json",
+      "bytes": 303,
+      "sha256": "c386fcdc97656a45534950c74f824744ef1a743f0efed86a3ae349c72c2d146c"
+    },
+    {
+      "file": "INDEPENDENT-GRAPH-READINESS.json",
+      "bytes": 3487,
+      "sha256": "97900ed5950a542ae1828849e958b8971b052ce9b76c54fff19a068dc5ec86d5"
+    },
+    {
+      "file": "INPUT-ONLY.json",
+      "bytes": 926,
+      "sha256": "de4c4552a791c799fac4c92154c47ae25fc8025b4212ede0c1280532a4241172"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 2202,
+      "sha256": "986ea528cda6687c14cc87f790b7eec90b4e10567bef1e547a07ecc226de5928"
+    },
+    {
+      "file": "NATIVE-OBSERVATIONS.json",
+      "bytes": 64560,
+      "sha256": "7ea72c23b89ce8a448315d209a4bb5cb857801623a6e83903d6b148aa2ff7b0a"
+    },
+    {
+      "file": "replay_production_cold_roots.py",
+      "bytes": 4386,
+      "sha256": "128023aaaca7f1ddef0b330b6de1bde791de52aa603332dbd3a240feac49e06c"
+    },
+    {
+      "file": "RUNTIME-RECEIPT.json",
+      "bytes": 974,
+      "sha256": "e00484c2addee4e960965a2b68131a83d68a02d9bd2208da988bc55b2e0be32a"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 2314,
+      "sha256": "190ffc91aa4faf9e37fa8a8401e1320d3c951d28f4f07cb41a0d468f36843564"
+    },
+    {
+      "file": "WASH-VALIDATION.json",
+      "bytes": 1453,
+      "sha256": "0e791005ca73029d0f8f4df61b867369e2de6822337c2d798bdce6cfe45452bd"
+    }
+  ]
+}

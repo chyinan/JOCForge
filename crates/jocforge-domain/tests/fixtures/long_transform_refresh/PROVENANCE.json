@@ -1,0 +1,144 @@
+{
+  "schema": "long-transform-refresh-composition-provenance.v1",
+  "package": "LONG-TRANSFORM-REFRESH-COMPOSITION",
+  "source_wash_package": "SANITIZED_F09_TRANSFORM_REFRESH_COMPOSITION_R1",
+  "source_manifest_sha256": "4f0681e4f55960b670717ca8b30e97f789485aec69d9fd7b97ca85855c32e756",
+  "source_independent_check_sha256": "9a457e9c8ba5cf13a10d90d1592d771c1b9456bd65d521c0f7222052be47d3df",
+  "source_payloads": [
+    {
+      "path": "INPUTS.json",
+      "bytes": 3093,
+      "sha256": "75a4a7ac0b10a1ab7821db78f460fa9999d42ec9993d5d142012de12dfeea840"
+    },
+    {
+      "path": "EXPECTED.json",
+      "bytes": 695029,
+      "sha256": "54dbd50e02582f8e6fba46cb689965b2c82a87d2d86bc53d8036d4c604e6b181"
+    },
+    {
+      "path": "PARAMETERS.json",
+      "bytes": 13694,
+      "sha256": "d227af94962d12229927f7090d96ffb265bdccc963a967b6e8e3bb1e3ecb7608"
+    },
+    {
+      "path": "CONTRACT.json",
+      "bytes": 6872,
+      "sha256": "20ea7189bf50ce99ad614f7a01df9563e9b3e1293ba36f6076ce2bac8b55422b"
+    },
+    {
+      "path": "FFT-CANARY-INPUT.json",
+      "bytes": 391,
+      "sha256": "f8043b255bc1bba291584fba156b51a74ca3911ce84e095662aa11c44f2f92ae"
+    },
+    {
+      "path": "FFT-CANARY-EXPECTED.json",
+      "bytes": 675,
+      "sha256": "ad457c9cc79bdd11522cdc2ca69529fba8442abf690a811789890575d9b906b2"
+    },
+    {
+      "path": "FFT-CANARY-CHECK.json",
+      "bytes": 319,
+      "sha256": "5c4d27ee11f41bfa71ff713f0b56605c2937cbd85ac0c4d8f562346ed4655242"
+    }
+  ],
+  "reference_module": {
+    "file_bytes_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "qualification": "Loaded-path file bytes hashed inside the target and matched by host rehash; not a relocated memory-image digest."
+  },
+  "verified_dependencies": [
+    {
+      "package": "COEFFICIENT-TO-POWER-ROW",
+      "manifest_sha256": "4af64c87e7a40c3990075a3aa07d052ea0178c99ef1f1264847dfeaa7265c2d8",
+      "check_sha256": "ddcf281cb1edc3d805bd65aec282403fe962412a49eaf0311c1eac19d06ecd66"
+    },
+    {
+      "package": "RAW-EXPONENT-FROM-POWER-BITS",
+      "manifest_sha256": "f1acb6d4321e3b7fdb746bf7fd0e3b1ce7db179a5ecb5fe37201b429587158fb",
+      "check_sha256": "c184b804d2f7a607c24ee4ca86f9db2664cc9227c9e411a66ad21573d0537ed3"
+    },
+    {
+      "package": "EXPONENT-REFRESH-STATE-MAP",
+      "manifest_sha256": "f46a4c67bf019649d8f770a04d59b3809ed9eda7b3d5268aab4e3bddd03505e5",
+      "check_sha256": "0f42620d973b858f3a14d930e4c6c830be7af0e6a6528561edbe9c81cc4035a5"
+    }
+  ],
+  "evidence": {
+    "fold_and_rotation": "STATIC_CONFIRMED and Wash formula replay PASS",
+    "inner_fft": "STATIC_CONFIRMED closed-form group-scoped coefficients; 32-value native canary and full-vector Wash replay PASS; native per-stage internal buffers NOT_RUN",
+    "native_output_boundaries": "RUNTIME_CONFIRMED at explicit helper outputs and complete wrapper outputs",
+    "standalone_vectors": "6 recipes x 2 calls; 3072 values at each stage boundary, 1536 histories",
+    "composition_vectors": "3 recipes x 2 calls; 3072 spectrum, 1518 POWER, 1302 raw exponent, 2604 refresh-state words, 6 markers",
+    "native_coefficient_power_joins": "180 generation/pointer/count/content matches; no ADM sample-position inference",
+    "wash_independent_replay": "PASS across all standalone stages, history, canary, and complete composition outputs",
+    "independent_product_audio_integration": "NOT_RUN"
+  },
+  "source_evidence_digests_only": [
+    {
+      "alias": "runtime_hook",
+      "bytes": 24164,
+      "sha256": "93c2bd2e4933d91c5e44173636c95fbb986886e52fc894bb48ca8ec8613fe1e5"
+    },
+    {
+      "alias": "private_runtime_digest_only",
+      "bytes": 737821,
+      "sha256": "10d1a2f69ed7b87f7bcbdd6187a349010aebb336ddf7dfceaba385801564aef3"
+    },
+    {
+      "alias": "reference_receipt",
+      "bytes": 602,
+      "sha256": "c69260481940d00076ca07c1f40da49db13faf4c01ace51fd95d8915e86dcbaf"
+    },
+    {
+      "alias": "prototype_transform",
+      "bytes": 6769,
+      "sha256": "da269f7556829214109153053bacbbe5914414bb9cfa545ac0cb6cc6955ea0de"
+    },
+    {
+      "alias": "prototype_refresh",
+      "bytes": 6342,
+      "sha256": "71d5d13eba59e6a985b94e13f323eb6fa0bb5e39af6159d5a1b27e9b8c069c50"
+    },
+    {
+      "alias": "static_fold_primary",
+      "bytes": 1052,
+      "sha256": "f5b43b10abe197046077cb30368f631c696b708fa92364611bab8388d34693bf"
+    },
+    {
+      "alias": "static_fold_companion",
+      "bytes": 1052,
+      "sha256": "bc26c0545fd641c89e6202588b34bb1d47895ea1822d3b71c6f34969472b7d64"
+    },
+    {
+      "alias": "static_pre",
+      "bytes": 1447,
+      "sha256": "8eb2616fd16e66ecf5e9871c7f2ed7b4a4b81db431aace1c8aca696a18d52fa4"
+    },
+    {
+      "alias": "static_fft",
+      "bytes": 4462,
+      "sha256": "48ff7ddc2c15230bfd3e7c5dd6128981c4fdfc5e49a32d95e8fd9f8cec3a72c9"
+    },
+    {
+      "alias": "static_post_primary",
+      "bytes": 950,
+      "sha256": "1d5ea56889b48500bfa149939862a5d5b5cc5d0358ffa6a7b31d6f1eebefffa9"
+    },
+    {
+      "alias": "static_post_companion",
+      "bytes": 950,
+      "sha256": "3693be5d1e3a734dfae1d8a79ad6a1b9f3c41bc270762b6343cc3236f99fe952"
+    }
+  ],
+  "delivery_scope": "INTERNAL_IMPLEMENTATION_HANDOFF",
+  "private_vendor_key": "EXCLUDED",
+  "public_third_party_license_status": "NOT_ASSESSED",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO",
+  "explicitly_not_delivered": [
+    "raw PCM or ADM",
+    "raw runtime traces",
+    "binary contents",
+    "addresses or disassembly identifiers",
+    "vendor private key or authentication material"
+  ]
+}

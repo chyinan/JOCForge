@@ -1,0 +1,17 @@
+{
+  "schema": "long-transform-refresh-composition-check.v1",
+  "package": "LONG-TRANSFORM-REFRESH-COMPOSITION",
+  "manifest_sha256": "4eaa2690e30ed0705404d7a6cd835e8637c2f933319d60be8812d900cb6521c1",
+  "payload_count": 8,
+  "payload_hashes_match": true,
+  "source_manifest_check_and_payloads_match": true,
+  "module_file_identity_runtime_bound": true,
+  "standalone_stage_replay": "PASS: 6 recipes x 2 calls; 3072 values at each fold/pre/FFT/post/wrapper boundary and 1536 history words",
+  "fft_group_index_canary": "PASS 32/32",
+  "composition_replay": "PASS: 3 recipes x 2 calls; spectrum 3072, POWER 1518, raw exponent 1302, refresh state 2604, markers 6",
+  "native_inner_fft_stage_buffers": "NOT_RUN",
+  "native_same_generation_coefficient_power_joins": 180,
+  "independent_product_audio_integration": "NOT_RUN",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO"
+}

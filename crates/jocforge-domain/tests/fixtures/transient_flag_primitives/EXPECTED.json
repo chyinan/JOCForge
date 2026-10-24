@@ -1,0 +1,13 @@
+{
+  "schema": "f07-selected-frame-flag-expected-digests.v1",
+  "structure_refresh": {
+    "case_count": 4096,
+    "serialized_flag_count": 24576,
+    "ascii_output_sha256": "724105a06037f6d9fc3c91f621469845fc28f867d0971b46d0ac3102509fff53"
+  },
+  "dither": {
+    "plan_count": 2048,
+    "serialized_flag_count": 73728,
+    "ascii_output_sha256": "0a94502a427bb52fa66757fe26f5afbe6ed29bf55b0d1a6cd96f186ce6886563"
+  }
+}

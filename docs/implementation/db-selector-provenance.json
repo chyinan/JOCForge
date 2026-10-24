@@ -1,0 +1,12 @@
+{
+  "slice": "F09G_PRECOMPUTED_MEANS_TO_DB_SELECTOR",
+  "source_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "gain_db_spec_sha256": "f6e73ca2e361c06413974f4b7725fdc94f8e1d13a6a299062edde9dc3a7e6c12",
+  "parameter_artifact_sha256": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a",
+  "input_vectors_sha256": "afed7b0fdd7b80374a63cfb0b5922d6c988ea0c4a4417f09d2f28af5de462bc5",
+  "result_sha256": "2cbca405e9af2cf6f95e8bc36546a387ed7f26ff73afd222715e9bf720136849",
+  "review_status_sha256": "4ee71cd301c607b953f0dfc1a4f19894a1a97939925bbce1e1fa3fa4d67f151d",
+  "implementation_status": "LOCAL_MEAN_TO_SELECTOR_SLICE_ONLY__WHOLE_F09G_AND_F09_DEFERRED",
+  "whole_f09g_closed": false,
+  "whole_f09_closed": false
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "fft-group-index-canary-input.v1",
+  "recipe": {
+    "complex_count": 16,
+    "float_count": 32,
+    "input_rule": "((word_index*5)%17-8)/16",
+    "exact_binary32": true
+  },
+  "parameters": "PARAMETERS.arrays.butterfly_f32_bits",
+  "expected_used_as_seed": false,
+  "scope": "16-complex helper discriminator only; selected product transform remains128-complex."
+}

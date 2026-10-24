@@ -1,0 +1,28 @@
+{
+  "schema": "washed-f13c-id11-boundary-validation.v1",
+  "source_r13_manifest_sha256": "46b6a7418f759a134fd722a50979440b9fcc75e41552b557388ffddd85ffcfbe",
+  "wash_independent_validation": {
+    "source_manifest_and_payload_hashes": "PASS",
+    "payload_count": 10,
+    "sealed_file_count": 13,
+    "id11_cases": 72,
+    "id11_status_counts": {
+      "fail": 69,
+      "success": 3
+    },
+    "id11_exact_69_semantic_bits": 546,
+    "id11_final_alignment_bits": 6,
+    "trailing_zero_and_ff_accepted_with_8_bits_remaining": true,
+    "failure_owner_equal_cold": 2,
+    "failure_owner_changed": 67,
+    "generic_collector_normal_optimized_replay": "9/9 status/cursor/payload-call cases, zero mismatches",
+    "generic_collector_arena_output_reproduced": false
+  },
+  "limits": {
+    "whole_F13C": "NOT_READY",
+    "ID14_semantic_parser": "NOT_OBSERVED_IN_BOUNDED_SCOPE",
+    "new_full_song_native_encode": "NOT_RUN",
+    "parent_transaction_no_commit": "NOT_PROVEN",
+    "PCM_persisted_or_hashed": false
+  }
+}

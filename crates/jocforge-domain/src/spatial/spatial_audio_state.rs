@@ -15,8 +15,11 @@ pub(crate) mod descriptor_control;
 pub(crate) mod direct_lfe;
 pub(crate) mod fitting_mode0;
 pub(crate) mod receiver_mode1;
+pub(crate) mod spatial_audio_composer;
 pub(crate) mod spatial_audio_receiver;
 pub(crate) mod type10_assembler;
+
+pub use fitting_mode0::SelectedJocQmfProjection;
 
 const EXPECTED_COLD_BYTES: usize = 813_733;
 const NEGATIVE_ZERO_BITS: u32 = 0x8000_0000;
@@ -81,18 +84,31 @@ impl SpatialAudioState {
     fn new_cold() -> Result<Self, SpatialAudioError> {
         let root = F04CompositionState::cold();
         root.validate_cold()?;
+        let state = Self::from_root(root)?;
+        if state.canonical_bytes.len() != EXPECTED_COLD_BYTES {
+            return Err(SpatialAudioError::EncodedColdLengthMismatch);
+        }
+        Ok(state)
+    }
+
+    fn from_root(root: F04CompositionState) -> Result<Self, SpatialAudioError> {
         let mut encoder = F04StateEncoder::with_capacity(EXPECTED_COLD_BYTES);
         root.encode(&mut encoder)?;
         let canonical_bytes = encoder.finish();
-        if canonical_bytes.len() != EXPECTED_COLD_BYTES {
-            return Err(SpatialAudioError::EncodedColdLengthMismatch);
-        }
         let digest = SpatialAudioDigest::from_canonical_bytes(&canonical_bytes);
         Ok(Self {
             root,
             canonical_bytes: canonical_bytes.into_boxed_slice(),
             digest,
         })
+    }
+
+    fn staged_copy(&self) -> Self {
+        Self {
+            root: self.root.clone(),
+            canonical_bytes: self.canonical_bytes.clone(),
+            digest: self.digest,
+        }
     }
 
     pub fn canonical_bytes(&self) -> &[u8] {
@@ -214,6 +230,20 @@ impl SpatialAudioMachine {
             return Err(SpatialAudioError::BeforeDigestMismatch);
         }
         Ok(())
+    }
+
+    #[cfg(test)]
+    pub(in crate::spatial::spatial_audio_state) fn admit_staged_for_test(
+        &mut self,
+        staged: SpatialAudioStaged,
+    ) {
+        assert_eq!(staged.before_generation, self.generation);
+        assert_eq!(staged.before_digest, self.committed.digest());
+        let (state, _, before_generation, _) = staged.into_parts();
+        self.committed = state;
+        self.generation = before_generation
+            .checked_add(1)
+            .expect("test callback generation remains bounded");
     }
 }
 
@@ -369,7 +399,7 @@ impl SpatialAudioJoinMetadata {
     }
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 struct F04CompositionState {
     callback_index: FrontendCallbackIndex,
     retired: bool,
@@ -382,13 +412,13 @@ struct F04CompositionState {
     receiver_callback_count: ReceiverCallbackCount,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 struct ComponentAudioState {
     overlap_history_rows: [RawBytes; 15],
     source_ring_rows: [RawBytes; 15],
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 struct ComponentFilterParameterState {
     peak: f32,
     previous_gain: f32,
@@ -400,7 +430,7 @@ struct ComponentFilterParameterState {
     blocks_processed: i64,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 struct LfeDelayRingState {
     write_index: i64,
     read_index: i64,
@@ -409,7 +439,7 @@ struct LfeDelayRingState {
     model_samples_consumed: i64,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 struct RowState {
     current: [RawWord; 6],
     target: [RawWord; 6],
@@ -417,14 +447,53 @@ struct RowState {
     remaining: [RawWord; 6],
 }
 
-#[derive(Debug, PartialEq)]
+/// Immutable receiver accumulator fields needed by the downstream JOC geometry
+/// check. This projection owns values only and has no spatial-audio authority.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[allow(clippy::struct_field_names)]
+pub(crate) struct JocGeometryRowState {
+    current_words: [u32; 6],
+    target_words: [u32; 6],
+    slope_words: [u32; 6],
+    remaining_words: [u32; 6],
+}
+
+impl JocGeometryRowState {
+    fn from_owner(row: &RowState) -> Self {
+        let words = |values: &[RawWord; 6]| values.map(|value| u32::from_le_bytes(value.0));
+        Self {
+            current_words: words(&row.current),
+            target_words: words(&row.target),
+            slope_words: words(&row.slope),
+            remaining_words: words(&row.remaining),
+        }
+    }
+
+    pub(crate) const fn current_words(&self) -> &[u32; 6] {
+        &self.current_words
+    }
+
+    pub(crate) const fn target_words(&self) -> &[u32; 6] {
+        &self.target_words
+    }
+
+    pub(crate) const fn slope_words(&self) -> &[u32; 6] {
+        &self.slope_words
+    }
+
+    pub(crate) const fn remaining_words(&self) -> &[u32; 6] {
+        &self.remaining_words
+    }
+}
+
+#[derive(Clone, Debug, PartialEq)]
 struct RingState {
     words: RawBytes,
     write_index: i64,
     read_index: i64,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 struct TemporalState {
     span: i64,
     stride_bytes: i64,
@@ -433,7 +502,7 @@ struct TemporalState {
     buffers: Box<[RawBytes]>,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 struct DescriptorState {
     tail_peak: RawWord,
     hold_count: i64,
@@ -443,7 +512,7 @@ struct DescriptorState {
     gain: RawWord,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 struct ModelState {
     filter_state: [RawWord; 16],
     row_states: [RowState; 16],
@@ -461,7 +530,7 @@ struct ModelState {
     target_coefficients: NoneSentinel,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 struct QmfWindowState {
     target_temporal: TemporalState,
     target_history: [[RawBytes; 9]; 15],
@@ -474,7 +543,7 @@ struct QmfWindowState {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct RawWord([u8; 4]);
 
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 struct RawBytes {
     bytes: Box<[u8]>,
 }

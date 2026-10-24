@@ -5,12 +5,12 @@ use sha2::{Digest, Sha256};
 const TIMER_PERIODS: [i64; 6] = [24_000, 48_000, 48_000, 4_800, 24_000, 48_000];
 const TIMER_FIELDS: [usize; 6] = [0, 5, 4, 6, 7, 8];
 const TIMER_PRIORITY: [usize; 6] = [1, 2, 5, 0, 4, 3];
-
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub(super) struct TimerState {
     pub remaining: [i64; 6],
     pub cached: [i64; 6],
     pub mode: i64,
+    /// The local v1 canonical `counter` slot carries the native counter_low_s16 value.
     pub counter: i64,
 }
 
@@ -38,8 +38,18 @@ impl TimerState {
         digest.finalize().into()
     }
 
-    pub fn advance(&self, config: &[Value]) -> Result<TimerAdvance, MetadataOwnerError> {
-        if self.mode != 1 || self.counter != -513 || config.len() != 9 {
+    pub fn advance(
+        &self,
+        config: &[Value],
+        samples: i64,
+        counter_flag: bool,
+    ) -> Result<TimerAdvance, MetadataOwnerError> {
+        if !matches!(self.mode, 0 | 1)
+            || config.len() != 9
+            || samples < 0
+            || i32::try_from(samples).is_err()
+            || i16::try_from(self.counter).is_err()
+        {
             return Err(MetadataOwnerError::Timer);
         }
 
@@ -50,7 +60,21 @@ impl TimerState {
 
         let mut next = self.clone();
         for remaining in &mut next.remaining {
-            *remaining -= 1536;
+            *remaining = remaining
+                .checked_sub(samples)
+                .ok_or(MetadataOwnerError::Timer)?;
+        }
+
+        let mut output_counter_flag = counter_flag;
+        if (-512..=512).contains(&next.counter) {
+            let counter = i16::try_from(next.counter).map_err(|_| MetadataOwnerError::Timer)?;
+            let decremented = counter.wrapping_sub(1);
+            next.counter = i64::from(decremented);
+            if decremented == 0 {
+                output_counter_flag = false;
+            } else if i32::from(decremented).unsigned_abs().is_power_of_two() {
+                output_counter_flag = true;
+            }
         }
 
         if matches!(input[0], -2 | -1) && next.cached[0] == -1 {
@@ -75,17 +99,21 @@ impl TimerState {
         }
 
         let mut output = input;
-        output[0] = -2;
-        output[4..=8].fill(-512);
         let mut refreshed_field = None;
-        for timer in TIMER_PRIORITY {
-            if next.remaining[timer] <= 0 {
-                let field = TIMER_FIELDS[timer];
-                output[field] = next.cached[timer];
-                next.cached[timer] = if timer == 0 { -1 } else { -1024 };
-                next.remaining[timer] = TIMER_PERIODS[timer];
-                refreshed_field = Some(field as u8);
-                break;
+        if next.mode == 1 {
+            output[0] = -2;
+            output[4..=8].fill(-512);
+            if !output_counter_flag {
+                for timer in TIMER_PRIORITY {
+                    if next.remaining[timer] <= 0 {
+                        let field = TIMER_FIELDS[timer];
+                        output[field] = next.cached[timer];
+                        next.cached[timer] = if timer == 0 { -1 } else { -1024 };
+                        next.remaining[timer] = TIMER_PERIODS[timer];
+                        refreshed_field = Some(field as u8);
+                        break;
+                    }
+                }
             }
         }
 
@@ -93,6 +121,7 @@ impl TimerState {
             next,
             output,
             refreshed_field,
+            counter_flag: output_counter_flag,
         })
     }
 }
@@ -102,7 +131,11 @@ pub(super) struct TimerAdvance {
     pub next: TimerState,
     pub output: [i64; 9],
     pub refreshed_field: Option<u8>,
+    pub counter_flag: bool,
 }
+
+#[cfg(test)]
+mod timer_vectors;
 
 pub(super) fn encode_id1_payload(fields: &[i64; 9]) -> Result<Vec<u8>, MetadataOwnerError> {
     let mut writer = BitWriter::default();

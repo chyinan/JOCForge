@@ -1,0 +1,57 @@
+{
+  "schema": "fresh-current-normalization-spec-review.v1",
+  "current_spec_sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc",
+  "previous_spec_sha256": "eea5ed9833a6ca19d859df21f68f3b08e34407ace846f94e64ac5416957c59fb",
+  "parameter_artifact_sha256": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a",
+  "input_recipe_artifact_sha256": "afed7b0fdd7b80374a63cfb0b5922d6c988ea0c4a4417f09d2f28af5de462bc5",
+  "exact_diff": "--- previous-reviewed-spec\n+++ current-spec\n@@ -50,7 +50,7 @@\n \n F09 \u7684 POWER \u5237\u65b0\u7b56\u7565\u4e0e PRIMARY raw \u5e8f\u5217\u5316\u6307\u6570\u662f\u72ec\u7acb\u8f93\u5165\u3002\u5168\u5e26\u5bbd\u5148\u5b8c\u6210\u8be5\u5e27\u5168\u90e8 reuse \u533a\u95f4\u7684 PRIMARY/gain \u6700\u5c0f\u503c\u5408\u5e76\uff0c\u7136\u540e\u5404 anchor \u8fd0\u884c\u4e00\u6b21\u672c\u7b97\u6cd5\u3002\u6bcf\u4e2a reuse \u5757\u83b7\u5f97 anchor \u7684\u5b8c\u6574\u5c55\u5f00\u6307\u6570\u548c\u7ee7\u627f\u7684 gain\uff0c\u4e0d\u80fd\u7528\u6b4c\u66f2\u7b56\u7565\u7f13\u5b58\u4ee3\u66ff\u8ba1\u7b97\u3002\n \n-LFE \u7684\u516d\u4e2a marker \u76f4\u63a5\u4f5c 1/0 \u7b56\u7565\uff0c\u9996\u5757\u5fc5\u987b\u5237\u65b0\u3002\u5728\u5176\u5404 reuse \u533a\u95f4\uff0c7 \u9879 PRIMARY raw \u6309 bin \u53d6\u6700\u5c0f\u503c\uff0c\u518d\u8c03\u7528 span=1 \u7684 normalization\u3002option \u4e0e LFE \u72ec\u7acb gate \u663e\u5f0f\u4f20\u5165\uff1b\u5f53\u524d\u9009\u5b9a\u503c\u4e3a option=1\u3001gate=0\u3002\u4e0d\u80fd\u4ece\u5168\u5e26\u5bbd gate \u63a8\u5bfc\u4e00\u822c LFE \u914d\u7f6e\u3002\n+LFE \u7684\u516d\u4e2a marker \u76f4\u63a5\u4f5c 1/0 \u7b56\u7565\uff0c\u9996\u5757\u5fc5\u987b\u5237\u65b0\u3002\u5728\u5176\u5404 reuse \u533a\u95f4\uff0c7 \u9879 PRIMARY raw \u6309 bin \u53d6\u6700\u5c0f\u503c\uff0c\u518d\u8c03\u7528 span=1 \u7684 normalization\u3002option \u548c LFE \u72ec\u7acb gate \u663e\u5f0f\u4f20\u5165\uff1b\u5f53\u524d\u9009\u5b9a\u503c\u4e3aoption=1\u3001gate=0\u3002gate\u7531F09LB\u7684selected producer\u4ea7\u751f\uff0c\u4e0d\u80fd\u4ece\u5168\u5e26\u5bbdgate\u63a8\u5bfc\uff1bAHT-enabled\u6269\u5c55profile\u4e0d\u5728\u5f53\u524d\u652f\u6301\u57df\u3002\n \n \u6b63\u5e38\u8f93\u5165raw\u4e3a\u516d\u884c\u4e25\u683c\u6574\u65700\uff5e24\u3002\u5168\u5e26\u5bbdstrategy\u4e3a\u516d\u4e2a\u4e25\u683c\u6574\u65700\uff5e3\uff0c\u9996\u9879\u975e\u96f6\uff0canchor\u76841/2/3\u5206\u522b\u5bf9\u5e94span=1/2/4\u3002LFE strategy\u53ea\u63a5\u53d7\u516d\u4e2a\u4e25\u683c\u6574\u65700\u62161\uff0c\u9996\u9879\u5fc5\u987b\u4e3a1\uff0c\u5404anchor\u56fa\u5b9aspan=1\uff1bLFE\u8f93\u51652\u62163\u62a5 `EXPONENT_INPUT_ERROR`\u3002\u5168\u5e26\u5bbdgain\u4e3a\u516d\u4e2a\u4e25\u683c\u6574\u65700\uff5e3\u3002bool\u4e0d\u7b97\u6574\u6570\u3002option\u53ea\u63a5\u53d70/1\uff1bgate\u662f\u663e\u5f0fI16\u3002D06-N\u5fc5\u987b\u6765\u81ea\u6388\u6743provider\uff0c\u4e0d\u80fd\u7528\u6709\u7406\u5019\u9009\u6216\u5b57\u9762\u503c\u7ed5\u8fc7\u8eab\u4efd\u6838\u9a8c\u3002\n \n",
+  "changes": [
+    {
+      "field": "F10.6 LFE independent gate provenance",
+      "previous": "Selected option=1 gate=0; no general derivation from FBW gate.",
+      "current": "Same selected values; explicitly names selected producer and excludes AHT-enabled extension.",
+      "classification": "Producer attribution and profile scope restriction; no arithmetic changes to FBW 217-bin normalization or these two recipes."
+    }
+  ],
+  "fresh_review_result": "PASS_FOR_TWO_FBW_RECIPE_REPLAYS_ONLY",
+  "current_hash_bound": true,
+  "old_review_claim_extended_to_current": false,
+  "checks": [
+    {
+      "case_id": "mod25",
+      "independent_checker": {
+        "base_exponent": 3,
+        "expanded_i16le_sha256": "40ded5c47c45130cd2fa255ae0ea6e3389c4bc95c801affafd75f8ed1ad0c243",
+        "initial_sum_i32": 1514,
+        "first_pass_square_error_i32": 8006,
+        "error_shift_i32": 524681216,
+        "grouped_sample_count_i16": 216,
+        "scaled_count_f32_word": 967625933,
+        "lrint_threshold_i32": 707789,
+        "second_pass_triggered": false
+      },
+      "output_words_native_vs_research_model_mismatch_count": 0,
+      "input_words_match_source_generator": true,
+      "native_output_matches_independent_checker_hash": true
+    },
+    {
+      "case_id": "zigzag24",
+      "independent_checker": {
+        "base_exponent": 0,
+        "expanded_i16le_sha256": "7eae5ccd093cef1f4a746aa7035e4523b1b0492de2d65a8ecbe027acc882e011",
+        "initial_sum_i32": null,
+        "first_pass_square_error_i32": null,
+        "error_shift_i32": null,
+        "grouped_sample_count_i16": 216,
+        "scaled_count_f32_word": null,
+        "lrint_threshold_i32": null,
+        "second_pass_triggered": false
+      },
+      "output_words_native_vs_research_model_mismatch_count": 0,
+      "input_words_match_source_generator": true,
+      "native_output_matches_independent_checker_hash": true
+    }
+  ],
+  "LFE_producer_statement_independently_native_verified_this_run": false,
+  "whole_F10_ready": false
+}

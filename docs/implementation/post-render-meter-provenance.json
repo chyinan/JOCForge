@@ -1,0 +1,66 @@
+{
+  "schema": "post-render-meter-callback-composition.v1",
+  "classification": "SYNTHETIC_TYPED_PACKET_SUBCHAIN",
+  "local_fixture": {
+    "file": "crates/jocforge-domain/tests/fixtures/post_render_meter/zero_programme.json",
+    "bytes": 1037,
+    "sha256": "fbb1ba5bb6d027d4b7663bbf6219fd4b79555e53deb0042fd106cc2a1f543de9"
+  },
+  "lfe_input_fixture": {
+    "file": "crates/jocforge-domain/tests/fixtures/meter_frontend_oar/lfe_delay_inputs.json",
+    "bytes": 922,
+    "sha256": "8e940cef901862086fb858e940cd74faf6f091693bfb7917037584b861bea2f7"
+  },
+  "implementation_files": [
+    "crates/jocforge-domain/src/meter/post_render_meter.rs",
+    "crates/jocforge-domain/src/meter/object_renderer.rs",
+    "crates/jocforge-domain/src/meter/object_render_metadata.rs",
+    "crates/jocforge-domain/src/meter/object_gain_mixer.rs",
+    "crates/jocforge-domain/src/meter/lfe_delay_ring.rs",
+    "crates/jocforge-domain/src/meter/shared_gain_delay.rs",
+    "crates/jocforge-domain/src/meter/sample_block_queue.rs",
+    "crates/jocforge-domain/src/meter/energy_window.rs",
+    "crates/jocforge-domain/src/meter/true_peak.rs",
+    "crates/jocforge-domain/src/meter/integrated_meter.rs",
+    "crates/jocforge-domain/src/meter/ungated_mean.rs"
+  ],
+  "clock_domains": [
+    "ObjectRenderCallbackIndex",
+    "ObjectRenderCallbackGeneration",
+    "SharedGainDelayCallbackIndex",
+    "MeterCallbackIndex",
+    "MeterUpstreamGeneration",
+    "MeterSamplePosition",
+    "MeterBlockIndex",
+    "EnergyRecordCount"
+  ],
+  "callback_order": [
+    "stage the independent meter LFE ring and build a same-generation OAR packet from supplied regular SCP/control values",
+    "validate shared OAR/DV32/meter callback generation",
+    "stage OAR metadata, records, targets, gains and task sum",
+    "stage shared six-lane DV32",
+    "stage F06W publication and actual pending sample values",
+    "for each complete 1024-sample block: true peak then K/window",
+    "for each completed 960-sample energy record: integrated and ungated meter"
+  ],
+  "selected_test": {
+    "source_samples": 1,
+    "normal_callbacks": 1,
+    "zero_input_drains": 3,
+    "published_samples_per_lane": 1536,
+    "complete_1024_blocks": 1,
+    "raw_pending_samples_per_lane": 512,
+    "energy_records": 1,
+    "energy_window_partial_samples": 64,
+    "integrated_energy_pair_count": 1,
+    "numeric_leaf_values": "computed from the explicit synthetic zero OAR packet"
+  },
+  "production_readiness": {
+    "independent_adm_frontend": "NOT_IMPLEMENTED",
+    "independent_oar_packet_producer": "NOT_IMPLEMENTED",
+    "complete_eight_owner_meter_root": "NOT_IMPLEMENTED",
+    "terminal_measurement_receipt": "NOT_MINTED",
+    "metadata_source_stage": "REQUIRES_A_VERIFIED_PROGRAMME_MEASUREMENT_RECEIPT_AND_TYPED_BODIES",
+    "real_adm_validation": "NOT_RUN"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "f09-runtime-event-receipt.v1",
+  "legacy_receipt_sha256": "2e1eb8e80932dac7fa007a0c672d503fef5c5810bef433a993cce4cdfda24b22",
+  "trace_sha256": "d607032cff3ec1baf4ee9ad9761742a144f649bf06cbb6349810225faa2cb14b",
+  "hook_sha256": "19e2d7665b3f2be8a721edc0a406c6dd20b3e3e17a6a41c975197ba6de0b9489",
+  "legacy_f12_capture_count": 0,
+  "legacy_counter_filter": "f12_controlled_vectors only; zero is not a count of F09 events",
+  "actual_f09_controlled_payload_events": 1,
+  "actual_controlled_case_count": 7,
+  "all_import_event_count": 13,
+  "natural_frame_owner_imports": 6,
+  "controlled_imports_excluded_from_natural": 7,
+  "frame_owner_consumers": 6,
+  "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "module_identity": "File bytes read inside target from actual loaded module path; host rehash matches, not relocated memory hash",
+  "reference_ec3_control_match": true,
+  "native_config_capture": "RUNTIME_CONFIRMED"
+}

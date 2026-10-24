@@ -1,0 +1,13 @@
+{
+  "started_utc": "2026-10-23T05:36:15.063460+00:00",
+  "job_sha256": "87877c944a521e7a889276b9c2b2a264b6281741ec6c5cd801eb665dc77ff015",
+  "observer_sha256": "3a8398ddd25841362a57f3657d17ea961b946c42c2bfa20c5bba8898fd144711",
+  "trace_sha256": "9e03c6d36cde89a4f42e8be748650e9b88dc7575aca322d88ef5fbc934748e26",
+  "native_controlled_cases": 2,
+  "compared_output_words": 434,
+  "mismatch_count": 0,
+  "reference_ec3_sha256": "5ee3c8a39ba421fae56bdc7d77103909644bb419a6b7f87b3f31205a2e8d0987",
+  "baseline_reference_hash_matches": true,
+  "native_business_parameters_modified": false,
+  "raw_pcm_persisted": false
+}

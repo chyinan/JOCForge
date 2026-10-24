@@ -1,0 +1,9 @@
+{
+  "schema": "f13c-partial-frame-padding-handoff-check.v1",
+  "handoff_manifest_sha256": "7e839dd2c4ff414651754056c40075360b1cb896422b926a64f4619b8af314f2",
+  "source_package_manifest_sha256": "47dd26dc64d91de60a8735ee8cc9885da386a58b0c56a9cabc23d97e1303f0d9",
+  "base_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "payload_hashes_match": true,
+  "whole_F13C_ready": false,
+  "implementation_ready": false
+}

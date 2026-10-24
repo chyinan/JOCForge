@@ -1,0 +1,21 @@
+{
+  "native_capture_executed": true,
+  "started_utc": "2026-10-23T15:08:02.088425+00:00",
+  "observer_sha256": "8bb84faa1c47b88308f751e94574b29ba1ad2f0bcca5a2bb64539cfefa1052c6",
+  "job_sha256": "ade4e3fcd330ba73b771a9ec33ec1610f4e0efeb6a4c34d9ff51cd73387eef5b",
+  "trace_sha256": "716af6d363bad556c814c1e77e83ab63235db3e24ad0a662d8666ff6271751b7",
+  "events": 49,
+  "observer_errors": 0,
+  "production_top_constructor_observed": 1,
+  "natural_queue_constructs": 5,
+  "independent_queue_constructs": 5,
+  "parent_and_frontend_calls": 6,
+  "reference_EC3_bytes": 16384,
+  "reference_EC3_sha256": "5ee3c8a39ba421fae56bdc7d77103909644bb419a6b7f87b3f31205a2e8d0987",
+  "reference_matches_baseline": true,
+  "reference_fixture": "BOUNDED_SECONDARY_NOT_PRIMARY_SONG",
+  "raw_PCM_key_or_authentication_content_read": false,
+  "configuration_block_bytes_read": 0,
+  "live_roots_parameters_or_branches_modified": false,
+  "full_parent_failure_injected": false
+}

@@ -1,0 +1,57 @@
+{
+  "schema": "f13c-reader-source-join-fixture-provenance.v1",
+  "source_package": "IMPLEMENTER_SUPPLEMENTS/F13C-READER-SOURCE-JOIN",
+  "base_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_package_manifest_sha256": "2276298e21d58276650062466941455f5ebadd0be4542ecbfae25588a71d1899",
+  "handoff_manifest_sha256": "7f6adb938741b61ac15c7aeca1dac759504e291af302ab3d460bd41fc64aa7b6",
+  "handoff_check_sha256": "45f871629f970e49a31e29cfd31b086615c39ab9fbafc472abe601eaec35d026",
+  "related_eof_handoff_manifest_sha256": "ef7fa983440fd11784fe9f24f64284240f00fd053853dc1cc28067d3b1cf0d42",
+  "relative_control_position_to_absolute_sample_mapping": "selected item start sample + selected-segment-relative reader cursor before this frame; one selected capture only",
+  "absolute_file_byte_offset": "NOT_BOUND",
+  "host_clock": "NOT_BOUND",
+  "PCM_content": "NOT_READ",
+  "same_owner_reset": "NOT_RUN",
+  "whole_F13C_ready": false,
+  "fixtures": [
+    {
+      "file": "INPUTS.json",
+      "bytes": 19223,
+      "sha256": "300f201215d3713b4e8eed212dacfb1d8fa78a3cd8fd88b8b23bd11f6191ce89"
+    },
+    {
+      "file": "NATIVE-OBSERVATIONS.json",
+      "bytes": 19161,
+      "sha256": "2e2a88054872d4a530c07b807537113550fcc093428c4a77f7b4da58d6ed4dbf"
+    },
+    {
+      "file": "CONTRACT.json",
+      "bytes": 1799,
+      "sha256": "78536aa19c8f8e8120e955da2d6d3b0bf62dc67cf581764de6309ac7e9147447"
+    },
+    {
+      "file": "CURRENT-OVERLAY.json",
+      "bytes": 665,
+      "sha256": "8f42546a440ed9cc91845a6c0a6e375425eb4ff0371812d66f64f32ad4d4b288"
+    },
+    {
+      "file": "CHECK.json",
+      "bytes": 289,
+      "sha256": "0f87ea3e4f3db7c87b87a75947e3ad3558656f59260831ae9a38974132876825"
+    },
+    {
+      "file": "SOURCE-AUDIT.json",
+      "bytes": 1260,
+      "sha256": "aabc7da7087f25a410e2d90fd8508452abf9054dda788ba66738ef6400c2506e"
+    },
+    {
+      "file": "WASH-INDEPENDENT-CHECK.json",
+      "bytes": 1545,
+      "sha256": "81b661ed79c1c91cf76215bafa6738c2d7498cefe37923e6a1874c49bac8db05"
+    },
+    {
+      "file": "READER-SOURCE-ADDENDUM.md",
+      "bytes": 1526,
+      "sha256": "ac2c9dbbe2a702d80e3ef920298e6033f83b1125be5723b3e2657b6b678f65f7"
+    }
+  ]
+}

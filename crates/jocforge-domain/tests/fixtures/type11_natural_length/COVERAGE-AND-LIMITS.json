@@ -1,0 +1,25 @@
+{
+  "complete_model_scope": "All frozen callback attempts are accounted for:4251 total, first2 without Type11 output;4249 outputs fresh-reencoded only from metadata and independent DBMD. No zero-padded ID11 seed is used in this study.",
+  "model_reexecution_order": "All fresh payload bytes were produced before archived expected payloads were opened. Fresh bytes match every archived payload. The standalone checker independently replays serialized length, not full payload bytes.",
+  "natural_queue_link": "Native observations bind producer, formatter, frontend, collector, ingress and copy within each of69 source-call generations. Model-side queue is NOT_RUN in the fresh Type11-only probe; historical queue policy160 is not used to constrain generation.",
+  "metadata_inputs": "Frozen delivered control52 geometry/control words and standalone DBMD metadata only. No audio export script was executed, no raw PCM/checkpoints were read, and no PCM content hashes were computed or used as prediction inputs. Frozen JSON report hash fields were not used to calculate Type11 outputs.",
+  "not_proven": [
+    "All possible selected metadata/profile inputs produce<=160.",
+    "Full primary-song native ID11 generation/queue behavior.",
+    "An independent complete upstream control/PCM producer rerun.",
+    "Semantic parser/complexity or semantic carrier_block closure."
+  ],
+  "additional_materials_if_native_primary_parity_required": [
+    {
+      "name": "Verified full-primary selected native job/driver",
+      "purpose": "Normal original-engine full-primary run with the intended single-output configuration, plus readonly metadata-only hooks.",
+      "condition": "Resolve the previously recorded primary-driver/output-configuration scope before claiming full-primary native coverage; do not substitute the secondary fixture."
+    },
+    {
+      "name": "Complete independent upstream metadata provider",
+      "purpose": "Reproduce delivered control52 generation without frozen diagnostic inputs.",
+      "condition": "Bind all upstream selector/fit/state rules to the programme owner. Current fresh Type11-stage replay uses frozen model-produced metadata inputs explicitly."
+    }
+  ],
+  "earlier_observer_attempt": "A preliminary collector return pointer was retained as a transient callback retval object. It was corrected by copying its pointer value before later callbacks. Accepted native set uses the corrected observer; preliminary identity booleans are not used."
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "f09e-refresh-difference-map-check.v1",
+  "package": "F09E-REFRESH-DIFFERENCE-MAP",
+  "manifest_sha256": "ad4708faaf4f1f9d71a93bc0fdebe4eca4f6a4aff1080579ef5f1cce77808d57",
+  "payload_count": 4,
+  "all_payload_hashes_match": true,
+  "source_manifest_sha256_match": true,
+  "source_file_hash_and_size_matches": 4,
+  "formula_matches_all_valid_vectors": 32,
+  "valid_vector_count": 32,
+  "rejected_input_count": 7,
+  "generated_i16le_bytes": 64,
+  "generated_i16le_sha256": "a0e75dafa9f3c1627ec36351ed857711c5a79f60fd7fda0b9f988f0505a4a070",
+  "coordinator_rule_replay": "PASS",
+  "independent_peer_review": "NOT_RUN",
+  "native_execution": "NOT_REQUIRED_FOR_THIS_INTEGER_RULE_AND_NOT_RUN_THIS_TURN",
+  "delivery_scope": "INTERNAL_ONLY",
+  "whole_implementation_ready": "NO"
+}

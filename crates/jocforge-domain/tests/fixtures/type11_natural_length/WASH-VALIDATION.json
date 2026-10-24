@@ -1,0 +1,18 @@
+{
+  "schema": "washed-natural-type11-length-validation.v1",
+  "status": "SELECTED_SAMPLE_SUPPORTS_160_API_POLICY_NOT_UNIVERSAL",
+  "source_candidate_manifest_sha256": "c33784aecff1f08c3b7fd831c32f2e84be13d52de61806f4ac9ca66b406d213d",
+  "independent_checks": {
+    "candidate_payload_hashes_exact_file_set_envelope": "PASS",
+    "normal_checker": "4249 model lengths + 69 native identity receipts, zero mismatches",
+    "optimized_checker": "4249 model lengths + 69 native identity receipts, zero mismatches",
+    "model_execution_receipt": "4249 fresh writes byte-matched archived expected outputs before expected opened",
+    "raw_PCM_or_authentication_material": false
+  },
+  "limits": [
+    "Natural outputs above 160 not observed in tested selected model/native scopes.",
+    "No universal selected-profile or all-ADM upper bound proven.",
+    "Full primary-song native run not performed.",
+    "Whole F13C and product acceptance remain NOT_READY."
+  ]
+}

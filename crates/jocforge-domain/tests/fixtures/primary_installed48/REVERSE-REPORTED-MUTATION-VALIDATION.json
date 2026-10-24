@@ -1,0 +1,61 @@
+{
+  "cases": [
+    {
+      "case": "field0",
+      "optimized": false,
+      "exit_code": 1,
+      "error": "ValueError: Whole primary activity sequence",
+      "integrity_hashes_recomputed": true
+    },
+    {
+      "case": "field0",
+      "optimized": true,
+      "exit_code": 1,
+      "error": "ValueError: Whole primary activity sequence",
+      "integrity_hashes_recomputed": true
+    },
+    {
+      "case": "skip4",
+      "optimized": false,
+      "exit_code": 1,
+      "error": "ValueError: Whole primary activity sequence",
+      "integrity_hashes_recomputed": true
+    },
+    {
+      "case": "skip4",
+      "optimized": true,
+      "exit_code": 1,
+      "error": "ValueError: Whole primary activity sequence",
+      "integrity_hashes_recomputed": true
+    },
+    {
+      "case": "owner",
+      "optimized": false,
+      "exit_code": 1,
+      "error": "ValueError: Installed source mapping/metadata",
+      "integrity_hashes_recomputed": true
+    },
+    {
+      "case": "owner",
+      "optimized": true,
+      "exit_code": 1,
+      "error": "ValueError: Installed source mapping/metadata",
+      "integrity_hashes_recomputed": true
+    },
+    {
+      "case": "flag52",
+      "optimized": false,
+      "exit_code": 1,
+      "error": "ValueError: Postroute variants",
+      "integrity_hashes_recomputed": true
+    },
+    {
+      "case": "flag52",
+      "optimized": true,
+      "exit_code": 1,
+      "error": "ValueError: Postroute variants",
+      "integrity_hashes_recomputed": true
+    }
+  ],
+  "scope": "Current sanitized-owner/P11-bound replay, including approved spread vector suite; full waveform remains RAM-only."
+}

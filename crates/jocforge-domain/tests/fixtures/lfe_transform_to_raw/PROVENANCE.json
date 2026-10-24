@@ -1,0 +1,100 @@
+{
+  "schema": "lfe-transform-to-raw-provenance.v1",
+  "package": "LFE-TRANSFORM-TO-RAW",
+  "source_wash_package": "SANITIZED_F09_LFE_TRANSFORM_RAW_R1",
+  "source_manifest_sha256": "6d8208dfce9d1310d13021a6e9f772da38649b38acf3cfd9d5f5f779bd51c068",
+  "source_independent_check_sha256": "9716d502ef3c060daff9c6f69ff1e6251ed967f2481692221e9093b9466c44e6",
+  "source_payloads": [
+    {
+      "path": "INPUTS.json",
+      "bytes": 934,
+      "sha256": "a0482cc260a07901e1f1d72ff3dada518398fe90e654c78faeb558cd59c9c1b8"
+    },
+    {
+      "path": "EXPECTED.json",
+      "bytes": 199824,
+      "sha256": "30120cea975fe6184359173a44893e87e2f8383effa18fad8ab22d0567520baf"
+    },
+    {
+      "path": "PARAMETERS.json",
+      "bytes": 9572,
+      "sha256": "73ceb9195554577f5fde109cd97ca0b9ef4a1618be9497e6222bdd05963467e8"
+    },
+    {
+      "path": "CONTRACT.json",
+      "bytes": 5151,
+      "sha256": "db2fdb927fa70d93414776c136a866361a1ae9cf5404a705d77e2c71aafb66f3"
+    }
+  ],
+  "reference_module": {
+    "file_bytes_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "qualification": "Actual loaded-path module file hash computed in target and matched by host rehash; not a relocated memory-image digest."
+  },
+  "verified_dependency": {
+    "package": "LFE-COEFFICIENT-EXPONENT",
+    "manifest_sha256": "63d6fa945445ea9545b3ac02ad9df86b832a4abcccf6beb5caaf515ed1a3540a",
+    "check_sha256": "9321c12d5414febcce241e9102628434dc7ab6b1c0e1c4a1168b2037ba6fc258"
+  },
+  "evidence": {
+    "native_stage_boundaries": "RUNTIME_CONFIRMED: folded/pre/low-frequency output/helper boundaries and complete LFE wrapper outputs",
+    "static_rules": "STATIC_CONFIRMED for gather, FFT8, recurrence, post-rotation and raw coefficient exponent path",
+    "prototype_postcompare": "3 recipes x 2 calls; fold/pre/low/raw output compare",
+    "wash_independent_replay": "PASS: all folded/pre/low/spectrum/history/raw values independently recomputed",
+    "natural_same_generation_lfe_consumer_joins": 36,
+    "whole_audio_integration": "NOT_RUN"
+  },
+  "source_evidence_digests_only": [
+    {
+      "alias": "runtime_hook",
+      "bytes": 28110,
+      "sha256": "2973471ce224b5fdc541bf3cc72d596402e440bf034dfa42c396f04869f09b77"
+    },
+    {
+      "alias": "private_trace_digest_only",
+      "bytes": 822774,
+      "sha256": "8a70b0e33552e224f2a9eae8f4f86fec2d60f809a894230cda0ace925be49617"
+    },
+    {
+      "alias": "reference_receipt",
+      "bytes": 602,
+      "sha256": "d0e2f24f3c2b95e741ada38428651fb7414fa95d0c79129cc2c26e58d5d9519e"
+    },
+    {
+      "alias": "lfe_prototype",
+      "bytes": 4582,
+      "sha256": "77de92045db003f0f422c651cc237900cd2dcd073c45a71691c74e51ce60b8a9"
+    },
+    {
+      "alias": "static_low_fft",
+      "bytes": 2913,
+      "sha256": "3ba89baf24884471c2e1d58ce7bf578142653125ed3f459c2548eee1d279dad0"
+    },
+    {
+      "alias": "static_primary_post",
+      "bytes": 638,
+      "sha256": "d855bd560a203720548f7013cde6b23a9d2fff8acc3231bb0c04ce2f25da1a53"
+    },
+    {
+      "alias": "static_companion_post",
+      "bytes": 638,
+      "sha256": "7569e4ee2ef5287af39cc87ce3259202d853b786f976bfd4eb2f30716e47a874"
+    },
+    {
+      "alias": "static_fft8",
+      "bytes": 3308,
+      "sha256": "4ca83945541ed6259aba5beaeb3c74e94fd3312555cbdea9fd50305c3ab06fda"
+    }
+  ],
+  "delivery_scope": "INTERNAL_IMPLEMENTATION_HANDOFF",
+  "private_vendor_key": "EXCLUDED",
+  "public_third_party_license_status": "NOT_ASSESSED",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO",
+  "explicitly_not_delivered": [
+    "raw PCM or ADM",
+    "raw runtime traces",
+    "binary contents",
+    "addresses or disassembly identifiers",
+    "vendor private key or authentication material"
+  ]
+}

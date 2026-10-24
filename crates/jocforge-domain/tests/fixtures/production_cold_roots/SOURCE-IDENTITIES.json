@@ -1,0 +1,71 @@
+{
+  "sources": [
+    {
+      "role": "actual_selected_top_constructor",
+      "bytes": 25379,
+      "sha256": "f667a833e687267c706c5003a5b237659cac897df91c8f78515580f492e41b86"
+    },
+    {
+      "role": "selected_wrapper_initializer",
+      "bytes": 4010,
+      "sha256": "5bd183d9df8866489dd000af4b710cadfb7e5714f13477197772ef219f649259"
+    },
+    {
+      "role": "general_fifo_group_constructor",
+      "bytes": 3865,
+      "sha256": "ac10639cd56dba4efd175651f560e982cce3d9639dd4f51f39be43e75df03250"
+    },
+    {
+      "role": "queue_constructor",
+      "bytes": 1730,
+      "sha256": "5a6635061c5e5974b4c484261a1fd24789ddea7d5229b96c9a527d1e7ed6e50b"
+    },
+    {
+      "role": "serializer_history_constructor",
+      "bytes": 4980,
+      "sha256": "58084714daeb0ea7f0ecdd4bddd1b0e2230a751c0f71019252c53b8d402f0eb1"
+    },
+    {
+      "role": "ID11_owner_constructor",
+      "bytes": 832,
+      "sha256": "71658e06397d4545685743a7c4f110ce4337a79b76b5586b60c8aa31e0d6942b"
+    },
+    {
+      "role": "ID14_owner_constructor",
+      "bytes": 391,
+      "sha256": "559e8d8aaf5602e6dad0c7deace319e2cab51ab1a7a9b50e1711358459e9ffac"
+    },
+    {
+      "role": "ID2_owner_constructor",
+      "bytes": 494,
+      "sha256": "5bf1b355ee8235d39e4889b0dc4c76372304a36c98ab44b873cfa3de4bd92a9d"
+    },
+    {
+      "role": "protection_owner_initializer",
+      "bytes": 2497,
+      "sha256": "30e3dc02697b989e6f35ffb57fa92f96221c8f07ee5e77dacc837aee6fad5a13"
+    },
+    {
+      "role": "outer_codec_parent",
+      "bytes": 7290,
+      "sha256": "f2f4a60d998e2c8f20ceaa307fed08c7bf3bc6e010d23307e6d7146e86dec83b"
+    },
+    {
+      "role": "assembly_readiness",
+      "bytes": 4395,
+      "sha256": "04bdc79e1f26250bfa930d264f493a815d34e5242bd37aeecf6f2bec9b455ae0"
+    },
+    {
+      "role": "selected_frontend_dispatch",
+      "bytes": 6505,
+      "sha256": "17952ddcdeb76470ffc429e9173346e1dabb9f818cb31a9e4dbf8a748eeb458e"
+    },
+    {
+      "role": "caller_visible_publication_gate",
+      "bytes": 2880,
+      "sha256": "b3bd5f6c75dc74dbd631a1404f25aa1b13143197752cee4bf970162de4e63196"
+    }
+  ],
+  "original_binary_decompiler_addresses_or_private_material_included": false,
+  "live_analysis_named_constructor_and_gate_resolution": "SUCCESS"
+}

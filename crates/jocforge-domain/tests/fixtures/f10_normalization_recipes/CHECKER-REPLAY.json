@@ -1,0 +1,9 @@
+{
+  "cases": 2,
+  "compared_words": 434,
+  "mismatch_count": 0,
+  "expected_loaded_after_computation": true,
+  "checker_sha256": "dd348489f8db54bf76dc1dedd8ccb6df85803eba6de75a3ce294b9d70317fe25",
+  "native_rerun": false,
+  "verification_kind": "FRESH_INDEPENDENT_REPLAY_OF_NATIVE_OUTPUTS"
+}

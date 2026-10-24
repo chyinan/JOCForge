@@ -1,0 +1,21 @@
+{
+  "schema": "detached-delivery-envelope.v1",
+  "external_anchor": "Envelope SHA supplied separately",
+  "bindings": [
+    {
+      "file": "MANIFEST.json",
+      "bytes": 3337,
+      "sha256": "f210abc9fb0d92f239ebef228cb3c3e15b9f55a820623aecf650b96d537102f4"
+    },
+    {
+      "file": "INDEPENDENT-CHECK.json",
+      "bytes": 433,
+      "sha256": "965e890b1ad6cb0d3deb51d7fc6968b8753fd9b3a3332eaa0a44f41fd527aaf7"
+    },
+    {
+      "file": "verify_primary_source_metadata.py",
+      "bytes": 10789,
+      "sha256": "79432f90aa594615eb6506f914ed409917e6684d8b7a279463f195ab962ee76a"
+    }
+  ]
+}

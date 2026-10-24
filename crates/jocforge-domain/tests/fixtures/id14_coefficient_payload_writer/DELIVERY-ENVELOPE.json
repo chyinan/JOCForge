@@ -1,0 +1,71 @@
+{
+  "schema": "washed-implementer-supplement-delivery-envelope.v1",
+  "artifact_id": "F13C-ID14-COEFFICIENT-PAYLOAD-WRITER-V1",
+  "bindings": [
+    {
+      "file": "approved-codebooks.json",
+      "bytes": 92323,
+      "sha256": "515d635adc6099493dfd27f787bdf2b9f19a4b4bb1180860b0e820a23fb5d5ae"
+    },
+    {
+      "file": "CHECK-NORMAL.json",
+      "bytes": 2996,
+      "sha256": "1c63b4a25a83cf0640c5e23078e7c6d8fa9fe9f1c071b5adaccf0f933b161c55"
+    },
+    {
+      "file": "CHECK-OPTIMIZED.json",
+      "bytes": 2996,
+      "sha256": "1c63b4a25a83cf0640c5e23078e7c6d8fa9fe9f1c071b5adaccf0f933b161c55"
+    },
+    {
+      "file": "check_payload_writer.py",
+      "bytes": 7033,
+      "sha256": "7c507ac4abe8098dcd7da6b059cfc2db19e75a67fbab0869ccdef7b2415f3a8f"
+    },
+    {
+      "file": "CONTRACT.md",
+      "bytes": 3469,
+      "sha256": "df71d76fb6f1b9c8611c702f0eef9ad5e6ada75818ab8299fdab449fe2d4880b"
+    },
+    {
+      "file": "FROZEN-MODEL-POSTCOMPARE.json",
+      "bytes": 4846,
+      "sha256": "04564166aad3e720d5218bea2ee3fb6ac531ed4c8390be1ef2d688307af08639"
+    },
+    {
+      "file": "INDEPENDENT-CHECK.json",
+      "bytes": 249,
+      "sha256": "b79f939c7bec7b74969ebfdcad39b4ea1635ac082c0fdd18afb2941b56144f05"
+    },
+    {
+      "file": "INPUT-ONLY.json",
+      "bytes": 282338,
+      "sha256": "9ad1f75ba81fe61dcc97e0d4feab58ce36c66d186d7c408e248389edc6714c1d"
+    },
+    {
+      "file": "MANIFEST.json",
+      "bytes": 2059,
+      "sha256": "4af8b1c919d7627749bc5dd10610c1268830185c90b1c28e41aba71320c03315"
+    },
+    {
+      "file": "NATIVE-CODEBOOK-POSTCOMPARE.json",
+      "bytes": 61799,
+      "sha256": "f10dc33f783a792fa0593351e38eb1e647f00ea74ba5aba389be38cb3ccf708b"
+    },
+    {
+      "file": "NATIVE-OBSERVATIONS.json",
+      "bytes": 164837,
+      "sha256": "4f11ffe172eeb94b92c5d4f1ae559b7724daf73968e885e37dad4f0d6f3df1d5"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 1661,
+      "sha256": "cd5df05f7ca27db262b2159b24699873b99f2eb86362a732924840ed77bb5dd4"
+    },
+    {
+      "file": "WASH-VALIDATION.json",
+      "bytes": 1472,
+      "sha256": "72b7d62f9dae75957f2f233e4f180a5829fd58a786465b3ac88fc0ef1b32f846"
+    }
+  ]
+}

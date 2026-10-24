@@ -1,0 +1,26 @@
+{
+  "schema": "f13c-selected-bsi-native-source-clarification.v1",
+  "scope": "selected BSI scalar producer only; not full F13C",
+  "selected_native_source": "validated configuration count payload, imported into the codec owner and emitted in the BSI complexity-index field before outgoing EMDF serialization",
+  "observed_values": [
+    {
+      "configured_count": 1,
+      "native_payload_prefix_hex": "0101",
+      "ID14_body_queue_serializer_present": false
+    },
+    {
+      "configured_count": 16,
+      "native_payload_prefix_hex": "0110",
+      "ID14_body_queue_serializer_present": false
+    }
+  ],
+  "same_physical_field_identity": "The configured-count payload byte reaches the selected BSI complexity_index_type_a field; this is a source/identity link, not an inference from equal numeric values.",
+  "existing_washed_evidence": {
+    "bsi_count_producer_manifest_sha256": "cdc1d781cfb19a8b935cc64cf66524926f76b667e0747ab0ac83ac603bcdcb3a",
+    "bsi_count_producer_check_sha256": "02971722c6deee824f1f908c4e2e929110215a2579dca3401ea7aa9e5426ecae",
+    "selected_id14_consumption_r2_manifest_sha256": "294dc82380bf9b8cb9a60094e973debc6b075801a46a64e33313e2766d65d778",
+    "selected_id14_consumption_r2_check_sha256": "a2800e112088927f22e4ad16b96b6b99b0317db3683d5780e10aec42e3bb0567"
+  },
+  "model_comparison": "The frozen helper computes object_count+1 after semantic ID14 parsing. In the selected 15-object model case this equals 16, but it is not the selected native producer source.",
+  "native_ID14_semantic_parser": "NOT_OBSERVED_ON_TRACED_SELECTED_OUTGOING_PATH; native malformed/full-container parser calls NOT_RUN; no global parser absence claim"
+}

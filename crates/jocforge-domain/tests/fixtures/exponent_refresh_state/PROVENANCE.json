@@ -1,0 +1,84 @@
+{
+  "schema": "exponent-refresh-state-provenance.v1",
+  "package": "EXPONENT-REFRESH-STATE-MAP",
+  "upstream_wash_package": "SANITIZED_F09_REFRESH_STATE_R1",
+  "upstream_manifest_sha256": "21ec09924b008e699f2261c990144bb8e2d23fecc49562e9a270e5846974807b",
+  "upstream_independent_check_sha256": "f50c7c742d5a6c7a3a691aace7b592ec5f3bd759a6e9314575682a8ffa0211e6",
+  "upstream_payloads": [
+    {
+      "path": "INPUTS.json",
+      "bytes": 3010,
+      "sha256": "5af60faa4ff3215b38bbe13f351ff2775d0d8662d5944955f6360ab29c0f602b"
+    },
+    {
+      "path": "EXPECTED.json",
+      "bytes": 3821,
+      "sha256": "bdb79c0f5df7be6a0aedf4d2ef9812b10718574cafcc44021abb2c776c52295b"
+    },
+    {
+      "path": "PARAMETERS.json",
+      "bytes": 1340,
+      "sha256": "e404bac6e584f2b9fa37aa63edf811095e3b7b199b5863120d6c55127e32c55f"
+    },
+    {
+      "path": "CONTRACT.json",
+      "bytes": 8379,
+      "sha256": "e119af84f8ff27bd4b5c976d3fcc36622d2642bacf102fd8e029bfae0cf4a4e6"
+    }
+  ],
+  "reference_module": {
+    "file_bytes_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "bytes": 11210752,
+    "qualification": "Target-side hash of the actual loaded module path matched by a host rehash. This is file-image identity, not a relocated mapped-memory digest."
+  },
+  "evidence": {
+    "static_rule": "STATIC_CONFIRMED",
+    "native_runtime": "RUNTIME_CONFIRMED: 10 recipes, 12 transitions",
+    "prototype_postcompare": "12/12",
+    "wash_formula_replay": "PASS: 10 recipes, 12 transitions, independently recomputed from inputs and parameters; expected outputs were not used as seeds",
+    "independent_product_implementation": "NOT_RUN"
+  },
+  "source_evidence_digests_only": [
+    {
+      "alias": "static_refresh",
+      "bytes": 4304,
+      "sha256": "1cbabb927a0190e22f15f89f2ec8869477ac8590f20452961ff9c762f94ca76b"
+    },
+    {
+      "alias": "static_refresh_instruction_evidence",
+      "bytes": 32428,
+      "sha256": "9d83518b2dab2ae05b72bbd6fa65101aaeeb80b0ca251a9fafe6450eb32b6499"
+    },
+    {
+      "alias": "runtime_hook",
+      "bytes": 4295,
+      "sha256": "9299566af69463684b2349741c6419f37fd7820202f3c0b40d0710dfe29d0da5"
+    },
+    {
+      "alias": "runtime_receipt",
+      "bytes": 602,
+      "sha256": "08182124141e8b2ba7cf13f8f7c7587a3066c90164c2e477db4c3ba0f83cd2b4"
+    },
+    {
+      "alias": "private_capture_digest_only",
+      "bytes": 53833,
+      "sha256": "40ff315762d2ed7b86e147af381d30168680f203398dbef285e859fa3a016292"
+    },
+    {
+      "alias": "static_refresh_caller_operands",
+      "bytes": 13573,
+      "sha256": "95880b8a9f1d5b148d28de6b3a2435ba6f54785c0f53be3d4b859fd450ab6583"
+    }
+  ],
+  "delivery_scope": "INTERNAL_IMPLEMENTATION_HANDOFF",
+  "private_vendor_key": "EXCLUDED",
+  "public_third_party_license_status": "NOT_ASSESSED",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO",
+  "explicitly_not_delivered": [
+    "raw runtime traces",
+    "binary contents",
+    "addresses or disassembly identifiers",
+    "vendor private key or authentication material"
+  ]
+}

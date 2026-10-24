@@ -1,0 +1,11 @@
+{
+  "schema": "implementer-package-authority-overlay.v1",
+  "base_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "base_spec_file": "specs/13-joc-complexity-timer-payload-order.md",
+  "base_spec_sha256": "09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b",
+  "supplement_manifest_sha256": "cdc1d781cfb19a8b935cc64cf66524926f76b667e0747ab0ac83ac603bcdcb3a",
+  "superseded_claim": "Section 1 EMDF/ID14-derived complexity producer and ID14-presence gate",
+  "replacement_scope": "selected additional-BSI scalar producer from configuration count plus literal 64-byte importer copy",
+  "f13c_parent_status": "IMPLEMENTATION_READY=NO",
+  "overall_implementation_ready": "NO"
+}

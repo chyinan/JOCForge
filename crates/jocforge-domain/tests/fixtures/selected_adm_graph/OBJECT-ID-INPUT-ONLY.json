@@ -1,0 +1,106 @@
+{
+  "cases": [
+    {
+      "case": 0,
+      "text": "AO_1001",
+      "output_u32_initial": 3435973836,
+      "input_type": "Owned mutable ASCII string, in-place short-string storage"
+    },
+    {
+      "case": 1,
+      "text": "AO_1002",
+      "output_u32_initial": 3435973836,
+      "input_type": "Owned mutable ASCII string, in-place short-string storage"
+    },
+    {
+      "case": 2,
+      "text": "AO_1000",
+      "output_u32_initial": 3435973836,
+      "input_type": "Owned mutable ASCII string, in-place short-string storage"
+    },
+    {
+      "case": 3,
+      "text": "AO_1001TAIL",
+      "output_u32_initial": 3435973836,
+      "input_type": "Owned mutable ASCII string, in-place short-string storage"
+    },
+    {
+      "case": 4,
+      "text": "AO_10010",
+      "output_u32_initial": 3435973836,
+      "input_type": "Owned mutable ASCII string, in-place short-string storage"
+    },
+    {
+      "case": 5,
+      "text": "AO_100",
+      "output_u32_initial": 3435973836,
+      "input_type": "Owned mutable ASCII string, in-place short-string storage"
+    },
+    {
+      "case": 6,
+      "text": "ao_1001",
+      "output_u32_initial": 3435973836,
+      "input_type": "Owned mutable ASCII string, in-place short-string storage"
+    },
+    {
+      "case": 7,
+      "text": " AO_1001",
+      "output_u32_initial": 3435973836,
+      "input_type": "Owned mutable ASCII string, in-place short-string storage"
+    },
+    {
+      "case": 8,
+      "text": "AO_0x1001",
+      "output_u32_initial": 3435973836,
+      "input_type": "Owned mutable ASCII string, in-place short-string storage"
+    },
+    {
+      "case": 9,
+      "text": "AO_ffff",
+      "output_u32_initial": 3435973836,
+      "input_type": "Owned mutable ASCII string, in-place short-string storage"
+    },
+    {
+      "case": 10,
+      "text": "AO_1001 ",
+      "output_u32_initial": 3435973836,
+      "input_type": "Owned mutable ASCII string, in-place short-string storage"
+    },
+    {
+      "case": 11,
+      "text": "AO_10aB",
+      "output_u32_initial": 3435973836,
+      "input_type": "Owned mutable ASCII string, in-place short-string storage"
+    },
+    {
+      "case": 12,
+      "text": "AO_10Ab",
+      "output_u32_initial": 3435973836,
+      "input_type": "Owned mutable ASCII string, in-place short-string storage"
+    },
+    {
+      "case": 13,
+      "text": "AO_g001",
+      "output_u32_initial": 3435973836,
+      "input_type": "Owned mutable ASCII string, in-place short-string storage"
+    },
+    {
+      "case": 14,
+      "text": "AO_100g",
+      "output_u32_initial": 3435973836,
+      "input_type": "Owned mutable ASCII string, in-place short-string storage"
+    },
+    {
+      "case": 15,
+      "text": "AO_ 1001",
+      "output_u32_initial": 3435973836,
+      "input_type": "Owned mutable ASCII string, in-place short-string storage"
+    },
+    {
+      "case": 16,
+      "text": "AO_1001",
+      "output_u32_initial": 3435973836,
+      "input_type": "Owned mutable ASCII string, in-place short-string storage"
+    }
+  ]
+}

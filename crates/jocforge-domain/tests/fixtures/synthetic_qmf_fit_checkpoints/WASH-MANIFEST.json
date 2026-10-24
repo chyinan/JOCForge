@@ -1,0 +1,35 @@
+{
+  "schema": "washed-spec-manifest.v1",
+  "payloads": [
+    {
+      "file": "approved-huffman.json",
+      "bytes": 92323,
+      "sha256": "515d635adc6099493dfd27f787bdf2b9f19a4b4bb1180860b0e820a23fb5d5ae"
+    },
+    {
+      "file": "approved-joc-functional.json",
+      "bytes": 2448,
+      "sha256": "af08ef531f8708ab81cd6af0bf8ae71504ffb19ba76d5fb8571b1ae8db53c747"
+    },
+    {
+      "file": "approved-joc-math.json",
+      "bytes": 39081,
+      "sha256": "d42b7e8ebaabf27bdf519148986b70aa6de56f4eb6bfd0179cd0bd011e284fe7"
+    },
+    {
+      "file": "CONTRACT.md",
+      "bytes": 4379,
+      "sha256": "2e1c9dd330c3066c895097c802c6e97cf27c351a8e3243e27323fe192cb08eff"
+    },
+    {
+      "file": "EXPECTED.json",
+      "bytes": 7710868,
+      "sha256": "e0102fe3708efc32bf3a87eb3a3130d0e9ef60d3df824d69e8dce5f45a800f49"
+    },
+    {
+      "file": "INPUT-ONLY.json",
+      "bytes": 1681,
+      "sha256": "1d8d6d2c8a9476aef859aeb3f4b58fd5e505a8e09abd3554f3a70f8c12ec5baf"
+    }
+  ]
+}

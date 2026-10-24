@@ -779,3 +779,4 @@ fn dropped_stage_preserves_committed_root() {
 }
 
 mod receiver_mode1;
+mod spatial_audio_composer;

@@ -1,0 +1,10 @@
+{
+  "schema": "washed-f13c-scratch-parent-provenance.v1",
+  "source_candidate_manifest_sha256": "1d323b909696cfd5586d3a97d514e81368f2fc52ae841373cca1fb2b43fd9a76",
+  "native_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "R18_configuration_layout_manifest_sha256": "093c374aa37ae4233f70354761b31f65053b30f5e39cedb195ce452dc313ff1d",
+  "R18_configuration_source_manifest_sha256": "caef594d791d16c9dc81ce56908da57a01d322e0ab89d6c8177ba45a971b82f4",
+  "evidence_scope": "scratch protected-container parent; 16 controlled cases plus 2 direct raw-reservation cases",
+  "provider_scope": "empty provider or explicitly caller-owned public zero test input; vendor default initializer not called",
+  "private_material": false
+}

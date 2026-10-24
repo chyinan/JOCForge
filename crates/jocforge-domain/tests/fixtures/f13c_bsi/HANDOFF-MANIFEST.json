@@ -1,0 +1,97 @@
+{
+  "schema": "f13c-bsi-count-producer-handoff-manifest.v1",
+  "source_package_manifest_sha256": "cdc1d781cfb19a8b935cc64cf66524926f76b667e0747ab0ac83ac603bcdcb3a",
+  "base_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "files": [
+    {
+      "path": "CONTRACT-ADDENDUM.md",
+      "bytes": 3068,
+      "sha256": "cd4d0e835f735ade34087d5362d1b3c82f1599d08099d00c237a0637374fa6d0"
+    },
+    {
+      "path": "CONTRACT.json",
+      "bytes": 4251,
+      "sha256": "0a5ccfb1dd35e93b3345fc25fb93864bc010dd689cd48ec75809a9225b882df7"
+    },
+    {
+      "path": "CURRENT-OVERLAY.json",
+      "bytes": 745,
+      "sha256": "864a984d9d816e3854cccf3558b881f202166cb4e387433a070588efbfc9dfe8"
+    },
+    {
+      "path": "EXPECTED.json",
+      "bytes": 16766,
+      "sha256": "ae5cd3cb0c8e707f96641e1fd5b999b683eea260b2d5bb0c9c07c2510caf9c91"
+    },
+    {
+      "path": "FAILURE-OBSERVATIONS.json",
+      "bytes": 2949,
+      "sha256": "022ecf6ee0b8bc85db8b0d05124ade5ba831758f2f567167fd4981b68ed858c3"
+    },
+    {
+      "path": "INDEPENDENT-CHECK.json",
+      "bytes": 599,
+      "sha256": "02971722c6deee824f1f908c4e2e929110215a2579dca3401ea7aa9e5426ecae"
+    },
+    {
+      "path": "INPUTS.json",
+      "bytes": 11030,
+      "sha256": "c6922f0095a38a9f656f6b90d41592766dc729efc90733c04fe45d9673bc8517"
+    },
+    {
+      "path": "MANIFEST.json",
+      "bytes": 1663,
+      "sha256": "cdc1d781cfb19a8b935cc64cf66524926f76b667e0747ab0ac83ac603bcdcb3a"
+    },
+    {
+      "path": "NATIVE-JOINS.json",
+      "bytes": 20945,
+      "sha256": "3dcf41500a10e2324b1cdcc7fb99a012a4c20b1c45692a6849bff23447ab6399"
+    },
+    {
+      "path": "README.md",
+      "bytes": 668,
+      "sha256": "ac7904c2dc7d5235c93823f693872aa4b75472dd6c11c846bf5c9fd57e668e4d"
+    },
+    {
+      "path": "REPLAY.json",
+      "bytes": 225,
+      "sha256": "d1970db7eef38368c0740447136bdbd2b87332b5e1083cf7b7dfb4a090f8184a"
+    },
+    {
+      "path": "RUNTIME-RECEIPTS.json",
+      "bytes": 3002,
+      "sha256": "a4965b89f1850df8c18cfbc2fdfc764e03f68f4fbce042a38759649dac33b720"
+    },
+    {
+      "path": "SOURCE-IDENTITIES.json",
+      "bytes": 1972,
+      "sha256": "ee5fbfc5b3b261ba78ef1d1d6b13f5a53833315a511a6c8c149c4cf6a1ca303b"
+    },
+    {
+      "path": "SPEC-CORRECTION.md",
+      "bytes": 1067,
+      "sha256": "f95a62dd76e294e4a22767f71935a43324e9081ed6069644c09db4a2af5d1591"
+    },
+    {
+      "path": "UPSTREAM-WATCH-RECEIPT.json",
+      "bytes": 763,
+      "sha256": "a86c43ac7358eee17680f5b995157caf644784c91b7f6a0919988fa160f4ad5c"
+    },
+    {
+      "path": "WASH-INDEPENDENT-CHECK.json",
+      "bytes": 929,
+      "sha256": "a26fb8563990d7cbcf1ebc90a77fe09fc661cab77901502ec8fb95789ae6915d"
+    },
+    {
+      "path": "replay_bsi_count_producer.py",
+      "bytes": 2444,
+      "sha256": "397ea01b62ad6ff868bbf992ba665dbeb633b091aedfdbe955edab4cf3080068"
+    },
+    {
+      "path": "wash_replay.py",
+      "bytes": 5940,
+      "sha256": "cd8911207503a502957b850a8ffcfcfc26784bb438e1f28123f43df9d38d7901"
+    }
+  ]
+}

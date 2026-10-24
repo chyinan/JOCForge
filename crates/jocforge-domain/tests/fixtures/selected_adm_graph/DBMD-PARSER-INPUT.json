@@ -1,0 +1,6 @@
+{
+  "file": "source_metadata.dbmd",
+  "bytes": 580,
+  "sha256": "bc3f7199da679b43d1fd6f770c2caae08250d6ee545858e759fc12afc2232194",
+  "source": "Actual DBMD chunk from the same selected source as the real AXML/CHNA graph; no decoded projection supplied as producer input."
+}

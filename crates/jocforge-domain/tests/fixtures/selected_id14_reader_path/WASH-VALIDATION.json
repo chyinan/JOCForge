@@ -1,0 +1,32 @@
+{
+  "schema": "washed-selected-id14-reader-validation.v1",
+  "status": "SELECTED_PATH_NATIVE_SEMANTIC_READER_NOT_APPLICABLE_WHOLE_F13C_NOT_READY",
+  "source_candidate_manifest_sha256": "2a47643b3d7eb938fa7ccad231c7c033b0d9254a4cc1c02cd33c031f4655430a",
+  "verified_candidate_package": {
+    "manifest_sha256": "2a47643b3d7eb938fa7ccad231c7c033b0d9254a4cc1c02cd33c031f4655430a",
+    "check_sha256": "5be5ebe2dc455fd0c95b50625698bfc35ad7ffdc3eb4b3b18101b1f60727ca39",
+    "envelope_sha256": "26987ab56f5a2a5899c4f98be5cb03cee63ed2f50a4b42b4a9670be255d71b3d",
+    "payloads": 10,
+    "candidate_count": 70,
+    "normal_and_optimized_checker": "PASS"
+  },
+  "predecessor_packages": {
+    "R14_selected_serializer_lineage_manifest_sha256": "5cb0b59df226560d7a0b89970e0c54f7bac0e359517d57ce10ebb12ae874f767",
+    "model_parser_native_BSI_supplement_manifest_sha256": "d248175ea03a6cb6838b8c14995ea197a3529db2639afb51cb23185ab490bea8",
+    "selected_ID14_consumption_R2_manifest_sha256": "294dc82380bf9b8cb9a60094e973debc6b075801a46a64e33313e2766d65d778"
+  },
+  "limitations": [
+    "No fresh native parser execution; no parser was found on the recovered selected outgoing path.",
+    "No global DLL/module parser-absence claim.",
+    "Prior four-case serializer lineage is rehashed, not re-executed.",
+    "Other modules/profiles/decoder and arbitrary indirect-entry paths are outside this closure.",
+    "Whole F13C and end-to-end product acceptance NOT_READY."
+  ],
+  "excluded_material": {
+    "binary": false,
+    "disassembly": false,
+    "private_key": false,
+    "authentication_values": false,
+    "PCM": false
+  }
+}

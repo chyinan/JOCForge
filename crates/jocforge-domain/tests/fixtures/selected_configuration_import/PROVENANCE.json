@@ -1,0 +1,100 @@
+{
+  "schema": "selected-configuration-import-provenance.v2",
+  "package": "SELECTED-CONFIGURATION-IMPORT",
+  "source_wash_package": "SANITIZED_F09_SELECTED_CONFIG_TRANSFER_R2",
+  "source_manifest_sha256": "51931af77f7264d8b38037b90c52fa874323a60493214aed584233e332ce3d3e",
+  "source_independent_check_sha256": "408583cb04f4b0ca76e4565bef20fd61c2e8d005d440bf86d9caa9bdd0caf766",
+  "source_payloads": [
+    {
+      "path": "INPUTS.json",
+      "bytes": 42574,
+      "sha256": "ea2b7ab2bede4924e60f069b8632b4e7c1102dd63bb30c5f7e0dd03ff3cd8c44"
+    },
+    {
+      "path": "EXPECTED.json",
+      "bytes": 449521,
+      "sha256": "fee6e9d8d10bed3eaa54c86f77084ec0cfe569dd3e6ce6a8bfa3eeb775084a71"
+    },
+    {
+      "path": "PARAMETERS.json",
+      "bytes": 1924,
+      "sha256": "7155f238fe62097490addbaf6893d6386bf7a6cdbac928c74ebf252e5553998f"
+    },
+    {
+      "path": "RUNTIME-RECEIPT.json",
+      "bytes": 993,
+      "sha256": "a95bdcf94ad79551fc7fe7ed82eb58f791bdef6a8a8fc1d579dd52e3410abaad"
+    },
+    {
+      "path": "NATIVE-LINEAGE.json",
+      "bytes": 5240,
+      "sha256": "72342c45d45cd77b01336ead87aa1150de3f13db89abe1a2ae3b6215b2559f53"
+    },
+    {
+      "path": "CONTRACT.json",
+      "bytes": 10413,
+      "sha256": "4f9bbed8c90fbac996d82cf4b0ed61f177fc396644c866ae2e1b9a57aa2b1906"
+    }
+  ],
+  "reference_module": {
+    "file_bytes_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "qualification": "Actual loaded-path file hash measured in target and matched by host rehash; not a relocated-image digest."
+  },
+  "evidence": {
+    "native_runtime": "7 controlled imports: 4 success, 2 prefix failures, 1 late rate failure; 6 separate natural owner imports",
+    "wash_independent_replay": "PASS: source bytes reconstructed from patches; all 4096 owner bytes and 64 metadata bytes matched for 7 cases",
+    "partial_failure": "Return 59 after prior owner/metadata writes, independently replayed",
+    "channel_map_return_161": "STATIC_CONTRACT_ONLY; no rejecting runtime vector",
+    "full_metadata_import": "NOT_CLAIMED_AS_EXHAUSTIVE",
+    "independent_product_audio_integration": "NOT_RUN"
+  },
+  "source_evidence_digests_only": [
+    {
+      "alias": "runtime_hook",
+      "bytes": 36642,
+      "sha256": "19e2d7665b3f2be8a721edc0a406c6dd20b3e3e17a6a41c975197ba6de0b9489"
+    },
+    {
+      "alias": "private_trace_digest_only",
+      "bytes": 1325464,
+      "sha256": "d607032cff3ec1baf4ee9ad9761742a144f649bf06cbb6349810225faa2cb14b"
+    },
+    {
+      "alias": "legacy_receipt",
+      "bytes": 602,
+      "sha256": "2e1eb8e80932dac7fa007a0c672d503fef5c5810bef433a993cce4cdfda24b22"
+    },
+    {
+      "alias": "legacy_counter_source",
+      "bytes": 7243,
+      "sha256": "4d8219d3b0d4ee0a6e1872608fe2feff15aef405b8e910116ac32d1867de0272"
+    },
+    {
+      "alias": "private_hardware_watch_digest_only",
+      "bytes": 24817,
+      "sha256": "d754747d30f2ab5a71b74dea14301661d1375bb2159564b23a4ecc523906f459"
+    },
+    {
+      "alias": "static_active_import",
+      "bytes": 9765,
+      "sha256": "a6a85906698046134d08386b5e4532c797f8fded55f48b136a3c89d55da65ab1"
+    },
+    {
+      "alias": "independent_replayer",
+      "bytes": 4893,
+      "sha256": "702e117172701bdd1b320798620cbc0f5fb29a04509da9b709098ac6c943bb23"
+    }
+  ],
+  "delivery_scope": "INTERNAL_IMPLEMENTATION_HANDOFF",
+  "private_vendor_key": "EXCLUDED",
+  "public_third_party_license_status": "NOT_ASSESSED",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO",
+  "explicitly_not_delivered": [
+    "raw PCM or ADM",
+    "raw runtime traces",
+    "binary contents",
+    "addresses or disassembly identifiers",
+    "vendor private key or authentication material"
+  ]
+}

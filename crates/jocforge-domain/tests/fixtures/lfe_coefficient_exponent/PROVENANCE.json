@@ -1,0 +1,84 @@
+{
+  "schema": "lfe-coefficient-exponent-provenance.v1",
+  "package": "LFE-COEFFICIENT-EXPONENT",
+  "source_wash_package": "SANITIZED_F09_LFE_COEFFICIENT_EXPONENT_R1",
+  "source_manifest_sha256": "f2e8ab625d17809a5e3b119fb923e8123818f3fc8639b2d8ba22f8da33efe72f",
+  "source_independent_check_sha256": "b256e4cd23b48dc9391e4b955516d9085468b35603b5b1180c169f6726d48d37",
+  "source_payloads": [
+    {
+      "path": "INPUTS.json",
+      "bytes": 3025,
+      "sha256": "fbd9317bcb5036b6d706f9f136df46b69520047dde52a126b65401fdf2b48fff"
+    },
+    {
+      "path": "EXPECTED.json",
+      "bytes": 17992,
+      "sha256": "80952b734a0c87fe523395a16a3c3e6172766b857ff944ebb0c8d4d78e085c2d"
+    },
+    {
+      "path": "CONTRACT.json",
+      "bytes": 4210,
+      "sha256": "9b9b309c2b4ed98a36bec78d6fe360f67d5a1bdd1b71497a1926721c2b8d355b"
+    }
+  ],
+  "reference_module": {
+    "file_bytes_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "qualification": "Target-side hash of actual loaded-path file bytes matched by a host rehash; not a relocated memory-image digest."
+  },
+  "evidence": {
+    "static": "STATIC_CONFIRMED leaf and wrapper instruction/dataflow",
+    "native_runtime": "RUNTIME_CONFIRMED: 5 recipes, 2 calls per recipe, 2 LFE blocks",
+    "values": "140 LFE raw outputs, 140 separate POWER-helper observations, 70 combined-call LFE block-0 outputs",
+    "wash_independent_replay": "PASS for all 140 + 140 + 70 values; expected outputs were not used as input seeds",
+    "independent_product_audio_integration": "NOT_RUN"
+  },
+  "source_evidence_digests_only": [
+    {
+      "alias": "runtime_hook",
+      "bytes": 17420,
+      "sha256": "b7a0f3842d1446b80ca4f4e794e4406c1e8c88188e01c7045e8795c1b8377076"
+    },
+    {
+      "alias": "private_trace_digest_only",
+      "bytes": 419036,
+      "sha256": "abef2d3c0f2b329b37bdc5f06619d327aa8c02d668ad2c44b1e68ab91febfa2b"
+    },
+    {
+      "alias": "reference_receipt",
+      "bytes": 602,
+      "sha256": "736f87cd52936d4f2dd5e6a50e912c6119dc2d58ad49cc2396f75953850780ce"
+    },
+    {
+      "alias": "static_coefficient_exponent",
+      "bytes": 4263,
+      "sha256": "1cd8b71a9d24001ab19ad2b4ccedbdb23c80e8412a338f8e3e9e69899c56ecdb"
+    },
+    {
+      "alias": "static_coefficient_instructions",
+      "bytes": 29298,
+      "sha256": "580626e3ad5bc644e389c7b8bfcd15d98cd4790be70d4c3efeb8d6a9153e1ae6"
+    },
+    {
+      "alias": "static_route_wrapper",
+      "bytes": 2811,
+      "sha256": "f1535cb0cc1e99aa4f702fac34ba20ccff96c79bc32684c75dfe33dae686dda1"
+    },
+    {
+      "alias": "static_separate_power_helper",
+      "bytes": 1774,
+      "sha256": "dfebb1de661da886bf9e1b8bd83db31fe21c07c1aad292b54efd1e038206961a"
+    }
+  ],
+  "delivery_scope": "INTERNAL_IMPLEMENTATION_HANDOFF",
+  "private_vendor_key": "EXCLUDED",
+  "public_third_party_license_status": "NOT_ASSESSED",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO",
+  "explicitly_not_delivered": [
+    "raw PCM or ADM",
+    "raw runtime traces",
+    "binary contents",
+    "addresses or disassembly identifiers",
+    "vendor private key or authentication material"
+  ]
+}

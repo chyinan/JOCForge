@@ -1,0 +1,13 @@
+{
+  "approved_spec_sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd",
+  "approved_clause": "F13.4 declares ID11 FIFO payload capacity160 bytes as interface capacity, not fixed payload length.",
+  "assessment": "Same unit and same per-payload FIFO admission dimension, but different numerical limits. Direct selected native queue/ingress tests admit161 bytes and2103 bytes. No native160-byte comparison is present in the inspected queue admission/ID11 ingress chain.",
+  "what_is_not_proven": "Trailing-extended valid69-byte input is accepted; this does not establish that a different semantic ID11 producer naturally generates more than160 bytes. Nor does it exclude a deliberate narrower160-byte washed API policy upstream.",
+  "minimal_revision_proposal": [
+    "If F13.4 intends to state the selected native queue/storage limit, replace native attribution160 with the constructor-derived2103 for object_capacity16/frame_capacity8, and add the2103/2104 boundary.",
+    "If160 is an intentional washed selected-interface cap, preserve it but label it an additional model/API admission policy, distinct from native queue storage/admission capacity. State its own source/rationale rather than attributing it to this native field.",
+    "Keep ID6 generic capacity3 and dedicated ID2 capacity8 separate; do not merge roles."
+  ],
+  "authority": "Proposal to Wash only; approved files unchanged.",
+  "implementation_ready_for_whole_F13C": false
+}

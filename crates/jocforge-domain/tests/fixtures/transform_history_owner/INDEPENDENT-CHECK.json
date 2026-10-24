@@ -1,0 +1,19 @@
+{
+  "schema": "transform-history-owner-continuity-check.v1",
+  "package": "TRANSFORM-HISTORY-OWNER-CONTINUITY",
+  "manifest_sha256": "d21eef82d1b135c0219c7e6cb9b40da8052016f907e27813eb2de823af275327",
+  "payload_count": 5,
+  "payload_hashes_match": true,
+  "source_manifest_check_and_payloads_match": true,
+  "module_file_identity_runtime_bound": true,
+  "independent_history_words": 1536,
+  "history_replay": "PASS all words",
+  "workspace_initializer": "PASS zero fields/null pointers/0xA5 tail canaries",
+  "native_fold_calls": 432,
+  "cold_slots": 12,
+  "carry_checks": 420,
+  "carry_mismatches": 0,
+  "full_reset_eof": "NOT_RUN",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO"
+}

@@ -1,0 +1,25 @@
+{
+  "primary_source_samples": 6522906,
+  "primary_source_file_bytes": 743696526,
+  "primary_metadata": {
+    "axml": "7e4e61d4e2bec581ff2b05133281198a220602290597950e301a6079701c1659",
+    "chna": "f82b14e4c1b5b3b1750ed4104aa53f1d595e3ff2d4dbaef76a76c0e35f31b7a6",
+    "dbmd": "ea961b79063bc68f64b1210dba002a5729d1003427196123f93b0890939b75d9"
+  },
+  "archived_native_safe_same_metadata_and_extent": true,
+  "full_pcm_byte_identity": "NOT_REHASHED",
+  "hanabi": "SECONDARY_REFERENCE_ONLY",
+  "hanabi_source_samples": 13888071,
+  "hanabi_source_file_bytes": 1583325474,
+  "primary_hanabi_metadata_equality": {
+    "axml": false,
+    "chna": true,
+    "dbmd": false
+  },
+  "primary_full_file": true,
+  "hanabi_reference_excerpt_samples": 6000,
+  "no_hanabi_trim_to_primary_proven": true,
+  "n_authority": "PCM data byte extent / declared block alignment. XML object duration rounding is a consistency check, not the source of PCM sample count.",
+  "recorded_alternate_wave_hash_used_as_current_identity": false,
+  "logical_input_adm_name": "A clean adapter logical name may refer to this admitted metadata identity; no physical research file named input-adm.wav is claimed."
+}

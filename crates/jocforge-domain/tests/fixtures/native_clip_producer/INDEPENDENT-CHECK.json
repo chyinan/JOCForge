@@ -1,0 +1,8 @@
+{
+  "schema": "washed-implementer-supplement-independent-check.v1",
+  "manifest_sha256": "5c7a332f844ef63952ab41041d84bea56e5846adea651796761f0ef48b2e9a51",
+  "status": "PASS",
+  "cases": 393,
+  "generations": 434,
+  "whole_F13C_ready": false
+}

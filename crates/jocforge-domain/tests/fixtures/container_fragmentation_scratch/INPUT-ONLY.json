@@ -1,0 +1,765 @@
+{
+  "scope": "EXPLICIT_OWNED_SCRATCH_GRAPH_NOT_PRODUCTION_COLD_EQUIVALENCE",
+  "parent_cases": [
+    {
+      "invocation": 1,
+      "records": [
+        {
+          "payload_id": 11,
+          "configuration_hex": "00000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 69,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 14,
+          "configuration_hex": "08000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 411,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 2,
+          "configuration_hex": "01000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "body_bytes": 3,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 1,
+          "configuration_hex": "00000000000000000100000000000000000000000100000000060000000000000000000000000000",
+          "body_bytes": 2,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        }
+      ],
+      "provider_fixture": "EMPTY_PROVIDER_NEGATIVE_CONTROL",
+      "history_present": 0,
+      "container_version": 0,
+      "container_key_selector": 0,
+      "protection_mode": 1,
+      "primary_length_bytes": 4,
+      "secondary_length_bytes": 1,
+      "secondary_history_capacity": 1,
+      "secondary_history_item_bytes": 32,
+      "associated_data_bytes": 0,
+      "output_capacity_policy": "COUNT_THEN_EXACT",
+      "output_physical_bytes": 1024,
+      "output_fill_u8": 165,
+      "guard_bytes": 16
+    },
+    {
+      "invocation": 2,
+      "records": [
+        {
+          "payload_id": 11,
+          "configuration_hex": "00000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 69,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 14,
+          "configuration_hex": "08000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 411,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 2,
+          "configuration_hex": "01000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "body_bytes": 3,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 1,
+          "configuration_hex": "00000000000000000100000000000000000000000100000000060000000000000000000000000000",
+          "body_bytes": 2,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        }
+      ],
+      "provider_fixture": "EMPTY_PROVIDER_NEGATIVE_CONTROL",
+      "history_present": 1,
+      "container_version": 0,
+      "container_key_selector": 0,
+      "protection_mode": 1,
+      "primary_length_bytes": 4,
+      "secondary_length_bytes": 1,
+      "secondary_history_capacity": 1,
+      "secondary_history_item_bytes": 32,
+      "associated_data_bytes": 0,
+      "output_capacity_policy": "COUNT_THEN_EXACT",
+      "output_physical_bytes": 1024,
+      "output_fill_u8": 165,
+      "guard_bytes": 16
+    },
+    {
+      "invocation": 3,
+      "records": [
+        {
+          "payload_id": 11,
+          "configuration_hex": "00000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 69,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 14,
+          "configuration_hex": "08000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 412,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 2,
+          "configuration_hex": "01000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "body_bytes": 3,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 1,
+          "configuration_hex": "00000000000000000100000000000000000000000100000000060000000000000000000000000000",
+          "body_bytes": 2,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        }
+      ],
+      "provider_fixture": "EMPTY_PROVIDER_NEGATIVE_CONTROL",
+      "history_present": 0,
+      "container_version": 0,
+      "container_key_selector": 0,
+      "protection_mode": 1,
+      "primary_length_bytes": 4,
+      "secondary_length_bytes": 1,
+      "secondary_history_capacity": 1,
+      "secondary_history_item_bytes": 32,
+      "associated_data_bytes": 0,
+      "output_capacity_policy": "COUNT_THEN_EXACT",
+      "output_physical_bytes": 1024,
+      "output_fill_u8": 165,
+      "guard_bytes": 16
+    },
+    {
+      "invocation": 4,
+      "records": [
+        {
+          "payload_id": 11,
+          "configuration_hex": "00000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 69,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 14,
+          "configuration_hex": "08000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 412,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 2,
+          "configuration_hex": "01000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "body_bytes": 3,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 1,
+          "configuration_hex": "00000000000000000100000000000000000000000100000000060000000000000000000000000000",
+          "body_bytes": 2,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        }
+      ],
+      "provider_fixture": "EMPTY_PROVIDER_NEGATIVE_CONTROL",
+      "history_present": 1,
+      "container_version": 0,
+      "container_key_selector": 0,
+      "protection_mode": 1,
+      "primary_length_bytes": 4,
+      "secondary_length_bytes": 1,
+      "secondary_history_capacity": 1,
+      "secondary_history_item_bytes": 32,
+      "associated_data_bytes": 0,
+      "output_capacity_policy": "COUNT_THEN_EXACT",
+      "output_physical_bytes": 1024,
+      "output_fill_u8": 165,
+      "guard_bytes": 16
+    },
+    {
+      "invocation": 5,
+      "records": [
+        {
+          "payload_id": 11,
+          "configuration_hex": "00000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 69,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 14,
+          "configuration_hex": "08000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 415,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 2,
+          "configuration_hex": "01000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "body_bytes": 3,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 1,
+          "configuration_hex": "00000000000000000100000000000000000000000100000000060000000000000000000000000000",
+          "body_bytes": 2,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        }
+      ],
+      "provider_fixture": "EMPTY_PROVIDER_NEGATIVE_CONTROL",
+      "history_present": 0,
+      "container_version": 0,
+      "container_key_selector": 0,
+      "protection_mode": 1,
+      "primary_length_bytes": 4,
+      "secondary_length_bytes": 1,
+      "secondary_history_capacity": 1,
+      "secondary_history_item_bytes": 32,
+      "associated_data_bytes": 0,
+      "output_capacity_policy": "COUNT_THEN_EXACT",
+      "output_physical_bytes": 1024,
+      "output_fill_u8": 165,
+      "guard_bytes": 16
+    },
+    {
+      "invocation": 6,
+      "records": [
+        {
+          "payload_id": 11,
+          "configuration_hex": "00000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 69,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 14,
+          "configuration_hex": "08000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 415,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 2,
+          "configuration_hex": "01000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "body_bytes": 3,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 1,
+          "configuration_hex": "00000000000000000100000000000000000000000100000000060000000000000000000000000000",
+          "body_bytes": 2,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        }
+      ],
+      "provider_fixture": "EMPTY_PROVIDER_NEGATIVE_CONTROL",
+      "history_present": 1,
+      "container_version": 0,
+      "container_key_selector": 0,
+      "protection_mode": 1,
+      "primary_length_bytes": 4,
+      "secondary_length_bytes": 1,
+      "secondary_history_capacity": 1,
+      "secondary_history_item_bytes": 32,
+      "associated_data_bytes": 0,
+      "output_capacity_policy": "COUNT_THEN_EXACT",
+      "output_physical_bytes": 1024,
+      "output_fill_u8": 165,
+      "guard_bytes": 16
+    },
+    {
+      "invocation": 7,
+      "records": [
+        {
+          "payload_id": 11,
+          "configuration_hex": "00000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 69,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 14,
+          "configuration_hex": "08000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 416,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 2,
+          "configuration_hex": "01000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "body_bytes": 3,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 1,
+          "configuration_hex": "00000000000000000100000000000000000000000100000000060000000000000000000000000000",
+          "body_bytes": 2,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        }
+      ],
+      "provider_fixture": "EMPTY_PROVIDER_NEGATIVE_CONTROL",
+      "history_present": 0,
+      "container_version": 0,
+      "container_key_selector": 0,
+      "protection_mode": 1,
+      "primary_length_bytes": 4,
+      "secondary_length_bytes": 1,
+      "secondary_history_capacity": 1,
+      "secondary_history_item_bytes": 32,
+      "associated_data_bytes": 0,
+      "output_capacity_policy": "COUNT_THEN_EXACT",
+      "output_physical_bytes": 1024,
+      "output_fill_u8": 165,
+      "guard_bytes": 16
+    },
+    {
+      "invocation": 8,
+      "records": [
+        {
+          "payload_id": 11,
+          "configuration_hex": "00000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 69,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 14,
+          "configuration_hex": "08000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 416,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 2,
+          "configuration_hex": "01000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "body_bytes": 3,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 1,
+          "configuration_hex": "00000000000000000100000000000000000000000100000000060000000000000000000000000000",
+          "body_bytes": 2,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        }
+      ],
+      "provider_fixture": "EMPTY_PROVIDER_NEGATIVE_CONTROL",
+      "history_present": 1,
+      "container_version": 0,
+      "container_key_selector": 0,
+      "protection_mode": 1,
+      "primary_length_bytes": 4,
+      "secondary_length_bytes": 1,
+      "secondary_history_capacity": 1,
+      "secondary_history_item_bytes": 32,
+      "associated_data_bytes": 0,
+      "output_capacity_policy": "COUNT_THEN_EXACT",
+      "output_physical_bytes": 1024,
+      "output_fill_u8": 165,
+      "guard_bytes": 16
+    },
+    {
+      "invocation": 9,
+      "records": [
+        {
+          "payload_id": 11,
+          "configuration_hex": "00000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 69,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 14,
+          "configuration_hex": "08000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 411,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 2,
+          "configuration_hex": "01000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "body_bytes": 3,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 1,
+          "configuration_hex": "00000000000000000100000000000000000000000100000000060000000000000000000000000000",
+          "body_bytes": 2,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        }
+      ],
+      "provider_fixture": "CALLER_OWNED_PUBLIC_SINGLE_ZERO_BYTE",
+      "history_present": 0,
+      "container_version": 0,
+      "container_key_selector": 0,
+      "protection_mode": 1,
+      "primary_length_bytes": 4,
+      "secondary_length_bytes": 1,
+      "secondary_history_capacity": 1,
+      "secondary_history_item_bytes": 32,
+      "associated_data_bytes": 0,
+      "output_capacity_policy": "COUNT_THEN_EXACT",
+      "output_physical_bytes": 1024,
+      "output_fill_u8": 165,
+      "guard_bytes": 16
+    },
+    {
+      "invocation": 10,
+      "records": [
+        {
+          "payload_id": 11,
+          "configuration_hex": "00000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 69,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 14,
+          "configuration_hex": "08000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 411,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 2,
+          "configuration_hex": "01000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "body_bytes": 3,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 1,
+          "configuration_hex": "00000000000000000100000000000000000000000100000000060000000000000000000000000000",
+          "body_bytes": 2,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        }
+      ],
+      "provider_fixture": "CALLER_OWNED_PUBLIC_SINGLE_ZERO_BYTE",
+      "history_present": 1,
+      "container_version": 0,
+      "container_key_selector": 0,
+      "protection_mode": 1,
+      "primary_length_bytes": 4,
+      "secondary_length_bytes": 1,
+      "secondary_history_capacity": 1,
+      "secondary_history_item_bytes": 32,
+      "associated_data_bytes": 0,
+      "output_capacity_policy": "COUNT_THEN_EXACT",
+      "output_physical_bytes": 1024,
+      "output_fill_u8": 165,
+      "guard_bytes": 16
+    },
+    {
+      "invocation": 11,
+      "records": [
+        {
+          "payload_id": 11,
+          "configuration_hex": "00000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 69,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 14,
+          "configuration_hex": "08000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 412,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 2,
+          "configuration_hex": "01000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "body_bytes": 3,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 1,
+          "configuration_hex": "00000000000000000100000000000000000000000100000000060000000000000000000000000000",
+          "body_bytes": 2,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        }
+      ],
+      "provider_fixture": "CALLER_OWNED_PUBLIC_SINGLE_ZERO_BYTE",
+      "history_present": 0,
+      "container_version": 0,
+      "container_key_selector": 0,
+      "protection_mode": 1,
+      "primary_length_bytes": 4,
+      "secondary_length_bytes": 1,
+      "secondary_history_capacity": 1,
+      "secondary_history_item_bytes": 32,
+      "associated_data_bytes": 0,
+      "output_capacity_policy": "COUNT_THEN_EXACT",
+      "output_physical_bytes": 1024,
+      "output_fill_u8": 165,
+      "guard_bytes": 16
+    },
+    {
+      "invocation": 12,
+      "records": [
+        {
+          "payload_id": 11,
+          "configuration_hex": "00000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 69,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 14,
+          "configuration_hex": "08000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 412,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 2,
+          "configuration_hex": "01000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "body_bytes": 3,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 1,
+          "configuration_hex": "00000000000000000100000000000000000000000100000000060000000000000000000000000000",
+          "body_bytes": 2,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        }
+      ],
+      "provider_fixture": "CALLER_OWNED_PUBLIC_SINGLE_ZERO_BYTE",
+      "history_present": 1,
+      "container_version": 0,
+      "container_key_selector": 0,
+      "protection_mode": 1,
+      "primary_length_bytes": 4,
+      "secondary_length_bytes": 1,
+      "secondary_history_capacity": 1,
+      "secondary_history_item_bytes": 32,
+      "associated_data_bytes": 0,
+      "output_capacity_policy": "COUNT_THEN_EXACT",
+      "output_physical_bytes": 1024,
+      "output_fill_u8": 165,
+      "guard_bytes": 16
+    },
+    {
+      "invocation": 13,
+      "records": [
+        {
+          "payload_id": 11,
+          "configuration_hex": "00000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 69,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 14,
+          "configuration_hex": "08000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 415,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 2,
+          "configuration_hex": "01000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "body_bytes": 3,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 1,
+          "configuration_hex": "00000000000000000100000000000000000000000100000000060000000000000000000000000000",
+          "body_bytes": 2,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        }
+      ],
+      "provider_fixture": "CALLER_OWNED_PUBLIC_SINGLE_ZERO_BYTE",
+      "history_present": 0,
+      "container_version": 0,
+      "container_key_selector": 0,
+      "protection_mode": 1,
+      "primary_length_bytes": 4,
+      "secondary_length_bytes": 1,
+      "secondary_history_capacity": 1,
+      "secondary_history_item_bytes": 32,
+      "associated_data_bytes": 0,
+      "output_capacity_policy": "COUNT_THEN_EXACT",
+      "output_physical_bytes": 1024,
+      "output_fill_u8": 165,
+      "guard_bytes": 16
+    },
+    {
+      "invocation": 14,
+      "records": [
+        {
+          "payload_id": 11,
+          "configuration_hex": "00000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 69,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 14,
+          "configuration_hex": "08000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 415,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 2,
+          "configuration_hex": "01000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "body_bytes": 3,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 1,
+          "configuration_hex": "00000000000000000100000000000000000000000100000000060000000000000000000000000000",
+          "body_bytes": 2,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        }
+      ],
+      "provider_fixture": "CALLER_OWNED_PUBLIC_SINGLE_ZERO_BYTE",
+      "history_present": 1,
+      "container_version": 0,
+      "container_key_selector": 0,
+      "protection_mode": 1,
+      "primary_length_bytes": 4,
+      "secondary_length_bytes": 1,
+      "secondary_history_capacity": 1,
+      "secondary_history_item_bytes": 32,
+      "associated_data_bytes": 0,
+      "output_capacity_policy": "COUNT_THEN_EXACT",
+      "output_physical_bytes": 1024,
+      "output_fill_u8": 165,
+      "guard_bytes": 16
+    },
+    {
+      "invocation": 15,
+      "records": [
+        {
+          "payload_id": 11,
+          "configuration_hex": "00000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 69,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 14,
+          "configuration_hex": "08000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 416,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 2,
+          "configuration_hex": "01000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "body_bytes": 3,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 1,
+          "configuration_hex": "00000000000000000100000000000000000000000100000000060000000000000000000000000000",
+          "body_bytes": 2,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        }
+      ],
+      "provider_fixture": "CALLER_OWNED_PUBLIC_SINGLE_ZERO_BYTE",
+      "history_present": 0,
+      "container_version": 0,
+      "container_key_selector": 0,
+      "protection_mode": 1,
+      "primary_length_bytes": 4,
+      "secondary_length_bytes": 1,
+      "secondary_history_capacity": 1,
+      "secondary_history_item_bytes": 32,
+      "associated_data_bytes": 0,
+      "output_capacity_policy": "COUNT_THEN_EXACT",
+      "output_physical_bytes": 1024,
+      "output_fill_u8": 165,
+      "guard_bytes": 16
+    },
+    {
+      "invocation": 16,
+      "records": [
+        {
+          "payload_id": 11,
+          "configuration_hex": "00000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 69,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 14,
+          "configuration_hex": "08000000000000000000000000000000000000000000000000000000010000000000000000000000",
+          "body_bytes": 416,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 2,
+          "configuration_hex": "01000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "body_bytes": 3,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        },
+        {
+          "payload_id": 1,
+          "configuration_hex": "00000000000000000100000000000000000000000100000000060000000000000000000000000000",
+          "body_bytes": 2,
+          "body_fill_u8": 90,
+          "body_role": "OWNED_OPAQUE_CONTROLLED_BYTES_NOT_SEMANTIC_PRODUCER_OUTPUT"
+        }
+      ],
+      "provider_fixture": "CALLER_OWNED_PUBLIC_SINGLE_ZERO_BYTE",
+      "history_present": 1,
+      "container_version": 0,
+      "container_key_selector": 0,
+      "protection_mode": 1,
+      "primary_length_bytes": 4,
+      "secondary_length_bytes": 1,
+      "secondary_history_capacity": 1,
+      "secondary_history_item_bytes": 32,
+      "associated_data_bytes": 0,
+      "output_capacity_policy": "COUNT_THEN_EXACT",
+      "output_physical_bytes": 1024,
+      "output_fill_u8": 165,
+      "guard_bytes": 16
+    }
+  ],
+  "direct_raw_reservation_lengths": [
+    511,
+    512
+  ],
+  "provider_definition": {
+    "EMPTY_PROVIDER_NEGATIVE_CONTROL": "Empty caller-owned list; no fallback initializer invoked.",
+    "CALLER_OWNED_PUBLIC_SINGLE_ZERO_BYTE": "One caller-owned record with key selector0, explicit key length1 and a public zero test byte. No vendor record or secret copied. This is a test provider, not production protection identity."
+  }
+}

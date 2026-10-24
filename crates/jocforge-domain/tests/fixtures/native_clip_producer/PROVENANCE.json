@@ -1,0 +1,10 @@
+{
+  "schema": "washed-native-clip-provenance.v1",
+  "source_candidate_manifest_sha256": "00692e369043e05c06f475bd390ae0476d729da15990489f17b84140df0c6ca2",
+  "source_candidate_check_sha256": "1b9d9c670b9b20c2e9e5e472501a39065f43d59de964bdf2205191ac10926dd2",
+  "native_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "functional_parameters_sha256": "a418de5f6a17f45ac97f2eb6508efbfeaff2ea561f9657ff94b058657ea0ed9e",
+  "previous_ID14_writer_source_manifest_sha256": "1f3d6fac145d9b6185dbe3dd34809f6a0af526abff2c82b44c572a3180feb32d",
+  "private_or_authentication_data_included": false,
+  "raw_PCM_included": false
+}

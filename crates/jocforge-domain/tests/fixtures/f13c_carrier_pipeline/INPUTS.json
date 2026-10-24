@@ -1,0 +1,229 @@
+{
+  "schema": "emdf-carrier-input-only.v1",
+  "input_only": true,
+  "boundary_cases": [
+    {
+      "name": "zero",
+      "n": 0,
+      "flag": 0,
+      "counter": 0,
+      "offset": 0
+    },
+    {
+      "name": "one",
+      "n": 1,
+      "flag": 0,
+      "counter": 0,
+      "offset": 0
+    },
+    {
+      "name": "unaligned_three",
+      "n": 17,
+      "flag": 0,
+      "counter": 0,
+      "offset": 3
+    },
+    {
+      "name": "unaligned_fifteen",
+      "n": 7,
+      "flag": 0,
+      "counter": 0,
+      "offset": 15
+    },
+    {
+      "name": "first_segment_full",
+      "n": 507,
+      "flag": 0,
+      "counter": 0,
+      "offset": 0
+    },
+    {
+      "name": "second_segment_one",
+      "n": 508,
+      "flag": 0,
+      "counter": 0,
+      "offset": 3
+    },
+    {
+      "name": "four_blocks_full",
+      "n": 2040,
+      "flag": 0,
+      "counter": 0,
+      "offset": 0
+    },
+    {
+      "name": "five_blocks_start",
+      "n": 2041,
+      "flag": 0,
+      "counter": 0,
+      "offset": 3
+    },
+    {
+      "name": "five_blocks_full",
+      "n": 2551,
+      "flag": 0,
+      "counter": 0,
+      "offset": 15
+    },
+    {
+      "name": "six_blocks_start",
+      "n": 2552,
+      "flag": 0,
+      "counter": 0,
+      "offset": 0
+    },
+    {
+      "name": "six_blocks_full",
+      "n": 3062,
+      "flag": 0,
+      "counter": 0,
+      "offset": 3
+    },
+    {
+      "name": "capacity_excess_one",
+      "n": 3063,
+      "flag": 0,
+      "counter": 0,
+      "offset": 0
+    },
+    {
+      "name": "cadence_prefix_full",
+      "n": 3054,
+      "flag": 1,
+      "counter": 61,
+      "offset": 3
+    },
+    {
+      "name": "cadence_prefix_excess_one",
+      "n": 3055,
+      "flag": 1,
+      "counter": 61,
+      "offset": 0
+    },
+    {
+      "name": "flag_without_cadence",
+      "n": 3062,
+      "flag": 1,
+      "counter": 0,
+      "offset": 15
+    },
+    {
+      "name": "negative_length",
+      "n": -1,
+      "flag": 0,
+      "counter": 0,
+      "offset": 0
+    },
+    {
+      "name": "zero_preserve_first",
+      "n": 0,
+      "flag": 1,
+      "counter": 61,
+      "offset": 0,
+      "prior_first": 4
+    },
+    {
+      "name": "negative_preserve_first",
+      "n": -1,
+      "flag": 0,
+      "counter": 0,
+      "offset": 0,
+      "prior_first": 3
+    }
+  ],
+  "sequence_requested_bytes": [
+    422,
+    0,
+    -1,
+    316
+  ],
+  "publication_gate": {
+    "initial_progress": 0,
+    "delay_threshold_samples": 3072,
+    "hop_samples": 1536,
+    "calls": [
+      {
+        "frontend_invocation": 1,
+        "internal_output_bytes": 4096
+      },
+      {
+        "frontend_invocation": 2,
+        "internal_output_bytes": 4096
+      },
+      {
+        "frontend_invocation": 3,
+        "internal_output_bytes": 4096
+      },
+      {
+        "frontend_invocation": 4,
+        "internal_output_bytes": 4096
+      },
+      {
+        "frontend_invocation": 5,
+        "internal_output_bytes": 4096
+      },
+      {
+        "frontend_invocation": 6,
+        "internal_output_bytes": 4096
+      }
+    ]
+  },
+  "natural_carriers": [
+    {
+      "case_id": "published-au-0",
+      "published_au_ordinal": 0,
+      "serialized_body_hex": "02c808a1f884b8000a270008040e00d1081c0620103be04020701f8040e07d0081c003e103fc040207f868840ff310081fe7e0103fdf4020703ef840ff01f081fefbe1002232add80710400014633840001aced676b3b59daced676b3b59daced676b3b59daced676b3b0a48f7f82985233716582b82f0498600000185705800000000000000000000c2966130a4a614ef63ba5031d71d003b40c28e1cc58e636587d852fc0cf20f00000061489f30530a466583615c14c7263c0000030a3853d82985235c185244c2922831d8614e63bd7030a700f4cc1a6527b031b0a486e4001d5bde33c81dbda0000f416cdce80ebe49bf1efbdc03b5da00020b1400000061489a639851c29f5965ec7305e15dc3000000c2b82c00000000000000000000615c118ef31cc0f60a3783b4ed001966c776e29819e2fdc76b0cc29231852260063bb0a7b0a44cc29edc58b0a48b853e614fc000768019678b02776148963b1b0a4b30c39a0b6bccd9000000b0f22b5fe1d2a458160ed00012058e00b2ed80521b7869400000020a002cb038680000058220a50082060590000b800004020004a1f59b3e0c00",
+      "body_origin": "NATIVE_DIAGNOSTIC_BOUNDARY_INPUT_NOT_MODEL_PRODUCTION",
+      "planner_input": {
+        "n": 422,
+        "flag": 0,
+        "counter": 2,
+        "prior_first": 0
+      },
+      "frame_bit_offset": 10048,
+      "cursor_origin": "Native ordinary codec reservation; absolute bit offset is supplied boundary input, not derived by this metadata-only model."
+    },
+    {
+      "case_id": "published-au-1",
+      "published_au_ordinal": 1,
+      "serialized_body_hex": "02c808a1f884b8000a270008040e00d1081c0620103be04020701f8040e07d0081c003e103fc040207f868840ff310081fe7e0103fdf4020703ef840ff01f081fefbe1002232add80710401bc670800075353535353535353535353535353530f1f693f9e4006598001790be000000000000000000061377d8d76e192f7f1000b00c3d5274c6b06f0012ef00003050a020000007b0d8e63d31cc1ee39858c7e086598000de6d5cbbb05e1501bc1638d02a0b000092a154016080505040000000000031607be61793feb8d97fc80000581d5efcd0000000000000000599e4ffbfe0c6f66c5fc58d860004bb6ca0c3db1d3f9612cb07be0f62304cbddb30404a002c06db21bdd82ca0200000000010028a0200000010028000a1010140000000000000a096000000100b2801040c0b20001700000804000905d56c1123",
+      "body_origin": "NATIVE_DIAGNOSTIC_BOUNDARY_INPUT_NOT_MODEL_PRODUCTION",
+      "planner_input": {
+        "n": 316,
+        "flag": 0,
+        "counter": 3,
+        "prior_first": 2
+      },
+      "frame_bit_offset": 11950,
+      "cursor_origin": "Native ordinary codec reservation; absolute bit offset is supplied boundary input, not derived by this metadata-only model."
+    },
+    {
+      "case_id": "published-au-2",
+      "published_au_ordinal": 2,
+      "serialized_body_hex": "02c808a1f884b8000a270008040e00d1081c0620103be04020701f8040e07d0081c003e103fc040207f868840ff310081fe7e0103fdf4020703ef840ff01f081fefbe1002232add80710401c46708000b5353535353535353535353535353530bcbb1b0e61316062062c062c0c580000759b6e80000000000000000002fdbb8d7710efc643fe02c030e6f13ae012703b5000000305800000000c5967818f675878e61665b8cf1f000259bc91fc17854b000a9da058b1500008129402c0948500a40000000000032cc30537aa60640000001f4db7400000000000000000ebeff8ec6983c6cb400004a0183db84c1fee796632cfdff4cc31373cbf9e27800076960212cf5662a2a00000000585842c2ca2a5258000000402ca0b002a2c042a500000000000005962a000000042a28001040c0b200017000008040009c588bab2d2",
+      "body_origin": "NATIVE_DIAGNOSTIC_BOUNDARY_INPUT_NOT_MODEL_PRODUCTION",
+      "planner_input": {
+        "n": 320,
+        "flag": 0,
+        "counter": 4,
+        "prior_first": 2
+      },
+      "frame_bit_offset": 11932,
+      "cursor_origin": "Native ordinary codec reservation; absolute bit offset is supplied boundary input, not derived by this metadata-only model."
+    },
+    {
+      "case_id": "published-au-3",
+      "published_au_ordinal": 3,
+      "serialized_body_hex": "02c808a1f884b8000a270008040e00d1081c0620103be04020701f8040e07d0081c003e103fc040207f868840ff310081fe7e0103fdf4020703ef840ff01f081fefbe1002232add80710401bc6708000f5353535353535353535353535353530a3f19cf0032cc00019e400019660000000000000001855d8e98ed9ec7e818263c000063a3703077f857730033c9000000305800000000c17d9867efb0b3dff4cdef8001de92d98fc260d8547becb30b000000000940000000000000000000062c00061471cc3000000006790000000000000000018263f0310586782617d849d8eea0003dff7c5831d3d825c2eee3b3298b00f7c0c3f7ef62cf3c5ec131e001da1bc1594eef60f1b3c17854002c00000000250000000000000000000000000000000000000000000000001040c0b2000170000080400093b8888fb79",
+      "body_origin": "NATIVE_DIAGNOSTIC_BOUNDARY_INPUT_NOT_MODEL_PRODUCTION",
+      "planner_input": {
+        "n": 316,
+        "flag": 0,
+        "counter": 5,
+        "prior_first": 2
+      },
+      "frame_bit_offset": 11966,
+      "cursor_origin": "Native ordinary codec reservation; absolute bit offset is supplied boundary input, not derived by this metadata-only model."
+    }
+  ]
+}

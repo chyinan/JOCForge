@@ -1,0 +1,51 @@
+{
+  "label": "primary_user_music",
+  "source_file_name": "\u4eba\u662f\u732b - \u5f20\u5361\u65af, \u6d1b\u5929\u4f9d.wav",
+  "source_file_bytes": 743696526,
+  "sample_rate": 48000,
+  "physical_channels": 38,
+  "pcm_bits": 24,
+  "block_align": 114,
+  "data_bytes": 743611284,
+  "source_samples": 6522906,
+  "metadata_only": true,
+  "pcm_bytes_read": 0,
+  "pcm_content_hash_computed": false,
+  "read_bytes": 85177,
+  "chunks": [
+    {
+      "id": "JUNK",
+      "payload_offset": 20,
+      "bytes": 64
+    },
+    {
+      "id": "fmt ",
+      "payload_offset": 92,
+      "bytes": 16,
+      "sha256": "f5c3ad7fe9d719260f7e56a62755244fb3cc77f697589b19fe8130d99216039e"
+    },
+    {
+      "id": "data",
+      "payload_offset": 116,
+      "bytes": 743611284
+    },
+    {
+      "id": "axml",
+      "payload_offset": 743611408,
+      "bytes": 82997,
+      "sha256": "7e4e61d4e2bec581ff2b05133281198a220602290597950e301a6079701c1659"
+    },
+    {
+      "id": "chna",
+      "payload_offset": 743694414,
+      "bytes": 1524,
+      "sha256": "f82b14e4c1b5b3b1750ed4104aa53f1d595e3ff2d4dbaef76a76c0e35f31b7a6"
+    },
+    {
+      "id": "dbmd",
+      "payload_offset": 743695946,
+      "bytes": 580,
+      "sha256": "ea961b79063bc68f64b1210dba002a5729d1003427196123f93b0890939b75d9"
+    }
+  ]
+}

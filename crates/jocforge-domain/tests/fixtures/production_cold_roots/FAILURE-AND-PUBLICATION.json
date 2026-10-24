@@ -1,0 +1,13 @@
+{
+  "natural_observation": "Assembly readiness codes221,221,0,0,0,0; parent tolerance2->1->0, all six outer codec parent returns0. These are tolerated priming misses, not injected fatal failures.",
+  "caller_visible_publication": "Frontend progress0->1536->3072->4608 then saturated; visible bytes0,0,4096,4096,4096,4096. Same native top/parent/frontend identities are bound.",
+  "durable_file_commit": "NOT_OBSERVED as a same-invocation transaction. Final reference-file hash is interference control, not a durable rollback receipt.",
+  "static_failure_roots": [
+    "With nonzero assembly result and tolerance0, codec parent sets its failure marker and returns the assembly result. With positive tolerance it decrements and can continue.",
+    "Protected-container failure sets the parent failure marker and maps to197 after earlier state writes.",
+    "Selected frontend dispatcher checks the latched failure marker and can return223 on a later call; frontend wrapper maps dispatcher failure to4 and exposes0 caller-visible bytes.",
+    "Warning aggregation has a separate bitset root and does not equal fatal failure state. No implicit whole-owner rollback is present in the inspected conditional paths."
+  ],
+  "production_failure_injection": "NOT_RUN; no live root, branch or business parameter changed.",
+  "global_no_commit_or_rollback": "NOT_PROVEN. R19 scoped wrapper failures are not expanded into a full codec/frontend transaction claim."
+}

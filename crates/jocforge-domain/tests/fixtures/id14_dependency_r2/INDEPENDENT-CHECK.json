@@ -1,0 +1,17 @@
+{
+  "manifest_sha256": "294dc82380bf9b8cb9a60094e973debc6b075801a46a64e33313e2766d65d778",
+  "payload_hashes_match": true,
+  "checker_sha256": "4532d9f8403d798cb0bf9a4ee26a0d4fa02993e868ed3f32f51191007fbc0b53",
+  "replay": {
+    "model_scalar_replay_cases": 2,
+    "native_status_and_absent_field_receipts_checked": 2,
+    "header_access_event_count_checked": 392,
+    "mismatch_count": 0,
+    "expected_loaded_after_calculation": true,
+    "original_native_execution_in_this_replay": false,
+    "whole_F13C_ready": false
+  },
+  "forbidden_material_scan_hits": [],
+  "selected_count_producer_encoded_id14_dependency_closed": true,
+  "whole_F13C_ready": false
+}

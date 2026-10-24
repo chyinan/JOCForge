@@ -1,0 +1,44 @@
+{
+  "schema": "washed-id1-timer-continuous-input.v1",
+  "cold_rule": {
+    "remaining": [
+      24000,
+      48000,
+      48000,
+      4800,
+      24000,
+      48000
+    ],
+    "cached": [
+      -1,
+      -1024,
+      -1024,
+      -1024,
+      -1024,
+      -1024
+    ],
+    "mode": 1,
+    "counter_low_s16": -513,
+    "counter_extra_u16": 0,
+    "group_s16": -1,
+    "codec_s16": -1
+  },
+  "input_config": [
+    -2,
+    1,
+    0,
+    0,
+    -40,
+    -60,
+    -512,
+    -12,
+    -512
+  ],
+  "samples_per_call": 1536,
+  "calls": 40,
+  "capacity": 11,
+  "offset": 0,
+  "output_capacity": 11,
+  "output_guard_bytes": 16,
+  "output_guard_fill_u8": 165
+}

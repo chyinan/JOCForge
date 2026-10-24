@@ -1,0 +1,36 @@
+{
+  "slice": "LONG-TRANSFORM-REFRESH-COMPOSITION",
+  "package_manifest_sha256": "4eaa2690e30ed0705404d7a6cd835e8637c2f933319d60be8812d900cb6521c1",
+  "independent_check_sha256": "0574d3f4aff6460340709216fd1d0c141c47baa68367f2c43abbc446ba2157b5",
+  "source_wash_manifest_sha256": "4f0681e4f55960b670717ca8b30e97f789485aec69d9fd7b97ca85855c32e756",
+  "source_wash_independent_check_sha256": "9a457e9c8ba5cf13a10d90d1592d771c1b9456bd65d521c0f7222052be47d3df",
+  "direct_dependencies": {
+    "COEFFICIENT-TO-POWER-ROW": {
+      "manifest_sha256": "4af64c87e7a40c3990075a3aa07d052ea0178c99ef1f1264847dfeaa7265c2d8",
+      "check_sha256": "ddcf281cb1edc3d805bd65aec282403fe962412a49eaf0311c1eac19d06ecd66"
+    },
+    "RAW-EXPONENT-FROM-POWER-BITS": {
+      "manifest_sha256": "f1acb6d4321e3b7fdb746bf7fd0e3b1ce7db179a5ecb5fe37201b429587158fb",
+      "check_sha256": "c184b804d2f7a607c24ee4ca86f9db2664cc9227c9e411a66ad21573d0537ed3"
+    },
+    "EXPONENT-REFRESH-STATE-MAP": {
+      "manifest_sha256": "f46a4c67bf019649d8f770a04d59b3809ed9eda7b3d5268aab4e3bddd03505e5",
+      "check_sha256": "0f42620d973b858f3a14d930e4c6c830be7af0e6a6528561edbe9c81cc4035a5"
+    }
+  },
+  "payload_hashes": {
+    "CONTRACT.md": "9d44569e61f49eed238f6a8dbb65136fa2d9307c755fb1158a397ee29b92570f",
+    "INPUTS.json": "75a4a7ac0b10a1ab7821db78f460fa9999d42ec9993d5d142012de12dfeea840",
+    "EXPECTED.json": "54dbd50e02582f8e6fba46cb689965b2c82a87d2d86bc53d8036d4c604e6b181",
+    "PARAMETERS.json": "d227af94962d12229927f7090d96ffb265bdccc963a967b6e8e3bb1e3ecb7608",
+    "PROVENANCE.json": "7fa05f0c482aa3321edd927a73376b343eb593d87652976a4c0a0d1f20da101c",
+    "FFT-CANARY-INPUT.json": "f8043b255bc1bba291584fba156b51a74ca3911ce84e095662aa11c44f2f92ae",
+    "FFT-CANARY-EXPECTED.json": "ad457c9cc79bdd11522cdc2ca69529fba8442abf690a811789890575d9b906b2",
+    "FFT-CANARY-CHECK.json": "5c4d27ee11f41bfa71ff713f0b56605c2937cbd85ac0c4d8f562346ed4655242"
+  },
+  "implementation_status": "LOCAL_SYNTHETIC_TRANSFORM_REFRESH_COMPOSITION__WHOLE_F09_DEFERRED",
+  "native_inner_fft_stage_buffers": "NOT_RUN",
+  "independent_product_audio_integration": "NOT_RUN",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO"
+}

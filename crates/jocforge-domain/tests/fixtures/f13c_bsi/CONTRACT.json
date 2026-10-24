@@ -1,0 +1,84 @@
+{
+  "schema": "selected-native-bsi-count-producer.v1",
+  "scope": "Ordinary non-bypass JOC wrapper, codec selector 10, single selected substream. Selected target rate code 5 maps to 1024 kbps. Other codes used only as controlled helper inputs; no complete alternate-rate encoding claim.",
+  "upstream_semantics": "Configured JOC processing count: selected non-LFE synthesis count plus LFE-presence flag. It is not source ADM channel count and is not an ID14 parser projection.",
+  "source_recipe": {
+    "channel_code_type": "I16 signed",
+    "source_count_range": "1..128",
+    "rate_code_range": "0..5",
+    "lfe_presence": "Any nonnegative I16 code with ((code>>8)&127)==4 produces 1; negative codes are counted as object codes, not LFE. Multiple LFE-coded items still produce Boolean 1.",
+    "non_lfe_count": "11 when rate_code==0; 15 when rate_code in 1..5.",
+    "count_i32": "non_lfe_count+lfe_presence; ordinary derived set {11,12,15,16}.",
+    "arithmetic": "Exact integer counts, no scaling or float rounding; this selected formula cannot overflow I32."
+  },
+  "config_parameter": {
+    "type": "I32 signed",
+    "range_inclusive": [
+      1,
+      16
+    ],
+    "absent_default": 11,
+    "invalid_error_i32": 220,
+    "clamping": false,
+    "explicit_query": "First matching parameter supplies its I32 unchanged; standalone query can bypass validation, so query success alone is not valid API acceptance.",
+    "validation_order": "Configuration constructor writes header/selector before validating the parameter list; errors preserve the tested target slot but may mutate the prefix. No whole-object no-commit guarantee.",
+    "tested_invalid_inputs": [
+      -1,
+      0,
+      17,
+      272
+    ],
+    "tested_valid_inputs": [
+      1,
+      16
+    ],
+    "tested_missing_result": 11
+  },
+  "payload_rule": {
+    "enable_u16": 1,
+    "length_minus_one_u16": 1,
+    "payload_after": "Start with supplied previous U8[64]; write byte0=1 and byte1=count_i32&255; preserve bytes2..63.",
+    "actual_consumed_length_bytes": 2,
+    "legal_domain_note": "Since validated count is1..16, low8 has no truncation in legal configurations. Probes272/-1 demonstrate underlying cast only, not supported inputs.",
+    "substream_rule": "Native writes the last configured substream; with more than one substream it disables first stream enable. Only selected one-stream dynamic proof is supplied.",
+    "tail_initializer": "Natural zero tail was observed, but its earliest initializer is not closed by this package. Model may represent two consumed bytes; do not invent a 64-byte all-zero producer."
+  },
+  "natural_join": {
+    "observed_source_channels": 38,
+    "observed_rate_code": 5,
+    "bypass_selected": false,
+    "non_lfe_count": 15,
+    "lfe_presence": 1,
+    "count_i32": 16,
+    "same_config_constructor_to_producer": true,
+    "same_record_producer_to_importer": true,
+    "producer_invocations": 7,
+    "import_invocations": 6
+  },
+  "failure": {
+    "controlled_missing_parameter_context": "Earlier controlled calls without the natural option context returned35 after writing additional-BSI bytes. Those are retained as partial-write evidence, not success vectors.",
+    "parent_queue_and_transaction_no_commit": "NOT_RUN"
+  },
+  "remaining": [
+    "Bypass wrapper producer and its upper source count restrictions",
+    "Earliest 64-byte tail initializer",
+    "ID14-specific semantic parser and complexity algorithm relation",
+    "Common immutable ID11/ID14 identity and carrier block origin",
+    "ID14 malformed byte/length and transaction failure cases"
+  ],
+  "whole_F13C_ready": false,
+  "validated_endpoints": {
+    "inputs_i32": [
+      1,
+      16
+    ],
+    "constructor_producer_importer_status": "Each stage returns0 in both controlled calls",
+    "payload_prefixes_hex": [
+      "0101",
+      "0110"
+    ],
+    "copy_extent_bytes": 64,
+    "tail_after_two_generated_bytes": "62 input A5 bytes preserved through producer and importer",
+    "context_limit": "Private graph retains normal native option metadata as diagnostic context; independent checker only reproduces disclosed scalar/payload rule, not the full native constructor."
+  }
+}

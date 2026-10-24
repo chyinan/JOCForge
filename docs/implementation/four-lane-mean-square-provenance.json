@@ -1,0 +1,15 @@
+{
+  "slice": "FOUR-LANE-MEAN-SQUARE",
+  "package_manifest_sha256": "7a5da39f1b20b8ffcebfe0925dd236df36c2d29552362985680c3f3b8505dbd1",
+  "independent_check_sha256": "fac6afc662b532d19e0e7e3d4932236e3e8235c397331fcd0017dfdbc634a7c0",
+  "source_manifest_sha256": "6a10c327a39f806580f61203d6186ee9919a1b7b86872b0e3a0b8f4e2f48b47d",
+  "source_independent_check_sha256": "a07ab929cdab22826a8f3279f209989e95d14302303161267d3dfed1f50f09f2",
+  "input_vectors_sha256": "a755df024cfd968e4a4f067d8a43a7a20caf136fad4b55ac65aaa9383846e657",
+  "result_sha256": "75489266e33fd2d65eb5b53c6b7906e533a1158a613dbb5b7e9d19ce0a5360c3",
+  "runtime_receipt_sha256": "1da17a0ddf289fbcb6623064b024c166f4419e485c737c51d9e6d55466676f16",
+  "implementation_status": "LOCAL_FOUR_LANE_MEAN_SQUARE_ONLY__GAIN_HISTORY_DEFERRED",
+  "native_lane_register_capture": "NOT_RUN",
+  "native_final_mean_values": 7,
+  "whole_f09g_closed": false,
+  "whole_f09_closed": false
+}

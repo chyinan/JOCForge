@@ -1,0 +1,120 @@
+{
+  "rate_scale_f32_bits": [
+    1051372203,
+    1052361336,
+    1056964608,
+    0
+  ],
+  "block_threshold_i16": [
+    6144,
+    3072,
+    2048,
+    1024,
+    5644,
+    2822,
+    1881,
+    940,
+    4096,
+    2048,
+    1365,
+    682
+  ],
+  "block_size_i16": [
+    6,
+    3,
+    2,
+    -1,
+    -1,
+    1
+  ],
+  "channel_count_a_i16": [
+    2,
+    1,
+    2,
+    3,
+    2,
+    3,
+    2,
+    3,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "channel_count_b_i16": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    1,
+    2,
+    2,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "compatibility_rates_i16": [
+    32,
+    40,
+    48,
+    56,
+    64,
+    80,
+    96,
+    112,
+    128,
+    160,
+    192,
+    224,
+    256,
+    320,
+    384,
+    448,
+    512,
+    576,
+    640
+  ],
+  "identities": [
+    {
+      "name": "rate_scale_f32_bits",
+      "bytes": 16,
+      "sha256": "53f4fcb2c29d50263035b6a68d0f27afab5747d17b395eee9baa6fdb00ebd0dd"
+    },
+    {
+      "name": "block_threshold_i16",
+      "bytes": 24,
+      "sha256": "4a6a478ce086f824155a6dfb859fa5405feb066d8c6d7bbeefe0b95c883b82d3"
+    },
+    {
+      "name": "block_size_i16",
+      "bytes": 12,
+      "sha256": "47cd2e24d72d3dbfa7b8385e85dd720f42417a296a3f64e391c99b4dfa5b3537"
+    },
+    {
+      "name": "channel_count_a_i16",
+      "bytes": 32,
+      "sha256": "fe4178a816c2b73f8ae4d61acb4ec8e5a599344c7330806b8975a92e7c2971a9"
+    },
+    {
+      "name": "channel_count_b_i16",
+      "bytes": 32,
+      "sha256": "a582e7a67c1a37230c28c9754674df764b6964d8d694ed005a58d58ad551c75b"
+    },
+    {
+      "name": "compatibility_rates_i16",
+      "bytes": 38,
+      "sha256": "4cfa6d9f15f01895fe11458de1312db013a9861a51e3ce651833956bfd932ef6"
+    }
+  ],
+  "grade": "RUNTIME_READ_FROM_ACTUAL_LOADED_MODULE_NONSECRET_NUMERIC_TABLES"
+}

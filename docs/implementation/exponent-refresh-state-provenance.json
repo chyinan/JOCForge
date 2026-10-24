@@ -1,0 +1,50 @@
+{
+  "schema": "f09-exponent-refresh-state-local-provenance.v1",
+  "slice_id": "exponent-refresh-state-transition",
+  "source_package": "EXPONENT-REFRESH-STATE-MAP",
+  "source_package_path": "outputs/IMPLEMENTER_SUPPLEMENTS/EXPONENT-REFRESH-STATE-MAP",
+  "source_manifest_sha256": "f46a4c67bf019649d8f770a04d59b3809ed9eda7b3d5268aab4e3bddd03505e5",
+  "source_independent_check_sha256": "0f42620d973b858f3a14d930e4c6c830be7af0e6a6528561edbe9c81cc4035a5",
+  "source_payloads": {
+    "CONTRACT.md": {
+      "bytes": 5194,
+      "sha256": "d363f933a3871be31dc489c2a9163b3f988aa45f6ca881856f276db85fff8c93"
+    },
+    "INPUTS.json": {
+      "bytes": 3010,
+      "sha256": "5af60faa4ff3215b38bbe13f351ff2775d0d8662d5944955f6360ab29c0f602b"
+    },
+    "EXPECTED.json": {
+      "bytes": 3821,
+      "sha256": "bdb79c0f5df7be6a0aedf4d2ef9812b10718574cafcc44021abb2c776c52295b"
+    },
+    "PARAMETERS.json": {
+      "bytes": 1340,
+      "sha256": "e404bac6e584f2b9fa37aa63edf811095e3b7b199b5863120d6c55127e32c55f"
+    },
+    "PROVENANCE.json": {
+      "bytes": 3060,
+      "sha256": "0505c8a4352573b59946764c72a4f8268def48fda06b638ac26d9c26f2209115"
+    }
+  },
+  "upstream_wash_manifest_sha256": "21ec09924b008e699f2261c990144bb8e2d23fecc49562e9a270e5846974807b",
+  "upstream_wash_independent_check_sha256": "f50c7c742d5a6c7a3a691aace7b592ec5f3bd759a6e9314575682a8ffa0211e6",
+  "reference_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "reference_module_identity_qualification": "Target-side hash of the actual loaded module path matched by a host rehash; file-image identity, not relocated mapped-memory digest.",
+  "runtime_cases": {
+    "recipes": 10,
+    "state_transitions": 12,
+    "wash_formula_replay": "PASS 12/12",
+    "local_expected_comparison": "PASS 12/12"
+  },
+  "interface_choices": {
+    "mode": "Rust i16, matching the package's 16-bit operand; no native Rust bool/enum typedef is claimed.",
+    "special": "Rust i16, matching the package's 16-bit operand; threshold selection uses special > 0."
+  },
+  "delivery_scope": "INTERNAL_IMPLEMENTATION_HANDOFF",
+  "user_publication_authorization_record": "docs/implementation/PUBLIC-DISTRIBUTION-AUTHORIZATION.md",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": false,
+  "private_vendor_key": "EXCLUDED",
+  "public_third_party_license_status": "NOT_ASSESSED"
+}

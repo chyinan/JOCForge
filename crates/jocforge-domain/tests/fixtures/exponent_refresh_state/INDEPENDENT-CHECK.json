@@ -1,0 +1,19 @@
+{
+  "schema": "exponent-refresh-state-map-check.v1",
+  "package": "EXPONENT-REFRESH-STATE-MAP",
+  "manifest_sha256": "f46a4c67bf019649d8f770a04d59b3809ed9eda7b3d5268aab4e3bddd03505e5",
+  "payload_count": 5,
+  "payload_hashes_match": true,
+  "upstream_manifest_and_check_match": true,
+  "upstream_payload_hashes_match": true,
+  "module_file_identity_runtime_bound": true,
+  "valid_input_recipes": 10,
+  "state_transitions": 12,
+  "prototype_postcompare": "12/12",
+  "wash_formula_replay": "PASS 12/12",
+  "normal_special_threshold_discriminator": "PASS; normal marker=1, special marker=0",
+  "violated_preconditions": "NOT_RUN; behavior remains unspecified",
+  "independent_product_implementation": "NOT_RUN",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO"
+}

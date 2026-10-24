@@ -1,0 +1,262 @@
+{
+  "schema": "transient-actual-local-review-status.v1",
+  "review_id": "v0.3.0-transient-actual-r3",
+  "review_mode": "independent implementation from specification, authorized parameters, and input-only vectors",
+  "verdict": "PASS_FOR_DECLARED_LOCAL_SCOPE",
+  "numeric_verdict": "PASS",
+  "manual_verdict": "PASS",
+  "implementation_ready": "NO",
+  "whole_package_ready": "NO",
+  "os_allowlist": "NOT_ENFORCED",
+  "checker_does_not_override_manual_review": true,
+  "evidence_policy": {
+    "expected_used_as_seed": false,
+    "actual_sequence_computed_before_expected_open": true,
+    "native_prediction_inputs_used": false,
+    "research_source_used": false,
+    "model_source_used": false,
+    "dll_used": false,
+    "other_checker_used": false,
+    "private_key_used": false
+  },
+  "readset": [
+    {
+      "file": "MANIFEST.json",
+      "bytes": 1865,
+      "sha256": "f222072379b6c854bec27def87147aca09015b2b859f3f9f37c0367d19be60ea"
+    },
+    {
+      "file": "specs/00-numeric-semantics.md",
+      "bytes": 3369,
+      "sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135"
+    },
+    {
+      "file": "specs/07-history-and-transient.md",
+      "bytes": 15529,
+      "sha256": "ab59cb962673315bfa9b8be3018aaffa778e8d29bb92903de0c4165224dd1530"
+    },
+    {
+      "file": "specs/07-transient-authorized-parameters.md",
+      "bytes": 1810,
+      "sha256": "3cc78a9e3e14b0b9ba4f11654e3af14b281c262aeabf3f3f744383113b1b2dc8"
+    },
+    {
+      "file": "specs/08-transforms.md",
+      "bytes": 7431,
+      "sha256": "0d48c5bbd7ecbbc978fcc9e2be80c9dec9b3b475bf3c8bd7157f5f59c20b411c"
+    },
+    {
+      "file": "specs/06-none-drc-statistics-and-control.md",
+      "bytes": 17923,
+      "sha256": "0a0046a6da8fe737378b9e109360a3cd9a1134c6207138c2df7cf23f37ba680d"
+    },
+    {
+      "file": "PIPELINE-AND-INTERFACES.md",
+      "bytes": 4778,
+      "sha256": "3cc1f0b2ccd9ee28efbf8bb4e044e1d4995935e074067b126fe0f6a07af5ee24"
+    },
+    {
+      "file": "parameters/transient-d05-authorized-v1.json",
+      "bytes": 7548,
+      "sha256": "130cd1a446ea8413a1d0d4c5eea631e890b7f1cd675975efa92697e258402991"
+    },
+    {
+      "file": "test-vectors/TRANSIENT-AUTHORIZED-INPUT-VECTORS.json",
+      "bytes": 153305,
+      "sha256": "ddf9a4d0344f7f03f12768c5bac62cc7622f8691bf9e7c27b02bf4eedc6bda98"
+    },
+    {
+      "file": "test-vectors/TRANSIENT-AUTHORIZED-RESULT.json",
+      "bytes": 29365,
+      "sha256": "0c6f3350631c0f54770e75f1a16a8d77cb46042f7f87cbfcf6002e89eb38ff64"
+    },
+    {
+      "file": "evidence:EVID-EXECUTION-GUIDANCE-RTK-V1",
+      "role": "execution instruction only"
+    }
+  ],
+  "numeric_evidence": {
+    "checker_sha256": "75e043b2cfea2181fc1ff6b10f0dffade6595dc78ae6f419a3cb988c07988f23",
+    "checker_result_sha256": "9cd5e5a741bf0702440f66a7af56332826ca047b1b9356581cf3f8da822bae0f",
+    "parameter_slots": 33,
+    "parameter_bytes": 132,
+    "parameter_distinct_f32_words": 28,
+    "continuous_blocks": 36,
+    "filtered_f32_words": 9216,
+    "next_state_f32_words": 1044,
+    "next_state_queue_values": 288,
+    "projected_field_comparisons": 11088,
+    "short_source_true_false": [
+      5,
+      31
+    ],
+    "other_source_true_false": [
+      12,
+      24
+    ],
+    "short_consumed_true": 5,
+    "other_consumed_true": 11,
+    "clear_boundary_cases": 4,
+    "decision_boundary_cases": 21,
+    "aggregate_bytes": 41976,
+    "aggregate_sha256": "5829e04630a7d3ea50239ab2c1eb2e6ca2d650401aa8f2d5d06a522dafc19194",
+    "mismatches": 0,
+    "first_divergence": null
+  },
+  "closed_prior_issues": [
+    {
+      "id": "F07-ACTUAL-R1-001",
+      "status": "CLOSED",
+      "evidence": "F07 declares the selected 33-slot provider supplied at lines 3, 17, and 114; line 129 confines the old parameterized review to historical scope and points actual supply to F07A."
+    },
+    {
+      "id": "F07-ACTUAL-R2-001",
+      "status": "CLOSED",
+      "evidence": "F07 line 23 now maps missing provider file/field to PARAMETER_UNAVAILABLE and type, bit-pattern, order, or hash mismatch to PARAMETER_IDENTITY_ERROR, matching the entry contract at line 118."
+    }
+  ],
+  "manual_checks": [
+    {
+      "topic": "provider delivery and source classification",
+      "status": "PASS",
+      "finding": "All six groups are supplied for internal implementation; source and distribution limits remain scoped and do not certify vendor design history."
+    },
+    {
+      "topic": "parameter rejection contract",
+      "status": "PASS",
+      "finding": "Missing provider/file/field and corrupt identity cases now have one consistent error mapping."
+    },
+    {
+      "topic": "installed versus delayed audio",
+      "status": "PASS",
+      "finding": "Transient consumes installed_audio; F08 consumes the once-delayed transform stream."
+    },
+    {
+      "topic": "short and other FIFO",
+      "status": "PASS_NUMERIC_AND_STATIC",
+      "finding": "Independent four-slot FIFOs consume old slot zero and append their own source flags."
+    },
+    {
+      "topic": "dither commit",
+      "status": "PASS_STATIC",
+      "finding": "Consumed-short state is staged once and committed only on frame acceptance; retries reuse the staged result."
+    },
+    {
+      "topic": "priming reset EOF and error",
+      "status": "PASS_STATIC",
+      "finding": "No fabricated priming or EOF frames; reset covers programme state and fatal errors are fail-stop."
+    },
+    {
+      "topic": "F08 and F06ND interfaces",
+      "status": "PASS_STATIC_WITH_KNOWN_OPEN_DEPENDENCY",
+      "finding": "Primary, companion, and secondary share the non-inverted short-consumed mapping; actual F06ND secondary reconstruction remains outside this local closure."
+    }
+  ],
+  "issues": [],
+  "known_limits": [
+    "Historical executable to current Rust source build identity was not rebuilt.",
+    "No real song, SDK, DLL, native PCM, or full codec run was performed.",
+    "F08 production transform assets and actual F06ND secondary forward/inverse closure remain outside this local numeric result.",
+    "Authorization is internal-only and does not certify original-source provenance or authorize public or third-party distribution."
+  ],
+  "revision": "r3",
+  "content_files_verified": 9,
+  "post_review_changes": "Local status only; reviewed bytes unchanged.",
+  "current_bindings": [
+    {
+      "file": "specs/00-numeric-semantics.md",
+      "reviewed_sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135",
+      "current_sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135",
+      "same_bytes": true
+    },
+    {
+      "file": "specs/07-history-and-transient.md",
+      "reviewed_sha256": "ab59cb962673315bfa9b8be3018aaffa778e8d29bb92903de0c4165224dd1530",
+      "current_sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac",
+      "same_bytes": false,
+      "prior_current_sha256": "ab59cb962673315bfa9b8be3018aaffa778e8d29bb92903de0c4165224dd1530"
+    },
+    {
+      "file": "specs/07-transient-authorized-parameters.md",
+      "reviewed_sha256": "3cc78a9e3e14b0b9ba4f11654e3af14b281c262aeabf3f3f744383113b1b2dc8",
+      "current_sha256": "7d3e85c1281653dfa8228b3162f6df95f0b53b367ce85d9333b4c0151d9dbe1f",
+      "same_bytes": false,
+      "prior_current_sha256": "3cc78a9e3e14b0b9ba4f11654e3af14b281c262aeabf3f3f744383113b1b2dc8"
+    },
+    {
+      "file": "specs/08-transforms.md",
+      "reviewed_sha256": "0d48c5bbd7ecbbc978fcc9e2be80c9dec9b3b475bf3c8bd7157f5f59c20b411c",
+      "current_sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e",
+      "same_bytes": false,
+      "prior_current_sha256": "c3d68ca7affc2f389a8a07b9347d56e70d48d570821135414ba5874bc2061199"
+    },
+    {
+      "file": "specs/06-none-drc-statistics-and-control.md",
+      "reviewed_sha256": "0a0046a6da8fe737378b9e109360a3cd9a1134c6207138c2df7cf23f37ba680d",
+      "current_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+      "same_bytes": false,
+      "prior_current_sha256": "6a2151fb9b7af942bad4a611b6aabbaa36c8e3ecfd44d08185d6845077ad39c5"
+    },
+    {
+      "file": "PIPELINE-AND-INTERFACES.md",
+      "reviewed_sha256": "3cc1f0b2ccd9ee28efbf8bb4e044e1d4995935e074067b126fe0f6a07af5ee24",
+      "current_sha256": "61e4f4a968c93a2dc074656db656cf757246a5f316a1ca06502ebc9d4d842e12",
+      "same_bytes": false,
+      "prior_current_sha256": "0a722f1aacfb4dba0834b012c2baedd9a03e12908238677f956e7d64fd73e373"
+    },
+    {
+      "file": "parameters/transient-d05-authorized-v1.json",
+      "reviewed_sha256": "130cd1a446ea8413a1d0d4c5eea631e890b7f1cd675975efa92697e258402991",
+      "current_sha256": "130cd1a446ea8413a1d0d4c5eea631e890b7f1cd675975efa92697e258402991",
+      "same_bytes": true
+    },
+    {
+      "file": "test-vectors/TRANSIENT-AUTHORIZED-INPUT-VECTORS.json",
+      "reviewed_sha256": "ddf9a4d0344f7f03f12768c5bac62cc7622f8691bf9e7c27b02bf4eedc6bda98",
+      "current_sha256": "ddf9a4d0344f7f03f12768c5bac62cc7622f8691bf9e7c27b02bf4eedc6bda98",
+      "same_bytes": true
+    },
+    {
+      "file": "test-vectors/TRANSIENT-AUTHORIZED-RESULT.json",
+      "reviewed_sha256": "0c6f3350631c0f54770e75f1a16a8d77cb46042f7f87cbfcf6002e89eb38ff64",
+      "current_sha256": "0c6f3350631c0f54770e75f1a16a8d77cb46042f7f87cbfcf6002e89eb38ff64",
+      "same_bytes": true
+    }
+  ],
+  "status_reconciliation": {
+    "current_identity_refresh": {
+      "revision": "status-reconciliation-r1",
+      "files": [
+        "PIPELINE-AND-INTERFACES.md"
+      ],
+      "historical_review_identity_preserved": true,
+      "algorithm_changed": false
+    }
+  },
+  "subsequent_current_binding_refreshes": [
+    {
+      "file": "specs/07-history-and-transient.md",
+      "prior_current_sha256": "468a95e0a369edd00c9757452f3fbb8f2ed78e17c2c81622b441a2f7a0d12462",
+      "replacement_sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac",
+      "reason": "Current package identity refresh only; historical reviewed_sha256, review scope, algorithms, and readiness are unchanged."
+    },
+    {
+      "file": "specs/07-transient-authorized-parameters.md",
+      "prior_current_sha256": "eae71b333a34f56a60590634af0b8ee1f223c9b45ede54667fd679c8b4974aa3",
+      "replacement_sha256": "7d3e85c1281653dfa8228b3162f6df95f0b53b367ce85d9333b4c0151d9dbe1f",
+      "reason": "Current package identity refresh only; historical reviewed_sha256, review scope, algorithms, and readiness are unchanged."
+    },
+    {
+      "file": "PIPELINE-AND-INTERFACES.md",
+      "prior_current_sha256": "45b46a04d5b15230691d5ab6fbfe1efabe8266b35ffa15b02c0d1cb304698063",
+      "replacement_sha256": "61e4f4a968c93a2dc074656db656cf757246a5f316a1ca06502ebc9d4d842e12",
+      "reason": "Current package identity refresh only; historical reviewed_sha256, review scope, algorithms, and readiness are unchanged."
+    },
+    {
+      "file": "specs/08-transforms.md",
+      "prior_current_sha256": "ffe9b5a15e104eeb2cb465abc1ed8f4e9b63ac663f45af3f64edff9280fc4736",
+      "replacement_sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e",
+      "reason": "Current package identity refresh only; historical reviewed_sha256, review scope, algorithms, and readiness are unchanged."
+    }
+  ]
+}

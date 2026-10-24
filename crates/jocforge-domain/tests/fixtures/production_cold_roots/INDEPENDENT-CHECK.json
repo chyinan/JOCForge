@@ -1,0 +1,11 @@
+{
+  "schema": "washed-implementer-supplement-independent-check.v1",
+  "manifest_sha256": "986ea528cda6687c14cc87f790b7eec90b4e10567bef1e547a07ecc226de5928",
+  "status": "PASS",
+  "cases": {
+    "queue": 5,
+    "frontend": 6,
+    "parent_boundary": 6
+  },
+  "production_cold_parent_equivalence": false
+}

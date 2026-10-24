@@ -1,0 +1,7 @@
+{
+  "schema": "washed-implementer-supplement-independent-check.v1",
+  "manifest_sha256": "9a0b164c09d467e42b838bf6290ecfb7b660f21564b67315961241793113c41f",
+  "status": "PASS",
+  "candidate_count": 70,
+  "selected_path_native_ID14_parser": "NOT_APPLICABLE_NO_SEMANTIC_READER_IN_RECOVERED_PATH"
+}

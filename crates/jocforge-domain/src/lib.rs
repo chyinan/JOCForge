@@ -1,6 +1,7 @@
 // pattern: Functional Core
 //! Domain boundaries only. Algorithms require an approved specification.
 
+pub mod analysis;
 pub mod codec;
 pub mod frontend;
 pub mod integrity;

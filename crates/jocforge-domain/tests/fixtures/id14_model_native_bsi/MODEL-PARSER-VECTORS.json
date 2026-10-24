@@ -1,0 +1,215 @@
+{
+  "schema": "f13c-id14-model-parser-vectors.v1",
+  "classification": "MODEL_EXECUTION_NOT_NATIVE",
+  "model_helper_source_sha256": "7f7b7179cac59b510f0b5a0e71f3d97d3cd7e602181ccbe7174e191f6f2c056d",
+  "debug_release_observations_equal": true,
+  "vectors": [
+    {
+      "case": "prefix_0",
+      "domain": "JOC_ID14_MODEL_HELPER",
+      "input_hex": "",
+      "input_bytes": [],
+      "expected_model_observation": "Err(Bit(EndOfInput { requested: 3, remaining: 0 }))"
+    },
+    {
+      "case": "prefix_1",
+      "domain": "JOC_ID14_MODEL_HELPER",
+      "input_hex": "67",
+      "input_bytes": [
+        103
+      ],
+      "expected_model_observation": "Err(Bit(EndOfInput { requested: 6, remaining: 5 }))"
+    },
+    {
+      "case": "prefix_2",
+      "domain": "JOC_ID14_MODEL_HELPER",
+      "input_hex": "6708",
+      "input_bytes": [
+        103,
+        8
+      ],
+      "expected_model_observation": "Err(Bit(EndOfInput { requested: 5, remaining: 1 }))"
+    },
+    {
+      "case": "prefix_3",
+      "domain": "JOC_ID14_MODEL_HELPER",
+      "input_hex": "670800",
+      "input_bytes": [
+        103,
+        8,
+        0
+      ],
+      "expected_model_observation": "Err(Bit(EndOfInput { requested: 10, remaining: 4 }))"
+    },
+    {
+      "case": "prefix_4",
+      "domain": "JOC_ID14_MODEL_HELPER",
+      "input_hex": "67080000",
+      "input_bytes": [
+        103,
+        8,
+        0,
+        0
+      ],
+      "expected_model_observation": "Err(Bit(EndOfInput { requested: 1, remaining: 0 }))"
+    },
+    {
+      "case": "prefix_5",
+      "domain": "JOC_ID14_MODEL_HELPER",
+      "input_hex": "6708000000",
+      "input_bytes": [
+        103,
+        8,
+        0,
+        0,
+        0
+      ],
+      "expected_model_observation": "Err(Bit(EndOfInput { requested: 1, remaining: 0 }))"
+    },
+    {
+      "case": "prefix_6",
+      "domain": "JOC_ID14_MODEL_HELPER",
+      "input_hex": "670800000000",
+      "input_bytes": [
+        103,
+        8,
+        0,
+        0,
+        0,
+        0
+      ],
+      "expected_model_observation": "Ok((3, 5, 15, 0, 15))"
+    },
+    {
+      "case": "extra_zero",
+      "domain": "JOC_ID14_MODEL_HELPER",
+      "input_hex": "67080000000000",
+      "input_bytes": [
+        103,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "expected_model_observation": "Err(TrailingData { bits: 11 })"
+    },
+    {
+      "case": "nonzero_padding",
+      "domain": "JOC_ID14_MODEL_HELPER",
+      "input_hex": "670800000001",
+      "input_bytes": [
+        103,
+        8,
+        0,
+        0,
+        0,
+        1
+      ],
+      "expected_model_observation": "Err(NonZeroPadding)"
+    },
+    {
+      "case": "reserved_downmix",
+      "domain": "JOC_ID14_MODEL_HELPER",
+      "input_hex": "e70800000000",
+      "input_bytes": [
+        231,
+        8,
+        0,
+        0,
+        0,
+        0
+      ],
+      "expected_model_observation": "Err(ReservedDownmix { index: 7 })"
+    },
+    {
+      "case": "valid_id14_only",
+      "domain": "EMDF_MODEL_HELPER",
+      "input_hex": "583800110388200063384000000000240000000000",
+      "input_bytes": [
+        88,
+        56,
+        0,
+        17,
+        3,
+        136,
+        32,
+        0,
+        99,
+        56,
+        64,
+        0,
+        0,
+        0,
+        0,
+        36,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "expected_model_observation": "consumed=21 supplied=21 full_wrapper_length_ok=true profile=Err(JocProfileValidationFailure { profile: ObservedVendorCompat, oamd_payload_count: 0, joc_payload_count: 1, deviations: [] })"
+    },
+    {
+      "case": "extra_tail",
+      "domain": "EMDF_MODEL_HELPER",
+      "input_hex": "58380011038820006338400000000024000000000000",
+      "input_bytes": [
+        88,
+        56,
+        0,
+        17,
+        3,
+        136,
+        32,
+        0,
+        99,
+        56,
+        64,
+        0,
+        0,
+        0,
+        0,
+        36,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "expected_model_observation": "consumed=21 supplied=22 full_wrapper_length_ok=false profile=Err(JocProfileValidationFailure { profile: ObservedVendorCompat, oamd_payload_count: 0, joc_payload_count: 1, deviations: [] })"
+    },
+    {
+      "case": "truncated",
+      "domain": "EMDF_MODEL_HELPER",
+      "input_hex": "5838001103882000633840000000002400000000",
+      "input_bytes": [
+        88,
+        56,
+        0,
+        17,
+        3,
+        136,
+        32,
+        0,
+        99,
+        56,
+        64,
+        0,
+        0,
+        0,
+        0,
+        36,
+        0,
+        0,
+        0,
+        0
+      ],
+      "expected_model_observation": "Err(TruncatedContainer { declared: 17, available: 16 })"
+    }
+  ],
+  "full_selected_OAMD_ID14_wrapper_success": "NOT_RUN"
+}

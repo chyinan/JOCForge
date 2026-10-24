@@ -1,0 +1,740 @@
+{
+  "schema": "lfe-native-observations.v1",
+  "cases": [
+    {
+      "recipe_index": 0,
+      "steps": [
+        {
+          "call": 0,
+          "combined_lfe_block0": [
+            24,
+            2,
+            1,
+            0,
+            0,
+            0,
+            1
+          ],
+          "fullband_return": "0",
+          "lfe_only_return": "0",
+          "fullband_output": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "lfe_rows": [
+            {
+              "block": 0,
+              "output": [
+                24,
+                2,
+                1,
+                0,
+                0,
+                0,
+                1
+              ],
+              "tail_canary": 12345,
+              "power_probe_bits": [
+                0,
+                1015021568,
+                1040187392,
+                1056964608,
+                1065353216,
+                1065353216,
+                1033895936
+              ],
+              "power_probe_bias": 0,
+              "power_probe_role": "SEPARATE_NATIVE_HELPER_NOT_INTERNAL_INTERMEDIATE_CAPTURE"
+            },
+            {
+              "block": 1,
+              "output": [
+                2,
+                1,
+                0,
+                0,
+                0,
+                1,
+                24
+              ],
+              "tail_canary": 12345,
+              "power_probe_bits": [
+                1015021568,
+                1040187392,
+                1056964608,
+                1065353216,
+                1065353216,
+                1033895936,
+                0
+              ],
+              "power_probe_bias": 0,
+              "power_probe_role": "SEPARATE_NATIVE_HELPER_NOT_INTERNAL_INTERMEDIATE_CAPTURE"
+            }
+          ]
+        },
+        {
+          "call": 1,
+          "combined_lfe_block0": [
+            2,
+            1,
+            0,
+            0,
+            0,
+            1,
+            24
+          ],
+          "fullband_return": "0",
+          "lfe_only_return": "0",
+          "fullband_output": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "lfe_rows": [
+            {
+              "block": 0,
+              "output": [
+                2,
+                1,
+                0,
+                0,
+                0,
+                1,
+                24
+              ],
+              "tail_canary": 12345,
+              "power_probe_bits": [
+                1015021568,
+                1040187392,
+                1056964608,
+                1065353216,
+                1065353216,
+                1033895936,
+                0
+              ],
+              "power_probe_bias": 0,
+              "power_probe_role": "SEPARATE_NATIVE_HELPER_NOT_INTERNAL_INTERMEDIATE_CAPTURE"
+            },
+            {
+              "block": 1,
+              "output": [
+                1,
+                0,
+                0,
+                0,
+                1,
+                24,
+                2
+              ],
+              "tail_canary": 12345,
+              "power_probe_bits": [
+                1040187392,
+                1056964608,
+                1065353216,
+                1065353216,
+                1033895936,
+                0,
+                1015021568
+              ],
+              "power_probe_bias": 0,
+              "power_probe_role": "SEPARATE_NATIVE_HELPER_NOT_INTERNAL_INTERMEDIATE_CAPTURE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "recipe_index": 1,
+      "steps": [
+        {
+          "call": 0,
+          "combined_lfe_block0": [
+            24,
+            2,
+            1,
+            0,
+            0,
+            0,
+            1
+          ],
+          "fullband_return": "0",
+          "lfe_only_return": "0",
+          "fullband_output": [
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "lfe_rows": [
+            {
+              "block": 0,
+              "output": [
+                24,
+                2,
+                1,
+                0,
+                0,
+                0,
+                1
+              ],
+              "tail_canary": 12345,
+              "power_probe_bits": [
+                0,
+                1015021568,
+                1040187392,
+                1056964608,
+                1065353216,
+                1065353216,
+                1033895936
+              ],
+              "power_probe_bias": 0,
+              "power_probe_role": "SEPARATE_NATIVE_HELPER_NOT_INTERNAL_INTERMEDIATE_CAPTURE"
+            },
+            {
+              "block": 1,
+              "output": [
+                2,
+                1,
+                0,
+                0,
+                0,
+                1,
+                24
+              ],
+              "tail_canary": 12345,
+              "power_probe_bits": [
+                1015021568,
+                1040187392,
+                1056964608,
+                1065353216,
+                1065353216,
+                1033895936,
+                0
+              ],
+              "power_probe_bias": 0,
+              "power_probe_role": "SEPARATE_NATIVE_HELPER_NOT_INTERNAL_INTERMEDIATE_CAPTURE"
+            }
+          ]
+        },
+        {
+          "call": 1,
+          "combined_lfe_block0": [
+            2,
+            1,
+            0,
+            0,
+            0,
+            1,
+            24
+          ],
+          "fullband_return": "0",
+          "lfe_only_return": "0",
+          "fullband_output": [
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "lfe_rows": [
+            {
+              "block": 0,
+              "output": [
+                2,
+                1,
+                0,
+                0,
+                0,
+                1,
+                24
+              ],
+              "tail_canary": 12345,
+              "power_probe_bits": [
+                1015021568,
+                1040187392,
+                1056964608,
+                1065353216,
+                1065353216,
+                1033895936,
+                0
+              ],
+              "power_probe_bias": 0,
+              "power_probe_role": "SEPARATE_NATIVE_HELPER_NOT_INTERNAL_INTERMEDIATE_CAPTURE"
+            },
+            {
+              "block": 1,
+              "output": [
+                1,
+                0,
+                0,
+                0,
+                1,
+                24,
+                2
+              ],
+              "tail_canary": 12345,
+              "power_probe_bits": [
+                1040187392,
+                1056964608,
+                1065353216,
+                1065353216,
+                1033895936,
+                0,
+                1015021568
+              ],
+              "power_probe_bias": 0,
+              "power_probe_role": "SEPARATE_NATIVE_HELPER_NOT_INTERNAL_INTERMEDIATE_CAPTURE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "recipe_index": 2,
+      "steps": [
+        {
+          "call": 0,
+          "combined_lfe_block0": [
+            24,
+            2,
+            1,
+            0,
+            0,
+            0,
+            1
+          ],
+          "fullband_return": "0",
+          "lfe_only_return": "0",
+          "fullband_output": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "lfe_rows": [
+            {
+              "block": 0,
+              "output": [
+                24,
+                2,
+                1,
+                0,
+                0,
+                0,
+                1
+              ],
+              "tail_canary": 12345,
+              "power_probe_bits": [
+                0,
+                1015021568,
+                1040187392,
+                1056964608,
+                1065353216,
+                1065353216,
+                1033895936
+              ],
+              "power_probe_bias": 0,
+              "power_probe_role": "SEPARATE_NATIVE_HELPER_NOT_INTERNAL_INTERMEDIATE_CAPTURE"
+            },
+            {
+              "block": 1,
+              "output": [
+                2,
+                1,
+                0,
+                0,
+                0,
+                1,
+                24
+              ],
+              "tail_canary": 12345,
+              "power_probe_bits": [
+                1015021568,
+                1040187392,
+                1056964608,
+                1065353216,
+                1065353216,
+                1033895936,
+                0
+              ],
+              "power_probe_bias": 0,
+              "power_probe_role": "SEPARATE_NATIVE_HELPER_NOT_INTERNAL_INTERMEDIATE_CAPTURE"
+            }
+          ]
+        },
+        {
+          "call": 1,
+          "combined_lfe_block0": [
+            2,
+            1,
+            0,
+            0,
+            0,
+            1,
+            24
+          ],
+          "fullband_return": "0",
+          "lfe_only_return": "0",
+          "fullband_output": [
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "lfe_rows": [
+            {
+              "block": 0,
+              "output": [
+                2,
+                1,
+                0,
+                0,
+                0,
+                1,
+                24
+              ],
+              "tail_canary": 12345,
+              "power_probe_bits": [
+                1015021568,
+                1040187392,
+                1056964608,
+                1065353216,
+                1065353216,
+                1033895936,
+                0
+              ],
+              "power_probe_bias": 0,
+              "power_probe_role": "SEPARATE_NATIVE_HELPER_NOT_INTERNAL_INTERMEDIATE_CAPTURE"
+            },
+            {
+              "block": 1,
+              "output": [
+                1,
+                0,
+                0,
+                0,
+                1,
+                24,
+                2
+              ],
+              "tail_canary": 12345,
+              "power_probe_bits": [
+                1040187392,
+                1056964608,
+                1065353216,
+                1065353216,
+                1033895936,
+                0,
+                1015021568
+              ],
+              "power_probe_bias": 0,
+              "power_probe_role": "SEPARATE_NATIVE_HELPER_NOT_INTERNAL_INTERMEDIATE_CAPTURE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "recipe_index": 3,
+      "steps": [
+        {
+          "call": 0,
+          "combined_lfe_block0": [
+            24,
+            2,
+            1,
+            0,
+            0,
+            0,
+            1
+          ],
+          "fullband_return": "0",
+          "lfe_only_return": "0",
+          "fullband_output": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "lfe_rows": [
+            {
+              "block": 0,
+              "output": [
+                24,
+                2,
+                1,
+                0,
+                0,
+                0,
+                1
+              ],
+              "tail_canary": 12345,
+              "power_probe_bits": [
+                0,
+                1015021568,
+                1040187392,
+                1056964608,
+                1065353216,
+                1065353216,
+                1033895936
+              ],
+              "power_probe_bias": 0,
+              "power_probe_role": "SEPARATE_NATIVE_HELPER_NOT_INTERNAL_INTERMEDIATE_CAPTURE"
+            },
+            {
+              "block": 1,
+              "output": [
+                2,
+                1,
+                0,
+                0,
+                0,
+                1,
+                24
+              ],
+              "tail_canary": 12345,
+              "power_probe_bits": [
+                1015021568,
+                1040187392,
+                1056964608,
+                1065353216,
+                1065353216,
+                1033895936,
+                0
+              ],
+              "power_probe_bias": 0,
+              "power_probe_role": "SEPARATE_NATIVE_HELPER_NOT_INTERNAL_INTERMEDIATE_CAPTURE"
+            }
+          ]
+        },
+        {
+          "call": 1,
+          "combined_lfe_block0": [
+            2,
+            1,
+            0,
+            0,
+            0,
+            1,
+            24
+          ],
+          "fullband_return": "0",
+          "lfe_only_return": "0",
+          "fullband_output": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "lfe_rows": [
+            {
+              "block": 0,
+              "output": [
+                2,
+                1,
+                0,
+                0,
+                0,
+                1,
+                24
+              ],
+              "tail_canary": 12345,
+              "power_probe_bits": [
+                1015021568,
+                1040187392,
+                1056964608,
+                1065353216,
+                1065353216,
+                1033895936,
+                0
+              ],
+              "power_probe_bias": 0,
+              "power_probe_role": "SEPARATE_NATIVE_HELPER_NOT_INTERNAL_INTERMEDIATE_CAPTURE"
+            },
+            {
+              "block": 1,
+              "output": [
+                1,
+                0,
+                0,
+                0,
+                1,
+                24,
+                2
+              ],
+              "tail_canary": 12345,
+              "power_probe_bits": [
+                1040187392,
+                1056964608,
+                1065353216,
+                1065353216,
+                1033895936,
+                0,
+                1015021568
+              ],
+              "power_probe_bias": 0,
+              "power_probe_role": "SEPARATE_NATIVE_HELPER_NOT_INTERNAL_INTERMEDIATE_CAPTURE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "recipe_index": 4,
+      "steps": [
+        {
+          "call": 0,
+          "combined_lfe_block0": [
+            24,
+            2,
+            1,
+            0,
+            0,
+            0,
+            1
+          ],
+          "fullband_return": "0",
+          "lfe_only_return": "0",
+          "fullband_output": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "lfe_rows": [
+            {
+              "block": 0,
+              "output": [
+                24,
+                2,
+                1,
+                0,
+                0,
+                0,
+                1
+              ],
+              "tail_canary": 12345,
+              "power_probe_bits": [
+                0,
+                1015021568,
+                1040187392,
+                1056964608,
+                1065353216,
+                1065353216,
+                1033895936
+              ],
+              "power_probe_bias": 0,
+              "power_probe_role": "SEPARATE_NATIVE_HELPER_NOT_INTERNAL_INTERMEDIATE_CAPTURE"
+            },
+            {
+              "block": 1,
+              "output": [
+                2,
+                1,
+                0,
+                0,
+                0,
+                1,
+                24
+              ],
+              "tail_canary": 12345,
+              "power_probe_bits": [
+                1015021568,
+                1040187392,
+                1056964608,
+                1065353216,
+                1065353216,
+                1033895936,
+                0
+              ],
+              "power_probe_bias": 0,
+              "power_probe_role": "SEPARATE_NATIVE_HELPER_NOT_INTERNAL_INTERMEDIATE_CAPTURE"
+            }
+          ]
+        },
+        {
+          "call": 1,
+          "combined_lfe_block0": [
+            2,
+            1,
+            0,
+            0,
+            0,
+            1,
+            24
+          ],
+          "fullband_return": "0",
+          "lfe_only_return": "0",
+          "fullband_output": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "lfe_rows": [
+            {
+              "block": 0,
+              "output": [
+                2,
+                1,
+                0,
+                0,
+                0,
+                1,
+                24
+              ],
+              "tail_canary": 12345,
+              "power_probe_bits": [
+                1015021568,
+                1040187392,
+                1056964608,
+                1065353216,
+                1065353216,
+                1033895936,
+                0
+              ],
+              "power_probe_bias": 0,
+              "power_probe_role": "SEPARATE_NATIVE_HELPER_NOT_INTERNAL_INTERMEDIATE_CAPTURE"
+            },
+            {
+              "block": 1,
+              "output": [
+                1,
+                0,
+                0,
+                0,
+                1,
+                24,
+                2
+              ],
+              "tail_canary": 12345,
+              "power_probe_bits": [
+                1040187392,
+                1056964608,
+                1065353216,
+                1065353216,
+                1033895936,
+                0,
+                1015021568
+              ],
+              "power_probe_bias": 0,
+              "power_probe_role": "SEPARATE_NATIVE_HELPER_NOT_INTERNAL_INTERMEDIATE_CAPTURE"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "schema": "raw-exponent-from-power-bits-provenance.v1",
+  "package": "RAW-EXPONENT-FROM-POWER-BITS",
+  "source_wash_package": "SANITIZED_F09_RAW_EXPONENT_ROUTES_R1",
+  "source_manifest_sha256": "92624e1fe4319ffde8c11cfc10fb43d9c3cccd45687f913c97cd1f5d8cfacfac",
+  "source_independent_check_sha256": "54d25872273474f1b26d769538182f7c14a24ad72791876bdcc3905259bd8d0d",
+  "source_payloads": [
+    {
+      "path": "INPUTS.json",
+      "bytes": 5330,
+      "sha256": "a910cd49f502d281fc19744a16083a51bcccf5aa6fb5b9058ca460184916af4a"
+    },
+    {
+      "path": "EXPECTED.json",
+      "bytes": 29412,
+      "sha256": "d63c0bdb8e389721bf9dfd2a3f8995f54c42e37c6c3d1ae773028999c545d8a5"
+    },
+    {
+      "path": "CONTRACT.json",
+      "bytes": 6258,
+      "sha256": "623a1c126b9169ef0e84978ecbb394cc52e68f33f5fce55b68764614d6333adb"
+    }
+  ],
+  "reference_module": {
+    "file_bytes_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "qualification": "Target-side hash of the actual loaded module path file bytes matched by a host rehash; not a relocated memory-image digest."
+  },
+  "evidence": {
+    "static_rule": "STATIC_CONFIRMED",
+    "native_runtime": "RUNTIME_CONFIRMED: 5 bit recipes and 50 output values",
+    "source_replay": "5/5 recipes and 50/50 values match the bit formula; expected outputs were not used as inputs",
+    "wash_formula_replay": "PASS: 5 recipes and 50 values independently recomputed",
+    "independent_product_implementation": "NOT_RUN"
+  },
+  "source_evidence_digests_only": [
+    {
+      "alias": "static_bit_kernel",
+      "bytes": 2663,
+      "sha256": "55f9b99addfc8a541938f3367ba6ce73b238f068fe1e1afcf634bdf3ef18dfd3"
+    },
+    {
+      "alias": "runtime_hook",
+      "bytes": 6348,
+      "sha256": "66b9e5fb0bead9c0958ff30adc162b647f260b0f8098a248b78d0f0def05bdf4"
+    },
+    {
+      "alias": "runtime_receipt",
+      "bytes": 601,
+      "sha256": "990f49de067f8c80a11ca29bd684626c4a025e45bc1d0f0253008d995ae8562d"
+    },
+    {
+      "alias": "private_trace_digest_only",
+      "bytes": 61774,
+      "sha256": "33d93c27e6aea773bbdbca4015807a1f5019d7c03ed0069452aad6e587e64b7e"
+    }
+  ],
+  "filtered_scope": "Only standalone POWER-bit kernel. Coefficient-pair route, wrapper/configuration writer, raw POWER writer, bias provider, and routing are not delivered as ready behavior in this package.",
+  "delivery_scope": "INTERNAL_IMPLEMENTATION_HANDOFF",
+  "private_vendor_key": "EXCLUDED",
+  "public_third_party_license_status": "NOT_ASSESSED",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO",
+  "explicitly_not_delivered": [
+    "raw runtime traces",
+    "binary contents",
+    "addresses or disassembly identifiers",
+    "vendor private key or authentication material"
+  ]
+}

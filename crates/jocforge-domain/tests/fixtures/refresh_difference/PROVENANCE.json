@@ -1,0 +1,33 @@
+{
+  "schema": "f09e-refresh-difference-map-provenance.v1",
+  "package": "F09E-REFRESH-DIFFERENCE-MAP",
+  "base_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_files": {
+    "specs/09-exponents.md": {
+      "bytes": 9722,
+      "sha256": "41cd157140d0deaab51fa9a895c33758cb49eb46cf5844a2883c1d6e8bb81739",
+      "relevant_clause": "F09.6"
+    },
+    "parameters/exponent-refresh-difference-math-v1.json": {
+      "bytes": 1661,
+      "sha256": "6cf3ae8d899b334d5aa87e0744e4c58b7dba1d92177ca07738726f8ea0ee2c6d"
+    },
+    "test-vectors/EXPONENT-REFRESH-DIFFERENCE-MATH-VERIFICATION.json": {
+      "bytes": 3664,
+      "sha256": "bc8841bce23069d392d67f59bf06ae5ab7e6e6b7fb6ae0f17396e03c2a8767b8"
+    },
+    "test-vectors/POLICY-MATH-PARAMETERIZED-LOCAL-REVIEW-STATUS.json": {
+      "bytes": 5556,
+      "sha256": "e09b8757ce01780c18fc89796298303842499917ca3fff98ee5c408fb32a619b"
+    }
+  },
+  "review_status_note": "The broader historical policy review file is retained as a provenance reference only; its current_bindings section records later package identity refreshes. The F09E acceptance authority in this slice is the exact F09.6 rule, parameter asset, and 32-valid/7-rejected verification file bound above.",
+  "delivery_scope": "INTERNAL_ONLY",
+  "public_or_third_party_distribution_authorized": false,
+  "whole_implementation_ready": false,
+  "native_execution": "NOT_REQUIRED_FOR_THIS_INTEGER_RULE_AND_NOT_RUN_THIS_TURN",
+  "whole_F09_refresh": "NOT_IMPLEMENTED_BY_THIS_SLICE",
+  "F10_normalization": "NOT_IMPLEMENTED_BY_THIS_SLICE",
+  "BAP_producer": "NOT_IMPLEMENTED_BY_THIS_SLICE"
+}
+

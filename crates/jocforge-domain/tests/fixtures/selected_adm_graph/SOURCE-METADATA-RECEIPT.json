@@ -1,0 +1,50 @@
+{
+  "schema": "real-adm-metadata-graph-receipt.v1",
+  "source_file_name": "hanabi.wav",
+  "source_file_bytes": 1583325474,
+  "sample_rate": 48000,
+  "physical_channels": 38,
+  "pcm_bits": 24,
+  "source_frames_from_data_extent": 13888071,
+  "metadata_reads_only": true,
+  "pcm_data_bytes_read": 0,
+  "pcm_content_digest_computed": false,
+  "total_bytes_read": 84735,
+  "chunks": [
+    {
+      "id": "JUNK",
+      "payload_offset": 20,
+      "bytes": 64
+    },
+    {
+      "id": "fmt ",
+      "payload_offset": 92,
+      "bytes": 16,
+      "metadata_sha256": "f5c3ad7fe9d719260f7e56a62755244fb3cc77f697589b19fe8130d99216039e"
+    },
+    {
+      "id": "data",
+      "payload_offset": 116,
+      "bytes": 1583240094
+    },
+    {
+      "id": "axml",
+      "payload_offset": 1583240218,
+      "bytes": 83135,
+      "metadata_sha256": "5973f94db1bc995465b33f6d9be7fd55d3e1bd3941130a913c58e7e5cf57bbfc"
+    },
+    {
+      "id": "chna",
+      "payload_offset": 1583323362,
+      "bytes": 1524,
+      "metadata_sha256": "f82b14e4c1b5b3b1750ed4104aa53f1d595e3ff2d4dbaef76a76c0e35f31b7a6"
+    },
+    {
+      "id": "dbmd",
+      "payload_offset": 1583324894,
+      "bytes": 580
+    }
+  ],
+  "graph_source": "Actual selected source metadata chunks, not a synthetic graph recipe",
+  "graph_scope": "Frozen Python graph parser and bed routing only; native duplicate/malformed handling and installed48 installation not yet validated."
+}

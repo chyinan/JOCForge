@@ -1,0 +1,85 @@
+{
+  "schema": "f13c-input-eof-lifecycle-handoff-manifest.v1",
+  "source_package_manifest_sha256": "139c118dd722fc1fe4e65bc23c82bc448fa80a00c4d9731a638582e9879b23e7",
+  "base_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "related_bsi_handoff_manifest_sha256": "70f90cd5472299f66bba22c362e87fe2645b6f480d71dfeb763fab2eb769fe00",
+  "related_id14_handoff_manifest_sha256": "9985e8f321741d596a1675499d8764765fc9ecc864dc9824e979da4559b5d684",
+  "related_carrier_handoff_manifest_sha256": "9c136d43219ccd8fc5623066864d27959f079c9cfe9dfcd10a5726e7fb20f049",
+  "files": [
+    {
+      "path": "CONTRACT.json",
+      "bytes": 3281,
+      "sha256": "f5acc4e8fc01d70176174cb3e2443ce30759eb4a76e96927025dd95ceab26995"
+    },
+    {
+      "path": "CURRENT-OVERLAY.json",
+      "bytes": 951,
+      "sha256": "48599cf1e73444f676ca4d6ce01394e64bbb5ccd6b00e080fc69552a12604bb7"
+    },
+    {
+      "path": "EOF-ADDENDUM.md",
+      "bytes": 2046,
+      "sha256": "ffe72f781d8fc2b5c43eb68533fbf69d3318cc374de824b37afc508a48b8d260"
+    },
+    {
+      "path": "EXPECTED.json",
+      "bytes": 9685,
+      "sha256": "b97e71ef1cdf595fe8510443cdd047a085215eed0cb80616bf7f2138baa20a09"
+    },
+    {
+      "path": "INDEPENDENT-CHECK.json",
+      "bytes": 805,
+      "sha256": "d735993a4518f1c449e132c235b2fd1423cae5ec19deebb433b468c2e689ecb5"
+    },
+    {
+      "path": "INPUTS.json",
+      "bytes": 2235,
+      "sha256": "a0638d3b966690406fb2b49f6a367cd3a488711c69afa86457d9e2bf073968e0"
+    },
+    {
+      "path": "MANIFEST.json",
+      "bytes": 1339,
+      "sha256": "139c118dd722fc1fe4e65bc23c82bc448fa80a00c4d9731a638582e9879b23e7"
+    },
+    {
+      "path": "NATIVE-OBSERVATIONS.json",
+      "bytes": 91428,
+      "sha256": "8c14e40ae8790d30cf8a1414b4550780e41ebeb83a2f29947cea6e160105f724"
+    },
+    {
+      "path": "README.md",
+      "bytes": 601,
+      "sha256": "8d73dfc1927b29f3177551ac93dcd196bd513a021e987b1bfdbee53eef6b1114"
+    },
+    {
+      "path": "REPLAY.json",
+      "bytes": 359,
+      "sha256": "ccd117114c85d9cf4c04608ac1e6f4c242ab2e701d6c066ffbbb7ffc256be019"
+    },
+    {
+      "path": "RUNTIME-RECEIPTS.json",
+      "bytes": 2114,
+      "sha256": "d01c63a736f0dd9e603eefed189f769f26e0089048620ad4e966153b7e0b751a"
+    },
+    {
+      "path": "SOURCE-IDENTITIES.json",
+      "bytes": 1917,
+      "sha256": "7517aa09fbad6def74b2014a14a02f717493a08bd0086506e5659a849defdeeb"
+    },
+    {
+      "path": "WASH-INDEPENDENT-CHECK.json",
+      "bytes": 1338,
+      "sha256": "ccd638683fc2d2835bfebda5bd816cd7743091bc39b6b47d08369f6173b13f8e"
+    },
+    {
+      "path": "replay_input_eof_lifecycle.py",
+      "bytes": 3849,
+      "sha256": "29ed49be477fa4a898a34e7479927a2ffbbf4c2bb1945a9d80223a07094ba098"
+    },
+    {
+      "path": "wash_replay.py",
+      "bytes": 7119,
+      "sha256": "41d35e916399fb03a0883d97665d2c5d1df7ca0bfec858d86a9b4202ba4b1719"
+    }
+  ]
+}

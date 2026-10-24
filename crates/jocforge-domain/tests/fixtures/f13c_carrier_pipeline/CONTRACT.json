@@ -1,0 +1,67 @@
+{
+  "schema": "selected-emdf-carrier-contract.v1",
+  "scope": "Selected ordinary 48kHz,1024kbps,one independent substream; transport primitives and observed publication gate. No ordinary codec/audio reproduction is claimed.",
+  "units": {
+    "planner_request": "I32 bytes of serialized protected EMDF body, excluding four-byte sync/length prefix.",
+    "planner_lengths": "Six I32 byte counts.",
+    "marker": "U16, selected22584 (bytes88,56).",
+    "body_length": "Positive I16 in native refill interface; scoped maximum3062. Serialized as16 high-bit-first bits.",
+    "bit_cursor": "U16 native frame words and pending bit count; frame_bit_offset=8*(cursor_byte_delta_from_frame_base)+pending_bits.",
+    "block_index": "Zero-based0..5.",
+    "source_and_AU": "Local observed frontend call ordinal versus actual caller-visible published-AU ordinal; not absolute ADM or host clocks."
+  },
+  "cold_initializer": {
+    "state_bytes_zeroed": 192,
+    "period_i32": 62,
+    "counter_i32": 0,
+    "enabled_i32": 0,
+    "first_block_i32": 0
+  },
+  "planner_rule": [
+    "Clear six segment lengths to zero; increment counter and reset to zero only when new counter equals period. Store extra flag. Store enabled=(request>0).",
+    "If request<=0 preserve first_block. Return1 for negative residual,0 for zero; counter/flags/cleared segments are already committed.",
+    "For positive request choose first_block2 if request<=2040,else1 if request<=2551,else0.",
+    "First block has507 body-byte capacity; subsequent blocks511. At block0 only, extra flag!=0 and enabled and counter_after==0 subtract8 bytes from that first capacity.",
+    "Assign min(remaining,capacity) to each block until residualzero or all six blocks used. Return1 if residual!=0; no rollback."
+  ],
+  "capacity_formula": {
+    "ordinary_maximum": 3062,
+    "ordinary_expression": "507+5*511",
+    "periodic_prefix_maximum": 3054,
+    "periodic_expression": "(507-8)+5*511",
+    "2040_boundary": "507+3*511; first block2 -> block1 at2041.",
+    "2551_boundary": "507+4*511; first block1 -> block0 at2552.",
+    "counter_domain": "Proved selected period62 with input counter0..61; I32 overflow/out-of-invariant counters not covered.",
+    "empty_body_rule": "First-block field may be stale when disabled; do not treat it as an active carrier selector."
+  },
+  "capacity_failures": {
+    "request3063": "All six segments populated507,511,511,511,511,511; one byte residual,return1. Counter,enabled,first_block and lengths already changed.",
+    "prefix_request3055": "flag1,counter_before61,period62 => counter0; first capacity499 plus five511 totals3054,one residual,return1 with partial mutation.",
+    "writer_on_plan_failure": "NOT_RUN in controlled vectors. The native callsite does not check the planner return at this boundary; downstream whole-parent failure behavior is not established."
+  },
+  "reservation_rule": {
+    "present_zero": "Emit one presence bit only.",
+    "present_one_selected": "Emit presence bit1 then nine-bit literal skip-byte length. The saved payload cursor follows those10bits. Selected skip length equals body length+4.",
+    "sync_length_payload": "Write marker16 bits then body length16 bits at saved first-block cursor, followed by first body segment. Continue raw body bytes at later saved cursors without another marker.",
+    "padding_and_periodic_prefix": "The reservation writer can emit a separate8-byte periodic encoder-information prefix and padding. Its full generation is outside this selected block2 capture; planner capacity impact was tested.",
+    "partial_word_flush": "Merge pending high bits with existing low bits; controlled vectors compare all544 bytes of each owned block buffer, including untouched bits and guard."
+  },
+  "byte_order": "Observed output copier mode0 swaps each pair of native frame-storage bytes before caller publication. Other modes not dynamically qualified.",
+  "publication_gate": [
+    "Observed threshold3072 samples, hop1536. If old_progress<threshold+hop, add hop; otherwise retain progress.",
+    "Expose internal output bytes only when updated_progress>threshold (strict). First two calls0bytes, next four4096bytes.",
+    "Progress saturates at4608 and is a warmup gate accumulator, not an advancing sample clock.",
+    "Define published AU ordinal only on actual outer valid_output_bytes>0. Internal parent outputs include two suppressed frames."
+  ],
+  "controlled_reachability": "2040/2041/2551/2552 are successful real planner+writer calls with typed private state, sufficient non-overlapping owned buffers,return0 and full-buffer replay. They are transport-primitive reachability, not proof that this selected four-payload programme can naturally generate those larger body sizes. Natural bodies are316..422 bytes.",
+  "ownership_and_overlap": "Controlled multi-block contexts use distinct owned buffers; alias/overlap misuse is not tested and no native overlap validation is claimed. Natural selected case has one active fragment; it exactly fills its reservation and does not overlap the other observed block skip fields.",
+  "remaining": [
+    "Absolute ADM sample/host-frame binding",
+    "Independent model generation/authentication of protected body, separate from transport",
+    "Broader selected-input reachability for multi-block body sizes",
+    "General multi-fragment same-frame alias/overlap behavior",
+    "Whole-parent rollback on planner overflow",
+    "EOF/partial input and actual programme reset"
+  ],
+  "production_readiness": "NO_WHOLE_CHAIN_CLAIM"
+}

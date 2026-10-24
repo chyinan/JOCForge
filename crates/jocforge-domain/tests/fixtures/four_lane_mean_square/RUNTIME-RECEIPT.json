@@ -1,0 +1,56 @@
+{
+  "schema": "mean-square-per-case-runtime-receipt.v1",
+  "native_case_count": 7,
+  "per_case_observer_capture_count": 7,
+  "aggregate_payload_count": 1,
+  "per_case_statuses": [
+    "CAPTURED",
+    "CAPTURED",
+    "CAPTURED",
+    "CAPTURED",
+    "CAPTURED",
+    "CAPTURED",
+    "CAPTURED"
+  ],
+  "cases": [
+    {
+      "name": "zero",
+      "native_mean_bits": 0,
+      "input_sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+    },
+    {
+      "name": "constant",
+      "native_mean_bits": 1015021568,
+      "input_sha256": "b9216bad2029fc2443efa4cd9652e6dc358ccd944b887d92f9a9e49885f530c7"
+    },
+    {
+      "name": "impulse",
+      "native_mean_bits": 981467136,
+      "input_sha256": "1a433f4b85ac5555c63df6ae8136c10c0146f827cbd30953f91d9930e29a6f60"
+    },
+    {
+      "name": "alternating",
+      "native_mean_bits": 1031798784,
+      "input_sha256": "956ce08cec42261c4733450918319726f163d07dd6523ba5658c64f828c62eb5"
+    },
+    {
+      "name": "modular",
+      "native_mean_bits": 1028988864,
+      "input_sha256": "03d4bed5ee01fcfed43d270f63f84a48cdb439a81f10cf5016c1a9bb19adf97f"
+    },
+    {
+      "name": "partition_order",
+      "native_mean_bits": 998244376,
+      "input_sha256": "18fcd0e984fea7ae613058d5af3a3961557f2c1ace420b90f789d033acb150a6"
+    },
+    {
+      "name": "reduction_order",
+      "native_mean_bits": 998244352,
+      "input_sha256": "97400f0d14605956ad93829d1c3c7c48de8d14921266c218524c196d10e7a01b"
+    }
+  ],
+  "source_trace_sha256": "15359dff87b4b250e836fb527f9347bb2afd7e3cfb86c22d5758222a75a431b8",
+  "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "reference_ec3_sha256": "5ee3c8a39ba421fae56bdc7d77103909644bb419a6b7f87b3f31205a2e8d0987",
+  "counter_note": "Original run.json counts aggregate f09_mean_square_controlled payloads. This receipt separately counts the seven actual per-case native events."
+}

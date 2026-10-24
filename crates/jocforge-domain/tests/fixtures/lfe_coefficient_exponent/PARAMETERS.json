@@ -1,0 +1,17 @@
+{
+  "schema": "lfe-coefficient-exponent-parameters.v1",
+  "lfe_bin_count_i16": 7,
+  "cap_i16": 48,
+  "zero_energy_output_i16": 24,
+  "energy_lower_clamp_f32": -1.0,
+  "energy_upper_clamp_f32": 1.0,
+  "word_double_modulus_bits": 32,
+  "source_exponent_shift": 24,
+  "source_exponent_bias": 126,
+  "zero_word_source_exponent": -127,
+  "difference_clamp_min": 0,
+  "difference_clamp_max": 60,
+  "final_arithmetic_right_shift": 1,
+  "lfe_bias_consumed": false,
+  "evidence_scope": "Selected finite 5.1 LFE route only; caller selector, coefficient producer, and parent lifecycle remain outside this slice."
+}

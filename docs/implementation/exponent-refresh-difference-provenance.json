@@ -1,0 +1,34 @@
+{
+  "schema": "f09e-refresh-difference-map-local-provenance.v1",
+  "slice_id": "refresh-difference-index-map",
+  "source_package": "F09E-REFRESH-DIFFERENCE-MAP",
+  "source_package_path": "outputs/IMPLEMENTER_SUPPLEMENTS/F09E-REFRESH-DIFFERENCE-MAP",
+  "source_manifest_sha256": "ad4708faaf4f1f9d71a93bc0fdebe4eca4f6a4aff1080579ef5f1cce77808d57",
+  "source_independent_check_sha256": "59accb7a74f523b44043a07b28162c75a5c2c9dbdef26791adbe35e0fb0b076c",
+  "payloads": {
+    "CONTRACT.md": {
+      "bytes": 2101,
+      "sha256": "1861534c4a2c44e8755c40bccbfe9aa63ffc90462d589c703bfc2c51124a2023"
+    },
+    "PARAMETERS.json": {
+      "bytes": 1661,
+      "sha256": "6cf3ae8d899b334d5aa87e0744e4c58b7dba1d92177ca07738726f8ea0ee2c6d"
+    },
+    "PROVENANCE.json": {
+      "bytes": 1643,
+      "sha256": "871b03569dd29305227861a9ad6e7c536ff9af0dacf92b51ff38ac76dfc67873"
+    },
+    "VECTORS.json": {
+      "bytes": 3664,
+      "sha256": "bc8841bce23069d392d67f59bf06ae5ab7e6e6b7fb6ae0f17396e03c2a8767b8"
+    }
+  },
+  "base_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "delivery_scope": "INTERNAL_ONLY",
+  "user_publication_authorization_record": "docs/implementation/PUBLIC-DISTRIBUTION-AUTHORIZATION.md",
+  "implementation_scope": "pure strict i16 index-to-i16 integer map only",
+  "whole_f09_ready": false,
+  "whole_implementation_ready": false,
+  "private_vendor_key": "EXCLUDED",
+  "native_execution": "NOT_REQUIRED_FOR_THIS_INTEGER_RULE_AND_NOT_RUN_THIS_TURN"
+}

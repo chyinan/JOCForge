@@ -1,0 +1,75 @@
+{
+  "earlier_private_context_calls": [
+    {
+      "event": "bsi_scalar_controlled",
+      "status": "CAPTURED",
+      "input_i32": 15,
+      "query_return": 1,
+      "queried_i32": 15,
+      "producer_return": 35,
+      "enable": 1,
+      "length_minus_one": 1,
+      "payload64_hex": "010fa5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5",
+      "private_record_initialized_from_native_valid_record": true,
+      "root_parameter_overrides": 0,
+      "metadata_input_is_explicit_i32": true
+    },
+    {
+      "event": "bsi_scalar_controlled",
+      "status": "CAPTURED",
+      "input_i32": 16,
+      "query_return": 1,
+      "queried_i32": 16,
+      "producer_return": 35,
+      "enable": 1,
+      "length_minus_one": 1,
+      "payload64_hex": "0110a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5",
+      "private_record_initialized_from_native_valid_record": true,
+      "root_parameter_overrides": 0,
+      "metadata_input_is_explicit_i32": true
+    },
+    {
+      "event": "bsi_scalar_controlled",
+      "status": "CAPTURED",
+      "input_i32": 17,
+      "query_return": 1,
+      "queried_i32": 17,
+      "producer_return": 35,
+      "enable": 1,
+      "length_minus_one": 1,
+      "payload64_hex": "0111a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5",
+      "private_record_initialized_from_native_valid_record": true,
+      "root_parameter_overrides": 0,
+      "metadata_input_is_explicit_i32": true
+    },
+    {
+      "event": "bsi_scalar_controlled",
+      "status": "CAPTURED",
+      "input_i32": 272,
+      "query_return": 1,
+      "queried_i32": 272,
+      "producer_return": 35,
+      "enable": 1,
+      "length_minus_one": 1,
+      "payload64_hex": "0110a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5",
+      "private_record_initialized_from_native_valid_record": true,
+      "root_parameter_overrides": 0,
+      "metadata_input_is_explicit_i32": true
+    },
+    {
+      "event": "bsi_scalar_controlled",
+      "status": "CAPTURED",
+      "input_i32": -1,
+      "query_return": 1,
+      "queried_i32": -1,
+      "producer_return": 35,
+      "enable": 1,
+      "length_minus_one": 1,
+      "payload64_hex": "01ffa5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5",
+      "private_record_initialized_from_native_valid_record": true,
+      "root_parameter_overrides": 0,
+      "metadata_input_is_explicit_i32": true
+    }
+  ],
+  "scope": "These calls returned35 after mutations. This is a producer/configuration failure observation, not an ID14 parser malformed/no-commit test."
+}

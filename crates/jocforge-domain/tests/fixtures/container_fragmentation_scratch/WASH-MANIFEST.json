@@ -1,0 +1,61 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "artifact_id": "F13C-CONTAINER-FRAGMENTATION-PARENT-SCRATCH-V1",
+  "source_candidate_manifest_sha256": "1d323b909696cfd5586d3a97d514e81368f2fc52ae841373cca1fb2b43fd9a76",
+  "payloads": [
+    {
+      "file": "CHECK-NORMAL.json",
+      "bytes": 450,
+      "sha256": "63219275408da2619216ac6f50de54c22396f5234b7f5aab6b82bc7eec6e1227"
+    },
+    {
+      "file": "CHECK-OPTIMIZED.json",
+      "bytes": 450,
+      "sha256": "63219275408da2619216ac6f50de54c22396f5234b7f5aab6b82bc7eec6e1227"
+    },
+    {
+      "file": "CONTRACT.md",
+      "bytes": 3372,
+      "sha256": "79ac99865ff3e4824724ba5bc4c6144fd4692c9a0fb89c82f5d24bbf1e463db2"
+    },
+    {
+      "file": "INPUT-ONLY.json",
+      "bytes": 29998,
+      "sha256": "6f7de6596096ccfb9f8dd81ff77994a16e8103cd387ae4d40119f54fc8166442"
+    },
+    {
+      "file": "LENGTH-SCOPE-CONFLICT.json",
+      "bytes": 1016,
+      "sha256": "4847cd15e14a2061c1c6ae9484e33237cff8af4193edf46dfb6d98827cc1aace"
+    },
+    {
+      "file": "NATIVE-OBSERVATIONS.json",
+      "bytes": 74522,
+      "sha256": "cc7529985a719e582ffd96fb474fdcdaed7ac7f3c36d0a1384f07a527154e3df"
+    },
+    {
+      "file": "PROVENANCE.json",
+      "bytes": 758,
+      "sha256": "bb1e623bf7e60fb324ecbfeab32637d270bde8795ac4f8db785b2915238bed86"
+    },
+    {
+      "file": "replay_container_parent_admission.py",
+      "bytes": 4865,
+      "sha256": "5dfff3abe2f741ed6ad7fb497e8b2ae009a92e956958dabfae0a4b1f75a4708b"
+    },
+    {
+      "file": "RUNTIME-RECEIPT.json",
+      "bytes": 1029,
+      "sha256": "61c5867584ba948ad33216a6b483e62598494c17ec90de07c434345bd1403077"
+    },
+    {
+      "file": "WASH-VALIDATION.json",
+      "bytes": 1306,
+      "sha256": "7c0c592aa9ca327f065a247cb11fb07efba7ac637406bfe3e8d7b3ab3afbc75c"
+    }
+  ],
+  "detached_files": [
+    "INDEPENDENT-CHECK.json",
+    "DELIVERY-ENVELOPE.json"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "schema": "f13c-bsi-count-producer-handoff-check.v1",
+  "handoff_manifest_sha256": "70f90cd5472299f66bba22c362e87fe2645b6f480d71dfeb763fab2eb769fe00",
+  "source_package_manifest_sha256": "cdc1d781cfb19a8b935cc64cf66524926f76b667e0747ab0ac83ac603bcdcb3a",
+  "base_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "superseded_base_spec_sha256": "09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b",
+  "payload_hashes_match": true,
+  "whole_F13C_ready": false,
+  "implementation_ready": false
+}

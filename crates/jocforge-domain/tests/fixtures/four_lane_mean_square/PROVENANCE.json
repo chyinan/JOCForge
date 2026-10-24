@@ -1,0 +1,80 @@
+{
+  "schema": "four-lane-mean-square-provenance.v1",
+  "package": "FOUR-LANE-MEAN-SQUARE",
+  "source_wash_package": "SANITIZED_F09_FOUR_LANE_MEAN_SQUARE_R1",
+  "source_manifest_sha256": "6a10c327a39f806580f61203d6186ee9919a1b7b86872b0e3a0b8f4e2f48b47d",
+  "source_independent_check_sha256": "a07ab929cdab22826a8f3279f209989e95d14302303161267d3dfed1f50f09f2",
+  "source_payloads": [
+    {
+      "path": "INPUTS.json",
+      "bytes": 34032,
+      "sha256": "a755df024cfd968e4a4f067d8a43a7a20caf136fad4b55ac65aaa9383846e657"
+    },
+    {
+      "path": "EXPECTED.json",
+      "bytes": 42295,
+      "sha256": "75489266e33fd2d65eb5b53c6b7906e533a1158a613dbb5b7e9d19ce0a5360c3"
+    },
+    {
+      "path": "CONTRACT.json",
+      "bytes": 2466,
+      "sha256": "c8b2f7e5489d1258a7a71c1e618b54031b304d24067c20f8f27a69082d390b80"
+    },
+    {
+      "path": "RUNTIME-RECEIPT.json",
+      "bytes": 1970,
+      "sha256": "1da17a0ddf289fbcb6623064b024c166f4419e485c737c51d9e6d55466676f16"
+    }
+  ],
+  "reference_module": {
+    "file_bytes_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "qualification": "Actual loaded-path file hash measured in target and matched by host rehash; not relocated-memory digest."
+  },
+  "evidence": {
+    "static_rule": "STATIC_CONFIRMED",
+    "native_final_means": "RUNTIME_CONFIRMED: 7 native calls, one per recipe",
+    "wash_independent_replay": "PASS: all 7x256 exact input words and all intermediate/final arithmetic recomputed",
+    "native_lane_register_capture": "NOT_RUN",
+    "expected_used_as_seed": false,
+    "whole_product_audio_integration": "NOT_RUN"
+  },
+  "source_evidence_digests_only": [
+    {
+      "alias": "static_mean_kernel",
+      "bytes": 2939,
+      "sha256": "528944307376165a3c07fd6d40803c4829a8c88430207aa90a95c77cfd50041a"
+    },
+    {
+      "alias": "static_mean_instructions",
+      "bytes": 17123,
+      "sha256": "5dd3d721ebb4e0956336b0366423d4b6849bf920154fe2a4f736c692d1b06f58"
+    },
+    {
+      "alias": "runtime_hook",
+      "bytes": 1910,
+      "sha256": "a6757fef4a444ba58c5c2f789e283316477f9c1e892cee6f43147f5be7ff3dd7"
+    },
+    {
+      "alias": "aggregate_runtime_receipt",
+      "bytes": 751,
+      "sha256": "c666358d77c3d00452f90cd84fad751eb623cb19fc78fcb48f77f7fad60aae1c"
+    },
+    {
+      "alias": "private_per_case_trace_digest_only",
+      "bytes": 36288,
+      "sha256": "15359dff87b4b250e836fb527f9347bb2afd7e3cfb86c22d5758222a75a431b8"
+    }
+  ],
+  "delivery_scope": "INTERNAL_IMPLEMENTATION_HANDOFF",
+  "private_vendor_key": "EXCLUDED",
+  "public_third_party_license_status": "NOT_ASSESSED",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO",
+  "explicitly_not_delivered": [
+    "raw PCM or ADM",
+    "raw runtime traces",
+    "binary contents",
+    "addresses or disassembly identifiers",
+    "vendor private key or authentication material"
+  ]
+}

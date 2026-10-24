@@ -1,0 +1,31 @@
+{
+  "schema": "wash-selected-reader-source-join-review.v1",
+  "result": "PASS_FOR_ONE_SELECTED_CAPTURE",
+  "source_manifest_sha256": "2276298e21d58276650062466941455f5ebadd0be4542ecbfae25588a71d1899",
+  "source_check_sha256": "0f87ea3e4f3db7c87b87a75947e3ad3558656f59260831ae9a38974132876825",
+  "base_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "superseded_base_spec_sha256": "09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b",
+  "related_bsi_handoff_manifest_sha256": "70f90cd5472299f66bba22c362e87fe2645b6f480d71dfeb763fab2eb769fe00",
+  "related_id14_handoff_manifest_sha256": "9985e8f321741d596a1675499d8764765fc9ecc864dc9824e979da4559b5d684",
+  "related_carrier_handoff_manifest_sha256": "9c136d43219ccd8fc5623066864d27959f079c9cfe9dfcd10a5726e7fb20f049",
+  "related_eof_handoff_manifest_sha256": "ef7fa983440fd11784fe9f24f64284240f00fd053853dc1cc28067d3b1cf0d42",
+  "wash_replay_sha256": "c3dbe4474750f7e07dbe90f00160ce529f995a655a5306123b29f4f1f0cdf50e",
+  "external_input_calls": 4,
+  "control_records": 152,
+  "selected_item_sample_start": 2880000,
+  "selected_item_sample_end": 2886000,
+  "read_float_actual_samples": [
+    1536,
+    1536,
+    1536,
+    1392
+  ],
+  "mismatches": 0,
+  "PCM_values_read": false,
+  "absolute_file_byte_offset_bound": false,
+  "host_clock_bound": false,
+  "constructor_descriptor_pointer_alias_proved": false,
+  "same_owner_reset_run": false,
+  "whole_F13C_ready": false,
+  "implementation_ready": false
+}

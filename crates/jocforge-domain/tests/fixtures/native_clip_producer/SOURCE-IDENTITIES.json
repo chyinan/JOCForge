@@ -1,0 +1,25 @@
+{
+  "schema": "washed-native-clip-source-identities.v1",
+  "dll_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "functional_parameters_sha256": "a418de5f6a17f45ac97f2eb6508efbfeaff2ea561f9657ff94b058657ea0ed9e",
+  "approved_source_roles": [
+    {
+      "role": "APPROVED_JL",
+      "sha256": "92d7be8c41adf94056c81d98514b66318b3a38b006db3426bf56919effd9f012"
+    },
+    {
+      "role": "APPROVED_Q",
+      "sha256": "91fde215d0a6d5d1e820a2e29b467afd2b1fc78a5fa8f87300cc42a346152143"
+    },
+    {
+      "role": "FROZEN_MODEL_CLIP_MAPPING",
+      "sha256": "4e54b546f8d1cf0bc9db2e39558713507c1bc16408971ea6cf55ed56d93994a9"
+    },
+    {
+      "role": "FROZEN_MODEL_WRITER",
+      "sha256": "0d94e44c377fa231a060c8c322fb04788003c411fb26df3675f18faaa19e24ff"
+    }
+  ],
+  "static_snapshot_hashes_preserved_by_source_candidate": 11,
+  "source_paths_or_addresses_included": false
+}

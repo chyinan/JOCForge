@@ -1,0 +1,22 @@
+{
+  "schema": "meter-source-cursor-input.v1",
+  "input_only": true,
+  "source_samples": 1537,
+  "sample_rate_hz": 48000,
+  "channels": 38,
+  "bits_per_sample": 24,
+  "normal_callbacks": 2,
+  "zero_input_drains": 3,
+  "callback_samples": 1536,
+  "sample_rule": {
+    "channel_multiplier": 97,
+    "sample_modulus": 31,
+    "signed_offset": -1500
+  },
+  "asserted_after_computation": [
+    "first normal hop reads 1536 source samples",
+    "last normal hop reads one source sample and pads 1535 positive-zero words",
+    "three drain hops perform no read and each output 1536 positive-zero words",
+    "cursor stops at source_samples and PCM bytes remain borrowed from caller"
+  ]
+}

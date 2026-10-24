@@ -1,0 +1,66 @@
+{
+  "schema": "washed-primary-metadata-control-local-provenance.v1",
+  "source_supplement_manifest_sha256": "f210abc9fb0d92f239ebef228cb3c3e15b9f55a820623aecf650b96d537102f4",
+  "detached_delivery_envelope_sha256": "a6a3bc2b970cb4e90bc1b28c18744e7742c5e1004331a66ab20dbba257542273",
+  "independent_check_sha256": "965e890b1ad6cb0d3deb51d7fc6968b8753fd9b3a3332eaa0a44f41fd527aaf7",
+  "independent_check_bound_by_envelope": true,
+  "checker_sha256": "79432f90aa594615eb6506f914ed409917e6684d8b7a279463f195ab962ee76a",
+  "checker_replay": {
+    "normal": "PASS",
+    "optimized": "PASS",
+    "control_rows": 38,
+    "object_control_words": 364,
+    "object_mismatches": 0,
+    "dbmd_rows": 38,
+    "dbmd_mismatches": 0,
+    "pcm_bytes_read": 0
+  },
+  "source_identity": {
+    "source_file_name": "primary_user_music",
+    "source_file_bytes": 743696526,
+    "source_samples": 6522906,
+    "full_pcm_identity": "NOT_REHASHED",
+    "original_job_identity": "RESEARCH_DECLARATION_ONLY",
+    "raw_job_document_distributed": false,
+    "candidate_hanabi_is_primary": false
+  },
+  "files": {
+    "JOB-FIELD-PROJECTION.json": {
+      "bytes": 1283,
+      "sha256": "b710150f1b8357ca417d3fe705c88334b9c9bbd418656b458e49f8ffa3faba82"
+    },
+    "JOB-PROJECTION-RECEIPT.json": {
+      "bytes": 2289,
+      "sha256": "3c342e34dd5519f752a3f58cafcd0710e6dfb6137631baabf369a2221a08a2b8"
+    },
+    "FROZEN-JOB-BINDING.json": {
+      "bytes": 997,
+      "sha256": "ad28d54ef72bf0c1af1f3315ccca74f27cd02de61f9006b25565acb49352361f"
+    },
+    "PRIMARY-SOURCE-RECEIPT.json": {
+      "bytes": 1329,
+      "sha256": "c60c45033ee40592b9fc82c9c68edf94c4ee1676f27d9df34634291b2cb0f7ad"
+    },
+    "source_metadata.xml": {
+      "bytes": 82997,
+      "sha256": "7e4e61d4e2bec581ff2b05133281198a220602290597950e301a6079701c1659"
+    },
+    "source_track_associations.bin": {
+      "bytes": 1524,
+      "sha256": "f82b14e4c1b5b3b1750ed4104aa53f1d595e3ff2d4dbaef76a76c0e35f31b7a6"
+    },
+    "source_metadata.dbmd": {
+      "bytes": 580,
+      "sha256": "ea961b79063bc68f64b1210dba002a5729d1003427196123f93b0890939b75d9"
+    },
+    "F01E-EXPECTED-COMPARISON-DATA.json": {
+      "bytes": 20207,
+      "sha256": "1265db0d87ce83204c34831f9ddde0e958705b171e9b05ee3e71c4ebda0b44c4"
+    },
+    "MODEL-DEFINED-CONTROL38.json": {
+      "bytes": 18668,
+      "sha256": "7b73e633a64f4cfeac6cc4acf63ed66c507012b7b9ab1885dc39ec7265ca00ee"
+    }
+  },
+  "scope": "Primary source metadata/control verification only; original XML and PCM bytes were not provided/read. No main encode or end-to-end native run is claimed."
+}

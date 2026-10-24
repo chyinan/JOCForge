@@ -2,7 +2,7 @@
 #![allow(dead_code)] // The F04R proposal is not yet wired into the deferred F04C producer.
 
 use super::{
-    ModelState, RawBytes, RawWord, SpatialAudioJoinMetadata, TemporalState,
+    JocGeometryRowState, ModelState, RawBytes, RawWord, SpatialAudioJoinMetadata, TemporalState,
     descriptor_control::{
         DescriptorControlInputView, DescriptorGainInputView, DescriptorParameterInput,
         apply_descriptor_gain, stage_descriptor_control,
@@ -12,13 +12,17 @@ use super::{
     },
 };
 use crate::{
+    joc::oamd::reader_target::{HistoryProducerGeneration, ReaderInvocationIndex},
     numeric::{FiniteF32, r32_add, r32_mul, r32_sub},
     profile::resolve_selected_profile,
     spatial::{
         DescriptorMathematicalProvider, QmfMathematicalFftProvider, QmfReceiverFunctionalProvider,
         ValidatedWindowQ15Provider, post_window_fanout::CallbackPhase,
     },
-    timeline::{FrontendCallbackIndex, ReceiverCallbackCount},
+    timeline::{
+        CodecSourceIndex, FrontendCallbackIndex, JocDispatchIndex, ReceiverCallbackCount,
+        source_for_callback,
+    },
 };
 
 const FRAME_SAMPLES: usize = 1_536;
@@ -98,10 +102,33 @@ pub(super) struct Type10ReceiverInput<'a> {
     phase: CallbackPhase,
     callback_index: FrontendCallbackIndex,
     receiver_generation: ReceiverCallbackCount,
+    component_origin_generation: FrontendCallbackIndex,
+    lfe_origin_generation: FrontendCallbackIndex,
     samples: &'a [f32],
 }
 
 impl Type10ReceiverInput<'_> {
+    #[allow(clippy::too_many_arguments)]
+    pub(super) fn from_assembly<'a>(
+        parent: &'a SpatialAudioJoinMetadata,
+        phase: CallbackPhase,
+        callback_index: FrontendCallbackIndex,
+        receiver_generation: ReceiverCallbackCount,
+        component_origin_generation: FrontendCallbackIndex,
+        lfe_origin_generation: FrontendCallbackIndex,
+        samples: &'a [f32],
+    ) -> Type10ReceiverInput<'a> {
+        Type10ReceiverInput {
+            parent,
+            phase,
+            callback_index,
+            receiver_generation,
+            component_origin_generation,
+            lfe_origin_generation,
+            samples,
+        }
+    }
+
     #[cfg(test)]
     pub(super) fn from_direct_vector_for_test<'a>(
         parent: &'a SpatialAudioJoinMetadata,
@@ -110,14 +137,27 @@ impl Type10ReceiverInput<'_> {
         receiver_generation: ReceiverCallbackCount,
         samples: &'a [f32],
     ) -> Type10ReceiverInput<'a> {
-        Type10ReceiverInput {
+        Type10ReceiverInput::from_assembly(
             parent,
             phase,
             callback_index,
             receiver_generation,
+            callback_index,
+            FrontendCallbackIndex::new(callback_index.value().saturating_sub(2)),
             samples,
-        }
+        )
     }
+}
+
+#[derive(Clone, Copy)]
+pub(super) struct TargetUpdatesLineage {
+    pub(super) reader_invocation: ReaderInvocationIndex,
+    pub(super) history_producer_generations: [HistoryProducerGeneration; INPUT_ROWS],
+    pub(super) state_before_sha256: [u8; 32],
+    pub(super) state_after_sha256: [u8; 32],
+    pub(super) target_sha256: [u8; 32],
+    pub(super) semantic_sha256: [u8; 32],
+    pub(super) target_words: [u32; TARGET_VALUES],
 }
 
 pub(super) struct TargetUpdatesReceipt<'a> {
@@ -125,10 +165,29 @@ pub(super) struct TargetUpdatesReceipt<'a> {
     phase: CallbackPhase,
     callback_index: FrontendCallbackIndex,
     receiver_generation: ReceiverCallbackCount,
+    lineage: TargetUpdatesLineage,
     values: &'a [f32],
 }
 
 impl TargetUpdatesReceipt<'_> {
+    pub(super) fn from_reader_receipt<'a>(
+        parent: &'a SpatialAudioJoinMetadata,
+        phase: CallbackPhase,
+        callback_index: FrontendCallbackIndex,
+        receiver_generation: ReceiverCallbackCount,
+        lineage: &TargetUpdatesLineage,
+        values: &'a [f32],
+    ) -> TargetUpdatesReceipt<'a> {
+        TargetUpdatesReceipt {
+            parent,
+            phase,
+            callback_index,
+            receiver_generation,
+            lineage: *lineage,
+            values,
+        }
+    }
+
     #[cfg(test)]
     pub(super) fn from_direct_vector_for_test<'a>(
         parent: &'a SpatialAudioJoinMetadata,
@@ -137,13 +196,27 @@ impl TargetUpdatesReceipt<'_> {
         receiver_generation: ReceiverCallbackCount,
         values: &'a [f32],
     ) -> TargetUpdatesReceipt<'a> {
-        TargetUpdatesReceipt {
+        let target_words =
+            std::array::from_fn(|index| values.get(index).copied().unwrap_or_default().to_bits());
+        TargetUpdatesReceipt::from_reader_receipt(
             parent,
             phase,
             callback_index,
             receiver_generation,
+            &TargetUpdatesLineage {
+                reader_invocation: ReaderInvocationIndex::new(
+                    callback_index.value().saturating_sub(2),
+                ),
+                history_producer_generations: [HistoryProducerGeneration::Callback(callback_index);
+                    INPUT_ROWS],
+                state_before_sha256: [0; 32],
+                state_after_sha256: [0; 32],
+                target_sha256: [0; 32],
+                semantic_sha256: [0; 32],
+                target_words,
+            },
             values,
-        }
+        )
     }
 }
 
@@ -170,6 +243,34 @@ pub(super) struct ReceiverStageTrace {
 #[must_use]
 #[derive(Debug)]
 pub(super) struct SpatialAudioReceiverProposal {
+    pub(super) programme_id: Box<str>,
+    pub(super) attempt: u64,
+    pub(super) transaction_id: Box<str>,
+    pub(super) spatial_before_generation: u64,
+    pub(super) spatial_before_digest: super::SpatialAudioDigest,
+    pub(super) phase: CallbackPhase,
+    pub(super) callback_index: FrontendCallbackIndex,
+    pub(super) source_index: CodecSourceIndex,
+    pub(super) dispatch: JocDispatchIndex,
+    pub(super) component_origin_generation: FrontendCallbackIndex,
+    pub(super) lfe_origin_generation: FrontendCallbackIndex,
+    pub(super) target_reader_invocation: ReaderInvocationIndex,
+    pub(super) target_history_producer_generations: [HistoryProducerGeneration; INPUT_ROWS],
+    pub(super) target_state_before_sha256: [u8; 32],
+    pub(super) target_state_after_sha256: [u8; 32],
+    pub(super) target_sha256: [u8; 32],
+    pub(super) target_semantic_sha256: [u8; 32],
+    pub(super) target_update_words: [u32; TARGET_VALUES],
+    /// Same-execution descriptor result for downstream J05 admission. Consumers
+    /// must use this selection rather than run descriptor/temporal3 again.
+    pub(super) descriptor_selected_index: u8,
+    pub(super) descriptor_target_gain_word: u32,
+    pub(super) s09_return: [Box<[FiniteF32]>; 6],
+    /// Preconditioned source rows 1..15 retained for the same-generation
+    /// target QMF stage. These are audio values, not the 16x6 target gains.
+    pub(super) target_qmf_input: [Box<[f32]>; 15],
+    pub(super) geometry_rows_before: [JocGeometryRowState; 16],
+    pub(super) geometry_rows_after: [JocGeometryRowState; 16],
     pub(super) s09_input: [Box<[FiniteF32]>; 6],
     pub(super) final_six: [Box<[FiniteF32]>; 6],
     pub(super) after: ModelState,
@@ -195,6 +296,12 @@ pub(super) fn stage_spatial_audio_receiver(
         .as_ref()
         .ok_or(SpatialAudioReceiverError::LineageTargetUpdates)?;
     validate_lineage(&input, target_updates)?;
+    let callback_index = input.parent.callback_index();
+    let source_index = source_for_callback(callback_index)
+        .ok_or(SpatialAudioReceiverError::LineageTargetUpdates)?;
+    let dispatch = source_index
+        .dispatch()
+        .map_err(|_| SpatialAudioReceiverError::LineageTargetUpdates)?;
     validate_state_shape(&input.before)?;
     validate_temporal_states(&input.before)?;
     if input.type10.samples.len() != INPUT_ROWS * FRAME_SAMPLES {
@@ -208,10 +315,29 @@ pub(super) fn stage_spatial_audio_receiver(
     {
         return Err(SpatialAudioReceiverError::InputNonfinite);
     }
+    if target_updates
+        .values
+        .iter()
+        .zip(target_updates.lineage.target_words)
+        .any(|(value, word)| value.to_bits() != word)
+    {
+        return Err(SpatialAudioReceiverError::LineageTargetUpdates);
+    }
 
+    let geometry_rows_before = input
+        .before
+        .row_states
+        .each_ref()
+        .map(JocGeometryRowState::from_owner);
     let preconditioned = precondition_rows(&mut input.before, input.type10.samples, providers)?;
+    let target_qmf_input = target_qmf_rows(&preconditioned)?;
     install_target_updates(&mut input.before, target_updates.values);
     let accumulator = accumulate_rows(&mut input.before, &preconditioned, providers)?;
+    let geometry_rows_after = input
+        .before
+        .row_states
+        .each_ref()
+        .map(JocGeometryRowState::from_owner);
     let mut receiver_lanes = transform_and_first_ring(&mut input.before, &accumulator, providers)?;
     #[cfg(test)]
     let lane3_before_postfilter = receiver_lanes[3].clone();
@@ -282,7 +408,9 @@ pub(super) fn stage_spatial_audio_receiver(
         std::array::from_fn(|lane| receiver_lanes[lane].as_slice());
     let gain_input = DescriptorGainInputView::from_f04r_temporal3(selection, &gain_lanes);
     let descriptor_proposal = apply_descriptor_gain(gain_input).map_err(map_descriptor_error)?;
-    let (_, _, _, gained, descriptor_after) = descriptor_proposal.into_parts();
+    let (_, _, descriptor_selected_index, gained, descriptor_after) =
+        descriptor_proposal.into_parts();
+    let descriptor_target_gain_word = u32::from_le_bytes(descriptor_after.gain.0);
     input.before.descriptor_state = descriptor_after;
     for lane in 0..LANE_COUNT {
         receiver_lanes[lane] = finite_values_to_f32(&gained[lane]);
@@ -301,12 +429,48 @@ pub(super) fn stage_spatial_audio_receiver(
         descriptor_input,
     };
     Ok(SpatialAudioReceiverProposal {
+        programme_id: input.parent.programme_id().as_str().into(),
+        attempt: input.parent.attempt().value(),
+        transaction_id: input.parent.transaction_id().as_str().into(),
+        spatial_before_generation: input.parent.before_generation(),
+        spatial_before_digest: input.parent.before_digest(),
+        phase: input.phase,
+        callback_index,
+        source_index,
+        dispatch,
+        component_origin_generation: input.type10.component_origin_generation,
+        lfe_origin_generation: input.type10.lfe_origin_generation,
+        target_reader_invocation: target_updates.lineage.reader_invocation,
+        target_history_producer_generations: target_updates.lineage.history_producer_generations,
+        target_state_before_sha256: target_updates.lineage.state_before_sha256,
+        target_state_after_sha256: target_updates.lineage.state_after_sha256,
+        target_sha256: target_updates.lineage.target_sha256,
+        target_semantic_sha256: target_updates.lineage.semantic_sha256,
+        target_update_words: target_updates.lineage.target_words,
+        descriptor_selected_index,
+        descriptor_target_gain_word,
+        s09_return: gained,
+        target_qmf_input,
+        geometry_rows_before,
+        geometry_rows_after,
         s09_input,
         final_six,
         after: input.before,
         #[cfg(test)]
         trace,
     })
+}
+
+fn target_qmf_rows(preconditioned: &[f32]) -> Result<[Box<[f32]>; 15], SpatialAudioReceiverError> {
+    if preconditioned.len() != INPUT_ROWS * FRAME_SAMPLES {
+        return Err(SpatialAudioReceiverError::Type10Shape);
+    }
+    Ok(std::array::from_fn(|object| {
+        let row = object + 1;
+        preconditioned[row * FRAME_SAMPLES..(row + 1) * FRAME_SAMPLES]
+            .to_vec()
+            .into_boxed_slice()
+    }))
 }
 
 fn validate_providers<'a>(
@@ -437,6 +601,9 @@ fn validate_lineage(
         || target_updates.callback_index != input.parent.callback_index()
         || input.type10.receiver_generation.value() != receiver_after
         || target_updates.receiver_generation.value() != receiver_after
+        || input.type10.component_origin_generation != input.parent.callback_index()
+        || input.type10.lfe_origin_generation.value() != receiver_before
+        || target_updates.lineage.reader_invocation.value() != receiver_before
         || input.type10.phase != input.phase
         || target_updates.phase != input.phase
         || !same_parent(input.parent, input.type10.parent)

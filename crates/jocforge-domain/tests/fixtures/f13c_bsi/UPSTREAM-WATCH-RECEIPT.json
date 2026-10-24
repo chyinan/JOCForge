@@ -1,0 +1,16 @@
+{
+  "schema": "upstream-caller-hardware-watch-receipt.v1",
+  "write_event_count": 20,
+  "watch_fields": [
+    "caller_enable_and_length",
+    "caller_payload_first_two_bytes"
+  ],
+  "cap": 40,
+  "log_sha256": "cda56a47592bc33707a85c6f141b31de37b55d95cb67a16efcc8c85b19c6b5d6",
+  "job_sha256": "8aa62a3f6ad6f138d479d41dc260cc0553dfd33dbd47db6de62b4ace964a41f1",
+  "reference_bytes": 16384,
+  "reference_sha256": "5ee3c8a39ba421fae56bdc7d77103909644bb419a6b7f87b3f31205a2e8d0987",
+  "session_closed": true,
+  "native_business_state_modified": false,
+  "scope": "Watch armed at first importer entry, so first initial caller write predates arming. Subsequent writes identify the repeated real producer; not an initial-allocation first-write proof."
+}

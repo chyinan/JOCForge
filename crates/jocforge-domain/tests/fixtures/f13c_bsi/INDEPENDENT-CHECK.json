@@ -1,0 +1,17 @@
+{
+  "manifest_sha256": "cdc1d781cfb19a8b935cc64cf66524926f76b667e0747ab0ac83ac603bcdcb3a",
+  "payload_hashes_match": true,
+  "checker_sha256": "397ea01b62ad6ff868bbf992ba665dbeb633b091aedfdbe955edab4cf3080068",
+  "replay": {
+    "ordinary_cases": 3,
+    "configuration_cases": 7,
+    "validated_pipeline_cases": 2,
+    "bypass_diagnostic_cases": 5,
+    "mismatch_count": 0,
+    "expected_loaded_after_computation": true,
+    "whole_F13C_ready": false
+  },
+  "forbidden_material_scan_hits": [],
+  "selected_scalar_producer_and_import_copy_ready": true,
+  "whole_F13C_ready": false
+}

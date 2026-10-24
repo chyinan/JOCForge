@@ -1,0 +1,23 @@
+{
+  "reference_ec3_bytes": 17395712,
+  "reference_ec3_sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+  "frames": 4247,
+  "frame_bytes": 4096,
+  "sample_rate": 48000,
+  "samples_per_frame": 1536,
+  "original_user_reference_m4a_sha256_recorded": "eec1e5509c318ff56b60930a4f98227cf61dce6704c3d8cf521aeb39a60c035b",
+  "reference_role": "User-supplied reference, existing lossless-extraction receipt; encoded output identity reverified, no decoded PCM read.",
+  "current_primary_to_reference_byte_exact_reencode": "NOT_ESTABLISHED",
+  "fresh_reference_attempts": [
+    {
+      "attempt": "Command override path",
+      "exit_code": 10,
+      "error_scope": "Input storage/command property path inconsistency; no output"
+    },
+    {
+      "attempt": "XML-only frozen input/filter semantics",
+      "exit_code": 10,
+      "error_scope": "Workflow rejects four announced filter streams against one EC3 sink; no output"
+    }
+  ]
+}

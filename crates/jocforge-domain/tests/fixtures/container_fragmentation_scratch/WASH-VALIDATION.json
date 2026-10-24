@@ -1,0 +1,38 @@
+{
+  "schema": "washed-f13c-scratch-parent-validation.v1",
+  "status": "SCOPED_PARENT_OBSERVATION_READY_PRODUCTION_PATH_NOT_CLOSED",
+  "independent_checks": {
+    "candidate_payload_hashes_and_envelope": "PASS",
+    "normal_and_optimized_native_checker_receipts": "16 parent + 2 raw reservation cases, zero mismatches",
+    "configuration_layout_binding": "MATCHED_TO_WASHED_R18_AND_SOURCE_R14_IDENTITIES",
+    "binary_payloads": 0,
+    "private_authentication_values": 0,
+    "raw_PCM": 0
+  },
+  "observed": {
+    "public_provider_positive_cases": 8,
+    "empty_provider_negative_cases": 8,
+    "container_lengths_bytes": [
+      507,
+      508,
+      511,
+      512
+    ],
+    "512_byte_case_wire_fragments": [
+      511,
+      5
+    ],
+    "empty_provider_child_status": 9,
+    "empty_provider_parent_status": 7,
+    "empty_provider_published_bytes": 0,
+    "some_scratch_state_changed_on_failure": true
+  },
+  "limits": [
+    "Not production cold equivalent.",
+    "No semantic carrier_block mapping established; Agent 3 owns this question.",
+    "No full codec/four-FIFO/source-generation or durable publication replay.",
+    "No cryptographic fragment content reproduction.",
+    "F13.1 selected production length rule remains unchanged pending profile-path proof.",
+    "Whole F13C NOT_READY."
+  ]
+}

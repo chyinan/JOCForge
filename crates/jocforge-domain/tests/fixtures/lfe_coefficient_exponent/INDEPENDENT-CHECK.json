@@ -1,0 +1,20 @@
+{
+  "schema": "lfe-coefficient-exponent-check.v1",
+  "package": "LFE-COEFFICIENT-EXPONENT",
+  "manifest_sha256": "63d6fa945445ea9545b3ac02ad9df86b832a4abcccf6beb5caaf515ed1a3540a",
+  "payload_count": 5,
+  "payload_hashes_match": true,
+  "upstream_manifest_check_and_payloads_match": true,
+  "module_file_identity_runtime_bound": true,
+  "recipes": 5,
+  "continuous_calls": 10,
+  "lfe_rows": 20,
+  "independent_power_probe_values": 140,
+  "independent_lfe_raw_values": 140,
+  "independent_combined_block0_values": 70,
+  "formula_replay": "PASS all values",
+  "bias_independence_values": [0, 2, 4],
+  "separate_power_probe_not_internal_capture": true,
+  "independent_product_audio_integration": "NOT_RUN",
+  "whole_f09_closed": false
+}

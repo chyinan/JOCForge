@@ -1,0 +1,420 @@
+{
+  "authored_mode_fields": {
+    "section9_raw_authored_mode_byte": 131,
+    "warm_trim_mode": 3,
+    "authored_source_mode_byte": 4,
+    "surround_ex_mode": 0
+  },
+  "track_count": 38,
+  "tracks": [
+    {
+      "track_index_zero_based": 0,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 1,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 2,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 3,
+      "raw_flag": 0,
+      "raw_packed": 64,
+      "enum48": 1,
+      "enum52": 0,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 0
+    },
+    {
+      "track_index_zero_based": 4,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 5,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 6,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 7,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 8,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 9,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 10,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 11,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 12,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 13,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 14,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 15,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 16,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 17,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 18,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 19,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 20,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 21,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 22,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 23,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 24,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 25,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 26,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 27,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 28,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 29,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 30,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 31,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 32,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 33,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 34,
+      "raw_flag": 0,
+      "raw_packed": 64,
+      "enum48": 1,
+      "enum52": 0,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 0
+    },
+    {
+      "track_index_zero_based": 35,
+      "raw_flag": 0,
+      "raw_packed": 64,
+      "enum48": 1,
+      "enum52": 0,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 0
+    },
+    {
+      "track_index_zero_based": 36,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    },
+    {
+      "track_index_zero_based": 37,
+      "raw_flag": 0,
+      "raw_packed": 68,
+      "enum48": 1,
+      "enum52": -1,
+      "flag64": 0,
+      "diagnostic_code48": 1,
+      "diagnostic_code52": 4
+    }
+  ],
+  "track_fields": "Six frozen parser fields are track_index_zero_based/raw_flag/raw_packed/enum48/enum52/flag64. Additional code48/code52 diagnostics are independently decoded for transparency.",
+  "sections": [
+    {
+      "section_id": 7,
+      "body_offset": 7,
+      "body_bytes": 96,
+      "checksum_offset": 103,
+      "checksum_valid": true
+    },
+    {
+      "section_id": 9,
+      "body_offset": 107,
+      "body_bytes": 248,
+      "checksum_offset": 355,
+      "checksum_valid": true
+    },
+    {
+      "section_id": 10,
+      "body_offset": 359,
+      "body_bytes": 218,
+      "checksum_offset": 577,
+      "checksum_valid": true
+    }
+  ],
+  "timebase_metadata": {
+    "section9_field111_byte": 34,
+    "frame_rate_code": 2
+  },
+  "scope": "Actual metadata parser result for this source only; object events must still join by physical host and same source identity."
+}

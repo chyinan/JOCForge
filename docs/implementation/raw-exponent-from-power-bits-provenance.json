@@ -1,0 +1,46 @@
+{
+  "schema": "raw-exponent-from-power-bits-local-provenance.v1",
+  "slice_id": "raw-exponent-from-power-bits",
+  "source_package": "RAW-EXPONENT-FROM-POWER-BITS",
+  "source_package_path": "outputs/IMPLEMENTER_SUPPLEMENTS/RAW-EXPONENT-FROM-POWER-BITS",
+  "source_package_manifest_sha256": "f1acb6d4321e3b7fdb746bf7fd0e3b1ce7db179a5ecb5fe37201b429587158fb",
+  "source_independent_check_sha256": "c184b804d2f7a607c24ee4ca86f9db2664cc9227c9e411a66ad21573d0537ed3",
+  "source_payloads": {
+    "CONTRACT.md": {
+      "bytes": 2663,
+      "sha256": "32bf9d55b5e63aeb78c9f35fe1e4ffe08909f2f501cf5058d1bfa23f1176d784"
+    },
+    "INPUTS.json": {
+      "bytes": 1630,
+      "sha256": "12acc79d95ee6736a732c838ba4dea9a20ec65d3101719487e06a7ccdf9c493b"
+    },
+    "EXPECTED.json": {
+      "bytes": 1068,
+      "sha256": "e999e9479ee88e1ae0b7011cfaca1c50fc792522eeb9c3a04b5ffd4efb3ed0f6"
+    },
+    "PARAMETERS.json": {
+      "bytes": 739,
+      "sha256": "28ba7ad6cf9d3ea5d856b9b1ec81e78f431466d87f9e7ac0bb5a2a398ef8ee35"
+    },
+    "PROVENANCE.json": {
+      "bytes": 2761,
+      "sha256": "8a7cf7d026a242c30fa71428b2f2d7645c90a5ca53e7772b31d7c0876071d0e6"
+    }
+  },
+  "upstream_source_manifest_sha256": "92624e1fe4319ffde8c11cfc10fb43d9c3cccd45687f913c97cd1f5d8cfacfac",
+  "upstream_source_independent_check_sha256": "54d25872273474f1b26d769538182f7c14a24ad72791876bdcc3905259bd8d0d",
+  "reference_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "evidence": {
+    "static_rule": "STATIC_CONFIRMED",
+    "runtime_recipes": 5,
+    "runtime_values": 50,
+    "formula_replay": "PASS 50/50",
+    "independent_product_implementation": "NOT_RUN"
+  },
+  "delivery_scope": "INTERNAL_IMPLEMENTATION_HANDOFF",
+  "user_publication_authorization_record": "docs/implementation/PUBLIC-DISTRIBUTION-AUTHORIZATION.md",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": false,
+  "private_vendor_key": "EXCLUDED",
+  "public_third_party_license_status": "NOT_ASSESSED"
+}

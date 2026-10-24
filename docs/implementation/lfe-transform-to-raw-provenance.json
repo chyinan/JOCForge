@@ -1,0 +1,19 @@
+{
+  "slice": "LFE-TRANSFORM-TO-RAW",
+  "package_manifest_sha256": "96b7b6b5b4d76f4967daa09d3817fcac789a22fba362c505fe915d1aee29f5ca",
+  "independent_check_sha256": "60bcbc859b2b8e0cd487261915c20b38ad3ab3a63dc89851d8a5570da8e07167",
+  "source_manifest_sha256": "6d8208dfce9d1310d13021a6e9f772da38649b38acf3cfd9d5f5f779bd51c068",
+  "source_independent_check_sha256": "9716d502ef3c060daff9c6f69ff1e6251ed967f2481692221e9093b9466c44e6",
+  "parameter_sha256": "73ceb9195554577f5fde109cd97ca0b9ef4a1618be9497e6222bdd05963467e8",
+  "verified_dependency": {
+    "package": "LFE-COEFFICIENT-EXPONENT",
+    "manifest_sha256": "63d6fa945445ea9545b3ac02ad9df86b832a4abcccf6beb5caaf515ed1a3540a",
+    "check_sha256": "9321c12d5414febcce241e9102628434dc7ab6b1c0e1c4a1168b2037ba6fc258"
+  },
+  "scope": "finite long-block 256-word 5.1 LFE fold/pre/FFT8 recurrence/post plus 7-bin raw output",
+  "inner_fft8_buffer_native_capture": "NOT_RUN",
+  "parent_history_owner_reset_clock": "OPEN",
+  "short_transform": "NOT_IMPLEMENTED",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO"
+}

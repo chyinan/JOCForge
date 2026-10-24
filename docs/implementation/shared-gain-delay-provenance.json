@@ -1,0 +1,45 @@
+{
+  "schema": "shared-gain-delay-local-mapping.v1",
+  "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_assets": {
+    "specs/06-shared-dv32-parameter-generation.md": {
+      "bytes": 3719,
+      "sha256": "a8a88ef1bb74e8f482fb09dfa2fb169f6a51f44f1d58d643957895e2bbbd9723"
+    },
+    "specs/06-shared-dv32-state-and-audio.md": {
+      "bytes": 9116,
+      "sha256": "f99c0f47d502d949f726633d100ae8868acf4669dfe99f4624ebfb1bf42d8691"
+    },
+    "parameters/shared-dv32-mathematical-v1.json": {
+      "bytes": 1236,
+      "sha256": "af189ffb34f703fdebe9a37bc46ffe972d97432b7f2e3f2a463b82682c96d4fa"
+    },
+    "test-vectors/SHARED-DV32-CONTINUOUS-VERIFICATION.json": {
+      "bytes": 609266,
+      "sha256": "07b60bee788fe755161bd68ca38d35c6afb9ec32a89ad2b2e9c282b7bb82327d"
+    },
+    "test-vectors/SHARED-DV32-LOCAL-REVIEW-STATUS.json": {
+      "bytes": 8339,
+      "sha256": "6dfd0bbde892ba8f8e70fab4f751f165f839733c9e7e28efe8f3a705973f4020"
+    }
+  },
+  "local_fixture": {
+    "file": "crates/jocforge-domain/tests/fixtures/shared_gain_delay/continuous_callbacks.json",
+    "bytes": 2942,
+    "sha256": "a857a18fdbc6a820edd07fe4105feb82ebf8cd87528122879a4d9d847064bd64",
+    "role": "input recipes and post-computation digests only"
+  },
+  "verified_scope": {
+    "callbacks": 6,
+    "blocks_per_callback": 48,
+    "output_words": 55296,
+    "portable_state_bytes": 812,
+    "whole_meter_ready": false
+  },
+  "excluded": [
+    "meter frontend and OAR producer",
+    "pending PCM lifecycle queue",
+    "whole meter root and parent commit",
+    "real-programme validation and product acceptance"
+  ]
+}

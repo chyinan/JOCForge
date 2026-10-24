@@ -1,0 +1,23 @@
+{
+  "manifest_sha256": "139c118dd722fc1fe4e65bc23c82bc448fa80a00c4d9731a638582e9879b23e7",
+  "payload_hashes_match": true,
+  "checker_sha256": "29ed49be477fa4a898a34e7479927a2ffbbf4c2bb1945a9d80223a07094ba098",
+  "replay": {
+    "external_process_calls": 4,
+    "flush_calls": 5,
+    "active_flush_calls": 4,
+    "work_calls": 8,
+    "frontend_source_calls": 6,
+    "published_aus": 4,
+    "early_return_cases": 3,
+    "mismatch_count": 0,
+    "expected_loaded_after_calculation": true,
+    "PCM_read": false,
+    "absolute_file_offset_bound": false,
+    "same_owner_reset_executed": false
+  },
+  "forbidden_material_scan_hits": [],
+  "close_then_owner_allocation_free_observed": true,
+  "pending_descriptor_and_payload_inside_freed_allocation": true,
+  "whole_F13C_ready": false
+}

@@ -1,0 +1,60 @@
+{
+  "sources": [
+    {
+      "alias": "wrapper_count_selection",
+      "bytes": 13798,
+      "sha256": "6d36787c79602dffe76ee9c60dee390827fd2ba519b0bf2fb3253ebb8bae406d"
+    },
+    {
+      "alias": "count_mapper",
+      "bytes": 266,
+      "sha256": "4a1017880038cebc1aca8d94cc16ca35123b9e0bc8daadfac7c7b6c1588ecbc1"
+    },
+    {
+      "alias": "shape_constructor",
+      "bytes": 938,
+      "sha256": "6bc35f8b25edbfb518f3bec175f721bd6be95bcd58cc8f3a87c48e22031ac9fb"
+    },
+    {
+      "alias": "wrapper_parameter_generation",
+      "bytes": 4010,
+      "sha256": "5bd183d9df8866489dd000af4b710cadfb7e5714f13477197772ef219f649259"
+    },
+    {
+      "alias": "config_constructor",
+      "bytes": 3302,
+      "sha256": "f834c234678c69d48ea5e63b06ecf04b4e9cd13233cf80b2c827a00d9b7cd8fd"
+    },
+    {
+      "alias": "parameter_validator",
+      "bytes": 1946,
+      "sha256": "01199d3071f3e67ebb9c15d5832b2fb4fae053f99c7de78e7137ce28012016f6"
+    },
+    {
+      "alias": "parameter_query",
+      "bytes": 1344,
+      "sha256": "62cfe727a94c8fc4eb4ecb9daaa2324d96ba57cdcb4fd1753c6a7d08182b4100"
+    },
+    {
+      "alias": "bsi_count_writer",
+      "bytes": 10991,
+      "sha256": "514d9a76b20e4ea1e95f66ad2bbdcd738f7c3d0285da01f3556a0236b2506ba7"
+    },
+    {
+      "alias": "downstream_importer",
+      "bytes": 9765,
+      "sha256": "a6a85906698046134d08386b5e4532c797f8fded55f48b136a3c89d55da65ab1"
+    }
+  ],
+  "source_material_included": false,
+  "parameter_table_semantics": {
+    "record_count_in_selected_table": 13,
+    "parameter_type": "signed integer range",
+    "minimum": 1,
+    "maximum": 16,
+    "default": 11,
+    "invalid_error": 220
+  },
+  "parameter_table_extraction": "Static range/default compared against seven actual configuration-constructor calls; no original table bytes delivered.",
+  "official_module_file_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+}

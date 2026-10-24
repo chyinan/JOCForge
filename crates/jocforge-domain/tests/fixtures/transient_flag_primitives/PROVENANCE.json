@@ -1,0 +1,23 @@
+{
+  "slice": "F07_4_5_SELECTED_FRAME_STRUCTURE_AND_DITHER_FLAGS_ONLY",
+  "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_spec_sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac",
+  "source_verification_sha256": "7aa92b4c0dee80910c8b9c52100bc2ca933903e33efde081e568aafc8ed854d7",
+  "source_review_sha256": "68e25c9805e03b39c22e76b3b39c84327721d3f8282418b3e818385838a751f2",
+  "reviewed_spec_sha256": "a9bebb457c8adaba2d8b1c51bec3b53e425e8e6bdb288d0933feffe97315c6df",
+  "current_spec_sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac",
+  "current_spec_review_binding": "R1_REVIEW_HASH_PRECEDES_CURRENT_SPEC_HASH",
+  "structure_refresh_cases": 4096,
+  "structure_refresh_flags": 24576,
+  "dither_plans": 2048,
+  "dither_serialized_flags": 73728,
+  "mismatch_count_in_source_review": 0,
+  "scope_exclusions": [
+    "F07.2 transient filter/peak producers",
+    "F07.3 short/other consumed queues",
+    "F07.6 programme state owner and reset",
+    "F07.8 header syntax writer",
+    "F07.9 EOF and source clocks",
+    "whole F07 and audio pipeline"
+  ]
+}

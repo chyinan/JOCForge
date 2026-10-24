@@ -1,0 +1,55 @@
+{
+  "cases": [
+    {
+      "event": "private_uid_lookup",
+      "load_invocation": 1,
+      "owner": 1,
+      "input_uid": "ATU_00000001",
+      "return_u8": 1,
+      "output_before": 3435973836,
+      "output_after": 1,
+      "input_string_preserved": true
+    },
+    {
+      "event": "private_uid_lookup",
+      "load_invocation": 1,
+      "owner": 1,
+      "input_uid": "ATU_00000001",
+      "return_u8": 1,
+      "output_before": 3435973836,
+      "output_after": 1,
+      "input_string_preserved": true
+    },
+    {
+      "event": "private_uid_lookup",
+      "load_invocation": 1,
+      "owner": 1,
+      "input_uid": "ATU_99999999",
+      "return_u8": 0,
+      "output_before": 3435973836,
+      "output_after": 3435973836,
+      "input_string_preserved": true
+    },
+    {
+      "event": "private_uid_lookup",
+      "load_invocation": 1,
+      "owner": 1,
+      "input_uid": "MISSING_UID",
+      "return_u8": 0,
+      "output_before": 3435973836,
+      "output_after": 3435973836,
+      "input_string_preserved": true
+    },
+    {
+      "event": "private_uid_lookup",
+      "load_invocation": 1,
+      "owner": 1,
+      "input_uid": "",
+      "return_u8": 0,
+      "output_before": 3435973836,
+      "output_after": 3435973836,
+      "input_string_preserved": true
+    }
+  ],
+  "scope": "Repeated lookup of one existing UID plus missing and empty query keys; not duplicate map insertion or a malformed complete XML load."
+}

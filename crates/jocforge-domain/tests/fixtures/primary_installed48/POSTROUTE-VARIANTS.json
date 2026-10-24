@@ -1,0 +1,2220 @@
+{
+  "variants": [
+    {
+      "variant_id": 0,
+      "source_index": 0,
+      "condition": {
+        "prefix_written": false
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000001000000000000000300000002000000000000000000000000000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 1,
+      "source_index": 0,
+      "condition": {
+        "prefix_written": true
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0000000000000000000000000300000002000000000000000000000000000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 2,
+      "source_index": 1,
+      "condition": {
+        "prefix_written": false
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "01000000010000000000000003000000020000000000000000fe7f3f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065352704,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 3,
+      "source_index": 1,
+      "condition": {
+        "prefix_written": true
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "00000000000000000000000003000000020000000000000000fe7f3f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065352704,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 4,
+      "source_index": 2,
+      "condition": {
+        "prefix_written": false
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000001000000000000000300000002000000000000000000003f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1056964608,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 5,
+      "source_index": 2,
+      "condition": {
+        "prefix_written": true
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0000000000000000000000000300000002000000000000000000003f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1056964608,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 6,
+      "source_index": 3,
+      "condition": {
+        "prefix_written": false
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "010000000100000000000000030000000200000000000000000000000000003f000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        1056964608,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 7,
+      "source_index": 3,
+      "condition": {
+        "prefix_written": true
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "000000000000000000000000030000000200000000000000000000000000003f000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        1056964608,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 8,
+      "source_index": 4,
+      "condition": {
+        "prefix_written": false
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "01000000010000000000000003000000020000000000000000fe7f3f0000003f000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065352704,
+        1056964608,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 9,
+      "source_index": 4,
+      "condition": {
+        "prefix_written": true
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "00000000000000000000000003000000020000000000000000fe7f3f0000003f000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065352704,
+        1056964608,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 10,
+      "source_index": 5,
+      "condition": {
+        "prefix_written": false
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000001000000000000000300000002000000000000000000000000fe7f3f000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        1065352704,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 11,
+      "source_index": 5,
+      "condition": {
+        "prefix_written": true
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0000000000000000000000000300000002000000000000000000000000fe7f3f000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        1065352704,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 12,
+      "source_index": 6,
+      "condition": {
+        "prefix_written": false
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "01000000010000000000000003000000020000000000000000fe7f3f00fe7f3f000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065352704,
+        1065352704,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 13,
+      "source_index": 6,
+      "condition": {
+        "prefix_written": true
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "00000000000000000000000003000000020000000000000000fe7f3f00fe7f3f000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065352704,
+        1065352704,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 14,
+      "source_index": 7,
+      "condition": {
+        "prefix_written": false
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "010000000100000000000000030000000200000000000000000000000000000000fe7f3f0000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        0,
+        1065352704
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 15,
+      "source_index": 7,
+      "condition": {
+        "prefix_written": true
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "000000000000000000000000030000000200000000000000000000000000000000fe7f3f0000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        0,
+        1065352704
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 16,
+      "source_index": 8,
+      "condition": {
+        "prefix_written": false
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "01000000010000000000000003000000020000000000000000fe7f3f0000000000fe7f3f0000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065352704,
+        0,
+        1065352704
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 17,
+      "source_index": 8,
+      "condition": {
+        "prefix_written": true
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "00000000000000000000000003000000020000000000000000fe7f3f0000000000fe7f3f0000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065352704,
+        0,
+        1065352704
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 18,
+      "source_index": 9,
+      "condition": {
+        "prefix_written": false
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000001000000000000000300000002000000000000000000000000fe7f3f00fe7f3f0000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        1065352704,
+        1065352704
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 19,
+      "source_index": 9,
+      "condition": {
+        "prefix_written": true
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0000000000000000000000000300000002000000000000000000000000fe7f3f00fe7f3f0000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        1065352704,
+        1065352704
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 20,
+      "source_index": 10,
+      "condition": {
+        "prefix_written": false
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "01000000010000000000000003000000020000000000000000fe7f3f00fe7f3f00fe7f3f0000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065352704,
+        1065352704,
+        1065352704
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 21,
+      "source_index": 10,
+      "condition": {
+        "prefix_written": true
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "00000000000000000000000003000000020000000000000000fe7f3f00fe7f3f00fe7f3f0000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065352704,
+        1065352704,
+        1065352704
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 22,
+      "source_index": 11,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0000000000000000000000000300000002000000000000000000000000000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 23,
+      "source_index": 11,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000000000000000000000300000002000000000000000000000000000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 24,
+      "source_index": 12,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0000000000000000000000000300000002000000000000000000803f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065353216,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 25,
+      "source_index": 12,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000000000000000000000300000002000000000000000000803f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065353216,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 26,
+      "source_index": 13,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0000000000000000000000000300000002000000000000000000003f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1056964608,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4242,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 27,
+      "source_index": 13,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000000000000000000000300000002000000000000000000003f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1056964608,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 9,
+      "first_observed_callback": 1226
+    },
+    {
+      "variant_id": 28,
+      "source_index": 14,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "000000000000000000000000030000000200000000000000000000000000003f000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        1056964608,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 29,
+      "source_index": 14,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "010000000000000000000000030000000200000000000000000000000000003f000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        1056964608,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 30,
+      "source_index": 15,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0000000000000000000000000300000002000000000000000000803f0000003f000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065353216,
+        1056964608,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 31,
+      "source_index": 15,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000000000000000000000300000002000000000000000000803f0000003f000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065353216,
+        1056964608,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 32,
+      "source_index": 16,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "000000000000000000000000030000000200000000000000000000000000803f000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        1065353216,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4212,
+      "first_observed_callback": 17
+    },
+    {
+      "variant_id": 33,
+      "source_index": 16,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "010000000000000000000000030000000200000000000000000000000000803f000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        1065353216,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 39,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 34,
+      "source_index": 17,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0000000000000000000000000300000002000000000000000000803f0000803f000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065353216,
+        1065353216,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4207,
+      "first_observed_callback": 17
+    },
+    {
+      "variant_id": 35,
+      "source_index": 17,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000000000000000000000300000002000000000000000000803f0000803f000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065353216,
+        1065353216,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 44,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 36,
+      "source_index": 18,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "000000000000000000000000030000000200000000000000000000000000003f0000803f0000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        1056964608,
+        1065353216
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 3203,
+      "first_observed_callback": 21
+    },
+    {
+      "variant_id": 37,
+      "source_index": 18,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "010000000000000000000000030000000200000000000000000000000000003f0000803f0000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        1056964608,
+        1065353216
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 1048,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 38,
+      "source_index": 19,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0000000000000000000000000300000002000000000000000000803f0000003f0000803f0000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065353216,
+        1056964608,
+        1065353216
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 3203,
+      "first_observed_callback": 21
+    },
+    {
+      "variant_id": 39,
+      "source_index": 19,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000000000000000000000300000002000000000000000000803f0000003f0000803f0000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065353216,
+        1056964608,
+        1065353216
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 1048,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 40,
+      "source_index": 20,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "00000000000000000000000003000000020000000000000000000000560e6d3f000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        1064111702,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4053,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 41,
+      "source_index": 20,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "01000000000000000000000003000000020000000000000000000000560e6d3f000000000000000000000000010000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        1064111702,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 198,
+      "first_observed_callback": 453
+    },
+    {
+      "variant_id": 42,
+      "source_index": 21,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0000000000000000000000000300000002000000000000000000803f1c2f6d3f000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065353216,
+        1064120092,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4073,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 43,
+      "source_index": 21,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000000000000000000000300000002000000000000000000803f1c2f6d3f000000000000000000000000010000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065353216,
+        1064120092,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 178,
+      "first_observed_callback": 453
+    },
+    {
+      "variant_id": 44,
+      "source_index": 22,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000001000000000000000300000002000000000000007cb60e3d878a413f000000000000000000000000000000000000000000000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1024374396,
+        1061259911,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 45,
+      "source_index": 22,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000000000000000000000300000002000000000000007cb60e3d878a413fcdcccc3d0000000000000000010000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1024374396,
+        1061259911,
+        1036831949
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 46,
+      "source_index": 23,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000001000000000000000300000002000000000000009814773f8f8a413f000000000000000000000000000000000000000000000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1064768664,
+        1061259919,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 47,
+      "source_index": 23,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000000000000000000000300000002000000000000009814773f8f8a413fcdcccc3d0000000000000000010000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1064768664,
+        1061259919,
+        1036831949
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 48,
+      "source_index": 24,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "000000000000000000000000030000000200000000000000000000000499553e000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        1045797124,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4104,
+      "first_observed_callback": 18
+    },
+    {
+      "variant_id": 49,
+      "source_index": 24,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "010000000000000000000000030000000200000000000000000000000499553e000000000000000000000000010000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        1045797124,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 147,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 50,
+      "source_index": 25,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0000000000000000000000000300000002000000000000000000803fe098553e000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065353216,
+        1045797088,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4108,
+      "first_observed_callback": 18
+    },
+    {
+      "variant_id": 51,
+      "source_index": 25,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000000000000000000000300000002000000000000000000803fe098553e000000000000000000000000010000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065353216,
+        1045797088,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 143,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 52,
+      "source_index": 26,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0000000000000000000000000300000002000000000000000000000039b4c83dcdcccc3d0000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        1036563513,
+        1036831949
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 3502,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 53,
+      "source_index": 26,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000000000000000000000300000002000000000000000000000039b4c83dcdcccc3d0000000000000000010000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        1036563513,
+        1036831949
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 749,
+      "first_observed_callback": 55
+    },
+    {
+      "variant_id": 54,
+      "source_index": 27,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0000000000000000000000000300000002000000000000000000803f39b4c83dcdcccc3d0000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065353216,
+        1036563513,
+        1036831949
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 3589,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 55,
+      "source_index": 27,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000000000000000000000300000002000000000000000000803f39b4c83dcdcccc3d0000000000000000010000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065353216,
+        1036563513,
+        1036831949
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 662,
+      "first_observed_callback": 53
+    },
+    {
+      "variant_id": 56,
+      "source_index": 28,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "00000000000000000000000003000000020000000000000000000000ee7cbf3d000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        1035959534,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 57,
+      "source_index": 28,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "01000000000000000000000003000000020000000000000000000000ee7cbf3d000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        0,
+        1035959534,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 58,
+      "source_index": 29,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0000000000000000000000000300000002000000000000000000803f5839b43d000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065353216,
+        1035221336,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 59,
+      "source_index": 29,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000000000000000000000300000002000000000000000000803f5839b43d000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065353216,
+        1035221336,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 60,
+      "source_index": 30,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "010000000100000000000000030000000200000000000000b2a1cf3e0c5b133f000000000000000000000000000000000000000000000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1053794738,
+        1058233100,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 61,
+      "source_index": 30,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "010000000000000000000000030000000200000000000000b2a1cf3e0c5b133f000000000000000000000000010000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1053794738,
+        1058233100,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 62,
+      "source_index": 31,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000001000000000000000300000002000000000000001f2f183f0c5b133f000000000000000000000000000000000000000000000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1058549535,
+        1058233100,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 63,
+      "source_index": 31,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000000000000000000000300000002000000000000001f2f183f0c5b133f000000000000000000000000010000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1058549535,
+        1058233100,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 64,
+      "source_index": 32,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0000000000000000000000000300000002000000000000001058b93dae47e13e000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1035556880,
+        1054951342,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 65,
+      "source_index": 32,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000000000000000000000300000002000000000000001058b93dae47e13e000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1035556880,
+        1054951342,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 66,
+      "source_index": 33,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0000000000000000000000000300000002000000000000008816693f2406e13e000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1063851656,
+        1054934564,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 67,
+      "source_index": 33,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000000000000000000000300000002000000000000008816693f2406e13e000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1063851656,
+        1054934564,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 68,
+      "source_index": 34,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0000000000000000000000000300000002000000000000000681553e295caf3e000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1045790982,
+        1051679785,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4081,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 69,
+      "source_index": 34,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "0100000000000000000000000300000002000000000000000681553e295caf3e000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1045790982,
+        1051679785,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 170,
+      "first_observed_callback": 143
+    },
+    {
+      "variant_id": 70,
+      "source_index": 35,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "000000000000000000000000030000000200000000000000713d3a3fa245b63e000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1060781425,
+        1052132770,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4146,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 71,
+      "source_index": 35,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "010000000000000000000000030000000200000000000000713d3a3fa245b63e000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1060781425,
+        1052132770,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 105,
+      "first_observed_callback": 74
+    },
+    {
+      "variant_id": 72,
+      "source_index": 36,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "000000000000000000000000030000000200000000000000a4a1463c00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1011261860,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 2491,
+      "first_observed_callback": 49
+    },
+    {
+      "variant_id": 73,
+      "source_index": 36,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "010000000000000000000000030000000200000000000000a4a1463c00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1011261860,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 1760,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 74,
+      "source_index": 37,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "00000000000000000000000003000000020000000000000071e57c3f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065149809,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 2491,
+      "first_observed_callback": 49
+    },
+    {
+      "variant_id": 75,
+      "source_index": 37,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "01000000000000000000000003000000020000000000000071e57c3f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065149809,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 1760,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 76,
+      "source_index": 38,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "000000000000000000000000030000000200000000000000a4a1463c00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1011261860,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 2081,
+      "first_observed_callback": 49
+    },
+    {
+      "variant_id": 77,
+      "source_index": 38,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "010000000000000000000000030000000200000000000000a4a1463c00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1011261860,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 2170,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 78,
+      "source_index": 39,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "00000000000000000000000003000000020000000000000071e57c3f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065149809,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 2081,
+      "first_observed_callback": 49
+    },
+    {
+      "variant_id": 79,
+      "source_index": 39,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "01000000000000000000000003000000020000000000000071e57c3f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065149809,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 2170,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 80,
+      "source_index": 40,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "00000000000000000000000003000000020000000000000061df9e3d139baf3e000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1033822049,
+        1051695891,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 3751,
+      "first_observed_callback": 3
+    },
+    {
+      "variant_id": 81,
+      "source_index": 40,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "01000000000000000000000003000000020000000000000061df9e3d139baf3e000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1033822049,
+        1051695891,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 500,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 82,
+      "source_index": 41,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "00000000000000000000000003000000020000000000000014246c3f139baf3e000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1064051732,
+        1051695891,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 3745,
+      "first_observed_callback": 1
+    },
+    {
+      "variant_id": 83,
+      "source_index": 41,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "01000000000000000000000003000000020000000000000014246c3f139baf3e000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1064051732,
+        1051695891,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 506,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 84,
+      "source_index": 42,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "000000000000000000000000030000000200000000000000a4a1463c00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1011261860,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4118,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 85,
+      "source_index": 42,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "010000000000000000000000030000000200000000000000a4a1463c00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1011261860,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 133,
+      "first_observed_callback": 74
+    },
+    {
+      "variant_id": 86,
+      "source_index": 43,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "00000000000000000000000003000000020000000000000071e57c3f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065149809,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4125,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 87,
+      "source_index": 43,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "01000000000000000000000003000000020000000000000071e57c3f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065149809,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 126,
+      "first_observed_callback": 75
+    },
+    {
+      "variant_id": 88,
+      "source_index": 44,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "000000000000000000000000030000000200000000000000a4a1463c00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1011261860,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 89,
+      "source_index": 44,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "010000000000000000000000030000000200000000000000a4a1463c00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1011261860,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 90,
+      "source_index": 45,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "00000000000000000000000003000000020000000000000071e57c3f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065149809,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 3960,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 91,
+      "source_index": 45,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "01000000000000000000000003000000020000000000000071e57c3f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065149809,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 291,
+      "first_observed_callback": 62
+    },
+    {
+      "variant_id": 92,
+      "source_index": 46,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "000000000000000000000000030000000200000000000000a4a1463c00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1011261860,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4251,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 93,
+      "source_index": 46,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "010000000000000000000000030000000200000000000000a4a1463c00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1011261860,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 0,
+      "first_observed_callback": null
+    },
+    {
+      "variant_id": 94,
+      "source_index": 47,
+      "condition": {
+        "quiet": 0
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "00000000000000000000000003000000020000000000000071e57c3f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065149809,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 4206,
+      "first_observed_callback": 0
+    },
+    {
+      "variant_id": 95,
+      "source_index": 47,
+      "condition": {
+        "quiet": 1
+      },
+      "defined_ranges": [
+        {
+          "offset": 0,
+          "bytes": 56,
+          "hex": "01000000000000000000000003000000020000000000000071e57c3f00000000000000000000000000000000000000000000000001000000"
+        }
+      ],
+      "unknown_ranges": [],
+      "position_words": [
+        1065149809,
+        0,
+        0
+      ],
+      "packed_attribute": 2816,
+      "observed_uses": 45,
+      "first_observed_callback": 130
+    }
+  ],
+  "possible_variant_count": 96,
+  "observed_variant_count": 71,
+  "complete_defined_range": {
+    "offset": 0,
+    "bytes": 56
+  },
+  "unknown_ranges": [],
+  "selector": "Prefix:2*source_index+prefix_written; regular:22+2*(source_index-11)+quiet. Callback record supplies quiet37 and positive prefix membership."
+}

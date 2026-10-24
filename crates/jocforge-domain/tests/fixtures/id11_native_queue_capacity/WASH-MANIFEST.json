@@ -1,0 +1,66 @@
+{
+  "schema": "washed-implementer-supplement-manifest.v1",
+  "artifact_id": "F13C-ID11-NATIVE-QUEUE-CAPACITY-V1",
+  "source_candidate_manifest_sha256": "db7b47ca272ca211939f4d49561681bdf2cebf3d9089c0cb7869d68ff6cea115",
+  "payloads": [
+    {
+      "file": "APPROVED-CONTRACT-COMPARISON.json",
+      "bytes": 1482,
+      "sha256": "08dc90051a6577e1b56624dfa9735e5b499cf5ecc163fc6edc878c2567d8673a"
+    },
+    {
+      "file": "CHECK-NORMAL.json",
+      "bytes": 360,
+      "sha256": "91fe33ba48a4c7a693c277f5a05eb8bc3708e383a7ce2ab10d5a00547fc53c1f"
+    },
+    {
+      "file": "CHECK-OPTIMIZED.json",
+      "bytes": 360,
+      "sha256": "91fe33ba48a4c7a693c277f5a05eb8bc3708e383a7ce2ab10d5a00547fc53c1f"
+    },
+    {
+      "file": "CONTRACT.md",
+      "bytes": 2968,
+      "sha256": "50a638758b693f63037009ff10ada5b58b0dbe78e10745143db2f8c12db1c354"
+    },
+    {
+      "file": "FIELD-AND-CONSUMER.json",
+      "bytes": 3157,
+      "sha256": "aba7038a7a03a6aad0a6a1ab2c84a00fac333079174af439480789025f770272"
+    },
+    {
+      "file": "INPUT-ONLY.json",
+      "bytes": 3698,
+      "sha256": "116dc42b77531e5607e4123836c3802046ec9dba2b3271e0d5156e1157fa07c7"
+    },
+    {
+      "file": "NATIVE-OBSERVATIONS.json",
+      "bytes": 15992,
+      "sha256": "320ba905200f5547a089b792a7cc07e9061381ae38ad6ee017a5eb1f74688fd5"
+    },
+    {
+      "file": "PROVENANCE.json",
+      "bytes": 675,
+      "sha256": "e033c371c15af4f64df96b97f2ee291d4d3e95ec306092bee2310e65511b2e1c"
+    },
+    {
+      "file": "replay_metadata_queue_capacity.py",
+      "bytes": 2871,
+      "sha256": "3effdb88a05a4a1350ecea92c46e97dcc3970419417c5ae529d240b165a5f42c"
+    },
+    {
+      "file": "RUNTIME-RECEIPT.json",
+      "bytes": 801,
+      "sha256": "1dd8ba509aa0c6165e36312f5d0cb59470c04f7c4e34ec9c27f40fc7ea045eb3"
+    },
+    {
+      "file": "WASH-VALIDATION.json",
+      "bytes": 1027,
+      "sha256": "6c4bbb844468291be9234571f462898bfb93b60034b2cb93e7dcdba0777606e7"
+    }
+  ],
+  "detached_files": [
+    "INDEPENDENT-CHECK.json",
+    "DELIVERY-ENVELOPE.json"
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "schema": "gain-history-peak-state-provenance.v1",
+  "package": "GAIN-HISTORY-PEAK-STATE",
+  "source_wash_package": "SANITIZED_F09_GAIN_HISTORY_R1",
+  "source_manifest_sha256": "7acbd2cba5ce0f8c67738a9915d7f98484854aedd66007930526339cb8b5bd68",
+  "source_independent_check_sha256": "dcff19c3a9996ef8e7cd60faf3b5815711b9e6d514693f8098fc1b6ecb3ea37a",
+  "source_payloads": [
+    {
+      "path": "INPUTS.json",
+      "bytes": 807125,
+      "sha256": "8987d512edbea6a977f9a9327556b5d3f54cc84a27f08b20870559382d31a744"
+    },
+    {
+      "path": "EXPECTED.json",
+      "bytes": 485161,
+      "sha256": "9ce8d4a339642bc3694f041d2884ec80dce846c3a42c338d5a9e94baa62547c2"
+    },
+    {
+      "path": "PARAMETERS.json",
+      "bytes": 1223,
+      "sha256": "af1eb3e483f984fb78df870119c34ad211f531e875750a76557c4ad0d2ceb027"
+    },
+    {
+      "path": "DERIVED-TRACES.json",
+      "bytes": 2409151,
+      "sha256": "bf54157d2c8bfafd3ae070f3f2eff73f519342ca9c85f8b1c89852717c8f2fd2"
+    },
+    {
+      "path": "AUXILIARY-EFFECTS.json",
+      "bytes": 18935,
+      "sha256": "fe12921d58650305794d9b42ac3e12889504bea0a41e89c6c2216b899f38d504"
+    },
+    {
+      "path": "NATIVE-CONTEXT.json",
+      "bytes": 739,
+      "sha256": "010e9d80ce3809acac6a691852216bb30f5b3cc56933ade886e89636dbe3a25e"
+    },
+    {
+      "path": "RUNTIME-RECEIPTS.json",
+      "bytes": 1615,
+      "sha256": "27ac964e88eaa2de90f65c94c42fbac862711362e25a74d0b9f9f7311ac2301f"
+    },
+    {
+      "path": "CONTRACT.json",
+      "bytes": 7098,
+      "sha256": "1af85465ab33ae6885b306baf628393b6b3bb4fa6e99e70bdfadfcaa23fc4dd8"
+    }
+  ],
+  "reference_module": {
+    "file_bytes_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "qualification": "Loaded-path module file bytes hash was recorded in target and matched by host rehash."
+  },
+  "evidence": {
+    "static_peak_gain_rules": "STATIC_CONFIRMED",
+    "native_case_receipts": "R43/R46 current receipt reports 17 unique history cases, 3 reuse cases, 648 peak transitions, 540 gain outputs, 90 reuse values; R45 zero-capture excluded",
+    "wash_independent_replay": "PASS: 165888 input words, 648 peak transitions, 540 gains, 90 reuse outputs",
+    "native_lane_register_capture": "NOT_RUN",
+    "native_reset_eof": "NOT_RUN",
+    "product_audio_integration": "NOT_RUN"
+  },
+  "delivery_scope": "INTERNAL_IMPLEMENTATION_HANDOFF",
+  "private_vendor_key": "EXCLUDED",
+  "public_third_party_license_status": "NOT_ASSESSED",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO",
+  "explicitly_not_delivered": [
+    "raw PCM or ADM",
+    "raw native trace payloads",
+    "binary contents",
+    "addresses or disassembly identifiers",
+    "vendor private key or authentication material"
+  ]
+}

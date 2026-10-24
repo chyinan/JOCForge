@@ -1,0 +1,40 @@
+{
+  "independent_metadata_queue_construction": "YES_WITHIN_CAPTURED_CONTROL_FIELDS: five fresh owned arenas, original constructor, all pointer tables/descriptors/body extents within each arena, guards intact and no aliases with production queue owners. No byte-exact whole-memory equivalence claim.",
+  "independent_production_cold_codec_parent_equivalence": "NO",
+  "R19_cases_connected_to_production_cold_roots": "NOT_RUN",
+  "reason": "Actual selected serializer/history constructor installs its built-in protection-provider identity while initializing the owner. Provider contents were deliberately not read. Substituting the public R19 test provider would change this identity and cannot establish production-cold equivalence. Full profile constructor also requires a validated configuration/arena/callback contract that has not been independently reconstructed.",
+  "required_materials": [
+    {
+      "name": "selected top-constructor configuration and admission schema",
+      "owner": "selected wrapper/profile admission -> actual top codec constructor",
+      "purpose": "Produce every nonsecret configuration field, arena extent/alignment and callback dependency independently rather than copying a live configuration block.",
+      "acquisition": "Trace the wrapper parameter assembly and selected configuration validator field-by-field. Export only ordinary functional fields and constructor receipts; exclude license/private-provider material."
+    },
+    {
+      "name": "approved nonsecret selected protection-provider identity contract",
+      "owner": "actual serializer/history constructor and provider initializer",
+      "purpose": "Resolve whether the exact selected protection identity can be instantiated without a private vendor provider.",
+      "acquisition": "An original supported public/nonsecret provider path with matching profile is required. Built-in provider contents remain unread; no live provider clone, fallback interception or bypass is permitted. R19 public-provider fixtures are a distinct profile qualification."
+    },
+    {
+      "name": "complete codec cold-root initializer and failure snapshot schema",
+      "owner": "actual selected top constructor and codec-instance initializer",
+      "purpose": "Own all codec input/history/output/fragment state plus queue/tolerance/warning roots before invoking the full outer parent on controlled507/512 cases.",
+      "acquisition": "Follow actual instance initializer callbacks and their declared memory layouts; initialize independently, then validate identities and finite extents. No PCM snapshots/hashes or generic zero-filling of unknown state."
+    },
+    {
+      "name": "durable publication transaction fixture",
+      "owner": "frontend caller-visible gate -> output-storage/file writer",
+      "purpose": "Bind a controlled outer failure to downstream file publication and durable state.",
+      "acquisition": "Trace explicit output ownership/acknowledgment/commit boundaries; a successful reference file alone does not prove transaction atomicity."
+    }
+  ],
+  "evidence_levels": {
+    "production_cold_constructor_roots": "NATIVE_OBSERVED_IDENTITY_BOUND",
+    "independent_queue_control_initializer": "NATIVE_AND_MODEL_REPLAY_MATCH",
+    "production_cold_parent_equivalence": "NOT_ESTABLISHED",
+    "full_parent_failure_rollback": "NOT_RUN_NOT_PROVEN"
+  },
+  "implementation_contacted": false,
+  "parallel_research_tasks_contacted": false
+}

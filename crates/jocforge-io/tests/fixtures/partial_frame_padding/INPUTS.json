@@ -1,0 +1,12 @@
+{
+  "schema": "partial-tail-rule-input-only.v1",
+  "input_only": true,
+  "channels": 38,
+  "frame_samples": 1536,
+  "actual_samples": 1392,
+  "word_bytes": 4,
+  "renderer_delay_samples": 3072,
+  "backend_delay_samples": 3072,
+  "flush_attempts": 5,
+  "valid_prefix_is_opaque": true
+}

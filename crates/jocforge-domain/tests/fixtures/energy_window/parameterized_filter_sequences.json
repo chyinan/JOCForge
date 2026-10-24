@@ -1,0 +1,39 @@
+{
+  "schema": "energy-window-parameterized-filter-sequences.v1",
+  "source_vector": {
+    "file": "test-vectors/METER-K-PARAMETERIZED-VERIFICATION.json",
+    "bytes": 3693,
+    "sha256": "66a11e0751975ff619a9711943834fb52070655e6c3ec71f5ae318766b36080a"
+  },
+  "scope": "synthetic matrix arithmetic and cold/clamp/noise identity only, not complete production K-filter equivalence",
+  "synthetic_matrix_rule": "for stage s=0,1; row r=0..7; lane l=0..3: R32((-1)^(r+l)*(s+1)*(r+1)*(l+1)/4096); row8 positive zero",
+  "execution": "single sequence from cold, blocks0..2 continuous",
+  "cases": [
+    {
+      "block_index": 0,
+      "samples": 64,
+      "last_sample_override": 128.0,
+      "expected_output_sha256": "f2a85c26542cda220ae6256d372de229813eb36405b70d0c39a6b0bc0431a1a7",
+      "expected_next_state_words": [[1065353216, 1019215872, 1031774444, 3175069872], [1031774444, 3175069872, 980423472, 3123973732]],
+      "expected_power_sum_word": 819147799
+    },
+    {
+      "block_index": 1,
+      "samples": 960,
+      "last_sample_override": null,
+      "expected_output_sha256": "82af7cd771f33ef5ec78b62c94c575d84a334bfda4ee6b7d0221e7257f881364",
+      "expected_next_state_words": [[3154116608, 3162505216, 3098459513, 948112923], [3098459513, 948112923, 3029288100, 878110449]],
+      "expected_power_sum_word": 827069772
+    },
+    {
+      "block_index": 2,
+      "samples": 1024,
+      "last_sample_override": null,
+      "expected_output_sha256": "610e09010c130c3ac0aeaaf752f4322ecd6a0f7c05cfa975b14a58a56a5a654c",
+      "expected_next_state_words": [[3172990976, 3175088128, 3091626641, 940891117], [3091626641, 940891117, 3058170386, 907410316]],
+      "expected_power_sum_word": 763636785
+    }
+  ],
+  "independent_isolated_review": "NOT_RUN",
+  "whole_meter_pipeline": "NOT_RUN"
+}

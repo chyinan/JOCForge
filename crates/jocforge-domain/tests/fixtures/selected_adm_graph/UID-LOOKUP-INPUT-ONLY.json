@@ -1,0 +1,25 @@
+{
+  "source": "Actual live graph owner inside load invocation1; queried only after its first successful UID lookup returned.",
+  "cases": [
+    {
+      "uid": "ATU_00000001",
+      "output_u32_initial": 3435973836
+    },
+    {
+      "uid": "ATU_00000001",
+      "output_u32_initial": 3435973836
+    },
+    {
+      "uid": "ATU_99999999",
+      "output_u32_initial": 3435973836
+    },
+    {
+      "uid": "MISSING_UID",
+      "output_u32_initial": 3435973836
+    },
+    {
+      "uid": "",
+      "output_u32_initial": 3435973836
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "tail_samples": 144,
+  "tail_words": 5472,
+  "tail_bytes": 21888,
+  "tail_counts": {
+    "positive_zero": 5472,
+    "negative_zero": 0,
+    "subnormal": 0,
+    "finite_nonzero": 0,
+    "infinity": 0,
+    "nan": 0
+  },
+  "model_flush": [
+    {
+      "call": 1,
+      "remaining": 3,
+      "generated_callbacks": 1,
+      "has_input": true,
+      "model_synthetic_prefix_preserved": true
+    },
+    {
+      "call": 2,
+      "remaining": 2,
+      "generated_callbacks": 2,
+      "has_input": true,
+      "model_synthetic_prefix_preserved": true
+    },
+    {
+      "call": 3,
+      "remaining": 1,
+      "generated_callbacks": 3,
+      "has_input": true,
+      "model_synthetic_prefix_preserved": true
+    },
+    {
+      "call": 4,
+      "remaining": 0,
+      "generated_callbacks": 4,
+      "has_input": true,
+      "model_synthetic_prefix_preserved": true
+    },
+    {
+      "call": 5,
+      "remaining": 0,
+      "generated_callbacks": 4,
+      "has_input": false,
+      "model_synthetic_prefix_preserved": null
+    }
+  ]
+}

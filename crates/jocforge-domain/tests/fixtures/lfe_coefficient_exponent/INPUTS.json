@@ -1,0 +1,152 @@
+{
+  "schema": "lfe-exponent-input-recipes.v1",
+  "recipes": [
+    {
+      "mode": 1,
+      "format": 7,
+      "bias": 0,
+      "lfe_bins": 7,
+      "lfe_blocks": 2,
+      "fullband_bins": 5,
+      "fullband_blocks": 1,
+      "real_cycle": [
+        0,
+        0.125,
+        -0.25,
+        0.5,
+        1,
+        2,
+        0.25
+      ],
+      "imag_cycle": [
+        0,
+        0,
+        0.25,
+        0.5,
+        0,
+        0,
+        0.125
+      ],
+      "phase_rule": "(bin+block+call)%7",
+      "reuse_buffers": true
+    },
+    {
+      "mode": 1,
+      "format": 7,
+      "bias": 2,
+      "lfe_bins": 7,
+      "lfe_blocks": 2,
+      "fullband_bins": 5,
+      "fullband_blocks": 1,
+      "real_cycle": [
+        0,
+        0.125,
+        -0.25,
+        0.5,
+        1,
+        2,
+        0.25
+      ],
+      "imag_cycle": [
+        0,
+        0,
+        0.25,
+        0.5,
+        0,
+        0,
+        0.125
+      ],
+      "phase_rule": "(bin+block+call)%7",
+      "reuse_buffers": true
+    },
+    {
+      "mode": 1,
+      "format": 7,
+      "bias": 4,
+      "lfe_bins": 7,
+      "lfe_blocks": 2,
+      "fullband_bins": 5,
+      "fullband_blocks": 1,
+      "real_cycle": [
+        0,
+        0.125,
+        -0.25,
+        0.5,
+        1,
+        2,
+        0.25
+      ],
+      "imag_cycle": [
+        0,
+        0,
+        0.25,
+        0.5,
+        0,
+        0,
+        0.125
+      ],
+      "phase_rule": "(bin+block+call)%7",
+      "reuse_buffers": true
+    },
+    {
+      "mode": 0,
+      "format": 7,
+      "bias": 4,
+      "lfe_bins": 7,
+      "lfe_blocks": 2,
+      "fullband_bins": 5,
+      "fullband_blocks": 1,
+      "real_cycle": [
+        0,
+        0.125,
+        -0.25,
+        0.5,
+        1,
+        2,
+        0.25
+      ],
+      "imag_cycle": [
+        0,
+        0,
+        0.25,
+        0.5,
+        0,
+        0,
+        0.125
+      ],
+      "phase_rule": "(bin+block+call)%7",
+      "reuse_buffers": true
+    },
+    {
+      "mode": 1,
+      "format": 2,
+      "bias": 4,
+      "lfe_bins": 7,
+      "lfe_blocks": 2,
+      "fullband_bins": 5,
+      "fullband_blocks": 1,
+      "real_cycle": [
+        0,
+        0.125,
+        -0.25,
+        0.5,
+        1,
+        2,
+        0.25
+      ],
+      "imag_cycle": [
+        0,
+        0,
+        0.25,
+        0.5,
+        0,
+        0,
+        0.125
+      ],
+      "phase_rule": "(bin+block+call)%7",
+      "reuse_buffers": true
+    }
+  ],
+  "expected_used_as_seed": false,
+  "reconstruction": "For call0 then call1 on same buffers, generate exactly7 real/imag coefficients per block from cycle[(bin+block+call)%7]. First run one full-band channel plus LFE for one block and capture LFE block0; next run LFE-only for two blocks without changing coefficients and capture both blocks. Full-band real[5]=.25, imaginary[5]=0, POWER bits[5]=1031798784, bias as recipe. No audio/PCM input is loaded."
+}

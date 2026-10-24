@@ -1,0 +1,37 @@
+{
+  "schema": "f13c-carrier-pipeline-fixture-provenance.v1",
+  "source_package": "IMPLEMENTER_SUPPLEMENTS/F13C-EMDF-CARRIER-PIPELINE",
+  "base_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_package_manifest_sha256": "8edaa695dc53fd9f7de96693b16259b08b7399141f266bded7e4115029f9794e",
+  "handoff_manifest_sha256": "9c136d43219ccd8fc5623066864d27959f079c9cfe9dfcd10a5726e7fb20f049",
+  "handoff_check_sha256": "8a0343f13fe811e5de8a64cb20ddb7fe72f7190905ef1686590240ac32cf6ff9",
+  "source_body_classification": "NATIVE_DIAGNOSTIC_BOUNDARY_INPUT_NOT_MODEL_PRODUCTION",
+  "local_gate_claim": "Selected carrier planner, reservation, fragment writer and publication gate only; whole_F13C_ready=false.",
+  "fixtures": [
+    {
+      "file": "INPUTS.json",
+      "bytes": 7990,
+      "sha256": "3fb6749e79c5eeabd4a9978f4bd9d9b8c1076e116a1a071649b2a2642c90d75b"
+    },
+    {
+      "file": "EXPECTED.json",
+      "bytes": 97683,
+      "sha256": "9ba3cf73905f7ba25fd9c4378ae1ebec7cdc1b32370f9e571df4040ca06a5e2d"
+    },
+    {
+      "file": "NATIVE-AU-JOINS.json",
+      "bytes": 23777,
+      "sha256": "cebe647028b976ac3de9d23fb92cc946922ce8a0b1c2b5a79bae1fd135d41d65"
+    },
+    {
+      "file": "CONTRACT.json",
+      "bytes": 5594,
+      "sha256": "735ef772686992940456ee76b937103a49cd2cfe6a8d16dac2c29ef092308a5e"
+    },
+    {
+      "file": "CARRIER-ADDENDUM.md",
+      "bytes": 2595,
+      "sha256": "07086764f652c917a7f86765de2e605150a22730f6fe5b6b75319e3d521f00d0"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "washed-selected-id14-reader-candidate-summary.v1",
+  "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "checked_candidate_count": 70,
+  "all_candidates_complete_decompile": true,
+  "all_direct_xrefs_uncapped": true,
+  "semantic_reader_family_count": 18,
+  "semantic_reader_family_reverse_root": "ID11 semantic parser root",
+  "candidate_inventory_raw_addresses_delivered": false,
+  "fresh_native_dynamic_capture": false
+}

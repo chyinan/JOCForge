@@ -1,0 +1,18 @@
+{
+  "slice": "LFE-COEFFICIENT-EXPONENT",
+  "package_manifest_sha256": "63d6fa945445ea9545b3ac02ad9df86b832a4abcccf6beb5caaf515ed1a3540a",
+  "independent_check_sha256": "9321c12d5414febcce241e9102628434dc7ab6b1c0e1c4a1168b2037ba6fc258",
+  "source_manifest_sha256": "f2e8ab625d17809a5e3b119fb923e8123818f3fc8639b2d8ba22f8da33efe72f",
+  "source_independent_check_sha256": "b256e4cd23b48dc9391e4b955516d9085468b35603b5b1180c169f6726d48d37",
+  "validated_payloads": {
+    "CONTRACT.md": "33e9a41f11a6bf6f8aae6c3a6568cd5958d60f2deec022a20529325844c65df1",
+    "INPUTS.json": "fbd9317bcb5036b6d706f9f136df46b69520047dde52a126b65401fdf2b48fff",
+    "EXPECTED.json": "80952b734a0c87fe523395a16a3c3e6172766b857ff944ebb0c8d4d78e085c2d",
+    "PARAMETERS.json": "eae2870ebcf5e5164f85a3b5e8cc16db5da39de550fed48bc9175be06b69472a",
+    "PROVENANCE.json": "779c36e3d088fb736bf7cc17e17c7a6fa4b7ce41d65176bcef4ae7dcb9a1090e"
+  },
+  "scope": "selected finite 5.1 LFE coefficient-pair exponent helper; two blocks by seven bins",
+  "independent_product_audio_integration": "NOT_RUN",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO"
+}

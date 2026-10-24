@@ -1,0 +1,846 @@
+{
+  "schema": "washed-id1-timer-primitive-inputs.v1",
+  "timer_cases": [
+    {
+      "name": "natural_4",
+      "state": {
+        "remaining": [
+          24000,
+          48000,
+          48000,
+          4800,
+          24000,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -1024,
+          -1024,
+          -1024,
+          -1024,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config": [
+        -2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        -512,
+        0,
+        -512
+      ],
+      "samples": 1536,
+      "counter_flag": 0
+    },
+    {
+      "name": "native_before_replay",
+      "state": {
+        "remaining": [
+          24000,
+          48000,
+          48000,
+          4800,
+          24000,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -1024,
+          -1024,
+          -1024,
+          -1024,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config": [
+        -2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        -512,
+        0,
+        -512
+      ],
+      "samples": 1536,
+      "counter_flag": 0
+    },
+    {
+      "name": "all_expired",
+      "state": {
+        "remaining": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -1024,
+          -1024,
+          -1024,
+          -1024,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config": [
+        -2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        -512,
+        0,
+        -512
+      ],
+      "samples": 1536,
+      "counter_flag": 0
+    },
+    {
+      "name": "flag_one_skip_refresh",
+      "state": {
+        "remaining": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -1024,
+          -1024,
+          -1024,
+          -1024,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config": [
+        -2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        -512,
+        0,
+        -512
+      ],
+      "samples": 1536,
+      "counter_flag": 1
+    },
+    {
+      "name": "zero_hop",
+      "state": {
+        "remaining": [
+          24000,
+          48000,
+          48000,
+          4800,
+          24000,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -1024,
+          -1024,
+          -1024,
+          -1024,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config": [
+        -2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        -512,
+        0,
+        -512
+      ],
+      "samples": 0,
+      "counter_flag": 0
+    },
+    {
+      "name": "mode_zero",
+      "state": {
+        "remaining": [
+          24000,
+          48000,
+          48000,
+          4800,
+          24000,
+          48000
+        ],
+        "mode": 0,
+        "cached": [
+          -1,
+          -1024,
+          -1024,
+          -1024,
+          -1024,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config": [
+        -2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        -512,
+        0,
+        -512
+      ],
+      "samples": 1536,
+      "counter_flag": 0
+    },
+    {
+      "name": "counter_-512",
+      "state": {
+        "remaining": [
+          24000,
+          48000,
+          48000,
+          4800,
+          24000,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -1024,
+          -1024,
+          -1024,
+          -1024,
+          -1024
+        ],
+        "counter_low_s16": -512,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config": [
+        -2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        -512,
+        0,
+        -512
+      ],
+      "samples": 1536,
+      "counter_flag": 0
+    },
+    {
+      "name": "counter_-1",
+      "state": {
+        "remaining": [
+          24000,
+          48000,
+          48000,
+          4800,
+          24000,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -1024,
+          -1024,
+          -1024,
+          -1024,
+          -1024
+        ],
+        "counter_low_s16": -1,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config": [
+        -2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        -512,
+        0,
+        -512
+      ],
+      "samples": 1536,
+      "counter_flag": 0
+    },
+    {
+      "name": "counter_0",
+      "state": {
+        "remaining": [
+          24000,
+          48000,
+          48000,
+          4800,
+          24000,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -1024,
+          -1024,
+          -1024,
+          -1024,
+          -1024
+        ],
+        "counter_low_s16": 0,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config": [
+        -2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        -512,
+        0,
+        -512
+      ],
+      "samples": 1536,
+      "counter_flag": 0
+    },
+    {
+      "name": "counter_1",
+      "state": {
+        "remaining": [
+          24000,
+          48000,
+          48000,
+          4800,
+          24000,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -1024,
+          -1024,
+          -1024,
+          -1024,
+          -1024
+        ],
+        "counter_low_s16": 1,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config": [
+        -2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        -512,
+        0,
+        -512
+      ],
+      "samples": 1536,
+      "counter_flag": 0
+    },
+    {
+      "name": "counter_2",
+      "state": {
+        "remaining": [
+          24000,
+          48000,
+          48000,
+          4800,
+          24000,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -1024,
+          -1024,
+          -1024,
+          -1024,
+          -1024
+        ],
+        "counter_low_s16": 2,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config": [
+        -2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        -512,
+        0,
+        -512
+      ],
+      "samples": 1536,
+      "counter_flag": 0
+    },
+    {
+      "name": "counter_4",
+      "state": {
+        "remaining": [
+          24000,
+          48000,
+          48000,
+          4800,
+          24000,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -1024,
+          -1024,
+          -1024,
+          -1024,
+          -1024
+        ],
+        "counter_low_s16": 4,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config": [
+        -2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        -512,
+        0,
+        -512
+      ],
+      "samples": 1536,
+      "counter_flag": 0
+    },
+    {
+      "name": "natural_10",
+      "state": {
+        "remaining": [
+          24000,
+          46464,
+          46464,
+          4800,
+          22464,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          0,
+          0,
+          -1024,
+          0,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config": [
+        -2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        -512,
+        0,
+        -512
+      ],
+      "samples": 1536,
+      "counter_flag": 0
+    },
+    {
+      "name": "natural_16",
+      "state": {
+        "remaining": [
+          24000,
+          44928,
+          44928,
+          4800,
+          20928,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          0,
+          0,
+          -1024,
+          0,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config": [
+        -2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        -512,
+        0,
+        -512
+      ],
+      "samples": 1536,
+      "counter_flag": 0
+    },
+    {
+      "name": "natural_22",
+      "state": {
+        "remaining": [
+          24000,
+          43392,
+          43392,
+          4800,
+          19392,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          0,
+          0,
+          -1024,
+          0,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config": [
+        -2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        -512,
+        0,
+        -512
+      ],
+      "samples": 1536,
+      "counter_flag": 0
+    },
+    {
+      "name": "natural_28",
+      "state": {
+        "remaining": [
+          24000,
+          41856,
+          41856,
+          4800,
+          17856,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          0,
+          0,
+          -1024,
+          0,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config": [
+        -2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        -512,
+        0,
+        -512
+      ],
+      "samples": 1536,
+      "counter_flag": 0
+    },
+    {
+      "name": "natural_34",
+      "state": {
+        "remaining": [
+          24000,
+          40320,
+          40320,
+          4800,
+          16320,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          0,
+          0,
+          -1024,
+          0,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config": [
+        -2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        -512,
+        0,
+        -512
+      ],
+      "samples": 1536,
+      "counter_flag": 0
+    }
+  ],
+  "wrapper_cases": [
+    {
+      "name": "valid_wrapper",
+      "state": {
+        "remaining": [
+          24000,
+          48000,
+          48000,
+          4800,
+          24000,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -1024,
+          -1024,
+          -1024,
+          -1024,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config": [
+        -2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        -512,
+        0,
+        -512
+      ],
+      "capacity": 11,
+      "samples": 1536,
+      "offset": 0,
+      "descriptor_fill_u8": 165,
+      "body_fill_u8": 165,
+      "body_capacity": 11,
+      "guard_bytes": 16
+    },
+    {
+      "name": "short_capacity",
+      "state": {
+        "remaining": [
+          24000,
+          48000,
+          48000,
+          4800,
+          24000,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -1024,
+          -1024,
+          -1024,
+          -1024,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config": [
+        -2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        -512,
+        0,
+        -512
+      ],
+      "capacity": 10,
+      "samples": 1536,
+      "offset": 0,
+      "descriptor_fill_u8": 165,
+      "body_fill_u8": 165,
+      "body_capacity": 11,
+      "guard_bytes": 16
+    },
+    {
+      "name": "mode_sentinel_rejected",
+      "state": {
+        "remaining": [
+          24000,
+          48000,
+          48000,
+          4800,
+          24000,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -1024,
+          -1024,
+          -1024,
+          -1024,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config": [
+        -1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        -512,
+        0,
+        -512
+      ],
+      "capacity": 11,
+      "samples": 1536,
+      "offset": 0,
+      "descriptor_fill_u8": 165,
+      "body_fill_u8": 165,
+      "body_capacity": 11,
+      "guard_bytes": 16
+    },
+    {
+      "name": "measurement_sentinel_rejected",
+      "state": {
+        "remaining": [
+          24000,
+          48000,
+          48000,
+          4800,
+          24000,
+          48000
+        ],
+        "mode": 1,
+        "cached": [
+          -1,
+          -1024,
+          -1024,
+          -1024,
+          -1024,
+          -1024
+        ],
+        "counter_low_s16": -513,
+        "counter_extra_u16": 0,
+        "group_s16": -1,
+        "codec_s16": -1
+      },
+      "config": [
+        -2,
+        1,
+        0,
+        0,
+        -1024,
+        0,
+        -512,
+        0,
+        -512
+      ],
+      "capacity": 11,
+      "samples": 1536,
+      "offset": 0,
+      "descriptor_fill_u8": 165,
+      "body_fill_u8": 165,
+      "body_capacity": 11,
+      "guard_bytes": 16
+    }
+  ]
+}

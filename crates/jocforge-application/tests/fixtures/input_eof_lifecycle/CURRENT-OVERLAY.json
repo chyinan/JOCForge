@@ -1,0 +1,14 @@
+{
+  "schema": "implementer-package-authority-overlay.v1",
+  "base_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "base_spec_file": "specs/13-joc-complexity-timer-payload-order.md",
+  "base_spec_sha256": "09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b",
+  "related_bsi_handoff_manifest_sha256": "70f90cd5472299f66bba22c362e87fe2645b6f480d71dfeb763fab2eb769fe00",
+  "related_id14_handoff_manifest_sha256": "9985e8f321741d596a1675499d8764765fc9ecc864dc9824e979da4559b5d684",
+  "related_carrier_handoff_manifest_sha256": "9c136d43219ccd8fc5623066864d27959f079c9cfe9dfcd10a5726e7fb20f049",
+  "selected_eof_behavior": "4 active flush drains, 1 empty flush, post-EOF process return -3 with zero output, close retires old workspace",
+  "absolute_ADM_WAV_offset": "NOT_BOUND",
+  "same_owner_reset": "NOT_RUN",
+  "whole_F13C_ready": "NO",
+  "overall_implementation_ready": "NO"
+}

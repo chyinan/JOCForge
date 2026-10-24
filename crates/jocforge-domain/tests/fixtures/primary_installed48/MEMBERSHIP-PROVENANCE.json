@@ -1,0 +1,46 @@
+{
+  "status": "APPROVED_WASHED_FORMULAS_AND_PARAMETERS; PRIMARY_MODEL_DERIVED_NOT_INDEPENDENTLY_NATIVE_VALIDATED",
+  "approved_contracts": [
+    {
+      "artifact": "specs/04-prefix-spread-and-gain.md",
+      "sections": "F04G.1-9",
+      "sha256": "ca5b069d16f0a0837ad4501036c74bb6e8ae3d6acfaf8bf3961ca4869923a68b"
+    },
+    {
+      "artifact": "specs/04-spread-authorized-parameters.md",
+      "sections": "F04GA",
+      "sha256": "4c8b966929818a9a0ea8cace90830bd5e7fa9ce8fdb716931078f97ccee83013"
+    }
+  ],
+  "approved_geometry_contract": {
+    "artifact": "specs/01-selected-geometry-layout-and-bed-routing.md",
+    "scope": "Selected P11 recipe; not synthetic basis substitution",
+    "sha256": "8ea5ff070ebfb77ecfe86a7e87ce846e05de2a1b3575bf834b5ead7414a51830"
+  },
+  "vector_artifact": "test-vectors/SPREAD-AUTHORIZED-VERIFICATION.json",
+  "vector_artifact_sha256": "78dbf5563754b83b12d023e0b434e5bd89394a7d67a536ac27d5288f16c2a236",
+  "vector_ids": [
+    "WIDTH-Q15",
+    "POWER-FIXED",
+    "POWER-MAPPED",
+    "GAIN-0",
+    "GAIN-1",
+    "GAIN-2",
+    "GAIN-3",
+    "GAIN-4",
+    "GAIN-5",
+    "GAIN-6",
+    "GAIN-7",
+    "GAIN-8"
+  ],
+  "rejection_json_pointers": [
+    "/rejections/0",
+    "/rejections/1",
+    "/rejections/2"
+  ],
+  "parameter_artifact": "parameters/spread-authorized-v1.json",
+  "parameter_sha256": "5611b37f2a997f75da0ba920e394c0e36eddd9477e11ba94d44852d3e12fd0c9",
+  "primary_native_gain11_comparison": "NOT_RUN",
+  "native_parent_error_semantics": "NOT_RUN",
+  "next_evidence": "Actual primary callback/generation matched tail32/P11 owner -> gain11 before/after compensation -> executed positive writers; do not replace with controls or synthetic cases."
+}

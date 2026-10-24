@@ -1,0 +1,19 @@
+{
+  "schema": "four-lane-mean-contract.v1",
+  "scope": "Exactly256 finite F32 values, stride1; four independent accumulators, no persistent state.",
+  "input_domain": "Current recipes: zero and normal finite inputs with absolute value<=1; no square overflow or subnormal square occurs. Other counts/strides, NaN/Inf and overflow/underflow profiles not covered.",
+  "algorithm": "Initialize lane[0..3] to +0 F32. For i0..255 in ascending groups of4, square=R(sample[i]*sample[i]); lane[i%4]=R(lane[i%4]+square). After64 updates per lane, total=+0; total=R(total+lane0), then lane1, then lane2, then lane3. Return R(total/256.0). R means one binary32 rounding after exactly that operation. Do not use one global sample accumulator or a balanced horizontal reduction.",
+  "intermediates": "EXPECTED carries all64 accumulation steps per lane and total trace[0, afterlane0, afterlane1, afterlane2, afterlane3]. They are computed from exact input bits and static SSE rule. Actual native final mean is separately captured; native lane-register snapshots were not captured.",
+  "discriminators": "partition_order differs from global serial; reduction_order differs from balanced and reversed lane reduction. INPUTS include all256 native input bits plus formula and hash, so wrong input expansion cannot hide behind one output scalar.",
+  "state_side_effects": "Static kernel reads input and computes local lanes. Runtime input hash unchanged and canary preserved. No reset/clock/history state is needed for this local kernel. Admission checks are a safe adapter choice, not native errors.",
+  "errors": "Wrong buffer lengths/pointers and unsupported counts/strides not injected. Native generic function does not supply this slice a validated error/status contract; no division-by-zero behavior is invented.",
+  "reuse": "May supply a numeric energy scalar to gain/DB/meter consumers only at matching input/count/time domains. No F09 producer or entire audio chain closed.",
+  "grades": {
+    "rule": "STATIC_CONFIRMED",
+    "final_values": "RUNTIME_CONFIRMED",
+    "intermediate_values": "INDEPENDENT_INPUT_ARITHMETIC",
+    "whole_audio": "NOT_RUN"
+  },
+  "whole_f09_closed": false,
+  "runtime_case_provenance": "Seven native mean calls each emit their own f09_mean_case_native receipt after return; one additional aggregate payload contains all7. Every native_final mean is runtime-confirmed, computed lane histories are not native-register captures."
+}

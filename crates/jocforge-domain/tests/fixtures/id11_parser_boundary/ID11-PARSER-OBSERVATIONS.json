@@ -1,0 +1,1545 @@
+{
+  "scope": "PRIVATE_COLD_OWNER_NATIVE_NOT_MODEL_REPLAY",
+  "cases": [
+    {
+      "name": "prefix_0",
+      "supplied_bytes": 0,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 0
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 0,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": true,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_1",
+      "supplied_bytes": 1,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 8
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 8,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": true,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_2",
+      "supplied_bytes": 2,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 16
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 14,
+        "remaining_bits": 2
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_3",
+      "supplied_bytes": 3,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 24
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 23,
+        "remaining_bits": 1
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_4",
+      "supplied_bytes": 4,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 32
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 31,
+        "remaining_bits": 1
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_5",
+      "supplied_bytes": 5,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 40
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 40,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_6",
+      "supplied_bytes": 6,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 48
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 48,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_7",
+      "supplied_bytes": 7,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 56
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 52,
+        "remaining_bits": 4
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_8",
+      "supplied_bytes": 8,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 64
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 64,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_9",
+      "supplied_bytes": 9,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 72
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 70,
+        "remaining_bits": 2
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_10",
+      "supplied_bytes": 10,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 80
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 80,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_11",
+      "supplied_bytes": 11,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 88
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 83,
+        "remaining_bits": 5
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_12",
+      "supplied_bytes": 12,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 96
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 96,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_13",
+      "supplied_bytes": 13,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 104
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 104,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_14",
+      "supplied_bytes": 14,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 112
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 111,
+        "remaining_bits": 1
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_15",
+      "supplied_bytes": 15,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 120
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 120,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_16",
+      "supplied_bytes": 16,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 128
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 127,
+        "remaining_bits": 1
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_17",
+      "supplied_bytes": 17,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 136
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 136,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_18",
+      "supplied_bytes": 18,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 144
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 144,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_19",
+      "supplied_bytes": 19,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 152
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 151,
+        "remaining_bits": 1
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_20",
+      "supplied_bytes": 20,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 160
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 158,
+        "remaining_bits": 2
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_21",
+      "supplied_bytes": 21,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 168
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 167,
+        "remaining_bits": 1
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_22",
+      "supplied_bytes": 22,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 176
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 176,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_23",
+      "supplied_bytes": 23,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 184
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 182,
+        "remaining_bits": 2
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_24",
+      "supplied_bytes": 24,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 192
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 189,
+        "remaining_bits": 3
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_25",
+      "supplied_bytes": 25,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 200
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 200,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_26",
+      "supplied_bytes": 26,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 208
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 207,
+        "remaining_bits": 1
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_27",
+      "supplied_bytes": 27,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 216
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 213,
+        "remaining_bits": 3
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_28",
+      "supplied_bytes": 28,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 224
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 224,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_29",
+      "supplied_bytes": 29,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 232
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 232,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_30",
+      "supplied_bytes": 30,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 240
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 238,
+        "remaining_bits": 2
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_31",
+      "supplied_bytes": 31,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 248
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 244,
+        "remaining_bits": 4
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_32",
+      "supplied_bytes": 32,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 256
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 256,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_33",
+      "supplied_bytes": 33,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 264
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 264,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_34",
+      "supplied_bytes": 34,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 272
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 269,
+        "remaining_bits": 3
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_35",
+      "supplied_bytes": 35,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 280
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 275,
+        "remaining_bits": 5
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_36",
+      "supplied_bytes": 36,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 288
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 287,
+        "remaining_bits": 1
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_37",
+      "supplied_bytes": 37,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 296
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 296,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_38",
+      "supplied_bytes": 38,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 304
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 300,
+        "remaining_bits": 4
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_39",
+      "supplied_bytes": 39,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 312
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 312,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_40",
+      "supplied_bytes": 40,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 320
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 318,
+        "remaining_bits": 2
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_41",
+      "supplied_bytes": 41,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 328
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 328,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_42",
+      "supplied_bytes": 42,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 336
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 331,
+        "remaining_bits": 5
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_43",
+      "supplied_bytes": 43,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 344
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 344,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_44",
+      "supplied_bytes": 44,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 352
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 352,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_45",
+      "supplied_bytes": 45,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 360
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 359,
+        "remaining_bits": 1
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_46",
+      "supplied_bytes": 46,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 368
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 368,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_47",
+      "supplied_bytes": 47,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 376
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 375,
+        "remaining_bits": 1
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_48",
+      "supplied_bytes": 48,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 384
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 384,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_49",
+      "supplied_bytes": 49,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 392
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 392,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_50",
+      "supplied_bytes": 50,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 400
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 399,
+        "remaining_bits": 1
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_51",
+      "supplied_bytes": 51,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 408
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 406,
+        "remaining_bits": 2
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_52",
+      "supplied_bytes": 52,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 416
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 415,
+        "remaining_bits": 1
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_53",
+      "supplied_bytes": 53,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 424
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 424,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_54",
+      "supplied_bytes": 54,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 432
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 430,
+        "remaining_bits": 2
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_55",
+      "supplied_bytes": 55,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 440
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 437,
+        "remaining_bits": 3
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_56",
+      "supplied_bytes": 56,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 448
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 448,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_57",
+      "supplied_bytes": 57,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 456
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 455,
+        "remaining_bits": 1
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_58",
+      "supplied_bytes": 58,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 464
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 461,
+        "remaining_bits": 3
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_59",
+      "supplied_bytes": 59,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 472
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 472,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_60",
+      "supplied_bytes": 60,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 480
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 480,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_61",
+      "supplied_bytes": 61,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 488
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 486,
+        "remaining_bits": 2
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_62",
+      "supplied_bytes": 62,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 496
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 492,
+        "remaining_bits": 4
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_63",
+      "supplied_bytes": 63,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 504
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 504,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_64",
+      "supplied_bytes": 64,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 512
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 512,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_65",
+      "supplied_bytes": 65,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 520
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 520,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_66",
+      "supplied_bytes": 66,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 528
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 528,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_67",
+      "supplied_bytes": 67,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 536
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 536,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_68",
+      "supplied_bytes": 68,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 2,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 544
+      },
+      "nested_status": 1,
+      "cursor_after": {
+        "consumed_bits": 544,
+        "remaining_bits": 0
+      },
+      "return_status": 1,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "prefix_69",
+      "supplied_bytes": 69,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 1,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 552
+      },
+      "alignment_before": {
+        "consumed_bits": 546,
+        "remaining_bits": 6
+      },
+      "alignment_after": {
+        "consumed_bits": 552,
+        "remaining_bits": 0
+      },
+      "alignment_status": 0,
+      "nested_status": 0,
+      "cursor_after": {
+        "consumed_bits": 552,
+        "remaining_bits": 0
+      },
+      "return_status": 0,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "trailing_zero",
+      "supplied_bytes": 70,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 1,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 560
+      },
+      "alignment_before": {
+        "consumed_bits": 546,
+        "remaining_bits": 14
+      },
+      "alignment_after": {
+        "consumed_bits": 552,
+        "remaining_bits": 8
+      },
+      "alignment_status": 0,
+      "nested_status": 0,
+      "cursor_after": {
+        "consumed_bits": 552,
+        "remaining_bits": 8
+      },
+      "return_status": 0,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    },
+    {
+      "name": "trailing_ff",
+      "supplied_bytes": 70,
+      "constructor_objects": 16,
+      "constructor_frames": 8,
+      "owner_extent_bytes": 8192,
+      "reset_calls": 1,
+      "cursor_before": {
+        "consumed_bits": 0,
+        "remaining_bits": 560
+      },
+      "alignment_before": {
+        "consumed_bits": 546,
+        "remaining_bits": 14
+      },
+      "alignment_after": {
+        "consumed_bits": 552,
+        "remaining_bits": 8
+      },
+      "alignment_status": 0,
+      "nested_status": 0,
+      "cursor_after": {
+        "consumed_bits": 552,
+        "remaining_bits": 8
+      },
+      "return_status": 0,
+      "owner_equals_cold": false,
+      "guard_unchanged": true,
+      "input_unchanged": true
+    }
+  ],
+  "allocation_difference_limit": "Only same-allocation cold equality was observed; pointer-bearing storage is not serialized. No parent transaction or semantic field rollback is inferred."
+}

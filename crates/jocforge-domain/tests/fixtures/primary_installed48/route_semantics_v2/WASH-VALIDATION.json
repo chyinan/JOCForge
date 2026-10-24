@@ -1,0 +1,10 @@
+{
+  "schema": "washed-primary-route-semantics-validation.v2",
+  "source22_width_ge_threshold": true,
+  "variant44_active_z_zero": true,
+  "variant44_field44_zero": true,
+  "variant45_quiet_field44_preserved": true,
+  "variant45_quiet_z_preserved": true,
+  "mismatches": 0,
+  "native_primary_acceptance": "NOT_RUN"
+}

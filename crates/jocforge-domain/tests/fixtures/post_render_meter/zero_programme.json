@@ -1,0 +1,37 @@
+{
+  "schema": "post-render-meter-zero-programme-input.v1",
+  "scope": "SYNTHETIC_TYPED_OAR_PACKET_TO_NUMERIC_METER_LEAVES",
+  "source_samples": 1,
+  "sample_rate_hz": 48000,
+  "normal_callbacks": 1,
+  "zero_input_drains": 3,
+  "oar_packet": {
+    "source_count": 16,
+    "samples_per_source": 1536,
+    "pcm_f32_word": 0,
+    "direct_control_words": [0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    "object_control_words": [0, 0, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+  },
+  "k_matrix": {
+    "sample_rate_hz": 48000,
+    "mode": "Modern",
+    "stages": 2
+  },
+  "expected_lifecycle": {
+    "callbacks": 4,
+    "shared_gain_delay_callbacks": 4,
+    "published_samples_per_lane": 1536,
+    "complete_1024_blocks": 1,
+    "raw_pending_samples_per_lane": 512,
+    "energy_records": 1,
+    "energy_window_partial_samples": 64,
+    "integrated_energy_pair_count": 1
+  },
+  "not_claimed": [
+    "independent ADM frontend",
+    "real OAR packet producer",
+    "whole meter terminal root",
+    "MeasurementReceipt",
+    "real programme validation"
+  ]
+}

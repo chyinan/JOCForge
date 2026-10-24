@@ -1,0 +1,1014 @@
+{
+  "source_vector_sha256": "493eb904467d22f9ca6dc50b86bf05bcd9f6643f16fa352766cac26d15e156eb",
+  "object_rows": [
+    {
+      "physical_host": 10,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        0,
+        1064111702,
+        0,
+        0,
+        1036831950,
+        1,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 10,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": -1.0,
+        "y": -0.852,
+        "z": 0.0,
+        "width": 0.1,
+        "diffuse": 1,
+        "dbmd_track": {
+          "host_channel_index": 10,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 11,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1065353216,
+        1064120092,
+        0,
+        0,
+        1036831950,
+        1,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 11,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": 1.0,
+        "y": -0.853,
+        "z": 0.0,
+        "width": 0.1,
+        "diffuse": 1,
+        "dbmd_track": {
+          "host_channel_index": 11,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 12,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1024374396,
+        1061259911,
+        1036831949,
+        0,
+        1045220558,
+        1,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 12,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": -0.930316,
+        "y": -0.51204,
+        "z": 0.1,
+        "width": 0.2,
+        "diffuse": 1,
+        "dbmd_track": {
+          "host_channel_index": 12,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 13,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1064768664,
+        1061259919,
+        1036831949,
+        0,
+        1045220558,
+        1,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 13,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": 0.930316,
+        "y": -0.512041,
+        "z": 0.1,
+        "width": 0.2,
+        "diffuse": 1,
+        "dbmd_track": {
+          "host_channel_index": 13,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 14,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        0,
+        1045797124,
+        0,
+        0,
+        1044549468,
+        1,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 14,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": -1.0,
+        "y": 0.582817,
+        "z": 0.0,
+        "width": 0.19,
+        "diffuse": 1,
+        "dbmd_track": {
+          "host_channel_index": 14,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 15,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1065353216,
+        1045797088,
+        0,
+        0,
+        1044549468,
+        1,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 15,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": 1.0,
+        "y": 0.582818,
+        "z": 0.0,
+        "width": 0.19,
+        "diffuse": 1,
+        "dbmd_track": {
+          "host_channel_index": 15,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 16,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        0,
+        1036563513,
+        1036831949,
+        0,
+        1036831950,
+        1,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 16,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": -1.0,
+        "y": 0.804,
+        "z": 0.1,
+        "width": 0.1,
+        "diffuse": 1,
+        "dbmd_track": {
+          "host_channel_index": 16,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 17,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1065353216,
+        1036563513,
+        1036831949,
+        0,
+        1036831950,
+        1,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 17,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": 1.0,
+        "y": 0.804,
+        "z": 0.1,
+        "width": 0.1,
+        "diffuse": 1,
+        "dbmd_track": {
+          "host_channel_index": 17,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 18,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        0,
+        1035959534,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 18,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": -1.0,
+        "y": 0.813,
+        "z": 0.0,
+        "width": 0.0,
+        "diffuse": 0,
+        "dbmd_track": {
+          "host_channel_index": 18,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 19,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1065353216,
+        1035221336,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 19,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": 1.0,
+        "y": 0.824,
+        "z": 0.0,
+        "width": 0.0,
+        "diffuse": 0,
+        "dbmd_track": {
+          "host_channel_index": 19,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 20,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1053794738,
+        1058233100,
+        0,
+        0,
+        1047233823,
+        1,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 20,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": -0.188939,
+        "y": -0.151216,
+        "z": 0.0,
+        "width": 0.23,
+        "diffuse": 1,
+        "dbmd_track": {
+          "host_channel_index": 20,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 21,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1058549535,
+        1058233100,
+        0,
+        0,
+        1047233823,
+        1,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 21,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": 0.188938,
+        "y": -0.151216,
+        "z": 0.0,
+        "width": 0.23,
+        "diffuse": 1,
+        "dbmd_track": {
+          "host_channel_index": 21,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 22,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1035556880,
+        1054951342,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 22,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": -0.819,
+        "y": 0.12,
+        "z": 0.0,
+        "width": 0.0,
+        "diffuse": 0,
+        "dbmd_track": {
+          "host_channel_index": 22,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 23,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1063851656,
+        1054934564,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 23,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": 0.821,
+        "y": 0.121,
+        "z": 0.0,
+        "width": 0.0,
+        "diffuse": 0,
+        "dbmd_track": {
+          "host_channel_index": 23,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 24,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1045790982,
+        1051679785,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 24,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": -0.583,
+        "y": 0.315,
+        "z": 0.0,
+        "width": 0.0,
+        "diffuse": 0,
+        "dbmd_track": {
+          "host_channel_index": 24,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 25,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1060781425,
+        1052132770,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 25,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": 0.455,
+        "y": 0.288,
+        "z": 0.0,
+        "width": 0.0,
+        "diffuse": 0,
+        "dbmd_track": {
+          "host_channel_index": 25,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 26,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1011261860,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 26,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": -0.975753,
+        "y": 1.0,
+        "z": 0.0,
+        "width": 0.0,
+        "diffuse": 0,
+        "dbmd_track": {
+          "host_channel_index": 26,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 27,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1065149809,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 27,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": 0.975752,
+        "y": 1.0,
+        "z": 0.0,
+        "width": 0.0,
+        "diffuse": 0,
+        "dbmd_track": {
+          "host_channel_index": 27,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 28,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1011261860,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 28,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": -0.975753,
+        "y": 1.0,
+        "z": 0.0,
+        "width": 0.0,
+        "diffuse": 0,
+        "dbmd_track": {
+          "host_channel_index": 28,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 29,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1065149809,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 29,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": 0.975752,
+        "y": 1.0,
+        "z": 0.0,
+        "width": 0.0,
+        "diffuse": 0,
+        "dbmd_track": {
+          "host_channel_index": 29,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 30,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1033822049,
+        1051695891,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 30,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": -0.844851,
+        "y": 0.31404,
+        "z": 0.0,
+        "width": 0.0,
+        "diffuse": 0,
+        "dbmd_track": {
+          "host_channel_index": 30,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 31,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1064051732,
+        1051695891,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 31,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": 0.844851,
+        "y": 0.31404,
+        "z": 0.0,
+        "width": 0.0,
+        "diffuse": 0,
+        "dbmd_track": {
+          "host_channel_index": 31,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 32,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1011261860,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 32,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": -0.975753,
+        "y": 1.0,
+        "z": 0.0,
+        "width": 0.0,
+        "diffuse": 0,
+        "dbmd_track": {
+          "host_channel_index": 32,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 33,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1065149809,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 33,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": 0.975752,
+        "y": 1.0,
+        "z": 0.0,
+        "width": 0.0,
+        "diffuse": 0,
+        "dbmd_track": {
+          "host_channel_index": 33,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 34,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1011261860,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 34,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": -0.975753,
+        "y": 1.0,
+        "z": 0.0,
+        "width": 0.0,
+        "diffuse": 0,
+        "dbmd_track": {
+          "host_channel_index": 34,
+          "enum48": 1,
+          "enum52": 0,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 64
+        }
+      }
+    },
+    {
+      "physical_host": 35,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1065149809,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 35,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": 0.975752,
+        "y": 1.0,
+        "z": 0.0,
+        "width": 0.0,
+        "diffuse": 0,
+        "dbmd_track": {
+          "host_channel_index": 35,
+          "enum48": 1,
+          "enum52": 0,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 64
+        }
+      }
+    },
+    {
+      "physical_host": 36,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1011261860,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 36,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": -0.975753,
+        "y": 1.0,
+        "z": 0.0,
+        "width": 0.0,
+        "diffuse": 0,
+        "dbmd_track": {
+          "host_channel_index": 36,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    },
+    {
+      "physical_host": 37,
+      "expected_control_words": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1065149809,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "normalized_input": {
+        "host_channel_index": 37,
+        "start_sample": 0,
+        "duration_samples": 6522906,
+        "x": 0.975752,
+        "y": 1.0,
+        "z": 0.0,
+        "width": 0.0,
+        "diffuse": 0,
+        "dbmd_track": {
+          "host_channel_index": 37,
+          "enum48": 1,
+          "enum52": -1,
+          "flag64": 0,
+          "raw_flag_low2": 0,
+          "raw_packed": 68
+        }
+      }
+    }
+  ],
+  "role": "Expected data loaded only after independent production; never producer input."
+}

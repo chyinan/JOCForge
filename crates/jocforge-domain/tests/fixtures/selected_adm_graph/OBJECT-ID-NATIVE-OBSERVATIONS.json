@@ -1,0 +1,157 @@
+{
+  "cases": [
+    {
+      "event": "private_object_id_parser",
+      "input_text": "AO_1001",
+      "return_u8": 1,
+      "output_before": 3435973836,
+      "output_after": 0,
+      "input_string_after": "",
+      "input_length_after": 0
+    },
+    {
+      "event": "private_object_id_parser",
+      "input_text": "AO_1002",
+      "return_u8": 1,
+      "output_before": 3435973836,
+      "output_after": 1,
+      "input_string_after": "",
+      "input_length_after": 0
+    },
+    {
+      "event": "private_object_id_parser",
+      "input_text": "AO_1000",
+      "return_u8": 0,
+      "output_before": 3435973836,
+      "output_after": 3435973836,
+      "input_string_after": "",
+      "input_length_after": 0
+    },
+    {
+      "event": "private_object_id_parser",
+      "input_text": "AO_1001TAIL",
+      "return_u8": 1,
+      "output_before": 3435973836,
+      "output_after": 0,
+      "input_string_after": "",
+      "input_length_after": 0
+    },
+    {
+      "event": "private_object_id_parser",
+      "input_text": "AO_10010",
+      "return_u8": 1,
+      "output_before": 3435973836,
+      "output_after": 0,
+      "input_string_after": "",
+      "input_length_after": 0
+    },
+    {
+      "event": "private_object_id_parser",
+      "input_text": "AO_100",
+      "return_u8": 0,
+      "output_before": 3435973836,
+      "output_after": 3435973836,
+      "input_string_after": "",
+      "input_length_after": 0
+    },
+    {
+      "event": "private_object_id_parser",
+      "input_text": "ao_1001",
+      "return_u8": 0,
+      "output_before": 3435973836,
+      "output_after": 3435973836,
+      "input_string_after": "",
+      "input_length_after": 0
+    },
+    {
+      "event": "private_object_id_parser",
+      "input_text": " AO_1001",
+      "return_u8": 0,
+      "output_before": 3435973836,
+      "output_after": 3435973836,
+      "input_string_after": "",
+      "input_length_after": 0
+    },
+    {
+      "event": "private_object_id_parser",
+      "input_text": "AO_0x1001",
+      "return_u8": 0,
+      "output_before": 3435973836,
+      "output_after": 3435973836,
+      "input_string_after": "",
+      "input_length_after": 0
+    },
+    {
+      "event": "private_object_id_parser",
+      "input_text": "AO_ffff",
+      "return_u8": 1,
+      "output_before": 3435973836,
+      "output_after": 61438,
+      "input_string_after": "",
+      "input_length_after": 0
+    },
+    {
+      "event": "private_object_id_parser",
+      "input_text": "AO_1001 ",
+      "return_u8": 1,
+      "output_before": 3435973836,
+      "output_after": 0,
+      "input_string_after": "",
+      "input_length_after": 0
+    },
+    {
+      "event": "private_object_id_parser",
+      "input_text": "AO_10aB",
+      "return_u8": 1,
+      "output_before": 3435973836,
+      "output_after": 170,
+      "input_string_after": "",
+      "input_length_after": 0
+    },
+    {
+      "event": "private_object_id_parser",
+      "input_text": "AO_10Ab",
+      "return_u8": 1,
+      "output_before": 3435973836,
+      "output_after": 170,
+      "input_string_after": "",
+      "input_length_after": 0
+    },
+    {
+      "event": "private_object_id_parser",
+      "input_text": "AO_g001",
+      "return_u8": 0,
+      "output_before": 3435973836,
+      "output_after": 3435973836,
+      "input_string_after": "",
+      "input_length_after": 0
+    },
+    {
+      "event": "private_object_id_parser",
+      "input_text": "AO_100g",
+      "return_u8": 0,
+      "output_before": 3435973836,
+      "output_after": 3435973836,
+      "input_string_after": "",
+      "input_length_after": 0
+    },
+    {
+      "event": "private_object_id_parser",
+      "input_text": "AO_ 1001",
+      "return_u8": 1,
+      "output_before": 3435973836,
+      "output_after": 0,
+      "input_string_after": "",
+      "input_length_after": 0
+    },
+    {
+      "event": "private_object_id_parser",
+      "input_text": "AO_1001",
+      "return_u8": 1,
+      "output_before": 3435973836,
+      "output_after": 0,
+      "input_string_after": "",
+      "input_length_after": 0
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "file": "test-vectors/full-song/input-adm.wav",
+    "bytes": 743696526,
+    "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "fresh_verification": "PASS",
+    "role": "validation_only",
+    "authorization": "user_explicit_2026-10-12"
+  },
+  {
+    "file": "test-vectors/full-song/expected.ec3",
+    "bytes": 17395712,
+    "sha256": "34d18a6fb0f477cbccd0b7d633a80b4191c0c535385ff66b8d9cbf7ff1440448",
+    "fresh_verification": "PASS",
+    "role": "validation_only",
+    "authorization": "user_explicit_2026-10-12"
+  }
+]

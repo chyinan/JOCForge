@@ -1,0 +1,49 @@
+{
+  "schema": "selected-job-functional-field-projection.v1",
+  "input": {
+    "kind": "atmos_mezz",
+    "version": "1",
+    "file_name": "\u4eba\u662f\u732b - \u5f20\u5361\u65af, \u6d1b\u5929\u4f9d.wav",
+    "source_root": "D:/",
+    "timecode_frame_rate": "not_indicated",
+    "offset": "auto",
+    "ffoa": "auto"
+  },
+  "encode": {
+    "version": "1",
+    "data_rate_kbps": 1024,
+    "loudness": {
+      "mode": "measure_only",
+      "metering_mode": "1770-4",
+      "dialogue_intelligence": "false",
+      "speech_threshold": 100
+    },
+    "timecode_frame_rate": "not_indicated",
+    "time_controls": {
+      "start": "",
+      "end": "",
+      "time_base": "file_position",
+      "prepend_silence_duration": "0.0",
+      "append_silence_duration": "0.0"
+    },
+    "drc": {
+      "line_mode_drc_profile": "none",
+      "rf_mode_drc_profile": "none"
+    },
+    "downmix": {
+      "loro_center_mix_level": "-3",
+      "loro_surround_mix_level": "-3",
+      "ltrt_center_mix_level": "-3",
+      "ltrt_surround_mix_level": "-3",
+      "preferred_downmix_mode": "loro"
+    },
+    "custom_trims": {
+      "surround_trim_5_1": "auto",
+      "height_trim_5_1": "auto"
+    }
+  },
+  "output": {
+    "kind": "ec3",
+    "version": "1"
+  }
+}

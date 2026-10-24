@@ -321,6 +321,27 @@ impl IntegrityCallResult {
     }
 }
 
+#[must_use]
+#[derive(Debug, Eq, PartialEq)]
+pub struct IntegritySourceProposal {
+    after_owner: IntegrityProgrammeOwner,
+    result: IntegrityCallResult,
+}
+
+impl IntegritySourceProposal {
+    pub const fn after_state(&self) -> &IntegrityState {
+        &self.after_owner.state
+    }
+
+    pub const fn result(&self) -> &IntegrityCallResult {
+        &self.result
+    }
+
+    pub fn into_parts(self) -> (IntegrityProgrammeOwner, IntegrityCallResult) {
+        (self.after_owner, self.result)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq)]
 pub struct IntegrityProgrammeOwner {
     state: IntegrityState,
@@ -364,7 +385,52 @@ impl IntegrityProgrammeOwner {
         input: IntegrityInput<'_>,
         provider_json: &[u8],
     ) -> Result<IntegrityCallResult, IntegrityError> {
-        self.process_with_stage_observer(input, provider_json, |_| false)
+        if self.retired {
+            return Err(IntegrityError::new(IntegrityErrorCode::AttemptRetired));
+        }
+        let result = self.stage_source(input, provider_json);
+        match result {
+            Ok(proposal) => {
+                let (after_owner, result) = proposal.into_parts();
+                *self = after_owner;
+                Ok(result)
+            }
+            Err(error) => {
+                self.retired = true;
+                Err(error)
+            }
+        }
+    }
+
+    /// Stages SOURCE, DISPATCH and AU without replacing or retiring this owner.
+    pub fn stage_source(
+        &self,
+        input: IntegrityInput<'_>,
+        provider_json: &[u8],
+    ) -> Result<IntegritySourceProposal, IntegrityError> {
+        if self.retired {
+            return Err(IntegrityError::new(IntegrityErrorCode::AttemptRetired));
+        }
+        if self.state.finalized {
+            return Err(IntegrityError::new(IntegrityErrorCode::AlreadyFinalized));
+        }
+        let before_sha256 = self.state.sha256();
+        let (result, next_state) =
+            self.stage_call(input, provider_json, before_sha256, &mut |_| false)?;
+        Ok(IntegritySourceProposal {
+            after_owner: self.with_state(next_state),
+            result,
+        })
+    }
+
+    fn with_state(&self, state: IntegrityState) -> Self {
+        Self {
+            state,
+            programme_id: self.programme_id.clone(),
+            attempt: self.attempt,
+            expected_source_count: self.expected_source_count,
+            retired: self.retired,
+        }
     }
 
     /// EOF commits only the finalized flag and generation after the exact source count is reached.
@@ -429,6 +495,7 @@ impl IntegrityProgrammeOwner {
         self.process_with_stage_observer(input, provider_json, |current| current == stage)
     }
 
+    #[cfg(test)]
     fn process_with_stage_observer<F>(
         &mut self,
         input: IntegrityInput<'_>,

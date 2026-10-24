@@ -1,0 +1,52 @@
+{
+  "schema": "washed-primary-activity-validation.v1",
+  "scope": "primary selected 38-channel PCM24/48 kHz source mapping and activity flags; selected 11-point membership contract vectors",
+  "independent_wash_checks": {
+    "r2_manifest_payloads": "38/38 size and SHA-256 matched",
+    "r2_seal_file_set": "41/41 expected files; no extra or missing files after cache cleanup",
+    "r2_envelope_bindings": "all matched",
+    "r1_immutable_manifest_sha256": "9ae377599d28d509172d160902e322a79b39c084ec1b771f2645a76bbada1b31",
+    "membership_normal_and_optimized": {
+      "primitive_f32_words": 163832,
+      "gain_cases": 9,
+      "gain_f32_words": 1764,
+      "threshold_rejections": 3,
+      "mismatches": 0
+    },
+    "primary_validation_copy_normal_and_optimized": {
+      "callbacks": 4251,
+      "sources": 48,
+      "transitions": 5695,
+      "postroute_variants": 71,
+      "independent_activity_mismatches": 0,
+      "spread_gain_mismatches": 0,
+      "flag_stream_sha256": "26090b9fb8c0feba23c323bac29474308229ba7834d976cba16fab7a5bbd5d94"
+    },
+    "primary_wave_normal_and_optimized": {
+      "callbacks": 4251,
+      "sources": 48,
+      "transitions": 5695,
+      "postroute_variants": 71,
+      "independent_activity_mismatches": 0,
+      "spread_gain_mismatches": 0,
+      "flag_stream_sha256": "26090b9fb8c0feba23c323bac29474308229ba7834d976cba16fab7a5bbd5d94"
+    },
+    "selected_p11": {
+      "words_matched": 33,
+      "serialized_bytes": 132,
+      "sha256": "ea7577cf5fa0bce6ab76aeb81447c452cbac498fa79bd039a11149d970d7de68"
+    },
+    "pcm_persistence_or_hash": "0 bytes persisted; full PCM hash not computed"
+  },
+  "source_side_reported_only": {
+    "critical_mutations": "8/8 rejected in normal and optimized runs, with integrity hashes recomputed; not re-executed independently by Wash"
+  },
+  "limits": {
+    "primary_membership_native_validation": "NOT_ESTABLISHED",
+    "native_primary_acceptance": "NOT_RUN",
+    "native_encode": "NOT_RUN",
+    "audio_listening_acceptance": "NOT_RUN",
+    "primary_full_pcm_identity": "NOT_REHASHED",
+    "private_vendor_key": "EXCLUDED"
+  }
+}

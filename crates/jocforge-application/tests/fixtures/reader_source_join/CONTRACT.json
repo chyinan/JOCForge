@@ -1,0 +1,27 @@
+{
+  "schema": "selected-reader-source-join-contract-v1",
+  "status": "CLOSED_FOR_SELECTED_CAPTURE",
+  "scope": {
+    "selected_item_index": 0,
+    "source_channels": 38,
+    "source_sample_rate_hz": 48000,
+    "selected_item_start_sample": 2880000,
+    "selected_item_end_sample": 2886000,
+    "selected_item_duration_samples": 6000,
+    "frame_samples": 1536,
+    "encoder_input_calls": 4
+  },
+  "claim": "For this selected capture, all 38 external API control records in each of four input packets carry the selected-segment-relative position equal to the selected reader cursor before that frame. CompositeMaster item start/end are 2880000/2886000 source sample coordinates. The final read returns 1392 actual samples for a 1536-sample request while the packet reports 1536 samples.",
+  "time_domains": {
+    "control_position": "selected-segment-relative sample position; equals reader cursor_before in this capture",
+    "reader_cursor": "selected-segment-relative sample count",
+    "composite_item_start_end": "source file-position sample coordinates passed to the selected CompositeMaster",
+    "derived_source_sample_start": "selected item start plus reader cursor_before; derived, not a separately emitted API field"
+  },
+  "limitations": [
+    "One selected source/job only; no general claim for multi-item edits, seek, resampling, other rates, concurrency, or malformed inputs.",
+    "No PCM values or PCM content hashes were read or retained.",
+    "The final returned packet is 1536 samples while the underlying reader returns 1392 actual samples; packet padding contents were not inspected.",
+    "The selected-item constructor output and CompositeMaster descriptor are joined by selection index and exact field equality, not a proven pointer alias."
+  ]
+}

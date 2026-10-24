@@ -1,0 +1,37 @@
+{
+  "schema": "independent-meter-lfe-delay-local-mapping.v1",
+  "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_spec": {
+    "file": "specs/06-oar-frontend-input-and-clock-join.md",
+    "bytes": 9427,
+    "sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423"
+  },
+  "source_vector": {
+    "file": "test-vectors/OAR-FRONTEND-CLOCK-JOIN-VERIFICATION.json",
+    "bytes": 466502,
+    "sha256": "d4800930c462693720527ed4aab1e0fb973bfa0751cb45bf9d332da72d5a06ad",
+    "input_pointer": "/lfe_ring_cases[*]/g,input_constant_f32"
+  },
+  "local_fixture": {
+    "file": "crates/jocforge-domain/tests/fixtures/meter_frontend_oar/lfe_delay_inputs.json",
+    "bytes": 922,
+    "sha256": "8e940cef901862086fb858e940cd74faf6f091693bfb7917037584b861bea2f7"
+  },
+  "verified_scope": {
+    "ring_slots": 3,
+    "delay_samples": 3072,
+    "frame_samples": 1536,
+    "ring_input_cases": 7,
+    "normal_callbacks": 4,
+    "zero_input_drains": 3,
+    "first_two_outputs": "allocated positive zero frames with no origin",
+    "later_outputs": "full frame and callback origin from g-2",
+    "oar_packet_generation": "g+1"
+  },
+  "production_boundary": {
+    "current_lfe_frame_producer": "NOT_IMPLEMENTED",
+    "regular_scp_and_control_producer": "NOT_IMPLEMENTED",
+    "complete_independent_meter_frontend": "NOT_IMPLEMENTED",
+    "ring_commit_authority": "PARENT_PROPOSAL_ONLY"
+  }
+}

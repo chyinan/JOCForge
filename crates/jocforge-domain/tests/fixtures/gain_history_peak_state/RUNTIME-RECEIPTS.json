@@ -1,0 +1,39 @@
+{
+  "schema": "gain-history-runtime-batches.v1",
+  "ordinary_batch": {
+    "recipe_count": 8,
+    "reuse_case_count": 3,
+    "receipt_sha256": "a32ae222bdf52fab7dbcb71c5dd95622aee13d98857306e29466ab1132ae12a5",
+    "vectors_sha256": "a18527d1b6600781eb097344b28faaebe6a89ee825e3316987f7b280f1ba8009",
+    "preserved_and_crosschecked": true
+  },
+  "aligned_boundary_batch": {
+    "recipe_count": 13,
+    "reuse_case_count": 3,
+    "receipt_sha256": "9b75ba5050f499072f83697c1b9a06faeaeba3fee1569d062ff86be8c5da1b51",
+    "preserved_and_crosschecked": true
+  },
+  "current_batch": {
+    "recipe_count": 17,
+    "reuse_case_count": 3,
+    "observer_case_capture_count": 20,
+    "native_call_counts": {
+      "peak": 648,
+      "gain": 540,
+      "reuse": 3,
+      "stats_init": 17
+    },
+    "receipt_sha256": "36f523f9a67835041d0cf8647b025ae7b36630a46a547e091d54318a9cfcd016",
+    "all_case_statuses": "CAPTURED",
+    "reference_ec3_sha256": "5ee3c8a39ba421fae56bdc7d77103909644bb419a6b7f87b3f31205a2e8d0987"
+  },
+  "excluded_failed_probe": {
+    "receipt_sha256": "9d46f879c364923c375084c24c4eb5745c6168f34bd77ce42d6027c3dd0a8d85",
+    "observer_capture_count": 0,
+    "reference_ec3_bytes": 0,
+    "grade": "NOT_CAPTURED_NOT_NUMERIC_EVIDENCE",
+    "note": "Frida control-register probe attempt failed before usable capture; no values from it enter this package."
+  },
+  "module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "module_identity": "Hash inside target of actual loaded module path file bytes; host reference file rehash matches."
+}

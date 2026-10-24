@@ -1,0 +1,21 @@
+{
+  "schema": "normalization-recipe-definition.v1",
+  "recipe_origin": "Existing explicit recipe generator in research/wash preparation source; these are authored test inputs, not recovered natural audio/exponent producers.",
+  "length": 217,
+  "index_domain": "i is zero-based integer 0 through 216 inclusive. Index applies to entire raw row before removing base bin.",
+  "mod25": "raw[i]=(i*7+3)%25",
+  "zigzag24": "q=floor(i/25); t=i%25; raw[i]=t if q%2==0 else 24-t",
+  "base_bin": "raw[0] is part of formula, no override: mod25 base=3, zigzag24 base=0.",
+  "storage": "217 contiguous signed I16 words, little-endian, stride 2 bytes; 434 bytes total.",
+  "arithmetic": "Exact nonnegative integer multiply then add then remainder; zigzag quotient/remainder then parity then subtraction. No floating point or rounding. For mod25 selected i*7+3 <=1515, no I16/I32 overflow. All outputs in 0..24.",
+  "phase": "Both formulas reset index to zero at each row; no block offset, external level, implicit phase or prefix padding.",
+  "normalization_input_partition": "Base raw[0] is separate scalar; groups consume raw[1..216], spans2 and4, counts108 and54. No tail padding needed in either case.",
+  "native_scope": "Two controlled private-owner calls; ordinary full-band branch, option/gate from INPUTS. Source arrays and scratch are private allocations. Live business input untouched.",
+  "native_return": "Low I16 return register is diagnostic only; not interpreted as a success/error contract. Output comparisons establish these two numeric cases.",
+  "not_closed": [
+    "Natural exponent producer lineage",
+    "All F10 inputs/profiles",
+    "Normalization factor general provider/initialization",
+    "reset/EOF/rollback"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "lfe-transform-to-raw-check.v1",
+  "package": "LFE-TRANSFORM-TO-RAW",
+  "manifest_sha256": "96b7b6b5b4d76f4967daa09d3817fcac789a22fba362c505fe915d1aee29f5ca",
+  "payload_count": 5,
+  "payload_hashes_match": true,
+  "upstream_manifest_check_and_payloads_match": true,
+  "module_file_identity_runtime_bound": true,
+  "recipes": 3,
+  "calls": 6,
+  "independent_fold_values": 3072,
+  "independent_pre_values": 3072,
+  "independent_low_fft_values": 192,
+  "independent_coefficients": 84,
+  "independent_history_values": 1536,
+  "independent_raw_lfe_values": 42,
+  "formula_replay": "PASS all values",
+  "wrapper_explicit_stage_values": 84,
+  "natural_same_generation_consumer_joins": 36,
+  "independent_product_audio_integration": "NOT_RUN",
+  "whole_f09_closed": false
+}

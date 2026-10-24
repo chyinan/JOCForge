@@ -1,0 +1,18 @@
+{
+  "slice": "COEFFICIENT-TO-POWER-ROW",
+  "package_manifest_sha256": "4af64c87e7a40c3990075a3aa07d052ea0178c99ef1f1264847dfeaa7265c2d8",
+  "independent_check_sha256": "ddcf281cb1edc3d805bd65aec282403fe962412a49eaf0311c1eac19d06ecd66",
+  "source_wash_manifest_sha256": "41048ac8e86f390553d657a8e333d244fdee13889dbc43be29456310fe8c04ea",
+  "validated_payloads": {
+    "CONTRACT.md": "09d881feb584fc061009933374f61d9a38271970846680f524cfe110b85ac976",
+    "INPUTS.json": "76bfff2673c035a5a2c360fb0b2de146f7a0141d6cf7d44c5313c92696c03bdc",
+    "EXPECTED.json": "0c0516b60fb3b1cab23856ca8c3d5fdf16d93c1f492b1c0c618008288796345c",
+    "PARAMETERS.json": "8593cc226ea381634e14f16a26e536274a16a744ad6d8dc1c7f0b32586c5ad1f",
+    "PROVENANCE.json": "027eafa3606a322352fb92488bdf89d68dab01a5729bfa9037a5df0b5d7790ac"
+  },
+  "scope": "finite 253-bin coefficient pair to POWER row; selected 1x1 and 2x2 wrappers only",
+  "implementation_status": "LOCAL_SLICE_IMPLEMENTED_WHOLE_F09_DEFERRED",
+  "independent_product_audio_integration": "NOT_RUN",
+  "whole_f09_closed": false,
+  "whole_implementation_ready": "NO"
+}

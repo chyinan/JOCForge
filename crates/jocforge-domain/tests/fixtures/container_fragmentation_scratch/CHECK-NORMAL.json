@@ -1,0 +1,11 @@
+{
+  "scope": "CONTROL_LENGTH_AND_SCOPED_STATE_EFFECTS_NOT_CRYPTOGRAPHIC_OUTPUT_REPRODUCTION",
+  "parent_cases": 16,
+  "raw_reservation_cases": 2,
+  "mismatches": [],
+  "expected_loaded_after_computation": true,
+  "authentication_values_computed_or_loaded_by_checker": false,
+  "native_fragment_equality_receipts_checked": true,
+  "fragment_content_independently_reproduced": false,
+  "outer_codec_or_durable_publication_replayed": false
+}

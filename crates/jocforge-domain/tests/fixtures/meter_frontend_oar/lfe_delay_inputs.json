@@ -1,0 +1,21 @@
+{
+  "schema": "meter-front-end-lfe-delay-inputs.v1",
+  "classification": "SYNTHETIC_INPUT_RECIPE",
+  "source_vector": {
+    "file": "test-vectors/OAR-FRONTEND-CLOCK-JOIN-VERIFICATION.json",
+    "bytes": 466502,
+    "sha256": "d4800930c462693720527ed4aab1e0fb973bfa0751cb45bf9d332da72d5a06ad"
+  },
+  "source_samples": 4625,
+  "normal_callbacks": 4,
+  "zero_input_drains": 3,
+  "input_frames": [
+    {"callback_index": 0, "phase": "NORMAL", "constant_f32_word": 1065353216},
+    {"callback_index": 1, "phase": "NORMAL", "constant_f32_word": 1073741824},
+    {"callback_index": 2, "phase": "NORMAL", "constant_f32_word": 1077936128},
+    {"callback_index": 3, "phase": "NORMAL", "constant_f32_word": 1082130432},
+    {"callback_index": 4, "phase": "DRAIN", "constant_f32_word": 0},
+    {"callback_index": 5, "phase": "DRAIN", "constant_f32_word": 0},
+    {"callback_index": 6, "phase": "DRAIN", "constant_f32_word": 0}
+  ]
+}

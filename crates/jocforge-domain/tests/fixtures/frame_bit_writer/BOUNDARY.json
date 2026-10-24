@@ -1,0 +1,24 @@
+{
+  "schema": "selected-frame-bit-writer-boundary.v1",
+  "cases": [
+    {
+      "id": "unaligned_fields",
+      "initial_hex": "a5a5a5a5",
+      "start_bit": 3,
+      "field_value": 22,
+      "field_width": 5,
+      "bytes_hex": "c3",
+      "expected_hex": "b6c3a5a5",
+      "end_bit": 16
+    },
+    {
+      "id": "capacity_rejection",
+      "initial_hex": "00",
+      "start_bit": 7,
+      "field_value": 3,
+      "field_width": 2,
+      "expected_error": "BufferTooSmall",
+      "end_bit": 7
+    }
+  ]
+}

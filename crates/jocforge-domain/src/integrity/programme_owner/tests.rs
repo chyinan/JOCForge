@@ -352,6 +352,29 @@ fn five_continuous_calls_match_receipts_frames_and_state_transitions() {
 }
 
 #[test]
+fn production_stage_returns_owned_after_without_mutating_the_committed_owner() {
+    let v = vectors();
+    let provider = provider();
+    let owner = new_owner(0);
+    let before = owner.state.sha256();
+    let call = &v["continuous_calls"][0];
+    let input = TestInput::from_vector(&call["input"]);
+    let proposal = owner.stage_source(input.as_input(), &provider).unwrap();
+    assert_eq!(owner.state.sha256(), before);
+    assert_eq!(
+        proposal.after_state().sha256().to_hex(),
+        call["expected"]["after_sha256"]
+    );
+    assert_eq!(
+        sha256_hex(proposal.result().frame()),
+        call["expected"]["frame_sha256"]
+    );
+    let (after_owner, result) = proposal.into_parts();
+    assert_state(&after_owner.state, &call["expected"]["state"]);
+    assert_eq!(result.commit_count(), 1);
+}
+
+#[test]
 fn every_materialized_failure_retires_without_committing_or_publishing() {
     let v = vectors();
     let provider = provider();

@@ -1,0 +1,2829 @@
+{
+  "parent_cases": [
+    {
+      "event": "scratch_container_parent_case",
+      "invocation": 1,
+      "declared_payload_bytes": 411,
+      "payload_fill_u8": 90,
+      "history_present_before": 0,
+      "counting_return": 0,
+      "counted_full_container_bytes": 507,
+      "output_capacity_bytes": 507,
+      "provider_records": 0,
+      "provider_fixture": "EMPTY_PROVIDER_NEGATIVE_CONTROL",
+      "production_cold_equivalence": "NOT_ESTABLISHED_PUBLIC_TEST_PROVIDER_OR_EMPTY_PROVIDER_NOT_VENDOR_PROTECTION_IDENTITY",
+      "protection_lookup_calls": 1,
+      "authentication_initializer_calls": 0,
+      "vendor_default_initializer_calls": 0,
+      "capacity_bits": 4056,
+      "serializer_owner_identity_join": true,
+      "last_main_writer_cursor_bits": 4009,
+      "output_cursor_before_lookup": 4009,
+      "protection_lookup_status": 9,
+      "serializer_return": 9,
+      "child_output_descriptor_after": 507,
+      "output_cursor_after_serializer": 4009,
+      "parent_return": 7,
+      "published_output_bytes": 0,
+      "history_present_after": 0,
+      "held_header_present_after": 0,
+      "secondary_history_used_before": 0,
+      "secondary_history_used_after": "0",
+      "secondary_history_write_index_after": "0",
+      "secondary_history_read_index_after": "0",
+      "changed_owned_root_bytes": [
+        {
+          "root": "parent",
+          "bytes_changed": 0
+        },
+        {
+          "root": "serializer_owner",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_flags",
+          "bytes_changed": 0
+        },
+        {
+          "root": "held_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body",
+          "bytes_changed": 0
+        },
+        {
+          "root": "selection_scratch",
+          "bytes_changed": 4
+        },
+        {
+          "root": "protection_context",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_history",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "output",
+          "bytes_changed": 438
+        },
+        {
+          "root": "provider_record",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "caller_public_key",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "associated_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "published_length",
+          "bytes_changed": 4
+        },
+        {
+          "root": "descriptor_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_1",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_1",
+          "bytes_changed": 0
+        }
+      ],
+      "output_guard_unchanged": true,
+      "outer_codec_outcome": "NOT_RUN",
+      "durable_publication_gate": "NOT_RUN"
+    },
+    {
+      "event": "scratch_container_parent_case",
+      "invocation": 2,
+      "declared_payload_bytes": 411,
+      "payload_fill_u8": 90,
+      "history_present_before": 1,
+      "counting_return": 0,
+      "counted_full_container_bytes": 507,
+      "output_capacity_bytes": 507,
+      "provider_records": 0,
+      "provider_fixture": "EMPTY_PROVIDER_NEGATIVE_CONTROL",
+      "production_cold_equivalence": "NOT_ESTABLISHED_PUBLIC_TEST_PROVIDER_OR_EMPTY_PROVIDER_NOT_VENDOR_PROTECTION_IDENTITY",
+      "protection_lookup_calls": 1,
+      "authentication_initializer_calls": 0,
+      "vendor_default_initializer_calls": 0,
+      "capacity_bits": 4056,
+      "serializer_owner_identity_join": true,
+      "last_main_writer_cursor_bits": 4009,
+      "output_cursor_before_lookup": 4009,
+      "protection_lookup_status": 9,
+      "serializer_return": 9,
+      "child_output_descriptor_after": 507,
+      "output_cursor_after_serializer": 4009,
+      "parent_return": 7,
+      "published_output_bytes": 0,
+      "history_present_after": 0,
+      "held_header_present_after": 1,
+      "secondary_history_used_before": 0,
+      "secondary_history_used_after": "0",
+      "secondary_history_write_index_after": "0",
+      "secondary_history_read_index_after": "0",
+      "changed_owned_root_bytes": [
+        {
+          "root": "parent",
+          "bytes_changed": 1
+        },
+        {
+          "root": "serializer_owner",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_flags",
+          "bytes_changed": 1
+        },
+        {
+          "root": "held_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body",
+          "bytes_changed": 0
+        },
+        {
+          "root": "selection_scratch",
+          "bytes_changed": 4
+        },
+        {
+          "root": "protection_context",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_history",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "output",
+          "bytes_changed": 438
+        },
+        {
+          "root": "provider_record",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "caller_public_key",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "associated_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "published_length",
+          "bytes_changed": 4
+        },
+        {
+          "root": "descriptor_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_1",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_1",
+          "bytes_changed": 0
+        }
+      ],
+      "output_guard_unchanged": true,
+      "outer_codec_outcome": "NOT_RUN",
+      "durable_publication_gate": "NOT_RUN"
+    },
+    {
+      "event": "scratch_container_parent_case",
+      "invocation": 3,
+      "declared_payload_bytes": 412,
+      "payload_fill_u8": 90,
+      "history_present_before": 0,
+      "counting_return": 0,
+      "counted_full_container_bytes": 508,
+      "output_capacity_bytes": 508,
+      "provider_records": 0,
+      "provider_fixture": "EMPTY_PROVIDER_NEGATIVE_CONTROL",
+      "production_cold_equivalence": "NOT_ESTABLISHED_PUBLIC_TEST_PROVIDER_OR_EMPTY_PROVIDER_NOT_VENDOR_PROTECTION_IDENTITY",
+      "protection_lookup_calls": 1,
+      "authentication_initializer_calls": 0,
+      "vendor_default_initializer_calls": 0,
+      "capacity_bits": 4064,
+      "serializer_owner_identity_join": true,
+      "last_main_writer_cursor_bits": 4017,
+      "output_cursor_before_lookup": 4017,
+      "protection_lookup_status": 9,
+      "serializer_return": 9,
+      "child_output_descriptor_after": 508,
+      "output_cursor_after_serializer": 4017,
+      "parent_return": 7,
+      "published_output_bytes": 0,
+      "history_present_after": 0,
+      "held_header_present_after": 0,
+      "secondary_history_used_before": 0,
+      "secondary_history_used_after": "0",
+      "secondary_history_write_index_after": "0",
+      "secondary_history_read_index_after": "0",
+      "changed_owned_root_bytes": [
+        {
+          "root": "parent",
+          "bytes_changed": 0
+        },
+        {
+          "root": "serializer_owner",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_flags",
+          "bytes_changed": 0
+        },
+        {
+          "root": "held_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body",
+          "bytes_changed": 0
+        },
+        {
+          "root": "selection_scratch",
+          "bytes_changed": 4
+        },
+        {
+          "root": "protection_context",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_history",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "output",
+          "bytes_changed": 439
+        },
+        {
+          "root": "provider_record",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "caller_public_key",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "associated_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "published_length",
+          "bytes_changed": 4
+        },
+        {
+          "root": "descriptor_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_1",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_1",
+          "bytes_changed": 0
+        }
+      ],
+      "output_guard_unchanged": true,
+      "outer_codec_outcome": "NOT_RUN",
+      "durable_publication_gate": "NOT_RUN"
+    },
+    {
+      "event": "scratch_container_parent_case",
+      "invocation": 4,
+      "declared_payload_bytes": 412,
+      "payload_fill_u8": 90,
+      "history_present_before": 1,
+      "counting_return": 0,
+      "counted_full_container_bytes": 508,
+      "output_capacity_bytes": 508,
+      "provider_records": 0,
+      "provider_fixture": "EMPTY_PROVIDER_NEGATIVE_CONTROL",
+      "production_cold_equivalence": "NOT_ESTABLISHED_PUBLIC_TEST_PROVIDER_OR_EMPTY_PROVIDER_NOT_VENDOR_PROTECTION_IDENTITY",
+      "protection_lookup_calls": 1,
+      "authentication_initializer_calls": 0,
+      "vendor_default_initializer_calls": 0,
+      "capacity_bits": 4064,
+      "serializer_owner_identity_join": true,
+      "last_main_writer_cursor_bits": 4017,
+      "output_cursor_before_lookup": 4017,
+      "protection_lookup_status": 9,
+      "serializer_return": 9,
+      "child_output_descriptor_after": 508,
+      "output_cursor_after_serializer": 4017,
+      "parent_return": 7,
+      "published_output_bytes": 0,
+      "history_present_after": 0,
+      "held_header_present_after": 1,
+      "secondary_history_used_before": 0,
+      "secondary_history_used_after": "0",
+      "secondary_history_write_index_after": "0",
+      "secondary_history_read_index_after": "0",
+      "changed_owned_root_bytes": [
+        {
+          "root": "parent",
+          "bytes_changed": 1
+        },
+        {
+          "root": "serializer_owner",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_flags",
+          "bytes_changed": 1
+        },
+        {
+          "root": "held_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body",
+          "bytes_changed": 0
+        },
+        {
+          "root": "selection_scratch",
+          "bytes_changed": 4
+        },
+        {
+          "root": "protection_context",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_history",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "output",
+          "bytes_changed": 439
+        },
+        {
+          "root": "provider_record",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "caller_public_key",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "associated_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "published_length",
+          "bytes_changed": 4
+        },
+        {
+          "root": "descriptor_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_1",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_1",
+          "bytes_changed": 0
+        }
+      ],
+      "output_guard_unchanged": true,
+      "outer_codec_outcome": "NOT_RUN",
+      "durable_publication_gate": "NOT_RUN"
+    },
+    {
+      "event": "scratch_container_parent_case",
+      "invocation": 5,
+      "declared_payload_bytes": 415,
+      "payload_fill_u8": 90,
+      "history_present_before": 0,
+      "counting_return": 0,
+      "counted_full_container_bytes": 511,
+      "output_capacity_bytes": 511,
+      "provider_records": 0,
+      "provider_fixture": "EMPTY_PROVIDER_NEGATIVE_CONTROL",
+      "production_cold_equivalence": "NOT_ESTABLISHED_PUBLIC_TEST_PROVIDER_OR_EMPTY_PROVIDER_NOT_VENDOR_PROTECTION_IDENTITY",
+      "protection_lookup_calls": 1,
+      "authentication_initializer_calls": 0,
+      "vendor_default_initializer_calls": 0,
+      "capacity_bits": 4088,
+      "serializer_owner_identity_join": true,
+      "last_main_writer_cursor_bits": 4041,
+      "output_cursor_before_lookup": 4041,
+      "protection_lookup_status": 9,
+      "serializer_return": 9,
+      "child_output_descriptor_after": 511,
+      "output_cursor_after_serializer": 4041,
+      "parent_return": 7,
+      "published_output_bytes": 0,
+      "history_present_after": 0,
+      "held_header_present_after": 0,
+      "secondary_history_used_before": 0,
+      "secondary_history_used_after": "0",
+      "secondary_history_write_index_after": "0",
+      "secondary_history_read_index_after": "0",
+      "changed_owned_root_bytes": [
+        {
+          "root": "parent",
+          "bytes_changed": 0
+        },
+        {
+          "root": "serializer_owner",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_flags",
+          "bytes_changed": 0
+        },
+        {
+          "root": "held_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body",
+          "bytes_changed": 0
+        },
+        {
+          "root": "selection_scratch",
+          "bytes_changed": 4
+        },
+        {
+          "root": "protection_context",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_history",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "output",
+          "bytes_changed": 442
+        },
+        {
+          "root": "provider_record",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "caller_public_key",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "associated_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "published_length",
+          "bytes_changed": 4
+        },
+        {
+          "root": "descriptor_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_1",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_1",
+          "bytes_changed": 0
+        }
+      ],
+      "output_guard_unchanged": true,
+      "outer_codec_outcome": "NOT_RUN",
+      "durable_publication_gate": "NOT_RUN"
+    },
+    {
+      "event": "scratch_container_parent_case",
+      "invocation": 6,
+      "declared_payload_bytes": 415,
+      "payload_fill_u8": 90,
+      "history_present_before": 1,
+      "counting_return": 0,
+      "counted_full_container_bytes": 511,
+      "output_capacity_bytes": 511,
+      "provider_records": 0,
+      "provider_fixture": "EMPTY_PROVIDER_NEGATIVE_CONTROL",
+      "production_cold_equivalence": "NOT_ESTABLISHED_PUBLIC_TEST_PROVIDER_OR_EMPTY_PROVIDER_NOT_VENDOR_PROTECTION_IDENTITY",
+      "protection_lookup_calls": 1,
+      "authentication_initializer_calls": 0,
+      "vendor_default_initializer_calls": 0,
+      "capacity_bits": 4088,
+      "serializer_owner_identity_join": true,
+      "last_main_writer_cursor_bits": 4041,
+      "output_cursor_before_lookup": 4041,
+      "protection_lookup_status": 9,
+      "serializer_return": 9,
+      "child_output_descriptor_after": 511,
+      "output_cursor_after_serializer": 4041,
+      "parent_return": 7,
+      "published_output_bytes": 0,
+      "history_present_after": 0,
+      "held_header_present_after": 1,
+      "secondary_history_used_before": 0,
+      "secondary_history_used_after": "0",
+      "secondary_history_write_index_after": "0",
+      "secondary_history_read_index_after": "0",
+      "changed_owned_root_bytes": [
+        {
+          "root": "parent",
+          "bytes_changed": 1
+        },
+        {
+          "root": "serializer_owner",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_flags",
+          "bytes_changed": 1
+        },
+        {
+          "root": "held_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body",
+          "bytes_changed": 0
+        },
+        {
+          "root": "selection_scratch",
+          "bytes_changed": 4
+        },
+        {
+          "root": "protection_context",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_history",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "output",
+          "bytes_changed": 442
+        },
+        {
+          "root": "provider_record",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "caller_public_key",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "associated_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "published_length",
+          "bytes_changed": 4
+        },
+        {
+          "root": "descriptor_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_1",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_1",
+          "bytes_changed": 0
+        }
+      ],
+      "output_guard_unchanged": true,
+      "outer_codec_outcome": "NOT_RUN",
+      "durable_publication_gate": "NOT_RUN"
+    },
+    {
+      "event": "scratch_container_parent_case",
+      "invocation": 7,
+      "declared_payload_bytes": 416,
+      "payload_fill_u8": 90,
+      "history_present_before": 0,
+      "counting_return": 0,
+      "counted_full_container_bytes": 512,
+      "output_capacity_bytes": 512,
+      "provider_records": 0,
+      "provider_fixture": "EMPTY_PROVIDER_NEGATIVE_CONTROL",
+      "production_cold_equivalence": "NOT_ESTABLISHED_PUBLIC_TEST_PROVIDER_OR_EMPTY_PROVIDER_NOT_VENDOR_PROTECTION_IDENTITY",
+      "protection_lookup_calls": 1,
+      "authentication_initializer_calls": 0,
+      "vendor_default_initializer_calls": 0,
+      "capacity_bits": 4096,
+      "serializer_owner_identity_join": true,
+      "last_main_writer_cursor_bits": 4049,
+      "output_cursor_before_lookup": 4049,
+      "protection_lookup_status": 9,
+      "serializer_return": 9,
+      "child_output_descriptor_after": 512,
+      "output_cursor_after_serializer": 4049,
+      "parent_return": 7,
+      "published_output_bytes": 0,
+      "history_present_after": 0,
+      "held_header_present_after": 0,
+      "secondary_history_used_before": 0,
+      "secondary_history_used_after": "0",
+      "secondary_history_write_index_after": "0",
+      "secondary_history_read_index_after": "0",
+      "changed_owned_root_bytes": [
+        {
+          "root": "parent",
+          "bytes_changed": 0
+        },
+        {
+          "root": "serializer_owner",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_flags",
+          "bytes_changed": 0
+        },
+        {
+          "root": "held_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body",
+          "bytes_changed": 0
+        },
+        {
+          "root": "selection_scratch",
+          "bytes_changed": 4
+        },
+        {
+          "root": "protection_context",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_history",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "output",
+          "bytes_changed": 443
+        },
+        {
+          "root": "provider_record",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "caller_public_key",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "associated_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "published_length",
+          "bytes_changed": 4
+        },
+        {
+          "root": "descriptor_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_1",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_1",
+          "bytes_changed": 0
+        }
+      ],
+      "output_guard_unchanged": true,
+      "outer_codec_outcome": "NOT_RUN",
+      "durable_publication_gate": "NOT_RUN"
+    },
+    {
+      "event": "scratch_container_parent_case",
+      "invocation": 8,
+      "declared_payload_bytes": 416,
+      "payload_fill_u8": 90,
+      "history_present_before": 1,
+      "counting_return": 0,
+      "counted_full_container_bytes": 512,
+      "output_capacity_bytes": 512,
+      "provider_records": 0,
+      "provider_fixture": "EMPTY_PROVIDER_NEGATIVE_CONTROL",
+      "production_cold_equivalence": "NOT_ESTABLISHED_PUBLIC_TEST_PROVIDER_OR_EMPTY_PROVIDER_NOT_VENDOR_PROTECTION_IDENTITY",
+      "protection_lookup_calls": 1,
+      "authentication_initializer_calls": 0,
+      "vendor_default_initializer_calls": 0,
+      "capacity_bits": 4096,
+      "serializer_owner_identity_join": true,
+      "last_main_writer_cursor_bits": 4049,
+      "output_cursor_before_lookup": 4049,
+      "protection_lookup_status": 9,
+      "serializer_return": 9,
+      "child_output_descriptor_after": 512,
+      "output_cursor_after_serializer": 4049,
+      "parent_return": 7,
+      "published_output_bytes": 0,
+      "history_present_after": 0,
+      "held_header_present_after": 1,
+      "secondary_history_used_before": 0,
+      "secondary_history_used_after": "0",
+      "secondary_history_write_index_after": "0",
+      "secondary_history_read_index_after": "0",
+      "changed_owned_root_bytes": [
+        {
+          "root": "parent",
+          "bytes_changed": 1
+        },
+        {
+          "root": "serializer_owner",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_flags",
+          "bytes_changed": 1
+        },
+        {
+          "root": "held_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body",
+          "bytes_changed": 0
+        },
+        {
+          "root": "selection_scratch",
+          "bytes_changed": 4
+        },
+        {
+          "root": "protection_context",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_history",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "output",
+          "bytes_changed": 443
+        },
+        {
+          "root": "provider_record",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "caller_public_key",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "associated_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "published_length",
+          "bytes_changed": 4
+        },
+        {
+          "root": "descriptor_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_1",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_1",
+          "bytes_changed": 0
+        }
+      ],
+      "output_guard_unchanged": true,
+      "outer_codec_outcome": "NOT_RUN",
+      "durable_publication_gate": "NOT_RUN"
+    },
+    {
+      "event": "scratch_container_parent_case",
+      "invocation": 9,
+      "declared_payload_bytes": 411,
+      "payload_fill_u8": 90,
+      "history_present_before": 0,
+      "counting_return": 0,
+      "counted_full_container_bytes": 507,
+      "output_capacity_bytes": 507,
+      "provider_records": 1,
+      "provider_fixture": "CALLER_OWNED_PUBLIC_SINGLE_ZERO_BYTE",
+      "production_cold_equivalence": "NOT_ESTABLISHED_PUBLIC_TEST_PROVIDER_OR_EMPTY_PROVIDER_NOT_VENDOR_PROTECTION_IDENTITY",
+      "protection_lookup_calls": 1,
+      "authentication_initializer_calls": 2,
+      "vendor_default_initializer_calls": 0,
+      "capacity_bits": 4056,
+      "serializer_owner_identity_join": true,
+      "last_main_writer_cursor_bits": 4049,
+      "output_cursor_before_lookup": 4009,
+      "protection_lookup_status": 0,
+      "serializer_return": 0,
+      "child_output_descriptor_after": 507,
+      "output_cursor_after_serializer": 4049,
+      "parent_return": 0,
+      "published_output_bytes": 507,
+      "history_present_after": 0,
+      "held_header_present_after": 0,
+      "secondary_history_used_before": 0,
+      "secondary_history_used_after": "1",
+      "secondary_history_write_index_after": "0",
+      "secondary_history_read_index_after": "0",
+      "changed_owned_root_bytes": [
+        {
+          "root": "parent",
+          "bytes_changed": 0
+        },
+        {
+          "root": "serializer_owner",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_flags",
+          "bytes_changed": 0
+        },
+        {
+          "root": "held_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body",
+          "bytes_changed": 0
+        },
+        {
+          "root": "selection_scratch",
+          "bytes_changed": 4
+        },
+        {
+          "root": "protection_context",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_history",
+          "bytes_changed": 1
+        },
+        {
+          "root": "secondary_data",
+          "bytes_changed": 31
+        },
+        {
+          "root": "output",
+          "bytes_changed": 438
+        },
+        {
+          "root": "provider_record",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "caller_public_key",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "associated_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "published_length",
+          "bytes_changed": 4
+        },
+        {
+          "root": "descriptor_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_1",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_1",
+          "bytes_changed": 0
+        }
+      ],
+      "output_guard_unchanged": true,
+      "outer_codec_outcome": "NOT_RUN",
+      "durable_publication_gate": "NOT_RUN"
+    },
+    {
+      "event": "scratch_container_parent_case",
+      "invocation": 10,
+      "declared_payload_bytes": 411,
+      "payload_fill_u8": 90,
+      "history_present_before": 1,
+      "counting_return": 0,
+      "counted_full_container_bytes": 507,
+      "output_capacity_bytes": 507,
+      "provider_records": 1,
+      "provider_fixture": "CALLER_OWNED_PUBLIC_SINGLE_ZERO_BYTE",
+      "production_cold_equivalence": "NOT_ESTABLISHED_PUBLIC_TEST_PROVIDER_OR_EMPTY_PROVIDER_NOT_VENDOR_PROTECTION_IDENTITY",
+      "protection_lookup_calls": 1,
+      "authentication_initializer_calls": 2,
+      "vendor_default_initializer_calls": 0,
+      "capacity_bits": 4056,
+      "serializer_owner_identity_join": true,
+      "last_main_writer_cursor_bits": 4049,
+      "output_cursor_before_lookup": 4009,
+      "protection_lookup_status": 0,
+      "serializer_return": 0,
+      "child_output_descriptor_after": 507,
+      "output_cursor_after_serializer": 4049,
+      "parent_return": 0,
+      "published_output_bytes": 507,
+      "history_present_after": 0,
+      "held_header_present_after": 1,
+      "secondary_history_used_before": 0,
+      "secondary_history_used_after": "1",
+      "secondary_history_write_index_after": "0",
+      "secondary_history_read_index_after": "0",
+      "changed_owned_root_bytes": [
+        {
+          "root": "parent",
+          "bytes_changed": 1
+        },
+        {
+          "root": "serializer_owner",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_flags",
+          "bytes_changed": 1
+        },
+        {
+          "root": "held_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body",
+          "bytes_changed": 0
+        },
+        {
+          "root": "selection_scratch",
+          "bytes_changed": 4
+        },
+        {
+          "root": "protection_context",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_history",
+          "bytes_changed": 1
+        },
+        {
+          "root": "secondary_data",
+          "bytes_changed": 31
+        },
+        {
+          "root": "output",
+          "bytes_changed": 438
+        },
+        {
+          "root": "provider_record",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "caller_public_key",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "associated_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "published_length",
+          "bytes_changed": 4
+        },
+        {
+          "root": "descriptor_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_1",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_1",
+          "bytes_changed": 0
+        }
+      ],
+      "output_guard_unchanged": true,
+      "outer_codec_outcome": "NOT_RUN",
+      "durable_publication_gate": "NOT_RUN"
+    },
+    {
+      "event": "scratch_container_parent_case",
+      "invocation": 11,
+      "declared_payload_bytes": 412,
+      "payload_fill_u8": 90,
+      "history_present_before": 0,
+      "counting_return": 0,
+      "counted_full_container_bytes": 508,
+      "output_capacity_bytes": 508,
+      "provider_records": 1,
+      "provider_fixture": "CALLER_OWNED_PUBLIC_SINGLE_ZERO_BYTE",
+      "production_cold_equivalence": "NOT_ESTABLISHED_PUBLIC_TEST_PROVIDER_OR_EMPTY_PROVIDER_NOT_VENDOR_PROTECTION_IDENTITY",
+      "protection_lookup_calls": 1,
+      "authentication_initializer_calls": 2,
+      "vendor_default_initializer_calls": 0,
+      "capacity_bits": 4064,
+      "serializer_owner_identity_join": true,
+      "last_main_writer_cursor_bits": 4057,
+      "output_cursor_before_lookup": 4017,
+      "protection_lookup_status": 0,
+      "serializer_return": 0,
+      "child_output_descriptor_after": 508,
+      "output_cursor_after_serializer": 4057,
+      "parent_return": 0,
+      "published_output_bytes": 508,
+      "history_present_after": 0,
+      "held_header_present_after": 0,
+      "secondary_history_used_before": 0,
+      "secondary_history_used_after": "1",
+      "secondary_history_write_index_after": "0",
+      "secondary_history_read_index_after": "0",
+      "changed_owned_root_bytes": [
+        {
+          "root": "parent",
+          "bytes_changed": 0
+        },
+        {
+          "root": "serializer_owner",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_flags",
+          "bytes_changed": 0
+        },
+        {
+          "root": "held_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body",
+          "bytes_changed": 0
+        },
+        {
+          "root": "selection_scratch",
+          "bytes_changed": 4
+        },
+        {
+          "root": "protection_context",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_history",
+          "bytes_changed": 1
+        },
+        {
+          "root": "secondary_data",
+          "bytes_changed": 32
+        },
+        {
+          "root": "output",
+          "bytes_changed": 439
+        },
+        {
+          "root": "provider_record",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "caller_public_key",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "associated_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "published_length",
+          "bytes_changed": 4
+        },
+        {
+          "root": "descriptor_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_1",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_1",
+          "bytes_changed": 0
+        }
+      ],
+      "output_guard_unchanged": true,
+      "outer_codec_outcome": "NOT_RUN",
+      "durable_publication_gate": "NOT_RUN"
+    },
+    {
+      "event": "scratch_container_parent_case",
+      "invocation": 12,
+      "declared_payload_bytes": 412,
+      "payload_fill_u8": 90,
+      "history_present_before": 1,
+      "counting_return": 0,
+      "counted_full_container_bytes": 508,
+      "output_capacity_bytes": 508,
+      "provider_records": 1,
+      "provider_fixture": "CALLER_OWNED_PUBLIC_SINGLE_ZERO_BYTE",
+      "production_cold_equivalence": "NOT_ESTABLISHED_PUBLIC_TEST_PROVIDER_OR_EMPTY_PROVIDER_NOT_VENDOR_PROTECTION_IDENTITY",
+      "protection_lookup_calls": 1,
+      "authentication_initializer_calls": 2,
+      "vendor_default_initializer_calls": 0,
+      "capacity_bits": 4064,
+      "serializer_owner_identity_join": true,
+      "last_main_writer_cursor_bits": 4057,
+      "output_cursor_before_lookup": 4017,
+      "protection_lookup_status": 0,
+      "serializer_return": 0,
+      "child_output_descriptor_after": 508,
+      "output_cursor_after_serializer": 4057,
+      "parent_return": 0,
+      "published_output_bytes": 508,
+      "history_present_after": 0,
+      "held_header_present_after": 1,
+      "secondary_history_used_before": 0,
+      "secondary_history_used_after": "1",
+      "secondary_history_write_index_after": "0",
+      "secondary_history_read_index_after": "0",
+      "changed_owned_root_bytes": [
+        {
+          "root": "parent",
+          "bytes_changed": 1
+        },
+        {
+          "root": "serializer_owner",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_flags",
+          "bytes_changed": 1
+        },
+        {
+          "root": "held_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body",
+          "bytes_changed": 0
+        },
+        {
+          "root": "selection_scratch",
+          "bytes_changed": 4
+        },
+        {
+          "root": "protection_context",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_history",
+          "bytes_changed": 1
+        },
+        {
+          "root": "secondary_data",
+          "bytes_changed": 32
+        },
+        {
+          "root": "output",
+          "bytes_changed": 439
+        },
+        {
+          "root": "provider_record",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "caller_public_key",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "associated_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "published_length",
+          "bytes_changed": 4
+        },
+        {
+          "root": "descriptor_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_1",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_1",
+          "bytes_changed": 0
+        }
+      ],
+      "output_guard_unchanged": true,
+      "outer_codec_outcome": "NOT_RUN",
+      "durable_publication_gate": "NOT_RUN"
+    },
+    {
+      "event": "scratch_container_parent_case",
+      "invocation": 13,
+      "declared_payload_bytes": 415,
+      "payload_fill_u8": 90,
+      "history_present_before": 0,
+      "counting_return": 0,
+      "counted_full_container_bytes": 511,
+      "output_capacity_bytes": 511,
+      "provider_records": 1,
+      "provider_fixture": "CALLER_OWNED_PUBLIC_SINGLE_ZERO_BYTE",
+      "production_cold_equivalence": "NOT_ESTABLISHED_PUBLIC_TEST_PROVIDER_OR_EMPTY_PROVIDER_NOT_VENDOR_PROTECTION_IDENTITY",
+      "protection_lookup_calls": 1,
+      "authentication_initializer_calls": 2,
+      "vendor_default_initializer_calls": 0,
+      "capacity_bits": 4088,
+      "serializer_owner_identity_join": true,
+      "last_main_writer_cursor_bits": 4081,
+      "output_cursor_before_lookup": 4041,
+      "protection_lookup_status": 0,
+      "serializer_return": 0,
+      "child_output_descriptor_after": 511,
+      "output_cursor_after_serializer": 4081,
+      "parent_return": 0,
+      "published_output_bytes": 511,
+      "history_present_after": 0,
+      "held_header_present_after": 0,
+      "secondary_history_used_before": 0,
+      "secondary_history_used_after": "1",
+      "secondary_history_write_index_after": "0",
+      "secondary_history_read_index_after": "0",
+      "changed_owned_root_bytes": [
+        {
+          "root": "parent",
+          "bytes_changed": 0
+        },
+        {
+          "root": "serializer_owner",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_flags",
+          "bytes_changed": 0
+        },
+        {
+          "root": "held_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body",
+          "bytes_changed": 0
+        },
+        {
+          "root": "selection_scratch",
+          "bytes_changed": 4
+        },
+        {
+          "root": "protection_context",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_history",
+          "bytes_changed": 1
+        },
+        {
+          "root": "secondary_data",
+          "bytes_changed": 32
+        },
+        {
+          "root": "output",
+          "bytes_changed": 442
+        },
+        {
+          "root": "provider_record",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "caller_public_key",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "associated_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "published_length",
+          "bytes_changed": 4
+        },
+        {
+          "root": "descriptor_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_1",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_1",
+          "bytes_changed": 0
+        }
+      ],
+      "output_guard_unchanged": true,
+      "outer_codec_outcome": "NOT_RUN",
+      "durable_publication_gate": "NOT_RUN"
+    },
+    {
+      "event": "scratch_container_parent_case",
+      "invocation": 14,
+      "declared_payload_bytes": 415,
+      "payload_fill_u8": 90,
+      "history_present_before": 1,
+      "counting_return": 0,
+      "counted_full_container_bytes": 511,
+      "output_capacity_bytes": 511,
+      "provider_records": 1,
+      "provider_fixture": "CALLER_OWNED_PUBLIC_SINGLE_ZERO_BYTE",
+      "production_cold_equivalence": "NOT_ESTABLISHED_PUBLIC_TEST_PROVIDER_OR_EMPTY_PROVIDER_NOT_VENDOR_PROTECTION_IDENTITY",
+      "protection_lookup_calls": 1,
+      "authentication_initializer_calls": 2,
+      "vendor_default_initializer_calls": 0,
+      "capacity_bits": 4088,
+      "serializer_owner_identity_join": true,
+      "last_main_writer_cursor_bits": 4081,
+      "output_cursor_before_lookup": 4041,
+      "protection_lookup_status": 0,
+      "serializer_return": 0,
+      "child_output_descriptor_after": 511,
+      "output_cursor_after_serializer": 4081,
+      "parent_return": 0,
+      "published_output_bytes": 511,
+      "history_present_after": 0,
+      "held_header_present_after": 1,
+      "secondary_history_used_before": 0,
+      "secondary_history_used_after": "1",
+      "secondary_history_write_index_after": "0",
+      "secondary_history_read_index_after": "0",
+      "changed_owned_root_bytes": [
+        {
+          "root": "parent",
+          "bytes_changed": 1
+        },
+        {
+          "root": "serializer_owner",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_flags",
+          "bytes_changed": 1
+        },
+        {
+          "root": "held_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body",
+          "bytes_changed": 0
+        },
+        {
+          "root": "selection_scratch",
+          "bytes_changed": 4
+        },
+        {
+          "root": "protection_context",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_history",
+          "bytes_changed": 1
+        },
+        {
+          "root": "secondary_data",
+          "bytes_changed": 32
+        },
+        {
+          "root": "output",
+          "bytes_changed": 442
+        },
+        {
+          "root": "provider_record",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "caller_public_key",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "associated_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "published_length",
+          "bytes_changed": 4
+        },
+        {
+          "root": "descriptor_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_1",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_1",
+          "bytes_changed": 0
+        }
+      ],
+      "output_guard_unchanged": true,
+      "outer_codec_outcome": "NOT_RUN",
+      "durable_publication_gate": "NOT_RUN"
+    },
+    {
+      "event": "scratch_container_parent_case",
+      "invocation": 15,
+      "declared_payload_bytes": 416,
+      "payload_fill_u8": 90,
+      "history_present_before": 0,
+      "counting_return": 0,
+      "counted_full_container_bytes": 512,
+      "output_capacity_bytes": 512,
+      "provider_records": 1,
+      "provider_fixture": "CALLER_OWNED_PUBLIC_SINGLE_ZERO_BYTE",
+      "production_cold_equivalence": "NOT_ESTABLISHED_PUBLIC_TEST_PROVIDER_OR_EMPTY_PROVIDER_NOT_VENDOR_PROTECTION_IDENTITY",
+      "protection_lookup_calls": 1,
+      "authentication_initializer_calls": 2,
+      "vendor_default_initializer_calls": 0,
+      "capacity_bits": 4096,
+      "serializer_owner_identity_join": true,
+      "last_main_writer_cursor_bits": 4089,
+      "output_cursor_before_lookup": 4049,
+      "protection_lookup_status": 0,
+      "serializer_return": 0,
+      "child_output_descriptor_after": 512,
+      "output_cursor_after_serializer": 4089,
+      "parent_return": 0,
+      "published_output_bytes": 512,
+      "history_present_after": 0,
+      "held_header_present_after": 0,
+      "secondary_history_used_before": 0,
+      "secondary_history_used_after": "1",
+      "secondary_history_write_index_after": "0",
+      "secondary_history_read_index_after": "0",
+      "changed_owned_root_bytes": [
+        {
+          "root": "parent",
+          "bytes_changed": 0
+        },
+        {
+          "root": "serializer_owner",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_flags",
+          "bytes_changed": 0
+        },
+        {
+          "root": "held_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body",
+          "bytes_changed": 0
+        },
+        {
+          "root": "selection_scratch",
+          "bytes_changed": 4
+        },
+        {
+          "root": "protection_context",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_history",
+          "bytes_changed": 1
+        },
+        {
+          "root": "secondary_data",
+          "bytes_changed": 32
+        },
+        {
+          "root": "output",
+          "bytes_changed": 443
+        },
+        {
+          "root": "provider_record",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "caller_public_key",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "associated_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "published_length",
+          "bytes_changed": 4
+        },
+        {
+          "root": "descriptor_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_1",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_1",
+          "bytes_changed": 0
+        }
+      ],
+      "output_guard_unchanged": true,
+      "outer_codec_outcome": "NOT_RUN",
+      "durable_publication_gate": "NOT_RUN"
+    },
+    {
+      "event": "scratch_container_parent_case",
+      "invocation": 16,
+      "declared_payload_bytes": 416,
+      "payload_fill_u8": 90,
+      "history_present_before": 1,
+      "counting_return": 0,
+      "counted_full_container_bytes": 512,
+      "output_capacity_bytes": 512,
+      "provider_records": 1,
+      "provider_fixture": "CALLER_OWNED_PUBLIC_SINGLE_ZERO_BYTE",
+      "production_cold_equivalence": "NOT_ESTABLISHED_PUBLIC_TEST_PROVIDER_OR_EMPTY_PROVIDER_NOT_VENDOR_PROTECTION_IDENTITY",
+      "protection_lookup_calls": 1,
+      "authentication_initializer_calls": 2,
+      "vendor_default_initializer_calls": 0,
+      "capacity_bits": 4096,
+      "serializer_owner_identity_join": true,
+      "last_main_writer_cursor_bits": 4089,
+      "output_cursor_before_lookup": 4049,
+      "protection_lookup_status": 0,
+      "serializer_return": 0,
+      "child_output_descriptor_after": 512,
+      "output_cursor_after_serializer": 4089,
+      "parent_return": 0,
+      "published_output_bytes": 512,
+      "history_present_after": 0,
+      "held_header_present_after": 1,
+      "secondary_history_used_before": 0,
+      "secondary_history_used_after": "1",
+      "secondary_history_write_index_after": "0",
+      "secondary_history_read_index_after": "0",
+      "changed_owned_root_bytes": [
+        {
+          "root": "parent",
+          "bytes_changed": 1
+        },
+        {
+          "root": "serializer_owner",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_flags",
+          "bytes_changed": 1
+        },
+        {
+          "root": "held_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body",
+          "bytes_changed": 0
+        },
+        {
+          "root": "selection_scratch",
+          "bytes_changed": 4
+        },
+        {
+          "root": "protection_context",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider",
+          "bytes_changed": 0
+        },
+        {
+          "root": "secondary_history",
+          "bytes_changed": 1
+        },
+        {
+          "root": "secondary_data",
+          "bytes_changed": 32
+        },
+        {
+          "root": "output",
+          "bytes_changed": 443
+        },
+        {
+          "root": "provider_record",
+          "bytes_changed": 0
+        },
+        {
+          "root": "provider_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "caller_public_key",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "history_header",
+          "bytes_changed": 0
+        },
+        {
+          "root": "container_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_pointer_table",
+          "bytes_changed": 0
+        },
+        {
+          "root": "associated_data",
+          "bytes_changed": 0
+        },
+        {
+          "root": "published_length",
+          "bytes_changed": 4
+        },
+        {
+          "root": "descriptor_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_11",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_2",
+          "bytes_changed": 0
+        },
+        {
+          "root": "descriptor_1",
+          "bytes_changed": 0
+        },
+        {
+          "root": "body_1",
+          "bytes_changed": 0
+        }
+      ],
+      "output_guard_unchanged": true,
+      "outer_codec_outcome": "NOT_RUN",
+      "durable_publication_gate": "NOT_RUN"
+    }
+  ],
+  "transport_plans": [
+    {
+      "event": "counted_container_transport_plan",
+      "parent_invocation": 1,
+      "requested_bytes": 507,
+      "planner_return": 0,
+      "segments": [
+        0,
+        0,
+        507,
+        0,
+        0,
+        0
+      ],
+      "first_block": 2,
+      "counter_after": 1,
+      "body_successfully_authenticated": false,
+      "fragments": []
+    },
+    {
+      "event": "counted_container_transport_plan",
+      "parent_invocation": 2,
+      "requested_bytes": 507,
+      "planner_return": 0,
+      "segments": [
+        0,
+        0,
+        507,
+        0,
+        0,
+        0
+      ],
+      "first_block": 2,
+      "counter_after": 1,
+      "body_successfully_authenticated": false,
+      "fragments": []
+    },
+    {
+      "event": "counted_container_transport_plan",
+      "parent_invocation": 3,
+      "requested_bytes": 508,
+      "planner_return": 0,
+      "segments": [
+        0,
+        0,
+        507,
+        1,
+        0,
+        0
+      ],
+      "first_block": 2,
+      "counter_after": 1,
+      "body_successfully_authenticated": false,
+      "fragments": []
+    },
+    {
+      "event": "counted_container_transport_plan",
+      "parent_invocation": 4,
+      "requested_bytes": 508,
+      "planner_return": 0,
+      "segments": [
+        0,
+        0,
+        507,
+        1,
+        0,
+        0
+      ],
+      "first_block": 2,
+      "counter_after": 1,
+      "body_successfully_authenticated": false,
+      "fragments": []
+    },
+    {
+      "event": "counted_container_transport_plan",
+      "parent_invocation": 5,
+      "requested_bytes": 511,
+      "planner_return": 0,
+      "segments": [
+        0,
+        0,
+        507,
+        4,
+        0,
+        0
+      ],
+      "first_block": 2,
+      "counter_after": 1,
+      "body_successfully_authenticated": false,
+      "fragments": []
+    },
+    {
+      "event": "counted_container_transport_plan",
+      "parent_invocation": 6,
+      "requested_bytes": 511,
+      "planner_return": 0,
+      "segments": [
+        0,
+        0,
+        507,
+        4,
+        0,
+        0
+      ],
+      "first_block": 2,
+      "counter_after": 1,
+      "body_successfully_authenticated": false,
+      "fragments": []
+    },
+    {
+      "event": "counted_container_transport_plan",
+      "parent_invocation": 7,
+      "requested_bytes": 512,
+      "planner_return": 0,
+      "segments": [
+        0,
+        0,
+        507,
+        5,
+        0,
+        0
+      ],
+      "first_block": 2,
+      "counter_after": 1,
+      "body_successfully_authenticated": false,
+      "fragments": []
+    },
+    {
+      "event": "counted_container_transport_plan",
+      "parent_invocation": 8,
+      "requested_bytes": 512,
+      "planner_return": 0,
+      "segments": [
+        0,
+        0,
+        507,
+        5,
+        0,
+        0
+      ],
+      "first_block": 2,
+      "counter_after": 1,
+      "body_successfully_authenticated": false,
+      "fragments": []
+    },
+    {
+      "event": "counted_container_transport_plan",
+      "parent_invocation": 9,
+      "requested_bytes": 507,
+      "planner_return": 0,
+      "segments": [
+        0,
+        0,
+        507,
+        0,
+        0,
+        0
+      ],
+      "first_block": 2,
+      "counter_after": 1,
+      "body_successfully_authenticated": true,
+      "fragments": [
+        {
+          "block": 2,
+          "wire_length": 511,
+          "nine_bit_wire_length": 511,
+          "container_bytes": 507,
+          "fragment_equal_to_native_container": true,
+          "guard_unchanged": true
+        }
+      ],
+      "reassembled_bytes": 507
+    },
+    {
+      "event": "counted_container_transport_plan",
+      "parent_invocation": 10,
+      "requested_bytes": 507,
+      "planner_return": 0,
+      "segments": [
+        0,
+        0,
+        507,
+        0,
+        0,
+        0
+      ],
+      "first_block": 2,
+      "counter_after": 1,
+      "body_successfully_authenticated": true,
+      "fragments": [
+        {
+          "block": 2,
+          "wire_length": 511,
+          "nine_bit_wire_length": 511,
+          "container_bytes": 507,
+          "fragment_equal_to_native_container": true,
+          "guard_unchanged": true
+        }
+      ],
+      "reassembled_bytes": 507
+    },
+    {
+      "event": "counted_container_transport_plan",
+      "parent_invocation": 11,
+      "requested_bytes": 508,
+      "planner_return": 0,
+      "segments": [
+        0,
+        0,
+        507,
+        1,
+        0,
+        0
+      ],
+      "first_block": 2,
+      "counter_after": 1,
+      "body_successfully_authenticated": true,
+      "fragments": [
+        {
+          "block": 2,
+          "wire_length": 511,
+          "nine_bit_wire_length": 511,
+          "container_bytes": 507,
+          "fragment_equal_to_native_container": true,
+          "guard_unchanged": true
+        },
+        {
+          "block": 3,
+          "wire_length": 1,
+          "nine_bit_wire_length": 1,
+          "container_bytes": 1,
+          "fragment_equal_to_native_container": true,
+          "guard_unchanged": true
+        }
+      ],
+      "reassembled_bytes": 508
+    },
+    {
+      "event": "counted_container_transport_plan",
+      "parent_invocation": 12,
+      "requested_bytes": 508,
+      "planner_return": 0,
+      "segments": [
+        0,
+        0,
+        507,
+        1,
+        0,
+        0
+      ],
+      "first_block": 2,
+      "counter_after": 1,
+      "body_successfully_authenticated": true,
+      "fragments": [
+        {
+          "block": 2,
+          "wire_length": 511,
+          "nine_bit_wire_length": 511,
+          "container_bytes": 507,
+          "fragment_equal_to_native_container": true,
+          "guard_unchanged": true
+        },
+        {
+          "block": 3,
+          "wire_length": 1,
+          "nine_bit_wire_length": 1,
+          "container_bytes": 1,
+          "fragment_equal_to_native_container": true,
+          "guard_unchanged": true
+        }
+      ],
+      "reassembled_bytes": 508
+    },
+    {
+      "event": "counted_container_transport_plan",
+      "parent_invocation": 13,
+      "requested_bytes": 511,
+      "planner_return": 0,
+      "segments": [
+        0,
+        0,
+        507,
+        4,
+        0,
+        0
+      ],
+      "first_block": 2,
+      "counter_after": 1,
+      "body_successfully_authenticated": true,
+      "fragments": [
+        {
+          "block": 2,
+          "wire_length": 511,
+          "nine_bit_wire_length": 511,
+          "container_bytes": 507,
+          "fragment_equal_to_native_container": true,
+          "guard_unchanged": true
+        },
+        {
+          "block": 3,
+          "wire_length": 4,
+          "nine_bit_wire_length": 4,
+          "container_bytes": 4,
+          "fragment_equal_to_native_container": true,
+          "guard_unchanged": true
+        }
+      ],
+      "reassembled_bytes": 511
+    },
+    {
+      "event": "counted_container_transport_plan",
+      "parent_invocation": 14,
+      "requested_bytes": 511,
+      "planner_return": 0,
+      "segments": [
+        0,
+        0,
+        507,
+        4,
+        0,
+        0
+      ],
+      "first_block": 2,
+      "counter_after": 1,
+      "body_successfully_authenticated": true,
+      "fragments": [
+        {
+          "block": 2,
+          "wire_length": 511,
+          "nine_bit_wire_length": 511,
+          "container_bytes": 507,
+          "fragment_equal_to_native_container": true,
+          "guard_unchanged": true
+        },
+        {
+          "block": 3,
+          "wire_length": 4,
+          "nine_bit_wire_length": 4,
+          "container_bytes": 4,
+          "fragment_equal_to_native_container": true,
+          "guard_unchanged": true
+        }
+      ],
+      "reassembled_bytes": 511
+    },
+    {
+      "event": "counted_container_transport_plan",
+      "parent_invocation": 15,
+      "requested_bytes": 512,
+      "planner_return": 0,
+      "segments": [
+        0,
+        0,
+        507,
+        5,
+        0,
+        0
+      ],
+      "first_block": 2,
+      "counter_after": 1,
+      "body_successfully_authenticated": true,
+      "fragments": [
+        {
+          "block": 2,
+          "wire_length": 511,
+          "nine_bit_wire_length": 511,
+          "container_bytes": 507,
+          "fragment_equal_to_native_container": true,
+          "guard_unchanged": true
+        },
+        {
+          "block": 3,
+          "wire_length": 5,
+          "nine_bit_wire_length": 5,
+          "container_bytes": 5,
+          "fragment_equal_to_native_container": true,
+          "guard_unchanged": true
+        }
+      ],
+      "reassembled_bytes": 512
+    },
+    {
+      "event": "counted_container_transport_plan",
+      "parent_invocation": 16,
+      "requested_bytes": 512,
+      "planner_return": 0,
+      "segments": [
+        0,
+        0,
+        507,
+        5,
+        0,
+        0
+      ],
+      "first_block": 2,
+      "counter_after": 1,
+      "body_successfully_authenticated": true,
+      "fragments": [
+        {
+          "block": 2,
+          "wire_length": 511,
+          "nine_bit_wire_length": 511,
+          "container_bytes": 507,
+          "fragment_equal_to_native_container": true,
+          "guard_unchanged": true
+        },
+        {
+          "block": 3,
+          "wire_length": 5,
+          "nine_bit_wire_length": 5,
+          "container_bytes": 5,
+          "fragment_equal_to_native_container": true,
+          "guard_unchanged": true
+        }
+      ],
+      "reassembled_bytes": 512
+    }
+  ],
+  "raw_reservation_cases": [
+    {
+      "event": "raw_reservation_length_case",
+      "declared_length": 511,
+      "nine_bit_wire_length": 511,
+      "presence_bit": 1,
+      "cursor_bits_after": 4098,
+      "raw_return_i16": 0,
+      "guard_unchanged": true,
+      "scope": "DIRECT_RAW_WRITER_NOT_PLANNER_OR_FULL_PARENT"
+    },
+    {
+      "event": "raw_reservation_length_case",
+      "declared_length": 512,
+      "nine_bit_wire_length": 0,
+      "presence_bit": 1,
+      "cursor_bits_after": 4106,
+      "raw_return_i16": 0,
+      "guard_unchanged": true,
+      "scope": "DIRECT_RAW_WRITER_NOT_PLANNER_OR_FULL_PARENT"
+    }
+  ],
+  "transport_composition_limit": "For positive scratch cases the actual successfully serialized container buffer is passed to planner/reservation/refill in an explicit component composition. Negative-case planner calls use counted length only and are NOT native parent successors. Original production ordering counts/plans before codec and output serialization; this scratch composition does not execute that outer codec owner."
+}
