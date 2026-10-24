@@ -9,7 +9,7 @@ use crate::profile::{
 };
 use crate::timeline::AdmSampleCount;
 use roxmltree::{Document, Node};
-use serde_json::Value;
+use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 
 const SELECTED_SAMPLE_RATE_HZ: u32 = 48_000;
@@ -60,6 +60,15 @@ impl SelectedWaveDescriptor {
 pub enum SelectedInputKind {
     Adm,
     AtmosMezz,
+}
+
+impl SelectedInputKind {
+    pub const fn selected_label(self) -> &'static str {
+        match self {
+            Self::Adm => "adm",
+            Self::AtmosMezz => "atmos_mezz",
+        }
+    }
 }
 
 /// File reference returned as a value. The parser never opens it.
@@ -160,6 +169,70 @@ pub struct SelectedJobConfiguration {
 }
 
 impl SelectedJobConfiguration {
+    /// Returns every normalized selected F01E value used by job/config identity.
+    pub fn normalized_identity_value(&self) -> Value {
+        let carriage = match self.selected_profile.carriage() {
+            crate::profile::EmdfCarriageProfile::DeployedCompat => "deployed_compat",
+            crate::profile::EmdfCarriageProfile::EtsiEmdf => "etsi_emdf",
+            crate::profile::EmdfCarriageProfile::Unsupported => "unsupported",
+        };
+        let downmix = self.downmix;
+        json!({
+            "profile_dimensions": {
+                "authored_input": "selected_adm_bwf_38ch_pcm24_48khz",
+                "core_carrier": "selected_5_1_six_carriers",
+                "joc_downmix": "mode0_phase1_index3",
+                "substream_topology": "single_independent_zero_dependent",
+                "codec_rate": "48khz_1024kbps_6blocks_1536samples_4096bytes",
+                "emdf_carriage": carriage
+            },
+            "input_kind": self.input_kind.selected_label(),
+            "input_reference": {
+                "file_name": self.input_reference.file_name(),
+                "local_path": self.input_reference.local_path()
+            },
+            "output_reference": {
+                "file_name": self.output_reference.file_name(),
+                "local_path": self.output_reference.local_path()
+            },
+            "wave": {
+                "sample_rate_hz": self.wave.sample_rate_hz(),
+                "channels": self.wave.channels(),
+                "pcm_bits": self.wave.pcm_bits()
+            },
+            "source_samples": self.source_samples,
+            "bit_rate_kbps": self.bit_rate_kbps,
+            "bit_rate_enum": self.bit_rate_enum,
+            "layout_enum": self.layout_enum,
+            "target_capacity": self.target_capacity,
+            "sample_length_enum": self.sample_length_enum,
+            "frame_samples": self.frame_samples,
+            "spatial_config_mode": self.spatial_config_mode,
+            "dispatch_mode": self.dispatch_mode,
+            "route_virtual_prefix_count": self.route_virtual_prefix_count,
+            "loudness": {
+                "metering_mode": self.loudness.metering_mode(),
+                "dialogue_intelligence": self.loudness.dialogue_intelligence(),
+                "speech_threshold": self.loudness.speech_threshold()
+            },
+            "line_drc_profile": self.line_drc_profile,
+            "rf_drc_profile": self.rf_drc_profile,
+            "downmix": {
+                "preferred_mode": downmix.preferred_mode(),
+                "mix_levels": downmix.mix_levels()
+            },
+            "surround_trim_5_1": self.surround_trim_5_1,
+            "height_trim_5_1": self.height_trim_5_1,
+            "input_offset": self.input_offset,
+            "input_ffoa": self.input_ffoa,
+            "start": self.start,
+            "end": self.end,
+            "time_base": self.time_base,
+            "prepend_silence_duration": self.prepend_silence_duration,
+            "append_silence_duration": self.append_silence_duration
+        })
+    }
+
     pub const fn selected_profile(&self) -> ResolvedEncodingProfile {
         self.selected_profile
     }
@@ -348,6 +421,7 @@ pub struct SelectedPrimaryControlBinding {
     original_job_bytes_declaration: u64,
     original_job_bytes_available: bool,
     full_pcm_identity_rehashed: bool,
+    runtime_resource_bound: bool,
 }
 
 impl SelectedPrimaryControlBinding {
@@ -407,6 +481,10 @@ impl SelectedPrimaryControlBinding {
     pub const fn full_pcm_identity_rehashed(&self) -> bool {
         self.full_pcm_identity_rehashed
     }
+
+    pub const fn runtime_resource_bound(&self) -> bool {
+        self.runtime_resource_bound
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -416,7 +494,23 @@ pub struct PrimaryMetadataChunkHashes {
     dbmd: [u8; 32],
 }
 
+/// Resource, job, data-span and metadata identity for a freshly admitted job.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct SelectedPrimaryRuntimeIdentity {
+    pub source_file_bytes: u64,
+    pub data_bytes: u64,
+    pub metadata_hashes: PrimaryMetadataChunkHashes,
+    pub resource_sha256: [u8; 32],
+    pub config_sha256: [u8; 32],
+    pub job_xml_sha256: [u8; 32],
+    pub job_xml_bytes: u64,
+}
+
 impl PrimaryMetadataChunkHashes {
+    pub const fn new(axml: [u8; 32], chna: [u8; 32], dbmd: [u8; 32]) -> Self {
+        Self { axml, chna, dbmd }
+    }
+
     pub const fn axml(self) -> [u8; 32] {
         self.axml
     }
@@ -596,6 +690,56 @@ pub fn bind_selected_primary_control_projection(
             .ok_or(PrimaryControlBindingError::ProjectionReceipt)?,
         original_job_bytes_available: false,
         full_pcm_identity_rehashed: false,
+        runtime_resource_bound: false,
+    })
+}
+
+/// Binds an admitted selected ADM job to its current complete RIFF resource for
+/// independently constructed primary metadata/control values.
+pub fn bind_admitted_selected_input(
+    configuration: &SelectedJobConfiguration,
+    identity: SelectedPrimaryRuntimeIdentity,
+) -> Result<SelectedPrimaryControlBinding, PrimaryControlBindingError> {
+    let selected_profile = resolve_selected_profile(&EncodingProfile::selected())
+        .map_err(|_| PrimaryControlBindingError::SelectedProfile)?;
+    let wave = configuration.wave();
+    let source_samples = AdmSampleCount::new(configuration.source_samples())
+        .map_err(|_| PrimaryControlBindingError::SourceExtent)?;
+    let expected_data_bytes = source_samples
+        .value()
+        .checked_mul(u64::from(wave.channels()) * u64::from(wave.pcm_bits()) / 8)
+        .ok_or(PrimaryControlBindingError::SourceExtent)?;
+    if configuration.selected_profile() != selected_profile
+        || configuration.input_kind() != SelectedInputKind::Adm
+    {
+        return Err(PrimaryControlBindingError::SelectedJobMismatch);
+    }
+    if wave.sample_rate_hz() != SELECTED_SAMPLE_RATE_HZ
+        || wave.channels() != SELECTED_CHANNELS
+        || wave.pcm_bits() != SELECTED_PCM_BITS
+        || identity.source_file_bytes == 0
+        || identity.data_bytes != expected_data_bytes
+        || identity.data_bytes > identity.source_file_bytes
+        || identity.job_xml_bytes == 0
+    {
+        return Err(PrimaryControlBindingError::SourceExtent);
+    }
+    Ok(SelectedPrimaryControlBinding {
+        selected_profile,
+        input_kind: SelectedInputKind::Adm,
+        source_file_name: configuration.input_reference().file_name().to_owned(),
+        source_file_bytes: identity.source_file_bytes,
+        data_bytes: identity.data_bytes,
+        wave,
+        source_samples,
+        metadata_hashes: identity.metadata_hashes,
+        job_projection_sha256: identity.config_sha256,
+        source_receipt_sha256: identity.resource_sha256,
+        original_job_sha256_declaration: identity.job_xml_sha256,
+        original_job_bytes_declaration: identity.job_xml_bytes,
+        original_job_bytes_available: true,
+        full_pcm_identity_rehashed: true,
+        runtime_resource_bound: true,
     })
 }
 

@@ -723,7 +723,7 @@ def check_source_flags_producer(root,d):
  ck(len(vector_bytes)==27933 and hashlib.sha256(vector_bytes).hexdigest()=='ba7fb477931bc6f7127b63631b8048e127ecd78514133749ce3b0acdf61d3aaf'and vectors['schema']=='jocforge-source-flags-input-vectors.v1'and vectors['input_only']is True and [item['case_id']for item in vectors['positive_cases']]+['real_first_callback_case']==success_ids and [item['case_id']for item in vectors['negative_cases']]==error_ids,'SourceFlags fixture identity and case set')
  real_input=vectors['real_first_callback_case']['input'];ck(real_input['customer_PCM24_WAVE_sha256']=='7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1'and 'current_overrides'not in real_input and 'input-adm.wav'not in vector_bytes.decode('utf-8')and len(vectors['real_first_callback_case']['expected']['flags_u8_48x2_hex'])==192,'SourceFlags boundary vector stores no path or raw PCM')
 
- expected_implementation={'module_file':'crates/jocforge-domain/src/spatial/source_flags.rs','test_file':'crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs','fixture_file':'crates/jocforge-domain/tests/fixtures/source_flags/INPUT-ONLY-VECTORS.json','test_mode':'20 synthetic literal vectors in workspace suite; authorized WAVE boundary vector is explicitly invoked with JOCFORGE_AUTHORIZED_WAV and is ignored otherwise'}
+ expected_implementation={'module_file':'crates/jocforge-domain/src/spatial/source_flags.rs','test_file':'crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs','fixture_file':'crates/jocforge-domain/tests/fixtures/source_flags/INPUT-ONLY-VECTORS.json','test_mode':'20 synthetic literal vectors plus one meter-owned value-only vector in workspace suite; authorized WAVE boundary vector is explicitly invoked with JOCFORGE_AUTHORIZED_WAV and is ignored otherwise'}
  implementation=task['implementation'];ck(all(implementation[key]==value for key,value in expected_implementation.items()),'SourceFlags implementation file names')
  inventory=implementation['file_inventory'];expected_paths=[expected_implementation[key]for key in('module_file','test_file','fixture_file')]
  ck([entry['path']for entry in inventory]==expected_paths,'SourceFlags descriptive file inventory')
@@ -756,10 +756,10 @@ def check_source_flags_producer(root,d):
  ck(source.startswith('// pattern: Functional Core')and 'r32_mul('in source_code and 'r32_add('not in source_code and '.mul_add('not in source_code and 'energy'not in lower and 'rms'not in lower,'SourceFlags R32-only numeric boundary')
  ck('previous_product.value().abs() > epsilon || current_product.value().abs() > epsilon'in source_code and 'triangle_activity_witness(&before[..], &current[..], &window)?'in source_code and 'control.width.value() >= width_limit'in source_code,'SourceFlags shared strict activity and inclusive width thresholds')
  ck('WINDOW_SHA256: &str = "134a5a788d42b0532f3ec46112ad978cc14fb3c46cb0d82f02fee5f129b7c919"'in source and 'fn triangle_window()'in source_code,'SourceFlags triangle window KAT')
- ck('history_proposal.push(raw_frame(current))'in source_code and 'let before = &history.rows[row]'in source_code and bool(re.search(r'match\s+record\.role\s*\{\s*HostRole::Lfe\s*=>\s*\{',source_code)),'SourceFlags before-history, raw history and semantic LFE rules')
+ ck('history_proposal.push(raw_frame(current))'in source_code and 'let before = &history_rows[row]'in source_code and bool(re.search(r'match\s+record\.role\s*\{\s*HostRole::Lfe\s*=>\s*\{',source_code)),'SourceFlags before-history, raw history and semantic LFE rules')
  prefix_start=source_code.find('for (source, pair) in payload[..PREFIX_SOURCE_COUNT]')
  prefix_end=source_code.find('let width_limit =',prefix_start)
- ck(prefix_start>=0 and prefix_end>prefix_start and 'input.prefix_writers.written[source]'in source_code[prefix_start:prefix_end]and'current_pcm'not in source_code[prefix_start:prefix_end],'SourceFlags prefix writer output does not inspect PCM amplitude')
+ ck(prefix_start>=0 and prefix_end>prefix_start and 'prefix_writers.written[source]'in source_code[prefix_start:prefix_end]and'current_pcm'not in source_code[prefix_start:prefix_end],'SourceFlags prefix writer output does not inspect PCM amplitude')
  lineage_decl=re.search(r'pub\(super\) struct SourceFlagsLineage\s*\{([^}]*)\}',source_code,re.S)
  lineage_fields=[line.strip().rstrip(',')for line in lineage_decl.group(1).splitlines()if line.strip()]if lineage_decl is not None else []
  expected_lineage_fields=['parent: Arc<SourceFlagsParentLineage>','current_pcm_receipt: SourceFlagsDigest','controls_receipt: SourceFlagsDigest','route_receipt: SourceFlagsDigest','writer_receipt: SourceFlagsDigest']
@@ -2591,8 +2591,12 @@ def check_selected_adm_graph(root,d):
  ck(not(fixture/'MANIFEST.json').exists()and all((fixture/name).is_file()for name in expected),'selected graph fixtures reuse the tracked manifest policy')
  for name,(length,digest)in expected.items():
   raw=(fixture/name).read_bytes();ck(len(raw)==length and hashlib.sha256(raw).hexdigest()==digest,'selected graph fixture identity '+name)
- application=(root/'crates/jocforge-application/src/lib.rs').read_text(encoding='utf-8')
- ck('BackendUnavailable'in application and'parse_selected_adm_graph'not in application and'build_candidate_object_controls'not in application,'candidate graph remains outside main encode')
+  application=(root/'crates/jocforge-application/src/lib.rs').read_text(encoding='utf-8')
+  prepare_start=application.index('pub fn prepare_selected_job_input(')
+  encode_start=application.index('pub const fn encode()')
+  prepare=application[prepare_start:encode_start]
+  encode=application[encode_start:]
+  ck('parse_selected_adm_graph'in prepare and'parse_selected_dbmd_sections'in prepare and'build_candidate_object_controls'not in prepare and'BackendUnavailable'in encode and'parse_selected_adm_graph'not in encode,'prepared graph admission remains separate from main encode')
  ck(all((root/path).is_file()for path in selected['implementation_files']+selected['test_modules']+selected['local_mapping_files']),'selected graph mapped files exist')
 
 def check_primary_metadata_control(root,d):
@@ -2653,7 +2657,7 @@ def check_primary_installed48_slice(root,d):
  ck({path.name for path in clarification.iterdir()if path.is_file()}==set(expected_files),'selected installed48 clarification exact file set; reuse existing package manifest')
  for name,(length,digest) in expected_files.items():
   content=(clarification/name).read_bytes();ck(len(content)==length and hashlib.sha256(content).hexdigest()==digest,'selected installed48 clarification payload identity '+name)
- entries={entry['functional_id']:entry for entry in d['functional_entries']};f03=entries['F03W']['direct_slices'];f04=entries['F04G']['direct_slices'];ck(len(f03)==1 and f03[0]['slice_id']=='selected-primary-installed48-source-map-and-activity'and f03[0]['implementation_status']=='LOCALLY_VERIFIED_SELECTED_ACTIVITY_AND_ALL_POSTROUTE_VARIANTS','selected installed48 source/activity direct-slice mapping');ck(len(f04)==1 and f04[0]['slice_id']=='selected-p11-prefix-membership-producer'and f04[0]['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_AND_SEALED_SELECTED_MEMBERSHIP_VECTORS','selected P11 membership direct-slice mapping')
+  entries={entry['functional_id']:entry for entry in d['functional_entries']};f03=entries['F03W']['direct_slices'];f04=entries['F04G']['direct_slices'];ck(len(f03)==1 and f03[0]['slice_id']=='selected-primary-installed48-source-map-and-activity'and f03[0]['implementation_status']=='LOCALLY_VERIFIED_STATIC_ROUTE_AND_REAL_ADM_G0_ACTIVITY_PROPOSAL__F03R_TYPED_CONTROL_JOIN_OPEN','selected installed48 source/activity direct-slice mapping');ck(len(f04)==1 and f04[0]['slice_id']=='selected-p11-prefix-membership-producer'and f04[0]['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_AND_SEALED_SELECTED_MEMBERSHIP_VECTORS','selected P11 membership direct-slice mapping')
  for direct in (f03[0],f04[0]):
   ck(all((root/path).is_file()for path in direct['implementation_files']+direct['test_modules']+direct['parameters']['provider_files']+direct['vectors']['authoritative_vectors']),'selected installed48 direct-slice paths exist '+direct['slice_id'])
   ck(direct['vectors']['r2_manifest_sha256']=='ca2bc4aff5c81dfc9159177326ddf1db2630a8dc26634a3a761bbbc2a4798332'and direct['vectors']['route_clarification_v2_manifest_sha256']==expected_manifest,'selected installed48 direct-slice Wash manifest identities '+direct['slice_id'])
@@ -2944,7 +2948,7 @@ def run(root=ROOT):
  ck('roxmltree = { version = "=0.21.1", default-features = true }'in manifest,'roxmltree selected F01E XML parser manifest')
  notices=(root/'THIRD_PARTY_NOTICES.md').read_text(encoding='utf-8')
  ck(all(name in notices and checksum in notices for name,checksum in [('num-bigint','a5e44f723f1133c9deac646763579fdb3ac745e418f2a7af9cd0c431da1f20b9'),('num-integer','7ce2d95d4b3734dc35aa2f45e1aa22cd416814592a4f9d9205e11affd5b8e10b'),('num-traits','071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841'),('autocfg','f2032f911046de80f0a198e0901378627c33f59ea0ac00e363d481118bd70a53'),('roxmltree','f1964b10c76125c36f8afe190065a4bf9a87bf324842c05701330bba9f1cacbb')]),'third-party and transitive dependency notices')
- deps={'domain':{'num-bigint','sha2','serde_json','roxmltree'},'application':{'jocforge-domain','sha2'},'io':{'jocforge-domain','sha2'},'cli':{'jocforge-application'},'validation':{'jocforge-domain','jocforge-application','jocforge-io'}}
+ deps={'domain':{'num-bigint','sha2','serde_json','roxmltree'},'application':{'jocforge-domain','sha2','serde_json'},'io':{'jocforge-domain','sha2'},'cli':{'jocforge-application'},'validation':{'jocforge-domain','jocforge-application','jocforge-io'}}
  approved_fallback_source_files={path for entry in es if entry['functional_id']=='F03S' for direct in entry.get('direct_slices',[]) if direct.get('slice_id')=='outer-energy-fallback' for path in direct.get('implementation_files',[])}
  approved_configuration_import_sources={path for entry in es if entry['functional_id']=='F09' for direct in entry.get('direct_slices',[]) if direct.get('slice_id')=='selected-configuration-record-import' for path in direct.get('implementation_files',[])}
  for n,w in deps.items():

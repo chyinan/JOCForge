@@ -137,7 +137,9 @@
 | F03S/outer-active-update | F03S | `spatial_control` |
 | F03S/outer-empty-matrix-skip | F03S | `spatial_control` |
 | F03W/selected-primary-installed48-source-map-and-activity | F03W | `spatial_control` |
+| F04/independent-meter-installed48-postwindow-leaf | F04 | `spatial_audio` |
 | F04C/whole-spatial-audio-j05-composer | F04C | `spatial_audio` |
+| F04A/independent-meter-installed48-postwindow-leaf | F04A | `spatial_audio` |
 | F04F/single-tail-diffusion-filter-block-preview | F04F | `spatial_audio` |
 | F04F/single-tail-active-inactive-callback-lifecycle | F04F | `spatial_audio` |
 | F04G/selected-p11-prefix-membership-producer | F04G | `spatial_audio` |

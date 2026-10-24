@@ -632,6 +632,20 @@ pub struct SourceFlagsProduced {
     pub(crate) raw_history_proposal: RawHistoryProposal,
 }
 
+/// Lineage-free selected F03R values for an owner that supplies its own meter state.
+/// This value carries no parent receipt, packet capability or commit authority.
+#[derive(Debug)]
+pub struct SourceFlagsValues {
+    payload: [[u8; 2]; SOURCE_COUNT],
+    raw_history_rows: Box<[RawFrame]>,
+}
+
+impl SourceFlagsValues {
+    pub const fn payload(&self) -> &[[u8; 2]; SOURCE_COUNT] {
+        &self.payload
+    }
+}
+
 impl SourceFlagsProduced {
     pub fn into_parts(self) -> Result<(SourceFlagsPacket, RawHistoryProposal), SourceFlagsError> {
         self.packet
@@ -720,43 +734,17 @@ impl SourceFlagsProducer {
             .as_ref()
             .ok_or(SourceFlagsError::MissingBeforeHistory)?;
         preflight(&input, history)?;
-        let window = triangle_window()?;
-        let mut payload = [[0_u8; 2]; SOURCE_COUNT];
-
-        for (source, pair) in payload[..PREFIX_SOURCE_COUNT].iter_mut().enumerate() {
-            *pair = if input.prefix_writers.written[source] {
-                [0, 0]
-            } else {
-                [1, 1]
-            };
-        }
-
-        let width_limit = f32::from_bits(WIDTH_LIMIT_BITS);
-        let mut history_proposal = Vec::with_capacity(REGULAR_HOSTS);
-        for (row, host) in input.route.regular_hosts.iter().copied().enumerate() {
-            let current = input.current_pcm.row(host);
-            let before = &history.rows[row];
-            let control = input.controls.for_host(host)?;
-            let witness = triangle_activity_witness(&before[..], &current[..], &window)?;
-
-            let activity = witness && !control.muted;
-            let processing_inactive = !activity;
-            let selection_suppressed = control.muted;
-            let pair = if activity && control.width.value() >= width_limit {
-                [1, 1]
-            } else {
-                [
-                    u8::from(processing_inactive),
-                    u8::from(selection_suppressed),
-                ]
-            };
-            if pair == [0, 1] || pair.iter().any(|flag| *flag > 1) {
-                return Err(SourceFlagsError::InvalidFlagPair);
-            }
-            payload[usize::from(input.route.destination(host)?)] = pair;
-            history_proposal.push(raw_frame(current));
-        }
-
+        let values = compute_source_flags_values(
+            &input.current_pcm,
+            &history.rows,
+            &input.controls,
+            &input.route,
+            &input.prefix_writers,
+        )?;
+        let SourceFlagsValues {
+            payload,
+            raw_history_rows,
+        } = values;
         let lineage = Arc::new(make_lineage(
             Arc::clone(&input.parent),
             &input.current_pcm,
@@ -768,13 +756,41 @@ impl SourceFlagsProducer {
         packet.validate_payload()?;
         packet.validate_parent_binding(&input.parent)?;
         let raw_history_proposal = RawHistoryProposal {
-            rows: history_proposal.into_boxed_slice(),
+            rows: raw_history_rows,
             lineage,
         };
         Ok(SourceFlagsProduced {
             packet,
             raw_history_proposal,
         })
+    }
+
+    /// Runs the same selected F03R value transition for an independently owned meter state.
+    pub fn produce_meter_values(
+        current_pcm_rows: &[Vec<u32>],
+        previous_regular_rows: &[Vec<u32>],
+        controls: &RegularControls,
+        route: &ValidatedSemanticRoute,
+        prefix_writer_sources: &[u8],
+    ) -> Result<SourceFlagsValues, SourceFlagsError> {
+        let current_rows = current_pcm_rows
+            .iter()
+            .map(|row| row.iter().copied().map(f32::from_bits).collect())
+            .collect();
+        let current_pcm = CurrentHostPcm::new(current_rows)?;
+        let history_rows = previous_regular_rows
+            .iter()
+            .map(|row| row.iter().copied().map(f32::from_bits).collect::<Vec<_>>())
+            .map(finite_frame)
+            .collect::<Result<Vec<_>, _>>()?;
+        let prefix_writers = PrefixWriterSet::new(prefix_writer_sources.to_vec())?;
+        compute_source_flags_values(
+            &current_pcm,
+            &history_rows,
+            controls,
+            route,
+            &prefix_writers,
+        )
     }
 
     #[cfg(test)]
@@ -788,24 +804,66 @@ impl SourceFlagsProducer {
     }
 }
 
+fn compute_source_flags_values(
+    current_pcm: &CurrentHostPcm,
+    history_rows: &[FiniteFrame],
+    controls: &RegularControls,
+    route: &ValidatedSemanticRoute,
+    prefix_writers: &PrefixWriterSet,
+) -> Result<SourceFlagsValues, SourceFlagsError> {
+    preflight_value_shapes(current_pcm, history_rows, controls, route)?;
+    let window = triangle_window()?;
+    let mut payload = [[0_u8; 2]; SOURCE_COUNT];
+
+    for (source, pair) in payload[..PREFIX_SOURCE_COUNT].iter_mut().enumerate() {
+        *pair = if prefix_writers.written[source] {
+            [0, 0]
+        } else {
+            [1, 1]
+        };
+    }
+
+    let width_limit = f32::from_bits(WIDTH_LIMIT_BITS);
+    let mut history_proposal = Vec::with_capacity(REGULAR_HOSTS);
+    for (row, host) in route.regular_hosts.iter().copied().enumerate() {
+        let current = current_pcm.row(host);
+        let before = &history_rows[row];
+        let control = controls.for_host(host)?;
+        let witness = triangle_activity_witness(&before[..], &current[..], &window)?;
+
+        let activity = witness && !control.muted;
+        let processing_inactive = !activity;
+        let selection_suppressed = control.muted;
+        let pair = if activity && control.width.value() >= width_limit {
+            [1, 1]
+        } else {
+            [
+                u8::from(processing_inactive),
+                u8::from(selection_suppressed),
+            ]
+        };
+        if pair == [0, 1] || pair.iter().any(|flag| *flag > 1) {
+            return Err(SourceFlagsError::InvalidFlagPair);
+        }
+        payload[usize::from(route.destination(host)?)] = pair;
+        history_proposal.push(raw_frame(current));
+    }
+    Ok(SourceFlagsValues {
+        payload,
+        raw_history_rows: history_proposal.into_boxed_slice(),
+    })
+}
+
 fn preflight(
     input: &SourceFlagsInput,
     history: &BeforeRegularHistory,
 ) -> Result<(), SourceFlagsError> {
-    if input.current_pcm.rows.len() != HOST_CHANNELS
-        || input
-            .current_pcm
-            .rows
-            .iter()
-            .any(|row| row.len() != FRAME_SAMPLES)
-    {
-        return Err(SourceFlagsError::PcmShape);
-    }
-    if history.rows.len() != REGULAR_HOSTS
-        || history.rows.iter().any(|row| row.len() != FRAME_SAMPLES)
-    {
-        return Err(SourceFlagsError::HistoryShape);
-    }
+    preflight_value_shapes(
+        &input.current_pcm,
+        &history.rows,
+        &input.controls,
+        &input.route,
+    )?;
     if history.owner_generation != input.parent.before_history_generation {
         return Err(SourceFlagsError::WrongHistoryGeneration);
     }
@@ -823,22 +881,47 @@ fn preflight(
     if input.controls.values.len() != REGULAR_HOSTS {
         return Err(SourceFlagsError::RegularControlCount);
     }
-    for host in input.route.regular_hosts.iter().copied() {
-        input.controls.for_host(host)?;
-        input.route.destination(host)?;
-    }
-    if input.route.regular_hosts.len() != REGULAR_HOSTS
-        || input.route.destination_by_host.len() != HOST_CHANNELS
-        || input.route.destination(input.route.lfe_host).is_ok()
-    {
-        return Err(SourceFlagsError::RouteNotBijective);
-    }
     resolve_selected_profile(&input.parent.profile_identity)
         .map_err(|_| SourceFlagsError::UnsupportedProfile)?;
     if input.parent.provider_lineage.f01e_provider_generation() != 0
         || input.parent.provider_lineage.f03_provider_generation() != 0
     {
         return Err(SourceFlagsError::ProviderLineageMismatch);
+    }
+    Ok(())
+}
+
+fn preflight_value_shapes(
+    current_pcm: &CurrentHostPcm,
+    history_rows: &[FiniteFrame],
+    controls: &RegularControls,
+    route: &ValidatedSemanticRoute,
+) -> Result<(), SourceFlagsError> {
+    if current_pcm.rows.len() != HOST_CHANNELS
+        || current_pcm
+            .rows
+            .iter()
+            .any(|row| row.len() != FRAME_SAMPLES)
+    {
+        return Err(SourceFlagsError::PcmShape);
+    }
+    if history_rows.len() != REGULAR_HOSTS
+        || history_rows.iter().any(|row| row.len() != FRAME_SAMPLES)
+    {
+        return Err(SourceFlagsError::HistoryShape);
+    }
+    if controls.values.len() != REGULAR_HOSTS {
+        return Err(SourceFlagsError::RegularControlCount);
+    }
+    for host in route.regular_hosts.iter().copied() {
+        controls.for_host(host)?;
+        route.destination(host)?;
+    }
+    if route.regular_hosts.len() != REGULAR_HOSTS
+        || route.destination_by_host.len() != HOST_CHANNELS
+        || route.destination(route.lfe_host).is_ok()
+    {
+        return Err(SourceFlagsError::RouteNotBijective);
     }
     Ok(())
 }

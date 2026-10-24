@@ -589,13 +589,17 @@
         {
           "slice_id": "selected-job-resource-and-adm-event-admission",
           "mapping_status": "MATERIALIZED_APPLICATION_VALUE_PREPARATION_SUBSLICE_WHOLE_F01E_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_CONFIG_GRAPH_ADMISSION_AND_IMMUTABLE_RESOURCE_CUSTODY__METERING_AND_MAIN_NOT_CONNECTED",
-          "scope": "Coordinates the existing selected job normalization and selected ADM graph event validator before retaining a caller-supplied immutable resource snapshot and its actual SHA-256. It holds the admitted graph/events only after structural admission. It does not parse RIFF itself, run metering, enter READY, execute callbacks or produce output.",
+          "implementation_status": "LOCALLY_VERIFIED_SAME_RESOURCE_GRAPH_AND_CANONICAL_JOB_IDENTITY__F03R_TYPED_CONTROL_MAPPING_OPEN",
+          "scope": "Coordinates selected job normalization, AXML/CHNA graph admission and DBMD parsing over borrowed payloads from one caller-owned immutable RIFF allocation. Binds the full resource SHA/length, raw job XML SHA, canonical normalized-config SHA, and graph chunk spans to one PreparedJobInput. The caller's IO adapter still validates RIFF structure. This slice does not run metering, enter READY, execute callbacks, or produce output.",
           "owner": "application",
           "implementation_files": [
             "crates/jocforge-application/src/lib.rs",
             "crates/jocforge-domain/src/frontend/job_configuration.rs",
-            "crates/jocforge-domain/src/frontend/selected_adm_graph.rs"
+            "crates/jocforge-domain/src/frontend/selected_adm_graph.rs",
+            "crates/jocforge-domain/src/frontend/dbmd_sections.rs"
+          ],
+          "local_mapping_files": [
+            "docs/implementation/prepared-job-input-identity.md"
           ],
           "test_modules": [
             "crates/jocforge-application/tests/prepared_job_input.rs"
@@ -620,13 +624,17 @@
               "crates/jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json",
               "crates/jocforge-domain/tests/fixtures/selected_adm_graph/source_metadata.xml",
               "crates/jocforge-domain/tests/fixtures/selected_adm_graph/source_track_associations.bin",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-COLD-ENTRY-CLARIFICATION-V1/CONTRACT.md"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-COLD-ENTRY-CLARIFICATION-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PREPARED-JOB-INPUT-IDENTITY-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-FRONTEND-G0-G2-STARTER-V1/CONTRACT.md"
             ],
             "case_pointers": [
               "three accepted and eight rejected selected job configurations retain their existing outcomes",
               "accepted preparations contain 28 admitted events and 38 physical tracks",
               "a source extent beyond the admitted event coverage rejects before the graph is held",
-              "the retained Arc bytes share caller storage and their SHA-256 is recomputed from actual bytes"
+              "AXML, CHNA and DBMD spans are checked against same-allocation RIFF chunk headers and parent resource identity",
+              "resource identity covers the full RIFF allocation; config identity covers raw UTF-8 job SHA plus canonical normalized F01E JSON",
+              "internal in-memory full-WAVE probe admitted 38 tracks/28 events/38 DBMD rows and staged g0 primary activity; callback was discarded at unresolved F03R typed-control mapping"
             ],
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json",
@@ -648,13 +656,27 @@
               "trigger": "single-event, zero-start, programme coverage, fixed Cartesian/jump/interpolation or other selected graph rule fails for the validated source extent",
               "programme_state_after": "No PreparedJobInput or held graph projection exists.",
               "caller_action": "Reject before metadata cache/hold and do not infer admission from matching hashes."
+            },
+            {
+              "error_code": "PREPARED_JOB_METADATA_BINDING",
+              "category": "same-resource chunk binding",
+              "trigger": "an AXML/CHNA/DBMD payload is not the matching in-allocation RIFF chunk span",
+              "programme_state_after": "No PreparedJobInput or graph provenance is returned.",
+              "caller_action": "Reject the cross-resource or mislabeled payload; do not retain a detached graph."
+            },
+            {
+              "error_code": "PREPARED_JOB_IDENTITY_ENVELOPE",
+              "category": "canonical job identity",
+              "trigger": "the selected normalized configuration identity envelope cannot be serialized",
+              "programme_state_after": "No PreparedJobInput is returned.",
+              "caller_action": "Reject before callback processing."
             }
           ],
           "supplement_manifest_sha256": "cb220f8af4a0d94921e3277d70216f66ae7e8b057d7cc14a9beba2a0d8a898aa",
           "limitations": [
-            "same-resource RIFF adapter composition is not yet typed into this application value",
-            "metering/main custody, READY transition and full frontend execution remain NOT_RUN",
-            "synthetic installed48 replay is not whole frontend or native validation"
+            "RIFF validation and payload-span discovery remain the caller IO adapter's responsibility; no F03R typed-control mapping has been admitted",
+            "metering/main custody, READY transition, feature/selector/component stages and full frontend execution remain NOT_RUN",
+            "the local F01E XML was constructed from an accepted configuration vector and was not the source file's original job document"
           ]
         },
         {
@@ -1806,18 +1828,22 @@
         {
           "slice_id": "selected-primary-installed48-source-map-and-activity",
           "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_FUNCTIONAL_ID_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_SELECTED_ACTIVITY_AND_ALL_POSTROUTE_VARIANTS",
-          "scope": "Bind the approved selected primary metadata/control projection to the generated P11 prefix and 37 sorted non-LFE physical rows; produce callback-local source activity, prefix field0/field4 writers, and stateful full-frame activity history for 4,247 normal callbacks and four cached drains. This is a narrow model slice, not a connected production path or native consumer acceptance.",
+          "implementation_status": "LOCALLY_VERIFIED_STATIC_ROUTE_AND_REAL_ADM_G0_ACTIVITY_PROPOSAL__F03R_TYPED_CONTROL_JOIN_OPEN",
+          "scope": "Keeps the detached static projection path and adds a dynamic selected-ADM resource identity binding that reuses the same 48-source row mapping. The authorized full WAV was parsed in memory and produced a source map plus a g0 primary-activity proposal; F03R's typed feature-control inputs remain unresolved, so no callback state was committed and no flags/render consumer ran.",
           "implementation_files": [
+            "crates/jocforge-domain/src/frontend/job_configuration.rs",
+            "crates/jocforge-domain/src/frontend/primary_metadata_control.rs",
             "crates/jocforge-domain/src/spatial/installed48_source_map.rs",
             "crates/jocforge-domain/src/spatial/installed48_activity.rs",
             "crates/jocforge-domain/src/spatial/selected_p11_geometry.rs",
-            "crates/jocforge-domain/src/spatial/source_flags.rs"
+            "crates/jocforge-domain/src/spatial/source_flags.rs",
+            "crates/jocforge-io/examples/meter_input_probe.rs"
           ],
           "test_modules": [
             "crates/jocforge-domain/tests/installed48_source_map.rs",
             "crates/jocforge-domain/tests/installed48_activity.rs",
-            "crates/jocforge-domain/tests/selected_p11_geometry.rs"
+            "crates/jocforge-domain/tests/selected_p11_geometry.rs",
+            "crates/jocforge-application/tests/prepared_job_input.rs"
           ],
           "clock": {
             "domains": ["FrontendCallbackIndex", "AdmSampleIndex", "CodecSourceIndex", "PhysicalHostIndex"],
@@ -1830,14 +1856,14 @@
             ]
           },
           "parameters": {
-            "kind": "SEALED_SELECTED_PRIMARY_R2_AND_APPROVED_P11_LAYOUT",
+            "kind": "DYNAMIC_ADM_RESOURCE_IDENTITY_WITH_APPROVED_P11_LAYOUT",
             "provider_files": [
               "crates/jocforge-domain/tests/fixtures/primary_installed48/INSTALLED48-SOURCE-MAP.json",
               "crates/jocforge-domain/tests/fixtures/primary_installed48/ACTIVITY-AND-ROUTING-RULES.json",
               "crates/jocforge-domain/tests/fixtures/primary_installed48/SELECTED-GEOMETRY-VECTORS.json",
               "crates/jocforge-domain/tests/fixtures/primary_installed48/P11-SOURCE-BINDING.json"
             ],
-            "validation_boundary": "R2 package payloads are test-only expected evidence; production code recomputes the source map and callback proposal. No PCM is persisted, and the producer is not connected to application encode."
+            "validation_boundary": "R2 package payloads remain test-only expected evidence; runtime source maps are recomputed from the admitted F01E graph/control rows and whole-resource identity. The g0 activity value is only a proposal; no callback state is committed and no main encode path is connected."
           },
           "vectors": {
             "kind": "SEALED_MODEL_REPLAY_AND_POSTCOMPUTATION_RECEIPTS",
@@ -1853,14 +1879,25 @@
               "4,251 callback rows: phase, host-frame, source sample cursor, actual/advertised counts, quiet flags, writer indices and field0/field4 masks",
               "5,695 field transition receipts derived from recomputed masks",
               "96 selected post-route variants; V2 specifies active width>=R32(0.2) clears Z at byte offset32 after the normalizer disables field52",
-              "Selected validation-WAVE replay was in-memory only; primary-WAVE PCM identity remains NOT_REHASHED"
+              "The admitted validation WAV was read in memory at its whole-resource identity; the g0 source/activity proposals were dropped at the unresolved F03R typed-control input join"
             ],
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/primary_installed48/CALLBACK-ACTIVITY-OUTPUTS.jsonl",
               "sha256": "120066a8ff1e836a2f0c79e725c49361ff35a1f2323d6ab8fc69a2e94d451ad6"
             },
+          "authorized_validation_resource": {
+            "file": "IMPLEMENTER_PACKAGE/test-vectors/full-song/input-adm.wav",
+            "bytes": 743696526,
+            "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+            "use": "internal identity-bound diagnostic only; never a runtime allowlist"
+          },
             "r2_manifest_sha256": "ca2bc4aff5c81dfc9159177326ddf1db2630a8dc26634a3a761bbbc2a4798332",
-            "route_clarification_v2_manifest_sha256": "c24f2202b3d90c6b739e5e09210106fedfe5b01ba94132bde44012de535d7258"
+            "route_clarification_v2_manifest_sha256": "c24f2202b3d90c6b739e5e09210106fedfe5b01ba94132bde44012de535d7258",
+            "washed_reference_manifest_sha256": {
+              "prepared_job_input_identity_v1": "cefd573075ef181f5a5f9f2929bbdeeb9b348468dea750f61018e65c8e98bd9f",
+              "meter_frontend_g0_g2_starter_v1": "9e63f9ee657d9267ba21a57099c16f410f484d9ff9926cabc3a2eb9a7bebc0f6",
+              "meter_frontend_producer_chain_v1": "9de1440ebb9bc1d1e119b1f2bbb80577a0ae885f722264a52d837c28f9c8e95f"
+            }
           },
           "error_outcomes": [
             {"error_code": "INSTALLED48_ROW_COUNT", "category": "source map shape", "trigger": "Selected controls, 48 source rows, or 37 physical hosts do not satisfy the fixed profile shape.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no installed48 source map."},
@@ -1868,9 +1905,9 @@
           ],
           "not_run": [
             "native primary activity acceptance and consumer-field lineage",
-            "application/CLI production connection",
-            "full F03/F04 source-to-render composition",
-            "primary-WAVE PCM identity, end-to-end encode, and W04 acceptance"
+            "F03R typed feature-control field binding and SourceFlags values",
+            "F03F/selector/U04/outer, F04A render integration, SCP/control packet, and callback commit",
+            "application/CLI production connection, end-to-end encode, and W04 acceptance"
           ]
         }
       ]
@@ -1883,6 +1920,77 @@
       "owner": "spatial_audio",
       "planned_phase": "Phase 3",
       "inventory_status": "INVENTORIED",
+      "direct_slices": [
+        {
+          "slice_id": "independent-meter-installed48-postwindow-leaf",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F04A_DEFERRED",
+          "implementation_status": "LOCALLY_IMPLEMENTED_F04A_LEAF__CORRECTED_NUMERIC_REPLAY_PENDING__F03R_TYPED_CONTROL_MAPPING_OPEN",
+          "scope": "Implements a fresh meter-owned selected F04A installed48/post-window value transition using same-resource PCM, graph/control map, primary activity and membership proposals. A prior isolated run was invalidated after review found F64 sqrt constants were promoted from F32. The implementation now uses the specified F64 literals; the corrected leaf has not been replayed. It is not a committed F06 callback and is not connected to SourceFlags, CurrentFeatures, selector/U04, component, LFE, OAR packet, or measurement receipt.",
+          "owner": "meter",
+          "implementation_files": [
+            "crates/jocforge-domain/src/meter/installed48_renderer.rs",
+            "crates/jocforge-domain/src/meter/mod.rs"
+          ],
+          "test_modules": [],
+          "local_mapping_files": [
+            "docs/implementation/meter-installed48-leaf.md"
+          ],
+          "clock": {
+            "domains": [
+              "MeterCallbackIndex",
+              "AdmSampleIndex",
+              "FrontendCallbackIndex",
+              "CodecSourceIndex",
+              "PhysicalHostIndex"
+            ],
+            "covered_clauses": [
+              "the selected NORMAL source interval begins at 1536*g; output generation is g+1",
+              "the leaf has fresh previous PCM, previous-current rows and per-host diffusion state; no main root alias or commit",
+              "corrected numeric replay remains pending; no SourceFlags or F03F stage was committed"
+            ]
+          },
+          "parameters": {
+            "kind": "APPROVED_SELECTED_P11_MEMBERSHIP_AND_DIFFUSION_PARAMETER_PROVIDERS",
+            "provider_files": [
+              "crates/jocforge-domain/tests/fixtures/primary_installed48/MEMBERSHIP-PARAMETERS.json",
+              "crates/jocforge-domain/tests/fixtures/diffusion_filter/diffusion-mathematical-v1.json",
+              "crates/jocforge-domain/tests/fixtures/diffusion_filter/diffusion-constructor-mathematical-v1.json"
+            ],
+            "validation_boundary": "Runtime values are recomputed from the selected P11 geometry, same-callback PCM, F01E control rows and fresh diffusion state; expected vectors are not runtime inputs."
+          },
+          "vectors": {
+            "kind": "CORRECTED_F04A_LEAF_REPLAY_PENDING",
+            "authoritative_vectors": [],
+            "case_pointers": [
+              "the prior F64-sqrt output run was invalidated and its hashes are not verification evidence",
+              "corrected F64-literal sqrt then F32 conversion requires a new replay after the F03R typed-control input is washed"
+            ],
+            "authorized_resource_identity": {
+              "bytes": 743696526,
+              "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+              "use": "internal identity-bound diagnostic only; never a runtime allowlist"
+            },
+            "washed_reference_manifest_sha256": {
+              "meter_frontend_g0_g2_starter_v1": "9e63f9ee657d9267ba21a57099c16f410f484d9ff9926cabc3a2eb9a7bebc0f6",
+              "meter_frontend_producer_chain_v1": "9de1440ebb9bc1d1e119b1f2bbb80577a0ae885f722264a52d837c28f9c8e95f"
+            }
+          },
+          "error_outcomes": [
+            {
+              "error_code": "F03R_TYPED_CONTROL_MAPPING_UNRESOLVED",
+              "category": "full callback stage before F03F/F04 integration",
+              "trigger": "F01E.9 ADM event diffuse is present but has not been proven to be the separate F03R feature-flags diffuse input.",
+              "programme_state_after": "The g0 full callback proposal is discarded; no SourceFlags or full meter callback state is committed.",
+              "caller_action": "Wait for the cleaned F01E.5-to-F03R field mapping. Do not coerce the ADM event diffuse value."
+            }
+          ],
+          "not_run": [
+            "F03R SourceFlags values, F03F CurrentFeatures, selector/U04/outer and F03W root commit",
+            "F04 matrix/destinations, component15, direct-LFE packet assembly, SCP16/control16",
+            "g1/g2 full frontend callbacks, EOF/drains, measurement receipt, encoding, or product acceptance"
+          ]
+        }
+      ],
       "implementation_status": "DEFERRED_DETAILED_MAPPING"
     },
     {
@@ -1939,6 +2047,69 @@
       "owner": "spatial_audio",
       "planned_phase": "Phase 3",
       "inventory_status": "INVENTORIED",
+      "direct_slices": [
+        {
+          "slice_id": "independent-meter-installed48-postwindow-leaf",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F04A_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_REAL_WAVE_G0_G2_NONCOMMITTING_LEAF__F03R_TYPED_CONTROL_MAPPING_OPEN",
+          "scope": "Runs the selected F04A installed48/post-window value transition with a fresh meter-owned leaf state and same-resource PCM, graph/control map, primary activity and membership proposals. It emits one 48x3072 frame per NORMAL callback and advances only the isolated renderer proposal. This evidence is not a committed F06 callback and is not connected to F03R flags, CurrentFeatures, selector/U04, component, LFE, OAR packet, or measurement receipt.",
+          "owner": "meter",
+          "implementation_files": [
+            "crates/jocforge-domain/src/meter/installed48_renderer.rs",
+            "crates/jocforge-domain/src/meter/mod.rs"
+          ],
+          "test_modules": [],
+          "local_mapping_files": [
+            "docs/implementation/meter-installed48-leaf.md"
+          ],
+          "clock": {
+            "domains": [
+              "MeterCallbackIndex",
+              "AdmSampleIndex",
+              "FrontendCallbackIndex",
+              "CodecSourceIndex",
+              "PhysicalHostIndex"
+            ],
+            "covered_clauses": [
+              "g0..g2 are full NORMAL source intervals beginning at 0/1536/3072; output generation is g+1",
+              "the leaf has fresh previous PCM, previous-current rows and per-host diffusion state; no main root alias or commit",
+              "only the explicit installed48 producer result is identified; no SourceFlags or F03F stage was committed"
+            ]
+          },
+          "parameters": {
+            "kind": "APPROVED_SELECTED_P11_MEMBERSHIP_AND_DIFFUSION_PARAMETER_PROVIDERS",
+            "provider_files": [
+              "crates/jocforge-domain/tests/fixtures/primary_installed48/MEMBERSHIP-PARAMETERS.json",
+              "crates/jocforge-domain/tests/fixtures/diffusion_filter/diffusion-mathematical-v1.json",
+              "crates/jocforge-domain/tests/fixtures/diffusion_filter/diffusion-constructor-mathematical-v1.json"
+            ],
+            "validation_boundary": "Runtime values are recomputed from the selected P11 geometry, same-callback PCM, F01E control rows and fresh diffusion state; expected vectors are not runtime inputs."
+          },
+          "vectors": {
+            "kind": "REAL_RESOURCE_NONCOMMITTING_LEAF_OUTPUT_HASHES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-FRONTEND-G0-G2-STARTER-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-FRONTEND-PRODUCER-CHAIN-V1/CONTRACT.md"
+            ],
+            "case_pointers": [
+              "actual F04A g0 48x3072 output SHA-256 06d88109940f8e913952099a2921a07697bc2863d75d89d5020bb6eadf5d1dbb",
+              "actual F04A g1 48x3072 output SHA-256 8ba7283b9395bdc6c2e514844f7fd6795b187be871984c9017c839547ff1d054",
+              "actual F04A g2 48x3072 output SHA-256 c03318dc8f6349ace6ff439021315c70e3e5739f8b3104ed154979d1aadb54b",
+              "hashes identify diagnostic leaf outputs only; none seeded later computation"
+            ],
+            "authorized_resource_identity": {
+              "bytes": 743696526,
+              "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+              "use": "internal identity-bound diagnostic only; never a runtime allowlist"
+            }
+          },
+          "not_run": [
+            "F03R typed feature-control field binding, SourceFlags values and F03F CurrentFeatures",
+            "selector/U04/outer, F04 matrix/destinations/component, direct-LFE packet assembly, SCP16/control16",
+            "full callback commit, g1/g2 full frontend callbacks, EOF/drains, measurement receipt, encoding, or product acceptance"
+          ]
+        }
+      ],
       "implementation_status": "DEFERRED_DETAILED_MAPPING"
     },
     {
@@ -11755,17 +11926,17 @@
         "module_file": "crates/jocforge-domain/src/spatial/source_flags.rs",
         "test_file": "crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs",
         "fixture_file": "crates/jocforge-domain/tests/fixtures/source_flags/INPUT-ONLY-VECTORS.json",
-        "test_mode": "20 synthetic literal vectors in workspace suite; authorized WAVE boundary vector is explicitly invoked with JOCFORGE_AUTHORIZED_WAV and is ignored otherwise",
+        "test_mode": "20 synthetic literal vectors plus one meter-owned value-only vector in workspace suite; authorized WAVE boundary vector is explicitly invoked with JOCFORGE_AUTHORIZED_WAV and is ignored otherwise",
         "file_inventory": [
           {
             "path": "crates/jocforge-domain/src/spatial/source_flags.rs",
-            "bytes": 33595,
-            "sha256": "49be45826645dbf7c58a4bbe4b753d3e734a9fe4ccb5832acecfe064b0b22eda"
+            "bytes": 36073,
+            "sha256": "8ed614e4ad294e2e8125523df9f1b97c75e538cdc83f0e07b4c6c40dcd249755"
           },
           {
             "path": "crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs",
-              "bytes": 29657,
-              "sha256": "e813e0cf50e7106ed43c3f6261abb1c89f23494ee5ab2b1c5d2a306bbea16e0e"
+              "bytes": 30714,
+              "sha256": "061d8a2c956cd22b1c517411d112a922a3e12126609909f4fb01a0f721294e9d"
           },
           {
             "path": "crates/jocforge-domain/tests/fixtures/source_flags/INPUT-ONLY-VECTORS.json",

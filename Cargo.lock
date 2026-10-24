@@ -98,6 +98,7 @@ dependencies = [
 name = "jocforge-io"
 version = "0.1.0-dev.1"
 dependencies = [
+ "jocforge-application",
  "jocforge-domain",
  "serde_json",
  "sha2",

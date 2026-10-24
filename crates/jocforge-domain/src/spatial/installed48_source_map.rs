@@ -3,7 +3,7 @@
 
 use crate::frontend::dbmd_sections::DbmdTrackFields;
 use crate::frontend::job_configuration::{
-    PrimaryMetadataChunkHashes, SelectedPrimaryControlBinding,
+    PrimaryMetadataChunkHashes, SelectedInputKind, SelectedPrimaryControlBinding,
 };
 use crate::frontend::object_control::ObjectControl52;
 use crate::frontend::primary_metadata_control::{
@@ -463,6 +463,23 @@ pub fn build_primary_installed48_source_map(
     geometry: &SelectedP11Geometry,
 ) -> Result<Installed48SourceMap, Installed48SourceMapError> {
     validate_primary_binding(controls.source_binding())?;
+    build_installed48_source_map(controls, geometry)
+}
+
+/// Builds the same installed48 value map from an admitted runtime-selected input.
+/// Static P11/bed/object mapping is shared with the detached projection path.
+pub fn build_meter_installed48_source_map(
+    controls: &PrimaryMetadataControlRows,
+    geometry: &SelectedP11Geometry,
+) -> Result<Installed48SourceMap, Installed48SourceMapError> {
+    validate_meter_source_binding(controls.source_binding())?;
+    build_installed48_source_map(controls, geometry)
+}
+
+fn build_installed48_source_map(
+    controls: &PrimaryMetadataControlRows,
+    geometry: &SelectedP11Geometry,
+) -> Result<Installed48SourceMap, Installed48SourceMapError> {
     if controls.row_count() != PHYSICAL_HOST_COUNT {
         return Err(Installed48SourceMapError::RowCount);
     }
@@ -579,6 +596,26 @@ pub fn build_primary_installed48_source_map(
         rows,
         physical_to_global_source,
     })
+}
+
+fn validate_meter_source_binding(
+    binding: &SelectedPrimaryControlBinding,
+) -> Result<(), Installed48SourceMapError> {
+    if !binding.runtime_resource_bound() || binding.input_kind() != SelectedInputKind::Adm {
+        return Err(Installed48SourceMapError::SourceBinding);
+    }
+    let sample_count = binding.data_bytes() / SELECTED_BLOCK_ALIGN;
+    if binding.data_bytes() % SELECTED_BLOCK_ALIGN != 0
+        || binding.data_bytes() > binding.source_file_bytes()
+        || sample_count != SELECTED_SAMPLE_COUNT
+        || binding.source_samples().value() != SELECTED_SAMPLE_COUNT
+        || binding.wave().channels() != 38
+        || binding.wave().sample_rate_hz() != 48_000
+        || binding.wave().pcm_bits() != 24
+    {
+        return Err(Installed48SourceMapError::SourceExtent);
+    }
+    Ok(())
 }
 
 fn membership_record(control_words: [u32; 13]) -> [u8; 32] {

@@ -7,10 +7,10 @@ rust-version.workspace = true
 
 [dependencies]
 jocforge-domain = { path = "../jocforge-domain" }
+serde_json = { version = "=1.0.154", default-features = false, features = ["std"] }
 sha2 = { version = "=0.10.9", default-features = false }
 
 [dev-dependencies]
-serde_json = { version = "=1.0.154", default-features = false, features = ["std"] }
 sha2 = { version = "=0.10.9", default-features = false }
 
 [lints]

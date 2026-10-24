@@ -739,4 +739,36 @@ mod tests {
             "HISTORY_SHAPE"
         );
     }
+
+    #[test]
+    fn meter_values_transition_reuses_the_same_flags_without_a_main_packet_owner() {
+        let route = ValidatedSemanticRoute::new(route_records(3, true, false)).unwrap();
+        let controls = controls_for(&route, None).unwrap();
+        let current_pcm = vec![vec![0_u32; FRAME_SAMPLES]; HOST_CHANNELS];
+        let previous_regular = vec![vec![0_u32; FRAME_SAMPLES]; REGULAR_HOSTS];
+        let values = SourceFlagsProducer::produce_meter_values(
+            &current_pcm,
+            &previous_regular,
+            &controls,
+            &route,
+            &[0, 4],
+        )
+        .unwrap();
+
+        for source in 0..PREFIX_SOURCE_COUNT {
+            assert_eq!(
+                values.payload()[source],
+                if source == 0 || source == 4 {
+                    [0, 0]
+                } else {
+                    [1, 1]
+                }
+            );
+        }
+        assert!(
+            values.payload()[PREFIX_SOURCE_COUNT..]
+                .iter()
+                .all(|flags| *flags == [1, 0])
+        );
+    }
 }

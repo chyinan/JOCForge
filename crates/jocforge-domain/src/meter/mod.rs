@@ -2,6 +2,7 @@
 //! Meter-domain boundaries. The selected K-matrix provider is a bounded direct slice.
 
 pub mod energy_window;
+pub mod installed48_renderer;
 pub mod integrated_meter;
 pub mod k_matrix;
 pub mod lfe_delay_ring;
