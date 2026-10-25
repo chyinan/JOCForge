@@ -7185,6 +7185,51 @@
             "No native DEE parity claim or receipt/digest finalization."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "selected-none-drc-bsi-high-byte-projection",
+          "mapping_status": "MATERIALIZED_SELECTED_F06ND_TO_F12_BSI_HIGH_BYTE__BITSTREAM_WRITER_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_RF_AND_SIX_LINE_HIGH_BYTE_PROJECTION__F12_WRITER_OPEN",
+          "scope": "Consumes only the selected scheduler RF U16 control word and six line U16 control words and returns their high bytes for the F12 BSI boundary. It does not reinterpret BSI bytes as U16 inputs, consume auxiliary/limiter words or flags, emit any F12 bits, or perform CRC/whole-frame writing.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/lib.rs",
+            "crates/jocforge-domain/src/drc/mod.rs",
+            "crates/jocforge-domain/src/drc/none_drc_bsi_projection.rs",
+            "crates/jocforge-domain/src/drc/none_drc_scheduler.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The U16-to-high-byte projection is stateless and consumes one scheduler frame output value."
+            ]
+          },
+          "parameters": {
+            "kind": "NONE_U16_HIGH_BYTE_PROJECTION",
+            "provider_files": [],
+            "validation_boundary": "Applies the selected high-eight-bit rule only; selected scheduler flags remain separate success-path outputs."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/none_drc_bsi_projection.rs"
+          ],
+          "vectors": {
+            "kind": "EXHAUSTIVE_U16_HIGH_BYTE_DOMAIN_AND_TYPED_SCHEDULER_PROJECTION",
+            "authoritative_vectors": [
+              "specs/06-none-drc-statistics-and-control.md"
+            ],
+            "case_pointers": [
+              "All 65,536 possible U16 values project to their exact high byte.",
+              "A typed scheduler output test projects only RF and six line words while perturbing flags, auxiliary and limiter fields independently."
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_spec_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "F12 BSI field presence policy, bit writer, frame builder, CRC and final 4,096-byte output",
+            "Production application::encode wiring and whole-programme output",
+            "F06 meter finalization and meter_terminal_sha256 remain HOLD"
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },

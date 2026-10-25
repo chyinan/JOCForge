@@ -1006,6 +1006,12 @@ def main():
   ('f06nd-clarification-supplement-identity-drift',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06ND')['direct_slices']if s['slice_id']=='washed-none-drc-source-fifo-and-error-contract-clarification')['parameters'].update(authorization_manifest_sha256='0'*64)))
  ]
  cases += [
+  ('f06nd-bsi-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F06ND')['direct_slices'].remove(next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06ND')['direct_slices']if s['slice_id']=='selected-none-drc-bsi-high-byte-projection')))),
+  ('f06nd-bsi-high-byte-shift-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/drc/none_drc_bsi_projection.rs','(word >> 8) as u8','(word >> 7) as u8')),
+  ('f06nd-bsi-rf-source-crosswire',lambda r:replace_once(r/'crates/jocforge-domain/src/drc/none_drc_bsi_projection.rs','scheduler.rf_packed_word_u16','scheduler.rf_aux_packed_word_u16')),
+  ('f06nd-bsi-exhaustive-u16-endpoint-removed',lambda r:replace_once(r/'crates/jocforge-domain/tests/none_drc_bsi_projection.rs','u16::MIN..=u16::MAX','u16::MIN..u16::MAX'))
+ ]
+ cases += [
   ('f04g-control52-static-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices'].remove(next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices']if s['slice_id']=='washed-control52-static-row-and-owner-copy-lineage')))),
   ('f04g-control52-gain-producer-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices']if s['slice_id']=='washed-control52-static-row-and-owner-copy-lineage')['native_status'].update(f04g_gain11_producer='CLOSED'))),
   ('f04g-control52-f04a-consumer-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices']if s['slice_id']=='washed-control52-static-row-and-owner-copy-lineage')['native_status'].update(f04a_immediate_consumer='CLOSED'))),
