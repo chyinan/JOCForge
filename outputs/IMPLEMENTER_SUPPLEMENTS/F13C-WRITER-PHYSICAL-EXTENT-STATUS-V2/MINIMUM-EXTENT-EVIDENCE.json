@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge.f13c-writer-extent-minimum-evidence.v2",
+  "status": "REQUIRED_TO_CLOSE_PHYSICAL_EXTENT; NOT_AUTHORIZATION_TO_CAPTURE",
+  "required_identity_chain": [
+    "indexed table owner and its producer/initializer",
+    "exact backing-pointer table entry consumed by the selected writer state",
+    "allocator result and typed allocated byte capacity",
+    "selected writer cursor/base identity and maximum writable byte extent",
+    "any separately cited IDA pointer expression must be joined by a proven owner/field relation before being equated"
+  ],
+  "not_sufficient": [
+    "logical expected/final bit counts",
+    "cursor values without allocation capacity",
+    "equal pointer-like values from unrelated disassembly views"
+  ],
+  "payload_read_budget_bytes": 0,
+  "wash_gate": "Any live observation requires a specific Wash GO; none is granted here."
+}

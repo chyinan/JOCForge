@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-washed-supplement-manifest.v1",
+  "package_id": "F13C-WRITER-PHYSICAL-EXTENT-STATUS-V2",
+  "status": "PARTIAL_STATIC_OWNER_CHAIN_CLOSED_ALLOCATOR_EXTENT_UNBOUND",
+  "implementation_ready_for_physical_extent": false,
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "bytes": 1617,
+      "sha256": "4f1b851aea8a4246f20bb06588b82b4c5efd4d0e9c69793616ea2d541ac95ca4"
+    },
+    {
+      "path": "OWNER-CHAIN.json",
+      "bytes": 1090,
+      "sha256": "7eef2b495db8176fbf434150c0a38bf6814a60136123aff1b6dec5edb7372d20"
+    },
+    {
+      "path": "MINIMUM-EXTENT-EVIDENCE.json",
+      "bytes": 876,
+      "sha256": "b5d2d9c43ed0928fadba9c3c8416b5a6f9025b29320c2272c95cd04c9aef4ed8"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 968,
+      "sha256": "4bfcfbe891bbbe15e672ebbac245ea9f2baa11bde02452edd680455d0d76ae7c"
+    },
+    {
+      "path": "check_package.py",
+      "bytes": 1672,
+      "sha256": "9a23967c67bc38dec38c08c2d469cb93a7206d4ffed3be7cf5eb9bbee0bd5843"
+    }
+  ]
+}

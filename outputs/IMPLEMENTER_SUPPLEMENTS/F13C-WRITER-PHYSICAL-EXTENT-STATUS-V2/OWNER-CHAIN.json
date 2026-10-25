@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.f13c-writer-owner-chain-status.v2",
+  "status": "WRITER_STATE_OWNER_INITIALIZER_STATIC_CLOSED; PHYSICAL_EXTENT_UNBOUND",
+  "selected_writer_state": {
+    "contains": ["output cursor/base", "logical bit offset", "16-bit accumulation state"],
+    "logical_bit_count_formula_source": "separate helper/context",
+    "physical_capacity": "NOT_ESTABLISHED"
+  },
+  "static_owner_edges": [
+    {"edge":"selected writer call → embedded writer state supplied by containing owner","status":"STATIC_CLOSED_FOR_REVIEWED_GHIDRA_CHAIN"},
+    {"edge":"owner initializer → backing pointer copied from indexed table slot into writer state","status":"STATIC_CLOSED_FOR_REVIEWED_GHIDRA_CHAIN"},
+    {"edge":"indexed table producer → allocator and physical byte extent","status":"UNBOUND"},
+    {"edge":"prior IDA pointer expression → this Ghidra writer state","status":"UNBOUND_NOT_ASSUMED_SAME"}
+  ],
+  "limits": [
+    "Logical bit count is not physical allocation capacity.",
+    "No buffer contents were read.",
+    "No target/native run or RAM capture was performed."
+  ]
+}

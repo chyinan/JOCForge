@@ -239,6 +239,7 @@
 | F13C/washed-run011-measurement-to-joc-identity-boundary | F13C | `metadata` |
 | F13C/washed-receipt-capture-output-safety-hold | F13C | `metadata` |
 | F13C/washed-host-dispatch-coordinate-erratum-and-parent-join-hold | F13C | `metadata` |
+| F13C/washed-f13c-writer-owner-initializer-lineage-v2 | F13C | `metadata` |
 | F13C/washed-f13c-writer-physical-extent-status | F13C | `metadata` |
 | F13C/washed-f13c-writer-physical-extent-status | F13C | `metadata` |
 | F13C/washed-parent-writer-serialization-and-no-output-boundary-hold | F13C | `metadata` |

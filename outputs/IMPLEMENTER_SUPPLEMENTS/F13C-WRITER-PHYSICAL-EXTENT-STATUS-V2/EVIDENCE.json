@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.f13c-writer-physical-extent-wash-evidence.v2",
+  "status": "PARTIAL_STATIC_WRITER_STATE_CHAIN_PHYSICAL_EXTENT_UNBOUND",
+  "source_identity": {
+    "native_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "research_package_manifest_sha256": "9ddf02e808482131619a68e54824c950f59600f0ab74316aeedfa76ce3f64509",
+    "ghidra_query_outputs_verified": 9,
+    "raw_code_or_decompilation_included": false
+  },
+  "closed_scope": "Ghidra selected writer cursor/base state back to its containing owner and the initializer that copies a backing pointer from an indexed table slot",
+  "unbound_scope": [
+    "indexed table producer",
+    "allocator and physical writable extent",
+    "identity join from the separate IDA pointer expression to this Ghidra field"
+  ],
+  "native_execution": "NOT_RUN",
+  "buffer_contents_read": false,
+  "pcm_or_payload_included": false,
+  "private_key_or_auth_material_included": false
+}

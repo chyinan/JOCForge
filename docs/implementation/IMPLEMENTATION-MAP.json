@@ -11059,6 +11059,60 @@
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
         {
+          "slice_id": "washed-f13c-writer-owner-initializer-lineage-v2",
+          "mapping_status": "WASHED_STATIC_WRITER_OWNER_AND_INITIALIZER_CHAIN__TABLE_PRODUCER_AND_PHYSICAL_EXTENT_OPEN",
+          "implementation_status": "WASHED_GHIDRA_STATE_TO_OWNER_INITIALIZER_STATIC_CLOSED__IDA_FIELD_JOIN_UNBOUND",
+          "scope": "Wash closes the reviewed Ghidra selected-writer state to its containing owner and the initializer that copies a backing pointer from an indexed table slot. The indexed table producer/allocator, physical byte capacity, and identity join from the separate IDA pointer expression to this Ghidra field remain UNBOUND. This is static lineage only; no RAM/native run or implementation authorization is provided.",
+          "owner": "codec",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The reviewed owner/initializer path does not bind a source, dispatch or AU clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F13C_WRITER_OWNER_INITIALIZER_LINEAGE_V2",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-WRITER-PHYSICAL-EXTENT-STATUS-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-WRITER-PHYSICAL-EXTENT-STATUS-V2/OWNER-CHAIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-WRITER-PHYSICAL-EXTENT-STATUS-V2/MINIMUM-EXTENT-EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-WRITER-PHYSICAL-EXTENT-STATUS-V2/EVIDENCE.json"
+            ],
+            "supplement_manifest_sha256": "673ab2880077b38fd3a0f352d1f70b8d1ae957635c53bfc169035b4f3092f6a9",
+            "reviewed_research_package_manifest_sha256": "9ddf02e808482131619a68e54824c950f59600f0ab74316aeedfa76ce3f64509",
+            "validation_boundary": "Static Ghidra writer-state owner/initializer lineage only; cross-tool field identity, indexed-table producer and physical extent remain unbound."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_F13C_WRITER_OWNER_INITIALIZER_STATUS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-WRITER-PHYSICAL-EXTENT-STATUS-V2/OWNER-CHAIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-WRITER-PHYSICAL-EXTENT-STATUS-V2/EVIDENCE.json"
+            ],
+            "case_pointers": [
+              "Ghidra selected writer cursor/base state traces to its containing owner and an initializer copy from an indexed pointer table slot.",
+              "Indexed table producer, allocator/capacity and IDA pointer-expression field identity remain UNBOUND."
+            ],
+            "source_supplement_manifest_sha256": "673ab2880077b38fd3a0f352d1f70b8d1ae957635c53bfc169035b4f3092f6a9"
+          },
+          "native_status": {
+            "ghidra_writer_state_to_containing_owner": "STATIC_CLOSED",
+            "owner_to_initializer_pointer_copy": "STATIC_CLOSED",
+            "indexed_table_producer": "UNBOUND",
+            "allocator_and_physical_capacity": "UNBOUND",
+            "ida_pointer_to_ghidra_field_identity": "UNBOUND",
+            "native_execution": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "No indexed table producer, allocator owner or physical writable byte extent is established.",
+            "No IDA-to-Ghidra field identity join, RAM/native run, or implementation authorization is provided."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
           "slice_id": "washed-f13c-writer-physical-extent-status",
           "mapping_status": "WASHED_LOGICAL_WRITER_STATE_AND_PHYSICAL_CAPACITY_SEPARATED__CAPACITY_UNBOUND",
           "implementation_status": "WASHED_STATIC_CURSOR_AND_LOGICAL_BIT_COUNT__WRITER_BUFFER_CAPACITY_UNBOUND",

@@ -239,6 +239,7 @@
 | F13C/washed-run011-measurement-to-joc-identity-boundary | — | `Measurement callback generations and JOC row/parent/writer generations are distinct and remain unjoined.` |
 | F13C/washed-receipt-capture-output-safety-hold | — | `Measurement callback and run clocks are not a JOC parent-writer/source-generation receipt.` |
 | F13C/washed-host-dispatch-coordinate-erratum-and-parent-join-hold | — | `Host callback order and thread do not establish selected JOC row or source generation identity.`<br>`run_011 measurement generation is not a JOC profile-row generation.` |
+| F13C/washed-f13c-writer-owner-initializer-lineage-v2 | — | `The reviewed owner/initializer path does not bind a source, dispatch or AU clock.` |
 | F13C/washed-f13c-writer-physical-extent-status | — | `This evidence describes static writer representation only; no source, dispatch or AU clock is bound.` |
 | F13C/washed-f13c-writer-physical-extent-status | — | `This evidence describes static writer representation only; no source, dispatch or AU clock is bound.` |
 | F13C/washed-parent-writer-serialization-and-no-output-boundary-hold | — | `Writer success counter advances only after successful serialized output; candidate observation before serialization does not establish writer success.` |

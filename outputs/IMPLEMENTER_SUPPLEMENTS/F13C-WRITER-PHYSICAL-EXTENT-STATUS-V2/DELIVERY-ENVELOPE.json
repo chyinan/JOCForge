@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge-washed-supplement-delivery.v1",
+  "package_id": "F13C-WRITER-PHYSICAL-EXTENT-STATUS-V2",
+  "manifest_sha256": "673ab2880077b38fd3a0f352d1f70b8d1ae957635c53bfc169035b4f3092f6a9",
+  "payload_files": 5,
+  "writer_owner_initializer": "STATIC_CLOSED",
+  "physical_capacity": "UNBOUND",
+  "IDA_to_Ghidra_identity": "UNBOUND"
+}
