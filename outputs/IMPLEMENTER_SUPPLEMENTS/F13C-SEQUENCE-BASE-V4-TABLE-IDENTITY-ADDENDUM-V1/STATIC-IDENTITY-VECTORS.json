@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-f13c-v4-table-identity-guards.v1",
+  "grade": "STATIC_CROSS_PACKAGE_IDENTITY; NO_RUNTIME_VECTORS",
+  "cases": [
+    {
+      "id": "family-b-dispatch-table-identity",
+      "input": {
+        "family_b_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+        "v4_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+        "family_b_profile_dispatch_table_identity": "same exact table as V4 Type10/11 dispatch table"
+      },
+      "expected": {"static_table_join":"CLOSED","selected_runtime_invocation":"UNBOUND"}
+    },
+    {
+      "id": "family-b-row-owner-path",
+      "input": "reviewed family-B wrapper call graph",
+      "expected": {
+        "event_handler_and_parent_processor_same_row_expression": true,
+        "runtime_source_generation_identity":"UNBOUND"
+      }
+    },
+    {
+      "id": "generic-tag-218-class-guard",
+      "input": "tag-218 parse/serialize pair from MPEG2VideoDescriptor table",
+      "expected": {"belongs_to_v4_type10_type11_table":false}
+    },
+    {
+      "id": "unrelated-numeric-status-guard",
+      "input": "numeric status value equal to event tag 218",
+      "expected": {"same_event_semantics_proven":false}
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge-f13c-v4-table-identity-evidence.v1",
+  "status": "FAMILY_B_TO_V4_TYPE_TABLE_STATICALLY_BOUND_SELECTED_INVOCATION_UNBOUND",
+  "reverse_v3_package": {
+    "manifest_sha256": "58683c795061fc2cc26fa2d07b5ae82b8b5fd4bbe51f5091a26f332f9a8d7c7a",
+    "seal_sha256": "4b28e8bb6a99db2f025f217f0f14c3bce60e1582110622e2c876c3b3a4ec7c26",
+    "query_outputs_verified": 11,
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "v4_source_package": {
+    "manifest_sha256": "0c81d9c6b2aa3f0b21eea89344175f684d6cba05d521565a6cc447a2c9b90734",
+    "payload_count": 7,
+    "payloads_verified_by_wash": true,
+    "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "wash_recomputed_table_regions": [
+    {"semantic_role":"V4 Type10/11 dispatch table","bytes":672,"sha256":"c8e1b316835b6b859349ab3691d408bc3c6a91348c0f572e474e4c93cfd3ca0d"},
+    {"semantic_role":"V4 nested callback method table","bytes":48,"sha256":"2979c91f701b5a2294e0c6f6ec52ba7b2432a4c092c18f6b150aa80665e3600c"}
+  ],
+  "identity_edges": {
+    "family_b_dispatch_table_to_v4_table": "STATIC_CLOSED_BY_SAME_IMAGE_AND_EXACT_TABLE_IDENTITY",
+    "family_b_type10_type11_rows_to_v4_rows": "STATIC_CLOSED",
+    "family_b_nested_method_table_to_v4_method_table": "STATIC_CLOSED",
+    "family_b_owner_expression_across_handler_and_parent": "STATIC_CLOSED_WITHIN_WRAPPER_PATH",
+    "family_b_to_selected_host_invocation": "UNBOUND",
+    "family_a_to_v4_table": "UNBOUND",
+    "runtime_source_frame_au_generation": "UNBOUND"
+  },
+  "execution_boundary": {
+    "native_or_target_execution":"NOT_RUN",
+    "pcm_or_event_buffer_read":false,
+    "private_key_or_auth_material_read":false,
+    "whole_f13c_ready":false,
+    "implementation_ready":false
+  }
+}

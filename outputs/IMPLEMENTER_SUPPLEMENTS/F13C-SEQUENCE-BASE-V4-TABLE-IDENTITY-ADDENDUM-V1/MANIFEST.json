@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F13C-SEQUENCE-BASE-V4-TABLE-IDENTITY-ADDENDUM-V1",
+  "status": "FAMILY_B_TO_V4_TYPE_TABLE_STATICALLY_BOUND_SELECTED_INVOCATION_UNBOUND",
+  "implementation_ready": false,
+  "source_reverse_manifest_sha256": "58683c795061fc2cc26fa2d07b5ae82b8b5fd4bbe51f5091a26f332f9a8d7c7a",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1729,
+      "sha256": "e800336cada895db7ef4456862623036d78e7f37555e262803bd20ffe5679a9a"
+    },
+    {
+      "file": "STATIC-IDENTITY-VECTORS.json",
+      "bytes": 1253,
+      "sha256": "d52ce48fdaaf91be96c1467c38312f64bd20d4e9eb0ba27f98eb3dfc38d48c7d"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1815,
+      "sha256": "8248b9d067756fa425580c248711abdcfb6af29418c9f44355f39aed5f4b457d"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 689,
+      "sha256": "8274d3f82e950e2000ae00c69740c7dfb0e44c1ed5db3cb61e5746dd47cef40e"
+    }
+  ]
+}

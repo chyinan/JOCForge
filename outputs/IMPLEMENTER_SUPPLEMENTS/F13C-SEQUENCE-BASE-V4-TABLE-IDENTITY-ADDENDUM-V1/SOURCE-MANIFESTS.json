@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge-f13c-v4-table-identity-source-manifests.v1",
+  "reverse_static_followup_manifest_sha256": "58683c795061fc2cc26fa2d07b5ae82b8b5fd4bbe51f5091a26f332f9a8d7c7a",
+  "v4_original_source_manifest_sha256": "0c81d9c6b2aa3f0b21eea89344175f684d6cba05d521565a6cc447a2c9b90734",
+  "v4_washed_status_manifest_sha256": "0246139898c5058e5b800df8fdfacc2cf04200efd6610d10352c1e1e39e12f59",
+  "shared_encoder_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "identity_basis": "Same exact module image hash plus independently rehashed V4 table regions and exact type-row/method-table identities. Static identity does not imply runtime selection."
+}
