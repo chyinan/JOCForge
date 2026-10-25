@@ -8915,8 +8915,97 @@
           ],
           "not_run": [
             "The caller's strict short flag producer, six-lane F07 history/transient wiring, and native source-generation join remain open.",
-            "The F08 LFE transform route, F09 exponent consumer, F12 bitstream/frame composition, and parent success/fatal/reset/EOF transaction remain open.",
+            "The separate F08 LFE transform is locally verified against synthetic trace hashes; F09 exponent consumption, F12 bitstream/frame composition, and parent success/fatal/reset/EOF transaction remain open.",
             "Native equivalence, real ADM, encoded output, decode/render, listening, and W04 product acceptance were not run."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "math-generated-lfe-transform",
+          "mapping_status": "MATERIALIZED_DIRECT_F08_7_8_9_LFE_ROUTE__F09_AND_PARENT_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_MATH_GENERATED_LFE_FFT8_RECURRENCE_SEVEN_BIN_POST__WHOLE_F08_OPEN",
+          "scope": "Consumes one validated F08.2 two-bank fold, applies the shared math-generated long pre-rotation, performs 16 gathered FFT8 groups, the selected eight-bin low-frequency recurrence, and the seven-bin LFE post-rotation. It returns separate seven-word primary and companion spectra. It owns no transform history, source clock, F09 exponent conversion, frame/AU write, or parent commit.",
+          "owner": "analysis",
+          "implementation_files": [
+            "crates/jocforge-domain/src/transform/fbw_transform.rs",
+            "crates/jocforge-domain/src/transform/lfe_transform.rs",
+            "crates/jocforge-domain/src/transform/math_generated_parameters.rs",
+            "crates/jocforge-domain/src/transform/window_fold.rs",
+            "crates/jocforge-domain/src/transform/mod.rs",
+            "crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json"
+          ],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Consumes one caller-supplied LFE fold and assigns no sample, callback, source, AU, or programme clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_MATH_GENERATED_V1_F08_LFE_TRANSFORM_PROVIDER",
+            "provider_files": [
+              "specs/08-transforms.md",
+              "specs/08-nonzero-transform-composition.md",
+              "parameters/ordinary-transform-math-v1.json",
+              "crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json"
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "approved_model_spec_sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e",
+            "approved_composition_spec_sha256": "629d8c5c2853f81f82bcee281370fbb39efea0a62255f367da6fd3677172175d",
+            "math_generated_provider_sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1",
+            "validation_boundary": "Uses only the selected math-generated-v1 provider; historical D01-D04 identity and native equivalence are not claimed."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/lfe_transform.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_F08_NONZERO_LFE_CONTINUOUS_SPECTRUM_TRACES",
+            "authoritative_vectors": [
+              "test-vectors/F08-NONZERO-COMPOSITION-INPUT-VECTORS.json",
+              "test-vectors/F08-NONZERO-COMPOSITION-RESULT.json",
+              "crates/jocforge-domain/tests/fixtures/window_fold/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json"
+            ],
+            "case_pointers": [
+              "Runs the three `lfe_continuous` recipes with separate primary and companion fold values and checks both seven-word spectrum hashes and nonzero counts for each block.",
+              "The result exposes trace hashes/previews rather than complete expected spectrum words; this is not an independent full-word oracle replay.",
+              "F09 POWER/PRIMARY exponent conversion, source/clock integration, parent transaction, native equivalence, and whole F08 remain outside this slice."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/window_fold/INPUT-ONLY-VECTORS.json",
+              "bytes": 3771,
+              "sha256": "eb825796adc60933b1c717122f991a9a0ced95ab0cd89d29ef4f6e1e28b6866c"
+            },
+            "additional_fixtures": [
+              {
+                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
+                "bytes": 19159,
+                "sha256": "a77806e29ea7e0cb361353a2a6313826e4cdcc2b3f36cebce6fc0b434cdcb906"
+              }
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "native_status": {
+            "provider_profile": "math-generated-v1",
+            "lfe_fft8_recurrence_seven_bin_post": "LOCALLY_VERIFIED_FOR_SYNTHETIC_TRACE_HASHES",
+            "f09_exponent_conversion": "NOT_IMPLEMENTED_BY_THIS_SLICE",
+            "native_equivalence": "NOT_RUN",
+            "whole_f08": "NOT_IMPLEMENTED",
+            "product_render_and_listening": "NOT_RUN"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "F08_NUMERIC_FAILURE",
+              "category": "LFE pre-rotation, FFT8, recurrence, or post-rotation R32 operation",
+              "trigger": "A separately rounded transform operation produces a nonfinite result.",
+              "programme_state_after": "No primary/companion spectrum is returned; the supplied fold value remains unchanged.",
+              "caller_action": "Fail-stop the caller under I03; do not continue with a partial spectrum."
+            }
+          ],
+          "not_run": [
+            "F09 POWER/PRIMARY exponent consumption and out-of-range mantissa handling are not part of this transform leaf.",
+            "F07 source/flag production, AU clocks, F12 frame writing, and parent success/fatal/reset/EOF transaction remain open.",
+            "Native equivalence, encoded audio, decode/render, listening, and W04 product acceptance were not run."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }

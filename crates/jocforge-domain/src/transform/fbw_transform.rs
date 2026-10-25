@@ -103,21 +103,32 @@ enum MathGeneratedBank {
     Companion,
 }
 
-fn long_spectrum(
+pub(super) fn long_pre_rotation(
     folded: &[u32; SPECTRUM_WORDS],
-    bank: MathGeneratedBank,
     parameters: &MathGeneratedTransformParameters,
-) -> Result<[u32; SPECTRUM_WORDS], F08FbwTransformError> {
-    let mut fft = [0.0_f32; SPECTRUM_WORDS];
+) -> Result<[f32; SPECTRUM_WORDS], F08FbwTransformError> {
+    let mut pre_rotated = [0.0_f32; SPECTRUM_WORDS];
     for index in 0..128 {
         let x = f32::from_bits(folded[2 * index]);
         let y = f32::from_bits(folded[2 * index + 1]);
         let cosine = f32::from_bits(parameters.long_cosine_f32_bits()[index]);
         let sine = f32::from_bits(parameters.long_sine_f32_bits()[index]);
-        let negative_cosine_x = negate(multiply(cosine, x)?);
-        fft[2 * index] = add(negative_cosine_x, multiply(sine, y)?)?;
-        fft[2 * index + 1] = add(multiply(cosine, y)?, multiply(sine, x)?)?;
+        let cosine_x = multiply(cosine, x)?;
+        let sine_y = multiply(sine, y)?;
+        let cosine_y = multiply(cosine, y)?;
+        let sine_x = multiply(sine, x)?;
+        pre_rotated[2 * index] = add(negate(cosine_x), sine_y)?;
+        pre_rotated[2 * index + 1] = add(cosine_y, sine_x)?;
     }
+    Ok(pre_rotated)
+}
+
+fn long_spectrum(
+    folded: &[u32; SPECTRUM_WORDS],
+    bank: MathGeneratedBank,
+    parameters: &MathGeneratedTransformParameters,
+) -> Result<[u32; SPECTRUM_WORDS], F08FbwTransformError> {
+    let mut fft = long_pre_rotation(folded, parameters)?;
     normalized_fft128(&mut fft, parameters).map_err(map_fft_error)?;
 
     let mut spectrum = [0_u32; SPECTRUM_WORDS];
