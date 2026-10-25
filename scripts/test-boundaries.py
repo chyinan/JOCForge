@@ -941,6 +941,11 @@ def main():
   ('f06-prepass-fail-stop-disabled',lambda r:replace_once(r/'crates/jocforge-domain/src/meter/meter_prepass.rs','self.state.phase = IndependentMeterPrepassPhase::Failed;','self.state.phase = IndependentMeterPrepassPhase::Meter;')),
   ('f06-prepass-finalization-promoted',lambda r:replace_once(r/'crates/jocforge-domain/src/meter/meter_prepass.rs','impl IndependentMeterPrepass {','impl IndependentMeterPrepass {\n    fn finalize_selected_measurement(&self) {}'))
  ]
+ cases += [
+  ('f06nf-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F06NF')['direct_slices'].pop())),
+  ('f06nf-provider-word-drift',json_file_mut('crates/jocforge-domain/src/transform/secondary_fft_parameters.json',lambda d:d['fields_u32']['twiddles'].__setitem__(0,d['fields_u32']['twiddles'][0]^1))),
+  ('f06nf-final-b4-order-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/transform/secondary_fft.rs','multiply_words(twiddles.s3[lane], r3.real[lane])?,\n                multiply_words(twiddles.c3[lane], r3.imaginary[lane])?,','multiply_words(twiddles.c3[lane], r3.imaginary[lane])?,\n                multiply_words(twiddles.s3[lane], r3.real[lane])?,'))
+ ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]
   if not cases:raise RuntimeError('no boundary mutations match case prefix: '+x.case_prefix)

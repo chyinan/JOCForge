@@ -5474,7 +5474,72 @@
       "owner": "drc",
       "planned_phase": "Phase 5",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "selected-secondary-fft-network",
+          "mapping_status": "MATERIALIZED_SELECTED_SECONDARY_FFT64_128_NETWORK__INVERSE_AND_CHAIN_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_SECONDARY_FFT64_128_DIRECT_AND_BASIS_VECTORS__INVERSE_CHAIN_DEFERRED",
+          "scope": "Implements the stateless F06NF complex FFT64/FFT128 network with the selected pinned twiddle, scale and permutation words. It follows the specified F4/B4 operation order with a separate F32 rounding step for each add, subtract and multiply. It validates the full supplied parameter document, including the pre/post rotation arrays reserved for the surrounding inverse path. It does not implement inverse256, spectrum pre/post rotations, forward analysis, overlap history, or full F06 main-source composition.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/transform/mod.rs",
+            "crates/jocforge-domain/src/transform/secondary_fft.rs",
+            "crates/jocforge-domain/src/transform/secondary_fft_parameters.json"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "One FFT invocation is stateless and owns no callback, source, AU, or programme clock.",
+              "FFT64 and FFT128 accept exactly 2N interleaved finite F32 words and write every output word once."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_PINNED_SECONDARY_INVERSE_MATH_PROVIDER",
+            "provider_files": [
+              "crates/jocforge-domain/src/transform/secondary_fft_parameters.json"
+            ],
+            "source_provider_sha256": "b452a929d7e4f7090f9466930e5c6047a8007192a30a3ed7c3cd7447dba073b1",
+            "validation_boundary": "Validates the exact provider identity, schema, field lengths, finite F32 words, formula labels and selected permutation; host libm is not used by the runtime FFT."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/secondary_fft.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_SECONDARY_FFT64_128_INPUT_RECIPES_AND_BASIS_OUTPUTS",
+            "authoritative_vectors": [
+              "test-vectors/SECONDARY-FFT-INVERSE-VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "14 input-first FFT64/FFT128 cases compare every output word.",
+              "384 unity basis cases compare all output F32LE hashes across FFT64 and FFT128.",
+              "Unsupported sizes, wrong scalar lengths and nonfinite input words are rejected."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/secondary_fft/SECONDARY-FFT-INVERSE-VERIFICATION.json",
+              "bytes": 592083,
+              "sha256": "15794c5eea4ef67b6bc07dc5e970c7c3000ad2aae1fe8a9ed5f3d447276f0261"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_spec_sha256": "a899c158eeed9485090d4307ef3629eadeca9359ac0d5085612c5f632390ad66",
+            "source_parameter_sha256": "b452a929d7e4f7090f9466930e5c6047a8007192a30a3ed7c3cd7447dba073b1",
+            "source_vector_sha256": "15794c5eea4ef67b6bc07dc5e970c7c3000ad2aae1fe8a9ed5f3d447276f0261"
+          },
+          "error_outcomes": [
+            {"error_code":"FFT_INPUT_ERROR","category":"input preflight","trigger":"Interleaved scalar length is not 2N or any input F32 word is nonfinite.","programme_state_after":"No output is returned; the FFT owns no state.","caller_action":"Reject the invocation."},
+            {"error_code":"PARAMETER_UNAVAILABLE","category":"provider identity","trigger":"Embedded selected provider bytes do not match the pinned SHA-256.","programme_state_after":"No output is returned.","caller_action":"Reject the invocation."},
+            {"error_code":"FFT_PARAMETER_ERROR","category":"provider shape or schema","trigger":"A field, finite word, formula label, or selected permutation fails validation.","programme_state_after":"No output is returned.","caller_action":"Reject the invocation."},
+            {"error_code":"NUMERIC_FAILURE","category":"separately rounded F32 arithmetic","trigger":"A required finite intermediate cannot be represented as a finite F32.","programme_state_after":"No output is returned.","caller_action":"Reject the invocation."},
+            {"error_code":"UNSUPPORTED_PROFILE","category":"selected FFT size","trigger":"Complex-point count is outside 64 or 128.","programme_state_after":"No output is returned.","caller_action":"Reject the invocation."}
+          ],
+          "not_run": [
+            "10 full inverse256 cases and the F06NI inverse wrapper",
+            "24 forward/inverse/overlap chain blocks and transform history",
+            "full F06 main-source secondary reconstruction and none-DRC",
+            "real ADM, native DLL, product and listening acceptance"
+          ],
+          "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
+        }
+      ]
     },
     {
       "functional_id": "F06WH",
