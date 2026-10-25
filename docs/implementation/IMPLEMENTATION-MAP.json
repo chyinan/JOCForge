@@ -5454,7 +5454,75 @@
       "owner": "drc",
       "planned_phase": "Phase 5",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "single-lane-secondary-overlap-carry",
+          "mapping_status": "MATERIALIZED_SELECTED_SECONDARY_OVERLAP_LEAF__WHOLE_F06NR_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_SELECTED_SINGLE_LANE_OVERLAP_AND_CARRY__F06NR_FRAME_DEFERRED",
+          "scope": "Consumes one already-transformed 256-word lane block and an independent 128-word carry, applies the selected math-generated F08 window with the F06NR.3 overlap operation order, and returns all 256 output words plus the exact D[64..192] next carry. It owns no clock, lane routing, frame/source transaction, inverse FFT, carrier assembly or private EOF flush; it does not claim original static-window identity or whole F06NR equivalence.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/transform/mod.rs",
+            "crates/jocforge-domain/src/transform/secondary_overlap.rs",
+            "crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "One overlap block is a stateless six-lane-independent transition over an explicit old carry.",
+              "The next carry is a bitwise copy of transformed words 64..192; it does not reuse overlap output."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_MATH_GENERATED_F08_WINDOW",
+            "provider_files": [
+              "crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json"
+            ],
+            "source_provider_sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1",
+            "window_words_sha256": "45e8cbe4c07bd1b59bc009ed6ac77d7911a3a309b01308131da97e640da95b23",
+            "validation_boundary": "Consumes the approved math-generated KBD window words and rejects provider identity or finite-field errors; it does not claim equality with the original static window table."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/secondary_overlap.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_SIX_BLOCK_OVERLAP_AND_CARRY_INPUT_RECIPES",
+            "authoritative_vectors": [
+              "test-vectors/SECONDARY-OVERLAP-CARRIER-VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "Six sequential 256-word input recipes continue from each actual next carry.",
+              "Every 256-word overlap output and all 128 next-carry words are compared exactly.",
+              "Input recipes cover positive/negative zero, boundary impulses, dyadic values and alternating signs."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/secondary_overlap/overlap-verification.json",
+              "bytes": 45751,
+              "sha256": "11e353e47d189aa1eff9bd51290609a5684481610b8a03df226a73b3600e518b"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_spec_sha256": "26a67687d019b480fcb450cc8321198f8df3d5182c55d49adefc4179fa23f74a",
+            "source_parameter_sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1",
+            "source_window_words_sha256": "45e8cbe4c07bd1b59bc009ed6ac77d7911a3a309b01308131da97e640da95b23",
+            "source_vector_sha256": "11e353e47d189aa1eff9bd51290609a5684481610b8a03df226a73b3600e518b"
+          },
+          "error_outcomes": [
+            {"error_code":"SECONDARY_INPUT_ERROR","category":"transformed block or carry domain","trigger":"The block is not 256 finite words or carry construction is nonfinite.","programme_state_after":"No output is returned and the before carry is unchanged.","caller_action":"Reject the block transition."},
+            {"error_code":"PARAMETER_UNAVAILABLE","category":"selected F08 window provider","trigger":"Embedded provider bytes do not match the pinned identity.","programme_state_after":"No output is returned.","caller_action":"Reject the transition."},
+            {"error_code":"PARAMETER_IDENTITY_ERROR","category":"window provider shape or content","trigger":"The window field, finite words, or window-word SHA does not match the selected provider contract.","programme_state_after":"No output is returned.","caller_action":"Reject the transition."},
+            {"error_code":"NUMERIC_FAILURE","category":"separately rounded F32 overlap","trigger":"A required finite intermediate or output is nonfinite.","programme_state_after":"No output or next carry is returned.","caller_action":"Reject the transition."
+            }
+          ],
+          "not_run": [
+            "F06NR five-lane forward history, F06NF/F06NI integration and 30-block frame transaction",
+            "secondary block0 warmup and block1..5 carrier placement",
+            "main none-DRC statistics/scheduler",
+            "F06 meter finalization/MeasurementReceipt terminal digest remains HOLD",
+            "real ADM, native DLL, product and listening acceptance"
+          ],
+          "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
+        }
+      ]
     },
     {
       "functional_id": "F06NI",

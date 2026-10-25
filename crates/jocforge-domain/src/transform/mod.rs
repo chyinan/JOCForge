@@ -7,4 +7,5 @@ pub mod long_transform;
 pub(super) mod parameters;
 pub mod secondary_fft;
 pub mod secondary_inverse;
+pub mod secondary_overlap;
 pub mod workspace;

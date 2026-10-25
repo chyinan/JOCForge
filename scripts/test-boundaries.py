@@ -951,6 +951,11 @@ def main():
   ('f06ni-short-quarter-split-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/transform/secondary_inverse.rs','64 + index,','128 + index,')),
   ('f06ni-outer-clamp-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/transform/secondary_inverse.rs','clamp_to_unit(multiply(transformed_a[2 * index], TWO_WORD)?)?','multiply(transformed_a[2 * index], TWO_WORD)?'))
  ]
+ cases += [
+  ('f06nr-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F06NR')['direct_slices'].pop())),
+  ('f06nr-carry-source-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/transform/secondary_overlap.rs','transformed_words[64..192]','transformed_words[128..256]')),
+  ('f06nr-overlap-index-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/transform/secondary_overlap.rs','255 - 2 * index,','255 - 4 * index,'))
+ ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]
   if not cases:raise RuntimeError('no boundary mutations match case prefix: '+x.case_prefix)
