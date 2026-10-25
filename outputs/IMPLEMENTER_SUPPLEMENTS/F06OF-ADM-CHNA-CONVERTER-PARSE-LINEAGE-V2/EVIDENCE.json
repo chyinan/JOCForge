@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge.f06of-adm-chna-converter-parse-lineage.v2",
+  "package_id": "F06OF-ADM-CHNA-CONVERTER-PARSE-LINEAGE-V2",
+  "status": "OBJECT_AND_BED_TO_CONVERTER_STORAGE_STATIC_CLOSED_FRAME_DESCRIPTOR_JOIN_UNBOUND",
+  "source_package": {
+    "evidence_manifest_sha256": "a0d4473b952cf8451fb4e84b40274e774799d2dfe15109e4b6d623ff6216f7ca",
+    "package_seal_sha256": "d858406bafed074d49576fd3699d28771819cc5aaaf9e392f510b20c3987c7d7",
+    "payload_files_verified": 6,
+    "payload_hashes_and_sizes": "PASS"
+  },
+  "approved_f01e_manifest_sha256": "f210abc9fb0d92f239ebef228cb3c3e15b9f55a820623aecf650b96d537102f4",
+  "closed_static_edges": [
+    "CHNA row UID to track-index map",
+    "UID lookup to CHNA track slot",
+    "object AudioObjectID to decoded channel input ID",
+    "bed AudioObjectID plus zero-based channel ordinal to arithmetic-sum channel-record value",
+    "converter-local channel descriptor to AdmFileStorage lookup"
+  ],
+  "remaining_unbound": [
+    "AdmFileStorage result to selected measurement frame descriptor",
+    "physical row order at frame consumption",
+    "PCM range/cursor and reader EOF",
+    "runtime owner/generation join",
+    "bed/object source identity to downstream SCP16/control16 and F06OF callback owner"
+  ],
+  "native_execution": "NOT_RUN",
+  "primary_pcm_identity": "NOT_REHASHED",
+  "source_code_or_binary_included": false,
+  "raw_pcm_included": false,
+  "private_keys_or_auth_material_included": false,
+  "implementation_ready": "NO",
+  "public_distribution": "AUTHORIZED_FOR_THIS_WASHED_NONPRIVATE_MATERIAL"
+}

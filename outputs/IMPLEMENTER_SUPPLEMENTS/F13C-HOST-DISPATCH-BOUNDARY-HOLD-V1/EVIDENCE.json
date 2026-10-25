@@ -1,0 +1,37 @@
+{
+  "schema": "jocforge.f13c-host-dispatch-boundary-status.v1",
+  "package_id": "F13C-HOST-DISPATCH-BOUNDARY-HOLD-V1",
+  "status": "HOST_SDK_CALLBACK_BOUNDARY_STATIC_CLOSED_PRIVATE_JOC_PARENT_JOIN_UNBOUND",
+  "source_package_manifest_sha256": "ec03db81aed9738c5f01b905b5db9dd19c83cccb4330bbeb32e7060687257b7a",
+  "source_payload_files_verified": 6,
+  "source_payload_hashes_and_sizes": "PASS",
+  "native_run": "NOT_RUN",
+  "host_path": {
+    "plugin_category_registration": "STATIC_CLOSED",
+    "stage_runner_same_owner_build_to_run": "STATIC_CLOSED",
+    "selected_audio_object_to_wrapper": "STATIC_CLOSED",
+    "host_virtual_audio_filter_callback_boundary": "STATIC_CLOSED",
+    "virtual_target_to_private_joc_profile_parent": "UNBOUND"
+  },
+  "joc_join": {
+    "type10_type11_method_table_registration": "STATIC_CLOSED_BY_PRIOR_DLL_PACKAGE",
+    "constructor_event_to_later_parent_slot_same_row_generation": "UNBOUND",
+    "selected_profile_type": "UNBOUND",
+    "run_011_scope": "measurement-only; no JOC parent-writer receipt"
+  },
+  "coordinate_correction": {
+    "earlier_host_function_labels": "some flat-image file offsets were mislabeled as PE RVAs",
+    "current_host_regions": "reidentified with corrected file-offset/PE-RVA correspondence",
+    "old_host_coordinate_claims_reused": false,
+    "DLL_internal_region_identity_affected": false
+  },
+  "capture_safety": {
+    "existing_harness_pre_serialization_no_output_stop": "NOT_VERIFIED",
+    "previous_capture_created_temporary_encoded_output": true,
+    "same_row_generation_receipt": "BLOCKED",
+    "native_run_authorized": false
+  },
+  "private_keys_or_auth_material_included": false,
+  "private_user_data_or_pcm_included": false,
+  "public_distribution": "AUTHORIZED_FOR_THIS_WASHED_NONPRIVATE_STATUS"
+}

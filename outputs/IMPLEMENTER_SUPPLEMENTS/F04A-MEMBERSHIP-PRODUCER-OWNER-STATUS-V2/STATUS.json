@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge.f04a-membership-producer-owner-status.v2",
+  "package_id": "F04A-MEMBERSHIP-PRODUCER-OWNER-STATUS-V2",
+  "status": "NATIVE_GATE_AND_PERSISTENT_ROW_STATE_ARE_DISTINCT_CLEAN_JOIN_UNBOUND",
+  "source_package_manifest_sha256": "8dbf3a581d6dc763396723d85d9f8e4582e77d0441a93455b19dbdc4e3cb04bc",
+  "source_payload_count": 5,
+  "source_payload_hashes_and_sizes": "PASS",
+  "prior_control52_wash_manifest_sha256": "e45b59e7c5dcf92f270b8f75b2d9f2705ca97e5e72d52ca98d25478c67e8b2ea",
+  "status_map": {
+    "handler_input_row_table": "STATIC_CLOSED_AS_DISTINCT_OWNER",
+    "persistent_cache_row_state_table": "STATIC_CLOSED_AS_DISTINCT_OWNER; current value/generation UNBOUND",
+    "handler_full_u32_gate_read": "STATIC_CLOSED; raw staged bytes 0..3; three bytes untyped",
+    "handler_gate_to_candidate_rows": "STATIC_CLOSED",
+    "candidate_rows_to_final_status_list": "STATIC_CLOSED",
+    "final_native_list_to_geometry_and_accumulator": "STATIC_CLOSED",
+    "clean_audio_diffuse_lane_identity": "UNBOUND",
+    "clean_f04a_prefix_writer_identity": "NOT_PROVEN",
+    "same_generation_receipt": "NOT_CAPTURED"
+  },
+  "separate_activity_result": {
+    "row_field": "row+0",
+    "rule": "strict abs(product) > 2^-23",
+    "consumed_by_handler_gate": false
+  },
+  "gate": {
+    "row_flag": "full U32 == 0",
+    "matrix_sum": "left-to-right binary32 row sum >= 0.5",
+    "short_circuit": "nonzero flag skips sum evaluation",
+    "special_values": {"exact_0_5":"PASS","negative":"FAIL","NaN":"FAIL","positive_infinity":"PASS"},
+    "explicit_finite_guard": false
+  },
+  "decision": {
+    "full_f04a_membership_closed": false,
+    "native_run": "NOT_RUN",
+    "implementation_ready": "NO",
+    "public_distribution": "AUTHORIZED_FOR_THIS_WASHED_NONPRIVATE_MATERIAL",
+    "private_key_or_auth_material_included": false,
+    "raw_pcm_included": false
+  }
+}

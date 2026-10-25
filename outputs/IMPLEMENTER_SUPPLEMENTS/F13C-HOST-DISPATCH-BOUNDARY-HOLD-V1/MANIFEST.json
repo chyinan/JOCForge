@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge-wash-manifest.v1",
+  "package_id": "F13C-HOST-DISPATCH-BOUNDARY-HOLD-V1",
+  "source_package_manifest_sha256": "ec03db81aed9738c5f01b905b5db9dd19c83cccb4330bbeb32e7060687257b7a",
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "bytes": 2473,
+      "sha256": "f4a41b970f3904f86667eb813fcf45135bfbaa07a144dcfdc2af3577d4849038"
+    },
+    {
+      "path": "DELIVERY-ENVELOPE.json",
+      "bytes": 792,
+      "sha256": "a93a53b20ee4418d2d6276dbcad7aef62590e91cd3c2b9f9ba8ef57453d9c51d"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 1773,
+      "sha256": "1bbf4f2bf75cba22026c97a42534f0c44b6e85cbdb28054ef797811c1653eb16"
+    }
+  ]
+}

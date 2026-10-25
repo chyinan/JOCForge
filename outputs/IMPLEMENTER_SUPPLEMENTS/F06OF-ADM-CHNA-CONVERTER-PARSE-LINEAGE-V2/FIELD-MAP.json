@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge.f06of-adm-chna-converter-field-map.v2",
+  "package_id": "F06OF-ADM-CHNA-CONVERTER-PARSE-LINEAGE-V2",
+  "source_input": {
+    "media": "ADM BWF",
+    "accepted_xml_node": "atmos_mezz",
+    "f01e_precedence": "adm node when present; otherwise atmos_mezz",
+    "xml_label_is_distinct_media_type": false
+  },
+  "chna_rows": {
+    "row_table_start_buffer_offset": 4,
+    "row_count_type": "U16",
+    "row_stride_bytes": 40,
+    "track_index": {"type":"U16","row_offset":0,"role":"track slot source"},
+    "audio_track_uid": {"type":"12-byte UID","row_offset":2,"role":"UID lookup key"},
+    "validation": ["UID uniqueness", "track index bounds", "track-index coverage versus channel count"],
+    "slot_rule": "track_index - 1"
+  },
+  "object_channel": {
+    "identifier_format": "AO_%04x",
+    "channel_input_id_rule": "parse suffix, reject malformed or suffix < 0x1001, subtract 0x1001",
+    "descriptor_fields": {
+      "channel_input_id": "decoded ID",
+      "storage_slot": "CHNA track_index - 1"
+    },
+    "storage_vector_write": "slot=track_index-1; value=decoded channel_input_id"
+  },
+  "bed_channel": {
+    "record_per_bed_channel_ordinal": true,
+    "bed_channel_ordinal": "zero-based U32 loop value",
+    "channel_record_third_argument": "I32(decoded channel_input_id) + I32(zero_based_bed_channel_ordinal), computed as a 32-bit arithmetic sum",
+    "channel_record_fourth_argument": "I32(CHNA track_index) - 1",
+    "channel_record_value_field": "third argument, 32-bit value stored at record offset 8",
+    "channel_record_track_slot_field": "fourth argument, 32-bit value stored at record offset 16",
+    "storage_vector_write": "slot=CHNA track_index-1; value=U32(channel_record value field)",
+    "expanded_storage_value": "decoded channel_input_id + zero_based_bed_channel_ordinal"
+  },
+  "converter_local_consumer": {
+    "lookup_key": "U32 channel input value from channel descriptor record",
+    "consumer": "AdmFileStorage per-channel lookup",
+    "converter_local_lineage": "STATIC_CLOSED"
+  },
+  "selected_frame_consumer": {
+    "converter_storage_to_measurement_frame_descriptor": "UNBOUND",
+    "physical_source_row_order": "UNBOUND",
+    "PCM_range_or_cursor": "UNBOUND",
+    "owner_and_generation_join": "UNBOUND",
+    "whole_F06OF_readiness": "NO"
+  }
+}

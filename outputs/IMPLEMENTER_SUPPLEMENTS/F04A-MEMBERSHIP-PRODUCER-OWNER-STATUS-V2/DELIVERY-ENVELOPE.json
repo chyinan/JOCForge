@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge-wash-supplement.v1",
+  "package_id": "F04A-MEMBERSHIP-PRODUCER-OWNER-STATUS-V2",
+  "audience": "ISOLATED_IMPLEMENTATION_AND_PUBLIC_DISTRIBUTION",
+  "scope": "F04A native row ownership, staged gate semantics, and clean-membership join status",
+  "decision": "RECORD_DISTINCT_ROW_OWNERS; KEEP_CLEAN_F04A_MEMBERSHIP_JOIN_UNBOUND",
+  "implementation_ready": false,
+  "public_distribution_status": "AUTHORIZED_FOR_THIS_WASHED_NONPRIVATE_MATERIAL",
+  "source_package_manifest_sha256": "8dbf3a581d6dc763396723d85d9f8e4582e77d0441a93455b19dbdc4e3cb04bc",
+  "native_run_authorized": false,
+  "excluded_material": [
+    "native source, binaries, disassembly, addresses and runtime pointers",
+    "raw PCM, private keys, authentication material and protected output"
+  ]
+}

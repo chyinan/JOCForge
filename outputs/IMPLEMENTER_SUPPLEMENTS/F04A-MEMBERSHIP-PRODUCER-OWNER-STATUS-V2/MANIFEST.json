@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge-wash-manifest.v1",
+  "package_id": "F04A-MEMBERSHIP-PRODUCER-OWNER-STATUS-V2",
+  "source_package_manifest_sha256": "8dbf3a581d6dc763396723d85d9f8e4582e77d0441a93455b19dbdc4e3cb04bc",
+  "prior_control52_wash_manifest_sha256": "e45b59e7c5dcf92f270b8f75b2d9f2705ca97e5e72d52ca98d25478c67e8b2ea",
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "bytes": 2788,
+      "sha256": "d40d7c6fc11a093d0217ab632fb24b11a2cf2b4431279b063e01bb5272171f7b"
+    },
+    {
+      "path": "DELIVERY-ENVELOPE.json",
+      "bytes": 786,
+      "sha256": "e4585fc52fe658b19ae7fef2f4ae46173a24529a68a5557c25bf05d94a4aec7e"
+    },
+    {
+      "path": "STATUS.json",
+      "bytes": 1864,
+      "sha256": "430fed216d397293f0b6fc02ad6d118883e214589b8937d5fae7bf944870b0ec"
+    }
+  ]
+}

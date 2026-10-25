@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge-wash-manifest.v1",
+  "package_id": "F13C-WRITER-SERIALIZATION-BOUNDARY-HOLD-V1",
+  "source_package_manifest_sha256": "4c057ac88f839abb9cd60a313f8379adad718fde18cf520806514309192dd35b",
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "bytes": 1883,
+      "sha256": "7bd709204678ad9715d3d9c5532db657188f14f169358765b3da22f50105f2ce"
+    },
+    {
+      "path": "DELIVERY-ENVELOPE.json",
+      "bytes": 785,
+      "sha256": "4a178c648380f400ac5a388d292281ed508ce90b077dc5e35abc176e16530746"
+    },
+    {
+      "path": "STATUS.json",
+      "bytes": 1661,
+      "sha256": "c950c5d3c851a971af7dba0771d62f01babd0cb3051b2d1f7354a5d96e84f4fd"
+    }
+  ]
+}

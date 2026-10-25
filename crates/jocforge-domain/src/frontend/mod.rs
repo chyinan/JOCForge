@@ -1,6 +1,7 @@
 // pattern: Functional Core
 //! Pure frontend contracts and provider validation.
 
+pub mod adm_file_storage_map;
 pub mod adm_object_events;
 pub mod bed_channel_join;
 mod current_features_provider;

@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge-wash-supplement.v1",
+  "package_id": "F06OF-ADM-CHNA-CONVERTER-PARSE-LINEAGE-V2",
+  "audience": "ISOLATED_IMPLEMENTATION_AND_PUBLIC_DISTRIBUTION",
+  "scope": "Hash-bound static ADM/CHNA object and bed mapping through converter-local storage lookup",
+  "decision": "USE_CONVERTER_LOCAL_MAPPING; KEEP_MEASUREMENT_FRAME_JOIN_UNBOUND",
+  "implementation_ready": false,
+  "public_distribution_status": "AUTHORIZED_FOR_THIS_WASHED_NONPRIVATE_MATERIAL",
+  "source_evidence_manifest_sha256": "a0d4473b952cf8451fb4e84b40274e774799d2dfe15109e4b6d623ff6216f7ca",
+  "source_package_seal_sha256": "d858406bafed074d49576fd3699d28771819cc5aaaf9e392f510b20c3987c7d7",
+  "native_run_authorized": false,
+  "excluded_material": [
+    "converter binaries, source code, disassembly, and runtime addresses",
+    "raw PCM, private user data, private keys, authentication material, and protected output"
+  ]
+}

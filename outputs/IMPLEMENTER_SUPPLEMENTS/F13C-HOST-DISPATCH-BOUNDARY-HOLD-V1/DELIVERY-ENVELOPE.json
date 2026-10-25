@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge-wash-supplement.v1",
+  "package_id": "F13C-HOST-DISPATCH-BOUNDARY-HOLD-V1",
+  "audience": "ISOLATED_IMPLEMENTATION_AND_PUBLIC_DISTRIBUTION",
+  "scope": "F13C host SDK dispatch boundary, coordinate erratum, and dynamic receipt safety status",
+  "decision": "KEEP_HOST_TO_JOC_PARENT_AND_SAME_GENERATION_JOIN_UNBOUND",
+  "implementation_ready": false,
+  "public_distribution_status": "AUTHORIZED_FOR_THIS_WASHED_NONPRIVATE_STATUS",
+  "source_package_manifest_sha256": "ec03db81aed9738c5f01b905b5db9dd19c83cccb4330bbeb32e7060687257b7a",
+  "native_run_authorized": false,
+  "excluded_material": [
+    "binary, source code, disassembly, raw addresses, runtime pointers, and private identifiers",
+    "raw PCM, encoded media, private keys, and authentication material"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge-wash-supplement.v1",
+  "package_id": "F13C-WRITER-SERIALIZATION-BOUNDARY-HOLD-V1",
+  "audience": "ISOLATED_IMPLEMENTATION_AND_PUBLIC_DISTRIBUTION",
+  "scope": "F13C parent writer success, serialization ordering, and safe capture boundary",
+  "decision": "KEEP_NATIVE_WRITER_SUCCESS_AND_SAME_GENERATION_JOIN_UNBOUND",
+  "implementation_ready": false,
+  "public_distribution_status": "AUTHORIZED_FOR_THIS_WASHED_NONPRIVATE_STATUS",
+  "source_package_manifest_sha256": "4c057ac88f839abb9cd60a313f8379adad718fde18cf520806514309192dd35b",
+  "native_run_authorized": false,
+  "excluded_material": [
+    "source code, binaries, disassembly, raw addresses and pointers",
+    "PCM, serialized body bytes, private keys, authentication material and protected media"
+  ]
+}

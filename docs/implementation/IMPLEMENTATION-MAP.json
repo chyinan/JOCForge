@@ -2402,6 +2402,51 @@
             "selector/U04/outer, F04 matrix/destinations/component, direct-LFE packet assembly, SCP16/control16",
             "full callback commit, g1/g2 full frontend callbacks, EOF/drains, measurement receipt, encoding, or product acceptance"
           ]
+        },
+        {
+          "slice_id": "washed-membership-producer-owner-status-v2",
+          "mapping_status": "WASHED_STATIC_ROW_OWNERS_AND_NATIVE_GATE__CLEAN_MEMBERSHIP_JOIN_UNBOUND",
+          "implementation_status": "WASHED_DISTINCT_ROW_OWNERS_AND_MEMBERSHIP_FLOW_CLOSED__CLEAN_IDENTITY_UNBOUND",
+          "scope": "The V2 audit distinguishes the handler gate table from the persistent/cache row-state table and records the native gate and downstream candidate/status-list flow. In the staged raw Control52 branch, offset4 U32 reads raw bytes0..3: one U8 plus three untyped bytes; it is not a typed audio_diffuse field. The package does not bind clean F04A audio_diffuse/lane fields to the handler gate, final row list or prefix writer, and does not establish a same-generation join.",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The handler-gate and persistent/cache row tables have distinct owners and bases; no same-row pointer/generation join is established.",
+              "Current persistent flag across cache/copy/reuse and runtime row generation remain UNBOUND; no source/AU clock is inferred from event order."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F04A_MEMBERSHIP_PRODUCER_OWNER_STATUS_V2",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04A-MEMBERSHIP-PRODUCER-OWNER-STATUS-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04A-MEMBERSHIP-PRODUCER-OWNER-STATUS-V2/STATUS.json"
+            ],
+            "supplement_manifest_sha256": "fff1b10bdb7870d6a2ebe9cc3546942c8924fe954536600b460f9067f4463ca3",
+            "source_package_manifest_sha256": "8dbf3a581d6dc763396723d85d9f8e4582e77d0441a93455b19dbdc4e3cb04bc",
+            "validation_boundary": "Wash static lineage evidence only; no native run, clean membership equivalence, prefix-writer identity or runtime owner receipt."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_F04A_DISTINCT_ROW_OWNERS_AND_GATE_STATUS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04A-MEMBERSHIP-PRODUCER-OWNER-STATUS-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04A-MEMBERSHIP-PRODUCER-OWNER-STATUS-V2/STATUS.json"
+            ],
+            "case_pointers": [
+              "Handler table and persistent/cache table are distinct 56-byte row owners with no same-row/generation join.",
+              "The handler's staged offset4 U32 reads raw Control52 bytes0..3; it is not the raw Control52 U32 at offset4 and is not a typed audio_diffuse field.",
+              "Native membership gate, candidate filtering and nonzero-status output list are statically mapped, but clean F04A membership and prefix-writer identities remain unbound."
+            ],
+            "source_package_manifest_sha256": "8dbf3a581d6dc763396723d85d9f8e4582e77d0441a93455b19dbdc4e3cb04bc"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Same-row and same-generation join from clean F04A audio_diffuse/lane values to native gate and selected row list.",
+            "Persistent row-state current value, clean prefix writer identity, source-row/PCM generation and native run remain UNBOUND/NOT_RUN."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ],
       "implementation_status": "DEFERRED_DETAILED_MAPPING"
@@ -2835,6 +2880,7 @@
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
+
 
       ]
     },
@@ -5764,6 +5810,86 @@
             "Native source/writer run and PCM rehash remain NOT_RUN"
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "selected-adm-graph-to-converter-storage-map",
+          "mapping_status": "MATERIALIZED_HASH_BOUND_F06OF_CONVERTER_LOCAL_STORAGE_MAP__MEASUREMENT_ROW_JOIN_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_TYPED_CONVERTER_STORAGE_SLOTS_AND_VALUES__FRAME_ROW_JOIN_OPEN",
+          "scope": "Projects an already parsed selected AXML/CHNA graph into 38 converter-local entries keyed by the one-based CHNA track index minus one. Object channel-input values use the decoded AO semantic key directly; bed values use the graph-produced decoded key plus zero-based bed ordinal. Track-slot and channel-input ID are distinct newtypes. This materializes only the converter-local map and does not resolve meter PCM rows or connect to the selected measurement frame descriptor.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/frontend/adm_file_storage_map.rs",
+            "crates/jocforge-domain/src/frontend/selected_adm_graph.rs",
+            "crates/jocforge-domain/src/frontend/mod.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The converter storage map is stateless metadata projection; CHNA track slot is an address, not a callback, source, AU, PCM cursor or programme clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F06OF_ADM_CHNA_CONVERTER_PARSE_LINEAGE_V2",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-CHNA-CONVERTER-PARSE-LINEAGE-V2/FIELD-MAP.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-CHNA-CONVERTER-PARSE-LINEAGE-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-CHNA-CONVERTER-PARSE-LINEAGE-V2/EVIDENCE.json"
+            ],
+            "supplement_manifest_sha256": "013b9f79499ab771bd6699ae78943232971f781c95ca2bb33b9eaaf83fa934b8",
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_evidence_manifest_sha256": "a0d4473b952cf8451fb4e84b40274e774799d2dfe15109e4b6d623ff6216f7ca",
+            "source_package_seal_sha256": "d858406bafed074d49576fd3699d28771819cc5aaaf9e392f510b20c3987c7d7",
+            "validation_boundary": "Hash-bound static converter-local mapping only; no native execution, raw PCM, selected frame or runtime generation identity."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/adm_file_storage_map.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_SELECTED_GRAPH_TO_CONVERTER_SLOT_AND_CHANNEL_INPUT_VALUES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-CHNA-CONVERTER-PARSE-LINEAGE-V2/FIELD-MAP.json",
+              "crates/jocforge-domain/tests/fixtures/selected_adm_graph/REAL-GRAPH-TRACK-IDENTITIES.json"
+            ],
+            "case_pointers": [
+              "Recomputes track slot as CHNA track_index minus one and checks all 38 slots in sorted storage order.",
+              "Object channel-input values equal decoded AO semantic keys; bed values equal decoded AO suffix minus 0x1001 plus bed ordinal.",
+              "The V2 contract's converter-local lookup boundary is implemented; the selected measurement frame/PCM row join remains UNBOUND."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/selected_adm_graph/REAL-GRAPH-TRACK-IDENTITIES.json",
+              "bytes": 19792,
+              "sha256": "f573a280401ba43a312bea65f793899965bdca62800c1e716677701c1bca7269"
+            },
+            "source_metadata_xml_sha256": "5973f94db1bc995465b33f6d9be7fd55d3e1bd3941130a913c58e7e5cf57bbfc",
+            "source_chna_sha256": "f82b14e4c1b5b3b1750ed4104aa53f1d595e3ff2d4dbaef76a76c0e35f31b7a6"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "AdmFileStorageMapError::ChnaTrackIndexZero",
+              "category": "CHNA track-slot projection",
+              "trigger": "A graph track carries a zero one-based CHNA track index.",
+              "programme_state_after": "No converter storage map is returned; this projection owns no state.",
+              "caller_action": "Reject the graph projection."
+            },
+            {
+              "error_code": "AdmFileStorageMapError::TrackSlotOutOfRange",
+              "category": "selected 38-track profile boundary",
+              "trigger": "Track index minus one is outside slot 0..37.",
+              "programme_state_after": "No converter storage map is returned.",
+              "caller_action": "Reject the unsupported selected graph."
+            },
+            {
+              "error_code": "AdmFileStorageMapError::{DuplicateTrackSlot,MissingTrackSlot}",
+              "category": "converter map coverage",
+              "trigger": "The graph does not produce exactly one value for every selected slot 0..37.",
+              "programme_state_after": "No complete converter storage map is returned.",
+              "caller_action": "Reject the graph projection; do not infer a missing row."
+            }
+          ],
+          "not_run": [
+            "AdmFileStorage map values are not joined to a selected meter frame descriptor, physical PCM row order, sample range or reader EOF.",
+            "Runtime owner/generation join, SCP/control producer, whole F06OF frontend, PCM rehash and product acceptance remain NOT_RUN."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -7382,6 +7508,7 @@
             }
           ],
           "not_run": [
+            "The dialnorm value is shared with F06ND from the callback input; this slice does not validate a same-programme F06 measurement receipt.",
             "Other BSI and block fields, transform/exponent/mantissa syntax, F12 candidate search/retry, CRC and complete 4096-byte frame production.",
             "F06WH/global source commit, codec owner state install, metadata FIFO, application::encode, whole-programme replay and product acceptance remain deferred or NOT_RUN."
           ],
@@ -10382,6 +10509,110 @@
             "No existing job/harness rerun for this receipt",
             "No native run GO; a new run requires an independently verified no-output stop and separate Wash GO",
             "Native same-row/generation join remains UNBOUND"
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-host-dispatch-coordinate-erratum-and-parent-join-hold",
+          "mapping_status": "WASHED_HOST_DISPATCH_BOUNDARY_AND_COORDINATE_ERRATUM_HOLD",
+          "implementation_status": "WASHED_HOST_SDK_CALLBACK_STATIC_CLOSED_PRIVATE_JOC_PARENT_JOIN_UNBOUND",
+          "scope": "Static evidence closes plugin registration, StageRunner owner continuity through build/run, selected audio object to wrapper, and the host SDK virtual callback boundary. The callback target is not joined to the private type-10/type-11 JOC profile-row parent or the constructor event. Earlier host flat-image file offsets were mislabeled as PE RVAs; do not reuse those host-region labels. DLL-internal profile-table evidence remains a separate identity.",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Host callback order and thread do not establish selected JOC row or source generation identity.",
+              "run_011 measurement generation is not a JOC profile-row generation."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F13C_HOST_DISPATCH_BOUNDARY_HOLD_V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-DISPATCH-BOUNDARY-HOLD-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-DISPATCH-BOUNDARY-HOLD-V1/EVIDENCE.json"
+            ],
+            "supplement_manifest_sha256": "e29e80527153fcb7b4ceb9207e30d321a12dd18642836f75f64bc6de8f11c601",
+            "source_package_manifest_sha256": "ec03db81aed9738c5f01b905b5db9dd19c83cccb4330bbeb32e7060687257b7a",
+            "validation_boundary": "Static host boundary and coordinate erratum only; no selected JOC parent, constructor-to-writer identity, or runtime generation receipt."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_F13C_HOST_DISPATCH_AND_COORDINATE_ERRATUM_STATUS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-DISPATCH-BOUNDARY-HOLD-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-HOST-DISPATCH-BOUNDARY-HOLD-V1/EVIDENCE.json"
+            ],
+            "case_pointers": [
+              "Host registration and SDK callback path are static closed; callback-to-private-JOC-parent edge remains UNBOUND.",
+              "Prior flat-image offsets are not PE RVAs; old host coordinate claims are superseded.",
+              "run_011 remains measurement-only with no JOC writer receipt; no native run was performed."
+            ],
+            "source_supplement_manifest_sha256": "e29e80527153fcb7b4ceb9207e30d321a12dd18642836f75f64bc6de8f11c601"
+          },
+          "native_status": {
+            "host_sdk_callback_boundary": "STATIC_CLOSED",
+            "private_joc_parent_join": "UNBOUND",
+            "constructor_event_same_row_generation": "UNBOUND",
+            "old_host_file_offset_labels_as_rva": "WITHDRAWN",
+            "native_run": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Selected profile type, SDK virtual target to JOC parent, constructor event to parent slot same-row/generation join.",
+            "No safe no-output writer receipt or native run authorization."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-parent-writer-serialization-and-no-output-boundary-hold",
+          "mapping_status": "WASHED_WRITER_SUCCESS_ORDER_CLOSED_SAFE_NATIVE_RECEIPT_BOUNDARY_UNAVAILABLE",
+          "implementation_status": "WASHED_PRE_SERIALIZATION_CANDIDATE_ONLY_WRITER_SUCCESS_NOT_OBSERVED",
+          "scope": "Static ordering shows the bit writer serializes header, sequence, remaining fields and payload before returning success, and the parent success counter advances only after that return. A pre-serialization stop can observe candidate inputs only; writer status and counter-after remain NOT_OBSERVED. An in-memory sink still serializes protected output, and an output file/cleanup is not a no-output guarantee.",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Writer success counter advances only after successful serialized output; candidate observation before serialization does not establish writer success."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F13C_WRITER_SERIALIZATION_BOUNDARY_HOLD_V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-WRITER-SERIALIZATION-BOUNDARY-HOLD-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-WRITER-SERIALIZATION-BOUNDARY-HOLD-V1/STATUS.json"
+            ],
+            "supplement_manifest_sha256": "1c978d4ede59888bb8a2a194f5437fbae4b9d334c2217f0e310af8f7b5af5ca2",
+            "source_package_manifest_sha256": "4c057ac88f839abb9cd60a313f8379adad718fde18cf520806514309192dd35b",
+            "validation_boundary": "Static success ordering and unsafe capture-boundary analysis only; no writer-success runtime receipt and no run GO."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_F13C_WRITER_SERIALIZATION_AND_CAPTURE_STATUS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-WRITER-SERIALIZATION-BOUNDARY-HOLD-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-WRITER-SERIALIZATION-BOUNDARY-HOLD-V1/STATUS.json"
+            ],
+            "case_pointers": [
+              "Parent success counter follows successful bit serialization; a pre-serialization stop cannot observe writer result or counter-after.",
+              "Existing run_011 is measurement-only and run_012 has no pre-serialize stop; a prior capture created temporary encoded output before cleanup.",
+              "No file/no-output guarantee or native writer-success receipt is available; no native run was started."
+            ],
+            "source_supplement_manifest_sha256": "1c978d4ede59888bb8a2a194f5437fbae4b9d334c2217f0e310af8f7b5af5ca2"
+          },
+          "native_status": {
+            "pre_serialization_candidate_inputs": "OBSERVABLE_ONLY",
+            "writer_status": "NOT_OBSERVED",
+            "success_counter_after": "NOT_OBSERVED",
+            "existing_harness_safe_for_joc_writer_receipt": false,
+            "same_row_generation_parent_writer_join": "UNBOUND",
+            "new_native_run": "NOT_AUTHORIZED"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Native writer-success and same-row/generation join remain UNBOUND.",
+            "No safe no-output boundary or separate Wash GO exists; do not run the existing harness."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }

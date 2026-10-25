@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-wash-manifest.v1",
+  "package_id": "F06OF-ADM-CHNA-CONVERTER-PARSE-LINEAGE-V2",
+  "source_evidence_manifest_sha256": "a0d4473b952cf8451fb4e84b40274e774799d2dfe15109e4b6d623ff6216f7ca",
+  "source_package_seal_sha256": "d858406bafed074d49576fd3699d28771819cc5aaaf9e392f510b20c3987c7d7",
+  "approved_f01e_manifest_sha256": "f210abc9fb0d92f239ebef228cb3c3e15b9f55a820623aecf650b96d537102f4",
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "bytes": 2829,
+      "sha256": "73da51d52bfa0f3b2dc41254f46b3e74ccd44238c291ac755bae6a1d5f37bff0"
+    },
+    {
+      "path": "DELIVERY-ENVELOPE.json",
+      "bytes": 910,
+      "sha256": "9534221283fefe1dfb303dc28518ddecd3b709877541aa3d65fe9784a3f2494d"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 1564,
+      "sha256": "459af323262a2755230b16802eef5fbaf1d780a9d62d70d7cacb3848cd3a8d7a"
+    },
+    {
+      "path": "FIELD-MAP.json",
+      "bytes": 2302,
+      "sha256": "680c35be9c7066adc10209bd3f44cd4bd7a270b846568f627e821f838a1984aa"
+    }
+  ]
+}

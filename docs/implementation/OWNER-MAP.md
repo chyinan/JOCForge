@@ -141,6 +141,7 @@
 | F04/independent-meter-installed48-postwindow-leaf | F04 | `spatial_audio` |
 | F04C/whole-spatial-audio-j05-composer | F04C | `spatial_audio` |
 | F04A/independent-meter-installed48-postwindow-leaf | F04A | `spatial_audio` |
+| F04A/washed-membership-producer-owner-status-v2 | F04A | `spatial_audio` |
 | F04F/single-tail-diffusion-filter-block-preview | F04F | `spatial_audio` |
 | F04F/single-tail-active-inactive-callback-lifecycle | F04F | `spatial_audio` |
 | F04G/selected-p11-prefix-membership-producer | F04G | `spatial_audio` |
@@ -172,6 +173,7 @@
 | F06OF/washed-native-frontend-lineage-source-owner-hold | F06OF | `meter` |
 | F06OF/washed-adm-converter-static-inventory-hold | F06OF | `meter` |
 | F06OF/washed-adm-bwf-label-source-row-gap | F06OF | `meter` |
+| F06OF/selected-adm-graph-to-converter-storage-map | F06OF | `meter` |
 | F06NR/single-lane-secondary-overlap-carry | F06NR | `drc` |
 | F06NR/selected-secondary-carrier-routing | F06NR | `drc` |
 | F06NR/selected-secondary-source-au-clock-projection | F06NR | `drc` |
@@ -229,5 +231,7 @@
 | F13C/washed-sequence-base-static-producer-constructor-cold-reset-status | F13C | `metadata` |
 | F13C/washed-run011-measurement-to-joc-identity-boundary | F13C | `metadata` |
 | F13C/washed-receipt-capture-output-safety-hold | F13C | `metadata` |
+| F13C/washed-host-dispatch-coordinate-erratum-and-parent-join-hold | F13C | `metadata` |
+| F13C/washed-parent-writer-serialization-and-no-output-boundary-hold | F13C | `metadata` |
 | F13D2/id2-profile-header-and-body-wire | F13D2 | `metadata` |
 | F14K/public-keyless-integrity-owner | F14K | `integrity` |
