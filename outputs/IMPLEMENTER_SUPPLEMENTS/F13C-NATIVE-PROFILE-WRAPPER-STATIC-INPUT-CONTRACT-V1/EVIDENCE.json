@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-f13c-native-profile-wrapper-evidence.v1",
+  "status": "WRAPPER_INPUT_SYNTHESIS_STATIC_CLOSED_CONVERTER_HANDOFF_UNBOUND",
+  "reverse_package": {
+    "manifest_sha256": "b72891dfdf17c11859369b838403c7f08bff93eae566d3d922f30fe0d2be39f4",
+    "payload_count": 4,
+    "checker_normal": "INTEGRITY_PASS",
+    "checker_python_O": "INTEGRITY_PASS"
+  },
+  "source_verification": {
+    "encoder_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "encoder_module_bytes": 10942464,
+    "encoder_module_hash_recomputed_by_wash": true,
+    "independently_rehashed_new_regions": [
+      {"role":"encoder profile input wrapper","bytes":735,"sha256":"0fc572a2b91af0a99cb22428fdadc0a372491bd08cc82fef4d475f3117974124"},
+      {"role":"profile pair/default getter","bytes":272,"sha256":"994bd57e25f5a4033b9c18cabcc765b53bdccc83e4b9dbde0eb060a9c2d61ac2"},
+      {"role":"fixed signed-I32 pair prefix","bytes":16,"sha256":"880371befcaf4fd6fd62d212a7be26233e4916671f585cded09693c2e15e37f0"}
+    ],
+    "independently_rehashed_v4_matched_regions": [
+      {"role":"profile row builder","bytes":3642,"sha256":"96d670307736883062169058b4e5aac7c57cbf293fd773360e78aee6f8ccb810"},
+      {"role":"profile pair normalizer","bytes":751,"sha256":"9b635746560545a89379cc067b67493d36af1fb7307ec836d6c0e9aa763eca3d"},
+      {"role":"profile metadata builder","bytes":1172,"sha256":"9668ece64bc0346ab5698c299fd57e044f4e6de78525f1d0e7c23efd5bd76ef9"},
+      {"role":"internal context constructor","bytes":2491,"sha256":"9c1518dd0da387f678f59e0eb5760c0aafd261f70d49c6fcbfe7edcd03a6bf1c"}
+    ],
+    "fixed_prefix_decoded_as_signed_i32": [1, 10, 11, 7],
+    "v4_original_source_manifest_sha256": "0c81d9c6b2aa3f0b21eea89344175f684d6cba05d521565a6cc447a2c9b90734",
+    "v4_source_payloads": "7_OF_7_VERIFIED_BY_WASH",
+    "converter_module_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "converter_module_hash_recomputed_by_wash": true,
+    "converter_function_regions_rehashed_by_wash": false
+  },
+  "execution_boundary": {
+    "native_or_target_execution": "NOT_RUN",
+    "selected_host_invocation": "NOT_CAPTURED",
+    "user_ADM_or_PCM_read_for_this_slice": false,
+    "raw_code_or_decompilation_included": false,
+    "private_key_or_auth_material_included": false,
+    "whole_f13c_ready": false,
+    "implementation_ready": false
+  }
+}

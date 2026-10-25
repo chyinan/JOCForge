@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F13C-NATIVE-PROFILE-WRAPPER-STATIC-INPUT-CONTRACT-V1",
+  "status": "WRAPPER_INPUT_SYNTHESIS_STATIC_CLOSED_CONVERTER_HANDOFF_AND_SELECTED_INVOCATION_UNBOUND",
+  "implementation_ready": false,
+  "source_reverse_manifest_sha256": "b72891dfdf17c11859369b838403c7f08bff93eae566d3d922f30fe0d2be39f4",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 3269,
+      "sha256": "f90a4004dfd2742d244c5ba85326ec44ea5e6d918b6dec458215a7f1b2d4ee0e"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1696,
+      "sha256": "e33c495585e3dae1a42732e487d958fb8f3c703aa29d5e7dd0d756d1b9b99282"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2396,
+      "sha256": "fd1f4ea8eca4bb2cb446e7bc40f7f5fd7966cdbb90085a80768fccf1a14a3893"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1168,
+      "sha256": "7bf9d659bae9bc41a3623a7dacbc0dc2b091670b31255913e03c30e9d29e1bfc"
+    }
+  ]
+}

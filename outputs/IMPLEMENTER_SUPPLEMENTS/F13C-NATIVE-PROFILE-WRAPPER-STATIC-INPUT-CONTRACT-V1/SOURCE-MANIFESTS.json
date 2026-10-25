@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge-f13c-profile-wrapper-source-manifests.v1",
+  "reverse_package_manifest_sha256": "b72891dfdf17c11859369b838403c7f08bff93eae566d3d922f30fe0d2be39f4",
+  "v4_original_source_package": {
+    "manifest_sha256": "0c81d9c6b2aa3f0b21eea89344175f684d6cba05d521565a6cc447a2c9b90734",
+    "verified_payload_count": 7
+  },
+  "approved_clean_package": {
+    "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "relevant_f01e_sha256": "afd9efc879ed9a4878bd967c1370275074efd2226e11e67eb86838f4168f61b7",
+    "relevant_f01g_sha256": "c3abb599305392cdad7b43a1d8d45b1c1ae0466ff899f56caa3590d010a11f14"
+  },
+  "module_identities": {
+    "encoder_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "converter_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8"
+  },
+  "scope": {
+    "encoder_wrapper_and_profile_constructor_regions": "WASH_REHASHED_AGAINST_ENCODER_IMAGE",
+    "converter_side_metadata_owner_regions": "PARENT_PACKAGE_REPORTED; exact function intervals not independently replayed in this Wash",
+    "converter_C_to_encoder_wrapper_W_join": "UNBOUND"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "schema": "jocforge-f13c-native-profile-wrapper-input-vectors.v1",
+  "grade": "INPUT_ONLY_ARITHMETIC_DERIVED_FROM_STATIC_CONTRACT; NOT_CAPTURED_SELECTED_RUN_VALUES",
+  "wrapper_pair_prefix": {
+    "profile_count_i32": 1,
+    "pair_count_i32": 5,
+    "pair_stride_bytes": 8,
+    "first_two_pairs": [[1, 10], [11, 7]],
+    "remaining_pairs": [[13, "X+Y"], [14, "Y"], [12, "rate_word"]],
+    "X_and_Y_semantics": "UNBOUND"
+  },
+  "selector_formula": {
+    "dividend_type": "signed I32 local out-parameter A",
+    "partial_flag_for_type10_wrapper_path": 1,
+    "base_division": "trunc_toward_zero(A/1536)",
+    "increment_condition": "partial_flag != 0 && A != 1536*base_q",
+    "valid_list_selector_range": "0 <= q < 5"
+  },
+  "boundary_vectors": [
+    {
+      "id": "exact-zero-boundary",
+      "input": {"A": 0, "partial_flag": 1},
+      "expected": {"base_q": 0, "increment": false, "q": 0, "valid": true}
+    },
+    {
+      "id": "exact-one-block",
+      "input": {"A": 1536, "partial_flag": 1},
+      "expected": {"base_q": 1, "increment": false, "q": 1, "valid": true}
+    },
+    {
+      "id": "partial-after-one-block",
+      "input": {"A": 1537, "partial_flag": 1},
+      "expected": {"base_q": 1, "increment": true, "q": 2, "valid": true}
+    },
+    {
+      "id": "outside-five-list-domain",
+      "input": {"A": 6145, "partial_flag": 1},
+      "expected": {"base_q": 4, "increment": true, "q": 5, "valid": false}
+    }
+  ],
+  "limits": {
+    "vectors_are_native_runtime_observations": false,
+    "selected_A_value_or_clock_domain": "UNBOUND",
+    "selected_q_range_proven": false,
+    "converter_owner_to_wrapper_join": "UNBOUND",
+    "overflow_behavior_for_X_plus_Y": "UNBOUND"
+  }
+}

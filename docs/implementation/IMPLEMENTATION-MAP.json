@@ -10769,6 +10769,70 @@
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
         {
+          "slice_id": "washed-f13c-native-profile-wrapper-static-input-contract",
+          "mapping_status": "WASHED_WRAPPER_TYPE10_CONDITIONAL_STATIC__CONVERTER_HANDOFF_UNBOUND",
+          "implementation_status": "WASHED_TYPE10_WRAPPER_SYNTHESIS_STATIC_CLOSED__SELECTED_INVOCATION_AND_A_UNBOUND",
+          "scope": "On the reviewed encoder-wrapper path, profile_count is 1 and five signed-I32 pairs are synthesized (8 bytes each); first pair (1,10) selects native type 10 on that path rather than relying on the absent-key default. The type-10 wrapper path sets partial_flag=1 and computes q from an internal signed-I32 out-parameter A using trunc_toward_zero(A/1536) plus a partial-block increment. Selected host invocation, converter-owner handoff, X/Y values, rate-word conversion, internal A source/unit/value and selected q remain unbound. This is conditional static behavior, not the actual selected profile or an algorithm ready for product wiring.",
+          "owner": "codec",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The wrapper-local profile row and selector formulas are not joined to a selected callback, source, frame or generation clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F13C_NATIVE_PROFILE_WRAPPER_STATIC_INPUT_CONTRACT_V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-PROFILE-WRAPPER-STATIC-INPUT-CONTRACT-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-PROFILE-WRAPPER-STATIC-INPUT-CONTRACT-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-PROFILE-WRAPPER-STATIC-INPUT-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-PROFILE-WRAPPER-STATIC-INPUT-CONTRACT-V1/SOURCE-MANIFESTS.json"
+            ],
+            "supplement_manifest_sha256": "49ad6f47bb86c8e0b771c2f07031dc1f807505929162402c5e43e530a7c1d093",
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_f01e_spec_sha256": "afd9efc879ed9a4878bd967c1370275074efd2226e11e67eb86838f4168f61b7",
+            "source_f01g_spec_sha256": "c3abb599305392cdad7b43a1d8d45b1c1ae0466ff899f56caa3590d010a11f14",
+            "validation_boundary": "Only the reviewed wrapper-local static path is closed; clean ADM-to-wrapper host/job identity and selected invocation are not established."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_F13C_WRAPPER_INPUT_SYNTHESIS_AND_SELECTOR_ARITHMETIC",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-PROFILE-WRAPPER-STATIC-INPUT-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-PROFILE-WRAPPER-STATIC-INPUT-CONTRACT-V1/EVIDENCE.json"
+            ],
+            "case_pointers": [
+              "The static wrapper prefix is signed I32 [1,10,11,7], with profile_count=1, five pairs of stride 8, and first pair selecting type 10 only on this wrapper path.",
+              "Key13 is X+Y, key14 is Y, and key12 is a converted rate word; X/Y, conversion and overflow behavior are not established.",
+              "The type-10 wrapper path has partial_flag=1; for nonnegative A, q uses trunc(A/1536) plus the partial increment rule; selected A/q and descriptor validity remain unbound."
+            ],
+            "source_supplement_manifest_sha256": "49ad6f47bb86c8e0b771c2f07031dc1f807505929162402c5e43e530a7c1d093"
+          },
+          "native_status": {
+            "wrapper_static_type10_path": "STATIC_CLOSED_CONDITIONALLY",
+            "wrapper_profile_count": 1,
+            "wrapper_pair_count": 5,
+            "wrapper_pair_stride_bytes": 8,
+            "type10_partial_flag": 1,
+            "selector_dividend_A": "INTERNAL_SIGNED_I32_OUT_PARAMETER; SOURCE_AND_UNITS_UNBOUND",
+            "converter_owner_to_wrapper_input": "UNBOUND",
+            "selected_wrapper_invocation": "NOT_CAPTURED",
+            "selected_A_and_units": "UNBOUND",
+            "selected_list_selector_q": "UNBOUND",
+            "source_generation": "UNBOUND",
+            "native_execution": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "No selected type10 invocation or cross-owner converter-to-wrapper handoff is established.",
+            "No X/Y meaning, rate conversion, A source/unit, selected q or profile-row generation is established.",
+            "No algorithm implementation or product readiness is authorized by this conditional static status."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
           "slice_id": "selected-id14-semantic-reader-path-applicability",
           "mapping_status": "MATERIALIZED_SELECTED_OUTGOING_PATH_READER_AUDIT__NO_GLOBAL_ABSENCE_CLAIM",
           "implementation_status": "WASHED_CONTROL_FLOW_EVIDENCE_CUSTODY_ONLY__NO_ID14_PARSER_IMPLEMENTED",
