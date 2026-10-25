@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge-f13c-profile-key13-parameter13-identity-guards.v1",
+  "cases": [
+    {
+      "id": "same-numeric-key-different-field-domain",
+      "input": {
+        "profile_pair": {"namespace":"native profile pair list","key_i32":13,"value":"X+Y"},
+        "configuration_parameter": {"namespace":"configuration record","parameter_id":13,"type":"signed I32","selected_capture_value":16}
+      },
+      "expected": {
+        "same_field_established": false,
+        "cross_field_join": "UNBOUND"
+      }
+    },
+    {
+      "id": "same-encoder-image-is-not-owner-identity",
+      "input": {
+        "wrapper_and_configuration_evidence_image_sha256":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+      },
+      "expected": {
+        "shared_owner_call_or_generation_established": false
+      }
+    }
+  ]
+}

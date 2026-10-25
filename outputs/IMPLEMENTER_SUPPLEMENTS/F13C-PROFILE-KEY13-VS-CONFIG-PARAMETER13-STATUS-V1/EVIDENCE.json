@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-f13c-profile-key13-parameter13-identity-evidence.v1",
+  "status": "NO_DIRECT_JOIN_ESTABLISHED_WITHIN_REVIEWED_PACKAGES",
+  "reverse_package": {
+    "manifest_sha256": "3d2c9e0fc14235d87c12ab6064ac2d8bb5eada2e2f858c2e98cc1add147eeded",
+    "payload_count": 5,
+    "checker_normal": "PASS_HASH_BOUND_PROFILE_KEY13_CONFIG_PARAMETER13_DISAMBIGUATION",
+    "checker_python_O": "PASS_HASH_BOUND_PROFILE_KEY13_CONFIG_PARAMETER13_DISAMBIGUATION"
+  },
+  "wrapper_profile_pair": {
+    "source_manifest_sha256": "49ad6f47bb86c8e0b771c2f07031dc1f807505929162402c5e43e530a7c1d093",
+    "field_namespace": "native profile pair list",
+    "key_type": "signed I32",
+    "key": 13,
+    "value_expression": "X + Y",
+    "X_and_Y_semantics": "UNBOUND",
+    "selected_wrapper_invocation": "NOT_CAPTURED"
+  },
+  "configuration_parameter": {
+    "source_manifest_sha256": "253d2cbca8cbad05f432c39655aeea06a74641f17a1117b9126e09e5c83e17f5",
+    "field_namespace": "configuration record",
+    "parameter_id": 13,
+    "type": "signed I32",
+    "producer": "non_lfe_count + lfe_presence",
+    "selected_capture_value": 16,
+    "source_generation_join": "UNBOUND"
+  },
+  "shared_encoder_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "cross_field_dataflow": "UNBOUND",
+  "shared_owner_or_call_identity": "UNBOUND",
+  "shared_source_generation": "UNBOUND",
+  "implementation_ready": false
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge-f13c-profile-key13-parameter13-source-manifests.v1",
+  "reviewed_inputs": [
+    {
+      "role":"wrapper profile-pair synthesis",
+      "package_manifest_sha256":"49ad6f47bb86c8e0b771c2f07031dc1f807505929162402c5e43e530a7c1d093",
+      "payload_count":4
+    },
+    {
+      "role":"configuration count parameter producer",
+      "package_manifest_sha256":"253d2cbca8cbad05f432c39655aeea06a74641f17a1117b9126e09e5c83e17f5",
+      "payload_count":4
+    }
+  ],
+  "reverse_comparison_manifest_sha256":"3d2c9e0fc14235d87c12ab6064ac2d8bb5eada2e2f858c2e98cc1add147eeded",
+  "shared_encoder_image_sha256":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "no_global_absence_claim":true
+}

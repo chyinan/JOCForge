@@ -234,6 +234,7 @@
 | F13C/selected-configuration-writer-and-descriptor-bit-budget | F13C | `metadata` |
 | F13C/id14-model-parser-and-native-bsi-source-clarification | F13C | `metadata` |
 | F13C/washed-selected-adm-metadata-to-native-profile-crosswalk-status | F13C | `metadata` |
+| F13C/washed-f13c-profile-key13-config-parameter13-disambiguation | F13C | `metadata` |
 | F13C/washed-f13c-native-profile-wrapper-static-input-contract | F13C | `metadata` |
 | F13C/selected-id14-semantic-reader-path-applicability | F13C | `metadata` |
 | F13C/container-fragmentation-scratch-parent-observation | F13C | `metadata` |

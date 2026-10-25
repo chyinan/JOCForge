@@ -10769,6 +10769,62 @@
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
         {
+          "slice_id": "washed-f13c-profile-key13-config-parameter13-disambiguation",
+          "mapping_status": "WASHED_FIELD_NAMESPACES_DISTINCT__CROSS_FIELD_JOIN_UNBOUND",
+          "implementation_status": "WASHED_NO_DIRECT_KEY13_PARAMETER13_JOIN__NO_ALGORITHM_CHANGE",
+          "scope": "The reviewed encoder wrapper profile-pair key 13 is signed I32 `X+Y`, with X/Y semantics and selected wrapper invocation unbound. Configuration-record parameter 13 is a separate signed-I32 field produced as non_lfe_count+lfe_presence and has selected capture value 16. Sharing an encoder image and numeric identifier does not establish dataflow, common owner/call, or source-generation identity. Do not merge these fields or use value 16 as a join.",
+          "owner": "codec",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The two scalar namespaces have no shared selected source/generation clock in the reviewed packages."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F13C_PROFILE_KEY13_VS_CONFIGURATION_PARAMETER13_STATUS_V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-PROFILE-KEY13-VS-CONFIG-PARAMETER13-STATUS-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-PROFILE-KEY13-VS-CONFIG-PARAMETER13-STATUS-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-PROFILE-KEY13-VS-CONFIG-PARAMETER13-STATUS-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-PROFILE-KEY13-VS-CONFIG-PARAMETER13-STATUS-V1/SOURCE-MANIFESTS.json"
+            ],
+            "supplement_manifest_sha256": "814a8aed69738758869bd5c5745dcf0e6b80d29c96a8d291dba1dd648948323f",
+            "source_reverse_manifest_sha256": "3d2c9e0fc14235d87c12ab6064ac2d8bb5eada2e2f858c2e98cc1add147eeded",
+            "validation_boundary": "Disambiguation only; key13 and parameter13 dataflow and generation remain UNBOUND."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_F13C_DISTINCT_KEY13_AND_PARAMETER13_INPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-PROFILE-KEY13-VS-CONFIG-PARAMETER13-STATUS-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-PROFILE-KEY13-VS-CONFIG-PARAMETER13-STATUS-V1/EVIDENCE.json"
+            ],
+            "case_pointers": [
+              "Native profile pair key13 is signed I32 X+Y with X/Y semantics UNBOUND.",
+              "Configuration parameter ID13 is signed I32 non_lfe_count+lfe_presence and a selected capture value 16.",
+              "Equal numeric identifier/value and shared encoder image do not prove a cross-field or generation join."
+            ],
+            "source_supplement_manifest_sha256": "814a8aed69738758869bd5c5745dcf0e6b80d29c96a8d291dba1dd648948323f"
+          },
+          "native_status": {
+            "profile_pair_key13_namespace": "SIGNED_I32_X_PLUS_Y",
+            "configuration_parameter13_namespace": "SIGNED_I32_NON_LFE_COUNT_PLUS_LFE_PRESENCE",
+            "cross_field_dataflow": "UNBOUND",
+            "shared_owner_or_call_identity": "UNBOUND",
+            "shared_source_generation": "UNBOUND",
+            "selected_wrapper_invocation": "NOT_CAPTURED",
+            "implementation_ready": false
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "No key13-to-parameter13 mapping, same-call owner, or source-generation link is established.",
+            "Do not merge these fields by numeric identifier; no algorithm or selected profile result is inferred from the numeric value 16."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
           "slice_id": "washed-f13c-native-profile-wrapper-static-input-contract",
           "mapping_status": "WASHED_WRAPPER_TYPE10_CONDITIONAL_STATIC__CONVERTER_HANDOFF_UNBOUND",
           "implementation_status": "WASHED_TYPE10_WRAPPER_SYNTHESIS_STATIC_CLOSED__SELECTED_INVOCATION_AND_A_UNBOUND",
