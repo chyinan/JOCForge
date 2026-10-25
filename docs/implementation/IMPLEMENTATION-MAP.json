@@ -8203,6 +8203,28 @@
       "planned_phase": "Phase 6",
       "inventory_status": "INVENTORIED",
       "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "parameters": {
+        "kind": "APPROVED_F07_TRANSIENT_AND_SOURCE_STATE_PROVIDER_INVENTORY",
+        "provider_files": [
+          "parameters/transient-d05-authorized-v1.json",
+          "parameters/f07-f12-source-state-schema-v1.json",
+          "parameters/f07-f12-source-provider-manifest-v1.json"
+        ],
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+        "validation_boundary": "Approved parameter/state/provider files are identity-bound; they do not by themselves close whole F07 owner composition, F08 consumer integration, or parent source transaction."
+      },
+      "vectors": {
+        "kind": "APPROVED_F07_F12_INPUT_ONLY_SOURCE_AND_TRANSIENT_RECIPES",
+        "authoritative_vectors": [
+          "test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json",
+          "test-vectors/TRANSIENT-AUTHORIZED-INPUT-VECTORS.json"
+        ],
+        "case_pointers": [
+          "Source composition and transient D05 inputs are hash-bound input recipes from the frozen package.",
+          "The four current F07 direct slices remain local leaf implementations; these inputs do not establish the whole six-lane F07 parent transaction, F08 source-clock handshake, or product acceptance."
+        ],
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+      },
       "direct_slices": [
         {
           "slice_id": "input-history-block-transition",
@@ -8430,6 +8452,66 @@
               "caller_action": "Retire the enclosing attempt according to F07.10/I03."
             }
           ]
+        },
+        {
+          "slice_id": "washed-f07-f08-native-parent-lifecycle-boundary",
+          "mapping_status": "WASHED_MODEL_CONTRACTS_PRESENT__NATIVE_PARENT_OWNER_AND_GENERATION_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_PARENT_STAGE_NOT_RUN",
+          "scope": "The frozen approved package contains selected F07/F07A/F08/F09/F10/F12 model formulas and lifecycle rules; this Wash audit found no missing formula requiring new algorithm research. The unresolved issue is the selected native callback to F07/F07A/F08 owner/source-generation join and parent staged success/fatal/reset/EOF boundary. The analysis fixture seam is TEST_ONLY and does not execute F07 equations, FFT/transform, real ADM, or the production analysis API. A bounded DTHD directory-count discrepancy remains unresolved and is not a global absence claim; DTHD membership in the selected path remains UNBOUND.",
+          "owner": "analysis",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The package describes model clocks; no selected native callback, owner token, generation, or parent lifecycle clock is bound by this audit."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F07_F08_NATIVE_PARENT_LIFECYCLE_BOUNDARY_V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F08-NATIVE-PARENT-LIFECYCLE-BOUNDARY-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F08-NATIVE-PARENT-LIFECYCLE-BOUNDARY-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F08-NATIVE-PARENT-LIFECYCLE-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F08-NATIVE-PARENT-LIFECYCLE-BOUNDARY-V1/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "62a1164b98197aff7eb0120737b0250e69cc9016b03f2a77a793c88e389055d8",
+            "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "validation_boundary": "Wash status evidence only; model contracts present does not mean the selected native parent owner/generation path is implemented."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_F07_F08_PARENT_LIFECYCLE_GAP_STATUS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F08-NATIVE-PARENT-LIFECYCLE-BOUNDARY-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F08-NATIVE-PARENT-LIFECYCLE-BOUNDARY-V1/EVIDENCE.json"
+            ],
+            "case_pointers": [
+              "The evidence records a TEST_ONLY fixture seam with production_allowed=false, commit_count=0, and no F07/F08 execution.",
+              "Native selected callback to owner/source-generation and parent staged success/fatal/reset/EOF remain UNBOUND.",
+              "The bounded 24-versus-28 directory count discrepancy and DTHD selected-path membership remain unresolved without a global absence claim."
+            ],
+            "source_supplement_manifest_sha256": "62a1164b98197aff7eb0120737b0250e69cc9016b03f2a77a793c88e389055d8"
+          },
+          "native_status": {
+            "model_contracts_present": true,
+            "analysis_fixture_seam_production_allowed": false,
+            "actual_fft_transform": "NOT_RUN",
+            "selected_callback_to_owner_generation": "UNBOUND",
+            "parent_staged_success_fatal_reset_eof": "UNBOUND",
+            "dthd_selected_path_membership": "UNBOUND",
+            "bounded_directory_count_discrepancy": "UNRESOLVED",
+            "global_absence_claim": false,
+            "native_or_product_execution": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "No selected native callback, owner token, source generation, or parent success/fatal/reset/EOF boundary was observed or implemented.",
+            "The fixture seam is test-only and cannot be treated as an algorithm or product pass.",
+            "No DTHD algorithm or global absence claim is inferred from the bounded directory listing.",
+            "No real ADM, whole source-to-AU transaction, rendered output, listening, or W04 acceptance was performed."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -8519,7 +8601,138 @@
       "owner": "analysis",
       "planned_phase": "Phase 6",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "parameters": {
+        "kind": "APPROVED_F08_MATH_GENERATED_V1_PROVIDER",
+        "provider_files": [
+          "parameters/ordinary-transform-math-v1.json"
+        ],
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+        "validation_boundary": "The math-generated-v1 provider is approved for its declared operations; historical D01-D04 bit identity and whole F08 production equivalence are not claimed."
+      },
+      "vectors": {
+        "kind": "APPROVED_F08_NONZERO_MATH_GENERATED_COMPOSITION_INPUTS",
+        "authoritative_vectors": [
+          "test-vectors/F08-NONZERO-COMPOSITION-INPUT-VECTORS.json",
+          "test-vectors/F08-NONZERO-COMPOSITION-RESULT.json"
+        ],
+        "case_pointers": [
+          "Three FBW long/short/long and three LFE synthetic blocks provide local trace hashes; they do not establish a complete F07/F08/F09 source transaction or product audio acceptance."
+        ],
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+      },
+      "direct_slices": [
+        {
+          "slice_id": "math-generated-window-fold",
+          "mapping_status": "MATERIALIZED_DIRECT_F08_2_FOLD_AND_HISTORY__WHOLE_F08_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_MATH_GENERATED_F08_2_TWO_BANK_FOLD_AND_HISTORY__WHOLE_F08_OPEN",
+          "scope": "Implements the shared F08.2 window fold for one caller-supplied 256-word F32 block and independent primary/companion 128-word histories. It returns both folded 256-word banks and both next histories using the selected `math-generated-v1` provider and separate R32 operations. It is branch-independent: the caller owns the long/short flag. It does not implement pre/post rotation, FFT, LFE transform, F07 source/sample production, F09 exponent generation, parent state installation, source clocks, or whole F08 acceptance.",
+          "owner": "analysis",
+          "implementation_files": [
+            "crates/jocforge-domain/src/transform/math_generated_parameters.rs",
+            "crates/jocforge-domain/src/transform/window_fold.rs",
+            "crates/jocforge-domain/src/transform/mod.rs",
+            "crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json"
+          ],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Consumes one caller-supplied block and before histories; this F08.2 leaf assigns no sample, callback, source, AU, or programme clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_MATH_GENERATED_V1_F08_TRANSFORM_PROVIDER",
+            "provider_files": [
+              "specs/08-transforms.md",
+              "specs/08-nonzero-transform-composition.md",
+              "parameters/ordinary-transform-math-v1.json",
+              "crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json"
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "approved_model_spec_sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e",
+            "nonzero_composition_contract_sha256": "629d8c5c2853f81f82bcee281370fbb39efea0a62255f367da6fd3677172175d",
+            "math_generated_provider_sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1",
+            "validation_boundary": "Parses only the approved math-generated-v1 file identity and exact F08 dimensions/finite/permutation requirements. Historical D01-D04 identity is not claimed or required by this selected route."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/window_fold.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_F08_NONZERO_SYNTHETIC_FOLD_AND_HISTORY_TRACES",
+            "authoritative_vectors": [
+              "test-vectors/F08-NONZERO-COMPOSITION-INPUT-VECTORS.json",
+              "test-vectors/F08-NONZERO-COMPOSITION-RESULT.json",
+              "crates/jocforge-domain/tests/fixtures/window_fold/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json"
+            ],
+            "case_pointers": [
+              "Three nonzero FBW input recipes exercise long/short/long context while checking only the shared F08.2 fold and primary/companion next-history trace hashes.",
+              "Three nonzero LFE input recipes check the same F08.2 two-bank fold/history rule; F08.8-F08.9 LFE transform is not implemented by this slice.",
+              "The result artifact exposes stage hashes/previews, not complete expected output words; the test does not claim a full transform oracle replay or whole F08 pass.",
+              "Input recipes are synthetic generated values and include no WAV, PCM, native DLL, private key, or song lookup."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/window_fold/INPUT-ONLY-VECTORS.json",
+              "bytes": 3771,
+              "sha256": "eb825796adc60933b1c717122f991a9a0ced95ab0cd89d29ef4f6e1e28b6866c"
+            },
+            "additional_fixtures": [
+              {
+                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
+                "bytes": 19159,
+                "sha256": "a77806e29ea7e0cb361353a2a6313826e4cdcc2b3f36cebce6fc0b434cdcb906"
+              }
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "native_status": {
+            "provider_profile": "math-generated-v1",
+            "f08_2_window_fold_and_two_bank_history": "LOCALLY_VERIFIED",
+            "historical_d01_d04_bit_identity": "NOT_REQUIRED_BY_SELECTED_ROUTE_AND_NOT_PROVED",
+            "native_equivalence": "NOT_RUN",
+            "whole_f08": "NOT_IMPLEMENTED",
+            "whole_f07_f09_f12_transaction": "NOT_RUN",
+            "product_render_and_listening": "NOT_RUN"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "F08_INPUT_ERROR",
+              "category": "input block and bank history",
+              "trigger": "Input length is not 256, either history length is not 128, or input/state contains a nonfinite F32 word.",
+              "programme_state_after": "No fold or next history is returned; caller-owned histories remain byte-identical.",
+              "caller_action": "Reject the block before F08.3; do not substitute a zero input/history."
+            },
+            {
+              "error_code": "F08_NUMERIC_FAILURE",
+              "category": "F08.2 R32 operation",
+              "trigger": "A separately rounded multiply, add, or subtract produces a nonfinite result.",
+              "programme_state_after": "No fold or next history is returned; caller-owned histories remain byte-identical.",
+              "caller_action": "Fail-stop the caller under I03; do not continue with prior or zero results."
+            },
+            {
+              "error_code": "PARAMETER_UNAVAILABLE",
+              "category": "math-generated parameter provider",
+              "trigger": "The provider bytes are absent or a required field is missing.",
+              "programme_state_after": "No typed provider, fold, or next history is returned.",
+              "caller_action": "Stop parameter admission; do not fall back to historical tables or zero defaults."
+            },
+            {
+              "error_code": "PARAMETER_IDENTITY_ERROR",
+              "category": "math-generated parameter identity and shape",
+              "trigger": "Provider hash/schema/profile, field type/dimension, finite words, or required permutation identity differs from the selected package.",
+              "programme_state_after": "No typed provider, fold, or next history is returned.",
+              "caller_action": "Reject the provider; do not use historical D01-D04 table identity as a fallback."
+            }
+          ],
+          "not_run": [
+            "F08.3 pre-rotation, normalized FFT, F08.5/F08.6 post-rotation, and F08.8/F08.9 LFE transform.",
+            "F07 transient flag production, source/callback clock, six-lane owner reset/fatal/EOF transaction, F09 exponent consumer, and F12 frame composition.",
+            "Whole F07/F08/F09/F10/F11/F12 source-to-AU transaction, native equivalence, encoded audio/render, playback, listening, and W04 product acceptance."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        }
+      ]
     },
     {
       "functional_id": "F08NZ",
@@ -8529,7 +8742,28 @@
       "owner": "analysis",
       "planned_phase": "Phase 6",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "parameters": {
+        "kind": "APPROVED_F08_NONZERO_COMPOSITION_PROVIDER_BINDING",
+        "provider_files": [
+          "parameters/ordinary-transform-math-v1.json"
+        ],
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+        "validation_boundary": "Local math-generated composition only; not historical/native provider equivalence or whole-package readiness."
+      },
+      "vectors": {
+        "kind": "APPROVED_NONZERO_F08_CONTINUOUS_AND_RESET_INPUTS",
+        "authoritative_vectors": [
+          "test-vectors/F08-NONZERO-COMPOSITION-INPUT-VECTORS.json",
+          "test-vectors/F08-NONZERO-COMPOSITION-RESULT.json",
+          "test-vectors/F08-NONZERO-TRANSFORM-LOCAL-REVIEW-STATUS.json"
+        ],
+        "case_pointers": [
+          "The local package records trace hashes and reset/error assertions for a math-generated provider; its reported 4650-word crosscheck is not a fresh independent wordwise oracle replay.",
+          "Whole F07/F08/F09/F10/F11/F12 transaction, native equivalence, rendering and listening remain NOT_RUN."
+        ],
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+      }
     },
     {
       "functional_id": "F09",
@@ -9699,7 +9933,29 @@
       "owner": "analysis",
       "planned_phase": "Phase 6",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "parameters": {
+        "kind": "APPROVED_F11_F12_CODEC_WIRE_AND_CROSS_MODULE_PROVIDER_INVENTORY",
+        "provider_files": [
+          "parameters/codec-wire-selected-v1.json",
+          "parameters/codec-wire-cross-module-providers-v1.json",
+          "parameters/public-bap-48k-v1.json"
+        ],
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+        "validation_boundary": "Approved provider identities are available; this inventory does not bind production POWER/BAP producers or a full F11 search call."
+      },
+      "vectors": {
+        "kind": "APPROVED_F11_CODEC_WIRE_INPUT_ONLY_UNIT_CASES",
+        "authoritative_vectors": [
+          "test-vectors/CODEC-WIRE-SELECTED-INPUT-VECTORS.json",
+          "test-vectors/BAP-RULE-VERIFICATION.json"
+        ],
+        "case_pointers": [
+          "U-COST-0 and U-COST-2 cover fixed cost calculations; U-SEARCH-01 covers search with a zero-BAP synthetic callback.",
+          "These local inputs do not validate production BAP, full POWER-to-F11 refresh/strategy/search, source clocks or the selected frame path."
+        ],
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+      }
     },
     {
       "functional_id": "F12",
@@ -9710,6 +9966,27 @@
       "planned_phase": "Phase 6",
       "inventory_status": "INVENTORIED",
       "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "parameters": {
+        "kind": "APPROVED_F12_CODEC_WIRE_AND_CROSS_MODULE_PROVIDER_INVENTORY",
+        "provider_files": [
+          "parameters/codec-wire-selected-v1.json",
+          "parameters/codec-wire-cross-module-providers-v1.json"
+        ],
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+        "validation_boundary": "Approved wire/provider maps are available; full 4096-byte frame production, source identities and programme transaction are not materialized by this inventory."
+      },
+      "vectors": {
+        "kind": "APPROVED_F12_SELECTED_AND_COMPLETE_FRAME_INPUT_ONLY_VECTORS",
+        "authoritative_vectors": [
+          "test-vectors/CODEC-WIRE-SELECTED-INPUT-VECTORS.json",
+          "test-vectors/CODEC-WIRE-COMPLETE-FRAME-INPUT-VECTORS.json"
+        ],
+        "case_pointers": [
+          "Selected codec wire cases and complete-frame input recipes are hash-bound inputs, not a fresh 4249-source/4247-AU replay.",
+          "Existing direct F12 leaves remain partial; full F12 candidate search, frame composition, CRC and parent transaction remain open."
+        ],
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+      },
       "direct_slices": [
         {
           "slice_id": "grouped-quantizer-helper",
@@ -9966,6 +10243,26 @@
       "planned_phase": "Phase 6",
       "inventory_status": "INVENTORIED",
       "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "parameters": {
+        "kind": "APPROVED_F12S_CODEC_WIRE_PROVIDER_INVENTORY",
+        "provider_files": [
+          "parameters/codec-wire-selected-v1.json",
+          "parameters/codec-wire-cross-module-providers-v1.json"
+        ],
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+        "validation_boundary": "Provider and selected wire identities are available; this does not close F09 exponent/BAP producers, retry search or full F12S."
+      },
+      "vectors": {
+        "kind": "APPROVED_F12S_SELECTED_CODEC_INPUT_ONLY_VECTORS",
+        "authoritative_vectors": [
+          "test-vectors/CODEC-WIRE-SELECTED-INPUT-VECTORS.json",
+          "test-vectors/CODEC-WIRE-COMPLETE-FRAME-INPUT-VECTORS.json"
+        ],
+        "case_pointers": [
+          "Selected input-only wire recipes supplement the locally verified mantissa quantizer; they do not supply production exponent/BAP or upstream transform identity."
+        ],
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+      },
       "direct_slices": [
         {
           "slice_id": "mantissa-quantizer",
@@ -10069,7 +10366,28 @@
       "owner": "codec",
       "planned_phase": "Phase 6",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "parameters": {
+        "kind": "APPROVED_F07_F12_SOURCE_COMPOSITION_PROVIDER_AND_STATE_INVENTORY",
+        "provider_files": [
+          "parameters/f07-f12-source-state-schema-v1.json",
+          "parameters/f07-f12-source-provider-manifest-v1.json",
+          "parameters/codec-wire-cross-module-providers-v1.json"
+        ],
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+        "validation_boundary": "The approved source-state schema/provider inventory does not establish fresh source/AU identities or production parent state."
+      },
+      "vectors": {
+        "kind": "APPROVED_F07_F12_SOURCE_COMPOSITION_INPUT_ONLY_VECTORS",
+        "authoritative_vectors": [
+          "test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json",
+          "test-vectors/CODEC-WIRE-COMPLETE-FRAME-INPUT-VECTORS.json"
+        ],
+        "case_pointers": [
+          "Input recipes define a model composition path but do not constitute a fresh 4249-source/4247-AU run or a product receipt."
+        ],
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+      }
     },
     {
       "functional_id": "F12A",
@@ -10079,7 +10397,27 @@
       "owner": "codec",
       "planned_phase": "Phase 6",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "parameters": {
+        "kind": "APPROVED_F12A_PUBLIC_BAP_AND_CODEC_PROVIDER_INVENTORY",
+        "provider_files": [
+          "parameters/public-bap-48k-v1.json",
+          "parameters/codec-wire-cross-module-providers-v1.json"
+        ],
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+        "validation_boundary": "The public BAP provider is available, but full production POWER-to-BAP source integration and F11 strategy/search are not closed."
+      },
+      "vectors": {
+        "kind": "APPROVED_F12A_BAP_RULE_AND_CODEC_INPUT_ONLY_VECTORS",
+        "authoritative_vectors": [
+          "test-vectors/BAP-RULE-VERIFICATION.json",
+          "test-vectors/CODEC-WIRE-SELECTED-INPUT-VECTORS.json"
+        ],
+        "case_pointers": [
+          "The BAP rule fixture verifies table values only; F11 U-SEARCH-01 zero-BAP synthetic coverage is not production BAP or complete POWER-to-F11 validation."
+        ],
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+      }
     },
     {
       "functional_id": "F13",
@@ -18554,7 +18892,7 @@
       "default_features": false,
       "archive_sha256": "a7507d819769d01a365ab707794a4084392c824f54a7a6a7862f8c3d0892b283",
       "license_choice": "Apache-2.0",
-      "scope": "reader_eof, F01E, F03, CurrentFeatures P1.4-C, F04 P1.4-D1/P1.4-D2 provider/package-manifest identity SHA-256, and F05R56 canonical state/reader/target/receipt digests"
+      "scope": "reader_eof, F01E, F03, CurrentFeatures P1.4-C, F04 P1.4-D1/P1.4-D2 provider/package-manifest identity SHA-256, F05R56 canonical state/reader/target/receipt digests, and F08 math-generated provider file identity"
     },
     "serde_json": {
       "version": "=1.0.154",
@@ -18564,7 +18902,7 @@
       ],
       "archive_sha256": "e7e9cc8b1b85264074fbcc02a88680c4096b1e47df8f739dceb03bf482f04bd6",
       "license_choice": "Apache-2.0",
-      "scope": "F01E P1.4-A, F03 target P1.4-B, exact CurrentFeatures P1.4-C, F04 P1.4-D1/P1.4-D2 provider syntax parsing/private field access after identity gates, and F05R56 sorted compact semantic-receipt JSON; other canonical writers remain project-owned"
+      "scope": "F01E P1.4-A, F03 target P1.4-B, exact CurrentFeatures P1.4-C, F04 P1.4-D1/P1.4-D2 provider syntax parsing/private field access after identity gates, F05R56 sorted compact semantic-receipt JSON, and F08 math-generated provider schema/typed-array validation; other canonical writers remain project-owned"
     },
     "num_bigint": {
       "version": "=0.4.6",

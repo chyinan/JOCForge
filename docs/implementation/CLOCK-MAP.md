@@ -204,7 +204,9 @@
 | F07/structure-refresh-flag-projection | — | `One stateless six-block projection; no source, frame, or AU counter is retained.` |
 | F07/selected-dither-flag-plan | — | `Consumes one explicitly ordered six-block frame and returns the next previous_short projection; no absolute clock is owned.` |
 | F07/actual-d05-transient-channel-block | — | `One input block advances one caller-owned lane state; 36-call ordering is test input, not a programme source or AU clock owner.` |
+| F07/washed-f07-f08-native-parent-lifecycle-boundary | — | `The package describes model clocks; no selected native callback, owner token, generation, or parent lifecycle clock is bound by this audit.` |
 | F07A/selected-d05-transient-parameter-provider | — | `Stateless identity and typed-parameter loading; no frame or source clock is owned.` |
+| F08/math-generated-window-fold | — | `Consumes one caller-supplied block and before histories; this F08.2 leaf assigns no sample, callback, source, AU, or programme clock.` |
 | F09/exponent-refresh-state-transition | — | `Consumes one caller-provided [begin, end) row window and owns no callback, source, AU, or lifecycle clock.` |
 | F09/raw-exponent-from-power-bits | — | `Consumes one caller-supplied U32 word, bias, and cap; owns no state or clock.` |
 | F09/coefficient-pair-to-power-row | — | `Consumes caller-owned coefficient rows synchronously; owns no callback, source, dispatch, AU, or persistent state clock.` |

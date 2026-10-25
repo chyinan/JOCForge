@@ -204,7 +204,9 @@
 | F07/structure-refresh-flag-projection | F07 | `analysis` |
 | F07/selected-dither-flag-plan | F07 | `analysis` |
 | F07/actual-d05-transient-channel-block | F07 | `analysis` |
+| F07/washed-f07-f08-native-parent-lifecycle-boundary | F07 | `analysis` |
 | F07A/selected-d05-transient-parameter-provider | F07A | `analysis` |
+| F08/math-generated-window-fold | F08 | `analysis` |
 | F09/exponent-refresh-state-transition | F09 | `analysis` |
 | F09/raw-exponent-from-power-bits | F09 | `analysis` |
 | F09/coefficient-pair-to-power-row | F09 | `analysis` |

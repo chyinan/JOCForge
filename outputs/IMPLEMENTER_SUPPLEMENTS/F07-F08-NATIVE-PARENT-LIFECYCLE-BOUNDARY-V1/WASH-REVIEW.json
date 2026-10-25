@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "F07-F08-NATIVE-PARENT-LIFECYCLE-BOUNDARY-V1",
+  "review_result": "WASHED_AS_PARENT_LIFECYCLE_GAP_WITH_FORMULA_RULES_PRESERVED",
+  "checks": {
+    "reverse_package_files": "PASS_7_OF_7",
+    "approved_package_source_refs": "MATCHED",
+    "analysis_fixture_seam_manifest_and_payloads": "PASS_11_OF_11",
+    "source_manifests_and_listed_files": "PASS_2_MANIFESTS_14_FILES",
+    "bounded_directory_discrepancy": "PRESERVED_UNRESOLVED",
+    "native_parent_owner_generation": "UNBOUND",
+    "dthd_selected_path_necessity": "UNBOUND"
+  },
+  "content_boundary": {
+    "source_code_included": false,
+    "decompilation_included": false,
+    "binary_fixture_contents_included": false,
+    "private_key_or_auth_material_included": false,
+    "audio_or_pcm_included": false
+  },
+  "implementation_ready": false
+}

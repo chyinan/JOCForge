@@ -1,0 +1,50 @@
+{
+  "schema": "f08-nonzero-transform-composition-inputs.v1",
+  "input_only": true,
+  "parameter_binding": {
+    "file": "parameters/ordinary-transform-math-v1.json",
+    "bytes": 16538,
+    "sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1"
+  },
+  "fbw_continuous": {
+    "bank_order": ["primary", "companion"],
+    "short_flags_i1": [0, 1, 0],
+    "blocks": [
+      {"id": "fbw-0-long", "length": 256, "multiplier": 37, "offset": 17, "modulus": 257, "centre": 128, "power_of_two_denominator": 4096},
+      {"id": "fbw-1-short", "length": 256, "multiplier": 37, "offset": 70, "modulus": 257, "centre": 128, "power_of_two_denominator": 4096},
+      {"id": "fbw-2-long", "length": 256, "multiplier": 37, "offset": 123, "modulus": 257, "centre": 128, "power_of_two_denominator": 4096}
+    ],
+    "cold_history_words": 128,
+    "exponent_bins": 217
+  },
+  "same_input_long_short_discriminator": {
+    "block": {"id": "fbw-discriminator", "length": 256, "multiplier": 43, "offset": 29, "modulus": 263, "centre": 131, "power_of_two_denominator": 8192},
+    "history_recipe": {"length": 128, "multiplier": 19, "offset": 5, "modulus": 127, "centre": 63, "power_of_two_denominator": 16384},
+    "run_flags_i1": [0, 1],
+    "exponent_bins": 217
+  },
+  "lfe_continuous": {
+    "blocks": [
+      {"id": "lfe-0", "length": 256, "multiplier": 61, "offset": 7, "modulus": 193, "centre": 96, "power_of_two_denominator": 2048},
+      {"id": "lfe-1", "length": 256, "multiplier": 61, "offset": 36, "modulus": 193, "centre": 96, "power_of_two_denominator": 2048},
+      {"id": "lfe-2", "length": 256, "multiplier": 61, "offset": 65, "modulus": 193, "centre": 96, "power_of_two_denominator": 2048}
+    ],
+    "cold_history_words": 128,
+    "output_bins": 7
+  },
+  "reset_replay": {
+    "fbw_block_id": "fbw-0-long",
+    "short_flag_i1": 0,
+    "lfe_block_id": "lfe-0"
+  },
+  "error_cases": [
+    {"id": "fbw-input-length-255", "operation": "FBW", "mutation": "INPUT_LENGTH_255", "expected_error": "F08_INPUT_ERROR", "expected": {"status": "ERROR", "error_code": "F08_INPUT_ERROR", "output_present": false, "state_unchanged": true}},
+    {"id": "fbw-history-length-127", "operation": "FBW", "mutation": "HISTORY_LENGTH_127", "expected_error": "F08_INPUT_ERROR", "expected": {"status": "ERROR", "error_code": "F08_INPUT_ERROR", "output_present": false, "state_unchanged": true}},
+    {"id": "fbw-short-bool", "operation": "FBW", "mutation": "SHORT_FLAG_BOOL", "expected_error": "F08_INPUT_ERROR", "expected": {"status": "ERROR", "error_code": "F08_INPUT_ERROR", "output_present": false, "state_unchanged": true}},
+    {"id": "fbw-nonfinite", "operation": "FBW", "mutation": "INPUT_POSITIVE_INFINITY", "expected_error": "F08_INPUT_ERROR", "expected": {"status": "ERROR", "error_code": "F08_INPUT_ERROR", "output_present": false, "state_unchanged": true}},
+    {"id": "parameter-missing-butterfly", "operation": "PARAMETERS", "mutation": "MISSING_BUTTERFLY", "expected_error": "PARAMETER_UNAVAILABLE", "expected": {"status": "ERROR", "error_code": "PARAMETER_UNAVAILABLE", "output_present": false, "state_unchanged": true}},
+    {"id": "parameter-bad-permutation", "operation": "PARAMETERS", "mutation": "DUPLICATE_SPECTRUM_INDEX", "expected_error": "PARAMETER_IDENTITY_ERROR", "expected": {"status": "ERROR", "error_code": "PARAMETER_IDENTITY_ERROR", "output_present": false, "state_unchanged": true}},
+    {"id": "parameter-hash-mismatch", "operation": "PARAMETERS", "mutation": "DECLARED_SHA256_ZERO", "expected_error": "PARAMETER_IDENTITY_ERROR", "expected": {"status": "ERROR", "error_code": "PARAMETER_IDENTITY_ERROR", "output_present": false, "state_unchanged": true}}
+  ],
+  "forbidden_inputs": ["WAV", "PCM file", "private key", "native DLL", "song lookup"]
+}

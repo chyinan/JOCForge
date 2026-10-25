@@ -1,0 +1,496 @@
+{
+  "schema": "f08-nonzero-transform-composition-result.v1",
+  "status": "PASS_LOCAL_MATH_GENERATED_PROVIDER",
+  "local_composition_ready": "YES_FOR_MATH_GENERATED_V1",
+  "production_equivalence_ready": "NO",
+  "whole_implementation_ready": "NO",
+  "parameter_identity": {
+    "file": "parameters/ordinary-transform-math-v1.json",
+    "bytes": 16538,
+    "sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1",
+    "matched": true
+  },
+  "fbw_continuous": {
+    "blocks": 3,
+    "short_flags_i1": [
+      0,
+      1,
+      0
+    ],
+    "traces": [
+      {
+        "case_id": "fbw-0-long",
+        "branch": "LONG",
+        "input_sha256": "16dd94db8cc5dda206515396e263057f7c77300214c79668933237875ffe4b1c",
+        "primary_fold_sha256": "dfbeaba188327f27cdc009552bbd147bdba27330db139549629aa5aa14b304f4",
+        "companion_fold_sha256": "5836ff5a63e5c0587920ab9a6be1a593e1a09e3b617508cc079842d6bae734ce",
+        "primary_spectrum_sha256": "1552d8686a436594261d20d84fd6cf66a52467980c6ff870903136994861fbf9",
+        "companion_spectrum_sha256": "c45439d998ae3fde753afaca730030ac1825ebcce7e2a7c3b7a9b345d1e1e38a",
+        "primary_prefix_sha256": "7d9216aee7b7e610124e425df537b33debbc9c9706bfa8b126f378c47e1e0177",
+        "companion_prefix_sha256": "72f3081cce2b6109a93277f2b89b53875f957803bf2b7f24c96f1fe1d4d8010b",
+        "power_sha256": "22908a75a039ab12a2f32afe6f677d00e053e02b11d3552f9b122b01285d80ac",
+        "power_raw_sha256": "2b3c07333ef2790e46a00b462fdf2b5cc90263f3e5791c4b288a4cb21f1f3b12",
+        "primary_raw_sha256": "18ab7d24ad6bc2b0ce261e73eaaba28fbcd675a8d4ca883a729e8373c8a86ca7",
+        "primary_next_history_sha256": "3e92ca9bbb9c0cdb1932d979ec93417c26e5d2003a9064580b9325d161e2fdd3",
+        "companion_next_history_sha256": "9ca34822c227b8315819b7c3957ccc0d37a96be2d3340ef8b894b8619cab6a6f",
+        "nonzero_primary_spectrum_words": 256,
+        "nonzero_companion_spectrum_words": 256,
+        "primary_preview_u32": [
+          "b8a72138",
+          "b9a1dcb4",
+          "ba47209f",
+          "ba53d2c4",
+          "389b1ab2",
+          "3a909055",
+          "3a8a4cf9",
+          "39260aba"
+        ],
+        "power_raw_preview": [
+          13,
+          11,
+          10,
+          9,
+          9,
+          9,
+          9,
+          9,
+          10,
+          11,
+          11,
+          10
+        ],
+        "primary_raw_preview": [
+          13,
+          11,
+          10,
+          10,
+          13,
+          9,
+          9,
+          12,
+          11,
+          12,
+          11,
+          10
+        ]
+      },
+      {
+        "case_id": "fbw-1-short",
+        "branch": "SHORT_INTERLEAVED",
+        "input_sha256": "12d579699f20ead3c98ff4df9f649a425ca3025975af866af6201f0b5a5fbd7f",
+        "primary_fold_sha256": "82f5fce8d3eb37ecb33706018ab3d76a2f9b9c834ec1c2a3782edabf5941461f",
+        "companion_fold_sha256": "cdf84453b08713e28c93728162b736b31bfb344cf4ad3fef2860d0eaa7b76aee",
+        "primary_spectrum_sha256": "3f06cabc9b158c7563379d3729d2ecd794040b23363dd0c673d162825488a59c",
+        "companion_spectrum_sha256": "9f90087dd651843673a3ed8f64ea65c99b0e04071e44e9b5a07b4bb9d6a4f09e",
+        "primary_prefix_sha256": "ec7abd7b0d1377eb895c0fdfa4242c43dcbef44126e8d37a39d493c326010f97",
+        "companion_prefix_sha256": "a98f12e691b5bb75b9001c0e70a91f13ec61f32d99107c682ff674dbd0c0ff7e",
+        "power_sha256": "8b02813c1ee837035778473225fd7593b53f83eb0d94ec13d921844d6570c3d9",
+        "power_raw_sha256": "2140da4d57558ae0a21bb1e691b5ceabf9c3bcb425bbf1f2cf1fa76c0fa74939",
+        "primary_raw_sha256": "1794df64a84f824aba553b5c4905f1b267bd590f26f16fab7abc68895167a529",
+        "primary_next_history_sha256": "6ac3f2129af4381963ebd292cef08c7c5776cef0583bd26071c068a5793c4d85",
+        "companion_next_history_sha256": "fd290effbe7c32aeaf70c36b461f1f9dfb813eace50ac62f554fcd4d4bd4cadf",
+        "nonzero_primary_spectrum_words": 256,
+        "nonzero_companion_spectrum_words": 256,
+        "primary_preview_u32": [
+          "b99198f6",
+          "393de9b0",
+          "bb2cc142",
+          "3b336228",
+          "3ae47c6e",
+          "b9910138",
+          "3afa4297",
+          "3aa6964b"
+        ],
+        "power_raw_preview": [
+          9,
+          11,
+          8,
+          8,
+          8,
+          8,
+          9,
+          9,
+          9,
+          9,
+          9,
+          10
+        ],
+        "primary_raw_preview": [
+          11,
+          12,
+          8,
+          8,
+          9,
+          11,
+          9,
+          9,
+          13,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "case_id": "fbw-2-long",
+        "branch": "LONG",
+        "input_sha256": "44c4e8959bc41119665afe013efc98e01eaaf0d1dd24a1845bdd36a7c2283df4",
+        "primary_fold_sha256": "da22a8c300dacb72968fd36254ae65f6adc419fd20f791441cfa74df9c87214a",
+        "companion_fold_sha256": "a74b1607c8fa87154deb2b1cedf90288396db9ed67884d14bc14e01e748a2044",
+        "primary_spectrum_sha256": "12df6c889ac43c50a4621f1870bbfb0b68fd225dee796b48467ef7a4720d0cd6",
+        "companion_spectrum_sha256": "f003daf7c0aa82a97a82a43dcf8b5bce82aefc7aaa2a444ead14764d5dae6acb",
+        "primary_prefix_sha256": "12252aee7b52a630d75b6936822e1d4c4ec6e6feb74707e5677cd00f483545e5",
+        "companion_prefix_sha256": "4afd69ffef74f86e2ea87545e22484507a0041fbe0dec9144533c3bf8eb34a17",
+        "power_sha256": "b8eb0fb802ad796692913cca99c17323a4a1ae35ef01d9af9b81a4d81f7b7ee8",
+        "power_raw_sha256": "e8d627173c0a57c1eeb185d99b17e711c4971c3d5b8cf2f5001204fdb36a3a31",
+        "primary_raw_sha256": "46817d3bcdf36e75194aefd0920a8b8dc78aa0e4497770450081c1078f815447",
+        "primary_next_history_sha256": "133a4ffc943aded5e0dae55e8e6ab9bbca3f329ebaf483cd2d22b9e67ec18022",
+        "companion_next_history_sha256": "f877aa8a6ca0b5ffd070a87fe57def8a3d8fad0039dd535e8fc9e231be925c4a",
+        "nonzero_primary_spectrum_words": 256,
+        "nonzero_companion_spectrum_words": 256,
+        "primary_preview_u32": [
+          "3a571507",
+          "ba1e4ef0",
+          "bb158d64",
+          "3a042307",
+          "bad58483",
+          "b9dccb9c",
+          "380caa34",
+          "3ab6fb5a"
+        ],
+        "power_raw_preview": [
+          9,
+          9,
+          8,
+          9,
+          9,
+          9,
+          10,
+          9,
+          9,
+          12,
+          11,
+          11
+        ],
+        "primary_raw_preview": [
+          10,
+          10,
+          8,
+          10,
+          9,
+          11,
+          14,
+          9,
+          10,
+          15,
+          11,
+          11
+        ]
+      }
+    ],
+    "terminal_primary_history_sha256": "133a4ffc943aded5e0dae55e8e6ab9bbca3f329ebaf483cd2d22b9e67ec18022",
+    "terminal_companion_history_sha256": "f877aa8a6ca0b5ffd070a87fe57def8a3d8fad0039dd535e8fc9e231be925c4a"
+  },
+  "same_input_long_short_discriminator": {
+    "input_sha256": "d858947cff1d5e8dd49aa0fcef060cad347263cc82524f207b25c69a86ee3ee6",
+    "history_sha256": "4670ddf6b37ae74c52443163a56987d4a8ead8c7a0e126db11bbe17626e9eea5",
+    "long_primary_sha256": "e19aaf81296585265222e0c4bc0215276e6598ef3a5223ff79acac27d755a27b",
+    "short_primary_sha256": "f0f97971e033cc564107a2f9157f6810615de4cc3731d8805578e78d8faba318",
+    "spectrum_word_differences": 256,
+    "power_word_differences": 217,
+    "power_raw_differences": 150,
+    "primary_raw_differences": 181,
+    "next_history_same_across_branch": true
+  },
+  "lfe_continuous": {
+    "blocks": 3,
+    "traces": [
+      {
+        "case_id": "lfe-0",
+        "branch": "LFE_RECURSIVE",
+        "input_sha256": "af8317923c62ae88174f36e6d3b093e61ebba34fcb94def261ca79b452ad4c13",
+        "primary_fold_sha256": "1bb6c607574e0ecc76d48ac3cba1eff727757a091a3c0e5fbcb9258db0f39952",
+        "companion_fold_sha256": "284ddd8f63889914ba86b70ead13720628754b64e172abca56b5d5ce0779a7da",
+        "primary_spectrum_sha256": "25f47f92c31ff3d29ec5cee6b49a09c2f9c5659a9f9c7edd5d408b29e4473271",
+        "companion_spectrum_sha256": "09cf45c87f55e030e3f83bf31ed0b68dd79375666385d86f142a449f6eb1def9",
+        "primary_prefix_sha256": "25f47f92c31ff3d29ec5cee6b49a09c2f9c5659a9f9c7edd5d408b29e4473271",
+        "companion_prefix_sha256": "09cf45c87f55e030e3f83bf31ed0b68dd79375666385d86f142a449f6eb1def9",
+        "power_sha256": "491dccfba87bfddd47cba6458aed035f7020bb0b3d357e8d361347acfcd8fa86",
+        "power_raw_sha256": "be9d041d194903755e974f1e4fe3d4ad89d7fc09c12467cdc1466b574118334f",
+        "primary_raw_sha256": "43152dfa6429f50c67489275cd0c66f2efc621a5fc8c62020a04768eb47e2ad9",
+        "primary_next_history_sha256": "4da4a6a6f8c3ee27300e876e21e5fbb91c815030c92e1d0eb74ef393d1fbb61d",
+        "companion_next_history_sha256": "8d48af15e7067f824133170eb0ee744f3c956a64a06de1d00945231955631eb6",
+        "nonzero_primary_spectrum_words": 7,
+        "nonzero_companion_spectrum_words": 7,
+        "primary_preview_u32": [
+          "b9274f6c",
+          "ba3abf76",
+          "ba480373",
+          "39a5d341",
+          "3a499c0c",
+          "b881c74e",
+          "b7d93f3a"
+        ],
+        "power_raw_preview": [
+          12,
+          10,
+          9,
+          11,
+          10,
+          12,
+          10
+        ],
+        "primary_raw_preview": [
+          12,
+          10,
+          10,
+          11,
+          10,
+          13,
+          15
+        ]
+      },
+      {
+        "case_id": "lfe-1",
+        "branch": "LFE_RECURSIVE",
+        "input_sha256": "10db5547f58e3c0b85e48c5371a631f40c184c854112a8217358b1d7fd0fd33e",
+        "primary_fold_sha256": "1d108a0f84dff5cd0d9cccfcba07fe834b29f4976b24886fe15ae823bd49d9ac",
+        "companion_fold_sha256": "e60593f0e3b2df5163e18a8c4fbd8d6d9068be2539c22641ebd4be988e757e6b",
+        "primary_spectrum_sha256": "747486e23622320ac140dac4d19d128ccc21f5cfa6b1fe37db86b2147def4c1a",
+        "companion_spectrum_sha256": "8f6a0dd9e97f77ded278435d10cfb75f1833164fd2201ac8c5194cf912092188",
+        "primary_prefix_sha256": "747486e23622320ac140dac4d19d128ccc21f5cfa6b1fe37db86b2147def4c1a",
+        "companion_prefix_sha256": "8f6a0dd9e97f77ded278435d10cfb75f1833164fd2201ac8c5194cf912092188",
+        "power_sha256": "c0b7dbab3e3bd3fda2156559cf274a5e4488ded8016db6ab8ae49e54b2938469",
+        "power_raw_sha256": "b3ada84e32f16ff9c1831612add7ca325bd75f72681d5c93650cc6787a85349c",
+        "primary_raw_sha256": "9aca16912c8b7a492ab3bdd76abdf0873c88ff9cd56af65756b3e1e1e949d0fc",
+        "primary_next_history_sha256": "55437355454e8bd18e457f0de8c59c590a59662cc0b64a74804923fc7c8d0b8d",
+        "companion_next_history_sha256": "e4b32fb622c17bd63aa7f49d9a516a46e306c4dc3363e4da6049d1bd4f11b9e9",
+        "nonzero_primary_spectrum_words": 7,
+        "nonzero_companion_spectrum_words": 7,
+        "primary_preview_u32": [
+          "b8ab7f47",
+          "38d8306c",
+          "38ef704a",
+          "ba5f742c",
+          "ba9c556c",
+          "3a4ef10c",
+          "3a9d3eee"
+        ],
+        "power_raw_preview": [
+          12,
+          11,
+          13,
+          9,
+          9,
+          9,
+          9
+        ],
+        "primary_raw_preview": [
+          13,
+          13,
+          13,
+          10,
+          9,
+          10,
+          9
+        ]
+      },
+      {
+        "case_id": "lfe-2",
+        "branch": "LFE_RECURSIVE",
+        "input_sha256": "91f34d5050889914e8f4db92d4108867b5500ceb79c5dfe88308e196a824c303",
+        "primary_fold_sha256": "53d24c9f4728cef8dafc111e84cc84f40b293ca721c6a5da042502beb18a6f2b",
+        "companion_fold_sha256": "98eaea31e7b6083af2b98a5e528e17c0a09850570a7b739c0dc512d4cc7ff114",
+        "primary_spectrum_sha256": "cc385567dbf90ff203b38aa2e3db5377ccc12e49aa6d585bd1075e1c1826e450",
+        "companion_spectrum_sha256": "ff3e3c8f3450ac467dca04625d7bf8cc1fe57a7d6106cae0f04feace4654c905",
+        "primary_prefix_sha256": "cc385567dbf90ff203b38aa2e3db5377ccc12e49aa6d585bd1075e1c1826e450",
+        "companion_prefix_sha256": "ff3e3c8f3450ac467dca04625d7bf8cc1fe57a7d6106cae0f04feace4654c905",
+        "power_sha256": "00b3805609b22ce091f3cb4b5c830a7113ba6426a4af0f4893bf1117b49e8fb7",
+        "power_raw_sha256": "b94ba79a6a9173ecdbf24b0198b0dcdc83d302abc3a8f4273f73187613116b49",
+        "primary_raw_sha256": "e07d5d2b897f78ae42ac6617cdc09a069691eba73c91be8a6022aae6806b1ec7",
+        "primary_next_history_sha256": "642275e1b8c02eb84cf21e237e298b5f580482a90c0274f87669ec8933ed34f0",
+        "companion_next_history_sha256": "cc4f57aba634876053b0d871d4b38e382459e8f4cfcde468cf8f470083b6c157",
+        "nonzero_primary_spectrum_words": 7,
+        "nonzero_companion_spectrum_words": 7,
+        "primary_preview_u32": [
+          "3a8b35fa",
+          "39181387",
+          "ba64bace",
+          "39dc8f5c",
+          "b9c3a07a",
+          "b9f5f496",
+          "ba1ce8d2"
+        ],
+        "power_raw_preview": [
+          9,
+          9,
+          9,
+          10,
+          10,
+          10,
+          10
+        ],
+        "primary_raw_preview": [
+          9,
+          12,
+          10,
+          11,
+          11,
+          11,
+          10
+        ]
+      }
+    ],
+    "terminal_primary_history_sha256": "642275e1b8c02eb84cf21e237e298b5f580482a90c0274f87669ec8933ed34f0",
+    "terminal_companion_history_sha256": "cc4f57aba634876053b0d871d4b38e382459e8f4cfcde468cf8f470083b6c157"
+  },
+  "reset_replay": {
+    "fbw_primary_spectrum_reproduced": true,
+    "fbw_companion_spectrum_reproduced": true,
+    "fbw_primary_state_reproduced": true,
+    "fbw_companion_state_reproduced": true,
+    "lfe_primary_spectrum_reproduced": true,
+    "lfe_companion_spectrum_reproduced": true,
+    "continuous_state_changes_second_fbw_output": true
+  },
+  "error_boundaries": {
+    "cases": 7,
+    "all_machine_readable_expected_matched": true,
+    "all_rejected_without_state_change": true,
+    "results": [
+      {
+        "id": "fbw-input-length-255",
+        "expected": {
+          "status": "ERROR",
+          "error_code": "F08_INPUT_ERROR",
+          "output_present": false,
+          "state_unchanged": true
+        },
+        "actual": {
+          "status": "ERROR",
+          "error_code": "F08_INPUT_ERROR",
+          "output_present": false,
+          "state_unchanged": true
+        },
+        "state_before_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+        "state_after_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "id": "fbw-history-length-127",
+        "expected": {
+          "status": "ERROR",
+          "error_code": "F08_INPUT_ERROR",
+          "output_present": false,
+          "state_unchanged": true
+        },
+        "actual": {
+          "status": "ERROR",
+          "error_code": "F08_INPUT_ERROR",
+          "output_present": false,
+          "state_unchanged": true
+        },
+        "state_before_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+        "state_after_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "id": "fbw-short-bool",
+        "expected": {
+          "status": "ERROR",
+          "error_code": "F08_INPUT_ERROR",
+          "output_present": false,
+          "state_unchanged": true
+        },
+        "actual": {
+          "status": "ERROR",
+          "error_code": "F08_INPUT_ERROR",
+          "output_present": false,
+          "state_unchanged": true
+        },
+        "state_before_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+        "state_after_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "id": "fbw-nonfinite",
+        "expected": {
+          "status": "ERROR",
+          "error_code": "F08_INPUT_ERROR",
+          "output_present": false,
+          "state_unchanged": true
+        },
+        "actual": {
+          "status": "ERROR",
+          "error_code": "F08_INPUT_ERROR",
+          "output_present": false,
+          "state_unchanged": true
+        },
+        "state_before_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+        "state_after_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "id": "parameter-missing-butterfly",
+        "expected": {
+          "status": "ERROR",
+          "error_code": "PARAMETER_UNAVAILABLE",
+          "output_present": false,
+          "state_unchanged": true
+        },
+        "actual": {
+          "status": "ERROR",
+          "error_code": "PARAMETER_UNAVAILABLE",
+          "output_present": false,
+          "state_unchanged": true
+        },
+        "state_before_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+        "state_after_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "id": "parameter-bad-permutation",
+        "expected": {
+          "status": "ERROR",
+          "error_code": "PARAMETER_IDENTITY_ERROR",
+          "output_present": false,
+          "state_unchanged": true
+        },
+        "actual": {
+          "status": "ERROR",
+          "error_code": "PARAMETER_IDENTITY_ERROR",
+          "output_present": false,
+          "state_unchanged": true
+        },
+        "state_before_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+        "state_after_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "id": "parameter-hash-mismatch",
+        "expected": {
+          "status": "ERROR",
+          "error_code": "PARAMETER_IDENTITY_ERROR",
+          "output_present": false,
+          "state_unchanged": true
+        },
+        "actual": {
+          "status": "ERROR",
+          "error_code": "PARAMETER_IDENTITY_ERROR",
+          "output_present": false,
+          "state_unchanged": true
+        },
+        "state_before_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+        "state_after_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      }
+    ]
+  },
+  "verified_model_crosscheck": {
+    "file": "evidence:EVID-F08-TRANSFORM-SPEC-CORE-V1",
+    "sha256": "7a18804788df90f50883649f5e93fd73e4cee57df03f1bf76695b1d9a09c7eec",
+    "compared_u32_words": 4650,
+    "mismatches": 0
+  },
+  "scope": {
+    "closed": "nonzero window-to-long/short/LFE transform-to-POWER/PRIMARY exponent-input composition for delivered math-generated-v1 provider",
+    "not_closed": "historical D01/D04 identity, native equivalence, encoded audio/render quality, whole codec and whole package"
+  },
+  "model_reads": [
+    "evidence:EVID-F08-TRANSFORM-SPEC-CORE-V1"
+  ],
+  "wav_or_pcm_file_reads": false,
+  "private_key_reads": false
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "jocforge-f07-f08-native-parent-lifecycle-evidence.v1",
+  "status": "MODEL_CONTRACTS_PRESENT_NATIVE_CALLBACK_OWNER_GENERATION_UNBOUND",
+  "fixture_seam": {
+    "production_allowed": false,
+    "commit_count": 0,
+    "state_delta": null,
+    "f07_equations_executed": false,
+    "actual_transform_or_fft_executed": false
+  },
+  "local_f08_review": {
+    "selected_provider": "math-generated-v1",
+    "reported_scope": "80 exposed hash/preview comparisons; 7 reset assertions; 7 error cases",
+    "fresh_independent_4650_word_replay": "NOT_AVAILABLE_FROM_FROZEN_MODEL_AND_EXPECTED_SET",
+    "whole_source_integration": "NOT_PROVEN"
+  },
+  "bounded_native_inventory": {
+    "readme_reported_slices": 24,
+    "observed_directory_files": 28,
+    "b_prefixed_entries": 26,
+    "count_discrepancy": "UNRESOLVED",
+    "f07_f08_named_slice_in_bounded_directory": false,
+    "global_absence_claim": false
+  },
+  "unbound": [
+    "selected callback to F07/F07A/F08 native owner and source generation",
+    "parent staged success/fatal/reset/EOF boundary for that generation",
+    "whether DTHD meter is a required selected-path dependency"
+  ],
+  "not_run": [
+    "fresh 4249-source to 4247-AU cold replay",
+    "cross-module fatal/durable-fault execution",
+    "decoder/render/spatial/product acceptance"
+  ]
+}

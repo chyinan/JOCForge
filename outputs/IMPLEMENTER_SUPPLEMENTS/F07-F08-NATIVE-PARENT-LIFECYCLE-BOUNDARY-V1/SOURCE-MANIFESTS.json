@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-f07-f08-parent-lifecycle-source-manifests.v1",
+  "reverse_package": {
+    "manifest_sha256": "7e38e51ece809c155498765092c5699d673b2e20ec608cd9b442baa2506e8324",
+    "package_payloads": 7,
+    "source_manifests_verified": 2,
+    "listed_source_files_hashed": 14,
+    "checker_mode": "PYTHON_OPTIMIZED_EXPLICIT_GUARDS",
+    "input_vector_payload_opened": false
+  },
+  "approved_clean_package": {
+    "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "contracts": [
+      {"file":"specs/07-history-and-transient.md","sha256":"61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac"},
+      {"file":"specs/08-transforms.md","sha256":"bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e"},
+      {"file":"specs/09-exponents.md","sha256":"41cd157140d0deaab51fa9a895c33758cb49eb46cf5844a2883c1d6e8bb81739"},
+      {"file":"specs/10-exponent-normalization.md","sha256":"a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc"},
+      {"file":"specs/12-selected-source-frame-composition.md","sha256":"9e6fcc14489ca0acaff0f7c223fce65539aa5b19cb4119ebcb34d19049cd0769"},
+      {"file":"parameters/f07-f12-source-state-schema-v1.json","sha256":"7967752a88493648c24cf7c1183da61dc470e35a684bb48d6335c496e90c6f4e"},
+      {"file":"test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json","sha256":"59f7e83438bd1e7bd955cb4a9fe9c6dd7717939a651eb150d190edb2d91432d5"}
+    ]
+  },
+  "analysis_fixture_seam": {
+    "manifest_sha256": "0fd24d23ca4237e8bdd2283671293dfa0b54755ea74e84316234b4cc4c195912",
+    "payloads_reverified": 11,
+    "production_allowed": false
+  },
+  "dee_corpus_readme_sha256": "76ecb8d0c2c150257a723a2fdf8e8f317f46e6bf1332a2d78e97d6a379eaa2f2"
+}

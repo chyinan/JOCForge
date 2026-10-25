@@ -34,6 +34,8 @@ production crate 不得依赖 validation。validation 可以依赖 domain、appl
 
 F05R56 domain stage 仅接受调用者提供的不可变 callback inputs；selected profile constants are pinned to approved `MANIFEST.json` assets by input-only tests and boundary checks, with no runtime file or environment reads. F05O Type11 writer 输出必须经 Type11 wire decoder 重新解码后才能进入 reader56 materializer；不得把 writer-side rows 当作 decoded rows。F05R56 产生的 pending receipt 在 `spatial_control` parent admission 前不可供 F04C/F04R/F05JC 使用。
 
+F08 `math-generated-v1` provider 使用已锁定的 `sha2` 与 `serde_json` 对调用者提供的字节做精确文件身份、schema、维度、finite 与 permutation 校验；domain 不自行读取参数文件，不回退到历史 D01-D04 表，也不把 provider 值暴露为可变状态。
+
 Profile 只能包含 `PROFILE-DIMENSIONS.md` 登记的七个维度和唯一 supported row。每次新增依赖或 profile variant 都须先修改批准架构和边界检查。
 
 F01E.1 的 selected job-XML parser 使用 `roxmltree` 0.21.1，将调用者提供的 UTF-8 XML bytes 解析为只读 DOM。调用端先按 F01E 拒绝 `DOCTYPE`/`ENTITY` 字样；该依赖不读取文件或网络。它只服务选定 job-XML 配置归一化，不得扩展为任意 ADM graph/XML 语义解析。

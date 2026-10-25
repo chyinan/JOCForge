@@ -83,21 +83,21 @@
 | F06OR | — | — | INVENTORIED |
 | F06OC | — | — | INVENTORIED |
 | F06ND | — | — | INVENTORIED |
-| F07 | — | — | INVENTORIED |
+| F07 | APPROVED_F07_TRANSIENT_AND_SOURCE_STATE_PROVIDER_INVENTORY | `parameters/transient-d05-authorized-v1.json`<br>`parameters/f07-f12-source-state-schema-v1.json`<br>`parameters/f07-f12-source-provider-manifest-v1.json` | INVENTORIED |
 | F07A | — | — | INVENTORIED |
-| F08 | — | — | INVENTORIED |
-| F08NZ | — | — | INVENTORIED |
+| F08 | APPROVED_F08_MATH_GENERATED_V1_PROVIDER | `parameters/ordinary-transform-math-v1.json` | INVENTORIED |
+| F08NZ | APPROVED_F08_NONZERO_COMPOSITION_PROVIDER_BINDING | `parameters/ordinary-transform-math-v1.json` | INVENTORIED |
 | F09 | — | — | INVENTORIED |
 | F09E | — | — | INVENTORIED |
 | F09PA | — | — | INVENTORIED |
 | F09G | — | — | INVENTORIED |
 | F09LB | — | — | INVENTORIED |
 | F10 | — | — | INVENTORIED |
-| F11 | — | — | INVENTORIED |
-| F12 | — | — | INVENTORIED |
-| F12S | — | — | INVENTORIED |
-| F12SC | — | — | INVENTORIED |
-| F12A | — | — | INVENTORIED |
+| F11 | APPROVED_F11_F12_CODEC_WIRE_AND_CROSS_MODULE_PROVIDER_INVENTORY | `parameters/codec-wire-selected-v1.json`<br>`parameters/codec-wire-cross-module-providers-v1.json`<br>`parameters/public-bap-48k-v1.json` | INVENTORIED |
+| F12 | APPROVED_F12_CODEC_WIRE_AND_CROSS_MODULE_PROVIDER_INVENTORY | `parameters/codec-wire-selected-v1.json`<br>`parameters/codec-wire-cross-module-providers-v1.json` | INVENTORIED |
+| F12S | APPROVED_F12S_CODEC_WIRE_PROVIDER_INVENTORY | `parameters/codec-wire-selected-v1.json`<br>`parameters/codec-wire-cross-module-providers-v1.json` | INVENTORIED |
+| F12SC | APPROVED_F07_F12_SOURCE_COMPOSITION_PROVIDER_AND_STATE_INVENTORY | `parameters/f07-f12-source-state-schema-v1.json`<br>`parameters/f07-f12-source-provider-manifest-v1.json`<br>`parameters/codec-wire-cross-module-providers-v1.json` | INVENTORIED |
+| F12A | APPROVED_F12A_PUBLIC_BAP_AND_CODEC_PROVIDER_INVENTORY | `parameters/public-bap-48k-v1.json`<br>`parameters/codec-wire-cross-module-providers-v1.json` | INVENTORIED |
 | F13 | PINNED_SELECTED_PROFILE_AND_WRAPPER_CONFIGURATION | `crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json`<br>`crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-wrapper-config.json` | INVENTORIED |
 | F13F | FIXED_SELECTED_QUEUE_CAPACITY_DELAY_AND_SLOT_PROVIDER | `crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json` | INVENTORIED |
 | F13T | FIXED_TIMER_PERIODS_AND_WASHED_COUNTER_RULES | `crates/jocforge-domain/tests/fixtures/metadata_owner/metadata-public-provider.json` | INVENTORIED |
@@ -204,7 +204,9 @@
 | F07/structure-refresh-flag-projection | NONE_SELECTED_F07_PROFILE_FLAGS | — | Consumes only six caller-supplied Boolean short/other sequences. The selected profile fixes SPX=0 and end-bin=217. No D05 transient provider values are read. |
 | F07/selected-dither-flag-plan | NONE_SELECTED_F07_DITHER_PROFILE | — | Consumes typed Boolean short decisions and prior flags only. The selected selector/acmod/coupling/gate conditions are fixed by the helper scope; no D05 or D11 provider values are read. |
 | F07/actual-d05-transient-channel-block | HASH_PINNED_ACTUAL_D05_SELECTED_PROFILE_PROVIDER | `crates/jocforge-domain/tests/fixtures/transient_channel/PARAMETERS.json` | The F07A provider validates the exact 7,548-byte D05 artifact SHA and all six ordered finite-F32 groups before any transient arithmetic. No synthetic profile coefficients or fallback are used by this direct slice. |
+| F07/washed-f07-f08-native-parent-lifecycle-boundary | HASH_BOUND_F07_F08_NATIVE_PARENT_LIFECYCLE_BOUNDARY_V1 | `outputs/IMPLEMENTER_SUPPLEMENTS/F07-F08-NATIVE-PARENT-LIFECYCLE-BOUNDARY-V1/CONTRACT.md`<br>`outputs/IMPLEMENTER_SUPPLEMENTS/F07-F08-NATIVE-PARENT-LIFECYCLE-BOUNDARY-V1/EVIDENCE.json`<br>`outputs/IMPLEMENTER_SUPPLEMENTS/F07-F08-NATIVE-PARENT-LIFECYCLE-BOUNDARY-V1/SOURCE-MANIFESTS.json`<br>`outputs/IMPLEMENTER_SUPPLEMENTS/F07-F08-NATIVE-PARENT-LIFECYCLE-BOUNDARY-V1/WASH-REVIEW.json` | Wash status evidence only; model contracts present does not mean the selected native parent owner/generation path is implemented. |
 | F07A/selected-d05-transient-parameter-provider | HASH_PINNED_INTERNAL_ONLY_D05_P_A_S_O_M_C | `crates/jocforge-domain/tests/fixtures/transient_channel/PARAMETERS.json` | Checks file identity before JSON parsing; then validates fixed schema, group order, types, counts, finite binary32 words, per-group LE hashes, distribution-scope flags, and the canonical 132-byte digest. |
+| F08/math-generated-window-fold | HASH_BOUND_MATH_GENERATED_V1_F08_TRANSFORM_PROVIDER | `specs/08-transforms.md`<br>`specs/08-nonzero-transform-composition.md`<br>`parameters/ordinary-transform-math-v1.json`<br>`crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json` | Parses only the approved math-generated-v1 file identity and exact F08 dimensions/finite/permutation requirements. Historical D01-D04 identity is not claimed or required by this selected route. |
 | F09/exponent-refresh-state-transition | HASH_BOUND_SELECTED_REFRESH_STATE_PARAMETERS | `crates/jocforge-domain/tests/fixtures/exponent_refresh_state/PARAMETERS.json` | Uses the selected D06-E table, four I32 position weights, and the two threshold F32 bit patterns from the hash-bound parameter payload. No runtime provider or file I/O is performed. |
 | F09/raw-exponent-from-power-bits | HASH_BOUND_RAW_POWER_BIT_KERNEL_INTEGER_PARAMETERS | `crates/jocforge-domain/tests/fixtures/raw_exponent/PARAMETERS.json` | Uses the exact integer word transform, exponent bias, difference clamp, I16 wrap, signed cap comparison, and arithmetic shift. The bit word is never decoded as floating point. |
 | F09/coefficient-pair-to-power-row | HASH_BOUND_COEFFICIENT_PAIR_TO_POWER_PARAMETERS | `crates/jocforge-domain/tests/fixtures/coefficient_power/PARAMETERS.json` | Uses the finite coefficient domain, 253-bin output, F32 operation order, POWER cap, selected wrapper dimensions, bias clear effect, and recorded floating-point environment from the package. The helper does not set MXCSR or validate out-of-profile inputs. |
