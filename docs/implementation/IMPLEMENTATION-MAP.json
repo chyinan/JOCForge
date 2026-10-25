@@ -4486,6 +4486,92 @@
           ],
           "not_run": ["independent ADM frontend/event/render/feature/selection/component producers","complete frontend warm state and whole eight-owner meter root","verified MeasurementReceipt and production MetadataOwner::stage_source join","real ADM, whole programme and product acceptance"],
           "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
+        },
+        {
+          "slice_id": "independent-meter-prepass-callback-commit",
+          "mapping_status": "MATERIALIZED_ATOMIC_PREPASS_CALLBACK_COMMIT__WHOLE_F06_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_ATOMIC_PREPASS_CALLBACK_COMMIT__FINALIZE_AND_MAIN_DEFERRED",
+          "scope": "Owns the selected local LFE and post-render meter states under one prepass callback boundary. A successful callback returns a non-Clone stage borrowing the prepass owner; commit replaces both after states together. A leaf-stage error preserves both numeric owners and records FAILED until full reset reconstructs both from cold. Existing leaf clocks enforce ceil(source_samples/1536) normal callbacks followed by exactly three zero-input drains. Inputs remain explicit MeterFrontendCallbackInput values; this does not provide an independent ADM frontend, terminal measurement identity, finalization, main none-DRC, or the GTC parent transaction.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/meter/mod.rs",
+            "crates/jocforge-domain/src/meter/meter_prepass.rs"
+          ],
+          "local_mapping_files": [
+            "docs/implementation/WASH-REVALIDATION-STATUS.md"
+          ],
+          "clock": {
+            "domains": [
+              "MeterSourceSampleCount",
+              "MeterCallbackIndex",
+              "ObjectRenderCallbackGeneration",
+              "MeterBlockIndex",
+              "EnergyRecordCount"
+            ],
+            "covered_clauses": [
+              "Existing meter leaf clocks require ceil(N/1536) normal callbacks followed by three zero-input drains.",
+              "LFE callback index, upstream generation, renderer callback and sample queue callback remain joined by their typed owner checks.",
+              "A staged callback is a one-shot mutable borrow; both owner after states install in one root replacement.",
+              "A stage failure changes only prepass lifecycle to FAILED; full reset reconstructs both local owners from cold."
+            ]
+          },
+          "parameters": {
+            "kind": "VALIDATED_SELECTED_F06_POST_RENDER_PROVIDERS",
+            "provider_files": [
+              "crates/jocforge-domain/src/meter/k_matrix_parameters.json",
+              "crates/jocforge-domain/src/meter/k_matrix_bounds.json",
+              "crates/jocforge-domain/src/meter/truepeak_parameters.json",
+              "crates/jocforge-domain/src/meter/truepeak_log_parameters.json"
+            ],
+            "validation_boundary": "The owner accepts a positive typed source extent, validated shared-gain parameters and the selected K-matrix provider. Callers supply typed frontend callback inputs; no file reader or ADM producer is included."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/src/meter/meter_prepass.rs"
+          ],
+          "vectors": {
+            "kind": "SYNTHETIC_ZERO_PROGRAMME_PREPASS_AND_APPROVED_F06_STATE_MACHINE_VECTORS",
+            "authoritative_vectors": [
+              "test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json"
+            ],
+            "case_pointers": [
+              "One normal callback followed by exactly three zero-input drain callbacks.",
+              "Dropping an uncommitted stage leaves both callback owners unchanged.",
+              "A later leaf validation failure leaves both owners unchanged and marks the prepass FAILED.",
+              "Full reset restores both owners to their cold state and restarts callback index zero."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/post_render_meter/zero_programme.json",
+              "bytes": 1037,
+              "sha256": "fbb1ba5bb6d027d4b7663bbf6219fd4b79555e53deb0042fd106cc2a1f543de9"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "wash_status_supplement_manifest_sha256": "63dc79991ab97e94f4189c0d268c8359e5a74acf29ed7c53723a3f01720cafe8",
+            "drain_semantics_erratum_manifest_sha256": "f4c660a632c0b3649b1496095f37f2c164f1537bbb495086180394cb00429b96",
+            "reducer_pair_join_supplement_manifest_sha256": "cbd6842938b11c93183b66986c55cd93709f3cd4671968264c37cb373a2d15a6"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "INDEPENDENT_METER_PREPASS_CALLBACK_ERROR",
+              "category": "LOCAL_CALLBACK_STAGE_FAILURE",
+              "trigger": "Any LFE, OAR, DV32, scheduler, peak, K/window, integrated, or ungated stage rejects the callback.",
+              "programme_state_after": "Both numeric owner states remain at their committed before values; lifecycle records FAILED at MeterCallback.",
+              "caller_action": "Reject further callbacks until full reset."
+            },
+            {
+              "error_code": "INDEPENDENT_METER_PREPASS_FAILED",
+              "category": "FAIL_STOP_LIFECYCLE",
+              "trigger": "A callback is attempted after the owner has entered FAILED.",
+              "programme_state_after": "No owner state changes.",
+              "caller_action": "Perform full reset before retry."
+            }
+          ],
+          "not_run": [
+            "independent ADM/frontend event and source producer",
+            "whole eight-owner meter root and recursive terminal-state digest",
+            "programme terminal measurement finalization and production MetadataOwner caller",
+            "main none-DRC source composition and GTC parent transaction (P1.3-C hold)",
+            "whole-production fault injection, real ADM replay and product acceptance"
+          ],
+          "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
         }
       ]
     },

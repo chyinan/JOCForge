@@ -157,6 +157,7 @@
 | F05T/trim-section-codec | F05T | `joc` |
 | F06/programme-measurement-finalize-projection | F06 | `meter` |
 | F06/post-render-meter-callback-composition | F06 | `meter` |
+| F06/independent-meter-prepass-callback-commit | F06 | `meter` |
 | F06L/ordered-log-energy-peak-accumulator-window-and-reduction | F06L | `meter` |
 | F06I/integrated-meter-synthetic-state-and-event-transition | F06I | `meter` |
 | F06W/meter-output-sample-accounting-and-span-ledger | F06W | `meter` |
