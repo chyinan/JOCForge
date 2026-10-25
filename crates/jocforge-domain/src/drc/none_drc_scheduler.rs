@@ -151,8 +151,7 @@ pub struct NoneDrcSchedulerFrameTransition {
     pub next_state: NoneDrcSchedulerState,
 }
 
-/// Lower-level failures are propagated without assigning a new F06ND outcome
-/// code. The exact mapping of arithmetic I03 failures remains unbound here.
+/// Lower-level failures from one selected scheduler frame.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum NoneDrcSchedulerError {
     Numeric(R32Error),
@@ -160,6 +159,24 @@ pub enum NoneDrcSchedulerError {
     Dialnorm(NoneDrcDialnormOffsetError),
     Normalization(NoneDrcNormalizationError),
     Quantization(NoneDrcQuantizerError),
+}
+
+impl NoneDrcSchedulerError {
+    /// Maps only the washed F06ND intermediate nonfinite/overflow class.
+    ///
+    /// Dialnorm, negative-input, unsupported-kind and other nested labels remain
+    /// unbound and return `None`.
+    pub const fn outcome_code(self) -> Option<&'static str> {
+        match self {
+            Self::Numeric(_)
+            | Self::GenerationOverflow
+            | Self::Normalization(NoneDrcNormalizationError::NumericNonFinite)
+            | Self::Quantization(NoneDrcQuantizerError::NumericNonFinite) => {
+                Some("NUMERIC_FAILURE")
+            }
+            Self::Dialnorm(_) | Self::Normalization(_) | Self::Quantization(_) => None,
+        }
+    }
 }
 
 impl From<R32Error> for NoneDrcSchedulerError {

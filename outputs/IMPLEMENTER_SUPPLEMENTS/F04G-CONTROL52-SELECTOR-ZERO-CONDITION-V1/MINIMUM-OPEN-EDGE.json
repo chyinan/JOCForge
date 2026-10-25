@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.control52-selector-zero-minimum-evidence.v1",
+  "status": "NOT_AUTHORIZATION_TO_CAPTURE",
+  "to_confirm_selected_reachability": [
+    "selected source-mode identity",
+    "selected in-range category classification for the admitted ADM graph"
+  ],
+  "to_close_gate_join": [
+    "formatter output owner/pointer token",
+    "selected handler gate table owner/pointer token",
+    "same callback/source-generation token",
+    "row count and capacity at each boundary"
+  ],
+  "capture_limit": {
+    "row_bytes_read": 0,
+    "PCM_bytes_read": 0,
+    "gate_scalar_read": false,
+    "requires_new_specific_Wash_GO": true
+  }
+}

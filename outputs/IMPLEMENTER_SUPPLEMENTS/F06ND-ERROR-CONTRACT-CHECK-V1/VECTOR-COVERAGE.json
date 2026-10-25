@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.f06nd-error-vector-coverage.v1",
+  "coverage_sources": [
+    {
+      "path": "outputs/IMPLEMENTER_PACKAGE/test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json",
+      "sha256": "5faceecd9b13bacf1033bdafbb72f5bec854304a5c1bd5cce5b804ee6b9a299f",
+      "covers": ["whole lifecycle order", "reset/restart", "one downstream failure and retirement", "rolling-measurement rejection"],
+      "does_not_cover": ["simultaneous-invalid F06ND preflight precedence", "raw input nonfinite error mapping", "parameter identity mismatch code"]
+    },
+    {
+      "path": "outputs/IMPLEMENTER_PACKAGE/test-vectors/NONE-DRC-AUTHORIZED-VERIFICATION.json",
+      "sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d",
+      "covers": ["valid statistics inputs", "valid scheduler sequence", "valid normalization and quantizer input cases"],
+      "does_not_cover": ["child error-code translation into F06ND outcomes", "simultaneous-invalid cases"]
+    }
+  ],
+  "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "invalid_case_vectors_for_unbound_edges": 0,
+  "expected_results_invented": false
+}

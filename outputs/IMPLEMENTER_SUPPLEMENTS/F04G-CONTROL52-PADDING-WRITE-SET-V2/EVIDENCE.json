@@ -1,0 +1,31 @@
+{
+  "schema": "jocforge.control52-padding-write-set-evidence.v2",
+  "status": "PARTIAL_STATIC; LIVE_GATE_JOIN_UNBOUND",
+  "scope": "main Control52 context row table and its reviewed full-row copy destination",
+  "claims": {
+    "raw_bytes_1_to_3": "STATIC_ZERO_WITHIN_REVIEWED_WRITER_SET",
+    "selector_u16_zero_branch": "STATIC_REACHABLE_NO_WRITE_REUSES_PRIOR_SEMANTIC_ROW",
+    "selector_zero_selected_callback_reachability": "NOT_OBSERVED",
+    "row_to_formatter_to_selected_gate_owner_generation": "UNBOUND",
+    "runtime_capture": "NOT_RUN"
+  },
+  "provenance": {
+    "wash_reviewed_static_package_manifest_sha256": "bb06fec78a015ca8288ed9c1d3bb79cda7e7a4d285814d137d8274810cb7a906",
+    "static_package_payload_files_verified": 6,
+    "source_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "source_region_hashes": [
+      {"role":"control52_field_writer","bytes":640,"sha256":"003994aca8fdae7a378f17413fd28f4ff47175475a38a50f67dd158680eebc33"},
+      {"role":"raw_row_full_copy_writer","bytes":101,"sha256":"962a790bb6398553e32cdbd46922cc473bae808c8ce967c9cb7980c80c9323cc"},
+      {"role":"raw_row_arena_constructor","bytes":90,"sha256":"33a17c8177afb5ef99809af39f8d15f2a04a94aea853854e0d28fa00d6892980"}
+    ],
+    "input_vectors": "synthetic arithmetic only; not runtime observations",
+    "native_execution": "NOT_RUN",
+    "row_bytes_pcm_or_payload_included": false,
+    "private_key_or_auth_material_included": false
+  },
+  "limitations": [
+    "The zero-byte conclusion is restricted to the named main context and reviewed writer set.",
+    "No conclusion is made about any unreviewed row family or selected callback branch reachability.",
+    "No live gate value or row owner/generation identity is established."
+  ]
+}

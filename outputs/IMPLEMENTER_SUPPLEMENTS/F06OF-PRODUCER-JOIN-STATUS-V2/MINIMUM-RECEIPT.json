@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge.f06of-producer-reader-minimum-receipt.v1",
+  "status": "EVIDENCE_REQUEST_ONLY; NOT_AN_APPROVED_PRODUCT_API",
+  "same_input_generation": [
+    "opaque prepared-input identity",
+    "source-generation token",
+    "callback/source index"
+  ],
+  "row_descriptor_identity": [
+    "semantic channel ID",
+    "CHNA source-channel index",
+    "track index",
+    "physical row ordinal",
+    "descriptor owner token and generation"
+  ],
+  "reader_and_model_units": {
+    "file offset before/after": "bytes",
+    "requested/returned read extent": "bytes",
+    "source cursor before/after": "samples per channel",
+    "actual samples per channel": "samples per channel",
+    "eof": "explicit typed status",
+    "drain callback": "typed drain ordinal in the same generation"
+  },
+  "prohibitions": [
+    "No PCM, row, or encoded payload bytes are read or persisted.",
+    "No equality-of-values, file-order, or adjacent-event substitution for owner/generation identity.",
+    "Any live receipt requires a new specific Wash GO."
+  ]
+}

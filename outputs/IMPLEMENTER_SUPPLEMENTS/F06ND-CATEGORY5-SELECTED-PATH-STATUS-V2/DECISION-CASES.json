@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.f06nd-category5-boundary-cases.v2",
+  "input_only": true,
+  "cases": [
+    {
+      "id": "approved-selected-category5",
+      "result": "no DRC-control FIFO write; four zero logical records remain; override is zero",
+      "grade": "APPROVED_CLEAN_SPEC"
+    },
+    {
+      "id": "selected-atmos-process-input",
+      "result": "PCM frame descriptor is consumed; category5/InputControlEvent is not an input at this process boundary",
+      "byte_layout": "NOT_APPLICABLE_TO_THIS_BOUNDARY",
+      "grade": "STATIC_SELECTED_PATH"
+    },
+    {
+      "id": "separate-generic-storage-event-vector",
+      "result": "no selected category5 producer/owner/generation join established",
+      "byte_layout_or_output_effect": "UNBOUND; NOT_INFERRED",
+      "grade": "STATIC_SCOPED_LIMIT"
+    }
+  ],
+  "not_claimed": [
+    "The entire native engine has no generic event-vector records.",
+    "A generic event vector is produced by the selected category5 submission.",
+    "The generic event vector affects selected BSI/output."
+  ]
+}

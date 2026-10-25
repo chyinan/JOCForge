@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge-washed-supplement-delivery.v1",
+  "package_id": "F04G-CONTROL52-PADDING-WRITE-SET-V2",
+  "manifest_sha256": "cad533e1e52239b7f5486a040887df83cdb23049786ec4d70f9b2f7160b46f44",
+  "payload_files": 5,
+  "padding_status": "STATIC_ZERO_WITHIN_REVIEWED_WRITER_SET",
+  "live_gate_join": "UNBOUND"
+}

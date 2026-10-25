@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge-washed-supplement-delivery.v1",
+  "package_id": "F04G-CONTROL52-CONSTRUCTOR-REGION-ERRATUM-V1",
+  "manifest_sha256": "ac1d68eb2db528393fb9f28f039a5a7b94554d04a3a33eb206c2efd2df584f6f",
+  "payload_files": 3,
+  "constructor_region": "53adf8a9e03c120dc6340f3e8502ee9c6379f956a9bd17a5c2b33b3703396dfd",
+  "old_region": "WITHDRAWN_FOR_THIS_INTERVAL",
+  "selected_gate_join": "UNBOUND"
+}

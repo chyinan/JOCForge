@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-washed-supplement-manifest.v1",
+  "package_id": "F04G-CONTROL52-SELECTOR-ZERO-CONDITION-V1",
+  "status": "CONDITIONALLY_REACHABLE_STATIC_SELECTED_INPUT_NOT_OBSERVED_GATE_JOIN_UNBOUND",
+  "implementation_ready_for_live_gate_join": false,
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "bytes": 1468,
+      "sha256": "405f974c00948a5cb5ae6661e0702d72661df7fb3efd97a80f095fb1b09673e7"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 1506,
+      "sha256": "486b016c37651c1abe193d13b76137797bc195c548c5313b50cc40e878a97db3"
+    },
+    {
+      "path": "DECISION-CASES.json",
+      "bytes": 1292,
+      "sha256": "cabbea2a5c3e1793b5d467f1572ce444f6239ac36a87a1cee1f86e7e4239d4c8"
+    },
+    {
+      "path": "MINIMUM-OPEN-EDGE.json",
+      "bytes": 642,
+      "sha256": "0a77c54d0bb883b95a934ca42ca6d59e7cc6668f0d04eea6d9f2e0a72667dba4"
+    },
+    {
+      "path": "check_package.py",
+      "bytes": 1778,
+      "sha256": "24df4c12151b5ef9f78f709812a20b66ed5ba92e1f4e728a4673dd7d1a88b08e"
+    }
+  ]
+}

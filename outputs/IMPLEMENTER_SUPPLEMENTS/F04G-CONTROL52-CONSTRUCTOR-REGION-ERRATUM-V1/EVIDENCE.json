@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge.control52-constructor-region-identity-erratum.v1",
+  "status": "CURRENT_REGION_IDENTITY_VERIFIED; SELECTED_BRANCH_AND_GATE_JOIN_OPEN",
+  "source_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "constructor_region": {
+    "byte_length": 2791,
+    "sha256": "53adf8a9e03c120dc6340f3e8502ee9c6379f956a9bd17a5c2b33b3703396dfd",
+    "image_interval_rehashed_in_memory": true
+  },
+  "superseded_identity": {
+    "sha256": "d2154332c25647a841a85a3a98d5bbe44655c49ff36d657f91ef5bf3ec73e20b",
+    "interval_coordinates_available": false,
+    "disposition": "WITHDRAWN_FOR_THIS_CONSTRUCTOR_INTERVAL; ORIGIN_UNKNOWN"
+  },
+  "affected_claims": [
+    "main context constructor owner/descriptor linkage",
+    "mode-flag and row-writer-call gating claims that relied on the constructor region identity"
+  ],
+  "unchanged_open_boundaries": [
+    "actual selected callback source mode and selector branch: NOT_OBSERVED",
+    "source row to formatter to selected gate owner/generation: UNBOUND"
+  ],
+  "native_execution": "NOT_RUN",
+  "raw_code_or_audio_bytes_included": false
+}

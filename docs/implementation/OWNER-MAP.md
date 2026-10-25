@@ -191,6 +191,8 @@
 | F06ND/selected-none-drc-statistics-to-scheduler-frame-composition | F06ND | `drc` |
 | F06ND/selected-none-drc-logical-override-fifo-transition | F06ND | `drc` |
 | F06ND/washed-none-drc-source-fifo-and-error-contract-clarification | F06ND | `drc` |
+| F06ND/washed-selected-category5-process-boundary-status | F06ND | `drc` |
+| F06ND/selected-none-drc-closed-numeric-outcome-mapping | F06ND | `drc` |
 | F06ND/selected-none-drc-bsi-high-byte-projection | F06ND | `drc` |
 | F06ND/selected-f06nd-controls-to-f12-bsi-drc-fields | F06ND | `drc` |
 | F07/input-history-block-transition | F07 | `analysis` |

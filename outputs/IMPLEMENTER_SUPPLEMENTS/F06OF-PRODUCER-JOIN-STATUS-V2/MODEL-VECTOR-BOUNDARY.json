@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.f06of-model-vector-boundary.v1",
+  "source_package_manifest_sha256": "806a1a6cbb63cdcb5f9f075c491fe0adbb5a385430279d9c2ada89c7ee21644f",
+  "source_vector_sha256": "1852669e796e8994c49416c1d3deaec2740a4e4dcde0192afeb88918a1d0028d",
+  "source_vector_cases": 9,
+  "input_only": true,
+  "model_units": {
+    "N": "source samples per channel",
+    "H": "1536 samples per frontend callback",
+    "Q": "ceil(N/H)",
+    "cursor": "source samples per channel"
+  },
+  "native_file_read_units": {
+    "request_and_return": "bytes",
+    "cursor_mapping_to_model_samples": "UNBOUND",
+    "selected_pcm_row_mapping": "UNBOUND",
+    "native_eof_observation": "NOT_OBSERVED"
+  },
+  "not_native_observation": true
+}

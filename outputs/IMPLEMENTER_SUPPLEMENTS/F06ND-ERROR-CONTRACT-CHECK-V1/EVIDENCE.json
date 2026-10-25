@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.f06nd-error-contract-wash-evidence.v1",
+  "approved_source_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "f06nd_spec_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+  "f06wh_composition_spec_sha256": "94e8d42e77e71f4f16e99a74ee3c808cfc925074e19dd814762d21cde6f259d2",
+  "existing_clean_clarification_package_manifest_sha256": "e668f379594ad7fafa91f34104dee13847d507befdf143cb56d1572a76b6d8f7",
+  "status": "SPEC_AUDIT_ONLY; UNBOUND_EDGES_PRESERVED",
+  "native_run": "NOT_RUN",
+  "private_key_or_auth_material_included": false,
+  "pcm_or_payload_included": false
+}

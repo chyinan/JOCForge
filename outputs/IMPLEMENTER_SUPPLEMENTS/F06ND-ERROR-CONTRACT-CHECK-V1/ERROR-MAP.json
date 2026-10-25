@@ -1,0 +1,34 @@
+{
+  "schema": "jocforge.f06nd-error-contract-map.v1",
+  "status": "DECLARED_OUTCOMES_CLOSED; EDGE_PRECEDENCE_AND_CHILD_TRANSLATION_UNBOUND",
+  "preflight_order": [
+    "required parameter supply and identity",
+    "profile/configuration domain",
+    "state type and dimensions",
+    "source generation agreement",
+    "primary/secondary same-generation shape and finite checks",
+    "programme dialnorm domain",
+    "computation"
+  ],
+  "declared_outcomes": {
+    "missing_required_parameter": "PARAMETER_UNAVAILABLE",
+    "unsupported_profile_or_configuration_domain": "UNSUPPORTED_PROFILE",
+    "state_type_dimension_generation_or_shape_error": "DRC_INPUT_ERROR",
+    "intermediate_nonfinite_or_overflow": "NUMERIC_FAILURE",
+    "clean_scheduler_u64_generation_overflow": "NUMERIC_FAILURE"
+  },
+  "failure_lifecycle": {
+    "normal_output": "ABSENT",
+    "partial_numeric_state_commit": "FORBIDDEN",
+    "lifecycle": "RETIRED_BY_I03",
+    "retry": "FULL_COLD_RESET_REQUIRED"
+  },
+  "unbound_outcomes": [
+    "first-error precedence for simultaneous-invalid gates",
+    "raw primary/secondary NaN or Inf detected during input preflight",
+    "supplied parameter identity mismatch",
+    "out-of-range dialnorm classification",
+    "translation/passthrough of leaf statistics/scheduler/normalizer/quantizer error labels except the declared F06ND numeric-failure class"
+  ],
+  "native_error_parity": false
+}

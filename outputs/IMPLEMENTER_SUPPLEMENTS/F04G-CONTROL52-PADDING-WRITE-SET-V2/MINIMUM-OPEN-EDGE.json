@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge.control52-row-gate-minimum-identity-evidence.v1",
+  "status": "REQUIRED_TO_CLOSE_LIVE_GATE_JOIN; NOT_AUTHORIZATION_TO_CAPTURE",
+  "required_same_generation_binding": [
+    "opaque context/table owner token",
+    "source generation token",
+    "row ordinal and descriptor identity",
+    "copy-versus-reuse branch identity",
+    "formatter output owner token",
+    "selected handler gate table owner token"
+  ],
+  "capture_limit": {
+    "row_bytes_read": 0,
+    "pcm_bytes_read": 0,
+    "gate_scalar_value_read": false,
+    "payload_persisted": false
+  },
+  "wash_gate": "A specific metadata-only capture requires a separate Wash GO."
+}

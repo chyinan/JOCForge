@@ -1,0 +1,30 @@
+{
+  "schema": "jocforge.control52-selector-zero-condition.v1",
+  "status": "CONDITIONALLY_REACHABLE_STATIC; SELECTED_INPUT_NOT_OBSERVED; GATE_JOIN_UNBOUND",
+  "condition": {
+    "source_mode_not_equal_to": 1,
+    "and": "an unsupported category exists within the configured input count"
+  },
+  "static_effect": {
+    "selector_slot": "remains zero in-range",
+    "builder_result": "success",
+    "input_count": "retained; no compaction",
+    "callback_writer": "may be called when the context writer-enable flag is clear",
+    "zero_selector_branch": "performs no row write; prior semantic row content may remain"
+  },
+  "selected_path_status": {
+    "actual_selected_source_mode": "NOT_OBSERVED",
+    "actual_selected_input_categories": "NOT_OBSERVED",
+    "selector_zero_in_selected_callback": "NOT_CAPTURED",
+    "formatter_to_selected_gate_owner_generation": "UNBOUND"
+  },
+  "provenance": {
+    "selector_static_package_manifest_sha256": "f45817e030124bb2f1b4131342ca080b9ca52492e58a2a28a9e37649bc342d36",
+    "constructor_region_identity_erratum_manifest_sha256": "ac1d68eb2db528393fb9f28f039a5a7b94554d04a3a33eb206c2efd2df584f6f",
+    "source_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "corrected_constructor_region_sha256": "53adf8a9e03c120dc6340f3e8502ee9c6379f956a9bd17a5c2b33b3703396dfd",
+    "previous_unlocated_constructor_digest": "WITHDRAWN_FOR_THIS_INTERVAL",
+    "native_execution": "NOT_RUN",
+    "raw_row_pcm_or_payload_included": false
+  }
+}

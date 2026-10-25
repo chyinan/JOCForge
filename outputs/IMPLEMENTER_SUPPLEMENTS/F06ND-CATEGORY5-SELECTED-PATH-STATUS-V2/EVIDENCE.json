@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge.f06nd-category5-selected-path-status.v2",
+  "status": "SELECTED_PROCESS_BYTE_LAYOUT_NOT_APPLICABLE; GENERIC_EVENT_EDGE_UNBOUND",
+  "selected_clean_rule": {
+    "category": 5,
+    "width_bits": 32,
+    "count": 1,
+    "writes_drc_control_fifo": false,
+    "fifo_records_after_submission": "four zero logical records",
+    "override": 0
+  },
+  "native_selected_process_boundary": {
+    "input": "PCM frame descriptor: frame size, channel count, per-channel sample pointers",
+    "category5_or_InputControlEvent_parameter": false,
+    "serialized_category5_record_write_observed": false,
+    "byte_layout_status": "NOT_APPLICABLE_TO_THIS_BOUNDARY"
+  },
+  "unbound_edges": [
+    "selected category5 producer to generic InputControlEvent storage API",
+    "selected category5 to extra metadata/PcmMd consumer",
+    "selected category5 to selected BSI/output effect"
+  ],
+  "provenance": {
+    "reviewed_research_manifest_sha256": "4048cff6b62a2756483ed59240a9a73395b6d5188fa53991c3541dc3da9d7947",
+    "research_package_seal_sha256": "d1b300845d8492f41bb4c8afcb4715ef413d4bf523a90e9264dcc206959d4881",
+    "research_payload_files_verified": 4,
+    "native_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "approved_f06nd_spec_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+    "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "native_execution": "NOT_RUN",
+    "pcm_payload_or_private_key_included": false
+  }
+}

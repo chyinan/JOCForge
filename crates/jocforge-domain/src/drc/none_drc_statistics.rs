@@ -113,13 +113,27 @@ pub struct NoneDrcStatisticsFrameTransition {
     pub next_state: NoneDrcStatisticsState,
 }
 
-/// Numeric or selected dialnorm failure propagated without assigning a new
-/// F06ND error code. The numeric I03 outcome mapping remains outside this leaf.
+/// Numeric, normalization or selected dialnorm failure from one statistics frame.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum NoneDrcStatisticsError {
     Numeric(R32Error),
     Normalization(NoneDrcNormalizationError),
     Dialnorm(NoneDrcDialnormOffsetError),
+}
+
+impl NoneDrcStatisticsError {
+    /// Maps only the washed F06ND intermediate numeric-failure class.
+    ///
+    /// Raw input nonfinite classification, dialnorm range and other child
+    /// labels remain unbound and return `None`.
+    pub const fn outcome_code(self) -> Option<&'static str> {
+        match self {
+            Self::Numeric(_) | Self::Normalization(NoneDrcNormalizationError::NumericNonFinite) => {
+                Some("NUMERIC_FAILURE")
+            }
+            Self::Normalization(_) | Self::Dialnorm(_) => None,
+        }
+    }
 }
 
 impl From<R32Error> for NoneDrcStatisticsError {

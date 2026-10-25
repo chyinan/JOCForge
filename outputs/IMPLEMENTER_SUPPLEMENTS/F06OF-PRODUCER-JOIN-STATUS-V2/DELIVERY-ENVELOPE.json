@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge-washed-supplement-delivery.v1",
+  "package_id": "F06OF-PRODUCER-JOIN-STATUS-V2",
+  "manifest_sha256": "992be1e7769638e2995951cc99205d6489d35945bc1dfac5011784ec83c8afe0",
+  "payload_files": 5,
+  "sample_byte_conversion": "UNBOUND",
+  "producer_join": "UNBOUND"
+}

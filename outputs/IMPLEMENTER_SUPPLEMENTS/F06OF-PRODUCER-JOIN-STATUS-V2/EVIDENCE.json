@@ -1,0 +1,31 @@
+{
+  "schema": "jocforge.f06of-producer-reader-unit-status.v2",
+  "status": "PARTIAL_STATIC_MODEL; ROW_DESCRIPTOR_CURSOR_JOIN_UNBOUND",
+  "claims": {
+    "converter_channel_input_id_to_physical_row": "UNBOUND",
+    "physical_row_to_selected_descriptor_owner_generation": "UNBOUND",
+    "reader_bytes_to_model_samples_and_eof": "UNBOUND",
+    "approved_model_clock": "MODEL_ONLY"
+  },
+  "provenance": {
+    "reviewed_research_package_manifest_sha256": "806a1a6cbb63cdcb5f9f075c491fe0adbb5a385430279d9c2ada89c7ee21644f",
+    "research_payload_files_verified": 6,
+    "research_input_only_case_count": 9,
+    "research_input_only_vector_sha256": "1852669e796e8994c49416c1d3deaec2740a4e4dcde0192afeb88918a1d0028d",
+    "approved_model_spec": {
+      "path": "outputs/IMPLEMENTER_PACKAGE/specs/06-oar-frontend-input-and-clock-join.md",
+      "sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423",
+      "clauses": ["F06OF.1", "F06OF.2", "F06OF.6"],
+      "unit": "samples per channel"
+    },
+    "native_execution": "NOT_RUN",
+    "primary_source_content_sha256": "NOT_REHASHED",
+    "pcm_row_or_payload_bytes_included": false,
+    "private_key_or_auth_material_included": false
+  },
+  "limitations": [
+    "The metadata consistency checks do not prove physical PCM row selection.",
+    "A file-position interval is not a sample-frame interval without an explicit reader mapping.",
+    "No byte-to-sample cursor conversion or same-generation descriptor join is established."
+  ]
+}

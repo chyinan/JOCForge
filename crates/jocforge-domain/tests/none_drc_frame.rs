@@ -3,19 +3,24 @@ use jocforge_domain::drc::none_drc_callback::{
     NoneDrcCallbackError, NoneDrcCallbackInput, project_none_drc_callback_clock,
     transition_none_drc_callback,
 };
+use jocforge_domain::drc::none_drc_dialnorm_offset::NoneDrcDialnormOffsetError;
 use jocforge_domain::drc::none_drc_frame::{
     NoneDrcFrameError, NoneDrcFrameInput, transition_none_drc_frame,
 };
+use jocforge_domain::drc::none_drc_normalizer::NoneDrcNormalizationError;
 use jocforge_domain::drc::none_drc_override_fifo::{
     NoneDrcOverrideFifoState, ZeroLogicalRecord, transition_none_drc_override_fifo,
 };
+use jocforge_domain::drc::none_drc_quantizer::NoneDrcQuantizerError;
 use jocforge_domain::drc::none_drc_scheduler::{
-    NoneDrcSchedulerFrameInput, NoneDrcSchedulerState, transition_none_drc_scheduler_frame,
+    NoneDrcSchedulerError, NoneDrcSchedulerFrameInput, NoneDrcSchedulerState,
+    transition_none_drc_scheduler_frame,
 };
 use jocforge_domain::drc::none_drc_statistics::{
-    FiniteStatisticsPlanes, NoneDrcStatisticsFrameOutput, NoneDrcStatisticsState,
+    FiniteStatisticsPlanes, NoneDrcStatisticsError, NoneDrcStatisticsFrameOutput,
+    NoneDrcStatisticsState,
 };
-use jocforge_domain::numeric::FiniteF32;
+use jocforge_domain::numeric::{FiniteF32, R32Error};
 use jocforge_domain::timeline::{
     CodecSourceIndex, FrontendCallbackIndex, JocDispatchIndex, JocGeneratedWriterIndex,
     JocPoppedWriterIndex, OrdinaryPayloadWriterIndex, PublicationDisposition, PublishedAuIndex,
@@ -31,6 +36,88 @@ const AUTHORIZED_VERIFICATION: &str =
 const CHANNEL_COUNT: usize = 6;
 const SAMPLE_COUNT: usize = 1_536;
 const BLOCK_COUNT: usize = 6;
+
+#[test]
+fn closed_internal_numeric_classes_map_without_classifying_unbound_edges() {
+    let numeric = Some("NUMERIC_FAILURE");
+    assert_eq!(
+        NoneDrcStatisticsError::Numeric(R32Error::NonFiniteResult).outcome_code(),
+        numeric,
+    );
+    assert_eq!(
+        NoneDrcStatisticsError::Normalization(NoneDrcNormalizationError::NumericNonFinite)
+            .outcome_code(),
+        numeric,
+    );
+    assert_eq!(
+        NoneDrcStatisticsError::Normalization(NoneDrcNormalizationError::NonFiniteInput)
+            .outcome_code(),
+        None,
+    );
+    assert_eq!(
+        NoneDrcStatisticsError::Normalization(NoneDrcNormalizationError::NegativeInput)
+            .outcome_code(),
+        None,
+    );
+    assert_eq!(
+        NoneDrcStatisticsError::Dialnorm(NoneDrcDialnormOffsetError::UnsupportedProfile)
+            .outcome_code(),
+        None,
+    );
+
+    assert_eq!(
+        NoneDrcSchedulerError::Numeric(R32Error::NonFiniteResult).outcome_code(),
+        numeric,
+    );
+    assert_eq!(
+        NoneDrcSchedulerError::GenerationOverflow.outcome_code(),
+        numeric,
+    );
+    assert_eq!(
+        NoneDrcSchedulerError::Normalization(NoneDrcNormalizationError::NumericNonFinite)
+            .outcome_code(),
+        numeric,
+    );
+    assert_eq!(
+        NoneDrcSchedulerError::Quantization(NoneDrcQuantizerError::NumericNonFinite).outcome_code(),
+        numeric,
+    );
+    assert_eq!(
+        NoneDrcSchedulerError::Normalization(NoneDrcNormalizationError::NonFiniteInput)
+            .outcome_code(),
+        None,
+    );
+    assert_eq!(
+        NoneDrcSchedulerError::Dialnorm(NoneDrcDialnormOffsetError::UnsupportedProfile)
+            .outcome_code(),
+        None,
+    );
+    assert_eq!(
+        NoneDrcSchedulerError::Quantization(NoneDrcQuantizerError::UnsupportedKind).outcome_code(),
+        None,
+    );
+    assert_eq!(
+        NoneDrcSchedulerError::Quantization(NoneDrcQuantizerError::NonFiniteInput).outcome_code(),
+        None,
+    );
+
+    assert_eq!(
+        NoneDrcFrameError::Statistics(NoneDrcStatisticsError::Numeric(R32Error::NonFiniteResult,))
+            .outcome_code(),
+        numeric,
+    );
+    assert_eq!(
+        NoneDrcFrameError::Scheduler(NoneDrcSchedulerError::GenerationOverflow).outcome_code(),
+        numeric,
+    );
+    assert_eq!(
+        NoneDrcCallbackError::Frame(NoneDrcFrameError::Scheduler(
+            NoneDrcSchedulerError::GenerationOverflow,
+        ))
+        .outcome_code(),
+        numeric,
+    );
+}
 
 #[test]
 fn selected_source_fixture_hashes_are_pinned() {

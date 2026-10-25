@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-washed-supplement-manifest.v1",
+  "package_id": "F04G-CONTROL52-PADDING-WRITE-SET-V2",
+  "status": "PARTIAL_STATIC_PADDING_SCOPED_LIVE_GATE_JOIN_UNBOUND",
+  "implementation_ready_for_live_gate_join": false,
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "bytes": 2056,
+      "sha256": "a9db5c79c9825828a5a2a72c479895c63cbcc6e42325bf8c9011b3c9e1f2449c"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 1774,
+      "sha256": "bf099fcae3c960bdf720a897a2fbae46ea2b63c745d89543c3e6fd4f0b2219bc"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 811,
+      "sha256": "9c5f411d181f2b308fc056f4f8bdc179dd88973ae24d5c77368a1edeb58f3b21"
+    },
+    {
+      "path": "MINIMUM-OPEN-EDGE.json",
+      "bytes": 659,
+      "sha256": "8a3fd8bde0ba8b1c12b8bcacf9014cd15fef406af450a78c80d30df865bd22d8"
+    },
+    {
+      "path": "check_package.py",
+      "bytes": 2214,
+      "sha256": "8cf77187a05230351d9a4f672be169ec86251dc47bb90deb060f2d71b3cc00cf"
+    }
+  ]
+}

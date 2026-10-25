@@ -1,0 +1,30 @@
+{
+  "schema": "jocforge.control52-selector-zero-static-cases.v1",
+  "input_only": true,
+  "cases": [
+    {
+      "id": "source_mode_one",
+      "condition": "source_mode == 1",
+      "writer_call": "bypassed by the context mode gate",
+      "selected_input_observation": "NOT_OBSERVED"
+    },
+    {
+      "id": "non_mode_one_supported_categories",
+      "condition": "source_mode != 1 and every in-range category is supported",
+      "selector_table": "initialized zero then populated with nonzero values for supported entries",
+      "zero_selector_from_category_mapping": "not produced by the reviewed mapper for these entries"
+    },
+    {
+      "id": "non_mode_one_unsupported_in_range_category",
+      "condition": "source_mode != 1 and an unsupported category occurs before input_count",
+      "selector_table": "successful builder leaves a zero at that in-range slot and retains input_count",
+      "zero_selector_consumer": "no row store; prior semantic row may be reused",
+      "selected_input_observation": "NOT_OBSERVED"
+    }
+  ],
+  "not_claimed": [
+    "The selected ADM input contains an unsupported category.",
+    "The selected callback reached the zero-selector branch.",
+    "The formatter output is the same object or generation as the selected handler gate table."
+  ]
+}

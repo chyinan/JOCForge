@@ -49,7 +49,8 @@ impl NoneDrcFrameError {
     pub const fn outcome_code(self) -> Option<&'static str> {
         match self {
             Self::GenerationMismatch => Some("DRC_INPUT_ERROR"),
-            Self::Statistics(_) | Self::Scheduler(_) => None,
+            Self::Statistics(error) => error.outcome_code(),
+            Self::Scheduler(error) => error.outcome_code(),
         }
     }
 }

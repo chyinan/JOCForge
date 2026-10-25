@@ -2712,7 +2712,7 @@
           "slice_id": "washed-control52-static-row-and-owner-copy-lineage",
           "mapping_status": "WASHED_STATIC_LINEAGE_ONLY__F04G_AND_F04A_PRODUCTION_OPEN",
           "implementation_status": "WASHED_HIGH_BIT_SELECTOR_ROW_AND_SAME_OWNER_COPY_STATIC_CLOSED__GAIN_PRODUCER_F04A_AND_LIVE_BRANCH_OPEN",
-          "scope": "Wash V2 closes only the traced high-bit selector branch from an 88-byte typed source to a typed 52-byte row and the same owner descriptor through the selected parent into the consumer. The zero-flag branch copies that raw 52-byte row into a 56-byte geometry record. The low-bit branch differs; nonzero flag rows carry a U32 selector at byte20 and are not Control52-compatible with a clean F32 X field. No code, formula equivalence, live profile selection, F04G fixed 11-word output, F04A writer identity, or runtime generation join is implemented or claimed.",
+      "scope": "Wash V2 closes only the traced high-bit selector branch from an 88-byte typed source to a typed 52-byte row and the same owner descriptor through the selected parent into the consumer. The zero-flag branch copies that raw 52-byte row into a 56-byte geometry record. Separate hash-bound supplements pin zero padding only within the reviewed writer set and a conditional selector-zero no-write/reuse branch; actual selected reachability remains NOT_OBSERVED. The constructor region identity is corrected to the image-bound interval hash and the prior unlocated digest is withdrawn for that interval. The low-bit branch differs; nonzero flag rows carry a U32 selector at byte20 and are not Control52-compatible with a clean F32 X field. No code, formula equivalence, live profile selection, F04G fixed 11-word output, F04A writer identity, or runtime generation join is implemented or claimed.",
           "owner": "spatial_audio",
           "implementation_files": [],
           "local_mapping_files": [],
@@ -2723,9 +2723,14 @@
             ]
           },
           "parameters": {
-            "kind": "NONE_WASHED_STATIC_CONTROL52_LINEAGE",
+        "kind": "HASH_BOUND_WASHED_STATIC_CONTROL52_LINEAGE_AND_STATUS_CORRECTIONS",
             "provider_files": [],
-            "validation_boundary": "Static type/field/copy path from the hash-bound Wash addendum; the traced constructor is not joined to clean F04FM mode/lane and no live branch is observed."
+        "supporting_wash_supplements": [
+          {"package_id":"F04G-CONTROL52-CONSTRUCTOR-REGION-ERRATUM-V1","path":"outputs/IMPLEMENTER_SUPPLEMENTS/F04G-CONTROL52-CONSTRUCTOR-REGION-ERRATUM-V1","manifest_sha256":"ac1d68eb2db528393fb9f28f039a5a7b94554d04a3a33eb206c2efd2df584f6f"},
+          {"package_id":"F04G-CONTROL52-PADDING-WRITE-SET-V2","path":"outputs/IMPLEMENTER_SUPPLEMENTS/F04G-CONTROL52-PADDING-WRITE-SET-V2","manifest_sha256":"cad533e1e52239b7f5486a040887df83cdb23049786ec4d70f9b2f7160b46f44"},
+          {"package_id":"F04G-CONTROL52-SELECTOR-ZERO-CONDITION-V1","path":"outputs/IMPLEMENTER_SUPPLEMENTS/F04G-CONTROL52-SELECTOR-ZERO-CONDITION-V1","manifest_sha256":"8ac369fa1af2166396f40f23e45d6c3035365cfc9d5c2f35e21819b99e9da871"}
+        ],
+        "validation_boundary": "Static type/field/copy path and narrowly scoped status corrections from hash-bound Wash packages; the traced constructor is not joined to clean F04FM mode/lane and no live branch is observed."
           },
           "test_modules": [],
           "vectors": {
@@ -2738,7 +2743,9 @@
               "The high-bit selector branch maps the typed source fields into the documented 52-byte row; the low-bit branch uses another path.",
               "The row pointer/count remain in the same owner descriptor through the parent and consumer; consumer extent is count*52, downstream stride is 52, and zero flag copies into a 56-byte geometry record.",
               "A nonzero flag uses a U32 selector at row offset20 and conflicts with clean Control52 F32 X; this is conditional, not an unconditional 52-byte exclusion.",
-              "The traced constructor selects one static candidate but has no clean F04FM mode/lane join; fixed 11-word F04G producer and immediate F04A consumer remain NOT_CLOSED."
+        "The traced constructor selects one static candidate but has no clean F04FM mode/lane join; fixed 11-word F04G producer and immediate F04A consumer remain NOT_CLOSED.",
+        "The 2791-byte constructor region hash is 53adf8a9…0339d6fd; the earlier unlocated d2154332…ec73e20b digest is withdrawn for this interval.",
+        "Raw padding bytes 1..3 stay zero only within the named writer set; selector-zero is conditionally reachable when source_mode != 1 and an unsupported in-range category exists, but selected reachability is NOT_OBSERVED."
             ],
             "source_supplement_manifest_sha256": "e45b59e7c5dcf92f270b8f75b2d9f2705ca97e5e72d52ca98d25478c67e8b2ea",
             "source_package_manifest_sha256": "6e5f30ebb76f74c91845a1370bd83c52a22a2680f253bb2abb04e5f93a7a5f06",
@@ -5969,7 +5976,7 @@
           "slice_id": "washed-f06of-producer-join-status-and-receipt-hold",
           "mapping_status": "WASHED_PARTIAL_STATIC_MODEL_PRODUCER_JOIN_UNBOUND",
           "implementation_status": "WASHED_MODEL_CLOCK_RESET_ONLY_PRODUCER_ROW_AND_DESCRIPTOR_JOIN_UNBOUND",
-          "scope": "Wash confirms the approved F06OF MODEL callback clock/cold-reset contract remains model-only. The producer join from ConverterChannelInputId to PCM physical row, selected measurement descriptor, same-source cursor/EOF/drain, and owner generation remains UNBOUND. The delivered minimum receipt describes evidence needed for later closure but does not authorize a capture.",
+          "scope": "Wash confirms the approved F06OF MODEL callback clock/cold-reset contract remains model-only. The V2 status distinguishes the model cursor and source extents in samples per channel from file read requests/results in bytes, but does not prove a conversion or selected reader use. The producer join from ConverterChannelInputId to PCM physical row, selected measurement descriptor, same-source cursor/EOF/drain, and owner generation remains UNBOUND. The delivered minimum receipt describes evidence needed for later closure but does not authorize a capture.",
           "implementation_files": [],
           "local_mapping_files": [],
           "clock": {
@@ -5979,14 +5986,15 @@
             ]
           },
           "parameters": {
-            "kind": "HASH_BOUND_F06OF_PRODUCER_JOIN_STATUS_V1",
+            "kind": "HASH_BOUND_F06OF_PRODUCER_READER_UNIT_STATUS_V2",
             "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V1/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V1/MINIMUM-RECEIPT.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/MODEL-VECTOR-BOUNDARY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/MINIMUM-RECEIPT.json"
             ],
-            "supplement_manifest_sha256": "65401a05065eb19647f05bb86230e0645a078ac050e07b227e99f9dcb05ec767",
-            "source_research_manifest_sha256": "888c46297949f117d8f8ba7e678ab54691a6dfa3e044391b14601e78b4556f90",
+            "supplement_manifest_sha256": "992be1e7769638e2995951cc99205d6489d35945bc1dfac5011784ec83c8afe0",
+            "source_research_manifest_sha256": "806a1a6cbb63cdcb5f9f075c491fe0adbb5a385430279d9c2ada89c7ee21644f",
             "model_specifications": [
               {"path":"outputs/IMPLEMENTER_PACKAGE/specs/06-oar-frontend-input-and-clock-join.md","sha256":"2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423"},
               {"path":"outputs/IMPLEMENTER_PACKAGE/specs/06-oar-model-callback-state-and-clock.md","sha256":"7342e87525e30e09e2ed95fb07593cebaa81cc113d2ce3798d99ec7cefaf0ae9"}
@@ -5997,23 +6005,25 @@
           "vectors": {
             "kind": "HASH_BOUND_F06OF_PRODUCER_JOIN_STATUS_AND_MINIMUM_RECEIPT",
             "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V1/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V1/MINIMUM-RECEIPT.json"
+            "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/CONTRACT.md",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/EVIDENCE.json",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/MODEL-VECTOR-BOUNDARY.json",
+            "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/MINIMUM-RECEIPT.json"
             ],
             "case_pointers": [
-              "ConverterChannelInputId to PCM physical row is UNBOUND; the source map's CHNA slot does not establish a PCM row identity.",
-              "Minimum receipt binds prepared resource, source generation, semantic channel, CHNA index, track index, physical row ordinal, descriptor owner/generation, requested/returned counts, cursor before/after, EOF and callback/drain ordinal.",
-              "The minimum receipt is a schema requirement only; it is not observed native evidence or capture authorization."
+            "Model source extent, callback size and cursor use samples per channel; native file requests and returned counts use bytes.",
+            "ConverterChannelInputId to PCM physical row, row to selected descriptor, byte range to model cursor/EOF, and owner/generation remain UNBOUND.",
+            "The minimum receipt binds prepared input generation, channel/track/row, descriptor owner/generation, byte extents, sample cursor, EOF and callback/drain; it is an evidence request only."
             ],
-            "source_supplement_manifest_sha256": "65401a05065eb19647f05bb86230e0645a078ac050e07b227e99f9dcb05ec767",
-            "source_evidence_manifest_sha256": "888c46297949f117d8f8ba7e678ab54691a6dfa3e044391b14601e78b4556f90"
+          "source_supplement_manifest_sha256": "992be1e7769638e2995951cc99205d6489d35945bc1dfac5011784ec83c8afe0",
+          "source_evidence_manifest_sha256": "806a1a6cbb63cdcb5f9f075c491fe0adbb5a385430279d9c2ada89c7ee21644f"
           },
           "native_status": {
             "status": "PARTIAL_STATIC_MODEL; PRODUCER_JOIN_UNBOUND",
             "converter_channel_input_id_to_pcm_physical_row": "UNBOUND",
             "pcm_row_to_selected_meter_descriptor": "UNBOUND",
             "same_source_generation_cursor_eof_and_drain_join": "UNBOUND",
+            "reader_bytes_to_model_samples_and_eof": "UNBOUND",
             "downstream_descriptor_consumer": "STATIC_PARTIAL",
             "callback_clock_and_reset": "MODEL_ONLY",
             "primary_source_pcm_identity": "NOT_REHASHED",
@@ -7413,7 +7423,7 @@
             }
           ],
           "not_run": [
-            "Underlying first-failure precedence and F06ND outcome mapping remain UNBOUND and are propagated as typed stage errors.",
+            "First-error precedence and F06ND outcome classes beyond the declared intermediate numeric-failure mapping remain UNBOUND and are propagated as typed stage errors.",
             "The callback-derived CodecSourceIndex does not independently receipt the primary/secondary sample-plane source identity.",
             "The statistics state is Copy and the scheduler state is Copy; this wrapper returns a paired next state but does not enforce a unique parent commit lineage.",
             "Logical FIFO byte schema and nonzero category5 payload remain UNBOUND; F06WH single source commit, whole programme reset/EOF equality and F12 full frame remain deferred.",
@@ -7563,6 +7573,121 @@
             "No category1 authored-control producer in the selected profile.",
             "No outer F06WH single source transaction/commit implementation.",
             "No native DEE parity claim or receipt/digest finalization."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-selected-category5-process-boundary-status",
+          "mapping_status": "WASHED_SELECTED_PROCESS_BYTE_LAYOUT_NOT_APPLICABLE__GENERIC_EVENT_EDGE_UNBOUND",
+          "implementation_status": "WASHED_CATEGORY5_NO_DRC_FIFO_WRITE_AND_NO_PROCESS_BYTE_LAYOUT__GENERIC_EDGE_OPEN",
+          "scope": "The selected category5/32-bit/count1 clean rule writes no DRC-control FIFO record and preserves four zero logical records. The reviewed selected AtmosProcessor process boundary accepts a PCM frame descriptor and has no category5/InputControlEvent parameter, so a category5 byte layout is not applicable at that boundary. A separate generic event-vector API remains unjoined to the selected producer, metadata, BSI or output; this does not claim global absence of event records.",
+          "owner": "drc",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Selected process-boundary evidence owns no callback/source clock and adds no byte-to-clock conversion."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_F06ND_SELECTED_CATEGORY5_PROCESS_BOUNDARY_STATUS_V2",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-CATEGORY5-SELECTED-PATH-STATUS-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-CATEGORY5-SELECTED-PATH-STATUS-V2/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-CATEGORY5-SELECTED-PATH-STATUS-V2/DECISION-CASES.json"
+            ],
+            "supplement_manifest_sha256": "8fc0c53d2d980afde82d623dceb55bbd5b90f9098b9a7f31a6889604dd7a7117",
+            "source_spec_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+            "validation_boundary": "Selected process boundary only; the generic event API and downstream effect remain UNBOUND."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_WASHED_SELECTED_CATEGORY5_PROCESS_BOUNDARY_AND_DECISION_CASES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-CATEGORY5-SELECTED-PATH-STATUS-V2/DECISION-CASES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-CATEGORY5-SELECTED-PATH-STATUS-V2/EVIDENCE.json"
+            ],
+            "case_pointers": [
+              "Selected category5/32-bit/count1 does not write the DRC-control FIFO; the four zero logical records remain zero.",
+              "The selected process accepts a PCM frame descriptor and no category5 or InputControlEvent input; no byte layout is applicable at this process boundary.",
+              "Generic InputControlEvent, extra metadata and selected BSI/output joins remain UNBOUND."
+            ],
+            "source_supplement_manifest_sha256": "8fc0c53d2d980afde82d623dceb55bbd5b90f9098b9a7f31a6889604dd7a7117"
+          },
+          "native_status": {
+            "selected_category5_drc_control_fifo_write": "NO",
+            "selected_process_category5_byte_layout": "NOT_APPLICABLE_TO_THIS_BOUNDARY",
+            "generic_event_api_join": "UNBOUND",
+            "selected_bsi_or_output_effect": "UNBOUND",
+            "native_execution": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Selected category5 producer to generic InputControlEvent storage API remains UNBOUND.",
+            "Generic event records to selected metadata/BSI/output effects remain UNBOUND.",
+            "No global absence claim or byte schema is inferred."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "selected-none-drc-closed-numeric-outcome-mapping",
+          "mapping_status": "MATERIALIZED_WASHED_F06ND_NUMERIC_FAILURE_CLASS__OTHER_EDGES_UNBOUND",
+          "implementation_status": "LOCALLY_VERIFIED_DECLARED_NUMERIC_FAILURE_CLASS__PRECEDENCE_AND_OTHER_CHILD_LABELS_OPEN",
+          "scope": "Maps only the declared F06ND intermediate numeric-failure class in the statistics/scheduler composition: R32 arithmetic failure, normalization/quantizer NumericNonFinite, and checked scheduler U64 generation overflow return NUMERIC_FAILURE. Other nested labels, raw input NaN/Inf, out-of-range dialnorm, parameter identity mismatch and simultaneous-invalid precedence remain UNBOUND. This mapping returns only an outcome classification; it owns no state, commit, reset or native parity.",
+          "owner": "drc",
+          "implementation_files": [
+            "crates/jocforge-domain/src/drc/none_drc_statistics.rs",
+            "crates/jocforge-domain/src/drc/none_drc_scheduler.rs",
+            "crates/jocforge-domain/src/drc/none_drc_frame.rs",
+            "crates/jocforge-domain/src/drc/none_drc_callback.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Outcome classification is stateless; callback/source generation checks remain in the existing typed frame transition."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_F06ND_DECLARED_ERROR_CLASSES",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-ERROR-CONTRACT-CHECK-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-ERROR-CONTRACT-CHECK-V1/ERROR-MAP.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-ERROR-CONTRACT-CHECK-V1/EVIDENCE.json"
+            ],
+            "supplement_manifest_sha256": "2768cb911c91d1c8832f8779c6c0d15f11243f36a2a8f1bfe50ae3b6ab16c27c",
+            "source_spec_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+            "validation_boundary": "Only F06ND-level intermediate nonfinite/overflow is mapped; explicit unbound outcomes remain unmapped."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/none_drc_frame.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_ERROR_CLASS_CONTRACT_WITH_LOCAL_TYPED_MAPPING_CASES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-ERROR-CONTRACT-CHECK-V1/ERROR-MAP.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-ERROR-CONTRACT-CHECK-V1/VECTOR-COVERAGE.json"
+            ],
+            "case_pointers": [
+              "Local tests cover R32 failure, normalization NumericNonFinite, quantizer NumericNonFinite and scheduler generation overflow mappings.",
+              "Local tests assert normalization NonFiniteInput/NegativeInput, dialnorm UnsupportedProfile and quantizer UnsupportedKind remain unmapped.",
+              "Wash vectors do not cover simultaneous-invalid first-error precedence or the unbound input/identity/dialnorm edges."
+            ],
+            "source_supplement_manifest_sha256": "2768cb911c91d1c8832f8779c6c0d15f11243f36a2a8f1bfe50ae3b6ab16c27c"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "NUMERIC_FAILURE",
+              "category": "declared intermediate nonfinite or overflow",
+              "trigger": "Statistics/scheduler R32 failure, nested NumericNonFinite, or checked scheduler generation overflow.",
+              "programme_state_after": "No frame transition or normal output is returned; no partial numeric state is committed.",
+              "caller_action": "Retire through the future I03/F06WH parent and require a full cold reset."
+            }
+          ],
+          "not_run": [
+            "No first-error precedence claim for simultaneous-invalid gates.",
+            "Raw source NaN/Inf classification, parameter identity mismatch, dialnorm range and other child labels remain UNBOUND.",
+            "No native error parity, parent retirement/reset execution or product integration is claimed."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },

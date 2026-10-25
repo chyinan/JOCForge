@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge-washed-supplement-delivery.v1",
+  "package_id": "F06ND-ERROR-CONTRACT-CHECK-V1",
+  "manifest_sha256": "2768cb911c91d1c8832f8779c6c0d15f11243f36a2a8f1bfe50ae3b6ab16c27c",
+  "payload_files": 5,
+  "declared_error_mapping": "PARTIAL",
+  "simultaneous_invalid_precedence": "UNBOUND",
+  "leaf_error_translation": "UNBOUND"
+}

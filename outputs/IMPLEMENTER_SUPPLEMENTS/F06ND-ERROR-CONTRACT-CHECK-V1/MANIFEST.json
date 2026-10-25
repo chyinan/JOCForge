@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-washed-supplement-manifest.v1",
+  "package_id": "F06ND-ERROR-CONTRACT-CHECK-V1",
+  "status": "DECLARED_OUTCOMES_CLOSED_EDGE_PRECEDENCE_AND_CHILD_TRANSLATION_UNBOUND",
+  "implementation_ready_for_complete_error_mapping": false,
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "bytes": 2600,
+      "sha256": "504c83fd2620b4e3bd4a0462b8dfab094a9e0db095ec20e8ef92f11c830b20c5"
+    },
+    {
+      "path": "ERROR-MAP.json",
+      "bytes": 1406,
+      "sha256": "0439fc88ca2819a0b1849587cc70354776ea57b7da9e4494888235d2ef348c3c"
+    },
+    {
+      "path": "VECTOR-COVERAGE.json",
+      "bytes": 1179,
+      "sha256": "0cbd90e0928380969695b63a0bdd2c3aecba858902cc4a666750305b12c9daea"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 659,
+      "sha256": "d7b0f39761b3886ea9c8d1a4b785d8a4a5fd3f96f1cf46baf91dede0be00959f"
+    },
+    {
+      "path": "check_package.py",
+      "bytes": 1739,
+      "sha256": "8e138dad41e4f14b913d74e4620327b33fcf9db78b28cbb80931f9ed69153519"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-washed-supplement-manifest.v1",
+  "package_id": "F06OF-PRODUCER-JOIN-STATUS-V2",
+  "status": "PARTIAL_STATIC_MODEL_ROW_DESCRIPTOR_CURSOR_JOIN_UNBOUND",
+  "implementation_ready_for_producer_join": false,
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "bytes": 2266,
+      "sha256": "811124f8ded8fb5e6141aa5eb12dbdad99db293d4c786e7f1ab7fe66d6dc81ac"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 1498,
+      "sha256": "16a804c07e51816f575cf9183fbf164d6e7c97b1f40b86ab5a277f56df20780c"
+    },
+    {
+      "path": "MODEL-VECTOR-BOUNDARY.json",
+      "bytes": 723,
+      "sha256": "1d04e1711699219ea7db8973f4ff1d4f8235d7224b7cfec443b47d1a426dfead"
+    },
+    {
+      "path": "MINIMUM-RECEIPT.json",
+      "bytes": 1045,
+      "sha256": "240fb6200c63707f1608d162cb5236e768e5003aed4577572bea31f19d6376f9"
+    },
+    {
+      "path": "check_package.py",
+      "bytes": 1736,
+      "sha256": "da6b1def17e688394666ad84d8a90bdec9d5f561af3e421bd156395de8877b1c"
+    }
+  ]
+}

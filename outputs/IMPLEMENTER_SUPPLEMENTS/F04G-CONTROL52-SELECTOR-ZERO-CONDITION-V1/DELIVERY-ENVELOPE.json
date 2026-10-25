@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge-washed-supplement-delivery.v1",
+  "package_id": "F04G-CONTROL52-SELECTOR-ZERO-CONDITION-V1",
+  "manifest_sha256": "8ac369fa1af2166396f40f23e45d6c3035365cfc9d5c2f35e21819b99e9da871",
+  "payload_files": 5,
+  "selected_selector_zero": "CONDITIONALLY_REACHABLE; NOT_OBSERVED",
+  "live_gate_join": "UNBOUND"
+}

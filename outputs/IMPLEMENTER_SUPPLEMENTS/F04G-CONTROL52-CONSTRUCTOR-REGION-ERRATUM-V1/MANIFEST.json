@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge-washed-supplement-manifest.v1",
+  "package_id": "F04G-CONTROL52-CONSTRUCTOR-REGION-ERRATUM-V1",
+  "status": "CONSTRUCTOR_REGION_IDENTITY_CORRECTED_SELECTED_GATE_JOIN_UNBOUND",
+  "implementation_ready_for_gate_join": false,
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "bytes": 962,
+      "sha256": "395f11362b8eb9c1b8d908fe13065d59d5c3a36c56ebd4e8a05b3e3af1e7d5aa"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 1122,
+      "sha256": "590bbe80d8c6cb1adda961dbedd770816b774e22e6be29d63bb480a8b1b42993"
+    },
+    {
+      "path": "check_package.py",
+      "bytes": 1668,
+      "sha256": "44d1cc3b807b30f7faf346f9bdce7744a0a326225f679d1ebfbc675eeb887a86"
+    }
+  ]
+}

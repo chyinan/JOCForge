@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.control52-padding-producer-vectors.v2",
+  "input_only": true,
+  "native_values_used": false,
+  "producer_rule": "row_u32_at_offset_0 = U32(source_u8_at_offset_36 == 0)",
+  "little_endian": true,
+  "vectors": [
+    {
+      "id": "source_u8_zero",
+      "source_u8_at_offset_36": 0,
+      "row_bytes_0_to_3_after_writer": [1, 0, 0, 0],
+      "derived_full_u32": 1,
+      "bytes_1_to_3_zero": true
+    },
+    {
+      "id": "source_u8_one",
+      "source_u8_at_offset_36": 1,
+      "row_bytes_0_to_3_after_writer": [0, 0, 0, 0],
+      "derived_full_u32": 0,
+      "bytes_1_to_3_zero": true
+    }
+  ],
+  "not_asserted": [
+    "selected callback chose either writer branch",
+    "the live handler gate consumed this row",
+    "the source row and gate input share an owner or generation"
+  ]
+}
