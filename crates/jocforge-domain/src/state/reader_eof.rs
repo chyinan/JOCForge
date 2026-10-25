@@ -119,7 +119,9 @@ impl ReaderEofState {
     }
     pub fn canonical_bytes(&self) -> Vec<u8> {
         let mut out = Vec::new();
-        out.extend_from_slice(&self.callback_index.value().to_le_bytes());
+        // The canonical state schema fixes this clock field at U64LE even
+        // though FrontendCallbackIndex uses a compact U32 representation.
+        out.extend_from_slice(&u64::from(self.callback_index.value()).to_le_bytes());
         out.extend_from_slice(&self.source_cursor_samples.to_le_bytes());
         out.extend_from_slice(&self.normal_callbacks.value().to_le_bytes());
         out.extend_from_slice(&self.remaining_cached_drains.to_le_bytes());
