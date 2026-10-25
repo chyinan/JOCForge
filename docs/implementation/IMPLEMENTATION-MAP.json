@@ -6037,7 +6037,7 @@
           "slice_id": "washed-f06of-selected-input-reader-static-contract",
           "mapping_status": "WASHED_STATIC_INPUT_READER_UNITS_AND_SHORT_READ_RULES__SOURCE_JOIN_UNBOUND",
           "implementation_status": "WASHED_SAMPLE_BYTE_AND_ACTUAL_FRAME_SEMANTICS_CLOSED__SELECTED_RUNTIME_OPEN",
-          "scope": "The reviewed input-reader contract separates per-channel sample positions from byte-counted file reads; PCM24/38-channel blockAlign is 114, relative byte offset is sample_position*blockAlign, and the data descriptor supplies the absolute payload offset. Complete frames are floor(actualBytes/blockAlign); a short chunk stops the read loop and successful return carries actual frame count on the guarded cursor branch. It also records planar row order and PCM24 sign-extension/F32 conversion. These are static reader semantics only: selected invocation, physical row/descriptor owner-generation, numeric selected payload offset, OS EOF boolean and native drain mapping remain unbound.",
+          "scope": "The reviewed input-reader contract separates per-channel sample positions from byte-counted file reads; PCM24/38-channel blockAlign is 114, relative byte offset is sample_position*blockAlign, and the data descriptor supplies the absolute payload offset. Complete frames are floor(actualBytes/blockAlign); a short chunk stops the read loop and successful return carries actual frame count on the guarded cursor branch. It also records planar row order and PCM24 sign-extension/F32 conversion. A Wash V2 correction confirms the original reader package's F06OF model-spec hash matches the approved source and withdraws the mistaken V1 mismatch claim. These are static reader semantics only: selected invocation, physical row/descriptor owner-generation, numeric selected payload offset, OS EOF boolean and native drain mapping remain unbound.",
           "owner": "io",
           "implementation_files": [],
           "local_mapping_files": [],
@@ -6053,12 +6053,17 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/CONTRACT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V2/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V2/SOURCE-MANIFESTS.json"
             ],
             "supplement_manifest_sha256": "cde8e18f85933811766a9b69cfacf52ffd4eed5a149e894cff22a4d526b3698b",
             "approved_source_spec_sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423",
+            "source_hash_correction_status": "V1_ERRATUM_WITHDRAWN; UPSTREAM_SOURCE_IDENTITY_MATCHES_APPROVED_MODEL",
+            "source_hash_correction_manifest_sha256": "417ea5156b56fa31a0174265fbc178aceb3ce4c152f1f7e26ead54c7de1984fe",
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-            "validation_boundary": "Static conversion/read behavior only; physical row, selected invocation, descriptor and EOF/drain identity remain unbound."
+            "validation_boundary": "Static conversion/read behavior is hash-bound to the approved F06OF model spec; physical row, selected invocation, descriptor and EOF/drain identity remain unbound."
           },
           "test_modules": [],
           "vectors": {
@@ -6070,7 +6075,8 @@
             "case_pointers": [
               "38-channel PCM24 uses blockAlign 114 bytes; per-channel sample position maps to a relative byte offset by multiplying blockAlign.",
               "Actual complete frames are floor(actual byte count/blockAlign); short reads stop the conversion loop and return the actual frame count on the guarded branch.",
-              "Input-only arithmetic vectors contain no PCM and do not establish selected native EOF or drain behavior."
+              "Input-only arithmetic vectors contain no PCM and do not establish selected native EOF or drain behavior.",
+              "Wash V2 withdraws the false source-hash mismatch claim; the original model-spec SHA matches the approved package and actual file."
             ],
             "source_supplement_manifest_sha256": "cde8e18f85933811766a9b69cfacf52ffd4eed5a149e894cff22a4d526b3698b"
           },
@@ -6088,6 +6094,67 @@
             "No selected physical-row/descriptor/cursor/EOF generation join is established.",
             "No EOF boolean or native drain callback rule is inferred from short reads or sample-count arithmetic.",
             "No PCM, DBMD, native run or product acceptance was performed."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-f06of-host-reader-borrowed-row-adapter-status",
+          "mapping_status": "WASHED_STATIC_READER_HOST_ADAPTER_CLOSED__SELECTED_SOURCE_DESCRIPTOR_JOIN_UNBOUND",
+          "implementation_status": "WASHED_BORROWED_ROW_AND_ACTUAL_FRAME_ADAPTER_STATIC__SELECTED_INSTANCE_UNBOUND",
+          "scope": "The reviewed host path registers an ADM BWF reader factory (registry value 3), retains it in a master handle, lazily opens shared storage, and has a float-read adapter that borrows a caller row table through a temporary non-owning descriptor with sample capacity requested+offset. The helper receives the original request; on normal status 0 the outward actual count is min(remaining duration, reader-returned frames). These are static interface facts only: selected registration/invocation, host-to-handle identity, row/read-result-to-measurement descriptor generation and EOF/drain remain UNBOUND or NOT_ESTABLISHED.",
+          "owner": "io",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Adapter input/request/actual count are per-channel frames; no selected callback or source generation is joined."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F06OF_READER_HOST_ADAPTER_STATIC_CONTRACT_V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-READER-HOST-ADAPTER-STATIC-CONTRACT-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-READER-HOST-ADAPTER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-READER-HOST-ADAPTER-STATIC-CONTRACT-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-READER-HOST-ADAPTER-STATIC-CONTRACT-V1/SOURCE-MANIFESTS.json"
+            ],
+            "supplement_manifest_sha256": "110ba63914f545510705cd7017a79142a628e50de153182677d17a4297697a70",
+            "approved_f06of_model_spec_sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423",
+            "validation_boundary": "Static host registration/adapter semantics only; selected host instance, borrowed row to descriptor owner/generation, EOF and drain remain unbound."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_INPUT_ONLY_F06OF_BORROWED_ROW_AND_ACTUAL_FRAME_ADAPTER_SEMANTICS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-READER-HOST-ADAPTER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-READER-HOST-ADAPTER-STATIC-CONTRACT-V1/EVIDENCE.json"
+            ],
+            "case_pointers": [
+              "A non-null caller row table is borrowed through a temporary descriptor; the descriptor owns no row storage.",
+              "The request is not pre-clipped at the adapter; normal status 0 returns min(remaining duration, reader-returned frames).",
+              "Input-only arithmetic is not a selected-run or EOF/drain observation."
+            ],
+            "source_supplement_manifest_sha256": "110ba63914f545510705cd7017a79142a628e50de153182677d17a4297697a70"
+          },
+          "native_status": {
+            "reader_registry_type_value": 3,
+            "factory_retained_by_master_handle": true,
+            "lazy_open_installs_shared_storage": true,
+            "float_read_borrows_non_null_caller_row_table": true,
+            "temporary_descriptor_owns_row_storage": false,
+            "helper_request_preclipped": false,
+            "normal_actual_frames_formula": "min(remaining_duration_frames, reader_returned_frames)",
+            "host_to_master_handle_selected_identity": "UNBOUND",
+            "row_and_actual_frames_to_meter_descriptor_generation": "UNBOUND",
+            "native_eof_or_drain": "NOT_ESTABLISHED",
+            "native_execution": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "No selected host registration/invocation or host-to-master-handle identity is established.",
+            "Borrowed row table/actual frames to the same-generation measurement descriptor remain unbound.",
+            "No EOF/drain behavior, PCM read or product acceptance is inferred."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
@@ -11317,6 +11384,72 @@
             "No native run GO; no production sequence rule is changed.",
             "No clean F05J/F05JL event/base input or adapter is added.",
             "Cold bytes, reset same-target identity, selected profile/event and parent writer generation remain unbound."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-f13c-sequence-base-row-owner-static-status",
+          "mapping_status": "WASHED_STATIC_ROW_OWNER_AND_FAMILY_B_V4_TABLE_IDENTITY__SELECTED_RUNTIME_OPEN",
+          "implementation_status": "WASHED_FAMILY_B_V4_TABLE_JOIN_STATIC_CLOSED__FAMILY_A_AND_RUNTIME_GENERATION_UNBOUND",
+          "scope": "Wash confirms two wrapper families use the same static row-owner expression for handler and parent-row-processor paths. The V2 identity addendum closes Family B dispatch/type10/type11/nested-method-table identity to V4 within the reviewed image. The tag-218 parser/serializer candidate is a generic MPEG2VideoDescriptor path outside that V4 table, not a sequence-base event edge. Family A to V4, selected type/selector, selected event occurrence, same-row runtime invocation, source/frame/AU generation and parent-writer identity remain UNBOUND. This is static identity evidence only, not a ready sequence-base or production algorithm rule.",
+          "owner": "joc",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Static row-owner expression equality does not establish runtime source/frame/AU generation."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F13C_SEQUENCE_BASE_ROW_OWNER_AND_V4_TABLE_IDENTITY_STATUS",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-SEQUENCE-BASE-ROW-OWNER-STATIC-STATUS-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-SEQUENCE-BASE-ROW-OWNER-STATIC-STATUS-V1/STATIC-IDENTITY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-SEQUENCE-BASE-ROW-OWNER-STATIC-STATUS-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-SEQUENCE-BASE-ROW-OWNER-STATIC-STATUS-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-SEQUENCE-BASE-V4-TABLE-IDENTITY-ADDENDUM-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-SEQUENCE-BASE-V4-TABLE-IDENTITY-ADDENDUM-V1/STATIC-IDENTITY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-SEQUENCE-BASE-V4-TABLE-IDENTITY-ADDENDUM-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-SEQUENCE-BASE-V4-TABLE-IDENTITY-ADDENDUM-V1/SOURCE-MANIFESTS.json"
+            ],
+            "supplement_manifest_sha256": "57e54adfcf32b3599126450dff069677a7f49c7e0fdd5dd992816139d3548338",
+            "v4_table_identity_addendum_manifest_sha256": "e12049f676320cbd8a431129d52adeccaf1a5251c30d3339381eca5f5ee196e2",
+            "source_reverse_manifest_sha256": "f80b775939c01067484be9e57a6ee6af3e6ef2f5dae3bd8a82e0618f9112557d",
+            "validation_boundary": "Family B to V4 table identity is static only; Family A, selected invocation, event occurrence and runtime generation remain unbound."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_F13C_STATIC_ROW_OWNER_EXPRESSION_AND_OPEN_IDENTITY_EDGES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-SEQUENCE-BASE-ROW-OWNER-STATIC-STATUS-V1/STATIC-IDENTITY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-SEQUENCE-BASE-ROW-OWNER-STATIC-STATUS-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-SEQUENCE-BASE-V4-TABLE-IDENTITY-ADDENDUM-V1/STATIC-IDENTITY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-SEQUENCE-BASE-V4-TABLE-IDENTITY-ADDENDUM-V1/EVIDENCE.json"
+            ],
+            "case_pointers": [
+              "Two wrapper families share a static row-owner expression for handler and parent-row-processor paths.",
+              "V2 closes Family B to the V4 Type10/11 table; Family A remains unbound.",
+              "The tag218 parser/serializer candidate is a generic MPEG2VideoDescriptor path outside the V4 type table."
+            ],
+            "source_supplement_manifest_sha256": "57e54adfcf32b3599126450dff069677a7f49c7e0fdd5dd992816139d3548338"
+          },
+          "native_status": {
+            "same_static_row_owner_expression": "STATIC_CLOSED_FOR_TWO_WRAPPER_FAMILIES",
+            "tag218_parser_serializer_same_field_presence": true,
+            "family_b_to_v4_type10_type11_method_table": "STATIC_CLOSED",
+            "family_a_to_v4_type10_type11_method_table": "UNBOUND",
+            "tag218_to_v4_type10_type11_method_table": "NOT_IN_V4_TABLE_PER_STATIC_V2",
+            "selected_type_and_selector": "UNBOUND",
+            "selected_event_occurrence": "UNBOUND",
+            "runtime_same_row_invocation": "UNBOUND",
+            "source_frame_au_generation": "UNBOUND",
+            "native_execution": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "No selected type/selector or same-row runtime generation is established.",
+            "No tag218-to-Type10/11 method-table mapping or production sequence-base rule is inferred."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },

@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge-f13c-sequence-base-row-owner-static-evidence.v1",
+  "status": "STATIC_SAME_ROW_OWNER_PATHS_CLOSED_V4_TYPE_AND_RUNTIME_GENERATION_UNBOUND",
+  "reverse_package": {
+    "manifest_sha256": "f80b775939c01067484be9e57a6ee6af3e6ef2f5dae3bd8a82e0618f9112557d",
+    "seal_sha256": "4ab1aabe51cf9063591ad92ebe2934e6f5c930d1df7885ee8271a1e67d15d678",
+    "payload_count": 4,
+    "query_output_hashes_verified": 10
+  },
+  "target_image": {
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "bytes": 10942464,
+    "hash_recomputed_by_wash": true
+  },
+  "v4_source": {
+    "washed_v4_manifest_sha256": "0246139898c5058e5b800df8fdfacc2cf04200efd6610d10352c1e1e39e12f59",
+    "original_source_manifest_sha256": "0c81d9c6b2aa3f0b21eea89344175f684d6cba05d521565a6cc447a2c9b90734",
+    "original_source_payload_count": 7,
+    "original_source_payloads_verified_by_wash": true
+  },
+  "static_facts": {
+    "wrapper_family_count_with_same_row_expression": 2,
+    "candidate_type10_and_type11_rows_share_nested_method_table": true,
+    "candidate_parent_writer_slot_binding_to_v4": "UNBOUND",
+    "candidate_tag218_parser_and_serializer_touch_same_field_and_presence": true,
+    "candidate_parser_serializer_binding_to_v4_type10_type11_table": "UNBOUND",
+    "unrelated_0xda_error_status_proves_event_semantics": false
+  },
+  "unbound": [
+    "candidate parse/serialize pair to V4 Type 10/11 method table",
+    "actual selected profile type and selector",
+    "selected event occurrence",
+    "runtime same-row invocation",
+    "source/frame/AU generation"
+  ],
+  "execution_boundary": {
+    "native_or_target_execution": "NOT_RUN",
+    "pcm_or_event_buffer_read": false,
+    "key_or_auth_material_read": false,
+    "whole_f13c_ready": false,
+    "implementation_ready": false
+  }
+}

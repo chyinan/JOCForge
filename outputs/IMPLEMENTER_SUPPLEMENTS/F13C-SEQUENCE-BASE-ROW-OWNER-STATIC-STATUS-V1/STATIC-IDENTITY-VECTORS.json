@@ -1,0 +1,42 @@
+{
+  "schema": "jocforge-f13c-sequence-base-static-identity-guards.v1",
+  "grade": "HASH_BOUND_STATIC_PATH_FACTS; NO_RUNTIME_VECTORS",
+  "cases": [
+    {
+      "id": "wrapper-family-a-row-owner",
+      "input": "reviewed wrapper-family A call graph",
+      "observed": {
+        "event_handler_and_parent_processor_use_same_row_owner_expression": true,
+        "v4_type10_or_type11_binding": "UNBOUND",
+        "selected_invocation": "NOT_CAPTURED"
+      },
+      "runtime_generation_proven": false
+    },
+    {
+      "id": "wrapper-family-b-row-owner",
+      "input": "reviewed wrapper-family B call graph",
+      "observed": {
+        "event_handler_and_parent_processor_use_same_row_owner_expression": true,
+        "v4_type10_or_type11_binding": "UNBOUND",
+        "selected_invocation": "NOT_CAPTURED"
+      },
+      "runtime_generation_proven": false
+    },
+    {
+      "id": "tag218-parser-serializer-candidate",
+      "input": "reviewed static candidate parser/writer pair",
+      "observed": {
+        "parser_and_serializer_touch_same_field_and_presence_flag": true,
+        "mapping_to_v4_type10_type11_method_table": "UNBOUND"
+      },
+      "selected_event_proven": false
+    },
+    {
+      "id": "numeric-constant-guard",
+      "input": "unrelated helper status value 0xDA",
+      "expected": {
+        "infer_tag218_event_semantics_from_numeric_equality": false
+      }
+    }
+  ]
+}

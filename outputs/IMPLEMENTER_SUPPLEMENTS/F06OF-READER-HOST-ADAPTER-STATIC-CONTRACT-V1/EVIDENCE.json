@@ -1,0 +1,42 @@
+{
+  "schema": "jocforge-f06of-reader-host-adapter-evidence.v1",
+  "status": "STATIC_READER_REGISTRATION_AND_BORROWED_ROW_ADAPTER_CLOSED_SELECTED_SOURCE_DESCRIPTOR_JOIN_UNBOUND",
+  "reverse_package": {
+    "manifest_sha256": "7f19c4dbc040cc3710b016b3a187f878467a42693455f2c945a1354c200cd3e2",
+    "payload_count": 8,
+    "checker_normal": "PASS_HOST_READER_ADAPTER bodies=18 table_regions=2 runtime_join=UNBOUND; no PCM read",
+    "checker_python_O": "PASS_HOST_READER_ADAPTER bodies=18 table_regions=2 runtime_join=UNBOUND; no PCM read"
+  },
+  "module_identity": {
+    "converter_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "converter_bytes": 6286336,
+    "host_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+    "host_bytes": 4233728,
+    "hashes_verified_by_checker": true
+  },
+  "static_adapter_facts": {
+    "adm_bwf_reader_registry_type_value": 3,
+    "factory_retained_by_master_handle": true,
+    "lazy_open_installs_shared_storage": true,
+    "float_read_borrows_non_null_caller_row_table": true,
+    "temporary_buffer_descriptor_owns_row_storage": false,
+    "helper_receives_original_request_not_duration_preclipped": true,
+    "normal_status": 0,
+    "actual_frames_formula": "min(remaining_duration_frames, reader_returned_frames)"
+  },
+  "host_to_measurement_join": {
+    "host_source_instance_to_master_handle": "UNBOUND",
+    "master_storage_to_borrowed_row_table": "STATIC_ADAPTER_CALL; selected instance UNBOUND",
+    "row_table_and_actual_frames_to_meter_descriptor": "UNBOUND",
+    "common_source_or_reset_generation": "UNBOUND"
+  },
+  "execution_boundary": {
+    "native_or_target_execution": "NOT_RUN",
+    "pcm_or_row_buffer_read": false,
+    "private_key_or_auth_material_read": false,
+    "source_audio_reopened": false,
+    "whole_f06of_ready": false,
+    "implementation_ready": false
+  },
+  "scope_limit": "Body hashes cover recovered Ghidra bodies; logical-boundary recovery and selected runtime identity remain separate evidence grades."
+}

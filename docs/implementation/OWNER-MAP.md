@@ -177,6 +177,7 @@
 | F06OF/selected-adm-graph-to-converter-storage-map | F06OF | `meter` |
 | F06OF/washed-f06of-seek-row-table-output-path-erratum | F06OF | `meter` |
 | F06OF/washed-f06of-selected-input-reader-static-contract | F06OF | `meter` |
+| F06OF/washed-f06of-host-reader-borrowed-row-adapter-status | F06OF | `meter` |
 | F06OF/washed-f06of-producer-join-status-and-receipt-hold | F06OF | `meter` |
 | F06NR/single-lane-secondary-overlap-carry | F06NR | `drc` |
 | F06NR/selected-secondary-carrier-routing | F06NR | `drc` |
@@ -243,6 +244,7 @@
 | F13C/selected-type11-natural-output-length-bound | F13C | `metadata` |
 | F13C/controlled-id14-coefficient-to-payload-writer | F13C | `metadata` |
 | F13C/washed-sequence-base-static-producer-constructor-cold-reset-status | F13C | `metadata` |
+| F13C/washed-f13c-sequence-base-row-owner-static-status | F13C | `metadata` |
 | F13C/washed-run011-measurement-to-joc-identity-boundary | F13C | `metadata` |
 | F13C/washed-receipt-capture-output-safety-hold | F13C | `metadata` |
 | F13C/washed-host-dispatch-coordinate-erratum-and-parent-join-hold | F13C | `metadata` |

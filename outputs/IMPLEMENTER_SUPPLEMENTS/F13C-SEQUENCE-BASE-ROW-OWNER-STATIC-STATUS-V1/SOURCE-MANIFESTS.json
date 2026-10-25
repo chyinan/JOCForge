@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge-f13c-sequence-base-row-owner-source-manifests.v1",
+  "reviewed_reverse_manifest_sha256": "f80b775939c01067484be9e57a6ee6af3e6ef2f5dae3bd8a82e0618f9112557d",
+  "v4_washed_manifest_sha256": "0246139898c5058e5b800df8fdfacc2cf04200efd6610d10352c1e1e39e12f59",
+  "v4_original_source_manifest_sha256": "0c81d9c6b2aa3f0b21eea89344175f684d6cba05d521565a6cc447a2c9b90734",
+  "v4_original_source_payload_count_verified": 7,
+  "target_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "ghidra_query_artifacts": {
+    "count": 10,
+    "all_hashes_verified": true,
+    "raw_query_artifacts_in_washed_package": false
+  },
+  "scope": "Hashes identify reviewed static artifacts. They do not establish selected type, invocation, or runtime generation."
+}

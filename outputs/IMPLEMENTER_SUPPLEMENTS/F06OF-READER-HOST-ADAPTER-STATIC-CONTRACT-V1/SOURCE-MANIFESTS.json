@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge-f06of-reader-host-adapter-source-manifests.v1",
+  "reverse_package_manifest_sha256": "7f19c4dbc040cc3710b016b3a187f878467a42693455f2c945a1354c200cd3e2",
+  "module_identities": [
+    {"role":"converter","sha256":"9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8","bytes":6286336},
+    {"role":"host adapter","sha256":"65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e","bytes":4233728}
+  ],
+  "related_clean_contracts": [
+    {"role":"F06OF model input and clock join","package_file":"outputs/IMPLEMENTER_PACKAGE/specs/06-oar-frontend-input-and-clock-join.md","sha256":"2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423"},
+    {"role":"selected ADM graph and time model","package_file":"outputs/IMPLEMENTER_PACKAGE/specs/01-adm-graph-and-time.md","sha256":"c3abb599305392cdad7b43a1d8d45b1c1ae0466ff899f56caa3590d010a11f14"}
+  ],
+  "identity_limit": "Module and package hashes identify artifacts; they do not prove a selected host-source to measurement-descriptor handoff."
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge-f06of-reader-source-hash-correction-identities.v2",
+  "original_reverse_reader_manifest_sha256": "a3e01abe4175de9eca473fe55901425e19ec30e0dc8afdaeb83c5f83cb91a9b0",
+  "approved_implementer_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_f06of_spec_sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423",
+  "previous_wash_erratum_manifest_sha256": "93ba9c3e308567e001656738b84eb5069573a155ee39c9fc6e00f6bf6d61f7ba",
+  "corrected_wash_host_adapter_package_manifest_sha256": "110ba63914f545510705cd7017a79142a628e50de153182677d17a4297697a70",
+  "claim_limit": "V2 withdraws only the false source-hash mismatch claim; it does not close native runtime ownership joins."
+}

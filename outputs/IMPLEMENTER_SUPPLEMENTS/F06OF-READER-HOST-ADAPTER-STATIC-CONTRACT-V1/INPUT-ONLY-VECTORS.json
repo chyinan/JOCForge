@@ -1,0 +1,51 @@
+{
+  "schema": "jocforge-f06of-reader-host-adapter-input-only-vectors.v1",
+  "grade": "DERIVED_INTERFACE_SEMANTICS; NOT_NATIVE_RUN_OBSERVATIONS",
+  "vectors": [
+    {
+      "id": "borrowed-row-table-capacity",
+      "input": {
+        "channels": 38,
+        "requested_frames_per_channel": 1536,
+        "destination_offset_samples": 64,
+        "row_table": "non-null caller-owned table"
+      },
+      "derived": {
+        "temporary_descriptor_channel_count": 38,
+        "temporary_descriptor_sample_capacity": 1600,
+        "temporary_descriptor_owns_row_storage": false
+      },
+      "scope_limit": "This checks the documented wrapper shape only; it does not identify a selected source row or meter descriptor."
+    },
+    {
+      "id": "actual-frame-return-limited-by-remaining-duration",
+      "input": {
+        "requested_frames_per_channel": 512,
+        "remaining_duration_frames": 300,
+        "reader_returned_frames": 480,
+        "reader_status": 0
+      },
+      "derived": {
+        "request_received_by_helper": 512,
+        "adapter_actual_frames": 300,
+        "status": 0
+      },
+      "scope_limit": "Illustrates outer min(remaining, reader return); does not imply the selected run or EOF semantics."
+    },
+    {
+      "id": "actual-frame-return-limited-by-reader-result",
+      "input": {
+        "requested_frames_per_channel": 512,
+        "remaining_duration_frames": 1200,
+        "reader_returned_frames": 480,
+        "reader_status": 0
+      },
+      "derived": {
+        "request_received_by_helper": 512,
+        "adapter_actual_frames": 480,
+        "status": 0
+      },
+      "scope_limit": "Illustrates outer min(remaining, reader return); does not establish a native drain callback."
+    }
+  ]
+}
