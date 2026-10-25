@@ -4,8 +4,8 @@ mod tests {
     use super::super::{
         BeforeRegularHistory, CurrentHostPcm, FRAME_SAMPLES, HOST_CHANNELS, HostRole,
         HostRouteRecord, PREFIX_SOURCE_COUNT, PrefixWriterSet, REGULAR_HOSTS, RegularControl,
-        RegularControls, SOURCE_COUNT, SourceFlagsAttempt, SourceFlagsError,
-        SourceFlagsHistoryGeneration, SourceFlagsInput, SourceFlagsParentLineage,
+        RegularControls, SOURCE_COUNT, SelectedFeatureFlagsControl, SourceFlagsAttempt,
+        SourceFlagsError, SourceFlagsHistoryGeneration, SourceFlagsInput, SourceFlagsParentLineage,
         SourceFlagsProducer, SourceFlagsProgrammeId, ValidatedSemanticRoute,
     };
     use crate::{
@@ -14,7 +14,7 @@ mod tests {
             validate_f01e_provider, validate_f03_package_manifest,
             validate_f03_target_cold_provider,
         },
-        profile::EncodingProfile,
+        profile::{EncodingProfile, resolve_selected_profile},
         spatial::SpatialControlMachine,
         timeline::FrontendCallbackIndex,
         transaction::CallbackTransactionId,
@@ -770,5 +770,39 @@ mod tests {
                 .iter()
                 .all(|flags| *flags == [1, 0])
         );
+    }
+
+    #[test]
+    fn selected_feature_control_keeps_authored_audio_diffuse_distinct() {
+        let profile = resolve_selected_profile(&EncodingProfile::selected()).unwrap();
+        let feature = SelectedFeatureFlagsControl::from_admitted_profile(
+            profile,
+            FrontendCallbackIndex::new(0),
+            10,
+        )
+        .unwrap();
+        let mut authored_control52 = [0_u32; 13];
+        authored_control52[10] = 1;
+        let copied_event_diffuse = u8::try_from(authored_control52[10]).unwrap();
+        assert_eq!(
+            RegularControl::from_raw(10, 0, 0.1, 0, copied_event_diffuse),
+            Err(SourceFlagsError::UnsupportedComponentOrDiffuse)
+        );
+        let postroute_source56_diffuse = 1;
+        assert_eq!(
+            RegularControl::from_raw(10, 0, 0.1, 0, postroute_source56_diffuse),
+            Err(SourceFlagsError::UnsupportedComponentOrDiffuse)
+        );
+
+        let regular = feature.into_regular_control(0, 0.0).unwrap();
+        assert_eq!(authored_control52[10], 1);
+        assert_eq!(feature.profile_identity(), profile);
+        assert_eq!(feature.callback_index(), FrontendCallbackIndex::new(0));
+        assert_eq!(feature.host().value(), 10);
+        assert_eq!(feature.component_enum(), 0);
+        assert_eq!(feature.diffuse(), 0);
+        assert!(!regular.muted);
+        assert_eq!(regular.width.to_bits(), 0);
+        assert_eq!(regular.host.value(), 10);
     }
 }

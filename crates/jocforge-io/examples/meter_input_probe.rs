@@ -13,14 +13,14 @@ use jocforge_domain::{
         selected_adm_graph::parse_selected_adm_graph,
     },
     meter::sample_block_queue::{MeterCallbackIndex, MeterSourceSampleCount},
+    profile::ResolvedEncodingProfile,
     spatial::{
-        installed48_activity::{
-            PrimaryActivityInput, PrimaryActivityOutput, PrimaryInstalled48ActivityProducer,
-        },
+        installed48_activity::{PrimaryActivityInput, PrimaryInstalled48ActivityProducer},
         installed48_source_map::{Installed48SourceMap, build_meter_installed48_source_map},
         selected_p11_geometry::generate_selected_p11_geometry,
         source_flags::{
-            HostRole, HostRouteRecord, RegularControl, RegularControls, ValidatedSemanticRoute,
+            HostRole, HostRouteRecord, RegularControls, SelectedFeatureFlagsControl,
+            SourceFlagsProducer, ValidatedSemanticRoute,
         },
     },
     timeline::{AdmSampleCount, AdmSampleIndex, FrontendCallbackIndex},
@@ -141,11 +141,25 @@ fn main() -> Result<(), Box<dyn Error>> {
         .map_err(|_| io::Error::other("selected P11 geometry generation failed"))?;
     let source_map = build_meter_installed48_source_map(&primary_controls, &geometry)
         .map_err(|_| io::Error::other("meter installed48 map construction failed"))?;
+    let host10_binding = source_map
+        .physical_to_global_source()
+        .iter()
+        .find(|binding| binding.physical_host().value() == 10)
+        .ok_or_else(|| io::Error::other("selected host 10 source binding is missing"))?;
+    let host10_audio_event_diffuse = source_map
+        .row_for_source(host10_binding.source_index())
+        .and_then(jocforge_domain::spatial::installed48_source_map::Installed48SourceRow::control52)
+        .map(|control| control.words()[10])
+        .ok_or_else(|| io::Error::other("selected host 10 Control52 is missing"))?;
+    if host10_audio_event_diffuse != 1 {
+        return Err(io::Error::other("selected host 10 event diffuse is not one").into());
+    }
     let activity = PrimaryInstalled48ActivityProducer::new(&source_map)
         .map_err(|_| io::Error::other("primary installed48 activity setup failed"))?;
-    let activity_state = activity
+    let mut activity_state = activity
         .cold_state()
         .map_err(|_| io::Error::other("primary installed48 activity cold state failed"))?;
+    let selected_profile = prepared.configuration().selected_profile();
     println!("caller_job=F01E_fixture_settings_with_selected_file_reference");
     println!(
         "caller_job_xml_sha256={}",
@@ -179,135 +193,171 @@ fn main() -> Result<(), Box<dyn Error>> {
         primary_controls.row_count()
     );
 
-    let cursor = MeterPcmSourceCursor::cold(&parsed, source_identity, source_samples)
+    let mut cursor = MeterPcmSourceCursor::cold(&parsed, source_identity, source_samples)
         .map_err(|_| io::Error::other("selected meter source cursor cold admission failed"))?;
-    let callback = 0_u64;
-    let proposal =
-        stage_meter_pcm_source_frame(&cursor, MeterCallbackIndex::new(callback), &parsed)
-            .map_err(|_| io::Error::other("selected meter source frame staging failed"))?;
-    let frame = proposal.frame();
-    if frame.rows().len() != 38 || frame.rows().iter().any(|row| row.len() != 1_536) {
-        return Err(io::Error::other("meter raw input frame shape mismatch").into());
-    }
-    let mut frame_digest = Sha256::new();
-    for row in frame.rows() {
-        for word in row {
-            frame_digest.update(word.to_le_bytes());
+    let (route, _) =
+        source_flags_inputs(&source_map, selected_profile, FrontendCallbackIndex::new(0))?;
+    let mut previous_regular_rows = vec![vec![0_u32; 1_536]; route.regular_hosts().len()];
+    for callback in 0..3_u64 {
+        let proposal =
+            stage_meter_pcm_source_frame(&cursor, MeterCallbackIndex::new(callback), &parsed)
+                .map_err(|_| io::Error::other("selected meter source frame staging failed"))?;
+        let (next_cursor, frame) = proposal.into_parts();
+        if frame.rows().len() != 38 || frame.rows().iter().any(|row| row.len() != 1_536) {
+            return Err(io::Error::other("meter raw input frame shape mismatch").into());
         }
-    }
-    println!(
-        "callback={} phase={:?} generation={} cursor_before={} cursor_after={} host_samples={} padded_samples={} rows=38x1536 f32_words_sha256={}",
-        frame.callback_index().value(),
-        frame.phase(),
-        frame.upstream_generation().value(),
-        frame.source_cursor_before().value(),
-        frame.source_cursor_after().value(),
-        frame.host_input_count().value(),
-        frame.source_padding_count().value(),
-        hex_lower(&frame_digest.finalize()),
-    );
-    let activity_proposal = activity
-        .produce_next(
-            &source_map,
-            &activity_state,
-            PrimaryActivityInput::NormalRead {
-                reader_relative_sample: AdmSampleIndex::new(frame.source_cursor_before().value()),
-                pcm_word_rows: frame.rows().to_vec(),
-            },
+        let mut frame_digest = Sha256::new();
+        for row in frame.rows() {
+            for word in row {
+                frame_digest.update(word.to_le_bytes());
+            }
+        }
+        let activity_proposal = activity
+            .produce_next(
+                &source_map,
+                &activity_state,
+                PrimaryActivityInput::NormalRead {
+                    reader_relative_sample: AdmSampleIndex::new(
+                        frame.source_cursor_before().value(),
+                    ),
+                    pcm_word_rows: frame.rows().to_vec(),
+                },
+            )
+            .map_err(|_| io::Error::other("meter primary activity stage failed"))?;
+        let (activity_output, next_activity_state, membership_route) =
+            activity_proposal.into_parts();
+        if activity_output.callback_index().value() != callback {
+            return Err(io::Error::other("activity callback generation mismatch").into());
+        }
+        let callback_index = FrontendCallbackIndex::new(callback);
+        let host10_feature = SelectedFeatureFlagsControl::from_admitted_profile(
+            selected_profile,
+            callback_index,
+            10,
         )
-        .map_err(|_| io::Error::other("meter primary activity stage failed"))?;
-    let (activity_output, _next_activity_state, membership_route) = activity_proposal.into_parts();
-    println!(
-        "activity_callback={} phase={:?} host_frame={:?} actual_samples={} quiet37_sha256={} prefix_writers={:?} membership_rows={}",
-        activity_output.callback_index().value(),
-        activity_output.phase(),
-        activity_output
-            .host_frame()
-            .map(FrontendCallbackIndex::value),
-        activity_output.actual_source_samples(),
-        hex_lower(&Sha256::digest(activity_output.quiet37())),
-        activity_output.prefix_writer_indices(),
-        membership_route.contributions().len(),
-    );
-    match validate_source56_candidate_shape(&activity_output, &source_map) {
-        Ok(rows) => println!(
-            "source56_adapter=NONNORMATIVE_CANDIDATE_SHAPE_VALIDATED rows={rows}; source flags values not run"
-        ),
-        Err(error) => {
-            println!("source56_adapter=NONNORMATIVE_CANDIDATE_REJECTED");
-            println!("candidate_source56_error={error}");
+        .map_err(|error| {
+            io::Error::other(format!(
+                "selected host 10 feature control: {}",
+                error.code()
+            ))
+        })?;
+        let (route, controls) = source_flags_inputs(&source_map, selected_profile, callback_index)?;
+        let prefix_writer_sources = membership_route.writer_indices();
+        let values = SourceFlagsProducer::produce_meter_values(
+            frame.rows(),
+            &previous_regular_rows,
+            &controls,
+            &route,
+            &prefix_writer_sources,
+        )
+        .map_err(|error| {
+            io::Error::other(format!(
+                "selected F03R value stage failed: {}",
+                error.code()
+            ))
+        })?;
+        let mut flags_digest = Sha256::new();
+        for pair in values.payload() {
+            flags_digest.update(pair);
         }
+        previous_regular_rows = values.raw_history_rows().map(|row| row.to_vec()).collect();
+        println!(
+            "callback={} phase={:?} generation={} cursor_before={} cursor_after={} host_samples={} padded_samples={} rows=38x1536 f32_words_sha256={} quiet37_sha256={} prefix_writers={:?} membership_rows={} f03r_payload=48x2 sha256={} host10_feature_host={} host10_feature_callback={} host10_feature_component_enum={} host10_feature_diffuse={}",
+            frame.callback_index().value(),
+            frame.phase(),
+            frame.upstream_generation().value(),
+            frame.source_cursor_before().value(),
+            frame.source_cursor_after().value(),
+            frame.host_input_count().value(),
+            frame.source_padding_count().value(),
+            hex_lower(&frame_digest.finalize()),
+            hex_lower(&Sha256::digest(activity_output.quiet37())),
+            prefix_writer_sources,
+            membership_route.contributions().len(),
+            hex_lower(&flags_digest.finalize()),
+            host10_feature.host().value(),
+            host10_feature.callback_index().value(),
+            host10_feature.component_enum(),
+            host10_feature.diffuse(),
+        );
+        cursor = next_cursor;
+        activity_state = next_activity_state;
     }
-    println!("pipeline_stop_stage=F03R_SOURCE56_ADAPTER_AWAITING_WASH_CONFIRMATION");
-    println!("source_flags_values=NOT_RUN");
-    println!("pipeline_commit=NOT_RUN");
+    let host10_audio_event_diffuse_after = source_map
+        .row_for_source(host10_binding.source_index())
+        .and_then(jocforge_domain::spatial::installed48_source_map::Installed48SourceRow::control52)
+        .map(|control| control.words()[10])
+        .ok_or_else(|| io::Error::other("selected host 10 Control52 disappeared"))?;
+    if host10_audio_event_diffuse_after != host10_audio_event_diffuse {
+        return Err(io::Error::other("F03R input changed F01E Control52 word10").into());
+    }
+    println!(
+        "host10_audio_event_diffuse_word10={host10_audio_event_diffuse_after} preserved_for_F04A"
+    );
+    println!("f03r_input=selected_profile_typed_controls; event_diffuse_not_reused");
+    println!("pipeline_stop_stage=F03R_VALUE_ONLY");
+    println!("source_flags_packet=NOT_CREATED");
     println!("callback_commit=NOT_COMMITTED");
     Ok(())
 }
 
-// LOCAL DIAGNOSTIC ONLY: this Source56-to-F03R field mapping is not Wash-approved.
-fn validate_source56_candidate_shape(
-    activity: &PrimaryActivityOutput,
+fn source_flags_inputs(
     source_map: &Installed48SourceMap,
-) -> Result<usize, io::Error> {
-    let mut controls = Vec::with_capacity(37);
-    let mut regular_hosts = Vec::with_capacity(37);
+    profile: ResolvedEncodingProfile,
+    callback_index: FrontendCallbackIndex,
+) -> Result<(ValidatedSemanticRoute, RegularControls), io::Error> {
+    let mut records_by_host = [None; 38];
     for binding in source_map.physical_to_global_source() {
         let host = binding.physical_host().value();
-        let row = activity
-            .postroute_rows()
-            .iter()
-            .find(|row| row.source_index() == binding.source_index())
-            .ok_or_else(|| io::Error::other("Source56 row for installed source is missing"))?;
-        let metadata = row.metadata_words_8_to_55();
-        let mute = u8::try_from(row.field4())
-            .map_err(|_| io::Error::other("Source56 field4 mute value is out of range"))?;
-        let width = f32::from_bits(metadata[8]);
-        let diffuse = u8::try_from(metadata[9])
-            .map_err(|_| io::Error::other("Source56 diffuse-control field is out of range"))?;
-        let component = u8::try_from(metadata[10])
-            .map_err(|_| io::Error::other("Source56 spatial enum is out of range"))?;
-        let control =
-            RegularControl::from_raw(host, mute, width, component, diffuse).map_err(|error| {
-                io::Error::other(format!(
-                    "candidate Source56 host {host} fields rejected: mute={mute} width_bits=0x{:08x} component_enum={component} diffuse_control_flag={diffuse} error={}",
-                    width.to_bits(),
-                    error.code()
-                ))
-            })?;
-        controls.push(control);
-        regular_hosts.push(host);
+        let destination = u8::try_from(binding.source_index().value())
+            .map_err(|_| io::Error::other("installed source index is out of range"))?;
+        records_by_host[usize::from(host)] = Some(
+            HostRouteRecord::new(host, HostRole::Regular, true, Some(destination))
+                .map_err(|error| io::Error::other(format!("semantic route: {}", error.code())))?,
+        );
     }
-    let controls = RegularControls::new(controls).map_err(|error| {
-        io::Error::other(format!("candidate Source56 controls: {}", error.code()))
-    })?;
     let mut records = Vec::with_capacity(38);
-    for host in 0..38_u8 {
-        if regular_hosts.contains(&host) {
-            let binding = source_map
-                .physical_to_global_source()
-                .iter()
-                .find(|binding| binding.physical_host().value() == host)
-                .ok_or_else(|| io::Error::other("Source56 physical host binding is missing"))?;
-            let destination = u8::try_from(binding.source_index().value())
-                .map_err(|_| io::Error::other("Source56 destination index is out of range"))?;
-            records.push(
-                HostRouteRecord::new(host, HostRole::Regular, true, Some(destination)).map_err(
-                    |error| io::Error::other(format!("Source56 route: {}", error.code())),
-                )?,
-            );
-        } else {
-            records.push(
-                HostRouteRecord::new(host, HostRole::Lfe, true, None).map_err(|error| {
-                    io::Error::other(format!("Source56 LFE route: {}", error.code()))
-                })?,
-            );
-        }
+    for (host, record) in records_by_host.iter().enumerate() {
+        let host = u8::try_from(host)
+            .map_err(|_| io::Error::other("physical host index is out of range"))?;
+        records.push(
+            record.unwrap_or(
+                HostRouteRecord::new(host, HostRole::Lfe, true, None)
+                    .map_err(|error| io::Error::other(format!("LFE route: {}", error.code())))?,
+            ),
+        );
     }
     let route = ValidatedSemanticRoute::new(records)
-        .map_err(|error| io::Error::other(format!("Source56 semantic route: {}", error.code())))?;
-    let _ = (controls, route);
-    Ok(regular_hosts.len())
+        .map_err(|error| io::Error::other(format!("semantic route: {}", error.code())))?;
+    let mut controls = Vec::with_capacity(37);
+    for host in route.regular_hosts() {
+        let binding = source_map
+            .physical_to_global_source()
+            .iter()
+            .find(|binding| binding.physical_host().value() == host.value())
+            .ok_or_else(|| io::Error::other("physical host source binding is missing"))?;
+        let row = source_map
+            .row_for_source(binding.source_index())
+            .ok_or_else(|| io::Error::other("installed source row is missing"))?;
+        let mute = row
+            .input_mute()
+            .ok_or_else(|| io::Error::other("installed source mute is missing"))?;
+        let width = f32::from_bits(row.metadata_words_8_to_55()[8]);
+        let feature = SelectedFeatureFlagsControl::from_admitted_profile(
+            profile,
+            callback_index,
+            host.value(),
+        )
+        .map_err(|error| {
+            io::Error::other(format!("selected F03R feature control: {}", error.code()))
+        })?;
+        controls.push(feature.into_regular_control(mute, width).map_err(|error| {
+            io::Error::other(format!("selected F03R regular control: {}", error.code()))
+        })?);
+    }
+    let controls = RegularControls::new(controls)
+        .map_err(|error| io::Error::other(format!("regular controls: {}", error.code())))?;
+    Ok((route, controls))
 }
 
 fn hex_lower(bytes: &[u8]) -> String {

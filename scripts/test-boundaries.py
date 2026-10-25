@@ -330,6 +330,8 @@ def main():
   ('source-flags-producer-status-overreach',map_mut_render(lambda d:d['phase_one']['P1.3-D'].update(status='LOCALLY_VERIFIED_NUMERIC_AND_PACKET'))),
   ('source-flags-d1-status-drift',map_mut_render(lambda d:d['phase_one']['P1.3-D1'].update(status='LOCALLY_VERIFIED_NUMERIC_AND_PACKET'))),
   ('source-flags-current-features-overclaim',map_mut_render(lambda d:next(item for item in d['programme_roots']if item['root_id']=='spatial_control')['callback_output_packets']['CurrentFeaturesPacket'].update(producer_status='LOCALLY_VERIFIED_NUMERIC_AND_PACKET'))),
+  ('source-flags-selected-feature-diffuse-alias-enabled',map_mut_render(lambda d:d['phase_one']['SOURCE_FLAGS_PRODUCER']['selected_feature_control_binding']['selected_feature_values'].update(diffuse=1))),
+  ('source-flags-f03r-wash-identity-drift',map_mut_render(lambda d:next(item for item in d['functional_entries']if item['functional_id']=='F03R')['direct_slices'][0]['parameters'].update(validation_boundary='washed identity omitted'))),
   ('source-flags-authorized-media-path-persisted',lambda r:append(r/'crates/jocforge-domain/tests/fixtures/source_flags/INPUT-ONLY-VECTORS.json','\ninput-adm.wav\n')),
   ('source-flags-vector-id-removed',map_mut_render(lambda d:d['phase_one']['SOURCE_FLAGS_PRODUCER']['vectors']['success_case_ids'].remove('prefix_writer_on_silence'))),
   ('source-flags-duplicate-checker-definition',lambda r:append(r/'scripts/check-boundaries.py','\ndef check_source_flags_producer(root, d):\n    pass\n'))

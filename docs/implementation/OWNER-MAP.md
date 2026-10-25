@@ -130,6 +130,7 @@
 | F03C/selector-pairwise-affinity | F03C | `spatial_control` |
 | F03U/u04-membership-projection | F03U | `spatial_control` |
 | F03U/u04-refinement-admission-gate | F03U | `spatial_control` |
+| F03R/selected-profile-feature-control-and-value-only-source-flags | F03R | `spatial_control` |
 | F03N/rectangular-nnls-solver | F03N | `spatial_control` |
 | F03S/outer-coefficient-postprocess | F03S | `spatial_control` |
 | F03S/outer-energy-fallback | F03S | `spatial_control` |

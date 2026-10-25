@@ -7,7 +7,7 @@ use super::spatial_control::{
 use crate::{
     frontend::ProviderSha256,
     numeric::{FiniteF32, R32Error, r32_mul},
-    profile::{EncodingProfile, resolve_selected_profile},
+    profile::{EncodingProfile, ResolvedEncodingProfile, resolve_selected_profile},
     timeline::FrontendCallbackIndex,
     transaction::CallbackTransactionId,
 };
@@ -22,6 +22,8 @@ const FRAME_SAMPLES: usize = 1536;
 const WINDOW_WORDS: usize = FRAME_SAMPLES * 2;
 const ACTIVITY_EPSILON_BITS: u32 = 0x3400_0000;
 const WIDTH_LIMIT_BITS: u32 = 0x3e4c_cccd;
+const SELECTED_FEATURE_COMPONENT_ENUM: u8 = 0;
+const SELECTED_FEATURE_DIFFUSE: u8 = 0;
 const WINDOW_SHA256: &str = "134a5a788d42b0532f3ec46112ad978cc14fb3c46cb0d82f02fee5f129b7c919";
 
 type FiniteFrame = Box<[FiniteF32; FRAME_SAMPLES]>;
@@ -154,6 +156,74 @@ impl HostId {
 
     pub const fn value(self) -> u8 {
         self.0
+    }
+}
+
+/// Selected-profile F03R feature controls, distinct from authored audio controls.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct SelectedFeatureFlagsControl {
+    profile_identity: ResolvedEncodingProfile,
+    callback_index: FrontendCallbackIndex,
+    host: HostId,
+    component_enum: u8,
+    diffuse: u8,
+}
+
+impl SelectedFeatureFlagsControl {
+    /// LOCAL_TRANSLATION: selected-profile feature inputs are `(component=0,diffuse=0)`.
+    pub fn from_admitted_profile(
+        profile_identity: ResolvedEncodingProfile,
+        callback_index: FrontendCallbackIndex,
+        host_channel_index: u8,
+    ) -> Result<Self, SourceFlagsError> {
+        let selected_profile = resolve_selected_profile(&EncodingProfile::selected_with_carriage(
+            profile_identity.carriage(),
+        ))
+        .map_err(|_| SourceFlagsError::UnsupportedProfile)?;
+        if selected_profile != profile_identity {
+            return Err(SourceFlagsError::UnsupportedProfile);
+        }
+        Ok(Self {
+            profile_identity,
+            callback_index,
+            host: HostId::new(host_channel_index)?,
+            component_enum: SELECTED_FEATURE_COMPONENT_ENUM,
+            diffuse: SELECTED_FEATURE_DIFFUSE,
+        })
+    }
+
+    pub const fn profile_identity(self) -> ResolvedEncodingProfile {
+        self.profile_identity
+    }
+
+    pub const fn callback_index(self) -> FrontendCallbackIndex {
+        self.callback_index
+    }
+
+    pub const fn host(self) -> HostId {
+        self.host
+    }
+
+    pub const fn component_enum(self) -> u8 {
+        self.component_enum
+    }
+
+    pub const fn diffuse(self) -> u8 {
+        self.diffuse
+    }
+
+    pub fn into_regular_control(
+        self,
+        mute: u8,
+        width: f32,
+    ) -> Result<RegularControl, SourceFlagsError> {
+        RegularControl::from_raw(
+            self.host.value(),
+            mute,
+            width,
+            self.component_enum,
+            self.diffuse,
+        )
     }
 }
 
@@ -643,6 +713,10 @@ pub struct SourceFlagsValues {
 impl SourceFlagsValues {
     pub const fn payload(&self) -> &[[u8; 2]; SOURCE_COUNT] {
         &self.payload
+    }
+
+    pub fn raw_history_rows(&self) -> impl ExactSizeIterator<Item = &RawHistoryFrame> + '_ {
+        self.raw_history_rows.iter().map(Box::as_ref)
     }
 }
 
