@@ -4544,7 +4544,7 @@
               "sha256": "fbb1ba5bb6d027d4b7663bbf6219fd4b79555e53deb0042fd106cc2a1f543de9"
             },
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-            "wash_status_supplement_manifest_sha256": "63dc79991ab97e94f4189c0d268c8359e5a74acf29ed7c53723a3f01720cafe8",
+            "wash_status_supplement_manifest_sha256": "9f47ee930332adf026958d338c5d968cf095833d54edc4556036492bee2f4a22",
             "drain_semantics_erratum_manifest_sha256": "f4c660a632c0b3649b1496095f37f2c164f1537bbb495086180394cb00429b96",
             "reducer_pair_join_supplement_manifest_sha256": "cbd6842938b11c93183b66986c55cd93709f3cd4671968264c37cb373a2d15a6"
           },
