@@ -6249,7 +6249,12 @@
               "crates/jocforge-domain/tests/fixtures/none_drc/authorized_parameters.json"
             ],
             "source_provider_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
-            "validation_boundary": "The integration test binds Q0/Q1/Q2 to the exact approved artifact. Production uses the selected constants and performs no filesystem read or fallback."
+            "authorization_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+            "authorization_package_id": "F06ND-PUBLIC-DISTRIBUTION-AUTHORIZATION-V1",
+            "authorization_manifest_sha256": "638db1b9d875b5d15ae75beeea52c8579315ea84c6e71c85308a0d9c116596ec",
+            "authorization_scope_file": "crates/jocforge-domain/tests/fixtures/none_drc/public_distribution_scope/SCOPE.json",
+            "authorization_scope_sha256": "3f7f38d7e46db03a61430f99ddf739b0759a07d582f5621a6c818b2777f51f96",
+            "validation_boundary": "The implementation fixture remains byte-for-byte identical to the sealed source package. The hash-bound public-scope addendum supersedes its earlier internal-only labels; production uses the selected constants and performs no filesystem read or fallback."
           },
           "test_modules": [
             "crates/jocforge-domain/tests/none_drc_quantizer.rs"
@@ -6304,7 +6309,157 @@
             "F06 meter finalization and meter_terminal_sha256 remain HOLD",
             "Real ADM, native DLL, product and listening acceptance"
           ],
-          "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "selected-none-drc-scalar-normalizer",
+          "mapping_status": "MATERIALIZED_SELECTED_F06ND3_NORMALIZER__STATISTICS_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_SELECTED_NORMALIZER_POLYNOMIAL__STATISTICS_DEFERRED",
+          "scope": "Normalizes one nonnegative finite F32 using the selected exponent-derived binary32 scaling and DRC_NORMALIZE3 polynomial operation order. It owns no filter, peak, statistics, scheduler, FIFO, frame, programme state, meter receipt or digest.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/lib.rs",
+            "crates/jocforge-domain/src/drc/mod.rs",
+            "crates/jocforge-domain/src/drc/none_drc_normalizer.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "A scalar normalization call is stateless and owns no source, AU, callback or programme clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_DRC_NORMALIZE3_WORDS",
+            "provider_files": [
+              "crates/jocforge-domain/tests/fixtures/none_drc/authorized_parameters.json"
+            ],
+            "source_provider_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
+            "authorization_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+            "authorization_package_id": "F06ND-PUBLIC-DISTRIBUTION-AUTHORIZATION-V1",
+            "authorization_manifest_sha256": "638db1b9d875b5d15ae75beeea52c8579315ea84c6e71c85308a0d9c116596ec",
+            "authorization_scope_file": "crates/jocforge-domain/tests/fixtures/none_drc/public_distribution_scope/SCOPE.json",
+            "authorization_scope_sha256": "3f7f38d7e46db03a61430f99ddf739b0759a07d582f5621a6c818b2777f51f96",
+            "validation_boundary": "The scalar implementation uses only selected DRC_NORMALIZE3 words. The exact source fixture remains hash-pinned; current public scope comes from the superseding Wash authorization supplement."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/none_drc_normalizer.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_12_NORMALIZED_INPUT_WORD_CASES",
+            "authoritative_vectors": [
+              "test-vectors/NONE-DRC-AUTHORIZED-VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "Recomputes each of the 12 normalized input words before comparing expected output words.",
+              "Rejects negative/nonfinite input and nonfinite intermediates; verifies negative zero follows the zero branch."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/none_drc/authorized_verification.json",
+              "bytes": 533786,
+              "sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_spec_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+            "source_parameter_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
+            "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "NONE_DRC_NORMALIZER_INPUT_NONFINITE",
+              "category": "normalizer input",
+              "trigger": "Input F32 is NaN or infinite.",
+              "programme_state_after": "No normalized word is returned; the leaf owns no state.",
+              "caller_action": "Reject the invocation."
+            },
+            {
+              "error_code": "NONE_DRC_NORMALIZER_INPUT_NEGATIVE",
+              "category": "normalizer input domain",
+              "trigger": "Input F32 is less than zero.",
+              "programme_state_after": "No normalized word is returned; the leaf owns no state.",
+              "caller_action": "Reject the invocation."
+            },
+            {
+              "error_code": "NONE_DRC_NORMALIZER_NUMERIC_NONFINITE",
+              "category": "binary32 intermediate",
+              "trigger": "A required scaled or polynomial intermediate is nonfinite.",
+              "programme_state_after": "No normalized word is returned; the leaf owns no state.",
+              "caller_action": "Reject the invocation."
+            }
+          ],
+          "not_run": [
+            "F06ND filter, RMS, peak, auxiliary and level statistics",
+            "F06ND scheduler, limiter, FIFO, frame transaction and programme state",
+            "F06 meter finalization and meter_terminal_sha256 remain HOLD",
+            "Real ADM, native DLL, product and listening acceptance"
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "selected-none-drc-dialnorm-offset",
+          "mapping_status": "MATERIALIZED_SELECTED_F06ND_DIALNORM_OFFSET__STATISTICS_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_SELECTED_DIALNORM_OFFSET_WORDS__STATISTICS_DEFERRED",
+          "scope": "Maps one selected integer dialnorm value in 1..=31 to the binary32 word for R32((31-d)/144). It owns no statistics, scheduler, FIFO, frame, programme state, meter receipt or digest.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/lib.rs",
+            "crates/jocforge-domain/src/drc/mod.rs",
+            "crates/jocforge-domain/src/drc/none_drc_dialnorm_offset.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "A dialnorm offset mapping is stateless and owns no source, AU, callback or programme clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_MATH_GENERATED_DIALNORM_OFFSET_WORDS",
+            "provider_files": [
+              "crates/jocforge-domain/tests/fixtures/none_drc/authorized_math_parameters.json"
+            ],
+            "source_provider_sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166",
+            "authorization_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+            "authorization_package_id": "F06ND-PUBLIC-DISTRIBUTION-AUTHORIZATION-V1",
+            "authorization_manifest_sha256": "638db1b9d875b5d15ae75beeea52c8579315ea84c6e71c85308a0d9c116596ec",
+            "authorization_scope_file": "crates/jocforge-domain/tests/fixtures/none_drc/public_distribution_scope/SCOPE.json",
+            "authorization_scope_sha256": "3f7f38d7e46db03a61430f99ddf739b0759a07d582f5621a6c818b2777f51f96",
+            "validation_boundary": "The formula-derived 31-word provider is copied byte-for-byte from the approved Wash package and validated before comparing all domain entries."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/none_drc_dialnorm_offset.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_31_DIALNORM_OFFSET_WORDS",
+            "authoritative_vectors": [
+              "parameters/none-drc-math-v1.json"
+            ],
+            "case_pointers": [
+              "Checks every dialnorm value from 1 through 31 against the generated provider word.",
+              "Rejects values outside the selected domain as UNSUPPORTED_PROFILE."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/none_drc/authorized_math_parameters.json",
+              "bytes": 2010,
+              "sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_spec_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+            "source_parameter_sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166",
+            "source_vector_sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "UNSUPPORTED_PROFILE",
+              "category": "dialnorm domain",
+              "trigger": "The supplied integer is outside 1..=31.",
+              "programme_state_after": "No offset word is returned; the leaf owns no state.",
+              "caller_action": "Reject the selected profile value."
+            }
+          ],
+          "not_run": [
+            "F06ND programme loudness producer and dialnorm selection",
+            "F06ND statistics, normalization composition and scheduler",
+            "F06 meter finalization and meter_terminal_sha256 remain HOLD",
+            "Real ADM, native DLL, product and listening acceptance"
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },

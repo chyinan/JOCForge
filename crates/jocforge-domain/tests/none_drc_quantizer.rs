@@ -5,6 +5,8 @@ use jocforge_domain::drc::none_drc_quantizer::{
 const AUTHORIZED_PARAMETERS: &str = include_str!("fixtures/none_drc/authorized_parameters.json");
 const AUTHORIZED_VERIFICATION: &str =
     include_str!("fixtures/none_drc/authorized_verification.json");
+const PUBLIC_DISTRIBUTION_SCOPE: &str =
+    include_str!("fixtures/none_drc/public_distribution_scope/SCOPE.json");
 
 #[test]
 fn selected_quantizer_parameter_words_match_the_approved_artifact() {
@@ -17,6 +19,25 @@ fn selected_quantizer_parameter_words_match_the_approved_artifact() {
         .collect::<Vec<_>>();
 
     assert_eq!(words, [0x3E2F_7469, 0x3F2A_DD8F, 0x3F7F_7A01]);
+
+    let distribution_scope: serde_json::Value =
+        serde_json::from_str(PUBLIC_DISTRIBUTION_SCOPE).unwrap();
+    assert_eq!(
+        distribution_scope["decision"].as_str(),
+        Some("PUBLIC_DISTRIBUTION_AUTHORIZED_FOR_NONPRIVATE_FUNCTIONAL_MATERIAL")
+    );
+    assert_eq!(
+        distribution_scope["source_package"]["parameter_file"]["sha256"].as_str(),
+        Some("35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f")
+    );
+    assert_eq!(
+        distribution_scope["previous_internal_only_labels"].as_str(),
+        Some("SUPERSEDED_FOR_THIS_SCOPE_BY_USER_CLARIFICATION")
+    );
+    assert_eq!(
+        distribution_scope["source_package_contents_modified"],
+        serde_json::Value::Bool(false)
+    );
 }
 
 #[test]

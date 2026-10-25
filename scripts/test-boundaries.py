@@ -965,6 +965,16 @@ def main():
   ('f06nd-rf-sentinel-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/drc/none_drc_quantizer.rs','const RF_ZERO_SENTINEL: u32 = 0xFFFF_FF00;','const RF_ZERO_SENTINEL: u32 = 0xFFFF_FE00;')),
   ('f06nd-expected-output-comparison-removed',lambda r:replace_once(r/'crates/jocforge-domain/tests/none_drc_quantizer.rs','assert_eq!(\n                *actual,\n                expected.as_u64().unwrap() as u16,','let _ = (*actual, expected.as_u64().unwrap() as u16);'))
  ]
+ cases += [
+  ('f06nd-normalizer-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F06ND')['direct_slices'].remove(next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06ND')['direct_slices']if s['slice_id']=='selected-none-drc-scalar-normalizer')))),
+  ('f06nd-normalizer-word-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/drc/none_drc_normalizer.rs','NORMALIZE_A: f32 = f32::from_bits(0x3CAA_5BD7)','NORMALIZE_A: f32 = f32::from_bits(0x3CAA_5BD6)')),
+  ('f06nd-normalizer-output-check-removed',lambda r:replace_once(r/'crates/jocforge-domain/tests/none_drc_normalizer.rs','assert_eq!(calculated_words, expected_words);','let _ = (calculated_words, expected_words);')),
+  ('f06nd-dialnorm-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F06ND')['direct_slices'].remove(next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06ND')['direct_slices']if s['slice_id']=='selected-none-drc-dialnorm-offset')))),
+  ('f06nd-dialnorm-denominator-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/drc/none_drc_dialnorm_offset.rs','144.0_f32','143.0_f32')),
+  ('f06nd-dialnorm-domain-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/drc/none_drc_dialnorm_offset.rs','if !(1..=31).contains(&dialnorm)','if !(1..=30).contains(&dialnorm)')),
+  ('f06nd-public-scope-withdrawn',lambda r:replace_once(r/'crates/jocforge-domain/tests/fixtures/none_drc/public_distribution_scope/SCOPE.json','PUBLIC_DISTRIBUTION_AUTHORIZED_FOR_NONPRIVATE_FUNCTIONAL_MATERIAL','INTERNAL_ONLY')),
+  ('f06nd-public-scope-source-drift',lambda r:replace_once(r/'crates/jocforge-domain/tests/fixtures/none_drc/public_distribution_scope/SCOPE.json','c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a','0'*64))
+ ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]
   if not cases:raise RuntimeError('no boundary mutations match case prefix: '+x.case_prefix)

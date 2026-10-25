@@ -1,0 +1,70 @@
+{
+  "schema": "jocforge.f06nd-public-distribution-scope.v1",
+  "package_id": "F06ND-PUBLIC-DISTRIBUTION-AUTHORIZATION-V1",
+  "decision": "PUBLIC_DISTRIBUTION_AUTHORIZED_FOR_NONPRIVATE_FUNCTIONAL_MATERIAL",
+  "authorization_basis": "User clarification in this thread: only vendor-private keys/authentication secrets and genuinely private user data are excluded; ordinary constants and washed algorithm material remain open.",
+  "source_package": {
+    "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "parameter_file": {
+      "path": "parameters/none-drc-authorized-v1.json",
+      "bytes": 3792,
+      "sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f"
+    },
+    "algorithm_spec": {
+      "path": "specs/06-none-drc-statistics-and-control.md",
+      "bytes": 18048,
+      "sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081"
+    },
+    "verification_vectors": {
+      "path": "test-vectors/NONE-DRC-AUTHORIZED-VERIFICATION.json",
+      "bytes": 533786,
+      "sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
+    }
+  },
+  "authorized_function_groups": {
+    "DRC_FILTER5": {
+      "count": 5,
+      "type": "binary32",
+      "classification": "HISTORICAL_DEE_STATIC_FUNCTIONAL_AUDIO_EVIDENCE",
+      "private_key_or_auth_material": false,
+      "private_user_data": false
+    },
+    "DRC_NORMALIZE3": {
+      "count": 3,
+      "type": "binary32",
+      "classification": "VERIFIED_FROZEN_PYTHON_FUNCTIONAL_LITERALS",
+      "private_key_or_auth_material": false,
+      "private_user_data": false
+    },
+    "DRC_QUANTIZE3": {
+      "count": 3,
+      "type": "binary32",
+      "classification": "VERIFIED_FROZEN_PYTHON_FUNCTIONAL_LITERALS",
+      "private_key_or_auth_material": false,
+      "private_user_data": false
+    },
+    "DRC_AUX_ROTATION2": {
+      "count": 2,
+      "type": "binary32",
+      "classification": "VERIFIED_FROZEN_PYTHON_FUNCTIONAL_LITERALS",
+      "private_key_or_auth_material": false,
+      "private_user_data": false
+    }
+  },
+  "publicly_distributable": [
+    "the 13 listed functional constants",
+    "the selected clean algorithm specification and implementation",
+    "generated input-only vectors and verification results",
+    "non-sensitive provenance and source-classification metadata"
+  ],
+  "excluded": [
+    "vendor private keys",
+    "authentication secrets or materials",
+    "genuinely private user data",
+    "raw PCM or audio inputs",
+    "protected media outputs",
+    "original vendor tables, source code, DLLs, or research artifacts"
+  ],
+  "previous_internal_only_labels": "SUPERSEDED_FOR_THIS_SCOPE_BY_USER_CLARIFICATION",
+  "source_package_contents_modified": false
+}

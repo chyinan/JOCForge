@@ -1,0 +1,72 @@
+{
+  "schema": "clean.none-drc.math-functional-values.v1",
+  "delivery_scope": "INTERNAL_RESEARCH_AND_INTERNAL_IMPLEMENTATION_ONLY",
+  "formula_source": "Independent explicit selected-domain mathematical rules; source comparison is validation only",
+  "dialnorm_domain": [
+    1,
+    31
+  ],
+  "dialnorm_formula": "R32((31-d)/144)",
+  "dialnorm_words": [
+    1045779797,
+    1045313764,
+    1044847730,
+    1044381696,
+    1043915662,
+    1043449628,
+    1042983595,
+    1042517561,
+    1042051527,
+    1041585493,
+    1041119460,
+    1040653426,
+    1040187392,
+    1039255324,
+    1038323257,
+    1037391189,
+    1036459122,
+    1035527054,
+    1034594987,
+    1033662919,
+    1032730852,
+    1031798784,
+    1029934649,
+    1028070514,
+    1026206379,
+    1024342244,
+    1021546041,
+    1017817771,
+    1013157433,
+    1004768825,
+    0
+  ],
+  "mix_formula": [
+    "R32(-sqrt(2)/4)",
+    "1",
+    "-1/2"
+  ],
+  "mix_words": [
+    3199534323,
+    1065353216,
+    3204448256
+  ],
+  "validation": {
+    "dialnorm_selected_words_matched": 31,
+    "mix_selected_words_matched": 3,
+    "mix_generation_decimal_precisions": [
+      100,
+      200
+    ],
+    "first_divergence": null
+  },
+  "original_tables_delivered": false,
+  "unresolved_required_functional_values": 0,
+  "complete_none_drc_provider": true,
+  "IMPLEMENTATION_READY": "NO",
+  "public_or_third_party_distribution": "NOT_AUTHORIZED",
+  "algorithm_spec": "specs/06-none-drc-statistics-and-control.md",
+  "provider_completeness_scope": "Selected numerical parameter set only: this 34-word mathematical provider plus the separately authorized thirteen-word functional provider. Does not certify secondary reconstruction or entire DRC audio path.",
+  "authorized_functional_provider": "parameters/none-drc-authorized-v1.json",
+  "authorized_functional_provider_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
+  "complete_none_drc_audio_path": false
+}

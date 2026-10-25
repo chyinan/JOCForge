@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge-wash-supplement.v1",
+  "package_id": "F06ND-PUBLIC-DISTRIBUTION-AUTHORIZATION-V1",
+  "audience": "ISOLATED_IMPLEMENTATION_AND_PUBLIC_DISTRIBUTION",
+  "scope": "F06ND selected non-secret functional constants and associated clean implementation artifacts",
+  "status": "PUBLIC_DISTRIBUTION_AUTHORIZED",
+  "supersedes": "Prior internal-only distribution labels for the scoped F06ND non-secret functional material",
+  "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "excluded_material": [
+    "vendor private keys and authentication secrets",
+    "private user data and raw PCM",
+    "protected media, vendor binaries, original source code, and original research tables"
+  ]
+}
