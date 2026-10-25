@@ -175,6 +175,7 @@
 | F06ND/selected-none-drc-rf-line-scalar-quantizer | — | `A scalar quantizer invocation is stateless and owns no source, AU, callback or programme clock.` |
 | F06ND/selected-none-drc-scalar-normalizer | — | `A scalar normalization call is stateless and owns no source, AU, callback or programme clock.` |
 | F06ND/selected-none-drc-dialnorm-offset | — | `A dialnorm offset mapping is stateless and owns no source, AU, callback or programme clock.` |
+| F06ND/selected-none-drc-statistics-frame-transition | — | `One invocation consumes exactly one six-block frame and returns one actual next state.`<br>`The source/frame generation is external; this state schema stores no generation and validates no cross-owner generation join.` |
 | F07/input-history-block-transition | — | `The helper advances exactly one caller-ordered 256-sample block and owns no absolute source-frame clock.` |
 | F07/structure-refresh-flag-projection | — | `One stateless six-block projection; no source, frame, or AU counter is retained.` |
 | F07/selected-dither-flag-plan | — | `Consumes one explicitly ordered six-block frame and returns the next previous_short projection; no absolute clock is owned.` |

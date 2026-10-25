@@ -175,6 +175,7 @@
 | F06ND/selected-none-drc-rf-line-scalar-quantizer | F06ND | `drc` |
 | F06ND/selected-none-drc-scalar-normalizer | F06ND | `drc` |
 | F06ND/selected-none-drc-dialnorm-offset | F06ND | `drc` |
+| F06ND/selected-none-drc-statistics-frame-transition | F06ND | `drc` |
 | F07/input-history-block-transition | F07 | `analysis` |
 | F07/structure-refresh-flag-projection | F07 | `analysis` |
 | F07/selected-dither-flag-plan | F07 | `analysis` |

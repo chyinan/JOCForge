@@ -973,7 +973,13 @@ def main():
   ('f06nd-dialnorm-denominator-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/drc/none_drc_dialnorm_offset.rs','144.0_f32','143.0_f32')),
   ('f06nd-dialnorm-domain-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/drc/none_drc_dialnorm_offset.rs','if !(1..=31).contains(&dialnorm)','if !(1..=30).contains(&dialnorm)')),
   ('f06nd-public-scope-withdrawn',lambda r:replace_once(r/'crates/jocforge-domain/tests/fixtures/none_drc/public_distribution_scope_v2/SCOPE.json','PUBLIC_DISTRIBUTION_AUTHORIZED_FOR_NONPRIVATE_FUNCTIONAL_AND_MATHEMATICAL_MATERIAL','INTERNAL_ONLY')),
-  ('f06nd-public-scope-source-drift',lambda r:replace_once(r/'crates/jocforge-domain/tests/fixtures/none_drc/public_distribution_scope_v2/SCOPE.json','c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a','0'*64))
+  ('f06nd-public-scope-source-drift',lambda r:replace_once(r/'crates/jocforge-domain/tests/fixtures/none_drc/public_distribution_scope_v2/SCOPE.json','c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a','0'*64)),
+  ('f06nd-statistics-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F06ND')['direct_slices'].remove(next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06ND')['direct_slices']if s['slice_id']=='selected-none-drc-statistics-frame-transition')))),
+  ('f06nd-statistics-filter-word-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/drc/none_drc_statistics.rs','FILTER_A0: f32 = f32::from_bits(0x3F79_999A)','FILTER_A0: f32 = f32::from_bits(0x3F79_999B)')),
+  ('f06nd-statistics-cold-state-seed-removed',lambda r:replace_once(r/'crates/jocforge-domain/tests/none_drc_statistics.rs','let mut state = NoneDrcStatisticsState::cold();','let mut state = state_from_expected();')),
+  ('f06nd-statistics-actual-next-state-removed',lambda r:replace_once(r/'crates/jocforge-domain/tests/none_drc_statistics.rs','state = transition.next_state;','state = state;')),
+  ('f06nd-statistics-output-comparison-removed',lambda r:replace_once(r/'crates/jocforge-domain/tests/none_drc_statistics.rs','assert_output_matches(','output_comparison_removed(')),
+  ('f06nd-statistics-next-state-comparison-removed',lambda r:replace_once(r/'crates/jocforge-domain/tests/none_drc_statistics.rs','assert_state_matches(&case["expected_next_state_words"], &state);','let _ = (&case["expected_next_state_words"], &state);'))
  ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]

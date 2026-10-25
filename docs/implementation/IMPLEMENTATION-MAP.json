@@ -6463,6 +6463,92 @@
             "Real ADM, native DLL, product and listening acceptance"
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "selected-none-drc-statistics-frame-transition",
+          "mapping_status": "MATERIALIZED_SELECTED_F06ND3_F06ND4_STATE_TRANSITION__SCHEDULER_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_8_STEP_STATISTICS_STATE_CHAIN__ERROR_PRECEDENCE_AND_PARENT_WIRING_OPEN",
+          "scope": "Implements one pure six-block F06ND.3-.4 statistics transition: five paired biquad lanes and ordered mean-square reduction, channel energy normalization, primary/secondary peak carry, auxiliary downmix peak carry, output projections and the exact 23-word next state. Validation uses the authorized synthetic primary/secondary recipes; it does not reconstruct secondary audio, own a generation clock, or connect to the product frame path.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/lib.rs",
+            "crates/jocforge-domain/src/drc/mod.rs",
+            "crates/jocforge-domain/src/drc/none_drc_statistics.rs",
+            "crates/jocforge-domain/src/drc/none_drc_normalizer.rs",
+            "crates/jocforge-domain/src/drc/none_drc_dialnorm_offset.rs",
+            "crates/jocforge-domain/src/numeric/finite_f32.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "One invocation consumes exactly one six-block frame and returns one actual next state.",
+              "The source/frame generation is external; this state schema stores no generation and validates no cross-owner generation join."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F06ND_FUNCTIONAL_AND_MATH_PROVIDER_WORDS",
+            "provider_files": [
+              "crates/jocforge-domain/tests/fixtures/none_drc/authorized_parameters.json",
+              "crates/jocforge-domain/tests/fixtures/none_drc/authorized_math_parameters.json"
+            ],
+            "functional_provider_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
+            "math_provider_sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166",
+            "math_provider_git_blob_sha1": "8ee95ed63232cda8a4a431b2be3460ba93563f98",
+            "math_provider_git_blob_bytes": 1938,
+            "authorization_package_id": "F06ND-PUBLIC-DISTRIBUTION-AUTHORIZATION-V2",
+            "authorization_manifest_sha256": "21b3854b45fc0d85738db61dafe106e3f9c86a470534df376b1bfb92285fc885",
+            "authorization_scope_sha256": "7b9c5ec09772dc0b04ce125fdbc8042f9747fdb081c94b3af7926a06afe4ae80",
+            "validation_boundary": "The local source parameter and vector fixtures remain byte-for-byte hash-bound to the original Wash package. The V2 addendum supersedes prior distribution labels without changing the sealed source package."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/none_drc_statistics.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_8_INPUT_ONLY_F06ND_STATISTICS_FRAMES_AND_STATE_CHAIN",
+            "authoritative_vectors": [
+              "test-vectors/NONE-DRC-AUTHORIZED-VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "Reconstructs all eight primary and secondary six-plane frames and verifies all 16 input F32LE hashes per sequence.",
+              "Seeds the exact positive-zero 23-word state once and chains each computed next state into the following step; expected state is never an input.",
+              "Compares every RMS level, peak input, per-block five-lane mean square, summed power, normalized level, auxiliary raw peak and next-state word.",
+              "Secondary planes are expressly synthetic validation inputs; no F06NR reconstruction is executed."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/none_drc/authorized_verification.json",
+              "bytes": 533786,
+              "sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_spec_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+            "source_parameter_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
+            "source_math_parameter_sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166",
+            "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "NUMERIC_FAILURE",
+              "category": "specified binary32 intermediate",
+              "trigger": "A required F32 add, subtract, multiply, divide, or normalizer intermediate is nonfinite.",
+              "programme_state_after": "No output or next state is returned; caller state remains unchanged.",
+              "caller_action": "Propagate the typed numeric failure; the product outcome mapping remains unbound."
+            },
+            {
+              "error_code": "UNSUPPORTED_PROFILE",
+              "category": "dialnorm profile domain",
+              "trigger": "Dialnorm is outside the selected 1..=31 domain.",
+              "programme_state_after": "No output or next state is returned.",
+              "caller_action": "Reject the selected-profile invocation."
+            }
+          ],
+          "not_run": [
+            "F06ND.7 simultaneous-preflight first-failure precedence remains UNBOUND.",
+            "Mapping of nonfinite source input to DRC_INPUT_ERROR versus NUMERIC_FAILURE remains UNBOUND; typed finite planes are required by this leaf.",
+            "No runtime parameter identity failure path is implemented; parameter words are bound by tests and boundary checks.",
+            "External generation matching and parent state commitment are not part of this transition.",
+            "F06ND scheduler, limiter, metadata FIFO, complete frame/programme integration and production audio-source connection.",
+            "F06 meter finalization and meter_terminal_sha256 remain HOLD; real ADM, native DLL, product and W04 acceptance remain NOT_RUN."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
