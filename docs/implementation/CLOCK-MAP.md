@@ -207,6 +207,8 @@
 | F07/washed-f07-f08-native-parent-lifecycle-boundary | — | `The package describes model clocks; no selected native callback, owner token, generation, or parent lifecycle clock is bound by this audit.` |
 | F07A/selected-d05-transient-parameter-provider | — | `Stateless identity and typed-parameter loading; no frame or source clock is owned.` |
 | F08/math-generated-window-fold | — | `Consumes one caller-supplied block and before histories; this F08.2 leaf assigns no sample, callback, source, AU, or programme clock.` |
+| F08/math-generated-short-transform | — | `Consumes one caller-supplied F08.2 fold; no source, callback, AU, or programme clock is assigned.` |
+| F08/math-generated-fbw-transform | — | `The block route selector is a caller-provided strict flag; this slice assigns no F07/sample/callback/AU clock.` |
 | F09/exponent-refresh-state-transition | — | `Consumes one caller-provided [begin, end) row window and owns no callback, source, AU, or lifecycle clock.` |
 | F09/raw-exponent-from-power-bits | — | `Consumes one caller-supplied U32 word, bias, and cap; owns no state or clock.` |
 | F09/coefficient-pair-to-power-row | — | `Consumes caller-owned coefficient rows synchronously; owns no callback, source, dispatch, AU, or persistent state clock.` |

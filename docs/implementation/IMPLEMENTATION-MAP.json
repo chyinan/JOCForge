@@ -8731,6 +8731,194 @@
             "Whole F07/F08/F09/F10/F11/F12 source-to-AU transaction, native equivalence, encoded audio/render, playback, listening, and W04 product acceptance."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "math-generated-short-transform",
+          "mapping_status": "MATERIALIZED_DIRECT_F08_3_4_6_SHORT_BRANCH__LONG_LFE_AND_F07_FLAG_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_MATH_GENERATED_SHORT_PRE_FFT64_POST__WHOLE_F08_OPEN",
+          "scope": "Consumes the paired F08.2 fold for one caller-supplied short FBW block and runs both banks through the two-short pre-rotation, stage-normalized FFT64, and interleaved short post-rotation. It returns primary and companion 256-word spectrum values. The caller must select this branch only when its strict F08 short flag is 1; this leaf does not produce or validate that flag. Long post-rotation, F08 LFE, F07 source/flag production, F09 exponents, frame/parent transaction, source clocks, and whole F08 remain outside this slice.",
+          "owner": "analysis",
+          "implementation_files": [
+            "crates/jocforge-domain/src/transform/math_generated_parameters.rs",
+            "crates/jocforge-domain/src/transform/window_fold.rs",
+            "crates/jocforge-domain/src/transform/short_transform.rs",
+            "crates/jocforge-domain/src/transform/staged_fft.rs",
+            "crates/jocforge-domain/src/transform/mod.rs",
+            "crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json"
+          ],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Consumes one caller-supplied F08.2 fold; no source, callback, AU, or programme clock is assigned."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_MATH_GENERATED_V1_F08_SHORT_TRANSFORM_PROVIDER",
+            "provider_files": [
+              "specs/08-transforms.md",
+              "specs/08-nonzero-transform-composition.md",
+              "parameters/ordinary-transform-math-v1.json",
+              "crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json"
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "approved_model_spec_sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e",
+            "math_generated_provider_sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1",
+            "validation_boundary": "Uses the separately validated math-generated-v1 provider; this is not historical D01-D04 table identity or native equivalence."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/short_transform.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_F08_NONZERO_SHORT_BRANCH_SPECTRUM_TRACES",
+            "authoritative_vectors": [
+              "test-vectors/F08-NONZERO-COMPOSITION-INPUT-VECTORS.json",
+              "test-vectors/F08-NONZERO-COMPOSITION-RESULT.json",
+              "crates/jocforge-domain/tests/fixtures/window_fold/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json"
+            ],
+            "case_pointers": [
+              "The second FBW recipe is selected by short_flags_i1[1]=1 after the first long block's verified F08.2 primary/companion history transitions.",
+              "Primary and companion short spectrum hashes and nonzero counts match the `fbw-1-short` local result trace.",
+              "The result contains exposed trace hashes/previews rather than full expected spectrum words; this is not a full transform oracle replay or whole-chain acceptance."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/window_fold/INPUT-ONLY-VECTORS.json",
+              "bytes": 3771,
+              "sha256": "eb825796adc60933b1c717122f991a9a0ced95ab0cd89d29ef4f6e1e28b6866c"
+            },
+            "additional_fixtures": [
+              {
+                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
+                "bytes": 19159,
+                "sha256": "a77806e29ea7e0cb361353a2a6313826e4cdcc2b3f36cebce6fc0b434cdcb906"
+              }
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "native_status": {
+            "provider_profile": "math-generated-v1",
+            "short_pre_rotation_fft64_interleaved_post": "LOCALLY_VERIFIED_FOR_SYNTHETIC_TRACE",
+            "strict_short_flag_producer": "NOT_IMPLEMENTED",
+            "long_route_and_lfe_transform": "NOT_IMPLEMENTED_BY_THIS_SLICE",
+            "native_equivalence": "NOT_RUN",
+            "whole_f08": "NOT_IMPLEMENTED",
+            "product_render_and_listening": "NOT_RUN"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "F08_NUMERIC_FAILURE",
+              "category": "short pre/FFT64/post R32 operation",
+              "trigger": "A separately rounded transform operation produces a nonfinite result.",
+              "programme_state_after": "No primary/companion spectra are returned; the supplied fold/history value remains unchanged.",
+              "caller_action": "Fail-stop the caller under I03; do not continue with a partial spectrum."
+            }
+          ],
+          "not_run": [
+            "No strict short-flag source/consumer selection, F07 output producer, or source-generation join is implemented.",
+            "No F08 long transform, LFE transform, F09 exponent consumer, complete F12 frame/parent commit, or fresh 4249-source/4247-AU replay is included.",
+            "No native equivalence, encoded audio, decoder/render/player, listening, or W04 product acceptance was performed."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "math-generated-fbw-transform",
+          "mapping_status": "MATERIALIZED_DIRECT_F08_FBW_LONG_SHORT_TRANSFORM__LFE_AND_UPSTREAM_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_MATH_GENERATED_FBW_LONG_SHORT_SPECTRA__LFE_PARENT_OPEN",
+          "scope": "Consumes one validated F08.2 two-bank fold and a strict signed-I32 short flag of 0 or 1. Flag 0 runs the math-generated long pre-rotation, normalized FFT128, and long post-rotation; flag 1 runs the two-short pre-rotation, normalized FFT64s, and interleaved short post-rotation. It returns primary/companion 256-word spectra without mutating fold histories. It does not produce the short flag, consume F07 source clocks, implement the F08 LFE route, or install a frame/parent state.",
+          "owner": "analysis",
+          "implementation_files": [
+            "crates/jocforge-domain/src/transform/fbw_transform.rs",
+            "crates/jocforge-domain/src/transform/staged_fft.rs",
+            "crates/jocforge-domain/src/transform/short_transform.rs",
+            "crates/jocforge-domain/src/transform/math_generated_parameters.rs",
+            "crates/jocforge-domain/src/transform/window_fold.rs",
+            "crates/jocforge-domain/src/transform/mod.rs",
+            "crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json"
+          ],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The block route selector is a caller-provided strict flag; this slice assigns no F07/sample/callback/AU clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_MATH_GENERATED_V1_F08_FBW_TRANSFORM_PROVIDER",
+            "provider_files": [
+              "specs/08-transforms.md",
+              "specs/08-nonzero-transform-composition.md",
+              "parameters/ordinary-transform-math-v1.json",
+              "crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json"
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "approved_model_spec_sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e",
+            "math_generated_provider_sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1",
+            "validation_boundary": "Uses only the selected math-generated-v1 tables. The historical D01-D04 identity is neither substituted nor claimed."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/fbw_transform.rs",
+            "crates/jocforge-domain/tests/window_fold.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_F08_MATH_GENERATED_FBW_LONG_SHORT_LONG_TRACE",
+            "authoritative_vectors": [
+              "test-vectors/F08-NONZERO-COMPOSITION-INPUT-VECTORS.json",
+              "test-vectors/F08-NONZERO-COMPOSITION-RESULT.json",
+              "crates/jocforge-domain/tests/fixtures/window_fold/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json"
+            ],
+            "case_pointers": [
+              "The three synthetic FBW blocks run long/short/long from continuous primary/companion fold histories and compare both 256-word spectrum hashes to the `fbw-0-long`, `fbw-1-short`, and `fbw-2-long` traces.",
+              "The test validates the shared F08.2 folds separately and does not claim complete expected output words for every transform stage.",
+              "F08 LFE, F07 production input/flags, source clocks, F09 exponent consumption, and complete parent/source-to-AU composition are outside this slice."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/window_fold/INPUT-ONLY-VECTORS.json",
+              "bytes": 3771,
+              "sha256": "eb825796adc60933b1c717122f991a9a0ced95ab0cd89d29ef4f6e1e28b6866c"
+            },
+            "additional_fixtures": [
+              {
+                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
+                "bytes": 19159,
+                "sha256": "a77806e29ea7e0cb361353a2a6313826e4cdcc2b3f36cebce6fc0b434cdcb906"
+              }
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "native_status": {
+            "provider_profile": "math-generated-v1",
+            "strict_short_flag_validation": "LOCALLY_VERIFIED_FOR_I32_0_OR_1",
+            "fbw_long_short_spectral_route": "LOCALLY_VERIFIED_FOR_SYNTHETIC_TRACE_HASHES",
+            "lfe_transform": "NOT_IMPLEMENTED_BY_THIS_SLICE",
+            "f07_flag_and_source_producer": "NOT_IMPLEMENTED",
+            "native_equivalence": "NOT_RUN",
+            "whole_f08": "NOT_IMPLEMENTED",
+            "product_render_and_listening": "NOT_RUN"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "F08_INPUT_ERROR",
+              "category": "strict FBW short flag",
+              "trigger": "The supplied I32 selector is not 0 (long) or 1 (short).",
+              "programme_state_after": "No primary/companion spectrum is returned; the supplied fold value is unchanged.",
+              "caller_action": "Reject before transform execution; do not coerce or use a default branch."
+            },
+            {
+              "error_code": "F08_NUMERIC_FAILURE",
+              "category": "long/short R32 transform operation",
+              "trigger": "A separately rounded pre/FFT/post operation produces a nonfinite result.",
+              "programme_state_after": "No primary/companion spectrum is returned; the supplied fold value is unchanged.",
+              "caller_action": "Fail-stop the caller under I03; do not continue with a partial spectrum."
+            }
+          ],
+          "not_run": [
+            "The caller's strict short flag producer, six-lane F07 history/transient wiring, and native source-generation join remain open.",
+            "The F08 LFE transform route, F09 exponent consumer, F12 bitstream/frame composition, and parent success/fatal/reset/EOF transaction remain open.",
+            "Native equivalence, real ADM, encoded output, decode/render, listening, and W04 product acceptance were not run."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
