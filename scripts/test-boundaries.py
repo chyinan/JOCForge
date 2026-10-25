@@ -994,6 +994,18 @@ def main():
   ('f06nd-scheduler-output-comparison-removed',lambda r:replace_once(r/'crates/jocforge-domain/tests/none_drc_scheduler.rs','assert_output_matches(&case["expected_output"], &actual_output, index);','output_comparison_removed(&case["expected_output"], &actual_output, index);'))
  ]
  cases += [
+  ('f06nd-frame-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F06ND')['direct_slices'].remove(next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06ND')['direct_slices']if s['slice_id']=='selected-none-drc-statistics-to-scheduler-frame-composition')))),
+  ('f06nd-frame-generation-check-removed',lambda r:replace_once(r/'crates/jocforge-domain/src/drc/none_drc_frame.rs','if scheduler_state.generation() != input.source_generation.value() {','if false {')),
+  ('f06nd-frame-generation-error-removed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06ND')['direct_slices']if s['slice_id']=='selected-none-drc-statistics-to-scheduler-frame-composition')['error_outcomes'].pop())),
+  ('f06nd-frame-stats-peak-bypassed',lambda r:replace_once(r/'crates/jocforge-domain/src/drc/none_drc_frame.rs','peak_inputs_six: finite_block(statistics.output.peak_inputs_six)','peak_inputs_six: finite_block(statistics.output.rms_levels_six)'))
+ ]
+ cases += [
+  ('f06nd-contract-clarification-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F06ND')['direct_slices'].remove(next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06ND')['direct_slices']if s['slice_id']=='washed-none-drc-source-fifo-and-error-contract-clarification')))),
+  ('f06nd-fifo-schema-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06ND')['direct_slices']if s['slice_id']=='washed-none-drc-source-fifo-and-error-contract-clarification')['native_status'].update(record_byte_schema='CLOSED'))),
+  ('f06nd-native-parity-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06ND')['direct_slices']if s['slice_id']=='washed-none-drc-source-fifo-and-error-contract-clarification')['native_status'].update(native_run='PASS'))),
+  ('f06nd-clarification-supplement-identity-drift',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06ND')['direct_slices']if s['slice_id']=='washed-none-drc-source-fifo-and-error-contract-clarification')['parameters'].update(authorization_manifest_sha256='0'*64)))
+ ]
+ cases += [
   ('f04g-control52-static-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices'].remove(next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices']if s['slice_id']=='washed-control52-static-row-and-owner-copy-lineage')))),
   ('f04g-control52-gain-producer-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices']if s['slice_id']=='washed-control52-static-row-and-owner-copy-lineage')['native_status'].update(f04g_gain11_producer='CLOSED'))),
   ('f04g-control52-f04a-consumer-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices']if s['slice_id']=='washed-control52-static-row-and-owner-copy-lineage')['native_status'].update(f04a_immediate_consumer='CLOSED'))),
@@ -1025,6 +1037,13 @@ def main():
   ('f06of-converter-producer-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06OF')['direct_slices']if s['slice_id']=='washed-adm-converter-static-inventory-hold')['native_status'].update(source_row_writer='CLOSED'))),
   ('f06of-label-source-writer-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06OF')['direct_slices']if s['slice_id']=='washed-adm-bwf-label-source-row-gap')['native_status'].update(source_row_writer='CLOSED'))),
   ('f06of-measurement-generation-as-joc',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06OF')['direct_slices']if s['slice_id']=='washed-native-frontend-lineage-source-owner-hold')['native_status'].update(selected_source_or_frame_generation='JOC_GENERATION')))
+ ]
+ cases += [
+  ('f04g-raw-width-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices'].remove(next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices']if s['slice_id']=='washed-raw-width-lifecycle-and-membership-status')))),
+  ('f04g-raw-width-matrix-equivalence-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices']if s['slice_id']=='washed-raw-width-lifecycle-and-membership-status')['native_status'].update(later_matrix_equals_clean_f04g7_front_compensation='EQUIVALENT'))),
+  ('f04g-raw-width-complete-output-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices']if s['slice_id']=='washed-raw-width-lifecycle-and-membership-status')['native_status'].update(candidate_complete_clean_f04g_gain11='ESTABLISHED'))),
+  ('f04g-raw-width-f04a-membership-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices']if s['slice_id']=='washed-raw-width-lifecycle-and-membership-status')['native_status'].update(f04a_membership_equivalence='JOINED'))),
+  ('f04g-raw-width-supplement-identity-drift',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices']if s['slice_id']=='washed-raw-width-lifecycle-and-membership-status')['vectors'].update(source_supplement_manifest_sha256='0'*64)))
  ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]

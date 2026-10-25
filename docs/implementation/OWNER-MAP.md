@@ -146,6 +146,7 @@
 | F04G/selected-p11-prefix-membership-producer | F04G | `spatial_audio` |
 | F04G/washed-control52-static-row-and-owner-copy-lineage | F04G | `spatial_audio` |
 | F04G/washed-width11-spatial-vector-same-invocation-reader | F04G | `spatial_audio` |
+| F04G/washed-raw-width-lifecycle-and-membership-status | F04G | `spatial_audio` |
 | F04RB/actual-receiver-to-joc-qmf-projection | F04RB | `spatial_audio` |
 | F05/selected-coefficient-fit-retry-and-payload | F05 | `joc` |
 | F05Q/quantized-huffman-body-writer | F05Q | `joc` |
@@ -183,6 +184,8 @@
 | F06ND/selected-none-drc-dialnorm-offset | F06ND | `drc` |
 | F06ND/selected-none-drc-statistics-frame-transition | F06ND | `drc` |
 | F06ND/selected-none-drc-scheduler-frame-transition | F06ND | `drc` |
+| F06ND/selected-none-drc-statistics-to-scheduler-frame-composition | F06ND | `drc` |
+| F06ND/washed-none-drc-source-fifo-and-error-contract-clarification | F06ND | `drc` |
 | F07/input-history-block-transition | F07 | `analysis` |
 | F07/structure-refresh-flag-projection | F07 | `analysis` |
 | F07/selected-dither-flag-plan | F07 | `analysis` |
@@ -223,5 +226,6 @@
 | F13C/controlled-id14-coefficient-to-payload-writer | F13C | `metadata` |
 | F13C/washed-sequence-base-static-producer-constructor-cold-reset-status | F13C | `metadata` |
 | F13C/washed-run011-measurement-to-joc-identity-boundary | F13C | `metadata` |
+| F13C/washed-receipt-capture-output-safety-hold | F13C | `metadata` |
 | F13D2/id2-profile-header-and-body-wire | F13D2 | `metadata` |
 | F14K/public-keyless-integrity-owner | F14K | `integrity` |

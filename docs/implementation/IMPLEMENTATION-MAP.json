@@ -2774,6 +2774,66 @@
             "Native run and PCM rehash remain NOT_RUN"
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-raw-width-lifecycle-and-membership-status",
+          "mapping_status": "WASHED_STATIC_RAW_WIDTH_MATRIX_USE__FINAL_F04G_AND_F04A_OPEN",
+          "implementation_status": "WASHED_RAW_WIDTH_LATER_USE_CLOSED__FORMULA_MEMBERSHIP_AND_RUNTIME_JOIN_OPEN",
+          "scope": "Wash closes a static later consumer for the typed raw-width scalar: it is staged into geometry, copied for selected rows, and read by a pairwise distance/cosine matrix. The matrix formula is not the approved clean F04G.7 front-gain formula. Input-only clean recalculation also shows that Q15-colliding raw widths can produce different clean output, and the low-width boundary rejects clean while the static helper preserves prior data. F04A clean membership and writer identity remain unjoined; no native/runtime output is claimed.",
+          "owner": "spatial_audio",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Static raw-width field lineage and consumer order only; runtime selected-row/cache membership and generation are unobserved."
+            ]
+          },
+          "parameters": {
+            "kind": "NONE_WASHED_RAW_WIDTH_AND_MEMBERSHIP_BOUNDARY",
+            "provider_files": [],
+            "validation_boundary": "Input-only Wash recalculation distinguishes clean formula behavior from native static matrix use; it is not a native or implementation output comparison."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_WASH_RAW_WIDTH_COLLISION_AND_LOW_WIDTH_BOUNDARIES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04G-RAW-WIDTH-LIFECYCLE-AND-MEMBERSHIP-STATUS-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04G-RAW-WIDTH-LIFECYCLE-AND-MEMBERSHIP-STATUS-V2/EVIDENCE.json"
+            ],
+            "case_pointers": [
+              "Raw width feeds a later selected-row pairwise distance/cosine matrix but does not reproduce clean F04G.7 sin-squared/front-gain compensation.",
+              "Two clean-only raw widths collide after Q15/mapped-width quantization while clean final outputs differ; this does not compare native runtime outputs.",
+              "A low mapped-width case is rejected by clean F04G while the static helper preserves the prior point vector; live branch remains unobserved.",
+              "Native staged-row flag/matrix-sum membership is not joined to clean audio_diffuse/lane predicates; writer/cache/generation remain open."
+            ],
+            "source_supplement_manifest_sha256": "ff08fef02649246ca7e3ec4fe319298feca4d500c36cdb3ecc16b9503b122462",
+            "source_package_manifests": [
+              "af488ce34f52645108d34cac64239768e3f25676450c82ca1f05071733113ca3",
+              "a877bd76ac97438026d76782f76522e6b3ef50da4c75cf2381f4ec53c5099c2d",
+              "3a08d70f704a1014e14f1d7bfa538969697db7f638f7deb735341d0f89b54ed3"
+            ],
+            "source_payload_hashes_and_sizes": "PASS",
+            "input_only_recalculation": "PASS_FOR_Q15_COLLISIONS_AND_LOW_WIDTH_BOUNDARY"
+          },
+          "native_status": {
+            "raw_width_source_to_later_pairwise_matrix": "STATIC_CLOSED",
+            "later_matrix_equals_clean_f04g7_front_compensation": "MISMATCH",
+            "candidate_complete_clean_f04g_gain11": "NOT_ESTABLISHED",
+            "native_f04g_values": "NOT_CAPTURED",
+            "f04a_membership_equivalence": "NOT_JOINED",
+            "f04a_writer_identity": "NOT_PROVEN",
+            "same_generation_receipt": "NOT_CAPTURED",
+            "native_run": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Complete clean F04G.7 formula output and native equivalence",
+            "Clean F04A membership and writer identity",
+            "Selected live branch, runtime cache identity, native values and same-generation receipt",
+            "Native run, PCM and protected output remain NOT_RUN"
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -6975,8 +7035,157 @@
             "F06 meter finalization and meter_terminal_sha256 remain HOLD; real ADM, native DLL, product and W04 acceptance remain NOT_RUN."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "selected-none-drc-statistics-to-scheduler-frame-composition",
+          "mapping_status": "MATERIALIZED_SELECTED_F06ND_SAME_FRAME_COMPOSITION__PARENT_COMMIT_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_8_INPUT_FRAME_STATS_TO_SCHEDULER_WIRING__PARENT_COMMIT_OPEN",
+          "scope": "One pure F06ND frame call accepts a typed CodecSourceIndex, requires it to equal the scheduler state's U64 generation, runs the selected statistics transition first, passes that call's six RMS/peak outputs and the same dialnorm into the scheduler, and returns both outputs and both next states only when both stages succeed. It does not bind the caller-supplied source to an upstream owner receipt, commit either state, run the metadata FIFO, or connect application::encode.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/lib.rs",
+            "crates/jocforge-domain/src/drc/mod.rs",
+            "crates/jocforge-domain/src/drc/none_drc_frame.rs",
+            "crates/jocforge-domain/src/drc/none_drc_statistics.rs",
+            "crates/jocforge-domain/src/drc/none_drc_scheduler.rs",
+            "crates/jocforge-domain/src/drc/none_drc_normalizer.rs",
+            "crates/jocforge-domain/src/drc/none_drc_dialnorm_offset.rs",
+            "crates/jocforge-domain/src/drc/none_drc_quantizer.rs",
+            "crates/jocforge-domain/src/numeric/finite_f32.rs",
+            "crates/jocforge-domain/src/timeline/index.rs"
+          ],
+          "clock": {
+            "domains": [
+              "CodecSourceIndex",
+              "NoneDrcSchedulerState.generation"
+            ],
+            "covered_clauses": [
+              "Statistics and scheduler consume one common invocation input and dialnorm; the scheduler generation must equal the supplied CodecSourceIndex value before either stage runs.",
+              "The wrapper returns a paired staged result and owns no commit, abort/fatal authority, or cross-programme generation."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F06ND_FUNCTIONAL_AND_MATH_PROVIDER_WORDS",
+            "provider_files": [
+              "crates/jocforge-domain/tests/fixtures/none_drc/authorized_parameters.json",
+              "crates/jocforge-domain/tests/fixtures/none_drc/authorized_math_parameters.json"
+            ],
+            "functional_provider_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
+            "math_provider_sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166",
+            "authorization_package_id": "F06ND-PUBLIC-DISTRIBUTION-AUTHORIZATION-V2",
+            "authorization_manifest_sha256": "21b3854b45fc0d85738db61dafe106e3f9c86a470534df376b1bfb92285fc885",
+            "authorization_scope_sha256": "7b9c5ec09772dc0b04ce125fdbc8042f9747fdb081c94b3af7926a06afe4ae80",
+            "validation_boundary": "The stage-level source fixtures and V2 authorization identities are shared; this wrapper adds no provider, fallback or mutable global."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/none_drc_frame.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_SAME_FRAME_COMPOSITION_OVER_STATISTICS_INPUT_RECIPES",
+            "authoritative_vectors": [
+              "test-vectors/NONE-DRC-AUTHORIZED-VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "Reconstructs all eight primary/secondary input frames and verifies the 16 per-frame input hashes.",
+              "Compares all statistics outputs and state to the statistics sequence expected values after recomputation.",
+                "Passes the same typed source index and dialnorm through the one statistics-then-scheduler call; scheduler state generation is checked against that source index.",
+              "Recomputes the scheduler independently from the wrapper's actual statistics output and the same pre-frame scheduler state; scheduler expected outputs are never inputs.",
+              "This verifies stage wiring, not a new Wash whole-frame expected-output vector or production source/AU connection."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/none_drc/authorized_verification.json",
+              "bytes": 533786,
+              "sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_spec_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+            "source_parameter_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
+            "source_math_parameter_sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166",
+            "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "DRC_INPUT_ERROR",
+              "category": "source/scheduler generation join",
+              "trigger": "The caller-supplied CodecSourceIndex does not equal the scheduler state's U64 generation.",
+              "programme_state_after": "No stage runs and no output or next state is returned; both before states remain unchanged.",
+              "caller_action": "Reject the frame transition."
+            }
+          ],
+          "not_run": [
+            "Underlying first-failure precedence and F06ND outcome mapping remain UNBOUND and are propagated as typed stage errors.",
+            "CodecSourceIndex is caller-supplied; upstream primary/secondary source identity is not independently receipted by this wrapper.",
+            "The statistics state is Copy and the scheduler state is Copy; this wrapper returns a paired next state but does not enforce a unique parent commit lineage.",
+            "Parent source transaction, programme reset/EOF, metadata override FIFO and F12 writer remain deferred.",
+            "F06 meter finalization and meter_terminal_sha256 remain HOLD; W04/product acceptance remains NOT_RUN."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-none-drc-source-fifo-and-error-contract-clarification",
+          "mapping_status": "WASHED_SPEC_CONTRACT_CLARIFICATION__FIFO_RECORD_SCHEMA_AND_EDGE_CODES_OPEN",
+          "implementation_status": "WASHED_SOURCE_GENERATION_FIFO_SHIFT_AND_PREFLIGHT_ORDER_CLOSED__RECORD_AND_EDGE_OUTCOMES_OPEN",
+          "scope": "The Wash addendum closes the clean FIFO cold metadata (four zero logical records, delay, append slot and frame count), per-source shift/zero-fill/read/consume/reset/count transition, category5 non-write policy, shared source-generation rule, statistics-before-scheduler order, scheduler generation advance, F06WH single source commit, and F06ND.7 preflight order/error classes. It explicitly leaves logical-record fields/serialization/nonzero payload and several edge error classifications unbound; this slice implements none of those behaviors.",
+          "owner": "drc",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "CodecSourceIndex",
+              "NoneDrcSchedulerState.generation"
+            ],
+            "covered_clauses": [
+              "Primary/secondary/short flags/programme dialnorm share one contiguous source generation g.",
+              "Statistics runs before scheduler in that source stage; F06WH owns the one source commit.",
+              "The metadata FIFO frame count must align to source_count at EOF; no implementation or owner receipt is present."
+            ]
+          },
+          "parameters": {
+            "kind": "NONE_WASHED_F06ND_INTERFACE_CONTRACT_CLARIFICATION",
+            "provider_files": [],
+            "authorization_package_id": "F06ND-SPEC-CONTRACT-CLARIFICATIONS-V1",
+            "authorization_manifest_sha256": "e668f379594ad7fafa91f34104dee13847d507befdf143cb56d1572a76b6d8f7",
+            "validation_boundary": "References the sealed spec/state/vector identities and clarified clean interface; it does not extend clean rules to native DEE parity or invent a FIFO record schema."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_WASHED_F06ND_INTERFACE_CLARIFICATION",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-SPEC-CONTRACT-CLARIFICATIONS-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-SPEC-CONTRACT-CLARIFICATIONS-V1/STATUS.json"
+            ],
+            "case_pointers": [
+              "Cold FIFO and transition order are specified, but byte-level logical-record schema and nonzero category5 payload are UNBOUND.",
+              "Stats/scheduler same-source composition and source-boundary commit are specified; the typed generation token name remains implementation-defined.",
+              "F06ND.7 check order and declared error classes are specified; simultaneous-invalid result and two edge classifications remain unbound.",
+              "Scheduler U64 overflow is clean NUMERIC_FAILURE; native wrap parity is not claimed."
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_spec_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+            "whole_state_schema_sha256": "64374f686377d94ab8a3843d09d26329788c7afd48c7683459596b119f68e4be",
+            "cold_state_vector_sha256": "a2283d3e1dd06f32d40e360ee48018501d0b88b2a6dbd0ad8234d9e82d14b74a",
+            "source_supplement_manifest_sha256": "e668f379594ad7fafa91f34104dee13847d507befdf143cb56d1572a76b6d8f7"
+          },
+          "native_status": {
+            "clean_fifo_transition": "SPEC_CLOSED_RECORD_SCHEMA_UNBOUND",
+            "same_source_stats_scheduler_order": "SPEC_CLOSED",
+            "source_commit_authority": "F06WH_SINGLE_SOURCE_COMMIT_SPEC_CLOSED",
+            "record_byte_schema": "UNBOUND",
+            "nonzero_category5_payload": "UNBOUND",
+            "u64_native_overflow_parity": "UNBOUND",
+            "simultaneous_invalid_first_returned_error": "UNBOUND",
+            "raw_source_nan_inf_outcome": "UNBOUND",
+            "parameter_identity_mismatch_outcome": "UNBOUND",
+            "native_run": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "No metadata override FIFO implementation; logical-record schema/serialization/payload remain unbound.",
+            "No category1 authored-control producer in the selected profile.",
+            "No outer F06WH single source transaction/commit implementation.",
+            "No native DEE parity claim or receipt/digest finalization."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
-
       ]
     },
     {
@@ -9920,6 +10129,58 @@
             "No JOC input_profile key1 pair or selected profile type receipt",
             "No JOC base value observation or same-row constructor-to-parent generation join",
             "A future run requires a separate Wash GO"
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-receipt-capture-output-safety-hold",
+          "mapping_status": "WASHED_RUN_BOUNDARY_HOLD__NO_SAFE_NATIVE_RECEIPT_CAPTURE",
+          "implementation_status": "BLOCKED_NO_VERIFIED_PRE_SERIALIZATION_NO_OUTPUT_BOUNDARY",
+          "scope": "The existing run_011 observer is measurement-only and does not stop after the JOC parent writer; its runner creates output paths and a temporary media artifact existed during capture. run_012 observed measurement getters, lacked a pre-serialization stop hook, exited naturally and created temporary output. This existing harness cannot safely capture the requested native parent receipt under a no-output boundary.",
+          "owner": "joc",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Measurement callback and run clocks are not a JOC parent-writer/source-generation receipt."
+            ]
+          },
+          "parameters": {
+            "kind": "NONE_WASHED_RECEIPT_CAPTURE_SAFETY_STATUS",
+            "provider_files": [],
+            "validation_boundary": "Existing capture harness is explicitly not safe for the requested receipt; no native run was authorized or started."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_WASHED_RUN_OUTPUT_BOUNDARY_STATUS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-RECEIPT-CAPTURE-OUTPUT-SAFETY-HOLD-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-RECEIPT-CAPTURE-OUTPUT-SAFETY-HOLD-V1/STATUS.json"
+            ],
+            "case_pointers": [
+              "run_011 is measurement-only; no JOC parent writer stop and output creation is not suppressed.",
+              "run_012 lacks a pre-serialize stop hook and exits naturally with temporary output.",
+              "A future receipt requires a pre-armed stop before file creation/protected serialization while preserving the native writer path; a stub is not native evidence."
+            ],
+            "source_supplement_manifest_sha256": "f9dd90e744ea7f72149fa28018d7865cf90d98d3f52f708250fa316b6c529f2c",
+            "source_package_manifest_sha256": "78c9c2ba03fe436ea38f29cd655cad14b033dd6d7b5ae8c1e58801adf3af49b8",
+            "source_payloads_verified": 7,
+            "source_payload_hashes_and_sizes": "PASS"
+          },
+          "native_status": {
+            "run_011_parent_writer_receipt": "NOT_OBSERVED",
+            "run_012_pre_serialize_hook": "NOT_AVAILABLE",
+            "existing_harness_safe_for_receipt": false,
+            "output_free_boundary": "NOT_ESTABLISHED",
+            "native_same_row_generation_join": "UNBOUND",
+            "new_native_run": "NOT_AUTHORIZED"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "No existing job/harness rerun for this receipt",
+            "No native run GO; a new run requires an independently verified no-output stop and separate Wash GO",
+            "Native same-row/generation join remains UNBOUND"
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
