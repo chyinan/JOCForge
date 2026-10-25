@@ -9,6 +9,7 @@ F05O_BODY_ASSEMBLER_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2
 INTEGRITY_ROOT_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\INTEGRITY-OWNER-ROOT-V1')
 PACKAGE=PKG
 F06ND_PUBLIC_SCOPE_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\F06ND-PUBLIC-DISTRIBUTION-AUTHORIZATION-V2')
+F04G_CONTROL52_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\F04G-CONTROL52-DISPATCH-STATIC-LINEAGE-V2')
 CURRENT_FEATURES_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\CURRENT-FEATURES-PRODUCER-V1')
 CURRENT_FEATURES_INTEGRATION_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\CURRENT-FEATURES-INTEGRATION-CONTRACT-V1')
 POSTWINDOW_FANOUT_SUPPLEMENT=pathlib.Path(r'C:\Users\chyinan\Documents\Codex\2026-10-12\files-pasted-by-the-user-agent\outputs\IMPLEMENTER_SUPPLEMENTS\POSTWINDOW-FANOUT-CONTRACT-V1')
@@ -338,6 +339,18 @@ def check_f04_parameter_providers(root,d):
  ck(p['verification']=={'integration_test_count':7,'module_unit_test_count':11,'window_provider_count':1,'component_provider_count':1,'DSP':'NOT_IMPLEMENTED','provider_validation_is_DSP_PASS':False},'P1.4-D1 exact verification scope')
  p13e=d['phase_one']['P1.3-E'];spatial=next(x for x in d['programme_roots']if x['root_id']=='spatial_audio')
  ck(p13e['status']=='BLOCKED_ON_F04_DSP_RENDER_AND_PARENT'and p13e['implementation_status']=='BLOCKED_ON_F04_DSP_RENDER_AND_PARENT'and spatial['readiness']['implementation_status']=='BLOCKED_ON_F04_DSP_RENDER_PARENT'and all(word in ' '.join(p13e['blockers']+spatial['readiness']['blockers'])for word in('remaining','DSP','render','parent')),'P1.4-D1/D2 do not advance P1.3-E integration readiness')
+
+def check_f04g_control52_static_lineage(root,d):
+ entry=next(e for e in d['functional_entries']if e['functional_id']=='F04G');direct=entry.get('direct_slices',[]);s=next((x for x in direct if x['slice_id']=='washed-control52-static-row-and-owner-copy-lineage'),None);ck(s is not None and entry['implementation_status']=='DEFERRED_DETAILED_MAPPING'and len(direct)==2,'F04G retains one existing producer slice and one washed static Control52 boundary')
+ if s is None:return
+ ck(s['mapping_status']=='WASHED_STATIC_LINEAGE_ONLY__F04G_AND_F04A_PRODUCTION_OPEN'and s['implementation_status']=='WASHED_HIGH_BIT_SELECTOR_ROW_AND_SAME_OWNER_COPY_STATIC_CLOSED__GAIN_PRODUCER_F04A_AND_LIVE_BRANCH_OPEN'and s['delivery_scope']=='USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL','F04G conditional Control52 static status and scope')
+ ck(s['owner']=='spatial_audio'and s['implementation_files']==[]and s['test_modules']==[]and s['clock']['domains']==[]and s['parameters']['provider_files']==[],'F04G static evidence is not promoted to code or runtime clock')
+ manifest=F04G_CONTROL52_SUPPLEMENT/'MANIFEST.json';m=json.loads(manifest.read_text(encoding='utf-8'));ck(hashlib.sha256(manifest.read_bytes()).hexdigest()==s['vectors']['source_supplement_manifest_sha256']=='e45b59e7c5dcf92f270b8f75b2d9f2705ca97e5e72d52ca98d25478c67e8b2ea'and m['source_package_manifest_sha256']==s['vectors']['source_package_manifest_sha256']=='6e5f30ebb76f74c91845a1370bd83c52a22a2680f253bb2abb04e5f93a7a5f06'and len(m['files'])==3,'F04G V2 source and supplement manifest identities')
+ ck(all((F04G_CONTROL52_SUPPLEMENT/x['path']).is_file()and (F04G_CONTROL52_SUPPLEMENT/x['path']).stat().st_size==x['bytes']and hashlib.sha256((F04G_CONTROL52_SUPPLEMENT/x['path']).read_bytes()).hexdigest()==x['sha256']for x in m['files']),'F04G V2 payload sizes/hashes')
+ evidence=json.loads((F04G_CONTROL52_SUPPLEMENT/'EVIDENCE.json').read_text(encoding='utf-8'));facts=evidence['static_facts'];ck(evidence['status']=='CONTROL52_TYPED_SOURCE_AND_SAME_OWNER_COPY_STATIC_CLOSED_F04G_PRODUCER_OPEN'and facts['input_record_bytes']==88 and facts['output_row_bytes']==52 and facts['high_bit_selector_branch']=='typed source to Control52-compatible row mapping'and facts['copy_extent']=='row_count * 52 bytes'and facts['downstream_stride']==52 and facts['runtime_copy_or_reuse']=='NOT_OBSERVED'and facts['fixed_11_word_gain_buffer']=='NOT_ESTABLISHED','F04G conditional row/owner evidence and open live/producer scope')
+ native=s['native_status'];ck(native=={'control52_typed_source_and_same_owner_copy':'STATIC_CLOSED','f04g_gain11_producer':'NOT_CLOSED','f04a_immediate_consumer':'NOT_CLOSED','f04fm_to_selector':'NOT_JOINED','runtime_cache_copy_or_reuse':'NOT_OBSERVED','same_generation_receipt':'NOT_CAPTURED','native_run':'NOT_RUN'},'F04G map preserves producer/consumer/generation gaps')
+ cases=' '.join(s['vectors']['case_pointers']);ck('high-bit selector branch' in cases and 'low-bit branch' in cases and 'nonzero flag' in cases and 'zero flag' in cases and 'no clean F04FM mode/lane join' in cases and 'NOT_CLOSED' in cases,'F04G row compatibility remains conditional on selector branch')
+ ck(not any(x in json.dumps(s) for x in ('RVA','raw pointer','private key bytes')),'F04G public map contains no raw reverse identifiers or secret material')
 
 def check_f04_remaining_provider_mapping(root,d):
  p=d['phase_one']['P1.4-D2']
@@ -2681,7 +2694,7 @@ def check_primary_installed48_slice(root,d):
  ck({path.name for path in clarification.iterdir()if path.is_file()}==set(expected_files),'selected installed48 clarification exact file set; reuse existing package manifest')
  for name,(length,digest) in expected_files.items():
   content=(clarification/name).read_bytes();ck(len(content)==length and hashlib.sha256(content).hexdigest()==digest,'selected installed48 clarification payload identity '+name)
-  entries={entry['functional_id']:entry for entry in d['functional_entries']};f03=entries['F03W']['direct_slices'];f04=entries['F04G']['direct_slices'];ck(len(f03)==1 and f03[0]['slice_id']=='selected-primary-installed48-source-map-and-activity'and f03[0]['implementation_status']=='LOCALLY_VERIFIED_STATIC_ROUTE_AND_REAL_ADM_G0_G2_F03R_VALUE_PROPOSALS__PACKET_AND_ROOT_COMMIT_DEFERRED','selected installed48 source/activity direct-slice mapping');ck(len(f04)==1 and f04[0]['slice_id']=='selected-p11-prefix-membership-producer'and f04[0]['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_AND_SEALED_SELECTED_MEMBERSHIP_VECTORS','selected P11 membership direct-slice mapping')
+  entries={entry['functional_id']:entry for entry in d['functional_entries']};f03=entries['F03W']['direct_slices'];f04=entries['F04G']['direct_slices'];ck(len(f03)==1 and f03[0]['slice_id']=='selected-primary-installed48-source-map-and-activity'and f03[0]['implementation_status']=='LOCALLY_VERIFIED_STATIC_ROUTE_AND_REAL_ADM_G0_G2_F03R_VALUE_PROPOSALS__PACKET_AND_ROOT_COMMIT_DEFERRED','selected installed48 source/activity direct-slice mapping');ck(len(f04)==2 and f04[0]['slice_id']=='selected-p11-prefix-membership-producer'and f04[0]['implementation_status']=='LOCALLY_VERIFIED_SYNTHETIC_AND_SEALED_SELECTED_MEMBERSHIP_VECTORS'and f04[1]['slice_id']=='washed-control52-static-row-and-owner-copy-lineage'and f04[1]['implementation_status']=='WASHED_HIGH_BIT_SELECTOR_ROW_AND_SAME_OWNER_COPY_STATIC_CLOSED__GAIN_PRODUCER_F04A_AND_LIVE_BRANCH_OPEN','selected P11 membership and conditional Control52 evidence mapping')
  for direct in (f03[0],f04[0]):
   ck(all((root/path).is_file()for path in direct['implementation_files']+direct['test_modules']+direct['parameters']['provider_files']+direct['vectors']['authoritative_vectors']),'selected installed48 direct-slice paths exist '+direct['slice_id'])
   ck(direct['vectors']['r2_manifest_sha256']=='ca2bc4aff5c81dfc9159177326ddf1db2630a8dc26634a3a761bbbc2a4798332'and direct['vectors']['route_clarification_v2_manifest_sha256']==expected_manifest,'selected installed48 direct-slice Wash manifest identities '+direct['slice_id'])
@@ -3262,6 +3275,7 @@ def run(root=ROOT):
  check_spatial_control_mapping(root,d)
  check_spatial_audio_mapping(root,d)
  check_f04_parameter_providers(root,d)
+ check_f04g_control52_static_lineage(root,d)
  check_f04_remaining_provider_mapping(root,d)
  check_qmf_fft_primitive_mapping(root,d)
  check_qmf_core_mapping(root,d)

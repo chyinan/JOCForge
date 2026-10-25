@@ -144,6 +144,7 @@
 | F04F/single-tail-diffusion-filter-block-preview | F04F | `spatial_audio` |
 | F04F/single-tail-active-inactive-callback-lifecycle | F04F | `spatial_audio` |
 | F04G/selected-p11-prefix-membership-producer | F04G | `spatial_audio` |
+| F04G/washed-control52-static-row-and-owner-copy-lineage | F04G | `spatial_audio` |
 | F04RB/actual-receiver-to-joc-qmf-projection | F04RB | `spatial_audio` |
 | F05/selected-coefficient-fit-retry-and-payload | F05 | `joc` |
 | F05Q/quantized-huffman-body-writer | F05Q | `joc` |

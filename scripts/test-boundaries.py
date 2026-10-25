@@ -993,6 +993,13 @@ def main():
   ('f06nd-scheduler-state-chain-broken',lambda r:replace_once(r/'crates/jocforge-domain/tests/none_drc_scheduler.rs','state = transition.next_state;','state = state;')),
   ('f06nd-scheduler-output-comparison-removed',lambda r:replace_once(r/'crates/jocforge-domain/tests/none_drc_scheduler.rs','assert_output_matches(&case["expected_output"], &actual_output, index);','output_comparison_removed(&case["expected_output"], &actual_output, index);'))
  ]
+ cases += [
+  ('f04g-control52-static-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices'].remove(next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices']if s['slice_id']=='washed-control52-static-row-and-owner-copy-lineage')))),
+  ('f04g-control52-gain-producer-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices']if s['slice_id']=='washed-control52-static-row-and-owner-copy-lineage')['native_status'].update(f04g_gain11_producer='CLOSED'))),
+  ('f04g-control52-f04a-consumer-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices']if s['slice_id']=='washed-control52-static-row-and-owner-copy-lineage')['native_status'].update(f04a_immediate_consumer='CLOSED'))),
+  ('f04g-control52-branch-conditionality-removed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices']if s['slice_id']=='washed-control52-static-row-and-owner-copy-lineage')['vectors']['case_pointers'].__setitem__(2,'All selector branches use the same Control52-compatible F32 row mapping.'))),
+  ('f04g-control52-supplement-identity-drift',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices']if s['slice_id']=='washed-control52-static-row-and-owner-copy-lineage')['vectors'].update(source_supplement_manifest_sha256='0'*64)))
+ ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]
   if not cases:raise RuntimeError('no boundary mutations match case prefix: '+x.case_prefix)

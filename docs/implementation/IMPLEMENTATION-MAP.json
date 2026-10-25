@@ -2662,6 +2662,61 @@
             "native primary gain acceptance",
             "production encode, listening and W04 acceptance"
           ]
+        },
+        {
+          "slice_id": "washed-control52-static-row-and-owner-copy-lineage",
+          "mapping_status": "WASHED_STATIC_LINEAGE_ONLY__F04G_AND_F04A_PRODUCTION_OPEN",
+          "implementation_status": "WASHED_HIGH_BIT_SELECTOR_ROW_AND_SAME_OWNER_COPY_STATIC_CLOSED__GAIN_PRODUCER_F04A_AND_LIVE_BRANCH_OPEN",
+          "scope": "Wash V2 closes only the traced high-bit selector branch from an 88-byte typed source to a typed 52-byte row and the same owner descriptor through the selected parent into the consumer. The zero-flag branch copies that raw 52-byte row into a 56-byte geometry record. The low-bit branch differs; nonzero flag rows carry a U32 selector at byte20 and are not Control52-compatible with a clean F32 X field. No code, formula equivalence, live profile selection, F04G fixed 11-word output, F04A writer identity, or runtime generation join is implemented or claimed.",
+          "owner": "spatial_audio",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Static field and same-owner pointer/count lineage only; no runtime generation receipt or selected callback clock is observed."
+            ]
+          },
+          "parameters": {
+            "kind": "NONE_WASHED_STATIC_CONTROL52_LINEAGE",
+            "provider_files": [],
+            "validation_boundary": "Static type/field/copy path from the hash-bound Wash addendum; the traced constructor is not joined to clean F04FM mode/lane and no live branch is observed."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_WASHED_STATIC_LINEAGE_SUPPLEMENT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04G-CONTROL52-DISPATCH-STATIC-LINEAGE-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04G-CONTROL52-DISPATCH-STATIC-LINEAGE-V2/EVIDENCE.json"
+            ],
+            "case_pointers": [
+              "The high-bit selector branch maps the typed source fields into the documented 52-byte row; the low-bit branch uses another path.",
+              "The row pointer/count remain in the same owner descriptor through the parent and consumer; consumer extent is count*52, downstream stride is 52, and zero flag copies into a 56-byte geometry record.",
+              "A nonzero flag uses a U32 selector at row offset20 and conflicts with clean Control52 F32 X; this is conditional, not an unconditional 52-byte exclusion.",
+              "The traced constructor selects one static candidate but has no clean F04FM mode/lane join; fixed 11-word F04G producer and immediate F04A consumer remain NOT_CLOSED."
+            ],
+            "source_supplement_manifest_sha256": "e45b59e7c5dcf92f270b8f75b2d9f2705ca97e5e72d52ca98d25478c67e8b2ea",
+            "source_package_manifest_sha256": "6e5f30ebb76f74c91845a1370bd83c52a22a2680f253bb2abb04e5f93a7a5f06",
+            "payload_hashes_and_sizes": "4/4 PASS"
+          },
+          "native_status": {
+            "control52_typed_source_and_same_owner_copy": "STATIC_CLOSED",
+            "f04g_gain11_producer": "NOT_CLOSED",
+            "f04a_immediate_consumer": "NOT_CLOSED",
+            "f04fm_to_selector": "NOT_JOINED",
+            "runtime_cache_copy_or_reuse": "NOT_OBSERVED",
+            "same_generation_receipt": "NOT_CAPTURED",
+            "native_run": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Runtime cache copy/reuse and cache identity",
+            "Constructor selector to F04FM mode/lane identity",
+            "F04G fixed 11-word producer and formula/value equivalence",
+            "Immediate F04A consumer read range, writer membership and same-generation receipt",
+            "Live branch applicability and native run remain NOT_RUN"
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
