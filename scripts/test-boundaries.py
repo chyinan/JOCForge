@@ -938,7 +938,8 @@ def main():
  cases += [
   ('f06-prepass-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F06')['direct_slices'].pop())),
   ('f06-prepass-atomic-install-split',lambda r:replace_once(r/'crates/jocforge-domain/src/meter/meter_prepass.rs','self.owner.state = IndependentMeterPrepassState {','self.owner.state.phase = IndependentMeterPrepassPhase::Meter;')),
-  ('f06-prepass-fail-stop-disabled',lambda r:replace_once(r/'crates/jocforge-domain/src/meter/meter_prepass.rs','self.state.phase = IndependentMeterPrepassPhase::Failed;','self.state.phase = IndependentMeterPrepassPhase::Meter;'))
+  ('f06-prepass-fail-stop-disabled',lambda r:replace_once(r/'crates/jocforge-domain/src/meter/meter_prepass.rs','self.state.phase = IndependentMeterPrepassPhase::Failed;','self.state.phase = IndependentMeterPrepassPhase::Meter;')),
+  ('f06-prepass-finalization-promoted',lambda r:replace_once(r/'crates/jocforge-domain/src/meter/meter_prepass.rs','impl IndependentMeterPrepass {','impl IndependentMeterPrepass {\n    fn finalize_selected_measurement(&self) {}'))
  ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]

@@ -4545,6 +4545,7 @@
             },
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "wash_status_supplement_manifest_sha256": "9f47ee930332adf026958d338c5d968cf095833d54edc4556036492bee2f4a22",
+            "meter_terminal_digest_hold_manifest_sha256": "3e5b0a337d5dce5bc3668346fcdbb98540593458f302f802b2f1d088005d8a19",
             "drain_semantics_erratum_manifest_sha256": "f4c660a632c0b3649b1496095f37f2c164f1537bbb495086180394cb00429b96",
             "reducer_pair_join_supplement_manifest_sha256": "cbd6842938b11c93183b66986c55cd93709f3cd4671968264c37cb373a2d15a6"
           },
@@ -4567,6 +4568,7 @@
           "not_run": [
             "independent ADM/frontend event and source producer",
             "whole eight-owner meter root and recursive terminal-state digest",
+            "production meter_terminal_sha256 preimage/root mapping (METER-TERMINAL-DIGEST-DEFINITION-HOLD-V1)",
             "programme terminal measurement finalization and production MetadataOwner caller",
             "main none-DRC source composition and GTC parent transaction (P1.3-C hold)",
             "whole-production fault injection, real ADM replay and product acceptance"
