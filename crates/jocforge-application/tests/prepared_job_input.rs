@@ -2,7 +2,9 @@
 use jocforge_application::{
     PreparedJobInputError, SelectedAdmResourcePayloads, prepare_selected_job_input,
 };
+use jocforge_domain::frontend::adm_file_storage_map::AdmFileStorageTrackSlot;
 use jocforge_domain::frontend::job_configuration::SelectedWaveDescriptor;
+use jocforge_domain::frontend::selected_adm_graph::SelectedTrackKind;
 use jocforge_domain::transaction::ProgrammeId;
 use serde_json::Value;
 use sha2::{Digest, Sha256};
@@ -73,6 +75,26 @@ fn value_preparation_binds_graph_and_identity_to_one_immutable_resource() {
             assert_eq!(prepared.graph().provenance().axml().chunk_id(), *b"axml");
             assert_eq!(prepared.graph().provenance().chna().chunk_id(), *b"chna");
             assert_eq!(prepared.graph().provenance().dbmd().chunk_id(), *b"dbmd");
+            let converter_map = prepared.converter_storage_map().unwrap();
+            assert_eq!(
+                converter_map.resource_identity(),
+                prepared.resource_identity()
+            );
+            assert_eq!(converter_map.axml(), prepared.graph().provenance().axml());
+            assert_eq!(converter_map.chna(), prepared.graph().provenance().chna());
+            for track in prepared.graph().graph().tracks() {
+                let slot = AdmFileStorageTrackSlot::new(
+                    u8::try_from(track.track_index().value() - 1).unwrap(),
+                )
+                .unwrap();
+                let entry = converter_map.channels().entry_for_slot(slot);
+                let expected_channel_input = match track.kind() {
+                    SelectedTrackKind::DirectSpeakersBed { bed_input_id, .. } => bed_input_id,
+                    SelectedTrackKind::Object { semantic_key } => semantic_key,
+                };
+                assert_eq!(entry.track_slot(), slot);
+                assert_eq!(entry.channel_input_id().value(), expected_channel_input);
+            }
             let xml_sha256: [u8; 32] =
                 Sha256::digest(case["input_xml"].as_str().unwrap().as_bytes()).into();
             assert_eq!(prepared.job_xml_sha256(), xml_sha256);

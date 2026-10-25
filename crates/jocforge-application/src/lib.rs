@@ -6,6 +6,9 @@ use jocforge_domain::frontend::job_configuration::{
     parse_selected_job_configuration,
 };
 use jocforge_domain::frontend::{
+    adm_file_storage_map::{
+        AdmFileStorageChannelMap, AdmFileStorageMapError, build_adm_file_storage_channel_map,
+    },
     adm_object_events::AdmittedSelectedObjectEvents,
     dbmd_sections::{DbmdSectionError, SelectedDbmdSections, parse_selected_dbmd_sections},
     selected_adm_graph::{SelectedAdmGraph, SelectedAdmGraphError, parse_selected_adm_graph},
@@ -119,6 +122,32 @@ impl PreparedAdmGraph {
     }
 }
 
+#[derive(Clone, Debug, PartialEq)]
+pub struct PreparedAdmFileStorageMap {
+    resource_identity: ResourceIdentity,
+    axml: ResourceChunkSpan,
+    chna: ResourceChunkSpan,
+    channels: AdmFileStorageChannelMap,
+}
+
+impl PreparedAdmFileStorageMap {
+    pub const fn resource_identity(&self) -> ResourceIdentity {
+        self.resource_identity
+    }
+
+    pub const fn axml(&self) -> ResourceChunkSpan {
+        self.axml
+    }
+
+    pub const fn chna(&self) -> ResourceChunkSpan {
+        self.chna
+    }
+
+    pub const fn channels(&self) -> &AdmFileStorageChannelMap {
+        &self.channels
+    }
+}
+
 /// Embedded ADM payloads borrowed from the same immutable resource allocation.
 #[derive(Clone, Copy, Debug)]
 pub struct SelectedAdmResourcePayloads<'a> {
@@ -173,6 +202,23 @@ impl PreparedJobInput {
     pub const fn identity_envelope(&self) -> &Value {
         &self.identity_envelope
     }
+
+    /// Exposes the converter-local channel map with the metadata's enclosing resource identity.
+    ///
+    /// This binds the map to this prepared AXML/CHNA resource; it does not bind map values to
+    /// physical PCM rows or the downstream meter frame descriptor.
+    pub fn converter_storage_map(
+        &self,
+    ) -> Result<PreparedAdmFileStorageMap, PreparedJobInputError> {
+        let channels = build_adm_file_storage_channel_map(&self.graph.graph)
+            .map_err(PreparedJobInputError::ConverterStorageMap)?;
+        Ok(PreparedAdmFileStorageMap {
+            resource_identity: self.resource_identity,
+            axml: self.graph.provenance.axml,
+            chna: self.graph.provenance.chna,
+            channels,
+        })
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -181,6 +227,7 @@ pub enum PreparedJobInputError {
     SampleCount(ClockError),
     GraphAdmission(SelectedAdmGraphError),
     GraphParse(SelectedAdmGraphError),
+    ConverterStorageMap(AdmFileStorageMapError),
     DbmdParse(DbmdSectionError),
     MetadataPayloadBinding,
     IdentityEnvelope,
@@ -193,6 +240,9 @@ impl std::fmt::Display for PreparedJobInputError {
             Self::SampleCount(error) => write!(formatter, "source sample count: {error:?}"),
             Self::GraphAdmission(error) => write!(formatter, "ADM graph admission: {error:?}"),
             Self::GraphParse(error) => write!(formatter, "ADM graph parse: {error:?}"),
+            Self::ConverterStorageMap(error) => {
+                write!(formatter, "ADM converter storage map: {error:?}")
+            }
             Self::DbmdParse(error) => write!(formatter, "DBMD parse: {error:?}"),
             Self::MetadataPayloadBinding => formatter.write_str(
                 "ADM metadata payload is not a unique subslice of the selected resource",

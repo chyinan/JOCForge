@@ -5814,12 +5814,13 @@
         {
           "slice_id": "selected-adm-graph-to-converter-storage-map",
           "mapping_status": "MATERIALIZED_HASH_BOUND_F06OF_CONVERTER_LOCAL_STORAGE_MAP__MEASUREMENT_ROW_JOIN_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_TYPED_CONVERTER_STORAGE_SLOTS_AND_VALUES__FRAME_ROW_JOIN_OPEN",
-          "scope": "Projects an already parsed selected AXML/CHNA graph into 38 converter-local entries keyed by the one-based CHNA track index minus one. Object channel-input values use the decoded AO semantic key directly; bed values use the graph-produced decoded key plus zero-based bed ordinal. Track-slot and channel-input ID are distinct newtypes. This materializes only the converter-local map and does not resolve meter PCM rows or connect to the selected measurement frame descriptor.",
+          "implementation_status": "LOCALLY_VERIFIED_PREPARED_RESOURCE_TO_CONVERTER_MAP__FRAME_ROW_JOIN_OPEN",
+          "scope": "Projects the AXML/CHNA graph already bound to one PreparedJobInput into 38 converter-local entries keyed by one-based CHNA track index minus one. The returned application value carries the enclosing resource identity and exact AXML/CHNA chunk spans. Object channel-input values use the decoded AO semantic key directly; bed values use the graph-produced decoded key plus zero-based bed ordinal. Track-slot and channel-input ID are distinct newtypes. This does not resolve meter PCM rows or connect to the selected measurement frame descriptor.",
           "implementation_files": [
             "crates/jocforge-domain/src/frontend/adm_file_storage_map.rs",
             "crates/jocforge-domain/src/frontend/selected_adm_graph.rs",
-            "crates/jocforge-domain/src/frontend/mod.rs"
+            "crates/jocforge-domain/src/frontend/mod.rs",
+            "crates/jocforge-application/src/lib.rs"
           ],
           "clock": {
             "domains": [],
@@ -5841,7 +5842,8 @@
             "validation_boundary": "Hash-bound static converter-local mapping only; no native execution, raw PCM, selected frame or runtime generation identity."
           },
           "test_modules": [
-            "crates/jocforge-domain/tests/adm_file_storage_map.rs"
+            "crates/jocforge-domain/tests/adm_file_storage_map.rs",
+            "crates/jocforge-application/tests/prepared_job_input.rs"
           ],
           "vectors": {
             "kind": "HASH_BOUND_SELECTED_GRAPH_TO_CONVERTER_SLOT_AND_CHANNEL_INPUT_VALUES",
@@ -5852,6 +5854,7 @@
             "case_pointers": [
               "Recomputes track slot as CHNA track_index minus one and checks all 38 slots in sorted storage order.",
               "Object channel-input values equal decoded AO semantic keys; bed values equal decoded AO suffix minus 0x1001 plus bed ordinal.",
+              "PreparedJobInput exposes the map with the same resource SHA and AXML/CHNA chunk spans used for graph admission.",
               "The V2 contract's converter-local lookup boundary is implemented; the selected measurement frame/PCM row join remains UNBOUND."
             ],
             "local_fixture": {
@@ -5883,6 +5886,13 @@
               "trigger": "The graph does not produce exactly one value for every selected slot 0..37.",
               "programme_state_after": "No complete converter storage map is returned.",
               "caller_action": "Reject the graph projection; do not infer a missing row."
+            },
+            {
+              "error_code": "PreparedJobInputError::ConverterStorageMap",
+              "category": "prepared resource to converter map adapter",
+              "trigger": "The graph-to-storage projection rejects a zero, out-of-range, duplicate or missing CHNA track slot.",
+              "programme_state_after": "No PreparedAdmFileStorageMap is returned; the immutable prepared resource and graph remain unchanged.",
+              "caller_action": "Reject the prepared-map request; no source-row or product error code is inferred."
             }
           ],
           "not_run": [
