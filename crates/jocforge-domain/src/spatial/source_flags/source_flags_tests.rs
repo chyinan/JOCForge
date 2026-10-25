@@ -4,8 +4,8 @@ mod tests {
     use super::super::{
         BeforeRegularHistory, CurrentHostPcm, FRAME_SAMPLES, HOST_CHANNELS, HostRole,
         HostRouteRecord, PREFIX_SOURCE_COUNT, PrefixWriterSet, REGULAR_HOSTS, RegularControl,
-        RegularControls, SOURCE_COUNT, SelectedFeatureFlagsControl, SourceFlagsAttempt,
-        SourceFlagsError, SourceFlagsHistoryGeneration, SourceFlagsInput, SourceFlagsParentLineage,
+        RegularControls, SOURCE_COUNT, SelectedFeatureFlagsControl, SourceFlagsError,
+        SourceFlagsHistoryGeneration, SourceFlagsInput, SourceFlagsParentLineage,
         SourceFlagsProducer, SourceFlagsProgrammeId, ValidatedSemanticRoute,
     };
     use crate::{
@@ -17,7 +17,7 @@ mod tests {
         profile::{EncodingProfile, resolve_selected_profile},
         spatial::SpatialControlMachine,
         timeline::FrontendCallbackIndex,
-        transaction::CallbackTransactionId,
+        transaction::{AttemptId, CallbackLineageIdentity},
     };
     use serde_json::Value;
     use sha2::{Digest, Sha256};
@@ -37,6 +37,10 @@ mod tests {
         include_bytes!("../../../tests/fixtures/target_cold/f03-selected-target-cold-v1.json");
     const SOURCE_FLAGS_VECTORS: &[u8] =
         include_bytes!("../../../tests/fixtures/source_flags/INPUT-ONLY-VECTORS.json");
+
+    fn synthetic_programme_id() -> SourceFlagsProgrammeId {
+        crate::transaction::test_programme_id("SYNTHETIC_FLAGS")
+    }
 
     fn selected_machine() -> SpatialControlMachine {
         let f01e_manifest_evidence = PackageManifestEvidence::new(Arc::from(MANIFEST_BYTES), None);
@@ -126,17 +130,15 @@ mod tests {
 
     fn parent_lineage(
         machine: &SpatialControlMachine,
-        transaction_id: &str,
+        programme_id: SourceFlagsProgrammeId,
         callback_index: u64,
     ) -> SourceFlagsParentLineage {
-        SourceFlagsParentLineage::new(
-            SourceFlagsProgrammeId::new("SYNTHETIC_FLAGS").unwrap(),
-            SourceFlagsAttempt::new(0),
-            CallbackTransactionId::new(transaction_id).unwrap(),
-            FrontendCallbackIndex::new(callback_index),
-            machine,
-        )
-        .unwrap()
+        let callback_index = FrontendCallbackIndex::new(
+            u32::try_from(callback_index).expect("fixture callback index fits U32"),
+        );
+        let transaction_id =
+            CallbackLineageIdentity::new(programme_id, AttemptId::new(0), callback_index);
+        SourceFlagsParentLineage::new(transaction_id, machine).unwrap()
     }
 
     fn test_history(
@@ -159,19 +161,19 @@ mod tests {
     fn case_input(
         case: &Value,
         machine: &SpatialControlMachine,
-        transaction_id: &str,
+        programme_id: SourceFlagsProgrammeId,
     ) -> Result<SourceFlagsInput, SourceFlagsError> {
         let callback_index = case["input"]
             .get("packet_callback_index")
             .and_then(Value::as_u64)
             .unwrap_or(0);
-        case_input_at(case, machine, transaction_id, callback_index)
+        case_input_at(case, machine, programme_id, callback_index)
     }
 
     fn case_input_at(
         case: &Value,
         machine: &SpatialControlMachine,
-        transaction_id: &str,
+        programme_id: SourceFlagsProgrammeId,
         callback_index: u64,
     ) -> Result<SourceFlagsInput, SourceFlagsError> {
         let input = &case["input"];
@@ -233,7 +235,7 @@ mod tests {
                         })
                         .unwrap_or_default(),
                 )?,
-                parent_lineage(machine, transaction_id, callback_index),
+                parent_lineage(machine, programme_id, callback_index),
             ));
         }
 
@@ -273,7 +275,7 @@ mod tests {
             controls,
             route,
             prefix_writers,
-            parent_lineage(machine, transaction_id, callback_index),
+            parent_lineage(machine, programme_id, callback_index),
         ))
     }
 
@@ -437,10 +439,11 @@ mod tests {
         )
         .unwrap();
         let parent = SourceFlagsParentLineage::new(
-            SourceFlagsProgrammeId::new("AUTHORIZED_FLAGS_BOUNDARY").unwrap(),
-            SourceFlagsAttempt::new(0),
-            CallbackTransactionId::new("FLAGS-AUTHORIZED-BOUNDARY-0").unwrap(),
-            FrontendCallbackIndex::new(0),
+            CallbackLineageIdentity::new(
+                crate::transaction::test_programme_id("AUTHORIZED_FLAGS_BOUNDARY"),
+                AttemptId::new(0),
+                FrontendCallbackIndex::new(0),
+            ),
             &machine,
         )
         .unwrap();
@@ -503,7 +506,7 @@ mod tests {
         let before_generation = machine.generation();
         let vectors = vectors();
         for case in vectors["positive_cases"].as_array().unwrap() {
-            let input = case_input(case, &machine, "FLAGS-CALLBACK-0").unwrap();
+            let input = case_input(case, &machine, synthetic_programme_id()).unwrap();
             let expected_raw_history: Vec<Vec<u32>> = input
                 .route
                 .regular_hosts()
@@ -557,17 +560,22 @@ mod tests {
             let result = if id == "stale_packet" {
                 let first_case = vectors["positive_cases"][0].clone();
                 let packet_callback = case["input"]["packet_callback_index"].as_u64().unwrap();
-                let input =
-                    case_input_at(&first_case, &machine, "FLAGS-CALLBACK-0", packet_callback)
-                        .unwrap();
+                let input = case_input_at(
+                    &first_case,
+                    &machine,
+                    synthetic_programme_id(),
+                    packet_callback,
+                )
+                .unwrap();
                 let produced = SourceFlagsProducer::produce(input).unwrap();
-                let mut stale = parent_lineage(&machine, "FLAGS-CALLBACK-0", 0);
+                let mut stale = parent_lineage(&machine, synthetic_programme_id(), 0);
                 stale.callback_index = FrontendCallbackIndex::new(
-                    case["input"]["expected_callback_index"].as_u64().unwrap(),
+                    u32::try_from(case["input"]["expected_callback_index"].as_u64().unwrap())
+                        .unwrap(),
                 );
                 produced.packet.validate_parent_binding(&stale)
             } else {
-                case_input(case, &machine, "FLAGS-CALLBACK-0")
+                case_input(case, &machine, synthetic_programme_id())
                     .and_then(SourceFlagsProducer::produce)
                     .map(|_| ())
             };
@@ -581,11 +589,17 @@ mod tests {
     fn equal_payloads_from_distinct_parent_lineages_are_not_reusable() {
         let machine = selected_machine();
         let case = &vectors()["positive_cases"][0];
-        let first =
-            SourceFlagsProducer::produce(case_input(case, &machine, "FLAGS-CALLBACK-0").unwrap())
-                .unwrap();
+        let first = SourceFlagsProducer::produce(
+            case_input(case, &machine, synthetic_programme_id()).unwrap(),
+        )
+        .unwrap();
         let second = SourceFlagsProducer::produce(
-            case_input(case, &machine, "FLAGS-CALLBACK-OTHER").unwrap(),
+            case_input(
+                case,
+                &machine,
+                crate::transaction::test_programme_id("OTHER_SYNTHETIC_FLAGS"),
+            )
+            .unwrap(),
         )
         .unwrap();
         assert_eq!(first.packet.payload(), second.packet.payload());
@@ -602,13 +616,13 @@ mod tests {
         let vectors = vectors();
         let rebound = &vectors["positive_cases"][18];
         let rebound_output = SourceFlagsProducer::produce(
-            case_input(rebound, &machine, "FLAGS-CALLBACK-0").unwrap(),
+            case_input(rebound, &machine, synthetic_programme_id()).unwrap(),
         )
         .unwrap();
         let default_route = ValidatedSemanticRoute::new(route_records(3, true, false)).unwrap();
         let mut current = zero_rows(HOST_CHANNELS);
         current[3][767] = 1.0;
-        let parent = parent_lineage(&machine, "FLAGS-CALLBACK-0", 0);
+        let parent = parent_lineage(&machine, synthetic_programme_id(), 0);
         let before = test_history(
             &machine,
             &default_route,
@@ -638,7 +652,7 @@ mod tests {
 
         let written = &vectors["positive_cases"][16];
         let produced = SourceFlagsProducer::produce(
-            case_input(written, &machine, "FLAGS-CALLBACK-0").unwrap(),
+            case_input(written, &machine, synthetic_programme_id()).unwrap(),
         )
         .unwrap();
         for source in 0..11 {
@@ -660,11 +674,12 @@ mod tests {
         changed_audio["input"]["current_overrides"] =
             serde_json::from_str::<Value>("[[0, 767, 1065353216], [4, 255, 3212836864]]").unwrap();
 
-        let silent =
-            SourceFlagsProducer::produce(case_input(&base, &machine, "FLAGS-CALLBACK-0").unwrap())
-                .unwrap();
+        let silent = SourceFlagsProducer::produce(
+            case_input(&base, &machine, synthetic_programme_id()).unwrap(),
+        )
+        .unwrap();
         let active = SourceFlagsProducer::produce(
-            case_input(&changed_audio, &machine, "FLAGS-CALLBACK-0").unwrap(),
+            case_input(&changed_audio, &machine, synthetic_programme_id()).unwrap(),
         )
         .unwrap();
         assert_eq!(
@@ -690,9 +705,10 @@ mod tests {
     fn raw_history_proposal_preserves_signed_zero_before_flag_processing() {
         let machine = selected_machine();
         let case = &vectors()["positive_cases"][9];
-        let produced =
-            SourceFlagsProducer::produce(case_input(case, &machine, "FLAGS-CALLBACK-0").unwrap())
-                .unwrap();
+        let produced = SourceFlagsProducer::produce(
+            case_input(case, &machine, synthetic_programme_id()).unwrap(),
+        )
+        .unwrap();
         assert_eq!(produced.raw_history_proposal.rows()[0][767], 0x8000_0000);
         assert_eq!(produced.packet.payload()[11], [1, 0]);
     }

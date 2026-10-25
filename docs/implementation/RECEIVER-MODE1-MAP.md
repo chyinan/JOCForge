@@ -55,14 +55,14 @@ Fresh review R1 is bound to the current package and passes 44/44 static checks. 
     "api": "stage_receiver_mode1 consumes one linear Type10AssemblyProposal and a typed F04R stage-3 ReceiverS09InputView; it returns a linear proposal with preserved E2/E3 after-state, Type10 outcome, five raw analysis spectra, surround PCM, and QMF after slices.",
     "implementation_files": [
       {
-        "bytes": 17166,
+        "bytes": 17134,
         "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs",
-        "sha256": "5362379d8c33a2c7ae349c34d1836a083c453c43b61f191a075ecc8f4afd3aca"
+        "sha256": "6131903076529c50753b908a48679cbec6be22a6135599712592aa37f2095d5e"
       },
       {
-        "bytes": 37519,
+        "bytes": 37303,
         "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-        "sha256": "dc5516d1bef5b18983b469116c3f8c959d12931dc10af18b5233794865587621"
+        "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"
       }
     ],
     "s09_lineage_type": "ReceiverS09InputView binds six finite 1536-sample lanes to SpatialAudioJoinMetadata and explicit CallbackPhase; the receiver stage compares it with the Type10 receipt before any QMF processing.",
@@ -82,9 +82,9 @@ Fresh review R1 is bound to the current package and passes 44/44 static checks. 
         "sha256": "9bc20e80319c4a5df182a7937f69b28587de85fb3c037825890e300f3c117d53"
       },
       {
-        "bytes": 23823,
+        "bytes": 24485,
         "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs",
-        "sha256": "dcef738f8387ed59802f300eb7069a134060cb392c3bdd74c26f87c5fd475148"
+        "sha256": "bb9fc89e6914b4b9fb9dc94cd0da47ee83886183661d792957cef352896bab22"
       }
     ]
   },

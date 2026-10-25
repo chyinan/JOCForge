@@ -15,7 +15,7 @@ use crate::{
         ValidatedWindowQ15Provider,
     },
     timeline::FrontendCallbackIndex,
-    transaction::CallbackTransactionId,
+    transaction::CallbackLineageIdentity,
 };
 
 const SOURCE_ROW_COUNT: usize = 48;
@@ -71,7 +71,7 @@ pub(crate) enum ComponentCallbackPhase {
 pub(crate) struct SpatialAudioInputPacket {
     programme_id: SourceFlagsProgrammeId,
     attempt: SourceFlagsAttempt,
-    transaction_id: CallbackTransactionId,
+    transaction_id: CallbackLineageIdentity,
     callback_index: FrontendCallbackIndex,
     phase: ComponentCallbackPhase,
     profile_identity: EncodingProfile,
@@ -105,7 +105,7 @@ pub(super) struct ComponentAfterState {
 pub(super) struct ComponentStageReceipt {
     programme_id: SourceFlagsProgrammeId,
     attempt: SourceFlagsAttempt,
-    transaction_id: CallbackTransactionId,
+    transaction_id: CallbackLineageIdentity,
     callback_index: FrontendCallbackIndex,
     phase: ComponentCallbackPhase,
     profile_identity: EncodingProfile,
@@ -184,7 +184,7 @@ struct FilterBlockSettings<'a> {
 struct ComponentPacketFixture<'a> {
     programme_id: SourceFlagsProgrammeId,
     attempt: SourceFlagsAttempt,
-    transaction_id: CallbackTransactionId,
+    transaction_id: CallbackLineageIdentity,
     callback_index: FrontendCallbackIndex,
     phase: ComponentCallbackPhase,
     profile_identity: EncodingProfile,
@@ -269,15 +269,9 @@ impl ComponentStageProposal {
             },
             component_output: component_output.into_boxed_slice(),
             receipt: ComponentStageReceipt {
-                programme_id: SourceFlagsProgrammeId::new(
-                    spatial_audio_join.programme_id().as_str(),
-                )
-                .expect("test join programme id remains non-empty"),
+                programme_id: spatial_audio_join.programme_id().clone(),
                 attempt: spatial_audio_join.attempt(),
-                transaction_id: CallbackTransactionId::new(
-                    spatial_audio_join.transaction_id().as_str(),
-                )
-                .expect("test join transaction id remains non-empty"),
+                transaction_id: spatial_audio_join.transaction_id().clone(),
                 callback_index: spatial_audio_join.callback_index(),
                 phase,
                 profile_identity: spatial_audio_join.profile_identity(),
@@ -310,7 +304,7 @@ impl ComponentStageReceipt {
         self.attempt
     }
 
-    pub(super) fn transaction_id(&self) -> &CallbackTransactionId {
+    pub(super) fn transaction_id(&self) -> &CallbackLineageIdentity {
         &self.transaction_id
     }
 
@@ -353,6 +347,8 @@ impl ComponentStageReceipt {
 
 #[allow(dead_code)]
 #[allow(clippy::too_many_arguments)]
+// Consumes the opaque packet capability for one component stage.
+#[allow(clippy::needless_pass_by_value)]
 pub(crate) fn produce_component_stage(
     spatial_audio: &SpatialAudioMachine,
     spatial_audio_join: &SpatialAudioJoinMetadata,
@@ -406,10 +402,10 @@ pub(crate) fn produce_component_stage(
     };
     validate_component_state(&before_state)?;
 
-    if packet.programme_id.as_str() != spatial_audio_join.programme_id().as_str()
+    if packet.programme_id != *spatial_audio_join.programme_id()
         || packet.attempt != spatial_audio_join.attempt()
-        || packet.transaction_id.as_str() != spatial_audio_join.transaction_id().as_str()
-        || packet.transaction_id.as_str() != spatial_control_join.transaction_id().as_str()
+        || packet.transaction_id != *spatial_audio_join.transaction_id()
+        || packet.transaction_id != *spatial_control_join.transaction_id()
         || packet.profile_identity != spatial_audio_join.profile_identity()
         || packet.spatial_control_provider_lineage != spatial_control.provider_lineage()
         || spatial_control_join.provider_lineage() != spatial_control.provider_lineage()

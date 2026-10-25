@@ -8,8 +8,12 @@ use super::{
 use crate::{
     frontend::job_configuration::SelectedJobConfiguration,
     joc::oamd::reader_target::ReaderTargetUpdateReceipt,
-    spatial::spatial_audio_state::SelectedJocQmfProjection,
+    spatial::{
+        source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
+        spatial_audio_state::SelectedJocQmfProjection,
+    },
     timeline::{CodecSourceIndex, JocDispatchIndex},
+    transaction::CallbackLineageIdentity,
 };
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -43,9 +47,9 @@ impl std::error::Error for MetadataBodiesError {}
 /// intentionally absent until its measurement projection is available.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct MetadataBodiesLineage {
-    programme_id: Box<str>,
-    attempt: u64,
-    transaction_id: Box<str>,
+    programme_id: SourceFlagsProgrammeId,
+    attempt: SourceFlagsAttempt,
+    transaction_id: CallbackLineageIdentity,
     source_index: CodecSourceIndex,
     dispatch: JocDispatchIndex,
     reader_state_before_sha256: [u8; 32],
@@ -54,15 +58,15 @@ pub struct MetadataBodiesLineage {
 }
 
 impl MetadataBodiesLineage {
-    pub fn programme_id(&self) -> &str {
+    pub fn programme_id(&self) -> &SourceFlagsProgrammeId {
         &self.programme_id
     }
 
-    pub const fn attempt(&self) -> u64 {
+    pub const fn attempt(&self) -> SourceFlagsAttempt {
         self.attempt
     }
 
-    pub fn transaction_id(&self) -> &str {
+    pub const fn transaction_id(&self) -> &CallbackLineageIdentity {
         &self.transaction_id
     }
 
@@ -109,17 +113,17 @@ impl MetadataBodiesProposal {
 
     #[cfg(test)]
     pub(crate) fn for_test(
-        programme_id: &str,
-        attempt: u64,
-        transaction_id: &str,
+        programme_id: SourceFlagsProgrammeId,
+        attempt: SourceFlagsAttempt,
+        transaction_id: CallbackLineageIdentity,
         source_index: CodecSourceIndex,
         bodies: MetadataBodies,
     ) -> Self {
         Self {
             lineage: MetadataBodiesLineage {
-                programme_id: programme_id.into(),
+                programme_id,
                 attempt,
-                transaction_id: transaction_id.into(),
+                transaction_id,
                 source_index,
                 dispatch: source_index.dispatch().expect("bounded test source"),
                 reader_state_before_sha256: [0; 32],
@@ -145,9 +149,9 @@ pub fn assemble_metadata_bodies(
         .dispatch()
         .map_err(|_| MetadataBodiesError::Lineage)?;
     if projection.dispatch() != expected_dispatch
-        || projection.callback_index().value() != source_index.value() + 2
+        || u64::from(projection.callback_index().value()) != source_index.value() + 2
         || projection.component_origin_generation() != projection.callback_index()
-        || projection.lfe_origin_generation().value() != source_index.value()
+        || u64::from(projection.lfe_origin_generation().value()) != source_index.value()
         || projection.target_reader_invocation().value() != source_index.value()
         || projection.programme_id() != reader_receipt.programme_id()
         || projection.transaction_id() != reader_receipt.transaction_id()
@@ -180,9 +184,9 @@ pub fn assemble_metadata_bodies(
     .into_metadata_body(source_index);
     Ok(MetadataBodiesProposal {
         lineage: MetadataBodiesLineage {
-            programme_id: projection.programme_id().into(),
+            programme_id: projection.programme_id().clone(),
             attempt: projection.attempt(),
-            transaction_id: projection.transaction_id().into(),
+            transaction_id: projection.transaction_id().clone(),
             source_index,
             dispatch: projection.dispatch(),
             reader_state_before_sha256: *reader_receipt.state_before_sha256(),

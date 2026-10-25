@@ -111,7 +111,7 @@ impl Type10AssemblyReceipt {
     }
 
     #[allow(dead_code)]
-    pub(super) fn transaction_id(&self) -> &crate::transaction::CallbackTransactionId {
+    pub(super) fn transaction_id(&self) -> &crate::transaction::CallbackLineageIdentity {
         self.component_lineage.transaction_id()
     }
 
@@ -315,12 +315,12 @@ fn component_lfe_same_parent(
     lfe: &DirectLfeStageLineage,
     expected_parent: &SpatialAudioJoinMetadata,
 ) -> bool {
-    component.programme_id().as_str() == expected_parent.programme_id().as_str()
-        && lfe.programme_id().as_str() == expected_parent.programme_id().as_str()
+    component.programme_id() == expected_parent.programme_id()
+        && lfe.programme_id() == expected_parent.programme_id()
         && component.attempt() == expected_parent.attempt()
         && lfe.attempt() == expected_parent.attempt()
-        && component.transaction_id().as_str() == expected_parent.transaction_id().as_str()
-        && lfe.transaction_id().as_str() == expected_parent.transaction_id().as_str()
+        && component.transaction_id() == expected_parent.transaction_id()
+        && lfe.transaction_id() == expected_parent.transaction_id()
         && component.profile_identity() == expected_parent.profile_identity()
         && lfe.profile_identity() == expected_parent.profile_identity()
         && component.spatial_control_before_generation() == lfe.spatial_control_before_generation()
@@ -332,7 +332,7 @@ fn validate_row0_ring_origin(
     after: &LfeDelayRingState,
     row0: Option<&Type10LfeRow0Input>,
     callback_index: FrontendCallbackIndex,
-    expected_origin: Option<u64>,
+    expected_origin: Option<u32>,
 ) -> Result<Option<FrontendCallbackIndex>, Type10AssemblyError> {
     match (expected_origin, row0) {
         (None, None) => Ok(None),

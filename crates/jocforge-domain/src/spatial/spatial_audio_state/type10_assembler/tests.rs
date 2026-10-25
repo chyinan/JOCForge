@@ -6,7 +6,7 @@ use crate::{
     spatial::{
         SpatialControlProviderLineage,
         post_window_fanout::CallbackPhase,
-        source_flags::{HostId, SourceFlagsAttempt, SourceFlagsProgrammeId},
+        source_flags::{HostId, SourceFlagsAttempt},
         spatial_audio_state::{
             LfeDelayRingState, SpatialAudioDigest, SpatialAudioJoinMetadata, SpatialAudioMachine,
             component_stage::{ComponentCallbackPhase, ComponentStageProposal},
@@ -14,7 +14,7 @@ use crate::{
         },
     },
     timeline::FrontendCallbackIndex,
-    transaction::CallbackTransactionId,
+    transaction::CallbackLineageIdentity,
 };
 use std::sync::Arc;
 
@@ -71,11 +71,19 @@ fn parent_join(
     before_generation: u64,
     before_digest: SpatialAudioDigest,
 ) -> SpatialAudioJoinMetadata {
+    let callback_index = FrontendCallbackIndex::new(u32::try_from(callback).unwrap());
+    let programme_id = crate::transaction::test_programme_id(programme);
+    let transaction_programme_id = if transaction == "type10-test-transaction" {
+        programme_id.clone()
+    } else {
+        crate::transaction::test_programme_id(transaction)
+    };
+    let attempt = SourceFlagsAttempt::new(attempt);
     SpatialAudioJoinMetadata::new(
-        SourceFlagsProgrammeId::new(programme).expect("fixture programme id"),
-        SourceFlagsAttempt::new(attempt),
-        CallbackTransactionId::new(transaction).expect("fixture transaction id"),
-        FrontendCallbackIndex::new(callback),
+        programme_id,
+        attempt,
+        CallbackLineageIdentity::new(transaction_programme_id, attempt, callback_index),
+        callback_index,
         before_generation,
         before_digest,
         profile,
@@ -133,7 +141,7 @@ fn component_proposal(
         &context.spatial_control,
         context.provider_lineage,
         control_provider_lineage,
-        component_values(join.callback_index().value(), output_length),
+        component_values(u64::from(join.callback_index().value()), output_length),
     )
 }
 
@@ -163,15 +171,17 @@ fn ring_after(callback: u64, corrupt_source: Option<u64>) -> LfeDelayRingState {
             bytes[0] ^= 1;
         }
         ring.rows[slot] = Some(Arc::from(bytes.into_boxed_slice()));
-        ring.input_frame_indexes[slot] = Some(FrontendCallbackIndex::new(source));
+        ring.input_frame_indexes[slot] = Some(FrontendCallbackIndex::new(
+            u32::try_from(source).expect("fixture callback fits U32"),
+        ));
     }
     ring
 }
 
 fn lfe_row0(callback: u64, origin: u64, byte_override: Option<Vec<u8>>) -> Type10LfeRow0Input {
     Type10LfeRow0Input::fixture_for_type10(
-        FrontendCallbackIndex::new(callback),
-        FrontendCallbackIndex::new(origin),
+        FrontendCallbackIndex::new(u32::try_from(callback).expect("callback fits U32")),
+        FrontendCallbackIndex::new(u32::try_from(origin).expect("origin fits U32")),
         byte_override.unwrap_or_else(|| lfe_row_bytes(origin)),
     )
 }
@@ -312,19 +322,24 @@ fn g2_g5_row_order_origins_and_bit_preservation() {
         assert_eq!(packet.payload().len(), TYPE10_ROWS * FRAME_SAMPLES);
         assert_eq!(
             packet.callback_index(),
-            FrontendCallbackIndex::new(callback)
+            FrontendCallbackIndex::new(u32::try_from(callback).expect("callback fits U32"))
         );
         assert_eq!(
             receipt.component_origin_generation(),
-            FrontendCallbackIndex::new(callback)
+            FrontendCallbackIndex::new(u32::try_from(callback).expect("callback fits U32"))
         );
         assert_eq!(
             receipt.lfe_origin_generation(),
-            Some(FrontendCallbackIndex::new(origin))
+            Some(FrontendCallbackIndex::new(
+                u32::try_from(origin).expect("origin fits U32")
+            ))
         );
-        assert_eq!(receipt.programme_id().as_str(), "type10-test-programme");
+        assert_eq!(
+            *receipt.programme_id(),
+            crate::transaction::test_programme_id("type10-test-programme")
+        );
         assert_eq!(receipt.attempt(), SourceFlagsAttempt::new(7));
-        assert_eq!(receipt.transaction_id().as_str(), "type10-test-transaction");
+        assert_eq!(receipt.transaction_id(), parent.transaction_id());
         assert_eq!(receipt.phase(), phase);
         assert_eq!(receipt.profile_identity(), context.profile);
         assert_eq!(

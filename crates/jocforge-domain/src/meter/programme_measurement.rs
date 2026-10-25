@@ -12,6 +12,7 @@ use super::{
     ungated_mean::{DiOffGetterError, UngatedMeanState, di_off_getter},
 };
 use crate::numeric::{FiniteF32, r32_sub, trunc_f32_to_i32};
+use crate::transaction::{AttemptId, ProgrammeId};
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 use std::collections::BTreeMap;
@@ -32,10 +33,10 @@ pub enum ProgrammeMeasurementError {
     Canonical,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) struct MeterFinalizationIdentity<'a> {
-    pub(crate) programme_id: &'a str,
-    pub(crate) attempt: u64,
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub(crate) struct MeterFinalizationIdentity {
+    pub(crate) programme_id: ProgrammeId,
+    pub(crate) attempt: AttemptId,
     pub(crate) input_sha256: [u8; 32],
     pub(crate) config_sha256: [u8; 32],
     pub(crate) meter_terminal_sha256: [u8; 32],
@@ -178,14 +179,11 @@ impl ProgrammeMeasurementValue {
 }
 
 pub(crate) fn finalize_selected_measurement(
-    identity: MeterFinalizationIdentity<'_>,
+    identity: MeterFinalizationIdentity,
     true_peak: &TruePeakState,
     integrated: &IntegratedMeterState,
     ungated: &UngatedMeanState,
 ) -> Result<ProgrammeMeasurementProposal, ProgrammeMeasurementError> {
-    if identity.programme_id.is_empty() {
-        return Err(ProgrammeMeasurementError::Identity);
-    }
     let itu_word =
         multiply_words(integrated.result_word(), HOST_SCALE_WORD).map_err(map_peak_error)?;
     let getter = di_off_getter(
@@ -359,8 +357,8 @@ mod tests {
     fn cold_leaf_states_finalize_to_the_selected_absence_measurement() {
         let proposal = finalize_selected_measurement(
             MeterFinalizationIdentity {
-                programme_id: "cold-finalize-test",
-                attempt: 0,
+                programme_id: crate::transaction::test_programme_id("cold-finalize-test"),
+                attempt: AttemptId::new(0),
                 input_sha256: [0x11; 32],
                 config_sha256: [0x22; 32],
                 meter_terminal_sha256: [0x33; 32],

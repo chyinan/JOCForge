@@ -97,19 +97,19 @@ This is only the direct-LFE ring transition and a future Type10 row0 input; it d
   ],
   "implementation_inventory": [
     {
-      "bytes": 17056,
+      "bytes": 16562,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
-      "sha256": "b30cb63addb5f8ddfe6bf03e65f84e34221929b8cb78180efc1e6c762c6b6bc5"
+      "sha256": "bfa2808ba2aa5566cf832a76a5ef93a6180bc1e81c35a63934809f3ffe9abce7"
     },
     {
-      "bytes": 37519,
+      "bytes": 37303,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "dc5516d1bef5b18983b469116c3f8c959d12931dc10af18b5233794865587621"
+      "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"
     },
     {
-      "bytes": 26347,
+      "bytes": 26366,
       "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-      "sha256": "3c13f67f84698b32d568bf9fda223878eb3925a95c7fcbe30e0d0ef2f1b8fcd2"
+      "sha256": "25ddd1832309801765697d7c9e014766e159a5b7571234a86d790c71a895f426"
     }
   ],
   "implementation_prohibitions": [
@@ -131,7 +131,7 @@ This is only the direct-LFE ring transition and a future Type10 row0 input; it d
     "lineage": [
       "programme",
       "attempt",
-      "CallbackTransactionId",
+      "CallbackLineageIdentity",
       "FrontendCallbackIndex",
       "explicit CallbackPhase",
       "selected profile",
@@ -228,9 +228,9 @@ This is only the direct-LFE ring transition and a future Type10 row0 input; it d
   ],
   "test_inventory": [
     {
-      "bytes": 19748,
+      "bytes": 20332,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe/tests.rs",
-      "sha256": "974767ddea57685ddf6656a5e46308e47b2a92cefdb7e23827230d6c9f831c66"
+      "sha256": "b1074ca65c97f34cf3162e321c32d1576d0dfe7aa993e980e2794b8af3251ef7"
     }
   ],
   "transition": {

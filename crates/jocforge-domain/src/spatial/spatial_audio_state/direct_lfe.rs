@@ -15,7 +15,7 @@ use crate::{
         },
     },
     timeline::FrontendCallbackIndex,
-    transaction::CallbackTransactionId,
+    transaction::CallbackLineageIdentity,
 };
 use std::sync::Arc;
 
@@ -52,7 +52,7 @@ impl DirectLfeError {
 pub(in crate::spatial) struct DirectLfeInputView {
     programme_id: SourceFlagsProgrammeId,
     attempt: SourceFlagsAttempt,
-    transaction_id: CallbackTransactionId,
+    transaction_id: CallbackLineageIdentity,
     callback_index: FrontendCallbackIndex,
     phase: super::super::post_window_fanout::CallbackPhase,
     profile_identity: EncodingProfile,
@@ -70,7 +70,7 @@ impl DirectLfeInputView {
         _authority: SpatialControlLfeIngressAuthority,
         programme_id: SourceFlagsProgrammeId,
         attempt: SourceFlagsAttempt,
-        transaction_id: CallbackTransactionId,
+        transaction_id: CallbackLineageIdentity,
         callback_index: FrontendCallbackIndex,
         phase: super::super::post_window_fanout::CallbackPhase,
         profile_identity: EncodingProfile,
@@ -82,9 +82,6 @@ impl DirectLfeInputView {
             || profile_identity != spatial_control.profile()
         {
             return Err(DirectLfeError::ProfileUnsupported);
-        }
-        if i64::try_from(callback_index.value()).is_err() {
-            return Err(DirectLfeError::State);
         }
         if samples.len() != LFE_FRAME_SAMPLES {
             return Err(DirectLfeError::Input);
@@ -166,7 +163,7 @@ impl Type10LfeRow0Input {
 pub(super) struct DirectLfeStageLineage {
     programme_id: SourceFlagsProgrammeId,
     attempt: SourceFlagsAttempt,
-    transaction_id: CallbackTransactionId,
+    transaction_id: CallbackLineageIdentity,
     callback_index: FrontendCallbackIndex,
     phase: super::super::post_window_fanout::CallbackPhase,
     profile_identity: EncodingProfile,
@@ -190,7 +187,7 @@ impl DirectLfeStageLineage {
     }
 
     #[allow(dead_code)]
-    pub(super) fn transaction_id(&self) -> &CallbackTransactionId {
+    pub(super) fn transaction_id(&self) -> &CallbackLineageIdentity {
         &self.transaction_id
     }
 
@@ -288,10 +285,10 @@ pub(super) fn produce_direct_lfe_stage(
 
     validate_lfe_ring_state(&before.lfe_state, callback_index)?;
 
-    if input.programme_id.as_str() != spatial_audio_join.programme_id().as_str()
+    if input.programme_id != *spatial_audio_join.programme_id()
         || input.attempt != spatial_audio_join.attempt()
-        || input.transaction_id.as_str() != spatial_audio_join.transaction_id().as_str()
-        || input.transaction_id.as_str() != spatial_control_join.transaction_id().as_str()
+        || input.transaction_id != *spatial_audio_join.transaction_id()
+        || input.transaction_id != *spatial_control_join.transaction_id()
         || input.spatial_control_provider_lineage != spatial_control.provider_lineage()
         || spatial_control_join.provider_lineage() != spatial_control.provider_lineage()
         || !valid_row_bytes(&input.row_bytes)
@@ -346,7 +343,7 @@ fn stage_lfe_ring_transition(
         before.rows[2].as_ref().map(Arc::clone),
     ];
     let mut after_indexes = before.input_frame_indexes;
-    after_rows[next_write_slot] = Some(Arc::clone(&input.row_bytes));
+    after_rows[next_write_slot] = Some(input.row_bytes);
     after_indexes[next_write_slot] = Some(callback_index);
     let model_samples_consumed = before
         .model_samples_consumed
@@ -395,9 +392,8 @@ pub(super) fn validate_lfe_ring_state(
     state: &LfeDelayRingState,
     callback_index: FrontendCallbackIndex,
 ) -> Result<(), DirectLfeError> {
-    let expected_model_samples = i64::try_from(callback_index.value())
-        .ok()
-        .and_then(|callback| callback.checked_mul(MODEL_SAMPLES_PER_CALLBACK))
+    let expected_model_samples = i64::from(callback_index.value())
+        .checked_mul(MODEL_SAMPLES_PER_CALLBACK)
         .ok_or(DirectLfeError::State)?;
     if !(0..LFE_DELAY_SLOTS).contains(&state.write_index)
         || !(0..LFE_DELAY_SLOTS).contains(&state.read_index)
@@ -457,15 +453,9 @@ impl LfeStageProposal {
             after,
             type10_row0,
             lineage: DirectLfeStageLineage {
-                programme_id: SourceFlagsProgrammeId::new(
-                    spatial_audio_join.programme_id().as_str(),
-                )
-                .expect("test join programme id remains non-empty"),
+                programme_id: spatial_audio_join.programme_id().clone(),
                 attempt: spatial_audio_join.attempt(),
-                transaction_id: CallbackTransactionId::new(
-                    spatial_audio_join.transaction_id().as_str(),
-                )
-                .expect("test join transaction id remains non-empty"),
+                transaction_id: spatial_audio_join.transaction_id().clone(),
                 callback_index: spatial_audio_join.callback_index(),
                 phase,
                 profile_identity: spatial_audio_join.profile_identity(),

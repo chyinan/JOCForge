@@ -172,7 +172,7 @@ pub(super) fn stage_receiver_mode1(
         }
         (Some(receiver_index), Type10AssemblyOutcome::Ready { packet, receipt }, Some(s09)) => {
             validate_s09_lineage(expected_parent, expected_phase, s09)?;
-            if receiver_callback_count_before.value() != receiver_index {
+            if receiver_callback_count_before.value() != u64::from(receiver_index) {
                 return Err(ReceiverMode1Error::State);
             }
             if packet.callback_index() != expected_parent.callback_index()
@@ -188,10 +188,11 @@ pub(super) fn stage_receiver_mode1(
                 return Err(ReceiverMode1Error::Input);
             }
 
-            let receiver_callback_count_after = receiver_index
-                .checked_add(1)
-                .map(ReceiverCallbackCount::new)
-                .ok_or(ReceiverMode1Error::State)?;
+            let receiver_callback_count_after = ReceiverCallbackCount::new(
+                u64::from(receiver_index)
+                    .checked_add(1)
+                    .ok_or(ReceiverMode1Error::State)?,
+            );
             let analysis = analyze_receiver_lanes(
                 receiver_before,
                 &s09.lanes,
@@ -250,9 +251,9 @@ fn validate_parent_lineage(
     {
         return Err(ReceiverMode1Error::State);
     }
-    if receipt.programme_id().as_str() != expected_parent.programme_id().as_str()
+    if receipt.programme_id() != expected_parent.programme_id()
         || receipt.attempt() != expected_parent.attempt()
-        || receipt.transaction_id().as_str() != expected_parent.transaction_id().as_str()
+        || receipt.transaction_id() != expected_parent.transaction_id()
     {
         return Err(ReceiverMode1Error::Input);
     }
@@ -277,9 +278,9 @@ fn validate_s09_lineage(
     {
         return Err(ReceiverMode1Error::State);
     }
-    if input.parent.programme_id().as_str() != expected_parent.programme_id().as_str()
+    if input.parent.programme_id() != expected_parent.programme_id()
         || input.parent.attempt() != expected_parent.attempt()
-        || input.parent.transaction_id().as_str() != expected_parent.transaction_id().as_str()
+        || input.parent.transaction_id() != expected_parent.transaction_id()
     {
         return Err(ReceiverMode1Error::Input);
     }

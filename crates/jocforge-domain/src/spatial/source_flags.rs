@@ -9,7 +9,7 @@ use crate::{
     numeric::{FiniteF32, R32Error, r32_mul},
     profile::{EncodingProfile, ResolvedEncodingProfile, resolve_selected_profile},
     timeline::FrontendCallbackIndex,
-    transaction::CallbackTransactionId,
+    transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId},
 };
 use sha2::{Digest, Sha256};
 use std::sync::Arc;
@@ -112,35 +112,8 @@ impl SourceFlagsHistoryGeneration {
     }
 }
 
-#[derive(Debug, Eq, PartialEq)]
-pub struct SourceFlagsProgrammeId(Box<str>);
-
-impl SourceFlagsProgrammeId {
-    pub fn new(value: &str) -> Result<Self, SourceFlagsError> {
-        if value.is_empty() {
-            Err(SourceFlagsError::EmptyProgrammeIdentity)
-        } else {
-            Ok(Self(value.into()))
-        }
-    }
-
-    pub fn as_str(&self) -> &str {
-        &self.0
-    }
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct SourceFlagsAttempt(u64);
-
-impl SourceFlagsAttempt {
-    pub const fn new(value: u64) -> Self {
-        Self(value)
-    }
-
-    pub const fn value(self) -> u64 {
-        self.0
-    }
-}
+pub type SourceFlagsProgrammeId = ProgrammeId;
+pub type SourceFlagsAttempt = AttemptId;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct HostId(u8);
@@ -552,7 +525,7 @@ impl PrefixWriterSet {
 pub struct SourceFlagsParentLineage {
     programme_id: SourceFlagsProgrammeId,
     attempt: SourceFlagsAttempt,
-    transaction_id: CallbackTransactionId,
+    transaction_id: CallbackLineageIdentity,
     callback_index: FrontendCallbackIndex,
     before_history_generation: SourceFlagsHistoryGeneration,
     before_history_digest: SpatialControlDigest,
@@ -562,12 +535,12 @@ pub struct SourceFlagsParentLineage {
 
 impl SourceFlagsParentLineage {
     pub fn new(
-        programme_id: SourceFlagsProgrammeId,
-        attempt: SourceFlagsAttempt,
-        transaction_id: CallbackTransactionId,
-        callback_index: FrontendCallbackIndex,
+        transaction_id: CallbackLineageIdentity,
         owner: &SpatialControlMachine,
     ) -> Result<Self, SourceFlagsError> {
+        let programme_id = transaction_id.programme_id().clone();
+        let attempt = transaction_id.attempt_id();
+        let callback_index = transaction_id.callback_index();
         if callback_index != owner.committed().callback_index() {
             return Err(SourceFlagsError::StaleCallbackGeneration);
         }
@@ -628,17 +601,18 @@ struct SourceFlagsDigest([u8; 32]);
 
 impl SourceFlagsDigest {
     fn from_parts(domain: &[u8], parent: &SourceFlagsParentLineage, payload: &[u8]) -> Self {
+        let programme_id_bytes = parent.programme_id.as_str().as_bytes();
         let mut bytes = Vec::with_capacity(
-            domain.len()
-                + parent.programme_id.as_str().len()
-                + parent.transaction_id.as_str().len()
-                + 32
-                + payload.len(),
+            domain.len() + 8 + programme_id_bytes.len() + 8 + 4 + 8 + payload.len(),
         );
         bytes.extend_from_slice(domain);
-        bytes.extend_from_slice(parent.programme_id.as_str().as_bytes());
+        bytes.extend_from_slice(
+            &u64::try_from(programme_id_bytes.len())
+                .expect("programme identity length fits U64")
+                .to_le_bytes(),
+        );
+        bytes.extend_from_slice(programme_id_bytes);
         bytes.extend_from_slice(&parent.attempt.value().to_le_bytes());
-        bytes.extend_from_slice(parent.transaction_id.as_str().as_bytes());
         bytes.extend_from_slice(&parent.callback_index.value().to_le_bytes());
         bytes.extend_from_slice(&parent.before_history_generation.value().to_le_bytes());
         bytes.extend_from_slice(payload);

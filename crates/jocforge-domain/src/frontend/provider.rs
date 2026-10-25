@@ -693,6 +693,7 @@ mod tests {
     use crate::{
         frontend::{FrontendControlError, FrontendControlMachine},
         timeline::FrontendCallbackIndex,
+        transaction::{AttemptId, CallbackLineageIdentity},
     };
     use std::path::PathBuf;
 
@@ -742,9 +743,21 @@ mod tests {
         let validated = validate_f01e_provider(&provider, &manifest).unwrap();
         let mut wrong_receipt = validated.receipt().clone();
         wrong_receipt.lineage.manifest_sha256 = ProviderSha256::digest(b"different manifest");
-        let machine = FrontendControlMachine::from_provider(validated).unwrap();
+        let programme_id = crate::transaction::test_programme_id("provider-test-programme");
+        let attempt = AttemptId::new(0);
+        let machine =
+            FrontendControlMachine::from_provider(validated, programme_id.clone(), attempt)
+                .unwrap();
         assert!(matches!(
-            machine.prepare("tx", FrontendCallbackIndex::new(0), 0, &wrong_receipt),
+            machine.prepare(
+                CallbackLineageIdentity::new(
+                    programme_id.clone(),
+                    attempt,
+                    FrontendCallbackIndex::new(0),
+                ),
+                0,
+                &wrong_receipt,
+            ),
             Err(FrontendControlError::ProviderMismatch)
         ));
     }

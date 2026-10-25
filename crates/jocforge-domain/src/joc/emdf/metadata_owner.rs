@@ -19,7 +19,11 @@ use super::{
     id1_configuration::Id1MeasurementConfiguration,
     metadata_bodies::{MetadataBodiesLineage, MetadataBodiesProposal},
 };
-use crate::timeline::{CodecSourceIndex, JocDispatchIndex, PublishedAuIndex};
+use crate::{
+    spatial::source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
+    timeline::{CodecSourceIndex, JocDispatchIndex, PublishedAuIndex},
+    transaction::{AttemptId, ProgrammeId},
+};
 
 const PROFILE_ID: &str = "selected-48k-1536-four-queue.v1";
 const CARRIAGE_MODE: &str = "deployed_compat";
@@ -54,6 +58,7 @@ pub enum MetadataOwnerError {
     EofSourceCount,
     Finalized,
     Retired,
+    AttemptSequence,
 }
 
 impl MetadataOwnerError {
@@ -76,6 +81,7 @@ impl MetadataOwnerError {
             Self::EofSourceCount => "METADATA_EOF_SOURCE_COUNT",
             Self::Finalized => "METADATA_FINALIZED",
             Self::Retired => "METADATA_RETIRED",
+            Self::AttemptSequence => "METADATA_ATTEMPT_SEQUENCE",
         }
     }
 }
@@ -103,9 +109,9 @@ pub struct MetadataBodies {
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct MetadataSourceCall {
-    pub programme_id: String,
-    pub attempt: u64,
-    pub transaction_id: String,
+    pub programme_id: SourceFlagsProgrammeId,
+    pub attempt: SourceFlagsAttempt,
+    pub transaction_id: crate::transaction::CallbackLineageIdentity,
     pub source_index: CodecSourceIndex,
     pub dispatch: JocDispatchIndex,
     pub au_index: Option<PublishedAuIndex>,
@@ -263,9 +269,9 @@ pub struct MetadataSourceResult {
 
 #[derive(Debug)]
 pub struct MetadataSourceReceipt {
-    programme_id: String,
-    attempt: u64,
-    transaction_id: String,
+    programme_id: SourceFlagsProgrammeId,
+    attempt: SourceFlagsAttempt,
+    transaction_id: crate::transaction::CallbackLineageIdentity,
     source_index: CodecSourceIndex,
     dispatch: JocDispatchIndex,
     au_index: Option<PublishedAuIndex>,
@@ -285,15 +291,15 @@ pub struct MetadataSourceReceipt {
 }
 
 impl MetadataSourceReceipt {
-    pub fn programme_id(&self) -> &str {
+    pub fn programme_id(&self) -> &SourceFlagsProgrammeId {
         &self.programme_id
     }
 
-    pub const fn attempt(&self) -> u64 {
+    pub const fn attempt(&self) -> SourceFlagsAttempt {
         self.attempt
     }
 
-    pub fn transaction_id(&self) -> &str {
+    pub const fn transaction_id(&self) -> &crate::transaction::CallbackLineageIdentity {
         &self.transaction_id
     }
 
@@ -485,8 +491,8 @@ impl PendingPayload {
 
 /// Private single-owner metadata state. Source calls stage on a clone and replace this root once.
 pub struct MetadataOwner {
-    programme_id: String,
-    attempt: u64,
+    programme_id: ProgrammeId,
+    attempt: AttemptId,
     expected_sources: u64,
     provider_file: Vec<u8>,
     wrapper_file: Vec<u8>,
@@ -499,8 +505,8 @@ pub struct MetadataOwner {
 
 impl MetadataOwner {
     pub fn new(
-        programme_id: impl Into<String>,
-        attempt: u64,
+        programme_id: ProgrammeId,
+        attempt: AttemptId,
         expected_sources: u64,
         provider_file: &[u8],
         wrapper_file: &[u8],
@@ -533,7 +539,7 @@ impl MetadataOwner {
         let provider_sha256 =
             decode_sha256(PROVIDER_CANONICAL_SHA256).ok_or(MetadataOwnerError::ProviderIdentity)?;
         Ok(Self {
-            programme_id: programme_id.into(),
+            programme_id,
             attempt,
             expected_sources,
             provider_file: provider_file.to_vec(),
@@ -562,9 +568,9 @@ impl MetadataOwner {
             return Err(MetadataOwnerError::ProgrammeIdentity);
         }
         let call = MetadataSourceCall {
-            programme_id: bodies_lineage.programme_id().to_owned(),
+            programme_id: bodies_lineage.programme_id().clone(),
             attempt: bodies_lineage.attempt(),
-            transaction_id: bodies_lineage.transaction_id().to_owned(),
+            transaction_id: bodies_lineage.transaction_id().clone(),
             source_index: bodies_lineage.source_index(),
             dispatch: bodies_lineage.dispatch(),
             au_index: input.au_index,
@@ -896,7 +902,15 @@ impl MetadataOwner {
         })
     }
 
-    pub fn reset_for_attempt(&self, attempt: u64) -> Result<Self, MetadataOwnerError> {
+    pub fn reset_for_attempt(&self, attempt: AttemptId) -> Result<Self, MetadataOwnerError> {
+        let expected_attempt = self
+            .attempt
+            .value()
+            .checked_add(1)
+            .ok_or(MetadataOwnerError::AttemptSequence)?;
+        if !self.retired || attempt.value() != expected_attempt {
+            return Err(MetadataOwnerError::AttemptSequence);
+        }
         Self::new(
             self.programme_id.clone(),
             attempt,

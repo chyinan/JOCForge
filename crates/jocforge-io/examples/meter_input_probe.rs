@@ -4,6 +4,7 @@
 use jocforge_application::{SelectedAdmResourcePayloads, prepare_selected_job_input};
 use jocforge_domain::{
     frontend::{
+        PackageManifestEvidence, ProviderFileEvidence,
         dbmd_sections::parse_selected_dbmd_sections,
         job_configuration::{
             PrimaryMetadataChunkHashes, SelectedInputKind, SelectedPrimaryRuntimeIdentity,
@@ -12,11 +13,24 @@ use jocforge_domain::{
         primary_metadata_control::{PrimaryControl38Fields, produce_primary_metadata_control_rows},
         selected_adm_graph::parse_selected_adm_graph,
     },
-    meter::sample_block_queue::{MeterCallbackIndex, MeterSourceSampleCount},
+    meter::{
+        installed48_renderer::{
+            MeterInstalled48Input, MeterInstalled48State, stage_meter_installed48,
+        },
+        sample_block_queue::{MeterCallbackIndex, MeterSourceSampleCount},
+    },
     profile::ResolvedEncodingProfile,
     spatial::{
-        installed48_activity::{PrimaryActivityInput, PrimaryInstalled48ActivityProducer},
-        installed48_source_map::{Installed48SourceMap, build_meter_installed48_source_map},
+        diffusion_filter::{
+            DiffusionFilterParameters, validate_diffusion_filter_package_manifest,
+            validate_diffusion_filter_parameters,
+        },
+        installed48_activity::{
+            PrimaryActivityInput, PrimaryActivityOutput, PrimaryInstalled48ActivityProducer,
+        },
+        installed48_source_map::{
+            Installed48SourceMap, PrimaryPrefixRoute, build_meter_installed48_source_map,
+        },
         selected_p11_geometry::generate_selected_p11_geometry,
         source_flags::{
             HostRole, HostRouteRecord, RegularControls, SelectedFeatureFlagsControl,
@@ -24,16 +38,31 @@ use jocforge_domain::{
         },
     },
     timeline::{AdmSampleCount, AdmSampleIndex, FrontendCallbackIndex},
+    transaction::ProgrammeId,
 };
 use jocforge_io::pcm::{
     meter_source_cursor::{
-        MeterPcmSourceCursor, MeterPcmSourceIdentity, stage_meter_pcm_source_frame,
+        MeterPcmSourceCursor, MeterPcmSourceIdentity, MeterRawInputFrame,
+        stage_meter_pcm_source_frame,
     },
     riff_pcm24::parse_selected_riff_pcm24,
 };
 use serde_json::Value;
 use sha2::{Digest, Sha256};
-use std::{env, error::Error, fs, io, sync::Arc};
+use std::{env, error::Error, fs, io, path::Path, sync::Arc};
+
+const F04_PACKAGE_MANIFEST: &[u8] =
+    include_bytes!("../../jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json");
+const DIFFUSION_COEFFICIENTS: &[u8] = include_bytes!(
+    "../../jocforge-domain/tests/fixtures/diffusion_filter/diffusion-mathematical-v1.json"
+);
+const DIFFUSION_CONSTRUCTOR: &[u8] = include_bytes!(
+    "../../jocforge-domain/tests/fixtures/diffusion_filter/diffusion-constructor-mathematical-v1.json"
+);
+// Explicit diagnostic caller identity; not derived from source/config bytes or reused by a product job.
+fn diagnostic_programme_id() -> ProgrammeId {
+    ProgrammeId::new("JOCForgeProbe-v1").expect("diagnostic programme ID is nonempty")
+}
 
 fn main() -> Result<(), Box<dyn Error>> {
     let path = env::args_os()
@@ -79,6 +108,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         1,
     );
     let prepared = prepare_selected_job_input(
+        diagnostic_programme_id(),
         job_xml.as_bytes(),
         SelectedWaveDescriptor::new(parsed.sample_rate_hz(), parsed.channels(), 24),
         parsed.total_samples(),
@@ -160,6 +190,9 @@ fn main() -> Result<(), Box<dyn Error>> {
         .cold_state()
         .map_err(|_| io::Error::other("primary installed48 activity cold state failed"))?;
     let selected_profile = prepared.configuration().selected_profile();
+    let (diffusion_parameters, diffusion_manifest_sha256) = selected_diffusion_parameters()?;
+    let renderer_source_sha256 = *source_map.source_binding().source_receipt_sha256();
+    let mut renderer_state = MeterInstalled48State::cold(renderer_source_sha256, source_samples);
     println!("caller_job=F01E_fixture_settings_with_selected_file_reference");
     println!(
         "caller_job_xml_sha256={}",
@@ -187,6 +220,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         admitted_events.events().len()
     );
     println!("dbmd_track_count={}", dbmd.track_fields().len());
+    println!("f04a_diffusion_manifest_sha256={diffusion_manifest_sha256}");
     println!("meter_installed48_source_rows={}", source_map.rows().len());
     println!(
         "meter_primary_control_rows={}",
@@ -198,6 +232,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let (route, _) =
         source_flags_inputs(&source_map, selected_profile, FrontendCallbackIndex::new(0))?;
     let mut previous_regular_rows = vec![vec![0_u32; 1_536]; route.regular_hosts().len()];
+    let mut f04g_actual_callbacks = Vec::with_capacity(3);
     for callback in 0..3_u64 {
         let proposal =
             stage_meter_pcm_source_frame(&cursor, MeterCallbackIndex::new(callback), &parsed)
@@ -226,10 +261,19 @@ fn main() -> Result<(), Box<dyn Error>> {
             .map_err(|_| io::Error::other("meter primary activity stage failed"))?;
         let (activity_output, next_activity_state, membership_route) =
             activity_proposal.into_parts();
-        if activity_output.callback_index().value() != callback {
+        if u64::from(activity_output.callback_index().value()) != callback {
             return Err(io::Error::other("activity callback generation mismatch").into());
         }
-        let callback_index = FrontendCallbackIndex::new(callback);
+        f04g_actual_callbacks.push(f04g_actual_callback_record(
+            &frame,
+            &activity_output,
+            &membership_route,
+            &source_map,
+        )?);
+        let callback_index = FrontendCallbackIndex::new(
+            u32::try_from(callback)
+                .map_err(|_| io::Error::other("callback index exceeds its U32 domain"))?,
+        );
         let host10_feature = SelectedFeatureFlagsControl::from_admitted_profile(
             selected_profile,
             callback_index,
@@ -256,13 +300,60 @@ fn main() -> Result<(), Box<dyn Error>> {
                 error.code()
             ))
         })?;
+        let mut flag_pair_counts = [0_usize; 4];
+        for pair in values.payload() {
+            let bucket = match pair {
+                [0, 0] => 0,
+                [0, 1] => 1,
+                [1, 0] => 2,
+                [1, 1] => 3,
+                _ => return Err(io::Error::other("F03R payload flag pair is outside U1xU1").into()),
+            };
+            flag_pair_counts[bucket] += 1;
+        }
+        if flag_pair_counts.iter().sum::<usize>() != 48 {
+            return Err(io::Error::other("F03R payload count is not 48 pairs").into());
+        }
         let mut flags_digest = Sha256::new();
         for pair in values.payload() {
             flags_digest.update(pair);
         }
         previous_regular_rows = values.raw_history_rows().map(|row| row.to_vec()).collect();
+        let render_proposal = stage_meter_installed48(
+            &renderer_state,
+            MeterInstalled48Input {
+                source_sha256: renderer_source_sha256,
+                callback_index: frame.callback_index(),
+                source_cursor_before: AdmSampleIndex::new(frame.source_cursor_before().value()),
+                host_input_samples: u16::try_from(frame.host_input_count().value())
+                    .map_err(|_| io::Error::other("meter host sample count exceeds u16"))?,
+                source_padding_samples: u16::try_from(frame.source_padding_count().value())
+                    .map_err(|_| io::Error::other("meter padding sample count exceeds u16"))?,
+                raw_pcm_rows: frame.rows(),
+                activity: &activity_output,
+                membership_route: &membership_route,
+                source_map: &source_map,
+                controls: &primary_controls,
+                diffusion_parameters: Some(&diffusion_parameters),
+            },
+        )
+        .map_err(|error| {
+            io::Error::other(format!("selected F04A leaf stage failed: {}", error.code()))
+        })?;
+        let (next_renderer_state, render_frame) = render_proposal.into_parts();
+        if render_frame.callback_index() != frame.callback_index()
+            || render_frame.upstream_generation() != frame.upstream_generation().value()
+        {
+            return Err(io::Error::other("F04A callback generation mismatch").into());
+        }
+        let mut render_digest = Sha256::new();
+        for row in render_frame.rows() {
+            for word in row {
+                render_digest.update(word.to_le_bytes());
+            }
+        }
         println!(
-            "callback={} phase={:?} generation={} cursor_before={} cursor_after={} host_samples={} padded_samples={} rows=38x1536 f32_words_sha256={} quiet37_sha256={} prefix_writers={:?} membership_rows={} f03r_payload=48x2 sha256={} host10_feature_host={} host10_feature_callback={} host10_feature_component_enum={} host10_feature_diffuse={}",
+            "callback={} phase={:?} generation={} cursor_before={} cursor_after={} host_samples={} padded_samples={} rows=38x1536 f32_words_sha256={} quiet37_sha256={} prefix_writers={:?} membership_rows={} f03r_payload=48x2 sha256={} pair_counts_00_01_10_11={:?} host10_feature_host={} host10_feature_callback={} host10_feature_component_enum={} host10_feature_diffuse={} f04a_leaf=48x3072 generation={} sha256={}",
             frame.callback_index().value(),
             frame.phase(),
             frame.upstream_generation().value(),
@@ -275,13 +366,17 @@ fn main() -> Result<(), Box<dyn Error>> {
             prefix_writer_sources,
             membership_route.contributions().len(),
             hex_lower(&flags_digest.finalize()),
+            flag_pair_counts,
             host10_feature.host().value(),
             host10_feature.callback_index().value(),
             host10_feature.component_enum(),
             host10_feature.diffuse(),
+            render_frame.upstream_generation(),
+            hex_lower(&render_digest.finalize()),
         );
         cursor = next_cursor;
         activity_state = next_activity_state;
+        renderer_state = next_renderer_state;
     }
     let host10_audio_event_diffuse_after = source_map
         .row_for_source(host10_binding.source_index())
@@ -295,10 +390,159 @@ fn main() -> Result<(), Box<dyn Error>> {
         "host10_audio_event_diffuse_word10={host10_audio_event_diffuse_after} preserved_for_F04A"
     );
     println!("f03r_input=selected_profile_typed_controls; event_diffuse_not_reused");
-    println!("pipeline_stop_stage=F03R_VALUE_ONLY");
+    println!("value_stages=F03R_VALUE_ONLY_AND_F04A_LEAF");
     println!("source_flags_packet=NOT_CREATED");
+    println!("f04a_leaf=separate_noncommitting_selected_value_transition");
     println!("callback_commit=NOT_COMMITTED");
+    if let Some(output_directory) = env::var_os("JOCFORGE_F04G_ACTUAL_INPUTS_OUT") {
+        write_f04g_actual_input_package(
+            Path::new(&output_directory),
+            &prepared,
+            &geometry,
+            &hex_lower(&Sha256::digest(axml)),
+            &hex_lower(&Sha256::digest(chna)),
+            &hex_lower(&Sha256::digest(dbmd_payload)),
+            &f04g_actual_callbacks,
+        )?;
+    }
     Ok(())
+}
+
+fn f04g_actual_callback_record(
+    frame: &MeterRawInputFrame,
+    activity: &PrimaryActivityOutput,
+    membership_route: &PrimaryPrefixRoute,
+    source_map: &Installed48SourceMap,
+) -> Result<serde_json::Value, io::Error> {
+    let mut physical_source_rows = Vec::with_capacity(37);
+    for (regular_ordinal, binding) in source_map.physical_to_global_source().iter().enumerate() {
+        let source_index = binding.source_index().value();
+        let row = source_map
+            .row_for_source(binding.source_index())
+            .ok_or_else(|| io::Error::other("F04G actual input source row is missing"))?;
+        let quiet = *activity
+            .quiet37()
+            .get(regular_ordinal)
+            .ok_or_else(|| io::Error::other("F04G actual quiet flag is missing"))?;
+        let input_mute = row
+            .input_mute()
+            .ok_or_else(|| io::Error::other("F04G actual input mute is missing"))?;
+        let control52 = row.control52();
+        let membership_words = control52.map(|control| {
+            let words = control.words();
+            [
+                words[5], words[6], words[7], words[4], words[9], words[8], words[11], words[12],
+            ]
+        });
+        let membership_actual = membership_route
+            .contributions()
+            .iter()
+            .find(|contribution| contribution.source_index().value() == source_index)
+            .map(|contribution| {
+                serde_json::json!({
+                    "gain_words_u32": contribution.result().gain_words(),
+                    "positive_members": contribution.result().positive_members()
+                })
+            });
+        physical_source_rows.push(serde_json::json!({
+            "physical_host": binding.physical_host().value(),
+            "source_index": source_index,
+            "kind": row.kind(),
+            "quiet": quiet,
+            "input_mute": input_mute,
+            "control52_membership_words_u32": membership_words,
+            "membership_actual_output": membership_actual
+        }));
+    }
+    Ok(serde_json::json!({
+        "frontend_callback_g": frame.callback_index().value(),
+        "phase": format!("{:?}", frame.phase()),
+        "upstream_generation": frame.upstream_generation().value(),
+        "source_interval": [frame.source_cursor_before().value(), frame.source_cursor_after().value()],
+        "actual_source_samples": frame.host_input_count().value(),
+        "quiet37_u8": activity.quiet37().to_vec(),
+        "prefix_writer_sources": membership_route.writer_indices(),
+        "membership_contribution_count": membership_route.contributions().len(),
+        "physical_source_rows": physical_source_rows
+    }))
+}
+
+fn write_f04g_actual_input_package(
+    output_directory: &Path,
+    prepared: &jocforge_application::PreparedJobInput,
+    geometry: &jocforge_domain::spatial::selected_p11_geometry::SelectedP11Geometry,
+    axml_sha256: &str,
+    chna_sha256: &str,
+    dbmd_sha256: &str,
+    callbacks: &[serde_json::Value],
+) -> Result<(), io::Error> {
+    fs::create_dir_all(output_directory)?;
+    let payload = serde_json::json!({
+        "schema": "f04g-actual-membership-inputs.v1",
+        "package_id": "F04G_ACTUAL_MEMBERSHIP_INPUTS_V1",
+        "source_identity": {
+            "resource_bytes": prepared.resource_identity().resource_bytes(),
+            "resource_sha256": hex_lower(&prepared.resource_identity().input_sha256()),
+            "axml_sha256": axml_sha256,
+            "chna_sha256": chna_sha256,
+            "dbmd_sha256": dbmd_sha256,
+            "job_xml_sha256": hex_lower(&prepared.job_xml_sha256()),
+            "config_sha256": hex_lower(&prepared.config_sha256())
+        },
+        "selected_profile": "ADM / 48 kHz / 38-channel PCM24 / 5.1",
+        "p11_geometry_f32le_sha256": hex_lower(geometry.f32le_sha256()),
+        "pcm_policy": {
+            "raw_pcm_included": false,
+            "raw_pcm_persisted": false,
+            "quiet37_values_are_activity_outputs": true
+        },
+        "expected_outputs_included": false,
+        "callbacks": callbacks
+    });
+    let payload_bytes = serde_json::to_vec_pretty(&payload)
+        .map_err(|_| io::Error::other("F04G actual-input JSON serialization failed"))?;
+    let payload_sha256 = hex_lower(&Sha256::digest(&payload_bytes));
+    fs::write(
+        output_directory.join("F04G-ACTUAL-INPUTS.json"),
+        &payload_bytes,
+    )?;
+    let manifest = serde_json::json!({
+        "schema": "f04g-actual-input-capture-manifest.v1",
+        "payloads": [{
+            "file": "F04G-ACTUAL-INPUTS.json",
+            "bytes": payload_bytes.len(),
+            "sha256": payload_sha256
+        }],
+        "expected_outputs_included": false,
+        "raw_pcm_included": false
+    });
+    let manifest_bytes = serde_json::to_vec_pretty(&manifest)
+        .map_err(|_| io::Error::other("F04G actual-input manifest serialization failed"))?;
+    let manifest_sha256 = hex_lower(&Sha256::digest(&manifest_bytes));
+    fs::write(output_directory.join("MANIFEST.json"), manifest_bytes)?;
+    println!(
+        "f04g_actual_input_package=F04G-ACTUAL-INPUTS.json bytes={} sha256={} manifest_sha256={}",
+        payload_bytes.len(),
+        payload_sha256,
+        manifest_sha256
+    );
+    Ok(())
+}
+
+fn selected_diffusion_parameters() -> Result<(DiffusionFilterParameters, String), io::Error> {
+    let package_manifest = PackageManifestEvidence::new(Arc::from(F04_PACKAGE_MANIFEST), None);
+    let manifest =
+        validate_diffusion_filter_package_manifest(&package_manifest).map_err(|error| {
+            io::Error::other(format!("diffusion package validation: {}", error.code()))
+        })?;
+    let manifest_sha256 = manifest.manifest_sha256().to_hex();
+    let coefficients = ProviderFileEvidence::new(Arc::from(DIFFUSION_COEFFICIENTS), None);
+    let constructor = ProviderFileEvidence::new(Arc::from(DIFFUSION_CONSTRUCTOR), None);
+    let parameters = validate_diffusion_filter_parameters(&coefficients, &constructor, &manifest)
+        .map_err(|error| {
+        io::Error::other(format!("diffusion parameter validation: {}", error.code()))
+    })?;
+    Ok((parameters, manifest_sha256))
 }
 
 fn source_flags_inputs(

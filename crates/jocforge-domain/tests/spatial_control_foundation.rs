@@ -11,7 +11,10 @@ use jocforge_domain::{
     },
     spatial::{PacketReadiness, SpatialControlError, SpatialControlMachine},
     timeline::AdmSampleIndex,
-    transaction::{CallbackTransactionId, CallbackTransactionIdError},
+    transaction::{
+        AttemptId, CallbackLineageIdentity, CallbackTransactionId, CallbackTransactionIdError,
+        ProgrammeId,
+    },
 };
 use std::sync::Arc;
 
@@ -221,7 +224,7 @@ fn provider_identity_mismatch_is_rejected_without_mutating_existing_cold_root() 
 }
 
 #[test]
-fn callback_transaction_id_rejects_empty_identity() {
+fn callback_transaction_id_keeps_the_approved_string_contract() {
     assert_eq!(
         CallbackTransactionId::new(""),
         Err(CallbackTransactionIdError::Empty)
@@ -230,4 +233,16 @@ fn callback_transaction_id_rejects_empty_identity() {
         CallbackTransactionId::new("callback-1").unwrap().as_str(),
         "callback-1"
     );
+}
+
+#[test]
+fn callback_lineage_identity_keeps_its_typed_components() {
+    let programme_id = ProgrammeId::new("programme-foundation-test").unwrap();
+    let attempt_id = AttemptId::new(3);
+    let callback_index = jocforge_domain::timeline::FrontendCallbackIndex::new(7);
+    let identity = CallbackLineageIdentity::new(programme_id.clone(), attempt_id, callback_index);
+
+    assert_eq!(identity.programme_id(), &programme_id);
+    assert_eq!(identity.attempt_id(), attempt_id);
+    assert_eq!(identity.callback_index(), callback_index);
 }

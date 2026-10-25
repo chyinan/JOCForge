@@ -49,7 +49,7 @@ use crate::frontend::{
 };
 use crate::profile::{EncodingProfile, resolve_selected_profile};
 use crate::timeline::{AdmSampleIndex, FrontendCallbackIndex, NormalCallbackCount};
-use crate::transaction::CallbackTransactionId;
+use crate::transaction::CallbackLineageIdentity;
 use sha2::{Digest, Sha256};
 use std::fmt::Write as FmtWrite;
 
@@ -320,7 +320,7 @@ impl SpatialControlState {
     fn serialize_v5(&self) -> Vec<u8> {
         let mut bytes = Vec::new();
 
-        push_u64(&mut bytes, self.clocks.callback_index.value());
+        push_u64(&mut bytes, u64::from(self.clocks.callback_index.value()));
         push_u64(&mut bytes, self.clocks.source_cursor_samples.value());
         push_u64(&mut bytes, self.clocks.normal_callbacks.value());
         push_u32(&mut bytes, self.clocks.remaining_cached_drains);
@@ -526,7 +526,7 @@ impl SpatialControlRenderAuthority {
 
 #[derive(Debug, Eq, PartialEq)]
 pub struct SpatialControlJoinMetadata {
-    transaction_id: CallbackTransactionId,
+    transaction_id: CallbackLineageIdentity,
     callback_index: FrontendCallbackIndex,
     before_generation: u64,
     before_digest: SpatialControlDigest,
@@ -536,7 +536,7 @@ pub struct SpatialControlJoinMetadata {
 }
 
 impl SpatialControlJoinMetadata {
-    pub fn transaction_id(&self) -> &CallbackTransactionId {
+    pub fn transaction_id(&self) -> &CallbackLineageIdentity {
         &self.transaction_id
     }
 
@@ -567,7 +567,7 @@ impl SpatialControlJoinMetadata {
     #[cfg(test)]
     pub(crate) fn fixture(
         machine: &SpatialControlMachine,
-        transaction_id: CallbackTransactionId,
+        transaction_id: CallbackLineageIdentity,
         callback_index: FrontendCallbackIndex,
         before_generation: u64,
         before_digest: Option<[u8; 32]>,

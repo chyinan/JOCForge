@@ -4,6 +4,7 @@
 use crate::{
     meter::measurement_receipt::{ProgrammeGatingKind, ProgrammeMeasurementReceipt},
     numeric::{FiniteF32, r32_add, trunc_f32_to_i32},
+    transaction::{AttemptId, ProgrammeId},
 };
 use serde_json::Value;
 
@@ -22,8 +23,8 @@ pub enum Id1ConfigurationError {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Id1MeasurementConfiguration {
-    programme_id: Box<str>,
-    attempt: u64,
+    programme_id: ProgrammeId,
+    attempt: AttemptId,
     values: [i64; 9],
     measurement_input_sha256: [u8; 32],
     measurement_config_sha256: [u8; 32],
@@ -57,7 +58,7 @@ impl Id1MeasurementConfiguration {
             i64::from(ABSENT),
         ];
         Ok(Self {
-            programme_id: receipt.programme_id().into(),
+            programme_id: receipt.programme_id().clone(),
             attempt: receipt.attempt(),
             values,
             measurement_input_sha256: *receipt.input_sha256(),
@@ -77,11 +78,11 @@ impl Id1MeasurementConfiguration {
         &self.values
     }
 
-    pub fn programme_id(&self) -> &str {
+    pub fn programme_id(&self) -> &ProgrammeId {
         &self.programme_id
     }
 
-    pub const fn attempt(&self) -> u64 {
+    pub const fn attempt(&self) -> AttemptId {
         self.attempt
     }
 
@@ -171,8 +172,8 @@ mod tests {
     fn measurement_receipt_projects_the_exact_nine_id1_fields() {
         let receipt =
             ProgrammeMeasurementReceipt::from_verified_prepass(ProgrammeMeasurementReceiptInput {
-                programme_id: "id1-measurement-test",
-                attempt: 3,
+                programme_id: crate::transaction::test_programme_id("id1-measurement-test"),
+                attempt: AttemptId::new(3),
                 input_sha256: [0x11; 32],
                 config_sha256: [0x22; 32],
                 dialogue_word: (-23.0_f32).to_bits(),
@@ -201,8 +202,8 @@ mod tests {
     fn dialogue_is_generic_field_two_true_but_rejected_by_selected_di_off() {
         let receipt =
             ProgrammeMeasurementReceipt::from_verified_prepass(ProgrammeMeasurementReceiptInput {
-                programme_id: "dialogue-gating-test",
-                attempt: 0,
+                programme_id: crate::transaction::test_programme_id("dialogue-gating-test"),
+                attempt: AttemptId::new(0),
                 input_sha256: [0x11; 32],
                 config_sha256: [0x22; 32],
                 dialogue_word: (-23.0_f32).to_bits(),

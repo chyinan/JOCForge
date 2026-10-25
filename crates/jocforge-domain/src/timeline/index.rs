@@ -14,11 +14,23 @@ macro_rules! index_type {
             }
         }
     };
+    ($name:ident, $representation:ty) => {
+        #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+        pub struct $name($representation);
+        impl $name {
+            pub const fn new(value: $representation) -> Self {
+                Self(value)
+            }
+            pub const fn value(self) -> $representation {
+                self.0
+            }
+        }
+    };
 }
 
 index_type!(AdmSampleIndex);
 index_type!(NormalCallbackCount);
-index_type!(FrontendCallbackIndex);
+index_type!(FrontendCallbackIndex, u32);
 index_type!(CodecSourceIndex);
 index_type!(JocDispatchIndex);
 index_type!(JocGeneratedWriterIndex);

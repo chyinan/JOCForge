@@ -17,7 +17,7 @@ use crate::{
         spatial_control::{SpatialControlJoinMetadata, SpatialControlMachine},
     },
     timeline::FrontendCallbackIndex,
-    transaction::CallbackTransactionId,
+    transaction::{AttemptId, CallbackLineageIdentity},
 };
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
@@ -80,18 +80,31 @@ fn route(lfe_host: u8) -> ValidatedSemanticRoute {
     ValidatedSemanticRoute::new(records).unwrap()
 }
 
+fn direct_lfe_programme_id() -> SourceFlagsProgrammeId {
+    crate::transaction::test_programme_id("direct-lfe-test-programme")
+}
+
+fn direct_lfe_transaction_id(callback_index: FrontendCallbackIndex) -> CallbackLineageIdentity {
+    CallbackLineageIdentity::new(direct_lfe_programme_id(), AttemptId::new(7), callback_index)
+}
+
 fn input_view(
     context: &TestContext,
     callback_index: FrontendCallbackIndex,
     phase: CallbackPhase,
     samples: Vec<f32>,
-    transaction_id: &str,
+    transaction_label: &str,
 ) -> Result<DirectLfeInputView, DirectLfeError> {
+    let programme_id = if transaction_label == "foreign-transaction" {
+        crate::transaction::test_programme_id("foreign-direct-lfe-programme")
+    } else {
+        direct_lfe_programme_id()
+    };
     DirectLfeInputView::try_from_spatial_control(
         SpatialControlLfeIngressAuthority::fixture(),
-        SourceFlagsProgrammeId::new("direct-lfe-test-programme").unwrap(),
+        programme_id.clone(),
         SourceFlagsAttempt::new(7),
-        CallbackTransactionId::new(transaction_id).unwrap(),
+        CallbackLineageIdentity::new(programme_id, AttemptId::new(7), callback_index),
         callback_index,
         phase,
         context.profile,
@@ -106,9 +119,9 @@ fn spatial_audio_join(
     callback_index: FrontendCallbackIndex,
 ) -> SpatialAudioJoinMetadata {
     SpatialAudioJoinMetadata::new(
-        SourceFlagsProgrammeId::new("direct-lfe-test-programme").unwrap(),
+        direct_lfe_programme_id(),
         SourceFlagsAttempt::new(7),
-        CallbackTransactionId::new("direct-lfe-test-transaction").unwrap(),
+        direct_lfe_transaction_id(callback_index),
         callback_index,
         context.spatial_audio.generation(),
         context.spatial_audio.digest(),
@@ -122,7 +135,7 @@ fn spatial_control_join(
 ) -> SpatialControlJoinMetadata {
     SpatialControlJoinMetadata::fixture(
         &context.spatial_control,
-        CallbackTransactionId::new("direct-lfe-test-transaction").unwrap(),
+        direct_lfe_transaction_id(callback_index),
         callback_index,
         context.spatial_control.generation(),
         None,
@@ -202,7 +215,7 @@ fn ring_snapshot(state: &LfeDelayRingState) -> Value {
         .iter()
         .map(|row| row.as_ref().map(|bytes| sha256(bytes)))
         .collect();
-    let indexes: Vec<Option<u64>> = state
+    let indexes: Vec<Option<u32>> = state
         .input_frame_indexes
         .iter()
         .map(|index| index.map(FrontendCallbackIndex::value))
@@ -230,7 +243,7 @@ fn direct_lfe_g0_through_g5_match_actual_first_vectors() {
         assert_eq!(case["id"], SUCCESS_IDS[generation]);
         let input = &case["input"];
         assert_eq!(input["generation"].as_u64(), Some(generation as u64));
-        let callback_index = FrontendCallbackIndex::new(generation as u64);
+        let callback_index = FrontendCallbackIndex::new(u32::try_from(generation).unwrap());
         let callback_phase = phase(input["phase"].as_str().unwrap());
         let samples = row_from_recipe(&input["recipe"], cached_g1.as_deref());
         let actual_input_bytes = row_bytes(&samples);
@@ -278,7 +291,9 @@ fn direct_lfe_g0_through_g5_match_actual_first_vectors() {
         if let Some(row0) = proposal.type10_row0.as_ref() {
             assert_eq!(
                 Some(row0.origin_generation.value()),
-                expected_output["output_origin_generation"].as_u64()
+                expected_output["output_origin_generation"]
+                    .as_u64()
+                    .map(|value| u32::try_from(value).unwrap())
             );
             assert_eq!(
                 sha256(&row0.row_bytes),
@@ -294,8 +309,10 @@ fn direct_lfe_g0_through_g5_match_actual_first_vectors() {
             Some(expected_available)
         );
         assert_eq!(
-            expected_type10["rows_1_15_origin_generation"].as_u64(),
-            expected_available.then_some(generation as u64)
+            expected_type10["rows_1_15_origin_generation"]
+                .as_u64()
+                .map(|value| u32::try_from(value).unwrap()),
+            expected_available.then_some(u32::try_from(generation).unwrap())
         );
         state = proposal.after;
     }
@@ -412,9 +429,9 @@ fn direct_lfe_profile_mismatch_rejects_without_staging() {
     let before_digest = context.spatial_audio.digest();
     let result = DirectLfeInputView::try_from_spatial_control(
         SpatialControlLfeIngressAuthority::fixture(),
-        SourceFlagsProgrammeId::new("direct-lfe-test-programme").unwrap(),
+        direct_lfe_programme_id(),
         SourceFlagsAttempt::new(7),
-        CallbackTransactionId::new("direct-lfe-test-transaction").unwrap(),
+        direct_lfe_transaction_id(FrontendCallbackIndex::new(0)),
         FrontendCallbackIndex::new(0),
         CallbackPhase::Normal,
         EncodingProfile::selected_with_carriage(crate::profile::EmdfCarriageProfile::EtsiEmdf),

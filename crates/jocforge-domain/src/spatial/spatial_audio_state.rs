@@ -4,7 +4,7 @@ use crate::{
     profile::{EncodingProfile, resolve_selected_profile},
     spatial::source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
     timeline::{FrontendCallbackIndex, ReceiverCallbackCount},
-    transaction::CallbackTransactionId,
+    transaction::CallbackLineageIdentity,
 };
 use sha2::{Digest, Sha256};
 use std::fmt::Write as FmtWrite;
@@ -340,7 +340,7 @@ impl SpatialAudioStaged {
 pub struct SpatialAudioJoinMetadata {
     programme_id: SourceFlagsProgrammeId,
     attempt: SourceFlagsAttempt,
-    transaction_id: CallbackTransactionId,
+    transaction_id: CallbackLineageIdentity,
     callback_index: FrontendCallbackIndex,
     before_generation: u64,
     before_digest: SpatialAudioDigest,
@@ -353,7 +353,7 @@ impl SpatialAudioJoinMetadata {
     pub(crate) fn new(
         programme_id: SourceFlagsProgrammeId,
         attempt: SourceFlagsAttempt,
-        transaction_id: CallbackTransactionId,
+        transaction_id: CallbackLineageIdentity,
         callback_index: FrontendCallbackIndex,
         before_generation: u64,
         before_digest: SpatialAudioDigest,
@@ -378,7 +378,7 @@ impl SpatialAudioJoinMetadata {
         self.attempt
     }
 
-    pub const fn transaction_id(&self) -> &CallbackTransactionId {
+    pub const fn transaction_id(&self) -> &CallbackLineageIdentity {
         &self.transaction_id
     }
 
@@ -626,10 +626,7 @@ impl F04CompositionState {
     fn encode(&self, encoder: &mut F04StateEncoder) -> Result<(), SpatialAudioError> {
         encoder.begin_dataclass("F04CompositionState", 9)?;
         encoder.field("callback_index")?;
-        encoder.encode_i64(
-            i64::try_from(self.callback_index.value())
-                .map_err(|_| SpatialAudioError::EncodingLengthOverflow)?,
-        );
+        encoder.encode_i64(i64::from(self.callback_index.value()));
         encoder.field("retired")?;
         encoder.encode_bool(self.retired);
         encoder.field("component_state")?;
@@ -735,10 +732,7 @@ impl LfeDelayRingState {
         encoder.encode_tuple_length(self.input_frame_indexes.len())?;
         for index in &self.input_frame_indexes {
             match index {
-                Some(index) => encoder.encode_i64(
-                    i64::try_from(index.value())
-                        .map_err(|_| SpatialAudioError::EncodingLengthOverflow)?,
-                ),
+                Some(index) => encoder.encode_i64(i64::from(index.value())),
                 None => encoder.encode_none(),
             }
         }

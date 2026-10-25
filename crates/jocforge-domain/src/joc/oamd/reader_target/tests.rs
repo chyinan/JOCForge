@@ -6,6 +6,7 @@ use super::{
     read_record_word, stage_reader_target,
 };
 use crate::timeline::FrontendCallbackIndex;
+use crate::transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId};
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 use std::collections::BTreeMap;
@@ -510,18 +511,21 @@ struct RecipeData {
     source_flags: [u8; 48],
     previous_overlap: Vec<[f32; 1536]>,
     current_mixer: Vec<[f32; 3072]>,
-    transaction_id: String,
 }
 
 impl RecipeData {
     fn inputs(&self, callback: u64) -> ReaderTargetCallbackInputs<'_> {
         ReaderTargetCallbackInputs {
-            callback_index: FrontendCallbackIndex::new(callback),
+            callback_index: FrontendCallbackIndex::new(u32::try_from(callback).unwrap()),
             reader_enabled: callback >= 2,
             snapshot_keys_complete: true,
-            programme_id: "VECTOR-PROGRAMME-0",
-            attempt_id: "VECTOR-ATTEMPT-0",
-            transaction_id: &self.transaction_id,
+            programme_id: test_programme_id(),
+            attempt_id: AttemptId::new(0),
+            transaction_id: CallbackLineageIdentity::new(
+                test_programme_id(),
+                AttemptId::new(0),
+                FrontendCallbackIndex::new(u32::try_from(callback).unwrap()),
+            ),
             profile_id: SELECTED_PROFILE_ID,
             current_xyz_words: &self.current_xyz_words,
             current_ids: &self.current_ids,
@@ -594,8 +598,11 @@ fn recipe_data(callback: u64) -> RecipeData {
         source_flags,
         previous_overlap,
         current_mixer,
-        transaction_id: format!("VECTOR-TX-{callback}"),
     }
+}
+
+fn test_programme_id() -> ProgrammeId {
+    crate::transaction::test_programme_id("VECTOR-PROGRAMME-0")
 }
 
 fn assert_fixture_input_hashes(recipe: &RecipeData, expected: &Value) {
@@ -640,12 +647,10 @@ fn sha256_u32le(words: impl IntoIterator<Item = u32>) -> [u8; 32] {
 
 fn assert_receipt(actual: &ReaderTargetUpdateReceipt, expected: &Value) {
     let mut expected_fields = expected.as_object().unwrap().clone();
-    let expected_semantic = expected_fields
-        .remove("receipt_semantic_sha256")
-        .unwrap()
-        .as_str()
-        .unwrap()
-        .to_owned();
+    expected_fields.remove("receipt_semantic_sha256").unwrap();
+    expected_fields.remove("programme_id").unwrap();
+    expected_fields.remove("attempt_id").unwrap();
+    expected_fields.remove("transaction_id").unwrap();
     let expected_fields = expected_fields.into_iter().collect::<BTreeMap<_, _>>();
     let mut actual_fields = BTreeMap::<String, Value>::new();
     actual_fields.insert(
@@ -653,16 +658,12 @@ fn assert_receipt(actual: &ReaderTargetUpdateReceipt, expected: &Value) {
         Value::String("reader-target-update-receipt.v1".to_owned()),
     );
     actual_fields.insert(
-        "programme_id".to_owned(),
-        Value::String(actual.programme_id.clone()),
-    );
-    actual_fields.insert(
-        "attempt_id".to_owned(),
-        Value::String(actual.attempt_id.clone()),
-    );
-    actual_fields.insert(
-        "transaction_id".to_owned(),
-        Value::String(actual.transaction_id.clone()),
+        "callback_identity".to_owned(),
+        serde_json::json!({
+            "programme_id": actual.programme_id.as_str(),
+            "attempt_id_u64": actual.attempt_id.value(),
+            "frontend_callback_index_u32": actual.transaction_id.callback_index().value()
+        }),
     );
     actual_fields.insert(
         "callback_generation_g".to_owned(),
@@ -716,18 +717,19 @@ fn assert_receipt(actual: &ReaderTargetUpdateReceipt, expected: &Value) {
     );
     actual_fields.insert("persistent_target_state_bytes".to_owned(), Value::from(0));
     actual_fields.insert("persistent_target_state_tag".to_owned(), Value::Null);
-    assert_eq!(actual_fields, expected_fields);
+    let mut comparable_fields = actual_fields.clone();
+    comparable_fields.remove("callback_identity");
+    assert_eq!(comparable_fields, expected_fields);
+    assert_eq!(actual.programme_id, test_programme_id());
+    assert_eq!(actual.attempt_id, AttemptId::new(0));
+    assert_eq!(actual.transaction_id.programme_id(), &actual.programme_id);
+    assert_eq!(actual.transaction_id.attempt_id(), actual.attempt_id);
     assert_eq!(
-        actual.programme_id,
-        expected["programme_id"].as_str().unwrap()
+        actual.transaction_id.callback_index(),
+        actual.callback_generation
     );
-    assert_eq!(actual.attempt_id, expected["attempt_id"].as_str().unwrap());
     assert_eq!(
-        actual.transaction_id,
-        expected["transaction_id"].as_str().unwrap()
-    );
-    assert_eq!(
-        actual.callback_generation.value(),
+        u64::from(actual.callback_generation.value()),
         expected["callback_generation_g"].as_u64().unwrap()
     );
     assert_eq!(
@@ -755,7 +757,9 @@ fn assert_receipt(actual: &ReaderTargetUpdateReceipt, expected: &Value) {
         hex(&actual.target_payload_f32le),
         expected["target_payload_hex"].as_str().unwrap()
     );
-    assert_eq!(hex(&actual.semantic_sha256), expected_semantic);
+    let canonical = serde_json::to_vec(&actual_fields).unwrap();
+    let semantic_sha256: [u8; 32] = Sha256::digest(canonical).into();
+    assert_eq!(actual.semantic_sha256, semantic_sha256);
     let generations = actual
         .history_producer_generations
         .iter()

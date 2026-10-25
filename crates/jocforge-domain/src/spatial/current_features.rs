@@ -24,7 +24,7 @@ use crate::{
         SourceFlagsAttempt, SourceFlagsError, SourceFlagsParentLineage, SourceFlagsProgrammeId,
     },
     timeline::FrontendCallbackIndex,
-    transaction::CallbackTransactionId,
+    transaction::CallbackLineageIdentity,
 };
 use std::sync::Arc;
 
@@ -58,14 +58,14 @@ pub(super) enum CurrentFeaturesError {
 #[must_use]
 pub struct CurrentFeaturesPacket {
     _callback_index: FrontendCallbackIndex,
-    _parent_transaction_id: CallbackTransactionId,
+    _parent_transaction_id: CallbackLineageIdentity,
     _features_f32_bits_24x48: Box<[[u32; SOURCE_COUNT]]>,
 }
 
 impl CurrentFeaturesPacket {
     fn from_producer(
         callback_index: FrontendCallbackIndex,
-        parent_transaction_id: CallbackTransactionId,
+        parent_transaction_id: CallbackLineageIdentity,
         features_f32_bits_24x48: Box<[[u32; SOURCE_COUNT]]>,
     ) -> Self {
         Self {
@@ -95,7 +95,7 @@ pub(super) struct CurrentFeaturesProduced {
 pub(super) struct CurrentFeaturesLineage {
     pub(super) programme_id: SourceFlagsProgrammeId,
     pub(super) attempt: SourceFlagsAttempt,
-    pub(super) transaction_id: CallbackTransactionId,
+    pub(super) transaction_id: CallbackLineageIdentity,
     pub(super) callback_index: FrontendCallbackIndex,
     pub(super) profile: EncodingProfile,
     pub(super) provider_lineage: SpatialControlProviderLineage,
@@ -129,7 +129,7 @@ pub(super) fn produce_current_features(
     owner: &SpatialControlMachine,
     programme_id: &SourceFlagsProgrammeId,
     attempt: SourceFlagsAttempt,
-    transaction_id: &CallbackTransactionId,
+    transaction_id: &CallbackLineageIdentity,
     callback_index: FrontendCallbackIndex,
     callback_phase: CallbackPhase,
     source_flags: SourceFlagsPacket,
@@ -138,6 +138,12 @@ pub(super) fn produce_current_features(
     fft_provider: &ValidatedFeatureFft4096MathProvider,
 ) -> Result<CurrentFeaturesProduced, CurrentFeaturesError> {
     validate_provider_shape(processor, fft_provider)?;
+    if transaction_id.programme_id() != programme_id
+        || transaction_id.attempt_id() != attempt
+        || transaction_id.callback_index() != callback_index
+    {
+        return Err(CurrentFeaturesError::ParentLineageMismatch);
+    }
     validate_parent_identity(
         owner,
         programme_id,
@@ -268,8 +274,7 @@ pub(super) fn produce_current_features(
         .as_ref()
         .map(CurrentFeaturesAudioView::payload_byte_count);
     let lineage = CurrentFeaturesLineage {
-        programme_id: SourceFlagsProgrammeId::new(programme_id.as_str())
-            .map_err(|_| CurrentFeaturesError::ParentLineageMismatch)?,
+        programme_id: programme_id.clone(),
         attempt,
         transaction_id: transaction_id.clone(),
         callback_index,
@@ -341,7 +346,7 @@ fn validate_parent_identity(
     owner: &SpatialControlMachine,
     programme_id: &SourceFlagsProgrammeId,
     attempt: SourceFlagsAttempt,
-    transaction_id: &CallbackTransactionId,
+    transaction_id: &CallbackLineageIdentity,
     callback_index: FrontendCallbackIndex,
     callback_phase: CallbackPhase,
     source_flags: &SourceFlagsPacket,
@@ -365,9 +370,9 @@ fn validate_parent_identity(
         if audio.callback_index() != callback_index {
             return Err(CurrentFeaturesError::StaleCallback);
         }
-        if audio.programme_id().as_str() != programme_id.as_str()
+        if audio.programme_id() != programme_id
             || audio.attempt() != attempt
-            || audio.transaction_id().as_str() != transaction_id.as_str()
+            || audio.transaction_id() != transaction_id
         {
             return Err(CurrentFeaturesError::ParentLineageMismatch);
         }
@@ -383,16 +388,8 @@ fn validate_parent_identity(
             return Err(CurrentFeaturesError::RootIdentityMismatch);
         }
     }
-    let parent = SourceFlagsParentLineage::new(
-        SourceFlagsProgrammeId::new(programme_id.as_str())
-            .map_err(|_| CurrentFeaturesError::ParentLineageMismatch)?,
-        attempt,
-        CallbackTransactionId::new(transaction_id.as_str())
-            .map_err(|_| CurrentFeaturesError::ParentLineageMismatch)?,
-        callback_index,
-        owner,
-    )
-    .map_err(map_source_flags_error)?;
+    let parent = SourceFlagsParentLineage::new(transaction_id.clone(), owner)
+        .map_err(map_source_flags_error)?;
     source_flags
         .validate_parent_binding(&parent)
         .map_err(map_source_flags_error)?;

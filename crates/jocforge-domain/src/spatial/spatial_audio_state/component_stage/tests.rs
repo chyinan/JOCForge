@@ -13,7 +13,7 @@ use crate::{
         validate_f04_parameter_package_manifest, validate_window_q15_provider,
     },
     timeline::FrontendCallbackIndex,
-    transaction::CallbackTransactionId,
+    transaction::CallbackLineageIdentity,
 };
 use serde_json::{Map, Value};
 use sha2::{Digest, Sha256};
@@ -94,6 +94,18 @@ fn provider_lineage(context: &TestContext) -> [F04ParameterProviderLineage; 2] {
     ]
 }
 
+fn component_programme_id() -> SourceFlagsProgrammeId {
+    crate::transaction::test_programme_id("component-test-programme")
+}
+
+fn component_transaction_id(callback_index: FrontendCallbackIndex) -> CallbackLineageIdentity {
+    CallbackLineageIdentity::new(
+        component_programme_id(),
+        SourceFlagsAttempt::new(7),
+        callback_index,
+    )
+}
+
 pub(in crate::spatial::spatial_audio_state) fn type10_test_context() -> (
     SpatialAudioMachine,
     SpatialControlMachine,
@@ -112,9 +124,9 @@ pub(in crate::spatial::spatial_audio_state) fn type10_test_context() -> (
 
 fn callback_join(context: &TestContext, index: FrontendCallbackIndex) -> SpatialAudioJoinMetadata {
     SpatialAudioJoinMetadata::new(
-        SourceFlagsProgrammeId::new("component-test-programme").unwrap(),
+        component_programme_id(),
         SourceFlagsAttempt::new(7),
-        CallbackTransactionId::new("component-test-transaction").unwrap(),
+        component_transaction_id(index),
         index,
         context.spatial_audio.generation(),
         context.spatial_audio.digest(),
@@ -125,7 +137,7 @@ fn callback_join(context: &TestContext, index: FrontendCallbackIndex) -> Spatial
 fn control_join(context: &TestContext, index: FrontendCallbackIndex) -> SpatialControlJoinMetadata {
     control_join_with(
         context,
-        "component-test-transaction",
+        component_transaction_id(index),
         index,
         context.spatial_control.generation(),
         None,
@@ -135,7 +147,7 @@ fn control_join(context: &TestContext, index: FrontendCallbackIndex) -> SpatialC
 
 fn control_join_with(
     context: &TestContext,
-    transaction_id: &str,
+    transaction_id: CallbackLineageIdentity,
     callback_index: FrontendCallbackIndex,
     before_generation: u64,
     before_digest: Option<[u8; 32]>,
@@ -143,7 +155,7 @@ fn control_join_with(
 ) -> SpatialControlJoinMetadata {
     SpatialControlJoinMetadata::fixture(
         &context.spatial_control,
-        CallbackTransactionId::new(transaction_id).unwrap(),
+        transaction_id,
         callback_index,
         before_generation,
         before_digest,
@@ -153,9 +165,9 @@ fn control_join_with(
 
 fn zero_packet(context: &TestContext) -> SpatialAudioInputPacket {
     SpatialAudioInputPacket::fixture(ComponentPacketFixture {
-        programme_id: SourceFlagsProgrammeId::new("component-test-programme").unwrap(),
+        programme_id: component_programme_id(),
         attempt: SourceFlagsAttempt::new(7),
-        transaction_id: CallbackTransactionId::new("component-test-transaction").unwrap(),
+        transaction_id: component_transaction_id(FrontendCallbackIndex::new(0)),
         callback_index: FrontendCallbackIndex::new(0),
         phase: ComponentCallbackPhase::Normal,
         profile_identity: context.profile,
@@ -175,9 +187,9 @@ fn join_with(
     profile: EncodingProfile,
 ) -> SpatialAudioJoinMetadata {
     SpatialAudioJoinMetadata::new(
-        SourceFlagsProgrammeId::new("component-test-programme").unwrap(),
+        component_programme_id(),
         SourceFlagsAttempt::new(7),
-        CallbackTransactionId::new("component-test-transaction").unwrap(),
+        component_transaction_id(callback),
         callback,
         before_generation,
         context.spatial_audio.digest(),
@@ -1161,14 +1173,11 @@ fn cold_component_stage_produces_complete_proposal_without_local_commit() {
     );
     assert_eq!(proposal.receipt.phase, ComponentCallbackPhase::Normal);
     assert_eq!(proposal.receipt.profile_identity, context.profile);
-    assert_eq!(
-        proposal.receipt.programme_id.as_str(),
-        "component-test-programme"
-    );
+    assert_eq!(proposal.receipt.programme_id, component_programme_id());
     assert_eq!(proposal.receipt.attempt, SourceFlagsAttempt::new(7));
     assert_eq!(
-        proposal.receipt.transaction_id.as_str(),
-        "component-test-transaction"
+        proposal.receipt.transaction_id,
+        component_transaction_id(FrontendCallbackIndex::new(0))
     );
 }
 
@@ -1179,7 +1188,7 @@ fn component_stage_rejects_lineage_profile_phase_and_input_mismatches_without_pr
     let join = callback_join(&context, callback);
 
     let mut packet = zero_packet(&context);
-    packet.programme_id = SourceFlagsProgrammeId::new("other-programme").unwrap();
+    packet.programme_id = crate::transaction::test_programme_id("other-programme");
     assert_stage_error(
         &context,
         &join,
@@ -1199,7 +1208,11 @@ fn component_stage_rejects_lineage_profile_phase_and_input_mismatches_without_pr
     );
 
     let mut packet = zero_packet(&context);
-    packet.transaction_id = CallbackTransactionId::new("other-transaction").unwrap();
+    packet.transaction_id = CallbackLineageIdentity::new(
+        crate::transaction::test_programme_id("other-component-programme"),
+        SourceFlagsAttempt::new(7),
+        callback,
+    );
     assert_stage_error(
         &context,
         &join,
@@ -1249,16 +1262,20 @@ fn component_stage_rejects_lineage_profile_phase_and_input_mismatches_without_pr
     );
 
     let stale_digest_join = SpatialAudioJoinMetadata::new(
-        SourceFlagsProgrammeId::new("component-test-programme").unwrap(),
+        component_programme_id(),
         SourceFlagsAttempt::new(7),
-        CallbackTransactionId::new("component-test-transaction").unwrap(),
+        component_transaction_id(callback),
         callback,
         context.spatial_audio.generation(),
         super::super::SpatialAudioDigest([0x55; 32]),
         context.profile,
     );
     let mut packet = zero_packet(&context);
-    packet.transaction_id = CallbackTransactionId::new("wrong-transaction").unwrap();
+    packet.transaction_id = CallbackLineageIdentity::new(
+        crate::transaction::test_programme_id("wrong-component-programme"),
+        SourceFlagsAttempt::new(7),
+        callback,
+    );
     assert_stage_error(
         &context,
         &stale_digest_join,
@@ -1330,7 +1347,11 @@ fn component_stage_validates_independent_spatial_control_join_metadata() {
 
     let wrong_transaction = control_join_with(
         &context,
-        "other-transaction",
+        CallbackLineageIdentity::new(
+            crate::transaction::test_programme_id("other-component-programme"),
+            SourceFlagsAttempt::new(7),
+            callback,
+        ),
         callback,
         context.spatial_control.generation(),
         None,
@@ -1357,7 +1378,7 @@ fn component_stage_validates_independent_spatial_control_join_metadata() {
 
     let wrong_profile = control_join_with(
         &context,
-        "component-test-transaction",
+        component_transaction_id(callback),
         callback,
         context.spatial_control.generation(),
         None,
@@ -1374,7 +1395,7 @@ fn component_stage_validates_independent_spatial_control_join_metadata() {
 
     let wrong_generation = control_join_with(
         &context,
-        "component-test-transaction",
+        component_transaction_id(callback),
         callback,
         context.spatial_control.generation() + 1,
         None,
@@ -1391,7 +1412,7 @@ fn component_stage_validates_independent_spatial_control_join_metadata() {
 
     let wrong_digest = control_join_with(
         &context,
-        "component-test-transaction",
+        component_transaction_id(callback),
         callback,
         context.spatial_control.generation(),
         Some([0x55; 32]),

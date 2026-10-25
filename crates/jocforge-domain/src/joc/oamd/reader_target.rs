@@ -11,6 +11,7 @@ mod type11;
 use crate::{
     joc::emdf::metadata_owner::MetadataPayloadBody,
     timeline::{CodecSourceIndex, FrontendCallbackIndex},
+    transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId},
 };
 use serde_json::Value;
 use sha2::{Digest, Sha256};
@@ -23,7 +24,7 @@ const TARGET_ROW_IDENTITIES: [i64; 15] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 
 const SAMPLES_PER_ENERGY_ROW: usize = 1536;
 const SOURCE_COUNT: usize = 48;
 pub(crate) const SELECTED_PROFILE_ID: &str = "reader56-main-target-panner.v1";
-const READER_PRIMING_CALLBACKS: u64 = 2;
+const READER_PRIMING_CALLBACKS: u32 = 2;
 
 /// Reader callback count; distinct from the frontend callback index.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -45,7 +46,7 @@ fn reader_invocation_for_callback(
     callback
         .value()
         .checked_sub(READER_PRIMING_CALLBACKS)
-        .map(ReaderInvocationIndex::new)
+        .map(|invocation| ReaderInvocationIndex::new(u64::from(invocation)))
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -58,8 +59,7 @@ impl HistoryProducerGeneration {
     fn canonical_value(self) -> i64 {
         match self {
             Self::Cold => -1,
-            Self::Callback(index) => i64::try_from(index.value())
-                .expect("callback indices are range-checked before state construction"),
+            Self::Callback(index) => i64::from(index.value()),
         }
     }
 }
@@ -96,9 +96,9 @@ pub struct ReaderTargetCallbackInputs<'a> {
     pub callback_index: FrontendCallbackIndex,
     pub reader_enabled: bool,
     pub snapshot_keys_complete: bool,
-    pub programme_id: &'a str,
-    pub attempt_id: &'a str,
-    pub transaction_id: &'a str,
+    pub programme_id: ProgrammeId,
+    pub attempt_id: AttemptId,
+    pub transaction_id: CallbackLineageIdentity,
     pub profile_id: &'a str,
     pub current_xyz_words: &'a [u32; TARGET_ROWS * 3],
     pub current_ids: &'a [u32; TARGET_ROWS],
@@ -116,6 +116,7 @@ pub enum ReaderTargetError {
     StateError,
     PipelineRetired,
     CallbackOrder,
+    CallbackIdentityMismatch,
     InputError,
     ProfileUnsupported,
     NumericFailure,
@@ -127,6 +128,7 @@ impl ReaderTargetError {
             Self::StateError => "R56T_STATE_ERROR",
             Self::PipelineRetired => "R56T_PIPELINE_RETIRED",
             Self::CallbackOrder => "R56T_CALLBACK_ORDER",
+            Self::CallbackIdentityMismatch => "R56T_CALLBACK_IDENTITY_MISMATCH",
             Self::InputError => "R56T_INPUT_ERROR",
             Self::ProfileUnsupported => "R56T_PROFILE_UNSUPPORTED",
             Self::NumericFailure => "R56T_NUMERIC_FAILURE",
@@ -144,9 +146,9 @@ pub struct ReaderTargetStageProposal {
 /// Callback-local typed receipt candidate; never part of ReaderTargetState serialization.
 #[allow(dead_code)] // The parent transaction is the first authorized consumer of these fields.
 pub struct ReaderTargetUpdateReceipt {
-    programme_id: String,
-    attempt_id: String,
-    transaction_id: String,
+    programme_id: ProgrammeId,
+    attempt_id: AttemptId,
+    transaction_id: CallbackLineageIdentity,
     callback_generation: FrontendCallbackIndex,
     reader_invocation: ReaderInvocationIndex,
     profile_id: &'static str,
@@ -262,7 +264,6 @@ pub fn stage_reader_target(
             .callback_index
             .value()
             .checked_add(1)
-            .filter(|value| i64::try_from(*value).is_ok())
             .ok_or(ReaderTargetError::StateError)?,
     );
     staged.current_xyz_words = *input.current_xyz_words;
@@ -334,15 +335,15 @@ impl ReaderTargetStageProposal {
 
 #[allow(dead_code)] // Receipt admission and downstream use are outside this producer slice.
 impl ReaderTargetUpdateReceipt {
-    pub(crate) fn programme_id(&self) -> &str {
+    pub(crate) fn programme_id(&self) -> &ProgrammeId {
         &self.programme_id
     }
 
-    pub(crate) fn attempt_id(&self) -> &str {
-        &self.attempt_id
+    pub(crate) const fn attempt_id(&self) -> AttemptId {
+        self.attempt_id
     }
 
-    pub(crate) fn transaction_id(&self) -> &str {
+    pub(crate) const fn transaction_id(&self) -> &CallbackLineageIdentity {
         &self.transaction_id
     }
 
@@ -415,7 +416,6 @@ fn validate_callback_order(
     input: &ReaderTargetCallbackInputs<'_>,
 ) -> Result<(), ReaderTargetError> {
     if input.callback_index != committed.callback_index
-        || i64::try_from(input.callback_index.value()).is_err()
         || input.reader_enabled != (input.callback_index.value() >= 2)
     {
         return Err(ReaderTargetError::CallbackOrder);
@@ -435,10 +435,13 @@ fn validate_selected_profile(
 fn validate_callback_inputs(
     input: &ReaderTargetCallbackInputs<'_>,
 ) -> Result<(), ReaderTargetError> {
+    if input.transaction_id.programme_id() != &input.programme_id
+        || input.transaction_id.attempt_id() != input.attempt_id
+        || input.transaction_id.callback_index() != input.callback_index
+    {
+        return Err(ReaderTargetError::CallbackIdentityMismatch);
+    }
     if !input.snapshot_keys_complete
-        || input.programme_id.is_empty()
-        || input.attempt_id.is_empty()
-        || input.transaction_id.is_empty()
         || input.active_target_indices.len() > TARGET_ROWS
         || input.matrix.len() != input.active_target_indices.len() * SOURCE_COUNT
     {
@@ -747,16 +750,12 @@ fn build_receipt(
         Value::String("reader-target-update-receipt.v1".to_owned()),
     );
     fields.insert(
-        "programme_id".to_owned(),
-        Value::String(input.programme_id.to_owned()),
-    );
-    fields.insert(
-        "attempt_id".to_owned(),
-        Value::String(input.attempt_id.to_owned()),
-    );
-    fields.insert(
-        "transaction_id".to_owned(),
-        Value::String(input.transaction_id.to_owned()),
+        "callback_identity".to_owned(),
+        serde_json::json!({
+            "programme_id": input.programme_id.as_str(),
+            "attempt_id_u64": input.attempt_id.value(),
+            "frontend_callback_index_u32": input.transaction_id.callback_index().value()
+        }),
     );
     fields.insert(
         "callback_generation_g".to_owned(),
@@ -812,9 +811,9 @@ fn build_receipt(
     let canonical = serde_json::to_vec(&fields).map_err(|_| ReaderTargetError::NumericFailure)?;
     let semantic_sha256 = Sha256::digest(canonical).into();
     Ok(ReaderTargetUpdateReceipt {
-        programme_id: input.programme_id.to_owned(),
-        attempt_id: input.attempt_id.to_owned(),
-        transaction_id: input.transaction_id.to_owned(),
+        programme_id: input.programme_id.clone(),
+        attempt_id: input.attempt_id,
+        transaction_id: input.transaction_id.clone(),
         callback_generation: input.callback_index,
         reader_invocation,
         profile_id: SELECTED_PROFILE_ID,
@@ -857,10 +856,7 @@ fn write_record_word(record: &mut [u8; RECORD_BYTES], index: usize, word: u32) {
 fn encode_state(state: &ReaderTargetState, output: &mut Vec<u8>) {
     encode_dataclass_start(output, "ReaderTargetState", 9);
     encode_field(output, "callback_index");
-    encode_i64(
-        output,
-        i64::try_from(state.callback_index.value()).expect("state range checked"),
-    );
+    encode_i64(output, i64::from(state.callback_index.value()));
     encode_field(output, "retired");
     encode_bool(output, state.retired);
     encode_field(output, "history");

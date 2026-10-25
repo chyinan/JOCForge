@@ -2,9 +2,9 @@
 use super::*;
 use crate::{
     profile::{EmdfCarriageProfile, EncodingProfile},
-    spatial::source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
+    spatial::source_flags::SourceFlagsAttempt,
     timeline::FrontendCallbackIndex,
-    transaction::CallbackTransactionId,
+    transaction::CallbackLineageIdentity,
 };
 use serde_json::Value;
 use std::fs;
@@ -152,9 +152,13 @@ fn join_metadata(
     before_digest: SpatialAudioDigest,
 ) -> SpatialAudioJoinMetadata {
     SpatialAudioJoinMetadata::new(
-        SourceFlagsProgrammeId::new("cold-test-programme").expect("programme id is nonempty"),
+        crate::transaction::test_programme_id("cold-test-programme"),
         SourceFlagsAttempt::new(0),
-        CallbackTransactionId::new("cold-test-callback").expect("transaction id is nonempty"),
+        CallbackLineageIdentity::new(
+            crate::transaction::test_programme_id("cold-test-programme"),
+            SourceFlagsAttempt::new(0),
+            FrontendCallbackIndex::new(0),
+        ),
         FrontendCallbackIndex::new(0),
         before_generation,
         before_digest,

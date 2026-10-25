@@ -23,8 +23,13 @@ use crate::{
         fit_score::FitScoreProvider,
         temporal_weights::{TemporalWeightError, TemporalWeightProposal, TemporalWeightState},
     },
-    spatial::{QmfReceiverFunctionalProvider, spatial_audio_state::SelectedJocQmfProjection},
+    spatial::{
+        QmfReceiverFunctionalProvider,
+        source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
+        spatial_audio_state::SelectedJocQmfProjection,
+    },
     timeline::CodecSourceIndex,
+    transaction::CallbackLineageIdentity,
 };
 
 const OBJECT_COUNT: usize = 15;
@@ -38,6 +43,8 @@ const ZERO_BITS: u32 = 0x0000_0000;
 
 #[cfg(test)]
 use crate::joc::coefficient_geometry::{GeometryAccumulatorRow, stage_selected_geometry};
+#[cfg(test)]
+use crate::{timeline::FrontendCallbackIndex, transaction::AttemptId};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct CoefficientFitState {
@@ -98,9 +105,9 @@ pub struct CoefficientFitProposal {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct FitSourceLineage {
-    programme_id: Box<str>,
-    attempt: u64,
-    transaction_id: Box<str>,
+    programme_id: SourceFlagsProgrammeId,
+    attempt: SourceFlagsAttempt,
+    transaction_id: CallbackLineageIdentity,
     source_index: CodecSourceIndex,
     dispatch: crate::timeline::JocDispatchIndex,
     spatial_before_generation: u64,
@@ -108,15 +115,15 @@ pub struct FitSourceLineage {
 }
 
 impl FitSourceLineage {
-    pub fn programme_id(&self) -> &str {
+    pub fn programme_id(&self) -> &SourceFlagsProgrammeId {
         &self.programme_id
     }
 
-    pub const fn attempt(&self) -> u64 {
+    pub const fn attempt(&self) -> SourceFlagsAttempt {
         self.attempt
     }
 
-    pub fn transaction_id(&self) -> &str {
+    pub const fn transaction_id(&self) -> &CallbackLineageIdentity {
         &self.transaction_id
     }
 
@@ -321,9 +328,9 @@ pub fn stage_coefficient_fit_from_qmf(
         projection.carrier_window_words(),
         score_provider,
         Some(FitSourceLineage {
-            programme_id: projection.programme_id().into(),
+            programme_id: projection.programme_id().clone(),
             attempt: projection.attempt(),
-            transaction_id: projection.transaction_id().into(),
+            transaction_id: projection.transaction_id().clone(),
             source_index: projection.source_index(),
             dispatch: projection.dispatch(),
             spatial_before_generation: projection.spatial_before_generation(),
@@ -506,6 +513,8 @@ mod tests {
         let sequences = [0_u16, 0, 1];
 
         for generation in 0..3 {
+            let programme_id = crate::transaction::test_programme_id("synthetic-fit-programme");
+            let attempt = AttemptId::new(7);
             let current_carriers = synthetic_carrier_current24(&input, generation);
             let current_targets = synthetic_target_current24(&input, generation, &current_carriers);
             let target_windows =
@@ -523,10 +532,15 @@ mod tests {
             )
             .unwrap();
             let source_index = CodecSourceIndex::new(u64::try_from(generation).unwrap());
+            let callback_index = FrontendCallbackIndex::new(
+                u32::try_from(generation).unwrap().checked_add(2).unwrap(),
+            );
+            let transaction_id =
+                CallbackLineageIdentity::new(programme_id.clone(), attempt, callback_index);
             proposal.source_lineage = Some(FitSourceLineage {
-                programme_id: "synthetic-fit-programme".into(),
-                attempt: 7,
-                transaction_id: "synthetic-fit-transaction".into(),
+                programme_id: programme_id.clone(),
+                attempt,
+                transaction_id: transaction_id.clone(),
                 source_index,
                 dispatch: source_index.dispatch().unwrap(),
                 spatial_before_generation: u64::try_from(generation).unwrap(),
@@ -566,9 +580,9 @@ mod tests {
                 u64::try_from(generation).unwrap()
             );
             let payload_input = JocPayloadInput::for_test(
-                "synthetic-fit-programme",
-                7,
-                "synthetic-fit-transaction",
+                programme_id.clone(),
+                attempt,
+                transaction_id.clone(),
                 source_index,
                 128,
                 0x3d80_0000,
@@ -580,9 +594,9 @@ mod tests {
                     &wrap_before,
                     &proposal,
                     &JocPayloadInput::for_test(
-                        "synthetic-fit-programme",
-                        7,
-                        "synthetic-fit-transaction",
+                        programme_id.clone(),
+                        attempt,
+                        transaction_id.clone(),
                         source_index,
                         128,
                         0x3d80_0000,

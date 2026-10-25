@@ -12,6 +12,7 @@ use jocforge_domain::frontend::{
 };
 use jocforge_domain::state::EncodeError;
 use jocforge_domain::timeline::{AdmSampleCount, ClockError};
+use jocforge_domain::transaction::ProgrammeId;
 use serde_json::{Map, Value, json};
 use sha2::{Digest, Sha256};
 use std::collections::BTreeMap;
@@ -22,6 +23,7 @@ use std::sync::Arc;
 /// input preparation only; it grants no metering, READY or encode authority.
 #[derive(Debug)]
 pub struct PreparedJobInput {
+    programme_id: ProgrammeId,
     configuration: SelectedJobConfiguration,
     graph: PreparedAdmGraph,
     dbmd: SelectedDbmdSections,
@@ -132,6 +134,10 @@ impl<'a> SelectedAdmResourcePayloads<'a> {
 }
 
 impl PreparedJobInput {
+    pub fn programme_id(&self) -> &ProgrammeId {
+        &self.programme_id
+    }
+
     pub const fn configuration(&self) -> &SelectedJobConfiguration {
         &self.configuration
     }
@@ -203,8 +209,11 @@ impl std::error::Error for PreparedJobInputError {}
 /// Normalizes a selected job and binds embedded AXML/CHNA/DBMD views to one
 /// caller-owned immutable resource. The input adapter must parse and validate
 /// RIFF first, derive `wave`, `source_samples`, and payload views from that same
-/// allocation, then pass them here. File references in XML remain intent.
+/// allocation, then pass them here. The caller supplies the opaque programme
+/// identity separately; it is not derived from resource/config hashes. File
+/// references in XML remain intent.
 pub fn prepare_selected_job_input(
+    programme_id: ProgrammeId,
     xml: &[u8],
     wave: SelectedWaveDescriptor,
     source_samples: u64,
@@ -257,6 +266,7 @@ pub fn prepare_selected_job_input(
         },
     };
     Ok(PreparedJobInput {
+        programme_id,
         configuration,
         graph,
         dbmd,

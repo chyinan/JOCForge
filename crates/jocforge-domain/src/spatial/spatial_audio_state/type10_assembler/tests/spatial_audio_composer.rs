@@ -45,7 +45,7 @@ const DESCRIPTOR_BYTES: &[u8] =
 const JOB_CONFIGURATION_VECTORS: &[u8] = include_bytes!(
     "../../../../../tests/fixtures/job_configuration/job-configuration-vectors.json"
 );
-const READER_ATTEMPT_ID: &str = "type10-reader-attempt-7";
+const READER_ATTEMPT_ID: crate::transaction::AttemptId = crate::transaction::AttemptId::new(7);
 
 struct ValidatedProviders {
     manifest_sha256: String,
@@ -154,12 +154,12 @@ fn full_parent_advances_priming_then_preserves_ready_target_lineage() {
         let reader = stage_reader_target(
             &reader_state,
             &ReaderTargetCallbackInputs {
-                callback_index: FrontendCallbackIndex::new(callback),
+                callback_index: FrontendCallbackIndex::new(u32::try_from(callback).unwrap()),
                 reader_enabled: callback >= 2,
                 snapshot_keys_complete: true,
-                programme_id: "type10-test-programme",
+                programme_id: parent.programme_id().clone(),
                 attempt_id: READER_ATTEMPT_ID,
-                transaction_id: "type10-test-transaction",
+                transaction_id: parent.transaction_id().clone(),
                 profile_id: SELECTED_PROFILE_ID,
                 current_xyz_words: &current_xyz_words,
                 current_ids: &current_ids,
@@ -195,7 +195,10 @@ fn full_parent_advances_priming_then_preserves_ready_target_lineage() {
             .spatial_audio
             .stage(prepared)
             .expect("full-root staging computes the canonical after digest");
-        assert_eq!(staged.after_state().callback_index().value(), callback + 1);
+        assert_eq!(
+            u64::from(staged.after_state().callback_index().value()),
+            callback + 1
+        );
         assert_eq!(
             staged.after_state().receiver_callback_count().value(),
             callback.saturating_sub(1)

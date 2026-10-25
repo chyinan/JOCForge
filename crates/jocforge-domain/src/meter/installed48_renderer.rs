@@ -20,7 +20,7 @@ use crate::{
         },
         source_flags::triangle_window,
     },
-    timeline::{AdmSampleIndex, FrontendCallbackIndex},
+    timeline::AdmSampleIndex,
 };
 
 pub const METER_INSTALLED48_ROWS: usize = 48;
@@ -267,12 +267,8 @@ fn validate_input(
     }
     if input.callback_index != before.callback_index
         || input.source_cursor_before != before.source_cursor
-        || input.activity.callback_index().value() != input.callback_index.value()
-        || input
-            .activity
-            .host_frame()
-            .map(FrontendCallbackIndex::value)
-            != Some(input.callback_index.value())
+        || input.activity.reader_relative_sample() != input.source_cursor_before
+        || input.activity.host_frame().is_none()
         || input.activity.actual_source_samples() != input.host_input_samples
         || input.membership_route.writer_indices() != input.activity.prefix_writer_indices()
         || input

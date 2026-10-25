@@ -71,7 +71,7 @@ The linear proposal carries one immutable Arc payload. Its two consumer views sh
     "lineage": [
       "programme",
       "attempt",
-      "CallbackTransactionId",
+      "CallbackLineageIdentity",
       "FrontendCallbackIndex",
       "CallbackPhase",
       "selected EncodingProfile",

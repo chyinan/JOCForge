@@ -8,7 +8,7 @@ use crate::{
     profile::EncodingProfile,
     spatial::source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
     timeline::FrontendCallbackIndex,
-    transaction::CallbackTransactionId,
+    transaction::CallbackLineageIdentity,
 };
 use sha2::{Digest, Sha256};
 use std::sync::Arc;
@@ -175,7 +175,7 @@ impl CurrentFeaturesAudioView {
         self.lineage.attempt
     }
 
-    pub(super) fn transaction_id(&self) -> &CallbackTransactionId {
+    pub(super) fn transaction_id(&self) -> &CallbackLineageIdentity {
         self.lineage
             .spatial_control_after_proposal_identity
             .transaction_id()
@@ -256,7 +256,7 @@ impl SpatialAudioPostWindowView {
         self.lineage.attempt
     }
 
-    pub(super) fn transaction_id(&self) -> &CallbackTransactionId {
+    pub(super) fn transaction_id(&self) -> &CallbackLineageIdentity {
         self.lineage
             .spatial_control_after_proposal_identity
             .transaction_id()

@@ -2,6 +2,8 @@
 #![allow(dead_code)] // The whole-meter finalize coordinator remains a gated production caller.
 //! Immutable whole-programme measurement receipt value.
 
+use crate::transaction::{AttemptId, ProgrammeId};
+
 const SELECTED_NORMAL_CALLBACKS: u64 = 4_247;
 const SELECTED_ZERO_DRAINS: u64 = 3;
 const SELECTED_ENERGY_WINDOWS: u64 = 6_794;
@@ -54,8 +56,8 @@ impl ProgrammeGatingKind {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ProgrammeMeasurementReceipt {
-    programme_id: Box<str>,
-    attempt: u64,
+    programme_id: ProgrammeId,
+    attempt: AttemptId,
     input_sha256: [u8; 32],
     config_sha256: [u8; 32],
     dialogue_word: u32,
@@ -69,10 +71,10 @@ pub struct ProgrammeMeasurementReceipt {
     energy_windows: u64,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct ProgrammeMeasurementReceiptInput<'a> {
-    pub(crate) programme_id: &'a str,
-    pub(crate) attempt: u64,
+    pub(crate) programme_id: ProgrammeId,
+    pub(crate) attempt: AttemptId,
     pub(crate) input_sha256: [u8; 32],
     pub(crate) config_sha256: [u8; 32],
     pub(crate) dialogue_word: u32,
@@ -93,9 +95,6 @@ impl ProgrammeMeasurementReceipt {
     pub(crate) fn from_verified_prepass(
         input: ProgrammeMeasurementReceiptInput<'_>,
     ) -> Result<Self, MeasurementReceiptError> {
-        if input.programme_id.is_empty() {
-            return Err(MeasurementReceiptError::Identity);
-        }
         let gating_kind = ProgrammeGatingKind::parse_exact(input.gating_kind)?;
         if [
             input.dialogue_word,
@@ -115,7 +114,7 @@ impl ProgrammeMeasurementReceipt {
             return Err(MeasurementReceiptError::Counts);
         }
         Ok(Self {
-            programme_id: input.programme_id.into(),
+            programme_id: input.programme_id,
             attempt: input.attempt,
             input_sha256: input.input_sha256,
             config_sha256: input.config_sha256,
@@ -131,11 +130,11 @@ impl ProgrammeMeasurementReceipt {
         })
     }
 
-    pub fn programme_id(&self) -> &str {
+    pub fn programme_id(&self) -> &ProgrammeId {
         &self.programme_id
     }
 
-    pub const fn attempt(&self) -> u64 {
+    pub const fn attempt(&self) -> AttemptId {
         self.attempt
     }
 
@@ -190,8 +189,8 @@ mod tests {
 
     fn input(gating_kind: &str) -> ProgrammeMeasurementReceiptInput<'_> {
         ProgrammeMeasurementReceiptInput {
-            programme_id: "gating-kind-test",
-            attempt: 0,
+            programme_id: crate::transaction::test_programme_id("measurement-test-programme"),
+            attempt: AttemptId::new(0),
             input_sha256: [0x11; 32],
             config_sha256: [0x22; 32],
             dialogue_word: (-120.0_f32).to_bits(),

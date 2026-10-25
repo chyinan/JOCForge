@@ -4,7 +4,7 @@ use super::*;
 use crate::{
     frontend::{PackageManifestEvidence, ProviderFileEvidence},
     profile::EncodingProfile,
-    spatial::source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
+    spatial::source_flags::SourceFlagsAttempt,
     spatial::{
         DescriptorMathematicalProvider, QmfMathematicalFftProvider, QmfReceiverFunctionalProvider,
         post_window_fanout::CallbackPhase,
@@ -17,7 +17,7 @@ use crate::{
         validate_qmf_mathematical_fft_provider, validate_qmf_receiver_functional_provider,
     },
     timeline::{FrontendCallbackIndex, JocDispatchIndex, ReceiverCallbackCount},
-    transaction::CallbackTransactionId,
+    transaction::CallbackLineageIdentity,
 };
 use serde_json::Value;
 use sha2::{Digest, Sha256};
@@ -91,12 +91,14 @@ fn case<'a>(document: &'a Value, id: &str) -> &'a Value {
 fn parent(g: u64) -> SpatialAudioJoinMetadata {
     let profile = EncodingProfile::selected();
     let state = SpatialAudioMachine::new_cold(profile).expect("selected parent profile");
-    let transaction = format!("CALLBACK-{g}");
+    let programme_id = crate::transaction::test_programme_id("f04rb-mode0-direct-test");
+    let attempt = SourceFlagsAttempt::new(7);
+    let callback_index = FrontendCallbackIndex::new(u32::try_from(g).unwrap());
     SpatialAudioJoinMetadata::new(
-        SourceFlagsProgrammeId::new("f04rb-mode0-direct-test").expect("programme id"),
-        SourceFlagsAttempt::new(7),
-        CallbackTransactionId::new(&transaction).expect("transaction id"),
-        FrontendCallbackIndex::new(g),
+        programme_id.clone(),
+        attempt,
+        CallbackLineageIdentity::new(programme_id, attempt, callback_index),
+        callback_index,
         g,
         state.digest(),
         profile,

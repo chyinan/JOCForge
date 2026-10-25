@@ -31,20 +31,19 @@ const FRAME_SAMPLES: usize = 1_536;
 const TYPE10_ROWS: usize = 16;
 const TARGET_VALUES: usize = 16 * 6;
 
-/// Explicit local binding between the numeric source-flags attempt and the
-/// reader's existing string attempt identity. It adds no persisted encoding.
+/// Explicit local binding between spatial-control and reader attempt values.
 #[derive(Clone, Copy)]
-pub(super) struct ReaderAttemptBinding<'a> {
+pub(super) struct ReaderAttemptBinding {
     source_attempt: SourceFlagsAttempt,
-    reader_attempt_id: &'a str,
+    reader_attempt_id: SourceFlagsAttempt,
 }
 
-impl<'a> ReaderAttemptBinding<'a> {
+impl ReaderAttemptBinding {
     pub(super) fn new(
         source_attempt: SourceFlagsAttempt,
-        reader_attempt_id: &'a str,
+        reader_attempt_id: SourceFlagsAttempt,
     ) -> Result<Self, SpatialAudioCompositionError> {
-        if reader_attempt_id.is_empty() {
+        if reader_attempt_id != source_attempt {
             return Err(SpatialAudioCompositionError::TargetLineage);
         }
         Ok(Self {
@@ -118,13 +117,13 @@ pub(super) fn stage_spatial_audio_callback(
     phase: CallbackPhase,
     type10: Type10AssemblyProposal,
     target_receipt: Option<&ReaderTargetUpdateReceipt>,
-    attempt_binding: Option<ReaderAttemptBinding<'_>>,
+    attempt_binding: Option<ReaderAttemptBinding>,
     providers: Option<SpatialAudioJocProviders<'_>>,
 ) -> Result<SpatialAudioCallbackProposal, SpatialAudioCompositionError> {
     machine.validate_join(&parent)?;
     if machine.committed.root.retired
         || machine.committed.callback_index() != parent.callback_index()
-        || machine.generation() != parent.callback_index().value()
+        || machine.generation() != u64::from(parent.callback_index().value())
     {
         return Err(SpatialAudioCompositionError::State);
     }
@@ -156,7 +155,7 @@ pub(super) fn stage_spatial_audio_callback(
                 &parent,
                 target_receipt,
                 attempt_binding,
-                receiver_before_generation,
+                u64::from(receiver_before_generation),
             )?;
 
             let type10_values: Vec<f32> = packet
@@ -167,7 +166,7 @@ pub(super) fn stage_spatial_audio_callback(
             let target_words = target_receipt.target_words();
             let target_values: [f32; TARGET_VALUES] = target_words.map(f32::from_bits);
             let receiver_generation_after = ReceiverCallbackCount::new(
-                receiver_before_generation
+                u64::from(receiver_before_generation)
                     .checked_add(1)
                     .ok_or(SpatialAudioCompositionError::State)?,
             );
@@ -244,9 +243,9 @@ fn validate_type10_receipt(
     if receipt.callback_index() != parent.callback_index() || receipt.phase() != phase {
         return Err(SpatialAudioCompositionError::CallbackOrder);
     }
-    if receipt.programme_id().as_str() != parent.programme_id().as_str()
+    if receipt.programme_id() != parent.programme_id()
         || receipt.attempt() != parent.attempt()
-        || receipt.transaction_id().as_str() != parent.transaction_id().as_str()
+        || receipt.transaction_id() != parent.transaction_id()
         || receipt.profile_identity() != parent.profile_identity()
         || receipt.spatial_audio_before_generation() != parent.before_generation()
         || receipt.spatial_audio_before_digest() != parent.before_digest()
@@ -262,7 +261,7 @@ fn validate_ready_type10(
     parent: &SpatialAudioJoinMetadata,
     packet: &Type10Packet,
     receipt: &Type10AssemblyReceipt,
-    receiver_before_generation: u64,
+    receiver_before_generation: u32,
 ) -> Result<(), SpatialAudioCompositionError> {
     if packet.callback_index() != parent.callback_index()
         || packet.shape() != [TYPE10_ROWS, FRAME_SAMPLES]
@@ -277,7 +276,7 @@ fn validate_ready_type10(
 fn validate_target_receipt(
     parent: &SpatialAudioJoinMetadata,
     receipt: &ReaderTargetUpdateReceipt,
-    attempt_binding: ReaderAttemptBinding<'_>,
+    attempt_binding: ReaderAttemptBinding,
     reader_invocation: u64,
 ) -> Result<(), SpatialAudioCompositionError> {
     let target_words = receipt.target_words();
@@ -294,8 +293,8 @@ fn validate_target_receipt(
             });
     if attempt_binding.source_attempt != parent.attempt()
         || receipt.attempt_id() != attempt_binding.reader_attempt_id
-        || receipt.programme_id() != parent.programme_id().as_str()
-        || receipt.transaction_id() != parent.transaction_id().as_str()
+        || receipt.programme_id() != parent.programme_id()
+        || receipt.transaction_id() != parent.transaction_id()
         || receipt.callback_generation() != parent.callback_index()
         || receipt.reader_invocation().value() != reader_invocation
         || receipt.profile_id() != SELECTED_PROFILE_ID

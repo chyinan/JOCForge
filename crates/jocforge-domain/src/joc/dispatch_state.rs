@@ -9,8 +9,12 @@ use crate::{
         },
         emdf::metadata_owner::MetadataPayloadBody,
     },
-    spatial::spatial_audio_state::SelectedJocQmfProjection,
+    spatial::{
+        source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
+        spatial_audio_state::SelectedJocQmfProjection,
+    },
     timeline::{CodecSourceIndex, JocDispatchIndex},
+    transaction::CallbackLineageIdentity,
 };
 
 const SELECTED_CAPACITY_BYTES: u16 = 372;
@@ -92,9 +96,9 @@ impl Default for JocDispatchState {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct JocPayloadInput {
-    programme_id: Box<str>,
-    attempt: u64,
-    transaction_id: Box<str>,
+    programme_id: SourceFlagsProgrammeId,
+    attempt: SourceFlagsAttempt,
+    transaction_id: CallbackLineageIdentity,
     source_index: CodecSourceIndex,
     dispatch: JocDispatchIndex,
     clip_gain_index: u8,
@@ -115,16 +119,16 @@ impl JocPayloadInput {
             .checked_add(2)
             .ok_or(JocDispatchError::Clock)?;
         if projection.dispatch() != expected_dispatch
-            || projection.callback_index().value() != expected_callback
+            || u64::from(projection.callback_index().value()) != expected_callback
             || !(128..=255).contains(&projection.descriptor_selected_index())
             || !f32::from_bits(projection.descriptor_target_gain_word()).is_finite()
         {
             return Err(JocDispatchError::Lineage);
         }
         Ok(Self {
-            programme_id: projection.programme_id().into(),
+            programme_id: projection.programme_id().clone(),
             attempt: projection.attempt(),
-            transaction_id: projection.transaction_id().into(),
+            transaction_id: projection.transaction_id().clone(),
             source_index: projection.source_index(),
             dispatch: projection.dispatch(),
             clip_gain_index: projection.descriptor_selected_index(),
@@ -134,17 +138,17 @@ impl JocPayloadInput {
 
     #[cfg(test)]
     pub(crate) fn for_test(
-        programme_id: &str,
-        attempt: u64,
-        transaction_id: &str,
+        programme_id: SourceFlagsProgrammeId,
+        attempt: SourceFlagsAttempt,
+        transaction_id: CallbackLineageIdentity,
         source_index: CodecSourceIndex,
         clip_gain_index: u8,
         descriptor_target_gain_word: u32,
     ) -> Self {
         Self {
-            programme_id: programme_id.into(),
+            programme_id,
             attempt,
-            transaction_id: transaction_id.into(),
+            transaction_id,
             source_index,
             dispatch: source_index.dispatch().expect("bounded test source"),
             clip_gain_index,
@@ -297,9 +301,9 @@ fn validate_fit_lineage(
     input: &JocPayloadInput,
 ) -> Result<(), JocDispatchError> {
     let lineage = lineage.ok_or(JocDispatchError::Lineage)?;
-    if lineage.programme_id() != input.programme_id.as_ref()
+    if lineage.programme_id() != &input.programme_id
         || lineage.attempt() != input.attempt
-        || lineage.transaction_id() != input.transaction_id.as_ref()
+        || lineage.transaction_id() != &input.transaction_id
         || lineage.source_index() != input.source_index
         || lineage.dispatch() != input.dispatch
     {

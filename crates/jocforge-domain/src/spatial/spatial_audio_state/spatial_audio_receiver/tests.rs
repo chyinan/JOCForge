@@ -11,14 +11,14 @@ use crate::{
         DescriptorMathematicalProvider, QmfMathematicalFftProvider, QmfReceiverFunctionalProvider,
         ValidatedWindowQ15Provider,
         post_window_fanout::CallbackPhase,
-        source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
+        source_flags::SourceFlagsAttempt,
         spatial_audio_state::{F04StateEncoder, QmfWindowState, SpatialAudioMachine},
         validate_descriptor_mathematical_provider, validate_f04_parameter_package_manifest,
         validate_qmf_mathematical_fft_provider, validate_qmf_receiver_functional_provider,
         validate_window_q15_provider,
     },
     timeline::{FrontendCallbackIndex, ReceiverCallbackCount},
-    transaction::CallbackTransactionId,
+    transaction::CallbackLineageIdentity,
 };
 use std::sync::Arc;
 
@@ -218,11 +218,14 @@ fn validated_providers() -> ValidatedProviders {
 fn parent(callback_index: u64) -> SpatialAudioJoinMetadata {
     let profile = EncodingProfile::selected();
     let state = SpatialAudioMachine::new_cold(profile).expect("selected spatial-audio root");
+    let programme_id = crate::transaction::test_programme_id("f04r-direct-test");
+    let attempt = SourceFlagsAttempt::new(7);
+    let callback_index = FrontendCallbackIndex::new(u32::try_from(callback_index).unwrap());
     SpatialAudioJoinMetadata::new(
-        SourceFlagsProgrammeId::new("f04r-direct-test").expect("test programme id"),
-        SourceFlagsAttempt::new(7),
-        CallbackTransactionId::new("f04r-direct-transaction").expect("test transaction id"),
-        FrontendCallbackIndex::new(callback_index),
+        programme_id.clone(),
+        attempt,
+        CallbackLineageIdentity::new(programme_id, attempt, callback_index),
+        callback_index,
         state.generation(),
         state.digest(),
         profile,
@@ -285,7 +288,7 @@ fn stage_case(
     include_target_receipt: bool,
 ) -> Result<SpatialAudioReceiverProposal, SpatialAudioReceiverError> {
     let parent = parent(case.callback_index);
-    let callback_index = FrontendCallbackIndex::new(case.callback_index);
+    let callback_index = FrontendCallbackIndex::new(u32::try_from(case.callback_index).unwrap());
     let generation = ReceiverCallbackCount::new(case.receiver_generation);
     let type10 = Type10ReceiverInput::from_direct_vector_for_test(
         &parent,
@@ -372,7 +375,7 @@ fn direct_receiver_kat_compares_literals_after_one_continuous_actual_state_chain
             );
         }
         assert_eq!(
-            proposal.callback_index.value(),
+            u64::from(proposal.callback_index.value()),
             proposal.source_index.value() + 2
         );
         assert_eq!(proposal.dispatch.value(), proposal.source_index.value() + 1);

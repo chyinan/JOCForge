@@ -110,14 +110,14 @@ The full provider, state, clock, outcome, KAT, and implementation-scope record f
   ],
   "implementation_inventory": [
     {
-      "bytes": 40594,
+      "bytes": 40820,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs",
-      "sha256": "b90dd8904d7c93ef258871edcebf3f4ffd8b6d5347f39a7fdc964af4b4f2e2ff"
+      "sha256": "49b5566b204d7deb74828f3c7715cd64748be11a0f08c8e5820f452b90c636e9"
     },
     {
-      "bytes": 37519,
+      "bytes": 37303,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "dc5516d1bef5b18983b469116c3f8c959d12931dc10af18b5233794865587621"
+      "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"
     }
   ],
   "implementation_prohibitions": [
@@ -401,9 +401,9 @@ The full provider, state, clock, outcome, KAT, and implementation-scope record f
   ],
   "test_inventory": [
     {
-      "bytes": 23025,
+      "bytes": 23080,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs",
-      "sha256": "842a854b6fb9be7066842559ed07c06ef832ca88012c6d1b8d0fd02a5bffb27f"
+      "sha256": "ebb01345bd4289a219498610cad9fae957c93ff7d9d4481bc25f28bd9ff8cbab"
     }
   ],
   "vector_coverage": {

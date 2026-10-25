@@ -14,11 +14,13 @@ use crate::{
         DescriptorMathematicalProvider, QmfMathematicalFftProvider, QmfReceiverFunctionalProvider,
         post_window_fanout::CallbackPhase,
         qmf_analysis_synthesis::{QmfAnalysisHistory, QmfAnalysisSynthesisError, analyze_qmf_slot},
+        source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
     },
     timeline::{
         CodecSourceIndex, FrontendCallbackIndex, JocDispatchIndex, ReceiverCallbackCount,
         source_for_callback,
     },
+    transaction::CallbackLineageIdentity,
 };
 
 const CARRIER_LANES: [usize; 5] = [0, 1, 2, 4, 5];
@@ -158,9 +160,9 @@ pub(super) struct Mode0FittingProposal {
 /// This projection carries actual buffers and cannot advance receiver/QMF state.
 #[derive(Debug)]
 pub struct SelectedJocQmfProjection {
-    programme_id: Box<str>,
-    attempt: u64,
-    transaction_id: Box<str>,
+    programme_id: SourceFlagsProgrammeId,
+    attempt: SourceFlagsAttempt,
+    transaction_id: CallbackLineageIdentity,
     spatial_before_generation: u64,
     spatial_before_digest: super::SpatialAudioDigest,
     callback_index: FrontendCallbackIndex,
@@ -187,15 +189,15 @@ pub struct SelectedJocQmfProjection {
 }
 
 impl SelectedJocQmfProjection {
-    pub(crate) fn programme_id(&self) -> &str {
+    pub(crate) fn programme_id(&self) -> &SourceFlagsProgrammeId {
         &self.programme_id
     }
 
-    pub(crate) const fn attempt(&self) -> u64 {
+    pub(crate) const fn attempt(&self) -> SourceFlagsAttempt {
         self.attempt
     }
 
-    pub(crate) fn transaction_id(&self) -> &str {
+    pub(crate) const fn transaction_id(&self) -> &CallbackLineageIdentity {
         &self.transaction_id
     }
 
@@ -640,10 +642,10 @@ fn validate_input_lineage(
     let generation_after = receiver.checked_add(1).ok_or(Mode0FittingError::Lineage)?;
     let dispatch = callback
         .checked_sub(1)
-        .map(JocDispatchIndex::new)
+        .map(|value| JocDispatchIndex::new(u64::from(value)))
         .ok_or(Mode0FittingError::Lineage)?;
-    let receiver_index = ReceiverCallbackCount::new(receiver);
-    let generation_after = ReceiverCallbackCount::new(generation_after);
+    let receiver_index = ReceiverCallbackCount::new(u64::from(receiver));
+    let generation_after = ReceiverCallbackCount::new(u64::from(generation_after));
     if input.fitting_before_generation != receiver_index
         || input.receiver_analysis_before_generation != receiver_index
         || input.receiver_analysis_after.generation != generation_after
@@ -655,9 +657,9 @@ fn validate_input_lineage(
 }
 
 fn same_parent(left: &SpatialAudioJoinMetadata, right: &SpatialAudioJoinMetadata) -> bool {
-    left.programme_id().as_str() == right.programme_id().as_str()
+    left.programme_id() == right.programme_id()
         && left.attempt() == right.attempt()
-        && left.transaction_id().as_str() == right.transaction_id().as_str()
+        && left.transaction_id() == right.transaction_id()
         && left.callback_index() == right.callback_index()
         && left.before_generation() == right.before_generation()
         && left.before_digest() == right.before_digest()

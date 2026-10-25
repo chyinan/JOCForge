@@ -9,7 +9,7 @@ use crate::{
     spatial::{
         DescriptorMathematicalProvider, QmfReceiverFunctionalProvider,
         post_window_fanout::CallbackPhase,
-        source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
+        source_flags::SourceFlagsAttempt,
         spatial_audio_state::{
             DescriptorState, RawWord, SpatialAudioJoinMetadata, SpatialAudioMachine,
         },
@@ -17,7 +17,7 @@ use crate::{
         validate_qmf_receiver_functional_provider,
     },
     timeline::FrontendCallbackIndex,
-    transaction::CallbackTransactionId,
+    transaction::CallbackLineageIdentity,
 };
 use serde_json::Value;
 use sha2::{Digest, Sha256};
@@ -71,9 +71,13 @@ fn parent() -> SpatialAudioJoinMetadata {
     let profile = EncodingProfile::selected();
     let state = SpatialAudioMachine::new_cold(profile).expect("selected spatial-audio root");
     SpatialAudioJoinMetadata::new(
-        SourceFlagsProgrammeId::new("f04d-direct-test").expect("test programme id"),
+        crate::transaction::test_programme_id("f04d-direct-test"),
         SourceFlagsAttempt::new(7),
-        CallbackTransactionId::new("f04d-direct-transaction").expect("test transaction id"),
+        CallbackLineageIdentity::new(
+            crate::transaction::test_programme_id("f04d-direct-test"),
+            SourceFlagsAttempt::new(7),
+            FrontendCallbackIndex::new(2),
+        ),
         FrontendCallbackIndex::new(2),
         state.generation(),
         state.digest(),

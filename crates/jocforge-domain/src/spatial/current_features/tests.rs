@@ -17,12 +17,11 @@ use crate::{
             tests::{current_features_audio_view_fixture, render_proposal_fixture},
         },
         source_flags::{
-            SourceFlagsAttempt, SourceFlagsParentLineage, SourceFlagsProgrammeId,
-            current_features_test_packet,
+            SourceFlagsAttempt, SourceFlagsParentLineage, current_features_test_packet,
         },
     },
     timeline::FrontendCallbackIndex,
-    transaction::CallbackTransactionId,
+    transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId},
 };
 use serde_json::Value;
 use std::sync::Arc;
@@ -38,8 +37,27 @@ const FEATURE_PROCESSOR: &[u8] =
     include_bytes!("../../../tests/fixtures/current_features/feature-processor-math-v1.json");
 const FEATURE_FFT: &[u8] =
     include_bytes!("../../../tests/fixtures/current_features/feature-fft4096-math-v1.json");
-const PROGRAMME_ID: &str = "CURRENT_FEATURES_TEST";
-const TRANSACTION_ID: &str = "CURRENT_FEATURES_TEST_TX";
+const ATTEMPT_ID: AttemptId = AttemptId::new(0);
+
+fn programme_id() -> ProgrammeId {
+    crate::transaction::test_programme_id("CURRENT_FEATURES_TEST")
+}
+
+fn transaction_id(callback_index: FrontendCallbackIndex) -> CallbackLineageIdentity {
+    transaction_id_for(programme_id(), ATTEMPT_ID, callback_index)
+}
+
+fn transaction_id_for(
+    programme_id: ProgrammeId,
+    attempt_id: AttemptId,
+    callback_index: FrontendCallbackIndex,
+) -> CallbackLineageIdentity {
+    CallbackLineageIdentity::new(programme_id, attempt_id, callback_index)
+}
+
+fn frontend_callback_index(value: u64) -> FrontendCallbackIndex {
+    FrontendCallbackIndex::new(u32::try_from(value).expect("fixture callback index fits U32"))
+}
 
 const POSITIVE_CASES: [&str; 15] = [
     "cold_suppress",
@@ -94,6 +112,7 @@ struct PreparedCase {
     post_window_audio: Option<CurrentFeaturesAudioView>,
     render_proposal_error: Option<PostWindowFanoutError>,
     callback_index: FrontendCallbackIndex,
+    transaction_id: CallbackLineageIdentity,
 }
 
 fn vectors() -> Value {
@@ -156,7 +175,7 @@ fn prepare_case(case: &Value, invalid_before: Option<&str>) -> PreparedCase {
         .get("callback_index")
         .and_then(Value::as_u64)
         .unwrap_or(0);
-    let callback_index = FrontendCallbackIndex::new(
+    let callback_index = frontend_callback_index(
         input
             .get("expected_callback_index")
             .and_then(Value::as_u64)
@@ -197,15 +216,10 @@ fn prepare_case(case: &Value, invalid_before: Option<&str>) -> PreparedCase {
             ];
         }
     }
-    let packet_callback_index = FrontendCallbackIndex::new(callback_value);
-    let source_flags_parent = SourceFlagsParentLineage::new(
-        SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
-        SourceFlagsAttempt::new(0),
-        CallbackTransactionId::new(TRANSACTION_ID).unwrap(),
-        packet_callback_index,
-        &context.machine,
-    )
-    .unwrap();
+    let packet_callback_index = frontend_callback_index(callback_value);
+    let transaction_id = transaction_id(packet_callback_index);
+    let source_flags_parent =
+        SourceFlagsParentLineage::new(transaction_id.clone(), &context.machine).unwrap();
     let source_flags = current_features_test_packet(flags, source_flags_parent);
 
     let audio_input = input.get("audio").and_then(Value::as_object);
@@ -240,7 +254,7 @@ fn prepare_case(case: &Value, invalid_before: Option<&str>) -> PreparedCase {
             }
             let spatial_control_join = Arc::new(SpatialControlJoinMetadata::fixture(
                 &context.machine,
-                CallbackTransactionId::new(TRANSACTION_ID).unwrap(),
+                transaction_id.clone(),
                 packet_callback_index,
                 context.machine.generation(),
                 None,
@@ -248,8 +262,8 @@ fn prepare_case(case: &Value, invalid_before: Option<&str>) -> PreparedCase {
             ));
             let payload = rows.into_iter().flatten().map(f32::from_bits).collect();
             match current_features_audio_view_fixture(
-                SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
-                SourceFlagsAttempt::new(0),
+                programme_id(),
+                ATTEMPT_ID,
                 spatial_control_join,
                 CallbackPhase::Normal,
                 payload,
@@ -267,6 +281,7 @@ fn prepare_case(case: &Value, invalid_before: Option<&str>) -> PreparedCase {
         post_window_audio,
         render_proposal_error,
         callback_index,
+        transaction_id,
     }
 }
 
@@ -280,9 +295,9 @@ fn produce(
     }
     produce_current_features(
         &prepared.context.machine,
-        &SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
-        SourceFlagsAttempt::new(0),
-        &CallbackTransactionId::new(TRANSACTION_ID).unwrap(),
+        &programme_id(),
+        ATTEMPT_ID,
+        &prepared.transaction_id,
         prepared.callback_index,
         CallbackPhase::Normal,
         prepared.source_flags,
@@ -294,20 +309,13 @@ fn produce(
 
 fn flags_packet(
     machine: &SpatialControlMachine,
-    transaction_id: &str,
-    callback_index: FrontendCallbackIndex,
+    transaction_id: &CallbackLineageIdentity,
+    _callback_index: FrontendCallbackIndex,
     flags: [[u8; 2]; 48],
 ) -> SourceFlagsPacket {
     current_features_test_packet(
         flags,
-        SourceFlagsParentLineage::new(
-            SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
-            SourceFlagsAttempt::new(0),
-            CallbackTransactionId::new(transaction_id).unwrap(),
-            callback_index,
-            machine,
-        )
-        .unwrap(),
+        SourceFlagsParentLineage::new(transaction_id.clone(), machine).unwrap(),
     )
 }
 
@@ -423,9 +431,9 @@ fn current_features_preserves_shared_render_and_after_proposal_identities() {
 
     let produced = produce_current_features(
         &prepared.context.machine,
-        &SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
-        SourceFlagsAttempt::new(0),
-        &CallbackTransactionId::new(TRANSACTION_ID).unwrap(),
+        &programme_id(),
+        ATTEMPT_ID,
+        &transaction_id(prepared.callback_index),
         prepared.callback_index,
         CallbackPhase::Normal,
         prepared.source_flags,
@@ -503,9 +511,9 @@ fn all_nine_current_features_error_vectors_reject_without_partial_output() {
         };
         let result = produce_current_features(
             &prepared.context.machine,
-            &SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
-            SourceFlagsAttempt::new(0),
-            &CallbackTransactionId::new(TRANSACTION_ID).unwrap(),
+            &programme_id(),
+            ATTEMPT_ID,
+            &transaction_id(prepared.callback_index),
             prepared.callback_index,
             CallbackPhase::Normal,
             prepared.source_flags,
@@ -547,18 +555,26 @@ fn current_features_rejects_parent_render_root_and_flags_lineage_mismatches() {
     ];
     for (mismatch, expected_error) in mismatches {
         let current_owner = context();
-        let mut packet_programme = PROGRAMME_ID;
-        let mut packet_attempt = 0;
-        let mut packet_transaction = TRANSACTION_ID;
+        let mut packet_programme = programme_id();
+        let mut packet_attempt = ATTEMPT_ID;
+        let mut packet_transaction = transaction_id(callback);
         let mut packet_callback = callback;
         let mut packet_profile = current_owner.machine.profile();
         let mut packet_generation = current_owner.machine.generation();
         let mut packet_before_digest = None;
-        let mut flags_transaction = TRANSACTION_ID;
+        let mut flags_transaction = transaction_id(callback);
         match mismatch {
-            "programme" => packet_programme = "OTHER_PROGRAMME",
-            "attempt" => packet_attempt = 1,
-            "transaction" => packet_transaction = "OTHER_TRANSACTION",
+            "programme" => {
+                packet_programme = crate::transaction::test_programme_id("OTHERPROGRAMME01");
+            }
+            "attempt" => packet_attempt = AttemptId::new(1),
+            "transaction" => {
+                packet_transaction = transaction_id_for(
+                    crate::transaction::test_programme_id("OTHERPROGRAMME01"),
+                    ATTEMPT_ID,
+                    callback,
+                );
+            }
             "callback" => packet_callback = FrontendCallbackIndex::new(1),
             "profile" => {
                 packet_profile =
@@ -566,20 +582,26 @@ fn current_features_rejects_parent_render_root_and_flags_lineage_mismatches() {
             }
             "root_generation" => packet_generation += 1,
             "root_digest" => packet_before_digest = Some([0x55; 32]),
-            "flags_transaction" => flags_transaction = "OTHER_FLAGS_TRANSACTION",
+            "flags_transaction" => {
+                flags_transaction = transaction_id_for(
+                    crate::transaction::test_programme_id("OTHERPROGRAMME01"),
+                    ATTEMPT_ID,
+                    callback,
+                );
+            }
             _ => unreachable!(),
         }
         let spatial_control_join = Arc::new(SpatialControlJoinMetadata::fixture(
             &current_owner.machine,
-            CallbackTransactionId::new(packet_transaction).unwrap(),
+            packet_transaction,
             packet_callback,
             packet_generation,
             packet_before_digest,
             packet_profile,
         ));
         let audio_view = current_features_audio_view_fixture(
-            SourceFlagsProgrammeId::new(packet_programme).unwrap(),
-            SourceFlagsAttempt::new(packet_attempt),
+            packet_programme,
+            packet_attempt,
             spatial_control_join,
             CallbackPhase::Normal,
             vec![0.0; 48 * 3072],
@@ -587,7 +609,7 @@ fn current_features_rejects_parent_render_root_and_flags_lineage_mismatches() {
         .unwrap();
         let flags = flags_packet(
             &current_owner.machine,
-            flags_transaction,
+            &flags_transaction,
             callback,
             [[1, 1]; 48],
         );
@@ -595,9 +617,9 @@ fn current_features_rejects_parent_render_root_and_flags_lineage_mismatches() {
         let before_digest = current_owner.machine.digest();
         let result = produce_current_features(
             &current_owner.machine,
-            &SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
-            SourceFlagsAttempt::new(0),
-            &CallbackTransactionId::new(TRANSACTION_ID).unwrap(),
+            &programme_id(),
+            ATTEMPT_ID,
+            &transaction_id(callback),
             callback,
             CallbackPhase::Normal,
             flags,
@@ -620,30 +642,35 @@ fn current_features_rejects_a_mismatched_explicit_render_phase_without_staging()
     let callback = FrontendCallbackIndex::new(0);
     let join = Arc::new(SpatialControlJoinMetadata::fixture(
         &context.machine,
-        CallbackTransactionId::new(TRANSACTION_ID).unwrap(),
+        transaction_id(callback),
         callback,
         context.machine.generation(),
         None,
         context.machine.profile(),
     ));
     let proposal = render_proposal_fixture(
-        SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
-        SourceFlagsAttempt::new(0),
+        programme_id(),
+        ATTEMPT_ID,
         join,
         CallbackPhase::CachedDrain,
         vec![0.0; 48 * 3072],
     )
     .unwrap();
     let (audio_view, spatial_view) = proposal.fanout();
-    let flags = flags_packet(&context.machine, TRANSACTION_ID, callback, [[1, 1]; 48]);
+    let flags = flags_packet(
+        &context.machine,
+        &transaction_id(callback),
+        callback,
+        [[1, 1]; 48],
+    );
     let before_generation = context.machine.generation();
     let before_digest = context.machine.digest();
 
     let result = produce_current_features(
         &context.machine,
-        &SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
-        SourceFlagsAttempt::new(0),
-        &CallbackTransactionId::new(TRANSACTION_ID).unwrap(),
+        &programme_id(),
+        ATTEMPT_ID,
+        &transaction_id(callback),
         callback,
         CallbackPhase::Normal,
         flags,
@@ -665,16 +692,9 @@ fn current_features_rejects_a_mismatched_explicit_render_phase_without_staging()
 fn current_features_accepts_missing_view_for_reset_sources() {
     let context = context();
     let callback = FrontendCallbackIndex::new(0);
-    let transaction = CallbackTransactionId::new(TRANSACTION_ID).unwrap();
-    let programme = SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap();
-    let parent = SourceFlagsParentLineage::new(
-        SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
-        SourceFlagsAttempt::new(0),
-        transaction.clone(),
-        callback,
-        &context.machine,
-    )
-    .unwrap();
+    let transaction = transaction_id(callback);
+    let programme = programme_id();
+    let parent = SourceFlagsParentLineage::new(transaction.clone(), &context.machine).unwrap();
     let source_flags = current_features_test_packet([[0, 1]; 48], parent);
     let before_generation = context.machine.generation();
     let before_digest = context.machine.digest();
@@ -726,9 +746,9 @@ fn current_features_accepts_missing_view_for_reset_sources() {
 fn current_features_accepts_missing_view_for_carry_sources() {
     let context = context();
     let callback = FrontendCallbackIndex::new(0);
-    let transaction = CallbackTransactionId::new(TRANSACTION_ID).unwrap();
-    let programme = SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap();
-    let source_flags = flags_packet(&context.machine, TRANSACTION_ID, callback, [[1, 0]; 48]);
+    let transaction = transaction_id(callback);
+    let programme = programme_id();
+    let source_flags = flags_packet(&context.machine, &transaction, callback, [[1, 0]; 48]);
     let before_generation = context.machine.generation();
     let before_digest = context.machine.digest();
 
@@ -779,11 +799,11 @@ fn current_features_accepts_missing_view_for_carry_sources() {
 fn current_features_requires_audio_for_a_single_read_in_mixed_flags() {
     let context = context();
     let callback = FrontendCallbackIndex::new(0);
-    let flags_transaction = CallbackTransactionId::new(TRANSACTION_ID).unwrap();
-    let programme = SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap();
+    let flags_transaction = transaction_id(callback);
+    let programme = programme_id();
     let mut flags = [[0, 1]; 48];
     flags[17] = [0, 0];
-    let source_flags = flags_packet(&context.machine, TRANSACTION_ID, callback, flags);
+    let source_flags = flags_packet(&context.machine, &flags_transaction, callback, flags);
     let before_generation = context.machine.generation();
     let before_digest = context.machine.digest();
 
@@ -812,7 +832,7 @@ fn current_features_requires_audio_for_a_single_read_in_mixed_flags() {
 fn current_features_validates_stale_view_for_all_reset_sources() {
     let context = context();
     let callback = FrontendCallbackIndex::new(0);
-    let transaction = CallbackTransactionId::new(TRANSACTION_ID).unwrap();
+    let transaction = transaction_id(callback);
     let stale_join = Arc::new(SpatialControlJoinMetadata::fixture(
         &context.machine,
         transaction.clone(),
@@ -822,21 +842,21 @@ fn current_features_validates_stale_view_for_all_reset_sources() {
         context.machine.profile(),
     ));
     let audio_view = current_features_audio_view_fixture(
-        SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
-        SourceFlagsAttempt::new(0),
+        programme_id(),
+        ATTEMPT_ID,
         stale_join,
         CallbackPhase::Normal,
         vec![0.0; 48 * 3072],
     )
     .unwrap();
-    let source_flags = flags_packet(&context.machine, TRANSACTION_ID, callback, [[0, 1]; 48]);
+    let source_flags = flags_packet(&context.machine, &transaction, callback, [[0, 1]; 48]);
     let before_generation = context.machine.generation();
     let before_digest = context.machine.digest();
 
     let result = produce_current_features(
         &context.machine,
-        &SourceFlagsProgrammeId::new(PROGRAMME_ID).unwrap(),
-        SourceFlagsAttempt::new(0),
+        &programme_id(),
+        ATTEMPT_ID,
         &transaction,
         callback,
         CallbackPhase::Normal,

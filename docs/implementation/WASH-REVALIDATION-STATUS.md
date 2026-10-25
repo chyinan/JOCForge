@@ -1,0 +1,16 @@
+# Wash revalidation status
+
+These hash-bound supplements refine or limit existing implementation mappings. They do not authorize a callback coordinator, establish native parity, or close whole-programme acceptance.
+
+| Supplement | Manifest SHA-256 | Implementation use |
+|---|---|---|
+| `CALLBACK-LINEAGE-TYPEMAP-ERRATUM-V1` | `e561b73cdab75187ab1df8ebcaa43d9a14f3dd232213809e19ea9f210a96adaf` | Consumed by the local identity migration. `ProgrammeId` is a nonempty caller-supplied string, `AttemptId` is U64, and `FrontendCallbackIndex` is U32. `CallbackLineageIdentity` is an internal join value. GTC `CallbackTransactionId` remains a nonempty string; the P1.3-C coordinator gate is unchanged. See [callback lineage identity](CALLBACK-LINEAGE-IDENTITY.md). |
+| `F13C-CLIP-FIELD-LINEAGE-REVALIDATION-V1` | `636dacc31eb2275f0d8fd4cfad1a21bb3e1ab51e9c442a4f5a5f424f6e25384c` | Revalidates existing clip and sequence field contracts. The observed clip `128` and sequence `0` are separate sources; the natural event base/value join is `NOT_CAPTURED`, and whole-primary equivalence is `NOT_ESTABLISHED`. It adds no algorithm or owner. |
+| `F13C-CLIP-VIRTUAL-IDA-RECHECK-V1` | `47f4af4743e51563667b16764135bb16ca37058faecf9ec0bc4268bf39dc20cc` | Reports 12/12 bounded region checks for a virtual PE image. A fresh GUI/IDB reopen was `NOT_RUN`; this is not a fresh database capture. The sequence source join and whole-primary equivalence remain open. |
+| `F03R-DYNAMIC-HISTORY-OWNER-PARTIAL-V1` | `418c6862e8be2ebdd821f203defca06bc4bd970f09ddd0bc58052e9acbfb9855` | Confirms one zero-extent invocation and same-slot table alignment only. It does not bind an input row, cold value, constructor, or first writer. F03R history ownership stays `UNBOUND`; the two history stores remain separate. |
+| `F06-NATIVE-METER-AUDIT-V1` | `dacc7c0d0e53c1854b25c6a1531a97d10ff765c71dced092e3297478b3b53a7b` | Confirms the observed 6,794-record integrated-state cadence against the approved F06I rule. The required three-drain join, 104 records without input generations, native/model measurement differences, 44-byte getter mapping, and direct EOF observation remain open. Status is `PARTIAL_EVIDENCE_ONLY`; implementation readiness is `NO`. |
+| `F04A-AUTHORIZED-WAV-EXPECTED-HASHES-V1` | `7b85b785bd781b6a9a29c3ab4f8179f34d302ca8a40c4850baf1cbfe4ac879df` | Reference-only hashes for 288 mixer calls. Wash did not rehash the full WAV or replay all numeric outputs. Its field-semantics HOLD blocks per-call comparison until the captured branch/mode/lane fields join the approved contract. |
+| `F04A-EXPECTED-FIELD-SEMANTICS-HOLD-V1` | `03b9fb6be613cbcca73f1d978bc90fefc56f892e07ed3bedadc5b7906650d53a` | Keeps the 288-call comparison `NOT_JOINED` while R2 resolves the same-run field identity. No implementation change follows from the ambiguous labels. |
+| `F04A-MODEL-CALL-CLASSIFICATION-AND-RECEIPT-HOLD-V1` | `0cb838fb8c62e43a5785d8e08893dc0a273dd79fb704eb753b92eb3e50c20f10` | Separates 658 frozen-model calls from the 288 WAV-bound expected calls. They are not interchangeable. A typed implementation receipt is still required before Wash can join them. |
+
+The F03R partial, F06 audit, and F04A hash packages contain no PCM, source code, decompilation, protected output, or vendor key. Their scopes remain limited to the stated observations.

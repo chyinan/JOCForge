@@ -12,7 +12,7 @@ use crate::{
         spatial_control::SpatialControlRenderAuthority,
     },
     timeline::FrontendCallbackIndex,
-    transaction::CallbackTransactionId,
+    transaction::{AttemptId, CallbackLineageIdentity},
 };
 use std::sync::Arc;
 
@@ -21,6 +21,18 @@ const F01E_PROVIDER_BYTES: &[u8] =
     include_bytes!("../../../tests/fixtures/f01e_provider/f01e-selected-constructor-v1.json");
 const F03_PROVIDER_BYTES: &[u8] =
     include_bytes!("../../../tests/fixtures/target_cold/f03-selected-target-cold-v1.json");
+
+fn test_programme_id() -> SourceFlagsProgrammeId {
+    crate::transaction::test_programme_id("post-window-test-programme")
+}
+
+fn test_callback_transaction_id() -> CallbackLineageIdentity {
+    CallbackLineageIdentity::new(
+        test_programme_id(),
+        AttemptId::new(3),
+        FrontendCallbackIndex::new(0),
+    )
+}
 
 #[allow(clippy::too_many_arguments)]
 pub(in crate::spatial) fn render_proposal_fixture(
@@ -79,7 +91,7 @@ fn spatial_control() -> SpatialControlMachine {
 fn after_proposal_identity(machine: &SpatialControlMachine) -> Arc<SpatialControlJoinMetadata> {
     Arc::new(SpatialControlJoinMetadata::fixture(
         machine,
-        CallbackTransactionId::new("post-window-test-transaction").unwrap(),
+        test_callback_transaction_id(),
         FrontendCallbackIndex::new(0),
         machine.generation(),
         None,
@@ -92,7 +104,7 @@ fn fanout_returns_two_views_of_one_payload_with_explicit_phase_and_identity() {
     let machine = spatial_control();
     let after_proposal_identity = after_proposal_identity(&machine);
     let proposal = render_proposal_fixture(
-        SourceFlagsProgrammeId::new("post-window-test-programme").unwrap(),
+        test_programme_id(),
         SourceFlagsAttempt::new(3),
         Arc::clone(&after_proposal_identity),
         CallbackPhase::CachedDrain,
@@ -135,8 +147,8 @@ fn fanout_returns_two_views_of_one_payload_with_explicit_phase_and_identity() {
             .spatial_control_after_proposal_identity
     ));
     assert_eq!(
-        current_features.lineage.programme_id.as_str(),
-        "post-window-test-programme"
+        current_features.lineage.programme_id.as_ref(),
+        &test_programme_id()
     );
     assert_eq!(current_features.lineage.attempt, SourceFlagsAttempt::new(3));
     for source in 0..SOURCE_COUNT {
@@ -152,7 +164,7 @@ fn proposal_rejects_payloads_that_do_not_have_the_fixed_shape() {
     let machine = spatial_control();
     for sample_count in [PAYLOAD_SAMPLE_COUNT - 1, PAYLOAD_SAMPLE_COUNT + 1] {
         let result = render_proposal_fixture(
-            SourceFlagsProgrammeId::new("post-window-test-programme").unwrap(),
+            test_programme_id(),
             SourceFlagsAttempt::new(3),
             after_proposal_identity(&machine),
             CallbackPhase::Normal,
@@ -169,7 +181,7 @@ fn proposal_rejects_non_finite_payload_samples() {
         let mut payload = vec![0.0; PAYLOAD_SAMPLE_COUNT];
         payload[PAYLOAD_SAMPLE_COUNT / 2] = invalid;
         let result = render_proposal_fixture(
-            SourceFlagsProgrammeId::new("post-window-test-programme").unwrap(),
+            test_programme_id(),
             SourceFlagsAttempt::new(3),
             after_proposal_identity(&machine),
             CallbackPhase::Normal,
@@ -186,7 +198,7 @@ fn payload_borrows_preserve_every_source_major_sample() {
         .map(|index| index as f32)
         .collect();
     let proposal = render_proposal_fixture(
-        SourceFlagsProgrammeId::new("post-window-test-programme").unwrap(),
+        test_programme_id(),
         SourceFlagsAttempt::new(3),
         after_proposal_identity(&machine),
         CallbackPhase::Normal,
@@ -211,7 +223,7 @@ fn payload_borrows_preserve_every_source_major_sample() {
 fn different_proposals_do_not_share_render_stage_identity_even_for_equal_audio() {
     let machine = spatial_control();
     let first = render_proposal_fixture(
-        SourceFlagsProgrammeId::new("post-window-test-programme").unwrap(),
+        test_programme_id(),
         SourceFlagsAttempt::new(3),
         after_proposal_identity(&machine),
         CallbackPhase::Normal,
@@ -219,7 +231,7 @@ fn different_proposals_do_not_share_render_stage_identity_even_for_equal_audio()
     )
     .unwrap();
     let second = render_proposal_fixture(
-        SourceFlagsProgrammeId::new("post-window-test-programme").unwrap(),
+        crate::transaction::test_programme_id("post-window-test-programme"),
         SourceFlagsAttempt::new(3),
         after_proposal_identity(&machine),
         CallbackPhase::Normal,

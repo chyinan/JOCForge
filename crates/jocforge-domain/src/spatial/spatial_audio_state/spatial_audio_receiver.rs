@@ -17,12 +17,15 @@ use crate::{
     profile::resolve_selected_profile,
     spatial::{
         DescriptorMathematicalProvider, QmfMathematicalFftProvider, QmfReceiverFunctionalProvider,
-        ValidatedWindowQ15Provider, post_window_fanout::CallbackPhase,
+        ValidatedWindowQ15Provider,
+        post_window_fanout::CallbackPhase,
+        source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
     },
     timeline::{
         CodecSourceIndex, FrontendCallbackIndex, JocDispatchIndex, ReceiverCallbackCount,
         source_for_callback,
     },
+    transaction::CallbackLineageIdentity,
 };
 
 const FRAME_SAMPLES: usize = 1_536;
@@ -31,7 +34,7 @@ const LANE_COUNT: usize = 6;
 const TARGET_VALUES: usize = INPUT_ROWS * LANE_COUNT;
 const BLOCK_SAMPLES: usize = 32;
 const BLOCK_COUNT: usize = FRAME_SAMPLES / BLOCK_SAMPLES;
-const RECEIVER_GENERATION_OFFSET: u64 = 1;
+const RECEIVER_GENERATION_OFFSET: u32 = 1;
 const RING_SAMPLES: usize = 225;
 const RING_BYTES: usize = RING_SAMPLES * 4;
 const TEMPORAL_LAYOUTS: [(i64, usize); 5] = [(1_217, 3), (63, 5), (900, 1), (256, 6), (896, 15)];
@@ -204,9 +207,9 @@ impl TargetUpdatesReceipt<'_> {
             callback_index,
             receiver_generation,
             &TargetUpdatesLineage {
-                reader_invocation: ReaderInvocationIndex::new(
+                reader_invocation: ReaderInvocationIndex::new(u64::from(
                     callback_index.value().saturating_sub(2),
-                ),
+                )),
                 history_producer_generations: [HistoryProducerGeneration::Callback(callback_index);
                     INPUT_ROWS],
                 state_before_sha256: [0; 32],
@@ -243,9 +246,9 @@ pub(super) struct ReceiverStageTrace {
 #[must_use]
 #[derive(Debug)]
 pub(super) struct SpatialAudioReceiverProposal {
-    pub(super) programme_id: Box<str>,
-    pub(super) attempt: u64,
-    pub(super) transaction_id: Box<str>,
+    pub(super) programme_id: SourceFlagsProgrammeId,
+    pub(super) attempt: SourceFlagsAttempt,
+    pub(super) transaction_id: CallbackLineageIdentity,
     pub(super) spatial_before_generation: u64,
     pub(super) spatial_before_digest: super::SpatialAudioDigest,
     pub(super) phase: CallbackPhase,
@@ -429,9 +432,9 @@ pub(super) fn stage_spatial_audio_receiver(
         descriptor_input,
     };
     Ok(SpatialAudioReceiverProposal {
-        programme_id: input.parent.programme_id().as_str().into(),
-        attempt: input.parent.attempt().value(),
-        transaction_id: input.parent.transaction_id().as_str().into(),
+        programme_id: input.parent.programme_id().clone(),
+        attempt: input.parent.attempt(),
+        transaction_id: input.parent.transaction_id().clone(),
         spatial_before_generation: input.parent.before_generation(),
         spatial_before_digest: input.parent.before_digest(),
         phase: input.phase,
@@ -596,14 +599,14 @@ fn validate_lineage(
         .checked_sub(RECEIVER_GENERATION_OFFSET)
         .ok_or(SpatialAudioReceiverError::LineageTargetUpdates)?;
     if resolve_selected_profile(&input.parent.profile_identity()).is_err()
-        || input.receiver_callback_count_before.value() != receiver_before
+        || input.receiver_callback_count_before.value() != u64::from(receiver_before)
         || input.type10.callback_index != input.parent.callback_index()
         || target_updates.callback_index != input.parent.callback_index()
-        || input.type10.receiver_generation.value() != receiver_after
-        || target_updates.receiver_generation.value() != receiver_after
+        || input.type10.receiver_generation.value() != u64::from(receiver_after)
+        || target_updates.receiver_generation.value() != u64::from(receiver_after)
         || input.type10.component_origin_generation != input.parent.callback_index()
         || input.type10.lfe_origin_generation.value() != receiver_before
-        || target_updates.lineage.reader_invocation.value() != receiver_before
+        || target_updates.lineage.reader_invocation.value() != u64::from(receiver_before)
         || input.type10.phase != input.phase
         || target_updates.phase != input.phase
         || !same_parent(input.parent, input.type10.parent)
@@ -615,9 +618,9 @@ fn validate_lineage(
 }
 
 fn same_parent(left: &SpatialAudioJoinMetadata, right: &SpatialAudioJoinMetadata) -> bool {
-    left.programme_id().as_str() == right.programme_id().as_str()
+    left.programme_id() == right.programme_id()
         && left.attempt() == right.attempt()
-        && left.transaction_id().as_str() == right.transaction_id().as_str()
+        && left.transaction_id() == right.transaction_id()
         && left.callback_index() == right.callback_index()
         && left.before_generation() == right.before_generation()
         && left.before_digest() == right.before_digest()

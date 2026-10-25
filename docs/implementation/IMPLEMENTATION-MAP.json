@@ -1370,8 +1370,8 @@
         {
           "slice_id": "selected-profile-feature-control-and-value-only-source-flags",
           "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F03R_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_SELECTED_PROFILE_TYPED_CONTROL_AND_VALUE_STAGE__FULL_WAVE_RUN_NOT_AVAILABLE",
-          "scope": "Applies Wash LOCAL_TRANSLATION contract F03R-SELECTED-FEATURE-CONTROL-BINDING-V2: each selected-profile per-host F03R feature control is independently typed as component_enum=0 and diffuse=0, while F01E Control52 word10 remains unchanged as authored audio diffuse for F04A. Runs the value-only SourceFlags stage with same-callback selected controls; does not claim a native hidden-field alias, create SourceFlagsPacket, install state, or commit a callback root.",
+          "implementation_status": "LOCALLY_VERIFIED_SELECTED_PROFILE_TYPED_CONTROL_AND_REAL_WAVE_G0_G2_VALUE_STAGE__NONCOMMITTING",
+          "scope": "Applies Wash LOCAL_TRANSLATION contract F03R-SELECTED-FEATURE-CONTROL-BINDING-V2: each selected-profile per-host F03R feature control is independently typed as component_enum=0 and diffuse=0, while F01E Control52 word10 remains unchanged as authored audio diffuse for F04A. Runs the value-only SourceFlags stage on the authorized full WAVE for g0-g2 with sequential raw-history proposals; does not claim a native hidden-field alias, create SourceFlagsPacket, install state, or commit a callback root.",
           "owner": "spatial_control",
           "implementation_files": [
             "crates/jocforge-domain/src/spatial/source_flags.rs",
@@ -1400,23 +1400,157 @@
             "provider_files": [
               "crates/jocforge-domain/tests/fixtures/primary_metadata_control/F01E-EXPECTED-COMPARISON-DATA.json"
             ],
-            "validation_boundary": "Wash package F03R-SELECTED-FEATURE-CONTROL-BINDING-V2 is bound by manifest SHA-256 53c74da814eacba840916d93fd9fc89bcc84b7229afda629170943d12bb0bd52. The local selected profile yields typed (component_enum=0,diffuse=0); this does not establish a native field source or support other profiles. The full authorized-WAVE g0-g2 probe was not run in this checkout because its input is absent and JOCFORGE_AUTHORIZED_WAV is unset."
+            "validation_boundary": "Wash package F03R-SELECTED-FEATURE-CONTROL-BINDING-V2 is bound by manifest SHA-256 53c74da814eacba840916d93fd9fc89bcc84b7229afda629170943d12bb0bd52. The local selected profile yields typed (component_enum=0,diffuse=0); this does not establish a native field source or support other profiles. The exact authorized full WAVE identity was replayed in memory for g0-g2; no raw PCM was persisted and no packet, callback root, F04A frame, or parent commit was produced."
           },
           "vectors": {
-            "kind": "SAME_CALLBACK_CROSS_CONSUMER_FIXTURE_AND_VALUE_ONLY_RESULT",
+            "kind": "AUTHORIZED_REAL_WAVE_G0_G2_VALUE_ONLY_OUTPUTS_AND_CROSS_CONSUMER_FIXTURE",
             "authoritative_vectors": [
               "crates/jocforge-domain/tests/fixtures/primary_metadata_control/F01E-EXPECTED-COMPARISON-DATA.json"
             ],
             "case_pointers": [
               "meter_installed48_renderer.rs builds the selected primary metadata/source map and verifies host10 Control52 word10=1",
               "the selected-profile typed adapter binds host10/callback0 to component_enum=0,diffuse=0 and the SourceFlags value stage returns the active impulse result [0,0]",
-              "the same active host10 event diffuse causes F04A to require its diffusion provider; the test observes DiffusionParametersUnavailable without committing renderer state",
-              "direct Control52 word10 reuse and the nonnormative post-route Source56 diffuse candidate are both rejected by the F03R control boundary"
+              "the same active host10 event diffuse causes the F04A consumer test to require its diffusion provider; it observes DiffusionParametersUnavailable without committing renderer state",
+              "direct Control52 word10 reuse and the nonnormative post-route Source56 diffuse candidate are both rejected by the F03R control boundary",
+              "real WAVE pair counts [00,01,10,11] are [30,0,16,2], [31,0,15,2], [30,0,16,2]; pair 00 requires a CurrentFeaturesAudioView, and the meter leaf frame cannot substitute for the spatial-control render identity"
             ],
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/primary_metadata_control/F01E-EXPECTED-COMPARISON-DATA.json",
               "bytes": 20207,
               "sha256": "1265db0d87ce83204c34831f9ddde0e958705b171e9b05ee3e71c4ebda0b44c4"
+            },
+            "actual_wave_probe": {
+              "resource_bytes": 743696526,
+              "resource_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+              "caller_job_xml_sha256": "4a110274aff94d61d53d7e0d79a5915aad4b5211487ec98163fc3abd4904d3d6",
+              "caller_config_sha256": "e6bd0108b29d54fffcac8d6eb85e48e94798a5ba4369f274c2026d30f15f53a0",
+              "callback_values": [
+                {
+                  "callback": 0,
+                  "generation": 1,
+                  "cursor_before": 0,
+                  "cursor_after": 1536,
+                  "pcm_rows_sha256": "08888d3dae3aa8cbf8d8df42836bb67ab07f3c2d8a9d669247e324553e42c71b",
+                  "quiet37_sha256": "40b71dd056ba867dafe9d479fc714496df771fb629cd3a8c0e6f4a02c80eb25e",
+                  "prefix_writer_sources": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10
+                  ],
+                  "membership_rows": 6,
+                  "f03r_payload_shape": "48x2",
+                  "f03r_payload_sha256": "da2819b893989c93c527a9ecbf2719d03d4a8528d16ccdc3e296d6e80def7cc4",
+                  "flag_pair_counts_00_01_10_11": [
+                    30,
+                    0,
+                    16,
+                    2
+                  ]
+                },
+                {
+                  "callback": 1,
+                  "generation": 2,
+                  "cursor_before": 1536,
+                  "cursor_after": 3072,
+                  "pcm_rows_sha256": "988ee6a0d2a790a370e52becb317d171aa835def8ac4aea2049d2989bb261fdb",
+                  "quiet37_sha256": "b2df8c2c4e7fc2133c231c5b46f5edbe6ce98adb0bad0f17e38b39868eeeeb65",
+                  "prefix_writer_sources": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10
+                  ],
+                  "membership_rows": 6,
+                  "f03r_payload_shape": "48x2",
+                  "f03r_payload_sha256": "7f2d2030409ca351a2f86d4604a36e03d31e4a968bf0b809ac74e6ee5d4248e4",
+                  "flag_pair_counts_00_01_10_11": [
+                    31,
+                    0,
+                    15,
+                    2
+                  ]
+                },
+                {
+                  "callback": 2,
+                  "generation": 3,
+                  "cursor_before": 3072,
+                  "cursor_after": 4608,
+                  "pcm_rows_sha256": "b25be8c4f704e1702f2f9b1e32005907fa9b1f19fde4c016407f27731834a6c6",
+                  "quiet37_sha256": "40b71dd056ba867dafe9d479fc714496df771fb629cd3a8c0e6f4a02c80eb25e",
+                  "prefix_writer_sources": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10
+                  ],
+                  "membership_rows": 6,
+                  "f03r_payload_shape": "48x2",
+                  "f03r_payload_sha256": "da2819b893989c93c527a9ecbf2719d03d4a8528d16ccdc3e296d6e80def7cc4",
+                  "flag_pair_counts_00_01_10_11": [
+                    30,
+                    0,
+                    16,
+                    2
+                  ]
+                }
+              ],
+              "control_separation": {
+                "host": 10,
+                "event_control52_word10": 1,
+                "typed_feature_component_enum": 0,
+                "typed_feature_diffuse": 0,
+                "callback_indices": [
+                  0,
+                  1,
+                  2
+                ],
+                "native_field_alias_claimed": false
+              },
+              "current_features_gate": {
+                "read_pair": "00",
+                "read_pair_counts_g0_g1_g2": [
+                  30,
+                  31,
+                  30
+                ],
+                "audio_view_required": true,
+                "CurrentFeaturesAudioView_factory": "PostWindowRenderProposal::try_from_spatial_control_renderer",
+                "meter_leaf_frame_substitution": "FORBIDDEN_NO_SPATIAL_CONTROL_RENDER_IDENTITY",
+                "required_source_flags_parent_lineage": [
+                  "programme_id",
+                  "attempt",
+                  "CallbackLineageIdentity",
+                  "FrontendCallbackIndex",
+                  "before_history_generation",
+                  "before_history_digest",
+                  "selected profile",
+                  "validated provider lineage"
+                ],
+                "callback_phase_conversion": "EXPLICIT_NORMAL_REQUIRED; no render view or parent receipt was minted by this probe"
+              },
+              "state_boundary": "F03R values and a separate noncommitting F04A leaf were produced; no SourceFlagsPacket, CurrentFeaturesAudioView, callback root, or parent commit was produced"
             }
           },
           "error_outcomes": [
@@ -1436,7 +1570,7 @@
             }
           ],
           "not_run": [
-            "authorized-WAVE F03R g0-g2 value probe; the exact input is absent from this checkout",
+            "g3 onward, cached drain, or whole-programme F03R value probe",
             "SourceFlagsPacket production, F03F CurrentFeatures, selector/U04/outer and F03W root commit",
             "corrected F04A numeric replay, full callback commit, EOF/drains, measurement receipt, encoding or product acceptance"
           ]
@@ -1906,8 +2040,8 @@
         {
           "slice_id": "selected-primary-installed48-source-map-and-activity",
           "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_FUNCTIONAL_ID_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_STATIC_ROUTE_AND_REAL_ADM_G0_ACTIVITY_PROPOSAL__F03R_SELECTED_TYPED_VALUE_FIXTURE_TESTED__REAL_WAVE_PROBE_NOT_RUN",
-          "scope": "Keeps the detached static projection path and adds a dynamic selected-ADM resource identity binding that reuses the same 48-source row mapping. The authorized full WAV was previously parsed in memory and produced a source map plus a g0 primary-activity proposal. The nonnormative pre-F04 Source56 candidate remains rejected. Wash V2 now supplies a selected-profile typed F03R adapter, and a fixture cross-consumer test exercises the value-only SourceFlags stage while retaining authored event diffuse for F04A. The current checkout has no authorized WAV, so g0-g2 full-resource F03R values remain unrun; no callback root is committed.",
+          "implementation_status": "LOCALLY_VERIFIED_STATIC_ROUTE_AND_REAL_ADM_G0_G2_F03R_VALUE_PROPOSALS__PACKET_AND_ROOT_COMMIT_DEFERRED",
+          "scope": "Keeps the detached static projection path and dynamic selected-ADM resource identity binding over the same 48-source row mapping. The authorized full WAVE was read in memory and produced source/activity plus F03R value-only results for g0-g2 under Wash V2's selected-profile typed adapter. Host10 authored Control52 word10=1 remains separate from feature diffuse=0. The nonnormative pre-F04 Source56 candidate remains rejected. No SourceFlagsPacket or callback root is committed.",
           "implementation_files": [
             "crates/jocforge-domain/src/frontend/job_configuration.rs",
             "crates/jocforge-domain/src/frontend/primary_metadata_control.rs",
@@ -1944,7 +2078,7 @@
               "crates/jocforge-domain/tests/fixtures/primary_installed48/SELECTED-GEOMETRY-VECTORS.json",
               "crates/jocforge-domain/tests/fixtures/primary_installed48/P11-SOURCE-BINDING.json"
             ],
-            "validation_boundary": "R2 package payloads remain test-only expected evidence; runtime source maps are recomputed from the admitted F01E graph/control rows and whole-resource identity. The F03R value-only fixture test uses the separate selected-profile typed adapter; no callback state is committed and no main encode path is connected."
+            "validation_boundary": "R2 package payloads remain test-only expected evidence; runtime source maps are recomputed from the admitted F01E graph/control rows and whole-resource identity. The authorized WAVE g0-g2 F03R value-only probe used the separate selected-profile typed adapter and sequential raw-history proposals; no packet, callback state, or main encode path was committed."
           },
           "vectors": {
             "kind": "SEALED_MODEL_REPLAY_AND_POSTCOMPUTATION_RECEIPTS",
@@ -1960,9 +2094,10 @@
               "4,251 callback rows: phase, host-frame, source sample cursor, actual/advertised counts, quiet flags, writer indices and field0/field4 masks",
               "5,695 field transition receipts derived from recomputed masks",
               "96 selected post-route variants; V2 specifies active width>=R32(0.2) clears Z at byte offset32 after the normalizer disables field52",
-              "The admitted validation WAV was previously read in memory at its whole-resource identity; its g0 source/activity proposals were dropped before F03R values under the then-unresolved join",
-              "Wash V2 now authorizes a selected-profile typed feature pair (0,0), distinct from event diffuse; the fixture integration test exercises this adapter and the F03R value-only stage",
-              "A temporary Source56 candidate rejected host14 with mute0/width+0/component_enum0/diffuse_flag1 and remains nonnormative; the current checkout lacks the authorized WAV for a full g0-g2 probe"
+              "The approved 743696526-byte WAVE was replayed in memory at g0-g2; raw PCM rows and F03R payloads are represented only by per-callback hashes",
+              "the F03R payload hashes are g0 da2819b893989c93c527a9ecbf2719d03d4a8528d16ccdc3e296d6e80def7cc4, g1 7f2d2030409ca351a2f86d4604a36e03d31e4a968bf0b809ac74e6ee5d4248e4, and g2 da2819b893989c93c527a9ecbf2719d03d4a8528d16ccdc3e296d6e80def7cc4",
+              "Wash V2 typed controls are host/callback-bound with feature diffuse=0 while host10 event Control52 word10 stays 1; no native field alias or callback commit is claimed",
+              "a temporary Source56 candidate rejected host14 with mute0/width+0/component_enum0/diffuse_flag1 and remains nonnormative"
             ],
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/primary_installed48/CALLBACK-ACTIVITY-OUTPUTS.jsonl",
@@ -1990,7 +2125,7 @@
           ],
           "not_run": [
             "native primary activity acceptance and consumer-field lineage",
-            "F03R typed feature-control field binding and SourceFlags values",
+            "F03R SourceFlagsPacket production, CurrentFeatures, selector/U04/outer, and F03W root commit",
             "F03F/selector/U04/outer, F04A render integration, SCP/control packet, and callback commit",
             "application/CLI production connection, end-to-end encode, and W04 acceptance"
           ]
@@ -2009,8 +2144,8 @@
         {
           "slice_id": "independent-meter-installed48-postwindow-leaf",
           "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F04A_DEFERRED",
-          "implementation_status": "LOCALLY_IMPLEMENTED_F04A_LEAF__CORRECTED_NUMERIC_REPLAY_PENDING",
-          "scope": "Implements a fresh meter-owned selected F04A installed48/post-window value transition using same-resource PCM, graph/control map, primary activity and membership proposals. A prior isolated run was invalidated after review found F64 sqrt constants were promoted from F32. The implementation now uses the specified F64 literals; the corrected leaf has not been replayed. It is not a committed F06 callback and is not connected to SourceFlags, CurrentFeatures, selector/U04, component, LFE, OAR packet, or measurement receipt. The selected F03R typed adapter is now locally materialized, but no full callback integration is claimed.",
+          "implementation_status": "LOCALLY_REPLAYED_CORRECTED_F04A_REAL_WAVE_G0_G2__EXPECTED_COMPARISON_PENDING",
+          "scope": "Implements a fresh meter-owned selected F04A installed48/post-window value transition using same-resource PCM, graph/control map, primary activity, membership proposals, and identity-validated diffusion parameters. The corrected F64-literal path has been rerun for real g0-g2 and its actual hashes are recorded under F04A; no independent corrected expected-output vector is currently available, so numeric conformance is not claimed. This is not a committed F06 callback and is not connected to SourceFlagsPacket, CurrentFeatures, selector/U04, component, LFE, OAR packet, or measurement receipt.",
           "owner": "meter",
           "implementation_files": [
             "crates/jocforge-domain/src/meter/installed48_renderer.rs",
@@ -2033,7 +2168,7 @@
             "covered_clauses": [
               "the selected NORMAL source interval begins at 1536*g; output generation is g+1",
               "the leaf has fresh previous PCM, previous-current rows and per-host diffusion state; no main root alias or commit",
-              "corrected numeric replay remains pending; no F03F stage or callback root was committed"
+              "corrected actual F04A generations g0/g1/g2 are recorded; no independent expected comparison, F03F stage, or callback root was committed"
             ]
           },
           "parameters": {
@@ -2046,18 +2181,60 @@
             "validation_boundary": "Runtime values are recomputed from the selected P11 geometry, same-callback PCM, F01E control rows and fresh diffusion state; expected vectors are not runtime inputs."
           },
           "vectors": {
-            "kind": "CORRECTED_F04A_LEAF_REPLAY_PENDING",
+            "kind": "CORRECTED_REAL_WAVE_G0_G2_ACTUALS__EXPECTED_COMPARISON_NOT_RUN",
             "authoritative_vectors": [],
             "case_pointers": [
-              "the prior F64-sqrt output run was invalidated and its hashes are not verification evidence",
-              "corrected F64-literal sqrt then F32 conversion requires a new independent replay; the prior hashes remain invalidated"
+              "fresh corrected-code F04A actual hashes: g0 06d88109940f8e913952099a2921a07697bc2863d75d89d5020bb6eadf5d1dbb, g1 8ba7283b9395bdc6c2e514844f7fd6795b187be871984c9017c839547ff1d054, g2 c03318dc8f6349ace6ff439021315c70e3e5739f8b3104ed154979d1aadb54b4",
+              "these fresh actual hashes happen to equal the withdrawn pre-correction strings; the old run was not used as an expected vector",
+              "no independently generated corrected F04A expected hashes are present, so expected comparison and conformance remain NOT_RUN"
             ],
+            "actual_vs_expected": {
+              "actual": {
+                "callback_indices": [
+                  0,
+                  1,
+                  2
+                ],
+                "upstream_generations": [
+                  1,
+                  2,
+                  3
+                ],
+                "source_intervals": [
+                  "[0,1536)",
+                  "[1536,3072)",
+                  "[3072,4608)"
+                ],
+                "frame_shape": "48x3072 F32 words",
+                "parameter_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+                "output_sha256": [
+                  "06d88109940f8e913952099a2921a07697bc2863d75d89d5020bb6eadf5d1dbb",
+                  "8ba7283b9395bdc6c2e514844f7fd6795b187be871984c9017c839547ff1d054",
+                  "c03318dc8f6349ace6ff439021315c70e3e5739f8b3104ed154979d1aadb54b4"
+                ],
+                "mode": "fresh noncommitting leaf replay over authorized resource SHA-256 7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+              },
+              "expected": {
+                "status": "NOT_SUPPLIED",
+                "comparison": "NOT_RUN",
+                "conformance_claim": false
+              }
+            },
+            "numeric_order": {
+              "filtered_prefix_weights": "binary64 literals 0.85/0.15 -> binary64 sqrt -> one F32 cast -> finite R32 products",
+              "filtered_scale": "sqrt64_to_f32(filter_weight) -> R32 multiply by mode -> R32 multiply by gain",
+              "per_sample_mix": "R32 direct product; ordered R32 add into prefix; R32 filtered product; ordered R32 add",
+              "spread_factor": "R32 width*PI_F32 -> R32 division by 0.4 -> F64 cosine -> F32 cast -> R32 square",
+              "postwindow": "R32 multiply previous/current installed samples by the corresponding triangle-window half",
+              "callbacks": "NORMAL g0/g1/g2 only; leaf generation g+1; no callback-root commit"
+            },
             "authorized_resource_identity": {
               "bytes": 743696526,
               "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
               "use": "internal identity-bound diagnostic only; never a runtime allowlist"
             },
             "washed_reference_manifest_sha256": {
+              "f04_diffusion_provider_package": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
               "meter_frontend_g0_g2_starter_v1": "9e63f9ee657d9267ba21a57099c16f410f484d9ff9926cabc3a2eb9a7bebc0f6",
               "meter_frontend_producer_chain_v1": "9de1440ebb9bc1d1e119b1f2bbb80577a0ae885f722264a52d837c28f9c8e95f",
               "f03r_diffuse_field_boundary_v1": "d57ba77c725ba0a54be624854b069cf96cc27f4daa9811a990c60c50b4b55efa",
@@ -2066,7 +2243,7 @@
             }
           },
           "not_run": [
-            "authorized-WAVE F03R g0-g2 values, F03F CurrentFeatures, selector/U04/outer and F03W root commit",
+            "F03R SourceFlagsPacket production, F03F CurrentFeatures, selector/U04/outer and F03W root commit",
             "F04 matrix/destinations, component15, direct-LFE packet assembly, SCP16/control16",
             "g1/g2 full frontend callbacks, EOF/drains, measurement receipt, encoding, or product acceptance"
           ]
@@ -2132,8 +2309,8 @@
         {
           "slice_id": "independent-meter-installed48-postwindow-leaf",
           "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F04A_DEFERRED",
-          "implementation_status": "INVALIDATED_PRIOR_REAL_WAVE_OUTPUTS__CORRECTED_F04A_REPLAY_PENDING",
-          "scope": "A prior same-resource g0-g2 F04A leaf run was invalidated after the filtered-prefix square-root constants were found to have been promoted from F32. Its hashes are withdrawn. The corrected F04A replay has not been run. This is not a committed F06 callback and does not connect F03R flags, CurrentFeatures, selector/U04, component, LFE, OAR packet, or measurement receipt.",
+          "implementation_status": "CORRECTED_REAL_WAVE_G0_G2_ACTUALS_REPLAYED__EXPECTED_COMPARISON_PENDING",
+          "scope": "A prior same-resource g0-g2 F04A leaf run was invalidated after the filtered-prefix square-root constants were found to have been promoted from F32. The corrected code has now rerun those callbacks with binary64 weights and records fresh actual hashes; they happen to equal the prior strings, which remain withdrawn as expectations. No independent corrected expected-output vector is available, so conformance is not claimed. This is not a committed F06 callback and does not connect SourceFlagsPacket, CurrentFeatures, selector/U04, component, LFE, OAR packet, or measurement receipt.",
           "owner": "meter",
           "implementation_files": [
             "crates/jocforge-domain/src/meter/installed48_renderer.rs",
@@ -2152,9 +2329,9 @@
               "PhysicalHostIndex"
             ],
             "covered_clauses": [
-              "the invalidated prior run used g0..g2 NORMAL source intervals beginning at 0/1536/3072; no corrected output generation is currently verified",
+              "corrected actual output used g0/g1/g2 NORMAL source intervals beginning at 0/1536/3072 and generations 1/2/3",
               "the leaf has fresh previous PCM, previous-current rows and per-host diffusion state; no main root alias or commit",
-              "the old installed48 output hashes are not evidence; no corrected F04A result, F03F stage or callback root is committed"
+              "actual F04A values are noncommitting and have no independent expected-hash comparison; no F03F stage or callback root is committed"
             ]
           },
           "parameters": {
@@ -2167,12 +2344,52 @@
             "validation_boundary": "Runtime values are recomputed from the selected P11 geometry, same-callback PCM, F01E control rows and fresh diffusion state; expected vectors are not runtime inputs."
           },
           "vectors": {
-            "kind": "INVALIDATED_PRIOR_REAL_RESOURCE_RUN__CORRECTED_REPLAY_PENDING",
+            "kind": "CORRECTED_REAL_WAVE_G0_G2_ACTUALS__EXPECTED_COMPARISON_NOT_RUN",
             "authoritative_vectors": [],
             "case_pointers": [
-              "the prior g0-g2 output hashes were invalidated because F64 sqrt constants were promoted from F32",
-              "the corrected numeric replay has not been run and must regenerate output from the authorized source"
+              "fresh corrected-code F04A actual hashes: g0 06d88109940f8e913952099a2921a07697bc2863d75d89d5020bb6eadf5d1dbb, g1 8ba7283b9395bdc6c2e514844f7fd6795b187be871984c9017c839547ff1d054, g2 c03318dc8f6349ace6ff439021315c70e3e5739f8b3104ed154979d1aadb54b4",
+              "the fresh actual hashes equal the withdrawn prior strings; those old outputs remain invalid as expectations and were not used as inputs",
+              "the approved package supplies diffusion parameters but no independent corrected g0-g2 F04A output hashes; expected comparison remains NOT_RUN"
             ],
+            "actual_vs_expected": {
+              "actual": {
+                "callback_indices": [
+                  0,
+                  1,
+                  2
+                ],
+                "upstream_generations": [
+                  1,
+                  2,
+                  3
+                ],
+                "source_intervals": [
+                  "[0,1536)",
+                  "[1536,3072)",
+                  "[3072,4608)"
+                ],
+                "frame_shape": "48x3072 F32 words",
+                "parameter_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+                "output_sha256": [
+                  "06d88109940f8e913952099a2921a07697bc2863d75d89d5020bb6eadf5d1dbb",
+                  "8ba7283b9395bdc6c2e514844f7fd6795b187be871984c9017c839547ff1d054",
+                  "c03318dc8f6349ace6ff439021315c70e3e5739f8b3104ed154979d1aadb54b4"
+                ]
+              },
+              "expected": {
+                "status": "NOT_SUPPLIED",
+                "comparison": "NOT_RUN",
+                "conformance_claim": false
+              }
+            },
+            "numeric_order": {
+              "filtered_prefix_weights": "binary64 literals 0.85/0.15 -> binary64 sqrt -> one F32 cast -> finite R32 products",
+              "filtered_scale": "sqrt64_to_f32(filter_weight) -> R32 multiply by mode -> R32 multiply by gain",
+              "per_sample_mix": "R32 direct product; ordered R32 add into prefix; R32 filtered product; ordered R32 add",
+              "spread_factor": "R32 width*PI_F32 -> R32 division by 0.4 -> F64 cosine -> F32 cast -> R32 square",
+              "postwindow": "R32 multiply previous/current installed samples by the corresponding triangle-window half",
+              "callbacks": "NORMAL g0/g1/g2 only; output generation g+1; leaf proposal discarded"
+            },
             "authorized_resource_identity": {
               "bytes": 743696526,
               "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
@@ -2180,7 +2397,7 @@
             }
           },
           "not_run": [
-            "authorized-WAVE F03R g0-g2 value-only probe and corrected F04A numeric replay",
+            "independent corrected F04A expected-output comparison",
             "F03F CurrentFeatures",
             "selector/U04/outer, F04 matrix/destinations/component, direct-LFE packet assembly, SCP16/control16",
             "full callback commit, g1/g2 full frontend callbacks, EOF/drains, measurement receipt, encoding, or product acceptance"
@@ -9939,7 +10156,7 @@
         "producer_stage": "same-callback W3072/post-window installed48 boundary before F04C consumer processing",
         "lineage": [
           "programme and attempt",
-          "CallbackTransactionId, FrontendCallbackIndex, and explicit CallbackPhase NORMAL or CACHED_DRAIN",
+          "CallbackLineageIdentity, FrontendCallbackIndex, and explicit CallbackPhase NORMAL or CACHED_DRAIN",
           "selected profile and F01E/F03 provider lineage",
           "spatial_control before generation and complete root digest",
           "typed render-stage identity and spatial-control after-proposal identity",
@@ -10740,6 +10957,17 @@
         "representation": "private String",
         "validation": "nonempty, matching transaction_id minLength=1 in the GTC transactionReceipt schema"
       },
+      "local_callback_lineage_identity": {
+        "type": "CallbackLineageIdentity",
+        "authority": "CALLBACK-LINEAGE-TYPEMAP-ERRATUM-V1; manifest SHA-256 e561b73cdab75187ab1df8ebcaa43d9a14f3dd232213809e19ea9f210a96adaf",
+        "fields": {
+          "programme_id": "ProgrammeId(String), nonempty caller-supplied and stable across full restart; never derived from content",
+          "attempt": "AttemptId(U64), advances only after retirement and complete cold reset",
+          "frontend_callback": "FrontendCallbackIndex(U32)"
+        },
+        "role": "internal same-callback equality/join value only; not a transaction ID, receipt capability, serialized format, or native ABI",
+        "gtc_boundary": "convert FrontendCallbackIndex U32 explicitly to GTC callback_index U64; no coordinator or GTC receipt serializer is implemented"
+      },
       "join_metadata": {
         "all staged callback values": [
           "CallbackTransactionId",
@@ -10818,8 +11046,35 @@
         "field_mapping_status": "RESOLVED_BY_WASH_ERRATUM",
         "owner_schema_pointer": "#/$defs/ownerReceipt",
         "owner_receipt_count": 12,
-        "owner_receipt_owner_ids_ascii": ["analysis", "codec", "drc", "frontend_control", "integrity", "joc", "metadata", "meter", "output", "reader_eof", "spatial_audio", "spatial_control"],
-        "wrapper_fields": ["schema", "transaction_id", "kind", "result", "attempt", "callback_index", "source_index", "dispatch", "au_index", "owner_receipts", "durable_append", "fatal", "top_level_commit_count"],
+        "owner_receipt_owner_ids_ascii": [
+          "analysis",
+          "codec",
+          "drc",
+          "frontend_control",
+          "integrity",
+          "joc",
+          "metadata",
+          "meter",
+          "output",
+          "reader_eof",
+          "spatial_audio",
+          "spatial_control"
+        ],
+        "wrapper_fields": [
+          "schema",
+          "transaction_id",
+          "kind",
+          "result",
+          "attempt",
+          "callback_index",
+          "source_index",
+          "dispatch",
+          "au_index",
+          "owner_receipts",
+          "durable_append",
+          "fatal",
+          "top_level_commit_count"
+        ],
         "wrapper_types": {
           "schema": "const selected-profile-transaction-receipt.v2",
           "transaction_id": "nonempty string; CallbackTransactionId",
@@ -10864,7 +11119,20 @@
         },
         "owner_receipt_order": {
           "status": "APPROVED_BY_WASH_SIDE_DESIGN",
-          "order": ["analysis", "codec", "drc", "frontend_control", "integrity", "joc", "metadata", "meter", "output", "reader_eof", "spatial_audio", "spatial_control"]
+          "order": [
+            "analysis",
+            "codec",
+            "drc",
+            "frontend_control",
+            "integrity",
+            "joc",
+            "metadata",
+            "meter",
+            "output",
+            "reader_eof",
+            "spatial_audio",
+            "spatial_control"
+          ]
         },
         "wash_side_design_basis": {
           "authority": "approved internal API design choice; not a DEE/native behavior claim",
@@ -10917,13 +11185,33 @@
         "dual_root_success": "FORBIDDEN"
       },
       "owner_root_readiness": {
-        "currently_materialized_or_mapped": ["reader_eof", "frontend_control", "spatial_audio", "spatial_control", "integrity", "metadata"],
+        "currently_materialized_or_mapped": [
+          "reader_eof",
+          "frontend_control",
+          "spatial_audio",
+          "spatial_control",
+          "integrity",
+          "metadata"
+        ],
         "spatial_audio_mapping_status": "MAPPING_COMPLETE_BLOCKED",
         "spatial_audio_implementation_status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__DSP_PRODUCERS_DEFERRED",
         "spatial_control_status": "MAPPING_COMPLETE_BLOCKED_ON_P1.3_C_ROOTS",
         "missing_callback_root_implementation": "spatial_audio",
-        "additional_owner_roots_required_for_12_snapshots": ["joc", "meter", "drc", "analysis", "codec", "output"],
-        "g_ge_2_source_stage_roots": ["joc", "drc", "analysis", "codec", "output"]
+        "additional_owner_roots_required_for_12_snapshots": [
+          "joc",
+          "meter",
+          "drc",
+          "analysis",
+          "codec",
+          "output"
+        ],
+        "g_ge_2_source_stage_roots": [
+          "joc",
+          "drc",
+          "analysis",
+          "codec",
+          "output"
+        ]
       },
       "vector_bindings": {
         "file": "test-vectors/GLOBAL-TRANSACTION-INPUT-VECTORS.json",
@@ -10944,7 +11232,11 @@
         "whole_execution_and_product_execution": "NOT_RUN",
         "production_path_reference": null
       },
-      "unclosed_transaction_kinds": ["MEASUREMENT", "FINALIZE", "RESTART"],
+      "unclosed_transaction_kinds": [
+        "MEASUREMENT",
+        "FINALIZE",
+        "RESTART"
+      ],
       "implementation_rust": "FORBIDDEN until all fixed callback owner roots are materialized and integrated",
       "blockers": [
         "the v2 CallbackTransactionReceipt must not be implemented until the missing owner roots and g>=2 source-stage roots are materialized",
@@ -11146,9 +11438,9 @@
         "crates/jocforge-domain/src/timeline/mod.rs"
       ],
       "implementation_inventory": [
-        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 37519, "sha256": "dc5516d1bef5b18983b469116c3f8c959d12931dc10af18b5233794865587621"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 37303, "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"},
         {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2694, "sha256": "c5dc2468b4246b1629a1dcbc54a7c6356955d2f16e3cdcb71856eed69f84203c"},
-        {"path": "crates/jocforge-domain/src/timeline/index.rs", "bytes": 2290, "sha256": "911be2413816ebe1fde51ceda0066e9c088f92ae7c8b045cee49aac37540ec7d"},
+        {"path": "crates/jocforge-domain/src/timeline/index.rs", "bytes": 2672, "sha256": "50696493ea1bed2b647f2c438f032410548b70e5008b535773e23647ee59bd40"},
         {"path": "crates/jocforge-domain/src/timeline/mod.rs", "bytes": 586, "sha256": "7f2099065d657bdacab116d921a63107a180930086b73a42557881aa3acdb7b2"}
       ],
       "test_files": [
@@ -11156,7 +11448,7 @@
         "crates/jocforge-domain/tests/spatial_audio_cold_staging.rs"
       ],
       "test_inventory": [
-        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/tests.rs", "bytes": 6848, "sha256": "2cea166d6103a544200268ab1560b53ceec10fc5a190afcb7bf9e0837478186b"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/tests.rs", "bytes": 6910, "sha256": "34842a1ad2d63236fd07b1f66afc11233612c5f38dccba6e67b0142782a2b8bf"},
         {"path": "crates/jocforge-domain/tests/spatial_audio_cold_staging.rs", "bytes": 9923, "sha256": "0db769e058314f49f35266af6fdcff9c7cf9ba58e126627711a21a722d3a5fa0"}
       ],
       "test_vector_fixture_files": [
@@ -11320,7 +11612,7 @@
         "producer_authority": "future spatial_control/F03W producer after validated ADM graph establishes exactly one semantic_role=lfe and bed_id=3 host slot",
         "host_slot": "typed host identity in 0..37; never hardcode a source/track slot",
         "payload": "owned finite F32[1536], exact F32LE row bytes of 6144 bytes from host38[g][lfe_host][0..1535]",
-        "lineage": ["programme", "attempt", "CallbackTransactionId", "FrontendCallbackIndex", "explicit CallbackPhase", "selected profile", "spatial_control before-generation and full digest", "provider lineage", "unique semantic LFE host identity"],
+        "lineage": ["programme", "attempt", "CallbackLineageIdentity", "FrontendCallbackIndex", "explicit CallbackPhase", "selected profile", "spatial_control before-generation and full digest", "provider lineage", "unique semantic LFE host identity"],
         "normal_short_read": "upstream pads the full host38 frame with positive zero before this view is created; E3 receives the full padded row",
         "cached_drain": "reuse the exact last NORMAL padded LFE row bytes with a new callback generation; do not reread ADM or regenerate samples",
         "mute": "no mute input; preserve explicit row bytes unchanged; regular-source mute does not enter this path"
@@ -11411,12 +11703,12 @@
         "crates/jocforge-domain/tests/fixtures/direct_lfe/G1-VECTOR-ERRATUM.json"
       ],
       "implementation_inventory": [
-        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs", "bytes": 17056, "sha256": "b30cb63addb5f8ddfe6bf03e65f84e34221929b8cb78180efc1e6c762c6b6bc5"},
-        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 37519, "sha256": "dc5516d1bef5b18983b469116c3f8c959d12931dc10af18b5233794865587621"},
-        {"path": "crates/jocforge-domain/src/spatial/spatial_control.rs", "bytes": 26347, "sha256": "3c13f67f84698b32d568bf9fda223878eb3925a95c7fcbe30e0d0ef2f1b8fcd2"}
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs", "bytes": 16562, "sha256": "bfa2808ba2aa5566cf832a76a5ef93a6180bc1e81c35a63934809f3ffe9abce7"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 37303, "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_control.rs", "bytes": 26366, "sha256": "25ddd1832309801765697d7c9e014766e159a5b7571234a86d790c71a895f426"}
       ],
       "test_inventory": [
-        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe/tests.rs", "bytes": 19748, "sha256": "974767ddea57685ddf6656a5e46308e47b2a92cefdb7e23827230d6c9f831c66"}
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe/tests.rs", "bytes": 20332, "sha256": "b1074ca65c97f34cf3162e321c32d1576d0dfe7aa993e980e2794b8af3251ef7"}
       ],
       "fixture_inventory": [
         {"path": "crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json", "bytes": 13306, "sha256": "52c2b1a3b52e53198e47e90e4d6e51e8435fbe660ad996b4005f741107a7eb7f"},
@@ -11588,15 +11880,15 @@
         "crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json"
       ],
       "implementation_inventory": [
-        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs","bytes":12144,"sha256":"9473ea603741d59955d90f4a58c6c02875f1bba97d45203d6547c9b0c84d8a78"},
-        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state.rs","bytes":37519,"sha256":"dc5516d1bef5b18983b469116c3f8c959d12931dc10af18b5233794865587621"},
-        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs","bytes":38627,"sha256":"ff0121d7a2ad16dac2682ae3564b2d4baafff64b622673a05015133253646256"},
-        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs","bytes":17056,"sha256":"b30cb63addb5f8ddfe6bf03e65f84e34221929b8cb78180efc1e6c762c6b6bc5"},
-        {"path":"crates/jocforge-domain/src/spatial/spatial_control.rs","bytes":26347,"sha256":"3c13f67f84698b32d568bf9fda223878eb3925a95c7fcbe30e0d0ef2f1b8fcd2"}
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs","bytes":12074,"sha256":"22c336456921c174ce1d1e72d4a265b4e61a7321e9c3753cf20d1924e0d77413"},
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state.rs","bytes":37303,"sha256":"ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"},
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs","bytes":38418,"sha256":"7047500d89ce089c1ec5907ecd1bead7128b296a897ea76d751034c64e35b53d"},
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs","bytes":16562,"sha256":"bfa2808ba2aa5566cf832a76a5ef93a6180bc1e81c35a63934809f3ffe9abce7"},
+        {"path":"crates/jocforge-domain/src/spatial/spatial_control.rs","bytes":26366,"sha256":"25ddd1832309801765697d7c9e014766e159a5b7571234a86d790c71a895f426"}
       ],
       "test_inventory": [
-        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs","bytes":23823,"sha256":"dcef738f8387ed59802f300eb7069a134060cb392c3bdd74c26f87c5fd475148"},
-        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs","bytes":51413,"sha256":"b501289f41cc2c08dcbc31e4fb9419b4c79c2383b01af2c7eca864dcfd9ab123"}
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs","bytes":24485,"sha256":"bb9fc89e6914b4b9fb9dc94cd0da47ee83886183661d792957cef352896bab22"},
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs","bytes":51880,"sha256":"3437d4a71a97495ad57370da278df2157d4af0fd760f72e04027b28bace2c74c"}
       ],
       "fixture_inventory": [
         {"path":"crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json","bytes":13306,"sha256":"52c2b1a3b52e53198e47e90e4d6e51e8435fbe660ad996b4005f741107a7eb7f"}
@@ -11655,7 +11947,7 @@
         "source_major": true,
         "payload_byte_count": 589824,
         "payload_sha256": "SHA-256 over exact source-major F32 U32LE bytes",
-        "lineage": ["programme", "attempt", "CallbackTransactionId", "FrontendCallbackIndex", "CallbackPhase", "selected EncodingProfile", "validated F01E/F03 provider lineage", "spatial_control before generation and complete root digest", "typed render-stage identity", "typed spatial-control after-proposal identity", "payload byte count and SHA-256"],
+        "lineage": ["programme", "attempt", "CallbackLineageIdentity", "FrontendCallbackIndex", "CallbackPhase", "selected EncodingProfile", "validated F01E/F03 provider lineage", "spatial_control before generation and complete root digest", "typed render-stage identity", "typed spatial-control after-proposal identity", "payload byte count and SHA-256"],
         "production_constructor": "future spatial_control/F03W renderer only; requires opaque SpatialControlRenderAuthority minted only inside spatial_control; no public raw/default constructor"
       },
       "phase": ["NORMAL", "CACHED_DRAIN"],
@@ -11730,10 +12022,10 @@
         "root_member": false,
         "root_canonical_bytes": 0,
         "cold_reset_read": "NOT_READY",
-        "parent_transaction": "future producer receipt must bind the packet to the same CallbackTransactionId and FrontendCallbackIndex as the complete typed after proposal"
+        "parent_transaction": "future producer receipt must bind the packet to the same CallbackLineageIdentity and FrontendCallbackIndex as the complete typed after proposal"
       },
       "authority": {
-        "prepare": "pure validation against shared CallbackTransactionId, FrontendCallbackIndex, before_generation, before_sha256, selected EncodingProfile identity and both provider receipt lineages",
+        "prepare": "pure validation against shared CallbackLineageIdentity, FrontendCallbackIndex, before_generation, before_sha256, selected EncodingProfile identity and both provider receipt lineages",
         "stage": "produce a complete immutable after-state and recomputed full v5 root digest without mutating committed state; equal state hashes do not authorize cross-profile/provider tokens",
         "noncold_prepare": "crate-private and deferred until a future producer can supply the complete typed after proposal; no test-only constructor",
         "local_commit": "FORBIDDEN",
@@ -11746,7 +12038,7 @@
         "SpatialControlStaged": "linear, non-Clone/non-Copy"
       },
       "join_metadata": [
-        "shared CallbackTransactionId",
+        "shared CallbackLineageIdentity",
         "same FrontendCallbackIndex",
         "selected EncodingProfile identity",
         "before_generation and before_sha256",
@@ -11840,18 +12132,18 @@
         "file_inventory": [
           {
             "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-            "bytes": 26347,
-            "sha256": "3c13f67f84698b32d568bf9fda223878eb3925a95c7fcbe30e0d0ef2f1b8fcd2"
+            "bytes": 26366,
+            "sha256": "25ddd1832309801765697d7c9e014766e159a5b7571234a86d790c71a895f426"
           },
           {
             "path": "crates/jocforge-domain/src/transaction/mod.rs",
-            "bytes": 725,
-            "sha256": "3ca14198acbe03b7dcb431319a63004b1ef68bae80396df930e007d576d85e82"
+            "bytes": 2706,
+            "sha256": "14dfe26f606f786eeb5ebd9a3ba5dd48d92346b46fa5d729497519dfa1ae8a9f"
           },
           {
             "path": "crates/jocforge-domain/src/timeline/index.rs",
-            "bytes": 2290,
-            "sha256": "911be2413816ebe1fde51ceda0066e9c088f92ae7c8b045cee49aac37540ec7d"
+            "bytes": 2672,
+            "sha256": "50696493ea1bed2b647f2c438f032410548b70e5008b535773e23647ee59bd40"
           },
           {
             "path": "crates/jocforge-domain/src/spatial/mod.rs",
@@ -11860,8 +12152,8 @@
           },
           {
             "path": "crates/jocforge-domain/tests/spatial_control_foundation.rs",
-            "bytes": 9428,
-            "sha256": "da7854c7a5ed2a1651114214d71ca266a3e41fc20ccba1958c74ee62f4264ae1"
+            "bytes": 10051,
+            "sha256": "7235e30cf033d32c746e44c5501424a77e97fe84f745984c8cecf771d40d3212"
           }
         ],
         "verified_scope": "complete v5 persistent cold root, full canonical bytes/digest, read-only machine, provider/profile lineage guards, opaque packet capability type reference, CurrentFeatures packet ownership in the separate producer slice, noncold prepare deferred"
@@ -11927,12 +12219,12 @@
         "exactly 37 typed regular-host controls; selected feature component_enum/diffuse are independently profile-bound as (0,0)",
         "validated 38-host semantic route with exactly one excluded LFE and ordered 11..47 destinations",
         "same-callback prefix writer set limited to sources 0..10",
-        "typed programme ID, attempt, CallbackTransactionId, FrontendCallbackIndex, before-history generation/digest, selected profile and validated provider lineage"
+        "typed programme ID, attempt, CallbackLineageIdentity, FrontendCallbackIndex, before-history generation/digest, selected profile and validated provider lineage"
       ],
       "lineage_binding": [
         "programme ID",
         "attempt",
-        "CallbackTransactionId",
+        "CallbackLineageIdentity",
         "FrontendCallbackIndex",
         "before-history owner generation and digest",
         "selected EncodingProfile identity",
@@ -12020,13 +12312,13 @@
         "file_inventory": [
           {
             "path": "crates/jocforge-domain/src/spatial/source_flags.rs",
-              "bytes": 38314,
-              "sha256": "e38110906e4a08d18dcbe72637099ee0530c11f75f47d88b0219c11cf14ebf33"
+              "bytes": 37921,
+              "sha256": "7011d4017c1e8b9d11b12d0260ce03b982c849f01fe4f7df7aa77aa0d4bd5fc5"
           },
           {
             "path": "crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs",
-              "bytes": 32211,
-              "sha256": "c7bbeaa874a0712cd86741e18b5eb5fd9046f78f5692dbb717eca32e17186c65"
+              "bytes": 32699,
+              "sha256": "45479cc3e0549f313130b357c8d2ead99574411cb88831869eeb321820119b2d"
           },
           {
             "path": "crates/jocforge-domain/tests/fixtures/source_flags/INPUT-ONLY-VECTORS.json",
@@ -12626,7 +12918,7 @@
       "required_provider_types": ["ValidatedFeatureProcessorMathProvider", "ValidatedFeatureFft4096MathProvider"],
       "raw_provider_evidence_consumption": "FORBIDDEN",
       "required_context_shapes": {"before_source_vector": "F32[48][24] source-major", "before_source_scalar": "F32[48]", "source_flags": "same-callback SourceFlagsPacket U8[48][2]", "post_window_audio": "Option<CurrentFeaturesAudioView>; required when any source is READ (00), None is allowed when all sources are RESET/CARRY", "callback_phase": "explicit CallbackPhase NORMAL or CACHED_DRAIN; never inferred from audio bits"},
-      "lineage_binding": ["programme", "attempt", "CallbackTransactionId", "FrontendCallbackIndex", "CallbackPhase", "before feature generation/digest", "spatial-control after-proposal identity when a view is supplied", "render-stage identity when a view is supplied", "payload byte count and SHA-256 when a view is supplied", "flags receipt", "selected profile identity", "validated F01E/F03 provider lineage", "validated feature-processor math provider receipt", "validated FFT roots provider receipt"],
+      "lineage_binding": ["programme", "attempt", "CallbackLineageIdentity", "FrontendCallbackIndex", "CallbackPhase", "before feature generation/digest", "spatial-control after-proposal identity when a view is supplied", "render-stage identity when a view is supplied", "payload byte count and SHA-256 when a view is supplied", "flags receipt", "selected profile identity", "validated F01E/F03 provider lineage", "validated feature-processor math provider receipt", "validated FFT roots provider receipt"],
       "branches": {"flag_pair_order": ["processing_inactive", "selection_suppressed"], "01": "RESET; consumer priority branch tested, not emitted by SourceFlags producer", "10": "CARRY", "00": "READ_AUDIO_INPUT", "audio_read": "only READ_AUDIO_INPUT reads sample payloads or calls FFT; RESET/CARRY do not read audio", "01_product_boundary_rule": "accepted as reset-priority consumer input; no SourceFlags producer output claim"},
       "source_flags_pair_domain": ["00", "10", "11"],
       "consumer_boundary_open_questions": [],
@@ -12650,7 +12942,7 @@
           "construction_authority": "future installed48/render producer only",
           "boundary": "INSTALLED48_POST_WINDOW_48X3072",
           "payload": "finite F32[48][3072] source-major",
-          "binding": ["programme", "attempt", "CallbackTransactionId", "FrontendCallbackIndex", "selected EncodingProfile", "validated F01E/F03 provider lineage", "spatial-control before generation and complete-root digest", "render proposal/receipt identity", "SHA-256 of exactly payload F32 U32LE bytes"],
+          "binding": ["programme", "attempt", "CallbackLineageIdentity", "FrontendCallbackIndex", "selected EncodingProfile", "validated F01E/F03 provider lineage", "spatial-control before generation and complete-root digest", "render proposal/receipt identity", "SHA-256 of exactly payload F32 U32LE bytes"],
           "public_raw_constructor": false,
           "current_features_test_fixture_constructor": "module-private cfg(test) only"
         },
@@ -13321,12 +13613,12 @@
       },
       "implementation_binding": {
         "implementation_files": [
-          {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs", "bytes": 17166, "sha256": "5362379d8c33a2c7ae349c34d1836a083c453c43b61f191a075ecc8f4afd3aca"},
-          {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 37519, "sha256": "dc5516d1bef5b18983b469116c3f8c959d12931dc10af18b5233794865587621"}
+          {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs", "bytes": 17134, "sha256": "6131903076529c50753b908a48679cbec6be22a6135599712592aa37f2095d5e"},
+          {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 37303, "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"}
         ],
         "test_files": [
           {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests/receiver_mode1.rs", "bytes": 23303, "sha256": "9bc20e80319c4a5df182a7937f69b28587de85fb3c037825890e300f3c117d53"},
-          {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs", "bytes": 23823, "sha256": "dcef738f8387ed59802f300eb7069a134060cb392c3bdd74c26f87c5fd475148"}
+          {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs", "bytes": 24485, "sha256": "bb9fc89e6914b4b9fb9dc94cd0da47ee83886183661d792957cef352896bab22"}
         ],
         "s09_lineage_type": "ReceiverS09InputView binds six finite 1536-sample lanes to SpatialAudioJoinMetadata and explicit CallbackPhase; the receiver stage compares it with the Type10 receipt before any QMF processing.",
         "api": "stage_receiver_mode1 consumes one linear Type10AssemblyProposal and a typed F04R stage-3 ReceiverS09InputView; it returns a linear proposal with preserved E2/E3 after-state, Type10 outcome, five raw analysis spectra, surround PCM, and QMF after slices.",
@@ -13603,10 +13895,10 @@
       "fixture_materialization_status": "MATERIALIZED_AND_HASH_PINNED",
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs", "bytes": 22467, "sha256": "aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce"},
-        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 37519, "sha256": "dc5516d1bef5b18983b469116c3f8c959d12931dc10af18b5233794865587621"}
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 37303, "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"}
       ],
       "test_inventory": [
-        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs", "bytes": 15524, "sha256": "42fe49df1899e21f796b44a70cbc324b8db9f5a06b5335b6dcc035cbca43e947"}
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control/tests.rs", "bytes": 15592, "sha256": "a82e8a8bf747f209e6dbbf4beb05e7e44c85e8ec2a5e5cdc1ab668615ba80a40"}
       ],
       "fixture_inventory": [
         {"path": "crates/jocforge-domain/tests/fixtures/descriptor_control/input-vectors.json", "bytes": 8878, "sha256": "c622899783197a953fb6c0bcd262b0e7b1a110d605e9301e27782e44cb247528"},
@@ -13940,20 +14232,20 @@
     "implementation_inventory": [
       {
         "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs",
-        "bytes": 40594,
-        "sha256": "b90dd8904d7c93ef258871edcebf3f4ffd8b6d5347f39a7fdc964af4b4f2e2ff"
+        "bytes": 40820,
+        "sha256": "49b5566b204d7deb74828f3c7715cd64748be11a0f08c8e5820f452b90c636e9"
       },
       {
         "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-        "bytes": 37519,
-        "sha256": "dc5516d1bef5b18983b469116c3f8c959d12931dc10af18b5233794865587621"
+        "bytes": 37303,
+        "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"
       }
     ],
     "test_inventory": [
       {
         "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs",
-        "bytes": 23025,
-        "sha256": "842a854b6fb9be7066842559ed07c06ef832ca88012c6d1b8d0fd02a5bffb27f"
+        "bytes": 23080,
+        "sha256": "ebb01345bd4289a219498610cad9fae957c93ff7d9d4481bc25f28bd9ff8cbab"
       }
     ],
     "fixture_inventory": [

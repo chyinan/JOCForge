@@ -73,29 +73,29 @@ This E4 slice only assembles the E2 component proposal with the E3 delayed LFE r
   ],
   "implementation_inventory": [
     {
-      "bytes": 12144,
+      "bytes": 12074,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs",
-      "sha256": "9473ea603741d59955d90f4a58c6c02875f1bba97d45203d6547c9b0c84d8a78"
+      "sha256": "22c336456921c174ce1d1e72d4a265b4e61a7321e9c3753cf20d1924e0d77413"
     },
     {
-      "bytes": 37519,
+      "bytes": 37303,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "dc5516d1bef5b18983b469116c3f8c959d12931dc10af18b5233794865587621"
+      "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"
     },
     {
-      "bytes": 38627,
+      "bytes": 38418,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs",
-      "sha256": "ff0121d7a2ad16dac2682ae3564b2d4baafff64b622673a05015133253646256"
+      "sha256": "7047500d89ce089c1ec5907ecd1bead7128b296a897ea76d751034c64e35b53d"
     },
     {
-      "bytes": 17056,
+      "bytes": 16562,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
-      "sha256": "b30cb63addb5f8ddfe6bf03e65f84e34221929b8cb78180efc1e6c762c6b6bc5"
+      "sha256": "bfa2808ba2aa5566cf832a76a5ef93a6180bc1e81c35a63934809f3ffe9abce7"
     },
     {
-      "bytes": 26347,
+      "bytes": 26366,
       "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-      "sha256": "3c13f67f84698b32d568bf9fda223878eb3925a95c7fcbe30e0d0ef2f1b8fcd2"
+      "sha256": "25ddd1832309801765697d7c9e014766e159a5b7571234a86d790c71a895f426"
     }
   ],
   "implementation_prohibitions": [
@@ -198,14 +198,14 @@ This E4 slice only assembles the E2 component proposal with the E3 delayed LFE r
   ],
   "test_inventory": [
     {
-      "bytes": 23823,
+      "bytes": 24485,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs",
-      "sha256": "dcef738f8387ed59802f300eb7069a134060cb392c3bdd74c26f87c5fd475148"
+      "sha256": "bb9fc89e6914b4b9fb9dc94cd0da47ee83886183661d792957cef352896bab22"
     },
     {
-      "bytes": 51413,
+      "bytes": 51880,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs",
-      "sha256": "b501289f41cc2c08dcbc31e4fb9419b4c79c2383b01af2c7eca864dcfd9ab123"
+      "sha256": "3437d4a71a97495ad57370da278df2157d4af0fd760f72e04027b28bace2c74c"
     }
   ],
   "vectors": {

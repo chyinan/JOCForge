@@ -8,6 +8,7 @@ use super::{
 const SAMPLES_PER_CALLBACK: u64 = 1536;
 const CACHED_DRAINS: u64 = 4;
 const PRIMING_CALLBACKS: u64 = 2;
+const PRIMING_CALLBACKS_U32: u32 = 2;
 const SUPPRESSED_SOURCES: u64 = 2;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -76,8 +77,8 @@ pub fn programme_counts(samples: AdmSampleCount) -> Result<ProgrammeCounts, Cloc
 }
 pub fn source_for_callback(g: FrontendCallbackIndex) -> Option<CodecSourceIndex> {
     g.value()
-        .checked_sub(PRIMING_CALLBACKS)
-        .map(CodecSourceIndex::new)
+        .checked_sub(PRIMING_CALLBACKS_U32)
+        .map(|source| CodecSourceIndex::new(u64::from(source)))
 }
 impl CodecSourceIndex {
     pub fn dispatch(self) -> Result<JocDispatchIndex, ClockError> {

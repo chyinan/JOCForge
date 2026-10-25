@@ -273,10 +273,10 @@ impl PrimaryInstalled48ActivityProducer {
             return Err(PrimaryActivityError::HistoryShape);
         }
         let callback = before.next_callback.value();
-        if callback >= self.total_callback_count {
+        if u64::from(callback) >= self.total_callback_count {
             return Err(PrimaryActivityError::CallbackSequenceComplete);
         }
-        let expected_phase = if callback < self.normal_callback_count {
+        let expected_phase = if u64::from(callback) < self.normal_callback_count {
             PrimaryActivityPhase::NormalRead
         } else {
             PrimaryActivityPhase::CachedDrain

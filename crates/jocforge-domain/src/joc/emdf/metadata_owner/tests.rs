@@ -26,8 +26,8 @@ fn vectors() -> Value {
 fn owner() -> MetadataOwner {
     let root = fixture_root();
     MetadataOwner::new(
-        "P0",
-        0,
+        crate::transaction::test_programme_id("P0"),
+        crate::transaction::AttemptId::new(0),
         5,
         &std::fs::read(root.join("metadata-public-provider.json")).unwrap(),
         &std::fs::read(root.join("metadata-wrapper-config.json")).unwrap(),
@@ -60,11 +60,23 @@ fn source_call(case: &Value) -> MetadataSourceCall {
         })
     };
 
+    let programme_id =
+        crate::transaction::test_programme_id(identity["programme_id"].as_str().unwrap());
+    let attempt = crate::transaction::AttemptId::new(identity["attempt"].as_u64().unwrap());
+    let source_index = CodecSourceIndex::new(identity["source_index"].as_u64().unwrap());
+    let callback_index = crate::timeline::FrontendCallbackIndex::new(
+        u32::try_from(source_index.value() + 2).unwrap(),
+    );
+    let transaction_id = crate::transaction::CallbackLineageIdentity::new(
+        programme_id.clone(),
+        attempt,
+        callback_index,
+    );
     MetadataSourceCall {
-        programme_id: identity["programme_id"].as_str().unwrap().to_owned(),
-        attempt: identity["attempt"].as_u64().unwrap(),
-        transaction_id: identity["transaction_id"].as_str().unwrap().to_owned(),
-        source_index: CodecSourceIndex::new(identity["source_index"].as_u64().unwrap()),
+        programme_id,
+        attempt,
+        transaction_id,
+        source_index,
         dispatch: JocDispatchIndex::new(identity["dispatch"].as_u64().unwrap()),
         au_index: identity["au_index"].as_u64().map(PublishedAuIndex::new),
         config: input["config"].as_array().unwrap().clone(),
@@ -129,7 +141,7 @@ fn typed_stage_uses_pinned_wrapper_and_leaves_committed_leaf_unchanged() {
     let before_bytes = before.state.canonical_bytes();
     let measurement =
         ProgrammeMeasurementReceipt::from_verified_prepass(ProgrammeMeasurementReceiptInput {
-            programme_id: &call.programme_id,
+            programme_id: call.programme_id.clone(),
             attempt: call.attempt,
             input_sha256: [0x11; 32],
             config_sha256: [0x22; 32],
@@ -148,9 +160,9 @@ fn typed_stage_uses_pinned_wrapper_and_leaves_committed_leaf_unchanged() {
         Id1MeasurementConfiguration::from_measurement_for_test(&measurement).unwrap();
     assert_eq!(id1_configuration.json_values(), call.config);
     let bodies = MetadataBodiesProposal::for_test(
-        &call.programme_id,
+        call.programme_id.clone(),
         call.attempt,
-        &call.transaction_id,
+        call.transaction_id.clone(),
         call.source_index,
         call.bodies,
     );
@@ -167,7 +179,10 @@ fn typed_stage_uses_pinned_wrapper_and_leaves_committed_leaf_unchanged() {
         proposal.proposed_after_sha256(),
         case["expected"]["after_sha256"]
     );
-    assert_eq!(proposal.bodies_lineage().transaction_id(), "META-0");
+    assert_eq!(
+        proposal.bodies_lineage().transaction_id(),
+        &call.transaction_id
+    );
     assert_eq!(proposal.before_snapshot().generation(), 0);
     assert_eq!(proposal.before_snapshot().next_source_index().value(), 0);
     assert_eq!(proposal.after_snapshot().generation(), 1);
@@ -196,7 +211,7 @@ fn published_metadata_proposal_stages_into_the_selected_carrier() {
     let call = source_call(&calls[2]);
     let measurement =
         ProgrammeMeasurementReceipt::from_verified_prepass(ProgrammeMeasurementReceiptInput {
-            programme_id: &call.programme_id,
+            programme_id: call.programme_id.clone(),
             attempt: call.attempt,
             input_sha256: [0x11; 32],
             config_sha256: [0x22; 32],
@@ -214,9 +229,9 @@ fn published_metadata_proposal_stages_into_the_selected_carrier() {
     let id1_configuration =
         Id1MeasurementConfiguration::from_measurement_for_test(&measurement).unwrap();
     let bodies = MetadataBodiesProposal::for_test(
-        &call.programme_id,
+        call.programme_id.clone(),
         call.attempt,
-        &call.transaction_id,
+        call.transaction_id.clone(),
         call.source_index,
         call.bodies,
     );
@@ -411,7 +426,11 @@ fn terminal_container_rejects_total_wire_length_above_the_carrier_limit() {
 #[test]
 fn cold_reset_and_retry_are_pinned_without_extra_clock_advances() {
     let vectors = vectors();
-    let retired = owner().reset_for_attempt(1).unwrap();
+    let mut retired_owner = owner();
+    retired_owner.prepare_eof(0).unwrap_err();
+    let retired = retired_owner
+        .reset_for_attempt(crate::transaction::AttemptId::new(1))
+        .unwrap();
     assert_eq!(
         bytes_hex(&retired.state.canonical_bytes()),
         vectors["cold"]["canonical_hex"]
@@ -444,7 +463,13 @@ fn provider_and_wrapper_identity_are_checked_before_use() {
     provider[0] ^= 1;
     let wrapper = std::fs::read(root.join("metadata-wrapper-config.json")).unwrap();
     assert!(matches!(
-        MetadataOwner::new("P0", 0, 5, &provider, &wrapper),
+        MetadataOwner::new(
+            crate::transaction::test_programme_id("P0"),
+            crate::transaction::AttemptId::new(0),
+            5,
+            &provider,
+            &wrapper,
+        ),
         Err(MetadataOwnerError::ProviderIdentity)
     ));
 
@@ -452,7 +477,13 @@ fn provider_and_wrapper_identity_are_checked_before_use() {
     let mut wrapper = wrapper;
     wrapper.push(b' ');
     assert!(matches!(
-        MetadataOwner::new("P0", 0, 5, &provider, &wrapper),
+        MetadataOwner::new(
+            crate::transaction::test_programme_id("P0"),
+            crate::transaction::AttemptId::new(0),
+            5,
+            &provider,
+            &wrapper,
+        ),
         Err(MetadataOwnerError::WrapperIdentity)
     ));
 }

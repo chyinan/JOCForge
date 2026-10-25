@@ -4,6 +4,7 @@
 use super::ProviderSha256;
 use super::provider::{F01EProviderReceipt, NormalizedConfig, ValidatedF01EColdProvider};
 use crate::timeline::{FrontendCallbackIndex, NormalCallbackCount};
+use crate::transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId};
 use std::sync::Arc;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -150,6 +151,8 @@ impl FrontendNormalizedConfig {
 #[derive(Clone, Debug)]
 pub struct FrontendControlState {
     schema: &'static str,
+    programme_id: ProgrammeId,
+    attempt_id: AttemptId,
     callback_index: FrontendCallbackIndex,
     normal_callbacks: NormalCallbackCount,
     remaining_cached_drains: u32,
@@ -164,7 +167,11 @@ pub struct FrontendControlState {
     provider_receipt: F01EProviderReceipt,
 }
 impl FrontendControlState {
-    fn from_provider(provider: ValidatedF01EColdProvider) -> Result<Self, FrontendControlError> {
+    fn from_provider(
+        provider: ValidatedF01EColdProvider,
+        programme_id: ProgrammeId,
+        attempt_id: AttemptId,
+    ) -> Result<Self, FrontendControlError> {
         let (cold, canonical, provider_receipt) = provider.into_parts();
         if ProviderSha256::digest(&canonical) != provider_receipt.canonical_sha256() {
             return Err(FrontendControlError::ProviderMismatch);
@@ -181,9 +188,14 @@ impl FrontendControlState {
             })
             .collect::<Vec<_>>()
             .into();
+        let callback_index = u32::try_from(cold.callback_index)
+            .map(FrontendCallbackIndex::new)
+            .map_err(|_| FrontendControlError::CallbackIndexOutOfRange)?;
         Ok(Self {
             schema: "F01E_SELECTED_COLD_V1",
-            callback_index: FrontendCallbackIndex::new(cold.callback_index),
+            programme_id,
+            attempt_id,
+            callback_index,
             normal_callbacks: NormalCallbackCount::new(cold.normal_callbacks),
             remaining_cached_drains: cold.remaining_cached_drains,
             phase: FrontendControlPhase::BeforeFirstNormal,
@@ -202,6 +214,12 @@ impl FrontendControlState {
     }
     pub const fn callback_index(&self) -> FrontendCallbackIndex {
         self.callback_index
+    }
+    pub fn programme_id(&self) -> &ProgrammeId {
+        &self.programme_id
+    }
+    pub const fn attempt_id(&self) -> AttemptId {
+        self.attempt_id
     }
     pub const fn normal_callbacks(&self) -> NormalCallbackCount {
         self.normal_callbacks
@@ -240,8 +258,9 @@ impl FrontendControlState {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum FrontendControlError {
-    EmptyTransactionId,
+    CallbackIdentityMismatch,
     CallbackIndexMismatch,
+    CallbackIndexOutOfRange,
     GenerationMismatch,
     ProviderMismatch,
 }
@@ -254,8 +273,7 @@ pub enum FrontendControlError {
 /// ```
 #[derive(Debug)]
 pub struct FrontendControlPrepared {
-    transaction_id: String,
-    callback_index: FrontendCallbackIndex,
+    transaction_id: CallbackLineageIdentity,
     before_generation: u64,
     before_digest: FrontendControlDigest,
     provider_manifest_sha256: ProviderSha256,
@@ -288,19 +306,18 @@ impl FrontendControlStaged {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct FrontendControlJoinMetadata {
-    transaction_id: String,
-    callback_index: FrontendCallbackIndex,
+    transaction_id: CallbackLineageIdentity,
     before_generation: u64,
     before_digest: FrontendControlDigest,
     provider_manifest_sha256: ProviderSha256,
     provider_file_sha256: ProviderSha256,
 }
 impl FrontendControlJoinMetadata {
-    pub fn transaction_id(&self) -> &str {
+    pub const fn transaction_id(&self) -> &CallbackLineageIdentity {
         &self.transaction_id
     }
     pub const fn callback_index(&self) -> FrontendCallbackIndex {
-        self.callback_index
+        self.transaction_id.callback_index()
     }
     pub const fn before_generation(&self) -> u64 {
         self.before_generation
@@ -337,9 +354,11 @@ pub struct FrontendControlMachine {
 impl FrontendControlMachine {
     pub fn from_provider(
         provider: ValidatedF01EColdProvider,
+        programme_id: ProgrammeId,
+        attempt_id: AttemptId,
     ) -> Result<Self, FrontendControlError> {
         Ok(Self {
-            committed: FrontendControlState::from_provider(provider)?,
+            committed: FrontendControlState::from_provider(provider, programme_id, attempt_id)?,
             generation: 0,
         })
     }
@@ -351,14 +370,16 @@ impl FrontendControlMachine {
     }
     pub fn prepare(
         &self,
-        transaction_id: &str,
-        callback_index: FrontendCallbackIndex,
+        transaction_id: CallbackLineageIdentity,
         before_generation: u64,
         provider_receipt: &F01EProviderReceipt,
     ) -> Result<FrontendControlPrepared, FrontendControlError> {
-        if transaction_id.is_empty() {
-            return Err(FrontendControlError::EmptyTransactionId);
+        if transaction_id.programme_id() != &self.committed.programme_id
+            || transaction_id.attempt_id() != self.committed.attempt_id
+        {
+            return Err(FrontendControlError::CallbackIdentityMismatch);
         }
+        let callback_index = transaction_id.callback_index();
         if callback_index != self.committed.callback_index {
             return Err(FrontendControlError::CallbackIndexMismatch);
         }
@@ -374,14 +395,15 @@ impl FrontendControlMachine {
             return Err(FrontendControlError::ProviderMismatch);
         }
         Ok(FrontendControlPrepared {
-            transaction_id: transaction_id.to_owned(),
-            callback_index,
+            transaction_id,
             before_generation,
             before_digest: self.committed.digest(),
             provider_manifest_sha256: provider_receipt.manifest_sha256(),
             provider_file_sha256: provider_receipt.provider_file_sha256(),
         })
     }
+    // Consumes the one-shot prepared capability even though its identity fields are Copy.
+    #[allow(clippy::needless_pass_by_value)]
     pub fn stage(
         &self,
         prepared: FrontendControlPrepared,
@@ -391,7 +413,12 @@ impl FrontendControlMachine {
         {
             return Err(FrontendControlError::GenerationMismatch);
         }
-        if prepared.callback_index != self.committed.callback_index
+        if prepared.transaction_id.programme_id() != &self.committed.programme_id
+            || prepared.transaction_id.attempt_id() != self.committed.attempt_id
+        {
+            return Err(FrontendControlError::CallbackIdentityMismatch);
+        }
+        if prepared.transaction_id.callback_index() != self.committed.callback_index
             || prepared.provider_manifest_sha256
                 != self.committed.provider_receipt.manifest_sha256()
             || prepared.provider_file_sha256
@@ -404,7 +431,6 @@ impl FrontendControlMachine {
         Ok(FrontendControlStaged {
             join: FrontendControlJoinMetadata {
                 transaction_id: prepared.transaction_id,
-                callback_index: prepared.callback_index,
                 before_generation: prepared.before_generation,
                 before_digest: prepared.before_digest,
                 provider_manifest_sha256: prepared.provider_manifest_sha256,
