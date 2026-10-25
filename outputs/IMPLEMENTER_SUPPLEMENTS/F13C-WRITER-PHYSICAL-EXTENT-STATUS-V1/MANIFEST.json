@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge-washed-supplement-manifest.v1",
+  "package_id": "F13C-WRITER-PHYSICAL-EXTENT-STATUS-V1",
+  "status": "PARTIAL_STATIC_WRITER_FIELD_AND_PHYSICAL_CAPACITY_UNBOUND",
+  "implementation_ready_for_writer_extent": false,
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "bytes": 1076,
+      "sha256": "66be6d01de6f118283aaf19dab705b8e7cbe0d61b93440981ba01a19605dfedd"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 1188,
+      "sha256": "359570b92ed6fe903594eb3685cc2e07757a9b0456991e4a65dbba2108a8bff0"
+    },
+    {
+      "path": "MINIMUM-EXTENT-RECEIPT.json",
+      "bytes": 708,
+      "sha256": "5924e991b44d84291d8aee6fd3bdeadf7a24be40da4b46c17052bf52983be241"
+    },
+    {
+      "path": "check_package.py",
+      "bytes": 1588,
+      "sha256": "7a3b6158b8c0e4f50cd9792b142eefd7de1c5ee49494e8b187150b158901eef6"
+    }
+  ]
+}

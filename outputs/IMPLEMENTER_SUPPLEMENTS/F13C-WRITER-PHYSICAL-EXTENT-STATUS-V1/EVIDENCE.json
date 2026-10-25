@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge.f13c-writer-physical-extent-status.v1",
+  "status": "PARTIAL_STATIC; TARGET_FIELD_IDENTITY_AND_PHYSICAL_CAPACITY_UNBOUND",
+  "writer_semantics": {
+    "output_state": "cursor/base pair",
+    "write_unit": "16-bit units",
+    "logical_bit_offset": "tracked separately",
+    "expected_final_bit_count": "recorded separately",
+    "physical_writable_extent": "NOT_ESTABLISHED"
+  },
+  "identity_edges": {
+    "prior_native_pointer_expression_to_Ghidra_writer_argument": "UNBOUND",
+    "writer_state_to_allocator_owner": "UNBOUND",
+    "allocator_to_physical_byte_capacity": "UNBOUND"
+  },
+  "provenance": {
+    "reviewed_research_package_manifest_sha256": "5042e52b3cf7a6c054da1fa195927fb79cb63dea27043965ddb180b37c7a6a1f",
+    "research_package_payload_files_verified": 4,
+    "source_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "source_image_sha256_rechecked": true,
+    "native_execution": "NOT_RUN",
+    "buffer_content_read": false,
+    "pcm_payload_or_private_key_included": false
+  },
+  "interpretation_limit": "Logical bit budget and expected/final bit-count records are not physical allocation-capacity evidence."
+}

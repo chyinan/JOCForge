@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge.f13c-writer-extent-minimum-evidence.v1",
+  "status": "EVIDENCE_REQUEST_ONLY; NOT_AUTHORIZATION_TO_CAPTURE",
+  "required_identity_chain": [
+    "opaque owner token for the pointer-bearing object",
+    "typed field identity linking the pointer to the selected writer cursor/base argument",
+    "allocator/constructor identity and returned allocation token",
+    "physical writable byte extent/capacity for that allocation",
+    "selected writer invocation and source generation"
+  ],
+  "no_payload_requirement": [
+    "Do not read or persist buffer contents.",
+    "Do not infer capacity from logical bit counts.",
+    "Do not arm a native writer stop before a separate Wash GO."
+  ]
+}

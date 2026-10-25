@@ -11000,6 +11000,120 @@
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
         {
+          "slice_id": "washed-f13c-writer-physical-extent-status",
+          "mapping_status": "WASHED_LOGICAL_WRITER_STATE_AND_PHYSICAL_CAPACITY_SEPARATED__CAPACITY_UNBOUND",
+          "implementation_status": "WASHED_STATIC_CURSOR_AND_LOGICAL_BIT_COUNT__WRITER_BUFFER_CAPACITY_UNBOUND",
+          "scope": "Wash records only the selected writer's cursor/base pair, 16-bit write units, separately tracked logical bit offset and expected final bit count. It does not join the IDA pointer expression to the Ghidra writer argument, the writer state to its allocator owner, or that owner to physical writable byte capacity. A logical bit budget is not physical capacity evidence; no RAM/native run or implementation authorization is provided.",
+          "owner": "codec",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "This evidence describes static writer representation only; no source, dispatch or AU clock is bound."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F13C_WRITER_PHYSICAL_EXTENT_STATUS_V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-WRITER-PHYSICAL-EXTENT-STATUS-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-WRITER-PHYSICAL-EXTENT-STATUS-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-WRITER-PHYSICAL-EXTENT-STATUS-V1/MINIMUM-EXTENT-RECEIPT.json"
+            ],
+            "supplement_manifest_sha256": "cf6d83fc87c4d2ea387c646869c9c065f5d1bb7cb444ebc1ed373aa80de89de9",
+            "reviewed_research_package_manifest_sha256": "5042e52b3cf7a6c054da1fa195927fb79cb63dea27043965ddb180b37c7a6a1f",
+            "validation_boundary": "Cursor/bit accounting is static; allocator owner and actual writable extent remain UNBOUND."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_F13C_WRITER_PHYSICAL_EXTENT_STATUS_AND_MINIMUM_RECEIPT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-WRITER-PHYSICAL-EXTENT-STATUS-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-WRITER-PHYSICAL-EXTENT-STATUS-V1/MINIMUM-EXTENT-RECEIPT.json"
+            ],
+            "case_pointers": [
+              "Writer output state is a cursor/base pair and writes use 16-bit units.",
+              "Logical bit offset and expected final bit count are separate records; physical writable extent is NOT_ESTABLISHED.",
+              "Pointer-expression to writer-argument, writer-state to allocator-owner, and allocator to physical capacity joins remain UNBOUND."
+            ],
+            "source_supplement_manifest_sha256": "cf6d83fc87c4d2ea387c646869c9c065f5d1bb7cb444ebc1ed373aa80de89de9"
+          },
+          "native_status": {
+            "writer_output_state": "CURSOR_BASE_PAIR",
+            "write_unit": "U16",
+            "logical_bit_offset": "TRACKED_SEPARATELY",
+            "expected_final_bit_count": "RECORDED_SEPARATELY",
+            "physical_writable_extent": "NOT_ESTABLISHED",
+            "writer_argument_identity": "UNBOUND",
+            "allocator_owner_identity": "UNBOUND",
+            "allocator_to_byte_capacity": "UNBOUND",
+            "native_execution": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "No physical writable-capacity receipt or allocator identity is established.",
+            "No RAM/native target run is authorized; logical bit budget cannot stand in for physical extent."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-f13c-writer-physical-extent-status",
+          "mapping_status": "WASHED_LOGICAL_WRITER_STATE_AND_PHYSICAL_CAPACITY_SEPARATED__CAPACITY_UNBOUND",
+          "implementation_status": "WASHED_STATIC_CURSOR_AND_LOGICAL_BIT_COUNT__WRITER_BUFFER_CAPACITY_UNBOUND",
+          "scope": "Wash records only the selected writer's cursor/base pair, 16-bit write units, separately tracked logical bit offset and expected final bit count. It does not join the IDA pointer expression to the Ghidra writer argument, the writer state to its allocator owner, or that owner to physical writable byte capacity. A logical bit budget is not physical capacity evidence; no RAM/native run or implementation authorization is provided.",
+          "owner": "codec",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "This evidence describes static writer representation only; no source, dispatch or AU clock is bound."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F13C_WRITER_PHYSICAL_EXTENT_STATUS_V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-WRITER-PHYSICAL-EXTENT-STATUS-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-WRITER-PHYSICAL-EXTENT-STATUS-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-WRITER-PHYSICAL-EXTENT-STATUS-V1/MINIMUM-EXTENT-RECEIPT.json"
+            ],
+            "supplement_manifest_sha256": "cf6d83fc87c4d2ea387c646869c9c065f5d1bb7cb444ebc1ed373aa80de89de9",
+            "reviewed_research_package_manifest_sha256": "5042e52b3cf7a6c054da1fa195927fb79cb63dea27043965ddb180b37c7a6a1f",
+            "validation_boundary": "Cursor/bit accounting is static; allocator owner and actual writable extent remain UNBOUND."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_F13C_WRITER_PHYSICAL_EXTENT_STATUS_AND_MINIMUM_RECEIPT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-WRITER-PHYSICAL-EXTENT-STATUS-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-WRITER-PHYSICAL-EXTENT-STATUS-V1/MINIMUM-EXTENT-RECEIPT.json"
+            ],
+            "case_pointers": [
+              "Writer output state is a cursor/base pair and writes use 16-bit units.",
+              "Logical bit offset and expected final bit count are separate records; physical writable extent is NOT_ESTABLISHED.",
+              "Pointer-expression to writer-argument, writer-state to allocator-owner, and allocator to physical capacity joins remain UNBOUND."
+            ],
+            "source_supplement_manifest_sha256": "cf6d83fc87c4d2ea387c646869c9c065f5d1bb7cb444ebc1ed373aa80de89de9"
+          },
+          "native_status": {
+            "writer_output_state": "CURSOR_BASE_PAIR",
+            "write_unit": "U16",
+            "logical_bit_offset": "TRACKED_SEPARATELY",
+            "expected_final_bit_count": "RECORDED_SEPARATELY",
+            "physical_writable_extent": "NOT_ESTABLISHED",
+            "writer_argument_identity": "UNBOUND",
+            "allocator_owner_identity": "UNBOUND",
+            "allocator_to_byte_capacity": "UNBOUND",
+            "native_execution": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "No physical writable-capacity receipt or allocator identity is established.",
+            "No RAM/native target run is authorized; logical bit budget cannot stand in for physical extent."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
           "slice_id": "washed-parent-writer-serialization-and-no-output-boundary-hold",
           "mapping_status": "WASHED_WRITER_SUCCESS_ORDER_CLOSED_SAFE_NATIVE_RECEIPT_BOUNDARY_UNAVAILABLE",
           "implementation_status": "WASHED_PRE_SERIALIZATION_CANDIDATE_ONLY_WRITER_SUCCESS_NOT_OBSERVED",

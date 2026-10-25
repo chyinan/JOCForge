@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge-washed-supplement-delivery.v1",
+  "package_id": "F13C-WRITER-PHYSICAL-EXTENT-STATUS-V1",
+  "manifest_sha256": "cf6d83fc87c4d2ea387c646869c9c065f5d1bb7cb444ebc1ed373aa80de89de9",
+  "payload_files": 4,
+  "logical_budget": "DEFINED_SEPARATELY",
+  "physical_extent": "UNBOUND"
+}
