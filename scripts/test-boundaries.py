@@ -957,7 +957,11 @@ def main():
   ('f06nr-overlap-index-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/transform/secondary_overlap.rs','255 - 2 * index,','255 - 4 * index,')),
   ('f06nr-carrier-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F06NR')['direct_slices'].remove(next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06NR')['direct_slices']if s['slice_id']=='selected-secondary-carrier-routing')))),
   ('f06nr-carrier-lane-order-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/transform/secondary_carrier.rs','[0, 2, 1, 4, 5]','[0, 1, 2, 4, 5]')),
-  ('f06nr-carrier-warmup-not-dropped',lambda r:replace_once(r/'crates/jocforge-domain/src/transform/secondary_carrier.rs','enumerate().skip(1)','enumerate().skip(0)'))
+  ('f06nr-carrier-warmup-not-dropped',lambda r:replace_once(r/'crates/jocforge-domain/src/transform/secondary_carrier.rs','enumerate().skip(1)','enumerate().skip(0)')),
+  ('f06nr-clock-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F06NR')['direct_slices'].remove(next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06NR')['direct_slices']if s['slice_id']=='selected-secondary-source-au-clock-projection')))),
+  ('f06nr-clock-source-offset-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/timeline/clock.rs','checked_sub(PRIMING_CALLBACKS_U32)','checked_sub(PRIMING_CALLBACKS_U32 + 1)')),
+  ('f06nr-clock-au-index-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/timeline/clock.rs','let j = v.checked_sub(2)','let j = v.checked_sub(3)')),
+  ('f06nr-clock-generated-writer-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/timeline/clock.rs','self.value()\n            .checked_sub(1)\n            .map(JocGeneratedWriterIndex::new)','self.value()\n            .checked_sub(2)\n            .map(JocGeneratedWriterIndex::new'))
  ]
  cases += [
   ('f06nd-quantizer-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F06ND')['direct_slices'].pop())),
@@ -980,6 +984,14 @@ def main():
   ('f06nd-statistics-actual-next-state-removed',lambda r:replace_once(r/'crates/jocforge-domain/tests/none_drc_statistics.rs','state = transition.next_state;','state = state;')),
   ('f06nd-statistics-output-comparison-removed',lambda r:replace_once(r/'crates/jocforge-domain/tests/none_drc_statistics.rs','assert_output_matches(','output_comparison_removed(')),
   ('f06nd-statistics-next-state-comparison-removed',lambda r:replace_once(r/'crates/jocforge-domain/tests/none_drc_statistics.rs','assert_state_matches(&case["expected_next_state_words"], &state);','let _ = (&case["expected_next_state_words"], &state);'))
+ ]
+ cases += [
+  ('f06nd-scheduler-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F06ND')['direct_slices'].remove(next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06ND')['direct_slices']if s['slice_id']=='selected-none-drc-scheduler-frame-transition')))),
+  ('f06nd-scheduler-rf-increment-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/drc/none_drc_scheduler.rs','3.0, 2_000.0','3.0, 2_001.0')),
+  ('f06nd-scheduler-peak-window-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/drc/none_drc_scheduler.rs','peak_logs_six[1..]','peak_logs_six[0..]')),
+  ('f06nd-scheduler-generation-wrap-added',lambda r:replace_once(r/'crates/jocforge-domain/src/drc/none_drc_scheduler.rs','checked_add(1)','wrapping_add(1)')),
+  ('f06nd-scheduler-state-chain-broken',lambda r:replace_once(r/'crates/jocforge-domain/tests/none_drc_scheduler.rs','state = transition.next_state;','state = state;')),
+  ('f06nd-scheduler-output-comparison-removed',lambda r:replace_once(r/'crates/jocforge-domain/tests/none_drc_scheduler.rs','assert_output_matches(&case["expected_output"], &actual_output, index);','output_comparison_removed(&case["expected_output"], &actual_output, index);'))
  ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]

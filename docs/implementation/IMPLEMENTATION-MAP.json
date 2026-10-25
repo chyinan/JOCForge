@@ -5581,6 +5581,84 @@
             "real ADM, native DLL, product and listening acceptance"
           ],
           "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
+        },
+        {
+          "slice_id": "selected-secondary-source-au-clock-projection",
+          "mapping_status": "MATERIALIZED_SELECTED_SOURCE_AU_DISPATCH_CLOCK_CONVERSION__TRANSFORM_FRAME_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_TYPED_SOURCE_DISPATCH_AU_WRITER_PROJECTION__FULL_F06NR_DEFERRED",
+          "scope": "Pure typed conversion for the selected sample-count, callback, codec-source, JOC-dispatch, generated-writer, popped-writer and published-AU domains. It accounts for 4,247 normal callbacks, four cached drains, two suppressed priming sources, 4,249 sources and 4,247 published AUs, including ordinary/JOC pending writer ordinals. It does not execute transform blocks, write codec frames, flush at EOF, commit a programme, or claim whole F06NR production integration.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/timeline/mod.rs",
+            "crates/jocforge-domain/src/timeline/index.rs",
+            "crates/jocforge-domain/src/timeline/clock.rs"
+          ],
+          "clock": {
+            "domains": [
+              "AdmSampleCount",
+              "NormalCallbackCount",
+              "FrontendCallbackIndex",
+              "CodecSourceIndex",
+              "JocDispatchIndex",
+              "JocGeneratedWriterIndex",
+              "JocPoppedWriterIndex",
+              "OrdinaryPayloadWriterIndex",
+              "PublishedAuIndex"
+            ],
+            "covered_clauses": [
+              "Each clock/index domain has a distinct newtype with a private representation.",
+              "g=0/1 has no source; for g>=2, source s=g-2, dispatch d=s+1, and generated writer d-1=s.",
+              "Sources s=0/1 are suppressed; s=1 pops writer0; s>=2 publishes j=s-2 and consumes ordinary j while popping JOC writer s-1=j+1.",
+              "For the selected sample count, normal callbacks=4247, cached drains=4, sources=4249 and published AUs=4247; pending ordinary writers are 4247/4248 and pending JOC writer is 4248."
+            ]
+          },
+          "parameters": {
+            "kind": "NONE_FIXED_SELECTED_SAMPLE_AND_SOURCE_CLOCK_RULES",
+            "provider_files": [],
+            "validation_boundary": "Implements the hash-bound selected clock equations and checked integer conversions only; it owns no codec or JOC DSP state."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/timeline_clock_contract.rs"
+          ],
+          "vectors": {
+            "kind": "DETERMINISTIC_SELECTED_CLOCK_CONTRACT_CASES",
+            "authoritative_vectors": [
+              "docs/architecture/DATAFLOW.md",
+              "specs/06-secondary-reconstruction-clock-and-overlap.md"
+            ],
+            "case_pointers": [
+              "Sample-count accounting checks empty rejection, one-block boundaries and the selected 6,522,906-sample programme.",
+              "Callback/source/dispatch/generated-writer conversion checks priming and the terminal callback.",
+              "Publication checks suppressed s=0/1, first/last published AU, and writer-domain separation.",
+              "Terminal pending writer ordinals are asserted explicitly."
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_spec_sha256": "26a67687d019b480fcb450cc8321198f8df3d5182c55d49adefc4179fa23f74a"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "ClockError::ZeroSampleCount",
+              "category": "sample-count preflight",
+              "trigger": "ADM sample count is zero.",
+              "programme_state_after": "No clock projection is returned; the function owns no state.",
+              "caller_action": "Reject the projection."
+            },
+            {
+              "error_code": "ClockError::ArithmeticOverflow",
+              "category": "checked clock arithmetic",
+              "trigger": "Adding callback, source, dispatch or writer offsets overflows the selected integer representation.",
+              "programme_state_after": "No clock projection is returned; the function owns no state.",
+              "caller_action": "Reject the projection."
+            }
+          ],
+          "not_run": [
+            "F06NR transform/history/overlap/carrier execution connected to each CodecSourceIndex",
+            "F06NR frame transaction and production AU writer connection",
+            "EOF adds no codec flush; terminal pending writers are accounted but are not consumed or discarded by this projection",
+            "ID14 pending writer 4248 lifecycle and product-level EOF error mapping",
+            "F06 meter finalization and meter_terminal_sha256 remain HOLD",
+            "Real ADM, native DLL, product and listening acceptance"
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -6544,12 +6622,101 @@
             "F06ND.7 simultaneous-preflight first-failure precedence remains UNBOUND.",
             "Mapping of nonfinite source input to DRC_INPUT_ERROR versus NUMERIC_FAILURE remains UNBOUND; typed finite planes are required by this leaf.",
             "No runtime parameter identity failure path is implemented; parameter words are bound by tests and boundary checks.",
+            "NoneDrcStatisticsState is Copy; this pure leaf does not enforce a single parent-owned committed state chain.",
             "External generation matching and parent state commitment are not part of this transition.",
             "F06ND scheduler, limiter, metadata FIFO, complete frame/programme integration and production audio-source connection.",
             "F06 meter finalization and meter_terminal_sha256 remain HOLD; real ADM, native DLL, product and W04 acceptance remain NOT_RUN."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "selected-none-drc-scheduler-frame-transition",
+          "mapping_status": "MATERIALIZED_SELECTED_F06ND5_SCHEDULER__PROGRAMME_AND_FIFO_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_186_SCHEDULER_SEQUENCE__ERROR_MAP_AND_GENERATION_JOIN_OPEN",
+          "scope": "Implements one pure selected six-block scheduler transition for peak logs, RF/line limiters, none dynamics, packed control outputs, and the scheduler-owned state. It consumes the selected dialnorm and peak inputs; RMS values are typed peer output and are intentionally not consumed in the selected none scheduler. It is not connected to the statistics producer, metadata FIFO, F12 writer, parent transaction or programme clock.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/lib.rs",
+            "crates/jocforge-domain/src/drc/mod.rs",
+            "crates/jocforge-domain/src/drc/none_drc_scheduler.rs",
+            "crates/jocforge-domain/src/drc/none_drc_quantizer.rs",
+            "crates/jocforge-domain/src/drc/none_drc_normalizer.rs",
+            "crates/jocforge-domain/src/drc/none_drc_dialnorm_offset.rs",
+            "crates/jocforge-domain/src/numeric/finite_f32.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The scheduler stores an internal U64 generation and advances it once per successful call; it does not identify FrontendCallbackIndex, CodecSourceIndex or PublishedAuIndex.",
+              "The caller must provide state from the preceding actual transition; equality to outer source count/generation is not verified by this leaf."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F06ND_FUNCTIONAL_AND_MATH_PROVIDER_WORDS",
+            "provider_files": [
+              "crates/jocforge-domain/tests/fixtures/none_drc/authorized_parameters.json",
+              "crates/jocforge-domain/tests/fixtures/none_drc/authorized_math_parameters.json"
+            ],
+            "functional_provider_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
+            "math_provider_sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166",
+            "math_provider_git_blob_sha1": "8ee95ed63232cda8a4a431b2be3460ba93563f98",
+            "math_provider_git_blob_bytes": 1938,
+            "authorization_package_id": "F06ND-PUBLIC-DISTRIBUTION-AUTHORIZATION-V2",
+            "authorization_manifest_sha256": "21b3854b45fc0d85738db61dafe106e3f9c86a470534df376b1bfb92285fc885",
+            "authorization_scope_sha256": "7b9c5ec09772dc0b04ce125fdbc8042f9747fdb081c94b3af7926a06afe4ae80",
+            "validation_boundary": "The selected binary32 words and 34 math words are hash-bound to the sealed source artifacts and current V2 public authorization; no runtime file provider or fallback exists."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/none_drc_scheduler.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_186_SCHEDULER_INPUT_RECIPES_AND_STATE_CHAIN",
+            "authoritative_vectors": [
+              "test-vectors/NONE-DRC-AUTHORIZED-VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "Reconstructs 186 six-block RMS/peak recipes at fixed dialnorm 24.",
+              "Cold-starts once; each step consumes the preceding computed actual next_state, never expected state.",
+              "Compares every RF/line packed word, flags, auxiliary/limiter outputs, signed minimum, peak log, line gain and full state record.",
+              "RMS input values are reconstructed and finite-typed but remain unused by the selected none scheduler, per the spec.",
+              "A focused unit test rejects local U64 generation overflow rather than wrapping; source/native overflow behavior remains unbound."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/none_drc/authorized_verification.json",
+              "bytes": 533786,
+              "sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_spec_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+            "source_parameter_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
+            "source_math_parameter_sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166",
+            "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "NUMERIC_FAILURE",
+              "category": "specified arithmetic or U64 generation overflow",
+              "trigger": "A required binary32 operation fails or local checked generation increment overflows.",
+              "programme_state_after": "No transition/output is returned; before state remains unchanged.",
+              "caller_action": "Reject the local transition; source/native U64 overflow behavior remains unbound."
+            },
+            {
+              "error_code": "UNSUPPORTED_PROFILE",
+              "category": "dialnorm domain",
+              "trigger": "Dialnorm is outside the selected 1..=31 domain.",
+              "programme_state_after": "No transition/output is returned.",
+              "caller_action": "Reject the selected-profile invocation."
+            }
+          ],
+          "not_run": [
+            "F06ND.7 first-failure precedence and underlying numeric/normalizer/quantizer error mapping remain UNBOUND.",
+            "Statistics-to-scheduler same-frame generation join and external generation equality are not verified.",
+            "NoneDrcSchedulerState is Copy; a parent owner must enforce one continuous committed-state lineage, which this slice does not provide.",
+            "Metadata override FIFO, producer writes, F12 byte writer, EOF/source-count equality and parent state install remain deferred.",
+            "F06 meter finalization and meter_terminal_sha256 remain HOLD; real ADM, native DLL, product and W04 acceptance remain NOT_RUN."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
+
       ]
     },
     {

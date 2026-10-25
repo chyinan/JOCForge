@@ -168,6 +168,7 @@
 | F06OF/meter-in-memory-pcm24-source-cursor | F06OF | `meter` |
 | F06NR/single-lane-secondary-overlap-carry | F06NR | `drc` |
 | F06NR/selected-secondary-carrier-routing | F06NR | `drc` |
+| F06NR/selected-secondary-source-au-clock-projection | F06NR | `drc` |
 | F06NI/selected-secondary-inverse256-wrapper | F06NI | `drc` |
 | F06NF/selected-secondary-fft-network | F06NF | `drc` |
 | F06U/ungated-single-slot-mean-and-di-off-getter | F06U | `meter` |
@@ -176,6 +177,7 @@
 | F06ND/selected-none-drc-scalar-normalizer | F06ND | `drc` |
 | F06ND/selected-none-drc-dialnorm-offset | F06ND | `drc` |
 | F06ND/selected-none-drc-statistics-frame-transition | F06ND | `drc` |
+| F06ND/selected-none-drc-scheduler-frame-transition | F06ND | `drc` |
 | F07/input-history-block-transition | F07 | `analysis` |
 | F07/structure-refresh-flag-projection | F07 | `analysis` |
 | F07/selected-dither-flag-plan | F07 | `analysis` |
