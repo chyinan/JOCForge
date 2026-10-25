@@ -1,0 +1,48 @@
+{
+  "schema": "jocforge.f06nd-public-distribution-scope.v2",
+  "package_id": "F06ND-PUBLIC-DISTRIBUTION-AUTHORIZATION-V2",
+  "decision": "PUBLIC_DISTRIBUTION_AUTHORIZED_FOR_NONPRIVATE_FUNCTIONAL_AND_MATHEMATICAL_MATERIAL",
+  "authorization_basis": "User clarification in this thread: only vendor-private keys/authentication secrets and genuinely private user data are excluded; ordinary constants and washed algorithm material remain open.",
+  "functional_source_package": {
+    "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "parameter_file": {
+      "path": "parameters/none-drc-authorized-v1.json",
+      "bytes": 3792,
+      "sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f"
+    }
+  },
+  "mathematical_provider_source": {
+    "implementation_commit_sha": "9e38e8ca0fa1e78169847b8a49d7347133d3e30a",
+    "path": "crates/jocforge-domain/tests/fixtures/none_drc/authorized_math_parameters.json",
+    "git_blob_sha1": "8ee95ed63232cda8a4a431b2be3460ba93563f98",
+    "bytes": 1938,
+    "source_classification": "Independent explicit selected-domain mathematical rules; source comparison is validation only",
+    "original_tables_delivered": false
+  },
+  "authorized_function_groups": {
+    "DRC_FILTER5": {"count": 5, "type": "binary32", "classification": "HISTORICAL_DEE_STATIC_FUNCTIONAL_AUDIO_EVIDENCE"},
+    "DRC_NORMALIZE3": {"count": 3, "type": "binary32", "classification": "VERIFIED_FROZEN_PYTHON_FUNCTIONAL_LITERALS"},
+    "DRC_QUANTIZE3": {"count": 3, "type": "binary32", "classification": "VERIFIED_FROZEN_PYTHON_FUNCTIONAL_LITERALS"},
+    "DRC_AUX_ROTATION2": {"count": 2, "type": "binary32", "classification": "VERIFIED_FROZEN_PYTHON_FUNCTIONAL_LITERALS"}
+  },
+  "authorized_math_groups": {
+    "dialnorm_words": {"count": 31, "type": "binary32", "formula": "R32((31-d)/144)", "domain": "d=1..31"},
+    "mix_words": {"count": 3, "formula_source": "R32(-sqrt(2)/4), 1, -1/2"}
+  },
+  "publicly_distributable": [
+    "13 non-secret functional binary32 values",
+    "34-word mathematical provider and its stated formulas",
+    "selected clean algorithm specification and implementation",
+    "generated input-only vectors, tests, verification results, and non-sensitive provenance"
+  ],
+  "excluded": [
+    "vendor private keys",
+    "authentication secrets",
+    "genuinely private user data",
+    "raw PCM or audio inputs",
+    "protected media outputs",
+    "original vendor tables, source code, binaries, or research artifacts"
+  ],
+  "previous_internal_only_labels": "SUPERSEDED_FOR_THIS_SCOPE_BY_USER_CLARIFICATION",
+  "original_hash_sealed_packages_modified": false
+}

@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge-wash-supplement.v1",
+  "package_id": "F06ND-PUBLIC-DISTRIBUTION-AUTHORIZATION-V2",
+  "audience": "ISOLATED_IMPLEMENTATION_AND_PUBLIC_DISTRIBUTION",
+  "scope": "F06ND 13 functional values, 34 mathematical values, and associated clean scalar implementation artifacts",
+  "status": "PUBLIC_DISTRIBUTION_AUTHORIZED_FOR_NONPRIVATE_MATERIAL",
+  "supersedes": "F06ND-PUBLIC-DISTRIBUTION-AUTHORIZATION-V1",
+  "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "implementation_math_provider_commit_sha": "9e38e8ca0fa1e78169847b8a49d7347133d3e30a",
+  "excluded_material": [
+    "vendor private keys and authentication secrets",
+    "genuinely private user data and raw PCM",
+    "protected media and original vendor source artifacts"
+  ]
+}

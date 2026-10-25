@@ -6,7 +6,7 @@ const AUTHORIZED_PARAMETERS: &str = include_str!("fixtures/none_drc/authorized_p
 const AUTHORIZED_VERIFICATION: &str =
     include_str!("fixtures/none_drc/authorized_verification.json");
 const PUBLIC_DISTRIBUTION_SCOPE: &str =
-    include_str!("fixtures/none_drc/public_distribution_scope/SCOPE.json");
+    include_str!("fixtures/none_drc/public_distribution_scope_v2/SCOPE.json");
 
 #[test]
 fn selected_quantizer_parameter_words_match_the_approved_artifact() {
@@ -24,10 +24,10 @@ fn selected_quantizer_parameter_words_match_the_approved_artifact() {
         serde_json::from_str(PUBLIC_DISTRIBUTION_SCOPE).unwrap();
     assert_eq!(
         distribution_scope["decision"].as_str(),
-        Some("PUBLIC_DISTRIBUTION_AUTHORIZED_FOR_NONPRIVATE_FUNCTIONAL_MATERIAL")
+        Some("PUBLIC_DISTRIBUTION_AUTHORIZED_FOR_NONPRIVATE_FUNCTIONAL_AND_MATHEMATICAL_MATERIAL")
     );
     assert_eq!(
-        distribution_scope["source_package"]["parameter_file"]["sha256"].as_str(),
+        distribution_scope["functional_source_package"]["parameter_file"]["sha256"].as_str(),
         Some("35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f")
     );
     assert_eq!(
@@ -35,7 +35,7 @@ fn selected_quantizer_parameter_words_match_the_approved_artifact() {
         Some("SUPERSEDED_FOR_THIS_SCOPE_BY_USER_CLARIFICATION")
     );
     assert_eq!(
-        distribution_scope["source_package_contents_modified"],
+        distribution_scope["original_hash_sealed_packages_modified"],
         serde_json::Value::Bool(false)
     );
 }

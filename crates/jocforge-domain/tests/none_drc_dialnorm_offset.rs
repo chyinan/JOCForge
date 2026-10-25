@@ -6,7 +6,7 @@ use sha2::{Digest, Sha256};
 const AUTHORIZED_MATH_PARAMETERS: &[u8] =
     include_bytes!("fixtures/none_drc/authorized_math_parameters.json");
 const PUBLIC_DISTRIBUTION_SCOPE: &[u8] =
-    include_bytes!("fixtures/none_drc/public_distribution_scope/SCOPE.json");
+    include_bytes!("fixtures/none_drc/public_distribution_scope_v2/SCOPE.json");
 const AUTHORIZED_MATH_PARAMETERS_SHA256: &str =
     "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166";
 const AUTHORIZED_MATH_PARAMETERS_BYTES: usize = 2_010;
@@ -52,15 +52,23 @@ fn exact_math_provider_is_hash_bound_and_all_selected_words_match() {
         serde_json::from_slice(PUBLIC_DISTRIBUTION_SCOPE).unwrap();
     assert_eq!(
         distribution_scope["decision"].as_str(),
-        Some("PUBLIC_DISTRIBUTION_AUTHORIZED_FOR_NONPRIVATE_FUNCTIONAL_MATERIAL")
+        Some("PUBLIC_DISTRIBUTION_AUTHORIZED_FOR_NONPRIVATE_FUNCTIONAL_AND_MATHEMATICAL_MATERIAL")
     );
     assert_eq!(
-        distribution_scope["source_package"]["manifest_sha256"].as_str(),
+        distribution_scope["functional_source_package"]["manifest_sha256"].as_str(),
         Some("c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a")
     );
     assert_eq!(
         distribution_scope["previous_internal_only_labels"].as_str(),
         Some("SUPERSEDED_FOR_THIS_SCOPE_BY_USER_CLARIFICATION")
+    );
+    assert_eq!(
+        distribution_scope["mathematical_provider_source"]["git_blob_sha1"].as_str(),
+        Some("8ee95ed63232cda8a4a431b2be3460ba93563f98")
+    );
+    assert_eq!(
+        distribution_scope["original_hash_sealed_packages_modified"],
+        serde_json::Value::Bool(false)
     );
 }
 

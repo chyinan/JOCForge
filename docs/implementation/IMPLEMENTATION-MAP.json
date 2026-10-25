@@ -6250,10 +6250,10 @@
             ],
             "source_provider_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
             "authorization_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
-            "authorization_package_id": "F06ND-PUBLIC-DISTRIBUTION-AUTHORIZATION-V1",
-            "authorization_manifest_sha256": "638db1b9d875b5d15ae75beeea52c8579315ea84c6e71c85308a0d9c116596ec",
-            "authorization_scope_file": "crates/jocforge-domain/tests/fixtures/none_drc/public_distribution_scope/SCOPE.json",
-            "authorization_scope_sha256": "3f7f38d7e46db03a61430f99ddf739b0759a07d582f5621a6c818b2777f51f96",
+            "authorization_package_id": "F06ND-PUBLIC-DISTRIBUTION-AUTHORIZATION-V2",
+            "authorization_manifest_sha256": "21b3854b45fc0d85738db61dafe106e3f9c86a470534df376b1bfb92285fc885",
+            "authorization_scope_file": "crates/jocforge-domain/tests/fixtures/none_drc/public_distribution_scope_v2/SCOPE.json",
+            "authorization_scope_sha256": "7b9c5ec09772dc0b04ce125fdbc8042f9747fdb081c94b3af7926a06afe4ae80",
             "validation_boundary": "The implementation fixture remains byte-for-byte identical to the sealed source package. The hash-bound public-scope addendum supersedes its earlier internal-only labels; production uses the selected constants and performs no filesystem read or fallback."
           },
           "test_modules": [
@@ -6334,10 +6334,10 @@
             ],
             "source_provider_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
             "authorization_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
-            "authorization_package_id": "F06ND-PUBLIC-DISTRIBUTION-AUTHORIZATION-V1",
-            "authorization_manifest_sha256": "638db1b9d875b5d15ae75beeea52c8579315ea84c6e71c85308a0d9c116596ec",
-            "authorization_scope_file": "crates/jocforge-domain/tests/fixtures/none_drc/public_distribution_scope/SCOPE.json",
-            "authorization_scope_sha256": "3f7f38d7e46db03a61430f99ddf739b0759a07d582f5621a6c818b2777f51f96",
+            "authorization_package_id": "F06ND-PUBLIC-DISTRIBUTION-AUTHORIZATION-V2",
+            "authorization_manifest_sha256": "21b3854b45fc0d85738db61dafe106e3f9c86a470534df376b1bfb92285fc885",
+            "authorization_scope_file": "crates/jocforge-domain/tests/fixtures/none_drc/public_distribution_scope_v2/SCOPE.json",
+            "authorization_scope_sha256": "7b9c5ec09772dc0b04ce125fdbc8042f9747fdb081c94b3af7926a06afe4ae80",
             "validation_boundary": "The scalar implementation uses only selected DRC_NORMALIZE3 words. The exact source fixture remains hash-pinned; current public scope comes from the superseding Wash authorization supplement."
           },
           "test_modules": [
@@ -6415,12 +6415,15 @@
               "crates/jocforge-domain/tests/fixtures/none_drc/authorized_math_parameters.json"
             ],
             "source_provider_sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166",
+            "source_provider_git_commit_sha": "9e38e8ca0fa1e78169847b8a49d7347133d3e30a",
+            "source_provider_git_blob_sha1": "8ee95ed63232cda8a4a431b2be3460ba93563f98",
+            "source_provider_git_blob_bytes": 1938,
             "authorization_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
-            "authorization_package_id": "F06ND-PUBLIC-DISTRIBUTION-AUTHORIZATION-V1",
-            "authorization_manifest_sha256": "638db1b9d875b5d15ae75beeea52c8579315ea84c6e71c85308a0d9c116596ec",
-            "authorization_scope_file": "crates/jocforge-domain/tests/fixtures/none_drc/public_distribution_scope/SCOPE.json",
-            "authorization_scope_sha256": "3f7f38d7e46db03a61430f99ddf739b0759a07d582f5621a6c818b2777f51f96",
-            "validation_boundary": "The formula-derived 31-word provider is copied byte-for-byte from the approved Wash package and validated before comparing all domain entries."
+            "authorization_package_id": "F06ND-PUBLIC-DISTRIBUTION-AUTHORIZATION-V2",
+            "authorization_manifest_sha256": "21b3854b45fc0d85738db61dafe106e3f9c86a470534df376b1bfb92285fc885",
+            "authorization_scope_file": "crates/jocforge-domain/tests/fixtures/none_drc/public_distribution_scope_v2/SCOPE.json",
+            "authorization_scope_sha256": "7b9c5ec09772dc0b04ce125fdbc8042f9747fdb081c94b3af7926a06afe4ae80",
+            "validation_boundary": "The formula-derived provider is hash-bound to the approved Wash package and implementation commit blob; all 31 domain words are validated before comparison."
           },
           "test_modules": [
             "crates/jocforge-domain/tests/none_drc_dialnorm_offset.rs"
