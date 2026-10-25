@@ -1,0 +1,75 @@
+{
+  "schema": "jocforge-f13c-bsi-configuration-count-input-only-vectors.v1",
+  "vectors": [
+    {
+      "id": "selected-wrapper-count-recipe",
+      "input": {
+        "rate_code": 5,
+        "signed_i16_channel_label_count": 38,
+        "non_lfe_count": 15,
+        "lfe_presence": 1
+      },
+      "expected": {
+        "configured_count_type": "signed I32",
+        "configured_count": 16
+      },
+      "evidence_grade": "HASH_BOUND_SELECTED_CAPTURE",
+      "scope_limit": "This selected recipe only; no general overflow, range, or other-rate behavior is established here."
+    },
+    {
+      "id": "configuration-query-and-constructor",
+      "input": {
+        "parameter_id": 13,
+        "parameter_type": "signed I32",
+        "selector": 10,
+        "query_output": 16
+      },
+      "expected": {
+        "constructor_consumes_query_value": true
+      },
+      "evidence_grade": "HASH_BOUND_CAPTURE_LOCAL_JOIN",
+      "scope_limit": "The join is local to this capture and is not a stable owner or generation identity."
+    },
+    {
+      "id": "configuration-record-through-bsi-importer",
+      "input": {
+        "configured_count": 16,
+        "configuration_record": "capture-local record A"
+      },
+      "expected": {
+        "bsi_producer_consumes_configuration_record": true,
+        "importer_consumes_produced_record": true,
+        "field": "complexity_index_type_a",
+        "field_start_bit": 105,
+        "field_width_bits": 8,
+        "field_value_in_selected_capture": 16
+      },
+      "evidence_grade": "HASH_BOUND_CAPTURE_LOCAL_JOIN_PLUS_EXISTING_WIRE_FIELD_SUPPLEMENT",
+      "scope_limit": "The value is not joined to a selected published AU or source generation."
+    },
+    {
+      "id": "id14-is-not-required-by-bounded-count-producer",
+      "input": {
+        "configuration_count_cases": [1, 16],
+        "id14_queue_body_emdf_serializer_and_joc_holder": "absent in bounded private-owner calls"
+      },
+      "expected": {
+        "producer_statuses": [0, 0]
+      },
+      "evidence_grade": "BOUNDED_CONTROLLED_CALLS",
+      "scope_limit": "Does not prove global ID14/parser absence or successful complete-frame output."
+    },
+    {
+      "id": "equal-counts-do-not-join-producers",
+      "input": {
+        "clean_model_object_count": 15,
+        "clean_model_object_count_plus_one": 16,
+        "captured_configuration_count": 16
+      },
+      "expected": {
+        "same_source_or_generation_proven": false
+      },
+      "evidence_grade": "IDENTITY_GUARD"
+    }
+  ]
+}

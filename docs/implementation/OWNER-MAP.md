@@ -224,12 +224,14 @@
 | F12S/mantissa-quantizer | F12S | `codec` |
 | F13/selected-metadata-owner-source-stage | F13 | `metadata` |
 | F13C/selected-bsi-count-and-payload-import | F13C | `metadata` |
+| F13C/washed-f13c-bsi-configuration-count-capture-local-lineage | F13C | `metadata` |
 | F13C/selected-emdf-carrier-planner-reservation-writer-and-publication-gate | F13C | `metadata` |
 | F13C/selected-input-eof-lifecycle-observation-replay | F13C | `metadata` |
 | F13C/selected-reader-partial-frame-input-padding | F13C | `metadata` |
 | F13C/selected-id11-parser-boundary-evidence | F13C | `metadata` |
 | F13C/selected-configuration-writer-and-descriptor-bit-budget | F13C | `metadata` |
 | F13C/id14-model-parser-and-native-bsi-source-clarification | F13C | `metadata` |
+| F13C/washed-selected-adm-metadata-to-native-profile-crosswalk-status | F13C | `metadata` |
 | F13C/selected-id14-semantic-reader-path-applicability | F13C | `metadata` |
 | F13C/container-fragmentation-scratch-parent-observation | F13C | `metadata` |
 | F13C/selected-production-cold-root-observation | F13C | `metadata` |

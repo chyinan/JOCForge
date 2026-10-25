@@ -1,0 +1,77 @@
+{
+  "schema": "jocforge-f13c-selected-adm-metadata-crosswalk-evidence.v1",
+  "status": "ADM_METADATA_CAPTURE_BOUNDED_NATIVE_PROFILE_INPUT_CROSSWALK_UNBOUND",
+  "source_observation_package": {
+    "manifest_sha256": "6487567d8b94b301760bc4788d1c0e825209bf848d75c2b29f542ec9033010a2",
+    "payload_count": 5,
+    "checker_normal": "INTEGRITY_PASS",
+    "checker_python_O": "INTEGRITY_PASS",
+    "receipt_scope": "Checker verifies the sealed receipt only; it does not reopen the WAV or replay the observation."
+  },
+  "approved_input_identity": {
+    "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "path": "test-vectors/full-song/input-adm.wav",
+    "manifest_declared_bytes": 743696526,
+    "manifest_declared_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "actual_full_file_sha_this_round": "NOT_REHASHED",
+    "full_file_hash_match_this_round": "NOT_EVALUATED"
+  },
+  "bounded_observation": {
+    "riff_wave_format": {
+      "format_code": 1,
+      "channels": 38,
+      "sample_rate_hz": 48000,
+      "bits_per_sample": 24,
+      "block_align_bytes": 114
+    },
+    "axml": {
+      "payload_bytes": 82997,
+      "reported_original_read_sha256": "7e4e61d4e2bec581ff2b05133281198a220602290597950e301a6079701c1659",
+      "semantic_type_labels": ["0001", "0003"],
+      "semantic_type_definitions": ["DirectSpeakers", "Objects"],
+      "native_profile_key1_type_a7_partial_and_selector_mapping": "NOT_IDENTIFIED_IN_INSPECTED_FIELDS"
+    },
+    "chna": {
+      "payload_bytes": 1524,
+      "reported_original_read_sha256": "f82b14e4c1b5b3b1750ed4104aa53f1d595e3ff2d4dbaef76a76c0e35f31b7a6",
+      "track_count": 38,
+      "unique_track_indices": 38,
+      "track_index_range": [1, 38]
+    },
+    "read_accounting": {
+      "reported_total_read_bytes": 84597,
+      "reported_bytes_with_retained_digest": 84521,
+      "header_bytes_without_retained_digest": 76,
+      "pcm_data_range_start": 116,
+      "pcm_data_range_end_exclusive": 743611400,
+      "pcm_data_bytes": 743611284,
+      "pcm_data_bytes_read": 0,
+      "pcm_action": "SEEK_ONLY_SKIP",
+      "dbmd_payload_read": false,
+      "source_read_repeated_for_receipt": false
+    }
+  },
+  "evidence_grades": {
+    "receipt_manifest_and_payload_integrity": "WASH_VERIFIED",
+    "AXML_CHNA_chunk_digests": "CAPTURE_REPORTED_NOT_REPLAYED",
+    "approved_vector_identities": "WASH_INDEPENDENTLY_REHASHED",
+    "whole_wav_hash": "MANIFEST_DECLARED_EXPECTED_IDENTITY_ONLY_NOT_REHASHED"
+  },
+  "unbound_inputs": [
+    "native I32 profile pair list and key-1 type",
+    "native profile-row owner identity",
+    "native a7 value, unit, and origin",
+    "native partial-block flag",
+    "native list-selector mapping",
+    "same-row constructor-to-parent invocation identity"
+  ],
+  "scope_limits": {
+    "dbmd_payload_inspected": false,
+    "whole_wav_or_native_pipeline_absence_claim": false,
+    "native_execution": "NOT_RUN",
+    "pcm_decoded_or_persisted": false,
+    "raw_axml_or_complete_uids_included": false,
+    "private_key_or_auth_material_included": false,
+    "implementation_ready": false
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "schema": "jocforge-f13c-bsi-configuration-count-producer-evidence.v1",
+  "status": "CONFIGURATION_COUNT_PATH_CLOSED_CAPTURE_LOCAL_SOURCE_GENERATION_UNBOUND",
+  "reverse_package": {
+    "manifest_sha256": "a152ce9bf335018f7ddf8da075fd4164f0fd05e00a5a39bca6f8fb7714c62c85",
+    "payload_count": 5,
+    "independent_checker": {
+      "normal": "PASS_HASH_BOUND_NATIVE_BSI_CONFIG_SOURCE_LINEAGE",
+      "python_O": "PASS_HASH_BOUND_NATIVE_BSI_CONFIG_SOURCE_LINEAGE"
+    }
+  },
+  "verified_source_package_counts": {
+    "count_producer_payloads": 10,
+    "count_handoff_payloads": 18,
+    "id14_r2_payloads": 8,
+    "configuration_import_payloads": 8,
+    "f12_lineage_payloads": 5,
+    "wire_field_payloads": 5
+  },
+  "selected_wrapper_recipe": {
+    "rate_code": 5,
+    "sample_rate_hz": 48000,
+    "bit_rate_bps": 1024000,
+    "signed_i16_channel_label_count": 38,
+    "non_lfe_count": 15,
+    "lfe_presence": 1,
+    "configured_count_type": "signed I32",
+    "configured_count_value": 16
+  },
+  "capture_local_chain": {
+    "configuration_parameter_id": 13,
+    "configuration_parameter_type": "signed I32",
+    "selector": 10,
+    "query_value": 16,
+    "query_to_constructor": "JOINED_WITHIN_CAPTURE",
+    "constructor_to_bsi_producer": "JOINED_WITHIN_CAPTURE",
+    "bsi_producer_invocations": 7,
+    "producer_to_importer_record": "JOINED_WITHIN_CAPTURE",
+    "importer_invocations": 6,
+    "capture_local_ids_are_cross_run_identities": false
+  },
+  "field_layout": {
+    "field": "complexity_index_type_a",
+    "frame_relative_start_bit": 105,
+    "width_bits": 8,
+    "cursor_after": 113,
+    "working_header_byte_offset": 119,
+    "source_generation_bound": false
+  },
+  "id14_independence_scope": {
+    "bounded_configuration_counts": [1, 16],
+    "id14_queue_body_emdf_serializer_and_joc_holder_present": false,
+    "producer_statuses": [0, 0],
+    "global_parser_absence_claim": false
+  },
+  "current_rust_seam_correspondence": {
+    "implementer_reported_commit": "9d483e3",
+    "clean_model_input": "validated semantic object_count",
+    "clean_model_output": "typed SelectedComplexityIndexTypeA derived as U8(object_count + 1)",
+    "clean_model_wire_position": "F12 bit 105, width 8",
+    "native_configuration_record_to_rust_input_or_record": "UNMAPPED",
+    "same_selected_source_generation": "UNBOUND",
+    "equal_selected_numeric_value_proves_identity": false
+  },
+  "unbound_joins": [
+    "wrapper scalar origin to parameter query source generation",
+    "capture-local BSI owner to natural encoder owner",
+    "captured record to selected source/frame/AU generation",
+    "captured record to selected published F12 AU writer"
+  ],
+  "execution_boundary": {
+    "native_execution_this_slice": "NOT_RUN",
+    "pcm_or_emdf_body_read": false,
+    "key_or_auth_material_read": false,
+    "whole_f13c_ready": false,
+    "production_rule_for_each_au_established": false
+  }
+}

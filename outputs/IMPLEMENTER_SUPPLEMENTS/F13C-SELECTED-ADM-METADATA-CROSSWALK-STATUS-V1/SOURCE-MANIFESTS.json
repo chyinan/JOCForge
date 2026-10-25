@@ -1,0 +1,16 @@
+{
+  "schema": "jocforge-f13c-adm-metadata-source-manifests.v1",
+  "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "v4_sequence_base_status_manifest_sha256": "0246139898c5058e5b800df8fdfacc2cf04200efd6610d10352c1e1e39e12f59",
+  "vector_identity_check": "WASH_INDEPENDENTLY_REHASHED_SIZE_AND_SHA_MATCH",
+  "vectors": [
+    {"path":"test-vectors/JOC-TIMER-ORDER-INPUT-VECTORS.json","bytes":2689,"sha256":"7469213950e80fde353cf033bdd20c9befa37a2db20763243c4b3316762bb8c3"},
+    {"path":"test-vectors/LIVE-JOC-COORDINATOR-INPUT-VECTORS.json","bytes":2805177,"sha256":"de22607f2c2d7c957ee201a16a4d9fd6a47ec8c7f718432c0324a4c888153c50"},
+    {"path":"test-vectors/LIVE-JOC-COORDINATOR-WHOLE-STATE-VECTORS.json","bytes":65582,"sha256":"d616189c0ed40cc6e82a7216ae336427657feb047615d7fb516599bd97ae849c"},
+    {"path":"test-vectors/CODEC-WIRE-EMDF-MODE-INPUT-VECTORS.json","bytes":2317,"sha256":"aa18b1bffacfc665b19dd12c279896118e1ddad9f0d7169da245f6cc876404b8"},
+    {"path":"test-vectors/GLOBAL-TRANSACTION-INPUT-VECTORS.json","bytes":12133,"sha256":"98a07dbcc4c4046ebb6c129978b694fa1808878a10e3dd95b5e58b42560c7443"},
+    {"path":"test-vectors/KEYLESS-PUBLICATION-INPUT-VECTORS.json","bytes":84002,"sha256":"fcc0b1972641680e937a2c5adcd793833dde39146e04f48990f40c5513d6f60a"},
+    {"path":"test-vectors/FRONTEND-CONFIG-EVENT-INPUT-VECTORS.json","bytes":943694,"sha256":"493eb904467d22f9ca6dc50b86bf05bcd9f6643f16fa352766cac26d15e156eb"},
+    {"path":"test-vectors/OAMD-ID11-LIVE-INPUT-VECTORS.json","bytes":130350,"sha256":"cc853785b32d804f08d01e10a966ae046dc5b6f0b0c95b96ab20e9654f1033a3"}
+  ]
+}

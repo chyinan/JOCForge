@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F13C-SELECTED-ADM-METADATA-CROSSWALK-STATUS-V1",
+  "status": "ADM_METADATA_CAPTURE_BOUNDED_NATIVE_PROFILE_INPUT_CROSSWALK_UNBOUND",
+  "implementation_ready": false,
+  "source_reverse_manifest_sha256": "6487567d8b94b301760bc4788d1c0e825209bf848d75c2b29f542ec9033010a2",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 2163,
+      "sha256": "74e0a89fdd364c1f0e9713979445c4e3fa0a8a47a7f98edc3a884ddfa7f8eaba"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 3131,
+      "sha256": "0a2295ed87396b136b63d60fb5de563cdfe599650aa61b19168e217ba6b5cea9"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1647,
+      "sha256": "b7032449d94f8395cbcadd6ebd8b558ff46a15aaf47e563bd3305637b7ec7d93"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge-f13c-bsi-count-producer-source-manifests.v1",
+  "new_reverse_package": {
+    "path": "C:/Users/chyinan/Documents/Codex/2026-10-23/jocforge-reverse-agent-2/outputs/native-bsi-config-count-source-lineage",
+    "manifest_sha256": "a152ce9bf335018f7ddf8da075fd4164f0fd05e00a5a39bca6f8fb7714c62c85",
+    "payload_count": 5
+  },
+  "reviewed_hash_bound_inputs": [
+    {
+      "role": "count producer and capture-local joins",
+      "manifest_sha256": "cdc1d781cfb19a8b935cc64cf66524926f76b667e0747ab0ac83ac603bcdcb3a",
+      "handoff_manifest_sha256": "70f90cd5472299f66bba22c362e87fe2645b6f480d71dfeb763fab2eb769fe00",
+      "payloads_verified_by_independent_checker": 10
+    },
+    {
+      "role": "bounded ID14 dependency calls",
+      "manifest_sha256": "294dc82380bf9b8cb9a60094e973debc6b075801a46a64e33313e2766d65d778",
+      "payloads_verified_by_independent_checker": 8
+    },
+    {
+      "role": "natural configuration import context",
+      "manifest_sha256": "8ad92e6a0372414c4f2319f996399a5167379922ff3ebaa3d29467f339bd61b1",
+      "payloads_verified_by_independent_checker": 8
+    },
+    {
+      "role": "clean-model F12 field lineage and native-source status",
+      "manifest_sha256": "ae252406f99560f79e56cef2c4560e04d20a89f8c08badec086a6c72e10edbf0",
+      "payloads_verified_by_independent_checker": 5
+    },
+    {
+      "role": "additional-BSI wire field location",
+      "manifest_sha256": "d48fa96a507e30e936172f43a290a7db0a4c3a2c9c4b153c0605a24ebd524953",
+      "payloads_verified_by_independent_checker": 5
+    }
+  ],
+  "native_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "raw_binary_source_included": false,
+  "raw_source_or_decompilation_included": false,
+  "private_key_or_auth_material_included": false
+}

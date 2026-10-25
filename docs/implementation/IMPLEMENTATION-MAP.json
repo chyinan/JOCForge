@@ -10096,6 +10096,66 @@
           "error_outcomes": []
         },
         {
+          "slice_id": "washed-f13c-bsi-configuration-count-capture-local-lineage",
+          "mapping_status": "WASHED_CAPTURE_LOCAL_CONFIGURATION_TO_BSI_CHAIN__CROSS_RUN_AND_AU_IDENTITY_OPEN",
+          "implementation_status": "WASHED_NATIVE_CAPTURE_LOCAL_COUNT_PRODUCER_AND_IMPORTER_JOIN__RUST_SOURCE_JOIN_UNBOUND",
+          "scope": "A bounded selected wrapper capture records rate_code 5 at 48 kHz/1024 kbps with 38 signed-I16 channel labels, yielding non-LFE count 15 plus LFE presence 1 and configured_count 16. Within that capture, parameter 13/selector 10 query output 16 is consumed by the constructor; the resulting configuration record reaches the BSI producer and importer, with complexity_index_type_a at bit 105/U8. Two bounded ID14-absent calls have producer status 0. Capture-local IDs do not establish cross-run or selected source/AU generation identity, and the clean model's equal value 16 is not producer identity. No global parser absence is claimed.",
+          "owner": "codec",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The package records within-capture joins only; no persistent source, frame or AU generation is established."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F13C_NATIVE_CONFIGURATION_COUNT_CAPTURE_LINEAGE_V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-BSI-CONFIGURATION-COUNT-PRODUCER-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-BSI-CONFIGURATION-COUNT-PRODUCER-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-BSI-CONFIGURATION-COUNT-PRODUCER-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-BSI-CONFIGURATION-COUNT-PRODUCER-V1/SOURCE-MANIFESTS.json"
+            ],
+            "supplement_manifest_sha256": "253d2cbca8cbad05f432c39655aeea06a74641f17a1117b9126e09e5c83e17f5",
+            "source_reverse_manifest_sha256": "a152ce9bf335018f7ddf8da075fd4164f0fd05e00a5a39bca6f8fb7714c62c85",
+            "clean_model_field_manifest_sha256": "ae252406f99560f79e56cef2c4560e04d20a89f8c08badec086a6c72e10edbf0",
+            "validation_boundary": "Capture-local native producer chain only; no same-generation link to the clean Rust model value or every published AU."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_CAPTURE_LOCAL_SELECTED_CONFIGURATION_COUNT_AND_BSI_LINEAGE",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-BSI-CONFIGURATION-COUNT-PRODUCER-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-BSI-CONFIGURATION-COUNT-PRODUCER-V1/EVIDENCE.json"
+            ],
+            "case_pointers": [
+              "Selected wrapper rate_code 5, 38 signed-I16 labels, non-LFE 15 plus LFE presence 1 produces configured_count 16.",
+              "Parameter 13/selector 10 query, constructor, BSI producer and importer join within the capture; the field is complexity_index_type_a at bit 105/U8.",
+              "The clean F13JO model object_count+1 value is also 16, but no shared producer/source-generation identity is established."
+            ],
+            "source_supplement_manifest_sha256": "253d2cbca8cbad05f432c39655aeea06a74641f17a1117b9126e09e5c83e17f5"
+          },
+          "native_status": {
+            "capture_local_configuration_query_constructor_bsi_importer_chain": "CLOSED_WITHIN_CAPTURE",
+            "configuration_count_to_complexity_index_type_a_bit_105": "CAPTURE_LOCAL_FIELD_IDENTITY",
+            "capture_local_ids_are_cross_run_identity": false,
+            "rust_selected_complexity_input_or_record_join": "UNMAPPED",
+            "selected_source_generation": "UNBOUND",
+            "selected_published_au_usage": "NOT_ESTABLISHED",
+            "bounded_id14_absent_call_statuses": [0, 0],
+            "global_id14_parser_absence": "NOT_CLAIMED",
+            "native_execution_this_slice": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "No native configuration-record to Rust typed-input identity mapping is established.",
+            "No source/frame/AU generation join or per-published-AU producer rule is established.",
+            "No global ID14/parser absence, complete F13C readiness or product acceptance is claimed."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
           "slice_id": "selected-emdf-carrier-planner-reservation-writer-and-publication-gate",
           "mapping_status": "MATERIALIZED_SELECTED_TRANSPORT_SUBSLICE__WHOLE_F13C_DEFERRED",
           "implementation_status": "LOCALLY_VERIFIED_18_PRIMITIVES_FOUR_NATIVE_DIAGNOSTIC_AU_AND_SIX_CALL_GATE__WHOLE_F13C_OPEN",
@@ -10540,6 +10600,61 @@
             "global native parser absence",
             "whole F13C and product encode"
           ]
+        },
+        {
+          "slice_id": "washed-selected-adm-metadata-to-native-profile-crosswalk-status",
+          "mapping_status": "WASHED_BOUNDED_ADM_METADATA_CAPTURE__NATIVE_PROFILE_CROSSWALK_UNBOUND",
+          "implementation_status": "WASHED_RIFF_AXML_CHNA_METADATA_ONLY__NATIVE_PROFILE_FIELDS_UNBOUND",
+          "scope": "Wash records bounded RIFF/fmt, AXML and CHNA metadata from the selected WAV while skipping PCM data. The inspected semantic labels and track identities do not provide the native profile key/type, a7, partial-block flag, selector mapping or same-row constructor/parent identity. The full WAV hash was not rechecked in this observation; DBMD was not inspected. This is not an algorithm specification or a whole-pipeline absence claim.",
+          "owner": "frontend",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Bounded metadata-only observation; no sample, callback, source, frame or AU clock is derived."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F13C_SELECTED_ADM_METADATA_CROSSWALK_STATUS_V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-SELECTED-ADM-METADATA-CROSSWALK-STATUS-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-SELECTED-ADM-METADATA-CROSSWALK-STATUS-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-SELECTED-ADM-METADATA-CROSSWALK-STATUS-V1/SOURCE-MANIFESTS.json"
+            ],
+            "supplement_manifest_sha256": "f4a605e9bb901ae3b198505574b4635d5f8291c457132d0e61916352d122f5de",
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "validation_boundary": "Bounded RIFF metadata observation only; clean/native identity, a7 and selector joins remain unbound."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_SELECTED_ADM_METADATA_CROSSWALK_STATUS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-SELECTED-ADM-METADATA-CROSSWALK-STATUS-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-SELECTED-ADM-METADATA-CROSSWALK-STATUS-V1/SOURCE-MANIFESTS.json"
+            ],
+            "case_pointers": [
+              "RIFF/fmt reports selected 38-channel PCM24 at 48 kHz; no PCM data bytes were read.",
+              "AXML semantic labels 0001/0003 and CHNA track indices do not identify native key-1 profile type, a7, partial-block or list selector.",
+              "Whole-WAV rehash, DBMD inspection and selected native profile/row/generation joins remain NOT_RUN or UNBOUND."
+            ],
+            "source_supplement_manifest_sha256": "f4a605e9bb901ae3b198505574b4635d5f8291c457132d0e61916352d122f5de"
+          },
+          "native_status": {
+            "bounded_metadata_fields": "CAPTURE_REPORTED_NOT_REPLAYED",
+            "pcm_data_read": 0,
+            "dbmd_payload_read": false,
+            "whole_wav_hash_rechecked": false,
+            "native_profile_key1_type_a7_partial_selector_crosswalk": "UNBOUND",
+            "same_row_constructor_parent_invocation_identity": "UNBOUND",
+            "native_execution": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Native I32 profile pair/key-1 type, native a7, partial flag and selector mapping remain UNBOUND.",
+            "Whole-WAV hash recheck, DBMD and whole native pipeline were not inspected; no absence claim is made."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
         {
           "slice_id": "selected-id14-semantic-reader-path-applicability",
