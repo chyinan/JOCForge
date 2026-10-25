@@ -145,6 +145,7 @@
 | F04F/single-tail-active-inactive-callback-lifecycle | F04F | `spatial_audio` |
 | F04G/selected-p11-prefix-membership-producer | F04G | `spatial_audio` |
 | F04G/washed-control52-static-row-and-owner-copy-lineage | F04G | `spatial_audio` |
+| F04G/washed-width11-spatial-vector-same-invocation-reader | F04G | `spatial_audio` |
 | F04RB/actual-receiver-to-joc-qmf-projection | F04RB | `spatial_audio` |
 | F05/selected-coefficient-fit-retry-and-payload | F05 | `joc` |
 | F05Q/quantized-huffman-body-writer | F05Q | `joc` |
@@ -167,6 +168,9 @@
 | F06TP/selected-six-channel-true-peak-block-cascade | F06TP | `meter` |
 | F06OF/meter-lfe-delay-and-oar-packet-assembly | F06OF | `meter` |
 | F06OF/meter-in-memory-pcm24-source-cursor | F06OF | `meter` |
+| F06OF/washed-native-frontend-lineage-source-owner-hold | F06OF | `meter` |
+| F06OF/washed-adm-converter-static-inventory-hold | F06OF | `meter` |
+| F06OF/washed-adm-bwf-label-source-row-gap | F06OF | `meter` |
 | F06NR/single-lane-secondary-overlap-carry | F06NR | `drc` |
 | F06NR/selected-secondary-carrier-routing | F06NR | `drc` |
 | F06NR/selected-secondary-source-au-clock-projection | F06NR | `drc` |
@@ -217,5 +221,7 @@
 | F13C/id11-native-queue-capacity-and-public-policy-boundary | F13C | `metadata` |
 | F13C/selected-type11-natural-output-length-bound | F13C | `metadata` |
 | F13C/controlled-id14-coefficient-to-payload-writer | F13C | `metadata` |
+| F13C/washed-sequence-base-static-producer-constructor-cold-reset-status | F13C | `metadata` |
+| F13C/washed-run011-measurement-to-joc-identity-boundary | F13C | `metadata` |
 | F13D2/id2-profile-header-and-body-wire | F13D2 | `metadata` |
 | F14K/public-keyless-integrity-owner | F14K | `integrity` |

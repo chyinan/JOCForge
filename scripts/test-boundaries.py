@@ -1000,6 +1000,32 @@ def main():
   ('f04g-control52-branch-conditionality-removed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices']if s['slice_id']=='washed-control52-static-row-and-owner-copy-lineage')['vectors']['case_pointers'].__setitem__(2,'All selector branches use the same Control52-compatible F32 row mapping.'))),
   ('f04g-control52-supplement-identity-drift',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices']if s['slice_id']=='washed-control52-static-row-and-owner-copy-lineage')['vectors'].update(source_supplement_manifest_sha256='0'*64)))
  ]
+ cases += [
+  ('f04g-spatial-vector-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices'].remove(next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices']if s['slice_id']=='washed-width11-spatial-vector-same-invocation-reader')))),
+  ('f04g-spatial-vector-clean-writer-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices']if s['slice_id']=='washed-width11-spatial-vector-same-invocation-reader')['native_status'].update(f04a_writer_identity='CLOSED'))),
+  ('f04g-spatial-vector-formula-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices']if s['slice_id']=='washed-width11-spatial-vector-same-invocation-reader')['native_status'].update(f04g_formula_equivalence='EQUIVALENT'))),
+  ('f04g-spatial-vector-supplement-identity-drift',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F04G')['direct_slices']if s['slice_id']=='washed-width11-spatial-vector-same-invocation-reader')['vectors'].update(source_supplement_manifest_sha256='0'*64)))
+ ]
+ cases += [
+  ('f13c-sequence-base-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F13C')['direct_slices'].remove(next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F13C')['direct_slices']if s['slice_id']=='washed-sequence-base-static-producer-constructor-cold-reset-status')))),
+  ('f13c-base-cold-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F13C')['direct_slices']if s['slice_id']=='washed-sequence-base-static-producer-constructor-cold-reset-status')['native_status'].update(base_cold_bytes='STATIC_ZERO'))),
+  ('f13c-reset-target-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F13C')['direct_slices']if s['slice_id']=='washed-sequence-base-static-producer-constructor-cold-reset-status')['native_status'].update(reset_target_identity='SAME_STATE'))),
+  ('f13c-selected-profile-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F13C')['direct_slices']if s['slice_id']=='washed-sequence-base-static-producer-constructor-cold-reset-status')['native_status'].update(selected_profile_type_and_selector='CAPTURED'))),
+  ('f13c-v4-supplement-identity-drift',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F13C')['direct_slices']if s['slice_id']=='washed-sequence-base-static-producer-constructor-cold-reset-status')['vectors'].update(v4_supplement_manifest_sha256='0'*64)))
+ ]
+ cases += [
+  ('f13c-run011-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F13C')['direct_slices'].remove(next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F13C')['direct_slices']if s['slice_id']=='washed-run011-measurement-to-joc-identity-boundary')))),
+  ('f13c-run011-profile-type-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F13C')['direct_slices']if s['slice_id']=='washed-run011-measurement-to-joc-identity-boundary')['native_status'].update(selected_joc_profile_type='TYPE10'))),
+  ('f13c-run011-base-value-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F13C')['direct_slices']if s['slice_id']=='washed-run011-measurement-to-joc-identity-boundary')['native_status'].update(joc_base_value='ZERO'))),
+  ('f13c-run011-parent-generation-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F13C')['direct_slices']if s['slice_id']=='washed-run011-measurement-to-joc-identity-boundary')['native_status'].update(same_row_parent_writer_generation='CLOSED'))),
+  ('f13c-run011-supplement-identity-drift',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F13C')['direct_slices']if s['slice_id']=='washed-run011-measurement-to-joc-identity-boundary')['vectors'].update(source_supplement_manifest_sha256='0'*64)))
+ ]
+ cases += [
+  ('f06of-lineage-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F06OF')['direct_slices'].remove(next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06OF')['direct_slices']if s['slice_id']=='washed-native-frontend-lineage-source-owner-hold')))),
+  ('f06of-converter-producer-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06OF')['direct_slices']if s['slice_id']=='washed-adm-converter-static-inventory-hold')['native_status'].update(source_row_writer='CLOSED'))),
+  ('f06of-label-source-writer-overclaimed',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06OF')['direct_slices']if s['slice_id']=='washed-adm-bwf-label-source-row-gap')['native_status'].update(source_row_writer='CLOSED'))),
+  ('f06of-measurement-generation-as-joc',map_mut(lambda d:next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06OF')['direct_slices']if s['slice_id']=='washed-native-frontend-lineage-source-owner-hold')['native_status'].update(selected_source_or_frame_generation='JOC_GENERATION')))
+ ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]
   if not cases:raise RuntimeError('no boundary mutations match case prefix: '+x.case_prefix)

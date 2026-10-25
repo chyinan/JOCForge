@@ -2717,6 +2717,63 @@
             "Live branch applicability and native run remain NOT_RUN"
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-width11-spatial-vector-same-invocation-reader",
+          "mapping_status": "WASHED_STATIC_WIDTH11_VECTOR_AND_READER__F04G_FORMULA_AND_F04A_JOIN_OPEN",
+          "implementation_status": "WASHED_WIDTH11_SHAPE_READER_CLOSED_FOR_TRACED_CONFIG__FORMULA_LIVE_AND_CLEAN_JOIN_OPEN",
+          "scope": "For one traced six-channel constructor configuration, Wash closes a structural width-11 binary32 vector: profile width and converted mask population are 11; each eligible staged row writes 11 values to a descriptor with count 11 and staged-row stride; the same invocation's matrix gather reads 11 values from that descriptor. An alternate traced configuration has width 15, and the live branch was not observed. This does not establish formula equivalence, actual values, clean F04A writer identity, clean membership, or selected-profile runtime applicability.",
+          "owner": "spatial_audio",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Static constructor/vector/gather lineage only; runtime callback generation and live branch are not captured."
+            ]
+          },
+          "parameters": {
+            "kind": "NONE_WASHED_STATIC_VECTOR_SHAPE_AND_READ_RANGE",
+            "provider_files": [],
+            "validation_boundary": "Static width/type/descriptor/read-index facts for the traced constructor path only; do not infer formula or F04A semantic equivalence from matching dimensions or storage."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_WASHED_F04G_STATIC_VECTOR_CONSUMER_SUPPLEMENT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04G-SPATIAL-VECTOR-CONSUMER-STATIC-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04G-SPATIAL-VECTOR-CONSUMER-STATIC-V1/EVIDENCE.json"
+            ],
+            "case_pointers": [
+              "Traced six-channel width 11 and alternate traced width 15; live constructor branch NOT_OBSERVED.",
+              "Width-11 binary32 vector is written per eligible staged row, then read in the same invocation from the same descriptor.",
+              "Native gather uses staged-row flag and matrix-sum threshold; no typed join to clean F04A audio-diffuse/lane predicates exists.",
+              "F04G formula equivalence, clean F04A identity, runtime values/membership and same-generation receipt remain open."
+            ],
+            "source_supplement_manifest_sha256": "bd7691d9e34bb50fa509554bb87ab8668ec9aa721e2d88822f535ed19a33d2e8",
+            "source_package_manifest_sha256": "d3f81bf1b8042c1c04d9b2497555fbc506ba39fd2e5ecd31e7995e0a64580790",
+            "prior_control52_wash_manifest_sha256": "e45b59e7c5dcf92f270b8f75b2d9f2705ca97e5e72d52ca98d25478c67e8b2ea",
+            "source_payload_hashes": "PASS"
+          },
+          "native_status": {
+            "control52_source_and_same_owner": "CLOSED_BY_PRIOR_WASH",
+            "static_width11_vector_shape": "CLOSED_FOR_TRACED_CONSTRUCTOR_PATH",
+            "same_invocation_vector_reader": "STATIC_CLOSED",
+            "f04g_formula_equivalence": "NOT_EVALUATED",
+            "f04a_writer_identity": "NOT_PROVEN",
+            "clean_f04a_membership_join": "NOT_JOINED",
+            "runtime_values_and_membership": "NOT_CAPTURED",
+            "same_generation_receipt": "NOT_CAPTURED",
+            "native_run": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "F04G formula/value equivalence and selected profile live branch",
+            "Clean F04A writer identity and membership join",
+            "Runtime selected-row membership, cache identity, values and same-generation receipt",
+            "Native run and PCM rehash remain NOT_RUN"
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -5498,6 +5555,154 @@
             "complete independent frontend warm state, terminal root, real ADM and product acceptance"
           ],
           "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
+        },
+        {
+          "slice_id": "washed-native-frontend-lineage-source-owner-hold",
+          "mapping_status": "WASHED_PARTIAL_STATIC_CALLBACK_CHAIN__SOURCE_OWNER_JOINS_UNBOUND",
+          "implementation_status": "WASHED_PARTIAL_STATIC_NO_PCM_REHASH__SOURCE_MAP_AND_OWNER_JOINS_OPEN",
+          "scope": "Wash records a selected static meter callback from planar 48 kHz frames to a downstream meter consumer, including existing 1536/512/0 frame-length and 38-channel/requested-1536 observations. Run-local generation is not equated to F06OF g, and a zero-input candidate is not treated as a drain or EOF. This is meter frontend lineage only; no selected ADM source-map or same-generation JOC join is established.",
+          "owner": "meter",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Washed static/observation boundary only; run-local meter callback identity is not a CodecSourceIndex or JOC generation join."
+            ]
+          },
+          "parameters": {
+            "kind": "NONE_WASHED_FRONTEND_LINEAGE_EVIDENCE",
+            "provider_files": [],
+            "validation_boundary": "Evidence custody and gap mapping only; no clean source-map, row writer, producer or runtime receipt is implemented."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_WASHED_F06OF_STATUS_SUPPLEMENT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-NATIVE-FRONTEND-LINEAGE-STATUS-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-NATIVE-FRONTEND-LINEAGE-STATUS-V1/EVIDENCE.json"
+            ],
+            "case_pointers": [
+              "Selected meter callback and downstream consumer lineage is static, but no run-local generation join to F06OF source/AU is available.",
+              "The independent spatial metadata path is not joined to F06OF Control52/SCP16."
+            ],
+            "source_supplement_manifest_sha256": "da64997854743089e00d4214efa83b2ab28953f6fdd75ec0170163867a246334",
+            "source_evidence_manifest_sha256": "d9196ac37e53d8757fbf71cf815ec7bd9d5178ac918799044a9db4586bb04968",
+            "source_package_seal_sha256": "7cdb6776493ef1e67d3809945835088f5e9b22fe2d983c39ef42aa2da2d408de",
+            "payload_hashes_and_sizes": "PASS"
+          },
+          "native_status": {
+            "status": "PARTIAL_STATIC_CALLBACK_CHAIN_SOURCE_OWNER_JOINS_UNBOUND",
+            "native_run": "NOT_RUN",
+            "selected_source_or_frame_generation": "UNBOUND",
+            "primary_pcm_rehash": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Native ADM/CHNA source_map and physical-row producer",
+            "Activity/membership owner and per-row SCP16/control16 source",
+            "Source cursor, reader EOF/drain identity and selected frame join",
+            "Primary PCM rehash and native run remain NOT_RUN"
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-adm-converter-static-inventory-hold",
+          "mapping_status": "WASHED_STATIC_TERMINOLOGY_ONLY__PRODUCER_DATAFLOW_UNBOUND",
+          "implementation_status": "WASHED_ADM_CONVERTER_INVENTORY_ONLY__SOURCE_ROW_WRITER_UNBOUND",
+          "scope": "The washed converter inventory confirms ADM/CHNA and mapping-related terminology only. It identifies no producer store, typed source-row transformation, owner/generation lineage or write into the selected frame descriptor.",
+          "owner": "meter",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Washed static/observation boundary only; run-local meter callback identity is not a CodecSourceIndex or JOC generation join."
+            ]
+          },
+          "parameters": {
+            "kind": "NONE_WASHED_FRONTEND_LINEAGE_EVIDENCE",
+            "provider_files": [],
+            "validation_boundary": "Evidence custody and gap mapping only; no clean source-map, row writer, producer or runtime receipt is implemented."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_WASHED_F06OF_STATUS_SUPPLEMENT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-CONVERTER-STATIC-INVENTORY-HOLD-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-CONVERTER-STATIC-INVENTORY-HOLD-V1/EVIDENCE.json"
+            ],
+            "case_pointers": [
+              "String/type inventory is a search lead only; no source-map producer or writer edge is established.",
+              "The separate spatial metadata writer remains adjacent and unjoined to this meter path."
+            ],
+            "source_supplement_manifest_sha256": "11749ca880712ddfae68c4a106ad67c7c5faec76f28768ed35dce09cfc5531d9",
+            "source_evidence_manifest_sha256": "d9196ac37e53d8757fbf71cf815ec7bd9d5178ac918799044a9db4586bb04968",
+            "source_package_seal_sha256": "7cdb6776493ef1e67d3809945835088f5e9b22fe2d983c39ef42aa2da2d408de",
+            "payload_hashes_and_sizes": "PASS"
+          },
+          "native_status": {
+            "status": "STATIC_TERMINOLOGY_FOUND_PRODUCER_DATAFLOW_UNBOUND",
+            "native_run": "NOT_RUN",
+            "source_row_writer": "UNBOUND",
+            "owner_generation": "UNBOUND"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Executable producer registration/callgraph and source-row store",
+            "Typed source_map to selected frame descriptor dataflow",
+            "Same-owner and same-generation consumer join"
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-adm-bwf-label-source-row-gap",
+          "mapping_status": "WASHED_ADM_BWF_LABEL_RULE_CLOSED__SOURCE_ROW_WRITER_UNBOUND",
+          "implementation_status": "WASHED_INPUT_LABEL_PRECEDENCE_ONLY__SOURCE_MAP_PRODUCTION_OPEN",
+          "scope": "The washed label rule says ADM is selected when present and atmos_mezz otherwise. run_011 used atmos_mezz only on a measurement path and has no JOC input-profile or source-row producer join; a node label does not establish a native source_map algorithm.",
+          "owner": "meter",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Washed static/observation boundary only; run-local meter callback identity is not a CodecSourceIndex or JOC generation join."
+            ]
+          },
+          "parameters": {
+            "kind": "NONE_WASHED_FRONTEND_LINEAGE_EVIDENCE",
+            "provider_files": [],
+            "validation_boundary": "Evidence custody and gap mapping only; no clean source-map, row writer, producer or runtime receipt is implemented."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_WASHED_F06OF_STATUS_SUPPLEMENT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-BWF-LABEL-AND-SOURCE-ROW-GAP-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-BWF-LABEL-AND-SOURCE-ROW-GAP-V1/EVIDENCE.json"
+            ],
+            "case_pointers": [
+              "Input label precedence is static; source-row writer, physical order and selected frame owner are unbound.",
+              "The run_011 measurement generation is not JOC/profile-row generation and primary PCM was not rehashed."
+            ],
+            "source_supplement_manifest_sha256": "4d673d82ed59d8b4f00f1ba0844bd37e22bdd94aee241da16664edd48fdb7000",
+            "source_evidence_manifest_sha256": "d9196ac37e53d8757fbf71cf815ec7bd9d5178ac918799044a9db4586bb04968",
+            "source_package_seal_sha256": "7cdb6776493ef1e67d3809945835088f5e9b22fe2d983c39ef42aa2da2d408de",
+            "payload_hashes_and_sizes": "PASS"
+          },
+          "native_status": {
+            "status": "ADM_BWF_LABEL_RULE_CLOSED_SOURCE_ROW_WRITER_UNBOUND",
+            "native_run": "NOT_RUN",
+            "source_row_writer": "UNBOUND",
+            "joc_profile_or_generation_join": "UNBOUND"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Converter source-row mapping, activity/membership production and selected frame descriptor join",
+            "Same-generation F06OF source/frame consumer receipt",
+            "Native source/writer run and PCM rehash remain NOT_RUN"
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -9605,6 +9810,118 @@
             "native retry helper, production cold-owner/generation composition, transport or AU publication",
             "whole F13C and product acceptance"
           ]
+        },
+        {
+          "slice_id": "washed-sequence-base-static-producer-constructor-cold-reset-status",
+          "mapping_status": "WASHED_STATIC_EVIDENCE_CUSTODY_ONLY__SELECTED_RUNTIME_AND_PARENT_JOIN_OPEN",
+          "implementation_status": "WASHED_ARITHMETIC_EVENT_PRODUCER_AND_CONDITIONAL_CONSTRUCTOR_SET__COLD_RESET_SELECTION_AND_PARENT_JOIN_OPEN",
+          "scope": "Combines the Wash V2 arithmetic contract, V3 cold/reset/event-handler audit and V4 profile-row event producer/constructor callback trace. It establishes the static handler arithmetic, event-list template producer and conditional type10/type11 constructor-time zero base set. It does not establish the requested run's profile type, selector or event occurrence; raw cold bytes; reset identity with the main base; or the later same-row/generation parent writer call. The approved clean F05J/F05JL model remains counter-only and is not changed.",
+          "owner": "joc",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Static constructor/list/handler relationships only; selected event occurrence and runtime owner generation remain unobserved.",
+              "Event ordinal, event payload, callback invocation, parent-success counter and wire sequence remain distinct; no identity join is claimed."
+            ]
+          },
+          "parameters": {
+            "kind": "NONE_WASHED_STATIC_SEQUENCE_BASE_STATUS",
+            "provider_files": [],
+            "validation_boundary": "Hash-bound Wash static evidence custody only; no product code, source payload, or runtime event is added."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_WASH_SEQUENCE_BASE_STATUS_SUPPLEMENTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-SEQUENCE-BASE-STATIC-SEMANTICS-HOLD-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-SEQUENCE-BASE-STATIC-COLD-RESET-EVENT-HOLD-V3/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-SEQUENCE-BASE-PRODUCER-CONSTRUCTOR-STATUS-V4/CONTRACT.md"
+            ],
+            "case_pointers": [
+              "V2 arithmetic is static: negative counter emits zero; otherwise wrapping U32 addition, at most one subtract-1023 correction, then the 10-bit writer range check.",
+              "V3 confirms the native counter initializer and handler/event branch, but base cold bytes and reset-to-base identity remain UNBOUND.",
+              "V4 confirms type10/type11 event-list construction and same-row constructor callback; post-callback zero base is conditional on profile type and a valid selected list.",
+              "Selected profile type, selector and event occurrence; reset target identity; same-row/generation later parent call; and clean F05J/F05JL mapping remain open."
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+        "v2_supplement_manifest_sha256": "5e92bc487f8f8fbd1fc17fb61c16a1535a560f367575efbf431573da48bd630f",
+            "v3_supplement_manifest_sha256": "a676f5c87a4ae8f3e3d76b3d350fa3e69f11e70cf2149a685b3bf48d780a6c0b",
+            "v4_supplement_manifest_sha256": "0246139898c5058e5b800df8fdfacc2cf04200efd6610d10352c1e1e39e12f59"
+          },
+          "native_status": {
+            "arithmetic_rule": "STATIC_CLOSED_BY_V2",
+            "handler_branch": "STATIC_CLOSED_BY_V3",
+            "event_list_producer": "STATIC_CLOSED_FOR_LISTED_TYPE10_TYPE11_TEMPLATES_BY_V4",
+            "constructor_callback_base_set": "CONDITIONAL_ZERO_FOR_TYPE10_TYPE11_VALID_LIST_BY_V4",
+            "selected_profile_type_and_selector": "UNBOUND",
+            "event_occurrence_and_runtime_payload": "UNBOUND",
+            "base_cold_bytes": "UNBOUND",
+            "reset_target_identity": "UNBOUND",
+            "same_row_parent_generation_join": "UNBOUND",
+            "clean_f05j_f05jl_mapping": "NOT_PRESENT_IN_CLEAN_MODEL",
+            "native_run": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "No native run GO; no production sequence rule is changed.",
+            "No clean F05J/F05JL event/base input or adapter is added.",
+            "Cold bytes, reset same-target identity, selected profile/event and parent writer generation remain unbound."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-run011-measurement-to-joc-identity-boundary",
+          "mapping_status": "WASHED_MEASUREMENT_RESOURCE_IDENTITY_ONLY__JOC_PROFILE_AND_PARENT_JOIN_OPEN",
+          "implementation_status": "WASHED_RUN011_MEASUREMENT_RESOURCE_STATIC_CLOSED__NO_JOC_TYPE_OR_GENERATION_PROOF",
+          "scope": "The existing run_011 job/event/WAVE identity is statically closed only for a measurement-only DPLM path. It carries no typed native input_profile key/value list or normalized JOC profile type, and its callback clock is not a JOC row/parent/writer generation. It cannot establish a JOC sequence-base value or parent writer join.",
+          "owner": "joc",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Measurement callback generations and JOC row/parent/writer generations are distinct and remain unjoined."
+            ]
+          },
+          "parameters": {
+            "kind": "NONE_WASHED_EXISTING_MEASUREMENT_RESOURCE_BOUNDARY",
+            "provider_files": [],
+            "validation_boundary": "Static resource identity only; no run-specific JOC input profile is in the receipt and no new native run was authorized."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_WASHED_RUN011_IDENTITY_AND_NONJOIN_STATUS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-RUN011-SELECTED-INSTANCE-BOUNDARY-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-RUN011-SELECTED-INSTANCE-BOUNDARY-V1/EVIDENCE.json"
+            ],
+            "case_pointers": [
+              "Resource job/run/event/WAVE identity is STATIC_CLOSED for the measurement-only DPLM path.",
+              "No typed native input_profile key1 pair is present; selected JOC profile type remains UNBOUND.",
+              "Measurement source callback clock is explicitly not a JOC row/parent generation.",
+              "No selected JOC type, JOC base value or later same-row parent generation join is proven."
+            ],
+            "source_supplement_manifest_sha256": "5df8f395bee69c07384cabacfc77cfa6209e695ce17efd99382ed2d805791f12",
+            "source_package_manifest_sha256": "c70862e402cfd1c45be30359a5faf472727bf668312ecfc1a568c4c883f2b6bc",
+            "source_payload_hashes_and_sizes": "9/9 PASS"
+          },
+          "native_status": {
+            "measurement_resource_identity": "STATIC_CLOSED",
+            "selected_joc_profile_type": "UNBOUND",
+            "joc_base_value": "NOT_PROVEN",
+            "same_row_parent_writer_generation": "UNBOUND",
+            "new_native_run": "NOT_RUN",
+            "wash_go_for_future_run": "REQUIRED"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "No JOC input_profile key1 pair or selected profile type receipt",
+            "No JOC base value observation or same-row constructor-to-parent generation join",
+            "A future run requires a separate Wash GO"
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
