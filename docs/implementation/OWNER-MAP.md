@@ -166,6 +166,7 @@
 | F06TP/selected-six-channel-true-peak-block-cascade | F06TP | `meter` |
 | F06OF/meter-lfe-delay-and-oar-packet-assembly | F06OF | `meter` |
 | F06OF/meter-in-memory-pcm24-source-cursor | F06OF | `meter` |
+| F06NI/selected-secondary-inverse256-wrapper | F06NI | `drc` |
 | F06NF/selected-secondary-fft-network | F06NF | `drc` |
 | F06U/ungated-single-slot-mean-and-di-off-getter | F06U | `meter` |
 | F06D/selected-shared-gain-delay-state-and-callback-transition | F06D | `meter` |

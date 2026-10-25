@@ -68,6 +68,12 @@ impl SecondaryFftError {
 /// Validated provider fields consumed by the stateless F06NF FFT.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct SecondaryFftParameters {
+    long_pre_a: [u32; 128],
+    long_pre_b: [u32; 128],
+    long_post: [u32; 128],
+    short_pre_a: [u32; 64],
+    short_pre_b: [u32; 64],
+    short_post: [u32; 64],
     twiddles: [u32; FFT_TWIDDLE_WORDS],
     radix_scale: [u32; FFT_LANES],
     permutation64: [u32; 4],
@@ -132,12 +138,12 @@ impl SecondaryFftParameters {
 
         // These rotations belong to the surrounding inverse pipeline. This
         // FFT leaf validates their provider fields without consuming them.
-        let _long_pre_a = float_words::<128>(fields, "long_pre_a")?;
-        let _long_pre_b = float_words::<128>(fields, "long_pre_b")?;
-        let _long_post = float_words::<128>(fields, "long_post")?;
-        let _short_pre_a = float_words::<64>(fields, "short_pre_a")?;
-        let _short_pre_b = float_words::<64>(fields, "short_pre_b")?;
-        let _short_post = float_words::<64>(fields, "short_post")?;
+        let long_pre_a = float_words::<128>(fields, "long_pre_a")?;
+        let long_pre_b = float_words::<128>(fields, "long_pre_b")?;
+        let long_post = float_words::<128>(fields, "long_post")?;
+        let short_pre_a = float_words::<64>(fields, "short_pre_a")?;
+        let short_pre_b = float_words::<64>(fields, "short_pre_b")?;
+        let short_post = float_words::<64>(fields, "short_post")?;
         let twiddles = float_words::<FFT_TWIDDLE_WORDS>(fields, "twiddles")?;
         let radix_scale = float_words::<FFT_LANES>(fields, "radix_scale")?;
         if radix_scale.iter().any(|word| *word != radix_scale[0]) {
@@ -152,6 +158,12 @@ impl SecondaryFftParameters {
         }
 
         Ok(Self {
+            long_pre_a,
+            long_pre_b,
+            long_post,
+            short_pre_a,
+            short_pre_b,
+            short_post,
             twiddles,
             radix_scale,
             permutation64,
@@ -162,6 +174,13 @@ impl SecondaryFftParameters {
 
     pub const fn provider_sha256(&self) -> &[u8; 32] {
         &self.provider_sha256
+    }
+
+    pub(crate) const fn pre_post_words(&self, size: SecondaryFftSize) -> (&[u32], &[u32], &[u32]) {
+        match size {
+            SecondaryFftSize::Points64 => (&self.short_pre_a, &self.short_pre_b, &self.short_post),
+            SecondaryFftSize::Points128 => (&self.long_pre_a, &self.long_pre_b, &self.long_post),
+        }
     }
 }
 

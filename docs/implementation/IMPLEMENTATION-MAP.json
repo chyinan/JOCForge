@@ -5464,7 +5464,73 @@
       "owner": "drc",
       "planned_phase": "Phase 5",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "selected-secondary-inverse256-wrapper",
+          "mapping_status": "MATERIALIZED_SELECTED_LONG_SHORT_INVERSE256__FRAME_OVERLAP_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_LONG_SHORT_INVERSE256_SPLIT_ROTATION_AND_CLAMP__OVERLAP_DEFERRED",
+          "scope": "Implements the selected long/short inverse256 spectrum split, descriptor pre/post rotations, F06NF FFT128/FFT64 calls, the descriptor scale and outer clamp. Each invocation is stateless and returns a complete 256-word array. It does not own forward history, inverse carry, overlap, F06NR frame/block placement, main-source transaction, or F06 finalize identity.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/transform/mod.rs",
+            "crates/jocforge-domain/src/transform/secondary_fft.rs",
+            "crates/jocforge-domain/src/transform/secondary_inverse.rs",
+            "crates/jocforge-domain/src/transform/secondary_fft_parameters.json"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "One inverse256 call owns no source-frame, block, callback, or programme clock.",
+              "Long and short paths use independent descriptor scratch and write all 256 output words once."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_PINNED_SECONDARY_INVERSE_ROTATIONS_AND_FFT_PROVIDER",
+            "provider_files": [
+              "crates/jocforge-domain/src/transform/secondary_fft_parameters.json"
+            ],
+            "source_provider_sha256": "b452a929d7e4f7090f9466930e5c6047a8007192a30a3ed7c3cd7447dba073b1",
+            "validation_boundary": "The selected parameter provider validates long/short pre_a, pre_b, post_sine, FFT twiddle, scale and permutation fields before the inverse call."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/secondary_inverse.rs",
+            "crates/jocforge-domain/tests/secondary_fft.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_LONG_SHORT_INVERSE256_INPUT_RECIPES_WITH_ACTUAL_FFT",
+            "authoritative_vectors": [
+              "test-vectors/SECONDARY-FFT-INVERSE-VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "Five long and five short inverse256 cases compare every output word using F06NF FFT64/128.",
+              "Inputs cover positive/negative zero, spectrum-edge impulses, finite clipping and dyadic values.",
+              "The separate SECONDARY-INVERSE-WRAPPER-VERIFICATION identity-FFT stub is not used as production input or expected output."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/secondary_fft/SECONDARY-FFT-INVERSE-VERIFICATION.json",
+              "bytes": 592083,
+              "sha256": "15794c5eea4ef67b6bc07dc5e970c7c3000ad2aae1fe8a9ed5f3d447276f0261"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_spec_sha256": "5d811a74d6ae22bd50be1e74656ae81a43e84582100e5cbddd908d394295805d",
+            "source_parameter_sha256": "b452a929d7e4f7090f9466930e5c6047a8007192a30a3ed7c3cd7447dba073b1",
+            "source_vector_sha256": "15794c5eea4ef67b6bc07dc5e970c7c3000ad2aae1fe8a9ed5f3d447276f0261"
+          },
+          "error_outcomes": [
+            {"error_code":"SECONDARY_INPUT_ERROR","category":"spectrum input domain","trigger":"Input does not contain 256 finite F32 words.","programme_state_after":"No output is returned; the inverse operator owns no state.","caller_action":"Reject the invocation."},
+            {"error_code":"PARAMETER_UNAVAILABLE","category":"selected inverse/FFT provider","trigger":"Required long/short rotations or F06NF parameters are unavailable or invalid.","programme_state_after":"No output is returned.","caller_action":"Reject the invocation."},
+            {"error_code":"NUMERIC_FAILURE","category":"separately rounded F32 arithmetic","trigger":"A pre/post rotation, inverse scaling, or clamp input is nonfinite.","programme_state_after":"No output is returned.","caller_action":"Reject the invocation."}
+          ],
+          "not_run": [
+            "F06NR 30 per-frame forward/inverse/overlap transitions and 128-word carry ownership",
+            "secondary block0 warmup, carrier placement and zero-tail/lfe assembly",
+            "main none-DRC statistics/scheduler and global parent commit",
+            "F06 meter finalization/MeasurementReceipt (currently HOLD at meter_terminal_sha256)",
+            "real ADM, native DLL, product and listening acceptance"
+          ],
+          "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
+        }
+      ]
     },
     {
       "functional_id": "F06NF",
