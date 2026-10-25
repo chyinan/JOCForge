@@ -162,6 +162,7 @@
 | F06/programme-measurement-finalize-projection | F06 | `meter` |
 | F06/post-render-meter-callback-composition | F06 | `meter` |
 | F06/independent-meter-prepass-callback-commit | F06 | `meter` |
+| F06/selected-lufs-to-dialnorm-value | F06 | `meter` |
 | F06L/ordered-log-energy-peak-accumulator-window-and-reduction | F06L | `meter` |
 | F06I/integrated-meter-synthetic-state-and-event-transition | F06I | `meter` |
 | F06W/meter-output-sample-accounting-and-span-ledger | F06W | `meter` |
@@ -215,6 +216,7 @@
 | F10/exponent-difference-triple-packing | F10 | `analysis` |
 | F12/grouped-quantizer-helper | F12 | `codec` |
 | F12/bounded-msb-frame-bit-writer | F12 | `codec` |
+| F12/selected-fixed-profile-header-prefix | F12 | `codec` |
 | F12S/mantissa-quantizer | F12S | `codec` |
 | F13/selected-metadata-owner-source-stage | F13 | `metadata` |
 | F13C/selected-bsi-count-and-payload-import | F13C | `metadata` |

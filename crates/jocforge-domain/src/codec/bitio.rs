@@ -44,6 +44,11 @@ impl<'a> FrameBitWriter<'a> {
         self.cursor
     }
 
+    /// Checks that a complete compound field group fits without changing bytes or cursor.
+    pub fn preflight_capacity(&self, bit_count: u32) -> Result<(), FrameBitWriterError> {
+        self.ensure_capacity(bit_count)
+    }
+
     pub fn write_bit(&mut self, value: bool) -> Result<(), FrameBitWriterError> {
         self.write_unsigned(u32::from(value), 1)
     }

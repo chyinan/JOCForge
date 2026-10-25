@@ -1,0 +1,31 @@
+{
+  "schema": "jocforge.f06-f12-dialnorm-status.v1",
+  "formula_status": "STATIC_CLOSED",
+  "typed_programme_source_join_status": "NOT_READY",
+  "selected_lufs": {"type":"F32","scope":"final full-programme measurement"},
+  "dialnorm": {"type":"integer","domain_inclusive":[1,31],"wire_width_bits":5,"wire_bits_in_f12":"45..49"},
+  "formula": {
+    "special_case": "if abs(R32(selected_lufs - (-120.0))) < 0.000001 then dialnorm=31",
+    "otherwise": "t=trunc_toward_zero(R32(selected_lufs - 0.5)); dialnorm=-clamp(t,-31,-1)"
+  },
+  "f06nd_mapping": {
+    "n": "R32(S16(-256*d) * 2^-15) = -d/128",
+    "dialnorm_offset": "R32((31-d)/144)",
+    "source_rule": "same finalized programme dialnorm d is consumed for each source generation"
+  },
+  "model_evidence": {
+    "scope": "one clean input-only whole-composition state instance",
+    "same_finalized_measurement_digest_reused_for_sources_0_1_2": true,
+    "rolling_prefix_digest_rejected": true,
+    "digest_contains_unique_programme_input_identity": false,
+    "proves_cross_programme_identity_join": false
+  },
+  "unbound_edges": [
+    "identity-bearing finalized measurement receipt to each F06ND source input",
+    "the same receipt identity carried into the corresponding F12 BSI input",
+    "cross-programme rejection when two inputs have identical selected_lufs and dialnorm"
+  ],
+  "minimum_receipt_fields_are_evidence_request_only": true,
+  "native_experiment": "NOT_RUN",
+  "raw_pcm_or_complete_frame_used": false
+}

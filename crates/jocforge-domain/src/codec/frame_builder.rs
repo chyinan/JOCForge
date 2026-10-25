@@ -1,12 +1,54 @@
 // pattern: Functional Core
 //! Boundary that assembles validated typed receipts. It cannot calculate upstream values.
 
-use crate::codec::bitio::{FrameBitWriter, FrameBitWriterError};
+use crate::codec::bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError};
 use crate::codec::frame_syntax::{CodecBlockIndex, SelectedBsiDrcFields};
 use crate::timeline::CodecSourceIndex;
 
 const DIALNORM_BIT_OFFSET: u32 = 45;
+const SELECTED_FIXED_PREFIX_BITS: u32 = 45;
 const LINE_BLOCK_COUNT: u8 = 6;
+const SELECTED_FIXED_PREFIX_FIELDS: [(u32, u8); 9] = [
+    (0x0B77, 16),
+    (0, 2),
+    (0, 3),
+    (0x07FF, 11),
+    (0, 2),
+    (3, 2),
+    (7, 3),
+    (1, 1),
+    (16, 5),
+];
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum SelectedEac3PrefixError {
+    CursorMismatch { actual: u32 },
+    BitWriter(FrameBitWriterError),
+}
+
+impl From<FrameBitWriterError> for SelectedEac3PrefixError {
+    fn from(error: FrameBitWriterError) -> Self {
+        Self::BitWriter(error)
+    }
+}
+
+/// Writes the selected 48 kHz / 1024 kbps / 5.1 fixed E-AC-3 prefix at bit 0.
+///
+/// The prefix ends at bit 44; the next caller-owned field begins at bit 45.
+/// Three display-pad bits are not emitted.
+pub fn write_selected_eac3_fixed_prefix(
+    writer: &mut FrameBitWriter<'_>,
+) -> Result<FrameBitCursor, SelectedEac3PrefixError> {
+    let actual = writer.cursor().bit_offset();
+    if actual != 0 {
+        return Err(SelectedEac3PrefixError::CursorMismatch { actual });
+    }
+    writer.preflight_capacity(SELECTED_FIXED_PREFIX_BITS)?;
+    for (value, width) in SELECTED_FIXED_PREFIX_FIELDS {
+        writer.write_unsigned(value, width)?;
+    }
+    Ok(writer.cursor())
+}
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum SelectedBsiDrcWriterError {

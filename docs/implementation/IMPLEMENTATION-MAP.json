@@ -4793,6 +4793,70 @@
             "whole-production fault injection, real ADM replay and product acceptance"
           ],
           "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
+        },
+        {
+          "slice_id": "selected-lufs-to-dialnorm-value",
+          "mapping_status": "MATERIALIZED_HASH_BOUND_F06_F12_DIALNORM_FORMULA__PROGRAMME_RECEIPT_JOIN_NOT_READY",
+          "implementation_status": "LOCALLY_VERIFIED_SELECTED_DIALNORM_VALUE__PROGRAMME_RECEIPT_JOIN_NOT_READY",
+          "scope": "Computes only the selected U5 dialnorm value from one caller-supplied finite binary32 selected_lufs: apply the -120 LUFS sentinel rule, otherwise R32(selected_lufs-0.5), truncation toward zero, clamp to [-31,-1] and negate. The function proves the numeric value formula only; it does not establish the finalized programme-measurement receipt or same-programme identity consumed by F06ND/F12.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/meter/dialnorm.rs",
+            "crates/jocforge-domain/src/meter/mod.rs",
+            "crates/jocforge-domain/src/numeric/finite_f32.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "One selected_lufs value maps to one stateless dialnorm U5 value; no source, callback, programme, measurement-owner or generation clock is owned."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_SELECTED_FULL_PROGRAMME_DIALNORM_VALUE_FORMULA",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F12-SELECTED-PREFIX-DIALNORM-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F12-SELECTED-PREFIX-DIALNORM-V1/DIALNORM-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F12-SELECTED-PREFIX-DIALNORM-V1/EVIDENCE.json"
+            ],
+            "supplement_manifest_sha256": "0afba77679f20496cae42b840252c7278fad5185274fa0fd81e1e95b9f2401a2",
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "validation_boundary": "The formula is clean-spec static closed; programme receipt identity and cross-programme rejection remain NOT_READY."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/selected_dialnorm.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_DIALNORM_INPUT_ONLY_FORMULA_EXAMPLES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F12-SELECTED-PREFIX-DIALNORM-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F12-SELECTED-PREFIX-DIALNORM-V1/DIALNORM-STATUS.json"
+            ],
+            "case_pointers": [
+              "The input-only selected_lufs=-23.5 F32 word recomputes dialnorm 24.",
+              "The selected -120 LUFS sentinel recomputes dialnorm 31.",
+              "Finite values outside the ordinary loudness range clamp only after the specified F32 truncation."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/selected_dialnorm/input-only-vectors.json",
+              "bytes": 1687,
+              "sha256": "865ad85dbef724b6896257baa9454db23d0bd82020297330ada4c8a65b816088"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "supplement_manifest_sha256": "0afba77679f20496cae42b840252c7278fad5185274fa0fd81e1e95b9f2401a2"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "NUMERIC_FAILURE",
+              "category": "finite binary32 dialnorm formula",
+              "trigger": "A required R32 subtraction or guarded conversion cannot produce the selected value.",
+              "programme_state_after": "No dialnorm value is returned; the function owns no state.",
+              "caller_action": "Propagate the local numeric error; no programme receipt or cross-stage identity is inferred."
+            }
+          ],
+          "not_run": [
+            "Finalized measurement identity to this value, F06ND source token and F12 BSI receipt remains NOT_READY.",
+            "No native run, PCM, full frame or production application connection is claimed."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -9286,6 +9350,85 @@
           },
           "error_outcomes": [],
           "not_run": ["F12 field-order writer", "real carrier cursor derivation", "4096-byte complete frame", "codec owner and parent transaction"]
+        },
+        {
+          "slice_id": "selected-fixed-profile-header-prefix",
+          "mapping_status": "MATERIALIZED_HASH_BOUND_F12_FIXED_PREFIX_45_BITS__WHOLE_F12_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_SELECTED_FIXED_PREFIX_MSB_45_BITS__BSI_AND_FRAME_OPEN",
+          "scope": "Writes the nine unconditional fixed selected-profile E-AC-3 fields MSB-first at frame bits 0..44, after requiring cursor 0 and preflighting all 45 bits. It stops at bit 45 without writing display padding; the caller then writes dialnorm and later conditional BSI fields. It does not decide the programme dialnorm source, measurement receipt, other BSI/block syntax, candidate search, CRC, frame size allocation, codec state or parent commit.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/frame_builder.rs",
+            "crates/jocforge-domain/src/codec/bitio.rs"
+          ],
+          "clock": {
+            "domains": ["FrameBitCursor"],
+            "covered_clauses": [
+              "Fixed prefix begins only at bit cursor 0 and advances exactly 45 bits.",
+              "Insufficient scratch capacity is checked before writing any prefix bits; display pad bits are outside the prefix."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F12_SELECTED_FIXED_PREFIX_FIELDS_V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F12-SELECTED-PREFIX-DIALNORM-V1/FIELD-TABLE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F12-SELECTED-PREFIX-DIALNORM-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F12-SELECTED-PREFIX-DIALNORM-V1/EVIDENCE.json"
+            ],
+            "supplement_manifest_sha256": "0afba77679f20496cae42b840252c7278fad5185274fa0fd81e1e95b9f2401a2",
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_spec_sha256": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448",
+            "validation_boundary": "Selected fixed profile only; no alternate bitrate/channel/block-count path and no programme/source identity is supplied by the prefix writer."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/selected_frame_prefix.rs",
+            "crates/jocforge-domain/src/codec/frame_syntax.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_F12_INPUT_ONLY_FIXED_PREFIX_AND_MANUAL_FRAME_OFFSETS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F12-SELECTED-PREFIX-DIALNORM-V1/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/codec_fixture/CODEC-OWNER-VECTORS.json"
+            ],
+            "case_pointers": [
+              "The input-only vector recomputes the exact 45-bit prefix and keeps the three display-pad bits outside the prefix.",
+              "The selected codec fixture field-offset table independently checks the fixed prefix and the adjacent dialnorm/compre/compr fields after the writer advances to bit 45.",
+              "Cursor mismatch and short-capacity failures leave the caller scratch and cursor unchanged."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/selected_frame_prefix/input-only-vectors.json",
+              "bytes": 1687,
+              "sha256": "865ad85dbef724b6896257baa9454db23d0bd82020297330ada4c8a65b816088"
+            },
+            "codec_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/codec_fixture/CODEC-OWNER-VECTORS.json",
+              "bytes": 10880173,
+              "sha256": "0d107905a9cafb3ec64a0437c96b41a9d8652256789a468e7d4bceb2d0e26740",
+              "manifest_sha256": "077070af8cfbe9a2451f768cfdbefe05ffa44c07b6551330bf5d95ee44d34c44",
+              "role": "manual wire-layout oracle only; not production codec input or source identity"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "SelectedEac3PrefixError::CursorMismatch",
+              "category": "fixed prefix start boundary",
+              "trigger": "The supplied FrameBitCursor is not 0.",
+              "programme_state_after": "No prefix bits or cursor changes occur.",
+              "caller_action": "Reject this local frame-builder call."
+            },
+            {
+              "error_code": "FrameBitWriterError::BufferTooSmall",
+              "category": "bounded frame scratch",
+              "trigger": "The caller scratch cannot hold all 45 prefix bits.",
+              "programme_state_after": "Preflight fails before writing; bytes and cursor remain unchanged.",
+              "caller_action": "Reject the candidate scratch; no codec or parent state is committed."
+            }
+          ],
+          "not_run": [
+            "Dialnorm value production and same-programme measurement receipt remain separate; the identity join is NOT_READY.",
+            "Remaining BSI fields, line-Drc block syntax outside the separate F06ND slice, transform/mantissa bits, full frame, CRC and parent transaction remain NOT_RUN."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },

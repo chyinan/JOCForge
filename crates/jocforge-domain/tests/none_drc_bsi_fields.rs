@@ -1,5 +1,7 @@
 use jocforge_domain::codec::bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError};
-use jocforge_domain::codec::frame_builder::{SelectedBsiDrcWriter, SelectedBsiDrcWriterError};
+use jocforge_domain::codec::frame_builder::{
+    SelectedBsiDrcWriter, SelectedBsiDrcWriterError, write_selected_eac3_fixed_prefix,
+};
 use jocforge_domain::codec::frame_syntax::{
     CodecBlockIndex, SelectedBsiDrcSyntaxError, bind_selected_bsi_drc_fields,
 };
@@ -50,7 +52,13 @@ fn selected_drc_fields_bind_to_same_source_and_write_at_specified_cursors() {
     let mut bytes = [0_u8; 32];
     let mut drc_writer = SelectedBsiDrcWriter::new(fields);
     let mut cursor = {
-        let mut bit_writer = FrameBitWriter::new(&mut bytes, FrameBitCursor::new(45)).unwrap();
+        let mut bit_writer = FrameBitWriter::new(&mut bytes, FrameBitCursor::new(0)).unwrap();
+        assert_eq!(
+            write_selected_eac3_fixed_prefix(&mut bit_writer)
+                .unwrap()
+                .bit_offset(),
+            45,
+        );
         drc_writer.write_header_drc(&mut bit_writer).unwrap();
         bit_writer.cursor().bit_offset()
     };
@@ -120,7 +128,8 @@ fn wrong_cursor_order_and_capacity_fail_without_partial_field_writes() {
     assert_eq!(wrong_bytes, before_bad_header);
 
     let cursor_before_line = {
-        let mut bit_writer = FrameBitWriter::new(&mut bytes, FrameBitCursor::new(45)).unwrap();
+        let mut bit_writer = FrameBitWriter::new(&mut bytes, FrameBitCursor::new(0)).unwrap();
+        write_selected_eac3_fixed_prefix(&mut bit_writer).unwrap();
         drc_writer.write_header_drc(&mut bit_writer).unwrap();
         bit_writer.cursor().bit_offset()
     };

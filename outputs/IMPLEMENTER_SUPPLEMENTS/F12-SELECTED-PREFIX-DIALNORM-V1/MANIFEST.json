@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge-washed-supplement-manifest.v1",
+  "package_id": "F12-SELECTED-PREFIX-DIALNORM-V1",
+  "status": "PARTIAL_UNRESOLVED_PREFIX_AND_FORMULA_CLOSED_IDENTITY_JOIN_NOT_READY",
+  "implementation_ready_for_cross_stage_join": false,
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "bytes": 2506,
+      "sha256": "30e3a5e3d1f9e22cd6c8658bc968f6217bd83c4072260192b7aa7328c62cde61"
+    },
+    {
+      "path": "FIELD-TABLE.json",
+      "bytes": 2900,
+      "sha256": "11e131ad9b31cb65011d5ed23b2ac80a67b684d5aad6758015a2669f4ef51354"
+    },
+    {
+      "path": "DIALNORM-STATUS.json",
+      "bytes": 1478,
+      "sha256": "da7d0ec8202789443b375489a0f0dbcbfbd874ad551eafd19d0e809eb5c4c7d1"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1687,
+      "sha256": "865ad85dbef724b6896257baa9454db23d0bd82020297330ada4c8a65b816088"
+    },
+    {
+      "path": "MINIMUM-RECEIPT.json",
+      "bytes": 929,
+      "sha256": "bb0cd73b0792ab7fc1acfc2fb1f6ad364ff346018a383f88fd934efc7c6b46d6"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 2169,
+      "sha256": "81dbc47a27b03e77336c02d7f9eccbf984024172ccadd6ee6f22693bdf720e4a"
+    },
+    {
+      "path": "check_package.py",
+      "bytes": 4272,
+      "sha256": "ed2cc460c2f01799d49f0278163ad932644bcf827c78ee56e175782421d93810"
+    }
+  ]
+}

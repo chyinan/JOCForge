@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge.f06-dialnorm-f12-minimum-receipt-evidence.v1",
+  "classification": "EVIDENCE_REQUEST_ONLY; NOT_A_PRODUCT_API_DECLARATION",
+  "required_programme_fields": [
+    "programme_input_identity",
+    "finalized_measurement_generation_or_owner_token",
+    "measurement_digest",
+    "selected_lufs_f32_word",
+    "dialnorm"
+  ],
+  "required_per_source_consumer_fields": [
+    "source_index",
+    "source_generation",
+    "programme_input_identity",
+    "measurement_generation_or_owner_token",
+    "measurement_digest",
+    "dialnorm"
+  ],
+  "consumers": ["F06ND source invocation", "same-source F12 BSI input"],
+  "negative_cases_needed": [
+    "two distinct programme identities with equal selected_lufs and dialnorm must not share a receipt",
+    "stale measurement generation must be rejected",
+    "mismatched measurement digest must be rejected"
+  ],
+  "native_capture_required_for_clean_model_join": false
+}

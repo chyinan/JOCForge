@@ -95,7 +95,7 @@ pub fn bind_selected_bsi_drc_fields(
 mod tests {
     use super::*;
     use crate::codec::bitio::{FrameBitCursor, FrameBitWriter};
-    use crate::codec::frame_builder::SelectedBsiDrcWriter;
+    use crate::codec::frame_builder::{SelectedBsiDrcWriter, write_selected_eac3_fixed_prefix};
     use serde_json::Value;
 
     const OWNER_VECTORS: &[u8] =
@@ -128,12 +128,31 @@ mod tests {
         let mut drc_writer = SelectedBsiDrcWriter::new(fields);
         let mut cursor = {
             let mut writer =
-                FrameBitWriter::new(&mut actual_frame, FrameBitCursor::new(45)).unwrap();
+                FrameBitWriter::new(&mut actual_frame, FrameBitCursor::new(0)).unwrap();
+            assert_eq!(
+                write_selected_eac3_fixed_prefix(&mut writer)
+                    .unwrap()
+                    .bit_offset(),
+                45,
+            );
             drc_writer.write_header_drc(&mut writer).unwrap();
             writer.cursor().bit_offset()
         };
 
-        for label in ["dialnorm", "compre", "compr"] {
+        for label in [
+            "syncword",
+            "strmtyp",
+            "substreamid",
+            "frmsiz",
+            "fscod",
+            "numblkscod",
+            "acmod",
+            "lfeon",
+            "bsid",
+            "dialnorm",
+            "compre",
+            "compr",
+        ] {
             let field = find_field(&case["expected"]["field_offsets"], label);
             let field_offset = u32::try_from(field["begin"].as_u64().unwrap()).unwrap();
             let field_width = u8::try_from(field["width"].as_u64().unwrap()).unwrap();

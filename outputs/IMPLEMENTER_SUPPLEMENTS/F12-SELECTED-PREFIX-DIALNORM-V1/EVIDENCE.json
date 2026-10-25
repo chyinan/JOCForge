@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge.f12-prefix-dialnorm-wash-evidence.v1",
+  "status": "PARTIAL_UNRESOLVED",
+  "fixed_prefix_bits_0_44": "STATIC_CLOSED",
+  "selected_loudness_to_dialnorm_formula": "STATIC_CLOSED",
+  "typed_programme_source_receipt_chain": "NOT_READY",
+  "provenance": {
+    "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "approved_members": [
+      {"path":"specs/12-selected-codec-wire.md","sha256":"9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448","clauses":["F12S.1","F12S.7","F12S.12"]},
+      {"path":"parameters/codec-wire-selected-v1.json","sha256":"a7a0a721a9e515d197a2d12fc0c9cb942b2b393f9019383a66ce2635f7aaa0dd","clauses":["selected profile","fixed transport header fields"]},
+      {"path":"specs/06-meter-bsi.md","sha256":"5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752","clauses":["F06.2a","F06.3"]},
+      {"path":"specs/06-none-drc-statistics-and-control.md","sha256":"62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081","clauses":["F06ND.1","dialnorm input"]},
+      {"path":"specs/06-meter-none-drc-whole-composition.md","sha256":"94e8d42e77e71f4f16e99a74ee3c808cfc925074e19dd814762d21cde6f259d2","clauses":["programme finalize","source composition","BSI/ID1 digest rule"]},
+      {"path":"test-vectors/F06-METER-NONE-DRC-WHOLE-INPUT-VECTORS.json","sha256":"5faceecd9b13bacf1033bdafbb72f5bec854304a5c1bd5cce5b804ee6b9a299f","classification":"input-only model sequence; no PCM"},
+      {"path":"test-vectors/F06-METER-NONE-DRC-WHOLE-VERIFICATION-RESULT.json","sha256":"70a891b8c55950d2657c2798a04bf4af004b03b4b9bb5b92b6533aefec98b74a","classification":"model result within one state instance; not cross-programme identity proof"}
+    ],
+    "wash_reviewed_reverse_package_manifest_sha256":"ec1c2e5b758b20bfe9b9bed7152dbf93e54af5bbd63790080d6266ff588795af",
+    "reverse_package_payloads_verified":6,
+    "prefix_recomputed_independently":true,
+    "dialnorm_examples_recomputed_independently":true,
+    "native_experiment":"NOT_RUN",
+    "raw_pcm_or_frame_payload_included":false,
+    "private_key_or_auth_material_included":false
+  }
+}

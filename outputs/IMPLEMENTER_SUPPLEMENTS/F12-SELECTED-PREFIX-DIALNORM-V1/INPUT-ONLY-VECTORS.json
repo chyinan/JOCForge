@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge.f12-prefix-dialnorm-input-only.v1",
+  "contains_pcm": false,
+  "contains_complete_frame": false,
+  "vectors": [
+    {
+      "id": "F12S7-FIXED-PREFIX-45-BITS",
+      "grade": "SPEC_INPUT_ONLY",
+      "profile": {"sample_rate_hz":48000,"bit_rate_bps":1024000,"acmod":7,"lfe_on":1,"audio_blocks":6,"independent_substreams":1,"frame_bytes":4096},
+      "bit_order": "MSB_FIRST",
+      "fields": [
+        {"name":"syncword","width_bits":16,"value":2935},
+        {"name":"strmtyp","width_bits":2,"value":0},
+        {"name":"substreamid","width_bits":3,"value":0},
+        {"name":"frmsiz","width_bits":11,"value":2047},
+        {"name":"fscod","width_bits":2,"value":0},
+        {"name":"numblkscod","width_bits":2,"value":3},
+        {"name":"acmod","width_bits":3,"value":7},
+        {"name":"lfeon","width_bits":1,"value":1},
+        {"name":"bsid","width_bits":5,"value":16}
+      ],
+      "expected": {"bit_count":45,"bit_string":"000010110111011100000111111111110011111110000","display_byte_hex":"0b7707ff3f80","display_pad_bits":"000","pad_bits_are_not_prefix":true}
+    },
+    {
+      "id": "F06-F12-DIALNORM-ORDINARY-EXAMPLE",
+      "grade": "FORMULA_INPUT_ONLY_EXAMPLE",
+      "input": {"selected_lufs_f32_word":"0xC1BC0000","selected_lufs_f32_decimal":-23.5},
+      "expected": {"dialnorm":24,"dialnorm_five_bits":"11000","f06nd_n_f32_word":"0xBE400000","f06nd_n_f32_decimal":-0.1875},
+      "not_a_fixed_product_value": true
+    },
+    {
+      "id": "F06-F12-DIALNORM-SENTINEL",
+      "grade": "FORMULA_BOUNDARY_INPUT_ONLY",
+      "input": {"selected_lufs_f32_decimal":-120.0},
+      "expected": {"dialnorm":31,"dialnorm_five_bits":"11111"}
+    }
+  ]
+}

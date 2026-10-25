@@ -1,0 +1,46 @@
+{
+  "schema": "jocforge.f12-selected-fixed-prefix.v1",
+  "status": "STATIC_CLOSED",
+  "source_clause": "F12S.7",
+  "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "bit_order": "MSB_FIRST",
+  "start_bit": 0,
+  "end_bit_inclusive": 44,
+  "total_width_bits": 45,
+  "profile_gate": {
+    "sample_rate_hz": 48000,
+    "bit_rate_bps": 1024000,
+    "acmod": 7,
+    "lfe_on": 1,
+    "audio_blocks": 6,
+    "independent_substreams": 1,
+    "frame_bytes": 4096,
+    "source_clauses": ["F12S.1", "F12S.7", "F12S.12"]
+  },
+  "fields": [
+    {"ordinal":0,"name":"syncword","width_bits":16,"value":2935,"value_hex":"0x0B77","bit_start":0,"bit_end_inclusive":15,"presence":"UNCONDITIONAL","value_class":"FROZEN_SELECTED_PROFILE_CONSTANT"},
+    {"ordinal":1,"name":"strmtyp","width_bits":2,"value":0,"value_hex":"0x0","bit_start":16,"bit_end_inclusive":17,"presence":"UNCONDITIONAL","value_class":"FROZEN_SELECTED_PROFILE_CONSTANT"},
+    {"ordinal":2,"name":"substreamid","width_bits":3,"value":0,"value_hex":"0x0","bit_start":18,"bit_end_inclusive":20,"presence":"UNCONDITIONAL","value_class":"FROZEN_SELECTED_PROFILE_CONSTANT"},
+    {"ordinal":3,"name":"frmsiz","width_bits":11,"value":2047,"value_hex":"0x7FF","bit_start":21,"bit_end_inclusive":31,"presence":"UNCONDITIONAL","value_class":"FROZEN_SELECTED_PROFILE_CONSTANT"},
+    {"ordinal":4,"name":"fscod","width_bits":2,"value":0,"value_hex":"0x0","bit_start":32,"bit_end_inclusive":33,"presence":"UNCONDITIONAL","value_class":"FROZEN_SELECTED_PROFILE_CONSTANT"},
+    {"ordinal":5,"name":"numblkscod","width_bits":2,"value":3,"value_hex":"0x3","bit_start":34,"bit_end_inclusive":35,"presence":"UNCONDITIONAL","value_class":"FROZEN_SELECTED_PROFILE_CONSTANT"},
+    {"ordinal":6,"name":"acmod","width_bits":3,"value":7,"value_hex":"0x7","bit_start":36,"bit_end_inclusive":38,"presence":"UNCONDITIONAL","value_class":"FROZEN_SELECTED_PROFILE_CONSTANT"},
+    {"ordinal":7,"name":"lfeon","width_bits":1,"value":1,"value_hex":"0x1","bit_start":39,"bit_end_inclusive":39,"presence":"UNCONDITIONAL","value_class":"FROZEN_SELECTED_PROFILE_CONSTANT"},
+    {"ordinal":8,"name":"bsid","width_bits":5,"value":16,"value_hex":"0x10","bit_start":40,"bit_end_inclusive":44,"presence":"UNCONDITIONAL","value_class":"FROZEN_SELECTED_PROFILE_CONSTANT"}
+  ],
+  "adjacent_field": {
+    "name": "dialnorm",
+    "width_bits": 5,
+    "bit_start": 45,
+    "bit_end_inclusive": 49,
+    "presence": "UNCONDITIONAL",
+    "value_class": "FINALIZED_PROGRAMME_MEASUREMENT_VALUE",
+    "value_status": "FORMULA_STATIC_CLOSED_TYPED_IDENTITY_JOIN_NOT_READY",
+    "source_clause": "F12S.7 and F06.3"
+  },
+  "recomputed_prefix_bits": "000010110111011100000111111111110011111110000",
+  "display_only_padded_byte_hex": "0b7707ff3f80",
+  "display_pad_bits": "000",
+  "display_pad_is_outside_prefix": true,
+  "native_frame_bytes_used": false
+}

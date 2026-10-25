@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge-washed-supplement-delivery.v1",
+  "package_id": "F12-SELECTED-PREFIX-DIALNORM-V1",
+  "manifest_sha256": "0afba77679f20496cae42b840252c7278fad5185274fa0fd81e1e95b9f2401a2",
+  "payload_files": 7,
+  "fixed_prefix_status": "STATIC_CLOSED",
+  "dialnorm_formula_status": "STATIC_CLOSED",
+  "typed_programme_source_join_status": "NOT_READY"
+}

@@ -1,6 +1,7 @@
 // pattern: Functional Core
 //! Meter-domain boundaries. The selected K-matrix provider is a bounded direct slice.
 
+pub mod dialnorm;
 pub mod energy_window;
 pub mod installed48_renderer;
 pub mod integrated_meter;
