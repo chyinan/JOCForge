@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge.f06of-producer-join-minimum-receipt.v1",
+  "status": "REQUIRED_FOR_JOIN_CLOSURE; NOT_AUTHORIZATION_TO_CAPTURE",
+  "same_generation_binding": {
+    "prepared_input_identity": "opaque identity from the selected job",
+    "source_generation": "typed generation token",
+    "callback_index": "typed callback/source index"
+  },
+  "channel_row_binding": {
+    "semantic_channel_id": "typed selected channel identity",
+    "chna_source_channel_index": "typed source-channel index",
+    "track_index": "typed track index",
+    "physical_row_ordinal": "typed row ordinal",
+    "descriptor_owner_token": "opaque owner identity",
+    "descriptor_generation": "typed generation token"
+  },
+  "reader_binding": {
+    "requested_sample_count": "integer samples per channel",
+    "returned_sample_count": "integer samples per channel",
+    "cursor_before": "integer source samples per channel",
+    "cursor_after": "integer source samples per channel",
+    "eof_status": "explicit typed status"
+  },
+  "drain_binding": {
+    "drain_ordinal": "typed ordinal for each model drain callback",
+    "source_generation": "same generation token as the selected input and descriptor"
+  },
+  "prohibitions": [
+    "Do not read or persist PCM or row bodies.",
+    "Do not treat callback count, equal numeric values, file order, or event adjacency as identity.",
+    "Do not run a target process until a separate Wash GO approves the exact job, output guard, bounded receipt, and one-shot stop."
+  ]
+}

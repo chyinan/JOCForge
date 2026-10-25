@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge-washed-supplement-manifest.v1",
+  "package_id": "F06OF-PRODUCER-JOIN-STATUS-V1",
+  "status": "PARTIAL_STATIC_MODEL_PRODUCER_JOIN_UNBOUND",
+  "implementation_ready_for_producer_join": false,
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "bytes": 2091,
+      "sha256": "afa70d110defa9ff54abb41ee3348f84403062b6fb8257f8290ab2de5076ab2f"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 1797,
+      "sha256": "15e894f4d426c196bff57c4c26ff188d5a7e07426841076751df69d321ec311d"
+    },
+    {
+      "path": "MINIMUM-RECEIPT.json",
+      "bytes": 1499,
+      "sha256": "e4eb0da958d17341dbda70299aa246851ab2db64c66cee5e39079c87c82b1072"
+    }
+  ]
+}
