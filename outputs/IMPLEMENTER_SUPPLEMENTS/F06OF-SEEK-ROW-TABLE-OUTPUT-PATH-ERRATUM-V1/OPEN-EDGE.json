@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge.f06of-seek-row-table-open-edge.v1",
+  "last_bounded_candidate": "seek/samplePosition → DlbWavFile row-pointer table → stream-append writer",
+  "why_not_selected_input_proof": [
+    "No identity link from ConverterChannelInputId or selected ADM source to the candidate table.",
+    "The traced downstream helper appends converted data to a stream; it is not established as the meter's input reader.",
+    "No same-generation descriptor, actual read length, cursor, or EOF receipt is joined."
+  ],
+  "minimum_next_static_edge": "Find the selected input-side reader call that consumes the admitted ADM source and connect its row ordinal and return/cursor semantics to the selected measurement descriptor owner/generation.",
+  "if_dynamic_is_required": "Submit a specific metadata-only observation to Wash and wait for GO; do not inspect row/PCM bytes."
+}

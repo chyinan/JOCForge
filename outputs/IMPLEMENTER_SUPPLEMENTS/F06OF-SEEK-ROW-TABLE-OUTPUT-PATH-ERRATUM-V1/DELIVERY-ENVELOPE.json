@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge-washed-supplement-delivery.v1",
+  "package_id": "F06OF-SEEK-ROW-TABLE-OUTPUT-PATH-ERRATUM-V1",
+  "manifest_sha256": "e8a3a955875358e99ee1baf9aba56f14c05de293781dcce806116bb623133e70",
+  "payload_files": 4,
+  "candidate_row_table": "NOT_JOINED_TO_SELECTED_INPUT",
+  "reader_cursor_eof": "UNBOUND"
+}

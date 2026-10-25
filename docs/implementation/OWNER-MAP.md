@@ -175,6 +175,7 @@
 | F06OF/washed-adm-converter-static-inventory-hold | F06OF | `meter` |
 | F06OF/washed-adm-bwf-label-source-row-gap | F06OF | `meter` |
 | F06OF/selected-adm-graph-to-converter-storage-map | F06OF | `meter` |
+| F06OF/washed-f06of-seek-row-table-output-path-erratum | F06OF | `meter` |
 | F06OF/washed-f06of-producer-join-status-and-receipt-hold | F06OF | `meter` |
 | F06NR/single-lane-secondary-overlap-carry | F06NR | `drc` |
 | F06NR/selected-secondary-carrier-routing | F06NR | `drc` |

@@ -5975,6 +5975,60 @@
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
         {
+          "slice_id": "washed-f06of-seek-row-table-output-path-erratum",
+          "mapping_status": "WASHED_STATIC_CANDIDATE_TO_OUTPUT_WRITER__NOT_SELECTED_INPUT_ROW",
+          "implementation_status": "WASHED_SEEK_ROW_TABLE_OUTPUT_PATH_CANDIDATE__INPUT_JOIN_UNBOUND",
+          "scope": "A samplePosition-labeled metadata-tree seek reaches a candidate DlbWavFile with an internal per-channel row-pointer table; its downstream conversion path reaches stream append and advances an output cursor. This candidate is not proven to be a selected ADM input PCM row. Candidate stride, ConverterChannelInputId-to-selected-row identity, row-to-meter-descriptor owner/generation, and actual input read/count/cursor/EOF remain UNBOUND. No implementation or native run is claimed.",
+          "owner": "meter",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The candidate seek key is only samplePosition-labeled metadata; no selected input sample cursor or callback clock is bound."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F06OF_SEEK_ROW_TABLE_OUTPUT_PATH_ERRATUM_V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SEEK-ROW-TABLE-OUTPUT-PATH-ERRATUM-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SEEK-ROW-TABLE-OUTPUT-PATH-ERRATUM-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SEEK-ROW-TABLE-OUTPUT-PATH-ERRATUM-V1/OPEN-EDGE.json"
+            ],
+            "supplement_manifest_sha256": "e8a3a955875358e99ee1baf9aba56f14c05de293781dcce806116bb623133e70",
+            "reviewed_research_package_manifest_sha256": "a3e01abe4175de9eca473fe55901425e19ec30e0dc8afdaeb83c5f83cb91a9b0",
+            "validation_boundary": "Static candidate path to output append only; selected input identity and reader semantics remain unbound."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_F06OF_SEEK_ROW_TABLE_CANDIDATE_STATUS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SEEK-ROW-TABLE-OUTPUT-PATH-ERRATUM-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SEEK-ROW-TABLE-OUTPUT-PATH-ERRATUM-V1/OPEN-EDGE.json"
+            ],
+            "case_pointers": [
+              "The candidate row-pointer table is on a path to stream append/output cursor, not proven selected input PCM.",
+              "Candidate stride is UNBOUND; no row-to-descriptor/cursor/EOF connection is established."
+            ],
+            "source_supplement_manifest_sha256": "e8a3a955875358e99ee1baf9aba56f14c05de293781dcce806116bb623133e70"
+          },
+          "native_status": {
+            "candidate_seek_coordinate": "samplePosition-labeled metadata-tree key",
+            "candidate_row_table_to_output_append": "STATIC_CANDIDATE_PATH",
+            "candidate_stride_unit": "UNBOUND",
+            "selected_input_physical_row_join": "UNBOUND",
+            "selected_meter_descriptor_owner_generation": "UNBOUND",
+            "selected_reader_actual_count_cursor_eof": "UNBOUND",
+            "native_execution": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Do not treat this output-writer path as ConverterChannelInputId-to-input-PCM-row evidence.",
+            "Selected input row, descriptor, actual read count, cursor and EOF remain UNBOUND."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
           "slice_id": "washed-f06of-producer-join-status-and-receipt-hold",
           "mapping_status": "WASHED_PARTIAL_STATIC_MODEL_PRODUCER_JOIN_UNBOUND",
           "implementation_status": "WASHED_MODEL_CLOCK_RESET_ONLY_PRODUCER_ROW_AND_DESCRIPTOR_JOIN_UNBOUND",

@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge-washed-supplement-manifest.v1",
+  "package_id": "F06OF-SEEK-ROW-TABLE-OUTPUT-PATH-ERRATUM-V1",
+  "status": "PARTIAL_STATIC_CANDIDATE_NOT_SELECTED_INPUT_JOIN",
+  "implementation_ready_for_input_row_join": false,
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "bytes": 1197,
+      "sha256": "4429db70a7e1767be894f9883a49a0d788becbeeaff4f07dadea391c95de5670"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 1197,
+      "sha256": "c6753c7ef3d88e6e3b2662d16f7f9d8f9645cdb2f22c77b00885e3edd191c4dd"
+    },
+    {
+      "path": "OPEN-EDGE.json",
+      "bytes": 880,
+      "sha256": "0b985cfdd436c39fd732369adc683dc727b450ee0d904ed1adec0514da3bfaf7"
+    },
+    {
+      "path": "check_package.py",
+      "bytes": 1607,
+      "sha256": "38498ba9d40f060c2e240457a68442ae43759dd48acc26383690b148ddf53416"
+    }
+  ]
+}

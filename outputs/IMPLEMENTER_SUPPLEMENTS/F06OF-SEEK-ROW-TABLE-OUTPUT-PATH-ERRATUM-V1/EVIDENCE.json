@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge.f06of-seek-row-table-candidate-status.v1",
+  "status": "CANDIDATE_ROW_TABLE_NOT_JOINED_TO_SELECTED_INPUT",
+  "provenance": {
+    "reviewed_research_package_manifest_sha256": "a3e01abe4175de9eca473fe55901425e19ec30e0dc8afdaeb83c5f83cb91a9b0",
+    "research_payload_files_verified": 8,
+    "converter_pe_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "approved_f06of_model_spec_sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423",
+    "native_execution": "NOT_RUN",
+    "pcm_row_or_payload_bytes_read": 0,
+    "private_key_or_auth_material_included": false
+  },
+  "observed_static_boundary": {
+    "seek_coordinate": "samplePosition-labeled metadata-tree key",
+    "candidate_object": "DlbWavFile with an internal per-channel row-pointer table",
+    "downstream_candidate": "conversion path reaches stream append and advances an output cursor",
+    "candidate_stride_unit": "UNBOUND"
+  },
+  "required_join": {
+    "converter_channel_id_to_selected_physical_input_row": "UNBOUND",
+    "row_table_to_selected_meter_descriptor_owner_generation": "UNBOUND",
+    "selected_reader_actual_count_cursor_eof": "UNBOUND"
+  }
+}
