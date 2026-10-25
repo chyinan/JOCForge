@@ -59,6 +59,10 @@ impl DecodedPcm24ReadChunk {
     pub fn planar_f32_bits(&self) -> &[Vec<u32>] {
         &self.planar_f32_bits
     }
+
+    pub fn into_planar_f32_bits(self) -> Vec<Vec<u32>> {
+        self.planar_f32_bits
+    }
 }
 
 /// One preserved selected metadata chunk, borrowed from the input bytes.
@@ -218,6 +222,46 @@ impl<'a> ParsedRiffPcm24<'a> {
             }
         }
         Ok(planar)
+    }
+
+    /// Reads one bounded sample chunk from this already parsed in-memory RIFF.
+    ///
+    /// The per-channel sample position is converted to a relative byte offset using
+    /// the parsed block alignment. This does not perform an operating-system read.
+    pub fn read_pcm24_chunk(
+        &self,
+        first_sample: AdmSampleIndex,
+        requested_frames: u64,
+    ) -> Result<DecodedPcm24ReadChunk, RiffPcm24Error> {
+        let end_sample = first_sample
+            .value()
+            .checked_add(requested_frames)
+            .ok_or(RiffPcm24Error::InvalidInput)?;
+        if requested_frames == 0 || end_sample > self.total_samples {
+            return Err(RiffPcm24Error::InvalidInput);
+        }
+
+        let block_align = u64::from(self.block_align);
+        let relative_offset = first_sample
+            .value()
+            .checked_mul(block_align)
+            .ok_or(RiffPcm24Error::InvalidInput)?;
+        let requested_bytes = requested_frames
+            .checked_mul(block_align)
+            .and_then(|bytes| u32::try_from(bytes).ok())
+            .ok_or(RiffPcm24Error::InvalidInput)?;
+        let byte_start =
+            usize::try_from(relative_offset).map_err(|_| RiffPcm24Error::InvalidInput)?;
+        let byte_length =
+            usize::try_from(requested_bytes).map_err(|_| RiffPcm24Error::InvalidInput)?;
+        let byte_end = byte_start
+            .checked_add(byte_length)
+            .ok_or(RiffPcm24Error::InvalidInput)?;
+        let read_bytes = self
+            .data_payload
+            .get(byte_start..byte_end)
+            .ok_or(RiffPcm24Error::InvalidInput)?;
+        decode_selected_pcm24_read_chunk(read_bytes, requested_bytes)
     }
 }
 

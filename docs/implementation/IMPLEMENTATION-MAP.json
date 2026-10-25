@@ -5671,8 +5671,8 @@
         {
           "slice_id": "meter-in-memory-pcm24-source-cursor",
           "mapping_status": "MATERIALIZED_DIRECT_INPUT_SUBSLICE_F06OF_AND_FRONTEND_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_BORROWED_PCM24_TO_RAW_INPUT_FRAMES__SCP_CONTROL_PRODUCER_DEFERRED",
-          "scope": "Binds an independent typed meter source cursor to one already parsed selected RIFF/PCM24 byte slice by full source SHA and sample count. It reads each normal 38-channel hop into fresh F32 rows, pads only the final raw source input, and emits exactly three fresh zero-input drain frames. The cursor stores source identity and clocks, never PCM. Output stops at raw physical-channel input; no ADM/event render or SCP/control is claimed.",
+          "implementation_status": "LOCALLY_VERIFIED_TYPED_PCM24_READ_CHUNK_CURSOR_TO_RAW_FRAMES__SCP_CONTROL_PRODUCER_DEFERRED",
+          "scope": "Binds an independent typed meter source cursor to one already parsed selected RIFF/PCM24 byte slice by full source SHA and sample count. Each normal sample range is addressed through the parsed blockAlign byte offset and decoded by the shared selected PCM24 read-chunk helper; the cursor consumes its typed actual-frame count and advances by that returned count. It pads only the final raw source input and emits exactly three fresh zero-input model drain frames. The cursor stores source identity and clocks, never PCM. Output stops at raw physical-channel input; no operating-system read, native EOF/drain, ADM/event render or SCP/control is claimed.",
           "implementation_files": [
             "crates/jocforge-io/Cargo.toml",
             "crates/jocforge-io/src/pcm/mod.rs",
@@ -5696,26 +5696,27 @@
               "Normal callback count is ceil(N/1536); each normal frame reads min(1536,N-cursor) then pads the raw input rows to 1536.",
               "The source cursor advances only for normal host samples and reaches N at end of source.",
               "Exactly three callbacks after the normal count are zero-input drains; they do not read source data or advance the cursor.",
-              "Every frame generation is callback index g+1; the frame carries its before/after source cursor and host/padding counts."
+              "Every frame generation is callback index g+1; the frame carries its before/after source cursor and host/padding counts.",
+              "The in-memory source cursor validates the typed actual-frame count from each decoded chunk against the model's scheduled normal-sample count; it does not model an OS short read."
             ]
           },
           "parameters": {
             "kind": "SELECTED_IN_MEMORY_RIFF_PCM24_PROFILE",
             "provider_files": [],
-            "validation_boundary": "Requires a caller-borrowed ParsedRiffPcm24 matching the selected 48 kHz, 38-channel, PCM24, block-align 114 profile, selected job resource SHA-256, and selected job sample extent. It performs no filesystem read or sample persistence."
+            "validation_boundary": "Requires a caller-borrowed ParsedRiffPcm24 matching the selected 48 kHz, 38-channel, PCM24, block-align 114 profile, selected job resource SHA-256, and selected job sample extent. It performs no filesystem read or sample persistence; its three drains are model schedule only."
           },
           "test_modules": [
             "crates/jocforge-io/src/pcm/meter_source_cursor.rs"
           ],
           "vectors": {
-            "kind": "SYNTHETIC_IN_MEMORY_PCM24_BYTES_AND_SELECTED_NORMAL_DRAIN_SCHEDULE",
+            "kind": "SYNTHETIC_IN_MEMORY_PCM24_BYTES_AND_TYPED_READ_CHUNK_SCHEDULE",
             "authoritative_vectors": [
               "crates/jocforge-io/tests/fixtures/meter_source_cursor/input_only.json"
             ],
             "case_pointers": [
               "INPUT-ONLY source_samples=1537 generates two normal frames and three zero drains",
               "last normal read is one host sample plus 1535 positive zeros per channel",
-              "the returned actual sample words match the caller-borrowed RIFF hop",
+              "each normal cursor step consumes the shared chunk decoder's typed frame count and returns the same actual sample words as the caller-borrowed RIFF hop",
               "a different byte-slice identity and an out-of-order callback reject without cursor advance"
             ],
             "local_fixture": {
@@ -5735,7 +5736,9 @@
             {"error_code":"METER_SOURCE_READER_ERROR","category":"PCM24 hop extraction","trigger":"The in-memory reader rejects the requested hop.","programme_state_after":"No frame or next cursor is returned.","caller_action":"Propagate the selected reader error; do not synthesize the missing normal samples."}
           ],
           "not_run": [
+            "The three zero-input drains are model schedule only; no native EOF/drain join is established.",
             "38-channel raw rows through an independent ADM/object render and event-control producer",
+            "Physical PCM row to F06OF measurement descriptor owner/source-generation join remains UNBOUND.",
             "SCP16/control16 construction and same-callback F06OF packet production",
             "complete independent frontend warm state, terminal root, real ADM and product acceptance"
           ],

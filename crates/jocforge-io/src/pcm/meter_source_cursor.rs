@@ -234,13 +234,18 @@ pub fn stage_meter_pcm_source_frame(
             return Err(MeterSourceCursorError::InvalidSourceExtent);
         }
         let first_sample = AdmSampleIndex::new(cursor_before);
-        let rows = parsed_source
-            .read_pcm24_hop(first_sample, actual)
+        let decoded = parsed_source
+            .read_pcm24_chunk(first_sample, actual)
             .map_err(MeterSourceCursorError::Reader)?;
+        let read_count = decoded.actual_frames().value();
+        if read_count != actual {
+            return Err(MeterSourceCursorError::Reader(RiffPcm24Error::InvalidInput));
+        }
+        let rows = decoded.into_planar_f32_bits();
         let next_cursor = cursor_before
-            .checked_add(actual)
+            .checked_add(read_count)
             .ok_or(MeterSourceCursorError::ArithmeticOverflow)?;
-        (actual, next_cursor, rows)
+        (read_count, next_cursor, rows)
     } else {
         (0, cursor_before, vec![Vec::new(); METER_SOURCE_CHANNELS])
     };
