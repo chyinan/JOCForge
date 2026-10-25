@@ -1,0 +1,44 @@
+{
+  "schema": "jocforge-f13c-bsi-importer-static-identity-evidence.v1",
+  "status": "STATIC_IMPORTER_REGION_IDENTITY_CLOSED_RUNTIME_DESTINATION_JOIN_UNBOUND",
+  "reverse_package": {
+    "manifest_sha256": "3c27cab02b71da47ebcbbadc6d5c0827f504ba73ffdc105cb677108735f2473a",
+    "payload_count": 5,
+    "checker_normal": "PASS_HASH_BOUND_IMPORTER_STATIC_IDENTITY_RUNTIME_JOIN_UNBOUND",
+    "checker_python_O": "PASS_HASH_BOUND_IMPORTER_STATIC_IDENTITY_RUNTIME_JOIN_UNBOUND",
+    "referenced_payload_files_opened_by_checker": 0
+  },
+  "static_identity": {
+    "count_capture_downstream_importer_region_sha256": "a6a85906698046134d08386b5e4532c797f8fded55f48b136a3c89d55da65ab1",
+    "natural_configuration_static_active_import_region_sha256": "a6a85906698046134d08386b5e4532c797f8fded55f48b136a3c89d55da65ab1",
+    "hash_match": true,
+    "identity_grade": "SAME_STATIC_CODE_REGION_ONLY"
+  },
+  "documented_operations": {
+    "importer": "literal copy per hash-bound contract",
+    "natural_f12_working_header_byte": 119,
+    "f12_field": "complexity_index_type_a",
+    "f12_field_start_bit": 105,
+    "f12_field_width_bits": 8,
+    "f12_wire_operation": "direct U8 emission per hash-bound contract"
+  },
+  "runtime_endpoints": {
+    "private_capture_record_token": 6,
+    "private_capture_owner_token": 5,
+    "private_capture_config_token": 4,
+    "natural_import_owner_label": "encoder_owner0",
+    "natural_outer_generations": [1, 2, 3, 4, 5, 6],
+    "shared_runtime_destination_owner_call_token": false,
+    "same_runtime_call": "UNBOUND",
+    "same_parent_vs_cross_parent": "UNBOUND",
+    "source_frame_or_au_generation": "UNBOUND",
+    "unique_missing_identity": "Importer destination token joining capture-local record 6 to encoder_owner0 working-header byte 119 in one identified generation"
+  },
+  "execution_boundary": {
+    "native_or_target_execution": "NOT_RUN",
+    "pcm_emdf_payload_or_body_read": false,
+    "key_or_auth_material_read": false,
+    "whole_f13c_ready": false,
+    "new_algorithm_rule": false
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-f13c-bsi-importer-static-identity-source-manifests.v1",
+  "reverse_package": {
+    "manifest_sha256": "3c27cab02b71da47ebcbbadc6d5c0827f504ba73ffdc105cb677108735f2473a"
+  },
+  "hash_bound_inputs": [
+    {
+      "role": "capture-local BSI producer/importer package",
+      "manifest_sha256": "cdc1d781cfb19a8b935cc64cf66524926f76b667e0747ab0ac83ac603bcdcb3a",
+      "handoff_manifest_sha256": "70f90cd5472299f66bba22c362e87fe2645b6f480d71dfeb763fab2eb769fe00",
+      "source_identity_metadata_sha256": "ee5fbfc5b3b261ba78ef1d1d6b13f5a53833315a511a6c8c149c4cf6a1ca303b",
+      "contract_addendum_sha256": "cd4d0e835f735ade34087d5362d1b3c82f1599d08099d00c237a0637374fa6d0",
+      "downstream_importer_static_region_sha256": "a6a85906698046134d08386b5e4532c797f8fded55f48b136a3c89d55da65ab1"
+    },
+    {
+      "role": "natural configuration-import owner and outer-generation observations",
+      "manifest_sha256": "8ad92e6a0372414c4f2319f996399a5167379922ff3ebaa3d29467f339bd61b1",
+      "provenance_metadata_sha256": "6513c5acd36c2c42c8a04a5fde1380b0594a12ed7fea86b6a27e839d67af4bd9",
+      "native_lineage_metadata_sha256": "72342c45d45cd77b01336ead87aa1150de3f13db89abe1a2ae3b6215b2559f53",
+      "static_active_import_region_sha256": "a6a85906698046134d08386b5e4532c797f8fded55f48b136a3c89d55da65ab1"
+    },
+    {
+      "role": "selected clean-model F12 field lineage",
+      "manifest_sha256": "ae252406f99560f79e56cef2c4560e04d20a89f8c08badec086a6c72e10edbf0",
+      "field_lineage_metadata_sha256": "6b54076f62f5842ad08cea664e49801cc9e21599318090d4a26a749375d9fd1f"
+    },
+    {
+      "role": "selected additional-BSI importer copy and U8 wire emitter contract",
+      "manifest_sha256": "d48fa96a507e30e936172f43a290a7db0a4c3a2c9c4b153c0605a24ebd524953",
+      "contract_metadata_sha256": "d27cd2982875fe84e768ce4ff4c5b15423498712e9edd5e485b6a97548860de5"
+    }
+  ]
+}

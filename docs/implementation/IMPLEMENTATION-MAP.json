@@ -10156,6 +10156,60 @@
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
         {
+          "slice_id": "washed-f13c-bsi-importer-static-identity",
+          "mapping_status": "WASHED_SAME_IMPORTER_CODE_REGION_STATIC_CLOSED__RUNTIME_DESTINATION_JOIN_OPEN",
+          "implementation_status": "WASHED_LITERAL_IMPORTER_OPERATION_STATIC_CLOSED__RECORD_OWNER_GENERATION_UNBOUND",
+          "scope": "The capture package downstream importer and the natural-configuration package static active importer are the same hash-bound code region; the documented operation is a literal copy. The natural F12 working header reads U8 at byte 119 for `complexity_index_type_a` (frame bit 105). The capture-local record 6 is not joined to encoder_owner0's byte 119 within the same runtime call, parent or source/frame/AU generation. This is static code identity only, not a production record connection.",
+          "owner": "codec",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Same static importer code identity does not bind a callback, source, frame or AU generation."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F13C_BSI_IMPORTER_STATIC_IDENTITY_STATUS_V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-BSI-IMPORTER-STATIC-IDENTITY-STATUS-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-BSI-IMPORTER-STATIC-IDENTITY-STATUS-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-BSI-IMPORTER-STATIC-IDENTITY-STATUS-V1/SOURCE-MANIFESTS.json"
+            ],
+            "supplement_manifest_sha256": "7a3c8653a14f6b6dc367f7afaa963e639e6e53fa127a82b7e2f860a4a357fcd1",
+            "source_reverse_manifest_sha256": "3c27cab02b71da47ebcbbadc6d5c0827f504ba73ffdc105cb677108735f2473a",
+            "validation_boundary": "Static importer region identity and documented literal copy only; runtime destination token and generation remain unbound."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_F13C_BSI_IMPORTER_STATIC_REGION_IDENTITY",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-BSI-IMPORTER-STATIC-IDENTITY-STATUS-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-BSI-IMPORTER-STATIC-IDENTITY-STATUS-V1/SOURCE-MANIFESTS.json"
+            ],
+            "case_pointers": [
+              "Capture-package downstream importer and natural-configuration static active-import region SHA-256 match.",
+              "Natural F12 working header directly emits the complexity U8 from byte 119; capture record 6 is not joined to encoder_owner0 byte 119."
+            ],
+            "source_supplement_manifest_sha256": "7a3c8653a14f6b6dc367f7afaa963e639e6e53fa127a82b7e2f860a4a357fcd1"
+          },
+          "native_status": {
+            "same_static_importer_code_region": "STATIC_CLOSED",
+            "importer_operation": "LITERAL_COPY",
+            "natural_working_header_byte_offset": 119,
+            "f12_field": "complexity_index_type_a",
+            "capture_record6_to_encoder_owner0_byte119_same_call": "UNBOUND",
+            "same_parent_or_source_frame_au_generation": "UNBOUND",
+            "native_execution": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "No capture-record to natural encoder-owner/header runtime destination identity is established.",
+            "No same-call, parent, source/frame/AU generation link or selected published-AU use is established."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
           "slice_id": "selected-emdf-carrier-planner-reservation-writer-and-publication-gate",
           "mapping_status": "MATERIALIZED_SELECTED_TRANSPORT_SUBSLICE__WHOLE_F13C_DEFERRED",
           "implementation_status": "LOCALLY_VERIFIED_18_PRIMITIVES_FOUR_NATIVE_DIAGNOSTIC_AU_AND_SIX_CALL_GATE__WHOLE_F13C_OPEN",

@@ -225,6 +225,7 @@
 | F13/selected-metadata-owner-source-stage | F13 | `metadata` |
 | F13C/selected-bsi-count-and-payload-import | F13C | `metadata` |
 | F13C/washed-f13c-bsi-configuration-count-capture-local-lineage | F13C | `metadata` |
+| F13C/washed-f13c-bsi-importer-static-identity | F13C | `metadata` |
 | F13C/selected-emdf-carrier-planner-reservation-writer-and-publication-gate | F13C | `metadata` |
 | F13C/selected-input-eof-lifecycle-observation-replay | F13C | `metadata` |
 | F13C/selected-reader-partial-frame-input-padding | F13C | `metadata` |

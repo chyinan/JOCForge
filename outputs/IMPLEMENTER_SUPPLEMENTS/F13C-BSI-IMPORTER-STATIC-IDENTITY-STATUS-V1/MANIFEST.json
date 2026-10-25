@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F13C-BSI-IMPORTER-STATIC-IDENTITY-STATUS-V1",
+  "status": "STATIC_IMPORTER_REGION_IDENTITY_CLOSED_RUNTIME_DESTINATION_JOIN_UNBOUND",
+  "implementation_ready": false,
+  "source_reverse_manifest_sha256": "3c27cab02b71da47ebcbbadc6d5c0827f504ba73ffdc105cb677108735f2473a",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1529,
+      "sha256": "2e5e246aad5beb72efaece6d7f24d6d16eeeaf74862bd25bb3a3e8bd49d2c7c5"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2027,
+      "sha256": "8f472e2e23958467ff1aae335541ed34e08ae795dd90e01e54f1897938434fb7"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1898,
+      "sha256": "607134bab885a37286f08d8a0594727e593ca2e94e09b5c1be868df8ef0e6820"
+    }
+  ]
+}
