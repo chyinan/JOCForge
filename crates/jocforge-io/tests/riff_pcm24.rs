@@ -1,6 +1,8 @@
 // pattern: Functional Core
 use jocforge_domain::timeline::AdmSampleIndex;
-use jocforge_io::pcm::riff_pcm24::{ParsedRiffPcm24, RiffPcm24Error, parse_selected_riff_pcm24};
+use jocforge_io::pcm::riff_pcm24::{
+    ParsedRiffPcm24, RiffPcm24Error, decode_selected_pcm24_read_chunk, parse_selected_riff_pcm24,
+};
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 use std::path::PathBuf;
@@ -14,6 +16,9 @@ const UNIT_VECTORS_SHA256: &str =
 const ADAPTER_CONTRACT_SHA256: &str =
     "9bce2e35ce47147c76c13e58ee976d44c5109938f0b19e1f3a81f1d8a61fa1ae";
 const UNIT_README_SHA256: &str = "a455c6b33e582b0d359face09667e91622404fd203d376e446d615f9a52bbcce";
+const F06OF_INPUT_ONLY_VECTORS_PATH: &str = "../../outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json";
+const F06OF_INPUT_ONLY_VECTORS_SHA256: &str =
+    "16958ad2622e17d6667e825d430c2c6e5edd39dc61e148913ff1de252e39c976";
 
 fn crate_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -257,6 +262,68 @@ fn selected_adm_payloads_are_unique_borrowed_spans_from_one_riff() {
     assert!(is_subslice(&bytes, payloads.axml()));
     assert!(is_subslice(&bytes, payloads.chna()));
     assert!(is_subslice(&bytes, payloads.dbmd()));
+}
+
+#[test]
+fn pcm24_read_chunks_return_complete_frames_from_washed_input_vectors() {
+    let vector_bytes = std::fs::read(crate_root().join(F06OF_INPUT_ONLY_VECTORS_PATH)).unwrap();
+    assert_eq!(sha256(&vector_bytes), F06OF_INPUT_ONLY_VECTORS_SHA256);
+    let vectors: Value = serde_json::from_slice(&vector_bytes).unwrap();
+    assert_eq!(
+        vectors["grade"],
+        "MODEL_ARITHMETIC_ONLY; NO_PCM_ACCESS_OR_NATIVE_CALLBACK_OBSERVATIONS"
+    );
+
+    let mut checked_cases = 0;
+    for case in vectors["vectors"].as_array().unwrap() {
+        let input = &case["input"];
+        if input["channels"].as_u64() != Some(38) {
+            continue;
+        }
+        let expected = &case["expected"];
+        let block_align = expected["block_align_bytes"].as_u64().unwrap();
+        let requested_bytes =
+            u32::try_from(input["hop_frames"].as_u64().unwrap() * block_align).unwrap();
+        let read_bytes =
+            vec![0; usize::try_from(expected["last_actual_bytes"].as_u64().unwrap()).unwrap()];
+        let decoded = decode_selected_pcm24_read_chunk(&read_bytes, requested_bytes).unwrap();
+
+        assert_eq!(
+            decoded.actual_frames().value(),
+            expected["last_actual_frames"].as_u64().unwrap(),
+            "{}",
+            case["id"]
+        );
+        assert_eq!(decoded.planar_f32_bits().len(), 38);
+        assert!(
+            decoded
+                .planar_f32_bits()
+                .iter()
+                .all(|channel| channel.len() == decoded.actual_frames().value() as usize)
+        );
+        checked_cases += 1;
+    }
+    assert_eq!(checked_cases, 3);
+}
+
+#[test]
+fn pcm24_read_chunk_ignores_incomplete_tail_and_preserves_channel_order() {
+    let requested_bytes = 2 * 114;
+    let mut read_bytes = vec![0xff; 114 + 113];
+    read_bytes[..3].copy_from_slice(&[0xff, 0xff, 0x7f]);
+    read_bytes[3..6].copy_from_slice(&[0x00, 0x00, 0x80]);
+    read_bytes[6..9].copy_from_slice(&[0xff, 0xff, 0xff]);
+    read_bytes[9..12].copy_from_slice(&[0x00, 0x00, 0x00]);
+
+    let decoded = decode_selected_pcm24_read_chunk(&read_bytes, requested_bytes).unwrap();
+
+    assert_eq!(decoded.actual_frames().value(), 1);
+    assert_eq!(decoded.planar_f32_bits().len(), 38);
+    assert!(decoded.planar_f32_bits().iter().all(|row| row.len() == 1));
+    assert_eq!(decoded.planar_f32_bits()[0][0], 0x3f7f_fffe);
+    assert_eq!(decoded.planar_f32_bits()[1][0], 0xbf80_0000);
+    assert_eq!(decoded.planar_f32_bits()[2][0], 0xb400_0000);
+    assert_eq!(decoded.planar_f32_bits()[3][0], 0x0000_0000);
 }
 
 #[test]

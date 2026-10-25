@@ -18,6 +18,7 @@ const CHUNK_HEADER_BYTES: usize = 8;
 const PCM24_SIGN_BIT: i32 = 0x0080_0000;
 const PCM24_MODULUS: i32 = 0x0100_0000;
 const PCM24_SCALE: f32 = 8_388_608.0;
+const PCM24_INT32_SCALE: f32 = 1.0 / 2_147_483_648.0;
 
 /// The selected model-reader failure projection.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -30,6 +31,33 @@ impl RiffPcm24Error {
         match self {
             Self::InvalidInput => "INVALID_INPUT",
         }
+    }
+}
+
+/// Number of complete interleaved frames returned by one PCM24 read.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct Pcm24FrameCount(u64);
+
+impl Pcm24FrameCount {
+    pub const fn value(self) -> u64 {
+        self.0
+    }
+}
+
+/// Planar F32 bit rows decoded from the complete frames in one successful read.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct DecodedPcm24ReadChunk {
+    actual_frames: Pcm24FrameCount,
+    planar_f32_bits: Vec<Vec<u32>>,
+}
+
+impl DecodedPcm24ReadChunk {
+    pub const fn actual_frames(&self) -> Pcm24FrameCount {
+        self.actual_frames
+    }
+
+    pub fn planar_f32_bits(&self) -> &[Vec<u32>] {
+        &self.planar_f32_bits
     }
 }
 
@@ -191,6 +219,67 @@ impl<'a> ParsedRiffPcm24<'a> {
         }
         Ok(planar)
     }
+}
+
+/// Functional Core: decode the complete PCM24 frames from one successful byte read.
+///
+/// The caller reports the number of bytes it requested. A short read is accepted;
+/// trailing bytes that do not complete an interleaved frame are not decoded. This
+/// function performs no file access and does not update a source cursor or row table.
+pub fn decode_selected_pcm24_read_chunk(
+    read_bytes: &[u8],
+    requested_bytes: u32,
+) -> Result<DecodedPcm24ReadChunk, RiffPcm24Error> {
+    let actual_bytes = u32::try_from(read_bytes.len()).map_err(|_| RiffPcm24Error::InvalidInput)?;
+    if actual_bytes > requested_bytes {
+        return Err(RiffPcm24Error::InvalidInput);
+    }
+
+    let actual_byte_count =
+        usize::try_from(actual_bytes).map_err(|_| RiffPcm24Error::InvalidInput)?;
+    let frame_count = actual_byte_count / SELECTED_BLOCK_ALIGN;
+    let complete_bytes = frame_count
+        .checked_mul(SELECTED_BLOCK_ALIGN)
+        .ok_or(RiffPcm24Error::InvalidInput)?;
+    let mut planar_f32_bits = (0..SELECTED_CHANNELS)
+        .map(|_| Vec::with_capacity(frame_count))
+        .collect::<Vec<_>>();
+
+    for frame in 0..frame_count {
+        let frame_offset = frame
+            .checked_mul(SELECTED_BLOCK_ALIGN)
+            .ok_or(RiffPcm24Error::InvalidInput)?;
+        for (channel, row) in planar_f32_bits.iter_mut().enumerate() {
+            let offset = frame_offset
+                .checked_add(channel * 3)
+                .ok_or(RiffPcm24Error::InvalidInput)?;
+            let sample_end = offset.checked_add(3).ok_or(RiffPcm24Error::InvalidInput)?;
+            if sample_end > complete_bytes {
+                return Err(RiffPcm24Error::InvalidInput);
+            }
+            let packed = &read_bytes[offset..sample_end];
+            let unsigned =
+                i32::from(packed[0]) | (i32::from(packed[1]) << 8) | (i32::from(packed[2]) << 16);
+            let signed = if unsigned & PCM24_SIGN_BIT != 0 {
+                unsigned - PCM24_MODULUS
+            } else {
+                unsigned
+            };
+            let shifted = signed << 8;
+            let normalized = (shifted as f32) * PCM24_INT32_SCALE;
+            if !normalized.is_finite() {
+                return Err(RiffPcm24Error::InvalidInput);
+            }
+            row.push(normalized.to_bits());
+        }
+    }
+
+    Ok(DecodedPcm24ReadChunk {
+        actual_frames: Pcm24FrameCount(
+            u64::try_from(frame_count).map_err(|_| RiffPcm24Error::InvalidInput)?,
+        ),
+        planar_f32_bits,
+    })
 }
 
 fn unique_metadata_payload<'a>(

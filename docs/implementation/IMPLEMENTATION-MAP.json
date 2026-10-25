@@ -6282,6 +6282,80 @@
             "No dynamic capture is authorized; source PCM remains NOT_REHASHED and native execution remains NOT_RUN."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "selected-pcm24-read-chunk-decoder",
+          "mapping_status": "MATERIALIZED_DIRECT_F06OF_READ_CHUNK_SUBSLICE__SOURCE_ROW_AND_EOF_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_COMPLETE_FRAME_COUNT_AND_PLANAR_PCM24_CHUNK_DECODE__NO_SOURCE_JOIN",
+          "scope": "Decode one successful PCM24 byte-read result for the selected 38-channel layout. Reject an actual byte count above the U32 request, count complete frames as floor(actual_bytes/114), ignore an incomplete trailing frame, and return planar F32 bit rows in source channel ordinal order. This pure helper performs no file I/O and changes no row table or cursor. It does not bind a physical PCM row to a measurement descriptor, source owner/generation, OS status, EOF, drain, or selected native invocation.",
+          "owner": "io",
+          "implementation_files": [
+            "crates/jocforge-io/src/pcm/riff_pcm24.rs"
+          ],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Actual frame count is local to one byte-read result; no source cursor, callback, descriptor or generation clock is advanced or joined."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F06OF_SELECTED_PCM24_READ_CHUNK_CONTRACT",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V2/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V2/SOURCE-MANIFESTS.json"
+            ],
+            "supplement_manifest_sha256": "cde8e18f85933811766a9b69cfacf52ffd4eed5a149e894cff22a4d526b3698b",
+            "source_hash_correction_manifest_sha256": "417ea5156b56fa31a0174265fbc178aceb3ce4c152f1f7e26ead54c7de1984fe",
+            "approved_model_spec_sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423",
+            "validation_boundary": "The static reader contract and approved model arithmetic support this byte-chunk conversion; selected source-row and measurement joins remain unbound."
+          },
+          "test_modules": [
+            "crates/jocforge-io/tests/riff_pcm24.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_F06OF_ACTUAL_BYTES_TO_COMPLETE_PCM24_FRAME_COUNT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/CONTRACT.md"
+            ],
+            "case_pointers": [
+              "The three selected 38-channel arithmetic cases verify 1050 actual frames, 1536 exact-hop frames, and one actual frame from 119700, 175104, and 114 read bytes respectively.",
+              "A local synthetic byte case verifies signed PCM24 to F32 conversion in ordinal channel order and floor-count handling of a 113-byte incomplete tail; it contains no source PCM or native observation.",
+              "The vector grade is model arithmetic only and does not bind reader identity, source row, descriptor, cursor, EOF or drain."
+            ],
+            "source_supplement_manifest_sha256": "cde8e18f85933811766a9b69cfacf52ffd4eed5a149e894cff22a4d526b3698b"
+          },
+          "native_status": {
+            "selected_block_align_bytes": 114,
+            "selected_channel_count": 38,
+            "read_result_to_complete_frame_count": "LOCALLY_VERIFIED",
+            "planar_pcm24_conversion": "LOCALLY_VERIFIED_FOR_SYNTHETIC_INPUT",
+            "source_row_to_measurement_descriptor": "UNBOUND",
+            "owner_or_source_generation": "UNBOUND",
+            "os_status_and_eof": "NOT_IMPLEMENTED",
+            "native_execution": "NOT_RUN"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "INVALID_INPUT",
+              "category": "local read-chunk extent validation",
+              "trigger": "The supplied actual byte extent exceeds the requested U32 byte count or is not representable as U32.",
+              "programme_state_after": "No decoded chunk is returned; this helper changes no row table, cursor or persistent state.",
+              "caller_action": "Reject the local read chunk. This result does not claim native public status or error parity."
+            }
+          ],
+          "not_run": [
+            "No file adapter or OS status mapping is implemented by this helper.",
+            "No source-row, selected descriptor, cursor, owner/generation, EOF or drain join is implemented.",
+            "No native, real ADM, product or whole-meter acceptance was performed."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
