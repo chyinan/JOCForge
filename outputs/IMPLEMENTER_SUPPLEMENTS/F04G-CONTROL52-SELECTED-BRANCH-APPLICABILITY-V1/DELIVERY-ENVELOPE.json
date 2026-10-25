@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge-washed-supplement-delivery.v1",
+  "package_id": "F04G-CONTROL52-SELECTED-BRANCH-APPLICABILITY-V1",
+  "manifest_sha256": "5b78ecf9996e228e543648a1f4989684e28354510bf5e2e09f169b89369d91b6",
+  "payload_files": 4,
+  "selected_branch": "CONDITIONALLY_REACHABLE; ACTUAL_INPUT_NOT_OBSERVED",
+  "mode_crosswalk": "UNBOUND",
+  "gate_join": "UNBOUND"
+}

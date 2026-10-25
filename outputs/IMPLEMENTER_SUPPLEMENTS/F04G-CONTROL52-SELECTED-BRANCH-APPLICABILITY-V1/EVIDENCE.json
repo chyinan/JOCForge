@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.control52-selected-branch-applicability-evidence.v1",
+  "status": "PARTIAL; SELECTED_BRANCH_APPLICABILITY_NOT_OBSERVED",
+  "provenance": {
+    "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "approved_specs": [
+      {"path":"specs/01-frontend-config-dbmd-events.md","sha256":"afd9efc879ed9a4878bd967c1370275074efd2226e11e67eb86838f4168f61b7","clause":"F01E.4/F01E.6/F01E.7"},
+      {"path":"specs/01-adm-graph-and-time.md","sha256":"c3abb599305392cdad7b43a1d8d45b1c1ae0466ff899f56caa3590d010a11f14","clause":"F01G.1/F01G.5"}
+    ],
+    "selector_static_package_manifest_sha256":"f45817e030124bb2f1b4131342ca080b9ca52492e58a2a28a9e37649bc342d36",
+    "constructor_region_identity_erratum_manifest_sha256":"ac1d68eb2db528393fb9f28f039a5a7b94554d04a3a33eb206c2efd2df584f6f",
+    "source_image_sha256":"3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "native_execution":"NOT_RUN",
+    "actual_selected_adm_categories":"NOT_READ_NOT_OBSERVED",
+    "private_user_data_or_pcm_included":false,
+    "private_key_or_auth_material_included":false
+  },
+  "remaining_edges": [
+    "clean ADM semantic identity to native selector category byte",
+    "selected source-mode field to native context mode flag",
+    "formatter output to selected handler gate owner/generation"
+  ]
+}

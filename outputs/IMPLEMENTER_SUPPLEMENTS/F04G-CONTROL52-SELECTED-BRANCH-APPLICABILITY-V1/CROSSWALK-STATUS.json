@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge.control52-selected-branch-crosswalk-status.v1",
+  "status": "NATIVE_SELECTOR_APPLICABILITY_NOT_OBSERVED",
+  "native_condition_from_wash_status": "source_mode != 1 AND an unsupported category occurs within input_count",
+  "clean_fields": {
+    "warm_trim_mode": {"selected_value": 3, "source_clause": "F01E.4"},
+    "authored_source_mode_byte": {"selected_value": 4, "formula": "warm_trim_mode + 1", "consumer": "surround_ex_mode derivation"},
+    "bed_count": 10,
+    "object_count": 28,
+    "physical_host_channel_identity": "channel_format_id + semantic_role + host_channel_index"
+  },
+  "crosswalks": {
+    "authored_source_mode_byte_to_native_context_source_mode": "UNBOUND; clean spec marks domains distinct",
+    "bed_object_semantic_identity_to_native_selector_category_byte": "UNBOUND",
+    "clean_selected_category_set_to_native_selector_supported_set": "UNBOUND",
+    "selected_zero_selector_callback_reachability": "NOT_OBSERVED"
+  },
+  "do_not_infer": [
+    "Do not treat authored_source_mode_byte=4 as native source_mode=4.",
+    "Do not infer native selector category from bed/object type or host_channel_index.",
+    "Do not infer branch reachability from equal counts or neighboring events."
+  ],
+  "native_or_user_input_values_read": false
+}

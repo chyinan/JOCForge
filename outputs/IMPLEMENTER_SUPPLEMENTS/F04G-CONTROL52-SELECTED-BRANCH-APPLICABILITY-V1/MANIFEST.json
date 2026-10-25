@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge-washed-supplement-manifest.v1",
+  "package_id": "F04G-CONTROL52-SELECTED-BRANCH-APPLICABILITY-V1",
+  "status": "PARTIAL_STATIC_SELECTED_BRANCH_NOT_OBSERVED_CROSSWALKS_UNBOUND",
+  "implementation_ready_for_live_gate_join": false,
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "bytes": 1348,
+      "sha256": "6cdc127cc20b3b2e3319599ba4672cbf5a38b141247f66de62bec62a172ed4d6"
+    },
+    {
+      "path": "CROSSWALK-STATUS.json",
+      "bytes": 1283,
+      "sha256": "84588484bdfbed5c9a3fe282156011f80d5fcf6f85005ae0bc63d44b63fad371"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 1373,
+      "sha256": "50b9a9ed93b65a213708378c211b96aeecb9f5380eccad78f76c93cb09a2febe"
+    },
+    {
+      "path": "check_package.py",
+      "bytes": 1724,
+      "sha256": "e71a61b65dbe8e93a66b7cbbfa6c39c79d028579b22cba4d1fdcc2c85d180db0"
+    }
+  ]
+}
