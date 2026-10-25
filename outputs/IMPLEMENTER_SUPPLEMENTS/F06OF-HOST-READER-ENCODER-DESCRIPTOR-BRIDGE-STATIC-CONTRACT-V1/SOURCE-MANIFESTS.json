@@ -1,0 +1,30 @@
+{
+  "schema": "jocforge-f06of-host-reader-encoder-bridge-source-manifests.v1",
+  "reverse_package_manifest_sha256": "7f19c4dbc040cc3710b016b3a187f878467a42693455f2c945a1354c200cd3e2",
+  "approved_f06of_model": {
+    "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "path": "outputs/IMPLEMENTER_PACKAGE/specs/06-oar-frontend-input-and-clock-join.md",
+    "sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423"
+  },
+  "related_washed_packages": [
+    {
+      "role": "reader static semantics and source cursor boundaries",
+      "package_id": "F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1",
+      "manifest_sha256": "cde8e18f85933811766a9b69cfacf52ffd4eed5a149e894cff22a4d526b3698b"
+    },
+    {
+      "role": "selected measurement descriptor consumer",
+      "manifest_sha256": "ebe915e442cdcfa2807312e51de759b841e9788f3eb00e973e60f8b5fe703c93"
+    },
+    {
+      "role": "F13C native profile wrapper conditional input contract",
+      "manifest_sha256": "49ad6f47bb86c8e0b771c2f07031dc1f807505929162402c5e43e530a7c1d093"
+    }
+  ],
+  "provenance_correction": {
+    "source_hash_erratum_v1_withdrawn": true,
+    "source_hash_correction_v2_manifest_sha256": "417ea5156b56fa31a0174265fbc178aceb3ce4c152f1f7e26ead54c7de1984fe",
+    "approved_F06OF_hash_matches_original_reader_source_identity": true
+  },
+  "identity_limit": "Static module/contract identity does not prove selected source instance, converter-to-master ownership, or measurement generation."
+}

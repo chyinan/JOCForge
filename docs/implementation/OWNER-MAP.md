@@ -178,6 +178,7 @@
 | F06OF/washed-f06of-seek-row-table-output-path-erratum | F06OF | `meter` |
 | F06OF/washed-f06of-selected-input-reader-static-contract | F06OF | `meter` |
 | F06OF/washed-f06of-host-reader-borrowed-row-adapter-status | F06OF | `meter` |
+| F06OF/washed-f06of-reader-descriptor-to-encoder-wrapper-bridge-status | F06OF | `meter` |
 | F06OF/washed-f06of-producer-join-status-and-receipt-hold | F06OF | `meter` |
 | F06NR/single-lane-secondary-overlap-carry | F06NR | `drc` |
 | F06NR/selected-secondary-carrier-routing | F06NR | `drc` |

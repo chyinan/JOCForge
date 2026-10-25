@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge-f06of-host-reader-encoder-descriptor-static-identity.v1",
+  "grade": "HASH_BOUND_STATIC_BRANCH_RELATIONS; SELECTED_RUNTIME_NOT_CAPTURED",
+  "cases": [
+    {
+      "id": "plain-reader-to-pe-encoder-worker-path",
+      "input": {
+        "plain_reader_branch_condition": "worker configuration byte is zero",
+        "pe_encoder_branch_condition": "worker configuration signed I32 is zero"
+      },
+      "observed": {
+        "reader_returns_descriptor_D": true,
+        "same_descriptor_D_passed_to_encoder_process": true,
+        "descriptor_is_actual_selected_runtime_instance": "UNBOUND"
+      }
+    },
+    {
+      "id": "descriptor-field-ownership",
+      "input": "static reader-master metadata fields and worker-local descriptor D",
+      "observed": {
+        "reader_master_metadata_to_D": "STATIC_DIRECT_LOAD_QUERY_AND_COPY",
+        "encoder_process_consumes_same_D": true,
+        "runtime_field_values_read": false
+      }
+    },
+    {
+      "id": "converter-and-meter-identity-guard",
+      "input": {
+        "converter_storage_owner_C": "separate module owner",
+        "F06OF_meter_descriptor": "separate measurement interface"
+      },
+      "expected": {
+        "C_to_worker_master_identity": "UNBOUND",
+        "D_to_meter_descriptor_identity": "UNBOUND",
+        "same_source_generation": "UNBOUND"
+      }
+    }
+  ]
+}

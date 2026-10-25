@@ -6159,6 +6159,67 @@
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
         {
+          "slice_id": "washed-f06of-reader-descriptor-to-encoder-wrapper-bridge-status",
+          "mapping_status": "WASHED_STATIC_READER_DESCRIPTOR_TO_ENCODER_WRAPPER_CLOSED__CONVERTER_AND_METER_JOINS_UNBOUND",
+          "implementation_status": "WASHED_STATIC_DESCRIPTOR_FORWARDING_PATH_CLOSED__SELECTED_SOURCE_AND_METER_IDENTITY_OPEN",
+          "scope": "The reviewed static path returns reader worker descriptor D, passes the same D to the public PE encoder process, and forwards D through the private process to lazy-open/profile-wrapper paths; reader-master metadata fields statically populate D. This does not join host source-property proxy to worker configuration, converter source owner C to encoder master, D to the F06OF measurement descriptor, selected branch values, or any source/reset generation. EOF/drain remains UNBOUND.",
+          "owner": "io",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Static descriptor forwarding and metadata field writes do not establish a selected source, callback, sample cursor or generation."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F06OF_READER_DESCRIPTOR_TO_ENCODER_WRAPPER_STATIC_BRIDGE_V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-HOST-READER-ENCODER-DESCRIPTOR-BRIDGE-STATIC-CONTRACT-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-HOST-READER-ENCODER-DESCRIPTOR-BRIDGE-STATIC-CONTRACT-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-HOST-READER-ENCODER-DESCRIPTOR-BRIDGE-STATIC-CONTRACT-V1/STATIC-IDENTITY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-HOST-READER-ENCODER-DESCRIPTOR-BRIDGE-STATIC-CONTRACT-V1/SOURCE-MANIFESTS.json"
+            ],
+            "supplement_manifest_sha256": "f23d99d03bc49d3a589697f625d8d492751bbfa9f131c4239bd86bf1794877ad",
+            "converter_module_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+            "host_module_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
+            "encoder_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+            "validation_boundary": "Reviewed static descriptor path only; source owner, meter descriptor, selected invocation and generation remain unbound."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_F06OF_READER_DESCRIPTOR_BRIDGE_STATIC_FACTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-HOST-READER-ENCODER-DESCRIPTOR-BRIDGE-STATIC-CONTRACT-V1/STATIC-IDENTITY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-HOST-READER-ENCODER-DESCRIPTOR-BRIDGE-STATIC-CONTRACT-V1/EVIDENCE.json"
+            ],
+            "case_pointers": [
+              "Reader returns descriptor D; the same D is passed to the public PE encoder process and forwarded to lazy-open/profile-wrapper paths.",
+              "Reader-master metadata writes populate D statically; D is not identified as the F06OF measurement descriptor.",
+              "Host proxy/worker config, converter C/encoder master, selected source generation and EOF/drain remain UNBOUND."
+            ],
+            "source_supplement_manifest_sha256": "f23d99d03bc49d3a589697f625d8d492751bbfa9f131c4239bd86bf1794877ad"
+          },
+          "native_status": {
+            "reader_descriptor_D_to_public_encoder_process": "STATIC_CLOSED",
+            "descriptor_D_forwarded_to_private_lazy_open_profile_path": "STATIC_CLOSED",
+            "reader_master_metadata_to_D": "STATIC_DIRECT_LOAD_QUERY_AND_COPY",
+            "host_source_proxy_to_worker_configuration": "UNBOUND",
+            "converter_owner_C_to_encoder_master": "UNBOUND",
+            "descriptor_D_to_meter_descriptor": "UNBOUND",
+            "same_source_or_reset_generation": "UNBOUND",
+            "EOF_or_drain": "UNBOUND",
+            "native_execution": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "No selected-run host/source invocation or converter-owner handoff is established.",
+            "No reader descriptor-to-meter descriptor/source generation join or EOF/drain contract is established.",
+            "No PCM, row buffer, native target or product acceptance was run."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
           "slice_id": "washed-f06of-producer-join-status-and-receipt-hold",
           "mapping_status": "WASHED_PARTIAL_STATIC_MODEL_PRODUCER_JOIN_UNBOUND",
           "implementation_status": "WASHED_MODEL_CLOCK_RESET_ONLY_PRODUCER_ROW_AND_DESCRIPTOR_JOIN_UNBOUND",
