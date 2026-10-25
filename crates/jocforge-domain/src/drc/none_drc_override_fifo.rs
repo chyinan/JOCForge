@@ -10,7 +10,7 @@ const APPEND_SLOT: u8 = 3;
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ZeroLogicalRecord;
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq)]
 pub struct NoneDrcOverrideFifoState {
     records: [ZeroLogicalRecord; LOGICAL_RECORD_COUNT],
     frames_processed: u64,
@@ -56,19 +56,23 @@ impl NoneDrcOverrideFifoError {
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq)]
 pub struct NoneDrcOverrideFifoTransition {
     consumed_record: ZeroLogicalRecord,
     next_state: NoneDrcOverrideFifoState,
 }
 
 impl NoneDrcOverrideFifoTransition {
-    pub const fn consumed_record(self) -> ZeroLogicalRecord {
+    pub const fn consumed_record(&self) -> ZeroLogicalRecord {
         self.consumed_record
     }
 
-    pub const fn next_state(self) -> NoneDrcOverrideFifoState {
-        self.next_state
+    pub const fn next_state(&self) -> &NoneDrcOverrideFifoState {
+        &self.next_state
+    }
+
+    pub fn into_parts(self) -> (ZeroLogicalRecord, NoneDrcOverrideFifoState) {
+        (self.consumed_record, self.next_state)
     }
 }
 

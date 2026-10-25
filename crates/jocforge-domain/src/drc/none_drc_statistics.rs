@@ -46,7 +46,7 @@ pub struct NoneDrcStatisticsFrameInput<'a> {
 }
 
 /// Committed per-programme state used only by this statistics transition.
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct NoneDrcStatisticsState {
     filter_pairs: [[f32; 2]; FULLBAND_CHANNEL_COUNT],
     previous_primary_peak: [f32; CHANNEL_COUNT],
@@ -79,6 +79,15 @@ impl NoneDrcStatisticsState {
     pub const fn previous_downmix_peak(&self) -> f32 {
         self.previous_downmix_peak
     }
+
+    fn staged_next_state(&self) -> Self {
+        Self {
+            filter_pairs: self.filter_pairs,
+            previous_primary_peak: self.previous_primary_peak,
+            previous_secondary_peak: self.previous_secondary_peak,
+            previous_downmix_peak: self.previous_downmix_peak,
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -98,7 +107,7 @@ pub struct NoneDrcStatisticsFrameOutput {
     pub auxiliary_raw_peaks_six: [f32; BLOCK_COUNT],
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct NoneDrcStatisticsFrameTransition {
     pub output: NoneDrcStatisticsFrameOutput,
     pub next_state: NoneDrcStatisticsState,
@@ -143,7 +152,7 @@ pub fn transition_none_drc_statistics_frame(
     let dialnorm_offset = f32::from_bits(none_drc_dialnorm_offset_word(input.dialnorm)?);
     let filter_vectors = paired_filter_vectors()?;
     let auxiliary_coefficients = auxiliary_mix_coefficients()?;
-    let mut next_state = *state;
+    let mut next_state = state.staged_next_state();
     let mut rms_levels_six = [POSITIVE_ZERO; BLOCK_COUNT];
     let mut peak_inputs_six = [POSITIVE_ZERO; BLOCK_COUNT];
     let mut auxiliary_raw_peaks_six = [POSITIVE_ZERO; BLOCK_COUNT];

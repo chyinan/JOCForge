@@ -64,7 +64,7 @@ impl LimiterState {
 }
 
 /// Selected continuous scheduler state for one programme.
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct NoneDrcSchedulerState {
     rf: NoneDynamicsState,
     line: NoneDynamicsState,
@@ -109,6 +109,17 @@ impl NoneDrcSchedulerState {
     pub const fn generation(&self) -> u64 {
         self.generation
     }
+
+    fn staged_next_state(&self) -> Self {
+        Self {
+            rf: self.rf,
+            line: self.line,
+            rf_limiter: self.rf_limiter,
+            line_limiter: self.line_limiter,
+            peak_six: self.peak_six,
+            generation: self.generation,
+        }
+    }
 }
 
 /// One scheduler input row. RMS levels are included as validated peer output;
@@ -134,7 +145,7 @@ pub struct NoneDrcSchedulerFrameOutput {
     pub line_gain_words: [u32; BLOCK_COUNT],
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct NoneDrcSchedulerFrameTransition {
     pub output: NoneDrcSchedulerFrameOutput,
     pub next_state: NoneDrcSchedulerState,
@@ -192,7 +203,7 @@ pub fn transition_none_drc_scheduler_frame(
         peak_logs_six[block] = clamp(r32_add_values(normalized, half_offset)?);
     }
 
-    let mut next_state = *state;
+    let mut next_state = state.staged_next_state();
     next_state.peak_six = peak_logs_six;
 
     let rf_peak_log = peak_logs_six[1..]

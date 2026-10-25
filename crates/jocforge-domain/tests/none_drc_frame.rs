@@ -101,7 +101,7 @@ fn eight_statistics_frames_feed_the_same_scheduler_invocation_and_state_chain() 
         .unwrap()
         .unwrap();
         let callback_clock = callback_transition.clock();
-        let transition = *callback_transition.frame();
+        let transition = callback_transition.frame();
         assert_eq!(
             callback_clock.source_index,
             CodecSourceIndex::new(u64::try_from(step).unwrap()),
@@ -175,9 +175,11 @@ fn eight_statistics_frames_feed_the_same_scheduler_invocation_and_state_chain() 
             independent_scheduler.next_state
         );
 
-        statistics_state = transition.next_statistics_state;
-        scheduler_state = transition.next_scheduler_state;
-        fifo_state = next_fifo_state;
+        let (_, frame_transition, fifo_transition, _) = callback_transition.into_parts();
+        let (_, fifo_state_after) = fifo_transition.into_parts();
+        statistics_state = frame_transition.next_statistics_state;
+        scheduler_state = frame_transition.next_scheduler_state;
+        fifo_state = fifo_state_after;
     }
 }
 
@@ -192,7 +194,8 @@ fn source_generation_mismatch_returns_drc_input_error_without_state_change() {
         CodecSourceIndex::new(0),
     )
     .unwrap()
-    .next_state();
+    .into_parts()
+    .1;
     let input = NoneDrcFrameInput {
         primary_samples: &primary,
         secondary_samples: &secondary,
@@ -337,7 +340,8 @@ fn callback_fifo_generation_mismatch_rejects_before_staging_frame_owners() {
     let fifo_after_source_zero =
         transition_none_drc_override_fifo(&fifo_before, CodecSourceIndex::new(0))
             .unwrap()
-            .next_state();
+            .into_parts()
+            .1;
     let statistics_before = NoneDrcStatisticsState::cold();
     let scheduler_before = NoneDrcSchedulerState::cold();
     let input = NoneDrcCallbackInput {

@@ -7301,8 +7301,8 @@
         {
           "slice_id": "selected-none-drc-statistics-to-scheduler-frame-composition",
           "mapping_status": "MATERIALIZED_SELECTED_F06ND_SAME_FRAME_COMPOSITION__PARENT_COMMIT_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_8_FRAME_STATS_SCHEDULER_BSI_CLOCK_AND_LOGICAL_FIFO__PARENT_COMMIT_OPEN",
-          "scope": "A pure callback stage returns no F06ND transition for priming callback g=0/1. For g>=2 it derives typed source s=g-2, dispatch d=s+1, and generated writer d-1=s; it requires both scheduler generation and zero-logical-FIFO frames_processed to equal s, stages statistics then scheduler, stages the per-source FIFO zero-record transition, and carries the RF/six-line high-byte projection from that exact scheduler output with the typed suppressed/published AU and writer disposition. It does not bind sample planes to an upstream owner receipt, serialize logical FIFO records, decide F12 field position/order or CRC, commit state, or connect application::encode.",
+          "implementation_status": "LOCALLY_VERIFIED_8_FRAME_STATS_SCHEDULER_BSI_CLOCK_FIFO__MOVE_ONLY_PROPOSALS__PARENT_COMMIT_OPEN",
+          "scope": "A pure callback stage returns no F06ND transition for priming callback g=0/1. For g>=2 it derives typed source s=g-2, dispatch d=s+1, and generated writer d-1=s; it requires both scheduler generation and zero-logical-FIFO frames_processed to equal s, stages statistics then scheduler, stages the per-source FIFO zero-record transition, and carries the RF/six-line high-byte projection from that exact scheduler output with the typed suppressed/published AU and writer disposition. Persistent statistics/scheduler/FIFO state and staged transition values are non-Clone/non-Copy; consuming into_parts methods transfer the staged values once. This does not bind sample planes to an upstream owner receipt, serialize logical FIFO records, decide F12 field position/order or CRC, perform the parent commit, or connect application::encode.",
           "implementation_files": [
             "crates/jocforge-domain/src/lib.rs",
             "crates/jocforge-domain/src/drc/mod.rs",

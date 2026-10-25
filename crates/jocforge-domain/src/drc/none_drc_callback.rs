@@ -30,7 +30,7 @@ pub struct NoneDrcCallbackInput<'a> {
     pub dialnorm: i32,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct NoneDrcCallbackTransition {
     clock: NoneDrcCallbackClock,
     frame: NoneDrcFrameTransition,
@@ -53,6 +53,17 @@ impl NoneDrcCallbackTransition {
 
     pub const fn dialnorm(&self) -> i32 {
         self.dialnorm
+    }
+
+    pub fn into_parts(
+        self,
+    ) -> (
+        NoneDrcCallbackClock,
+        NoneDrcFrameTransition,
+        NoneDrcOverrideFifoTransition,
+        i32,
+    ) {
+        (self.clock, self.frame, self.fifo_transition, self.dialnorm)
     }
 }
 

@@ -30,7 +30,7 @@ pub struct NoneDrcFrameOutput {
     pub bsi_projection: NoneDrcBsiProjection,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub struct NoneDrcFrameTransition {
     pub output: NoneDrcFrameOutput,
     pub next_statistics_state: NoneDrcStatisticsState,

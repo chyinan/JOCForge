@@ -15,8 +15,9 @@ fn cold_and_per_source_transitions_keep_four_logical_zero_records() {
     for source in 0..8 {
         let transition =
             transition_none_drc_override_fifo(&state, CodecSourceIndex::new(source)).unwrap();
-        assert_eq!(transition.consumed_record(), ZeroLogicalRecord);
-        state = transition.next_state();
+        let (consumed_record, next_state) = transition.into_parts();
+        assert_eq!(consumed_record, ZeroLogicalRecord);
+        state = next_state;
         assert_eq!(state.records(), &[ZeroLogicalRecord; 4]);
         assert_eq!(state.frames_processed(), source + 1);
     }
