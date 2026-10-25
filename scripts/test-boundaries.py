@@ -931,6 +931,10 @@ def main():
   ('f05r56-provider-fixture-tampered',f04r_fixture_mut('crates/jocforge-domain/tests/fixtures/reader_target/reader56-main-panner-v1.json',flip_first_byte)),
   ('f05r56-receipt-input-fixture-tampered',f04r_fixture_mut('crates/jocforge-domain/tests/fixtures/reader_target/READER-TARGET-RECEIPT-INPUTS.json',flip_first_byte))
  ]
+ cases += [
+  ('f13c-projection-clip-source-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/joc/dispatch_state.rs','clip_gain_index: projection.descriptor_selected_index(),','clip_gain_index: 0,')),
+  ('f13c-sequence-source-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/joc/dispatch_state.rs','let sequence_count = if before.sequence_counter < 0','let sequence_count = if input.clip_gain_index == 0'))
+ ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]
   if not cases:raise RuntimeError('no boundary mutations match case prefix: '+x.case_prefix)

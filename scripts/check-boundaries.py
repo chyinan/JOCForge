@@ -2711,6 +2711,30 @@ def check_diffusion_filter_slice(root,d):
  ck(all(name in tail_tests for name in ('cold_tail_filters_previous_then_current_and_caches_current_outputs','warm_tail_uses_cached_previous_output_and_processes_current_pcm_only','inactive_removes_the_tail_and_reactivation_restarts_from_cold','warm_tail_without_the_same_instance_output_cache_fails_closed')),'F04F tail synthetic lifecycle coverage')
  ck('std::fs'not in tail_code and 'std::env'not in tail_code and 'std::process'not in tail_code and not re.search(r'pub\s+fn\s+.*\busize\b',tail_code),'F04F tail domain boundary has no I/O or public platform-size clock')
 
+def check_f13c_clip_sequence_lineage(root,d):
+ entries={entry['functional_id']:entry for entry in d['functional_entries']}
+ slices=entries['F13C']['direct_slices']
+ matches=[item for item in slices if item.get('slice_id')=='controlled-id14-coefficient-to-payload-writer']
+ ck(len(matches)==1,'one controlled F13C ID14 writer slice')
+ direct=matches[0]
+ expected={
+  'clip_field_manifest_sha256':'636dacc31eb2275f0d8fd4cfad1a21bb3e1ab51e9c442a4f5a5f424f6e25384c',
+  'virtual_ida_recheck_manifest_sha256':'47f4af4743e51563667b16764135bb16ca37058faecf9ec0bc4268bf39dc20cc',
+  'local_clip_source':'SelectedJocQmfProjection.descriptor_selected_index -> JocPayloadInput.clip_gain_index',
+  'local_sequence_source':'JocDispatchState.sequence_counter -> JocPayloadInput to stage_joc_payload sequence argument',
+  'separation_test':'one projection-to-writer-input test checks clip forwarding; writer tests hold clip=128 while sequence advances 0,0,1 and separately wrap 1023->1',
+  'native_source_join':'natural raw event base/value remains NOT_CAPTURED; whole-primary equivalence NOT_ESTABLISHED'
+ }
+ ck(direct.get('vectors',{}).get('wash_lineage_revalidation')==expected,'F13C Wash revalidation remains identity-bound and non-promoting')
+ dispatch=(root/'crates/jocforge-domain/src/joc/dispatch_state.rs').read_text(encoding='utf-8')
+ source=(root/'crates/jocforge-domain/src/joc/source_stage.rs').read_text(encoding='utf-8')
+ fit_tests=(root/'crates/jocforge-domain/src/joc/coefficient_fitting.rs').read_text(encoding='utf-8')
+ projection_test=(root/'crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests/spatial_audio_composer.rs').read_text(encoding='utf-8')
+ ck('clip_gain_index: projection.descriptor_selected_index()' in dispatch and 'let sequence_count = if before.sequence_counter < 0' in dispatch and 'u16::try_from(before.sequence_counter)' in dispatch and 'input.clip_gain_index' in dispatch and 'sequence_count' in dispatch,'F13C clip is projection-owned and sequence comes from its independent counter')
+ ck('JocPayloadInput::from_projection(projection)' in source and 'assemble_staged_source(dispatch_before, fit, &payload_input, retry_provider)' in source and 'stage_joc_payload(dispatch_before, &fit, payload_input, retry_provider)' in source,'F13C projection-to-fit-to-ID14 writer connection is explicit and staged')
+ ck('JocPayloadInput::from_projection(&projection)' in projection_test and 'payload_input.clip_gain_index_for_test()' in projection_test and 'projection.descriptor_selected_index()' in projection_test and 'let sequences = [0_u16, 0, 1];' in fit_tests and 'assert_eq!(wrap.sequence_count(), 1_023);' in fit_tests and 'assert_eq!(wrap.clip_gain_index(), 128);' in fit_tests,'F13C clip forwarding and independent sequence progression are covered')
+ ck(direct['implementation_status']=='LOCALLY_VERIFIED_15_SYNTHETIC_CASES_588_CODEBOOK_SYMBOLS__UPSTREAM_AND_PARENT_OPEN' and 'native_source_join' in expected and 'whole-primary equivalence NOT_ESTABLISHED' in expected['native_source_join'],'F13C remains scoped below native source mapping and parent acceptance')
+
 def check_id11_parser_boundary_evidence(root,d):
  entries={entry['functional_id']:entry for entry in d['functional_entries']};slices=entries['F13C']['direct_slices'];matches=[item for item in slices if item.get('slice_id')=='selected-id11-parser-boundary-evidence'];ck(len(matches)==1,'one bounded ID11 parser-boundary evidence slice');direct=matches[0]
  ck(direct['implementation_status']=='LOCALLY_VERIFIED_WASHED_BOUNDARY_RECEIPTS_ONLY__NO_ID11_PARSER_IMPLEMENTATION'and direct['implementation_files']==[],'ID11 boundary evidence does not claim a semantic parser implementation')
@@ -3041,6 +3065,7 @@ def run(root=ROOT):
  check_f03_target_provider_implementation(root,d)
  check_primary_installed48_slice(root,d)
  check_diffusion_filter_slice(root,d)
+ check_f13c_clip_sequence_lineage(root,d)
  check_id11_parser_boundary_evidence(root,d)
  return {'verified_scopes':verified_scopes,'inventoried_ids':len(es),'deferred_roots':sum(r['materialization_status']=='INVENTORIED_PENDING_P1.3_MATERIALIZATION'for r in d['programme_roots'])}
 run_checks=lambda root=ROOT,package=PKG:run(root)

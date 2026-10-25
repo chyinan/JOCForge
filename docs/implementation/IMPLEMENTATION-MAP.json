@@ -8672,7 +8672,15 @@
               "bytes": 4846,
               "sha256": "04564166aad3e720d5218bea2ee3fb6ac531ed4c8390be1ef2d688307af08639"
             },
-            "source_supplement_manifest_sha256": "4af8b1c919d7627749bc5dd10610c1268830185c90b1c28e41aba71320c03315"
+            "source_supplement_manifest_sha256": "4af8b1c919d7627749bc5dd10610c1268830185c90b1c28e41aba71320c03315",
+            "wash_lineage_revalidation": {
+              "clip_field_manifest_sha256": "636dacc31eb2275f0d8fd4cfad1a21bb3e1ab51e9c442a4f5a5f424f6e25384c",
+              "virtual_ida_recheck_manifest_sha256": "47f4af4743e51563667b16764135bb16ca37058faecf9ec0bc4268bf39dc20cc",
+              "local_clip_source": "SelectedJocQmfProjection.descriptor_selected_index -> JocPayloadInput.clip_gain_index",
+              "local_sequence_source": "JocDispatchState.sequence_counter -> JocPayloadInput to stage_joc_payload sequence argument",
+              "separation_test": "one projection-to-writer-input test checks clip forwarding; writer tests hold clip=128 while sequence advances 0,0,1 and separately wrap 1023->1",
+              "native_source_join": "natural raw event base/value remains NOT_CAPTURED; whole-primary equivalence NOT_ESTABLISHED"
+            }
           },
           "error_outcomes": [
             {

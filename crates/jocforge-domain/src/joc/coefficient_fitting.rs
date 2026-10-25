@@ -605,6 +605,7 @@ mod tests {
                 )
                 .unwrap();
                 assert_eq!(wrap.sequence_count(), 1_023);
+                assert_eq!(wrap.clip_gain_index(), 128);
                 assert_eq!(wrap.after().sequence_counter(), 1);
             }
             let diagnostic = proposal

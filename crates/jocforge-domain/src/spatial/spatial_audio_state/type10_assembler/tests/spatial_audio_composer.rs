@@ -9,6 +9,7 @@ use crate::{
         },
     },
     joc::{
+        dispatch_state::JocPayloadInput,
         emdf::{metadata_bodies::assemble_metadata_bodies, metadata_owner::MetadataPayloadBody},
         oamd::reader_target::{
             HistoryProducerGeneration, ReaderTargetCallbackInputs, ReaderTargetState,
@@ -208,6 +209,12 @@ fn full_parent_advances_priming_then_preserves_ready_target_lineage() {
             SpatialAudioCallbackOutcome::Priming => assert!(callback < 2),
             SpatialAudioCallbackOutcome::Joc(projection) => {
                 assert_eq!(callback, 2);
+                let payload_input = JocPayloadInput::from_projection(&projection)
+                    .expect("the selected QMF projection binds a writer input");
+                assert_eq!(
+                    payload_input.clip_gain_index_for_test(),
+                    projection.descriptor_selected_index()
+                );
                 let target_receipt = target_receipt
                     .as_ref()
                     .expect("ready callback carries a target receipt");

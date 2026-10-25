@@ -137,6 +137,11 @@ impl JocPayloadInput {
     }
 
     #[cfg(test)]
+    pub(crate) const fn clip_gain_index_for_test(&self) -> u8 {
+        self.clip_gain_index
+    }
+
+    #[cfg(test)]
     pub(crate) fn for_test(
         programme_id: SourceFlagsProgrammeId,
         attempt: SourceFlagsAttempt,
