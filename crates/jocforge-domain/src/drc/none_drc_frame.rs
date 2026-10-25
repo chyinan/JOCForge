@@ -1,6 +1,9 @@
 // pattern: Functional Core
 //! Same-frame composition of the selected F06ND statistics and scheduler leaves.
 
+use crate::drc::none_drc_bsi_projection::{
+    NoneDrcBsiProjection, project_scheduler_controls_to_bsi,
+};
 use crate::drc::none_drc_scheduler::{
     NoneDrcSchedulerError, NoneDrcSchedulerFrameInput, NoneDrcSchedulerFrameOutput,
     NoneDrcSchedulerState, transition_none_drc_scheduler_frame,
@@ -24,6 +27,7 @@ pub struct NoneDrcFrameInput<'a> {
 pub struct NoneDrcFrameOutput {
     pub statistics: NoneDrcStatisticsFrameOutput,
     pub scheduler: NoneDrcSchedulerFrameOutput,
+    pub bsi_projection: NoneDrcBsiProjection,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -78,11 +82,14 @@ pub fn transition_none_drc_frame(
     };
     let scheduler = transition_none_drc_scheduler_frame(scheduler_state, &scheduler_input)
         .map_err(NoneDrcFrameError::Scheduler)?;
+    let scheduler_output = scheduler.output;
+    let bsi_projection = project_scheduler_controls_to_bsi(&scheduler_output);
 
     Ok(NoneDrcFrameTransition {
         output: NoneDrcFrameOutput {
             statistics: statistics.output,
-            scheduler: scheduler.output,
+            scheduler: scheduler_output,
+            bsi_projection,
         },
         next_statistics_state: statistics.next_state,
         next_scheduler_state: scheduler.next_state,

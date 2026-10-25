@@ -7039,13 +7039,14 @@
         {
           "slice_id": "selected-none-drc-statistics-to-scheduler-frame-composition",
           "mapping_status": "MATERIALIZED_SELECTED_F06ND_SAME_FRAME_COMPOSITION__PARENT_COMMIT_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_8_INPUT_FRAME_STATS_TO_SCHEDULER_WIRING__PARENT_COMMIT_OPEN",
-          "scope": "One pure F06ND frame call accepts a typed CodecSourceIndex, requires it to equal the scheduler state's U64 generation, runs the selected statistics transition first, passes that call's six RMS/peak outputs and the same dialnorm into the scheduler, and returns both outputs and both next states only when both stages succeed. It does not bind the caller-supplied source to an upstream owner receipt, commit either state, run the metadata FIFO, or connect application::encode.",
+          "implementation_status": "LOCALLY_VERIFIED_8_INPUT_FRAME_STATS_TO_SCHEDULER_AND_BSI_PROJECTION__PARENT_COMMIT_OPEN",
+          "scope": "One pure F06ND frame call accepts a typed CodecSourceIndex, requires it to equal the scheduler state's U64 generation, runs the selected statistics transition first, passes that call six RMS/peak outputs and the same dialnorm into the scheduler, and returns both outputs and both next states only when both stages succeed. It also carries the RF and six line high-byte projection derived from that exact scheduler output. It does not decide F12 field presence, position/order or CRC; bind the caller source to an upstream owner receipt; commit either state; run the metadata FIFO; or connect application::encode.",
           "implementation_files": [
             "crates/jocforge-domain/src/lib.rs",
             "crates/jocforge-domain/src/drc/mod.rs",
             "crates/jocforge-domain/src/drc/none_drc_frame.rs",
             "crates/jocforge-domain/src/drc/none_drc_statistics.rs",
+            "crates/jocforge-domain/src/drc/none_drc_bsi_projection.rs",
             "crates/jocforge-domain/src/drc/none_drc_scheduler.rs",
             "crates/jocforge-domain/src/drc/none_drc_normalizer.rs",
             "crates/jocforge-domain/src/drc/none_drc_dialnorm_offset.rs",
@@ -7089,7 +7090,8 @@
               "Compares all statistics outputs and state to the statistics sequence expected values after recomputation.",
                 "Passes the same typed source index and dialnorm through the one statistics-then-scheduler call; scheduler state generation is checked against that source index.",
               "Recomputes the scheduler independently from the wrapper's actual statistics output and the same pre-frame scheduler state; scheduler expected outputs are never inputs.",
-              "This verifies stage wiring, not a new Wash whole-frame expected-output vector or production source/AU connection."
+              "This verifies stage wiring, not a new Wash whole-frame expected-output vector or production source/AU connection.",
+              "Asserts each composed BSI high byte is projected from the RF and six line words returned by that same scheduler invocation."
             ],
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/none_drc/authorized_verification.json",

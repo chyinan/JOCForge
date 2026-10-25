@@ -81,6 +81,19 @@ fn eight_statistics_frames_feed_the_same_scheduler_invocation_and_state_chain() 
         let transition =
             transition_none_drc_frame(&statistics_state, &scheduler_state, &frame_input).unwrap();
 
+        assert_eq!(
+            transition.output.bsi_projection.rf_high_byte,
+            transition.output.scheduler.rf_packed_word_u16.to_be_bytes()[0],
+        );
+        assert_eq!(
+            transition.output.bsi_projection.line_high_bytes,
+            transition
+                .output
+                .scheduler
+                .line_packed_words_u16
+                .map(|word| word.to_be_bytes()[0]),
+        );
+
         assert_statistics_output_matches(
             &case["expected_output_words"],
             &transition.output.statistics,
