@@ -1,0 +1,122 @@
+{
+  "schema": "clean.none-drc.authorized-functional-values.v1",
+  "delivery_scope": "INTERNAL_RESEARCH_AND_INTERNAL_IMPLEMENTATION_ONLY",
+  "groups": {
+    "DRC_FILTER5": {
+      "field_order": [
+        "a0",
+        "a1",
+        "b0",
+        "b1",
+        "b2"
+      ],
+      "type": "binary32",
+      "count": 5,
+      "f32_words_u32": [
+        1064933786,
+        0,
+        1058223067,
+        3186329131,
+        3203106347
+      ],
+      "decimal_annotations": [
+        0.9750000238418579,
+        0.0,
+        0.5750100016593933,
+        -0.11500199884176254,
+        -0.46000799536705017
+      ],
+      "source_classification": "HISTORICAL_DEE_STATIC_FUNCTIONAL_AUDIO_EVIDENCE",
+      "source_compiled_location_newly_confirmed": false,
+      "authority": "Explicit user authorization for these nonsecret functional values, internal delivery and implementation only"
+    },
+    "DRC_NORMALIZE3": {
+      "field_order": [
+        "A",
+        "B",
+        "C"
+      ],
+      "type": "binary32",
+      "count": 3,
+      "f32_words_u32": [
+        1017797591,
+        1013066698,
+        1004942814
+      ],
+      "decimal_annotations": [
+        0.02079574577510357,
+        0.01380438543856144,
+        0.007025464437901974
+      ],
+      "source_classification": "VERIFIED_FROZEN_PYTHON_FUNCTIONAL_LITERALS",
+      "source_compiled_location_newly_confirmed": false,
+      "authority": "Explicit user authorization for these nonsecret functional values, internal delivery and implementation only"
+    },
+    "DRC_QUANTIZE3": {
+      "field_order": [
+        "Q0",
+        "Q1",
+        "Q2"
+      ],
+      "type": "binary32",
+      "count": 3,
+      "f32_words_u32": [
+        1043297385,
+        1059773839,
+        1065318913
+      ],
+      "decimal_annotations": [
+        0.17134250700473785,
+        0.6674432158470154,
+        0.9979553818702698
+      ],
+      "source_classification": "VERIFIED_FROZEN_PYTHON_FUNCTIONAL_LITERALS",
+      "source_compiled_location_newly_confirmed": false,
+      "authority": "Explicit user authorization for these nonsecret functional values, internal delivery and implementation only"
+    },
+    "DRC_AUX_ROTATION2": {
+      "field_order": [
+        "P0",
+        "P1"
+      ],
+      "type": "binary32",
+      "count": 2,
+      "f32_words_u32": [
+        1063188344,
+        1056621642
+      ],
+      "decimal_annotations": [
+        0.8709635734558105,
+        0.4897788166999817
+      ],
+      "source_classification": "VERIFIED_FROZEN_PYTHON_FUNCTIONAL_LITERALS",
+      "source_compiled_location_newly_confirmed": false,
+      "authority": "Explicit user authorization for these nonsecret functional values, internal delivery and implementation only"
+    }
+  },
+  "serialization": {
+    "group_order": [
+      "DRC_FILTER5",
+      "DRC_NORMALIZE3",
+      "DRC_QUANTIZE3",
+      "DRC_AUX_ROTATION2"
+    ],
+    "word_byte_order": "little-endian",
+    "bytes": 52,
+    "sha256": "a1add4c25573697914ea39a048ac7438e4c1fdbb108b79763cc1a5a8ac6980dd"
+  },
+  "decimals_are_annotations": "The U32 binary32 word is authoritative; do not decimal-round the annotations",
+  "source_scope": "FILTER5 is bound to existing historical static audio evidence. The other8 values are bound to verified frozen Python functional consumers; their original compiled locations were not newly confirmed.",
+  "independently_generated_mathematical_design_claim": false,
+  "excluded_materials": [
+    "original table files",
+    "research source code",
+    "DLL",
+    "private vendor key",
+    "authentication material"
+  ],
+  "public_or_third_party_distribution_authorized": false,
+  "math_provider": "parameters/none-drc-math-v1.json",
+  "algorithm_spec": "specs/06-none-drc-statistics-and-control.md",
+  "authorized_scope_not_extended_to_other_dependencies": true
+}

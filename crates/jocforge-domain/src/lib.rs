@@ -3,6 +3,7 @@
 
 pub mod analysis;
 pub mod codec;
+pub mod drc;
 pub mod frontend;
 pub mod integrity;
 pub mod joc;

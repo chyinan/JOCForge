@@ -5521,6 +5521,66 @@
             "real ADM, native DLL, product and listening acceptance"
           ],
           "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
+        },
+        {
+          "slice_id": "selected-secondary-carrier-routing",
+          "mapping_status": "MATERIALIZED_SELECTED_SECONDARY_CARRIER_ROUTING__FULL_F06NR_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_SELECTED_SECONDARY_CARRIER_ROUTING_AND_WARMUP_DROP__FULL_F06NR_DEFERRED",
+          "scope": "Consumes five logical lane streams, each with six finite 256-word blocks. It drops block 0, places blocks 1..5 in carrier rows [0,2,1,4,5], leaves row 3 as positive-zero LFE, and leaves the final 256 words of every row as positive zero. It does not implement FFT, inverse, overlap, transform history, frame transaction, or whole F06NR composition.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/transform/mod.rs",
+            "crates/jocforge-domain/src/transform/secondary_carrier.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Carrier assembly is stateless over an explicit 5x6x256 input.",
+              "Each output carrier row is fully initialized; lane block 0 is omitted and the LFE row remains positive zero."
+            ]
+          },
+          "parameters": {
+            "kind": "NONE_INPUT_RECIPE_ONLY",
+            "provider_files": [],
+            "validation_boundary": "Uses the approved input recipe in SECONDARY-OVERLAP-CARRIER-VERIFICATION; no algorithm parameter provider is required."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/secondary_carrier.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_SECONDARY_CARRIER_INPUT_RECIPE_AND_ROWS",
+            "authoritative_vectors": [
+              "test-vectors/SECONDARY-OVERLAP-CARRIER-VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "The exact lane/block/sample recipe is reconstructed as F32 words.",
+              "The whole carrier and each of six rows are compared to approved hashes.",
+              "Tests assert block 0 is omitted, routed rows match inputs, LFE and trailing row tails are positive zero, and invalid shape/nonfinite inputs reject."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/secondary_overlap/overlap-verification.json",
+              "bytes": 45751,
+              "sha256": "11e353e47d189aa1eff9bd51290609a5684481610b8a03df226a73b3600e518b"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_spec_sha256": "26a67687d019b480fcb450cc8321198f8df3d5182c55d49adefc4179fa23f74a",
+            "source_vector_sha256": "11e353e47d189aa1eff9bd51290609a5684481610b8a03df226a73b3600e518b"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "SECONDARY_INPUT_ERROR",
+              "category": "carrier input domain",
+              "trigger": "Lane count, block count, block size, or finite-word requirement fails.",
+              "programme_state_after": "No carrier is returned; the operation owns no state.",
+              "caller_action": "Reject the carrier assembly."
+            }
+          ],
+          "not_run": [
+            "F06NF/F06NI FFT and inverse integration, overlap processing, or secondary transform history",
+            "F06NR source/AU clock, 30-block frame transaction, or full carrier production path",
+            "F06 finalization and meter_terminal_sha256 remain HOLD",
+            "real ADM, native DLL, product and listening acceptance"
+          ],
+          "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
         }
       ]
     },
@@ -6165,7 +6225,88 @@
       "owner": "drc",
       "planned_phase": "Phase 5",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "selected-none-drc-rf-line-scalar-quantizer",
+          "mapping_status": "MATERIALIZED_SELECTED_F06ND6_QUANTIZER__FULL_F06ND_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_SELECTED_RF_LINE_SCALAR_QUANTIZER__F06ND_STATISTICS_AND_SCHEDULER_DEFERRED",
+          "scope": "Quantizes one finite scalar for the selected RF or line packed-control format using the approved DRC_QUANTIZE3 words, specified binary32 operation order, saturating ties-to-even conversion, exponent/fraction packing and RF zero sentinel. It owns no filter, level, peak, scheduler, FIFO, frame, programme state or audio statistics.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/lib.rs",
+            "crates/jocforge-domain/src/drc/mod.rs",
+            "crates/jocforge-domain/src/drc/none_drc_quantizer.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "A scalar quantizer invocation is stateless and owns no source, AU, callback or programme clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_WASHED_DRC_QUANTIZE3_F32_WORDS",
+            "provider_files": [
+              "crates/jocforge-domain/tests/fixtures/none_drc/authorized_parameters.json"
+            ],
+            "source_provider_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
+            "validation_boundary": "The integration test binds Q0/Q1/Q2 to the exact approved artifact. Production uses the selected constants and performs no filesystem read or fallback."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/none_drc_quantizer.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_RF_LINE_PACKED_QUANTIZER_INPUT_RECIPES",
+            "authoritative_vectors": [
+              "test-vectors/NONE-DRC-AUTHORIZED-VERIFICATION.json"
+            ],
+            "case_pointers": [
+              "Recomputes 3,856 authorized inputs for RF and 3,856 for line before reading expected outputs.",
+              "Checks packed U16 outputs, the RF 0xFFFF_FF00 callee sentinel and 0xFF00 storage word, and line zero without RF sentinel substitution.",
+              "Rejects unsupported wire kinds and nonfinite input values."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/none_drc/authorized_verification.json",
+              "bytes": 533786,
+              "sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_spec_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+            "source_parameter_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
+            "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "NONE_DRC_QUANTIZER_KIND",
+              "category": "packed-control kind",
+              "trigger": "The input wire kind is not RF or line.",
+              "programme_state_after": "No packed result is returned; the leaf owns no state.",
+              "caller_action": "Reject the invocation."
+            },
+            {
+              "error_code": "NONE_DRC_QUANTIZER_INPUT_NONFINITE",
+              "category": "scalar input",
+              "trigger": "The supplied F32 value is NaN or infinite.",
+              "programme_state_after": "No packed result is returned; the leaf owns no state.",
+              "caller_action": "Reject the invocation."
+            },
+            {
+              "error_code": "NONE_DRC_QUANTIZER_NUMERIC_NONFINITE",
+              "category": "binary32 intermediate",
+              "trigger": "A specified polynomial intermediate cannot be represented as finite F32.",
+              "programme_state_after": "No packed result is returned; the leaf owns no state.",
+              "caller_action": "Reject the invocation."
+            }
+          ],
+          "not_run": [
+            "F06ND paired filters, primary/secondary/auxiliary statistics and normalization",
+            "F06ND line/RF scheduler, limiter, metadata FIFO and per-frame state",
+            "Full F06ND audio-frame/programme composition and product integration",
+            "F06 meter finalization and meter_terminal_sha256 remain HOLD",
+            "Real ADM, native DLL, product and listening acceptance"
+          ],
+          "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
+        }
+      ]
     },
     {
       "functional_id": "F07",

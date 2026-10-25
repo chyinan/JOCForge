@@ -167,10 +167,12 @@
 | F06OF/meter-lfe-delay-and-oar-packet-assembly | F06OF | `meter` |
 | F06OF/meter-in-memory-pcm24-source-cursor | F06OF | `meter` |
 | F06NR/single-lane-secondary-overlap-carry | F06NR | `drc` |
+| F06NR/selected-secondary-carrier-routing | F06NR | `drc` |
 | F06NI/selected-secondary-inverse256-wrapper | F06NI | `drc` |
 | F06NF/selected-secondary-fft-network | F06NF | `drc` |
 | F06U/ungated-single-slot-mean-and-di-off-getter | F06U | `meter` |
 | F06D/selected-shared-gain-delay-state-and-callback-transition | F06D | `meter` |
+| F06ND/selected-none-drc-rf-line-scalar-quantizer | F06ND | `drc` |
 | F07/input-history-block-transition | F07 | `analysis` |
 | F07/structure-refresh-flag-projection | F07 | `analysis` |
 | F07/selected-dither-flag-plan | F07 | `analysis` |

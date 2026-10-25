@@ -954,7 +954,16 @@ def main():
  cases += [
   ('f06nr-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F06NR')['direct_slices'].pop())),
   ('f06nr-carry-source-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/transform/secondary_overlap.rs','transformed_words[64..192]','transformed_words[128..256]')),
-  ('f06nr-overlap-index-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/transform/secondary_overlap.rs','255 - 2 * index,','255 - 4 * index,'))
+  ('f06nr-overlap-index-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/transform/secondary_overlap.rs','255 - 2 * index,','255 - 4 * index,')),
+  ('f06nr-carrier-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F06NR')['direct_slices'].remove(next(s for s in next(e for e in d['functional_entries']if e['functional_id']=='F06NR')['direct_slices']if s['slice_id']=='selected-secondary-carrier-routing')))),
+  ('f06nr-carrier-lane-order-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/transform/secondary_carrier.rs','[0, 2, 1, 4, 5]','[0, 1, 2, 4, 5]')),
+  ('f06nr-carrier-warmup-not-dropped',lambda r:replace_once(r/'crates/jocforge-domain/src/transform/secondary_carrier.rs','enumerate().skip(1)','enumerate().skip(0)'))
+ ]
+ cases += [
+  ('f06nd-quantizer-slice-removed',map_mut(lambda d:next(e for e in d['functional_entries']if e['functional_id']=='F06ND')['direct_slices'].pop())),
+  ('f06nd-quantizer-parameter-word-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/drc/none_drc_quantizer.rs','const Q0: f32 = f32::from_bits(0x3E2F_7469);','const Q0: f32 = f32::from_bits(0x3E2F_7468);')),
+  ('f06nd-rf-sentinel-drift',lambda r:replace_once(r/'crates/jocforge-domain/src/drc/none_drc_quantizer.rs','const RF_ZERO_SENTINEL: u32 = 0xFFFF_FF00;','const RF_ZERO_SENTINEL: u32 = 0xFFFF_FE00;')),
+  ('f06nd-expected-output-comparison-removed',lambda r:replace_once(r/'crates/jocforge-domain/tests/none_drc_quantizer.rs','assert_eq!(\n                *actual,\n                expected.as_u64().unwrap() as u16,','let _ = (*actual, expected.as_u64().unwrap() as u16);'))
  ]
  if x.case_prefix:
   cases=[case for case in cases if case[0].startswith(x.case_prefix)]
