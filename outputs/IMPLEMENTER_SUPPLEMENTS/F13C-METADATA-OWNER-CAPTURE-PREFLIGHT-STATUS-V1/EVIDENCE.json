@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-f13c-metadata-owner-capture-preflight-evidence.v1",
+  "status": "BLOCKED_PRECONDITIONS_UNVERIFIED",
+  "reverse_package": {
+    "manifest_sha256": "5b58a15633ea855820a6f693a4756d486a52ed596ad797e2b012a973382f1cc4",
+    "payload_count": 5,
+    "checker_normal": "PASS_METADATA_PREFLIGHT blocked_gates=4 capture_ready=FALSE native=NOT_RUN",
+    "checker_python_O": "PASS_METADATA_PREFLIGHT blocked_gates=4 capture_ready=FALSE native=NOT_RUN"
+  },
+  "preflight_gates": [
+    {"id":"all_sinks_disabled","verified":false,"status":"BLOCKED"},
+    {"id":"prearmed_one_shot_stop","verified":false,"status":"BLOCKED"},
+    {"id":"non_user_fixture_identity","verified":false,"status":"BLOCKED"},
+    {"id":"common_owner_generation_observer","verified":false,"status":"BLOCKED"}
+  ],
+  "receipt_schema_status": "PROPOSAL_ONLY_NO_NATIVE_VALUES",
+  "read_caps_proposed_not_implemented": {
+    "target_invocations": 1,
+    "source_epochs": 1,
+    "joined_callbacks": 1,
+    "fixed_scalar_or_pointer_reads_max": 64,
+    "metadata_bytes_max": 512,
+    "encoded_or_protected_output_bytes": 0,
+    "pcm_or_metadata_body_bytes": 0,
+    "automatic_retries": 0,
+    "budget_ms": 10000
+  },
+  "referenced_sealed_sources_rehashed_by_wash": 8,
+  "execution_boundary": {
+    "capture_ready": false,
+    "target_started_or_attached": false,
+    "PCM_or_payload_read": false,
+    "implementation_contacted_for_reverse_evidence": false,
+    "D_metadata_to_F12_owner_join": "UNBOUND",
+    "source_generation": "UNBOUND",
+    "implementation_ready": false
+  }
+}

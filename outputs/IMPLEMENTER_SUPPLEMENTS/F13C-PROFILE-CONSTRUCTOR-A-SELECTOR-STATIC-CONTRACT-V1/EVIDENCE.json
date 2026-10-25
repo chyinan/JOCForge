@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge-f13c-profile-constructor-a-selector-evidence.v1",
+  "status": "CONDITIONAL_TYPE10_WRAPPER_A_Q_STATICALLY_CLOSED_SELECTED_HOST_INVOCATION_UNBOUND",
+  "reverse_package": {
+    "manifest_sha256": "98c9a2894a31c98dfc4e9fd21f94747d1c41448c4ff8a1a6d4adcc0d71ab0b03",
+    "seal_sha256": "b20666994e96ac79d713d668972bb3b16c43e3a25713c28ed4bccb2ec0c3410c",
+    "payloads_verified_by_wash": 4
+  },
+  "source_image": {
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "bytes": 10942464,
+    "identity_recomputed_by_wash": true
+  },
+  "function_regions": [
+    {"role":"profile wrapper","bytes":735,"sha256":"0fc572a2b91af0a99cb22428fdadc0a372491bd08cc82fef4d475f3117974124"},
+    {"role":"profile row builder","bytes":3642,"sha256":"96d670307736883062169058b4e5aac7c57cbf293fd773360e78aee6f8ccb810"},
+    {"role":"profile pair normalizer","bytes":751,"sha256":"9b635746560545a89379cc067b67493d36af1fb7307ec836d6c0e9aa763eca3d"},
+    {"role":"internal context constructor","bytes":2491,"sha256":"9c1518dd0da387f678f59e0eb5760c0aafd261f70d49c6fcbfe7edcd03a6bf1c"},
+    {"role":"profile pair getter","bytes":272,"sha256":"994bd57e25f5a4033b9c18cabcc765b53bdccc83e4b9dbde0eb060a9c2d61ac2"}
+  ],
+  "upstream_packages": {
+    "washed_wrapper_contract_manifest_sha256": "49ad6f47bb86c8e0b771c2f07031dc1f807505929162402c5e43e530a7c1d093",
+    "v4_original_source_manifest_sha256": "0c81d9c6b2aa3f0b21eea89344175f684d6cba05d521565a6cc447a2c9b90734",
+    "v4_source_payloads_verified_by_wash": 7
+  },
+  "limits": {
+    "A_unit_or_clock_domain": "UNBOUND",
+    "actual_selected_wrapper_invocation": "UNBOUND",
+    "actual_selected_A_or_q": "UNBOUND",
+    "source_generation": "UNBOUND",
+    "counterfactual_full_I32_input_policy": "NOT_INCLUDED_AS_PRODUCT_POLICY",
+    "native_execution": "NOT_RUN",
+    "pcm_or_payload_read": false,
+    "implementation_ready": false
+  }
+}

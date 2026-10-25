@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge-f13c-capture-preflight-source-manifests.v1",
+  "reverse_preflight_manifest_sha256": "5b58a15633ea855820a6f693a4756d486a52ed596ad797e2b012a973382f1cc4",
+  "rehashed_review_references": [
+    {"role":"D metadata to wrapper static contract","manifest_sha256":"89a00763dceac0c2e69df78e8a7b92d342173d0c8f4d4d4be94618b0bff57cdb"},
+    {"role":"output safety hold","manifest_sha256":"f9dd90e744ea7f72149fa28018d7865cf90d98d3f52f708250fa316b6c529f2c"},
+    {"role":"output safety hold contract","manifest_sha256":"8d7797ee53e4ed38074a8801ad9fc8a221052e09a6335ed0f1e95f89a7f7b3e1"},
+    {"role":"host reader to encoder descriptor bridge","manifest_sha256":"f23d99d03bc49d3a589697f625d8d492751bbfa9f131c4239bd86bf1794877ad"},
+    {"role":"descriptor metadata complexity boundary","manifest_sha256":"9f8b1439f019600c54ac2b85cf82c0c3aa4f19a4b49e1bd3c56981d491892b66"},
+    {"role":"descriptor metadata boundary receipt schema","manifest_sha256":"7a898aafbc24c0804c615d1e290222d1ecebcdd983e049922912d71bf5822d47"},
+    {"role":"F06OF row join metadata-only observation proposal","sha256":"5aa5d806d3df10dcc9c101e79fc8fad8c7879522b81c7b7d1d0ed9bf2c6b4ed6"},
+    {"role":"F12 complexity producer field lineage","manifest_sha256":"cd516f23b2c28538864aa1a7649a421444ac255eaa8b281daee1dcfc1bd20863"}
+  ],
+  "stale_user_audio_reference": "Not accepted as a non-user fixture; no audio file was opened, generated, or hashed in this preflight."
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "jocforge-f13c-derived-metadata-copy-vectors.v1",
+  "grade": "STATIC_FORMULA_AND_LENGTH_VECTORS; NO_METADATA_BODY_VALUES",
+  "vectors": [
+    {
+      "id": "channel-map-copy-length",
+      "input": {"mode":"not 1","channel_count":9,"record_stride_bytes":6},
+      "expected": {"copied_extent_bytes":54,"descriptor_or_F12_identity":"UNBOUND"}
+    },
+    {
+      "id": "mode-one-channel-code-map",
+      "cases": [
+        {"channel_count":10,"expected_code":2},
+        {"channel_count":12,"expected_code":1},
+        {"channel_count":16,"expected_code":0}
+      ],
+      "scope_limit": "Static branch rule only; selected mode/count not captured."
+    },
+    {
+      "id": "auxiliary-metadata-copy",
+      "input": {"mode":0,"auxiliary_reference":"non-null"},
+      "expected": {"bytes_copied":120,"chunk_shape":"7*16 + 8","destination":"separate scratch/context-owned areas"}
+    },
+    {
+      "id": "metadata-row-normalization",
+      "input": {"row_count":9,"input_stride_bytes":28,"skip_prefix_bytes":4,"copy_bytes_per_row":24},
+      "expected": {"output_stride_bytes":24,"output_extent_bytes":216,"row_body_values":"NOT_READ"}
+    }
+  ],
+  "identity_guards": {
+    "D_metadata_to_F12_configuration_count_producer": "UNBOUND",
+    "D_metadata_to_profile_wrapper_prefix": "STATIC_SAME_LOCAL_CONFIGURATION_OBJECT",
+    "profile_pair_key13_equals_F12_parameter13": "NOT_ESTABLISHED"
+  }
+}

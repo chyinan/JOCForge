@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge-f13c-derived-metadata-to-wrapper-source-manifests.v1",
+  "reverse_package_manifest_sha256": "9f8b1439f019600c54ac2b85cf82c0c3aa4f19a4b49e1bd3c56981d491892b66",
+  "encoder_module_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "static_function_index_sha256": "b85bf4c662f47ec799caca3a153516bb7f3d4de3115f7eab2cf2d253c67469d3",
+  "related_source_manifests": [
+    "f23d99d03bc49d3a589697f625d8d492751bbfa9f131c4239bd86bf1794877ad",
+    "49ad6f47bb86c8e0b771c2f07031dc1f807505929162402c5e43e530a7c1d093",
+    "814a8aed69738758869bd5c5745dcf0e6b80d29c96a8d291dba1dd648948323f",
+    "253d2cbca8cbad05f432c39655aeea06a74641f17a1117b9126e09e5c83e17f5"
+  ],
+  "boundary": "Static metadata transform only; no copied metadata body values are represented."
+}

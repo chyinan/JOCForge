@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge-f13c-profile-constructor-a-selector-source-manifests.v1",
+  "reverse_package_manifest_sha256": "98c9a2894a31c98dfc4e9fd21f94747d1c41448c4ff8a1a6d4adcc0d71ab0b03",
+  "washed_wrapper_contract_manifest_sha256": "49ad6f47bb86c8e0b771c2f07031dc1f807505929162402c5e43e530a7c1d093",
+  "v4_original_source_manifest_sha256": "0c81d9c6b2aa3f0b21eea89344175f684d6cba05d521565a6cc447a2c9b90734",
+  "encoder_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "evidence_scope": "Exact static function identities and conditional wrapper path. No selected host invocation or runtime generation is claimed."
+}

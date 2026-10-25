@@ -238,6 +238,9 @@
 | F13C/washed-selected-adm-metadata-to-native-profile-crosswalk-status | — | `Bounded metadata-only observation; no sample, callback, source, frame or AU clock is derived.` |
 | F13C/washed-f13c-profile-key13-config-parameter13-disambiguation | — | `The two scalar namespaces have no shared selected source/generation clock in the reviewed packages.` |
 | F13C/washed-f13c-native-profile-wrapper-static-input-contract | — | `The wrapper-local profile row and selector formulas are not joined to a selected callback, source, frame or generation clock.` |
+| F13C/washed-f13c-profile-constructor-a-selector-static-contract | — | `The conditional wrapper arithmetic is not joined to a selected callback, source, frame or generation clock.` |
+| F13C/washed-f13c-derived-metadata-to-wrapper-static-status | — | `Static copy/normalization paths only; no selected source, callback, frame or generation clock is bound.` |
+| F13C/washed-f13c-metadata-owner-capture-preflight-status | — | `No selected invocation, owner transfer or source-generation clock was observed.` |
 | F13C/selected-id14-semantic-reader-path-applicability | — | `This call-path applicability audit owns no runtime source, dispatch, AU, or programme clock. The four prior serializer rows retain their original call indices as rehashed evidence only.` |
 | F13C/container-fragmentation-scratch-parent-observation | — | `Scratch parent observations do not bind to the selected production callback, source, or AU clock.` |
 | F13C/selected-production-cold-root-observation | — | `The six frontend/parent calls and 1536-sample gate advances are observed invocation relationships, not absolute ADM position or a new native generation clock.` |

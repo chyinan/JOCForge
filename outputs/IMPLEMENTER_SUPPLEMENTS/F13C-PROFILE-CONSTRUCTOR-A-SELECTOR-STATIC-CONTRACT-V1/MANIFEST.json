@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F13C-PROFILE-CONSTRUCTOR-A-SELECTOR-STATIC-CONTRACT-V1",
+  "status": "CONDITIONAL_TYPE10_WRAPPER_A_Q_STATICALLY_CLOSED_SELECTED_INVOCATION_UNBOUND",
+  "implementation_ready": false,
+  "source_reverse_manifest_sha256": "98c9a2894a31c98dfc4e9fd21f94747d1c41448c4ff8a1a6d4adcc0d71ab0b03",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1786,
+      "sha256": "7508e3211b1a36e02568e27ce99a89d57e2975191308692b96b64ef9ed61875a"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 993,
+      "sha256": "840354337a9020ebe7a9d7922a1eb01b70667b96d3471e39ece162ad90f0dcb4"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1913,
+      "sha256": "2b6f239271e82fbf5fa5ca546128a6a753823f98df59b7a622d26d0a922c9886"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 651,
+      "sha256": "6d075efabc80758ce7e268b02780523d3a50275dbe600064aca5ff926058dfd0"
+    }
+  ]
+}

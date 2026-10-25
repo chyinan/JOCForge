@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-f13c-derived-metadata-to-wrapper-evidence.v1",
+  "status": "D_METADATA_TRANSFORMS_STATIC_CLOSED_F12_PRODUCER_IDENTITY_UNBOUND",
+  "reverse_package": {
+    "manifest_sha256": "9f8b1439f019600c54ac2b85cf82c0c3aa4f19a4b49e1bd3c56981d491892b66",
+    "payload_count": 7,
+    "checker_normal": "PASS_D_METADATA_BOUNDARY regions=11 snapshots=7 F12_owner_generation_join=UNBOUND native=NOT_RUN",
+    "checker_python_O": "PASS_D_METADATA_BOUNDARY regions=11 snapshots=7 F12_owner_generation_join=UNBOUND native=NOT_RUN"
+  },
+  "source_identity": {
+    "encoder_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "encoder_bytes": 10942464,
+    "static_index_sha256": "b85bf4c662f47ec799caca3a153516bb7f3d4de3115f7eab2cf2d253c67469d3",
+    "static_index_bytes": 16225428,
+    "encoder_and_index_hashes_verified_by_wash": true,
+    "static_code_regions_verified": 11,
+    "instruction_snapshots_verified": 7
+  },
+  "related_washed_packages": {
+    "host_reader_encoder_bridge_manifest_sha256": "f23d99d03bc49d3a589697f625d8d492751bbfa9f131c4239bd86bf1794877ad",
+    "native_profile_wrapper_manifest_sha256": "49ad6f47bb86c8e0b771c2f07031dc1f807505929162402c5e43e530a7c1d093",
+    "profile_key13_parameter13_identity_manifest_sha256": "814a8aed69738758869bd5c5745dcf0e6b80d29c96a8d291dba1dd648948323f",
+    "F12_count_producer_manifest_sha256": "253d2cbca8cbad05f432c39655aeea06a74641f17a1117b9126e09e5c83e17f"
+  },
+  "unbound_edges": [
+    "selected source/job identity to the reviewed wrapper path",
+    "D-derived metadata/open configuration to F12 configuration-count producer owner",
+    "common source/reset generation across those owners",
+    "selected mode, channel count, and auxiliary/row metadata values"
+  ],
+  "execution_boundary": {
+    "native_or_target_execution": "NOT_RUN",
+    "metadata_vector_body_read": false,
+    "PCM_or_row_buffer_read": false,
+    "private_key_or_auth_material_read": false,
+    "implementation_ready": false
+  }
+}

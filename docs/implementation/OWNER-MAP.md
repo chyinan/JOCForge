@@ -238,6 +238,9 @@
 | F13C/washed-selected-adm-metadata-to-native-profile-crosswalk-status | F13C | `metadata` |
 | F13C/washed-f13c-profile-key13-config-parameter13-disambiguation | F13C | `metadata` |
 | F13C/washed-f13c-native-profile-wrapper-static-input-contract | F13C | `metadata` |
+| F13C/washed-f13c-profile-constructor-a-selector-static-contract | F13C | `metadata` |
+| F13C/washed-f13c-derived-metadata-to-wrapper-static-status | F13C | `metadata` |
+| F13C/washed-f13c-metadata-owner-capture-preflight-status | F13C | `metadata` |
 | F13C/selected-id14-semantic-reader-path-applicability | F13C | `metadata` |
 | F13C/container-fragmentation-scratch-parent-observation | F13C | `metadata` |
 | F13C/selected-production-cold-root-observation | F13C | `metadata` |

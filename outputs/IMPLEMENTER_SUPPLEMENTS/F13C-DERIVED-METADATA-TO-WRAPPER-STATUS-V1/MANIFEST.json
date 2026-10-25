@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F13C-DERIVED-METADATA-TO-WRAPPER-STATUS-V1",
+  "status": "D_METADATA_TRANSFORMS_STATIC_CLOSED_F12_PRODUCER_IDENTITY_UNBOUND",
+  "implementation_ready": false,
+  "source_reverse_manifest_sha256": "9f8b1439f019600c54ac2b85cf82c0c3aa4f19a4b49e1bd3c56981d491892b66",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 2478,
+      "sha256": "f1a916c163ddf2ea56921dfc11d6e4eb95f0cfcc740c573e6eddf829520504e8"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1405,
+      "sha256": "8d89e771c1a4735d63aad8d63617b34ece9006f69c2c35ec190d856f6ab28ea3"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1999,
+      "sha256": "3da8583006725151fe9f5b3b3f3e7be1b95dc09ee9b82b70b0976851c9648621"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 803,
+      "sha256": "8553216d4e3aa66503e303383ecd3fd9d5c6a3cc507988437b016e6c8a2ebb15"
+    }
+  ]
+}

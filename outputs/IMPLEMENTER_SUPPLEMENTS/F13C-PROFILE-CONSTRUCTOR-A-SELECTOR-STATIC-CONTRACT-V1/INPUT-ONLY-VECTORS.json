@@ -1,0 +1,31 @@
+{
+  "schema": "jocforge-f13c-profile-constructor-a-selector-input-only.v1",
+  "grade": "STATIC_WRAPPER_PATH_ARITHMETIC; NOT_SELECTED_RUNTIME_OBSERVATION",
+  "vector": {
+    "id": "conditional-type10-wrapper-path",
+    "input": {
+      "profile_type_i32": 10,
+      "key11_mode_i32": 7,
+      "normalized_constructor_p_i32": 0,
+      "partial_block_flag_i32": 1,
+      "block_size": 1536
+    },
+    "derived_steps": {
+      "initial_sum": 1312,
+      "first_rounded_quotient": 1,
+      "first_delta": 224,
+      "pre_round_value": 4128,
+      "second_delta": 480
+    },
+    "expected": {
+      "A_i32": 4608,
+      "base_q": 3,
+      "remainder": 0,
+      "partial_increment": false,
+      "q": 3,
+      "valid_for_five_descriptors": true
+    },
+    "evidence_grade": "HASH_BOUND_STATIC_FUNCTION_REGIONS_PLUS_WASH_INPUT_ARITHMETIC",
+    "scope_limit": "The host call and selected source generation are not bound; this vector does not claim the actual selected run used the wrapper path."
+  }
+}

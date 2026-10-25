@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F13C-METADATA-OWNER-CAPTURE-PREFLIGHT-STATUS-V1",
+  "status": "BLOCKED_PRECONDITIONS_UNVERIFIED_CAPTURE_NOT_READY",
+  "implementation_ready": false,
+  "source_reverse_manifest_sha256": "5b58a15633ea855820a6f693a4756d486a52ed596ad797e2b012a973382f1cc4",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1686,
+      "sha256": "53468861003d3a6f81a66d8487b804bae76987657fcaa7bd2937200bcee38b54"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1555,
+      "sha256": "01b7a796151e52110538ea3ced93d8a667df4e7e6c43498d4553fb0f39cc6361"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1449,
+      "sha256": "2b67cb747dc5124a2696796c84142fc2702742c2802b918fb8eefd54beb71c95"
+    }
+  ]
+}

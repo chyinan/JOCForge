@@ -11017,6 +11017,182 @@
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
         {
+          "slice_id": "washed-f13c-profile-constructor-a-selector-static-contract",
+          "mapping_status": "CONDITIONAL_TYPE10_MODE7_A_Q_STATIC_RULE__SELECTED_HOST_AND_SOURCE_UNBOUND",
+          "implementation_status": "WASHED_CONDITIONAL_A_4608_Q3_STATIC__NO_SELECTED_RUNTIME_OR_PRODUCT_POLICY",
+          "scope": "For the reviewed conditional type-10/mode-7 wrapper path, normalized signed-I32 p=0 and partial flag=1 produce internal A=4608 by the washed signed-I32 IDIV/1536 construction. The row builder derives q=3, valid for five descriptors. A's unit or clock meaning, selected host invocation, selected runtime A/q and source generation remain UNBOUND; this static vector does not establish selected production input or authorize a product default.",
+          "owner": "codec",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The conditional wrapper arithmetic is not joined to a selected callback, source, frame or generation clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F13C_PROFILE_CONSTRUCTOR_A_SELECTOR_STATIC_CONTRACT_V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-PROFILE-CONSTRUCTOR-A-SELECTOR-STATIC-CONTRACT-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-PROFILE-CONSTRUCTOR-A-SELECTOR-STATIC-CONTRACT-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-PROFILE-CONSTRUCTOR-A-SELECTOR-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-PROFILE-CONSTRUCTOR-A-SELECTOR-STATIC-CONTRACT-V1/SOURCE-MANIFESTS.json"
+            ],
+            "supplement_manifest_sha256": "6c180cf44ca6d9c3bd4c175b78851cd23994120fbac040ebebe6bb2ce2dbb7a3",
+            "source_reverse_manifest_sha256": "98c9a2894a31c98dfc4e9fd21f94747d1c41448c4ff8a1a6d4adcc0d71ab0b03",
+            "validation_boundary": "Conditional static arithmetic only; selected host invocation, A unit, selected A/q and source generation remain unbound."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_CONDITIONAL_F13C_TYPE10_MODE7_A_AND_SELECTOR_ARITHMETIC",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-PROFILE-CONSTRUCTOR-A-SELECTOR-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-PROFILE-CONSTRUCTOR-A-SELECTOR-STATIC-CONTRACT-V1/EVIDENCE.json"
+            ],
+            "case_pointers": [
+              "Conditional type-10/mode-7 path normalizes p=0, sets partial flag 1, and derives A=4608 in 1536-unit arithmetic.",
+              "The selector calculation yields q=3 with zero remainder and is valid for five descriptors on this conditional path.",
+              "The vector does not bind a selected host invocation, actual selected A/q, A unit or source generation."
+            ],
+            "source_supplement_manifest_sha256": "6c180cf44ca6d9c3bd4c175b78851cd23994120fbac040ebebe6bb2ce2dbb7a3"
+          },
+          "native_status": {
+            "wrapper_path": "CONDITIONAL_TYPE10_MODE7_STATIC_RULE",
+            "normalized_constructor_p_i32": 0,
+            "partial_block_flag_i32": 1,
+            "derived_internal_A_i32": 4608,
+            "derived_selector_q": 3,
+            "A_unit_or_clock_domain": "UNBOUND",
+            "selected_host_invocation": "UNBOUND",
+            "selected_runtime_A_or_q": "UNBOUND",
+            "source_generation": "UNBOUND",
+            "native_execution": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "No selected type-10/mode-7 host invocation or source generation is established.",
+            "The internal A value has no established external unit or clock meaning; do not treat 4608 or q=3 as a selected production input.",
+            "No algorithm implementation or product readiness is authorized by this conditional static status."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-f13c-derived-metadata-to-wrapper-static-status",
+          "mapping_status": "WASHED_DESCRIPTOR_METADATA_TRANSFORMS_STATIC_CLOSED__F12_PRODUCER_IDENTITY_UNBOUND",
+          "implementation_status": "WASHED_CHANNEL_AUXILIARY_AND_ROW_COPY_RULES_STATIC__SELECTED_VALUES_AND_OWNER_JOIN_OPEN",
+          "scope": "On the reviewed encoder construction path, worker-descriptor channel/map, auxiliary and 9-row metadata transforms feed an open configuration and wrapper prefix with stated lengths and copy rules. These are conditional static transforms; selected mode/count/source identity were not captured. The wrapper profile-pair key 13 remains X+Y and is not the configuration-record parameter 13. No descriptor-to-F12-count owner/source-generation join or product algorithm is established.",
+          "owner": "frontend",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Static copy/normalization paths only; no selected source, callback, frame or generation clock is bound."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F13C_DERIVED_METADATA_TO_WRAPPER_STATIC_STATUS_V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-DERIVED-METADATA-TO-WRAPPER-STATUS-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-DERIVED-METADATA-TO-WRAPPER-STATUS-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-DERIVED-METADATA-TO-WRAPPER-STATUS-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-DERIVED-METADATA-TO-WRAPPER-STATUS-V1/SOURCE-MANIFESTS.json"
+            ],
+            "supplement_manifest_sha256": "89a00763dceac0c2e69df78e8a7b92d342173d0c8f4d4d4be94618b0bff57cdb",
+            "source_reverse_manifest_sha256": "9f8b1439f019600c54ac2b85cf82c0c3aa4f19a4b49e1bd3c56981d491892b66",
+            "validation_boundary": "Static transformation/length evidence only; selected owner, F12 producer and same-generation joins remain unbound."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_F13C_DERIVED_METADATA_COPY_LENGTHS_AND_SELECTOR_FORMULA",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-DERIVED-METADATA-TO-WRAPPER-STATUS-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-DERIVED-METADATA-TO-WRAPPER-STATUS-V1/EVIDENCE.json"
+            ],
+            "case_pointers": [
+              "Channel map copies channel_count records at six bytes each on the non-mode-1 branch; selected mode/count are not captured.",
+              "Auxiliary metadata copies 120 bytes in 7*16 plus 8; metadata rows skip four bytes and copy 24 bytes from each of nine records.",
+              "Input-only lengths/formulas contain no metadata body values and do not join the descriptor to the F12 count producer."
+            ],
+            "source_supplement_manifest_sha256": "89a00763dceac0c2e69df78e8a7b92d342173d0c8f4d4d4be94618b0bff57cdb"
+          },
+          "native_status": {
+            "descriptor_metadata_to_open_config_transforms": "STATIC_CLOSED_FOR_REVIEWED_WRAPPER_PATH",
+            "open_config_to_profile_wrapper_prefix": "STATIC_SAME_LOCAL_OBJECT",
+            "profile_pair_key13": "UNRESOLVED_X_PLUS_Y",
+            "configuration_parameter13": "SEPARATE_NAMESPACE",
+            "descriptor_to_f12_configuration_count_producer": "UNBOUND",
+            "common_source_reset_generation": "UNBOUND",
+            "selected_wrapper_invocation": "NOT_CAPTURED",
+            "native_execution": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "No selected mode/count or metadata body values are established.",
+            "No descriptor-to-F12 count source/owner/generation join is established.",
+            "No production algorithm or whole F13C readiness is claimed."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "washed-f13c-metadata-owner-capture-preflight-status",
+          "mapping_status": "CAPTURE_PREFLIGHT_BLOCKED_FOUR_GATES_UNVERIFIED__NO_TARGET_RUN",
+          "implementation_status": "EVIDENCE_ONLY_NO_GUARD_OR_GO_NO_PRODUCTION_ACTION",
+          "scope": "Wash-only preflight for a proposed one-invocation metadata receipt found all four required gates unverified: target-wide sink disablement, pre-armed one-shot stop, accepted non-user fixture provenance, and a qualified common-owner/source-generation observer. capture_ready=false; the target was not started or attached, and no PCM or payload was read. The receipt schema and read caps are proposals, not implemented guards. The D-metadata-to-F12 owner join and source generation remain UNBOUND. This is a bounded hold, not authorization to capture or a global claim that no safe route can be built.",
+          "owner": "frontend",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "No selected invocation, owner transfer or source-generation clock was observed."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F13C_METADATA_OWNER_CAPTURE_PREFLIGHT_STATUS_V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-METADATA-OWNER-CAPTURE-PREFLIGHT-STATUS-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-METADATA-OWNER-CAPTURE-PREFLIGHT-STATUS-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-METADATA-OWNER-CAPTURE-PREFLIGHT-STATUS-V1/SOURCE-MANIFESTS.json"
+            ],
+            "supplement_manifest_sha256": "a58a2f041923278637ed4432ce244a2e84e97fd1f2a99f45046ae8d15f3f3209",
+            "source_reverse_manifest_sha256": "5b58a15633ea855820a6f693a4756d486a52ed596ad797e2b012a973382f1cc4",
+            "validation_boundary": "Preflight blocker evidence only; no guard was implemented or exercised, and capture remains prohibited by this status."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_F13C_CAPTURE_PREFLIGHT_BLOCKED_STATUS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-METADATA-OWNER-CAPTURE-PREFLIGHT-STATUS-V1/EVIDENCE.json"
+            ],
+            "case_pointers": [
+              "All four preflight gates are BLOCKED and unverified.",
+              "No target was started or attached; PCM and payload reads are false.",
+              "The receipt schema and proposed read caps do not implement or prove capture guards.",
+              "D-metadata-to-F12 owner identity and source generation remain UNBOUND."
+            ],
+            "source_supplement_manifest_sha256": "a58a2f041923278637ed4432ce244a2e84e97fd1f2a99f45046ae8d15f3f3209"
+          },
+          "native_status": {
+            "preflight_status": "BLOCKED_PRECONDITIONS_UNVERIFIED",
+            "blocked_gate_count": 4,
+            "capture_ready": false,
+            "target_started_or_attached": false,
+            "pcm_or_payload_read": false,
+            "receipt_schema": "PROPOSAL_ONLY_NO_NATIVE_VALUES",
+            "d_metadata_to_f12_owner_join": "UNBOUND",
+            "source_generation": "UNBOUND",
+            "implementation_ready": false
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Do not treat this package as a no-write guard, one-shot stop, capture GO, or runtime observation.",
+            "No accepted non-user fixture or qualified owner-generation observer is established.",
+            "No algorithm implementation or product readiness follows from this bounded preflight result."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
           "slice_id": "selected-id14-semantic-reader-path-applicability",
           "mapping_status": "MATERIALIZED_SELECTED_OUTGOING_PATH_READER_AUDIT__NO_GLOBAL_ABSENCE_CLAIM",
           "implementation_status": "WASHED_CONTROL_FLOW_EVIDENCE_CUSTODY_ONLY__NO_ID14_PARSER_IMPLEMENTED",
