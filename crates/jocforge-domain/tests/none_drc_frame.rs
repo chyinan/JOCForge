@@ -6,6 +6,9 @@ use jocforge_domain::drc::none_drc_callback::{
 use jocforge_domain::drc::none_drc_frame::{
     NoneDrcFrameError, NoneDrcFrameInput, transition_none_drc_frame,
 };
+use jocforge_domain::drc::none_drc_override_fifo::{
+    NoneDrcOverrideFifoState, ZeroLogicalRecord, transition_none_drc_override_fifo,
+};
 use jocforge_domain::drc::none_drc_scheduler::{
     NoneDrcSchedulerFrameInput, NoneDrcSchedulerState, transition_none_drc_scheduler_frame,
 };
@@ -59,6 +62,7 @@ fn eight_statistics_frames_feed_the_same_scheduler_invocation_and_state_chain() 
 
     let mut statistics_state = NoneDrcStatisticsState::cold();
     let mut scheduler_state = NoneDrcSchedulerState::cold();
+    let mut fifo_state = NoneDrcOverrideFifoState::cold();
     assert_statistics_state_matches(&sequence["cold_state"], &statistics_state);
 
     for (step, case) in cases.iter().enumerate() {
@@ -88,10 +92,14 @@ fn eight_statistics_frames_feed_the_same_scheduler_invocation_and_state_chain() 
             secondary_samples: &secondary,
             dialnorm,
         };
-        let callback_transition =
-            transition_none_drc_callback(&statistics_state, &scheduler_state, &callback_input)
-                .unwrap()
-                .unwrap();
+        let callback_transition = transition_none_drc_callback(
+            &statistics_state,
+            &scheduler_state,
+            &fifo_state,
+            &callback_input,
+        )
+        .unwrap()
+        .unwrap();
         let callback_clock = callback_transition.clock();
         let transition = *callback_transition.frame();
         assert_eq!(
@@ -107,6 +115,14 @@ fn eight_statistics_frames_feed_the_same_scheduler_invocation_and_state_chain() 
             JocGeneratedWriterIndex::new(u64::try_from(step).unwrap()),
         );
         assert_selected_publication(step, callback_clock.publication);
+        let fifo_transition = callback_transition.fifo_transition();
+        let next_fifo_state = fifo_transition.next_state();
+        assert_eq!(fifo_transition.consumed_record(), ZeroLogicalRecord);
+        assert_eq!(
+            next_fifo_state.frames_processed(),
+            u64::try_from(step + 1).unwrap()
+        );
+        assert_eq!(next_fifo_state.records(), &[ZeroLogicalRecord; 4]);
 
         let bsi_fields =
             bind_selected_bsi_drc_fields(callback_clock.source_index, &callback_transition)
@@ -161,6 +177,7 @@ fn eight_statistics_frames_feed_the_same_scheduler_invocation_and_state_chain() 
 
         statistics_state = transition.next_statistics_state;
         scheduler_state = transition.next_scheduler_state;
+        fifo_state = next_fifo_state;
     }
 }
 
@@ -170,6 +187,12 @@ fn source_generation_mismatch_returns_drc_input_error_without_state_change() {
     let secondary = finite_planes(&reconstruct_planes(0, true));
     let statistics_before = NoneDrcStatisticsState::cold();
     let scheduler_before = NoneDrcSchedulerState::cold();
+    let fifo_state = transition_none_drc_override_fifo(
+        &NoneDrcOverrideFifoState::cold(),
+        CodecSourceIndex::new(0),
+    )
+    .unwrap()
+    .next_state();
     let input = NoneDrcFrameInput {
         primary_samples: &primary,
         secondary_samples: &secondary,
@@ -192,7 +215,12 @@ fn source_generation_mismatch_returns_drc_input_error_without_state_change() {
         dialnorm: 24,
     };
     assert_eq!(
-        transition_none_drc_callback(&statistics_before, &scheduler_before, &callback_input),
+        transition_none_drc_callback(
+            &statistics_before,
+            &scheduler_before,
+            &fifo_state,
+            &callback_input,
+        ),
         Err(NoneDrcCallbackError::Frame(
             NoneDrcFrameError::GenerationMismatch,
         )),
@@ -278,6 +306,7 @@ fn priming_callbacks_do_not_stage_f06nd_or_advance_state() {
     let samples = zero_finite_planes();
     let statistics_before = NoneDrcStatisticsState::cold();
     let scheduler_before = NoneDrcSchedulerState::cold();
+    let fifo_before = NoneDrcOverrideFifoState::cold();
     for callback_index in [0, 1] {
         let input = NoneDrcCallbackInput {
             callback_index: FrontendCallbackIndex::new(callback_index),
@@ -286,12 +315,55 @@ fn priming_callbacks_do_not_stage_f06nd_or_advance_state() {
             dialnorm: 24,
         };
         assert_eq!(
-            transition_none_drc_callback(&statistics_before, &scheduler_before, &input).unwrap(),
+            transition_none_drc_callback(
+                &statistics_before,
+                &scheduler_before,
+                &fifo_before,
+                &input
+            )
+            .unwrap(),
             None,
         );
         assert_eq!(statistics_before, NoneDrcStatisticsState::cold());
         assert_eq!(scheduler_before, NoneDrcSchedulerState::cold());
+        assert_eq!(fifo_before, NoneDrcOverrideFifoState::cold());
     }
+}
+
+#[test]
+fn callback_fifo_generation_mismatch_rejects_before_staging_frame_owners() {
+    let samples = zero_finite_planes();
+    let fifo_before = NoneDrcOverrideFifoState::cold();
+    let fifo_after_source_zero =
+        transition_none_drc_override_fifo(&fifo_before, CodecSourceIndex::new(0))
+            .unwrap()
+            .next_state();
+    let statistics_before = NoneDrcStatisticsState::cold();
+    let scheduler_before = NoneDrcSchedulerState::cold();
+    let input = NoneDrcCallbackInput {
+        callback_index: FrontendCallbackIndex::new(2),
+        primary_samples: samples.as_ref(),
+        secondary_samples: samples.as_ref(),
+        dialnorm: 24,
+    };
+
+    let result = transition_none_drc_callback(
+        &statistics_before,
+        &scheduler_before,
+        &fifo_after_source_zero,
+        &input,
+    );
+    assert_eq!(
+        result,
+        Err(NoneDrcCallbackError::Fifo(
+            jocforge_domain::drc::none_drc_override_fifo::NoneDrcOverrideFifoError::
+                SourceGenerationMismatch,
+        )),
+    );
+    assert_eq!(result.unwrap_err().outcome_code(), Some("DRC_INPUT_ERROR"));
+    assert_eq!(statistics_before, NoneDrcStatisticsState::cold());
+    assert_eq!(scheduler_before, NoneDrcSchedulerState::cold());
+    assert_eq!(fifo_after_source_zero.frames_processed(), 1);
 }
 
 fn assert_callback_clock(

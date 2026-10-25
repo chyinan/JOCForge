@@ -4,6 +4,7 @@ use jocforge_domain::codec::frame_syntax::{
     CodecBlockIndex, SelectedBsiDrcSyntaxError, bind_selected_bsi_drc_fields,
 };
 use jocforge_domain::drc::none_drc_callback::{NoneDrcCallbackInput, transition_none_drc_callback};
+use jocforge_domain::drc::none_drc_override_fifo::NoneDrcOverrideFifoState;
 use jocforge_domain::drc::none_drc_scheduler::NoneDrcSchedulerState;
 use jocforge_domain::drc::none_drc_statistics::{FiniteStatisticsPlanes, NoneDrcStatisticsState};
 use jocforge_domain::numeric::FiniteF32;
@@ -20,9 +21,14 @@ fn selected_drc_fields_bind_to_same_source_and_write_at_specified_cursors() {
         secondary_samples: &samples,
         dialnorm: 24,
     };
-    let f06nd = transition_none_drc_callback(&statistics_state, &scheduler_state, &callback_input)
-        .unwrap()
-        .unwrap();
+    let f06nd = transition_none_drc_callback(
+        &statistics_state,
+        &scheduler_state,
+        &NoneDrcOverrideFifoState::cold(),
+        &callback_input,
+    )
+    .unwrap()
+    .unwrap();
     let source = CodecSourceIndex::new(0);
     let fields = bind_selected_bsi_drc_fields(source, &f06nd).unwrap();
     let scheduler = &f06nd.frame().output.scheduler;
@@ -184,6 +190,7 @@ fn successful_f06nd_transition()
     transition_none_drc_callback(
         &NoneDrcStatisticsState::cold(),
         &NoneDrcSchedulerState::cold(),
+        &NoneDrcOverrideFifoState::cold(),
         &input,
     )
     .unwrap()

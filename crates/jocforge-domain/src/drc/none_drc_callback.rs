@@ -4,6 +4,10 @@
 use crate::drc::none_drc_frame::{
     NoneDrcFrameError, NoneDrcFrameInput, NoneDrcFrameTransition, transition_none_drc_frame,
 };
+use crate::drc::none_drc_override_fifo::{
+    NoneDrcOverrideFifoError, NoneDrcOverrideFifoState, NoneDrcOverrideFifoTransition,
+    transition_none_drc_override_fifo,
+};
 use crate::drc::none_drc_statistics::FiniteStatisticsPlanes;
 use crate::timeline::{
     ClockError, CodecSourceIndex, FrontendCallbackIndex, JocDispatchIndex, JocGeneratedWriterIndex,
@@ -30,6 +34,7 @@ pub struct NoneDrcCallbackInput<'a> {
 pub struct NoneDrcCallbackTransition {
     clock: NoneDrcCallbackClock,
     frame: NoneDrcFrameTransition,
+    fifo_transition: NoneDrcOverrideFifoTransition,
     dialnorm: i32,
 }
 
@@ -42,6 +47,10 @@ impl NoneDrcCallbackTransition {
         &self.frame
     }
 
+    pub const fn fifo_transition(&self) -> &NoneDrcOverrideFifoTransition {
+        &self.fifo_transition
+    }
+
     pub const fn dialnorm(&self) -> i32 {
         self.dialnorm
     }
@@ -50,7 +59,18 @@ impl NoneDrcCallbackTransition {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum NoneDrcCallbackError {
     Clock(ClockError),
+    Fifo(NoneDrcOverrideFifoError),
     Frame(NoneDrcFrameError),
+}
+
+impl NoneDrcCallbackError {
+    pub const fn outcome_code(self) -> Option<&'static str> {
+        match self {
+            Self::Clock(_) => None,
+            Self::Fifo(error) => Some(error.outcome_code()),
+            Self::Frame(error) => error.outcome_code(),
+        }
+    }
 }
 
 /// Projects one callback into its selected source, dispatch, writer and AU domains.
@@ -76,11 +96,12 @@ pub fn project_none_drc_callback_clock(
 
 /// Derives the F06ND source generation from the callback before staging the frame.
 ///
-/// The returned frame proposal and clock disposition share one callback lineage.
-/// This function owns no commit, parent reset, FIFO, frame write or EOF behavior.
+/// The returned frame and zero-record FIFO proposals share one callback lineage.
+/// This function owns no commit, parent reset, frame write or EOF flush.
 pub fn transition_none_drc_callback(
     statistics_state: &crate::drc::none_drc_statistics::NoneDrcStatisticsState,
     scheduler_state: &crate::drc::none_drc_scheduler::NoneDrcSchedulerState,
+    fifo_state: &NoneDrcOverrideFifoState,
     input: &NoneDrcCallbackInput<'_>,
 ) -> Result<Option<NoneDrcCallbackTransition>, NoneDrcCallbackError> {
     let Some(clock) = project_none_drc_callback_clock(input.callback_index)
@@ -88,6 +109,8 @@ pub fn transition_none_drc_callback(
     else {
         return Ok(None);
     };
+    let fifo_transition = transition_none_drc_override_fifo(fifo_state, clock.source_index)
+        .map_err(NoneDrcCallbackError::Fifo)?;
     let frame_input = NoneDrcFrameInput {
         primary_samples: input.primary_samples,
         secondary_samples: input.secondary_samples,
@@ -99,6 +122,7 @@ pub fn transition_none_drc_callback(
     Ok(Some(NoneDrcCallbackTransition {
         clock,
         frame,
+        fifo_transition,
         dialnorm: input.dialnorm,
     }))
 }

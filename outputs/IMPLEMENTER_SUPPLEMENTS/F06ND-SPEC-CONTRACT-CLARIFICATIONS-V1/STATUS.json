@@ -1,0 +1,52 @@
+{
+  "schema": "jocforge.f06nd-approved-contract-clarifications.v1",
+  "package_id": "F06ND-SPEC-CONTRACT-CLARIFICATIONS-V1",
+  "status": "SPEC_CLOSED_FIFO_TRANSITION_AND_SOURCE_GENERATION; RECORD_SCHEMA_AND_EDGE_ERROR_CODES_UNBOUND",
+  "source_package": {
+    "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "f06nd_spec": {
+      "path": "specs/06-none-drc-statistics-and-control.md",
+      "bytes": 18048,
+      "sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081"
+    },
+    "f06wh_composition_spec": {
+      "path": "specs/06-meter-none-drc-whole-composition.md",
+      "bytes": 9594,
+      "sha256": "94e8d42e77e71f4f16e99a74ee3c808cfc925074e19dd814762d21cde6f259d2"
+    },
+    "state_schema": {
+      "path": "parameters/f06-meter-none-drc-whole-state-schema-v1.json",
+      "bytes": 4280,
+      "sha256": "64374f686377d94ab8a3843d09d26329788c7afd48c7683459596b119f68e4be"
+    },
+    "cold_state_vectors": {
+      "path": "test-vectors/F06-METER-NONE-DRC-WHOLE-COLD-STATE-IDENTITIES.json",
+      "bytes": 8973,
+      "sha256": "a2283d3e1dd06f32d40e360ee48018501d0b88b2a6dbd0ad8234d9e82d14b74a"
+    }
+  },
+  "closed_clean_rules": {
+    "fifo_cold": "four zero logical records; delay=3072; append_slot=3; frames_processed U64=0",
+    "fifo_transition": "shift records[1:], zero-fill tail, read record0, consume/reset to zero, processed+1",
+    "selected_fifo_submission": "opaque category5, 32-bit, count1; no DRC-control FIFO write",
+    "source_generation": "contiguous U64 source generation g from zero; primary/secondary/short flags/programme dialnorm same g",
+    "statistics_scheduler_order": "statistics then scheduler in the same source-stage composition",
+    "scheduler_generation": "U64 cold zero; success increments by one; clean overflow class NUMERIC_FAILURE",
+    "source_commit": "F06WH stages the main-source work and commits once at the source boundary",
+    "preflight_order": ["parameter supply and identity", "profile/config domain", "state type/dimensions", "generation", "input shape/finite", "dialnorm domain", "computation"],
+    "declared_errors": {"missing_parameter":"PARAMETER_UNAVAILABLE","unsupported_domain":"UNSUPPORTED_PROFILE","shape_type_generation":"DRC_INPUT_ERROR","intermediate_nonfinite_or_overflow":"NUMERIC_FAILURE"}
+  },
+  "unbound_or_untested": [
+    "field-by-field logical FIFO record schema and byte serialization",
+    "nonzero category5 payload behavior",
+    "native DEE U64 generation overflow parity",
+    "a particular Rust expected_source_generation receipt/type name",
+    "simultaneous-invalid first-error result vectors",
+    "raw input NaN/Inf preflight error code",
+    "supplied-parameter identity mismatch outcome"
+  ],
+  "native_parity_claim": false,
+  "private_key_or_auth_material_included": false,
+  "private_user_data_or_pcm_included": false,
+  "public_distribution": "AUTHORIZED_FOR_THIS_WASHED_NONPRIVATE_MATERIAL"
+}

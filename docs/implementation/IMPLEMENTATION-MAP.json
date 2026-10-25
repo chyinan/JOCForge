@@ -7237,13 +7237,14 @@
         {
           "slice_id": "selected-none-drc-statistics-to-scheduler-frame-composition",
           "mapping_status": "MATERIALIZED_SELECTED_F06ND_SAME_FRAME_COMPOSITION__PARENT_COMMIT_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_8_FRAME_STATS_SCHEDULER_BSI_AND_TYPED_CALLBACK_CLOCK__PARENT_COMMIT_OPEN",
-          "scope": "A pure callback stage returns no F06ND transition for priming callback g=0/1. For g>=2 it derives typed source s=g-2, dispatch d=s+1, and generated writer d-1=s; it stages statistics then scheduler only when the scheduler generation equals s, and carries the RF/six-line high-byte projection from that exact scheduler output with the typed suppressed/published AU and writer disposition. It does not bind sample planes to an upstream owner receipt, decide F12 field presence/position/order or CRC, commit state, run the metadata FIFO, or connect application::encode.",
+          "implementation_status": "LOCALLY_VERIFIED_8_FRAME_STATS_SCHEDULER_BSI_CLOCK_AND_LOGICAL_FIFO__PARENT_COMMIT_OPEN",
+          "scope": "A pure callback stage returns no F06ND transition for priming callback g=0/1. For g>=2 it derives typed source s=g-2, dispatch d=s+1, and generated writer d-1=s; it requires both scheduler generation and zero-logical-FIFO frames_processed to equal s, stages statistics then scheduler, stages the per-source FIFO zero-record transition, and carries the RF/six-line high-byte projection from that exact scheduler output with the typed suppressed/published AU and writer disposition. It does not bind sample planes to an upstream owner receipt, serialize logical FIFO records, decide F12 field position/order or CRC, commit state, or connect application::encode.",
           "implementation_files": [
             "crates/jocforge-domain/src/lib.rs",
             "crates/jocforge-domain/src/drc/mod.rs",
             "crates/jocforge-domain/src/drc/none_drc_callback.rs",
             "crates/jocforge-domain/src/drc/none_drc_frame.rs",
+            "crates/jocforge-domain/src/drc/none_drc_override_fifo.rs",
             "crates/jocforge-domain/src/drc/none_drc_statistics.rs",
             "crates/jocforge-domain/src/drc/none_drc_bsi_projection.rs",
             "crates/jocforge-domain/src/drc/none_drc_scheduler.rs",
@@ -7263,30 +7264,35 @@
               "JocPoppedWriterIndex",
               "OrdinaryPayloadWriterIndex",
               "PublishedAuIndex",
+              "NoneDrcOverrideFifoState.frames_processed",
               "NoneDrcSchedulerState.generation"
             ],
             "covered_clauses": [
               "Priming callback g=0/1 has no CodecSourceIndex and returns no F06ND stage; for g>=2, typed source s=g-2, dispatch d=s+1, and generated writer d-1=s are derived from the callback.",
               "Sources s=0/1 stage F06ND but suppress publication; s=1 pops JOC writer0. Sources s>=2 publish AU j=s-2, consume ordinary writer j, and pop JOC writer s-1=j+1.",
-              "Statistics and scheduler consume one common invocation input and dialnorm; the scheduler generation must equal the callback-derived CodecSourceIndex before either stage runs.",
-              "The wrapper returns paired stage states and same-stage high-byte BSI projection but owns no frame write, commit, abort/fatal authority, parent reset, FIFO or cross-programme generation."
+              "The callback-derived source index must equal both scheduler.generation and FIFO.frames_processed before either state transition runs.",
+              "The logical FIFO starts with four zero records, delay 3072, append slot 3 and count zero; each successful source shifts/zero-fills, reads and consumes/reset record0 to zero, then increments the count.",
+              "Statistics and scheduler consume one common invocation input and dialnorm; the wrapper returns paired statistics, scheduler, FIFO and BSI proposals but owns no frame write, commit, abort/fatal authority, parent reset, record serialization or cross-programme generation."
             ]
           },
           "parameters": {
             "kind": "HASH_BOUND_F06ND_FUNCTIONAL_AND_MATH_PROVIDER_WORDS",
             "provider_files": [
               "crates/jocforge-domain/tests/fixtures/none_drc/authorized_parameters.json",
-              "crates/jocforge-domain/tests/fixtures/none_drc/authorized_math_parameters.json"
+              "crates/jocforge-domain/tests/fixtures/none_drc/authorized_math_parameters.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-SPEC-CONTRACT-CLARIFICATIONS-V1/CONTRACT.md"
             ],
             "functional_provider_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
             "math_provider_sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166",
             "authorization_package_id": "F06ND-PUBLIC-DISTRIBUTION-AUTHORIZATION-V2",
             "authorization_manifest_sha256": "21b3854b45fc0d85738db61dafe106e3f9c86a470534df376b1bfb92285fc885",
             "authorization_scope_sha256": "7b9c5ec09772dc0b04ce125fdbc8042f9747fdb081c94b3af7926a06afe4ae80",
+            "fifo_clarification_manifest_sha256": "e668f379594ad7fafa91f34104dee13847d507befdf143cb56d1572a76b6d8f7",
             "validation_boundary": "The stage-level source fixtures and V2 authorization identities are shared; this wrapper adds no provider, fallback or mutable global."
           },
           "test_modules": [
-            "crates/jocforge-domain/tests/none_drc_frame.rs"
+            "crates/jocforge-domain/tests/none_drc_frame.rs",
+            "crates/jocforge-domain/tests/none_drc_override_fifo.rs"
           ],
           "vectors": {
             "kind": "HASH_BOUND_SAME_FRAME_COMPOSITION_OVER_STATISTICS_INPUT_RECIPES",
@@ -7303,7 +7309,8 @@
               "This verifies stage wiring, not a new Wash whole-frame expected-output vector or production source/AU connection.",
               "Asserts each composed BSI high byte is projected from the RF and six line words returned by that same scheduler invocation.",
               "Checks g=0/1 priming, g=2/3 suppression, g=4 first AU, g=4246 last normal callback, g=4247 first drain, and g=4250 terminal drain clock projections.",
-              "Checks that priming callbacks do not stage F06ND and that callback-derived source generation mismatch returns before either state changes."
+              "Checks that priming callbacks do not stage F06ND and that callback-derived source generation mismatch returns before either state changes.",
+              "Chains four-zero-record FIFO count with the same eight source generations and checks each consumed record is zero; byte schema is not inferred."
             ],
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/none_drc/authorized_verification.json",
@@ -7315,6 +7322,7 @@
             "clock_source_spec_sha256": "26a67687d019b480fcb450cc8321198f8df3d5182c55d49adefc4179fa23f74a",
             "source_parameter_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
             "source_math_parameter_sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166",
+            "fifo_clarification_manifest_sha256": "e668f379594ad7fafa91f34104dee13847d507befdf143cb56d1572a76b6d8f7",
             "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
           },
           "error_outcomes": [
@@ -7328,17 +7336,103 @@
             {
               "error_code": "DRC_INPUT_ERROR",
               "category": "source/scheduler generation join",
-              "trigger": "The caller-supplied CodecSourceIndex does not equal the scheduler state's U64 generation.",
-              "programme_state_after": "No stage runs and no output or next state is returned; both before states remain unchanged.",
+              "trigger": "The callback-derived CodecSourceIndex differs from scheduler.generation or FIFO.frames_processed.",
+              "programme_state_after": "No statistics, scheduler or FIFO transition is returned; all before states remain unchanged.",
               "caller_action": "Reject the frame transition."
+            },
+            {
+              "error_code": "NUMERIC_FAILURE",
+              "category": "logical FIFO processed-frame counter",
+              "trigger": "frames_processed cannot be incremented as U64 after a source transition.",
+              "programme_state_after": "No callback transition or after-state is returned.",
+              "caller_action": "Reject the local transition; native wrap behavior remains unbound."
             }
           ],
           "not_run": [
             "Underlying first-failure precedence and F06ND outcome mapping remain UNBOUND and are propagated as typed stage errors.",
             "The callback-derived CodecSourceIndex does not independently receipt the primary/secondary sample-plane source identity.",
             "The statistics state is Copy and the scheduler state is Copy; this wrapper returns a paired next state but does not enforce a unique parent commit lineage.",
-            "Parent source transaction, programme reset/EOF, metadata override FIFO and F12 writer remain deferred.",
+            "Logical FIFO byte schema and nonzero category5 payload remain UNBOUND; F06WH single source commit, whole programme reset/EOF equality and F12 full frame remain deferred.",
             "F06 meter finalization and meter_terminal_sha256 remain HOLD; W04/product acceptance remains NOT_RUN."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "selected-none-drc-logical-override-fifo-transition",
+          "mapping_status": "MATERIALIZED_WASHED_LOGICAL_ZERO_FIFO_TRANSITION__RECORD_SCHEMA_UNBOUND",
+          "implementation_status": "LOCALLY_VERIFIED_ZERO_LOGICAL_RECORD_FIFO_SOURCE_CHAIN__PARENT_COMMIT_OPEN",
+          "scope": "Models the selected zero-only logical FIFO cold state: four zero records, metadata delay 3072, append slot 3, frames_processed U64 zero. For source s it requires frames_processed=s, shifts records[1:] left, zero-fills the tail, returns the new record0, consumes/resets it to zero, and increments the counter. Selected category5 does not write the DRC-control FIFO. This state is staged only; byte record schema, nonzero category5 payload and F06WH commit are outside this leaf.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/drc/mod.rs",
+            "crates/jocforge-domain/src/drc/none_drc_override_fifo.rs",
+            "crates/jocforge-domain/src/drc/none_drc_callback.rs"
+          ],
+          "clock": {
+            "domains": [
+              "CodecSourceIndex",
+              "NoneDrcOverrideFifoState.frames_processed"
+            ],
+            "covered_clauses": [
+              "frames_processed is U64 zero at cold and must equal the typed CodecSourceIndex for each source transition.",
+              "Each successful source shifts four logical records, zero-fills the tail, reads and consumes/reset record0, then increments frames_processed exactly once.",
+              "This stage adds no EOF flush; global EOF count equality and the one F06WH source commit remain parent rules."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F06ND_SPEC_CONTRACT_CLARIFICATIONS_V1_ZERO_FIFO_RULE",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-SPEC-CONTRACT-CLARIFICATIONS-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-SPEC-CONTRACT-CLARIFICATIONS-V1/STATUS.json"
+            ],
+            "supplement_manifest_sha256": "e668f379594ad7fafa91f34104dee13847d507befdf143cb56d1572a76b6d8f7",
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "validation_boundary": "Zero logical-record model only; no bytes, fields, nonzero payload or native parity."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/none_drc_override_fifo.rs",
+            "crates/jocforge-domain/tests/none_drc_frame.rs",
+            "crates/jocforge-domain/src/drc/none_drc_override_fifo.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_ZERO_LOGICAL_FIFO_AND_SAME_SOURCE_FRAME_CHAIN",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-SPEC-CONTRACT-CLARIFICATIONS-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-SPEC-CONTRACT-CLARIFICATIONS-V1/STATUS.json",
+              "crates/jocforge-domain/tests/fixtures/none_drc/authorized_verification.json"
+            ],
+            "case_pointers": [
+              "Checks cold metadata and eight contiguous CodecSourceIndex transitions; after each transition all four logical records remain zero and frames_processed advances once.",
+              "The same eight F06ND callback transitions carry paired statistics, scheduler, BSI projection and FIFO after-state.",
+              "Generation gaps reject before frame-state staging; U64 counter overflow returns NUMERIC_FAILURE without a transition."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/none_drc/authorized_verification.json",
+              "bytes": 533786,
+              "sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
+            },
+            "source_supplement_manifest_sha256": "e668f379594ad7fafa91f34104dee13847d507befdf143cb56d1572a76b6d8f7",
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "DRC_INPUT_ERROR",
+              "category": "source/FIFO generation join",
+              "trigger": "FIFO.frames_processed differs from the source CodecSourceIndex.",
+              "programme_state_after": "No FIFO transition is returned; the before state is unchanged.",
+              "caller_action": "Reject the source-stage transition."
+            },
+            {
+              "error_code": "NUMERIC_FAILURE",
+              "category": "checked FIFO counter increment",
+              "trigger": "frames_processed cannot be incremented as U64.",
+              "programme_state_after": "No FIFO transition or after-state is returned.",
+              "caller_action": "Reject the clean local transition; native wrap parity is not claimed."
+            }
+          ],
+          "not_run": [
+            "Field-by-field logical record schema, byte serialization and nonzero category5 payload behavior remain UNBOUND.",
+            "F06WH parent atomic install, programme reset/EOF source_count check, meter finalization and whole-programme output remain deferred."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },

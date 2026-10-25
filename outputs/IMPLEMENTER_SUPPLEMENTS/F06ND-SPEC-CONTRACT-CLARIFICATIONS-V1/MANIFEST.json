@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge-wash-manifest.v1",
+  "package_id": "F06ND-SPEC-CONTRACT-CLARIFICATIONS-V1",
+  "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "bytes": 3511,
+      "sha256": "1e61c8fbc9095e7b590513886acda671f12b3bee8231c12e37c841dc59830304"
+    },
+    {
+      "path": "DELIVERY-ENVELOPE.json",
+      "bytes": 631,
+      "sha256": "e58edeb89bf8e085a49f858eabc0975a8ddfcd4761def8c9f248cce57286b26b"
+    },
+    {
+      "path": "STATUS.json",
+      "bytes": 2956,
+      "sha256": "bab61081e9de47199ae86e35971ee95bcfafb8220bf5a73699d64a4defc2efed"
+    }
+  ]
+}

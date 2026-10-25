@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge-wash-supplement.v1",
+  "package_id": "F06ND-SPEC-CONTRACT-CLARIFICATIONS-V1",
+  "audience": "ISOLATED_IMPLEMENTATION_AND_PUBLIC_DISTRIBUTION",
+  "scope": "F06ND FIFO, source-generation composition, scheduler overflow class, and preflight error mapping",
+  "decision": "USE_APPROVED_ORDERED_CLEAN_CONTRACT; RETAIN_UNBOUND_RECORD_AND_EDGE_ERROR_DETAILS",
+  "implementation_ready": false,
+  "public_distribution_status": "AUTHORIZED_FOR_THIS_WASHED_NONPRIVATE_MATERIAL",
+  "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "native_run_authorized": false
+}
