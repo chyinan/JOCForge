@@ -1,0 +1,35 @@
+{
+  "schema": "jocforge.control52-formatter-gate-suffix-evidence.v1",
+  "status": "STATIC_CLOSED_FOR_REVIEWED_SERIAL_CALL_PATH; RUNTIME_AND_VALUE_JOIN_OPEN",
+  "symbolic_layout": {
+    "row_stride_bytes": 56,
+    "arena_base": "B",
+    "prefix_count": "P",
+    "current_row_count": "C",
+    "current_row_capacity": "K",
+    "capacity_precondition": "C <= K",
+    "combined_gate_rows": "[B, B + 56*(P+K))",
+    "prefix_rows": "[B, B + 56*P)",
+    "current_suffix": "[B + 56*P, B + 56*(P+K))",
+    "formatter_destination_for_i": "B + 56*P + 56*i",
+    "gate_row_for_current_i": "P + i"
+  },
+  "closed_edge": {
+    "formatter_current_row_to_combined_gate_row": "STATIC_CLOSED_ON_REVIEWED_SERIAL_PARENT_AND_SELECTED_DISPATCH_PATH",
+    "basis": "same frame arena base B; parent supplies combined count P+C after row preparation returns"
+  },
+  "still_open": {
+    "actual_selected_callback_invocation": "NOT_CAPTURED",
+    "live_P_C_K_and_capacity": "NOT_CAPTURED",
+    "row_value_equality_after_reset_or_active_updater": "NOT_EVALUATED",
+    "source_context_row_to_frame_gate_owner_generation": "UNBOUND",
+    "raw_source_row_generation": "UNBOUND"
+  },
+  "scope_identity": {
+    "research_package_manifest_sha256": "4ae877d4e90fec3a8e9a541046b376c77bf515b2ae57a76e163e78d98cedd9a1",
+    "constructor_identity_erratum_manifest_sha256": "ac1d68eb2db528393fb9f28f039a5a7b94554d04a3a33eb206c2efd2df584f6f",
+    "source_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "native_execution": "NOT_RUN",
+    "row_or_pcm_bytes_included": false
+  }
+}

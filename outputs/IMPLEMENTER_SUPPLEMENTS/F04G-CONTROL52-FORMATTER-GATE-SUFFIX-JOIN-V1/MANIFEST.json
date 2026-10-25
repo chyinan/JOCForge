@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-washed-supplement-manifest.v1",
+  "package_id": "F04G-CONTROL52-FORMATTER-GATE-SUFFIX-JOIN-V1",
+  "status": "STATIC_CLOSED_CURRENT_ROW_SUFFIX_RUNTIME_JOIN_UNOBSERVED",
+  "implementation_ready_for_gate_values": false,
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "bytes": 1816,
+      "sha256": "120d0737f9835bffeee155ea384859fcef3257524a5cc152643f23e32c29ac9a"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 1576,
+      "sha256": "f2ea90fcb79121f6077818363f8bc2eab1e7028b55f88983ff95b3d8b1f14c9d"
+    },
+    {
+      "path": "JOIN-ARITHMETIC.json",
+      "bytes": 671,
+      "sha256": "457b938e4c4e2b859acce027c62f8fa2ccdba59eba98f2f2a698e8a3d06211f7"
+    },
+    {
+      "path": "MINIMUM-RUNTIME-CONFIRMATION.json",
+      "bytes": 754,
+      "sha256": "c668c7700962dee29d4067ade58f8ea094ec1f27e452a58883dd7cf319bb0584"
+    },
+    {
+      "path": "check_package.py",
+      "bytes": 2172,
+      "sha256": "7a3b130d1d980ef1e8ab181f4f86fa9c4fa8e5695c4b832512c5ddd167a2f7b1"
+    }
+  ]
+}

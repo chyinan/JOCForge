@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge.control52-suffix-runtime-confirmation.v1",
+  "status": "PROPOSAL_ONLY; WAIT_FOR_SPECIFIC_WASH_GO",
+  "scope": "one serial parent invocation, one current formatted row i, one selected gate invocation",
+  "metadata_only_fields": [
+    "opaque serial-parent/frame owner token",
+    "opaque formatter and gate invocation tokens",
+    "P, C, K and proven buffer capacities",
+    "opaque current-row and gate-row identity tokens for P+i",
+    "branch identifiers and one callback/generation token"
+  ],
+  "prohibitions": [
+    "Do not read or persist row bytes, PCM, payload, or gate scalar values.",
+    "Do not infer source generation from pointer equality or event ordering.",
+    "Stop if owner token or capacity is unknown."
+  ]
+}

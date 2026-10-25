@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge.control52-suffix-identity-input-only.v1",
+  "input_only": true,
+  "native_addresses_or_values_used": false,
+  "rule": "formatter(B+56*P+56*i) == gate(B+56*(P+i))",
+  "cases": [
+    {"id":"empty_current_suffix","B":4096,"P":0,"C":0,"K":0,"row_indices":[]},
+    {"id":"zero_prefix_three_current","B":4096,"P":0,"C":3,"K":3,"row_indices":[0,1,2]},
+    {"id":"prefix_and_current_suffix","B":8192,"P":10,"C":3,"K":28,"row_indices":[0,1,2]},
+    {"id":"larger_prefix_single_current","B":16384,"P":16,"C":1,"K":38,"row_indices":[0]}
+  ],
+  "case_values_are_synthetic_arithmetic_only": true,
+  "does_not_prove_live_capacity_or_row_value_equality": true
+}
