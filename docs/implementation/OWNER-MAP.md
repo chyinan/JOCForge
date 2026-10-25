@@ -220,6 +220,7 @@
 | F12/grouped-quantizer-helper | F12 | `codec` |
 | F12/bounded-msb-frame-bit-writer | F12 | `codec` |
 | F12/selected-fixed-profile-header-prefix | F12 | `codec` |
+| F12/selected-complexity-index-type-a-u8-field-writer | F12 | `codec` |
 | F12S/mantissa-quantizer | F12S | `codec` |
 | F13/selected-metadata-owner-source-stage | F13 | `metadata` |
 | F13C/selected-bsi-count-and-payload-import | F13C | `metadata` |
@@ -243,5 +244,6 @@
 | F13C/washed-f13c-writer-physical-extent-status | F13C | `metadata` |
 | F13C/washed-f13c-writer-physical-extent-status | F13C | `metadata` |
 | F13C/washed-parent-writer-serialization-and-no-output-boundary-hold | F13C | `metadata` |
+| F13C/selected-model-joc-complexity-u8-projection | F13C | `metadata` |
 | F13D2/id2-profile-header-and-body-wire | F13D2 | `metadata` |
 | F14K/public-keyless-integrity-owner | F14K | `integrity` |

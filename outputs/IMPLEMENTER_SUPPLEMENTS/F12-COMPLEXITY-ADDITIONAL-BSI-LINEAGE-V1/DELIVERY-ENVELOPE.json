@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge-washed-supplement-delivery.v1",
+  "package_id": "F12-COMPLEXITY-ADDITIONAL-BSI-LINEAGE-V1",
+  "manifest_sha256": "ae252406f99560f79e56cef2c4560e04d20a89f8c08badec086a6c72e10edbf0",
+  "payload_files": 5,
+  "model_field_link": "STATIC_CLOSED",
+  "native_source_join": "UNBOUND"
+}

@@ -9615,6 +9615,78 @@
             "Remaining BSI fields, line-Drc block syntax outside the separate F06ND slice, transform/mantissa bits, full frame, CRC and parent transaction remain NOT_RUN."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "selected-complexity-index-type-a-u8-field-writer",
+          "mapping_status": "MATERIALIZED_HASH_BOUND_F13JO_COMPLEXITY_TO_F12_FIELD__FULL_FRAME_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_MODEL_U8_FIELD_AT_BITS_105_112__FRAME_COMPOSITION_OPEN",
+          "scope": "Consumes the clean F13JO model complexity U8 as a typed field value and writes only F12 `complexity_index_type_a` at bits 105..112 after requiring cursor 105 and preflighting all eight bits. The caller owns preceding additional-BSI presence/length/identifier fields. This does not parse EMDF/ID14, identify the native configuration-count source, select a carrier block, assemble a complete frame, compute CRC, or commit codec state.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/frame_syntax.rs",
+            "crates/jocforge-domain/src/codec/frame_builder.rs",
+            "crates/jocforge-domain/src/codec/bitio.rs"
+          ],
+          "clock": {
+            "domains": ["FrameBitCursor"],
+            "covered_clauses": [
+              "The caller positions the cursor at bit 105; a successful U8 write advances it to bit 113.",
+              "Cursor mismatch or insufficient capacity writes no field bits and preserves the cursor."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F13JO_MODEL_COMPLEXITY_AND_F12_ADDITIONAL_BSI_FIELD",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F12-COMPLEXITY-ADDITIONAL-BSI-LINEAGE-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F12-COMPLEXITY-ADDITIONAL-BSI-LINEAGE-V1/FIELD-LINEAGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F12-COMPLEXITY-ADDITIONAL-BSI-LINEAGE-V1/EVIDENCE.json"
+            ],
+            "supplement_manifest_sha256": "ae252406f99560f79e56cef2c4560e04d20a89f8c08badec086a6c72e10edbf0",
+            "source_f13jo_spec_sha256": "09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b",
+            "source_f12_wire_spec_sha256": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448",
+            "validation_boundary": "Clean semantic object-count input is assumed validated before the model projection; no native BSI source identity is inferred."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/selected_complexity_field.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_F13JO_INPUT_ONLY_COMPLEXITY_AND_F12_FIELD_POSITION",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F12-COMPLEXITY-ADDITIONAL-BSI-LINEAGE-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F12-COMPLEXITY-ADDITIONAL-BSI-LINEAGE-V1/FIELD-LINEAGE.json"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/selected_complexity_field/input-only-vectors.json",
+              "bytes": 951,
+              "sha256": "7ef82f2a5128d40e5f8d825bd6d66709e7e749edf5493d898785db433e47bf20"
+            },
+            "case_pointers": [
+              "Selected object_count=15 derives model complexity U8=16 and writes MSB-first bits 105..112; cursor ends at 113.",
+              "Changing carrier_block from 2 to 5 leaves the object_count+1 value unchanged; carrier selection is a separate model field."
+            ],
+            "source_supplement_manifest_sha256": "ae252406f99560f79e56cef2c4560e04d20a89f8c08badec086a6c72e10edbf0"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "SelectedComplexityFieldWriteError::CursorMismatch",
+              "category": "additional-BSI field cursor boundary",
+              "trigger": "The writer cursor is not at bit 105.",
+              "programme_state_after": "No complexity field bits or cursor changes occur.",
+              "caller_action": "Reject this local field-writer call."
+            },
+            {
+              "error_code": "FrameBitWriterError::BufferTooSmall",
+              "category": "bounded frame scratch",
+              "trigger": "The caller scratch cannot hold all eight complexity bits at cursor 105.",
+              "programme_state_after": "Preflight fails before writing; bytes and cursor remain unchanged.",
+              "caller_action": "Reject the local field-writer call; no codec or parent state is committed."
+            }
+          ],
+          "not_run": [
+            "The selected Rust pipeline does not yet parse a complete validated EMDF/ID14 model wrapper into this value.",
+            "Native configuration-count source to this field and same-owner/generation identity remain UNBOUND.",
+            "Additional-BSI preceding fields, carrier placement, complete frame, CRC and parent transaction remain open."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -10282,8 +10354,7 @@
               "caller_action": "Reject the local provider shape; do not substitute another sample rate, channel layout, or frame size."
             }
           ]
-        }
-        ,
+        },
         {
           "slice_id": "selected-id11-parser-boundary-evidence",
           "mapping_status": "MATERIALIZED_WASHED_BOUNDARY_EVIDENCE_SUBSLICE_WHOLE_F13C_DEFERRED",
@@ -11275,6 +11346,59 @@
           "not_run": [
             "Native writer-success and same-row/generation join remain UNBOUND.",
             "No safe no-output boundary or separate Wash GO exists; do not run the existing harness."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "selected-model-joc-complexity-u8-projection",
+          "mapping_status": "MATERIALIZED_HASH_BOUND_F13JO_MODEL_FORMULA__NATIVE_BSI_SOURCE_UNBOUND",
+          "implementation_status": "LOCALLY_VERIFIED_OBJECT_COUNT_PLUS_ONE_U8__VALIDATED_EMDF_PARSER_AND_NATIVE_JOIN_DEFERRED",
+          "scope": "Consumes an already validated semantic F13JO joc_object_count and derives the model complexity U8 as checked object_count+1. The selected F12 additional-BSI `complexity_index_type_a` wire field is a distinct U8 at bits 105..112 and is written by the separate F12 field-writer slice. This does not parse EMDF/ID14, establish the native configuration-count source, equate equal numeric values with identity, or connect carrier_block to complexity.",
+          "owner": "joc",
+          "implementation_files": [
+            "crates/jocforge-domain/src/joc/model_complexity.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The one-value model projection owns no callback, source, dispatch, AU or transaction clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F13JO_MODEL_COMPLEXITY_TO_F12_FIELD_LINEAGE",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F12-COMPLEXITY-ADDITIONAL-BSI-LINEAGE-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F12-COMPLEXITY-ADDITIONAL-BSI-LINEAGE-V1/FIELD-LINEAGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F12-COMPLEXITY-ADDITIONAL-BSI-LINEAGE-V1/EVIDENCE.json"
+            ],
+            "supplement_manifest_sha256": "ae252406f99560f79e56cef2c4560e04d20a89f8c08badec086a6c72e10edbf0",
+            "source_f13jo_spec_sha256": "09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b",
+            "source_f12_wire_spec_sha256": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448",
+            "validation_boundary": "Input is an already validated semantic object count; parsing, profile admission and native BSI producer identity are outside this leaf."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/selected_complexity_field.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_F13JO_INPUT_ONLY_OBJECT_COUNT_AND_COMPLEXITY_U8",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F12-COMPLEXITY-ADDITIONAL-BSI-LINEAGE-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/selected_complexity_field/input-only-vectors.json",
+              "bytes": 951,
+              "sha256": "7ef82f2a5128d40e5f8d825bd6d66709e7e749edf5493d898785db433e47bf20"
+            },
+            "case_pointers": [
+              "Selected semantic object_count=15 derives model complexity U8=16.",
+              "Carrier block changes independently and does not change object_count+1."
+            ],
+            "source_supplement_manifest_sha256": "ae252406f99560f79e56cef2c4560e04d20a89f8c08badec086a6c72e10edbf0"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Nonrepresentable object_count inputs are guarded locally but have no F13JO product error mapping in this package.",
+            "No validated EMDF/ID14 parser, native source join, carrier placement, complete frame, CRC or parent transaction is implemented."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }

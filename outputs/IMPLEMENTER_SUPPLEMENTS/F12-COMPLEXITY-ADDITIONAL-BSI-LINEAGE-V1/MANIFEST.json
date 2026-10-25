@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-washed-supplement-manifest.v1",
+  "package_id": "F12-COMPLEXITY-ADDITIONAL-BSI-LINEAGE-V1",
+  "status": "MODEL_FIELD_LINK_CLOSED_NATIVE_SOURCE_JOIN_UNBOUND",
+  "implementation_ready_for_native_source_join": false,
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "bytes": 1597,
+      "sha256": "1c035f2aa4cb638e75f0daa3121fdbeea73b9e03051104c76c693e084e928b01"
+    },
+    {
+      "path": "FIELD-LINEAGE.json",
+      "bytes": 1800,
+      "sha256": "6b54076f62f5842ad08cea664e49801cc9e21599318090d4a26a749375d9fd1f"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 951,
+      "sha256": "7ef82f2a5128d40e5f8d825bd6d66709e7e749edf5493d898785db433e47bf20"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 1041,
+      "sha256": "80604f1261c7a589ed0359d0df36880b3bbeaa0d9bf94c8e2539cf1c7bdd561b"
+    },
+    {
+      "path": "check_package.py",
+      "bytes": 1964,
+      "sha256": "0911df25ac7aea24750a9983d53300e952aeae165810112d99d838ba82dcbbe9"
+    }
+  ]
+}

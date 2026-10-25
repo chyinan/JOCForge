@@ -7,6 +7,23 @@ use crate::timeline::CodecSourceIndex;
 
 const LINE_BLOCK_COUNT: u8 = 6;
 
+/// The selected F12 additional-BSI complexity U8 (`complexity_index_type_a`).
+///
+/// The value is supplied by the clean F13JO model path; this type does not
+/// establish native BSI source identity or whole-frame readiness.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct SelectedComplexityIndexTypeA(u8);
+
+impl SelectedComplexityIndexTypeA {
+    pub const fn from_model_value(value: u8) -> Self {
+        Self(value)
+    }
+
+    pub const fn value(self) -> u8 {
+        self.0
+    }
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct CodecBlockIndex(u8);
 

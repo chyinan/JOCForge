@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge.f13jo-complexity-f12-lineage-evidence.v1",
+  "status": "MODEL_FIELD_LINK_CLOSED; NATIVE_SOURCE_JOIN_UNBOUND",
+  "provenance": {
+    "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "f13jo_spec_sha256": "09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b",
+    "f12_wire_spec_sha256": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448",
+    "reviewed_research_package_manifest_sha256": "cd516f23b2c28538864aa1a7649a421444ac255eaa8b281daee1dcfc1bd20863",
+    "source_package_payload_files_verified": 7,
+    "checker_runs": ["normal", "python -O"],
+    "native_execution": "NOT_RUN",
+    "private_key_or_auth_material_included": false,
+    "pcm_or_emdf_payload_included": false
+  },
+  "scope_limits": [
+    "A complete valid OAMD+ID14 wrapper success was not run.",
+    "The clean model formula does not establish the native BSI producer source.",
+    "Native object_count+1 to configuration-count identity remains UNBOUND."
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge.f13jo-complexity-f12-input-only.v1",
+  "input_only": true,
+  "contains_emdf_bytes_or_payload": false,
+  "vectors": [
+    {
+      "id": "selected_model_complexity",
+      "classification": "MODEL_INPUT_RECIPE_ONLY",
+      "input": {"joc_object_count":15,"carrier_block":2},
+      "derived_model_value": {"complexity_u8":16,"wire_bits":"00010000","wire_start":105,"wire_width":8,"cursor_after":113},
+      "field_identity": "complexity U8 is distinct from carrier_block"
+    },
+    {
+      "id": "carrier_selector_is_independent",
+      "classification": "FORMULA_ISOLATION_ONLY_NOT_SELECTED_PROFILE_ACCEPTANCE",
+      "input": {"joc_object_count":15,"carrier_block":5},
+      "derived_model_value": {"complexity_u8":16,"wire_start":105,"wire_width":8},
+      "field_identity": "changing carrier_block does not change object_count+1 formula"
+    }
+  ],
+  "native_writer_values_used": false,
+  "complete_wrapper_run": "NOT_RUN"
+}

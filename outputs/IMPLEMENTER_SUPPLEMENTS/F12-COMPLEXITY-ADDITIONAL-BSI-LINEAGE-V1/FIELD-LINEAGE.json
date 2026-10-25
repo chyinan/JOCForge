@@ -1,0 +1,46 @@
+{
+  "schema": "jocforge.f13jo-complexity-to-f12-bsi-lineage.v1",
+  "model_field_link": "STATIC_CLOSED",
+  "runtime_status": "COMPLETE_VALID_OAMD_ID14_WRAPPER_NOT_RUN",
+  "model_producer": {
+    "helper": "AncillaryPayload::validated_at_block",
+    "source": "semantic ID14 joc_object_count within validated selected EMDF profile",
+    "formula": "U8(joc_object_count + 1)",
+    "selected_values": {
+      "downmix_index": 3,
+      "joc_channel_count": 5,
+      "joc_object_count": 15,
+      "oamd_object_slots": 16,
+      "model_complexity_u8": 16
+    },
+    "consumer": "encode_frame_with_bsi consumes AncillaryPayload.joc_complexity"
+  },
+  "selected_f12_wire_field": {
+    "field_label": "complexity_index_type_a",
+    "wire_semantics": "8-bit additional-BSI complexity U8",
+    "bit_order": "MSB_FIRST",
+    "bit_start": 105,
+    "width_bits": 8,
+    "bit_end_inclusive": 112,
+    "cursor_after": 113,
+    "preceding_fields": [
+      {"field":"additional_bsi_presence","start":90,"width":1,"end":90},
+      {"field":"length_code","start":91,"width":6,"end":96},
+      {"field":"payload_identifier","start":97,"width":8,"end":104}
+    ]
+  },
+  "native_source_status": {
+    "same_wire_field_source": "validated configuration-count byte carried through codec owner and working header",
+    "native_id14_semantic_reader_join": "UNBOUND",
+    "native_object_count_plus_one_to_bsi_owner_generation_join": "UNBOUND",
+    "same_numeric_value_16_proves_identity": false,
+    "scope": "selected recovered outgoing path only; global parser absence not claimed"
+  },
+  "carrier_block_distinction": {
+    "model_field": "carrier_block",
+    "selected_value": 2,
+    "role": "EMDF carrier block selection/placement",
+    "same_field_as_complexity_u8": false,
+    "native_semantic_owner_join": "UNBOUND"
+  }
+}

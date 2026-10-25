@@ -2,11 +2,15 @@
 //! Boundary that assembles validated typed receipts. It cannot calculate upstream values.
 
 use crate::codec::bitio::{FrameBitCursor, FrameBitWriter, FrameBitWriterError};
-use crate::codec::frame_syntax::{CodecBlockIndex, SelectedBsiDrcFields};
+use crate::codec::frame_syntax::{
+    CodecBlockIndex, SelectedBsiDrcFields, SelectedComplexityIndexTypeA,
+};
 use crate::timeline::CodecSourceIndex;
 
 const DIALNORM_BIT_OFFSET: u32 = 45;
 const SELECTED_FIXED_PREFIX_BITS: u32 = 45;
+const COMPLEXITY_INDEX_TYPE_A_BIT_OFFSET: u32 = 105;
+const COMPLEXITY_INDEX_TYPE_A_WIDTH: u8 = 8;
 const LINE_BLOCK_COUNT: u8 = 6;
 const SELECTED_FIXED_PREFIX_FIELDS: [(u32, u8); 9] = [
     (0x0B77, 16),
@@ -47,6 +51,36 @@ pub fn write_selected_eac3_fixed_prefix(
     for (value, width) in SELECTED_FIXED_PREFIX_FIELDS {
         writer.write_unsigned(value, width)?;
     }
+    Ok(writer.cursor())
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum SelectedComplexityFieldWriteError {
+    CursorMismatch { actual: u32 },
+    BitWriter(FrameBitWriterError),
+}
+
+impl From<FrameBitWriterError> for SelectedComplexityFieldWriteError {
+    fn from(error: FrameBitWriterError) -> Self {
+        Self::BitWriter(error)
+    }
+}
+
+/// Writes only the selected F12 additional-BSI complexity U8 at bits 105..112.
+///
+/// The caller owns presence/length/identifier fields and positions the cursor.
+/// This field writer does not derive the model value, select a carrier block,
+/// identify the native BSI producer, or assemble a complete frame.
+pub fn write_selected_complexity_index_type_a(
+    writer: &mut FrameBitWriter<'_>,
+    complexity: SelectedComplexityIndexTypeA,
+) -> Result<FrameBitCursor, SelectedComplexityFieldWriteError> {
+    let actual = writer.cursor().bit_offset();
+    if actual != COMPLEXITY_INDEX_TYPE_A_BIT_OFFSET {
+        return Err(SelectedComplexityFieldWriteError::CursorMismatch { actual });
+    }
+    writer.preflight_capacity(u32::from(COMPLEXITY_INDEX_TYPE_A_WIDTH))?;
+    writer.write_unsigned(u32::from(complexity.value()), COMPLEXITY_INDEX_TYPE_A_WIDTH)?;
     Ok(writer.cursor())
 }
 

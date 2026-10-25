@@ -220,6 +220,7 @@
 | F12/grouped-quantizer-helper | — | `Consumes an explicitly ordered item slice; owns no callback, source, AU, or retry clock.` |
 | F12/bounded-msb-frame-bit-writer | `FrameBitCursor` | `cursor advances by exactly each admitted field width`<br>`failed width/value/capacity checks do not advance the cursor` |
 | F12/selected-fixed-profile-header-prefix | `FrameBitCursor` | `Fixed prefix begins only at bit cursor 0 and advances exactly 45 bits.`<br>`Insufficient scratch capacity is checked before writing any prefix bits; display pad bits are outside the prefix.` |
+| F12/selected-complexity-index-type-a-u8-field-writer | `FrameBitCursor` | `The caller positions the cursor at bit 105; a successful U8 write advances it to bit 113.`<br>`Cursor mismatch or insufficient capacity writes no field bits and preserves the cursor.` |
 | F12S/mantissa-quantizer | — | `The quantizer is stateless and has no callback, source, AU, or trial-search clock ownership.` |
 | F13/selected-metadata-owner-source-stage | `CodecSourceIndex`<br>`JocDispatchIndex`<br>`PublishedAuIndex` | `source s`<br>`dispatch s+1`<br>`AU absent for s<2 else s-2`<br>`ordinary writer s-2`<br>`ID14 writer s-1` |
 | F13C/selected-bsi-count-and-payload-import | — | `The scalar formula, count admission projection, producer and literal importer copy are stateless calls; no source, dispatch, AU, or programme clock is owned.` |
@@ -243,5 +244,6 @@
 | F13C/washed-f13c-writer-physical-extent-status | — | `This evidence describes static writer representation only; no source, dispatch or AU clock is bound.` |
 | F13C/washed-f13c-writer-physical-extent-status | — | `This evidence describes static writer representation only; no source, dispatch or AU clock is bound.` |
 | F13C/washed-parent-writer-serialization-and-no-output-boundary-hold | — | `Writer success counter advances only after successful serialized output; candidate observation before serialization does not establish writer success.` |
+| F13C/selected-model-joc-complexity-u8-projection | — | `The one-value model projection owns no callback, source, dispatch, AU or transaction clock.` |
 | F13D2/id2-profile-header-and-body-wire | — | `The profile mapper, local Type11 prefix reader, and ID2 body serializer own no source, dispatch, AU, or persistent clock.` |
 | F14K/public-keyless-integrity-owner | `CodecSourceIndex`<br>`JocDispatchIndex`<br>`PublishedAuIndex` | `source_index is the next committed CodecSourceIndex`<br>`dispatch = source_index + 1`<br>`au_index is null for source 0 and 1, then source_index - 2`<br>`the first two source calls execute all three integrity stages with published=false`<br>`source indices >=2 produce published=true and increment published_au_count once`<br>`EOF requires the exact expected source count and publishes max(0, expected_source_count - 2) AUs` |
