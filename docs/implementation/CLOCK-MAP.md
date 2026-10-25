@@ -176,6 +176,7 @@
 | F06OF/washed-adm-bwf-label-source-row-gap | — | `Washed static/observation boundary only; run-local meter callback identity is not a CodecSourceIndex or JOC generation join.` |
 | F06OF/selected-adm-graph-to-converter-storage-map | — | `The converter storage map is stateless metadata projection; CHNA track slot is an address, not a callback, source, AU, PCM cursor or programme clock.` |
 | F06OF/washed-f06of-seek-row-table-output-path-erratum | — | `The candidate seek key is only samplePosition-labeled metadata; no selected input sample cursor or callback clock is bound.` |
+| F06OF/washed-f06of-selected-input-reader-static-contract | — | `Evidence distinguishes sample-per-channel positions from file byte extents; it does not bind a selected runtime source cursor or generation.` |
 | F06OF/washed-f06of-producer-join-status-and-receipt-hold | — | `Approved model callback schedule and reset are model rules only; native cursor, EOF, drain and source generation are not inferred.` |
 | F06NR/single-lane-secondary-overlap-carry | — | `One overlap block is a stateless six-lane-independent transition over an explicit old carry.`<br>`The next carry is a bitwise copy of transformed words 64..192; it does not reuse overlap output.` |
 | F06NR/selected-secondary-carrier-routing | — | `Carrier assembly is stateless over an explicit 5x6x256 input.`<br>`Each output carrier row is fully initialized; lane block 0 is omitted and the LFE row remains positive zero.` |

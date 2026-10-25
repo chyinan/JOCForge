@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1",
+  "status": "STATIC_INPUT_READER_SEMANTICS_CLOSED_SELECTED_SOURCE_TO_MEASUREMENT_JOIN_UNBOUND",
+  "implementation_ready": false,
+  "source_reverse_manifest_sha256": [
+    "4e76ddaf1a4976f4a790ab96244b924fe522474e136ce696cf0457eef1dadd57",
+    "daf52ed9b4496627348eedc139dcaf2dc902b7840ea18801c5c6f46a043b2c0f"
+  ],
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 5052,
+      "sha256": "f37af9aa8d0322d9fa5b977f9b1c08c4ff7262e26323c517c89d81156689fa11"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 2377,
+      "sha256": "16958ad2622e17d6667e825d430c2c6e5edd39dc61e148913ff1de252e39c976"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 2200,
+      "sha256": "84308549b9746f5aefee5a58879d84506dc88cdd5f05577c59a649ddd8105180"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1826,
+      "sha256": "7312b6fe5e59579b553abcae6d76d3172f3ad8ee4616fc856d53c897c6521810"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "schema": "jocforge-f06of-input-reader-static-evidence.v1",
+  "status": "STATIC_INPUT_READER_SEMANTICS_CLOSED_SELECTED_SOURCE_TO_MEASUREMENT_JOIN_UNBOUND",
+  "reverse_packages": [
+    {
+      "package": "f06of_selected_input_reader_erratum_wash",
+      "manifest_sha256": "4e76ddaf1a4976f4a790ab96244b924fe522474e136ce696cf0457eef1dadd57",
+      "payload_count": 8,
+      "checker_normal": "PASS arithmetic=4 static_bodies=21; no PCM read",
+      "checker_python_O": "PASS arithmetic=4 static_bodies=21; no PCM read",
+      "corrections": ["shared stream helper is not output-only", "split unwind ranges are not complete-function extents"]
+    },
+    {
+      "package": "selected_reader_measurement_boundary_wash",
+      "manifest_sha256": "daf52ed9b4496627348eedc139dcaf2dc902b7840ea18801c5c6f46a043b2c0f",
+      "payload_count": 9,
+      "checker_normal": "PASS arithmetic=4 static_bodies=10; no PCM read",
+      "checker_python_O": "PASS arithmetic=4 static_bodies=10; no PCM read",
+      "instruction_slices_verified": 7
+    }
+  ],
+  "source_identities": {
+    "converter_image_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
+    "converter_image_bytes": 6286336,
+    "verified_against_exact_static_image": true,
+    "selected_reader_execution": "NOT_RUN",
+    "pcm_or_row_buffer_access": "NOT_READ_NOT_HASHED",
+    "source_file_full_sha_this_slice": "NOT_REHASHED; approved manifest identity only",
+    "selected_runtime_callback_table": "UNBOUND",
+    "source_reset_generation": "UNBOUND"
+  },
+  "descriptor_endpoint": {
+    "authority_manifest_sha256": "ebe915e442cdcfa2807312e51de759b841e9788f3eb00e973e60f8b5fe703c93",
+    "channel_count_type_and_offset": "U64 at descriptor byte 8",
+    "frame_size_type_and_offset": "U64 at descriptor byte 16",
+    "reader_rows_to_descriptor_identity": "UNBOUND"
+  },
+  "scope_limits": {
+    "selected_measured_run_identity": "UNBOUND",
+    "native_eof_boolean_or_final_drain": "NOT_ESTABLISHED",
+    "whole_binary_absence_claim": false,
+    "raw_code_or_decompilation_included": false,
+    "PCM_or_row_contents_included": false,
+    "private_key_or_auth_material_included": false,
+    "implementation_ready": false
+  }
+}

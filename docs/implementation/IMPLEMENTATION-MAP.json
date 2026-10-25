@@ -6034,6 +6034,64 @@
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
         {
+          "slice_id": "washed-f06of-selected-input-reader-static-contract",
+          "mapping_status": "WASHED_STATIC_INPUT_READER_UNITS_AND_SHORT_READ_RULES__SOURCE_JOIN_UNBOUND",
+          "implementation_status": "WASHED_SAMPLE_BYTE_AND_ACTUAL_FRAME_SEMANTICS_CLOSED__SELECTED_RUNTIME_OPEN",
+          "scope": "The reviewed input-reader contract separates per-channel sample positions from byte-counted file reads; PCM24/38-channel blockAlign is 114, relative byte offset is sample_position*blockAlign, and the data descriptor supplies the absolute payload offset. Complete frames are floor(actualBytes/blockAlign); a short chunk stops the read loop and successful return carries actual frame count on the guarded cursor branch. It also records planar row order and PCM24 sign-extension/F32 conversion. These are static reader semantics only: selected invocation, physical row/descriptor owner-generation, numeric selected payload offset, OS EOF boolean and native drain mapping remain unbound.",
+          "owner": "io",
+          "implementation_files": [],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Evidence distinguishes sample-per-channel positions from file byte extents; it does not bind a selected runtime source cursor or generation."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F06OF_SELECTED_INPUT_READER_STATIC_CONTRACT_V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/SOURCE-MANIFESTS.json"
+            ],
+            "supplement_manifest_sha256": "cde8e18f85933811766a9b69cfacf52ffd4eed5a149e894cff22a4d526b3698b",
+            "approved_source_spec_sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423",
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "validation_boundary": "Static conversion/read behavior only; physical row, selected invocation, descriptor and EOF/drain identity remain unbound."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_INPUT_ONLY_F06OF_SAMPLE_BYTE_AND_ACTUAL_FRAME_ARITHMETIC",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/EVIDENCE.json"
+            ],
+            "case_pointers": [
+              "38-channel PCM24 uses blockAlign 114 bytes; per-channel sample position maps to a relative byte offset by multiplying blockAlign.",
+              "Actual complete frames are floor(actual byte count/blockAlign); short reads stop the conversion loop and return the actual frame count on the guarded branch.",
+              "Input-only arithmetic vectors contain no PCM and do not establish selected native EOF or drain behavior."
+            ],
+            "source_supplement_manifest_sha256": "cde8e18f85933811766a9b69cfacf52ffd4eed5a149e894cff22a4d526b3698b"
+          },
+          "native_status": {
+            "static_reader_units_and_conversion_rules": "CLOSED_FOR_REVIEWED_PATH",
+            "selected_runtime_reader": "NOT_OBSERVED",
+            "input_row_to_measurement_descriptor_owner_generation": "UNBOUND",
+            "selected_absolute_payload_offset": "UNBOUND",
+            "native_eof_boolean_and_drain": "NOT_ESTABLISHED",
+            "native_execution": "NOT_RUN",
+            "pcm_read_by_this_evidence": 0
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "No selected physical-row/descriptor/cursor/EOF generation join is established.",
+            "No EOF boolean or native drain callback rule is inferred from short reads or sample-count arithmetic.",
+            "No PCM, DBMD, native run or product acceptance was performed."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
           "slice_id": "washed-f06of-producer-join-status-and-receipt-hold",
           "mapping_status": "WASHED_PARTIAL_STATIC_MODEL_PRODUCER_JOIN_UNBOUND",
           "implementation_status": "WASHED_MODEL_CLOCK_RESET_ONLY_PRODUCER_ROW_AND_DESCRIPTOR_JOIN_UNBOUND",

@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge-f06of-input-reader-arithmetic-vectors.v1",
+  "grade": "MODEL_ARITHMETIC_ONLY; NO_PCM_ACCESS_OR_NATIVE_CALLBACK_OBSERVATIONS",
+  "vectors": [
+    {
+      "id": "selected-metadata-derived-extent",
+      "input": {"frames_per_channel":6522906,"channels":38,"bytes_per_sample":3,"hop_frames":1536},
+      "expected": {"block_align_bytes":114,"pcm_extent_bytes":743611284,"normal_input_blocks":4247,"last_start_sample":6521856,"last_start_relative_byte":743491584,"last_actual_frames":1050,"last_actual_bytes":119700,"model_only_padding_frames":486},
+      "scope_limit": "Arithmetic from manifest-bound metadata only; does not read or hash PCM. The actual payload file offset and selected native reader identity remain unbound."
+    },
+    {
+      "id": "single-frame-short-source",
+      "input": {"frames_per_channel":1,"channels":1,"bytes_per_sample":3,"hop_frames":1536},
+      "expected": {"block_align_bytes":3,"pcm_extent_bytes":3,"normal_input_blocks":1,"last_start_sample":0,"last_start_relative_byte":0,"last_actual_frames":1,"last_actual_bytes":3,"model_only_padding_frames":1535}
+    },
+    {
+      "id": "exact-hop",
+      "input": {"frames_per_channel":1536,"channels":38,"bytes_per_sample":3,"hop_frames":1536},
+      "expected": {"block_align_bytes":114,"pcm_extent_bytes":175104,"normal_input_blocks":1,"last_start_sample":0,"last_start_relative_byte":0,"last_actual_frames":1536,"last_actual_bytes":175104,"model_only_padding_frames":0}
+    },
+    {
+      "id": "one-frame-over-hop",
+      "input": {"frames_per_channel":1537,"channels":38,"bytes_per_sample":3,"hop_frames":1536},
+      "expected": {"block_align_bytes":114,"pcm_extent_bytes":175218,"normal_input_blocks":2,"last_start_sample":1536,"last_start_relative_byte":175104,"last_actual_frames":1,"last_actual_bytes":114,"model_only_padding_frames":1535}
+    }
+  ],
+  "rules": {
+    "block_align_bytes": "channels * bytes_per_sample",
+    "relative_file_byte_offset": "sample_position_per_channel * block_align_bytes",
+    "absolute_file_byte_offset": "data_payload_file_offset + relative_file_byte_offset; numeric selected offset is UNBOUND",
+    "actual_complete_frames": "floor(actual_bytes / block_align_bytes)",
+    "input_block_count": "ceil(frames_per_channel / hop_frames)",
+    "padding_is_model_only": true,
+    "selected_native_eof_or_drain_semantics": "UNBOUND"
+  }
+}

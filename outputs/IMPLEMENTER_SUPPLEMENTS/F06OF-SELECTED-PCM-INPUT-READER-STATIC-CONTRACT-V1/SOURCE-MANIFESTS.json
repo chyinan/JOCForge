@@ -1,0 +1,38 @@
+{
+  "schema": "jocforge-f06of-input-reader-source-manifests.v1",
+  "reverse_inputs": [
+    {
+      "role": "PE-aware input-reader erratum and complete body scope",
+      "manifest_sha256": "4e76ddaf1a4976f4a790ab96244b924fe522474e136ce696cf0457eef1dadd57",
+      "converter_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8"
+    },
+    {
+      "role": "actual-frame return and measurement descriptor boundary",
+      "manifest_sha256": "daf52ed9b4496627348eedc139dcaf2dc902b7840ea18801c5c6f46a043b2c0f",
+      "converter_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8"
+    }
+  ],
+  "prior_superseded_package": {
+    "package": "f06of_seek_reader_unit_followup_wash",
+    "manifest_sha256": "a3e01abe4175de9eca473fe55901425e19ec30e0dc8afdaeb83c5f83cb91a9b0",
+    "superseded_claims": ["shared helper output-only classification", "first unwind region described as entire function body"]
+  },
+  "selected_model_specs": [
+    {
+      "role": "ADM graph and per-channel sample clock",
+      "package_file": "outputs/IMPLEMENTER_PACKAGE/specs/01-adm-graph-and-time.md",
+      "sha256": "c3abb599305392cdad7b43a1d8d45b1c1ae0466ff899f56caa3590d010a11f14"
+    },
+    {
+      "role": "selected frontend configuration and event model",
+      "package_file": "outputs/IMPLEMENTER_PACKAGE/specs/01-frontend-config-dbmd-events.md",
+      "sha256": "afd9efc879ed9a4878bd967c1370275074efd2226e11e67eb86838f4168f61b7"
+    },
+    {
+      "role": "F06OF frontend input and clock join model",
+      "package_file": "outputs/IMPLEMENTER_PACKAGE/specs/06-oar-frontend-input-and-clock-join.md",
+      "sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423"
+    }
+  ],
+  "related_consumer_manifest_sha256": "ebe915e442cdcfa2807312e51de759b841e9788f3eb00e973e60f8b5fe703c93"
+}
