@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge-wash-manifest.v1",
+  "package_id": "F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1",
+  "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "files": [
+    {
+      "path": "BSI-FIELD-MAP.json",
+      "bytes": 2634,
+      "sha256": "02343a8682feb384556e3c4ff97d69df64e70cf93d5a95f44b58fb35fcca0ad0"
+    },
+    {
+      "path": "CONTRACT.md",
+      "bytes": 3177,
+      "sha256": "fd1d1cadef3a088bf679ba0e87da2b0496ebb415f89d07860958b7a53b5e9192"
+    },
+    {
+      "path": "DELIVERY-ENVELOPE.json",
+      "bytes": 784,
+      "sha256": "b8a10ef5c37bbcaa8c88141b7025d071bee743825cff3ba4b2df7c7ada0b5ebd"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 1920,
+      "sha256": "b622e88f53049a2f18525205cd3c91b5c432de2200dd91b038b9dc7afd3110d5"
+    }
+  ]
+}

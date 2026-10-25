@@ -1,3 +1,8 @@
+use jocforge_domain::codec::frame_syntax::{CodecBlockIndex, bind_selected_bsi_drc_fields};
+use jocforge_domain::drc::none_drc_callback::{
+    NoneDrcCallbackError, NoneDrcCallbackInput, project_none_drc_callback_clock,
+    transition_none_drc_callback,
+};
 use jocforge_domain::drc::none_drc_frame::{
     NoneDrcFrameError, NoneDrcFrameInput, transition_none_drc_frame,
 };
@@ -8,7 +13,11 @@ use jocforge_domain::drc::none_drc_statistics::{
     FiniteStatisticsPlanes, NoneDrcStatisticsFrameOutput, NoneDrcStatisticsState,
 };
 use jocforge_domain::numeric::FiniteF32;
-use jocforge_domain::timeline::CodecSourceIndex;
+use jocforge_domain::timeline::{
+    CodecSourceIndex, FrontendCallbackIndex, JocDispatchIndex, JocGeneratedWriterIndex,
+    JocPoppedWriterIndex, OrdinaryPayloadWriterIndex, PublicationDisposition, PublishedAuIndex,
+    PublishedConsumption,
+};
 use sha2::{Digest, Sha256};
 
 const AUTHORIZED_PARAMETERS: &str = include_str!("fixtures/none_drc/authorized_parameters.json");
@@ -72,14 +81,47 @@ fn eight_statistics_frames_feed_the_same_scheduler_invocation_and_state_chain() 
 
         let primary = finite_planes(&primary);
         let secondary = finite_planes(&secondary);
-        let frame_input = NoneDrcFrameInput {
+        let callback_index = FrontendCallbackIndex::new(u32::try_from(step + 2).unwrap());
+        let callback_input = NoneDrcCallbackInput {
+            callback_index,
             primary_samples: &primary,
             secondary_samples: &secondary,
-            source_generation: CodecSourceIndex::new(u64::try_from(step).unwrap()),
             dialnorm,
         };
-        let transition =
-            transition_none_drc_frame(&statistics_state, &scheduler_state, &frame_input).unwrap();
+        let callback_transition =
+            transition_none_drc_callback(&statistics_state, &scheduler_state, &callback_input)
+                .unwrap()
+                .unwrap();
+        let callback_clock = callback_transition.clock();
+        let transition = *callback_transition.frame();
+        assert_eq!(
+            callback_clock.source_index,
+            CodecSourceIndex::new(u64::try_from(step).unwrap()),
+        );
+        assert_eq!(
+            callback_clock.dispatch_index,
+            JocDispatchIndex::new(u64::try_from(step + 1).unwrap()),
+        );
+        assert_eq!(
+            callback_clock.generated_writer_index,
+            JocGeneratedWriterIndex::new(u64::try_from(step).unwrap()),
+        );
+        assert_selected_publication(step, callback_clock.publication);
+
+        let bsi_fields =
+            bind_selected_bsi_drc_fields(callback_clock.source_index, &callback_transition)
+                .unwrap();
+        assert_eq!(bsi_fields.dialnorm(), u8::try_from(dialnorm).unwrap());
+        assert_eq!(
+            bsi_fields.rf_code(),
+            Some(transition.output.scheduler.rf_packed_word_u16.to_be_bytes()[0]),
+        );
+        for block in 0..BLOCK_COUNT {
+            assert_eq!(
+                bsi_fields.line_code(CodecBlockIndex::new(u8::try_from(block).unwrap()).unwrap()),
+                Some(transition.output.scheduler.line_packed_words_u16[block].to_be_bytes()[0]),
+            );
+        }
 
         assert_eq!(
             transition.output.bsi_projection.rf_high_byte,
@@ -143,8 +185,159 @@ fn source_generation_mismatch_returns_drc_input_error_without_state_change() {
         NoneDrcFrameError::GenerationMismatch.outcome_code(),
         Some("DRC_INPUT_ERROR")
     );
+    let callback_input = NoneDrcCallbackInput {
+        callback_index: FrontendCallbackIndex::new(3),
+        primary_samples: &primary,
+        secondary_samples: &secondary,
+        dialnorm: 24,
+    };
+    assert_eq!(
+        transition_none_drc_callback(&statistics_before, &scheduler_before, &callback_input),
+        Err(NoneDrcCallbackError::Frame(
+            NoneDrcFrameError::GenerationMismatch,
+        )),
+    );
     assert_eq!(statistics_before, NoneDrcStatisticsState::cold());
     assert_eq!(scheduler_before, NoneDrcSchedulerState::cold());
+}
+
+#[test]
+fn callback_clock_projects_priming_suppression_and_selected_boundaries() {
+    assert_eq!(
+        project_none_drc_callback_clock(FrontendCallbackIndex::new(0)).unwrap(),
+        None,
+    );
+    assert_eq!(
+        project_none_drc_callback_clock(FrontendCallbackIndex::new(1)).unwrap(),
+        None,
+    );
+    assert_callback_clock(
+        2,
+        0,
+        1,
+        0,
+        PublicationDisposition::Suppressed { joc_popped: None },
+    );
+    assert_callback_clock(
+        3,
+        1,
+        2,
+        1,
+        PublicationDisposition::Suppressed {
+            joc_popped: Some(JocPoppedWriterIndex::new(0)),
+        },
+    );
+    assert_callback_clock(
+        4,
+        2,
+        3,
+        2,
+        PublicationDisposition::Published(PublishedConsumption {
+            au: PublishedAuIndex::new(0),
+            ordinary: OrdinaryPayloadWriterIndex::new(0),
+            joc_popped: JocPoppedWriterIndex::new(1),
+        }),
+    );
+    assert_callback_clock(
+        4_246,
+        4_244,
+        4_245,
+        4_244,
+        PublicationDisposition::Published(PublishedConsumption {
+            au: PublishedAuIndex::new(4_242),
+            ordinary: OrdinaryPayloadWriterIndex::new(4_242),
+            joc_popped: JocPoppedWriterIndex::new(4_243),
+        }),
+    );
+    assert_callback_clock(
+        4_247,
+        4_245,
+        4_246,
+        4_245,
+        PublicationDisposition::Published(PublishedConsumption {
+            au: PublishedAuIndex::new(4_243),
+            ordinary: OrdinaryPayloadWriterIndex::new(4_243),
+            joc_popped: JocPoppedWriterIndex::new(4_244),
+        }),
+    );
+    assert_callback_clock(
+        4_250,
+        4_248,
+        4_249,
+        4_248,
+        PublicationDisposition::Published(PublishedConsumption {
+            au: PublishedAuIndex::new(4_246),
+            ordinary: OrdinaryPayloadWriterIndex::new(4_246),
+            joc_popped: JocPoppedWriterIndex::new(4_247),
+        }),
+    );
+}
+
+#[test]
+fn priming_callbacks_do_not_stage_f06nd_or_advance_state() {
+    let samples = zero_finite_planes();
+    let statistics_before = NoneDrcStatisticsState::cold();
+    let scheduler_before = NoneDrcSchedulerState::cold();
+    for callback_index in [0, 1] {
+        let input = NoneDrcCallbackInput {
+            callback_index: FrontendCallbackIndex::new(callback_index),
+            primary_samples: samples.as_ref(),
+            secondary_samples: samples.as_ref(),
+            dialnorm: 24,
+        };
+        assert_eq!(
+            transition_none_drc_callback(&statistics_before, &scheduler_before, &input).unwrap(),
+            None,
+        );
+        assert_eq!(statistics_before, NoneDrcStatisticsState::cold());
+        assert_eq!(scheduler_before, NoneDrcSchedulerState::cold());
+    }
+}
+
+fn assert_callback_clock(
+    callback: u32,
+    source: u64,
+    dispatch: u64,
+    generated_writer: u64,
+    publication: PublicationDisposition,
+) {
+    let actual = project_none_drc_callback_clock(FrontendCallbackIndex::new(callback))
+        .unwrap()
+        .unwrap();
+    assert_eq!(actual.callback_index, FrontendCallbackIndex::new(callback));
+    assert_eq!(actual.source_index, CodecSourceIndex::new(source));
+    assert_eq!(actual.dispatch_index, JocDispatchIndex::new(dispatch));
+    assert_eq!(
+        actual.generated_writer_index,
+        JocGeneratedWriterIndex::new(generated_writer),
+    );
+    assert_eq!(actual.publication, publication);
+}
+
+fn assert_selected_publication(step: usize, actual: PublicationDisposition) {
+    match step {
+        0 => assert_eq!(
+            actual,
+            PublicationDisposition::Suppressed { joc_popped: None }
+        ),
+        1 => assert_eq!(
+            actual,
+            PublicationDisposition::Suppressed {
+                joc_popped: Some(JocPoppedWriterIndex::new(0)),
+            },
+        ),
+        published => {
+            let au = u64::try_from(published - 2).unwrap();
+            assert_eq!(
+                actual,
+                PublicationDisposition::Published(PublishedConsumption {
+                    au: PublishedAuIndex::new(au),
+                    ordinary: OrdinaryPayloadWriterIndex::new(au),
+                    joc_popped: JocPoppedWriterIndex::new(u64::try_from(published - 1).unwrap()),
+                }),
+            );
+        }
+    }
 }
 
 fn assert_recipe_definitions(sequence: &serde_json::Value) {
@@ -221,6 +414,15 @@ fn finite_planes(planes: &[[f32; SAMPLE_COUNT]; CHANNEL_COUNT]) -> FiniteStatist
     std::array::from_fn(|channel| {
         std::array::from_fn(|sample| FiniteF32::new(planes[channel][sample]).unwrap())
     })
+}
+
+fn zero_finite_planes() -> Box<FiniteStatisticsPlanes> {
+    let zero = FiniteF32::new(0.0).unwrap();
+    let rows = (0..CHANNEL_COUNT)
+        .map(|_| [zero; SAMPLE_COUNT])
+        .collect::<Vec<_>>()
+        .into_boxed_slice();
+    rows.try_into().expect("six zero planes")
 }
 
 fn plane_bytes(planes: &[[f32; SAMPLE_COUNT]; CHANNEL_COUNT]) -> Vec<u8> {

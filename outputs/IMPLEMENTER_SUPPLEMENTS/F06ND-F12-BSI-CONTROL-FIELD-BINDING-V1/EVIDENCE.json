@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge.f06nd-f12-bsi-field-binding-evidence.v1",
+  "package_id": "F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1",
+  "status": "CLEAN_SPEC_FIELD_BINDING_CLOSED_FOR_SELECTED_F06ND_DRC_OUTPUTS",
+  "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_artifacts": [
+    {"path":"specs/06-none-drc-statistics-and-control.md","bytes":18048,"sha256":"62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081"},
+    {"path":"specs/12-selected-codec-wire.md","bytes":14760,"sha256":"9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448"},
+    {"path":"specs/06-meter-none-drc-whole-composition.md","bytes":9594,"sha256":"94e8d42e77e71f4f16e99a74ee3c808cfc925074e19dd814762d21cde6f259d2"},
+    {"path":"test-vectors/CODEC-WIRE-COMPLETE-FRAME-INPUT-VECTORS.json","bytes":4996244,"sha256":"698c2ec69a8250251a3b3295ce135d1178079a5a2750a9ea5381c4e688db527a"},
+    {"path":"test-vectors/NONE-DRC-AUTHORIZED-VERIFICATION.json","bytes":533786,"sha256":"f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"}
+  ],
+  "clean_mapping": {
+    "rf_and_line_sources": "F06ND same-source RF U16/flag and six line U16/flags; F06ND.1 explicitly supplies their high eight bits to F12 BSI",
+    "selected_success_presence": "RF and six line flags equal 1",
+    "aux_and_limiter_to_bsi": "No selected BSI fields or authorized mapping in F12S schema",
+    "native_reverse_evidence_required": false
+  },
+  "test_vector_limit": "The complete-frame vectors contain manually authored BSI control values; they demonstrate the wire layout, not the upstream F06ND owner identity. The identity binding comes from the F06ND/F12 approved clean clauses.",
+  "native_run": "NOT_RUN",
+  "private_vendor_key_or_auth_material_included": false,
+  "private_user_data_or_pcm_included": false,
+  "public_distribution": "AUTHORIZED_FOR_THIS_WASHED_NONPRIVATE_MATERIAL"
+}

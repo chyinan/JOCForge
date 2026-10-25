@@ -1,0 +1,15 @@
+{
+  "schema": "jocforge-wash-supplement.v1",
+  "package_id": "F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1",
+  "audience": "ISOLATED_IMPLEMENTATION_AND_PUBLIC_DISTRIBUTION",
+  "scope": "Clean F06ND-to-F12 selected BSI RF/line control-byte mapping and bit positions",
+  "decision": "CLEAN_SPEC_MAPPING_CLOSED; DO_NOT_SERIALIZE_AUX_OR_LIMITER_AUDIT_WORDS",
+  "implementation_ready": false,
+  "public_distribution_status": "AUTHORIZED_FOR_THIS_WASHED_NONPRIVATE_MATERIAL",
+  "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "native_run_authorized": false,
+  "excluded_material": [
+    "native binaries, source, disassembly, private keys, authentication materials",
+    "raw PCM, protected media, and implementation-output captures"
+  ]
+}

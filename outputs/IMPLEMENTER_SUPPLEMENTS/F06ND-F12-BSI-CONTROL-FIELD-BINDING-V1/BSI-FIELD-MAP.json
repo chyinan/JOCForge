@@ -1,0 +1,68 @@
+{
+  "schema": "jocforge.f06nd-f12-bsi-control-field-map.v1",
+  "package_id": "F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1",
+  "profile": {
+    "sample_rate_hz": 48000,
+    "bit_rate_kbps": 1024,
+    "channel_layout": "5.1",
+    "acmod": 7,
+    "lfe": true,
+    "blocks_per_frame": 6,
+    "frame_bytes": 4096,
+    "bit_order": "MSB_FIRST"
+  },
+  "source_owner": "F06ND per-source scheduler output; must share the same source generation as the F12 frame input",
+  "fields": [
+    {
+      "source": "F06ND.RF_flag_u16",
+      "destination": "BSI.compre",
+      "present_condition": "flag == 1; selected successful F06ND path guarantees 1",
+      "wire_width_bits": 1,
+      "frame_bit_offset": 50,
+      "encoding": "boolean presence bit"
+    },
+    {
+      "source": "F06ND.RF_packed_word_u16",
+      "destination": "BSI.compr",
+      "present_condition": "compre == 1",
+      "wire_width_bits": 8,
+      "frame_bit_offset": "51 when present",
+      "encoding": "U16 >> 8, then serialize the U8 MSB-first"
+    },
+    {
+      "source": "F06ND.line_flags_u16[i], i=0..5",
+      "destination": "F12 block[i].line_DRC_presence",
+      "present_condition": "flag[i] == 1; selected successful F06ND path guarantees all six flags are 1",
+      "wire_width_bits": 1,
+      "frame_bit_offset": "within each block after optional short and dither fields",
+      "encoding": "boolean presence bit; block order 0..5"
+    },
+    {
+      "source": "F06ND.line_packed_words_u16[i], i=0..5",
+      "destination": "F12 block[i].line_DRC_code",
+      "present_condition": "block[i].line_DRC_presence == 1",
+      "wire_width_bits": 8,
+      "frame_bit_offset": "immediately after the matching block's presence bit",
+      "encoding": "U16 >> 8, then serialize the U8 MSB-first"
+    }
+  ],
+  "header_offset_basis": {
+    "fixed_header_bits_before_dialnorm": 45,
+    "dialnorm": {"source":"F06 selected programme loudness", "type":"U5", "offset":45,"width":5},
+    "compre_offset": 50,
+    "compr_offset": 51,
+    "mixmdate_offset": "51 + 8 * RF_code_present",
+    "absolute_offsets_after_mix_and_information": "cursor-derived because presence fields conditionally add bits"
+  },
+  "non_bsi_f06nd_outputs": [
+    "RF_aux_packed_word_u16",
+    "RF_limiter_packed_word_u16",
+    "line_aux_packed_words_u16",
+    "line_limiter_packed_words_u16"
+  ],
+  "source_commit": {
+    "F12_trial_state": "staged; commit only after an accepted complete candidate",
+    "global_source_commit": "owned by F06WH/GTC parent boundary, not this projection adapter"
+  },
+  "conformance_scope": "clean specification composition only; no native identity or product acceptance claim"
+}

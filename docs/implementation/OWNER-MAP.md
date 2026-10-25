@@ -187,6 +187,7 @@
 | F06ND/selected-none-drc-statistics-to-scheduler-frame-composition | F06ND | `drc` |
 | F06ND/washed-none-drc-source-fifo-and-error-contract-clarification | F06ND | `drc` |
 | F06ND/selected-none-drc-bsi-high-byte-projection | F06ND | `drc` |
+| F06ND/selected-f06nd-controls-to-f12-bsi-drc-fields | F06ND | `drc` |
 | F07/input-history-block-transition | F07 | `analysis` |
 | F07/structure-refresh-flag-projection | F07 | `analysis` |
 | F07/selected-dither-flag-plan | F07 | `analysis` |

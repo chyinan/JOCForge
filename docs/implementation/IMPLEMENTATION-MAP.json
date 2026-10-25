@@ -2835,6 +2835,7 @@
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
+
       ]
     },
     {
@@ -7039,11 +7040,12 @@
         {
           "slice_id": "selected-none-drc-statistics-to-scheduler-frame-composition",
           "mapping_status": "MATERIALIZED_SELECTED_F06ND_SAME_FRAME_COMPOSITION__PARENT_COMMIT_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_8_INPUT_FRAME_STATS_TO_SCHEDULER_AND_BSI_PROJECTION__PARENT_COMMIT_OPEN",
-          "scope": "One pure F06ND frame call accepts a typed CodecSourceIndex, requires it to equal the scheduler state's U64 generation, runs the selected statistics transition first, passes that call six RMS/peak outputs and the same dialnorm into the scheduler, and returns both outputs and both next states only when both stages succeed. It also carries the RF and six line high-byte projection derived from that exact scheduler output. It does not decide F12 field presence, position/order or CRC; bind the caller source to an upstream owner receipt; commit either state; run the metadata FIFO; or connect application::encode.",
+          "implementation_status": "LOCALLY_VERIFIED_8_FRAME_STATS_SCHEDULER_BSI_AND_TYPED_CALLBACK_CLOCK__PARENT_COMMIT_OPEN",
+          "scope": "A pure callback stage returns no F06ND transition for priming callback g=0/1. For g>=2 it derives typed source s=g-2, dispatch d=s+1, and generated writer d-1=s; it stages statistics then scheduler only when the scheduler generation equals s, and carries the RF/six-line high-byte projection from that exact scheduler output with the typed suppressed/published AU and writer disposition. It does not bind sample planes to an upstream owner receipt, decide F12 field presence/position/order or CRC, commit state, run the metadata FIFO, or connect application::encode.",
           "implementation_files": [
             "crates/jocforge-domain/src/lib.rs",
             "crates/jocforge-domain/src/drc/mod.rs",
+            "crates/jocforge-domain/src/drc/none_drc_callback.rs",
             "crates/jocforge-domain/src/drc/none_drc_frame.rs",
             "crates/jocforge-domain/src/drc/none_drc_statistics.rs",
             "crates/jocforge-domain/src/drc/none_drc_bsi_projection.rs",
@@ -7052,16 +7054,25 @@
             "crates/jocforge-domain/src/drc/none_drc_dialnorm_offset.rs",
             "crates/jocforge-domain/src/drc/none_drc_quantizer.rs",
             "crates/jocforge-domain/src/numeric/finite_f32.rs",
-            "crates/jocforge-domain/src/timeline/index.rs"
+            "crates/jocforge-domain/src/timeline/index.rs",
+            "crates/jocforge-domain/src/timeline/clock.rs"
           ],
           "clock": {
             "domains": [
+              "FrontendCallbackIndex",
               "CodecSourceIndex",
+              "JocDispatchIndex",
+              "JocGeneratedWriterIndex",
+              "JocPoppedWriterIndex",
+              "OrdinaryPayloadWriterIndex",
+              "PublishedAuIndex",
               "NoneDrcSchedulerState.generation"
             ],
             "covered_clauses": [
-              "Statistics and scheduler consume one common invocation input and dialnorm; the scheduler generation must equal the supplied CodecSourceIndex value before either stage runs.",
-              "The wrapper returns a paired staged result and owns no commit, abort/fatal authority, or cross-programme generation."
+              "Priming callback g=0/1 has no CodecSourceIndex and returns no F06ND stage; for g>=2, typed source s=g-2, dispatch d=s+1, and generated writer d-1=s are derived from the callback.",
+              "Sources s=0/1 stage F06ND but suppress publication; s=1 pops JOC writer0. Sources s>=2 publish AU j=s-2, consume ordinary writer j, and pop JOC writer s-1=j+1.",
+              "Statistics and scheduler consume one common invocation input and dialnorm; the scheduler generation must equal the callback-derived CodecSourceIndex before either stage runs.",
+              "The wrapper returns paired stage states and same-stage high-byte BSI projection but owns no frame write, commit, abort/fatal authority, parent reset, FIFO or cross-programme generation."
             ]
           },
           "parameters": {
@@ -7083,7 +7094,9 @@
           "vectors": {
             "kind": "HASH_BOUND_SAME_FRAME_COMPOSITION_OVER_STATISTICS_INPUT_RECIPES",
             "authoritative_vectors": [
-              "test-vectors/NONE-DRC-AUTHORIZED-VERIFICATION.json"
+              "test-vectors/NONE-DRC-AUTHORIZED-VERIFICATION.json",
+              "docs/architecture/DATAFLOW.md",
+              "specs/06-secondary-reconstruction-clock-and-overlap.md"
             ],
             "case_pointers": [
               "Reconstructs all eight primary/secondary input frames and verifies the 16 per-frame input hashes.",
@@ -7091,7 +7104,9 @@
                 "Passes the same typed source index and dialnorm through the one statistics-then-scheduler call; scheduler state generation is checked against that source index.",
               "Recomputes the scheduler independently from the wrapper's actual statistics output and the same pre-frame scheduler state; scheduler expected outputs are never inputs.",
               "This verifies stage wiring, not a new Wash whole-frame expected-output vector or production source/AU connection.",
-              "Asserts each composed BSI high byte is projected from the RF and six line words returned by that same scheduler invocation."
+              "Asserts each composed BSI high byte is projected from the RF and six line words returned by that same scheduler invocation.",
+              "Checks g=0/1 priming, g=2/3 suppression, g=4 first AU, g=4246 last normal callback, g=4247 first drain, and g=4250 terminal drain clock projections.",
+              "Checks that priming callbacks do not stage F06ND and that callback-derived source generation mismatch returns before either state changes."
             ],
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/none_drc/authorized_verification.json",
@@ -7100,11 +7115,19 @@
             },
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "source_spec_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+            "clock_source_spec_sha256": "26a67687d019b480fcb450cc8321198f8df3d5182c55d49adefc4179fa23f74a",
             "source_parameter_sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f",
             "source_math_parameter_sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166",
             "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
           },
           "error_outcomes": [
+            {
+              "error_code": "ClockError::ArithmeticOverflow",
+              "category": "checked callback clock projection",
+              "trigger": "A checked source, dispatch, generated-writer or publication projection overflows its typed representation.",
+              "programme_state_after": "No F06ND stage runs; no output or next state is returned.",
+              "caller_action": "Reject the local typed transition; no native product error code is inferred."
+            },
             {
               "error_code": "DRC_INPUT_ERROR",
               "category": "source/scheduler generation join",
@@ -7115,7 +7138,7 @@
           ],
           "not_run": [
             "Underlying first-failure precedence and F06ND outcome mapping remain UNBOUND and are propagated as typed stage errors.",
-            "CodecSourceIndex is caller-supplied; upstream primary/secondary source identity is not independently receipted by this wrapper.",
+            "The callback-derived CodecSourceIndex does not independently receipt the primary/secondary sample-plane source identity.",
             "The statistics state is Copy and the scheduler state is Copy; this wrapper returns a paired next state but does not enforce a unique parent commit lineage.",
             "Parent source transaction, programme reset/EOF, metadata override FIFO and F12 writer remain deferred.",
             "F06 meter finalization and meter_terminal_sha256 remain HOLD; W04/product acceptance remains NOT_RUN."
@@ -7230,6 +7253,137 @@
             "F12 BSI field presence policy, bit writer, frame builder, CRC and final 4,096-byte output",
             "Production application::encode wiring and whole-programme output",
             "F06 meter finalization and meter_terminal_sha256 remain HOLD"
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "selected-f06nd-controls-to-f12-bsi-drc-fields",
+          "mapping_status": "MATERIALIZED_HASH_BOUND_F06ND_TO_F12_BSI_CONTROL_BINDING_V1__FULL_FRAME_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_SAME_SOURCE_BSI_CONTROL_PLAN_AND_CURSOR_WRITES__FULL_F12_DEFERRED",
+          "scope": "Binds a successful callback-derived F06ND transition to a caller-supplied F12 CodecSourceIndex and stages only selected DRC BSI fields. It writes U5 dialnorm, `compre`, and optional `compr` at header bit 45; writes each selected line-presence/code pair at the live cursor after that block's optional short/dither syntax in block order 0..5. Each field group is capacity-preflighted as one bounded write. This does not build other BSI fields, codec audio syntax, candidate trials, CRC, a complete frame, or parent state.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/frame_syntax.rs",
+            "crates/jocforge-domain/src/codec/frame_builder.rs",
+            "crates/jocforge-domain/src/codec/bitio.rs",
+            "crates/jocforge-domain/src/drc/none_drc_callback.rs",
+            "crates/jocforge-domain/src/drc/none_drc_bsi_projection.rs"
+          ],
+          "clock": {
+            "domains": [
+              "CodecSourceIndex",
+              "CodecBlockIndex"
+            ],
+            "covered_clauses": [
+              "The BSI plan is admitted only when its F12 source index equals the successful same-source F06ND callback transition source index.",
+              "Line DRC fields are written in typed block order 0..5; each field offset uses the current cursor after preceding optional block syntax."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F06ND_F12_BSI_CONTROL_FIELD_BINDING_V1",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1/BSI-FIELD-MAP.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1/EVIDENCE.json"
+            ],
+            "supplement_manifest_sha256": "4e9e6a566acbc186e7ff6f11c98b47a62df616336338b8453fa39810592fe39e",
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "validation_boundary": "Selected clean-spec BSI control fields only; manual codec fixture BSI values verify wire positions but do not establish producer identity."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/none_drc_bsi_fields.rs",
+            "crates/jocforge-domain/tests/none_drc_frame.rs",
+            "crates/jocforge-domain/src/codec/frame_syntax.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_F06ND_SAME_SOURCE_PROJECTION_AND_F12_MANUAL_BSI_LAYOUT",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1/BSI-FIELD-MAP.json",
+              "crates/jocforge-domain/tests/fixtures/none_drc/authorized_verification.json",
+              "crates/jocforge-domain/tests/fixtures/codec_fixture/CODEC-OWNER-VECTORS.json"
+            ],
+            "case_pointers": [
+              "Eight authorized F06ND input frames derive callback, source, scheduler outputs and same-source RF/line BSI code proposals after computation.",
+              "The manual mixed_short_actual_keyless_joc fixture verifies dialnorm/compre/compr at bits 45..59 and line DRC presence/code at cursor-derived offsets after each block's optional syntax.",
+              "Capacity, wrong cursor and out-of-order block failures leave the attempted field operation and writer cursor unchanged.",
+              "CODEC-OWNER-VECTORS is a wire-layout oracle only; its hand-authored BSI values are not substituted for F06ND output or same-source identity."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/codec_fixture/CODEC-OWNER-VECTORS.json",
+              "bytes": 10880173,
+              "sha256": "0d107905a9cafb3ec64a0437c96b41a9d8652256789a468e7d4bceb2d0e26740"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "codec_fixture_manifest_sha256": "077070af8cfbe9a2451f768cfdbefe05ffa44c07b6551330bf5d95ee44d34c44",
+            "source_vector_sha256": "f4cd579712b2d77c485d354dac3f2132cba6106174441e6eef2914dbdf7c136d"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "DRC_INPUT_ERROR",
+              "category": "F06ND/F12 source-generation join",
+              "trigger": "The F12 frame source index differs from the source index on the successful F06ND transition.",
+              "programme_state_after": "No BSI plan or field bytes are returned; no persistent state exists in this slice.",
+              "caller_action": "Reject the source-stage plan."
+            },
+            {
+              "error_code": "SelectedBsiDrcSyntaxError::DialnormOutOfRange",
+              "category": "selected U5 dialnorm boundary",
+              "trigger": "A proposed dialnorm is outside the selected F06ND 1..31 range.",
+              "programme_state_after": "No BSI plan or field bytes are returned.",
+              "caller_action": "Reject the selected-profile plan; no native product code is inferred."
+            },
+            {
+              "error_code": "SelectedBsiDrcSyntaxError::BlockIndexOutOfRange",
+              "category": "selected six-block syntax boundary",
+              "trigger": "A caller supplies a line DRC block index outside 0..5.",
+              "programme_state_after": "No field write occurs for the invalid block.",
+              "caller_action": "Reject the selected-profile call; no native product code is inferred."
+            },
+            {
+              "error_code": "SelectedBsiDrcWriterError::HeaderCursorMismatch",
+              "category": "F12 header cursor boundary",
+              "trigger": "The writer cursor is not at bit 45 when the DRC header fields are requested.",
+              "programme_state_after": "No header field or cursor is changed.",
+              "caller_action": "Reject this local frame-builder attempt."
+            },
+            {
+              "error_code": "SelectedBsiDrcWriterError::HeaderAlreadyWritten",
+              "category": "F12 header field lifecycle",
+              "trigger": "The caller requests the one-time dialnorm/compre/compr group more than once.",
+              "programme_state_after": "No field or cursor is changed by the repeated request.",
+              "caller_action": "Reject this local frame-builder attempt."
+            },
+            {
+              "error_code": "SelectedBsiDrcWriterError::HeaderNotWritten",
+              "category": "F12 field lifecycle",
+              "trigger": "The caller writes line DRC fields or finishes before writing the header DRC group.",
+              "programme_state_after": "No field or cursor is changed by the invalid request.",
+              "caller_action": "Reject this local frame-builder attempt."
+            },
+            {
+              "error_code": "SelectedBsiDrcWriterError::BlockOutOfOrder",
+              "category": "line DRC block sequence",
+              "trigger": "A line DRC field is requested for a block other than the next block 0..5.",
+              "programme_state_after": "The attempted field and cursor are unchanged; earlier bits remain only in caller-owned candidate scratch.",
+              "caller_action": "Discard the candidate scratch and reject this local frame-builder attempt."
+            },
+            {
+              "error_code": "SelectedBsiDrcWriterError::IncompleteBlockFields",
+              "category": "six-block DRC field completion",
+              "trigger": "The caller finishes the DRC field writer before all six line block fields are written in order.",
+              "programme_state_after": "No completion value is returned; any earlier bits remain only in caller-owned candidate scratch.",
+              "caller_action": "Discard the candidate scratch and reject this local frame-builder attempt."
+            },
+            {
+              "error_code": "FrameBitWriterError::BufferTooSmall",
+              "category": "bounded frame scratch",
+              "trigger": "The complete one-bit or nine-bit DRC field group does not fit at the live cursor.",
+              "programme_state_after": "The attempted field and cursor are unchanged; earlier bits remain only in caller-owned candidate scratch.",
+              "caller_action": "Discard the candidate scratch; no codec state or parent state is committed."
+            }
+          ],
+          "not_run": [
+            "Other BSI and block fields, transform/exponent/mantissa syntax, F12 candidate search/retry, CRC and complete 4096-byte frame production.",
+            "F06WH/global source commit, codec owner state install, metadata FIFO, application::encode, whole-programme replay and product acceptance remain deferred or NOT_RUN."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
