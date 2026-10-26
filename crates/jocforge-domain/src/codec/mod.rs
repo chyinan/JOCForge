@@ -23,4 +23,6 @@ pub mod policy_parameters;
 pub mod rate_profile;
 pub mod raw_exponent_from_power;
 pub mod refresh_difference;
+pub mod selected_frame_trial;
+pub mod selected_main_q_search;
 pub mod substream_topology;

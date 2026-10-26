@@ -1,0 +1,160 @@
+{
+  "schema": "codec3-complete-frame-input-source-map.v1",
+  "selected_profile": {
+    "sample_rate_hz": 48000,
+    "bit_rate_bps": 1024000,
+    "frame_samples_per_channel": 1536,
+    "frame_bytes": 4096,
+    "blocks": 6,
+    "independent_substreams": 1,
+    "acmod": 7,
+    "lfe_on": 1,
+    "fullband_channels": 5,
+    "fullband_end_bin": 217,
+    "lfe_end_bin": 7,
+    "coupling_spx_delta_bit_allocation_aht": "all disabled"
+  },
+  "inputs": [
+    {
+      "field": "audio_frame",
+      "type": "finite F32[6][1536]",
+      "external_channel_order": [
+        "L",
+        "R",
+        "C",
+        "LFE",
+        "Ls",
+        "Rs"
+      ],
+      "codec_channel_order": [
+        "L",
+        "C",
+        "R",
+        "Ls",
+        "Rs",
+        "LFE"
+      ],
+      "producer": "approved F08 transform/audio stage",
+      "boundary": "values are supplied by the same source callback; CODEC3 does not regenerate DSP"
+    },
+    {
+      "field": "short_flags",
+      "type": "bool[6][5]",
+      "order": "block 0..5, codec fullband lane 0..4",
+      "producer": "approved F07/F09 plan",
+      "consumer": "F12 short_syntax presence and per-block five short bits"
+    },
+    {
+      "field": "previous_short",
+      "type": "bool[5]",
+      "owner": "F12 codec state",
+      "consumer": "same-source dither plan; state is staged once and committed only through the source transaction"
+    },
+    {
+      "field": "six_block_exponent_plan",
+      "shape": "fullband strategy/base/packed groups/decoded exponents/gain for 6\u00d75 lanes; separate LFE strategy/base/groups/decoded exponents for 6 blocks",
+      "producer": "approved F09/F10 plan",
+      "boundary": "provided plan is consumed as input; this contract does not rederive exponent math, BAP search, or quantization"
+    },
+    {
+      "field": "db_per_bit_codes",
+      "type": "U2[6]",
+      "producer": "approved F09 source-frame plan",
+      "consumer": "BA tuple for the corresponding six blocks"
+    },
+    {
+      "field": "main_frame_codes",
+      "type": "U5[5] or six-block fullband strategy plan, selected by exponent_format",
+      "producer": "main F09/F10 codec plan",
+      "separation": "not interchangeable with converter_frame_codes"
+    },
+    {
+      "field": "converter_frame_codes_and_snr",
+      "types": {
+        "converter_frame_codes": "U5[5]",
+        "converter_snr_offset": "U10"
+      },
+      "producer": "separate selected converter plan",
+      "consumer": "converter header fields; do not reuse main frame codes"
+    },
+    {
+      "field": "bsi",
+      "type": "same-source selected BSI object plus six per-block line DRC records",
+      "producers": [
+        "F06 finalized programme measurement/config",
+        "F06ND same-source RF/line DRC scheduler"
+      ],
+      "fields": [
+        "dialnorm",
+        "RF presence/code",
+        "mixing/downmix",
+        "information metadata",
+        "line DRC presence/code[6]",
+        "same-source JOC additional-BSI fields"
+      ],
+      "fixture_caveat": "complete-frame vector BSI values are explicit field inputs; they do not prove a real F06 producer identity"
+    },
+    {
+      "field": "emdf_payload_and_joc_complexity",
+      "type": "F13 ready complete EMDF container C bytes plus same-container parsed complexity, or typed ABSENT_PUBLISHED_PAYLOAD_V1 for suppressed sources",
+      "producer": "F13 four-body ready barrier and selected EMDF serializer",
+      "payload_domains": {
+        "ID11": "F05L OAMD body",
+        "ID14": "F05JL JOC body",
+        "ID2": "F13D2 selected profile metadata body",
+        "ID1": "F13 programme measurement/timer body"
+      },
+      "boundary": "F12 receives the complete F13 container; it does not create OAMD/JOC bodies or infer complexity from an older header"
+    },
+    {
+      "field": "emdf_carriage_mode",
+      "type": "enum string",
+      "accepted": [
+        "deployed_compat",
+        "etsi_emdf"
+      ],
+      "owner": "explicit programme-level F13 input, fixed for the programme",
+      "boundary": "not inferred from extension, payload, reference output, or decoder response; F13.9 documents deployed_compat as the omission default"
+    }
+  ],
+  "bsi_bit_source_map": [
+    {
+      "field": "dialnorm",
+      "wire": "U5 at frame bits45..49",
+      "source": "F06 finalized full-programme selected_lufs through F06.3"
+    },
+    {
+      "field": "compre",
+      "wire": "U1 at frame bit50",
+      "source": "same-source F06ND RF_flag_u16"
+    },
+    {
+      "field": "compr",
+      "wire": "U8 beginning at bit51 when compre=1",
+      "source": "high byte: RF_packed_word_u16 >> 8"
+    },
+    {
+      "field": "line DRC",
+      "wire": "one presence bit per block, then U8 when present; cursor position follows that block's optional short/dither fields",
+      "source": "line_flags_u16[i], high byte line_packed_words_u16[i] >> 8"
+    },
+    {
+      "field": "mixing/information metadata",
+      "wire": "conditional MSB-first F12S.7 fields",
+      "source": "F06.4 normalized selected configuration and authored_source_mode_byte mapping"
+    },
+    {
+      "field": "JOC complexity",
+      "wire": "additional BSI presence, length code, identifier, complexity",
+      "source": "same F13 container; selected ID14 object_count 15 gives object_count+1=16"
+    }
+  ],
+  "domain_guards": [
+    "F06 preferred_downmix_mode is not the F13 ID1 preferred bool.",
+    "F06 gating_kind is not the F13 ID1 preferred bool.",
+    "The complete-frame input vector's mixing object contains the five authored downmix fields and its information object contains the selected information fields; zero-valued F12S.7 writer fields are not fixture inputs.",
+    "F13 EMDF bodies and F12 BSI are separate typed inputs; neither is inferred from frame bytes.",
+    "ID1 preferred is closed by F13-PREFERRED-F06-TYPED-CLOSURE-V1: finalized public kind Dialogue=1 -> preferred true, other public kinds false. Construct programme ID1 config once. No user preferred input."
+  ],
+  "writer_boundary": "audio_frame is the upstream codec pipeline input, not permission for frame_builder to recompute DSP. frame_builder consumes the validated codec plan, BSI, payload and integrity result."
+}

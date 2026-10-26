@@ -1,0 +1,151 @@
+{
+  "schema": "jocforge-codec-allocation-search-sources.v1",
+  "production_research_manifest_sha256": "657b9941b0d25db1afa5500d113184f9d1a39f63a794513efe596c9c1b06c8d9",
+  "boundary_research_manifest_sha256": "880fe63ff69c2eb166d0ab3b494960f6a7fe59c4d18f09488ed3dcf55f0df7ed",
+  "approved_parent_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "actual_rehashed_source_identities": [
+    {
+      "role": "specs/09-exponents.md",
+      "bytes": 9722,
+      "sha256": "41cd157140d0deaab51fa9a895c33758cb49eb46cf5844a2883c1d6e8bb81739",
+      "grade": "REHASHED_APPROVED_LEAF"
+    },
+    {
+      "role": "specs/09-gain-and-db.md",
+      "bytes": 5440,
+      "sha256": "f6e73ca2e361c06413974f4b7725fdc94f8e1d13a6a299062edde9dc3a7e6c12",
+      "grade": "REHASHED_APPROVED_LEAF"
+    },
+    {
+      "role": "specs/10-exponent-normalization.md",
+      "bytes": 5969,
+      "sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc",
+      "grade": "REHASHED_APPROVED_LEAF"
+    },
+    {
+      "role": "specs/11-converter.md",
+      "bytes": 5172,
+      "sha256": "9ecb50bbb125d2a6e2d8f5e565ffbc7514c156c72602d2d2d89d8b17e9e4e4c8",
+      "grade": "REHASHED_APPROVED_LEAF"
+    },
+    {
+      "role": "specs/12-bit-allocation.md",
+      "bytes": 10061,
+      "sha256": "fa347045793bf3ce88349052526a758bc47e9d33fb1f1a1265a50c249ccd45f7",
+      "grade": "REHASHED_APPROVED_LEAF"
+    },
+    {
+      "role": "specs/12-selected-codec-wire.md",
+      "bytes": 14760,
+      "sha256": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448",
+      "grade": "REHASHED_APPROVED_LEAF"
+    },
+    {
+      "role": "specs/12-selected-source-frame-composition.md",
+      "bytes": 10843,
+      "sha256": "9e6fcc14489ca0acaff0f7c223fce65539aa5b19cb4119ebcb34d19049cd0769",
+      "grade": "REHASHED_APPROVED_LEAF"
+    },
+    {
+      "role": "parameters/public-bap-48k-v1.json",
+      "bytes": 8509,
+      "sha256": "eb913038a89d853db453831d64df34c19f8ea8a89d04a72c0ef43733619545a3",
+      "grade": "REHASHED_APPROVED_LEAF"
+    },
+    {
+      "role": "parameters/codec-wire-cross-module-providers-v1.json",
+      "bytes": 15764,
+      "sha256": "d0a99cd1fd25b5ba0b2e690d549ac474006d8a4dddb10e185446808379e96e2d",
+      "grade": "REHASHED_APPROVED_LEAF"
+    },
+    {
+      "role": "parameters/codec-wire-selected-v1.json",
+      "bytes": 3081,
+      "sha256": "a7a0a721a9e515d197a2d12fc0c9cb942b2b393f9019383a66ce2635f7aaa0dd",
+      "grade": "REHASHED_APPROVED_LEAF"
+    },
+    {
+      "role": "parameters/policy-authorized-v1.json",
+      "bytes": 4559,
+      "sha256": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a",
+      "grade": "REHASHED_APPROVED_LEAF"
+    },
+    {
+      "role": "test-vectors/PUBLIC-BAP-VERIFICATION.json",
+      "bytes": 297068,
+      "sha256": "aa4a4da8fd8f6f87fb6b81178cd277b197081209787df778861f24b6cd42616c",
+      "grade": "REHASHED_APPROVED_LEAF"
+    },
+    {
+      "role": "actual_duration_freeze_manifest",
+      "bytes": 62543,
+      "sha256": "a4ca3690287bee75a6304882d07515559c9563595410268cdcd97e277107e6a8",
+      "grade": "REHASHED_MANIFEST_NOT_ALL_PAYLOADS_PRESENT"
+    },
+    {
+      "role": "actual_duration_execution",
+      "bytes": 6185,
+      "sha256": "c43dabce54cdda0d951eca7734a35e0bf39abe621362f1c94b8766b7364d78e3",
+      "grade": "REHASHED_EXECUTION_METADATA_NOT_NEW_RUN"
+    },
+    {
+      "role": "actual_duration_build",
+      "bytes": 2078,
+      "sha256": "2ab22fced9dcd8fafc240c805bfe95c4b5e56fd7b48a9752878c0210ebca8ccf",
+      "grade": "REHASHED_EXECUTION_METADATA_NOT_NEW_RUN"
+    },
+    {
+      "role": "excluded_metrics_registry_core",
+      "bytes": 18891,
+      "sha256": "7f7b7179cac59b510f0b5a0e71f3d97d3cd7e602181ccbe7174e191f6f2c056d",
+      "grade": "REHASHED_ADJACENT_SOURCE_NOT_SELECTED_PRODUCTION"
+    },
+    {
+      "role": "excluded_metrics_running_stage",
+      "bytes": 13576,
+      "sha256": "65b82dd1cb173a23e581d87f7e569a19a335f538bf27587b87593f5d3ad90e52",
+      "grade": "REHASHED_METRICS_DURATION_METADATA"
+    }
+  ],
+  "boundary_approved_sources": [
+    {
+      "file": "specs/11-converter.md",
+      "bytes": 5172,
+      "sha256": "9ecb50bbb125d2a6e2d8f5e565ffbc7514c156c72602d2d2d89d8b17e9e4e4c8"
+    },
+    {
+      "file": "specs/12-bit-allocation.md",
+      "bytes": 10061,
+      "sha256": "fa347045793bf3ce88349052526a758bc47e9d33fb1f1a1265a50c249ccd45f7"
+    },
+    {
+      "file": "specs/12-selected-codec-wire.md",
+      "bytes": 14760,
+      "sha256": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448"
+    },
+    {
+      "file": "parameters/public-bap-48k-v1.json",
+      "bytes": 8509,
+      "sha256": "eb913038a89d853db453831d64df34c19f8ea8a89d04a72c0ef43733619545a3"
+    }
+  ],
+  "approved_numeric_vector_references": [
+    {
+      "file": "test-vectors/PUBLIC-BAP-VERIFICATION.json",
+      "bytes": 297068,
+      "sha256": "aa4a4da8fd8f6f87fb6b81178cd277b197081209787df778861f24b6cd42616c"
+    },
+    {
+      "file": "test-vectors/BAP-RULE-VERIFICATION.json",
+      "bytes": 552,
+      "sha256": "a1a42d37d6e53b3f86b1396d1dbb83d848b28809efcfb1462c4a2329e142363d"
+    }
+  ],
+  "historical_main_source_identity": {
+    "source_sha256_anchor": "515f0b8ed4c390c33e72ff746debeb0dfb32370383f4bba4d9646441ecef5613",
+    "executable_sha256_anchor": "1e88959ae31efc261a9f6403f5d083c40ebe7b89fc8ce49f72ed0d75564597c8",
+    "grade": "HISTORICAL_MANIFEST_ANCHOR_ONLY_NOT_SOURCE_REHASHED",
+    "not_a_numeric_dependency_gate": true
+  },
+  "raw_source_paths_original_code_actual_PCM_AU_or_authentication_forwarded": false
+}

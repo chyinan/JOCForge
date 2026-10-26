@@ -1,18 +1,38 @@
 // pattern: Functional Core
 //! F11.3/F11.4 candidate search over caller-provided per-candidate costs.
 
+use std::convert::Infallible;
+
+use super::bap::{BapBlock, BapFrame};
+
 const FRAME_BITS_I16: i16 = 20_480;
 const FIRST_PARTITION_BITS_I16: i16 = 12_800;
 const TAIL_PARTITION_BITS_I16: i16 = 7_680;
 const PER_BLOCK_QUOTA_I16: i16 = 3_413;
 const GLOBAL_OVERHEAD_I16: i16 = 17;
 const MAX_OFFSET: i32 = 671;
+const WIDTH_BY_BAP: [i16; 16] = [0, 5, 7, 3, 7, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16];
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ConverterSearchInput {
     pub header_cost: i16,
     pub fixed_costs: [i16; 6],
     pub auxiliary_cost: i16,
+}
+
+/// Errors while evaluating a converter search from actual per-candidate BAP rows.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub enum ConverterBapSearchError<E> {
+    InvalidCostInput,
+    CandidateBap(E),
+}
+
+/// Errors while joining a candidate-tagged F12A frame to converter search.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub enum ConverterFrameSearchError<E> {
+    InvalidCostInput,
+    CandidateBap(E),
+    CandidateMismatch { requested: i32, received: u16 },
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -36,6 +56,17 @@ impl ConverterSearchResult {
     }
 }
 
+/// Computes the six virtual mantissa costs from actual BAP rows.
+///
+/// BAP1 and BAP2 items are grouped in threes and BAP4 items in pairs across
+/// the five full-band channels and LFE within each block. Each block starts
+/// with fresh group counts. Other BAP codes use the selected F12S width vector.
+/// The accumulator is W16; no coefficient quantization or sentinel judgment
+/// is performed here.
+pub fn converter_mantissa_costs(blocks: &[BapBlock; 6]) -> [i16; 6] {
+    std::array::from_fn(|block_index| block_mantissa_cost(&blocks[block_index]))
+}
+
 /// Searches the selected F11.4 candidate order with caller-provided per-candidate mantissa costs.
 ///
 /// The callback is invoked for every visited candidate, including candidates above the selected
@@ -44,10 +75,83 @@ impl ConverterSearchResult {
 /// This function owns no BAP provider, policy state, or product converter transaction.
 pub fn search_converter_offset<F>(
     input: &ConverterSearchInput,
-    mantissa_costs_for: F,
+    mut mantissa_costs_for: F,
 ) -> ConverterSearchResult
 where
-    F: Fn(i32) -> [i16; 6],
+    F: FnMut(i32) -> [i16; 6],
+{
+    match search_candidates(input, |candidate| {
+        Ok::<[i16; 6], Infallible>(mantissa_costs_for(candidate))
+    }) {
+        Ok(result) => result,
+        Err(error) => match error {},
+    }
+}
+
+/// Searches offsets by producing fresh BAP for each candidate and deriving its costs.
+///
+/// The callback runs for every visited candidate, including candidates above
+/// the cap. Its BAP results are consumed immediately and are not reused for a
+/// different candidate, block, or channel. A callback failure is fatal to this
+/// search call. The no-best case checks the specified zero-mantissa cost
+/// case without invoking the BAP callback at offset zero.
+pub fn search_converter_offset_from_bap<F, E>(
+    input: &ConverterSearchInput,
+    mut bap_blocks_for: F,
+) -> Result<ConverterSearchResult, ConverterBapSearchError<E>>
+where
+    F: FnMut(i32) -> Result<[BapBlock; 6], E>,
+{
+    if input.header_cost < 0
+        || input.auxiliary_cost < 0
+        || input.fixed_costs.iter().any(|cost| *cost < 0)
+    {
+        return Err(ConverterBapSearchError::InvalidCostInput);
+    }
+
+    search_candidates(input, |candidate| {
+        let blocks = bap_blocks_for(candidate).map_err(ConverterBapSearchError::CandidateBap)?;
+        Ok(converter_mantissa_costs(&blocks))
+    })
+}
+
+/// Searches using candidate-tagged F12A frames and rejects a mismatched q join.
+///
+/// This adapter keeps the lower-level block-array callback API available while
+/// preserving the F12A candidate key at the frame boundary. Source generation
+/// identity remains caller-owned.
+pub fn search_converter_offset_from_bap_frame<F, E>(
+    input: &ConverterSearchInput,
+    mut bap_frame_for: F,
+) -> Result<ConverterSearchResult, ConverterFrameSearchError<E>>
+where
+    F: FnMut(i32) -> Result<BapFrame, E>,
+{
+    if input.header_cost < 0
+        || input.auxiliary_cost < 0
+        || input.fixed_costs.iter().any(|cost| *cost < 0)
+    {
+        return Err(ConverterFrameSearchError::InvalidCostInput);
+    }
+
+    search_candidates(input, |candidate| {
+        let frame = bap_frame_for(candidate).map_err(ConverterFrameSearchError::CandidateBap)?;
+        if i32::from(frame.candidate_q()) != candidate {
+            return Err(ConverterFrameSearchError::CandidateMismatch {
+                requested: candidate,
+                received: frame.candidate_q(),
+            });
+        }
+        Ok(converter_mantissa_costs(frame.blocks()))
+    })
+}
+
+fn search_candidates<F, E>(
+    input: &ConverterSearchInput,
+    mut mantissa_costs_for: F,
+) -> Result<ConverterSearchResult, E>
+where
+    F: FnMut(i32) -> Result<[i16; 6], E>,
 {
     let mut low = 0_i32;
     let mut high = 1_024_i32;
@@ -57,7 +161,7 @@ where
     while high - low >= 2 {
         let candidate = (low + high) / 2;
         candidate_order.push(candidate);
-        let candidate_mantissa_costs = mantissa_costs_for(candidate);
+        let candidate_mantissa_costs = mantissa_costs_for(candidate)?;
         let feasible = converter_frame_feasible(
             input.header_cost,
             &input.fixed_costs,
@@ -83,11 +187,46 @@ where
         best = Some(0);
     }
 
-    ConverterSearchResult {
+    Ok(ConverterSearchResult {
         header_bits: input.header_cost,
         candidate_order,
         best_offset: best.and_then(|value| u16::try_from(value).ok()),
+    })
+}
+
+fn block_mantissa_cost(block: &BapBlock) -> i16 {
+    let mut counts = [0_u16; WIDTH_BY_BAP.len()];
+    for code in block
+        .fullband_rows()
+        .iter()
+        .flatten()
+        .chain(block.lfe_row().iter())
+    {
+        let count = &mut counts[usize::from(*code)];
+        *count = count.wrapping_add(1);
     }
+
+    let mut cost = 0_i16;
+    for (code, count) in counts.into_iter().enumerate() {
+        let contribution = match code {
+            1 => grouped_width(count, 3, 5),
+            2 => grouped_width(count, 3, 7),
+            4 => grouped_width(count, 2, 7),
+            _ => i16::try_from(count)
+                .expect("a selected block has at most 1,092 bins")
+                .wrapping_mul(WIDTH_BY_BAP[code]),
+        };
+        cost = cost.wrapping_add(contribution);
+    }
+    debug_assert!(cost >= 0, "a six-row BAP cost fits in signed W16");
+    cost
+}
+
+fn grouped_width(count: u16, group_size: u16, field_width: i16) -> i16 {
+    let group_count = count.wrapping_add(group_size - 1) / group_size;
+    i16::try_from(group_count)
+        .expect("a selected block has at most 1,092 bins")
+        .wrapping_mul(field_width)
 }
 
 fn converter_frame_feasible(

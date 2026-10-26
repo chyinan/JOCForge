@@ -132,14 +132,26 @@ pub fn finish_selector_u04_handoff(
     handoff: SelectorU04Handoff,
     refinement: Option<&U04ProjectionResult>,
 ) -> Result<SelectedTargetSlots, SelectorU04HandoffError> {
+    finish_selector_u04_handoff_with_xyz(
+        handoff,
+        refinement.map(U04ProjectionResult::projected_xyz_u32),
+    )
+}
+
+/// Applies an already-produced U04 XYZ projection only when CAPACITY_REACHED admitted it.
+pub fn finish_selector_u04_handoff_with_xyz(
+    handoff: SelectorU04Handoff,
+    projected_xyz_u32: Option<&[[u32; 3]]>,
+) -> Result<SelectedTargetSlots, SelectorU04HandoffError> {
     let mut selected = handoff.selected_targets;
     if handoff.admission.refinement_called() {
-        let refinement = refinement.ok_or(SelectorU04HandoffError::RefinementMissing)?;
-        if refinement.projected_xyz_u32().len() != handoff.admission.selected_count() as usize {
+        let projected_xyz_u32 =
+            projected_xyz_u32.ok_or(SelectorU04HandoffError::RefinementMissing)?;
+        if projected_xyz_u32.len() != usize::from(handoff.admission.selected_count()) {
             return Err(SelectorU04HandoffError::RefinementShape);
         }
-        selected.xyz_words = refinement.projected_xyz_u32().to_vec();
-    } else if refinement.is_some() {
+        selected.xyz_words = projected_xyz_u32.to_vec();
+    } else if projected_xyz_u32.is_some() {
         return Err(SelectorU04HandoffError::RefinementUnexpected);
     }
     Ok(selected)

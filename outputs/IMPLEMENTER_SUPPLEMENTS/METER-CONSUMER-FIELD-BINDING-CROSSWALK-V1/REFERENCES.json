@@ -1,0 +1,159 @@
+{
+  "schema": "research.meter-consumer-field-references.v1",
+  "references": [
+    {
+      "id": "WIRING",
+      "package": "SPATIAL-CONTROL-TO-COMPONENT-PRODUCTION-WIRING-V1",
+      "manifest_sha256": "6d1fa51b3b04ea8ca19c9d81c51b75a49d27349eaad2e018d6848e739f2cb5c1",
+      "documents": [
+        {
+          "document": "CONTRACT.md",
+          "sha256": "5a5269461898eda50ad20c066eac28c3da4b125018efe8efb7d9ffba6c870666",
+          "bytes": 8559
+        },
+        {
+          "document": "STAGE-CONTRACTS.json",
+          "sha256": "693f1eda9ecd5f034199d39d7ad03d9484a0501e5bdf3872e997c76f9a183a83",
+          "bytes": 5456
+        },
+        {
+          "document": "CONTROL-HANDOFF.json",
+          "sha256": "167886088cfdd502e622479022eb2bcad3961a6a21c41e7a1f8c4d9e6b0c7d36",
+          "bytes": 13098
+        }
+      ]
+    },
+    {
+      "id": "BRIDGE",
+      "package": "F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1",
+      "manifest_sha256": "7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac",
+      "documents": [
+        {
+          "document": "CONTRACT.md",
+          "sha256": "d67791cf8ab2b2168bf61ab38c05beaafe7b5c799c084276c90a8bef8fd917b2",
+          "bytes": 4607
+        }
+      ]
+    },
+    {
+      "id": "NORMAL",
+      "package": "FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1",
+      "manifest_sha256": "513b0c7554d25a97c2a5e448ce0f7c109f75b01c80ec53d16a145db6208d1c23",
+      "documents": [
+        {
+          "document": "CONTRACT.md",
+          "sha256": "95cb7e006f22ece1fcff339cfd0d6b9db686ed29cb5043ef2940886b466bb547",
+          "bytes": 7458
+        },
+        {
+          "document": "INTERFACE.json",
+          "sha256": "0e610997ab85d32532f33a8d14b7067a05fa16036fae609be8c9adb6e52cf460",
+          "bytes": 4335
+        }
+      ]
+    },
+    {
+      "id": "ORDINAL",
+      "package": "OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1",
+      "manifest_sha256": "b5a21ba892c071256aab26f1a4733b122cd0ba0dc3b27ad0182135a4b1c2cde3",
+      "documents": [
+        {
+          "document": "CONTRACT.md",
+          "sha256": "e3c332136f4b8aaa7165507d2dd0ad2d0e8f5bee3e9bff94f4f406adb6902d80",
+          "bytes": 4897
+        }
+      ]
+    },
+    {
+      "id": "MATRIX",
+      "package": "SPATIAL-ACTIVE-MATRIX-REPRESENTATION-ADAPTER-V1",
+      "manifest_sha256": "97d554d78dce00348476cdf00fd5cb566e9c4327dc3b4f6418e344df3fa08d7a",
+      "documents": [
+        {
+          "document": "CONTRACT.md",
+          "sha256": "8277fc163cf09f382bcabaa92b05874fe1daa0771aea1951cbbabcfc8ca2d33f",
+          "bytes": 3491
+        }
+      ]
+    },
+    {
+      "id": "OUTER",
+      "package": "SPATIAL-TARGET-CONTEXT-OUTER-CROSSWALK-V1",
+      "manifest_sha256": "d676c206090cd103334a1a3704c5b97efdcf191a7f262b670ddaad32d5851d36",
+      "documents": [
+        {
+          "document": "CROSSWALK.md",
+          "sha256": "f8ad09a0fda0117f69bf315947985f90cf7e3cd1e09fef067090173b9505bcfa",
+          "bytes": 9438
+        }
+      ]
+    },
+    {
+      "id": "FLAGS",
+      "package": "SOURCE-FLAGS-BED-OBJECT-CONTROL-ADAPTER-V1",
+      "manifest_sha256": "0d4b047cb65368f5769cc1e35085f6e5946dec890b4404bb7b79cd6c1613d4ae",
+      "documents": [
+        {
+          "document": "CONTRACT.md",
+          "sha256": "8464b395a97facd18e324697094a080096e0d802940917dc39bcc6be0b463a54",
+          "bytes": 3406
+        }
+      ]
+    },
+    {
+      "id": "HOLD",
+      "package": "METER-DRAIN-SOURCE-CONTROL-HOLD-V1",
+      "manifest_sha256": "c64eff3db5f596c620c2f8cefb3eeb48aa15a08d1a7c66fb330392b2eaf0ebbc",
+      "documents": [
+        {
+          "document": "CONTRACT.md",
+          "sha256": "04774460993d6e981a351679abcf07f8fafeeeb7260ede1a78595d3e729c1b9d",
+          "bytes": 4094
+        }
+      ]
+    },
+    {
+      "id": "F04A",
+      "document": "04-window-matrix-and-component-audio.md",
+      "sha256": "350937eadb5da2432ed60723305cdc8de80a139fef803ec3a2aa5a3990ed6334",
+      "bytes": 9190,
+      "approved_main_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+    },
+    {
+      "id": "F03R",
+      "document": "03-source-routing-and-feature-flags.md",
+      "sha256": "ef0a7bd95edc2adc63b07e752879b6ddefb817962b7b6fa44c77b4acb5c51f19",
+      "bytes": 4830,
+      "approved_main_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+    },
+    {
+      "id": "F04G",
+      "document": "04-spread-parameter-provider-and-caller.md",
+      "sha256": "11a9a62467c7992224450bc00bca570a180a293631212e5848ddc7738421f77a",
+      "bytes": 4971,
+      "approved_main_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+    },
+    {
+      "id": "F05H",
+      "document": "05-fit-marker-and-metadata-history.md",
+      "sha256": "39cb2ef34ef976b369c4390969d6a38e291d3268e9e2c7e43499ea299b692f26",
+      "bytes": 6252,
+      "approved_main_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+    },
+    {
+      "id": "OWNER",
+      "document": "00-selected-owner-projection-and-j05.md",
+      "sha256": "9ff01aca7b6be6e89511e4d493f9fc9e661a50e2f098065f4a32c3fed777542f",
+      "bytes": 4504,
+      "approved_main_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+    },
+    {
+      "id": "TX",
+      "document": "00-global-transaction-contract.md",
+      "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105",
+      "bytes": 20041,
+      "approved_main_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+    }
+  ],
+  "verification": "All8 supplement manifests and11 selected supplement documents, plus6 approved leaves independently rehashed; no DSP or implementation execution."
+}

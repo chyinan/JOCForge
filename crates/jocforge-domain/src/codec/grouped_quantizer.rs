@@ -1,75 +1,47 @@
 // pattern: Functional Core
-//! Internal F12 grouped quantizer helper for the washed BAP1/2/4 slice only.
+//! Block-local F12 mantissa quantization, grouping, and MSB-first packing.
 
 use super::mantissa::{MantissaQuantizerError, quantize_mantissa};
 
-const BAP1_GROUP: usize = 0;
-const BAP2_GROUP: usize = 1;
-const BAP4_GROUP: usize = 2;
-const WORD_BITS: u8 = 16;
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum GroupedBap {
-    Bap1,
-    Bap2,
-    Bap4,
-}
-
-impl GroupedBap {
-    pub const fn value(self) -> u8 {
-        match self {
-            Self::Bap1 => 1,
-            Self::Bap2 => 2,
-            Self::Bap4 => 4,
-        }
-    }
-
-    const fn group_index(self) -> usize {
-        match self {
-            Self::Bap1 => BAP1_GROUP,
-            Self::Bap2 => BAP2_GROUP,
-            Self::Bap4 => BAP4_GROUP,
-        }
-    }
-
-    const fn group_size(self) -> u8 {
-        match self {
-            Self::Bap1 | Self::Bap2 => 3,
-            Self::Bap4 => 2,
-        }
-    }
-
-    const fn width(self) -> u8 {
-        match self {
-            Self::Bap1 => 5,
-            Self::Bap2 | Self::Bap4 => 7,
-        }
-    }
-
-    const fn fill_code(self) -> u16 {
-        match self {
-            Self::Bap1 => 1,
-            Self::Bap2 => 2,
-            Self::Bap4 => 5,
-        }
-    }
+/// Channel order used to flatten one block before mantissa grouping.
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
+pub enum MantissaChannel {
+    Left,
+    Center,
+    Right,
+    LeftSurround,
+    RightSurround,
+    Lfe,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct GroupedItemInput {
-    pub bap: GroupedBap,
+pub struct MantissaBlockItemInput {
+    pub channel: MantissaChannel,
+    pub bin: u16,
     pub coefficient_word: u32,
+    pub decoded_exponent: i16,
+    pub bap: u8,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct GroupedItemObservation {
-    bap: GroupedBap,
+pub struct MantissaItemObservation {
+    channel: MantissaChannel,
+    bin: u16,
+    bap: u8,
     code: u16,
     width: u8,
 }
 
-impl GroupedItemObservation {
-    pub const fn bap(&self) -> GroupedBap {
+impl MantissaItemObservation {
+    pub const fn channel(&self) -> MantissaChannel {
+        self.channel
+    }
+
+    pub const fn bin(&self) -> u16 {
+        self.bin
+    }
+
+    pub const fn bap(&self) -> u8 {
         self.bap
     }
 
@@ -84,12 +56,17 @@ impl GroupedItemObservation {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct GroupedPackObservation {
+    bap: u8,
     value: u16,
     width: u8,
-    start_bits: u64,
+    start_bit: u64,
 }
 
 impl GroupedPackObservation {
+    pub const fn bap(&self) -> u8 {
+        self.bap
+    }
+
     pub const fn value(&self) -> u16 {
         self.value
     }
@@ -98,302 +75,209 @@ impl GroupedPackObservation {
         self.width
     }
 
-    pub const fn start_bits(&self) -> u64 {
-        self.start_bits
+    /// Absolute bit offset of this group field within the block bitstream.
+    pub const fn start_bit(&self) -> u64 {
+        self.start_bit
     }
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct MantissaBlockOutput {
+    items: Vec<MantissaItemObservation>,
+    grouped_packs: Vec<GroupedPackObservation>,
+    packed_bytes: Vec<u8>,
+    bit_count: u64,
+}
+
+impl MantissaBlockOutput {
+    pub fn items(&self) -> &[MantissaItemObservation] {
+        &self.items
+    }
+
+    pub fn grouped_packs(&self) -> &[GroupedPackObservation] {
+        &self.grouped_packs
+    }
+
+    pub fn packed_bytes(&self) -> &[u8] {
+        &self.packed_bytes
+    }
+
+    pub const fn bit_count(&self) -> u64 {
+        self.bit_count
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum MantissaBlockError {
+    Quantizer(MantissaQuantizerError),
+    DuplicateItemPosition { channel: MantissaChannel, bin: u16 },
+    BitCountOverflow,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+struct PackedField {
+    value: u16,
+    width: u8,
+    grouped_bap: Option<u8>,
 }
 
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
-struct GroupBuffer {
+struct PendingGroup {
+    first_item_index: usize,
     codes: [u16; 3],
-    reservation_ids: [u64; 3],
     count: u8,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-struct ReservedField {
-    id: u64,
-    width: u8,
-    code: Option<u16>,
-}
-
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct GroupedQuantizerState {
-    groups: [GroupBuffer; 3],
-    reservations: Vec<ReservedField>,
-    next_reservation_id: u64,
-    pending_bit_count: u8,
-    pending_accumulator: u16,
-    effective_bits: u64,
-    emitted_word_memory_bytes: Vec<u8>,
-}
-
-impl GroupedQuantizerState {
-    pub fn cold() -> Self {
-        Self {
-            groups: [GroupBuffer::default(); 3],
-            reservations: Vec::new(),
-            next_reservation_id: 0,
-            pending_bit_count: 0,
-            pending_accumulator: 0,
-            effective_bits: 0,
-            emitted_word_memory_bytes: Vec::new(),
+/// Quantizes and packs one block in channel order [L,C,R,Ls,Rs,LFE], then bin order.
+///
+/// Every call starts with empty BAP1/2/4 groups. Grouped fields occupy the first
+/// item's position; partial groups use their F12 filler codes. Errors describe
+/// this block candidate so the caller can retry another candidate if required.
+pub fn pack_block_mantissas(
+    inputs: &[MantissaBlockItemInput],
+) -> Result<MantissaBlockOutput, MantissaBlockError> {
+    let mut ordered_inputs = inputs.iter().collect::<Vec<_>>();
+    ordered_inputs.sort_by_key(|item| (item.channel, item.bin));
+    for pair in ordered_inputs.windows(2) {
+        if pair[0].channel == pair[1].channel && pair[0].bin == pair[1].bin {
+            return Err(MantissaBlockError::DuplicateItemPosition {
+                channel: pair[0].channel,
+                bin: pair[0].bin,
+            });
         }
     }
 
-    pub fn group_counts(&self) -> [u32; 3] {
-        self.groups.map(|group| u32::from(group.count))
-    }
-
-    pub const fn pending_bit_count(&self) -> u8 {
-        self.pending_bit_count
-    }
-
-    pub const fn pending_accumulator_u16(&self) -> u16 {
-        self.pending_accumulator
-    }
-
-    pub const fn effective_bits(&self) -> u64 {
-        self.effective_bits
-    }
-
-    pub fn emitted_word_memory_bytes(&self) -> &[u8] {
-        &self.emitted_word_memory_bytes
-    }
-
-    /// Quantizes items, reserves each item width, and compacts completed groups in place.
-    ///
-    /// This helper has no logical capacity argument and does not promise rollback.
-    pub fn quantize(
-        &mut self,
-        inputs: &[GroupedItemInput],
-    ) -> Result<GroupedQuantizerCall, GroupedQuantizerError> {
-        let mut items = Vec::with_capacity(inputs.len());
-        let mut packs = Vec::new();
-        for input in inputs {
-            let code = quantized_code(input.coefficient_word, input.bap)?;
-            let item = GroupedItemObservation {
-                bap: input.bap,
-                code,
-                width: input.bap.width(),
-            };
-            items.push(item);
-            if let Some(pack) = self.reserve_group_code(input.bap, code)? {
-                packs.push(pack);
-            }
-        }
-        Ok(GroupedQuantizerCall {
-            return_code: 0,
-            items,
-            packs,
-        })
-    }
-
-    /// Fills and compacts existing incomplete reservations without reserving more bits.
-    pub fn flush(&mut self) -> Result<GroupedQuantizerFlush, GroupedQuantizerError> {
-        let mut items = Vec::new();
-        let mut packs = Vec::new();
-        for bap in [GroupedBap::Bap1, GroupedBap::Bap2, GroupedBap::Bap4] {
-            let group_index = bap.group_index();
-            let group_size = bap.group_size();
-            let existing_count = self.groups[group_index].count;
-            if existing_count == 0 {
-                continue;
-            }
-            while self.groups[group_index].count < group_size {
-                let count = usize::from(self.groups[group_index].count);
-                let code = bap.fill_code();
-                self.groups[group_index].codes[count] = code;
-                self.groups[group_index].count += 1;
-                if bap != GroupedBap::Bap4 {
-                    items.push(GroupedItemObservation {
-                        bap,
-                        code,
-                        width: bap.width(),
-                    });
-                }
-            }
-            if self.groups[group_index].count == group_size {
-                let value = grouped_value(bap, self.groups[group_index].codes);
-                packs.push(self.compact_group(bap, value, existing_count)?);
-                self.groups[group_index].count = 0;
-            }
-        }
-        Ok(GroupedQuantizerFlush {
-            return_code: 0,
-            items,
-            packs,
-        })
-    }
-
-    fn reserve_group_code(
-        &mut self,
-        bap: GroupedBap,
-        code: u16,
-    ) -> Result<Option<GroupedPackObservation>, GroupedQuantizerError> {
-        let group_index = bap.group_index();
-        let count = usize::from(self.groups[group_index].count);
-        let id = self.next_reservation_id;
-        self.next_reservation_id = self
-            .next_reservation_id
-            .checked_add(1)
-            .ok_or(GroupedQuantizerError::BitCountOverflow)?;
-        self.effective_bits = self
-            .effective_bits
-            .checked_add(u64::from(bap.width()))
-            .ok_or(GroupedQuantizerError::BitCountOverflow)?;
-        self.reservations.push(ReservedField {
-            id,
-            width: bap.width(),
-            code: None,
+    let mut items = Vec::with_capacity(ordered_inputs.len());
+    for input in ordered_inputs {
+        let code = quantize_mantissa(input.coefficient_word, input.decoded_exponent, input.bap)
+            .map_err(MantissaBlockError::Quantizer)?;
+        items.push(MantissaItemObservation {
+            channel: input.channel,
+            bin: input.bin,
+            bap: input.bap,
+            code: code.value(),
+            width: code.width(),
         });
-        self.groups[group_index].codes[count] = code;
-        self.groups[group_index].reservation_ids[count] = id;
-        self.groups[group_index].count += 1;
-        if self.groups[group_index].count != bap.group_size() {
-            self.rebuild_writer_state();
-            return Ok(None);
-        }
-
-        let value = grouped_value(bap, self.groups[group_index].codes);
-        let packed = self.compact_group(bap, value, self.groups[group_index].count)?;
-        self.groups[group_index].count = 0;
-        Ok(Some(packed))
     }
 
-    fn compact_group(
-        &mut self,
-        bap: GroupedBap,
-        value: u16,
-        reservation_count: u8,
-    ) -> Result<GroupedPackObservation, GroupedQuantizerError> {
-        let group_index = bap.group_index();
-        let ids = self.groups[group_index].reservation_ids;
-        let first_id = ids[0];
-        let first_position = self
-            .reservations
-            .iter()
-            .position(|field| field.id == first_id)
-            .ok_or(GroupedQuantizerError::MissingReservation)?;
-        let absolute_start_bits = self.reservations[..first_position]
-            .iter()
-            .try_fold(0_u64, |bits, field| {
-                bits.checked_add(u64::from(field.width))
-            })
-            .ok_or(GroupedQuantizerError::BitCountOverflow)?;
-        let start_bits = absolute_start_bits % u64::from(WORD_BITS);
-        let removed_width = u64::from(bap.width())
-            .checked_mul(u64::from(reservation_count.saturating_sub(1)))
-            .ok_or(GroupedQuantizerError::BitCountOverflow)?;
-        self.effective_bits = self
-            .effective_bits
-            .checked_sub(removed_width)
-            .ok_or(GroupedQuantizerError::BitCountOverflow)?;
-        self.reservations[first_position].code = Some(value);
-        let removed_ids = &ids[1..usize::from(reservation_count)];
-        self.reservations
-            .retain(|field| field.id == first_id || !removed_ids.contains(&field.id));
-        self.rebuild_writer_state();
-        Ok(GroupedPackObservation {
-            value,
-            width: bap.width(),
-            start_bits,
-        })
-    }
-
-    fn rebuild_writer_state(&mut self) {
-        self.emitted_word_memory_bytes.clear();
-        self.pending_bit_count = 0;
-        self.pending_accumulator = 0;
-        let mut word = 0_u16;
-        let mut bits_in_word = 0_u8;
-        for field in &self.reservations {
-            let value = field.code.unwrap_or(0);
-            for bit_index in (0..field.width).rev() {
-                word = (word << 1) | ((value >> bit_index) & 1);
-                bits_in_word += 1;
-                if bits_in_word == WORD_BITS {
-                    self.emitted_word_memory_bytes
-                        .extend_from_slice(&word.to_le_bytes());
-                    word = 0;
-                    bits_in_word = 0;
-                }
+    let mut fields = vec![None; items.len()];
+    let mut groups = [PendingGroup::default(); 3];
+    for (item_index, item) in items.iter().enumerate() {
+        if let Some(group_index) = group_index(item.bap) {
+            let group = &mut groups[group_index];
+            if group.count == 0 {
+                group.first_item_index = item_index;
             }
+            group.codes[usize::from(group.count)] = item.code;
+            group.count += 1;
+            if group.count == group_size(item.bap) {
+                fields[group.first_item_index] = Some(PackedField {
+                    value: grouped_value(item.bap, group.codes),
+                    width: item.width,
+                    grouped_bap: Some(item.bap),
+                });
+                *group = PendingGroup::default();
+            }
+        } else if item.bap != 0 {
+            fields[item_index] = Some(PackedField {
+                value: item.code,
+                width: item.width,
+                grouped_bap: None,
+            });
         }
-        self.pending_bit_count = bits_in_word;
-        self.pending_accumulator = if bits_in_word == 0 {
-            0
-        } else {
-            word << (WORD_BITS - bits_in_word)
-        };
     }
+
+    for (group_index, bap) in [1, 2, 4].into_iter().enumerate() {
+        let group = &mut groups[group_index];
+        if group.count == 0 {
+            continue;
+        }
+        let group_size = usize::from(group_size(bap));
+        let count = usize::from(group.count);
+        group.codes[count..group_size].fill(fill_code(bap));
+        let width = items[group.first_item_index].width;
+        fields[group.first_item_index] = Some(PackedField {
+            value: grouped_value(bap, group.codes),
+            width,
+            grouped_bap: Some(bap),
+        });
+    }
+
+    let bit_count = fields
+        .iter()
+        .flatten()
+        .try_fold(0_u64, |total, field| {
+            total.checked_add(u64::from(field.width))
+        })
+        .ok_or(MantissaBlockError::BitCountOverflow)?;
+    let byte_count =
+        usize::try_from(bit_count.div_ceil(8)).map_err(|_| MantissaBlockError::BitCountOverflow)?;
+    let mut packed_bytes = vec![0_u8; byte_count];
+    let mut grouped_packs = Vec::new();
+    let mut bit_cursor = 0_u64;
+
+    for field in fields.into_iter().flatten() {
+        if let Some(bap) = field.grouped_bap {
+            grouped_packs.push(GroupedPackObservation {
+                bap,
+                value: field.value,
+                width: field.width,
+                start_bit: bit_cursor,
+            });
+        }
+        for source_bit in (0..field.width).rev() {
+            if (field.value >> source_bit) & 1 != 0 {
+                let byte_index = usize::try_from(bit_cursor / 8)
+                    .map_err(|_| MantissaBlockError::BitCountOverflow)?;
+                let bit_in_byte = u8::try_from(bit_cursor % 8)
+                    .map_err(|_| MantissaBlockError::BitCountOverflow)?;
+                packed_bytes[byte_index] |= 1_u8 << (7 - bit_in_byte);
+            }
+            bit_cursor = bit_cursor
+                .checked_add(1)
+                .ok_or(MantissaBlockError::BitCountOverflow)?;
+        }
+    }
+
+    Ok(MantissaBlockOutput {
+        items,
+        grouped_packs,
+        packed_bytes,
+        bit_count,
+    })
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct GroupedQuantizerCall {
-    return_code: i32,
-    items: Vec<GroupedItemObservation>,
-    packs: Vec<GroupedPackObservation>,
-}
-
-impl GroupedQuantizerCall {
-    pub const fn return_code(&self) -> i32 {
-        self.return_code
-    }
-
-    pub fn items(&self) -> &[GroupedItemObservation] {
-        &self.items
-    }
-
-    pub fn packs(&self) -> &[GroupedPackObservation] {
-        &self.packs
-    }
-}
-
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct GroupedQuantizerFlush {
-    return_code: i32,
-    items: Vec<GroupedItemObservation>,
-    packs: Vec<GroupedPackObservation>,
-}
-
-impl GroupedQuantizerFlush {
-    pub const fn return_code(&self) -> i32 {
-        self.return_code
-    }
-
-    pub fn items(&self) -> &[GroupedItemObservation] {
-        &self.items
-    }
-
-    pub fn packs(&self) -> &[GroupedPackObservation] {
-        &self.packs
-    }
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum GroupedQuantizerError {
-    UnobservedScalarQuantizerFailure(MantissaQuantizerError),
-    BitCountOverflow,
-    MissingReservation,
-}
-
-fn quantized_code(coefficient_word: u32, bap: GroupedBap) -> Result<u16, GroupedQuantizerError> {
-    match quantize_mantissa(coefficient_word, bap.value()) {
-        Ok(code) => Ok(code.value()),
-        Err(
-            MantissaQuantizerError::NonFiniteInput | MantissaQuantizerError::NonFiniteIntermediate,
-        ) => Ok(0),
-        Err(error) => Err(GroupedQuantizerError::UnobservedScalarQuantizerFailure(
-            error,
-        )),
-    }
-}
-
-fn grouped_value(bap: GroupedBap, codes: [u16; 3]) -> u16 {
+const fn group_index(bap: u8) -> Option<usize> {
     match bap {
-        GroupedBap::Bap1 => 9 * codes[0] + 3 * codes[1] + codes[2],
-        GroupedBap::Bap2 => 25 * codes[0] + 5 * codes[1] + codes[2],
-        GroupedBap::Bap4 => 11 * codes[0] + codes[1],
+        1 => Some(0),
+        2 => Some(1),
+        4 => Some(2),
+        _ => None,
+    }
+}
+
+const fn group_size(bap: u8) -> u8 {
+    match bap {
+        1 | 2 => 3,
+        4 => 2,
+        _ => 0,
+    }
+}
+
+const fn fill_code(bap: u8) -> u16 {
+    match bap {
+        1 => 1,
+        2 => 2,
+        4 => 5,
+        _ => 0,
+    }
+}
+
+fn grouped_value(bap: u8, codes: [u16; 3]) -> u16 {
+    match bap {
+        1 => 9 * codes[0] + 3 * codes[1] + codes[2],
+        2 => 25 * codes[0] + 5 * codes[1] + codes[2],
+        4 => 11 * codes[0] + codes[1],
+        _ => 0,
     }
 }

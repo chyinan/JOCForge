@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge-f13c-metadata-control-source-manifests.v1",
+  "reverse_package_manifest_sha256": "59adce6cffa4a708b90c79d3c8c0f071685f0f889a8e67c9e95bde363b047657",
+  "reused_washed_inputs": [
+    {"role":"D-to-wrapper metadata transform contract","manifest_sha256":"89a00763dceac0c2e69df78e8a7b92d342173d0c8f4d4d4be94618b0bff57cdb"},
+    {"role":"F13C BSI configuration-count producer contract","manifest_sha256":"253d2cbca8cbad05f432c39655aeea06a74641f17a1117b9126e09e5c83e17f5"},
+    {"role":"F12 complexity U8 wire field","manifest_sha256":"d48fa96a507e30e936172f43a290a7db0a4c3a2c9c4b153c0605a24ebd524953"}
+  ],
+  "claim_limit": "No direct typed or same-generation owner join is established by these artifacts."
+}

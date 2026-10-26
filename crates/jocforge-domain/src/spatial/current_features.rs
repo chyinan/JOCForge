@@ -9,7 +9,7 @@ use super::{
     },
     spatial_control::{
         SpatialControlDigest, SpatialControlJoinMetadata, SpatialControlMachine,
-        SpatialControlProviderLineage,
+        SpatialControlProviderLineage, SpatialControlRenderIdentity,
     },
 };
 use crate::{
@@ -36,7 +36,7 @@ const BAND_COUNT: usize = 24;
 const FFT_STAGE_COUNT: usize = 12;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(super) enum CurrentFeaturesError {
+pub enum CurrentFeaturesError {
     UnsupportedProfile,
     ProviderMismatch,
     ParentLineageMismatch,
@@ -107,6 +107,7 @@ pub(super) struct CurrentFeaturesLineage {
     pub(super) before_digest: SpatialControlDigest,
     pub(super) callback_phase: CallbackPhase,
     pub(super) render_stage_identity: Option<Arc<RenderStageIdentity>>,
+    pub(super) spatial_control_render_identity: Option<Arc<SpatialControlRenderIdentity>>,
     pub(super) spatial_control_after_proposal_identity: Option<Arc<SpatialControlJoinMetadata>>,
     pub(super) audio_payload_sha256: Option<AudioPayloadSha256>,
     pub(super) audio_payload_byte_count: Option<u64>,
@@ -270,7 +271,10 @@ pub(super) fn produce_current_features(
         .map(|view| Arc::clone(view.render_stage_identity()));
     let spatial_control_after_proposal_identity = post_window_audio
         .as_ref()
-        .map(|view| Arc::clone(view.spatial_control_after_proposal_identity()));
+        .and_then(|view| view.spatial_control_after_proposal_identity().cloned());
+    let spatial_control_render_identity = post_window_audio
+        .as_ref()
+        .map(|view| Arc::clone(view.spatial_control_render_identity()));
     let audio_payload_sha256 = post_window_audio
         .as_ref()
         .map(CurrentFeaturesAudioView::payload_sha256);
@@ -288,6 +292,7 @@ pub(super) fn produce_current_features(
         before_digest,
         callback_phase,
         render_stage_identity,
+        spatial_control_render_identity,
         spatial_control_after_proposal_identity,
         audio_payload_sha256,
         audio_payload_byte_count,

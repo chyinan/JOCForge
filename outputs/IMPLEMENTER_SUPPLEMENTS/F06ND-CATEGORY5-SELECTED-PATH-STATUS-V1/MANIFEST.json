@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge-washed-supplement-manifest.v1",
+  "package_id": "F06ND-CATEGORY5-SELECTED-PATH-STATUS-V1",
+  "status": "SELECTED_LOGICAL_FIFO_CLOSED_BYTE_LAYOUT_NOT_APPLICABLE_GENERIC_EVENT_EDGE_UNBOUND",
+  "implementation_ready_for_generic_event_edge": false,
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "bytes": 1467,
+      "sha256": "0ebb7cdfeede1cddb76b6c1d763d212613962e0f36e0c662e9a4e6d67dd82ba4"
+    },
+    {
+      "path": "EVIDENCE.json",
+      "bytes": 1309,
+      "sha256": "3e26e97b377d291b9aaae7eba2d729014c7e6748d42ad99b29606dc5ccf61981"
+    },
+    {
+      "path": "DECISION-CASES.json",
+      "bytes": 1293,
+      "sha256": "5285c66ff0b778d0e2e91c702004f5ae115d2d84103a8407fbb584a61ed94ef2"
+    },
+    {
+      "path": "check_package.py",
+      "bytes": 1800,
+      "sha256": "57c379124028faf8c146c7b6914ae91eb50d835f3d592d52a060f7385e887d8d"
+    }
+  ]
+}

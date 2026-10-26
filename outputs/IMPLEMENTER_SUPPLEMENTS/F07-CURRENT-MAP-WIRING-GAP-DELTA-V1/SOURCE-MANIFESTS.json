@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge-f07-current-map-delta-source-manifests.v1",
+  "reverse_delta_package": {
+    "manifest_sha256": "7a5a7ca8148142ddeef23de05b687c8ba5116b8a61bdd763d529169607dea493",
+    "seal_sha256": "49d080d2d2711898209517ca9cc9316ab18d5506e49b5e33d96df1459efdd8ee",
+    "payloads_reverified": 4,
+    "sealed_files_reverified": 5
+  },
+  "live_map_identities": {
+    "implementation_map": {"bytes":1259738,"sha256":"7d7e162da8f0cc552a6cb322a495b17b76aca70da9d30c7c8d81339d8cc4a642"},
+    "vector_map": {"bytes":147402,"sha256":"4bce7d6d7a4477196c481c10eb0cd683ac81e8c3c9bfec456d341a52221d374d"},
+    "clock_map": {"bytes":46185,"sha256":"62559e95802af57eaf0512e9785b338f78ac2d5c0bbacb6306fd8e59699bbe5c"},
+    "files_rehashed": "PASS_3_OF_3"
+  },
+  "approved_spec_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "prior_f07_1_wash_package": "F07-INPUT-HISTORY-DIRECT-SLICE-GAP-MATRIX-V1"
+}

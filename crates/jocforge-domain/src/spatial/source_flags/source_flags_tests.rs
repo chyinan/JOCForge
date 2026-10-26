@@ -910,6 +910,10 @@ mod tests {
                 .iter()
                 .all(|band| band.is_empty())
         );
+        let response_gate = proposal.point_response_gate().unwrap();
+        assert_eq!(response_gate.callback_index(), callback_index);
+        assert!(response_gate.candidate_ids().is_empty());
+        assert!(response_gate.processing_ids().is_empty());
         assert_eq!(machine.generation(), before_generation);
         assert_eq!(machine.digest(), before_digest);
     }

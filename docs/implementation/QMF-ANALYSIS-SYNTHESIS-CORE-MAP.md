@@ -185,6 +185,18 @@ The machine-readable record below binds the exact formulas, providers, owners, c
     "F04QP",
     "F04RB"
   ],
+  "historical_implementation_inventory": [
+    {
+      "bytes": 21790,
+      "path": "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs",
+      "sha256": "9184b8ca22b5ed89082a92e3027b74c13d7e5424c4504598c3e71c239f2beeaa"
+    },
+    {
+      "bytes": 2855,
+      "path": "crates/jocforge-domain/src/spatial/mod.rs",
+      "sha256": "91beefcd535b04930a7c3dd2427c081fc114053d44bb3971edb220b924412ba0"
+    }
+  ],
   "implementation_files": [
     "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs",
     "crates/jocforge-domain/src/spatial/mod.rs"
@@ -196,9 +208,9 @@ The machine-readable record below binds the exact formulas, providers, owners, c
       "sha256": "9184b8ca22b5ed89082a92e3027b74c13d7e5424c4504598c3e71c239f2beeaa"
     },
     {
-      "bytes": 2745,
+      "bytes": 3261,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "b367a77ab87157e12b0bd3f29e673a5bfc309b4fad49d8f8d260c52d83f5e661"
+      "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"
     }
   ],
   "implementation_prohibitions": [

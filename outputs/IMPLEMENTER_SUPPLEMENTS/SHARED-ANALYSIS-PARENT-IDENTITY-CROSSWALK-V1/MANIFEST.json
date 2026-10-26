@@ -1,0 +1,20 @@
+{
+  "package_id": "SHARED-ANALYSIS-PARENT-IDENTITY-CROSSWALK-V1",
+  "files": [
+    {
+      "file": "CROSSWALK.md",
+      "bytes": 8355,
+      "sha256": "402806c757366c5f38975de538e6cad24ced1e493acab2d1b9cfa444aea4e9cb"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 2724,
+      "sha256": "3b078366fe782ea344124762f255709359d2c32c00acecab1bc0790ead118be0"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 433,
+      "sha256": "7b6d519741a30415db5174b7c3af5ada990f33f69facc8b2f8f8021265fe7bc4"
+    }
+  ]
+}

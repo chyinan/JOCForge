@@ -131,7 +131,7 @@ The linear proposal carries one immutable Arc payload. Its two consumer views sh
     "full_repository_boundary_mutations_rejected": 585,
     "matrix_destination_producer": "NOT_IMPLEMENTED",
     "parent_transaction": "NOT_IMPLEMENTED",
-    "post_window_fanout_tests": 5,
+    "post_window_fanout_tests": 6,
     "render_producer": "NOT_IMPLEMENTED",
     "spatial_audio_assembler": "NOT_IMPLEMENTED",
     "targeted_boundary_mutations_rejected": 32

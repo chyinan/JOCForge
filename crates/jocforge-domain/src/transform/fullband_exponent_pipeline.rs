@@ -2,6 +2,7 @@
 //! Stages selected full-band F09 refresh and F10 normalization over F08 outputs.
 
 use super::exponent_inputs::{FULL_BAND_EXPONENT_INPUT_BINS, FullBandTransformExponentInputs};
+use crate::analysis::source_frame::{SharedAnalysisIdentity, SharedAnalysisReceipt};
 use crate::codec::exponent_normalization::{
     ExponentNormalizationError, NormalizedExponentRow, normalize_fullband_exponents,
 };
@@ -10,6 +11,41 @@ use crate::codec::policy_parameters::PolicyParameters;
 
 const REFRESH_BEGIN_I16: i16 = 0;
 const REFRESH_END_I16: i16 = 128;
+
+/// Parent-issued source receipt plus the complete, fixed F09/F10 source plan.
+///
+/// The selected codec plan uses fixed six-block arrays, so its type provides the completion
+/// boundary. The parent constructs this receipt only after staging that plan from one shared
+/// analysis result. It carries no digest and does not advance any owner state.
+#[must_use]
+#[derive(Debug, Eq, PartialEq)]
+pub struct NumericPlanReceipt<'a, T> {
+    shared_analysis: &'a SharedAnalysisReceipt,
+    plan: T,
+}
+
+impl<'a, T> NumericPlanReceipt<'a, T> {
+    /// Parent-only constructor for a completed source plan derived from the shared analysis.
+    #[allow(dead_code)] // Reserved for the parent after its six-block source plan is staged.
+    pub(crate) fn from_parent(shared_analysis: &'a SharedAnalysisReceipt, plan: T) -> Self {
+        Self {
+            shared_analysis,
+            plan,
+        }
+    }
+
+    pub const fn shared_analysis(&self) -> &'a SharedAnalysisReceipt {
+        self.shared_analysis
+    }
+
+    pub const fn identity(&self) -> &SharedAnalysisIdentity {
+        self.shared_analysis.identity()
+    }
+
+    pub const fn plan(&self) -> &T {
+        &self.plan
+    }
+}
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct FullBandExponentStageControls {

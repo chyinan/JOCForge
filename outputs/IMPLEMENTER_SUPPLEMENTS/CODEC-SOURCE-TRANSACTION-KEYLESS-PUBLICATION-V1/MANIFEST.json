@@ -1,0 +1,50 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "CODEC-SOURCE-TRANSACTION-KEYLESS-PUBLICATION-V1",
+  "implementation_ready": true,
+  "readiness_scope": "Source proposal/candidate transaction, runtime plan clocks, suppression and keyless durable publication contract only",
+  "whole_chain_implementation_ready": false,
+  "source_research_manifest_sha256": "ec00f911e98403d2e8522f542a959a69f9f1142d8451117dfc757bcbc92c8d19",
+  "files": [
+    {
+      "file": "CLOCK-AND-EOF-CONTRACT.json",
+      "bytes": 3571,
+      "sha256": "5f525260841e989408e68ac59a50275d3c8d47cb797eab0d45e63038934e9543"
+    },
+    {
+      "file": "CONTRACT.md",
+      "bytes": 5488,
+      "sha256": "528478df6cb22ff94e86e275cb769e76f2ffb601a53072bf21f78564aa4a4fbc"
+    },
+    {
+      "file": "INPUT-ONLY-TRANSACTIONS.json",
+      "bytes": 3774,
+      "sha256": "2c7a7a5f15257f78e2e441085a49ddd43989706ea8ca087a27612ec91e49f3f9"
+    },
+    {
+      "file": "OWNER-AND-COMMIT-MAP.json",
+      "bytes": 4259,
+      "sha256": "f4c56cd6e4e2fbd735dcb56ca1e4208e4caee8b248600fc20700f4e76a3b1ca2"
+    },
+    {
+      "file": "PUBLICATION-AND-FAILURE-BOUNDARIES.json",
+      "bytes": 3674,
+      "sha256": "fe4d851976026c0d677fd97b4de6537fcd6197803e86b00d43dda69fe603596f"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 4734,
+      "sha256": "4926b4622a601e77f4130b5f435711849f4932ec7f399ca24bcf5a15259ec777"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 642,
+      "sha256": "697dd5d6dcaf0e33e7e411bfdb7ad1d78b2b6163bfcbdba65df7e7d90dc47a24"
+    },
+    {
+      "file": "WASH-DECISION.json",
+      "bytes": 665,
+      "sha256": "8ae4470bf374dc36e75bd947f673448b48b0e2f9865dd5a71d2daa6c59aa798b"
+    }
+  ]
+}

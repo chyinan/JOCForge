@@ -1,0 +1,122 @@
+{
+  "schema": "codec3-emdf-integrity-embed-boundary.v1",
+  "f13_ready_body_barrier": {
+    "ready_receipts_required": [
+      "ID11",
+      "ID1",
+      "ID2",
+      "ID14"
+    ],
+    "queue_push_order": [
+      11,
+      1,
+      2,
+      14
+    ],
+    "serialization_order": [
+      11,
+      14,
+      2,
+      1
+    ],
+    "writer_generation_map": {
+      "ID11": "s-2 for published source s>=2",
+      "ID1": "s-2",
+      "ID2": "s-2",
+      "ID14": "s-1"
+    },
+    "front_callback_zero_based": "s+2",
+    "body_sources": {
+      "ID11": "F05L selected OAMD/Type11 body",
+      "ID14": "F05JL selected JOC body",
+      "ID2": "F13D2 selected profile metadata body",
+      "ID1": "F13 programme measurement/timer body"
+    },
+    "source_generation": "four immutable body receipts are checked for the same source generation before queue mutation",
+    "suppression": "source0/1 still push/pop queues but skip EMDF serialization, complexity/carrier validation, and provide typed ABSENT_PUBLISHED_PAYLOAD_V1 to F12; source1 ID14 writer0 is popped and discarded",
+    "codec_frame_effect": "F12 still builds a complete 4096-byte scratch frame and computes/validates the E-AC-3 CRC16 for source0/1; only published metadata fields are absent, and no AU is appended"
+  },
+  "f13_container": {
+    "prefix": "bytes 0..1 are 0x58 0x38; bytes2..3 are BE U16 body byte length",
+    "body_item_order": [
+      "ID11",
+      "ID14",
+      "ID2",
+      "ID1"
+    ],
+    "item_syntax": "ID U5, conditional configuration, variable unsigned length, payload bytes",
+    "terminator": "ID0 then primary length code2 (4 protection bytes) and secondary length code1 (1 protection byte), checksum slots, zero pad to byte",
+    "protection_slot_offsets": "dynamic offsets from the complete F13 serialization; do not use fixed absolute offsets or patch by scanning reference bytes",
+    "total_length_C": "complete container bytes including four-byte prefix",
+    "body_length_B": "C-4; C<=511 and therefore selected B<=507",
+    "separate_queue_capacities_bytes": {
+      "ID11": 160,
+      "ID1": 10,
+      "ID2": 8,
+      "ID14": 543
+    },
+    "capacity_guard": "queue capacity, complete container bound, F12 U9 carrier length, and F12 remaining frame-bit budget are separate constraints"
+  },
+  "carriage_mode": {
+    "input_field": "emdf_carriage_mode",
+    "enum": [
+      "deployed_compat",
+      "etsi_emdf"
+    ],
+    "selected_default": "deployed_compat",
+    "mode_rule": "selected explicitly at programme boundary and immutable for the programme; omission uses only the F13.9 documented default",
+    "deployed_compat": {
+      "codec_data_present": false,
+      "ID11_payload_frame_aligned": false,
+      "ID14_payload_frame_aligned": true
+    },
+    "etsi_emdf": {
+      "codec_data_present": true,
+      "reserved_U8": 0,
+      "ID11_payload_frame_aligned": true,
+      "ID14_payload_frame_aligned": true
+    },
+    "boundary": "etsi_emdf is experimental and does not claim whole-stream ETSI or decoder conformance; mode changes require a fresh complete F13 serialization and F12 frame trial"
+  },
+  "keyless_public_integrity": {
+    "private_authentication": "excluded; no HMAC key/material is an input",
+    "emdf_crc32": {
+      "profile": "CRC32/ISO-HDLC",
+      "input": "zeroed four-byte primary slot container[4:]",
+      "parameters": {
+        "init": "0xFFFFFFFF",
+        "reflected_polynomial": "0xEDB88320",
+        "xorout": "0xFFFFFFFF"
+      },
+      "placement": "four-byte big-endian primary slot"
+    },
+    "emdf_crc8": {
+      "profile": "CRC8/SMBUS",
+      "input": "the four primary CRC32 bytes in wire order",
+      "parameters": {
+        "init": 0,
+        "polynomial": "0x07",
+        "xorout": 0
+      },
+      "placement": "one-byte secondary slot"
+    },
+    "eac3_crc16": {
+      "parameters": {
+        "init": 0,
+        "polynomial": "0x8005",
+        "reflected": false,
+        "xorout": 0
+      },
+      "generate_coverage": "frame[2:4094]",
+      "placement": "big-endian at frame[4094:4096]",
+      "verify_coverage": "frame[2:4096]",
+      "required_residual": 0
+    }
+  },
+  "single_write_owner_rule": {
+    "selected_f15_call_order": "F13 ready container -> F14K primary/secondary CRC patch -> F12 writes the carrier skip/payload, frame tail, and CRC16 semantics -> F15 receives completed 4096-byte frame",
+    "no_ffmpeg_injection": true,
+    "separate_integrity_root_note": "INTEGRITY-OWNER-ROOT-V1 also models SOURCE/DISPATCH/AU receipts; its DISPATCH/AU mutating wrapper must not be run as a second skip/CRC writer on an already completed F12 frame. If selected as an owner wrapper, it needs a named adapter so each wire range has one writer.",
+    "integrity_root_manifest_sha256": "aff36a4ac3d5afdf2a29859cc6406c5568a468bc2be0a1987d3e333c3d3db7dd"
+  }
+}

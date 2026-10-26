@@ -112,6 +112,43 @@ pub struct SpatialControlProviderLineage {
     f03_provider_generation: u64,
 }
 
+/// Before-state identity for a render callback; it does not claim a parent after-state digest.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub(super) struct SpatialControlRenderIdentity {
+    transaction_id: CallbackLineageIdentity,
+    callback_index: FrontendCallbackIndex,
+    before_generation: u64,
+    before_digest: SpatialControlDigest,
+    profile_identity: EncodingProfile,
+    provider_lineage: SpatialControlProviderLineage,
+}
+
+impl SpatialControlRenderIdentity {
+    pub(super) fn transaction_id(&self) -> &CallbackLineageIdentity {
+        &self.transaction_id
+    }
+
+    pub const fn callback_index(&self) -> FrontendCallbackIndex {
+        self.callback_index
+    }
+
+    pub const fn before_generation(&self) -> u64 {
+        self.before_generation
+    }
+
+    pub const fn before_digest(&self) -> SpatialControlDigest {
+        self.before_digest
+    }
+
+    pub const fn profile_identity(&self) -> EncodingProfile {
+        self.profile_identity
+    }
+
+    pub const fn provider_lineage(&self) -> SpatialControlProviderLineage {
+        self.provider_lineage
+    }
+}
+
 impl SpatialControlProviderLineage {
     fn from_receipts(f01e: &F01EProviderReceipt, f03: &F03TargetProviderReceipt) -> Self {
         let f03_lineage = f03.validated_manifest_lineage();
@@ -195,6 +232,7 @@ pub enum PacketReadiness {
 pub enum SpatialControlError {
     UnsupportedProfile,
     ProfileBindingMismatch,
+    RenderCallbackMismatch,
     ProviderLineageMismatch,
     F01ECanonicalIdentityMismatch,
     F03TargetProjectionMismatch,
@@ -536,6 +574,27 @@ pub struct SpatialControlJoinMetadata {
 }
 
 impl SpatialControlJoinMetadata {
+    /// Callback-local staging identity from the committed before root. The enclosing F03W parent
+    /// supplies the complete after root and admission only after all callback stages succeed.
+    pub(super) fn pending_callback(
+        owner: &SpatialControlMachine,
+        transaction_id: CallbackLineageIdentity,
+    ) -> Result<Self, SpatialControlError> {
+        let callback_index = owner.committed().callback_index();
+        if transaction_id.callback_index() != callback_index || owner.committed().retired() {
+            return Err(SpatialControlError::RenderCallbackMismatch);
+        }
+        Ok(Self {
+            transaction_id,
+            callback_index,
+            before_generation: owner.generation(),
+            before_digest: owner.digest(),
+            after_digest: owner.digest(),
+            profile_identity: owner.profile(),
+            provider_lineage: owner.provider_lineage(),
+        })
+    }
+
     pub fn transaction_id(&self) -> &CallbackLineageIdentity {
         &self.transaction_id
     }
@@ -562,6 +621,17 @@ impl SpatialControlJoinMetadata {
 
     pub const fn provider_lineage(&self) -> SpatialControlProviderLineage {
         self.provider_lineage
+    }
+
+    pub(super) fn render_identity(&self) -> SpatialControlRenderIdentity {
+        SpatialControlRenderIdentity {
+            transaction_id: self.transaction_id.clone(),
+            callback_index: self.callback_index,
+            before_generation: self.before_generation,
+            before_digest: self.before_digest,
+            profile_identity: self.profile_identity,
+            provider_lineage: self.provider_lineage,
+        }
     }
 
     #[cfg(test)]
@@ -673,6 +743,34 @@ impl SpatialControlMachine {
 
     pub const fn packet_readiness(&self) -> PacketReadiness {
         PacketReadiness::NotReady
+    }
+
+    /// Binds a render payload to its committed callback-before identity without requiring the
+    /// complete after-state that is produced only after feature/target/matrix stages finish.
+    pub(super) fn render_identity(
+        &self,
+        transaction_id: CallbackLineageIdentity,
+    ) -> Result<SpatialControlRenderIdentity, SpatialControlError> {
+        let callback_index = self.committed.callback_index();
+        if transaction_id.callback_index() != callback_index || self.committed.retired() {
+            return Err(SpatialControlError::RenderCallbackMismatch);
+        }
+        if resolve_selected_profile(&self.profile_identity).is_err() {
+            return Err(SpatialControlError::UnsupportedProfile);
+        }
+        Ok(SpatialControlRenderIdentity {
+            transaction_id,
+            callback_index,
+            before_generation: self.generation,
+            before_digest: self.digest(),
+            profile_identity: self.profile_identity,
+            provider_lineage: self.provider_lineage,
+        })
+    }
+
+    /// Keeps render authority construction inside the selected spatial-control owner.
+    pub(super) fn render_authority() -> SpatialControlRenderAuthority {
+        SpatialControlRenderAuthority::from_spatial_control_renderer()
     }
 
     /// Read-only guard for reusing a token under the machine's exact six-dimensional identity.

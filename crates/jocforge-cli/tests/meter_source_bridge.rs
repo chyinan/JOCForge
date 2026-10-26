@@ -8,10 +8,12 @@ use jocforge::meter_source_bridge::{
 use jocforge_application::{
     PreparedJobInput, SelectedAdmResourcePayloads,
     meter_source_bridge::{
-        IndependentMeterPrepass, KMatrixMode, KMatrixProfile, MeterCallbackIndex,
-        MeterCallbackPhase, MeterFrontendCallbackInput, MeterSourceBridgeError,
-        MeterSourceCallbackView, MeterSourceSampleCount, ObjectRenderCallbackGeneration,
-        ProgrammeId, SelectedWaveDescriptor, SharedGainDelayParameters, generate_k_matrix,
+        IndependentMeterPrepass, KMatrixMode, KMatrixProfile, MeterCallbackCount,
+        MeterCallbackIndex, MeterCallbackPhase, MeterFrontendCallbackInput, MeterSampleCount,
+        MeterSourceBridgeError, MeterSourceCallbackFrame, MeterSourceCallbackFrameParts,
+        MeterSourceCallbackView, MeterSourceIdentity, MeterSourcePosition, MeterSourceSampleCount,
+        MeterUpstreamGeneration, ObjectRenderCallbackGeneration, ProgrammeId,
+        SelectedWaveDescriptor, SharedGainDelayParameters, generate_k_matrix,
     },
     prepare_selected_job_input,
 };
@@ -140,6 +142,30 @@ fn frontend_handoff_rejects_wrong_clock_and_direct_lfe_row() {
 }
 
 #[test]
+fn source_frame_extent_must_match_the_prepared_adm_job() {
+    let prepared = prepared_job_input();
+    let rows = vec![vec![0; 1_536]; 38];
+    let frame = callback_frame(&prepared, &rows, 2);
+
+    assert_eq!(
+        MeterSourceCallbackView::new(&prepared, frame).err(),
+        Some(MeterSourceBridgeError::SourceExtentMismatch)
+    );
+}
+
+#[test]
+fn meter_oar_bridge_rejects_non_adm_input_kind() {
+    let prepared = prepared_job_input_for_case(1);
+    let rows = vec![vec![0; 1_536]; 38];
+    let frame = callback_frame(&prepared, &rows, prepared.configuration().source_samples());
+
+    assert_eq!(
+        MeterSourceCallbackView::new(&prepared, frame).err(),
+        Some(MeterSourceBridgeError::SelectedInputKindMismatch)
+    );
+}
+
+#[test]
 fn source_and_prepass_extents_must_match_before_prepass_staging() {
     let prepared = prepared_job_input();
     let (resource, _) = selected_resource();
@@ -205,13 +231,20 @@ fn prepass(sample_count: MeterSourceSampleCount) -> IndependentMeterPrepass {
 }
 
 fn prepared_job_input() -> PreparedJobInput {
+    prepared_job_input_for_case(0)
+}
+
+fn prepared_job_input_for_case(case_index: usize) -> PreparedJobInput {
     let vectors: Value = serde_json::from_slice(include_bytes!(
         "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
     ))
     .unwrap();
-    let case = &vectors["config_cases"][0];
+    let case = &vectors["config_cases"][case_index];
     let descriptor = &case["pcm_descriptor"];
     let (resource, spans) = selected_resource();
+    let source_samples = parse_selected_riff_pcm24(&resource, None)
+        .unwrap()
+        .total_samples();
     prepare_selected_job_input(
         ProgrammeId::new("JOCForgeTestID01").unwrap(),
         case["input_xml"].as_str().unwrap().as_bytes(),
@@ -220,11 +253,35 @@ fn prepared_job_input() -> PreparedJobInput {
             descriptor["channels"].as_u64().unwrap() as u16,
             descriptor["pcm_bits"].as_u64().unwrap() as u16,
         ),
-        descriptor["source_samples"].as_u64().unwrap(),
+        source_samples,
         Arc::clone(&resource),
         metadata_payloads(&resource, &spans),
     )
     .unwrap()
+}
+
+fn callback_frame<'a>(
+    prepared: &PreparedJobInput,
+    rows: &'a [Vec<u32>],
+    source_samples: u64,
+) -> MeterSourceCallbackFrame<'a> {
+    let normal_callbacks = source_samples.div_ceil(1_536);
+    let host_input_count = source_samples.min(1_536);
+    MeterSourceCallbackFrame::new(MeterSourceCallbackFrameParts {
+        callback_index: MeterCallbackIndex::new(0),
+        upstream_generation: MeterUpstreamGeneration::new(1),
+        phase: MeterCallbackPhase::NormalSource,
+        source_identity: MeterSourceIdentity::from_sha256(
+            prepared.resource_identity().input_sha256(),
+        ),
+        source_samples: MeterSourceSampleCount::new(source_samples).unwrap(),
+        normal_callbacks: MeterCallbackCount::new(normal_callbacks),
+        source_cursor_before: MeterSourcePosition::new(0),
+        source_cursor_after: MeterSourcePosition::new(host_input_count),
+        host_input_count: MeterSampleCount::new(host_input_count),
+        source_padding_count: MeterSampleCount::new(1_536 - host_input_count),
+        rows,
+    })
 }
 
 fn selected_resource() -> (Arc<[u8]>, [Range<usize>; 3]) {

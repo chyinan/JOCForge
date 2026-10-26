@@ -1,0 +1,485 @@
+{
+  "schema": "eac3-quantizer-mantissa-input-only.v1",
+  "input_only": true,
+  "expected_quantizer_codes_included": false,
+  "expected_au_body_included": false,
+  "pcm_included": false,
+  "private_key_included": false,
+  "coefficient_encoding": "canonical big-endian IEEE-754 binary32 bit word in hex",
+  "decoded_exponent_encoding": "integer value from the normalized F09/F10 plan",
+  "bap_encoding": "integer semantic BAP in 0..15",
+  "domain_sweep": [
+    {
+      "id": "bap0_domain",
+      "bap": 0,
+      "coefficient_f32_bits": "3e800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap1_domain",
+      "bap": 1,
+      "coefficient_f32_bits": "3e800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap2_domain",
+      "bap": 2,
+      "coefficient_f32_bits": "3e800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap3_domain",
+      "bap": 3,
+      "coefficient_f32_bits": "3e800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap4_domain",
+      "bap": 4,
+      "coefficient_f32_bits": "3e800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap5_domain",
+      "bap": 5,
+      "coefficient_f32_bits": "3e800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap6_domain",
+      "bap": 6,
+      "coefficient_f32_bits": "3e800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap7_domain",
+      "bap": 7,
+      "coefficient_f32_bits": "3e800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap8_domain",
+      "bap": 8,
+      "coefficient_f32_bits": "3e800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap9_domain",
+      "bap": 9,
+      "coefficient_f32_bits": "3e800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap10_domain",
+      "bap": 10,
+      "coefficient_f32_bits": "3e800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap11_domain",
+      "bap": 11,
+      "coefficient_f32_bits": "3e800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap12_domain",
+      "bap": 12,
+      "coefficient_f32_bits": "3e800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap13_domain",
+      "bap": 13,
+      "coefficient_f32_bits": "3e800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap14_domain",
+      "bap": 14,
+      "coefficient_f32_bits": "3e800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap15_domain",
+      "bap": 15,
+      "coefficient_f32_bits": "3e800000",
+      "decoded_exponent": 0
+    }
+  ],
+  "boundary_cases": [
+    {
+      "id": "bap1_low",
+      "bap": 1,
+      "coefficient_f32_bits": "bf800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap1_high",
+      "bap": 1,
+      "coefficient_f32_bits": "3f800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap2_low",
+      "bap": 2,
+      "coefficient_f32_bits": "bf800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap2_high",
+      "bap": 2,
+      "coefficient_f32_bits": "3f800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap4_low",
+      "bap": 4,
+      "coefficient_f32_bits": "bf800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap4_high",
+      "bap": 4,
+      "coefficient_f32_bits": "3f800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap3_valid",
+      "bap": 3,
+      "coefficient_f32_bits": "3f000000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap3_sentinel",
+      "bap": 3,
+      "coefficient_f32_bits": "3f000000",
+      "decoded_exponent": 1
+    },
+    {
+      "id": "bap5_valid",
+      "bap": 5,
+      "coefficient_f32_bits": "3f000000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap5_sentinel",
+      "bap": 5,
+      "coefficient_f32_bits": "3f000000",
+      "decoded_exponent": 1
+    },
+    {
+      "id": "bap6_rne_tie",
+      "bap": 6,
+      "coefficient_f32_bits": "37800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap7_rne_tie",
+      "bap": 7,
+      "coefficient_f32_bits": "37800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap8_rne_tie",
+      "bap": 8,
+      "coefficient_f32_bits": "37800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap9_rne_tie",
+      "bap": 9,
+      "coefficient_f32_bits": "37800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap10_rne_tie",
+      "bap": 10,
+      "coefficient_f32_bits": "37800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap11_rne_tie",
+      "bap": 11,
+      "coefficient_f32_bits": "37800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap12_rne_tie",
+      "bap": 12,
+      "coefficient_f32_bits": "37800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap13_rne_tie",
+      "bap": 13,
+      "coefficient_f32_bits": "37800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap14_rne_tie",
+      "bap": 14,
+      "coefficient_f32_bits": "37800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap15_rne_tie",
+      "bap": 15,
+      "coefficient_f32_bits": "b7800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap6_positive_boundary",
+      "bap": 6,
+      "coefficient_f32_bits": "3f800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap15_positive_boundary",
+      "bap": 15,
+      "coefficient_f32_bits": "3f800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap6_negative_boundary",
+      "bap": 6,
+      "coefficient_f32_bits": "bf800000",
+      "decoded_exponent": 0
+    },
+    {
+      "id": "bap15_negative_boundary",
+      "bap": 15,
+      "coefficient_f32_bits": "bf800000",
+      "decoded_exponent": 0
+    }
+  ],
+  "grouping_cases": [
+    {
+      "id": "same_block_cross_channel",
+      "frame": 0,
+      "block": 0,
+      "items": [
+        {
+          "channel": 0,
+          "bin": 0,
+          "bap": 1,
+          "coefficient_f32_bits": "bf800000",
+          "decoded_exponent": 0
+        },
+        {
+          "channel": 0,
+          "bin": 1,
+          "bap": 2,
+          "coefficient_f32_bits": "bf800000",
+          "decoded_exponent": 0
+        },
+        {
+          "channel": 1,
+          "bin": 0,
+          "bap": 1,
+          "coefficient_f32_bits": "3e800000",
+          "decoded_exponent": 0
+        },
+        {
+          "channel": 1,
+          "bin": 1,
+          "bap": 2,
+          "coefficient_f32_bits": "3e800000",
+          "decoded_exponent": 0
+        },
+        {
+          "channel": 2,
+          "bin": 0,
+          "bap": 1,
+          "coefficient_f32_bits": "3f800000",
+          "decoded_exponent": 0
+        },
+        {
+          "channel": 2,
+          "bin": 1,
+          "bap": 2,
+          "coefficient_f32_bits": "3f800000",
+          "decoded_exponent": 0
+        },
+        {
+          "channel": 3,
+          "bin": 0,
+          "bap": 4,
+          "coefficient_f32_bits": "bf800000",
+          "decoded_exponent": 0
+        },
+        {
+          "channel": 4,
+          "bin": 0,
+          "bap": 4,
+          "coefficient_f32_bits": "3f800000",
+          "decoded_exponent": 0
+        },
+        {
+          "channel": 5,
+          "bin": 0,
+          "bap": 0,
+          "coefficient_f32_bits": "3f800000",
+          "decoded_exponent": 0
+        }
+      ]
+    },
+    {
+      "id": "reset_between_blocks",
+      "frame": 0,
+      "blocks": [
+        {
+          "block": 0,
+          "items": [
+            {
+              "channel": 0,
+              "bin": 0,
+              "bap": 1,
+              "coefficient_f32_bits": "3e800000",
+              "decoded_exponent": 0
+            },
+            {
+              "channel": 1,
+              "bin": 0,
+              "bap": 1,
+              "coefficient_f32_bits": "3e800000",
+              "decoded_exponent": 0
+            }
+          ]
+        },
+        {
+          "block": 1,
+          "items": [
+            {
+              "channel": 0,
+              "bin": 0,
+              "bap": 1,
+              "coefficient_f32_bits": "3e800000",
+              "decoded_exponent": 0
+            },
+            {
+              "channel": 1,
+              "bin": 0,
+              "bap": 2,
+              "coefficient_f32_bits": "3e800000",
+              "decoded_exponent": 0
+            },
+            {
+              "channel": 2,
+              "bin": 0,
+              "bap": 4,
+              "coefficient_f32_bits": "3e800000",
+              "decoded_exponent": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reset_between_frames",
+      "frames": [
+        {
+          "frame": 0,
+          "blocks": [
+            {
+              "block": 5,
+              "items": [
+                {
+                  "channel": 0,
+                  "bin": 216,
+                  "bap": 2,
+                  "coefficient_f32_bits": "3e800000",
+                  "decoded_exponent": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 1,
+          "blocks": [
+            {
+              "block": 0,
+              "items": [
+                {
+                  "channel": 0,
+                  "bin": 0,
+                  "bap": 2,
+                  "coefficient_f32_bits": "3e800000",
+                  "decoded_exponent": 0
+                },
+                {
+                  "channel": 1,
+                  "bin": 0,
+                  "bap": 2,
+                  "coefficient_f32_bits": "3e800000",
+                  "decoded_exponent": 0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "budget_inputs": [
+    {
+      "id": "one_bit_below",
+      "non_mantissa_body_bits": 32714,
+      "frame": 0,
+      "block": 0,
+      "group_case_id": "same_block_cross_channel"
+    },
+    {
+      "id": "exact_pre_tail_limit",
+      "non_mantissa_body_bits": 32715,
+      "frame": 0,
+      "block": 0,
+      "group_case_id": "same_block_cross_channel"
+    },
+    {
+      "id": "one_bit_over",
+      "non_mantissa_body_bits": 32716,
+      "frame": 0,
+      "block": 0,
+      "group_case_id": "same_block_cross_channel"
+    }
+  ],
+  "reserved_tail": {
+    "frame_bits": 32768,
+    "reserved_bits": 34
+  },
+  "expected_group_codes_included": false,
+  "input_scope": "Finite clipped coefficient, normalized decoded exponent, and R1-owned BAP; power/BAP allocation and search are upstream and are not recomputed here.",
+  "precision_cases": [
+    {
+      "id": "positive_min_subnormal_to_normal",
+      "bap": 15,
+      "coefficient_f32_bits": "00000001",
+      "decoded_exponent": 24
+    },
+    {
+      "id": "negative_min_subnormal_to_normal",
+      "bap": 15,
+      "coefficient_f32_bits": "80000001",
+      "decoded_exponent": 24
+    },
+    {
+      "id": "positive_one_scaled_exponent_24",
+      "bap": 0,
+      "coefficient_f32_bits": "3f800000",
+      "decoded_exponent": 24
+    },
+    {
+      "id": "negative_zero_scaled_exponent_24",
+      "bap": 0,
+      "coefficient_f32_bits": "80000000",
+      "decoded_exponent": 24
+    },
+    {
+      "id": "bap1_scaled_to_high_clamp",
+      "bap": 1,
+      "coefficient_f32_bits": "3f000000",
+      "decoded_exponent": 1
+    }
+  ]
+}

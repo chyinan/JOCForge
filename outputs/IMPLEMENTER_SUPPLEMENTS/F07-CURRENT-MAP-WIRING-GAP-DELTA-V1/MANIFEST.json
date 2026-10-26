@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F07-CURRENT-MAP-WIRING-GAP-DELTA-V1",
+  "status": "F07_1_PRIOR_WASH_CLOSURE_RETAINED_WHOLE_FRAME_WIRING_OPEN",
+  "implementation_ready": false,
+  "source_reverse_manifest_sha256": "7a5a7ca8148142ddeef23de05b687c8ba5116b8a61bdd763d529169607dea493",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1599,
+      "sha256": "1971e77a5172bee9ba599f35b1818bc3a10e598d4c23f6ceb9eb0b0083732bed"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1420,
+      "sha256": "4fb7cc738295e9738d601b22798da6623eb46352d068089674e89ea99571df5d"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 936,
+      "sha256": "ced6b6d1c6a07de0c5d1eaedba7c1d100a52c372ecde889dad753c68b842fde3"
+    },
+    {
+      "file": "WASH-REVIEW.json",
+      "bytes": 694,
+      "sha256": "c71a1afd906bd29272bccf42c840a5066d51e52ecfd8bc44b8cb162e73ea884f"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "approved_sources": [
+    {
+      "path": "specs/03-gate-and-target-installation.md",
+      "sha256": "aeb6791967413e71518cfb1c5853c52cd8e6e7e7174f60afa611cc0e0fa8d9dc"
+    },
+    {
+      "path": "specs/03-u04-refinement-and-projection.md",
+      "sha256": "ca235e2f373d95d5c628ca61c651d01805bb9cb14a7c3457d9a77b1d87941879"
+    },
+    {
+      "path": "specs/03-point-response-and-target-context.md",
+      "sha256": "8fb727170fb41df5354a17429fc00411010f010cb32dc86e0fdcc81bddaf4964"
+    },
+    {
+      "path": "specs/03-rectangular-nnls-initial-fit.md",
+      "sha256": "7cfb51e8905f739e60bebcd30899887bda52cc493a5bab0c976ca645548b09fc"
+    },
+    {
+      "path": "specs/03-outer-energy-correction.md",
+      "sha256": "7ca47864c9fe7573b6cc6edfafdbd2049c5e74aa73f9b240c4c15bf4a427cdb2"
+    },
+    {
+      "path": "specs/05-fit-marker-and-metadata-history.md",
+      "sha256": "39cb2ef34ef976b369c4390969d6a38e291d3268e9e2c7e43499ea299b692f26"
+    },
+    {
+      "path": "specs/00-selected-owner-projection-and-j05.md",
+      "sha256": "9ff01aca7b6be6e89511e4d493f9fc9e661a50e2f098065f4a32c3fed777542f"
+    },
+    {
+      "path": "specs/00-global-transaction-contract.md",
+      "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105"
+    }
+  ]
+}

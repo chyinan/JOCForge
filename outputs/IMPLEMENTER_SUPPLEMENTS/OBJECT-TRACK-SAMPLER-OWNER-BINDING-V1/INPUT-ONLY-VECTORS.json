@@ -1,0 +1,370 @@
+{
+  "schema": "research.object-owner-slot-inputs.v1",
+  "base_object_tracks": [
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_00000000",
+      "host_channel_index": 10,
+      "channel_format_id": "AC_OBJ_0000",
+      "audio_objects": [
+        {
+          "id": "AO_1008"
+        }
+      ],
+      "semantic_key": 7
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_00000009",
+      "host_channel_index": 11,
+      "channel_format_id": "AC_OBJ_0001",
+      "audio_objects": [
+        {
+          "id": "AO_10a3"
+        }
+      ],
+      "semantic_key": 162
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_00000012",
+      "host_channel_index": 12,
+      "channel_format_id": "AC_OBJ_0002",
+      "audio_objects": [
+        {
+          "id": "AO_113e"
+        }
+      ],
+      "semantic_key": 317
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_0000001b",
+      "host_channel_index": 13,
+      "channel_format_id": "AC_OBJ_0003",
+      "audio_objects": [
+        {
+          "id": "AO_11d9"
+        }
+      ],
+      "semantic_key": 472
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_00000007",
+      "host_channel_index": 14,
+      "channel_format_id": "AC_OBJ_0004",
+      "audio_objects": [
+        {
+          "id": "AO_1274"
+        }
+      ],
+      "semantic_key": 627
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_00000010",
+      "host_channel_index": 15,
+      "channel_format_id": "AC_OBJ_0005",
+      "audio_objects": [
+        {
+          "id": "AO_130f"
+        }
+      ],
+      "semantic_key": 782
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_00000019",
+      "host_channel_index": 16,
+      "channel_format_id": "AC_OBJ_0006",
+      "audio_objects": [
+        {
+          "id": "AO_1027"
+        }
+      ],
+      "semantic_key": 38
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_00000005",
+      "host_channel_index": 17,
+      "channel_format_id": "AC_OBJ_0007",
+      "audio_objects": [
+        {
+          "id": "AO_10c2"
+        }
+      ],
+      "semantic_key": 193
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_0000000e",
+      "host_channel_index": 18,
+      "channel_format_id": "AC_OBJ_0008",
+      "audio_objects": [
+        {
+          "id": "AO_115d"
+        }
+      ],
+      "semantic_key": 348
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_00000017",
+      "host_channel_index": 19,
+      "channel_format_id": "AC_OBJ_0009",
+      "audio_objects": [
+        {
+          "id": "AO_11f8"
+        }
+      ],
+      "semantic_key": 503
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_00000003",
+      "host_channel_index": 20,
+      "channel_format_id": "AC_OBJ_0010",
+      "audio_objects": [
+        {
+          "id": "AO_1293"
+        }
+      ],
+      "semantic_key": 658
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_0000000c",
+      "host_channel_index": 21,
+      "channel_format_id": "AC_OBJ_0011",
+      "audio_objects": [
+        {
+          "id": "AO_132e"
+        }
+      ],
+      "semantic_key": 813
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_00000015",
+      "host_channel_index": 22,
+      "channel_format_id": "AC_OBJ_0012",
+      "audio_objects": [
+        {
+          "id": "AO_1046"
+        }
+      ],
+      "semantic_key": 69
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_00000001",
+      "host_channel_index": 23,
+      "channel_format_id": "AC_OBJ_0013",
+      "audio_objects": [
+        {
+          "id": "AO_10e1"
+        }
+      ],
+      "semantic_key": 224
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_0000000a",
+      "host_channel_index": 24,
+      "channel_format_id": "AC_OBJ_0014",
+      "audio_objects": [
+        {
+          "id": "AO_117c"
+        }
+      ],
+      "semantic_key": 379
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_00000013",
+      "host_channel_index": 25,
+      "channel_format_id": "AC_OBJ_0015",
+      "audio_objects": [
+        {
+          "id": "AO_1217"
+        }
+      ],
+      "semantic_key": 534
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_0000001c",
+      "host_channel_index": 26,
+      "channel_format_id": "AC_OBJ_0016",
+      "audio_objects": [
+        {
+          "id": "AO_12b2"
+        }
+      ],
+      "semantic_key": 689
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_00000008",
+      "host_channel_index": 27,
+      "channel_format_id": "AC_OBJ_0017",
+      "audio_objects": [
+        {
+          "id": "AO_134d"
+        }
+      ],
+      "semantic_key": 844
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_00000011",
+      "host_channel_index": 28,
+      "channel_format_id": "AC_OBJ_0018",
+      "audio_objects": [
+        {
+          "id": "AO_1065"
+        }
+      ],
+      "semantic_key": 100
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_0000001a",
+      "host_channel_index": 29,
+      "channel_format_id": "AC_OBJ_0019",
+      "audio_objects": [
+        {
+          "id": "AO_1100"
+        }
+      ],
+      "semantic_key": 255
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_00000006",
+      "host_channel_index": 30,
+      "channel_format_id": "AC_OBJ_0020",
+      "audio_objects": [
+        {
+          "id": "AO_119b"
+        }
+      ],
+      "semantic_key": 410
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_0000000f",
+      "host_channel_index": 31,
+      "channel_format_id": "AC_OBJ_0021",
+      "audio_objects": [
+        {
+          "id": "AO_1236"
+        }
+      ],
+      "semantic_key": 565
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_00000018",
+      "host_channel_index": 32,
+      "channel_format_id": "AC_OBJ_0022",
+      "audio_objects": [
+        {
+          "id": "AO_12d1"
+        }
+      ],
+      "semantic_key": 720
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_00000004",
+      "host_channel_index": 33,
+      "channel_format_id": "AC_OBJ_0023",
+      "audio_objects": [
+        {
+          "id": "AO_136c"
+        }
+      ],
+      "semantic_key": 875
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_0000000d",
+      "host_channel_index": 34,
+      "channel_format_id": "AC_OBJ_0024",
+      "audio_objects": [
+        {
+          "id": "AO_1084"
+        }
+      ],
+      "semantic_key": 131
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_00000016",
+      "host_channel_index": 35,
+      "channel_format_id": "AC_OBJ_0025",
+      "audio_objects": [
+        {
+          "id": "AO_111f"
+        }
+      ],
+      "semantic_key": 286
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_00000002",
+      "host_channel_index": 36,
+      "channel_format_id": "AC_OBJ_0026",
+      "audio_objects": [
+        {
+          "id": "AO_11ba"
+        }
+      ],
+      "semantic_key": 441
+    },
+    {
+      "audio_pack_type": "Objects",
+      "audio_track_uid": "ATU_0000000b",
+      "host_channel_index": 37,
+      "channel_format_id": "AC_OBJ_0027",
+      "audio_objects": [
+        {
+          "id": "AO_1255"
+        }
+      ],
+      "semantic_key": 596
+    }
+  ],
+  "cases": [
+    {
+      "id": "noncontiguous_keys",
+      "recipe": "use base records"
+    },
+    {
+      "id": "graph_reversed",
+      "recipe": "reverse complete graph record list"
+    },
+    {
+      "id": "graph_rotated",
+      "recipe": "rows[11:]+rows[:11]"
+    },
+    {
+      "id": "host_reversed",
+      "recipe": "replace each host h with47-h, preserving UID/key/channel association"
+    },
+    {
+      "id": "shared_AO_distinct_UID",
+      "recipe": "copy base row0 semantic_key and audio_objects into row1; retain row1 UID/host/channel"
+    },
+    {
+      "id": "existing_ASCII_UID_type",
+      "recipe": "replace first4 UIDs by UID_2,UID_10,UID_A,UID_a; all other fields unchanged"
+    }
+  ],
+  "source_prefix_execution": "Only hash-bound meter descriptor function's objects filter/UID sort/host-to-group enumeration prefix is executed, not full descriptor construction or native code.",
+  "alternative_owner_mapping": "enumerate the input graph order as a pre-existing local map; convert state references by exact UID. Do not force reorder or reinterpret its numeric slots.",
+  "data_kind": "Self-owned typed graph metadata, not actual user ADM or PCM"
+}

@@ -1,0 +1,21 @@
+{
+  "package_id": "SPATIAL-TARGET-CONTEXT-OUTER-CROSSWALK-V1",
+  "files": [
+    {
+      "file": "CROSSWALK.md",
+      "bytes": 9438,
+      "sha256": "f8ad09a0fda0117f69bf315947985f90cf7e3cd1e09fef067090173b9505bcfa"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 1271,
+      "sha256": "afe3bd43e32835122d4e364e674abb8f8bf2634f513f192e9268c2d9b9c3385d"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 375,
+      "sha256": "3c27f126ad7e852748e323e1fe72b0e96b216e0f76a712000a3dbc6aada6d6f1"
+    }
+  ],
+  "product_acceptance": "NOT_RUN"
+}

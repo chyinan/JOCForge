@@ -2,7 +2,14 @@
 //! Typed F04 cold state and staging capabilities. No DSP or local commit authority lives here.
 use crate::{
     profile::{EncodingProfile, resolve_selected_profile},
-    spatial::source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
+    spatial::{
+        ValidatedComponentParameterProvider, ValidatedWindowQ15Provider,
+        post_window_fanout::CallbackPhase,
+        source_flags::{SourceFlagsAttempt, SourceFlagsProgrammeId},
+        source_geometry_outer::CompactOuterMatrix,
+        spatial_control::{SpatialControlJoinMetadata, SpatialControlMachine},
+        target_context::TargetSlotIndex,
+    },
     timeline::{FrontendCallbackIndex, ReceiverCallbackCount},
     transaction::CallbackLineageIdentity,
 };
@@ -19,6 +26,7 @@ pub(crate) mod spatial_audio_composer;
 pub(crate) mod spatial_audio_receiver;
 pub(crate) mod type10_assembler;
 
+pub use component_stage::ComponentStageError;
 pub use fitting_mode0::SelectedJocQmfProjection;
 
 const EXPECTED_COLD_BYTES: usize = 813_733;
@@ -44,6 +52,421 @@ pub enum SpatialAudioError {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct SpatialAudioDigest([u8; 32]);
+
+const METER_COMPONENT_ROW_COUNT: usize = 15;
+const METER_COMPONENT_SAMPLE_COUNT: usize = 1_536;
+const METER_INSTALLED_SAMPLE_COUNT: usize = 3_072;
+
+/// F04A component output paired with the exact pre-quiet C/d callback that produced it.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct MeterComponentOutputRows {
+    callback_index: FrontendCallbackIndex,
+    transaction_id: CallbackLineageIdentity,
+    phase: CallbackPhase,
+    active_target_slots: Box<[TargetSlotIndex]>,
+    canonical_rows_f32_bits: Box<[u32]>,
+}
+
+impl MeterComponentOutputRows {
+    pub const fn callback_index(&self) -> FrontendCallbackIndex {
+        self.callback_index
+    }
+
+    pub fn transaction_id(&self) -> &CallbackLineageIdentity {
+        &self.transaction_id
+    }
+
+    pub const fn phase(&self) -> CallbackPhase {
+        self.phase
+    }
+
+    pub fn active_target_slots(&self) -> &[TargetSlotIndex] {
+        &self.active_target_slots
+    }
+
+    pub const fn canonical_rows_f32_bits(&self) -> &[u32] {
+        &self.canonical_rows_f32_bits
+    }
+
+    pub fn row_for_target_slot(&self, target_slot: TargetSlotIndex) -> Option<&[u32]> {
+        let slot = usize::from(target_slot.value());
+        if slot >= METER_COMPONENT_ROW_COUNT {
+            return None;
+        }
+        let start = slot.checked_mul(METER_COMPONENT_SAMPLE_COUNT)?;
+        self.canonical_rows_f32_bits
+            .get(start..start + METER_COMPONENT_SAMPLE_COUNT)
+    }
+
+    #[cfg(test)]
+    pub(crate) fn fixture(
+        callback_index: FrontendCallbackIndex,
+        transaction_id: CallbackLineageIdentity,
+        phase: CallbackPhase,
+        active_target_slots: Vec<TargetSlotIndex>,
+    ) -> Self {
+        let mut canonical_rows_f32_bits =
+            Vec::with_capacity(METER_COMPONENT_ROW_COUNT * METER_COMPONENT_SAMPLE_COUNT);
+        for slot in 0..METER_COMPONENT_ROW_COUNT {
+            canonical_rows_f32_bits.extend(std::iter::repeat_n(
+                (slot as f32 + 1.0).to_bits(),
+                METER_COMPONENT_SAMPLE_COUNT,
+            ));
+        }
+        Self {
+            callback_index,
+            transaction_id,
+            phase,
+            active_target_slots: active_target_slots.into_boxed_slice(),
+            canonical_rows_f32_bits: canonical_rows_f32_bits.into_boxed_slice(),
+        }
+    }
+}
+
+/// Immutable 15-slot overlap history snapshot used by marker energy before component execution.
+#[derive(Clone, Debug, PartialEq)]
+pub struct ComponentBeforeOverlapRows {
+    callback_index: FrontendCallbackIndex,
+    rows_f32: Box<[f32]>,
+}
+
+impl ComponentBeforeOverlapRows {
+    pub const fn callback_index(&self) -> FrontendCallbackIndex {
+        self.callback_index
+    }
+
+    pub fn row_for_target_slot(&self, target_slot: TargetSlotIndex) -> Option<&[f32]> {
+        let row = usize::from(target_slot.value());
+        if row >= METER_COMPONENT_ROW_COUNT {
+            return None;
+        }
+        let start = row.checked_mul(METER_COMPONENT_SAMPLE_COUNT)?;
+        self.rows_f32
+            .get(start..start + METER_COMPONENT_SAMPLE_COUNT)
+    }
+
+    pub fn rows(&self) -> [&[f32]; METER_COMPONENT_ROW_COUNT] {
+        std::array::from_fn(|row| {
+            let start = row * METER_COMPONENT_SAMPLE_COUNT;
+            &self.rows_f32[start..start + METER_COMPONENT_SAMPLE_COUNT]
+        })
+    }
+}
+
+/// Pure marker-energy preview from component.before and the current C/d mixer input.
+/// Consuming this preview later advances the existing component owner exactly once.
+#[must_use]
+pub struct MeterComponentStagePreview {
+    packet: component_stage::SpatialAudioInputPacket,
+    mixer_preview: Box<[crate::numeric::FiniteF32]>,
+    matrix: CompactOuterMatrix,
+    active_target_slots: Box<[TargetSlotIndex]>,
+    before_generation: u64,
+    before_digest: SpatialAudioDigest,
+    callback_index: FrontendCallbackIndex,
+    transaction_id: CallbackLineageIdentity,
+    phase: component_stage::ComponentCallbackPhase,
+    current_mixer_rows_f32: Box<[f32]>,
+    canonical_dense_matrix_f32_bits: Box<[u32]>,
+    component_before_overlap: ComponentBeforeOverlapRows,
+}
+
+impl MeterComponentStagePreview {
+    pub const fn callback_index(&self) -> FrontendCallbackIndex {
+        self.callback_index
+    }
+
+    pub fn transaction_id(&self) -> &CallbackLineageIdentity {
+        &self.transaction_id
+    }
+
+    pub fn active_target_slots(&self) -> &[TargetSlotIndex] {
+        &self.active_target_slots
+    }
+
+    pub fn previous_overlap_rows(&self) -> [&[f32]; METER_COMPONENT_ROW_COUNT] {
+        self.component_before_overlap.rows()
+    }
+
+    pub const fn component_before_overlap(&self) -> &ComponentBeforeOverlapRows {
+        &self.component_before_overlap
+    }
+
+    pub fn current_mixer_rows(&self) -> [&[f32]; METER_COMPONENT_ROW_COUNT] {
+        std::array::from_fn(|row| {
+            let start = row * METER_INSTALLED_SAMPLE_COUNT;
+            &self.current_mixer_rows_f32[start..start + METER_INSTALLED_SAMPLE_COUNT]
+        })
+    }
+
+    pub fn compact_matrix_f32(&self) -> Vec<f32> {
+        self.matrix
+            .c_rows_u32()
+            .iter()
+            .flat_map(|row| row.iter().copied().map(f32::from_bits))
+            .collect()
+    }
+
+    /// Canonical D[15][48] from the same C/d adapter used by marker preview and F04A.
+    pub const fn canonical_dense_matrix_f32_bits(&self) -> &[u32] {
+        &self.canonical_dense_matrix_f32_bits
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    pub fn execute(
+        self,
+        spatial_audio: &SpatialAudioMachine,
+        spatial_audio_join: &SpatialAudioJoinMetadata,
+        spatial_control_join: &SpatialControlJoinMetadata,
+        spatial_control: &SpatialControlMachine,
+        window: &ValidatedWindowQ15Provider,
+        parameters: &ValidatedComponentParameterProvider,
+    ) -> Result<MeterComponentStageProposal, component_stage::ComponentStageError> {
+        if spatial_audio.generation() != self.before_generation
+            || spatial_audio.digest() != self.before_digest
+            || spatial_audio_join.callback_index() != self.callback_index
+            || spatial_audio_join.transaction_id() != &self.transaction_id
+            || spatial_control_join.callback_index() != self.callback_index
+            || spatial_control_join.transaction_id() != &self.transaction_id
+        {
+            return Err(component_stage::ComponentStageError::State);
+        }
+        let component = component_stage::produce_component_stage_with_preview(
+            spatial_audio,
+            spatial_audio_join,
+            spatial_control_join,
+            spatial_control,
+            self.phase,
+            self.packet,
+            window,
+            parameters,
+            self.mixer_preview,
+        )?;
+        let meter_rows = component_output_rows_for_meter(&component, &self.matrix)?;
+        Ok(MeterComponentStageProposal {
+            component,
+            meter_rows,
+        })
+    }
+}
+
+/// Exports the already-staged F04A output only when its exact C/d matrix matches the F03S result.
+pub(crate) fn component_output_rows_for_meter(
+    proposal: &component_stage::ComponentStageProposal,
+    matrix: &CompactOuterMatrix,
+) -> Result<MeterComponentOutputRows, component_stage::ComponentStageError> {
+    let (component_output, receipt) = proposal.meter_view();
+    let destinations = matrix
+        .destinations()
+        .iter()
+        .map(|destination| destination.target_slot().value())
+        .collect::<Vec<_>>();
+    if receipt.callback_index() != matrix.value_generation()
+        || receipt.transaction_id() != matrix.transaction_id()
+        || receipt.matrix_destination_slots() != destinations
+        || matrix.c_rows_u32().len() != destinations.len()
+        || destinations.windows(2).any(|pair| pair[0] >= pair[1])
+        || component_output.len() != METER_COMPONENT_ROW_COUNT * METER_COMPONENT_SAMPLE_COUNT
+    {
+        return Err(component_stage::ComponentStageError::Input);
+    }
+
+    let active_target_slots = destinations
+        .into_iter()
+        .map(TargetSlotIndex::from_validated)
+        .collect::<Vec<_>>()
+        .into_boxed_slice();
+    let canonical_rows_f32_bits = component_output
+        .iter()
+        .map(|sample| sample.value().to_bits())
+        .collect::<Vec<_>>()
+        .into_boxed_slice();
+    Ok(MeterComponentOutputRows {
+        callback_index: receipt.callback_index(),
+        transaction_id: receipt.transaction_id().clone(),
+        phase: match receipt.phase() {
+            component_stage::ComponentCallbackPhase::Normal => CallbackPhase::Normal,
+            component_stage::ComponentCallbackPhase::CachedDrain => CallbackPhase::CachedDrain,
+        },
+        active_target_slots,
+        canonical_rows_f32_bits,
+    })
+}
+
+/// Noncommitting F04A result paired with its canonical component rows for the meter adapter.
+#[must_use]
+pub struct MeterComponentStageProposal {
+    #[allow(dead_code)] // The enclosing callback parent consumes this only at its commit point.
+    component: component_stage::ComponentStageProposal,
+    meter_rows: MeterComponentOutputRows,
+}
+
+impl MeterComponentStageProposal {
+    pub const fn meter_rows(&self) -> &MeterComponentOutputRows {
+        &self.meter_rows
+    }
+
+    pub const fn blocks_processed(&self) -> i64 {
+        self.component.blocks_processed()
+    }
+
+    #[allow(dead_code)] // The parent commit consumer is intentionally outside this producer slice.
+    pub(crate) fn into_parts(
+        self,
+    ) -> (
+        component_stage::ComponentStageProposal,
+        MeterComponentOutputRows,
+    ) {
+        (self.component, self.meter_rows)
+    }
+}
+
+impl SpatialAudioMachine {
+    /// Copies the committed overlap rows for F05R56 energy preview without advancing F04A state.
+    pub fn component_before_overlap_rows(
+        &self,
+    ) -> Result<ComponentBeforeOverlapRows, component_stage::ComponentStageError> {
+        let mut rows_f32 =
+            Vec::with_capacity(METER_COMPONENT_ROW_COUNT * METER_COMPONENT_SAMPLE_COUNT);
+        for row in &self.committed.root.component_state.overlap_history_rows {
+            if row.bytes.len() != METER_COMPONENT_SAMPLE_COUNT * 4 {
+                return Err(component_stage::ComponentStageError::State);
+            }
+            for word in row.bytes.chunks_exact(4) {
+                let bits = u32::from_le_bytes(
+                    word.try_into()
+                        .map_err(|_| component_stage::ComponentStageError::State)?,
+                );
+                let value = f32::from_bits(bits);
+                if !value.is_finite() {
+                    return Err(component_stage::ComponentStageError::State);
+                }
+                rows_f32.push(value);
+            }
+        }
+        Ok(ComponentBeforeOverlapRows {
+            callback_index: self.committed.root.callback_index,
+            rows_f32: rows_f32.into_boxed_slice(),
+        })
+    }
+
+    /// Prepares the pure current-C/d mixer preview and immutable component.before overlap rows.
+    /// This advances no component, filter, or overlap state.
+    #[allow(clippy::too_many_arguments)]
+    pub fn prepare_component_stage_preview(
+        &self,
+        spatial_audio_join: &SpatialAudioJoinMetadata,
+        spatial_control_join: &SpatialControlJoinMetadata,
+        spatial_control: &SpatialControlMachine,
+        phase: CallbackPhase,
+        window: &ValidatedWindowQ15Provider,
+        parameters: &ValidatedComponentParameterProvider,
+        installed48_f32_bits: Vec<u32>,
+        matrix: &CompactOuterMatrix,
+    ) -> Result<MeterComponentStagePreview, component_stage::ComponentStageError> {
+        if matrix.value_generation() != spatial_audio_join.callback_index()
+            || matrix.transaction_id() != spatial_audio_join.transaction_id()
+            || matrix.value_generation() != spatial_control_join.callback_index()
+            || matrix.transaction_id() != spatial_control_join.transaction_id()
+        {
+            return Err(component_stage::ComponentStageError::Input);
+        }
+        let component_before_overlap = self.component_before_overlap_rows()?;
+        if component_before_overlap.callback_index() != matrix.value_generation() {
+            return Err(component_stage::ComponentStageError::CallbackOrder);
+        }
+        let coefficient_bits = matrix
+            .c_rows_u32()
+            .iter()
+            .flat_map(|row| row.iter().copied())
+            .collect::<Vec<_>>();
+        let target_slots = matrix
+            .destinations()
+            .iter()
+            .map(|destination| destination.target_slot().value())
+            .collect::<Vec<_>>();
+        let active_matrix = component_stage::ActiveComponentMatrix::from_producer_output(
+            matrix.value_generation(),
+            coefficient_bits,
+            target_slots,
+        )?;
+        let canonical_dense_matrix_f32_bits = active_matrix.scatter_to_canonical_dense();
+        let component_phase = match phase {
+            CallbackPhase::Normal => component_stage::ComponentCallbackPhase::Normal,
+            CallbackPhase::CachedDrain => component_stage::ComponentCallbackPhase::CachedDrain,
+        };
+        let packet = component_stage::SpatialAudioInputPacket::from_current_component_callback(
+            self,
+            spatial_audio_join,
+            spatial_control_join,
+            spatial_control,
+            component_phase,
+            window,
+            parameters,
+            installed48_f32_bits,
+            active_matrix,
+        )?;
+        let mixer_preview = component_stage::preview_component_mixer(&packet)?;
+        let current_mixer_rows_f32 = mixer_preview
+            .iter()
+            .map(|sample| sample.value())
+            .collect::<Vec<_>>()
+            .into_boxed_slice();
+        let active_target_slots = matrix
+            .destinations()
+            .iter()
+            .map(|destination| destination.target_slot())
+            .collect::<Vec<_>>()
+            .into_boxed_slice();
+        Ok(MeterComponentStagePreview {
+            packet,
+            mixer_preview,
+            matrix: matrix.clone(),
+            before_generation: self.generation,
+            before_digest: self.digest(),
+            callback_index: matrix.value_generation(),
+            transaction_id: matrix.transaction_id().clone(),
+            phase: component_phase,
+            active_target_slots,
+            current_mixer_rows_f32,
+            canonical_dense_matrix_f32_bits,
+            component_before_overlap,
+        })
+    }
+
+    /// Executes F04A once from the prepared marker preview and the same owner-before state.
+    #[allow(clippy::too_many_arguments)]
+    pub fn stage_component_for_meter(
+        &self,
+        spatial_audio_join: &SpatialAudioJoinMetadata,
+        spatial_control_join: &SpatialControlJoinMetadata,
+        spatial_control: &SpatialControlMachine,
+        phase: CallbackPhase,
+        window: &ValidatedWindowQ15Provider,
+        parameters: &ValidatedComponentParameterProvider,
+        installed48_f32_bits: Vec<u32>,
+        matrix: &CompactOuterMatrix,
+    ) -> Result<MeterComponentStageProposal, component_stage::ComponentStageError> {
+        let preview = self.prepare_component_stage_preview(
+            spatial_audio_join,
+            spatial_control_join,
+            spatial_control,
+            phase,
+            window,
+            parameters,
+            installed48_f32_bits,
+            matrix,
+        )?;
+        preview.execute(
+            self,
+            spatial_audio_join,
+            spatial_control_join,
+            spatial_control,
+            window,
+            parameters,
+        )
+    }
+}
 
 impl SpatialAudioDigest {
     fn from_canonical_bytes(bytes: &[u8]) -> Self {

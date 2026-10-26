@@ -79,6 +79,7 @@ The selected 8-callback producer chain, six reader invocations, Type11 roundtrip
     "crates/jocforge-domain/src/joc/oamd.rs",
     "crates/jocforge-domain/src/joc/oamd/reader_target.rs",
     "crates/jocforge-domain/src/joc/oamd/reader_target/exact_trigonometry.rs",
+    "crates/jocforge-domain/src/numeric/exact_trigonometry.rs",
     "crates/jocforge-domain/src/joc/oamd/reader_target/reader_records.rs",
     "crates/jocforge-domain/src/joc/oamd/reader_target/target_panner.rs",
     "crates/jocforge-domain/src/joc/oamd/reader_target/type11.rs"

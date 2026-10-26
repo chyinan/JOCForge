@@ -10,6 +10,15 @@ use super::{
         MeterSourceSampleCount,
     },
 };
+use crate::{
+    joc::oamd::reader_target::{
+        HistoryProducerGeneration, ReaderInvocationIndex, ReaderTargetControlLineage,
+        ReaderTargetControlRows,
+    },
+    spatial::{spatial_audio_state::MeterComponentOutputRows, target_context::TargetSlotIndex},
+    timeline::FrontendCallbackIndex,
+    transaction::CallbackLineageIdentity,
+};
 
 const LFE_DELAY_SLOTS: u8 = 3;
 const LFE_DELAY_SAMPLES: u64 = 3_072;
@@ -285,6 +294,10 @@ pub struct MeterFrontendCallbackInput {
     current_lfe_words: Vec<u32>,
     regular_pcm_words: Vec<Vec<u32>>,
     regular_control_words: Vec<Vec<u32>>,
+    spatial_callback_index: Option<FrontendCallbackIndex>,
+    spatial_transaction_id: Option<CallbackLineageIdentity>,
+    active_target_slots: Option<Box<[TargetSlotIndex]>>,
+    target_control_lineages: Option<[ReaderTargetControlLineage; REGULAR_SOURCE_COUNT]>,
 }
 
 impl MeterFrontendCallbackInput {
@@ -303,7 +316,122 @@ impl MeterFrontendCallbackInput {
             current_lfe_words,
             regular_pcm_words,
             regular_control_words,
+            spatial_callback_index: None,
+            spatial_transaction_id: None,
+            active_target_slots: None,
+            target_control_lineages: None,
         }
+    }
+
+    /// Builds the F06OF row view from same-callback F04A component rows and F05R56 controls.
+    /// The spatial-control parent forwards admitted target rows; this adapter does not commit
+    /// either owner or rewrite any row/history lineage.
+    pub fn from_spatial_outputs(
+        callback_index: MeterCallbackIndex,
+        upstream_generation: ObjectRenderCallbackGeneration,
+        phase: MeterCallbackPhase,
+        current_lfe_words: Vec<u32>,
+        component_rows: &MeterComponentOutputRows,
+        target_controls: &ReaderTargetControlRows,
+    ) -> Result<Self, MeterLfeError> {
+        let target_callback = target_controls.callback_index();
+        if component_rows.callback_index() != target_callback
+            || component_rows.transaction_id() != target_controls.transaction_id()
+            || u64::from(target_callback.value()) != callback_index.value()
+        {
+            return Err(MeterLfeError::CallbackOrder);
+        }
+        let expected_meter_phase = match component_rows.phase() {
+            crate::spatial::post_window_fanout::CallbackPhase::Normal => {
+                MeterCallbackPhase::NormalSource
+            }
+            crate::spatial::post_window_fanout::CallbackPhase::CachedDrain => {
+                MeterCallbackPhase::ZeroInputDrain
+            }
+        };
+        if phase != expected_meter_phase {
+            return Err(MeterLfeError::PhaseMismatch);
+        }
+        if component_rows.active_target_slots() != target_controls.active_target_slots()
+            || component_rows.canonical_rows_f32_bits().len()
+                != REGULAR_SOURCE_COUNT * CALLBACK_SAMPLES
+            || current_lfe_words.len() != CALLBACK_SAMPLES
+        {
+            return Err(MeterLfeError::InputShape);
+        }
+        if current_lfe_words
+            .iter()
+            .any(|word| !f32::from_bits(*word).is_finite())
+        {
+            return Err(MeterLfeError::InputNonFinite);
+        }
+        if phase == MeterCallbackPhase::ZeroInputDrain
+            && current_lfe_words.iter().any(|word| *word != 0)
+        {
+            return Err(MeterLfeError::DrainInputNonZero);
+        }
+        if upstream_generation.value()
+            != callback_index
+                .value()
+                .checked_add(1)
+                .ok_or(MeterLfeError::ArithmeticOverflow)?
+        {
+            return Err(MeterLfeError::GenerationMismatch);
+        }
+        let expected_invocation = callback_index
+            .value()
+            .checked_sub(2)
+            .map(ReaderInvocationIndex::new);
+        if target_controls.reader_invocation() != expected_invocation {
+            return Err(MeterLfeError::CallbackOrder);
+        }
+
+        let mut regular_pcm_words = Vec::with_capacity(REGULAR_SOURCE_COUNT);
+        let mut regular_control_words = Vec::with_capacity(REGULAR_SOURCE_COUNT);
+        for slot in 0..REGULAR_SOURCE_COUNT {
+            let target_slot = TargetSlotIndex::from_validated(slot as u8);
+            let component_row = component_rows
+                .row_for_target_slot(target_slot)
+                .ok_or(MeterLfeError::InputShape)?;
+            let control_row = target_controls
+                .rows()
+                .get(slot)
+                .ok_or(MeterLfeError::InputShape)?;
+            if control_row.target_slot() != target_slot
+                || control_row.producer_row()
+                    != u8::try_from(slot).map_err(|_| MeterLfeError::InputShape)?
+            {
+                return Err(MeterLfeError::InputShape);
+            }
+            if let HistoryProducerGeneration::Callback(generation) =
+                control_row.producer_generation()
+            {
+                if generation.value() > target_callback.value() {
+                    return Err(MeterLfeError::CallbackOrder);
+                }
+            }
+            regular_pcm_words.push(component_row.to_vec());
+            regular_control_words.push(control_row.control52_words().to_vec());
+        }
+
+        let target_control_lineages = target_controls.lineages();
+        Ok(Self {
+            callback_index,
+            upstream_generation,
+            phase,
+            current_lfe_words,
+            regular_pcm_words,
+            regular_control_words,
+            spatial_callback_index: Some(target_callback),
+            spatial_transaction_id: Some(target_controls.transaction_id().clone()),
+            active_target_slots: Some(
+                component_rows
+                    .active_target_slots()
+                    .to_vec()
+                    .into_boxed_slice(),
+            ),
+            target_control_lineages: Some(target_control_lineages),
+        })
     }
 
     pub const fn callback_index(&self) -> MeterCallbackIndex {
@@ -329,6 +457,24 @@ impl MeterFrontendCallbackInput {
     pub fn regular_control_words(&self) -> &[Vec<u32>] {
         &self.regular_control_words
     }
+
+    pub const fn spatial_callback_index(&self) -> Option<FrontendCallbackIndex> {
+        self.spatial_callback_index
+    }
+
+    pub fn spatial_transaction_id(&self) -> Option<&CallbackLineageIdentity> {
+        self.spatial_transaction_id.as_ref()
+    }
+
+    pub fn active_target_slots(&self) -> Option<&[TargetSlotIndex]> {
+        self.active_target_slots.as_deref()
+    }
+
+    pub const fn target_control_lineages(
+        &self,
+    ) -> Option<&[ReaderTargetControlLineage; REGULAR_SOURCE_COUNT]> {
+        self.target_control_lineages.as_ref()
+    }
 }
 
 #[must_use]
@@ -336,6 +482,10 @@ pub struct MeterFrontendOarPacketProposal {
     after_lfe: MeterLfeDelayState,
     packet: ObjectRenderCallbackPacket,
     lfe_output_origin: Option<MeterLfeCallbackOrigin>,
+    spatial_callback_index: Option<FrontendCallbackIndex>,
+    spatial_transaction_id: Option<CallbackLineageIdentity>,
+    active_target_slots: Option<Box<[TargetSlotIndex]>>,
+    target_control_lineages: Option<[ReaderTargetControlLineage; REGULAR_SOURCE_COUNT]>,
 }
 
 impl MeterFrontendOarPacketProposal {
@@ -349,6 +499,24 @@ impl MeterFrontendOarPacketProposal {
 
     pub const fn lfe_output_origin(&self) -> Option<MeterLfeCallbackOrigin> {
         self.lfe_output_origin
+    }
+
+    pub const fn spatial_callback_index(&self) -> Option<FrontendCallbackIndex> {
+        self.spatial_callback_index
+    }
+
+    pub fn spatial_transaction_id(&self) -> Option<&CallbackLineageIdentity> {
+        self.spatial_transaction_id.as_ref()
+    }
+
+    pub fn active_target_slots(&self) -> Option<&[TargetSlotIndex]> {
+        self.active_target_slots.as_deref()
+    }
+
+    pub const fn target_control_lineages(
+        &self,
+    ) -> Option<&[ReaderTargetControlLineage; REGULAR_SOURCE_COUNT]> {
+        self.target_control_lineages.as_ref()
     }
 
     pub fn into_parts(
@@ -405,6 +573,10 @@ pub fn stage_meter_frontend_oar_packet(
         return Err(MeterLfeError::InputNonFinite);
     }
 
+    let spatial_callback_index = input.spatial_callback_index;
+    let spatial_transaction_id = input.spatial_transaction_id.clone();
+    let active_target_slots = input.active_target_slots.clone();
+    let target_control_lineages = input.target_control_lineages;
     let (after_lfe, delayed_lfe, origin) = lfe.into_parts();
     let mut pcm_words = Vec::with_capacity(TOTAL_SOURCE_COUNT);
     pcm_words.push(delayed_lfe);
@@ -425,6 +597,10 @@ pub fn stage_meter_frontend_oar_packet(
         after_lfe,
         packet,
         lfe_output_origin: origin,
+        spatial_callback_index,
+        spatial_transaction_id,
+        active_target_slots,
+        target_control_lineages,
     })
 }
 
@@ -611,5 +787,94 @@ mod tests {
             Some(MeterLfeError::InputShape)
         );
         assert_eq!(state, snapshot);
+    }
+
+    #[test]
+    fn spatial_outputs_bind_component_and_control_rows_by_target_slot_and_keep_s0_lineage() {
+        use crate::{
+            joc::oamd::reader_target::HistoryProducerGeneration,
+            spatial::{post_window_fanout::CallbackPhase, target_context::TargetSlotIndex},
+            timeline::FrontendCallbackIndex,
+            transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId},
+        };
+
+        let frontend_callback = FrontendCallbackIndex::new(0);
+        let programme = ProgrammeId::new("METERROWTEST1").unwrap();
+        let attempt = AttemptId::new(0);
+        let transaction = CallbackLineageIdentity::new(programme, attempt, frontend_callback);
+        let active_slots = vec![
+            TargetSlotIndex::from_validated(2),
+            TargetSlotIndex::from_validated(8),
+        ];
+        let component_rows = MeterComponentOutputRows::fixture(
+            frontend_callback,
+            transaction.clone(),
+            CallbackPhase::Normal,
+            active_slots.clone(),
+        );
+        let generations = std::array::from_fn(|row| {
+            if row == 0 {
+                HistoryProducerGeneration::Cold
+            } else {
+                HistoryProducerGeneration::Callback(frontend_callback)
+            }
+        });
+        let target_controls = ReaderTargetControlRows::fixture(
+            frontend_callback,
+            transaction.clone(),
+            active_slots.clone(),
+            None,
+            generations,
+        );
+
+        let input = MeterFrontendCallbackInput::from_spatial_outputs(
+            MeterCallbackIndex::new(0),
+            ObjectRenderCallbackGeneration::try_new(1).unwrap(),
+            MeterCallbackPhase::NormalSource,
+            input_frame(0x3f00_0000),
+            &component_rows,
+            &target_controls,
+        )
+        .unwrap();
+
+        assert_eq!(input.spatial_callback_index(), Some(frontend_callback));
+        assert_eq!(input.spatial_transaction_id(), Some(&transaction));
+        assert_eq!(input.active_target_slots(), Some(active_slots.as_slice()));
+        assert_eq!(input.regular_pcm_words().len(), REGULAR_SOURCE_COUNT);
+        assert_eq!(input.regular_control_words().len(), REGULAR_SOURCE_COUNT);
+        for slot in 0..REGULAR_SOURCE_COUNT {
+            assert_eq!(
+                input.regular_pcm_words()[slot][0],
+                ((slot + 1) as f32).to_bits()
+            );
+            assert_eq!(
+                input.regular_control_words()[slot],
+                vec![slot as u32 + 1; 13]
+            );
+        }
+        let lineages = *input.target_control_lineages().unwrap();
+        assert_eq!(
+            lineages[0].producer_generation(),
+            HistoryProducerGeneration::Cold
+        );
+        assert_eq!(
+            lineages[1].producer_generation(),
+            HistoryProducerGeneration::Callback(frontend_callback)
+        );
+        for (slot, lineage) in lineages.iter().enumerate() {
+            assert_eq!(lineage.target_slot().value(), slot as u8);
+            assert_eq!(lineage.producer_row(), slot as u8);
+        }
+
+        let lfe = MeterLfeDelayState::cold(MeterSourceSampleCount::new(1_536).unwrap()).unwrap();
+        let packet = stage_meter_frontend_oar_packet(&lfe, input).unwrap();
+        assert_eq!(packet.lfe_output_origin(), None);
+        assert_eq!(
+            packet.packet().controls()[0],
+            [0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        );
+        assert_eq!(packet.packet().controls()[1], vec![1; 13]);
+        assert_eq!(packet.packet().pcm_words()[1][0], 1.0_f32.to_bits());
+        assert_eq!(packet.target_control_lineages().unwrap(), &lineages);
     }
 }

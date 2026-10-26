@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge-f13c-metadata-control-store-evidence.v1",
+  "status": "METADATA_CONTROL_TRANSFORMS_STATIC_CLOSED_F12_COUNT_OWNER_JOIN_UNBOUND",
+  "reverse_package": {
+    "manifest_sha256": "59adce6cffa4a708b90c79d3c8c0f071685f0f889a8e67c9e95bde363b047657",
+    "payload_count": 5,
+    "checker_normal": "PASS_WRAPPER_METADATA_WRITER_BOUNDARY intervals=5 F12_entry=NOT_AVAILABLE owner_generation=UNBOUND native=NOT_RUN",
+    "checker_python_O": "PASS_WRAPPER_METADATA_WRITER_BOUNDARY intervals=5 F12_entry=NOT_AVAILABLE owner_generation=UNBOUND native=NOT_RUN"
+  },
+  "source_identity": {
+    "encoder_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "static_index_sha256": "b85bf4c662f47ec799caca3a153516bb7f3d4de3115f7eab2cf2d253c67469d3",
+    "image_and_index_recomputed_by_wash": true,
+    "bounded_static_regions": 5,
+    "instruction_snapshots": 7
+  },
+  "owner_separation": {
+    "descriptor_derived_channel_and_auxiliary_metadata": "OPEN CONFIGURATION / METADATA CONTROL STORE",
+    "F12_count_producer": "SEPARATE VALIDATED CONFIGURATION COUNT OWNER",
+    "typed_copy_or_owner_transfer_between_them": "NOT ESTABLISHED",
+    "source_or_reset_generation_join": "UNBOUND"
+  },
+  "unbound": [
+    "selected mode and metadata values",
+    "metadata-control to F12 count producer owner",
+    "F12 writer exact entry identity in this package",
+    "common source/reset generation"
+  ],
+  "execution_boundary": {
+    "native_or_target_execution": "NOT_RUN",
+    "metadata_or_event_body_values_read": false,
+    "PCM_or_row_buffer_read": false,
+    "key_or_auth_material_read": false,
+    "implementation_ready": false
+  }
+}

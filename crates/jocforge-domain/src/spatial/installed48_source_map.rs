@@ -92,6 +92,7 @@ pub struct Installed48SourceRow {
     input_mute: Option<u8>,
     control52: Option<ObjectControl52>,
     packed_attribute: u32,
+    point_response_source_fields: [u32; 4],
 }
 
 impl Installed48SourceRow {
@@ -121,6 +122,11 @@ impl Installed48SourceRow {
 
     pub const fn packed_attribute(&self) -> u32 {
         self.packed_attribute
+    }
+
+    /// `[feature_mode, source_skip, spatial_enum, coordinate_parameter]` from the installed row.
+    pub const fn point_response_source_fields(&self) -> [u32; 4] {
+        self.point_response_source_fields
     }
 }
 
@@ -498,6 +504,7 @@ fn build_installed48_source_map(
             metadata_words_8_to_55: metadata,
             input_mute: None,
             control52: None,
+            point_response_source_fields: installed_source_fields(&metadata, 0),
         });
     }
 
@@ -569,6 +576,10 @@ fn build_installed48_source_map(
             input_mute: Some(0),
             control52,
             packed_attribute: packed,
+            point_response_source_fields: control52.map_or_else(
+                || installed_source_fields(&metadata, 0),
+                ObjectControl52::point_response_source_fields,
+            ),
         });
         physical_bindings.push(PhysicalSourceBinding {
             physical_host: host,
@@ -699,6 +710,15 @@ fn prefix_metadata(xyz_words: [u32; 3]) -> [u32; 12] {
 
 fn bed_metadata(xyz_words: [u32; 3]) -> [u32; 12] {
     prefix_metadata(xyz_words)
+}
+
+fn installed_source_fields(metadata_words_8_to_55: &[u32; 12], source_skip: u32) -> [u32; 4] {
+    [
+        metadata_words_8_to_55[7],
+        source_skip,
+        metadata_words_8_to_55[10],
+        metadata_words_8_to_55[11],
+    ]
 }
 
 fn packed_attribute(metadata: &[u32; 12]) -> Result<u32, Installed48SourceMapError> {

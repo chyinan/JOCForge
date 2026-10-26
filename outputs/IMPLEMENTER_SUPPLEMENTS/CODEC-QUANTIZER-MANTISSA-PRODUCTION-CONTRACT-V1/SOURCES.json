@@ -1,0 +1,300 @@
+{
+  "schema": "jocforge-eac3-quantizer-mantissa-source-manifest.v1",
+  "approved_package_manifest": {
+    "path": "outputs/IMPLEMENTER_PACKAGE/MANIFEST.json",
+    "sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+  },
+  "direct_sources": [
+    {
+      "path": "specs/00-numeric-semantics.md",
+      "bytes": 3369,
+      "sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135",
+      "content_opened": true,
+      "role": "F32/RNE semantics"
+    },
+    {
+      "path": "specs/08-transforms.md",
+      "bytes": 9916,
+      "sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e",
+      "content_opened": true,
+      "role": "coefficient source shape"
+    },
+    {
+      "path": "specs/09-exponents.md",
+      "bytes": 9722,
+      "sha256": "41cd157140d0deaab51fa9a895c33758cb49eb46cf5844a2883c1d6e8bb81739",
+      "content_opened": true,
+      "role": "clipped coefficient and exponent plan"
+    },
+    {
+      "path": "specs/10-exponent-normalization.md",
+      "bytes": 5969,
+      "sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc",
+      "content_opened": true,
+      "role": "expanded exponent plan"
+    },
+    {
+      "path": "specs/12-codec-and-wire.md",
+      "bytes": 7899,
+      "sha256": "3e712f4d8bd0d0eaccd933ce0087a4fc0fbd73e3ca92b4dc673153786936a14e",
+      "content_opened": true,
+      "role": "shared quantizer/grouping/candidate rules"
+    },
+    {
+      "path": "specs/12-selected-codec-wire.md",
+      "bytes": 14760,
+      "sha256": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448",
+      "content_opened": true,
+      "role": "selected quantizer, mantissa, bit reserve and padding"
+    },
+    {
+      "path": "specs/12-selected-source-frame-composition.md",
+      "bytes": 10843,
+      "sha256": "9e6fcc14489ca0acaff0f7c223fce65539aa5b19cb4119ebcb34d19049cd0769",
+      "content_opened": true,
+      "role": "same-plan trial inputs and per-block grouping scope"
+    },
+    {
+      "path": "specs/09-lfe-gate-mantissa-boundaries.md",
+      "bytes": 4786,
+      "sha256": "9aff19192a8b5cba7db8bec26b05106edf214b4149a5f1c9d4be040691c80951",
+      "content_opened": true,
+      "role": "PRIMARY/LFE clipped staged row boundary"
+    },
+    {
+      "path": "parameters/codec-wire-selected-v1.json",
+      "bytes": 3081,
+      "sha256": "a7a0a721a9e515d197a2d12fc0c9cb942b2b393f9019383a66ce2635f7aaa0dd",
+      "content_opened": true,
+      "role": "selected constants and BAP width/group maps"
+    },
+    {
+      "path": "parameters/public-bap-48k-v1.json",
+      "bytes": 8509,
+      "sha256": "eb913038a89d853db453831d64df34c19f8ea8a89d04a72c0ef43733619545a3",
+      "content_opened": true,
+      "role": "public 48 kHz BAP tables"
+    },
+    {
+      "path": "parameters/lfe-gate-mantissa-boundaries-v1.json",
+      "bytes": 747,
+      "sha256": "310afbab35e19096e19433a40fee3a69271b18e8b70f6977380a6e7cba590962",
+      "content_opened": true,
+      "role": "selected profile clip/gate provider"
+    },
+    {
+      "path": "parameters/codec-wire-cross-module-providers-v1.json",
+      "bytes": 15764,
+      "sha256": "d0a99cd1fd25b5ba0b2e690d549ac474006d8a4dddb10e185446808379e96e2d",
+      "content_opened": true,
+      "role": "25-file clean cross-module input/provider registry"
+    },
+    {
+      "path": "test-vectors/BAP-RULE-VERIFICATION.json",
+      "bytes": 552,
+      "sha256": "a1a42d37d6e53b3f86b1396d1dbb83d848b28809efcfb1462c4a2329e142363d",
+      "content_opened": true,
+      "role": "existing BAP rule result reference"
+    },
+    {
+      "path": "test-vectors/CODEC-WIRE-SELECTED-VERIFICATION.json",
+      "bytes": 989,
+      "sha256": "20a7f9743845391b3d2d1dd98940282ffcda5d8b058fc49b4d2950e98047ac5b",
+      "content_opened": true,
+      "role": "208/208 quantizer and grouped-bit verification metadata"
+    },
+    {
+      "path": "test-vectors/CODEC-WIRE-SELECTED-LOCAL-REVIEW-STATUS.json",
+      "bytes": 7247,
+      "sha256": "f3655d4433e8b8e8a9c4260c2c8c4f59d9751ca689998fced6829a4775977225",
+      "content_opened": true,
+      "role": "selected F12 local review status"
+    },
+    {
+      "path": "test-vectors/CODEC-WIRE-COMPLETE-FRAME-INPUT-VECTORS.json",
+      "bytes": 4996244,
+      "sha256": "698c2ec69a8250251a3b3295ce135d1178079a5a2750a9ea5381c4e688db527a",
+      "content_opened": false,
+      "role": "input-only complete-frame fixture"
+    },
+    {
+      "path": "test-vectors/CODEC-WIRE-COMPLETE-FRAME-VERIFICATION.json",
+      "bytes": 641,
+      "sha256": "4615b59e39dfd1606f205e833b95f3f99b135c502ad15f5b8ebd94c7f7261fff",
+      "content_opened": true,
+      "role": "compact complete-frame verification metadata"
+    },
+    {
+      "path": "test-vectors/LFE-GATE-MANTISSA-INPUT-VECTORS.json",
+      "bytes": 4979,
+      "sha256": "70d63104353ff6f721ae521be4469a9dda15e48d27e22030b3c46f0220c9b6be",
+      "content_opened": true,
+      "role": "existing coefficient-boundary inputs"
+    },
+    {
+      "path": "test-vectors/LFE-GATE-MANTISSA-VERIFICATION-RESULT.json",
+      "bytes": 4930,
+      "sha256": "deb5d1037aef990b39596af96ad79bab3085d5fe1623da8b6de7111d87f9da20",
+      "content_opened": true,
+      "role": "compact clipping verification result"
+    }
+  ],
+  "cross_module_registry": {
+    "path": "parameters/codec-wire-cross-module-providers-v1.json",
+    "file_count": 25,
+    "private_key_required": false,
+    "semantic_registry_sha256_from_complete_frame_verification": "67b5d997be1ddcfe911612072c27bb751502a84c07597d628a2d4f284851dd37",
+    "registry_file_sha256": "d0a99cd1fd25b5ba0b2e690d549ac474006d8a4dddb10e185446808379e96e2d"
+  },
+  "cross_module_files": [
+    {
+      "path": "parameters/codec-wire-selected-v1.json",
+      "bytes": 3081,
+      "sha256": "a7a0a721a9e515d197a2d12fc0c9cb942b2b393f9019383a66ce2635f7aaa0dd"
+    },
+    {
+      "path": "parameters/public-bap-48k-v1.json",
+      "bytes": 8509,
+      "sha256": "eb913038a89d853db453831d64df34c19f8ea8a89d04a72c0ef43733619545a3"
+    },
+    {
+      "path": "specs/06-meter-bsi.md",
+      "bytes": 6337,
+      "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
+    },
+    {
+      "path": "specs/06-none-drc-statistics-and-control.md",
+      "bytes": 18048,
+      "sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081"
+    },
+    {
+      "path": "specs/06-meter-log-and-peak.md",
+      "bytes": 7525,
+      "sha256": "c8a9aec8c931391bfbb4ecaca01a8e5cbec3ba680899f516727c6574a170e38f"
+    },
+    {
+      "path": "specs/06-true-peak-cascade-and-metrics.md",
+      "bytes": 9824,
+      "sha256": "e0491288c3a9beb59ecb7b017d505ee16eb9f401d53bd0fd918573644c1876b3"
+    },
+    {
+      "path": "parameters/none-drc-authorized-v1.json",
+      "bytes": 3792,
+      "sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f"
+    },
+    {
+      "path": "parameters/none-drc-math-v1.json",
+      "bytes": 2010,
+      "sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166"
+    },
+    {
+      "path": "parameters/meter-log-mathematical-v1.json",
+      "bytes": 780,
+      "sha256": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266"
+    },
+    {
+      "path": "parameters/meter-truepeak-authorized-v1.json",
+      "bytes": 2584,
+      "sha256": "f67e6fe86533af74acc261bf3908890e77a461198116c64b624dc91b69049757"
+    },
+    {
+      "path": "specs/07-history-and-transient.md",
+      "bytes": 15770,
+      "sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac"
+    },
+    {
+      "path": "specs/09-exponents.md",
+      "bytes": 9722,
+      "sha256": "41cd157140d0deaab51fa9a895c33758cb49eb46cf5844a2883c1d6e8bb81739"
+    },
+    {
+      "path": "specs/09-gain-and-db.md",
+      "bytes": 5440,
+      "sha256": "f6e73ca2e361c06413974f4b7725fdc94f8e1d13a6a299062edde9dc3a7e6c12"
+    },
+    {
+      "path": "specs/10-exponent-normalization.md",
+      "bytes": 5969,
+      "sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc"
+    },
+    {
+      "path": "parameters/transient-d05-authorized-v1.json",
+      "bytes": 7548,
+      "sha256": "130cd1a446ea8413a1d0d4c5eea631e890b7f1cd675975efa92697e258402991"
+    },
+    {
+      "path": "parameters/policy-authorized-v1.json",
+      "bytes": 4559,
+      "sha256": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a"
+    },
+    {
+      "path": "parameters/exponent-refresh-difference-math-v1.json",
+      "bytes": 1661,
+      "sha256": "6cf3ae8d899b334d5aa87e0744e4c58b7dba1d92177ca07738726f8ea0ee2c6d"
+    },
+    {
+      "path": "specs/08-transforms.md",
+      "bytes": 9916,
+      "sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e"
+    },
+    {
+      "path": "parameters/ordinary-transform-math-v1.json",
+      "bytes": 16538,
+      "sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1"
+    },
+    {
+      "path": "test-vectors/TRANSFORM-RULE-VERIFICATION.json",
+      "bytes": 695,
+      "sha256": "12ab9067d9310a5dee14943fd96c9ef3548ed44379917d12da81055e049cc5e4"
+    },
+    {
+      "path": "test-vectors/GENERATED-TRANSFORM-PREFIX-VERIFICATION.json",
+      "bytes": 1319,
+      "sha256": "897a9a92748204069af17e039b7a5068da33f4a174421025670fb61ecfdc8454"
+    },
+    {
+      "path": "specs/13-emdf-and-timeline.md",
+      "bytes": 12839,
+      "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd"
+    },
+    {
+      "path": "specs/13-id2-profile-metadata.md",
+      "bytes": 3236,
+      "sha256": "35aa89d0dd67fb0133c4898c1007c84d48b39c5df6683dd88a173600975b48cc"
+    },
+    {
+      "path": "test-vectors/unit/ADAPTER-CONTRACT.md",
+      "bytes": 22205,
+      "sha256": "9bce2e35ce47147c76c13e58ee976d44c5109938f0b19e1f3a81f1d8a61fa1ae"
+    },
+    {
+      "path": "test-vectors/CODEC-WIRE-EMDF-MODE-INPUT-VECTORS.json",
+      "bytes": 2317,
+      "sha256": "aa18b1bffacfc665b19dd12c279896118e1ddad9f0d7169da245f6cc876404b8"
+    }
+  ],
+  "external_references": [
+    {
+      "title": "ETSI TS 102 366 V1.4.1",
+      "section": "6.3.5 Ungrouping of mantissas",
+      "url": "https://www.etsi.org/deliver/etsi_ts/102300_102399/102366/01.04.01_60/ts_102366v010401p.pdf",
+      "purpose": "Grouped BAP1/2/4 radix digit order and dummy fill behavior",
+      "retrieved_date": "2026-10-26"
+    }
+  ],
+  "ownership_boundaries": {
+    "BAP_power_and_offset_search": "R1-owned; consumed as input, not rederived",
+    "frame_layout_and_CRC": "R3-owned; not reimplemented",
+    "transaction_and_commit": "R4-owned; not rederived"
+  },
+  "frozen_quantizer_source_policy": {
+    "frozen_quantizer_python_path": "NOT_REQUIRED_BY_APPROVED_REPRODUCIBILITY_CONTRACT",
+    "evidence": "Approved CODEC-WIRE-SELECTED-VERIFICATION records 208/208 accepted-quantizer matches; package-side reproduction uses approved equations and input-only vectors."
+  },
+  "content_boundary": {
+    "complete_frame_input_vector": "metadata-only identity binding; content not opened",
+    "expected_quantizer_codes_in_vectors": false,
+    "AU_body_or_PCM_included": false,
+    "private_key_required": false
+  }
+}

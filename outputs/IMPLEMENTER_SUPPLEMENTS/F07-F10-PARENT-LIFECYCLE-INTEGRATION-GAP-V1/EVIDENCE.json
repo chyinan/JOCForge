@@ -1,0 +1,37 @@
+{
+  "schema": "jocforge-parent-analysis-lifecycle-gap-evidence.v1",
+  "status": "MODEL_CONTRACTS_PRESENT_NATIVE_PARENT_OWNER_GENERATION_UNBOUND",
+  "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_specs_and_local_reviews": "AVAILABLE_AND_HASH_BOUND",
+  "analysis_fixture_seam": {
+    "production_allowed": false,
+    "commit_count": 0,
+    "state_delta": null,
+    "executes_f07_or_f08": false
+  },
+  "f08_local_composition": {
+    "selected_provider": "math-generated-v1",
+    "recorded_local_scope": "nonzero composition, reset and error cases",
+    "fresh_whole_transaction": "NOT_RUN",
+    "independent_4650_word_replay": "NOT_AVAILABLE_FROM_FROZEN_EXPECTED_SET"
+  },
+  "bounded_dee_inventory": {
+    "readme_reported_slices": 24,
+    "observed_directory_files": 28,
+    "observed_b_prefixed_entries": 26,
+    "count_discrepancy": "UNRESOLVED",
+    "f07_f08_named_slice_in_bounded_directory": "NONE_FOUND",
+    "global_absence_claim": false
+  },
+  "unbound": [
+    "selected native source callback to F07/F07A/F08 owner and generation",
+    "parent staged success/fatal/reset/EOF boundary for the selected source",
+    "whether DTHD meter processing is required by the selected path"
+  ],
+  "execution": {
+    "tests": "NOT_RUN",
+    "native_or_product": "NOT_RUN",
+    "audio_or_pcm": "NOT_READ",
+    "private_key_or_auth_material": "NOT_READ"
+  }
+}

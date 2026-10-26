@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F13C-METADATA-CONTROL-STORE-DISJOINT-FROM-F12-V1",
+  "status": "METADATA_CONTROL_TRANSFORMS_STATIC_CLOSED_F12_COUNT_OWNER_JOIN_UNBOUND",
+  "implementation_ready": false,
+  "source_reverse_manifest_sha256": "59adce6cffa4a708b90c79d3c8c0f071685f0f889a8e67c9e95bde363b047657",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 2745,
+      "sha256": "3fd7771dc20a2abcf4097d98dd3e921dfd23ca831fbbda9f9860efb44f4f1e06"
+    },
+    {
+      "file": "STATIC-IDENTITY-VECTORS.json",
+      "bytes": 1076,
+      "sha256": "41e2c2873e7cdb400df657ffbddfbcf46b026af0d781ebc11293dab141d258d3"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1671,
+      "sha256": "5a68f3dfc8658f4ea6420b6f3fc18661c7f82b7c2ff3bc963439ba265bd4ef8a"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 727,
+      "sha256": "33c60c87225fa8b044e1b0905a2f82463ccdb5f28d66ca1067b3b890962926b6"
+    }
+  ]
+}

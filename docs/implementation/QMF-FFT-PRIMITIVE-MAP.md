@@ -88,6 +88,18 @@ The primitive is a 64-point complex transform over 128 interleaved F32 scalar sl
   },
   "functional_id": "F04QF",
   "functional_id_scope": "This readiness applies only to the fixed 64-point FFT primitive. F04QF rotation use, F04Q analysis/synthesis, receiver, fitting, and whole spatial_audio remain separately scoped.",
+  "historical_implementation_inventory": [
+    {
+      "bytes": 3812,
+      "path": "crates/jocforge-domain/src/spatial/qmf_fft64.rs",
+      "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"
+    },
+    {
+      "bytes": 2855,
+      "path": "crates/jocforge-domain/src/spatial/mod.rs",
+      "sha256": "91beefcd535b04930a7c3dd2427c081fc114053d44bb3971edb220b924412ba0"
+    }
+  ],
   "implementation_files": [
     "crates/jocforge-domain/src/spatial/qmf_fft64.rs",
     "crates/jocforge-domain/src/spatial/mod.rs"
@@ -99,9 +111,9 @@ The primitive is a 64-point complex transform over 128 interleaved F32 scalar sl
       "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"
     },
     {
-      "bytes": 2745,
+      "bytes": 3261,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "b367a77ab87157e12b0bd3f29e673a5bfc309b4fad49d8f8d260c52d83f5e661"
+      "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"
     }
   ],
   "implementation_prohibitions": [

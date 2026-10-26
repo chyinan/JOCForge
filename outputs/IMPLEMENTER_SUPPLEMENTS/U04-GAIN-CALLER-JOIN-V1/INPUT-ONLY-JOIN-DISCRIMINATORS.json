@@ -1,0 +1,256 @@
+{
+  "scope": "Own finite candidate/selected-order and full-attribute input; no expected gains or projection/audio bodies. Not a new ADM profile admission proof.",
+  "callback_generation": 7,
+  "selector_termination": "CAPACITY_REACHED",
+  "candidate_global_ids": [
+    0,
+    2,
+    4,
+    5,
+    7,
+    8,
+    11,
+    14,
+    17,
+    20,
+    23,
+    29,
+    31,
+    35,
+    39,
+    44,
+    47
+  ],
+  "selected_global_ids_in_selection_order": [
+    35,
+    2,
+    47,
+    11,
+    23,
+    0,
+    39,
+    5,
+    29,
+    14,
+    44,
+    8,
+    31,
+    4,
+    17
+  ],
+  "source_xyz_f32_exact_dyadics": [
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0625,
+      0.3125,
+      0.6875
+    ],
+    [
+      0.125,
+      0.625,
+      0.3125
+    ],
+    [
+      0.1875,
+      0.9375,
+      1.0
+    ],
+    [
+      0.25,
+      0.1875,
+      0.625
+    ],
+    [
+      0.3125,
+      0.5,
+      0.25
+    ],
+    [
+      0.375,
+      0.8125,
+      0.9375
+    ],
+    [
+      0.4375,
+      0.0625,
+      0.5625
+    ],
+    [
+      0.5,
+      0.375,
+      0.1875
+    ],
+    [
+      0.5625,
+      0.6875,
+      0.875
+    ],
+    [
+      0.625,
+      1.0,
+      0.5
+    ],
+    [
+      0.6875,
+      0.25,
+      0.125
+    ],
+    [
+      0.75,
+      0.5625,
+      0.8125
+    ],
+    [
+      0.8125,
+      0.875,
+      0.4375
+    ],
+    [
+      0.875,
+      0.125,
+      0.0625
+    ],
+    [
+      0.9375,
+      0.4375,
+      0.75
+    ],
+    [
+      1.0,
+      0.75,
+      0.375
+    ]
+  ],
+  "source_attributes_u32": [
+    2816,
+    2832,
+    2848,
+    2816,
+    2833,
+    2848,
+    2816,
+    2832,
+    2848,
+    2816,
+    2832,
+    2848,
+    2816,
+    2832,
+    2848,
+    2816,
+    2832
+  ],
+  "target_xyz_f32_exact_dyadics": [
+    [
+      0.8125,
+      0.875,
+      0.4375
+    ],
+    [
+      0.0625,
+      0.3125,
+      0.6875
+    ],
+    [
+      1.0,
+      0.75,
+      0.375
+    ],
+    [
+      0.375,
+      0.8125,
+      0.9375
+    ],
+    [
+      0.625,
+      1.0,
+      0.5
+    ],
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.875,
+      0.125,
+      0.0625
+    ],
+    [
+      0.1875,
+      0.9375,
+      1.0
+    ],
+    [
+      0.6875,
+      0.25,
+      0.125
+    ],
+    [
+      0.4375,
+      0.0625,
+      0.5625
+    ],
+    [
+      0.9375,
+      0.4375,
+      0.75
+    ],
+    [
+      0.3125,
+      0.5,
+      0.25
+    ],
+    [
+      0.75,
+      0.5625,
+      0.8125
+    ],
+    [
+      0.125,
+      0.625,
+      0.3125
+    ],
+    [
+      0.5,
+      0.375,
+      0.1875
+    ]
+  ],
+  "target_attributes_u32": [
+    2832,
+    2832,
+    2832,
+    2816,
+    2832,
+    2816,
+    2848,
+    2816,
+    2848,
+    2832,
+    2816,
+    2848,
+    2816,
+    2848,
+    2848
+  ],
+  "feature_recipe": "Original pre-selector band-major F[b,j]=R32(((b+1)*(j+1))/2^16), b0..23, j0..16. Separate selector-local residual feature must not replace it. Weight production is owned by R1.",
+  "rejection_probes": [
+    "CANDIDATES_EXHAUSTED with count15 must skip U04",
+    "target dedup changes count must reject under existing model contract",
+    "duplicate or missing candidate global ID",
+    "geometry/attribute from a different callback generation"
+  ],
+  "wrong_join_probes": [
+    "Replace original17 sources with final survivor subset",
+    "Sort15 selected IDs before building gain columns",
+    "Compare attributes only by bit0",
+    "Use installed old target slots instead of selected initial anchors",
+    "Feed first source projected anchors into next source solve"
+  ],
+  "verification": "17 source argument rows and255 source-target ordinal associations checked against the supplied immutable input identity mapping; no solver math rerun."
+}

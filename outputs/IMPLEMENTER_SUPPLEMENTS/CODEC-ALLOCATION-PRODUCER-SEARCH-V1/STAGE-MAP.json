@@ -1,0 +1,105 @@
+{
+  "schema": "research.codec-allocation-stage-map.v1",
+  "stages": [
+    {
+      "stage": 1,
+      "name": "F08/F09 POWER",
+      "inputs": "same-source primary A and companion B with F32 precision, six blocks, five217+LFE7; exact consumed short/other structure flags",
+      "outputs": "POWER=min(1,R32(R32(A*A)+R32(B*B))); raw I16 exponent via unsigned bit formula F09.2",
+      "constraints": "Use actual transformed coefficients; no log2 approximation or cache"
+    },
+    {
+      "stage": 2,
+      "name": "main POWER refresh",
+      "inputs": "raw POWER rows, per-channel fresh zero work, structure markers, mode1/secondary0; [0,128) FBW",
+      "outputs": "refreshed current/work/markers and saved S[5][6][217]",
+      "constraints": "Freeze S current immediately after first refresh; tail128..216 raw unchanged; work/S/PRIMARY are distinct"
+    },
+    {
+      "stage": 3,
+      "name": "main strategy/normalization",
+      "inputs": "main markers+short overrides, reverse scan; primary-only strict-clipped coefficients",
+      "outputs": "main block strategies/pattern OR explicit strategy format; grouped anchors and expanded decoded exponents, gain; LFE own plan",
+      "constraints": "F09/F10 option1 main, one fixed plan per source; consumed clipped coefficients feed quantization"
+    },
+    {
+      "stage": 4,
+      "name": "converter refresh/strategy",
+      "inputs": "saved S, same consumed structural flags; fresh converter work per FBW channel",
+      "outputs": "independent converter refresh+reverse strategies+five matched frame codes",
+      "constraints": "No rerun transform; no use main frame code or main final work; unmatched converter pattern fatal"
+    },
+    {
+      "stage": 5,
+      "name": "converter exponent conversion",
+      "inputs": "main decoded exponent rows, converter reuse spans; LFE main strategy clock",
+      "outputs": "per-span binwise minimum, option0 normalization and expanded converted exponents: five217+LFE7 per block",
+      "constraints": "No main optimizer option1 second round; LFE does not run FBW POWER reanalysis"
+    },
+    {
+      "stage": 6,
+      "name": "F09G",
+      "inputs": "same-source own means/db state and transformed inputs per existing provider",
+      "outputs": "db_code[6] U2 fixed for converter and all main trials",
+      "constraints": "Compute once; candidate search must not advance provider or use old cached db codes"
+    },
+    {
+      "stage": 7,
+      "name": "converter candidate BAP",
+      "inputs": "qU10,converted decoded exponents; tuple[2,1,1,db[b],7],fast_gain4",
+      "outputs": "BAP[6 blocks][5x217+7] U8 and per-block histograms",
+      "constraints": "Same public F12A integer network; caller context from all active same-block fine values, not this element alone"
+    },
+    {
+      "stage": 8,
+      "name": "converter fixed/mantissa cost",
+      "inputs": "independent converter strategies/packed group counts, LFE refresh/db changes/surround EX; actual candidate BAP",
+      "outputs": "H, F[6], M[6], auxiliary1; exact W16 cost; budget/partition residual",
+      "constraints": "BAP1/2/4 groups cross channels, reset each block; no quantization coefficients needed to count widths"
+    },
+    {
+      "stage": 9,
+      "name": "converter search",
+      "inputs": "virtual20480-bit budget; low0 high1024 best-1",
+      "outputs": "binary trial trace, offset<=671 or0 fallback or failure",
+      "constraints": "Compute BAP/cost even q>671 before cap predicate; cost/residual equality accepts"
+    },
+    {
+      "stage": 10,
+      "name": "main candidate BAP",
+      "inputs": "fixed main expanded exponents and db codes, q shared across36 elements; tuple[2,1,1,db[b],7],fast_gain1",
+      "outputs": "per-block six independent BAP rows",
+      "constraints": "Main q>=16 no zero bypass; reuse neither converter BAP nor previous q BAP"
+    },
+    {
+      "stage": 11,
+      "name": "main complete-trial oracle",
+      "inputs": "same fixed spectra/plan/dither/BSI/F13 payload plus freshly computed BAP",
+      "outputs": "R2 quantization/group result and R3 full actual body fields/size or specific failure",
+      "constraints": "Actual capacity32768-34 beforetail; converter residual/virtual budget cannot decide main feasibility"
+    },
+    {
+      "stage": 12,
+      "name": "main search",
+      "inputs": "test16 then low16 high784, atmost10 midpoints whilegap>1",
+      "outputs": "last successful candidate or no-best source failure",
+      "constraints": "Failure only trial scratch; no retransform/repolicy/re-dither. Quant sentinel/field failure makes q infeasible; pretrial producer error is fatal"
+    }
+  ],
+  "orders": {
+    "source": "one fixed plan per codec source",
+    "block": "0..5",
+    "channel": "[L,C,R,Ls,Rs,LFE] internal; external[L,R,C,LFE,Ls,Rs]",
+    "bin": "ascending within each row",
+    "main_BAP_calls": "36 per candidate, each with its block db code",
+    "converter_BAP_calls": "36 per q, converted exponent domain"
+  },
+  "precision": {
+    "POWER": "R32 operations then exact F32 bit formula",
+    "refresh": "I16/W16 plus explicitly specified F32 error products",
+    "BAP": "I32 intermediate and S16 saturation, arithmetic right shift, no floats, no W16",
+    "cost": "W16 signed wrapping, reject negative where required; not BAP S16",
+    "main_capacity": "actual bitwriter width"
+  },
+  "cost_quantization_join": "Mantissa count width agrees for valid quant codes only. Cost success does not waive R2 sentinel/nonfinite errors or R3 actual field/capacity failures."
+}

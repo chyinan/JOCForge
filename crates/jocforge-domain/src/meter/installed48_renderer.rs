@@ -265,10 +265,40 @@ fn validate_input(
     {
         return Err(MeterInstalled48Error::SourceIdentityMismatch);
     }
+    let callback = input.callback_index.value();
+    let normal_callback_count = before
+        .source_samples
+        .value()
+        .div_ceil(METER_INSTALLED48_FRAME_SAMPLES as u64);
+    let total_callback_count = normal_callback_count
+        .checked_add(3)
+        .ok_or(MeterInstalled48Error::ArithmeticOverflow)?;
+    if callback >= total_callback_count {
+        return Err(MeterInstalled48Error::CallbackOrder);
+    }
+    let normal_callback = callback < normal_callback_count;
+    let expected_reader_position = if normal_callback {
+        let expected_cursor = callback
+            .checked_mul(METER_INSTALLED48_FRAME_SAMPLES as u64)
+            .ok_or(MeterInstalled48Error::ArithmeticOverflow)?;
+        if expected_cursor != input.source_cursor_before.value() {
+            return Err(MeterInstalled48Error::CallbackOrder);
+        }
+        input.source_cursor_before
+    } else {
+        let last_normal_query = normal_callback_count
+            .checked_sub(1)
+            .and_then(|last| last.checked_mul(METER_INSTALLED48_FRAME_SAMPLES as u64))
+            .ok_or(MeterInstalled48Error::CallbackOrder)?;
+        if input.source_cursor_before.value() != before.source_samples.value() {
+            return Err(MeterInstalled48Error::CallbackOrder);
+        }
+        AdmSampleIndex::new(last_normal_query)
+    };
     if input.callback_index != before.callback_index
         || input.source_cursor_before != before.source_cursor
-        || input.activity.reader_relative_sample() != input.source_cursor_before
-        || input.activity.host_frame().is_none()
+        || u64::from(input.activity.callback_index().value()) != callback
+        || input.activity.reader_relative_sample() != expected_reader_position
         || input.activity.actual_source_samples() != input.host_input_samples
         || input.membership_route.writer_indices() != input.activity.prefix_writer_indices()
         || input
@@ -283,28 +313,28 @@ fn validate_input(
     {
         return Err(MeterInstalled48Error::CallbackOrder);
     }
-    if input.activity.phase() != PrimaryActivityPhase::NormalRead {
+    let expected_phase = if normal_callback {
+        PrimaryActivityPhase::NormalRead
+    } else {
+        PrimaryActivityPhase::FreshZeroInputDrain
+    };
+    if input.activity.phase() != expected_phase
+        || input.activity.host_frame().is_some() != normal_callback
+    {
         return Err(MeterInstalled48Error::CallbackPhase);
     }
-    let expected_cursor = input
-        .callback_index
-        .value()
-        .checked_mul(METER_INSTALLED48_FRAME_SAMPLES as u64)
-        .ok_or(MeterInstalled48Error::ArithmeticOverflow)?;
     let remaining_samples = before
         .source_samples
         .value()
         .checked_sub(before.source_cursor.value())
         .ok_or(MeterInstalled48Error::SourceExtentMismatch)?;
-    let expected_host_samples = remaining_samples.min(METER_INSTALLED48_FRAME_SAMPLES as u64);
-    let expected_padding_samples = METER_INSTALLED48_FRAME_SAMPLES as u64 - expected_host_samples;
-    let normal_callback_count = before
-        .source_samples
-        .value()
-        .div_ceil(METER_INSTALLED48_FRAME_SAMPLES as u64);
-    if expected_cursor != input.source_cursor_before.value()
-        || input.callback_index.value() >= normal_callback_count
-        || u64::from(input.host_input_samples) != expected_host_samples
+    let (expected_host_samples, expected_padding_samples) = if normal_callback {
+        let actual = remaining_samples.min(METER_INSTALLED48_FRAME_SAMPLES as u64);
+        (actual, METER_INSTALLED48_FRAME_SAMPLES as u64 - actual)
+    } else {
+        (0, 0)
+    };
+    if u64::from(input.host_input_samples) != expected_host_samples
         || u64::from(input.source_padding_samples) != expected_padding_samples
         || input.raw_pcm_rows.len() != METER_INSTALLED48_HOST_ROWS
         || input.raw_pcm_rows.iter().any(|row| {
@@ -315,6 +345,9 @@ fn validate_input(
         || before.previous_pcm_rows.len() != METER_INSTALLED48_HOST_ROWS
         || before.previous_current_rows.len() != METER_INSTALLED48_ROWS
     {
+        return Err(MeterInstalled48Error::InputShape);
+    }
+    if !normal_callback && input.raw_pcm_rows.iter().flatten().any(|word| *word != 0) {
         return Err(MeterInstalled48Error::InputShape);
     }
     if before.source_samples.value() != input.source_map.source_binding().source_samples().value()

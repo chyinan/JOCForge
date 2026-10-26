@@ -1,0 +1,81 @@
+{
+  "integer_types": "Indices/counts/length use nonnegative integers checked in U64 range. Reject bool/string/negative/nonintegral values. FIFO phase/sample counts are exact integers, not F32 or elapsed wall time.",
+  "clock_formulas": {
+    "callback_g": "0-based frontend callback; g<2 advances callback owners but emits no codec source and does not execute F07.",
+    "source_s": "g-2 for g>=2",
+    "dispatch_d": "s+1 = g-1",
+    "current_body_writer_w": "s, 0-based writer generation; JOC body dispatch is s+1.",
+    "published_au_j": "s-2 for s>=2; no publication for s0/1",
+    "ordinary_popped_writer": "s-2; empty for s<2",
+    "joc_popped_writer": "s-1; empty for s0; source1 writer0 consumed suppressed.",
+    "published_payloads": "AU j consumes ID11/1/2 writer j and ID14 writer j+1 (JOC dispatch j+2)."
+  },
+  "queue_order": "All four current bodies ready before mutation; on clones ID11 push/pop, ID1 push/pop, ID2 push/pop, ID14 push/pop. Serialization after gate is11/14/2/1.",
+  "suppression": "Source0/1 run shared analysis, DRC, numeric plan, JOC/body/timer, all queue push/pop and complete codec scratch frame with ABSENT published metadata. No EMDF parse/build, keyless EMDF checksum, complexity/carrier or published payload validation. Pass ABSENT_PUBLISHED_PAYLOAD_V1; still validate complete codec frame including keyless fixed tail and CRC16. Commit all owners once, no AU append.",
+  "first_publication": {
+    "g": 4,
+    "s": 2,
+    "dispatch": 3,
+    "au": 0,
+    "ID11_1_2_writer": 0,
+    "ID14_writer": 1
+  },
+  "cached_parent_calls": "Main four cached callbacks reuse last padded input/control snapshot while advancing main state; not four new zero callbacks. Do not borrow independent meter EOF rules.",
+  "no_extra_flush": [
+    "F07",
+    "F08/F09/F10 plan",
+    "F11 converter",
+    "F12 codec",
+    "JOC",
+    "metadata queues",
+    "main DRC"
+  ],
+  "pending_disposition": "At FINALIZING record pending writer identities/hash and DROP_AT_DONE then release storage. No additional pop/push/clock advancement or extra AU. If finalization fails, they remain abandoned-attempt evidence rather than proof of DONE.",
+  "independent_meter_scope": "Independent F06 meter uses three new-zero drain callbacks; excluded from main cached4/source publication model.",
+  "terminal_ledger": "Runtime counts derive from the validated programme plan. DONE totals must match that plan; primary example constants/schema do not enforce an exact-primary-N admission rule.",
+  "primary_example_main_extent": {
+    "normal_callbacks": 4247,
+    "last_normal_real_samples": 1050,
+    "last_normal_zero_padding": 486,
+    "cached_callbacks": 4,
+    "total_callbacks": 4251,
+    "sources": 4249,
+    "dispatches": 4249,
+    "writers": 4249,
+    "published_aus": 4247,
+    "bytes_per_au": 4096,
+    "published_bytes": 17395712
+  },
+  "primary_example_pending_at_end": {
+    "ID11": [
+      4247,
+      4248
+    ],
+    "ID1": [
+      4247,
+      4248
+    ],
+    "ID2": [
+      4247,
+      4248
+    ],
+    "ID14": [
+      4248
+    ]
+  },
+  "runtime_plan_derived_counts": {
+    "Q": "N//1536 + int(N%1536!=0)",
+    "main_callbacks": "Q+4",
+    "codec_sources_dispatches_writers": "Q+2",
+    "published_aus": "Q",
+    "output_bytes": "checked(Q*4096)",
+    "ordinary_pending": [
+      "Q",
+      "Q+1"
+    ],
+    "joc_pending": [
+      "Q+1"
+    ],
+    "admission": "N and all container/profile/metadata admission must already be validated; checked integer extents throughout"
+  }
+}

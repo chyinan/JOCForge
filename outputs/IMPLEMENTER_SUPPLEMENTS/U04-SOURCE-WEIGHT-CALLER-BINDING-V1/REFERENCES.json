@@ -1,0 +1,104 @@
+{
+  "schema": "research.u04-source-weight-caller-references.v1",
+  "approved_parent_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "references": [
+    {
+      "id": "U",
+      "document": "03-u04-refinement-and-projection.md",
+      "sha256": "ca235e2f373d95d5c628ca61c651d01805bb9cb14a7c3457d9a77b1d87941879",
+      "clauses": [
+        "F03U.1",
+        "F03U.4",
+        "F03U.6"
+      ],
+      "grade": "CURRENT_APPROVED_CONTRACT"
+    },
+    {
+      "id": "C",
+      "document": "03-selector-affinity-and-selection.md",
+      "sha256": "ce95853e007f9282f3d1dce0e43cffb132ed079b5f1cd2fe3e6ce10901d51697",
+      "clauses": [
+        "F03C.1",
+        "F03C.3"
+      ],
+      "grade": "CURRENT_APPROVED_CONTRACT"
+    },
+    {
+      "id": "F",
+      "document": "03-feature-processor-and-state.md",
+      "sha256": "dbd1cf259d2e40013910868d31e38909678d3af8add9d80bd59d15e8cc6e8edd",
+      "clauses": [
+        "current feature output and carried feature state"
+      ],
+      "grade": "CURRENT_APPROVED_CONTRACT"
+    },
+    {
+      "id": "CALLER",
+      "document": "fullstream_front_prediction_rectangular_fma3_panner_candidate_core_rev1.py",
+      "sha256": "ce0b377c9c58142dfab19605b38253ce825f5947f170a1ca30f275103f65c4ca",
+      "line_domain": [
+        61,
+        108
+      ],
+      "scope": "Actual candidate gate/original feature gather/U04 boundary",
+      "grade": "REHASHED_FROZEN_MODEL_TEXT_NO_NEW_NATIVE_RUN"
+    },
+    {
+      "id": "PACK",
+      "document": "r33_raw96_u04_adapter_core.py",
+      "sha256": "7f2cb7c64a63a5d4b29ee2910fb97937b726fc7e258ecc471712ae96d1bfbff4",
+      "line_domain": [
+        205,
+        268
+      ],
+      "scope": "Actual fixture argument transport; features not external source-weight cache",
+      "grade": "REHASHED_FROZEN_MODEL_TEXT_NO_NEW_NATIVE_RUN"
+    },
+    {
+      "id": "SEL",
+      "document": "r33_selector_init_core.py",
+      "sha256": "5cbfbf288b5cc3a5a009de051deaae22df67b28f1f01295e4d53ac099fe0e82a",
+      "line_domain": [
+        50,
+        95
+      ],
+      "scope": "Separate serialized selector descriptor",
+      "grade": "REHASHED_FROZEN_MODEL_TEXT_NO_NEW_NATIVE_RUN"
+    },
+    {
+      "id": "SCRATCH",
+      "document": "selector_model_core.py",
+      "sha256": "7d2b886812fa20b43142751d363cef7ac02bf9c4a314ad026d7303b8f6dc8791",
+      "line_domain": [
+        470,
+        505
+      ],
+      "scope": "Separate selector candidate feature scratch",
+      "grade": "REHASHED_FROZEN_MODEL_TEXT_NO_NEW_NATIVE_RUN"
+    },
+    {
+      "id": "PYPURE",
+      "document": "meter_sdk_weighted_center_core.py",
+      "sha256": "eb6518073f1d3990e5062357937940f195f26e76fd36f80df959e0ac386f15c0",
+      "line_domain": [
+        11,
+        22
+      ],
+      "scope": "Shared weight pure primitive only; other SDK center algorithm excluded",
+      "grade": "REHASHED_FROZEN_MODEL_TEXT_NO_NEW_NATIVE_RUN"
+    },
+    {
+      "id": "RSPURE",
+      "document": "core.rs",
+      "sha256": "d30019a84d8493a6104f5c8d2b9ce111170dff4150d284648844013a9ad2afab",
+      "line_domain": [
+        23,
+        47
+      ],
+      "scope": "Bounded powf plus serial F32 fold; not proof all platform powf equal mathematical contract",
+      "grade": "REHASHED_FROZEN_MODEL_TEXT_NO_NEW_NATIVE_RUN"
+    }
+  ],
+  "source_text_forwarded": false,
+  "actual_u04_helper_source_rehash_claim": false
+}

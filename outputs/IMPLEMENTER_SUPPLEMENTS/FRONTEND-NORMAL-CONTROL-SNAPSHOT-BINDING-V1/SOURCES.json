@@ -1,0 +1,84 @@
+{
+  "parent_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "sources": [
+    {
+      "role": "specs/01-frontend-config-dbmd-events.md",
+      "sha256": "afd9efc879ed9a4878bd967c1370275074efd2226e11e67eb86838f4168f61b7",
+      "bytes": 13867,
+      "grade": "CURRENT_APPROVED_CONTRACT"
+    },
+    {
+      "role": "specs/01-adm-graph-and-time.md",
+      "sha256": "c3abb599305392cdad7b43a1d8d45b1c1ae0466ff899f56caa3590d010a11f14",
+      "bytes": 6441,
+      "grade": "CURRENT_APPROVED_CONTRACT"
+    },
+    {
+      "role": "specs/01-bed-routing-and-source-geometry.md",
+      "sha256": "26e4220818d50227f75d5bc00e99840609d6a2023619e01328cb768bed4511b2",
+      "bytes": 5510,
+      "grade": "CURRENT_APPROVED_CONTRACT"
+    },
+    {
+      "role": "specs/00-selected-owner-projection-and-j05.md",
+      "sha256": "9ff01aca7b6be6e89511e4d493f9fc9e661a50e2f098065f4a32c3fed777542f",
+      "bytes": 4504,
+      "grade": "CURRENT_APPROVED_CONTRACT"
+    },
+    {
+      "role": "specs/00-global-transaction-contract.md",
+      "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105",
+      "bytes": 20041,
+      "grade": "CURRENT_APPROVED_CONTRACT"
+    },
+    {
+      "role": "specs/03-adm-installed48-whole.md",
+      "sha256": "a494e653e584c8453464aa74ae08bf453cc615e1ccafd98ab4ede238de1f7dd9",
+      "bytes": 10079,
+      "grade": "CURRENT_APPROVED_CONTRACT"
+    },
+    {
+      "role": "parameters/f01e-selected-constructor-v1.json",
+      "sha256": "b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb",
+      "bytes": 20138,
+      "grade": "CURRENT_APPROVED_CONTRACT"
+    },
+    {
+      "role": "approved_source_flags_adapter_MANIFEST.json",
+      "sha256": "0d4b047cb65368f5769cc1e35085f6e5946dec890b4404bb7b79cd6c1613d4ae",
+      "bytes": 1399,
+      "grade": "APPROVED_ADAPTER"
+    },
+    {
+      "role": "approved_source_flags_adapter_CONTRACT.md",
+      "sha256": "8464b395a97facd18e324697094a080096e0d802940917dc39bcc6be0b463a54",
+      "bytes": 3406,
+      "grade": "APPROVED_ADAPTER"
+    },
+    {
+      "role": "approved_source_flags_adapter_SOURCE-FIELDS.json",
+      "sha256": "8ddf93ebd788383d0799609f24d3d3e101070a1624e4f15f79137b7ddc674f6f",
+      "bytes": 4463,
+      "grade": "APPROVED_ADAPTER"
+    },
+    {
+      "role": "weight_constructor",
+      "sha256": "cace4e10bdbc4d8ae622f0cf4aad5ab6fecd47b4721631b91f2eb304c273df5d",
+      "bytes": 6818,
+      "grade": "REHASHED_FROZEN_MODEL_TEXT_NOT_NATIVE_EXECUTION"
+    },
+    {
+      "role": "first_record_fixture_only",
+      "sha256": "99d32b96631db1e21a645310a518775093d83d0fe59e4007b1b80b5719436b20",
+      "bytes": 5991,
+      "grade": "REHASHED_FROZEN_MODEL_TEXT_NOT_NATIVE_EXECUTION"
+    },
+    {
+      "role": "bed_defined_prefix_and_control_adapter",
+      "sha256": "c93c018a5e191c9e56a15632863da5fe258c75ab91c1240907d6df6e6eac10b8",
+      "bytes": 5904,
+      "grade": "REHASHED_FROZEN_MODEL_TEXT_NOT_NATIVE_EXECUTION"
+    }
+  ],
+  "research_paths_excluded": true
+}

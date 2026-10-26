@@ -1,0 +1,175 @@
+{
+  "classification": "LOCAL_MODEL synthetic control cases; no expected state/audio/AU bodies. Own owner tokens represent control proposals only, never real DSP state.",
+  "candidate_feasibility": "Synthetic monotonic integer predicate q<=max_feasible; not BAP or real codec feasibility.",
+  "default_max_feasible": 422,
+  "frame_size_input": 4096,
+  "cases": [
+    {
+      "name": "suppressed_source0",
+      "prefix_sources": 0
+    },
+    {
+      "name": "suppressed_source1",
+      "prefix_sources": 1
+    },
+    {
+      "name": "first_published_short_writes",
+      "prefix_sources": 2,
+      "writes": [
+        1,
+        1000,
+        3095
+      ]
+    },
+    {
+      "name": "second_published",
+      "prefix_sources": 3
+    },
+    {
+      "name": "fatal_input",
+      "prefix_sources": 2,
+      "fault": "input"
+    },
+    {
+      "name": "fatal_analysis",
+      "prefix_sources": 2,
+      "fault": "analysis"
+    },
+    {
+      "name": "fatal_converter",
+      "prefix_sources": 2,
+      "fault": "converter"
+    },
+    {
+      "name": "fatal_producer_barrier",
+      "prefix_sources": 2,
+      "fault": "producer_barrier"
+    },
+    {
+      "name": "fatal_queue11",
+      "prefix_sources": 2,
+      "fault": "queue11"
+    },
+    {
+      "name": "fatal_queue1",
+      "prefix_sources": 2,
+      "fault": "queue1"
+    },
+    {
+      "name": "fatal_queue2",
+      "prefix_sources": 2,
+      "fault": "queue2"
+    },
+    {
+      "name": "fatal_queue14",
+      "prefix_sources": 2,
+      "fault": "queue14"
+    },
+    {
+      "name": "fatal_payload",
+      "prefix_sources": 2,
+      "fault": "payload"
+    },
+    {
+      "name": "fatal_frame_size",
+      "prefix_sources": 2,
+      "fault": "frame_size"
+    },
+    {
+      "name": "fatal_crc16",
+      "prefix_sources": 2,
+      "fault": "crc16"
+    },
+    {
+      "name": "fatal_offset",
+      "prefix_sources": 2,
+      "fault": "offset"
+    },
+    {
+      "name": "fatal_readback",
+      "prefix_sources": 2,
+      "fault": "readback"
+    },
+    {
+      "name": "fatal_fsync",
+      "prefix_sources": 2,
+      "fault": "fsync"
+    },
+    {
+      "name": "fatal_post_append_crash",
+      "prefix_sources": 2,
+      "fault": "post_append_crash"
+    },
+    {
+      "name": "all_candidates_infeasible",
+      "prefix_sources": 2,
+      "max_feasible": null
+    },
+    {
+      "name": "zero_write_after_partial",
+      "prefix_sources": 2,
+      "writes": [
+        100,
+        0
+      ]
+    },
+    {
+      "name": "write_error_after_partial",
+      "prefix_sources": 2,
+      "writes": [
+        100,
+        "ERROR"
+      ]
+    },
+    {
+      "name": "write_overrun",
+      "prefix_sources": 2,
+      "writes": [
+        4097
+      ]
+    },
+    {
+      "name": "incomplete_write_sequence",
+      "prefix_sources": 2,
+      "writes": [
+        4095
+      ]
+    }
+  ],
+  "terminal_clock_recipe": {
+    "normal_callbacks": 4247,
+    "cached_callbacks": 4,
+    "callback_priming": 2,
+    "sources": 4249,
+    "suppression_sources": 2,
+    "queue_depths": {
+      "11": 3,
+      "1": 3,
+      "2": 3,
+      "14": 2
+    }
+  },
+  "finalization_fault_points": [
+    "terminal_length",
+    "terminal_fsync",
+    "rename",
+    "post_rename_parent_fsync"
+  ],
+  "not_simulated": [
+    "real DSP values",
+    "frame generation/CRC math",
+    "disk write/fsync/rename",
+    "concurrent process crash recovery"
+  ],
+  "terminal_clock_recipe_scope": "PRIMARY_N_6522906_FIXTURE_ONLY",
+  "additional_plan_clock_inputs": {
+    "N": [
+      1,
+      1536,
+      1537,
+      6522906
+    ],
+    "H": 1536,
+    "data_kind": "SELF_OWNED_COUNTS_ONLY_NO_AUDIO"
+  }
+}

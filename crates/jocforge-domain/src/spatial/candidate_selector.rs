@@ -13,7 +13,7 @@ const HALF_WORD: u32 = 0x3f00_0000;
 const SIX_WORD: u32 = 0x40c0_0000;
 const COMPLEMENT_SCALE_WORD: u32 = 0x3f73_3333;
 const MIN_AFFINITY_WORD: u32 = 0x3a83_126f;
-const POWER_EXPONENT_WORD: u32 = 0x3e4c_cccd;
+pub(crate) const POWER_EXPONENT_WORD: u32 = 0x3e4c_cccd;
 const TIE_WINDOW_WORD: u32 = 0x3c23_d70a;
 const COVERAGE_EPSILON_WORD: u32 = 0x3400_0000;
 const COVERAGE_LIMIT_WORD: u32 = 0x3f19_999a;
@@ -570,7 +570,7 @@ fn initial_support(feature: &[Vec<u32>]) -> Result<Vec<u32>, SelectorError> {
     for candidate in 0..count {
         let mut total = 0;
         for band_features in feature.iter().take(FEATURE_BANDS) {
-            let powered = power(band_features[candidate], POWER_EXPONENT_WORD)?;
+            let powered = pow32(band_features[candidate], POWER_EXPONENT_WORD)?;
             total = add(total, powered)?;
         }
         support[candidate] = total;
@@ -611,7 +611,7 @@ fn band_normalizers(totals: &[u32]) -> Result<Vec<u32>, SelectorError> {
         .iter()
         .map(|total| {
             let shifted = add(*total, ONE_WORD)?;
-            multiply(power(shifted, POWER_EXPONENT_WORD)?, TWO_WORD)
+            multiply(pow32(shifted, POWER_EXPONENT_WORD)?, TWO_WORD)
         })
         .collect()
 }
@@ -641,7 +641,7 @@ fn score_candidates(
             if f32::from_bits(remainder) < 0.0 {
                 remainder = 0;
             }
-            let powered = power(add(remainder, ONE_WORD)?, POWER_EXPONENT_WORD)?;
+            let powered = pow32(add(remainder, ONE_WORD)?, POWER_EXPONENT_WORD)?;
             let remaining_normalizer = multiply(powered, TWO_WORD)?;
             let band_score = subtract(normalizers[band], remaining_normalizer)?;
             score = add(score, band_score)?;
@@ -694,7 +694,7 @@ fn update_coverage_and_support(
         if complement[candidate][chosen] != 0 {
             continue;
         }
-        let delta = power(
+        let delta = pow32(
             subtract(ONE_WORD, affinity[candidate][chosen])?,
             POWER_EXPONENT_WORD,
         )?;
@@ -806,7 +806,7 @@ fn sqrt32(value: u32) -> Result<u32, SelectorError> {
     finite_word(value.sqrt())
 }
 
-fn power(base: u32, exponent: u32) -> Result<u32, SelectorError> {
+pub(crate) fn pow32(base: u32, exponent: u32) -> Result<u32, SelectorError> {
     let base = f32::from_bits(base);
     let exponent = f32::from_bits(exponent);
     if !base.is_finite() || !exponent.is_finite() || base < 0.0 {

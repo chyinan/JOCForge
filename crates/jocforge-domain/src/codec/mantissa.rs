@@ -221,74 +221,92 @@ pub enum MantissaQuantizerError {
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct MantissaCode(u16);
+pub struct MantissaCode {
+    value: u16,
+    width: u8,
+}
 
 impl MantissaCode {
     pub const fn value(self) -> u16 {
-        self.0
+        self.value
+    }
+
+    pub const fn width(self) -> u8 {
+        self.width
     }
 }
 
-/// Quantizes one already-scaled finite binary32 word for an admitted BAP value.
+/// Scales one clipped coefficient and quantizes it for an admitted BAP value.
 ///
-/// This is only the stateless F12S.5 code-value slice. It does not scale an input
-/// coefficient by an exponent, group codes, write bits, or participate in a trial.
+/// The coefficient/exponent product is evaluated in F64 and converted to F32 once.
+/// Arithmetic after that conversion follows the selected F12S.5 R32 steps.
 pub fn quantize_mantissa(
-    finite_f32_word: u32,
+    coefficient_word: u32,
+    decoded_exponent: i16,
     bap: u8,
 ) -> Result<MantissaCode, MantissaQuantizerError> {
     if bap > 15 {
         return Err(MantissaQuantizerError::UnsupportedBap);
     }
-    let coefficient = FiniteF32::new(f32::from_bits(finite_f32_word))
+    let coefficient = FiniteF32::new(f32::from_bits(coefficient_word))
         .map_err(|_| MantissaQuantizerError::NonFiniteInput)?;
-    if bap == 0 {
-        return Ok(MantissaCode(0));
-    }
+    let coefficient = scale_coefficient(coefficient, decoded_exponent)?;
 
-    match bap {
-        1 => quantize_clamped(coefficient, 1.5, 3),
-        2 => quantize_clamped(coefficient, 2.5, 5),
-        4 => quantize_clamped(coefficient, 5.5, 11),
-        3 => quantize_sentinel(coefficient, 3.5, 7),
-        5 => quantize_sentinel(coefficient, 7.5, 15),
-        6..=15 => quantize_fixed_point(coefficient, bap),
-        _ => Err(MantissaQuantizerError::UnsupportedBap),
-    }
+    let value = match bap {
+        0 => 0,
+        1 => quantize_clamped(coefficient, 1.5, 3)?,
+        2 => quantize_clamped(coefficient, 2.5, 5)?,
+        4 => quantize_clamped(coefficient, 5.5, 11)?,
+        3 => quantize_sentinel(coefficient, 3.5, 7)?,
+        5 => quantize_sentinel(coefficient, 7.5, 15)?,
+        6..=15 => quantize_fixed_point(coefficient, bap)?,
+        _ => return Err(MantissaQuantizerError::UnsupportedBap),
+    };
+    Ok(MantissaCode {
+        value,
+        width: MANTISSA_WIDTH_BY_BAP[usize::from(bap)],
+    })
+}
+
+fn scale_coefficient(
+    coefficient: FiniteF32,
+    decoded_exponent: i16,
+) -> Result<FiniteF32, MantissaQuantizerError> {
+    let exponent_scale = 2.0_f64.powi(i32::from(decoded_exponent));
+    let scaled_f64 = f64::from(coefficient.value()) * exponent_scale;
+    // This conversion is the single R32 step required after the F64 scale.
+    #[allow(clippy::cast_possible_truncation)]
+    let scaled_f32 = scaled_f64 as f32;
+    FiniteF32::new(scaled_f32).map_err(|_| MantissaQuantizerError::NonFiniteIntermediate)
 }
 
 fn quantize_clamped(
     coefficient: FiniteF32,
     scale: f32,
     levels: u16,
-) -> Result<MantissaCode, MantissaQuantizerError> {
+) -> Result<u16, MantissaQuantizerError> {
     let scaled = scaled_offset(coefficient, scale)?;
     let truncated = trunc_f32_to_i32(scaled)
         .map_err(|_| MantissaQuantizerError::IntegerOutOfRange)?
         .value();
     let bounded = truncated.clamp(0, i32::from(levels - 1));
-    Ok(MantissaCode(
-        u16::try_from(bounded).expect("clamped nonnegative code"),
-    ))
+    Ok(u16::try_from(bounded).expect("clamped nonnegative code"))
 }
 
 fn quantize_sentinel(
     coefficient: FiniteF32,
     scale: f32,
     sentinel: u16,
-) -> Result<MantissaCode, MantissaQuantizerError> {
+) -> Result<u16, MantissaQuantizerError> {
     let scaled = scaled_offset(coefficient, scale)?;
     let truncated = trunc_f32_to_i32(scaled)
         .map_err(|_| MantissaQuantizerError::IntegerOutOfRange)?
         .value();
-    let modulus = i32::from(sentinel) + 1;
-    let raw = u32::try_from(truncated.rem_euclid(modulus)).expect("remainder is nonnegative");
+    let raw = u32::try_from(truncated & i32::from(sentinel)).expect("masked code is nonnegative");
     if raw == u32::from(sentinel) {
         return Err(MantissaQuantizerError::ReservedCodeSentinel);
     }
-    Ok(MantissaCode(
-        u16::try_from(raw).expect("masked code fits u16"),
-    ))
+    Ok(u16::try_from(raw).expect("masked code fits u16"))
 }
 
 fn scaled_offset(coefficient: FiniteF32, scale: f32) -> Result<FiniteF32, MantissaQuantizerError> {
@@ -302,10 +320,7 @@ fn scaled_offset(coefficient: FiniteF32, scale: f32) -> Result<FiniteF32, Mantis
     .map_err(|_| MantissaQuantizerError::NonFiniteIntermediate)
 }
 
-fn quantize_fixed_point(
-    coefficient: FiniteF32,
-    bap: u8,
-) -> Result<MantissaCode, MantissaQuantizerError> {
+fn quantize_fixed_point(coefficient: FiniteF32, bap: u8) -> Result<u16, MantissaQuantizerError> {
     let width = MANTISSA_WIDTH_BY_BAP[usize::from(bap)];
     let offset = 2.0_f32.powi(-i32::from(width));
     let biased = r32_add(
@@ -338,7 +353,7 @@ fn quantize_fixed_point(
     } else {
         fixed_bits >> (16 - width)
     };
-    Ok(MantissaCode(code))
+    Ok(code)
 }
 
 fn round_ties_even(value: f64) -> f64 {

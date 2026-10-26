@@ -1644,6 +1644,149 @@ fn production_packet_constructor_binds_empty_current_matrix_and_stages_component
     assert_eq!(context.spatial_control.generation(), 0);
 }
 
+fn production_packet_with_matrix(
+    context: &TestContext,
+    callback: FrontendCallbackIndex,
+    coefficients: Vec<u32>,
+    destinations: Vec<u8>,
+) -> SpatialAudioInputPacket {
+    let matrix = ActiveComponentMatrix::from_producer_output(callback, coefficients, destinations)
+        .expect("current C/d rows are valid");
+    SpatialAudioInputPacket::from_current_component_callback(
+        &context.spatial_audio,
+        &callback_join(context, callback),
+        &control_join(context, callback),
+        &context.spatial_control,
+        ComponentCallbackPhase::Normal,
+        &context.window,
+        &context.parameters,
+        vec![1.0_f32.to_bits(); INSTALLED_WORDS],
+        matrix,
+    )
+    .expect("current installed48 and C/d bind to the same callback")
+}
+
+#[test]
+fn pure_mixer_preview_matches_the_mixer_consumed_by_component_stage() {
+    let context = context();
+    let callback = FrontendCallbackIndex::new(0);
+    let before_generation = context.spatial_audio.generation();
+    let before_digest = context.spatial_audio.digest();
+    let before_overlap = context
+        .spatial_audio
+        .component_before_overlap_rows()
+        .unwrap();
+    let coefficients = active_matrix_recipe(2, false);
+    let destinations = vec![2, 7];
+    let preview_packet = production_packet_with_matrix(
+        &context,
+        callback,
+        coefficients.clone(),
+        destinations.clone(),
+    );
+
+    let mixer_preview = preview_component_mixer(&preview_packet).unwrap();
+    assert_eq!(mixer_preview.len(), COMPONENT_ROW_COUNT * INSTALLED_SAMPLES);
+    assert_eq!(
+        mixer_preview[2 * INSTALLED_SAMPLES].value().to_bits(),
+        (1.0_f32 / 16.0).to_bits()
+    );
+    assert_eq!(
+        mixer_preview[7 * INSTALLED_SAMPLES].value().to_bits(),
+        (2.0_f32 / 16.0).to_bits()
+    );
+    assert_eq!(context.spatial_audio.generation(), before_generation);
+    assert_eq!(context.spatial_audio.digest(), before_digest);
+    assert_eq!(
+        context
+            .spatial_audio
+            .component_before_overlap_rows()
+            .unwrap(),
+        before_overlap
+    );
+
+    let preview_stage = produce_component_stage_with_preview(
+        &context.spatial_audio,
+        &callback_join(&context, callback),
+        &control_join(&context, callback),
+        &context.spatial_control,
+        ComponentCallbackPhase::Normal,
+        preview_packet,
+        &context.window,
+        &context.parameters,
+        mixer_preview,
+    )
+    .unwrap();
+    let reference_stage = produce_component_stage(
+        &context.spatial_audio,
+        &callback_join(&context, callback),
+        &control_join(&context, callback),
+        &context.spatial_control,
+        ComponentCallbackPhase::Normal,
+        production_packet_with_matrix(&context, callback, coefficients, destinations),
+        &context.window,
+        &context.parameters,
+    )
+    .unwrap();
+
+    assert_eq!(
+        preview_stage.component_output,
+        reference_stage.component_output
+    );
+    assert_eq!(preview_stage.after.audio, reference_stage.after.audio);
+    assert_eq!(
+        preview_stage.after.parameters,
+        reference_stage.after.parameters
+    );
+    assert_eq!(
+        preview_stage.after.filter_history,
+        reference_stage.after.filter_history
+    );
+    assert_eq!(preview_stage.after.parameters.blocks_processed, 24);
+    assert_eq!(context.spatial_audio.generation(), before_generation);
+    assert_eq!(context.spatial_audio.digest(), before_digest);
+}
+
+#[test]
+fn all_zero_active_matrix_still_stages_component_state() {
+    let context = context();
+    let callback = FrontendCallbackIndex::new(0);
+    let before_generation = context.spatial_audio.generation();
+    let before_digest = context.spatial_audio.digest();
+    let packet = production_packet_with_matrix(
+        &context,
+        callback,
+        active_matrix_recipe(2, true),
+        vec![2, 7],
+    );
+
+    let mixer_preview = preview_component_mixer(&packet).unwrap();
+    assert!(mixer_preview.iter().all(|sample| sample.value() == 0.0));
+    let proposal = produce_component_stage_with_preview(
+        &context.spatial_audio,
+        &callback_join(&context, callback),
+        &control_join(&context, callback),
+        &context.spatial_control,
+        ComponentCallbackPhase::Normal,
+        packet,
+        &context.window,
+        &context.parameters,
+        mixer_preview,
+    )
+    .unwrap();
+
+    assert_eq!(proposal.component_output.len(), COMPONENT_WORDS);
+    assert!(
+        proposal
+            .component_output
+            .iter()
+            .all(|sample| sample.value() == 0.0)
+    );
+    assert_eq!(proposal.after.parameters.blocks_processed, 24);
+    assert_eq!(context.spatial_audio.generation(), before_generation);
+    assert_eq!(context.spatial_audio.digest(), before_digest);
+}
+
 fn active_matrix_recipe(row_count: usize, all_zero: bool) -> Vec<u32> {
     let mut words = vec![0; row_count * MATRIX_COLUMN_COUNT];
     if !all_zero {

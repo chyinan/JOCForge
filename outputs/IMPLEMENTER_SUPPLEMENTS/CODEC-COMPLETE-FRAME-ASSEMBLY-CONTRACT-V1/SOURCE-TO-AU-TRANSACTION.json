@@ -1,0 +1,43 @@
+{
+  "schema": "codec3-source-to-au-transaction.v1",
+  "source_clock": {
+    "source_index": "s starts at 0 and advances by one per complete 1536-sample source frame",
+    "dispatch": "s+1",
+    "front_callback_zero_based": "s+2",
+    "suppressed_sources": [
+      0,
+      1
+    ],
+    "published_au_index": "s-2 for s>=2",
+    "source_count": "Q+2",
+    "published_au_count": "Q",
+    "published_bytes": "Q*4096",
+    "eof": "no codec or metadata-only flush; pending writers are discarded on finalize",
+    "Q": "ceil(actual positive programme samples N/1536)"
+  },
+  "source_order": [
+    "collect complete F13 ID11/ID1/ID2/ID14 ready receipts for this source generation",
+    "only after all four are ready, push/pop staged queues in order [11,1,2,14]",
+    "for s=0/1, suppress F13 EMDF serialization/complexity/carrier validation and pass typed ABSENT_PUBLISHED_PAYLOAD_V1 to F12; F12 still builds a full 4096-byte scratch frame, writes keyless tail fields, and computes/verifies E-AC-3 CRC16",
+    "for s>=2, serialize popped bodies in EMDF order [11,14,2,1], apply the fixed carriage mode and F14K checksums, parse same-container complexity/carrier inputs",
+    "build a complete F12 4096-byte candidate from same-source audio, block plans, BSI and EMDF payload",
+    "for s=0/1, commit successful timer/queue/codec source state without an AU append; do not skip the codec frame or its CRC16",
+    "for s>=2, append exactly 4096 bytes to the staging stream at offset (s-2)*4096; partial writes loop until complete; fsync before logical/durable AU ledger commit",
+    "after final expected source/AU counts, fsync staging, atomically rename to final path, and fsync the parent directory"
+  ],
+  "atomicity_and_failures": {
+    "owner": "F15 selected keyless publication root coordinates F13, F12 and public integrity staged proposals",
+    "success": "one source transaction commit after suppression gate or durable append as appropriate",
+    "failure": "no partial AU becomes logical output; staged queue/timer/codec/integrity proposals are discarded; programme attempt retires and requires full restart",
+    "short_write": "zero progress or error retires attempt; write offset is attempt-local and logical AU count is unchanged until full 4096-byte write and flush succeed",
+    "no_hmac": true,
+    "no_claim": "no power-loss transactional guarantee across filesystem, in-memory state and other owners beyond the explicit F15 model contract"
+  },
+  "readiness_boundary": {
+    "F12 supplied-fixture boundary": "local review PASS; four 4096-byte fixture frames and CRC residuals checked",
+    "whole_product": "NOT_RUN",
+    "cross_module_production": "PARTIAL; F06/F08/F13 production inputs remain separate gates",
+    "sound_or_spatial_acceptance": "NOT_RUN"
+  },
+  "authority_note": "Use already approved CODEC-SOURCE-TRANSACTION-KEYLESS-PUBLICATION-V1 for precise flush/readback/fail-stop ordering and main Q+4 callbacks; 4249/4247 is one programme example only. Physical partial progress is possible even when logical publication fails. Post-rename failure must not imply file rollback."
+}

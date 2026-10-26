@@ -355,10 +355,11 @@ fn error_label(error: CurrentFeaturesError) -> &'static str {
     }
 }
 
-fn fanout_error_label(error: &PostWindowFanoutError) -> &'static str {
+fn fanout_error_label(error: PostWindowFanoutError) -> &'static str {
     match error {
         PostWindowFanoutError::PayloadShape => "RENDER_PAYLOAD_SHAPE",
         PostWindowFanoutError::NonFinitePayload => "RENDER_NONFINITE_PAYLOAD",
+        PostWindowFanoutError::CallbackIdentityMismatch => "RENDER_CALLBACK_IDENTITY",
     }
 }
 
@@ -426,8 +427,10 @@ fn current_features_preserves_shared_render_and_after_proposal_identities() {
     let prepared = prepare_case(&case, None);
     let view = prepared.post_window_audio.as_ref().unwrap();
     let expected_render_stage_identity = Arc::clone(view.render_stage_identity());
-    let expected_after_proposal_identity =
-        Arc::clone(view.spatial_control_after_proposal_identity());
+    let expected_after_proposal_identity = Arc::clone(
+        view.spatial_control_after_proposal_identity()
+            .expect("fixture carries a complete after-proposal identity"),
+    );
     let expected_payload_sha256 = view.payload_sha256();
 
     let produced = produce_current_features(
@@ -491,7 +494,7 @@ fn all_nine_current_features_error_vectors_reject_without_partial_output() {
             };
             assert_eq!(render_error, expected_render_error, "{case_id}");
             assert_eq!(
-                fanout_error_label(&render_error),
+                fanout_error_label(render_error),
                 expected_label,
                 "{case_id}"
             );

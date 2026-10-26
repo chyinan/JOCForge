@@ -1,0 +1,21 @@
+{
+  "package_id": "CODEC-BAP-MANTISSA-INTERFACE-CROSSWALK-V1",
+  "files": [
+    {
+      "file": "CROSSWALK.md",
+      "bytes": 6565,
+      "sha256": "e3413f172a5f9062076b3acddc890790bffede98fb823ffe4b3fbc2f8b4117a9"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 3286,
+      "sha256": "8a8b0d0add87b9efb69970f2993d5943aa4c37b17feedac144e928aca1b9cf4e"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 376,
+      "sha256": "ec2eac8f94d72e5bc103a090cf585eafe212d18fa30f46476378dd14c16af0ed"
+    }
+  ],
+  "product_acceptance": "NOT_RUN"
+}

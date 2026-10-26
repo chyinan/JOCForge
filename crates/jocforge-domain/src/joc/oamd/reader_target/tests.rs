@@ -2,8 +2,8 @@
 use super::ReaderTargetState;
 use super::{
     READER_ROWS, RECORD_BYTES, ReaderInvocationIndex, ReaderTargetCallbackInputs,
-    ReaderTargetError, ReaderTargetUpdateReceipt, SELECTED_PROFILE_ID, hex, make_fit_record,
-    read_record_word, stage_reader_target,
+    ReaderTargetError, ReaderTargetUpdateReceipt, SELECTED_PROFILE_ID, TARGET_ROWS, hex,
+    make_fit_record, read_record_word, stage_reader_target,
 };
 use crate::timeline::FrontendCallbackIndex;
 use crate::transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId};
@@ -100,6 +100,43 @@ fn successful_direct_stage_carries_current_xyz_into_the_next_owner_state() {
         proposal.next_state.current_xyz_words,
         *input.current_xyz_words
     );
+}
+
+#[test]
+fn delivered_control52_rows_keep_target_slot_and_original_s0_lineage() {
+    let committed = state_after_priming();
+    let recipe = recipe_data(2);
+    let input = recipe.inputs(2);
+    let proposal = stage_reader_target(&committed, &input).unwrap();
+    let delivered = proposal.delivered_controls();
+
+    assert_eq!(delivered.callback_index(), input.callback_index);
+    assert_eq!(delivered.transaction_id(), &input.transaction_id);
+    assert_eq!(
+        delivered.reader_invocation(),
+        Some(ReaderInvocationIndex::new(0))
+    );
+    assert_eq!(
+        delivered
+            .active_target_slots()
+            .iter()
+            .map(|slot| slot.value())
+            .collect::<Vec<_>>(),
+        input.active_target_indices
+    );
+
+    for row in 0..TARGET_ROWS {
+        let s0 = proposal.next_state.history.slots[0][row];
+        let target_row = &delivered.rows()[row];
+        assert_eq!(target_row.target_slot().value(), u8::try_from(row).unwrap());
+        assert_eq!(
+            target_row.producer_row(),
+            u8::try_from(s0.producer_row).unwrap()
+        );
+        assert_eq!(target_row.producer_generation(), s0.producer_generation);
+        let expected = std::array::from_fn(|word| read_record_word(&s0.payload, word + 1));
+        assert_eq!(target_row.control52_words(), &expected);
+    }
 }
 
 #[test]

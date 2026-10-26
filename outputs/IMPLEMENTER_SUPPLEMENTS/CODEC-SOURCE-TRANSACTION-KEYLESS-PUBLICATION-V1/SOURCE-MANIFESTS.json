@@ -1,0 +1,155 @@
+{
+  "schema": "jocforge-codec-source-publication-sources.v1",
+  "research_manifest_sha256": "ec00f911e98403d2e8522f542a959a69f9f1142d8451117dfc757bcbc92c8d19",
+  "approved_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_contracts": [
+    {
+      "file": "specs/00-numeric-semantics.md",
+      "bytes": 3369,
+      "sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135",
+      "clauses_used": [
+        "N00.1",
+        "N00.2"
+      ]
+    },
+    {
+      "file": "specs/00-global-transaction-contract.md",
+      "bytes": 20041,
+      "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105",
+      "clauses_used": [
+        "4.1-4.5",
+        "5",
+        "6",
+        "7",
+        "8",
+        "11"
+      ]
+    },
+    {
+      "file": "specs/00-selected-owner-projection-and-j05.md",
+      "bytes": 4504,
+      "sha256": "9ff01aca7b6be6e89511e4d493f9fc9e661a50e2f098065f4a32c3fed777542f",
+      "clauses_used": [
+        "Callback split",
+        "Source timing"
+      ]
+    },
+    {
+      "file": "specs/07-history-and-transient.md",
+      "bytes": 15770,
+      "sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac",
+      "clauses_used": [
+        "F07.6-F07.9"
+      ]
+    },
+    {
+      "file": "specs/11-converter.md",
+      "bytes": 5172,
+      "sha256": "9ecb50bbb125d2a6e2d8f5e565ffbc7514c156c72602d2d2d89d8b17e9e4e4c8",
+      "clauses_used": [
+        "F11.1",
+        "F11.4"
+      ]
+    },
+    {
+      "file": "specs/12-codec-and-wire.md",
+      "bytes": 7899,
+      "sha256": "3e712f4d8bd0d0eaccd933ce0087a4fc0fbd73e3ca92b4dc673153786936a14e",
+      "clauses_used": [
+        "F12.1",
+        "F12.4",
+        "F12.6"
+      ]
+    },
+    {
+      "file": "specs/12-selected-codec-wire.md",
+      "bytes": 14760,
+      "sha256": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448",
+      "clauses_used": [
+        "F12S.2",
+        "F12S.8-F12S.10",
+        "F12S errors"
+      ]
+    },
+    {
+      "file": "specs/12-selected-source-frame-composition.md",
+      "bytes": 10843,
+      "sha256": "9e6fcc14489ca0acaff0f7c223fce65539aa5b19cb4119ebcb34d19049cd0769",
+      "clauses_used": [
+        "2-7",
+        "10",
+        "F12SC.10"
+      ]
+    },
+    {
+      "file": "specs/13-emdf-and-timeline.md",
+      "bytes": 12839,
+      "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd",
+      "clauses_used": [
+        "F13.4-F13.7",
+        "F13.9"
+      ]
+    },
+    {
+      "file": "specs/13-joc-complexity-timer-payload-order.md",
+      "bytes": 8367,
+      "sha256": "09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b",
+      "clauses_used": [
+        "clock and payload order"
+      ]
+    },
+    {
+      "file": "specs/14-integrity.md",
+      "bytes": 4251,
+      "sha256": "7e9df3565d0ab25dad1ab4989de57003d399a0e839a5fb298a6bfc53b240894f",
+      "clauses_used": [
+        "F14.4 only; private authentication algorithm excluded"
+      ]
+    },
+    {
+      "file": "specs/14-keyless-checksum-profile.md",
+      "bytes": 2169,
+      "sha256": "830a8a9b92a5819a5fde3363f0667bf8da204c277690c8289be439de85371382",
+      "clauses_used": [
+        "F14K.1",
+        "F14K.4"
+      ]
+    },
+    {
+      "file": "specs/15-keyless-publication.md",
+      "bytes": 8329,
+      "sha256": "47beaa9d415d6d26eb8d6a7df63ca3d86514c37740618c3a041a46c7961b3a72",
+      "clauses_used": [
+        "1-5"
+      ]
+    },
+    {
+      "file": "parameters/keyless-publication-state-v1.json",
+      "bytes": 1639,
+      "sha256": "189067c34e9533b8fe3a94277effde2ac6f6ec7bec4767221d890fc198b0d68c",
+      "clauses_used": [
+        "state.v2-cross-stage"
+      ]
+    },
+    {
+      "file": "parameters/selected-owner-projection-v1.json",
+      "bytes": 3637,
+      "sha256": "b8e78dd1d15091e88877b2ead3e0608dbc1554c13afbcde46d5da24a2fd136dd",
+      "clauses_used": [
+        "field_groups",
+        "commit_rule"
+      ]
+    }
+  ],
+  "additional_scope_authority": {
+    "file": "specs/01-input-and-clock.md",
+    "sha256": "6bd78ebe23536c3a55ec54f2e13c2e8b98c2ee245ae5a886e47bc9580520b93a"
+  },
+  "frozen_caller": {
+    "bytes": 15797,
+    "sha256": "77d2ebca696a50d1746517ce7a51d80904cbdd993b699cf8efe563e6b23b0b27",
+    "scope": "Static processing/payload clock join only; not selected-main codec parameters or new transaction/IO proof"
+  },
+  "new_io_transaction_semantics": "LOCAL_MODEL under approved GTC/F15P plus Wash post-rename failure clarification",
+  "private_code_paths_AU_audio_or_auth_material_forwarded": false
+}

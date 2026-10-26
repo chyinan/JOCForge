@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge-openjoc-sequence-count-spatial-state-evidence.v1",
+  "status": "IN_BAND_SEQUENCE_STATE_CONSUMER_STATICALLY_CLOSED_NATIVE_SOURCE_GENERATION_JOIN_UNBOUND",
+  "reverse_package": {
+    "manifest_sha256": "3cadc964595a78895c0eb6b50568c8d30b98bae0c29496896f3f55af21aa3112",
+    "seal_sha256": "8a0717ab9c4627f626de7d40ef1eeb3efd8d7144f8e7a09257a9e7a74067fc24",
+    "checker_normal": "PASS_HASH_BOUND_DECODER_COMPLEXITY_CONSUMER_LINEAGE",
+    "checker_python_O": "PASS_HASH_BOUND_DECODER_COMPLEXITY_CONSUMER_LINEAGE"
+  },
+  "source_hash_review": {
+    "listed_files": 11,
+    "size_and_sha_verified_by_wash": true,
+    "reported_openjoc_head": "e3e330a2000f8d0bced3460756473c8774eb16f0",
+    "reported_lav_head": "db288ee0c2e77f1266482c5ff4668378bb4c2cfc",
+    "git_head_and_clean_worktree_independently_verified": false,
+    "reason": "Git metadata access to the D: repository roots was denied; file hashes are the identity basis."
+  },
+  "decoder_effect": {
+    "sequence_count_width_bits": 10,
+    "sequence_count_wire_domain": "0..1023",
+    "state_consumers": ["per-object previous matrices","QMF analysis history","QMF synthesis history","speaker reconstruction timeline/spatial bridge"],
+    "continuous_spatial_state_depends_on_in_band_sequence_count": true,
+    "single_frame_decode_blocked_by_native_generation_join": false,
+    "continuous_same_generation_claim_blocked_by_native_generation_join": true
+  },
+  "lav_scope": {
+    "field_parsed": true,
+    "confirmed_consumer": "MOV dec3 metadata serialization",
+    "playback_decode_or_render_consumer": "UNBOUND_NOT_ESTABLISHED_BY_SCOPED_SOURCE_SEARCH"
+  },
+  "execution_boundary": {
+    "tests_run": false,
+    "real_audio_loaded_or_played": false,
+    "DEE_or_DLL_run": false,
+    "PCM_or_keys_read": false,
+    "source_generation_join": "UNBOUND",
+    "listening_acceptance": "NOT_RUN",
+    "implementation_ready": false
+  }
+}

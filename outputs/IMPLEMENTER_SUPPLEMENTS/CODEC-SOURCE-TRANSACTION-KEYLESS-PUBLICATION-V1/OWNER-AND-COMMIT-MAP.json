@@ -1,0 +1,83 @@
+{
+  "classification": "LOCAL_MODEL design authorized by approved GTC; not a claim of native DEE transaction layout.",
+  "immutable_inputs": [
+    "same-source installed/delayed audio",
+    "SharedAnalysisReceipt",
+    "NumericPlanReceipt",
+    "same-source BSI/DRC",
+    "programme-fixed carriage mode",
+    "completed programme measurement"
+  ],
+  "proposal_owners": [
+    {
+      "owner": "callback frontend/spatial",
+      "executor": "F01-F04 unique owners per projection",
+      "staged": "reader/control/history/spatial audio/receiver and QMF after states",
+      "commit": "parent root swap only"
+    },
+    {
+      "owner": "analysis",
+      "executor": "one SharedAnalysisPrepare then F08-F11 consumers",
+      "staged": "F07 input history/transient, F08 primary/companion/LFE banks, F09/F10 policy and plan state",
+      "commit": "parent root swap only; no second F07/F08 advance"
+    },
+    {
+      "owner": "drc",
+      "executor": "Main F06ND/none-DRC consumer of same main SharedAnalysisReceipt; independent meter prepass is excluded.",
+      "staged": "secondary forward/inverse, statistics/scheduler/BSI",
+      "commit": "parent root swap only; independent of F08 companion"
+    },
+    {
+      "owner": "joc",
+      "executor": "F05JL consumes J05",
+      "staged": "temporal/geometry/fit/retry/sequence and ID14 writer proposal",
+      "commit": "parent root swap; internal retries scratch"
+    },
+    {
+      "owner": "metadata",
+      "executor": "F13 only",
+      "staged": "ID1 timer and four queue push/pop, EMDF assembly proposal",
+      "commit": "all four queues together at parent swap"
+    },
+    {
+      "owner": "codec",
+      "executor": "F12 only",
+      "staged": "accepted-frame transform/previous_short and codec after-state",
+      "commit": "one parent swap after full frame and required durable output; leaf success is proposal"
+    },
+    {
+      "owner": "integrity",
+      "executor": "F14K per current EMDF and F14.4 per full frame",
+      "staged": "frame-local checksum/CRC receipt",
+      "commit": "no cross-frame secret/RNG/auth history; accepted receipt only"
+    },
+    {
+      "owner": "output",
+      "executor": "F15 coordinator",
+      "staged": "candidate AU identity, expected offset, durable receipt and logical ledger next",
+      "commit": "only after complete append/readback/flush succeeds; physical IO is not memory rollback"
+    }
+  ],
+  "trial_scope": {
+    "fixed": "Same spectra/exponents/gain/db/converter/BSI/payload/dither/plan and before-state for all q trials.",
+    "fresh_each_trial": [
+      "BAP result",
+      "mantissa groupers per block",
+      "bitwriter and cursor",
+      "candidate bytes"
+    ],
+    "search": "q16 then low16/high784, floor midpoint while high-low>1 and midpoint_count<10; preserve last successful candidate. q16 not included in midpoint counter.",
+    "candidate_failure": "Main trial capacity/BAP/quantization sentinel/group/field construction infeasible destroys trial scratch only; no candidate-level owner or clock commit.",
+    "fatal": "Invalid preflight/plan/BSI/EMDF/provider, uncaught or unclassifiable error, or no accepted candidate retires programme.",
+    "converter_distinction": "F11 legal negative budget/residual is converter infeasible; candidate BAP callback error/illegal BAP/domain or arithmetic error is fatal producer error, not swallowed as main-trial rejection."
+  },
+  "acceptance_sequence": [
+    "all producers and staged leaf receipts ready",
+    "complete final candidate exactly4096 and CRC residual0",
+    "suppressed source: skip IO; published source: durable append receipt",
+    "one parent CallbackTransaction root swap",
+    "advance clocks/ledger exactly once"
+  ],
+  "abort": "Discard all staged leaf roots; preserve committed owner identities and clocks/ledger except status/fatal record. If IO began, mark whole temp artifact ABANDONED. Subsequent source/callback rejected; only programme-origin full_restart.",
+  "restart": "Destroy all owners and measurement receipt, discard pending/scratch, close old temp, attempt+1, new staging identity, clocks cold, re-enter METERING. No same-attempt resume from trusted ledger or truncate."
+}

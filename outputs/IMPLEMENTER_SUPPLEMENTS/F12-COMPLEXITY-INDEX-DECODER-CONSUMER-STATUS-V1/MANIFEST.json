@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F12-COMPLEXITY-INDEX-DECODER-CONSUMER-STATUS-V1",
+  "status": "OPENJOC_ADMISSION_GATE_STATICALLY_CLOSED_DIRECT_RENDER_PARAMETER_NOT_FOUND_IN_SCOPED_PATH",
+  "implementation_ready": false,
+  "source_reverse_manifest_sha256": "e03490d81178f73711e99d796c605909b24395ac12b98edd052fd7f0f9b9c7da",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1935,
+      "sha256": "de8b96351b51be684bcc971c9f36e90509804dd8f5ddd85d59a710c89a4d7148"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1343,
+      "sha256": "5a181b667bdf4426a100b4e4a4f6aa84af160e3498ca421cabb0c84b85f3eded"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1904,
+      "sha256": "fc4043aebace41f472d5db7d23ad241e41ffc0862ecdb463adeaa574688a0f7d"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 2196,
+      "sha256": "96bd7c5613aabbe7067ddd24d3644be28b9980fd1d5ec4501d49959f41955dc8"
+    }
+  ]
+}

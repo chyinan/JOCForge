@@ -6,7 +6,11 @@ use super::{
         CurrentFeaturesError, CurrentFeaturesPacket, CurrentFeaturesProduced,
         produce_current_features,
     },
-    post_window_fanout::{CallbackPhase, CurrentFeaturesAudioView},
+    point_response::{PointResponseError, PointResponseGateInput},
+    post_window_fanout::{
+        CallbackPhase, CurrentFeaturesAudioView, PostWindowRenderProposal,
+        SpatialAudioPostWindowView,
+    },
     source_flags::{
         RawHistoryProposal, SourceFlagsError, SourceFlagsInput, SourceFlagsPacket,
         SourceFlagsProducer,
@@ -14,12 +18,18 @@ use super::{
     spatial_control::SpatialControlMachine,
 };
 use crate::frontend::{ValidatedFeatureFft4096MathProvider, ValidatedFeatureProcessorMathProvider};
+use crate::meter::installed48_renderer::{MeterInstalled48Frame, MeterInstalled48Proposal};
 use crate::numeric::{FiniteF32, r32_add};
+use crate::spatial::installed48_activity::{PrimaryActivityPhase, PrimaryActivityProposal};
+use crate::transaction::CallbackLineageIdentity;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(super) enum FrontendFeatureStageError {
+pub enum FrontendFeatureStageError {
     SourceFlags(SourceFlagsError),
     CurrentFeatures(CurrentFeaturesError),
+    PrimaryActivityIdentity,
+    MeterFrameIdentity,
+    PostWindow(super::post_window_fanout::PostWindowFanoutError),
 }
 
 /// Source-ascending gates and the unmodified candidate feature snapshot.
@@ -39,6 +49,38 @@ pub(super) struct FrontendFeatureStageProposal {
     pub(super) current_features: CurrentFeaturesProduced,
     pub(super) raw_history: RawHistoryProposal,
     pub(super) gate: FeatureGateOutput,
+}
+
+/// Callback-local frontend stages plus the single-use audio view reserved for component execution.
+#[must_use]
+pub struct RenderedFrontendFeatureStageProposal {
+    pub(super) primary_activity: PrimaryActivityProposal,
+    pub(super) installed48: MeterInstalled48Proposal,
+    pub(super) frontend: FrontendFeatureStageProposal,
+    pub(super) spatial_audio: SpatialAudioPostWindowView,
+}
+
+impl RenderedFrontendFeatureStageProposal {
+    pub const fn primary_activity(&self) -> &PrimaryActivityProposal {
+        &self.primary_activity
+    }
+
+    pub const fn installed48(&self) -> &MeterInstalled48Proposal {
+        &self.installed48
+    }
+}
+
+impl FrontendFeatureStageProposal {
+    /// Transfers this callback's gate IDs with the same transaction lineage to F03P.
+    #[allow(dead_code)] // The parent callback composer will consume this with the F01E source snapshot.
+    pub(super) fn point_response_gate(&self) -> Result<PointResponseGateInput, PointResponseError> {
+        PointResponseGateInput::new(
+            self.current_features.lineage.callback_index,
+            self.current_features.lineage.transaction_id.clone(),
+            self.gate.candidate_ids.to_vec(),
+            self.gate.processing_ids.to_vec(),
+        )
+    }
 }
 
 /// Runs each producer once and keeps both state proposals pending for the parent owner.
@@ -89,6 +131,73 @@ pub(super) fn stage_frontend_features(
         current_features,
         raw_history,
         gate,
+    })
+}
+
+/// Fans one actual installed48 frame to the feature owner and preserves the second view for F04A.
+#[allow(clippy::too_many_arguments)]
+pub fn stage_frontend_features_from_installed48(
+    owner: &SpatialControlMachine,
+    transaction_id: CallbackLineageIdentity,
+    primary_activity: PrimaryActivityProposal,
+    installed48: MeterInstalled48Proposal,
+    input: SourceFlagsInput,
+    callback_phase: CallbackPhase,
+    processor: &ValidatedFeatureProcessorMathProvider,
+    fft_provider: &ValidatedFeatureFft4096MathProvider,
+) -> Result<RenderedFrontendFeatureStageProposal, FrontendFeatureStageError> {
+    let callback = transaction_id.callback_index();
+    let activity_output = primary_activity.output();
+    if callback_phase != CallbackPhase::Normal
+        || activity_output.callback_index() != callback
+        || activity_output.phase() != PrimaryActivityPhase::NormalRead
+        || activity_output.host_frame() != Some(callback)
+    {
+        return Err(FrontendFeatureStageError::PrimaryActivityIdentity);
+    }
+    let installed48_frame: &MeterInstalled48Frame = installed48.frame();
+    let expected_upstream_generation = u64::from(callback.value())
+        .checked_add(1)
+        .ok_or(FrontendFeatureStageError::MeterFrameIdentity)?;
+    if installed48_frame.callback_index().value() != u64::from(callback.value())
+        || installed48_frame.upstream_generation() != expected_upstream_generation
+        || installed48_frame.rows().len() != 48
+        || installed48_frame
+            .rows()
+            .iter()
+            .any(|row| row.len() != 3_072)
+        || owner.committed().callback_index() != callback
+    {
+        return Err(FrontendFeatureStageError::MeterFrameIdentity);
+    }
+
+    let installed48_payload = installed48_frame
+        .rows()
+        .iter()
+        .flat_map(|row| row.iter().copied().map(f32::from_bits))
+        .collect::<Vec<_>>();
+    let render = PostWindowRenderProposal::try_from_spatial_control_callback(
+        SpatialControlMachine::render_authority(),
+        owner,
+        transaction_id,
+        callback_phase,
+        installed48_payload,
+    )
+    .map_err(FrontendFeatureStageError::PostWindow)?;
+    let (current_features_audio, spatial_audio) = render.fanout();
+    let frontend = stage_frontend_features(
+        owner,
+        input,
+        callback_phase,
+        Some(current_features_audio),
+        processor,
+        fft_provider,
+    )?;
+    Ok(RenderedFrontendFeatureStageProposal {
+        primary_activity,
+        installed48,
+        frontend,
+        spatial_audio,
     })
 }
 

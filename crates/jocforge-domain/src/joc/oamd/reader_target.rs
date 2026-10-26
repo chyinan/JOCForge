@@ -10,6 +10,7 @@ mod type11;
 
 use crate::{
     joc::emdf::metadata_owner::MetadataPayloadBody,
+    spatial::target_context::TargetSlotIndex,
     timeline::{CodecSourceIndex, FrontendCallbackIndex},
     transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId},
 };
@@ -141,6 +142,7 @@ impl ReaderTargetError {
 pub struct ReaderTargetStageProposal {
     next_state: ReaderTargetState,
     pending_receipt: Option<ReaderTargetUpdateReceipt>,
+    delivered_controls: ReaderTargetControlRows,
 }
 
 /// Callback-local typed receipt candidate; never part of ReaderTargetState serialization.
@@ -162,9 +164,129 @@ pub struct ReaderTargetUpdateReceipt {
     id11_body: Vec<u8>,
 }
 
+/// One delivered F05R56 Control52 row and its original history owner lineage.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct ReaderTargetControlLineage {
+    target_slot: TargetSlotIndex,
+    producer_row: u8,
+    producer_generation: HistoryProducerGeneration,
+}
+
+impl ReaderTargetControlLineage {
+    pub const fn target_slot(self) -> TargetSlotIndex {
+        self.target_slot
+    }
+
+    pub const fn producer_row(self) -> u8 {
+        self.producer_row
+    }
+
+    pub const fn producer_generation(self) -> HistoryProducerGeneration {
+        self.producer_generation
+    }
+}
+
+/// A target-slot Control52 value paired with its delivered S0 history lineage.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct ReaderTargetControlRow {
+    lineage: ReaderTargetControlLineage,
+    control52_words: [u32; 13],
+}
+
+impl ReaderTargetControlRow {
+    pub const fn target_slot(&self) -> TargetSlotIndex {
+        self.lineage.target_slot()
+    }
+
+    pub const fn producer_row(&self) -> u8 {
+        self.lineage.producer_row()
+    }
+
+    pub const fn producer_generation(&self) -> HistoryProducerGeneration {
+        self.lineage.producer_generation()
+    }
+
+    pub const fn lineage(&self) -> ReaderTargetControlLineage {
+        self.lineage
+    }
+
+    pub const fn control52_words(&self) -> &[u32; 13] {
+        &self.control52_words
+    }
+}
+
+/// Immutable target-slot ordered Control52 values from one staged F05R56 callback.
+/// The enclosing spatial_control parent exposes these to consumers only after admission.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct ReaderTargetControlRows {
+    callback_index: FrontendCallbackIndex,
+    transaction_id: CallbackLineageIdentity,
+    active_target_slots: Box<[TargetSlotIndex]>,
+    reader_invocation: Option<ReaderInvocationIndex>,
+    rows: [ReaderTargetControlRow; TARGET_ROWS],
+}
+
+impl ReaderTargetControlRows {
+    pub const fn callback_index(&self) -> FrontendCallbackIndex {
+        self.callback_index
+    }
+
+    pub fn transaction_id(&self) -> &CallbackLineageIdentity {
+        &self.transaction_id
+    }
+
+    pub fn active_target_slots(&self) -> &[TargetSlotIndex] {
+        &self.active_target_slots
+    }
+
+    pub const fn reader_invocation(&self) -> Option<ReaderInvocationIndex> {
+        self.reader_invocation
+    }
+
+    pub const fn rows(&self) -> &[ReaderTargetControlRow; TARGET_ROWS] {
+        &self.rows
+    }
+
+    pub fn lineages(&self) -> [ReaderTargetControlLineage; TARGET_ROWS] {
+        std::array::from_fn(|row| self.rows[row].lineage())
+    }
+
+    fn control_words(&self) -> [[u32; 13]; TARGET_ROWS] {
+        std::array::from_fn(|row| self.rows[row].control52_words)
+    }
+
+    #[cfg(test)]
+    pub(crate) fn fixture(
+        callback_index: FrontendCallbackIndex,
+        transaction_id: CallbackLineageIdentity,
+        active_target_slots: Vec<TargetSlotIndex>,
+        reader_invocation: Option<ReaderInvocationIndex>,
+        producer_generations: [HistoryProducerGeneration; TARGET_ROWS],
+    ) -> Self {
+        let rows = std::array::from_fn(|row| {
+            let target_slot = TargetSlotIndex::from_validated(row as u8);
+            ReaderTargetControlRow {
+                lineage: ReaderTargetControlLineage {
+                    target_slot,
+                    producer_row: row as u8,
+                    producer_generation: producer_generations[row],
+                },
+                control52_words: [u32::try_from(row + 1).unwrap(); 13],
+            }
+        });
+        Self {
+            callback_index,
+            transaction_id,
+            active_target_slots: active_target_slots.into_boxed_slice(),
+            reader_invocation,
+            rows,
+        }
+    }
+}
+
 struct MarkerHistoryPreview {
     next_state: ReaderTargetState,
-    delivered_controls: [[u32; 13]; TARGET_ROWS],
+    delivered_controls: ReaderTargetControlRows,
     active_after: [u8; TARGET_ROWS],
 }
 
@@ -271,10 +393,12 @@ pub fn stage_reader_target(
     staged.current_attributes = *input.current_attributes;
     staged.previous_active = marker_preview.active_after.map(i64::from);
 
+    let mut delivered_controls = marker_preview.delivered_controls;
     if !input.reader_enabled {
         return Ok(ReaderTargetStageProposal {
             next_state: staged,
             pending_receipt: None,
+            delivered_controls,
         });
     }
 
@@ -284,12 +408,9 @@ pub fn stage_reader_target(
         return Err(ReaderTargetError::StateError);
     }
 
-    let computed = preview_reader_and_targets(
-        committed,
-        &staged.history,
-        input,
-        &marker_preview.delivered_controls,
-    )?;
+    let control_words = delivered_controls.control_words();
+    delivered_controls.reader_invocation = Some(reader_invocation);
+    let computed = preview_reader_and_targets(committed, &staged.history, input, &control_words)?;
     staged.reader_records = computed.reader_records;
     staged.reader_invocations = ReaderInvocationIndex::new(
         reader_invocation
@@ -312,6 +433,7 @@ pub fn stage_reader_target(
     Ok(ReaderTargetStageProposal {
         next_state: staged,
         pending_receipt: Some(receipt),
+        delivered_controls,
     })
 }
 
@@ -319,6 +441,11 @@ pub fn stage_reader_target(
 impl ReaderTargetStageProposal {
     pub(crate) const fn next_state(&self) -> &ReaderTargetState {
         &self.next_state
+    }
+
+    /// Proposed Control52 rows remain pending until the enclosing spatial_control parent admits them.
+    pub(crate) const fn delivered_controls(&self) -> &ReaderTargetControlRows {
+        &self.delivered_controls
     }
 
     pub(crate) const fn pending_receipt(&self) -> Option<&ReaderTargetUpdateReceipt> {
@@ -492,7 +619,9 @@ fn preview_marker_and_history(
     input: &ReaderTargetCallbackInputs<'_>,
 ) -> Result<MarkerHistoryPreview, ReaderTargetError> {
     let mut staged = committed.staged_copy();
-    let mut delivered_controls = [[0_u32; 13]; TARGET_ROWS];
+    let mut control_words = [[0_u32; 13]; TARGET_ROWS];
+    let mut producer_generations = [HistoryProducerGeneration::Cold; TARGET_ROWS];
+    let mut producer_rows = [0_u8; TARGET_ROWS];
     let mut active_after = [0_u8; TARGET_ROWS];
     for row in 0..TARGET_ROWS {
         let has_witness = has_quiet_witness(input, row);
@@ -511,14 +640,45 @@ fn preview_marker_and_history(
         staged.history.slots[0][row] = after[0];
         staged.history.slots[1][row] = after[1];
         staged.history.slots[2][row] = after[2];
-        for (word, delivered_word) in delivered_controls[row].iter_mut().enumerate() {
+        for (word, delivered_word) in control_words[row].iter_mut().enumerate() {
             *delivered_word = read_record_word(&after[0].payload, word + 1);
         }
+        producer_generations[row] = after[0].producer_generation;
+        producer_rows[row] =
+            u8::try_from(after[0].producer_row).map_err(|_| ReaderTargetError::StateError)?;
         active_after[row] = current_active;
     }
+    let mut rows = Vec::with_capacity(TARGET_ROWS);
+    for row in 0..TARGET_ROWS {
+        let target_slot =
+            u8::try_from(TARGET_ROW_IDENTITIES[row]).map_err(|_| ReaderTargetError::StateError)?;
+        rows.push(ReaderTargetControlRow {
+            lineage: ReaderTargetControlLineage {
+                target_slot: TargetSlotIndex::from_validated(target_slot),
+                producer_row: producer_rows[row],
+                producer_generation: producer_generations[row],
+            },
+            control52_words: control_words[row],
+        });
+    }
+    let rows: [ReaderTargetControlRow; TARGET_ROWS] =
+        rows.try_into().map_err(|_| ReaderTargetError::StateError)?;
+    let active_target_slots = input
+        .active_target_indices
+        .iter()
+        .copied()
+        .map(TargetSlotIndex::from_validated)
+        .collect::<Vec<_>>()
+        .into_boxed_slice();
     Ok(MarkerHistoryPreview {
         next_state: staged,
-        delivered_controls,
+        delivered_controls: ReaderTargetControlRows {
+            callback_index: input.callback_index,
+            transaction_id: input.transaction_id.clone(),
+            active_target_slots,
+            reader_invocation: None,
+            rows,
+        },
         active_after,
     })
 }

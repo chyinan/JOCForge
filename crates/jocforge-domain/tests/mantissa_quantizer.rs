@@ -2,131 +2,157 @@
 use jocforge_domain::codec::mantissa::{MantissaQuantizerError, quantize_mantissa};
 use serde_json::Value;
 use sha2::{Digest, Sha256};
-use std::collections::HashMap;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
-const SOURCE_MANIFEST_SHA256: &str =
-    "2f50ddb6f894d26d3a87390b0fb5d48021afe90e4fa5e7cff976e02ae83e0ae5";
-const SOURCE_CHECK_SHA256: &str =
-    "ed62b615af423b0ce98fbae9c7876c7ca7d60fa1853e7e95fd8ce68684492210";
+const PACKAGE_DIRECTORY: &str =
+    "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1";
+const PACKAGE_MANIFEST_SHA256: &str =
+    "fd819c3ec27e7bade55efda5e648792c9c33892a9be7a36bbfce89231b9e961f";
 
-fn crate_root() -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+fn repository_root() -> PathBuf {
+    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..")
 }
 
-fn fixture_root() -> PathBuf {
-    crate_root().join("tests/fixtures/mantissa_quantizer")
+fn package_root() -> PathBuf {
+    repository_root().join(PACKAGE_DIRECTORY)
+}
+
+fn read_json(name: &str) -> (Vec<u8>, Value) {
+    let bytes = std::fs::read(package_root().join(name)).unwrap();
+    let value = serde_json::from_slice(&bytes).unwrap();
+    (bytes, value)
 }
 
 fn sha256(bytes: &[u8]) -> String {
     format!("{:x}", Sha256::digest(bytes))
 }
 
-#[test]
-fn sanitized_package_identity_and_payloads_are_hash_bound() {
-    let root = fixture_root();
-    let manifest_bytes = std::fs::read(root.join("source-manifest.json")).unwrap();
-    let check_bytes = std::fs::read(root.join("independent-check.json")).unwrap();
-    let manifest: Value = serde_json::from_slice(&manifest_bytes).unwrap();
-    let check: Value = serde_json::from_slice(&check_bytes).unwrap();
-    let provenance: Value = serde_json::from_slice(
-        &std::fs::read(
-            crate_root().join("../../docs/implementation/mantissa-quantizer-provenance.json"),
-        )
-        .unwrap(),
+fn approved_vectors() -> Value {
+    let (manifest_bytes, manifest) = read_json("MANIFEST.json");
+    assert_eq!(sha256(&manifest_bytes), PACKAGE_MANIFEST_SHA256);
+    assert_eq!(
+        manifest["package_id"],
+        "CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1"
+    );
+
+    let (vector_bytes, vectors) = read_json("INPUT-ONLY-VECTORS.json");
+    let vector_entry = manifest["files"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|entry| entry["file"] == "INPUT-ONLY-VECTORS.json")
+        .unwrap();
+    assert_eq!(
+        vector_entry["bytes"].as_u64().unwrap(),
+        vector_bytes.len() as u64
+    );
+    assert_eq!(
+        vector_entry["sha256"].as_str().unwrap(),
+        sha256(&vector_bytes)
+    );
+    vectors
+}
+
+fn input(case: &Value) -> (u32, i16, u8) {
+    (
+        u32::from_str_radix(case["coefficient_f32_bits"].as_str().unwrap(), 16).unwrap(),
+        i16::try_from(case["decoded_exponent"].as_i64().unwrap()).unwrap(),
+        u8::try_from(case["bap"].as_u64().unwrap()).unwrap(),
     )
-    .unwrap();
-
-    assert_eq!(sha256(&manifest_bytes), SOURCE_MANIFEST_SHA256);
-    assert_eq!(sha256(&check_bytes), SOURCE_CHECK_SHA256);
-    assert_eq!(check["manifest_sha256"], SOURCE_MANIFEST_SHA256);
-    assert_eq!(check["payload_count"], 7);
-    assert_eq!(check["all_payload_hashes_match"], true);
-    assert_eq!(check["scope_is_stateless_only"], true);
-    assert_eq!(check["whole_status_not_ready"], true);
-    assert_eq!(manifest["production_usable"], "SLICE_ONLY");
-    assert_eq!(manifest["implementation_ready"], "NO");
-    assert_eq!(provenance["source_manifest_sha256"], SOURCE_MANIFEST_SHA256);
-    assert_eq!(
-        provenance["source_independent_check_sha256"],
-        SOURCE_CHECK_SHA256
-    );
-    assert_eq!(
-        provenance["scope"]["whole_product_implementation_ready"],
-        "NO"
-    );
-
-    let local_names = HashMap::from([
-        ("SCOPE.md", "scope.md"),
-        ("PROVENANCE.json", "provenance.json"),
-        ("SPEC-SELECTED-CODEC-WIRE.md", "spec.md"),
-        ("PARAMETERS-CODEC-WIRE-SELECTED.json", "parameters.json"),
-        ("QUANTIZER-INPUT-VECTORS.json", "input-vectors.json"),
-        ("QUANTIZER-VERIFICATION.json", "verification.json"),
-        ("LOCAL-REVIEW-STATUS.json", "local-review-status.json"),
-    ]);
-    for entry in manifest["files"].as_array().unwrap() {
-        let source_name = entry["path"].as_str().unwrap();
-        let local_name = local_names.get(source_name).unwrap();
-        assert_payload_matches(&root, entry, local_name);
-    }
-}
-
-fn assert_payload_matches(root: &Path, entry: &Value, local_name: &str) {
-    let bytes = std::fs::read(root.join(local_name)).unwrap();
-    assert_eq!(entry["bytes"].as_u64().unwrap(), bytes.len() as u64);
-    assert_eq!(entry["sha256"].as_str().unwrap(), sha256(&bytes));
 }
 
 #[test]
-fn all_washed_quantizer_vectors_match_exact_codes_or_failure_status() {
-    let root = fixture_root();
-    let vectors: Value =
-        serde_json::from_slice(&std::fs::read(root.join("input-vectors.json")).unwrap()).unwrap();
-    let cases = vectors["quantizer_cases"].as_array().unwrap();
-    assert_eq!(cases.len(), 208);
+fn approved_package_is_hash_bound_and_contains_inputs_only() {
+    let vectors = approved_vectors();
+    assert_eq!(vectors["schema"], "eac3-quantizer-mantissa-input-only.v1");
+    assert_eq!(vectors["input_only"], true);
+    assert_eq!(vectors["expected_quantizer_codes_included"], false);
+    assert_eq!(vectors["expected_au_body_included"], false);
+    assert_eq!(vectors["pcm_included"], false);
+    assert_eq!(vectors["private_key_included"], false);
+}
 
-    let mut success_count = 0;
-    let mut error_count = 0;
+#[test]
+fn approved_quantizer_inputs_are_accepted_except_reserved_sentinels() {
+    let vectors = approved_vectors();
+    let cases = vectors["domain_sweep"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .chain(vectors["boundary_cases"].as_array().unwrap())
+        .chain(vectors["precision_cases"].as_array().unwrap())
+        .collect::<Vec<_>>();
+    assert_eq!(cases.len(), 45);
+
     for case in cases {
-        let word = u32::from_str_radix(case["f32_word"].as_str().unwrap(), 16).unwrap();
-        let bap = u8::try_from(case["bap"].as_u64().unwrap()).unwrap();
-        let actual = quantize_mantissa(word, bap);
-        match case["status"].as_str().unwrap() {
-            "OK" => {
-                success_count += 1;
-                assert_eq!(
-                    actual.unwrap().value(),
-                    u16::try_from(case["code"].as_u64().unwrap()).unwrap()
-                );
-            }
-            "ERROR" => {
-                error_count += 1;
-                assert_eq!(actual, Err(MantissaQuantizerError::ReservedCodeSentinel));
-            }
-            status => panic!("unmapped quantizer status: {status}"),
+        let (coefficient_word, decoded_exponent, bap) = input(case);
+        let actual = quantize_mantissa(coefficient_word, decoded_exponent, bap);
+        let is_sentinel = matches!(
+            case["id"].as_str().unwrap(),
+            "bap3_sentinel" | "bap5_sentinel"
+        );
+        if is_sentinel {
+            assert_eq!(
+                actual,
+                Err(MantissaQuantizerError::ReservedCodeSentinel),
+                "{}",
+                case["id"]
+            );
+        } else {
+            assert!(actual.is_ok(), "{}", case["id"]);
         }
     }
-    assert_eq!(success_count, 204);
-    assert_eq!(error_count, 4);
 }
 
 #[test]
-fn nonfinite_inputs_unsupported_bap_and_nonfinite_intermediates_fail_closed() {
+fn selected_bap_formulas_use_the_scaled_coefficient() {
+    let quarter = 0x3e80_0000_u32;
+    assert_eq!(quantize_mantissa(quarter, 0, 0).unwrap().value(), 0);
+    assert_eq!(quantize_mantissa(quarter, 0, 1).unwrap().value(), 1);
+    assert_eq!(quantize_mantissa(quarter, 0, 2).unwrap().value(), 3);
+    assert_eq!(quantize_mantissa(quarter, 0, 4).unwrap().value(), 6);
+    assert_eq!(quantize_mantissa(0x3f00_0000, 0, 3).unwrap().value(), 5);
+    assert_eq!(quantize_mantissa(0x3f00_0000, 0, 5).unwrap().value(), 11);
+
+    // F64 scaling happens before the single conversion to R32.
+    assert_eq!(quantize_mantissa(quarter, 2, 1).unwrap().value(), 2);
+    assert_eq!(quantize_mantissa(0x3f80_0000, 24, 0).unwrap().width(), 0);
+}
+
+#[test]
+fn fixed_point_ties_round_to_even_before_the_arithmetic_shift() {
+    let widths = [5_u8, 6, 7, 8, 9, 10, 11, 12, 14, 16];
+    for (offset, width) in widths.into_iter().enumerate() {
+        let bap = u8::try_from(offset + 6).unwrap();
+        let tie = 2.0_f32.powi(-i32::from(width));
+        assert_eq!(
+            quantize_mantissa(tie.to_bits(), 0, bap).unwrap().value(),
+            1,
+            "BAP {bap}"
+        );
+    }
+}
+
+#[test]
+fn invalid_inputs_and_unrepresentable_intermediates_fail() {
     assert_eq!(
-        quantize_mantissa(f32::INFINITY.to_bits(), 0),
+        quantize_mantissa(f32::INFINITY.to_bits(), 0, 0),
         Err(MantissaQuantizerError::NonFiniteInput)
     );
     assert_eq!(
-        quantize_mantissa(f32::NAN.to_bits(), 15),
+        quantize_mantissa(f32::NAN.to_bits(), 0, 15),
         Err(MantissaQuantizerError::NonFiniteInput)
     );
     assert_eq!(
-        quantize_mantissa(0.0_f32.to_bits(), 16),
+        quantize_mantissa(0.0_f32.to_bits(), 0, 16),
         Err(MantissaQuantizerError::UnsupportedBap)
     );
     assert_eq!(
-        quantize_mantissa(f32::MAX.to_bits(), 1),
+        quantize_mantissa(f32::MAX.to_bits(), 0, 1),
+        Err(MantissaQuantizerError::NonFiniteIntermediate)
+    );
+    assert_eq!(
+        quantize_mantissa(f32::MAX.to_bits(), 24, 0),
         Err(MantissaQuantizerError::NonFiniteIntermediate)
     );
 }

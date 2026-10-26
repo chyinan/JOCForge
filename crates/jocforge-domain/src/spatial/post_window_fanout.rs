@@ -1,7 +1,9 @@
 // pattern: Functional Core
 //! One-time fanout capability for the selected installed48 post-window payload.
 
-use super::spatial_control::SpatialControlRenderAuthority;
+use super::spatial_control::{
+    SpatialControlMachine, SpatialControlRenderAuthority, SpatialControlRenderIdentity,
+};
 use super::{SpatialControlDigest, SpatialControlJoinMetadata, SpatialControlProviderLineage};
 use crate::{
     numeric::{FiniteF32, FiniteF32Error},
@@ -37,10 +39,11 @@ pub struct AudioPayloadSha256([u8; 32]);
 #[derive(Debug)]
 pub struct RenderStageIdentity;
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum PostWindowFanoutError {
     PayloadShape,
     NonFinitePayload,
+    CallbackIdentityMismatch,
 }
 
 #[derive(Clone)]
@@ -52,7 +55,8 @@ struct PostWindowLineage {
     payload_sha256: AudioPayloadSha256,
     payload_byte_count: u64,
     render_stage_identity: Arc<RenderStageIdentity>,
-    spatial_control_after_proposal_identity: Arc<SpatialControlJoinMetadata>,
+    render_identity: Arc<SpatialControlRenderIdentity>,
+    spatial_control_after_proposal_identity: Option<Arc<SpatialControlJoinMetadata>>,
 }
 
 /// A single-use proposal owned by the future spatial-control renderer.
@@ -122,6 +126,44 @@ impl PostWindowRenderProposal {
         phase: CallbackPhase,
         payload: Vec<f32>,
     ) -> Result<Self, PostWindowFanoutError> {
+        let render_identity = Arc::new(spatial_control_after_proposal_identity.render_identity());
+        Self::from_render_identity(
+            programme_id,
+            attempt,
+            render_identity,
+            Some(spatial_control_after_proposal_identity),
+            phase,
+            payload,
+        )
+    }
+
+    /// Selected callback path: bind before-state identity now; the parent after-state join is
+    /// produced only after later callback stages have completed.
+    pub(super) fn try_from_spatial_control_callback(
+        _authority: SpatialControlRenderAuthority,
+        owner: &SpatialControlMachine,
+        transaction_id: CallbackLineageIdentity,
+        phase: CallbackPhase,
+        payload: Vec<f32>,
+    ) -> Result<Self, PostWindowFanoutError> {
+        let render_identity = Arc::new(
+            owner
+                .render_identity(transaction_id)
+                .map_err(|_| PostWindowFanoutError::CallbackIdentityMismatch)?,
+        );
+        let programme_id = render_identity.transaction_id().programme_id().clone();
+        let attempt = render_identity.transaction_id().attempt_id();
+        Self::from_render_identity(programme_id, attempt, render_identity, None, phase, payload)
+    }
+
+    fn from_render_identity(
+        programme_id: SourceFlagsProgrammeId,
+        attempt: SourceFlagsAttempt,
+        render_identity: Arc<SpatialControlRenderIdentity>,
+        spatial_control_after_proposal_identity: Option<Arc<SpatialControlJoinMetadata>>,
+        phase: CallbackPhase,
+        payload: Vec<f32>,
+    ) -> Result<Self, PostWindowFanoutError> {
         if payload.len() != PAYLOAD_SAMPLE_COUNT {
             return Err(PostWindowFanoutError::PayloadShape);
         }
@@ -146,6 +188,7 @@ impl PostWindowRenderProposal {
                 payload_sha256: AudioPayloadSha256(payload_sha256),
                 payload_byte_count: PAYLOAD_BYTE_COUNT,
                 render_stage_identity: Arc::new(RenderStageIdentity),
+                render_identity,
                 spatial_control_after_proposal_identity,
             },
         })
@@ -176,15 +219,11 @@ impl CurrentFeaturesAudioView {
     }
 
     pub(super) fn transaction_id(&self) -> &CallbackLineageIdentity {
-        self.lineage
-            .spatial_control_after_proposal_identity
-            .transaction_id()
+        self.lineage.render_identity.transaction_id()
     }
 
     pub(super) fn callback_index(&self) -> FrontendCallbackIndex {
-        self.lineage
-            .spatial_control_after_proposal_identity
-            .callback_index()
+        self.lineage.render_identity.callback_index()
     }
 
     pub(super) fn callback_phase(&self) -> CallbackPhase {
@@ -192,27 +231,19 @@ impl CurrentFeaturesAudioView {
     }
 
     pub(super) fn profile_identity(&self) -> EncodingProfile {
-        self.lineage
-            .spatial_control_after_proposal_identity
-            .profile_identity()
+        self.lineage.render_identity.profile_identity()
     }
 
     pub(super) fn provider_lineage(&self) -> SpatialControlProviderLineage {
-        self.lineage
-            .spatial_control_after_proposal_identity
-            .provider_lineage()
+        self.lineage.render_identity.provider_lineage()
     }
 
     pub(super) fn before_generation(&self) -> u64 {
-        self.lineage
-            .spatial_control_after_proposal_identity
-            .before_generation()
+        self.lineage.render_identity.before_generation()
     }
 
     pub(super) fn before_digest(&self) -> SpatialControlDigest {
-        self.lineage
-            .spatial_control_after_proposal_identity
-            .before_digest()
+        self.lineage.render_identity.before_digest()
     }
 
     pub(super) const fn boundary(&self) -> PostWindowBoundary {
@@ -233,8 +264,14 @@ impl CurrentFeaturesAudioView {
 
     pub(super) fn spatial_control_after_proposal_identity(
         &self,
-    ) -> &Arc<SpatialControlJoinMetadata> {
-        &self.lineage.spatial_control_after_proposal_identity
+    ) -> Option<&Arc<SpatialControlJoinMetadata>> {
+        self.lineage
+            .spatial_control_after_proposal_identity
+            .as_ref()
+    }
+
+    pub(super) fn spatial_control_render_identity(&self) -> &Arc<SpatialControlRenderIdentity> {
+        &self.lineage.render_identity
     }
 
     pub(super) fn sample_count(&self) -> usize {
@@ -257,15 +294,11 @@ impl SpatialAudioPostWindowView {
     }
 
     pub(super) fn transaction_id(&self) -> &CallbackLineageIdentity {
-        self.lineage
-            .spatial_control_after_proposal_identity
-            .transaction_id()
+        self.lineage.render_identity.transaction_id()
     }
 
     pub(super) fn callback_index(&self) -> FrontendCallbackIndex {
-        self.lineage
-            .spatial_control_after_proposal_identity
-            .callback_index()
+        self.lineage.render_identity.callback_index()
     }
 
     pub(super) fn callback_phase(&self) -> CallbackPhase {
@@ -273,33 +306,26 @@ impl SpatialAudioPostWindowView {
     }
 
     pub(super) fn profile_identity(&self) -> EncodingProfile {
-        self.lineage
-            .spatial_control_after_proposal_identity
-            .profile_identity()
+        self.lineage.render_identity.profile_identity()
     }
 
     pub(super) fn provider_lineage(&self) -> SpatialControlProviderLineage {
-        self.lineage
-            .spatial_control_after_proposal_identity
-            .provider_lineage()
+        self.lineage.render_identity.provider_lineage()
     }
 
     pub(super) fn before_generation(&self) -> u64 {
-        self.lineage
-            .spatial_control_after_proposal_identity
-            .before_generation()
+        self.lineage.render_identity.before_generation()
     }
 
     pub(super) fn before_digest(&self) -> SpatialControlDigest {
-        self.lineage
-            .spatial_control_after_proposal_identity
-            .before_digest()
+        self.lineage.render_identity.before_digest()
     }
 
-    pub(super) fn after_digest(&self) -> SpatialControlDigest {
+    pub(super) fn after_digest(&self) -> Option<SpatialControlDigest> {
         self.lineage
             .spatial_control_after_proposal_identity
-            .after_digest()
+            .as_ref()
+            .map(|identity| identity.after_digest())
     }
 
     pub(super) const fn boundary(&self) -> PostWindowBoundary {
@@ -320,8 +346,14 @@ impl SpatialAudioPostWindowView {
 
     pub(super) fn spatial_control_after_proposal_identity(
         &self,
-    ) -> &Arc<SpatialControlJoinMetadata> {
-        &self.lineage.spatial_control_after_proposal_identity
+    ) -> Option<&Arc<SpatialControlJoinMetadata>> {
+        self.lineage
+            .spatial_control_after_proposal_identity
+            .as_ref()
+    }
+
+    pub(super) fn spatial_control_render_identity(&self) -> &Arc<SpatialControlRenderIdentity> {
+        &self.lineage.render_identity
     }
 
     pub(super) fn sample_count(&self) -> usize {

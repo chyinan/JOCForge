@@ -1,0 +1,42 @@
+{
+  "schema": "jocforge-codec-allocation-search-verification.v1",
+  "source_integrity": {
+    "production_payloads": "7/7_MATCH",
+    "production_actual_sources": "17/17_MATCH",
+    "boundary_payloads": "5/5_MATCH",
+    "boundary_approved_sources": "4/4_MATCH",
+    "additional_approved_vector_refs": "2/2_MATCH"
+  },
+  "wash_normal_and_optimized_production_replay": {
+    "status": "PASS_EACH",
+    "checks": 434,
+    "approved_cases": 88,
+    "bap_values": 9016,
+    "own_bap_cases": 56,
+    "nonzero_bap_converter_searches": 4,
+    "converter_best_qs": [
+      192,
+      192,
+      224,
+      572
+    ]
+  },
+  "wash_normal_and_optimized_boundaries": {
+    "status": "PASS_EACH",
+    "checks": 46,
+    "typed_rejections": 14,
+    "cross_channel_group_bit_counts": [
+      5,
+      7,
+      7
+    ],
+    "residual_neighbors": [
+      1,
+      0,
+      -1
+    ]
+  },
+  "full_POWER_policy_execution": "NOT_RUN",
+  "main_full_frame_feasibility": "ABSTRACT_CONTROL_ONLY_NOT_REAL_QUANTIZATION_OR_FRAME",
+  "native_audio_or_AU_execution": "NOT_RUN"
+}

@@ -1,0 +1,54 @@
+{
+  "schema": "codec3-f13-preferred-status-erratum.v1",
+  "superseded_claim": "F13 ID1 automatic preferred provider is UNBOUND and blocks the F12/F13 connection.",
+  "current_status": "CLOSED_FOR_COMPLETED_FINITE_F06_SCALAR_PUBLIC_KIND_TO_PROGRAMME_ID1_PREFERRED",
+  "authority": {
+    "package_id": "F13-PREFERRED-F06-TYPED-CLOSURE-V1",
+    "manifest_sha256": "d2b0954721af416c097d2979809bd0dc2177266985b98eeeeeaa81d6958d5cad",
+    "contract_sha256": "a09662946f0edf94159ce3b8f1178bc0d26d3f5723d2f2711da6526a85eb2ff5",
+    "verification_sha256": "dafce80fdd4470f5e8b20060a5622b88bbc2aca1d950fdef5c889a9261a4bdc8",
+    "wash_decision_sha256": "90e4faa2ec29d8ee48fb071cf4a5e0b96ab08c64b489595ff32ed728d3b9e007"
+  },
+  "final_measurement_receipt_fields": {
+    "owner": "same finalized programme measurement object",
+    "required_values": [
+      "selected_loudness or selected host metric",
+      "public measurement kind",
+      "finalized lifecycle/admission identity for the programme"
+    ],
+    "public_kind_domain": {
+      "Ungated": 0,
+      "Dialogue": 1,
+      "ITU_Level": 2
+    },
+    "preferred_rule": "ID1 preferred = (public_measurement_kind == Dialogue)",
+    "construction_lifetime": "Construct the programme ID1 configuration once after complete independent programme measurement finalization; reuse it for each source timer update.",
+    "not_new_inputs": [
+      "no user/XML/UI preferred field",
+      "no BSI preferred_downmix substitution",
+      "no F06 gating enum numeric cast",
+      "no extra DSP state"
+    ]
+  },
+  "selected_branch_table": [
+    {
+      "condition": "fallback and ITU <= -0.9375 normalized",
+      "selected": "ungated",
+      "public_kind": 0,
+      "preferred": false
+    },
+    {
+      "condition": "fallback and ITU > -0.9375 normalized",
+      "selected": "ITU/level",
+      "public_kind": 2,
+      "preferred": false
+    },
+    {
+      "condition": "dialogue eligible",
+      "selected": "dialogue",
+      "public_kind": 1,
+      "preferred": true
+    }
+  ],
+  "remaining_boundary": "This closure does not certify upstream meter DSP, native restart/flush equivalence, whole-programme execution, or audio acceptance."
+}

@@ -1,0 +1,21 @@
+{
+  "research_manifest_sha256": "97b99513c1687c8b1512e55179962324ddad85b7ea8fed73e667139f587bf56f",
+  "payload_hashes_verified": 4,
+  "source_hashes_verified_locally": [
+    "03-u04-refinement-and-projection",
+    "03-selector-affinity-and-selection",
+    "03-gate-and-target-installation",
+    "00-numeric-semantics",
+    "fullstream_front_prediction_rectangular_exact_core.py",
+    "r33_raw96_u04_adapter_core.py",
+    "u04_projection_input_controls_core_rev1.py"
+  ],
+  "missing_at_expected_locator": [],
+  "cached_native_body_hashes": "Research-reported; not independently relocated or rehashed in this Wash pass",
+  "fresh_PE_rehash": "NOT_RUN",
+  "native_runtime": "NOT_RUN",
+  "research_structural_join_checks_reported": 255,
+  "independent_numeric_or_structural_execution": "NOT_RUN",
+  "scope": "Caller identities and ordering clarification of approved F03U.1-5; no new formula, admission or runtime parity claim",
+  "implementer_access": "Only this washed payload and existing approved sources. Frozen/native hashes are provenance; implementer must not open or rehash research files."
+}

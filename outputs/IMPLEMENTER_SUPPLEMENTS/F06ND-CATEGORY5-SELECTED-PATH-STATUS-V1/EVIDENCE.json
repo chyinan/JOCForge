@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge.f06nd-category5-selected-path-status.v1",
+  "status": "SELECTED_LOGICAL_FIFO_RULE_CLOSED; GENERIC_EVENT_EDGE_UNBOUND",
+  "selected_profile": {
+    "category": 5,
+    "width_bits": 32,
+    "count": 1
+  },
+  "claims": {
+    "selected_category5_writes_drc_control_fifo": false,
+    "selected_fifo_logical_records_after_submission": "four zero logical records",
+    "selected_override": 0,
+    "selected_atmos_process_accepts_category5_event": false,
+    "category5_byte_layout_at_selected_process_boundary": "NOT_APPLICABLE",
+    "generic_storage_event_vector_join_to_selected_category5": "UNBOUND",
+    "generic_storage_event_output_effect_for_selected_profile": "UNBOUND"
+  },
+  "provenance": {
+    "wash_reviewed_research_manifest_sha256": "06640e096eb24651320e6c968edb241a71363dd8792355f4d8f9de1d222fc3e3",
+    "research_payload_files_verified": 4,
+    "native_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "approved_f06nd_spec_sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+    "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "native_execution": "NOT_RUN",
+    "pcm_or_payload_included": false,
+    "private_key_or_auth_material_included": false
+  }
+}

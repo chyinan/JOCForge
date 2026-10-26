@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "F07-CURRENT-MAP-WIRING-GAP-DELTA-V1",
+  "review_result": "WASHED_AS_CURRENT_MAP_GAP_DELTA",
+  "checks": {
+    "reverse_manifest_payloads": "PASS_4_OF_4",
+    "reverse_package_seal": "PASS_5_OF_5",
+    "implementation_map_snapshot": "PASS",
+    "vector_map_snapshot": "PASS",
+    "clock_map_snapshot": "PASS",
+    "f07_1_prior_wash_reopened": false,
+    "native_or_product_execution": "NOT_RUN"
+  },
+  "content_boundary": {
+    "implementation_source_included": false,
+    "source_code_or_dll_included": false,
+    "audio_or_pcm_included": false,
+    "private_key_or_auth_material_included": false
+  },
+  "implementation_ready": false
+}

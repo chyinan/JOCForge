@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge-codec-allocation-search-decision.v1",
+  "decision": "APPROVE_SELECTED_PRODUCTION_BAP_CONVERTER_SEARCH_AND_FIXED_PLAN_TRIAL_HANDOFF",
+  "implementation_ready_scope": "Actual integer BAP and converter cost/search implementation plus specified source-to-plan interfaces",
+  "no_new_missing_table_or_secret": true,
+  "main_actual_trial_dependencies": [
+    "Real quantizer/groupers from CODEC2",
+    "Real full-frame writer and CRC from CODEC3",
+    "Source-root commit/publication from CODEC4"
+  ],
+  "do_not_claim": "Complete POWER policy, actual main-frame search or end-to-end audio validated by metadata/BAP replay",
+  "whole_chain_ready": false
+}

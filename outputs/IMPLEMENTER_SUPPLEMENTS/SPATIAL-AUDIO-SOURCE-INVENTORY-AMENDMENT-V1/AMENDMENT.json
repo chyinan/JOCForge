@@ -1,0 +1,45 @@
+{
+  "classification": "LOCAL_IMPLEMENTATION_EVOLUTION_AMENDMENT; not new algorithm or native evidence",
+  "scope": "Permit the current component-stage bridge additions in an existing source inventory while preserving frozen historical cold evidence",
+  "file": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+  "approved_current_bytes": 53239,
+  "approved_current_sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4",
+  "comparison_baseline": {
+    "git_head": "24a2e1179804350ef48bd0e48e0e6836721cb21c",
+    "file_sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"
+  },
+  "observed_diff": "Three hunks: grouped imports, ComponentStageError re-export, 415 added lines of typed meter/component output and preview/proposal connection. Only removed baseline text is replaced source_flags import; original core state/serializer/cold logic is not modified by this diff.",
+  "approval_meaning": "Authorizes this source extension and current inventory identity to proceed to verification under already approved wiring. Does not certify all 415 added lines, numeric semantics, cold equivalence, compilation or product correctness.",
+  "sealed_evidence": "Do not edit F04-COLD-STATE-V1 manifest, original preimages, parameter identities or historical verification records. Historical source inventory stays labeled its original snapshot; it is not a promise all future source bytes remain frozen.",
+  "checker_update": "Permit a narrowly explicit current-source inventory overlay bound to this amendment and exact file/hash, while retaining historical snapshot identity separately. Do not replace old sealed evidence. Checker must still recompute current file bytes/hash and all cold provider/preimage identities. Mismatched unrelated files must still reject; no global skip, wildcard or automatic hash refresh.",
+  "acceptance_requirements": [
+    "Existing F04 cold serialization must still produce exactly813733bytes and approved sha35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e; run existing relevant cold/reset tests",
+    "Run affected component preview, C/d mapping, no-advance-before-parent and callback lineage tests",
+    "Run applicable fmt/check/clippy/test and generated-map/boundary checks; verify mutation of current source hash still rejects",
+    "Do not mark added bridges verified or whole-chain complete until their own tests actually pass"
+  ],
+  "source_reorganization": "If maintainability warrants, move new bridge helpers into a semantic cohesive module as a separately inventoried change; this exact-hash amendment does not silently authorize another file version.",
+  "review_limits": {
+    "reviewed": "Diff structure and preservation of existing core implementation text; referenced approved wiring scope",
+    "execution": "NOT_RUN",
+    "full_independent_code_review": "NOT_RUN"
+  },
+  "references": [
+    {
+      "package_id": "F04-COLD-STATE-V1",
+      "manifest_sha256": "77ad0562fcd4efa1e8fe37cc1dc7219570b49b9b332cca1f1273ccda2e2cef9c"
+    },
+    {
+      "package_id": "SPATIAL-CONTROL-TO-COMPONENT-PRODUCTION-WIRING-V1",
+      "manifest_sha256": "6d1fa51b3b04ea8ca19c9d81c51b75a49d27349eaad2e018d6848e739f2cb5c1"
+    },
+    {
+      "package_id": "SPATIAL-ACTIVE-MATRIX-REPRESENTATION-ADAPTER-V1",
+      "manifest_sha256": "97d554d78dce00348476cdf00fd5cb566e9c4327dc3b4f6418e344df3fa08d7a"
+    },
+    {
+      "package_id": "METER-CONSUMER-FIELD-BINDING-CROSSWALK-V1",
+      "manifest_sha256": "ea35435b13049df6357b901f75a5d8cdab46b849b392ba3867135bc679af2fc2"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "research_manifest_sha256": "75f4542f2d4cf0ff0d325b2eca77ef6803929700a403110c1285a232535c402c",
+  "payloads_verified": 4,
+  "approved_sources_verified": 11,
+  "scope": "Existing GTC/F12SC rule clarification plus optional minimal local wrapper, not new native/DSP contract",
+  "production_implementation_review": "NOT_RUN",
+  "numeric_or_native_execution": "NOT_RUN",
+  "private_keys_or_proprietary_source_code_included": false
+}

@@ -3,6 +3,12 @@
 
 use crate::timeline::FrontendCallbackIndex;
 
+mod source_transaction;
+
+#[allow(unused_imports)]
+// Parent source stage is not yet called by the top-level callback root.
+pub(crate) use source_transaction::{SourceTransaction, SourceTransactionStageError};
+
 /// Opaque caller-supplied nonempty programme identity. It remains stable across restart attempts.
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
 pub struct ProgrammeId(String);

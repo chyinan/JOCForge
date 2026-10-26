@@ -302,6 +302,18 @@ impl MetadataSourceReceipt {
         &self.transaction_id
     }
 
+    pub const fn source_index(&self) -> CodecSourceIndex {
+        self.source_index
+    }
+
+    pub const fn dispatch(&self) -> JocDispatchIndex {
+        self.dispatch
+    }
+
+    pub const fn au_index(&self) -> Option<PublishedAuIndex> {
+        self.au_index
+    }
+
     pub fn as_json(&self) -> Value {
         json!({
             "schema": "metadata-source-receipt.v1",
@@ -949,6 +961,42 @@ pub struct MetadataEofProposal {
 }
 
 impl MetadataEofProposal {
+    pub const fn expected_sources(&self) -> u64 {
+        self.expected_sources
+    }
+
+    pub const fn after_is_finalized(&self) -> bool {
+        self.after_state.finalized
+    }
+
+    pub fn queues_are_empty(&self) -> bool {
+        self.after_state
+            .queues
+            .values()
+            .all(|queue| queue.slots.iter().all(Option::is_none))
+    }
+
+    pub fn pending_writers_are_drop_at_done(&self) -> bool {
+        self.after_state
+            .pending
+            .iter()
+            .all(|pending| pending.disposition == "DROP_AT_DONE")
+    }
+
+    pub fn pending_writer_dispositions(&self) -> Vec<(u8, CodecSourceIndex, &'static str)> {
+        self.after_state
+            .pending
+            .iter()
+            .map(|pending| {
+                (
+                    pending.queue_id,
+                    pending.writer_generation,
+                    pending.disposition,
+                )
+            })
+            .collect()
+    }
+
     pub fn as_json(&self) -> Value {
         json!({
             "expected_sources": self.expected_sources,

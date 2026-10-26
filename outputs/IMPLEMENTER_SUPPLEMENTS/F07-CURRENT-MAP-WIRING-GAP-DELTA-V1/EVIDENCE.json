@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge-f07-current-map-wiring-gap-delta.v1",
+  "status": "F07_1_PRIOR_WASH_CLOSURE_RETAINED_WHOLE_FRAME_WIRING_OPEN",
+  "current_map_snapshot_sha256": "7d7e162da8f0cc552a6cb322a495b17b76aca70da9d30c7c8d81339d8cc4a642",
+  "current_vector_map_sha256": "4bce7d6d7a4477196c481c10eb0cd683ac81e8c3c9bfec456d341a52221d374d",
+  "current_clock_map_sha256": "62559e95802af57eaf0512e9785b338f78ac2d5c0bbacb6306fd8e59699bbe5c",
+  "local_slices": {
+    "F07_1_input_history": "two-frame/six-lane local history slice; whole F07 deferred",
+    "F07_structure_refresh": "local selected-profile numeric slice; whole F07 deferred",
+    "F07_dither_flags": "local selected-plan slice; whole F07 deferred",
+    "F07A_transient_channel": "one FBW lane/block slice; full F07A open",
+    "F07A_D05_provider": "provider identity slice only; full F07A open",
+    "F08_2_fold_history": "two-bank fold/history slice; whole F08 deferred"
+  },
+  "remaining_production_edges": [
+    "six installed_audio rows to one production source/frame owner/generation and F07 receipt/commit",
+    "all five FBW plus LFE F07A state consumers and F07.4/.5 parent wiring",
+    "full F08 delayed-audio path and enclosing state owner beyond F08.2"
+  ],
+  "f07_1_equation_gap": "NONE_FOUND_IN_APPROVED_SPEC_AND_PRIOR_WASH",
+  "analysis_fixture_seam": "TEST_ONLY; does not prove production owner/commit",
+  "tests_or_native_run_in_delta": "NOT_RUN"
+}

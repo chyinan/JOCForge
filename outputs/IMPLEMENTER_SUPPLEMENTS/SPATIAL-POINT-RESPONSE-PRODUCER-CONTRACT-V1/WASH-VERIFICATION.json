@@ -1,0 +1,20 @@
+{
+  "research_manifest_sha256": "26a02131ddcbf0529d4ddc79dfb6628b804039583d7ae7fadc338deb5e6137f6",
+  "payload_hashes_verified": 7,
+  "approved_sources_hashes_verified": 11,
+  "approved_parent_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "independent_execution": {
+    "normal": "PASS",
+    "python_O": "PASS",
+    "response_values": 180,
+    "bounded_math_angle_comparisons": 130,
+    "union_index_paths": 4,
+    "branch_rejections": 5
+  },
+  "algorithm_review": "Checked against approved F03P.1-4 and F03P.6-7; this is a clarification of existing formulas, not native equivalence proof.",
+  "reference_source_code_delivered": false,
+  "private_keys_delivered": false,
+  "real_adm_audio_spatial_acceptance": "NOT_RUN",
+  "full_input_math_library_rounding_proof": "NOT_RUN",
+  "scope": "Selected stateless response producer only; no new profile, DTHD or TrueHD dependency."
+}

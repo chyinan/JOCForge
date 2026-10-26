@@ -1,0 +1,36 @@
+{
+  "input_cases": [
+    {
+      "typed_attempt": 0,
+      "canonical_string": "0"
+    },
+    {
+      "typed_attempt": 1,
+      "canonical_string": "1"
+    },
+    {
+      "typed_attempt": 10,
+      "canonical_string": "10"
+    },
+    {
+      "typed_attempt": 18446744073709551615,
+      "canonical_string": "18446744073709551615"
+    }
+  ],
+  "noncanonical_string_rejection_inputs": [
+    "00",
+    "01",
+    "+1",
+    "-1",
+    " 1",
+    "1 ",
+    "0x1",
+    "1_000"
+  ],
+  "identity_cases": [
+    "same programme attempt0 vs attempt1 rejects",
+    "different programme both attempt0 rejects owner join",
+    "same programme attempt canonical string but stale output owner rejects"
+  ],
+  "kind": "Self-authored local identity contract examples; no audio/native outputs"
+}

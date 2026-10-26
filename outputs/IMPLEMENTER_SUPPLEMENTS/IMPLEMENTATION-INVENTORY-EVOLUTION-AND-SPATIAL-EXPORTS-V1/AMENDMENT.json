@@ -1,0 +1,29 @@
+{
+  "classification": "LOCAL_IMPLEMENTATION_INVENTORY_POLICY_AND_EXACT_MODULE_EXPORT_AMENDMENT",
+  "exact_current_file": {
+    "path": "crates/jocforge-domain/src/spatial/mod.rs",
+    "bytes": 3261,
+    "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"
+  },
+  "historical_inventory": {
+    "bytes": 2855,
+    "sha256": "91beefcd535b04930a7c3dd2427c081fc114053d44bb3971edb220b924412ba0",
+    "treatment": "Preserve original historical record; it remains the identity of that verified snapshot, not the current evolving source."
+  },
+  "wash_review": "Inspected git diff to HEAD: module declarations for approved response/P15/U04/outer/callback responsibilities, frontend_stages visibility and typed component/callback exports; no numerical code in this module export diff.",
+  "authorization": "Permit these current module declaration/re-export updates under existing approved architecture and wiring. Public API exposure must still obey private mutable state, owner/commit authority and dependency rules; this is not waiver of boundary or behavior tests.",
+  "standing_policy": {
+    "frozen_material": "Approved specification, parameter/provider, cold preimage, fixture and sealed review manifests remain immutable; modifying their values or normative semantics still requires a real approved supplement.",
+    "historical_source_evidence": "Keep original source inventory with original evidence scope separately. Do not rewrite historical reports to claim they tested current bytes.",
+    "current_implementation_inventory": "Implementation Agent may explicitly update the current source/test inventory for ordinary authorized implementation changes after reviewing the actual diff, tracing it to approved behavior, running affected tests and independent review where required, and recording the verified current version. This is implementation maintenance, not a new reverse-engineering dependency or per-file Wash permission request.",
+    "checker": "Separate historical evidence identity from current source inventory. Continue recomputing current bytes/hash against explicitly recorded current entries; sealed package hashes continue to be checked separately. No auto-accept hashes, wildcard allows, broad checker skip or merely hash-refreshing unknown diffs.",
+    "mutation": "A changed current source without matching explicit reviewed current inventory must fail; mutation of approved spec/provider/preimage or historical evidence must still fail.",
+    "escalation": "Ask Wash only for a genuine missing/changed behavior/provider/owner contract or unexplained historical-to-current difference. Module additions and export edits allowed by current architecture do not alone need a new Wash package."
+  },
+  "execution_and_review_limits": {
+    "module_diff_review": "DONE",
+    "compile_or_tests": "NOT_RUN_BY_WASH",
+    "new_public_item_boundary_verification": "REQUIRED_IMPLEMENTATION_CHECK",
+    "whole_chain": "NOT_RUN"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "parent_manifest_sha256": "8e06c157f15f6b836ba702b7e024eccd8f50a78a8ad736f11a54b844c39bdbae",
+  "parent_seal_sha256": "5b552c5b561cc9bdcf9b84e0346c95049bce90f75db72937e80f58e517be9100",
+  "addendum_manifest_sha256": "c60f8ef5a6a2591d5da348f87086badc4629625ca932955bfeb24d05326d525d",
+  "source_identities_checked": 37,
+  "parent_sealed_entries_verified": 9,
+  "addendum_payloads_verified": 5,
+  "primary_standard_check": "Wash opened official ETSI V1.4.1 Annex E.1.2.2, syntax lines5530-5557 and5637-5683; confirmed mixing and information field widths/guards. Standard defines widths/guards; selected zero values come from approved profile contracts.",
+  "stale_preferred_UNBOUND": "REMOVED; superseded by approved d2b0954721af416c097d2979809bd0dc2177266985b98eeeeeaa81d6958d5cad typed closure",
+  "historical_review_qualification": {
+    "reviewed_freeze_manifest_sha256": "4bb2157a7c068e1c7e1f85876e50f5bca4199ca349cb1b46878a14d5f2c177c5",
+    "reviewed_12_selected_spec_sha256": "5779c9b12c9c4f225f8f0f9c29904f559cefdbf5c5f9f390e3b3309306ad5908",
+    "current_c7_12_selected_spec_sha256": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448",
+    "interpretation": "The r2b review is cited as fixture/snapshot evidence only; it is not claimed as an independent review of the current c7 live spec bytes."
+  },
+  "superseded_research_file_set": "ad5dee/638ce0 was overwritten research-side and is not freshly verifiable; only retained current parent/addendum used",
+  "full_frame_execution": "NOT_RUN",
+  "native_execution": "NOT_RUN",
+  "whole_programme_execution": "NOT_RUN",
+  "sound_or_spatial_acceptance": "NOT_RUN",
+  "private_keys_or_proprietary_source_code_included": false,
+  "admission": "Scoped frame assembly implementation clarification, not whole-product readiness or runtime proof. Approved base F12S remains detailed bitwriter authority."
+}

@@ -1,294 +1,282 @@
 // pattern: Functional Core
 use jocforge_domain::codec::grouped_quantizer::{
-    GroupedBap, GroupedItemInput, GroupedItemObservation, GroupedPackObservation,
-    GroupedQuantizerState,
+    MantissaBlockError, MantissaBlockItemInput, MantissaChannel, pack_block_mantissas,
 };
+use jocforge_domain::codec::mantissa::MantissaQuantizerError;
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 use std::path::PathBuf;
 
-const PACKAGE_DIRECTORY: &str = "tests/fixtures/grouped_quantizer";
+const PACKAGE_DIRECTORY: &str =
+    "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1";
 const PACKAGE_MANIFEST_SHA256: &str =
-    "59d070c4678fcf3a4d63d6e9d746c454a59050ba0dc8fdb14fa1c20cab642a96";
-const INDEPENDENT_CHECK_SHA256: &str =
-    "e0244cb95bbd12823ab790eb5643a79bc2c00e03626f7fd2d9dabb2b349d90d7";
-const TRANSITION_CONTRACT_SHA256: &str =
-    "e54e02a8f37f11e4d6911ce9bdf312e385143715d354a26f683da3ddf03afb18";
-const PACKAGE_PAYLOADS: [(&str, usize, &str); 5] = [
-    (
-        "SCOPE.md",
-        1324,
-        "4c43b1102934f37f74a1e4a6895885f00989c91fc5bd99cfbdbec9b7c850ddbc",
-    ),
-    (
-        "TRANSITION-CONTRACT.md",
-        2252,
-        "e54e02a8f37f11e4d6911ce9bdf312e385143715d354a26f683da3ddf03afb18",
-    ),
-    (
-        "PROVENANCE.json",
-        1090,
-        "83de507f41a80baca2c9731dddbbdea6e38e0389bd68e464dd0f1ededf0a3cb1",
-    ),
-    (
-        "R18-VECTORS.json",
-        22316,
-        "2227c98e31699ae3a6759a32385e665d8e8aaf487c5629495b92707ad1667388",
-    ),
-    (
-        "R15-CAPACITY-VECTORS.json",
-        17902,
-        "2c1f9c645866d7bb6f413ae2b86faa2b9400203acef2b06fddc8cbda8bf6eef3",
-    ),
-];
+    "fd819c3ec27e7bade55efda5e648792c9c33892a9be7a36bbfce89231b9e961f";
 
-fn crate_root() -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+fn repository_root() -> PathBuf {
+    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..")
+}
+
+fn package_root() -> PathBuf {
+    repository_root().join(PACKAGE_DIRECTORY)
 }
 
 fn read_json(name: &str) -> (Vec<u8>, Value) {
-    let bytes = read_bytes(name);
-    let json = serde_json::from_slice(&bytes).unwrap();
-    (bytes, json)
-}
-
-fn read_bytes(name: &str) -> Vec<u8> {
-    std::fs::read(crate_root().join(PACKAGE_DIRECTORY).join(name)).unwrap()
+    let bytes = std::fs::read(package_root().join(name)).unwrap();
+    let value = serde_json::from_slice(&bytes).unwrap();
+    (bytes, value)
 }
 
 fn sha256(bytes: &[u8]) -> String {
     format!("{:x}", Sha256::digest(bytes))
 }
 
-fn bap(value: &Value) -> GroupedBap {
-    match value.as_u64().unwrap() {
-        1 => GroupedBap::Bap1,
-        2 => GroupedBap::Bap2,
-        4 => GroupedBap::Bap4,
-        other => panic!("out-of-scope BAP {other}"),
-    }
-}
-
-fn coefficient_word(value: &Value) -> u32 {
-    if let Some(text) = value.as_str() {
-        match text {
-            "NaN" => f32::NAN.to_bits(),
-            "Infinity" => f32::INFINITY.to_bits(),
-            "-Infinity" => f32::NEG_INFINITY.to_bits(),
-            other => panic!("unexpected coefficient token {other}"),
-        }
-    } else {
-        (value.as_f64().unwrap() as f32).to_bits()
-    }
-}
-
-#[test]
-fn package_manifest_independent_check_and_all_payload_hashes_match() {
-    let (check_bytes, check) = read_json("INDEPENDENT-CHECK.json");
-    assert_eq!(sha256(&check_bytes), INDEPENDENT_CHECK_SHA256);
-    assert_eq!(check["manifest_sha256"], PACKAGE_MANIFEST_SHA256);
-    assert_eq!(check["schema"], "f12-grouped-quantizer-local-check.v2");
-    assert_eq!(check["payload_count"], 5);
-    assert_eq!(check["all_payload_hashes_match"], true);
-    assert_eq!(check["transition_contract_bound"], true);
-    assert_eq!(check["out_of_domain_bap_not_claimed"], true);
-    assert_eq!(check["caller_capacity_not_closed"], true);
-    assert_eq!(check["whole_status_not_ready"], true);
-    for (name, expected_bytes, expected_hash) in PACKAGE_PAYLOADS {
-        let bytes = read_bytes(name);
-        assert_eq!(bytes.len(), expected_bytes, "{name}");
-        assert_eq!(sha256(&bytes), expected_hash, "{name}");
-    }
-}
-
-#[test]
-fn r18_and_r15_grouped_cases_match_observed_items_packs_and_writer_state() {
-    for file in ["R18-VECTORS.json", "R15-CAPACITY-VECTORS.json"] {
-        let (_, vectors) = read_json(file);
-        for vector in vectors["vectors"].as_array().unwrap() {
-            assert_grouped_vector(vector);
-        }
-    }
-}
-
-fn assert_grouped_vector(vector: &Value) {
-    let name = vector["name"].as_str().unwrap();
-    let input = &vector["input"];
-    let baps = input["baps"].as_array().unwrap();
-    let coefficients = input["coefficients_f32"].as_array().unwrap();
-    assert_eq!(baps.len(), coefficients.len(), "{name}");
-    let inputs = baps
-        .iter()
-        .zip(coefficients)
-        .map(|(bap_value, coefficient)| GroupedItemInput {
-            bap: bap(bap_value),
-            coefficient_word: coefficient_word(coefficient),
-        })
-        .collect::<Vec<_>>();
-
-    let mut state = GroupedQuantizerState::cold();
-    let quantizer_call = if inputs.is_empty() {
-        None
-    } else {
-        Some(
-            state
-                .quantize(&inputs)
-                .unwrap_or_else(|error| panic!("{name} quantizer: {error:?}")),
-        )
-    };
-    if vector["quantizer_return"].is_null() {
-        assert!(quantizer_call.is_none(), "{name} quantizer call");
-    } else {
-        assert_eq!(
-            quantizer_call.as_ref().unwrap().return_code(),
-            vector["quantizer_return"].as_i64().unwrap() as i32,
-            "{name} quantizer return"
-        );
-    }
-
-    let after_quantizer_counts = state.group_counts();
-    let after_quantizer_bytes = state.emitted_word_memory_bytes().len();
-    if let Some(expected_counts) = vector.get("state_counts_after_quantizer") {
-        assert_u32s(&after_quantizer_counts, expected_counts, name);
-        assert_eq!(
-            state.pending_bit_count(),
-            vector["pending_bits_after_quantizer"].as_u64().unwrap() as u8,
-            "{name} pending bits after quantizer"
-        );
-        assert_eq!(
-            state.pending_accumulator_u16(),
-            vector["pending_accumulator_after_quantizer"]
-                .as_u64()
-                .unwrap() as u16,
-            "{name} pending accumulator after quantizer"
-        );
-        assert_eq!(
-            after_quantizer_bytes,
-            vector["emitted_bytes_after_quantizer"].as_u64().unwrap() as usize,
-            "{name} emitted bytes after quantizer"
-        );
-    }
-
-    let mut observed_items = quantizer_call
-        .as_ref()
-        .map(|call| call.items().to_vec())
-        .unwrap_or_default();
-    let mut observed_packs = quantizer_call
-        .as_ref()
-        .map(|call| call.packs().to_vec())
-        .unwrap_or_default();
-    if !vector["flush_return"].is_null() {
-        let flush = state
-            .flush()
-            .unwrap_or_else(|error| panic!("{name} flush: {error:?}"));
-        assert_eq!(
-            flush.return_code(),
-            vector["flush_return"].as_i64().unwrap() as i32,
-            "{name} flush return"
-        );
-        observed_items.extend_from_slice(flush.items());
-        observed_packs.extend_from_slice(flush.packs());
-    }
-
-    assert_items(&observed_items, &vector["observed_items"], name);
-    assert_packs(&observed_packs, &vector["observed_packs"], name);
-    assert_u32s(&state.group_counts(), &vector["state_counts"], name);
+fn approved_vectors() -> Value {
+    let (manifest_bytes, manifest) = read_json("MANIFEST.json");
+    assert_eq!(sha256(&manifest_bytes), PACKAGE_MANIFEST_SHA256);
     assert_eq!(
-        state.pending_bit_count(),
-        vector["pending_bit_count"].as_u64().unwrap() as u8,
-        "{name} final pending bits"
-    );
-    assert_eq!(
-        state.pending_accumulator_u16(),
-        vector["pending_accumulator_u16"].as_u64().unwrap() as u16,
-        "{name} final accumulator"
-    );
-    assert_eq!(
-        state.effective_bits(),
-        vector["effective_bits"].as_u64().unwrap(),
-        "{name} effective bits"
-    );
-    assert_eq!(
-        state.emitted_word_memory_bytes(),
-        vector["emitted_word_memory_bytes"]
-            .as_array()
-            .unwrap()
-            .iter()
-            .map(|byte| u8::try_from(byte.as_u64().unwrap()).unwrap())
-            .collect::<Vec<_>>(),
-        "{name} output bytes"
-    );
-    assert_eq!(
-        sha256(state.emitted_word_memory_bytes()),
-        vector["emitted_word_memory_sha256"].as_str().unwrap(),
-        "{name} output digest"
+        manifest["package_id"],
+        "CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1"
     );
 
-    let logical_capacity = input["logical_capacity_bytes"].as_u64();
-    let capacity_exceeded = logical_capacity.is_some_and(|capacity| {
-        u64::try_from(state.emitted_word_memory_bytes().len()).unwrap() > capacity
-    });
-    assert_eq!(
-        capacity_exceeded,
-        vector["capacity_exceeded_without_error"].as_bool().unwrap(),
-        "{name} logical capacity observation"
-    );
-}
-
-fn assert_u32s(actual: &[u32], expected: &Value, context: &str) {
-    let expected = expected
+    let (vector_bytes, vectors) = read_json("INPUT-ONLY-VECTORS.json");
+    let vector_entry = manifest["files"]
         .as_array()
         .unwrap()
         .iter()
-        .map(|value| u32::try_from(value.as_u64().unwrap()).unwrap())
-        .collect::<Vec<_>>();
-    assert_eq!(actual, expected, "{context}");
+        .find(|entry| entry["file"] == "INPUT-ONLY-VECTORS.json")
+        .unwrap();
+    assert_eq!(
+        vector_entry["bytes"].as_u64().unwrap(),
+        u64::try_from(vector_bytes.len()).unwrap()
+    );
+    assert_eq!(
+        vector_entry["sha256"].as_str().unwrap(),
+        sha256(&vector_bytes)
+    );
+    vectors
 }
 
-fn assert_items(actual: &[GroupedItemObservation], expected: &Value, context: &str) {
-    let expected = expected.as_array().unwrap();
-    assert_eq!(actual.len(), expected.len(), "{context} item count");
-    for (index, (actual, expected)) in actual.iter().zip(expected).enumerate() {
-        assert_eq!(
-            actual.bap().value(),
-            expected["bap"].as_u64().unwrap() as u8,
-            "{context} item {index} BAP"
-        );
-        assert_eq!(
-            actual.code(),
-            expected["code"].as_u64().unwrap() as u16,
-            "{context} item {index} code"
-        );
-        assert_eq!(
-            actual.width(),
-            expected["width"].as_u64().unwrap() as u8,
-            "{context} item {index} width"
-        );
+fn channel(value: &Value) -> MantissaChannel {
+    match value.as_u64().unwrap() {
+        0 => MantissaChannel::Left,
+        1 => MantissaChannel::Center,
+        2 => MantissaChannel::Right,
+        3 => MantissaChannel::LeftSurround,
+        4 => MantissaChannel::RightSurround,
+        5 => MantissaChannel::Lfe,
+        other => panic!("unsupported input-vector channel {other}"),
     }
+}
+
+fn item(value: &Value) -> MantissaBlockItemInput {
+    MantissaBlockItemInput {
+        channel: channel(&value["channel"]),
+        bin: u16::try_from(value["bin"].as_u64().unwrap()).unwrap(),
+        coefficient_word: u32::from_str_radix(value["coefficient_f32_bits"].as_str().unwrap(), 16)
+            .unwrap(),
+        decoded_exponent: i16::try_from(value["decoded_exponent"].as_i64().unwrap()).unwrap(),
+        bap: u8::try_from(value["bap"].as_u64().unwrap()).unwrap(),
+    }
+}
+
+#[test]
+fn approved_input_package_is_hash_bound_and_excludes_expected_codes() {
+    let vectors = approved_vectors();
+    assert_eq!(vectors["schema"], "eac3-quantizer-mantissa-input-only.v1");
+    assert_eq!(vectors["input_only"], true);
+    assert_eq!(vectors["expected_quantizer_codes_included"], false);
+    assert_eq!(vectors["expected_group_codes_included"], false);
+    assert_eq!(vectors["expected_au_body_included"], false);
+    assert_eq!(vectors["pcm_included"], false);
+    assert_eq!(vectors["private_key_included"], false);
+}
+
+#[test]
+fn same_block_groups_cross_channels_and_packs_first_item_msb_first() {
+    let vectors = approved_vectors();
+    let case = vectors["grouping_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["id"] == "same_block_cross_channel")
+        .unwrap();
+    let mut inputs = case["items"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(item)
+        .collect::<Vec<_>>();
+    inputs.reverse();
+
+    let output = pack_block_mantissas(&inputs).unwrap();
     assert_eq!(
-        sha256(&read_bytes("TRANSITION-CONTRACT.md")),
-        TRANSITION_CONTRACT_SHA256
+        output
+            .items()
+            .iter()
+            .map(|observation| (observation.channel(), observation.bin()))
+            .collect::<Vec<_>>(),
+        [
+            (MantissaChannel::Left, 0),
+            (MantissaChannel::Left, 1),
+            (MantissaChannel::Center, 0),
+            (MantissaChannel::Center, 1),
+            (MantissaChannel::Right, 0),
+            (MantissaChannel::Right, 1),
+            (MantissaChannel::LeftSurround, 0),
+            (MantissaChannel::RightSurround, 0),
+            (MantissaChannel::Lfe, 0),
+        ]
+    );
+    assert_eq!(output.bit_count(), 19);
+    assert_eq!(
+        output
+            .grouped_packs()
+            .iter()
+            .map(|pack| (pack.bap(), pack.value(), pack.width(), pack.start_bit()))
+            .collect::<Vec<_>>(),
+        [(1, 5, 5, 0), (2, 19, 7, 5), (4, 10, 7, 12)]
+    );
+    assert_eq!(output.packed_bytes(), [0x29, 0x31, 0x40]);
+}
+
+#[test]
+fn every_block_starts_with_empty_groups_and_partial_groups_use_fillers() {
+    let vectors = approved_vectors();
+    let case = vectors["grouping_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["id"] == "reset_between_blocks")
+        .unwrap();
+    let blocks = case["blocks"].as_array().unwrap();
+    let first = pack_block_mantissas(
+        &blocks[0]["items"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(item)
+            .collect::<Vec<_>>(),
+    )
+    .unwrap();
+    let second = pack_block_mantissas(
+        &blocks[1]["items"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(item)
+            .collect::<Vec<_>>(),
+    )
+    .unwrap();
+
+    assert_eq!(first.bit_count(), 5);
+    assert_eq!(first.grouped_packs().len(), 1);
+    assert_eq!(first.grouped_packs()[0].value(), 13);
+    assert_eq!(first.grouped_packs()[0].start_bit(), 0);
+
+    assert_eq!(second.bit_count(), 19);
+    assert_eq!(
+        second
+            .grouped_packs()
+            .iter()
+            .map(|pack| (pack.bap(), pack.value(), pack.start_bit()))
+            .collect::<Vec<_>>(),
+        [(1, 13, 0), (2, 87, 5), (4, 71, 12)]
     );
 }
 
-fn assert_packs(actual: &[GroupedPackObservation], expected: &Value, context: &str) {
-    let expected = expected.as_array().unwrap();
-    assert_eq!(actual.len(), expected.len(), "{context} pack count");
-    for (index, (actual, expected)) in actual.iter().zip(expected).enumerate() {
-        assert_eq!(
-            actual.value(),
-            expected["value"].as_u64().unwrap() as u16,
-            "{context} pack {index} value"
-        );
-        assert_eq!(
-            actual.width(),
-            expected["width"].as_u64().unwrap() as u8,
-            "{context} pack {index} width"
-        );
-        assert_eq!(
-            actual.start_bits(),
-            expected["start_bits"].as_u64().unwrap(),
-            "{context} pack {index} start"
-        );
-    }
+#[test]
+fn exact_full_domain_mantissa_cost_is_124_bits() {
+    let vectors = approved_vectors();
+    let domain = vectors["domain_sweep"].as_array().unwrap();
+    let channels = [
+        MantissaChannel::Left,
+        MantissaChannel::Center,
+        MantissaChannel::Right,
+        MantissaChannel::LeftSurround,
+        MantissaChannel::RightSurround,
+        MantissaChannel::Lfe,
+    ];
+    let inputs = domain
+        .iter()
+        .enumerate()
+        .map(|(index, value)| MantissaBlockItemInput {
+            channel: channels[index % channels.len()],
+            bin: u16::try_from(index / channels.len()).unwrap(),
+            coefficient_word: u32::from_str_radix(
+                value["coefficient_f32_bits"].as_str().unwrap(),
+                16,
+            )
+            .unwrap(),
+            decoded_exponent: i16::try_from(value["decoded_exponent"].as_i64().unwrap()).unwrap(),
+            bap: u8::try_from(value["bap"].as_u64().unwrap()).unwrap(),
+        })
+        .collect::<Vec<_>>();
+
+    let output = pack_block_mantissas(&inputs).unwrap();
+    assert_eq!(output.bit_count(), 124);
+    assert_eq!(output.packed_bytes().len(), 16);
+    assert_eq!(output.grouped_packs().len(), 3);
+}
+
+#[test]
+fn malformed_positions_and_quantizer_failures_return_block_errors() {
+    let duplicate = MantissaBlockItemInput {
+        channel: MantissaChannel::Left,
+        bin: 0,
+        coefficient_word: 0x3e80_0000,
+        decoded_exponent: 0,
+        bap: 1,
+    };
+    assert_eq!(
+        pack_block_mantissas(&[duplicate, duplicate]),
+        Err(MantissaBlockError::DuplicateItemPosition {
+            channel: MantissaChannel::Left,
+            bin: 0,
+        })
+    );
+
+    let vectors = approved_vectors();
+    let sentinel = vectors["boundary_cases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|case| case["id"] == "bap3_sentinel")
+        .unwrap();
+    let sentinel_input = MantissaBlockItemInput {
+        channel: MantissaChannel::Left,
+        bin: 0,
+        coefficient_word: u32::from_str_radix(
+            sentinel["coefficient_f32_bits"].as_str().unwrap(),
+            16,
+        )
+        .unwrap(),
+        decoded_exponent: i16::try_from(sentinel["decoded_exponent"].as_i64().unwrap()).unwrap(),
+        bap: u8::try_from(sentinel["bap"].as_u64().unwrap()).unwrap(),
+    };
+    assert_eq!(
+        pack_block_mantissas(&[sentinel_input]),
+        Err(MantissaBlockError::Quantizer(
+            MantissaQuantizerError::ReservedCodeSentinel
+        ))
+    );
+
+    let unsupported = MantissaBlockItemInput {
+        bap: 16,
+        ..duplicate
+    };
+    assert_eq!(
+        pack_block_mantissas(&[unsupported]),
+        Err(MantissaBlockError::Quantizer(
+            MantissaQuantizerError::UnsupportedBap
+        ))
+    );
+}
+
+#[test]
+fn empty_block_has_no_bits_or_persistent_group_state() {
+    let output = pack_block_mantissas(&[]).unwrap();
+    assert!(output.items().is_empty());
+    assert!(output.grouped_packs().is_empty());
+    assert!(output.packed_bytes().is_empty());
+    assert_eq!(output.bit_count(), 0);
 }

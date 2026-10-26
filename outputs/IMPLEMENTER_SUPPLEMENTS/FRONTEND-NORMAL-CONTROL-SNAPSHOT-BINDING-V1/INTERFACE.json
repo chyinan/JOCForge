@@ -1,0 +1,46 @@
+{
+  "schema": "research.frontend-normal-control-interface.v1",
+  "scope": "Selected F01E normal callback only; existing meter drain adapter unchanged",
+  "inputs": {
+    "prepared": [
+      "Owned validated ADM graph and runtime physical joins",
+      "Selected normalized config incl actual positive N, H1536, sample_rate48000,38 PCM24",
+      "Canonical one-zero-start event per each of28 objects, covering N",
+      "Matching immutable DBMD physical track records and input/programme identity"
+    ],
+    "before": "Existing F01E state: callback/normal counters;28 nested object records ordered by object ordinal; nullable before-first-normal binding/cache/snapshots; programme/attempt identity supplied by parent",
+    "call": "NORMAL g, g==next callback, query_sample=g*1536<N; actual=min(1536,N-query); same-source source/host packet receipt"
+  },
+  "output": {
+    "source_views": "Immutable 38 physical tagged rows: Bed6 defined-prefix +rawtail UNPRODUCED, Object13 from actual current sampler output; regular37 is physical ascending exclude semantic LFE.",
+    "proposal": "Complete next28 nested states and complete optional snapshots, no external commit; entire output has g/origin_g, same programme/attempt/prepared identity and actual owned value references",
+    "canonical_carrier": "Existing constructor fields require owned U32[38][13]/[37][13]. Bed first6 defined words, remaining storage local unconsumed padding0 only; role from existing binding, never raw bed13 or sampled authored bed width.",
+    "parent_handoff": "F03W source/control/render parent consumes proposal values once and stages next state. No SDK Rust receipt or queue identity is claimed."
+  },
+  "preflight": [
+    "Validate complete config/graph/events/DBMD and physical complement joins before numeric sampling or visible mutation",
+    "10 unique bed channel-format joins;28 object ordinals and runtime hosts; all38 cover/disjoint; exactly one semantic LFE anywhere",
+    "Canonical nested state has same owner/attempt and correct ordinal/host association; frame/query clock valid",
+    "Each admitted event satisfies F01E.7 and finite coordinate/width rules; no late per-object partial success"
+  ],
+  "normal_algorithm": [
+    "Derive object call view sorted by physical host while owning state remains indexed by object ordinal",
+    "Query same admitted event at gH; event start/rtime stay0; period512 slots do not perform extra post-N ADM lookups on padded last normal",
+    "Apply F01E.8 writer coordinate conversion/strict clamp and spread rounding",
+    "If sampler_previous absent, initialize by current writer XYZ once; otherwise start from owned previous XYZ",
+    "Execute slot1 then slot2 for every object and axis with separate R32 multiplications/addition, no FMA; keep second result in proposal state",
+    "Assemble current object13 F01E.9 including sampled XYZ/uniform_width; keep DBMD identity fields outside unsupported object slots",
+    "Assemble tagged bed6 metadata unchanged; SourceFlags bed mute0/width+0 via approved adapter; object SourceFlags word0/word9 current controls",
+    "Build complete immutable control38/regular37 snapshots and source-geometry values using runtime routes; expose only when all objects succeed"
+  ],
+  "commit_and_failure": "Proposal does not commit per row or by itself. Whole F03W parent validates current-generation joins and downstream outcome before one root commit. Any late preflight/sampler/render/etc failure discards all proposal state/snapshots/receipts, retains before owner bytes, reports existing I03 fail-stop; no partial publish or same-attempt repair by reusing stale source controls.",
+  "generation": {
+    "value_generation": "g",
+    "normal_origin_generation": "g",
+    "next_callback_index": "g+1 after successful parent commit",
+    "event_timestamp": "event start0, distinct from querygH",
+    "query": "gH even for short final frame; actual only controls raw PCM length",
+    "foreign_packet_generation": "Use explicit adapter if consumer usesg+1; do not relabel this source origin"
+  },
+  "hold_reset": "After normal EOF use existing approved hold interface; no new event/blend at drain. Reset destroys snapshots/event/sampler/binding/DBMD/counters and instantiates fresh selected cold state with newly prepared inputs; no carry to another attempt/programme."
+}

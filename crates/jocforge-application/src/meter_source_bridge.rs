@@ -3,12 +3,13 @@
 
 pub use jocforge_domain::{
     frontend::{
-        job_configuration::SelectedWaveDescriptor,
+        job_configuration::{SelectedInputKind, SelectedWaveDescriptor},
         selected_adm_graph::{PhysicalHostIndex, SelectedAdmGraph},
     },
+    joc::oamd::reader_target::{ReaderTargetControlLineage, ReaderTargetControlRows},
     meter::{
         k_matrix::{KMatrixMode, KMatrixProfile, generate_k_matrix},
-        lfe_delay_ring::MeterFrontendCallbackInput,
+        lfe_delay_ring::{MeterFrontendCallbackInput, MeterLfeError},
         meter_prepass::{
             IndependentMeterCallbackStage, IndependentMeterPrepass, IndependentMeterPrepassError,
         },
@@ -16,7 +17,7 @@ pub use jocforge_domain::{
         post_render_meter::PostRenderMeterReceipt,
         sample_block_queue::{
             MeterCallbackCount, MeterCallbackIndex, MeterCallbackPhase, MeterSampleCount,
-            MeterSourceSampleCount,
+            MeterSourceSampleCount, MeterUpstreamGeneration,
         },
         shared_gain_delay::SharedGainDelayParameters,
         source_frame::{
@@ -24,6 +25,8 @@ pub use jocforge_domain::{
             MeterSourcePosition,
         },
     },
+    spatial::spatial_audio_state::MeterComponentOutputRows,
+    timeline::FrontendCallbackIndex,
     transaction::ProgrammeId,
 };
 
@@ -35,10 +38,13 @@ const CALLBACK_SAMPLES: u64 = 1_536;
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum MeterSourceBridgeError {
     ResourceIdentityMismatch,
+    SelectedInputKindMismatch,
+    SourceExtentMismatch,
     SourceShape,
     SourceClock,
     FrontendClock,
     DirectLfeMismatch,
+    SpatialStage(MeterLfeError),
     PrepassClockMismatch,
     Prepass(IndependentMeterPrepassError),
 }
@@ -62,6 +68,14 @@ impl<'a> MeterSourceCallbackView<'a> {
         let direct_lfe_host = selected_graph.receipt().direct_lfe_host();
         if frame.source_identity() != expected_identity {
             return Err(MeterSourceBridgeError::ResourceIdentityMismatch);
+        }
+        if prepared.configuration().input_kind() != SelectedInputKind::Adm {
+            return Err(MeterSourceBridgeError::SelectedInputKindMismatch);
+        }
+        if frame.source_samples().value() == 0
+            || frame.source_samples().value() != prepared.configuration().source_samples()
+        {
+            return Err(MeterSourceBridgeError::SourceExtentMismatch);
         }
         if frame.rows().len() != PHYSICAL_CHANNEL_COUNT
             || frame
@@ -212,6 +226,9 @@ impl<'a> MeterSourceCallbackView<'a> {
             return Err(MeterSourceBridgeError::DirectLfeMismatch);
         }
 
+        let spatial_callback_index = input.spatial_callback_index();
+        let target_control_lineages = input.target_control_lineages().copied();
+
         Ok(MeterSourceOarHandoff {
             input,
             source_receipt: MeterSourceOarReceipt {
@@ -226,8 +243,32 @@ impl<'a> MeterSourceCallbackView<'a> {
                 source_padding_count: self.frame.source_padding_count(),
                 direct_lfe_host: self.direct_lfe_host,
                 resource_identity: self.frame.source_identity(),
+                spatial_callback_index,
+                target_control_lineages,
             },
         })
+    }
+
+    /// Builds and binds the F06OF input from canonical F04A rows and admitted F05R56 controls.
+    /// Row labels and history lineage remain target-slot based through the resulting handoff.
+    pub fn bind_spatial_outputs(
+        self,
+        component_rows: &MeterComponentOutputRows,
+        target_controls: &ReaderTargetControlRows,
+    ) -> Result<MeterSourceOarHandoff, MeterSourceBridgeError> {
+        let object_render_generation =
+            ObjectRenderCallbackGeneration::try_new(self.frame.upstream_generation().value())
+                .map_err(|_| MeterSourceBridgeError::FrontendClock)?;
+        let input = MeterFrontendCallbackInput::from_spatial_outputs(
+            self.frame.callback_index(),
+            object_render_generation,
+            self.frame.phase(),
+            self.direct_lfe_words().to_vec(),
+            component_rows,
+            target_controls,
+        )
+        .map_err(MeterSourceBridgeError::SpatialStage)?;
+        self.bind_frontend_input(input)
     }
 }
 
@@ -256,6 +297,8 @@ pub struct MeterSourceOarReceipt {
     source_padding_count: MeterSampleCount,
     direct_lfe_host: PhysicalHostIndex,
     resource_identity: MeterSourceIdentity,
+    spatial_callback_index: Option<FrontendCallbackIndex>,
+    target_control_lineages: Option<[ReaderTargetControlLineage; 15]>,
 }
 
 impl MeterSourceOarReceipt {
@@ -303,6 +346,14 @@ impl MeterSourceOarReceipt {
 
     pub const fn resource_identity(self) -> MeterSourceIdentity {
         self.resource_identity
+    }
+
+    pub const fn spatial_callback_index(self) -> Option<FrontendCallbackIndex> {
+        self.spatial_callback_index
+    }
+
+    pub const fn target_control_lineages(self) -> Option<[ReaderTargetControlLineage; 15]> {
+        self.target_control_lineages
     }
 }
 

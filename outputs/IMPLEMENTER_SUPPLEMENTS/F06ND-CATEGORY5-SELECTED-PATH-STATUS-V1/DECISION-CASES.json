@@ -1,0 +1,36 @@
+{
+  "schema": "jocforge.f06nd-category5-selected-path-decision-cases.v1",
+  "input_only": true,
+  "cases": [
+    {
+      "id": "selected-clean-logical-submission",
+      "input": {"category":5,"width_bits":32,"count":1},
+      "approved_clean_result": {
+        "writes_drc_control_fifo": false,
+        "fifo_logical_record_count": 4,
+        "fifo_records_after_submission": "all zero",
+        "override": 0
+      },
+      "grade": "APPROVED_CLEAN_SPEC"
+    },
+    {
+      "id": "selected-atmos-process-descriptor-boundary",
+      "input": ["channel_count","frame_size","per_channel_sample_pointers"],
+      "category5_or_input_control_event_parameter": false,
+      "category5_byte_layout_at_this_boundary": "NOT_APPLICABLE",
+      "grade": "STATIC_SELECTED_PATH"
+    },
+    {
+      "id": "separate-generic-storage-event-surface",
+      "input": "InputControlEvent vector accepted by a separate generic storage API",
+      "selected_category5_identity_join": "UNBOUND",
+      "byte_layout_or_selected_output_effect": "NOT_INFERRED",
+      "grade": "STATIC_WITH_UNBOUND_JOIN"
+    }
+  ],
+  "not_claimed": [
+    "The entire engine has no InputControlEvent records.",
+    "The generic event-vector API is unused by every profile.",
+    "Any category5 record layout or payload encoding."
+  ]
+}

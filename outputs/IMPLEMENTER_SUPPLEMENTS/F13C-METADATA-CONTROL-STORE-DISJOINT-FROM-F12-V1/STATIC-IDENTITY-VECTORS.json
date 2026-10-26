@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge-f13c-metadata-control-static-guards.v1",
+  "grade": "STATIC_CONTROL_FLOW_AND_SHAPE; NO_METADATA_BODY_VALUES",
+  "cases": [
+    {
+      "id": "mode-dependent-channel-map",
+      "input": {"mode":"not 1","channel_count":10,"bytes_per_mapping_record":6},
+      "expected": {"map_copy_extent_bytes":60,"F12_complexity_identity":"UNBOUND"}
+    },
+    {
+      "id": "auxiliary-mode-remap",
+      "input": {"mode":0,"auxiliary_pointer":"non-null","auxiliary_mode_byte":3},
+      "expected": {"metadata_path_enabled":true,"internal_mode_code":2,"F12_count_producer_join":"UNBOUND"}
+    },
+    {
+      "id": "nine-row-metadata-copy",
+      "input": {"row_count":9,"input_stride_bytes":28,"skipped_prefix_bytes":4,"copied_bytes_per_row":24},
+      "expected": {"output_extent_bytes":216,"slot_stride_bytes":5,"row_body_values":"NOT_READ"}
+    },
+    {
+      "id": "namespace-guard",
+      "input": {"metadata_control_state":"separate owner","F12_parameter13":"validated count owner"},
+      "expected": {"same_owner_or_generation_established":false}
+    }
+  ]
+}

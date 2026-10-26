@@ -1,0 +1,8 @@
+{
+  "schema": "jocforge-washed-supplement-delivery.v1",
+  "package_id": "F06ND-CATEGORY5-SELECTED-PATH-STATUS-V1",
+  "manifest_sha256": "e7911325d4b63ce06cc029253bd23a1a173502efdc5ff296662f4e1eb0f6b43a",
+  "payload_files": 4,
+  "selected_process_byte_layout": "NOT_APPLICABLE",
+  "generic_event_join": "UNBOUND"
+}

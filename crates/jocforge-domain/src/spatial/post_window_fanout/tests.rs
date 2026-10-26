@@ -139,12 +139,16 @@ fn fanout_returns_two_views_of_one_payload_with_explicit_phase_and_identity() {
         &spatial_audio.lineage.render_stage_identity
     ));
     assert!(Arc::ptr_eq(
-        &current_features
-            .lineage
-            .spatial_control_after_proposal_identity,
-        &spatial_audio
+        current_features
             .lineage
             .spatial_control_after_proposal_identity
+            .as_ref()
+            .expect("current-features view keeps its after-proposal identity"),
+        spatial_audio
+            .lineage
+            .spatial_control_after_proposal_identity
+            .as_ref()
+            .expect("spatial-audio view keeps its after-proposal identity")
     ));
     assert_eq!(
         current_features.lineage.programme_id.as_ref(),
@@ -157,6 +161,31 @@ fn fanout_returns_two_views_of_one_payload_with_explicit_phase_and_identity() {
         assert!(source_samples.iter().all(|sample| sample.to_bits() == 0));
     }
     assert!(current_features.source_samples(SOURCE_COUNT).is_none());
+}
+
+#[test]
+fn callback_fanout_binds_the_before_owner_without_claiming_an_after_root() {
+    let machine = spatial_control();
+    let transaction_id = test_callback_transaction_id();
+    let proposal = PostWindowRenderProposal::try_from_spatial_control_callback(
+        SpatialControlMachine::render_authority(),
+        &machine,
+        transaction_id.clone(),
+        CallbackPhase::Normal,
+        vec![0.0; PAYLOAD_SAMPLE_COUNT],
+    )
+    .unwrap();
+    let (features, spatial_audio) = proposal.fanout();
+
+    assert_eq!(features.transaction_id(), &transaction_id);
+    assert_eq!(features.callback_index(), transaction_id.callback_index());
+    assert_eq!(features.before_generation(), machine.generation());
+    assert_eq!(features.before_digest(), machine.digest());
+    assert!(features.spatial_control_after_proposal_identity().is_none());
+    assert_eq!(spatial_audio.transaction_id(), &transaction_id);
+    assert!(spatial_audio.after_digest().is_none());
+    assert!(Arc::ptr_eq(&features.payload, &spatial_audio.payload));
+    assert_eq!(machine.generation(), 0);
 }
 
 #[test]

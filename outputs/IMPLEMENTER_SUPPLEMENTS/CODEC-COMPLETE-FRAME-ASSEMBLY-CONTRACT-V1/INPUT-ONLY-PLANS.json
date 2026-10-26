@@ -1,0 +1,179 @@
+{
+  "schema": "codec3-complete-frame-input-only-plans.v1",
+  "input_only": true,
+  "expected_frame_or_au_bytes_included": false,
+  "pcm_or_audio_samples_included": false,
+  "prototype_expected_outputs_used_as_seed": false,
+  "common_plan_shape": {
+    "frame_bytes": 4096,
+    "audio_shape": [
+      6,
+      1536
+    ],
+    "external_channels": [
+      "L",
+      "R",
+      "C",
+      "LFE",
+      "Ls",
+      "Rs"
+    ],
+    "codec_channels": [
+      "L",
+      "C",
+      "R",
+      "Ls",
+      "Rs",
+      "LFE"
+    ],
+    "blocks": 6,
+    "short_flags_shape": [
+      6,
+      5
+    ],
+    "previous_short_shape": [
+      5
+    ],
+    "fullband_plan_shape": [
+      6,
+      5
+    ],
+    "lfe_plan_shape": [
+      6
+    ],
+    "db_per_bit_codes_shape": [
+      6
+    ],
+    "bsi_line_drc_shape": [
+      6
+    ],
+    "main_frame_codes_shape": [
+      5
+    ],
+    "converter_frame_codes_shape": [
+      5
+    ],
+    "converter_snr_offset_type": "U10",
+    "emdf_carriage_mode_type": "enum string supplied at programme start"
+  },
+  "plans": [
+    {
+      "id": "source0_suppressed",
+      "inputs": {
+        "source_index": 0,
+        "codec_profile": "selected-48k-1024-5.1",
+        "payload": "ABSENT_PUBLISHED_PAYLOAD_V1",
+        "emdf_carriage_mode": "deployed_compat",
+        "build_full_frame_scratch": true,
+        "frame_bytes": 4096,
+        "eac3_crc16": true,
+        "publish_au": false
+      },
+      "field_sources": [
+        "F07/F09/F10 codec plan",
+        "same-source F06 BSI plan",
+        "F15 suppression contract"
+      ]
+    },
+    {
+      "id": "source1_suppressed_and_id14_writer0_discarded",
+      "inputs": {
+        "source_index": 1,
+        "codec_profile": "selected-48k-1024-5.1",
+        "payload": "ABSENT_PUBLISHED_PAYLOAD_V1",
+        "emdf_carriage_mode": "deployed_compat",
+        "build_full_frame_scratch": true,
+        "frame_bytes": 4096,
+        "eac3_crc16": true,
+        "publish_au": false
+      },
+      "field_sources": [
+        "same-source staged F13 queue state",
+        "F15 source1 suppression rule"
+      ]
+    },
+    {
+      "id": "first_published_deployed_compat",
+      "inputs": {
+        "source_index": 2,
+        "codec_profile": "selected-48k-1024-5.1",
+        "emdf_carriage_mode": "deployed_compat",
+        "four_ready_body_receipts": [
+          "ID11@writer0",
+          "ID14@writer1",
+          "ID2@writer0",
+          "ID1@writer0"
+        ],
+        "complete_emdf_container_length_C": "symbolic 4..511 bytes; container body B=C-4",
+        "additional_bsi_complexity": "derive from the same complete F13/ID14 body; no header/reference seed"
+      },
+      "field_sources": [
+        "F13 same-source queue receipts",
+        "F14K public CRC32/CRC8",
+        "F12S block2 skip writer",
+        "F12S codec plan"
+      ]
+    },
+    {
+      "id": "same_source_etsi_emdf_experiment",
+      "inputs": {
+        "source_index": 2,
+        "same_codec_plan_identity_as": "first_published_deployed_compat",
+        "emdf_carriage_mode": "etsi_emdf",
+        "codec_data_present": true,
+        "codec_data_reserved_U8": 0,
+        "ID11_payload_frame_aligned": true,
+        "ID14_payload_frame_aligned": true
+      },
+      "field_sources": [
+        "explicit F13.9 mode input",
+        "fresh full F13 serialization",
+        "fresh F12 frame-size trial"
+      ]
+    },
+    {
+      "id": "carrier_length_boundary",
+      "inputs": {
+        "complete_container_C": 511,
+        "F13_body_B": 507,
+        "skip_length_width": 9,
+        "frame_bytes": 4096,
+        "pre_tail_bit_limit": 32734
+      },
+      "field_sources": [
+        "F13.1 container rule",
+        "F13 metadata owner boundary",
+        "F12S.1/.9 frame rule"
+      ],
+      "assertion_scope": "a 9-bit length fit does not guarantee the complete frame bit budget fits"
+    },
+    {
+      "id": "carrier_length_rejection",
+      "inputs": {
+        "complete_container_C": 512,
+        "skip_length_width": 9
+      },
+      "field_sources": [
+        "F13.1",
+        "F12S.7"
+      ],
+      "assertion_scope": "reject before candidate trial"
+    },
+    {
+      "id": "dynamic_line_drc_cursor",
+      "inputs": {
+        "block": 3,
+        "short_syntax_present": true,
+        "dither_syntax_present": true,
+        "line_drc_present": true,
+        "line_drc_word_source": "same-source F06ND line_packed_words_u16[3] >> 8"
+      },
+      "field_sources": [
+        "F06ND-F12 BSI field binding",
+        "F12S block writer"
+      ],
+      "assertion_scope": "derive bit offset from current writer cursor"
+    }
+  ],
+  "fixture_boundary": "Existing CODEC-WIRE-COMPLETE-FRAME-INPUT-VECTORS are referenced by hash for field shapes/case coverage only. This package does not import expected frame bytes, AU body bytes, PCM, or expected outputs."
+}

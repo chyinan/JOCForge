@@ -1,0 +1,15 @@
+{
+  "package_id": "CODEC-PUBLIC-BAP-PROVIDER-V1",
+  "files": [
+    {
+      "file": "public-bap-48k-v1.json",
+      "bytes": 8509,
+      "sha256": "eb913038a89d853db453831d64df34c19f8ea8a89d04a72c0ef43733619545a3"
+    },
+    {
+      "file": "DELIVERY.json",
+      "bytes": 496,
+      "sha256": "ee7f10ff6de7242cffd819727806a4aed1b4a04c9e6b0eec869fc47780a67238"
+    }
+  ]
+}

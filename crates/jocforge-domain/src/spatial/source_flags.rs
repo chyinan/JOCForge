@@ -7,6 +7,10 @@ use super::spatial_control::{
 use crate::{
     frontend::{
         ProviderSha256,
+        normal_control_snapshot::{
+            NormalControlHeldSourceView, NormalControlPreparedSnapshot, NormalControlRow,
+            NormalControlSnapshotProposal, NormalControlTrackKind,
+        },
         primary_metadata_control::{PrimaryControl38Fields, PrimaryMetadataControlRows},
         selected_adm_graph::{SelectedAdmGraph, SelectedTrackKind},
     },
@@ -330,6 +334,11 @@ impl ValidatedSemanticRoute {
         &self.regular_hosts
     }
 
+    /// Returns the admitted global source for one physical host, or `None` for LFE.
+    pub fn destination_for_host(&self, host: HostId) -> Option<u8> {
+        self.destination_by_host[usize::from(host.value())]
+    }
+
     fn destination(&self, host: HostId) -> Result<u8, SourceFlagsError> {
         self.destination_by_host[usize::from(host.value())]
             .ok_or(SourceFlagsError::RouteNotBijective)
@@ -479,6 +488,21 @@ impl SourceControlSnapshotClock {
     pub const fn is_cached_drain(self) -> bool {
         self.cached_drain
     }
+
+    #[cfg(test)]
+    pub(crate) const fn fixture_with_source_origin(
+        callback_index: FrontendCallbackIndex,
+        normal_callbacks: NormalCallbackCount,
+        source_origin: FrontendCallbackIndex,
+        cached_drain: bool,
+    ) -> Self {
+        Self {
+            callback_index,
+            normal_callbacks,
+            source_origin,
+            cached_drain,
+        }
+    }
 }
 
 /// Source-control projection from one validated physical metadata snapshot.
@@ -607,6 +631,294 @@ pub fn project_primary_regular_source_controls(
     if !direct_lfe_seen || regular_controls.len() != REGULAR_HOSTS {
         return Err(SourceFlagsError::PrimaryControlRowMismatch);
     }
+    let route = ValidatedSemanticRoute::new(route_records)?;
+    let controls = RegularControls::new(regular_controls)?;
+    Ok(PrimaryRegularSourceControlProjection {
+        clock,
+        profile_identity,
+        route,
+        controls,
+    })
+}
+
+/// Projects the current normal snapshot's tagged controls into the F03R regular-host domain.
+/// The proposal already carries the admitted graph, physical map, DBMD identity and source
+/// origin; `graph` is checked against that prepared identity before any projection is returned.
+pub fn project_normal_control_snapshot_source_controls(
+    proposal: &NormalControlSnapshotProposal,
+    graph: &SelectedAdmGraph,
+    profile_identity: ResolvedEncodingProfile,
+) -> Result<PrimaryRegularSourceControlProjection, SourceFlagsError> {
+    let prepared = proposal.after_state().prepared_identity().as_ref();
+    if !prepared.matches_graph(graph) {
+        return Err(SourceFlagsError::PrimaryMetadataIdentityMismatch);
+    }
+    project_normal_control_snapshot_source_controls_from_prepared(
+        proposal,
+        prepared,
+        profile_identity,
+    )
+}
+
+/// Core projection for the exact prepared map, also usable by frontend unit tests.
+pub(crate) fn project_normal_control_snapshot_source_controls_from_prepared(
+    proposal: &NormalControlSnapshotProposal,
+    prepared: &NormalControlPreparedSnapshot,
+    profile_identity: ResolvedEncodingProfile,
+) -> Result<PrimaryRegularSourceControlProjection, SourceFlagsError> {
+    if proposal.after_state().prepared_identity().as_ref() != prepared
+        || prepared.profile_identity() != profile_identity
+    {
+        return Err(SourceFlagsError::UnsupportedProfile);
+    }
+
+    let callback_index = proposal.transaction_id().callback_index();
+    let callback_count = proposal.after_state().next_normal_callbacks();
+    let expected_next = callback_index
+        .value()
+        .checked_add(1)
+        .ok_or(SourceFlagsError::SourceControlClockMismatch)?;
+    let query_sample = u64::from(callback_index.value())
+        .checked_mul(
+            u64::try_from(FRAME_SAMPLES)
+                .map_err(|_| SourceFlagsError::SourceControlClockMismatch)?,
+        )
+        .ok_or(SourceFlagsError::SourceControlClockMismatch)?;
+    let expected_actual = prepared.source_samples().saturating_sub(query_sample);
+    if proposal.value_generation() != callback_index
+        || proposal.normal_origin_generation() != callback_index
+        || proposal.query_sample() != query_sample
+        || query_sample >= prepared.source_samples()
+        || u64::from(proposal.actual_samples()) != expected_actual.min(FRAME_SAMPLES as u64)
+        || callback_count.value() != u64::from(expected_next)
+        || proposal.after_state().next_callback_index().value() != expected_next
+    {
+        return Err(SourceFlagsError::SourceControlClockMismatch);
+    }
+    let clock = SourceControlSnapshotClock::for_normal_callback(callback_index, callback_count)?;
+    if clock.is_cached_drain() || clock.source_origin() != proposal.normal_origin_generation() {
+        return Err(SourceFlagsError::SourceControlClockMismatch);
+    }
+
+    project_normal_control_rows(
+        proposal.control38_rows(),
+        proposal.regular37_rows(),
+        prepared,
+        profile_identity,
+        clock,
+    )
+}
+
+/// Projects the committed last-normal F01E values for a main cached-audio delivery g.
+/// The control rows remain sourced from Q-1; only the projection delivery clock advances.
+pub fn project_held_normal_control_snapshot_source_controls(
+    held: &NormalControlHeldSourceView,
+    graph: &SelectedAdmGraph,
+    profile_identity: ResolvedEncodingProfile,
+) -> Result<PrimaryRegularSourceControlProjection, SourceFlagsError> {
+    let prepared = held.prepared_identity();
+    if !prepared.matches_graph(graph) {
+        return Err(SourceFlagsError::PrimaryMetadataIdentityMismatch);
+    }
+    if prepared.profile_identity() != profile_identity {
+        return Err(SourceFlagsError::UnsupportedProfile);
+    }
+    let clock = SourceControlSnapshotClock::for_cached_drain(
+        held.delivery_generation(),
+        held.normal_callbacks(),
+    )?;
+    if clock.source_origin() != held.source_origin_generation()
+        || held.delivery_transaction_id().programme_id() != prepared.programme_id()
+        || held.delivery_transaction_id().attempt_id() != prepared.attempt_id()
+        || held.delivery_transaction_id().callback_index() != clock.callback_index()
+    {
+        return Err(SourceFlagsError::SourceControlClockMismatch);
+    }
+    project_normal_control_rows(
+        held.control38_rows(),
+        held.regular37_rows(),
+        prepared,
+        profile_identity,
+        clock,
+    )
+}
+
+fn project_normal_control_rows(
+    control38_rows: &[NormalControlRow; HOST_CHANNELS],
+    regular37_rows: &[NormalControlRow; REGULAR_HOSTS],
+    prepared: &NormalControlPreparedSnapshot,
+    profile_identity: ResolvedEncodingProfile,
+    clock: SourceControlSnapshotClock,
+) -> Result<PrimaryRegularSourceControlProjection, SourceFlagsError> {
+    if control38_rows.len() != HOST_CHANNELS
+        || regular37_rows.len() != REGULAR_HOSTS
+        || prepared.physical_tracks().len() != HOST_CHANNELS
+    {
+        return Err(SourceFlagsError::PrimaryControlRowMismatch);
+    }
+    let callback_index = clock.callback_index();
+    let direct_lfe_host = prepared.lfe_host();
+    if usize::from(direct_lfe_host) >= HOST_CHANNELS {
+        return Err(SourceFlagsError::PrimaryControlRowMismatch);
+    }
+
+    let mut destination_by_host = [None; HOST_CHANNELS];
+    for binding in prepared.regular_source_bindings() {
+        let host = usize::from(binding.physical_host());
+        if host >= HOST_CHANNELS || host == usize::from(direct_lfe_host) {
+            return Err(SourceFlagsError::PrimaryRegularSourceMapMismatch);
+        }
+        let destination = u8::try_from(binding.global_source())
+            .map_err(|_| SourceFlagsError::PrimaryRegularSourceMapMismatch)?;
+        let is_selected_global_source = (11..=47).contains(&destination);
+        if !is_selected_global_source || destination_by_host[host].replace(destination).is_some() {
+            return Err(SourceFlagsError::PrimaryRegularSourceMapMismatch);
+        }
+    }
+
+    let mut route_records = Vec::with_capacity(HOST_CHANNELS);
+    let mut direct_lfe_seen = false;
+    for (host_index, row) in control38_rows.iter().enumerate() {
+        let host = row.physical_host();
+        let track = &prepared.physical_tracks()[host_index];
+        if usize::from(host) != host_index
+            || track.physical_host() != host
+            || track.track_uid() != row.track_uid()
+            || track.channel_format_id() != row.channel_format_id()
+            || row.dbmd().track_index() != u16::from(host)
+        {
+            return Err(SourceFlagsError::PrimaryControlRowMismatch);
+        }
+        match (host == direct_lfe_host, row, track.kind()) {
+            (
+                true,
+                NormalControlRow::Bed6 {
+                    words,
+                    unproduced_tail,
+                    ..
+                },
+                NormalControlTrackKind::Bed {
+                    bed_id: 3,
+                    semantic_role,
+                    ..
+                },
+            ) if semantic_role == "lfe"
+                && *words == [0, 0, 3, 2, 1, 3]
+                && unproduced_tail.offset_bytes() == 24
+                && unproduced_tail.byte_count() == 28 =>
+            {
+                if direct_lfe_seen {
+                    return Err(SourceFlagsError::PrimaryControlRowMismatch);
+                }
+                direct_lfe_seen = true;
+                route_records.push(HostRouteRecord::new(host, HostRole::Lfe, true, None)?);
+            }
+            (
+                false,
+                NormalControlRow::Bed6 { words, .. },
+                NormalControlTrackKind::Bed {
+                    bed_id,
+                    semantic_role,
+                    ..
+                },
+            ) if *bed_id != 3
+                && semantic_role != "lfe"
+                && words[0..5] == [0, 0, 3, 2, 1]
+                && words[5] == u32::from(*bed_id) =>
+            {
+                route_records.push(HostRouteRecord::new(
+                    host,
+                    HostRole::Regular,
+                    true,
+                    Some(
+                        destination_by_host[host_index]
+                            .ok_or(SourceFlagsError::PrimaryRegularSourceMapMismatch)?,
+                    ),
+                )?);
+            }
+            (
+                false,
+                NormalControlRow::Object13 {
+                    semantic_key,
+                    local_owner_ordinal,
+                    control,
+                    ..
+                },
+                NormalControlTrackKind::Object {
+                    semantic_key: track_key,
+                    local_owner_ordinal: track_ordinal,
+                },
+            ) if semantic_key == track_key
+                && local_owner_ordinal == track_ordinal
+                && control.words()[11] == 0
+                && control.words()[12] == 1 =>
+            {
+                let binding = prepared
+                    .object_owner_bindings()
+                    .iter()
+                    .find(|binding| binding.track_uid() == row.track_uid())
+                    .ok_or(SourceFlagsError::PrimaryControlRowMismatch)?;
+                if binding.local_owner_ordinal() != *local_owner_ordinal
+                    || binding.physical_host() != host
+                    || binding.semantic_key() != *semantic_key
+                    || binding.channel_format_id() != row.channel_format_id()
+                {
+                    return Err(SourceFlagsError::PrimaryControlRowMismatch);
+                }
+                route_records.push(HostRouteRecord::new(
+                    host,
+                    HostRole::Regular,
+                    true,
+                    Some(
+                        destination_by_host[host_index]
+                            .ok_or(SourceFlagsError::PrimaryRegularSourceMapMismatch)?,
+                    ),
+                )?);
+            }
+            _ => return Err(SourceFlagsError::PrimaryControlRowMismatch),
+        }
+    }
+    if !direct_lfe_seen {
+        return Err(SourceFlagsError::PrimaryControlRowMismatch);
+    }
+
+    let mut regular_controls = Vec::with_capacity(REGULAR_HOSTS);
+    for (rank, (row, expected_host)) in regular37_rows
+        .iter()
+        .zip(prepared.regular37_hosts())
+        .enumerate()
+    {
+        let host = row.physical_host();
+        if host != *expected_host
+            || host == direct_lfe_host
+            || control38_rows[usize::from(host)] != *row
+        {
+            return Err(SourceFlagsError::RegularControlHostMismatch);
+        }
+        let binding = prepared.regular_source_bindings()[rank];
+        if binding.physical_host() != host
+            || destination_by_host[usize::from(host)]
+                != Some(
+                    u8::try_from(binding.global_source())
+                        .map_err(|_| SourceFlagsError::PrimaryRegularSourceMapMismatch)?,
+                )
+        {
+            return Err(SourceFlagsError::PrimaryRegularSourceMapMismatch);
+        }
+        let source_view = row.source_flags_view();
+        let mute =
+            u8::try_from(source_view.mute_word()).map_err(|_| SourceFlagsError::InvalidMute)?;
+        let feature_control = SelectedFeatureFlagsControl::from_admitted_profile(
+            profile_identity,
+            callback_index,
+            host,
+        )?;
+        regular_controls.push(
+            feature_control
+                .into_regular_control(mute, f32::from_bits(source_view.spread_word()))?,
+        );
+    }
+
     let route = ValidatedSemanticRoute::new(route_records)?;
     let controls = RegularControls::new(regular_controls)?;
     Ok(PrimaryRegularSourceControlProjection {

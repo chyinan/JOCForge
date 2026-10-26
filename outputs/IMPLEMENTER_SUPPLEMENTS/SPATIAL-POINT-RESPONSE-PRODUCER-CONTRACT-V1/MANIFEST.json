@@ -1,0 +1,28 @@
+{
+  "package_id": "SPATIAL-POINT-RESPONSE-PRODUCER-CONTRACT-V1",
+  "scope": "Existing selected F03P mathematical response producer implementation clarification",
+  "files": [
+    {
+      "file": "CONTRACT.json",
+      "bytes": 7399,
+      "sha256": "ee9d5412659b2a7652961f93e3f13762e0fd1442fb5b2ddd3e3787a37eaca14f"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 3042,
+      "sha256": "9402a4d6bbae6bf50769008d8d79fa73a28a6baedb96f1cea6a9f337ecfa7df7"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 3386,
+      "sha256": "78d5bf379806da4059cd742d825c4a71e884c23275cc3d21ce9c6fe77efa2440"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 919,
+      "sha256": "ec122ebdd86a8e2bff318cbb5e26ac25371c2dccca8ed804a4acd22000ec5bc3"
+    }
+  ],
+  "whole_programme_execution": "NOT_RUN",
+  "product_acceptance": "NOT_RUN"
+}

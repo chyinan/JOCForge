@@ -1,0 +1,13 @@
+{
+  "package_id": "SPATIAL-P15-BASIS-RECIPE-V1",
+  "files": [
+    {
+      "file": "CONTRACT-AND-INPUT-RECIPE.json",
+      "bytes": 3495,
+      "sha256": "f485f7d37854ff94fe695cc8b963e553a381ac4800b34c80681fdae5990f6951"
+    }
+  ],
+  "scope": "Existing selected P15 generator, not a new profile",
+  "native_execution": "NOT_RUN",
+  "product_acceptance": "NOT_RUN"
+}

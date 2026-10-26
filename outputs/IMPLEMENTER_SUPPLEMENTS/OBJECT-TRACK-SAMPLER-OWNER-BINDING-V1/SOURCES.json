@@ -1,0 +1,54 @@
+{
+  "parent_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "sources": [
+    {
+      "role": "specs/01-adm-graph-and-time.md",
+      "bytes": 6441,
+      "sha256": "c3abb599305392cdad7b43a1d8d45b1c1ae0466ff899f56caa3590d010a11f14",
+      "grade": "CURRENT_APPROVED_CONTRACT"
+    },
+    {
+      "role": "specs/01-frontend-config-dbmd-events.md",
+      "bytes": 13867,
+      "sha256": "afd9efc879ed9a4878bd967c1370275074efd2226e11e67eb86838f4168f61b7",
+      "grade": "CURRENT_APPROVED_CONTRACT"
+    },
+    {
+      "role": "parameters/f01e-selected-constructor-v1.json",
+      "bytes": 20138,
+      "sha256": "b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb",
+      "grade": "CURRENT_APPROVED_CONTRACT"
+    },
+    {
+      "role": "specs/00-selected-owner-projection-and-j05.md",
+      "bytes": 4504,
+      "sha256": "9ff01aca7b6be6e89511e4d493f9fc9e661a50e2f098065f4a32c3fed777542f",
+      "grade": "CURRENT_APPROVED_CONTRACT"
+    },
+    {
+      "role": "descriptor_UID_sort_group_domain",
+      "bytes": 13969,
+      "sha256": "5642c171e2255b629d82c334e9ffc438e362517ea8c1949f9fdaf2cd94c92529",
+      "grade": "REHASHED_FROZEN_MODEL_SOURCE_NOT_NEW_NATIVE_EXECUTION"
+    },
+    {
+      "role": "actual_descriptor_model_caller",
+      "bytes": 8829,
+      "sha256": "19e0e68534e851ee04b5d152bca8b2a6ebc55e893a534bfab051e192dd18e197",
+      "grade": "REHASHED_FROZEN_MODEL_SOURCE_NOT_NEW_NATIVE_EXECUTION"
+    },
+    {
+      "role": "actual_per_track_event_key_and_host_row",
+      "bytes": 14086,
+      "sha256": "7d5cd65e78bc92bf474abc63dba7d5018ecd02c026e61fe585b6cf42f489592e",
+      "grade": "REHASHED_FROZEN_MODEL_SOURCE_NOT_NEW_NATIVE_EXECUTION"
+    },
+    {
+      "role": "legacy_first_record_physical_type_domain_not_clean_owner",
+      "bytes": 5991,
+      "sha256": "99d32b96631db1e21a645310a518775093d83d0fe59e4007b1b80b5719436b20",
+      "grade": "REHASHED_FROZEN_MODEL_SOURCE_NOT_NEW_NATIVE_EXECUTION"
+    }
+  ],
+  "research_paths_excluded": true
+}

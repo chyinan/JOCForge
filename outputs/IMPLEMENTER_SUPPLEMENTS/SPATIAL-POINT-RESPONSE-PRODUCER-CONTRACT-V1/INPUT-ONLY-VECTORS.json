@@ -1,0 +1,149 @@
+{
+  "authorized_front_side_y_q15": 5285,
+  "scope": "Own finite scalar positions, quantizer/height/index inputs. No expected response arrays or real audio.",
+  "xyz_vectors": [
+    {
+      "name": "lower_origin",
+      "xyz_u32": [
+        0,
+        0,
+        0
+      ],
+      "coordinate_parameter": 1
+    },
+    {
+      "name": "upper_right_front",
+      "xyz_u32": [
+        1065353216,
+        0,
+        1065353216
+      ],
+      "coordinate_parameter": 1
+    },
+    {
+      "name": "front_center",
+      "xyz_u32": [
+        1056964608,
+        0,
+        0
+      ],
+      "coordinate_parameter": 1
+    },
+    {
+      "name": "midheight_center",
+      "xyz_u32": [
+        1056964608,
+        1056964608,
+        1056964608
+      ],
+      "coordinate_parameter": 1
+    },
+    {
+      "name": "parameter_zero_flattens_height",
+      "xyz_u32": [
+        1056964608,
+        1056964608,
+        1056964608
+      ],
+      "coordinate_parameter": 0
+    },
+    {
+      "name": "negative_zero",
+      "xyz_u32": [
+        2147483648,
+        2147483648,
+        2147483648
+      ],
+      "coordinate_parameter": 1
+    },
+    {
+      "name": "subnormal_xyz",
+      "xyz_u32": [
+        1,
+        1,
+        1
+      ],
+      "coordinate_parameter": 1
+    },
+    {
+      "name": "quantizer_half_tie",
+      "xyz_u32": [
+        931135488,
+        931135488,
+        931135488
+      ],
+      "coordinate_parameter": 1
+    },
+    {
+      "name": "next_below_half",
+      "xyz_u32": [
+        1056964607,
+        1056964607,
+        1056964607
+      ],
+      "coordinate_parameter": 1
+    },
+    {
+      "name": "next_above_half",
+      "xyz_u32": [
+        1056964609,
+        1056964609,
+        1056964609
+      ],
+      "coordinate_parameter": 1
+    },
+    {
+      "name": "near_upper_q15",
+      "xyz_u32": [
+        1065352704,
+        1065352704,
+        1065352704
+      ],
+      "coordinate_parameter": 1
+    },
+    {
+      "name": "negative_q15_no_lower_clamp",
+      "xyz_u32": [
+        3212836864,
+        0,
+        0
+      ],
+      "coordinate_parameter": 1
+    }
+  ],
+  "index_recipe": "For source ID sid0..47 use XYZ=(sid mod3, (sid//3)mod3,(sid//9)mod3)/2, each independently R32; authored audio width=((sid mod4)+1)/8. Other selected fields: mode0,skip0,enum0,coordinate_parameter1. Reverse source record array to distinguish source-ID lookup from array ordinal.",
+  "gate_inputs": {
+    "candidates": [
+      2,
+      47
+    ],
+    "processing": [
+      2,
+      11
+    ]
+  },
+  "empty_and_independent_sets": [
+    {
+      "candidates": [],
+      "processing": []
+    },
+    {
+      "candidates": [
+        47
+      ],
+      "processing": []
+    },
+    {
+      "candidates": [],
+      "processing": [
+        11
+      ]
+    }
+  ],
+  "threshold_primitive_input_words": [
+    "358637bc",
+    "358637bd",
+    "358637be"
+  ],
+  "grouping_primitive_own_points_recipe": "(x,y,z)=(1,1/1000,0),(0,0,0),(1/2,2/1000,0), each R32; pending indices0,1,2. This tests x-sorted first member layer_y, not a production geometry substitute."
+}

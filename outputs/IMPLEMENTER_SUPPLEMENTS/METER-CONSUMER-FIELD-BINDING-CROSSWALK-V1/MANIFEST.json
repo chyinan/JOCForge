@@ -1,0 +1,20 @@
+{
+  "package_id": "METER-CONSUMER-FIELD-BINDING-CROSSWALK-V1",
+  "files": [
+    {
+      "file": "CROSSWALK.md",
+      "bytes": 6121,
+      "sha256": "e7b041f727497e135f0a8be91aed9f2431c084f66be248746a15af68026fed53"
+    },
+    {
+      "file": "REFERENCES.json",
+      "bytes": 5870,
+      "sha256": "f1f39798fcf02e0c16e06923a15c88571dd6fc0c7dd87a7cc8cc9c8e4d85a970"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 379,
+      "sha256": "7c7d41d53b4fcfbb9812bc8267fead0a92e8dc0ecdf9d3ae44253355b34c3ccb"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "package_id": "CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1",
+  "scope": "Selected quantizer and block-local mantissa packing only",
+  "files": [
+    {
+      "file": "CONTRACT.json",
+      "bytes": 6767,
+      "sha256": "4b794d6b7f079af56a87c767a131261366002cd8d96168dd626d965aef1a7b7d"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 11051,
+      "sha256": "19dfa6afdaedfe2cfb6ff7db31a0679f109bb4482702d9c81ea5b3ea4ecdcd4b"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 11090,
+      "sha256": "488c3f303a9fd1afbc9442550c8c28884f2fdb1fe04c763236539fedfe03bbbc"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 998,
+      "sha256": "967de9f51f793a098cfd870a32cab86ba41f16fe5889254a1f2b8e38b3c90977"
+    }
+  ],
+  "full_frame_execution": "NOT_RUN",
+  "product_acceptance": "NOT_RUN"
+}

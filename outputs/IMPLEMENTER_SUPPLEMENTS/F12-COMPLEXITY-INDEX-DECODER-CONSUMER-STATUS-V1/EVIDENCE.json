@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge-f12-complexity-index-decoder-consumer-evidence.v1",
+  "status": "ADMISSION_AND_DIAGNOSTIC_ROLE_STATICALLY_CLOSED_DIRECT_RENDER_PARAMETER_NOT_FOUND_IN_SCOPED_PATH",
+  "reverse_package": {
+    "manifest_sha256": "e03490d81178f73711e99d796c605909b24395ac12b98edd052fd7f0f9b9c7da",
+    "payload_count": 6,
+    "checker_normal": "PASS_HASH_BOUND_DECODER_COMPLEXITY_CONSUMER_LINEAGE",
+    "checker_python_O": "PASS_HASH_BOUND_DECODER_COMPLEXITY_CONSUMER_LINEAGE"
+  },
+  "decoder_behavior": {
+    "parsed_field": "complexity_index_type_a U8, 10 bits in carrier syntax",
+    "parser_conditions": ["two-byte addbsi record in tested scalar case","reserved bits zero","type-A flag present","U8 <= 16"],
+    "validation": "parsed U8 must equal OAMD total object count before decode call",
+    "mismatch_effect": "frame rejected before decode/render",
+    "valid_value_use": "retained for diagnostics; not passed into JocFrameInput or DecodedPayloadFrame in the checked path",
+    "direct_spatial_reconstruction_parameter": "NOT_FOUND_IN_SCOPED_OPENJOC_PATH"
+  },
+  "lav_behavior": {
+    "parser": "stores type-A U8 in AC3 header metadata",
+    "confirmed_consumer": "MOV dec3 metadata serialization",
+    "playback_decoder_or_renderer_consumer": "UNBOUND_NOT_ESTABLISHED_BY_SCOPED_SOURCE_SEARCH"
+  },
+  "source_identity": {
+    "openjoc_listed_files": 8,
+    "lav_listed_files": 3,
+    "file_size_and_sha_checks": "PASS",
+    "git_head_and_worktree_reverified": false,
+    "source_identity_basis": "hashes of the eleven listed files; repository HEAD/clean status are reporter claims only"
+  },
+  "execution_boundary": {
+    "tests_run": false,
+    "real_audio_loaded_or_played": false,
+    "dee_or_dll_run": false,
+    "user_wav_or_pcm_read": false,
+    "key_or_auth_material_read": false,
+    "perceived_severity": "NOT_EVALUATED_LISTENING_REQUIRED",
+    "implementation_ready": false
+  }
+}

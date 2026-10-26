@@ -1,0 +1,89 @@
+{
+  "approved_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_sources": [
+    {
+      "document": "03-u04-refinement-and-projection",
+      "sha256": "ca235e2f373d95d5c628ca61c651d01805bb9cb14a7c3457d9a77b1d87941879",
+      "bytes": 5458
+    },
+    {
+      "document": "03-selector-affinity-and-selection",
+      "sha256": "ce95853e007f9282f3d1dce0e43cffb132ed079b5f1cd2fe3e6ce10901d51697",
+      "bytes": 6405
+    },
+    {
+      "document": "03-gate-and-target-installation",
+      "sha256": "aeb6791967413e71518cfb1c5853c52cd8e6e7e7174f60afa611cc0e0fa8d9dc",
+      "bytes": 5475
+    },
+    {
+      "document": "00-numeric-semantics",
+      "sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135",
+      "bytes": 3369
+    }
+  ],
+  "frozen_sources": [
+    {
+      "name": "fullstream_front_prediction_rectangular_exact_core.py",
+      "sha256": "7b31a8122ff2212bd3efba6f22523ba2ea33efa651f0501c924aa79bb8ed1c52",
+      "bytes": 12497,
+      "scope": "lines61-106: original gate candidate feature, current geometry/attributes, initial selected target assembly. Historical fixture wrapper is not authoritative for current capacity admission.",
+      "executed": false
+    },
+    {
+      "name": "r33_raw96_u04_adapter_core.py",
+      "sha256": "7f2cb7c64a63a5d4b29ee2910fb97937b726fc7e258ecc471712ae96d1bfbff4",
+      "bytes": 21441,
+      "scope": "lines213-267: declared candidate-order source XYZ/24 bands/full attribute and selected-order target XYZ/full attribute. Transport target labels are local ordinals, not global IDs.",
+      "executed": false
+    },
+    {
+      "name": "u04_projection_input_controls_core_rev1.py",
+      "sha256": "ae73527d1feed1ef7ce12f19cb9bbb561f0c88eb364b7af3e95163b5ff472787",
+      "bytes": 8061,
+      "scope": "lines60-150: historical artifact consumer reads raw source weights/membership gains and reconstructs projection. Does not itself generate membership gains; not used as production solver.",
+      "executed": false
+    }
+  ],
+  "native_static": {
+    "grade": "CACHED_STATIC",
+    "declared_import_executable_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "fresh_original_PE_rehash": "NOT_RUN_SOURCE_FILE_UNAVAILABLE",
+    "body_scope": "Recovered database bodies, not independently certified complete logical boundaries. Static function/call relations only; no target execution.",
+    "bodies": [
+      {
+        "role": "selector_capacity_exit_and_original_source_descriptor_handoff",
+        "bytes": 1470,
+        "sha256": "124713ada7ccc4c1d7ae2d3403c64ffc54e14cf22442c354fecfa306c1d36d0f"
+      },
+      {
+        "role": "original_source_count_to_refinement_wrapper",
+        "bytes": 372,
+        "sha256": "52e8af42d9b34951a60fd911366bc0fcaf200b06103d8679f96094ceb692c5cd"
+      },
+      {
+        "role": "fixed_target_snapshot_per_source_gain_and_later_projection",
+        "bytes": 1066,
+        "sha256": "bd6e402d1deb30fc5f020416873ebd003b69ed5dbd8cd3d031c60fecf9888479"
+      },
+      {
+        "role": "source_point_full_attribute_and_fixed_target_gain_row_producer",
+        "bytes": 2186,
+        "sha256": "bb212ee3ceb74dbd8662ab51072822dbb978e9c510f7f4b8902ca798731fd808"
+      }
+    ],
+    "private_export_identities": [
+      {
+        "export_sha256": "7d2c928d25567605eae93f757ea3d73e162139bf6d6721a34649a3ac0f54157a",
+        "bytes": 88141
+      },
+      {
+        "export_sha256": "0fa6231489d182cc24bc9b13b6f90facd5eb56fbef51f2bddd38df46d2b609e8",
+        "bytes": 83450
+      }
+    ],
+    "code_coordinates_or_decompilation_delivered": false
+  },
+  "source_weight_scope": "R1 separately owns source_weight producer. This audit observes its shared N-order argument but does not rederive or qualify its numerical provider.",
+  "numerical_formula_authority": "Approved F03U.3; no claim of whole native math bit parity or newly proven coordinate-domain coverage."
+}

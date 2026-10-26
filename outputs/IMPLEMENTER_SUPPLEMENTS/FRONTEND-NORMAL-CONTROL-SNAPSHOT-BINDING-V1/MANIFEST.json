@@ -1,0 +1,32 @@
+{
+  "package_id": "FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 7458,
+      "sha256": "95cb7e006f22ece1fcff339cfd0d6b9db686ed29cb5043ef2940886b466bb547"
+    },
+    {
+      "file": "INTERFACE.json",
+      "bytes": 4335,
+      "sha256": "0e610997ab85d32532f33a8d14b7067a05fa16036fae609be8c9adb6e52cf460"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 22605,
+      "sha256": "7766314c4cfe02732c8792fe93b691a65990b93ed05522867c186d4f935f574d"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 3009,
+      "sha256": "1a97e6ed07f8146e262aad771282400c9ed6d195f3babc9f11ea82442cdbd05c"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 1345,
+      "sha256": "dce562469ccc9307c80d0d8962d72c2fd875d3683eee06b28a53c1a90b4b92c9"
+    }
+  ],
+  "scope": "Selected normal callback only; existing drain contracts unchanged",
+  "full_programme_execution": "NOT_RUN"
+}

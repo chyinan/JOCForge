@@ -421,3 +421,57 @@ fn read_coordinates(
     }
     Ok(coordinates)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::{RawAdmObjectEvent, admit_selected_object_events};
+    use crate::timeline::AdmSampleCount;
+
+    #[test]
+    fn admitted_event_accessors_preserve_authored_optional_control_values() {
+        // Synthetic accessor recipe only; this does not exercise graph parsing or snapshots.
+        let raw = RawAdmObjectEvent {
+            physical_host: 12,
+            track_uid: "synthetic-track".to_owned(),
+            object_id: "synthetic-object".to_owned(),
+            object_start: "00:00:00.000000".to_owned(),
+            object_duration: "00:00:00.032021".to_owned(),
+            block_rtime: "00:00:00.000000".to_owned(),
+            block_duration: "00:00:00.032021".to_owned(),
+            cartesian: Some("1".to_owned()),
+            jump_position: Some("1".to_owned()),
+            interpolation_length: Some("0".to_owned()),
+            coordinates: [None, Some(-1000.0), Some(-0.0)],
+            width: Some(-0.0),
+            depth: None,
+            height: Some(-0.0),
+            diffuse: Some(0.0),
+        };
+        let raw_events = std::array::from_fn(|index| {
+            let mut event = raw.clone();
+            if index == 1 {
+                event.diffuse = None;
+            }
+            event
+        });
+        let admitted =
+            admit_selected_object_events(raw_events, AdmSampleCount::new(1_537).unwrap()).unwrap();
+        let event = &admitted.events()[0];
+        let control = event.control_event();
+
+        assert_eq!(event.physical_host(), 12);
+        assert_eq!(control.start_sample(), 0);
+        assert_eq!(control.duration_samples(), 1_537);
+        assert_eq!(control.programme_samples(), 1_537);
+        let coordinates = control.authored_coordinates();
+        assert_eq!(coordinates[0], None);
+        assert_eq!(coordinates[1], Some(-1000.0));
+        assert_eq!(coordinates[2].map(f64::to_bits), Some((-0.0_f64).to_bits()));
+        let spread = control.authored_spread();
+        assert_eq!(spread[0].map(f64::to_bits), Some((-0.0_f64).to_bits()));
+        assert_eq!(spread[1], None);
+        assert_eq!(spread[2].map(f64::to_bits), Some((-0.0_f64).to_bits()));
+        assert_eq!(control.diffuse(), Some(0));
+        assert_eq!(admitted.events()[1].control_event().diffuse(), None);
+    }
+}

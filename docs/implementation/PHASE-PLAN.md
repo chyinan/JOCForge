@@ -2484,6 +2484,121 @@
 }
 ```
 
+## Current source inventory evolution
+
+```json
+{
+  "classification": "CURRENT_SOURCE_INVENTORY_WITH_PRESERVED_HISTORICAL_SNAPSHOTS",
+  "current_source_inventory": [
+    {
+      "bytes": 53239,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+      "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"
+    },
+    {
+      "bytes": 3261,
+      "path": "crates/jocforge-domain/src/spatial/mod.rs",
+      "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"
+    },
+    {
+      "bytes": 30134,
+      "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+      "sha256": "0ea66b3b2d1c5f1ae554769ecb92c0001130915b536cb461ec084f0b0ee5ae86"
+    },
+    {
+      "bytes": 2915,
+      "path": "crates/jocforge-domain/src/transaction/mod.rs",
+      "sha256": "442a74702c82926abd9de95e5f0686fd9f1cb8e656e2e051ade2390abdee238c"
+    },
+    {
+      "bytes": 61230,
+      "path": "crates/jocforge-domain/src/spatial/source_flags.rs",
+      "sha256": "55155b4a84a1199f77d0b006b9923b1621cb885ef98e01d63d12b1f99bdfe348"
+    },
+    {
+      "bytes": 48742,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs",
+      "sha256": "9ed4b36687e6694d73716bb774c7773c9b545f93ca49e1025336d355f24b8e2b"
+    },
+    {
+      "bytes": 61890,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs",
+      "sha256": "9275736d43853f6b137abdeeda5ae4aa4530acda241eacad02dcd28f22f7d555"
+    }
+  ],
+  "historical_source_inventory": [
+    {
+      "bytes": 37303,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+      "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"
+    },
+    {
+      "bytes": 2855,
+      "path": "crates/jocforge-domain/src/spatial/mod.rs",
+      "sha256": "91beefcd535b04930a7c3dd2427c081fc114053d44bb3971edb220b924412ba0"
+    },
+    {
+      "bytes": 26366,
+      "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+      "sha256": "25ddd1832309801765697d7c9e014766e159a5b7571234a86d790c71a895f426"
+    },
+    {
+      "bytes": 2706,
+      "path": "crates/jocforge-domain/src/transaction/mod.rs",
+      "sha256": "14dfe26f606f786eeb5ebd9a3ba5dd48d92346b46fa5d729497519dfa1ae8a9f"
+    },
+    {
+      "bytes": 58899,
+      "path": "crates/jocforge-domain/src/spatial/source_flags.rs",
+      "sha256": "ec8630271e67f5d5f73f15c6aa1e01e9738a591b486d2e63f47167ede3738328"
+    },
+    {
+      "bytes": 46100,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs",
+      "sha256": "6eb9640e126dd8e6c7e9bbb69782d2901fb38c79343f48089bea2d7b7b227fcc"
+    },
+    {
+      "bytes": 57070,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs",
+      "sha256": "c6295d0d4e04f6be4c3dc1418cc460d9dcca4b13d744d81e3dd219d62a8c9c53"
+    }
+  ],
+  "local_diff_review": {
+    "qualification": "Review covers typed wiring, immutable before-state, error and authority boundaries; it does not claim whole-chain or native acceptance.",
+    "reviewer": "read-only Fast agent",
+    "status": "PASS_FOR_TRANSACTION_SOURCE_FLAGS_SPATIAL_CONTROL_COMPONENT_STAGE_AND_TESTS"
+  },
+  "status": "LOCALLY_VERIFIED_CURRENT_SOURCE_INVENTORY",
+  "verification": {
+    "boundary_check": "PASS",
+    "candidate_selector_tests": "PASS_5",
+    "cold_staging_tests": "PASS_4",
+    "fmt_check": "PASS",
+    "generated_map_check": "PASS",
+    "installed48_activity_tests": "PASS_1",
+    "installed48_source_map_tests": "PASS_3",
+    "provider_tests": "PASS_14",
+    "qmf_fft_tests": "PASS_10",
+    "spatial_control_foundation_tests": "PASS_6",
+    "spatial_control_parent_seam_tests": "PASS_1",
+    "spatial_control_production_admission_tests": "PASS_1",
+    "spatial_unit_tests": "PASS_162_IGNORED_1",
+    "workspace_check": "PASS",
+    "workspace_clippy_all_targets_deny_warnings": "PASS"
+  },
+  "wash_amendments": [
+    {
+      "manifest_sha256": "915af5789ae57b000d61c12eddd768953d55fe9b0356b0180044f4eedd23aa17",
+      "package_id": "SPATIAL-AUDIO-SOURCE-INVENTORY-AMENDMENT-V1"
+    },
+    {
+      "manifest_sha256": "8860588472c55700d4aa2c6e9d49f1f4740ebcdd8367ab79dc90a32d8af85991",
+      "package_id": "IMPLEMENTATION-INVENTORY-EVOLUTION-AND-SPATIAL-EXPORTS-V1"
+    }
+  ]
+}
+```
+
 ## P1.3-E1 spatial_audio cold-state/staging foundation
 
 ```json
@@ -2495,6 +2610,28 @@
   "cold_state_actual_sha256": "35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e",
   "expected_cold_bytes": 813733,
   "expected_cold_sha256": "35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e",
+  "historical_implementation_inventory": [
+    {
+      "bytes": 37303,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+      "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"
+    },
+    {
+      "bytes": 2855,
+      "path": "crates/jocforge-domain/src/spatial/mod.rs",
+      "sha256": "91beefcd535b04930a7c3dd2427c081fc114053d44bb3971edb220b924412ba0"
+    },
+    {
+      "bytes": 2672,
+      "path": "crates/jocforge-domain/src/timeline/index.rs",
+      "sha256": "50696493ea1bed2b647f2c438f032410548b70e5008b535773e23647ee59bd40"
+    },
+    {
+      "bytes": 586,
+      "path": "crates/jocforge-domain/src/timeline/mod.rs",
+      "sha256": "7f2099065d657bdacab116d921a63107a180930086b73a42557881aa3acdb7b2"
+    }
+  ],
   "implementation_files": [
     "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
     "crates/jocforge-domain/src/spatial/mod.rs",
@@ -2503,14 +2640,14 @@
   ],
   "implementation_inventory": [
     {
-      "bytes": 37303,
+      "bytes": 53239,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"
+      "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"
     },
     {
-      "bytes": 2745,
+      "bytes": 3261,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "b367a77ab87157e12b0bd3f29e673a5bfc309b4fad49d8f8d260c52d83f5e661"
+      "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"
     },
     {
       "bytes": 2672,
@@ -2529,6 +2666,32 @@
     "do not merge the two span=896 temporal nodes or zero-fill LFE None sentinels"
   ],
   "implementation_status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__DSP_PRODUCERS_DEFERRED",
+  "inventory_evolution": {
+    "amendments": [
+      {
+        "manifest_sha256": "915af5789ae57b000d61c12eddd768953d55fe9b0356b0180044f4eedd23aa17",
+        "package_id": "SPATIAL-AUDIO-SOURCE-INVENTORY-AMENDMENT-V1",
+        "payload_path": "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-AUDIO-SOURCE-INVENTORY-AMENDMENT-V1/AMENDMENT.json",
+        "payload_sha256": "1f03880ab4531b766fc6d99cec36129ced19dae0c10e7e322496f0d27d8f5856"
+      },
+      {
+        "manifest_sha256": "8860588472c55700d4aa2c6e9d49f1f4740ebcdd8367ab79dc90a32d8af85991",
+        "package_id": "IMPLEMENTATION-INVENTORY-EVOLUTION-AND-SPATIAL-EXPORTS-V1",
+        "payload_path": "outputs/IMPLEMENTER_SUPPLEMENTS/IMPLEMENTATION-INVENTORY-EVOLUTION-AND-SPATIAL-EXPORTS-V1/AMENDMENT.json",
+        "payload_sha256": "b1b7b84d9d04b5572d8c5fb159d66e1e466b710b88972c8b16cbaef843776ed8"
+      }
+    ],
+    "classification": "CURRENT_IMPLEMENTATION_INVENTORY; historical source evidence remains separate",
+    "current_source_scope": "Only the two exact current source entries covered by the amendments differ from the preserved historical snapshot; F04 specification, provider, preimage and fixture identities remain sealed and independently checked.",
+    "verification": {
+      "boundary_check": "PENDING",
+      "cold_staging_tests": "PASS_4",
+      "domain_check": "PENDING",
+      "domain_clippy": "PENDING",
+      "fmt_check": "PENDING",
+      "spatial_unit_tests": "PASS_162_IGNORED_1"
+    }
+  },
   "mapping_status": "MAPPING_COMPLETE",
   "programme_root": "spatial_audio",
   "scope": "Construct and serialize the complete F04CompositionState cold root with a bounded typed F04_STATE_NODE_V1 encoder, then provide a non-Clone storage/staging foundation; do not implement DSP, provider validation, PostWindow render/fanout, or local commit/abort/fatal",
@@ -2622,6 +2785,33 @@
     "clock_domain_file": "crates/jocforge-domain/src/timeline/index.rs",
     "file_inventory": [
       {
+        "bytes": 30134,
+        "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+        "sha256": "0ea66b3b2d1c5f1ae554769ecb92c0001130915b536cb461ec084f0b0ee5ae86"
+      },
+      {
+        "bytes": 2915,
+        "path": "crates/jocforge-domain/src/transaction/mod.rs",
+        "sha256": "442a74702c82926abd9de95e5f0686fd9f1cb8e656e2e051ade2390abdee238c"
+      },
+      {
+        "bytes": 2672,
+        "path": "crates/jocforge-domain/src/timeline/index.rs",
+        "sha256": "50696493ea1bed2b647f2c438f032410548b70e5008b535773e23647ee59bd40"
+      },
+      {
+        "bytes": 3261,
+        "path": "crates/jocforge-domain/src/spatial/mod.rs",
+        "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"
+      },
+      {
+        "bytes": 10051,
+        "path": "crates/jocforge-domain/tests/spatial_control_foundation.rs",
+        "sha256": "7235e30cf033d32c746e44c5501424a77e97fe84f745984c8cecf771d40d3212"
+      }
+    ],
+    "historical_file_inventory": [
+      {
         "bytes": 26366,
         "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
         "sha256": "25ddd1832309801765697d7c9e014766e159a5b7571234a86d790c71a895f426"
@@ -2637,9 +2827,9 @@
         "sha256": "50696493ea1bed2b647f2c438f032410548b70e5008b535773e23647ee59bd40"
       },
       {
-        "bytes": 2745,
+        "bytes": 2855,
         "path": "crates/jocforge-domain/src/spatial/mod.rs",
-        "sha256": "b367a77ab87157e12b0bd3f29e673a5bfc309b4fad49d8f8d260c52d83f5e661"
+        "sha256": "91beefcd535b04930a7c3dd2427c081fc114053d44bb3971edb220b924412ba0"
       },
       {
         "bytes": 10051,
@@ -2767,14 +2957,14 @@
   "implementation": {
     "file_inventory": [
       {
-        "bytes": 48629,
+        "bytes": 61230,
         "path": "crates/jocforge-domain/src/spatial/source_flags.rs",
-        "sha256": "a13ad6da38bc9d209cd1aae3291ee4f5a09eaff00b080c4d7e42c4b8c9f97dd2"
+        "sha256": "55155b4a84a1199f77d0b006b9923b1621cb885ef98e01d63d12b1f99bdfe348"
       },
       {
-        "bytes": 36245,
+        "bytes": 36501,
         "path": "crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs",
-        "sha256": "ea02dc4d3b85f8006dd56182eea3809fa8d6b86b123b88eccfac626f2d1b6dc0"
+        "sha256": "b72391a0aab869193399501aa49329c717a353d91c07cc9564c73d3835e25992"
       },
       {
         "bytes": 27933,
@@ -2783,6 +2973,18 @@
       }
     ],
     "fixture_file": "crates/jocforge-domain/tests/fixtures/source_flags/INPUT-ONLY-VECTORS.json",
+    "historical_file_inventory": [
+      {
+        "bytes": 58899,
+        "path": "crates/jocforge-domain/src/spatial/source_flags.rs",
+        "sha256": "ec8630271e67f5d5f73f15c6aa1e01e9738a591b486d2e63f47167ede3738328"
+      },
+      {
+        "bytes": 36501,
+        "path": "crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs",
+        "sha256": "b72391a0aab869193399501aa49329c717a353d91c07cc9564c73d3835e25992"
+      }
+    ],
     "module_file": "crates/jocforge-domain/src/spatial/source_flags.rs",
     "test_file": "crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs",
     "test_mode": "20 synthetic literal vectors plus one meter-owned value-only vector and one cross-consumer fixture vector in workspace suite; authorized WAVE boundary vector is explicitly invoked with JOCFORGE_AUTHORIZED_WAV and is ignored otherwise"
@@ -4040,6 +4242,23 @@
   ],
   "fixture_manifest": "crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json",
   "fixture_manifest_reused": true,
+  "historical_implementation_inventory": [
+    {
+      "bytes": 19312,
+      "path": "crates/jocforge-domain/src/spatial/window_q15_provider.rs",
+      "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"
+    },
+    {
+      "bytes": 14344,
+      "path": "crates/jocforge-domain/src/spatial/component_parameters_provider.rs",
+      "sha256": "b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"
+    },
+    {
+      "bytes": 2855,
+      "path": "crates/jocforge-domain/src/spatial/mod.rs",
+      "sha256": "91beefcd535b04930a7c3dd2427c081fc114053d44bb3971edb220b924412ba0"
+    }
+  ],
   "identity_flow": [
     "recompute complete MANIFEST.json bytes/SHA before parsing",
     "require one exact manifest entry for each provider path",
@@ -4063,9 +4282,9 @@
       "sha256": "b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"
     },
     {
-      "bytes": 2745,
+      "bytes": 3261,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "b367a77ab87157e12b0bd3f29e673a5bfc309b4fad49d8f8d260c52d83f5e661"
+      "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"
     }
   ],
   "implementation_prohibitions": [
@@ -4405,6 +4624,33 @@
     "F04R",
     "F04D"
   ],
+  "historical_implementation_inventory": [
+    {
+      "bytes": 22614,
+      "path": "crates/jocforge-domain/src/spatial/qmf_receiver_functional_provider.rs",
+      "sha256": "dc04957542f802fa7a751d88911180cef7575c11033fd9a06b5221e7697e4bff"
+    },
+    {
+      "bytes": 11066,
+      "path": "crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs",
+      "sha256": "bddb8bd2b775b2cd9fc3e6412981965ef9ca5c5f98d137ff98de31c87dbbb2d8"
+    },
+    {
+      "bytes": 10441,
+      "path": "crates/jocforge-domain/src/spatial/descriptor_mathematical_provider.rs",
+      "sha256": "df8612dcdc46fcf2620e2a73d68d26d392bbba02be27af729f8c5ded76cf8639"
+    },
+    {
+      "bytes": 19312,
+      "path": "crates/jocforge-domain/src/spatial/window_q15_provider.rs",
+      "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"
+    },
+    {
+      "bytes": 2855,
+      "path": "crates/jocforge-domain/src/spatial/mod.rs",
+      "sha256": "91beefcd535b04930a7c3dd2427c081fc114053d44bb3971edb220b924412ba0"
+    }
+  ],
   "identity_flow": [
     "recompute complete MANIFEST.json bytes/SHA before parsing",
     "require one exact manifest entry for each provider path",
@@ -4440,9 +4686,9 @@
       "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"
     },
     {
-      "bytes": 2745,
+      "bytes": 3261,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "b367a77ab87157e12b0bd3f29e673a5bfc309b4fad49d8f8d260c52d83f5e661"
+      "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"
     }
   ],
   "implementation_prohibitions": [
@@ -4842,6 +5088,18 @@
   },
   "functional_id": "F04QF",
   "functional_id_scope": "This readiness applies only to the fixed 64-point FFT primitive. F04QF rotation use, F04Q analysis/synthesis, receiver, fitting, and whole spatial_audio remain separately scoped.",
+  "historical_implementation_inventory": [
+    {
+      "bytes": 3812,
+      "path": "crates/jocforge-domain/src/spatial/qmf_fft64.rs",
+      "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"
+    },
+    {
+      "bytes": 2855,
+      "path": "crates/jocforge-domain/src/spatial/mod.rs",
+      "sha256": "91beefcd535b04930a7c3dd2427c081fc114053d44bb3971edb220b924412ba0"
+    }
+  ],
   "implementation_files": [
     "crates/jocforge-domain/src/spatial/qmf_fft64.rs",
     "crates/jocforge-domain/src/spatial/mod.rs"
@@ -4853,9 +5111,9 @@
       "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"
     },
     {
-      "bytes": 2745,
+      "bytes": 3261,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "b367a77ab87157e12b0bd3f29e673a5bfc309b4fad49d8f8d260c52d83f5e661"
+      "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"
     }
   ],
   "implementation_prohibitions": [
@@ -5211,6 +5469,18 @@
     "F04QP",
     "F04RB"
   ],
+  "historical_implementation_inventory": [
+    {
+      "bytes": 21790,
+      "path": "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs",
+      "sha256": "9184b8ca22b5ed89082a92e3027b74c13d7e5424c4504598c3e71c239f2beeaa"
+    },
+    {
+      "bytes": 2855,
+      "path": "crates/jocforge-domain/src/spatial/mod.rs",
+      "sha256": "91beefcd535b04930a7c3dd2427c081fc114053d44bb3971edb220b924412ba0"
+    }
+  ],
   "implementation_files": [
     "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs",
     "crates/jocforge-domain/src/spatial/mod.rs"
@@ -5222,9 +5492,9 @@
       "sha256": "9184b8ca22b5ed89082a92e3027b74c13d7e5424c4504598c3e71c239f2beeaa"
     },
     {
-      "bytes": 2745,
+      "bytes": 3261,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "b367a77ab87157e12b0bd3f29e673a5bfc309b4fad49d8f8d260c52d83f5e661"
+      "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"
     }
   ],
   "implementation_prohibitions": [
@@ -5628,7 +5898,7 @@
   },
   "implementation_binding": {
     "api": "stage_receiver_mode1 consumes one linear Type10AssemblyProposal and a typed F04R stage-3 ReceiverS09InputView; it returns a linear proposal with preserved E2/E3 after-state, Type10 outcome, five raw analysis spectra, surround PCM, and QMF after slices.",
-    "implementation_files": [
+    "historical_implementation_files": [
       {
         "bytes": 17134,
         "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs",
@@ -5638,6 +5908,18 @@
         "bytes": 37303,
         "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
         "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"
+      }
+    ],
+    "implementation_files": [
+      {
+        "bytes": 17134,
+        "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs",
+        "sha256": "6131903076529c50753b908a48679cbec6be22a6135599712592aa37f2095d5e"
+      },
+      {
+        "bytes": 53239,
+        "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+        "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"
       }
     ],
     "s09_lineage_type": "ReceiverS09InputView binds six finite 1536-sample lanes to SpatialAudioJoinMetadata and explicit CallbackPhase; the receiver stage compares it with the Type10 receipt before any QMF processing.",
@@ -6098,6 +6380,18 @@
   ],
   "fixture_materialization_status": "MATERIALIZED_AND_HASH_PINNED",
   "functional_id": "F04D",
+  "historical_implementation_inventory": [
+    {
+      "bytes": 22467,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs",
+      "sha256": "aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce"
+    },
+    {
+      "bytes": 37303,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+      "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"
+    }
+  ],
   "implementation_files": [
     "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs",
     "crates/jocforge-domain/src/spatial/spatial_audio_state.rs"
@@ -6109,9 +6403,9 @@
       "sha256": "aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce"
     },
     {
-      "bytes": 37303,
+      "bytes": 53239,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"
+      "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"
     }
   ],
   "implementation_prohibitions": [
@@ -6601,6 +6895,18 @@
   ],
   "fixture_materialization_status": "MATERIALIZED_AND_HASH_PINNED",
   "functional_id": "F04RB",
+  "historical_implementation_inventory": [
+    {
+      "bytes": 40820,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs",
+      "sha256": "49b5566b204d7deb74828f3c7715cd64748be11a0f08c8e5820f452b90c636e9"
+    },
+    {
+      "bytes": 37303,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+      "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"
+    }
+  ],
   "implementation_files": [
     "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs",
     "crates/jocforge-domain/src/spatial/spatial_audio_state.rs"
@@ -6612,9 +6918,9 @@
       "sha256": "49b5566b204d7deb74828f3c7715cd64748be11a0f08c8e5820f452b90c636e9"
     },
     {
-      "bytes": 37303,
+      "bytes": 53239,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"
+      "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"
     }
   ],
   "implementation_prohibitions": [
@@ -7959,7 +8265,7 @@
     "full_repository_boundary_mutations_rejected": 585,
     "matrix_destination_producer": "NOT_IMPLEMENTED",
     "parent_transaction": "NOT_IMPLEMENTED",
-    "post_window_fanout_tests": 5,
+    "post_window_fanout_tests": 6,
     "render_producer": "NOT_IMPLEMENTED",
     "spatial_audio_assembler": "NOT_IMPLEMENTED",
     "targeted_boundary_mutations_rejected": 32
@@ -8053,12 +8359,7 @@
       ]
     }
   ],
-  "implementation_files": [
-    "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
-    "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-    "crates/jocforge-domain/src/spatial/spatial_control.rs"
-  ],
-  "implementation_inventory": [
+  "historical_implementation_inventory": [
     {
       "bytes": 16562,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
@@ -8073,6 +8374,28 @@
       "bytes": 26366,
       "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
       "sha256": "25ddd1832309801765697d7c9e014766e159a5b7571234a86d790c71a895f426"
+    }
+  ],
+  "implementation_files": [
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
+    "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+    "crates/jocforge-domain/src/spatial/spatial_control.rs"
+  ],
+  "implementation_inventory": [
+    {
+      "bytes": 16562,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
+      "sha256": "bfa2808ba2aa5566cf832a76a5ef93a6180bc1e81c35a63934809f3ffe9abce7"
+    },
+    {
+      "bytes": 53239,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+      "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"
+    },
+    {
+      "bytes": 30134,
+      "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+      "sha256": "0ea66b3b2d1c5f1ae554769ecb92c0001130915b536cb461ec084f0b0ee5ae86"
     }
   ],
   "implementation_prohibitions": [
@@ -8331,14 +8654,7 @@
       "status": "SCOPED_SUBSET_ONLY"
     }
   ],
-  "implementation_files": [
-    "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs",
-    "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-    "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs",
-    "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
-    "crates/jocforge-domain/src/spatial/spatial_control.rs"
-  ],
-  "implementation_inventory": [
+  "historical_implementation_inventory": [
     {
       "bytes": 12074,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs",
@@ -8363,6 +8679,52 @@
       "bytes": 26366,
       "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
       "sha256": "25ddd1832309801765697d7c9e014766e159a5b7571234a86d790c71a895f426"
+    }
+  ],
+  "historical_test_inventory": [
+    {
+      "bytes": 24485,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs",
+      "sha256": "bb9fc89e6914b4b9fb9dc94cd0da47ee83886183661d792957cef352896bab22"
+    },
+    {
+      "bytes": 57070,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs",
+      "sha256": "c6295d0d4e04f6be4c3dc1418cc460d9dcca4b13d744d81e3dd219d62a8c9c53"
+    }
+  ],
+  "implementation_files": [
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs",
+    "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs",
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
+    "crates/jocforge-domain/src/spatial/spatial_control.rs"
+  ],
+  "implementation_inventory": [
+    {
+      "bytes": 12074,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs",
+      "sha256": "22c336456921c174ce1d1e72d4a265b4e61a7321e9c3753cf20d1924e0d77413"
+    },
+    {
+      "bytes": 53239,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+      "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"
+    },
+    {
+      "bytes": 48742,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs",
+      "sha256": "9ed4b36687e6694d73716bb774c7773c9b545f93ca49e1025336d355f24b8e2b"
+    },
+    {
+      "bytes": 16562,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
+      "sha256": "bfa2808ba2aa5566cf832a76a5ef93a6180bc1e81c35a63934809f3ffe9abce7"
+    },
+    {
+      "bytes": 30134,
+      "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+      "sha256": "0ea66b3b2d1c5f1ae554769ecb92c0001130915b536cb461ec084f0b0ee5ae86"
     }
   ],
   "implementation_prohibitions": [
@@ -8470,9 +8832,9 @@
       "sha256": "bb9fc89e6914b4b9fb9dc94cd0da47ee83886183661d792957cef352896bab22"
     },
     {
-      "bytes": 57070,
+      "bytes": 61890,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs",
-      "sha256": "c6295d0d4e04f6be4c3dc1418cc460d9dcca4b13d744d81e3dd219d62a8c9c53"
+      "sha256": "9275736d43853f6b137abdeeda5ae4aa4530acda241eacad02dcd28f22f7d555"
     }
   ],
   "vectors": {
@@ -8595,6 +8957,7 @@
     "crates/jocforge-domain/src/joc/oamd.rs",
     "crates/jocforge-domain/src/joc/oamd/reader_target.rs",
     "crates/jocforge-domain/src/joc/oamd/reader_target/exact_trigonometry.rs",
+    "crates/jocforge-domain/src/numeric/exact_trigonometry.rs",
     "crates/jocforge-domain/src/joc/oamd/reader_target/reader_records.rs",
     "crates/jocforge-domain/src/joc/oamd/reader_target/target_panner.rs",
     "crates/jocforge-domain/src/joc/oamd/reader_target/type11.rs"
@@ -8712,6 +9075,8 @@
 | F01E/selected-dbmd-authored-mode-and-track-field-producer | Phase 2 | Parses an already supplied selected DBMD payload: section framing/checksum/terminator, required section9/section10, authored mode and physical-order section10 per-track fields. The field accessor joins by physical track index, not pack/object ordinal. It does not open the RIFF file, parse F01G ADM graph bytes, attach track fields to host routes, emit control38, or claim whole F01E. | `crates/jocforge-domain/src/frontend/dbmd_sections.rs`<br>`crates/jocforge-domain/src/frontend/mod.rs` | `crates/jocforge-domain/tests/job_configuration.rs` | LOCALLY_VERIFIED_4_AUTHORED_MODES_6_TRACK_FIELDS_10_DBMD_REJECTIONS__F01G_GRAPH_JOIN_OPEN |
 | F01E/selected-object-event-control52-row-production | Phase 2 | Implements the pure F01E.8/.9 row-value formula and tests 28 input rows from the hash-bound F01E vector. The separate ordered-set API requires parser-produced DBMD track fields and the bed/host identity join; its same-source exercise is mapped under the F01G candidate slice and is not source-bound to the F01E main job. It owns no callback hold, reset, commit, or programme state. | `crates/jocforge-domain/src/frontend/object_control.rs`<br>`crates/jocforge-domain/src/frontend/bed_channel_join.rs`<br>`crates/jocforge-domain/src/frontend/mod.rs` | `crates/jocforge-domain/tests/object_control.rs` | LOCALLY_VERIFIED_28_CONTROL52_VALUE_ROWS__F01E_SOURCE_AND_EVENT_SET_BINDING_OPEN |
 | F01E/primary-source-bound-control38-value-production | Phase 2 | Binds the Wash R4 path-free job projection, frozen binding and metadata-only source receipt to AXML/CHNA/DBMD hashes, then recomputes 38 physical-host rows, 364 object control words and 38 DBMD rows. Bed bytes 24..51 remain unproduced. Raw job XML is unavailable; full PCM identity is NOT_REHASHED. No application::encode connection or end-to-end run is claimed. | `crates/jocforge-domain/src/frontend/job_configuration.rs`<br>`crates/jocforge-domain/src/frontend/primary_metadata_control.rs`<br>`crates/jocforge-domain/src/frontend/mod.rs` | `crates/jocforge-domain/tests/primary_metadata_control.rs` | LOCALLY_VERIFIED_R4_PRIMARY_METADATA_BOUND_38_ROWS_364_OBJECT_WORDS_BED_TAIL_UNPRODUCED__NO_MAIN_ENCODE |
+| F01E/object-track-sampler-owner-binding | Phase 2 | At programme preparation, binds exactly 28 admitted Objects TRACK records to local sampler owner ordinals 0..27 by unsigned ASCII TrackUID byte order. Each immutable binding preserves TrackUID, unchanged semantic key, physical host, and channel-format ID. Invocation order remains ascending physical host and resolves sampler state by TrackUID/local binding; semantic keys and descriptor ordinals are not reused as array positions. | `crates/jocforge-domain/src/frontend/selected_adm_graph.rs` | `crates/jocforge-domain/src/frontend/selected_adm_graph.rs` | LOCALLY_VERIFIED_28_TRACKUID_SORTED_LOCAL_SLOTS__DEE_NATIVE_ARRAY_ORDER_UNCLAIMED |
+| F01E/normal-control-snapshot-proposal | Phase 2 | From one cold validated prepared identity, graph, admitted event set, DBMD fields, and normal callback owner state, preflights all bindings before sampling exactly 28 objects in ascending physical-host order through the frozen TrackUID-to-local-slot map. Each object carries actual previous XYZ through two ordered R32 sampler slots, then produces Object13; beds produce defined Bed6 with tail bytes24..51 unproduced. The proposal returns complete physical control38 and regular37 snapshots, typed source identity/origin, and a full noncommitting after-state. It does not invoke the F03W parent commit or cached-drain hold producer. | `crates/jocforge-domain/src/frontend/normal_control_snapshot.rs`<br>`crates/jocforge-domain/src/frontend/adm_object_events.rs`<br>`crates/jocforge-domain/src/frontend/object_control.rs`<br>`crates/jocforge-domain/src/frontend/selected_adm_graph.rs`<br>`crates/jocforge-domain/src/frontend/mod.rs` | `crates/jocforge-domain/src/frontend/normal_control_snapshot/tests.rs`<br>`crates/jocforge-domain/src/frontend/selected_adm_graph.rs`<br>`crates/jocforge-domain/src/frontend/adm_object_events.rs`<br>`crates/jocforge-domain/tests/object_control.rs` | LOCALLY_VERIFIED_NORMAL_TWO_SLOT_SAMPLER_AND_ATOMIC_CONTROL_ROWS__PARENT_INSTALL_OPEN |
 | F03G/target-slot-install | Phase 3 | Explicit prior 15-slot state and selected XYZ/ID/attribute proposal to original row-major cost words, exact n-pass greedy tie order, and complete next-state projection. Empty selection preserves old state. Constructor, source gate, selector, projection/fit producers, marker/history, parent commit, and product integration are excluded. | `crates/jocforge-domain/src/spatial/mod.rs`<br>`crates/jocforge-domain/src/spatial/target_slot_install.rs` | `crates/jocforge-domain/tests/target_slot_install.rs` | LOCALLY_VERIFIED_F03G_2_4_COST_GREEDY_MAPPING_AND_STATE_PROJECTION |
 | F03C/candidate-selector | Phase 3 | Cold candidate selector over explicit feature/position/response/width/attribute/previous-ID inputs; affinity/complement, fixed Q/T/W, previous-ID boost, slot gate, tie resolution, feature/coverage/support updates, survivor compression, and selected output diagnostics. | `crates/jocforge-domain/src/spatial/mod.rs`<br>`crates/jocforge-domain/src/spatial/candidate_selector.rs` | `crates/jocforge-domain/tests/candidate_selector.rs` | LOCALLY_VERIFIED_COLD_CANDIDATE_SELECTION__FEATURE_AND_TARGET_PRODUCERS_DEFERRED |
 | F03C/selector-score-choice | Phase 3 | Stateless primary maximum, 0.01 F32 tie window, and earliest secondary-maximum selection over explicit same-length primary/secondary score arrays. | `crates/jocforge-domain/src/spatial/candidate_selector.rs` | `crates/jocforge-domain/tests/candidate_selector.rs` | LOCALLY_VERIFIED_PRIMARY_WINDOW_AND_SECONDARY_TIE_PRIMITIVE |
@@ -8719,16 +9084,20 @@
 | F03U/u04-membership-projection | Phase 3 | Stateless F03U.4/.5 projection from explicit source XYZ/weights, target XYZ/attributes and gain[N][T]; two reciprocal normalization layers, F32 projection, and exact protected-anchor preservation. Gain/weights/geometry are caller-supplied. | `crates/jocforge-domain/src/spatial/mod.rs`<br>`crates/jocforge-domain/src/spatial/u04_projection.rs` | `crates/jocforge-domain/tests/u04_projection.rs` | LOCALLY_VERIFIED_TWO_LAYER_U04_PROJECTION__GEOMETRY_AND_INSTALL_DEFERRED |
 | F03U/u04-refinement-admission-gate | Phase 3 | Stateless F03U.1 caller gate: only CAPACITY_REACHED triggers refinement; CANDIDATES_EXHAUSTED preserves initial positions even with count 15. Does not run refinement. | `crates/jocforge-domain/src/spatial/u04_projection.rs` | `crates/jocforge-domain/tests/u04_projection.rs` | LOCALLY_VERIFIED_SELECTOR_STATUS_ADMISSION_GATE__REFINEMENT_DEFERRED |
 | F03R/selected-profile-feature-control-and-value-only-source-flags | Phase 3 | Applies Wash LOCAL_TRANSLATION contract F03R-SELECTED-FEATURE-CONTROL-BINDING-V2: each selected-profile per-host F03R feature control is independently typed as component_enum=0 and diffuse=0, while F01E Control52 word10 remains unchanged as authored audio diffuse for F04A. Runs the value-only SourceFlags stage on the authorized full WAVE for g0-g2 with sequential raw-history proposals; does not claim a native hidden-field alias, create SourceFlagsPacket, install state, or commit a callback root. | `crates/jocforge-domain/src/spatial/source_flags.rs`<br>`crates/jocforge-io/examples/meter_input_probe.rs` | `crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs`<br>`crates/jocforge-domain/tests/meter_installed48_renderer.rs` | LOCALLY_VERIFIED_SELECTED_PROFILE_TYPED_CONTROL_AND_REAL_WAVE_G0_G2_VALUE_STAGE__NONCOMMITTING |
+| F03P/selected-p15-basis-generation | Phase 3 | Generates the selected 15-row basis in the approved stable layout0x159B order, applies the authorized front-side Y Q15 value only to rows7/8, converts each signed Q15 coordinate through the two specified R32 stages, and carries layout/profile/spec/parameter/basis identity. P11 remains a separate 11-row generator; no generic layout fallback is added. | `crates/jocforge-domain/src/spatial/selected_p15_geometry.rs`<br>`crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/tests/selected_p15_geometry.rs` | LOCALLY_VERIFIED_SELECTED_P15_LAYOUT_159B_AND_Y_PARAMETER__RESPONSE_CONSUMER_LOCAL |
+| F03P/selected-target-context-and-compact-projection | Phase 3 | Builds the 14-word pre-marker F05H.1 fit record for each of all fifteen installed target slots, validates the selected mode/width/extra/spatial-enum/coordinate-parameter fields even for inactive slots, computes full P15 context for all slots using the same selected P15 response kernel, then gathers A and current target XYZ in increasing installed-slot destinations order. Preserves F03G empty-selection state separately from compact target count n; n=0 still computes and validates all fifteen contexts. It does not bind processing source geometry, invoke per-source NNLS/F03S outer stages, produce compact C, mix components, or commit owners. | `crates/jocforge-domain/src/spatial/target_context.rs`<br>`crates/jocforge-domain/src/spatial/point_response.rs`<br>`crates/jocforge-domain/src/spatial/selected_p15_geometry.rs`<br>`crates/jocforge-domain/src/spatial/target_slot_install.rs`<br>`crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/src/spatial/target_context/tests.rs`<br>`crates/jocforge-domain/src/spatial/point_response/tests.rs`<br>`crates/jocforge-domain/tests/selected_p15_geometry.rs` | LOCALLY_VERIFIED_PREMARKER_P15_CONTEXT_AND_DESTINATION_COMPACTION__OUTER_SOURCE_JOIN_OPEN |
 | F03N/rectangular-nnls-solver | Phase 3 | Stateless 15-row, 1..=15-column F32 matrix plus F32 response to F64 nonnegative solution, R32 seed, active-set diagnostics, and SOLVED/ITERATION_LIMIT status. No F03S outer solver, selector, U04, context/response producer, warm state, parent transaction, or n=0 outer skip integration. | `crates/jocforge-domain/src/spatial/rectangular_nnls.rs` | `crates/jocforge-domain/tests/rectangular_nnls.rs`<br>`crates/jocforge-domain/src/spatial/rectangular_nnls/tests.rs` | LOCALLY_VERIFIED_COLD_RECTANGULAR_NNLS__OUTER_AND_PRODUCERS_DEFERRED |
 | F03S/outer-coefficient-postprocess | Phase 3 | Stateless F03S.5 strict floor, sequential R32 total, dominance comparison, earliest-maximum tie, and one-hot cap. Does not run F03S.1-.4 or any solver/geometry/outer pipeline. | `crates/jocforge-domain/src/spatial/outer_postprocess.rs` | `crates/jocforge-domain/tests/outer_postprocess.rs` | LOCALLY_VERIFIED_F03S_5_FLOOR_DOMINANCE_AND_TIE_RULES__OUTER_DEFERRED |
 | F03S/outer-energy-fallback | Phase 3 | Stateless F03S.2 projection/energy branch, threshold and fallback scale. Active cases return the input seed unchanged for branch diagnostics only; fallback scales the seed and calls the existing F03S.5 postprocess. No F03S.3/.4 active correction. | `crates/jocforge-domain/src/spatial/mod.rs`<br>`crates/jocforge-domain/src/spatial/outer_energy_fallback.rs`<br>`crates/jocforge-domain/src/spatial/outer_postprocess.rs` | `crates/jocforge-domain/tests/outer_energy_fallback.rs`<br>`crates/jocforge-domain/tests/outer_postprocess.rs` | LOCALLY_VERIFIED_F03S_2_BRANCH_AND_FALLBACK_DIAGNOSTICS__ACTIVE_ROUTE_DEFERRED |
 | F03S/outer-geometric-correction | Phase 3 | Stateless F03S.3 target/source XYZ geometry, distance/flag diagonal penalty, B/L/H construction, lower F32 Cholesky, ordered forward/back substitution, and nonnegative correction. No F03S.4 active update or outer pipeline. | `crates/jocforge-domain/src/spatial/mod.rs`<br>`crates/jocforge-domain/src/spatial/outer_geometric_correction.rs` | `crates/jocforge-domain/tests/outer_geometric_correction.rs` | LOCALLY_VERIFIED_F03S_3_F32_GEOMETRY_SYSTEM_AND_CORRECTION__ACTIVE_UPDATE_DEFERRED |
 | F03S/outer-active-update | Phase 3 | Stateless F03S.4 active quadratic-energy update from explicit context/response/seed/correction inputs. Returns discriminant, step, scaled seed, and output; does not generate correction, choose branch, run NNLS, or apply floor/prune. | `crates/jocforge-domain/src/spatial/mod.rs`<br>`crates/jocforge-domain/src/spatial/outer_active_update.rs` | `crates/jocforge-domain/tests/outer_active_update.rs` | LOCALLY_VERIFIED_F03S_4_DISCRIMINANT_STEP_AND_OUTPUT__OUTER_DEFERRED |
 | F03S/outer-empty-matrix-skip | Phase 3 | F03S.1 n=0 branch only: validate the explicit source-call order and return a zero-row/48-column matrix without reading response/XYZ or invoking NNLS. Nonempty target matrix production is excluded. | `crates/jocforge-domain/src/spatial/mod.rs`<br>`crates/jocforge-domain/src/spatial/outer_empty_matrix.rs` | `crates/jocforge-domain/tests/outer_empty_matrix.rs` | LOCALLY_VERIFIED_N_ZERO_EMPTY_MATRIX_SKIP__NONEMPTY_OUTER_DEFERRED |
+| F03S/source-geometry-to-compact-outer-matrix | Phase 3 | Builds global source rows0..47 from the installed P11 prefix plus same-callback F01B bed geometry and graph-bound F01E Object13 words5..7; validates graph, TrackUID, host, DBMD, owner, source-map, callback, transaction, and raw-origin identity; excludes direct semantic LFE. Joins each processing source to its response columns, runs cold NNLS and the selected F03S fallback/active stages, and returns destination-ordered C[n][48] with uncalled columns positive zero. It does not mix components or commit owner state. | `crates/jocforge-domain/src/spatial/source_geometry_outer.rs`<br>`crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/src/spatial/source_geometry_outer/tests.rs` | LOCALLY_VERIFIED_48_SOURCE_GEOMETRY_AND_PER_SOURCE_OUTER__F04_MATRIX_AND_PARENT_COMMIT_OPEN |
 | F03W/selected-primary-installed48-source-map-and-activity | Phase 3 | Keeps the detached static projection path and dynamic selected-ADM resource identity binding over the same 48-source row mapping. The authorized full WAVE was read in memory and produced source/activity plus F03R value-only results for g0-g2 under Wash V2's selected-profile typed adapter. Host10 authored Control52 word10=1 remains separate from feature diffuse=0. The nonnormative pre-F04 Source56 candidate remains rejected. No SourceFlagsPacket or callback root is committed. | `crates/jocforge-domain/src/frontend/job_configuration.rs`<br>`crates/jocforge-domain/src/frontend/primary_metadata_control.rs`<br>`crates/jocforge-domain/src/spatial/installed48_source_map.rs`<br>`crates/jocforge-domain/src/spatial/installed48_activity.rs`<br>`crates/jocforge-domain/src/spatial/selected_p11_geometry.rs`<br>`crates/jocforge-domain/src/spatial/source_flags.rs`<br>`crates/jocforge-io/src/pcm/meter_source_cursor.rs`<br>`crates/jocforge-io/src/pcm/riff_pcm24.rs`<br>`crates/jocforge-io/examples/meter_input_probe.rs` | `crates/jocforge-domain/tests/installed48_source_map.rs`<br>`crates/jocforge-domain/tests/installed48_activity.rs`<br>`crates/jocforge-domain/tests/selected_p11_geometry.rs`<br>`crates/jocforge-application/tests/prepared_job_input.rs`<br>`crates/jocforge-domain/tests/meter_installed48_renderer.rs` | LOCALLY_VERIFIED_STATIC_ROUTE_AND_REAL_ADM_G0_G2_F03R_VALUE_PROPOSALS__PACKET_AND_ROOT_COMMIT_DEFERRED |
 | F03W/source-flags-current-features-and-source-gate | Phase 3 | Runs the existing SourceFlags producer once, carries its validated packet into CurrentFeatures with the explicit callback phase, preserves the raw-history and feature-state proposals for the parent, and derives source-ascending plus4 candidates, plus0 processing IDs, the unchanged band-major candidate feature snapshot, and the sorted unique union of candidate and processing IDs for a future response producer. This slice does not render installed48, produce source-control values, compute response columns, advance or commit the spatial_control root, or run selector/U04/outer/history/component stages. | `crates/jocforge-domain/src/spatial/frontend_stages.rs`<br>`crates/jocforge-domain/src/spatial/current_features.rs`<br>`crates/jocforge-domain/src/spatial/source_flags.rs`<br>`crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs`<br>`crates/jocforge-domain/src/spatial/current_features/tests.rs` | LOCALLY_VERIFIED_SOURCE_FLAGS_CURRENT_FEATURES_GATE_AND_RESPONSE_REQUEST_PROPOSALS__ROOT_COMMIT_DEFERRED |
-| F03W/primary-metadata-source-control-projection | Phase 3 | Projects the admitted physical-order F01E control rows into selected F03R RegularControl values using distinct bed and object field rules, excludes the semantic bed_id3 direct LFE, and carries a typed current-callback or last-normal drain source origin. The same validated physical-host route selects regular PCM and history rows and maps them to sources 11..47. The projection does not invoke the F01E sampler, read PCM, or commit spatial_control state. | `crates/jocforge-domain/src/spatial/source_flags.rs`<br>`crates/jocforge-domain/src/frontend/primary_metadata_control.rs`<br>`crates/jocforge-domain/src/frontend/selected_adm_graph.rs` | `crates/jocforge-domain/tests/primary_metadata_control.rs` | LOCALLY_VERIFIED_BED_OBJECT_FIELDS_AND_SOURCE_ORIGIN__CALLBACK_ROOT_DEFERRED |
+| F03W/primary-metadata-source-control-projection | Phase 3 | Projects selected Bed6/Object13 normal snapshots into the F03R regular-source control domain while preserving the existing admitted static metadata projection. For normal generation g it validates prepared graph identity, source/control rows and generation, maps exact physical hosts through regular_source_bindings to global sources11..47, excludes the graph-selected semantic direct LFE, uses Bed mute0/positive-zero width and sampled Object13 words0/9, and binds a normal-only source-control origin g. Cached drains do not invoke the normal producer and continue to use the separately approved last-normal hold path. This projection does not compute CurrentFeatures without its audio view or commit F03W state. | `crates/jocforge-domain/src/frontend/mod.rs`<br>`crates/jocforge-domain/src/frontend/normal_control_snapshot.rs`<br>`crates/jocforge-domain/src/frontend/primary_metadata_control.rs`<br>`crates/jocforge-domain/src/frontend/selected_adm_graph.rs`<br>`crates/jocforge-domain/src/spatial/source_flags.rs` | `crates/jocforge-domain/src/frontend/normal_control_snapshot/tests.rs`<br>`crates/jocforge-domain/tests/primary_metadata_control.rs` | LOCALLY_VERIFIED_F01E_NORMAL_SNAPSHOT_TO_F03R_SOURCEFLAGS_PROJECTION__F03W_ROOT_COMMIT_OPEN |
 | F03W/selector-u04-target-value-handoff | Phase 3 | Joins one completed selector result back to its original candidate IDs, positions, attributes and pre-decay band-major feature columns using selected_initial_ordinals, without rerunning the selector. It derives U04 admission from explicit selector status and accepts a projected XYZ result only for CAPACITY_REACHED; other statuses preserve original positions and skip U04. It does not produce response columns, construct the required U04 source/gain inputs, mutate target state, or commit the spatial_control root. | `crates/jocforge-domain/src/spatial/selector_u04_handoff.rs`<br>`crates/jocforge-domain/src/spatial/candidate_selector.rs`<br>`crates/jocforge-domain/src/spatial/u04_projection.rs`<br>`crates/jocforge-domain/src/spatial/target_slot_install.rs` | `crates/jocforge-domain/tests/candidate_selector.rs` | LOCALLY_VERIFIED_SELECTOR_ORDINAL_GATHER_AND_CAPACITY_ONLY_U04_ADMISSION__ROOT_COMMIT_DEFERRED |
+| F03W/p15-response-source-admission-and-columns | Phase 3 | Binds one 48-row source snapshot to the same callback transaction as candidate/processing gate IDs, validates all-source mode and finite input fields, applies the selected Q15 coordinate conversion and generated-source branch checks only on the sorted deduplicated union, produces separate +0 post-audio feature widths, and computes sparse P15 response columns with exact R64/R32 equal-power weights and F03P plane grouping. Empty union returns no columns after all-source mode validation. The real F01E normal source snapshot caller, enclosing F03W commit and downstream response consumers remain separate. | `crates/jocforge-domain/src/spatial/point_response.rs`<br>`crates/jocforge-domain/src/spatial/selected_p15_geometry.rs`<br>`crates/jocforge-domain/src/spatial/mod.rs`<br>`crates/jocforge-domain/src/numeric/exact_trigonometry.rs`<br>`crates/jocforge-domain/src/numeric/q15_coordinate.rs`<br>`crates/jocforge-domain/src/numeric/mod.rs`<br>`crates/jocforge-domain/src/joc/oamd/reader_target/exact_trigonometry.rs` | `crates/jocforge-domain/tests/point_response.rs`<br>`crates/jocforge-domain/tests/selected_p15_geometry.rs`<br>`crates/jocforge-domain/src/spatial/point_response/tests.rs`<br>`crates/jocforge-domain/src/joc/oamd/reader_target/tests.rs` | LOCALLY_VERIFIED_P15_RESPONSE_COLUMNS_AND_CALLBACK_BOUND_SOURCE_GATE__F03W_PARENT_DEFERRED |
 | F04/independent-meter-installed48-postwindow-leaf | Phase 3 | Implements a fresh meter-owned selected F04A installed48/post-window value transition using same-resource PCM, graph/control map, primary activity, membership proposals, and identity-validated diffusion parameters. The current formula matches approved F04A.4: binary64 weight literal, binary64 square root, one R32 cast before gain/mode products, and separately rounded R32 mix operations. Current-code g0-g2 actual hashes are recorded; no independent expected-output vector is present, so numeric conformance is not claimed. The isolated Git history has neither the older expression nor a separate correction commit, so the historical cause is UNKNOWN and withdrawn actuals remain invalid as expectations. This is not a committed F06 callback and is not connected to SourceFlagsPacket, CurrentFeatures, selector/U04, component, LFE, OAR packet, or measurement receipt. | `crates/jocforge-domain/src/meter/installed48_renderer.rs`<br>`crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/meter_installed48_renderer.rs`<br>`crates/jocforge-domain/src/meter/installed48_renderer.rs` | LOCALLY_REPLAYED_CURRENT_F04A_REAL_WAVE_G0_G2__EXPECTED_COMPARISON_PENDING__HISTORY_UNKNOWN |
 | F04C/whole-spatial-audio-j05-composer | Phase 3 | Validates existing Type10 and reader-target receipts before receiver execution; g0/g1 advance the full spatial_audio root without receiver/QMF, while g>=2 executes receiver and fitting once, preserves actual buffers and per-row target producer generations, and returns one complete canonical spatial_audio after proposal plus immutable J05 projection. | `crates/jocforge-domain/src/spatial/spatial_audio_state/spatial_audio_composer.rs`<br>`crates/jocforge-domain/src/spatial/spatial_audio_state/spatial_audio_receiver.rs`<br>`crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs`<br>`crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs`<br>`crates/jocforge-domain/src/spatial/spatial_audio_state.rs`<br>`crates/jocforge-domain/src/joc/oamd/reader_target.rs` | `crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests/spatial_audio_composer.rs` | LOCALLY_VERIFIED_CONTINUOUS_G0_G1_G2_ROOT_AND_J05_PROPOSALS__PARENT_INSTALL_NOT_RUN |
 | F04A/independent-meter-installed48-postwindow-leaf | Phase 3 | A fresh same-resource g0-g2 F04A leaf run uses the current approved F04A.4 order: binary64 weight literal, binary64 square root, one R32 cast before gain/mode products, and separately rounded R32 sample mixing. These actual hashes equal withdrawn earlier actual strings; the isolated history contains neither the older expression nor a separate correction commit, so historical cause is UNKNOWN and prior values remain invalid as expectations. No independent F04A expected-output vector is available, so conformance is not claimed. This is not a committed F06 callback and does not connect SourceFlagsPacket, CurrentFeatures, selector/U04, component, LFE, OAR packet, or measurement receipt. | `crates/jocforge-domain/src/meter/installed48_renderer.rs`<br>`crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/src/meter/installed48_renderer.rs` | CURRENT_REAL_WAVE_G0_G2_ACTUALS_REPLAYED__EXPECTED_COMPARISON_PENDING__HISTORY_UNKNOWN |
@@ -8763,7 +9132,7 @@
 | F06TP/selected-six-channel-true-peak-block-cascade | Phase 5 | Selected six-channel 48 kHz/1024-sample block only: authorized 12-tap coefficients, 12-tap FIR, two-stage 4x interpolation, LFE ordinal-3 bypass, complete per-lane FIR history, per-block sample/true-peak metrics, and programme maxima. No frontend, sample-window scheduler, full F06 meter, or product chain. | `crates/jocforge-domain/src/meter/true_peak.rs`<br>`crates/jocforge-domain/src/meter/truepeak_parameters.json`<br>`crates/jocforge-domain/src/meter/truepeak_log_parameters.json` | `crates/jocforge-domain/src/meter/true_peak/tests.rs` | LOCALLY_VERIFIED_AUTHORIZED_4X_CASCADE_STATE_AND_LOCAL_PEAKS__FRONTEND_DEFERRED |
 | F06OF/meter-lfe-delay-and-oar-packet-assembly | Phase 5 | Owns a fresh three-slot meter LFE ring, stores full finite frames with callback origins, emits positive-zero rows for the first two calls and the actual g-2 row thereafter, then assembles that row with fifteen same-callback regular SCP/control rows into an OAR packet with generation g+1. Current LFE, regular SCP and controls are caller-supplied outputs of upstream processing. | `crates/jocforge-domain/src/meter/mod.rs`<br>`crates/jocforge-domain/src/meter/lfe_delay_ring.rs`<br>`crates/jocforge-domain/src/meter/object_renderer.rs` | `crates/jocforge-domain/src/meter/lfe_delay_ring.rs`<br>`crates/jocforge-domain/src/meter/post_render_meter.rs` | LOCALLY_VERIFIED_TWO_CALLBACK_LFE_RING_AND_PACKET_ASSEMBLY__UPSTREAM_FRONTEND_DEFERRED |
 | F06OF/meter-in-memory-pcm24-source-cursor | Phase 5 | Binds an independent typed meter source cursor to one already parsed selected RIFF/PCM24 byte slice by full source SHA and sample count. Each normal sample range is addressed through the parsed blockAlign byte offset and decoded by the shared selected PCM24 read-chunk helper; the cursor consumes its typed actual-frame count and advances by that returned count. It pads only the final raw source input and emits exactly three fresh zero-input model drain frames. The cursor stores source identity and clocks, never PCM. Output stops at raw physical-channel input; no operating-system read, native EOF/drain, ADM/event render or SCP/control is claimed. | `crates/jocforge-io/Cargo.toml`<br>`crates/jocforge-io/src/pcm/mod.rs`<br>`crates/jocforge-io/src/pcm/riff_pcm24.rs`<br>`crates/jocforge-io/src/pcm/meter_source_cursor.rs`<br>`crates/jocforge-application/src/lib.rs` | `crates/jocforge-io/src/pcm/meter_source_cursor.rs` | LOCALLY_VERIFIED_TYPED_PCM24_READ_CHUNK_CURSOR_TO_RAW_FRAMES__SCP_CONTROL_PRODUCER_DEFERRED |
-| F06OF/meter-source-oar-callback-handoff | Phase 5 | The CLI composition root owns the IO cursor and translates its proposal into an immutable domain MeterSourceCallbackFrame for application. Application binds the frame to PreparedJobInput and the selected ADM graph, exposes 38 physical rows to the upstream frontend caller, checks the returned OAR input clock and exact direct-LFE physical row, and stages the independent meter prepass. The CLI combines that application stage with the IO cursor after-state in one infallible commit, checks source/prepass extents and normal-callback counts, coordinates cold reset, and joins their Q+3 finalization schedule. Application has no IO dependency. The slice does not produce component15 rows, regular controls, matrix/destinations, or spatial DSP. | `crates/jocforge-cli/Cargo.toml`<br>`crates/jocforge-cli/src/lib.rs`<br>`crates/jocforge-cli/src/meter_source_bridge.rs`<br>`crates/jocforge-application/src/meter_source_bridge.rs`<br>`crates/jocforge-application/src/lib.rs`<br>`crates/jocforge-domain/src/meter/mod.rs`<br>`crates/jocforge-domain/src/meter/source_frame.rs`<br>`crates/jocforge-domain/src/meter/lfe_delay_ring.rs`<br>`crates/jocforge-domain/src/meter/meter_prepass.rs`<br>`crates/jocforge-io/src/pcm/meter_source_cursor.rs`<br>`crates/jocforge-io/src/pcm/riff_pcm24.rs` | `crates/jocforge-cli/tests/meter_source_bridge.rs`<br>`crates/jocforge-domain/src/meter/lfe_delay_ring.rs`<br>`crates/jocforge-domain/src/meter/meter_prepass.rs` | LOCALLY_VERIFIED_SAME_RESOURCE_PHYSICAL_LFE_AND_CLOCK_JOIN__PRODUCTION_SPATIAL_PROVIDER_DEFERRED |
+| F06OF/meter-source-oar-callback-handoff | Phase 5 | The CLI composition root owns the IO cursor and translates its proposal into an immutable domain MeterSourceCallbackFrame for application. Application binds the frame to PreparedJobInput and the selected ADM graph, exposes 38 physical rows to the upstream frontend caller, checks the returned OAR input clock and exact direct-LFE physical row, and stages the independent meter prepass. The CLI combines that application stage with the IO cursor after-state in one infallible commit, checks source/prepass extents and normal-callback counts, coordinates cold reset, and joins their Q+3 finalization schedule. Application has no IO dependency. The slice does not produce component15 rows, regular controls, matrix/destinations, or spatial DSP. | `crates/jocforge-cli/Cargo.toml`<br>`crates/jocforge-cli/src/lib.rs`<br>`crates/jocforge-cli/src/meter_source_bridge.rs`<br>`crates/jocforge-application/src/meter_source_bridge.rs`<br>`crates/jocforge-application/src/lib.rs`<br>`crates/jocforge-domain/src/meter/mod.rs`<br>`crates/jocforge-domain/src/meter/source_frame.rs`<br>`crates/jocforge-domain/src/meter/lfe_delay_ring.rs`<br>`crates/jocforge-domain/src/meter/meter_prepass.rs`<br>`crates/jocforge-io/src/pcm/meter_source_cursor.rs`<br>`crates/jocforge-io/src/pcm/riff_pcm24.rs` | `crates/jocforge-cli/tests/meter_source_bridge.rs`<br>`crates/jocforge-domain/src/meter/lfe_delay_ring.rs`<br>`crates/jocforge-domain/src/meter/meter_prepass.rs` | LOCALLY_VERIFIED_EXACT_ADM_AND_SOURCE_EXTENT_BINDING__PRODUCTION_SPATIAL_PROVIDER_DEFERRED |
 | F06OF/washed-native-frontend-lineage-source-owner-hold | Phase 5 | Wash records a selected static meter callback from planar 48 kHz frames to a downstream meter consumer, including existing 1536/512/0 frame-length and 38-channel/requested-1536 observations. Run-local generation is not equated to F06OF g, and a zero-input candidate is not treated as a drain or EOF. This is meter frontend lineage only; no selected ADM source-map or same-generation JOC join is established. | — | — | WASHED_PARTIAL_STATIC_NO_PCM_REHASH__SOURCE_MAP_AND_OWNER_JOINS_OPEN |
 | F06OF/washed-adm-converter-static-inventory-hold | Phase 5 | The washed converter inventory confirms ADM/CHNA and mapping-related terminology only. It identifies no producer store, typed source-row transformation, owner/generation lineage or write into the selected frame descriptor. | — | — | WASHED_ADM_CONVERTER_INVENTORY_ONLY__SOURCE_ROW_WRITER_UNBOUND |
 | F06OF/washed-adm-bwf-label-source-row-gap | Phase 5 | The washed label rule says ADM is selected when present and atmos_mezz otherwise. run_011 used atmos_mezz only on a measurement path and has no JOC input-profile or source-row producer join; a node label does not establish a native source_map algorithm. | — | — | WASHED_INPUT_LABEL_PRECEDENCE_ONLY__SOURCE_MAP_PRODUCTION_OPEN |
@@ -8823,12 +9192,15 @@
 | F10/exponent-difference-triple-packing | Phase 6 | Packs one to three final exponent differences in -2..=2 into the F10.5 seven-bit base-five group value. Missing tail digits use digit 2. It owns no exponent row, reuse interval, frame clock, or bitstream writer. | `crates/jocforge-domain/src/codec/exponent_packing.rs` | `crates/jocforge-domain/tests/exponent_packing.rs` | LOCALLY_VERIFIED_F10_5_TRIPLE_PACKING__CURRENT_SPEC_REVIEW_OPEN |
 | F10/fullband-f09-refresh-normalization-stage | Phase 6 | Consumes a selected F08 217-bin POWER/PRIMARY proposal, caller-owned before work row and marker, caller-supplied F09 mode/special controls, and caller-supplied F10 span/option/gate/policy. It stages one F09 refresh over bins [0,128), then passes the resulting POWER current row to F10 full-band normalization. It returns current/work/marker proposals, normalized snapshot, and unchanged POWER/PRIMARY inputs. It does not choose the policy controls, create a cold owner, assign a source clock, or commit state. | `crates/jocforge-domain/src/transform/fullband_exponent_pipeline.rs`<br>`crates/jocforge-domain/src/transform/exponent_inputs.rs`<br>`crates/jocforge-domain/src/transform/fbw_transform.rs`<br>`crates/jocforge-domain/src/transform/math_generated_parameters.rs`<br>`crates/jocforge-domain/src/codec/exponent_refresh_state.rs`<br>`crates/jocforge-domain/src/codec/exponent_normalization.rs`<br>`crates/jocforge-domain/src/codec/policy_parameters.rs`<br>`crates/jocforge-domain/src/codec/mantissa.rs`<br>`crates/jocforge-domain/src/codec/raw_exponent_from_power.rs`<br>`crates/jocforge-domain/src/numeric/finite_f32.rs`<br>`crates/jocforge-domain/src/transform/mod.rs` | `crates/jocforge-domain/tests/fullband_exponent_pipeline.rs` | LOCALLY_VERIFIED_STRUCTURAL_REFRESH_AND_F10_NORMALIZATION_PROPOSAL__NO_COMPOSITE_ORACLE |
 | F11/virtual-header-fixed-bit-cost | Phase 6 | Computes only the selected F11.2 virtual-header fixed cost for acmod=7 and one programme: 91 bits plus 14 bits when surround_EX mode is nonzero. It does not compute per-block costs, BAP histogram costs, feasibility, SNR search, or a full converter call. | `crates/jocforge-domain/src/codec/converter_header_cost.rs`<br>`crates/jocforge-domain/src/codec/mod.rs` | `crates/jocforge-domain/tests/converter_header_cost.rs` | LOCALLY_VERIFIED_U_COST_0_AND_2_HEADER_COST__OTHER_CONVERTER_COSTS_OPEN |
-| F11/converter-offset-search | Phase 6 | Runs the F11.3 feasibility and F11.4 bounded binary search over caller-supplied header/fixed/auxiliary costs and a pure callback that returns six candidate mantissa costs. It checks every visited candidate including q>671 and returns candidate order plus best offset. U-SEARCH-01 exercises the callback with all-zero BAP costs; the search implementation is not specialized to that case. It does not produce production BAP or general per-block/mantissa costs. | `crates/jocforge-domain/src/codec/converter_search.rs`<br>`crates/jocforge-domain/src/codec/mod.rs` | `crates/jocforge-domain/tests/converter_search.rs` | LOCALLY_VERIFIED_U_SEARCH_01_GENERAL_CANDIDATE_COST_INPUT__PRODUCTION_BAP_OPEN |
-| F12/grouped-quantizer-helper | Phase 6 | Internal-only valid BAP1/2/4 grouped quantizer helper. It reserves item widths, compacts completed groups in place, and flushes only existing reservations. It does not implement caller capacity ownership, BAP values outside the selected domain, higher retry/rollback, producer identity, or full frame/EC3 behavior. | `crates/jocforge-domain/src/codec/grouped_quantizer.rs` | `crates/jocforge-domain/tests/grouped_quantizer.rs` | LOCALLY_VERIFIED_GROUPED_QUANTIZER_HELPER__WHOLE_F12_DEFERRED |
+| F11/converter-offset-search | Phase 6 | Runs selected F11.3/F11.4 feasibility and bounded candidate search. It derives six W16 grouped mantissa costs from six typed BAP blocks per candidate; the q-tagged bridge rejects a BAP frame whose candidate differs from the requested q before costing. The legacy untagged callback API remains available. F12A BAP generation is implemented separately from the same public provider. This slice still does not bind a F09/F10 source-generation plan, derive fixed header/auxiliary costs, build the F12 main scratch frame, or commit a source. | `crates/jocforge-domain/src/codec/bap.rs`<br>`crates/jocforge-domain/src/codec/converter_search.rs`<br>`crates/jocforge-domain/src/codec/mod.rs` | `crates/jocforge-domain/tests/converter_search.rs`<br>`crates/jocforge-domain/tests/bap_converter_search.rs` | LOCALLY_VERIFIED_Q_TAGGED_BAP_COST_SEARCH__SOURCE_GENERATION_JOIN_OPEN |
+| F12/grouped-quantizer-helper | Phase 6 | Quantizes one block of supplied selected-profile channel/bin items, sorts in [L,C,R,Ls,Rs,LFE] and increasing-bin order, forms independent BAP1/2/4 groups within the block, uses the specified partial-group fillers, emits each grouped field at its first item and ordinary nonzero-BAP fields at their item positions, and packs the resulting fields MSB-first. Returns the packed bytes and exact bit count. It does not enforce the 32,734-bit pre-tail frame budget, close the full frame, add CRC, own retry, or commit codec state. | `crates/jocforge-domain/src/codec/grouped_quantizer.rs` | `crates/jocforge-domain/tests/grouped_quantizer.rs` | LOCALLY_VERIFIED_BLOCK_QUANTIZATION_GROUPING_AND_MSB_PACKING__FRAME_BUDGET_OPEN |
 | F12/bounded-msb-frame-bit-writer | Phase 6 | Writes caller-specified unsigned fields and bytes high-bit-first into bounded frame scratch while preserving surrounding bits. It owns only a typed bit cursor and does not derive F12 field order, audio syntax, carrier cursor, frame size or owner state. | `crates/jocforge-domain/src/codec/bitio.rs` | `crates/jocforge-domain/src/codec/bitio.rs` | LOCALLY_VERIFIED_TYPED_CURSOR_AND_BOUNDED_MSB_WRITES__FRAME_SYNTAX_DEFERRED |
 | F12/selected-fixed-profile-header-prefix | Phase 6 | Writes the nine unconditional fixed selected-profile E-AC-3 fields MSB-first at frame bits 0..44, after requiring cursor 0 and preflighting all 45 bits. It stops at bit 45 without writing display padding; the caller then writes dialnorm and later conditional BSI fields. It does not decide the programme dialnorm source, measurement receipt, other BSI/block syntax, candidate search, CRC, frame size allocation, codec state or parent commit. | `crates/jocforge-domain/src/codec/frame_builder.rs`<br>`crates/jocforge-domain/src/codec/bitio.rs` | `crates/jocforge-domain/tests/selected_frame_prefix.rs`<br>`crates/jocforge-domain/src/codec/frame_syntax.rs` | LOCALLY_VERIFIED_SELECTED_FIXED_PREFIX_MSB_45_BITS__BSI_AND_FRAME_OPEN |
 | F12/selected-complexity-index-type-a-u8-field-writer | Phase 6 | Consumes the clean F13JO model complexity U8 as a typed field value and writes only F12 `complexity_index_type_a` at bits 105..112 after requiring cursor 105 and preflighting all eight bits. The caller owns preceding additional-BSI presence/length/identifier fields. This does not parse EMDF/ID14, identify the native configuration-count source, select a carrier block, assemble a complete frame, compute CRC, or commit codec state. | `crates/jocforge-domain/src/codec/frame_syntax.rs`<br>`crates/jocforge-domain/src/codec/frame_builder.rs`<br>`crates/jocforge-domain/src/codec/bitio.rs` | `crates/jocforge-domain/tests/selected_complexity_field.rs` | LOCALLY_VERIFIED_MODEL_U8_FIELD_AT_BITS_105_112__FRAME_COMPOSITION_OPEN |
-| F12S/mantissa-quantizer | Phase 6 | Pure finite binary32 word plus BAP to mantissa code or candidate-local error for F12S.5. Input is already exponent-scaled; no transform, fit, exponent/BAP producer, grouping, trial search, bitstream/frame, programme state, or source/AU clock is implemented. | `crates/jocforge-domain/src/codec/mantissa.rs` | `crates/jocforge-domain/tests/mantissa_quantizer.rs` | LOCALLY_VERIFIED_STATELESS_MANTISSA_QUANTIZER__WHOLE_F12S_DEFERRED |
+| F12/selected-q-frame-trial-and-keyless-crc | Phase 6 | Builds one selected 48 kHz/1024 kbps/5.1 source-frame candidate from an immutable caller plan and one U10 q. Each call generates fresh six-block BAP, quantizes clipped coefficient/exponent rows, resets grouped mantissa state per block, writes the selected header/block order to bounded scratch, enforces the 32,734-bit pre-tail limit, writes the 34-bit tail and shared E-AC-3 CRC16, and returns a complete source-index/q-tagged candidate. It does not produce F06/F09/F10/F11/F13 values, commit source state, schedule source/AU clocks, append output, or publish. | `crates/jocforge-domain/src/codec/selected_frame_trial.rs`<br>`crates/jocforge-domain/src/codec/mod.rs`<br>`crates/jocforge-domain/src/codec/bap.rs`<br>`crates/jocforge-domain/src/codec/bitio.rs`<br>`crates/jocforge-domain/src/codec/exponent_packing.rs`<br>`crates/jocforge-domain/src/codec/frame_builder.rs`<br>`crates/jocforge-domain/src/codec/frame_syntax.rs`<br>`crates/jocforge-domain/src/codec/grouped_quantizer.rs`<br>`crates/jocforge-domain/src/codec/mantissa.rs`<br>`crates/jocforge-domain/src/integrity/crc16.rs` | `crates/jocforge-domain/src/codec/selected_frame_trial.rs` | LOCALLY_VERIFIED_4096_BYTE_CANDIDATE_FRAME_TRIAL_AND_CRC__SOURCE_PLAN_JOIN_OPEN |
+| F12/selected-main-q-search | Phase 6 | Runs the selected F12S.8 main search over one already-preflighted immutable frame plan: test q=16 first without counting it, then low=16/high=784 with at most ten midpoint trials. Candidate success retains the latest frame and advances low; candidate infeasibility advances high. The search preserves fatal upstream/F11/provider errors and reports NoBest separately. It does not recompute F09/F10/BSI/EMDF, commit the selected candidate, advance source/AU clocks, or publish output. | `crates/jocforge-domain/src/codec/selected_main_q_search.rs`<br>`crates/jocforge-domain/src/codec/selected_frame_trial.rs`<br>`crates/jocforge-domain/src/codec/mod.rs` | `crates/jocforge-domain/src/codec/selected_main_q_search.rs` | LOCALLY_VERIFIED_Q16_SEED_AND_TEN_MIDPOINT_SEARCH__SOURCE_ROOT_OPEN |
+| F12S/mantissa-quantizer | Phase 6 | Consumes one finite clipped coefficient F32 word, caller-supplied decoded I16 exponent, and semantic BAP 0..15. It computes coefficient*2^exponent in F64 then converts once to F32, applies the selected per-BAP quantization formulas with separately rounded R32 steps, truncation or explicit ties-to-even rounding, and returns code plus width or a local candidate error. It does not derive/validate the upstream normalized exponent or BAP, group items, search candidates, write a frame, or commit state. | `crates/jocforge-domain/src/codec/mantissa.rs` | `crates/jocforge-domain/tests/mantissa_quantizer.rs` | LOCALLY_VERIFIED_F64_EXPONENT_SCALE_AND_R32_MANTISSA_QUANTIZER__UPSTREAM_PLAN_OPEN |
+| F12A/selected-f12a-public-bap-network | Phase 6 | Loads the hash-bound selected public P01 BAP provider, validates the exact selected 48 kHz ordinary FBW/LFE profile and table schemas, and computes the stateless integer F12A network for one row or six blocks at candidate q. The frame result preserves candidate_q across all 36 active elements and internal [L,C,R,Ls,Rs,LFE] axes. It does not bind the caller source-generation identity to F09/F10, perform the F12S main q search, build the complete 4096-byte trial, or commit source state. | `crates/jocforge-domain/src/codec/bap.rs`<br>`crates/jocforge-domain/src/codec/converter_search.rs`<br>`crates/jocforge-domain/src/codec/mod.rs` | `crates/jocforge-domain/tests/bap_converter_search.rs` | LOCALLY_VERIFIED_SELECTED_F12A_INTEGER_NETWORK_AND_Q_TAG__F12S_SEARCH_AND_SOURCE_GENERATION_OPEN |
 | F13/selected-metadata-owner-source-stage | Phase 7 | Selected 48 kHz/1536-sample profile only: lineage-bound ID11/ID2/ID14 body barrier, ID1 configuration with an explicit internal I32-derived value, private timer and four-queue clone, source2+ EMDF proposal, specialized receipt and owned noncommitting after-state. The current ProgrammeMeasurementReceipt has no provider crosswalk for this value; it is not inferred from gating_kind. Programme meter execution, parent root installation, complexity BSI and durable output remain separate. | `crates/jocforge-domain/src/joc/emdf/id1_configuration.rs`<br>`crates/jocforge-domain/src/joc/emdf/metadata_bodies.rs`<br>`crates/jocforge-domain/src/joc/emdf/metadata_owner.rs`<br>`crates/jocforge-domain/src/joc/emdf/metadata_owner/timer.rs`<br>`crates/jocforge-domain/src/joc/emdf/metadata_owner/payload_queue.rs`<br>`crates/jocforge-domain/src/joc/emdf/metadata_owner/emdf_serializer.rs` | `crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs` | LOCALLY_VERIFIED_TYPED_BODY_BARRIER_TIMER_FOUR_QUEUE_EMDF_AND_NONCOMMITTING_AFTER_PROPOSAL__PARENT_INSTALL_NOT_RUN |
 | F13/measurement-result-aggregate-and-id1-integer-projection | Phase 7 | The completed model measurement receipt exposes a semantic ProgrammeGatingKind; an explicit PublicMeasurementResultKind conversion maps ungated/dialogue/level to public 0/1/2, and ID1 preferred is public kind == 1. Internal selector origins map separately as 0/1/2 to public 0/2/1; no cast is used. A single finalized ID1 configuration is supplied when a fresh metadata owner is constructed and reused by all production stage_source transitions; typed source-stage inputs carry no measurement/config field. The raw process_source vector adapter is cfg(test) only and retains fixture config inputs. EOF does not replace the owner configuration, and reset_for_attempt requires the finalized configuration for the new attempt before constructing cold timer/queues. The native paired writer/getter behavior is crosswalked for completed finite scalar tuples, but the actual factory branch/value and native reset equivalence are not observed. Raw 44-byte record offset and raw I32 member storage identity are not asserted. No XML/UI input or downmix-preference inference is used. | `crates/jocforge-domain/src/meter/measurement_selection.rs`<br>`crates/jocforge-domain/src/meter/mod.rs`<br>`crates/jocforge-domain/src/meter/measurement_receipt.rs`<br>`crates/jocforge-domain/src/joc/emdf/id1_configuration.rs`<br>`crates/jocforge-domain/src/joc/emdf/metadata_owner.rs` | `crates/jocforge-domain/tests/measurement_selection.rs`<br>`crates/jocforge-domain/src/meter/measurement_receipt.rs`<br>`crates/jocforge-domain/src/joc/emdf/id1_configuration.rs`<br>`crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs` | LOCALLY_VERIFIED_PUBLIC_KIND_TO_ID1_AND_SINGLE_PROGRAMME_CONFIG_REUSE__WHOLE_MODEL_RUN_NOT_RUN |
 | F13C/selected-bsi-count-and-payload-import | Phase 7 | Selected ordinary non-bypass wrapper only: derive configured count from rate code 0..=5 and signed-I16 channel labels, model the validated configuration-count status/slot projection, produce U16 enable/length plus payload bytes 0/1, and copy all 64 payload bytes into a typed importer projection. The observed prefix-write fact is recorded, but unavailable header/selector prefix bytes are not synthesized. This selected producer does not parse ID14: a separate frozen model/helper does parse ID14 and computes object_count+1, but that model fact does not supply the selected native BSI count, which comes from validated configuration count. Native malformed/full-container semantic ID14 parser calls remain NOT_RUN. No ID14 body implementation, bypass path, multi-substream writer, or whole F13C/F13 is implemented. | `crates/jocforge-domain/src/joc/additional_bsi.rs` | `crates/jocforge-domain/tests/f13c_additional_bsi.rs` | LOCALLY_VERIFIED_SELECTED_COUNT_AND_COPY__PREFIX_BYTES_ID14_AND_PARENT_OPEN |

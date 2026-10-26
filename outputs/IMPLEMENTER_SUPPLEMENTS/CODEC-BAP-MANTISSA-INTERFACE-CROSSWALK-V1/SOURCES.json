@@ -1,0 +1,85 @@
+{
+  "schema": "eac3-bap-mantissa-interface-sources.v1",
+  "approved_package_manifest": {
+    "path": "outputs/IMPLEMENTER_PACKAGE/MANIFEST.json",
+    "bytes": 76302,
+    "sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+  },
+  "sources": [
+    {
+      "path": "specs/09-exponents.md",
+      "bytes": 9722,
+      "sha256": "41cd157140d0deaab51fa9a895c33758cb49eb46cf5844a2883c1d6e8bb81739",
+      "role": "fixed POWER/PRIMARY plan and single-plan trial reuse"
+    },
+    {
+      "path": "specs/09-lfe-gate-mantissa-boundaries.md",
+      "bytes": 4786,
+      "sha256": "9aff19192a8b5cba7db8bec26b05106edf214b4149a5f1c9d4be040691c80951",
+      "role": "clipped coefficient and exponent staged-bank boundary"
+    },
+    {
+      "path": "specs/10-exponent-normalization.md",
+      "bytes": 5969,
+      "sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc",
+      "role": "expanded decoded exponent rows and reuse semantics"
+    },
+    {
+      "path": "specs/11-converter.md",
+      "bytes": 5172,
+      "sha256": "9ecb50bbb125d2a6e2d8f5e565ffbc7514c156c72602d2d2d89d8b17e9e4e4c8",
+      "role": "independent histogram cost identity; converter error boundary"
+    },
+    {
+      "path": "specs/12-bit-allocation.md",
+      "bytes": 10061,
+      "sha256": "fa347045793bf3ce88349052526a758bc47e9d33fb1f1a1265a50c249ccd45f7",
+      "role": "F12A input/output shape, active range, statelessness, and error protocol"
+    },
+    {
+      "path": "specs/12-codec-and-wire.md",
+      "bytes": 7899,
+      "sha256": "3e712f4d8bd0d0eaccd933ce0087a4fc0fbd73e3ca92b4dc673153786936a14e",
+      "role": "shared trial/cost/failure boundary"
+    },
+    {
+      "path": "specs/12-selected-codec-wire.md",
+      "bytes": 14760,
+      "sha256": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448",
+      "role": "selected main BAP calls, positional quantization, grouping, actual scratch feasibility"
+    },
+    {
+      "path": "specs/12-selected-source-frame-composition.md",
+      "bytes": 10843,
+      "sha256": "9e6fcc14489ca0acaff0f7c223fce65539aa5b19cb4119ebcb34d19049cd0769",
+      "role": "one fixed plan, fresh trial scratch, commit boundary"
+    },
+    {
+      "path": "parameters/public-bap-48k-v1.json",
+      "bytes": 8509,
+      "sha256": "eb913038a89d853db453831d64df34c19f8ea8a89d04a72c0ef43733619545a3",
+      "role": "selected public F12A tables"
+    },
+    {
+      "path": "parameters/codec-wire-selected-v1.json",
+      "bytes": 3081,
+      "sha256": "a7a0a721a9e515d197a2d12fc0c9cb942b2b393f9019383a66ce2635f7aaa0dd",
+      "role": "selected profile, search, width, group, and capacity constants"
+    },
+    {
+      "path": "test-vectors/BAP-RULE-VERIFICATION.json",
+      "bytes": 552,
+      "sha256": "a1a42d37d6e53b3f86b1396d1dbb83d848b28809efcfb1462c4a2329e142363d",
+      "role": "approved BAP rule verification metadata"
+    },
+    {
+      "path": "test-vectors/CODEC-WIRE-SELECTED-VERIFICATION.json",
+      "bytes": 989,
+      "sha256": "20a7f9743845391b3d2d1dd98940282ffcda5d8b058fc49b4d2950e98047ac5b",
+      "role": "approved quantizer/group/search verification metadata"
+    }
+  ],
+  "native_or_dll_execution": "NOT_REQUIRED_AND_NOT_RUN",
+  "implementation_source_read": false,
+  "private_key_or_pcm_read": false
+}

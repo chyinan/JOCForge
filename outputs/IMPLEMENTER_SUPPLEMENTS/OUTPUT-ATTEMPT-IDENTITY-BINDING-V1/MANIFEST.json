@@ -1,0 +1,20 @@
+{
+  "package_id": "OUTPUT-ATTEMPT-IDENTITY-BINDING-V1",
+  "files": [
+    {
+      "file": "CONTRACT.json",
+      "bytes": 2589,
+      "sha256": "6f45f7d82a869c9bf9914d027f40c0b905fdc210d122390c0c5b7c3c3193602a"
+    },
+    {
+      "file": "INPUT-ONLY-CASES.json",
+      "bytes": 774,
+      "sha256": "e4103604eecce3a0e92ceaa11f6589bd69a1be6539b6e18b6f1cb9833e0771fd"
+    },
+    {
+      "file": "SOURCES-AND-DECISION.json",
+      "bytes": 906,
+      "sha256": "a9ab76c41791014e96afe6efe4e8f5b4196d57ebd66a7646ddefcc9080c82644"
+    }
+  ]
+}

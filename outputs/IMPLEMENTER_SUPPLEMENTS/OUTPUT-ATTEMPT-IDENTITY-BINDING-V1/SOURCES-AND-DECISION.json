@@ -1,0 +1,20 @@
+{
+  "approved_sources": [
+    {
+      "file": "specs/00-global-transaction-contract.md",
+      "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105"
+    },
+    {
+      "file": "specs/15-keyless-publication.md",
+      "sha256": "47beaa9d415d6d26eb8d6a7df63ca3d86514c37740618c3a041a46c7961b3a72"
+    },
+    {
+      "file": "parameters/keyless-publication-state-v1.json",
+      "sha256": "189067c34e9533b8fe3a94277effde2ac6f6ec7bec4767221d890fc198b0d68c"
+    }
+  ],
+  "decision_authority": "Wash coordinator selects routine local representation within user-authorized implementation scope",
+  "basis": "GTC attempt starts0/restart+1; F15 state schema attempt U64 and separate unique opaque staging_owner. Text format was unspecified; this package supplies a local encoding, not a reverse-engineered DEE rule.",
+  "native_execution": "NOT_RUN",
+  "implementation_execution": "NOT_RUN"
+}

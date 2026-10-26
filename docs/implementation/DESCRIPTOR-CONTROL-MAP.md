@@ -152,6 +152,18 @@ The two-phase F04D stage is locally verified against six selected-provider direc
   ],
   "fixture_materialization_status": "MATERIALIZED_AND_HASH_PINNED",
   "functional_id": "F04D",
+  "historical_implementation_inventory": [
+    {
+      "bytes": 22467,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs",
+      "sha256": "aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce"
+    },
+    {
+      "bytes": 37303,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+      "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"
+    }
+  ],
   "implementation_files": [
     "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs",
     "crates/jocforge-domain/src/spatial/spatial_audio_state.rs"
@@ -163,9 +175,9 @@ The two-phase F04D stage is locally verified against six selected-provider direc
       "sha256": "aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce"
     },
     {
-      "bytes": 37303,
+      "bytes": 53239,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"
+      "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"
     }
   ],
   "implementation_prohibitions": [

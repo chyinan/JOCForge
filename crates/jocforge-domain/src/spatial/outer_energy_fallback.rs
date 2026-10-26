@@ -6,8 +6,8 @@ use crate::numeric::{FiniteF32, r32_add, r32_mul};
 
 const ENERGY_RATIO_U32: u32 = 0x3f21_866c;
 const EPSILON_U32: u32 = 0x3400_0000;
-const FLOOR_U32: u32 = 0x3586_37bd;
-const DOMINANCE_RATIO_U32: u32 = 0x3f7f_fe09;
+pub(crate) const FLOOR_U32: u32 = 0x3586_37bd;
+pub(crate) const DOMINANCE_RATIO_U32: u32 = 0x3f7f_fe09;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum OuterEnergyFallbackError {

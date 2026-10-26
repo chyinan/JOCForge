@@ -1,0 +1,78 @@
+{
+  "schema": "research.u04-source-weight-caller-inputs.v1",
+  "scope": "Metadata/gather and exact0-or1 power-input discrimination; not selector/gain/projection execution",
+  "cases": [
+    {
+      "id": "candidate16_selected15",
+      "callback_g": 7,
+      "raw_feature_shape": [
+        24,
+        48
+      ],
+      "candidate_ids": [
+        0,
+        2,
+        5,
+        6,
+        8,
+        9,
+        11,
+        14,
+        17,
+        20,
+        23,
+        27,
+        32,
+        36,
+        41,
+        47
+      ],
+      "feature_recipe": "Initialize F48 positive zero. For candidate ordinal j, set F48[b][candidate_ids[j]]=1 for b=0..j. Other cells remain0.",
+      "selector_status": "CAPACITY_REACHED",
+      "selected_global_ids": [
+        0,
+        2,
+        5,
+        6,
+        8,
+        9,
+        11,
+        14,
+        17,
+        20,
+        23,
+        27,
+        32,
+        36,
+        41
+      ],
+      "processing_ids": [
+        1,
+        5,
+        9
+      ],
+      "binding_rule": "Gather all16 original candidate columns into24x16; source_weight length16, including unselected candidate47. Weight semantic primitive is serial band sum ofpow32(original0/1,0.2). Selected/processing arrays do not select weight rows."
+    },
+    {
+      "id": "selector_scratch_is_not_weight_input",
+      "base": "candidate16_selected15",
+      "selector_scratch_recipe": "Make a separate copy and set all its features tozero after selector processing",
+      "binding_rule": "U04 still consumes original candidate feature words; do not change them to mutated scratch."
+    },
+    {
+      "id": "skip_exhausted_even15",
+      "base": "candidate16_selected15",
+      "selector_status": "CANDIDATES_EXHAUSTED",
+      "binding_rule": "No U04/source-weight invocation or cache output; count15 does not override status"
+    },
+    {
+      "id": "independent_primitive_zero_column",
+      "N": 1,
+      "features_recipe": "24x1 positivezero",
+      "scope": "Independent F03U primitive boundary only: not admitted through current candidate sum>=0.5 gate",
+      "binding_rule": "Zero weight is handled by existing projection epsilon rules; no fabricated production candidate claim."
+    }
+  ],
+  "numerical_replay": "NOT_RUN_NOT_NEEDED_EXISTING_F03U_FORMULA",
+  "pow32_note": "0/1 cases isolate array binding without choosing a platform powf implementation. General bases remain governed by approved F03C.1."
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge-openjoc-sequence-count-source-manifests.v1",
+  "reverse_package_manifest_sha256": "3cadc964595a78895c0eb6b50568c8d30b98bae0c29496896f3f55af21aa3112",
+  "openjoc_files": [
+    {"path":"crates/openjoc-eac3/src/lib.rs","bytes":103418,"sha256":"6cfec34defba20deedfe359e0f4dcfb8e06aca03d719a54d07272b215a31ba31"},
+    {"path":"crates/openjoc-joc/src/parser.rs","bytes":11169,"sha256":"52246154159c57808928c563d1cb9b9d15f6fcb9d8542ecb292ad25eec69a553"},
+    {"path":"crates/openjoc-joc/src/decoder.rs","bytes":23119,"sha256":"4a84d08010ce42473964e667d9f2bb4af5c8c2b7d1ddebfe7ce5510e32c533e6"},
+    {"path":"crates/openjoc-joc/src/timeline.rs","bytes":22462,"sha256":"7050aaa9b589f1ef37c2a6e82fe00c805918a34fc8ff63b4f8d4ddde8e6328b5"},
+    {"path":"crates/openjoc-scene/src/payload_decoder.rs","bytes":21394,"sha256":"ea906d6809770316a911797c30c42ad3e0d3bf8ed6afe46df304fd2b9af29029"},
+    {"path":"crates/openjoc-api/src/lib.rs","bytes":44121,"sha256":"d47db6ab12cb34e5a4dfa5ff9c58fbc857b73664fb996f1b2363e0798fec2c68"},
+    {"path":"crates/openjoc-api/src/session.rs","bytes":50632,"sha256":"22c2c20fec67cdf6efac16e28a64f34557f7397cfbb7decbd1bcf9ea4d0c1ed1"},
+    {"path":"crates/openjoc-api/src/speaker.rs","bytes":18430,"sha256":"7a416de5b584928ef4df19ac42a9c2af2eb57bacd85754375d678ec6a2c8cfa7"},
+    {"path":"crates/openjoc-joc/tests/stateful_decoder.rs","bytes":18857,"sha256":"25bf5e4636770cd1d85fc099ea21349c26dd67a062857d5b2bf6d89b50db6571"},
+    {"path":"crates/openjoc-joc/tests/parser.rs","bytes":8599,"sha256":"362cdd8b967953c3d924718613ac99b59d3d0548f716d4f5bbcb44fdcee35472"},
+    {"path":"docs/site/concepts/eac3-joc-overview.md","bytes":2261,"sha256":"a211ef422e415b1e5ea468214022f29aed871bee849c2c57be793e693649ea73"}
+  ],
+  "lav_files": [
+    {"path":"ffmpeg/libavcodec/ac3_parser.c","sha256":"51c162c1502be269df438d9d5aac7460ff9f700e201d7014db6e70b69d60301e"},
+    {"path":"ffmpeg/libavcodec/ac3_parser_internal.h","sha256":"4e3f726e54d1f08dabccf5b2e99692aed2b90539a79b69e32b22d75f6e6818ca"},
+    {"path":"ffmpeg/libavformat/movenc.c","sha256":"937aa3b9a41ab2a64c98c7d305612c8b16e33dd6b6ac07c0478c295f18e1c3f6"}
+  ],
+  "f12_complexity_contract_manifest_sha256": "ae252406f99560f79e56cef2c4560e04d20a89f8c08badec086a6c72e10edbf0"
+}

@@ -57,6 +57,39 @@ impl SelectedObjectEvent {
             diffuse,
         }
     }
+
+    pub const fn host_channel_index(&self) -> u8 {
+        self.host_channel_index
+    }
+
+    pub const fn start_sample(&self) -> u64 {
+        self.start_sample
+    }
+
+    pub const fn duration_samples(&self) -> u64 {
+        self.duration_samples
+    }
+
+    pub const fn programme_samples(&self) -> u64 {
+        self.programme_samples
+    }
+
+    /// Returns the authored optional XYZ fields before writer conversion.
+    /// Omitted coordinates and the exact floating-point values are preserved.
+    pub const fn authored_coordinates(&self) -> [Option<f64>; 3] {
+        [self.x, self.y, self.z]
+    }
+
+    /// Returns the authored optional width, depth, and height fields before
+    /// spread validation or uniform-width conversion.
+    pub const fn authored_spread(&self) -> [Option<f64>; 3] {
+        [self.width, self.depth, self.height]
+    }
+
+    /// Returns the admitted discrete diffuse value, preserving field presence.
+    pub const fn diffuse(&self) -> Option<i32> {
+        self.diffuse
+    }
 }
 
 /// Errors local to selected event value production; not native status values.
@@ -97,6 +130,46 @@ impl ObjectControl52 {
     pub const fn words(self) -> [u32; 13] {
         self.0
     }
+
+    /// Wraps a row already committed by the F01E owner without re-sampling or rewriting it.
+    pub(crate) const fn from_committed_snapshot_words(words: [u32; 13]) -> Self {
+        Self(words)
+    }
+
+    /// Selected F03P source fields copied from their approved Object13 slots.
+    pub const fn point_response_source_fields(self) -> [u32; 4] {
+        [self.0[8], self.0[0], self.0[11], self.0[12]]
+    }
+
+    #[cfg(test)]
+    pub(crate) const fn fixture_from_words(words: [u32; 13]) -> Self {
+        Self(words)
+    }
+
+    pub(crate) const fn from_normal_sample(
+        sampled_xyz: [u32; 3],
+        uniform_width: u32,
+        diffuse: Option<i32>,
+    ) -> Self {
+        let mut words = [0_u32; 13];
+        words[0] = 0;
+        words[1] = 0;
+        words[2] = 3;
+        words[3] = 2;
+        words[4] = 0;
+        words[5] = sampled_xyz[0];
+        words[6] = sampled_xyz[1];
+        words[7] = sampled_xyz[2];
+        words[8] = 0;
+        words[9] = uniform_width;
+        words[10] = match diffuse {
+            Some(value) if value != 0 => 1,
+            Some(_) | None => 0,
+        };
+        words[11] = 0;
+        words[12] = 1;
+        Self(words)
+    }
 }
 
 /// Ordered object rows derived from the exact non-bed complement of a validated
@@ -132,24 +205,14 @@ pub fn build_selected_object_control52(
         return Err(ObjectControlError::EventDuration);
     }
 
-    let xyz = event_coordinates(event.x, event.y, event.z)?;
-    let sampler_xyz = sample_event(xyz)?;
-    let uniform_width = uniform_width(event.width, event.depth, event.height)?;
-    let mut words = [0_u32; 13];
-    words[0] = 0;
-    words[1] = 0;
-    words[2] = 3;
-    words[3] = 2;
-    words[4] = 0;
-    words[5] = sampler_xyz[0];
-    words[6] = sampler_xyz[1];
-    words[7] = sampler_xyz[2];
-    words[8] = 0;
-    words[9] = uniform_width;
-    words[10] = u32::from(event.diffuse.unwrap_or(0) != 0);
-    words[11] = 0;
-    words[12] = 1;
-    Ok(ObjectControl52(words))
+    let xyz = writer_coordinates(&event)?;
+    let sampler_xyz = sample_event_from_previous(xyz, xyz)?;
+    let uniform_width = writer_uniform_width(&event)?;
+    Ok(ObjectControl52::from_normal_sample(
+        sampler_xyz,
+        uniform_width,
+        event.diffuse,
+    ))
 }
 
 /// Builds the complete selected 28-object control set in ascending physical-host
@@ -182,6 +245,16 @@ pub fn build_selected_object_control_set(
         .try_into()
         .map_err(|_| ObjectControlError::EventCount)?;
     Ok(SelectedObjectControlSet { rows, dbmd_tracks })
+}
+
+pub(crate) fn writer_coordinates(
+    event: &SelectedObjectEvent,
+) -> Result<[u32; 3], ObjectControlError> {
+    event_coordinates(event.x, event.y, event.z)
+}
+
+pub(crate) fn writer_uniform_width(event: &SelectedObjectEvent) -> Result<u32, ObjectControlError> {
+    uniform_width(event.width, event.depth, event.height)
 }
 
 fn event_coordinates(
@@ -232,16 +305,20 @@ fn z_coordinate(value: Option<f64>) -> Result<u32, ObjectControlError> {
     Ok(writer_value.to_bits())
 }
 
-fn sample_event(xyz: [u32; 3]) -> Result<[u32; 3], ObjectControlError> {
+pub(crate) fn sample_event_from_previous(
+    writer_xyz: [u32; 3],
+    previous_xyz: [u32; 3],
+) -> Result<[u32; 3], ObjectControlError> {
     let denominator = r32_mul(finite(SAMPLE_RATE)?, finite(SAMPLER_TAU)?)
         .map_err(|_| ObjectControlError::NumericFailure)?;
     let ratio = finite(SAMPLER_PERIOD / denominator.value())?;
     let history = finite((-ratio.value()).exp())?;
     let incoming = r32_sub_one(history)?;
-    let mut previous = xyz.map(f32::from_bits);
+    let writer = writer_xyz.map(f32::from_bits);
+    let mut previous = previous_xyz.map(f32::from_bits);
     for _slot in 0..2 {
-        for (coordinate, previous_value) in xyz.iter().zip(previous.iter_mut()) {
-            let coordinate = finite(f32::from_bits(*coordinate))?;
+        for (coordinate, previous_value) in writer.iter().zip(previous.iter_mut()) {
+            let coordinate = finite(*coordinate)?;
             let input_component =
                 r32_mul(coordinate, incoming).map_err(|_| ObjectControlError::NumericFailure)?;
             let previous_component = r32_mul(finite(*previous_value)?, history)

@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge-codec-source-publication-verification.v1",
+  "research_payload_hashes": "8/8_MATCH",
+  "approved_contracts": "15/15_MATCH",
+  "frozen_assembler_hash": "MATCH",
+  "normal_and_optimized_control_verifier": {
+    "status": "PASS_EACH",
+    "input_cases": 24,
+    "fatal_restart_cases": 20,
+    "primary_queue_clock_steps": 4249
+  },
+  "wash_derived_plan_clock_check": {
+    "N_cases": 4,
+    "checks": 17032,
+    "queue_writer_and_pending_relations": "PASS"
+  },
+  "real_codec_feasibility_or_DSP": "NOT_RUN",
+  "real_filesystem_durability_faults_or_crash": "NOT_RUN",
+  "native_execution": "NOT_RUN"
+}

@@ -1,0 +1,9 @@
+{
+  "research_manifest_sha256": "380d2e1031318d16f2fa0024d514f2453eeb786cd156bff8d0b9a8f0b1f48652",
+  "payloads_verified": 2,
+  "reference_files_hash_verified": 25,
+  "scope": "Existing approved producer/consumer rule index; no new DSP or native identity requirement",
+  "implementation_review": "NOT_RUN",
+  "numerical_execution": "NOT_RUN",
+  "product_acceptance": "NOT_RUN"
+}

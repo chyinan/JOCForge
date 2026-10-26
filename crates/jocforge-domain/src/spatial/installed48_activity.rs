@@ -14,12 +14,20 @@ use crate::timeline::{AdmSampleIndex, FrontendCallbackIndex};
 
 const FRAME_SAMPLES: usize = 1_536;
 const CACHED_DRAIN_CALLBACKS: u64 = 4;
+const METER_ZERO_INPUT_DRAIN_CALLBACKS: u64 = 3;
 const SELECTED_SOURCE_SAMPLES: u64 = 6_522_906;
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum ActivityDrainPolicy {
+    ReplayCachedFrame,
+    FreshZeroInput,
+}
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum PrimaryActivityPhase {
     NormalRead,
     CachedDrain,
+    FreshZeroInputDrain,
 }
 
 impl PrimaryActivityPhase {
@@ -27,6 +35,7 @@ impl PrimaryActivityPhase {
         match self {
             Self::NormalRead => "normal",
             Self::CachedDrain => "cached_flush",
+            Self::FreshZeroInputDrain => "fresh_zero_meter_drain",
         }
     }
 }
@@ -37,6 +46,7 @@ pub enum PrimaryActivityError {
     SourceExtent,
     CallbackSequenceComplete,
     CallbackPhase,
+    FreshDrainInputNonZero,
     ReaderPosition,
     ReaderFrameShape,
     NonfinitePcm,
@@ -55,6 +65,7 @@ impl PrimaryActivityError {
             Self::SourceExtent => "PRIMARY_ACTIVITY_SOURCE_EXTENT",
             Self::CallbackSequenceComplete => "PRIMARY_ACTIVITY_CALLBACKS_COMPLETE",
             Self::CallbackPhase => "PRIMARY_ACTIVITY_CALLBACK_PHASE",
+            Self::FreshDrainInputNonZero => "PRIMARY_ACTIVITY_FRESH_DRAIN_NONZERO",
             Self::ReaderPosition => "PRIMARY_ACTIVITY_READER_POSITION",
             Self::ReaderFrameShape => "PRIMARY_ACTIVITY_READER_FRAME_SHAPE",
             Self::NonfinitePcm => "PRIMARY_ACTIVITY_PCM_NONFINITE",
@@ -75,6 +86,9 @@ pub enum PrimaryActivityInput {
         pcm_word_rows: Vec<Vec<u32>>,
     },
     CachedDrain,
+    FreshZeroInputDrain {
+        pcm_word_rows: Vec<Vec<u32>>,
+    },
 }
 
 #[derive(Debug, PartialEq)]
@@ -150,6 +164,10 @@ impl PrimaryActivityProposal {
         &self.output
     }
 
+    pub fn membership_route(&self) -> &PrimaryPrefixRoute {
+        &self.membership_route
+    }
+
     pub fn into_parts(
         self,
     ) -> (
@@ -199,6 +217,7 @@ pub struct PrimaryInstalled48ActivityProducer {
     source_samples: u64,
     normal_callback_count: u64,
     total_callback_count: u64,
+    drain_policy: ActivityDrainPolicy,
     activity_window: Box<[FiniteF32]>,
     membership: PrefixMembershipProducer,
 }
@@ -229,6 +248,37 @@ impl PrimaryInstalled48ActivityProducer {
             source_samples,
             normal_callback_count,
             total_callback_count,
+            drain_policy: ActivityDrainPolicy::ReplayCachedFrame,
+            activity_window,
+            membership,
+        })
+    }
+
+    /// Builds the independent meter schedule: Q normal callbacks followed by three fresh-zero drains.
+    pub fn new_meter(source_map: &Installed48SourceMap) -> Result<Self, PrimaryActivityError> {
+        let binding = source_map.source_binding();
+        let source_samples = binding.source_samples().value();
+        if source_samples == 0 || binding.data_bytes() / 114 != source_samples {
+            return Err(PrimaryActivityError::SourceExtent);
+        }
+        let normal_callback_count = source_samples.div_ceil(FRAME_SAMPLES as u64);
+        let total_callback_count = normal_callback_count
+            .checked_add(METER_ZERO_INPUT_DRAIN_CALLBACKS)
+            .ok_or(PrimaryActivityError::SourceExtent)?;
+        let activity_window =
+            triangle_window().map_err(|_| PrimaryActivityError::ActivityWindow)?;
+        if activity_window.len() != FRAME_SAMPLES * 2 {
+            return Err(PrimaryActivityError::ActivityWindow);
+        }
+        let membership =
+            PrefixMembershipProducer::for_selected_primary_p11(source_map.p11_geometry())
+                .map_err(|_| PrimaryActivityError::MembershipProducer)?;
+        Ok(Self {
+            source_receipt_sha256: *binding.source_receipt_sha256(),
+            source_samples,
+            normal_callback_count,
+            total_callback_count,
+            drain_policy: ActivityDrainPolicy::FreshZeroInput,
             activity_window,
             membership,
         })
@@ -279,7 +329,10 @@ impl PrimaryInstalled48ActivityProducer {
         let expected_phase = if u64::from(callback) < self.normal_callback_count {
             PrimaryActivityPhase::NormalRead
         } else {
-            PrimaryActivityPhase::CachedDrain
+            match self.drain_policy {
+                ActivityDrainPolicy::ReplayCachedFrame => PrimaryActivityPhase::CachedDrain,
+                ActivityDrainPolicy::FreshZeroInput => PrimaryActivityPhase::FreshZeroInputDrain,
+            }
         };
         let (
             frame,
@@ -312,9 +365,13 @@ impl PrimaryInstalled48ActivityProducer {
                         .checked_add(expected_samples as u64)
                         .ok_or(PrimaryActivityError::SourceExtent)?,
                 );
+                let after_cache = match self.drain_policy {
+                    ActivityDrainPolicy::ReplayCachedFrame => Some(frame.clone()),
+                    ActivityDrainPolicy::FreshZeroInput => None,
+                };
                 (
                     frame.clone(),
-                    Some(frame),
+                    after_cache,
                     expected_samples,
                     Some(FrontendCallbackIndex::new(callback)),
                     reader_relative_sample,
@@ -337,6 +394,27 @@ impl PrimaryInstalled48ActivityProducer {
                 (
                     frame.clone(),
                     Some(frame),
+                    0,
+                    None,
+                    last_start,
+                    before.reader_cursor,
+                    before.last_reader_start,
+                )
+            }
+            (
+                PrimaryActivityPhase::FreshZeroInputDrain,
+                PrimaryActivityInput::FreshZeroInputDrain { pcm_word_rows },
+            ) => {
+                if before.reader_cursor.value() != self.source_samples {
+                    return Err(PrimaryActivityError::ReaderPosition);
+                }
+                let last_start = before
+                    .last_reader_start
+                    .ok_or(PrimaryActivityError::CachedFrameMissing)?;
+                let frame = PrimaryAudioFrame::from_fresh_zero_drain(pcm_word_rows)?;
+                (
+                    frame,
+                    None,
                     0,
                     None,
                     last_start,
@@ -457,6 +535,16 @@ impl Clone for PrimaryAudioFrame {
 }
 
 impl PrimaryAudioFrame {
+    fn from_fresh_zero_drain(pcm_word_rows: Vec<Vec<u32>>) -> Result<Self, PrimaryActivityError> {
+        if pcm_word_rows.len() != 38 || pcm_word_rows.iter().any(|row| row.len() != FRAME_SAMPLES) {
+            return Err(PrimaryActivityError::ReaderFrameShape);
+        }
+        if pcm_word_rows.iter().flatten().any(|word| *word != 0) {
+            return Err(PrimaryActivityError::FreshDrainInputNonZero);
+        }
+        Self::from_normal_read(pcm_word_rows, FRAME_SAMPLES)
+    }
+
     fn from_normal_read(
         pcm_word_rows: Vec<Vec<u32>>,
         actual_samples: usize,
@@ -501,4 +589,147 @@ fn fresh_history() -> Result<Box<[Box<[FiniteF32]>]>, PrimaryActivityError> {
         .map(|_| vec![zero; FRAME_SAMPLES].into_boxed_slice())
         .collect::<Vec<_>>()
         .into_boxed_slice())
+}
+
+#[cfg(test)]
+mod meter_zero_drain_tests {
+    use super::*;
+    use crate::frontend::{
+        dbmd_sections::parse_selected_dbmd_sections,
+        job_configuration::bind_selected_primary_control_projection,
+        primary_metadata_control::produce_primary_metadata_control_rows,
+        selected_adm_graph::parse_selected_adm_graph,
+    };
+    use crate::spatial::{
+        installed48_source_map::build_primary_installed48_source_map,
+        selected_p11_geometry::generate_selected_p11_geometry,
+    };
+
+    const AXML: &[u8] =
+        include_bytes!("../../tests/fixtures/primary_metadata_control/source_metadata.xml");
+    const CHNA: &[u8] = include_bytes!(
+        "../../tests/fixtures/primary_metadata_control/source_track_associations.bin"
+    );
+    const DBMD: &[u8] =
+        include_bytes!("../../tests/fixtures/primary_metadata_control/source_metadata.dbmd");
+    const JOB_PROJECTION: &[u8] =
+        include_bytes!("../../tests/fixtures/primary_metadata_control/JOB-FIELD-PROJECTION.json");
+    const JOB_PROJECTION_RECEIPT: &[u8] =
+        include_bytes!("../../tests/fixtures/primary_metadata_control/JOB-PROJECTION-RECEIPT.json");
+    const FROZEN_JOB_BINDING: &[u8] =
+        include_bytes!("../../tests/fixtures/primary_metadata_control/FROZEN-JOB-BINDING.json");
+    const PRIMARY_SOURCE_RECEIPT: &[u8] =
+        include_bytes!("../../tests/fixtures/primary_metadata_control/PRIMARY-SOURCE-RECEIPT.json");
+
+    fn source_map() -> Installed48SourceMap {
+        let binding = bind_selected_primary_control_projection(
+            JOB_PROJECTION,
+            JOB_PROJECTION_RECEIPT,
+            FROZEN_JOB_BINDING,
+            PRIMARY_SOURCE_RECEIPT,
+        )
+        .unwrap();
+        let graph = parse_selected_adm_graph(AXML, CHNA).unwrap();
+        let dbmd = parse_selected_dbmd_sections(DBMD).unwrap();
+        let controls = produce_primary_metadata_control_rows(&binding, &graph, &dbmd).unwrap();
+        let geometry = generate_selected_p11_geometry(0x111b, true).unwrap();
+        build_primary_installed48_source_map(&controls, &geometry).unwrap()
+    }
+
+    fn fresh_zero_rows() -> Vec<Vec<u32>> {
+        vec![vec![0_u32; FRAME_SAMPLES]; 38]
+    }
+
+    fn at_meter_drain_boundary(
+        producer: &PrimaryInstalled48ActivityProducer,
+    ) -> PrimaryActivityState {
+        let mut state = producer.cold_state().unwrap();
+        state.next_callback =
+            FrontendCallbackIndex::new(u32::try_from(producer.normal_callback_count).unwrap());
+        state.reader_cursor = AdmSampleIndex::new(producer.source_samples);
+        state.last_reader_start = Some(AdmSampleIndex::new(
+            (producer.normal_callback_count - 1) * FRAME_SAMPLES as u64,
+        ));
+        state.regular_history = fresh_history().unwrap();
+        state.cached_frame = None;
+        state
+    }
+
+    #[test]
+    fn independent_meter_schedule_runs_q_plus_three_fresh_zero_drains() {
+        let source_map = source_map();
+        let producer = PrimaryInstalled48ActivityProducer::new_meter(&source_map).unwrap();
+        let mut before = at_meter_drain_boundary(&producer);
+        assert_eq!(
+            producer.total_callback_count,
+            producer.normal_callback_count + METER_ZERO_INPUT_DRAIN_CALLBACKS
+        );
+
+        for drain in 0..METER_ZERO_INPUT_DRAIN_CALLBACKS {
+            let callback = producer.normal_callback_count + drain;
+            let proposal = producer
+                .produce_next(
+                    &source_map,
+                    &before,
+                    PrimaryActivityInput::FreshZeroInputDrain {
+                        pcm_word_rows: fresh_zero_rows(),
+                    },
+                )
+                .unwrap();
+            let (output, after, _) = proposal.into_parts();
+            assert_eq!(output.phase(), PrimaryActivityPhase::FreshZeroInputDrain);
+            assert_eq!(u64::from(output.callback_index().value()), callback);
+            assert_eq!(output.host_frame(), None);
+            assert_eq!(output.actual_source_samples(), 0);
+            assert_eq!(
+                output.reader_relative_sample().value(),
+                (producer.normal_callback_count - 1) * FRAME_SAMPLES as u64
+            );
+            assert_eq!(after.reader_cursor.value(), producer.source_samples);
+            assert_eq!(after.cached_frame, None);
+            assert_eq!(u64::from(after.next_callback.value()), callback + 1);
+            before = after;
+        }
+
+        assert_eq!(
+            u64::from(before.next_callback.value()),
+            producer.total_callback_count
+        );
+        assert_eq!(
+            producer
+                .produce_next(
+                    &source_map,
+                    &before,
+                    PrimaryActivityInput::FreshZeroInputDrain {
+                        pcm_word_rows: fresh_zero_rows(),
+                    },
+                )
+                .err(),
+            Some(PrimaryActivityError::CallbackSequenceComplete)
+        );
+    }
+
+    #[test]
+    fn fresh_zero_meter_drain_rejects_any_nonzero_raw_word() {
+        let source_map = source_map();
+        let producer = PrimaryInstalled48ActivityProducer::new_meter(&source_map).unwrap();
+        let before = at_meter_drain_boundary(&producer);
+        let snapshot = before.next_callback;
+        let mut raw_rows = fresh_zero_rows();
+        raw_rows[7][3] = 1.0_f32.to_bits();
+
+        assert_eq!(
+            producer
+                .produce_next(
+                    &source_map,
+                    &before,
+                    PrimaryActivityInput::FreshZeroInputDrain {
+                        pcm_word_rows: raw_rows,
+                    },
+                )
+                .err(),
+            Some(PrimaryActivityError::FreshDrainInputNonZero)
+        );
+        assert_eq!(before.next_callback, snapshot);
+    }
 }

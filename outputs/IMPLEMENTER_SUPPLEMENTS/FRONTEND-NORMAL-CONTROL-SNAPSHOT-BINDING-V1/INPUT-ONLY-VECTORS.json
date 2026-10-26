@@ -1,0 +1,992 @@
+{
+  "schema": "research.frontend-normal-control-inputs.v1",
+  "kind": "SELF_OWNED_TYPED_METADATA_NOT_REAL_ADM_OR_PCM",
+  "prepared": {
+    "programme": "own-programme",
+    "attempt": 0,
+    "N": 1537,
+    "prepared_identity": "typed-validated-own-graph-config-events",
+    "beds": [
+      {
+        "channel_format_id": "bed-0",
+        "host_channel_index": 0,
+        "bed_id": 0,
+        "semantic_role": "bed"
+      },
+      {
+        "channel_format_id": "bed-1",
+        "host_channel_index": 4,
+        "bed_id": 1,
+        "semantic_role": "bed"
+      },
+      {
+        "channel_format_id": "bed-2",
+        "host_channel_index": 8,
+        "bed_id": 2,
+        "semantic_role": "bed"
+      },
+      {
+        "channel_format_id": "bed-3",
+        "host_channel_index": 12,
+        "bed_id": 3,
+        "semantic_role": "lfe"
+      },
+      {
+        "channel_format_id": "bed-4",
+        "host_channel_index": 16,
+        "bed_id": 4,
+        "semantic_role": "bed"
+      },
+      {
+        "channel_format_id": "bed-5",
+        "host_channel_index": 20,
+        "bed_id": 5,
+        "semantic_role": "bed"
+      },
+      {
+        "channel_format_id": "bed-6",
+        "host_channel_index": 24,
+        "bed_id": 6,
+        "semantic_role": "bed"
+      },
+      {
+        "channel_format_id": "bed-7",
+        "host_channel_index": 28,
+        "bed_id": 7,
+        "semantic_role": "bed"
+      },
+      {
+        "channel_format_id": "bed-8",
+        "host_channel_index": 32,
+        "bed_id": 8,
+        "semantic_role": "bed"
+      },
+      {
+        "channel_format_id": "bed-9",
+        "host_channel_index": 36,
+        "bed_id": 9,
+        "semantic_role": "bed"
+      }
+    ],
+    "objects": [
+      {
+        "object_ordinal": 0,
+        "host_channel_index": 37,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": -0.75,
+          "y": -0.6666666666666666,
+          "z": -0.5,
+          "width": 0.1,
+          "diffuse": 0
+        }
+      },
+      {
+        "object_ordinal": 1,
+        "host_channel_index": 35,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": -0.5,
+          "y": -0.3333333333333333,
+          "z": 0.0,
+          "width": 0.1,
+          "diffuse": 1
+        }
+      },
+      {
+        "object_ordinal": 2,
+        "host_channel_index": 34,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": -0.25,
+          "y": 0.0,
+          "z": 0.5,
+          "width": 0.1,
+          "diffuse": 0
+        }
+      },
+      {
+        "object_ordinal": 3,
+        "host_channel_index": 33,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": 0.0,
+          "y": 0.3333333333333333,
+          "z": -0.5,
+          "width": 0.1,
+          "diffuse": 1
+        }
+      },
+      {
+        "object_ordinal": 4,
+        "host_channel_index": 31,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": 0.25,
+          "y": 0.6666666666666666,
+          "z": 0.0,
+          "width": 0.1,
+          "diffuse": 0
+        }
+      },
+      {
+        "object_ordinal": 5,
+        "host_channel_index": 30,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": 0.5,
+          "y": -0.6666666666666666,
+          "z": 0.5,
+          "width": 0.1,
+          "diffuse": 1
+        }
+      },
+      {
+        "object_ordinal": 6,
+        "host_channel_index": 29,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": 0.75,
+          "y": -0.3333333333333333,
+          "z": -0.5,
+          "width": 0.1,
+          "diffuse": 0
+        }
+      },
+      {
+        "object_ordinal": 7,
+        "host_channel_index": 27,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": -0.75,
+          "y": 0.0,
+          "z": 0.0,
+          "width": 0.1,
+          "diffuse": 1
+        }
+      },
+      {
+        "object_ordinal": 8,
+        "host_channel_index": 26,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": -0.5,
+          "y": 0.3333333333333333,
+          "z": 0.5,
+          "width": 0.1,
+          "diffuse": 0
+        }
+      },
+      {
+        "object_ordinal": 9,
+        "host_channel_index": 25,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": -0.25,
+          "y": 0.6666666666666666,
+          "z": -0.5,
+          "width": 0.1,
+          "diffuse": 1
+        }
+      },
+      {
+        "object_ordinal": 10,
+        "host_channel_index": 23,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": 0.0,
+          "y": -0.6666666666666666,
+          "z": 0.0,
+          "width": 0.1,
+          "diffuse": 0
+        }
+      },
+      {
+        "object_ordinal": 11,
+        "host_channel_index": 22,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": 0.25,
+          "y": -0.3333333333333333,
+          "z": 0.5,
+          "width": 0.1,
+          "diffuse": 1
+        }
+      },
+      {
+        "object_ordinal": 12,
+        "host_channel_index": 21,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": 0.5,
+          "y": 0.0,
+          "z": -0.5,
+          "width": 0.1,
+          "diffuse": 0
+        }
+      },
+      {
+        "object_ordinal": 13,
+        "host_channel_index": 19,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": 0.75,
+          "y": 0.3333333333333333,
+          "z": 0.0,
+          "width": 0.1,
+          "diffuse": 1
+        }
+      },
+      {
+        "object_ordinal": 14,
+        "host_channel_index": 18,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": -0.75,
+          "y": 0.6666666666666666,
+          "z": 0.5,
+          "width": 0.1,
+          "diffuse": 0
+        }
+      },
+      {
+        "object_ordinal": 15,
+        "host_channel_index": 17,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": -0.5,
+          "y": -0.6666666666666666,
+          "z": -0.5,
+          "width": 0.1,
+          "diffuse": 1
+        }
+      },
+      {
+        "object_ordinal": 16,
+        "host_channel_index": 15,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": -0.25,
+          "y": -0.3333333333333333,
+          "z": 0.0,
+          "width": 0.1,
+          "diffuse": 0
+        }
+      },
+      {
+        "object_ordinal": 17,
+        "host_channel_index": 14,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.5,
+          "width": 0.1,
+          "diffuse": 1
+        }
+      },
+      {
+        "object_ordinal": 18,
+        "host_channel_index": 13,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": 0.25,
+          "y": 0.3333333333333333,
+          "z": -0.5,
+          "width": 0.1,
+          "diffuse": 0
+        }
+      },
+      {
+        "object_ordinal": 19,
+        "host_channel_index": 11,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": 0.5,
+          "y": 0.6666666666666666,
+          "z": 0.0,
+          "width": 0.1,
+          "diffuse": 1
+        }
+      },
+      {
+        "object_ordinal": 20,
+        "host_channel_index": 10,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": 0.75,
+          "y": -0.6666666666666666,
+          "z": 0.5,
+          "width": 0.1,
+          "diffuse": 0
+        }
+      },
+      {
+        "object_ordinal": 21,
+        "host_channel_index": 9,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": -0.75,
+          "y": -0.3333333333333333,
+          "z": -0.5,
+          "width": 0.1,
+          "diffuse": 1
+        }
+      },
+      {
+        "object_ordinal": 22,
+        "host_channel_index": 7,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": -0.5,
+          "y": 0.0,
+          "z": 0.0,
+          "width": 0.1,
+          "diffuse": 0
+        }
+      },
+      {
+        "object_ordinal": 23,
+        "host_channel_index": 6,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": -0.25,
+          "y": 0.3333333333333333,
+          "z": 0.5,
+          "width": 0.1,
+          "diffuse": 1
+        }
+      },
+      {
+        "object_ordinal": 24,
+        "host_channel_index": 5,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": 0.0,
+          "y": 0.6666666666666666,
+          "z": -0.5,
+          "width": 0.1,
+          "diffuse": 0
+        }
+      },
+      {
+        "object_ordinal": 25,
+        "host_channel_index": 3,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": 0.25,
+          "y": -0.6666666666666666,
+          "z": 0.0,
+          "width": 0.1,
+          "diffuse": 1
+        }
+      },
+      {
+        "object_ordinal": 26,
+        "host_channel_index": 2,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": 0.5,
+          "y": -0.3333333333333333,
+          "z": 0.5,
+          "width": 0.1,
+          "diffuse": 0
+        }
+      },
+      {
+        "object_ordinal": 27,
+        "host_channel_index": 1,
+        "event": {
+          "start": 0,
+          "rtime": 0,
+          "duration": 1537,
+          "block_duration": 1537,
+          "jump": 1,
+          "interpolation": 0,
+          "cartesian": 1,
+          "blocks": 1,
+          "x": 0.75,
+          "y": 0.0,
+          "z": -0.5,
+          "width": 0.1,
+          "diffuse": 1
+        }
+      }
+    ],
+    "pack_order": [
+      "bed-3",
+      "bed-0",
+      "bed-9",
+      "bed-1",
+      "bed-8",
+      "bed-2",
+      "bed-7",
+      "bed-4",
+      "bed-6",
+      "bed-5"
+    ],
+    "dbmd_binding": "own-validated-physical-table"
+  },
+  "cold_state": {
+    "programme": "own-programme",
+    "attempt": 0,
+    "callback_index": 0,
+    "normal_callbacks": 0,
+    "objects": [
+      {
+        "object_ordinal": 0,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 1,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 2,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 3,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 4,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 5,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 6,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 7,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 8,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 9,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 10,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 11,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 12,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 13,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 14,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 15,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 16,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 17,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 18,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 19,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 20,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 21,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 22,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 23,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 24,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 25,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 26,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "object_ordinal": 27,
+        "host_channel_index": null,
+        "event_cache": null,
+        "sampler_previous_present": false,
+        "sampler_previous_xyz_u32": [
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "physical_binding": null,
+    "last_control38_snapshot": null,
+    "last_regular37_snapshot": null,
+    "dbmd_binding": null
+  },
+  "normal_callbacks": [
+    0,
+    1
+  ],
+  "source_samples": 1537,
+  "expected_results_not_input": true,
+  "carry_only_case": {
+    "before": "derive after first successful normal",
+    "change": {
+      "object_ordinal": 0,
+      "sampler_previous_xyz_u32": [
+        1063256064,
+        1063256064,
+        1063256064
+      ]
+    },
+    "callback": 1,
+    "scope": "Explicit before-state transition fixture, not a claim this state is reached by the constant-event programme"
+  },
+  "negative_zero_event": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": "-0.0 encoded F32 word80000000",
+    "width": "-0.0 encoded F32 word80000000",
+    "diffuse": 0
+  },
+  "sentinel_event": {
+    "x": -1000,
+    "y": -1000,
+    "z": -1,
+    "width": 0.1,
+    "diffuse": 0
+  },
+  "late_failure_cases": [
+    {
+      "kind": "duplicate_host",
+      "change": "last object host becomes bed host0"
+    },
+    {
+      "kind": "last_object_duration",
+      "change": "last object duration=1, keeping block_duration1537"
+    },
+    {
+      "kind": "clock",
+      "change": "callback0 given after first successful normal"
+    },
+    {
+      "kind": "programme",
+      "change": "new programme identity paired with old state"
+    }
+  ],
+  "parent_rejection_case": "Construct normal proposal then discard without publishing/committing to live owner",
+  "alias_case": "Mutate returned clean control38 carrier; staged snapshot contents must remain independent"
+}

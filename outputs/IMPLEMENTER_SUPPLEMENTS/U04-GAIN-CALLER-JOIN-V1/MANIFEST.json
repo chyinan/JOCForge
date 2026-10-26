@@ -1,0 +1,25 @@
+{
+  "package_id": "U04-GAIN-CALLER-JOIN-V1",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 6485,
+      "sha256": "af9ef79e9dfbd71797a0ba4b594cff865b15a42c16150b9bfc94b3d26cd8b40b"
+    },
+    {
+      "file": "INPUT-ONLY-JOIN-DISCRIMINATORS.json",
+      "bytes": 3884,
+      "sha256": "4c725bf810cd43e4d725f762a8a8cf61e09fcda4875e4eacc710eb072c2f974e"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 4031,
+      "sha256": "6a853151ad881bc2721845e873445db40d7b17bb0dc702755d4ab16c1c366eb7"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 1097,
+      "sha256": "889cf66871f637f7001fb5bd67b300441075b042695e446d3d92663b556c27a9"
+    }
+  ]
+}

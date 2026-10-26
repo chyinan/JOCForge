@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge-codec-source-publication-decision.v1",
+  "decision": "APPROVE_DEFINED_SOURCE_PROPOSAL_ACCEPTANCE_CLOCK_AND_KEYLESS_PUBLICATION_CONNECTION",
+  "ready_scope": "Pure state/clock and domain-to-IO receipt handoff; runtime uses real numerical/frame providers",
+  "primary_fixture_totals": "Reference example only; use current admitted programme plan at runtime",
+  "post_rename_parent_sync_failure": "May expose final path but no durable success/DONE; existing error phase and RETIRED, no new recovery framework",
+  "independent_meter": "Cold independent prepass; never shares main analysis/audio/history",
+  "whole_chain_ready": false
+}

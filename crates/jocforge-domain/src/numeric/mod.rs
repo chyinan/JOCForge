@@ -1,6 +1,7 @@
 // pattern: Functional Core
 //! Consumer-bound numeric primitives; no generic math toolkit.
 
+pub(crate) mod exact_trigonometry;
 mod finite_f32;
 mod q15_coordinate;
 mod trunc_i32;

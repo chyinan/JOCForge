@@ -1,24 +1,34 @@
 {
-  "schema": "mantissa-quantizer-provenance.v1",
-  "package": "F12-MANTISSA-QUANTIZER",
-  "source_manifest_sha256": "2f50ddb6f894d26d3a87390b0fb5d48021afe90e4fa5e7cff976e02ae83e0ae5",
-  "source_independent_check_sha256": "ed62b615af423b0ce98fbae9c7876c7ca7d60fa1853e7e95fd8ce68684492210",
-  "source_payloads": {
-    "SCOPE.md": "c1603bbd337586ac645d0106be9adde50652d6977c42701bec566b0253b5ab8f",
-    "PROVENANCE.json": "4f845f0a390768d1661b77b2dd08af5d8ca08e0dcc254d0a7e6d9985673aa1b1",
-    "SPEC-SELECTED-CODEC-WIRE.md": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448",
-    "PARAMETERS-CODEC-WIRE-SELECTED.json": "a7a0a721a9e515d197a2d12fc0c9cb942b2b393f9019383a66ce2635f7aaa0dd",
-    "QUANTIZER-INPUT-VECTORS.json": "8333a23ccd093659dd0f4b296528a3f44120f78caf41546991ed9113ce14d017",
-    "QUANTIZER-VERIFICATION.json": "20a7f9743845391b3d2d1dd98940282ffcda5d8b058fc49b4d2950e98047ac5b",
-    "LOCAL-REVIEW-STATUS.json": "f3655d4433e8b8e8a9c4260c2c8c4f59d9751ca689998fced6829a4775977225"
+  "schema": "mantissa-quantizer-provenance.v2",
+  "package": "CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1",
+  "manifest_sha256": "fd819c3ec27e7bade55efda5e648792c9c33892a9be7a36bbfce89231b9e961f",
+  "payloads": {
+    "CONTRACT.json": {
+      "bytes": 6767,
+      "sha256": "4b794d6b7f079af56a87c767a131261366002cd8d96168dd626d965aef1a7b7d"
+    },
+    "INPUT-ONLY-VECTORS.json": {
+      "bytes": 11051,
+      "sha256": "19dfa6afdaedfe2cfb6ff7db31a0679f109bb4482702d9c81ea5b3ea4ecdcd4b"
+    },
+    "SOURCES.json": {
+      "bytes": 11090,
+      "sha256": "488c3f303a9fd1afbc9442550c8c28884f2fdb1fe04c763236539fedfe03bbbc"
+    },
+    "WASH-VERIFICATION.json": {
+      "bytes": 998,
+      "sha256": "967de9f51f793a098cfd870a32cab86ba41f16fe5889254a1f2b8e38b3c90977"
+    }
   },
   "scope": {
-    "stateless_quantizer_only": true,
-    "production_usable": "SLICE_ONLY",
+    "f12s_5_exponent_scaled_stateless_quantizer": true,
+    "f12s_6_block_packer": true,
+    "input_vectors_are_inputs_only": true,
+    "expected_quantizer_codes_included": false,
+    "full_frame_execution": "NOT_RUN",
     "whole_f12_ready": false,
-    "whole_product_implementation_ready": "NO",
     "native_runtime": "NOT_RUN",
     "real_adm_chain": "NOT_RUN",
-    "source_au_replay": "NOT_RUN"
+    "product_acceptance": "NOT_RUN"
   }
 }

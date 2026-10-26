@@ -1,0 +1,59 @@
+{
+  "approved_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_sources": [
+    {
+      "document": "01-frontend-config-dbmd-events",
+      "sha256": "afd9efc879ed9a4878bd967c1370275074efd2226e11e67eb86838f4168f61b7",
+      "bytes": 13867
+    },
+    {
+      "document": "01-selected-geometry-layout-and-bed-routing",
+      "sha256": "8ea5ff070ebfb77ecfe86a7e87ce846e05de2a1b3575bf834b5ead7414a51830",
+      "bytes": 9551
+    },
+    {
+      "document": "03-point-response-and-target-context",
+      "sha256": "8fb727170fb41df5354a17429fc00411010f010cb32dc86e0fdcc81bddaf4964",
+      "bytes": 9435
+    },
+    {
+      "document": "03-adm-installed48-whole",
+      "sha256": "a494e653e584c8453464aa74ae08bf453cc615e1ccafd98ab4ede238de1f7dd9",
+      "bytes": 10079
+    }
+  ],
+  "frozen_model": {
+    "name": "pre_solver_widthzero_core.py",
+    "sha256": "31817b70e2dc4cb55514878e3eac04c4c73fb3541c140d73643d4c32cc674248",
+    "bytes": 12739,
+    "clauses": [
+      {
+        "lines": "24-56",
+        "role": "Prefix/bed semantic initializer and object whole52-byte writer; exact global48 coverage"
+      },
+      {
+        "lines": "59-90",
+        "role": "Defined-field accessor and actual point branch status reader; four U32 offsets plus F32 width"
+      },
+      {
+        "lines": "93-104",
+        "role": "Point numeric input takes XYZ and control tail from the same source"
+      },
+      {
+        "lines": "174-215",
+        "role": "Post-audio feature width transformation and called-source column consumer"
+      }
+    ],
+    "verification": "File rehashed; only five pure mapping/writer/reader helpers AST-selected for own inputs. No module top-level imports/runners or point numerics executed."
+  },
+  "research_verifier_sha256": "3483844a715bd3e5aebdc59ffd8df109e9aad1cfd60827904ec855e770118da0",
+  "source_code_delivered": false,
+  "evidence_grade": "APPROVED_CONTRACT + HASH_MATCHED_FROZEN_MODEL_DATAFLOW; NOT_NATIVE_RUNTIME_CAPTURE",
+  "scope_exclusions": [
+    "source leading hold/state field",
+    "arbitrary nonzero pre-mode audio route",
+    "native warm-transition universal equivalence",
+    "unadmitted Control13 variants",
+    "independent meter drain-control rules"
+  ]
+}

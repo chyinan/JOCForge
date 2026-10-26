@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "F07-F10-PARENT-LIFECYCLE-INTEGRATION-GAP-V1",
+  "review_result": "WASHED_AS_MODEL_AND_PARENT_INTEGRATION_GAP",
+  "checks": {
+    "reverse_manifest_payload_hashes": "PASS_7_OF_7",
+    "reverse_source_manifest_checks": "PASS_2_OF_2",
+    "listed_source_file_hashes": "PASS_14_OF_14",
+    "approved_package_manifest": "MATCHED",
+    "analysis_fixture_seam": "TEST_ONLY",
+    "native_parent_owner_generation": "UNBOUND",
+    "bounded_directory_count_discrepancy": "PRESERVED_UNRESOLVED",
+    "dthd_selected_path_necessity": "UNBOUND"
+  },
+  "content_boundary": {
+    "source_code_included": false,
+    "decompilation_included": false,
+    "private_key_or_auth_material_included": false,
+    "audio_or_pcm_included": false
+  },
+  "implementation_ready": false
+}

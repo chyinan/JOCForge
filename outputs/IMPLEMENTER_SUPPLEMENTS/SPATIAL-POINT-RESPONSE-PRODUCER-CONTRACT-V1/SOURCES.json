@@ -1,0 +1,102 @@
+{
+  "approved_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_sources": [
+    {
+      "file": "specs/00-numeric-semantics.md",
+      "sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135",
+      "bytes": 3369,
+      "clauses": [
+        "N00.1/2"
+      ]
+    },
+    {
+      "file": "specs/01-bed-routing-and-source-geometry.md",
+      "sha256": "26e4220818d50227f75d5bc00e99840609d6a2023619e01328cb768bed4511b2",
+      "bytes": 5510,
+      "clauses": [
+        "F01B.3/4"
+      ]
+    },
+    {
+      "file": "specs/01-selected-geometry-layout-and-bed-routing.md",
+      "sha256": "8ea5ff070ebfb77ecfe86a7e87ce846e05de2a1b3575bf834b5ead7414a51830",
+      "bytes": 9551,
+      "clauses": [
+        "3 selected P15",
+        "5 bed points",
+        "6 global48 installation"
+      ]
+    },
+    {
+      "file": "specs/03-spatial-and-audio.md",
+      "sha256": "1ae3ecc8058eb06f84e51ddef03e804e0e6f0678ba91df3aa7640f6aa1decbcb",
+      "bytes": 4056,
+      "clauses": [
+        "F03.2"
+      ]
+    },
+    {
+      "file": "specs/03-gate-and-target-installation.md",
+      "sha256": "aeb6791967413e71518cfb1c5853c52cd8e6e7e7174f60afa611cc0e0fa8d9dc",
+      "bytes": 5475,
+      "clauses": [
+        "F03G.1"
+      ]
+    },
+    {
+      "file": "specs/03-point-response-and-target-context.md",
+      "sha256": "8fb727170fb41df5354a17429fc00411010f010cb32dc86e0fdcc81bddaf4964",
+      "bytes": 9435,
+      "clauses": [
+        "F03P.1-4",
+        "F03P.6/7"
+      ]
+    },
+    {
+      "file": "specs/03-adm-installed48-whole.md",
+      "sha256": "a494e653e584c8453464aa74ae08bf453cc615e1ccafd98ab4ede238de1f7dd9",
+      "bytes": 10079,
+      "clauses": [
+        "3 stage order",
+        "5 callback proposal owner"
+      ]
+    },
+    {
+      "file": "specs/04-prefix-spread-and-gain.md",
+      "sha256": "ca5b069d16f0a0837ad4501036c74bb6e8ae3d6acfaf8bf3961ca4869923a68b",
+      "bytes": 12300,
+      "clauses": [
+        "F04G.3 grouping and X/Y plane weights only"
+      ]
+    },
+    {
+      "file": "specs/00-selected-owner-projection-and-j05.md",
+      "sha256": "9ff01aca7b6be6e89511e4d493f9fc9e661a50e2f098065f4a32c3fed777542f",
+      "bytes": 4504,
+      "clauses": [
+        "unique owner / commit mapping"
+      ]
+    },
+    {
+      "file": "parameters/point-panner-math-v1.json",
+      "sha256": "f79ab4d4ed06983cea05146a39bcfef22c183c1111d1d6103efce25c9c579ef6",
+      "bytes": 812,
+      "clauses": [
+        "angle bound / threshold / enclosure"
+      ]
+    },
+    {
+      "file": "parameters/geometry-front-side-y-v1.json",
+      "sha256": "5d2346dd39671aae7f7d3b56396fb1dea05da363a218a0efbd926dbab046c185",
+      "bytes": 1466,
+      "clauses": [
+        "front_side_y_q15"
+      ]
+    }
+  ],
+  "authority": "Existing approved semantic algorithm/provider rules are complete for selected MATHEMATICAL_R64_R32 route. No new native research needed.",
+  "source_registry_locator": "Suggested R1 registry path was not present at old D:/Tools root or restored matching D:/Dolby_Encoding_Engine/work/research-audit path. No broad search performed; no frozen helper content used.",
+  "reference_origin": "Own exact rational IEEE rounding and alternating-series interval implementation from approved clauses; no proprietary code or tables.",
+  "native_or_isolated_implementation_read": false,
+  "real_PCM_read": false
+}

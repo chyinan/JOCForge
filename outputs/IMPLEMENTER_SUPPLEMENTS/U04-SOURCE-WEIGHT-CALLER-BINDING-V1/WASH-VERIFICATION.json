@@ -1,0 +1,21 @@
+{
+  "research_manifest_sha256": "32e1068832e34dc8b50f05f763433fb8573e9bd63df402dfe734af66a1bf1e87",
+  "payloads_verified": 3,
+  "source_hashes_verified_locally": [
+    "U",
+    "C",
+    "F",
+    "CALLER",
+    "PACK",
+    "SEL",
+    "SCRATCH",
+    "PYPURE",
+    "RSPURE"
+  ],
+  "sources_not_found_at_exact_expected_locator": [],
+  "scope": "Current approved F03U.1/.4 formula and exact original candidate domain caller clarification",
+  "frozen_source_hashes_otherwise": "Research-reported for any unavailable entries; no stronger independent claim",
+  "numerical_or_native_execution": "NOT_RUN",
+  "source_code_delivered": false,
+  "product_acceptance": "NOT_RUN"
+}

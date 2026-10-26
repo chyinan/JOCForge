@@ -1,0 +1,269 @@
+{
+  "schema": "codec3-f12-frame-order-budget.v1",
+  "bit_order": "MSB-first for all F12 header/block syntax; multi-byte checksum fields are written big-endian",
+  "fixed_prefix_bits_0_44": [
+    {
+      "field": "syncword",
+      "width": 16,
+      "value": "0x0B77",
+      "bits": "0..15"
+    },
+    {
+      "field": "strmtyp",
+      "width": 2,
+      "value": 0,
+      "bits": "16..17"
+    },
+    {
+      "field": "substreamid",
+      "width": 3,
+      "value": 0,
+      "bits": "18..20"
+    },
+    {
+      "field": "frmsiz",
+      "width": 11,
+      "value": 2047,
+      "bits": "21..31"
+    },
+    {
+      "field": "fscod",
+      "width": 2,
+      "value": 0,
+      "bits": "32..33"
+    },
+    {
+      "field": "numblkscod",
+      "width": 2,
+      "value": 3,
+      "bits": "34..35"
+    },
+    {
+      "field": "acmod",
+      "width": 3,
+      "value": 7,
+      "bits": "36..38"
+    },
+    {
+      "field": "lfeon",
+      "width": 1,
+      "value": 1,
+      "bits": "39"
+    },
+    {
+      "field": "bsid",
+      "width": 5,
+      "value": 16,
+      "bits": "40..44"
+    }
+  ],
+  "header_order_after_prefix": [
+    "dialnorm U5",
+    "compre U1 and conditional compr U8",
+    "mixmdate and conditional selected downmix fields",
+    "infomdate and conditional information fields",
+    "conditional JOC additional-BSI fields sourced from the same F13 container",
+    "exponent format, fixed AHT/SNR strategy/transient pre-noise flags and syntax mask",
+    "coupling controls",
+    "main frame codes or six-block fullband strategy",
+    "six LFE strategy codes",
+    "five independent converter frame codes",
+    "main coarse/fine SNR and block_start_info"
+  ],
+  "selected_bsi_syntax_conditions": {
+    "normative_source": "ETSI TS 102 366 V1.4.1 (2017-09), Annex E, clauses E.1.2.2 and E.1.3.1.9..18/E.1.3.1.59..64",
+    "profile_conditions": {
+      "strmtyp": 0,
+      "acmod": 7,
+      "lfeon": 1,
+      "fscod": 0,
+      "numblkscod": 3,
+      "mixmdate": 1,
+      "infomdate": 1
+    },
+    "mixing_path": [
+      {
+        "field": "dmixmod",
+        "width": 2,
+        "condition": "acmod > 2",
+        "selected": "present; source value from F06 preferred_downmix_mode"
+      },
+      {
+        "field": "ltrtcmixlev",
+        "width": 3,
+        "condition": "(acmod & 1) != 0 AND acmod > 2",
+        "selected": "present"
+      },
+      {
+        "field": "lorocmixlev",
+        "width": 3,
+        "condition": "(acmod & 1) != 0 AND acmod > 2",
+        "selected": "present"
+      },
+      {
+        "field": "ltrtsurmixlev",
+        "width": 3,
+        "condition": "(acmod & 4) != 0",
+        "selected": "present"
+      },
+      {
+        "field": "lorosurmixlev",
+        "width": 3,
+        "condition": "(acmod & 4) != 0",
+        "selected": "present"
+      },
+      {
+        "field": "lfemixlevcode",
+        "width": 1,
+        "condition": "lfeon != 0",
+        "selected": 0,
+        "meaning": "presence flag; zero suppresses the separate 5-bit lfemixlevcod field"
+      },
+      {
+        "field": "lfemixlevcod",
+        "width": 5,
+        "condition": "lfemixlevcode == 1",
+        "selected": "absent because lfemixlevcode=0"
+      },
+      {
+        "field": "pgmscle",
+        "width": 1,
+        "condition": "strmtyp == 0",
+        "selected": 0,
+        "meaning": "presence flag; zero suppresses the separate 6-bit pgmscl field"
+      },
+      {
+        "field": "pgmscl",
+        "width": 6,
+        "condition": "pgmscle == 1",
+        "selected": "absent because pgmscle=0"
+      },
+      {
+        "field": "pgmscl2e/pgmscl2",
+        "condition": "acmod == 0",
+        "selected": "absent because acmod=7"
+      },
+      {
+        "field": "extpgmscle",
+        "width": 1,
+        "condition": "strmtyp == 0",
+        "selected": 0,
+        "meaning": "presence flag; zero suppresses the separate 6-bit extpgmscl field"
+      },
+      {
+        "field": "extpgmscl",
+        "width": 6,
+        "condition": "extpgmscle == 1",
+        "selected": "absent because extpgmscle=0"
+      },
+      {
+        "field": "mixdef",
+        "width": 2,
+        "selected": 0,
+        "meaning": "mixing option 1; no additional mixdef payload"
+      },
+      {
+        "field": "paninfoe",
+        "condition": "acmod < 2",
+        "selected": "absent because acmod=7"
+      },
+      {
+        "field": "frmmixcfginfoe",
+        "width": 1,
+        "selected": 0,
+        "meaning": "presence flag; zero suppresses frame/block mixing configuration fields"
+      }
+    ],
+    "information_path": [
+      {
+        "field": "bsmod",
+        "width": 3
+      },
+      {
+        "field": "copyrightb",
+        "width": 1
+      },
+      {
+        "field": "origbs",
+        "width": 1
+      },
+      {
+        "field": "dsurmod/dheadphonmod",
+        "condition": "acmod == 2",
+        "selected": "absent because acmod=7"
+      },
+      {
+        "field": "dsurexmod",
+        "width": 2,
+        "condition": "acmod >= 6",
+        "selected": "present"
+      },
+      {
+        "field": "audprodie",
+        "width": 1,
+        "selected": 0,
+        "meaning": "presence flag; zero suppresses mixlevel U5, roomtyp U2, and adconvtyp U1"
+      },
+      {
+        "field": "audprodi2e",
+        "condition": "acmod == 0",
+        "selected": "absent because acmod=7"
+      },
+      {
+        "field": "sourcefscod",
+        "width": 1,
+        "condition": "fscod < 3",
+        "selected": "present"
+      }
+    ]
+  },
+  "six_block_order": [
+    "conditional short bits for five fullband lanes [L,C,R,Ls,Rs]",
+    "conditional dither bits for five fullband lanes",
+    "line DRC presence and conditional U8 code",
+    "SPX presence 0",
+    "all bandwidth codes for refreshed fullband lanes",
+    "all refreshed fullband exponent bodies",
+    "LFE exponent body when the block LFE strategy is 1",
+    "conditional BA update and tuple",
+    "fast-gain update and six lane codes",
+    "block0-only converter SNR presence/U10; other blocks presence 0",
+    "per-block EMDF skip presence when skip syntax is enabled",
+    "mantissa item groups and ungrouped codes"
+  ],
+  "emdf_skip": {
+    "syntax_enable": "header syntax mask bit1 is set iff a published EMDF payload is present",
+    "carrier_block": 2,
+    "block_presence": "only block2 present=1; other five block presence bits=0 when syntax is enabled",
+    "length": "U9 byte count of the complete F13 EMDF container C, 0..511",
+    "payload": "write the complete container bytes once at the current MSB bit cursor; no external FFmpeg skip-field patch",
+    "absent_source": "sources0/1 pass ABSENT_PUBLISHED_PAYLOAD_V1; skip syntax is absent and payload fields are not validated, but F12 still builds the full 4096-byte source frame and E-AC-3 CRC16"
+  },
+  "frame_budget": {
+    "frame_bytes": 4096,
+    "frame_bits": 32768,
+    "tail_reserve_bits": 34,
+    "pre_tail_bit_limit": 32734,
+    "writer_rule": "candidate fits only if all header, six-block syntax, BSI, and EMDF carrier fields end by bit32734",
+    "tail_order": [
+      "zero pad to bit32734",
+      "tail_word U16=0",
+      "auxdatae U1=0",
+      "encinfo U1=0",
+      "CRC16 U16BE"
+    ],
+    "tail_word_is_not_elided": true
+  },
+  "candidate_plan_boundary": {
+    "search": "F12S.8 main q search and converter plan are separate; fixed frame/input plan is reused for all trials",
+    "trial_recomputes": "wire/quantization candidate serialization only per approved F12 trial contract",
+    "trial_does_not_recompute": [
+      "F08 transform",
+      "F09/F10 plan",
+      "F06 BSI",
+      "F13 queues/body",
+      "EMDF mode"
+    ],
+    "success_state": "staged F12 state proposal; outer source transaction governs commit"
+  }
+}

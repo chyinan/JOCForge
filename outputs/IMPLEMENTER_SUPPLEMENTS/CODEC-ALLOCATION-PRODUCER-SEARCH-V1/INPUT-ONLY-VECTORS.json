@@ -1,0 +1,398 @@
+{
+  "schema": "jocforge-codec-allocation-search-inputs.v1",
+  "production_bap_and_converter_inputs": {
+    "schema": "research.codec-allocation-input-recipes.v1",
+    "BAP_cases": {
+      "decoded_exponent_recipes": [
+        {
+          "id": "lfe_floor0",
+          "end": 7,
+          "recipe": "e[k]=0"
+        },
+        {
+          "id": "fbw_const6",
+          "end": 217,
+          "recipe": "e[k]=6"
+        },
+        {
+          "id": "fbw_const12",
+          "end": 217,
+          "recipe": "e[k]=12"
+        },
+        {
+          "id": "fbw_ramp24",
+          "end": 217,
+          "recipe": "e[k]=k mod25"
+        }
+      ],
+      "candidate": [
+        0,
+        1,
+        16,
+        400,
+        671,
+        672,
+        1023
+      ],
+      "fast_gain_code": [
+        1,
+        4
+      ],
+      "db_per_bit_code": 2,
+      "decay_tuple": [
+        2,
+        1,
+        1
+      ],
+      "floor_code": 7,
+      "caller_all_active_fine_zero": "(q AND15)==0",
+      "sample_rate": 48000,
+      "coupling": false,
+      "delta": false,
+      "aht": false
+    },
+    "converter_cases": {
+      "exponents": [
+        0,
+        6,
+        12,
+        24
+      ],
+      "recipe": "Every block has five rows of217 and LFE7, all decoded exponent=case value",
+      "strategies_by_FBW_channel": [
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "packed_group_counts_by_FBW_channel": [
+        [
+          72,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          72,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          72,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          72,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          72,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "LFE_strategy": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "db_codes": [
+        0,
+        1,
+        2,
+        3,
+        0,
+        1
+      ],
+      "surround_EX": 1
+    },
+    "main_search_cases": {
+      "scope": "ABSTRACT_FEASIBILITY_ORACLE_ONLY",
+      "monotone_thresholds": [
+        null,
+        16,
+        422,
+        783
+      ]
+    },
+    "source_policy_execution": "NOT_RUN:these are explicit decoded-exponent boundary inputs, not a claimed full POWER producer execution",
+    "no_audio_or_AU_body": true
+  },
+  "typed_grouped_and_residual_boundaries": {
+    "schema": "research.codec-allocation-boundary-inputs.v1",
+    "BAP_seed": {
+      "decoded_exponents_recipe": "seven integer12 values",
+      "candidate": 16,
+      "slow_decay_code": 2,
+      "fast_decay_code": 1,
+      "slow_gain_code": 1,
+      "db_per_bit_code": 0,
+      "floor_code": 7,
+      "fast_gain_code": 1,
+      "caller_all_active_fine_zero": true,
+      "sample_rate": 48000,
+      "coupling": false,
+      "delta": false,
+      "aht": false,
+      "end_exclusive": 7
+    },
+    "typed_changes": [
+      {
+        "changed_key": "candidate",
+        "id": "candidate_bool",
+        "value": true
+      },
+      {
+        "changed_key": "candidate",
+        "id": "candidate_negative",
+        "value": -1
+      },
+      {
+        "changed_key": "candidate",
+        "id": "candidate_overflow",
+        "value": 1024
+      },
+      {
+        "changed_key": "decoded_exponents",
+        "id": "exponent25",
+        "value": [
+          25,
+          25,
+          25,
+          25,
+          25,
+          25,
+          25
+        ]
+      },
+      {
+        "changed_key": "decoded_exponents",
+        "id": "exponent_bool",
+        "value": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "changed_key": "decoded_exponents",
+        "id": "row_short",
+        "value": [
+          12,
+          12,
+          12,
+          12,
+          12,
+          12
+        ]
+      },
+      {
+        "changed_key": "sample_rate",
+        "id": "sample_zero",
+        "value": 0
+      },
+      {
+        "changed_key": "sample_rate",
+        "id": "sample_bool",
+        "value": true
+      },
+      {
+        "changed_key": "sample_rate",
+        "id": "sample_unsupported",
+        "value": 44100
+      },
+      {
+        "changed_key": "coupling",
+        "id": "coupling",
+        "value": true
+      },
+      {
+        "changed_key": "caller_all_active_fine_zero",
+        "id": "caller_bool",
+        "value": 0
+      },
+      {
+        "changed_key": "fast_gain_code",
+        "id": "gain_overflow",
+        "value": 8
+      },
+      {
+        "changed_key": "db_per_bit_code",
+        "id": "db_overflow",
+        "value": 4
+      },
+      {
+        "changed_key": "candidate",
+        "id": "caller_context_conflict",
+        "value": 17
+      }
+    ],
+    "cost_layout_recipe": "Six rows: five217 and LFE7, initialize BAP0. Set listed [channel,bin,code] cells; each block has fresh groupers.",
+    "cross_channel_cases": [
+      {
+        "nonzero_cells": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            2,
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "nonzero_cells": [
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            1,
+            0,
+            2
+          ],
+          [
+            2,
+            0,
+            2
+          ]
+        ]
+      },
+      {
+        "nonzero_cells": [
+          [
+            0,
+            0,
+            4
+          ],
+          [
+            1,
+            0,
+            4
+          ]
+        ]
+      }
+    ],
+    "cost_nonmonotone": {
+      "before_nonzero_cells": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          2
+        ]
+      ],
+      "after_nonzero_cells": [
+        [
+          0,
+          0,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ]
+      ]
+    },
+    "residual_boundary": {
+      "header_bits": 91,
+      "fixed_bits": [
+        2693,
+        35,
+        35,
+        35,
+        35,
+        35
+      ],
+      "auxiliary_bits": 1,
+      "mantissa_first_block": [
+        9980,
+        9981,
+        9982
+      ],
+      "other_mantissa_blocks": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "domain": "Self-owned metadata only. Cost layouts are valid BAP arrays for the cost primitive; not asserted to be consecutive production-q outputs."
+  },
+  "main_feasibility_note": "Abstract control predicates are not a runtime quantizer/frame oracle.",
+  "actual_audio_AU_or_key_inputs": false
+}

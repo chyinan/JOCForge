@@ -1,2 +1,15 @@
 // pattern: Functional Core
-//! Reserved publication boundary. No algorithm or persistent state is implemented.
+//! Selected-profile keyless output proposals and durable ledger semantics.
+
+mod output_owner;
+
+#[cfg(test)]
+mod tests;
+
+pub use output_owner::{
+    OutputAppendProposal, OutputConfiguration, OutputDurableAppendReceipt,
+    OutputFinalExposureReceipt, OutputFinalizeProposal, OutputFinalizedProposal, OutputOwner,
+    OutputOwnerCommitReceipt, OutputOwnerError, OutputProvider, OutputSourceAfterProposal,
+    OutputSourceCommitReceipt, OutputSourceIdentity, OutputSourceProposal,
+    OutputSuppressedSourceProposal,
+};

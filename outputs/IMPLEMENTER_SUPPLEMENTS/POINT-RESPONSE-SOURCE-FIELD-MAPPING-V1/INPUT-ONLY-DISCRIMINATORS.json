@@ -1,0 +1,120 @@
+{
+  "scope": "Own source/Control13 transport probes; values outside selected domain remain rejection probes, not newly admitted configurations.",
+  "cases": [
+    {
+      "name": "feature_mode_slot_probe",
+      "control13_u32": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1040187392,
+        1056964608,
+        1061158912,
+        25,
+        1036831950,
+        1,
+        0,
+        1
+      ],
+      "purpose": "transport mapping only; mutated value may be outside admitted selected point branch"
+    },
+    {
+      "name": "source_skip_slot_probe",
+      "control13_u32": [
+        17,
+        0,
+        3,
+        2,
+        0,
+        1040187392,
+        1056964608,
+        1061158912,
+        0,
+        1036831950,
+        1,
+        0,
+        1
+      ],
+      "purpose": "transport mapping only; mutated value may be outside admitted selected point branch"
+    },
+    {
+      "name": "spatial_enum_slot_probe",
+      "control13_u32": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1040187392,
+        1056964608,
+        1061158912,
+        0,
+        1036831950,
+        1,
+        28,
+        1
+      ],
+      "purpose": "transport mapping only; mutated value may be outside admitted selected point branch"
+    },
+    {
+      "name": "coordinate_parameter_slot_probe",
+      "control13_u32": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1040187392,
+        1056964608,
+        1061158912,
+        0,
+        1036831950,
+        1,
+        0,
+        29
+      ],
+      "purpose": "transport mapping only; mutated value may be outside admitted selected point branch"
+    },
+    {
+      "name": "coordinate_parameter_zero",
+      "control13_u32": [
+        0,
+        0,
+        3,
+        2,
+        0,
+        1040187392,
+        1056964608,
+        1061158912,
+        0,
+        1036831950,
+        1,
+        0,
+        0
+      ],
+      "purpose": "transport mapping discriminator, not a change to selected Object13 fixed value1"
+    },
+    {
+      "name": "nonzero_audio_width_unused_slot1_diffuse1",
+      "control13_u32": [
+        0,
+        305419896,
+        3,
+        2,
+        0,
+        1040187392,
+        1056964608,
+        1061158912,
+        0,
+        1036831950,
+        1,
+        0,
+        1
+      ],
+      "purpose": "width9, unused1 and diffuse10 do not alias mode8 or enum11; post view only clears width"
+    }
+  ],
+  "route_recipe": "For each LFE host0..37, compact remaining physical hosts to source11..47; mark nine every-fourth remaining hosts bed and other28 object. Prefix0..10. Object XYZ=(host+1)/64,1/2,3/4; other words from listed base control. No audio input."
+}

@@ -1,0 +1,51 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "CODEC-ALLOCATION-PRODUCER-SEARCH-V1",
+  "implementation_ready": true,
+  "readiness_scope": "Production BAP numerical network, converter costs/search and fixed source-plan trial wiring",
+  "whole_chain_implementation_ready": false,
+  "source_research_manifest_sha256": "657b9941b0d25db1afa5500d113184f9d1a39f63a794513efe596c9c1b06c8d9",
+  "source_boundary_manifest_sha256": "880fe63ff69c2eb166d0ab3b494960f6a7fe59c4d18f09488ed3dcf55f0df7ed",
+  "files": [
+    {
+      "file": "ALLOCATION-AND-SEARCH-RULES.md",
+      "bytes": 6756,
+      "sha256": "fdc7a51b2701ac124906e867c38df0a42415b24f9a27cff20ea439ba02c75c4f"
+    },
+    {
+      "file": "BOUNDARIES.md",
+      "bytes": 1725,
+      "sha256": "0c2ccc8e427743fe0c78dedd51aaf3a54a07352da5cbdebed3c9db6b2d8b59d5"
+    },
+    {
+      "file": "CONTRACT.md",
+      "bytes": 2646,
+      "sha256": "7a84767db6e76c6a85b40bf8bbda6087bfe154ace0bab952965eb17b5a0c4f93"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 7645,
+      "sha256": "a2291556af70fb0b7b50144cf2603ec5a4b52352b1ad03c9c234aeb7209e576d"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 5732,
+      "sha256": "c04480a6ae2eccfaa0a3e5203b80c88286d7bf74725f2bbd76923e658c5eaa23"
+    },
+    {
+      "file": "STAGE-MAP.json",
+      "bytes": 5627,
+      "sha256": "c31bfc85a6f329f12b4ce326bcb03fff91caa30c5f27443c43ca569126d205e0"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1089,
+      "sha256": "d09c5677f5cd1584f74cd34ae14d7de9ac7740fd5bc91fdfb5ad81c7a6a48d6c"
+    },
+    {
+      "file": "WASH-DECISION.json",
+      "bytes": 686,
+      "sha256": "07af505cc14454cdab472f21886d82f3ca9b585ae9576f9a7df7d319bcc617d8"
+    }
+  ]
+}

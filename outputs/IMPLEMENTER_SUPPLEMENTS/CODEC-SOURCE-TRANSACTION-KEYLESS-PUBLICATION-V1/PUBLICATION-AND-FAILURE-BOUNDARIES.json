@@ -1,0 +1,34 @@
+{
+  "classification": "LOCAL_MODEL IO/transaction design under approved GTC/F15P; no native equivalence or cross-process/filesystem atomicity claim.",
+  "frame_domain": "Complete accepted candidate of4096 bytes with keyless tail_word0, auxdatae0, encinfo0 and CRC16 residual0. No caller-supplied secret, HMAC fallback or tail RNG state required.",
+  "mode": "deployed_compat default or etsi_emdf experimental; fixed for programme. A different mode requires EMDF serialization and full fresh F12 trial, never old-frame patching.",
+  "per_au_order": [
+    "validate AU=s-2, exact4096, current length=AU*4096 and fixed frame identity",
+    "write at explicit offset in loop; each progress1..remaining, no logical ledger update yet",
+    "check final length and readback hash",
+    "data flush/fsync",
+    "produce durable receipt",
+    "parent root swap commits staged owner roots plus logical AU count/length/hash ledger"
+  ],
+  "partial_write": "Partial progress alone is not failure; zero/error/overrun is fatal. Physical bytes may exceed committed logical length on failure; mark ABANDONED, do not publish partial AU or resume.",
+  "crash_boundary": "Append/fsync success followed by crash before parent root swap does not authorize recovery from that AU. Abandon entire attempt and full restart, not ledger replay.",
+  "finalize_order": [
+    "verify validated runtime-plan terminal clocks/counts/owner and pending ledger plus exact plan.output_bytes staging length; primary example17395712 is not universal",
+    "terminal staging data fsync",
+    "atomic rename under existing selected final-path precondition",
+    "parent-directory fsync",
+    "record final identity and DONE"
+  ],
+  "pre_rename_failure": "Ledger/length/terminal-fsync failure retires attempt and abandons temp; no new final file from this attempt.",
+  "rename_failure": "When atomic rename/replace itself fails before namespace change, do not claim DONE; old successful final file if present remains unchanged under filesystem atomic-rename assumption. Abandon temp.",
+  "post_rename_parent_fsync_failure": {
+    "status": "WASH_AUTHORIZED_LOCAL_MODEL_CLARIFICATION",
+    "fact": "Atomic rename may already have made the new path visible before parent fsync fails. Memory transaction cannot undo filesystem visibility.",
+    "required_safe_result": "No DONE or successful published receipt; retire attempt and stop this attempt. Record existing DURABLE_OUTPUT_ERROR with finalize/parent-sync phase using existing attempt/status/abandoned/error-phase fields. Do not fabricate rollback of already completed AU ledger.",
+    "namespace_policy": "Selected F15P final path must not overwrite an existing successful product. This clarification grants no overwrite permission. If a separately allowed generic replace succeeded before parent-sync failure, the old product is not guaranteed to remain.",
+    "cleanup": "No mandatory quarantine, new marker protocol or automatic recovery system. Do not automatically delete/re-rename/overwrite a visible final path. Cleanup/restart obey existing explicit output policy.",
+    "scope": "Not a reason to require private authentication or block already-defined pure-domain source transactions."
+  },
+  "cleanup": "Optional truncate/delete of abandoned temp is cleanup only, never rollback/resume authority. No actual filesystem operation performed by this audit.",
+  "keyless_scope": "F14K is frame-local CRC checksum over current EMDF, without private authentication state; CRC math/profile compatibility remains governed by approved F14K and separate verification. No certification or universal decoder compatibility claim."
+}

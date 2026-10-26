@@ -1,0 +1,27 @@
+{
+  "research_manifest_sha256": "331c4cc0c23d564838e11b6c13ffcd9d681221a3215422ad9dbd8ca95acab772",
+  "package_payloads_hash_verified": 5,
+  "direct_sources_hash_verified_by_wash": 19,
+  "large_frame_input_fixture": "Hash only; no parsing or expected body use",
+  "checker_normal": "PASS",
+  "checker_python_O": "PASS",
+  "recomputed_coverage": {
+    "domain_cases": 16,
+    "precision_cases": 5,
+    "boundary_cases": 24,
+    "quantizer_input_cases": 45,
+    "grouping_cases": 3,
+    "block_instances": 5,
+    "budget_cases": 3,
+    "cross_channel_group_fields": 3,
+    "full_domain_mantissa_bits": 124,
+    "cross_channel_mantissa_bits": 19,
+    "sentinel_inputs": 2
+  },
+  "approved_prior_results": "208 quantizer matches and four complete-frame CRC cases are approved metadata only, not reexecuted full frames",
+  "native_execution": "NOT_RUN",
+  "full_frame_execution": "NOT_RUN",
+  "audio_acceptance": "NOT_RUN",
+  "research_source_code_delivered": false,
+  "private_keys_delivered": false
+}

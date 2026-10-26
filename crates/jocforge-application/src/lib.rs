@@ -22,6 +22,7 @@ use std::collections::BTreeMap;
 use std::sync::Arc;
 
 pub mod meter_source_bridge;
+pub mod output_publication;
 
 /// LOCAL_TRANSLATION: immutable caller-resource binding after the input adapter
 /// validates RIFF and supplies its descriptor and sample extent. This value is

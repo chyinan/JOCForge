@@ -104,6 +104,18 @@ The full provider, state, clock, outcome, KAT, and implementation-scope record f
   ],
   "fixture_materialization_status": "MATERIALIZED_AND_HASH_PINNED",
   "functional_id": "F04RB",
+  "historical_implementation_inventory": [
+    {
+      "bytes": 40820,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs",
+      "sha256": "49b5566b204d7deb74828f3c7715cd64748be11a0f08c8e5820f452b90c636e9"
+    },
+    {
+      "bytes": 37303,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+      "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"
+    }
+  ],
   "implementation_files": [
     "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs",
     "crates/jocforge-domain/src/spatial/spatial_audio_state.rs"
@@ -115,9 +127,9 @@ The full provider, state, clock, outcome, KAT, and implementation-scope record f
       "sha256": "49b5566b204d7deb74828f3c7715cd64748be11a0f08c8e5820f452b90c636e9"
     },
     {
-      "bytes": 37303,
+      "bytes": 53239,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"
+      "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"
     }
   ],
   "implementation_prohibitions": [

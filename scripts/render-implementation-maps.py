@@ -34,6 +34,8 @@ def render(d):
   x=d['phase_one']['P1.3-D'];o['PHASE-PLAN.md']+='\n## P1.3-D spatial_control root audit\n\n```json\n'+json.dumps({'task':x,'programme_root_reference':f"programme_roots[{x['programme_root']}]"},ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
  if 'P1.3-E'in d['phase_one']:
   x=d['phase_one']['P1.3-E'];root=next(r for r in d['programme_roots']if r['root_id']==x['programme_root']);o['PHASE-PLAN.md']+='\n## P1.3-E spatial_audio programme-root mapping\n\n```json\n'+json.dumps({'task':x,'programme_root':root},ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
+ if 'SOURCE_INVENTORY_EVOLUTION'in d['phase_one']:
+  x=d['phase_one']['SOURCE_INVENTORY_EVOLUTION'];o['PHASE-PLAN.md']+='\n## Current source inventory evolution\n\n'+chr(96)*3+'json\n'+json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)+'\n'+chr(96)*3+'\n'
  if 'P1.3-E1'in d['phase_one']:
   x=d['phase_one']['P1.3-E1'];o['PHASE-PLAN.md']+='\n## P1.3-E1 spatial_audio cold-state/staging foundation\n\n```json\n'+json.dumps(x,ensure_ascii=False,indent=2,sort_keys=True)+'\n```\n'
  if 'P1.3-D1'in d['phase_one']:

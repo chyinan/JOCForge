@@ -1,0 +1,8 @@
+{
+  "source_hashes_verified": 12,
+  "scope": "Existing approved rule interface crosswalk only; no new native requirement",
+  "numerical_execution": "NOT_RUN",
+  "production_integration": "NOT_RUN",
+  "private_keys_or_source_code_included": false,
+  "codec_commit_qualification": "Same-source validated staged banks; all final commits belong to existing parent transaction."
+}

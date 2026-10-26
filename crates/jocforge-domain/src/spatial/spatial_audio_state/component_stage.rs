@@ -34,7 +34,7 @@ const COMPONENT_WORDS: usize = COMPONENT_ROW_COUNT * FRAME_SAMPLES;
 const FILTER_HISTORY_BYTES: usize = BLOCK_SAMPLES * F32_BYTES;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) enum ComponentStageError {
+pub enum ComponentStageError {
     State,
     PipelineRetired,
     CallbackOrder,
@@ -46,7 +46,7 @@ pub(crate) enum ComponentStageError {
 impl ComponentStageError {
     // The deferred parent transaction layer consumes this local translation.
     #[allow(dead_code)]
-    pub(crate) const fn code(self) -> &'static str {
+    pub const fn code(self) -> &'static str {
         match self {
             Self::State => "F04_STATE_ERROR",
             Self::PipelineRetired => "F04_PIPELINE_RETIRED",
@@ -115,6 +115,7 @@ pub(super) struct ComponentStageReceipt {
     spatial_control_before_digest: SpatialControlDigest,
     spatial_control_provider_lineage: SpatialControlProviderLineage,
     provider_lineage: [F04ParameterProviderLineage; 2],
+    matrix_destination_slots: Box<[u8]>,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -438,6 +439,14 @@ impl SpatialAudioInputPacket {
 }
 
 impl ComponentStageProposal {
+    pub(super) fn meter_view(&self) -> (&[FiniteF32], &ComponentStageReceipt) {
+        (&self.component_output, &self.receipt)
+    }
+
+    pub(super) const fn blocks_processed(&self) -> i64 {
+        self.after.parameters.blocks_processed
+    }
+
     #[cfg(test)]
     pub(in crate::spatial::spatial_audio_state) fn fixture_for_type10(
         spatial_audio_join: &SpatialAudioJoinMetadata,
@@ -469,6 +478,7 @@ impl ComponentStageProposal {
                     .copied()
                     .unwrap_or_else(|| spatial_control.provider_lineage()),
                 provider_lineage,
+                matrix_destination_slots: Box::default(),
             },
         }
     }
@@ -529,6 +539,10 @@ impl ComponentStageReceipt {
     pub(super) const fn provider_lineage(&self) -> [F04ParameterProviderLineage; 2] {
         self.provider_lineage
     }
+
+    pub(super) fn matrix_destination_slots(&self) -> &[u8] {
+        &self.matrix_destination_slots
+    }
 }
 
 #[allow(dead_code)]
@@ -544,6 +558,56 @@ pub(crate) fn produce_component_stage(
     packet: SpatialAudioInputPacket,
     window: &ValidatedWindowQ15Provider,
     parameters: &ValidatedComponentParameterProvider,
+) -> Result<ComponentStageProposal, ComponentStageError> {
+    produce_component_stage_impl(
+        spatial_audio,
+        spatial_audio_join,
+        spatial_control_join,
+        spatial_control,
+        expected_phase,
+        packet,
+        window,
+        parameters,
+        None,
+    )
+}
+
+#[allow(clippy::too_many_arguments)]
+pub(crate) fn produce_component_stage_with_preview(
+    spatial_audio: &SpatialAudioMachine,
+    spatial_audio_join: &SpatialAudioJoinMetadata,
+    spatial_control_join: &SpatialControlJoinMetadata,
+    spatial_control: &SpatialControlMachine,
+    expected_phase: ComponentCallbackPhase,
+    packet: SpatialAudioInputPacket,
+    window: &ValidatedWindowQ15Provider,
+    parameters: &ValidatedComponentParameterProvider,
+    mixer_preview: Box<[FiniteF32]>,
+) -> Result<ComponentStageProposal, ComponentStageError> {
+    produce_component_stage_impl(
+        spatial_audio,
+        spatial_audio_join,
+        spatial_control_join,
+        spatial_control,
+        expected_phase,
+        packet,
+        window,
+        parameters,
+        Some(mixer_preview),
+    )
+}
+
+#[allow(clippy::too_many_arguments)]
+fn produce_component_stage_impl(
+    spatial_audio: &SpatialAudioMachine,
+    spatial_audio_join: &SpatialAudioJoinMetadata,
+    spatial_control_join: &SpatialControlJoinMetadata,
+    spatial_control: &SpatialControlMachine,
+    expected_phase: ComponentCallbackPhase,
+    packet: SpatialAudioInputPacket,
+    window: &ValidatedWindowQ15Provider,
+    parameters: &ValidatedComponentParameterProvider,
+    mixer_preview: Option<Box<[FiniteF32]>>,
 ) -> Result<ComponentStageProposal, ComponentStageError> {
     let before = &spatial_audio.committed.root;
     if before.retired {
@@ -608,7 +672,15 @@ pub(crate) fn produce_component_stage(
     let payload = validate_packet_payload(&packet)?;
     let controller = ComponentControllerParameters::from_provider(parameters)?;
     let kernel = component_kernel_from_provider(window)?;
-    let matrix = mix_matrix(&payload)?;
+    let matrix = match mixer_preview {
+        Some(matrix) => {
+            if matrix.len() != COMPONENT_ROW_COUNT * INSTALLED_SAMPLES {
+                return Err(ComponentStageError::Input);
+            }
+            matrix
+        }
+        None => mix_matrix(&payload)?,
+    };
     let overlap = make_overlap(before_state.component_state, &matrix)?;
     let filtered = filter_component(
         &overlap.samples,
@@ -636,6 +708,7 @@ pub(crate) fn produce_component_stage(
         spatial_control_before_digest: packet.spatial_control_before_digest,
         spatial_control_provider_lineage: packet.spatial_control_provider_lineage,
         provider_lineage: packet.provider_lineage,
+        matrix_destination_slots: packet.destinations.clone(),
     };
 
     Ok(ComponentStageProposal {
@@ -814,6 +887,14 @@ fn mix_matrix(
         }
     }
     Ok(mixer)
+}
+
+/// Computes the stateless current-C/d mixer preview without reading or advancing component.before.
+pub(crate) fn preview_component_mixer(
+    packet: &SpatialAudioInputPacket,
+) -> Result<Box<[FiniteF32]>, ComponentStageError> {
+    let payload = validate_packet_payload(packet)?;
+    mix_matrix(&payload)
 }
 
 fn make_overlap(

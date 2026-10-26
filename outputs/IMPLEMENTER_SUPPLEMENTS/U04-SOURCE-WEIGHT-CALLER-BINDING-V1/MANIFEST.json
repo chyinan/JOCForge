@@ -1,0 +1,25 @@
+{
+  "package_id": "U04-SOURCE-WEIGHT-CALLER-BINDING-V1",
+  "files": [
+    {
+      "file": "BINDING.md",
+      "bytes": 3507,
+      "sha256": "203d84dc75fc8fe067c1c0d2ecd402586c33022cb416255abf6dadaba416d76e"
+    },
+    {
+      "file": "REFERENCES.json",
+      "bytes": 3483,
+      "sha256": "52a9deb6b62c27f245ebc2ffd833f1d4ee1460994f89dd3bc05ebf1eb58ffae1"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 2511,
+      "sha256": "231c28a7b1224c39673034e037ae9698e8d09af38a8224dfa8d644238f6f5c9f"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 666,
+      "sha256": "87b6f5e4c011ba99918c1b1a108f502f03b736400e700ad2e5f2be0898ee5aad"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge-f12-complexity-decoder-admission-vectors.v1",
+  "grade": "SYNTHETIC_SCALAR_CONTRACT_CASES; NOT_AUDIO_EXECUTION",
+  "vectors": [
+    {
+      "id": "matching-type-a-count",
+      "input": {"addbsi_length_bytes":2,"reserved_bits_zero":true,"type_a_flag":true,"complexity_index_type_a_u8":16,"oamd_total_object_count":16},
+      "expected": {"parser_admission":"PASS","complexity_count_check":"PASS","frame_reaches_decoder_gate":true},
+      "scope_limit": "Does not assert successful decode or audible quality."
+    },
+    {
+      "id": "mismatching-type-a-count",
+      "input": {"addbsi_length_bytes":2,"reserved_bits_zero":true,"type_a_flag":true,"complexity_index_type_a_u8":15,"oamd_total_object_count":16},
+      "expected": {"parser_admission":"PASS","complexity_count_check":"REJECT_BEFORE_DECODE_RENDER"}
+    },
+    {
+      "id": "missing-type-a-flag",
+      "input": {"addbsi_length_bytes":2,"reserved_bits_zero":true,"type_a_flag":false,"oamd_total_object_count":16},
+      "expected": {"parser_result":"MISSING_TYPE_A_EXTENSION_ERROR"}
+    },
+    {
+      "id": "complexity-out-of-range",
+      "input": {"type_a_flag":true,"complexity_index_type_a_u8":17,"oamd_total_object_count":17},
+      "expected": {"parser_result":"COMPLEXITY_INDEX_OUT_OF_RANGE"}
+    }
+  ],
+  "no_expected_pcm_or_render_output": true
+}

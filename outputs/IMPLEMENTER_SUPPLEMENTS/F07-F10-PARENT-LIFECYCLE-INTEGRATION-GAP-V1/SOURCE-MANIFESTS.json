@@ -1,0 +1,23 @@
+{
+  "schema": "jocforge-parent-analysis-lifecycle-source-manifests.v1",
+  "reverse_package": {
+    "manifest_sha256": "7e38e51ece809c155498765092c5699d673b2e20ec608cd9b442baa2506e8324",
+    "package_payloads": 7,
+    "package_and_source_checks": "PASS_OPTIMIZED_MODE",
+    "source_manifests_verified": 2,
+    "selected_source_files_hashed": 14
+  },
+  "approved_clean_package": {
+    "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "related_spec_and_vector_entries": "MATCHED_TO_MANIFEST"
+  },
+  "analysis_fixture_seam": {
+    "manifest_sha256": "0fd24d23ca4237e8bdd2283671293dfa0b54755ea74e84316234b4cc4c195912",
+    "payloads_reverified": 11
+  },
+  "frozen_implementation_snapshot": {
+    "head_claim": "b1fc2dea4922f5a9d411a4640782c82bd6ece19b",
+    "working_tree_claim": "CLEAN",
+    "these_repository_claims_independently_verified": false
+  }
+}

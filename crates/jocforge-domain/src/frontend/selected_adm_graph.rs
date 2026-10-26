@@ -30,7 +30,6 @@ const SELECTED_BED_COUNT: usize = 10;
 const SELECTED_OBJECT_COUNT: usize = 28;
 const VIRTUAL_PREFIX_SOURCE_COUNT: u64 = 11;
 const SELECTED_TOTAL_SOURCE_COUNT: u64 = 48;
-const SELECTED_LFE_HOST: u8 = 3;
 
 /// One-based CHNA track index, distinct from its zero-based physical host.
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
@@ -67,6 +66,51 @@ pub enum SelectedTrackKind {
     Object {
         semantic_key: u32,
     },
+}
+
+/// A clean local owner slot for an admitted object track.
+///
+/// This ordinal is allocated from TrackUID byte order. It does not assert a
+/// native sampler-array order or replace the track's physical-host identity.
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
+pub struct ObjectSamplerOwnerOrdinal(u8);
+
+impl ObjectSamplerOwnerOrdinal {
+    pub const fn value(self) -> u8 {
+        self.0
+    }
+}
+
+/// Immutable association between a physical object track and its local sampler slot.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct ObjectSamplerOwnerBinding {
+    track_uid: String,
+    local_owner_ordinal: ObjectSamplerOwnerOrdinal,
+    semantic_key: u32,
+    physical_host: PhysicalHostIndex,
+    channel_format_id: String,
+}
+
+impl ObjectSamplerOwnerBinding {
+    pub fn track_uid(&self) -> &str {
+        &self.track_uid
+    }
+
+    pub const fn local_owner_ordinal(&self) -> ObjectSamplerOwnerOrdinal {
+        self.local_owner_ordinal
+    }
+
+    pub const fn semantic_key(&self) -> u32 {
+        self.semantic_key
+    }
+
+    pub const fn physical_host(&self) -> PhysicalHostIndex {
+        self.physical_host
+    }
+
+    pub fn channel_format_id(&self) -> &str {
+        &self.channel_format_id
+    }
 }
 
 /// Graph identity and descriptor identity for one CHNA physical track.
@@ -205,6 +249,7 @@ impl SelectedAdmGraphReceipt {
 pub struct SelectedAdmGraph {
     tracks: [SelectedPhysicalTrack; SELECTED_TRACK_COUNT],
     object_events: [RawAdmObjectEvent; SELECTED_OBJECT_COUNT],
+    object_sampler_owner_bindings: [ObjectSamplerOwnerBinding; SELECTED_OBJECT_COUNT],
     bed_pack_channel_format_ids: [String; SELECTED_BED_COUNT],
     bed_join: SelectedBedChannelJoin,
     regular_source_bindings: [RegularSourceBinding; SELECTED_TRACK_COUNT - 1],
@@ -223,6 +268,23 @@ impl SelectedAdmGraph {
 
     pub const fn bed_channel_join(&self) -> &SelectedBedChannelJoin {
         &self.bed_join
+    }
+
+    /// Local owner slots in unsigned ASCII TrackUID byte order.
+    ///
+    /// Runtime invocation remains a separate physical-host-ordered traversal;
+    /// callers join each track to this table by TrackUID.
+    pub const fn object_sampler_owner_bindings(
+        &self,
+    ) -> &[ObjectSamplerOwnerBinding; SELECTED_OBJECT_COUNT] {
+        &self.object_sampler_owner_bindings
+    }
+
+    pub fn object_sampler_owner_binding_for_uid(
+        &self,
+        track_uid: &str,
+    ) -> Option<&ObjectSamplerOwnerBinding> {
+        find_object_sampler_owner_binding(&self.object_sampler_owner_bindings, track_uid)
     }
 
     pub const fn regular_source_bindings(
@@ -269,6 +331,57 @@ impl SelectedAdmGraph {
         build_selected_object_control_set(&admitted.control_events(), &dbmd_tracks, &self.bed_join)
             .map_err(SelectedAdmGraphError::ObjectControl)
     }
+}
+
+fn build_object_sampler_owner_bindings(
+    object_tracks: &[&SelectedPhysicalTrack],
+) -> Result<[ObjectSamplerOwnerBinding; SELECTED_OBJECT_COUNT], SelectedAdmGraphError> {
+    if object_tracks.len() != SELECTED_OBJECT_COUNT {
+        return Err(SelectedAdmGraphError::SelectedTrackDomain);
+    }
+
+    let mut ordered_tracks = object_tracks.to_vec();
+    ordered_tracks.sort_by(|left, right| left.uid.as_bytes().cmp(right.uid.as_bytes()));
+    if ordered_tracks
+        .windows(2)
+        .any(|pair| pair[0].uid == pair[1].uid)
+    {
+        return Err(SelectedAdmGraphError::DuplicateUid);
+    }
+
+    let bindings = ordered_tracks
+        .into_iter()
+        .enumerate()
+        .map(|(index, track)| {
+            let SelectedTrackKind::Object { semantic_key } = track.kind else {
+                return Err(SelectedAdmGraphError::SelectedTrackDomain);
+            };
+            let local_owner_ordinal = u8::try_from(index)
+                .map(ObjectSamplerOwnerOrdinal)
+                .map_err(|_| SelectedAdmGraphError::SelectedTrackDomain)?;
+            Ok(ObjectSamplerOwnerBinding {
+                track_uid: track.uid.clone(),
+                local_owner_ordinal,
+                semantic_key,
+                physical_host: track.physical_host,
+                channel_format_id: track.channel_format.clone(),
+            })
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+
+    bindings
+        .try_into()
+        .map_err(|_| SelectedAdmGraphError::SelectedTrackDomain)
+}
+
+fn find_object_sampler_owner_binding<'a>(
+    bindings: &'a [ObjectSamplerOwnerBinding; SELECTED_OBJECT_COUNT],
+    track_uid: &str,
+) -> Option<&'a ObjectSamplerOwnerBinding> {
+    let index = bindings
+        .binary_search_by(|binding| binding.track_uid.as_bytes().cmp(track_uid.as_bytes()))
+        .ok()?;
+    bindings.get(index)
 }
 
 /// Parses the selected valid AXML/CHNA metadata chunks without reading a WAV/data chunk.
@@ -474,9 +587,6 @@ pub fn parse_selected_adm_graph(
     .map_err(SelectedAdmGraphError::BedChannelJoin)?;
 
     let direct_lfe_host = bed_join.lfe_host();
-    if direct_lfe_host != SELECTED_LFE_HOST {
-        return Err(SelectedAdmGraphError::LfeHost);
-    }
     let regular_hosts = bed_join.regular_control_order();
     if regular_hosts.len() != SELECTED_TRACK_COUNT - 1 {
         return Err(SelectedAdmGraphError::SourceBindingDomain);
@@ -496,6 +606,7 @@ pub fn parse_selected_adm_graph(
     if uid_to_track_index.len() != SELECTED_TRACK_COUNT {
         return Err(SelectedAdmGraphError::DuplicateUid);
     }
+    let object_sampler_owner_bindings = build_object_sampler_owner_bindings(&object_rows)?;
     let tracks: [SelectedPhysicalTrack; SELECTED_TRACK_COUNT] = rows
         .try_into()
         .map_err(|_| SelectedAdmGraphError::SelectedTrackDomain)?;
@@ -516,6 +627,7 @@ pub fn parse_selected_adm_graph(
     Ok(SelectedAdmGraph {
         tracks,
         object_events,
+        object_sampler_owner_bindings,
         bed_pack_channel_format_ids: pack_channel_format_ids,
         bed_join,
         regular_source_bindings,
@@ -879,4 +991,232 @@ fn parse_selected_object_semantic_key(object_id: &str) -> Result<u32, SelectedAd
         .checked_sub(0x1001)
         .filter(|_| parsed > 0x1000)
         .ok_or(SelectedAdmGraphError::ObjectIdentifier)
+}
+
+#[cfg(test)]
+mod object_sampler_owner_binding_tests {
+    use super::{
+        ChnaTrackIndex, ObjectSamplerOwnerBinding, ObjectSamplerOwnerOrdinal, PhysicalHostIndex,
+        SelectedAdmGraphError, SelectedPhysicalTrack, SelectedTrackKind,
+        build_object_sampler_owner_bindings, find_object_sampler_owner_binding,
+    };
+
+    const INPUT_ONLY_VECTORS: &str = include_str!(
+        "../../../../outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/INPUT-ONLY-VECTORS.json"
+    );
+
+    #[test]
+    fn noncontinuous_keys_keep_their_identity_while_uid_sort_allocates_slots() {
+        let tracks = base_object_tracks();
+        let bindings = owner_bindings(&tracks);
+
+        assert_associations(&tracks, &bindings);
+        assert_eq!(bindings[0].track_uid(), "ATU_00000000");
+        assert_eq!(bindings[0].local_owner_ordinal().value(), 0);
+        assert_eq!(bindings[0].semantic_key(), 7);
+        assert_eq!(bindings[0].physical_host().value(), 10);
+        assert_eq!(bindings[0].channel_format_id(), "AC_OBJ_0000");
+    }
+
+    #[test]
+    fn reversing_graph_order_does_not_change_uid_owner_bindings() {
+        let tracks = base_object_tracks();
+        let expected = owner_bindings(&tracks);
+        let mut reversed = tracks.clone();
+        reversed.reverse();
+
+        let actual = owner_bindings(&reversed);
+
+        assert_eq!(actual, expected);
+        assert_associations(&reversed, &actual);
+    }
+
+    #[test]
+    fn rotating_graph_order_does_not_change_uid_owner_bindings() {
+        let tracks = base_object_tracks();
+        let expected = owner_bindings(&tracks);
+        let mut rotated = tracks.clone();
+        rotated.rotate_left(11);
+
+        let actual = owner_bindings(&rotated);
+
+        assert_eq!(actual, expected);
+        assert_associations(&rotated, &actual);
+    }
+
+    #[test]
+    fn reversed_hosts_keep_owner_slots_and_host_invocation_uses_uid_joins() {
+        let mut tracks = base_object_tracks();
+        let original = owner_bindings(&tracks);
+        for track in &mut tracks {
+            let host = 47 - track.physical_host.value();
+            track.physical_host = PhysicalHostIndex(host);
+            track.track_index = ChnaTrackIndex(u16::from(host) + 1);
+        }
+        let bindings = owner_bindings(&tracks);
+        assert_associations(&tracks, &bindings);
+
+        for previous in &original {
+            let current = find_object_sampler_owner_binding(&bindings, previous.track_uid())
+                .expect("same TrackUID remains mapped");
+            assert_eq!(
+                current.local_owner_ordinal(),
+                previous.local_owner_ordinal()
+            );
+            assert_eq!(current.semantic_key(), previous.semantic_key());
+            assert_eq!(current.channel_format_id(), previous.channel_format_id());
+            assert_eq!(
+                current.physical_host().value(),
+                47 - previous.physical_host().value()
+            );
+        }
+
+        let mut host_order = tracks.iter().collect::<Vec<_>>();
+        host_order.sort_by_key(|track| track.physical_host.value());
+        assert!(
+            host_order
+                .windows(2)
+                .all(|pair| { pair[0].physical_host.value() < pair[1].physical_host.value() })
+        );
+        for track in host_order {
+            let binding = find_object_sampler_owner_binding(&bindings, &track.uid)
+                .expect("host traversal joins the UID-sorted owner table");
+            assert_eq!(binding.physical_host(), track.physical_host);
+            assert_eq!(binding.channel_format_id(), track.channel_format);
+        }
+        assert_ne!(
+            bindings
+                .iter()
+                .map(ObjectSamplerOwnerBinding::track_uid)
+                .collect::<Vec<_>>(),
+            tracks
+                .iter()
+                .map(|track| track.uid.as_str())
+                .collect::<Vec<_>>()
+        );
+    }
+
+    #[test]
+    fn shared_semantic_key_keeps_distinct_track_owner_slots() {
+        let mut tracks = base_object_tracks();
+        let shared_identity = tracks[0].clone();
+        let SelectedTrackKind::Object { semantic_key } = shared_identity.kind else {
+            panic!("test input contains only object tracks");
+        };
+        tracks[1].object_id = shared_identity.object_id.clone();
+        tracks[1].descriptor_semantic_key = shared_identity.descriptor_semantic_key;
+        tracks[1].kind = SelectedTrackKind::Object { semantic_key };
+        let bindings = owner_bindings(&tracks);
+
+        assert_associations(&tracks, &bindings);
+        let first = find_object_sampler_owner_binding(&bindings, &tracks[0].uid).unwrap();
+        let second = find_object_sampler_owner_binding(&bindings, &tracks[1].uid).unwrap();
+        assert_ne!(first.track_uid(), second.track_uid());
+        assert_eq!(first.semantic_key(), second.semantic_key());
+        assert_ne!(first.local_owner_ordinal(), second.local_owner_ordinal());
+        assert_ne!(first.channel_format_id(), second.channel_format_id());
+    }
+
+    #[test]
+    fn existing_ascii_uid_values_use_unsigned_byte_lexical_order() {
+        let mut tracks = base_object_tracks();
+        for (track, uid) in tracks
+            .iter_mut()
+            .take(4)
+            .zip(["UID_2", "UID_10", "UID_A", "UID_a"])
+        {
+            track.uid = uid.to_owned();
+        }
+        let bindings = owner_bindings(&tracks);
+        assert_associations(&tracks, &bindings);
+
+        let ordered_uids = bindings
+            .iter()
+            .map(ObjectSamplerOwnerBinding::track_uid)
+            .collect::<Vec<_>>();
+        assert_eq!(&ordered_uids[24..], &["UID_10", "UID_2", "UID_A", "UID_a"]);
+    }
+
+    #[test]
+    fn uid_sort_uses_ordinary_prefix_length_order() {
+        let mut tracks = base_object_tracks();
+        tracks[0].uid = "UID_A".to_owned();
+        tracks[1].uid = "UID_A0".to_owned();
+        let bindings = owner_bindings(&tracks);
+
+        let shorter = find_object_sampler_owner_binding(&bindings, "UID_A").unwrap();
+        let longer = find_object_sampler_owner_binding(&bindings, "UID_A0").unwrap();
+        assert!(shorter.local_owner_ordinal() < longer.local_owner_ordinal());
+    }
+
+    fn base_object_tracks() -> Vec<SelectedPhysicalTrack> {
+        let input: serde_json::Value = serde_json::from_str(INPUT_ONLY_VECTORS).unwrap();
+        input["base_object_tracks"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|row| {
+                let track_uid = row["audio_track_uid"].as_str().unwrap().to_owned();
+                let semantic_key = u32::try_from(row["semantic_key"].as_u64().unwrap()).unwrap();
+                let host = u8::try_from(row["host_channel_index"].as_u64().unwrap()).unwrap();
+                let channel_format = row["channel_format_id"].as_str().unwrap().to_owned();
+                let object_id = row["audio_objects"][0]["id"].as_str().unwrap().to_owned();
+                SelectedPhysicalTrack {
+                    physical_host: PhysicalHostIndex(host),
+                    track_index: ChnaTrackIndex(u16::from(host) + 1),
+                    uid: track_uid,
+                    track_format: "synthetic-track-format".to_owned(),
+                    stream_format: "synthetic-stream-format".to_owned(),
+                    channel_format,
+                    pack_format: "synthetic-objects-pack".to_owned(),
+                    object_id,
+                    descriptor_semantic_key: semantic_key,
+                    kind: SelectedTrackKind::Object { semantic_key },
+                    block_count: 1,
+                    chna_reserved: 0,
+                }
+            })
+            .collect()
+    }
+
+    fn owner_bindings(tracks: &[SelectedPhysicalTrack]) -> [ObjectSamplerOwnerBinding; 28] {
+        let object_tracks = tracks.iter().collect::<Vec<_>>();
+        build_object_sampler_owner_bindings(&object_tracks).unwrap()
+    }
+
+    fn assert_associations(
+        tracks: &[SelectedPhysicalTrack],
+        bindings: &[ObjectSamplerOwnerBinding; 28],
+    ) {
+        assert_eq!(bindings.len(), 28);
+        for (index, binding) in bindings.iter().enumerate() {
+            assert_eq!(
+                binding.local_owner_ordinal(),
+                ObjectSamplerOwnerOrdinal(u8::try_from(index).unwrap())
+            );
+            let track = tracks
+                .iter()
+                .find(|track| track.uid == binding.track_uid())
+                .unwrap();
+            let SelectedTrackKind::Object { semantic_key } = track.kind else {
+                panic!("test input contains only object tracks");
+            };
+            assert_eq!(binding.semantic_key(), semantic_key);
+            assert_eq!(binding.physical_host(), track.physical_host);
+            assert_eq!(binding.channel_format_id(), track.channel_format);
+        }
+    }
+
+    #[test]
+    fn owner_binding_rejects_duplicate_track_uids() {
+        let mut tracks = base_object_tracks();
+        let duplicate_uid = tracks[0].uid.clone();
+        tracks[1].uid = duplicate_uid;
+        let object_tracks = tracks.iter().collect::<Vec<_>>();
+
+        assert_eq!(
+            build_object_sampler_owner_bindings(&object_tracks),
+            Err(SelectedAdmGraphError::DuplicateUid)
+        );
+    }
 }

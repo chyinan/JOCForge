@@ -90,12 +90,7 @@ This is only the direct-LFE ring transition and a future Type10 row0 input; it d
       ]
     }
   ],
-  "implementation_files": [
-    "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
-    "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-    "crates/jocforge-domain/src/spatial/spatial_control.rs"
-  ],
-  "implementation_inventory": [
+  "historical_implementation_inventory": [
     {
       "bytes": 16562,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
@@ -110,6 +105,28 @@ This is only the direct-LFE ring transition and a future Type10 row0 input; it d
       "bytes": 26366,
       "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
       "sha256": "25ddd1832309801765697d7c9e014766e159a5b7571234a86d790c71a895f426"
+    }
+  ],
+  "implementation_files": [
+    "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
+    "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+    "crates/jocforge-domain/src/spatial/spatial_control.rs"
+  ],
+  "implementation_inventory": [
+    {
+      "bytes": 16562,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs",
+      "sha256": "bfa2808ba2aa5566cf832a76a5ef93a6180bc1e81c35a63934809f3ffe9abce7"
+    },
+    {
+      "bytes": 53239,
+      "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+      "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"
+    },
+    {
+      "bytes": 30134,
+      "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+      "sha256": "0ea66b3b2d1c5f1ae554769ecb92c0001130915b536cb461ec084f0b0ee5ae86"
     }
   ],
   "implementation_prohibitions": [

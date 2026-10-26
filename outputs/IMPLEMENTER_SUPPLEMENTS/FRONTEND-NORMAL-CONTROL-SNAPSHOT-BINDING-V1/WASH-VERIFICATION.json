@@ -1,0 +1,19 @@
+{
+  "scope": "Existing approved F01E normal callback producer binding, sufficient to implement this interface only",
+  "research_manifest_sha256": "f88f74cd3bcddbb596f70f45948d39f4fbcd450d557d378e4287eb24ef5dbd27",
+  "payload_hash_verified": 7,
+  "source_hash_verified": 13,
+  "wash_review": "Reviewed against F01E.7-.10 and constructor plus approved bed/object adapter. Same object state ordinal, runtime physical binding, per-normal two-slot R32 sampler and whole parent proposal required.",
+  "research_reported_normal_checks": 56,
+  "research_reported_optimized_checks": 56,
+  "independent_execution_of_research_checker": "NOT_RUN: executable checker not included in delivered research package; recorded reports are not independent execution",
+  "research_check_report_hashes": {
+    "normal": "b9efa8617dd7fad124931455c775578a7a646c256c6b40bc2e12509c3e255e8a",
+    "optimized": "08f79ff11749ab663965267d5fb4952f01626432f694bda92ffc9b3ad26a031d"
+  },
+  "full_parser_and_parent_DSP": "NOT_RUN",
+  "native_execution": "NOT_RUN",
+  "audio_acceptance": "NOT_RUN",
+  "boundary": "Raw bed tail remains unproduced. Existing canonical rectangle bed padding is local unconsumed storage only. Main four cached drains and independent meter three fresh-zero drains remain separate approved schedules.",
+  "source_code_or_private_key_delivered": false
+}

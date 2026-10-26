@@ -1,0 +1,32 @@
+{
+  "package_id": "OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1",
+  "scope": "Immutable track identity to local sampler slot only; no DSP change",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 4897,
+      "sha256": "e3c332136f4b8aaa7165507d2dd0ad2d0e8f5bee3e9bff94f4f406adb6902d80"
+    },
+    {
+      "file": "BINDING.json",
+      "bytes": 3101,
+      "sha256": "6cb82e628e47e854b1cd8c1d9eeed3bde6f8e02ced8f0185b5e9c47ed3391924"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 9178,
+      "sha256": "eab17130ac7a23553dfe90c8d8eb81a0a03195dc52f4263720dff10a2665e710"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 2016,
+      "sha256": "811d392824c19fa5f50e46bbb7ebc677467fe884dede2d9e943b0589ca517436"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 810,
+      "sha256": "2d3722d50b781aee29f3da45b4c526a31338e5d2bd80f104960a1848da08b8c0"
+    }
+  ],
+  "whole_programme_execution": "NOT_RUN"
+}

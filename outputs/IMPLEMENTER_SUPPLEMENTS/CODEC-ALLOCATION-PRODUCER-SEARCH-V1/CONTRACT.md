@@ -1,0 +1,13 @@
+# Production allocation and converter search
+
+Ready scope: the complete approved integer BAP network, its decoded-exponent/caller context, converter cost/search and the fixed-plan-to-main-trial interface. This package connects existing F09/F10/F11/F12A/F12S rules; it adds no vendor dependency or TrueHD prerequisite.
+
+Implement production BAP from the public provider and actual decoded exponent rows. Do not use the verification fixture as a runtime allocation lookup. Preserve the stage/axis and precision distinctions in STAGE-MAP: saved POWER S, raw/current/work/PRIMARY, main/converter refresh and normalization, main fast-gain1 and converter fast-gain4. Compute one fixed source plan and db/gain/dither context before trials; compute fresh BAP for each candidate/block/channel.
+
+Converter budget20480/cap671 and main actual32768-bit frame feasibility are different interfaces. Converter costs use actual generated BAP and the approved W16/group-count rules; the BAP network uses its own I32/S16 arithmetic. BAP1/2 groups cross channels within a block, BAP4 pairs likewise, and groupers reset at each block. Cost validity cannot waive quantization sentinel or actual field-capacity errors.
+
+Follow the specified procedural searches exactly. Converter evaluates numerical cost even above cap before applying that cap; residual0 is feasible. Main test16/ten-midpoint search must call the actual quantization/full-frame oracle supplied by the other modules. The abstract feasibility predicates in the input vectors are validation collaborators only. Group ceilings can make valid cost layouts nonmonotone; no global-optimum quality guarantee or invented shortcut follows from the binary search.
+
+The old registry codec source is a metrics-only neighbouring path and does not define selected-main parameters. Historical rev13 source/executable identities remain manifest anchors where their texts are missing. Current approved numerical specifications and public parameters are complete and remain implementation authority; missing archive text is not a new key/table/parameter gate.
+
+Wash rehashed the seven-payload production package and seventeen actual source/metadata identities, plus the five-payload boundary package and four approved leaf references. The reviewed pure numerical verifiers passed in normal and optimized mode: 88 approved cases/9016 BAP values, 56 self-owned BAP inputs, four actual nonzero-BAP converter searches, fourteen typed rejections and grouped/residual boundaries. Full POWER-to-plan execution, quantization, real frame feasibility, native execution and whole-programme audio remain separately unexecuted here.

@@ -1,0 +1,39 @@
+{
+  "schema": "research.object-owner-slot-binding.v1",
+  "decision": "CLEAN_INTERNAL_IMMUTABLE_OBJECT_TRACK_UID_TO_OWNER_SLOT_BIJECTION",
+  "source_facts": {
+    "semantic_key": "Parse AO_4hex once as F01G defines: hex-0x1001; already semantic U32 stays unchanged",
+    "event_model": "Iterates graph Objects track rows, retains channel_key and host track_ordinal; raw96 row_index uses host",
+    "descriptor_model": "Objects are sorted by ASCII TrackUID byte order and enumerated; group_word_offset4 gets that ordinal; output records are separately host ordered",
+    "native_F01E_state_array_order": "NOT_OBSERVED_AND_NOT_REQUIRED_FOR_THIS_LOCAL_REPRESENTATION"
+  },
+  "local_choice": {
+    "set": "Exactly28 admitted Objects TRACK records, not distinct semantic keys or distinct AO IDs",
+    "order": "AudioTrackUID ASCII byte lexicographic order with ordinary prefix/length tie behavior, using existing admitted UID type/uniqueness rules only",
+    "ordinal": "Enumerate selected local sorted records0..27 once at programme preparation",
+    "mapping_fields": [
+      "audio_track_uid",
+      "semantic_key",
+      "host_channel_index",
+      "channel_format_id",
+      "local_owner_ordinal"
+    ],
+    "where": "Immutable existing Prepared graph/physical-binding data, frozen perprogramme/attempt. Nested mutable sampler state remains one28-record array; no newDSP state or digest required.",
+    "scope": "This is a deterministic clean allocation choice, not a claim of DEE sampler state order; an already established consistent local bijection may instead be explicitly converted."
+  },
+  "runtime": {
+    "processing": "Sort admitted object tracks by physical host as F01E.7 requires, look up UID in frozen mapping, then access that local owner state",
+    "output": "Control38/regular37/source geometry remain in their physical/source domains; event semantic key preserved for its consumers, never replaced by slot index",
+    "wrong_operations": [
+      "semantic_key-0x1001 a second time",
+      "semantic_key as dense index or requiring contiguous keys",
+      "state owner=host-10",
+      "master child or graph document enumeration as identity",
+      "dedup shared AO/semantic key when TrackUIDs differ",
+      "assume meter descriptor group equals sampler owner merely because values match",
+      "force reorder or reinterpret existing numeric state without explicit UID mapping"
+    ]
+  },
+  "external_domains": "F01E control52 does not export the clean owner ordinal as a semantic field. Meter descriptor group has its own proven UID-sort rule; any association with owner slots is an explicit UID/host graph join. Spatial global source IDs, raw96 host/type ordinals and selected target IDs remain separate.",
+  "failure": "Before any numeric sampler/visible state mutation validate complete existing graph/UID/host/channel associations and exact mapping identity. A programme/attempt/mapping change requires existing full reset/preparation policy, not silent slot reuse. No new source ID-format or semantic-key uniqueness constraint added."
+}

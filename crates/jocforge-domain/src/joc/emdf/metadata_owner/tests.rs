@@ -377,6 +377,28 @@ fn eof_is_a_leaf_proposal_with_no_source_receipt_or_flush() {
         })
     );
     assert!(!eof.has_source_receipt());
+    assert_eq!(eof.expected_sources(), 5);
+    assert!(eof.after_is_finalized());
+    assert!(eof.queues_are_empty());
+    assert!(eof.pending_writers_are_drop_at_done());
+    let mut pending = eof
+        .pending_writer_dispositions()
+        .into_iter()
+        .map(|(queue_id, writer, disposition)| (queue_id, writer.value(), disposition))
+        .collect::<Vec<_>>();
+    pending.sort_by_key(|(queue_id, writer, disposition)| (*queue_id, *writer, *disposition));
+    assert_eq!(
+        pending,
+        vec![
+            (1, 3, "DROP_AT_DONE"),
+            (1, 4, "DROP_AT_DONE"),
+            (2, 3, "DROP_AT_DONE"),
+            (2, 4, "DROP_AT_DONE"),
+            (11, 3, "DROP_AT_DONE"),
+            (11, 4, "DROP_AT_DONE"),
+            (14, 4, "DROP_AT_DONE"),
+        ]
+    );
     assert_eq!(
         owner.state.sha256_hex(),
         vectors["continuous_calls"]

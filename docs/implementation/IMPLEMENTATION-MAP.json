@@ -831,6 +831,181 @@
           "parameters": {"kind": "NONE_FIXED_SELECTED_F01E_PROFILE_AND_WASHED_ROWS", "provider_files": [], "validation_boundary": "Original job XML was not delivered; full PCM identity is NOT_REHASHED."},
           "vectors": {"kind": "HASH_PINNED_R4_METADATA_CONTROL_REPLAY", "authoritative_vectors": ["crates/jocforge-domain/tests/fixtures/primary_metadata_control/MODEL-DEFINED-CONTROL38.json", "crates/jocforge-domain/tests/fixtures/primary_metadata_control/F01E-EXPECTED-COMPARISON-DATA.json", "crates/jocforge-domain/tests/fixtures/primary_metadata_control/PRIMARY-DBMD-DECODED.json"], "case_pointers": ["38 primary metadata/control rows", "364 object words compared after production", "38 DBMD rows compared", "Bed tail remains unproduced", "Original job identity RESEARCH_DECLARATION_ONLY; PCM identity NOT_REHASHED; no main encode or native end-to-end claim"], "local_fixture": {"file": "crates/jocforge-domain/tests/fixtures/primary_metadata_control/MODEL-DEFINED-CONTROL38.json", "bytes": 18668, "sha256": "7b73e633a64f4cfeac6cc4acf63ed66c507012b7b9ab1885dc39ec7265ca00ee"}, "source_supplement_manifest_sha256": "f210abc9fb0d92f239ebef228cb3c3e15b9f55a820623aecf650b96d537102f4", "detached_delivery_envelope_sha256": "a6a3bc2b970cb4e90bc1b28c18744e7742c5e1004331a66ab20dbba257542273", "checker_sha256": "79432f90aa594615eb6506f914ed409917e6684d8b7a279463f195ab962ee76a"},
           "error_outcomes": [{"error_code": "PRIMARY_BINDING_* | PRIMARY_CONTROL_SOURCE_IDENTITY | DBMD_* | EVENT_*", "category": "primary metadata/control production", "trigger": "A bound artifact, profile, source extent, metadata digest, parse, graph, event or row join fails.", "programme_state_after": "No complete 38-row value is returned; no state or partial output is published.", "caller_action": "Reject; do not substitute candidate-source metadata or synthesize bed-tail bytes."}]
+        },
+        {
+          "slice_id": "object-track-sampler-owner-binding",
+          "mapping_status": "MATERIALIZED_DIRECT_F01E_UID_LOCAL_OWNER_MAP__NORMAL_SAMPLER_PROPOSAL_READY",
+          "implementation_status": "LOCALLY_VERIFIED_28_TRACKUID_SORTED_LOCAL_SLOTS__DEE_NATIVE_ARRAY_ORDER_UNCLAIMED",
+          "scope": "At programme preparation, binds exactly 28 admitted Objects TRACK records to local sampler owner ordinals 0..27 by unsigned ASCII TrackUID byte order. Each immutable binding preserves TrackUID, unchanged semantic key, physical host, and channel-format ID. Invocation order remains ascending physical host and resolves sampler state by TrackUID/local binding; semantic keys and descriptor ordinals are not reused as array positions.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/frontend/selected_adm_graph.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/src/frontend/selected_adm_graph.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The immutable owner bijection is prepared once per selected graph; it owns no callback or sample clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_OBJECT_TRACKUID_TO_LOCAL_SAMPLER_OWNER_SLOT",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/BINDING.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/SOURCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/WASH-VERIFICATION.json"
+            ],
+            "validation_boundary": "Deterministic clean local owner numbering only. This is not an assertion about DEE native sampler-array order, and the UID mapping does not rekey semantic events or the independent meter descriptor domain.",
+            "supplement_manifest_sha256": "b5a21ba892c071256aab26f1a4733b122cd0ba0dc3b27ad0182135a4b1c2cde3"
+          },
+          "vectors": {
+            "kind": "HASH_BOUND_OBJECT_OWNER_SLOT_BIJECTION_INPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/BINDING.json"
+            ],
+            "case_pointers": [
+              "Six input-only cases cover noncontinuous keys, graph-order permutations, reversed host order, two TrackUIDs with a shared semantic key, ASCII UID sorting, and UID prefix/length ordering.",
+              "Tests preserve host-order invocation while resolving each nested state slot by exact TrackUID.",
+              "Duplicate TrackUID rejection uses the existing graph preflight."
+            ],
+            "local_fixture": {
+              "file": "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/INPUT-ONLY-VECTORS.json",
+              "bytes": 9178,
+              "sha256": "eab17130ac7a23553dfe90c8d8eb81a0a03195dc52f4263720dff10a2665e710"
+            }
+          },
+          "error_outcomes": [
+            {
+              "error_code": "SOURCE_BINDING_DOMAIN",
+              "category": "local owner map",
+              "trigger": "The admitted graph cannot form the unique 28-track UID-to-owner bijection.",
+              "programme_state_after": "No prepared owner map is returned.",
+              "caller_action": "Reject graph preparation; do not substitute semantic-key or host arithmetic."
+            }
+          ],
+          "not_run": [
+            "DEE native sampler-array order and whole-product source-owner acceptance remain unclaimed."
+          ],
+          "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
+        },
+        {
+          "slice_id": "normal-control-snapshot-proposal",
+          "mapping_status": "MATERIALIZED_DIRECT_F01E_NORMAL_CONTROL_SNAPSHOT__PARENT_INSTALL_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_NORMAL_TWO_SLOT_SAMPLER_AND_ATOMIC_CONTROL_ROWS__PARENT_INSTALL_OPEN",
+          "scope": "From one cold validated prepared identity, graph, admitted event set, DBMD fields, and normal callback owner state, preflights all bindings before sampling exactly 28 objects in ascending physical-host order through the frozen TrackUID-to-local-slot map. Each object carries actual previous XYZ through two ordered R32 sampler slots, then produces Object13; beds produce defined Bed6 with tail bytes24..51 unproduced. The proposal returns complete physical control38 and regular37 snapshots, typed source identity/origin, and a full noncommitting after-state. It does not invoke the F03W parent commit or cached-drain hold producer.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
+            "crates/jocforge-domain/src/frontend/adm_object_events.rs",
+            "crates/jocforge-domain/src/frontend/object_control.rs",
+            "crates/jocforge-domain/src/frontend/selected_adm_graph.rs",
+            "crates/jocforge-domain/src/frontend/mod.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/src/frontend/normal_control_snapshot/tests.rs",
+            "crates/jocforge-domain/src/frontend/selected_adm_graph.rs",
+            "crates/jocforge-domain/src/frontend/adm_object_events.rs",
+            "crates/jocforge-domain/tests/object_control.rs"
+          ],
+          "clock": {
+            "domains": [
+              "FrontendCallbackIndex",
+              "NormalCallbackCount",
+              "CallbackLineageIdentity"
+            ],
+            "covered_clauses": [
+              "Normal callback query is g*1536 and actual sample count is min(1536,N-query).",
+              "The normal proposal generation and source origin equal g; one proposal leaves before-state unchanged until parent consumption.",
+              "Cached drains are not calls to this normal producer and continue to use the separately approved hold owner."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F01E_NORMAL_CONTROL_SNAPSHOT_AND_UID_OWNER_BINDING",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1/SOURCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/BINDING.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/INPUT-ONLY-VECTORS.json",
+              "specs/01-frontend-config-dbmd-events.md",
+              "specs/01-adm-graph-and-time.md",
+              "specs/01-bed-routing-and-source-geometry.md"
+            ],
+            "validation_boundary": "Synthetic input-only model recipes exercise callback sampling and field joins; no whole XML/DBMD production acceptance, parent installation/commit, cached-drain hold, F03W render, or native audio run is claimed.",
+            "normal_snapshot_supplement_manifest_sha256": "513b0c7554d25a97c2a5e448ce0f7c109f75b01c80ec53d16a145db6208d1c23",
+            "owner_binding_supplement_manifest_sha256": "b5a21ba892c071256aab26f1a4733b122cd0ba0dc3b27ad0182135a4b1c2cde3"
+          },
+          "vectors": {
+            "kind": "HASH_BOUND_F01E_NORMAL_CONTROL_SNAPSHOT_PROPOSALS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/src/frontend/normal_control_snapshot/tests.rs"
+            ],
+            "case_pointers": [
+              "N=1537 exercises one full 1536-sample normal call and a one-sample last normal call with persistent previous XYZ.",
+              "The recipe has 28 objects, ten interleaved beds, semantic LFE host12, reordered pack joins, and reversed local ordinal/physical-host mapping.",
+              "Tests cover Bed6/Object13 source-flags fields, defined bed prefix/unproduced tail, DBMD host join, prepared identity, late preflight rejection, proposal discard, and mutable carrier-copy isolation.",
+              "A separately supplied prior-XYZ case proves the second call consumes carried state; it is not claimed as a native constant-event programme observation."
+            ],
+            "local_fixture": {
+              "file": "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1/INPUT-ONLY-VECTORS.json",
+              "bytes": 22605,
+              "sha256": "7766314c4cfe02732c8792fe93b691a65990b93ed05522867c186d4f935f574d"
+            }
+          },
+          "error_outcomes": [
+            {
+              "error_code": "NORMAL_CONTROL_COLD_STATE",
+              "category": "normal owner preflight",
+              "trigger": "The supplied owner is not the exact selected cold state before normal callback zero.",
+              "programme_state_after": "No proposal is returned; before-state is unchanged.",
+              "caller_action": "Reject and reconstruct the selected owner from its programme start."
+            },
+            {
+              "error_code": "NORMAL_CONTROL_OWNER_BINDING | NORMAL_CONTROL_OBJECT_EVENT | NORMAL_CONTROL_BED_JOIN | NORMAL_CONTROL_LFE_IDENTITY | NORMAL_CONTROL_DBMD_IDENTITY",
+              "category": "prepared identity and physical joins",
+              "trigger": "The prepared graph, TrackUID owner map, host route, bed-pack channel-format join, semantic LFE, DBMD track, or admitted event set disagrees.",
+              "programme_state_after": "No partial control snapshot or sampler after-state is returned.",
+              "caller_action": "Reject the complete callback before publication."
+            },
+            {
+              "error_code": "NORMAL_CONTROL_CALLBACK_IDENTITY | NORMAL_CONTROL_CALLBACK_CLOCK | NORMAL_CONTROL_GENERATION | NORMAL_CONTROL_PREPARED_IDENTITY",
+              "category": "normal source clock/transaction",
+              "trigger": "Programme/attempt/prepared identity, next callback, normal source origin, query, or actual sample count does not match the selected schedule.",
+              "programme_state_after": "No proposal is returned; no owner counter advances.",
+              "caller_action": "Reject the stale/mixed callback and follow the enclosing attempt policy."
+            },
+            {
+              "error_code": "NORMAL_CONTROL_STATE_SHAPE | NORMAL_CONTROL_STATE_OWNER | NORMAL_CONTROL_SAMPLER_STATE | NORMAL_CONTROL_SNAPSHOT_SHAPE | NORMAL_CONTROL_INDEX_OVERFLOW",
+              "category": "complete staged after-state",
+              "trigger": "The before-state, sampler fields, row extents, or checked indices cannot represent the complete proposal.",
+              "programme_state_after": "No proposal is returned; the prior state remains unchanged.",
+              "caller_action": "Reject the full callback; never publish a prefix of rows."
+            },
+            {
+              "error_code": "EVENT_HOST | EVENT_DBMD_JOIN | EVENT_COUNT | EVENT_ORDER | EVENT_START | EVENT_DURATION | EVENT_GEOMETRY | EVENT_SPREAD | EVENT_NUMERIC",
+              "category": "F01E object writer/sampler input",
+              "trigger": "The admitted event or selected R32 writer/sampler conversion violates its existing input boundary.",
+              "programme_state_after": "No complete normal proposal is returned.",
+              "caller_action": "Propagate the local event/control error and leave the before-state unchanged."
+            }
+          ],
+          "not_run": [
+            "F03W parent/root installation and atomic owner commit.",
+            "Cached-drain hold production and native/real-ADM acceptance."
+          ],
+          "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
         }
       ]
     },
@@ -1585,7 +1760,167 @@
       "owner": "spatial_control",
       "planned_phase": "Phase 3",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "selected-p15-basis-generation",
+          "mapping_status": "MATERIALIZED_DIRECT_F03P_SELECTED_P15_BASIS_SUBSLICE",
+          "implementation_status": "LOCALLY_VERIFIED_SELECTED_P15_LAYOUT_159B_AND_Y_PARAMETER__RESPONSE_CONSUMER_LOCAL",
+          "scope": "Generates the selected 15-row basis in the approved stable layout0x159B order, applies the authorized front-side Y Q15 value only to rows7/8, converts each signed Q15 coordinate through the two specified R32 stages, and carries layout/profile/spec/parameter/basis identity. P11 remains a separate 11-row generator; no generic layout fallback is added.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/spatial/selected_p15_geometry.rs",
+            "crates/jocforge-domain/src/spatial/mod.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/selected_p15_geometry.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Programme-static geometry is generated at initialization and owns no callback/source clock."
+            ]
+          },
+          "parameters": {
+            "kind": "F01GL_3_SELECTED_P15_LAYOUT_AND_FRONT_SIDE_Y_PROVIDER",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-P15-BASIS-RECIPE-V1/CONTRACT-AND-INPUT-RECIPE.json",
+              "crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json"
+            ],
+            "validation_boundary": "Only layout0x159B with profile_enabled=true and the authorized Y_front=5285 provider is accepted. Exact stable rows and source-layout indices are hash-bound by the copied path-free recipe.",
+            "supplement_manifest_sha256": "211eb0b4bf2e672d0567e61b781986ce0cf9b7eb5e90514f5ad4f6038a4af8b7"
+          },
+          "vectors": {
+            "kind": "WASHED_P15_BASIS_INPUT_RECIPE_AND_GENERATED_WORD_IDENTITY",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-P15-BASIS-RECIPE-V1/CONTRACT-AND-INPUT-RECIPE.json"
+            ],
+            "case_pointers": [
+              "15 signed Q15 XYZ rows in stable basis order",
+              "source layout indices [0,1,2,4,5,6,7,11,12,13,14,17,18,21,22]",
+              "front_side_y applies to P15 basis rows7 and8 on Y only",
+              "45 generated F32 words and diagnostic digest match the clean recipe"
+            ],
+            "source_package_manifest_sha256": "211eb0b4bf2e672d0567e61b781986ce0cf9b7eb5e90514f5ad4f6038a4af8b7"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "UNSUPPORTED_PROFILE",
+              "category": "layout/profile admission",
+              "trigger": "Layout differs from0x159B or profile_enabled is false.",
+              "programme_state_after": "NO_GEOMETRY; owner state unchanged",
+              "caller_action": "Reject without falling back to P11 or another layout."
+            },
+            {
+              "error_code": "SELECTED_P15_GEOMETRY_NUMERIC",
+              "category": "geometry construction",
+              "trigger": "A coordinate conversion or basis assembly cannot produce the fixed 15-row finite value.",
+              "programme_state_after": "NO_GEOMETRY; owner state unchanged",
+              "caller_action": "Reject the geometry proposal."
+            }
+          ],
+          "not_run": [
+            "Full P15 response computation from real F01E callback sources.",
+            "Response source/gate/parent transaction integration.",
+            "Real ADM spatial-quality acceptance and W04."
+          ],
+          "wash_package": {
+            "directory": "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-P15-BASIS-RECIPE-V1",
+            "manifest_sha256": "211eb0b4bf2e672d0567e61b781986ce0cf9b7eb5e90514f5ad4f6038a4af8b7"
+          },
+          "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
+        },
+        {
+          "slice_id": "selected-target-context-and-compact-projection",
+          "mapping_status": "MATERIALIZED_DIRECT_F03P_6_TARGET_CONTEXT_PROJECTION__F03S_SOURCE_JOIN_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_PREMARKER_P15_CONTEXT_AND_DESTINATION_COMPACTION__OUTER_SOURCE_JOIN_OPEN",
+          "scope": "Builds the 14-word pre-marker F05H.1 fit record for each of all fifteen installed target slots, validates the selected mode/width/extra/spatial-enum/coordinate-parameter fields even for inactive slots, computes full P15 context for all slots using the same selected P15 response kernel, then gathers A and current target XYZ in increasing installed-slot destinations order. Preserves F03G empty-selection state separately from compact target count n; n=0 still computes and validates all fifteen contexts. It does not bind processing source geometry, invoke per-source NNLS/F03S outer stages, produce compact C, mix components, or commit owners.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/spatial/target_context.rs",
+            "crates/jocforge-domain/src/spatial/point_response.rs",
+            "crates/jocforge-domain/src/spatial/selected_p15_geometry.rs",
+            "crates/jocforge-domain/src/spatial/target_slot_install.rs",
+            "crates/jocforge-domain/src/spatial/mod.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/src/spatial/target_context/tests.rs",
+            "crates/jocforge-domain/src/spatial/point_response/tests.rs",
+            "crates/jocforge-domain/tests/selected_p15_geometry.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "One immutable installation snapshot supplies all fit/context records and destinations; the pure projection owns no source, callback, frame, or AU clock."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_P15_TARGET_CONTEXT_INSTALLATION_CROSSWALK",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-TARGET-CONTEXT-OUTER-CROSSWALK-V1/CROSSWALK.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-TARGET-CONTEXT-OUTER-CROSSWALK-V1/SOURCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-POINT-RESPONSE-PRODUCER-CONTRACT-V1/CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-P15-BASIS-RECIPE-V1/CONTRACT-AND-INPUT-RECIPE.json"
+            ],
+            "validation_boundary": "All fifteen pre-marker context records and the compact destination projection are locally exercised. Global source geometry identity, processing-source sequence, per-source outer fit, compact C, matrix installation, and parent commit remain separate.",
+            "target_context_supplement_manifest_sha256": "d676c206090cd103334a1a3704c5b97efdcf191a7f262b670ddaad32d5851d36",
+            "point_response_supplement_manifest_sha256": "255b5a1b6d3648099ec31abd61c490b02987a5f320fcea7a3cf51d9f524343d8",
+            "p15_basis_supplement_manifest_sha256": "211eb0b4bf2e672d0567e61b781986ce0cf9b7eb5e90514f5ad4f6038a4af8b7"
+          },
+          "vectors": {
+            "kind": "HASH_BOUND_P15_TARGET_CONTEXT_AND_DESTINATION_COMPACTION",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-TARGET-CONTEXT-OUTER-CROSSWALK-V1/CROSSWALK.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-POINT-RESPONSE-PRODUCER-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-P15-BASIS-RECIPE-V1/CONTRACT-AND-INPUT-RECIPE.json",
+              "crates/jocforge-domain/src/spatial/target_context/tests.rs"
+            ],
+            "case_pointers": [
+              "Empty selection with retained active slots preserves the empty-branch marker and compacts destinations in ascending installed slot order.",
+              "Zero active destinations still computes and validates all fifteen full contexts before returning fifteen empty compact rows.",
+              "Nonempty installation preserves target slot identity and exact F05H.1 pre-marker word mapping.",
+              "Inactive slots with unsupported mode or spatial enum are rejected during full-context preflight."
+            ],
+            "source_supplement_manifest_sha256": "d676c206090cd103334a1a3704c5b97efdcf191a7f262b670ddaad32d5851d36",
+            "payload_hashes_and_sizes": "PASS"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "UnsupportedGeometry",
+              "category": "selected P15 basis admission",
+              "trigger": "The geometry identity, layout, profile, front-side Y parameter, or point count differs from the selected P15 basis.",
+              "programme_state_after": "No context projection is returned; no owner state changes.",
+              "caller_action": "Reject without substituting P11 or another layout."
+            },
+            {
+              "error_code": "InvalidInstallation",
+              "category": "installed target snapshot",
+              "trigger": "An active flag or current installed XYZ value is invalid, or a slot/compact index cannot be represented.",
+              "programme_state_after": "No context projection is returned.",
+              "caller_action": "Reject the complete installation result."
+            },
+            {
+              "error_code": "UnsupportedFitContext",
+              "category": "F05H.1 full-context preflight",
+              "trigger": "Any of the fifteen records, including an inactive record, has unsupported mode, width, extra, spatial enum, or coordinate parameter.",
+              "programme_state_after": "No context projection is returned; partial context is discarded.",
+              "caller_action": "Reject before any per-source fit."
+            },
+            {
+              "error_code": "PointResponse",
+              "category": "P15 context arithmetic",
+              "trigger": "The shared selected response kernel rejects geometry or a nonfinite/numeric input.",
+              "programme_state_after": "No context projection is returned.",
+              "caller_action": "Discard the complete full/compact context result."
+            }
+          ],
+          "not_run": [
+            "Same-callback global source geometry and response-column join to the outer processing-source sequence.",
+            "per-source NNLS, F03S.3-.5 correction, compact C[n,48], marker/history, component mixer, and parent transaction.",
+            "Native spatial equivalence, real ADM quality, and W04 acceptance."
+          ],
+          "local_mapping_files": [],
+          "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
+        }
+      ]
     },
     {
       "functional_id": "F03N",
@@ -2014,7 +2349,110 @@
         "F03S.2 energy/fallback, F03S.3 geometry, F03S.4 active update, and F03S.5 postprocess composition",
         "selector/U04, producers, parent transaction, real ADM, and product acceptance"
       ]
-    }
+    },
+        {
+          "slice_id": "source-geometry-to-compact-outer-matrix",
+          "mapping_status": "MATERIALIZED_DIRECT_F03S_SAME_CALLBACK_SOURCE_JOIN_AND_COMPACT_OUTER_PRODUCER",
+          "implementation_status": "LOCALLY_VERIFIED_48_SOURCE_GEOMETRY_AND_PER_SOURCE_OUTER__F04_MATRIX_AND_PARENT_COMMIT_OPEN",
+          "scope": "Builds global source rows0..47 from the installed P11 prefix plus same-callback F01B bed geometry and graph-bound F01E Object13 words5..7; validates graph, TrackUID, host, DBMD, owner, source-map, callback, transaction, and raw-origin identity; excludes direct semantic LFE. Joins each processing source to its response columns, runs cold NNLS and the selected F03S fallback/active stages, and returns destination-ordered C[n][48] with uncalled columns positive zero. It does not mix components or commit owner state.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/spatial/source_geometry_outer.rs",
+            "crates/jocforge-domain/src/spatial/mod.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/src/spatial/source_geometry_outer/tests.rs"
+          ],
+          "clock": {
+            "domains": [
+              "CodecSourceIndex",
+              "FrontendCallbackIndex",
+              "CallbackLineageIdentity"
+            ],
+            "covered_clauses": [
+              "Global source identity is CodecSourceIndex0..47; sources0..10 use the installed P11 prefix and sources11..47 use graph regular-source bindings.",
+              "Raw source geometry is the normal F01E callback's installed/sample geometry, joined to F01B bed rows and F01E Object13 words5..7; it is not marker-updated or P15-quantized geometry.",
+              "Source snapshot, target context, response columns, callback generation, source origin, and callback lineage are checked before producing the compact outer result.",
+              "Only processing-source IDs invoke NNLS/F03S; output columns remain global-source ordered and uncalled sources remain positive zero."
+            ]
+          },
+          "parameters": {
+            "kind": "WASHED_SAME_CALLBACK_SOURCE_GEOMETRY_AND_SELECTED_P15_OUTER_CROSSWALK",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-TARGET-CONTEXT-OUTER-CROSSWALK-V1/CROSSWALK.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/BINDING.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-POINT-RESPONSE-PRODUCER-CONTRACT-V1/CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-P15-BASIS-RECIPE-V1/CONTRACT-AND-INPUT-RECIPE.json"
+            ],
+            "validation_boundary": "The F03G installation result itself carries no callback receipt; its callback/transaction binding remains an explicit parent-local input. This producer is noncommitting and makes no native or real-ADM acceptance claim.",
+            "package_manifest_sha256": {
+              "SPATIAL-TARGET-CONTEXT-OUTER-CROSSWALK-V1": "d676c206090cd103334a1a3704c5b97efdcf191a7f262b670ddaad32d5851d36",
+              "FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1": "513b0c7554d25a97c2a5e448ce0f7c109f75b01c80ec53d16a145db6208d1c23",
+              "OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1": "b5a21ba892c071256aab26f1a4733b122cd0ba0dc3b27ad0182135a4b1c2cde3",
+              "SPATIAL-POINT-RESPONSE-PRODUCER-CONTRACT-V1": "255b5a1b6d3648099ec31abd61c490b02987a5f320fcea7a3cf51d9f524343d8",
+              "SPATIAL-P15-BASIS-RECIPE-V1": "211eb0b4bf2e672d0567e61b781986ce0cf9b7eb5e90514f5ad4f6038a4af8b7"
+            }
+          },
+          "vectors": {
+            "kind": "WASHED_INPUT_RECIPES_AND_LOCAL_SOURCE_JOIN_CASES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-TARGET-CONTEXT-OUTER-CROSSWALK-V1/CROSSWALK.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-POINT-RESPONSE-PRODUCER-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-P15-BASIS-RECIPE-V1/CONTRACT-AND-INPUT-RECIPE.json"
+            ],
+            "case_pointers": [
+              "All 48 rows join P11, F01B Bed6, and F01E Object13 sources by typed source and owner identity; direct LFE is excluded.",
+              "Target context, response request, and raw source geometry callback/transaction mismatch reject the complete producer.",
+              "Candidate-only and unprocessed source columns remain positive zero; only ordered processing sources invoke the per-source cold outer path.",
+              "Fallback and active outer routes consume the same-callback raw XYZ row and produce compact destination-ordered C[n][48]."
+            ]
+          },
+          "error_outcomes": [
+            {
+              "error_code": "GlobalSourceGeometryError",
+              "category": "source graph and owner identity",
+              "trigger": "Prepared graph, callback lineage, source map, physical host, TrackUID, DBMD, regular-source binding, P11 prefix, bed geometry, object owner, finite coordinate, or source-index validation fails.",
+              "programme_state_after": "No global source snapshot is returned; no owner state changes.",
+              "caller_action": "Reject the complete source join without substituting array position, marker history, or another geometry domain."
+            },
+            {
+              "error_code": "CompactOuterMatrixError",
+              "category": "callback, response, solver, and F03S production",
+              "trigger": "Callback/transaction identity, source geometry identity, target shape, processing order, response column, NNLS, fallback, correction, active update, postprocess, or output shape fails.",
+              "programme_state_after": "No compact matrix is returned; partial per-source results are discarded.",
+              "caller_action": "Fail the enclosing source attempt; do not commit a partial matrix or substitute a different source row."
+            }
+          ],
+          "not_run": [
+            "F04 component15 production/mixing and matrix installation.",
+            "F03G installation callback receipt and parent owner/root transaction.",
+            "Real ADM spatial-quality replay, native comparison, and W04 product acceptance."
+          ],
+          "wash_packages": [
+            {
+              "directory": "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-TARGET-CONTEXT-OUTER-CROSSWALK-V1",
+              "manifest_sha256": "d676c206090cd103334a1a3704c5b97efdcf191a7f262b670ddaad32d5851d36"
+            },
+            {
+              "directory": "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1",
+              "manifest_sha256": "513b0c7554d25a97c2a5e448ce0f7c109f75b01c80ec53d16a145db6208d1c23"
+            },
+            {
+              "directory": "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1",
+              "manifest_sha256": "b5a21ba892c071256aab26f1a4733b122cd0ba0dc3b27ad0182135a4b1c2cde3"
+            },
+            {
+              "directory": "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-POINT-RESPONSE-PRODUCER-CONTRACT-V1",
+              "manifest_sha256": "255b5a1b6d3648099ec31abd61c490b02987a5f320fcea7a3cf51d9f524343d8"
+            },
+            {
+              "directory": "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-P15-BASIS-RECIPE-V1",
+              "manifest_sha256": "211eb0b4bf2e672d0567e61b781986ce0cf9b7eb5e90514f5ad4f6038a4af8b7"
+            }
+          ]
+        }
       ]
     },
     {
@@ -2111,28 +2549,119 @@
         },
         {
           "slice_id": "primary-metadata-source-control-projection",
-          "mapping_status": "MATERIALIZED_DIRECT_F03W_CONTROL_PROJECTION_SUBSLICE",
-          "implementation_status": "LOCALLY_VERIFIED_BED_OBJECT_FIELDS_AND_SOURCE_ORIGIN__CALLBACK_ROOT_DEFERRED",
-          "scope": "Projects the admitted physical-order F01E control rows into selected F03R RegularControl values using distinct bed and object field rules, excludes the semantic bed_id3 direct LFE, and carries a typed current-callback or last-normal drain source origin. The same validated physical-host route selects regular PCM and history rows and maps them to sources 11..47. The projection does not invoke the F01E sampler, read PCM, or commit spatial_control state.",
-          "implementation_files": ["crates/jocforge-domain/src/spatial/source_flags.rs", "crates/jocforge-domain/src/frontend/primary_metadata_control.rs", "crates/jocforge-domain/src/frontend/selected_adm_graph.rs"],
-          "test_modules": ["crates/jocforge-domain/tests/primary_metadata_control.rs"],
+          "mapping_status": "MATERIALIZED_DIRECT_F03W_STATIC_AND_NORMAL_CONTROL_SOURCE_PROJECTION__PARENT_COMMIT_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_F01E_NORMAL_SNAPSHOT_TO_F03R_SOURCEFLAGS_PROJECTION__F03W_ROOT_COMMIT_OPEN",
+          "scope": "Projects selected Bed6/Object13 normal snapshots into the F03R regular-source control domain while preserving the existing admitted static metadata projection. For normal generation g it validates prepared graph identity, source/control rows and generation, maps exact physical hosts through regular_source_bindings to global sources11..47, excludes the graph-selected semantic direct LFE, uses Bed mute0/positive-zero width and sampled Object13 words0/9, and binds a normal-only source-control origin g. Cached drains do not invoke the normal producer and continue to use the separately approved last-normal hold path. This projection does not compute CurrentFeatures without its audio view or commit F03W state.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/frontend/mod.rs",
+            "crates/jocforge-domain/src/frontend/normal_control_snapshot.rs",
+            "crates/jocforge-domain/src/frontend/primary_metadata_control.rs",
+            "crates/jocforge-domain/src/frontend/selected_adm_graph.rs",
+            "crates/jocforge-domain/src/spatial/source_flags.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/src/frontend/normal_control_snapshot/tests.rs",
+            "crates/jocforge-domain/tests/primary_metadata_control.rs"
+          ],
           "clock": {
-            "domains": ["FrontendCallbackIndex", "NormalCallbackCount", "PhysicalHostIndex", "CodecSourceIndex"],
-            "covered_clauses": ["Normal source-control snapshot origin equals its delivery callback g when g is below Q.", "Cached-drain delivery callback g>=Q retains source-control origin Q-1 while the callback clock advances.", "The parent F03W callback phase is checked against the projection clock before SourceFlags and CurrentFeatures staging.", "The direct LFE physical host is excluded; ascending physical regular hosts map through the admitted 11..47 codec-source binding."]
+            "domains": [
+              "FrontendCallbackIndex",
+              "NormalCallbackCount",
+              "PhysicalHostIndex",
+              "CodecSourceIndex"
+            ],
+            "covered_clauses": [
+              "Normal source-control snapshot origin equals its delivery callback g when g is below Q.",
+              "Cached-drain delivery callback g>=Q retains source-control origin Q-1 while the callback clock advances.",
+              "The parent F03W callback phase is checked against the projection clock before SourceFlags and CurrentFeatures staging.",
+              "The direct LFE physical host is excluded; ascending physical regular hosts map through the admitted 11..47 codec-source binding."
+            ]
           },
           "parameters": {
-            "kind": "F01E_PRIMARY_CONTROL_FIELDS_WITH_SELECTED_F03R_FEATURE_CONTROL",
-            "provider_files": ["outputs/IMPLEMENTER_SUPPLEMENTS/SOURCE-FLAGS-BED-OBJECT-CONTROL-ADAPTER-V1/SOURCE-FIELDS.json", "outputs/IMPLEMENTER_SUPPLEMENTS/SOURCE-FLAGS-BED-OBJECT-CONTROL-ADAPTER-V1/INPUT-ONLY-VECTORS.json", "crates/jocforge-domain/tests/fixtures/primary_metadata_control/JOB-FIELD-PROJECTION.json", "crates/jocforge-domain/tests/fixtures/primary_metadata_control/PRIMARY-SOURCE-RECEIPT.json"],
-            "validation_boundary": "Bed mute comes from defined prefix word0 and its positive-zero width comes from the explicit bed-branch assignment; undefined bytes24..51 remain unread. Object mute is same-source Control52 word0 and width is sampled uniform_width word9; audio diffuse word10 remains separate. Selected feature component/diffuse are fixed by SelectedFeatureFlagsControl. The caller still owns the real normal F01E provider and snapshot lifecycle."
+            "kind": "F01E_NORMAL_SNAPSHOT_AND_APPROVED_F03R_FEATURE_CONTROL_PROJECTION",
+            "provider_files": [
+              "crates/jocforge-domain/tests/fixtures/primary_metadata_control/JOB-FIELD-PROJECTION.json",
+              "crates/jocforge-domain/tests/fixtures/primary_metadata_control/PRIMARY-SOURCE-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/BINDING.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SOURCE-FLAGS-BED-OBJECT-CONTROL-ADAPTER-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SOURCE-FLAGS-BED-OBJECT-CONTROL-ADAPTER-V1/SOURCE-FIELDS.json"
+            ],
+            "validation_boundary": "Normal projections are bound to this normal callback and prepared graph; existing cached-drain projection preserves the prior normal source origin. Audio-dependent CurrentFeatures, render/F04 component, full F03W parent composition/commit, and native source receipts remain open.",
+            "normal_snapshot_supplement_manifest_sha256": "513b0c7554d25a97c2a5e448ce0f7c109f75b01c80ec53d16a145db6208d1c23",
+            "owner_binding_supplement_manifest_sha256": "b5a21ba892c071256aab26f1a4733b122cd0ba0dc3b27ad0182135a4b1c2cde3"
           },
           "vectors": {
-            "kind": "INPUT_ONLY_CONTROL_PROJECTION_AND_SYNTHETIC_F03R_VALUES",
-            "authoritative_vectors": ["outputs/IMPLEMENTER_SUPPLEMENTS/SOURCE-FLAGS-BED-OBJECT-CONTROL-ADAPTER-V1/INPUT-ONLY-VECTORS.json"],
-            "case_pointers": ["direct-speakers-bed-prefix-no-tail-read", "object-width-is-uniform-width", "same-callback-physical-row", "bed-width-is-consumed-but-not-authored", "primary_regular_controls_use_role_fields_and_hold_last_normal_origin_on_drain"]
+            "kind": "INPUT_ONLY_F01E_NORMAL_SNAPSHOT_TO_F03R_CONTROL_PROJECTION_AND_DRAIN_HOLD",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/FRONTEND-NORMAL-CONTROL-SNAPSHOT-BINDING-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OBJECT-TRACK-SAMPLER-OWNER-BINDING-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SOURCE-FLAGS-BED-OBJECT-CONTROL-ADAPTER-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "direct-speakers-bed-prefix-no-tail-read",
+              "object-width-is-uniform-width",
+              "same-callback-physical-row",
+              "bed-width-is-consumed-but-not-authored",
+              "primary_regular_controls_use_role_fields_and_hold_last_normal_origin_on_drain",
+              "Normal proposal callback 0/1 controls map through the prepared physical host/source bindings; host12 semantic LFE is excluded from regular37.",
+              "The source origin is the normal proposal generation; cached drain uses the separate existing hold route and does not re-run F01E sampling."
+            ]
           },
-          "error_outcomes": [{"error_code":"PRIMARY_METADATA_IDENTITY_MISMATCH","category":"metadata identity","trigger":"F01E control rows and selected AXML/CHNA graph do not share the bound metadata identity.","programme_state_after":"NO_PROJECTION; committed owner unchanged","caller_action":"Reject the source-control projection before SourceFlags production."},{"error_code":"PRIMARY_CONTROL_ROW_MISMATCH","category":"physical row or route identity","trigger":"A row is not in physical-host order, track identity or semantic LFE role differs, or bed/object control variant does not match its ADM track.","programme_state_after":"NO_PROJECTION; committed owner unchanged","caller_action":"Reject without reading undefined bed tail bytes."},{"error_code":"PRIMARY_REGULAR_SOURCE_MAP_MISMATCH","category":"host-to-source binding","trigger":"The admitted regular host bindings do not form the selected ascending source11..47 map with one LFE excluded.","programme_state_after":"NO_PROJECTION; committed owner unchanged","caller_action":"Reject instead of indexing compact regular rows by raw physical host."},{"error_code":"SOURCE_CONTROL_CLOCK","category":"callback clock","trigger":"Normal source origin is not the current callback, or cached-drain origin is not Q-1 for delivery g>=Q.","programme_state_after":"NO_PROJECTION; committed owner unchanged","caller_action":"Reject the source snapshot clock before consuming rows."},{"error_code":"SOURCE_CONTROL_CLOCK_MISMATCH","category":"callback phase","trigger":"The projection clock normal/drain phase differs from the explicit CurrentFeatures callback phase.","programme_state_after":"NO_PROPOSAL; committed owner unchanged","caller_action":"Reject before source-flags computation."}],
-          "not_run": ["normal F01E sampler execution and callback-specific control snapshot production", "real PCM/activity replay and audio output", "full spatial_control owner transition, receipt admission, or parent commit", "render, response, selector/U04/outer, target history, component, F06OF end-to-end OAR, and W04"],
-          "wash_packages": [{"directory":"outputs/IMPLEMENTER_SUPPLEMENTS/SOURCE-FLAGS-BED-OBJECT-CONTROL-ADAPTER-V1","manifest_sha256":"0d4b047cb65368f5769cc1e35085f6e5946dec890b4404bb7b79cd6c1613d4ae"},{"directory":"outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRAIN-SOURCE-CONTROL-HOLD-V1","manifest_sha256":"c64eff3db5f596c620c2f8cefb3eeb48aa15a08d1a7c66fb330392b2eaf0ebbc"}]
+          "error_outcomes": [
+            {
+              "error_code": "PRIMARY_METADATA_IDENTITY_MISMATCH",
+              "category": "metadata identity",
+              "trigger": "F01E control rows and selected AXML/CHNA graph do not share the bound metadata identity.",
+              "programme_state_after": "NO_PROJECTION; committed owner unchanged",
+              "caller_action": "Reject the source-control projection before SourceFlags production."
+            },
+            {
+              "error_code": "PRIMARY_CONTROL_ROW_MISMATCH",
+              "category": "physical row or route identity",
+              "trigger": "A row is not in physical-host order, track identity or semantic LFE role differs, or bed/object control variant does not match its ADM track.",
+              "programme_state_after": "NO_PROJECTION; committed owner unchanged",
+              "caller_action": "Reject without reading undefined bed tail bytes."
+            },
+            {
+              "error_code": "PRIMARY_REGULAR_SOURCE_MAP_MISMATCH",
+              "category": "host-to-source binding",
+              "trigger": "The admitted regular host bindings do not form the selected ascending source11..47 map with one LFE excluded.",
+              "programme_state_after": "NO_PROJECTION; committed owner unchanged",
+              "caller_action": "Reject instead of indexing compact regular rows by raw physical host."
+            },
+            {
+              "error_code": "SOURCE_CONTROL_CLOCK",
+              "category": "callback clock",
+              "trigger": "Normal source origin is not the current callback, or cached-drain origin is not Q-1 for delivery g>=Q.",
+              "programme_state_after": "NO_PROJECTION; committed owner unchanged",
+              "caller_action": "Reject the source snapshot clock before consuming rows."
+            },
+            {
+              "error_code": "SOURCE_CONTROL_CLOCK_MISMATCH",
+              "category": "callback phase",
+              "trigger": "The projection clock normal/drain phase differs from the explicit CurrentFeatures callback phase.",
+              "programme_state_after": "NO_PROPOSAL; committed owner unchanged",
+              "caller_action": "Reject before source-flags computation."
+            }
+          ],
+          "not_run": [
+            "F03W atomic parent/root installation and commit remain open.",
+            "Cached-drain hold producer, component rendering, and product acceptance remain separate."
+          ],
+          "wash_packages": [
+            {
+              "directory": "outputs/IMPLEMENTER_SUPPLEMENTS/SOURCE-FLAGS-BED-OBJECT-CONTROL-ADAPTER-V1",
+              "manifest_sha256": "0d4b047cb65368f5769cc1e35085f6e5946dec890b4404bb7b79cd6c1613d4ae"
+            },
+            {
+              "directory": "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRAIN-SOURCE-CONTROL-HOLD-V1",
+              "manifest_sha256": "c64eff3db5f596c620c2f8cefb3eeb48aa15a08d1a7c66fb330392b2eaf0ebbc"
+            }
+          ],
+          "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
         },
         {
           "slice_id": "selector-u04-target-value-handoff",
@@ -2161,6 +2690,135 @@
             "directory": "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-CONTROL-TO-COMPONENT-PRODUCTION-WIRING-V1",
             "manifest_sha256": "6d1fa51b3b04ea8ca19c9d81c51b75a49d27349eaad2e018d6848e739f2cb5c1"
           }
+        },
+        {
+          "slice_id": "p15-response-source-admission-and-columns",
+          "mapping_status": "MATERIALIZED_DIRECT_F03W_F03P_RESPONSE_PRODUCER_SUBSLICE",
+          "implementation_status": "LOCALLY_VERIFIED_P15_RESPONSE_COLUMNS_AND_CALLBACK_BOUND_SOURCE_GATE__F03W_PARENT_DEFERRED",
+          "scope": "Binds one 48-row source snapshot to the same callback transaction as candidate/processing gate IDs, validates all-source mode and finite input fields, applies the selected Q15 coordinate conversion and generated-source branch checks only on the sorted deduplicated union, produces separate +0 post-audio feature widths, and computes sparse P15 response columns with exact R64/R32 equal-power weights and F03P plane grouping. Empty union returns no columns after all-source mode validation. The real F01E normal source snapshot caller, enclosing F03W commit and downstream response consumers remain separate.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/spatial/point_response.rs",
+            "crates/jocforge-domain/src/spatial/selected_p15_geometry.rs",
+            "crates/jocforge-domain/src/spatial/mod.rs",
+            "crates/jocforge-domain/src/numeric/exact_trigonometry.rs",
+            "crates/jocforge-domain/src/numeric/q15_coordinate.rs",
+            "crates/jocforge-domain/src/numeric/mod.rs",
+            "crates/jocforge-domain/src/joc/oamd/reader_target/exact_trigonometry.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/point_response.rs",
+            "crates/jocforge-domain/tests/selected_p15_geometry.rs",
+            "crates/jocforge-domain/src/spatial/point_response/tests.rs",
+            "crates/jocforge-domain/src/joc/oamd/reader_target/tests.rs"
+          ],
+          "clock": {
+            "domains": [
+              "FrontendCallbackIndex",
+              "CallbackLineageIdentity",
+              "NormalCallbackCount",
+              "CodecSourceIndex"
+            ],
+            "covered_clauses": [
+              "Source snapshot and candidate/processing gate must share callback generation and full CallbackLineageIdentity.",
+              "Source-control snapshot origin is current g on normal callbacks and Q-1 on cached drains, separate from delivery g.",
+              "The response request union is sorted and deduplicated by global source ID; it never uses physical host or selector ordinal."
+            ]
+          },
+          "parameters": {
+            "kind": "APPROVED_P15_BASIS_AND_MATHEMATICAL_R64_R32_POINT_PANNER",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-POINT-RESPONSE-PRODUCER-CONTRACT-V1/CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-POINT-RESPONSE-PRODUCER-CONTRACT-V1/SOURCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-P15-BASIS-RECIPE-V1/CONTRACT-AND-INPUT-RECIPE.json",
+              "crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json"
+            ],
+            "validation_boundary": "The point panner uses the shared exact-rational R64-to-R32 implementation. Source rows are caller-supplied callback values; this stage does not reconstruct the F01E sampler or manufacture source geometry.",
+            "point_response_supplement_manifest_sha256": "255b5a1b6d3648099ec31abd61c490b02987a5f320fcea7a3cf51d9f524343d8",
+            "p15_basis_supplement_manifest_sha256": "211eb0b4bf2e672d0567e61b781986ce0cf9b7eb5e90514f5ad4f6038a4af8b7"
+          },
+          "vectors": {
+            "kind": "INPUT_ONLY_SOURCE_RECIPES_AND_P15_GEOMETRY_IDENTITY",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-POINT-RESPONSE-PRODUCER-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-P15-BASIS-RECIPE-V1/CONTRACT-AND-INPUT-RECIPE.json",
+              "crates/jocforge-domain/tests/fixtures/reader_target/panner-trigonometry-kat.json"
+            ],
+            "case_pointers": [
+              "candidate and processing sets [2,47] and [2,11] merge to [2,11,47] with one cross-set duplicate",
+              "empty union still validates all-source mode and skips per-source unconsumed branches",
+              "no-candidate/nonempty-processing and nonempty-candidate/no-processing are independent",
+              "exact P15 basis point inputs produce identity response columns in stable basis order",
+              "all P15 response values are finite/nonnegative and candidate feature_width words are +0",
+              "same transaction mismatch rejects before producing response columns"
+            ],
+            "source_supplement_manifest_sha256": "255b5a1b6d3648099ec31abd61c490b02987a5f320fcea7a3cf51d9f524343d8",
+            "payload_hashes_and_sizes": "PASS"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "POINT_RESPONSE_SOURCE_COUNT",
+              "category": "source view shape",
+              "trigger": "Source view does not contain exactly 48 rows.",
+              "programme_state_after": "NO_RESPONSE_PROPOSAL; owner unchanged",
+              "caller_action": "Reject before source identity lookup."
+            },
+            {
+              "error_code": "POINT_RESPONSE_SOURCE_IDENTITY",
+              "category": "global source identity",
+              "trigger": "Source IDs are missing/duplicated/outside0..47 or candidate/processing sets are not strictly source-ascending.",
+              "programme_state_after": "NO_RESPONSE_PROPOSAL; owner unchanged",
+              "caller_action": "Reject without substituting physical host or array ordinal."
+            },
+            {
+              "error_code": "POINT_RESPONSE_SOURCE_GATE_IDENTITY",
+              "category": "callback identity",
+              "trigger": "Source snapshot and gate have different callback index or programme/attempt transaction identity.",
+              "programme_state_after": "NO_RESPONSE_PROPOSAL; owner unchanged",
+              "caller_action": "Reject the mixed callback inputs."
+            },
+            {
+              "error_code": "POINT_RESPONSE_SOURCE_MODE",
+              "category": "selected source mode",
+              "trigger": "Any source among0..47 has feature_mode other than0.",
+              "programme_state_after": "NO_RESPONSE_PROPOSAL; owner unchanged",
+              "caller_action": "Reject even when the response union is empty."
+            },
+            {
+              "error_code": "POINT_RESPONSE_GENERATED_SOURCE_BRANCH",
+              "category": "generated source fields",
+              "trigger": "A requested source has nonzero source_skip/spatial_enum or coordinate_parameter outside{0,1}.",
+              "programme_state_after": "NO_RESPONSE_PROPOSAL; owner unchanged",
+              "caller_action": "Reject the generated source column."
+            },
+            {
+              "error_code": "POINT_RESPONSE_INPUT_NONFINITE",
+              "category": "source input",
+              "trigger": "Any source XYZ or original audio width is nonfinite.",
+              "programme_state_after": "NO_RESPONSE_PROPOSAL; owner unchanged",
+              "caller_action": "Reject before Q15 conversion."
+            },
+            {
+              "error_code": "POINT_RESPONSE_BASIS_DOMAIN",
+              "category": "P15 basis domain",
+              "trigger": "Basis points do not partition into9 lower and6 upper points in the selected z domain.",
+              "programme_state_after": "NO_RESPONSE_PROPOSAL; owner unchanged",
+              "caller_action": "Reject instead of substituting P11."
+            },
+            {
+              "error_code": "POINT_RESPONSE_NUMERIC_FAILURE",
+              "category": "R32/R64 math",
+              "trigger": "Q15 conversion, exact trigonometry, interpolation or response arithmetic fails finite/domain checks.",
+              "programme_state_after": "NO_RESPONSE_PROPOSAL; owner unchanged",
+              "caller_action": "Discard all partial columns."
+            }
+          ],
+          "not_run": [
+            "Normal F01E callback snapshot production and exact same-owner source receipt integration.",
+            "Full F03W parent proposal commit and all-callback stage composition.",
+            "Selector input composition from runtime source geometry/attributes.",
+            "U04 source/gain values, outer matrix, target history/component, real ADM spatial acceptance and W04."
+          ],
+          "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
         }
       ]
     },
@@ -4483,6 +5141,7 @@
         "crates/jocforge-domain/src/joc/oamd.rs",
         "crates/jocforge-domain/src/joc/oamd/reader_target.rs",
         "crates/jocforge-domain/src/joc/oamd/reader_target/exact_trigonometry.rs",
+        "crates/jocforge-domain/src/numeric/exact_trigonometry.rs",
         "crates/jocforge-domain/src/joc/oamd/reader_target/reader_records.rs",
         "crates/jocforge-domain/src/joc/oamd/reader_target/target_panner.rs",
         "crates/jocforge-domain/src/joc/oamd/reader_target/type11.rs"
@@ -5675,31 +6334,124 @@
         {
           "slice_id": "meter-source-oar-callback-handoff",
           "mapping_status": "MATERIALIZED_DIRECT_BRIDGE_SUBSLICE_F06OF_SPATIAL_AND_CONTROL_PRODUCER_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_SAME_RESOURCE_PHYSICAL_LFE_AND_CLOCK_JOIN__PRODUCTION_SPATIAL_PROVIDER_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_EXACT_ADM_AND_SOURCE_EXTENT_BINDING__PRODUCTION_SPATIAL_PROVIDER_DEFERRED",
           "scope": "The CLI composition root owns the IO cursor and translates its proposal into an immutable domain MeterSourceCallbackFrame for application. Application binds the frame to PreparedJobInput and the selected ADM graph, exposes 38 physical rows to the upstream frontend caller, checks the returned OAR input clock and exact direct-LFE physical row, and stages the independent meter prepass. The CLI combines that application stage with the IO cursor after-state in one infallible commit, checks source/prepass extents and normal-callback counts, coordinates cold reset, and joins their Q+3 finalization schedule. Application has no IO dependency. The slice does not produce component15 rows, regular controls, matrix/destinations, or spatial DSP.",
           "owner": "application",
-          "implementation_files": ["crates/jocforge-cli/Cargo.toml", "crates/jocforge-cli/src/lib.rs", "crates/jocforge-cli/src/meter_source_bridge.rs", "crates/jocforge-application/src/meter_source_bridge.rs", "crates/jocforge-application/src/lib.rs", "crates/jocforge-domain/src/meter/mod.rs", "crates/jocforge-domain/src/meter/source_frame.rs", "crates/jocforge-domain/src/meter/lfe_delay_ring.rs", "crates/jocforge-domain/src/meter/meter_prepass.rs", "crates/jocforge-io/src/pcm/meter_source_cursor.rs", "crates/jocforge-io/src/pcm/riff_pcm24.rs"],
+          "implementation_files": [
+            "crates/jocforge-cli/Cargo.toml",
+            "crates/jocforge-cli/src/lib.rs",
+            "crates/jocforge-cli/src/meter_source_bridge.rs",
+            "crates/jocforge-application/src/meter_source_bridge.rs",
+            "crates/jocforge-application/src/lib.rs",
+            "crates/jocforge-domain/src/meter/mod.rs",
+            "crates/jocforge-domain/src/meter/source_frame.rs",
+            "crates/jocforge-domain/src/meter/lfe_delay_ring.rs",
+            "crates/jocforge-domain/src/meter/meter_prepass.rs",
+            "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
+            "crates/jocforge-io/src/pcm/riff_pcm24.rs"
+          ],
           "local_mapping_files": [],
           "clock": {
-            "domains": ["MeterCallbackIndex", "MeterUpstreamGeneration", "MeterSourcePosition", "MeterSampleCount", "MeterCallbackCount", "ObjectRenderCallbackGeneration", "PhysicalHostIndex"],
-            "covered_clauses": ["A source frame and its frontend/OAR input must share callback index, generation g+1, and normal/drain phase.", "The frontend current-LFE row must be bit-identical to the physical PCM row selected by the prepared ADM graph's direct_lfe_host.", "Before staging, independent source and prepass sample extents and normal-callback counts must match.", "Reader cursor advancement and the existing meter/OAR callback proposal install through one linear stage commit; dropping the stage leaves the reader cursor unchanged.", "Reset validates the same source identity and extent, resets the prepass to its cold state, and reconstructs the source cursor at callback zero.", "Finalization requires both owners to complete Q normal callbacks plus three drains, with the source cursor at N."]
+            "domains": [
+              "MeterCallbackIndex",
+              "MeterUpstreamGeneration",
+              "MeterSourcePosition",
+              "MeterSampleCount",
+              "MeterCallbackCount",
+              "ObjectRenderCallbackGeneration",
+              "PhysicalHostIndex"
+            ],
+            "covered_clauses": [
+              "A source frame and its frontend/OAR input must share callback index, generation g+1, and normal/drain phase.",
+              "The frontend current-LFE row must be bit-identical to the physical PCM row selected by the prepared ADM graph's direct_lfe_host.",
+              "Before staging, independent source and prepass sample extents and normal-callback counts must match.",
+              "Reader cursor advancement and the existing meter/OAR callback proposal install through one linear stage commit; dropping the stage leaves the reader cursor unchanged.",
+              "Reset validates the same source identity and extent, resets the prepass to its cold state, and reconstructs the source cursor at callback zero.",
+              "Finalization requires both owners to complete Q normal callbacks plus three drains, with the source cursor at N."
+            ]
           },
           "parameters": {
             "kind": "HASH_BOUND_F06OF_MODEL_PCM38_TO_OAR_TYPED_BRIDGE",
-            "provider_files": ["outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/CONTRACT.md", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/COUNT-DOMAINS.csv", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/MODEL-BINDING.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/INPUT-ONLY-VECTORS.json"],
-            "supplement_manifest_sha256": "7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac",
-            "validation_boundary": "Model count, row-map, callback, LFE and prepass joins use a domain-owned frame value. The CLI composition root may depend on IO; application remains independent of IO and validation. The integration test decodes one synthetic frame and does not execute spatial DSP."
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/COUNT-DOMAINS.csv",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/MODEL-BINDING.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "validation_boundary": "Model count, row-map, callback, LFE and prepass joins use a domain-owned frame value. The CLI composition root may depend on IO; application remains independent of IO and validation. The integration test decodes one synthetic frame and does not execute spatial DSP.",
+            "supplement_manifest_sha256": "7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac"
           },
-          "test_modules": ["crates/jocforge-cli/tests/meter_source_bridge.rs", "crates/jocforge-domain/src/meter/lfe_delay_ring.rs", "crates/jocforge-domain/src/meter/meter_prepass.rs"],
+          "test_modules": [
+            "crates/jocforge-cli/tests/meter_source_bridge.rs",
+            "crates/jocforge-domain/src/meter/lfe_delay_ring.rs",
+            "crates/jocforge-domain/src/meter/meter_prepass.rs"
+          ],
           "vectors": {
             "kind": "SYNTHETIC_SOURCE_TO_OAR_CALLBACK_CLOCK_LFE_AND_RESET_BOUNDARY",
-            "authoritative_vectors": ["outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/INPUT-ONLY-VECTORS.json", "crates/jocforge-cli/tests/meter_source_bridge.rs", "crates/jocforge-domain/tests/fixtures/post_render_meter/zero_programme.json"],
-            "case_pointers": ["N=1: one normal callback reads one sample and pads 1535; three fresh drains keep cursor at N; all four generations are g+1.", "The same physical row selected by direct_lfe_host is bound to the direct LFE input; a mismatch rejects before source or prepass commit.", "Mismatched callback/generation or source/prepass extents reject before reader advancement.", "After Q+3 callbacks, both owners are ready to finalize; reset returns both callback clocks and cursor to cold zero.", "Synthetic input validates interface and lifecycle only; no matrix, component, control producer, spatial DSP, native execution, or product acceptance is covered."],
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-cli/tests/meter_source_bridge.rs",
+              "crates/jocforge-domain/tests/fixtures/post_render_meter/zero_programme.json"
+            ],
+            "case_pointers": [
+              "N=1: one normal callback reads one sample and pads 1535; three fresh drains keep cursor at N; all four generations are g+1.",
+              "The same physical row selected by direct_lfe_host is bound to the direct LFE input; a mismatch rejects before source or prepass commit.",
+              "Mismatched callback/generation or source/prepass extents reject before reader advancement.",
+              "After Q+3 callbacks, both owners are ready to finalize; reset returns both callback clocks and cursor to cold zero.",
+              "Synthetic input validates interface and lifecycle only; no matrix, component, control producer, spatial DSP, native execution, or product acceptance is covered.",
+              "Prepared ADM branch and positive source sample extent must match the same PreparedJobInput before handoff; AtmosMezz is rejected by this F06OF bridge."
+            ],
             "source_supplement_manifest_sha256": "7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac",
             "payload_hashes_and_sizes": "PASS"
           },
-          "error_outcomes": [{"error_code":"ResourceIdentityMismatch","category":"prepared resource binding","trigger":"The source proposal identity differs from the PreparedJobInput resource SHA-256.","programme_state_after":"No frontend handoff or state proposal is returned.","caller_action":"Reject the callback and retain the cursor."},{"error_code":"FrontendClock","category":"same-callback frontend handoff","trigger":"Frontend callback index, generation, or phase differs from the source frame.","programme_state_after":"No OAR handoff is returned and the source proposal is not committed.","caller_action":"Reject and rebuild the frontend result from the same source callback."},{"error_code":"DirectLfeMismatch","category":"F01 physical row selection","trigger":"The frontend current-LFE row differs from the selected direct-LFE physical PCM row.","programme_state_after":"No OAR handoff is returned.","caller_action":"Reject the row binding; do not substitute CHNA enumeration order."},{"error_code":"CursorMismatch","category":"source/prepass state join","trigger":"The source proposal is stale or its sample extent/normal count differs from the independent meter prepass.","programme_state_after":"No reader advancement occurs; no prepass callback stage is started.","caller_action":"Reject and recreate both owners from one selected source extent."}],
-          "not_run": ["Production source-to-spatial component15 producer and F03/F04 owner commit", "n-active F04A matrix/destination to F03W canonical 15x48 matrix adapter", "Regular control52/SCP16 producer and its source generation/history", "Real selected source PCM, whole-programme DSP, native execution, measurement acceptance, or W04"],
+          "error_outcomes": [
+            {
+              "error_code": "ResourceIdentityMismatch",
+              "category": "prepared resource binding",
+              "trigger": "The source proposal identity differs from the PreparedJobInput resource SHA-256.",
+              "programme_state_after": "No frontend handoff or state proposal is returned.",
+              "caller_action": "Reject the callback and retain the cursor."
+            },
+            {
+              "error_code": "SelectedInputKindMismatch",
+              "category": "selected F06OF input branch",
+              "trigger": "PreparedJobInput selected atmos_mezz rather than the approved ADM input branch.",
+              "programme_state_after": "No source-to-OAR handoff or state proposal is returned.",
+              "caller_action": "Reject this bridge and use an explicitly supported input path."
+            },
+            {
+              "error_code": "SourceExtentMismatch",
+              "category": "prepared resource sample extent",
+              "trigger": "The source frame has zero samples or its sample count differs from PreparedJobInput.",
+              "programme_state_after": "No source-to-OAR handoff or state proposal is returned.",
+              "caller_action": "Reject and construct both source and prepared-input values from the same selected RIFF resource and extent."
+            },
+            {
+              "error_code": "FrontendClock",
+              "category": "same-callback frontend handoff",
+              "trigger": "Frontend callback index, generation, or phase differs from the source frame.",
+              "programme_state_after": "No OAR handoff is returned and the source proposal is not committed.",
+              "caller_action": "Reject and rebuild the frontend result from the same source callback."
+            },
+            {
+              "error_code": "DirectLfeMismatch",
+              "category": "F01 physical row selection",
+              "trigger": "The frontend current-LFE row differs from the selected direct-LFE physical PCM row.",
+              "programme_state_after": "No OAR handoff is returned.",
+              "caller_action": "Reject the row binding; do not substitute CHNA enumeration order."
+            },
+            {
+              "error_code": "CursorMismatch",
+              "category": "source/prepass state join",
+              "trigger": "The source proposal is stale or its sample extent/normal count differs from the independent meter prepass.",
+              "programme_state_after": "No reader advancement occurs; no prepass callback stage is started.",
+              "caller_action": "Reject and recreate both owners from one selected source extent."
+            }
+          ],
+          "not_run": [
+            "Production component15 and regular control52 producers remain open.",
+        "matrix/destination production and full spatial DSP remain open."
+          ],
           "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
         },
         {
@@ -10371,10 +11123,11 @@
         },
         {
           "slice_id": "converter-offset-search",
-          "mapping_status": "MATERIALIZED_DIRECT_F11_3_4_SEARCH__CANDIDATE_COST_PRODUCER_OPEN",
-          "implementation_status": "LOCALLY_VERIFIED_U_SEARCH_01_GENERAL_CANDIDATE_COST_INPUT__PRODUCTION_BAP_OPEN",
-          "scope": "Runs the F11.3 feasibility and F11.4 bounded binary search over caller-supplied header/fixed/auxiliary costs and a pure callback that returns six candidate mantissa costs. It checks every visited candidate including q>671 and returns candidate order plus best offset. U-SEARCH-01 exercises the callback with all-zero BAP costs; the search implementation is not specialized to that case. It does not produce production BAP or general per-block/mantissa costs.",
+          "mapping_status": "MATERIALIZED_DIRECT_F11_3_4_Q_TAGGED_BAP_COST_SEARCH__SOURCE_PLAN_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_Q_TAGGED_BAP_COST_SEARCH__SOURCE_GENERATION_JOIN_OPEN",
+          "scope": "Runs selected F11.3/F11.4 feasibility and bounded candidate search. It derives six W16 grouped mantissa costs from six typed BAP blocks per candidate; the q-tagged bridge rejects a BAP frame whose candidate differs from the requested q before costing. The legacy untagged callback API remains available. F12A BAP generation is implemented separately from the same public provider. This slice still does not bind a F09/F10 source-generation plan, derive fixed header/auxiliary costs, build the F12 main scratch frame, or commit a source.",
           "implementation_files": [
+            "crates/jocforge-domain/src/codec/bap.rs",
             "crates/jocforge-domain/src/codec/converter_search.rs",
             "crates/jocforge-domain/src/codec/mod.rs"
           ],
@@ -10386,31 +11139,47 @@
             ]
           },
           "parameters": {
-            "kind": "F11_3_4_CANDIDATE_COST_SEARCH",
+            "kind": "HASH_BOUND_F11_Q_TAGGED_BAP_COST_SEARCH",
             "provider_files": [
-              "specs/11-converter.md"
+              "specs/11-converter.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-ALLOCATION-PRODUCER-SEARCH-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-ALLOCATION-PRODUCER-SEARCH-V1/ALLOCATION-AND-SEARCH-RULES.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-ALLOCATION-PRODUCER-SEARCH-V1/STAGE-MAP.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-ALLOCATION-PRODUCER-SEARCH-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-PUBLIC-BAP-PROVIDER-V1/public-bap-48k-v1.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-BAP-MANTISSA-INTERFACE-CROSSWALK-V1/CROSSWALK.md"
             ],
+            "validation_boundary": "The F12A selected model network and provider are available; q is carried on each BapFrame and checked before cost derivation. Source-generation identity, fixed source-plan wiring, main F12 trial, full frame, and parent commit remain separate.",
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "source_spec_sha256": "9ecb50bbb125d2a6e2d8f5e565ffbc7514c156c72602d2d2d89d8b17e9e4e4c8",
-            "source_unit_vector_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8",
-            "validation_boundary": "The candidate cost callback is caller supplied; U-SEARCH-01 uses zero BAP costs. This leaf does not read a BAP table or provider."
+            "supplement_manifest_sha256": "9e709fa4f7d1a751f0eead53949bf6999432bac2b1360bdd2fc246e9595a36a9",
+            "public_bap_provider_manifest_sha256": "75e62efa34b046358aeb2231624f1e7d339b7bd241513d39017adf0e475f49e1",
+            "bap_mantissa_crosswalk_manifest_sha256": "72deab0f457b68371c85b568d875e06e7a0505f98cb8d4643e1c6030321bab5f"
           },
           "test_modules": [
-            "crates/jocforge-domain/tests/converter_search.rs"
+            "crates/jocforge-domain/tests/converter_search.rs",
+            "crates/jocforge-domain/tests/bap_converter_search.rs"
           ],
           "vectors": {
-            "kind": "HASH_BOUND_U_SEARCH_01_CANDIDATE_SEQUENCE",
+            "kind": "HASH_BOUND_U_SEARCH_01_AND_Q_TAGGED_BAP_COST_SEARCH",
             "authoritative_vectors": [
               "test-vectors/unit/vectors.json",
               "test-vectors/UNIT-RECHECK.json",
               "crates/jocforge-domain/tests/fixtures/converter_search/INPUT-ONLY-VECTORS.json",
               "crates/jocforge-domain/tests/fixtures/converter_search/RESULT.json",
-              "crates/jocforge-domain/tests/fixtures/converter_search/PROVENANCE.json"
+              "crates/jocforge-domain/tests/fixtures/converter_search/PROVENANCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-ALLOCATION-PRODUCER-SEARCH-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-ALLOCATION-PRODUCER-SEARCH-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-ALLOCATION-PRODUCER-SEARCH-V1/ALLOCATION-AND-SEARCH-RULES.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-ALLOCATION-PRODUCER-SEARCH-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-PUBLIC-BAP-PROVIDER-V1/public-bap-48k-v1.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-BAP-MANTISSA-INTERFACE-CROSSWALK-V1/CROSSWALK.md"
             ],
             "case_pointers": [
-              "U-SEARCH-01 checks the exact ten-candidate order and best offset 671 with an all-zero-BAP synthetic cost callback.",
-              "The local input fixture copies only header/fixed/auxiliary costs and the declared zero-BAP callback fact.",
-              "This does not validate nonzero BAP calculation, production F11 costs/search, or a selected frame path."
+              "U-SEARCH-01 preserves the exact zero-BAP synthetic callback candidate sequence and best offset.",
+              "Washed typed-cost inputs cover cross-channel BAP1/2/4 grouping, per-block reset, a nonmonotone histogram, and residual equality/one-bit-over.",
+              "The q-tagged bridge rejects a BapFrame with candidate_q different from the requested search candidate before cost calculation.",
+              "F12A provider network output is model implementation; no native/compiled helper or whole main trial is claimed."
             ],
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/converter_search/INPUT-ONLY-VECTORS.json",
@@ -10429,20 +11198,49 @@
                 "sha256": "abf7bb5e8f23a3ce0a90c25e8c859660ad16c0d8fdefd0cb54cb8a6a0766a7f7"
               }
             ],
-            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-            "source_unit_recheck_sha256": "ba30733a7afd586b7ba21a2e69ccd9e09ce9b9f976659b5f3e055c261f30753f"
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
           },
           "native_status": {
-            "u_search_01_candidate_order_with_zero_bap_cost_callback": "LOCALLY_VERIFIED",
-            "production_bap_and_candidate_cost_producer": "NOT_IMPLEMENTED_BY_THIS_SLICE",
-            "whole_f11": "NOT_IMPLEMENTED",
-            "native_equivalence": "NOT_RUN",
-            "product_acceptance": "NOT_RUN"
+            "u_search_01_zero_bap_candidate_order": "LOCALLY_VERIFIED",
+            "typed_bap_block_shape_and_range": "LOCALLY_VERIFIED_INPUT_BOUNDARY",
+            "selected_f12a_bap_network": "LOCALLY_IMPLEMENTED_FROM_APPROVED_SPEC",
+            "candidate_q_binding": "LOCALLY_VERIFIED",
+            "source_generation_join": "CALLER_OWNED_NOT_REVALIDATED",
+            "whole_f11": "NOT_IMPLEMENTED"
           },
-          "error_outcomes": [],
+          "error_outcomes": [
+            {
+              "error_code": "CodeOutOfRange",
+              "category": "typed BAP block admission",
+              "trigger": "A supplied BAP cell is outside0..15.",
+              "programme_state_after": "No BAP block value is returned; no persistent state changes.",
+              "caller_action": "Reject the malformed typed BAP result."
+            },
+            {
+              "error_code": "InvalidCostInput",
+              "category": "candidate search cost admission",
+              "trigger": "Header, auxiliary, or fixed per-block costs are negative.",
+              "programme_state_after": "No candidate search or BAP callback is started.",
+              "caller_action": "Reject the invalid cost input."
+            },
+            {
+              "error_code": "CandidateBap",
+              "category": "candidate BAP producer",
+              "trigger": "The caller-supplied BAP callback fails for any visited candidate.",
+              "programme_state_after": "The search returns an error and no result; no state is committed.",
+              "caller_action": "Propagate the producer failure; do not convert it into infeasibility."
+            },
+            {
+              "error_code": "CandidateMismatch",
+              "category": "same-candidate BAP join",
+              "trigger": "The returned BapFrame.candidate_q differs from the search candidate.",
+              "programme_state_after": "No cost or search result is returned for the mismatched candidate.",
+              "caller_action": "Reject the cross-candidate join before costing."
+            }
+          ],
           "not_run": [
-            "Production BAP provider/algorithm, nonzero BAP candidates, and BAP-derived mantissa histograms.",
-            "General per-block costs, strategy/profile selection, selected frame integration, source/AU clocks, F12 writing, and parent transaction."
+            "F09/F10 shared source-generation identity remains unresolved.",
+            "Fixed header and auxiliary costs, main F12 trial, and parent source commit remain outside this slice."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
@@ -10481,67 +11279,76 @@
       "direct_slices": [
         {
           "slice_id": "grouped-quantizer-helper",
-          "mapping_status": "MATERIALIZED_INTERNAL_DIRECT_SUBSLICE_WHOLE_F12_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_GROUPED_QUANTIZER_HELPER__WHOLE_F12_DEFERRED",
-          "scope": "Internal-only valid BAP1/2/4 grouped quantizer helper. It reserves item widths, compacts completed groups in place, and flushes only existing reservations. It does not implement caller capacity ownership, BAP values outside the selected domain, higher retry/rollback, producer identity, or full frame/EC3 behavior.",
+          "mapping_status": "MATERIALIZED_DIRECT_F12S_6_BLOCK_PACKER__FULL_FRAME_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_BLOCK_QUANTIZATION_GROUPING_AND_MSB_PACKING__FRAME_BUDGET_OPEN",
+          "scope": "Quantizes one block of supplied selected-profile channel/bin items, sorts in [L,C,R,Ls,Rs,LFE] and increasing-bin order, forms independent BAP1/2/4 groups within the block, uses the specified partial-group fillers, emits each grouped field at its first item and ordinary nonzero-BAP fields at their item positions, and packs the resulting fields MSB-first. Returns the packed bytes and exact bit count. It does not enforce the 32,734-bit pre-tail frame budget, close the full frame, add CRC, own retry, or commit codec state.",
           "implementation_files": [
             "crates/jocforge-domain/src/codec/grouped_quantizer.rs"
           ],
           "clock": {
             "domains": [],
             "covered_clauses": [
-              "Consumes an explicitly ordered item slice; owns no callback, source, AU, or retry clock."
+              "One call represents one block and owns no callback, source, AU, frame, or retry clock; each call starts with empty grouping state."
             ]
           },
           "parameters": {
-            "kind": "HASH_BOUND_GROUPED_QUANTIZER_SELECTED_BAP_RULES",
+            "kind": "HASH_BOUND_F12S_5_6_BLOCK_MANTISSA_PACKING",
             "provider_files": [
-              "crates/jocforge-domain/tests/fixtures/grouped_quantizer/SCOPE.md"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1/CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1/INPUT-ONLY-VECTORS.json"
             ],
-            "validation_boundary": "Only valid BAP1/2/4 helper inputs are accepted; radix, arity, width, and fill behavior are scoped by the bound SCOPE payload and transition contract."
+            "validation_boundary": "Input-only block recipes verify the local item order, grouping, fillers, and MSB packing. Full frame-budget admission, frame close/CRC, upstream coefficient/exponent/BAP production, and parent retry/commit are outside this slice.",
+            "supplement_manifest_sha256": "fd819c3ec27e7bade55efda5e648792c9c33892a9be7a36bbfce89231b9e961f"
           },
           "test_modules": [
             "crates/jocforge-domain/tests/grouped_quantizer.rs"
           ],
           "vectors": {
-            "kind": "HASH_BOUND_R18_R15_GROUPED_QUANTIZER_VECTORS",
+            "kind": "HASH_BOUND_F12S_BLOCK_GROUPING_AND_PACKING_INPUTS",
             "authoritative_vectors": [
-              "crates/jocforge-domain/tests/fixtures/grouped_quantizer/R18-VECTORS.json",
-              "crates/jocforge-domain/tests/fixtures/grouped_quantizer/R15-CAPACITY-VECTORS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1/CONTRACT.json",
+              "crates/jocforge-domain/tests/grouped_quantizer.rs"
             ],
             "case_pointers": [
-              "R18 covers valid-domain item, grouping, flush, writer-state, pending-accumulator, and byte-hash observations.",
-              "R15 covers the supplied logical-capacity observation only; no caller-capacity ownership or overrun contract is inferred."
+              "same_block_cross_channel exercises sorting, cross-channel groups, first-item placement, and MSB-first bytes.",
+              "reset_between_blocks verifies each block starts with empty groups and partial groups use their published fillers.",
+              "full domain input items produce a local 124-bit mantissa cost; malformed duplicate positions and quantizer sentinel failures reject the block."
             ],
             "local_fixture": {
-              "file": "crates/jocforge-domain/tests/fixtures/grouped_quantizer/SCOPE.md",
-              "bytes": 1324,
-              "sha256": "4c43b1102934f37f74a1e4a6895885f00989c91fc5bd99cfbdbec9b7c850ddbc"
+              "file": "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "bytes": 11051,
+              "sha256": "19dfa6afdaedfe2cfb6ff7db31a0679f109bb4482702d9c81ea5b3ea4ecdcd4b"
             }
           },
           "error_outcomes": [
             {
-              "error_code": "GROUPED_QUANTIZER_UNOBSERVED_SCALAR_FAILURE",
-              "category": "local helper boundary",
-              "trigger": "The scalar quantizer reports an error outside the washed non-finite cases.",
-              "programme_state_after": "Earlier items in the call may already have mutated this helper state; rollback is not promised.",
-              "caller_action": "Treat the condition as outside this slice; do not infer native BAP-domain or enclosing retry behavior."
+              "error_code": "Quantizer",
+              "category": "block candidate quantization",
+              "trigger": "Any supplied coefficient, exponent, or BAP yields a local quantizer error.",
+              "programme_state_after": "No block output is returned; the function owns no persistent state.",
+              "caller_action": "Fail the current candidate according to the enclosing trial owner."
             },
             {
-              "error_code": "GROUPED_QUANTIZER_BIT_COUNT_OVERFLOW",
-              "category": "local representation boundary",
-              "trigger": "The local effective-bit counter cannot represent the next transition.",
-              "programme_state_after": "Prior transitions in the same call may already have mutated this helper state; rollback is not promised.",
-              "caller_action": "Reject this local helper operation without claiming an observed native outcome."
+              "error_code": "DuplicateItemPosition",
+              "category": "block item layout",
+              "trigger": "Two items occupy the same channel and bin position.",
+              "programme_state_after": "No block output is returned.",
+              "caller_action": "Reject the malformed block layout."
+            },
+            {
+              "error_code": "BitCountOverflow",
+              "category": "packed block extent",
+              "trigger": "The local packed bit count or byte offset cannot be represented.",
+              "programme_state_after": "No block output is returned.",
+              "caller_action": "Reject the local block candidate without claiming full-frame behavior."
             }
           ],
           "not_run": [
-            "caller capacity ownership and native overrun contract",
-            "safe BAP values outside 1, 2, and 4",
-            "upstream source-plane producer identity",
-            "higher-level trial search, retry, and rollback",
-            "complete frame, EC3 stream, real audio, and whole-product validation"
-          ]
+            "The full-frame 32,734-bit pre-tail budget, CRC, q retry, and source commit remain separate."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
         {
           "slice_id": "bounded-msb-frame-bit-writer",
@@ -10718,6 +11525,183 @@
             "Additional-BSI preceding fields, carrier placement, complete frame, CRC and parent transaction remain open."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "selected-q-frame-trial-and-keyless-crc",
+          "mapping_status": "MATERIALIZED_DIRECT_F12_SELECTED_Q_FRAME_TRIAL__SOURCE_ROOT_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_4096_BYTE_CANDIDATE_FRAME_TRIAL_AND_CRC__SOURCE_PLAN_JOIN_OPEN",
+          "scope": "Builds one selected 48 kHz/1024 kbps/5.1 source-frame candidate from an immutable caller plan and one U10 q. Each call generates fresh six-block BAP, quantizes clipped coefficient/exponent rows, resets grouped mantissa state per block, writes the selected header/block order to bounded scratch, enforces the 32,734-bit pre-tail limit, writes the 34-bit tail and shared E-AC-3 CRC16, and returns a complete source-index/q-tagged candidate. It does not produce F06/F09/F10/F11/F13 values, commit source state, schedule source/AU clocks, append output, or publish.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
+            "crates/jocforge-domain/src/codec/mod.rs",
+            "crates/jocforge-domain/src/codec/bap.rs",
+            "crates/jocforge-domain/src/codec/bitio.rs",
+            "crates/jocforge-domain/src/codec/exponent_packing.rs",
+            "crates/jocforge-domain/src/codec/frame_builder.rs",
+            "crates/jocforge-domain/src/codec/frame_syntax.rs",
+            "crates/jocforge-domain/src/codec/grouped_quantizer.rs",
+            "crates/jocforge-domain/src/codec/mantissa.rs",
+            "crates/jocforge-domain/src/integrity/crc16.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/src/codec/selected_frame_trial.rs"
+          ],
+          "clock": {
+            "domains": [
+              "CodecSourceIndex"
+            ],
+            "covered_clauses": [
+              "The trial is source-index tagged but advances no source, dispatch, AU, or publication clock; each q receives fresh BAP/grouping/writer scratch."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_SELECTED_F12S_CANDIDATE_FRAME_TRIAL",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/FRAME-INPUT-SOURCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/FRAME-ORDER-AND-BUDGET.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/EMDF-INTEGRITY-EMBED.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/INPUT-ONLY-PLANS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-PUBLIC-BAP-PROVIDER-V1/public-bap-48k-v1.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1/CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-ALLOCATION-PRODUCER-SEARCH-V1/ALLOCATION-AND-SEARCH-RULES.md",
+              "specs/12-selected-codec-wire.md",
+              "specs/12-bit-allocation.md",
+              "specs/12-selected-source-frame-composition.md",
+              "specs/09-lfe-gate-mantissa-boundaries.md"
+            ],
+            "validation_boundary": "This pure per-q builder consumes caller-supplied typed plan values and checks provider/profile/shape/range, candidate q, BSI/EMDF source_index equality, pre-tail capacity, tail, and CRC residual. Source-index tags do not prove the missing shared F09/F10 generation receipt; F06/F11/F13 producer identities and root transaction remain caller-owned.",
+            "frame_supplement_manifest_sha256": "d9085785d5484d236d4b24925a52954fc0bb01153c2e173e2d07d8f6e1b4a5f6"
+          },
+          "vectors": {
+            "kind": "HASH_BOUND_SELECTED_FRAME_TRIAL_INPUT_ONLY_PLANS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/INPUT-ONLY-PLANS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/FRAME-ORDER-AND-BUDGET.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/FRAME-INPUT-SOURCES.json",
+              "crates/jocforge-domain/src/codec/selected_frame_trial.rs"
+            ],
+            "case_pointers": [
+              "The suppressed source0 input-only plan exercises complete frame construction without publishing an AU or fabricating EMDF.",
+              "The test verifies deterministic repeat for the same plan/q, 4096-byte length, fixed syncword, pre-tail budget, zero tail fields, and CRC residual zero.",
+              "The package contains no expected frame/AM bytes or PCM; these tests are structural and do not claim byte-level frame conformance."
+            ],
+            "local_fixture": {
+              "file": "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/INPUT-ONLY-PLANS.json",
+              "bytes": 4803,
+              "sha256": "2a5b7a11cc2d429435a2b0c2fe88255f5eeffed295c0954239e8b2a6791d7d74"
+            }
+          },
+          "error_outcomes": [
+            {
+              "error_code": "SelectedFramePlanError",
+              "category": "frame plan preflight",
+              "trigger": "Provider/profile, BSI, converter code, exponent plan, coefficient clip domain, EMDF length, or source index/EMDF identity is invalid.",
+              "programme_state_after": "No candidate trial is started; no state changes.",
+              "caller_action": "Treat as source-fatal/preflight and do not map it to q infeasibility."
+            },
+            {
+              "error_code": "SelectedFrameTrialFatalError",
+              "category": "provider/candidate identity",
+              "trigger": "The BAP provider is unavailable/invalid or returned candidate_q differs from requested q.",
+              "programme_state_after": "No candidate frame is returned.",
+              "caller_action": "Propagate the fatal provider/join error."
+            },
+            {
+              "error_code": "CandidateInfeasibleReason",
+              "category": "per-q scratch trial",
+              "trigger": "BAP row input, mantissa sentinel/packing, writer field, pre-tail capacity, CRC residual, or candidate U10 construction fails.",
+              "programme_state_after": "Fresh scratch is discarded; the immutable plan and committed source state are unchanged.",
+              "caller_action": "Mark only this candidate infeasible and let the enclosing main search decide."
+            }
+          ],
+          "not_run": [
+            "F12S.8 q search is a separate direct slice.",
+            "source-generation identity between F09/F10 and the caller plan remains unresolved.",
+            "durable output and publication are not implemented."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "selected-main-q-search",
+          "mapping_status": "MATERIALIZED_DIRECT_F12S_8_BOUNDED_MAIN_Q_SEARCH__SOURCE_ROOT_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_Q16_SEED_AND_TEN_MIDPOINT_SEARCH__SOURCE_ROOT_OPEN",
+          "scope": "Runs the selected F12S.8 main search over one already-preflighted immutable frame plan: test q=16 first without counting it, then low=16/high=784 with at most ten midpoint trials. Candidate success retains the latest frame and advances low; candidate infeasibility advances high. The search preserves fatal upstream/F11/provider errors and reports NoBest separately. It does not recompute F09/F10/BSI/EMDF, commit the selected candidate, advance source/AU clocks, or publish output.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/selected_main_q_search.rs",
+            "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
+            "crates/jocforge-domain/src/codec/mod.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/src/codec/selected_main_q_search.rs"
+          ],
+          "clock": {
+            "domains": [
+              "CodecSourceIndex"
+            ],
+            "covered_clauses": [
+              "One fixed source plan is searched over candidate q values; the search owns no source, callback, dispatch, AU, or commit clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F12S_8_MAIN_Q_SEARCH",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/FRAME-ORDER-AND-BUDGET.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/INPUT-ONLY-PLANS.json",
+              "specs/12-selected-codec-wire.md"
+            ],
+            "validation_boundary": "Search runs only over a caller-supplied fixed trial plan. It does not bind that plan to a shared F09/F10 generation receipt or source owner.",
+            "frame_supplement_manifest_sha256": "d9085785d5484d236d4b24925a52954fc0bb01153c2e173e2d07d8f6e1b4a5f6"
+          },
+          "vectors": {
+            "kind": "HASH_BOUND_F12S_8_Q_SEARCH_SCHEDULE_INPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/INPUT-ONLY-PLANS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/FRAME-ORDER-AND-BUDGET.json",
+              "crates/jocforge-domain/src/codec/selected_main_q_search.rs"
+            ],
+            "case_pointers": [
+              "No-best synthetic schedule asserts seed q16 then midpoint order [400,208,112,64,40,28,22,19,17], with seed excluded from midpoint count.",
+              "All-success schedule asserts ten midpoint cap and last successful q783.",
+              "Threshold q400 case retains q400 after later trials fail.",
+              "Preflight/F11 errors are preserved as Upstream, never remapped to candidate infeasibility."
+            ],
+            "local_fixture": {
+              "file": "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-COMPLETE-FRAME-ASSEMBLY-CONTRACT-V1/INPUT-ONLY-PLANS.json",
+              "bytes": 4803,
+              "sha256": "2a5b7a11cc2d429435a2b0c2fe88255f5eeffed295c0954239e8b2a6791d7d74"
+            }
+          },
+          "error_outcomes": [
+            {
+              "error_code": "Upstream",
+              "category": "source plan/F11 preflight",
+              "trigger": "The caller supplies an existing upstream failure while preparing the fixed source plan.",
+              "programme_state_after": "No q trial is run and no source state changes.",
+              "caller_action": "Propagate the original error unchanged."
+            },
+            {
+              "error_code": "Trial",
+              "category": "fatal candidate-stage error",
+              "trigger": "A q trial returns a fatal BAP provider or candidate identity error.",
+              "programme_state_after": "Search stops with an error and no winner is returned.",
+              "caller_action": "Propagate the fatal error; do not turn it into an infeasible midpoint."
+            },
+            {
+              "error_code": "NoBest",
+              "category": "search completion",
+              "trigger": "q=16 and every permitted midpoint candidate are infeasible.",
+              "programme_state_after": "No candidate frame is returned; parent source failure remains external.",
+              "caller_action": "Treat as source-fatal under the enclosing F12S/I03 owner."
+            }
+          ],
+          "not_run": [
+            "F09/F10 source-generation identity and full upstream source root.",
+            "parent source commit, AU append, and durable publication."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -10758,8 +11742,8 @@
         {
           "slice_id": "mantissa-quantizer",
           "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F12S_AND_PRODUCT_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_STATELESS_MANTISSA_QUANTIZER__WHOLE_F12S_DEFERRED",
-          "scope": "Pure finite binary32 word plus BAP to mantissa code or candidate-local error for F12S.5. Input is already exponent-scaled; no transform, fit, exponent/BAP producer, grouping, trial search, bitstream/frame, programme state, or source/AU clock is implemented.",
+          "implementation_status": "LOCALLY_VERIFIED_F64_EXPONENT_SCALE_AND_R32_MANTISSA_QUANTIZER__UPSTREAM_PLAN_OPEN",
+          "scope": "Consumes one finite clipped coefficient F32 word, caller-supplied decoded I16 exponent, and semantic BAP 0..15. It computes coefficient*2^exponent in F64 then converts once to F32, applies the selected per-BAP quantization formulas with separately rounded R32 steps, truncation or explicit ties-to-even rounding, and returns code plus width or a local candidate error. It does not derive/validate the upstream normalized exponent or BAP, group items, search candidates, write a frame, or commit state.",
           "implementation_files": [
             "crates/jocforge-domain/src/codec/mantissa.rs"
           ],
@@ -10774,33 +11758,38 @@
             ]
           },
           "parameters": {
-            "kind": "HASH_BOUND_F12S_MANTISSA_QUANTIZER_PARAMETERS",
+            "kind": "HASH_BOUND_F12S_5_EXPONENT_SCALE_AND_MANTISSA_QUANTIZER",
             "provider_files": [
-              "crates/jocforge-domain/tests/fixtures/mantissa_quantizer/parameters.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1/CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1/SOURCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1/WASH-VERIFICATION.json"
             ],
-            "validation_boundary": "Consumes one caller-supplied finite F32 bit word and BAP 0..15; uses the delivered F12S.5 quantizer constants and the existing R32/truncation primitives. It does not derive or validate the upstream exponent, coefficient, or BAP producer."
+            "validation_boundary": "The Wash package supplies input-only coefficient/exponent/BAP recipes and exact F12S.5 arithmetic. This slice does not re-derive the upstream normalized-exponent range or run the F09/F10 producer.",
+            "supplement_manifest_sha256": "fd819c3ec27e7bade55efda5e648792c9c33892a9be7a36bbfce89231b9e961f",
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
           },
           "test_modules": [
             "crates/jocforge-domain/tests/mantissa_quantizer.rs"
           ],
           "vectors": {
-            "kind": "HASH_BOUND_F12S_QUANTIZER_SUCCESS_AND_SENTINEL_VECTORS",
+            "kind": "HASH_BOUND_F12S_MANTISSA_INPUT_ONLY_AND_PRECISION_CASES",
             "authoritative_vectors": [
-              "crates/jocforge-domain/tests/fixtures/mantissa_quantizer/input-vectors.json",
-              "crates/jocforge-domain/tests/fixtures/mantissa_quantizer/verification.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1/CONTRACT.json",
+              "crates/jocforge-domain/tests/mantissa_quantizer.rs"
             ],
             "case_pointers": [
-              "208 exact quantizer cases: 204 code outputs and 4 BAP 3/5 reserved-sentinel failures",
-              "All selected BAP values 0..15 are exercised across the delivered finite F32 words",
-              "Local boundary cases reject non-finite inputs, unsupported BAP, and non-finite intermediates"
+              "Sixteen domain-sweep, twenty-four boundary, and five precision inputs exercise the approved coefficient/exponent/BAP tuple shapes; the package includes no expected quantizer code outputs.",
+              "Local tests verify input acceptance versus reserved BAP3/5 sentinels and selected formula/RNE examples; these are not native or full-frame vectors.",
+              "Nonfinite input, unsupported BAP, nonfinite scaled/R32 intermediate, and integer conversion failure are local rejection boundaries."
             ],
             "local_fixture": {
-              "file": "crates/jocforge-domain/tests/fixtures/mantissa_quantizer/input-vectors.json",
-              "bytes": 23808,
-              "sha256": "8333a23ccd093659dd0f4b296528a3f44120f78caf41546991ed9113ce14d017"
-            },
-            "source_package_manifest_sha256": "2f50ddb6f894d26d3a87390b0fb5d48021afe90e4fa5e7cff976e02ae83e0ae5",
-            "source_independent_check_sha256": "ed62b615af423b0ce98fbae9c7876c7ca7d60fa1853e7e95fd8ce68684492210"
+              "file": "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-QUANTIZER-MANTISSA-PRODUCTION-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "bytes": 11051,
+              "sha256": "19dfa6afdaedfe2cfb6ff7db31a0679f109bb4482702d9c81ea5b3ea4ecdcd4b"
+            }
           },
           "error_outcomes": [
             {
@@ -10840,12 +11829,9 @@
             }
           ],
           "not_run": [
-            "coefficient exponent scaling and source producer input validation",
-            "F09 exponent and BAP production",
-            "F12 quantizer grouping, trial search, retry, and bit packing",
-            "frame construction, CRC, EMDF, programme transaction, and source/AU publication",
-            "native/runtime replay, real ADM chain, and whole-product acceptance"
-          ]
+            "The upstream normalized exponent and BAP producer are caller-owned and remain open."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -10888,15 +11874,14 @@
       "owner": "codec",
       "planned_phase": "Phase 6",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "implementation_status": "LOCALLY_VERIFIED_SELECTED_F12A_BAP_NETWORK__F12S_FRAME_TRIAL_OPEN",
       "parameters": {
         "kind": "APPROVED_F12A_PUBLIC_BAP_AND_CODEC_PROVIDER_INVENTORY",
         "provider_files": [
           "parameters/public-bap-48k-v1.json",
           "parameters/codec-wire-cross-module-providers-v1.json"
         ],
-        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-        "validation_boundary": "The public BAP provider is available, but full production POWER-to-BAP source integration and F11 strategy/search are not closed."
+        "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
       },
       "vectors": {
         "kind": "APPROVED_F12A_BAP_RULE_AND_CODEC_INPUT_ONLY_VECTORS",
@@ -10908,7 +11893,120 @@
           "The BAP rule fixture verifies table values only; F11 U-SEARCH-01 zero-BAP synthetic coverage is not production BAP or complete POWER-to-F11 validation."
         ],
         "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
-      }
+      },
+      "direct_slices": [
+        {
+          "slice_id": "selected-f12a-public-bap-network",
+          "mapping_status": "MATERIALIZED_DIRECT_F12A_SELECTED_PUBLIC_BAP_NETWORK__F12S_SEARCH_AND_SOURCE_PLAN_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_SELECTED_F12A_INTEGER_NETWORK_AND_Q_TAG__F12S_SEARCH_AND_SOURCE_GENERATION_OPEN",
+          "scope": "Loads the hash-bound selected public P01 BAP provider, validates the exact selected 48 kHz ordinary FBW/LFE profile and table schemas, and computes the stateless integer F12A network for one row or six blocks at candidate q. The frame result preserves candidate_q across all 36 active elements and internal [L,C,R,Ls,Rs,LFE] axes. It does not bind the caller source-generation identity to F09/F10, perform the F12S main q search, build the complete 4096-byte trial, or commit source state.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/bap.rs",
+            "crates/jocforge-domain/src/codec/converter_search.rs",
+            "crates/jocforge-domain/src/codec/mod.rs"
+          ],
+          "test_modules": [
+            "crates/jocforge-domain/tests/bap_converter_search.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "F12A has no persistent cross-row/block state; BapFrame carries candidate q but source-generation identity remains caller-owned."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F12A_PUBLIC_PROVIDER_AND_SELECTED_INTEGER_NETWORK",
+            "provider_files": [
+              "specs/12-bit-allocation.md",
+              "specs/12-selected-codec-wire.md",
+              "specs/12-selected-source-frame-composition.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-PUBLIC-BAP-PROVIDER-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-PUBLIC-BAP-PROVIDER-V1/public-bap-48k-v1.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-PUBLIC-BAP-PROVIDER-V1/DELIVERY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-ALLOCATION-PRODUCER-SEARCH-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-ALLOCATION-PRODUCER-SEARCH-V1/ALLOCATION-AND-SEARCH-RULES.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-ALLOCATION-PRODUCER-SEARCH-V1/STAGE-MAP.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-ALLOCATION-PRODUCER-SEARCH-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-BAP-MANTISSA-INTERFACE-CROSSWALK-V1/CROSSWALK.md"
+            ],
+            "validation_boundary": "Provider bytes, selected profile, parameter table schema, row shapes, exponent/code/caller context and candidate q are checked. The returned BAP rows are not compared with a native or compiled helper output oracle; q is retained and checked, source-generation identity is still owned by the caller.",
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "public_provider_manifest_sha256": "75e62efa34b046358aeb2231624f1e7d339b7bd241513d39017adf0e475f49e1",
+            "allocation_supplement_manifest_sha256": "9e709fa4f7d1a751f0eead53949bf6999432bac2b1360bdd2fc246e9595a36a9",
+            "interface_crosswalk_manifest_sha256": "72deab0f457b68371c85b568d875e06e7a0505f98cb8d4643e1c6030321bab5f"
+          },
+          "vectors": {
+            "kind": "HASH_BOUND_F12A_INPUT_ONLY_PROVIDER_AND_RULE_CASES",
+            "authoritative_vectors": [
+              "test-vectors/BAP-RULE-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-ALLOCATION-PRODUCER-SEARCH-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-PUBLIC-BAP-PROVIDER-V1/public-bap-48k-v1.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-BAP-MANTISSA-INTERFACE-CROSSWALK-V1/CROSSWALK.md",
+              "crates/jocforge-domain/tests/bap_converter_search.rs"
+            ],
+            "case_pointers": [
+              "Four approved decoded-exponent recipes exercise LFE floor0, constant FBW exponent6/12, and a 0..24 ramp across selected candidates.",
+              "The suite checks both main fast_gain1 and converter fast_gain4 paths, selected bypass/caller contexts, typed rejection outcomes, 6×[5×217+7] axes, and candidate_q preservation.",
+              "Inputs are hash-bound; tests do not invent or claim expected BAP output arrays, native/compiled-helper parity, or audio acceptance."
+            ],
+            "local_fixture": {
+              "file": "outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-PUBLIC-BAP-PROVIDER-V1/public-bap-48k-v1.json",
+              "bytes": 8509,
+              "sha256": "eb913038a89d853db453831d64df34c19f8ea8a89d04a72c0ef43733619545a3"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "BAP_INPUT_ERROR",
+              "category": "row/frame input preflight",
+              "trigger": "Candidate/code/row/caller-context shape or value is invalid.",
+              "programme_state_after": "No valid BAP row/frame is returned; the network owns no persistent state.",
+              "caller_action": "Reject before adding the result to a trial."
+            },
+            {
+              "error_code": "PARAMETER_UNAVAILABLE",
+              "category": "provider availability",
+              "trigger": "Provider bytes or required table entries are absent.",
+              "programme_state_after": "No network execution occurs.",
+              "caller_action": "Fail provider preflight."
+            },
+            {
+              "error_code": "BAP_PARAMETER_ERROR",
+              "category": "provider identity/schema",
+              "trigger": "Provider hash, table type/size/range, band coverage, or pointer table is invalid.",
+              "programme_state_after": "No BAP output is returned.",
+              "caller_action": "Reject the provider; do not substitute a fallback table."
+            },
+            {
+              "error_code": "UNSUPPORTED_PROFILE",
+              "category": "profile/bandwidth admission",
+              "trigger": "Sample rate/features or end_exclusive do not match the selected ordinary 48 kHz FBW217/LFE7 route.",
+              "programme_state_after": "No BAP output is returned.",
+              "caller_action": "Reject without an adjacent-profile fallback."
+            }
+          ],
+          "not_run": [
+            "F12S main q search and full selected frame trial are separate slices.",
+            "source-generation identity from F09/F10 remains caller-owned.",
+            "Native/compiled helper comparison, whole-frame source commit, and output publication are not run."
+          ],
+          "native_status": {
+            "source_generation_join": "CALLER_OWNED_NOT_REVALIDATED",
+            "compiled_helper": "NOT_RUN",
+            "native_execution": "NOT_RUN"
+          },
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "distribution_override": {
+            "package_metadata_preserved": true,
+            "source_delivery_scope": "INTERNAL_RESEARCH_AND_INTERNAL_IMPLEMENTATION_ONLY",
+            "provider_private_key_used": false,
+            "original_research_tables_copied": false,
+            "authorized_payload_sha256": "eb913038a89d853db453831d64df34c19f8ea8a89d04a72c0ef43733619545a3",
+            "authority": "User explicitly authorized public distribution of non-private-key materials, except vendor private keys."
+          }
+        }
+      ]
     },
     {
       "functional_id": "F13",
@@ -15092,6 +16190,54 @@
     }
   },
   "phase_one": {
+    "SOURCE_INVENTORY_EVOLUTION": {
+      "classification": "CURRENT_SOURCE_INVENTORY_WITH_PRESERVED_HISTORICAL_SNAPSHOTS",
+      "status": "LOCALLY_VERIFIED_CURRENT_SOURCE_INVENTORY",
+      "historical_source_inventory": [
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 37303, "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"},
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2855, "sha256": "91beefcd535b04930a7c3dd2427c081fc114053d44bb3971edb220b924412ba0"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_control.rs", "bytes": 26366, "sha256": "25ddd1832309801765697d7c9e014766e159a5b7571234a86d790c71a895f426"},
+        {"path": "crates/jocforge-domain/src/transaction/mod.rs", "bytes": 2706, "sha256": "14dfe26f606f786eeb5ebd9a3ba5dd48d92346b46fa5d729497519dfa1ae8a9f"},
+        {"path": "crates/jocforge-domain/src/spatial/source_flags.rs", "bytes": 58899, "sha256": "ec8630271e67f5d5f73f15c6aa1e01e9738a591b486d2e63f47167ede3738328"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs", "bytes": 46100, "sha256": "6eb9640e126dd8e6c7e9bbb69782d2901fb38c79343f48089bea2d7b7b227fcc"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs", "bytes": 57070, "sha256": "c6295d0d4e04f6be4c3dc1418cc460d9dcca4b13d744d81e3dd219d62a8c9c53"}
+      ],
+      "current_source_inventory": [
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 53239, "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"},
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3261, "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_control.rs", "bytes": 30134, "sha256": "0ea66b3b2d1c5f1ae554769ecb92c0001130915b536cb461ec084f0b0ee5ae86"},
+        {"path": "crates/jocforge-domain/src/transaction/mod.rs", "bytes": 2915, "sha256": "442a74702c82926abd9de95e5f0686fd9f1cb8e656e2e051ade2390abdee238c"},
+        {"path": "crates/jocforge-domain/src/spatial/source_flags.rs", "bytes": 61230, "sha256": "55155b4a84a1199f77d0b006b9923b1621cb885ef98e01d63d12b1f99bdfe348"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs", "bytes": 48742, "sha256": "9ed4b36687e6694d73716bb774c7773c9b545f93ca49e1025336d355f24b8e2b"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs", "bytes": 61890, "sha256": "9275736d43853f6b137abdeeda5ae4aa4530acda241eacad02dcd28f22f7d555"}
+      ],
+      "wash_amendments": [
+        {"package_id": "SPATIAL-AUDIO-SOURCE-INVENTORY-AMENDMENT-V1", "manifest_sha256": "915af5789ae57b000d61c12eddd768953d55fe9b0356b0180044f4eedd23aa17"},
+        {"package_id": "IMPLEMENTATION-INVENTORY-EVOLUTION-AND-SPATIAL-EXPORTS-V1", "manifest_sha256": "8860588472c55700d4aa2c6e9d49f1f4740ebcdd8367ab79dc90a32d8af85991"}
+      ],
+      "local_diff_review": {
+        "reviewer": "read-only Fast agent",
+        "status": "PASS_FOR_TRANSACTION_SOURCE_FLAGS_SPATIAL_CONTROL_COMPONENT_STAGE_AND_TESTS",
+        "qualification": "Review covers typed wiring, immutable before-state, error and authority boundaries; it does not claim whole-chain or native acceptance."
+      },
+      "verification": {
+        "cold_staging_tests": "PASS_4",
+        "spatial_unit_tests": "PASS_162_IGNORED_1",
+        "provider_tests": "PASS_14",
+        "qmf_fft_tests": "PASS_10",
+        "spatial_control_foundation_tests": "PASS_6",
+        "spatial_control_parent_seam_tests": "PASS_1",
+        "spatial_control_production_admission_tests": "PASS_1",
+        "candidate_selector_tests": "PASS_5",
+        "installed48_source_map_tests": "PASS_3",
+        "installed48_activity_tests": "PASS_1",
+        "fmt_check": "PASS",
+        "workspace_check": "PASS",
+        "workspace_clippy_all_targets_deny_warnings": "PASS",
+        "boundary_check": "PASS",
+        "generated_map_check": "PASS"
+      }
+    },
     "P1.1": {
       "status": "GO",
       "completed_functional_ids": [],
@@ -16096,12 +17242,34 @@
         "crates/jocforge-domain/src/timeline/index.rs",
         "crates/jocforge-domain/src/timeline/mod.rs"
       ],
-      "implementation_inventory": [
+      "historical_implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 37303, "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2745, "sha256": "b367a77ab87157e12b0bd3f29e673a5bfc309b4fad49d8f8d260c52d83f5e661"},
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2855, "sha256": "91beefcd535b04930a7c3dd2427c081fc114053d44bb3971edb220b924412ba0"},
         {"path": "crates/jocforge-domain/src/timeline/index.rs", "bytes": 2672, "sha256": "50696493ea1bed2b647f2c438f032410548b70e5008b535773e23647ee59bd40"},
         {"path": "crates/jocforge-domain/src/timeline/mod.rs", "bytes": 586, "sha256": "7f2099065d657bdacab116d921a63107a180930086b73a42557881aa3acdb7b2"}
       ],
+      "implementation_inventory": [
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 53239, "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"},
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3261, "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"},
+        {"path": "crates/jocforge-domain/src/timeline/index.rs", "bytes": 2672, "sha256": "50696493ea1bed2b647f2c438f032410548b70e5008b535773e23647ee59bd40"},
+        {"path": "crates/jocforge-domain/src/timeline/mod.rs", "bytes": 586, "sha256": "7f2099065d657bdacab116d921a63107a180930086b73a42557881aa3acdb7b2"}
+      ],
+      "inventory_evolution": {
+        "classification": "CURRENT_IMPLEMENTATION_INVENTORY; historical source evidence remains separate",
+        "amendments": [
+          {"package_id": "SPATIAL-AUDIO-SOURCE-INVENTORY-AMENDMENT-V1", "manifest_sha256": "915af5789ae57b000d61c12eddd768953d55fe9b0356b0180044f4eedd23aa17", "payload_path": "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-AUDIO-SOURCE-INVENTORY-AMENDMENT-V1/AMENDMENT.json", "payload_sha256": "1f03880ab4531b766fc6d99cec36129ced19dae0c10e7e322496f0d27d8f5856"},
+          {"package_id": "IMPLEMENTATION-INVENTORY-EVOLUTION-AND-SPATIAL-EXPORTS-V1", "manifest_sha256": "8860588472c55700d4aa2c6e9d49f1f4740ebcdd8367ab79dc90a32d8af85991", "payload_path": "outputs/IMPLEMENTER_SUPPLEMENTS/IMPLEMENTATION-INVENTORY-EVOLUTION-AND-SPATIAL-EXPORTS-V1/AMENDMENT.json", "payload_sha256": "b1b7b84d9d04b5572d8c5fb159d66e1e466b710b88972c8b16cbaef843776ed8"}
+        ],
+        "current_source_scope": "Only the two exact current source entries covered by the amendments differ from the preserved historical snapshot; F04 specification, provider, preimage and fixture identities remain sealed and independently checked.",
+        "verification": {
+          "cold_staging_tests": "PASS_4",
+          "spatial_unit_tests": "PASS_162_IGNORED_1",
+          "fmt_check": "PENDING",
+          "domain_check": "PENDING",
+          "domain_clippy": "PENDING",
+          "boundary_check": "PENDING"
+        }
+      },
       "test_files": [
         "crates/jocforge-domain/src/spatial/spatial_audio_state/tests.rs",
         "crates/jocforge-domain/tests/spatial_audio_cold_staging.rs"
@@ -16220,7 +17388,7 @@
         "crates/jocforge-domain/tests/fixtures/f04_component/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json"
       ],
       "verification": {
-        "component_stage_tests": 14,
+        "component_stage_tests": 16,
         "direct_unit_vector_ids": ["U-FRONT-MATRIX", "U-FRONT-OVERLAP", "U-FRONT-FILTER64", "U-FRONT-PARAMETER64"],
         "parameter_generation_cases": 23,
         "whole_chain_component_callbacks": 6,
@@ -16362,6 +17530,11 @@
         "crates/jocforge-domain/tests/fixtures/direct_lfe/G1-VECTOR-ERRATUM.json"
       ],
       "implementation_inventory": [
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs", "bytes": 16562, "sha256": "bfa2808ba2aa5566cf832a76a5ef93a6180bc1e81c35a63934809f3ffe9abce7"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 53239, "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_control.rs", "bytes": 30134, "sha256": "0ea66b3b2d1c5f1ae554769ecb92c0001130915b536cb461ec084f0b0ee5ae86"}
+      ],
+      "historical_implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs", "bytes": 16562, "sha256": "bfa2808ba2aa5566cf832a76a5ef93a6180bc1e81c35a63934809f3ffe9abce7"},
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 37303, "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"},
         {"path": "crates/jocforge-domain/src/spatial/spatial_control.rs", "bytes": 26366, "sha256": "25ddd1832309801765697d7c9e014766e159a5b7571234a86d790c71a895f426"}
@@ -16540,12 +17713,23 @@
       ],
       "implementation_inventory": [
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs","bytes":12074,"sha256":"22c336456921c174ce1d1e72d4a265b4e61a7321e9c3753cf20d1924e0d77413"},
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state.rs","bytes":53239,"sha256":"74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"},
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs","bytes":48742,"sha256":"9ed4b36687e6694d73716bb774c7773c9b545f93ca49e1025336d355f24b8e2b"},
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs","bytes":16562,"sha256":"bfa2808ba2aa5566cf832a76a5ef93a6180bc1e81c35a63934809f3ffe9abce7"},
+        {"path":"crates/jocforge-domain/src/spatial/spatial_control.rs","bytes":30134,"sha256":"0ea66b3b2d1c5f1ae554769ecb92c0001130915b536cb461ec084f0b0ee5ae86"}
+      ],
+      "historical_implementation_inventory": [
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs","bytes":12074,"sha256":"22c336456921c174ce1d1e72d4a265b4e61a7321e9c3753cf20d1924e0d77413"},
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state.rs","bytes":37303,"sha256":"ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"},
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs","bytes":46100,"sha256":"6eb9640e126dd8e6c7e9bbb69782d2901fb38c79343f48089bea2d7b7b227fcc"},
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs","bytes":16562,"sha256":"bfa2808ba2aa5566cf832a76a5ef93a6180bc1e81c35a63934809f3ffe9abce7"},
         {"path":"crates/jocforge-domain/src/spatial/spatial_control.rs","bytes":26366,"sha256":"25ddd1832309801765697d7c9e014766e159a5b7571234a86d790c71a895f426"}
       ],
       "test_inventory": [
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs","bytes":24485,"sha256":"bb9fc89e6914b4b9fb9dc94cd0da47ee83886183661d792957cef352896bab22"},
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs","bytes":61890,"sha256":"9275736d43853f6b137abdeeda5ae4aa4530acda241eacad02dcd28f22f7d555"}
+      ],
+      "historical_test_inventory": [
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs","bytes":24485,"sha256":"bb9fc89e6914b4b9fb9dc94cd0da47ee83886183661d792957cef352896bab22"},
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs","bytes":57070,"sha256":"c6295d0d4e04f6be4c3dc1418cc460d9dcca4b13d744d81e3dd219d62a8c9c53"}
       ],
@@ -16635,7 +17819,7 @@
       "test_files": ["crates/jocforge-domain/src/spatial/post_window_fanout/tests.rs", "crates/jocforge-domain/src/spatial/current_features/tests.rs"],
       "test_scope": ["fixed shape and finite sample admission", "source-major payload byte count and SHA-256", "explicit normal/cached-drain phase", "one-time two-view fanout", "shared Arc payload allocation identity", "different proposal identities despite equal payload hashes", "lineage and view mismatch", "consumer error drops capabilities without state commit", "capabilities remain non-Clone/non-Copy"],
       "verification": {
-        "post_window_fanout_tests": 5,
+        "post_window_fanout_tests": 6,
         "current_features_tests": 10,
         "compile_fail_contracts": 5,
         "targeted_boundary_mutations_rejected": 32,
@@ -16788,16 +17972,23 @@
         "test_file": "crates/jocforge-domain/tests/spatial_control_foundation.rs",
         "root_canonical_bytes": 768582,
         "root_canonical_sha256": "cb9b512e03d82604270a22cf60e288f9ea8f6aa808517a6319a27f860552bcc0",
+        "historical_file_inventory": [
+          {"path": "crates/jocforge-domain/src/spatial/spatial_control.rs", "bytes": 26366, "sha256": "25ddd1832309801765697d7c9e014766e159a5b7571234a86d790c71a895f426"},
+          {"path": "crates/jocforge-domain/src/transaction/mod.rs", "bytes": 2706, "sha256": "14dfe26f606f786eeb5ebd9a3ba5dd48d92346b46fa5d729497519dfa1ae8a9f"},
+          {"path": "crates/jocforge-domain/src/timeline/index.rs", "bytes": 2672, "sha256": "50696493ea1bed2b647f2c438f032410548b70e5008b535773e23647ee59bd40"},
+          {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2855, "sha256": "91beefcd535b04930a7c3dd2427c081fc114053d44bb3971edb220b924412ba0"},
+          {"path": "crates/jocforge-domain/tests/spatial_control_foundation.rs", "bytes": 10051, "sha256": "7235e30cf033d32c746e44c5501424a77e97fe84f745984c8cecf771d40d3212"}
+        ],
         "file_inventory": [
           {
             "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-            "bytes": 26366,
-            "sha256": "25ddd1832309801765697d7c9e014766e159a5b7571234a86d790c71a895f426"
+            "bytes": 30134,
+            "sha256": "0ea66b3b2d1c5f1ae554769ecb92c0001130915b536cb461ec084f0b0ee5ae86"
           },
           {
             "path": "crates/jocforge-domain/src/transaction/mod.rs",
-            "bytes": 2706,
-            "sha256": "14dfe26f606f786eeb5ebd9a3ba5dd48d92346b46fa5d729497519dfa1ae8a9f"
+            "bytes": 2915,
+            "sha256": "442a74702c82926abd9de95e5f0686fd9f1cb8e656e2e051ade2390abdee238c"
           },
           {
             "path": "crates/jocforge-domain/src/timeline/index.rs",
@@ -16806,8 +17997,8 @@
           },
           {
             "path": "crates/jocforge-domain/src/spatial/mod.rs",
-            "bytes": 2745,
-            "sha256": "b367a77ab87157e12b0bd3f29e673a5bfc309b4fad49d8f8d260c52d83f5e661"
+            "bytes": 3261,
+            "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"
           },
           {
             "path": "crates/jocforge-domain/tests/spatial_control_foundation.rs",
@@ -16967,17 +18158,21 @@
         "module_file": "crates/jocforge-domain/src/spatial/source_flags.rs",
         "test_file": "crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs",
         "fixture_file": "crates/jocforge-domain/tests/fixtures/source_flags/INPUT-ONLY-VECTORS.json",
+        "historical_file_inventory": [
+          {"path": "crates/jocforge-domain/src/spatial/source_flags.rs", "bytes": 58899, "sha256": "ec8630271e67f5d5f73f15c6aa1e01e9738a591b486d2e63f47167ede3738328"},
+          {"path": "crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs", "bytes": 36501, "sha256": "b72391a0aab869193399501aa49329c717a353d91c07cc9564c73d3835e25992"}
+        ],
           "test_mode": "20 synthetic literal vectors plus one meter-owned value-only vector and one cross-consumer fixture vector in workspace suite; authorized WAVE boundary vector is explicitly invoked with JOCFORGE_AUTHORIZED_WAV and is ignored otherwise",
         "file_inventory": [
           {
             "path": "crates/jocforge-domain/src/spatial/source_flags.rs",
-              "bytes": 48629,
-              "sha256": "a13ad6da38bc9d209cd1aae3291ee4f5a09eaff00b080c4d7e42c4b8c9f97dd2"
+              "bytes": 61230,
+              "sha256": "55155b4a84a1199f77d0b006b9923b1621cb885ef98e01d63d12b1f99bdfe348"
           },
           {
             "path": "crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs",
-              "bytes": 36245,
-              "sha256": "ea02dc4d3b85f8006dd56182eea3809fa8d6b86b123b88eccfac626f2d1b6dc0"
+              "bytes": 36501,
+              "sha256": "b72391a0aab869193399501aa49329c717a353d91c07cc9564c73d3835e25992"
           },
           {
             "path": "crates/jocforge-domain/tests/fixtures/source_flags/INPUT-ONLY-VECTORS.json",
@@ -17759,7 +18954,16 @@
       },
       "dependency_scope": {"crate": "serde_json", "version": "=1.0.154", "default_features": false, "features": ["std"], "archive_sha256": "e7e9cc8b1b85264074fbcc02a88680c4096b1e47df8f739dceb03bf482f04bd6", "allowed_use": "strict identity-gated manifest/provider JSON parsing and private typed field access only", "public_serde_json_value": false, "canonical_writer": "none; exact file identity only"},
       "implementation_files": ["crates/jocforge-domain/src/spatial/window_q15_provider.rs", "crates/jocforge-domain/src/spatial/component_parameters_provider.rs", "crates/jocforge-domain/src/spatial/mod.rs"],
-      "implementation_inventory": [{"path":"crates/jocforge-domain/src/spatial/window_q15_provider.rs","bytes":19312,"sha256":"3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},{"path":"crates/jocforge-domain/src/spatial/component_parameters_provider.rs","bytes":14344,"sha256":"b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"},{"path":"crates/jocforge-domain/src/spatial/mod.rs","bytes":2745,"sha256":"b367a77ab87157e12b0bd3f29e673a5bfc309b4fad49d8f8d260c52d83f5e661"}],
+      "implementation_inventory": [
+        {"path": "crates/jocforge-domain/src/spatial/window_q15_provider.rs", "bytes": 19312, "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},
+        {"path": "crates/jocforge-domain/src/spatial/component_parameters_provider.rs", "bytes": 14344, "sha256": "b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"},
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3261, "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"}
+      ],
+      "historical_implementation_inventory": [
+        {"path": "crates/jocforge-domain/src/spatial/window_q15_provider.rs", "bytes": 19312, "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},
+        {"path": "crates/jocforge-domain/src/spatial/component_parameters_provider.rs", "bytes": 14344, "sha256": "b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"},
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2855, "sha256": "91beefcd535b04930a7c3dd2427c081fc114053d44bb3971edb220b924412ba0"}
+      ],
       "test_files": ["crates/jocforge-domain/tests/f04_parameter_providers.rs"],
       "test_inventory": [{"path":"crates/jocforge-domain/tests/f04_parameter_providers.rs","bytes":6325,"sha256":"37d56c997a903e6029828ce41e31c5b27218a1a472a4edf7d53f3fdc38ffeb4b"}],
       "fixture_files": ["crates/jocforge-domain/tests/fixtures/f04_parameters/window-q15.json", "crates/jocforge-domain/tests/fixtures/f04_parameters/component-parameter-mathematical-v1.json"],
@@ -17879,7 +19083,21 @@
         {"path": "crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs", "bytes": 11066, "sha256": "bddb8bd2b775b2cd9fc3e6412981965ef9ca5c5f98d137ff98de31c87dbbb2d8"},
         {"path": "crates/jocforge-domain/src/spatial/descriptor_mathematical_provider.rs", "bytes": 10441, "sha256": "df8612dcdc46fcf2620e2a73d68d26d392bbba02be27af729f8c5ded76cf8639"},
         {"path": "crates/jocforge-domain/src/spatial/window_q15_provider.rs", "bytes": 19312, "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2745, "sha256": "b367a77ab87157e12b0bd3f29e673a5bfc309b4fad49d8f8d260c52d83f5e661"}
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3261, "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"}
+      ],
+      "historical_implementation_inventory": [
+        {"path": "crates/jocforge-domain/src/spatial/qmf_receiver_functional_provider.rs", "bytes": 22614, "sha256": "dc04957542f802fa7a751d88911180cef7575c11033fd9a06b5221e7697e4bff"},
+        {"path": "crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs", "bytes": 11066, "sha256": "bddb8bd2b775b2cd9fc3e6412981965ef9ca5c5f98d137ff98de31c87dbbb2d8"},
+        {"path": "crates/jocforge-domain/src/spatial/descriptor_mathematical_provider.rs", "bytes": 10441, "sha256": "df8612dcdc46fcf2620e2a73d68d26d392bbba02be27af729f8c5ded76cf8639"},
+        {"path": "crates/jocforge-domain/src/spatial/window_q15_provider.rs", "bytes": 19312, "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2855, "sha256": "91beefcd535b04930a7c3dd2427c081fc114053d44bb3971edb220b924412ba0"}
+      ],
+      "historical_implementation_inventory": [
+        {"path": "crates/jocforge-domain/src/spatial/qmf_receiver_functional_provider.rs", "bytes": 22614, "sha256": "dc04957542f802fa7a751d88911180cef7575c11033fd9a06b5221e7697e4bff"},
+        {"path": "crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs", "bytes": 11066, "sha256": "bddb8bd2b775b2cd9fc3e6412981965ef9ca5c5f98d137ff98de31c87dbbb2d8"},
+        {"path": "crates/jocforge-domain/src/spatial/descriptor_mathematical_provider.rs", "bytes": 10441, "sha256": "df8612dcdc46fcf2620e2a73d68d26d392bbba02be27af729f8c5ded76cf8639"},
+        {"path": "crates/jocforge-domain/src/spatial/window_q15_provider.rs", "bytes": 19312, "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2855, "sha256": "91beefcd535b04930a7c3dd2427c081fc114053d44bb3971edb220b924412ba0"}
       ],
       "test_files": ["crates/jocforge-domain/tests/f04_remaining_provider_validators.rs"],
       "test_inventory": [{"path": "crates/jocforge-domain/tests/f04_remaining_provider_validators.rs", "bytes": 9771, "sha256": "8c0890d03b626bc75bc6daee4150c06d207cba02500778cfbd9288f44ad706a8"}],
@@ -18019,7 +19237,15 @@
       "shared_fixture_dependencies": ["crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json", "crates/jocforge-domain/tests/fixtures/f04_parameters/qmf-mathematical-fft-v1.json"],
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_fft64.rs", "bytes": 3812, "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2745, "sha256": "b367a77ab87157e12b0bd3f29e673a5bfc309b4fad49d8f8d260c52d83f5e661"}
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3261, "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"}
+      ],
+      "historical_implementation_inventory": [
+        {"path": "crates/jocforge-domain/src/spatial/qmf_fft64.rs", "bytes": 3812, "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"},
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2855, "sha256": "91beefcd535b04930a7c3dd2427c081fc114053d44bb3971edb220b924412ba0"}
+      ],
+      "historical_implementation_inventory": [
+        {"path": "crates/jocforge-domain/src/spatial/qmf_fft64.rs", "bytes": 3812, "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"},
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2855, "sha256": "91beefcd535b04930a7c3dd2427c081fc114053d44bb3971edb220b924412ba0"}
       ],
       "test_inventory": [
         {"path": "crates/jocforge-domain/tests/qmf_fft64.rs", "bytes": 8575, "sha256": "9d53ca5c441352312dfc19e425e990145e0416e3bcb0d733d2642c38fb119014"}
@@ -18182,7 +19408,15 @@
       ],
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs", "bytes": 21790, "sha256": "9184b8ca22b5ed89082a92e3027b74c13d7e5424c4504598c3e71c239f2beeaa"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2745, "sha256": "b367a77ab87157e12b0bd3f29e673a5bfc309b4fad49d8f8d260c52d83f5e661"}
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3261, "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"}
+      ],
+      "historical_implementation_inventory": [
+        {"path": "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs", "bytes": 21790, "sha256": "9184b8ca22b5ed89082a92e3027b74c13d7e5424c4504598c3e71c239f2beeaa"},
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2855, "sha256": "91beefcd535b04930a7c3dd2427c081fc114053d44bb3971edb220b924412ba0"}
+      ],
+      "historical_implementation_inventory": [
+        {"path": "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs", "bytes": 21790, "sha256": "9184b8ca22b5ed89082a92e3027b74c13d7e5424c4504598c3e71c239f2beeaa"},
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2855, "sha256": "91beefcd535b04930a7c3dd2427c081fc114053d44bb3971edb220b924412ba0"}
       ],
       "test_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis/tests.rs", "bytes": 14759, "sha256": "64243b2abd6668d321ed0c093bf1a3075ff71f487b282d123fc081a2cba2f037"}
@@ -18271,9 +19505,13 @@
         "error_coverage": "QMF core tests cover nonfinite input, numeric overflow, and provider identity mismatch. The local receiver stage tests stale receiver count, Type10/S09 callback and phase mismatch, priming/ready input presence, and malformed S09 lane shape. E4 covers same-parent/phase/origin mismatch; whole consumer model lists 11 preflight rejects. Full F04C parent failure/retirement remains NOT_RUN."
       },
       "implementation_binding": {
-        "implementation_files": [
+        "historical_implementation_files": [
           {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs", "bytes": 17134, "sha256": "6131903076529c50753b908a48679cbec6be22a6135599712592aa37f2095d5e"},
           {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 37303, "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"}
+        ],
+        "implementation_files": [
+          {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs", "bytes": 17134, "sha256": "6131903076529c50753b908a48679cbec6be22a6135599712592aa37f2095d5e"},
+          {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 53239, "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"}
         ],
         "test_files": [
           {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests/receiver_mode1.rs", "bytes": 23303, "sha256": "9bc20e80319c4a5df182a7937f69b28587de85fb3c037825890e300f3c117d53"},
@@ -18553,6 +19791,10 @@
       "planned_fixture_files": ["crates/jocforge-domain/tests/fixtures/descriptor_control/input-vectors.json", "crates/jocforge-domain/tests/fixtures/descriptor_control/actual-literals.json"],
       "fixture_materialization_status": "MATERIALIZED_AND_HASH_PINNED",
       "implementation_inventory": [
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs", "bytes": 22467, "sha256": "aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 53239, "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"}
+      ],
+      "historical_implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs", "bytes": 22467, "sha256": "aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce"},
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 37303, "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"}
       ],
@@ -18896,10 +20138,22 @@
       },
       {
         "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-        "bytes": 37303,
-        "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"
+          "bytes": 53239,
+          "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"
       }
     ],
+      "historical_implementation_inventory": [
+        {
+          "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs",
+          "bytes": 40820,
+          "sha256": "49b5566b204d7deb74828f3c7715cd64748be11a0f08c8e5820f452b90c636e9"
+        },
+        {
+          "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+          "bytes": 37303,
+          "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"
+        }
+      ],
     "test_inventory": [
       {
         "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0/tests.rs",

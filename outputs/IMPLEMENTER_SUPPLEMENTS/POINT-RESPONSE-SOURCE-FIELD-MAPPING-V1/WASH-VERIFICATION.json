@@ -1,0 +1,19 @@
+{
+  "research_manifest_sha256": "5d7ab6d1d5e9234ab455e44d4679518d343cd61da763da9d4607a3189aa015c7",
+  "payload_hashes_verified": 4,
+  "approved_sources_hashes_verified": 4,
+  "frozen_model_hash_verified": "31817b70e2dc4cb55514878e3eac04c4c73fb3541c140d73643d4c32cc674248",
+  "wash_review": "Read exact writer lines24-56 and actual point status reader70-90 plus post-view174-215; object control overlay atsource+4 gives offsets4+4*slot; not inferred from equal constant values.",
+  "independent_wash_transport_checks": 54,
+  "research_reported_normal_and_optimized": {
+    "routes": 38,
+    "source_records": 1824,
+    "four_field_checks": 7296,
+    "discriminators": 6
+  },
+  "independent_reexecution_of_research_checker": "NOT_RUN: research executable not delivered",
+  "native_execution": "NOT_RUN",
+  "real_adm_audio_execution": "NOT_RUN",
+  "source_code_or_private_key_delivered": false,
+  "admission": "Scoped four-field selected producer mapping resolved; no new branch support or full56-byte source record claim."
+}

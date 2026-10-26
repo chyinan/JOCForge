@@ -10,6 +10,8 @@ use super::transient_channel::{
     TransientChannelError, TransientChannelState, process_transient_channel_block,
 };
 use super::transient_parameters::TransientParameters;
+use crate::timeline::CodecSourceIndex;
+use crate::transaction::{AttemptId, CallbackTransactionId};
 
 const EXTERNAL_AUDIO_LANES: usize = 6;
 const FBW_EXTERNAL_ROWS: [usize; F07_FULLBAND_LANES] = [0, 2, 1, 4, 5];
@@ -146,6 +148,156 @@ impl F07SourceFrameProposal {
 
     pub fn into_parts(self) -> (F07SourceFrameOutput, F07SourceFrameAfterState) {
         (self.output, self.after_state)
+    }
+}
+
+/// The existing GTC analysis-owner generation value. This wrapper does not
+/// advance or synthesize a generation; the parent supplies the committed or
+/// staged snapshot value.
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+pub struct AnalysisOwnerGeneration(u64);
+
+impl AnalysisOwnerGeneration {
+    #[allow(dead_code)] // The analysis root generation is not wired into Rust yet.
+    pub(crate) const fn from_parent_snapshot(value: u64) -> Self {
+        Self(value)
+    }
+
+    pub const fn value(self) -> u64 {
+        self.0
+    }
+}
+
+/// The selected analysis root is the sole owner in this source-stage key.
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+pub enum AnalysisOwnerId {
+    Analysis,
+}
+
+impl AnalysisOwnerId {
+    pub const fn as_str(self) -> &'static str {
+        match self {
+            Self::Analysis => "analysis",
+        }
+    }
+}
+
+/// Parent-owned source transaction identity required by the approved GTC join.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct SourceStageKey {
+    attempt_id: AttemptId,
+    transaction_id: CallbackTransactionId,
+    source_index: CodecSourceIndex,
+    analysis_owner_id: AnalysisOwnerId,
+    analysis_before_generation: AnalysisOwnerGeneration,
+}
+
+impl SourceStageKey {
+    /// Builds the key only inside this receipt constructor from canonical parent values.
+    pub(crate) fn from_parent_snapshot(
+        attempt_id: AttemptId,
+        transaction_id: CallbackTransactionId,
+        source_index: CodecSourceIndex,
+        analysis_before_generation: AnalysisOwnerGeneration,
+    ) -> Self {
+        Self {
+            attempt_id,
+            transaction_id,
+            source_index,
+            analysis_owner_id: AnalysisOwnerId::Analysis,
+            analysis_before_generation,
+        }
+    }
+
+    pub const fn attempt_id(&self) -> AttemptId {
+        self.attempt_id
+    }
+
+    pub fn transaction_id(&self) -> &CallbackTransactionId {
+        &self.transaction_id
+    }
+
+    pub const fn source_index(&self) -> CodecSourceIndex {
+        self.source_index
+    }
+
+    pub const fn analysis_owner_id(&self) -> AnalysisOwnerId {
+        self.analysis_owner_id
+    }
+
+    pub const fn analysis_before_generation(&self) -> AnalysisOwnerGeneration {
+        self.analysis_before_generation
+    }
+}
+
+/// Identity of one parent's staged analysis result, including its exact after generation.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct SharedAnalysisIdentity {
+    source_stage_key: SourceStageKey,
+    analysis_after_generation: AnalysisOwnerGeneration,
+}
+
+impl SharedAnalysisIdentity {
+    pub const fn source_stage_key(&self) -> &SourceStageKey {
+        &self.source_stage_key
+    }
+
+    pub const fn source_index(&self) -> CodecSourceIndex {
+        self.source_stage_key.source_index()
+    }
+
+    pub const fn analysis_after_generation(&self) -> AnalysisOwnerGeneration {
+        self.analysis_after_generation
+    }
+}
+
+/// Parent-issued source identity plus the staged F07 proposal used by F06/F08-F12 consumers.
+///
+/// The parent retains commit authority and owns the complete shared-analysis after-state. This
+/// local receipt keeps the existing F07 proposal and key; it is not the complete analysis root.
+/// The fixed advancement count records the contract's single `SharedAnalysisPrepare`; it is not
+/// caller-selected or inferred from sample values.
+#[must_use]
+#[derive(Debug, Eq, PartialEq)]
+pub struct SharedAnalysisReceipt {
+    identity: SharedAnalysisIdentity,
+    f07_proposal: F07SourceFrameProposal,
+}
+
+impl SharedAnalysisReceipt {
+    /// The source parent may construct one receipt only after staging F07 exactly once.
+    ///
+    /// Generation values are the existing GTC owner snapshot fields. This function never
+    /// increments, derives, hashes, or otherwise synthesizes either generation.
+    #[allow(dead_code)] // Reserved for the selected parent source transaction, which is not wired yet.
+    pub(crate) fn from_parent(
+        source_stage_key: SourceStageKey,
+        analysis_after_generation: AnalysisOwnerGeneration,
+        f07_proposal: F07SourceFrameProposal,
+    ) -> Self {
+        Self {
+            identity: SharedAnalysisIdentity {
+                source_stage_key,
+                analysis_after_generation,
+            },
+            f07_proposal,
+        }
+    }
+
+    pub const fn identity(&self) -> &SharedAnalysisIdentity {
+        &self.identity
+    }
+
+    pub const fn f07_proposal(&self) -> &F07SourceFrameProposal {
+        &self.f07_proposal
+    }
+
+    pub const fn advancement_count(&self) -> u8 {
+        1
+    }
+
+    pub fn into_parts(self) -> (SharedAnalysisIdentity, F07SourceFrameProposal) {
+        (self.identity, self.f07_proposal)
     }
 }
 

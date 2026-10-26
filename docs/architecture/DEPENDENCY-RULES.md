@@ -4,6 +4,8 @@ Selected input preparation uses the existing locked `sha2` 0.10.9 dependency in 
 
 The PCM I/O crate also uses the locked `sha2` dependency to bind a borrowed parsed RIFF source to its meter read cursor. The cursor retains only the digest and sample position; it does not copy the source byte slice into persistent state.
 
+The atomic output adapter uses the locked `serde_json` dependency to serialize the F15 finalize-intent value into the contract's canonical compact JSON bytes before durable staging. This serialization stays inside `jocforge-io`; domain and application exchange typed proposals and receipts, not JSON values.
+
 当前实际 crate 依赖图：
 
 ```mermaid

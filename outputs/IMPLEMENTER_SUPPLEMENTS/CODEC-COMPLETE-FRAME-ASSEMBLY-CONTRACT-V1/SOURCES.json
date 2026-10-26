@@ -1,0 +1,178 @@
+{
+  "schema": "codec3-complete-frame-source-identities.v1",
+  "approved_base_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_specs": [
+    {
+      "path": "specs/12-codec-and-wire.md",
+      "sha256": "3e712f4d8bd0d0eaccd933ce0087a4fc0fbd73e3ca92b4dc673153786936a14e",
+      "use": "selected-profile status, bit budget and common codec/wire contract"
+    },
+    {
+      "path": "specs/12-selected-codec-wire.md",
+      "sha256": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448",
+      "use": "complete selected F12 writer, input fields, block order, keyless tail, source clock"
+    },
+    {
+      "path": "specs/13-emdf-and-timeline.md",
+      "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd",
+      "use": "four body queues, source/AU timing, F13 container and carriage mode"
+    },
+    {
+      "path": "specs/13-joc-complexity-timer-payload-order.md",
+      "sha256": "09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b",
+      "use": "same-container ID14 complexity and four body queue/payload order"
+    },
+    {
+      "path": "specs/13-id2-profile-metadata.md",
+      "sha256": "35aa89d0dd67fb0133c4898c1007c84d48b39c5df6683dd88a173600975b48cc",
+      "use": "selected ID2 body source boundary"
+    },
+    {
+      "path": "specs/14-integrity.md",
+      "sha256": "7e9df3565d0ab25dad1ab4989de57003d399a0e839a5fb298a6bfc53b240894f",
+      "use": "E-AC-3 CRC16 coverage and private HMAC exclusion boundary"
+    },
+    {
+      "path": "specs/15-keyless-publication.md",
+      "sha256": "47beaa9d415d6d26eb8d6a7df63ca3d86514c37740618c3a041a46c7961b3a72",
+      "use": "selected keyless source transaction, carriage modes, durable publication and EOF"
+    },
+    {
+      "path": "specs/06-meter-bsi.md",
+      "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752",
+      "use": "programme dialnorm, mixing/information fields and selected BSI source"
+    },
+    {
+      "path": "specs/06-none-drc-statistics-and-control.md",
+      "sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+      "use": "same-source DRC control producer"
+    },
+    {
+      "path": "specs/07-history-and-transient.md",
+      "sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac",
+      "use": "short/dither and source-frame plan dependencies"
+    },
+    {
+      "path": "specs/08-transforms.md",
+      "sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e",
+      "use": "approved transform producer boundary; no DSP recomputation here"
+    },
+    {
+      "path": "specs/09-exponents.md",
+      "sha256": "41cd157140d0deaab51fa9a895c33758cb49eb46cf5844a2883c1d6e8bb81739",
+      "use": "six-block exponent plan producer"
+    },
+    {
+      "path": "specs/10-exponent-normalization.md",
+      "sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc",
+      "use": "exponent plan normalization boundary"
+    },
+    {
+      "path": "specs/05-oamd-row-and-timing-wire.md",
+      "sha256": "b49694e3026938c1b5f91ef95fd63cc2eea03e25161367ba26095177ff452b11",
+      "use": "OAMD ID11 Type11 body framing and row-level wire boundary"
+    },
+    {
+      "path": "specs/05-oamd-id11-live-producer.md",
+      "sha256": "767005b297614e2ad5c374a9018642a22b577af37941f12486523cc43fb247dc",
+      "use": "ID11 ready-body producer boundary"
+    },
+    {
+      "path": "specs/05-live-joc-coordinator.md",
+      "sha256": "49c3e07298262e2d5867d936eab0ddf6d746a17a9ce844358a0966d1b5d4d779",
+      "use": "selected ID14/JOC body producer boundary"
+    }
+  ],
+  "selected_parameters": [
+    {
+      "path": "parameters/codec-wire-selected-v1.json",
+      "sha256": "a7a0a721a9e515d197a2d12fc0c9cb942b2b393f9019383a66ce2635f7aaa0dd",
+      "use": "selected frame/profile constants"
+    },
+    {
+      "path": "parameters/codec-wire-cross-module-providers-v1.json",
+      "sha256": "d0a99cd1fd25b5ba0b2e690d549ac474006d8a4dddb10e185446808379e96e2d",
+      "use": "25-file source identity groups for F12, F06 BSI, F07/F09/F10 policy, F08 transform and F13 EMDF; states vectors are explicit fixtures, not runtime lookup values"
+    },
+    {
+      "path": "parameters/public-bap-48k-v1.json",
+      "sha256": "eb913038a89d853db453831d64df34c19f8ea8a89d04a72c0ef43733619545a3",
+      "use": "R1 BAP source reference only; BAP search/derivation not repeated here"
+    }
+  ],
+  "washed_cross_module_supplements": [
+    {
+      "package_id": "F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1",
+      "manifest_sha256": "4e9e6a566acbc186e7ff6f11c98b47a62df616336338b8453fa39810592fe39e",
+      "contract_sha256": "fd1d1cadef3a088bf679ba0e87da2b0496ebb415f89d07860958b7a53b5e9192",
+      "evidence_sha256": "b622e88f53049a2f18525205cd3c91b5c432de2200dd91b038b9dc7afd3110d5"
+    },
+    {
+      "package_id": "F12-SELECTED-PREFIX-DIALNORM-V1",
+      "manifest_sha256": "0afba77679f20496cae42b840252c7278fad5185274fa0fd81e1e95b9f2401a2",
+      "contract_sha256": "30e3a5e3d1f9e22cd6c8658bc968f6217bd83c4072260192b7aa7328c62cde61",
+      "evidence_sha256": "81dbc47a27b03e77336c02d7f9eccbf984024172ccadd6ee6f22693bdf720e4a"
+    },
+    {
+      "package_id": "F13-BODY-INPUT-PROVENANCE-AND-PREFERRED-BOUNDARY-V1",
+      "manifest_sha256": "2b145478bd6f0d1868d6f9a589eee37693215791d219c91b64262995316087a8",
+      "contract_sha256": "00077d5f0947a3674355a44a965415fd45d4da9b55aa2031b1f37e5343caac83",
+      "matrix_sha256": "4dc79d57224218fcceda1a75d8174994e37f3a41ef38f86b57365741d77804b9",
+      "field_count": 39
+    },
+    {
+      "package_id": "F13-METADATA-MODEL-INTERFACE-AND-NATIVE-OWNER-GAP-V1",
+      "manifest_sha256": "ba3cf1f0c32c90d4cc25013bc6476d35f2d5b9fa0291cdf241f68e1903dc234b",
+      "contract_sha256": "cb4fa66531f4b06382822feccb8efaa4576596a41f0f07bb1ad0ac76838cd96f",
+      "evidence_sha256": "782a59ffdc60f3a4729d1809b32bed740c23da9e3b42d09d2bbc77fdb696fd18"
+    }
+  ],
+  "public_integrity_provider": {
+    "package_id": "INTEGRITY-OWNER-ROOT-V1",
+    "manifest_sha256": "aff36a4ac3d5afdf2a29859cc6406c5568a468bc2be0a1987d3e333c3d3db7dd",
+    "contract_sha256": "d83de6451b0cc46b394aee95bb43959b91cd549b04324c68f6ae1172591cde41",
+    "provider_sha256": "b0f52c55d38b9fba45ec39fc956cd8cd895ce2cfbc1f77d9493d99d2b8636a4d",
+    "scope": "public CRC32/CRC8/CRC16 only; no private key or HMAC profile"
+  },
+  "public_normative_bsi_syntax": {
+    "document": "ETSI TS 102 366 V1.4.1 (2017-09)",
+    "official_pdf_url": "https://www.etsi.org/deliver/etsi_ts/102300_102399/102366/01.04.01_60/ts_102366v010401p.pdf",
+    "official_edition_index_url": "https://www.etsi.org/deliver/etsi_ts/102300_102399/102366/",
+    "clauses": [
+      "Annex E.1.2.2 BSI syntax",
+      "Annex E.1.3.1.9..18 mixing-field definitions",
+      "Annex E.1.3.1.59..64 frame-mix/information definitions"
+    ],
+    "use": "close the bit widths and selected acmod/strmtyp/lfeon/fscod/numblkscod guards omitted by F12S.7 prose",
+    "local_file_sha256": "NOT_DOWNLOADED; official URL and clauses are the source identity"
+  },
+  "input_vector_and_review_identities": [
+    {
+      "path": "test-vectors/CODEC-WIRE-COMPLETE-FRAME-INPUT-VECTORS.json",
+      "sha256": "698c2ec69a8250251a3b3295ce135d1178079a5a2750a9ea5381c4e688db527a",
+      "use": "input field/shape/case source only; expected members not used as seeds or copied"
+    },
+    {
+      "path": "test-vectors/CODEC-WIRE-COMPLETE-FRAME-VERIFICATION.json",
+      "sha256": "4615b59e39dfd1606f205e833b95f3f99b135c502ad15f5b8ebd94c7f7261fff",
+      "use": "fixture verification summary only; four CRC-clean fixture frames do not prove sound output"
+    },
+    {
+      "path": "test-vectors/CODEC-WIRE-SELECTED-LOCAL-REVIEW-STATUS.json",
+      "sha256": "f3655d4433e8b8e8a9c4260c2c8c4f59d9751ca689998fced6829a4775977225",
+      "use": "fixture boundary is local PASS, cross-module production and whole package NO; review references its own frozen input manifest"
+    }
+  ],
+  "review_binding_note": {
+    "reviewed_freeze_manifest_sha256": "4bb2157a7c068e1c7e1f85876e50f5bca4199ca349cb1b46878a14d5f2c177c5",
+    "reviewed_12_selected_spec_sha256": "5779c9b12c9c4f225f8f0f9c29904f559cefdbf5c5f9f390e3b3309306ad5908",
+    "current_c7_12_selected_spec_sha256": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448",
+    "interpretation": "The r2b review is cited as fixture/snapshot evidence only; it is not claimed as an independent review of the current c7 live spec bytes."
+  },
+  "sensitive_boundary": {
+    "private_key_or_auth_material_read": false,
+    "raw_pcm_included": false,
+    "prototype_au_bytes_used_as_expected_seed": false,
+    "expected_frame_bodies_included": false
+  }
+}

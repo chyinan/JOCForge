@@ -1,0 +1,50 @@
+{
+  "status": "EXISTING_APPROVED_ALGORITHM_AND_PROVIDER_SUFFICIENT_FOR_IMPLEMENTATION",
+  "route": "MATHEMATICAL_R64_R32; legacy FMA3_PARAMETERIZED is separate and missing coefficients must be rejected, never silently borrowed.",
+  "programme_inputs": {
+    "layout": "P15 layout0x159B, profile_enabled=true, stable provider basis order; freeze at programme initialization.",
+    "basis_provider": "F01GL.3 direct selected generator, not original35-record table. U32767,H16384,Y_front from authorized parameter (currently5285). 9 lower points then6 upper; stable indices preserved.",
+    "P11_exclusion": "Audio prefix uses P11/layout0x111B. Its gain/spread response and 11 rows cannot substitute P15 15-observation columns."
+  },
+  "callback_inputs": {
+    "sources": "Exactly source0..47 each once, current semantic XYZ F32 plus original_audio_width F32, feature_mode/source_skip/spatial_enum/coordinate_parameter U32; reject missing/duplicate source identity, nonfinite, invalid type or branch.",
+    "source_position": "Prefix0..10 use current installed P11 source points; regular11..47 map physical38 excluding the unique direct LFE in physical order. Bed positions join channel_format_id and semantic role; object positions/attributes use current F01 sampler snapshot. Source ID is neither physical track nor selector ordinal.",
+    "attribute_binding": "Use installed semantic source fields (feature_mode/source_skip/spatial_enum/coordinate_parameter) from routing/sampler adapter, not processing_inactive flags or a guessed packed-attribute-to-native-record alias. R1 owns detailed F01E callback snapshot adapter.",
+    "feature_view": "Require all48 feature_mode=0, then create separate post-audio feature_width word00000000 for all sources, preserving authored audio width and original source records. If a public adapter accepts a prebuilt view, validate feature_width as exact positive-zero word for generated sources.",
+    "sets": "Consume F03G candidate IDs and processing/solver-call IDs independently; both are increasing unique global-ID sequences. Generate only sorted deduplicated union. Cross-set duplicate source generates once."
+  },
+  "generated_source_checks": "skip=0, feature_width=+0, spatial_enum=0, coordinate_parameter in{0,1}. source_skip is raw source control, not gate processing flag. All-source mode check still applies to empty union; unconsumed source skip/enum/coordinate branches are not numerically invoked.",
+  "quantization": "For each finite source XYZ: scaled=R32(x*32768); shifted=R32(scaled+(+0.5 if x>=0 else -0.5)); q=min(32767,trunc(shifted)), require final I32 and finite intermediates; no negative clamp. Convert q/32768 to F32. coordinate_parameter0 sets quantized Z integer0 only;1 preserves it. Signed zeros both take +0.5 branch.",
+  "plane_grouping": "Partition -0.1<z<=0.5 lower and z>0.5 upper; every basis index in exactly one plane, both nonempty. In stable original order take first pending anchor; members satisfy abs(R32(y-y_anchor))<R32(.01); remove, stable sort members by x; layer_y is first x-sorted member y. Stable-sort groups by layer_y. Do not use transitive clustering or original anchor as post-sort layer coordinate.",
+  "xy_weights": "F04G.3: X<=first endpoint selects first; X>=last selects last; otherwise first interval x_left<X<=x_right uses EQP(R32(R32(X-left)/R32(right-left))). Y<=first layer selects first; Y>last selects last; otherwise first interval y_left<=Y<=y_right uses same fraction/EQP. Multiply X and Y weights with one independent R32. Do not unify X/Y equality branches.",
+  "height": "Quantized Z<=0 gives1/0; floor(R32(Z*32768))>=32767 gives0/1; otherwise EQP(Z). For each basis index, result=R32(R32(lower_plane*low)+R32(upper_plane*high)); missing plane contribution at that basis index is+0.",
+  "angles": "EQP ratio finite F32 in[0,1]. If ratio<=.5: a=R32(R32(R32(ratio*R32(pi/4))*.5)*4), pair M32(cos(a)),M32(sin(a)); otherwise use R32(1-ratio) and swap pair. M32=R32(R64(exact real trig)); no fused/reassociated arithmetic, no direct one-round F32 trig. At signed zero sin preserves sign and cos=+1. Exact rational alternating series must stop only when both remainder interval endpoints round to the same R64 word.",
+  "threshold": "R32(1e-6) word358637bd. Clear to+0 only if threshold>response; equality retained. No further normalization, epsilon clamp, spread kernel, power primitive or reference-column fallback.",
+  "outputs": {
+    "columns": "sourceID -> complete15 finite nonnegative F32 response values in stable basis order.",
+    "feature_width_words": "same generated global IDs -> positive-zero F32 word; candidate width vector gathered by candidate globalID, never authored spread or union ordinal.",
+    "diagnostic": "15 basis rows x48 global source columns, ungenerated cells absent/null. Distinct from downstream n x48 coefficient matrix, whose uncalled cells are numerical+0."
+  },
+  "empty_paths": {
+    "empty_union": "No point columns, empty widths; diagnostic all null. Validate programme provider and all-source mode/input view contracts, return pure empty proposal. Do not fail or fill zero columns merely for empty set.",
+    "no_processing_nonempty_candidate": "Generate candidate response columns and candidate post-audio widths for selector; no solver calls does not erase candidate input.",
+    "no_candidate_nonempty_processing": "Selector returns empty selection; still generate processing source responses for downstream fit, preserve callback/quiet/marker processing.",
+    "whole_callback": "Neither empty union nor empty selected list grants early return from all callback stages. Existing targets may remain active. F03P.6 full15-slot context and active projection are a separate post-install consumer, and n0 still validates all15 fit records."
+  },
+  "owner_receipt": {
+    "classification": "LOCAL_MODEL callback proposal interface, not native ABI.",
+    "fields": [
+      "callback_generation",
+      "same_callback_source_and_gate_identity",
+      "P15_provider_identity",
+      "angle_mode",
+      "ordered_global_ids",
+      "owned_columns_and_feature_width_values"
+    ],
+    "state": "Pure columns/view/context; no persistent response history and no previous-callback cache fallback. Freeze provider per programme. F03W staged callback consumes this immutable proposal; successful parent callback commits once. Producer itself does not advance feature, target or marker/history state.",
+    "failure": "Type/shape/branch/provider/quantizer/numeric failure yields no partial proposal and follows I03 retirement; no native partial-failure equivalence asserted.",
+    "interface_note": "Local immutable proposal guidance only. Reuse approved typed identities; no new digest, HMAC, native receipt or generic framework is required. The source view adapter remains governed by approved F01E and its separate binding supplement."
+  },
+  "scope": "Response producer only; no selector/NNLS/outer/gain reimplementation, no new source controls, no new profile or real ADM quality claim.",
+  "readiness_qualification": "Sufficient to implement the existing selected mathematical response producer. Historical parameter-level implementation_ready=NO remains recorded; this clarification does not change it into a whole-programme or quality PASS. Parent package final PRE_HANDOFF scope governs coding admission; native and real-ADM acceptance remain NOT_RUN."
+}

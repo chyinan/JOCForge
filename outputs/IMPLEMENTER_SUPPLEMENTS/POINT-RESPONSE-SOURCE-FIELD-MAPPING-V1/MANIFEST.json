@@ -1,0 +1,27 @@
+{
+  "package_id": "POINT-RESPONSE-SOURCE-FIELD-MAPPING-V1",
+  "scope": "Four U32 semantic source fields and adjacent typed views only",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 6848,
+      "sha256": "b0c3f43117f2c30cc5c3a3bfab49bb9a199cb63f797acc4ef6489b04bc296872"
+    },
+    {
+      "file": "INPUT-ONLY-DISCRIMINATORS.json",
+      "bytes": 2794,
+      "sha256": "afec65c51df996dcb5fd79552474b85332609d861ffcae59079531dd1c6c9912"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 2304,
+      "sha256": "8eced89b7dcd75155ed7ac3ab7c308a029a47f851b327d7cfe45078ae290b91f"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 1023,
+      "sha256": "26dc24663af86316b672d7895a29ffbaf4387182a24e100e9c645bc99c0d38bc"
+    }
+  ],
+  "product_acceptance": "NOT_RUN"
+}

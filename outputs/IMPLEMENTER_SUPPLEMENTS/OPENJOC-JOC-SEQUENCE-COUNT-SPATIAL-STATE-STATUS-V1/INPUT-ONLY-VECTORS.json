@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-openjoc-sequence-count-state-vectors.v1",
+  "grade": "SOURCE_DERIVED_STATE_TRANSITION_CASES; NOT_EXECUTED",
+  "cases": [
+    {
+      "id": "sequence-zero-reset",
+      "input": {"previous_sequence":12,"next_sequence":0,"topology_unchanged":true},
+      "expected": {"decoder_matrix_and_qmf_state":"RESET"}
+    },
+    {
+      "id": "normal-successor",
+      "input": {"previous_sequence":15,"next_sequence":16,"topology_unchanged":true},
+      "expected": {"sequence_continuity":"RETAIN_STATE"}
+    },
+    {
+      "id": "sequence-gap-reset",
+      "input": {"previous_sequence":15,"next_sequence":17,"topology_unchanged":true},
+      "expected": {"decoder_matrix_and_qmf_state":"RESET"}
+    },
+    {
+      "id": "ten-bit-wrap",
+      "input": {"previous_sequence":1023,"next_sequence":1,"topology_unchanged":true},
+      "expected": {"sequence_continuity":"RETAIN_STATE"}
+    },
+    {
+      "id": "topology-change-reset",
+      "input": {"previous_sequence":15,"next_sequence":16,"channel_or_object_count_changed":true},
+      "expected": {"decoder_matrix_and_qmf_state":"RESET"}
+    },
+    {
+      "id": "timestamp-gap-without-discontinuity",
+      "input": {"timestamp_gap":true,"packet_discontinuity":false},
+      "expected": {"api_result":"REJECT_BEFORE_DECODE"}
+    }
+  ],
+  "limits": {
+    "vectors_are_executed_decoder_results": false,
+    "native_source_generation_join": "UNBOUND",
+    "perceived_audio_severity": "NOT_EVALUATED_LISTENING_REQUIRED"
+  }
+}

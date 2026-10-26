@@ -1,0 +1,15 @@
+{
+  "research_manifest_sha256": "48e6ebe5de177b04ab8bcb784b147ef3331f680e4e0ba7d8a2533d0d2330e2bd",
+  "research_payloads_verified": 7,
+  "source_hashes_verified": 8,
+  "decision": "APPROVED_LOCAL_REPRESENTATION_CHOICE_FOR_EXISTING_OWNER_STATE",
+  "independent_wash_checks": 140,
+  "wash_checks_scope": "28-track unique UID map invariant under graph reversal/rotation/host ordering, and semantic key single parse. Not full source replay.",
+  "research_reported_normal_checks": 868,
+  "research_reported_optimized_checks": 868,
+  "independent_reexecution_of_research_checker": "NOT_RUN: executable not in this package",
+  "native_sampler_array_order": "NOT_OBSERVED; not needed for local bijection",
+  "native_or_audio_execution": "NOT_RUN",
+  "source_code_delivered": false,
+  "private_keys_delivered": false
+}
