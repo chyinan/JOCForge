@@ -218,6 +218,7 @@
 | F09/lfe-long-transform-to-raw | F09 | `analysis` |
 | F09/transform-history-owner-and-workspace-initializer | F09 | `analysis` |
 | F09/selected-configuration-record-import | F09 | `analysis` |
+| F09/math-generated-transform-exponent-inputs | F09 | `analysis` |
 | F09E/refresh-difference-index-map | F09E | `analysis` |
 | F09PA/selected-policy-parameter-provider | F09PA | `analysis` |
 | F09G/precomputed-means-to-db-selector | F09G | `analysis` |
@@ -226,6 +227,7 @@
 | F09LB/selected-lfe-gate-and-mantissa-boundary | F09LB | `analysis` |
 | F10/fullband-exponent-row-normalization | F10 | `analysis` |
 | F10/exponent-difference-triple-packing | F10 | `analysis` |
+| F10/fullband-f09-refresh-normalization-stage | F10 | `analysis` |
 | F12/grouped-quantizer-helper | F12 | `codec` |
 | F12/bounded-msb-frame-bit-writer | F12 | `codec` |
 | F12/selected-fixed-profile-header-prefix | F12 | `codec` |

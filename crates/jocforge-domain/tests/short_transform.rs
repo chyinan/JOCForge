@@ -6,7 +6,8 @@ use sha2::{Digest, Sha256};
 
 const INPUT_VECTORS_SHA256: &str =
     "eb825796adc60933b1c717122f991a9a0ced95ab0cd89d29ef4f6e1e28b6866c";
-const RESULT_SHA256: &str = "a77806e29ea7e0cb361353a2a6313826e4cdcc2b3f36cebce6fc0b434cdcb906";
+const RESULT_SHA256: &str =
+    "a77806e29ea7e0cb361353a2a6313826e4cdcc2b3f36cebce6fc0b434cdcb906";
 const INPUT_VECTORS: &str = include_str!("fixtures/window_fold/INPUT-ONLY-VECTORS.json");
 const RESULT: &str = include_str!("fixtures/window_fold/RESULT.json");
 
@@ -48,9 +49,7 @@ fn math_generated_short_branch_matches_nonzero_fbw_trace() {
     assert_eq!(result["whole_implementation_ready"], "NO");
 
     let blocks = inputs["fbw_continuous"]["blocks"].as_array().unwrap();
-    let flags = inputs["fbw_continuous"]["short_flags_i1"]
-        .as_array()
-        .unwrap();
+    let flags = inputs["fbw_continuous"]["short_flags_i1"].as_array().unwrap();
     let traces = result["fbw_continuous"]["traces"].as_array().unwrap();
     assert_eq!(flags.len(), 3);
     assert_eq!(flags[0].as_u64(), Some(0));
@@ -60,8 +59,13 @@ fn math_generated_short_branch_matches_nonzero_fbw_trace() {
     let parameters = MathGeneratedTransformParameters::selected_math_generated_v1().unwrap();
     let zero_history = [0_u32; 128];
     let long_input = block_from_recipe(&blocks[0]);
-    let long_fold =
-        f08_window_fold_block(&long_input, &zero_history, &zero_history, &parameters).unwrap();
+    let long_fold = f08_window_fold_block(
+        &long_input,
+        &zero_history,
+        &zero_history,
+        &parameters,
+    )
+    .unwrap();
     assert_eq!(
         sha256_words(long_fold.primary_history_after()),
         traces[0]["primary_next_history_sha256"].as_str().unwrap()
@@ -95,9 +99,7 @@ fn math_generated_short_branch_matches_nonzero_fbw_trace() {
             .iter()
             .filter(|word| **word != 0)
             .count(),
-        traces[1]["nonzero_primary_spectrum_words"]
-            .as_u64()
-            .unwrap() as usize
+        traces[1]["nonzero_primary_spectrum_words"].as_u64().unwrap() as usize
     );
     assert_eq!(
         short_output
@@ -105,8 +107,6 @@ fn math_generated_short_branch_matches_nonzero_fbw_trace() {
             .iter()
             .filter(|word| **word != 0)
             .count(),
-        traces[1]["nonzero_companion_spectrum_words"]
-            .as_u64()
-            .unwrap() as usize
+        traces[1]["nonzero_companion_spectrum_words"].as_u64().unwrap() as usize
     );
 }

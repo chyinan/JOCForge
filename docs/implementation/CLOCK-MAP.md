@@ -218,6 +218,7 @@
 | F09/lfe-long-transform-to-raw | — | `Two branch history values are caller-owned inputs/outputs retained across the two synthetic test calls only; product analysis generation, source/AU mapping, and reset/clock ownership are not assigned here.` |
 | F09/transform-history-owner-and-workspace-initializer | — | `Controlled same-owner history carry is tested across two calls; no absolute sample, analysis generation, callback, AU, or EOF clock is inferred.` |
 | F09/selected-configuration-record-import | — | `One synchronous source-record import only; no source-frame, callback, AU, or persistent owner clock is created.` |
+| F09/math-generated-transform-exponent-inputs | — | `Consumes one caller-supplied transform output and owns no block, callback, source, AU, or programme clock.` |
 | F09E/refresh-difference-index-map | — | `The function is pure, stateless, and owns no callback, source, AU, or commit clock.` |
 | F09PA/selected-policy-parameter-provider | — | `Stateless provider admission; no numeric, db, gain, transform, callback, source, or AU clock advances.` |
 | F09G/precomputed-means-to-db-selector | — | `Pure one-block selector calculation; returns the next U16 value without committing cross-block or frame state.` |
@@ -226,6 +227,7 @@
 | F09LB/selected-lfe-gate-and-mantissa-boundary | — | `The selected coefficient stage owns no source/AU counter; each explicit stage/finish pair describes one local candidate transaction.` |
 | F10/fullband-exponent-row-normalization | — | `Stateless one-row calculation over caller-ordered bins; no source-frame clock or committed state is owned.` |
 | F10/exponent-difference-triple-packing | — | `Stateless packing of one caller-ordered group; no source-frame or AU clock is owned.` |
+| F10/fullband-f09-refresh-normalization-stage | — | `Stages one caller-supplied exponent row and before-state; selected block/source/AU clock and multi-block strategy traversal remain external.` |
 | F12/grouped-quantizer-helper | — | `Consumes an explicitly ordered item slice; owns no callback, source, AU, or retry clock.` |
 | F12/bounded-msb-frame-bit-writer | `FrameBitCursor` | `cursor advances by exactly each admitted field width`<br>`failed width/value/capacity checks do not advance the cursor` |
 | F12/selected-fixed-profile-header-prefix | `FrameBitCursor` | `Fixed prefix begins only at bit cursor 0 and advances exactly 45 bits.`<br>`Insufficient scratch capacity is checked before writing any prefix bits; display pad bits are outside the prefix.` |

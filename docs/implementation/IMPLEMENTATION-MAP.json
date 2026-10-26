@@ -9547,6 +9547,107 @@
             "external job-to-record writer, all configuration values/enums, complete metadata importer, and actual current-row binding",
             "ADM input scheduling, reset/EOF, whole F09, product integration, and audio acceptance"
           ]
+        },
+        {
+          "slice_id": "math-generated-transform-exponent-inputs",
+          "mapping_status": "MATERIALIZED_DIRECT_F08_TO_F09_POWER_PRIMARY_ROWS__REFRESH_AND_F10_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_217_AND_7_BIN_POWER_PRIMARY_ROWS__F09_REFRESH_F10_OPEN",
+          "scope": "Consumes math-generated F08 FBW or LFE spectra. Full-band uses the first 217 bins; LFE uses all seven. Computes separately rounded R32 POWER values, selected POWER raw exponents with bias 0/cap 48, and strict-clipped PRIMARY coefficients/raw exponents. Returns the clipped primary row for downstream mantissa use. It does not run F09 refresh state, policy selection, F10 normalization/packing, source clocks, or parent commit.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/transform/exponent_inputs.rs",
+            "crates/jocforge-domain/src/transform/fbw_transform.rs",
+            "crates/jocforge-domain/src/transform/lfe_transform.rs",
+            "crates/jocforge-domain/src/transform/math_generated_parameters.rs",
+            "crates/jocforge-domain/src/codec/mantissa.rs",
+            "crates/jocforge-domain/src/codec/raw_exponent_from_power.rs",
+            "crates/jocforge-domain/src/numeric/finite_f32.rs",
+            "crates/jocforge-domain/src/transform/mod.rs"
+          ],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Consumes one caller-supplied transform output and owns no block, callback, source, AU, or programme clock."
+            ]
+          },
+          "parameters": {
+            "kind": "SELECTED_F08_TO_F09_POWER_PRIMARY_EXPONENT_INPUTS",
+            "provider_files": [
+              "specs/08-transforms.md",
+              "specs/08-nonzero-transform-composition.md",
+              "specs/09-exponents.md",
+              "parameters/ordinary-transform-math-v1.json",
+              "crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json"
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "transform_spec_sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e",
+            "composition_spec_sha256": "629d8c5c2853f81f82bcee281370fbb39efea0a62255f367da6fd3677172175d",
+            "exponent_spec_sha256": "41cd157140d0deaab51fa9a895c33758cb49eb46cf5844a2883c1d6e8bb81739",
+            "math_generated_provider_sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1",
+            "validation_boundary": "Uses selected math-generated-v1 F08 spectra and F09 POWER bias 0/cap 48. It does not claim native coefficient identity or full F09/F10 completion."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/transform_exponent_inputs.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_F08_FBW_AND_LFE_F09_POWER_PRIMARY_ROWS",
+            "authoritative_vectors": [
+              "test-vectors/F08-NONZERO-COMPOSITION-INPUT-VECTORS.json",
+              "test-vectors/F08-NONZERO-COMPOSITION-RESULT.json",
+              "crates/jocforge-domain/tests/fixtures/window_fold/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json"
+            ],
+            "case_pointers": [
+              "Recomputes the three continuous FBW long/short/long traces and matches POWER F32, POWER raw-exponent, and PRIMARY raw-exponent row hashes and exposed previews over 217 bins.",
+              "Recomputes all three continuous LFE traces and matches the same three row identities over seven bins.",
+              "The result contains hashes/previews rather than full expected rows; this is not a full-word independent oracle replay or product acceptance."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/window_fold/INPUT-ONLY-VECTORS.json",
+              "bytes": 3771,
+              "sha256": "eb825796adc60933b1c717122f991a9a0ced95ab0cd89d29ef4f6e1e28b6866c"
+            },
+            "additional_fixtures": [
+              {
+                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
+                "bytes": 19159,
+                "sha256": "a77806e29ea7e0cb361353a2a6313826e4cdcc2b3f36cebce6fc0b434cdcb906"
+              }
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "native_status": {
+            "provider_profile": "math-generated-v1",
+            "fbw_217_bin_power_primary_rows": "LOCALLY_VERIFIED_FOR_SYNTHETIC_TRACE_HASHES",
+            "lfe_seven_bin_power_primary_rows": "LOCALLY_VERIFIED_FOR_SYNTHETIC_TRACE_HASHES",
+            "f09_refresh_state_and_policy_selection": "NOT_IMPLEMENTED_BY_THIS_SLICE",
+            "f10_normalization_and_packing": "NOT_IMPLEMENTED_BY_THIS_SLICE",
+            "native_equivalence": "NOT_RUN",
+            "whole_f09_f10": "NOT_IMPLEMENTED",
+            "product_render_and_listening": "NOT_RUN"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "EXPONENT_INPUT_ERROR",
+              "category": "F08 coefficient row shape or finite values",
+              "trigger": "A caller-supplied transform output does not contain the selected finite 217-bin FBW or seven-bin LFE row.",
+              "programme_state_after": "No POWER or PRIMARY row is returned; input transform values remain unchanged.",
+              "caller_action": "Reject the exponent input under F09; do not substitute a shorter row or zero fill."
+            },
+            {
+              "error_code": "NUMERIC_FAILURE",
+              "category": "separately rounded POWER square/add operation",
+              "trigger": "A required binary32 square or sum is nonfinite.",
+              "programme_state_after": "No POWER or PRIMARY row is returned; input transform values remain unchanged.",
+              "caller_action": "Stop and rebuild under I03; do not continue with partial exponent inputs."
+            }
+          ],
+          "not_run": [
+            "F09 exponent refresh/current-work state transition, mode/marker production, and authorized policy loading.",
+            "F10 normalization, reuse interval merge, and exponent-difference packing.",
+            "F07 source production, source/AU clock joins, F12 frame writing, parent success/fatal/reset/EOF, native equivalence, and product acceptance."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -10199,6 +10300,125 @@
               "caller_action": "Reject the candidate and follow F09.7/I03 stop-and-rebuild handling."
             }
           ]
+        },
+        {
+          "slice_id": "fullband-f09-refresh-normalization-stage",
+          "mapping_status": "MATERIALIZED_DIRECT_F08_F09_REFRESH_TO_F10_NORMALIZATION_STAGE__PARENT_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_STRUCTURAL_REFRESH_AND_F10_NORMALIZATION_PROPOSAL__NO_COMPOSITE_ORACLE",
+          "scope": "Consumes a selected F08 217-bin POWER/PRIMARY proposal, caller-owned before work row and marker, caller-supplied F09 mode/special controls, and caller-supplied F10 span/option/gate/policy. It stages one F09 refresh over bins [0,128), then passes the resulting POWER current row to F10 full-band normalization. It returns current/work/marker proposals, normalized snapshot, and unchanged POWER/PRIMARY inputs. It does not choose the policy controls, create a cold owner, assign a source clock, or commit state.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/transform/fullband_exponent_pipeline.rs",
+            "crates/jocforge-domain/src/transform/exponent_inputs.rs",
+            "crates/jocforge-domain/src/transform/fbw_transform.rs",
+            "crates/jocforge-domain/src/transform/math_generated_parameters.rs",
+            "crates/jocforge-domain/src/codec/exponent_refresh_state.rs",
+            "crates/jocforge-domain/src/codec/exponent_normalization.rs",
+            "crates/jocforge-domain/src/codec/policy_parameters.rs",
+            "crates/jocforge-domain/src/codec/mantissa.rs",
+            "crates/jocforge-domain/src/codec/raw_exponent_from_power.rs",
+            "crates/jocforge-domain/src/numeric/finite_f32.rs",
+            "crates/jocforge-domain/src/transform/mod.rs"
+          ],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Stages one caller-supplied exponent row and before-state; selected block/source/AU clock and multi-block strategy traversal remain external."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_MATH_GENERATED_F08_F09_F10_FULLBAND_STAGE_INPUTS",
+            "provider_files": [
+              "specs/08-transforms.md",
+              "specs/08-nonzero-transform-composition.md",
+              "specs/09-exponents.md",
+              "specs/10-exponent-normalization.md",
+              "parameters/ordinary-transform-math-v1.json",
+              "crates/jocforge-domain/tests/fixtures/policy_authorized/PARAMETERS.json"
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "transform_spec_sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e",
+            "composition_spec_sha256": "629d8c5c2853f81f82bcee281370fbb39efea0a62255f367da6fd3677172175d",
+            "exponent_spec_sha256": "41cd157140d0deaab51fa9a895c33758cb49eb46cf5844a2883c1d6e8bb81739",
+            "normalization_spec_sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc",
+            "math_generated_provider_sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1",
+            "policy_provider_sha256": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a",
+            "validation_boundary": "Uses the identity-validated selected F09PA policy provider when requested; F09 controls remain explicit caller inputs."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/fullband_exponent_pipeline.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_F08_TO_F09_F10_STAGE_INPUTS_AND_CONSUMER_BOUNDARY",
+            "authoritative_vectors": [
+              "test-vectors/F08-NONZERO-COMPOSITION-INPUT-VECTORS.json",
+              "test-vectors/F08-NONZERO-COMPOSITION-RESULT.json",
+              "crates/jocforge-domain/tests/fixtures/policy_authorized/PARAMETERS.json",
+              "specs/09-exponents.md",
+              "specs/10-exponent-normalization.md"
+            ],
+            "case_pointers": [
+              "Uses the first continuous FBW long trace, its hash-bound F08-to-F09 POWER/PRIMARY rows, and an explicit marker=1 structural-refresh case with zero before-work state.",
+              "Checks the F09 [0,128) structural refresh formula and F10 selected-policy normalization result shape/range; the combined F09/F10 normalized row has no separate Wash expected-output snapshot.",
+              "The F08 result remains hash/preview evidence; this test does not claim native, full-word composed, whole-programme, or product acceptance."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/window_fold/INPUT-ONLY-VECTORS.json",
+              "bytes": 3771,
+              "sha256": "eb825796adc60933b1c717122f991a9a0ced95ab0cd89d29ef4f6e1e28b6866c"
+            },
+            "additional_fixtures": [
+              {
+                "file": "crates/jocforge-domain/tests/fixtures/window_fold/RESULT.json",
+                "bytes": 19159,
+                "sha256": "a77806e29ea7e0cb361353a2a6313826e4cdcc2b3f36cebce6fc0b434cdcb906"
+              },
+              {
+                "file": "crates/jocforge-domain/tests/fixtures/policy_authorized/PARAMETERS.json",
+                "bytes": 4559,
+                "sha256": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a"
+              }
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+          },
+          "native_status": {
+            "provider_profile": "math-generated-v1",
+            "f09_structural_refresh_to_f10_normalizer": "LOCALLY_CONNECTED_FOR_ONE_CALLER_SUPPLIED_CASE",
+            "composed_expected_snapshot": "NOT_PROVIDED",
+            "cold_owner_reset_and_source_clock": "NOT_IMPLEMENTED_BY_THIS_SLICE",
+            "native_equivalence": "NOT_RUN",
+            "whole_f09_f10": "NOT_IMPLEMENTED",
+            "product_render_and_listening": "NOT_RUN"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "EXPONENT_INPUT_ERROR",
+              "category": "F09 before-state or caller controls",
+              "trigger": "Marker/mode/special is outside 0/1, the work row is outside 0..=31, the POWER raw row is outside 0..=24, or the F10 span/option is unsupported.",
+              "programme_state_after": "No stage proposal is returned; caller-owned before-state is unchanged.",
+              "caller_action": "Reject before the F09 transition; do not normalize partial state."
+            },
+            {
+              "error_code": "PARAMETER_UNAVAILABLE",
+              "category": "F10 D06-N policy provider",
+              "trigger": "F10 option=1 and gate=0 require a selected policy provider that was not supplied.",
+              "programme_state_after": "The local F09 transition is discarded; no stage proposal is returned.",
+              "caller_action": "Stop parameter admission; do not substitute a factor."
+            },
+            {
+              "error_code": "NUMERIC_FAILURE",
+              "category": "F10 normalization R32 conversion",
+              "trigger": "The downstream normalizer reports a nonfinite intermediate or numeric conversion failure.",
+              "programme_state_after": "The local F09 transition is discarded; caller-owned before-state is unchanged.",
+              "caller_action": "Stop and rebuild under F09.7/I03; do not publish a partial normalized row."
+            }
+          ],
+          "not_run": [
+            "Selected mode/marker/span/gate derivation, multi-block strategy traversal, six-block interval merge, and persistent cold/reset owner.",
+            "F09 LFE refresh and F10 LFE normalization are not implemented by this full-band stage.",
+            "Source/AU clocks, F07 producer, F12 frame writes, parent success/fatal/EOF, native equivalence, and product acceptance remain open."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },

@@ -1,7 +1,9 @@
 // pattern: Functional Core
 //! Selected transform helpers; parent audio clocks and lifecycle remain outside this module.
 
+pub mod exponent_inputs;
 pub mod fbw_transform;
+pub mod fullband_exponent_pipeline;
 pub mod history_owner;
 pub mod lfe_transform;
 pub mod long_transform;
