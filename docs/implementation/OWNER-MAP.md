@@ -268,4 +268,5 @@
 | F13C/washed-parent-writer-serialization-and-no-output-boundary-hold | F13C | `metadata` |
 | F13C/selected-model-joc-complexity-u8-projection | F13C | `metadata` |
 | F13D2/id2-profile-header-and-body-wire | F13D2 | `metadata` |
+| F14/authenticated-bit-compaction | F14 | `integrity` |
 | F14K/public-keyless-integrity-owner | F14K | `integrity` |

@@ -13291,7 +13291,86 @@
       "owner": "integrity",
       "planned_phase": "Phase 7",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "authenticated-bit-compaction",
+          "mapping_status": "MATERIALIZED_DIRECT_F14_1_AUTH_BASE_BIT_COMPACTION__AU_OWNER_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_SYNTHETIC_BIT_RANGES_AND_TAIL_WORD_COMMIT__PRODUCTION_AU_OPEN",
+          "scope": "Compacts an even-byte input in MSB-first order after ordered, non-overlapping, closed bit exclusions. Commits complete 16-bit words, zero-pads when the remaining tail is at least eight bits, and discards a shorter tail. The primitive accepts arbitrary even-byte synthetic inputs; it does not discover production AU exclusion ranges or process a fixed 4096-byte AU.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/authenticated_bit_compaction.rs",
+            "crates/jocforge-domain/src/codec/mod.rs"
+          ],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Stateless bit-stream projection; no frame, source, AU, or programme clock is owned."
+            ]
+          },
+          "parameters": {
+            "kind": "NONE_F14_1_BIT_COMPACTION_CONSTANTS",
+            "provider_files": [
+              "specs/14-integrity.md"
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_spec_sha256": "7e9df3565d0ab25dad1ab4989de57003d399a0e839a5fb298a6bfc53b240894f",
+            "validation_boundary": "Implements only public F14.1 bit compaction; no key, HMAC, or production AU writer fields are loaded."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/authenticated_bit_compaction.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_F14_1_U_COMPACT_CLOSED_RANGE_AND_TAIL_CASES",
+            "authoritative_vectors": [
+              "test-vectors/unit/vectors.json",
+              "test-vectors/UNIT-RECHECK.json",
+              "crates/jocforge-domain/tests/fixtures/authenticated_bit_compaction/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/authenticated_bit_compaction/RESULT.json",
+              "crates/jocforge-domain/tests/fixtures/authenticated_bit_compaction/PROVENANCE.json"
+            ],
+            "case_pointers": [
+              "U-COMPACT-0-15, U-COMPACT-0-23, U-COMPACT-0-24, and U-COMPACT-4-7 verify MSB-first exclusions, 16-bit word boundaries, zero padding, and short-tail discard.",
+              "Invalid odd-byte, reversed, out-of-bounds, overlapping, and unsorted inputs are rejected by the typed local boundary.",
+              "The vector cases are synthetic primitives; they are not production AU bit ranges or authentication/HMAC acceptance."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/authenticated_bit_compaction/INPUT-ONLY-VECTORS.json",
+              "bytes": 818,
+              "sha256": "3d53b26ee249cde0a6531f3ffd96cd352cad5877c64a3f154ba57c24073b4b87"
+            },
+            "additional_fixtures": [
+              {
+                "file": "crates/jocforge-domain/tests/fixtures/authenticated_bit_compaction/RESULT.json",
+                "bytes": 894,
+                "sha256": "a90344b2a749e6f94744fce50e847a424661dbecc3a29437935fdf4f36174626"
+              },
+              {
+                "file": "crates/jocforge-domain/tests/fixtures/authenticated_bit_compaction/PROVENANCE.json",
+                "bytes": 907,
+                "sha256": "e38b9184b9a6fccd5e63d24d58a3a7658910407bcf2466aec1f00498f16514bd"
+              }
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_unit_vector_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8",
+            "source_unit_recheck_sha256": "ba30733a7afd586b7ba21a2e69ccd9e09ce9b9f976659b5f3e055c261f30753f"
+          },
+          "native_status": {
+            "u_compact_four_synthetic_cases": "LOCALLY_VERIFIED",
+            "production_4096_byte_au_and_writer_exclusions": "NOT_IMPLEMENTED_BY_THIS_SLICE",
+            "hmac_and_authenticated_product_base": "NOT_RUN",
+            "whole_f14": "NOT_IMPLEMENTED",
+            "product_acceptance": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Production AU writer exclusion-range discovery/receipt and fixed 4096-byte input validation.",
+            "F14.2 HMAC/history, F14.3 AU container substitution, production F14.4 frame CRC transaction, and whole codec/product acceptance."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        }
+      ]
     },
     {
       "functional_id": "F14K",
