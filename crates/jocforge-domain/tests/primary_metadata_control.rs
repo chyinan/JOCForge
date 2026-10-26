@@ -8,6 +8,10 @@ use jocforge_domain::frontend::primary_metadata_control::{
     PrimaryControl38Fields, PrimaryMetadataControlError, produce_primary_metadata_control_rows,
 };
 use jocforge_domain::frontend::selected_adm_graph::parse_selected_adm_graph;
+use jocforge_domain::spatial::source_flags::{
+    SourceControlSnapshotClock, SourceFlagsProducer, project_primary_regular_source_controls,
+};
+use jocforge_domain::timeline::{FrontendCallbackIndex, NormalCallbackCount};
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 
@@ -184,6 +188,108 @@ fn primary_projection_binds_metadata_and_reproduces_defined_control_rows() {
         }
     }
     assert_eq!(compared_object_words, 364);
+}
+
+#[test]
+fn primary_regular_controls_use_role_fields_and_hold_last_normal_origin_on_drain() {
+    let binding = bind_selected_primary_control_projection(
+        JOB_PROJECTION,
+        JOB_PROJECTION_RECEIPT,
+        FROZEN_JOB_BINDING,
+        PRIMARY_SOURCE_RECEIPT,
+    )
+    .unwrap();
+    let graph = parse_selected_adm_graph(AXML, CHNA).unwrap();
+    let dbmd = parse_selected_dbmd_sections(DBMD).unwrap();
+    let control_rows = produce_primary_metadata_control_rows(&binding, &graph, &dbmd).unwrap();
+    let normal_callbacks = NormalCallbackCount::new(4_247);
+    let last_normal = FrontendCallbackIndex::new(4_246);
+    let normal_clock =
+        SourceControlSnapshotClock::for_normal_callback(last_normal, normal_callbacks).unwrap();
+    let projection = project_primary_regular_source_controls(
+        &control_rows,
+        &graph,
+        binding.selected_profile(),
+        normal_clock,
+    )
+    .unwrap();
+
+    assert_eq!(projection.route().regular_hosts().len(), 37);
+    assert_eq!(projection.controls().rows().len(), 37);
+    assert_eq!(projection.clock().source_origin(), last_normal);
+    let direct_lfe_host = graph.receipt().direct_lfe_host().value();
+    let regular_rows = control_rows
+        .rows()
+        .iter()
+        .filter(|row| row.track().physical_host().value() != direct_lfe_host)
+        .collect::<Vec<_>>();
+    assert_eq!(regular_rows.len(), 37);
+    let mut distinguished_object_width = false;
+    for (source_ordinal, (row, control)) in regular_rows
+        .iter()
+        .zip(projection.controls().rows())
+        .enumerate()
+    {
+        let host = row.track().physical_host();
+        assert_eq!(control.host().value(), host.value());
+        let binding = graph
+            .regular_source_bindings()
+            .iter()
+            .find(|item| item.physical_host() == host)
+            .unwrap();
+        assert_eq!(binding.global_source().value(), 11 + source_ordinal as u64);
+
+        match row.fields() {
+            PrimaryControl38Fields::Bed { words, .. } => {
+                assert_eq!(control.is_muted(), words[0] == 1);
+                assert_eq!(control.width().to_bits(), 0);
+            }
+            PrimaryControl38Fields::Object { control52 } => {
+                let words = control52.words();
+                assert_eq!(control.is_muted(), words[0] == 1);
+                assert_eq!(control.width().to_bits(), words[9]);
+                distinguished_object_width |= words[9] != words[10];
+            }
+        }
+    }
+    assert!(distinguished_object_width);
+
+    let current_pcm = vec![vec![0_u32; 1_536]; 38];
+    let previous_history = vec![vec![0_u32; 1_536]; 37];
+    let prefix_writers = (0..11).collect::<Vec<u8>>();
+    let flags = SourceFlagsProducer::produce_meter_values(
+        &current_pcm,
+        &previous_history,
+        projection.controls(),
+        projection.route(),
+        &prefix_writers,
+    )
+    .unwrap();
+    assert!(flags.payload()[..11].iter().all(|pair| *pair == [0, 0]));
+    for (source_ordinal, control) in projection.controls().rows().iter().enumerate() {
+        assert_eq!(
+            flags.payload()[11 + source_ordinal],
+            [1, u8::from(control.is_muted())]
+        );
+    }
+
+    let drain_callback = FrontendCallbackIndex::new(4_247);
+    let drain_clock =
+        SourceControlSnapshotClock::for_cached_drain(drain_callback, normal_callbacks).unwrap();
+    let drain_projection = project_primary_regular_source_controls(
+        &control_rows,
+        &graph,
+        binding.selected_profile(),
+        drain_clock,
+    )
+    .unwrap();
+    assert!(drain_projection.clock().is_cached_drain());
+    assert_eq!(drain_projection.clock().callback_index(), drain_callback);
+    assert_eq!(drain_projection.clock().source_origin(), last_normal);
+    assert_eq!(
+        SourceControlSnapshotClock::for_normal_callback(drain_callback, normal_callbacks),
+        Err(jocforge_domain::spatial::source_flags::SourceFlagsError::SourceControlClock)
+    );
 }
 
 #[test]

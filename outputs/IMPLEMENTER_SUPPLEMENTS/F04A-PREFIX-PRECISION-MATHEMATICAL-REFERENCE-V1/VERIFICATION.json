@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge-prefix-mathematical-reference-verification.v1",
+  "research_payload_hashes": "7/7_MATCH",
+  "approved_contract_hashes": "5/5_MATCH",
+  "frozen_source_hashes": "4/4_MATCH",
+  "wash_clean_reference_normal_and_optimized": {
+    "status": "PASS_EACH",
+    "synthetic_samples_computed": 10440,
+    "frozen_scalar_sample_comparisons": 0,
+    "omitted_pre_gain_R32_differences": 14,
+    "early_F32_literal_differences": 0,
+    "stale_previous_prefix_differences": 1453
+  },
+  "research_reported_frozen_scalar_comparison": {
+    "samples": 10440,
+    "normal_and_optimized": "MATCH_REPORTED_BY_RESEARCH",
+    "wash_repeated_frozen_model_execution": false
+  },
+  "current_implementation_expression": "Implementation Agent reports approved pre-gain R32 ordering; no source code was used as reference.",
+  "older_expression_or_correction_commit": "UNAVAILABLE_IN_REPORTED_CURRENT_HISTORY",
+  "full_corrected_g0_g2_conformance": "NOT_RUN",
+  "native_execution": "NOT_RUN",
+  "real_PCM_or_reference_audio": "NOT_READ",
+  "independent_reference_source_review": "Pure mathematical functions and deterministic synthetic recipes; no external code loading or file mutation."
+}

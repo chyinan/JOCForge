@@ -305,6 +305,30 @@ impl MeterFrontendCallbackInput {
             regular_control_words,
         }
     }
+
+    pub const fn callback_index(&self) -> MeterCallbackIndex {
+        self.callback_index
+    }
+
+    pub const fn upstream_generation(&self) -> ObjectRenderCallbackGeneration {
+        self.upstream_generation
+    }
+
+    pub const fn phase(&self) -> MeterCallbackPhase {
+        self.phase
+    }
+
+    pub fn current_lfe_words(&self) -> &[u32] {
+        &self.current_lfe_words
+    }
+
+    pub fn regular_pcm_words(&self) -> &[Vec<u32>] {
+        &self.regular_pcm_words
+    }
+
+    pub fn regular_control_words(&self) -> &[Vec<u32>] {
+        &self.regular_control_words
+    }
 }
 
 #[must_use]

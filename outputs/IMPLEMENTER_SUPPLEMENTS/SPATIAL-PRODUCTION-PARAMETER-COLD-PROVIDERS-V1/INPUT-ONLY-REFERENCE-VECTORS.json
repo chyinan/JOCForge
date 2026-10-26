@@ -1,0 +1,70 @@
+{
+  "schema": "jocforge-approved-input-only-vector-reference-index.v1",
+  "copied_vector_payloads": false,
+  "references": [
+    {
+      "path": "test-vectors/ADM-INSTALLED48-WHOLE-INPUT-VECTORS.json",
+      "bytes": 297763,
+      "sha256": "1b405277987597f6d176d0cabd236bc437645c0e770fbfb9c7b9319950c26bdf",
+      "scope": "synthetic input-only recipe; input_only=true, PCM files absent, no private key",
+      "reference_only": true,
+      "payload_copied": false
+    },
+    {
+      "path": "test-vectors/ADM-INSTALLED48-WHOLE-VERIFICATION.json",
+      "bytes": 573,
+      "sha256": "c4d255a5b916f08cfdfec6b50ea60a00eb440365369ec90423e0e94b1886a69e",
+      "scope": "synthetic composition PASS; not real ADM execution",
+      "reference_only": true,
+      "payload_copied": false
+    },
+    {
+      "path": "test-vectors/SELECTED-GEOMETRY-AUTHORIZED-VERIFICATION.json",
+      "bytes": 4843,
+      "sha256": "755290873e1ddec1cbb389ceb16967c20a5ced9bbc8449a42cbb2a412b245017",
+      "scope": "geometry word comparison; whole frontend and spatial acceptance NOT_RUN",
+      "reference_only": true,
+      "payload_copied": false
+    },
+    {
+      "path": "test-vectors/SPREAD-AUTHORIZED-VERIFICATION.json",
+      "bytes": 91375,
+      "sha256": "78dbf5563754b83b12d023e0b434e5bd89394a7d67a536ac27d5288f16c2a236",
+      "scope": "three input recipes, nine gain cases, three rejection cases",
+      "reference_only": true,
+      "payload_copied": false
+    },
+    {
+      "path": "test-vectors/FULL-SYNTHETIC-PREFIX-SPREAD-VERIFICATION.json",
+      "bytes": 10554,
+      "sha256": "787255e7ccff3114bb16d0bef93a34ebe2e2aaf8e8df104dc700f0a5b3943dd0",
+      "scope": "synthetic geometry only; local review PENDING_R3",
+      "reference_only": true,
+      "payload_copied": false
+    },
+    {
+      "path": "test-vectors/COMPONENT-PARAMETER-GENERATION-VERIFICATION.json",
+      "bytes": 55848,
+      "sha256": "819e7cede6f54689a87aad72c8ec3d8a5cb4b14fe41fc6a5556a03973f01ec85",
+      "scope": "23 synthetic cases; cold state equal",
+      "reference_only": true,
+      "payload_copied": false
+    },
+    {
+      "path": "test-vectors/DIFFUSION-CONSTRUCTOR-GENERATION-VERIFICATION.json",
+      "bytes": 4024,
+      "sha256": "3ff423d3d0308c8d5f6c1b4338547fd3013973bad172b6dbf739086ba077fc12",
+      "scope": "10 config words and complete cold state exact",
+      "reference_only": true,
+      "payload_copied": false
+    },
+    {
+      "path": "test-vectors/DIFFUSION-MATH-GENERATION-VERIFICATION.json",
+      "bytes": 4323,
+      "sha256": "5705761f79fba8030081aae9bb82322c891bdec16b3fc8aa1ab86f56101ecb91",
+      "scope": "coefficients, modes/lanes and four continuous cases",
+      "reference_only": true,
+      "payload_copied": false
+    }
+  ]
+}

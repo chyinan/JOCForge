@@ -59,7 +59,7 @@ pub(super) enum CurrentFeaturesError {
 pub struct CurrentFeaturesPacket {
     _callback_index: FrontendCallbackIndex,
     _parent_transaction_id: CallbackLineageIdentity,
-    _features_f32_bits_24x48: Box<[[u32; SOURCE_COUNT]]>,
+    features_f32_bits_24x48: Box<[[u32; SOURCE_COUNT]]>,
 }
 
 impl CurrentFeaturesPacket {
@@ -71,8 +71,12 @@ impl CurrentFeaturesPacket {
         Self {
             _callback_index: callback_index,
             _parent_transaction_id: parent_transaction_id,
-            _features_f32_bits_24x48: features_f32_bits_24x48,
+            features_f32_bits_24x48,
         }
+    }
+
+    pub(super) fn band_major_features(&self) -> &[[u32; SOURCE_COUNT]] {
+        &self.features_f32_bits_24x48
     }
 }
 
@@ -618,7 +622,7 @@ impl CurrentFeaturesPacket {
     }
 
     fn test_payload_bits(&self) -> &[[u32; SOURCE_COUNT]] {
-        &self._features_f32_bits_24x48
+        &self.features_f32_bits_24x48
     }
 }
 

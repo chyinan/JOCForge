@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V1",
+  "status": "SOURCE_HASH_MISMATCH_CONFIRMED_MODEL_CROSSWALK_UNBOUND",
+  "implementation_ready": false,
+  "source_reverse_manifest_sha256": "7f19c4dbc040cc3710b016b3a187f878467a42693455f2c945a1354c200cd3e2",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1167,
+      "sha256": "adae63c4ffba493f93795a5d7a9c39459bcdee89d094d46f2c92c466b61d8909"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1473,
+      "sha256": "05a5377de59a123711e524fddb9e6b2e52bfca708f508f0c6375d934e7386b2b"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 819,
+      "sha256": "917e17ecbfaba2d96a77bf9881709d14ce2f3884b52aab62cd206021b5787cba"
+    }
+  ]
+}

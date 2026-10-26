@@ -1,0 +1,17 @@
+# Bed and object inputs to selected source flags
+
+Ready scope: supply the existing F03R RegularControl mute/width and selected feature controls from the admitted physical source metadata. This is a stateless selected-model adapter, not a recovered authored bed-width field or a native execution claim.
+
+For a DirectSpeakers bed route, the frozen adapter explicitly constructs the six defined words [0,0,3,2,1,bed_id]. It obtains mute=0 from defined word0 and separately assigns finite positive-zero F32 width (bits00000000) in the bed branch. It never reads bytes24..51. Therefore bed width zero is an evidenced adapter output, not a guess from an undefined raw tail. Keep PrimaryMetadataControlRows' undefined bed tail undefined; do not fabricate a complete thirteen-word bed record to construct RegularControl.
+
+The unique semantic bed_id3 is the direct LFE and is excluded from regular source flags/audio. The other nine bed rows enter the regular domain with this explicit width. F03R reads width for every mapped regular tail, including beds; there is no bed-specific unused-width exemption in that helper.
+
+For an admitted object, read mute from its same-source F01E Control52 word0 and flags width from word9's sampled uniform_width F32 bits. This is not the raw authored width or the later feature-source width view. The approved example raw width0.1f and uniform-width word3dccccce distinguishes these domains. Audio diffuse remains word10 for its audio consumer. Feature component_enum=0 and feature_diffuse=0 come from the separately approved SelectedFeatureFlagsControl; do not copy audio diffuse into feature diffuse.
+
+Use the existing bed/object route distinction or a minimal tagged value adapter, then project to the already implemented RegularControl fields. No new DSP state or generic control framework is needed. Bed/object hosts can interleave. Resolve the host from F01E UID/channel_format/role binding, skip the semantic LFE, and preserve the physical ascending regular map to source11..47. Use that same mapping to select current PCM and its corresponding history; do not index a compact37 array by an unconverted physical index0..37.
+
+Bind the consumed control view, physical row mapping, current input and history-before to the current callback/attempt under existing ownership. During normal callbacks the F01E snapshot is current. During meter drains the admitted source snapshot retains its last-normal origin while delivery/processing callback advances; the separate hold adapter authorizes that reuse. Never relabel held contents as newly sampled, or reject them merely because content origin differs from delivery g.
+
+The parameter values above belong to the selected scope: 48 kHz, 38 physical rows, 10 admitted DirectSpeakers bed routes, 28 admitted object controls and one semantic LFE. They do not add authored bed spread/mute support or make target15 history controls interchangeable with source37 controls. Existing F03R activity/threshold/history math is unchanged.
+
+Wash verified the sealed research payloads, current approved F01/F03 rules, the selected feature-control adapter identities and five exact frozen source identities. No PCM, undefined bed tail, native capture or expected source-flag/audio result was consumed. The included concrete width recipe is synthetic metadata only and does not establish a resulting activity flag without audio/history inputs.

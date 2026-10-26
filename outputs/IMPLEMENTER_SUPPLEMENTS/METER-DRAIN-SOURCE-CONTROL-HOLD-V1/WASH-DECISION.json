@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge-meter-drain-source-control-decision.v1",
+  "decision": "APPROVE_EXISTING_F01E_SOURCE_SNAPSHOT_HOLD_IN_METER_THREE_ZERO_INPUT_DRAIN_ADAPTER",
+  "ready_scope": "Source control/geometry input and sampler non-query/non-blend behavior during independent meter drains",
+  "source_event_start_timestamp": 0,
+  "last_normal_query_position": "Provenance only, not event timestamp or a new drain query",
+  "new_DSP_state_required": false,
+  "derived_target_controls": "Recompute through existing pipeline every drain",
+  "whole_chain_ready": false
+}

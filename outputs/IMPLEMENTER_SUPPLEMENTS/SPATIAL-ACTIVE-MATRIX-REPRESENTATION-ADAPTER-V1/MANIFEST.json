@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "SPATIAL-ACTIVE-MATRIX-REPRESENTATION-ADAPTER-V1",
+  "implementation_ready": true,
+  "readiness_scope": "Matrix representation adapters and current C/d producer-generation binding only",
+  "whole_chain_implementation_ready": false,
+  "source_research_manifest_sha256": "ee66b3813818a0709fe85aaf9a9a3a70c17086f161db5c4842f36af56946c898",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 3491,
+      "sha256": "8277fc163cf09f382bcabaa92b05874fe1daa0771aea1951cbbabcfc8ca2d33f"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 2585,
+      "sha256": "902c1f879e8cd4ce7ba0693a4fc8f2e16f3bce8f94eb5e0c927c28dc709abdac"
+    },
+    {
+      "file": "REPRESENTATIONS.json",
+      "bytes": 3896,
+      "sha256": "b716ad060de0d2c804a2d19ddb748758739c5c2cc887f966fa761760198022f5"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1886,
+      "sha256": "50eb88a5d695dfc3420d046b3428eec205dd1666fb7c0ac9fdb9bb4f6a949e2d"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 752,
+      "sha256": "9176f85b22d440208e43c1e6ff1fc7ce9d5582677b4db018b2af5ab44b14de06"
+    },
+    {
+      "file": "WASH-DECISION.json",
+      "bytes": 625,
+      "sha256": "a779f5264383eba97c233d5065ae46ee4882e13e79996239e8c26ec75393813a"
+    }
+  ]
+}

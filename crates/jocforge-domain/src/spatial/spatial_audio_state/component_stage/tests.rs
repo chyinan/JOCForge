@@ -38,6 +38,9 @@ const PARAMETER_GENERATION_BYTES: &[u8] = include_bytes!(
 const WHOLE_SPATIAL_BYTES: &[u8] = include_bytes!(
     "../../../../tests/fixtures/f04_component/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json"
 );
+const ACTIVE_MATRIX_INPUTS: &[u8] = include_bytes!(
+    "../../../../../../outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-ACTIVE-MATRIX-REPRESENTATION-ADAPTER-V1/INPUT-ONLY-VECTORS.json"
+);
 
 struct TestContext {
     spatial_audio: SpatialAudioMachine,
@@ -1521,4 +1524,133 @@ fn component_stage_error_codes_are_explicit_local_translations() {
         ComponentStageError::NumericFailure.code(),
         "F04_NUMERIC_FAILURE"
     );
+}
+
+#[test]
+fn compact_active_matrix_scatter_and_gather_preserve_slots_and_words() {
+    let vectors: Value = serde_json::from_slice(ACTIVE_MATRIX_INPUTS).unwrap();
+    for case in vectors["cases"].as_array().unwrap() {
+        let generation = case["generation"].as_u64().unwrap();
+        let callback = FrontendCallbackIndex::new(u32::try_from(generation - 1).unwrap());
+        let row_count = usize::try_from(case["matrix_rows"].as_u64().unwrap()).unwrap();
+        let destinations = case["active_destinations"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|slot| u8::try_from(slot.as_u64().unwrap()).unwrap())
+            .collect::<Vec<_>>();
+        let all_zero =
+            case["coefficient_recipe_override"].as_str() == Some("POSITIVE_ZERO_ALL_CELLS");
+        let compact_words = active_matrix_recipe(row_count, all_zero);
+        let compact = ActiveComponentMatrix::from_producer_output(
+            callback,
+            compact_words.clone(),
+            destinations.clone(),
+        )
+        .unwrap();
+
+        assert_eq!(compact.callback_index(), callback);
+        assert_eq!(usize::from(compact.row_count()), row_count);
+        assert_eq!(compact.target_slots(), destinations);
+        assert_eq!(compact.coefficient_bits(), compact_words);
+
+        let dense = compact.scatter_to_canonical_dense();
+        assert_eq!(dense.len(), COMPONENT_ROW_COUNT * MATRIX_COLUMN_COUNT);
+        let gathered = ActiveComponentMatrix::gather_from_canonical_dense(
+            callback,
+            &dense,
+            destinations.clone(),
+        )
+        .unwrap();
+        assert_eq!(gathered.coefficient_bits(), compact.coefficient_bits());
+        assert_eq!(gathered.target_slots(), compact.target_slots());
+
+        let mut active = [false; COMPONENT_ROW_COUNT];
+        for slot in destinations.iter().copied() {
+            active[usize::from(slot)] = true;
+        }
+        for (slot, is_active) in active.into_iter().enumerate() {
+            let dense_row = &dense[slot * MATRIX_COLUMN_COUNT..(slot + 1) * MATRIX_COLUMN_COUNT];
+            if !is_active {
+                assert!(dense_row.iter().all(|word| *word == 0));
+            }
+        }
+        if all_zero {
+            assert_eq!(compact.row_count(), u8::try_from(row_count).unwrap());
+            assert_eq!(compact.target_slots(), destinations);
+        }
+    }
+
+    for case in vectors["rejection_inputs"].as_array().unwrap() {
+        let callback = FrontendCallbackIndex::new(0);
+        let row_count = usize::try_from(case["matrix_rows"].as_u64().unwrap()).unwrap();
+        let destinations = case["active_destinations"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|slot| u8::try_from(slot.as_u64().unwrap()).unwrap())
+            .collect::<Vec<_>>();
+        assert_eq!(
+            ActiveComponentMatrix::from_producer_output(
+                callback,
+                vec![0; row_count * MATRIX_COLUMN_COUNT],
+                destinations,
+            )
+            .err(),
+            Some(ComponentStageError::Input)
+        );
+    }
+}
+
+#[test]
+fn production_packet_constructor_binds_empty_current_matrix_and_stages_component_history() {
+    let context = context();
+    let callback = FrontendCallbackIndex::new(0);
+    let audio_join = callback_join(&context, callback);
+    let control_join = control_join(&context, callback);
+    let matrix = ActiveComponentMatrix::from_producer_output(callback, Vec::new(), Vec::new())
+        .expect("empty C/d is an explicit current producer result");
+    let packet = SpatialAudioInputPacket::from_current_component_callback(
+        &context.spatial_audio,
+        &audio_join,
+        &control_join,
+        &context.spatial_control,
+        ComponentCallbackPhase::Normal,
+        &context.window,
+        &context.parameters,
+        vec![0; INSTALLED_WORDS],
+        matrix,
+    )
+    .unwrap();
+    assert_eq!(packet.callback_index, callback);
+    assert_eq!(packet.matrix_rows, 0);
+    assert!(packet.matrix_f32_bits.is_empty());
+    assert!(packet.destinations.is_empty());
+
+    let proposal = produce_component_stage(
+        &context.spatial_audio,
+        &audio_join,
+        &control_join,
+        &context.spatial_control,
+        ComponentCallbackPhase::Normal,
+        packet,
+        &context.window,
+        &context.parameters,
+    )
+    .unwrap();
+    assert_eq!(proposal.component_output.len(), COMPONENT_WORDS);
+    assert_eq!(proposal.after.parameters.blocks_processed, 24);
+    assert_eq!(context.spatial_audio.generation(), 0);
+    assert_eq!(context.spatial_control.generation(), 0);
+}
+
+fn active_matrix_recipe(row_count: usize, all_zero: bool) -> Vec<u32> {
+    let mut words = vec![0; row_count * MATRIX_COLUMN_COUNT];
+    if !all_zero {
+        for row in 0..row_count {
+            let source = (7 * row + 3) % MATRIX_COLUMN_COUNT;
+            words[row * MATRIX_COLUMN_COUNT + source] = ((row + 1) as f32 / 16.0_f32).to_bits();
+        }
+    }
+    words
 }

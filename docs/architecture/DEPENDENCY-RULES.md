@@ -9,6 +9,7 @@ The PCM I/O crate also uses the locked `sha2` dependency to bind a borrowed pars
 ```mermaid
 flowchart TD
   CLI --> Application
+  CLI --> IO
   Validation --> Application
   Validation --> IO
   Validation --> Domain
@@ -16,9 +17,11 @@ flowchart TD
   IO --> Domain
 ```
 
+CLI is the selected-input composition root for the reader-to-application meter handoff. It may depend on IO to stage the in-memory PCM cursor and on Application to bind the resulting domain-owned frame values to the meter/OAR stage. Application remains independent of IO; the CLI module performs no codec or DSP arithmetic, and the executable `main` remains process orchestration.
+
 Domain 内部只通过批准的类型化契约传值。`integrity` 使用 `timeline` 的 source、dispatch 和 published-AU newtypes，并只依赖已登记的 checksum 与 provider 校验模块。`reader_eof` 和 `integrity` 各自拥有局部 committed state；两者都未接入全局 CallbackTransaction。其他模块的实现状态以 `IMPLEMENTATION-MAP.json` 为准。
 
-Domain 不得依赖 CLI、I/O、进程或环境变量。application 保持纯协调；CLI 的未来 I/O 组装不能把领域计算放入 main。io 只做文件适配，validation 只做独立检验。外部解码/比较进程只允许出现在 validation shell，不能充当生产编码核心。
+Domain 不得依赖 CLI、I/O、进程或环境变量。application 保持纯协调并只依赖 domain；CLI 可通过独立 composition module 连接 IO 与 application 的 typed values，但不得把领域计算放入 main。io 只做文件适配，validation 只做独立检验。外部解码/比较进程只允许出现在 validation shell，不能充当生产编码核心。
 
 `integrity` 在 domain 内解析调用者传入的 keyless provider bytes，并计算 canonical provider digest。它不读取 provider 文件，也不访问认证材料。provider 的文件读取和 manifest 适配仍属于未来 I/O 边界。
 

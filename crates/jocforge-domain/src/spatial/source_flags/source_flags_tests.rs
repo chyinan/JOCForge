@@ -10,12 +10,17 @@ mod tests {
     };
     use crate::{
         frontend::{
-            PackageManifestEvidence, ProviderFileEvidence, validate_f01e_package_manifest,
+            PackageManifestEvidence, ProviderFileEvidence,
+            validate_current_features_package_manifest, validate_f01e_package_manifest,
             validate_f01e_provider, validate_f03_package_manifest,
-            validate_f03_target_cold_provider,
+            validate_f03_target_cold_provider, validate_feature_fft4096_math_provider,
+            validate_feature_processor_math_provider,
         },
         profile::{EncodingProfile, resolve_selected_profile},
-        spatial::SpatialControlMachine,
+        spatial::{
+            SpatialControlMachine, frontend_stages::stage_frontend_features,
+            post_window_fanout::CallbackPhase,
+        },
         timeline::FrontendCallbackIndex,
         transaction::{AttemptId, CallbackLineageIdentity},
     };
@@ -35,6 +40,10 @@ mod tests {
         include_bytes!("../../../tests/fixtures/f01e_provider/f01e-selected-constructor-v1.json");
     const F03_PROVIDER_BYTES: &[u8] =
         include_bytes!("../../../tests/fixtures/target_cold/f03-selected-target-cold-v1.json");
+    const FEATURE_PROCESSOR_BYTES: &[u8] =
+        include_bytes!("../../../tests/fixtures/current_features/feature-processor-math-v1.json");
+    const FEATURE_FFT_BYTES: &[u8] =
+        include_bytes!("../../../tests/fixtures/current_features/feature-fft4096-math-v1.json");
     const SOURCE_FLAGS_VECTORS: &[u8] =
         include_bytes!("../../../tests/fixtures/source_flags/INPUT-ONLY-VECTORS.json");
 
@@ -820,5 +829,87 @@ mod tests {
         assert!(!regular.muted);
         assert_eq!(regular.width.to_bits(), 0);
         assert_eq!(regular.host.value(), 10);
+    }
+
+    #[test]
+    fn frontend_stages_bind_source_flags_and_features_without_committing_owner() {
+        let machine = selected_machine();
+        let callback_index = FrontendCallbackIndex::new(0);
+        let programme_id = synthetic_programme_id();
+        let route = ValidatedSemanticRoute::new(route_records(10, true, false)).unwrap();
+        let source_input = SourceFlagsInput::new(
+            CurrentHostPcm::new(zero_rows(HOST_CHANNELS)).unwrap(),
+            Some(
+                test_history(
+                    &machine,
+                    &route,
+                    machine.generation(),
+                    zero_rows(REGULAR_HOSTS),
+                )
+                .unwrap(),
+            ),
+            controls_for(&route, None).unwrap(),
+            route,
+            PrefixWriterSet::new(Vec::new()).unwrap(),
+            parent_lineage(&machine, programme_id, u64::from(callback_index.value())),
+        );
+        let manifest = PackageManifestEvidence::new(Arc::from(MANIFEST_BYTES), None);
+        let feature_manifest = validate_current_features_package_manifest(&manifest).unwrap();
+        let processor = validate_feature_processor_math_provider(
+            &ProviderFileEvidence::new(Arc::from(FEATURE_PROCESSOR_BYTES), None),
+            &feature_manifest,
+        )
+        .unwrap();
+        let fft = validate_feature_fft4096_math_provider(
+            &ProviderFileEvidence::new(Arc::from(FEATURE_FFT_BYTES), None),
+            &feature_manifest,
+        )
+        .unwrap();
+        let before_generation = machine.generation();
+        let before_digest = machine.digest();
+
+        let proposal = stage_frontend_features(
+            &machine,
+            source_input,
+            CallbackPhase::Normal,
+            None,
+            &processor,
+            &fft,
+        )
+        .unwrap();
+
+        assert_eq!(proposal.raw_history.rows().len(), REGULAR_HOSTS);
+        assert_eq!(
+            proposal.current_features.lineage.callback_index,
+            callback_index
+        );
+        assert_eq!(
+            proposal
+                .current_features
+                .feature_state_proposal
+                .source_vector_bits
+                .len(),
+            SOURCE_COUNT * 24
+        );
+        assert!(
+            proposal
+                .current_features
+                .feature_state_proposal
+                .source_vector_bits
+                .iter()
+                .all(|bits| *bits == 0)
+        );
+        assert!(proposal.gate.candidate_ids.is_empty());
+        assert!(proposal.gate.processing_ids.is_empty());
+        assert_eq!(proposal.gate.candidate_features.len(), 24);
+        assert!(
+            proposal
+                .gate
+                .candidate_features
+                .iter()
+                .all(|band| band.is_empty())
+        );
+        assert_eq!(machine.generation(), before_generation);
+        assert_eq!(machine.digest(), before_digest);
     }
 }

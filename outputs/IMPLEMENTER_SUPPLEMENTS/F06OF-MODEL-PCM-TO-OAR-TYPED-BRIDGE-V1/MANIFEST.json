@@ -1,0 +1,45 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1",
+  "implementation_ready": true,
+  "readiness_scope": "MODEL typed PCM38/count to existing meter processing to allocated16/control and OAR input handoff",
+  "whole_chain_implementation_ready": false,
+  "source_research_manifest_sha256": "eb3bfe7ad48954f6b27fd82b2a1879fd33634c3525d4fe68c409511e58aaf24c",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 4607,
+      "sha256": "d67791cf8ab2b2168bf61ab38c05beaafe7b5c799c084276c90a8bef8fd917b2"
+    },
+    {
+      "file": "COUNT-DOMAINS.csv",
+      "bytes": 1852,
+      "sha256": "157bdce0701ecf77be8fb9d1d4e21515aba52eda5ecc8c70eb7cbdc4bbbcbe79"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 13212,
+      "sha256": "e06697bb73573fbd82e5c3f1665afccc30eb7893082b6a491c4e8ea3aa748d0e"
+    },
+    {
+      "file": "MODEL-BINDING.json",
+      "bytes": 6460,
+      "sha256": "9ec0e15d427c35ed82effb3f4d29ca5f687d631c026c67b2899524c18c4c4a82"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 5562,
+      "sha256": "39ca2e3d9413f050d92a8fb1f6888fd94b73de34f280735e8042a28b96ff879d"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 867,
+      "sha256": "0c76bc35dd08ef3acbaa4f50943603cfe6767880797f2122dbefd5b88179760f"
+    },
+    {
+      "file": "WASH-DECISION.json",
+      "bytes": 704,
+      "sha256": "089769e2ccbd795c5c28f2a2723e761e3f9ed91200b9b9a5fcf13e4b76ec4e33"
+    }
+  ]
+}

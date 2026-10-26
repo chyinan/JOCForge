@@ -1,0 +1,10 @@
+{
+  "cold": "F04A.1 previous PCM/raw regular/prefix/current/component audio states are +0; diffusion map empty. This reference only owns prefix arithmetic inputs and outputs.",
+  "callback": "Previous/current prefix arrays clear to +0 independently each callback. Tail and output traversal increasing; contributions add to old_output in that order. Gain/branch/mode for the current callback apply to both halves.",
+  "filter_cold_activation": "F04A.4/F04F: newly active object filter processes previous PCM || current PCM; split previous/current filter outputs. Continuously active processes only current PCM and reuses saved prior filter outputs for previous half.",
+  "inactive_then_reactivate": "Remove inactive filter instance and previous outputs; reactivation constructs cold state, never resurrects old filter state.",
+  "membership": "Only nonquiet, width>0, finite gain>0 and gain>=R32(1e-6) writes; equality included. Complete11 gain vector provider required; absent call does not imply zero gain. Low-level arithmetic test cases do not expand caller membership domain.",
+  "commit": "Raw PCM and active filter state/outputs commit at callback end under approved owner transaction. Prefix previous half is recomputed with current gain, never stale prior prefix or current-total subtraction.",
+  "failure": "Precheck shape/finite/control; fatal fail-stop according to approved transaction contract. No native rollback equivalence asserted.",
+  "reset_and_eof": "Full owner reconstruction follows the applicable existing parent contract. This primitive adds no EOF schedule. Main F02 cached drain and independent-meter F06 fresh zero-input drain remain distinct."
+}

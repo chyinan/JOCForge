@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge-source-flags-bed-object-decision.v1",
+  "decision": "APPROVE_SELECTED_SOURCEFLAGS_REGULARCONTROL_BED_AND_OBJECT_FIELD_PROJECTION",
+  "scope_implementation_ready": true,
+  "bed_width_positive_zero": "Explicit semantic model-adapter assignment, not undefined tail fill",
+  "object_flags_width": "Same-snapshot F01E uniform_width word9, not raw authored width",
+  "feature_diffuse": "Separate selected-profile control0, not audio-diffuse word10",
+  "primary_bed_layout": "Keep only its known prefix; preserve raw tail UNPRODUCED",
+  "history_and_audio_identity": "Use declared physical-to-regular route plus current delivery and retained source snapshot origin",
+  "whole_spatial_DSP_or_native_execution": "NOT_RUN"
+}

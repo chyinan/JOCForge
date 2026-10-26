@@ -1,0 +1,10 @@
+{
+  "schema": "jocforge-meter-drain-source-control-verification.v1",
+  "research_payloads": "6/6_MATCH",
+  "source_hashes": "7/7_MATCH",
+  "normal_and_optimized_research_reports": "108_SOURCE_AST_AND_COUNT_CHECKS_EACH_PASS",
+  "wash_independent_count_origin_checks": 44,
+  "count_cases": 4,
+  "sampler_numeric_DSP_or_native_execution": "NOT_RUN",
+  "new_native_sampler_observation": "NOT_CLAIMED"
+}

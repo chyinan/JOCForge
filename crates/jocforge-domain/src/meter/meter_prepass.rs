@@ -8,7 +8,7 @@ use super::{
         IndependentMeterCallbackProposal, PostRenderMeterError, PostRenderMeterReceipt,
         PostRenderMeterState, stage_independent_meter_callback,
     },
-    sample_block_queue::{MeterCallbackIndex, MeterSourceSampleCount},
+    sample_block_queue::{MeterCallbackCount, MeterCallbackIndex, MeterSourceSampleCount},
     shared_gain_delay::SharedGainDelayParameters,
 };
 
@@ -75,6 +75,14 @@ impl IndependentMeterPrepass {
 
     pub const fn next_callback_index(&self) -> MeterCallbackIndex {
         self.state.lfe.callback_index()
+    }
+
+    pub const fn source_samples(&self) -> MeterSourceSampleCount {
+        self.source_samples
+    }
+
+    pub const fn normal_callback_count(&self) -> MeterCallbackCount {
+        self.state.lfe.normal_callbacks()
     }
 
     pub const fn lfe_state(&self) -> &MeterLfeDelayState {

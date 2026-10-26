@@ -1,0 +1,113 @@
+{
+  "schema": "research.spatial-production-stage-contracts.v1",
+  "profile": {
+    "physical_channels": 38,
+    "installed_sources": 48,
+    "window_samples": 3072,
+    "host_frame_samples": 1536,
+    "feature_bands": 24,
+    "response_basis": 15,
+    "target_capacity": 15,
+    "component_outputs": 15
+  },
+  "stages": [
+    {
+      "order": 1,
+      "name": "render_installed48",
+      "inputs": "physical38[g], controls[g], window3072, render.before",
+      "outputs": "installed48[g][48][3072] F32; actual prefix_writer_sources[g]; render.after",
+      "owner_and_constraints": "F03W render provider; approved F04A mathematics; do not replace with receiver6 or component15"
+    },
+    {
+      "order": 2,
+      "name": "source_flags",
+      "inputs": "physical38[g], flag_history.before, window3072, controls[g], route mapping, installed48.prefix11[g], prefix_writer_sources[g]",
+      "outputs": "flags[g][48] source ascending, separate plus0/plus4; flag_history.after",
+      "owner_and_constraints": "F03W flags"
+    },
+    {
+      "order": 3,
+      "name": "features",
+      "inputs": "installed48[g][48][3072], flags[g], feature.before[48], FFT/config providers",
+      "outputs": "feature[g][24 bands][48 sources] F32 band-major; feature.after",
+      "owner_and_constraints": "F03W feature; use matrix48, not diagnostic candidates"
+    },
+    {
+      "order": 4,
+      "name": "gate",
+      "inputs": "feature[g], flags[g]",
+      "outputs": "candidate_ids ascending; processing_ids ascending; original candidate feature24xN",
+      "owner_and_constraints": "callback-local; plus4 and serial feature sum select candidate; plus0 selects processing"
+    },
+    {
+      "order": 5,
+      "name": "response",
+      "inputs": "geometry[g] all48, fixed basis15, union(candidate_ids,processing_ids)",
+      "outputs": "per-source response[15]; post-audio feature widths for candidates",
+      "owner_and_constraints": "callback-local; strict union coverage, undefined unconsumed fields remain undefined"
+    },
+    {
+      "order": 6,
+      "name": "selector",
+      "inputs": "candidate IDs, original packed24xN features, XYZ/attrs, response15xN, post-audio widths, target.before IDs15",
+      "outputs": "ordered selected IDs[T], XYZ[T][3], attrs[T], semantic status",
+      "owner_and_constraints": "F03W selector scratch; selected global IDs are not candidate ordinals"
+    },
+    {
+      "order": 7,
+      "name": "u04",
+      "inputs": "only CAPACITY_REACHED: same candidate and selected domains, pre-decay feature snapshot",
+      "outputs": "refined XYZ[T][3], same selected IDs/attrs/order; executed bit",
+      "owner_and_constraints": "F03W scratch; EXHAUSTED count15 still skips; domain change rejects"
+    },
+    {
+      "order": 8,
+      "name": "install",
+      "inputs": "target.before current/previous15, selected/refined XYZ[T], IDs[T], attrs[T]",
+      "outputs": "target installation15; assignment15xT; prequiet active d unique ascending",
+      "owner_and_constraints": "F03W target current/previous; T0 preserves old arrays AND active"
+    },
+    {
+      "order": 9,
+      "name": "fit_context",
+      "inputs": "full15 installed XYZ/attrs, fixed basis15; d from installation",
+      "outputs": "full fit15x56 bytes; full_context[15 basis][15 slots]; gather context[15][n], XYZ[n][3]",
+      "owner_and_constraints": "F03W local; validate all15 fits even inactive; gather by d, not first n selected"
+    },
+    {
+      "order": 10,
+      "name": "outer",
+      "inputs": "context15xn, processing response15, source XYZ, scalar_flags0, fresh index_state[n] per source",
+      "outputs": "compact C[n][48] fresh positive-zero before writes; uncalled cols positive-zero",
+      "owner_and_constraints": "F03W local; n0 empty output no NNLS; n>0 order empty is computed allzero output"
+    },
+    {
+      "order": 11,
+      "name": "marker_proposal",
+      "inputs": "current C/d, flags.plus0, installed current/previous15, previous marker state, full fit, pure mix(installed48,C,d), immutable component.before overlap",
+      "outputs": "marker proposal15; quiet-after mask for next target state; immutable history input",
+      "owner_and_constraints": "F03W marker proposal; no component state advance; R3 handles numeric/history rules"
+    },
+    {
+      "order": 12,
+      "name": "matrix_publication",
+      "inputs": "current C/d, g and complete producer dependency receipts",
+      "outputs": "canonical D15x48 plus true active d and g, per approved scatter adapter",
+      "owner_and_constraints": "F03W proposal; d/C prequiet persist for current component, never replace with quiet-after"
+    },
+    {
+      "order": 13,
+      "name": "history",
+      "inputs": "marker/history inputs[g], metadata_history.before",
+      "outputs": "delivered controls and history.after receipt[g]",
+      "owner_and_constraints": "F05R56 sole mutable metadata history/reader/receiver-target owner"
+    },
+    {
+      "order": 14,
+      "name": "component",
+      "inputs": "installed48[g], current C/d (or approved canonical gather), component.before, parameter.before, filter_history.before",
+      "outputs": "component15[g][1536]; component.after, parameter.after, filter_history.after",
+      "owner_and_constraints": "F04C sole mutable owner; one persistent advance, 24 blocks x64 samples; no reset on zero C"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F04A-PREFIX-PRECISION-MATHEMATICAL-REFERENCE-V1",
+  "implementation_ready": true,
+  "readiness_scope": "Existing F04A.4 arithmetic clarification and independent validation-only mathematical reference",
+  "whole_chain_implementation_ready": false,
+  "source_research_manifest_sha256": "16ce9d9a7a0cd4412f0d18266fba82d1463e1204248c9e72e954f094129e9b6d",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 2684,
+      "sha256": "2ccb662251e6ee96eee1de2824fd8ff09903312c1a2f949c47d6565dfa027277"
+    },
+    {
+      "file": "INPUT-ONLY-RECIPES.json",
+      "bytes": 2080,
+      "sha256": "acc48eb0481f25526d82f345141bbaf38dd260a4e483c4374f5d2fa82dae26fc"
+    },
+    {
+      "file": "NUMERIC-RULES.json",
+      "bytes": 2380,
+      "sha256": "216a7b3681c3075d34179cffedff20b01a99c128a42fc8b45548a99a84197c76"
+    },
+    {
+      "file": "prefix_numeric_reference.py",
+      "bytes": 9655,
+      "sha256": "c2431dfec5adac1197e94b055906a6fe3be540cc4d759bc5cdd1f9d032e1e7e6"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 2482,
+      "sha256": "873c50d2f9fd3f05d9b98e2e981afa1305a904919d40d3a58118b5a3c219c921"
+    },
+    {
+      "file": "STATE-BOUNDARIES.json",
+      "bytes": 1684,
+      "sha256": "8fc86df3670254d85cfe2bc8e2cfec6dde1acaacc7e98d4314df4ad22d6332c4"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 1208,
+      "sha256": "dd11b0ca6b1a6885407d5e29d5045c738056f0b74998ef06bd5f4bde75391159"
+    }
+  ]
+}

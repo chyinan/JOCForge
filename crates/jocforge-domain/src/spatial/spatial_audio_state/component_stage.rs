@@ -196,6 +196,117 @@ struct ComponentPacketFixture<'a> {
     destinations: Vec<u8>,
 }
 
+/// Paired compact C[n,48] rows and target slots for one component callback.
+///
+/// The parent spatial-control producer is the only production constructor
+/// caller. It must pass the output captured before marker quiet for this same
+/// callback; an empty value represents an executed empty producer result,
+/// never a cold placeholder.
+#[allow(dead_code)]
+pub(super) struct ActiveComponentMatrix {
+    callback_index: FrontendCallbackIndex,
+    row_count: u8,
+    coefficient_bits: Box<[u32]>,
+    target_slots: Box<[u8]>,
+}
+
+#[allow(dead_code)]
+impl ActiveComponentMatrix {
+    pub(super) fn from_producer_output(
+        callback_index: FrontendCallbackIndex,
+        coefficient_bits: Vec<u32>,
+        target_slots: Vec<u8>,
+    ) -> Result<Self, ComponentStageError> {
+        let row_count = target_slots.len();
+        if row_count > COMPONENT_ROW_COUNT
+            || coefficient_bits.len() != row_count * MATRIX_COLUMN_COUNT
+            || coefficient_bits
+                .iter()
+                .any(|word| !f32::from_bits(*word).is_finite())
+            || !target_slots_are_selected_order(&target_slots)
+        {
+            return Err(ComponentStageError::Input);
+        }
+        let row_count = u8::try_from(row_count).map_err(|_| ComponentStageError::Input)?;
+        Ok(Self {
+            callback_index,
+            row_count,
+            coefficient_bits: coefficient_bits.into_boxed_slice(),
+            target_slots: target_slots.into_boxed_slice(),
+        })
+    }
+
+    pub(super) fn gather_from_canonical_dense(
+        callback_index: FrontendCallbackIndex,
+        dense_target_rows: &[u32],
+        target_slots: Vec<u8>,
+    ) -> Result<Self, ComponentStageError> {
+        if dense_target_rows.len() != COMPONENT_ROW_COUNT * MATRIX_COLUMN_COUNT
+            || dense_target_rows
+                .iter()
+                .any(|word| !f32::from_bits(*word).is_finite())
+            || !target_slots_are_selected_order(&target_slots)
+        {
+            return Err(ComponentStageError::Input);
+        }
+        let mut active = [false; COMPONENT_ROW_COUNT];
+        for slot in target_slots.iter().copied() {
+            active[usize::from(slot)] = true;
+        }
+        for (slot, is_active) in active.into_iter().enumerate() {
+            if !is_active
+                && dense_target_rows[slot * MATRIX_COLUMN_COUNT..(slot + 1) * MATRIX_COLUMN_COUNT]
+                    .iter()
+                    .any(|word| *word != 0)
+            {
+                return Err(ComponentStageError::Input);
+            }
+        }
+        let mut compact = Vec::with_capacity(target_slots.len() * MATRIX_COLUMN_COUNT);
+        for slot in target_slots.iter().copied() {
+            let offset = usize::from(slot) * MATRIX_COLUMN_COUNT;
+            compact.extend_from_slice(&dense_target_rows[offset..offset + MATRIX_COLUMN_COUNT]);
+        }
+        Self::from_producer_output(callback_index, compact, target_slots)
+    }
+
+    pub(super) fn scatter_to_canonical_dense(&self) -> Box<[u32]> {
+        let mut dense = vec![0; COMPONENT_ROW_COUNT * MATRIX_COLUMN_COUNT];
+        for (logical_row, slot) in self.target_slots.iter().copied().enumerate() {
+            let source_offset = logical_row * MATRIX_COLUMN_COUNT;
+            let target_offset = usize::from(slot) * MATRIX_COLUMN_COUNT;
+            dense[target_offset..target_offset + MATRIX_COLUMN_COUNT].copy_from_slice(
+                &self.coefficient_bits[source_offset..source_offset + MATRIX_COLUMN_COUNT],
+            );
+        }
+        dense.into_boxed_slice()
+    }
+
+    pub(super) const fn callback_index(&self) -> FrontendCallbackIndex {
+        self.callback_index
+    }
+
+    pub(super) const fn row_count(&self) -> u8 {
+        self.row_count
+    }
+
+    pub(super) fn coefficient_bits(&self) -> &[u32] {
+        &self.coefficient_bits
+    }
+
+    pub(super) fn target_slots(&self) -> &[u8] {
+        &self.target_slots
+    }
+}
+
+fn target_slots_are_selected_order(target_slots: &[u8]) -> bool {
+    target_slots.len() <= COMPONENT_ROW_COUNT
+        && target_slots
+            .iter()
+            .all(|slot| usize::from(*slot) < COMPONENT_ROW_COUNT)
+        && target_slots.windows(2).all(|pair| pair[0] < pair[1])
+}
+
 struct ParameterTransition {
     after: ComponentFilterParameterState,
     #[allow(dead_code)]
@@ -230,6 +341,81 @@ impl GainBranch {
 }
 
 impl SpatialAudioInputPacket {
+    /// Builds a production packet from one current installed48 and compact C/d
+    /// producer result. Matrix row ordinals stay paired with target slots; this
+    /// constructor does not synthesize an inactive fifteen-row placeholder.
+    #[allow(dead_code)]
+    #[allow(clippy::too_many_arguments)]
+    pub(super) fn from_current_component_callback(
+        spatial_audio: &SpatialAudioMachine,
+        spatial_audio_join: &SpatialAudioJoinMetadata,
+        spatial_control_join: &SpatialControlJoinMetadata,
+        spatial_control: &SpatialControlMachine,
+        phase: ComponentCallbackPhase,
+        window: &ValidatedWindowQ15Provider,
+        parameters: &ValidatedComponentParameterProvider,
+        installed48_f32_bits: Vec<u32>,
+        matrix: ActiveComponentMatrix,
+    ) -> Result<Self, ComponentStageError> {
+        let callback_index = spatial_audio_join.callback_index();
+        let selected_profile = spatial_audio.profile_identity();
+        if [
+            spatial_audio_join.profile_identity(),
+            spatial_control_join.profile_identity(),
+            spatial_control.profile(),
+        ]
+        .into_iter()
+        .any(|profile| resolve_selected_profile(&profile).is_err() || profile != selected_profile)
+        {
+            return Err(ComponentStageError::ProfileUnsupported);
+        }
+        if matrix.callback_index() != callback_index
+            || spatial_control_join.callback_index() != callback_index
+            || u64::from(callback_index.value()) != spatial_audio.generation()
+        {
+            return Err(ComponentStageError::CallbackOrder);
+        }
+        if spatial_audio_join.before_generation() != spatial_audio.generation()
+            || spatial_audio_join.before_digest() != spatial_audio.digest()
+            || spatial_control_join.before_generation() != spatial_control.generation()
+            || spatial_control_join.before_digest() != spatial_control.digest()
+        {
+            return Err(ComponentStageError::State);
+        }
+        if spatial_audio_join.transaction_id() != spatial_control_join.transaction_id()
+            || spatial_control_join.provider_lineage() != spatial_control.provider_lineage()
+        {
+            return Err(ComponentStageError::Input);
+        }
+        if installed48_f32_bits.len() != INSTALLED_WORDS
+            || installed48_f32_bits
+                .iter()
+                .any(|word| !f32::from_bits(*word).is_finite())
+        {
+            return Err(ComponentStageError::Input);
+        }
+
+        Ok(Self {
+            programme_id: spatial_audio_join.programme_id().clone(),
+            attempt: spatial_audio_join.attempt(),
+            transaction_id: spatial_audio_join.transaction_id().clone(),
+            callback_index,
+            phase,
+            profile_identity: selected_profile,
+            spatial_control_before_generation: spatial_control.generation(),
+            spatial_control_before_digest: spatial_control.digest(),
+            spatial_control_provider_lineage: spatial_control.provider_lineage(),
+            provider_lineage: [
+                *window.receipt().validated_manifest_lineage(),
+                *parameters.receipt().validated_manifest_lineage(),
+            ],
+            installed48_f32_bits: installed48_f32_bits.into_boxed_slice(),
+            matrix_rows: matrix.row_count(),
+            matrix_f32_bits: matrix.coefficient_bits,
+            destinations: matrix.target_slots,
+        })
+    }
+
     #[cfg(test)]
     fn fixture(fixture: ComponentPacketFixture<'_>) -> Self {
         Self {

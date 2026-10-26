@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge-spatial-production-parameter-verification.v1",
+  "research_payload_hashes": "5/5_MATCH",
+  "approved_source_hashes": "39/39_MATCH",
+  "input_only_vector_reference_hashes": "8/8_MATCH",
+  "readiness_authority_hashes": "2/2_MATCH",
+  "normal_and_optimized_package_checker": "PASS_SOURCE_PROVIDER_COLD_SHAPES_VECTOR_REFS",
+  "real_ADM_cold_execution": "NOT_RUN",
+  "dynamic_callgraph": "R1_SCOPE",
+  "controls_and_time": "R3_SCOPE",
+  "independent_F04A_scalar_reference": "SEPARATELY_DELIVERED",
+  "product_acceptance": "NOT_RUN"
+}

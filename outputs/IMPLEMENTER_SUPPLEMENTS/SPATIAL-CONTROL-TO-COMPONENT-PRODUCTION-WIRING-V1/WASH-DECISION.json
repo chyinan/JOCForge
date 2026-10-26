@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge-spatial-production-wiring-decision.v1",
+  "decision": "APPROVE_CURRENT_CALLBACK_MODEL_PRODUCERS_AND_TARGET_CONTROL_HANDOFF",
+  "implementation_ready_scope": "Existing numeric providers connected in the specified source/target/row/generation domains; parent staged commit follows existing approved architecture.",
+  "not_a_new_gate": "Native pointer identity, DEE serializer magic or same-named receipt is not a prerequisite for coding this model-owned pipeline.",
+  "not_runtime_admission_pass": "Historical production-admission evidence is not rewritten; real integration/full programme tests remain required.",
+  "scope_limits": [
+    "Selected F01E single-zero-start event acceptance; use its unique sampler state, no generic static-first-record shortcut",
+    "Dynamic metre sample/control/drain timing stays under existing F06/F01E parent input contract",
+    "Current C/d pre-quiet and history content lineage distinct",
+    "Full root numerical integration and product output not executed by this evidence package"
+  ],
+  "whole_chain_ready": false
+}

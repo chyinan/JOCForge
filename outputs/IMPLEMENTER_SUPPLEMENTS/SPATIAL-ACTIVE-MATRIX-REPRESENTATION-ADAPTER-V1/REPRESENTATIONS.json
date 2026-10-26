@@ -1,0 +1,39 @@
+{
+  "schema": "wash.meter-active-matrix-representations.v1",
+  "source_facts": {
+    "C_compact": "The exact outer producer returns n_active by48 words, no capacity padding; n_active0 returns an empty matrix with output_shape[0,48].",
+    "d_active_slots": "finish_callback enumerates installation active flags in ascending owner-slot order before quiet markers. C row k corresponds to d[k], not slot k.",
+    "consumer_call": "Meter worker passes outer.matrix_words and model_destination_indices directly to component_callback.",
+    "P_legacy_packed": "The exact dynamic adapter appends(15-n)*48 positive-zero words to C, and pairs those rows with d followed by the ascending inactive slots. This is a full15-row packed/permutation representation, not dense target-slot row order.",
+    "marker_preview": "The prototype also mixes C/d purely for marker energy using immutable installed48 and previous component overlap. This does not itself advance component state."
+  },
+  "derived_clean_adapter_decision": {
+    "grade": "CLEAN_REPRESENTATION_ADAPTER_DERIVED_FROM_APPROVED_BEHAVIOR; NOT_NATIVE_BUFFER_IDENTITY",
+    "D_dense": "Canonical15x48 target-slot view. Initialize all cells to positive-zero F32 bits00000000, then D[d[k],s]=C[k,s] by exact word copy.",
+    "scatter": "Compact C and ordered unique d -> canonical dense D. Preserve every active coefficient bit pattern.",
+    "gather": "Canonical dense D and the same ordered d -> C'[k,s]=D[d[k],s]. A consumer expecting compact n_active rows must gather; it must not blindly use D row k.",
+    "inactive_rule": "Canonical inactive D rows are positive zero. Active all-zero rows remain active according to d; do not infer d from nonzero coefficients.",
+    "packed_capacity_alternative": "If a fixed15x48 storage is defined as packed active-prefix capacity instead, call it P and carry its full destination permutation. Never call P dense or interchange it with D without an explicit adapter.",
+    "component_equivalence": "C/d, D/identity0..14, and P/full permutation supply each active output the same ordered(source index,coefficient bits) terms. Inactive terms are skipped under existingF04A c<=0 rule; the numeric kernel and later component state/update order are unchanged.",
+    "validation": "n0..15; C word count48*n; d lengthn, unique integer0..14. Selected production d is ascending installed-slot order. A primitive adapter may preserve any given paired unique order but never sort d alone.",
+    "mask_not_permutation": "The dense identity-row list and legacy full permutation are stateless mixer transport maps only. Keep the real active_target_indices=d separately for outer, marker and owner state. Do not turn padded inactive rows into active targets."
+  },
+  "current_vs_next": {
+    "current_callback": "Capture d and C from installation/outer before marker quiet.",
+    "next_target_state": "Quiet-after active flags update next state, not current C row count or d.",
+    "empty_selection": "Empty selected IDs preserve old active flags perF03G. Thus selected_count0 does not imply n_active0; old installed targets can still require a nonempty matrix.",
+    "cold": "A cold zero matrix is only initialization. A produced zero result is valid only after this callback's producer executes, including the n0 empty-target branch.",
+    "zero_output": "n0 or zero coefficients do not allow skipping component overlap/ring/filter advancement; old history may still contribute."
+  },
+  "scope": {
+    "full_DSP_execution": "NOT_RUN",
+    "native_execution": "NOT_RUN",
+    "implementation_contact": "NO",
+    "PCM_body_key_or_code_included": false,
+    "history_owner": "R3/current owner contract",
+    "cold_parameter_values": "R2/current provider",
+    "F04A_numerical_rules": "R4/current approved clauses"
+  },
+  "local_adapter_rules": "DEFINED",
+  "whole_chain_closed": false
+}

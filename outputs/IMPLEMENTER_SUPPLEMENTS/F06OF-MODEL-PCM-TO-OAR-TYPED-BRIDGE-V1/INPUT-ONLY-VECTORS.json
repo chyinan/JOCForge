@@ -1,0 +1,526 @@
+{
+  "schema": "wash.meter-frame-count-and-row-inputs.v1",
+  "scope": "SELF_OWNED_COUNTS_AND_VIRTUAL_ROW_LABELS; NO_PCM",
+  "cases": [
+    {
+      "id": "source_samples_0",
+      "N": 0,
+      "channels": 38,
+      "pcm_bits": 24,
+      "frame_samples": 1536,
+      "sample_rate": 48000,
+      "synthetic_data_offset_bytes": 4096,
+      "source_owner": "SELF_OWNED_METER_0"
+    },
+    {
+      "id": "source_samples_1",
+      "N": 1,
+      "channels": 38,
+      "pcm_bits": 24,
+      "frame_samples": 1536,
+      "sample_rate": 48000,
+      "synthetic_data_offset_bytes": 4096,
+      "source_owner": "SELF_OWNED_METER_1"
+    },
+    {
+      "id": "source_samples_1023",
+      "N": 1023,
+      "channels": 38,
+      "pcm_bits": 24,
+      "frame_samples": 1536,
+      "sample_rate": 48000,
+      "synthetic_data_offset_bytes": 4096,
+      "source_owner": "SELF_OWNED_METER_1023"
+    },
+    {
+      "id": "source_samples_1024",
+      "N": 1024,
+      "channels": 38,
+      "pcm_bits": 24,
+      "frame_samples": 1536,
+      "sample_rate": 48000,
+      "synthetic_data_offset_bytes": 4096,
+      "source_owner": "SELF_OWNED_METER_1024"
+    },
+    {
+      "id": "source_samples_1535",
+      "N": 1535,
+      "channels": 38,
+      "pcm_bits": 24,
+      "frame_samples": 1536,
+      "sample_rate": 48000,
+      "synthetic_data_offset_bytes": 4096,
+      "source_owner": "SELF_OWNED_METER_1535"
+    },
+    {
+      "id": "source_samples_1536",
+      "N": 1536,
+      "channels": 38,
+      "pcm_bits": 24,
+      "frame_samples": 1536,
+      "sample_rate": 48000,
+      "synthetic_data_offset_bytes": 4096,
+      "source_owner": "SELF_OWNED_METER_1536"
+    },
+    {
+      "id": "source_samples_1537",
+      "N": 1537,
+      "channels": 38,
+      "pcm_bits": 24,
+      "frame_samples": 1536,
+      "sample_rate": 48000,
+      "synthetic_data_offset_bytes": 4096,
+      "source_owner": "SELF_OWNED_METER_1537"
+    },
+    {
+      "id": "source_samples_3072",
+      "N": 3072,
+      "channels": 38,
+      "pcm_bits": 24,
+      "frame_samples": 1536,
+      "sample_rate": 48000,
+      "synthetic_data_offset_bytes": 4096,
+      "source_owner": "SELF_OWNED_METER_3072"
+    },
+    {
+      "id": "source_samples_6522906",
+      "N": 6522906,
+      "channels": 38,
+      "pcm_bits": 24,
+      "frame_samples": 1536,
+      "sample_rate": 48000,
+      "synthetic_data_offset_bytes": 4096,
+      "source_owner": "SELF_OWNED_METER_6522906"
+    }
+  ],
+  "row_identity_cases": [
+    {
+      "id": "physical_labels_forward",
+      "physical_row_labels": [
+        "physical_0",
+        "physical_1",
+        "physical_2",
+        "physical_3",
+        "physical_4",
+        "physical_5",
+        "physical_6",
+        "physical_7",
+        "physical_8",
+        "physical_9",
+        "physical_10",
+        "physical_11",
+        "physical_12",
+        "physical_13",
+        "physical_14",
+        "physical_15",
+        "physical_16",
+        "physical_17",
+        "physical_18",
+        "physical_19",
+        "physical_20",
+        "physical_21",
+        "physical_22",
+        "physical_23",
+        "physical_24",
+        "physical_25",
+        "physical_26",
+        "physical_27",
+        "physical_28",
+        "physical_29",
+        "physical_30",
+        "physical_31",
+        "physical_32",
+        "physical_33",
+        "physical_34",
+        "physical_35",
+        "physical_36",
+        "physical_37"
+      ],
+      "parsed_chna_entries": [
+        {
+          "track_uid": "ATU_00000001",
+          "track_index_one_based": 1
+        },
+        {
+          "track_uid": "ATU_00000002",
+          "track_index_one_based": 2
+        },
+        {
+          "track_uid": "ATU_00000003",
+          "track_index_one_based": 3
+        },
+        {
+          "track_uid": "ATU_00000004",
+          "track_index_one_based": 4
+        },
+        {
+          "track_uid": "ATU_00000005",
+          "track_index_one_based": 5
+        },
+        {
+          "track_uid": "ATU_00000006",
+          "track_index_one_based": 6
+        },
+        {
+          "track_uid": "ATU_00000007",
+          "track_index_one_based": 7
+        },
+        {
+          "track_uid": "ATU_00000008",
+          "track_index_one_based": 8
+        },
+        {
+          "track_uid": "ATU_00000009",
+          "track_index_one_based": 9
+        },
+        {
+          "track_uid": "ATU_0000000a",
+          "track_index_one_based": 10
+        },
+        {
+          "track_uid": "ATU_0000000b",
+          "track_index_one_based": 11
+        },
+        {
+          "track_uid": "ATU_0000000c",
+          "track_index_one_based": 12
+        },
+        {
+          "track_uid": "ATU_0000000d",
+          "track_index_one_based": 13
+        },
+        {
+          "track_uid": "ATU_0000000e",
+          "track_index_one_based": 14
+        },
+        {
+          "track_uid": "ATU_0000000f",
+          "track_index_one_based": 15
+        },
+        {
+          "track_uid": "ATU_00000010",
+          "track_index_one_based": 16
+        },
+        {
+          "track_uid": "ATU_00000011",
+          "track_index_one_based": 17
+        },
+        {
+          "track_uid": "ATU_00000012",
+          "track_index_one_based": 18
+        },
+        {
+          "track_uid": "ATU_00000013",
+          "track_index_one_based": 19
+        },
+        {
+          "track_uid": "ATU_00000014",
+          "track_index_one_based": 20
+        },
+        {
+          "track_uid": "ATU_00000015",
+          "track_index_one_based": 21
+        },
+        {
+          "track_uid": "ATU_00000016",
+          "track_index_one_based": 22
+        },
+        {
+          "track_uid": "ATU_00000017",
+          "track_index_one_based": 23
+        },
+        {
+          "track_uid": "ATU_00000018",
+          "track_index_one_based": 24
+        },
+        {
+          "track_uid": "ATU_00000019",
+          "track_index_one_based": 25
+        },
+        {
+          "track_uid": "ATU_0000001a",
+          "track_index_one_based": 26
+        },
+        {
+          "track_uid": "ATU_0000001b",
+          "track_index_one_based": 27
+        },
+        {
+          "track_uid": "ATU_0000001c",
+          "track_index_one_based": 28
+        },
+        {
+          "track_uid": "ATU_0000001d",
+          "track_index_one_based": 29
+        },
+        {
+          "track_uid": "ATU_0000001e",
+          "track_index_one_based": 30
+        },
+        {
+          "track_uid": "ATU_0000001f",
+          "track_index_one_based": 31
+        },
+        {
+          "track_uid": "ATU_00000020",
+          "track_index_one_based": 32
+        },
+        {
+          "track_uid": "ATU_00000021",
+          "track_index_one_based": 33
+        },
+        {
+          "track_uid": "ATU_00000022",
+          "track_index_one_based": 34
+        },
+        {
+          "track_uid": "ATU_00000023",
+          "track_index_one_based": 35
+        },
+        {
+          "track_uid": "ATU_00000024",
+          "track_index_one_based": 36
+        },
+        {
+          "track_uid": "ATU_00000025",
+          "track_index_one_based": 37
+        },
+        {
+          "track_uid": "ATU_00000026",
+          "track_index_one_based": 38
+        }
+      ],
+      "semantic_direct_lfe_physical_slot": 3
+    },
+    {
+      "id": "CHNA_entry_order_is_not_physical_order",
+      "physical_row_labels": [
+        "physical_0",
+        "physical_1",
+        "physical_2",
+        "physical_3",
+        "physical_4",
+        "physical_5",
+        "physical_6",
+        "physical_7",
+        "physical_8",
+        "physical_9",
+        "physical_10",
+        "physical_11",
+        "physical_12",
+        "physical_13",
+        "physical_14",
+        "physical_15",
+        "physical_16",
+        "physical_17",
+        "physical_18",
+        "physical_19",
+        "physical_20",
+        "physical_21",
+        "physical_22",
+        "physical_23",
+        "physical_24",
+        "physical_25",
+        "physical_26",
+        "physical_27",
+        "physical_28",
+        "physical_29",
+        "physical_30",
+        "physical_31",
+        "physical_32",
+        "physical_33",
+        "physical_34",
+        "physical_35",
+        "physical_36",
+        "physical_37"
+      ],
+      "parsed_chna_entries": [
+        {
+          "track_uid": "ATU_00000026",
+          "track_index_one_based": 38
+        },
+        {
+          "track_uid": "ATU_00000025",
+          "track_index_one_based": 37
+        },
+        {
+          "track_uid": "ATU_00000024",
+          "track_index_one_based": 36
+        },
+        {
+          "track_uid": "ATU_00000023",
+          "track_index_one_based": 35
+        },
+        {
+          "track_uid": "ATU_00000022",
+          "track_index_one_based": 34
+        },
+        {
+          "track_uid": "ATU_00000021",
+          "track_index_one_based": 33
+        },
+        {
+          "track_uid": "ATU_00000020",
+          "track_index_one_based": 32
+        },
+        {
+          "track_uid": "ATU_0000001f",
+          "track_index_one_based": 31
+        },
+        {
+          "track_uid": "ATU_0000001e",
+          "track_index_one_based": 30
+        },
+        {
+          "track_uid": "ATU_0000001d",
+          "track_index_one_based": 29
+        },
+        {
+          "track_uid": "ATU_0000001c",
+          "track_index_one_based": 28
+        },
+        {
+          "track_uid": "ATU_0000001b",
+          "track_index_one_based": 27
+        },
+        {
+          "track_uid": "ATU_0000001a",
+          "track_index_one_based": 26
+        },
+        {
+          "track_uid": "ATU_00000019",
+          "track_index_one_based": 25
+        },
+        {
+          "track_uid": "ATU_00000018",
+          "track_index_one_based": 24
+        },
+        {
+          "track_uid": "ATU_00000017",
+          "track_index_one_based": 23
+        },
+        {
+          "track_uid": "ATU_00000016",
+          "track_index_one_based": 22
+        },
+        {
+          "track_uid": "ATU_00000015",
+          "track_index_one_based": 21
+        },
+        {
+          "track_uid": "ATU_00000014",
+          "track_index_one_based": 20
+        },
+        {
+          "track_uid": "ATU_00000013",
+          "track_index_one_based": 19
+        },
+        {
+          "track_uid": "ATU_00000012",
+          "track_index_one_based": 18
+        },
+        {
+          "track_uid": "ATU_00000011",
+          "track_index_one_based": 17
+        },
+        {
+          "track_uid": "ATU_00000010",
+          "track_index_one_based": 16
+        },
+        {
+          "track_uid": "ATU_0000000f",
+          "track_index_one_based": 15
+        },
+        {
+          "track_uid": "ATU_0000000e",
+          "track_index_one_based": 14
+        },
+        {
+          "track_uid": "ATU_0000000d",
+          "track_index_one_based": 13
+        },
+        {
+          "track_uid": "ATU_0000000c",
+          "track_index_one_based": 12
+        },
+        {
+          "track_uid": "ATU_0000000b",
+          "track_index_one_based": 11
+        },
+        {
+          "track_uid": "ATU_0000000a",
+          "track_index_one_based": 10
+        },
+        {
+          "track_uid": "ATU_00000009",
+          "track_index_one_based": 9
+        },
+        {
+          "track_uid": "ATU_00000008",
+          "track_index_one_based": 8
+        },
+        {
+          "track_uid": "ATU_00000007",
+          "track_index_one_based": 7
+        },
+        {
+          "track_uid": "ATU_00000006",
+          "track_index_one_based": 6
+        },
+        {
+          "track_uid": "ATU_00000005",
+          "track_index_one_based": 5
+        },
+        {
+          "track_uid": "ATU_00000004",
+          "track_index_one_based": 4
+        },
+        {
+          "track_uid": "ATU_00000003",
+          "track_index_one_based": 3
+        },
+        {
+          "track_uid": "ATU_00000002",
+          "track_index_one_based": 2
+        },
+        {
+          "track_uid": "ATU_00000001",
+          "track_index_one_based": 1
+        }
+      ],
+      "semantic_direct_lfe_physical_slot": 37
+    }
+  ],
+  "component_provider_labels": [
+    "component_0",
+    "component_1",
+    "component_2",
+    "component_3",
+    "component_4",
+    "component_5",
+    "component_6",
+    "component_7",
+    "component_8",
+    "component_9",
+    "component_10",
+    "component_11",
+    "component_12",
+    "component_13",
+    "component_14"
+  ],
+  "descriptor_input_recipe": {
+    "regular_control_field_words": {
+      "word2": 0,
+      "word3": 0,
+      "word5_f32": 0.5,
+      "word6_f32": 0.5,
+      "word7_f32": 0.0,
+      "word11": 0,
+      "word12": 1
+    },
+    "direct_consumed_word2": 3,
+    "source_index_direct_count": 1
+  },
+  "expected_audio_or_body_bytes_included": false,
+  "actual_source_file_opened": false
+}

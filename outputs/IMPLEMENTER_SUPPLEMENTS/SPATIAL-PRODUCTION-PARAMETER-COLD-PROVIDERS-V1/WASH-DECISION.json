@@ -1,0 +1,41 @@
+{
+  "schema": "jocforge-spatial-production-parameter-decision.v1",
+  "decision": "APPROVE_SELECTED_PARAMETER_AND_COLD_CONSTRUCTOR_PROVIDERS",
+  "scope_implementation_ready": true,
+  "latest_registry_rows": [
+    {
+      "functional_id": "F01B",
+      "parameter_availability": "RESOLVED_FOR_SELECTED_INTERNAL_SCOPE; WHOLE_MODULE_AND_CONSUMPTION_AUDIT_STILL_SEPARATE",
+      "readiness_stage": "PRE_HANDOFF_SPEC",
+      "blocks_implementation_ready": false,
+      "pre_handoff_publication": "CLOSED_BY_ULTIMATE_REVIEW"
+    },
+    {
+      "functional_id": "F04F",
+      "parameter_availability": null,
+      "readiness_stage": "PRE_HANDOFF_SPEC",
+      "blocks_implementation_ready": false,
+      "pre_handoff_publication": "CLOSED_BY_ULTIMATE_REVIEW"
+    },
+    {
+      "functional_id": "F04G",
+      "parameter_availability": "RESOLVED_FOR_SELECTED_INTERNAL_SCOPE; WHOLE_MODULE_AND_CONSUMPTION_AUDIT_STILL_SEPARATE",
+      "readiness_stage": "PRE_HANDOFF_SPEC",
+      "blocks_implementation_ready": false,
+      "pre_handoff_publication": "CLOSED_BY_ULTIMATE_REVIEW"
+    },
+    {
+      "functional_id": "F04P",
+      "parameter_availability": null,
+      "readiness_stage": "PRE_HANDOFF_SPEC",
+      "blocks_implementation_ready": false,
+      "pre_handoff_publication": "CLOSED_BY_ULTIMATE_REVIEW"
+    }
+  ],
+  "matrix_representation_authority": {
+    "package_id": "SPATIAL-ACTIVE-MATRIX-REPRESENTATION-ADAPTER-V1",
+    "manifest_sha256": "97d554d78dce00348476cdf00fd5cb566e9c4327dc3b4f6418e344df3fa08d7a"
+  },
+  "main_and_meter_drain_clocks": "DISTINCT_PARENT_DOMAINS",
+  "whole_producer_callgraph_controls_and_real_execution": "NOT_GRANTED_BY_PARAMETER_COVERAGE"
+}

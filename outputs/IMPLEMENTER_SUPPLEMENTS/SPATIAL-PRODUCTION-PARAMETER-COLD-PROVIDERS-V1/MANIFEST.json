@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "SPATIAL-PRODUCTION-PARAMETER-COLD-PROVIDERS-V1",
+  "implementation_ready": true,
+  "readiness_scope": "Selected F03/F04 parameter identities, generation rules and cold constructor inputs",
+  "whole_chain_implementation_ready": false,
+  "source_research_manifest_sha256": "1a18c9992ad9f4f0bff921b81c51fc50eeb9f9e401cbe9da2b06d74feedf0e6f",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 3243,
+      "sha256": "4062e89e860e7dce229f408b0ea15f095769d04401249f1cc6518af13344e888"
+    },
+    {
+      "file": "COVERAGE.json",
+      "bytes": 9372,
+      "sha256": "b8b37b86806291cf2d72c313b77675081c402e6c9da1084c8d9a6e7cc54de945"
+    },
+    {
+      "file": "INPUT-ONLY-REFERENCE-VECTORS.json",
+      "bytes": 2813,
+      "sha256": "639e7611696607bbf3f3b0258ebe5ce7153a2f52e8110a56e6056d7da4d8d2e1"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 10794,
+      "sha256": "78778890c25f80269c48b9afab5bf361d89d42ab58f006cdb125f374c0af6cb4"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 566,
+      "sha256": "9a63242b9ec1a05d5fb0fddc237fcad4e5224b4fa919e0f0acbc9d5408838c7e"
+    },
+    {
+      "file": "WASH-DECISION.json",
+      "bytes": 1710,
+      "sha256": "97c8c70b8652ad42a61a42441cbc3ef1533ff57844ef910819e1a7c666b13040"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "schema": "jocforge-active-matrix-adapter-sources.v1",
+  "research_manifest_sha256": "ee66b3813818a0709fe85aaf9a9a3a70c17086f161db5c4842f36af56946c898",
+  "sources": [
+    {
+      "role": "actual meter callsites",
+      "bytes": 36561,
+      "sha256": "b800b1737094a9e3bbc2b2349574cc20d6ceceaadba0044c65fd896bc6e8ce51"
+    },
+    {
+      "role": "front matrix writer",
+      "bytes": 12704,
+      "sha256": "ce0b377c9c58142dfab19605b38253ce825f5947f170a1ca30f275103f65c4ca"
+    },
+    {
+      "role": "compact rectangular output",
+      "bytes": 7076,
+      "sha256": "3fa89859c2940ee4307169f4d5648f9fb7f057cbaa28722b1385d4a3ddda34fa"
+    },
+    {
+      "role": "legacy padded adapter",
+      "bytes": 4151,
+      "sha256": "406e798012c6b065827ea82e383f2d1fedff1203aa37c90998c530340d97b8c0"
+    },
+    {
+      "role": "component production caller",
+      "bytes": 7882,
+      "sha256": "d4a68ddc253767fccc983d471e91ef5b4d7b2a48ac39c88330f97c8410b18b73"
+    },
+    {
+      "role": "approved clean authority",
+      "bytes": 10079,
+      "sha256": "a494e653e584c8453464aa74ae08bf453cc615e1ccafd98ab4ede238de1f7dd9"
+    },
+    {
+      "role": "approved clean authority",
+      "bytes": 5150,
+      "sha256": "7ca47864c9fe7573b6cc6edfafdbd2049c5e74aa73f9b240c4c15bf4a427cdb2"
+    },
+    {
+      "role": "approved clean authority",
+      "bytes": 9190,
+      "sha256": "350937eadb5da2432ed60723305cdc8de80a139fef803ec3a2aa5a3990ed6334"
+    },
+    {
+      "role": "approved clean authority",
+      "bytes": 5475,
+      "sha256": "aeb6791967413e71518cfb1c5853c52cd8e6e7e7174f60afa611cc0e0fa8d9dc"
+    },
+    {
+      "role": "approved clean authority",
+      "bytes": 4504,
+      "sha256": "9ff01aca7b6be6e89511e4d493f9fc9e661a50e2f098065f4a32c3fed777542f"
+    }
+  ],
+  "native_code_coordinates_PCM_or_body_bytes_forwarded": false
+}

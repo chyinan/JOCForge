@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge-meter-model-bridge-decision.v1",
+  "decision": "APPROVE_TYPED_MODEL_SOURCE_TO_FRONTEND_TO_OAR_INPUT_BRIDGE",
+  "scope_implementation_ready": true,
+  "implementation_preconditions": [
+    "Approved F01 UID-to-physical-slot adapter",
+    "Existing independent meter frontend/spatial/component/LFE/OAR/DV providers and their own states",
+    "Actual fresh source data and metadata rather than archived prediction arrays"
+  ],
+  "native_pointer_identity": "NOT_REQUIRED_TO_IMPLEMENT_THIS_MODEL_INTERFACE; NOT_OBSERVED_HERE",
+  "small_programme_clarification": "Use g<2 priming and g>=2 origin g-2; two-normal-drain shorthand requires Q>=2",
+  "full_chain_ready": false
+}

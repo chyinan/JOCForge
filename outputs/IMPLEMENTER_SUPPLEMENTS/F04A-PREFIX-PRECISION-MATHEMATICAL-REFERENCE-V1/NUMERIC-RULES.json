@@ -1,0 +1,45 @@
+{
+  "authority": "F04A.4 plus N00.1/2; no new formula or native capture required.",
+  "constant_derivation": [
+    {
+      "literal": "0.85",
+      "binary64_literal_u64": "3feb333333333333",
+      "sqrt_binary64_u64": "3fed80a69c19e42a",
+      "sqrt_then_f32_u32": "3f6c0535",
+      "f32_input_then_sqrt_u32": "3f6c0535"
+    },
+    {
+      "literal": "0.15",
+      "binary64_literal_u64": "3fc3333333333333",
+      "sqrt_binary64_u64": "3fd8c97ef43f7248",
+      "sqrt_then_f32_u32": "3ec64bf8",
+      "f32_input_then_sqrt_u32": "3ec64bf8"
+    }
+  ],
+  "mandatory_order": [
+    "literal decimal -> R64",
+    "sqrt mathematical result -> R64",
+    "sqrt result -> R32 before gain multiply",
+    "A=R32(root85_f32 * gain_f32)",
+    "B=R32(R32(root15_f32 * R32(mode_i32)) * gain_f32)",
+    "product_a=R32(source_f32 * A)",
+    "first_sum=R32(product_a + old_output_f32)",
+    "product_b=R32(filter_sample_f32 * B)",
+    "result=R32(first_sum + product_b)"
+  ],
+  "direct_branch": "A=gain; result=R32(R32(source*gain)+old_output); no filter read.",
+  "finding": "The two final sqrt F32 constants are unchanged if these particular literal inputs were first rounded to F32. Retaining the sqrt weight in binary64 through gain multiplication is a different expression and can change results. A claim that changing only literal-input precision invalidates output needs the exact expression/rounding point clarified.",
+  "no_fma_or_reassociation": true,
+  "gradual_underflow": true,
+  "signed_zero": "N00 IEEE RNE add/multiply rules; cancellation +0, -0+-0=-0, multiplication XOR sign.",
+  "trace_fields": [
+    "coefficient_a_u32",
+    "coefficient_b_u32",
+    "source_product_u32",
+    "first_sum_u32",
+    "filter_product_u32",
+    "result_u32"
+  ],
+  "reference_algorithm": "Decode finite IEEE words to exact Fraction. Round rational at every declared operation using quotient/remainder and ties-even. For sqrt64, binary-search adjacent positive IEEE words then compare input exactly with the squared midpoint. This avoids reliance on platform sqrt/libm in the independent reference.",
+  "scope": "F04A prefix contribution primitive and synthetic previous/current half recomputation. F04G spread/gain generation, diffusion filter internals, whole g0-g2 matrix/ring/filter pipeline and native bit-exact conformance are outside this audit."
+}

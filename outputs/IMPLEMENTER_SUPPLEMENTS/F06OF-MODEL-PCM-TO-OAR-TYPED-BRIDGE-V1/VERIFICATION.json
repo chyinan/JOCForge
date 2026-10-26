@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge-meter-model-bridge-verification.v1",
+  "research_payloads": "8/8_MATCH",
+  "source_model_and_approved_contracts": "22/22_MATCH",
+  "historical_stage_ledgers": "3/3_MATCH",
+  "research_checker_reports": {
+    "normal": {
+      "checks": 25934,
+      "status": "PASS"
+    },
+    "optimized": {
+      "checks": 25934,
+      "status": "PASS"
+    },
+    "scope": "Count/cursor/crop/virtual row/control metadata only"
+  },
+  "independent_wash_replay": {
+    "checks": 676,
+    "count_cases": 9,
+    "virtual_row_cases": 2,
+    "checks_scope": "Count totals, tail extents, crop intersections, ring origins, cursor counts and CHNA physical-slot coverage"
+  },
+  "actual_pcm_read_or_decode": "NOT_RUN",
+  "full_frontend_or_OAR_DSP": "NOT_RUN",
+  "native_execution": "NOT_RUN",
+  "historical_report_content_verified": false
+}

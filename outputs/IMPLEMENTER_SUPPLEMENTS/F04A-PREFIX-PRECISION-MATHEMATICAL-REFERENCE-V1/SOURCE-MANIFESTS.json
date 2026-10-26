@@ -1,0 +1,62 @@
+{
+  "schema": "jocforge-prefix-mathematical-reference-sources.v1",
+  "research_manifest_sha256": "16ce9d9a7a0cd4412f0d18266fba82d1463e1204248c9e72e954f094129e9b6d",
+  "approved_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_contracts": [
+    {
+      "file": "specs/00-numeric-semantics.md",
+      "sha256": "53cb67d6c9ddced1fb909dda806bb478a2926a66f2e38cecaada6f6e95d4d135",
+      "bytes": 3369,
+      "authority": "APPROVED_CONTRACT"
+    },
+    {
+      "file": "specs/04-window-matrix-and-component-audio.md",
+      "sha256": "350937eadb5da2432ed60723305cdc8de80a139fef803ec3a2aa5a3990ed6334",
+      "bytes": 9190,
+      "authority": "APPROVED_CONTRACT"
+    },
+    {
+      "file": "specs/04-prefix-spread-and-gain.md",
+      "sha256": "ca5b069d16f0a0837ad4501036c74bb6e8ae3d6acfaf8bf3961ca4869923a68b",
+      "bytes": 12300,
+      "authority": "APPROVED_CONTRACT"
+    },
+    {
+      "file": "specs/04-diffusion-filter-and-lifecycle.md",
+      "sha256": "4b662c3721ba10ad9dafd193bf13e1bc2df571ab4cab580e46a8a6b39e9a3594",
+      "bytes": 7203,
+      "authority": "APPROVED_CONTRACT"
+    },
+    {
+      "file": "specs/00-global-transaction-contract.md",
+      "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105",
+      "bytes": 20041,
+      "authority": "APPROVED_CONTRACT"
+    }
+  ],
+  "frozen_source_identity_hashes": [
+    {
+      "bytes": 2534,
+      "sha256": "54e3d80e8244aef1f075d3e46bbcc08735887b163567997b6525ed55b135188c",
+      "use": "Scalar source compared using own synthetic data"
+    },
+    {
+      "bytes": 2223,
+      "sha256": "cdd5f0e29c2b118589a040bc6e99e8384a4b7979a18dddffbd6ad9172fd81700",
+      "use": "Static corroboration only; not executed"
+    },
+    {
+      "bytes": 3863,
+      "sha256": "7d313d6d558ca2e22f1a6692122ca218d60ca0a0c2075cac3d40e3e6960eb724",
+      "use": "Static corroboration only; not executed"
+    },
+    {
+      "bytes": 9881,
+      "sha256": "e62c15e7aedfa7498eff97907c3ac977fa9f3fde01144062453c45b81609a1be",
+      "use": "Static corroboration only; not executed"
+    }
+  ],
+  "clean_reference_sha256": "c2431dfec5adac1197e94b055906a6fe3be540cc4d759bc5cdd1f9d032e1e7e6",
+  "clean_reference_origin": "Own exact Fraction arithmetic and squared-midpoint nearest-even sqrt derivation; no implementation output used as expected.",
+  "source_code_from_original_models_or_native_not_delivered": true
+}

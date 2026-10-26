@@ -1,0 +1,43 @@
+{
+  "schema": "jocforge-meter-drain-source-control-sources.v1",
+  "research_manifest_sha256": "b9abe11025987467212644d69453d22827a44aefa3354cd9147708c22c1c3332",
+  "source_identities": [
+    {
+      "role": "specs/01-frontend-config-dbmd-events.md",
+      "bytes": 13867,
+      "sha256": "afd9efc879ed9a4878bd967c1370275074efd2226e11e67eb86838f4168f61b7"
+    },
+    {
+      "role": "specs/03-adm-installed48-whole.md",
+      "bytes": 10079,
+      "sha256": "a494e653e584c8453464aa74ae08bf453cc615e1ccafd98ab4ede238de1f7dd9"
+    },
+    {
+      "role": "specs/06-oar-frontend-input-and-clock-join.md",
+      "bytes": 9427,
+      "sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423"
+    },
+    {
+      "role": "specs/06-oar-model-callback-state-and-clock.md",
+      "bytes": 11750,
+      "sha256": "7342e87525e30e09e2ed95fb07593cebaa81cc113d2ce3798d99ec7cefaf0ae9"
+    },
+    {
+      "role": "parameters/f01e-selected-constructor-v1.json",
+      "bytes": 20138,
+      "sha256": "b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb"
+    },
+    {
+      "role": "approved_meter_bridge_manifest",
+      "bytes": 1553,
+      "sha256": "7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac"
+    },
+    {
+      "role": "frozen_meter_worker",
+      "bytes": 36561,
+      "sha256": "b800b1737094a9e3bbc2b2349574cc20d6ceceaadba0044c65fd896bc6e8ce51"
+    }
+  ],
+  "production_wiring_manifest_sha256": "6d1fa51b3b04ea8ca19c9d81c51b75a49d27349eaad2e018d6848e739f2cb5c1",
+  "raw_research_paths_or_source_code_forwarded": false
+}

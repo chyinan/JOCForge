@@ -9,6 +9,7 @@ pub mod current_features;
 pub mod descriptor_mathematical_provider;
 pub mod diffusion_filter;
 pub mod diffusion_tail;
+mod frontend_stages;
 pub mod installed48_activity;
 pub mod installed48_source_map;
 pub mod outer_active_update;

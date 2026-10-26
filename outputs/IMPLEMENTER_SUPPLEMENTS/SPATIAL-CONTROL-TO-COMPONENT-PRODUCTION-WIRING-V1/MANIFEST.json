@@ -1,0 +1,46 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "SPATIAL-CONTROL-TO-COMPONENT-PRODUCTION-WIRING-V1",
+  "implementation_ready": true,
+  "readiness_scope": "Selected F03/F04 current-callback producer wiring, component packet writer and target-control history/lineage handoff",
+  "whole_chain_implementation_ready": false,
+  "source_call_chain_research_manifest_sha256": "c3a88df4bfc32f7aeec31bd039af731846748a1a050b29afcdd10b3001c93ef0",
+  "source_control_research_manifest_sha256": "968e087a6f7efb9f4f96b48573cda0f0f3aeb0b33bf0accfb09bef8afb4c5bbf",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 8559,
+      "sha256": "5a5269461898eda50ad20c066eac28c3da4b125018efe8efb7d9ffba6c870666"
+    },
+    {
+      "file": "CONTROL-HANDOFF.json",
+      "bytes": 13098,
+      "sha256": "167886088cfdd502e622479022eb2bcad3961a6a21c41e7a1f8c4d9e6b0c7d36"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 10018,
+      "sha256": "870a7eb9ff9789c25230c6f92f5883d7fbe901efdcf69b16980f682657498219"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 10511,
+      "sha256": "adddaebec34325a01b31ec7a431c2904107e1fcf7ba51e3d47555e378b10c3b2"
+    },
+    {
+      "file": "STAGE-CONTRACTS.json",
+      "bytes": 5456,
+      "sha256": "693f1eda9ecd5f034199d39d7ad03d9484a0501e5bdf3872e997c76f9a183a83"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 905,
+      "sha256": "b557eecf5a345d658fa0affef35aa7d0952ed8c32a084d2ef48fa4a3c54ac4e1"
+    },
+    {
+      "file": "WASH-DECISION.json",
+      "bytes": 1096,
+      "sha256": "530ca52aa2a293293bee41c4bce2c86a95e613727b49dc117defc8067f6ecf9e"
+    }
+  ]
+}

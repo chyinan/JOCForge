@@ -7,6 +7,10 @@ rust-version.workspace = true
 
 [dependencies]
 jocforge-application = { path = "../jocforge-application" }
+jocforge-io = { path = "../jocforge-io" }
+
+[dev-dependencies]
+serde_json = { version = "=1.0.154", default-features = false, features = ["std"] }
 
 [lints]
 workspace = true

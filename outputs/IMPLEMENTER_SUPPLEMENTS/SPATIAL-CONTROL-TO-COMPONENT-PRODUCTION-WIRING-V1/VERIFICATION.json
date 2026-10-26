@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge-spatial-production-wiring-verification.v1",
+  "call_chain_payload_hashes": "8/8_MATCH",
+  "call_chain_source_hashes": "24/24_MATCH",
+  "call_chain_approved_supplement_hashes": "2/2_MATCH",
+  "call_chain_normal_and_optimized_metadata_checker": {
+    "status": "PASS_EACH",
+    "checks": 626,
+    "full_DSP": "NOT_RUN"
+  },
+  "control_seal_hashes": "9/9_MATCH_TOTAL10",
+  "control_direct_source_identities_recomputed": 25,
+  "reader_freeze_manifest": "Cited only by verified local-review status; 24 freeze payloads not rehashed here.",
+  "independent_control_word_lineage_checks": 259,
+  "sampler_scope_payloads": "6/6_MATCH",
+  "sampler_scope_sources": "8/8_MATCH",
+  "sampler_finite_example_reports": "147457 checks each mode reported; no universal shortcut theorem accepted",
+  "actual_audio_render_component_solver_marker_energy_native_execution": "NOT_RUN"
+}

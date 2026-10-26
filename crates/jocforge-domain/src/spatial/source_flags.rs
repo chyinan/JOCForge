@@ -5,10 +5,14 @@ use super::spatial_control::{
     SpatialControlDigest, SpatialControlMachine, SpatialControlProviderLineage,
 };
 use crate::{
-    frontend::ProviderSha256,
+    frontend::{
+        ProviderSha256,
+        primary_metadata_control::{PrimaryControl38Fields, PrimaryMetadataControlRows},
+        selected_adm_graph::{SelectedAdmGraph, SelectedTrackKind},
+    },
     numeric::{FiniteF32, R32Error, r32_mul},
     profile::{EncodingProfile, ResolvedEncodingProfile, resolve_selected_profile},
-    timeline::FrontendCallbackIndex,
+    timeline::{FrontendCallbackIndex, NormalCallbackCount},
     transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId},
 };
 use sha2::{Digest, Sha256};
@@ -24,6 +28,7 @@ const ACTIVITY_EPSILON_BITS: u32 = 0x3400_0000;
 const WIDTH_LIMIT_BITS: u32 = 0x3e4c_cccd;
 const SELECTED_FEATURE_COMPONENT_ENUM: u8 = 0;
 const SELECTED_FEATURE_DIFFUSE: u8 = 0;
+const BED_SOURCE_WIDTH_POSITIVE_ZERO_BITS: u32 = 0x0000_0000;
 const WINDOW_SHA256: &str = "134a5a788d42b0532f3ec46112ad978cc14fb3c46cb0d82f02fee5f129b7c919";
 
 type FiniteFrame = Box<[FiniteF32; FRAME_SAMPLES]>;
@@ -46,6 +51,11 @@ pub enum SourceFlagsError {
     InvalidMute,
     NonfiniteWidth,
     UnsupportedComponentOrDiffuse,
+    PrimaryMetadataIdentityMismatch,
+    PrimaryControlRowMismatch,
+    PrimaryRegularSourceMapMismatch,
+    SourceControlClock,
+    SourceControlClockMismatch,
     PcmShape,
     NonfinitePcm,
     HistoryShape,
@@ -80,6 +90,11 @@ impl SourceFlagsError {
             Self::InvalidMute => "INVALID_MUTE",
             Self::NonfiniteWidth => "NONFINITE_WIDTH",
             Self::UnsupportedComponentOrDiffuse => "UNSUPPORTED_COMPONENT_OR_DIFFUSE",
+            Self::PrimaryMetadataIdentityMismatch => "PRIMARY_METADATA_IDENTITY_MISMATCH",
+            Self::PrimaryControlRowMismatch => "PRIMARY_CONTROL_ROW_MISMATCH",
+            Self::PrimaryRegularSourceMapMismatch => "PRIMARY_REGULAR_SOURCE_MAP_MISMATCH",
+            Self::SourceControlClock => "SOURCE_CONTROL_CLOCK",
+            Self::SourceControlClockMismatch => "SOURCE_CONTROL_CLOCK_MISMATCH",
             Self::PcmShape => "PCM_SHAPE",
             Self::NonfinitePcm => "NONFINITE_PCM",
             Self::HistoryShape => "HISTORY_SHAPE",
@@ -350,6 +365,18 @@ impl RegularControl {
             width,
         })
     }
+
+    pub const fn host(self) -> HostId {
+        self.host
+    }
+
+    pub const fn is_muted(self) -> bool {
+        self.muted
+    }
+
+    pub const fn width(self) -> FiniteF32 {
+        self.width
+    }
 }
 
 #[derive(Debug)]
@@ -381,6 +408,213 @@ impl RegularControls {
             .find(|control| control.host == host)
             .ok_or(SourceFlagsError::RegularControlHostMismatch)
     }
+
+    pub fn rows(&self) -> &[RegularControl] {
+        &self.values
+    }
+}
+
+/// Callback binding for the source-control snapshot used by F03R.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct SourceControlSnapshotClock {
+    callback_index: FrontendCallbackIndex,
+    normal_callbacks: NormalCallbackCount,
+    source_origin: FrontendCallbackIndex,
+    cached_drain: bool,
+}
+
+impl SourceControlSnapshotClock {
+    pub fn for_normal_callback(
+        callback_index: FrontendCallbackIndex,
+        normal_callbacks: NormalCallbackCount,
+    ) -> Result<Self, SourceFlagsError> {
+        if normal_callbacks.value() == 0
+            || u64::from(callback_index.value()) >= normal_callbacks.value()
+        {
+            return Err(SourceFlagsError::SourceControlClock);
+        }
+        Ok(Self {
+            callback_index,
+            normal_callbacks,
+            source_origin: callback_index,
+            cached_drain: false,
+        })
+    }
+
+    pub fn for_cached_drain(
+        callback_index: FrontendCallbackIndex,
+        normal_callbacks: NormalCallbackCount,
+    ) -> Result<Self, SourceFlagsError> {
+        if normal_callbacks.value() == 0
+            || u64::from(callback_index.value()) < normal_callbacks.value()
+        {
+            return Err(SourceFlagsError::SourceControlClock);
+        }
+        let last_normal = normal_callbacks
+            .value()
+            .checked_sub(1)
+            .and_then(|value| u32::try_from(value).ok())
+            .map(FrontendCallbackIndex::new)
+            .ok_or(SourceFlagsError::SourceControlClock)?;
+        Ok(Self {
+            callback_index,
+            normal_callbacks,
+            source_origin: last_normal,
+            cached_drain: true,
+        })
+    }
+
+    pub const fn callback_index(self) -> FrontendCallbackIndex {
+        self.callback_index
+    }
+
+    pub const fn normal_callbacks(self) -> NormalCallbackCount {
+        self.normal_callbacks
+    }
+
+    pub const fn source_origin(self) -> FrontendCallbackIndex {
+        self.source_origin
+    }
+
+    pub const fn is_cached_drain(self) -> bool {
+        self.cached_drain
+    }
+}
+
+/// Source-control projection from one validated physical metadata snapshot.
+#[must_use]
+pub struct PrimaryRegularSourceControlProjection {
+    clock: SourceControlSnapshotClock,
+    profile_identity: ResolvedEncodingProfile,
+    route: ValidatedSemanticRoute,
+    controls: RegularControls,
+}
+
+impl PrimaryRegularSourceControlProjection {
+    pub const fn clock(&self) -> SourceControlSnapshotClock {
+        self.clock
+    }
+
+    pub const fn profile_identity(&self) -> ResolvedEncodingProfile {
+        self.profile_identity
+    }
+
+    pub const fn route(&self) -> &ValidatedSemanticRoute {
+        &self.route
+    }
+
+    pub const fn controls(&self) -> &RegularControls {
+        &self.controls
+    }
+}
+
+/// Projects the approved bed/object F01E fields to the selected F03R regular domain.
+pub fn project_primary_regular_source_controls(
+    control_rows: &PrimaryMetadataControlRows,
+    graph: &SelectedAdmGraph,
+    profile_identity: ResolvedEncodingProfile,
+    clock: SourceControlSnapshotClock,
+) -> Result<PrimaryRegularSourceControlProjection, SourceFlagsError> {
+    if profile_identity != control_rows.source_binding().selected_profile() {
+        return Err(SourceFlagsError::UnsupportedProfile);
+    }
+    let metadata_hashes = control_rows.source_binding().metadata_hashes();
+    if metadata_hashes.axml() != *graph.receipt().axml_sha256()
+        || metadata_hashes.chna() != *graph.receipt().chna_sha256()
+    {
+        return Err(SourceFlagsError::PrimaryMetadataIdentityMismatch);
+    }
+
+    let direct_lfe_host = graph.receipt().direct_lfe_host().value();
+    if usize::from(direct_lfe_host) >= HOST_CHANNELS || control_rows.row_count() != HOST_CHANNELS {
+        return Err(SourceFlagsError::PrimaryControlRowMismatch);
+    }
+    let mut destination_by_host = [None; HOST_CHANNELS];
+    for binding in graph.regular_source_bindings() {
+        let host = usize::from(binding.physical_host().value());
+        if host >= HOST_CHANNELS || host == usize::from(direct_lfe_host) {
+            return Err(SourceFlagsError::PrimaryRegularSourceMapMismatch);
+        }
+        let destination = u8::try_from(binding.global_source().value())
+            .map_err(|_| SourceFlagsError::PrimaryRegularSourceMapMismatch)?;
+        if destination_by_host[host].replace(destination).is_some() {
+            return Err(SourceFlagsError::PrimaryRegularSourceMapMismatch);
+        }
+    }
+
+    let mut route_records = Vec::with_capacity(HOST_CHANNELS);
+    let mut regular_controls = Vec::with_capacity(REGULAR_HOSTS);
+    let mut direct_lfe_seen = false;
+    for (row_index, row) in control_rows.rows().iter().enumerate() {
+        let host = row.track().physical_host().value();
+        if usize::from(host) != row_index
+            || graph
+                .tracks()
+                .iter()
+                .find(|track| track.physical_host().value() == host)
+                != Some(row.track())
+        {
+            return Err(SourceFlagsError::PrimaryControlRowMismatch);
+        }
+        let is_direct_lfe = host == direct_lfe_host;
+        match (row.track().kind(), row.fields()) {
+            (
+                SelectedTrackKind::DirectSpeakersBed { bed_id, .. },
+                PrimaryControl38Fields::Bed { .. },
+            ) if (bed_id == 3) == is_direct_lfe => {}
+            (SelectedTrackKind::Object { .. }, PrimaryControl38Fields::Object { .. })
+                if !is_direct_lfe => {}
+            _ => return Err(SourceFlagsError::PrimaryControlRowMismatch),
+        }
+
+        if is_direct_lfe {
+            if direct_lfe_seen {
+                return Err(SourceFlagsError::PrimaryControlRowMismatch);
+            }
+            direct_lfe_seen = true;
+            route_records.push(HostRouteRecord::new(host, HostRole::Lfe, true, None)?);
+            continue;
+        }
+
+        let destination = destination_by_host[usize::from(host)]
+            .ok_or(SourceFlagsError::PrimaryRegularSourceMapMismatch)?;
+        route_records.push(HostRouteRecord::new(
+            host,
+            HostRole::Regular,
+            true,
+            Some(destination),
+        )?);
+
+        let (mute_word, width) = match row.fields() {
+            PrimaryControl38Fields::Bed { words, .. } => (
+                words[0],
+                f32::from_bits(BED_SOURCE_WIDTH_POSITIVE_ZERO_BITS),
+            ),
+            PrimaryControl38Fields::Object { control52 } => {
+                let words = control52.words();
+                (words[0], f32::from_bits(words[9]))
+            }
+        };
+        let mute = u8::try_from(mute_word).map_err(|_| SourceFlagsError::InvalidMute)?;
+        let feature_control = SelectedFeatureFlagsControl::from_admitted_profile(
+            profile_identity,
+            clock.callback_index(),
+            host,
+        )?;
+        regular_controls.push(feature_control.into_regular_control(mute, width)?);
+    }
+
+    if !direct_lfe_seen || regular_controls.len() != REGULAR_HOSTS {
+        return Err(SourceFlagsError::PrimaryControlRowMismatch);
+    }
+    let route = ValidatedSemanticRoute::new(route_records)?;
+    let controls = RegularControls::new(regular_controls)?;
+    Ok(PrimaryRegularSourceControlProjection {
+        clock,
+        profile_identity,
+        route,
+        controls,
+    })
 }
 
 /// Exact finite host-major PCM input; shape and finiteness are validated before retention.
@@ -573,6 +807,7 @@ pub struct SourceFlagsInput {
     controls: RegularControls,
     route: ValidatedSemanticRoute,
     prefix_writers: PrefixWriterSet,
+    source_control_clock: Option<SourceControlSnapshotClock>,
     parent: Arc<SourceFlagsParentLineage>,
 }
 
@@ -591,8 +826,39 @@ impl SourceFlagsInput {
             controls,
             route,
             prefix_writers,
+            source_control_clock: None,
             parent: Arc::new(parent),
         }
+    }
+
+    pub fn from_primary_regular_source_controls(
+        current_pcm: CurrentHostPcm,
+        before_history: Option<BeforeRegularHistory>,
+        projection: PrimaryRegularSourceControlProjection,
+        prefix_writers: PrefixWriterSet,
+        parent: SourceFlagsParentLineage,
+    ) -> Result<Self, SourceFlagsError> {
+        let profile = resolve_selected_profile(&parent.profile_identity)
+            .map_err(|_| SourceFlagsError::UnsupportedProfile)?;
+        if projection.profile_identity != profile {
+            return Err(SourceFlagsError::UnsupportedProfile);
+        }
+        if projection.clock.callback_index() != parent.callback_index {
+            return Err(SourceFlagsError::StaleCallbackGeneration);
+        }
+        Ok(Self {
+            current_pcm,
+            before_history,
+            controls: projection.controls,
+            route: projection.route,
+            prefix_writers,
+            source_control_clock: Some(projection.clock),
+            parent: Arc::new(parent),
+        })
+    }
+
+    pub(super) const fn source_control_clock(&self) -> Option<SourceControlSnapshotClock> {
+        self.source_control_clock
     }
 }
 
@@ -628,11 +894,24 @@ pub(super) struct SourceFlagsLineage {
     parent: Arc<SourceFlagsParentLineage>,
     current_pcm_receipt: SourceFlagsDigest,
     controls_receipt: SourceFlagsDigest,
+    source_control_clock: Option<SourceControlSnapshotClock>,
     route_receipt: SourceFlagsDigest,
     writer_receipt: SourceFlagsDigest,
 }
 
 impl SourceFlagsLineage {
+    pub(super) fn programme_id(&self) -> &SourceFlagsProgrammeId {
+        &self.parent.programme_id
+    }
+
+    pub(super) fn attempt(&self) -> SourceFlagsAttempt {
+        self.parent.attempt
+    }
+
+    pub(super) fn transaction_id(&self) -> &CallbackLineageIdentity {
+        &self.parent.transaction_id
+    }
+
     pub(crate) fn callback_index(&self) -> FrontendCallbackIndex {
         self.parent.callback_index
     }
@@ -799,6 +1078,7 @@ impl SourceFlagsProducer {
             &input.controls,
             &input.route,
             &input.prefix_writers,
+            input.source_control_clock,
         )?);
         let packet = SourceFlagsPacket::from_producer(payload, Arc::clone(&lineage));
         packet.validate_payload()?;
@@ -1034,9 +1314,10 @@ fn make_lineage(
     controls: &RegularControls,
     route: &ValidatedSemanticRoute,
     prefix_writers: &PrefixWriterSet,
+    source_control_clock: Option<SourceControlSnapshotClock>,
 ) -> Result<SourceFlagsLineage, SourceFlagsError> {
     let current_pcm_receipt = digest_current_pcm(current_pcm, &parent);
-    let controls_receipt = digest_controls(controls, route, &parent)?;
+    let controls_receipt = digest_controls(controls, route, &parent, source_control_clock)?;
     let route_identity = route.receipt_sha256.to_hex();
     let route_receipt =
         SourceFlagsDigest::from_parts(b"source-flags-route-v1", &parent, route_identity.as_bytes());
@@ -1050,6 +1331,7 @@ fn make_lineage(
         parent,
         current_pcm_receipt,
         controls_receipt,
+        source_control_clock,
         route_receipt,
         writer_receipt,
     })
@@ -1067,6 +1349,7 @@ fn digest_controls(
     controls: &RegularControls,
     route: &ValidatedSemanticRoute,
     parent: &SourceFlagsParentLineage,
+    source_control_clock: Option<SourceControlSnapshotClock>,
 ) -> Result<SourceFlagsDigest, SourceFlagsError> {
     let mut bytes = Vec::with_capacity(REGULAR_HOSTS * 6);
     for host in route.regular_hosts.iter().copied() {
@@ -1075,6 +1358,13 @@ fn digest_controls(
         bytes.push(u8::from(control.muted));
         bytes.extend_from_slice(&control.width.to_bits().to_le_bytes());
         bytes.extend_from_slice(&[0, 0]);
+    }
+    if let Some(clock) = source_control_clock {
+        bytes.extend_from_slice(b"source-control-clock-v1");
+        bytes.push(u8::from(clock.is_cached_drain()));
+        bytes.extend_from_slice(&clock.callback_index().value().to_le_bytes());
+        bytes.extend_from_slice(&clock.normal_callbacks().value().to_le_bytes());
+        bytes.extend_from_slice(&clock.source_origin().value().to_le_bytes());
     }
     Ok(SourceFlagsDigest::from_parts(
         b"source-flags-controls-v1",
@@ -1128,6 +1418,7 @@ pub(super) fn current_features_test_packet(
         parent: Arc::new(parent),
         current_pcm_receipt: SourceFlagsDigest([0; 32]),
         controls_receipt: SourceFlagsDigest([0; 32]),
+        source_control_clock: None,
         route_receipt: SourceFlagsDigest([0; 32]),
         writer_receipt: SourceFlagsDigest([0; 32]),
     });

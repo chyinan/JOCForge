@@ -196,9 +196,9 @@ The machine-readable record below binds the exact formulas, providers, owners, c
       "sha256": "9184b8ca22b5ed89082a92e3027b74c13d7e5424c4504598c3e71c239f2beeaa"
     },
     {
-      "bytes": 2694,
+      "bytes": 2715,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "c5dc2468b4246b1629a1dcbc54a7c6356955d2f16e3cdcb71856eed69f84203c"
+      "sha256": "670df35be4e4f344415cd80e07fb431471a8d88bc6e66b860e6125249cade579"
     }
   ],
   "implementation_prohibitions": [

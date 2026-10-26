@@ -1,0 +1,13 @@
+{
+  "schema": "jocforge-meter-drain-source-control-inputs.v1",
+  "data_kind": "SELF_OWNED_COUNTS_AND_OPAQUE_SNAPSHOT_LABELS",
+  "H": 1536,
+  "N_values": [
+    1,
+    1536,
+    1537,
+    6522906
+  ],
+  "source_snapshot_label_recipe": "successful_normal_snapshot(Q-1, same input/attempt/physical binding)",
+  "expected_audio_or_body_bytes_included": false
+}

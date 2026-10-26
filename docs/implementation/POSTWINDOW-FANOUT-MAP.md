@@ -127,7 +127,7 @@ The linear proposal carries one immutable Arc payload. Its two consumer views sh
   ],
   "verification": {
     "compile_fail_contracts": 5,
-    "current_features_tests": 9,
+    "current_features_tests": 10,
     "full_repository_boundary_mutations_rejected": 585,
     "matrix_destination_producer": "NOT_IMPLEMENTED",
     "parent_transaction": "NOT_IMPLEMENTED",

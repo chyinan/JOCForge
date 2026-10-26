@@ -1,0 +1,17 @@
+domain,rule,type,boundary
+source duration,N,positive integer samples per physical channel,"RIFF data_bytes / blockAlign, not file bytes"
+PCM24 raw byte extent,114*N,bytes;38 channels times3,data offset is separate; do not multiply actual row count twice
+source requested,1536,U64 samples per channel,selected request; not actual or output capacity
+cursor actual,"A=min(1536,N-old_cursor)",U64 per-channel samples,returned value drives decoder length and cursor advance
+decoder rows,38 rows each A*4,planar F32 byte extent,row c is physical channel c; no CHNA-entry reordering
+padded source,38 rows each1536*4,capacity/processing frame,only raw input tail is fresh positive zero
+clean host_input_count,A normal;0 drain,actual source count,map frozen source_actual_samples here
+clean frontend_samples,1536,processing frame samples,map frozen host_advertised_samples here
+OAR allocated input,16 rows each1536*4,fixed derived source frame,"row0 delayed/priming LFE, row1..15 provider component rows"
+regular metadata60 frame field,1536,I32 at row metadata offset44,direct metadata branch retains0 there; global processing frame remains1536
+raw OAR/DV output,6 rows percallback each1536*4,uncropped derived output,not raw38 physical channels and not source actual
+published/cropped programme,P=ceil(N/1536)*1536,samples per output channel,includes source padding; crop uses latency3104
+complete statistics prefix,C=floor(P/1024)*1024,samples per output channel,1024 tail not zero-extended at EOF
+energy event domain,floor(C/960) events; C mod960 residual,independent window count,960 tail not a new event
+drain clock,ceil(3104/1536)=3,callbacks,zero raw38 input; cursor remainsN; never main cached4
+optional post-priming spatial16 artifact,Q+1,callback artifacts,not the Q+3 allocated16/OAR input stream; priming still produces allocated16

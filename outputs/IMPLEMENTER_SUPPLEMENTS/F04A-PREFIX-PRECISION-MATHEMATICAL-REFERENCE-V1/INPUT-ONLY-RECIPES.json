@@ -1,0 +1,65 @@
+{
+  "no_expected_output_words_or_audio_bodies": true,
+  "discriminating_input_only": {
+    "recipe": "alternating_dyadic",
+    "gain_u32": "3e99999a",
+    "mode": -1,
+    "filtered_branch": true,
+    "index": 1,
+    "initial_u32": "37e00000",
+    "source_u32": "37e00000",
+    "filter_input_u32": "b9800000"
+  },
+  "arithmetic_suite": {
+    "length": 17,
+    "recipes": [
+      "alternating_dyadic",
+      "boundary_impulses",
+      "signed_zero_subnormal"
+    ],
+    "gain_exact_rationals": [
+      "1",
+      "3/10",
+      "7/10",
+      "1/1000000"
+    ],
+    "gain_conversion": "R32 nearest-even",
+    "modes": [
+      -1,
+      0,
+      1
+    ],
+    "branches": [
+      "direct",
+      "filtered"
+    ],
+    "initial_output_recipe": "alternating_dyadic",
+    "filter_input_recipe": "boundary_impulses",
+    "cartesian_product": true
+  },
+  "recipe_definitions": {
+    "alternating_dyadic": "R32(((i mod17)-8)*(-1 if i odd else 1)/2^18)",
+    "boundary_impulses": "R32((-1 if i odd else 1)/2^12) at indices in {0,1,15,16,63,64,1535}, otherwise +0",
+    "signed_zero_subnormal": "Cycle input words 00000000,80000000,00000001,80000001,007fffff,807fffff",
+    "zero": "All +0"
+  },
+  "three_generation_suite": {
+    "half_length": 1536,
+    "gains": [
+      "1",
+      "3/10",
+      "7/10"
+    ],
+    "current_pcm_recipes": [
+      "alternating_dyadic",
+      "boundary_impulses",
+      "signed_zero_subnormal"
+    ],
+    "current_filter_recipe": "boundary_impulses",
+    "mode": -1,
+    "branch": "filtered",
+    "initial_previous_pcm_and_filter": "zero",
+    "each_callback": "Start both prefix halves at +0; render previous PCM/filter with this callback gain, separately render current PCM/filter with same gain; then commit current PCM/filter inputs as next previous. Filter halves here are synthetic provided inputs, not generated filter-state outputs."
+  },
+  "generation_claim_limit": "This detects stale previous-prefix reuse but does not validate diffusion constructor/continuity or whole-engine g0-g2."
+}

@@ -1,0 +1,62 @@
+{
+  "schema": "jocforge-source-flags-bed-object-source-identities.v1",
+  "research_manifest_sha256": "1388c9bf35ad279c0156038487c8aa565b2c158d50f0466b15e7a1e946a16b42",
+  "research_seal_sha256": "c1f7b6f6ffb659cc69d870e51f9c5d65cc1927f7d2b4bdc573e42b8c4932ae98",
+  "approved_base_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_specs": [
+    {
+      "path": "specs/01-frontend-config-dbmd-events.md",
+      "sha256": "afd9efc879ed9a4878bd967c1370275074efd2226e11e67eb86838f4168f61b7",
+      "scope": "F01E object sampler/control52 and physical bed channel link"
+    },
+    {
+      "path": "specs/01-bed-routing-and-source-geometry.md",
+      "sha256": "26e4220818d50227f75d5bc00e99840609d6a2023619e01328cb768bed4511b2",
+      "scope": "DirectSpeakers bed identity, bed_id, host slot, selected LFE role"
+    },
+    {
+      "path": "specs/01-selected-geometry-layout-and-bed-routing.md",
+      "sha256": "8ea5ff070ebfb77ecfe86a7e87ce846e05de2a1b3575bf834b5ead7414a51830",
+      "scope": "physical 38-row installation and selected bed/object route domain"
+    },
+    {
+      "path": "specs/03-source-routing-and-feature-flags.md",
+      "sha256": "ef0a7bd95edc2adc63b07e752879b6ddefb817962b7b6fa44c77b4acb5c51f19",
+      "scope": "F03R mute/width consumption, per-host source flags, same callback raw history"
+    }
+  ],
+  "selected_feature_adapter": {
+    "package_id": "F03R-SELECTED-FEATURE-CONTROL-BINDING-V2",
+    "manifest_sha256": "53c74da814eacba840916d93fd9fc89bcc84b7229afda629170943d12bb0bd52",
+    "contract_sha256": "ca8c089211be1f6e131f27c0478dc1cba7064a25e8e6fafdec5c8f7fa277af7b",
+    "rule": "SelectedFeatureControl is profile-owned component_enum=0/feature_diffuse=0, separate from F01E audio diffuse word10"
+  },
+  "frozen_source_identities": [
+    {
+      "bytes": 5904,
+      "sha256": "c93c018a5e191c9e56a15632863da5fe258c75ab91c1240907d6df6e6eac10b8",
+      "grade": "FROZEN_MODEL_SOURCE"
+    },
+    {
+      "bytes": 5215,
+      "sha256": "59544317dbcf8b6ee44053826bead6537a11e1092a5d16e1f2f28e5505db03bc",
+      "grade": "FROZEN_MODEL_SOURCE"
+    },
+    {
+      "bytes": 36561,
+      "sha256": "b800b1737094a9e3bbc2b2349574cc20d6ceceaadba0044c65fd896bc6e8ce51",
+      "grade": "FROZEN_MODEL_CALLER"
+    },
+    {
+      "bytes": 12535,
+      "sha256": "0f85eebdcb629cc5f695688623da1e1833a0b5c2c3e5bb3718a965e748fb8ead",
+      "grade": "FROZEN_MODEL_CALLER"
+    },
+    {
+      "bytes": 5991,
+      "sha256": "99d32b96631db1e21a645310a518775093d83d0fe59e4007b1b80b5719436b20",
+      "grade": "FROZEN_MODEL_OBJECT_CONTROL_PRODUCER"
+    }
+  ],
+  "research_paths_source_code_or_undefined_bed_bytes_forwarded": false
+}

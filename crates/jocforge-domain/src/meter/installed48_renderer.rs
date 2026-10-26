@@ -494,11 +494,7 @@ fn produce_prefix_rows(
                 return Err(MeterInstalled48Error::ControlDomain);
             }
             let use_filter = filtered && lane >= 0;
-            let direct_scale = multiply(sqrt64_to_f32(PREFIX_DIRECT_WEIGHT), gain)?;
-            let filter_scale = multiply(
-                multiply(sqrt64_to_f32(PREFIX_FILTER_WEIGHT), mode as f32)?,
-                gain,
-            )?;
+            let (direct_scale, filter_scale) = filtered_prefix_scales(gain, mode)?;
             let output_lane = usize::try_from(lane).ok();
             let lanes = diffusion_outputs.get(&host);
             if use_filter && (lanes.is_none() || output_lane.is_none()) {
@@ -512,17 +508,19 @@ fn produce_prefix_rows(
                     let lane = output_lane.ok_or(MeterInstalled48Error::ControlDomain)?;
                     let (previous_lanes, current_lanes) =
                         lanes.ok_or(MeterInstalled48Error::DiffusionParametersUnavailable)?;
-                    let previous_direct = multiply(previous_input, direct_scale)?;
-                    let previous_filtered = multiply(previous_lanes[lane][sample], filter_scale)?;
-                    previous_prefix[prefix][sample] = add(
-                        add(previous_direct, previous_prefix[prefix][sample])?,
-                        previous_filtered,
+                    previous_prefix[prefix][sample] = mix_filtered_prefix_sample(
+                        previous_prefix[prefix][sample],
+                        previous_input,
+                        previous_lanes[lane][sample],
+                        direct_scale,
+                        filter_scale,
                     )?;
-                    let current_direct = multiply(current_input, direct_scale)?;
-                    let current_filtered = multiply(current_lanes[lane][sample], filter_scale)?;
-                    current_prefix[prefix][sample] = add(
-                        add(current_direct, current_prefix[prefix][sample])?,
-                        current_filtered,
+                    current_prefix[prefix][sample] = mix_filtered_prefix_sample(
+                        current_prefix[prefix][sample],
+                        current_input,
+                        current_lanes[lane][sample],
+                        direct_scale,
+                        filter_scale,
                     )?;
                 } else {
                     previous_prefix[prefix][sample] = add(
@@ -542,6 +540,28 @@ fn produce_prefix_rows(
         current: current_prefix,
         diffusion_states: next_diffusion_states,
     })
+}
+
+fn filtered_prefix_scales(gain: f32, mode: i32) -> Result<(f32, f32), MeterInstalled48Error> {
+    let direct_scale = multiply(sqrt64_to_f32(PREFIX_DIRECT_WEIGHT), gain)?;
+    let filter_scale = multiply(
+        multiply(sqrt64_to_f32(PREFIX_FILTER_WEIGHT), mode as f32)?,
+        gain,
+    )?;
+    Ok((direct_scale, filter_scale))
+}
+
+fn mix_filtered_prefix_sample(
+    previous_output: f32,
+    source: f32,
+    filtered: f32,
+    direct_scale: f32,
+    filter_scale: f32,
+) -> Result<f32, MeterInstalled48Error> {
+    let direct_product = multiply(source, direct_scale)?;
+    let filter_product = multiply(filtered, filter_scale)?;
+    let first_sum = add(direct_product, previous_output)?;
+    add(first_sum, filter_product)
 }
 
 fn spread_factor(spread: f32, quiet: u8) -> Result<f32, MeterInstalled48Error> {
@@ -605,4 +625,154 @@ fn zero_rows(row_count: usize, sample_count: usize) -> Vec<Vec<u32>> {
 
 fn zero_float_rows(row_count: usize, sample_count: usize) -> Vec<Vec<f32>> {
     (0..row_count).map(|_| vec![0.0; sample_count]).collect()
+}
+
+#[cfg(test)]
+mod prefix_precision_tests {
+    use super::{filtered_prefix_scales, mix_filtered_prefix_sample};
+    use serde_json::Value;
+
+    const INPUT_ONLY_RECIPES: &[u8] = include_bytes!(
+        "../../../../outputs/IMPLEMENTER_SUPPLEMENTS/F04A-PREFIX-PRECISION-MATHEMATICAL-REFERENCE-V1/INPUT-ONLY-RECIPES.json"
+    );
+    const NUMERIC_RULES: &[u8] = include_bytes!(
+        "../../../../outputs/IMPLEMENTER_SUPPLEMENTS/F04A-PREFIX-PRECISION-MATHEMATICAL-REFERENCE-V1/NUMERIC-RULES.json"
+    );
+
+    #[test]
+    fn filtered_prefix_sample_matches_discriminating_postcomputed_scalar() {
+        let recipes: Value = serde_json::from_slice(INPUT_ONLY_RECIPES).unwrap();
+        let rules: Value = serde_json::from_slice(NUMERIC_RULES).unwrap();
+        let input = &recipes["discriminating_input_only"];
+        let words = &rules["constant_derivation"];
+        assert_eq!(words[0]["sqrt_then_f32_u32"], "3f6c0535");
+        assert_eq!(words[1]["sqrt_then_f32_u32"], "3ec64bf8");
+
+        let gain = f32::from_bits(parse_word(&input["gain_u32"]));
+        let mode = i32::try_from(input["mode"].as_i64().unwrap()).unwrap();
+        assert!(input["filtered_branch"].as_bool().unwrap());
+        let (direct_scale, filter_scale) = filtered_prefix_scales(gain, mode).unwrap();
+        assert_eq!(direct_scale.to_bits(), 0x3e8d_9cba);
+        assert_eq!(filter_scale.to_bits(), 0xbded_f4c4);
+
+        let result = mix_filtered_prefix_sample(
+            f32::from_bits(parse_word(&input["initial_u32"])),
+            f32::from_bits(parse_word(&input["source_u32"])),
+            f32::from_bits(parse_word(&input["filter_input_u32"])),
+            direct_scale,
+            filter_scale,
+        )
+        .unwrap();
+        assert_eq!(result.to_bits(), 0x3882_fa56);
+
+        // This postcomputed mutation retains the F64 sqrt through gain. The
+        // exact Fraction oracle bound by the reference manifest derives a
+        // different filtered coefficient and this same input yields 0x3882fa55.
+        let delayed_rounding = mix_filtered_prefix_sample(
+            f32::from_bits(parse_word(&input["initial_u32"])),
+            f32::from_bits(parse_word(&input["source_u32"])),
+            f32::from_bits(parse_word(&input["filter_input_u32"])),
+            direct_scale,
+            f32::from_bits(0xbded_f4c3),
+        )
+        .unwrap();
+        assert_eq!(delayed_rounding.to_bits(), 0x3882_fa55);
+        assert_ne!(result.to_bits(), delayed_rounding.to_bits());
+    }
+
+    #[test]
+    fn previous_and_current_prefix_halves_use_the_current_callback_gain() {
+        let recipes: Value = serde_json::from_slice(INPUT_ONLY_RECIPES).unwrap();
+        let suite = &recipes["three_generation_suite"];
+        let arithmetic = &recipes["arithmetic_suite"];
+        let length = usize::try_from(suite["half_length"].as_u64().unwrap()).unwrap();
+        let current_recipes = suite["current_pcm_recipes"].as_array().unwrap();
+        let gain_recipes = arithmetic["gain_exact_rationals"].as_array().unwrap();
+        let mode = i32::try_from(suite["mode"].as_i64().unwrap()).unwrap();
+        let filter_name = suite["current_filter_recipe"].as_str().unwrap();
+        assert_eq!(suite["branch"], "filtered");
+
+        let mut previous_pcm = vec![0_u32; length];
+        let mut previous_filter = vec![0_u32; length];
+        let mut prior_current = vec![0_u32; length];
+        let mut stale_previous_differences = 0_usize;
+        for (generation, recipe) in current_recipes.iter().enumerate() {
+            let gain = f32_from_rational(gain_recipes[generation].as_str().unwrap());
+            let current_pcm = synthetic_words(recipe.as_str().unwrap(), length);
+            let current_filter = synthetic_words(filter_name, length);
+            let (direct_scale, filter_scale) = filtered_prefix_scales(gain, mode).unwrap();
+            let fresh_previous =
+                render_half(&previous_pcm, &previous_filter, direct_scale, filter_scale);
+            if generation > 0 {
+                stale_previous_differences += fresh_previous
+                    .iter()
+                    .zip(&prior_current)
+                    .filter(|(fresh, stale)| fresh != stale)
+                    .count();
+            }
+            let current = render_half(&current_pcm, &current_filter, direct_scale, filter_scale);
+            prior_current = current;
+            previous_pcm = current_pcm;
+            previous_filter = current_filter;
+        }
+        assert_eq!(stale_previous_differences, 1_453);
+    }
+
+    fn render_half(
+        source: &[u32],
+        filtered: &[u32],
+        direct_scale: f32,
+        filter_scale: f32,
+    ) -> Vec<u32> {
+        source
+            .iter()
+            .zip(filtered)
+            .map(|(source, filtered)| {
+                mix_filtered_prefix_sample(
+                    0.0,
+                    f32::from_bits(*source),
+                    f32::from_bits(*filtered),
+                    direct_scale,
+                    filter_scale,
+                )
+                .unwrap()
+                .to_bits()
+            })
+            .collect()
+    }
+
+    fn synthetic_words(recipe: &str, length: usize) -> Vec<u32> {
+        (0..length)
+            .map(|index| match recipe {
+                "alternating_dyadic" => {
+                    let base = i32::try_from(index % 17).unwrap() - 8;
+                    let sign = if index % 2 == 0 { 1 } else { -1 };
+                    ((base * sign) as f32 / 262_144.0).to_bits()
+                }
+                "boundary_impulses" => {
+                    if [0, 1, 15, 16, 63, 64, 1_535].contains(&index) {
+                        ((if index % 2 == 0 { 1.0_f32 } else { -1.0_f32 }) / 4_096.0).to_bits()
+                    } else {
+                        0
+                    }
+                }
+                "signed_zero_subnormal" => {
+                    [0, 0x8000_0000, 1, 0x8000_0001, 0x007f_ffff, 0x807f_ffff][index % 6]
+                }
+                "zero" => 0,
+                _ => panic!("unknown synthetic recipe: {recipe}"),
+            })
+            .collect()
+    }
+
+    fn f32_from_rational(value: &str) -> f32 {
+        let (numerator, denominator) = value.split_once('/').map_or((value, "1"), |parts| parts);
+        let numerator = numerator.parse::<i32>().unwrap();
+        let denominator = denominator.parse::<i32>().unwrap();
+        numerator as f32 / denominator as f32
+    }
+
+    fn parse_word(value: &Value) -> u32 {
+        u32::from_str_radix(value.as_str().unwrap(), 16).unwrap()
+    }
 }

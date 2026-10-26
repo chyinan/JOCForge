@@ -1,0 +1,288 @@
+{
+  "schema": "jocforge-spatial-production-wiring-sources.v1",
+  "call_chain_research_manifest_sha256": "c3a88df4bfc32f7aeec31bd039af731846748a1a050b29afcdd10b3001c93ef0",
+  "control_handoff_research_manifest_sha256": "968e087a6f7efb9f4f96b48573cda0f0f3aeb0b33bf0accfb09bef8afb4c5bbf",
+  "control_handoff_seal_sha256": "1a596db84d3142cf14d4c27f4160537424bb6c5d80d0400df19166cf469b9549",
+  "sampler_scope_research_manifest_sha256": "0bd414987a38ec470f387e5eaf6cf8651eb49c503134fa8ce2172839fe47c7fc",
+  "call_chain_sources": [
+    {
+      "role": "meter_entry",
+      "bytes": 7318,
+      "sha256": "cf763c50a520949b50400bacd3c536cb77cc0d0245422fa6adc561f2cdac17d5"
+    },
+    {
+      "role": "meter_worker",
+      "bytes": 36561,
+      "sha256": "b800b1737094a9e3bbc2b2349574cc20d6ceceaadba0044c65fd896bc6e8ce51"
+    },
+    {
+      "role": "spatial_front",
+      "bytes": 12704,
+      "sha256": "ce0b377c9c58142dfab19605b38253ce825f5947f170a1ca30f275103f65c4ca"
+    },
+    {
+      "role": "rectangular_outer",
+      "bytes": 7076,
+      "sha256": "3fa89859c2940ee4307169f4d5648f9fb7f057cbaa28722b1385d4a3ddda34fa"
+    },
+    {
+      "role": "target_installation",
+      "bytes": 4151,
+      "sha256": "406e798012c6b065827ea82e383f2d1fedff1203aa37c90998c530340d97b8c0"
+    },
+    {
+      "role": "installed_and_component_audio",
+      "bytes": 7882,
+      "sha256": "d4a68ddc253767fccc983d471e91ef5b4d7b2a48ac39c88330f97c8410b18b73"
+    },
+    {
+      "role": "source_flags",
+      "bytes": 5215,
+      "sha256": "59544317dbcf8b6ee44053826bead6537a11e1092a5d16e1f2f28e5505db03bc"
+    },
+    {
+      "role": "feature_update",
+      "bytes": 2596,
+      "sha256": "eac438ce319448fcf3ede41852ff79e0029cb63e748405519d36b216036aa791"
+    },
+    {
+      "role": "selector_adapter",
+      "bytes": 5290,
+      "sha256": "5cbfbf288b5cc3a5a009de051deaae22df67b28f1f01295e4d53ac099fe0e82a"
+    },
+    {
+      "role": "selector_leaf",
+      "bytes": 31890,
+      "sha256": "7d2b886812fa20b43142751d363cef7ac02bf9c4a314ad026d7303b8f6dc8791"
+    },
+    {
+      "role": "response_producer",
+      "bytes": 12983,
+      "sha256": "9edf95b0723f0c55db030c7861eebf7997b09eca37772f6f766c2f7dbf004dd8"
+    },
+    {
+      "role": "context_producer",
+      "bytes": 3483,
+      "sha256": "032b1354c35055ef4fa5647647646afd08dd72ce40945036c33864bf38b0d636"
+    },
+    {
+      "role": "fit_control",
+      "bytes": 5151,
+      "sha256": "c8805e9c865b89c6f6712dbf34fe2ca88e1175e00d183afc949a89ec71a11a16"
+    },
+    {
+      "role": "approved_00-selected-owner-projection-and-j05.md",
+      "bytes": 4504,
+      "sha256": "9ff01aca7b6be6e89511e4d493f9fc9e661a50e2f098065f4a32c3fed777542f"
+    },
+    {
+      "role": "approved_03-adm-installed48-whole.md",
+      "bytes": 10079,
+      "sha256": "a494e653e584c8453464aa74ae08bf453cc615e1ccafd98ab4ede238de1f7dd9"
+    },
+    {
+      "role": "approved_03-gate-and-target-installation.md",
+      "bytes": 5475,
+      "sha256": "aeb6791967413e71518cfb1c5853c52cd8e6e7e7174f60afa611cc0e0fa8d9dc"
+    },
+    {
+      "role": "approved_03-selector-affinity-and-selection.md",
+      "bytes": 6405,
+      "sha256": "ce95853e007f9282f3d1dce0e43cffb132ed079b5f1cd2fe3e6ce10901d51697"
+    },
+    {
+      "role": "approved_03-u04-refinement-and-projection.md",
+      "bytes": 5458,
+      "sha256": "ca235e2f373d95d5c628ca61c651d01805bb9cb14a7c3457d9a77b1d87941879"
+    },
+    {
+      "role": "approved_03-point-response-and-target-context.md",
+      "bytes": 9435,
+      "sha256": "8fb727170fb41df5354a17429fc00411010f010cb32dc86e0fdcc81bddaf4964"
+    },
+    {
+      "role": "approved_03-outer-energy-correction.md",
+      "bytes": 5150,
+      "sha256": "7ca47864c9fe7573b6cc6edfafdbd2049c5e74aa73f9b240c4c15bf4a427cdb2"
+    },
+    {
+      "role": "approved_03-rectangular-nnls-initial-fit.md",
+      "bytes": 6652,
+      "sha256": "7cfb51e8905f739e60bebcd30899887bda52cc493a5bab0c976ca645548b09fc"
+    },
+    {
+      "role": "approved_03-feature-processor-and-state.md",
+      "bytes": 4436,
+      "sha256": "dbd1cf259d2e40013910868d31e38909678d3af8add9d80bd59d15e8cc6e8edd"
+    },
+    {
+      "role": "approved_04-window-matrix-and-component-audio.md",
+      "bytes": 9190,
+      "sha256": "350937eadb5da2432ed60723305cdc8de80a139fef803ec3a2aa5a3990ed6334"
+    },
+    {
+      "role": "approved_05-fit-marker-and-metadata-history.md",
+      "bytes": 6252,
+      "sha256": "39cb2ef34ef976b369c4390969d6a38e291d3268e9e2c7e43499ea299b692f26"
+    }
+  ],
+  "call_chain_approved_supplements": [
+    {
+      "package_id": "SPATIAL-ACTIVE-MATRIX-REPRESENTATION-ADAPTER-V1",
+      "sha256": "97d554d78dce00348476cdf00fd5cb566e9c4327dc3b4f6418e344df3fa08d7a"
+    },
+    {
+      "package_id": "F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1",
+      "sha256": "7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac"
+    }
+  ],
+  "control_directly_rechecked_unique_source_identities": [
+    {
+      "role": "specs/03-gate-and-target-installation.md",
+      "sha256": "aeb6791967413e71518cfb1c5853c52cd8e6e7e7174f60afa611cc0e0fa8d9dc"
+    },
+    {
+      "role": "specs/05-fit-marker-and-metadata-history.md",
+      "sha256": "39cb2ef34ef976b369c4390969d6a38e291d3268e9e2c7e43499ea299b692f26"
+    },
+    {
+      "role": "specs/05-reader56-target-updates-composition.md",
+      "sha256": "4f4fe2bc3b0dd08bc59e46ea5d3a48e2eafc4051906c2fda258250351261ce0d"
+    },
+    {
+      "role": "specs/06-oar-frontend-input-and-clock-join.md",
+      "sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423"
+    },
+    {
+      "role": "specs/03-adm-installed48-whole.md",
+      "sha256": "a494e653e584c8453464aa74ae08bf453cc615e1ccafd98ab4ede238de1f7dd9"
+    },
+    {
+      "role": "specs/03-outer-energy-correction.md",
+      "sha256": "7ca47864c9fe7573b6cc6edfafdbd2049c5e74aa73f9b240c4c15bf4a427cdb2"
+    },
+    {
+      "role": "specs/04-window-matrix-and-component-audio.md",
+      "sha256": "350937eadb5da2432ed60723305cdc8de80a139fef803ec3a2aa5a3990ed6334"
+    },
+    {
+      "role": "specs/04-whole-spatial-chain-composition.md",
+      "sha256": "92325b12128023001e1f3fd4696dcec68bbd47a46acdb7886781b411a10c5d59"
+    },
+    {
+      "role": "parameters/f03-selected-target-cold-v1.json",
+      "sha256": "a4b53854822a5f17a5413d6f2ded127a7366257c2a171377afcea4a84a3eaf00"
+    },
+    {
+      "role": "parameters/reader56-target-profile-v1.json",
+      "sha256": "ec4c56549a47d1892655345c036aba822d2f0c8baae6c71b398001e9f90ce5d1"
+    },
+    {
+      "role": "parameters/reader56-main-panner-v1.json",
+      "sha256": "b2f2cb31d3ee099db5bf32a8b93c8e1a9c441d84b9246c0908dceabde8e44c47"
+    },
+    {
+      "role": "READER-TARGET-UPDATES-V1",
+      "sha256": "02fcbf7206c261a004ef1bf591ea9f9f1c3dc6fa21023c91ee9d3f5ff3df414c"
+    },
+    {
+      "role": "spec_sha256",
+      "sha256": "c32ce5ae08d6805e510e39e1b6fa1e5910490168797516c30da1af422d8fa849"
+    },
+    {
+      "role": "api_schema_sha256",
+      "sha256": "bf50be8ac9eaefd5caa4aec27b31592c454017a557b0f0794f7276cf5d2790e3"
+    },
+    {
+      "role": "status_erratum_sha256",
+      "sha256": "85fb2a81c106661f91f8df92c095957e4992c05ae4be0ca6a005ada99da5149e"
+    },
+    {
+      "role": "current_package_receipt_audit_sha256",
+      "sha256": "e5264e8c3b60e2205f6b9fd68f8ae09a03074dc57c2766dd7eb18ced19b1066b"
+    },
+    {
+      "role": "reader_state_schema_sha256",
+      "sha256": "bb3d9754073fca1173d52c8c80d19f0a2433306004f5b20d0b83ee6c2d3ae510"
+    },
+    {
+      "role": "local_review_status_sha256",
+      "sha256": "34a5186e09126a413bff5d6a04efa089ff2f0448f703816584a31ed50abd8fb1"
+    },
+    {
+      "role": "frozen_control_history",
+      "sha256": "b800b1737094a9e3bbc2b2349574cc20d6ceceaadba0044c65fd896bc6e8ce51"
+    },
+    {
+      "role": "frozen_control_history",
+      "sha256": "0f85eebdcb629cc5f695688623da1e1833a0b5c2c3e5bb3718a965e748fb8ead"
+    },
+    {
+      "role": "frozen_control_history",
+      "sha256": "e7fcc16e6d7fe6d986df9633199dd0d51c36f1854a7f6350942342f38aba8d66"
+    },
+    {
+      "role": "frozen_control_history",
+      "sha256": "8138fd3f5247a7864aaa528073655457cf91c208f0bd4ec59b4847230217d6ad"
+    },
+    {
+      "role": "SPATIAL-CONTROL-PARENT-SEAM-V1",
+      "sha256": "051bca43be7f1cf3191ceecc374dd64f7f597e62ca2c159b3b357fbb61988bd3"
+    },
+    {
+      "role": "SPATIAL-CONTROL-PRODUCTION-ADMISSION-V1",
+      "sha256": "31b7ab587cb29eab3c7b473ecf4dd5d0133d7b3ea612d56096c2ee4b4a2437f1"
+    },
+    {
+      "role": "matrix_adapter",
+      "sha256": "97d554d78dce00348476cdf00fd5cb566e9c4327dc3b4f6418e344df3fa08d7a"
+    }
+  ],
+  "historical_reader_freeze_manifest_reference": {
+    "sha256": "0bc4a8c8649b9318b3245795a3da0ae3cd0ddc61eb19a594ffb838a2934ba5f7",
+    "grade": "REFERENCE_RECORDED_IN_HASH_VERIFIED_LOCAL_REVIEW_NOT_REOPENED_HERE"
+  },
+  "sampler_scope_sources": [
+    {
+      "role": "meter_control_initialization",
+      "bytes": 36561,
+      "sha256": "b800b1737094a9e3bbc2b2349574cc20d6ceceaadba0044c65fd896bc6e8ce51"
+    },
+    {
+      "role": "first_record_sampler",
+      "bytes": 5991,
+      "sha256": "99d32b96631db1e21a645310a518775093d83d0fe59e4007b1b80b5719436b20"
+    },
+    {
+      "role": "control_snapshot",
+      "bytes": 5904,
+      "sha256": "c93c018a5e191c9e56a15632863da5fe258c75ab91c1240907d6df6e6eac10b8"
+    },
+    {
+      "role": "constructor_weights",
+      "bytes": 6818,
+      "sha256": "cace4e10bdbc4d8ae622f0cf4aad5ab6fecd47b4721631b91f2eb304c273df5d"
+    },
+    {
+      "role": "approved_01-frontend-config-dbmd-events.md",
+      "bytes": 13867,
+      "sha256": "afd9efc879ed9a4878bd967c1370275074efd2226e11e67eb86838f4168f61b7"
+    },
+    {
+      "role": "approved_01-selected-geometry-layout-and-bed-routing.md",
+      "bytes": 9551,
+      "sha256": "8ea5ff070ebfb77ecfe86a7e87ce846e05de2a1b3575bf834b5ead7414a51830"
+    },
+    {
+      "role": "approved_01-bed-routing-and-source-geometry.md",
+      "bytes": 5510,
+      "sha256": "26e4220818d50227f75d5bc00e99840609d6a2023619e01328cb768bed4511b2"
+    },
+    {
+      "role": "approved_00-selected-owner-projection-and-j05.md",
+      "bytes": 4504,
+      "sha256": "9ff01aca7b6be6e89511e4d493f9fc9e661a50e2f098065f4a32c3fed777542f"
+    }
+  ],
+  "source_code_paths_native_coordinates_actual_PCM_or_expected_bodies_forwarded": false
+}

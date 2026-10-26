@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "SOURCE-FLAGS-BED-OBJECT-CONTROL-ADAPTER-V1",
+  "implementation_ready": true,
+  "readiness_scope": "Selected bed/object to SourceFlags RegularControl field adapter and physical-source identity only",
+  "whole_chain_implementation_ready": false,
+  "source_research_manifest_sha256": "1388c9bf35ad279c0156038487c8aa565b2c158d50f0466b15e7a1e946a16b42",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 3406,
+      "sha256": "8464b395a97facd18e324697094a080096e0d802940917dc39bcc6be0b463a54"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 2887,
+      "sha256": "f7dd497d1abdd727c757971e6a54aafa472c7ac45a2828aa4c02c4a247b67bf9"
+    },
+    {
+      "file": "SOURCE-FIELDS.json",
+      "bytes": 4463,
+      "sha256": "8ddf93ebd788383d0799609f24d3d3e101070a1624e4f15f79137b7ddc674f6f"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 2744,
+      "sha256": "a490bb26f9dda468092e3b9d39df740c1a4f9912224fb20f3138ff52ccca4e21"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 414,
+      "sha256": "6dfea7b7c6ceec989042bf49fb998d47b2a98becd4e84bc74165ed4eeec86b9a"
+    },
+    {
+      "file": "WASH-DECISION.json",
+      "bytes": 750,
+      "sha256": "b1fa30d67bef4a64182431b37c22c0e6c9ad6bd7a9fed05898ef09edff988a39"
+    }
+  ]
+}

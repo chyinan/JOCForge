@@ -21,6 +21,8 @@ use sha2::{Digest, Sha256};
 use std::collections::BTreeMap;
 use std::sync::Arc;
 
+pub mod meter_source_bridge;
+
 /// LOCAL_TRANSLATION: immutable caller-resource binding after the input adapter
 /// validates RIFF and supplies its descriptor and sample extent. This value is
 /// input preparation only; it grants no metering, READY or encode authority.

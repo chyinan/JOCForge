@@ -1,0 +1,154 @@
+{
+  "schema": "jocforge-meter-model-bridge-sources.v1",
+  "research_manifest_sha256": "eb3bfe7ad48954f6b27fd82b2a1879fd33634c3525d4fe68c409511e58aaf24c",
+  "source_identities": [
+    {
+      "role": "duration plan",
+      "file": "new_owned_composed_duration_stage_plan_rev1.py",
+      "bytes": 5476,
+      "sha256": "63854af48d35ed8ae7926fdc7dfd4fbe58e99f341c08c03588d421c08c8074c3"
+    },
+    {
+      "role": "cold wrapper",
+      "file": "meter_spatial_coder_sdk_FMA3_regular_currentfactor_minimal_cold_rev1.py",
+      "bytes": 7318,
+      "sha256": "cf763c50a520949b50400bacd3c536cb77cc0d0245422fa6adc561f2cdac17d5"
+    },
+    {
+      "role": "meter producer",
+      "file": "meter_spatial_coder_sdk_FMA3_regular_currentfactor_matrix_cold_reference_rev1.py",
+      "bytes": 36561,
+      "sha256": "b800b1737094a9e3bbc2b2349574cc20d6ceceaadba0044c65fd896bc6e8ce51"
+    },
+    {
+      "role": "source cursor",
+      "file": "r33_pcm_source_cursor_core.py",
+      "bytes": 5439,
+      "sha256": "378fc204a4c3f6d2aed5fd7c839062cd84a68071b3c97ffb5920da5efa2de8ee"
+    },
+    {
+      "role": "physical PCM24 decoder",
+      "file": "pcm24_riff_core.py",
+      "bytes": 6300,
+      "sha256": "5d59b288cf605e64772a4037853ca099df7f468b81165bfa17a5192d542f81e2"
+    },
+    {
+      "role": "host padding",
+      "file": "fullstream_input_schedule_core.py",
+      "bytes": 2558,
+      "sha256": "e579e9f121e7bf9f7b4868a9594f2d4842f89f50c7b34da97a0d9ede6dc3b949"
+    },
+    {
+      "role": "duration clock",
+      "file": "programme_duration_core.py",
+      "bytes": 2295,
+      "sha256": "ec467bf60998f0b7750120e749639e701e78cdcc37fb1c6db04d6bc1c47b9b6a"
+    },
+    {
+      "role": "control-row consumer",
+      "file": "r33_audio_regular_control_core.py",
+      "bytes": 5904,
+      "sha256": "c93c018a5e191c9e56a15632863da5fe258c75ab91c1240907d6df6e6eac10b8"
+    },
+    {
+      "role": "control routing",
+      "file": "r33_object_sampler_positions_core.py",
+      "bytes": 5991,
+      "sha256": "99d32b96631db1e21a645310a518775093d83d0fe59e4007b1b80b5719436b20"
+    },
+    {
+      "role": "LFE ring and physical source",
+      "file": "r33_model_time_schedule_core.py",
+      "bytes": 7239,
+      "sha256": "4b0a1e2da637230b908ee68f4114c95426edfb62c9028e423eb9bdfe3041cd8d"
+    },
+    {
+      "role": "allocated16 composition",
+      "file": "r32_type10_audio_core.py",
+      "bytes": 33914,
+      "sha256": "c4757133cf947c2e591f5a36e1a0237498f55c0cce5892f5f5fea768c45d7103"
+    },
+    {
+      "role": "OAR consumer",
+      "file": "meter_dplm_point6_replay_duration.py",
+      "bytes": 8288,
+      "sha256": "6e1409f7922220526acfe6c3e955dce7caf5549ea187d99e7eae780a19024537"
+    },
+    {
+      "role": "OAR metadata descriptor",
+      "file": "meter_dplm_oar_metadata_core.py",
+      "bytes": 7972,
+      "sha256": "6678875d768569ae9c38f8e94e19833b70a911d625f8e463cc46d1258e9a0b6e"
+    },
+    {
+      "role": "shared DV consumer",
+      "file": "meter_shared_dv32_replay_duration.py",
+      "bytes": 3361,
+      "sha256": "befdb7652f85ecd56c8782a50bc1792031e56a866a9628cd6daec56f2cc5295e"
+    },
+    {
+      "role": "published crop scheduler",
+      "file": "meter_dplm_output_schedule_core.py",
+      "bytes": 1920,
+      "sha256": "626f9c3308285cad18146abe9efe327122ef561adf18019ec1e287e80f9bb97a"
+    },
+    {
+      "role": "programme/prefix publisher",
+      "file": "meter_dplm_publish_valid_audio_duration.py",
+      "bytes": 5720,
+      "sha256": "70336fe127441c44affb0a69b0fbf8424dc6421d9f59de0c936c64e758c1afd2"
+    },
+    {
+      "role": "current approved authority",
+      "file": "01-adm-graph-and-time.md",
+      "bytes": 6441,
+      "sha256": "c3abb599305392cdad7b43a1d8d45b1c1ae0466ff899f56caa3590d010a11f14"
+    },
+    {
+      "role": "current approved authority",
+      "file": "01-bed-routing-and-source-geometry.md",
+      "bytes": 5510,
+      "sha256": "26e4220818d50227f75d5bc00e99840609d6a2023619e01328cb768bed4511b2"
+    },
+    {
+      "role": "current approved authority",
+      "file": "06-oar-frontend-input-and-clock-join.md",
+      "bytes": 9427,
+      "sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423"
+    },
+    {
+      "role": "current approved authority",
+      "file": "06-meter-window-and-output-clock.md",
+      "bytes": 7388,
+      "sha256": "c08dd41c42dd231ef23a683415f59b9b7db60375a3da2b8140501969933d073c"
+    },
+    {
+      "role": "current approved authority",
+      "file": "06-meter-none-drc-whole-composition.md",
+      "bytes": 9594,
+      "sha256": "94e8d42e77e71f4f16e99a74ee3c808cfc925074e19dd814762d21cde6f259d2"
+    },
+    {
+      "role": "historical cache source-snapshot scope qualifier",
+      "file": "compose_FMA3_OWN64_minimal_duration_controller_rev5.py",
+      "bytes": 36414,
+      "sha256": "a6e56c2456b0959ab59acf7ce4f34702950e5efb3ac773ec04f97c819ef1ffbe"
+    }
+  ],
+  "historical_stage_ledger_identities": [
+    {
+      "bytes": 6085,
+      "sha256": "ac60ba1667d1eaa98b3b7ba1304f8ad6ab0845496f4a384ffab433dd908374d0"
+    },
+    {
+      "bytes": 4984,
+      "sha256": "66beabae838858fe969b513abbf8301ea7a71cc075655f421b78d585f867f886"
+    },
+    {
+      "bytes": 5309,
+      "sha256": "a68d317db21d06b6c027c6bbf0e8203afb8ad415244bf9d1fd208d3867b75e4d"
+    }
+  ],
+  "archived_external_meter_report": "REFERENCED_HASH_ONLY_NOT_FRESHLY_REOPENED",
+  "source_code_expected_bodies_PCM_and_native_coordinates_forwarded": false
+}

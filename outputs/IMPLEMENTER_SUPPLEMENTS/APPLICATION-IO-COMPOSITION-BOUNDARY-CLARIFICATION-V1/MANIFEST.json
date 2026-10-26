@@ -1,0 +1,14 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "APPLICATION-IO-COMPOSITION-BOUNDARY-CLARIFICATION-V1",
+  "implementation_ready": true,
+  "readiness_scope": "Local composition-root dependency clarification only",
+  "origin": "LOCAL_ARCHITECTURE_DECISION_WITHIN_EXISTING_CLI_IO_ASSEMBLY_RESPONSIBILITY",
+  "files": [
+    {
+      "file": "DECISION.md",
+      "bytes": 2270,
+      "sha256": "2457ef95c756fb6345136b1f04e31797d1c09b8ddf68009500173cd113bd5101"
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "schema": "f03r-bed-regular-control-input-only-vectors.v1",
+  "input_only": true,
+  "expected_outputs_included": false,
+  "pcm_or_audio_values_included": false,
+  "vectors": [
+    {
+      "id": "direct-speakers-bed-prefix-no-tail-read",
+      "inputs": {
+        "route_kind": "DirectSpeakers",
+        "bed_id": 8,
+        "host_channel_index": 24,
+        "defined_prefix_words_u32le": [
+          0,
+          0,
+          3,
+          2,
+          1,
+          8
+        ],
+        "defined_bytes": 24,
+        "undefined_tail_offsets": "24..51; omitted"
+      },
+      "apply_rules_from": [
+        "frozen r33_audio_regular_control_core.py controls_from_models",
+        "F03R.1",
+        "F03R.3"
+      ]
+    },
+    {
+      "id": "object-width-is-uniform-width",
+      "inputs": {
+        "host_channel_index": 31,
+        "object_control52_word0": 0,
+        "object_control52_word9": "uniform_width_f32_word from F01E.8 sampler",
+        "object_control52_word10": "authored audio diffuse value",
+        "selected_feature_component_enum": 0,
+        "selected_feature_diffuse": 0
+      },
+      "apply_rules_from": [
+        "F01E.8",
+        "F01E.9",
+        "F03R selected control binding V2"
+      ]
+    },
+    {
+      "id": "same-callback-physical-row",
+      "inputs": {
+        "callback_generation_g": 4,
+        "physical_host_channel_index": 24,
+        "current_pcm_row_token": "synthetic-current-host-row-24-g4",
+        "history_before_token": "synthetic-history-host-row-24-g4",
+        "regular_control_source": "DirectSpeakers route adapter",
+        "lfe_host_channel_index": 9
+      },
+      "apply_rules_from": [
+        "F01E.6",
+        "F03R.1",
+        "F03R.5",
+        "frozen model_final_source_flags"
+      ]
+    },
+    {
+      "id": "bed-width-is-consumed-but-not-authored",
+      "inputs": {
+        "regular_bed_mute": 0,
+        "regular_bed_width_f32_word": "00000000 from explicit bed-branch adapter",
+        "selected_feature_control": [
+          0,
+          0
+        ],
+        "undefined_bed_tail": "not provided"
+      },
+      "apply_rules_from": [
+        "frozen controls_from_models",
+        "frozen model_final_source_flags",
+        "F03R.3"
+      ]
+    }
+  ],
+  "fixture_boundary": "These are self-authored metadata/control recipes only. They do not contain PCM, expected flags, undefined bed tail bytes, or a real callback result.",
+  "concrete_synthetic_object_width_recipe": {
+    "host_channel_index": 31,
+    "object_control_word0": 0,
+    "raw_authored_width_f32_word": "3dcccccd",
+    "produced_uniform_width_word9": "3dccccce",
+    "audio_diffuse_word10": 1,
+    "selected_feature_component_enum": 0,
+    "selected_feature_diffuse": 0,
+    "scope": "Test word-domain projection only; no actual audio/activity output."
+  }
+}

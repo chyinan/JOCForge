@@ -1,0 +1,103 @@
+{
+  "schema": "f03r-bed-regular-control-field-source.v1",
+  "selected_scope": {
+    "sample_rate_hz": 48000,
+    "physical_host_rows": 38,
+    "bed_rows": 10,
+    "object_rows": 28,
+    "direct_lfe_bed_id": 3,
+    "regular_bed_rows_after_lfe": 9
+  },
+  "bed_route_adapter": {
+    "evidence_grade": "HASH_MATCHED_FROZEN_PYTHON_MODEL_ADAPTER",
+    "source_function": "Selected frozen source-control model adapter",
+    "route_source": "typed DirectSpeakers bed route with physical row identity and bed_id",
+    "defined_prefix_words_u32le": [
+      0,
+      0,
+      3,
+      2,
+      1,
+      "bed_id"
+    ],
+    "defined_prefix_bytes": 24,
+    "undefined_unconsumed_bytes": 28,
+    "derived_fields": [
+      {
+        "field": "mute",
+        "source": "defined prefix word0",
+        "value": 0,
+        "meaning": "unmuted/enable polarity for the selected model"
+      },
+      {
+        "field": "bed_flag",
+        "source": "defined prefix word4",
+        "value": 1
+      },
+      {
+        "field": "bed_id",
+        "source": "defined prefix word5",
+        "value_domain": "0..9; bed_id3 is direct LFE"
+      },
+      {
+        "field": "width_f32_word",
+        "source": "explicit bed-branch assignment, not raw record bytes",
+        "value_word": "00000000",
+        "meaning": "positive F32 zero"
+      }
+    ],
+    "tail_read": false,
+    "interpretation": "The frozen adapter explicitly creates width zero for the bed branch. It is not a width decoded from bytes 24..51 and not an F01E-authored bed width field."
+  },
+  "object_route_adapter": {
+    "evidence_grade": "APPROVED_F01E_OBJECT_CONTROL_RULE_PLUS_HASH_MATCHED_FROZEN_MODEL_CONSUMER",
+    "physical_binding": "F01E host_channel_index after UID/channel_format_id crosswalk",
+    "control52_shape": "13 four-byte slots = 52 bytes",
+    "regular_audio_fields": [
+      {
+        "field": "mute",
+        "source": "F01E object control52 word0",
+        "selected_value": 0,
+        "meaning": "enabled/unmuted"
+      },
+      {
+        "field": "width",
+        "source": "F01E object control52 word9",
+        "semantic": "uniform_width after F01E.8 event-width normalization and sampler; not the raw authored width"
+      }
+    ],
+    "separate_fields": [
+      {
+        "field": "audio_diffuse",
+        "source": "F01E object control52 word10",
+        "consumer": "F04 audio diffuse route"
+      },
+      {
+        "field": "feature_component_enum",
+        "source": "SelectedFeatureControl",
+        "selected_value": 0
+      },
+      {
+        "field": "feature_diffuse",
+        "source": "SelectedFeatureControl",
+        "selected_value": 0
+      }
+    ],
+    "feature_domain_guard": "Do not map event audio-diffuse word10 or a same-named post-F04 field into F03R feature_diffuse."
+  },
+  "f03r_consumption": {
+    "approved_input_domain": "physical control rows0..37 with bed/object role, direct-LFE classification, mute, finite F32 width, and separate selected feature component/diffuse controls",
+    "direct_lfe": "the sole bed_id3 row is removed from regular tail processing",
+    "regular_rows": "the other 37 physical rows are processed in physical order and map to source11..47",
+    "mute_use": "mute is passed to the activity/window consumer and becomes reset_flag",
+    "width_use": "the selected frozen SourceFlags helper reads width for every mapped tail; if unmuted and active, width>=R32(0.2) triggers the width exclusion. There is no bed-specific width skip in this helper.",
+    "bed_width_result": "frozen bed width0 is consumed and does not trigger the >=0.2 exclusion",
+    "feature_use": "component_enum and feature_diffuse must be0 in the selected branch; other values reject"
+  },
+  "typed_clean_adapter": {
+    "recommendation": "Use a tagged BedRegularControl and ObjectRegularControl source adapter, then project each into the selected F03R RegularControl fields. Keep SelectedFeatureControl as a separate typed input.",
+    "bed_variant": "host_channel_index, bed_id, mute=false from defined route prefix, width=F32 positive zero from explicit frozen bed-branch assignment; no 52-byte bed tail",
+    "object_variant": "host_channel_index, mute from F01E word0, width from F01E word9 uniform_width",
+    "selected_feature_variant": "component_enum=0 and feature_diffuse=0 from selected-profile adapter; not copied from audio diffuse metadata"
+  }
+}

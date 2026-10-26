@@ -1,0 +1,119 @@
+{
+  "schema": "wash.active-matrix-adapter-inputs.v1",
+  "grade": "SELF_OWNED_COEFFICIENT_METADATA_AND_ROW_LABELS_ONLY",
+  "coefficient_recipe": "For logical row k and source s, use F32 bits of ((k+1)/16) only at s=(7*k+3) mod48, and positive-zero elsewhere. No samples or coefficients from a native/body reference.",
+  "cases": [
+    {
+      "id": "cold_empty_produced",
+      "generation": 1,
+      "selected_ids": [],
+      "old_active_slots": [],
+      "active_destinations": [],
+      "matrix_rows": 0,
+      "scope": "Explicit empty result after producer execution, not reading cold placeholder"
+    },
+    {
+      "id": "one_nonzero_owner_slot",
+      "generation": 2,
+      "active_destinations": [
+        7
+      ],
+      "matrix_rows": 1
+    },
+    {
+      "id": "noncontiguous_three_slots",
+      "generation": 3,
+      "active_destinations": [
+        2,
+        7,
+        14
+      ],
+      "matrix_rows": 3
+    },
+    {
+      "id": "full_capacity",
+      "generation": 4,
+      "active_destinations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "matrix_rows": 15
+    },
+    {
+      "id": "empty_selection_preserves_old_active",
+      "generation": 5,
+      "selected_ids": [],
+      "old_active_slots": [
+        2,
+        7
+      ],
+      "active_destinations": [
+        2,
+        7
+      ],
+      "matrix_rows": 2
+    },
+    {
+      "id": "quiet_changes_next_not_current",
+      "generation": 6,
+      "active_destinations": [
+        2,
+        7
+      ],
+      "matrix_rows": 2,
+      "quiet_after_active_slots": [
+        7
+      ]
+    },
+    {
+      "id": "computed_all_zero_active_rows",
+      "generation": 7,
+      "active_destinations": [
+        2,
+        7
+      ],
+      "matrix_rows": 2,
+      "coefficient_recipe_override": "POSITIVE_ZERO_ALL_CELLS",
+      "scope": "Active domain cannot be inferred from nonzero cells"
+    }
+  ],
+  "rejection_inputs": [
+    {
+      "id": "duplicate_destination",
+      "active_destinations": [
+        2,
+        2
+      ],
+      "matrix_rows": 2
+    },
+    {
+      "id": "out_of_range",
+      "active_destinations": [
+        15
+      ],
+      "matrix_rows": 1
+    },
+    {
+      "id": "shape_mismatch",
+      "active_destinations": [
+        2,
+        7
+      ],
+      "matrix_rows": 1
+    }
+  ],
+  "actual_PCM_or_expected_body_bytes_included": false
+}

@@ -2042,73 +2042,31 @@
           "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_FUNCTIONAL_ID_DEFERRED",
           "implementation_status": "LOCALLY_VERIFIED_STATIC_ROUTE_AND_REAL_ADM_G0_G2_F03R_VALUE_PROPOSALS__PACKET_AND_ROOT_COMMIT_DEFERRED",
           "scope": "Keeps the detached static projection path and dynamic selected-ADM resource identity binding over the same 48-source row mapping. The authorized full WAVE was read in memory and produced source/activity plus F03R value-only results for g0-g2 under Wash V2's selected-profile typed adapter. Host10 authored Control52 word10=1 remains separate from feature diffuse=0. The nonnormative pre-F04 Source56 candidate remains rejected. No SourceFlagsPacket or callback root is committed.",
-          "implementation_files": [
-            "crates/jocforge-domain/src/frontend/job_configuration.rs",
-            "crates/jocforge-domain/src/frontend/primary_metadata_control.rs",
-            "crates/jocforge-domain/src/spatial/installed48_source_map.rs",
-            "crates/jocforge-domain/src/spatial/installed48_activity.rs",
-            "crates/jocforge-domain/src/spatial/selected_p11_geometry.rs",
-            "crates/jocforge-domain/src/spatial/source_flags.rs",
-            "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
-            "crates/jocforge-io/src/pcm/riff_pcm24.rs",
-            "crates/jocforge-io/examples/meter_input_probe.rs"
-          ],
-          "test_modules": [
-            "crates/jocforge-domain/tests/installed48_source_map.rs",
-            "crates/jocforge-domain/tests/installed48_activity.rs",
-            "crates/jocforge-domain/tests/selected_p11_geometry.rs",
-            "crates/jocforge-application/tests/prepared_job_input.rs",
-            "crates/jocforge-domain/tests/meter_installed48_renderer.rs"
-          ],
+          "implementation_files": ["crates/jocforge-domain/src/frontend/job_configuration.rs", "crates/jocforge-domain/src/frontend/primary_metadata_control.rs", "crates/jocforge-domain/src/spatial/installed48_source_map.rs", "crates/jocforge-domain/src/spatial/installed48_activity.rs", "crates/jocforge-domain/src/spatial/selected_p11_geometry.rs", "crates/jocforge-domain/src/spatial/source_flags.rs", "crates/jocforge-io/src/pcm/meter_source_cursor.rs", "crates/jocforge-io/src/pcm/riff_pcm24.rs", "crates/jocforge-io/examples/meter_input_probe.rs"],
+          "test_modules": ["crates/jocforge-domain/tests/installed48_source_map.rs", "crates/jocforge-domain/tests/installed48_activity.rs", "crates/jocforge-domain/tests/selected_p11_geometry.rs", "crates/jocforge-application/tests/prepared_job_input.rs", "crates/jocforge-domain/tests/meter_installed48_renderer.rs"],
           "clock": {
             "domains": ["FrontendCallbackIndex", "AdmSampleIndex", "CodecSourceIndex", "PhysicalHostIndex"],
-            "covered_clauses": [
-              "Normal input callbacks g=0..4246; cached drain callbacks g=4247..4250",
-              "source s=g-2 only for g>=2; source0/1 fully advance history but suppress publication",
-              "source s>=2 publishes AU-independent installed48 state for source s; no AU or dispatch clock is consumed by this slice",
-              "reader position is min(1536*g, 6,522,906), with the final 486 samples padded positive-zero",
-              "each cached drain reuses the cached padded frame/control and advances callback-local activity history once"
-            ]
+            "covered_clauses": ["Normal input callbacks g=0..4246; cached drain callbacks g=4247..4250", "source s=g-2 only for g>=2; source0/1 fully advance history but suppress publication", "source s>=2 publishes AU-independent installed48 state for source s; no AU or dispatch clock is consumed by this slice", "reader position is min(1536*g, 6,522,906), with the final 486 samples padded positive-zero", "each cached drain reuses the cached padded frame/control and advances callback-local activity history once"]
           },
           "parameters": {
             "kind": "DYNAMIC_ADM_RESOURCE_IDENTITY_WITH_APPROVED_P11_LAYOUT",
-            "provider_files": [
-              "crates/jocforge-domain/tests/fixtures/primary_installed48/INSTALLED48-SOURCE-MAP.json",
-              "crates/jocforge-domain/tests/fixtures/primary_installed48/ACTIVITY-AND-ROUTING-RULES.json",
-              "crates/jocforge-domain/tests/fixtures/primary_installed48/SELECTED-GEOMETRY-VECTORS.json",
-              "crates/jocforge-domain/tests/fixtures/primary_installed48/P11-SOURCE-BINDING.json"
-            ],
+            "provider_files": ["crates/jocforge-domain/tests/fixtures/primary_installed48/INSTALLED48-SOURCE-MAP.json", "crates/jocforge-domain/tests/fixtures/primary_installed48/ACTIVITY-AND-ROUTING-RULES.json", "crates/jocforge-domain/tests/fixtures/primary_installed48/SELECTED-GEOMETRY-VECTORS.json", "crates/jocforge-domain/tests/fixtures/primary_installed48/P11-SOURCE-BINDING.json"],
             "validation_boundary": "R2 package payloads remain test-only expected evidence; runtime source maps are recomputed from the admitted F01E graph/control rows and whole-resource identity. The authorized WAVE g0-g2 F03R value-only probe used the separate selected-profile typed adapter and sequential raw-history proposals; no packet, callback state, or main encode path was committed."
           },
           "vectors": {
             "kind": "SEALED_MODEL_REPLAY_AND_POSTCOMPUTATION_RECEIPTS",
-            "authoritative_vectors": [
-              "crates/jocforge-domain/tests/fixtures/primary_installed48/CALLBACK-ACTIVITY-OUTPUTS.jsonl",
-              "crates/jocforge-domain/tests/fixtures/primary_installed48/FLAG-TRANSITIONS.json",
-              "crates/jocforge-domain/tests/fixtures/primary_installed48/POSTROUTE-VARIANTS.json",
-              "crates/jocforge-domain/tests/fixtures/primary_installed48/route_semantics_v2/CLARIFICATIONS.md",
-              "crates/jocforge-domain/tests/fixtures/primary_installed48/MEMBERSHIP-INPUT-ONLY.json",
-              "crates/jocforge-domain/tests/fixtures/primary_installed48/MEMBERSHIP-EXPECTED.json"
-            ],
-            "case_pointers": [
-              "4,251 callback rows: phase, host-frame, source sample cursor, actual/advertised counts, quiet flags, writer indices and field0/field4 masks",
-              "5,695 field transition receipts derived from recomputed masks",
-              "96 selected post-route variants; V2 specifies active width>=R32(0.2) clears Z at byte offset32 after the normalizer disables field52",
-              "The approved 743696526-byte WAVE was replayed in memory at g0-g2; raw PCM rows and F03R payloads are represented only by per-callback hashes",
-              "the F03R payload hashes are g0 da2819b893989c93c527a9ecbf2719d03d4a8528d16ccdc3e296d6e80def7cc4, g1 7f2d2030409ca351a2f86d4604a36e03d31e4a968bf0b809ac74e6ee5d4248e4, and g2 da2819b893989c93c527a9ecbf2719d03d4a8528d16ccdc3e296d6e80def7cc4",
-              "Wash V2 typed controls are host/callback-bound with feature diffuse=0 while host10 event Control52 word10 stays 1; no native field alias or callback commit is claimed",
-              "a temporary Source56 candidate rejected host14 with mute0/width+0/component_enum0/diffuse_flag1 and remains nonnormative"
-            ],
+            "authoritative_vectors": ["crates/jocforge-domain/tests/fixtures/primary_installed48/CALLBACK-ACTIVITY-OUTPUTS.jsonl", "crates/jocforge-domain/tests/fixtures/primary_installed48/FLAG-TRANSITIONS.json", "crates/jocforge-domain/tests/fixtures/primary_installed48/POSTROUTE-VARIANTS.json", "crates/jocforge-domain/tests/fixtures/primary_installed48/route_semantics_v2/CLARIFICATIONS.md", "crates/jocforge-domain/tests/fixtures/primary_installed48/MEMBERSHIP-INPUT-ONLY.json", "crates/jocforge-domain/tests/fixtures/primary_installed48/MEMBERSHIP-EXPECTED.json"],
+            "case_pointers": ["4,251 callback rows: phase, host-frame, source sample cursor, actual/advertised counts, quiet flags, writer indices and field0/field4 masks", "5,695 field transition receipts derived from recomputed masks", "96 selected post-route variants; V2 specifies active width>=R32(0.2) clears Z at byte offset32 after the normalizer disables field52", "The approved 743696526-byte WAVE was replayed in memory at g0-g2; raw PCM rows and F03R payloads are represented only by per-callback hashes", "the F03R payload hashes are g0 da2819b893989c93c527a9ecbf2719d03d4a8528d16ccdc3e296d6e80def7cc4, g1 7f2d2030409ca351a2f86d4604a36e03d31e4a968bf0b809ac74e6ee5d4248e4, and g2 da2819b893989c93c527a9ecbf2719d03d4a8528d16ccdc3e296d6e80def7cc4", "Wash V2 typed controls are host/callback-bound with feature diffuse=0 while host10 event Control52 word10 stays 1; no native field alias or callback commit is claimed", "a temporary Source56 candidate rejected host14 with mute0/width+0/component_enum0/diffuse_flag1 and remains nonnormative"],
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/primary_installed48/CALLBACK-ACTIVITY-OUTPUTS.jsonl",
               "sha256": "120066a8ff1e836a2f0c79e725c49361ff35a1f2323d6ab8fc69a2e94d451ad6"
             },
-          "authorized_validation_resource": {
-            "file": "IMPLEMENTER_PACKAGE/test-vectors/full-song/input-adm.wav",
-            "bytes": 743696526,
-            "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
-            "use": "internal identity-bound diagnostic only; never a runtime allowlist"
-          },
+            "authorized_validation_resource": {
+              "file": "IMPLEMENTER_PACKAGE/test-vectors/full-song/input-adm.wav",
+              "bytes": 743696526,
+              "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+              "use": "internal identity-bound diagnostic only; never a runtime allowlist"
+            },
             "r2_manifest_sha256": "ca2bc4aff5c81dfc9159177326ddf1db2630a8dc26634a3a761bbbc2a4798332",
             "route_clarification_v2_manifest_sha256": "c24f2202b3d90c6b739e5e09210106fedfe5b01ba94132bde44012de535d7258",
             "washed_reference_manifest_sha256": {
@@ -2119,16 +2077,62 @@
               "f03r_diffuse_candidate_probe_scope_v1": "e5f51f3763df70d0f830102214d862cc530e43a7cdeb43b2c637a3c9dfe9f0ff"
             }
           },
-          "error_outcomes": [
-            {"error_code": "INSTALLED48_ROW_COUNT", "category": "source map shape", "trigger": "Selected controls, 48 source rows, or 37 physical hosts do not satisfy the fixed profile shape.", "programme_state_after": "UNCHANGED_STATELESS", "caller_action": "Return no installed48 source map."},
-            {"error_code": "PRIMARY_ACTIVITY_CALLBACK_PHASE", "category": "callback lifecycle", "trigger": "Callback phase, input extent, control domain, or required selected source binding is invalid.", "programme_state_after": "NO_PROPOSAL; committed owner state unchanged", "caller_action": "Reject the callback proposal; do not synthesize a source or cached drain."}
-          ],
-          "not_run": [
-            "native primary activity acceptance and consumer-field lineage",
-            "F03R SourceFlagsPacket production, CurrentFeatures, selector/U04/outer, and F03W root commit",
-            "F03F/selector/U04/outer, F04A render integration, SCP/control packet, and callback commit",
-            "application/CLI production connection, end-to-end encode, and W04 acceptance"
-          ]
+          "error_outcomes": [{"error_code":"INSTALLED48_ROW_COUNT","category":"source map shape","trigger":"Selected controls, 48 source rows, or 37 physical hosts do not satisfy the fixed profile shape.","programme_state_after":"UNCHANGED_STATELESS","caller_action":"Return no installed48 source map."},{"error_code":"PRIMARY_ACTIVITY_CALLBACK_PHASE","category":"callback lifecycle","trigger":"Callback phase, input extent, control domain, or required selected source binding is invalid.","programme_state_after":"NO_PROPOSAL; committed owner state unchanged","caller_action":"Reject the callback proposal; do not synthesize a source or cached drain."}],
+          "not_run": ["native primary activity acceptance and consumer-field lineage", "F03R SourceFlagsPacket production, CurrentFeatures, selector/U04/outer, and F03W root commit", "F03F/selector/U04/outer, F04A render integration, SCP/control packet, and callback commit", "application/CLI production connection, end-to-end encode, and W04 acceptance"]
+        },
+        {
+          "slice_id": "source-flags-current-features-and-source-gate",
+          "mapping_status": "MATERIALIZED_DIRECT_F03W_STAGE_COMPOSITION_SUBSLICE",
+          "implementation_status": "LOCALLY_VERIFIED_SOURCE_FLAGS_CURRENT_FEATURES_AND_GATE_PROPOSALS__ROOT_COMMIT_DEFERRED",
+          "scope": "Runs the existing SourceFlags producer once, carries its validated packet into CurrentFeatures with the explicit callback phase, preserves the raw-history and feature-state proposals for the parent, and derives source-ascending plus4 candidates, plus0 processing IDs, and the unchanged band-major candidate feature snapshot. This slice does not render installed48, produce source-control values, advance or commit the spatial_control root, or run later response/selector/U04/outer/history/component stages.",
+          "implementation_files": ["crates/jocforge-domain/src/spatial/frontend_stages.rs", "crates/jocforge-domain/src/spatial/current_features.rs", "crates/jocforge-domain/src/spatial/source_flags.rs", "crates/jocforge-domain/src/spatial/mod.rs"],
+          "test_modules": ["crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs", "crates/jocforge-domain/src/spatial/current_features/tests.rs"],
+          "clock": {
+            "domains": ["FrontendCallbackIndex", "SourceFlagsHistoryGeneration", "CallbackPhase"],
+            "covered_clauses": ["SourceFlags and CurrentFeatures bind the same callback index and spatial_control before generation/digest.", "CallbackPhase is an explicit CurrentFeatures input and is not inferred from audio samples.", "Both state changes remain proposals; this slice does not advance a committed owner clock."]
+          },
+          "parameters": {
+            "kind": "VALIDATED_F01E_F03_TARGET_AND_CURRENT_FEATURE_MATH_PROVIDERS",
+            "provider_files": ["crates/jocforge-domain/tests/fixtures/f01e_provider/f01e-selected-constructor-v1.json", "crates/jocforge-domain/tests/fixtures/target_cold/f03-selected-target-cold-v1.json", "crates/jocforge-domain/tests/fixtures/current_features/feature-processor-math-v1.json", "crates/jocforge-domain/tests/fixtures/current_features/feature-fft4096-math-v1.json"],
+            "validation_boundary": "Only validated typed provider receipts reach CurrentFeatures. The existing SourceFlags and CurrentFeatures algorithms are reused. This synthetic callback test does not establish an ADM-derived production control producer or real render callback."
+          },
+          "vectors": {
+            "kind": "SYNTHETIC_STAGE_COMPOSITION_AND_GATE_BOUNDARIES",
+            "authoritative_vectors": [],
+            "case_pointers": ["source_flags_tests.rs::frontend_stages_bind_source_flags_and_features_without_committing_owner", "current_features/tests.rs::feature_gate_uses_independent_flags_and_preserves_candidate_features", "24-band serial R32 sum accepts exact 0.5 and rejects the immediately lower F32 word", "plus0 processing membership is independent of plus4 candidate membership", "candidate features preserve the original band-major values and source-ascending order"],
+            "local_fixture": null
+          },
+          "error_outcomes": [],
+          "not_run": ["production render and primary metadata-to-source-control adapter", "spatial_control root transition, parent commit, and receipt admission", "response generation, selector, conditional U04, outer matrix, marker/history, and target updates", "component output, F06OF production controls, real ADM callback, end-to-end encode, and W04"],
+          "wash_package": {
+            "directory": "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-CONTROL-TO-COMPONENT-PRODUCTION-WIRING-V1",
+            "manifest_sha256": "6d1fa51b3b04ea8ca19c9d81c51b75a49d27349eaad2e018d6848e739f2cb5c1"
+          }
+        },
+        {
+          "slice_id": "primary-metadata-source-control-projection",
+          "mapping_status": "MATERIALIZED_DIRECT_F03W_CONTROL_PROJECTION_SUBSLICE",
+          "implementation_status": "LOCALLY_VERIFIED_BED_OBJECT_FIELDS_AND_SOURCE_ORIGIN__CALLBACK_ROOT_DEFERRED",
+          "scope": "Projects the admitted physical-order F01E control rows into selected F03R RegularControl values using distinct bed and object field rules, excludes the semantic bed_id3 direct LFE, and carries a typed current-callback or last-normal drain source origin. The same validated physical-host route selects regular PCM and history rows and maps them to sources 11..47. The projection does not invoke the F01E sampler, read PCM, or commit spatial_control state.",
+          "implementation_files": ["crates/jocforge-domain/src/spatial/source_flags.rs", "crates/jocforge-domain/src/frontend/primary_metadata_control.rs", "crates/jocforge-domain/src/frontend/selected_adm_graph.rs"],
+          "test_modules": ["crates/jocforge-domain/tests/primary_metadata_control.rs"],
+          "clock": {
+            "domains": ["FrontendCallbackIndex", "NormalCallbackCount", "PhysicalHostIndex", "CodecSourceIndex"],
+            "covered_clauses": ["Normal source-control snapshot origin equals its delivery callback g when g is below Q.", "Cached-drain delivery callback g>=Q retains source-control origin Q-1 while the callback clock advances.", "The parent F03W callback phase is checked against the projection clock before SourceFlags and CurrentFeatures staging.", "The direct LFE physical host is excluded; ascending physical regular hosts map through the admitted 11..47 codec-source binding."]
+          },
+          "parameters": {
+            "kind": "F01E_PRIMARY_CONTROL_FIELDS_WITH_SELECTED_F03R_FEATURE_CONTROL",
+            "provider_files": ["outputs/IMPLEMENTER_SUPPLEMENTS/SOURCE-FLAGS-BED-OBJECT-CONTROL-ADAPTER-V1/SOURCE-FIELDS.json", "outputs/IMPLEMENTER_SUPPLEMENTS/SOURCE-FLAGS-BED-OBJECT-CONTROL-ADAPTER-V1/INPUT-ONLY-VECTORS.json", "crates/jocforge-domain/tests/fixtures/primary_metadata_control/JOB-FIELD-PROJECTION.json", "crates/jocforge-domain/tests/fixtures/primary_metadata_control/PRIMARY-SOURCE-RECEIPT.json"],
+            "validation_boundary": "Bed mute comes from defined prefix word0 and its positive-zero width comes from the explicit bed-branch assignment; undefined bytes24..51 remain unread. Object mute is same-source Control52 word0 and width is sampled uniform_width word9; audio diffuse word10 remains separate. Selected feature component/diffuse are fixed by SelectedFeatureFlagsControl. The caller still owns the real normal F01E provider and snapshot lifecycle."
+          },
+          "vectors": {
+            "kind": "INPUT_ONLY_CONTROL_PROJECTION_AND_SYNTHETIC_F03R_VALUES",
+            "authoritative_vectors": ["outputs/IMPLEMENTER_SUPPLEMENTS/SOURCE-FLAGS-BED-OBJECT-CONTROL-ADAPTER-V1/INPUT-ONLY-VECTORS.json"],
+            "case_pointers": ["direct-speakers-bed-prefix-no-tail-read", "object-width-is-uniform-width", "same-callback-physical-row", "bed-width-is-consumed-but-not-authored", "primary_regular_controls_use_role_fields_and_hold_last_normal_origin_on_drain"]
+          },
+          "error_outcomes": [{"error_code":"PRIMARY_METADATA_IDENTITY_MISMATCH","category":"metadata identity","trigger":"F01E control rows and selected AXML/CHNA graph do not share the bound metadata identity.","programme_state_after":"NO_PROJECTION; committed owner unchanged","caller_action":"Reject the source-control projection before SourceFlags production."},{"error_code":"PRIMARY_CONTROL_ROW_MISMATCH","category":"physical row or route identity","trigger":"A row is not in physical-host order, track identity or semantic LFE role differs, or bed/object control variant does not match its ADM track.","programme_state_after":"NO_PROJECTION; committed owner unchanged","caller_action":"Reject without reading undefined bed tail bytes."},{"error_code":"PRIMARY_REGULAR_SOURCE_MAP_MISMATCH","category":"host-to-source binding","trigger":"The admitted regular host bindings do not form the selected ascending source11..47 map with one LFE excluded.","programme_state_after":"NO_PROJECTION; committed owner unchanged","caller_action":"Reject instead of indexing compact regular rows by raw physical host."},{"error_code":"SOURCE_CONTROL_CLOCK","category":"callback clock","trigger":"Normal source origin is not the current callback, or cached-drain origin is not Q-1 for delivery g>=Q.","programme_state_after":"NO_PROJECTION; committed owner unchanged","caller_action":"Reject the source snapshot clock before consuming rows."},{"error_code":"SOURCE_CONTROL_CLOCK_MISMATCH","category":"callback phase","trigger":"The projection clock normal/drain phase differs from the explicit CurrentFeatures callback phase.","programme_state_after":"NO_PROPOSAL; committed owner unchanged","caller_action":"Reject before source-flags computation."}],
+          "not_run": ["normal F01E sampler execution and callback-specific control snapshot production", "real PCM/activity replay and audio output", "full spatial_control owner transition, receipt admission, or parent commit", "render, response, selector/U04/outer, target history, component, F06OF end-to-end OAR, and W04"],
+          "wash_packages": [{"directory":"outputs/IMPLEMENTER_SUPPLEMENTS/SOURCE-FLAGS-BED-OBJECT-CONTROL-ADAPTER-V1","manifest_sha256":"0d4b047cb65368f5769cc1e35085f6e5946dec890b4404bb7b79cd6c1613d4ae"},{"directory":"outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRAIN-SOURCE-CONTROL-HOLD-V1","manifest_sha256":"c64eff3db5f596c620c2f8cefb3eeb48aa15a08d1a7c66fb330392b2eaf0ebbc"}]
         }
       ]
     },
@@ -2144,16 +2148,14 @@
         {
           "slice_id": "independent-meter-installed48-postwindow-leaf",
           "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F04A_DEFERRED",
-          "implementation_status": "LOCALLY_REPLAYED_CORRECTED_F04A_REAL_WAVE_G0_G2__EXPECTED_COMPARISON_PENDING",
-          "scope": "Implements a fresh meter-owned selected F04A installed48/post-window value transition using same-resource PCM, graph/control map, primary activity, membership proposals, and identity-validated diffusion parameters. The corrected F64-literal path has been rerun for real g0-g2 and its actual hashes are recorded under F04A; no independent corrected expected-output vector is currently available, so numeric conformance is not claimed. This is not a committed F06 callback and is not connected to SourceFlagsPacket, CurrentFeatures, selector/U04, component, LFE, OAR packet, or measurement receipt.",
+          "implementation_status": "LOCALLY_REPLAYED_CURRENT_F04A_REAL_WAVE_G0_G2__EXPECTED_COMPARISON_PENDING__HISTORY_UNKNOWN",
+          "scope": "Implements a fresh meter-owned selected F04A installed48/post-window value transition using same-resource PCM, graph/control map, primary activity, membership proposals, and identity-validated diffusion parameters. The current formula matches approved F04A.4: binary64 weight literal, binary64 square root, one R32 cast before gain/mode products, and separately rounded R32 mix operations. Current-code g0-g2 actual hashes are recorded; no independent expected-output vector is present, so numeric conformance is not claimed. The isolated Git history has neither the older expression nor a separate correction commit, so the historical cause is UNKNOWN and withdrawn actuals remain invalid as expectations. This is not a committed F06 callback and is not connected to SourceFlagsPacket, CurrentFeatures, selector/U04, component, LFE, OAR packet, or measurement receipt.",
           "owner": "meter",
           "implementation_files": [
             "crates/jocforge-domain/src/meter/installed48_renderer.rs",
             "crates/jocforge-domain/src/meter/mod.rs"
           ],
-          "test_modules": [
-            "crates/jocforge-domain/tests/meter_installed48_renderer.rs"
-          ],
+          "test_modules": ["crates/jocforge-domain/tests/meter_installed48_renderer.rs", "crates/jocforge-domain/src/meter/installed48_renderer.rs"],
           "local_mapping_files": [
             "docs/implementation/meter-installed48-leaf.md"
           ],
@@ -2168,7 +2170,7 @@
             "covered_clauses": [
               "the selected NORMAL source interval begins at 1536*g; output generation is g+1",
               "the leaf has fresh previous PCM, previous-current rows and per-host diffusion state; no main root alias or commit",
-              "corrected actual F04A generations g0/g1/g2 are recorded; no independent expected comparison, F03F stage, or callback root was committed"
+              "current-code actual F04A generations g0/g1/g2 are recorded; no independent expected comparison, F03F stage, or callback root was committed"
             ]
           },
           "parameters": {
@@ -2181,37 +2183,30 @@
             "validation_boundary": "Runtime values are recomputed from the selected P11 geometry, same-callback PCM, F01E control rows and fresh diffusion state; expected vectors are not runtime inputs."
           },
           "vectors": {
-            "kind": "CORRECTED_REAL_WAVE_G0_G2_ACTUALS__EXPECTED_COMPARISON_NOT_RUN",
+            "kind": "CURRENT_REAL_WAVE_G0_G2_ACTUALS__EXPECTED_COMPARISON_NOT_RUN",
             "authoritative_vectors": [],
-            "case_pointers": [
-              "fresh corrected-code F04A actual hashes: g0 06d88109940f8e913952099a2921a07697bc2863d75d89d5020bb6eadf5d1dbb, g1 8ba7283b9395bdc6c2e514844f7fd6795b187be871984c9017c839547ff1d054, g2 c03318dc8f6349ace6ff439021315c70e3e5739f8b3104ed154979d1aadb54b4",
-              "these fresh actual hashes happen to equal the withdrawn pre-correction strings; the old run was not used as an expected vector",
-              "no independently generated corrected F04A expected hashes are present, so expected comparison and conformance remain NOT_RUN"
-            ],
+            "case_pointers": ["current-code F04A actual hashes: g0 06d88109940f8e913952099a2921a07697bc2863d75d89d5020bb6eadf5d1dbb, g1 8ba7283b9395bdc6c2e514844f7fd6795b187be871984c9017c839547ff1d054, g2 c03318dc8f6349ace6ff439021315c70e3e5739f8b3104ed154979d1aadb54b4", "these actual hashes equal withdrawn earlier actual strings; isolated history lacks the older expression and repair commit, so historical cause is UNKNOWN and no prior actual is used as expected", "no independent F04A expected hashes are present, so expected comparison and conformance remain NOT_RUN", "validation-only F04A precision package reproduces the two R32 roots and checks a synthetic scalar witness plus previous/current half recomputation; this is not whole g0-g2 conformance", "prequantizing 0.85/0.15 to F32 gives the same two final root words, so root equality does not identify the historical expression"],
+            "historical_formula_status": {
+              "prior_expression": "UNAVAILABLE_IN_ISOLATED_GIT_HISTORY",
+              "correction_commit": "UNAVAILABLE_IN_ISOLATED_GIT_HISTORY",
+              "historical_cause": "UNKNOWN"
+            },
+            "validation_only_reference": {
+              "package_id": "F04A-PREFIX-PRECISION-MATHEMATICAL-REFERENCE-V1",
+              "manifest_sha256": "35610f38b06625e3b2fbd67e0d42317e4b7338e3fd96cafc168874e42af8e8c7",
+              "input_only_recipes": "outputs/IMPLEMENTER_SUPPLEMENTS/F04A-PREFIX-PRECISION-MATHEMATICAL-REFERENCE-V1/INPUT-ONLY-RECIPES.json",
+              "numeric_rules": "outputs/IMPLEMENTER_SUPPLEMENTS/F04A-PREFIX-PRECISION-MATHEMATICAL-REFERENCE-V1/NUMERIC-RULES.json",
+              "oracle": "outputs/IMPLEMENTER_SUPPLEMENTS/F04A-PREFIX-PRECISION-MATHEMATICAL-REFERENCE-V1/prefix_numeric_reference.py",
+              "role": "VALIDATION_ONLY_NOT_PRODUCTION_DEPENDENCY"
+            },
             "actual_vs_expected": {
               "actual": {
-                "callback_indices": [
-                  0,
-                  1,
-                  2
-                ],
-                "upstream_generations": [
-                  1,
-                  2,
-                  3
-                ],
-                "source_intervals": [
-                  "[0,1536)",
-                  "[1536,3072)",
-                  "[3072,4608)"
-                ],
+                "callback_indices": [0, 1, 2],
+                "upstream_generations": [1, 2, 3],
+                "source_intervals": ["[0,1536)", "[1536,3072)", "[3072,4608)"],
                 "frame_shape": "48x3072 F32 words",
                 "parameter_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-                "output_sha256": [
-                  "06d88109940f8e913952099a2921a07697bc2863d75d89d5020bb6eadf5d1dbb",
-                  "8ba7283b9395bdc6c2e514844f7fd6795b187be871984c9017c839547ff1d054",
-                  "c03318dc8f6349ace6ff439021315c70e3e5739f8b3104ed154979d1aadb54b4"
-                ],
+                "output_sha256": ["06d88109940f8e913952099a2921a07697bc2863d75d89d5020bb6eadf5d1dbb", "8ba7283b9395bdc6c2e514844f7fd6795b187be871984c9017c839547ff1d054", "c03318dc8f6349ace6ff439021315c70e3e5739f8b3104ed154979d1aadb54b4"],
                 "mode": "fresh noncommitting leaf replay over authorized resource SHA-256 7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
               },
               "expected": {
@@ -2309,72 +2304,46 @@
         {
           "slice_id": "independent-meter-installed48-postwindow-leaf",
           "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F04A_DEFERRED",
-          "implementation_status": "CORRECTED_REAL_WAVE_G0_G2_ACTUALS_REPLAYED__EXPECTED_COMPARISON_PENDING",
-          "scope": "A prior same-resource g0-g2 F04A leaf run was invalidated after the filtered-prefix square-root constants were found to have been promoted from F32. The corrected code has now rerun those callbacks with binary64 weights and records fresh actual hashes; they happen to equal the prior strings, which remain withdrawn as expectations. No independent corrected expected-output vector is available, so conformance is not claimed. This is not a committed F06 callback and does not connect SourceFlagsPacket, CurrentFeatures, selector/U04, component, LFE, OAR packet, or measurement receipt.",
+          "implementation_status": "CURRENT_REAL_WAVE_G0_G2_ACTUALS_REPLAYED__EXPECTED_COMPARISON_PENDING__HISTORY_UNKNOWN",
+          "scope": "A fresh same-resource g0-g2 F04A leaf run uses the current approved F04A.4 order: binary64 weight literal, binary64 square root, one R32 cast before gain/mode products, and separately rounded R32 sample mixing. These actual hashes equal withdrawn earlier actual strings; the isolated history contains neither the older expression nor a separate correction commit, so historical cause is UNKNOWN and prior values remain invalid as expectations. No independent F04A expected-output vector is available, so conformance is not claimed. This is not a committed F06 callback and does not connect SourceFlagsPacket, CurrentFeatures, selector/U04, component, LFE, OAR packet, or measurement receipt.",
           "owner": "meter",
-          "implementation_files": [
-            "crates/jocforge-domain/src/meter/installed48_renderer.rs",
-            "crates/jocforge-domain/src/meter/mod.rs"
-          ],
-          "test_modules": [],
-          "local_mapping_files": [
-            "docs/implementation/meter-installed48-leaf.md"
-          ],
+          "implementation_files": ["crates/jocforge-domain/src/meter/installed48_renderer.rs", "crates/jocforge-domain/src/meter/mod.rs"],
+          "test_modules": ["crates/jocforge-domain/src/meter/installed48_renderer.rs"],
+          "local_mapping_files": ["docs/implementation/meter-installed48-leaf.md"],
           "clock": {
-            "domains": [
-              "MeterCallbackIndex",
-              "AdmSampleIndex",
-              "FrontendCallbackIndex",
-              "CodecSourceIndex",
-              "PhysicalHostIndex"
-            ],
-            "covered_clauses": [
-              "corrected actual output used g0/g1/g2 NORMAL source intervals beginning at 0/1536/3072 and generations 1/2/3",
-              "the leaf has fresh previous PCM, previous-current rows and per-host diffusion state; no main root alias or commit",
-              "actual F04A values are noncommitting and have no independent expected-hash comparison; no F03F stage or callback root is committed"
-            ]
+            "domains": ["MeterCallbackIndex", "AdmSampleIndex", "FrontendCallbackIndex", "CodecSourceIndex", "PhysicalHostIndex"],
+            "covered_clauses": ["current-code actual output used g0/g1/g2 NORMAL source intervals beginning at 0/1536/3072 and generations 1/2/3", "the leaf has fresh previous PCM, previous-current rows and per-host diffusion state; no main root alias or commit", "actual F04A values are noncommitting and have no independent expected-hash comparison; no F03F stage or callback root is committed"]
           },
           "parameters": {
             "kind": "APPROVED_SELECTED_P11_MEMBERSHIP_AND_DIFFUSION_PARAMETER_PROVIDERS",
-            "provider_files": [
-              "crates/jocforge-domain/tests/fixtures/primary_installed48/MEMBERSHIP-PARAMETERS.json",
-              "crates/jocforge-domain/tests/fixtures/diffusion_filter/diffusion-mathematical-v1.json",
-              "crates/jocforge-domain/tests/fixtures/diffusion_filter/diffusion-constructor-mathematical-v1.json"
-            ],
+            "provider_files": ["crates/jocforge-domain/tests/fixtures/primary_installed48/MEMBERSHIP-PARAMETERS.json", "crates/jocforge-domain/tests/fixtures/diffusion_filter/diffusion-mathematical-v1.json", "crates/jocforge-domain/tests/fixtures/diffusion_filter/diffusion-constructor-mathematical-v1.json"],
             "validation_boundary": "Runtime values are recomputed from the selected P11 geometry, same-callback PCM, F01E control rows and fresh diffusion state; expected vectors are not runtime inputs."
           },
           "vectors": {
-            "kind": "CORRECTED_REAL_WAVE_G0_G2_ACTUALS__EXPECTED_COMPARISON_NOT_RUN",
+            "kind": "CURRENT_REAL_WAVE_G0_G2_ACTUALS__EXPECTED_COMPARISON_NOT_RUN",
             "authoritative_vectors": [],
-            "case_pointers": [
-              "fresh corrected-code F04A actual hashes: g0 06d88109940f8e913952099a2921a07697bc2863d75d89d5020bb6eadf5d1dbb, g1 8ba7283b9395bdc6c2e514844f7fd6795b187be871984c9017c839547ff1d054, g2 c03318dc8f6349ace6ff439021315c70e3e5739f8b3104ed154979d1aadb54b4",
-              "the fresh actual hashes equal the withdrawn prior strings; those old outputs remain invalid as expectations and were not used as inputs",
-              "the approved package supplies diffusion parameters but no independent corrected g0-g2 F04A output hashes; expected comparison remains NOT_RUN"
-            ],
+            "case_pointers": ["current-code F04A actual hashes: g0 06d88109940f8e913952099a2921a07697bc2863d75d89d5020bb6eadf5d1dbb, g1 8ba7283b9395bdc6c2e514844f7fd6795b187be871984c9017c839547ff1d054, g2 c03318dc8f6349ace6ff439021315c70e3e5739f8b3104ed154979d1aadb54b4", "these actual hashes equal withdrawn earlier actual strings; isolated history lacks the older expression and repair commit, so historical cause is UNKNOWN and no prior actual is used as expected", "no independent F04A expected hashes are present, so expected comparison and conformance remain NOT_RUN", "validation-only precision package checks the synthetic witness gain=3e99999a/mode=-1/input=(37e00000,37e00000,b9800000): R32 result 3882fa56; retaining the F64 sqrt through gain yields 3882fa55; previous/current half recomputation finds 1453 stale-prefix differences, not whole g0-g2 conformance", "prequantizing 0.85/0.15 to F32 gives the same two final root words, so root equality does not identify the historical expression"],
+            "historical_formula_status": {
+              "prior_expression": "UNAVAILABLE_IN_ISOLATED_GIT_HISTORY",
+              "correction_commit": "UNAVAILABLE_IN_ISOLATED_GIT_HISTORY",
+              "historical_cause": "UNKNOWN"
+            },
+            "validation_only_reference": {
+              "package_id": "F04A-PREFIX-PRECISION-MATHEMATICAL-REFERENCE-V1",
+              "manifest_sha256": "35610f38b06625e3b2fbd67e0d42317e4b7338e3fd96cafc168874e42af8e8c7",
+              "input_only_recipes": "outputs/IMPLEMENTER_SUPPLEMENTS/F04A-PREFIX-PRECISION-MATHEMATICAL-REFERENCE-V1/INPUT-ONLY-RECIPES.json",
+              "numeric_rules": "outputs/IMPLEMENTER_SUPPLEMENTS/F04A-PREFIX-PRECISION-MATHEMATICAL-REFERENCE-V1/NUMERIC-RULES.json",
+              "oracle": "outputs/IMPLEMENTER_SUPPLEMENTS/F04A-PREFIX-PRECISION-MATHEMATICAL-REFERENCE-V1/prefix_numeric_reference.py",
+              "role": "VALIDATION_ONLY_NOT_PRODUCTION_DEPENDENCY"
+            },
             "actual_vs_expected": {
               "actual": {
-                "callback_indices": [
-                  0,
-                  1,
-                  2
-                ],
-                "upstream_generations": [
-                  1,
-                  2,
-                  3
-                ],
-                "source_intervals": [
-                  "[0,1536)",
-                  "[1536,3072)",
-                  "[3072,4608)"
-                ],
+                "callback_indices": [0, 1, 2],
+                "upstream_generations": [1, 2, 3],
+                "source_intervals": ["[0,1536)", "[1536,3072)", "[3072,4608)"],
                 "frame_shape": "48x3072 F32 words",
                 "parameter_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-                "output_sha256": [
-                  "06d88109940f8e913952099a2921a07697bc2863d75d89d5020bb6eadf5d1dbb",
-                  "8ba7283b9395bdc6c2e514844f7fd6795b187be871984c9017c839547ff1d054",
-                  "c03318dc8f6349ace6ff439021315c70e3e5739f8b3104ed154979d1aadb54b4"
-                ]
+                "output_sha256": ["06d88109940f8e913952099a2921a07697bc2863d75d89d5020bb6eadf5d1dbb", "8ba7283b9395bdc6c2e514844f7fd6795b187be871984c9017c839547ff1d054", "c03318dc8f6349ace6ff439021315c70e3e5739f8b3104ed154979d1aadb54b4"]
               },
               "expected": {
                 "status": "NOT_SUPPLIED",
@@ -2396,12 +2365,37 @@
               "use": "internal identity-bound diagnostic only; never a runtime allowlist"
             }
           },
-          "not_run": [
-            "independent corrected F04A expected-output comparison",
-            "F03F CurrentFeatures",
-            "selector/U04/outer, F04 matrix/destinations/component, direct-LFE packet assembly, SCP16/control16",
-            "full callback commit, g1/g2 full frontend callbacks, EOF/drains, measurement receipt, encoding, or product acceptance"
-          ]
+          "not_run": ["independent F04A expected-output comparison", "F03F CurrentFeatures", "selector/U04/outer writer and current C/d producer invocation, direct-LFE packet assembly, SCP16/control16", "full callback commit, g1/g2 full frontend callbacks, EOF/drains, measurement receipt, encoding, or product acceptance"]
+        },
+        {
+          "slice_id": "active-component-matrix-and-packet-constructor",
+          "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_F04A_MATRIX_REPRESENTATION__UPSTREAM_PRODUCER_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_COMPACT_DENSE_SCATTER_GATHER_AND_CURRENT_PACKET_BINDING__OUTER_WRITER_DEFERRED",
+          "scope": "Validates paired compact C[n,48] coefficients and ascending target slots, scatters exact words into the canonical dense D[15,48] target-slot view with inactive positive-zero rows, and gathers with the same slots without sorting or coefficient-based activity inference. The non-test packet constructor binds compact C/d, installed48, selected provider lineage, and current spatial-audio/control before-state identities to one callback. It produces only the component consumer packet; it does not implement the outer C/d writer, source installation, owner update, or component commit.",
+          "owner": "spatial_audio",
+          "implementation_files": ["crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs"],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": ["FrontendCallbackIndex"],
+            "covered_clauses": ["The compact matrix output carries a callback index that must equal both spatial joins before packet construction.", "C logical row k remains paired with target slot d[k]; production target slots are strictly ascending and row order is not inferred from coefficient values.", "Canonical D initializes all cells to positive-zero F32 bits and scatters D[d[k],s]=C[k,s] by exact word copy; gather with the same d reconstructs C exactly.", "Inactive D rows must be positive zero, while active all-zero coefficient rows remain active because d is retained separately.", "An explicit n=0 producer result creates empty C/d and a zero dense view; no cold placeholder or nonzero-coefficient test establishes readiness.", "The packet constructor copies owner/provider before-state identities and has no commit authority."]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_COMPACT_ACTIVE_MATRIX_AND_CANONICAL_TARGET_SLOT_ADAPTER",
+            "provider_files": ["outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-ACTIVE-MATRIX-REPRESENTATION-ADAPTER-V1/CONTRACT.md", "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-ACTIVE-MATRIX-REPRESENTATION-ADAPTER-V1/REPRESENTATIONS.json", "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-ACTIVE-MATRIX-REPRESENTATION-ADAPTER-V1/INPUT-ONLY-VECTORS.json", "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-ACTIVE-MATRIX-REPRESENTATION-ADAPTER-V1/WASH-DECISION.json"],
+            "supplement_manifest_sha256": "97d554d78dce00348476cdf00fd5cb566e9c4327dc3b4f6418e344df3fa08d7a",
+            "validation_boundary": "Metadata adapter only; no solver, numeric mixer, PCM, native run or full callback was executed by the Wash vectors. Local tests run the existing component consumer on one synthetic explicit-empty result."
+          },
+          "test_modules": ["crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs"],
+          "vectors": {
+            "kind": "HASH_BOUND_ACTIVE_MATRIX_METADATA_RECIPES_AND_LOCAL_PACKET_STAGE",
+            "authoritative_vectors": ["outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-ACTIVE-MATRIX-REPRESENTATION-ADAPTER-V1/INPUT-ONLY-VECTORS.json"],
+            "case_pointers": ["Seven synthetic cases cover n=0, one target, noncontiguous slots, full capacity, preserved old active slots, current-before-quiet capture, and active all-zero rows.", "Three malformed inputs cover duplicate destinations, out-of-range destinations and C/d shape mismatch.", "Local scatter/gather tests check exact active words and inactive positive-zero rows; active all-zero target slots remain in d.", "Local packet-constructor test stages the existing component history for an explicit empty C/d result and does not commit the owner.", "No real source, whole spatial producer, solver, numeric matrix oracle, or product acceptance is covered."],
+            "source_supplement_manifest_sha256": "97d554d78dce00348476cdf00fd5cb566e9c4327dc3b4f6418e344df3fa08d7a",
+            "payload_hashes_and_sizes": "PASS"
+          },
+          "error_outcomes": [{"error_code":"ComponentStageError::Input","category":"compact matrix shape/domain","trigger":"C word count is not 48*n, d has duplicates/out-of-range/unsorted target slots, a coefficient is nonfinite, or an inactive canonical row is not positive zero.","programme_state_after":"No active-matrix value or packet is returned.","caller_action":"Reject the paired matrix and destinations without sorting or inferring activity from coefficient values."},{"error_code":"ComponentStageError::CallbackOrder","category":"current callback identity","trigger":"The matrix callback index or spatial-control join callback differs from the spatial-audio callback.","programme_state_after":"No packet is returned.","caller_action":"Reject the stale producer output and stage a result from the current callback."},{"error_code":"ComponentStageError::State","category":"before-state identity","trigger":"The supplied audio/control joins do not match their current owner generation or digest.","programme_state_after":"No packet is returned and no owner changes.","caller_action":"Rebuild the packet from the current owner snapshots."}],
+          "not_run": ["Actual installation.active to F03S compact C/d writer call and producer generation receipt", "SourceFlags/CurrentFeatures/selector/U04/current owner writer and callback sequence", "Production F03W canonical D owner update and quiet-after next-state integration", "Full F04 component output, whole callback commit, actual PCM, native execution, or W04 acceptance"],
+          "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
         },
         {
           "slice_id": "washed-membership-producer-owner-status-v2",
@@ -2412,17 +2406,11 @@
           "local_mapping_files": [],
           "clock": {
             "domains": [],
-            "covered_clauses": [
-              "The handler-gate and persistent/cache row tables have distinct owners and bases; no same-row pointer/generation join is established.",
-              "Current persistent flag across cache/copy/reuse and runtime row generation remain UNBOUND; no source/AU clock is inferred from event order."
-            ]
+            "covered_clauses": ["The handler-gate and persistent/cache row tables have distinct owners and bases; no same-row pointer/generation join is established.", "Current persistent flag across cache/copy/reuse and runtime row generation remain UNBOUND; no source/AU clock is inferred from event order."]
           },
           "parameters": {
             "kind": "HASH_BOUND_F04A_MEMBERSHIP_PRODUCER_OWNER_STATUS_V2",
-            "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04A-MEMBERSHIP-PRODUCER-OWNER-STATUS-V2/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04A-MEMBERSHIP-PRODUCER-OWNER-STATUS-V2/STATUS.json"
-            ],
+            "provider_files": ["outputs/IMPLEMENTER_SUPPLEMENTS/F04A-MEMBERSHIP-PRODUCER-OWNER-STATUS-V2/CONTRACT.md", "outputs/IMPLEMENTER_SUPPLEMENTS/F04A-MEMBERSHIP-PRODUCER-OWNER-STATUS-V2/STATUS.json"],
             "supplement_manifest_sha256": "fff1b10bdb7870d6a2ebe9cc3546942c8924fe954536600b460f9067f4463ca3",
             "source_package_manifest_sha256": "8dbf3a581d6dc763396723d85d9f8e4582e77d0441a93455b19dbdc4e3cb04bc",
             "validation_boundary": "Wash static lineage evidence only; no native run, clean membership equivalence, prefix-writer identity or runtime owner receipt."
@@ -2430,22 +2418,12 @@
           "test_modules": [],
           "vectors": {
             "kind": "HASH_BOUND_F04A_DISTINCT_ROW_OWNERS_AND_GATE_STATUS",
-            "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04A-MEMBERSHIP-PRODUCER-OWNER-STATUS-V2/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04A-MEMBERSHIP-PRODUCER-OWNER-STATUS-V2/STATUS.json"
-            ],
-            "case_pointers": [
-              "Handler table and persistent/cache table are distinct 56-byte row owners with no same-row/generation join.",
-              "The handler's staged offset4 U32 reads raw Control52 bytes0..3; it is not the raw Control52 U32 at offset4 and is not a typed audio_diffuse field.",
-              "Native membership gate, candidate filtering and nonzero-status output list are statically mapped, but clean F04A membership and prefix-writer identities remain unbound."
-            ],
+            "authoritative_vectors": ["outputs/IMPLEMENTER_SUPPLEMENTS/F04A-MEMBERSHIP-PRODUCER-OWNER-STATUS-V2/CONTRACT.md", "outputs/IMPLEMENTER_SUPPLEMENTS/F04A-MEMBERSHIP-PRODUCER-OWNER-STATUS-V2/STATUS.json"],
+            "case_pointers": ["Handler table and persistent/cache table are distinct 56-byte row owners with no same-row/generation join.", "The handler's staged offset4 U32 reads raw Control52 bytes0..3; it is not the raw Control52 U32 at offset4 and is not a typed audio_diffuse field.", "Native membership gate, candidate filtering and nonzero-status output list are statically mapped, but clean F04A membership and prefix-writer identities remain unbound."],
             "source_package_manifest_sha256": "8dbf3a581d6dc763396723d85d9f8e4582e77d0441a93455b19dbdc4e3cb04bc"
           },
           "error_outcomes": [],
-          "not_run": [
-            "Same-row and same-generation join from clean F04A audio_diffuse/lane values to native gate and selected row list.",
-            "Persistent row-state current value, clean prefix writer identity, source-row/PCM generation and native run remain UNBOUND/NOT_RUN."
-          ],
+          "not_run": ["Same-row and same-generation join from clean F04A audio_diffuse/lane values to native gate and selected row list.", "Persistent row-state current value, clean prefix writer identity, source-row/PCM generation and native run remain UNBOUND/NOT_RUN."],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ],
@@ -5606,47 +5584,22 @@
           "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_F06OF_AND_FRONTEND_DEFERRED",
           "implementation_status": "LOCALLY_VERIFIED_TWO_CALLBACK_LFE_RING_AND_PACKET_ASSEMBLY__UPSTREAM_FRONTEND_DEFERRED",
           "scope": "Owns a fresh three-slot meter LFE ring, stores full finite frames with callback origins, emits positive-zero rows for the first two calls and the actual g-2 row thereafter, then assembles that row with fifteen same-callback regular SCP/control rows into an OAR packet with generation g+1. Current LFE, regular SCP and controls are caller-supplied outputs of upstream processing.",
-          "implementation_files": [
-            "crates/jocforge-domain/src/meter/mod.rs",
-            "crates/jocforge-domain/src/meter/lfe_delay_ring.rs",
-            "crates/jocforge-domain/src/meter/object_renderer.rs"
-          ],
-          "local_mapping_files": [
-            "docs/implementation/meter-lfe-delay.md",
-            "docs/implementation/meter-lfe-delay-provenance.json"
-          ],
+          "implementation_files": ["crates/jocforge-domain/src/meter/mod.rs", "crates/jocforge-domain/src/meter/lfe_delay_ring.rs", "crates/jocforge-domain/src/meter/object_renderer.rs"],
+          "local_mapping_files": ["docs/implementation/meter-lfe-delay.md", "docs/implementation/meter-lfe-delay-provenance.json"],
           "clock": {
-            "domains": [
-              "MeterCallbackIndex",
-              "ObjectRenderCallbackGeneration",
-              "MeterLfeCallbackOrigin"
-            ],
-            "covered_clauses": [
-              "Cold ring write/read slots are 0/1 and all three frame and origin slots are absent.",
-              "One input frame and callback index advance the ring once; output g uses input generation g-2 after the first two callbacks.",
-              "The OAR packet generation must equal meter callback index g+1 and packet regular PCM/control rows come from the same input batch.",
-              "The three meter drain callbacks require zero raw direct-LFE input; the ring output still comes from its retained frame slot."
-            ]
+            "domains": ["MeterCallbackIndex", "ObjectRenderCallbackGeneration", "MeterLfeCallbackOrigin"],
+            "covered_clauses": ["Cold ring write/read slots are 0/1 and all three frame and origin slots are absent.", "One input frame and callback index advance the ring once; output g uses input generation g-2 after the first two callbacks.", "The OAR packet generation must equal meter callback index g+1 and packet regular PCM/control rows come from the same input batch.", "The three meter drain callbacks require zero raw direct-LFE input; the ring output still comes from its retained frame slot."]
           },
           "parameters": {
             "kind": "FIXED_SELECTED_METER_LFE_RING_AND_OAR_PACKET_SHAPE",
             "provider_files": [],
             "validation_boundary": "Three 1536-sample slots and a 3072-sample delay. This adapter does not choose a source track or produce the LFE row, regular SCP rows, or regular control52 values."
           },
-          "test_modules": [
-            "crates/jocforge-domain/src/meter/lfe_delay_ring.rs",
-            "crates/jocforge-domain/src/meter/post_render_meter.rs"
-          ],
+          "test_modules": ["crates/jocforge-domain/src/meter/lfe_delay_ring.rs", "crates/jocforge-domain/src/meter/post_render_meter.rs"],
           "vectors": {
             "kind": "HASH_BOUND_SEVEN_SYNTHETIC_LFE_INPUT_FRAMES_AND_PACKET_JOIN",
-            "authoritative_vectors": [
-              "test-vectors/OAR-FRONTEND-CLOCK-JOIN-VERIFICATION.json"
-            ],
-            "case_pointers": [
-              "lfe_ring_cases[0..6] input_constant_f32 and callback index g",
-              "four normal input frames followed by three zero-input drains",
-              "packet test checks direct row, regular row, OAR generation and LFE origin"
-            ],
+            "authoritative_vectors": ["test-vectors/OAR-FRONTEND-CLOCK-JOIN-VERIFICATION.json"],
+            "case_pointers": ["lfe_ring_cases[0..6] input_constant_f32 and callback index g", "four normal input frames followed by three zero-input drains", "packet test checks direct row, regular row, OAR generation and LFE origin"],
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/meter_frontend_oar/lfe_delay_inputs.json",
               "bytes": 922,
@@ -5654,18 +5607,8 @@
             },
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
           },
-          "error_outcomes": [
-            {"error_code":"METER_LFE_CALLBACK_ORDER","category":"meter ring clock","trigger":"The supplied callback index does not match the ring cursor or the fixed normal/drain schedule.","programme_state_after":"No proposal is returned; the prior ring is unchanged.","caller_action":"Reject the stale or out-of-order callback."},
-            {"error_code":"METER_LFE_GENERATION_MISMATCH","category":"same-callback packet generation","trigger":"The supplied upstream generation is not callback index g+1.","programme_state_after":"No LFE or OAR packet proposal is returned.","caller_action":"Reject before assembling an OAR packet."},
-            {"error_code":"METER_LFE_PHASE_MISMATCH","category":"normal/drain phase","trigger":"The phase does not match the independent meter normal count followed by three drains.","programme_state_after":"No proposal is returned; the prior ring is unchanged.","caller_action":"Reject before slot advancement."},
-            {"error_code":"METER_LFE_INPUT_SHAPE_OR_NONFINITE","category":"LFE/SCP/control batch","trigger":"The LFE frame is not 1536 samples, regular arrays do not contain exactly fifteen rows of the selected shape, or a consumed sample is nonfinite.","programme_state_after":"No packet proposal is returned.","caller_action":"Reject the complete callback batch."}
-          ],
-          "not_run": [
-            "independent source read, ADM/object render, feature and selector producer",
-            "component overlap/filter and current LFE producer",
-            "complete independent meter frontend warm state and whole meter root",
-            "real ADM and whole-programme validation"
-          ],
+          "error_outcomes": [{"error_code":"METER_LFE_CALLBACK_ORDER","category":"meter ring clock","trigger":"The supplied callback index does not match the ring cursor or the fixed normal/drain schedule.","programme_state_after":"No proposal is returned; the prior ring is unchanged.","caller_action":"Reject the stale or out-of-order callback."},{"error_code":"METER_LFE_GENERATION_MISMATCH","category":"same-callback packet generation","trigger":"The supplied upstream generation is not callback index g+1.","programme_state_after":"No LFE or OAR packet proposal is returned.","caller_action":"Reject before assembling an OAR packet."},{"error_code":"METER_LFE_PHASE_MISMATCH","category":"normal/drain phase","trigger":"The phase does not match the independent meter normal count followed by three drains.","programme_state_after":"No proposal is returned; the prior ring is unchanged.","caller_action":"Reject before slot advancement."},{"error_code":"METER_LFE_INPUT_SHAPE_OR_NONFINITE","category":"LFE/SCP/control batch","trigger":"The LFE frame is not 1536 samples, regular arrays do not contain exactly fifteen rows of the selected shape, or a consumed sample is nonfinite.","programme_state_after":"No packet proposal is returned.","caller_action":"Reject the complete callback batch."}],
+          "not_run": ["independent source read, ADM/object render, feature and selector producer", "component overlap/filter and current LFE producer", "complete independent meter frontend warm state and whole meter root", "real ADM and whole-programme validation"],
           "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
         },
         {
@@ -5673,52 +5616,22 @@
           "mapping_status": "MATERIALIZED_DIRECT_INPUT_SUBSLICE_F06OF_AND_FRONTEND_DEFERRED",
           "implementation_status": "LOCALLY_VERIFIED_TYPED_PCM24_READ_CHUNK_CURSOR_TO_RAW_FRAMES__SCP_CONTROL_PRODUCER_DEFERRED",
           "scope": "Binds an independent typed meter source cursor to one already parsed selected RIFF/PCM24 byte slice by full source SHA and sample count. Each normal sample range is addressed through the parsed blockAlign byte offset and decoded by the shared selected PCM24 read-chunk helper; the cursor consumes its typed actual-frame count and advances by that returned count. It pads only the final raw source input and emits exactly three fresh zero-input model drain frames. The cursor stores source identity and clocks, never PCM. Output stops at raw physical-channel input; no operating-system read, native EOF/drain, ADM/event render or SCP/control is claimed.",
-          "implementation_files": [
-            "crates/jocforge-io/Cargo.toml",
-            "crates/jocforge-io/src/pcm/mod.rs",
-            "crates/jocforge-io/src/pcm/riff_pcm24.rs",
-            "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
-            "crates/jocforge-application/src/lib.rs"
-          ],
-          "local_mapping_files": [
-            "docs/implementation/meter-source-cursor.md",
-            "docs/implementation/meter-source-cursor-provenance.json"
-          ],
+          "implementation_files": ["crates/jocforge-io/Cargo.toml", "crates/jocforge-io/src/pcm/mod.rs", "crates/jocforge-io/src/pcm/riff_pcm24.rs", "crates/jocforge-io/src/pcm/meter_source_cursor.rs", "crates/jocforge-application/src/lib.rs"],
+          "local_mapping_files": ["docs/implementation/meter-source-cursor.md", "docs/implementation/meter-source-cursor-provenance.json"],
           "clock": {
-            "domains": [
-              "MeterSourceSampleCount",
-              "MeterSourcePosition",
-              "MeterCallbackIndex",
-              "MeterUpstreamGeneration",
-              "MeterCallbackCount"
-            ],
-            "covered_clauses": [
-              "Normal callback count is ceil(N/1536); each normal frame reads min(1536,N-cursor) then pads the raw input rows to 1536.",
-              "The source cursor advances only for normal host samples and reaches N at end of source.",
-              "Exactly three callbacks after the normal count are zero-input drains; they do not read source data or advance the cursor.",
-              "Every frame generation is callback index g+1; the frame carries its before/after source cursor and host/padding counts.",
-              "The in-memory source cursor validates the typed actual-frame count from each decoded chunk against the model's scheduled normal-sample count; it does not model an OS short read."
-            ]
+            "domains": ["MeterSourceSampleCount", "MeterSourcePosition", "MeterCallbackIndex", "MeterUpstreamGeneration", "MeterCallbackCount"],
+            "covered_clauses": ["Normal callback count is ceil(N/1536); each normal frame reads min(1536,N-cursor) then pads the raw input rows to 1536.", "The source cursor advances only for normal host samples and reaches N at end of source.", "Exactly three callbacks after the normal count are zero-input drains; they do not read source data or advance the cursor.", "Every frame generation is callback index g+1; the frame carries its before/after source cursor and host/padding counts.", "The in-memory source cursor validates the typed actual-frame count from each decoded chunk against the model's scheduled normal-sample count; it does not model an OS short read."]
           },
           "parameters": {
             "kind": "SELECTED_IN_MEMORY_RIFF_PCM24_PROFILE",
             "provider_files": [],
             "validation_boundary": "Requires a caller-borrowed ParsedRiffPcm24 matching the selected 48 kHz, 38-channel, PCM24, block-align 114 profile, selected job resource SHA-256, and selected job sample extent. It performs no filesystem read or sample persistence; its three drains are model schedule only."
           },
-          "test_modules": [
-            "crates/jocforge-io/src/pcm/meter_source_cursor.rs"
-          ],
+          "test_modules": ["crates/jocforge-io/src/pcm/meter_source_cursor.rs"],
           "vectors": {
             "kind": "SYNTHETIC_IN_MEMORY_PCM24_BYTES_AND_TYPED_READ_CHUNK_SCHEDULE",
-            "authoritative_vectors": [
-              "crates/jocforge-io/tests/fixtures/meter_source_cursor/input_only.json"
-            ],
-            "case_pointers": [
-              "INPUT-ONLY source_samples=1537 generates two normal frames and three zero drains",
-              "last normal read is one host sample plus 1535 positive zeros per channel",
-              "each normal cursor step consumes the shared chunk decoder's typed frame count and returns the same actual sample words as the caller-borrowed RIFF hop",
-              "a different byte-slice identity and an out-of-order callback reject without cursor advance"
-            ],
+            "authoritative_vectors": ["crates/jocforge-io/tests/fixtures/meter_source_cursor/input_only.json"],
+            "case_pointers": ["INPUT-ONLY source_samples=1537 generates two normal frames and three zero drains", "last normal read is one host sample plus 1535 positive zeros per channel", "each normal cursor step consumes the shared chunk decoder's typed frame count and returns the same actual sample words as the caller-borrowed RIFF hop", "a different byte-slice identity and an out-of-order callback reject without cursor advance"],
             "local_fixture": {
               "file": "crates/jocforge-io/tests/fixtures/meter_source_cursor/input_only.json",
               "bytes": 681,
@@ -5727,21 +5640,38 @@
             "source_spec_sha256": "6bd78ebe23536c3a55ec54f2e13c2e8b98c2ee245ae5a886e47bc9580520b93a",
             "source_oar_join_spec_sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423"
           },
-          "error_outcomes": [
-            {"error_code":"METER_SOURCE_EXTENT_INVALID","category":"selected source sample count","trigger":"Source sample count is zero, exceeds the selected signed-63-bit domain, or cannot form a checked normal/drain schedule.","programme_state_after":"No cursor is created or advanced.","caller_action":"Reject before reading a hop."},
-            {"error_code":"METER_SOURCE_PROFILE_MISMATCH","category":"RIFF descriptor","trigger":"RIFF descriptor does not match selected 48 kHz, 38-channel, PCM24, block-align 114.","programme_state_after":"No frame or next cursor is returned.","caller_action":"Reject before source progress."},
-            {"error_code":"METER_SOURCE_EXTENT_MISMATCH","category":"selected resource source count","trigger":"Parsed RIFF sample count differs from the selected job's bound source sample count.","programme_state_after":"No frame or next cursor is returned.","caller_action":"Reject the mismatched source resource."},
-            {"error_code":"METER_SOURCE_IDENTITY_MISMATCH","category":"selected resource byte identity","trigger":"The parsed full-resource SHA-256 differs from the selected job resource identity or from the cursor's source identity.","programme_state_after":"No frame or next cursor is returned.","caller_action":"Reject; do not continue on another source byte slice of the same length."},
-            {"error_code":"METER_SOURCE_CALLBACK_ORDER","category":"meter source cursor","trigger":"Callback index is stale, skipped, or called after the fixed three drains.","programme_state_after":"No frame or next cursor is returned.","caller_action":"Reject without source progress."},
-            {"error_code":"METER_SOURCE_READER_ERROR","category":"PCM24 hop extraction","trigger":"The in-memory reader rejects the requested hop.","programme_state_after":"No frame or next cursor is returned.","caller_action":"Propagate the selected reader error; do not synthesize the missing normal samples."}
-          ],
-          "not_run": [
-            "The three zero-input drains are model schedule only; no native EOF/drain join is established.",
-            "38-channel raw rows through an independent ADM/object render and event-control producer",
-            "Physical PCM row to F06OF measurement descriptor owner/source-generation join remains UNBOUND.",
-            "SCP16/control16 construction and same-callback F06OF packet production",
-            "complete independent frontend warm state, terminal root, real ADM and product acceptance"
-          ],
+          "error_outcomes": [{"error_code":"METER_SOURCE_EXTENT_INVALID","category":"selected source sample count","trigger":"Source sample count is zero, exceeds the selected signed-63-bit domain, or cannot form a checked normal/drain schedule.","programme_state_after":"No cursor is created or advanced.","caller_action":"Reject before reading a hop."},{"error_code":"METER_SOURCE_PROFILE_MISMATCH","category":"RIFF descriptor","trigger":"RIFF descriptor does not match selected 48 kHz, 38-channel, PCM24, block-align 114.","programme_state_after":"No frame or next cursor is returned.","caller_action":"Reject before source progress."},{"error_code":"METER_SOURCE_EXTENT_MISMATCH","category":"selected resource source count","trigger":"Parsed RIFF sample count differs from the selected job's bound source sample count.","programme_state_after":"No frame or next cursor is returned.","caller_action":"Reject the mismatched source resource."},{"error_code":"METER_SOURCE_IDENTITY_MISMATCH","category":"selected resource byte identity","trigger":"The parsed full-resource SHA-256 differs from the selected job resource identity or from the cursor's source identity.","programme_state_after":"No frame or next cursor is returned.","caller_action":"Reject; do not continue on another source byte slice of the same length."},{"error_code":"METER_SOURCE_CALLBACK_ORDER","category":"meter source cursor","trigger":"Callback index is stale, skipped, or called after the fixed three drains.","programme_state_after":"No frame or next cursor is returned.","caller_action":"Reject without source progress."},{"error_code":"METER_SOURCE_READER_ERROR","category":"PCM24 hop extraction","trigger":"The in-memory reader rejects the requested hop.","programme_state_after":"No frame or next cursor is returned.","caller_action":"Propagate the selected reader error; do not synthesize the missing normal samples."}],
+          "not_run": ["The three zero-input drains are model schedule only; no native EOF/drain join is established.", "38-channel raw rows through an independent ADM/object render and event-control producer", "Physical PCM row to F06OF measurement descriptor owner/source-generation join remains UNBOUND.", "SCP16/control16 construction and same-callback F06OF packet production", "complete independent frontend warm state, terminal root, real ADM and product acceptance"],
+          "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
+        },
+        {
+          "slice_id": "meter-source-oar-callback-handoff",
+          "mapping_status": "MATERIALIZED_DIRECT_BRIDGE_SUBSLICE_F06OF_SPATIAL_AND_CONTROL_PRODUCER_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_SAME_RESOURCE_PHYSICAL_LFE_AND_CLOCK_JOIN__PRODUCTION_SPATIAL_PROVIDER_DEFERRED",
+          "scope": "The CLI composition root owns the IO cursor and translates its proposal into an immutable domain MeterSourceCallbackFrame for application. Application binds the frame to PreparedJobInput and the selected ADM graph, exposes 38 physical rows to the upstream frontend caller, checks the returned OAR input clock and exact direct-LFE physical row, and stages the independent meter prepass. The CLI combines that application stage with the IO cursor after-state in one infallible commit, checks source/prepass extents and normal-callback counts, coordinates cold reset, and joins their Q+3 finalization schedule. Application has no IO dependency. The slice does not produce component15 rows, regular controls, matrix/destinations, or spatial DSP.",
+          "owner": "application",
+          "implementation_files": ["crates/jocforge-cli/Cargo.toml", "crates/jocforge-cli/src/lib.rs", "crates/jocforge-cli/src/meter_source_bridge.rs", "crates/jocforge-application/src/meter_source_bridge.rs", "crates/jocforge-application/src/lib.rs", "crates/jocforge-domain/src/meter/mod.rs", "crates/jocforge-domain/src/meter/source_frame.rs", "crates/jocforge-domain/src/meter/lfe_delay_ring.rs", "crates/jocforge-domain/src/meter/meter_prepass.rs", "crates/jocforge-io/src/pcm/meter_source_cursor.rs", "crates/jocforge-io/src/pcm/riff_pcm24.rs"],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": ["MeterCallbackIndex", "MeterUpstreamGeneration", "MeterSourcePosition", "MeterSampleCount", "MeterCallbackCount", "ObjectRenderCallbackGeneration", "PhysicalHostIndex"],
+            "covered_clauses": ["A source frame and its frontend/OAR input must share callback index, generation g+1, and normal/drain phase.", "The frontend current-LFE row must be bit-identical to the physical PCM row selected by the prepared ADM graph's direct_lfe_host.", "Before staging, independent source and prepass sample extents and normal-callback counts must match.", "Reader cursor advancement and the existing meter/OAR callback proposal install through one linear stage commit; dropping the stage leaves the reader cursor unchanged.", "Reset validates the same source identity and extent, resets the prepass to its cold state, and reconstructs the source cursor at callback zero.", "Finalization requires both owners to complete Q normal callbacks plus three drains, with the source cursor at N."]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F06OF_MODEL_PCM38_TO_OAR_TYPED_BRIDGE",
+            "provider_files": ["outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/CONTRACT.md", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/COUNT-DOMAINS.csv", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/MODEL-BINDING.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/INPUT-ONLY-VECTORS.json"],
+            "supplement_manifest_sha256": "7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac",
+            "validation_boundary": "Model count, row-map, callback, LFE and prepass joins use a domain-owned frame value. The CLI composition root may depend on IO; application remains independent of IO and validation. The integration test decodes one synthetic frame and does not execute spatial DSP."
+          },
+          "test_modules": ["crates/jocforge-cli/tests/meter_source_bridge.rs", "crates/jocforge-domain/src/meter/lfe_delay_ring.rs", "crates/jocforge-domain/src/meter/meter_prepass.rs"],
+          "vectors": {
+            "kind": "SYNTHETIC_SOURCE_TO_OAR_CALLBACK_CLOCK_LFE_AND_RESET_BOUNDARY",
+            "authoritative_vectors": ["outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/INPUT-ONLY-VECTORS.json", "crates/jocforge-cli/tests/meter_source_bridge.rs", "crates/jocforge-domain/tests/fixtures/post_render_meter/zero_programme.json"],
+            "case_pointers": ["N=1: one normal callback reads one sample and pads 1535; three fresh drains keep cursor at N; all four generations are g+1.", "The same physical row selected by direct_lfe_host is bound to the direct LFE input; a mismatch rejects before source or prepass commit.", "Mismatched callback/generation or source/prepass extents reject before reader advancement.", "After Q+3 callbacks, both owners are ready to finalize; reset returns both callback clocks and cursor to cold zero.", "Synthetic input validates interface and lifecycle only; no matrix, component, control producer, spatial DSP, native execution, or product acceptance is covered."],
+            "source_supplement_manifest_sha256": "7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac",
+            "payload_hashes_and_sizes": "PASS"
+          },
+          "error_outcomes": [{"error_code":"ResourceIdentityMismatch","category":"prepared resource binding","trigger":"The source proposal identity differs from the PreparedJobInput resource SHA-256.","programme_state_after":"No frontend handoff or state proposal is returned.","caller_action":"Reject the callback and retain the cursor."},{"error_code":"FrontendClock","category":"same-callback frontend handoff","trigger":"Frontend callback index, generation, or phase differs from the source frame.","programme_state_after":"No OAR handoff is returned and the source proposal is not committed.","caller_action":"Reject and rebuild the frontend result from the same source callback."},{"error_code":"DirectLfeMismatch","category":"F01 physical row selection","trigger":"The frontend current-LFE row differs from the selected direct-LFE physical PCM row.","programme_state_after":"No OAR handoff is returned.","caller_action":"Reject the row binding; do not substitute CHNA enumeration order."},{"error_code":"CursorMismatch","category":"source/prepass state join","trigger":"The source proposal is stale or its sample extent/normal count differs from the independent meter prepass.","programme_state_after":"No reader advancement occurs; no prepass callback stage is started.","caller_action":"Reject and recreate both owners from one selected source extent."}],
+          "not_run": ["Production source-to-spatial component15 producer and F03/F04 owner commit", "n-active F04A matrix/destination to F03W canonical 15x48 matrix adapter", "Regular control52/SCP16 producer and its source generation/history", "Real selected source PCM, whole-programme DSP, native execution, measurement acceptance, or W04"],
           "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
         },
         {
@@ -5754,9 +5684,7 @@
           "local_mapping_files": [],
           "clock": {
             "domains": [],
-            "covered_clauses": [
-              "Washed static/observation boundary only; run-local meter callback identity is not a CodecSourceIndex or JOC generation join."
-            ]
+            "covered_clauses": ["Washed static/observation boundary only; run-local meter callback identity is not a CodecSourceIndex or JOC generation join."]
           },
           "parameters": {
             "kind": "NONE_WASHED_FRONTEND_LINEAGE_EVIDENCE",
@@ -5766,14 +5694,8 @@
           "test_modules": [],
           "vectors": {
             "kind": "HASH_BOUND_WASHED_F06OF_STATUS_SUPPLEMENT",
-            "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-NATIVE-FRONTEND-LINEAGE-STATUS-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-NATIVE-FRONTEND-LINEAGE-STATUS-V1/EVIDENCE.json"
-            ],
-            "case_pointers": [
-              "Selected meter callback and downstream consumer lineage is static, but no run-local generation join to F06OF source/AU is available.",
-              "The independent spatial metadata path is not joined to F06OF Control52/SCP16."
-            ],
+            "authoritative_vectors": ["outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-NATIVE-FRONTEND-LINEAGE-STATUS-V1/CONTRACT.md", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-NATIVE-FRONTEND-LINEAGE-STATUS-V1/EVIDENCE.json"],
+            "case_pointers": ["Selected meter callback and downstream consumer lineage is static, but no run-local generation join to F06OF source/AU is available.", "The independent spatial metadata path is not joined to F06OF Control52/SCP16."],
             "source_supplement_manifest_sha256": "da64997854743089e00d4214efa83b2ab28953f6fdd75ec0170163867a246334",
             "source_evidence_manifest_sha256": "d9196ac37e53d8757fbf71cf815ec7bd9d5178ac918799044a9db4586bb04968",
             "source_package_seal_sha256": "7cdb6776493ef1e67d3809945835088f5e9b22fe2d983c39ef42aa2da2d408de",
@@ -5786,12 +5708,7 @@
             "primary_pcm_rehash": "NOT_RUN"
           },
           "error_outcomes": [],
-          "not_run": [
-            "Native ADM/CHNA source_map and physical-row producer",
-            "Activity/membership owner and per-row SCP16/control16 source",
-            "Source cursor, reader EOF/drain identity and selected frame join",
-            "Primary PCM rehash and native run remain NOT_RUN"
-          ],
+          "not_run": ["Native ADM/CHNA source_map and physical-row producer", "Activity/membership owner and per-row SCP16/control16 source", "Source cursor, reader EOF/drain identity and selected frame join", "Primary PCM rehash and native run remain NOT_RUN"],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
         {
@@ -5804,9 +5721,7 @@
           "local_mapping_files": [],
           "clock": {
             "domains": [],
-            "covered_clauses": [
-              "Washed static/observation boundary only; run-local meter callback identity is not a CodecSourceIndex or JOC generation join."
-            ]
+            "covered_clauses": ["Washed static/observation boundary only; run-local meter callback identity is not a CodecSourceIndex or JOC generation join."]
           },
           "parameters": {
             "kind": "NONE_WASHED_FRONTEND_LINEAGE_EVIDENCE",
@@ -5816,14 +5731,8 @@
           "test_modules": [],
           "vectors": {
             "kind": "HASH_BOUND_WASHED_F06OF_STATUS_SUPPLEMENT",
-            "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-CONVERTER-STATIC-INVENTORY-HOLD-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-CONVERTER-STATIC-INVENTORY-HOLD-V1/EVIDENCE.json"
-            ],
-            "case_pointers": [
-              "String/type inventory is a search lead only; no source-map producer or writer edge is established.",
-              "The separate spatial metadata writer remains adjacent and unjoined to this meter path."
-            ],
+            "authoritative_vectors": ["outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-CONVERTER-STATIC-INVENTORY-HOLD-V1/CONTRACT.md", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-CONVERTER-STATIC-INVENTORY-HOLD-V1/EVIDENCE.json"],
+            "case_pointers": ["String/type inventory is a search lead only; no source-map producer or writer edge is established.", "The separate spatial metadata writer remains adjacent and unjoined to this meter path."],
             "source_supplement_manifest_sha256": "11749ca880712ddfae68c4a106ad67c7c5faec76f28768ed35dce09cfc5531d9",
             "source_evidence_manifest_sha256": "d9196ac37e53d8757fbf71cf815ec7bd9d5178ac918799044a9db4586bb04968",
             "source_package_seal_sha256": "7cdb6776493ef1e67d3809945835088f5e9b22fe2d983c39ef42aa2da2d408de",
@@ -5836,11 +5745,7 @@
             "owner_generation": "UNBOUND"
           },
           "error_outcomes": [],
-          "not_run": [
-            "Executable producer registration/callgraph and source-row store",
-            "Typed source_map to selected frame descriptor dataflow",
-            "Same-owner and same-generation consumer join"
-          ],
+          "not_run": ["Executable producer registration/callgraph and source-row store", "Typed source_map to selected frame descriptor dataflow", "Same-owner and same-generation consumer join"],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
         {
@@ -5853,9 +5758,7 @@
           "local_mapping_files": [],
           "clock": {
             "domains": [],
-            "covered_clauses": [
-              "Washed static/observation boundary only; run-local meter callback identity is not a CodecSourceIndex or JOC generation join."
-            ]
+            "covered_clauses": ["Washed static/observation boundary only; run-local meter callback identity is not a CodecSourceIndex or JOC generation join."]
           },
           "parameters": {
             "kind": "NONE_WASHED_FRONTEND_LINEAGE_EVIDENCE",
@@ -5865,14 +5768,8 @@
           "test_modules": [],
           "vectors": {
             "kind": "HASH_BOUND_WASHED_F06OF_STATUS_SUPPLEMENT",
-            "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-BWF-LABEL-AND-SOURCE-ROW-GAP-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-BWF-LABEL-AND-SOURCE-ROW-GAP-V1/EVIDENCE.json"
-            ],
-            "case_pointers": [
-              "Input label precedence is static; source-row writer, physical order and selected frame owner are unbound.",
-              "The run_011 measurement generation is not JOC/profile-row generation and primary PCM was not rehashed."
-            ],
+            "authoritative_vectors": ["outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-BWF-LABEL-AND-SOURCE-ROW-GAP-V1/CONTRACT.md", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-BWF-LABEL-AND-SOURCE-ROW-GAP-V1/EVIDENCE.json"],
+            "case_pointers": ["Input label precedence is static; source-row writer, physical order and selected frame owner are unbound.", "The run_011 measurement generation is not JOC/profile-row generation and primary PCM was not rehashed."],
             "source_supplement_manifest_sha256": "4d673d82ed59d8b4f00f1ba0844bd37e22bdd94aee241da16664edd48fdb7000",
             "source_evidence_manifest_sha256": "d9196ac37e53d8757fbf71cf815ec7bd9d5178ac918799044a9db4586bb04968",
             "source_package_seal_sha256": "7cdb6776493ef1e67d3809945835088f5e9b22fe2d983c39ef42aa2da2d408de",
@@ -5885,11 +5782,7 @@
             "joc_profile_or_generation_join": "UNBOUND"
           },
           "error_outcomes": [],
-          "not_run": [
-            "Converter source-row mapping, activity/membership production and selected frame descriptor join",
-            "Same-generation F06OF source/frame consumer receipt",
-            "Native source/writer run and PCM rehash remain NOT_RUN"
-          ],
+          "not_run": ["Converter source-row mapping, activity/membership production and selected frame descriptor join", "Same-generation F06OF source/frame consumer receipt", "Native source/writer run and PCM rehash remain NOT_RUN"],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
         {
@@ -5897,47 +5790,25 @@
           "mapping_status": "MATERIALIZED_HASH_BOUND_F06OF_CONVERTER_LOCAL_STORAGE_MAP__MEASUREMENT_ROW_JOIN_DEFERRED",
           "implementation_status": "LOCALLY_VERIFIED_PREPARED_RESOURCE_TO_CONVERTER_MAP__FRAME_ROW_JOIN_OPEN",
           "scope": "Projects the AXML/CHNA graph already bound to one PreparedJobInput into 38 converter-local entries keyed by one-based CHNA track index minus one. The returned application value carries the enclosing resource identity and exact AXML/CHNA chunk spans. Object channel-input values use the decoded AO semantic key directly; bed values use the graph-produced decoded key plus zero-based bed ordinal. Track-slot and channel-input ID are distinct newtypes. This does not resolve meter PCM rows or connect to the selected measurement frame descriptor.",
-          "implementation_files": [
-            "crates/jocforge-domain/src/frontend/adm_file_storage_map.rs",
-            "crates/jocforge-domain/src/frontend/selected_adm_graph.rs",
-            "crates/jocforge-domain/src/frontend/mod.rs",
-            "crates/jocforge-application/src/lib.rs"
-          ],
+          "implementation_files": ["crates/jocforge-domain/src/frontend/adm_file_storage_map.rs", "crates/jocforge-domain/src/frontend/selected_adm_graph.rs", "crates/jocforge-domain/src/frontend/mod.rs", "crates/jocforge-application/src/lib.rs"],
           "clock": {
             "domains": [],
-            "covered_clauses": [
-              "The converter storage map is stateless metadata projection; CHNA track slot is an address, not a callback, source, AU, PCM cursor or programme clock."
-            ]
+            "covered_clauses": ["The converter storage map is stateless metadata projection; CHNA track slot is an address, not a callback, source, AU, PCM cursor or programme clock."]
           },
           "parameters": {
             "kind": "HASH_BOUND_F06OF_ADM_CHNA_CONVERTER_PARSE_LINEAGE_V2",
-            "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-CHNA-CONVERTER-PARSE-LINEAGE-V2/FIELD-MAP.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-CHNA-CONVERTER-PARSE-LINEAGE-V2/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-CHNA-CONVERTER-PARSE-LINEAGE-V2/EVIDENCE.json"
-            ],
+            "provider_files": ["outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-CHNA-CONVERTER-PARSE-LINEAGE-V2/FIELD-MAP.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-CHNA-CONVERTER-PARSE-LINEAGE-V2/CONTRACT.md", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-CHNA-CONVERTER-PARSE-LINEAGE-V2/EVIDENCE.json"],
             "supplement_manifest_sha256": "013b9f79499ab771bd6699ae78943232971f781c95ca2bb33b9eaaf83fa934b8",
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "source_evidence_manifest_sha256": "a0d4473b952cf8451fb4e84b40274e774799d2dfe15109e4b6d623ff6216f7ca",
             "source_package_seal_sha256": "d858406bafed074d49576fd3699d28771819cc5aaaf9e392f510b20c3987c7d7",
             "validation_boundary": "Hash-bound static converter-local mapping only; no native execution, raw PCM, selected frame or runtime generation identity."
           },
-          "test_modules": [
-            "crates/jocforge-domain/tests/adm_file_storage_map.rs",
-            "crates/jocforge-application/tests/prepared_job_input.rs"
-          ],
+          "test_modules": ["crates/jocforge-domain/tests/adm_file_storage_map.rs", "crates/jocforge-application/tests/prepared_job_input.rs"],
           "vectors": {
             "kind": "HASH_BOUND_SELECTED_GRAPH_TO_CONVERTER_SLOT_AND_CHANNEL_INPUT_VALUES",
-            "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-CHNA-CONVERTER-PARSE-LINEAGE-V2/FIELD-MAP.json",
-              "crates/jocforge-domain/tests/fixtures/selected_adm_graph/REAL-GRAPH-TRACK-IDENTITIES.json"
-            ],
-            "case_pointers": [
-              "Recomputes track slot as CHNA track_index minus one and checks all 38 slots in sorted storage order.",
-              "Object channel-input values equal decoded AO semantic keys; bed values equal decoded AO suffix minus 0x1001 plus bed ordinal.",
-              "PreparedJobInput exposes the map with the same resource SHA and AXML/CHNA chunk spans used for graph admission.",
-              "The V2 contract's converter-local lookup boundary is implemented; the selected measurement frame/PCM row join remains UNBOUND."
-            ],
+            "authoritative_vectors": ["outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-ADM-CHNA-CONVERTER-PARSE-LINEAGE-V2/FIELD-MAP.json", "crates/jocforge-domain/tests/fixtures/selected_adm_graph/REAL-GRAPH-TRACK-IDENTITIES.json"],
+            "case_pointers": ["Recomputes track slot as CHNA track_index minus one and checks all 38 slots in sorted storage order.", "Object channel-input values equal decoded AO semantic keys; bed values equal decoded AO suffix minus 0x1001 plus bed ordinal.", "PreparedJobInput exposes the map with the same resource SHA and AXML/CHNA chunk spans used for graph admission.", "The V2 contract's converter-local lookup boundary is implemented; the selected measurement frame/PCM row join remains UNBOUND."],
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/selected_adm_graph/REAL-GRAPH-TRACK-IDENTITIES.json",
               "bytes": 19792,
@@ -5946,40 +5817,8 @@
             "source_metadata_xml_sha256": "5973f94db1bc995465b33f6d9be7fd55d3e1bd3941130a913c58e7e5cf57bbfc",
             "source_chna_sha256": "f82b14e4c1b5b3b1750ed4104aa53f1d595e3ff2d4dbaef76a76c0e35f31b7a6"
           },
-          "error_outcomes": [
-            {
-              "error_code": "AdmFileStorageMapError::ChnaTrackIndexZero",
-              "category": "CHNA track-slot projection",
-              "trigger": "A graph track carries a zero one-based CHNA track index.",
-              "programme_state_after": "No converter storage map is returned; this projection owns no state.",
-              "caller_action": "Reject the graph projection."
-            },
-            {
-              "error_code": "AdmFileStorageMapError::TrackSlotOutOfRange",
-              "category": "selected 38-track profile boundary",
-              "trigger": "Track index minus one is outside slot 0..37.",
-              "programme_state_after": "No converter storage map is returned.",
-              "caller_action": "Reject the unsupported selected graph."
-            },
-            {
-              "error_code": "AdmFileStorageMapError::{DuplicateTrackSlot,MissingTrackSlot}",
-              "category": "converter map coverage",
-              "trigger": "The graph does not produce exactly one value for every selected slot 0..37.",
-              "programme_state_after": "No complete converter storage map is returned.",
-              "caller_action": "Reject the graph projection; do not infer a missing row."
-            },
-            {
-              "error_code": "PreparedJobInputError::ConverterStorageMap",
-              "category": "prepared resource to converter map adapter",
-              "trigger": "The graph-to-storage projection rejects a zero, out-of-range, duplicate or missing CHNA track slot.",
-              "programme_state_after": "No PreparedAdmFileStorageMap is returned; the immutable prepared resource and graph remain unchanged.",
-              "caller_action": "Reject the prepared-map request; no source-row or product error code is inferred."
-            }
-          ],
-          "not_run": [
-            "AdmFileStorage map values are not joined to a selected meter frame descriptor, physical PCM row order, sample range or reader EOF.",
-            "Runtime owner/generation join, SCP/control producer, whole F06OF frontend, PCM rehash and product acceptance remain NOT_RUN."
-          ],
+          "error_outcomes": [{"error_code":"AdmFileStorageMapError::ChnaTrackIndexZero","category":"CHNA track-slot projection","trigger":"A graph track carries a zero one-based CHNA track index.","programme_state_after":"No converter storage map is returned; this projection owns no state.","caller_action":"Reject the graph projection."},{"error_code":"AdmFileStorageMapError::TrackSlotOutOfRange","category":"selected 38-track profile boundary","trigger":"Track index minus one is outside slot 0..37.","programme_state_after":"No converter storage map is returned.","caller_action":"Reject the unsupported selected graph."},{"error_code":"AdmFileStorageMapError::{DuplicateTrackSlot,MissingTrackSlot}","category":"converter map coverage","trigger":"The graph does not produce exactly one value for every selected slot 0..37.","programme_state_after":"No complete converter storage map is returned.","caller_action":"Reject the graph projection; do not infer a missing row."},{"error_code":"PreparedJobInputError::ConverterStorageMap","category":"prepared resource to converter map adapter","trigger":"The graph-to-storage projection rejects a zero, out-of-range, duplicate or missing CHNA track slot.","programme_state_after":"No PreparedAdmFileStorageMap is returned; the immutable prepared resource and graph remain unchanged.","caller_action":"Reject the prepared-map request; no source-row or product error code is inferred."}],
+          "not_run": ["AdmFileStorage map values are not joined to a selected meter frame descriptor, physical PCM row order, sample range or reader EOF.", "Runtime owner/generation join, SCP/control producer, whole F06OF frontend, PCM rehash and product acceptance remain NOT_RUN."],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
         {
@@ -5992,17 +5831,11 @@
           "local_mapping_files": [],
           "clock": {
             "domains": [],
-            "covered_clauses": [
-              "The candidate seek key is only samplePosition-labeled metadata; no selected input sample cursor or callback clock is bound."
-            ]
+            "covered_clauses": ["The candidate seek key is only samplePosition-labeled metadata; no selected input sample cursor or callback clock is bound."]
           },
           "parameters": {
             "kind": "HASH_BOUND_F06OF_SEEK_ROW_TABLE_OUTPUT_PATH_ERRATUM_V1",
-            "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SEEK-ROW-TABLE-OUTPUT-PATH-ERRATUM-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SEEK-ROW-TABLE-OUTPUT-PATH-ERRATUM-V1/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SEEK-ROW-TABLE-OUTPUT-PATH-ERRATUM-V1/OPEN-EDGE.json"
-            ],
+            "provider_files": ["outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SEEK-ROW-TABLE-OUTPUT-PATH-ERRATUM-V1/CONTRACT.md", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SEEK-ROW-TABLE-OUTPUT-PATH-ERRATUM-V1/EVIDENCE.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SEEK-ROW-TABLE-OUTPUT-PATH-ERRATUM-V1/OPEN-EDGE.json"],
             "supplement_manifest_sha256": "e8a3a955875358e99ee1baf9aba56f14c05de293781dcce806116bb623133e70",
             "reviewed_research_package_manifest_sha256": "a3e01abe4175de9eca473fe55901425e19ec30e0dc8afdaeb83c5f83cb91a9b0",
             "validation_boundary": "Static candidate path to output append only; selected input identity and reader semantics remain unbound."
@@ -6010,14 +5843,8 @@
           "test_modules": [],
           "vectors": {
             "kind": "HASH_BOUND_F06OF_SEEK_ROW_TABLE_CANDIDATE_STATUS",
-            "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SEEK-ROW-TABLE-OUTPUT-PATH-ERRATUM-V1/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SEEK-ROW-TABLE-OUTPUT-PATH-ERRATUM-V1/OPEN-EDGE.json"
-            ],
-            "case_pointers": [
-              "The candidate row-pointer table is on a path to stream append/output cursor, not proven selected input PCM.",
-              "Candidate stride is UNBOUND; no row-to-descriptor/cursor/EOF connection is established."
-            ],
+            "authoritative_vectors": ["outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SEEK-ROW-TABLE-OUTPUT-PATH-ERRATUM-V1/EVIDENCE.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SEEK-ROW-TABLE-OUTPUT-PATH-ERRATUM-V1/OPEN-EDGE.json"],
+            "case_pointers": ["The candidate row-pointer table is on a path to stream append/output cursor, not proven selected input PCM.", "Candidate stride is UNBOUND; no row-to-descriptor/cursor/EOF connection is established."],
             "source_supplement_manifest_sha256": "e8a3a955875358e99ee1baf9aba56f14c05de293781dcce806116bb623133e70"
           },
           "native_status": {
@@ -6030,10 +5857,7 @@
             "native_execution": "NOT_RUN"
           },
           "error_outcomes": [],
-          "not_run": [
-            "Do not treat this output-writer path as ConverterChannelInputId-to-input-PCM-row evidence.",
-            "Selected input row, descriptor, actual read count, cursor and EOF remain UNBOUND."
-          ],
+          "not_run": ["Do not treat this output-writer path as ConverterChannelInputId-to-input-PCM-row evidence.", "Selected input row, descriptor, actual read count, cursor and EOF remain UNBOUND."],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
         {
@@ -6046,21 +5870,11 @@
           "local_mapping_files": [],
           "clock": {
             "domains": [],
-            "covered_clauses": [
-              "Evidence distinguishes sample-per-channel positions from file byte extents; it does not bind a selected runtime source cursor or generation."
-            ]
+            "covered_clauses": ["Evidence distinguishes sample-per-channel positions from file byte extents; it does not bind a selected runtime source cursor or generation."]
           },
           "parameters": {
             "kind": "HASH_BOUND_F06OF_SELECTED_INPUT_READER_STATIC_CONTRACT_V1",
-            "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V2/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V2/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V2/SOURCE-MANIFESTS.json"
-            ],
+            "provider_files": ["outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/CONTRACT.md", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/EVIDENCE.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/SOURCE-MANIFESTS.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V2/CONTRACT.md", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V2/EVIDENCE.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V2/SOURCE-MANIFESTS.json"],
             "supplement_manifest_sha256": "cde8e18f85933811766a9b69cfacf52ffd4eed5a149e894cff22a4d526b3698b",
             "approved_source_spec_sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423",
             "source_hash_correction_status": "V1_ERRATUM_WITHDRAWN; UPSTREAM_SOURCE_IDENTITY_MATCHES_APPROVED_MODEL",
@@ -6071,16 +5885,8 @@
           "test_modules": [],
           "vectors": {
             "kind": "HASH_BOUND_INPUT_ONLY_F06OF_SAMPLE_BYTE_AND_ACTUAL_FRAME_ARITHMETIC",
-            "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/EVIDENCE.json"
-            ],
-            "case_pointers": [
-              "38-channel PCM24 uses blockAlign 114 bytes; per-channel sample position maps to a relative byte offset by multiplying blockAlign.",
-              "Actual complete frames are floor(actual byte count/blockAlign); short reads stop the conversion loop and return the actual frame count on the guarded branch.",
-              "Input-only arithmetic vectors contain no PCM and do not establish selected native EOF or drain behavior.",
-              "Wash V2 withdraws the false source-hash mismatch claim; the original model-spec SHA matches the approved package and actual file."
-            ],
+            "authoritative_vectors": ["outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/EVIDENCE.json"],
+            "case_pointers": ["38-channel PCM24 uses blockAlign 114 bytes; per-channel sample position maps to a relative byte offset by multiplying blockAlign.", "Actual complete frames are floor(actual byte count/blockAlign); short reads stop the conversion loop and return the actual frame count on the guarded branch.", "Input-only arithmetic vectors contain no PCM and do not establish selected native EOF or drain behavior.", "Wash V2 withdraws the false source-hash mismatch claim; the original model-spec SHA matches the approved package and actual file."],
             "source_supplement_manifest_sha256": "cde8e18f85933811766a9b69cfacf52ffd4eed5a149e894cff22a4d526b3698b"
           },
           "native_status": {
@@ -6093,11 +5899,7 @@
             "pcm_read_by_this_evidence": 0
           },
           "error_outcomes": [],
-          "not_run": [
-            "No selected physical-row/descriptor/cursor/EOF generation join is established.",
-            "No EOF boolean or native drain callback rule is inferred from short reads or sample-count arithmetic.",
-            "No PCM, DBMD, native run or product acceptance was performed."
-          ],
+          "not_run": ["No selected physical-row/descriptor/cursor/EOF generation join is established.", "No EOF boolean or native drain callback rule is inferred from short reads or sample-count arithmetic.", "No PCM, DBMD, native run or product acceptance was performed."],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
         {
@@ -6110,18 +5912,11 @@
           "local_mapping_files": [],
           "clock": {
             "domains": [],
-            "covered_clauses": [
-              "Adapter input/request/actual count are per-channel frames; no selected callback or source generation is joined."
-            ]
+            "covered_clauses": ["Adapter input/request/actual count are per-channel frames; no selected callback or source generation is joined."]
           },
           "parameters": {
             "kind": "HASH_BOUND_F06OF_READER_HOST_ADAPTER_STATIC_CONTRACT_V1",
-            "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-READER-HOST-ADAPTER-STATIC-CONTRACT-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-READER-HOST-ADAPTER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-READER-HOST-ADAPTER-STATIC-CONTRACT-V1/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-READER-HOST-ADAPTER-STATIC-CONTRACT-V1/SOURCE-MANIFESTS.json"
-            ],
+            "provider_files": ["outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-READER-HOST-ADAPTER-STATIC-CONTRACT-V1/CONTRACT.md", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-READER-HOST-ADAPTER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-READER-HOST-ADAPTER-STATIC-CONTRACT-V1/EVIDENCE.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-READER-HOST-ADAPTER-STATIC-CONTRACT-V1/SOURCE-MANIFESTS.json"],
             "supplement_manifest_sha256": "110ba63914f545510705cd7017a79142a628e50de153182677d17a4297697a70",
             "approved_f06of_model_spec_sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423",
             "validation_boundary": "Static host registration/adapter semantics only; selected host instance, borrowed row to descriptor owner/generation, EOF and drain remain unbound."
@@ -6129,15 +5924,8 @@
           "test_modules": [],
           "vectors": {
             "kind": "HASH_BOUND_INPUT_ONLY_F06OF_BORROWED_ROW_AND_ACTUAL_FRAME_ADAPTER_SEMANTICS",
-            "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-READER-HOST-ADAPTER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-READER-HOST-ADAPTER-STATIC-CONTRACT-V1/EVIDENCE.json"
-            ],
-            "case_pointers": [
-              "A non-null caller row table is borrowed through a temporary descriptor; the descriptor owns no row storage.",
-              "The request is not pre-clipped at the adapter; normal status 0 returns min(remaining duration, reader-returned frames).",
-              "Input-only arithmetic is not a selected-run or EOF/drain observation."
-            ],
+            "authoritative_vectors": ["outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-READER-HOST-ADAPTER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-READER-HOST-ADAPTER-STATIC-CONTRACT-V1/EVIDENCE.json"],
+            "case_pointers": ["A non-null caller row table is borrowed through a temporary descriptor; the descriptor owns no row storage.", "The request is not pre-clipped at the adapter; normal status 0 returns min(remaining duration, reader-returned frames).", "Input-only arithmetic is not a selected-run or EOF/drain observation."],
             "source_supplement_manifest_sha256": "110ba63914f545510705cd7017a79142a628e50de153182677d17a4297697a70"
           },
           "native_status": {
@@ -6154,11 +5942,7 @@
             "native_execution": "NOT_RUN"
           },
           "error_outcomes": [],
-          "not_run": [
-            "No selected host registration/invocation or host-to-master-handle identity is established.",
-            "Borrowed row table/actual frames to the same-generation measurement descriptor remain unbound.",
-            "No EOF/drain behavior, PCM read or product acceptance is inferred."
-          ],
+          "not_run": ["No selected host registration/invocation or host-to-master-handle identity is established.", "Borrowed row table/actual frames to the same-generation measurement descriptor remain unbound.", "No EOF/drain behavior, PCM read or product acceptance is inferred."],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
         {
@@ -6171,18 +5955,11 @@
           "local_mapping_files": [],
           "clock": {
             "domains": [],
-            "covered_clauses": [
-              "Static descriptor forwarding and metadata field writes do not establish a selected source, callback, sample cursor or generation."
-            ]
+            "covered_clauses": ["Static descriptor forwarding and metadata field writes do not establish a selected source, callback, sample cursor or generation."]
           },
           "parameters": {
             "kind": "HASH_BOUND_F06OF_READER_DESCRIPTOR_TO_ENCODER_WRAPPER_STATIC_BRIDGE_V1",
-            "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-HOST-READER-ENCODER-DESCRIPTOR-BRIDGE-STATIC-CONTRACT-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-HOST-READER-ENCODER-DESCRIPTOR-BRIDGE-STATIC-CONTRACT-V1/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-HOST-READER-ENCODER-DESCRIPTOR-BRIDGE-STATIC-CONTRACT-V1/STATIC-IDENTITY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-HOST-READER-ENCODER-DESCRIPTOR-BRIDGE-STATIC-CONTRACT-V1/SOURCE-MANIFESTS.json"
-            ],
+            "provider_files": ["outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-HOST-READER-ENCODER-DESCRIPTOR-BRIDGE-STATIC-CONTRACT-V1/CONTRACT.md", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-HOST-READER-ENCODER-DESCRIPTOR-BRIDGE-STATIC-CONTRACT-V1/EVIDENCE.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-HOST-READER-ENCODER-DESCRIPTOR-BRIDGE-STATIC-CONTRACT-V1/STATIC-IDENTITY-VECTORS.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-HOST-READER-ENCODER-DESCRIPTOR-BRIDGE-STATIC-CONTRACT-V1/SOURCE-MANIFESTS.json"],
             "supplement_manifest_sha256": "f23d99d03bc49d3a589697f625d8d492751bbfa9f131c4239bd86bf1794877ad",
             "converter_module_sha256": "9972be4f952ca5f9121fa83ef941b29d4c1e6baf0ff1f708baaaedffa1bd76a8",
             "host_module_sha256": "65485b6d35fa534b25109ab6f238971aaded73fc99c7f7fb119d1a5d5299234e",
@@ -6192,15 +5969,8 @@
           "test_modules": [],
           "vectors": {
             "kind": "HASH_BOUND_F06OF_READER_DESCRIPTOR_BRIDGE_STATIC_FACTS",
-            "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-HOST-READER-ENCODER-DESCRIPTOR-BRIDGE-STATIC-CONTRACT-V1/STATIC-IDENTITY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-HOST-READER-ENCODER-DESCRIPTOR-BRIDGE-STATIC-CONTRACT-V1/EVIDENCE.json"
-            ],
-            "case_pointers": [
-              "Reader returns descriptor D; the same D is passed to the public PE encoder process and forwarded to lazy-open/profile-wrapper paths.",
-              "Reader-master metadata writes populate D statically; D is not identified as the F06OF measurement descriptor.",
-              "Host proxy/worker config, converter C/encoder master, selected source generation and EOF/drain remain UNBOUND."
-            ],
+            "authoritative_vectors": ["outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-HOST-READER-ENCODER-DESCRIPTOR-BRIDGE-STATIC-CONTRACT-V1/STATIC-IDENTITY-VECTORS.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-HOST-READER-ENCODER-DESCRIPTOR-BRIDGE-STATIC-CONTRACT-V1/EVIDENCE.json"],
+            "case_pointers": ["Reader returns descriptor D; the same D is passed to the public PE encoder process and forwarded to lazy-open/profile-wrapper paths.", "Reader-master metadata writes populate D statically; D is not identified as the F06OF measurement descriptor.", "Host proxy/worker config, converter C/encoder master, selected source generation and EOF/drain remain UNBOUND."],
             "source_supplement_manifest_sha256": "f23d99d03bc49d3a589697f625d8d492751bbfa9f131c4239bd86bf1794877ad"
           },
           "native_status": {
@@ -6215,11 +5985,7 @@
             "native_execution": "NOT_RUN"
           },
           "error_outcomes": [],
-          "not_run": [
-            "No selected-run host/source invocation or converter-owner handoff is established.",
-            "No reader descriptor-to-meter descriptor/source generation join or EOF/drain contract is established.",
-            "No PCM, row buffer, native target or product acceptance was run."
-          ],
+          "not_run": ["No selected-run host/source invocation or converter-owner handoff is established.", "No reader descriptor-to-meter descriptor/source generation join or EOF/drain contract is established.", "No PCM, row buffer, native target or product acceptance was run."],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
         {
@@ -6231,42 +5997,23 @@
           "local_mapping_files": [],
           "clock": {
             "domains": [],
-            "covered_clauses": [
-              "Approved model callback schedule and reset are model rules only; native cursor, EOF, drain and source generation are not inferred."
-            ]
+            "covered_clauses": ["Approved model callback schedule and reset are model rules only; native cursor, EOF, drain and source generation are not inferred."]
           },
           "parameters": {
             "kind": "HASH_BOUND_F06OF_PRODUCER_READER_UNIT_STATUS_V2",
-            "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/MODEL-VECTOR-BOUNDARY.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/MINIMUM-RECEIPT.json"
-            ],
+            "provider_files": ["outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/CONTRACT.md", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/EVIDENCE.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/MODEL-VECTOR-BOUNDARY.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/MINIMUM-RECEIPT.json"],
             "supplement_manifest_sha256": "992be1e7769638e2995951cc99205d6489d35945bc1dfac5011784ec83c8afe0",
             "source_research_manifest_sha256": "806a1a6cbb63cdcb5f9f075c491fe0adbb5a385430279d9c2ada89c7ee21644f",
-            "model_specifications": [
-              {"path":"outputs/IMPLEMENTER_PACKAGE/specs/06-oar-frontend-input-and-clock-join.md","sha256":"2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423"},
-              {"path":"outputs/IMPLEMENTER_PACKAGE/specs/06-oar-model-callback-state-and-clock.md","sha256":"7342e87525e30e09e2ed95fb07593cebaa81cc113d2ce3798d99ec7cefaf0ae9"}
-            ],
+            "model_specifications": [{"path":"outputs/IMPLEMENTER_PACKAGE/specs/06-oar-frontend-input-and-clock-join.md","sha256":"2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423"},{"path":"outputs/IMPLEMENTER_PACKAGE/specs/06-oar-model-callback-state-and-clock.md","sha256":"7342e87525e30e09e2ed95fb07593cebaa81cc113d2ce3798d99ec7cefaf0ae9"}],
             "validation_boundary": "Partial static consumer facts plus approved model contract only; producer identity, PCM rows and native source clocks remain unbound."
           },
           "test_modules": [],
           "vectors": {
             "kind": "HASH_BOUND_F06OF_PRODUCER_JOIN_STATUS_AND_MINIMUM_RECEIPT",
-            "authoritative_vectors": [
-            "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/CONTRACT.md",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/EVIDENCE.json",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/MODEL-VECTOR-BOUNDARY.json",
-            "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/MINIMUM-RECEIPT.json"
-            ],
-            "case_pointers": [
-            "Model source extent, callback size and cursor use samples per channel; native file requests and returned counts use bytes.",
-            "ConverterChannelInputId to PCM physical row, row to selected descriptor, byte range to model cursor/EOF, and owner/generation remain UNBOUND.",
-            "The minimum receipt binds prepared input generation, channel/track/row, descriptor owner/generation, byte extents, sample cursor, EOF and callback/drain; it is an evidence request only."
-            ],
-          "source_supplement_manifest_sha256": "992be1e7769638e2995951cc99205d6489d35945bc1dfac5011784ec83c8afe0",
-          "source_evidence_manifest_sha256": "806a1a6cbb63cdcb5f9f075c491fe0adbb5a385430279d9c2ada89c7ee21644f"
+            "authoritative_vectors": ["outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/CONTRACT.md", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/EVIDENCE.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/MODEL-VECTOR-BOUNDARY.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-PRODUCER-JOIN-STATUS-V2/MINIMUM-RECEIPT.json"],
+            "case_pointers": ["Model source extent, callback size and cursor use samples per channel; native file requests and returned counts use bytes.", "ConverterChannelInputId to PCM physical row, row to selected descriptor, byte range to model cursor/EOF, and owner/generation remain UNBOUND.", "The minimum receipt binds prepared input generation, channel/track/row, descriptor owner/generation, byte extents, sample cursor, EOF and callback/drain; it is an evidence request only."],
+            "source_supplement_manifest_sha256": "992be1e7769638e2995951cc99205d6489d35945bc1dfac5011784ec83c8afe0",
+            "source_evidence_manifest_sha256": "806a1a6cbb63cdcb5f9f075c491fe0adbb5a385430279d9c2ada89c7ee21644f"
           },
           "native_status": {
             "status": "PARTIAL_STATIC_MODEL; PRODUCER_JOIN_UNBOUND",
@@ -6280,10 +6027,7 @@
             "native_execution": "NOT_RUN"
           },
           "error_outcomes": [],
-          "not_run": [
-            "No source-row/descriptor/cursor EOF or owner-generation join is implemented.",
-            "No dynamic capture is authorized; source PCM remains NOT_REHASHED and native execution remains NOT_RUN."
-          ],
+          "not_run": ["No source-row/descriptor/cursor EOF or owner-generation join is implemented.", "No dynamic capture is authorized; source PCM remains NOT_REHASHED and native execution remains NOT_RUN."],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         },
         {
@@ -6292,46 +6036,25 @@
           "implementation_status": "LOCALLY_VERIFIED_COMPLETE_FRAME_COUNT_AND_PLANAR_PCM24_CHUNK_DECODE__NO_SOURCE_JOIN",
           "scope": "Decode one successful PCM24 byte-read result for the selected 38-channel layout. Reject an actual byte count above the U32 request, count complete frames as floor(actual_bytes/114), ignore an incomplete trailing frame, and return planar F32 bit rows in source channel ordinal order. This pure helper performs no file I/O and changes no row table or cursor. It does not bind a physical PCM row to a measurement descriptor, source owner/generation, OS status, EOF, drain, or selected native invocation.",
           "owner": "io",
-          "implementation_files": [
-            "crates/jocforge-io/src/pcm/riff_pcm24.rs"
-          ],
+          "implementation_files": ["crates/jocforge-io/src/pcm/riff_pcm24.rs"],
           "local_mapping_files": [],
           "clock": {
             "domains": [],
-            "covered_clauses": [
-              "Actual frame count is local to one byte-read result; no source cursor, callback, descriptor or generation clock is advanced or joined."
-            ]
+            "covered_clauses": ["Actual frame count is local to one byte-read result; no source cursor, callback, descriptor or generation clock is advanced or joined."]
           },
           "parameters": {
             "kind": "HASH_BOUND_F06OF_SELECTED_PCM24_READ_CHUNK_CONTRACT",
-            "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/SOURCE-MANIFESTS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V2/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V2/EVIDENCE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V2/SOURCE-MANIFESTS.json"
-            ],
+            "provider_files": ["outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/CONTRACT.md", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/EVIDENCE.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/SOURCE-MANIFESTS.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V2/CONTRACT.md", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V2/EVIDENCE.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-SOURCE-HASH-ERRATUM-V2/SOURCE-MANIFESTS.json"],
             "supplement_manifest_sha256": "cde8e18f85933811766a9b69cfacf52ffd4eed5a149e894cff22a4d526b3698b",
             "source_hash_correction_manifest_sha256": "417ea5156b56fa31a0174265fbc178aceb3ce4c152f1f7e26ead54c7de1984fe",
             "approved_model_spec_sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423",
             "validation_boundary": "The static reader contract and approved model arithmetic support this byte-chunk conversion; selected source-row and measurement joins remain unbound."
           },
-          "test_modules": [
-            "crates/jocforge-io/tests/riff_pcm24.rs"
-          ],
+          "test_modules": ["crates/jocforge-io/tests/riff_pcm24.rs"],
           "vectors": {
             "kind": "HASH_BOUND_F06OF_ACTUAL_BYTES_TO_COMPLETE_PCM24_FRAME_COUNT",
-            "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/CONTRACT.md"
-            ],
-            "case_pointers": [
-              "The three selected 38-channel arithmetic cases verify 1050 actual frames, 1536 exact-hop frames, and one actual frame from 119700, 175104, and 114 read bytes respectively.",
-              "A local synthetic byte case verifies signed PCM24 to F32 conversion in ordinal channel order and floor-count handling of a 113-byte incomplete tail; it contains no source PCM or native observation.",
-              "The vector grade is model arithmetic only and does not bind reader identity, source row, descriptor, cursor, EOF or drain."
-            ],
+            "authoritative_vectors": ["outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/INPUT-ONLY-VECTORS.json", "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-SELECTED-PCM-INPUT-READER-STATIC-CONTRACT-V1/CONTRACT.md"],
+            "case_pointers": ["The three selected 38-channel arithmetic cases verify 1050 actual frames, 1536 exact-hop frames, and one actual frame from 119700, 175104, and 114 read bytes respectively.", "A local synthetic byte case verifies signed PCM24 to F32 conversion in ordinal channel order and floor-count handling of a 113-byte incomplete tail; it contains no source PCM or native observation.", "The vector grade is model arithmetic only and does not bind reader identity, source row, descriptor, cursor, EOF or drain."],
             "source_supplement_manifest_sha256": "cde8e18f85933811766a9b69cfacf52ffd4eed5a149e894cff22a4d526b3698b"
           },
           "native_status": {
@@ -6344,20 +6067,8 @@
             "os_status_and_eof": "NOT_IMPLEMENTED",
             "native_execution": "NOT_RUN"
           },
-          "error_outcomes": [
-            {
-              "error_code": "INVALID_INPUT",
-              "category": "local read-chunk extent validation",
-              "trigger": "The supplied actual byte extent exceeds the requested U32 byte count or is not representable as U32.",
-              "programme_state_after": "No decoded chunk is returned; this helper changes no row table, cursor or persistent state.",
-              "caller_action": "Reject the local read chunk. This result does not claim native public status or error parity."
-            }
-          ],
-          "not_run": [
-            "No file adapter or OS status mapping is implemented by this helper.",
-            "No source-row, selected descriptor, cursor, owner/generation, EOF or drain join is implemented.",
-            "No native, real ADM, product or whole-meter acceptance was performed."
-          ],
+          "error_outcomes": [{"error_code":"INVALID_INPUT","category":"local read-chunk extent validation","trigger":"The supplied actual byte extent exceeds the requested U32 byte count or is not representable as U32.","programme_state_after":"No decoded chunk is returned; this helper changes no row table, cursor or persistent state.","caller_action":"Reject the local read chunk. This result does not claim native public status or error parity."}],
+          "not_run": ["No file adapter or OS status mapping is implemented by this helper.", "No source-row, selected descriptor, cursor, owner/generation, EOF or drain join is implemented.", "No native, real ADM, product or whole-meter acceptance was performed."],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
@@ -16359,7 +16070,7 @@
       ],
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 37303, "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2694, "sha256": "c5dc2468b4246b1629a1dcbc54a7c6356955d2f16e3cdcb71856eed69f84203c"},
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2715, "sha256": "670df35be4e4f344415cd80e07fb431471a8d88bc6e66b860e6125249cade579"},
         {"path": "crates/jocforge-domain/src/timeline/index.rs", "bytes": 2672, "sha256": "50696493ea1bed2b647f2c438f032410548b70e5008b535773e23647ee59bd40"},
         {"path": "crates/jocforge-domain/src/timeline/mod.rs", "bytes": 586, "sha256": "7f2099065d657bdacab116d921a63107a180930086b73a42557881aa3acdb7b2"}
       ],
@@ -16481,7 +16192,7 @@
         "crates/jocforge-domain/tests/fixtures/f04_component/F04-WHOLE-SPATIAL-CHAIN-VERIFICATION.json"
       ],
       "verification": {
-        "component_stage_tests": 12,
+        "component_stage_tests": 14,
         "direct_unit_vector_ids": ["U-FRONT-MATRIX", "U-FRONT-OVERLAP", "U-FRONT-FILTER64", "U-FRONT-PARAMETER64"],
         "parameter_generation_cases": 23,
         "whole_chain_component_callbacks": 6,
@@ -16802,13 +16513,13 @@
       "implementation_inventory": [
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs","bytes":12074,"sha256":"22c336456921c174ce1d1e72d4a265b4e61a7321e9c3753cf20d1924e0d77413"},
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state.rs","bytes":37303,"sha256":"ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"},
-        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs","bytes":38418,"sha256":"7047500d89ce089c1ec5907ecd1bead7128b296a897ea76d751034c64e35b53d"},
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs","bytes":46100,"sha256":"6eb9640e126dd8e6c7e9bbb69782d2901fb38c79343f48089bea2d7b7b227fcc"},
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs","bytes":16562,"sha256":"bfa2808ba2aa5566cf832a76a5ef93a6180bc1e81c35a63934809f3ffe9abce7"},
         {"path":"crates/jocforge-domain/src/spatial/spatial_control.rs","bytes":26366,"sha256":"25ddd1832309801765697d7c9e014766e159a5b7571234a86d790c71a895f426"}
       ],
       "test_inventory": [
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests.rs","bytes":24485,"sha256":"bb9fc89e6914b4b9fb9dc94cd0da47ee83886183661d792957cef352896bab22"},
-        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs","bytes":51880,"sha256":"3437d4a71a97495ad57370da278df2157d4af0fd760f72e04027b28bace2c74c"}
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs","bytes":57070,"sha256":"c6295d0d4e04f6be4c3dc1418cc460d9dcca4b13d744d81e3dd219d62a8c9c53"}
       ],
       "fixture_inventory": [
         {"path":"crates/jocforge-domain/tests/fixtures/direct_lfe/INPUT-ONLY-VECTORS.json","bytes":13306,"sha256":"52c2b1a3b52e53198e47e90e4d6e51e8435fbe660ad996b4005f741107a7eb7f"}
@@ -16897,7 +16608,7 @@
       "test_scope": ["fixed shape and finite sample admission", "source-major payload byte count and SHA-256", "explicit normal/cached-drain phase", "one-time two-view fanout", "shared Arc payload allocation identity", "different proposal identities despite equal payload hashes", "lineage and view mismatch", "consumer error drops capabilities without state commit", "capabilities remain non-Clone/non-Copy"],
       "verification": {
         "post_window_fanout_tests": 5,
-        "current_features_tests": 9,
+        "current_features_tests": 10,
         "compile_fail_contracts": 5,
         "targeted_boundary_mutations_rejected": 32,
         "full_repository_boundary_mutations_rejected": 585,
@@ -17067,8 +16778,8 @@
           },
           {
             "path": "crates/jocforge-domain/src/spatial/mod.rs",
-            "bytes": 2694,
-            "sha256": "c5dc2468b4246b1629a1dcbc54a7c6356955d2f16e3cdcb71856eed69f84203c"
+            "bytes": 2715,
+            "sha256": "670df35be4e4f344415cd80e07fb431471a8d88bc6e66b860e6125249cade579"
           },
           {
             "path": "crates/jocforge-domain/tests/spatial_control_foundation.rs",
@@ -17232,13 +16943,13 @@
         "file_inventory": [
           {
             "path": "crates/jocforge-domain/src/spatial/source_flags.rs",
-              "bytes": 37921,
-              "sha256": "7011d4017c1e8b9d11b12d0260ce03b982c849f01fe4f7df7aa77aa0d4bd5fc5"
+              "bytes": 48629,
+              "sha256": "a13ad6da38bc9d209cd1aae3291ee4f5a09eaff00b080c4d7e42c4b8c9f97dd2"
           },
           {
             "path": "crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs",
-              "bytes": 32699,
-              "sha256": "45479cc3e0549f313130b357c8d2ead99574411cb88831869eeb321820119b2d"
+              "bytes": 36182,
+              "sha256": "33b7f3d772c76a59f3af5bd9df774627d3630412fed63edb39b6ebca85cbde67"
           },
           {
             "path": "crates/jocforge-domain/tests/fixtures/source_flags/INPUT-ONLY-VECTORS.json",
@@ -18020,7 +17731,7 @@
       },
       "dependency_scope": {"crate": "serde_json", "version": "=1.0.154", "default_features": false, "features": ["std"], "archive_sha256": "e7e9cc8b1b85264074fbcc02a88680c4096b1e47df8f739dceb03bf482f04bd6", "allowed_use": "strict identity-gated manifest/provider JSON parsing and private typed field access only", "public_serde_json_value": false, "canonical_writer": "none; exact file identity only"},
       "implementation_files": ["crates/jocforge-domain/src/spatial/window_q15_provider.rs", "crates/jocforge-domain/src/spatial/component_parameters_provider.rs", "crates/jocforge-domain/src/spatial/mod.rs"],
-      "implementation_inventory": [{"path":"crates/jocforge-domain/src/spatial/window_q15_provider.rs","bytes":19312,"sha256":"3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},{"path":"crates/jocforge-domain/src/spatial/component_parameters_provider.rs","bytes":14344,"sha256":"b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"},{"path":"crates/jocforge-domain/src/spatial/mod.rs","bytes":2694,"sha256":"c5dc2468b4246b1629a1dcbc54a7c6356955d2f16e3cdcb71856eed69f84203c"}],
+      "implementation_inventory": [{"path":"crates/jocforge-domain/src/spatial/window_q15_provider.rs","bytes":19312,"sha256":"3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},{"path":"crates/jocforge-domain/src/spatial/component_parameters_provider.rs","bytes":14344,"sha256":"b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"},{"path":"crates/jocforge-domain/src/spatial/mod.rs","bytes":2715,"sha256":"670df35be4e4f344415cd80e07fb431471a8d88bc6e66b860e6125249cade579"}],
       "test_files": ["crates/jocforge-domain/tests/f04_parameter_providers.rs"],
       "test_inventory": [{"path":"crates/jocforge-domain/tests/f04_parameter_providers.rs","bytes":6325,"sha256":"37d56c997a903e6029828ce41e31c5b27218a1a472a4edf7d53f3fdc38ffeb4b"}],
       "fixture_files": ["crates/jocforge-domain/tests/fixtures/f04_parameters/window-q15.json", "crates/jocforge-domain/tests/fixtures/f04_parameters/component-parameter-mathematical-v1.json"],
@@ -18140,7 +17851,7 @@
         {"path": "crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs", "bytes": 11066, "sha256": "bddb8bd2b775b2cd9fc3e6412981965ef9ca5c5f98d137ff98de31c87dbbb2d8"},
         {"path": "crates/jocforge-domain/src/spatial/descriptor_mathematical_provider.rs", "bytes": 10441, "sha256": "df8612dcdc46fcf2620e2a73d68d26d392bbba02be27af729f8c5ded76cf8639"},
         {"path": "crates/jocforge-domain/src/spatial/window_q15_provider.rs", "bytes": 19312, "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2694, "sha256": "c5dc2468b4246b1629a1dcbc54a7c6356955d2f16e3cdcb71856eed69f84203c"}
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2715, "sha256": "670df35be4e4f344415cd80e07fb431471a8d88bc6e66b860e6125249cade579"}
       ],
       "test_files": ["crates/jocforge-domain/tests/f04_remaining_provider_validators.rs"],
       "test_inventory": [{"path": "crates/jocforge-domain/tests/f04_remaining_provider_validators.rs", "bytes": 9771, "sha256": "8c0890d03b626bc75bc6daee4150c06d207cba02500778cfbd9288f44ad706a8"}],
@@ -18280,7 +17991,7 @@
       "shared_fixture_dependencies": ["crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json", "crates/jocforge-domain/tests/fixtures/f04_parameters/qmf-mathematical-fft-v1.json"],
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_fft64.rs", "bytes": 3812, "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2694, "sha256": "c5dc2468b4246b1629a1dcbc54a7c6356955d2f16e3cdcb71856eed69f84203c"}
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2715, "sha256": "670df35be4e4f344415cd80e07fb431471a8d88bc6e66b860e6125249cade579"}
       ],
       "test_inventory": [
         {"path": "crates/jocforge-domain/tests/qmf_fft64.rs", "bytes": 8575, "sha256": "9d53ca5c441352312dfc19e425e990145e0416e3bcb0d733d2642c38fb119014"}
@@ -18443,7 +18154,7 @@
       ],
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs", "bytes": 21790, "sha256": "9184b8ca22b5ed89082a92e3027b74c13d7e5424c4504598c3e71c239f2beeaa"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2694, "sha256": "c5dc2468b4246b1629a1dcbc54a7c6356955d2f16e3cdcb71856eed69f84203c"}
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2715, "sha256": "670df35be4e4f344415cd80e07fb431471a8d88bc6e66b860e6125249cade579"}
       ],
       "test_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis/tests.rs", "bytes": 14759, "sha256": "64243b2abd6668d321ed0c093bf1a3075ff71f487b282d123fc081a2cba2f037"}

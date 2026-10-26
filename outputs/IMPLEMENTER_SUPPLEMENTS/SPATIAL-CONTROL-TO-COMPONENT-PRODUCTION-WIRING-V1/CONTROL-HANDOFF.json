@@ -1,0 +1,323 @@
+{
+  "schema": "jocforge-spatial-target-controls-handoff.v1",
+  "producer": {
+    "schema": "spatial-control52-target-row-producer.v1",
+    "status": "MODEL_RULES_DEFINED",
+    "owner": {
+      "stage": "F05H/F05R56",
+      "persistent_owner": "ReaderTargetState / marker-history state",
+      "consumer_stages": [
+        "F06OF control16 adapter",
+        "F05R56 Type11-reader-target materializer"
+      ],
+      "not_this_domain": "F03W/F01E physical source control52 rows"
+    },
+    "target_slot_domain": {
+      "type": "TargetSlotIndex",
+      "representation": "U8 logical index",
+      "valid_range": "0..14",
+      "row_count": 15
+    },
+    "fit_control_record56": {
+      "shape": "15 records × 14 U32LE words = 56 bytes per record",
+      "initial_word_rules": [
+        {
+          "word": 0,
+          "meaning": "quiet",
+          "initial": 0,
+          "marker_stage": "replaces with quiet flag"
+        },
+        {
+          "word": 1,
+          "meaning": "inactive_pair",
+          "initial": 0,
+          "marker_stage": "replaces with int(current_active == 0 AND previous_active == 0)"
+        },
+        {
+          "word": 2,
+          "rule": "(packed_attribute >> 4) & 15"
+        },
+        {
+          "word": 3,
+          "rule": "(packed_attribute >> 8) & 3"
+        },
+        {
+          "word": 4,
+          "rule": "(packed_attribute >> 10) & 3"
+        },
+        {
+          "word": 5,
+          "value": 0
+        },
+        {
+          "word": "6..8",
+          "meaning": "current target X/Y/Z raw F32 words"
+        },
+        {
+          "word": 9,
+          "rule": "packed_attribute & 1"
+        },
+        {
+          "word": "10..11",
+          "value": 0
+        },
+        {
+          "word": 12,
+          "rule": "(packed_attribute >> 1) & 7"
+        },
+        {
+          "word": 13,
+          "value": 1
+        }
+      ],
+      "marker_stage": "quiet and inactive_pair are written from same-callback marker inputs; other fit fields retain their constructed payload",
+      "numeric_conversion": "coordinates are copied as raw F32 words; no Q15 conversion occurs in this record constructor"
+    },
+    "history_delivery": {
+      "capacity": 15,
+      "slots": 3,
+      "cold_record_words": [
+        0,
+        1,
+        0,
+        3,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "per_row_order": [
+        "S0 = old S1",
+        "apply marker insertion: -1 -> new in S0/S1/S2; 0 -> new in S1/S2; 1 -> new in S2 only; other I32 -> no insertion",
+        "if updated S0.word1 and S1.word1 are both nonzero, copy complete S0 record to S1"
+      ],
+      "copy_preserves": [
+        "all 56 payload bytes",
+        "producer lineage",
+        "producer row"
+      ],
+      "delivered_record": "updated S0 for each target slot s",
+      "initial_markers": "15 zeros; not previous-marker state"
+    },
+    "control52_projection": {
+      "formula": "control52[s] = delivered_record[s].payload[4:56]",
+      "size_bytes": 52,
+      "word_mapping": "control52[s].word[j] = fit_record56[s].word[j+1], j=0..12",
+      "quiet_word": "fit word0 is omitted; fit word1 inactive_pair becomes control52 word0",
+      "row_identity": "target slot s is retained; history never compacts or reorders rows",
+      "lineage_sidecar": "producer_generation and producer_row are not embedded in the 52 bytes"
+    },
+    "control16_adapter": {
+      "shape": "16×13 U32LE",
+      "direct_row_0": [
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "direct_consumed_fields": [
+        "word2 = 3"
+      ],
+      "regular_rule": "control16[s+1] = 13 U32LE words decoded from control52[s]",
+      "regular_rows": "target slots 0..14 map to control16 rows 1..15",
+      "unknown_direct_tail_policy": "do not import raw/partially-defined direct control52 bytes; unconsumed direct words are the canonical zeros above"
+    },
+    "target_update_adapter": {
+      "producer": "F05R56 only",
+      "shape": "callback-local finite F32[16][6], row order [L,R,C,LFE,Ls,Rs]",
+      "row0": "direct target row",
+      "regular_rule": "target_updates[s+1] is the panner result for target slot s",
+      "same_control_row": "regular control52[s] and control16[s+1] retain target slot s; target_updates[s+1] has that same slot label",
+      "consumers": "F04C/F04R/F05JC accept the same committed receipt for callback g; they do not reconstruct targets from equal bytes"
+    },
+    "domain_separation": [
+      {
+        "domain": "F03W/F01E regular physical source controls",
+        "rows": 37,
+        "identity": "physical regular source/track row",
+        "purpose": "upstream route/flags/source mapping"
+      },
+      {
+        "domain": "F05H/F05R56 delivered regular controls",
+        "rows": 15,
+        "identity": "installed target slot 0..14",
+        "purpose": "F06OF control16 and F05R56 reader/target update"
+      },
+      {
+        "domain": "direct LFE control row",
+        "rows": 1,
+        "identity": "canonical row 0",
+        "purpose": "word2=3 direct branch selector"
+      }
+    ]
+  },
+  "row_mapping": {
+    "schema": "spatial-control-target-slot-row-map.v1",
+    "status": "CONTROL_ROW_IDENTITY_DEFINED; MATRIX_ADAPTER_REFERENCED",
+    "matrix_adapter": {
+      "wash_approved_manifest_sha256": "97d554d78dce00348476cdf00fd5cb566e9c4327dc3b4f6418e344df3fa08d7a",
+      "hash_source": "WASH_INDEPENDENTLY_HASH_VERIFIED_APPROVED_MANIFEST",
+      "artifact_locally_materialized": true,
+      "rules_repeated_here": false,
+      "identity_separation": "realactive d remains an explicit target-slot vector; canonical D conversion does not rewrite target/control active state; packed/full-permutation/dense-identity views apply only to the stateless mixer"
+    },
+    "control_rows": {
+      "regular_target_slot": "s in 0..14",
+      "fit_record56_row": "s",
+      "delivered_control52_row": "s",
+      "control16_row": "1+s",
+      "target_updates_row": "1+s",
+      "same_row_identity": "all retain target slot s; none is indexed by compact ActiveOrdinal k"
+    },
+    "active_matrix_join": {
+      "realactive_d": "explicit list of installed active target slots captured before marker quiet; order is the approved matrix adapter's order",
+      "slot_to_active_ordinal": "for a slot s present in d, its matrix ordinal is its position in d; inactive target slots have no active matrix row for this callback",
+      "component_output": "use the approved adapter's destination row for the same matrix row; SCP16 row is 1 + ComponentOwnerRow",
+      "control_lookup": "independently select control52[s], control16[1+s], and target_updates[1+s] by the target-slot value carried by d"
+    },
+    "quiet_transition": {
+      "current_callback": "use pre-quiet realactive d for the matrix/component handoff",
+      "after_quiet": "next-state only; do not filter or reindex current controls, matrix row labels, or current component accumulation"
+    },
+    "direct_lfe": {
+      "control16_row": 0,
+      "canonical_words": [
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "consumed_word": 2,
+      "target_updates_row": 0,
+      "scp16_audio_row": 0,
+      "audio_generation": "g-2 after the F06OF ring is primed; separate from current-g direct metadata"
+    },
+    "provenance_guard": "Control row labels come from target slot and history lineage; matrix-row ordinal, coefficient content, packed permutation, or equal row payload is not an identity source."
+  },
+  "generation_and_commit": {
+    "schema": "spatial-control-generation-and-commit-bridge.v1",
+    "generation_domains": [
+      {
+        "name": "frontend_callback_generation",
+        "type": "U64 zero-based g",
+        "owner": "F03W callback envelope / F05H producer call",
+        "meaning": "current staged callback whose stages and output batch are being assembled"
+      },
+      {
+        "name": "F06OC_packet_generation",
+        "type": "U64",
+        "rule": "g + 1",
+        "meaning": "F06OF/F06OC output packet label; do not substitute for history-row provenance"
+      },
+      {
+        "name": "reader_invocation",
+        "type": "U64 zero-based q",
+        "rule": "q = g - 2 when g >= 2; no invocation/receipt at g=0 or g=1",
+        "owner": "F05R56 reader stage"
+      },
+      {
+        "name": "regular_history_producer_generation",
+        "type": "typed ProducerLineage",
+        "rule": "a delivered regular row keeps the generation of the record currently in history S0; copies and slot transitions copy this tag unchanged",
+        "meaning": "may be older than batch generation g; never choose it by payload equality"
+      },
+      {
+        "name": "direct_target_row_generation",
+        "type": "U64 zero-based g",
+        "rule": "direct row0 provenance is current g",
+        "meaning": "direct target/control metadata is current even when the direct-LFE audio row is delayed"
+      },
+      {
+        "name": "direct_lfe_audio_generation",
+        "type": "U64 zero-based source callback",
+        "rule": "F06OF LFE ring emits source generation g-2 after priming; SCP16 row0 is the allocated LFE for the current envelope",
+        "meaning": "audio provenance is separate from control16/direct-target row provenance"
+      }
+    ],
+    "f05h_history_transition": {
+      "new_record_tag": "Callback(g, target_slot=s)",
+      "cold_record_tag_semantics": "ColdConstructor(target_slot=s), never callback generation 0",
+      "order": [
+        "S0 <- old S1",
+        "insert the new record according to marker (-1 to S0/S1/S2, 0 to S1/S2, 1 to S2, other I32 to no insertion)",
+        "after insertion, if S0.word1 and S1.word1 are both nonzero, copy the complete S0 record and lineage tag to S1",
+        "deliver S0 bytes [4:56] and preserve S0 lineage sidecar"
+      ],
+      "row_rule": "history operations are independent for each target slot s=0..14; producer_row remains s"
+    },
+    "boundary_encodings": {
+      "F05RT_semantic_cold_generation": -1,
+      "F06OF_record_wrapper_cold_generation": null,
+      "typed_model_value": "ProducerLineage::ColdConstructor(row)",
+      "callback_value": "ProducerLineage::Callback(g,row)",
+      "adapter_rule": "preserve the typed semantic variant internally; encode only at the named boundary. These spellings are not equal identity tokens and none means callback generation 0."
+    },
+    "receipt_generation_layout": {
+      "reader_records_shape": [
+        16,
+        56
+      ],
+      "target_updates_shape": [
+        16,
+        6
+      ],
+      "row0": "direct; generation g",
+      "rows1_to15": "regular target slots 0..14; each carries the corresponding delivered S0 producer generation",
+      "receipt_fields": [
+        "callback_generation_g",
+        "reader_invocation_q",
+        "history_producer_generations[16]",
+        "state_before_sha256",
+        "state_after_sha256",
+        "reader_records_sha256",
+        "target_payload_sha256"
+      ],
+      "payload_persistence": "target_updates is callback-local immutable receipt payload; zero persistent target-state bytes"
+    },
+    "owner_and_transaction": {
+      "stage_owner": "F05R56 owns marker/history, previous-active/target snapshot, reader records/invocation count, and target_updates receipt production",
+      "parent_commit_owner": "spatial_control model parent commits its persistent state proposal and admits the specialized receipt atomically for the same callback",
+      "reader_stage_local_commit": false,
+      "full_f03w_callback": "Use existing staged owner proposals and one parent commit after required stages succeed; do not execute a producer twice for its receipt or create a new transaction framework.",
+      "success": {
+        "commit_count": 1,
+        "receipt_admitted": true
+      },
+      "failure": {
+        "commit_count": 0,
+        "state_before_unchanged": true,
+        "receipt_or_partial_payload_returned": false,
+        "programme_retired": true,
+        "recovery": "full cold reset"
+      },
+      "abort_semantics": "discard staged proposals at the parent; no stage-local commit or partially admitted receipt",
+      "native_boundary": "no native global transaction or native receipt schema is claimed"
+    }
+  },
+  "priming": "History/marker and target snapshots advance at g0/g1. No reader invocation or target_updates receipt until g>=2.",
+  "legacy_admission_boundary": "Historical production_allowed=false is not new static model-code permission gating and is not relabelled as execution PASS. Actual integration needs implementation-side validation."
+}

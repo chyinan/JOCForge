@@ -138,9 +138,12 @@
 | F03S/outer-active-update | F03S | `spatial_control` |
 | F03S/outer-empty-matrix-skip | F03S | `spatial_control` |
 | F03W/selected-primary-installed48-source-map-and-activity | F03W | `spatial_control` |
+| F03W/source-flags-current-features-and-source-gate | F03W | `spatial_control` |
+| F03W/primary-metadata-source-control-projection | F03W | `spatial_control` |
 | F04/independent-meter-installed48-postwindow-leaf | F04 | `spatial_audio` |
 | F04C/whole-spatial-audio-j05-composer | F04C | `spatial_audio` |
 | F04A/independent-meter-installed48-postwindow-leaf | F04A | `spatial_audio` |
+| F04A/active-component-matrix-and-packet-constructor | F04A | `spatial_audio` |
 | F04A/washed-membership-producer-owner-status-v2 | F04A | `spatial_audio` |
 | F04F/single-tail-diffusion-filter-block-preview | F04F | `spatial_audio` |
 | F04F/single-tail-active-inactive-callback-lifecycle | F04F | `spatial_audio` |
@@ -171,6 +174,7 @@
 | F06TP/selected-six-channel-true-peak-block-cascade | F06TP | `meter` |
 | F06OF/meter-lfe-delay-and-oar-packet-assembly | F06OF | `meter` |
 | F06OF/meter-in-memory-pcm24-source-cursor | F06OF | `meter` |
+| F06OF/meter-source-oar-callback-handoff | F06OF | `meter` |
 | F06OF/washed-native-frontend-lineage-source-owner-hold | F06OF | `meter` |
 | F06OF/washed-adm-converter-static-inventory-hold | F06OF | `meter` |
 | F06OF/washed-adm-bwf-label-source-row-gap | F06OF | `meter` |

@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge-active-matrix-adapter-decision.v1",
+  "decision": "APPROVE_DENSE_TARGET_SLOT_CANONICAL_SCATTER_AND_SAME_MASK_GATHER",
+  "representation_rule_ready": true,
+  "source_facts": "Compact outer producer, pre-quiet installation destinations, exact component call pair and legacy packed representation.",
+  "derived_internal_design": "Dense target-slot scatter/gather reconciles existing approved canonical and numeric domains; no native-buffer identity claimed.",
+  "no_new_DSP_state": "Reuse existing canonical matrix and true active indices/generation.",
+  "whole_spatial_producer_ready": false
+}

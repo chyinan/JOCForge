@@ -2508,9 +2508,9 @@
       "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"
     },
     {
-      "bytes": 2694,
+      "bytes": 2715,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "c5dc2468b4246b1629a1dcbc54a7c6356955d2f16e3cdcb71856eed69f84203c"
+      "sha256": "670df35be4e4f344415cd80e07fb431471a8d88bc6e66b860e6125249cade579"
     },
     {
       "bytes": 2672,
@@ -2637,9 +2637,9 @@
         "sha256": "50696493ea1bed2b647f2c438f032410548b70e5008b535773e23647ee59bd40"
       },
       {
-        "bytes": 2694,
+        "bytes": 2715,
         "path": "crates/jocforge-domain/src/spatial/mod.rs",
-        "sha256": "c5dc2468b4246b1629a1dcbc54a7c6356955d2f16e3cdcb71856eed69f84203c"
+        "sha256": "670df35be4e4f344415cd80e07fb431471a8d88bc6e66b860e6125249cade579"
       },
       {
         "bytes": 10051,
@@ -2767,14 +2767,14 @@
   "implementation": {
     "file_inventory": [
       {
-        "bytes": 37921,
+        "bytes": 48629,
         "path": "crates/jocforge-domain/src/spatial/source_flags.rs",
-        "sha256": "7011d4017c1e8b9d11b12d0260ce03b982c849f01fe4f7df7aa77aa0d4bd5fc5"
+        "sha256": "a13ad6da38bc9d209cd1aae3291ee4f5a09eaff00b080c4d7e42c4b8c9f97dd2"
       },
       {
-        "bytes": 32699,
+        "bytes": 36182,
         "path": "crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs",
-        "sha256": "45479cc3e0549f313130b357c8d2ead99574411cb88831869eeb321820119b2d"
+        "sha256": "33b7f3d772c76a59f3af5bd9df774627d3630412fed63edb39b6ebca85cbde67"
       },
       {
         "bytes": 27933,
@@ -4063,9 +4063,9 @@
       "sha256": "b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"
     },
     {
-      "bytes": 2694,
+      "bytes": 2715,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "c5dc2468b4246b1629a1dcbc54a7c6356955d2f16e3cdcb71856eed69f84203c"
+      "sha256": "670df35be4e4f344415cd80e07fb431471a8d88bc6e66b860e6125249cade579"
     }
   ],
   "implementation_prohibitions": [
@@ -4440,9 +4440,9 @@
       "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"
     },
     {
-      "bytes": 2694,
+      "bytes": 2715,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "c5dc2468b4246b1629a1dcbc54a7c6356955d2f16e3cdcb71856eed69f84203c"
+      "sha256": "670df35be4e4f344415cd80e07fb431471a8d88bc6e66b860e6125249cade579"
     }
   ],
   "implementation_prohibitions": [
@@ -4853,9 +4853,9 @@
       "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"
     },
     {
-      "bytes": 2694,
+      "bytes": 2715,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "c5dc2468b4246b1629a1dcbc54a7c6356955d2f16e3cdcb71856eed69f84203c"
+      "sha256": "670df35be4e4f344415cd80e07fb431471a8d88bc6e66b860e6125249cade579"
     }
   ],
   "implementation_prohibitions": [
@@ -5222,9 +5222,9 @@
       "sha256": "9184b8ca22b5ed89082a92e3027b74c13d7e5424c4504598c3e71c239f2beeaa"
     },
     {
-      "bytes": 2694,
+      "bytes": 2715,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "c5dc2468b4246b1629a1dcbc54a7c6356955d2f16e3cdcb71856eed69f84203c"
+      "sha256": "670df35be4e4f344415cd80e07fb431471a8d88bc6e66b860e6125249cade579"
     }
   ],
   "implementation_prohibitions": [
@@ -7955,7 +7955,7 @@
   ],
   "verification": {
     "compile_fail_contracts": 5,
-    "current_features_tests": 9,
+    "current_features_tests": 10,
     "full_repository_boundary_mutations_rejected": 585,
     "matrix_destination_producer": "NOT_IMPLEMENTED",
     "parent_transaction": "NOT_IMPLEMENTED",
@@ -8350,9 +8350,9 @@
       "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"
     },
     {
-      "bytes": 38418,
+      "bytes": 46100,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs",
-      "sha256": "7047500d89ce089c1ec5907ecd1bead7128b296a897ea76d751034c64e35b53d"
+      "sha256": "6eb9640e126dd8e6c7e9bbb69782d2901fb38c79343f48089bea2d7b7b227fcc"
     },
     {
       "bytes": 16562,
@@ -8470,9 +8470,9 @@
       "sha256": "bb9fc89e6914b4b9fb9dc94cd0da47ee83886183661d792957cef352896bab22"
     },
     {
-      "bytes": 51880,
+      "bytes": 57070,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs",
-      "sha256": "3437d4a71a97495ad57370da278df2157d4af0fd760f72e04027b28bace2c74c"
+      "sha256": "c6295d0d4e04f6be4c3dc1418cc460d9dcca4b13d744d81e3dd219d62a8c9c53"
     }
   ],
   "vectors": {
@@ -8726,9 +8726,12 @@
 | F03S/outer-active-update | Phase 3 | Stateless F03S.4 active quadratic-energy update from explicit context/response/seed/correction inputs. Returns discriminant, step, scaled seed, and output; does not generate correction, choose branch, run NNLS, or apply floor/prune. | `crates/jocforge-domain/src/spatial/mod.rs`<br>`crates/jocforge-domain/src/spatial/outer_active_update.rs` | `crates/jocforge-domain/tests/outer_active_update.rs` | LOCALLY_VERIFIED_F03S_4_DISCRIMINANT_STEP_AND_OUTPUT__OUTER_DEFERRED |
 | F03S/outer-empty-matrix-skip | Phase 3 | F03S.1 n=0 branch only: validate the explicit source-call order and return a zero-row/48-column matrix without reading response/XYZ or invoking NNLS. Nonempty target matrix production is excluded. | `crates/jocforge-domain/src/spatial/mod.rs`<br>`crates/jocforge-domain/src/spatial/outer_empty_matrix.rs` | `crates/jocforge-domain/tests/outer_empty_matrix.rs` | LOCALLY_VERIFIED_N_ZERO_EMPTY_MATRIX_SKIP__NONEMPTY_OUTER_DEFERRED |
 | F03W/selected-primary-installed48-source-map-and-activity | Phase 3 | Keeps the detached static projection path and dynamic selected-ADM resource identity binding over the same 48-source row mapping. The authorized full WAVE was read in memory and produced source/activity plus F03R value-only results for g0-g2 under Wash V2's selected-profile typed adapter. Host10 authored Control52 word10=1 remains separate from feature diffuse=0. The nonnormative pre-F04 Source56 candidate remains rejected. No SourceFlagsPacket or callback root is committed. | `crates/jocforge-domain/src/frontend/job_configuration.rs`<br>`crates/jocforge-domain/src/frontend/primary_metadata_control.rs`<br>`crates/jocforge-domain/src/spatial/installed48_source_map.rs`<br>`crates/jocforge-domain/src/spatial/installed48_activity.rs`<br>`crates/jocforge-domain/src/spatial/selected_p11_geometry.rs`<br>`crates/jocforge-domain/src/spatial/source_flags.rs`<br>`crates/jocforge-io/src/pcm/meter_source_cursor.rs`<br>`crates/jocforge-io/src/pcm/riff_pcm24.rs`<br>`crates/jocforge-io/examples/meter_input_probe.rs` | `crates/jocforge-domain/tests/installed48_source_map.rs`<br>`crates/jocforge-domain/tests/installed48_activity.rs`<br>`crates/jocforge-domain/tests/selected_p11_geometry.rs`<br>`crates/jocforge-application/tests/prepared_job_input.rs`<br>`crates/jocforge-domain/tests/meter_installed48_renderer.rs` | LOCALLY_VERIFIED_STATIC_ROUTE_AND_REAL_ADM_G0_G2_F03R_VALUE_PROPOSALS__PACKET_AND_ROOT_COMMIT_DEFERRED |
-| F04/independent-meter-installed48-postwindow-leaf | Phase 3 | Implements a fresh meter-owned selected F04A installed48/post-window value transition using same-resource PCM, graph/control map, primary activity, membership proposals, and identity-validated diffusion parameters. The corrected F64-literal path has been rerun for real g0-g2 and its actual hashes are recorded under F04A; no independent corrected expected-output vector is currently available, so numeric conformance is not claimed. This is not a committed F06 callback and is not connected to SourceFlagsPacket, CurrentFeatures, selector/U04, component, LFE, OAR packet, or measurement receipt. | `crates/jocforge-domain/src/meter/installed48_renderer.rs`<br>`crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/meter_installed48_renderer.rs` | LOCALLY_REPLAYED_CORRECTED_F04A_REAL_WAVE_G0_G2__EXPECTED_COMPARISON_PENDING |
+| F03W/source-flags-current-features-and-source-gate | Phase 3 | Runs the existing SourceFlags producer once, carries its validated packet into CurrentFeatures with the explicit callback phase, preserves the raw-history and feature-state proposals for the parent, and derives source-ascending plus4 candidates, plus0 processing IDs, and the unchanged band-major candidate feature snapshot. This slice does not render installed48, produce source-control values, advance or commit the spatial_control root, or run later response/selector/U04/outer/history/component stages. | `crates/jocforge-domain/src/spatial/frontend_stages.rs`<br>`crates/jocforge-domain/src/spatial/current_features.rs`<br>`crates/jocforge-domain/src/spatial/source_flags.rs`<br>`crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs`<br>`crates/jocforge-domain/src/spatial/current_features/tests.rs` | LOCALLY_VERIFIED_SOURCE_FLAGS_CURRENT_FEATURES_AND_GATE_PROPOSALS__ROOT_COMMIT_DEFERRED |
+| F03W/primary-metadata-source-control-projection | Phase 3 | Projects the admitted physical-order F01E control rows into selected F03R RegularControl values using distinct bed and object field rules, excludes the semantic bed_id3 direct LFE, and carries a typed current-callback or last-normal drain source origin. The same validated physical-host route selects regular PCM and history rows and maps them to sources 11..47. The projection does not invoke the F01E sampler, read PCM, or commit spatial_control state. | `crates/jocforge-domain/src/spatial/source_flags.rs`<br>`crates/jocforge-domain/src/frontend/primary_metadata_control.rs`<br>`crates/jocforge-domain/src/frontend/selected_adm_graph.rs` | `crates/jocforge-domain/tests/primary_metadata_control.rs` | LOCALLY_VERIFIED_BED_OBJECT_FIELDS_AND_SOURCE_ORIGIN__CALLBACK_ROOT_DEFERRED |
+| F04/independent-meter-installed48-postwindow-leaf | Phase 3 | Implements a fresh meter-owned selected F04A installed48/post-window value transition using same-resource PCM, graph/control map, primary activity, membership proposals, and identity-validated diffusion parameters. The current formula matches approved F04A.4: binary64 weight literal, binary64 square root, one R32 cast before gain/mode products, and separately rounded R32 mix operations. Current-code g0-g2 actual hashes are recorded; no independent expected-output vector is present, so numeric conformance is not claimed. The isolated Git history has neither the older expression nor a separate correction commit, so the historical cause is UNKNOWN and withdrawn actuals remain invalid as expectations. This is not a committed F06 callback and is not connected to SourceFlagsPacket, CurrentFeatures, selector/U04, component, LFE, OAR packet, or measurement receipt. | `crates/jocforge-domain/src/meter/installed48_renderer.rs`<br>`crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/tests/meter_installed48_renderer.rs`<br>`crates/jocforge-domain/src/meter/installed48_renderer.rs` | LOCALLY_REPLAYED_CURRENT_F04A_REAL_WAVE_G0_G2__EXPECTED_COMPARISON_PENDING__HISTORY_UNKNOWN |
 | F04C/whole-spatial-audio-j05-composer | Phase 3 | Validates existing Type10 and reader-target receipts before receiver execution; g0/g1 advance the full spatial_audio root without receiver/QMF, while g>=2 executes receiver and fitting once, preserves actual buffers and per-row target producer generations, and returns one complete canonical spatial_audio after proposal plus immutable J05 projection. | `crates/jocforge-domain/src/spatial/spatial_audio_state/spatial_audio_composer.rs`<br>`crates/jocforge-domain/src/spatial/spatial_audio_state/spatial_audio_receiver.rs`<br>`crates/jocforge-domain/src/spatial/spatial_audio_state/fitting_mode0.rs`<br>`crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs`<br>`crates/jocforge-domain/src/spatial/spatial_audio_state.rs`<br>`crates/jocforge-domain/src/joc/oamd/reader_target.rs` | `crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests/spatial_audio_composer.rs` | LOCALLY_VERIFIED_CONTINUOUS_G0_G1_G2_ROOT_AND_J05_PROPOSALS__PARENT_INSTALL_NOT_RUN |
-| F04A/independent-meter-installed48-postwindow-leaf | Phase 3 | A prior same-resource g0-g2 F04A leaf run was invalidated after the filtered-prefix square-root constants were found to have been promoted from F32. The corrected code has now rerun those callbacks with binary64 weights and records fresh actual hashes; they happen to equal the prior strings, which remain withdrawn as expectations. No independent corrected expected-output vector is available, so conformance is not claimed. This is not a committed F06 callback and does not connect SourceFlagsPacket, CurrentFeatures, selector/U04, component, LFE, OAR packet, or measurement receipt. | `crates/jocforge-domain/src/meter/installed48_renderer.rs`<br>`crates/jocforge-domain/src/meter/mod.rs` | — | CORRECTED_REAL_WAVE_G0_G2_ACTUALS_REPLAYED__EXPECTED_COMPARISON_PENDING |
+| F04A/independent-meter-installed48-postwindow-leaf | Phase 3 | A fresh same-resource g0-g2 F04A leaf run uses the current approved F04A.4 order: binary64 weight literal, binary64 square root, one R32 cast before gain/mode products, and separately rounded R32 sample mixing. These actual hashes equal withdrawn earlier actual strings; the isolated history contains neither the older expression nor a separate correction commit, so historical cause is UNKNOWN and prior values remain invalid as expectations. No independent F04A expected-output vector is available, so conformance is not claimed. This is not a committed F06 callback and does not connect SourceFlagsPacket, CurrentFeatures, selector/U04, component, LFE, OAR packet, or measurement receipt. | `crates/jocforge-domain/src/meter/installed48_renderer.rs`<br>`crates/jocforge-domain/src/meter/mod.rs` | `crates/jocforge-domain/src/meter/installed48_renderer.rs` | CURRENT_REAL_WAVE_G0_G2_ACTUALS_REPLAYED__EXPECTED_COMPARISON_PENDING__HISTORY_UNKNOWN |
+| F04A/active-component-matrix-and-packet-constructor | Phase 3 | Validates paired compact C[n,48] coefficients and ascending target slots, scatters exact words into the canonical dense D[15,48] target-slot view with inactive positive-zero rows, and gathers with the same slots without sorting or coefficient-based activity inference. The non-test packet constructor binds compact C/d, installed48, selected provider lineage, and current spatial-audio/control before-state identities to one callback. It produces only the component consumer packet; it does not implement the outer C/d writer, source installation, owner update, or component commit. | `crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs` | `crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs` | LOCALLY_VERIFIED_COMPACT_DENSE_SCATTER_GATHER_AND_CURRENT_PACKET_BINDING__OUTER_WRITER_DEFERRED |
 | F04A/washed-membership-producer-owner-status-v2 | Phase 3 | The V2 audit distinguishes the handler gate table from the persistent/cache row-state table and records the native gate and downstream candidate/status-list flow. In the staged raw Control52 branch, offset4 U32 reads raw bytes0..3: one U8 plus three untyped bytes; it is not a typed audio_diffuse field. The package does not bind clean F04A audio_diffuse/lane fields to the handler gate, final row list or prefix writer, and does not establish a same-generation join. | — | — | WASHED_DISTINCT_ROW_OWNERS_AND_MEMBERSHIP_FLOW_CLOSED__CLEAN_IDENTITY_UNBOUND |
 | F04F/single-tail-diffusion-filter-block-preview | Phase 3 | Consume one identity-validated selected 48 kHz diffusion parameter set, one immutable per-tail F04F before-state, and one finite block of 0..=4096 F32 samples. Produce four planar lanes and a complete proposed after-state using the F04F.2-.4 block transition. No callback/source/AU clock, per-object tail map, prefix routing, cross-owner commit, or production encode connection is included. | `crates/jocforge-domain/src/spatial/diffusion_filter.rs`<br>`crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/src/spatial/diffusion_filter/tests.rs` | LOCALLY_VERIFIED_SELECTED_F04F_BLOCK_PREVIEW__TAIL_LIFECYCLE_DEFERRED |
 | F04F/single-tail-active-inactive-callback-lifecycle | Phase 3 | For one caller-selected tail, remove state immediately when inactive; when active, cold-create from previous raw PCM plus current raw PCM and split the four outputs into previous/current halves; warm-process current PCM only and use previous-filter outputs cached by the same tail. Return a proposal and next per-tail state. Do not route the 37-object map, create a callback transaction, persist raw PCM, or claim primary-source output identity. | `crates/jocforge-domain/src/spatial/diffusion_tail.rs`<br>`crates/jocforge-domain/src/spatial/diffusion_filter.rs`<br>`crates/jocforge-domain/src/spatial/mod.rs` | `crates/jocforge-domain/src/spatial/diffusion_tail/tests.rs` | LOCALLY_VERIFIED_SYNTHETIC_F04F_5_TAIL_TRANSITIONS__PRIMARY_CALLBACK_JOIN_DEFERRED |
@@ -8759,6 +8762,7 @@
 | F06TP/selected-six-channel-true-peak-block-cascade | Phase 5 | Selected six-channel 48 kHz/1024-sample block only: authorized 12-tap coefficients, 12-tap FIR, two-stage 4x interpolation, LFE ordinal-3 bypass, complete per-lane FIR history, per-block sample/true-peak metrics, and programme maxima. No frontend, sample-window scheduler, full F06 meter, or product chain. | `crates/jocforge-domain/src/meter/true_peak.rs`<br>`crates/jocforge-domain/src/meter/truepeak_parameters.json`<br>`crates/jocforge-domain/src/meter/truepeak_log_parameters.json` | `crates/jocforge-domain/src/meter/true_peak/tests.rs` | LOCALLY_VERIFIED_AUTHORIZED_4X_CASCADE_STATE_AND_LOCAL_PEAKS__FRONTEND_DEFERRED |
 | F06OF/meter-lfe-delay-and-oar-packet-assembly | Phase 5 | Owns a fresh three-slot meter LFE ring, stores full finite frames with callback origins, emits positive-zero rows for the first two calls and the actual g-2 row thereafter, then assembles that row with fifteen same-callback regular SCP/control rows into an OAR packet with generation g+1. Current LFE, regular SCP and controls are caller-supplied outputs of upstream processing. | `crates/jocforge-domain/src/meter/mod.rs`<br>`crates/jocforge-domain/src/meter/lfe_delay_ring.rs`<br>`crates/jocforge-domain/src/meter/object_renderer.rs` | `crates/jocforge-domain/src/meter/lfe_delay_ring.rs`<br>`crates/jocforge-domain/src/meter/post_render_meter.rs` | LOCALLY_VERIFIED_TWO_CALLBACK_LFE_RING_AND_PACKET_ASSEMBLY__UPSTREAM_FRONTEND_DEFERRED |
 | F06OF/meter-in-memory-pcm24-source-cursor | Phase 5 | Binds an independent typed meter source cursor to one already parsed selected RIFF/PCM24 byte slice by full source SHA and sample count. Each normal sample range is addressed through the parsed blockAlign byte offset and decoded by the shared selected PCM24 read-chunk helper; the cursor consumes its typed actual-frame count and advances by that returned count. It pads only the final raw source input and emits exactly three fresh zero-input model drain frames. The cursor stores source identity and clocks, never PCM. Output stops at raw physical-channel input; no operating-system read, native EOF/drain, ADM/event render or SCP/control is claimed. | `crates/jocforge-io/Cargo.toml`<br>`crates/jocforge-io/src/pcm/mod.rs`<br>`crates/jocforge-io/src/pcm/riff_pcm24.rs`<br>`crates/jocforge-io/src/pcm/meter_source_cursor.rs`<br>`crates/jocforge-application/src/lib.rs` | `crates/jocforge-io/src/pcm/meter_source_cursor.rs` | LOCALLY_VERIFIED_TYPED_PCM24_READ_CHUNK_CURSOR_TO_RAW_FRAMES__SCP_CONTROL_PRODUCER_DEFERRED |
+| F06OF/meter-source-oar-callback-handoff | Phase 5 | The CLI composition root owns the IO cursor and translates its proposal into an immutable domain MeterSourceCallbackFrame for application. Application binds the frame to PreparedJobInput and the selected ADM graph, exposes 38 physical rows to the upstream frontend caller, checks the returned OAR input clock and exact direct-LFE physical row, and stages the independent meter prepass. The CLI combines that application stage with the IO cursor after-state in one infallible commit, checks source/prepass extents and normal-callback counts, coordinates cold reset, and joins their Q+3 finalization schedule. Application has no IO dependency. The slice does not produce component15 rows, regular controls, matrix/destinations, or spatial DSP. | `crates/jocforge-cli/Cargo.toml`<br>`crates/jocforge-cli/src/lib.rs`<br>`crates/jocforge-cli/src/meter_source_bridge.rs`<br>`crates/jocforge-application/src/meter_source_bridge.rs`<br>`crates/jocforge-application/src/lib.rs`<br>`crates/jocforge-domain/src/meter/mod.rs`<br>`crates/jocforge-domain/src/meter/source_frame.rs`<br>`crates/jocforge-domain/src/meter/lfe_delay_ring.rs`<br>`crates/jocforge-domain/src/meter/meter_prepass.rs`<br>`crates/jocforge-io/src/pcm/meter_source_cursor.rs`<br>`crates/jocforge-io/src/pcm/riff_pcm24.rs` | `crates/jocforge-cli/tests/meter_source_bridge.rs`<br>`crates/jocforge-domain/src/meter/lfe_delay_ring.rs`<br>`crates/jocforge-domain/src/meter/meter_prepass.rs` | LOCALLY_VERIFIED_SAME_RESOURCE_PHYSICAL_LFE_AND_CLOCK_JOIN__PRODUCTION_SPATIAL_PROVIDER_DEFERRED |
 | F06OF/washed-native-frontend-lineage-source-owner-hold | Phase 5 | Wash records a selected static meter callback from planar 48 kHz frames to a downstream meter consumer, including existing 1536/512/0 frame-length and 38-channel/requested-1536 observations. Run-local generation is not equated to F06OF g, and a zero-input candidate is not treated as a drain or EOF. This is meter frontend lineage only; no selected ADM source-map or same-generation JOC join is established. | — | — | WASHED_PARTIAL_STATIC_NO_PCM_REHASH__SOURCE_MAP_AND_OWNER_JOINS_OPEN |
 | F06OF/washed-adm-converter-static-inventory-hold | Phase 5 | The washed converter inventory confirms ADM/CHNA and mapping-related terminology only. It identifies no producer store, typed source-row transformation, owner/generation lineage or write into the selected frame descriptor. | — | — | WASHED_ADM_CONVERTER_INVENTORY_ONLY__SOURCE_ROW_WRITER_UNBOUND |
 | F06OF/washed-adm-bwf-label-source-row-gap | Phase 5 | The washed label rule says ADM is selected when present and atmos_mezz otherwise. run_011 used atmos_mezz only on a measurement path and has no JOC input-profile or source-row producer join; a node label does not establish a native source_map algorithm. | — | — | WASHED_INPUT_LABEL_PRECEDENCE_ONLY__SOURCE_MAP_PRODUCTION_OPEN |

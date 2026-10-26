@@ -1,0 +1,256 @@
+{
+  "schema": "jocforge-spatial-production-parameter-sources.v1",
+  "research_manifest_sha256": "1a18c9992ad9f4f0bff921b81c51fc50eeb9f9e401cbe9da2b06d74feedf0e6f",
+  "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "provider_manifest_path": "parameters/adm-installed48-providers-v1.json",
+  "provider_manifest_sha256": "51305803b05daff498935b3283e56e27bb3e3966f52727bcf803a226871d5e91",
+  "approved_sources": [
+    {
+      "path": "SOURCES-AND-DEPENDENCIES.md",
+      "bytes": 10618,
+      "sha256": "93a446062a5bcc18840dda5c9339470e0f7fe597765dc5878953336e72809349",
+      "role": "Approved source/provider status and D10/D11 scope."
+    },
+    {
+      "path": "PARAMETER-GENERATION.md",
+      "bytes": 8354,
+      "sha256": "6cdc570f32139ea0d920e548832284615718fb349f7cec664e49a0ad79dd2ea5",
+      "role": "Approved mathematical parameter-generation index."
+    },
+    {
+      "path": "PARAMETER-INTERFACES.json",
+      "bytes": 260384,
+      "sha256": "31d26a412134fcb22a3b88801377af8a0a96973d6a74e32fe71e1421f32364a8",
+      "role": "Registered parameter interfaces and provider status."
+    },
+    {
+      "path": "specs/03-adm-installed48-whole.md",
+      "bytes": 10079,
+      "sha256": "a494e653e584c8453464aa74ae08bf453cc615e1ccafd98ab4ede238de1f7dd9",
+      "role": "F03W scope, installed48, matrix/writer-set boundary and cold/reset."
+    },
+    {
+      "path": "specs/03-spatial-and-audio.md",
+      "bytes": 4056,
+      "sha256": "1ae3ecc8058eb06f84e51ddef03e804e0e6f0678ba91df3aa7640f6aa1decbcb",
+      "role": "F03/F04 spatial and audio scope."
+    },
+    {
+      "path": "specs/03-gate-and-target-installation.md",
+      "bytes": 5475,
+      "sha256": "aeb6791967413e71518cfb1c5853c52cd8e6e7e7174f60afa611cc0e0fa8d9dc",
+      "role": "F03 target gate and installation provider reference."
+    },
+    {
+      "path": "specs/03-point-response-and-target-context.md",
+      "bytes": 9435,
+      "sha256": "8fb727170fb41df5354a17429fc00411010f010cb32dc86e0fdcc81bddaf4964",
+      "role": "F03 point provider reference; F64 numeric equivalence delegated to R4."
+    },
+    {
+      "path": "specs/01-bed-routing-and-source-geometry.md",
+      "bytes": 5510,
+      "sha256": "26e4220818d50227f75d5bc00e99840609d6a2023619e01328cb768bed4511b2",
+      "role": "Bed semantic roles, normalized points and physical identity."
+    },
+    {
+      "path": "specs/01-selected-geometry-layout-and-bed-routing.md",
+      "bytes": 9551,
+      "sha256": "8ea5ff070ebfb77ecfe86a7e87ce846e05de2a1b3575bf834b5ead7414a51830",
+      "role": "Selected P11/P15 geometry/layout/bed generator."
+    },
+    {
+      "path": "specs/04-window-matrix-and-component-audio.md",
+      "bytes": 9190,
+      "sha256": "350937eadb5da2432ed60723305cdc8de80a139fef803ec3a2aa5a3990ed6334",
+      "role": "F04 matrix/component/kernel shapes and lifecycle."
+    },
+    {
+      "path": "specs/04-whole-spatial-chain-composition.md",
+      "bytes": 9103,
+      "sha256": "92325b12128023001e1f3fd4696dcec68bbd47a46acdb7886781b411a10c5d59",
+      "role": "F04C typed boundaries, reset/cold state and downstream composition."
+    },
+    {
+      "path": "specs/04-component-parameter-generation.md",
+      "bytes": 4910,
+      "sha256": "2564879656a5b0e73975d99ef7a55217440131c5d4e2d6b4dc8117adecef76d8",
+      "role": "F04PG eight-word component parameter generator."
+    },
+    {
+      "path": "specs/04-component-parameter-state.md",
+      "bytes": 5792,
+      "sha256": "3e9b777a36ae722aeccd1054d778484e6a96e44d16f2534159dfe49afc7d1861",
+      "role": "F04P shared state, block transition and cold constructor."
+    },
+    {
+      "path": "specs/04-prefix-spread-and-gain.md",
+      "bytes": 12300,
+      "sha256": "ca5b069d16f0a0837ad4501036c74bb6e8ae3d6acfaf8bf3961ca4869923a68b",
+      "role": "F04G spread/gain inputs, formula and caller conditions."
+    },
+    {
+      "path": "specs/04-spread-authorized-parameters.md",
+      "bytes": 2365,
+      "sha256": "4c8b966929818a9a0ea8cace90830bd5e7fa9ce8fdb716931078f97ccee83013",
+      "role": "D10-W/WK/PC/SC value delivery and scope."
+    },
+    {
+      "path": "specs/04-spread-parameter-provider-and-caller.md",
+      "bytes": 4971,
+      "sha256": "11a9a62467c7992224450bc00bca570a180a293631212e5848ddc7738421f77a",
+      "role": "Spread parameter types, statelessness and no-call conditions."
+    },
+    {
+      "path": "specs/04-diffusion-filter-and-lifecycle.md",
+      "bytes": 7203,
+      "sha256": "4b662c3721ba10ad9dafd193bf13e1bc2df571ab4cab580e46a8a6b39e9a3594",
+      "role": "F04F configuration, instance, cold state and lifecycle."
+    },
+    {
+      "path": "specs/04-diffusion-constructor-generation.md",
+      "bytes": 4229,
+      "sha256": "e1a420ea0d4284c0cfadcf6962d34ff8cc0f877cee0d0503a6c0e2669c2978b9",
+      "role": "F04FCM 48 kHz ten-word constructor route."
+    },
+    {
+      "path": "specs/04-diffusion-mathematical-generation.md",
+      "bytes": 3125,
+      "sha256": "eeba9137918ffb647e3b0a68ca5b210aadd0b0815fed3eec7ae199a08057484d",
+      "role": "F04FM coefficient and prefix mapping route."
+    },
+    {
+      "path": "parameters/adm-installed48-providers-v1.json",
+      "bytes": 14372,
+      "sha256": "51305803b05daff498935b3283e56e27bb3e3966f52727bcf803a226871d5e91",
+      "role": "Selected installed48 provider manifest."
+    },
+    {
+      "path": "parameters/adm-installed48-state-v1.json",
+      "bytes": 7237,
+      "sha256": "5138318de304b83d26e47271c1661bcc903cebcd2cea457ae98e0048b161ed46",
+      "role": "F03W typed state shapes and cold constructors."
+    },
+    {
+      "path": "parameters/f03-selected-target-cold-v1.json",
+      "bytes": 3139,
+      "sha256": "a4b53854822a5f17a5413d6f2ded127a7366257c2a171377afcea4a84a3eaf00",
+      "role": "Exact retained-target cold provider."
+    },
+    {
+      "path": "parameters/geometry-front-side-y-v1.json",
+      "bytes": 1466,
+      "sha256": "5d2346dd39671aae7f7d3b56396fb1dea05da363a218a0efbd926dbab046c185",
+      "role": "P15-only front-side Y Q15 provider."
+    },
+    {
+      "path": "parameters/spread-authorized-v1.json",
+      "bytes": 2783,
+      "sha256": "5611b37f2a997f75da0ba920e394c0e36eddd9477e11ba94d44852d3e12fd0c9",
+      "role": "The 24 D10 spread values and exact field order."
+    },
+    {
+      "path": "parameters/diffusion-mathematical-v1.json",
+      "bytes": 1467,
+      "sha256": "d690512cd204e97fc04a35c03519ed3005e26cb57408432fe30bfde63c2319aa",
+      "role": "F04FM coefficient and mode/lane provider."
+    },
+    {
+      "path": "parameters/diffusion-constructor-mathematical-v1.json",
+      "bytes": 1770,
+      "sha256": "7a710d68b00c14d6b9b3f9fa3313579c5739ccce408655ea3252ad1ee4acd106",
+      "role": "F04FCM ten-word configuration and bank/ring lengths."
+    },
+    {
+      "path": "parameters/component-parameter-mathematical-v1.json",
+      "bytes": 1077,
+      "sha256": "5d0fec6f62a33eeef5c64016760fcbe94a1872a564b6d0e03f959c95c37eb0f5",
+      "role": "F04PG eight component parameters."
+    },
+    {
+      "path": "parameters/window-q15.json",
+      "bytes": 2704,
+      "sha256": "a12f9cbf91f1cf540c2eae77e4d236970defa70409f00ddf62ba87bfeafbb130",
+      "role": "Formula-generated N=64 component kernel."
+    },
+    {
+      "path": "parameters/point-panner-math-v1.json",
+      "bytes": 812,
+      "sha256": "f79ab4d4ed06983cea05146a39bcfef22c183c1111d1d6103efce25c9c579ef6",
+      "role": "Approved point-angle provider reference; R4 owns numeric review."
+    },
+    {
+      "path": "parameters/f01e-selected-constructor-v1.json",
+      "bytes": 20138,
+      "sha256": "b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb",
+      "role": "F03W event/control cold provider reference; R3 owns control semantics."
+    },
+    {
+      "path": "parameters/selected-owner-projection-v1.json",
+      "bytes": 3637,
+      "sha256": "b8e78dd1d15091e88877b2ead3e0608dbc1554c13afbcde46d5da24a2fd136dd",
+      "role": "Cross-owner state projection reference."
+    },
+    {
+      "path": "test-vectors/ADM-INSTALLED48-WHOLE-INPUT-VECTORS.json",
+      "bytes": 297763,
+      "sha256": "1b405277987597f6d176d0cabd236bc437645c0e770fbfb9c7b9319950c26bdf",
+      "role": "Existing synthetic input-only installed48 recipe; no PCM files."
+    },
+    {
+      "path": "test-vectors/ADM-INSTALLED48-WHOLE-VERIFICATION.json",
+      "bytes": 573,
+      "sha256": "c4d255a5b916f08cfdfec6b50ea60a00eb440365369ec90423e0e94b1886a69e",
+      "role": "Existing synthetic-only whole-composition status."
+    },
+    {
+      "path": "test-vectors/SELECTED-GEOMETRY-AUTHORIZED-VERIFICATION.json",
+      "bytes": 4843,
+      "sha256": "755290873e1ddec1cbb389ceb16967c20a5ced9bbc8449a42cbb2a412b245017",
+      "role": "Existing selected P11/P15 geometry word reference."
+    },
+    {
+      "path": "test-vectors/SPREAD-AUTHORIZED-VERIFICATION.json",
+      "bytes": 91375,
+      "sha256": "78dbf5563754b83b12d023e0b434e5bd89394a7d67a536ac27d5288f16c2a236",
+      "role": "Existing spread provider input recipes and gain cases."
+    },
+    {
+      "path": "test-vectors/FULL-SYNTHETIC-PREFIX-SPREAD-VERIFICATION.json",
+      "bytes": 10554,
+      "sha256": "787255e7ccff3114bb16d0bef93a34ebe2e2aaf8e8df104dc700f0a5b3943dd0",
+      "role": "Existing synthetic spread probe; production geometry absent, review pending."
+    },
+    {
+      "path": "test-vectors/COMPONENT-PARAMETER-GENERATION-VERIFICATION.json",
+      "bytes": 55848,
+      "sha256": "819e7cede6f54689a87aad72c8ec3d8a5cb4b14fe41fc6a5556a03973f01ec85",
+      "role": "Existing component parameter/cold-state cases."
+    },
+    {
+      "path": "test-vectors/DIFFUSION-CONSTRUCTOR-GENERATION-VERIFICATION.json",
+      "bytes": 4024,
+      "sha256": "3ff423d3d0308c8d5f6c1b4338547fd3013973bad172b6dbf739086ba077fc12",
+      "role": "Existing diffusion constructor/cold-state cases."
+    },
+    {
+      "path": "test-vectors/DIFFUSION-MATH-GENERATION-VERIFICATION.json",
+      "bytes": 4323,
+      "sha256": "5705761f79fba8030081aae9bb82322c891bdec16b3fc8aa1ab86f56101ecb91",
+      "role": "Existing coefficient and mode/lane cases."
+    }
+  ],
+  "current_readiness_authorities": [
+    {
+      "file": "SPEC-COMPLETENESS-MATRIX.json",
+      "bytes": 405547,
+      "sha256": "2da96a83e431c33f2d4d1cbe028eff06c1fa29741817ca04bf3fa56da66c3c9e"
+    },
+    {
+      "file": "FINAL-IMPLEMENTATION-READINESS-STATUS.json",
+      "bytes": 5168,
+      "sha256": "0b9cfe5b28d15fb68de48c0dbc3b329c8ceb3a1aa91ad0e2600917a0a369a6d2"
+    }
+  ],
+  "source_code_PCM_and_private_keys_forwarded": false
+}

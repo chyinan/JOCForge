@@ -1,0 +1,60 @@
+{
+  "schema": "wash.meter-model-source-oar-frame-binding.v1",
+  "scope": {
+    "source_models": "REHASHED_FROZEN_PYTHON",
+    "native_execution": "NOT_RUN",
+    "actual_PCM_audio_body_or_key_reads": "NOT_RUN",
+    "full_frontend_DSP_replay": "NOT_RUN",
+    "implementation_contact": "NO",
+    "native_row_owner_identity": "R3_SEPARATE"
+  },
+  "physical_input_contract": "Use already parsed approved F01 UID->track_index->physical_slot=track_index-1. Metadata attaches to physical rows; CHNA file-entry order does not reorder decoder output.",
+  "legacy_fields": "controls_from_models uses legacy CHNA_track_ordinal and raw96_type_ordinal as control_row_index and sorts/checks0..37; render and direct-LFE routines index PCM38 by those values. A typed F01 adapter must populate them from physical slot via exact UID/channel/object joins. A range/count check alone is not historical evidence that a legacy cache used physical slots.",
+  "source_read": [
+    "Initialize independent cursor from parsed data byte length at programme start.",
+    "On each normal callback retain old cursor, call read_pcm_source, take its clipped_actual_samples_u64 and decode exactly that interval.",
+    "The decoder loops channel_index0..37 and returns those same physical planar rows. Decode byte address=data_offset+(old_cursor+relative_sample)*114+3*physical_channel.",
+    "full_host_frame checks38 rows of A*4 bytes then appends positive-zero raw tail to1536. Keep A and capacity1536 separately.",
+    "At EOF the worker bypasses read/decode, keeps cursorN, creates new zero raw input38x1536 and advances its own drain counter3 times."
+  ],
+  "spatial_to_OAR": [
+    "The same normal/drain padded PCM variable is passed to regular render/source flags and semantic direct-LFE source selection.",
+    "Regular consumer indexes PCM38[control_row_index], skipping the semantic direct LFE; geometry/source transformations and matrix then produce15 component provider rows. No component row is claimed to equal a physical row.",
+    "LFE input is numerically formed from the uniquely selected physical LFE row then carried through the independent three-slot delay. The first two missing outputs are replaced by explicitly constructed allocated positive-zero rows, not reads of unwritten ring storage.",
+    "compose_type10_rows returns(lfe,*components), proving allocated row order. The worker writes allocated16 and its corresponding15 history controls plus direct row within the same callback.",
+    "The OAR script reads that exact allocated16 filename and corresponding control document; slices rows by index*6144 and enumerates controls with the same index. It constructs metadata60 with source_index, direct_count1 and frame_samples1536.",
+    "Regular metadata60 stores1536 in its I32 frame field; direct branch leaves that field at constructor0. The task process extent remains1536 for all rows; no raw source actual is substituted there.",
+    "Eight2-row OAR task states are cold once and carried over48 blocks of32 samples percallback. They yield six fixed-order full output rows. Shared-DV consumer reads the same OAR output path and carries its independent state, then programme publisher crops using count-only spans."
+  ],
+  "metadata_boundary": "Direct control tail is not a missing MODEL dependency: current F06OF canonical owned adapter retains the consumed direct word2 and zeros only unconsumed owned fields; fifteen regular controls remain fully supplied with their provenance. Do not claim all native direct52 bytes are known.",
+  "clock_and_ownership": {
+    "callback": "g zero-based; stored folderg+1; clean OAR generationg+1",
+    "normal_count": "Q=ceil(N/1536)",
+    "meter_callbacks": "Q+3",
+    "cold": "Fresh cursor, render/audio, feature, frontend, component/filter, flag history, direct-LFE ring and OAR task states perprogramme. Frozen cold wrapper rejects resume; no main audio or main state is an input.",
+    "state_carry": "Normal and drain callbacks both advance the same independent frontend/OAR states. Do not clear component/OAR tails merely because raw drain input iszero.",
+    "reset": "Full owner reconstruction and callback0; new input identity. No in-place native reset ABI or same-named Rust receipt is required.",
+    "read_count": "Worker has Q source reads and no extra EOF read; the separate cursor helper's EOF probe is not a worker call.",
+    "batch_vs_payload_origin": "Clean batch generation g+1 identifies this callback's allocated audio/control delivery. A delivered history control may retain an older producer generation/row; preserve that side provenance per current F06OF/F05H, never relabel it from the folder or loop ordinal.",
+    "allocated_vs_optional_output": "Allocated16 is delivered on every Q+3 callback. The optional post-priming spatial16 file is emitted only after LFE output exists, on Q+1 callbacks. OAR consumes allocated16, not that shorter optional file stream."
+  },
+  "crop_comparison": {
+    "F06W": "MATCHES:normal pending+=1536, drain adds0, startup3104 removed, published P=Q*1536.",
+    "F06OF": "MATCHES after explicit normal-proof field adaptation:source_actual_samples->host_input_count, host_advertised_samples->frontend_samples.",
+    "F06WH": "MATCHES:peaks/K-filter share same complete1024 prefix; EOF1024 and960 remainders do not create extra blocks/events.",
+    "source_vs_output": "P includes source padding; published/cropped does not mean originalN nor waveform equality with source samples."
+  },
+  "small_N_clarification": {
+    "formula": "LFE output absent forg<2; for g>=2 origin is g-2.",
+    "wording_limit": "The descriptive statement that the first two drains return the last two normal inputs requires Q>=2. With Q=1, the first drain is still priming. The general ring formula and scheduler are unchanged.",
+    "contract_action": "Qualify that explanatory sentence if extending boundary examples to Q=1; no silent algorithm change."
+  },
+  "readiness": {
+    "local_typed_MODEL_bridge": "DEFINED_WITH_APPROVED_F01_AND_UPSTREAM_PROVIDER_PRECONDITIONS",
+    "historical_metadata_cache_original_execution": "NOT_CAPTURED; NOT_REQUIRED_AS_RUNTIME_PREDICTION_INPUT",
+    "historical_meter_report_content": "NOT_PRESENT_AT_RESTORED_OR_EXACT_HASH_OBJECT_PATH; LEDGER_IDENTITY_ONLY",
+    "native_same_owner_join": "NOT_EVALUATED_HERE",
+    "full_programme_execution": "NOT_RUN",
+    "full_chain_closed": false
+  }
+}

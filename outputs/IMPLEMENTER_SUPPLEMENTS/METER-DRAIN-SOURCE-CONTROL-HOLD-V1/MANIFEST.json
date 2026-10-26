@@ -1,0 +1,35 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "METER-DRAIN-SOURCE-CONTROL-HOLD-V1",
+  "implementation_ready": true,
+  "readiness_scope": "Independent meter drain source-control hold entry only",
+  "whole_chain_implementation_ready": false,
+  "source_research_manifest_sha256": "b9abe11025987467212644d69453d22827a44aefa3354cd9147708c22c1c3332",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 4094,
+      "sha256": "04774460993d6e981a351679abcf07f8fafeeeb7260ede1a78595d3e729c1b9d"
+    },
+    {
+      "file": "INPUT-ONLY-CASES.json",
+      "bytes": 369,
+      "sha256": "4285ac2d51560e057da3fc85f4d3ff501fac49f2418f6e953f69542daa9cdbb9"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1604,
+      "sha256": "9f819ae109ff6c1fd8fa9e072b32bfe65e671d8f956a4ee41299d471dcba2598"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 409,
+      "sha256": "e9653aa7c05c465f77d4b558a8ec5be4363e89c01244eb1b484454e34c516b63"
+    },
+    {
+      "file": "WASH-DECISION.json",
+      "bytes": 574,
+      "sha256": "93ed37b1261d43495d80cae57f17143fb6887d1794e739ce870cf32d51850563"
+    }
+  ]
+}

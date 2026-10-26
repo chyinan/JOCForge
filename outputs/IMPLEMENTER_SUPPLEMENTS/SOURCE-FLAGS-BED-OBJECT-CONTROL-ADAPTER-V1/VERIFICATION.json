@@ -1,0 +1,9 @@
+{
+  "schema": "jocforge-source-flags-bed-object-verification.v1",
+  "sealed_payloads": "7/7_HASH_MATCH_TOTAL8_FILES",
+  "direct_source_identity_checks": 13,
+  "typed_scope": "4 self-owned metadata recipes plus concrete uniform-width word witness",
+  "native_capture": "NOT_RUN",
+  "PCM_or_undefined_tail_read": "NOT_RUN",
+  "actual_sourceflags_numeric_output_conformance": "NOT_CLAIMED_BY_THIS_ADAPTER"
+}

@@ -1,5 +1,5 @@
 // pattern: Imperative Shell
-use super::{CurrentFeaturesError, produce_current_features};
+use super::{CurrentFeaturesError, CurrentFeaturesPacket, produce_current_features};
 use crate::{
     frontend::{
         PackageManifestEvidence, ProviderFileEvidence, ValidatedF01EColdProvider,
@@ -12,6 +12,7 @@ use crate::{
     profile::{EmdfCarriageProfile, EncodingProfile},
     spatial::{
         SourceFlagsPacket, SpatialControlJoinMetadata, SpatialControlMachine,
+        frontend_stages::gate_current_features,
         post_window_fanout::{
             CallbackPhase, CurrentFeaturesAudioView, PAYLOAD_BYTE_COUNT, PostWindowFanoutError,
             tests::{current_features_audio_view_fixture, render_proposal_fixture},
@@ -872,4 +873,37 @@ fn current_features_validates_stale_view_for_all_reset_sources() {
     assert_eq!(error, CurrentFeaturesError::RootIdentityMismatch);
     assert_eq!(context.machine.generation(), before_generation);
     assert_eq!(context.machine.digest(), before_digest);
+}
+
+#[test]
+fn feature_gate_uses_independent_flags_and_preserves_candidate_features() {
+    let context = context();
+    let callback_index = frontend_callback_index(0);
+    let transaction = transaction_id(callback_index);
+    let parent = SourceFlagsParentLineage::new(transaction.clone(), &context.machine).unwrap();
+    let mut flags = [[1, 1]; 48];
+    flags[0] = [0, 0];
+    flags[1] = [1, 0];
+    flags[2] = [1, 0];
+    flags[5] = [1, 0];
+    let source_flags = current_features_test_packet(flags, parent);
+
+    let mut bands = vec![[0_u32; 48]; 24];
+    bands[0][1] = 0x3f00_0000;
+    bands[0][2] = 0x3eff_ffff;
+    bands[0][3] = 0x3f80_0000;
+    bands[0][5] = 0x3e80_0000;
+    bands[1][5] = 0x3e80_0000;
+    let packet =
+        CurrentFeaturesPacket::from_producer(callback_index, transaction, bands.into_boxed_slice());
+
+    let gate = gate_current_features(&packet, &source_flags).unwrap();
+
+    assert_eq!(&*gate.candidate_ids, &[1, 5]);
+    assert_eq!(&*gate.processing_ids, &[0]);
+    assert_eq!(gate.candidate_features.len(), 24);
+    assert!(gate.candidate_features.iter().all(|band| band.len() == 2));
+    assert_eq!(gate.candidate_features[0][0], 0x3f00_0000);
+    assert_eq!(gate.candidate_features[0][1], 0x3e80_0000);
+    assert_eq!(gate.candidate_features[1][1], 0x3e80_0000);
 }

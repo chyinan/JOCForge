@@ -73,6 +73,8 @@ name = "jocforge"
 version = "0.1.0-dev.1"
 dependencies = [
  "jocforge-application",
+ "jocforge-io",
+ "serde_json",
 ]
 
 [[package]]

@@ -1,0 +1,25 @@
+{
+  "schema": "jocforge-active-matrix-adapter-verification.v1",
+  "research_payload_hashes": "6/6_MATCH",
+  "source_and_approved_contract_hashes": "10/10_MATCH",
+  "research_normal_and_optimized_reports": {
+    "status": "PASS_EACH",
+    "checks": 11328,
+    "self_owned_cases": 7,
+    "rejections": 3,
+    "scope": "Metadata algebra only"
+  },
+  "independent_wash_metadata_replay": {
+    "status": "PASS",
+    "checks": 5253,
+    "cases": 7,
+    "rejections": 3,
+    "properties": [
+      "Exact compact/dense roundtrip",
+      "Inactive positive-zero words",
+      "Compact/dense/packed ordered contribution terms"
+    ]
+  },
+  "solver_numeric_mixer_and_full_callback_execution": "NOT_RUN",
+  "native_execution": "NOT_RUN"
+}
