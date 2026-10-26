@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge-model-measurement-id1-evidence.v1",
+  "model_rule_ready": true,
+  "research_payload_hashes": "5/5_MATCH",
+  "source_hashes": "8/8_MATCH",
+  "ledger_hashes": "3/3_MATCH",
+  "approved_payload_hashes": "4/4_MATCH",
+  "actual_duration_caller_sha256": "39edc921474a9b40e2a4af192231c220ce55a1f0a2c1198bfa02f4f6ae1f5807",
+  "field": "Root44_gating_kind24",
+  "domain": "F06_PUBLIC_MEASUREMENT_RESULT_KIND",
+  "preferred_rule": "type(value) is int and value in {0,1,2}; preferred=(value==1)",
+  "legacy_literal_true_scope": "OLDER_96_CALL_TOOL_ONLY",
+  "historical_execution": "REPORTED_CANDIDATE_QUALIFIED_STAGES",
+  "whole_model_execution_by_wash": "NOT_RUN",
+  "native_execution": "NOT_RUN",
+  "native_member_identity": "UNBOUND",
+  "selected_native_factory_and_reset_lineage": "UNBOUND",
+  "ungated_fallback": "CURRENT_APPROVED_F06U_PRESERVED"
+}

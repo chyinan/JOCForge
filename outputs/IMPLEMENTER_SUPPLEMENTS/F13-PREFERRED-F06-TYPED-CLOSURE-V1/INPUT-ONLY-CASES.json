@@ -1,0 +1,125 @@
+{
+  "scope": "Synthetic normalized scalar inputs, no expected output records or native observations.",
+  "cases": [
+    {
+      "case": "direct_eligible",
+      "normalized_f32_u32": {
+        "T": 1056964608,
+        "P": 1061158912,
+        "A": 3196059648,
+        "B": 3204448256,
+        "C": 3208642560
+      }
+    },
+    {
+      "case": "eligibility_equal",
+      "normalized_f32_u32": {
+        "T": 1056964608,
+        "P": 1056964608,
+        "A": 3196059648,
+        "B": 3204448256,
+        "C": 3208642560
+      }
+    },
+    {
+      "case": "eligibility_next_above",
+      "normalized_f32_u32": {
+        "T": 1056964608,
+        "P": 1056964609,
+        "A": 3196059648,
+        "B": 3204448256,
+        "C": 3208642560
+      }
+    },
+    {
+      "case": "direct_floor_equal",
+      "normalized_f32_u32": {
+        "T": 1056964608,
+        "P": 1061158912,
+        "A": 3203399680,
+        "B": 3204448256,
+        "C": 3208642560
+      }
+    },
+    {
+      "case": "direct_floor_next_above",
+      "normalized_f32_u32": {
+        "T": 1056964608,
+        "P": 1061158912,
+        "A": 3203399679,
+        "B": 3204448256,
+        "C": 3208642560
+      }
+    },
+    {
+      "case": "fallback_floor_equal",
+      "normalized_f32_u32": {
+        "T": 1056964608,
+        "P": 1056964608,
+        "A": 3196059648,
+        "B": 3211788288,
+        "C": 3208642560
+      }
+    },
+    {
+      "case": "fallback_floor_next_above",
+      "normalized_f32_u32": {
+        "T": 1056964608,
+        "P": 1056964608,
+        "A": 3196059648,
+        "B": 3211788287,
+        "C": 3208642560
+      }
+    },
+    {
+      "case": "chosen_positive_zero",
+      "normalized_f32_u32": {
+        "T": 1056964608,
+        "P": 1056964608,
+        "A": 3196059648,
+        "B": 3212836864,
+        "C": 0
+      }
+    },
+    {
+      "case": "chosen_negative_zero",
+      "normalized_f32_u32": {
+        "T": 1056964608,
+        "P": 1056964608,
+        "A": 3196059648,
+        "B": 3212836864,
+        "C": 2147483648
+      }
+    },
+    {
+      "case": "chosen_subnormal",
+      "normalized_f32_u32": {
+        "T": 1056964608,
+        "P": 1056964608,
+        "A": 3196059648,
+        "B": 3212836864,
+        "C": 1
+      }
+    },
+    {
+      "case": "model_disabled_dialogue_itu_valid",
+      "normalized_f32_u32": {
+        "T": 1061683200,
+        "P": 3154116608,
+        "A": 3211788288,
+        "B": 3191865344,
+        "C": 3195011072
+      }
+    },
+    {
+      "case": "model_disabled_dialogue_ungated_fallback",
+      "normalized_f32_u32": {
+        "T": 1061683200,
+        "P": 3154116608,
+        "A": 3211788288,
+        "B": 3211788288,
+        "C": 3195011072
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "jocforge-preferred-f06-typed-closure-decision.v1",
+  "decision": "APPROVE_EXISTING_FINAL_PUBLIC_MEASUREMENT_KIND_TO_ID1_CONNECTION",
+  "field_contract_ready": true,
+  "internal_interface": "Existing final programme measurement public-kind enum; explicit branch-origin conversion only if necessary. No additional stored DSP state.",
+  "native_member_behavioral_crosswalk": "BOUND_ON_COMPLETED_FINITE_SCALAR_DOMAIN",
+  "historical_factory_branch_observation": "NOT_REQUIRED_FOR_THIS_CONVERSION_GIVEN_PROVEN_BRANCH_EQUIVALENCE; NOT_OBSERVED",
+  "upstream_dsp_and_native_restart_equivalence": "NOT_CLAIMED",
+  "private_vendor_key": "EXCLUDED",
+  "whole_chain_ready": false
+}

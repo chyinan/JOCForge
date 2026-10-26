@@ -1,0 +1,61 @@
+{
+  "schema": "jocforge-preferred-f06-typed-closure-sources.v1",
+  "native_behavior_research_manifest_sha256": "8db0046f79c64a24a0c2864ee5de03fcfdb90ce14be47e94e9e3de2493cff813",
+  "native_behavior_grade": "CACHED_STATIC",
+  "declared_original_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+  "fresh_original_pe_rehash": "NOT_RUN",
+  "cached_export_identities": [
+    {
+      "sha256": "674cd380598d06873d6b8b8d4ca08bee5e0a4d5a1f20cf6ddead02aaefc59012",
+      "bytes": 314357
+    },
+    {
+      "sha256": "9a98f0bdcb6945139dd4b17c9bc10aebd0458528f68abdb5da1482c898496276",
+      "bytes": 77128
+    },
+    {
+      "sha256": "312835ed2a6def8553d638ca57045602eb4829c134073c081c09614b582ae871",
+      "bytes": 11130
+    }
+  ],
+  "approved_contracts": [
+    {
+      "file": "specs/06-meter-bsi.md",
+      "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752",
+      "bytes": 6337
+    },
+    {
+      "file": "specs/06-meter-none-drc-whole-composition.md",
+      "sha256": "94e8d42e77e71f4f16e99a74ee3c808cfc925074e19dd814762d21cde6f259d2",
+      "bytes": 9594
+    },
+    {
+      "file": "specs/13-emdf-and-timeline.md",
+      "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd",
+      "bytes": 12839
+    },
+    {
+      "file": "parameters/f06-meter-none-drc-whole-state-schema-v1.json",
+      "sha256": "64374f686377d94ab8a3843d09d26329788c7afd48c7683459596b119f68e4be",
+      "bytes": 4280
+    }
+  ],
+  "approved_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "prior_washed_packages": [
+    {
+      "package_id": "F13-PREFERRED-F06-MODEL-FIELD-CROSSWALK-V1",
+      "manifest_sha256": "d2d2dad65615ddb2ea18be6e5915780c770a12a9eeda57e79cb5436899b433ac"
+    },
+    {
+      "package_id": "F13-MEASUREMENT-ID1-PROGRAMME-LIFETIME-V1",
+      "manifest_sha256": "50814695b9f57e44e0362b3fe39236057f83e81616be1eada84c1de6a0109acb"
+    },
+    {
+      "package_id": "F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1",
+      "manifest_sha256": "9076bc0af478d15e6a3949e37b199d3435693fa6b2397e8868644bf0dfac372b"
+    }
+  ],
+  "supporting_route_research_manifest_sha256": "11080d7f07d5c5d376d7b9bd6781aa727b13c6507f9a7178baf24ba8848e342e",
+  "route_source_label_erratum_manifest_sha256": "80131294540eed83311f22e776e54801eff4cd0e041dd8edf7a0f6ce87918c82",
+  "source_code_coordinates_and_actual_measurement_metrics_forwarded": false
+}

@@ -108,23 +108,22 @@ pub struct MetadataBodies {
 }
 
 #[derive(Clone, Debug, PartialEq)]
-pub struct MetadataSourceCall {
+struct MetadataSourceCall {
     pub programme_id: SourceFlagsProgrammeId,
     pub attempt: SourceFlagsAttempt,
     pub transaction_id: crate::transaction::CallbackLineageIdentity,
     pub source_index: CodecSourceIndex,
     pub dispatch: JocDispatchIndex,
     pub au_index: Option<PublishedAuIndex>,
-    pub config: Vec<Value>,
+    config: Vec<Value>,
     pub bodies: MetadataBodies,
     pub wrapper_configuration: Value,
 }
 
-/// Typed production input. Wrapper configuration is constructor-pinned and is
-/// therefore not retransmitted by the caller on each source.
+/// Typed per-source input. The ID1 programme configuration and wrapper are
+/// constructor-pinned and are not retransmitted or recomputed for each source.
 pub struct MetadataStageInput {
     pub au_index: Option<PublishedAuIndex>,
-    pub id1_configuration: Id1MeasurementConfiguration,
     pub bodies: MetadataBodiesProposal,
 }
 
@@ -494,6 +493,7 @@ pub struct MetadataOwner {
     programme_id: ProgrammeId,
     attempt: AttemptId,
     expected_sources: u64,
+    id1_configuration: Id1MeasurementConfiguration,
     provider_file: Vec<u8>,
     wrapper_file: Vec<u8>,
     provider_sha256: [u8; 32],
@@ -504,9 +504,11 @@ pub struct MetadataOwner {
 }
 
 impl MetadataOwner {
+    /// Creates fresh timer and queue state around one finalized programme ID1 configuration.
+    ///
+    /// The same immutable configuration is reused for every source staged on this owner.
     pub fn new(
-        programme_id: ProgrammeId,
-        attempt: AttemptId,
+        id1_configuration: Id1MeasurementConfiguration,
         expected_sources: u64,
         provider_file: &[u8],
         wrapper_file: &[u8],
@@ -539,9 +541,10 @@ impl MetadataOwner {
         let provider_sha256 =
             decode_sha256(PROVIDER_CANONICAL_SHA256).ok_or(MetadataOwnerError::ProviderIdentity)?;
         Ok(Self {
-            programme_id,
-            attempt,
+            programme_id: id1_configuration.programme_id().clone(),
+            attempt: id1_configuration.attempt(),
             expected_sources,
+            id1_configuration,
             provider_file: provider_file.to_vec(),
             wrapper_file: wrapper_file.to_vec(),
             provider_sha256,
@@ -562,8 +565,8 @@ impl MetadataOwner {
             return Err(MetadataOwnerError::Retired);
         }
         let (bodies_lineage, bodies) = input.bodies.into_parts();
-        if input.id1_configuration.programme_id() != bodies_lineage.programme_id()
-            || input.id1_configuration.attempt() != bodies_lineage.attempt()
+        if self.id1_configuration.programme_id() != bodies_lineage.programme_id()
+            || self.id1_configuration.attempt() != bodies_lineage.attempt()
         {
             return Err(MetadataOwnerError::ProgrammeIdentity);
         }
@@ -574,7 +577,7 @@ impl MetadataOwner {
             source_index: bodies_lineage.source_index(),
             dispatch: bodies_lineage.dispatch(),
             au_index: input.au_index,
-            config: input.id1_configuration.json_values(),
+            config: self.id1_configuration.json_values(),
             bodies,
             wrapper_configuration: self.wrapper_configuration.clone(),
         };
@@ -636,6 +639,7 @@ impl MetadataOwner {
             programme_id: self.programme_id.clone(),
             attempt: self.attempt,
             expected_sources: self.expected_sources,
+            id1_configuration: self.id1_configuration.clone(),
             provider_file: self.provider_file.clone(),
             wrapper_file: self.wrapper_file.clone(),
             provider_sha256: self.provider_sha256,
@@ -646,7 +650,8 @@ impl MetadataOwner {
         }
     }
 
-    pub fn process_source(
+    #[cfg(test)]
+    fn process_source(
         &mut self,
         call: MetadataSourceCall,
     ) -> Result<MetadataSourceResult, MetadataOwnerError> {
@@ -902,7 +907,14 @@ impl MetadataOwner {
         })
     }
 
-    pub fn reset_for_attempt(&self, attempt: AttemptId) -> Result<Self, MetadataOwnerError> {
+    /// Starts a fresh cold owner with the finalized ID1 configuration for the new attempt.
+    ///
+    /// Measurement itself is supplied by the enclosing programme model and is not rerun here.
+    pub fn reset_for_attempt(
+        &self,
+        attempt: AttemptId,
+        id1_configuration: Id1MeasurementConfiguration,
+    ) -> Result<Self, MetadataOwnerError> {
         let expected_attempt = self
             .attempt
             .value()
@@ -911,9 +923,13 @@ impl MetadataOwner {
         if !self.retired || attempt.value() != expected_attempt {
             return Err(MetadataOwnerError::AttemptSequence);
         }
+        if id1_configuration.programme_id() != &self.programme_id
+            || id1_configuration.attempt() != attempt
+        {
+            return Err(MetadataOwnerError::ProgrammeIdentity);
+        }
         Self::new(
-            self.programme_id.clone(),
-            attempt,
+            id1_configuration,
             self.expected_sources,
             &self.provider_file,
             &self.wrapper_file,

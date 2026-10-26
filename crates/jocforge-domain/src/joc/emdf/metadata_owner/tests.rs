@@ -23,16 +23,47 @@ fn vectors() -> Value {
     .expect("metadata owner vectors must be valid JSON")
 }
 
-fn owner() -> MetadataOwner {
+fn id1_configuration_for_kind(
+    attempt: u64,
+    gating_kind: &'static str,
+) -> Id1MeasurementConfiguration {
+    let measurement =
+        ProgrammeMeasurementReceipt::from_verified_prepass(ProgrammeMeasurementReceiptInput {
+            programme_id: crate::transaction::test_programme_id("P0"),
+            attempt: crate::transaction::AttemptId::new(attempt),
+            input_sha256: [0x11; 32],
+            config_sha256: [0x22; 32],
+            dialogue_word: (-18.0_f32).to_bits(),
+            itu_word: (-17.0_f32).to_bits(),
+            true_peak_word: (-4.0_f32).to_bits(),
+            gating_kind,
+            selected_lufs_word: (-17.0_f32).to_bits(),
+            meter_terminal_sha256: [0x33; 32],
+            normal_callbacks: 4_247,
+            zero_drains: 3,
+            energy_windows: 6_794,
+        })
+        .unwrap();
+    Id1MeasurementConfiguration::from_measurement_for_test(&measurement).unwrap()
+}
+
+fn id1_configuration(attempt: u64) -> Id1MeasurementConfiguration {
+    id1_configuration_for_kind(attempt, "DIALOGUE")
+}
+
+fn owner_for_attempt(attempt: u64) -> MetadataOwner {
     let root = fixture_root();
     MetadataOwner::new(
-        crate::transaction::test_programme_id("P0"),
-        crate::transaction::AttemptId::new(0),
+        id1_configuration(attempt),
         5,
         &std::fs::read(root.join("metadata-public-provider.json")).unwrap(),
         &std::fs::read(root.join("metadata-wrapper-config.json")).unwrap(),
     )
     .unwrap()
+}
+
+fn owner() -> MetadataOwner {
+    owner_for_attempt(0)
 }
 
 fn hex_bytes(text: &str) -> Vec<u8> {
@@ -97,6 +128,7 @@ fn bytes_hex(bytes: &[u8]) -> String {
 fn cold_state_and_five_source_receipts_match_the_complete_vectors() {
     let vectors = vectors();
     let mut owner = owner();
+    let programme_configuration = owner.id1_configuration.clone();
     assert_eq!(
         bytes_hex(&owner.state.canonical_bytes()),
         vectors["cold"]["canonical_hex"]
@@ -105,6 +137,7 @@ fn cold_state_and_five_source_receipts_match_the_complete_vectors() {
 
     for call in vectors["continuous_calls"].as_array().unwrap() {
         let result = owner.process_source(source_call(call)).unwrap();
+        assert_eq!(owner.id1_configuration, programme_configuration);
         assert_eq!(result.receipt.as_json(), call["expected"]["receipt"]);
         assert_eq!(
             bytes_hex(&owner.state.canonical_bytes()),
@@ -118,6 +151,15 @@ fn cold_state_and_five_source_receipts_match_the_complete_vectors() {
                 .map(str::to_owned)
         );
     }
+    let restarted = owner_for_attempt(1);
+    assert_eq!(
+        restarted.id1_configuration.attempt(),
+        crate::transaction::AttemptId::new(1)
+    );
+    assert_eq!(
+        bytes_hex(&restarted.state.canonical_bytes()),
+        vectors["cold"]["canonical_hex"]
+    );
     let first_published: Value = serde_json::from_str(include_str!(
         "../../../../tests/fixtures/metadata_owner/EMDF-TERMINAL-FIXTURES.json"
     ))
@@ -138,30 +180,11 @@ fn typed_stage_uses_pinned_wrapper_and_leaves_committed_leaf_unchanged() {
     let case = &vectors["continuous_calls"][0];
     let call = source_call(case);
     let before = owner();
+    assert_eq!(
+        Value::Array(before.id1_configuration.json_values()),
+        case["input"]["config"]
+    );
     let before_bytes = before.state.canonical_bytes();
-    let measurement =
-        ProgrammeMeasurementReceipt::from_verified_prepass(ProgrammeMeasurementReceiptInput {
-            programme_id: call.programme_id.clone(),
-            attempt: call.attempt,
-            input_sha256: [0x11; 32],
-            config_sha256: [0x22; 32],
-            dialogue_word: (-18.0_f32).to_bits(),
-            itu_word: (-17.0_f32).to_bits(),
-            true_peak_word: (-4.0_f32).to_bits(),
-            gating_kind: "DIALOGUE",
-            selected_lufs_word: (-17.0_f32).to_bits(),
-            meter_terminal_sha256: [0x33; 32],
-            normal_callbacks: 4_247,
-            zero_drains: 3,
-            energy_windows: 6_794,
-        })
-        .unwrap();
-    let id1_configuration = Id1MeasurementConfiguration::from_measurement_for_test(
-        &measurement,
-        crate::meter::measurement_selection::Id1PreferredValue::from_measurement_i32(1),
-    )
-    .unwrap();
-    assert_eq!(id1_configuration.json_values(), call.config);
     let bodies = MetadataBodiesProposal::for_test(
         call.programme_id.clone(),
         call.attempt,
@@ -172,7 +195,6 @@ fn typed_stage_uses_pinned_wrapper_and_leaves_committed_leaf_unchanged() {
     let proposal = before
         .stage_source(MetadataStageInput {
             au_index: call.au_index,
-            id1_configuration,
             bodies,
         })
         .unwrap();
@@ -204,6 +226,53 @@ fn typed_stage_uses_pinned_wrapper_and_leaves_committed_leaf_unchanged() {
 }
 
 #[test]
+fn typed_metadata_programme_reuses_one_public_kind_configuration_until_eof() {
+    let vectors = vectors();
+    let root = fixture_root();
+    let programme_configuration = id1_configuration_for_kind(0, "LEVEL");
+    assert_eq!(programme_configuration.values()[2], 0);
+    let mut owner = MetadataOwner::new(
+        programme_configuration.clone(),
+        5,
+        &std::fs::read(root.join("metadata-public-provider.json")).unwrap(),
+        &std::fs::read(root.join("metadata-wrapper-config.json")).unwrap(),
+    )
+    .unwrap();
+    assert_eq!(
+        bytes_hex(&owner.state.canonical_bytes()),
+        vectors["cold"]["canonical_hex"]
+    );
+
+    for case in vectors["continuous_calls"].as_array().unwrap() {
+        let call = source_call(case);
+        let bodies = MetadataBodiesProposal::for_test(
+            call.programme_id.clone(),
+            call.attempt,
+            call.transaction_id.clone(),
+            call.source_index,
+            call.bodies,
+        );
+        let proposal = owner
+            .stage_source(MetadataStageInput {
+                au_index: call.au_index,
+                bodies,
+            })
+            .unwrap();
+        assert_eq!(
+            proposal.after_owner.id1_configuration,
+            programme_configuration
+        );
+        owner = proposal.into_after_owner();
+        assert_eq!(owner.id1_configuration, programme_configuration);
+    }
+
+    let eof = owner.prepare_eof(5).unwrap();
+    assert_eq!(owner.id1_configuration, programme_configuration);
+    assert_eq!(eof.as_json()["timer_advance_count"], 0);
+    assert_eq!(eof.as_json()["push_count"], 0);
+}
+
+#[test]
 fn published_metadata_proposal_stages_into_the_selected_carrier() {
     let vectors = vectors();
     let calls = vectors["continuous_calls"].as_array().unwrap();
@@ -212,28 +281,6 @@ fn published_metadata_proposal_stages_into_the_selected_carrier() {
         metadata.process_source(source_call(call)).unwrap();
     }
     let call = source_call(&calls[2]);
-    let measurement =
-        ProgrammeMeasurementReceipt::from_verified_prepass(ProgrammeMeasurementReceiptInput {
-            programme_id: call.programme_id.clone(),
-            attempt: call.attempt,
-            input_sha256: [0x11; 32],
-            config_sha256: [0x22; 32],
-            dialogue_word: (-18.0_f32).to_bits(),
-            itu_word: (-17.0_f32).to_bits(),
-            true_peak_word: (-4.0_f32).to_bits(),
-            gating_kind: "DIALOGUE",
-            selected_lufs_word: (-17.0_f32).to_bits(),
-            meter_terminal_sha256: [0x33; 32],
-            normal_callbacks: 4_247,
-            zero_drains: 3,
-            energy_windows: 6_794,
-        })
-        .unwrap();
-    let id1_configuration = Id1MeasurementConfiguration::from_measurement_for_test(
-        &measurement,
-        crate::meter::measurement_selection::Id1PreferredValue::from_measurement_i32(1),
-    )
-    .unwrap();
     let bodies = MetadataBodiesProposal::for_test(
         call.programme_id.clone(),
         call.attempt,
@@ -244,7 +291,6 @@ fn published_metadata_proposal_stages_into_the_selected_carrier() {
     let metadata_proposal = metadata
         .stage_source(MetadataStageInput {
             au_index: call.au_index,
-            id1_configuration,
             bodies,
         })
         .unwrap();
@@ -308,11 +354,14 @@ fn every_failure_vector_is_atomic_and_retires_only_the_attempt() {
 fn eof_is_a_leaf_proposal_with_no_source_receipt_or_flush() {
     let vectors = vectors();
     let mut owner = owner();
+    let programme_configuration = owner.id1_configuration.clone();
     for call in vectors["continuous_calls"].as_array().unwrap() {
         owner.process_source(source_call(call)).unwrap();
+        assert_eq!(owner.id1_configuration, programme_configuration);
     }
 
     let eof = owner.prepare_eof(5).unwrap();
+    assert_eq!(owner.id1_configuration, programme_configuration);
     assert_eq!(
         eof.as_json(),
         json!({
@@ -434,14 +483,27 @@ fn cold_reset_and_retry_are_pinned_without_extra_clock_advances() {
     let vectors = vectors();
     let mut retired_owner = owner();
     retired_owner.prepare_eof(0).unwrap_err();
+    let retry_configuration = id1_configuration(1);
+    assert_eq!(
+        retry_configuration.programme_id(),
+        &retired_owner.programme_id
+    );
+    assert_eq!(
+        retry_configuration.attempt(),
+        crate::transaction::AttemptId::new(1)
+    );
     let retired = retired_owner
-        .reset_for_attempt(crate::transaction::AttemptId::new(1))
+        .reset_for_attempt(crate::transaction::AttemptId::new(1), retry_configuration)
         .unwrap();
     assert_eq!(
         bytes_hex(&retired.state.canonical_bytes()),
         vectors["cold"]["canonical_hex"]
     );
     assert_eq!(retired.state.sha256_hex(), vectors["cold"]["sha256"]);
+    assert_eq!(
+        retired.id1_configuration.attempt(),
+        crate::transaction::AttemptId::new(1)
+    );
     let mut retry = owner();
     let result = retry
         .process_source(source_call(&vectors["reset_retry"]))
@@ -455,10 +517,12 @@ fn cold_reset_and_retry_are_pinned_without_extra_clock_advances() {
 #[test]
 fn eof_source_count_failure_retires_without_changing_committed_state() {
     let mut owner = owner();
+    let programme_configuration = owner.id1_configuration.clone();
     let before = owner.state.canonical_bytes();
     let error = owner.prepare_eof(0).unwrap_err();
     assert_eq!(error.code(), "METADATA_EOF_SOURCE_COUNT");
     assert_eq!(owner.state.canonical_bytes(), before);
+    assert_eq!(owner.id1_configuration, programme_configuration);
     assert!(owner.is_retired());
 }
 
@@ -469,13 +533,7 @@ fn provider_and_wrapper_identity_are_checked_before_use() {
     provider[0] ^= 1;
     let wrapper = std::fs::read(root.join("metadata-wrapper-config.json")).unwrap();
     assert!(matches!(
-        MetadataOwner::new(
-            crate::transaction::test_programme_id("P0"),
-            crate::transaction::AttemptId::new(0),
-            5,
-            &provider,
-            &wrapper,
-        ),
+        MetadataOwner::new(id1_configuration(0), 5, &provider, &wrapper,),
         Err(MetadataOwnerError::ProviderIdentity)
     ));
 
@@ -483,13 +541,7 @@ fn provider_and_wrapper_identity_are_checked_before_use() {
     let mut wrapper = wrapper;
     wrapper.push(b' ');
     assert!(matches!(
-        MetadataOwner::new(
-            crate::transaction::test_programme_id("P0"),
-            crate::transaction::AttemptId::new(0),
-            5,
-            &provider,
-            &wrapper,
-        ),
+        MetadataOwner::new(id1_configuration(0), 5, &provider, &wrapper,),
         Err(MetadataOwnerError::WrapperIdentity)
     ));
 }

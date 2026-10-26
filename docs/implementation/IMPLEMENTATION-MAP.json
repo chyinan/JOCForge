@@ -11297,27 +11297,31 @@
         },
         {
           "slice_id": "measurement-result-aggregate-and-id1-integer-projection",
-          "mapping_status": "MATERIALIZED_STATIC_INTERNAL_PROVIDER_RULES__SELECTED_VALUE_AND_EPOCH_UNBOUND",
-          "implementation_status": "LOCALLY_VERIFIED_INPUT_ONLY_I32_RULES_AND_WASHED_44_BYTE_AGGREGATION_INPUTS__PROVIDER_JOIN_UNBOUND",
-          "scope": "Stateless local rules only: strict greater-than replacement of a whole caller-supplied 44-byte measurement record from the -120 F32 comparator, equal-loudness retention, the unnamed processor I32 remap 3->2/2->1/1->0/other->-1, and ID1 I32 booleanization where source equals 1. The I32 member is carried separately from the record bytes because its offset/name and receipt crosswalk are not bound. No XML/UI input is added; no value is inferred from downmix or gating; no selected provider value is passed to a production metadata owner.",
+          "mapping_status": "MATERIALIZED_F06_TYPED_MODEL_CONNECTION_AND_PROGRAMME_LIFETIME__WHOLE_CHAIN_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_PUBLIC_KIND_TO_ID1_AND_SINGLE_PROGRAMME_CONFIG_REUSE__WHOLE_MODEL_RUN_NOT_RUN",
+          "scope": "The completed model measurement receipt exposes a semantic ProgrammeGatingKind; an explicit PublicMeasurementResultKind conversion maps ungated/dialogue/level to public 0/1/2, and ID1 preferred is public kind == 1. Internal selector origins map separately as 0/1/2 to public 0/2/1; no cast is used. A single finalized ID1 configuration is supplied when a fresh metadata owner is constructed and reused by all production stage_source transitions; typed source-stage inputs carry no measurement/config field. The raw process_source vector adapter is cfg(test) only and retains fixture config inputs. EOF does not replace the owner configuration, and reset_for_attempt requires the finalized configuration for the new attempt before constructing cold timer/queues. The native paired writer/getter behavior is crosswalked for completed finite scalar tuples, but the actual factory branch/value and native reset equivalence are not observed. Raw 44-byte record offset and raw I32 member storage identity are not asserted. No XML/UI input or downmix-preference inference is used.",
           "implementation_files": [
             "crates/jocforge-domain/src/meter/measurement_selection.rs",
             "crates/jocforge-domain/src/meter/mod.rs",
-            "crates/jocforge-domain/src/joc/emdf/id1_configuration.rs"
+            "crates/jocforge-domain/src/meter/measurement_receipt.rs",
+            "crates/jocforge-domain/src/joc/emdf/id1_configuration.rs",
+            "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs"
           ],
           "test_modules": [
             "crates/jocforge-domain/tests/measurement_selection.rs",
+            "crates/jocforge-domain/src/meter/measurement_receipt.rs",
             "crates/jocforge-domain/src/joc/emdf/id1_configuration.rs",
             "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs"
           ],
           "clock": {
-            "domains": [],
+            "domains": ["CodecSourceIndex", "JocDispatchIndex", "PublishedAuIndex"],
             "covered_clauses": [
-              "No source or AU clock is read or advanced; provider branch/value and same-programme/source/reset epoch remain UNBOUND."
+              "One programme-owned ID1 configuration is reused while the metadata owner advances its existing CodecSourceIndex s, dispatch d=s+1, and publication AU j.",
+              "Configuration construction is programme-scoped and has no per-source remeasurement clock; source-count equality to external model domains remains an enclosing-coordinator responsibility."
             ]
           },
           "parameters": {
-            "kind": "WASH_HASH_BOUND_INTERNAL_MEASUREMENT_PROVIDER_RULES",
+            "kind": "WASH_HASH_BOUND_F06_PUBLIC_RESULT_KIND_CROSSWALK_AND_INTERNAL_PROVIDER_RULES",
             "provider_files": [
               "specs/13-emdf-and-timeline.md",
               "specs/06-meter-bsi.md",
@@ -11326,11 +11330,29 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-AGGREGATION-INPUT-VECTORS-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-AGGREGATION-INPUT-VECTORS-V1/INPUT-ONLY-VECTORS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-AGGREGATION-INPUT-VECTORS-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-MODEL-FIELD-CROSSWALK-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-MODEL-FIELD-CROSSWALK-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-MODEL-FIELD-CROSSWALK-V1/INPUT-ONLY-RECIPES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-MODEL-FIELD-CROSSWALK-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-MODEL-FIELD-CROSSWALK-V1/WASH-REVIEW.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-MEASUREMENT-ID1-PROGRAMME-LIFETIME-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-MEASUREMENT-ID1-PROGRAMME-LIFETIME-V1/EVIDENCE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-MEASUREMENT-ID1-PROGRAMME-LIFETIME-V1/INPUT-ONLY-RECIPES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-MEASUREMENT-ID1-PROGRAMME-LIFETIME-V1/KIND-DOMAINS.csv",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-MEASUREMENT-ID1-PROGRAMME-LIFETIME-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-TYPED-CLOSURE-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-TYPED-CLOSURE-V1/INPUT-ONLY-CASES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-TYPED-CLOSURE-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-TYPED-CLOSURE-V1/VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-TYPED-CLOSURE-V1/WASH-DECISION.json"
             ],
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "supplement_manifest_sha256": "9076bc0af478d15e6a3949e37b199d3435693fa6b2397e8868644bf0dfac372b",
             "aggregation_input_supplement_manifest_sha256": "8209a14861329bc09978ef817587969dcfe516884671c6bd913d749498369f56",
+            "model_crosswalk_supplement_manifest_sha256": "d2d2dad65615ddb2ea18be6e5915780c770a12a9eeda57e79cb5436899b433ac",
+            "programme_lifetime_supplement_manifest_sha256": "50814695b9f57e44e0362b3fe39236057f83e81616be1eada84c1de6a0109acb",
+            "typed_closure_supplement_manifest_sha256": "d2b0954721af416c097d2979809bd0dc2177266985b98eeeeeaa81d6958d5cad",
             "source_contracts": [
               {
                 "file": "specs/13-emdf-and-timeline.md",
@@ -11343,20 +11365,71 @@
                 "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
               }
             ],
-            "validation_boundary": "Wash's static evidence passed payload, contract, registry, and cached code-body checks, but used a cached Ghidra database; original PE rehash and runtime observation are NOT_RUN. The selected provider branch/value, MeasurementReceipt crosswalk, and same-programme/source/reset epoch remain UNBOUND."
+            "crosswalk_sources": [
+              {
+                "file": "specs/06-meter-bsi.md",
+                "bytes": 6337,
+                "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
+              },
+              {
+                "file": "specs/06-ungated-mean-and-fallback.md",
+                "bytes": 8673,
+                "sha256": "07c850be31dbe42a1396634bd96dfd4a54fbd80aa27b3d39a36998545cdc3b9e"
+              },
+              {
+                "file": "specs/13-emdf-and-timeline.md",
+                "bytes": 12839,
+                "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd"
+              },
+              {
+                "file": "test-vectors/METER-UNGATED-FALLBACK-VERIFICATION.json",
+                "bytes": 135066,
+                "sha256": "7dc8f1405d6d1cbbcadba19b498e5d0fcb95a11cc221af58a64c81acb2a89d41"
+              }
+            ],
+            "lifetime_sources": [
+              {
+                "file": "specs/06-meter-bsi.md",
+                "bytes": 6337,
+                "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
+              },
+              {
+                "file": "specs/06-ungated-mean-and-fallback.md",
+                "bytes": 8673,
+                "sha256": "07c850be31dbe42a1396634bd96dfd4a54fbd80aa27b3d39a36998545cdc3b9e"
+              },
+              {
+                "file": "specs/13-emdf-and-timeline.md",
+                "bytes": 12839,
+                "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd"
+              },
+              {
+                "file": "test-vectors/METER-UNGATED-FALLBACK-VERIFICATION.json",
+                "bytes": 135066,
+                "sha256": "7dc8f1405d6d1cbbcadba19b498e5d0fcb95a11cc221af58a64c81acb2a89d41"
+              }
+            ],
+            "validation_boundary": "The frozen duration-model caller's public result kind to ID1 rule is hash-bound and locally connected through a distinct PublicMeasurementResultKind. One finalized configuration is stored by the model metadata owner and reused for each source; a new owner starts with cold timer/queues. The tests use input-only scalar receipts and existing source vectors, not a full meter or duration execution. Native member-to-model behavior is crosswalked only on completed finite scalar tuples; selected factory branch/value, upstream DSP, native restart equivalence, and original PE rehash remain unobserved/NOT_RUN."
           },
           "vectors": {
-            "kind": "HASH_BOUND_SYNTHETIC_INPUT_ONLY_RULES_WITH_LOCAL_RECORD_TRANSITION",
+            "kind": "HASH_BOUND_F06_TYPED_CLOSURE_INPUTS_MODEL_LIFETIME_AND_AGGREGATION_RECIPES",
             "authoritative_vectors": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
               "crates/jocforge-domain/tests/fixtures/measurement_selection/input-only-vectors.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-AGGREGATION-INPUT-VECTORS-V1/INPUT-ONLY-VECTORS.json",
-              "crates/jocforge-domain/tests/fixtures/measurement_selection/aggregation-input-only-vectors.json"
+              "crates/jocforge-domain/tests/fixtures/measurement_selection/aggregation-input-only-vectors.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-MODEL-FIELD-CROSSWALK-V1/INPUT-ONLY-RECIPES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-MEASUREMENT-ID1-PROGRAMME-LIFETIME-V1/INPUT-ONLY-RECIPES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-F06-TYPED-CLOSURE-V1/INPUT-ONLY-CASES.json",
+              "crates/jocforge-domain/tests/fixtures/metadata_owner/METADATA-OWNER-VECTORS.json"
             ],
             "case_pointers": [
               "Seven strict I32 equality cases and six unnamed processor raw-I32 remap cases are asserted against the Wash input-only controls.",
               "Four complete Wash aggregate recipes supply the initial 44-byte record, comparator bits, separate I32 member, and each ordered candidate record/loudness/member tuple; they cover no winner, strict winner/tie, later winner, and no candidates.",
-              "The aggregate package supplies inputs only, not expected production outputs. Tests derive each transition from the washed strict-greater rule and do not assert native layout, selected value, or an expected body."
+              "The model crosswalk package supplies scalar model inputs only. Receipt tests distinguish internal Level=1 from public Level=2 and verify public_result_kind==1 drives ID1 preferred; the ungated public-kind-0 projection is also tested without rerunning the F06U producer. No expected body or full model run is claimed.",
+              "The aggregate package supplies inputs only, not expected production outputs. Tests derive each transition from the washed strict-greater rule and do not assert native layout or an expected body.",
+              "The typed-closure package proves branch-independent public-kind/preferred behavior only on completed finite scalar tuples; its historical branch and native execution remain unobserved/not run.",
+              "The typed-stage lifetime test constructs one finalized ID1 configuration, advances five source proposals with that same configuration, verifies EOF accepts no measurement input, and verifies a new attempt starts with cold timer/queues. The separate raw process_source vector adapter is cfg(test) only and may consume its fixture's per-source config; it does not back the production stage path. The scalar recipes are not a full meter or duration run."
             ],
             "local_fixture": {
               "file": "crates/jocforge-domain/tests/fixtures/measurement_selection/aggregation-input-only-vectors.json",
@@ -11372,28 +11445,36 @@
             ],
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "supplement_manifest_sha256": "9076bc0af478d15e6a3949e37b199d3435693fa6b2397e8868644bf0dfac372b",
-            "aggregation_input_supplement_manifest_sha256": "8209a14861329bc09978ef817587969dcfe516884671c6bd913d749498369f56"
+            "aggregation_input_supplement_manifest_sha256": "8209a14861329bc09978ef817587969dcfe516884671c6bd913d749498369f56",
+            "model_crosswalk_supplement_manifest_sha256": "d2d2dad65615ddb2ea18be6e5915780c770a12a9eeda57e79cb5436899b433ac"
           },
           "native_status": {
+            "model_public_result_kind_to_id1_preferred": "LOCALLY_VERIFIED",
+            "selected_di_off_level_public_kind_2_to_preferred_false": "LOCALLY_VERIFIED",
+            "ungated_public_kind_0_to_preferred_false": "LOCALLY_VERIFIED",
+            "generic_dialogue_public_kind_1_to_preferred_true": "LOCALLY_VERIFIED",
+            "programme_id1_configuration_created_once_and_reused": "LOCALLY_VERIFIED_MODEL_OWNER_LIFETIME",
+            "fresh_metadata_owner_timer_and_queues": "LOCALLY_VERIFIED_COLD_CONSTRUCTOR",
+            "model_eof_does_not_recompute_measurement_or_preferred": "LOCALLY_VERIFIED",
             "strict_i32_booleanization": "LOCALLY_VERIFIED_AGAINST_INPUT_ONLY_CONTROLS",
             "processor_i32_remap": "LOCALLY_VERIFIED_AGAINST_INPUT_ONLY_CONTROLS",
             "44_byte_aggregate_transition": "LOCALLY_VERIFIED_WITH_SYNTHETIC_LOCAL_RECORDS",
-            "selected_provider_branch": "UNBOUND",
-            "selected_preferred_value": "UNBOUND",
-            "measurement_receipt_crosswalk": "UNBOUND",
-            "same_programme_source_reset_epoch": "UNBOUND",
+            "native_member_behavioral_crosswalk": "BOUND_ON_COMPLETED_FINITE_SCALAR_DOMAIN",
+            "selected_native_provider_branch": "UNBOUND",
+            "selected_native_preferred_value": "UNBOUND",
+            "native_same_programme_source_reset_epoch": "UNBOUND",
             "fresh_original_pe_rehash": "NOT_RUN",
             "native_or_runtime_execution": "NOT_RUN",
-            "production_id1_provider_join": "NOT_BOUND",
+            "full_model_execution": "NOT_RUN",
+            "native_restart_and_upstream_dsp_equivalence": "NOT_CLAIMED",
             "whole_f13_acceptance": "NOT_RUN"
           },
           "error_outcomes": [],
           "not_run": [
-            "Provider tag semantic names, selected provider branch and selected value.",
-            "Approved model MeasurementReceipt crosswalk and same-programme/source/reset epoch.",
-            "Provider factory selected-run reachability and direct per-source wrapper reachability.",
-            "Fresh original PE rehash, native/runtime/model execution, whole-chain execution, and product acceptance.",
-            "Exact Wash aggregate winner/tie record bytes and loudness values; local synthetic records are rule controls only."
+            "Selected native factory branch and runtime value are not observed; only branch-independent behavior on completed finite scalar tuples is crosswalked.",
+            "Upstream energy/ITU production from real audio, full model execution, native restart equivalence, and original PE rehash.",
+            "Programme-level frame-count equality to all external clocks, parent transaction installation, whole-chain execution, and product acceptance.",
+            "No expected production body is supplied by the model crosswalk or aggregation input-only packages."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }

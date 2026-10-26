@@ -1,11 +1,12 @@
 // pattern: Functional Core
 //! Pure local measurement-result aggregation and opaque I32 projections.
 //!
-//! The 44-byte record and its I32 member are carried as separate values because
-//! their byte layout and approved receipt crosswalk remain unbound. This module
-//! does not select a runtime provider or own committed programme state.
+//! The raw 44-byte record and its I32 member remain separate because their byte
+//! layout and identity with the F06 model result are unbound. A distinct typed
+//! path converts the model's public result kind to the ID1 boolean. This module
+//! does not select a native runtime provider or own committed programme state.
 
-use crate::numeric::FiniteF32;
+use crate::{meter::measurement_receipt::PublicMeasurementResultKind, numeric::FiniteF32};
 
 const MEASUREMENT_RECORD_BYTES: usize = 44;
 const INITIAL_LOUDNESS_COMPARATOR_BITS: u32 = 0xc2f0_0000;
@@ -15,6 +16,11 @@ const INITIAL_LOUDNESS_COMPARATOR_BITS: u32 = 0xc2f0_0000;
 pub struct Id1PreferredValue(i32);
 
 impl Id1PreferredValue {
+    /// Converts the public F06 measurement result kind, not the internal kind code.
+    pub const fn from_public_result_kind(kind: PublicMeasurementResultKind) -> Self {
+        if kind.value() == 1 { Self(1) } else { Self(0) }
+    }
+
     /// Converts an opaque measurement-result I32 using the strict equality rule.
     pub const fn from_measurement_i32(source_i32: i32) -> Self {
         Self(id1_preferred_from_measurement_i32(source_i32))

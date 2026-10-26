@@ -1,0 +1,4 @@
+semantic_selection,internal_kind,raw_meter_kind,wrapper_kind,public_result_kind,model_result_tag,model_kind_eq1
+ungated,0,0,1,0,0,False
+level,1,2,3,2,2,False
+dialogue,2,1,2,1,1,True

@@ -16,11 +16,23 @@ pub enum MeasurementReceiptError {
     Counts,
 }
 
+/// Semantic kind stored by the final model measurement receipt.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum ProgrammeGatingKind {
     Ungated,
     Dialogue,
     Level,
+}
+
+/// A measurement kind after conversion to the public F06 result domain.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct PublicMeasurementResultKind(u8);
+
+impl PublicMeasurementResultKind {
+    /// Returns the public result code: ungated 0, dialogue 1, or level 2.
+    pub const fn value(self) -> u8 {
+        self.0
+    }
 }
 
 impl ProgrammeGatingKind {
@@ -42,10 +54,15 @@ impl ProgrammeGatingKind {
     }
 
     pub const fn public_code(self) -> u8 {
+        self.public_result_kind().value()
+    }
+
+    /// Converts the semantic receipt kind into the distinct public result domain.
+    pub const fn public_result_kind(self) -> PublicMeasurementResultKind {
         match self {
-            Self::Ungated => 0,
-            Self::Dialogue => 1,
-            Self::Level => 2,
+            Self::Ungated => PublicMeasurementResultKind(0),
+            Self::Dialogue => PublicMeasurementResultKind(1),
+            Self::Level => PublicMeasurementResultKind(2),
         }
     }
 
@@ -162,6 +179,11 @@ impl ProgrammeMeasurementReceipt {
         self.gating_kind
     }
 
+    /// Returns this receipt's explicitly converted public measurement result kind.
+    pub const fn public_result_kind(&self) -> PublicMeasurementResultKind {
+        self.gating_kind.public_result_kind()
+    }
+
     pub const fn selected_lufs_word(&self) -> u32 {
         self.selected_lufs_word
     }
@@ -216,6 +238,7 @@ mod tests {
             assert_eq!(receipt.gating_kind(), kind);
             assert_eq!(receipt.gating_kind().as_str(), text);
             assert_eq!(receipt.gating_kind().public_code(), code);
+            assert_eq!(receipt.public_result_kind().value(), code);
         }
         for rejected in ["", "ungated", "dialogue", "level", "0", "1", "2"] {
             assert_eq!(

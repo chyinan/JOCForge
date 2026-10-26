@@ -1,0 +1,62 @@
+{
+  "schema": "wash.measurement-selection-kind-inputs.v1",
+  "grade": "SELF_OWNED_FINITE_SCALAR_SELECTION_BOUNDARY; NOT_FRESH_ENERGY_OR_BODY_PRODUCTION",
+  "cases": [
+    {
+      "id": "DI_off_level",
+      "scope": "selected current profile; valid frozen subset also applies",
+      "dialogue_host": -120.0,
+      "ITU_host": -24.0,
+      "ungated_host": -30.0,
+      "speech_percentage_host": -1.0,
+      "speech_threshold_percent": 100.0
+    },
+    {
+      "id": "DI_off_unavailable_ITU_fresh_ungated",
+      "scope": "current F06U branch; old helper rejects but must not narrow current contract",
+      "dialogue_host": -120.0,
+      "ITU_host": -120.0,
+      "ungated_host": -30.0,
+      "speech_percentage_host": -1.0,
+      "speech_threshold_percent": 100.0
+    },
+    {
+      "id": "DI_off_cold_mean_no_records",
+      "scope": "current F06U selection boundary; ungated scalar is defined fresh cold terminal result",
+      "dialogue_host": -120.0,
+      "ITU_host": -120.0,
+      "ungated_host": -120.0,
+      "speech_percentage_host": -1.0,
+      "speech_threshold_percent": 100.0
+    },
+    {
+      "id": "primitive_dialogue",
+      "scope": "F06.2 selection primitive only; not selected DI-off programme admission",
+      "dialogue_host": -20.0,
+      "ITU_host": -24.0,
+      "ungated_host": -30.0,
+      "speech_percentage_host": 80.0,
+      "speech_threshold_percent": 50.0
+    },
+    {
+      "id": "primitive_threshold_equality",
+      "scope": "F06.2 primitive boundary only",
+      "dialogue_host": -20.0,
+      "ITU_host": -24.0,
+      "ungated_host": -30.0,
+      "speech_percentage_host": 50.0,
+      "speech_threshold_percent": 50.0
+    },
+    {
+      "id": "primitive_dialogue_floor_equality",
+      "scope": "F06.2 primitive boundary only",
+      "dialogue_host": -60.0,
+      "ITU_host": -24.0,
+      "ungated_host": -30.0,
+      "speech_percentage_host": 80.0,
+      "speech_threshold_percent": 50.0
+    }
+  ],
+  "expected_body_or_native_record_bytes_included": false,
+  "ungated_input_condition": "A real programme must obtain this scalar from the fresh same-programme F06U terminal state. The recipes test only selection and enum mapping."
+}

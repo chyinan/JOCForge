@@ -1,6 +1,7 @@
+use jocforge_domain::meter::measurement_receipt::ProgrammeGatingKind;
 use jocforge_domain::meter::measurement_selection::{
-    MeasurementAggregate, MeasurementRecordCandidate, id1_preferred_from_measurement_i32,
-    processor_value_to_measurement_i32,
+    Id1PreferredValue, MeasurementAggregate, MeasurementRecordCandidate,
+    id1_preferred_from_measurement_i32, processor_value_to_measurement_i32,
 };
 use jocforge_domain::numeric::FiniteF32;
 use serde_json::Value;
@@ -74,6 +75,23 @@ fn processor_i32_remap_then_booleanization_matches_all_input_only_controls() {
         assert_eq!(
             id1_preferred_from_measurement_i32(measurement_i32),
             vector_i32(case, "id1_preferred_i32")
+        );
+    }
+}
+
+#[test]
+fn public_result_domain_separates_internal_level_from_id1_preferred() {
+    let cases = [
+        (ProgrammeGatingKind::Ungated, 0, 0),
+        (ProgrammeGatingKind::Dialogue, 1, 1),
+        (ProgrammeGatingKind::Level, 2, 0),
+    ];
+    for (semantic_kind, public_kind, preferred) in cases {
+        let public_result_kind = semantic_kind.public_result_kind();
+        assert_eq!(public_result_kind.value(), public_kind);
+        assert_eq!(
+            Id1PreferredValue::from_public_result_kind(public_result_kind).value(),
+            preferred
         );
     }
 }

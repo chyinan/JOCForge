@@ -1,0 +1,35 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F13-MEASUREMENT-ID1-PROGRAMME-LIFETIME-V1",
+  "status": "MODEL_PROGRAMME_MEASUREMENT_TO_ID1_LIFETIME_READY_NATIVE_JOIN_OPEN",
+  "model_lifetime_ready": true,
+  "implementation_ready": false,
+  "source_research_manifest_sha256": "d3b2ed818306107557f0790ed6a7d422ac91a7c85e58f35561b2030cc3ecd2fc",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 2547,
+      "sha256": "cb2536ed60bbe3591ccea9518cbfeed909596e60dc2e5d60ebf9c1d9d4f05829"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1630,
+      "sha256": "a36469d4760c467dc34add6f245059f357cac2369b9cd185aa68553d299da8eb"
+    },
+    {
+      "file": "INPUT-ONLY-RECIPES.json",
+      "bytes": 2231,
+      "sha256": "b8362e81fd690fa257572439df9a965cfe5015f30adf6b87593d5a9ae7edea2b"
+    },
+    {
+      "file": "KIND-DOMAINS.csv",
+      "bytes": 186,
+      "sha256": "dbf2459414e42d3dee707343663a728b9f5dd8fa2923e0aab06213c6986703a5"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 2640,
+      "sha256": "8cc426b8c398a3e2628f61b210ce01813d7c3120a9bdd6c2394084435d9d3ab3"
+    }
+  ]
+}

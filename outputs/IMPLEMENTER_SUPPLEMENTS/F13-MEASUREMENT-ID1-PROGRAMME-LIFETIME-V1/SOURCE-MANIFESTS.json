@@ -1,0 +1,74 @@
+{
+  "schema": "jocforge-measurement-id1-programme-sources.v1",
+  "research_manifest_sha256": "d3b2ed818306107557f0790ed6a7d422ac91a7c85e58f35561b2030cc3ecd2fc",
+  "model_crosswalk_manifest_sha256": "d2d2dad65615ddb2ea18be6e5915780c770a12a9eeda57e79cb5436899b433ac",
+  "source_identities": [
+    {
+      "role": "current approved authority",
+      "bytes": 6337,
+      "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
+    },
+    {
+      "role": "current approved authority",
+      "bytes": 8673,
+      "sha256": "07c850be31dbe42a1396634bd96dfd4a54fbd80aa27b3d39a36998545cdc3b9e"
+    },
+    {
+      "role": "frozen selection primitive",
+      "bytes": 14243,
+      "sha256": "b57908d17c50d40ff4e7731926173ea8640db1e7cad926e886c3ad04198b1398"
+    },
+    {
+      "role": "frozen DI-off subset",
+      "bytes": 2146,
+      "sha256": "6783304fa801ae498276cdf8e339d7ddb0e0f6fdc2e26fbdc7f5088ce671a6a5"
+    },
+    {
+      "role": "frozen result producer",
+      "bytes": 4404,
+      "sha256": "2cdf93a77c2a8d30b30ac3ce9530d1f2b60b85b096ab7652a2fb0d8709d84c4e"
+    },
+    {
+      "role": "actual frozen duration caller",
+      "bytes": 6156,
+      "sha256": "39edc921474a9b40e2a4af192231c220ce55a1f0a2c1198bfa02f4f6ae1f5807"
+    },
+    {
+      "role": "timer configuration value interface",
+      "bytes": 3885,
+      "sha256": "15290e104085962b9faa9dbaab31000fe8c0707499808343f67cbb43e9180b6c"
+    },
+    {
+      "role": "programme audio-manifest builder, not measurement-result selector",
+      "bytes": 5720,
+      "sha256": "70336fe127441c44affb0a69b0fbf8424dc6421d9f59de0c936c64e758c1afd2"
+    },
+    {
+      "role": "actual frozen duration timeline lifetime",
+      "bytes": 6013,
+      "sha256": "3ddefaa86bb93dedf73800e3d7791213c06f26556f9d4290c81ae149988c4581"
+    },
+    {
+      "role": "archived scalar or stage metadata",
+      "bytes": 1492,
+      "sha256": "6313b755b21fa5d34f662446ac681819c21dc98b0677747b53533398628eb289"
+    },
+    {
+      "role": "archived scalar or stage metadata",
+      "bytes": 849,
+      "sha256": "3c7dddc522aa5acee3bcb0244d53f9a05e35560829e82c8bc462ee62aad55b17"
+    },
+    {
+      "role": "archived scalar or stage metadata",
+      "bytes": 1357,
+      "sha256": "43e6440c1ea019aa95d51349aadd569c8a9c575c320b4dcd28be6505ceff57b0"
+    },
+    {
+      "role": "archived scalar or stage metadata",
+      "bytes": 9609,
+      "sha256": "8895a2727396ac9e45790a6e45ea973fd5dbd6c58fd3104939b177579a9bd384"
+    }
+  ],
+  "archived_scalar_values_forwarded": false,
+  "native_coordinates_or_code_forwarded": false
+}

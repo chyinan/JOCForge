@@ -1,0 +1,27 @@
+{
+  "schema": "jocforge-preferred-f06-typed-closure-verification.v1",
+  "research_payloads": "6/6_MATCH",
+  "cached_exports": "3/3_MATCH",
+  "recovered_code_bodies": "10/10_HASH_MATCH",
+  "approved_contracts": "4/4_MATCH",
+  "functional_constants": "3/3_BINARY32_HASH_MATCH",
+  "base_chain_manifest": "MATCH",
+  "normal_checker": {
+    "status": "PASS",
+    "input_only_cases": 12,
+    "synthetic_equivalence_checks": 10012,
+    "origin_branches": 3,
+    "invalid_inputs_rejected": 5
+  },
+  "optimized_checker": {
+    "status": "PASS",
+    "input_only_cases": 12,
+    "synthetic_equivalence_checks": 10012,
+    "origin_branches": 3,
+    "invalid_inputs_rejected": 5
+  },
+  "source_grade": "CACHED_STATIC",
+  "native_execution": "NOT_RUN",
+  "original_pe_rehash": "NOT_RUN",
+  "upstream_full_programme_audio_acceptance": "NOT_RUN"
+}

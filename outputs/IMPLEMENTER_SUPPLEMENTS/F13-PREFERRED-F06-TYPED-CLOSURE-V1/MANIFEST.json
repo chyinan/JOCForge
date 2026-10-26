@@ -1,0 +1,37 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F13-PREFERRED-F06-TYPED-CLOSURE-V1",
+  "status": "PREFERRED_F06_COMPLETED_SCALAR_TYPED_CONNECTION_READY",
+  "scope_implementation_ready": true,
+  "whole_chain_implementation_ready": false,
+  "source_native_behavior_research_manifest_sha256": "8db0046f79c64a24a0c2864ee5de03fcfdb90ce14be47e94e9e3de2493cff813",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 4827,
+      "sha256": "a09662946f0edf94159ce3b8f1178bc0d26d3f5723d2f2711da6526a85eb2ff5"
+    },
+    {
+      "file": "INPUT-ONLY-CASES.json",
+      "bytes": 2813,
+      "sha256": "e6db15e2041eae8e00c54d8cd70713512f967884366e5131cd4e53b42f5a737d"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 2498,
+      "sha256": "b22d00c43edc586f034a6f4d4ad498a32c78f9daf1014dd528e5512ad776ad7d"
+    },
+    {
+      "file": "VERIFICATION.json",
+      "bytes": 859,
+      "sha256": "dafce80fdd4470f5e8b20060a5622b88bbc2aca1d950fdef5c889a9261a4bdc8"
+    },
+    {
+      "file": "WASH-DECISION.json",
+      "bytes": 697,
+      "sha256": "90e4faa2ec29d8ee48fb071cf4a5e0b96ab08c64b489595ff32ed728d3b9e007"
+    }
+  ],
+  "implementation_ready": true,
+  "readiness_scope": "F06 completed finite scalar/public-kind to programme ID1 preferred connection only"
+}

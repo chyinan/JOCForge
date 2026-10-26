@@ -35,22 +35,22 @@ pub struct Id1MeasurementConfiguration {
 }
 
 impl Id1MeasurementConfiguration {
-    #[allow(dead_code)] // No production caller until the internal provider/receipt crosswalk is bound.
+    #[allow(dead_code)] // The model crosswalk is local; parent installation remains deferred.
     pub(crate) fn from_selected_di_off_measurement(
         receipt: &ProgrammeMeasurementReceipt,
-        preferred_value: Id1PreferredValue,
     ) -> Result<Self, Id1ConfigurationError> {
         if receipt.gating_kind() == ProgrammeGatingKind::Dialogue {
             return Err(Id1ConfigurationError::UnsupportedSelectedGating);
         }
-        Self::from_measurement(receipt, preferred_value)
+        Self::from_measurement(receipt)
     }
 
     #[allow(dead_code)] // Shared conversion core for selected admission and isolated tests.
     fn from_measurement(
         receipt: &ProgrammeMeasurementReceipt,
-        preferred_value: Id1PreferredValue,
     ) -> Result<Self, Id1ConfigurationError> {
+        let preferred_value =
+            Id1PreferredValue::from_public_result_kind(receipt.public_result_kind());
         let values = [
             -2,
             1,
@@ -75,9 +75,8 @@ impl Id1MeasurementConfiguration {
     #[cfg(test)]
     pub(crate) fn from_measurement_for_test(
         receipt: &ProgrammeMeasurementReceipt,
-        preferred_value: Id1PreferredValue,
     ) -> Result<Self, Id1ConfigurationError> {
-        Self::from_measurement(receipt, preferred_value)
+        Self::from_measurement(receipt)
     }
 
     pub const fn values(&self) -> &[i64; 9] {
@@ -193,11 +192,9 @@ mod tests {
                 energy_windows: 6_794,
             })
             .unwrap();
-        let configuration = Id1MeasurementConfiguration::from_selected_di_off_measurement(
-            &receipt,
-            Id1PreferredValue::from_measurement_i32(0),
-        )
-        .unwrap();
+        assert_eq!(receipt.public_result_kind().value(), 2);
+        let configuration =
+            Id1MeasurementConfiguration::from_selected_di_off_measurement(&receipt).unwrap();
         assert_eq!(
             configuration.values(),
             &[-2, 1, 0, 0, -48, -46, -512, -2, -512]
@@ -208,7 +205,7 @@ mod tests {
     }
 
     #[test]
-    fn id1_preferred_value_is_explicit_and_selected_gating_remains_separate() {
+    fn public_measurement_result_kind_drives_id1_preferred_and_selected_gate_remains_separate() {
         let receipt =
             ProgrammeMeasurementReceipt::from_verified_prepass(ProgrammeMeasurementReceiptInput {
                 programme_id: crate::transaction::test_programme_id("dialogue-gating-test"),
@@ -226,30 +223,41 @@ mod tests {
                 energy_windows: 6_794,
             })
             .unwrap();
+        assert_eq!(receipt.public_result_kind().value(), 1);
         assert_eq!(
-            Id1MeasurementConfiguration::from_measurement(
-                &receipt,
-                Id1PreferredValue::from_measurement_i32(1),
-            )
-            .unwrap()
-            .values()[2],
+            Id1MeasurementConfiguration::from_measurement(&receipt)
+                .unwrap()
+                .values()[2],
             1
         );
         assert_eq!(
-            Id1MeasurementConfiguration::from_measurement(
-                &receipt,
-                Id1PreferredValue::from_measurement_i32(0),
-            )
-            .unwrap()
-            .values()[2],
-            0
-        );
-        assert_eq!(
-            Id1MeasurementConfiguration::from_selected_di_off_measurement(
-                &receipt,
-                Id1PreferredValue::from_measurement_i32(1),
-            ),
+            Id1MeasurementConfiguration::from_selected_di_off_measurement(&receipt),
             Err(Id1ConfigurationError::UnsupportedSelectedGating)
         );
+    }
+
+    #[test]
+    fn ungated_public_result_kind_maps_preferred_false() {
+        let receipt =
+            ProgrammeMeasurementReceipt::from_verified_prepass(ProgrammeMeasurementReceiptInput {
+                programme_id: crate::transaction::test_programme_id("ungated-id1-result-test"),
+                attempt: AttemptId::new(0),
+                input_sha256: [0x11; 32],
+                config_sha256: [0x22; 32],
+                dialogue_word: (-120.0_f32).to_bits(),
+                itu_word: (-24.0_f32).to_bits(),
+                true_peak_word: (-1.0_f32).to_bits(),
+                gating_kind: "UNGATED",
+                selected_lufs_word: (-24.0_f32).to_bits(),
+                meter_terminal_sha256: [0x33; 32],
+                normal_callbacks: 4_247,
+                zero_drains: 3,
+                energy_windows: 6_794,
+            })
+            .unwrap();
+        assert_eq!(receipt.public_result_kind().value(), 0);
+        let configuration =
+            Id1MeasurementConfiguration::from_selected_di_off_measurement(&receipt).unwrap();
+        assert_eq!(configuration.values()[2], 0);
     }
 }

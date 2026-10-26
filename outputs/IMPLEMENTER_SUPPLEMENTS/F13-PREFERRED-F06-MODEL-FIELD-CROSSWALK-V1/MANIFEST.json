@@ -1,0 +1,35 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F13-PREFERRED-F06-MODEL-FIELD-CROSSWALK-V1",
+  "status": "MODEL_F06_PUBLIC_KIND_TO_ID1_RULE_READY_NATIVE_JOIN_OPEN",
+  "model_crosswalk_ready": true,
+  "implementation_ready": false,
+  "source_research_manifest_sha256": "f90555c736bb43c9a46fce451e87c9f6ae7bc23fe67e15a7617f4b41b56195a9",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 3279,
+      "sha256": "ec514394e3ae04f51969543b2d945f652160565f7fc458d7343d200dbada30cc"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 885,
+      "sha256": "30adf7f76f99b019b40772ab9f7827d95aa09dce64718d8b4eb079e5c28d7b56"
+    },
+    {
+      "file": "INPUT-ONLY-RECIPES.json",
+      "bytes": 1321,
+      "sha256": "b97604b832a1dd615bf46c0e43a6de33b0c89ee43df7686c14388282e5c8cdca"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 3157,
+      "sha256": "1214019595f5119aa619302492c17c1f269e4f02f74c97f987a73ca187ff3c72"
+    },
+    {
+      "file": "WASH-REVIEW.json",
+      "bytes": 637,
+      "sha256": "bae4e0fb29b1de66e7f6d7c680d52bf9a9649ccd5aec1df68c1d1cfe3c70dfa2"
+    }
+  ]
+}

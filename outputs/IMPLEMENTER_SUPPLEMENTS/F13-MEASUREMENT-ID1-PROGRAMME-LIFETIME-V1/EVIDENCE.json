@@ -1,0 +1,56 @@
+{
+  "schema": "jocforge-measurement-id1-programme-evidence.v1",
+  "model_lifetime_rule_ready": true,
+  "package_hashes": "9/9_MATCH",
+  "source_contract_hashes": "9/9_MATCH",
+  "archived_scalar_metadata_hashes": "3/3_MATCH",
+  "timeline_ledger_hash": "MATCH",
+  "research_normal_and_optimized_reports": "45_CHECKS_EACH_PASS; SCOPE_SCALAR_AND_IDENTITY_ONLY",
+  "wash_scalar_boundary_replay": {
+    "cases": 6,
+    "matches_reported_current_rules": true,
+    "derived": [
+      {
+        "id": "DI_off_level",
+        "internal_kind": 1,
+        "public_kind": 2,
+        "preferred": false
+      },
+      {
+        "id": "DI_off_unavailable_ITU_fresh_ungated",
+        "internal_kind": 0,
+        "public_kind": 0,
+        "preferred": false
+      },
+      {
+        "id": "DI_off_cold_mean_no_records",
+        "internal_kind": 0,
+        "public_kind": 0,
+        "preferred": false
+      },
+      {
+        "id": "primitive_dialogue",
+        "internal_kind": 2,
+        "public_kind": 1,
+        "preferred": true
+      },
+      {
+        "id": "primitive_threshold_equality",
+        "internal_kind": 1,
+        "public_kind": 2,
+        "preferred": false
+      },
+      {
+        "id": "primitive_dialogue_floor_equality",
+        "internal_kind": 1,
+        "public_kind": 2,
+        "preferred": false
+      }
+    ]
+  },
+  "fresh_ungated_mean_execution": "NOT_RUN",
+  "native_execution": "NOT_RUN",
+  "whole_programme_execution_by_wash": "NOT_RUN",
+  "native_member_and_factory_runtime_join": "OPEN",
+  "same_programme_config_reuse": "MODEL_STATIC_DATAFLOW_BOUND"
+}

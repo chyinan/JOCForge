@@ -1,0 +1,92 @@
+{
+  "schema": "jocforge-model-measurement-id1-sources.v1",
+  "research_manifest_sha256": "f90555c736bb43c9a46fce451e87c9f6ae7bc23fe67e15a7617f4b41b56195a9",
+  "research_sources": [
+    {
+      "role": "legacy_96_caller",
+      "bytes": 5549,
+      "sha256": "4177a3d5789b04fff36129ae6f40436d72dcb723ef8b5262332827c31d889160"
+    },
+    {
+      "role": "timer_config",
+      "bytes": 3885,
+      "sha256": "15290e104085962b9faa9dbaab31000fe8c0707499808343f67cbb43e9180b6c"
+    },
+    {
+      "role": "actual_duration_caller",
+      "bytes": 6156,
+      "sha256": "39edc921474a9b40e2a4af192231c220ce55a1f0a2c1198bfa02f4f6ae1f5807"
+    },
+    {
+      "role": "duration_stage_plan",
+      "bytes": 5476,
+      "sha256": "63854af48d35ed8ae7926fdc7dfd4fbe58e99f341c08c03588d421c08c8074c3"
+    },
+    {
+      "role": "measurement_producer",
+      "bytes": 4404,
+      "sha256": "2cdf93a77c2a8d30b30ac3ce9530d1f2b60b85b096ab7652a2fb0d8709d84c4e"
+    },
+    {
+      "role": "DI_disabled_selection",
+      "bytes": 2146,
+      "sha256": "6783304fa801ae498276cdf8e339d7ddb0e0f6fdc2e26fbdc7f5088ce671a6a5"
+    },
+    {
+      "role": "measurement_kind_rule",
+      "bytes": 14243,
+      "sha256": "b57908d17c50d40ff4e7731926173ea8640db1e7cad926e886c3ad04198b1398"
+    },
+    {
+      "role": "assembler",
+      "bytes": 15797,
+      "sha256": "77d2ebca696a50d1746517ce7a51d80904cbdd993b699cf8efe563e6b23b0b27"
+    }
+  ],
+  "historical_stage_ledgers": [
+    {
+      "stage": "dialogue",
+      "bytes": 6507,
+      "sha256": "e4bdb42ad53f35e16a11953dfdaa6d85ddfefbd32c7bd7652f30c260201da6ea",
+      "script_sha256": "2cdf93a77c2a8d30b30ac3ce9530d1f2b60b85b096ab7652a2fb0d8709d84c4e",
+      "candidate_scope_only": true
+    },
+    {
+      "stage": "timeline",
+      "bytes": 9609,
+      "sha256": "8895a2727396ac9e45790a6e45ea973fd5dbd6c58fd3104939b177579a9bd384",
+      "script_sha256": "39edc921474a9b40e2a4af192231c220ce55a1f0a2c1198bfa02f4f6ae1f5807",
+      "candidate_scope_only": true
+    },
+    {
+      "stage": "codec",
+      "bytes": 15496,
+      "sha256": "31480171b29b1e75d06860de2ac12f4a3955809d13e6f69144a8da60bedfda8b",
+      "script_sha256": "77d2ebca696a50d1746517ce7a51d80904cbdd993b699cf8efe563e6b23b0b27",
+      "candidate_scope_only": true
+    }
+  ],
+  "approved_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_payloads": [
+    {
+      "file": "specs/06-meter-bsi.md",
+      "bytes": 6337,
+      "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
+    },
+    {
+      "file": "specs/06-ungated-mean-and-fallback.md",
+      "bytes": 8673,
+      "sha256": "07c850be31dbe42a1396634bd96dfd4a54fbd80aa27b3d39a36998545cdc3b9e"
+    },
+    {
+      "file": "specs/13-emdf-and-timeline.md",
+      "bytes": 12839,
+      "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd"
+    },
+    {
+      "file": "test-vectors/METER-UNGATED-FALLBACK-VERIFICATION.json",
+      "bytes": 135066,
+      "sha256": "7dc8f1405d6d1cbbcadba19b498e5d0fcb95a11cc221af58a64c81acb2a89d41"
+    }
+  ]
+}

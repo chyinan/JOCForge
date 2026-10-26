@@ -1,0 +1,7 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "decision": "ACCEPT_MODEL_PRODUCER_CALLER_FIELD_CROSSWALK",
+  "source_review": "Payload and all eight Python/three ledger identities recomputed; approved F06/F06U/F13 contracts checked. Source paths/code/coordinates/actual measurement metrics were not forwarded.",
+  "qualification": "Does not equate public model kind with native opaque member or imply selected native execution.",
+  "scope_correction": "Earlier blanket advice against gating_kind derivation applies to unsupported name/value inference. This package supplies an explicit producer/caller edge in a named enum domain."
+}

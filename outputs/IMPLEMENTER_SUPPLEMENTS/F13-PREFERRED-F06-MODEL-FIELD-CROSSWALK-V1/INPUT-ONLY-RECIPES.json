@@ -1,0 +1,46 @@
+{
+  "schema": "wash.measurement-id1-stage-input-recipes.v1",
+  "grade": "SELF_OWNED_SCALAR_MODEL_INPUTS_ONLY",
+  "cases": [
+    {
+      "id": "selected_DI_off_valid_ITU",
+      "entry": "DI_disabled_selection",
+      "inputs": {
+        "ITU_host": -24.0,
+        "metering_mode": "1770-4",
+        "dialogue_intelligence": false,
+        "speech_threshold_percent": 100.0
+      }
+    },
+    {
+      "id": "primitive_dialogue_branch",
+      "entry": "selected_measurement_loudness_only_not_DI_off_programme",
+      "inputs": {
+        "dialogue_host": -20.0,
+        "ITU_host": -24.0,
+        "speech_percentage_host": 80.0,
+        "speech_threshold_percent": 50.0
+      }
+    },
+    {
+      "id": "primitive_threshold_tie",
+      "entry": "selected_measurement_loudness_only_not_DI_off_programme",
+      "inputs": {
+        "dialogue_host": -20.0,
+        "ITU_host": -24.0,
+        "speech_percentage_host": 50.0,
+        "speech_threshold_percent": 50.0
+      }
+    }
+  ],
+  "expected_body_or_native_record_bytes_included": false,
+  "caller_type_rejection_inputs": [
+    true,
+    false,
+    null,
+    -1,
+    3,
+    1.0
+  ],
+  "scope_note": "The three scalar recipes cover valid-ITU or dialogue local branches; they do not narrow the approved F06U ungated fallback."
+}
