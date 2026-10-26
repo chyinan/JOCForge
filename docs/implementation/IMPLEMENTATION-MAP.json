@@ -13369,6 +13369,82 @@
             "F14.2 HMAC/history, F14.3 AU container substitution, production F14.4 frame CRC transaction, and whole codec/product acceptance."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "hmac-sha256-primitive",
+          "mapping_status": "MATERIALIZED_DIRECT_F14_2_RFC_HMAC_PRIMITIVE__D09_KEY_PROVIDER_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_RFC4231_HMAC_SHA256_PRIMITIVE__PRODUCTION_KEY_OPEN",
+          "scope": "Implements the RFC 2104 HMAC-SHA-256 byte primitive over caller-supplied key/message bytes. The test uses the public RFC 4231 test key; the primitive does not retrieve, store, derive, or log a D09 production key. The selected F14 production profile's exactly-32-byte authorized key provider remains outside this slice.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/integrity/hmac_sha256.rs",
+            "crates/jocforge-domain/src/integrity/mod.rs"
+          ],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Stateless byte primitive; no AU, source, programme, or history clock is owned."
+            ]
+          },
+          "parameters": {
+            "kind": "NONE_RFC_2104_HMAC_SHA256_PRIMITIVE",
+            "provider_files": [
+              "specs/14-integrity.md"
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_spec_sha256": "7e9df3565d0ab25dad1ab4989de57003d399a0e839a5fb298a6bfc53b240894f",
+            "validation_boundary": "Implements only the public HMAC-SHA-256 algorithm; the production secret provider remains unavailable and is never substituted by the vector key."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/hmac_sha256.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_U_HMAC_RFC4231_CASE_1",
+            "authoritative_vectors": [
+              "test-vectors/unit/vectors.json",
+              "test-vectors/UNIT-RECHECK.json",
+              "crates/jocforge-domain/tests/fixtures/hmac_sha256/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/hmac_sha256/RESULT.json",
+              "crates/jocforge-domain/tests/fixtures/hmac_sha256/PROVENANCE.json"
+            ],
+            "case_pointers": [
+              "U-HMAC-RFC4231-1 checks the RFC 4231 SHA-256 HMAC digest for a public 20-byte test key and short message.",
+              "This verifies the primitive only; U-PROTECT-01 container construction and production D09 key acquisition remain open."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/hmac_sha256/INPUT-ONLY-VECTORS.json",
+              "bytes": 555,
+              "sha256": "61d30dffc0fdc08e0cf6b68d2dd559a6533ac8e88398fa0bb0f3bcf17ae27277"
+            },
+            "additional_fixtures": [
+              {
+                "file": "crates/jocforge-domain/tests/fixtures/hmac_sha256/RESULT.json",
+                "bytes": 454,
+                "sha256": "64d5941578e117b6edd63b335556261e75ef4f9e238b7e6014ac8bf6747dee4e"
+              },
+              {
+                "file": "crates/jocforge-domain/tests/fixtures/hmac_sha256/PROVENANCE.json",
+                "bytes": 911,
+                "sha256": "1f77150683e7a0205ef252e3a0516602207c64bb68f879f3a26769b9e624873a"
+              }
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_unit_vector_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8",
+            "source_unit_recheck_sha256": "ba30733a7afd586b7ba21a2e69ccd9e09ce9b9f976659b5f3e055c261f30753f"
+          },
+          "native_status": {
+            "u_hmac_rfc4231_case_1": "LOCALLY_VERIFIED",
+            "d09_production_key_provider": "NOT_AVAILABLE",
+            "u_protect_protocol_container": "NOT_IMPLEMENTED_BY_THIS_SLICE",
+            "production_authentication": "NOT_RUN",
+            "whole_f14": "NOT_IMPLEMENTED"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Authorized D09 key provider/profile retrieval, 32-byte secret input boundary, and product key custody.",
+            "F14.2 primary/secondary authenticated payload protocol and history, F14.3 fixed-range substitution, selected AU writer join, and whole-product authenticated output."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },
@@ -13399,8 +13475,8 @@
           "implementation_file_identities": [
             {
               "file": "crates/jocforge-domain/src/integrity/mod.rs",
-              "bytes": 253,
-              "sha256": "ac5e628f2fa01d3555c6bbd4ddfaab3d8d56bfe07a7e2292e1b47883c7fcf6b3"
+              "bytes": 274,
+              "sha256": "4b680a85b6b183675093268a17769159847b239581e48761c4a715c0ba49c382"
             },
             {
               "file": "crates/jocforge-domain/src/integrity/crc16.rs",

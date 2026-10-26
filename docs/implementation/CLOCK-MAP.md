@@ -269,4 +269,5 @@
 | F13C/selected-model-joc-complexity-u8-projection | — | `The one-value model projection owns no callback, source, dispatch, AU or transaction clock.` |
 | F13D2/id2-profile-header-and-body-wire | — | `The profile mapper, local Type11 prefix reader, and ID2 body serializer own no source, dispatch, AU, or persistent clock.` |
 | F14/authenticated-bit-compaction | — | `Stateless bit-stream projection; no frame, source, AU, or programme clock is owned.` |
+| F14/hmac-sha256-primitive | — | `Stateless byte primitive; no AU, source, programme, or history clock is owned.` |
 | F14K/public-keyless-integrity-owner | `CodecSourceIndex`<br>`JocDispatchIndex`<br>`PublishedAuIndex` | `source_index is the next committed CodecSourceIndex`<br>`dispatch = source_index + 1`<br>`au_index is null for source 0 and 1, then source_index - 2`<br>`the first two source calls execute all three integrity stages with published=false`<br>`source indices >=2 produce published=true and increment published_au_count once`<br>`EOF requires the exact expected source count and publishes max(0, expected_source_count - 2) AUs` |

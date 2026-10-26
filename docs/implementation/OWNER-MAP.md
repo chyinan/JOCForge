@@ -269,4 +269,5 @@
 | F13C/selected-model-joc-complexity-u8-projection | F13C | `metadata` |
 | F13D2/id2-profile-header-and-body-wire | F13D2 | `metadata` |
 | F14/authenticated-bit-compaction | F14 | `integrity` |
+| F14/hmac-sha256-primitive | F14 | `integrity` |
 | F14K/public-keyless-integrity-owner | F14K | `integrity` |

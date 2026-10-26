@@ -1,0 +1,12 @@
+{
+  "schema": "f14-rfc-hmac-sha256-results.v1",
+  "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_vector_path": "test-vectors/unit/vectors.json",
+  "source_vector_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8",
+  "cases": [
+    {
+      "id": "U-HMAC-RFC4231-1",
+      "digest_hex": "b0344c61d8db38535ca8afceaf0bf12b881dc200c9833da726e9376c2e32cff7"
+    }
+  ]
+}
