@@ -1,0 +1,64 @@
+{
+  "schema": "jocforge-preferred-aggregate-input-recipes.v1",
+  "input_only": true,
+  "record_layout": "OPAQUE_44_BYTES_MEMBER_CARRIED_SEPARATELY_NO_OFFSET_ASSERTED",
+  "grade": "SYNTHETIC_LOCAL_RULE_ONLY",
+  "cases": [
+    {
+      "id": "initial_comparator_tie_no_winner",
+      "initial_record_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "initial_comparator_f32_bits": 3270508544,
+      "initial_member_i32": 0,
+      "candidates": [
+        {
+          "record_hex": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+          "loudness_f32_bits": 3270508544,
+          "member_i32": 1
+        }
+      ]
+    },
+    {
+      "id": "strict_winner_then_equal_tie",
+      "initial_record_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "initial_comparator_f32_bits": 3270508544,
+      "initial_member_i32": 0,
+      "candidates": [
+        {
+          "record_hex": "2222222222222222222222222222222222222222222222222222222222222222222222222222222222222222",
+          "loudness_f32_bits": 3269197824,
+          "member_i32": 2
+        },
+        {
+          "record_hex": "3333333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+          "loudness_f32_bits": 3269197824,
+          "member_i32": 1
+        }
+      ]
+    },
+    {
+      "id": "later_strict_winner",
+      "initial_record_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "initial_comparator_f32_bits": 3270508544,
+      "initial_member_i32": 0,
+      "candidates": [
+        {
+          "record_hex": "4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444",
+          "loudness_f32_bits": 3269197824,
+          "member_i32": 2
+        },
+        {
+          "record_hex": "5555555555555555555555555555555555555555555555555555555555555555555555555555555555555555",
+          "loudness_f32_bits": 3269066752,
+          "member_i32": 1
+        }
+      ]
+    },
+    {
+      "id": "empty_candidates",
+      "initial_record_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "initial_comparator_f32_bits": 3270508544,
+      "initial_member_i32": 0,
+      "candidates": []
+    }
+  ]
+}

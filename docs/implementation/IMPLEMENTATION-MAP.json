@@ -11298,7 +11298,7 @@
         {
           "slice_id": "measurement-result-aggregate-and-id1-integer-projection",
           "mapping_status": "MATERIALIZED_STATIC_INTERNAL_PROVIDER_RULES__SELECTED_VALUE_AND_EPOCH_UNBOUND",
-          "implementation_status": "LOCALLY_VERIFIED_INPUT_ONLY_I32_RULES_AND_SYNTHETIC_44_BYTE_AGGREGATE__PROVIDER_JOIN_UNBOUND",
+          "implementation_status": "LOCALLY_VERIFIED_INPUT_ONLY_I32_RULES_AND_WASHED_44_BYTE_AGGREGATION_INPUTS__PROVIDER_JOIN_UNBOUND",
           "scope": "Stateless local rules only: strict greater-than replacement of a whole caller-supplied 44-byte measurement record from the -120 F32 comparator, equal-loudness retention, the unnamed processor I32 remap 3->2/2->1/1->0/other->-1, and ID1 I32 booleanization where source equals 1. The I32 member is carried separately from the record bytes because its offset/name and receipt crosswalk are not bound. No XML/UI input is added; no value is inferred from downmix or gating; no selected provider value is passed to a production metadata owner.",
           "implementation_files": [
             "crates/jocforge-domain/src/meter/measurement_selection.rs",
@@ -11324,10 +11324,13 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1/CONTRACT.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1/EVIDENCE.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1/SOURCE-MANIFESTS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1/SOURCE-MANIFESTS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-AGGREGATION-INPUT-VECTORS-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-AGGREGATION-INPUT-VECTORS-V1/INPUT-ONLY-VECTORS.json"
             ],
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
             "supplement_manifest_sha256": "9076bc0af478d15e6a3949e37b199d3435693fa6b2397e8868644bf0dfac372b",
+            "aggregation_input_supplement_manifest_sha256": "8209a14861329bc09978ef817587969dcfe516884671c6bd913d749498369f56",
             "source_contracts": [
               {
                 "file": "specs/13-emdf-and-timeline.md",
@@ -11346,20 +11349,30 @@
             "kind": "HASH_BOUND_SYNTHETIC_INPUT_ONLY_RULES_WITH_LOCAL_RECORD_TRANSITION",
             "authoritative_vectors": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1/INPUT-ONLY-VECTORS.json",
-              "crates/jocforge-domain/tests/fixtures/measurement_selection/input-only-vectors.json"
+              "crates/jocforge-domain/tests/fixtures/measurement_selection/input-only-vectors.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13-PREFERRED-AGGREGATION-INPUT-VECTORS-V1/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/measurement_selection/aggregation-input-only-vectors.json"
             ],
             "case_pointers": [
               "Seven strict I32 equality cases and six unnamed processor raw-I32 remap cases are asserted against the Wash input-only controls.",
-              "The no-winner control asserts the local zero-record/zero-member initialization; it is not a selected-job default.",
-              "The Wash strict-winner/tie case has no 44-byte inputs or loudness values. The local 44-byte winner/tie transition test uses synthetic bytes and loudness solely to exercise the stated comparison rule; it is not a Wash expected-output match."
+              "Four complete Wash aggregate recipes supply the initial 44-byte record, comparator bits, separate I32 member, and each ordered candidate record/loudness/member tuple; they cover no winner, strict winner/tie, later winner, and no candidates.",
+              "The aggregate package supplies inputs only, not expected production outputs. Tests derive each transition from the washed strict-greater rule and do not assert native layout, selected value, or an expected body."
             ],
             "local_fixture": {
-              "file": "crates/jocforge-domain/tests/fixtures/measurement_selection/input-only-vectors.json",
-              "bytes": 2012,
-              "sha256": "4128af1949606008688427092f7b6a503e772a5dda2dd9bd768984d734eee062"
+              "file": "crates/jocforge-domain/tests/fixtures/measurement_selection/aggregation-input-only-vectors.json",
+              "bytes": 2441,
+              "sha256": "3bf4a13488c10c9460a99e50e2d64a819c2da1af1d722cc58edd629f5c0d5ff4"
             },
+            "additional_fixtures": [
+              {
+                "file": "crates/jocforge-domain/tests/fixtures/measurement_selection/input-only-vectors.json",
+                "bytes": 2012,
+                "sha256": "4128af1949606008688427092f7b6a503e772a5dda2dd9bd768984d734eee062"
+              }
+            ],
             "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
-            "supplement_manifest_sha256": "9076bc0af478d15e6a3949e37b199d3435693fa6b2397e8868644bf0dfac372b"
+            "supplement_manifest_sha256": "9076bc0af478d15e6a3949e37b199d3435693fa6b2397e8868644bf0dfac372b",
+            "aggregation_input_supplement_manifest_sha256": "8209a14861329bc09978ef817587969dcfe516884671c6bd913d749498369f56"
           },
           "native_status": {
             "strict_i32_booleanization": "LOCALLY_VERIFIED_AGAINST_INPUT_ONLY_CONTROLS",

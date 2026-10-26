@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F13-PREFERRED-AGGREGATION-INPUT-VECTORS-V1",
+  "status": "COMPLETE_SYNTHETIC_AGGREGATION_INPUT_RECIPES",
+  "source_approved_supplement_manifest_sha256": "9076bc0af478d15e6a3949e37b199d3435693fa6b2397e8868644bf0dfac372b",
+  "native_execution": "NOT_RUN",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1315,
+      "sha256": "8f621b7becd64a6408a064871eefec2481d7792ce041e12d3203f70877aced5d"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 2441,
+      "sha256": "3bf4a13488c10c9460a99e50e2d64a819c2da1af1d722cc58edd629f5c0d5ff4"
+    }
+  ]
+}
