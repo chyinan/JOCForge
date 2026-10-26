@@ -3,6 +3,10 @@ use jocforge_domain::spatial::candidate_selector::{
     CandidateSelectorInput, SelectorError, candidate_selector, pairwise_affinity,
     selector_score_choice,
 };
+use jocforge_domain::spatial::selector_u04_handoff::{
+    finish_selector_u04_handoff, prepare_selector_u04_handoff,
+};
+use jocforge_domain::spatial::u04_projection::project_targets;
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 use std::path::PathBuf;
@@ -201,6 +205,77 @@ fn candidate_selector_matches_all_four_full_selection_vectors() {
             assert_eq!(actual.coverage_u32(), &ids(&expected["coverage_u32"]));
             assert_eq!(actual.support_u32(), &ids(&expected["support_u32"]));
             assert_eq!(actual.surviving_ids(), &ids(&expected["surviving_ids"]));
+        }
+    }
+}
+
+#[test]
+fn selector_handoff_gathers_original_targets_and_calls_u04_only_when_admitted() {
+    let vectors = vectors();
+    let cases = vectors["cases"].as_array().unwrap();
+    for id in ["U-SEL-COMPLEMENT", "U-SEL-CAPACITY"] {
+        let case = cases.iter().find(|case| case["id"] == id).unwrap();
+        let input = selector_input(&case["input"]);
+        let original = input.clone();
+        let result = candidate_selector(input).unwrap();
+        let handoff = prepare_selector_u04_handoff(&original, &result).unwrap();
+
+        assert_eq!(handoff.selector_status(), result.status());
+        assert_eq!(
+            handoff.admission().refinement_called(),
+            result.status()
+                == jocforge_domain::spatial::candidate_selector::SelectorStatus::CapacityReached
+        );
+        assert_eq!(handoff.selected_targets().ids_u32, result.selected_ids());
+        assert_eq!(
+            handoff.selected_targets().attributes_u32,
+            result.selected_attributes()
+        );
+        assert_eq!(
+            handoff.selected_targets().xyz_words,
+            result
+                .selected_initial_ordinals()
+                .iter()
+                .map(|ordinal| { original.positions_u32[usize::try_from(*ordinal).unwrap()] })
+                .collect::<Vec<_>>()
+        );
+        assert_eq!(handoff.pre_decay_features().len(), 24);
+        for (band, actual) in handoff.pre_decay_features().iter().enumerate() {
+            assert_eq!(
+                actual,
+                &result
+                    .selected_initial_ordinals()
+                    .iter()
+                    .map(|ordinal| {
+                        original.feature_u32[band][usize::try_from(*ordinal).unwrap()]
+                    })
+                    .collect::<Vec<_>>()
+            );
+        }
+
+        let before_refinement = handoff.selected_targets().clone();
+        let refinement = if handoff.admission().refinement_called() {
+            let selected_count = before_refinement.xyz_words.len();
+            Some(
+                project_targets(
+                    &[[0x3f80_0000, 0, 0]],
+                    &before_refinement.xyz_words,
+                    &before_refinement.attributes_u32,
+                    &[0x3f80_0000],
+                    &[vec![0x3f80_0000; selected_count]],
+                )
+                .unwrap(),
+            )
+        } else {
+            None
+        };
+        let completed = finish_selector_u04_handoff(handoff, refinement.as_ref()).unwrap();
+        assert_eq!(completed.ids_u32, result.selected_ids());
+        assert_eq!(completed.attributes_u32, result.selected_attributes());
+        if let Some(refinement) = refinement {
+            assert_eq!(completed.xyz_words, refinement.projected_xyz_u32());
+        } else {
+            assert_eq!(completed.xyz_words, before_refinement.xyz_words);
         }
     }
 }

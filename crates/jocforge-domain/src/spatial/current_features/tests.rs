@@ -901,6 +901,7 @@ fn feature_gate_uses_independent_flags_and_preserves_candidate_features() {
 
     assert_eq!(&*gate.candidate_ids, &[1, 5]);
     assert_eq!(&*gate.processing_ids, &[0]);
+    assert_eq!(&*gate.response_source_ids, &[0, 1, 5]);
     assert_eq!(gate.candidate_features.len(), 24);
     assert!(gate.candidate_features.iter().all(|band| band.len() == 2));
     assert_eq!(gate.candidate_features[0][0], 0x3f00_0000);

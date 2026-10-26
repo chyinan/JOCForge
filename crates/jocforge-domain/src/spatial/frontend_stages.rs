@@ -28,6 +28,7 @@ pub(super) enum FrontendFeatureStageError {
 pub(super) struct FeatureGateOutput {
     pub(super) candidate_ids: Box<[u32]>,
     pub(super) processing_ids: Box<[u32]>,
+    pub(super) response_source_ids: Box<[u32]>,
     pub(super) candidate_features: Box<[Box<[u32]>]>,
 }
 
@@ -125,6 +126,8 @@ pub(super) fn gate_current_features(
         }
     }
 
+    let response_source_ids =
+        merge_response_source_ids(&candidate_ids, &processing_ids, source_count)?;
     let candidate_features = bands
         .iter()
         .map(|band| {
@@ -144,8 +147,59 @@ pub(super) fn gate_current_features(
     Ok(FeatureGateOutput {
         candidate_ids: candidate_ids.into_boxed_slice(),
         processing_ids: processing_ids.into_boxed_slice(),
+        response_source_ids,
         candidate_features,
     })
+}
+
+fn merge_response_source_ids(
+    candidate_ids: &[u32],
+    processing_ids: &[u32],
+    source_count: usize,
+) -> Result<Box<[u32]>, FrontendFeatureStageError> {
+    let source_count = u32::try_from(source_count).map_err(|_| {
+        FrontendFeatureStageError::CurrentFeatures(CurrentFeaturesError::SourceShape)
+    })?;
+    if candidate_ids
+        .iter()
+        .chain(processing_ids)
+        .any(|source| *source >= source_count)
+        || candidate_ids.windows(2).any(|pair| pair[0] >= pair[1])
+        || processing_ids.windows(2).any(|pair| pair[0] >= pair[1])
+    {
+        return Err(FrontendFeatureStageError::CurrentFeatures(
+            CurrentFeaturesError::SourceShape,
+        ));
+    }
+
+    let capacity = candidate_ids
+        .len()
+        .checked_add(processing_ids.len())
+        .ok_or(FrontendFeatureStageError::CurrentFeatures(
+            CurrentFeaturesError::SourceShape,
+        ))?;
+    let mut union = Vec::with_capacity(capacity);
+    let (mut candidate, mut processing) = (0, 0);
+    while candidate < candidate_ids.len() && processing < processing_ids.len() {
+        match candidate_ids[candidate].cmp(&processing_ids[processing]) {
+            std::cmp::Ordering::Less => {
+                union.push(candidate_ids[candidate]);
+                candidate += 1;
+            }
+            std::cmp::Ordering::Greater => {
+                union.push(processing_ids[processing]);
+                processing += 1;
+            }
+            std::cmp::Ordering::Equal => {
+                union.push(candidate_ids[candidate]);
+                candidate += 1;
+                processing += 1;
+            }
+        }
+    }
+    union.extend_from_slice(&candidate_ids[candidate..]);
+    union.extend_from_slice(&processing_ids[processing..]);
+    Ok(union.into_boxed_slice())
 }
 
 fn numeric_error() -> FrontendFeatureStageError {

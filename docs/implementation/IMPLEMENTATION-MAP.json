@@ -2083,8 +2083,8 @@
         {
           "slice_id": "source-flags-current-features-and-source-gate",
           "mapping_status": "MATERIALIZED_DIRECT_F03W_STAGE_COMPOSITION_SUBSLICE",
-          "implementation_status": "LOCALLY_VERIFIED_SOURCE_FLAGS_CURRENT_FEATURES_AND_GATE_PROPOSALS__ROOT_COMMIT_DEFERRED",
-          "scope": "Runs the existing SourceFlags producer once, carries its validated packet into CurrentFeatures with the explicit callback phase, preserves the raw-history and feature-state proposals for the parent, and derives source-ascending plus4 candidates, plus0 processing IDs, and the unchanged band-major candidate feature snapshot. This slice does not render installed48, produce source-control values, advance or commit the spatial_control root, or run later response/selector/U04/outer/history/component stages.",
+          "implementation_status": "LOCALLY_VERIFIED_SOURCE_FLAGS_CURRENT_FEATURES_GATE_AND_RESPONSE_REQUEST_PROPOSALS__ROOT_COMMIT_DEFERRED",
+          "scope": "Runs the existing SourceFlags producer once, carries its validated packet into CurrentFeatures with the explicit callback phase, preserves the raw-history and feature-state proposals for the parent, and derives source-ascending plus4 candidates, plus0 processing IDs, the unchanged band-major candidate feature snapshot, and the sorted unique union of candidate and processing IDs for a future response producer. This slice does not render installed48, produce source-control values, compute response columns, advance or commit the spatial_control root, or run selector/U04/outer/history/component stages.",
           "implementation_files": ["crates/jocforge-domain/src/spatial/frontend_stages.rs", "crates/jocforge-domain/src/spatial/current_features.rs", "crates/jocforge-domain/src/spatial/source_flags.rs", "crates/jocforge-domain/src/spatial/mod.rs"],
           "test_modules": ["crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs", "crates/jocforge-domain/src/spatial/current_features/tests.rs"],
           "clock": {
@@ -2099,11 +2099,11 @@
           "vectors": {
             "kind": "SYNTHETIC_STAGE_COMPOSITION_AND_GATE_BOUNDARIES",
             "authoritative_vectors": [],
-            "case_pointers": ["source_flags_tests.rs::frontend_stages_bind_source_flags_and_features_without_committing_owner", "current_features/tests.rs::feature_gate_uses_independent_flags_and_preserves_candidate_features", "24-band serial R32 sum accepts exact 0.5 and rejects the immediately lower F32 word", "plus0 processing membership is independent of plus4 candidate membership", "candidate features preserve the original band-major values and source-ascending order"],
+            "case_pointers": ["source_flags_tests.rs::frontend_stages_bind_source_flags_and_features_without_committing_owner", "current_features/tests.rs::feature_gate_uses_independent_flags_and_preserves_candidate_features", "24-band serial R32 sum accepts exact 0.5 and rejects the immediately lower F32 word", "plus0 processing membership is independent of plus4 candidate membership", "candidate features preserve the original band-major values and source-ascending order", "candidate and processing IDs merge into a sorted unique response request set"],
             "local_fixture": null
           },
           "error_outcomes": [],
-          "not_run": ["production render and primary metadata-to-source-control adapter", "spatial_control root transition, parent commit, and receipt admission", "response generation, selector, conditional U04, outer matrix, marker/history, and target updates", "component output, F06OF production controls, real ADM callback, end-to-end encode, and W04"],
+          "not_run": ["production render and primary metadata-to-source-control adapter", "response value/geometry/width producer", "spatial_control root transition, parent commit, and receipt admission", "selector, conditional U04, outer matrix, marker/history, and target updates", "component output, F06OF production controls, real ADM callback, end-to-end encode, and W04"],
           "wash_package": {
             "directory": "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-CONTROL-TO-COMPONENT-PRODUCTION-WIRING-V1",
             "manifest_sha256": "6d1fa51b3b04ea8ca19c9d81c51b75a49d27349eaad2e018d6848e739f2cb5c1"
@@ -2133,6 +2133,34 @@
           "error_outcomes": [{"error_code":"PRIMARY_METADATA_IDENTITY_MISMATCH","category":"metadata identity","trigger":"F01E control rows and selected AXML/CHNA graph do not share the bound metadata identity.","programme_state_after":"NO_PROJECTION; committed owner unchanged","caller_action":"Reject the source-control projection before SourceFlags production."},{"error_code":"PRIMARY_CONTROL_ROW_MISMATCH","category":"physical row or route identity","trigger":"A row is not in physical-host order, track identity or semantic LFE role differs, or bed/object control variant does not match its ADM track.","programme_state_after":"NO_PROJECTION; committed owner unchanged","caller_action":"Reject without reading undefined bed tail bytes."},{"error_code":"PRIMARY_REGULAR_SOURCE_MAP_MISMATCH","category":"host-to-source binding","trigger":"The admitted regular host bindings do not form the selected ascending source11..47 map with one LFE excluded.","programme_state_after":"NO_PROJECTION; committed owner unchanged","caller_action":"Reject instead of indexing compact regular rows by raw physical host."},{"error_code":"SOURCE_CONTROL_CLOCK","category":"callback clock","trigger":"Normal source origin is not the current callback, or cached-drain origin is not Q-1 for delivery g>=Q.","programme_state_after":"NO_PROJECTION; committed owner unchanged","caller_action":"Reject the source snapshot clock before consuming rows."},{"error_code":"SOURCE_CONTROL_CLOCK_MISMATCH","category":"callback phase","trigger":"The projection clock normal/drain phase differs from the explicit CurrentFeatures callback phase.","programme_state_after":"NO_PROPOSAL; committed owner unchanged","caller_action":"Reject before source-flags computation."}],
           "not_run": ["normal F01E sampler execution and callback-specific control snapshot production", "real PCM/activity replay and audio output", "full spatial_control owner transition, receipt admission, or parent commit", "render, response, selector/U04/outer, target history, component, F06OF end-to-end OAR, and W04"],
           "wash_packages": [{"directory":"outputs/IMPLEMENTER_SUPPLEMENTS/SOURCE-FLAGS-BED-OBJECT-CONTROL-ADAPTER-V1","manifest_sha256":"0d4b047cb65368f5769cc1e35085f6e5946dec890b4404bb7b79cd6c1613d4ae"},{"directory":"outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRAIN-SOURCE-CONTROL-HOLD-V1","manifest_sha256":"c64eff3db5f596c620c2f8cefb3eeb48aa15a08d1a7c66fb330392b2eaf0ebbc"}]
+        },
+        {
+          "slice_id": "selector-u04-target-value-handoff",
+          "mapping_status": "MATERIALIZED_DIRECT_F03C_F03U_TARGET_HANDOFF_SUBSLICE",
+          "implementation_status": "LOCALLY_VERIFIED_SELECTOR_ORDINAL_GATHER_AND_CAPACITY_ONLY_U04_ADMISSION__ROOT_COMMIT_DEFERRED",
+          "scope": "Joins one completed selector result back to its original candidate IDs, positions, attributes and pre-decay band-major feature columns using selected_initial_ordinals, without rerunning the selector. It derives U04 admission from explicit selector status and accepts a projected XYZ result only for CAPACITY_REACHED; other statuses preserve original positions and skip U04. It does not produce response columns, construct the required U04 source/gain inputs, mutate target state, or commit the spatial_control root.",
+          "implementation_files": ["crates/jocforge-domain/src/spatial/selector_u04_handoff.rs", "crates/jocforge-domain/src/spatial/candidate_selector.rs", "crates/jocforge-domain/src/spatial/u04_projection.rs", "crates/jocforge-domain/src/spatial/target_slot_install.rs"],
+          "test_modules": ["crates/jocforge-domain/tests/candidate_selector.rs"],
+          "clock": {
+            "domains": [],
+            "covered_clauses": ["This value-only handoff consumes one caller-supplied selector result and owns no callback clock, state transition or commit."]
+          },
+          "parameters": {
+            "kind": "NONE_REUSES_APPROVED_STATELESS_SELECTOR_AND_U04_PRIMITIVES",
+            "provider_files": [],
+            "validation_boundary": "The bridge only preserves selector output identity and gates the existing U04 projection by SelectorStatus. Response geometry and U04 source/gain inputs must be supplied by their own approved producers."
+          },
+          "vectors": {
+            "kind": "INPUT_ONLY_SELECTOR_AND_U04_STATUS_BOUNDARIES",
+            "authoritative_vectors": ["crates/jocforge-domain/tests/fixtures/f04_component/unit-vectors.json"],
+            "case_pointers": ["U-SEL-COMPLEMENT", "U-SEL-CAPACITY", "U-PROJ-ADMIT-CAPACITY_REACHED-15", "U-PROJ-ADMIT-CANDIDATES_EXHAUSTED-15", "selector_handoff_gathers_original_targets_and_calls_u04_only_when_admitted"]
+          },
+          "error_outcomes": [{"error_code":"SELECTOR_TARGET_DOMAIN_MISMATCH","category":"selected identity join","trigger":"A selected initial ordinal is duplicated/out of range, or selected ID/attribute does not match the original candidate row.","programme_state_after":"NO_PROPOSAL; owner state unchanged","caller_action":"Reject the selector handoff without remapping positions or features by equal payload."},{"error_code":"U04_REFINEMENT_MISSING","category":"conditional refinement","trigger":"Selector status is CAPACITY_REACHED but no U04 projection result is supplied.","programme_state_after":"NO_PROPOSAL; owner state unchanged","caller_action":"Reject the callback; do not substitute original positions for an admitted refinement."},{"error_code":"U04_REFINEMENT_UNEXPECTED","category":"conditional refinement","trigger":"A U04 projection result is supplied for CANDIDATES_EXHAUSTED or another non-admitted status.","programme_state_after":"NO_PROPOSAL; owner state unchanged","caller_action":"Reject the unexpected U04 result; preserve the pre-U04 target values."},{"error_code":"U04_REFINEMENT_SHAPE","category":"refinement shape","trigger":"Projected XYZ count differs from the selected target count.","programme_state_after":"NO_PROPOSAL; owner state unchanged","caller_action":"Reject without changing IDs, attributes or target order."}],
+          "not_run": ["response column production and actual response vectors", "full F03W callback composition and no-candidate root branch", "production U04 source/gain input connection and actual selector/U04 spatial values", "target slot state installation, marker/history, component, and parent commit"],
+          "wash_package": {
+            "directory": "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-CONTROL-TO-COMPONENT-PRODUCTION-WIRING-V1",
+            "manifest_sha256": "6d1fa51b3b04ea8ca19c9d81c51b75a49d27349eaad2e018d6848e739f2cb5c1"
+          }
         }
       ]
     },
@@ -16070,7 +16098,7 @@
       ],
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 37303, "sha256": "ff4beb3b80aa3d157777244778ef397bc4b86abcb701609bad827d42729acb0b"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2715, "sha256": "670df35be4e4f344415cd80e07fb431471a8d88bc6e66b860e6125249cade579"},
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2745, "sha256": "b367a77ab87157e12b0bd3f29e673a5bfc309b4fad49d8f8d260c52d83f5e661"},
         {"path": "crates/jocforge-domain/src/timeline/index.rs", "bytes": 2672, "sha256": "50696493ea1bed2b647f2c438f032410548b70e5008b535773e23647ee59bd40"},
         {"path": "crates/jocforge-domain/src/timeline/mod.rs", "bytes": 586, "sha256": "7f2099065d657bdacab116d921a63107a180930086b73a42557881aa3acdb7b2"}
       ],
@@ -16778,8 +16806,8 @@
           },
           {
             "path": "crates/jocforge-domain/src/spatial/mod.rs",
-            "bytes": 2715,
-            "sha256": "670df35be4e4f344415cd80e07fb431471a8d88bc6e66b860e6125249cade579"
+            "bytes": 2745,
+            "sha256": "b367a77ab87157e12b0bd3f29e673a5bfc309b4fad49d8f8d260c52d83f5e661"
           },
           {
             "path": "crates/jocforge-domain/tests/spatial_control_foundation.rs",
@@ -16948,8 +16976,8 @@
           },
           {
             "path": "crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs",
-              "bytes": 36182,
-              "sha256": "33b7f3d772c76a59f3af5bd9df774627d3630412fed63edb39b6ebca85cbde67"
+              "bytes": 36245,
+              "sha256": "ea02dc4d3b85f8006dd56182eea3809fa8d6b86b123b88eccfac626f2d1b6dc0"
           },
           {
             "path": "crates/jocforge-domain/tests/fixtures/source_flags/INPUT-ONLY-VECTORS.json",
@@ -17731,7 +17759,7 @@
       },
       "dependency_scope": {"crate": "serde_json", "version": "=1.0.154", "default_features": false, "features": ["std"], "archive_sha256": "e7e9cc8b1b85264074fbcc02a88680c4096b1e47df8f739dceb03bf482f04bd6", "allowed_use": "strict identity-gated manifest/provider JSON parsing and private typed field access only", "public_serde_json_value": false, "canonical_writer": "none; exact file identity only"},
       "implementation_files": ["crates/jocforge-domain/src/spatial/window_q15_provider.rs", "crates/jocforge-domain/src/spatial/component_parameters_provider.rs", "crates/jocforge-domain/src/spatial/mod.rs"],
-      "implementation_inventory": [{"path":"crates/jocforge-domain/src/spatial/window_q15_provider.rs","bytes":19312,"sha256":"3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},{"path":"crates/jocforge-domain/src/spatial/component_parameters_provider.rs","bytes":14344,"sha256":"b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"},{"path":"crates/jocforge-domain/src/spatial/mod.rs","bytes":2715,"sha256":"670df35be4e4f344415cd80e07fb431471a8d88bc6e66b860e6125249cade579"}],
+      "implementation_inventory": [{"path":"crates/jocforge-domain/src/spatial/window_q15_provider.rs","bytes":19312,"sha256":"3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},{"path":"crates/jocforge-domain/src/spatial/component_parameters_provider.rs","bytes":14344,"sha256":"b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"},{"path":"crates/jocforge-domain/src/spatial/mod.rs","bytes":2745,"sha256":"b367a77ab87157e12b0bd3f29e673a5bfc309b4fad49d8f8d260c52d83f5e661"}],
       "test_files": ["crates/jocforge-domain/tests/f04_parameter_providers.rs"],
       "test_inventory": [{"path":"crates/jocforge-domain/tests/f04_parameter_providers.rs","bytes":6325,"sha256":"37d56c997a903e6029828ce41e31c5b27218a1a472a4edf7d53f3fdc38ffeb4b"}],
       "fixture_files": ["crates/jocforge-domain/tests/fixtures/f04_parameters/window-q15.json", "crates/jocforge-domain/tests/fixtures/f04_parameters/component-parameter-mathematical-v1.json"],
@@ -17851,7 +17879,7 @@
         {"path": "crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs", "bytes": 11066, "sha256": "bddb8bd2b775b2cd9fc3e6412981965ef9ca5c5f98d137ff98de31c87dbbb2d8"},
         {"path": "crates/jocforge-domain/src/spatial/descriptor_mathematical_provider.rs", "bytes": 10441, "sha256": "df8612dcdc46fcf2620e2a73d68d26d392bbba02be27af729f8c5ded76cf8639"},
         {"path": "crates/jocforge-domain/src/spatial/window_q15_provider.rs", "bytes": 19312, "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2715, "sha256": "670df35be4e4f344415cd80e07fb431471a8d88bc6e66b860e6125249cade579"}
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2745, "sha256": "b367a77ab87157e12b0bd3f29e673a5bfc309b4fad49d8f8d260c52d83f5e661"}
       ],
       "test_files": ["crates/jocforge-domain/tests/f04_remaining_provider_validators.rs"],
       "test_inventory": [{"path": "crates/jocforge-domain/tests/f04_remaining_provider_validators.rs", "bytes": 9771, "sha256": "8c0890d03b626bc75bc6daee4150c06d207cba02500778cfbd9288f44ad706a8"}],
@@ -17991,7 +18019,7 @@
       "shared_fixture_dependencies": ["crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json", "crates/jocforge-domain/tests/fixtures/f04_parameters/qmf-mathematical-fft-v1.json"],
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_fft64.rs", "bytes": 3812, "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2715, "sha256": "670df35be4e4f344415cd80e07fb431471a8d88bc6e66b860e6125249cade579"}
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2745, "sha256": "b367a77ab87157e12b0bd3f29e673a5bfc309b4fad49d8f8d260c52d83f5e661"}
       ],
       "test_inventory": [
         {"path": "crates/jocforge-domain/tests/qmf_fft64.rs", "bytes": 8575, "sha256": "9d53ca5c441352312dfc19e425e990145e0416e3bcb0d733d2642c38fb119014"}
@@ -18154,7 +18182,7 @@
       ],
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs", "bytes": 21790, "sha256": "9184b8ca22b5ed89082a92e3027b74c13d7e5424c4504598c3e71c239f2beeaa"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2715, "sha256": "670df35be4e4f344415cd80e07fb431471a8d88bc6e66b860e6125249cade579"}
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 2745, "sha256": "b367a77ab87157e12b0bd3f29e673a5bfc309b4fad49d8f8d260c52d83f5e661"}
       ],
       "test_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis/tests.rs", "bytes": 14759, "sha256": "64243b2abd6668d321ed0c093bf1a3075ff71f487b282d123fc081a2cba2f037"}

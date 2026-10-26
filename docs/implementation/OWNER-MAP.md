@@ -140,6 +140,7 @@
 | F03W/selected-primary-installed48-source-map-and-activity | F03W | `spatial_control` |
 | F03W/source-flags-current-features-and-source-gate | F03W | `spatial_control` |
 | F03W/primary-metadata-source-control-projection | F03W | `spatial_control` |
+| F03W/selector-u04-target-value-handoff | F03W | `spatial_control` |
 | F04/independent-meter-installed48-postwindow-leaf | F04 | `spatial_audio` |
 | F04C/whole-spatial-audio-j05-composer | F04C | `spatial_audio` |
 | F04A/independent-meter-installed48-postwindow-leaf | F04A | `spatial_audio` |

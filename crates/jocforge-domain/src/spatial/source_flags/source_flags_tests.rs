@@ -901,6 +901,7 @@ mod tests {
         );
         assert!(proposal.gate.candidate_ids.is_empty());
         assert!(proposal.gate.processing_ids.is_empty());
+        assert!(proposal.gate.response_source_ids.is_empty());
         assert_eq!(proposal.gate.candidate_features.len(), 24);
         assert!(
             proposal

@@ -25,6 +25,7 @@ pub mod qmf_mathematical_fft_provider;
 pub mod qmf_receiver_functional_provider;
 pub mod rectangular_nnls;
 pub mod selected_p11_geometry;
+pub mod selector_u04_handoff;
 pub mod source_flags;
 pub mod spatial_audio_state;
 pub mod spatial_control;
