@@ -1,0 +1,15 @@
+{
+  "schema": "f07a-wash-absence-scope.v2",
+  "global_absence_claim": false,
+  "approved_python_model_source_executed": false,
+  "native_trace_status": "ABORTED_BEFORE_RESULT; NO NATIVE FINDINGS USED",
+  "pcm_or_wav_intentionally_opened_or_used": false,
+  "binary_media_searched": false,
+  "key_material_intentionally_opened_or_used": false,
+  "sensitive_content_emitted_or_used": false,
+  "workspace_search_incident": {
+    "occurred": true,
+    "description": "A malformed PowerShell path filter made one ripgrep call search the current task worktree instead of only the frozen Python paths. Its output was discarded and did not contribute evidence. Ripgrep skips binary files by default, so binary WAV/PCM files were not traversed. Because the command scanned text files, this audit cannot certify that no text-encoded sample data was searched; no matching output was used or retained as evidence."
+  },
+  "incident_disposition": "The malformed text search result was discarded and did not contribute evidence. The limitation on ruling out text-encoded samples is retained."
+}

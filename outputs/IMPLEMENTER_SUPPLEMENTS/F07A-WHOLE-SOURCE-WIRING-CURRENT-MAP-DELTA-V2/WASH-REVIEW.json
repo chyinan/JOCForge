@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "F07A-WHOLE-SOURCE-WIRING-CURRENT-MAP-DELTA-V2",
+  "decision": "ACCEPTED_AS_CURRENT_MAP_AND_APPROVED_RULE_REFERENCE",
+  "review_scope": [
+    "sealed research package and payload hashes",
+    "approved package manifest and cited F07/provider/vector payload hashes",
+    "current implementation map, vector map, clock map and provider map identities",
+    "three current F07/F07A production gaps",
+    "preserved text-search incident disclosure"
+  ],
+  "not_claimed": [
+    "native execution",
+    "whole-source F07/F07A production implementation",
+    "same-generation owner join",
+    "parent staged commit/rollback/EOF closure",
+    "product audio or W04 acceptance"
+  ],
+  "disposition": "Relay the current hash-bound map snapshot and approved source references. Implementation may proceed on the pure contract-backed source-frame composition; keep the parent owner/generation and commit joins unbound until separately closed."
+}

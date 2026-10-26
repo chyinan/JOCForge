@@ -43,6 +43,10 @@ impl InputHistory {
     pub const fn words(&self) -> &[u32; INPUT_HISTORY_SAMPLES] {
         &self.0
     }
+
+    pub(crate) fn staged_copy(&self) -> Self {
+        Self(self.0)
+    }
 }
 
 impl DelayedInputBlock {

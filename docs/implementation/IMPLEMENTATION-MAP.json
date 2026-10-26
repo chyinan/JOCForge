@@ -8590,6 +8590,103 @@
               "caller_action": "Reject the provider and follow F07.10/I03 fail-stop handling."
             }
           ]
+        },
+        {
+          "slice_id": "five-fbw-source-frame-orchestrator",
+          "mapping_status": "MATERIALIZED_DIRECT_F07A_FIVE_LANE_SOURCE_FRAME__PARENT_OWNER_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_FIVE_FBW_LANES_SIX_BLOCKS_AND_DELAYED_ROWS__NO_COMPOSITION_ORACLE",
+          "scope": "Consumes one caller-supplied installed-audio source frame as six external rows by six 256-sample blocks. It independently stages F07.1 history on all six rows and F07A D05 transient analysis on the five FBW rows mapped [L,C,R,Ls,Rs] to external [0,2,1,4,5]; LFE row 3 receives no transient call. It projects F07.4 structure-refresh and F07.5 dither outputs and returns delayed audio plus noncommitting after-state. It does not derive an absolute source index, owner generation, parent transaction, reset authority, or F08 call.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/analysis/source_frame.rs",
+            "crates/jocforge-domain/src/analysis/input_history.rs",
+            "crates/jocforge-domain/src/analysis/transient_channel.rs",
+            "crates/jocforge-domain/src/analysis/transient_parameters.rs",
+            "crates/jocforge-domain/src/analysis/structure_refresh.rs",
+            "crates/jocforge-domain/src/analysis/dither.rs",
+            "crates/jocforge-domain/src/analysis/mod.rs"
+          ],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "One invocation consumes one six-block source-frame value and owns no absolute CodecSourceIndex or parent source-generation identity."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F07A_SOURCE_FRAME_D05_AND_LAYOUT_RULES",
+            "provider_files": [
+              "specs/07-history-and-transient.md",
+              "parameters/transient-d05-authorized-v1.json",
+              "parameters/f07-f12-source-state-schema-v1.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07A-WHOLE-SOURCE-WIRING-CURRENT-MAP-DELTA-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07A-WHOLE-SOURCE-WIRING-CURRENT-MAP-DELTA-V2/SOURCE-MANIFESTS.json"
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_spec_sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac",
+            "transient_provider_sha256": "130cd1a446ea8413a1d0d4c5eea631e890b7f1cd675975efa92697e258402991",
+            "source_frame_supplement_manifest_sha256": "cf6d7fe12cb30c457a5507c5de35cf614254f84a73adcb2b0428320e75e5dccf",
+            "wash_map_snapshot_sha256": "d531d172020115e369c7252fc215a68651abff7eaa6ab6180d0b01d99499b4d2",
+            "observed_pre_slice_implementation_map_sha256": "91918a507fefd1fc8a15c28750e2f84a1e8e9908319a839a2fb6e07afa407d87",
+            "validation_boundary": "The Wash supplement's map snapshot was current when rechecked but predates subsequent local map updates; approved F07 rules/source identities are root-manifest bound. Exact selected callback owner/source-generation binding remains unbound."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/source_frame.rs",
+            "crates/jocforge-domain/tests/transient_channel.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_F07_F12_SYNTHETIC_SOURCE_FRAME_RECIPE",
+            "authoritative_vectors": [
+              "test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/source_frame/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/transient_channel/INPUTS.json",
+              "crates/jocforge-domain/tests/fixtures/transient_channel/EXPECTED.json"
+            ],
+            "case_pointers": [
+              "Uses the S0-LONG-MIX installed-audio arithmetic recipe for six channels by 1536 samples; the test expands this to 6x6x256 caller blocks.",
+              "Checks the F07.1 cold delay sequence and terminal history for all six external rows, then compares each of 30 FBW lane/block calls to the existing one-lane D05 transition.",
+              "Checks F07.4/F07.5 flag projection from the resulting short/other consumed flags; this is local composition verification and has no separate Wash expected output snapshot.",
+              "The source recipe is synthetic input-only data and is not a native, whole-programme, or product acceptance vector."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/source_frame/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json",
+              "bytes": 10558,
+              "sha256": "59f7e83438bd1e7bd955cb4a9fe9c6dd7717939a651eb150d190edb2d91432d5"
+            },
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_frame_supplement_manifest_sha256": "cf6d7fe12cb30c457a5507c5de35cf614254f84a73adcb2b0428320e75e5dccf"
+          },
+          "native_status": {
+            "five_fbw_six_block_transient_composition": "LOCALLY_VERIFIED_FOR_SYNTHETIC_SOURCE_RECIPE",
+            "six_external_row_delayed_audio_projection": "LOCALLY_VERIFIED_FOR_SYNTHETIC_SOURCE_RECIPE",
+            "f07_4_f07_5_local_flag_projection": "LOCALLY_VERIFIED_FOR_SYNTHETIC_SOURCE_RECIPE",
+            "parent_owner_source_generation_and_commit": "UNBOUND",
+            "native_equivalence": "NOT_RUN",
+            "whole_f07_f07a": "NOT_IMPLEMENTED",
+            "product_acceptance": "NOT_RUN"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "F07_INPUT_ERROR",
+              "category": "installed FBW sample input",
+              "trigger": "A non-finite value is encountered by one of the staged F07A transient lane calls.",
+              "programme_state_after": "No frame proposal or after-state is returned; caller before-state remains unchanged.",
+              "caller_action": "Fail-stop the enclosing source attempt; do not install partial lane/block transitions."
+            },
+            {
+              "error_code": "F07_NUMERIC_FAILURE",
+              "category": "F07A transient R32 operation",
+              "trigger": "A separately rounded filter, mean-square, peak, or tier operation reports a numeric failure.",
+              "programme_state_after": "No frame proposal or after-state is returned; caller before-state remains unchanged.",
+              "caller_action": "Fail-stop and rebuild under I03; do not install partial lane/block transitions."
+            }
+          ],
+          "not_run": [
+            "Native selected callback owner/source-generation identity and parent staged success/fatal/reset/EOF transaction.",
+            "F07.4/F07.5 returned plans have not been connected to a production parent consumer or writer.",
+            "Delayed audio is returned for a future F08 consumer but is not connected to the transform/history owner or a complete 4249-source/4247-AU replay.",
+            "Native equivalence, real ADM, encoded output, decode/render, listening, and product acceptance are not established."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
     },

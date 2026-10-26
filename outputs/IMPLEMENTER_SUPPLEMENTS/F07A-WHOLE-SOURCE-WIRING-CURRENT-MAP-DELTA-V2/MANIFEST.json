@@ -1,0 +1,40 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F07A-WHOLE-SOURCE-WIRING-CURRENT-MAP-DELTA-V2",
+  "status": "CURRENT_MAPS_RECHECKED_THREE_GAPS_OPEN",
+  "implementation_ready": false,
+  "source_research_package_seal_sha256": "621470057206ab05bdd8d1cd998656621b4ef7a2ba304c17c2f94c8720c3c8e8",
+  "source_approved_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "files": [
+    {
+      "file": "ABSENCE-SCOPE.json",
+      "bytes": 1095,
+      "sha256": "4432afc283288810130d1b940e3f9bc6eb4c46702cffc53055db4694ab5abb2b"
+    },
+    {
+      "file": "CONTRACT.md",
+      "bytes": 2966,
+      "sha256": "32e0e5446eebaa55bd9097d26a3ab3dca9237b99aed5471caf4da0d25e86042a"
+    },
+    {
+      "file": "CURRENT-MAP-SNAPSHOT.json",
+      "bytes": 10748,
+      "sha256": "836e2ad2f29ce400efd326f43d226469b4fdbc1cc0fe81a407fd9a8cef48f9c9"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 819,
+      "sha256": "32c52b257c98e36bfa85c93220593584410188dc51a6a25a874a8e1dd993105f"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 3710,
+      "sha256": "7ca83855d19660d3cfba706295eb63bb249181f82e24a4d5266199cb3ce76f8e"
+    },
+    {
+      "file": "WASH-REVIEW.json",
+      "bytes": 990,
+      "sha256": "8f9cc01ff54d6890264b34d0bec34391a40f21622206f8a096003f9a1d3e85a8"
+    }
+  ]
+}

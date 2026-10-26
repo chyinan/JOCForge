@@ -40,6 +40,17 @@ impl TransientChannelState {
         }
     }
 
+    pub(crate) fn staged_copy(&self) -> Self {
+        Self {
+            two_history: self.two_history,
+            three_history: self.three_history,
+            peak_statistics: self.peak_statistics,
+            previous_mean: self.previous_mean,
+            short_queue: self.short_queue,
+            other_queue: self.other_queue,
+        }
+    }
+
     /// Serializes 29 F32 words followed by the short and other U8 queues.
     pub fn canonical_bytes(&self) -> [u8; STATE_SERIALIZED_BYTES] {
         let mut bytes = [0; STATE_SERIALIZED_BYTES];

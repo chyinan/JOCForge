@@ -1,0 +1,150 @@
+{
+  "schema": "f07a-current-implementation-map-snapshot.v2",
+  "capture_scope": "Current F07/F07A/F08 functional rows and F07/F07A/F08 Vector/Clock rows; no source code, media, or reverse data.",
+  "source_files": [
+    {
+      "file": "docs/implementation/IMPLEMENTATION-MAP.json",
+      "bytes": 1311835,
+      "sha256": "d531d172020115e369c7252fc215a68651abff7eaa6ab6180d0b01d99499b4d2",
+      "wash_recheck": "MATCH_CURRENT_FILE"
+    },
+    {
+      "file": "docs/implementation/CURRENT-FEATURES-PROVIDER-MAP.md",
+      "bytes": 14020,
+      "sha256": "eab8855c0a251d916723208a4583cc279490fee5ab1735db7db6d143a7967b72",
+      "wash_recheck": "MATCH_CURRENT_FILE"
+    },
+    {
+      "file": "docs/implementation/COMPONENT-PARAMETER-PROVIDER-MAP.md",
+      "bytes": 8048,
+      "sha256": "06e1c7e55ba24de372975be84002695f281874e9146a9debc83a30cd83e04ef1",
+      "wash_recheck": "MATCH_CURRENT_FILE"
+    },
+    {
+      "file": "docs/implementation/VECTOR-MAP.md",
+      "bytes": 155701,
+      "sha256": "439ba98b3055e2a22af65456f867a048337922d26c9def0f5313af81fd865549",
+      "wash_recheck": "MATCH_CURRENT_FILE"
+    },
+    {
+      "file": "docs/implementation/CLOCK-MAP.md",
+      "bytes": 47524,
+      "sha256": "55abb74bcb608d82067455a70b325da41730045f9c769b1afc31164ed210b4f8",
+      "wash_recheck": "MATCH_CURRENT_FILE"
+    }
+  ],
+  "functional_rows": [
+    {
+      "functional_id": "F07",
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "input-history-block-transition",
+          "mapping_status": "MATERIALIZED_DIRECT_STATE_SUBSLICE_WHOLE_F07_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_TWO_FRAME_SIX_LANE_F07_1_HISTORY__TRANSIENT_AND_PARENT_OWNER_OPEN",
+          "scope": "Implements one F07.1 256-word transition over one 1,280-word lane history, returning old history[256..512] and the next history formed by dropping the first 256 words and appending the current block. Six lanes and two frames are replayed against U-HISTORY-01 byte files. It does not implement F07.2 transient filtering, F08 transform history, programme ownership, source/callback clocks, or parent reset/fatal/EOF transactions."
+        },
+        {
+          "slice_id": "structure-refresh-flag-projection",
+          "mapping_status": "MATERIALIZED_DIRECT_NUMERIC_SUBSLICE_WHOLE_F07_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_SELECTED_PROFILE_4096_STRUCTURE_CASES__WHOLE_F07_OPEN",
+          "scope": "Projects caller-supplied six-block short_consumed and other_consumed flags to the selected-profile F07.4 structure-refresh flags. SPX=0 and end-bin=217 are fixed by the selected profile. It does not produce either input flag, implement transient filtering/queues, or own frame state."
+        },
+        {
+          "slice_id": "selected-dither-flag-plan",
+          "mapping_status": "MATERIALIZED_DIRECT_NUMERIC_SUBSLICE_WHOLE_F07_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_2048_SELECTED_DITHER_PLANS__WHOLE_F07_OPEN",
+          "scope": "Projects caller-supplied prior_short[5] and short_consumed[6][5] into six-by-five dither flags, header syntax presence, and next_previous_short[5] for selector 7/acmod 7/coupling disabled/gate enabled. It does not produce short flags, mutate programme state, serialize a header, or close F07/F12."
+        },
+        {
+          "slice_id": "actual-d05-transient-channel-block",
+          "mapping_status": "MATERIALIZED_DIRECT_STATE_AND_NUMERIC_SUBSLICE_WHOLE_F07_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_36_ACTUAL_D05_BLOCKS__CURRENT_F07_REVIEW_BINDING_OPEN",
+          "scope": "One full-band lane only: uses the identity-first selected D05 provider, F09G four-lane mean-square, F07.2 two-stage sample filter and three-stage paired filter, block-end history clear, peak/tier decisions, and separate four-slot short/other queue advancement. It runs a caller-ordered single-lane block stream. It does not implement the other lanes, F07.1 source history join, F07.4/.5 wiring, programme owner, F08, F12 transaction, or whole F07."
+        },
+        {
+          "slice_id": "washed-f07-f08-native-parent-lifecycle-boundary",
+          "mapping_status": "WASHED_MODEL_CONTRACTS_PRESENT__NATIVE_PARENT_OWNER_AND_GENERATION_UNBOUND",
+          "implementation_status": "EVIDENCE_ONLY_PARENT_STAGE_NOT_RUN",
+          "scope": "The frozen approved package contains selected F07/F07A/F08/F09/F10/F12 model formulas and lifecycle rules; this Wash audit found no missing formula requiring new algorithm research. The unresolved issue is the selected native callback to F07/F07A/F08 owner/source-generation join and parent staged success/fatal/reset/EOF boundary. The analysis fixture seam is TEST_ONLY and does not execute F07 equations, FFT/transform, real ADM, or the production analysis API. A bounded DTHD directory-count discrepancy remains unresolved and is not a global absence claim; DTHD membership in the selected path remains UNBOUND."
+        }
+      ]
+    },
+    {
+      "functional_id": "F07A",
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "selected-d05-transient-parameter-provider",
+          "mapping_status": "MATERIALIZED_PROVIDER_SUBSLICE_WHOLE_F07A_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_33_HASH_PINNED_D05_WORDS__WHOLE_F07A_OPEN",
+          "scope": "Identity-first parsing of the one selected internal-only D05 provider: 33 finite F32 words across P/A/S/O/M/C, exact field/group order, per-group LE hashes, and 132-byte canonical serialization. It performs no filtering, state update, profile fallback, file/environment access, or public distribution."
+        }
+      ]
+    },
+    {
+      "functional_id": "F08",
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "math-generated-window-fold",
+          "mapping_status": "MATERIALIZED_DIRECT_F08_2_FOLD_AND_HISTORY__WHOLE_F08_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_MATH_GENERATED_F08_2_TWO_BANK_FOLD_AND_HISTORY__WHOLE_F08_OPEN",
+          "scope": "Implements the shared F08.2 window fold for one caller-supplied 256-word F32 block and independent primary/companion 128-word histories. It returns both folded 256-word banks and both next histories using the selected `math-generated-v1` provider and separate R32 operations. It is branch-independent: the caller owns the long/short flag. It does not implement pre/post rotation, FFT, LFE transform, F07 source/sample production, F09 exponent generation, parent state installation, source clocks, or whole F08 acceptance."
+        },
+        {
+          "slice_id": "math-generated-short-transform",
+          "mapping_status": "MATERIALIZED_DIRECT_F08_3_4_6_SHORT_BRANCH__LONG_LFE_AND_F07_FLAG_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_MATH_GENERATED_SHORT_PRE_FFT64_POST__WHOLE_F08_OPEN",
+          "scope": "Consumes the paired F08.2 fold for one caller-supplied short FBW block and runs both banks through the two-short pre-rotation, stage-normalized FFT64, and interleaved short post-rotation. It returns primary and companion 256-word spectrum values. The caller must select this branch only when its strict F08 short flag is 1; this leaf does not produce or validate that flag. Long post-rotation, F08 LFE, F07 source/flag production, F09 exponents, frame/parent transaction, source clocks, and whole F08 remain outside this slice."
+        },
+        {
+          "slice_id": "math-generated-fbw-transform",
+          "mapping_status": "MATERIALIZED_DIRECT_F08_FBW_LONG_SHORT_TRANSFORM__LFE_AND_UPSTREAM_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_MATH_GENERATED_FBW_LONG_SHORT_SPECTRA__LFE_PARENT_OPEN",
+          "scope": "Consumes one validated F08.2 two-bank fold and a strict signed-I32 short flag of 0 or 1. Flag 0 runs the math-generated long pre-rotation, normalized FFT128, and long post-rotation; flag 1 runs the two-short pre-rotation, normalized FFT64s, and interleaved short post-rotation. It returns primary/companion 256-word spectra without mutating fold histories. It does not produce the short flag, consume F07 source clocks, implement the F08 LFE route, or install a frame/parent state."
+        },
+        {
+          "slice_id": "math-generated-lfe-transform",
+          "mapping_status": "MATERIALIZED_DIRECT_F08_7_8_9_LFE_ROUTE__F09_AND_PARENT_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_MATH_GENERATED_LFE_FFT8_RECURRENCE_SEVEN_BIN_POST__WHOLE_F08_OPEN",
+          "scope": "Consumes one validated F08.2 two-bank fold, applies the shared math-generated long pre-rotation, performs 16 gathered FFT8 groups, the selected eight-bin low-frequency recurrence, and the seven-bin LFE post-rotation. It returns separate seven-word primary and companion spectra. It owns no transform history, source clock, F09 exponent conversion, frame/AU write, or parent commit."
+        }
+      ]
+    }
+  ],
+  "vector_map_rows": [
+    {
+      "functional_id": "F07",
+      "line": 86,
+      "text": "| F07 | APPROVED_F07_F12_INPUT_ONLY_SOURCE_AND_TRANSIENT_RECIPES | `test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json`<br>`test-vectors/TRANSIENT-AUTHORIZED-INPUT-VECTORS.json` | `Source composition and transient D05 inputs are hash-bound input recipes from the frozen package.`<br>`The four current F07 direct slices remain local leaf implementations; these inputs do not establish the whole six-lane F07 parent transaction, F08 source-clock handshake, or product acceptance.` | INVENTORIED |"
+    },
+    {
+      "functional_id": "F07A",
+      "line": 87,
+      "text": "| F07A | — | — | — | INVENTORIED |"
+    },
+    {
+      "functional_id": "F08",
+      "line": 88,
+      "text": "| F08 | APPROVED_F08_NONZERO_MATH_GENERATED_COMPOSITION_INPUTS | `test-vectors/F08-NONZERO-COMPOSITION-INPUT-VECTORS.json`<br>`test-vectors/F08-NONZERO-COMPOSITION-RESULT.json` | `Three FBW long/short/long and three LFE synthetic blocks provide local trace hashes; they do not establish a complete F07/F08/F09 source transaction or product audio acceptance.` | INVENTORIED |"
+    }
+  ],
+  "clock_map_rows": [
+    {
+      "functional_id": "F07",
+      "line": 86,
+      "text": "| F07 | — | — | INVENTORIED |"
+    },
+    {
+      "functional_id": "F07A",
+      "line": 87,
+      "text": "| F07A | — | — | INVENTORIED |"
+    },
+    {
+      "functional_id": "F08",
+      "line": 88,
+      "text": "| F08 | — | — | INVENTORIED |"
+    }
+  ]
+}

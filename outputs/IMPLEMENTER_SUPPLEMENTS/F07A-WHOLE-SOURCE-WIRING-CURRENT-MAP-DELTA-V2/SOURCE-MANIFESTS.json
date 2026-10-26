@@ -1,0 +1,93 @@
+{
+  "schema": "f07a-current-map-source-manifests.v2",
+  "approved_implementer_package": {
+    "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "payloads": [
+      {
+        "file": "specs/07-history-and-transient.md",
+        "bytes": 15770,
+        "sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac",
+        "type": "approved_spec"
+      },
+      {
+        "file": "parameters/f07-f12-source-provider-manifest-v1.json",
+        "bytes": 3905,
+        "sha256": "2bde77646052a86b626c70d486069ddacec9231ea216fc6b44ef9a045401b1b9",
+        "type": "approved_parameter_or_input_only_vector"
+      },
+      {
+        "file": "parameters/transient-d05-authorized-v1.json",
+        "bytes": 7548,
+        "sha256": "130cd1a446ea8413a1d0d4c5eea631e890b7f1cd675975efa92697e258402991",
+        "type": "approved_parameter_or_input_only_vector"
+      },
+      {
+        "file": "test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json",
+        "bytes": 10558,
+        "sha256": "59f7e83438bd1e7bd955cb4a9fe9c6dd7717939a651eb150d190edb2d91432d5",
+        "type": "approved_parameter_or_input_only_vector"
+      },
+      {
+        "file": "test-vectors/F07-F12-SOURCE-COMPOSITION-MODEL-POSTCOMPARE-SUMMARY.json",
+        "bytes": 1453,
+        "sha256": "281f933de4b011b2f3fe46022d821523607eb11aa8902bfde1c3658d4db49bd7",
+        "type": "approved_parameter_or_input_only_vector"
+      },
+      {
+        "file": "test-vectors/TRANSIENT-AUTHORIZED-INPUT-VECTORS.json",
+        "bytes": 153305,
+        "sha256": "ddf9a4d0344f7f03f12768c5bac62cc7622f8691bf9e7c27b02bf4eedc6bda98",
+        "type": "approved_parameter_or_input_only_vector"
+      },
+      {
+        "file": "test-vectors/F08-NONZERO-COMPOSITION-INPUT-VECTORS.json",
+        "bytes": 3771,
+        "sha256": "eb825796adc60933b1c717122f991a9a0ced95ab0cd89d29ef4f6e1e28b6866c",
+        "type": "approved_parameter_or_input_only_vector"
+      },
+      {
+        "file": "test-vectors/F08-NONZERO-COMPOSITION-RESULT.json",
+        "bytes": 19159,
+        "sha256": "a77806e29ea7e0cb361353a2a6313826e4cdcc2b3f36cebce6fc0b434cdcb906",
+        "type": "approved_parameter_or_input_only_vector"
+      }
+    ]
+  },
+  "current_implementation_maps": [
+    {
+      "file": "docs/implementation/IMPLEMENTATION-MAP.json",
+      "bytes": 1311835,
+      "sha256": "d531d172020115e369c7252fc215a68651abff7eaa6ab6180d0b01d99499b4d2",
+      "wash_recheck": "MATCH_CURRENT_FILE"
+    },
+    {
+      "file": "docs/implementation/CURRENT-FEATURES-PROVIDER-MAP.md",
+      "bytes": 14020,
+      "sha256": "eab8855c0a251d916723208a4583cc279490fee5ab1735db7db6d143a7967b72",
+      "wash_recheck": "MATCH_CURRENT_FILE"
+    },
+    {
+      "file": "docs/implementation/COMPONENT-PARAMETER-PROVIDER-MAP.md",
+      "bytes": 8048,
+      "sha256": "06e1c7e55ba24de372975be84002695f281874e9146a9debc83a30cd83e04ef1",
+      "wash_recheck": "MATCH_CURRENT_FILE"
+    },
+    {
+      "file": "docs/implementation/VECTOR-MAP.md",
+      "bytes": 155701,
+      "sha256": "439ba98b3055e2a22af65456f867a048337922d26c9def0f5313af81fd865549",
+      "wash_recheck": "MATCH_CURRENT_FILE"
+    },
+    {
+      "file": "docs/implementation/CLOCK-MAP.md",
+      "bytes": 47524,
+      "sha256": "55abb74bcb608d82067455a70b325da41730045f9c769b1afc31164ed210b4f8",
+      "wash_recheck": "MATCH_CURRENT_FILE"
+    }
+  ],
+  "prior_research_package": {
+    "manifest_sha256": "621470057206ab05bdd8d1cd998656621b4ef7a2ba304c17c2f94c8720c3c8e8",
+    "old_map_snapshot_status": "STALE_AND_NOT_REUSED",
+    "rechecked_gap_rows_from_current_maps": true
+  }
+}

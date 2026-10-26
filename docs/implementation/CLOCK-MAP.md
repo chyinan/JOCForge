@@ -206,6 +206,7 @@
 | F07/actual-d05-transient-channel-block | — | `One input block advances one caller-owned lane state; 36-call ordering is test input, not a programme source or AU clock owner.` |
 | F07/washed-f07-f08-native-parent-lifecycle-boundary | — | `The package describes model clocks; no selected native callback, owner token, generation, or parent lifecycle clock is bound by this audit.` |
 | F07A/selected-d05-transient-parameter-provider | — | `Stateless identity and typed-parameter loading; no frame or source clock is owned.` |
+| F07A/five-fbw-source-frame-orchestrator | — | `One invocation consumes one six-block source-frame value and owns no absolute CodecSourceIndex or parent source-generation identity.` |
 | F08/math-generated-window-fold | — | `Consumes one caller-supplied block and before histories; this F08.2 leaf assigns no sample, callback, source, AU, or programme clock.` |
 | F08/math-generated-short-transform | — | `Consumes one caller-supplied F08.2 fold; no source, callback, AU, or programme clock is assigned.` |
 | F08/math-generated-fbw-transform | — | `The block route selector is a caller-provided strict flag; this slice assigns no F07/sample/callback/AU clock.` |

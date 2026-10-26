@@ -1,0 +1,19 @@
+{
+  "schema": "f07a-current-map-wash-evidence.v2",
+  "package_id": "F07A-WHOLE-SOURCE-WIRING-CURRENT-MAP-DELTA-V2",
+  "status": "CURRENT_MAPS_RECHECKED_THREE_GAPS_OPEN",
+  "current_implementation_map_sha256": "d531d172020115e369c7252fc215a68651abff7eaa6ab6180d0b01d99499b4d2",
+  "approved_spec_and_vector_hashes": "8/8_MATCH",
+  "mapping_interpretation": {
+    "five_fbw_source_frame_orchestrator": "NOT_MAPPED",
+    "parent_owner_generation_and_commit": "UNBOUND",
+    "f07_4_f07_5_production_consumer_edge": "NOT_MAPPED",
+    "f07a_provider": "PROVIDER_ONLY",
+    "f08_2": "SINGLE_BLOCK_FOLD_LEAF"
+  },
+  "native_execution": "NOT_RUN",
+  "frozen_model_orchestrator_execution": "NOT_RUN",
+  "input_only_vectors_executed_by_wash": false,
+  "implementation_ready": "NO",
+  "full_chain_closed": "NO"
+}
