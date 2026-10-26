@@ -237,6 +237,7 @@
 | F12/selected-complexity-index-type-a-u8-field-writer | `FrameBitCursor` | `The caller positions the cursor at bit 105; a successful U8 write advances it to bit 113.`<br>`Cursor mismatch or insufficient capacity writes no field bits and preserves the cursor.` |
 | F12S/mantissa-quantizer | — | `The quantizer is stateless and has no callback, source, AU, or trial-search clock ownership.` |
 | F13/selected-metadata-owner-source-stage | `CodecSourceIndex`<br>`JocDispatchIndex`<br>`PublishedAuIndex` | `source s`<br>`dispatch s+1`<br>`AU absent for s<2 else s-2`<br>`ordinary writer s-2`<br>`ID14 writer s-1` |
+| F13/measurement-result-aggregate-and-id1-integer-projection | — | `No source or AU clock is read or advanced; provider branch/value and same-programme/source/reset epoch remain UNBOUND.` |
 | F13C/selected-bsi-count-and-payload-import | — | `The scalar formula, count admission projection, producer and literal importer copy are stateless calls; no source, dispatch, AU, or programme clock is owned.` |
 | F13C/washed-f13c-bsi-configuration-count-capture-local-lineage | — | `The package records within-capture joins only; no persistent source, frame or AU generation is established.` |
 | F13C/washed-f13c-bsi-importer-static-identity | — | `Same static importer code identity does not bind a callback, source, frame or AU generation.` |

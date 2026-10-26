@@ -1,0 +1,68 @@
+{
+  "schema": "jocforge-f13-id1-preferred-source-manifests.v1",
+  "approved_implementer_package": {
+    "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "relevant_contracts": [
+      {
+        "file": "specs/13-emdf-and-timeline.md",
+        "bytes": 12839,
+        "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd"
+      },
+      {
+        "file": "specs/06-meter-bsi.md",
+        "bytes": 6337,
+        "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
+      },
+      {
+        "file": "specs/06-meter-none-drc-whole-composition.md",
+        "bytes": 9594,
+        "sha256": "94e8d42e77e71f4f16e99a74ee3c808cfc925074e19dd814762d21cde6f259d2"
+      },
+      {
+        "file": "specs/01-frontend-config-dbmd-events.md",
+        "bytes": 13867,
+        "sha256": "afd9efc879ed9a4878bd967c1370275074efd2226e11e67eb86838f4168f61b7"
+      },
+      {
+        "file": "parameters/joc-timer-order-v1.json",
+        "bytes": 1940,
+        "sha256": "b425f8dffc0d914d660c46bcce5226c80d5fc680ab7c7f02e590fd6f889cb50b"
+      }
+    ]
+  },
+  "prior_wash_decisions": {
+    "no_new_task_field": {
+      "package_id": "F13-PREFERRED-INPUT-DECISION-SUPERSESSION-V1",
+      "manifest_sha256": "0055b50cd51168c84923c3b6a5a671976acd77bb200b00fd1a1fc710037e7ede"
+    },
+    "earlier_provider_gap": {
+      "package_id": "F13-BODY-INPUT-PROVENANCE-AND-PREFERRED-BOUNDARY-V1",
+      "manifest_sha256": "2b145478bd6f0d1868d6f9a589eee37693215791d219c91b64262995316087a8"
+    }
+  },
+  "research_package": {
+    "manifest_sha256": "80c7d632d0f23124edad874208d4910a6afd68d615e564378cc79707070d084b",
+    "payloads": {
+      "INPUT-ONLY-CONTROL-CASES.json": "e6a204d689f38435b2017310c03c8983739b624e425df1c59981fee355b369fc",
+      "MODEL-CALLER-AVAILABILITY.json": "1947eb823fd41f62f57a192847df2c696fc693c280e599d85ae3cc4c8c103e04",
+      "PREFERRED-SOURCE-AND-RULE.json": "d421aad2b9f0d698e8003fd52e900e16e8cdcd9aa26d34a97dd54b0974050702",
+      "README.md": "10976219cdfa9a1c74e4ca8a75676115cc528c5a8cadad74db86300916c99572",
+      "SOURCE-IDENTITIES.json": "7ed3829a4a82c41c415d4a2016af9d4cf61b1bd4f2cef47a7f4440721acfd9af",
+      "STATIC-CODE-IDENTITIES.json": "b0a7210264d9ffd095c74e3cf2e2224f3667eeda7337d5d35763f86b5ad3d3c4"
+    }
+  },
+  "cached_static_analysis": {
+    "declared_import_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "research_export_sha256": "97f5e4911f3f2da0a25619bd17ca6f47bc59d48f831e64d37ef8998fe384c0c9",
+    "research_export_bytes": 186834,
+    "recovered_code_bodies": 19,
+    "body_hash_verifier": "PASS_NORMAL_AND_OPTIMIZED",
+    "fresh_original_pe_rehash": "NOT_RUN",
+    "exact_target_filename_under_user_supplied_d_root": "NOT_FOUND"
+  },
+  "model_registry": {
+    "file": "SOURCE-LINEAGE-AND-SCOPE.md",
+    "sha256": "2a8222fc9a5e3bcbf3c06d02965a39bd2894cdceec444eab0e7b2bb0542440fa",
+    "caller_content_status": "UNAVAILABLE_IN_BOUNDED_READABLE_SCOPE"
+  }
+}

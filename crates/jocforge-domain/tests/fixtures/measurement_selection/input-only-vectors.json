@@ -1,0 +1,83 @@
+{
+  "schema": "jocforge-f13-id1-preferred-input-only-vectors.v1",
+  "grade": "SYNTHETIC_LOCAL_RULE_INPUTS_NOT_NATIVE_OBSERVATIONS",
+  "basis": "Washed local comparison and remap rules; tag semantic names and selected provider remain unbound.",
+  "strict_i32_cases": [
+    {
+      "source_i32": -2147483648,
+      "id1_preferred_i32": 0
+    },
+    {
+      "source_i32": -2,
+      "id1_preferred_i32": 0
+    },
+    {
+      "source_i32": -1,
+      "id1_preferred_i32": 0
+    },
+    {
+      "source_i32": 0,
+      "id1_preferred_i32": 0
+    },
+    {
+      "source_i32": 1,
+      "id1_preferred_i32": 1
+    },
+    {
+      "source_i32": 2,
+      "id1_preferred_i32": 0
+    },
+    {
+      "source_i32": 2147483647,
+      "id1_preferred_i32": 0
+    }
+  ],
+  "processor_tag_cases": [
+    {
+      "processor_raw_i32": -1,
+      "measurement_result_i32": -1,
+      "id1_preferred_i32": 0
+    },
+    {
+      "processor_raw_i32": 0,
+      "measurement_result_i32": -1,
+      "id1_preferred_i32": 0
+    },
+    {
+      "processor_raw_i32": 1,
+      "measurement_result_i32": 0,
+      "id1_preferred_i32": 0
+    },
+    {
+      "processor_raw_i32": 2,
+      "measurement_result_i32": 1,
+      "id1_preferred_i32": 1
+    },
+    {
+      "processor_raw_i32": 3,
+      "measurement_result_i32": 2,
+      "id1_preferred_i32": 0
+    },
+    {
+      "processor_raw_i32": 4,
+      "measurement_result_i32": -1,
+      "id1_preferred_i32": 0
+    }
+  ],
+  "aggregate_cases": [
+    {
+      "case": "no_winning_record",
+      "selected_record_i32": 0,
+      "id1_preferred_i32": 0,
+      "interpretation": "local initialization only; not selected-job default"
+    },
+    {
+      "case": "strict_winner_then_equal_tie",
+      "selected_record_i32": 2,
+      "id1_preferred_i32": 0,
+      "interpretation": "first strict winner retained across equal-loudness tie"
+    }
+  ],
+  "native_measurement_values_included": false,
+  "selected_job_value_claimed": false
+}

@@ -237,6 +237,7 @@
 | F12/selected-complexity-index-type-a-u8-field-writer | F12 | `codec` |
 | F12S/mantissa-quantizer | F12S | `codec` |
 | F13/selected-metadata-owner-source-stage | F13 | `metadata` |
+| F13/measurement-result-aggregate-and-id1-integer-projection | F13 | `metadata` |
 | F13C/selected-bsi-count-and-payload-import | F13C | `metadata` |
 | F13C/washed-f13c-bsi-configuration-count-capture-local-lineage | F13C | `metadata` |
 | F13C/washed-f13c-bsi-importer-static-identity | F13C | `metadata` |

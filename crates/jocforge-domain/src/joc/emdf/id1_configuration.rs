@@ -1,8 +1,11 @@
 // pattern: Functional Core
-//! Whole-programme measurement projection to the selected ID1 configuration.
+//! Measurement-receipt and explicit ID1-value projection to the selected configuration.
 
 use crate::{
-    meter::measurement_receipt::{ProgrammeGatingKind, ProgrammeMeasurementReceipt},
+    meter::{
+        measurement_receipt::{ProgrammeGatingKind, ProgrammeMeasurementReceipt},
+        measurement_selection::Id1PreferredValue,
+    },
     numeric::{FiniteF32, r32_add, trunc_f32_to_i32},
     transaction::{AttemptId, ProgrammeId},
 };
@@ -32,24 +35,26 @@ pub struct Id1MeasurementConfiguration {
 }
 
 impl Id1MeasurementConfiguration {
-    #[allow(dead_code)] // Called by the future whole-meter to metadata parent adapter.
+    #[allow(dead_code)] // No production caller until the internal provider/receipt crosswalk is bound.
     pub(crate) fn from_selected_di_off_measurement(
         receipt: &ProgrammeMeasurementReceipt,
+        preferred_value: Id1PreferredValue,
     ) -> Result<Self, Id1ConfigurationError> {
         if receipt.gating_kind() == ProgrammeGatingKind::Dialogue {
             return Err(Id1ConfigurationError::UnsupportedSelectedGating);
         }
-        Self::from_measurement(receipt)
+        Self::from_measurement(receipt, preferred_value)
     }
 
     #[allow(dead_code)] // Shared conversion core for selected admission and isolated tests.
     fn from_measurement(
         receipt: &ProgrammeMeasurementReceipt,
+        preferred_value: Id1PreferredValue,
     ) -> Result<Self, Id1ConfigurationError> {
         let values = [
             -2,
             1,
-            i64::from(receipt.gating_kind().is_dialogue()),
+            i64::from(preferred_value.value()),
             0,
             i64::from(half_db_code(receipt.itu_word(), false)?),
             i64::from(half_db_code(receipt.dialogue_word(), false)?),
@@ -70,8 +75,9 @@ impl Id1MeasurementConfiguration {
     #[cfg(test)]
     pub(crate) fn from_measurement_for_test(
         receipt: &ProgrammeMeasurementReceipt,
+        preferred_value: Id1PreferredValue,
     ) -> Result<Self, Id1ConfigurationError> {
-        Self::from_measurement(receipt)
+        Self::from_measurement(receipt, preferred_value)
     }
 
     pub const fn values(&self) -> &[i64; 9] {
@@ -187,8 +193,11 @@ mod tests {
                 energy_windows: 6_794,
             })
             .unwrap();
-        let configuration =
-            Id1MeasurementConfiguration::from_selected_di_off_measurement(&receipt).unwrap();
+        let configuration = Id1MeasurementConfiguration::from_selected_di_off_measurement(
+            &receipt,
+            Id1PreferredValue::from_measurement_i32(0),
+        )
+        .unwrap();
         assert_eq!(
             configuration.values(),
             &[-2, 1, 0, 0, -48, -46, -512, -2, -512]
@@ -199,7 +208,7 @@ mod tests {
     }
 
     #[test]
-    fn dialogue_is_generic_field_two_true_but_rejected_by_selected_di_off() {
+    fn id1_preferred_value_is_explicit_and_selected_gating_remains_separate() {
         let receipt =
             ProgrammeMeasurementReceipt::from_verified_prepass(ProgrammeMeasurementReceiptInput {
                 programme_id: crate::transaction::test_programme_id("dialogue-gating-test"),
@@ -218,13 +227,28 @@ mod tests {
             })
             .unwrap();
         assert_eq!(
-            Id1MeasurementConfiguration::from_measurement(&receipt)
-                .unwrap()
-                .values()[2],
+            Id1MeasurementConfiguration::from_measurement(
+                &receipt,
+                Id1PreferredValue::from_measurement_i32(1),
+            )
+            .unwrap()
+            .values()[2],
             1
         );
         assert_eq!(
-            Id1MeasurementConfiguration::from_selected_di_off_measurement(&receipt),
+            Id1MeasurementConfiguration::from_measurement(
+                &receipt,
+                Id1PreferredValue::from_measurement_i32(0),
+            )
+            .unwrap()
+            .values()[2],
+            0
+        );
+        assert_eq!(
+            Id1MeasurementConfiguration::from_selected_di_off_measurement(
+                &receipt,
+                Id1PreferredValue::from_measurement_i32(1),
+            ),
             Err(Id1ConfigurationError::UnsupportedSelectedGating)
         );
     }

@@ -1,0 +1,35 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1",
+  "status": "INTERNAL_PROVIDER_STATIC_BOUND_SELECTED_VALUE_UNBOUND",
+  "implementation_ready": false,
+  "source_research_manifest_sha256": "80c7d632d0f23124edad874208d4910a6afd68d615e564378cc79707070d084b",
+  "source_approved_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 3592,
+      "sha256": "fcbe84e9fdb7f2dcaa29bdb9a73afb0f28beab49bc7d69f7cdbdd982a73495f8"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1522,
+      "sha256": "341f60c278e3c5bc0cc4abc4f93472205cb2deb8b7f37b192e0982c840a6fea6"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 2012,
+      "sha256": "4128af1949606008688427092f7b6a503e772a5dda2dd9bd768984d734eee062"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 3074,
+      "sha256": "1ee84f6e207a9dc0adc6ecb9819b6bdaaee6dfffa0365a69af700392349b32a5"
+    },
+    {
+      "file": "WASH-REVIEW.json",
+      "bytes": 1026,
+      "sha256": "0eb45005a866df3ac966319fa2eb08c6f7a2a8ca17f7b27d52c8bb69d01ebeda"
+    }
+  ]
+}

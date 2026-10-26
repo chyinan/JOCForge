@@ -1,0 +1,42 @@
+{
+  "schema": "jocforge-f13-id1-preferred-wash-evidence.v1",
+  "package_id": "F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1",
+  "status": "INTERNAL_PROVIDER_STATIC_BOUND_SELECTED_VALUE_UNBOUND",
+  "research_package_manifest_sha256": "80c7d632d0f23124edad874208d4910a6afd68d615e564378cc79707070d084b",
+  "research_payload_hashes": "6/6_MATCH",
+  "approved_contract_hashes": "5/5_MATCH",
+  "model_registry_hash": "MATCH",
+  "offline_verifier": {
+    "normal": "PASS",
+    "optimized": "PASS",
+    "function_bodies": 19,
+    "approved_contracts": 5,
+    "strict_i32_cases": 7,
+    "provider_tag_cases": 6,
+    "aggregate_cases": 2,
+    "native": "NOT_RUN",
+    "original_pe_recompare": "NOT_RUN",
+    "selected_value": "UNBOUND"
+  },
+  "d_drive_recheck": {
+    "target_filename": "dee_audio_filter_ddp_atmos.dll",
+    "exact_file_under_supplied_root": "NOT_FOUND",
+    "global_absence_claim": false
+  },
+  "closed": {
+    "origin_class": "EXISTING_INTERNAL_MEASUREMENT_PROVIDER",
+    "worker_aggregation_rule": "STRICT_F32_GREATER_THAN_REPLACES_WHOLE_44_BYTE_RECORD; TIES_KEEP_EXISTING",
+    "internal_i32_booleanization": "source_i32 == 1",
+    "new_xml_or_ui_field": "NO"
+  },
+  "unbound": [
+    "provider tag semantic names",
+    "approved model receipt crosswalk",
+    "selected backend/provider branch",
+    "selected preferred value",
+    "same-programme/source/reset epoch",
+    "fresh original PE rehash"
+  ],
+  "implementation_ready": "NO",
+  "whole_chain_closed": "NO"
+}

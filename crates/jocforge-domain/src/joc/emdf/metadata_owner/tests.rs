@@ -156,8 +156,11 @@ fn typed_stage_uses_pinned_wrapper_and_leaves_committed_leaf_unchanged() {
             energy_windows: 6_794,
         })
         .unwrap();
-    let id1_configuration =
-        Id1MeasurementConfiguration::from_measurement_for_test(&measurement).unwrap();
+    let id1_configuration = Id1MeasurementConfiguration::from_measurement_for_test(
+        &measurement,
+        crate::meter::measurement_selection::Id1PreferredValue::from_measurement_i32(1),
+    )
+    .unwrap();
     assert_eq!(id1_configuration.json_values(), call.config);
     let bodies = MetadataBodiesProposal::for_test(
         call.programme_id.clone(),
@@ -226,8 +229,11 @@ fn published_metadata_proposal_stages_into_the_selected_carrier() {
             energy_windows: 6_794,
         })
         .unwrap();
-    let id1_configuration =
-        Id1MeasurementConfiguration::from_measurement_for_test(&measurement).unwrap();
+    let id1_configuration = Id1MeasurementConfiguration::from_measurement_for_test(
+        &measurement,
+        crate::meter::measurement_selection::Id1PreferredValue::from_measurement_i32(1),
+    )
+    .unwrap();
     let bodies = MetadataBodiesProposal::for_test(
         call.programme_id.clone(),
         call.attempt,

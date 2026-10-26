@@ -8,6 +8,7 @@ pub mod integrated_meter;
 pub mod k_matrix;
 pub mod lfe_delay_ring;
 pub mod measurement_receipt;
+pub mod measurement_selection;
 pub mod meter_prepass;
 pub mod object_gain_mixer;
 pub mod object_render_metadata;

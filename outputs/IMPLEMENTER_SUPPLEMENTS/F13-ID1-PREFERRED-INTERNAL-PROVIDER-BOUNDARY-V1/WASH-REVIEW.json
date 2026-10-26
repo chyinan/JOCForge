@@ -1,0 +1,22 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "F13-ID1-PREFERRED-INTERNAL-PROVIDER-BOUNDARY-V1",
+  "decision": "ACCEPTED_AS_BOUNDED_STATIC_PROVIDER_AND_LOCAL_RULE_SUPPLEMENT",
+  "review_scope": [
+    "research package manifest and all payload hashes",
+    "approved contract identities",
+    "model registry identity and bounded unavailability status",
+    "cached static-analysis export and 19 code-body hash verifier",
+    "input-only local I32/remap/aggregate controls",
+    "original PE availability under the user-supplied D drive root"
+  ],
+  "not_claimed": [
+    "fresh original PE hash match",
+    "native or Python model execution",
+    "selected provider branch or preferred bit",
+    "semantic tag names or MeasurementReceipt crosswalk",
+    "same-run source/reset generation",
+    "product readiness or whole-chain closure"
+  ],
+  "disposition": "Relay the internal-provider source and local comparison rules. Do not add a user field or semantic tag guess. Keep selected-job value and epoch unbound."
+}
