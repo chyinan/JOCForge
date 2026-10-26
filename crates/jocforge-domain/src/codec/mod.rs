@@ -5,6 +5,8 @@ pub mod bap;
 pub mod bitio;
 pub mod coefficient_power;
 pub mod configuration_import;
+pub mod converter_header_cost;
+pub mod converter_search;
 pub mod core_layout;
 pub mod db_selector;
 pub mod exponent_normalization;

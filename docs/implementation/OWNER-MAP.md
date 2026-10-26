@@ -228,6 +228,8 @@
 | F10/fullband-exponent-row-normalization | F10 | `analysis` |
 | F10/exponent-difference-triple-packing | F10 | `analysis` |
 | F10/fullband-f09-refresh-normalization-stage | F10 | `analysis` |
+| F11/virtual-header-fixed-bit-cost | F11 | `analysis` |
+| F11/converter-offset-search | F11 | `analysis` |
 | F12/grouped-quantizer-helper | F12 | `codec` |
 | F12/bounded-msb-frame-bit-writer | F12 | `codec` |
 | F12/selected-fixed-profile-header-prefix | F12 | `codec` |

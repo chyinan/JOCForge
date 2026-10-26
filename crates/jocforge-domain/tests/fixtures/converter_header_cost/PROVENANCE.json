@@ -1,0 +1,13 @@
+{
+  "schema": "f11-selected-header-cost-provenance.v1",
+  "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_vector_path": "test-vectors/unit/vectors.json",
+  "source_vector_bytes": 1503142,
+  "source_vector_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8",
+  "selected_cases": [
+    "U-COST-0",
+    "U-COST-2"
+  ],
+  "extraction_boundary": "Copies only each unit input surround_ex_mode and expected header_bits field; no BAP parameter, provider table, audio, or product data is included.",
+  "source_verification": "Both selected cases are recorded PASS_RESEARCH_MODEL_OR_DECLARED_PRIMITIVE in the source unit-recheck artifact."
+}

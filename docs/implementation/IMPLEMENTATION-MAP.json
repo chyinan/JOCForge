@@ -10452,7 +10452,165 @@
           "These local inputs do not validate production BAP, full POWER-to-F11 refresh/strategy/search, source clocks or the selected frame path."
         ],
         "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
-      }
+      },
+      "direct_slices": [
+        {
+          "slice_id": "virtual-header-fixed-bit-cost",
+          "mapping_status": "MATERIALIZED_DIRECT_F11_2_SELECTED_VIRTUAL_HEADER_COST__WHOLE_F11_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_U_COST_0_AND_2_HEADER_COST__OTHER_CONVERTER_COSTS_OPEN",
+          "scope": "Computes only the selected F11.2 virtual-header fixed cost for acmod=7 and one programme: 91 bits plus 14 bits when surround_EX mode is nonzero. It does not compute per-block costs, BAP histogram costs, feasibility, SNR search, or a full converter call.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/converter_header_cost.rs",
+            "crates/jocforge-domain/src/codec/mod.rs"
+          ],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Stateless scalar cost calculation; no block, source, AU, or programme clock is owned."
+            ]
+          },
+          "parameters": {
+            "kind": "NONE_F11_2_VIRTUAL_HEADER_COST",
+            "provider_files": [
+              "specs/11-converter.md"
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_spec_sha256": "9ecb50bbb125d2a6e2d8f5e565ffbc7514c156c72602d2d2d89d8b17e9e4e4c8",
+            "validation_boundary": "Implements only the fixed selected header cost; no public BAP parameter table or internal provider data is consumed."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/converter_header_cost.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_F11_2_U_COST_0_AND_U_COST_2_HEADER_COST_CASES",
+            "authoritative_vectors": [
+              "test-vectors/unit/vectors.json",
+              "test-vectors/UNIT-RECHECK.json",
+              "crates/jocforge-domain/tests/fixtures/converter_header_cost/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/converter_header_cost/RESULT.json",
+              "crates/jocforge-domain/tests/fixtures/converter_header_cost/PROVENANCE.json"
+            ],
+            "case_pointers": [
+              "U-COST-0: surround_ex_mode=0 produces header_bits=91.",
+              "U-COST-2: surround_ex_mode=2 produces header_bits=105.",
+              "Local fixtures extract only those two input fields and header-bit results from the approved unit vector; no BAP table or cost-search input is copied."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/converter_header_cost/INPUT-ONLY-VECTORS.json",
+              "bytes": 576,
+              "sha256": "039fdea71f3aa976c65da0faf261b67d93746725a1636294ea65d9ddb519d75c"
+            },
+            "additional_fixtures": [
+              {
+                "file": "crates/jocforge-domain/tests/fixtures/converter_header_cost/RESULT.json",
+                "bytes": 450,
+                "sha256": "62a2c7500bf7dc2c489a45641ebd49238ed1e4577d798b328f3d4a9dcb2e7593"
+              },
+              {
+                "file": "crates/jocforge-domain/tests/fixtures/converter_header_cost/PROVENANCE.json",
+                "bytes": 720,
+                "sha256": "4e46ef23700c4d0796b154df123f72026ca6271754d8cdeccee5e320c5b4aeff"
+              }
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_unit_vector_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8",
+            "source_unit_recheck_sha256": "ba30733a7afd586b7ba21a2e69ccd9e09ce9b9f976659b5f3e055c261f30753f"
+          },
+          "native_status": {
+            "u_cost_0_and_2_header_bits": "LOCALLY_VERIFIED",
+            "per_block_costs_and_bap_histogram": "NOT_IMPLEMENTED_BY_THIS_SLICE",
+            "feasibility_and_snr_search": "NOT_IMPLEMENTED_BY_THIS_SLICE",
+            "native_equivalence": "NOT_RUN",
+            "whole_f11": "NOT_IMPLEMENTED",
+            "product_acceptance": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Per-block line compression, strategy, LFE refresh, BA/SNR record-update costs, and auxiliary handling.",
+            "Mantissa histogram/BAP costs, selected BAP provider consumption, F11.3 feasibility, and F11.4 SNR search.",
+            "Full F11/F12 integration, source/AU clocks, parent transaction, native equivalence, and product acceptance."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "converter-offset-search",
+          "mapping_status": "MATERIALIZED_DIRECT_F11_3_4_SEARCH__CANDIDATE_COST_PRODUCER_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_U_SEARCH_01_GENERAL_CANDIDATE_COST_INPUT__PRODUCTION_BAP_OPEN",
+          "scope": "Runs the F11.3 feasibility and F11.4 bounded binary search over caller-supplied header/fixed/auxiliary costs and a pure callback that returns six candidate mantissa costs. It checks every visited candidate including q>671 and returns candidate order plus best offset. U-SEARCH-01 exercises the callback with all-zero BAP costs; the search implementation is not specialized to that case. It does not produce production BAP or general per-block/mantissa costs.",
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/converter_search.rs",
+            "crates/jocforge-domain/src/codec/mod.rs"
+          ],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "One stateless candidate search; no source, block, AU, or programme clock is owned."
+            ]
+          },
+          "parameters": {
+            "kind": "F11_3_4_CANDIDATE_COST_SEARCH",
+            "provider_files": [
+              "specs/11-converter.md"
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_spec_sha256": "9ecb50bbb125d2a6e2d8f5e565ffbc7514c156c72602d2d2d89d8b17e9e4e4c8",
+            "source_unit_vector_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8",
+            "validation_boundary": "The candidate cost callback is caller supplied; U-SEARCH-01 uses zero BAP costs. This leaf does not read a BAP table or provider."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/tests/converter_search.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_U_SEARCH_01_CANDIDATE_SEQUENCE",
+            "authoritative_vectors": [
+              "test-vectors/unit/vectors.json",
+              "test-vectors/UNIT-RECHECK.json",
+              "crates/jocforge-domain/tests/fixtures/converter_search/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/converter_search/RESULT.json",
+              "crates/jocforge-domain/tests/fixtures/converter_search/PROVENANCE.json"
+            ],
+            "case_pointers": [
+              "U-SEARCH-01 checks the exact ten-candidate order and best offset 671 with an all-zero-BAP synthetic cost callback.",
+              "The local input fixture copies only header/fixed/auxiliary costs and the declared zero-BAP callback fact.",
+              "This does not validate nonzero BAP calculation, production F11 costs/search, or a selected frame path."
+            ],
+            "local_fixture": {
+              "file": "crates/jocforge-domain/tests/fixtures/converter_search/INPUT-ONLY-VECTORS.json",
+              "bytes": 605,
+              "sha256": "e4a50d95de741d4a2fbc39694d2461c26dd1928f26191fc7c9a1b1f1f1ebec6b"
+            },
+            "additional_fixtures": [
+              {
+                "file": "crates/jocforge-domain/tests/fixtures/converter_search/RESULT.json",
+                "bytes": 468,
+                "sha256": "5e12861e59549de9cbcdfbd1f01495586c2581af8b754503dcd019fe386e8530"
+              },
+              {
+                "file": "crates/jocforge-domain/tests/fixtures/converter_search/PROVENANCE.json",
+                "bytes": 809,
+                "sha256": "abf7bb5e8f23a3ce0a90c25e8c859660ad16c0d8fdefd0cb54cb8a6a0766a7f7"
+              }
+            ],
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "source_unit_recheck_sha256": "ba30733a7afd586b7ba21a2e69ccd9e09ce9b9f976659b5f3e055c261f30753f"
+          },
+          "native_status": {
+            "u_search_01_candidate_order_with_zero_bap_cost_callback": "LOCALLY_VERIFIED",
+            "production_bap_and_candidate_cost_producer": "NOT_IMPLEMENTED_BY_THIS_SLICE",
+            "whole_f11": "NOT_IMPLEMENTED",
+            "native_equivalence": "NOT_RUN",
+            "product_acceptance": "NOT_RUN"
+          },
+          "error_outcomes": [],
+          "not_run": [
+            "Production BAP provider/algorithm, nonzero BAP candidates, and BAP-derived mantissa histograms.",
+            "General per-block costs, strategy/profile selection, selected frame integration, source/AU clocks, F12 writing, and parent transaction."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        }
+      ]
     },
     {
       "functional_id": "F12",

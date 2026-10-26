@@ -1,0 +1,11 @@
+{
+  "schema": "f11-selected-zero-bap-search-provenance.v1",
+  "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_vector_path": "test-vectors/unit/vectors.json",
+  "source_vector_bytes": 1503142,
+  "source_vector_sha256": "a14dd6c3700fae1765399c72c816dd3146d57ab7dd026b375efb6aed7408cfa8",
+  "source_unit_recheck_path": "test-vectors/UNIT-RECHECK.json",
+  "source_unit_recheck_sha256": "ba30733a7afd586b7ba21a2e69ccd9e09ce9b9f976659b5f3e055c261f30753f",
+  "extraction_boundary": "Copies only U-SEARCH-01 header/fixed/auxiliary cost inputs and the declared all-zero BAP callback result; no header derivation, BAP provider table, or production BAP output is included.",
+  "source_verification": "The unit-recheck artifact records U-SEARCH-01 PASS."
+}

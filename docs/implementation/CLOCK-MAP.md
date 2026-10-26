@@ -228,6 +228,8 @@
 | F10/fullband-exponent-row-normalization | — | `Stateless one-row calculation over caller-ordered bins; no source-frame clock or committed state is owned.` |
 | F10/exponent-difference-triple-packing | — | `Stateless packing of one caller-ordered group; no source-frame or AU clock is owned.` |
 | F10/fullband-f09-refresh-normalization-stage | — | `Stages one caller-supplied exponent row and before-state; selected block/source/AU clock and multi-block strategy traversal remain external.` |
+| F11/virtual-header-fixed-bit-cost | — | `Stateless scalar cost calculation; no block, source, AU, or programme clock is owned.` |
+| F11/converter-offset-search | — | `One stateless candidate search; no source, block, AU, or programme clock is owned.` |
 | F12/grouped-quantizer-helper | — | `Consumes an explicitly ordered item slice; owns no callback, source, AU, or retry clock.` |
 | F12/bounded-msb-frame-bit-writer | `FrameBitCursor` | `cursor advances by exactly each admitted field width`<br>`failed width/value/capacity checks do not advance the cursor` |
 | F12/selected-fixed-profile-header-prefix | `FrameBitCursor` | `Fixed prefix begins only at bit cursor 0 and advances exactly 45 bits.`<br>`Insufficient scratch capacity is checked before writing any prefix bits; display pad bits are outside the prefix.` |
