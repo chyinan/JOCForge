@@ -1,0 +1,50 @@
+{
+  "activation_gate_producer_owner": "UNBOUND",
+  "evidence_grade": "REPORTER_ATTRIBUTED_STATIC_OBSERVATION_SOURCE_IDENTITIES_REHASHED_BY_WASH",
+  "implementation_requirement": false,
+  "native_dynamic_capture": "NOT_RUN",
+  "opaque_gate_shape": {
+    "filter_call_gate": [
+      {
+        "condition": "not equal zero",
+        "relative_word": 11,
+        "type": "U32"
+      },
+      {
+        "condition": "greater than positive zero",
+        "relative_word": 10,
+        "type": "F32"
+      },
+      {
+        "condition": "equals zero",
+        "relative_word": 0,
+        "type": "U32"
+      }
+    ],
+    "outer_gate": {
+      "condition": "equals zero",
+      "relative_word": 1,
+      "type": "U32"
+    },
+    "same_opaque_row_context_carried_to_filter_caller": true,
+    "values_captured_at_runtime": false
+  },
+  "schema": "washed-f04-diffusion-static-gate-status.v1",
+  "selected_source_generation": "NOT_OBSERVED",
+  "semantic_crosswalk": {
+    "inner_u32_nonzero_to_audio_diffuse": "UNBOUND",
+    "inner_u32_zero_to_quiet": "UNBOUND",
+    "native_call_receipt_to_a4_or_component_consumer": "UNBOUND",
+    "native_selector_or_row_to_f04fm_output_index": "UNBOUND",
+    "opaque_row_owner_to_tail_callback_source_generation": "UNBOUND",
+    "outer_u32_to_clean_gate_or_f04g_row": "UNBOUND",
+    "positive_f32_to_width_spread_raw_width_or_mapped_width": "UNBOUND"
+  },
+  "source_candidate_manifest_sha256": "f5fff9cdacbf33d6ca36964b55c3a9e328483eeff30c066ea23bb5422a4733d8",
+  "target_module": {
+    "label": "native_target_module.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "source_identity_rehash": "PASS",
+    "static_semantics_independently_reproduced": false
+  }
+}

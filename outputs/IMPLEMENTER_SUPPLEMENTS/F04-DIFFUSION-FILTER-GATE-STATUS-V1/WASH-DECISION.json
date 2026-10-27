@@ -1,0 +1,19 @@
+{
+  "decision": "ACCEPT_AS_STATUS_ONLY",
+  "existing_model_rules_unchanged": true,
+  "native_dynamic": "NOT_RUN",
+  "new_implementation_rule": false,
+  "product_acceptance": "NOT_RUN",
+  "schema": "wash-decision.v1",
+  "scope": [
+    "F04F",
+    "F04FM",
+    "F04FCM",
+    "F04A diffusion-prefix boundary"
+  ],
+  "unbound": [
+    "opaque gate semantic mapping",
+    "tail/source owner and generation",
+    "F04FM output index and A4/component consumer receipt"
+  ]
+}

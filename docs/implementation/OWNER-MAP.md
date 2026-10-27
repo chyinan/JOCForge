@@ -153,8 +153,12 @@
 | F04A/independent-meter-installed48-postwindow-leaf | F04A | `meter` |
 | F04A/active-component-matrix-and-packet-constructor | F04A | `spatial_audio` |
 | F04A/washed-membership-producer-owner-status-v2 | F04A | `spatial_audio` |
+| F04A/informational-diffusion-gate-to-prefix-consumer-identity-unbound | F04A | `spatial_audio` |
 | F04F/single-tail-diffusion-filter-block-preview | F04F | `spatial_audio` |
 | F04F/single-tail-active-inactive-callback-lifecycle | F04F | `spatial_audio` |
+| F04F/informational-diffusion-filter-opaque-gate-status | F04F | `spatial_audio` |
+| F04FM/informational-diffusion-gate-to-math-output-identity-unbound | F04FM | `spatial_audio` |
+| F04FCM/informational-diffusion-gate-to-constructor-identity-unbound | F04FCM | `spatial_audio` |
 | F04G/selected-p11-prefix-membership-producer | F04G | `spatial_audio` |
 | F04G/washed-control52-static-row-and-owner-copy-lineage | F04G | `spatial_audio` |
 | F04G/washed-width11-spatial-vector-same-invocation-reader | F04G | `spatial_audio` |

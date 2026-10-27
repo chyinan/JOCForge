@@ -3270,8 +3270,58 @@
           "error_outcomes": [],
           "not_run": ["Same-row and same-generation join from clean F04A audio_diffuse/lane values to native gate and selected row list.", "Persistent row-state current value, clean prefix writer identity, source-row/PCM generation and native run remain UNBOUND/NOT_RUN."],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "informational-diffusion-gate-to-prefix-consumer-identity-unbound",
+          "mapping_status": "WASHED_STATUS_ONLY_OPAQUE_GATE_TO_F04A_PREFIX_CONSUMER_JOIN_UNBOUND",
+          "implementation_status": "INFORMATIONAL_ONLY_NO_SAME_GENERATION_A4_OR_COMPONENT_RECEIPT",
+          "scope": "The status package does not bind the opaque gate row or the held 288 model calls to the F04A diffusion-prefix path, a source tail, callback generation, A4 output or component-consumer receipt; those joins remain UNBOUND. The separate model-prefix rules remain unchanged.",
+          "owner": "spatial_audio",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The reporter-attributed gate observation has no captured callback/source-generation identity and defines no production clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_F04_DIFFUSION_OPAQUE_GATE_STATUS",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/SOURCE-CHAIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/STATIC-GATE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/WASH-DECISION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "b3e0ef1ff4ca5db181d7e32dff6d0d01ff0fb04514561724e4ff37ff62ab1cac",
+            "candidate_source_manifest_sha256": "f5fff9cdacbf33d6ca36964b55c3a9e328483eeff30c066ea23bb5422a4733d8",
+            "validation_boundary": "Status crosswalk only. Existing clean model formulas remain unchanged; opaque gate semantics and producer/owner identity remain UNBOUND."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "INPUT_ONLY_F04_DIFFUSION_GATE_STATUS_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "Input vectors are boundary recipes only; their synthetic activation sequence is not produced from ADM.",
+              "No native gate-to-F04A/A4/component identity or output comparison is established."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "b3e0ef1ff4ca5db181d7e32dff6d0d01ff0fb04514561724e4ff37ff62ab1cac"
+          },
+          "not_run": [
+            "The 288 model calls to F04A diffusion-prefix outputs and component consumer receipts.",
+            "Same-tail/source owner and callback-generation identity."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
         }
-      ],
+                       ],
       "implementation_status": "DEFERRED_DETAILED_MAPPING"
     },
     {
@@ -3438,8 +3488,60 @@
             "simultaneous-invalid native first-failure order, reset receipts across other tails, and whole F04 callback transaction",
             "native primary diffusion acceptance, W04, listening, and product encode"
           ]
+        },
+        {
+          "slice_id": "informational-diffusion-filter-opaque-gate-status",
+          "mapping_status": "WASHED_STATUS_ONLY_REPORTER_ATTRIBUTED_OPAQUE_FILTER_GATE__SEMANTICS_UNBOUND",
+          "implementation_status": "INFORMATIONAL_ONLY_NATIVE_GATE_SHAPE_REPORTED__NO_CLEAN_PRODUCER_JOIN",
+          "scope": "R3 reported an outer U32-zero gate followed by nested U32-nonzero, F32-greater-than-positive-zero and U32-equals-zero predicates on one opaque row context. This is reporter-attributed static observation; Wash rehashed source identities but did not reproduce the static analysis. The predicate words are not mapped to clean-model activation fields, mode, lane, tail, callback or source generation; those joins remain UNBOUND. Existing F04F model behavior is unchanged.",
+          "owner": "spatial_audio",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The reporter-attributed gate observation has no captured callback/source-generation identity and defines no production clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_F04_DIFFUSION_OPAQUE_GATE_STATUS",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/SOURCE-CHAIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/STATIC-GATE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/WASH-DECISION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "b3e0ef1ff4ca5db181d7e32dff6d0d01ff0fb04514561724e4ff37ff62ab1cac",
+            "candidate_source_manifest_sha256": "f5fff9cdacbf33d6ca36964b55c3a9e328483eeff30c066ea23bb5422a4733d8",
+            "validation_boundary": "Status crosswalk only. Existing clean model formulas remain unchanged; opaque gate semantics and producer/owner identity remain UNBOUND."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "INPUT_ONLY_F04_DIFFUSION_GATE_STATUS_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "Outer U32 zero gate and nested U32 nonzero / F32 positive / U32 zero gate shape are reporter-attributed only.",
+              "No runtime predicate values or selected source generation were captured.",
+              "No production gate rule is added; semantic and owner joins remain UNBOUND."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "b3e0ef1ff4ca5db181d7e32dff6d0d01ff0fb04514561724e4ff37ff62ab1cac"
+          },
+          "not_run": [
+            "Opaque gate predicates to audio_diffuse, width/spread or quiet semantics.",
+            "Opaque row owner, selected source generation and tail-state identity.",
+            "Native dynamic capture and product acceptance."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
         }
-      ]
+                       ]
     },
     {
       "functional_id": "F04FM",
@@ -3449,7 +3551,59 @@
       "owner": "spatial_audio",
       "planned_phase": "Phase 3",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "informational-diffusion-gate-to-math-output-identity-unbound",
+          "mapping_status": "WASHED_STATUS_ONLY_OPAQUE_GATE_TO_F04FM_OUTPUT_JOIN_UNBOUND",
+          "implementation_status": "INFORMATIONAL_ONLY_NO_SELECTOR_ROW_TO_F04FM_OUTPUT_MAPPING",
+          "scope": "The status package does not bind the opaque native selector/row to an F04FM mathematical output index, lane or mode; that join remains UNBOUND. Approved F04FM generation formulas remain unchanged; no gate-to-output connection is inferred from field shape or row order.",
+          "owner": "spatial_audio",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The reporter-attributed gate observation has no captured callback/source-generation identity and defines no production clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_F04_DIFFUSION_OPAQUE_GATE_STATUS",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/SOURCE-CHAIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/STATIC-GATE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/WASH-DECISION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "b3e0ef1ff4ca5db181d7e32dff6d0d01ff0fb04514561724e4ff37ff62ab1cac",
+            "candidate_source_manifest_sha256": "f5fff9cdacbf33d6ca36964b55c3a9e328483eeff30c066ea23bb5422a4733d8",
+            "validation_boundary": "Status crosswalk only. Existing clean model formulas remain unchanged; opaque gate semantics and producer/owner identity remain UNBOUND."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "INPUT_ONLY_F04_DIFFUSION_GATE_STATUS_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "Static gate row words are NOT_RECORDED at runtime and have no F04FM output-index join.",
+              "Approved F04FM model rules remain unchanged; no implementation rule is added."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "b3e0ef1ff4ca5db181d7e32dff6d0d01ff0fb04514561724e4ff37ff62ab1cac"
+          },
+          "not_run": [
+            "Native selector/row to F04FM output index, lane or mode.",
+            "Opaque gate owner and callback/source-generation identity."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
+        }
+      ]
     },
     {
       "functional_id": "F04FCM",
@@ -3459,7 +3613,59 @@
       "owner": "spatial_audio",
       "planned_phase": "Phase 3",
       "inventory_status": "INVENTORIED",
-      "implementation_status": "DEFERRED_DETAILED_MAPPING"
+      "implementation_status": "DEFERRED_DETAILED_MAPPING",
+      "direct_slices": [
+        {
+          "slice_id": "informational-diffusion-gate-to-constructor-identity-unbound",
+          "mapping_status": "WASHED_STATUS_ONLY_OPAQUE_GATE_TO_CONSTRUCTOR_JOIN_UNBOUND",
+          "implementation_status": "INFORMATIONAL_ONLY_NO_GATE_TO_CONSTRUCTOR_OUTPUT_JOIN",
+          "scope": "The status package does not bind the opaque native gate row to F04FCM constructor output, selected profile, or a parameter-install invocation; those joins remain UNBOUND. Approved constructor formulas and cold/reset rules remain unchanged; no native gate semantics are inferred.",
+          "owner": "spatial_audio",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The reporter-attributed gate observation has no captured callback/source-generation identity and defines no production clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_F04_DIFFUSION_OPAQUE_GATE_STATUS",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/SOURCE-CHAIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/STATIC-GATE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/WASH-DECISION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "b3e0ef1ff4ca5db181d7e32dff6d0d01ff0fb04514561724e4ff37ff62ab1cac",
+            "candidate_source_manifest_sha256": "f5fff9cdacbf33d6ca36964b55c3a9e328483eeff30c066ea23bb5422a4733d8",
+            "validation_boundary": "Status crosswalk only. Existing clean model formulas remain unchanged; opaque gate semantics and producer/owner identity remain UNBOUND."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "INPUT_ONLY_F04_DIFFUSION_GATE_STATUS_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-FILTER-GATE-STATUS-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "The native gate observation does not identify an F04FCM constructor invocation or output.",
+              "Approved F04FCM model rules remain unchanged; no implementation rule is added."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "b3e0ef1ff4ca5db181d7e32dff6d0d01ff0fb04514561724e4ff37ff62ab1cac"
+          },
+          "not_run": [
+            "Opaque gate row to F04FCM constructor output or admitted profile identity.",
+            "Parameter-install owner/call identity and callback/source-generation identity."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
+        }
+      ]
     },
     {
       "functional_id": "F04G",

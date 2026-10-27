@@ -1,0 +1,12 @@
+{
+  "absolute_paths_or_source_payloads_in_wash": false,
+  "approved_and_washed_references_rehashed": 20,
+  "candidate_payloads_rehashed": "4/4 PASS",
+  "expected_outputs_included": false,
+  "input_only_vectors": "input-only; no expected output values",
+  "native_dynamic": "NOT_RUN",
+  "schema": "f04-diffusion-gate-wash-verification.v1",
+  "source_artifacts_rehashed": "5/5 PASS",
+  "source_manifest_sha256": "f5fff9cdacbf33d6ca36964b55c3a9e328483eeff30c066ea23bb5422a4733d8",
+  "static_semantics_reproduced_by_wash": false
+}

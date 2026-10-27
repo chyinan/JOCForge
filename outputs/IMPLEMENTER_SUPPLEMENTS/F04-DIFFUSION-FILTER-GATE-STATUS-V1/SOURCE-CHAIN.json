@@ -1,0 +1,162 @@
+{
+  "approved_main_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "independently_rehashed_source_artifacts": [
+    {
+      "bytes": 12143,
+      "label": "r19_filter_core.py",
+      "rehash": "PASS",
+      "sha256": "88748613c9e6764037f6947a8187e5d267c734d01c3edd16be2f5e6112c6ccec"
+    },
+    {
+      "bytes": 9815,
+      "label": "r19_a4_projection_core.py",
+      "rehash": "PASS",
+      "sha256": "03b6e39300d1c6870f20dd3b3464c734330c673deca9b77e24bcf39cb448f269"
+    },
+    {
+      "bytes": 3618,
+      "label": "r19_row_context_core.py",
+      "rehash": "PASS",
+      "sha256": "51b1a3c8a0438efd94e1be9ca5973b306a16dab4155e44dde195a2a5c3c5efcd"
+    },
+    {
+      "bytes": 5079,
+      "label": "r19_component_audio_core.py",
+      "rehash": "PASS",
+      "sha256": "336f77f41af1adc2f326d9e44f8b9b034dfdfaf556c1bd0edb900997bbc578e5"
+    },
+    {
+      "bytes": 10942464,
+      "label": "native_target_module.dll",
+      "rehash": "PASS",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+    }
+  ],
+  "schema": "washed-f04-diffusion-gate-source-chain.v1",
+  "source_manifest_sha256": "f5fff9cdacbf33d6ca36964b55c3a9e328483eeff30c066ea23bb5422a4733d8",
+  "source_package_id": "F04F-DIFFUSION-FILTER-GATE-SOURCE-STATUS-V2",
+  "source_payloads": [
+    {
+      "bytes": 3692,
+      "file": "DECISION.md",
+      "sha256": "073278381825e86bc32b6e5e219ab179584af0216a9eb80a94d2061e5bdea4fb"
+    },
+    {
+      "bytes": 1808,
+      "file": "STATIC-GATE-OBSERVATION.json",
+      "sha256": "ea3941196328381668b5f5cb0bd95dd66c9a8ad9f7eaa90d29adf9746a015ffa"
+    },
+    {
+      "bytes": 1711,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "51af9747e93515e33c77319f3ad2ac8bc9a6a4b889e731f18cfa43860485b303"
+    },
+    {
+      "bytes": 6233,
+      "file": "SOURCE-IDENTITIES.json",
+      "sha256": "9026a845b61f5f7a8815ed4cd29a39daa98603a54fe2430a2c3e3ecdf91f707e"
+    }
+  ],
+  "verified_approved_and_washed_references": [
+    {
+      "bytes": 7203,
+      "path": "approved/specs/04-diffusion-filter-and-lifecycle.md",
+      "sha256": "4b662c3721ba10ad9dafd193bf13e1bc2df571ab4cab580e46a8a6b39e9a3594"
+    },
+    {
+      "bytes": 3125,
+      "path": "approved/specs/04-diffusion-mathematical-generation.md",
+      "sha256": "eeba9137918ffb647e3b0a68ca5b210aadd0b0815fed3eec7ae199a08057484d"
+    },
+    {
+      "bytes": 4229,
+      "path": "approved/specs/04-diffusion-constructor-generation.md",
+      "sha256": "e1a420ea0d4284c0cfadcf6962d34ff8cc0f877cee0d0503a6c0e2669c2978b9"
+    },
+    {
+      "bytes": 9190,
+      "path": "approved/specs/04-window-matrix-and-component-audio.md",
+      "sha256": "350937eadb5da2432ed60723305cdc8de80a139fef803ec3a2aa5a3990ed6334"
+    },
+    {
+      "bytes": 9103,
+      "path": "approved/specs/04-whole-spatial-chain-composition.md",
+      "sha256": "92325b12128023001e1f3fd4696dcec68bbd47a46acdb7886781b411a10c5d59"
+    },
+    {
+      "bytes": 1467,
+      "path": "approved/parameters/diffusion-mathematical-v1.json",
+      "sha256": "d690512cd204e97fc04a35c03519ed3005e26cb57408432fe30bfde63c2319aa"
+    },
+    {
+      "bytes": 1770,
+      "path": "approved/parameters/diffusion-constructor-mathematical-v1.json",
+      "sha256": "7a710d68b00c14d6b9b3f9fa3313579c5739ccce408655ea3252ad1ee4acd106"
+    },
+    {
+      "bytes": 9411,
+      "path": "approved/test-vectors/DIFFUSION-LOCAL-VERIFICATION.json",
+      "sha256": "e313a31a448bc21dbf5987cdc9a873349c975aeffd43e992fe194d1231603c60"
+    },
+    {
+      "bytes": 4323,
+      "path": "approved/test-vectors/DIFFUSION-MATH-GENERATION-VERIFICATION.json",
+      "sha256": "5705761f79fba8030081aae9bb82322c891bdec16b3fc8aa1ab86f56101ecb91"
+    },
+    {
+      "bytes": 4024,
+      "path": "approved/test-vectors/DIFFUSION-CONSTRUCTOR-GENERATION-VERIFICATION.json",
+      "sha256": "3ff423d3d0308c8d5f6c1b4338547fd3013973bad172b6dbf739086ba077fc12"
+    },
+    {
+      "bytes": 4230,
+      "path": "approved/test-vectors/DIFFUSION-COMPLETE-LOCAL-REVIEW-STATUS.json",
+      "sha256": "1256b19713528fd7736867ad651e30b7f4f0f9331e4c6d0c26563819a63766be"
+    },
+    {
+      "bytes": 218,
+      "path": "washed/DIFFUSION-REACTIVATION-EVIDENCE-V1/MANIFEST.json",
+      "sha256": "8124fd8ed9879685a4b586eab2cf21d6e89b4b430f03fdd2150fce9343d58982"
+    },
+    {
+      "bytes": 1340,
+      "path": "washed/F04A-CORRECTED-DIFFUSION-PREFIX-REPLAY-V1/MANIFEST.json",
+      "sha256": "07830e4128d817743b4180395c0a0f44198f7e64e9fca7bf768ff27e1456f1de"
+    },
+    {
+      "bytes": 775,
+      "path": "washed/F04A-MODEL-CALL-CLASSIFICATION-AND-RECEIPT-HOLD-V1/MANIFEST.json",
+      "sha256": "0cb838fb8c62e43a5785d8e08893dc0a273dd79fb704eb753b92eb3e50c20f10"
+    },
+    {
+      "bytes": 646,
+      "path": "washed/F04G-WIDTH-SEMANTICS-ERRATUM-V1/MANIFEST.json",
+      "sha256": "a77333ef0916eca7e739c9b12c2d6c87e8dbe1441e5d0a017e286f2772ffea8d"
+    },
+    {
+      "bytes": 1139,
+      "path": "washed/F04G-RAW-WIDTH-LIFECYCLE-AND-MEMBERSHIP-STATUS-V2/MANIFEST.json",
+      "sha256": "ff08fef02649246ca7e3ec4fe319298feca4d500c36cdb3ecc16b9503b122462"
+    },
+    {
+      "bytes": 872,
+      "path": "washed/F04G-CONTROL52-SELECTED-BRANCH-APPLICABILITY-V1/MANIFEST.json",
+      "sha256": "5b78ecf9996e228e543648a1f4989684e28354510bf5e2e09f169b89369d91b6"
+    },
+    {
+      "bytes": 676,
+      "path": "washed/F04G-CONTROL52-DISPATCH-STATIC-LINEAGE-V2/MANIFEST.json",
+      "sha256": "e45b59e7c5dcf92f270b8f75b2d9f2705ca97e5e72d52ca98d25478c67e8b2ea"
+    },
+    {
+      "bytes": 783,
+      "path": "washed/F04G-SPATIAL-VECTOR-CONSUMER-STATIC-V1/MANIFEST.json",
+      "sha256": "bd7691d9e34bb50fa509554bb87ab8668ec9aa721e2d88822f535ed19a33d2e8"
+    },
+    {
+      "bytes": 682,
+      "path": "washed/F04G-INDIRECT-HANDLER-STATIC-CANDIDATE-AUDIT-V1/MANIFEST.json",
+      "sha256": "463c2aae9e1eee090f31fd9b38cf1adfbac67e0775745132b1f58310c05fd91e"
+    }
+  ]
+}

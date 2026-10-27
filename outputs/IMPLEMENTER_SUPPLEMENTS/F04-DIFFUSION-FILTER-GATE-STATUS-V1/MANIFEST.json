@@ -1,0 +1,41 @@
+{
+  "classification": "STATUS_ONLY_NOT_ALGORITHM",
+  "delivery": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+  "files": [
+    {
+      "bytes": 1712,
+      "file": "CONTRACT.md",
+      "sha256": "d8931bdf19aa4255c77a4460da77386e716c426850d135c2b3b72c354c34bdd2"
+    },
+    {
+      "bytes": 1984,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "175455deceebcbb2faaac32098195f342add2a0c03895baff9f88131b82b8174"
+    },
+    {
+      "bytes": 5897,
+      "file": "SOURCE-CHAIN.json",
+      "sha256": "32e4f95e3481535634fc7b5d69aabe1beea7b4b0a7c1ce4f3124b9d6e354b942"
+    },
+    {
+      "bytes": 1730,
+      "file": "STATIC-GATE-STATUS.json",
+      "sha256": "8c7703d722a1db5d32ff1a70d37f2c3e5a7f1ce570f09429cde29592e69fa3f2"
+    },
+    {
+      "bytes": 467,
+      "file": "WASH-DECISION.json",
+      "sha256": "146ba2a761a50302cc19e40aefe97018fb1271f21a23d520b9eeba66a0d35ce3"
+    },
+    {
+      "bytes": 527,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "70a886318bd4c5d1f0f3a3e7e352c9e33057f42153ef64c1b38b112fd1a1f47f"
+    }
+  ],
+  "implementation_requirement": false,
+  "package_id": "F04-DIFFUSION-FILTER-GATE-STATUS-V1",
+  "schema": "wash-package-manifest.v1",
+  "scope": "F04 native opaque gate status; approved clean model formulas remain unchanged; producer/owner semantic join unbound",
+  "source_manifest_sha256": "f5fff9cdacbf33d6ca36964b55c3a9e328483eeff30c066ea23bb5422a4733d8"
+}

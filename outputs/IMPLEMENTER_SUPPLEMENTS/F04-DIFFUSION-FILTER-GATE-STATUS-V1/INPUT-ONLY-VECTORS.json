@@ -1,0 +1,68 @@
+{
+  "kind": "input-only; no expected output values",
+  "schema": "f04-diffusion-gate-input-only-vectors.v1",
+  "vectors": [
+    {
+      "case": "clean-model-filter-lifecycle-boundary",
+      "input": {
+        "audio_diffuse_u32": "NOT_RECORDED_FOR_SELECTED_ADM",
+        "callback_index_u64": "G",
+        "codec_source_index_u64": "S",
+        "current_pcm_f32_1536": "EXPLICIT_INPUT_BOUNDARY",
+        "filter_lane_i32": "NOT_RECORDED_FOR_SELECTED_ADM",
+        "previous_pcm_f32_1536": "EXPLICIT_INPUT_BOUNDARY",
+        "quiet_u32": "NOT_RECORDED_FOR_SELECTED_ADM",
+        "tail_id_u32": "T",
+        "width_domain": "UNBOUND_RAW_VS_MAPPED",
+        "width_or_spread_f32": "NOT_RECORDED_FOR_SELECTED_ADM"
+      }
+    },
+    {
+      "case": "native-opaque-filter-gate-record",
+      "input": {
+        "callback_source_generation": "UNBOUND",
+        "row_word_0_u32": "NOT_RECORDED",
+        "row_word_10_f32": "NOT_RECORDED",
+        "row_word_11_u32": "NOT_RECORDED",
+        "row_word_1_u32": "NOT_RECORDED",
+        "source_tail_owner": "UNBOUND"
+      }
+    },
+    {
+      "case": "reactivation-sequence-boundary",
+      "input": {
+        "callback_sequence": [
+          {
+            "callback": "g0",
+            "filter_condition": "active"
+          },
+          {
+            "callback": "g1",
+            "filter_condition": "inactive"
+          },
+          {
+            "callback": "g2",
+            "filter_condition": "active"
+          },
+          {
+            "callback": "g3",
+            "filter_condition": "cached_drain"
+          },
+          {
+            "callback": "g4",
+            "filter_condition": "cached_drain"
+          },
+          {
+            "callback": "g5",
+            "filter_condition": "cached_drain"
+          },
+          {
+            "callback": "g6",
+            "filter_condition": "cached_drain"
+          }
+        ],
+        "gain_vector_source": "EXPLICIT_SYNTHETIC_BOUNDARY_NOT_PRODUCED_FROM_ADM"
+      }
+    }
+  ]
+}
