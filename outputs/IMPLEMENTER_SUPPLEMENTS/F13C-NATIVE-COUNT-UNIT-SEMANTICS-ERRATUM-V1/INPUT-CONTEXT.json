@@ -1,0 +1,10 @@
+{
+  "case_id": "selected_adm_file_position_frames_0_48",
+  "expected_outputs_included": false,
+  "frame_end_exclusive": 48,
+  "frame_start_inclusive": 0,
+  "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "pcm_values_included": false,
+  "sample_rate_hz": 48000,
+  "schema": "f13c-native-count-unit-erratum-input-context.v1"
+}

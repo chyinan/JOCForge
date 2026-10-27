@@ -1,0 +1,27 @@
+{
+  "closed_edges": [
+    "producer U32 output store to caller local slot",
+    "caller local slot to per-stream context field store",
+    "caller local slot to referenced stream-record field store",
+    "per-stream context field to actual read and next callee argument",
+    "referenced stream-record field to actual read and size/capacity helper"
+  ],
+  "open_edges": [
+    {
+      "edge": "count field subchain to selected ID14 writer input",
+      "reason": "Writer was reached in the same bounded run, but no same-object or explicit value-flow token connected the field consumers to writer arguments.",
+      "status": "UNBOUND"
+    },
+    {
+      "edge": "writer input to selected AU identity",
+      "status": "UNBOUND"
+    },
+    {
+      "edge": "native event to ADM sample, host frame, spatial callback, and consumer generation",
+      "status": "NOT_CAPTURED"
+    }
+  ],
+  "schema": "washed-f13c-native-same-run-edge-status.v1",
+  "source_payload_sha256": "1f0fdd811f80432481fc0ad653fae27195c500a3a11ac0d087a9a85dc11f7d7c",
+  "stop_condition": "Do not promote the count field to a codec/AU dependency until an explicit same-object/value-flow and generation join exists."
+}

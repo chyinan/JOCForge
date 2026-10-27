@@ -1,0 +1,41 @@
+{
+  "classification": "NATIVE_OBSERVATION_NOT_ALGORITHM",
+  "delivery": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+  "files": [
+    {
+      "bytes": 1405,
+      "file": "CONTRACT.md",
+      "sha256": "9c63f3b42a72612d7378e100fb46c15805b71ffc3cf5ae21a2531d1ac0d2facc"
+    },
+    {
+      "bytes": 1183,
+      "file": "EDGE-STATUS.json",
+      "sha256": "7c1a487e548073fe3aa88f04f745664f20f65dc4718bdd33e487c982cca4379f"
+    },
+    {
+      "bytes": 501,
+      "file": "MODEL-SEPARATION.json",
+      "sha256": "61dcd72d757923f8a00812469bcd774e0090dc77df55cb94433ae40386cdc0fd"
+    },
+    {
+      "bytes": 2349,
+      "file": "OBSERVED-SAME-RUN-CAPTURE.json",
+      "sha256": "e159bd82e01a4cccf5143ffe42ee0cd9f3f421f63d1b896ca1aefc68bcb4d50b"
+    },
+    {
+      "bytes": 1587,
+      "file": "SOURCE-CHAIN.json",
+      "sha256": "eb4757073272a21dd2a3dff2a7fc6b4efe7c73c531dcac13c82e4d55257e382b"
+    },
+    {
+      "bytes": 628,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "5140f24bb908fea6a9a3aa3e4d3d85f6c1f65af9d1c7270329162a9099cf911c"
+    }
+  ],
+  "implementation_requirement": false,
+  "package_id": "F13C-NATIVE-COUNT-SAME-RUN-STATUS-V1",
+  "schema": "wash-package-manifest.v1",
+  "scope": "Same-run producer to two field consumers observed; writer entry co-occurs without a count-to-writer/AU identity join",
+  "source_manifest_sha256": "9bfbb0cf507be9ebae6f60efd7ebb35c5231164eff11b3a78624db193f5b46e5"
+}

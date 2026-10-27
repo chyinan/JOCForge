@@ -302,6 +302,7 @@
 | F13C/informational-native-count-observation-frames-0-48 | F13C | `joc` |
 | F13C/informational-native-count-first-consumer-edge-0 | F13C | `joc` |
 | F13C/informational-native-count-reader-writer-status | F13C | `joc` |
+| F13C/informational-native-count-same-run-field-subchain | F13C | `joc` |
 | F13D2/id2-profile-header-and-body-wire | F13D2 | `metadata` |
 | F14/authenticated-bit-compaction | F14 | `integrity` |
 | F14/hmac-sha256-primitive | F14 | `integrity` |

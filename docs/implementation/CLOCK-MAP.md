@@ -302,6 +302,7 @@
 | F13C/informational-native-count-observation-frames-0-48 | — | `The observation identifies file-position frames [0,48) only; no CodecSourceIndex or AU identity is established.` |
 | F13C/informational-native-count-first-consumer-edge-0 | — | `The event ordinal is capture-local and explicitly is not a source generation, codec frame, or AU clock.` |
 | F13C/informational-native-count-reader-writer-status | — | `The file-position frame window and event are observational labels only; no source generation or AU clock is established.` |
+| F13C/informational-native-count-same-run-field-subchain | — | `The captured event has no parent/source-generation or selected AU identity; the file-position window is not a codec clock.` |
 | F13D2/id2-profile-header-and-body-wire | — | `The profile mapper, local Type11 prefix reader, and ID2 body serializer own no source, dispatch, AU, or persistent clock.` |
 | F14/authenticated-bit-compaction | — | `Stateless bit-stream projection; no frame, source, AU, or programme clock is owned.` |
 | F14/hmac-sha256-primitive | — | `Stateless byte primitive; no AU, source, programme, or history clock is owned.` |

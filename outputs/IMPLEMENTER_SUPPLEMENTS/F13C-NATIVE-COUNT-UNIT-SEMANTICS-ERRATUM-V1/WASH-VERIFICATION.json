@@ -1,0 +1,12 @@
+{
+  "F12_model_rule_cross_reference_verified": true,
+  "implementation_action": "update map to reference this erratum and remove byte-unit/target-length semantics",
+  "native_count_units": "UNBOUND",
+  "output_interference_comparison": "NOT_RUN",
+  "prior_wash_manifests_reverified": "4/4 PASS",
+  "private_or_raw_payloads_included": false,
+  "same_run_capture_reproduced_by_wash": false,
+  "schema": "f13c-native-count-unit-erratum-verification.v1",
+  "source_manifest_sha256": "0d53b0d69f00ee14aec7886d28754a6b3790afe17ac25d263eb22cab8b01e531",
+  "source_payloads_rehashed": "4/4 PASS"
+}

@@ -1,0 +1,22 @@
+{
+  "candidate_comparison_values_u32": [
+    507,
+    508,
+    511,
+    512
+  ],
+  "candidate_value_units_and_meaning": "UNBOUND",
+  "count_to_two_field_consumers": "OBSERVED_IN_SAME_RUN",
+  "f12_model_rule": "U8(ID14.object_count + 1) from same-source complete validated EMDF; unchanged",
+  "field_to_writer": "UNBOUND",
+  "label_is_semantic_unit": false,
+  "legacy_source_label": "counted_body_bytes",
+  "observed_type": "U32",
+  "observed_value": 281,
+  "schema": "f13c-native-count-unit-erratum.v1",
+  "source_manifest_sha256": "0d53b0d69f00ee14aec7886d28754a6b3790afe17ac25d263eb22cab8b01e531",
+  "source_package_id": "F13C-NATIVE-COUNT-SAME-RUN-CAPTURE-V1",
+  "units": "UNBOUND",
+  "writer_to_selected_au": "UNBOUND",
+  "zero_hits_scope": "only file-position frames [0,48)"
+}

@@ -16240,7 +16240,7 @@
           "slice_id": "informational-native-count-observation-frames-0-48",
           "mapping_status": "WASHED_INFORMATIONAL_NATIVE_OBSERVATION_ONLY",
           "implementation_status": "INFORMATIONAL_ONLY_IMPLEMENTATION_REQUIREMENT_FALSE_NO_AU_OR_SERIALIZER_JOIN",
-          "scope": "Records 64 reported U32 `counted_body_bytes` values for file-position frames [0,48) of one hash-bound 38-channel, 48 kHz, 24-bit ADM BWF input. The observed range is 239..331, stream selectors are zero, and targets 507/508/511/512 have zero hits in this window only. Codec/JOC mode is NOT_RECORDED. This is informational native evidence, not a serialized-frame/AU rule, model oracle, or full-program reachability claim; it does not change the clean-model F12 path.",
+          "scope": "Records 64 reported U32 count values under the legacy source field label `counted_body_bytes` for file-position frames [0,48) of one hash-bound 38-channel, 48 kHz, 24-bit ADM BWF input. The label does not establish a unit: the native count units and semantic object are UNBOUND. The observed range is 239..331 and stream selectors are zero. Candidate comparison values 507/508/511/512 have zero hits in this window only; their units and meaning are UNBOUND. Codec/JOC mode is NOT_RECORDED. This is informational native evidence, not a serialized-frame/AU rule, model oracle, or full-programme reachability claim; it does not change the clean-model F12 path.",
           "owner": "joc",
           "implementation_requirement": false,
           "implementation_files": [],
@@ -16258,24 +16258,63 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-OBSERVATION-SLICE-00-V1/OBSERVED-NATIVE-COUNT-VECTOR.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-OBSERVATION-SLICE-00-V1/OUTPUT-CONTROL-CLAIM.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-OBSERVATION-SLICE-00-V1/SOURCE-CHAIN.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-OBSERVATION-SLICE-00-V1/WASH-VERIFICATION.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-OBSERVATION-SLICE-00-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/CORRECTED-NATIVE-COUNT-SEMANTICS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/INPUT-CONTEXT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/SOURCE-CHAIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/SUPERSESSION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/WASH-VERIFICATION.json"
             ],
             "supplement_manifest_sha256": "38d6aad2ce6c46c78498680aab8aebdf7307909c16d001afedea7921e7cc16eb",
-            "validation_boundary": "Information-only observation. It provides no implementation rule, expected output, or selected AU identity."
+            "validation_boundary": "Information-only observation. Native count type is U32 and units are UNBOUND; the legacy label does not establish a unit or implementation rule.",
+            "semantic_erratum": {
+              "package_id": "F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1",
+              "manifest_sha256": "65d478281198ce5f41bfcd5adb43f4b35102112bdb06874314e9b62329cba4e8",
+              "observed_type": "U32",
+              "observed_value": 281,
+              "units": "UNBOUND",
+              "legacy_source_label": "counted_body_bytes",
+              "candidate_values_u32": [
+                507,
+                508,
+                511,
+                512
+              ],
+              "candidate_value_units_and_meaning": "UNBOUND"
+            }
           },
           "test_modules": [],
           "vectors": {
             "kind": "HASH_BOUND_NATIVE_COUNT_OBSERVATION_NO_EXPECTED_OUTPUTS",
             "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-OBSERVATION-SLICE-00-V1/OBSERVED-NATIVE-COUNT-VECTOR.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-OBSERVATION-SLICE-00-V1/OBSERVED-NATIVE-COUNT-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/CORRECTED-NATIVE-COUNT-SEMANTICS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/SUPERSESSION.json"
             ],
             "case_pointers": [
               "64 count events in file-position frames [0,48), values range 239..331, stream selector 0.",
-              "Targets 507/508/511/512 have no hits in this window; this is not generalized to later frames or a full programme.",
+              "Candidate comparison values U32 507/508/511/512 have no hits in this window; their units and meaning remain UNBOUND.",
               "No codec/JOC mode, serialized frame, parent generation, serializer/refill, or selected AU join is recorded."
             ],
             "expected_outputs_included": false,
-            "supplement_manifest_sha256": "38d6aad2ce6c46c78498680aab8aebdf7307909c16d001afedea7921e7cc16eb"
+            "supplement_manifest_sha256": "38d6aad2ce6c46c78498680aab8aebdf7307909c16d001afedea7921e7cc16eb",
+            "semantic_erratum": {
+              "package_id": "F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1",
+              "manifest_sha256": "65d478281198ce5f41bfcd5adb43f4b35102112bdb06874314e9b62329cba4e8",
+              "observed_type": "U32",
+              "observed_value": 281,
+              "units": "UNBOUND",
+              "legacy_source_label": "counted_body_bytes",
+              "candidate_values_u32": [
+                507,
+                508,
+                511,
+                512
+              ],
+              "candidate_value_units_and_meaning": "UNBOUND"
+            }
           },
           "not_run": [
             "Same invocation/object/generation identity through consumer, serializer/refill, and output writer.",
@@ -16346,7 +16385,7 @@
           "slice_id": "informational-native-count-reader-writer-status",
           "mapping_status": "WASHED_INFORMATIONAL_READER_WRITER_OBSERVATION__VALUE_TO_AU_JOIN_OPEN",
           "implementation_status": "INFORMATIONAL_ONLY_FIELD_READS_AND_WRITER_ENTRY_OBSERVED__DATA_JOIN_UNBOUND",
-          "scope": "Within the same bounded file-position run [0,48), two native fields were read with value 281: one value reached a helper argument, and a second field entered a size/capacity helper. The already identified ID14 writer entry was reached in the same process/thread. No producer output store was captured in this run, the call frames differ, and no direct value-flow receipt binds either field to the writer input, source generation, or selected AU. Same-run presence is not a data join; the clean-model F12 rule remains unchanged.",
+          "scope": "Within the same bounded file-position run [0,48), two native fields were read with count value 281. The erratum identifies the observed producer value as U32 with units and semantic object UNBOUND; the legacy source label `counted_body_bytes` does not establish bytes or a length. One value reached a helper argument, and a second field entered a size/capacity helper. The already identified ID14 writer entry was reached in the same process/thread. No producer output store was captured in this run, the call frames differ, and no direct value-flow receipt binds either field to the writer input, source generation, or selected AU. Same-run presence is not a data join; the clean-model F12 rule remains unchanged.",
           "owner": "joc",
           "implementation_requirement": false,
           "implementation_files": [],
@@ -16365,30 +16404,165 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-READER-WRITER-STATUS-V1/EDGE-STATUS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-READER-WRITER-STATUS-V1/MODEL-SEPARATION.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-READER-WRITER-STATUS-V1/SOURCE-CHAIN.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-READER-WRITER-STATUS-V1/WASH-VERIFICATION.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-READER-WRITER-STATUS-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/CORRECTED-NATIVE-COUNT-SEMANTICS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/INPUT-CONTEXT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/SOURCE-CHAIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/SUPERSESSION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/WASH-VERIFICATION.json"
             ],
             "supplement_manifest_sha256": "0716fbb88460353a0b2d438d5560dc9c6337d89dcf0606dbf73c9f4aa864d254",
-            "validation_boundary": "Informational observation only; no producer value to writer/AU identity join is established."
+            "validation_boundary": "Informational observation only; native count units remain UNBOUND and no producer value to writer/AU identity join is established.",
+            "semantic_erratum": {
+              "package_id": "F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1",
+              "manifest_sha256": "65d478281198ce5f41bfcd5adb43f4b35102112bdb06874314e9b62329cba4e8",
+              "observed_type": "U32",
+              "observed_value": 281,
+              "units": "UNBOUND",
+              "legacy_source_label": "counted_body_bytes",
+              "candidate_values_u32": [
+                507,
+                508,
+                511,
+                512
+              ],
+              "candidate_value_units_and_meaning": "UNBOUND"
+            }
           },
           "test_modules": [],
           "vectors": {
             "kind": "HASH_BOUND_INFORMATIONAL_NATIVE_READER_WRITER_EDGES_NO_EXPECTED_OUTPUTS",
             "authoritative_vectors": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-READER-WRITER-STATUS-V1/OBSERVED-READER-WRITER-STATE.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-READER-WRITER-STATUS-V1/EDGE-STATUS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-READER-WRITER-STATUS-V1/EDGE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/CORRECTED-NATIVE-COUNT-SEMANTICS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/SUPERSESSION.json"
             ],
             "case_pointers": [
-              "Both observed fields read value 281, but the producer output store was not captured in this run.",
+              "Both observed fields read value 281; the native producer count is U32 and its units/semantic object remain UNBOUND.",
               "The count-to-writer input edge and selected AU identity remain UNBOUND; no output-interference comparison was run.",
               "The clean F12 complexity rule remains U8(ID14.object_count+1) from same-source validated EMDF; native count 281 does not replace it."
             ],
             "expected_outputs_included": false,
-            "supplement_manifest_sha256": "0716fbb88460353a0b2d438d5560dc9c6337d89dcf0606dbf73c9f4aa864d254"
+            "supplement_manifest_sha256": "0716fbb88460353a0b2d438d5560dc9c6337d89dcf0606dbf73c9f4aa864d254",
+            "semantic_erratum": {
+              "package_id": "F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1",
+              "manifest_sha256": "65d478281198ce5f41bfcd5adb43f4b35102112bdb06874314e9b62329cba4e8",
+              "observed_type": "U32",
+              "observed_value": 281,
+              "units": "UNBOUND",
+              "legacy_source_label": "counted_body_bytes",
+              "candidate_values_u32": [
+                507,
+                508,
+                511,
+                512
+              ],
+              "candidate_value_units_and_meaning": "UNBOUND"
+            }
           },
           "not_run": [
             "Producer output store to either observed reader field in this run.",
             "Observed count fields to ID14 writer input, serializer/refill, source generation and selected AU.",
             "Output-interference comparison, full-programme reachability and product acceptance."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
+        },
+        {
+          "slice_id": "informational-native-count-same-run-field-subchain",
+          "mapping_status": "WASHED_INFORMATIONAL_SAME_RUN_PRODUCER_TO_FIELD_SUBCHAIN__WRITER_AU_OPEN",
+          "implementation_status": "INFORMATIONAL_ONLY_PRODUCER_TO_TWO_FIELD_CONSUMERS_OBSERVED__WRITER_AU_IDENTITY_UNBOUND",
+          "scope": "Within one bounded file-position run [0,48), the producer returned native U32 count value 281 under the legacy source label `counted_body_bytes`; its units and semantic object are UNBOUND, and the label does not establish bytes or a length. The value reached the caller local slot, which was stored into the per-stream context field and referenced stream-record field; both were read later in the same run. Two ID14 writer entries were observed, but neither count field was linked to writer inputs, source generation, or selected AU. This is native observation only and does not change the clean-model F12 rule.",
+          "owner": "joc",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The captured event has no parent/source-generation or selected AU identity; the file-position window is not a codec clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_NATIVE_SAME_RUN_FIELD_CHAIN",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-SAME-RUN-STATUS-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-SAME-RUN-STATUS-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-SAME-RUN-STATUS-V1/OBSERVED-SAME-RUN-CAPTURE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-SAME-RUN-STATUS-V1/EDGE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-SAME-RUN-STATUS-V1/MODEL-SEPARATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-SAME-RUN-STATUS-V1/SOURCE-CHAIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-SAME-RUN-STATUS-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-OBSERVATION-SLICE-00-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-FIRST-CONSUMER-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-READER-WRITER-STATUS-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-AU-JOIN-STATUS-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CONFIGURATION-COUNT-SELECTED-F12-CROSSWALK-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/CORRECTED-NATIVE-COUNT-SEMANTICS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/INPUT-CONTEXT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/SOURCE-CHAIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/SUPERSESSION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "019b25d91a423c1cb8d1ce8ee49b9507facc4cefabebd7cfdb626258bc2e8635",
+            "validation_boundary": "Informational native same-run field subchain only. Native count is U32 with units UNBOUND; the count-to-writer/AU semantic join remains unbound.",
+            "semantic_erratum": {
+              "package_id": "F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1",
+              "manifest_sha256": "65d478281198ce5f41bfcd5adb43f4b35102112bdb06874314e9b62329cba4e8",
+              "observed_type": "U32",
+              "observed_value": 281,
+              "units": "UNBOUND",
+              "legacy_source_label": "counted_body_bytes",
+              "candidate_values_u32": [
+                507,
+                508,
+                511,
+                512
+              ],
+              "candidate_value_units_and_meaning": "UNBOUND"
+            }
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_INFORMATIONAL_NATIVE_SAME_RUN_CAPTURE_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-SAME-RUN-STATUS-V1/OBSERVED-SAME-RUN-CAPTURE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-SAME-RUN-STATUS-V1/EDGE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/CORRECTED-NATIVE-COUNT-SEMANTICS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1/SUPERSESSION.json"
+            ],
+            "case_pointers": [
+              "Native U32 count value 281 under the legacy counted_body_bytes label reaches the caller slot and two field stores/reads in one 0..48 run; units are UNBOUND.",
+              "Writer entry co-occurrence does not bind either field to writer input; source generation and AU remain unbound/not captured.",
+              "The native count is not F12 complexity; clean-model F12 remains U8(ID14.object_count+1) from same-source validated EMDF."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "019b25d91a423c1cb8d1ce8ee49b9507facc4cefabebd7cfdb626258bc2e8635",
+            "semantic_erratum": {
+              "package_id": "F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1",
+              "manifest_sha256": "65d478281198ce5f41bfcd5adb43f4b35102112bdb06874314e9b62329cba4e8",
+              "observed_type": "U32",
+              "observed_value": 281,
+              "units": "UNBOUND",
+              "legacy_source_label": "counted_body_bytes",
+              "candidate_values_u32": [
+                507,
+                508,
+                511,
+                512
+              ],
+              "candidate_value_units_and_meaning": "UNBOUND"
+            }
+          },
+          "not_run": [
+            "Count field consumers to ID14 writer input and serializer/refill.",
+            "Source generation and selected AU identity.",
+            "Output interference comparison, full-programme output, and product acceptance."
           ],
           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
           "implementation_inventory": [],

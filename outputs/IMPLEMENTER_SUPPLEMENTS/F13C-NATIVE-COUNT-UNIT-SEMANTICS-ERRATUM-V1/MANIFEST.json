@@ -1,0 +1,41 @@
+{
+  "classification": "SEMANTIC_ERRATUM_NOT_ALGORITHM",
+  "delivery": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+  "files": [
+    {
+      "bytes": 1716,
+      "file": "CONTRACT.md",
+      "sha256": "15f19f711ff8e7d325ce1ee7a2cd993bb401d2b7ceabbfa78bc36ef79303ffa2"
+    },
+    {
+      "bytes": 782,
+      "file": "CORRECTED-NATIVE-COUNT-SEMANTICS.json",
+      "sha256": "b64e72007d847a0d45ba22136e5a3d74966eb3aadd1d3a36f4b04f5a972b4fc7"
+    },
+    {
+      "bytes": 363,
+      "file": "INPUT-CONTEXT.json",
+      "sha256": "bfcc6f9f3fe88ed821e9b5068563d5ba8c2453a10717a4670df253863c8ecbe6"
+    },
+    {
+      "bytes": 1706,
+      "file": "SOURCE-CHAIN.json",
+      "sha256": "a01fe598860df2ad0b0a140c25edee079f929fad4c3ae3c29856756eb4ae0304"
+    },
+    {
+      "bytes": 1716,
+      "file": "SUPERSESSION.json",
+      "sha256": "080c6ff91b6f5bd60627b8ccb718dd0537c738df63ff850264c11276636028be"
+    },
+    {
+      "bytes": 590,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "1701c92c0c62a4933a71643f1cd318b74f53fd29c7fa41fb509f13371ccd9d04"
+    }
+  ],
+  "implementation_requirement": false,
+  "package_id": "F13C-NATIVE-COUNT-UNIT-SEMANTICS-ERRATUM-V1",
+  "schema": "wash-package-manifest.v1",
+  "scope": "Correct native count units/legacy label semantics across prior F13C observation packages; F12 model path unchanged",
+  "source_manifest_sha256": "0d53b0d69f00ee14aec7886d28754a6b3790afe17ac25d263eb22cab8b01e531"
+}

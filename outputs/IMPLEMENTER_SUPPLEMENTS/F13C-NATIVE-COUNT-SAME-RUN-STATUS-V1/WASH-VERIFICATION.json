@@ -1,0 +1,14 @@
+{
+  "capture_reproduced_by_wash": false,
+  "count_to_writer": "UNBOUND",
+  "output_interference_comparison": "NOT_RUN",
+  "prior_wash_manifests_reverified": "4/4 PASS",
+  "producer_to_two_field_stores_and_reads": "SOURCE_REPORTED_IN_SAME_RUN",
+  "raw_audio_code_address_or_license_content_included": false,
+  "schema": "washed-f13c-native-same-run-verification.v1",
+  "source_generation": "NOT_CAPTURED",
+  "source_manifest_sha256": "9bfbb0cf507be9ebae6f60efd7ebb35c5231164eff11b3a78624db193f5b46e5",
+  "source_payloads_rehashed": "4/4 PASS",
+  "writer_entry_same_run": "SOURCE_REPORTED",
+  "writer_to_selected_au": "UNBOUND"
+}

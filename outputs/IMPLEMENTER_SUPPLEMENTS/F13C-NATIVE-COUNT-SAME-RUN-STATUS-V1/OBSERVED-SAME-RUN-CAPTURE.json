@@ -1,0 +1,44 @@
+{
+  "count_producer_to_field_consumers": {
+    "caller_local_slot_value": 281,
+    "caller_to_context_field_store": "OBSERVED_VALUE_281",
+    "caller_to_referenced_stream_record_store": "OBSERVED_VALUE_281",
+    "counted_body_bytes": 281,
+    "per_stream_context_field_read": "OBSERVED_VALUE_281",
+    "per_stream_context_value_to_next_callee_stack_argument": "OBSERVED_VALUE_281_AT_CALLEE_ENTRY",
+    "producer_output_store": "OBSERVED_IN_THIS_RUN",
+    "producer_return_slot_to_caller_local_slot": "OBSERVED_EXACT_POINTER_ALIAS_WITHIN_SAME_CALL",
+    "referenced_stream_record_field_read_from_same_field_address": "OBSERVED_VALUE_281",
+    "referenced_stream_record_value_to_size_capacity_helper": "OBSERVED",
+    "same_enclosing_context_pointer_across_two_stores_and_field_reads": "OBSERVED_TRANSIENTLY; RAW_POINTER_OMITTED"
+  },
+  "frame_window": {
+    "case_id": "selected_adm_file_position_frames_0_48",
+    "end_exclusive": 48,
+    "sample_rate_hz": 48000,
+    "start_inclusive": 0
+  },
+  "input_identity_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "lineage_status": {
+    "ADM_sample_or_spatial_callback_generation": "NOT_CAPTURED",
+    "count_field_consumers_to_id14_writer": "UNBOUND",
+    "count_field_consumers_to_serializer_or_fragment_refill": "UNBOUND",
+    "same_object_context_within_count_field_subchain": "OBSERVED",
+    "same_run_count_output_to_two_field_stores_and_consumers": "OBSERVED",
+    "selected_access_unit_identity": "UNBOUND"
+  },
+  "output_interference_comparison": "NOT_RUN",
+  "schema": "washed-f13c-native-same-run-capture.v1",
+  "source_manifest_sha256": "9bfbb0cf507be9ebae6f60efd7ebb35c5231164eff11b3a78624db193f5b46e5",
+  "writer_observation": {
+    "a_later_writer_entry_followed_the_selected_count_field_consumers": true,
+    "approved_id14_writer_entry_observed_in_same_run": true,
+    "count_field_value_to_writer_input": "UNBOUND",
+    "direct_pointer_alias_from_count_context_or_record_to_inspected_writer_arguments": "NOT_OBSERVED",
+    "one_writer_entry_preceded_the_selected_count_store": true,
+    "same_source_generation_or_callback_token_to_writer": "NOT_CAPTURED",
+    "writer_entries_observed": 2,
+    "writer_reference_manifest_sha256": "ed8e458bed4e166960b6677a81660c46cf7f76c7821aeee56f7024e56c1dce15",
+    "writer_to_selected_access_unit": "UNBOUND"
+  }
+}
