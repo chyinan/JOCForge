@@ -1,0 +1,101 @@
+{
+  "approved_and_washed_references_reverified": [
+    {
+      "bytes": 7203,
+      "sha256": "4b662c3721ba10ad9dafd193bf13e1bc2df571ab4cab580e46a8a6b39e9a3594",
+      "source": "specs/04-diffusion-filter-and-lifecycle.md"
+    },
+    {
+      "bytes": 3125,
+      "sha256": "eeba9137918ffb647e3b0a68ca5b210aadd0b0815fed3eec7ae199a08057484d",
+      "source": "specs/04-diffusion-mathematical-generation.md"
+    },
+    {
+      "bytes": 4229,
+      "sha256": "e1a420ea0d4284c0cfadcf6962d34ff8cc0f877cee0d0503a6c0e2669c2978b9",
+      "source": "specs/04-diffusion-constructor-generation.md"
+    },
+    {
+      "bytes": 9190,
+      "sha256": "350937eadb5da2432ed60723305cdc8de80a139fef803ec3a2aa5a3990ed6334",
+      "source": "specs/04-window-matrix-and-component-audio.md"
+    },
+    {
+      "bytes": 9103,
+      "sha256": "92325b12128023001e1f3fd4696dcec68bbd47a46acdb7886781b411a10c5d59",
+      "source": "specs/04-whole-spatial-chain-composition.md"
+    },
+    {
+      "bytes": 775,
+      "sha256": "0cb838fb8c62e43a5785d8e08893dc0a273dd79fb704eb753b92eb3e50c20f10",
+      "source": "outputs/IMPLEMENTER_SUPPLEMENTS/F04A-MODEL-CALL-CLASSIFICATION-AND-RECEIPT-HOLD-V1/MANIFEST.json"
+    },
+    {
+      "bytes": 646,
+      "sha256": "a77333ef0916eca7e739c9b12c2d6c87e8dbe1441e5d0a017e286f2772ffea8d",
+      "source": "outputs/IMPLEMENTER_SUPPLEMENTS/F04G-WIDTH-SEMANTICS-ERRATUM-V1/MANIFEST.json"
+    },
+    {
+      "bytes": 1139,
+      "sha256": "ff08fef02649246ca7e3ec4fe319298feca4d500c36cdb3ecc16b9503b122462",
+      "source": "outputs/IMPLEMENTER_SUPPLEMENTS/F04G-RAW-WIDTH-LIFECYCLE-AND-MEMBERSHIP-STATUS-V2/MANIFEST.json"
+    }
+  ],
+  "approved_main_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "previous_wash_package": {
+    "manifest_sha256": "b3e0ef1ff4ca5db181d7e32dff6d0d01ff0fb04514561724e4ff37ff62ab1cac",
+    "package_id": "F04-DIFFUSION-FILTER-GATE-STATUS-V1"
+  },
+  "schema": "washed-f04-diffusion-gate-v2-source-chain.v1",
+  "source_artifacts_rehashed": [
+    {
+      "bytes": 12143,
+      "label": "r19_filter_core.py",
+      "sha256": "88748613c9e6764037f6947a8187e5d267c734d01c3edd16be2f5e6112c6ccec"
+    },
+    {
+      "bytes": 9815,
+      "label": "r19_a4_projection_core.py",
+      "sha256": "03b6e39300d1c6870f20dd3b3464c734330c673deca9b77e24bcf39cb448f269"
+    },
+    {
+      "bytes": 3618,
+      "label": "r19_row_context_core.py",
+      "sha256": "51b1a3c8a0438efd94e1be9ca5973b306a16dab4155e44dde195a2a5c3c5efcd"
+    },
+    {
+      "bytes": 5079,
+      "label": "r19_component_audio_core.py",
+      "sha256": "336f77f41af1adc2f326d9e44f8b9b034dfdfaf556c1bd0edb900997bbc578e5"
+    },
+    {
+      "bytes": 10942464,
+      "label": "target_module.dll",
+      "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+    }
+  ],
+  "source_manifest_sha256": "66292330c420151b07e0e6e498c50bde994568c727c94e81c306d9ab645ca34b",
+  "source_payloads": [
+    {
+      "bytes": 2358,
+      "file": "DECISION.md",
+      "sha256": "0306d7e6a4b5fb025e385cb452ae25ced3515e35772e5c531311774a2446eab8"
+    },
+    {
+      "bytes": 2134,
+      "file": "STATIC-PRODUCER-EDGE.json",
+      "sha256": "da85d84843165f8ebb12f79233ae0fdb75c1fa38e31b3edb0be810dfd66ed26c"
+    },
+    {
+      "bytes": 1602,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "de1884f5610a34d28f5a0bceff75460bb9be98059eec7322e361481cc53396dc"
+    },
+    {
+      "bytes": 2620,
+      "file": "SOURCE-BASIS.json",
+      "sha256": "8951ab3a6bc7c54acb78e9c0156b689d7a659470493a1172d4f56075e221825a"
+    }
+  ],
+  "static_observation_independent_reproduction": false
+}

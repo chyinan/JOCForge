@@ -1,0 +1,13 @@
+{
+  "absolute_paths_or_source_code_in_package": false,
+  "approved_and_washed_references_reverified": 8,
+  "candidate_payloads_rehashed": "4/4 PASS",
+  "expected_outputs_included": false,
+  "input_only_vectors": "input-only; no expected outputs",
+  "native_dynamic": "NOT_RUN",
+  "schema": "f04-diffusion-gate-wash-v2-verification.v1",
+  "source_artifacts_rehashed": "5/5 PASS",
+  "source_manifest_sha256": "66292330c420151b07e0e6e498c50bde994568c727c94e81c306d9ab645ca34b",
+  "static_analysis_reproduced_by_wash": false,
+  "target_DLL_identity_rehashed": true
+}

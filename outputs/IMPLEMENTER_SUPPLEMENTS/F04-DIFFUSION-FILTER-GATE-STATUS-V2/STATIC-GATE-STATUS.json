@@ -1,0 +1,74 @@
+{
+  "bounded_writer_search": {
+    "claim": "No unique producer was identified; broad offset matches were not assigned to this owner.",
+    "target": "callback-context pointer field/relative +0xA0",
+    "unique_writer_found": false
+  },
+  "branch_shape": {
+    "branch_order_preserved": true,
+    "filter_call_gate": [
+      {
+        "comparison": "!= 0",
+        "relative_word_index": 11,
+        "type": "U32"
+      },
+      {
+        "comparison": "> +0.0",
+        "relative_word_index": 10,
+        "type": "F32"
+      },
+      {
+        "comparison": "== 0",
+        "relative_word_index": 0,
+        "type": "U32"
+      }
+    ],
+    "outer_gate": {
+      "comparison": "== 0",
+      "relative_word_index": 1,
+      "type": "U32"
+    },
+    "static_values_observed": false
+  },
+  "dynamic_capture": "NOT_RUN",
+  "evidence_grade": "SOURCE_IDENTITIES_REHASHED_BY_WASH; STATIC_GATE_REPORTER_ATTRIBUTED; SEMANTIC_JOIN_UNBOUND",
+  "fresh_analysis": {
+    "dll_executed": "false",
+    "imported_module": "target_module",
+    "project": "f04_filter_gate_fresh_20261028",
+    "read_only_project": "true",
+    "tool": "Ghidra 12.2"
+  },
+  "input_only_vector_ref": "INPUT-ONLY-VECTORS.json",
+  "opaque_record_pointer_flow": {
+    "filter_caller_receives_same_pointer": true,
+    "passed_through_row_dispatcher_and_wrapper": true,
+    "pointer_field_writer": "NOT_IDENTIFIED_IN_THIS_STATIC_ATTEMPT",
+    "pointer_loaded_from_callback_context_relative_byte_offset": "0xA0",
+    "pointer_owner_type": "UNBOUND"
+  },
+  "producer_and_semantic_joins": {
+    "dispatcher_or_row_to_f04fm_mode_lane_index": "UNBOUND",
+    "outer_word_1_source_owner": "UNBOUND",
+    "row_to_f04f_audio_diffuse_u32": "UNBOUND",
+    "row_word_0_to_quiet_u32": "UNBOUND",
+    "row_word_10_raw_vs_mapped_width": "UNBOUND",
+    "row_word_10_to_width_or_spread_f32": "UNBOUND",
+    "row_word_11_to_selected_filter_activity": "UNBOUND",
+    "tail_source_and_callback_generation_receipt": "UNBOUND",
+    "writer_of_opaque_row_words_0_10_11": "UNBOUND"
+  },
+  "schema": "f04-diffusion-filter-static-producer-edge.v1",
+  "static_chain_roles": [
+    "callback owner path",
+    "row dispatcher",
+    "filter wrapper",
+    "four-lane diffusion filter producer"
+  ],
+  "static_semantics_independently_reproduced_by_wash": false,
+  "target_module": {
+    "name": "dee_audio_filter_ddp_atmos.dll",
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  },
+  "wash_source_rehash": "5/5 PASS"
+}

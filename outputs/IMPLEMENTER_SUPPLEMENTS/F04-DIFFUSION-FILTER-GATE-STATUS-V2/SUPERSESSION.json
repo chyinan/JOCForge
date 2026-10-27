@@ -1,0 +1,9 @@
+{
+  "new_fact": "Five provided Python/DLL source identities were independently rehashed by Wash; source-basis F04G erratum manifest hash corrected and verified.",
+  "schema": "f04-diffusion-status-supersession.v1",
+  "supersedes": {
+    "manifest_sha256": "b3e0ef1ff4ca5db181d7e32dff6d0d01ff0fb04514561724e4ff37ff62ab1cac",
+    "package_id": "F04-DIFFUSION-FILTER-GATE-STATUS-V1"
+  },
+  "unchanged": "Fresh Ghidra static attempt still has no unique +0xA0 writer and all semantic joins UNBOUND."
+}

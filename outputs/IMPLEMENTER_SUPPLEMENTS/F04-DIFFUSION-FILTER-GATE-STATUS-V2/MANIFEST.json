@@ -1,0 +1,46 @@
+{
+  "classification": "STATIC_STATUS_NOT_ALGORITHM",
+  "delivery": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+  "files": [
+    {
+      "bytes": 1760,
+      "file": "CONTRACT.md",
+      "sha256": "bbe4ab6d84f41680f66bac8e1f2e3f57c1eaac3f631509882b7c10bc261ddb98"
+    },
+    {
+      "bytes": 1602,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "5423a447c6f200d379607f47faabf657fe9b5da99388ca0a4042b08f9c501184"
+    },
+    {
+      "bytes": 3608,
+      "file": "SOURCE-CHAIN.json",
+      "sha256": "dc3fbbcc0323c0817698a20638566c3352cef549e7f62a00e94df8500ecb6d00"
+    },
+    {
+      "bytes": 2477,
+      "file": "STATIC-GATE-STATUS.json",
+      "sha256": "51abf1f90f367472d661f35ce5c524375f6080ef40ad3f243a37813e7163531b"
+    },
+    {
+      "bytes": 497,
+      "file": "SUPERSESSION.json",
+      "sha256": "01279718c06661e3f5ed2ea63ffc5ceb96eab8ee4ebd6b1df479c405165ae26f"
+    },
+    {
+      "bytes": 406,
+      "file": "WASH-DECISION.json",
+      "sha256": "8dd8cc4e4ea1d2a1cad57355bb77b47e7afc5d4fd4f03567810b41e31a449b14"
+    },
+    {
+      "bytes": 563,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "f81820a3fefa45d8672552c8dd9837a28055fc82936c9a23999439046d9d35d8"
+    }
+  ],
+  "implementation_requirement": false,
+  "package_id": "F04-DIFFUSION-FILTER-GATE-STATUS-V2",
+  "schema": "wash-package-manifest.v1",
+  "scope": "Fresh static writer search for F04 diffusion opaque gate producer; no semantic field join established",
+  "source_manifest_sha256": "66292330c420151b07e0e6e498c50bde994568c727c94e81c306d9ab645ca34b"
+}

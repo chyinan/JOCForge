@@ -1,0 +1,45 @@
+{
+  "kind": "input-only; no expected outputs",
+  "schema": "f04-diffusion-filter-producer-edge-input-vectors.v1",
+  "vectors": [
+    {
+      "case": "approved-clean-filter-boundary",
+      "input": {
+        "F04FM_output_index_i32": "NOT_RECORDED",
+        "audio_diffuse_u32": "NOT_RECORDED",
+        "callback_index_u64": "NOT_RECORDED_FOR_NATIVE_CALL",
+        "current_pcm_f32_samples": 1536,
+        "filter_lane_i32": "NOT_RECORDED",
+        "previous_pcm_f32_samples": 1536,
+        "quiet_u32": "NOT_RECORDED",
+        "source_index_u64": "NOT_RECORDED_FOR_NATIVE_CALL",
+        "tail_id_u32": "UNBOUND",
+        "width_domain_raw_or_mapped": "UNBOUND",
+        "width_or_spread_f32": "NOT_RECORDED"
+      }
+    },
+    {
+      "case": "static-opaque-callback-row-input",
+      "input": {
+        "callback_context_member_relative_byte_offset": "0xA0",
+        "row_owner_token": "UNBOUND",
+        "row_word_0_u32": "NOT_CAPTURED",
+        "row_word_10_f32": "NOT_CAPTURED",
+        "row_word_11_u32": "NOT_CAPTURED",
+        "row_word_1_u32": "NOT_CAPTURED",
+        "source_generation_token": "UNBOUND"
+      }
+    },
+    {
+      "case": "R19-model-action-boundary",
+      "input": {
+        "audio_diffuse_width_quiet_producer": "NOT_IN_R19_A4_PROJECTION_INPUT_SCHEMA",
+        "pcm_rows_by_update": "explicit external PCM input to model function",
+        "route_rows_by_update": "explicit model input",
+        "source_control_update_id_u64": "caller-supplied",
+        "source_tail_action_id_u64": "caller-supplied",
+        "tail_control_row_u32": "caller-supplied"
+      }
+    }
+  ]
+}

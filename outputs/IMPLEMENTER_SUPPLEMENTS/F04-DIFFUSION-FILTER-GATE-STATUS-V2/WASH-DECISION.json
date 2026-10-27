@@ -1,0 +1,14 @@
+{
+  "decision": "ACCEPT_AS_INFORMATIONAL_STATIC_STATUS",
+  "implementation_requirement": false,
+  "native_dynamic": "NOT_RUN",
+  "new_algorithm_rule": false,
+  "product_acceptance": "NOT_RUN",
+  "remaining": [
+    "callback context +0xA0 producer/owner",
+    "row word semantic identities",
+    "source/tail/callback generation receipt",
+    "F04A/model-call linkage"
+  ],
+  "schema": "wash-decision.v1"
+}
