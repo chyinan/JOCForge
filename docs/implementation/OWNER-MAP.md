@@ -159,6 +159,8 @@
 | F04G/washed-control52-static-row-and-owner-copy-lineage | F04G | `spatial_audio` |
 | F04G/washed-width11-spatial-vector-same-invocation-reader | F04G | `spatial_audio` |
 | F04G/washed-raw-width-lifecycle-and-membership-status | F04G | `spatial_audio` |
+| F04P/informational-f04p-native-counter-boundary-status | F04P | `spatial_audio` |
+| F04PG/informational-f04pg-profile-install-boundary-status | F04PG | `spatial_audio` |
 | F04RB/actual-receiver-to-joc-qmf-projection | F04RB | `spatial_audio` |
 | F05/selected-coefficient-fit-retry-and-payload | F05 | `joc` |
 | F05Q/quantized-huffman-body-writer | F05Q | `joc` |
@@ -299,6 +301,7 @@
 | F13C/fit-to-id14-writer-metadata-body-join | F13C | `joc` |
 | F13C/informational-native-count-observation-frames-0-48 | F13C | `joc` |
 | F13C/informational-native-count-first-consumer-edge-0 | F13C | `joc` |
+| F13C/informational-native-count-reader-writer-status | F13C | `joc` |
 | F13D2/id2-profile-header-and-body-wire | F13D2 | `metadata` |
 | F14/authenticated-bit-compaction | F14 | `integrity` |
 | F14/hmac-sha256-primitive | F14 | `integrity` |

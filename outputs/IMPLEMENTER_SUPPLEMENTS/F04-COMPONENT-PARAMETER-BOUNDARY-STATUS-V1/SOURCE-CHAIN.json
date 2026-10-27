@@ -1,0 +1,95 @@
+{
+  "approved_main_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "candidate_manifest_sha256": "afccd9cdaec4a872644f60995b0ea326d56cdafb82884436e97730070cc1bed5",
+  "candidate_payloads": [
+    {
+      "bytes": 5136,
+      "file": "CONTRACT.md",
+      "sha256": "79a0ff977c0350ee4bf48bc4e5d6c6b6b4d1ee08703d620da223b5bf6254646c"
+    },
+    {
+      "bytes": 1546,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "fbaedf96516d6dd0b11b7743c4eab4f8c5c8f65764b1f75c43a4b6268a9184e0"
+    },
+    {
+      "bytes": 6189,
+      "file": "SOURCE-REFERENCES.json",
+      "sha256": "7ad1fe50c0bdee37d47040418f3296d344eb6984dfefa933802d59df130c17ba"
+    },
+    {
+      "bytes": 1561,
+      "file": "STATUS.json",
+      "sha256": "7b5f9dcfb23dddc346667a1b918bf8597a938bb7dbe85858e418a05de37cb248"
+    }
+  ],
+  "native_dll_enumeration": {
+    "dll_count": 0,
+    "root": "relocated DEE research root",
+    "source_code_read": false,
+    "wash_rechecked": true
+  },
+  "schema": "washed-f04p-f04pg-source-chain.v1",
+  "verified_references": [
+    {
+      "bytes": 76302,
+      "path": "outputs/IMPLEMENTER_PACKAGE/MANIFEST.json",
+      "sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a"
+    },
+    {
+      "bytes": 5792,
+      "path": "outputs/IMPLEMENTER_PACKAGE/specs/04-component-parameter-state.md",
+      "sha256": "3e9b777a36ae722aeccd1054d778484e6a96e44d16f2534159dfe49afc7d1861"
+    },
+    {
+      "bytes": 4910,
+      "path": "outputs/IMPLEMENTER_PACKAGE/specs/04-component-parameter-generation.md",
+      "sha256": "2564879656a5b0e73975d99ef7a55217440131c5d4e2d6b4dc8117adecef76d8"
+    },
+    {
+      "bytes": 9190,
+      "path": "outputs/IMPLEMENTER_PACKAGE/specs/04-window-matrix-and-component-audio.md",
+      "sha256": "350937eadb5da2432ed60723305cdc8de80a139fef803ec3a2aa5a3990ed6334"
+    },
+    {
+      "bytes": 11533,
+      "path": "docs/implementation/COMPONENT-STAGE-MAP.md",
+      "sha256": "98105c0b077507615df1cc2989dee87c7b38d0a30f10e9d1e4f6a694f46fdd7f"
+    },
+    {
+      "bytes": 8048,
+      "path": "docs/implementation/COMPONENT-PARAMETER-PROVIDER-MAP.md",
+      "sha256": "06e1c7e55ba24de372975be84002695f281874e9146a9debc83a30cd83e04ef1"
+    },
+    {
+      "bytes": 1396,
+      "path": "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-PRODUCTION-PARAMETER-COLD-PROVIDERS-V1/MANIFEST.json",
+      "sha256": "369d20fb6242ce8fd6835d6c75484304c97f21b0cbc3c228d47afd21802efba6"
+    },
+    {
+      "bytes": 2813,
+      "path": "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-PRODUCTION-PARAMETER-COLD-PROVIDERS-V1/INPUT-ONLY-REFERENCE-VECTORS.json",
+      "sha256": "639e7611696607bbf3f3b0258ebe5ce7153a2f52e8110a56e6056d7da4d8d2e1"
+    },
+    {
+      "bytes": 1717,
+      "path": "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-CONTROL-TO-COMPONENT-PRODUCTION-WIRING-V1/MANIFEST.json",
+      "sha256": "6d1fa51b3b04ea8ca19c9d81c51b75a49d27349eaad2e018d6848e739f2cb5c1"
+    },
+    {
+      "bytes": 6733,
+      "path": "DIRTY_FULL_CHAIN_CLOSURE_CONTINUATION_R33_REV11/model-results/MUSIC-FMA3-REGULAR-TINY-MINIMAL-COMPOSITION-REV1/execution-sources/399cb1e2e3043b95c9309bd70cc5a67ca243c9e71c6fafe56d0a8b04a7011b6f/fullstream_component_filter_parameters_core.py",
+      "sha256": "399cb1e2e3043b95c9309bd70cc5a67ca243c9e71c6fafe56d0a8b04a7011b6f"
+    },
+    {
+      "bytes": 55848,
+      "path": "outputs/IMPLEMENTER_PACKAGE/test-vectors/COMPONENT-PARAMETER-GENERATION-VERIFICATION.json",
+      "sha256": "819e7cede6f54689a87aad72c8ec3d8a5cb4b14fe41fc6a5556a03973f01ec85"
+    },
+    {
+      "bytes": 12395,
+      "path": "outputs/IMPLEMENTER_PACKAGE/test-vectors/COMPONENT-PARAMETER-LOCAL-REVIEW-STATUS.json",
+      "sha256": "084b471673dfbadb304462f6b324e7e6e2e2191f80c1ca46bbd285d774cb736c"
+    }
+  ]
+}

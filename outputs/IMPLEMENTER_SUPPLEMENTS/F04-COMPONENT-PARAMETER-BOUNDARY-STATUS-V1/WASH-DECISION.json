@@ -1,0 +1,17 @@
+{
+  "already_closed": "selected model formulas/ranges/cold state/recurrence/stage proposal per approved referenced docs",
+  "decision": "ACCEPT_STATUS_CROSSWALK_ONLY",
+  "implementation_readiness": "NO_FOR_UNBOUND_NATIVE_CLAIMS",
+  "native_execution": "NOT_RUN",
+  "no_new_algorithm_or_constant": true,
+  "schema": "wash-decision.v1",
+  "scope": [
+    "F04P",
+    "F04PG"
+  ],
+  "still_unbound": [
+    "native hold width/signedness/owner",
+    "native blocks_processed width/overflow/owner",
+    "admitted profile instance to parameter-install owner/call"
+  ]
+}

@@ -565,6 +565,14 @@ def check_f06nr_model_reference(root,d):
  ck(results.get('reference_kind')=='MODEL_OUTPUT_NOT_INDEPENDENT_GOLDEN'and len(rows)==9 and report.get('classification')=='MODEL_REFERENCE_ONLY'and report.get('independent_golden')is False and report.get('native_or_dee_execution')=='NOT_RUN'and report.get('numeric_after_state_status')=='NOT_RUN'and report['summary']=={'hash_comparisons':9,'matches':9,'mismatches':0,'interpretation':'Model-reference agreement only; not an independent oracle, native equivalence, product validation, or full-song acceptance.'}and matches,'F06NR 9/9 frozen-model hash comparison is informational and non-conformance only')
  drc=next(item for item in d['programme_roots']if item['root_id']=='drc');ck(reference.get('comparison_result')=='9_OF_9_F32LE_HASHES_MATCHED_MODEL_REFERENCE_ONLY'and reference.get('independent_golden')is False and reference.get('numeric_after_state_status')=='NOT_RUN'and report.get('reference_package',{}).get('manifest_sha256')=='4cc114591e0600b13bfd5e0c713d5529f07270389e7095578f039ee886d654cb'and drc.get('f06nr_numerical_after_state_status')=='NOT_RUN','F06NR model reference does not promote independent numeric readiness')
 
+def check_f04_component_parameter_boundary_status(root,d):
+ package=root/'outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V1';manifest=json.loads((package/'MANIFEST.json').read_text(encoding='utf-8'));decision=json.loads((package/'WASH-DECISION.json').read_text(encoding='utf-8'));source_chain=json.loads((package/'SOURCE-CHAIN.json').read_text(encoding='utf-8'));vectors=json.loads((package/'INPUT-ONLY-VECTORS.json').read_text(encoding='utf-8'));contract=(package/'CONTRACT.md').read_text(encoding='utf-8');f04p=next(e for e in d['functional_entries']if e['functional_id']=='F04P');f04pg=next(e for e in d['functional_entries']if e['functional_id']=='F04PG');p=next(s for s in f04p['direct_slices']if s['slice_id']=='informational-f04p-native-counter-boundary-status');pg=next(s for s in f04pg['direct_slices']if s['slice_id']=='informational-f04pg-profile-install-boundary-status')
+ payload_text='\n'.join((package/item['file']).read_text(encoding='utf-8')for item in manifest['files'])
+ ck(manifest['package_id']=='F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V1'and hashlib.sha256((package/'MANIFEST.json').read_bytes()).hexdigest()=='9bf65e932c07848b5da182bf3ff6a51ed18a0dcd71c3e00d34eaff15b16c0447'and manifest['implementation_requirement']is False and manifest['delivery']=='INTERNAL_IMPLEMENTER_REFERENCE'and not re.search(r'[A-Za-z]:[\\/]|/home/',payload_text),'F04P/F04PG package is status-only, path-free and preserves internal scope')
+ ck(decision['decision']=='ACCEPT_STATUS_CROSSWALK_ONLY'and decision['implementation_readiness']=='NO_FOR_UNBOUND_NATIVE_CLAIMS'and decision['no_new_algorithm_or_constant']is True and decision['native_execution']=='NOT_RUN'and source_chain['native_dll_enumeration']['dll_count']==0 and source_chain['native_dll_enumeration']['source_code_read']is False and len(source_chain['verified_references'])==12,'F04P/F04PG model status is hash-bound without native claims')
+ ck(vectors['input_only']is True and vectors['contains_expected_outputs']is False and len(vectors['cases'])>=3 and 'Python int semantics are not evidence' in contract,'F04P/F04PG boundary vectors carry no expected outputs')
+ ck(p['implementation_requirement']is False and pg['implementation_requirement']is False and p['implementation_files']==[]and pg['implementation_files']==[]and p['test_modules']==[]and pg['test_modules']==[]and p['delivery_scope']==pg['delivery_scope']=='INTERNAL_IMPLEMENTER_REFERENCE'and any('hold width' in x and 'signedness' in x for x in p['not_run'])and any('profile instance' in x for x in pg['not_run']),'F04P and F04PG remain separate status-only slices with unbound native storage/install edges')
+
 def check_f04_parameter_providers(root,d):
  p=d['phase_one']['P1.4-D1'];status='LOCALLY_VERIFIED_TYPED_PROVIDER_VALIDATORS'
  ck(d['status']['P1.4-D1']==status and p['task_id']=='P1.4-D1-F04-SELECTED-COMPONENT-PARAMETER-PROVIDER-CONTRACTS'and p['status']=='LOCALLY_VERIFIED'and p['mapping_status']=='MAPPING_COMPLETE'and p['implementation_status']==status,'P1.4-D1 local provider-only status')
@@ -3967,6 +3975,8 @@ def check_partial_root_and_new_slice_mappings(root, d):
         "F12": ["selected-codec-owner-generation-previous-short-stage"],
         "F13C": ["programme-output-identity-and-preflight-binding", "fit-to-id14-writer-metadata-body-join", "informational-native-count-observation-frames-0-48", "informational-native-count-first-consumer-edge-0"],
         "F03W": ["capacity-gated-u04-callback-continuation"],
+        "F04P": ["informational-f04p-native-counter-boundary-status"],
+        "F04PG": ["informational-f04pg-profile-install-boundary-status"],
     }
     required_direct = {"slice_id", "mapping_status", "implementation_status", "scope", "implementation_files", "clock", "parameters", "test_modules", "vectors"}
     for functional_id, slice_ids in expected_slices.items():
@@ -4087,6 +4097,7 @@ def check_partial_root_and_new_slice_mappings(root, d):
     verify_manifest("outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-OBSERVATION-SLICE-00-V1/MANIFEST.json", "38d6aad2ce6c46c78498680aab8aebdf7307909c16d001afedea7921e7cc16eb")
     verify_manifest("outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-FIRST-CONSUMER-V1/MANIFEST.json", "f142a099e98bf2ad4f138142932b988f3a9ce86d3bfa23cff6d2e57636302c11")
     verify_manifest("outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-AU-JOIN-STATUS-V1/MANIFEST.json", "09867b310314aee0c43473d33b952b9ca4e388545f768aa5e96d4e33aebe8360")
+    verify_manifest("outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V1/MANIFEST.json", "9bf65e932c07848b5da182bf3ff6a51ed18a0dcd71c3e00d34eaff15b16c0447")
 
 
 def run(root=ROOT):
@@ -4102,6 +4113,7 @@ def run(root=ROOT):
  check_f13c_native_count_observation(root,d)
  check_f13c_native_first_consumer(root,d)
  check_f06nr_model_reference(root,d)
+ check_f04_component_parameter_boundary_status(root,d)
  check_f11_f12_source_resolution(root,d)
  check_f06nr_input_crosswalk(root,d)
  check_f13_measurement_selection(root,d)

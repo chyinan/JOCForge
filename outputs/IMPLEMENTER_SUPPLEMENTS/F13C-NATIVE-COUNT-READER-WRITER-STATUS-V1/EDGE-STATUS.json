@@ -1,0 +1,32 @@
+{
+  "edges": [
+    {
+      "edge": "per-stream context field to immediate caller read",
+      "status": "OBSERVED_VALUE_281"
+    },
+    {
+      "edge": "caller read to next helper input argument",
+      "status": "OBSERVED_VALUE_281_AT_CALLEE_ENTRY"
+    },
+    {
+      "edge": "referenced stream-record field to immediate reader",
+      "status": "OBSERVED_VALUE_281_FROM_SAME_FIELD_ADDRESS"
+    },
+    {
+      "edge": "referenced stream-record read to size/capacity helper",
+      "status": "OBSERVED"
+    },
+    {
+      "edge": "either count field to the observed ID14 writer input",
+      "status": "UNBOUND"
+    },
+    {
+      "edge": "count event to source generation and selected AU",
+      "status": "NOT_CAPTURED_OR_UNBOUND"
+    }
+  ],
+  "path_relation": "The two field consumers and the known ID14 writer ran in one bounded process/thread run, but their dynamic call stacks did not preserve the count-consumer frame into the writer call. Same-run presence is not a data join.",
+  "schema": "washed-f13c-native-reader-writer-edge-status.v1",
+  "source_payload_sha256": "5786b42e5699b8ce514d78c11a4b7cdd9dc30e3c8e696af94cae2de82749d77d",
+  "stop_rule": "Do not promote serializer/refill/AU binding unless a same-object or explicit value-flow receipt connects the observed field to the writer input."
+}

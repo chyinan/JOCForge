@@ -1,0 +1,59 @@
+{
+  "cases": [
+    {
+      "case_id": "hold_integer_boundary_inputs",
+      "input": {
+        "candidate_values_decimal": [
+          "-1",
+          "0",
+          "1",
+          "2147483646",
+          "2147483647",
+          "2147483648"
+        ],
+        "field": "hold",
+        "native_width_and_signedness": "UNBOUND",
+        "owner": "ComponentFilterParameterState",
+        "python_type": "int"
+      }
+    },
+    {
+      "case_id": "blocks_processed_storage_boundaries",
+      "input": {
+        "candidate_values_decimal": [
+          "0",
+          "2147483647",
+          "2147483648",
+          "4294967295",
+          "4294967296",
+          "9223372036854775807",
+          "9223372036854775808",
+          "18446744073709551615",
+          "18446744073709551616"
+        ],
+        "field": "blocks_processed",
+        "native_width_overflow_and_owner": "UNBOUND",
+        "owner": "ComponentFilterParameterState",
+        "python_type": "int"
+      }
+    },
+    {
+      "case_id": "both_integer_fields_on_reset_boundary",
+      "input": {
+        "blocks_processed": "18446744073709551615",
+        "hold": "2147483647",
+        "reset_requested": true
+      }
+    }
+  ],
+  "contains_audio_payload": false,
+  "contains_expected_outputs": false,
+  "contains_source_code_or_disassembly": false,
+  "input_only": true,
+  "schema": "f04p-f04pg-boundary-input-only.v1",
+  "unbound_questions": [
+    "What native storage width and signedness does the hold owner use?",
+    "What native storage width, overflow rule, and state owner does blocks_processed correspond to?"
+  ],
+  "vector_scope": "Input recipes only. They do not assert acceptance, calculated state, native values, or expected outputs."
+}

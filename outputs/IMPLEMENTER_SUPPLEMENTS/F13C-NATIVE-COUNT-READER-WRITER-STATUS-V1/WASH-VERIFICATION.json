@@ -1,0 +1,14 @@
+{
+  "capture_reproduced_by_wash": false,
+  "clean_model_rule_unchanged": true,
+  "field_to_writer_input": "UNBOUND",
+  "output_interference_comparison": "NOT_RUN",
+  "producer_output_store_in_this_run": "NOT_CAPTURED",
+  "same_run_field_reads_and_writer_entry_reported": true,
+  "schema": "f13c-native-reader-writer-wash-verification.v1",
+  "selected_au": "UNBOUND",
+  "source_code_or_raw_payloads_included": false,
+  "source_generation": "NOT_CAPTURED",
+  "source_manifest_sha256": "fcb8972f8eeb47f7ba44da122860b0f001166571bc4132d3ea0066d818b1be30",
+  "source_payloads_rehashed": "4/4 PASS"
+}

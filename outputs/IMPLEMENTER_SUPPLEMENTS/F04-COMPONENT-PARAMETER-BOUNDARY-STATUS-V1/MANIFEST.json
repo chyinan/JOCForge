@@ -1,0 +1,36 @@
+{
+  "classification": "STATUS_ONLY_NOT_NEW_ALGORITHM",
+  "delivery": "INTERNAL_IMPLEMENTER_REFERENCE",
+  "files": [
+    {
+      "bytes": 2806,
+      "file": "CONTRACT.md",
+      "sha256": "a2aadb68efaffbdbc77b58616808d0584e1f8cc1ef4b355a1953abd404165b00"
+    },
+    {
+      "bytes": 1716,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "42f8d0f44079d3d3650538deb5cb008a1093a9d2fc1bc951c3cbfea05d54fc22"
+    },
+    {
+      "bytes": 3761,
+      "file": "SOURCE-CHAIN.json",
+      "sha256": "46a30bddb4550e604e82dd677ad78484b0cb25ef9e1df78c756d5dddddaaf65f"
+    },
+    {
+      "bytes": 562,
+      "file": "WASH-DECISION.json",
+      "sha256": "92c301e449fda9cb83d9675d29fe05e430f3bbb7e79bdd1ba290f140e59b5cbb"
+    },
+    {
+      "bytes": 748,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "3acc3a27923b1fd33f5b401bf0d73bfea736e203e07a36050ea8b29eb122fb40"
+    }
+  ],
+  "implementation_requirement": false,
+  "package_id": "F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V1",
+  "schema": "wash-package-manifest.v1",
+  "scope": "Status crosswalk for already-approved F04P/F04PG model rules and three unresolved native/profile identity edges",
+  "source_manifest_sha256": "afccd9cdaec4a872644f60995b0ea326d56cdafb82884436e97730070cc1bed5"
+}

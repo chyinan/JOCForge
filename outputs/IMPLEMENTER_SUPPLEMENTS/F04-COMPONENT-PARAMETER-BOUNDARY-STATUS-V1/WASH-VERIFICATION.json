@@ -1,0 +1,23 @@
+{
+  "frozen_python_source": {
+    "bytes": 6733,
+    "rehash_match": true,
+    "sha256": "399cb1e2e3043b95c9309bd70cc5a67ca243c9e71c6fafe56d0a8b04a7011b6f"
+  },
+  "input_only_vectors": {
+    "cases": 3,
+    "contains_expected_outputs": false,
+    "input_only": true
+  },
+  "native_disassembly_or_execution": "NOT_RUN",
+  "relocated_research_root_dll_count": 0,
+  "schema": "f04p-f04pg-wash-verification.v1",
+  "source_manifest_sha256": "afccd9cdaec4a872644f60995b0ea326d56cdafb82884436e97730070cc1bed5",
+  "source_payloads_rehashed": "4/4 PASS",
+  "source_references_verified": 12,
+  "unbound_items": [
+    "hold native width/signedness/owner",
+    "blocks_processed native width/overflow/owner",
+    "admitted profile to install owner/call"
+  ]
+}

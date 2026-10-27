@@ -1,0 +1,40 @@
+{
+  "case_id": "selected_adm_file_position_frames_0_48",
+  "field_consumers": [
+    {
+      "consumer_semantics": "UNBOUND",
+      "count_producer_output_store_in_this_run": "NOT_CAPTURED",
+      "field_role": "per-stream context count field",
+      "first_read": "OBSERVED_DYNAMIC",
+      "forwarding": "VALUE_COPIED_TO_CALL_STACK_ARGUMENT_AND_CONFIRMED_AS_281_AT_CALLEE_ENTRY",
+      "read_value": 281
+    },
+    {
+      "consumer_semantics": "SIZE_OR_CAPACITY_PATH_OBSERVED; CODEC_RECORD_ROLE_UNBOUND",
+      "count_producer_output_store_in_this_run": "NOT_CAPTURED",
+      "field_role": "referenced stream-record count field",
+      "forwarding": "READ_VALUE_ENTERED_A_SIZE_OR_CAPACITY_CONFIGURATION_HELPER",
+      "read_from_same_watched_field_address": "OBSERVED_DYNAMIC",
+      "read_value": 281
+    }
+  ],
+  "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+  "output_interference_comparison": "NOT_RUN",
+  "same_process_thread_for_field_reads_and_writer_entry": true,
+  "sample_rate_hz": 48000,
+  "schema": "washed-f13c-native-reader-writer-observation.v1",
+  "semantic_owner": "UNBOUND",
+  "source_manifest_sha256": "fcb8972f8eeb47f7ba44da122860b0f001166571bc4132d3ea0066d818b1be30",
+  "window": {
+    "end_exclusive": 48,
+    "start_inclusive": 0
+  },
+  "writer_observation": {
+    "approved_id14_writer_entry_reached_in_same_bounded_run": true,
+    "direct_pointer_alias_from_either_count_field_to_writer_inputs": "NOT_OBSERVED",
+    "same_count_field_value_to_writer_input_join": "UNBOUND",
+    "same_parent_or_source_generation_join": "NOT_CAPTURED",
+    "writer_reference_manifest_sha256": "ed8e458bed4e166960b6677a81660c46cf7f76c7821aeee56f7024e56c1dce15",
+    "writer_to_selected_access_unit": "UNBOUND"
+  }
+}

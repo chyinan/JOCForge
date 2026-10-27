@@ -1,0 +1,41 @@
+{
+  "classification": "OBSERVATION_STATUS_NOT_ALGORITHM",
+  "delivery": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+  "files": [
+    {
+      "bytes": 1580,
+      "file": "CONTRACT.md",
+      "sha256": "e8ba7bd2b4fd934819b9e466cc52b817a7568463ed01484805baea30ffea3a57"
+    },
+    {
+      "bytes": 1309,
+      "file": "EDGE-STATUS.json",
+      "sha256": "ac3355979d3742dd878f612a0f8835fc281aebd1768e102ca53affae8704b82c"
+    },
+    {
+      "bytes": 411,
+      "file": "MODEL-SEPARATION.json",
+      "sha256": "fbdbb7293f02b0c5fe67cd02993b594023cd8b7b9f82882979453c39eea75203"
+    },
+    {
+      "bytes": 1761,
+      "file": "OBSERVED-READER-WRITER-STATE.json",
+      "sha256": "787d470d8bd9cd62c0a5d7b99633b0c02408d2c74192dd32312889d3e6e8d199"
+    },
+    {
+      "bytes": 1457,
+      "file": "SOURCE-CHAIN.json",
+      "sha256": "319afb2814652c70b6dbb2e48d600386a684c76d8465f1ce6e8becb37a2fc11b"
+    },
+    {
+      "bytes": 594,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "0843b046b5163494c5b76e34bd508eb9284be67b9d3cf51c42774c64ee16d095"
+    }
+  ],
+  "implementation_requirement": false,
+  "package_id": "F13C-NATIVE-COUNT-READER-WRITER-STATUS-V1",
+  "schema": "wash-package-manifest.v1",
+  "scope": "Reader/capacity-helper observations and writer co-occurrence; no field-to-writer or AU identity join",
+  "source_manifest_sha256": "fcb8972f8eeb47f7ba44da122860b0f001166571bc4132d3ea0066d818b1be30"
+}

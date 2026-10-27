@@ -1,0 +1,39 @@
+{
+  "clean_model_f12_wash": {
+    "manifest_sha256": "55e09368aa86a3650cd30a958b00e036fdf2956681044f5a5fa6ac4eec542b3a",
+    "package_id": "F13C-CONFIGURATION-COUNT-SELECTED-F12-CROSSWALK-V1"
+  },
+  "prior_au_join_status_wash": {
+    "manifest_sha256": "09867b310314aee0c43473d33b952b9ca4e388545f768aa5e96d4e33aebe8360",
+    "package_id": "F13C-NATIVE-COUNT-AU-JOIN-STATUS-V1"
+  },
+  "prior_first_consumer_wash": {
+    "manifest_sha256": "f142a099e98bf2ad4f138142932b988f3a9ce86d3bfa23cff6d2e57636302c11",
+    "package_id": "F13C-NATIVE-COUNT-FIRST-CONSUMER-V1"
+  },
+  "schema": "washed-f13c-native-reader-writer-source-chain.v1",
+  "source_manifest_sha256": "fcb8972f8eeb47f7ba44da122860b0f001166571bc4132d3ea0066d818b1be30",
+  "source_package_id": "F13C-NATIVE-COUNT-READER-WRITER-CROSSWALK-V1",
+  "source_payloads": [
+    {
+      "bytes": 2580,
+      "file": "NATIVE-COUNT-READER-WRITER-CROSSWALK.json",
+      "sha256": "68efe683b3ebf0293f3a8b29903057881376577fee3c36020838ff6bb0bbb38e"
+    },
+    {
+      "bytes": 1213,
+      "file": "EDGE-STATUS.json",
+      "sha256": "5786b42e5699b8ce514d78c11a4b7cdd9dc30e3c8e696af94cae2de82749d77d"
+    },
+    {
+      "bytes": 1258,
+      "file": "REFERENCE-IDENTITIES.json",
+      "sha256": "f93644d4ea1c6a68473ad9f5559f5cab2e2a1bc0400f5795ccbe54de124614a4"
+    },
+    {
+      "bytes": 396,
+      "file": "CHECK.json",
+      "sha256": "09e5e0dd422b83ff9f88e580153b07f019e9de9e0bee763cccbb927cb19ef8d5"
+    }
+  ]
+}
