@@ -179,6 +179,7 @@
 | F06I/integrated-meter-synthetic-state-and-event-transition | F06I | `meter` |
 | F06W/meter-output-sample-accounting-and-span-ledger | F06W | `meter` |
 | F06W/k-weighted-complete-block-and-energy-window | F06W | `meter` |
+| F06W/sample-block-queue-lifecycle | F06W | `meter` |
 | F06KG/selected-k-matrix-provider-generator | F06KG | `meter` |
 | F06TP/selected-six-channel-true-peak-block-cascade | F06TP | `meter` |
 | F06OF/meter-lfe-delay-and-oar-packet-assembly | F06OF | `meter` |

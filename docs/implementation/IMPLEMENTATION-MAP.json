@@ -6230,7 +6230,7 @@
         {
           "slice_id": "k-weighted-complete-block-and-energy-window",
           "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F06W_AND_METER_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_F06W_3_5_COMPLETE_BLOCK_K_FILTER_AND_WINDOW__LIFECYCLE_QUEUE_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_F06W_3_5_COMPLETE_BLOCK_K_FILTER_AND_WINDOW__QUEUE_LIFECYCLE_SEPARATELY_MAPPED",
           "scope": "Consumes one explicitly supplied complete six-lane 1024-sample block, runs the selected two-stage four-lane K filter, splits at 960-sample boundaries, retains complete K and partial-window state, and returns one or two energy records without mutating the before-state. It does not assemble complete blocks from callback PCM or own the callback/lifecycle clock.",
           "implementation_files": [
             "crates/jocforge-domain/src/meter/mod.rs",
@@ -6288,16 +6288,88 @@
             {"error_code":"METER_ENERGY_WINDOW_NUMERIC_FAILURE","category":"R32 K-filter or energy arithmetic","trigger":"Any separately rounded operation is nonfinite or the normalized accumulation/reduction fails.","programme_state_after":"No proposal is returned; the before-state is unchanged.","caller_action":"Retire through the future meter parent."}
           ],
           "not_run": [
-            "pending six-row PCM queue and 1024-block lifecycle producer",
+            "selected-profile queue-to-meter numeric integration and terminal receipt",
             "meter frontend, OAR and shared gain-delay input composition",
             "whole meter root, integrated/ungated dispatch, parent transaction, real programme and product acceptance"
           ],
           "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
+        },
+        {
+          "slice_id": "sample-block-queue-lifecycle",
+          "mapping_status": "MATERIALIZED_WASHED_SAMPLE_QUEUE_LIFECYCLE__SELECTED_METER_ROOT_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_ACTUAL_SAMPLE_QUEUE_AND_THREE_DRAIN_LIFECYCLE__SELECTED_PROFILE_NUMERIC_ROOT_NOT_RUN",
+          "scope": "Stages one normal-source or zero-drain callback through the synchronized six-lane queue, retains actual F32 sample values, publishes only complete 1024-sample blocks, and exposes unconsumed raw and 960-sample energy tails at finalization without adding a flush. The N=9217 case verifies seven normal callbacks plus three drains, 10752 published samples/lane, 10240 consumed samples/lane, a 512-sample raw tail, and a 640-sample energy partial. This is a queue/lifecycle boundary; it is not the selected N=6522906 numeric meter profile or DSP validation.",
+          "owner": "meter",
+          "dependencies": ["k-weighted-complete-block-and-energy-window", "post-render-meter-callback-composition"],
+          "implementation_files": [
+            "crates/jocforge-domain/src/meter/sample_block_queue.rs",
+            "crates/jocforge-domain/src/meter/post_render_meter.rs",
+            "crates/jocforge-domain/src/meter/standalone_root.rs",
+            "crates/jocforge-domain/src/meter/mod.rs"
+          ],
+          "clock": {
+            "domains": ["MeterSourceSampleCount", "MeterCallbackIndex", "MeterCallbackCount", "MeterUpstreamGeneration", "MeterSampleCount", "MeterBlockIndex", "MeterBlockCount", "SampleBlockFillCursor"],
+            "covered_clauses": [
+              "For N>0, normal callback count is ceil(N/1536), followed by exactly three zero-source drain callbacks.",
+              "Startup skip, published sample count, queue generation and callback phase advance together; drain output is not assumed to be zero.",
+              "The synchronized six-lane queue retains actual values and consumes only complete 1024-sample blocks in lane order.",
+              "Finalization after all drains preserves the raw tail and energy partial without adding a sample block or codec/DSP flush."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INTERNAL_METER_SAMPLE_QUEUE_LIFECYCLE",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-SAMPLE-QUEUE-LIFECYCLE-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-SAMPLE-QUEUE-LIFECYCLE-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-SAMPLE-QUEUE-LIFECYCLE-V1/INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-SAMPLE-QUEUE-LIFECYCLE-V1/EXPECTED.json"
+            ],
+            "supplement_manifest_sha256": "362b383d4b5148394d7bdc43a502cc1ed68cfe39aa5fbbe1e98c2871ad68e606",
+            "validation_boundary": "Queue scheduling, actual sample value preservation, complete-block order, callback lifecycle and terminal tails only; no OAR/DV32, K-filter/true-peak numerical oracle or selected-profile meter receipt."
+          },
+          "test_modules": ["crates/jocforge-domain/src/meter/sample_block_queue.rs"],
+          "vectors": {
+            "kind": "INPUT_ONLY_SYMBOLIC_QUEUE_RECIPE_WITH_ACTUAL_LOCAL_SAMPLE_ORDER_ASSERTIONS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-SAMPLE-QUEUE-LIFECYCLE-V1/INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-SAMPLE-QUEUE-LIFECYCLE-V1/EXPECTED.json"
+            ],
+            "case_pointers": [
+              "N=9217 produces seven normal callbacks and three zero-input drains.",
+              "Synthetic callback rows are materialized as actual F32 words; complete 1024-sample lane blocks equal the published input slices.",
+              "Terminal queue has 10752 published, 10240 consumed, 512 raw tail and 640 consumed energy-partial samples per the separate queues.",
+              "Vector sample IDs and hashes are lifecycle/provenance aids, not PCM values or a production terminal digest."
+            ],
+            "expected_dsp_outputs_included": false,
+            "expected_values_are_assertions_only": true,
+            "supplement_manifest_sha256": "362b383d4b5148394d7bdc43a502cc1ed68cfe39aa5fbbe1e98c2871ad68e606"
+          },
+          "error_outcomes": [
+            {"error_code":"SampleBlockQueueError::CallbackPhaseMismatch","category":"normal/drain schedule","trigger":"The supplied phase does not match the typed callback index and source extent.","programme_state_after":"No proposal is returned; the before queue remains unchanged.","caller_action":"Reject this callback proposal."},
+            {"error_code":"SampleBlockQueueError::InputShape","category":"six-lane callback input","trigger":"Any lane does not contain exactly 1536 sample words.","programme_state_after":"No proposal is returned; the before queue remains unchanged.","caller_action":"Reject before queue append."},
+            {"error_code":"SampleBlockQueueError::InputNonFinite","category":"callback sample values","trigger":"Any input sample word is NaN or infinite.","programme_state_after":"No proposal is returned; the before queue remains unchanged.","caller_action":"Reject the callback proposal."},
+            {"error_code":"SampleBlockQueueError::FinalizationNotReady","category":"queue terminal lifecycle","trigger":"Finalization is requested before all normal callbacks and three drains are staged.","programme_state_after":"No terminal view is returned; the queue remains unchanged.","caller_action":"Continue the approved callback sequence or reject at the parent boundary."}
+          ],
+          "not_run": [
+            "Selected N=6522906 meter-profile queue, OAR/DV32, true-peak/K numeric outputs and complete meter root parity.",
+            "Terminal MeasurementReceipt/READY production, GTC owner receipt, single root swap and parent reset/fatal integration.",
+            "Real ADM, full-programme encode, product and listening acceptance."
+          ],
+          "delivery_scope": "INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION",
+          "implementation_inventory": [
+            {"path":"crates/jocforge-domain/src/meter/sample_block_queue.rs","bytes":34921,"sha256":"8efacd5236f3a56f5621b8fc420bc76dcc99fb4dfd41a5f932d0b9f544c3a315"},
+            {"path":"crates/jocforge-domain/src/meter/post_render_meter.rs","bytes":21564,"sha256":"7e533a1b2a576e495099a117128aa0dce5d62a5f5eb1eeef844d3e71769b941a"},
+            {"path":"crates/jocforge-domain/src/meter/standalone_root.rs","bytes":16057,"sha256":"69848193bd49e5429028494385bcba48c47c1051c965a3836f1bd8737cab3de9"},
+            {"path":"crates/jocforge-domain/src/meter/mod.rs","bytes":648,"sha256":"2795a8f103682569d34184f7d6d4a2bec97f750c273658a42af5a75fb74b6577"}
+          ],
+          "test_inventory": [
+            {"path":"crates/jocforge-domain/src/meter/sample_block_queue.rs","bytes":34921,"sha256":"8efacd5236f3a56f5621b8fc420bc76dcc99fb4dfd41a5f932d0b9f544c3a315"}
+          ]
         }
       ],
       "production_usable": false,
       "not_run": [
-        "pending six-row PCM lifecycle queue that assembles complete 1024-sample blocks",
+        "Selected N=6522906 queue-to-meter numeric integration and terminal receipt; N=9217 is only the isolated queue lifecycle boundary.",
         "F06I/F06U composition, frontend/OAR/DV32 source connection, full meter root, parent transaction and product acceptance"
       ],
       "delivery_scope": "INTERNAL_ONLY_NO_PUBLIC_OR_THIRD_PARTY_DISTRIBUTION"
@@ -7486,7 +7558,7 @@
           "slice_id": "selected-f06nr-same-source-drc-proposal",
           "mapping_status": "MATERIALIZED_F06NR_PRIMARY_AND_F06ND_SAME_SOURCE_PROPOSAL__NUMERICAL_PARITY_AND_PARENT_OPEN",
           "implementation_status": "LOCALLY_VERIFIED_NONCOMMITTING_SAME_SOURCE_DRC_PROPOSAL_API__NUMERICAL_PARITY_AND_PARENT_COMMIT_NOT_RUN",
-          "scope": "For one source, the DRC root reads F07 delayed primary rows and short_consumed from one SharedAnalysisReceipt, stages F06NR secondary history/carrier and F06ND using that same receipt, then joins both after-states into one complete noncommitting DRC proposal. This is a callable domain API only: numerical after-state parity, a parent/application callsite, receipt admission, and root commit are not established.",
+          "scope": "For one source, the DRC root reads F07 delayed primary rows and short_consumed from one SharedAnalysisReceipt, stages F06NR secondary history/carrier and F06ND using that same receipt, then joins both after-states into one complete noncommitting DRC proposal. This is a domain-level API only: numerical after-state parity, a parent/application callsite, receipt admission, and root commit are not established. Application cannot currently construct the required DRC root because the verified-prepass ProgrammeMeasurementReceipt producer is crate-private.",
           "owner": "drc",
           "dependencies": ["analysis-owner-f07-source-stage", "selected-none-drc-source-owner-stage", "selected-secondary-source-au-clock-projection"],
           "implementation_files": [
@@ -9309,7 +9381,7 @@
           "slice_id": "selected-none-drc-source-owner-stage",
           "mapping_status": "MATERIALIZED_SELECTED_F06ND_F06NR_SAME_SOURCE_PROPOSAL__NUMERICAL_PARITY_AND_GTC_PARENT_OPEN",
           "implementation_status": "LOCALLY_VERIFIED_SAME_RECEIPT_F06NR_F06ND_NONCOMMITTING_PROPOSAL__PARENT_RECEIPT_AND_COMMIT_NOT_RUN",
-          "scope": "The standalone DRC root combines the selected secondary histories, F06ND statistics/scheduler/FIFO, and programme dialnorm. For one source, a callable domain API reads F07 delayed audio and flags from one SharedAnalysisReceipt, stages F06NR and F06ND from that same receipt, and returns a complete noncommitting DRC after-root proposal. Numerical parity, a production parent caller, receipt admission, and parent commit remain NOT_RUN.",
+          "scope": "The standalone DRC root combines the selected secondary histories, F06ND statistics/scheduler/FIFO, and programme dialnorm. For one source, a domain-level API reads F07 delayed audio and flags from one SharedAnalysisReceipt, stages F06NR and F06ND from that same receipt, and returns a complete noncommitting DRC after-root proposal. Application cannot currently construct the required root because verified-prepass ProgrammeMeasurementReceipt minting is crate-private. Numerical parity, a production parent caller, receipt admission, and parent commit remain NOT_RUN.",
           "owner": "drc",
           "dependencies": [
             "selected-none-drc-statistics-to-scheduler-frame-composition",
@@ -17715,10 +17787,11 @@
           "sha256": "d61a8c70ae107930d30ec200530d712e33d64f611088c3cbbbe43de1f12dae48"
         }
       ],
-      "local_scope": "The complete standalone DRC root has a locally verified canonical state reference. A callable domain API stages F06NR PRIMARY and same-source F06ND from one SharedAnalysisReceipt into a noncommitting DRC proposal. Numerical parity, parent/application callsite, receipt admission, and GTC commit remain NOT_RUN.",
+      "local_scope": "The complete standalone DRC root has a locally verified canonical state reference. A domain-level API stages F06NR PRIMARY and same-source F06ND from one SharedAnalysisReceipt into a noncommitting DRC proposal. Application cannot currently construct the required DRC root because verified-prepass ProgrammeMeasurementReceipt minting is crate-private. Numerical parity, parent/application callsite, receipt admission, and GTC commit remain NOT_RUN.",
       "encode_status": "NOT_RUN",
       "remaining_gates": [
         "Application/parent SourceTransaction callsite for prepare_source_frame; SharedAnalysisReceipt::from_parent remains unwired.",
+        "Application cannot currently construct a DRC root: no public verified-prepass ProgrammeMeasurementReceipt producer is wired.",
         "Numerical F06NR forward/inverse after-state parity and nonzero carrier oracle remain NOT_RUN.",
         "DRC GTC OwnerReceipt admission and single-root swap remain NOT_RUN.",
         "Meter MeasurementReceipt/READY input remains NOT_RUN.",
@@ -17733,11 +17806,13 @@
       "f06nr_unresolved_join": [
         "Numerical F06NR forward/inverse after-state parity and nonzero carrier oracle remain NOT_RUN.",
         "No application/parent callsite exists; SharedAnalysisReceipt::from_parent remains unwired.",
+        "Application cannot construct the required DRC root; verified-prepass ProgrammeMeasurementReceipt production remains crate-private.",
         "DRC OwnerReceipt admission, GTC single-root swap, and parent fatal/reset/EOF integration remain NOT_RUN."
       ],
       "measurement_receipt_ready_input_status": "NOT_RUN",
       "f06nr_numerical_after_state_status": "NOT_RUN",
-      "f06nr_parent_callsite_status": "NOT_RUN"
+      "f06nr_parent_callsite_status": "NOT_RUN",
+      "f06nr_root_constructibility_status": "BLOCKED_ON_NONPUBLIC_VERIFIED_PREPASS_MEASUREMENT_RECEIPT_PRODUCER"
     },
                 {
       "root_id": "analysis",
