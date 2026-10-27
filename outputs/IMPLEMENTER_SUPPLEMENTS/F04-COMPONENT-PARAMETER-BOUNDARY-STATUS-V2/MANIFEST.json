@@ -1,0 +1,41 @@
+{
+  "classification": "STATUS_ONLY_NOT_NEW_ALGORITHM",
+  "delivery": "INTERNAL_IMPLEMENTER_REFERENCE",
+  "files": [
+    {
+      "bytes": 2295,
+      "file": "CONTRACT.md",
+      "sha256": "c17aaa3a09e3164ccbd4897d07347fa41bcbde281f76a8b58b01803d34884c83"
+    },
+    {
+      "bytes": 1716,
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "42f8d0f44079d3d3650538deb5cb008a1093a9d2fc1bc951c3cbfea05d54fc22"
+    },
+    {
+      "bytes": 4092,
+      "file": "SOURCE-CHAIN.json",
+      "sha256": "8d052c69672d8bc6bd734881e14ff5495468a65b1bb76305d1b4577bd2e44771"
+    },
+    {
+      "bytes": 715,
+      "file": "SUPERSESSION.json",
+      "sha256": "77a88d6be089384b3cc0f76da28651ee8082c2b6036166433c17d4f3d7b1fe92"
+    },
+    {
+      "bytes": 591,
+      "file": "WASH-DECISION.json",
+      "sha256": "801667c9f9f02d40d336e77cf91d0cd430abc3c89758bc96272d2d08efbcd732"
+    },
+    {
+      "bytes": 653,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "23e04f269d80a31fce060af9408f533f92e90490e9f294bceacdc08227e59046"
+    }
+  ],
+  "implementation_requirement": false,
+  "package_id": "F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V2",
+  "schema": "wash-package-manifest.v1",
+  "scope": "Corrected target identity status for F04P/F04PG; native storage and parameter-install identity remain open",
+  "source_manifest_sha256": "8a9ce2e6ccf002832a0fe103fe00250c6d2624565cc6a6b99345cbff27545ec0"
+}

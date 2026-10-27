@@ -3745,7 +3745,7 @@
           "slice_id": "informational-f04p-native-counter-boundary-status",
           "mapping_status": "WASHED_STATUS_CROSSWALK_ONLY_F04P_MODEL_COUNTER_RULES_NATIVE_TYPE_OPEN",
           "implementation_status": "INFORMATIONAL_ONLY_F04P_MODEL_RULES_CLOSED_NATIVE_HOLD_AND_COUNTER_TYPE_UNBOUND",
-          "scope": "The frozen Python model uses hold values 0..=0x7fffffff and increments blocks_processed once per 64-sample transition. Python int does not bind native width, signedness, overflow or ownership. No native code is implemented or observed by this status package.",
+          "scope": "The frozen Python model uses hold values 0..=0x7fffffff and increments blocks_processed once per 64-sample transition. The target DLL identity was rehashed by Wash, but static analysis and native execution remain NOT_RUN. Native hold width, signedness and owner, plus blocks_processed width, overflow and owner, remain UNBOUND; Python int does not establish native storage.",
           "owner": "spatial_audio",
           "implementation_requirement": false,
           "implementation_files": [],
@@ -3758,30 +3758,31 @@
           "parameters": {
             "kind": "HASH_BOUND_F04P_F04PG_STATUS_CROSSWALK_ONLY",
             "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V1/SOURCE-CHAIN.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V1/WASH-DECISION.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V1/WASH-VERIFICATION.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V2/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V2/SOURCE-CHAIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V2/SUPERSESSION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V2/WASH-DECISION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V2/WASH-VERIFICATION.json"
             ],
-            "supplement_manifest_sha256": "9bf65e932c07848b5da182bf3ff6a51ed18a0dcd71c3e00d34eaff15b16c0447",
-            "candidate_source_manifest_sha256": "afccd9cdaec4a872644f60995b0ea326d56cdafb82884436e97730070cc1bed5",
-            "validation_boundary": "Already-approved model rules only. Native width/signedness/overflow/owner and admitted-profile parameter-install call identity remain unbound; no native or product claim."
+            "supplement_manifest_sha256": "5d1d79d5c9f309997c38a1ef9e453b8174ff4d915999523adb27847655cdcf6e",
+            "candidate_source_manifest_sha256": "8a9ce2e6ccf002832a0fe103fe00250c6d2624565cc6a6b99345cbff27545ec0",
+            "validation_boundary": "Approved model rules only. The target image identity is hash-verified; native storage semantics and static analysis remain unbound/not run."
           },
           "test_modules": [],
           "vectors": {
             "kind": "INPUT_ONLY_F04P_INTEGER_BOUNDARY_AND_F04PG_PROFILE_IDENTITY_CASES",
             "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V1/INPUT-ONLY-VECTORS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V2/INPUT-ONLY-VECTORS.json"
             ],
             "case_pointers": [
               "hold_integer_boundary_inputs exercise model-side Python-int values only; native hold width/signedness/owner remain UNBOUND.",
-              "blocks_processed_storage_boundaries and reset boundary contain no expected outputs; native width/overflow/owner remain UNBOUND.",
-              "Admitted profile instance to parameter-install owner/call identity remains UNBOUND."
+              "blocks_processed_storage_boundaries and reset boundary contain input recipes only; native width/overflow/owner remain UNBOUND.",
+              "Wash rehashed the target DLL identity, but static analysis and native execution remain NOT_RUN."
             ],
             "expected_outputs_included": false,
-            "supplement_manifest_sha256": "9bf65e932c07848b5da182bf3ff6a51ed18a0dcd71c3e00d34eaff15b16c0447"
+            "supplement_manifest_sha256": "5d1d79d5c9f309997c38a1ef9e453b8174ff4d915999523adb27847655cdcf6e"
           },
           "not_run": [
             "Native hold width, signedness and state owner.",
@@ -3809,7 +3810,7 @@
           "slice_id": "informational-f04pg-profile-install-boundary-status",
           "mapping_status": "WASHED_STATUS_CROSSWALK_ONLY_F04PG_MODEL_PROFILE_RULES_NATIVE_INSTALL_JOIN_OPEN",
           "implementation_status": "INFORMATIONAL_ONLY_F04PG_SELECTED_MODEL_RULES_CLOSED_PROFILE_INSTALL_IDENTITY_UNBOUND",
-          "scope": "The selected model's fixed 48 kHz/64-sample generator, eight Q15 parameters, one shared state over 15 rows, recurrence, cold values and reset behavior are already specified. The native admitted-profile instance to parameter-install owner/call identity remains UNBOUND; this status adds no DSP rule or native storage claim.",
+          "scope": "The selected model's fixed 48 kHz/64-sample generator, eight Q15 parameters, one shared state over 15 rows, recurrence, cold values and reset behavior are already specified. Wash rehashed the target DLL identity, but static analysis and native execution remain NOT_RUN. The admitted-profile instance to parameter-install owner/call identity remains UNBOUND; this status adds no DSP rule or native storage claim.",
           "owner": "spatial_audio",
           "implementation_requirement": false,
           "implementation_files": [],
@@ -3822,30 +3823,31 @@
           "parameters": {
             "kind": "HASH_BOUND_F04P_F04PG_STATUS_CROSSWALK_ONLY",
             "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V1/SOURCE-CHAIN.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V1/WASH-DECISION.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V1/WASH-VERIFICATION.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V2/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V2/SOURCE-CHAIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V2/SUPERSESSION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V2/WASH-DECISION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V2/WASH-VERIFICATION.json"
             ],
-            "supplement_manifest_sha256": "9bf65e932c07848b5da182bf3ff6a51ed18a0dcd71c3e00d34eaff15b16c0447",
-            "candidate_source_manifest_sha256": "afccd9cdaec4a872644f60995b0ea326d56cdafb82884436e97730070cc1bed5",
-            "validation_boundary": "Already-approved model rules only. Native width/signedness/overflow/owner and admitted-profile parameter-install call identity remain unbound; no native or product claim."
+            "supplement_manifest_sha256": "5d1d79d5c9f309997c38a1ef9e453b8174ff4d915999523adb27847655cdcf6e",
+            "candidate_source_manifest_sha256": "8a9ce2e6ccf002832a0fe103fe00250c6d2624565cc6a6b99345cbff27545ec0",
+            "validation_boundary": "Approved model parameter-generation rules only. Native target identity is hash-verified; admitted-profile installation owner/call remains unbound."
           },
           "test_modules": [],
           "vectors": {
             "kind": "INPUT_ONLY_F04P_INTEGER_BOUNDARY_AND_F04PG_PROFILE_IDENTITY_CASES",
             "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V1/INPUT-ONLY-VECTORS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V2/INPUT-ONLY-VECTORS.json"
             ],
             "case_pointers": [
-              "hold_integer_boundary_inputs exercise model-side Python-int values only; native hold width/signedness/owner remain UNBOUND.",
-              "blocks_processed_storage_boundaries and reset boundary contain no expected outputs; native width/overflow/owner remain UNBOUND.",
-              "Admitted profile instance to parameter-install owner/call identity remains UNBOUND."
+              "The selected 48 kHz/64-sample parameter generator is an approved model rule; its 24 transitions do not establish native callback/install identity.",
+              "The admitted profile instance to parameter-install owner/call identity remains UNBOUND.",
+              "Wash rehashed the target DLL identity, but static analysis and native execution remain NOT_RUN."
             ],
             "expected_outputs_included": false,
-            "supplement_manifest_sha256": "9bf65e932c07848b5da182bf3ff6a51ed18a0dcd71c3e00d34eaff15b16c0447"
+            "supplement_manifest_sha256": "5d1d79d5c9f309997c38a1ef9e453b8174ff4d915999523adb27847655cdcf6e"
           },
           "not_run": [
             "Native hold width, signedness and state owner.",

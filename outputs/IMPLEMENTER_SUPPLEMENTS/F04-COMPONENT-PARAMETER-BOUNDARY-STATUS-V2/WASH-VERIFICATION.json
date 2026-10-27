@@ -1,0 +1,15 @@
+{
+  "approved_and_washed_references_reverified": 12,
+  "candidate_payloads_rehashed": "4/4 PASS",
+  "expected_outputs_included": false,
+  "frozen_python_source_rehashed": true,
+  "input_only_vectors": true,
+  "schema": "f04p-f04pg-wash-verification-v2.v1",
+  "source_manifest_sha256": "8a9ce2e6ccf002832a0fe103fe00250c6d2624565cc6a6b99345cbff27545ec0",
+  "static_analysis_or_native_execution": "NOT_RUN",
+  "superseded_package_manifest_sha256": "9bf65e932c07848b5da182bf3ff6a51ed18a0dcd71c3e00d34eaff15b16c0447",
+  "target_module_rehashed": {
+    "bytes": 10942464,
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2"
+  }
+}

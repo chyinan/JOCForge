@@ -1,0 +1,13 @@
+{
+  "correction": "The E: target image identity has now been independently verified. The previous D-root-only absence statement must not be read as evidence no DLL exists anywhere. Native static analysis remains NOT_RUN because the available IDA/Ghidra interface/database is unusable.",
+  "schema": "f04p-f04pg-status-supersession.v1",
+  "supersedes_wash_package": {
+    "manifest_sha256": "9bf65e932c07848b5da182bf3ff6a51ed18a0dcd71c3e00d34eaff15b16c0447",
+    "package_id": "F04-COMPONENT-PARAMETER-BOUNDARY-STATUS-V1"
+  },
+  "unchanged_unbound": [
+    "hold native width/signedness/owner",
+    "blocks_processed native width/overflow/owner",
+    "admitted profile instance to parameter-install owner/call"
+  ]
+}
