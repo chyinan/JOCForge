@@ -13,6 +13,8 @@ use super::selected_frame_trial::SelectedMainFrameCandidate;
 
 const FRAME_BYTES: usize = 4_096;
 const SUPPRESSED_SOURCE_COUNT: u64 = 2;
+const CODEC_OWNER_ID: &str = "codec";
+const CODEC_STATE_REF: &str = "owners.codec";
 
 /// Six current short-flag blocks in codec lane order `[L,C,R,Ls,Rs]`.
 pub type CodecShortFlags = [[bool; F07_FULLBAND_LANES]; F07_BLOCKS_PER_FRAME];
@@ -56,6 +58,33 @@ impl CodecOwnerRoot {
         &self.previous_short
     }
 
+    /// Serializes this complete owner value as the selected canonical JSON preimage.
+    ///
+    /// Clock and attempt identities are owned by the enclosing GTC source transaction and are
+    /// deliberately not part of the persistent Codec owner value.
+    pub fn canonical_state_bytes(&self) -> Vec<u8> {
+        let [left, center, right, left_surround, right_surround] =
+            self.previous_short.map(u8::from);
+        format!(
+            "{{\"codec\":{{\"generation\":{}}},\"previous_short\":{{\"i1_words\":[{left},{center},{right},{left_surround},{right_surround}]}}}}",
+            self.generation.value()
+        )
+        .into_bytes()
+    }
+
+    /// Returns immutable bytes and hashes for this root in the selected GTC owner slot.
+    pub fn state_reference(&self) -> CodecOwnerStateReference {
+        let canonical_bytes = self.canonical_state_bytes();
+        let state_sha256 = Sha256::digest(&canonical_bytes).into();
+        let cold_sha256 = Sha256::digest(Self::cold().canonical_state_bytes()).into();
+        CodecOwnerStateReference {
+            generation: self.generation,
+            state_sha256,
+            cold_sha256,
+            canonical_bytes,
+        }
+    }
+
     /// Stages the selected F12 state after a complete candidate has passed CRC and, for
     /// published sources, the matching F15 durable append receipt has been admitted.
     ///
@@ -83,6 +112,43 @@ impl CodecOwnerRoot {
             before_generation: self.generation,
             after_state,
         })
+    }
+}
+
+/// Complete immutable state-ref material for one selected GTC Codec owner snapshot.
+///
+/// This is an owner snapshot only; it is not a GTC OwnerReceipt and carries no transaction ID.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct CodecOwnerStateReference {
+    generation: CodecOwnerGeneration,
+    state_sha256: [u8; 32],
+    cold_sha256: [u8; 32],
+    canonical_bytes: Vec<u8>,
+}
+
+impl CodecOwnerStateReference {
+    pub const fn owner_id(&self) -> &'static str {
+        CODEC_OWNER_ID
+    }
+
+    pub const fn generation(&self) -> CodecOwnerGeneration {
+        self.generation
+    }
+
+    pub const fn state_ref(&self) -> &'static str {
+        CODEC_STATE_REF
+    }
+
+    pub const fn state_sha256(&self) -> &[u8; 32] {
+        &self.state_sha256
+    }
+
+    pub const fn cold_sha256(&self) -> &[u8; 32] {
+        &self.cold_sha256
+    }
+
+    pub fn canonical_bytes(&self) -> &[u8] {
+        &self.canonical_bytes
     }
 }
 
@@ -263,6 +329,44 @@ mod tests {
 
     fn all_long_flags() -> CodecShortFlags {
         [[false; F07_FULLBAND_LANES]; F07_BLOCKS_PER_FRAME]
+    }
+
+    #[test]
+    fn cold_state_reference_matches_the_washed_canonical_owner_value() {
+        let reference = CodecOwnerRoot::cold().state_reference();
+        assert_eq!(reference.owner_id(), "codec");
+        assert_eq!(reference.state_ref(), "owners.codec");
+        assert_eq!(reference.generation().value(), 0);
+        assert_eq!(
+            reference.canonical_bytes(),
+            br#"{"codec":{"generation":0},"previous_short":{"i1_words":[0,0,0,0,0]}}"#
+        );
+        assert_eq!(
+            format!("{:x}", Sha256::digest(reference.canonical_bytes())),
+            "f039d91adab362b63a9913eea116dc5ce38c8b77bf7d94c32352184a24594a55"
+        );
+        assert_eq!(reference.state_sha256(), reference.cold_sha256());
+    }
+
+    #[test]
+    fn accepted_source_state_reference_contains_full_after_bytes_and_keeps_cold_hash() {
+        let mut flags = all_long_flags();
+        flags[F07_BLOCKS_PER_FRAME - 1] = [true, false, true, false, true];
+        let frame = complete_frame(0, &[0; FRAME_BYTES]);
+        let proposal = CodecOwnerRoot::cold()
+            .stage_source(&frame, &flags, None)
+            .expect("complete suppressed source stages its codec after-state");
+        let reference = proposal.after_state().state_reference();
+
+        assert_eq!(reference.generation().value(), 1);
+        assert_eq!(
+            reference.canonical_bytes(),
+            br#"{"codec":{"generation":1},"previous_short":{"i1_words":[1,0,1,0,1]}}"#
+        );
+        let cold_reference = CodecOwnerRoot::cold().state_reference();
+        assert_eq!(reference.cold_sha256(), cold_reference.state_sha256());
+        assert_ne!(reference.state_sha256(), reference.cold_sha256());
+        assert_eq!(proposal.after_state().generation().value(), 1);
     }
 
     #[test]

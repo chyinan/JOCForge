@@ -1,0 +1,28 @@
+{
+  "package_id": "CODEC-OWNER-STATE-REFERENCE-V1",
+  "scope": "Selected clean codec owner state_ref/canonical preimage and GTC ownerReceipt mapping only",
+  "files": [
+    {
+      "file": "STATE-REFERENCE.json",
+      "bytes": 3906,
+      "sha256": "639578c2f79ec7770e49324eaf0ae8940c5a53804aa5606ef42c4c6c04712b71"
+    },
+    {
+      "file": "INPUT-ONLY-CASES.json",
+      "bytes": 1131,
+      "sha256": "422b911ae83e8c7af8a3720324e71df17a528c0909c29039a60ffbe56a490561"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 2456,
+      "sha256": "065b1cba688809dbc2906cd2662cf3be34a950e4daa0951401a186dbd65decf3"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 308,
+      "sha256": "e0d9452742bec35648c268c68e22e0c5ff110973d0c513075dbddac38feb7da2"
+    }
+  ],
+  "runtime_execution": "NOT_RUN",
+  "native_equivalence": "NOT_RUN"
+}

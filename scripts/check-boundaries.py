@@ -3835,7 +3835,8 @@ def check_partial_root_and_new_slice_mappings(root, d):
     for root_id in expected_roots:
         item = roots[root_id]
         ck(item["materialization_status"] == "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT", root_id + " root remains partial")
-        ck(item["canonical_gtc_state_ref_status"] == "NOT_RUN" and item["gtc_owner_receipt_status"] == "NOT_RUN" and item["gtc_single_root_swap_status"] == "NOT_RUN" and item["encode_status"] == "NOT_RUN", root_id + " root has no fabricated GTC receipt or commit")
+        expected_state_ref = "LOCALLY_VERIFIED_CODEC_STATE_REF_AND_OWNER_SNAPSHOT" if root_id == "codec" else "NOT_RUN"
+        ck(item["canonical_gtc_state_ref_status"] == expected_state_ref and item["gtc_owner_receipt_status"] == "NOT_RUN" and item["gtc_single_root_swap_status"] == "NOT_RUN" and item["encode_status"] == "NOT_RUN", root_id + " root has no fabricated GTC receipt or commit")
         ck(item.get("remaining_gates") and all((root / relative).is_file() for relative in item["implementation_files"] + item["test_modules"]), root_id + " partial root file references and gates")
         for inventory_key, files_key in (("implementation_inventory", "implementation_files"), ("test_inventory", "test_modules")):
             inventory = item.get(inventory_key, [])
@@ -3851,13 +3852,16 @@ def check_partial_root_and_new_slice_mappings(root, d):
     ck(meter["measurement_receipt_ready_status"] == "NOT_RUN", "meter terminal MeasurementReceipt/READY remains open")
     ck(drc["f06nr_producer_status"] == "NOT_RUN" and drc["measurement_receipt_ready_input_status"] == "NOT_RUN", "DRC F06NR and meter finalization inputs remain open")
     ck(roots["analysis"]["provider_plan_lineage_status"] == "NOT_RUN", "analysis provider-plan lineage remains open")
-    ck(codec["provider_plan_lineage_status"] == "NOT_RUN", "codec provider-plan lineage remains open")
+    ck(codec["canonical_gtc_state_ref_status"] == "LOCALLY_VERIFIED_CODEC_STATE_REF_AND_OWNER_SNAPSHOT" and codec["gtc_owner_receipt_status"] == "NOT_RUN" and codec["provider_plan_lineage_status"] == "NOT_RUN", "codec state-ref is local while transaction receipt and plan lineage remain open")
     ck(output["provider_plan_lineage_status"] == "NOT_RUN" and output["production_output_api_gate_status"] == "NOT_RUN" and output["validated_plan_output_binding_status"] == "NOT_RUN", "output production binding and provider-plan lineage remain open")
     id14 = next(item for item in entries["F13C"]["direct_slices"] if item["slice_id"] == "fit-to-id14-writer-metadata-body-join")
     ck(id14["implementation_status"] == "LOCALLY_VERIFIED_SAME_DISPATCH_ID14_BODY_CONSUMPTION__F04D_F04RB_AND_F05JL_ACCEPTANCE_NOT_RUN" and id14["parameters"]["supplement_manifest_sha256"] == "7d67ff782ea457e100882914c5254b293e92291146114b6e8d87d205b4176c9d", "F13 ID14 same-dispatch body join status and package identity")
     ck(any("F04D" in item and "F04RB" in item for item in id14["not_run"]) and any("F05JL" in item for item in id14["not_run"]) and not any("clip_gain_index producer" in item or "sequence_count producer" in item for item in id14["not_run"]), "F13 producer join closes the raw header-field gap while whole upstream runtime remains open")
     sequence_error = next((item for item in id14.get("error_outcomes", []) if item.get("error_code") == "JocDispatchError::Sequence"), None)
     ck(sequence_error is not None and "-2" in sequence_error["trigger"] and "1024" in sequence_error["trigger"] and any(path.endswith("/coefficient_fitting.rs") for path in id14["test_modules"]), "F05JL sequence guard rejects both out-of-domain counters before the writer")
+    codec_state = next(item for item in entries["F12"]["direct_slices"] if item["slice_id"] == "selected-codec-owner-generation-previous-short-stage")
+    ck(codec_state["implementation_status"] == "LOCALLY_VERIFIED_CODEC_STATE_REF_AND_OWNER_SNAPSHOT__GTC_RECEIPT_PARENT_IDENTITY_AND_PLAN_LINEAGE_NOT_RUN" and codec_state["parameters"]["supplement_manifest_sha256"] == "56a8571992471dae17cb023dd50a0165984e0662937cb6ed70842e9e0fbb1c1f", "F12 canonical codec state-ref mapping and supplement identity")
+    ck(any("owners.codec" in item for item in codec_state["vectors"]["case_pointers"]) and any("GTC OwnerReceipt" in item for item in codec_state["not_run"]) and any("parent" in item.lower() and "transaction" in item.lower() for item in codec_state["not_run"]), "F12 state ref remains distinct from parent receipt/transaction")
 
     app_cargo = tomllib.loads((root / "crates/jocforge-application/Cargo.toml").read_text(encoding="utf-8"))
     cli_cargo = tomllib.loads((root / "crates/jocforge-cli/Cargo.toml").read_text(encoding="utf-8"))
@@ -3889,6 +3893,7 @@ def check_partial_root_and_new_slice_mappings(root, d):
     verify_manifest("outputs/IMPLEMENTER_SUPPLEMENTS/U04-GAIN-CALLER-JOIN-V1/MANIFEST.json", "3dc243e1cb05b65dd5d703e5a0718fadae6618cdf44d6de4709430f247c208fc")
     verify_manifest("outputs/IMPLEMENTER_SUPPLEMENTS/U04-SOURCE-WEIGHT-CALLER-BINDING-V1/MANIFEST.json", "b16da90125002cebd14658240b517f5163e8b3b230cde18ca488cb526062c835")
     verify_manifest("outputs/IMPLEMENTER_SUPPLEMENTS/JOC-ID14-HEADER-PRODUCER-BINDING-V1/MANIFEST.json", "7d67ff782ea457e100882914c5254b293e92291146114b6e8d87d205b4176c9d")
+    verify_manifest("outputs/IMPLEMENTER_SUPPLEMENTS/CODEC-OWNER-STATE-REFERENCE-V1/MANIFEST.json", "56a8571992471dae17cb023dd50a0165984e0662937cb6ed70842e9e0fbb1c1f")
 
 
 def run(root=ROOT):

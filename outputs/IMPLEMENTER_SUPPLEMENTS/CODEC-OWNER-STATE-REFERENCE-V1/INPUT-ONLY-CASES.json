@@ -1,0 +1,51 @@
+{
+  "input_only": true,
+  "expected_frame_bytes_included": false,
+  "cases": [
+    {
+      "id": "cold",
+      "owner_value": {
+        "codec": {
+          "generation": 0
+        },
+        "previous_short": {
+          "i1_words": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": "accepted_suppressed_source",
+      "before_generation": 0,
+      "after_generation": 1,
+      "source": 0,
+      "full_frame_crc_required": true,
+      "AU_append": false,
+      "owner_commit": "parent once after accepted source"
+    },
+    {
+      "id": "candidate_retries",
+      "owner_state_mutations_before_acceptance": 0,
+      "all_retries_share_previous_short_snapshot": true
+    },
+    {
+      "id": "all_candidate_failure",
+      "normal_codec_after_receipt": false,
+      "committed_owner_unchanged": true
+    },
+    {
+      "id": "published_source_without_durable_receipt",
+      "codec_after_state": "pending",
+      "parent_admission": false
+    },
+    {
+      "id": "published_source_with_durable_receipt",
+      "parent_commit_count": 1
+    }
+  ]
+}

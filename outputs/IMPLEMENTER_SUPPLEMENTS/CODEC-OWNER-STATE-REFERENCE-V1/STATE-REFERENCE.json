@@ -1,0 +1,63 @@
+{
+  "schema": "codec-owner-state-reference.v1",
+  "owner_id": "codec",
+  "state_ref": {
+    "serialized_value": "owners.codec",
+    "scope": "logical key inside the enclosing selected-profile programme root; the parent stores the complete typed root at this key; not a file path"
+  },
+  "canonical_state_value": {
+    "codec": {
+      "generation": "U64"
+    },
+    "previous_short": {
+      "i1_words": "exactly five integer values, each 0 or 1, order [L,C,R,Ls,Rs]"
+    }
+  },
+  "canonical_preimage": {
+    "cold_bytes_utf8": "{\"codec\":{\"generation\":0},\"previous_short\":{\"i1_words\":[0,0,0,0,0]}}",
+    "encoding": "UTF-8 JSON, recursively sorted keys lexicographically, compact comma/colon separators, ensure_ascii=false, no BOM, no trailing newline",
+    "field_rules": "Only the two fields above are encoded in this owner value. U64 and I1 values are JSON decimal integers; booleans are rejected.",
+    "cold_sha256": "f039d91adab362b63a9913eea116dc5ce38c8b77bf7d94c32352184a24594a55",
+    "state_sha256": "SHA-256 over the complete canonical preimage bytes of the current owner value. Store those full bytes with the typed root; the digest is only an identity check."
+  },
+  "owner_state_envelope": {
+    "owner_id": "codec",
+    "generation": "must equal codec.generation in the referenced value",
+    "state_sha256": "digest of complete canonical bytes above",
+    "cold_sha256": "digest of cold canonical bytes above",
+    "state_ref": "owners.codec"
+  },
+  "proposal_receipt": {
+    "owner_receipt_fields": "Use the existing GTC ownerReceipt exactly: owner_id, before_generation, before_sha256, after_generation, after_sha256, changed, commit_count, transaction_id.",
+    "staged_codec_value": "Complete after owner value/bytes, not digest only. F12 stage has commit_count=0/pending until parent admission.",
+    "separate_f12_source_lineage": [
+      "ProgrammeId",
+      "AttemptId",
+      "transaction_id",
+      "CodecSourceIndex",
+      "EncodingProfile/provider-set identity",
+      "frame SHA-256",
+      "CRC16 residual",
+      "best q/trial count",
+      "suppressed or published disposition"
+    ],
+    "separation": "F12 source/provider/frame lineage is not part of canonical persistent codec state bytes; bind it in the existing staged/source receipt and parent transaction."
+  },
+  "generation_and_commit": {
+    "cold": "generation=0, previous_short=[0,0,0,0,0]",
+    "accepted_source": "next generation increments once when the parent admits the source codec after-state. previous_short is the block5 current short flag for lanes [L,C,R,Ls,Rs].",
+    "candidate_failure": "Candidate retries do not mutate this owner; all-candidate fatal exposes no normal after codec receipt and committed bytes remain unchanged.",
+    "suppressed_source0_1": "A complete 4096-byte source frame and CRC validation are still required; on accepted source, parent may admit codec after-state without AU append.",
+    "published_source_ge2": "Codec after-state stays pending until the existing F15 durable append/readback/fsync receipt, then parent admits it once with analysis and other owners.",
+    "reset": "Full GTC programme restart reconstructs this codec cold value along with every other owner. No source2 partial reset."
+  },
+  "withdrawn_representation": "The six 128-word transform histories are Analysis/F08 primary state per the reconciliation amendment; do not duplicate them here. The old 256-word projection, 18 U16 group words and bitwriter cursor are not persistent codec state for this selected clean root.",
+  "not_bound_here": [
+    "source index clock (GTC source lifecycle owner)",
+    "F08 transform histories (Analysis owner)",
+    "BAP/mantissa/group/bitwriter scratch",
+    "F15 output ledger and staging owner",
+    "HMAC/private key"
+  ],
+  "scope": "Canonical local GTC codec owner state_ref and receipt mapping only; no native Rev13 ABI or runtime test claim."
+}

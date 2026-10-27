@@ -1,0 +1,69 @@
+{
+  "approved_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_sources": [
+    {
+      "file": "specs/00-global-transaction-contract.md",
+      "bytes": 20041,
+      "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105"
+    },
+    {
+      "file": "specs/00-selected-owner-projection-and-j05.md",
+      "bytes": 4504,
+      "sha256": "9ff01aca7b6be6e89511e4d493f9fc9e661a50e2f098065f4a32c3fed777542f"
+    },
+    {
+      "file": "specs/07-history-and-transient.md",
+      "bytes": 15770,
+      "sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac"
+    },
+    {
+      "file": "specs/12-selected-codec-wire.md",
+      "bytes": 14760,
+      "sha256": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448"
+    },
+    {
+      "file": "specs/12-selected-source-frame-composition.md",
+      "bytes": 10843,
+      "sha256": "9e6fcc14489ca0acaff0f7c223fce65539aa5b19cb4119ebcb34d19049cd0769"
+    },
+    {
+      "file": "parameters/f07-f12-source-state-schema-v1.json",
+      "bytes": 5359,
+      "sha256": "7967752a88493648c24cf7c1183da61dc470e35a684bb48d6335c496e90c6f4e"
+    },
+    {
+      "file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
+      "bytes": 12153,
+      "sha256": "74c8e4a60600187783e559459b426aada2508ae273f95401c9a4234aee4504b4"
+    }
+  ],
+  "washed_authorities": [
+    {
+      "package_id": "F07-F12-ANALYSIS-CODEC-OWNER-RECONCILIATION-V1",
+      "manifest_sha256": "da4334efa864c7fd5530caa2a6a446e3c7d6dc4de20ea6933642fb0c7b22faf4",
+      "files": [
+        {
+          "file": "AMENDMENT.md",
+          "sha256": "8aeb73501a4d5641f25706370e7c877cbad1b310458534598f8ab934609d9acf"
+        },
+        {
+          "file": "INPUT-ONLY-TRANSITIONS.json",
+          "sha256": "08317238309fd4704753298f86bfb6e277cadbd659423edcd29336b14c2cf36c"
+        },
+        {
+          "file": "SOURCES.json",
+          "sha256": "ee4b0f28bbaac9a25e30eb60b87839b2770b95d6dbdc03e2bfc9ba31d7b19113"
+        },
+        {
+          "file": "WASH-VERIFICATION.json",
+          "sha256": "b688fcd2d9506fc76dcdd7552706abf455354ac745cd89e96e7c21c9e657252e"
+        }
+      ]
+    },
+    {
+      "package_id": "codec_root_state_lineage_withdrawal_v1",
+      "manifest_sha256": "70abf04c582683ebb8b757fa330bfc8ec5573354435d7cc21ddae7e8a8505879",
+      "seal_sha256": "1887ef7489156ffcf5441b5fa7717bc570900f2a9774607ab82fb701230946a6"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "base_sources_hash_verified": 7,
+  "reconciliation_manifest_and_payloads_hash_verified": true,
+  "withdrawal_manifest_and_seal_hash_verified": true,
+  "implementation_source_review": "NOT_RUN",
+  "runtime_execution": "NOT_RUN",
+  "native_rev13_owner_join": "NOT_RUN",
+  "product_acceptance": "NOT_RUN"
+}
