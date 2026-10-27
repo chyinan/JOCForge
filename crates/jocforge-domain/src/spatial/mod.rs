@@ -68,7 +68,7 @@ pub use spatial_audio_state::{
     ComponentBeforeOverlapRows, ComponentStageError, MeterComponentOutputRows,
     MeterComponentStagePreview, MeterComponentStageProposal, SpatialAudioAfterProposal,
     SpatialAudioDigest, SpatialAudioError, SpatialAudioJoinMetadata, SpatialAudioMachine,
-    SpatialAudioPrepared, SpatialAudioStaged, SpatialAudioState,
+    SpatialAudioOwnerStateReference, SpatialAudioPrepared, SpatialAudioStaged, SpatialAudioState,
 };
 pub use spatial_control::{
     PacketReadiness, SpatialControlAfterProposal, SpatialControlDigest, SpatialControlError,

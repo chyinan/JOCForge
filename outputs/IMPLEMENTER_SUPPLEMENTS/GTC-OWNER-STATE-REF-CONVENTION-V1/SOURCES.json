@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge-gtc-owner-state-ref-sources.v1",
+  "approved_package": {
+    "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "files": [
+      {
+        "path": "specs/00-global-transaction-contract.md",
+        "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105",
+        "use": "Owner ids, owner roots, immutable owner state, and rule that hashes identify state but do not replace complete state bytes."
+      },
+      {
+        "path": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
+        "sha256": "74c8e4a60600187783e559459b426aada2508ae273f95401c9a4234aee4504b4",
+        "use": "Authoritative registered owner-id enum and ownerState state_ref string shape; schema requires non-empty string but does not constrain syntax."
+      }
+    ]
+  },
+  "decision_origin": "Wash local naming convention for the new clean GTC contract; not observed DEE behavior."
+}

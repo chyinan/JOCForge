@@ -3,8 +3,7 @@
 
 use crate::{
     meter::{
-        measurement_receipt::{ProgrammeGatingKind, ProgrammeMeasurementReceipt},
-        measurement_selection::Id1PreferredValue,
+        measurement_receipt::ProgrammeMeasurementReceipt, measurement_selection::Id1PreferredValue,
     },
     numeric::{FiniteF32, r32_add, trunc_f32_to_i32},
     transaction::{AttemptId, ProgrammeId},
@@ -21,7 +20,6 @@ const TRUE_PEAK_MAX: i32 = 23;
 pub enum Id1ConfigurationError {
     NonfiniteMeasurement,
     Numeric,
-    UnsupportedSelectedGating,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -35,13 +33,10 @@ pub struct Id1MeasurementConfiguration {
 }
 
 impl Id1MeasurementConfiguration {
-    #[allow(dead_code)] // The model crosswalk is local; parent installation remains deferred.
-    pub(crate) fn from_selected_di_off_measurement(
+    #[allow(dead_code)] // The typed F06 closure is local; parent installation remains deferred.
+    pub(crate) fn from_final_programme_measurement(
         receipt: &ProgrammeMeasurementReceipt,
     ) -> Result<Self, Id1ConfigurationError> {
-        if receipt.gating_kind() == ProgrammeGatingKind::Dialogue {
-            return Err(Id1ConfigurationError::UnsupportedSelectedGating);
-        }
         Self::from_measurement(receipt)
     }
 
@@ -194,7 +189,7 @@ mod tests {
             .unwrap();
         assert_eq!(receipt.public_result_kind().value(), 2);
         let configuration =
-            Id1MeasurementConfiguration::from_selected_di_off_measurement(&receipt).unwrap();
+            Id1MeasurementConfiguration::from_final_programme_measurement(&receipt).unwrap();
         assert_eq!(
             configuration.values(),
             &[-2, 1, 0, 0, -48, -46, -512, -2, -512]
@@ -205,7 +200,7 @@ mod tests {
     }
 
     #[test]
-    fn public_measurement_result_kind_drives_id1_preferred_and_selected_gate_remains_separate() {
+    fn final_dialogue_public_measurement_kind_selects_id1_preferred() {
         let receipt =
             ProgrammeMeasurementReceipt::from_verified_prepass(ProgrammeMeasurementReceiptInput {
                 programme_id: crate::transaction::test_programme_id("dialogue-gating-test"),
@@ -230,10 +225,9 @@ mod tests {
                 .values()[2],
             1
         );
-        assert_eq!(
-            Id1MeasurementConfiguration::from_selected_di_off_measurement(&receipt),
-            Err(Id1ConfigurationError::UnsupportedSelectedGating)
-        );
+        let configuration =
+            Id1MeasurementConfiguration::from_final_programme_measurement(&receipt).unwrap();
+        assert_eq!(configuration.values()[2], 1);
     }
 
     #[test]
@@ -257,7 +251,7 @@ mod tests {
             .unwrap();
         assert_eq!(receipt.public_result_kind().value(), 0);
         let configuration =
-            Id1MeasurementConfiguration::from_selected_di_off_measurement(&receipt).unwrap();
+            Id1MeasurementConfiguration::from_final_programme_measurement(&receipt).unwrap();
         assert_eq!(configuration.values()[2], 0);
     }
 }

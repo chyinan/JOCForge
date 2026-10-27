@@ -31,6 +31,8 @@ pub use fitting_mode0::SelectedJocQmfProjection;
 
 const EXPECTED_COLD_BYTES: usize = 813_733;
 const NEGATIVE_ZERO_BITS: u32 = 0x8000_0000;
+const SPATIAL_AUDIO_OWNER_ID: &str = "spatial_audio";
+const SPATIAL_AUDIO_STATE_REF: &str = "owners.spatial_audio";
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum SpatialAudioError {
@@ -52,6 +54,45 @@ pub enum SpatialAudioError {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct SpatialAudioDigest([u8; 32]);
+
+/// Read-only GTC state-reference view over the complete SpatialAudio root.
+///
+/// `state_ref` is a logical owner key in the enclosing programme snapshot. The
+/// byte slice is the existing full `F04CompositionState` encoding; it excludes
+/// immutable profile admission metadata and carries no parent receipt/commit.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct SpatialAudioOwnerStateReference<'a> {
+    generation: u64,
+    state_sha256: SpatialAudioDigest,
+    cold_sha256: SpatialAudioDigest,
+    canonical_bytes: &'a [u8],
+}
+
+impl<'a> SpatialAudioOwnerStateReference<'a> {
+    pub const fn owner_id(&self) -> &'static str {
+        SPATIAL_AUDIO_OWNER_ID
+    }
+
+    pub const fn state_ref(&self) -> &'static str {
+        SPATIAL_AUDIO_STATE_REF
+    }
+
+    pub const fn generation(&self) -> u64 {
+        self.generation
+    }
+
+    pub const fn state_sha256(&self) -> SpatialAudioDigest {
+        self.state_sha256
+    }
+
+    pub const fn cold_sha256(&self) -> SpatialAudioDigest {
+        self.cold_sha256
+    }
+
+    pub fn canonical_bytes(&self) -> &'a [u8] {
+        self.canonical_bytes
+    }
+}
 
 const METER_COMPONENT_ROW_COUNT: usize = 15;
 const METER_COMPONENT_SAMPLE_COUNT: usize = 1_536;
@@ -580,6 +621,7 @@ impl SpatialAudioState {
 pub struct SpatialAudioMachine {
     committed: SpatialAudioState,
     generation: u64,
+    cold_digest: SpatialAudioDigest,
     profile_identity: EncodingProfile,
 }
 
@@ -587,9 +629,12 @@ impl SpatialAudioMachine {
     pub fn new_cold(profile_identity: EncodingProfile) -> Result<Self, SpatialAudioError> {
         resolve_selected_profile(&profile_identity)
             .map_err(|_| SpatialAudioError::UnsupportedProfile)?;
+        let committed = SpatialAudioState::new_cold()?;
+        let cold_digest = committed.digest();
         Ok(Self {
-            committed: SpatialAudioState::new_cold()?,
+            committed,
             generation: 0,
+            cold_digest,
             profile_identity,
         })
     }
@@ -604,6 +649,16 @@ impl SpatialAudioMachine {
 
     pub const fn digest(&self) -> SpatialAudioDigest {
         self.committed.digest()
+    }
+
+    /// Returns a read-only GTC owner-state snapshot for the complete root.
+    pub fn state_reference(&self) -> SpatialAudioOwnerStateReference<'_> {
+        SpatialAudioOwnerStateReference {
+            generation: self.generation,
+            state_sha256: self.committed.digest(),
+            cold_sha256: self.cold_digest,
+            canonical_bytes: self.committed.canonical_bytes(),
+        }
     }
 
     pub const fn profile_identity(&self) -> EncodingProfile {

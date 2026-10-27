@@ -1987,6 +1987,7 @@
       "matrix[g], destinations[g], current_lfe[g], installed48[g] input views",
       "Type10[g], final_six[g], target/carrier QMF output windows and all per-callback receipts"
     ],
+    "canonical_gtc_state_ref_status": "LOCALLY_VERIFIED_COMPLETE_SPATIAL_AUDIO_STATE_REFERENCE",
     "canonical_state": {
       "byte_level_encoding_complete": true,
       "callback_local_scratch": "excluded",
@@ -2009,6 +2010,14 @@
       ],
       "local_kat_bytes_match": true,
       "schema_semantic_sha256_is_state_digest": false
+    },
+    "canonical_state_reference": {
+      "cold_bytes": 813733,
+      "cold_sha256": "35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e",
+      "local_snapshot_api": "SpatialAudioMachine::state_reference",
+      "receipt_or_commit": "none; enclosing GTC remains the only parent receipt and commit authority",
+      "serialization": "Existing complete F04CompositionState canonical bytes",
+      "state_ref": "owners.spatial_audio"
     },
     "clock": {
       "callback_index_type": "FrontendCallbackIndex",
@@ -2291,6 +2300,8 @@
         "type": "I64LE"
       }
     ],
+    "gtc_owner_receipt_status": "NOT_IMPLEMENTED",
+    "gtc_single_root_swap_status": "NOT_RUN",
     "implementation_status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__DSP_PRODUCERS_DEFERRED",
     "linear_capabilities": {
       "machine": "SpatialAudioMachine; one committed root owner; non-Clone and non-Copy",
@@ -2352,13 +2363,13 @@
       "producer_stage": "same-callback W3072/post-window installed48 boundary before F04C consumer processing"
     },
     "programme_owner_binding": {
-      "binding_semantics": "The generic GTC OwnerState points to the complete F04CompositionState cold-schema candidate. The published cold digest is retained as an expected identity only; exact temporal cold scalars and the full F04 D-node byte grammar are not uniquely bound, so the canonical cold preimage and GTC cold_sha256 binding are not yet verified.",
+      "binding_semantics": "The generic GTC OwnerState uses the logical member key owners.spatial_audio. Its owner value is the complete F04CompositionState canonical byte sequence; local cold construction and the complete 813733-byte preimage match the approved cold KAT and SHA-256. The member key is not a schema path, and the snapshot is not a GTC OwnerReceipt or parent commit.",
       "cold_sha256": "35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e",
       "file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
       "package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
       "pointer": "#/properties/owners/properties/spatial_audio",
       "ref": "#/$defs/ownerState",
-      "state_ref_value": "test-vectors/F04-WHOLE-SPATIAL-STATE-SCHEMA.json#/whole_state_by_boundary/cold",
+      "state_ref_value": "owners.spatial_audio",
       "state_schema_file": "test-vectors/F04-WHOLE-SPATIAL-STATE-SCHEMA.json",
       "state_schema_pointer": "#/whole_state_by_boundary/cold",
       "state_schema_sha256": "4fdab9f591821d7c50e7daca17bc98d4a5b0616e9cb45b5937cae47b26ed657c",
@@ -2491,14 +2502,14 @@
   "classification": "CURRENT_SOURCE_INVENTORY_WITH_PRESERVED_HISTORICAL_SNAPSHOTS",
   "current_source_inventory": [
     {
-      "bytes": 53239,
+      "bytes": 55012,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"
+      "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"
     },
     {
-      "bytes": 3261,
+      "bytes": 3294,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"
+      "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"
     },
     {
       "bytes": 30134,
@@ -2575,10 +2586,13 @@
     "cold_staging_tests": "PASS_4",
     "fmt_check": "PASS",
     "generated_map_check": "PASS",
+    "id1_public_kind_projection_tests": "PASS_4",
     "installed48_activity_tests": "PASS_1",
     "installed48_source_map_tests": "PASS_3",
+    "integrity_owner_state_ref_tests": "PASS_10",
     "provider_tests": "PASS_14",
     "qmf_fft_tests": "PASS_10",
+    "spatial_audio_state_ref_tests": "PASS_6",
     "spatial_control_foundation_tests": "PASS_6",
     "spatial_control_parent_seam_tests": "PASS_1",
     "spatial_control_production_admission_tests": "PASS_1",
@@ -2640,14 +2654,14 @@
   ],
   "implementation_inventory": [
     {
-      "bytes": 53239,
+      "bytes": 55012,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"
+      "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"
     },
     {
-      "bytes": 3261,
+      "bytes": 3294,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"
+      "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"
     },
     {
       "bytes": 2672,
@@ -2682,13 +2696,33 @@
       }
     ],
     "classification": "CURRENT_IMPLEMENTATION_INVENTORY; historical source evidence remains separate",
-    "current_source_scope": "Only the two exact current source entries covered by the amendments differ from the preserved historical snapshot; F04 specification, provider, preimage and fixture identities remain sealed and independently checked.",
+    "current_source_scope": "The Wash amendments bind the pre-extension source bytes at commit 99f27fe9e22a90bac957f4e935b91a95fcdde8fc. A separate local, read-only SpatialAudio owner state-reference view was then added using the existing complete canonical bytes; it does not change F04 serialization, stage behavior, or parent commit authority. The complete current files are recorded in the current inventory below.",
+    "local_extension_after_wash_inventory": {
+      "base_commit": "99f27fe9e22a90bac957f4e935b91a95fcdde8fc",
+      "current_files": [
+        {
+          "bytes": 55012,
+          "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+          "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"
+        },
+        {
+          "bytes": 3294,
+          "path": "crates/jocforge-domain/src/spatial/mod.rs",
+          "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"
+        }
+      ],
+      "parent_receipt_or_commit_added": false,
+      "serialization_changed": false,
+      "state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6",
+      "status": "LOCALLY_VERIFIED_READ_ONLY_OWNER_STATE_REFERENCE_VIEW"
+    },
     "verification": {
-      "boundary_check": "PENDING",
+      "boundary_check": "PASS",
       "cold_staging_tests": "PASS_4",
-      "domain_check": "PENDING",
-      "domain_clippy": "PENDING",
-      "fmt_check": "PENDING",
+      "domain_check": "PASS",
+      "domain_clippy": "PASS",
+      "fmt_check": "PASS",
+      "spatial_audio_state_ref_tests": "PASS_6",
       "spatial_unit_tests": "PASS_162_IGNORED_1"
     }
   },
@@ -2704,9 +2738,9 @@
   ],
   "test_inventory": [
     {
-      "bytes": 6910,
+      "bytes": 7923,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/tests.rs",
-      "sha256": "34842a1ad2d63236fd07b1f66afc11233612c5f38dccba6e67b0142782a2b8bf"
+      "sha256": "dc27352960cbd2896b2519bfdbcd604403571f17480c3e9a0aee77878249dc1c"
     },
     {
       "bytes": 9923,
@@ -2800,9 +2834,9 @@
         "sha256": "50696493ea1bed2b647f2c438f032410548b70e5008b535773e23647ee59bd40"
       },
       {
-        "bytes": 3261,
+        "bytes": 3294,
         "path": "crates/jocforge-domain/src/spatial/mod.rs",
-        "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"
+        "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"
       },
       {
         "bytes": 10051,
@@ -4282,9 +4316,9 @@
       "sha256": "b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"
     },
     {
-      "bytes": 3261,
+      "bytes": 3294,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"
+      "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"
     }
   ],
   "implementation_prohibitions": [
@@ -4686,9 +4720,9 @@
       "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"
     },
     {
-      "bytes": 3261,
+      "bytes": 3294,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"
+      "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"
     }
   ],
   "implementation_prohibitions": [
@@ -5111,9 +5145,9 @@
       "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"
     },
     {
-      "bytes": 3261,
+      "bytes": 3294,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"
+      "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"
     }
   ],
   "implementation_prohibitions": [
@@ -5492,9 +5526,9 @@
       "sha256": "9184b8ca22b5ed89082a92e3027b74c13d7e5424c4504598c3e71c239f2beeaa"
     },
     {
-      "bytes": 3261,
+      "bytes": 3294,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"
+      "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"
     }
   ],
   "implementation_prohibitions": [
@@ -5917,9 +5951,9 @@
         "sha256": "6131903076529c50753b908a48679cbec6be22a6135599712592aa37f2095d5e"
       },
       {
-        "bytes": 53239,
+        "bytes": 55012,
         "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-        "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"
+        "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"
       }
     ],
     "s09_lineage_type": "ReceiverS09InputView binds six finite 1536-sample lanes to SpatialAudioJoinMetadata and explicit CallbackPhase; the receiver stage compares it with the Type10 receipt before any QMF processing.",
@@ -6403,9 +6437,9 @@
       "sha256": "aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce"
     },
     {
-      "bytes": 53239,
+      "bytes": 55012,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"
+      "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"
     }
   ],
   "implementation_prohibitions": [
@@ -6918,9 +6952,9 @@
       "sha256": "49b5566b204d7deb74828f3c7715cd64748be11a0f08c8e5820f452b90c636e9"
     },
     {
-      "bytes": 53239,
+      "bytes": 55012,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"
+      "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"
     }
   ],
   "implementation_prohibitions": [
@@ -8388,9 +8422,9 @@
       "sha256": "bfa2808ba2aa5566cf832a76a5ef93a6180bc1e81c35a63934809f3ffe9abce7"
     },
     {
-      "bytes": 53239,
+      "bytes": 55012,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"
+      "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"
     },
     {
       "bytes": 30134,
@@ -8707,9 +8741,9 @@
       "sha256": "22c336456921c174ce1d1e72d4a265b4e61a7321e9c3753cf20d1924e0d77413"
     },
     {
-      "bytes": 53239,
+      "bytes": 55012,
       "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-      "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"
+      "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"
     },
     {
       "bytes": 48742,
@@ -9248,4 +9282,4 @@
 | F13D2/id2-profile-header-and-body-wire | Phase 7 | Stateless exact profile-label to ID2 U3-code mapping, strict local Type11 LFE-header read, and five-input ID2 body serialization to 21 valid bits/3 bytes. No live DRC producer, programme profile admission, complete Type11 validation, FIFO, EMDF container, source/AU clock, or programme transaction. | `crates/jocforge-domain/src/joc/emdf/id2_wire.rs` | `crates/jocforge-domain/tests/id2_wire.rs` | LOCALLY_VERIFIED_ID2_PROFILE_HEADER_AND_BODY_WIRE__PROGRAMME_PRODUCER_DEFERRED |
 | F14/authenticated-bit-compaction | Phase 7 | Compacts an even-byte input in MSB-first order after ordered, non-overlapping, closed bit exclusions. Commits complete 16-bit words, zero-pads when the remaining tail is at least eight bits, and discards a shorter tail. The primitive accepts arbitrary even-byte synthetic inputs; it does not discover production AU exclusion ranges or process a fixed 4096-byte AU. | `crates/jocforge-domain/src/codec/authenticated_bit_compaction.rs`<br>`crates/jocforge-domain/src/codec/mod.rs` | `crates/jocforge-domain/tests/authenticated_bit_compaction.rs` | LOCALLY_VERIFIED_SYNTHETIC_BIT_RANGES_AND_TAIL_WORD_COMMIT__PRODUCTION_AU_OPEN |
 | F14/hmac-sha256-primitive | Phase 7 | Implements the RFC 2104 HMAC-SHA-256 byte primitive over caller-supplied key/message bytes. The test uses the public RFC 4231 test key; the primitive does not retrieve, store, derive, or log a D09 production key. The selected F14 production profile's exactly-32-byte authorized key provider remains outside this slice. | `crates/jocforge-domain/src/integrity/hmac_sha256.rs`<br>`crates/jocforge-domain/src/integrity/mod.rs` | `crates/jocforge-domain/tests/hmac_sha256.rs` | LOCALLY_VERIFIED_RFC4231_HMAC_SHA256_PRIMITIVE__PRODUCTION_KEY_OPEN |
-| F14K/public-keyless-integrity-owner | Phase 7 | Public keyless CRC profile and its programme-local integrity owner. Production stage_source returns a replacement owner, complete frame and three specialized receipts without local mutation or retirement; the existing process API retains its locally committing fixture behavior. Private authentication, parent installation and other roots are excluded. | `crates/jocforge-domain/src/integrity/mod.rs`<br>`crates/jocforge-domain/src/integrity/crc16.rs`<br>`crates/jocforge-domain/src/integrity/keyless_checksum.rs`<br>`crates/jocforge-domain/src/integrity/programme_owner.rs` | `crates/jocforge-domain/src/integrity/programme_owner/tests.rs` | LOCALLY_VERIFIED_KEYLESS_PUBLIC_OWNER__PRIVATE_AUTH_BLOCKED |
+| F14K/public-keyless-integrity-owner | Phase 7 | Public keyless CRC profile and its programme-local integrity owner. stage_source_for_callback validates typed programme/attempt/transaction/callback-to-source identity, then returns the staged source, complete frame, three specialized receipts, full canonical owner snapshot and a noncommitting GTC receipt projection. It does not mutate or retire the committed owner and does not assign a parent commit count. The fixture process API retains its local commit behavior. Private authentication and parent installation are excluded. | `crates/jocforge-domain/src/integrity/mod.rs`<br>`crates/jocforge-domain/src/integrity/crc16.rs`<br>`crates/jocforge-domain/src/integrity/keyless_checksum.rs`<br>`crates/jocforge-domain/src/integrity/programme_owner.rs` | `crates/jocforge-domain/src/integrity/programme_owner/tests.rs` | LOCALLY_VERIFIED_OWNER_STATE_REF_AND_RECEIPT_PROJECTION__PARENT_COMMIT_AND_PRIVATE_AUTH_DEFERRED |

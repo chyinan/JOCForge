@@ -1,0 +1,24 @@
+{
+  "schema": "jocforge-gtc-owner-state-ref-input-only-vectors.v1",
+  "rule_under_test": "For each registered owner_id X, state_ref is exactly owners.X.",
+  "cases": [
+    {"owner_id": "reader_eof", "expected_state_ref": "owners.reader_eof"},
+    {"owner_id": "frontend_control", "expected_state_ref": "owners.frontend_control"},
+    {"owner_id": "spatial_control", "expected_state_ref": "owners.spatial_control"},
+    {"owner_id": "spatial_audio", "expected_state_ref": "owners.spatial_audio"},
+    {"owner_id": "joc", "expected_state_ref": "owners.joc"},
+    {"owner_id": "meter", "expected_state_ref": "owners.meter"},
+    {"owner_id": "drc", "expected_state_ref": "owners.drc"},
+    {"owner_id": "analysis", "expected_state_ref": "owners.analysis"},
+    {"owner_id": "codec", "expected_state_ref": "owners.codec"},
+    {"owner_id": "metadata", "expected_state_ref": "owners.metadata"},
+    {"owner_id": "integrity", "expected_state_ref": "owners.integrity"},
+    {"owner_id": "output", "expected_state_ref": "owners.output"}
+  ],
+  "reject_cases": [
+    {"owner_id": "meter", "state_ref": "owners/meter", "reason": "noncanonical separator"},
+    {"owner_id": "codec", "state_ref": "owners", "reason": "does not identify the registered owner member"},
+    {"owner_id": "other", "state_ref": "owners.other", "reason": "owner id is outside the approved GTC enum"}
+  ],
+  "execution_status": "INPUT_ONLY_RULE_VECTORS_NOT_EXECUTED"
+}

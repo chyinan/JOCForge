@@ -1,0 +1,19 @@
+{
+  "schema": "jocforge-gtc-owner-state-ref-map.v1",
+  "canonical_rule": "state_ref = owners.<owner_id>, with one literal period and the exact registered owner_id",
+  "meaning": "Opaque logical member name in the complete immutable programme-state snapshot; not a filesystem path, URI, JSON Pointer, digest, or serialized owner bytes.",
+  "owners": [
+    {"owner_id": "reader_eof", "state_ref": "owners.reader_eof"},
+    {"owner_id": "frontend_control", "state_ref": "owners.frontend_control"},
+    {"owner_id": "spatial_control", "state_ref": "owners.spatial_control"},
+    {"owner_id": "spatial_audio", "state_ref": "owners.spatial_audio"},
+    {"owner_id": "joc", "state_ref": "owners.joc"},
+    {"owner_id": "meter", "state_ref": "owners.meter"},
+    {"owner_id": "drc", "state_ref": "owners.drc"},
+    {"owner_id": "analysis", "state_ref": "owners.analysis"},
+    {"owner_id": "codec", "state_ref": "owners.codec"},
+    {"owner_id": "metadata", "state_ref": "owners.metadata"},
+    {"owner_id": "integrity", "state_ref": "owners.integrity"},
+    {"owner_id": "output", "state_ref": "owners.output"}
+  ]
+}

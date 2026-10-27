@@ -1,4 +1,5 @@
 use super::*;
+use crate::timeline::FrontendCallbackIndex;
 use serde_json::Value;
 use std::path::PathBuf;
 
@@ -264,6 +265,32 @@ fn new_owner(attempt: u64) -> IntegrityProgrammeOwner {
         .expect("validated public keyless provider admits a cold owner")
 }
 
+fn gtc_callback_identity(
+    identity: &IntegrityIdentity,
+) -> (
+    ProgrammeId,
+    AttemptId,
+    CallbackTransactionId,
+    CallbackLineageIdentity,
+) {
+    let programme_id = ProgrammeId::new(&identity.programme_id).expect("programme is nonempty");
+    let attempt = AttemptId::new(identity.attempt);
+    let transaction_id = CallbackTransactionId::new(&identity.transaction_id)
+        .expect("transaction identity is nonempty");
+    let callback = identity
+        .source_index
+        .value()
+        .checked_add(2)
+        .and_then(|value| u32::try_from(value).ok())
+        .expect("selected source maps to a frontend callback index");
+    let callback_identity = CallbackLineageIdentity::new(
+        programme_id.clone(),
+        attempt,
+        FrontendCallbackIndex::new(callback),
+    );
+    (programme_id, attempt, transaction_id, callback_identity)
+}
+
 #[test]
 fn public_crc_primitives_match_published_checks() {
     assert_eq!(crc32_iso_hdlc(b"123456789"), 0xcbf4_3926);
@@ -311,6 +338,177 @@ fn provider_identity_and_cold_state_match_the_materialized_vector() {
             .as_str(),
         "UNSUPPORTED_PROFILE"
     );
+}
+
+#[test]
+fn gtc_owner_snapshot_contains_exact_state_bytes_hashes_and_reference() {
+    let v = vectors();
+    let owner = new_owner(0);
+    let snapshot = owner.owner_state_snapshot();
+    let expected = &v["cold"];
+
+    assert_eq!(snapshot.owner_id(), "integrity");
+    assert_eq!(snapshot.state_ref(), "owners.integrity");
+    assert_eq!(snapshot.generation(), 0);
+    assert_eq!(snapshot.state(), owner.committed_state());
+    assert_eq!(
+        snapshot.canonical_bytes(),
+        owner.committed_state().canonical_bytes()
+    );
+    assert_eq!(hex(snapshot.canonical_bytes()), expected["canonical_hex"]);
+    assert_eq!(snapshot.state_sha256().to_hex(), expected["sha256"]);
+    assert_eq!(snapshot.cold_sha256(), snapshot.state_sha256());
+}
+
+#[test]
+fn gtc_receipt_proposals_bind_suppressed_and_published_source_stages() {
+    let v = vectors();
+    let provider = provider();
+    let calls = v["continuous_calls"].as_array().unwrap();
+    let mut owner = new_owner(0);
+
+    for (index, call) in calls.iter().take(3).enumerate() {
+        let input = TestInput::from_vector(&call["input"]);
+        let (programme_id, attempt, transaction_id, callback_identity) =
+            gtc_callback_identity(&input.identity);
+        let before = owner.owner_state_snapshot();
+        let proposal = owner
+            .stage_source_for_callback(
+                input.as_input(),
+                &provider,
+                &programme_id,
+                attempt,
+                &transaction_id,
+                &callback_identity,
+            )
+            .expect("typed callback lineage admits the same integrity source");
+
+        assert_eq!(owner.owner_state_snapshot(), before);
+        let receipt = proposal.owner_receipt_proposal();
+        assert_eq!(receipt.owner_id(), "integrity");
+        assert_eq!(receipt.programme_id(), &programme_id);
+        assert_eq!(receipt.attempt(), attempt);
+        assert_eq!(receipt.transaction_id(), &transaction_id);
+        assert_eq!(receipt.callback_identity(), &callback_identity);
+        assert_eq!(receipt.before(), &before);
+        assert_eq!(receipt.before_generation(), before.generation());
+        assert_eq!(receipt.before_sha256(), before.state_sha256());
+        assert!(receipt.changed());
+        assert_eq!(receipt.after().generation(), before.generation() + 1);
+        assert_eq!(
+            receipt.after().state_sha256(),
+            proposal.source_proposal().result().after_sha256()
+        );
+        assert_eq!(
+            receipt.after().state_sha256().to_hex(),
+            call["expected"]["after_sha256"]
+        );
+        assert_eq!(receipt.after().state_ref(), "owners.integrity");
+
+        let source_identity = proposal.source_proposal().result().receipts()[0].identity();
+        assert_eq!(source_identity.transaction_id, transaction_id.as_str());
+        assert_eq!(source_identity.source_index, input.identity.source_index);
+        assert!(
+            proposal.source_proposal().result().receipts()[2]
+                .details()
+                .crc16()
+                .is_some()
+        );
+        if index < 2 {
+            assert_eq!(source_identity.au_index, None);
+            assert!(matches!(
+                proposal.source_proposal().result().receipts()[2].details(),
+                IntegrityStageDetails::Au {
+                    crc_residual: 0,
+                    published: false,
+                    ..
+                }
+            ));
+        } else {
+            assert_eq!(source_identity.au_index, Some(PublishedAuIndex::new(0)));
+            assert!(matches!(
+                proposal.source_proposal().result().receipts()[2].details(),
+                IntegrityStageDetails::Au {
+                    published: true,
+                    crc_residual: 0,
+                    ..
+                }
+            ));
+        }
+
+        let (after_owner, result, receipt) = proposal.into_parts();
+        assert_eq!(result.commit_count(), 1, "local source-stage count only");
+        assert_eq!(after_owner.committed_state(), receipt.after().state());
+        assert_eq!(owner.committed_state().sha256(), before.state_sha256());
+        owner = after_owner;
+    }
+}
+
+#[test]
+fn gtc_receipt_proposal_rejects_identity_mismatches_without_mutating_owner() {
+    let v = vectors();
+    let provider = provider();
+    let input = TestInput::from_vector(&v["continuous_calls"][0]["input"]);
+    let owner = new_owner(0);
+    let before = owner.committed_state().sha256();
+    let (programme_id, attempt, transaction_id, callback_identity) =
+        gtc_callback_identity(&input.identity);
+
+    let mismatched_transaction = CallbackTransactionId::new("different-transaction")
+        .expect("nonempty mismatch remains a typed transaction id");
+    assert_eq!(
+        owner
+            .stage_source_for_callback(
+                input.as_input(),
+                &provider,
+                &programme_id,
+                attempt,
+                &mismatched_transaction,
+                &callback_identity,
+            )
+            .unwrap_err()
+            .code(),
+        IntegrityErrorCode::TransactionIdentity
+    );
+
+    let mismatched_callback = CallbackLineageIdentity::new(
+        programme_id.clone(),
+        attempt,
+        FrontendCallbackIndex::new(callback_identity.callback_index().value() + 1),
+    );
+    assert_eq!(
+        owner
+            .stage_source_for_callback(
+                input.as_input(),
+                &provider,
+                &programme_id,
+                attempt,
+                &transaction_id,
+                &mismatched_callback,
+            )
+            .unwrap_err()
+            .code(),
+        IntegrityErrorCode::SourceOrder
+    );
+
+    let mismatched_programme = ProgrammeId::new("different-programme")
+        .expect("nonempty mismatch remains a typed programme id");
+    assert_eq!(
+        owner
+            .stage_source_for_callback(
+                input.as_input(),
+                &provider,
+                &mismatched_programme,
+                attempt,
+                &transaction_id,
+                &callback_identity,
+            )
+            .unwrap_err()
+            .code(),
+        IntegrityErrorCode::ProgrammeIdentity
+    );
+
+    assert_eq!(owner.committed_state().sha256(), before);
 }
 
 #[test]

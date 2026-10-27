@@ -16,6 +16,31 @@ fn fixture(name: &str) -> std::path::PathBuf {
 }
 
 #[test]
+fn owner_state_reference_exposes_complete_cold_bytes_without_mutating_machine() {
+    let machine = SpatialAudioMachine::new_cold(EncodingProfile::selected())
+        .expect("selected profile constructs the complete cold root");
+    let before_digest = machine.digest();
+    let reference = machine.state_reference();
+
+    assert_eq!(reference.owner_id(), "spatial_audio");
+    assert_eq!(reference.state_ref(), "owners.spatial_audio");
+    assert_eq!(reference.generation(), 0);
+    assert_eq!(reference.canonical_bytes().len(), EXPECTED_COLD_BYTES);
+    assert_eq!(
+        reference.canonical_bytes(),
+        machine.committed().canonical_bytes()
+    );
+    assert_eq!(reference.state_sha256(), before_digest);
+    assert_eq!(reference.cold_sha256(), before_digest);
+    assert_eq!(
+        reference.cold_sha256().to_hex(),
+        "35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e"
+    );
+    assert_eq!(machine.generation(), 0);
+    assert_eq!(machine.digest(), before_digest);
+}
+
+#[test]
 fn primitive_encoder_matches_every_input_only_case() {
     let _state = SpatialAudioState::new_cold().expect("cold state constructor succeeds");
     let vectors: Value = serde_json::from_slice(

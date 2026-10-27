@@ -13264,6 +13264,7 @@
             "model_crosswalk_supplement_manifest_sha256": "d2d2dad65615ddb2ea18be6e5915780c770a12a9eeda57e79cb5436899b433ac",
             "programme_lifetime_supplement_manifest_sha256": "50814695b9f57e44e0362b3fe39236057f83e81616be1eada84c1de6a0109acb",
             "typed_closure_supplement_manifest_sha256": "d2b0954721af416c097d2979809bd0dc2177266985b98eeeeeaa81d6958d5cad",
+            "preferred_status_erratum_manifest_sha256": "d9085785d5484d236d4b24925a52954fc0bb01153c2e173e2d07d8f6e1b4a5f6",
             "source_contracts": [
               {
                 "file": "specs/13-emdf-and-timeline.md",
@@ -15970,8 +15971,8 @@
         {
           "slice_id": "public-keyless-integrity-owner",
           "mapping_status": "MATERIALIZED_DIRECT_SUBSLICE_WHOLE_F14_AUTH_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_KEYLESS_PUBLIC_OWNER__PRIVATE_AUTH_BLOCKED",
-          "scope": "Public keyless CRC profile and its programme-local integrity owner. Production stage_source returns a replacement owner, complete frame and three specialized receipts without local mutation or retirement; the existing process API retains its locally committing fixture behavior. Private authentication, parent installation and other roots are excluded.",
+          "implementation_status": "LOCALLY_VERIFIED_OWNER_STATE_REF_AND_RECEIPT_PROJECTION__PARENT_COMMIT_AND_PRIVATE_AUTH_DEFERRED",
+          "scope": "Public keyless CRC profile and its programme-local integrity owner. stage_source_for_callback validates typed programme/attempt/transaction/callback-to-source identity, then returns the staged source, complete frame, three specialized receipts, full canonical owner snapshot and a noncommitting GTC receipt projection. It does not mutate or retire the committed owner and does not assign a parent commit count. The fixture process API retains its local commit behavior. Private authentication and parent installation are excluded.",
           "implementation_files": [
             "crates/jocforge-domain/src/integrity/mod.rs",
             "crates/jocforge-domain/src/integrity/crc16.rs",
@@ -15999,8 +16000,8 @@
             },
             {
               "file": "crates/jocforge-domain/src/integrity/programme_owner.rs",
-              "bytes": 26987,
-              "sha256": "afc3f08896f2a60d28ac606ab53175d6064d7766d5155e796785c4189783c0a6"
+              "bytes": 34299,
+              "sha256": "a04d7046c0d57f8479ee6d275c8bbee5c92fbbb9988ea017a52780504b138173"
             }
           ],
           "clock": {
@@ -16023,6 +16024,7 @@
             "provider_files": [
               "crates/jocforge-domain/tests/fixtures/integrity_owner/integrity-public-provider.json"
             ],
+            "state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6",
             "validation_boundary": "The domain validates the selected provider fields and canonical JSON SHA-256 from caller-supplied bytes. It performs no file/environment access and rejects every profile except keyless-crc32-crc8-crc16.v1."
           },
           "vectors": {
@@ -16991,7 +16993,7 @@
           "cold_sha256",
           "state_ref"
         ],
-        "state_ref_value": "test-vectors/F04-WHOLE-SPATIAL-STATE-SCHEMA.json#/whole_state_by_boundary/cold",
+        "state_ref_value": "owners.spatial_audio",
         "state_schema_file": "test-vectors/F04-WHOLE-SPATIAL-STATE-SCHEMA.json",
         "state_schema_pointer": "#/whole_state_by_boundary/cold",
         "state_schema_type": "F04CompositionState",
@@ -17001,7 +17003,18 @@
         "package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
         "uses_selected_overlap_projection_as_root": false,
         "uses_f04c_local_receipt_as_root": false,
-        "binding_semantics": "The generic GTC OwnerState points to the complete F04CompositionState cold-schema candidate. The published cold digest is retained as an expected identity only; exact temporal cold scalars and the full F04 D-node byte grammar are not uniquely bound, so the canonical cold preimage and GTC cold_sha256 binding are not yet verified."
+        "binding_semantics": "The generic GTC OwnerState uses the logical member key owners.spatial_audio. Its owner value is the complete F04CompositionState canonical byte sequence; local cold construction and the complete 813733-byte preimage match the approved cold KAT and SHA-256. The member key is not a schema path, and the snapshot is not a GTC OwnerReceipt or parent commit."
+      },
+      "canonical_gtc_state_ref_status": "LOCALLY_VERIFIED_COMPLETE_SPATIAL_AUDIO_STATE_REFERENCE",
+      "gtc_owner_receipt_status": "NOT_IMPLEMENTED",
+      "gtc_single_root_swap_status": "NOT_RUN",
+      "canonical_state_reference": {
+        "state_ref": "owners.spatial_audio",
+        "serialization": "Existing complete F04CompositionState canonical bytes",
+        "cold_bytes": 813733,
+        "cold_sha256": "35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e",
+        "local_snapshot_api": "SpatialAudioMachine::state_reference",
+        "receipt_or_commit": "none; enclosing GTC remains the only parent receipt and commit authority"
       },
       "fields": [
         {
@@ -17665,7 +17678,17 @@
     {
       "root_id": "integrity",
       "materialization_status": "LOCALLY_VERIFIED_KEYLESS_PUBLIC_PROFILE_ONLY__PRIVATE_AUTH_BLOCKED",
-      "implementation_status": "LOCALLY_VERIFIED_KEYLESS_PUBLIC_PROFILE_ONLY__PRIVATE_AUTH_BLOCKED",
+      "implementation_status": "LOCALLY_VERIFIED_KEYLESS_OWNER_STATE_REF_AND_RECEIPT_PROJECTION__PARENT_COMMIT_PRIVATE_AUTH_BLOCKED",
+      "canonical_gtc_state_ref_status": "LOCALLY_VERIFIED_COMPLETE_INTEGRITY_STATE_REFERENCE",
+      "gtc_owner_receipt_status": "NONCOMMITTING_PROJECTION_LOCALLY_VERIFIED__NOT_ADMITTED_BY_PARENT",
+      "gtc_single_root_swap_status": "NOT_RUN",
+      "canonical_state_reference": {
+        "state_ref": "owners.integrity",
+        "serialization": "Exact existing IntegrityStateV1 canonical bytes; JSON is not used",
+        "cold_sha256": "9b48c6c28b797f5ae375c63835677ec4c9738fe5207a3560366c1bed0d71577b",
+        "snapshot_api": "IntegrityProgrammeOwner::owner_state_snapshot",
+        "fields": ["profile_id", "provider_sha256", "generation", "next_source_index", "published_au_count", "finalized"]
+      },
       "selected_profile_id": "keyless-crc32-crc8-crc16.v1",
       "private_auth_profile": "BLOCKED",
       "owner_authority": {
@@ -17752,6 +17775,13 @@
         "success_receipt_order": ["SOURCE", "DISPATCH", "AU"],
         "failed_call_receipts": 0,
         "receipt_format_claim": "clean-room internal API schema only; no native receipt format was observed"
+      },
+      "gtc_owner_receipt_projection": {
+        "type": "IntegrityOwnerReceiptProposal",
+        "stage_api": "IntegrityProgrammeOwner::stage_source_for_callback",
+        "fields": ["owner_id", "programme_id", "attempt", "transaction_id", "callback_identity", "before", "after", "changed"],
+        "commit_count": "absent; only CallbackTransaction may assign it",
+        "status": "noncommitting proposal; not an admitted GTC OwnerReceipt"
       },
       "fatal_and_reset": {
         "any_production_stage_failure": "discard provisional bytes, receipts and replacement owner; preserve exact committed state; programme authority marks RETIRED",
@@ -17916,8 +17946,8 @@
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs", "bytes": 57070, "sha256": "c6295d0d4e04f6be4c3dc1418cc460d9dcca4b13d744d81e3dd219d62a8c9c53"}
       ],
       "current_source_inventory": [
-        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 53239, "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3261, "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 55012, "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"},
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3294, "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"},
         {"path": "crates/jocforge-domain/src/spatial/spatial_control.rs", "bytes": 30134, "sha256": "0ea66b3b2d1c5f1ae554769ecb92c0001130915b536cb461ec084f0b0ee5ae86"},
         {"path": "crates/jocforge-domain/src/transaction/mod.rs", "bytes": 2915, "sha256": "442a74702c82926abd9de95e5f0686fd9f1cb8e656e2e051ade2390abdee238c"},
         {"path": "crates/jocforge-domain/src/spatial/source_flags.rs", "bytes": 61230, "sha256": "55155b4a84a1199f77d0b006b9923b1621cb885ef98e01d63d12b1f99bdfe348"},
@@ -17948,7 +17978,10 @@
         "workspace_check": "PASS",
         "workspace_clippy_all_targets_deny_warnings": "PASS",
         "boundary_check": "PASS",
-        "generated_map_check": "PASS"
+        "generated_map_check": "PASS",
+        "integrity_owner_state_ref_tests": "PASS_10",
+        "spatial_audio_state_ref_tests": "PASS_6",
+        "id1_public_kind_projection_tests": "PASS_4"
       }
     },
     "P1.1": {
@@ -18962,8 +18995,8 @@
         {"path": "crates/jocforge-domain/src/timeline/mod.rs", "bytes": 586, "sha256": "7f2099065d657bdacab116d921a63107a180930086b73a42557881aa3acdb7b2"}
       ],
       "implementation_inventory": [
-        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 53239, "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3261, "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 55012, "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"},
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3294, "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"},
         {"path": "crates/jocforge-domain/src/timeline/index.rs", "bytes": 2672, "sha256": "50696493ea1bed2b647f2c438f032410548b70e5008b535773e23647ee59bd40"},
         {"path": "crates/jocforge-domain/src/timeline/mod.rs", "bytes": 586, "sha256": "7f2099065d657bdacab116d921a63107a180930086b73a42557881aa3acdb7b2"}
       ],
@@ -18973,14 +19006,26 @@
           {"package_id": "SPATIAL-AUDIO-SOURCE-INVENTORY-AMENDMENT-V1", "manifest_sha256": "915af5789ae57b000d61c12eddd768953d55fe9b0356b0180044f4eedd23aa17", "payload_path": "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-AUDIO-SOURCE-INVENTORY-AMENDMENT-V1/AMENDMENT.json", "payload_sha256": "1f03880ab4531b766fc6d99cec36129ced19dae0c10e7e322496f0d27d8f5856"},
           {"package_id": "IMPLEMENTATION-INVENTORY-EVOLUTION-AND-SPATIAL-EXPORTS-V1", "manifest_sha256": "8860588472c55700d4aa2c6e9d49f1f4740ebcdd8367ab79dc90a32d8af85991", "payload_path": "outputs/IMPLEMENTER_SUPPLEMENTS/IMPLEMENTATION-INVENTORY-EVOLUTION-AND-SPATIAL-EXPORTS-V1/AMENDMENT.json", "payload_sha256": "b1b7b84d9d04b5572d8c5fb159d66e1e466b710b88972c8b16cbaef843776ed8"}
         ],
-        "current_source_scope": "Only the two exact current source entries covered by the amendments differ from the preserved historical snapshot; F04 specification, provider, preimage and fixture identities remain sealed and independently checked.",
+        "current_source_scope": "The Wash amendments bind the pre-extension source bytes at commit 99f27fe9e22a90bac957f4e935b91a95fcdde8fc. A separate local, read-only SpatialAudio owner state-reference view was then added using the existing complete canonical bytes; it does not change F04 serialization, stage behavior, or parent commit authority. The complete current files are recorded in the current inventory below.",
+        "local_extension_after_wash_inventory": {
+          "base_commit": "99f27fe9e22a90bac957f4e935b91a95fcdde8fc",
+          "state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6",
+          "status": "LOCALLY_VERIFIED_READ_ONLY_OWNER_STATE_REFERENCE_VIEW",
+          "serialization_changed": false,
+          "parent_receipt_or_commit_added": false,
+          "current_files": [
+            {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 55012, "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"},
+            {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3294, "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"}
+          ]
+        },
         "verification": {
           "cold_staging_tests": "PASS_4",
           "spatial_unit_tests": "PASS_162_IGNORED_1",
-          "fmt_check": "PENDING",
-          "domain_check": "PENDING",
-          "domain_clippy": "PENDING",
-          "boundary_check": "PENDING"
+          "spatial_audio_state_ref_tests": "PASS_6",
+          "fmt_check": "PASS",
+          "domain_check": "PASS",
+          "domain_clippy": "PASS",
+          "boundary_check": "PASS"
         }
       },
       "test_files": [
@@ -18988,7 +19033,7 @@
         "crates/jocforge-domain/tests/spatial_audio_cold_staging.rs"
       ],
       "test_inventory": [
-        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/tests.rs", "bytes": 6910, "sha256": "34842a1ad2d63236fd07b1f66afc11233612c5f38dccba6e67b0142782a2b8bf"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/tests.rs", "bytes": 7923, "sha256": "dc27352960cbd2896b2519bfdbcd604403571f17480c3e9a0aee77878249dc1c"},
         {"path": "crates/jocforge-domain/tests/spatial_audio_cold_staging.rs", "bytes": 9923, "sha256": "0db769e058314f49f35266af6fdcff9c7cf9ba58e126627711a21a722d3a5fa0"}
       ],
       "test_vector_fixture_files": [
@@ -19244,7 +19289,7 @@
       ],
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs", "bytes": 16562, "sha256": "bfa2808ba2aa5566cf832a76a5ef93a6180bc1e81c35a63934809f3ffe9abce7"},
-        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 53239, "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 55012, "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"},
         {"path": "crates/jocforge-domain/src/spatial/spatial_control.rs", "bytes": 30134, "sha256": "0ea66b3b2d1c5f1ae554769ecb92c0001130915b536cb461ec084f0b0ee5ae86"}
       ],
       "historical_implementation_inventory": [
@@ -19426,7 +19471,7 @@
       ],
       "implementation_inventory": [
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs","bytes":12074,"sha256":"22c336456921c174ce1d1e72d4a265b4e61a7321e9c3753cf20d1924e0d77413"},
-        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state.rs","bytes":53239,"sha256":"74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"},
+        {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state.rs","bytes":55012,"sha256":"037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"},
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs","bytes":48742,"sha256":"9ed4b36687e6694d73716bb774c7773c9b545f93ca49e1025336d355f24b8e2b"},
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs","bytes":16562,"sha256":"bfa2808ba2aa5566cf832a76a5ef93a6180bc1e81c35a63934809f3ffe9abce7"},
         {"path":"crates/jocforge-domain/src/spatial/spatial_control.rs","bytes":30134,"sha256":"0ea66b3b2d1c5f1ae554769ecb92c0001130915b536cb461ec084f0b0ee5ae86"}
@@ -19710,8 +19755,8 @@
           },
           {
             "path": "crates/jocforge-domain/src/spatial/mod.rs",
-            "bytes": 3261,
-            "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"
+          "bytes": 3294,
+          "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"
           },
           {
             "path": "crates/jocforge-domain/tests/spatial_control_foundation.rs",
@@ -20670,7 +20715,7 @@
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/window_q15_provider.rs", "bytes": 19312, "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},
         {"path": "crates/jocforge-domain/src/spatial/component_parameters_provider.rs", "bytes": 14344, "sha256": "b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3261, "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"}
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3294, "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"}
       ],
       "historical_implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/window_q15_provider.rs", "bytes": 19312, "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},
@@ -20796,7 +20841,7 @@
         {"path": "crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs", "bytes": 11066, "sha256": "bddb8bd2b775b2cd9fc3e6412981965ef9ca5c5f98d137ff98de31c87dbbb2d8"},
         {"path": "crates/jocforge-domain/src/spatial/descriptor_mathematical_provider.rs", "bytes": 10441, "sha256": "df8612dcdc46fcf2620e2a73d68d26d392bbba02be27af729f8c5ded76cf8639"},
         {"path": "crates/jocforge-domain/src/spatial/window_q15_provider.rs", "bytes": 19312, "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3261, "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"}
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3294, "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"}
       ],
       "historical_implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_receiver_functional_provider.rs", "bytes": 22614, "sha256": "dc04957542f802fa7a751d88911180cef7575c11033fd9a06b5221e7697e4bff"},
@@ -20950,7 +20995,7 @@
       "shared_fixture_dependencies": ["crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json", "crates/jocforge-domain/tests/fixtures/f04_parameters/qmf-mathematical-fft-v1.json"],
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_fft64.rs", "bytes": 3812, "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3261, "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"}
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3294, "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"}
       ],
       "historical_implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_fft64.rs", "bytes": 3812, "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"},
@@ -21121,7 +21166,7 @@
       ],
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs", "bytes": 21790, "sha256": "9184b8ca22b5ed89082a92e3027b74c13d7e5424c4504598c3e71c239f2beeaa"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3261, "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"}
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3294, "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"}
       ],
       "historical_implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs", "bytes": 21790, "sha256": "9184b8ca22b5ed89082a92e3027b74c13d7e5424c4504598c3e71c239f2beeaa"},
@@ -21224,7 +21269,7 @@
         ],
         "implementation_files": [
           {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/receiver_mode1.rs", "bytes": 17134, "sha256": "6131903076529c50753b908a48679cbec6be22a6135599712592aa37f2095d5e"},
-          {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 53239, "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"}
+          {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 55012, "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"}
         ],
         "test_files": [
           {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests/receiver_mode1.rs", "bytes": 23303, "sha256": "9bc20e80319c4a5df182a7937f69b28587de85fb3c037825890e300f3c117d53"},
@@ -21505,7 +21550,7 @@
       "fixture_materialization_status": "MATERIALIZED_AND_HASH_PINNED",
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs", "bytes": 22467, "sha256": "aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce"},
-        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 53239, "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"}
+        {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 55012, "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"}
       ],
       "historical_implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/descriptor_control.rs", "bytes": 22467, "sha256": "aedf2de446d670a6e632f686f251ff894fa0745ea51200e7a326c547aa5ec4ce"},
@@ -21851,8 +21896,8 @@
       },
       {
         "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
-          "bytes": 53239,
-          "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"
+          "bytes": 55012,
+          "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"
       }
     ],
       "historical_implementation_inventory": [

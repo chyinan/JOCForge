@@ -1,0 +1,31 @@
+{
+  "package_id": "GTC-OWNER-STATE-REF-CONVENTION-V1",
+  "scope": "Canonical GTC owner state_ref naming convention only",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1853,
+      "sha256": "f8b322f1a1a7ba30d0cacb52ddbc1a5950ab5049da0af139ed44ee96d181db99"
+    },
+    {
+      "file": "STATE-REF-MAP.json",
+      "bytes": 1110,
+      "sha256": "f1b225e5581a9028ff49c32d7e3d939aad375832684bccc9c40bc36c0867aa29"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1433,
+      "sha256": "158452443f04b8f40a993f4852962c326e30c984c385c78d660ca4028bd27e24"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 954,
+      "sha256": "dd00248fab9e0bde551c6f8a639aa098dd1c8211da00dca168e109c2e11cfaa6"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 882,
+      "sha256": "dc215e6f73a1030f4817d54d5f80d4e8d5bb2065a05a2359bd65808e6c354873"
+    }
+  ]
+}

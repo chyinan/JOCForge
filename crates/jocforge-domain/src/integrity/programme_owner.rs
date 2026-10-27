@@ -8,7 +8,10 @@ use super::{
         validate_keyless_provider,
     },
 };
-use crate::timeline::{CodecSourceIndex, JocDispatchIndex, PublishedAuIndex};
+use crate::{
+    timeline::{CodecSourceIndex, JocDispatchIndex, PublishedAuIndex, source_for_callback},
+    transaction::{AttemptId, CallbackLineageIdentity, CallbackTransactionId, ProgrammeId},
+};
 use std::{error::Error, fmt};
 
 const PROFILE_ID: &str = "keyless-crc32-crc8-crc16.v1";
@@ -19,6 +22,7 @@ const FRAME_CRC_START: usize = 4094;
 const FRAME_CRC_INPUT_START: usize = 2;
 const FRAME_CRC_INPUT_END: usize = 4094;
 const SUPPRESSED_SOURCE_COUNT: u64 = 2;
+const GTC_STATE_REF: &str = "owners.integrity";
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct IntegrityIdentity {
@@ -182,6 +186,67 @@ impl IntegrityState {
     }
 }
 
+/// Immutable owner-state value projected for the selected GTC ownerState envelope.
+///
+/// `state_ref` is the approved logical member name. The complete typed state and
+/// canonical bytes travel with the snapshot; the reference does not replace either.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct IntegrityOwnerStateSnapshot {
+    state: IntegrityState,
+    canonical_bytes: Vec<u8>,
+    state_sha256: IntegritySha256,
+    cold_sha256: IntegritySha256,
+}
+
+impl IntegrityOwnerStateSnapshot {
+    fn from_state(state: &IntegrityState) -> Self {
+        let canonical_bytes = state.canonical_bytes();
+        let state_sha256 = sha256(&canonical_bytes);
+        let cold_state = IntegrityState {
+            generation: 0,
+            next_source_index: CodecSourceIndex::new(0),
+            published_au_count: 0,
+            finalized: false,
+            ..state.clone()
+        };
+        let cold_sha256 = cold_state.sha256();
+        Self {
+            state: state.clone(),
+            canonical_bytes,
+            state_sha256,
+            cold_sha256,
+        }
+    }
+
+    pub const fn owner_id(&self) -> &'static str {
+        OWNER_ID
+    }
+
+    pub const fn state_ref(&self) -> &'static str {
+        GTC_STATE_REF
+    }
+
+    pub const fn state(&self) -> &IntegrityState {
+        &self.state
+    }
+
+    pub fn canonical_bytes(&self) -> &[u8] {
+        &self.canonical_bytes
+    }
+
+    pub const fn generation(&self) -> u64 {
+        self.state.generation()
+    }
+
+    pub const fn state_sha256(&self) -> IntegritySha256 {
+        self.state_sha256
+    }
+
+    pub const fn cold_sha256(&self) -> IntegritySha256 {
+        self.cold_sha256
+    }
+}
+
 #[derive(Debug, Eq, PartialEq)]
 pub enum IntegrityStageDetails {
     Source {
@@ -342,6 +407,104 @@ impl IntegritySourceProposal {
     }
 }
 
+/// Noncommitting projection of one source proposal into the GTC owner-receipt fields.
+///
+/// This value deliberately has no `commit_count`: only the enclosing GTC parent
+/// can admit a callback and decide whether the owner commit count is zero or one.
+#[must_use]
+#[derive(Debug, Eq, PartialEq)]
+pub struct IntegrityOwnerReceiptProposal {
+    programme_id: ProgrammeId,
+    attempt: AttemptId,
+    transaction_id: CallbackTransactionId,
+    callback_identity: CallbackLineageIdentity,
+    before: IntegrityOwnerStateSnapshot,
+    after: IntegrityOwnerStateSnapshot,
+    changed: bool,
+}
+
+impl IntegrityOwnerReceiptProposal {
+    pub const fn owner_id(&self) -> &'static str {
+        OWNER_ID
+    }
+
+    pub fn programme_id(&self) -> &ProgrammeId {
+        &self.programme_id
+    }
+
+    pub const fn attempt(&self) -> AttemptId {
+        self.attempt
+    }
+
+    pub fn transaction_id(&self) -> &CallbackTransactionId {
+        &self.transaction_id
+    }
+
+    pub fn callback_identity(&self) -> &CallbackLineageIdentity {
+        &self.callback_identity
+    }
+
+    pub const fn before(&self) -> &IntegrityOwnerStateSnapshot {
+        &self.before
+    }
+
+    pub const fn after(&self) -> &IntegrityOwnerStateSnapshot {
+        &self.after
+    }
+
+    pub const fn before_generation(&self) -> u64 {
+        self.before.generation()
+    }
+
+    pub const fn after_generation(&self) -> u64 {
+        self.after.generation()
+    }
+
+    pub const fn before_sha256(&self) -> IntegritySha256 {
+        self.before.state_sha256()
+    }
+
+    pub const fn after_sha256(&self) -> IntegritySha256 {
+        self.after.state_sha256()
+    }
+
+    pub const fn changed(&self) -> bool {
+        self.changed
+    }
+}
+
+/// Owner-local staged source plus its prospective GTC state/receipt projection.
+///
+/// Consuming this value yields the replacement owner but never installs it. The
+/// programme parent decides whether to use the staged result or discard it.
+#[must_use]
+#[derive(Debug, Eq, PartialEq)]
+pub struct IntegrityGtcSourceProposal {
+    source: IntegritySourceProposal,
+    owner_receipt: IntegrityOwnerReceiptProposal,
+}
+
+impl IntegrityGtcSourceProposal {
+    pub const fn source_proposal(&self) -> &IntegritySourceProposal {
+        &self.source
+    }
+
+    pub const fn owner_receipt_proposal(&self) -> &IntegrityOwnerReceiptProposal {
+        &self.owner_receipt
+    }
+
+    pub fn into_parts(
+        self,
+    ) -> (
+        IntegrityProgrammeOwner,
+        IntegrityCallResult,
+        IntegrityOwnerReceiptProposal,
+    ) {
+        let (after_owner, result) = self.source.into_parts();
+        (after_owner, result, self.owner_receipt)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq)]
 pub struct IntegrityProgrammeOwner {
     state: IntegrityState,
@@ -423,6 +586,68 @@ impl IntegrityProgrammeOwner {
         })
     }
 
+    /// Stages one source and projects its owner snapshot against the typed GTC callback identity.
+    ///
+    /// This production-facing adapter uses `stage_source` and returns only a proposal. It does
+    /// not replace the committed owner or assign a GTC commit count.
+    pub fn stage_source_for_callback(
+        &self,
+        input: IntegrityInput<'_>,
+        provider_json: &[u8],
+        programme_id: &ProgrammeId,
+        attempt: AttemptId,
+        transaction_id: &CallbackTransactionId,
+        callback_identity: &CallbackLineageIdentity,
+    ) -> Result<IntegrityGtcSourceProposal, IntegrityError> {
+        if self.retired {
+            return Err(IntegrityError::new(IntegrityErrorCode::AttemptRetired));
+        }
+        if self.state.finalized {
+            return Err(IntegrityError::new(IntegrityErrorCode::AlreadyFinalized));
+        }
+        if self.programme_id != programme_id.as_str()
+            || input.identity.programme_id != programme_id.as_str()
+            || callback_identity.programme_id() != programme_id
+        {
+            return Err(IntegrityError::new(IntegrityErrorCode::ProgrammeIdentity));
+        }
+        if self.attempt != attempt.value()
+            || input.identity.attempt != attempt.value()
+            || callback_identity.attempt_id() != attempt
+        {
+            return Err(IntegrityError::new(IntegrityErrorCode::AttemptIdentity));
+        }
+        if transaction_id.as_str().is_empty()
+            || input.identity.transaction_id != transaction_id.as_str()
+        {
+            return Err(IntegrityError::new(IntegrityErrorCode::TransactionIdentity));
+        }
+        if source_for_callback(callback_identity.callback_index())
+            != Some(input.identity.source_index)
+        {
+            return Err(IntegrityError::new(IntegrityErrorCode::SourceOrder));
+        }
+
+        let before = IntegrityOwnerStateSnapshot::from_state(&self.state);
+        let source = self.stage_source(input, provider_json)?;
+        let after = IntegrityOwnerStateSnapshot::from_state(source.after_state());
+        let changed = before.generation() != after.generation()
+            || before.state_sha256() != after.state_sha256();
+        let owner_receipt = IntegrityOwnerReceiptProposal {
+            programme_id: programme_id.clone(),
+            attempt,
+            transaction_id: transaction_id.clone(),
+            callback_identity: callback_identity.clone(),
+            before,
+            after,
+            changed,
+        };
+        Ok(IntegrityGtcSourceProposal {
+            source,
+            owner_receipt,
+        })
+    }
+
     fn with_state(&self, state: IntegrityState) -> Self {
         Self {
             state,
@@ -479,6 +704,11 @@ impl IntegrityProgrammeOwner {
 
     pub const fn committed_state(&self) -> &IntegrityState {
         &self.state
+    }
+
+    /// Returns the complete current state projection without changing owner state.
+    pub fn owner_state_snapshot(&self) -> IntegrityOwnerStateSnapshot {
+        IntegrityOwnerStateSnapshot::from_state(&self.state)
     }
 
     pub const fn is_retired(&self) -> bool {

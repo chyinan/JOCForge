@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge-gtc-owner-state-ref-wash-verification.v1",
+  "package_id": "GTC-OWNER-STATE-REF-CONVENTION-V1",
+  "status": "LOCAL_NAMING_CONVENTION_ONLY",
+  "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_payload_hashes_verified": true,
+  "source_manifest_entries_verified": true,
+  "scope": {
+    "state_ref_format": "owners.<registered owner_id>",
+    "registered_owner_count": 12,
+    "owner_algorithms_or_state_bytes_changed": false,
+    "DEE_native_syntax_claimed": false,
+    "input_only_vectors_executed": false,
+    "implementation_or_runtime_verified": false
+  },
+  "limitations": [
+    "This naming rule does not close any owner serializer, owner receipt, source proposal, parent transaction, or product output path.",
+    "INPUT-ONLY-VECTORS.json is declarative and has not been executed."
+  ]
+}
