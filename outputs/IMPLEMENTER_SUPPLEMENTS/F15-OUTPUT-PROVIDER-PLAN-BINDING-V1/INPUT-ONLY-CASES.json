@@ -1,0 +1,43 @@
+{
+  "input_only": true,
+  "expected_audio_or_au_bytes_included": false,
+  "cases": [
+    {
+      "id": "selected_deployed_compat",
+      "profile": "eac3-joc-48k-1024k-acmod7-uncoupled-nonspx",
+      "carriage": "deployed_compat",
+      "expected": "provider projection/hash derived by trusted plan"
+    },
+    {
+      "id": "selected_etsi_emdf",
+      "profile": "eac3-joc-48k-1024k-acmod7-uncoupled-nonspx",
+      "carriage": "etsi_emdf",
+      "expected": "separate plan-derived provider identity"
+    },
+    {
+      "id": "prepared_input_only",
+      "expected": "reject: no validated codec/output plan"
+    },
+    {
+      "id": "provider_substitution",
+      "expected": "reject before staging"
+    },
+    {
+      "id": "manifest_identity_mismatch",
+      "expected": "reject before staging"
+    },
+    {
+      "id": "same_attempt_different_programme",
+      "expected": "reject by programme plus opaque staging-owner binding"
+    },
+    {
+      "id": "dynamic_extent",
+      "N": 6522906,
+      "Q": 4247,
+      "sources": 4249,
+      "aus": 4247,
+      "bytes": 17395712,
+      "purpose": "count example derived dynamically from N, not provider identity"
+    }
+  ]
+}

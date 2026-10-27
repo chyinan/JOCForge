@@ -1,0 +1,56 @@
+{
+  "scope": "Own symbolic identity inputs; not filesystem, cryptographic authentication or implementation execution.",
+  "typed_attempt_values": [
+    0,
+    1,
+    10,
+    18446744073709551615
+  ],
+  "noncanonical_external_strings": [
+    "00",
+    "01",
+    "+1",
+    "-1",
+    " 1",
+    "1 ",
+    "0x1",
+    "1_000"
+  ],
+  "owner_cases": [
+    {
+      "programme": "A",
+      "attempt": 0,
+      "opaque_staging_owner": "A-owner"
+    },
+    {
+      "programme": "B",
+      "attempt": 0,
+      "opaque_staging_owner": "B-owner"
+    },
+    {
+      "programme": "A",
+      "attempt": 1,
+      "opaque_staging_owner": "A-new-owner"
+    }
+  ],
+  "rejection_inputs": [
+    "matching decimal from different programme owner",
+    "same programme current attempt with stale staging owner",
+    "receipt/proposal from prior output generation",
+    "attempt U64 maximum full_restart would overflow",
+    "final exposure receipt absent parent fsync",
+    "durable append receipt supplied only by untrusted caller booleans"
+  ],
+  "structural_checks": {
+    "canonical_values": 4,
+    "noncanonical_labels": 8,
+    "owner_distinctions": 2
+  },
+  "unverified": [
+    "actual private constructor or OutputOwner implementation",
+    "canonical serialized production cold state",
+    "output/root receipt rejection implementation",
+    "real append/finalize/fsync/rename",
+    "power-loss or process-crash recovery"
+  ]
+}

@@ -2,6 +2,7 @@
 //! One-source JOC fit, dispatch, and immutable ID14 proposal aggregation.
 
 use crate::{
+    frontend::job_configuration::SelectedJobConfiguration,
     joc::{
         coefficient_fitting::{
             CoefficientFitProposal, CoefficientFitState, CoefficientFittingError, FitSourceLineage,
@@ -9,8 +10,14 @@ use crate::{
         },
         coefficient_representation::{RepresentationRetryError, RepresentationRetryProvider},
         dispatch_state::{JocDispatchError, JocDispatchState, JocPayloadInput, stage_joc_payload},
-        emdf::metadata_owner::MetadataPayloadBody,
+        emdf::{
+            metadata_bodies::{
+                MetadataBodiesError, MetadataBodiesProposal, assemble_metadata_bodies,
+            },
+            metadata_owner::MetadataPayloadBody,
+        },
         fit_score::FitScoreProvider,
+        oamd::reader_target::ReaderTargetUpdateReceipt,
     },
     spatial::{QmfReceiverFunctionalProvider, spatial_audio_state::SelectedJocQmfProjection},
 };
@@ -38,6 +45,40 @@ impl JocSourceProposal {
 
     pub const fn lineage(&self) -> &FitSourceLineage {
         &self.lineage
+    }
+
+    /// Joins this same-dispatch ID14 writer result to the F13 body barrier.
+    ///
+    /// Header fields are already bound by the F05JL source stage. F13 consumes
+    /// the complete body and writer generation; it does not accept or recompute
+    /// `clip_gain_index` or `sequence_count`.
+    pub fn assemble_metadata_bodies(
+        &self,
+        configuration: &SelectedJobConfiguration,
+        projection: &SelectedJocQmfProjection,
+        reader_receipt: &ReaderTargetUpdateReceipt,
+    ) -> Result<MetadataBodiesProposal, MetadataBodiesError> {
+        let lineage = &self.lineage;
+        if lineage.programme_id() != projection.programme_id()
+            || lineage.attempt() != projection.attempt()
+            || lineage.transaction_id() != projection.transaction_id()
+            || lineage.source_index() != projection.source_index()
+            || lineage.dispatch() != projection.dispatch()
+            || lineage.spatial_before_generation() != projection.spatial_before_generation()
+            || lineage.spatial_before_digest() != projection.spatial_before_digest()
+            || self.dispatch_after.successful_dispatches() != self.fit_after.fit_generation()
+        {
+            return Err(MetadataBodiesError::Lineage);
+        }
+        if self.id14_body.writer_generation != lineage.source_index() {
+            return Err(MetadataBodiesError::WriterGeneration);
+        }
+        assemble_metadata_bodies(
+            configuration,
+            projection,
+            reader_receipt,
+            self.id14_body.clone(),
+        )
     }
 
     pub fn into_parts(

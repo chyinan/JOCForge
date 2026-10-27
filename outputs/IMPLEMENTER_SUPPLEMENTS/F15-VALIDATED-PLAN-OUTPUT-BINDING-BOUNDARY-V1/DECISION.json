@@ -1,0 +1,29 @@
+{
+  "choice": "This increment may implement only a private, pure F15 provider projection helper. It must not construct ProgrammeOutputBinding until a trusted ValidatedEncodingPlan is available.",
+  "reason": "PreparedJobInput binds programme and input data. resolve_selected_profile checks only the supported six-dimensional profile. Neither proves selected provider-set validation or complete encode-plan identity.",
+  "plan_producer": "Trusted programme parent after selected provider receipts and full EncodingProfile/carriage have been validated. Bind ProgrammeId, resource SHA, config SHA, N, all six profile dimensions, carriage, approved package/F15 provider manifest identities, and the selected provider validation lineages.",
+  "existing_receipts": "PreparedJobInput is produced by input preparation. ResolvedEncodingProfile is produced by resolve_selected_profile. Individual provider receipts remain owned by their validators/stages. The implementation reports no aggregate ValidatedEncodingPlan type today; do not synthesize one from caller strings. Parent may add one minimal private aggregate that contains actual typed identities/receipts.",
+  "f15_helper": "The helper accepts the private validated plan/admission token and derives the sealed F15 output policy object. The emitted OutputProvider is not an independent input to bind_output. If the plan token does not exist, helper may be defined privately but production binding stays unavailable.",
+  "profile_namespaces": {
+    "gtc_profile_id": "eac3-joc-48k-1024k-acmod7-uncoupled-nonspx",
+    "f15_output_profile_id": "selected-keyless-output-policy.v1",
+    "relationship": "distinct identifiers; the parent plan binds both plus carriage"
+  },
+  "f15_manifest_sha256": "a2cf06839d3da81d14240ccd6526eebc0b878721d48a03fd0d0813f26961f6ce",
+  "provider_sha_semantics": "SHA-256 over the canonical UTF-8 JSON provider projection in the existing F15 projection package. The plan must carry and compare this exact derived SHA; caller-supplied hash/profile cannot select policy.",
+  "derived_fields": {
+    "frame_bytes": 4096,
+    "suppressed_sources": 2,
+    "counts": "Q=ceil(N/1536); source_count=Q+2; published_aus=Q; product_bytes=Q*4096, checked arithmetic. These dynamic values do not enter the provider hash."
+  },
+  "pre_call_reject": [
+    "missing plan token",
+    "input ProgrammeId/resource/config/N mismatch",
+    "unsupported six-dimensional profile or carriage",
+    "F15 provider manifest or required typed provider receipt mismatch",
+    "derived provider projection/hash mismatch",
+    "stale attempt/programme/opaque staging-owner/destination binding"
+  ],
+  "fixture_boundary": "OUTPUT-OWNER-ROOT-V1 is test-only (production_allowed=false). Its test provider/IO evidence is not promoted. The F15 projection package defines the Wash local policy bytes; it is not a native fact.",
+  "runtime_status": "No implementation, GTC root commit, filesystem operation or whole-programme run was verified in this wash step."
+}

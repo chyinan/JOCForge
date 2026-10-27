@@ -1,0 +1,9 @@
+{
+  "r2_manifest_payloads_hash_verified": 10,
+  "approved_references_hash_verified": 14,
+  "independent_runtime_or_native_execution": "NOT_RUN",
+  "implementation_code_review": "NOT_RUN",
+  "local_schema_decision": "DONE",
+  "product_acceptance": "NOT_RUN",
+  "research_claims": "R2 reported 16 references, but only the source references enumerated in SOURCES.json are locally verified; frozen state-function source identities are provenance only where their text was unavailable."
+}

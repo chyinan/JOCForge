@@ -8,12 +8,13 @@ use jocforge::meter_source_bridge::{
 use jocforge_application::{
     PreparedJobInput, SelectedAdmResourcePayloads,
     meter_source_bridge::{
-        IndependentMeterPrepass, KMatrixMode, KMatrixProfile, MeterCallbackCount,
-        MeterCallbackIndex, MeterCallbackPhase, MeterFrontendCallbackInput, MeterSampleCount,
-        MeterSourceBridgeError, MeterSourceCallbackFrame, MeterSourceCallbackFrameParts,
-        MeterSourceCallbackView, MeterSourceIdentity, MeterSourcePosition, MeterSourceSampleCount,
-        MeterUpstreamGeneration, ObjectRenderCallbackGeneration, ProgrammeId,
-        SelectedWaveDescriptor, SharedGainDelayParameters, generate_k_matrix,
+        AdmFileStorageTrackSlot, IndependentMeterPrepass, KMatrixMode, KMatrixProfile,
+        MeterCallbackCount, MeterCallbackIndex, MeterCallbackPhase, MeterFrontendCallbackInput,
+        MeterSampleCount, MeterSourceBridgeError, MeterSourceCallbackFrame,
+        MeterSourceCallbackFrameParts, MeterSourceCallbackView, MeterSourceIdentity,
+        MeterSourcePosition, MeterSourceSampleCount, MeterUpstreamGeneration,
+        ObjectRenderCallbackGeneration, ProgrammeId, SelectedTrackKind, SelectedWaveDescriptor,
+        SharedGainDelayParameters, generate_k_matrix,
     },
     prepare_selected_job_input,
 };
@@ -189,6 +190,88 @@ fn source_and_prepass_extents_must_match_before_prepass_staging() {
     assert_eq!(prepass.next_callback_index().value(), 0);
 }
 
+#[test]
+fn pcm_rows_bind_to_chna_track_and_slot_map_in_physical_order() {
+    let (resource, spans) = selected_resource_with_row_markers();
+    let prepared = prepared_job_input_from_resource(0, &resource, &spans);
+    let parsed = parse_selected_riff_pcm24(&resource, None).unwrap();
+    let identity = MeterPcmSourceIdentity::from_selected_resource_sha256(
+        prepared.resource_identity().input_sha256(),
+    );
+    let source_samples = MeterSourceSampleCount::new(parsed.total_samples()).unwrap();
+    let cursor = MeterPcmSourceCursor::cold(&parsed, identity, source_samples).unwrap();
+    let proposal = stage_meter_pcm_source_frame(&cursor, cursor.callback_index(), &parsed).unwrap();
+    let source_view = view_for_source_proposal(&prepared, &proposal).unwrap();
+    let row_map = source_view.physical_row_map();
+    let graph = prepared.graph().graph();
+    let converter_map = prepared.converter_storage_map().unwrap();
+
+    assert_eq!(row_map.resource_identity(), prepared.resource_identity());
+    assert_eq!(row_map.axml_sha256(), graph.receipt().axml_sha256());
+    assert_eq!(row_map.chna_sha256(), graph.receipt().chna_sha256());
+    assert_eq!(row_map.dbmd_sha256(), prepared.dbmd().payload_sha256());
+    assert_eq!(row_map.entries_by_pcm_row().len(), 38);
+
+    for binding in row_map.entries_by_pcm_row() {
+        let row = usize::from(binding.pcm_row().value());
+        let row_value = u8::try_from(row).unwrap();
+        let slot = AdmFileStorageTrackSlot::new(row_value).unwrap();
+        let converter_entry = converter_map.channels().entry_for_slot(slot);
+        let graph_track = graph
+            .tracks()
+            .iter()
+            .find(|track| track.track_index() == binding.track_index())
+            .unwrap();
+
+        assert_eq!(binding.track_index().value(), u16::from(row_value) + 1);
+        assert_eq!(binding.physical_host().value(), row_value);
+        assert_eq!(converter_entry.track_slot(), slot);
+        assert_eq!(
+            binding.channel_input_id(),
+            converter_entry.channel_input_id()
+        );
+        assert_eq!(
+            binding.dbmd_track_index().value(),
+            u16::from(binding.physical_host().value())
+        );
+        match graph_track.kind() {
+            SelectedTrackKind::DirectSpeakersBed { bed_input_id, .. } => {
+                assert_eq!(binding.channel_input_id().value(), bed_input_id);
+            }
+            SelectedTrackKind::Object { semantic_key } => {
+                assert_eq!(binding.channel_input_id().value(), semantic_key);
+            }
+        }
+
+        let expected_word = ((f32::from(row_value) + 1.0) / 8_388_608.0).to_bits();
+        assert_eq!(
+            source_view.physical_rows()[row][0],
+            expected_word,
+            "physical PCM row {row} must keep its input marker"
+        );
+    }
+}
+
+#[test]
+fn pcm_cursor_from_a_different_prepared_resource_is_rejected() {
+    let (prepared_resource, prepared_spans) = selected_resource_with_row_markers();
+    let prepared = prepared_job_input_from_resource(0, &prepared_resource, &prepared_spans);
+    let (foreign_resource, _) = selected_resource();
+    let parsed = parse_selected_riff_pcm24(&foreign_resource, None).unwrap();
+    let foreign_identity =
+        MeterPcmSourceIdentity::from_selected_resource_sha256(parsed.source_sha256());
+    let source_samples = MeterSourceSampleCount::new(parsed.total_samples()).unwrap();
+    let cursor = MeterPcmSourceCursor::cold(&parsed, foreign_identity, source_samples).unwrap();
+    let proposal = stage_meter_pcm_source_frame(&cursor, cursor.callback_index(), &parsed).unwrap();
+
+    assert_eq!(
+        view_for_source_proposal(&prepared, &proposal).err(),
+        Some(MeterSourceCoordinatorError::Bridge(
+            MeterSourceBridgeError::ResourceIdentityMismatch
+        ))
+    );
+}
+
 fn frontend_input(
     source: &MeterSourceCallbackView<'_>,
     callback: u64,
@@ -235,14 +318,22 @@ fn prepared_job_input() -> PreparedJobInput {
 }
 
 fn prepared_job_input_for_case(case_index: usize) -> PreparedJobInput {
+    let (resource, spans) = selected_resource();
+    prepared_job_input_from_resource(case_index, &resource, &spans)
+}
+
+fn prepared_job_input_from_resource(
+    case_index: usize,
+    resource: &Arc<[u8]>,
+    spans: &[Range<usize>; 3],
+) -> PreparedJobInput {
     let vectors: Value = serde_json::from_slice(include_bytes!(
         "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
     ))
     .unwrap();
     let case = &vectors["config_cases"][case_index];
     let descriptor = &case["pcm_descriptor"];
-    let (resource, spans) = selected_resource();
-    let source_samples = parse_selected_riff_pcm24(&resource, None)
+    let source_samples = parse_selected_riff_pcm24(resource, None)
         .unwrap()
         .total_samples();
     prepare_selected_job_input(
@@ -254,8 +345,8 @@ fn prepared_job_input_for_case(case_index: usize) -> PreparedJobInput {
             descriptor["pcm_bits"].as_u64().unwrap() as u16,
         ),
         source_samples,
-        Arc::clone(&resource),
-        metadata_payloads(&resource, &spans),
+        Arc::clone(resource),
+        metadata_payloads(resource, spans),
     )
     .unwrap()
 }
@@ -294,6 +385,19 @@ fn selected_resource() -> (Arc<[u8]>, [Range<usize>; 3]) {
     let riff_size = u32::try_from(bytes.len() - 8).unwrap();
     bytes[4..8].copy_from_slice(&riff_size.to_le_bytes());
     (Arc::from(bytes.into_boxed_slice()), [axml, chna, dbmd])
+}
+
+fn selected_resource_with_row_markers() -> (Arc<[u8]>, [Range<usize>; 3]) {
+    let (resource, spans) = selected_resource();
+    let parsed = parse_selected_riff_pcm24(&resource, None).unwrap();
+    let data_offset = usize::try_from(parsed.data_offset()).unwrap();
+    let mut bytes = resource.as_ref().to_vec();
+    for row in 0..38 {
+        let marker = i32::try_from(row + 1).unwrap().to_le_bytes();
+        let start = data_offset + row * 3;
+        bytes[start..start + 3].copy_from_slice(&marker[..3]);
+    }
+    (Arc::from(bytes.into_boxed_slice()), spans)
 }
 
 fn selected_format_payload() -> Vec<u8> {

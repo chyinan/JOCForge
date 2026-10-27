@@ -1,0 +1,113 @@
+{
+  "approved_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_sources": [
+    {
+      "id": "specs/09-exponents.md",
+      "bytes": 9722,
+      "sha256": "41cd157140d0deaab51fa9a895c33758cb49eb46cf5844a2883c1d6e8bb81739"
+    },
+    {
+      "id": "specs/09-gain-and-db.md",
+      "bytes": 5440,
+      "sha256": "f6e73ca2e361c06413974f4b7725fdc94f8e1d13a6a299062edde9dc3a7e6c12"
+    },
+    {
+      "id": "specs/09-lfe-gate-mantissa-boundaries.md",
+      "bytes": 4786,
+      "sha256": "9aff19192a8b5cba7db8bec26b05106edf214b4149a5f1c9d4be040691c80951"
+    },
+    {
+      "id": "specs/10-exponent-normalization.md",
+      "bytes": 5969,
+      "sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc"
+    },
+    {
+      "id": "specs/11-converter.md",
+      "bytes": 5172,
+      "sha256": "9ecb50bbb125d2a6e2d8f5e565ffbc7514c156c72602d2d2d89d8b17e9e4e4c8"
+    },
+    {
+      "id": "specs/12-bit-allocation.md",
+      "bytes": 10061,
+      "sha256": "fa347045793bf3ce88349052526a758bc47e9d33fb1f1a1265a50c249ccd45f7"
+    },
+    {
+      "id": "specs/12-selected-codec-wire.md",
+      "bytes": 14760,
+      "sha256": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448"
+    },
+    {
+      "id": "specs/12-selected-source-frame-composition.md",
+      "bytes": 10843,
+      "sha256": "9e6fcc14489ca0acaff0f7c223fce65539aa5b19cb4119ebcb34d19049cd0769"
+    },
+    {
+      "id": "parameters/f07-f12-source-state-schema-v1.json",
+      "bytes": 5359,
+      "sha256": "7967752a88493648c24cf7c1183da61dc470e35a684bb48d6335c496e90c6f4e"
+    },
+    {
+      "id": "parameters/codec-wire-selected-v1.json",
+      "bytes": 3081,
+      "sha256": "a7a0a721a9e515d197a2d12fc0c9cb942b2b393f9019383a66ce2635f7aaa0dd"
+    },
+    {
+      "id": "parameters/policy-authorized-v1.json",
+      "bytes": 4559,
+      "sha256": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a"
+    },
+    {
+      "id": "test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json",
+      "bytes": 10558,
+      "sha256": "59f7e83438bd1e7bd955cb4a9fe9c6dd7717939a651eb150d190edb2d91432d5"
+    },
+    {
+      "id": "test-vectors/F07-F12-SOURCE-COMPOSITION-VERIFICATION-RESULT.json",
+      "bytes": 2871144,
+      "sha256": "ada7e443a21299dbdbc527f05f705c65cbe2b674d785b20ad8b339aa7347766a"
+    },
+    {
+      "id": "supplement/ANALYSIS-FIXTURE-SEAM-V1/MANIFEST.json",
+      "bytes": 2373,
+      "sha256": "0fd24d23ca4237e8bdd2283671293dfa0b54755ea74e84316234b4cc4c195912"
+    },
+    {
+      "id": "frozen/f07_f12_composition_core.py",
+      "bytes": 9250,
+      "sha256": "4db46c148faf288aaccec4aea54d5829e67322c6ba7203e8644cd70ac8fbf2ef"
+    },
+    {
+      "id": "native/dee_audio_filter_ddp_atmos.virtual.bin",
+      "bytes": 11210752,
+      "sha256": "a142d075093d8b11751fdc1c3dfdae6c078c1fdb29c2bd4099bb44a08c71d90a"
+    }
+  ],
+  "locally_rehashed_approved_sources": [
+    "specs/09-exponents.md",
+    "specs/09-gain-and-db.md",
+    "specs/09-lfe-gate-mantissa-boundaries.md",
+    "specs/10-exponent-normalization.md",
+    "specs/11-converter.md",
+    "specs/12-bit-allocation.md",
+    "specs/12-selected-codec-wire.md",
+    "specs/12-selected-source-frame-composition.md",
+    "parameters/f07-f12-source-state-schema-v1.json",
+    "parameters/codec-wire-selected-v1.json",
+    "parameters/policy-authorized-v1.json",
+    "test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json",
+    "test-vectors/F07-F12-SOURCE-COMPOSITION-VERIFICATION-RESULT.json",
+    "supplement/ANALYSIS-FIXTURE-SEAM-V1/MANIFEST.json"
+  ],
+  "r2_research_package": {
+    "manifest_sha256": "22d322d503543900c86f9fbd824d54689842cde79fd177a4f895d207aee1e741",
+    "payload_count": 10,
+    "native_static_evidence": "Field-use audit supplied as Wash-only research evidence; no machine addresses, raw code or binaries forwarded.",
+    "frozen_leaf_text_status": "Two frozen function files are identity anchors; their current text copies were unavailable to Wash. Numerical update semantics in this amendment come from approved F09G rules; no unrehashable source is treated as authority."
+  },
+  "decision_basis": {
+    "policy_decision": "TEST_ONLY_REMOVE recommended by R2 and accepted for clean selected persistent root",
+    "source_state_schema_sha256": "7967752a88493648c24cf7c1183da61dc470e35a684bb48d6335c496e90c6f4e",
+    "f07_f12_canonical_sha256": "9e6fcc14489ca0acaff0f7c223fce65539aa5b19cb4119ebcb34d19049cd0769",
+    "amendment_effect": "Supersedes only policy persistent fields; preserves every historical package, fixture and evidence result without claiming they tested V6."
+  }
+}

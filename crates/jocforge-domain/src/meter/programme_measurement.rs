@@ -184,6 +184,39 @@ pub(crate) fn finalize_selected_measurement(
     integrated: &IntegratedMeterState,
     ungated: &UngatedMeanState,
 ) -> Result<ProgrammeMeasurementProposal, ProgrammeMeasurementError> {
+    let measurement = compute_programme_measurement_values(true_peak, integrated, ungated)?;
+    let receipt =
+        ProgrammeMeasurementReceipt::from_verified_prepass(ProgrammeMeasurementReceiptInput {
+            programme_id: identity.programme_id,
+            attempt: identity.attempt,
+            input_sha256: identity.input_sha256,
+            config_sha256: identity.config_sha256,
+            dialogue_word: measurement.dialogue_word,
+            itu_word: measurement.itu_word,
+            true_peak_word: measurement.true_peak_word,
+            gating_kind: measurement.gating_kind.as_str(),
+            selected_lufs_word: measurement.selected_word,
+            meter_terminal_sha256: identity.meter_terminal_sha256,
+            normal_callbacks: identity.normal_callbacks,
+            zero_drains: identity.zero_drains,
+            energy_windows: identity.energy_windows,
+        })
+        .map_err(map_receipt_error)?;
+    Ok(ProgrammeMeasurementProposal {
+        receipt,
+        measurement,
+    })
+}
+
+/// Computes the finalized scalar values without minting a programme receipt.
+///
+/// A receipt requires the enclosing standalone Meter root's actual canonical
+/// terminal state identity and is therefore produced only by its owner stage.
+pub(crate) fn compute_programme_measurement_values(
+    true_peak: &TruePeakState,
+    integrated: &IntegratedMeterState,
+    ungated: &UngatedMeanState,
+) -> Result<ProgrammeMeasurementValue, ProgrammeMeasurementError> {
     let itu_word =
         multiply_words(integrated.result_word(), HOST_SCALE_WORD).map_err(map_peak_error)?;
     let getter = di_off_getter(
@@ -219,27 +252,7 @@ pub(crate) fn finalize_selected_measurement(
         gating_kind,
         dialnorm,
     )?;
-    let receipt =
-        ProgrammeMeasurementReceipt::from_verified_prepass(ProgrammeMeasurementReceiptInput {
-            programme_id: identity.programme_id,
-            attempt: identity.attempt,
-            input_sha256: identity.input_sha256,
-            config_sha256: identity.config_sha256,
-            dialogue_word: getter.dialogue_word(),
-            itu_word,
-            true_peak_word,
-            gating_kind: gating_kind.as_str(),
-            selected_lufs_word: getter.selected_host_word(),
-            meter_terminal_sha256: identity.meter_terminal_sha256,
-            normal_callbacks: identity.normal_callbacks,
-            zero_drains: identity.zero_drains,
-            energy_windows: identity.energy_windows,
-        })
-        .map_err(map_receipt_error)?;
-    Ok(ProgrammeMeasurementProposal {
-        receipt,
-        measurement,
-    })
+    Ok(measurement)
 }
 
 #[allow(clippy::too_many_arguments)]

@@ -1,0 +1,10 @@
+{
+  "research_manifest_sha256": "d75922529f569fbb8b0ee40755fb82f0bdcccbb3db537579395e8df5a56fe80a",
+  "research_payloads_verified": 6,
+  "approved_sources_verified": 10,
+  "research_comparison_hashes": "Identity anchors supplied by the reverse package; no raw source text/code delivered.",
+  "normal_and_python_O": "PASS reported by research; checker not included and not independently re-executed by Wash.",
+  "numerical_or_native_execution": "NOT_RUN",
+  "real_pcm_or_AU": "NOT_READ",
+  "scope": "F07 structure marker to F09 refresh work/strategy to F10 anchor/reuse adapter mapping; no new numeric formula."
+}

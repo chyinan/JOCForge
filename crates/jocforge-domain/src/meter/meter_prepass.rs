@@ -3,7 +3,9 @@
 
 use super::{
     k_matrix::KMatrixProvider,
-    lfe_delay_ring::{MeterFrontendCallbackInput, MeterLfeDelayState, MeterLfeError},
+    lfe_delay_ring::{
+        MeterFrontendCallbackInput, MeterLfeCallbackOrigin, MeterLfeDelayState, MeterLfeError,
+    },
     post_render_meter::{
         IndependentMeterCallbackProposal, PostRenderMeterError, PostRenderMeterReceipt,
         PostRenderMeterState, stage_independent_meter_callback,
@@ -139,6 +141,47 @@ impl IndependentMeterPrepass {
         }
     }
 
+    /// Builds the complete next prepass root without replacing this root.
+    ///
+    /// The GTC parent may retain the returned after-root with its other
+    /// staged owners and perform one root replacement at its own boundary.
+    pub(crate) fn propose_callback(
+        &self,
+        input: MeterFrontendCallbackInput,
+    ) -> Result<IndependentMeterPrepassProposal, IndependentMeterPrepassError> {
+        if self.state.phase == IndependentMeterPrepassPhase::Failed {
+            return Err(IndependentMeterPrepassError::Failed);
+        }
+
+        let proposal = stage_independent_meter_callback(
+            &self.state.lfe,
+            &self.state.post_render,
+            input,
+            &self.gain_parameters,
+            &self.k_matrix,
+        )
+        .map_err(IndependentMeterPrepassError::Callback)?;
+        let receipt = proposal.receipt();
+        let lfe_output_origin = proposal.lfe_output_origin();
+        let (lfe, post_render) = proposal.into_parts();
+        let after = Self {
+            source_samples: self.source_samples,
+            gain_parameters: self.gain_parameters.clone(),
+            k_matrix: self.k_matrix.clone(),
+            state: IndependentMeterPrepassState {
+                phase: IndependentMeterPrepassPhase::Meter,
+                failure_stage: None,
+                lfe,
+                post_render,
+            },
+        };
+        Ok(IndependentMeterPrepassProposal {
+            after,
+            receipt,
+            lfe_output_origin,
+        })
+    }
+
     /// Reconstructs both callback owners from cold providers before replacing
     /// the current state; no partial reset is observable.
     pub fn reset(&mut self) -> Result<(), IndependentMeterPrepassError> {
@@ -161,6 +204,26 @@ impl IndependentMeterPrepass {
             lfe,
             post_render,
         })
+    }
+}
+
+/// Complete noncommitting meter-prepass after-state plus its leaf callback receipt.
+#[must_use]
+pub(crate) struct IndependentMeterPrepassProposal {
+    after: IndependentMeterPrepass,
+    receipt: PostRenderMeterReceipt,
+    lfe_output_origin: Option<MeterLfeCallbackOrigin>,
+}
+
+impl IndependentMeterPrepassProposal {
+    pub(crate) fn into_parts(
+        self,
+    ) -> (
+        IndependentMeterPrepass,
+        PostRenderMeterReceipt,
+        Option<MeterLfeCallbackOrigin>,
+    ) {
+        (self.after, self.receipt, self.lfe_output_origin)
     }
 }
 
@@ -337,5 +400,25 @@ mod tests {
         assert_eq!(machine.lfe_state(), &cold_lfe);
         assert_eq!(machine.post_render_state(), &cold_post_render);
         assert!(!machine.ready_to_finalize());
+    }
+
+    #[test]
+    fn proposal_callback_preserves_before_root_and_returns_owned_after_root() {
+        let machine = prepass();
+        let before_lfe = machine.lfe_state().clone();
+        let before_post_render = machine.post_render_state().clone();
+        let before_callback = machine.next_callback_index();
+        let proposal = machine
+            .propose_callback(input(0, MeterCallbackPhase::NormalSource, false))
+            .unwrap();
+        let (after, receipt, _) = proposal.into_parts();
+
+        assert_eq!(machine.next_callback_index(), before_callback);
+        assert_eq!(machine.lfe_state(), &before_lfe);
+        assert_eq!(machine.post_render_state(), &before_post_render);
+        assert_eq!(receipt.callback_index().value(), 0);
+        assert_eq!(after.next_callback_index().value(), 1);
+        assert_ne!(after.lfe_state(), &before_lfe);
+        assert_ne!(after.post_render_state(), &before_post_render);
     }
 }

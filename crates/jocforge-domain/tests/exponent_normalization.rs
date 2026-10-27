@@ -1,6 +1,7 @@
 // pattern: Functional Core
 use jocforge_domain::codec::exponent_normalization::{
-    ExponentNormalizationError, FULLBAND_EXPONENT_BINS, normalize_fullband_exponents,
+    ExponentNormalizationError, FULLBAND_EXPONENT_BINS, LFE_EXPONENT_BINS,
+    normalize_fullband_exponents, normalize_lfe_exponents,
 };
 use jocforge_domain::codec::policy_parameters::{PolicyProfile, load_policy_parameters};
 use serde_json::Value;
@@ -317,6 +318,29 @@ fn normalization_rejects_input_domains_outside_the_selected_contract() {
     invalid_raw[216] = 25;
     assert_eq!(
         normalize_fullband_exponents(&invalid_raw, 1, 0, 0, None),
+        Err(ExponentNormalizationError::ExponentInputError)
+    );
+}
+
+#[test]
+fn selected_lfe_normalizer_uses_its_seven_bin_span_one_route() {
+    let parameter_bytes = fixture_bytes("PARAMETERS.json");
+    let parameters = load_policy_parameters(PolicyProfile::selected(), Some(&parameter_bytes))
+        .expect("LFE normalization uses the selected policy provider");
+    let raw = [0_i16; LFE_EXPONENT_BINS];
+
+    let normalized = normalize_lfe_exponents(&raw, Some(&parameters)).unwrap();
+    assert_eq!(normalized.base_exponent(), 0);
+    assert_eq!(normalized.expanded_exponents(), &raw);
+    assert_eq!(
+        normalize_lfe_exponents(&raw, None),
+        Err(ExponentNormalizationError::ParameterUnavailable)
+    );
+
+    let mut invalid = raw;
+    invalid[6] = 25;
+    assert_eq!(
+        normalize_lfe_exponents(&invalid, Some(&parameters)),
         Err(ExponentNormalizationError::ExponentInputError)
     );
 }

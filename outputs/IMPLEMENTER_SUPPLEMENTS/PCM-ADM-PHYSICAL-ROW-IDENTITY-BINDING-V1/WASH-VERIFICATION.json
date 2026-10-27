@@ -1,0 +1,11 @@
+{
+  "approved_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_source_hashes_verified": 4,
+  "f06of_manifest_sha256": "7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac",
+  "f06of_payloads_hash_verified": 7,
+  "source_paths_or_source_code_delivered": false,
+  "pcm_content_read_for_this_crosswalk": false,
+  "real_resource_integration_reexecuted": "NOT_RUN",
+  "native_execution": "NOT_RUN",
+  "product_acceptance": "NOT_RUN"
+}

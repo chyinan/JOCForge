@@ -1,0 +1,58 @@
+{
+  "schema_version": "F07_F12_OWNER_STATE_V6_POLICY_AMENDMENT",
+  "supersedes_source": "parameters/f07-f12-source-state-schema-v1.json policy owner fields only",
+  "owner": "analysis/policy within the existing GTC analysis root; generation U64 remains once per accepted source",
+  "persistent_fields": {
+    "gain_range": {
+      "previous_peak_f32_bits_u32": [
+        6
+      ],
+      "lane_order": [
+        "L",
+        "C",
+        "R",
+        "Ls",
+        "Rs",
+        "LFE"
+      ],
+      "cold": [
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000"
+      ],
+      "completed_blocks_u64": 0
+    },
+    "db_per_bit": {
+      "selector_u16": 0,
+      "domain": "0..3",
+      "cold": 0,
+      "completed_blocks_u64": 0
+    }
+  },
+  "block_transitions": {
+    "gain_peak": "For each successful 256-sample channel block, current_peak=R32(2*max_i(abs(R32(x[i])))); summary=max(current_peak,old_previous_peak); gain output uses only lanes0..4; LFE peak state advances but has no FBW gain output; next previous_peak=current_peak for all six lanes.",
+    "db_selector": "Per channel mean uses four fresh +0 F32 accumulators and exact F09G sample order. Maximum scans internal lanes0..4; equal values choose the later lane. Existing selector U16 is input to hysteresis. Successful block code becomes next selector.",
+    "counters": "Each root-local completed_blocks counter increments once per successful block in the staged source. After a complete six-block source each advances by6. Counters do not affect numerical selection; they retain the leaf completion state defined by F09G.",
+    "source_commit": "Root policy generation advances once only when the whole source is accepted by the existing parent transaction. A failure after any staged block drops all staged state; no partial block counters/peaks/selector commit."
+  },
+  "cold_reset": "Both six peaks +0; gain completed_blocks0; db selector0 and completed_blocks0. Full programme reset reconstructs cold policy owner with all other GTC roots.",
+  "removed_from_persistent_root": {
+    "gain_db_history_u32_words_64": "Same-source delayed-LFE-tail square projection only; optional same-source diagnostic/fixture value, no next-source algorithm reader. Do not use as a substitute for six current peaks.",
+    "exponent_refresh_history_u16_words_30": "Synthetic fixture projection only; no general producer or next-source consumer. Remove from production persistent root.",
+    "normalized_anchor_u16_words_30": "F10 per-source NumericPlan output, not next-source state. Remove from production persistent root; keep current-source anchors in NumericPlan."
+  },
+  "per_source_scratch": {
+    "gain_summary_f32_6": true,
+    "gain_output_u2_5": true,
+    "means_f32_6": true,
+    "F09_work_fbw_i16_5x217": true,
+    "F09_work_lfe_i16_7": true,
+    "F10_normalized_plan": true,
+    "rule": "These remain normal algorithm/planning outputs where specified; exclusion applies only to persistent root fields."
+  },
+  "canonical": "Reuse existing GTC sorted-key UTF-8 JSON owner serialization and receipts. Amendment replaces the policy projection in the full analysis owner; no new digest, owner or receipt ABI.",
+  "scope": "Does not alter F09/F10 numerical algorithms, selected bin limits, provider values or candidate search."
+}

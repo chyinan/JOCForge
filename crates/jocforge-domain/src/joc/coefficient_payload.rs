@@ -144,12 +144,22 @@ impl CoefficientPayloadOutcome {
         self,
         writer_generation: crate::timeline::CodecSourceIndex,
     ) -> Option<super::emdf::metadata_owner::MetadataPayloadBody> {
-        self.descriptor_copy.map(
-            |descriptor| super::emdf::metadata_owner::MetadataPayloadBody {
+        self.try_into_metadata_body(writer_generation).ok()
+    }
+
+    /// Transfers the successful descriptor copy into a metadata body, or returns the complete
+    /// writer outcome unchanged when no descriptor bytes were produced.
+    pub fn try_into_metadata_body(
+        mut self,
+        writer_generation: crate::timeline::CodecSourceIndex,
+    ) -> Result<super::emdf::metadata_owner::MetadataPayloadBody, Self> {
+        match self.descriptor_copy.take() {
+            Some(descriptor) => Ok(super::emdf::metadata_owner::MetadataPayloadBody {
                 writer_generation,
                 bytes: descriptor.body,
-            },
-        )
+            }),
+            None => Err(self),
+        }
     }
 
     pub const fn header_bit_count(&self) -> u64 {

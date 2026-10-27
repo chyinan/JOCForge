@@ -1,0 +1,72 @@
+{
+  "approved_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_sources": [
+    {
+      "path": "specs/00-global-transaction-contract.md",
+      "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105",
+      "use": "codec owner, SourceTransaction and owner receipt fields"
+    },
+    {
+      "path": "specs/00-selected-owner-projection-and-j05.md",
+      "sha256": "9ff01aca7b6be6e89511e4d493f9fc9e661a50e2f098065f4a32c3fed777542f",
+      "use": "F12 leaf executor and F15 parent commit"
+    },
+    {
+      "path": "specs/07-history-and-transient.md",
+      "sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac",
+      "use": "previous_short formula, cold/reset and candidate reuse"
+    },
+    {
+      "path": "specs/12-codec-and-wire.md",
+      "sha256": "3e712f4d8bd0d0eaccd933ce0087a4fc0fbd73e3ca92b4dc673153786936a14e",
+      "use": "successful candidate codec-state commit"
+    },
+    {
+      "path": "specs/12-selected-codec-wire.md",
+      "sha256": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448",
+      "use": "six transform histories and five previous_short selected state"
+    },
+    {
+      "path": "specs/12-selected-source-frame-composition.md",
+      "sha256": "9e6fcc14489ca0acaff0f7c223fce65539aa5b19cb4119ebcb34d19049cd0769",
+      "use": "source transition, candidate scratch, reset and existing projection boundary"
+    },
+    {
+      "path": "parameters/f07-f12-source-state-schema-v1.json",
+      "sha256": "7967752a88493648c24cf7c1183da61dc470e35a684bb48d6335c496e90c6f4e",
+      "use": "old selected projection and explicit six-history prose"
+    }
+  ],
+  "fixture_seam": {
+    "package_id": "CODEC-FIXTURE-SEAM-V1",
+    "manifest_sha256": "077070af8cfbe9a2451f768cfdbefe05ffa44c07b6551330bf5d95ee44d34c44",
+    "status": "TEST_ONLY; production_allowed=false"
+  },
+  "codec_root_research": {
+    "manifest_sha256": "2aeef8c1443c0962b658358f8c14ee4a28499d08b29f503c15ff289743bb78c5",
+    "seal_sha256": "79cef0bc94d5200a4e60564907274f17fa6c7816550ed25cfcffc4302882ab01",
+    "source_identity_manifest_sha256": "ad1c3d23bb6012d0269fad94c17f4c332e510c77c5eef8fc28c5d59c11d4fb15",
+    "recovered_model_grade": "rev10 model static only; rev13 source bytes missing"
+  },
+  "codec_schema_conflict_adjudication": {
+    "evidence_manifest_sha256": "ac87049951d5463f903164ebe5ce25faea309953624c5b91a28f59d2bc15e5e1",
+    "seal_sha256": "886bab7d1de9bd13fe2a2cd2b8b1d4b25d1176933715cedaa2b93f154240c171"
+  },
+  "restored_model_files": [
+    {
+      "identity": "rev10 AnalysisState",
+      "bytes": 39889,
+      "sha256": "b5f0217765cf219085401851ff55be3785a64f072c2aaed63cf61fef43d4c08b",
+      "grade": "MODEL_STATIC_RESTORED_EARLIER_REVISION"
+    },
+    {
+      "identity": "primary long/short/LFE fold helpers",
+      "sha256": [
+        "9ccb09b30bcdbca74378704f1ab0313dea5e06bc78390823a8735ba3eb2dd860",
+        "7b286c5c89fd412440ca649941264a55c8f6f0df10118a72e07cf20565fdd4ba",
+        "246b0291cd23c8fae5ee91ffbed3ab231ba195f864faa41e469786a81ab0bfac"
+      ],
+      "grade": "MODEL_STATIC_HASH_VERIFIED"
+    }
+  ]
+}

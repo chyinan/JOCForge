@@ -1,0 +1,233 @@
+{
+  "schema": "policy-root-projection-input-only.v1",
+  "input_only": true,
+  "expected_projection_values_included": false,
+  "expected_hashes_included": false,
+  "PCM_included": false,
+  "frame_body_included": false,
+  "cases": [
+    {
+      "id": "gain_db_lfe_tail_projection",
+      "source": 4,
+      "delayed_audio_shape": [
+        6,
+        1536
+      ],
+      "external_channel_order": [
+        "L",
+        "R",
+        "C",
+        "LFE",
+        "Ls",
+        "Rs"
+      ],
+      "lfe_tail_recipe": "samples 1472..1535 alternate finite F32 +0.25 and -0.5",
+      "requested_projection": "gain_db_history_u32_words[64]"
+    },
+    {
+      "id": "refresh_projection_discriminator",
+      "source": 4,
+      "lanes": 5,
+      "blocks": 6,
+      "row_length": 217,
+      "raw_recipe": "raw[b][lane][k]=(3*b+5*lane+7*k) mod 25",
+      "work_initialization": "217 zeros per lane at frame start; later blocks consume prior work_after",
+      "structure_markers_by_lane": [
+        [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          1,
+          0,
+          1,
+          0,
+          1,
+          0
+        ]
+      ],
+      "requested_projection": "exponent_refresh_history_u16_words[30]",
+      "purpose": "distinguish marker, strategy, current base, work base, and raw exponent candidates"
+    },
+    {
+      "id": "normalized_anchor_reuse_discriminator",
+      "source": 4,
+      "lanes": 5,
+      "blocks": 6,
+      "row_length": 217,
+      "raw_recipe": "raw[b][lane][k]=(11*b+3*lane+5*k) mod 25",
+      "strategies_by_lane": [
+        [
+          1,
+          0,
+          2,
+          0,
+          0,
+          3
+        ],
+        [
+          2,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          3,
+          0,
+          1,
+          0,
+          2,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          3,
+          0
+        ],
+        [
+          2,
+          0,
+          1,
+          0,
+          0,
+          0
+        ]
+      ],
+      "normalization_option": 1,
+      "normalization_gate": 0,
+      "requested_projection": "normalized_anchor_u16_words[30]",
+      "purpose": "distinguish effective base, anchor-only base, reuse copy, first expanded exponent, and sentinel candidates"
+    },
+    {
+      "id": "selected_fbw_row_217",
+      "source": 4,
+      "decoded_exponent_shape": [
+        6,
+        5,
+        217
+      ],
+      "end_exclusive": 217,
+      "bandwidth_code": 48,
+      "consumer": "selected F12A and mantissa"
+    },
+    {
+      "id": "incorrect_selected_fbw_row_253",
+      "source": 4,
+      "decoded_exponent_shape": [
+        6,
+        5,
+        253
+      ],
+      "end_exclusive": 253,
+      "consumer": "claimed selected NumericPlan consumer",
+      "purpose": "selected-profile shape rejection; no tail fill supplied"
+    },
+    {
+      "id": "generic_scan_capacity_not_selected_shape",
+      "primary_scan_count": 253,
+      "selected_consumed_count": 217,
+      "purpose": "separate generic F09LB primitive capacity from selected semantic row length"
+    },
+    {
+      "id": "true_policy_state_cold",
+      "gain_previous_current_peak_f32_bits": [
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000"
+      ],
+      "gain_completed_blocks_u64": 0,
+      "db_selector_u16": 0,
+      "db_completed_blocks_u64": 0,
+      "operation": "start source 0"
+    },
+    {
+      "id": "gain_peak_cross_source_carry",
+      "gain_previous_current_peak_f32_bits": [
+        "3dcccccd",
+        "3e4ccccd",
+        "3e99999a",
+        "3ecccccd",
+        "3f000000",
+        "3f19999a"
+      ],
+      "gain_completed_blocks_u64": 17,
+      "source": 2,
+      "block": 5,
+      "block_pcm_recipe": "six finite 256-sample rows with distinct channel maxima",
+      "operation": "stage one successful block then continue through source boundary"
+    },
+    {
+      "id": "db_selector_cross_source_carry",
+      "db_selector_u16": 2,
+      "db_completed_blocks_u64": 17,
+      "source": 2,
+      "block": 5,
+      "block_mean_recipe": "five finite nonnegative FBW means chosen to trigger a selector transition; LFE mean present but excluded from maximum",
+      "operation": "stage one successful block then continue through source boundary"
+    },
+    {
+      "id": "policy_stage_failure_discards_state",
+      "gain_previous_current_peak_f32_bits": [
+        "3dcccccd",
+        "3e4ccccd",
+        "3e99999a",
+        "3ecccccd",
+        "3f000000",
+        "3f19999a"
+      ],
+      "gain_completed_blocks_u64": 18,
+      "db_selector_u16": 1,
+      "db_completed_blocks_u64": 18,
+      "failure_injection": "after F09G block result before parent commit"
+    },
+    {
+      "id": "source_local_work_not_root",
+      "fbw_work_shape": [
+        5,
+        217
+      ],
+      "lfe_work_shape": [
+        7
+      ],
+      "initial_value": 0,
+      "lifetime": "one source frame across six refresh calls",
+      "operation": "new next source allocates new zero work"
+    }
+  ]
+}

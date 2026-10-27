@@ -1,0 +1,11 @@
+{
+  "base_source_hashes_verified": 3,
+  "washed_supplement_manifest_hashes_verified": 3,
+  "provider_projection_hashes": {
+    "deployed_compat": "e5d18a8b140e768279ef0cc282aafc3495f42720030ed95522bf8ed240b221c5",
+    "etsi_emdf": "d4ba533d06ddf9bda330023891919e8a233ee8a12611eec051708012034b1687"
+  },
+  "implementation": "NOT_RUN",
+  "filesystem_io": "NOT_RUN",
+  "product_acceptance": "NOT_RUN"
+}

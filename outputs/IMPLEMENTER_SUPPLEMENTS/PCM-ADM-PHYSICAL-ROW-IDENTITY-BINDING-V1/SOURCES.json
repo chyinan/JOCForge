@@ -1,0 +1,75 @@
+{
+  "approved_sources": [
+    {
+      "file": "specs/01-frontend-config-dbmd-events.md",
+      "bytes": 13867,
+      "sha256": "afd9efc879ed9a4878bd967c1370275074efd2226e11e67eb86838f4168f61b7"
+    },
+    {
+      "file": "specs/01-bed-routing-and-source-geometry.md",
+      "bytes": 5510,
+      "sha256": "26e4220818d50227f75d5bc00e99840609d6a2023619e01328cb768bed4511b2"
+    },
+    {
+      "file": "specs/01-adm-graph-and-time.md",
+      "bytes": 6441,
+      "sha256": "c3abb599305392cdad7b43a1d8d45b1c1ae0466ff899f56caa3590d010a11f14"
+    },
+    {
+      "file": "specs/03-source-routing-and-feature-flags.md",
+      "bytes": 4830,
+      "sha256": "ef0a7bd95edc2adc63b07e752879b6ddefb817962b7b6fa44c77b4acb5c51f19"
+    }
+  ],
+  "f06of_reference_documents": [
+    {
+      "package_id": "F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1",
+      "manifest_sha256": "7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac",
+      "file": "CONTRACT.md",
+      "bytes": 4607,
+      "sha256": "d67791cf8ab2b2168bf61ab38c05beaafe7b5c799c084276c90a8bef8fd917b2"
+    },
+    {
+      "package_id": "F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1",
+      "manifest_sha256": "7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac",
+      "file": "COUNT-DOMAINS.csv",
+      "bytes": 1852,
+      "sha256": "157bdce0701ecf77be8fb9d1d4e21515aba52eda5ecc8c70eb7cbdc4bbbcbe79"
+    },
+    {
+      "package_id": "F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1",
+      "manifest_sha256": "7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac",
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 13212,
+      "sha256": "e06697bb73573fbd82e5c3f1665afccc30eb7893082b6a491c4e8ea3aa748d0e"
+    },
+    {
+      "package_id": "F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1",
+      "manifest_sha256": "7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac",
+      "file": "MODEL-BINDING.json",
+      "bytes": 6460,
+      "sha256": "9ec0e15d427c35ed82effb3f4d29ca5f687d631c026c67b2899524c18c4c4a82"
+    },
+    {
+      "package_id": "F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1",
+      "manifest_sha256": "7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac",
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 5562,
+      "sha256": "39ca2e3d9413f050d92a8fb1f6888fd94b73de34f280735e8042a28b96ff879d"
+    },
+    {
+      "package_id": "F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1",
+      "manifest_sha256": "7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac",
+      "file": "VERIFICATION.json",
+      "bytes": 867,
+      "sha256": "0c76bc35dd08ef3acbaa4f50943603cfe6767880797f2122dbefd5b88179760f"
+    },
+    {
+      "package_id": "F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1",
+      "manifest_sha256": "7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac",
+      "file": "WASH-DECISION.json",
+      "bytes": 704,
+      "sha256": "089769e2ccbd795c5c28f2a2723e761e3f9ed91200b9b9a5fcf13e4b76ec4e33"
+    }
+  ]
+}

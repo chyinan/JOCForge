@@ -1,0 +1,22 @@
+{
+  "approved_base_sources_hash_verified": 3,
+  "attempt_binding_payloads_hash_verified": 3,
+  "test_only_fixture_manifest_hash_verified": true,
+  "canonical_provider_hashes": {
+    "deployed_compat": "e5d18a8b140e768279ef0cc282aafc3495f42720030ed95522bf8ed240b221c5",
+    "etsi_emdf": "d4ba533d06ddf9bda330023891919e8a233ee8a12611eec051708012034b1687"
+  },
+  "research_source_code_read_or_forwarded": false,
+  "implementation_source_review": "NOT_RUN",
+  "provider_plan_execution": "NOT_RUN",
+  "filesystem_io": "NOT_RUN",
+  "product_acceptance": "NOT_RUN",
+  "test_only_output_owner_example": {
+    "package_id": "OUTPUT-OWNER-ROOT-V1",
+    "manifest_sha256": "d8d97f07d82d07dfa05772bb60bc90c6cab46e908f04366f24cc1398a16d169f",
+    "payloads_hash_verified": 7,
+    "output_provider_sha256": "8ee281ad7c0f524dc956b4a253fb3fa5240c8d2b32f40e99f8c24743de571458",
+    "production_allowed": false,
+    "use": "Field shape only; fixture execution evidence remains test-only."
+  }
+}

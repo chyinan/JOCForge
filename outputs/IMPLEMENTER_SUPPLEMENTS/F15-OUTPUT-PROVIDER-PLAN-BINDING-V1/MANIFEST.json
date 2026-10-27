@@ -1,0 +1,32 @@
+{
+  "package_id": "F15-OUTPUT-PROVIDER-PLAN-BINDING-V1",
+  "scope": "Validated encoding plan to F15 output-provider identity binding; local constructor decision only",
+  "files": [
+    {
+      "file": "CONTRACT.json",
+      "bytes": 5721,
+      "sha256": "34bb9759b2c1ea11a58f765856aaf52368d4d1fcb6248adbaa7b2a50b0ce6718"
+    },
+    {
+      "file": "SELECTED-OUTPUT-PROVIDER.json",
+      "bytes": 2480,
+      "sha256": "dfc7d1e7414953df804b88b69c389f11236d90764af013aab58679170e1644a6"
+    },
+    {
+      "file": "INPUT-ONLY-CASES.json",
+      "bytes": 1174,
+      "sha256": "356d7184e8794aaf502963ca0b60c725af367e4f5673ae7cecd7418ca9b2d4a5"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 1562,
+      "sha256": "f387219d0c758c2ebc610ebbd5d8c454c5ad96904244a502f787bc926e5a5f13"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 999,
+      "sha256": "1c6b08e8e6b448f2274420343fcb4430f1ae05cbf76905062a47dbc0599a1b0a"
+    }
+  ],
+  "implementation_execution": "NOT_RUN"
+}

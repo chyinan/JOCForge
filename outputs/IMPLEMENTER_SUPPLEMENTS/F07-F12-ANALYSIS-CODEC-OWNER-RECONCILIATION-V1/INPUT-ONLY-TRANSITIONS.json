@@ -1,0 +1,44 @@
+{
+  "schema": "selected-codec-root-input-only-vectors.v1",
+  "input_only": true,
+  "contains_user_pcm": false,
+  "contains_expected_au_bytes": false,
+  "vectors": [
+    {
+      "id": "cold_root",
+      "input": {"generation": 0, "next_source": 0, "history_recipe": "6x128 IEEE positive-zero F32 words", "previous_short": [0,0,0,0,0]},
+      "checks": ["canonical history word count768", "history bytes3072", "all rows distinct owners", "canonical serialize/digest deterministic"]
+    },
+    {
+      "id": "suppressed_source0_all_long",
+      "input": {"source": 0, "before": "cold_root", "short_flags_recipe": "30 integer zeros", "sample_recipe": "self-authored six-channel finite dyadic blocks; no user audio", "payload": "ABSENT_PUBLISHED_PAYLOAD_V1", "frame_result": "accepted complete4096/CRC0"},
+      "checks": ["stage six history rows once per block", "next previous_short all0", "return pending proposal", "parent commits once without AU append"]
+    },
+    {
+      "id": "suppressed_source1_mixed_short",
+      "input": {"source": 1, "before": "committed source0 root", "short_flags_recipe": "self-authored 6x5 I1 pattern with distinct block5 lane values", "sample_recipe": "self-authored finite dyadic blocks", "payload": "ABSENT_PUBLISHED_PAYLOAD_V1", "frame_result": "accepted complete4096/CRC0"},
+      "checks": ["long/short branches mutate the same per-lane128 history shape", "after previous_short equals block5 pattern", "commit once without AU append"]
+    },
+    {
+      "id": "candidate_infeasible_then_success",
+      "input": {"source": 2, "before": "committed source1 root", "candidate_outcomes": ["infeasible", "infeasible", "accepted"], "durable_append": "success"},
+      "checks": ["history and previous_short staged once", "failed candidate scratch discarded", "all candidates see identical staged state", "parent commits once after durable receipt"]
+    },
+    {
+      "id": "all_candidates_fail",
+      "input": {"source": 2, "before": "committed source1 root", "candidate_outcomes": "all infeasible"},
+      "checks": ["no proposal after-state admitted", "committed canonical codec bytes remain identical", "global lifecycle may retire", "no AU append"]
+    },
+    {
+      "id": "published_append_failure",
+      "input": {"source": 2, "frame_result": "accepted complete4096/CRC0", "durable_append": "failure after possible physical temp progress"},
+      "checks": ["codec proposal remains pending and is discarded", "committed codec root unchanged", "temporary artifact may be abandoned", "no logical AU commit"]
+    },
+    {
+      "id": "full_reset",
+      "input": {"before": "any committed or retired warm root", "action": "programme-origin full reset"},
+      "checks": ["recreate cold_root field-for-field", "generation0", "next_source0", "six positive-zero rows", "five previous_short zeros"]
+    }
+  ],
+  "boundary": "Recipes exercise ownership and transition semantics. They are not an independent transform numeric replay and contain no reference frame bytes."
+}

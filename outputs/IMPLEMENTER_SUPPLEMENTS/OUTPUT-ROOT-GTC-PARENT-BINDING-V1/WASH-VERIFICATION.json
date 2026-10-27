@@ -1,0 +1,9 @@
+{
+  "research_manifest_sha256": "1035121dba087ac1597044dd7b3929799bd1c9267826c1c6909a209a909407cf",
+  "payloads_verified": 3,
+  "approved_base_and_supplement_documents_verified": 16,
+  "implementation_execution": "NOT_RUN",
+  "filesystem_io": "NOT_RUN",
+  "runtime_or_native_equivalence": "NOT_RUN",
+  "scope": "Local selected F15/GTC output root interface composition only; no durability PASS claim"
+}

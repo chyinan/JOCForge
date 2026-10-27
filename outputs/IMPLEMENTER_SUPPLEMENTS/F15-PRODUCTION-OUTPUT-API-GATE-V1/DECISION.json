@@ -1,0 +1,29 @@
+{
+  "decision": "Until a trusted ValidatedEncodingPlan exists, disable the production arbitrary-provider to ProgrammeOutputBinding path and do not permit CLI staging/finalize from PreparedJobInput alone.",
+  "current_gap": "Implementation reports PreparedJobInput::bind_output accepts caller OutputProvider; no complete parent plan/provider-set receipt exists.",
+  "production_boundary": {
+    "PreparedJobInput": "input identity only",
+    "EncodingProfile": "six dimensions; resolve_selected_profile is admission only, not provider validation",
+    "OutputProvider": "private plan-derived value, not a caller authority",
+    "ProgrammeOutputBinding": "only parent plan constructor may mint it",
+    "CLI staging/finalize": "requires unforgeable production binding; without plan, no production route"
+  },
+  "test_harness": "Keep synthetic provider/binding behind cfg(test), internal test helper or non-default dev-only test-support feature; production CLI must not enable it.",
+  "future_plan_minimum": [
+    "ProgrammeId/resource SHA/config SHA/N from same PreparedJobInput",
+    "full six-dimensional EncodingProfile and carriage",
+    "approved package/F15 manifest identities plus actual selected provider receipt lineage",
+    "plan-derived F15 OutputProvider projection/hash",
+    "typed AttemptId and separate opaque staging owner/destination bound to same programme"
+  ],
+  "pre_io_reject": [
+    "missing/test-only plan token",
+    "input/resource/config/N mismatch",
+    "unsupported profile/carriage",
+    "provider manifest/receipt mismatch",
+    "caller provider or hash differs from private plan projection",
+    "attempt/programme/staging owner/destination mismatch"
+  ],
+  "owner_boundary": "F15 proposals/receipts become logical output only at existing GTC parent commit; no early leaf commit, overwrite authority or filesystem rollback claim.",
+  "scope": "API authority boundary only; does not create ValidatedEncodingPlan or certify runtime publication."
+}

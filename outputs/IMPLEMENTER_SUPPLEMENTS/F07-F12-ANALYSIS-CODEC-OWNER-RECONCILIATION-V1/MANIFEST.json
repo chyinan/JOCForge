@@ -1,0 +1,28 @@
+{
+  "package_id": "F07-F12-ANALYSIS-CODEC-OWNER-RECONCILIATION-V1",
+  "scope": "Supersedes only conflicting F07_F12 V5 codec-root transform/scratch field projection; assigns six primary histories to existing Analysis owner",
+  "files": [
+    {
+      "file": "AMENDMENT.md",
+      "bytes": 3738,
+      "sha256": "8aeb73501a4d5641f25706370e7c877cbad1b310458534598f8ab934609d9acf"
+    },
+    {
+      "file": "INPUT-ONLY-TRANSITIONS.json",
+      "bytes": 3005,
+      "sha256": "08317238309fd4704753298f86bfb6e277cadbd659423edcd29336b14c2cf36c"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 3150,
+      "sha256": "ee4b0f28bbaac9a25e30eb60b87839b2770b95d6dbdc03e2bfc9ba31d7b19113"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 442,
+      "sha256": "b688fcd2d9506fc76dcdd7552706abf455354ac745cd89e96e7c21c9e657252e"
+    }
+  ],
+  "native_equivalence": "NOT_RUN",
+  "product_acceptance": "NOT_RUN"
+}

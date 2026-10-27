@@ -1,0 +1,26 @@
+{
+  "package_id": "METER-DRC-STANDALONE-ROOT-BINDING-V1",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 7314,
+      "sha256": "a7477a63de3fdd3b0a9a74ece12885330820a0ed12e2204a71ff76349c80a2bd"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1650,
+      "sha256": "00c08621f6ca5600be5873355f2a4ef9ae254a6ade680c9ae18d0087401709d1"
+    },
+    {
+      "file": "SOURCE-REFERENCES.json",
+      "bytes": 5134,
+      "sha256": "263a6d0c2b4ddc75bd335dcd2c930b597a31a115ecddb396b125a8fa91b5f457"
+    },
+    {
+      "file": "STATUS-AND-VERIFICATION.json",
+      "bytes": 1609,
+      "sha256": "628e1f14f2942fc7540b342940e0fc919ba52a5d4c3a60823f8a9691a22bc4a7"
+    }
+  ],
+  "production_execution": "NOT_RUN"
+}

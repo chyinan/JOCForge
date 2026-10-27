@@ -1,0 +1,32 @@
+{
+  "package_id": "F09-F10-STAGE-CONTROL-ADAPTER-V1",
+  "scope": "Selected F09/F10 stage-control adapter mappings only; source frame algorithm values remain governed by approved contracts",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 8172,
+      "sha256": "3f629194864d43e830b80a5cb19e16e409ba55445853868b48900d4a74576164"
+    },
+    {
+      "file": "FIELD-MAP.json",
+      "bytes": 2716,
+      "sha256": "b39fb4a4f847b4f935960e8fa7a5acd8e460e074e429414001aa378c65f896e0"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 3388,
+      "sha256": "405b442a1f29466282ab7fd4161faa617966fb387c1485541c4dde36bcdeffb2"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 3523,
+      "sha256": "9737f8d8ecf881c59daee1d7e7c4c38b4a9e0a03880d5f73481920e07abb54f2"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 613,
+      "sha256": "0595f33b1c5f66b3f003b069b57170981d836439b421f3943df9027f428c0dc2"
+    }
+  ],
+  "implementation_execution": "NOT_RUN"
+}

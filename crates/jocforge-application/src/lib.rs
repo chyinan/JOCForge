@@ -1,9 +1,9 @@
 // pattern: Functional Core
 //! Selected input value preparation and the currently unavailable encode boundary.
 
+pub use jocforge_domain::frontend::job_configuration::SelectedWaveDescriptor;
 use jocforge_domain::frontend::job_configuration::{
-    JobConfigurationError, SelectedJobConfiguration, SelectedWaveDescriptor,
-    parse_selected_job_configuration,
+    JobConfigurationError, SelectedJobConfiguration, parse_selected_job_configuration,
 };
 use jocforge_domain::frontend::{
     adm_file_storage_map::{
@@ -15,7 +15,7 @@ use jocforge_domain::frontend::{
 };
 use jocforge_domain::state::EncodeError;
 use jocforge_domain::timeline::{AdmSampleCount, ClockError};
-use jocforge_domain::transaction::ProgrammeId;
+pub use jocforge_domain::transaction::ProgrammeId;
 use serde_json::{Map, Value, json};
 use sha2::{Digest, Sha256};
 use std::collections::BTreeMap;

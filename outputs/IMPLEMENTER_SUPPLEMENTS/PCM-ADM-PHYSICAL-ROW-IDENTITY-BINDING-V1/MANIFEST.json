@@ -1,0 +1,20 @@
+{
+  "package_id": "PCM-ADM-PHYSICAL-ROW-IDENTITY-BINDING-V1",
+  "files": [
+    {
+      "file": "CONTRACT.json",
+      "bytes": 3703,
+      "sha256": "e2cba0586f94b12f4117aa7ce14331bb9d957d6053d524ce5b781441342207be"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 2919,
+      "sha256": "7f61a6eb8a99cc8a82836b4ac1affd952a25bd863e5796b41c5dae1128648a6d"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 492,
+      "sha256": "3db90b50909fa7824be201acd97dd794a13a051ce2420cc0434e5e64b3e824c6"
+    }
+  ]
+}

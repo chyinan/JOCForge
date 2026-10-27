@@ -100,27 +100,43 @@ fn successful_writer_transfers_exact_owned_body_and_explicit_generation() {
     let inputs: Vec<Value> = serde_json::from_slice(PAYLOADS[6].1).unwrap();
     let mut successes = 0;
     let mut failures = 0;
+    let mut scratch_failures = 0;
+    let mut writer_failures = 0;
     for case in &inputs {
         let Ok(output) = write_selected_id14_coefficient_payload(&coefficient_input(case)) else {
             continue;
         };
         let expected = output.payload().map(<[u8]>::to_vec);
         let length = output.output_length_bytes();
+        let original = output.clone();
         let generation = CodecSourceIndex::new(23);
-        let body = output.into_metadata_body(generation);
+        let body = output.try_into_metadata_body(generation);
         match (expected, body) {
-            (Some(expected), Some(body)) => {
+            (Some(expected), Ok(body)) => {
                 assert_eq!(body.writer_generation, generation);
                 assert_eq!(body.bytes, expected);
                 assert_eq!(Some(body.bytes.len() as u64), length);
                 successes += 1;
             }
-            (None, None) => failures += 1,
+            (None, Err(outcome)) => {
+                assert_eq!(outcome, original);
+                assert!(outcome.descriptor_copy().is_none());
+                if outcome.coefficient_scratch_exceeded() {
+                    assert_eq!(outcome.writer_return_code(), None);
+                    scratch_failures += 1;
+                } else {
+                    assert!(outcome.writer_return_code().is_some());
+                    writer_failures += 1;
+                }
+                failures += 1;
+            }
             _ => panic!("writer success and metadata admission disagree"),
         }
     }
     assert!(successes > 0);
     assert!(failures > 0);
+    assert!(scratch_failures > 0);
+    assert!(writer_failures > 0);
 }
 
 #[test]

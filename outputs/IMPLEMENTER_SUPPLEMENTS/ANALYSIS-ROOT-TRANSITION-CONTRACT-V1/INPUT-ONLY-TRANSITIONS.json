@@ -1,0 +1,136 @@
+{
+  "schema": "analysis-root-input-only-transitions.v1",
+  "input_only": true,
+  "expected_state_words_included": false,
+  "expected_hashes_included": false,
+  "PCM_included": false,
+  "frame_body_included": false,
+  "provider_set": {
+    "transient": "130cd1a446ea8413a1d0d4c5eea631e890b7f1cd675975efa92697e258402991",
+    "transform": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1",
+    "policy": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a",
+    "difference_map": "6cf3ae8d899b334d5aa87e0744e4c58b7dba1d92177ca07738726f8ea0ee2c6d"
+  },
+  "cases": [
+    {
+      "id": "cold_source0_success",
+      "attempt": 0,
+      "source": 0,
+      "before_generations": {
+        "input_history": 0,
+        "transient": 0,
+        "transform": 0,
+        "policy": 0
+      },
+      "before_state": "COLD_SCHEMA_VALUE",
+      "operations": [
+        "prepare_shared_analysis_once",
+        "consume_f06",
+        "complete_f08_f09_f10_six_blocks",
+        "consume_f12_with_accepted_candidate",
+        "parent_commit_once"
+      ]
+    },
+    {
+      "id": "f06_failure_after_f07_stage",
+      "attempt": 0,
+      "source": 7,
+      "before_generations": {
+        "input_history": 7,
+        "transient": 7,
+        "transform": 7,
+        "policy": 7
+      },
+      "before_state": "VALID_COMMITTED_ROOT",
+      "operations": [
+        "prepare_shared_analysis_once",
+        "inject_F06_secondary_failure"
+      ]
+    },
+    {
+      "id": "double_prepare_rejected",
+      "attempt": 0,
+      "source": 1,
+      "before_generations": {
+        "input_history": 1,
+        "transient": 1,
+        "transform": 1,
+        "policy": 1
+      },
+      "before_state": "VALID_COMMITTED_ROOT",
+      "operations": [
+        "prepare_shared_analysis_once",
+        "prepare_shared_analysis_second_call"
+      ]
+    },
+    {
+      "id": "numeric_plan_wrong_source_rejected",
+      "attempt": 0,
+      "source": 2,
+      "before_generations": {
+        "input_history": 2,
+        "transient": 2,
+        "transform": 2,
+        "policy": 2
+      },
+      "before_state": "VALID_COMMITTED_ROOT",
+      "operations": [
+        "prepare_shared_analysis_once",
+        "request_numeric_plan_for_source_3"
+      ]
+    },
+    {
+      "id": "transform_provider_mismatch_rejected",
+      "attempt": 0,
+      "source": 2,
+      "before_generations": {
+        "input_history": 2,
+        "transient": 2,
+        "transform": 2,
+        "policy": 2
+      },
+      "before_state": "VALID_COMMITTED_ROOT",
+      "provider_override": {
+        "transform_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "operations": [
+        "prepare_shared_analysis_once",
+        "begin_f08"
+      ]
+    },
+    {
+      "id": "f12_plan_generation_mismatch_rejected",
+      "attempt": 0,
+      "source": 3,
+      "before_generations": {
+        "input_history": 3,
+        "transient": 3,
+        "transform": 3,
+        "policy": 3
+      },
+      "before_state": "VALID_COMMITTED_ROOT",
+      "operations": [
+        "prepare_shared_analysis_once",
+        "complete_f08_f09_f10_six_blocks",
+        "present_numeric_plan_with_generation_5_to_f12"
+      ]
+    },
+    {
+      "id": "full_restart_to_cold",
+      "attempt": 0,
+      "source": 9,
+      "before_generations": {
+        "input_history": 9,
+        "transient": 9,
+        "transform": 9,
+        "policy": 9
+      },
+      "before_state": "RETIRED_VALID_ROOT",
+      "operations": [
+        "full_restart_attempt_1",
+        "construct_cold_analysis_root",
+        "start_source_0"
+      ]
+    }
+  ]
+}

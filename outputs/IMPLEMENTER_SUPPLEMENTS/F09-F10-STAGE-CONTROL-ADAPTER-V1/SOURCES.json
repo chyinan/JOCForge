@@ -1,0 +1,104 @@
+{
+  "approved_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_sources": [
+    {
+      "id": "specs/07-history-and-transient.md",
+      "bytes": 15770,
+      "sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac"
+    },
+    {
+      "id": "specs/09-exponents.md",
+      "bytes": 9722,
+      "sha256": "41cd157140d0deaab51fa9a895c33758cb49eb46cf5844a2883c1d6e8bb81739"
+    },
+    {
+      "id": "specs/09-lfe-gate-mantissa-boundaries.md",
+      "bytes": 4786,
+      "sha256": "9aff19192a8b5cba7db8bec26b05106edf214b4149a5f1c9d4be040691c80951"
+    },
+    {
+      "id": "specs/10-exponent-normalization.md",
+      "bytes": 5969,
+      "sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc"
+    },
+    {
+      "id": "specs/12-selected-source-frame-composition.md",
+      "bytes": 10843,
+      "sha256": "9e6fcc14489ca0acaff0f7c223fce65539aa5b19cb4119ebcb34d19049cd0769"
+    },
+    {
+      "id": "parameters/policy-authorized-v1.json",
+      "bytes": 4559,
+      "sha256": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a"
+    },
+    {
+      "id": "test-vectors/EXPONENT-REFRESH-DIFFERENCE-MATH-VERIFICATION.json",
+      "bytes": 3664,
+      "sha256": "bc8841bce23069d392d67f59bf06ae5ab7e6e6b7fb6ae0f17396e03c2a8767b8"
+    },
+    {
+      "id": "test-vectors/POLICY-AUTHORIZED-INPUT-VECTORS.json",
+      "bytes": 4893,
+      "sha256": "afed7b0fdd7b80374a63cfb0b5922d6c988ea0c4a4417f09d2f28af5de462bc5"
+    },
+    {
+      "id": "test-vectors/POLICY-AUTHORIZED-RESULT.json",
+      "bytes": 20240,
+      "sha256": "2cbca405e9af2cf6f95e8bc36546a387ed7f26ff73afd222715e9bf720136849"
+    },
+    {
+      "id": "test-vectors/unit/ADAPTER-CONTRACT.md",
+      "bytes": 22205,
+      "sha256": "9bce2e35ce47147c76c13e58ee976d44c5109938f0b19e1f3a81f1d8a61fa1ae"
+    }
+  ],
+  "frozen_anchors": [
+    {
+      "id": "ordinary_exponent_refresh_candidate_core_rev1.py",
+      "bytes": 6342,
+      "sha256": "71d5d13eba59e6a985b94e13f323eb6fa0bb5e39af6159d5a1b27e9b8c069c50",
+      "text_available_now": false
+    },
+    {
+      "id": "ordinary_exponent_group_plan_mixed_candidate_core_rev3.py",
+      "bytes": 11754,
+      "sha256": "f78703472952d5808811f43583bab784348cfbb167a3595899ec8b969842511b",
+      "text_available_now": false
+    },
+    {
+      "id": "ordinary_lfe_dynamic_exponent_core_rev1.py",
+      "bytes": 3174,
+      "sha256": "97b8a7470bf2d3d60836e44fddbf8789edb67708d5d0a80883c506e2af7f4c2e",
+      "text_available_now": false
+    },
+    {
+      "id": "ordinary_lfe_normalize_a4390_core_rev1.py",
+      "bytes": 4253,
+      "sha256": "fde07b706d20a844f829eec816a5cd0859980f7ede4ae4c2f96c9eeeee375677",
+      "text_available_now": false
+    }
+  ],
+  "research_comparison_source_identities": [
+    {
+      "id": "authorized_policy_delivery_core.py",
+      "bytes": 18094,
+      "sha256": "45ca0c6d6083cb5c2dcb48632c3f3304c99b8c547bbef94e3809dcdd0fe0d409"
+    },
+    {
+      "id": "verify_authorized_policy_delivery.py",
+      "bytes": 12921,
+      "sha256": "a7efefa46d0979961d1283a4a0691eff37c85aa0f548c79f4573042589c04622"
+    },
+    {
+      "id": "POLICY-PARAMETER-RESEARCH-VERIFICATION.json",
+      "bytes": 66475,
+      "sha256": "81efef10591f0d76c374fd4302d4e82979585a7b9627536ee579cda28fe7d3da"
+    },
+    {
+      "id": "FRESH-IDENTITY-VERIFICATION.json",
+      "bytes": 3714023,
+      "sha256": "de498d7e78190dba9c1c1312cff2679c00f18f2c4bd69712f63552c10be01763"
+    }
+  ],
+  "frozen_anchor_text_available": false
+}

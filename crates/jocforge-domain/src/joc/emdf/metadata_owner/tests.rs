@@ -362,6 +362,8 @@ fn eof_is_a_leaf_proposal_with_no_source_receipt_or_flush() {
 
     let eof = owner.prepare_eof(5).unwrap();
     assert_eq!(owner.id1_configuration, programme_configuration);
+    assert_eq!(eof.programme_id(), &owner.programme_id);
+    assert_eq!(eof.attempt(), owner.attempt);
     assert_eq!(
         eof.as_json(),
         json!({

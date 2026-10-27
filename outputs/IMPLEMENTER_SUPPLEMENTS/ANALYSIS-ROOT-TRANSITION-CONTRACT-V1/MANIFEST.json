@@ -1,0 +1,32 @@
+{
+  "package_id": "ANALYSIS-ROOT-TRANSITION-CONTRACT-V1",
+  "scope": "Selected standalone analysis GTC root only",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 8641,
+      "sha256": "15054dea8974711ccee543a01949b239e54524f4e06d2cebe9d68b0d858bbbf9"
+    },
+    {
+      "file": "ANALYSIS-ROOT-SCHEMA.json",
+      "bytes": 3491,
+      "sha256": "614820b96a89324f1958971da6f206aab0a171599e34b49b425a01546fc861b8"
+    },
+    {
+      "file": "INPUT-ONLY-TRANSITIONS.json",
+      "bytes": 3606,
+      "sha256": "0da5c96b39b89ce5e1b258b24b21eb5d64d8f4e210d405cf4db29050f00c8823"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 3534,
+      "sha256": "33d4343bbc6944d3a9fce441ef220b0dfe41265a49c70486f11280d0c33e0583"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 876,
+      "sha256": "ba5c0d667f67d320e036982103d4e5b5cff28415e1cbd5549cc20975727afb8c"
+    }
+  ],
+  "production_execution": "NOT_RUN"
+}

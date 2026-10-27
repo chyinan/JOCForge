@@ -1,0 +1,25 @@
+{
+  "input_only": true,
+  "cases": [
+    {
+      "id": "prepared_input_plus_arbitrary_provider",
+      "expected": "production binding rejected/unavailable"
+    },
+    {
+      "id": "synthetic_test_provider",
+      "expected": "test harness only"
+    },
+    {
+      "id": "validated_parent_plan",
+      "expected": "binding permitted after identity checks"
+    },
+    {
+      "id": "provider_sha_or_profile_mismatch",
+      "expected": "reject before staging open"
+    },
+    {
+      "id": "stale_attempt_or_staging_owner",
+      "expected": "reject before IO"
+    }
+  ]
+}

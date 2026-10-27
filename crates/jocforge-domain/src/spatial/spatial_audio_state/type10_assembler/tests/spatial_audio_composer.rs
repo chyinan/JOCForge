@@ -9,12 +9,15 @@ use crate::{
         },
     },
     joc::{
-        dispatch_state::JocPayloadInput,
-        emdf::{metadata_bodies::assemble_metadata_bodies, metadata_owner::MetadataPayloadBody},
+        coefficient_fitting::CoefficientFitState,
+        coefficient_representation::RepresentationRetryProvider,
+        dispatch_state::{JocDispatchState, JocPayloadInput},
+        fit_score::FitScoreProvider,
         oamd::reader_target::{
             HistoryProducerGeneration, ReaderTargetCallbackInputs, ReaderTargetState,
             SELECTED_PROFILE_ID, stage_reader_target,
         },
+        source_stage::stage_joc_source,
     },
     spatial::{
         DescriptorMathematicalProvider, QmfMathematicalFftProvider, QmfReceiverFunctionalProvider,
@@ -45,6 +48,12 @@ const DESCRIPTOR_BYTES: &[u8] =
     include_bytes!("../../../../../tests/fixtures/f04_parameters/descriptor-mathematical.json");
 const JOB_CONFIGURATION_VECTORS: &[u8] = include_bytes!(
     "../../../../../tests/fixtures/job_configuration/job-configuration-vectors.json"
+);
+const JOC_FUNCTIONAL_BYTES: &[u8] = include_bytes!(
+    "../../../../../tests/fixtures/synthetic_qmf_fit_checkpoints/approved-joc-functional.json"
+);
+const JOC_MATH_BYTES: &[u8] = include_bytes!(
+    "../../../../../tests/fixtures/synthetic_qmf_fit_checkpoints/approved-joc-math.json"
 );
 const READER_ATTEMPT_ID: crate::transaction::AttemptId = crate::transaction::AttemptId::new(7);
 
@@ -251,16 +260,34 @@ fn full_parent_advances_priming_then_preserves_ready_target_lineage() {
                     target_receipt.semantic_sha256()
                 );
                 assert_eq!(projection.receiver_generation_after().value(), 1);
-                let bodies = assemble_metadata_bodies(
-                    &configuration,
+                let score_provider =
+                    FitScoreProvider::from_approved_bytes(JOC_FUNCTIONAL_BYTES, JOC_MATH_BYTES)
+                        .expect("selected JOC fit-score providers validate");
+                let retry_provider =
+                    RepresentationRetryProvider::from_approved_bytes(JOC_FUNCTIONAL_BYTES)
+                        .expect("selected ID14 representation provider validates");
+                let joc_source = stage_joc_source(
+                    &CoefficientFitState::cold(),
+                    &JocDispatchState::cold(),
                     &projection,
-                    target_receipt,
-                    MetadataPayloadBody {
-                        writer_generation: projection.source_index(),
-                        bytes: vec![0x40],
-                    },
+                    &providers.functional,
+                    &score_provider,
+                    &retry_provider,
                 )
-                .expect("available ID11, ID2 and ID14 bodies share one source lineage");
+                .expect("same-source F05JL stage supplies its complete ID14 body");
+                assert_eq!(
+                    joc_source.lineage().source_index(),
+                    projection.source_index()
+                );
+                assert_eq!(joc_source.dispatch_after().sequence_counter(), 0);
+                assert_eq!(joc_source.dispatch_after().successful_dispatches(), 1);
+                assert_eq!(
+                    joc_source.id14_body().writer_generation,
+                    projection.source_index()
+                );
+                let bodies = joc_source
+                    .assemble_metadata_bodies(&configuration, &projection, target_receipt)
+                    .expect("same-dispatch ID14 writer body joins the F13 body barrier");
                 assert_eq!(bodies.lineage().source_index(), projection.source_index());
                 assert_eq!(bodies.lineage().dispatch(), projection.dispatch());
                 assert_eq!(
@@ -268,7 +295,9 @@ fn full_parent_advances_priming_then_preserves_ready_target_lineage() {
                     target_receipt.id11_body()
                 );
                 assert_eq!(bodies.bodies().id2.as_ref().unwrap().bytes.len(), 3);
-                assert_eq!(bodies.bodies().id14.as_ref().unwrap().bytes, [0x40]);
+                let id14 = bodies.bodies().id14.as_ref().unwrap();
+                assert_eq!(id14.writer_generation, projection.source_index());
+                assert!(!id14.bytes.is_empty());
             }
         }
         context.spatial_audio.admit_staged_for_test(staged);

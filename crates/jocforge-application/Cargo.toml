@@ -5,6 +5,9 @@ edition.workspace = true
 license.workspace = true
 rust-version.workspace = true
 
+[features]
+test-support = []
+
 [dependencies]
 jocforge-domain = { path = "../jocforge-domain" }
 serde_json = { version = "=1.0.154", default-features = false, features = ["std"] }

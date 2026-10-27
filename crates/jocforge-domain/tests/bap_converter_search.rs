@@ -1,7 +1,7 @@
 use std::convert::Infallible;
 
 use jocforge_domain::codec::bap::{
-    BapBlock, BapFrame, BapFrameInput, BapOutputError, BapProfileInput, BapRowInput,
+    BapBlock, BapError, BapFrame, BapFrameInput, BapOutputError, BapProfileInput, BapRowInput,
     CONVERTER_FAST_GAIN_CODE, MAIN_FAST_GAIN_CODE, allocate_bap_frame, allocate_bap_row,
     load_bap_parameters,
 };
@@ -108,6 +108,21 @@ fn bap_row_input(
         caller_all_active_fine_zero,
         profile: BapProfileInput::selected(),
     }
+}
+
+#[test]
+fn selected_fullband_row_consumes_217_bins_and_rejects_253_capacity() {
+    let selected_row = [24_u8; 217];
+    let selected = bap_row_input(&selected_row, 217, 16, MAIN_FAST_GAIN_CODE, true);
+    let allocated = allocate_bap_row(Some(PUBLIC_BAP_PROVIDER), &selected).unwrap();
+    assert_eq!(allocated.len(), 217);
+
+    let generic_scan_capacity = [24_u8; 253];
+    let rejected = bap_row_input(&generic_scan_capacity, 253, 16, MAIN_FAST_GAIN_CODE, true);
+    assert_eq!(
+        allocate_bap_row(Some(PUBLIC_BAP_PROVIDER), &rejected),
+        Err(BapError::UnsupportedProfile)
+    );
 }
 
 fn recipe_exponents(id: &str, end: usize) -> Vec<u8> {

@@ -1,0 +1,43 @@
+{
+  "approved_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_base_sources": [
+    {
+      "file": "parameters/keyless-publication-providers-v1.json",
+      "bytes": 11388,
+      "sha256": "a2cf06839d3da81d14240ccd6526eebc0b878721d48a03fd0d0813f26961f6ce"
+    },
+    {
+      "file": "specs/15-keyless-publication.md",
+      "bytes": 8329,
+      "sha256": "47beaa9d415d6d26eb8d6a7df63ca3d86514c37740618c3a041a46c7961b3a72"
+    },
+    {
+      "file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
+      "bytes": 12153,
+      "sha256": "74c8e4a60600187783e559459b426aada2508ae273f95401c9a4234aee4504b4"
+    }
+  ],
+  "approved_attempt_binding": {
+    "manifest_sha256": "4213be803667406082571ece3d7e7dc0c22694796e6bca13242fc60addbf63f6",
+    "payloads": [
+      {
+        "file": "CONTRACT.json",
+        "sha256": "6f45f7d82a869c9bf9914d027f40c0b905fdc210d122390c0c5b7c3c3193602a"
+      },
+      {
+        "file": "INPUT-ONLY-CASES.json",
+        "sha256": "e4103604eecce3a0e92ceaa11f6589bd69a1be6539b6e18b6f1cb9833e0771fd"
+      },
+      {
+        "file": "SOURCES-AND-DECISION.json",
+        "sha256": "a9ab76c41791014e96afe6efe4e8f5b4196d57ebd66a7646ddefcc9080c82644"
+      }
+    ]
+  },
+  "test_only_output_owner_example": {
+    "package_id": "OUTPUT-OWNER-ROOT-V1",
+    "manifest_sha256": "d8d97f07d82d07dfa05772bb60bc90c6cab46e908f04366f24cc1398a16d169f",
+    "production_allowed": false,
+    "use": "Schema/example shape only; not promoted as production provider identity or evidence."
+  }
+}

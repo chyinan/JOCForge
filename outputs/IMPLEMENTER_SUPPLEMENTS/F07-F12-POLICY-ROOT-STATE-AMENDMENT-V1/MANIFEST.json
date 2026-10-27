@@ -1,0 +1,28 @@
+{
+  "package_id": "F07-F12-POLICY-ROOT-STATE-AMENDMENT-V1",
+  "scope": "Supersedes three selected F07_F12 policy persistent projection fields with actual F09G cross-source states; leaves numerical rules intact",
+  "files": [
+    {
+      "file": "POLICY-ROOT-AMENDMENT.json",
+      "bytes": 3356,
+      "sha256": "345d19ad19646bb8b38516417c7a9c7a79f4b8dd897d55c7031c028b9e1a4ef2"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 5420,
+      "sha256": "0c0fed50ae080623ec62771a2cfeaa0fd562a3c694db08cf2d1e9aa213a5a039"
+    },
+    {
+      "file": "SOURCES-AND-DECISION.json",
+      "bytes": 4620,
+      "sha256": "75d4612710fe3acb60ec3a152ff978899d31f2f4190cc5cd922374544420176c"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 484,
+      "sha256": "eaf66b366e4835b90501bb1f2a50a1f3c08de817bcb73f78e5f289a50971c33c"
+    }
+  ],
+  "implementation_execution": "NOT_RUN",
+  "product_acceptance": "NOT_RUN"
+}

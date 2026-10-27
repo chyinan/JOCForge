@@ -1,0 +1,52 @@
+{
+  "input_only": true,
+  "cases": [
+    {
+      "id": "first-dispatch",
+      "g": 2,
+      "r": 0,
+      "d": 1,
+      "s": 0,
+      "receiver_after_generation": 1,
+      "clip_index": 128,
+      "sequence_before": -1,
+      "sequence": 0,
+      "sequence_after": 0
+    },
+    {
+      "id": "second-dispatch",
+      "g": 3,
+      "r": 1,
+      "d": 2,
+      "s": 1,
+      "receiver_after_generation": 2,
+      "clip_index": 255,
+      "sequence_before": 0,
+      "sequence": 0,
+      "sequence_after": 1
+    },
+    {
+      "id": "stale-descriptor-generation",
+      "expected": "reject before ID14 writer"
+    },
+    {
+      "id": "gain-table-mismatch",
+      "expected": "reject before ID14 writer"
+    },
+    {
+      "id": "capacity-retry",
+      "expected": "all retries same clip index and sequence; no sequence advancement until full body succeeds"
+    },
+    {
+      "id": "sequence-wrap",
+      "sequence_before": 1023,
+      "wire_sequence": 1023,
+      "sequence_after": 1
+    },
+    {
+      "id": "F13-consumption",
+      "expected": "consume same immutable complete ID14 body and writer receipt; no header field recomputation"
+    }
+  ],
+  "audio_or_expected_body_included": false
+}

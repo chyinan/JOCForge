@@ -1,0 +1,22 @@
+{
+  "scope": "Selected 38-channel PCM physical row ↔ CHNA track/ADM/DBMD/source joins and meter-cursor provenance",
+  "physical_row": "RIFF decoder planar row ordinal is physical interleaved channel ordinal 0..37. For a selected ADM/CHNA track, row=track_index-1 (track_index 1..38); preserve track/row association in the map. F06OF explicitly states physical_slot=track_index-1 and CHNA entry order does not reorder PCM rows.",
+  "converter_input_id": "ConverterChannelInputId is a semantic routing identifier stored alongside the physical slot: bed branch carries bed_input_id; object branch carries semantic_key. It is not a PCM row number, CHNA track index or sufficient inverse key. Resolve ID via the validated slot-keyed map; select planar PCM row by physical track slot only. Do not assume ConverterChannelInputId uniqueness (object semantic IDs/bed identities have separate domains).",
+  "descriptor_and_source_owner": "Prepared graph/CHNA track row carries track_index, host physical slot and identity; DBMD per-track arrays bind by same physical host/track row under F01E.5. Meter/prepass uses the same physical row ordering and resource-bound prepared input; do not reorder by CHNA list, pack ordinal, semantic key, object owner ordinal or codec source index.",
+  "resource_identity": "PreparedJobInput selected resource SHA must equal ParsedRiffPcm24 full-resource SHA and MeterPcmSourceCursor source identity. Parsed sample extent N must equal prepared source sample count and cursor extent. Graph/AXML/CHNA provenance must belong to that same prepared resource.",
+  "clock_and_read": "Cursor proposal binds callback_index, upstream_generation=next callback generation, phase, source_cursor_before/after, host_input_count and source_padding_count. Normal callback g reads exactly A=min(1536,N-cursor) complete frames into each physical planar row; decoder must return actual_frames=A or fail. Advance cursor by actual decoded frames only after parent stage commit. Pad each physical row from A to1536 with positive zero. EOF/drain is determined from validated N/cursor schedule, never inferred from short read or arithmetic failure.",
+  "drain": "After Q=ceil(N/1536) normal source callbacks, selected meter schedule uses exactly3 zero-input callbacks: host_input_count=0, cursor=N and38 zero rows. This is its own meter schedule, distinct from main encoder four cached drains; downstream meter state advances while input cursor stays at N.",
+  "preflight_and_errors": [
+    "reject row count !=38, CHNA track_index zero/outside1..38, duplicate/missing physical slots, duplicate semantic route entries where applicable, resource SHA or extent mismatch, row length not equal host_input_count, actual read count != expected complete-frame A, stale callback/upstream generation, wrong phase, cursor discontinuity, arithmetic overflow",
+    "no partial rows or cursor/root mutation is published on failure; no sample-level retry or fabricated EOF"
+  ],
+  "identity_domains": {
+    "physical_pcm_row": "zero-based interleaved/planar channel ordinal",
+    "track_index": "one-based CHNA track identity; physical row=track_index-1",
+    "host_channel_index": "zero-based physical control/DBMD track slot, validated to same track record",
+    "converter_channel_input_id": "semantic route value associated with track slot, not row key",
+    "global_codec_source": "separate 0..47 route domain",
+    "callback": "meter/main callback clock and resource generation, not source/AU index"
+  },
+  "verification_boundary": "Wash checked approved source identities and F06OF materialized payload identities; this is a field binding contract, not fresh PCM/native execution or full integrative proof."
+}

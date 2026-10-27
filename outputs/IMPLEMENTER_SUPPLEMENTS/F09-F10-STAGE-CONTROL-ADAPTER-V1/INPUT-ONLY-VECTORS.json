@@ -1,0 +1,188 @@
+{
+  "schema": "f09-f10-stage-control-input-only.v1",
+  "input_only": true,
+  "expected_rows_included": false,
+  "expected_markers_or_strategies_included": false,
+  "PCM_included": false,
+  "cases": [
+    {
+      "id": "fbw_structure_other",
+      "short_consumed": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "other_consumed": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "spx": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "end_bin": [
+        217,
+        217,
+        217,
+        217,
+        217,
+        217
+      ],
+      "lane": "L"
+    },
+    {
+      "id": "fbw_structure_short_transition",
+      "short_consumed": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        1
+      ],
+      "other_consumed": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "spx": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "end_bin": [
+        217,
+        217,
+        217,
+        217,
+        217,
+        217
+      ],
+      "lane": "C"
+    },
+    {
+      "id": "fbw_refresh_marker_upgrade",
+      "current_recipe": "(7*block+5*lane+3*bin) mod 25",
+      "work_initial": [
+        0
+      ],
+      "row_length": 217,
+      "active_length": 128,
+      "active_mode": 1,
+      "special_mode": 0,
+      "structure_marker_before": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "fbw_strategy_span_and_reuse",
+      "refresh_decision": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "short_consumed": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      "purpose": "exercise reverse distance selection, short override, anchor spans, and reuse blocks"
+    },
+    {
+      "id": "fbw_power_primary_domain_discriminator",
+      "power_raw_recipe": "(block+lane+bin) mod 25",
+      "primary_raw_recipe": "(3*block+5*lane+7*bin) mod 25",
+      "shape": [
+        6,
+        5,
+        217
+      ],
+      "purpose": "reject feeding refresh work/current into F10 PRIMARY normalization"
+    },
+    {
+      "id": "lfe_refresh_dynamic",
+      "power_raw_recipe": "(11*block+3*bin) mod 25",
+      "shape": [
+        6,
+        7
+      ],
+      "marker_before": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "active_mode": 0,
+      "special_mode": 0,
+      "purpose": "allow later marker zero to upgrade through mode0 difference test"
+    },
+    {
+      "id": "lfe_primary_normalization_reuse",
+      "primary_raw_recipe": "(5*block+2*bin) mod 25",
+      "shape": [
+        6,
+        7
+      ],
+      "option": 1,
+      "gate": 0,
+      "span": 1,
+      "purpose": "normalize PRIMARY raw intervals selected by returned LFE refresh flags"
+    },
+    {
+      "id": "invalid_reuse_span_zero",
+      "strategy": 0,
+      "normalization_span_u8": 0,
+      "purpose": "adapter shape rejection; reuse performs no normalization call"
+    },
+    {
+      "id": "wrong_marker_from_short",
+      "structure_refresh": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "short_consumed": [
+        0,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "purpose": "reject using short directly as refresh_marker_before"
+    }
+  ]
+}

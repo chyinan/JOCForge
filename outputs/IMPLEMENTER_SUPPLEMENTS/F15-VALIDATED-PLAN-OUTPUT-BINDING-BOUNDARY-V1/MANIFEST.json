@@ -1,0 +1,26 @@
+{
+  "package_id": "F15-VALIDATED-PLAN-OUTPUT-BINDING-BOUNDARY-V1",
+  "files": [
+    {
+      "file": "DECISION.json",
+      "bytes": 3002,
+      "sha256": "ae3a58c879ecc67c6957fa7edb61cce80cae5139261779efe20d6f635f9b0cc7"
+    },
+    {
+      "file": "INPUT-ONLY.json",
+      "bytes": 714,
+      "sha256": "7f30022eb0247fe5c2381a1bbea38c37bf4c9a86750da29b090fbb00db1d1312"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 1189,
+      "sha256": "7155f82c6ba702a70d9dde142e7634d995759279534d0f120e7d2fb9f50aef99"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 400,
+      "sha256": "38ccf7f5b9d69c6b508bc9eced4fb7d195766a4860307c1b551d01d8fc459c1c"
+    }
+  ],
+  "implementation": "NOT_RUN"
+}

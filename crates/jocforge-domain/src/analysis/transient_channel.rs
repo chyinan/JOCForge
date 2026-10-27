@@ -51,6 +51,42 @@ impl TransientChannelState {
         }
     }
 
+    pub const fn two_history_words(&self) -> [u32; 4] {
+        [
+            self.two_history[0][0],
+            self.two_history[0][1],
+            self.two_history[1][0],
+            self.two_history[1][1],
+        ]
+    }
+
+    pub const fn three_history_words(&self) -> [u32; 6] {
+        [
+            self.three_history[0][0],
+            self.three_history[0][1],
+            self.three_history[1][0],
+            self.three_history[1][1],
+            self.three_history[2][0],
+            self.three_history[2][1],
+        ]
+    }
+
+    pub const fn peak_statistics_words(&self) -> &[u32; PEAK_STATISTICS_WORDS] {
+        &self.peak_statistics
+    }
+
+    pub const fn previous_mean_word(&self) -> u32 {
+        self.previous_mean
+    }
+
+    pub const fn short_queue_i1(&self) -> &[u8; QUEUE_LENGTH] {
+        &self.short_queue
+    }
+
+    pub const fn other_queue_i1(&self) -> &[u8; QUEUE_LENGTH] {
+        &self.other_queue
+    }
+
     /// Serializes 29 F32 words followed by the short and other U8 queues.
     pub fn canonical_bytes(&self) -> [u8; STATE_SERIALIZED_BYTES] {
         let mut bytes = [0; STATE_SERIALIZED_BYTES];

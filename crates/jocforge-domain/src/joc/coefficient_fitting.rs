@@ -10,16 +10,11 @@ use crate::{
         coefficient_normal_equations::{
             CoefficientNormalEquationError, build_selected_normal_equations,
         },
-        coefficient_payload::{
-            CoefficientPayloadInput, CoefficientPayloadObject, CoefficientPayloadPoint,
-            CoefficientPayloadWriterFailure, write_selected_id14_coefficient_payload,
-        },
         coefficient_representation::{
             FitRepresentationInput, RepresentationRetryError, RepresentationRetryProvider,
             RepresentationWriteResult, write_fit_representation_with_retry,
         },
         coefficient_search::{CoefficientSearchError, search_selected_coefficient_cell},
-        emdf::metadata_owner::MetadataPayloadBody,
         fit_score::FitScoreProvider,
         temporal_weights::{TemporalWeightError, TemporalWeightProposal, TemporalWeightState},
     },
@@ -31,6 +26,14 @@ use crate::{
     timeline::CodecSourceIndex,
     transaction::CallbackLineageIdentity,
 };
+
+#[cfg(test)]
+use crate::joc::coefficient_payload::{
+    CoefficientPayloadInput, CoefficientPayloadObject, CoefficientPayloadPoint,
+    CoefficientPayloadWriterFailure, write_selected_id14_coefficient_payload,
+};
+#[cfg(test)]
+use crate::joc::emdf::metadata_owner::MetadataPayloadBody;
 
 const OBJECT_COUNT: usize = 15;
 const CHANNEL_COUNT: usize = 5;
@@ -169,7 +172,8 @@ impl CoefficientFitProposal {
         self.source_lineage.as_ref()
     }
 
-    pub fn initial_full_payload_input(
+    #[cfg(test)]
+    pub(crate) fn initial_full_payload_input(
         &self,
         clip_gain_index: u8,
         sequence_count: u16,
@@ -216,7 +220,8 @@ impl CoefficientFitProposal {
         })
     }
 
-    pub fn write_initial_metadata_body(
+    #[cfg(test)]
+    pub(crate) fn write_initial_metadata_body(
         &self,
         clip_gain_index: u8,
         sequence_count: u16,
@@ -231,7 +236,7 @@ impl CoefficientFitProposal {
             .ok_or(CoefficientBodyError::NoSuccessfulPayload)
     }
 
-    pub fn write_payload_with_retry(
+    pub(crate) fn write_payload_with_retry(
         &self,
         provider: &RepresentationRetryProvider,
         clip_gain_index: u8,
@@ -280,6 +285,7 @@ impl std::fmt::Display for CoefficientFittingError {
 
 impl std::error::Error for CoefficientFittingError {}
 
+#[cfg(test)]
 #[derive(Debug)]
 pub enum CoefficientBodyError {
     RepresentationShape,
@@ -287,12 +293,14 @@ pub enum CoefficientBodyError {
     NoSuccessfulPayload,
 }
 
+#[cfg(test)]
 impl std::fmt::Display for CoefficientBodyError {
     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(formatter, "{self:?}")
     }
 }
 
+#[cfg(test)]
 impl std::error::Error for CoefficientBodyError {}
 
 pub fn stage_coefficient_fit_from_qmf(
@@ -452,7 +460,9 @@ mod tests {
         joc::{
             coefficient_geometry::GeometryAccumulatorRow,
             coefficient_representation::RepresentationRetryProvider,
-            dispatch_state::{JocDispatchState, JocPayloadInput, stage_joc_payload},
+            dispatch_state::{
+                JocDispatchError, JocDispatchState, JocPayloadInput, stage_joc_payload,
+            },
             fit_score::FitScoreProvider,
             programme_state::SelectedJocState,
             source_stage::assemble_staged_source,
@@ -607,6 +617,22 @@ mod tests {
                 assert_eq!(wrap.sequence_count(), 1_023);
                 assert_eq!(wrap.clip_gain_index(), 128);
                 assert_eq!(wrap.after().sequence_counter(), 1);
+
+                for invalid_counter in [-2_i64, 1_024] {
+                    let invalid_before = JocDispatchState::with_clock_for_test(
+                        source_index.dispatch().unwrap(),
+                        invalid_counter,
+                    );
+                    assert!(matches!(
+                        stage_joc_payload(
+                            &invalid_before,
+                            &proposal,
+                            &payload_input,
+                            &retry_provider,
+                        ),
+                        Err(JocDispatchError::Sequence)
+                    ));
+                }
             }
             let diagnostic = proposal
                 .write_payload_with_retry(&retry_provider, 128, sequences[generation], 80)

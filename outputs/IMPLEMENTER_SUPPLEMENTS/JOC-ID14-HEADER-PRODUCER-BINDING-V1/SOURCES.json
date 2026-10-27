@@ -1,0 +1,80 @@
+{
+  "approved_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_base_sources": [
+    {
+      "file": "specs/05-joc-dispatch-and-commit.md",
+      "bytes": 4759,
+      "sha256": "fc549d4bdeb598b801987dc153764835b61a2e56bdd6e734b127460527397c9e"
+    },
+    {
+      "file": "specs/05-live-joc-coordinator.md",
+      "bytes": 14599,
+      "sha256": "49c3e07298262e2d5867d936eab0ddf6d746a17a9ce844358a0966d1b5d4d779"
+    },
+    {
+      "file": "specs/05-joc-quantization-and-wire.md",
+      "bytes": 9201,
+      "sha256": "91fde215d0a6d5d1e820a2e29b467afd2b1fc78a5fa8f87300cc42a346152143"
+    },
+    {
+      "file": "specs/05-joc-selected-producer-and-commit.md",
+      "bytes": 15276,
+      "sha256": "92d7be8c41adf94056c81d98514b66318b3a38b006db3426bf56919effd9f012"
+    }
+  ],
+  "washed_supplements": [
+    {
+      "package_id": "F04RB-MODE0-FITTING-V1",
+      "manifest_sha256": "0f597e960eb98ae6ffb7436ea6ae0c435fb73e942801f2cd2dd3222028152be2",
+      "payloads": [
+        {
+          "file": "API-SCHEMA.json",
+          "bytes": 1019,
+          "sha256": "c9ba108c602ab37f24713628b1bcf0e5dcd06189dd89501a70bde04b77c9ba8c"
+        },
+        {
+          "file": "F04RB-MODE0-ACTUAL-LITERALS.json",
+          "bytes": 19861457,
+          "sha256": "7c5d6b034412c09264117e210fccb270f20550f099df2b00209e762876c30c77"
+        },
+        {
+          "file": "F04RB-MODE0-INPUT-VECTORS.json",
+          "bytes": 7696,
+          "sha256": "733a9502491c7d1e1e543b15b36bf34135960e285c8240615f44b63225720a5a"
+        },
+        {
+          "file": "SPEC.md",
+          "bytes": 8252,
+          "sha256": "54f76a4935d7fef0171d71c4422c40d466be5aa0b94df6c4437a7f32422f19da"
+        }
+      ]
+    },
+    {
+      "package_id": "JOC-FIT-STATE-SEQUENCE-REFERENCES-V1",
+      "manifest_sha256": "b32626f382edbb4ea27051ece69431f02253f313d939a48ece94a58d42d65425",
+      "payloads": [
+        {
+          "file": "CONTRACT.md",
+          "bytes": 3377,
+          "sha256": "ffde80f47fe0165c88dc115888548ef3ef6bb1c96130f60d0c8c268458986a47"
+        },
+        {
+          "file": "EXPECTED-SEQUENCE.json",
+          "bytes": 10321,
+          "sha256": "2b91809a14466cff27ba85282c5f61c7ac525fe2660fa6081dd6b932b1ed27e4"
+        },
+        {
+          "file": "FIELD-MAP.json",
+          "bytes": 4279,
+          "sha256": "76ecabc539475b9173388f770f527ae92652244c4e829e210862098d90cde952"
+        },
+        {
+          "file": "INPUT-ONLY.json",
+          "bytes": 482,
+          "sha256": "ba6bc05f63597c694393d0ba9ad2aad1bac30adad9cdc1a5ce7c722c3d12cf15"
+        }
+      ]
+    }
+  ],
+  "evidence_boundary": "F04RB implementation spec ready but whole receiver not run; sequence mapping contract is clean profile rule. This crosswalk is not a runtime or native execution result."
+}

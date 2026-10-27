@@ -1,0 +1,146 @@
+{
+  "schema": "research.standalone-meter-drc-references.v1",
+  "approved_parent_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "references": [
+    {
+      "id": "GTC",
+      "document": "00-global-transaction-contract.md",
+      "bytes": 20041,
+      "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105",
+      "grade": "CURRENT_APPROVED_CONTRACT_OR_DECLARED_FIXTURE"
+    },
+    {
+      "id": "GTC_SCHEMA",
+      "document": "GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
+      "bytes": 12153,
+      "sha256": "74c8e4a60600187783e559459b426aada2508ae273f95401c9a4234aee4504b4",
+      "grade": "CURRENT_APPROVED_CONTRACT_OR_DECLARED_FIXTURE"
+    },
+    {
+      "id": "F06WH",
+      "document": "06-meter-none-drc-whole-composition.md",
+      "bytes": 9594,
+      "sha256": "94e8d42e77e71f4f16e99a74ee3c808cfc925074e19dd814762d21cde6f259d2",
+      "grade": "CURRENT_APPROVED_CONTRACT_OR_DECLARED_FIXTURE"
+    },
+    {
+      "id": "COMBINED_SCHEMA",
+      "document": "f06-meter-none-drc-whole-state-schema-v1.json",
+      "bytes": 4280,
+      "sha256": "64374f686377d94ab8a3843d09d26329788c7afd48c7683459596b119f68e4be",
+      "grade": "CURRENT_APPROVED_CONTRACT_OR_DECLARED_FIXTURE"
+    },
+    {
+      "id": "COMBINED_COLD",
+      "document": "F06-METER-NONE-DRC-WHOLE-COLD-STATE-IDENTITIES.json",
+      "bytes": 8973,
+      "sha256": "a2283d3e1dd06f32d40e360ee48018501d0b88b2a6dbd0ad8234d9e82d14b74a",
+      "grade": "CURRENT_APPROVED_CONTRACT_OR_DECLARED_FIXTURE"
+    },
+    {
+      "id": "F06OF",
+      "document": "06-oar-frontend-input-and-clock-join.md",
+      "bytes": 9427,
+      "sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423",
+      "grade": "CURRENT_APPROVED_CONTRACT_OR_DECLARED_FIXTURE"
+    },
+    {
+      "id": "F06",
+      "document": "06-meter-bsi.md",
+      "bytes": 6337,
+      "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752",
+      "grade": "CURRENT_APPROVED_CONTRACT_OR_DECLARED_FIXTURE"
+    },
+    {
+      "id": "F06ND",
+      "document": "06-none-drc-statistics-and-control.md",
+      "bytes": 18048,
+      "sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+      "grade": "CURRENT_APPROVED_CONTRACT_OR_DECLARED_FIXTURE"
+    },
+    {
+      "id": "F06TP",
+      "document": "06-true-peak-cascade-and-metrics.md",
+      "bytes": 9824,
+      "sha256": "e0491288c3a9beb59ecb7b017d505ee16eb9f401d53bd0fd918573644c1876b3",
+      "grade": "CURRENT_APPROVED_CONTRACT_OR_DECLARED_FIXTURE"
+    },
+    {
+      "id": "F06U",
+      "document": "06-ungated-mean-and-fallback.md",
+      "bytes": 8673,
+      "sha256": "07c850be31dbe42a1396634bd96dfd4a54fbd80aa27b3d39a36998545cdc3b9e",
+      "grade": "CURRENT_APPROVED_CONTRACT_OR_DECLARED_FIXTURE"
+    },
+    {
+      "id": "F06I",
+      "document": "06-integrated-meter-state.md",
+      "bytes": 9368,
+      "sha256": "e5caf84805cb24850dd0cf85e18d1dc4a4ee91fcb9e334cfc6f9881952efdb72",
+      "grade": "CURRENT_APPROVED_CONTRACT_OR_DECLARED_FIXTURE"
+    },
+    {
+      "id": "GAP_SCOPE",
+      "document": "F06-METER-NONE-DRC-WHOLE-GAP-INVENTORY.json",
+      "bytes": 2407,
+      "sha256": "00e5952724183838b8d8a52c52acc79cbfd57292f349afb3a4c9c26d061a10f3",
+      "grade": "CURRENT_APPROVED_CONTRACT_OR_DECLARED_FIXTURE"
+    },
+    {
+      "id": "FIFO",
+      "document": "ordinary_metadata_override_core.py",
+      "bytes": 5365,
+      "sha256": "c4315c78c927221c20a193df2ee6205b24ccb4ed1b9f267c57c0a3eac9c09bf2",
+      "line_domain": [
+        14,
+        111
+      ],
+      "grade": "REHASHED_FROZEN_MODEL_SOURCE_NO_NEW_NATIVE_RUN"
+    },
+    {
+      "id": "DELAY_DEFAULT",
+      "document": "ordinary_constructor_defaults_core.py",
+      "bytes": 734,
+      "sha256": "4e684fcecbf170c5217b6e41fe74b39d13213ab5cc6654ebcbda2ca2485c485f",
+      "line_domain": [
+        6,
+        21
+      ],
+      "grade": "REHASHED_FROZEN_MODEL_SOURCE_NO_NEW_NATIVE_RUN"
+    },
+    {
+      "id": "DELAY_RULE",
+      "document": "metadata_programme_timeline_core.py",
+      "bytes": 5909,
+      "sha256": "2fee3fe4fba44e69e0ed7d67ac58b560a8d1c2f38c3f5bf2b8346e02292adb3f",
+      "line_domain": [
+        8,
+        24
+      ],
+      "grade": "REHASHED_FROZEN_MODEL_SOURCE_NO_NEW_NATIVE_RUN"
+    },
+    {
+      "id": "DURATION",
+      "document": "produce_ordinary_drc_controls_duration.py",
+      "bytes": 13158,
+      "sha256": "40a8f60ce688193c34796216bf95d89103e5afa4efce00141f967bd94f5ca882",
+      "line_domain": [
+        90,
+        155
+      ],
+      "grade": "REHASHED_FROZEN_MODEL_SOURCE_NO_NEW_NATIVE_RUN"
+    },
+    {
+      "id": "NONE_SETTER",
+      "document": "ordinary_drc_duration_core.py",
+      "bytes": 9079,
+      "sha256": "ea585156561fee58a2077c9b80e7c5be96757792625af1e1b6e907a1bd960cbb",
+      "line_domain": [
+        37,
+        83
+      ],
+      "grade": "REHASHED_FROZEN_MODEL_SOURCE_NO_NEW_NATIVE_RUN"
+    }
+  ],
+  "source_text_or_coordinates_forwarded": false
+}

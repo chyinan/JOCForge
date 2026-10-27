@@ -1,0 +1,31 @@
+{
+  "research_status": {
+    "schema": "research.standalone-meter-drc-status.v1",
+    "selected_numeric_parameters": "ALREADY_SUPPLIED",
+    "selected_root_boundary_rules": "DEFINED",
+    "new_native_requirement": false,
+    "combined13_owner_fixture_is_standalone_meter": false,
+    "category5_payload_schema": "NOT_IN_SELECTED_PROFILE_CONTRACT/NOT_REQUIRED",
+    "declared_DRC_nonzero_category5_payload_consumer_found": false,
+    "full_standalone_numeric_root_execution": "NOT_RUN",
+    "actual_terminal_meter_hash": "NOT_RUN_NOT_SYNTHESIZED",
+    "arbitrary_N_fixedGTC_schema_admission": "NOT_CERTIFIED_BY_COUNT_FORMULA_CASES",
+    "new_private_key_dependency": false
+  },
+  "wash_verification": {
+    "research_manifest_sha256": "605f179a72fe1ae72be3c3a2d3070abcf82ab568c5d9422f7cd40d0562e5c221",
+    "research_payloads_hash_verified": 6,
+    "approved_contract_and_fixture_references_rehashed": 12,
+    "frozen_model_text_references_rehashed": 5,
+    "research_reported_checker_runs": {
+      "normal": "PASS (33 checks; reported by research package)",
+      "python_O": "PASS (33 checks; reported by research package)"
+    },
+    "wash_independent_reexecution_of_research_checker": "NOT_RUN; checker executable is not delivered",
+    "standalone_full_numeric_meter_DRC_root_execution": "NOT_RUN",
+    "terminal_meter_hash": "NOT_RUN_NOT_SYNTHESIZED",
+    "real_ADM_or_native_execution": "NOT_RUN",
+    "scope": "Selected standalone root, source clock and parent-commit contract crosswalk; numerical/runtime acceptance remains open",
+    "private_keys_or_proprietary_source_code_delivered": false
+  }
+}

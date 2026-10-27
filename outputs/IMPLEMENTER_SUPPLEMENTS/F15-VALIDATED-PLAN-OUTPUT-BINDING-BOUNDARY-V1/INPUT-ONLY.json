@@ -1,0 +1,29 @@
+{
+  "input_only": true,
+  "cases": [
+    {
+      "id": "input_only_no_plan",
+      "expected": "no ProgrammeOutputBinding"
+    },
+    {
+      "id": "resolved_profile_only",
+      "expected": "insufficient plan authority"
+    },
+    {
+      "id": "valid_plan_deployed_compat",
+      "expected": "derive deployed_compat F15 provider and hash"
+    },
+    {
+      "id": "valid_plan_etsi_emdf",
+      "expected": "derive carriage-bound provider and distinct hash"
+    },
+    {
+      "id": "caller_provider_or_hash_substitution",
+      "expected": "reject before staging"
+    },
+    {
+      "id": "same_attempt_two_programmes",
+      "expected": "reject unless programme and opaque staging owner both match"
+    }
+  ]
+}

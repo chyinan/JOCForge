@@ -2,9 +2,48 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:jocforge:implementation-map:v1",
   "type": "object",
+  "$defs": {
+    "direct_slice": {
+      "type": "object",
+      "required": ["slice_id", "mapping_status", "implementation_status", "scope", "implementation_files", "clock", "parameters", "test_modules", "vectors"],
+      "properties": {
+        "slice_id": {"type": "string", "minLength": 1},
+        "mapping_status": {"type": "string", "minLength": 1},
+        "implementation_status": {"type": "string", "minLength": 1},
+        "scope": {"type": "string"},
+        "owner": {"type": "string"},
+        "dependencies": {"type": "array", "items": {"type": "string"}},
+        "implementation_files": {"type": "array", "items": {"type": "string"}},
+        "test_modules": {"type": "array", "items": {"type": "string"}},
+        "clock": {"type": "object"},
+        "parameters": {"type": "object"},
+        "vectors": {"type": "object"},
+        "not_run": {"type": "array", "items": {"type": "string"}},
+        "implementation_inventory": {"type": "array"},
+        "test_inventory": {"type": "array"}
+      }
+    },
+    "programme_root": {
+      "type": "object",
+      "required": ["root_id", "materialization_status"],
+      "properties": {
+        "root_id": {"type": "string", "minLength": 1},
+        "materialization_status": {"type": "string", "minLength": 1},
+        "implementation_status": {"type": "string"},
+        "implementation_files": {"type": "array", "items": {"type": "string"}},
+        "test_modules": {"type": "array", "items": {"type": "string"}},
+        "remaining_gates": {"type": "array", "items": {"type": "string"}},
+        "canonical_gtc_state_ref_status": {"type": "string"},
+        "gtc_owner_receipt_status": {"type": "string"},
+        "gtc_single_root_swap_status": {"type": "string"},
+        "encode_status": {"type": "string"}
+      }
+    }
+  },
   "required": ["schema", "status", "functional_entries", "programme_roots", "selected_overlap_projection", "phase_one"],
   "properties": {
     "schema": {"const": "jocforge-implementation-map.v1"},
+    "public_distribution_authorization": {"type": "object"},
     "status": {
       "type": "object",
       "required": ["ARCHITECTURE_DESIGN", "TRACEABILITY", "P1.1"]
@@ -16,13 +55,20 @@
       "items": {
         "type": "object",
         "required": ["functional_id", "spec_files", "owner", "planned_phase", "inventory_status", "implementation_status"],
-        "allOf": [{"if": {"properties": {"active_slice_materialization": {"const": "MATERIALIZED"}}}, "then": {"required": ["implementation_files", "test_modules", "clock", "parameters", "vectors", "error_outcomes", "phase_scope"]}}]
+        "properties": {
+          "direct_slices": {
+            "type": "array",
+            "items": {"$ref": "#/$defs/direct_slice"}
+          }
+        },
+        "allOf": [{"if": {"required": ["active_slice_materialization"], "properties": {"active_slice_materialization": {"const": "MATERIALIZED"}}}, "then": {"required": ["implementation_files", "test_modules", "clock", "parameters", "vectors"]}}]
       }
     },
     "programme_roots": {
       "type": "array",
       "minItems": 12,
-      "maxItems": 12
+      "maxItems": 12,
+      "items": {"$ref": "#/$defs/programme_root"}
     },
     "selected_overlap_projection": {"type": "object"},
     "phase_one": {"type": "object"}

@@ -1,0 +1,25 @@
+{
+  "package_id": "OUTPUT-ROOT-GTC-PARENT-BINDING-V1",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 9775,
+      "sha256": "adc151cb5f3fcd44e0994607a37defa762940b4a36870e73e311151baa76c3d7"
+    },
+    {
+      "file": "INPUT-ONLY-BINDING-CASES.json",
+      "bytes": 1465,
+      "sha256": "4ee92a7b76cdab3cab8ffdcfaf3075513e2b0604467830ea63b3893b38d82cd2"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 4268,
+      "sha256": "7e602de14205f8070bcea2fdcd5462d7599f706cf7c608f17eca3f3cc89288b8"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 403,
+      "sha256": "c8677964d62083e721d5899eb54a9aba8de2c20fe3e1e216ebf1976a454ff02c"
+    }
+  ]
+}

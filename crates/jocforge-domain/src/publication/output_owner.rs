@@ -603,6 +603,19 @@ impl OutputOwner {
         self.state.sha256_hex()
     }
 
+    /// Read-only GTC parent preflight values; they do not grant state mutation.
+    pub const fn generation(&self) -> u64 {
+        self.state.generation
+    }
+
+    pub const fn next_source_index(&self) -> CodecSourceIndex {
+        self.state.next_source_index
+    }
+
+    pub fn state_digest(&self) -> Result<[u8; 32], OutputOwnerError> {
+        self.state.sha256()
+    }
+
     pub fn configuration(&self) -> &OutputConfiguration {
         &self.configuration
     }
@@ -660,6 +673,22 @@ impl OutputSuppressedSourceProposal {
         self.receipt
     }
 
+    pub fn attempt_id(&self) -> &str {
+        self.after_owner.configuration.attempt_id()
+    }
+
+    pub fn staging_name(&self) -> &str {
+        self.after_owner.configuration.staging_name()
+    }
+
+    pub fn product_name(&self) -> &str {
+        self.after_owner.configuration.product_name()
+    }
+
+    pub const fn proposed_generation(&self) -> u64 {
+        self.after_owner.state.generation
+    }
+
     pub fn into_after(self) -> OutputSourceAfterProposal {
         let receipt = OutputSourceCommitReceipt::Suppressed(self.receipt);
         OutputSourceAfterProposal {
@@ -675,6 +704,54 @@ impl OutputSuppressedSourceProposal {
 pub enum OutputSourceProposal {
     Suppressed(OutputSuppressedSourceProposal),
     Append(OutputAppendProposal),
+}
+
+impl OutputSourceProposal {
+    pub fn attempt_id(&self) -> &str {
+        match self {
+            Self::Suppressed(proposal) => proposal.attempt_id(),
+            Self::Append(proposal) => proposal.attempt_id(),
+        }
+    }
+
+    pub fn staging_name(&self) -> &str {
+        match self {
+            Self::Suppressed(proposal) => proposal.staging_name(),
+            Self::Append(proposal) => proposal.staging_name(),
+        }
+    }
+
+    pub fn product_name(&self) -> &str {
+        match self {
+            Self::Suppressed(proposal) => proposal.product_name(),
+            Self::Append(proposal) => proposal.after_owner.configuration.product_name(),
+        }
+    }
+
+    pub const fn identity(&self) -> OutputSourceIdentity {
+        match self {
+            Self::Suppressed(proposal) => OutputSourceIdentity::new(
+                proposal.receipt.source_index,
+                proposal.receipt.dispatch,
+                None,
+            ),
+            Self::Append(proposal) => proposal.identity,
+        }
+    }
+
+    pub const fn before_state_sha256(&self) -> &[u8; 32] {
+        match self {
+            Self::Suppressed(proposal) => proposal.receipt.before_sha256(),
+            Self::Append(proposal) => proposal.before_state_sha256(),
+        }
+    }
+
+    pub const fn proposed_generation(&self) -> u64 {
+        match self {
+            Self::Suppressed(proposal) => proposal.proposed_generation(),
+            Self::Append(proposal) => proposal.after_owner.state.generation,
+        }
+    }
 }
 
 #[must_use]
@@ -997,6 +1074,14 @@ impl OutputFinalizeProposal {
 
     pub const fn state_sha256(&self) -> &[u8; 32] {
         &self.state_sha256
+    }
+
+    pub const fn before_state_sha256(&self) -> &[u8; 32] {
+        &self.before_state_sha256
+    }
+
+    pub const fn before_generation(&self) -> u64 {
+        self.before_state.generation
     }
 
     pub const fn ledger_sha256(&self) -> &[u8; 32] {

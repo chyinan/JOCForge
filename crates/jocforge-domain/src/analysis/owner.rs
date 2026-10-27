@@ -1,0 +1,1388 @@
+// pattern: Functional Core
+//! Selected F07-F10 analysis-owner state and noncommitting source stages.
+
+use super::exponent_plan::{
+    AnalysisExponentPlan, AnalysisExponentPlanError, stage_f09_f10_source_plan,
+};
+use super::gain_history::{
+    FULLBAND_GAIN_CHANNELS, GAIN_BLOCK_SAMPLES, GAIN_BLOCKS_PER_FRAME, GAIN_CHANNELS,
+    GainHistoryState, PeakReductionProfile, process_gain_block,
+};
+use super::input_history::InputHistory;
+use super::mean_square::{MeanSquareError, checked_mean_square_256};
+use super::source_frame::{
+    F07SourceFrameBeforeState, F07SourceFrameError, FBW_EXTERNAL_ROWS, InstalledAudioSourceFrame,
+    LFE_EXTERNAL_ROW, SharedAnalysisReceipt, stage_f07a_source_frame,
+};
+use super::structure_refresh::{F07_BLOCKS_PER_FRAME, F07_FULLBAND_LANES};
+use super::transient_channel::TransientChannelState;
+use super::transient_parameters::TransientParameters;
+use crate::codec::db_selector::{DbSelectorError, db_selector_from_means};
+use crate::codec::policy_parameters::{PolicyParameters, PolicyProfile};
+use crate::timeline::CodecSourceIndex;
+use crate::transaction::{
+    AttemptId, CallbackTransactionId, SourceTransaction, SourceTransactionStageError,
+};
+use crate::transform::exponent_inputs::{
+    FullBandTransformExponentInputs, LfeTransformExponentInputs, TransformExponentInputError,
+    f08_full_band_exponent_inputs, f08_lfe_exponent_inputs,
+};
+use crate::transform::fbw_transform::{
+    F08FbwTransformError, F08FbwTransformOutput, f08_fbw_transform_block,
+};
+use crate::transform::fullband_exponent_pipeline::NumericPlanReceipt;
+use crate::transform::lfe_transform::{
+    F08LfeTransformError, F08LfeTransformOutput, f08_lfe_transform_block,
+};
+use crate::transform::math_generated_parameters::MathGeneratedTransformParameters;
+use crate::transform::window_fold::{F08WindowFoldError, f08_window_fold_block};
+
+const EXTERNAL_AUDIO_LANES: usize = 6;
+const TRANSFORM_HISTORY_WORDS_PER_LANE: usize = 128;
+const GAIN_RANGE_CHANNELS: usize = 6;
+
+/// The four persistent F07-F10 analysis families.
+///
+/// This root has no source lifecycle, commit, failure, EOF, previous-short, metadata,
+/// codec, DRC, payload, or publication state. The GTC parent supplies source identities
+/// and remains the sole owner of commit/discard authority.
+#[derive(Debug, Eq, PartialEq)]
+pub struct AnalysisOwnerRoot {
+    input_history_generation: u64,
+    input_histories: [InputHistory; EXTERNAL_AUDIO_LANES],
+    transient_generation: u64,
+    transient_states: [TransientChannelState; F07_FULLBAND_LANES],
+    transform_generation: u64,
+    primary_fbw_history_u32_words: [u32; 640],
+    companion_fbw_history_u32_words: [u32; 640],
+    primary_lfe_history_u32_words: [u32; TRANSFORM_HISTORY_WORDS_PER_LANE],
+    companion_lfe_history_u32_words: [u32; TRANSFORM_HISTORY_WORDS_PER_LANE],
+    policy_generation: u64,
+    gain_range_previous_peak_f32_bits_u32: [u32; GAIN_RANGE_CHANNELS],
+    gain_range_completed_blocks_u64: u64,
+    db_per_bit_selector_u16: u16,
+    db_per_bit_completed_blocks_u64: u64,
+}
+
+impl AnalysisOwnerRoot {
+    /// Creates the exact cold analysis root: all generations and state words are zero.
+    pub fn cold() -> Self {
+        Self {
+            input_history_generation: 0,
+            input_histories: std::array::from_fn(|_| InputHistory::cold()),
+            transient_generation: 0,
+            transient_states: std::array::from_fn(|_| TransientChannelState::cold()),
+            transform_generation: 0,
+            primary_fbw_history_u32_words: [0; 640],
+            companion_fbw_history_u32_words: [0; 640],
+            primary_lfe_history_u32_words: [0; TRANSFORM_HISTORY_WORDS_PER_LANE],
+            companion_lfe_history_u32_words: [0; TRANSFORM_HISTORY_WORDS_PER_LANE],
+            policy_generation: 0,
+            gain_range_previous_peak_f32_bits_u32: [0; GAIN_RANGE_CHANNELS],
+            gain_range_completed_blocks_u64: 0,
+            db_per_bit_selector_u16: 0,
+            db_per_bit_completed_blocks_u64: 0,
+        }
+    }
+
+    /// Replaces this analysis root with the canonical cold value.
+    ///
+    /// The parent owns attempt advancement and retires the prior attempt before calling reset.
+    pub fn reset(&mut self) {
+        *self = Self::cold();
+    }
+
+    pub const fn input_history_generation(&self) -> u64 {
+        self.input_history_generation
+    }
+
+    pub const fn input_histories(&self) -> &[InputHistory; EXTERNAL_AUDIO_LANES] {
+        &self.input_histories
+    }
+
+    pub const fn transient_generation(&self) -> u64 {
+        self.transient_generation
+    }
+
+    pub const fn transient_states(&self) -> &[TransientChannelState; F07_FULLBAND_LANES] {
+        &self.transient_states
+    }
+
+    pub const fn transform_generation(&self) -> u64 {
+        self.transform_generation
+    }
+
+    pub const fn primary_fbw_history_u32_words(&self) -> &[u32; 640] {
+        &self.primary_fbw_history_u32_words
+    }
+
+    pub const fn companion_fbw_history_u32_words(&self) -> &[u32; 640] {
+        &self.companion_fbw_history_u32_words
+    }
+
+    pub const fn primary_lfe_history_u32_words(&self) -> &[u32; TRANSFORM_HISTORY_WORDS_PER_LANE] {
+        &self.primary_lfe_history_u32_words
+    }
+
+    pub const fn companion_lfe_history_u32_words(
+        &self,
+    ) -> &[u32; TRANSFORM_HISTORY_WORDS_PER_LANE] {
+        &self.companion_lfe_history_u32_words
+    }
+
+    pub const fn policy_generation(&self) -> u64 {
+        self.policy_generation
+    }
+
+    pub const fn gain_range_previous_peak_f32_bits_u32(&self) -> &[u32; GAIN_RANGE_CHANNELS] {
+        &self.gain_range_previous_peak_f32_bits_u32
+    }
+
+    pub const fn gain_range_completed_blocks_u64(&self) -> u64 {
+        self.gain_range_completed_blocks_u64
+    }
+
+    pub const fn db_per_bit_selector_u16(&self) -> u16 {
+        self.db_per_bit_selector_u16
+    }
+
+    pub const fn db_per_bit_completed_blocks_u64(&self) -> u64 {
+        self.db_per_bit_completed_blocks_u64
+    }
+
+    /// Reports whether this root satisfies the four-family committed-generation invariant.
+    pub const fn is_commit_eligible(&self) -> bool {
+        self.input_history_generation == self.transient_generation
+            && self.transient_generation == self.transform_generation
+            && self.transform_generation == self.policy_generation
+    }
+
+    fn common_generation(&self) -> Option<u64> {
+        self.is_commit_eligible()
+            .then_some(self.input_history_generation)
+    }
+
+    fn staged_copy(&self) -> Self {
+        Self {
+            input_history_generation: self.input_history_generation,
+            input_histories: std::array::from_fn(|lane| self.input_histories[lane].staged_copy()),
+            transient_generation: self.transient_generation,
+            transient_states: std::array::from_fn(|lane| self.transient_states[lane].staged_copy()),
+            transform_generation: self.transform_generation,
+            primary_fbw_history_u32_words: self.primary_fbw_history_u32_words,
+            companion_fbw_history_u32_words: self.companion_fbw_history_u32_words,
+            primary_lfe_history_u32_words: self.primary_lfe_history_u32_words,
+            companion_lfe_history_u32_words: self.companion_lfe_history_u32_words,
+            policy_generation: self.policy_generation,
+            gain_range_previous_peak_f32_bits_u32: self.gain_range_previous_peak_f32_bits_u32,
+            gain_range_completed_blocks_u64: self.gain_range_completed_blocks_u64,
+            db_per_bit_selector_u16: self.db_per_bit_selector_u16,
+            db_per_bit_completed_blocks_u64: self.db_per_bit_completed_blocks_u64,
+        }
+    }
+
+    /// Runs one noncommitting F07 source prepare and advances only input/transient families.
+    pub fn prepare_f07_source(
+        &self,
+        attempt_id: AttemptId,
+        transaction_id: CallbackTransactionId,
+        source_index: CodecSourceIndex,
+        installed_audio: &InstalledAudioSourceFrame,
+        previous_short: [bool; F07_FULLBAND_LANES],
+        transient_parameters: &TransientParameters,
+    ) -> Result<F07AnalysisStage, AnalysisOwnerStageError> {
+        let before_generation = self
+            .common_generation()
+            .ok_or(AnalysisOwnerStageError::InvalidCommittedGeneration)?;
+        let after_generation = before_generation
+            .checked_add(1)
+            .ok_or(AnalysisOwnerStageError::GenerationOverflow)?;
+
+        let before = F07SourceFrameBeforeState::new(
+            std::array::from_fn(|lane| self.input_histories[lane].staged_copy()),
+            std::array::from_fn(|lane| self.transient_states[lane].staged_copy()),
+            previous_short,
+        );
+        let f07_proposal = stage_f07a_source_frame(&before, installed_audio, transient_parameters)
+            .map_err(AnalysisOwnerStageError::F07)?;
+
+        let mut after_state = self.staged_copy();
+        let f07_after_state = f07_proposal.after_state();
+        after_state.input_histories = std::array::from_fn(|lane| {
+            f07_after_state.input_history_by_external_lane()[lane].staged_copy()
+        });
+        after_state.transient_states = std::array::from_fn(|lane| {
+            f07_after_state.transient_state_by_fbw_lane()[lane].staged_copy()
+        });
+        after_state.input_history_generation = after_generation;
+        after_state.transient_generation = after_generation;
+
+        let before_generation =
+            crate::analysis::source_frame::AnalysisOwnerGeneration::from_parent_snapshot(
+                before_generation,
+            );
+        let after_generation =
+            crate::analysis::source_frame::AnalysisOwnerGeneration::from_parent_snapshot(
+                after_generation,
+            );
+        let mut source_transaction =
+            SourceTransaction::new(attempt_id, transaction_id, source_index, before_generation);
+        source_transaction
+            .prepare_shared_analysis(after_generation, f07_proposal)
+            .map_err(map_transaction_stage_error)?;
+
+        Ok(F07AnalysisStage {
+            after_state,
+            source_transaction,
+        })
+    }
+}
+
+/// One staged F07 result and its parent-controlled shared-analysis receipt.
+#[must_use]
+#[derive(Debug, Eq, PartialEq)]
+pub struct F07AnalysisStage {
+    after_state: AnalysisOwnerRoot,
+    source_transaction: SourceTransaction,
+}
+
+impl F07AnalysisStage {
+    pub const fn after_state(&self) -> &AnalysisOwnerRoot {
+        &self.after_state
+    }
+
+    /// Returns the parent-issued identity and immutable F07 result for this source.
+    pub fn shared_analysis(&self) -> Option<&SharedAnalysisReceipt> {
+        self.source_transaction.shared_analysis()
+    }
+
+    pub(crate) fn into_parts(self) -> (AnalysisOwnerRoot, SourceTransaction) {
+        (self.after_state, self.source_transaction)
+    }
+
+    /// Completes F08 over all six blocks from the same staged F07 result.
+    pub fn complete_f08(
+        self,
+        parameters: &MathGeneratedTransformParameters,
+    ) -> Result<F08AnalysisStage, AnalysisOwnerStageError> {
+        let (mut after_state, source_transaction) = self.into_parts();
+        let shared_analysis = source_transaction
+            .shared_analysis()
+            .ok_or(AnalysisOwnerStageError::SourceTransactionRejected)?;
+        let proposal = shared_analysis.f07_proposal();
+        let delayed_audio = proposal.output().delayed_audio();
+        let short_flags = proposal.output().short_consumed();
+        let mut fullband_spectra = Vec::with_capacity(F07_BLOCKS_PER_FRAME * F07_FULLBAND_LANES);
+        let mut fullband_exponent_inputs =
+            Vec::with_capacity(F07_BLOCKS_PER_FRAME * F07_FULLBAND_LANES);
+        let mut lfe_spectra = Vec::with_capacity(F07_BLOCKS_PER_FRAME);
+        let mut lfe_exponent_inputs = Vec::with_capacity(F07_BLOCKS_PER_FRAME);
+
+        for block in 0..F07_BLOCKS_PER_FRAME {
+            for lane in 0..F07_FULLBAND_LANES {
+                let external_row = FBW_EXTERNAL_ROWS[lane];
+                let offset = lane * TRANSFORM_HISTORY_WORDS_PER_LANE;
+                let primary_before = &after_state.primary_fbw_history_u32_words
+                    [offset..offset + TRANSFORM_HISTORY_WORDS_PER_LANE];
+                let companion_before = &after_state.companion_fbw_history_u32_words
+                    [offset..offset + TRANSFORM_HISTORY_WORDS_PER_LANE];
+                let folded = f08_window_fold_block(
+                    &delayed_audio[external_row][block],
+                    primary_before,
+                    companion_before,
+                    parameters,
+                )
+                .map_err(AnalysisOwnerStageError::WindowFold)?;
+                after_state.primary_fbw_history_u32_words
+                    [offset..offset + TRANSFORM_HISTORY_WORDS_PER_LANE]
+                    .copy_from_slice(folded.primary_history_after());
+                after_state.companion_fbw_history_u32_words
+                    [offset..offset + TRANSFORM_HISTORY_WORDS_PER_LANE]
+                    .copy_from_slice(folded.companion_history_after());
+
+                let short_flag = i32::from(short_flags[block][lane]);
+                let spectra = f08_fbw_transform_block(&folded, short_flag, parameters)
+                    .map_err(AnalysisOwnerStageError::FullbandTransform)?;
+                let exponent_inputs = f08_full_band_exponent_inputs(&spectra)
+                    .map_err(AnalysisOwnerStageError::ExponentInput)?;
+                fullband_spectra.push(spectra);
+                fullband_exponent_inputs.push(exponent_inputs);
+            }
+
+            let folded_lfe = f08_window_fold_block(
+                &delayed_audio[LFE_EXTERNAL_ROW][block],
+                &after_state.primary_lfe_history_u32_words,
+                &after_state.companion_lfe_history_u32_words,
+                parameters,
+            )
+            .map_err(AnalysisOwnerStageError::WindowFold)?;
+            after_state
+                .primary_lfe_history_u32_words
+                .copy_from_slice(folded_lfe.primary_history_after());
+            after_state
+                .companion_lfe_history_u32_words
+                .copy_from_slice(folded_lfe.companion_history_after());
+            let spectra = f08_lfe_transform_block(&folded_lfe, parameters)
+                .map_err(AnalysisOwnerStageError::LfeTransform)?;
+            let exponent_inputs = f08_lfe_exponent_inputs(&spectra)
+                .map_err(AnalysisOwnerStageError::ExponentInput)?;
+            lfe_spectra.push(spectra);
+            lfe_exponent_inputs.push(exponent_inputs);
+        }
+
+        let shared_generation = shared_analysis.identity().analysis_after_generation();
+        after_state.transform_generation = shared_generation.value();
+
+        Ok(F08AnalysisStage {
+            after_state,
+            source_transaction,
+            plan: F08AnalysisPlan {
+                fullband_spectra,
+                fullband_exponent_inputs,
+                lfe_spectra,
+                lfe_exponent_inputs,
+            },
+        })
+    }
+}
+
+/// Six-block F08 output retained for the later F09/F10 stages.
+#[derive(Debug, Eq, PartialEq)]
+pub struct F08AnalysisPlan {
+    fullband_spectra: Vec<F08FbwTransformOutput>,
+    fullband_exponent_inputs: Vec<FullBandTransformExponentInputs>,
+    lfe_spectra: Vec<F08LfeTransformOutput>,
+    lfe_exponent_inputs: Vec<LfeTransformExponentInputs>,
+}
+
+impl F08AnalysisPlan {
+    pub fn is_six_block_complete(&self) -> bool {
+        self.fullband_spectra.len() == F07_BLOCKS_PER_FRAME * F07_FULLBAND_LANES
+            && self.fullband_exponent_inputs.len() == F07_BLOCKS_PER_FRAME * F07_FULLBAND_LANES
+            && self.lfe_spectra.len() == F07_BLOCKS_PER_FRAME
+            && self.lfe_exponent_inputs.len() == F07_BLOCKS_PER_FRAME
+    }
+
+    pub fn fullband_spectra(&self) -> &[F08FbwTransformOutput] {
+        &self.fullband_spectra
+    }
+
+    pub fn fullband_exponent_inputs(&self) -> &[FullBandTransformExponentInputs] {
+        &self.fullband_exponent_inputs
+    }
+
+    pub fn lfe_spectra(&self) -> &[F08LfeTransformOutput] {
+        &self.lfe_spectra
+    }
+
+    pub fn lfe_exponent_inputs(&self) -> &[LfeTransformExponentInputs] {
+        &self.lfe_exponent_inputs
+    }
+}
+
+/// F08 has advanced only transform history. F09/F10 policy state is still at `G`, so this
+/// result is deliberately not commit-eligible and does not produce a NumericPlanReceipt.
+#[must_use]
+#[derive(Debug, Eq, PartialEq)]
+pub struct F08AnalysisStage {
+    after_state: AnalysisOwnerRoot,
+    source_transaction: SourceTransaction,
+    plan: F08AnalysisPlan,
+}
+
+impl F08AnalysisStage {
+    pub const fn after_state(&self) -> &AnalysisOwnerRoot {
+        &self.after_state
+    }
+
+    /// Returns the same parent-issued receipt used to stage this six-block F08 plan.
+    pub fn shared_analysis(&self) -> Option<&SharedAnalysisReceipt> {
+        self.source_transaction.shared_analysis()
+    }
+
+    pub const fn plan(&self) -> &F08AnalysisPlan {
+        &self.plan
+    }
+
+    /// Stages selected F09G gain peaks and db-per-bit selector across six delayed blocks.
+    ///
+    /// The returned root still has the prior policy generation because the F09/F10
+    /// exponent and normalization projection remains a separate source-local plan.
+    pub fn complete_gain_db(
+        self,
+        policy_parameters: &PolicyParameters,
+    ) -> Result<AnalysisGainDbStage, AnalysisOwnerStageError> {
+        if !self.plan.is_six_block_complete() {
+            return Err(AnalysisOwnerStageError::IncompleteF08Plan);
+        }
+        let (mut after_state, source_transaction, f08_plan) = self.into_parts();
+        let shared_analysis = source_transaction
+            .shared_analysis()
+            .ok_or(AnalysisOwnerStageError::SourceTransactionRejected)?;
+        let delayed_audio = shared_analysis.f07_proposal().output().delayed_audio();
+        let mut gain_state = GainHistoryState::from_parts(
+            after_state.gain_range_previous_peak_f32_bits_u32,
+            [[0; GAIN_CHANNELS]; GAIN_BLOCKS_PER_FRAME],
+            [0; GAIN_CHANNELS],
+            [[0; FULLBAND_GAIN_CHANNELS]; GAIN_BLOCKS_PER_FRAME],
+        );
+        let mask = u16::try_from(PolicyProfile::selected().gain_layout_mask)
+            .map_err(|_| AnalysisOwnerStageError::SelectedGainMaskInvalid)?;
+        let mut gains_by_block = [[0_i16; FULLBAND_GAIN_CHANNELS]; GAIN_BLOCKS_PER_FRAME];
+        let mut db_per_bit_codes_by_block = [0_u8; GAIN_BLOCKS_PER_FRAME];
+        let mut gain_output_buffer = [0_i16; FULLBAND_GAIN_CHANNELS + 1];
+
+        for block in 0..GAIN_BLOCKS_PER_FRAME {
+            let samples: [[f32; GAIN_BLOCK_SAMPLES]; GAIN_CHANNELS] =
+                std::array::from_fn(|internal_lane| {
+                    let external_row = if internal_lane < F07_FULLBAND_LANES {
+                        FBW_EXTERNAL_ROWS[internal_lane]
+                    } else {
+                        LFE_EXTERNAL_ROW
+                    };
+                    delayed_audio[external_row][block].map(f32::from_bits)
+                });
+            if samples
+                .iter()
+                .flatten()
+                .any(|sample| !sample.is_finite() || sample.abs() > f32::from_bits(0x3fc0_0000))
+            {
+                return Err(AnalysisOwnerStageError::GainHistoryInput);
+            }
+
+            let mut means = [0_u32; GAIN_CHANNELS];
+            for (mean, samples) in means.iter_mut().zip(&samples) {
+                *mean = checked_mean_square_256(samples)
+                    .map_err(AnalysisOwnerStageError::MeanSquare)?;
+            }
+
+            let block_index =
+                u8::try_from(block).map_err(|_| AnalysisOwnerStageError::BlockIndexOverflow)?;
+            let gain_outcome = process_gain_block(
+                &mut gain_state,
+                block_index,
+                mask,
+                PeakReductionProfile::UnalignedScalar,
+                &samples,
+                &mut gain_output_buffer,
+            );
+            gains_by_block[block] = gain_outcome.gains_after();
+
+            let selector = db_selector_from_means(
+                &means,
+                after_state.db_per_bit_selector_u16,
+                policy_parameters,
+            )
+            .map_err(AnalysisOwnerStageError::DbSelector)?;
+            let selector_code = u8::try_from(selector.selector_after())
+                .map_err(|_| AnalysisOwnerStageError::DbSelectorCodeOverflow)?;
+            let next_gain_block_count = after_state
+                .gain_range_completed_blocks_u64
+                .checked_add(1)
+                .ok_or(AnalysisOwnerStageError::PolicyCounterOverflow)?;
+            let next_db_block_count = after_state
+                .db_per_bit_completed_blocks_u64
+                .checked_add(1)
+                .ok_or(AnalysisOwnerStageError::PolicyCounterOverflow)?;
+
+            after_state.gain_range_previous_peak_f32_bits_u32 = *gain_state.previous_peak_bits();
+            after_state.gain_range_completed_blocks_u64 = next_gain_block_count;
+            after_state.db_per_bit_selector_u16 = selector.selector_after();
+            after_state.db_per_bit_completed_blocks_u64 = next_db_block_count;
+            db_per_bit_codes_by_block[block] = selector_code;
+        }
+
+        Ok(AnalysisGainDbStage {
+            after_state,
+            source_transaction,
+            f08_plan,
+            plan: F09GainDbPlan {
+                gain_codes_by_block: gains_by_block,
+                db_per_bit_codes_by_block,
+            },
+        })
+    }
+
+    pub(crate) fn into_parts(self) -> (AnalysisOwnerRoot, SourceTransaction, F08AnalysisPlan) {
+        (self.after_state, self.source_transaction, self.plan)
+    }
+}
+
+/// Source-local selected F09G results kept apart from the persistent owner projection.
+#[derive(Debug, Eq, PartialEq)]
+pub struct F09GainDbPlan {
+    gain_codes_by_block: [[i16; FULLBAND_GAIN_CHANNELS]; GAIN_BLOCKS_PER_FRAME],
+    db_per_bit_codes_by_block: [u8; GAIN_BLOCKS_PER_FRAME],
+}
+
+impl F09GainDbPlan {
+    pub const fn gain_codes_by_block(
+        &self,
+    ) -> &[[i16; FULLBAND_GAIN_CHANNELS]; GAIN_BLOCKS_PER_FRAME] {
+        &self.gain_codes_by_block
+    }
+
+    pub const fn db_per_bit_codes_by_block(&self) -> &[u8; GAIN_BLOCKS_PER_FRAME] {
+        &self.db_per_bit_codes_by_block
+    }
+}
+
+/// F09G gain/db proposal after six successful staged blocks.
+///
+/// It is noncommitting and remains policy-generation incomplete until the same-source F09/F10
+/// numeric plan is complete and the parent accepts the source.
+#[must_use]
+#[derive(Debug, Eq, PartialEq)]
+pub struct AnalysisGainDbStage {
+    after_state: AnalysisOwnerRoot,
+    source_transaction: SourceTransaction,
+    f08_plan: F08AnalysisPlan,
+    plan: F09GainDbPlan,
+}
+
+impl AnalysisGainDbStage {
+    pub const fn after_state(&self) -> &AnalysisOwnerRoot {
+        &self.after_state
+    }
+
+    pub fn shared_analysis(&self) -> Option<&SharedAnalysisReceipt> {
+        self.source_transaction.shared_analysis()
+    }
+
+    pub const fn f08_plan(&self) -> &F08AnalysisPlan {
+        &self.f08_plan
+    }
+
+    pub const fn plan(&self) -> &F09GainDbPlan {
+        &self.plan
+    }
+
+    /// Completes the selected six-block F09/F10 plan without committing the after-root.
+    pub fn complete_f09_f10(
+        self,
+        policy_parameters: &PolicyParameters,
+    ) -> Result<AnalysisNumericPlanStage, AnalysisOwnerStageError> {
+        let Self {
+            mut after_state,
+            source_transaction,
+            f08_plan,
+            plan: gain_db_plan,
+        } = self;
+        let shared_analysis = source_transaction
+            .shared_analysis()
+            .ok_or(AnalysisOwnerStageError::SourceTransactionRejected)?;
+        let f07_output = shared_analysis.f07_proposal().output();
+        let exponent_plan =
+            stage_f09_f10_source_plan(&f08_plan, f07_output, &gain_db_plan, policy_parameters)
+                .map_err(AnalysisOwnerStageError::ExponentPlan)?;
+        let short_flags = std::array::from_fn(|block| {
+            std::array::from_fn(|lane| f07_output.short_consumed()[block][lane] != 0)
+        });
+        let dither_flags = *f07_output.dither_flags();
+        let previous_short_before = *f07_output.previous_short_before();
+        after_state.policy_generation = shared_analysis
+            .identity()
+            .analysis_after_generation()
+            .value();
+
+        Ok(AnalysisNumericPlanStage {
+            after_state,
+            source_transaction,
+            plan: Some(AnalysisNumericPlan {
+                f08: f08_plan,
+                gain_db: gain_db_plan,
+                exponents: exponent_plan,
+                short_flags,
+                previous_short_before,
+                dither_flags,
+            }),
+        })
+    }
+}
+
+/// Complete same-source F07-F10 value plan. F11 remains an independent later producer.
+#[must_use]
+#[derive(Debug, Eq, PartialEq)]
+pub struct AnalysisNumericPlan {
+    f08: F08AnalysisPlan,
+    gain_db: F09GainDbPlan,
+    exponents: AnalysisExponentPlan,
+    short_flags: [[bool; F07_FULLBAND_LANES]; F07_BLOCKS_PER_FRAME],
+    previous_short_before: [bool; F07_FULLBAND_LANES],
+    dither_flags: [[bool; F07_FULLBAND_LANES]; F07_BLOCKS_PER_FRAME],
+}
+
+impl AnalysisNumericPlan {
+    pub const fn f08(&self) -> &F08AnalysisPlan {
+        &self.f08
+    }
+
+    pub const fn gain_db(&self) -> &F09GainDbPlan {
+        &self.gain_db
+    }
+
+    pub const fn exponents(&self) -> &AnalysisExponentPlan {
+        &self.exponents
+    }
+
+    pub const fn short_flags(&self) -> &[[bool; F07_FULLBAND_LANES]; F07_BLOCKS_PER_FRAME] {
+        &self.short_flags
+    }
+
+    pub const fn previous_short_before(&self) -> &[bool; F07_FULLBAND_LANES] {
+        &self.previous_short_before
+    }
+
+    pub const fn dither_flags(&self) -> &[[bool; F07_FULLBAND_LANES]; F07_BLOCKS_PER_FRAME] {
+        &self.dither_flags
+    }
+}
+
+/// Noncommitting proposed after-root plus the same-source F07-F10 numeric receipt boundary.
+#[must_use]
+#[derive(Debug, Eq, PartialEq)]
+pub struct AnalysisNumericPlanStage {
+    after_state: AnalysisOwnerRoot,
+    source_transaction: SourceTransaction,
+    plan: Option<AnalysisNumericPlan>,
+}
+
+impl AnalysisNumericPlanStage {
+    pub const fn after_state(&self) -> &AnalysisOwnerRoot {
+        &self.after_state
+    }
+
+    pub fn shared_analysis(&self) -> Option<&SharedAnalysisReceipt> {
+        self.source_transaction.shared_analysis()
+    }
+
+    pub const fn plan(&self) -> Option<&AnalysisNumericPlan> {
+        self.plan.as_ref()
+    }
+
+    /// Creates the one numeric receipt from the same shared analysis identity/provider set.
+    pub fn prepare_numeric_plan(
+        &mut self,
+    ) -> Result<NumericPlanReceipt<'_, AnalysisNumericPlan>, AnalysisOwnerStageError> {
+        let plan = self
+            .plan
+            .take()
+            .ok_or(AnalysisOwnerStageError::NumericPlanAlreadyPrepared)?;
+        self.source_transaction
+            .prepare_numeric_plan(plan)
+            .map_err(map_transaction_stage_error)
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum AnalysisOwnerStageError {
+    InvalidCommittedGeneration,
+    GenerationOverflow,
+    SourceTransactionRejected,
+    IncompleteF08Plan,
+    SelectedGainMaskInvalid,
+    BlockIndexOverflow,
+    GainHistoryInput,
+    MeanSquare(MeanSquareError),
+    DbSelector(DbSelectorError),
+    DbSelectorCodeOverflow,
+    PolicyCounterOverflow,
+    ExponentPlan(AnalysisExponentPlanError),
+    NumericPlanAlreadyPrepared,
+    F07(F07SourceFrameError),
+    WindowFold(F08WindowFoldError),
+    FullbandTransform(F08FbwTransformError),
+    LfeTransform(F08LfeTransformError),
+    ExponentInput(TransformExponentInputError),
+}
+
+fn map_transaction_stage_error(_: SourceTransactionStageError) -> AnalysisOwnerStageError {
+    AnalysisOwnerStageError::SourceTransactionRejected
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{AnalysisOwnerRoot, AnalysisOwnerStageError, F07_BLOCKS_PER_FRAME};
+    use crate::analysis::exponent_plan::{AnalysisBlockIndex, FullbandLaneIndex};
+    use crate::analysis::input_history::INPUT_HISTORY_BLOCK_SAMPLES;
+    use crate::analysis::source_frame::F07SourceFrameError;
+    use crate::analysis::source_frame::InstalledAudioSourceFrame;
+    use crate::analysis::source_frame::zeroed_shared_analysis_receipt_for_identity_tests;
+    use crate::analysis::transient_channel::TransientChannelError;
+    use crate::analysis::transient_parameters::load_transient_parameters;
+    use crate::codec::exponent_normalization::{
+        FULLBAND_EXPONENT_BINS, LFE_EXPONENT_BINS, normalize_fullband_exponents,
+        normalize_lfe_exponents,
+    };
+    use crate::codec::exponent_refresh_state::refresh_exponent_state;
+    use crate::codec::policy_parameters::{PolicyProfile, load_policy_parameters};
+    use crate::timeline::CodecSourceIndex;
+    use crate::transaction::{AttemptId, CallbackTransactionId};
+    use crate::transform::math_generated_parameters::MathGeneratedTransformParameters;
+
+    const D05_PARAMETERS: &[u8] =
+        include_bytes!("../../tests/fixtures/transient_channel/PARAMETERS.json");
+    const F08_PARAMETERS: &[u8] =
+        include_bytes!("../transform/ordinary_transform_math_parameters.json");
+    const POLICY_PARAMETERS: &[u8] =
+        include_bytes!("../../tests/fixtures/policy_authorized/PARAMETERS.json");
+    const POLICY_AMENDMENT_VECTORS: &[u8] = include_bytes!(
+        "../../../../outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-POLICY-ROOT-STATE-AMENDMENT-V1/INPUT-ONLY-VECTORS.json"
+    );
+    const POLICY_AMENDMENT_VECTORS_SHA256: &str =
+        "0c0fed50ae080623ec62771a2cfeaa0fd562a3c694db08cf2d1e9aa213a5a039";
+
+    fn source_transaction() -> (AttemptId, CallbackTransactionId, CodecSourceIndex) {
+        (
+            AttemptId::new(3),
+            CallbackTransactionId::new("analysis-root-test").unwrap(),
+            CodecSourceIndex::new(0),
+        )
+    }
+
+    fn zero_audio() -> Box<InstalledAudioSourceFrame> {
+        vec![[[0_u32; INPUT_HISTORY_BLOCK_SAMPLES]; F07_BLOCKS_PER_FRAME]; 6]
+            .into_boxed_slice()
+            .try_into()
+            .unwrap()
+    }
+
+    fn varying_audio() -> Box<InstalledAudioSourceFrame> {
+        let mut audio = zero_audio();
+        for (channel, channel_blocks) in audio.iter_mut().enumerate() {
+            for (block, samples) in channel_blocks.iter_mut().enumerate() {
+                for (sample, word) in samples.iter_mut().enumerate() {
+                    let value = if block == 0 {
+                        0.0
+                    } else {
+                        let residue = (channel * 47 + block * 31 + sample * 13) % 257;
+                        (i32::try_from(residue).unwrap() - 128) as f32 / 512.0
+                    };
+                    *word = value.to_bits();
+                }
+            }
+        }
+        audio
+    }
+
+    fn expected_fullband_strategies(
+        refresh_markers: &[[i16; 5]; F07_BLOCKS_PER_FRAME],
+        short_consumed: &[[u8; 5]; F07_BLOCKS_PER_FRAME],
+    ) -> [[u8; 5]; F07_BLOCKS_PER_FRAME] {
+        let mut strategies = [[0_u8; 5]; F07_BLOCKS_PER_FRAME];
+        for lane in 0..5 {
+            let mut refresh_distance = 0_usize;
+            for block in (0..F07_BLOCKS_PER_FRAME).rev() {
+                let strategy = match refresh_markers[block][lane] {
+                    0 => {
+                        refresh_distance += 1;
+                        0
+                    }
+                    1 => {
+                        let strategy = if refresh_distance < 2 {
+                            3
+                        } else if refresh_distance < 4 {
+                            2
+                        } else {
+                            1
+                        };
+                        refresh_distance = 0;
+                        strategy
+                    }
+                    _ => panic!("F09 returned a non-I1 refresh marker"),
+                };
+                strategies[block][lane] = if short_consumed[block][lane] == 1 {
+                    3
+                } else {
+                    strategy
+                };
+            }
+        }
+        strategies
+    }
+
+    fn selected_policy_parameters() -> crate::codec::policy_parameters::PolicyParameters {
+        load_policy_parameters(PolicyProfile::selected(), Some(POLICY_PARAMETERS)).unwrap()
+    }
+
+    #[test]
+    fn cold_and_reset_match_exact_four_family_schema() {
+        let mut root = AnalysisOwnerRoot::cold();
+        assert!(root.is_commit_eligible());
+        assert_eq!(root.input_history_generation(), 0);
+        assert_eq!(root.transient_generation(), 0);
+        assert_eq!(root.transform_generation(), 0);
+        assert_eq!(root.policy_generation(), 0);
+        assert_eq!(root.input_histories().len(), 6);
+        assert_eq!(root.transient_states().len(), 5);
+        assert_eq!(root.primary_fbw_history_u32_words().len(), 640);
+        assert_eq!(root.companion_fbw_history_u32_words().len(), 640);
+        assert_eq!(root.primary_lfe_history_u32_words().len(), 128);
+        assert_eq!(root.companion_lfe_history_u32_words().len(), 128);
+        assert_eq!(root.gain_range_previous_peak_f32_bits_u32().len(), 6);
+        assert_eq!(root.gain_range_completed_blocks_u64(), 0);
+        assert_eq!(root.db_per_bit_selector_u16(), 0);
+        assert_eq!(root.db_per_bit_completed_blocks_u64(), 0);
+        assert!(
+            root.input_histories()
+                .iter()
+                .all(|history| history.words().iter().all(|word| *word == 0))
+        );
+        assert!(
+            root.transient_states()
+                .iter()
+                .all(|state| state.canonical_bytes().iter().all(|byte| *byte == 0))
+        );
+        assert!(
+            root.primary_fbw_history_u32_words()
+                .iter()
+                .chain(root.companion_fbw_history_u32_words())
+                .chain(root.primary_lfe_history_u32_words())
+                .chain(root.companion_lfe_history_u32_words())
+                .all(|word| *word == 0)
+        );
+        assert!(
+            root.gain_range_previous_peak_f32_bits_u32()
+                .iter()
+                .all(|word| *word == 0)
+        );
+
+        root.reset();
+        assert_eq!(root, AnalysisOwnerRoot::cold());
+    }
+
+    #[test]
+    fn f07_and_f08_advance_only_their_approved_generation_families() {
+        let root = AnalysisOwnerRoot::cold();
+        let parameters = load_transient_parameters(Some(D05_PARAMETERS)).unwrap();
+        let transform_parameters =
+            MathGeneratedTransformParameters::from_provider_bytes(F08_PARAMETERS).unwrap();
+        let (attempt, transaction, source) = source_transaction();
+        let f07 = root
+            .prepare_f07_source(
+                attempt,
+                transaction,
+                source,
+                &zero_audio(),
+                [false; 5],
+                &parameters,
+            )
+            .unwrap();
+        assert!(!f07.after_state().is_commit_eligible());
+        assert_eq!(f07.after_state().input_history_generation(), 1);
+        assert_eq!(f07.after_state().transient_generation(), 1);
+        assert_eq!(f07.after_state().transform_generation(), 0);
+        assert_eq!(f07.after_state().policy_generation(), 0);
+        let shared = f07.shared_analysis().unwrap();
+        assert_eq!(shared.advancement_count(), 1);
+        assert_eq!(shared.identity().source_index(), source);
+        let provider_lineage = shared.provider_lineage();
+        assert_eq!(
+            provider_lineage.transient_sha256(),
+            "130cd1a446ea8413a1d0d4c5eea631e890b7f1cd675975efa92697e258402991"
+        );
+        assert_eq!(
+            provider_lineage.transform_sha256(),
+            "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1"
+        );
+        assert_eq!(
+            provider_lineage.policy_sha256(),
+            "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a"
+        );
+        assert_eq!(
+            provider_lineage.difference_map_sha256(),
+            "6cf3ae8d899b334d5aa87e0744e4c58b7dba1d92177ca07738726f8ea0ee2c6d"
+        );
+
+        let f08 = f07.complete_f08(&transform_parameters).unwrap();
+        assert!(!f08.after_state().is_commit_eligible());
+        assert_eq!(f08.after_state().input_history_generation(), 1);
+        assert_eq!(f08.after_state().transient_generation(), 1);
+        assert_eq!(f08.after_state().transform_generation(), 1);
+        assert_eq!(f08.after_state().policy_generation(), 0);
+        assert_eq!(f08.after_state().gain_range_completed_blocks_u64(), 0);
+        assert_eq!(f08.after_state().db_per_bit_completed_blocks_u64(), 0);
+        assert!(f08.plan().is_six_block_complete());
+        assert_eq!(f08.plan().fullband_spectra().len(), 30);
+        assert_eq!(f08.plan().fullband_exponent_inputs().len(), 30);
+        assert_eq!(f08.plan().lfe_spectra().len(), 6);
+        assert_eq!(f08.plan().lfe_exponent_inputs().len(), 6);
+        assert!(matches!(
+            f08.after_state().prepare_f07_source(
+                attempt,
+                CallbackTransactionId::new("analysis-root-after-f08").unwrap(),
+                CodecSourceIndex::new(1),
+                &zero_audio(),
+                [false; 5],
+                &parameters,
+            ),
+            Err(AnalysisOwnerStageError::InvalidCommittedGeneration)
+        ));
+    }
+
+    #[test]
+    fn gain_and_db_stage_carries_the_two_approved_policy_histories() {
+        let mut root = AnalysisOwnerRoot::cold();
+        root.gain_range_previous_peak_f32_bits_u32 = [
+            0x3dcc_cccd,
+            0x3e4c_cccd,
+            0x3e99_999a,
+            0x3ecc_cccd,
+            0x3f00_0000,
+            0x3f19_999a,
+        ];
+        root.gain_range_completed_blocks_u64 = 17;
+        root.db_per_bit_selector_u16 = 2;
+        root.db_per_bit_completed_blocks_u64 = 17;
+        let committed_before = root.staged_copy();
+
+        let transient_parameters = load_transient_parameters(Some(D05_PARAMETERS)).unwrap();
+        let transform_parameters =
+            MathGeneratedTransformParameters::from_provider_bytes(F08_PARAMETERS).unwrap();
+        let policy_parameters = selected_policy_parameters();
+        let (attempt, transaction, source) = source_transaction();
+        let f07 = root
+            .prepare_f07_source(
+                attempt,
+                transaction,
+                source,
+                &zero_audio(),
+                [false; 5],
+                &transient_parameters,
+            )
+            .unwrap();
+        let f08 = f07.complete_f08(&transform_parameters).unwrap();
+        let gain_db = f08.complete_gain_db(&policy_parameters).unwrap();
+
+        assert!(!gain_db.after_state().is_commit_eligible());
+        assert_eq!(gain_db.after_state().policy_generation(), 0);
+        assert_eq!(gain_db.after_state().gain_range_completed_blocks_u64(), 23);
+        assert_eq!(gain_db.after_state().db_per_bit_completed_blocks_u64(), 23);
+        assert_eq!(
+            gain_db.after_state().db_per_bit_selector_u16(),
+            u16::from(*gain_db.plan().db_per_bit_codes_by_block().last().unwrap())
+        );
+        assert!(
+            gain_db
+                .plan()
+                .db_per_bit_codes_by_block()
+                .iter()
+                .all(|selector| *selector <= 3)
+        );
+        assert_eq!(gain_db.plan().gain_codes_by_block().len(), 6);
+        assert_eq!(root, committed_before);
+    }
+
+    #[test]
+    fn failure_after_a_f09g_block_drops_all_staged_policy_updates() {
+        let mut root = AnalysisOwnerRoot::cold();
+        root.gain_range_completed_blocks_u64 = 17;
+        root.db_per_bit_selector_u16 = 1;
+        root.db_per_bit_completed_blocks_u64 = u64::MAX - 2;
+        let committed_before = root.staged_copy();
+
+        let transient_parameters = load_transient_parameters(Some(D05_PARAMETERS)).unwrap();
+        let transform_parameters =
+            MathGeneratedTransformParameters::from_provider_bytes(F08_PARAMETERS).unwrap();
+        let policy_parameters = selected_policy_parameters();
+        let (attempt, transaction, source) = source_transaction();
+        let f07 = root
+            .prepare_f07_source(
+                attempt,
+                transaction,
+                source,
+                &zero_audio(),
+                [false; 5],
+                &transient_parameters,
+            )
+            .unwrap();
+        let f08 = f07.complete_f08(&transform_parameters).unwrap();
+
+        assert!(matches!(
+            f08.complete_gain_db(&policy_parameters),
+            Err(AnalysisOwnerStageError::PolicyCounterOverflow)
+        ));
+        assert_eq!(root, committed_before);
+    }
+
+    #[test]
+    fn policy_root_input_only_vectors_are_hash_bound_without_expected_outputs() {
+        use sha2::{Digest, Sha256};
+
+        assert_eq!(
+            format!("{:x}", Sha256::digest(POLICY_AMENDMENT_VECTORS)),
+            POLICY_AMENDMENT_VECTORS_SHA256
+        );
+        let vectors: serde_json::Value = serde_json::from_slice(POLICY_AMENDMENT_VECTORS).unwrap();
+        assert_eq!(vectors["schema"], "policy-root-projection-input-only.v1");
+        assert_eq!(vectors["expected_projection_values_included"], false);
+        assert_eq!(vectors["expected_hashes_included"], false);
+
+        let cases = vectors["cases"].as_array().unwrap();
+        let gain_carry = cases
+            .iter()
+            .find(|case| case["id"] == "gain_peak_cross_source_carry")
+            .unwrap();
+        assert_eq!(gain_carry["source"], 2);
+        assert_eq!(gain_carry["block"], 5);
+        assert_eq!(gain_carry["gain_completed_blocks_u64"], 17);
+        assert_eq!(
+            gain_carry["gain_previous_current_peak_f32_bits"]
+                .as_array()
+                .unwrap()
+                .len(),
+            6
+        );
+
+        let selector_carry = cases
+            .iter()
+            .find(|case| case["id"] == "db_selector_cross_source_carry")
+            .unwrap();
+        assert_eq!(selector_carry["db_selector_u16"], 2);
+        assert_eq!(selector_carry["db_completed_blocks_u64"], 17);
+
+        let local_work = cases
+            .iter()
+            .find(|case| case["id"] == "source_local_work_not_root")
+            .unwrap();
+        assert_eq!(local_work["fbw_work_shape"], serde_json::json!([5, 217]));
+        assert_eq!(local_work["lfe_work_shape"], serde_json::json!([7]));
+        assert_eq!(local_work["initial_value"], 0);
+    }
+
+    #[test]
+    fn source_identity_is_parent_supplied_and_not_derived_from_generation() {
+        let root = AnalysisOwnerRoot::cold();
+        let parameters = load_transient_parameters(Some(D05_PARAMETERS)).unwrap();
+        let attempt = AttemptId::new(3);
+        let transaction = CallbackTransactionId::new("analysis-root-source-identity").unwrap();
+        let source = CodecSourceIndex::new(37);
+        let f07 = root
+            .prepare_f07_source(
+                attempt,
+                transaction,
+                source,
+                &zero_audio(),
+                [false; 5],
+                &parameters,
+            )
+            .unwrap();
+
+        let identity = f07.shared_analysis().unwrap().identity();
+        assert_eq!(identity.source_index(), source);
+        assert_eq!(identity.analysis_after_generation().value(), 1);
+    }
+
+    #[test]
+    fn test_fixture_receipt_preserves_parent_source_identity() {
+        let attempt = AttemptId::new(5);
+        let transaction_id = CallbackTransactionId::new("identity-fixture-test").unwrap();
+        let source = CodecSourceIndex::new(19);
+        let receipt = zeroed_shared_analysis_receipt_for_identity_tests(
+            attempt,
+            transaction_id,
+            source,
+            0,
+            1,
+        );
+
+        assert_eq!(receipt.advancement_count(), 1);
+        assert_eq!(receipt.identity().source_index(), source);
+        assert_eq!(receipt.identity().analysis_after_generation().value(), 1);
+    }
+
+    #[test]
+    fn f07_prepared_root_cannot_start_another_source_before_policy_completion() {
+        let root = AnalysisOwnerRoot::cold();
+        let parameters = load_transient_parameters(Some(D05_PARAMETERS)).unwrap();
+        let (attempt, transaction, source) = source_transaction();
+        let f07 = root
+            .prepare_f07_source(
+                attempt,
+                transaction,
+                source,
+                &zero_audio(),
+                [false; 5],
+                &parameters,
+            )
+            .unwrap();
+
+        assert!(matches!(
+            f07.after_state().prepare_f07_source(
+                attempt,
+                CallbackTransactionId::new("analysis-root-next-source").unwrap(),
+                CodecSourceIndex::new(1),
+                &zero_audio(),
+                [false; 5],
+                &parameters,
+            ),
+            Err(AnalysisOwnerStageError::InvalidCommittedGeneration)
+        ));
+        assert!(root.is_commit_eligible());
+        assert_eq!(root.input_history_generation(), 0);
+    }
+
+    #[test]
+    fn late_f07_block_failure_discards_all_staged_owner_values() {
+        let root = AnalysisOwnerRoot::cold();
+        let parameters = load_transient_parameters(Some(D05_PARAMETERS)).unwrap();
+        let (attempt, transaction, source) = source_transaction();
+        let mut audio = zero_audio();
+        audio[5][5][INPUT_HISTORY_BLOCK_SAMPLES - 1] = f32::NAN.to_bits();
+        assert!(matches!(
+            root.prepare_f07_source(
+                attempt,
+                transaction,
+                source,
+                &audio,
+                [false; 5],
+                &parameters,
+            ),
+            Err(AnalysisOwnerStageError::F07(
+                F07SourceFrameError::Transient(TransientChannelError::InputError)
+            ))
+        ));
+        assert_eq!(root, AnalysisOwnerRoot::cold());
+    }
+
+    #[test]
+    fn late_f08_failure_discards_the_cloned_analysis_root() {
+        let mut root = AnalysisOwnerRoot::cold();
+        let mut lfe_history = crate::analysis::input_history::InputHistory::cold();
+        let maximum_block = [f32::MAX.to_bits(); INPUT_HISTORY_BLOCK_SAMPLES];
+        for _ in 0..4 {
+            let (_, next) = lfe_history.advance_block(&maximum_block);
+            lfe_history = next;
+        }
+        root.input_histories[super::super::source_frame::LFE_EXTERNAL_ROW] = lfe_history;
+        let committed_before = root.staged_copy();
+
+        let parameters = load_transient_parameters(Some(D05_PARAMETERS)).unwrap();
+        let transform_parameters =
+            MathGeneratedTransformParameters::from_provider_bytes(F08_PARAMETERS).unwrap();
+        let (attempt, transaction, source) = source_transaction();
+        let f07 = root
+            .prepare_f07_source(
+                attempt,
+                transaction,
+                source,
+                &zero_audio(),
+                [false; 5],
+                &parameters,
+            )
+            .unwrap();
+
+        assert!(matches!(
+            f07.complete_f08(&transform_parameters),
+            Err(AnalysisOwnerStageError::WindowFold(_)
+                | AnalysisOwnerStageError::FullbandTransform(_)
+                | AnalysisOwnerStageError::LfeTransform(_)
+                | AnalysisOwnerStageError::ExponentInput(_))
+        ));
+        assert_eq!(root, committed_before);
+    }
+
+    #[test]
+    fn wrong_provider_identity_is_rejected_before_a_typed_transform_provider_exists() {
+        let root = AnalysisOwnerRoot::cold();
+        let parameters = load_transient_parameters(Some(D05_PARAMETERS)).unwrap();
+        let (attempt, transaction, source) = source_transaction();
+        let f07 = root
+            .prepare_f07_source(
+                attempt,
+                transaction,
+                source,
+                &zero_audio(),
+                [false; 5],
+                &parameters,
+            )
+            .unwrap();
+        assert!(MathGeneratedTransformParameters::from_provider_bytes(b"{}").is_err());
+        assert!(load_transient_parameters(Some(b"{}")).is_err());
+        assert_eq!(f07.after_state().transform_generation(), 0);
+        assert_eq!(root, AnalysisOwnerRoot::cold());
+    }
+
+    #[test]
+    fn f09_f10_stage_uses_structure_power_primary_and_independent_lfe_controls() {
+        const FBW_LANES: usize = 5;
+        const FBW_BINS: usize = FULLBAND_EXPONENT_BINS;
+        const LFE_BINS: usize = LFE_EXPONENT_BINS;
+
+        let root = AnalysisOwnerRoot::cold();
+        let transient_parameters = load_transient_parameters(Some(D05_PARAMETERS)).unwrap();
+        let transform_parameters =
+            MathGeneratedTransformParameters::from_provider_bytes(F08_PARAMETERS).unwrap();
+        let policy_parameters = selected_policy_parameters();
+        let (attempt, transaction, source) = source_transaction();
+        let f07 = root
+            .prepare_f07_source(
+                attempt,
+                transaction,
+                source,
+                &varying_audio(),
+                [false; FBW_LANES],
+                &transient_parameters,
+            )
+            .unwrap();
+        let f08 = f07.complete_f08(&transform_parameters).unwrap();
+        let gain_db = f08.complete_gain_db(&policy_parameters).unwrap();
+
+        let f07_output = gain_db.shared_analysis().unwrap().f07_proposal().output();
+        let structure_refresh = *f07_output.structure_refresh();
+        let short_consumed = *f07_output.short_consumed();
+        assert_eq!(structure_refresh[0], [true; FBW_LANES]);
+        assert_eq!(short_consumed[0], [0; FBW_LANES]);
+        let fullband_power: [[[i16; FBW_BINS]; FBW_LANES]; F07_BLOCKS_PER_FRAME] =
+            std::array::from_fn(|block| {
+                std::array::from_fn(|lane| {
+                    *gain_db.f08_plan().fullband_exponent_inputs()[block * FBW_LANES + lane]
+                        .power_raw_exponents_i16()
+                })
+            });
+        let fullband_primary: [[[i16; FBW_BINS]; FBW_LANES]; F07_BLOCKS_PER_FRAME] =
+            std::array::from_fn(|block| {
+                std::array::from_fn(|lane| {
+                    *gain_db.f08_plan().fullband_exponent_inputs()[block * FBW_LANES + lane]
+                        .primary_raw_exponents_i16()
+                })
+            });
+        let lfe_power: [[i16; LFE_BINS]; F07_BLOCKS_PER_FRAME] = std::array::from_fn(|block| {
+            *gain_db.f08_plan().lfe_exponent_inputs()[block].power_raw_exponents_i16()
+        });
+        let lfe_primary: [[i16; LFE_BINS]; F07_BLOCKS_PER_FRAME] = std::array::from_fn(|block| {
+            *gain_db.f08_plan().lfe_exponent_inputs()[block].primary_raw_exponents_i16()
+        });
+        let gain_ranges = *gain_db.plan().gain_codes_by_block();
+
+        assert!(
+            fullband_power
+                .iter()
+                .flatten()
+                .zip(fullband_primary.iter().flatten())
+                .any(|(power, primary)| power != primary),
+            "synthetic input must distinguish POWER refresh rows from PRIMARY F10 rows"
+        );
+
+        let mut expected_fullband_markers = [[0_i16; FBW_LANES]; F07_BLOCKS_PER_FRAME];
+        for lane in 0..FBW_LANES {
+            let mut work = [0_i16; FBW_BINS];
+            for block in 0..F07_BLOCKS_PER_FRAME {
+                let mut current = fullband_power[block][lane];
+                let mut marker = i16::from(structure_refresh[block][lane]);
+                refresh_exponent_state(&mut current, &mut work, &mut marker, 1, 0, 0, 128);
+                expected_fullband_markers[block][lane] = marker;
+            }
+        }
+
+        let mut expected_lfe_markers = [0_i16; F07_BLOCKS_PER_FRAME];
+        let mut lfe_work = [0_i16; LFE_BINS];
+        for block in 0..F07_BLOCKS_PER_FRAME {
+            let mut current = lfe_power[block];
+            let mut marker = i16::from(block == 0);
+            refresh_exponent_state(&mut current, &mut lfe_work, &mut marker, 0, 0, 0, 7);
+            expected_lfe_markers[block] = marker;
+        }
+
+        let expected_strategies =
+            expected_fullband_strategies(&expected_fullband_markers, &short_consumed);
+        let numeric = gain_db.complete_f09_f10(&policy_parameters).unwrap();
+        let numeric_plan = numeric.plan().unwrap();
+        let actual_plan = numeric_plan.exponents();
+        assert_eq!(
+            actual_plan.fullband_refresh_marker_after(),
+            &expected_fullband_markers
+        );
+        assert_eq!(actual_plan.fullband_strategy(), &expected_strategies);
+        assert_eq!(
+            actual_plan.lfe_refresh_marker_after(),
+            &expected_lfe_markers
+        );
+
+        let profile = PolicyProfile::selected();
+        for lane in 0..FBW_LANES {
+            let mut block = 0;
+            while block < F07_BLOCKS_PER_FRAME {
+                let strategy = expected_strategies[block][lane];
+                assert_ne!(strategy, 0, "selected source must start with an F10 anchor");
+                let end = (block + 1..F07_BLOCKS_PER_FRAME)
+                    .find(|next| expected_strategies[*next][lane] != 0)
+                    .unwrap_or(F07_BLOCKS_PER_FRAME);
+                let merged_primary = std::array::from_fn(|bin| {
+                    (block..end)
+                        .map(|source_block| fullband_primary[source_block][lane][bin])
+                        .min()
+                        .unwrap()
+                });
+                let expected_gain = (block..end)
+                    .map(|source_block| gain_ranges[source_block][lane])
+                    .min()
+                    .unwrap();
+                let span = match strategy {
+                    1 => 1,
+                    2 => 2,
+                    3 => 4,
+                    _ => unreachable!("strategy was generated from the selected contract"),
+                };
+                let normalized = normalize_fullband_exponents(
+                    &merged_primary,
+                    span,
+                    profile.normalization_option,
+                    i16::from(profile.normalization_gate),
+                    Some(&policy_parameters),
+                )
+                .unwrap();
+                let decoded = std::array::from_fn(|index| {
+                    u8::try_from(normalized.expanded_exponents()[index]).unwrap()
+                });
+                for (source_block, strategy_row) in
+                    expected_strategies.iter().enumerate().take(end).skip(block)
+                {
+                    let actual = actual_plan
+                        .fullband_block(
+                            AnalysisBlockIndex::new(u8::try_from(source_block).unwrap()),
+                            FullbandLaneIndex::new(u8::try_from(lane).unwrap()),
+                        )
+                        .unwrap();
+                    assert_eq!(actual.decoded_exponents(), &decoded);
+                    assert_eq!(actual.gain_range(), u8::try_from(expected_gain).unwrap());
+                    assert_eq!(actual.strategy(), strategy_row[lane]);
+                }
+                block = end;
+            }
+        }
+
+        let mut block = 0;
+        while block < F07_BLOCKS_PER_FRAME {
+            let strategy = u8::try_from(expected_lfe_markers[block]).unwrap();
+            assert_ne!(strategy, 0, "selected LFE plan must start with an anchor");
+            let end = (block + 1..F07_BLOCKS_PER_FRAME)
+                .find(|next| expected_lfe_markers[*next] != 0)
+                .unwrap_or(F07_BLOCKS_PER_FRAME);
+            let merged_primary = std::array::from_fn(|bin| {
+                (block..end)
+                    .map(|source_block| lfe_primary[source_block][bin])
+                    .min()
+                    .unwrap()
+            });
+            let normalized =
+                normalize_lfe_exponents(&merged_primary, Some(&policy_parameters)).unwrap();
+            let decoded = std::array::from_fn(|index| {
+                u8::try_from(normalized.expanded_exponents()[index]).unwrap()
+            });
+            for (source_block, marker_after) in expected_lfe_markers
+                .iter()
+                .enumerate()
+                .take(end)
+                .skip(block)
+            {
+                let actual = actual_plan
+                    .lfe_block(AnalysisBlockIndex::new(u8::try_from(source_block).unwrap()))
+                    .unwrap();
+                assert_eq!(actual.decoded_exponents(), decoded);
+                assert_eq!(actual.strategy(), u8::try_from(*marker_after).unwrap());
+            }
+            block = end;
+        }
+    }
+}

@@ -14,7 +14,8 @@ use crate::timeline::CodecSourceIndex;
 use crate::transaction::{AttemptId, CallbackTransactionId};
 
 const EXTERNAL_AUDIO_LANES: usize = 6;
-const FBW_EXTERNAL_ROWS: [usize; F07_FULLBAND_LANES] = [0, 2, 1, 4, 5];
+pub(crate) const FBW_EXTERNAL_ROWS: [usize; F07_FULLBAND_LANES] = [0, 2, 1, 4, 5];
+pub(crate) const LFE_EXTERNAL_ROW: usize = 3;
 
 pub type InstalledAudioSourceFrame =
     [[[u32; INPUT_HISTORY_BLOCK_SAMPLES]; F07_BLOCKS_PER_FRAME]; EXTERNAL_AUDIO_LANES];
@@ -87,6 +88,7 @@ pub enum F07SourceFrameError {
 #[derive(Debug, Eq, PartialEq)]
 pub struct F07SourceFrameOutput {
     delayed_audio: DelayedAudioSourceFrame,
+    previous_short_before: [bool; F07_FULLBAND_LANES],
     short_source: [[u8; F07_FULLBAND_LANES]; F07_BLOCKS_PER_FRAME],
     other_source: [[u8; F07_FULLBAND_LANES]; F07_BLOCKS_PER_FRAME],
     short_consumed: [[u8; F07_FULLBAND_LANES]; F07_BLOCKS_PER_FRAME],
@@ -99,6 +101,10 @@ pub struct F07SourceFrameOutput {
 impl F07SourceFrameOutput {
     pub const fn delayed_audio(&self) -> &DelayedAudioSourceFrame {
         &self.delayed_audio
+    }
+
+    pub const fn previous_short_before(&self) -> &[bool; F07_FULLBAND_LANES] {
+        &self.previous_short_before
     }
 
     pub const fn short_source(&self) -> &[[u8; F07_FULLBAND_LANES]; F07_BLOCKS_PER_FRAME] {
@@ -251,6 +257,45 @@ impl SharedAnalysisIdentity {
     }
 }
 
+/// Exact selected provider lineage from the approved F07-F12 provider manifest.
+///
+/// These are existing package identities; this value computes no digest and defines no
+/// serialized receipt format.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct AnalysisProviderLineage {
+    transient: &'static str,
+    transform: &'static str,
+    policy: &'static str,
+    difference_map: &'static str,
+}
+
+impl AnalysisProviderLineage {
+    const fn selected() -> Self {
+        Self {
+            transient: "130cd1a446ea8413a1d0d4c5eea631e890b7f1cd675975efa92697e258402991",
+            transform: "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1",
+            policy: "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a",
+            difference_map: "6cf3ae8d899b334d5aa87e0744e4c58b7dba1d92177ca07738726f8ea0ee2c6d",
+        }
+    }
+
+    pub const fn transient_sha256(self) -> &'static str {
+        self.transient
+    }
+
+    pub const fn transform_sha256(self) -> &'static str {
+        self.transform
+    }
+
+    pub const fn policy_sha256(self) -> &'static str {
+        self.policy
+    }
+
+    pub const fn difference_map_sha256(self) -> &'static str {
+        self.difference_map
+    }
+}
+
 /// Parent-issued source identity plus the staged F07 proposal used by F06/F08-F12 consumers.
 ///
 /// The parent retains commit authority and owns the complete shared-analysis after-state. This
@@ -261,6 +306,7 @@ impl SharedAnalysisIdentity {
 #[derive(Debug, Eq, PartialEq)]
 pub struct SharedAnalysisReceipt {
     identity: SharedAnalysisIdentity,
+    provider_lineage: AnalysisProviderLineage,
     f07_proposal: F07SourceFrameProposal,
 }
 
@@ -280,6 +326,7 @@ impl SharedAnalysisReceipt {
                 source_stage_key,
                 analysis_after_generation,
             },
+            provider_lineage: AnalysisProviderLineage::selected(),
             f07_proposal,
         }
     }
@@ -290,6 +337,10 @@ impl SharedAnalysisReceipt {
 
     pub const fn f07_proposal(&self) -> &F07SourceFrameProposal {
         &self.f07_proposal
+    }
+
+    pub const fn provider_lineage(&self) -> AnalysisProviderLineage {
+        self.provider_lineage
     }
 
     pub const fn advancement_count(&self) -> u8 {
@@ -379,6 +430,7 @@ pub fn stage_f07a_source_frame(
     Ok(F07SourceFrameProposal {
         output: F07SourceFrameOutput {
             delayed_audio,
+            previous_short_before: *before.previous_short_by_fbw_lane(),
             short_source,
             other_source,
             short_consumed,
@@ -393,4 +445,50 @@ pub fn stage_f07a_source_frame(
             previous_short: next_previous_short,
         },
     })
+}
+
+/// Synthetic identity-only receipt fixture for cross-owner staging tests.
+///
+/// The zero output is not an F07 vector or a production cold constructor.
+#[cfg(test)]
+pub(crate) fn zeroed_shared_analysis_receipt_for_identity_tests(
+    attempt_id: AttemptId,
+    transaction_id: CallbackTransactionId,
+    source_index: CodecSourceIndex,
+    before_generation: u64,
+    after_generation: u64,
+) -> SharedAnalysisReceipt {
+    let proposal = F07SourceFrameProposal {
+        output: F07SourceFrameOutput {
+            delayed_audio: vec![
+                [[0_u32; INPUT_HISTORY_BLOCK_SAMPLES]; F07_BLOCKS_PER_FRAME];
+                EXTERNAL_AUDIO_LANES
+            ]
+            .into_boxed_slice(),
+            previous_short_before: [false; F07_FULLBAND_LANES],
+            short_source: [[0; F07_FULLBAND_LANES]; F07_BLOCKS_PER_FRAME],
+            other_source: [[0; F07_FULLBAND_LANES]; F07_BLOCKS_PER_FRAME],
+            short_consumed: [[0; F07_FULLBAND_LANES]; F07_BLOCKS_PER_FRAME],
+            other_consumed: [[0; F07_FULLBAND_LANES]; F07_BLOCKS_PER_FRAME],
+            structure_refresh: [[false; F07_FULLBAND_LANES]; F07_BLOCKS_PER_FRAME],
+            dither_flags: [[false; F07_FULLBAND_LANES]; F07_BLOCKS_PER_FRAME],
+            dither_syntax_present: false,
+        },
+        after_state: F07SourceFrameAfterState {
+            input_histories: std::array::from_fn(|_| InputHistory::cold()),
+            transient_states: std::array::from_fn(|_| TransientChannelState::cold()),
+            previous_short: [false; F07_FULLBAND_LANES],
+        },
+    };
+    let source_stage_key = SourceStageKey::from_parent_snapshot(
+        attempt_id,
+        transaction_id,
+        source_index,
+        AnalysisOwnerGeneration::from_parent_snapshot(before_generation),
+    );
+    SharedAnalysisReceipt::from_parent(
+        source_stage_key,
+        AnalysisOwnerGeneration::from_parent_snapshot(after_generation),
+        proposal,
+    )
 }

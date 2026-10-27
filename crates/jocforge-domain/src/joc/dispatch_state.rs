@@ -250,14 +250,13 @@ pub fn stage_joc_payload(
         return Err(JocDispatchError::Clock);
     }
     validate_fit_lineage(fit.source_lineage(), input)?;
-    let sequence_count = if before.sequence_counter < 0 {
-        0
-    } else {
-        u16::try_from(before.sequence_counter).map_err(|_| JocDispatchError::Sequence)?
+    let sequence_count = match before.sequence_counter {
+        -1 => 0,
+        0..=1_023 => {
+            u16::try_from(before.sequence_counter).map_err(|_| JocDispatchError::Sequence)?
+        }
+        _ => return Err(JocDispatchError::Sequence),
     };
-    if sequence_count > 1_023 {
-        return Err(JocDispatchError::Sequence);
-    }
     let representation = fit
         .write_payload_with_retry(
             retry_provider,

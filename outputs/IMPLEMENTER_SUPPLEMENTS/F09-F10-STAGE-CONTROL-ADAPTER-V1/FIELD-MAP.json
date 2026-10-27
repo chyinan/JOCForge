@@ -1,0 +1,137 @@
+{
+  "schema": "f09-f10-stage-control-field-map.v1",
+  "fbw_lane_order": [
+    "L",
+    "C",
+    "R",
+    "Ls",
+    "Rs"
+  ],
+  "external_to_internal_indices": [
+    0,
+    2,
+    1,
+    4,
+    5,
+    3
+  ],
+  "fullband": {
+    "structure_refresh_i1": {
+      "source": "F07 structure_refresh[6][5]",
+      "shape": [
+        6,
+        5
+      ],
+      "domain": [
+        0,
+        1
+      ]
+    },
+    "refresh_marker_before_i16": {
+      "source": "exact conversion of same block/lane F07 structure_refresh",
+      "shape": [
+        6,
+        5
+      ],
+      "domain": [
+        0,
+        1
+      ]
+    },
+    "refresh_active_mode_i16": 1,
+    "refresh_special_i16": {
+      "value": 0,
+      "semantic": "frozen mode_a2 selected-profile constant"
+    },
+    "work_before_i16": {
+      "shape": [
+        217
+      ],
+      "initial": "zero for each lane at source start",
+      "next": "prior block work_after",
+      "persistent_across_source": false
+    },
+    "power_raw_current_i16": {
+      "shape": [
+        6,
+        5,
+        217
+      ],
+      "consumer": "F09 refresh only"
+    },
+    "marker_after_i16": {
+      "shape": [
+        6,
+        5
+      ],
+      "consumer": "F09.4 strategy"
+    },
+    "strategy_to_span": {
+      "0": null,
+      "1": 1,
+      "2": 2,
+      "3": 4
+    },
+    "primary_raw_i16": {
+      "shape": [
+        6,
+        5,
+        217
+      ],
+      "source": "strict-clipped PRIMARY coefficients",
+      "consumer": "F10"
+    },
+    "decoded_exponents_for_BAP": {
+      "shape": [
+        6,
+        5,
+        217
+      ],
+      "source": "F10 anchor/reuse plan"
+    }
+  },
+  "lfe": {
+    "consumes_f07_short_or_structure": false,
+    "refresh_marker_before_i16": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "refresh_active_mode_i16": 0,
+    "refresh_special_i16": 0,
+    "work_before_i16": {
+      "shape": [
+        7
+      ],
+      "initial": "zero at source start",
+      "next": "prior block work_after",
+      "persistent_across_source": false
+    },
+    "marker_after_is_strategy": true,
+    "normalization_span_u8": 1,
+    "normalization_option_i16": 1,
+    "normalization_gate_i16": 0,
+    "primary_raw_i16": {
+      "shape": [
+        6,
+        7
+      ],
+      "source": "strict-clipped LFE MAIN coefficients"
+    },
+    "decoded_exponents_for_BAP": {
+      "shape": [
+        6,
+        7
+      ],
+      "source": "F10 LFE anchor/reuse plan"
+    },
+    "gain_range_present": false
+  },
+  "naming_guard": {
+    "refresh_special_i16": "must mean frozen mode_a2; it is not the active FBW/LFE mode",
+    "normalization_span_u8": "valid only for nonzero strategy/anchor calls; reuse has no span and makes no normalization call"
+  }
+}

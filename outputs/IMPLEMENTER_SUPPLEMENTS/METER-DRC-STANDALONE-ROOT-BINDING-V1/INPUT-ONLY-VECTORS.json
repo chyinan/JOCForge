@@ -1,0 +1,76 @@
+{
+  "schema": "research.standalone-meter-drc-inputs.v1",
+  "metadata_only": true,
+  "meter_count_inputs": [
+    {
+      "N": 1,
+      "H": 1536
+    },
+    {
+      "N": 1537,
+      "H": 1536
+    },
+    {
+      "N": 6522906,
+      "H": 1536
+    }
+  ],
+  "meter_rule": "Q=ceil(N/H); meterQ+3 newzero-input callbacks, startup3104, P=QH, C=floor(P/1024)*1024, E=floor(C/960); getters do not advance clocks. Nonselected N cases test formulas only, not generalized fixedGTC schema admission.",
+  "selected_header": {
+    "category": 5,
+    "element_bits": 32,
+    "count": 1
+  },
+  "selected_sources": [
+    {
+      "main_g": 2,
+      "source_s": 0
+    },
+    {
+      "main_g": 3,
+      "source_s": 1
+    },
+    {
+      "main_g": 4,
+      "source_s": 2
+    },
+    {
+      "main_g": 5,
+      "source_s": 3
+    }
+  ],
+  "rejected_headers": [
+    {
+      "category": 1,
+      "element_bits": 28,
+      "count": 1
+    },
+    {
+      "category": 5,
+      "element_bits": 8,
+      "count": 1
+    },
+    {
+      "category": 5,
+      "element_bits": 32,
+      "count": 2
+    },
+    {
+      "category": true,
+      "element_bits": 32,
+      "count": 1
+    }
+  ],
+  "invalid_override_seed": {
+    "records": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "meaning": "Malformed selected controlFIFO state, not a category5 opaque packet"
+  },
+  "parent_abort_case": "Prepare next frozen FIFO transition but discard proposal without replacing live state",
+  "category5_payload_bytes": "NOT_IN_SELECTED_PROFILE_CONTRACT/NOT_REQUIRED",
+  "measurement_scalars_or_terminal_hash_supplied": false
+}

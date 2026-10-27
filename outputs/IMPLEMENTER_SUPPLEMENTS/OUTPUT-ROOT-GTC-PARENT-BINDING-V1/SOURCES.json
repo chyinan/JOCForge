@@ -1,0 +1,104 @@
+{
+  "classification": "LOCAL_MODEL interface composition; no native receipt equivalence claim.",
+  "approved_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_base": [
+    {
+      "document": "00-global-transaction-contract",
+      "bytes": 20041,
+      "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105"
+    },
+    {
+      "document": "00-selected-owner-projection-and-j05",
+      "bytes": 4504,
+      "sha256": "9ff01aca7b6be6e89511e4d493f9fc9e661a50e2f098065f4a32c3fed777542f"
+    },
+    {
+      "document": "15-keyless-publication",
+      "bytes": 8329,
+      "sha256": "47beaa9d415d6d26eb8d6a7df63ca3d86514c37740618c3a041a46c7961b3a72"
+    },
+    {
+      "document": "01-input-and-clock",
+      "bytes": 6887,
+      "sha256": "6bd78ebe23536c3a55ec54f2e13c2e8b98c2ee245ae5a886e47bc9580520b93a"
+    },
+    {
+      "document": "keyless-publication-state-v1",
+      "bytes": 1639,
+      "sha256": "189067c34e9533b8fe3a94277effde2ac6f6ec7bec4767221d890fc198b0d68c"
+    },
+    {
+      "document": "GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA",
+      "bytes": 12153,
+      "sha256": "74c8e4a60600187783e559459b426aada2508ae273f95401c9a4234aee4504b4"
+    }
+  ],
+  "approved_supplements": [
+    {
+      "package_id": "OUTPUT-ATTEMPT-IDENTITY-BINDING-V1",
+      "manifest_sha256": "4213be803667406082571ece3d7e7dc0c22694796e6bca13242fc60addbf63f6",
+      "payloads": [
+        {
+          "document": "CONTRACT.json",
+          "bytes": 2589,
+          "sha256": "6f45f7d82a869c9bf9914d027f40c0b905fdc210d122390c0c5b7c3c3193602a"
+        },
+        {
+          "document": "INPUT-ONLY-CASES.json",
+          "bytes": 774,
+          "sha256": "e4103604eecce3a0e92ceaa11f6589bd69a1be6539b6e18b6f1cb9833e0771fd"
+        },
+        {
+          "document": "SOURCES-AND-DECISION.json",
+          "bytes": 906,
+          "sha256": "a9ab76c41791014e96afe6efe4e8f5b4196d57ebd66a7646ddefcc9080c82644"
+        }
+      ],
+      "scope": "Contract/schema/provider metadata read; historical vector or probe bodies are not validation inputs and not delivered."
+    },
+    {
+      "package_id": "OUTPUT-OWNER-ROOT-V1",
+      "manifest_sha256": "d8d97f07d82d07dfa05772bb60bc90c6cab46e908f04366f24cc1398a16d169f",
+      "payloads": [
+        {
+          "document": "OUTPUT-OWNER-CONTRACT.md",
+          "bytes": 6457,
+          "sha256": "9e37b12d64611d19e4980948a22bce40ae20f358b5b503964623140ffa7b5a5b"
+        },
+        {
+          "document": "output-publication-provider.json",
+          "bytes": 915,
+          "sha256": "8ee281ad7c0f524dc956b4a253fb3fa5240c8d2b32f40e99f8c24743de571458"
+        },
+        {
+          "document": "synthetic-output-provider.json",
+          "bytes": 916,
+          "sha256": "0530fd05f6ee0dd0255837bb9eef683be35f65ec7d8a64adbf6667db931637be"
+        },
+        {
+          "document": "OUTPUT-PROPOSALS-AND-RECEIPTS.schema.json",
+          "bytes": 2033,
+          "sha256": "f6e5f5361595515ec6934924b02cc6777789c31816ead4459b14b67611253272"
+        },
+        {
+          "document": "OUTPUT-OWNER-VECTORS.json",
+          "bytes": 120441,
+          "sha256": "1fcc817a439e1212490e53bcd8a0234d91c7a76480ae943de3d6fcd56d9b81ae"
+        },
+        {
+          "document": "LOCAL-FILESYSTEM-PROBE.json",
+          "bytes": 2909,
+          "sha256": "44777dfd8ca429f49db4e4d1cf2a15f5fbb988cdef4955ee95cea256bf27ba8f"
+        },
+        {
+          "document": "INDEPENDENT-CHECK.json",
+          "bytes": 1916,
+          "sha256": "4480400294257a2de5ef250bd8b0a9c92c7b135c12a1ce7a21da32d47e36cb4b"
+        }
+      ],
+      "scope": "Contract/schema/provider metadata read; historical vector or probe bodies are not validation inputs and not delivered."
+    }
+  ],
+  "decision_precedence": "OUTPUT-ATTEMPT-IDENTITY-BINDING-V1 controls typed attempt/string binding; GTC/OWNER controls parent commit; F15 source/IO/fatal policy controls publication. Old synthetic attempt labels remain historical test fixtures.",
+  "runtime_scope": "No isolated implementation, production output execution, real programme/AU body generation, filesystem IO or native execution in this audit."
+}

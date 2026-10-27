@@ -1,0 +1,13 @@
+{
+  "research_manifest_sha256": "9ffa3968fcab0c68cbdadbaa39c7fe025e30bd9edc5346fefc33838023ecd112",
+  "research_payloads_verified": 6,
+  "approved_source_files_hash_verified": 19,
+  "reported_existing_predecessor_wash_manifest_sha256": "8726ae5e979abf587718df55e68f3f8a056ee26e09ed02f25a2f103f8ac79b23",
+  "scope": "GTC analysis root schema/state transition and provider lineage. Does not inspect implementation source or claim production execution.",
+  "analysis_root_rules": "Standalone F07-F10 root only; 4 family generations; cold/reset; one F07 staged advance; F08-F10 complete six-block plan; F12 read-only; one GTC parent commit or discard.",
+  "native_or_DLL_execution": "NOT_RUN_NOT_REQUIRED",
+  "implementation_execution": "NOT_RUN",
+  "audio_or_product_acceptance": "NOT_RUN",
+  "new_digest_or_state_hash": "NONE",
+  "source_code_or_private_key_delivered": false
+}

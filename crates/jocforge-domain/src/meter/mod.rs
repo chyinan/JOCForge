@@ -19,5 +19,6 @@ pub mod programme_measurement;
 pub mod sample_block_queue;
 pub mod shared_gain_delay;
 pub mod source_frame;
+pub mod standalone_root;
 pub mod true_peak;
 pub mod ungated_mean;

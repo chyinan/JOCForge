@@ -1,0 +1,27 @@
+{
+  "package_id": "JOC-ID14-HEADER-PRODUCER-BINDING-V1",
+  "scope": "F04D/F04RB clip and F05JL sequence same-dispatch binding only",
+  "files": [
+    {
+      "file": "CONTRACT.json",
+      "bytes": 3970,
+      "sha256": "6f77a2b1a69227f7179b758d9bde6f2ef4fd7c31ef7f026df9416d571170159d"
+    },
+    {
+      "file": "INPUT-ONLY-CASES.json",
+      "bytes": 1196,
+      "sha256": "bdc22f4fdb2f538c6392be3181a007229b7f90e953e57260c0b42dc01c3e2456"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 2811,
+      "sha256": "6ce2f0b3b582a09d70274cfb3a972904ec6f7ef0585842dd92d00c6d346c3705"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 230,
+      "sha256": "00dbb43fa54fc5425d5404d19c8c4ed0a2d17746ad1678b66507ba1ecb886a8e"
+    }
+  ],
+  "integration_execution": "NOT_RUN"
+}

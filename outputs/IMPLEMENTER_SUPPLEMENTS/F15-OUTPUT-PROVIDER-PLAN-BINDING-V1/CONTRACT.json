@@ -1,0 +1,61 @@
+{
+  "classification": "Wash local binding decision for selected F15 output policy; not a recovered DEE provider ABI",
+  "roles": {
+    "prepared_job_input": "Binds programme, selected input resource/config/ADM and positive N. It is input preparation only and cannot mint output-provider authority.",
+    "validated_encoding_plan": "Trusted programme-parent value created only after exact six-dimensional EncodingProfile resolution, validation of selected codec/JOC/F13/F14 provider identities, selected carriage mode, and join to the same PreparedJobInput programme/resource/config/N.",
+    "f15_dependency_manifest": "Approved package-bound dependency manifest, not itself a runtime OutputProvider JSON. Its exact SHA is included in the plan-derived publication provider projection.",
+    "output_provider": "F15 filesystem/publication policy projection derived privately from ValidatedEncodingPlan. Its profile_id is an F15 namespace, distinct from the GTC codec profile_id. It is not caller-selectable.",
+    "output_provider_sha256": "SHA-256 of the exact canonical UTF-8 provider object bytes recorded below; carried by OutputConfiguration/OutputOwner and compared with the plan-derived value before staging."
+  },
+  "authoritative_producer": {
+    "owner": "Trusted encoding programme parent after validated plan formation",
+    "inputs": [
+      "same PreparedJobInput identity: ProgrammeId, resource SHA, config SHA and N",
+      "resolved full EncodingProfile six dimensions",
+      "selected F15 dependency manifest identity",
+      "validated selected stage/provider receipts and carriage mode",
+      "validated output destination/path policy"
+    ],
+    "operation": "A private plan method derives the exact F15 provider projection. The output binding constructor accepts the validated plan plus typed AttemptId, distinct opaque OutputStagingOwnerId and destination; it creates OutputProvider internally. Do not expose a production API accepting arbitrary OutputProvider or arbitrary provider_sha256.",
+    "status": "This contract defines the producer; it does not claim the current Rust constructor/caller has been changed or executed."
+  },
+  "profile_binding": {
+    "gtc_profile_id": "eac3-joc-48k-1024k-acmod7-uncoupled-nonspx",
+    "dimensions": "Use the existing six-dimension EncodingProfile and resolve_selected_profile; no shortened profile inferred from frame size.",
+    "carriage": "Must be the exact selected EncodingProfile carriage value: deployed_compat default or explicitly selected etsi_emdf. The plan projection and output-provider SHA bind it.",
+    "f15_output_policy_profile_id": "selected-keyless-output-policy.v1",
+    "f15_dependency_manifest_sha256": "a2cf06839d3da81d14240ccd6526eebc0b878721d48a03fd0d0813f26961f6ce",
+    "namespace_rule": "The F15 output-policy profile id and GTC codec profile id name distinct contracts. The trusted plan binds both; they are not compared for literal equality."
+  },
+  "selected_output_provider_projection": {
+    "schema": "output-owner-provider.v1",
+    "profile_id": "selected-keyless-output-policy.v1",
+    "encoding_profile_id": "eac3-joc-48k-1024k-acmod7-uncoupled-nonspx",
+    "emdf_carriage_mode": "derived from validated plan",
+    "f15_dependency_manifest_sha256": "a2cf06839d3da81d14240ccd6526eebc0b878721d48a03fd0d0813f26961f6ce",
+    "frame_bytes": 4096,
+    "suppressed_sources": 2,
+    "staging_name_template": "attempt-{attempt_id}.ec3.partial",
+    "intent_name_template": "attempt-{attempt_id}.finalize-intent.json",
+    "templates": "Wash local deterministic filename policy, not native algorithm behavior. Expand inside the parent-reserved opaque staging namespace; that namespace and final destination are bound separately."
+  },
+  "dynamic_counts": {
+    "Q": "ceil(N/1536), checked arithmetic",
+    "expected_sources": "Q+2",
+    "expected_published_aus": "Q",
+    "expected_product_bytes": "Q*4096, checked arithmetic",
+    "rule": "These are plan-derived runtime values; no single-song constants are provider fields or hash inputs."
+  },
+  "pre_io_rejections": [
+    "No validated encoding plan or plan not bound to current PreparedJobInput ProgrammeId/resource SHA/config SHA/N.",
+    "EncodingProfile is not the exact supported six-dimensional row or carriage is unsupported.",
+    "F15 dependency manifest identity differs from the approved package-bound identity or a required provider/stage receipt is absent/mismatched.",
+    "Caller-supplied OutputProvider/provider SHA differs from the plan-derived canonical projection; production constructor should not accept an independent provider argument.",
+    "Derived frame_bytes != 4096 or suppressed_sources != 2.",
+    "AttemptId, programme identity, opaque staging owner, output namespace or destination is stale or cross-bound.",
+    "Dynamic source/AU/product-length arithmetic overflows or conflicts with the validated plan."
+  ],
+  "attempt_and_owner": "Use OUTPUT-ATTEMPT-IDENTITY-BINDING-V1: same typed U64 AttemptId as GTC; canonical decimal string derived internally. Opaque staging owner remains a distinct parent-owned identity. Equal attempt values from different programmes do not establish owner identity.",
+  "publication_boundary": "Existing F15/GTC source and finalize proposals consume this provider-bound plan. Durable append/readback/fsync receipts and final exposure remain under existing shell/parent rules; this provider decision does not claim filesystem or whole-programme execution.",
+  "fixture_boundary": "OUTPUT-OWNER-ROOT-V1 is test-only with production_allowed=false. Its runtime receipt and filesystem evidence are not promoted. This Wash decision defines a new local plan-bound provider projection from approved F15 semantics."
+}

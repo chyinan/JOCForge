@@ -1,0 +1,140 @@
+{
+  "schema": "analysis-root-canonical-fields.v1",
+  "canonical_encoding_reference": "F07_F12_OWNER_STATE_V5",
+  "additional_properties": false,
+  "fields": [
+    {
+      "name": "input_history_generation",
+      "type": "U64"
+    },
+    {
+      "name": "input_history_u32_words",
+      "type": "U32[]",
+      "length": 7680,
+      "meaning": "6x1280 finite F32 bit words"
+    },
+    {
+      "name": "transient_generation",
+      "type": "U64"
+    },
+    {
+      "name": "transient_two_history_u32_words",
+      "type": "U32[]",
+      "length": 20,
+      "meaning": "5x4 finite F32 bit words"
+    },
+    {
+      "name": "transient_three_history_u32_words",
+      "type": "U32[]",
+      "length": 30,
+      "meaning": "5x6 finite F32 bit words"
+    },
+    {
+      "name": "transient_peak_statistics_u32_words",
+      "type": "U32[]",
+      "length": 90,
+      "meaning": "5x18 finite F32 bit words"
+    },
+    {
+      "name": "transient_previous_mean_u32_words",
+      "type": "U32[]",
+      "length": 5,
+      "meaning": "5 finite F32 bit words"
+    },
+    {
+      "name": "transient_short_queue_i1",
+      "type": "I1[]",
+      "length": 20,
+      "meaning": "5x4 strict integers 0 or 1"
+    },
+    {
+      "name": "transient_other_queue_i1",
+      "type": "I1[]",
+      "length": 20,
+      "meaning": "5x4 strict integers 0 or 1"
+    },
+    {
+      "name": "transform_generation",
+      "type": "U64"
+    },
+    {
+      "name": "primary_fbw_history_u32_words",
+      "type": "U32[]",
+      "length": 640,
+      "meaning": "5x128 finite F32 bit words"
+    },
+    {
+      "name": "companion_fbw_history_u32_words",
+      "type": "U32[]",
+      "length": 640,
+      "meaning": "5x128 finite F32 bit words"
+    },
+    {
+      "name": "primary_lfe_history_u32_words",
+      "type": "U32[]",
+      "length": 128,
+      "meaning": "128 finite F32 bit words"
+    },
+    {
+      "name": "companion_lfe_history_u32_words",
+      "type": "U32[]",
+      "length": 128,
+      "meaning": "128 finite F32 bit words"
+    },
+    {
+      "name": "policy_generation",
+      "type": "U64"
+    },
+    {
+      "name": "gain_db_history_u32_words",
+      "type": "U32[]",
+      "length": 64
+    },
+    {
+      "name": "exponent_refresh_history_u16_words",
+      "type": "U16[]",
+      "length": 30
+    },
+    {
+      "name": "normalized_anchor_u16_words",
+      "type": "U16[]",
+      "length": 30
+    }
+  ],
+  "committed_invariants": [
+    "input_history_generation == transient_generation",
+    "transient_generation == transform_generation",
+    "transform_generation == policy_generation",
+    "GTC analysis owner generation equals this common generation"
+  ],
+  "f07_prepared_invariants": [
+    "input_history_generation == before_generation + 1",
+    "transient_generation == before_generation + 1",
+    "transform_generation == before_generation",
+    "policy_generation == before_generation",
+    "commit_eligible == false",
+    "advancement_count == 1"
+  ],
+  "numeric_plan_complete_invariants": [
+    "all four family generations == before_generation + 1",
+    "six_block_complete == true",
+    "commit_eligible == true"
+  ],
+  "cold": {
+    "all_generations": 0,
+    "all_u32_words": 0,
+    "all_u16_words": 0,
+    "all_i1_values": 0,
+    "f32_zero_word": "00000000"
+  },
+  "reset": "field-for-field equal to cold",
+  "excluded_owners": [
+    "source lifecycle",
+    "codec transform/group/bitwriter",
+    "previous_short",
+    "DRC",
+    "metadata",
+    "payload FIFO",
+    "publication ledger"
+  ]
+}

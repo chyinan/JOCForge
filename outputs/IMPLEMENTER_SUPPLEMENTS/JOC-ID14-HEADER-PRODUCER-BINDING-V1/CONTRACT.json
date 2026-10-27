@@ -1,0 +1,60 @@
+{
+  "scope": "Same-dispatch binding for ID14 header clip_gain_index and sequence_count; no new numeric rule",
+  "clock_identity": {
+    "F04RB": "frontend callback g>=2; receiver r=g-2; receiver after generation r+1",
+    "F05J": "dispatch d=g-1; zero-based model callback=d+1; codec source s=d-1",
+    "join": "For this selected route r=s=d-1 and receiver after generation=d; keep these typed clock domains distinct and verify the explicit equations plus same programme/attempt/transaction."
+  },
+  "clip_gain_index": {
+    "producer": "Same-dispatch F04D descriptor-after projection consumed by F04RB/F05JC",
+    "value": "F04RB output clip_index equals descriptor selected_index; U8 in 128..255",
+    "validation": "PG03 gain at selected_index-128 must match the exact descriptor target-gain F32 bits. If index is recovered by exact gain reverse lookup, exactly one table match is required; use explicit selected index where available.",
+    "forbidden_sources": [
+      "ramp-intermediate sample gain",
+      "another callback descriptor",
+      "AU/header/reference bytes",
+      "independent caller integer"
+    ]
+  },
+  "sequence_count": {
+    "owner": "Existing F05J/F05JL sequence_counter in the current programme/attempt dispatch state",
+    "before_dispatch": "counter I16 range -1..1023; wire sequence is 0 if counter<0 else counter",
+    "retry": "All representation, capacity and Huffman trials for this dispatch reuse the same sequence value and do not advance state.",
+    "success": "After the complete ID14 body passes capacity/padding/hash checks, next counter is 1 if old counter is 1023 else old counter+1; successful_dispatches increments exactly once.",
+    "failure": "Failed attempt/final body failure advances neither sequence_counter nor successful_dispatches.",
+    "wire": "U10 bits[20,30), parse-back must equal the same dispatch proposal."
+  },
+  "typed_join": {
+    "minimal_private_header_input": [
+      "ProgrammeId",
+      "AttemptId",
+      "CallbackLineageIdentity or existing JocDispatch identity",
+      "F05JL dispatch/source and expected zero-based callback",
+      "F04RB descriptor selected_index/target_gain/generation receipt",
+      "F05JL sequence before-state/proposal and provider/profile lineage"
+    ],
+    "producer": "Build the complete header-input value inside the trusted F05JL coordinator after receiver/F04D fitting and sequence prepare. Do not expose independent raw clip_gain_index/sequence_count constructor arguments to a production F13/JOC composer.",
+    "identity_checks": [
+      "same programme/attempt/transaction",
+      "F04RB descriptor generation equals dispatch d",
+      "receiver r=d-1 and frontend callback g=d+1 according to typed maps",
+      "JOC source s=d-1 matches this dispatch",
+      "selected profile/provider identities agree",
+      "sequence input is current committed before-state and next_dispatch is d"
+    ],
+    "F13_handoff": "F13 consumes the complete immutable ID14 body plus its existing writer-generation receipt. F13 does not independently choose or update clip_gain_index or sequence_count; do not recalculate from F13 source/AU index."
+  },
+  "admission_and_failures": {
+    "prewriter_reject": [
+      "missing/stale descriptor receipt",
+      "index outside128..255",
+      "descriptor target gain mismatch against PG03",
+      "dispatch/callback/source clock mismatch",
+      "sequence counter outside -1..1023 or dispatch not next",
+      "programme/attempt/transaction/provider mismatch"
+    ],
+    "commit": "Only existing F05JL successful body stage proposes the next sequence state. The enclosing parent transaction admits it once; later F13 queue/AU publication remains a distinct clock and commit.",
+    "status": "The base producer clauses supply the values and formulas. This package only binds their same-dispatch identity."
+  },
+  "no_user_input": "clip_gain_index and sequence_count are derived from existing F04D/F05JL owners; no new XML/UI input."
+}

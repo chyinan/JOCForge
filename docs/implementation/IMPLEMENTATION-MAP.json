@@ -2819,6 +2819,165 @@
             "U04 source/gain values, outer matrix, target history/component, real ADM spatial acceptance and W04."
           ],
           "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
+        },
+        {
+          "slice_id": "capacity-gated-u04-callback-continuation",
+          "mapping_status": "MATERIALIZED_EXISTING_F03W_U04_CALLER_JOIN__NUMERIC_PARITY_AND_PARENT_COMMIT_OPEN",
+          "implementation_status": "EXISTING_LOCAL_CALLBACK_CONTINUATION__NUMERIC_PARITY_AND_PARENT_COMMIT_NOT_RUN",
+          "scope": "Within the existing continue_spatial_production_callback path, the selector result is handed to the U04 gate. Only CAPACITY_REACHED calls produce_u04_refinement; the producer receives the original candidate rows and selected initial targets, checks the source/target IDs, geometry, and complete attributes against those same values, and forwards projected XYZ into the target-install proposal. This is a mapping of existing behavior, not a new code change or whole-F03W completion.",
+          "owner": "spatial_control",
+          "dependencies": [
+            "selector-u04-target-value-handoff",
+            "u04-refinement-admission-gate",
+            "u04-membership-projection"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/spatial/production_callback.rs",
+            "crates/jocforge-domain/src/spatial/production_callback/tests.rs",
+            "crates/jocforge-domain/src/spatial/u04_refinement.rs",
+            "crates/jocforge-domain/src/spatial/selector_u04_handoff.rs",
+            "crates/jocforge-domain/src/spatial/candidate_selector.rs",
+            "crates/jocforge-domain/src/spatial/u04_projection.rs",
+            "crates/jocforge-domain/src/spatial/target_slot_install.rs",
+            "crates/jocforge-domain/src/spatial/source_geometry_outer.rs",
+            "crates/jocforge-domain/src/spatial/frontend_stages.rs",
+            "crates/jocforge-domain/src/spatial/installed48_source_map.rs"
+          ],
+          "clock": {
+            "domains": [
+              "CallbackLineageIdentity",
+              "FrontendCallbackIndex",
+              "SourceControlSnapshotClock",
+              "CodecSourceIndex"
+            ],
+            "covered_clauses": [
+              "The continuation validates callback lineage before deriving source and target inputs.",
+              "Original candidate IDs stay source-ascending and the source-weight row is computed from the same original band-major feature values.",
+              "Selected target IDs remain in selector order; initial positions and complete attributes are gathered for the same IDs before refinement.",
+              "CANDIDATES_EXHAUSTED and empty-candidate paths skip refinement; CAPACITY_REACHED admits one callback-local proposal."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_U04_GAIN_AND_SOURCE_WEIGHT_CALLER_JOIN",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/U04-GAIN-CALLER-JOIN-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/U04-GAIN-CALLER-JOIN-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/U04-GAIN-CALLER-JOIN-V1/INPUT-ONLY-JOIN-DISCRIMINATORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/U04-GAIN-CALLER-JOIN-V1/SOURCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/U04-GAIN-CALLER-JOIN-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/U04-SOURCE-WEIGHT-CALLER-BINDING-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/U04-SOURCE-WEIGHT-CALLER-BINDING-V1/BINDING.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/U04-SOURCE-WEIGHT-CALLER-BINDING-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/U04-SOURCE-WEIGHT-CALLER-BINDING-V1/REFERENCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/U04-SOURCE-WEIGHT-CALLER-BINDING-V1/WASH-VERIFICATION.json"
+            ],
+            "validation_boundary": "The supplements establish input identity and call-domain only; their vectors provide no expected gains and do not establish numeric parity.",
+            "u04_gain_manifest_sha256": "3dc243e1cb05b65dd5d703e5a0718fadae6618cdf44d6de4709430f247c208fc",
+            "u04_source_weight_manifest_sha256": "b16da90125002cebd14658240b517f5163e8b3b230cde18ca488cb526062c835"
+          },
+          "test_modules": [
+            "crates/jocforge-domain/src/spatial/production_callback/tests.rs",
+            "crates/jocforge-domain/src/spatial/u04_refinement.rs",
+            "crates/jocforge-domain/tests/candidate_selector.rs",
+            "crates/jocforge-domain/tests/u04_projection.rs"
+          ],
+          "vectors": {
+            "kind": "WASHED_CALLER_JOIN_DISCRIMINATORS_AND_LOCAL_IDENTITY_ASSERTIONS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/U04-GAIN-CALLER-JOIN-V1/INPUT-ONLY-JOIN-DISCRIMINATORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/U04-SOURCE-WEIGHT-CALLER-BINDING-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "CAPACITY_REACHED admits U04 while CANDIDATES_EXHAUSTED skips it, including a count-15 exhausted result.",
+              "Original candidate IDs, feature rows, source geometry, and full attributes remain joined by source ordinal.",
+              "Selected target IDs remain unsorted selector order with the same initial geometry and complete attributes.",
+              "The local callback test checks that U04 projected XYZ reaches the installation proposal.",
+              "Input-only packages contain no expected gain values; numerical parity is not claimed."
+            ],
+            "expected_values_are_assertions_only": true,
+            "input_only_expected_gains": false,
+            "pcm_or_native_run": "NOT_RUN"
+          },
+          "not_run": [
+            "Wash input-only source/target discriminators do not provide expected gain values; U04 numeric parity is NOT_RUN.",
+            "The enclosing F03W parent/root commit and GTC single root swap are NOT_RUN.",
+            "Whole callback, real ADM spatial acceptance, end-to-end encode, W04, and product acceptance are NOT_RUN."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/spatial/production_callback.rs",
+              "bytes": 20024,
+              "sha256": "cb5ccc4d2b9722fc99afd19f9ec33559495827cd24327d4537e739df5fb17648"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/production_callback/tests.rs",
+              "bytes": 17370,
+              "sha256": "213995df4bf6c787afc23aaccdb50672cfced532cc6e3e9a252bae5528d8e29b"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/u04_refinement.rs",
+              "bytes": 23277,
+              "sha256": "cb23ec97739e1ddf403a6693d5b266b12e541df43b8579d22dd4e1f749c7cd2d"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/selector_u04_handoff.rs",
+              "bytes": 5908,
+              "sha256": "421640c80af06dec59a3a19edf064ca6a648a33df1f03e7ade30fa4890c838b7"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/candidate_selector.rs",
+              "bytes": 27144,
+              "sha256": "d86ca38e46df2cdb16d1e316d278ee4de3ae3b68f5a5813269395a58273c4bcb"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/u04_projection.rs",
+              "bytes": 5984,
+              "sha256": "6ece9e3c51dbf5373fe32f227332322abac007dcf976143f383ade5f0c79aafe"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/target_slot_install.rs",
+              "bytes": 7307,
+              "sha256": "60f03466f00f1341b280627f49f2c594f863ca548b0deb030589b5d40fd12425"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/source_geometry_outer.rs",
+              "bytes": 36605,
+              "sha256": "afdf61dd37c09223794adb800104c6fa0effb1aeddd262cdb5aca546a7408790"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/frontend_stages.rs",
+              "bytes": 11734,
+              "sha256": "279a22861b5da04deaf9471b7a259a0442f7a0ecc39ade3ba3e16be0e66fe145"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/installed48_source_map.rs",
+              "bytes": 26360,
+              "sha256": "32ae28fc5439f778bfab6ba53d2ee46516e369a326ff46e0048c0f70626548de"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/spatial/production_callback/tests.rs",
+              "bytes": 17370,
+              "sha256": "213995df4bf6c787afc23aaccdb50672cfced532cc6e3e9a252bae5528d8e29b"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/u04_refinement.rs",
+              "bytes": 23277,
+              "sha256": "cb23ec97739e1ddf403a6693d5b266b12e541df43b8579d22dd4e1f749c7cd2d"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/candidate_selector.rs",
+              "bytes": 12332,
+              "sha256": "fe2f781be0f0cfa5ce5433a8b03790335f942fbb716431ee20d4e2491400b743"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/u04_projection.rs",
+              "bytes": 6388,
+              "sha256": "9d011fd15b537adacc556a65b21895f6e4d9079b00acfa98b63fb7489ed0d30f"
+            }
+          ]
         }
       ]
     },
@@ -5536,6 +5695,91 @@
             "No native run, PCM, full frame or production application connection is claimed."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "standalone-meter-selected-root-and-schedule-stage",
+          "mapping_status": "MATERIALIZED_FIXED_SELECTED_METER_ROOT_STAGE__TERMINAL_RECEIPT_AND_GTC_PARENT_OPEN",
+          "implementation_status": "LOCALLY_MATERIALIZED_SELECTED_SCHEDULE_AND_NONCOMMITTING_CALLBACK_STAGE__MEASUREMENT_RECEIPT_AND_PARENT_NOT_RUN",
+          "scope": "Materializes the fixed selected meter extent N=6,522,906 with 4,247 normal callbacks, three independent zero drains, and 4,250 total meter callbacks. Each callback produces a noncommitting after-root and typed local receipt; finalization exposes read-only measurement values only after the fixed counters match. This does not create the terminal MeasurementReceipt or READY transition.",
+          "owner": "meter",
+          "dependencies": [
+            "independent-meter-prepass-callback-commit",
+            "programme-measurement-finalize-projection"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/meter/standalone_root.rs",
+            "crates/jocforge-domain/src/meter/mod.rs"
+          ],
+          "clock": {
+            "domains": [
+              "AttemptId",
+              "MeterCallbackIndex",
+              "MeterCallbackPhase",
+              "MeterSourceSampleCount",
+              "MeterCallbackCount",
+              "MeterBlockCount",
+              "MeterSampleCount"
+            ],
+            "covered_clauses": [
+              "The selected source extent is fixed at 6,522,906 samples; unsupported extents reject.",
+              "The schedule is 4,247 normal callbacks, three fresh-zero drains, and 4,250 meter callbacks.",
+              "Each accepted callback returns a staged after-root; the committed root remains unchanged until a parent adopts the proposal.",
+              "Finalization validates the selected complete-block, energy-window, and remainder counts and returns values without minting a terminal receipt."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_SELECTED_STANDALONE_METER_ROOT_AND_SCHEDULE",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/STATUS-AND-VERIFICATION.json"
+            ],
+            "validation_boundary": "Fixed GTC selected meter schema only; no general source-length rule is inferred.",
+            "supplement_manifest_sha256": "23952c523c8bb7435133fadc77bdc1a491d74c9df09b191ff591a2da967fdb1a"
+          },
+          "test_modules": [
+            "crates/jocforge-domain/src/meter/standalone_root/tests.rs"
+          ],
+          "vectors": {
+            "kind": "INPUT_ONLY_SELECTED_METER_ROOT_SCHEDULE_AND_RESET_BOUNDARIES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "Only the selected 6,522,906-sample extent admits the standalone root.",
+              "The normal, zero-drain, and total callback counters match the fixed selected schedule.",
+              "Callback preparation preserves the prior root and full reset rebuilds selected cold state for the next attempt.",
+              "Finalization values borrow the actual terminal root and do not produce MeasurementReceipt or READY."
+            ],
+            "expected_values_are_assertions_only": true
+          },
+          "not_run": [
+            "Canonical GTC meter state_ref preimage and GTC OwnerReceipt are NOT_RUN.",
+            "Terminal MeasurementReceipt and READY production are NOT_RUN.",
+            "Production F06OF cursor-to-meter root composition, GTC single root swap, and programme-origin GTC reset/fatal integration are NOT_RUN.",
+            "Native EOF/drain observation, end-to-end encode, W04, and product acceptance are NOT_RUN."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/meter/standalone_root.rs",
+              "bytes": 16057,
+              "sha256": "69848193bd49e5429028494385bcba48c47c1051c965a3836f1bd8737cab3de9"
+            },
+            {
+              "path": "crates/jocforge-domain/src/meter/mod.rs",
+              "bytes": 648,
+              "sha256": "2795a8f103682569d34184f7d6d4a2bec97f750c273658a42af5a75fb74b6577"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/meter/standalone_root/tests.rs",
+              "bytes": 6976,
+              "sha256": "4d204315db95118824c8a4deb40c93ffde9d02ab33f46897fb7abed8694b0f55"
+            }
+          ]
         }
       ]
     },
@@ -6849,6 +7093,177 @@
           },
           "error_outcomes": [{"error_code":"INVALID_INPUT","category":"local read-chunk extent validation","trigger":"The supplied actual byte extent exceeds the requested U32 byte count or is not representable as U32.","programme_state_after":"No decoded chunk is returned; this helper changes no row table, cursor or persistent state.","caller_action":"Reject the local read chunk. This result does not claim native public status or error parity."}],
           "not_run": ["No file adapter or OS status mapping is implemented by this helper.", "No source-row, selected descriptor, cursor, owner/generation, EOF or drain join is implemented.", "No native, real ADM, product or whole-meter acceptance was performed."],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "prepared-adm-physical-pcm-row-cursor-binding",
+          "mapping_status": "MATERIALIZED_DIRECT_F06OF_PHYSICAL_PCM_ROW_AND_CURSOR_SUBSLICE__METER_ROOT_DEFERRED",
+          "implementation_status": "LOCALLY_VERIFIED_CHNA_DBMD_TO_PCM_ROW_AND_TYPED_METER_CURSOR_BINDING__TERMINAL_METER_ROOT_DEFERRED",
+          "scope": "Binds the same PreparedJobInput's validated CHNA/DBMD physical-track map to the selected 38-channel planar PCM rows and the MeterPcmSourceCursor proposal. For each CHNA track_index 1..38, PCM row is track_index-1; physical_host and zero-based DBMD track index must match that row. ConverterChannelInputId is retrieved only through the slot-keyed AdmFileStorageChannelMap and is carried as semantic route data, never used as a row index. The prepared full-resource identity and AXML/CHNA/DBMD chunk identities are retained, and the cursor frame must match the same resource SHA, sample extent, callback, generation, phase, cursor positions, actual complete-frame count and padding. This meter cursor has exactly three zero-input drains; it does not infer native EOF from short reads or reuse the main encoder's four cached drains. Cursor advancement remains the existing CLI meter/OAR stage's commit-only action.",
+          "owner": "application",
+          "dependencies": [
+            "selected-adm-graph-to-converter-storage-map",
+            "meter-in-memory-pcm24-source-cursor",
+            "selected-pcm24-read-chunk-decoder"
+          ],
+          "implementation_files": [
+            "crates/jocforge-application/src/meter_source_bridge.rs",
+            "crates/jocforge-cli/src/meter_source_bridge.rs",
+            "crates/jocforge-domain/src/frontend/adm_file_storage_map.rs",
+            "crates/jocforge-domain/src/frontend/dbmd_sections.rs",
+            "crates/jocforge-domain/src/frontend/selected_adm_graph.rs",
+            "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
+            "crates/jocforge-io/src/pcm/riff_pcm24.rs"
+          ],
+          "clock": {
+            "domains": [
+              "AdmSampleIndex",
+              "PcmPhysicalRowIndex",
+              "MeterCallbackIndex",
+              "MeterUpstreamGeneration",
+              "MeterSourcePosition",
+              "MeterSourceSampleCount",
+              "MeterSampleCount",
+              "MeterCallbackPhase"
+            ],
+            "covered_clauses": [
+              "Each source row reads exactly A=min(1536,N-source_cursor) complete frames; the actual decoder frame count must equal A.",
+              "Rows are planar in physical PCM ordinal 0..37 and are padded with positive zero to 1536 samples per meter callback.",
+              "Cursor before/after, callback_index, upstream_generation=callback_index+1 and phase travel together in the immutable cursor proposal.",
+              "After ceil(N/1536) normal callbacks, the meter cursor schedules exactly three zero-input drains at source_cursor=N; this is not the main encoder drain."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_PCM_ADM_PHYSICAL_ROW_IDENTITY_BINDING",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PCM-ADM-PHYSICAL-ROW-IDENTITY-BINDING-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PCM-ADM-PHYSICAL-ROW-IDENTITY-BINDING-V1/CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PCM-ADM-PHYSICAL-ROW-IDENTITY-BINDING-V1/SOURCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PCM-ADM-PHYSICAL-ROW-IDENTITY-BINDING-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/CONTRACT.md"
+            ],
+            "supplement_manifest_sha256": "fcd280810e1520131d26d8a2010d6d4a26851a6242a75306720558ff51d69219",
+            "source_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+            "validation_boundary": "Local row/cursor identity only. No owner commit, terminal measurement receipt, native EOF/drain observation, real PCM execution, or product acceptance is claimed."
+          },
+          "test_modules": [
+            "crates/jocforge-application/src/meter_source_bridge.rs",
+            "crates/jocforge-cli/tests/meter_source_bridge.rs"
+          ],
+          "vectors": {
+            "kind": "WASHED_PHYSICAL_ROW_BINDING_WITH_SYNTHETIC_CHANNEL_MARKERS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PCM-ADM-PHYSICAL-ROW-IDENTITY-BINDING-V1/CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PCM-ADM-PHYSICAL-ROW-IDENTITY-BINDING-V1/SOURCES.json",
+              "crates/jocforge-domain/tests/fixtures/selected_adm_graph/REAL-GRAPH-TRACK-IDENTITIES.json",
+              "crates/jocforge-io/tests/fixtures/meter_source_cursor/input_only.json"
+            ],
+            "case_pointers": [
+              "All 38 rows satisfy PCM row = CHNA track_index-1 = physical_host = DBMD per-track index.",
+              "Reversing graph iteration order does not reorder PCM rows; slot-keyed converter IDs remain semantic annotations.",
+              "Distinct synthetic PCM24 channel markers decode into the matching physical row.",
+              "A cursor proposal from a different full-resource SHA rejects before row/OAR handoff.",
+              "Converter-slot, DBMD-host, invalid track-index, duplicate-row and incomplete-coverage discriminators reject."
+            ],
+            "expected_values_are_assertions_only": true,
+            "pcm_read_by_wash": 0
+          },
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-application/src/meter_source_bridge.rs",
+              "bytes": 32728,
+              "sha256": "b800f5c9c113abf772ed90a107c738a0c041b50ebbc09e6db2f73781a015e0cc"
+            },
+            {
+              "path": "crates/jocforge-cli/src/meter_source_bridge.rs",
+              "bytes": 7214,
+              "sha256": "bea068488e53d3a154ea8ac9fe024929c7b593c40d55a17db854345f863c0c9f"
+            },
+            {
+              "path": "crates/jocforge-domain/src/frontend/adm_file_storage_map.rs",
+              "bytes": 4151,
+              "sha256": "576abafaacf38801f054cbc53c104207ea7b87f6d726d274ca9f48ee48e9534d"
+            },
+            {
+              "path": "crates/jocforge-domain/src/frontend/dbmd_sections.rs",
+              "bytes": 10099,
+              "sha256": "4c884344ec540ebcdf2974d057446a54b747643e2bb2b000f35cb845e439d079"
+            },
+            {
+              "path": "crates/jocforge-domain/src/frontend/selected_adm_graph.rs",
+              "bytes": 43855,
+              "sha256": "4a2bf8029e7f2f7f1ed4ca6c992e6305ebee5bd46ff47745648ba5806b549920"
+            },
+            {
+              "path": "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
+              "bytes": 18670,
+              "sha256": "e2ea766815ba3b5a923732cd66733f7161b0288eaf1b387929e158ce01f81286"
+            },
+            {
+              "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
+              "bytes": 17616,
+              "sha256": "003cf021ea18977cda6c355b5eab4dfa2ed9944012b7a2ccec1534cd62258965"
+            }
+          ],
+          "historical_implementation_inventory": [
+            {
+              "path": "crates/jocforge-application/src/meter_source_bridge.rs",
+              "bytes": 15022,
+              "sha256": "d892197706964e59c7b9c79660bd9f03047462e5dfed6de87859a8b8f2f6d08c"
+            },
+            {
+              "path": "crates/jocforge-cli/tests/meter_source_bridge.rs",
+              "bytes": 13463,
+              "sha256": "059628d066d87c4e92a376845ab9b478ff766d714108c9bff599bbfaf6a099a0"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-application/src/meter_source_bridge.rs",
+              "bytes": 32728,
+              "sha256": "b800f5c9c113abf772ed90a107c738a0c041b50ebbc09e6db2f73781a015e0cc"
+            },
+            {
+              "path": "crates/jocforge-cli/tests/meter_source_bridge.rs",
+              "bytes": 18116,
+              "sha256": "3a3726b909ca2ad185096a56b74ee0dcfba2c53161027113d4a4ba4327a9c6c4"
+            }
+          ],
+          "verification": {
+            "application_unit_test_count": 7,
+            "cli_integration_test_count": 7,
+            "f06of_terminal_meter_root": "NOT_RUN",
+            "native_eof_or_drain": "NOT_RUN",
+            "product_acceptance": "NOT_RUN"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "MeterSourceBridgeError::PhysicalRowBindingMismatch",
+              "trigger": "CHNA track/row, physical host, slot-map entry or row coverage does not agree.",
+              "result": "No physical row map or OAR handoff is returned."
+            },
+            {
+              "error_code": "MeterSourceBridgeError::DbmdRowBindingMismatch",
+              "trigger": "A DBMD per-track row is missing, outside 0..37 or does not bind the same physical host.",
+              "result": "No physical row map or OAR handoff is returned."
+            },
+            {
+              "error_code": "MeterSourceBridgeError::PreparedMetadataProvenanceMismatch",
+              "trigger": "The graph, AXML/CHNA/DBMD spans or slot map do not belong to the same PreparedJobInput resource.",
+              "result": "No physical row map is returned."
+            },
+            {
+              "error_code": "MeterSourceBridgeError::ResourceIdentityMismatch",
+              "trigger": "The cursor proposal's full-resource SHA differs from PreparedJobInput.",
+              "result": "No OAR handoff is returned and cursor state is unchanged."
+            }
+          ],
+          "not_run": [
+            "F06OF selected measurement descriptor owner/source-generation identity remains unbound.",
+            "OS EOF status, native drain behavior, native runtime execution and W04 acceptance remain NOT_RUN.",
+            "This meter cursor's three drains are not the main encoder's four cached drains.",
+            "No GTC meter/output root, top-level source transaction or product encode is committed."
+          ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
         }
       ]
@@ -8682,6 +9097,107 @@
             "F06WH/global source commit, codec owner state install, metadata FIFO, application::encode, whole-programme replay and product acceptance remain deferred or NOT_RUN."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "selected-none-drc-source-owner-stage",
+          "mapping_status": "MATERIALIZED_SELECTED_F06ND_OWNER_STAGE__F06NR_AND_GTC_PARENT_OPEN",
+          "implementation_status": "LOCALLY_MATERIALIZED_NONCOMMITTING_F06ND_SOURCE_STAGE__F06NR_RECEIPT_AND_PARENT_NOT_RUN",
+          "scope": "Adds a standalone selected DRC root around the existing secondary histories, F06ND statistics, scheduler, four-record zero FIFO, and programme dialnorm. For one source it validates the same SharedAnalysisReceipt, callback identity, attempt, source index, and local generations, then stages the F06ND transition and BSI projection. A typed secondary after-state can be joined into a complete noncommitting DRC after-root, but no F06NR producer is connected here.",
+          "owner": "drc",
+          "dependencies": [
+            "selected-none-drc-statistics-to-scheduler-frame-composition",
+            "selected-none-drc-logical-override-fifo-transition",
+            "five-fbw-source-frame-orchestrator"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/drc/none_drc_owner.rs",
+            "crates/jocforge-domain/src/drc/mod.rs",
+            "crates/jocforge-domain/src/analysis/source_frame.rs",
+            "crates/jocforge-domain/src/transaction/mod.rs"
+          ],
+          "clock": {
+            "domains": [
+              "AttemptId",
+              "CallbackLineageIdentity",
+              "FrontendCallbackIndex",
+              "CodecSourceIndex",
+              "AnalysisOwnerGeneration"
+            ],
+            "covered_clauses": [
+              "The DRC owner source generation must agree across secondary frame index, scheduler generation, and zero-FIFO frames_processed.",
+              "A non-priming source stage must match the parent-issued SharedAnalysisReceipt and callback-derived source index.",
+              "The staged F06ND transition and optional F06NR after-state must advance to source index plus one before a complete DRC after-root proposal exists."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_SELECTED_METER_DRC_AND_SHARED_ANALYSIS_OWNER_CONTRACTS",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-TRANSITION-CONTRACT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-TRANSITION-CONTRACT-V1/ANALYSIS-ROOT-SCHEMA.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-TRANSITION-CONTRACT-V1/INPUT-ONLY-TRANSITIONS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-ANALYSIS-CODEC-OWNER-RECONCILIATION-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-ANALYSIS-CODEC-OWNER-RECONCILIATION-V1/AMENDMENT.md"
+            ],
+            "validation_boundary": "The constructor requires a ProgrammeMeasurementReceipt supplied by an external caller; the meter finalization and READY chain is not connected.",
+            "meter_drc_manifest_sha256": "23952c523c8bb7435133fadc77bdc1a491d74c9df09b191ff591a2da967fdb1a",
+            "analysis_root_manifest_sha256": "96d259b01b7422aacd8d31747fb6894c849e19cbb6250891bd48dea6777afc8b",
+            "owner_reconciliation_manifest_sha256": "da4334efa864c7fd5530caa2a6a446e3c7d6dc4de20ea6933642fb0c7b22faf4"
+          },
+          "test_modules": [
+            "crates/jocforge-domain/src/drc/none_drc_owner.rs"
+          ],
+          "vectors": {
+            "kind": "INPUT_ONLY_DRC_OWNER_IDENTITY_AND_SOURCE_AFTER_STATE_JOIN",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-TRANSITION-CONTRACT-V1/INPUT-ONLY-TRANSITIONS.json"
+            ],
+            "case_pointers": [
+              "A missing or mismatched programme, attempt, SharedAnalysisReceipt, callback, source, or generation returns no DRC after-root.",
+              "F07 ordinary history remains owned only by Analysis.",
+              "A typed matching F06NR after-state may join the staged F06ND fields into a noncommitting root value.",
+              "The local tests use test-only SharedAnalysisReceipt construction and supplied secondary after-state; they do not establish production F06NR wiring."
+            ],
+            "expected_values_are_assertions_only": true
+          },
+          "not_run": [
+            "F06NR secondary producer and same-source production after-state join are NOT_RUN.",
+            "Canonical DRC state_ref preimage and GTC OwnerReceipt are NOT_RUN.",
+            "Meter MeasurementReceipt/READY input, GTC single root swap, fatal/reset/EOF parent integration, and encode are NOT_RUN."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
+              "bytes": 29200,
+              "sha256": "548503939c562ff1ab7de8b4768dd163c82fe91abc45aa05a52adf7869686662"
+            },
+            {
+              "path": "crates/jocforge-domain/src/drc/mod.rs",
+              "bytes": 363,
+              "sha256": "9e727cb278a452ed0ad9d7e62c52ebc2d297436fc0a01b474686c0a359db8275"
+            },
+            {
+              "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
+              "bytes": 18091,
+              "sha256": "f5a7939117a8fd604d22b2a05adc8400c51d414014a68f48c5df4f1b53a288a3"
+            },
+            {
+              "path": "crates/jocforge-domain/src/transaction/mod.rs",
+              "bytes": 2915,
+              "sha256": "442a74702c82926abd9de95e5f0686fd9f1cb8e656e2e051ade2390abdee238c"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
+              "bytes": 29200,
+              "sha256": "548503939c562ff1ab7de8b4768dd163c82fe91abc45aa05a52adf7869686662"
+            }
+          ]
         }
       ]
     },
@@ -9178,6 +9694,115 @@
             "Native equivalence, real ADM, encoded output, decode/render, listening, and product acceptance are not established."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "analysis-owner-f07-source-stage",
+          "mapping_status": "MATERIALIZED_ANALYSIS_F07_SOURCE_STAGE__F08_AND_GTC_COMMIT_SEPARATE",
+          "implementation_status": "LOCALLY_MATERIALIZED_F07_OWNER_AFTER_PROPOSAL__GTC_OWNER_RECEIPT_AND_COMMIT_NOT_RUN",
+          "scope": "Stages one F07 source frame inside AnalysisOwnerRoot, advancing the six external-row input histories and five FBW transient states under a shared local generation. It carries caller-supplied previous_short and validated transient parameters, then issues the parent transaction shared-analysis value for that source. It does not execute F08 or install the after-root.",
+          "owner": "analysis",
+          "dependencies": [
+            "five-fbw-source-frame-orchestrator",
+            "selected-d05-transient-parameter-provider"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/analysis/owner.rs",
+            "crates/jocforge-domain/src/analysis/source_frame.rs",
+            "crates/jocforge-domain/src/analysis/transient_channel.rs",
+            "crates/jocforge-domain/src/analysis/mod.rs",
+            "crates/jocforge-domain/src/transaction/mod.rs"
+          ],
+          "clock": {
+            "domains": [
+              "AttemptId",
+              "CallbackTransactionId",
+              "CodecSourceIndex",
+              "AnalysisOwnerGeneration"
+            ],
+            "covered_clauses": [
+              "F07 stages one source index from matching Analysis input-history and transient generations.",
+              "A parent-issued shared-analysis value binds the source index and after-generation; no source lifecycle clock is advanced by this owner.",
+              "The after-root is a proposal and the parent retains commit/discard authority."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_ANALYSIS_F07_OWNER_ROOT_AND_TRANSIENT_PROVIDER",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-TRANSITION-CONTRACT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-TRANSITION-CONTRACT-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-TRANSITION-CONTRACT-V1/ANALYSIS-ROOT-SCHEMA.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-ANALYSIS-CODEC-OWNER-RECONCILIATION-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-ANALYSIS-CODEC-OWNER-RECONCILIATION-V1/AMENDMENT.md",
+              "crates/jocforge-domain/tests/fixtures/transient_channel/PARAMETERS.json"
+            ],
+            "validation_boundary": "D05 values are caller-supplied through the already validated TransientParameters value; this row does not add a new parameter parser or a parent owner receipt.",
+            "analysis_root_manifest_sha256": "96d259b01b7422aacd8d31747fb6894c849e19cbb6250891bd48dea6777afc8b",
+            "owner_reconciliation_manifest_sha256": "da4334efa864c7fd5530caa2a6a446e3c7d6dc4de20ea6933642fb0c7b22faf4"
+          },
+          "test_modules": [
+            "crates/jocforge-domain/src/analysis/owner.rs",
+            "crates/jocforge-domain/src/analysis/source_frame.rs"
+          ],
+          "vectors": {
+            "kind": "INPUT_ONLY_ANALYSIS_COLD_AND_F07_SOURCE_TRANSITIONS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-TRANSITION-CONTRACT-V1/ANALYSIS-ROOT-SCHEMA.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-TRANSITION-CONTRACT-V1/INPUT-ONLY-TRANSITIONS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-ANALYSIS-CODEC-OWNER-RECONCILIATION-V1/INPUT-ONLY-TRANSITIONS.json"
+            ],
+            "case_pointers": [
+              "Cold input histories, transient lanes, and owner generations are zero.",
+              "F07 advances six external histories and five FBW transient channels from one same-source frame.",
+              "LFE is included in the six-row history but excluded from the five FBW transient calls.",
+              "The returned SharedAnalysisReceipt and proposed after-root are not committed by this stage."
+            ],
+            "expected_values_are_assertions_only": true
+          },
+          "not_run": [
+            "Canonical Analysis state_ref preimage, GTC OwnerReceipt, and GTC single root swap are NOT_RUN.",
+            "Parent programme reset/fatal/EOF integration and full provider-plan lineage are NOT_RUN.",
+            "Codec previous_short production binding, F11, end-to-end encode, and product acceptance are NOT_RUN."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/analysis/owner.rs",
+              "bytes": 56380,
+              "sha256": "53fa7833cf763570ebe1217d39a1e0b0f425e1d840a8d0634a285b608cc2942b"
+            },
+            {
+              "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
+              "bytes": 18091,
+              "sha256": "f5a7939117a8fd604d22b2a05adc8400c51d414014a68f48c5df4f1b53a288a3"
+            },
+            {
+              "path": "crates/jocforge-domain/src/analysis/transient_channel.rs",
+              "bytes": 16730,
+              "sha256": "5523689f13c36eb5ced27c8f512bf7134614c566118e7feec23af2c9916e9b3a"
+            },
+            {
+              "path": "crates/jocforge-domain/src/analysis/mod.rs",
+              "bytes": 304,
+              "sha256": "5991dab50bc1525bcc3f260b2e265a533a429228814861846ce79aede74d0a64"
+            },
+            {
+              "path": "crates/jocforge-domain/src/transaction/mod.rs",
+              "bytes": 2915,
+              "sha256": "442a74702c82926abd9de95e5f0686fd9f1cb8e656e2e051ade2390abdee238c"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/analysis/owner.rs",
+              "bytes": 56380,
+              "sha256": "53fa7833cf763570ebe1217d39a1e0b0f425e1d840a8d0634a285b608cc2942b"
+            },
+            {
+              "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
+              "bytes": 18091,
+              "sha256": "f5a7939117a8fd604d22b2a05adc8400c51d414014a68f48c5df4f1b53a288a3"
+            }
+          ]
         }
       ]
     },
@@ -9596,6 +10221,115 @@
             "Native equivalence, encoded audio, decode/render, listening, and W04 product acceptance were not run."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "analysis-owner-f08-transform-history-stage",
+          "mapping_status": "MATERIALIZED_ANALYSIS_F08_TRANSFORM_HISTORY_STAGE__POLICY_AND_GTC_COMMIT_SEPARATE",
+          "implementation_status": "LOCALLY_MATERIALIZED_SIX_BLOCK_F08_AFTER_PROPOSAL__PARENT_COMMIT_NOT_RUN",
+          "scope": "Completes six-block F08 from the same staged F07 receipt using the selected FBW and LFE window-fold/transform paths. It advances only primary and companion FBW/LFE transform histories and returns the six-block spectra and exponent-input plan. The resulting policy generation remains behind, so this proposal is not commit-eligible until later Analysis stages complete.",
+          "owner": "analysis",
+          "dependencies": [
+            "analysis-owner-f07-source-stage",
+            "math-generated-fbw-transform",
+            "math-generated-lfe-transform"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/analysis/owner.rs",
+            "crates/jocforge-domain/src/analysis/source_frame.rs",
+            "crates/jocforge-domain/src/transform/window_fold.rs",
+            "crates/jocforge-domain/src/transform/fbw_transform.rs",
+            "crates/jocforge-domain/src/transform/lfe_transform.rs",
+            "crates/jocforge-domain/src/transform/exponent_inputs.rs",
+            "crates/jocforge-domain/src/analysis/mod.rs"
+          ],
+          "clock": {
+            "domains": [
+              "CodecSourceIndex",
+              "AnalysisOwnerGeneration"
+            ],
+            "covered_clauses": [
+              "F08 consumes the same F07 source and SharedAnalysisReceipt across six ordered blocks.",
+              "FBW primary and companion histories advance for the five FBW lanes; separate LFE histories advance through the LFE route.",
+              "F08 changes transform generation only; F09G policy fields remain at the prior generation until later source-local stages."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_ANALYSIS_F08_HISTORY_AND_MATH_GENERATED_TRANSFORMS",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-TRANSITION-CONTRACT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-TRANSITION-CONTRACT-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-TRANSITION-CONTRACT-V1/ANALYSIS-ROOT-SCHEMA.json",
+              "crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json"
+            ],
+            "validation_boundary": "Only the selected math-generated-v1 tables are used; whole callback and parent commit remain separate.",
+            "supplement_manifest_sha256": "96d259b01b7422aacd8d31747fb6894c849e19cbb6250891bd48dea6777afc8b"
+          },
+          "test_modules": [
+            "crates/jocforge-domain/src/analysis/owner.rs"
+          ],
+          "vectors": {
+            "kind": "INPUT_ONLY_SIX_BLOCK_F08_TRANSFORM_AND_HISTORY_TRANSITIONS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-TRANSITION-CONTRACT-V1/INPUT-ONLY-TRANSITIONS.json",
+              "crates/jocforge-domain/tests/fixtures/window_fold/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "Six F08 blocks reuse one same-source delayed audio frame and transform after-state.",
+              "Five FBW lanes use the approved external-row mapping and LFE uses its independent seven-bin route.",
+              "The proposal advances transform history but does not become commit-eligible before the policy families.",
+              "No native, full-programme, or product comparison is claimed."
+            ],
+            "expected_values_are_assertions_only": true
+          },
+          "not_run": [
+            "Canonical Analysis state_ref and GTC OwnerReceipt are NOT_RUN.",
+            "GTC parent acceptance/single root swap, F09G policy completion, F11, native parity, and product acceptance are NOT_RUN."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/analysis/owner.rs",
+              "bytes": 56380,
+              "sha256": "53fa7833cf763570ebe1217d39a1e0b0f425e1d840a8d0634a285b608cc2942b"
+            },
+            {
+              "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
+              "bytes": 18091,
+              "sha256": "f5a7939117a8fd604d22b2a05adc8400c51d414014a68f48c5df4f1b53a288a3"
+            },
+            {
+              "path": "crates/jocforge-domain/src/transform/window_fold.rs",
+              "bytes": 5171,
+              "sha256": "9295d6d0cc18d796c55bdc4d61542a19d0b43886778ad41f8cf24cb34f734c9e"
+            },
+            {
+              "path": "crates/jocforge-domain/src/transform/fbw_transform.rs",
+              "bytes": 6652,
+              "sha256": "4254c8245769beb887f556bf04d4685e8e61ecdf80dafe316e2080a60fb9214a"
+            },
+            {
+              "path": "crates/jocforge-domain/src/transform/lfe_transform.rs",
+              "bytes": 22935,
+              "sha256": "37b20dd989897290c30668e4e48ac79a69679c4f82b9066720157a91b24f3052"
+            },
+            {
+              "path": "crates/jocforge-domain/src/transform/exponent_inputs.rs",
+              "bytes": 5255,
+              "sha256": "d41c465eb2da61284553796731360ea6ebedb9fe01ead36a7b0621f8900d0245"
+            },
+            {
+              "path": "crates/jocforge-domain/src/analysis/mod.rs",
+              "bytes": 304,
+              "sha256": "5991dab50bc1525bcc3f260b2e265a533a429228814861846ce79aede74d0a64"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/analysis/owner.rs",
+              "bytes": 56380,
+              "sha256": "53fa7833cf763570ebe1217d39a1e0b0f425e1d840a8d0634a285b608cc2942b"
+            }
+          ]
         }
       ]
     },
@@ -10630,6 +11364,103 @@
             "filter/energy auxiliary-state numerical effects, filter owner/reset, and native lane-register capture",
             "NaN/Inf, overflow/underflow and invalid buffers; reset/fatal/EOF, absolute ADM timing, external delayed-six input producer, whole F09G/F09, product/audio integration"
           ]
+        },
+        {
+          "slice_id": "analysis-owner-f09g-v6-policy-stage",
+          "mapping_status": "MATERIALIZED_F09G_V6_CROSS_SOURCE_POLICY_ROOT__FULL_ANALYSIS_PARENT_OPEN",
+          "implementation_status": "LOCALLY_MATERIALIZED_SIX_BLOCK_POLICY_STAGE__GTC_OWNER_RECEIPT_AND_COMMIT_NOT_RUN",
+          "scope": "Stages the selected six-block F09G gain and db-per-bit policy state in AnalysisOwnerRoot. The persistent V6 policy projection is gain_range previous_peak bits for six internal channels plus completed-block count, and db_per_bit selector plus completed-block count; callback-local gains, means, and normalization work are not added as persistent owner state. This remains a noncommitting proposal.",
+          "owner": "analysis",
+          "dependencies": [
+            "analysis-owner-f08-transform-history-stage",
+            "gain-history-peak-state-pass0-gate1-format7",
+            "precomputed-means-to-db-selector"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/analysis/owner.rs",
+            "crates/jocforge-domain/src/analysis/gain_history.rs",
+            "crates/jocforge-domain/src/analysis/mean_square.rs",
+            "crates/jocforge-domain/src/codec/db_selector.rs",
+            "crates/jocforge-domain/src/codec/policy_parameters.rs"
+          ],
+          "clock": {
+            "domains": [
+              "CodecSourceIndex",
+              "AnalysisOwnerGeneration",
+              "AnalysisBlockCount"
+            ],
+            "covered_clauses": [
+              "Each successful block stages gain and db-per-bit values while block count advances monotonically.",
+              "The selected frame advances six policy blocks, and only a same-source parent acceptance may install the complete after-root."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F09G_V6_POLICY_ROOT_AND_SELECTED_GAIN_PARAMETERS",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-POLICY-ROOT-STATE-AMENDMENT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-POLICY-ROOT-STATE-AMENDMENT-V1/POLICY-ROOT-AMENDMENT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-POLICY-ROOT-STATE-AMENDMENT-V1/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/gain_history_peak_state/PARAMETERS.json"
+            ],
+            "validation_boundary": "The V6 amendment changes persistent root projection only; numerical F09G rules are unchanged.",
+            "policy_root_manifest_sha256": "35c8252198a189e3cf0fd2649e02569486b4abdb22a124a528a47cca184ffa9a"
+          },
+          "test_modules": [
+            "crates/jocforge-domain/src/analysis/owner.rs"
+          ],
+          "vectors": {
+            "kind": "INPUT_ONLY_F09G_V6_POLICY_COLD_AND_BLOCK_TRANSITIONS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-POLICY-ROOT-STATE-AMENDMENT-V1/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/gain_history_peak_state/INPUTS.json",
+              "crates/jocforge-domain/tests/fixtures/gain_history_peak_state/EXPECTED.json"
+            ],
+            "case_pointers": [
+              "Cold previous peaks and completed-block counters are zero; db-per-bit selector is zero.",
+              "Six selected blocks stage the six-channel gain-range prior-peak and db-per-bit selector projection.",
+              "The source-local gain codes remain separate from persistent state until the parent accepts the source."
+            ],
+            "expected_values_are_assertions_only": true
+          },
+          "not_run": [
+            "Canonical Analysis state_ref and GTC OwnerReceipt are NOT_RUN.",
+            "GTC single root swap, full source fatal/reset/EOF handling, F11 consumer, and product acceptance are NOT_RUN."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/analysis/owner.rs",
+              "bytes": 56380,
+              "sha256": "53fa7833cf763570ebe1217d39a1e0b0f425e1d840a8d0634a285b608cc2942b"
+            },
+            {
+              "path": "crates/jocforge-domain/src/analysis/gain_history.rs",
+              "bytes": 17046,
+              "sha256": "9ceeb0aecce557405cc72ad8697c42c0238db34490fdae8f28e0f05c8b8af316"
+            },
+            {
+              "path": "crates/jocforge-domain/src/analysis/mean_square.rs",
+              "bytes": 11439,
+              "sha256": "4bb5e7ea02ae4d1a37dc553c761058df21b177b5a8909f030a0bb6b993592396"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/db_selector.rs",
+              "bytes": 5276,
+              "sha256": "7977e0185ac44ba78178beec8b86c9be627af050d5fc6c00931f5b8b25f3e387"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/policy_parameters.rs",
+              "bytes": 11909,
+              "sha256": "40ea6b4f54bad9474c6d758adddb0384b4684be7e83e395862d0ea6ade0799a2"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/analysis/owner.rs",
+              "bytes": 56380,
+              "sha256": "53fa7833cf763570ebe1217d39a1e0b0f425e1d840a8d0634a285b608cc2942b"
+            }
+          ]
         }
       ]
     },
@@ -11007,6 +11838,143 @@
             "Source/AU clocks, F07 producer, F12 frame writes, parent success/fatal/EOF, native equivalence, and product acceptance remain open."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "same-source-f09-f10-exponent-plan",
+          "mapping_status": "MATERIALIZED_SELECTED_F09_F10_SOURCE_PLAN__GTC_OWNER_COMMIT_AND_F11_CONSUMER_OPEN",
+          "implementation_status": "LOCALLY_MATERIALIZED_SIX_BLOCK_F09_F10_PLAN__NUMERIC_PARITY_AND_PARENT_COMMIT_NOT_RUN",
+          "scope": "Completes the selected same-source exponent plan after F08 and F09G. FBW refresh uses F07 structure marker-before values and source-local zero work carried across six blocks; F09 strategy selects whole-anchor reuse or spans 1, 2, or 4. F10 consumes PRIMARY raw exponent rows for the selected 217 bins, normalizes anchors or reuses the prior anchor, and packs results. LFE uses its independent marker-before sequence and seven-bin route. This is not a production F11 consumer or a committed root.",
+          "owner": "analysis",
+          "dependencies": [
+            "analysis-owner-f07-source-stage",
+            "analysis-owner-f08-transform-history-stage",
+            "analysis-owner-f09g-v6-policy-stage"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/analysis/exponent_plan.rs",
+            "crates/jocforge-domain/src/analysis/owner.rs",
+            "crates/jocforge-domain/src/analysis/source_frame.rs",
+            "crates/jocforge-domain/src/codec/exponent_normalization.rs",
+            "crates/jocforge-domain/src/codec/exponent_refresh_state.rs",
+            "crates/jocforge-domain/src/codec/exponent_packing.rs",
+            "crates/jocforge-domain/src/codec/policy_parameters.rs"
+          ],
+          "clock": {
+            "domains": [
+              "CodecSourceIndex",
+              "AnalysisOwnerGeneration",
+              "AnalysisBlockCount",
+              "AnalysisBlockIndex",
+              "FullbandLaneIndex"
+            ],
+            "covered_clauses": [
+              "The F09/F10 plan derives from one F07/F08/F09G source-stage identity and processes exactly six ordered blocks.",
+              "POWER drives refresh state; PRIMARY raw rows feed F10 anchor normalization and reuse.",
+              "F10 selected FBW consumers use 217 bins and the separate LFE branch uses seven bins; generic 253-bin scan capacity is rejected."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F09_F10_STAGE_CONTROL_AND_V6_POLICY_ROOT",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F09-F10-STAGE-CONTROL-ADAPTER-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F09-F10-STAGE-CONTROL-ADAPTER-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F09-F10-STAGE-CONTROL-ADAPTER-V1/FIELD-MAP.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F09-F10-STAGE-CONTROL-ADAPTER-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-POLICY-ROOT-STATE-AMENDMENT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-POLICY-ROOT-STATE-AMENDMENT-V1/POLICY-ROOT-AMENDMENT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-POLICY-ROOT-STATE-AMENDMENT-V1/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json",
+              "crates/jocforge-domain/tests/fixtures/policy_authorized/PARAMETERS.json"
+            ],
+            "validation_boundary": "The adapter specifies field and control joins; the available input vectors do not supply a complete native expected-output oracle for integrated F09/F10 parity.",
+            "f09_adapter_manifest_sha256": "edce469334d871edba0c5bb634b8e74f0d938b610f19ad5df005f0dfd55ec0fb",
+            "policy_root_manifest_sha256": "35c8252198a189e3cf0fd2649e02569486b4abdb22a124a528a47cca184ffa9a"
+          },
+          "test_modules": [
+            "crates/jocforge-domain/src/analysis/exponent_plan.rs",
+            "crates/jocforge-domain/src/analysis/owner.rs",
+            "crates/jocforge-domain/tests/exponent_normalization.rs"
+          ],
+          "vectors": {
+            "kind": "INPUT_ONLY_F09_F10_CONTROL_JOIN_AND_SELECTED_BIN_BOUNDARIES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F09-F10-STAGE-CONTROL-ADAPTER-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-POLICY-ROOT-STATE-AMENDMENT-V1/INPUT-ONLY-VECTORS.json",
+              "crates/jocforge-domain/tests/fixtures/policy_authorized/PARAMETERS.json"
+            ],
+            "case_pointers": [
+              "FBW active mode is one, special/mode_a2 is zero, and refresh-marker-before comes from F07 structure flags.",
+              "The F09.4 strategy uses one whole-anchor reuse mode and three span modes; invalid mode-to-span joins reject.",
+              "F10 consumes PRIMARY raw rows, not POWER working rows, and uses exactly 217 selected bins.",
+              "LFE uses its own fixed marker-before sequence, mode zero, and seven-bin PRIMARY row.",
+              "Control and shape assertions are input-only; integrated numerical parity is not claimed."
+            ],
+            "expected_values_are_assertions_only": true
+          },
+          "verification": {
+            "focused_analysis_tests_reported_passed": 16,
+            "report_source": "implementation agent report; not independently rerun in the mapping task"
+          },
+          "not_run": [
+            "Full integrated F09/F10 numerical parity against a native expected-output oracle is NOT_RUN.",
+            "Complete cross-owner provider-plan lineage and GTC canonical Analysis state_ref/OwnerReceipt are NOT_RUN.",
+            "GTC single root swap, F11 consumer, encode, native execution, and product acceptance are NOT_RUN."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/analysis/exponent_plan.rs",
+              "bytes": 21426,
+              "sha256": "ea0c196b846f3ca4fe25254adf830a8fe7e1a872735b552279c5bb5bc33f8828"
+            },
+            {
+              "path": "crates/jocforge-domain/src/analysis/owner.rs",
+              "bytes": 56380,
+              "sha256": "53fa7833cf763570ebe1217d39a1e0b0f425e1d840a8d0634a285b608cc2942b"
+            },
+            {
+              "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
+              "bytes": 18091,
+              "sha256": "f5a7939117a8fd604d22b2a05adc8400c51d414014a68f48c5df4f1b53a288a3"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/exponent_normalization.rs",
+              "bytes": 15773,
+              "sha256": "fa25ea47daa654579294235b78bb82749950910e0d2072a1ed267377d756531a"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/exponent_refresh_state.rs",
+              "bytes": 4693,
+              "sha256": "45509c9144fc4869d7ec2f71f5fbe663a6cd09c27a3a98b30d177a9baca3063a"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/exponent_packing.rs",
+              "bytes": 1987,
+              "sha256": "cc63c63334af36b35e8fc921d06bcd2bda6aadd1deea9eace63d6d7a8ad93afe"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/policy_parameters.rs",
+              "bytes": 11909,
+              "sha256": "40ea6b4f54bad9474c6d758adddb0384b4684be7e83e395862d0ea6ade0799a2"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/analysis/exponent_plan.rs",
+              "bytes": 21426,
+              "sha256": "ea0c196b846f3ca4fe25254adf830a8fe7e1a872735b552279c5bb5bc33f8828"
+            },
+            {
+              "path": "crates/jocforge-domain/src/analysis/owner.rs",
+              "bytes": 56380,
+              "sha256": "53fa7833cf763570ebe1217d39a1e0b0f425e1d840a8d0634a285b608cc2942b"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/exponent_normalization.rs",
+              "bytes": 24783,
+              "sha256": "3d402f7bccc15a542b4f56be93abe54ff61579bfcdb85ad92e43e38356d30108"
+            }
+          ]
         }
       ]
     },
@@ -11702,6 +12670,104 @@
             "parent source commit, AU append, and durable publication."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "selected-codec-owner-generation-previous-short-stage",
+          "mapping_status": "MATERIALIZED_SELECTED_CODEC_OWNER_STATE__F12_FRAME_AND_GTC_PARENT_COMMIT_OPEN",
+          "implementation_status": "LOCALLY_MATERIALIZED_CODEC_OWNER_STAGE__PROVIDER_PLAN_LINEAGE_AND_GTC_RECEIPT_NOT_RUN",
+          "scope": "Materializes exactly the selected codec persistent state: one owner generation and five previous_short flags. A candidate must be a complete 4,096-byte CRC-valid frame; sources 0 and 1 reject an append receipt, while published sources require a matching durable append receipt for the same source, AU, length, hash, CRC, fsync, and durable status. The method returns a proposal and has no owner-local commit.",
+          "owner": "codec",
+          "dependencies": [
+            "selected-q-frame-trial-and-keyless-crc",
+            "selected-main-q-search"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/codec/owner.rs",
+            "crates/jocforge-domain/src/codec/mod.rs",
+            "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
+            "crates/jocforge-domain/src/publication/output_owner.rs",
+            "crates/jocforge-domain/src/integrity/crc16.rs"
+          ],
+          "clock": {
+            "domains": [
+              "CodecSourceIndex",
+              "CodecOwnerGeneration",
+              "PublishedAuIndex"
+            ],
+            "covered_clauses": [
+              "Codec owner generation advances once per accepted source and is distinct from the GTC source clock.",
+              "The after previous_short row is the final F07 block flags in codec lane order.",
+              "Suppressed source handling and published-source durable append admission remain distinct."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_SELECTED_CODEC_OWNER_SCHEMA_AND_PUBLICATION_ADMISSION",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-ANALYSIS-CODEC-OWNER-RECONCILIATION-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-ANALYSIS-CODEC-OWNER-RECONCILIATION-V1/AMENDMENT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-ANALYSIS-CODEC-OWNER-RECONCILIATION-V1/INPUT-ONLY-TRANSITIONS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OUTPUT-ROOT-GTC-PARENT-BINDING-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OUTPUT-ROOT-GTC-PARENT-BINDING-V1/CONTRACT.md"
+            ],
+            "validation_boundary": "The owner consumes an already built frame candidate and a caller-provided durable append receipt; this does not produce F12 source/sequence controls or bind all providers to a GTC programme plan.",
+            "owner_reconciliation_manifest_sha256": "da4334efa864c7fd5530caa2a6a446e3c7d6dc4de20ea6933642fb0c7b22faf4",
+            "output_root_manifest_sha256": "2101f9c29c663ef53c1629c943e1fc474cc16cf2cac484013399facf2cc7f88f"
+          },
+          "test_modules": [
+            "crates/jocforge-domain/src/codec/owner.rs"
+          ],
+          "vectors": {
+            "kind": "INPUT_ONLY_CODEC_OWNER_COLD_SOURCE_AND_APPEND_ADMISSION",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-ANALYSIS-CODEC-OWNER-RECONCILIATION-V1/INPUT-ONLY-TRANSITIONS.json"
+            ],
+            "case_pointers": [
+              "Cold state is generation zero with five false previous_short flags.",
+              "Accepted suppressed sources require full frame CRC and no durable append receipt.",
+              "A published source requires matching durable receipt identity, frame hash, byte length, CRC, fsync, and durable fields.",
+              "No source clock, GTC OwnerReceipt, canonical GTC state_ref, or parent commit is installed here."
+            ],
+            "expected_values_are_assertions_only": true
+          },
+          "not_run": [
+            "Complete source/provider-plan lineage into the GTC codec owner and full frame-candidate binding are NOT_RUN.",
+            "Canonical codec GTC state_ref/OwnerReceipt, GTC single root swap, fatal/reset/EOF parent integration, and encode are NOT_RUN."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/codec/owner.rs",
+              "bytes": 12640,
+              "sha256": "c44e82457f6144995432eb791545b9eabbe05be3a394ba3a3a9aff32c5983e2c"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/mod.rs",
+              "bytes": 805,
+              "sha256": "ac238e59e8cff2579e42a609c292b6e43bd787f6e1124cb426aaf64ac8e2bc63"
+            },
+            {
+              "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
+              "bytes": 55545,
+              "sha256": "9671fbe3a5066295dc340cd721f234300cca15c680d4f5fd0e4772d57c0d733e"
+            },
+            {
+              "path": "crates/jocforge-domain/src/publication/output_owner.rs",
+              "bytes": 39341,
+              "sha256": "d3db7557e207ede77452a5215e0add1a0ba622b89fbbd9bd09c81e5e39bc3eae"
+            },
+            {
+              "path": "crates/jocforge-domain/src/integrity/crc16.rs",
+              "bytes": 478,
+              "sha256": "c642d8bc8bf8a75e736ab7f7c7468d6ede85c25fc70811be4206016333cad8c6"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/codec/owner.rs",
+              "bytes": 12640,
+              "sha256": "c44e82457f6144995432eb791545b9eabbe05be3a394ba3a3a9aff32c5983e2c"
+            }
+          ]
         }
       ]
     },
@@ -14305,6 +15371,324 @@
             "No validated EMDF/ID14 parser, native source join, carrier placement, complete frame, CRC or parent transaction is implemented."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "programme-output-identity-and-preflight-binding",
+          "mapping_status": "MATERIALIZED_TEST_SUPPORT_ONLY_F15_BINDING_HARNESS__PRODUCTION_PLAN_BINDING_NOT_RUN",
+          "implementation_status": "TEST_SUPPORT_ONLY_OUTPUT_PROJECTION_AND_HARNESS__PRODUCTION_VALIDATED_PLAN_BINDING_NOT_RUN",
+          "scope": "The private F15 carriage-to-provider projection and synthetic binding harness exist only under cfg(test) or the non-default test-support feature. ProgrammeOutputBinding has no default-production constructor, so the CLI staging APIs have no reachable production binding without a trusted ValidatedEncodingPlan. The test harness checks typed programme/attempt/staging identity and proposal clocks before staging I/O; it does not establish production provider-plan lineage.",
+          "owner": "output",
+          "dependencies": [
+            "selected-model-joc-complexity-u8-projection",
+            "controlled-id14-coefficient-to-payload-writer"
+          ],
+          "implementation_files": [
+            "crates/jocforge-application/src/output_publication.rs",
+            "crates/jocforge-application/src/output_publication/tests.rs",
+            "crates/jocforge-application/src/lib.rs",
+            "crates/jocforge-application/tests/prepared_job_input.rs",
+            "crates/jocforge-cli/src/output_publication.rs",
+            "crates/jocforge-cli/src/output_publication/tests.rs",
+            "crates/jocforge-domain/src/publication/output_owner.rs",
+            "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
+            "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs"
+          ],
+          "clock": {
+            "domains": [
+              "ProgrammeId",
+              "AttemptId",
+              "OutputStagingOwnerId",
+              "CodecSourceIndex",
+              "JocDispatchIndex",
+              "PublishedAuIndex"
+            ],
+            "covered_clauses": [
+              "The typed AttemptId and opaque staging-owner identity are bound to the same programme output leaf.",
+              "Source proposals match source, dispatch, and AU identity and the next output generation.",
+              "Finalize validates the current output state digest, generation, and expected product length before file staging."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F15_OUTPUT_IDENTITY_AND_PROVIDER_PLAN_CONTRACT",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OUTPUT-ROOT-GTC-PARENT-BINDING-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OUTPUT-ROOT-GTC-PARENT-BINDING-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OUTPUT-ROOT-GTC-PARENT-BINDING-V1/INPUT-ONLY-BINDING-CASES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-OUTPUT-PROVIDER-PLAN-BINDING-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-OUTPUT-PROVIDER-PLAN-BINDING-V1/CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-OUTPUT-PROVIDER-PLAN-BINDING-V1/SELECTED-OUTPUT-PROVIDER.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-OUTPUT-PROVIDER-PLAN-BINDING-V1/INPUT-ONLY-CASES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-OUTPUT-PROVIDER-PLAN-BINDING-V1/SOURCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-OUTPUT-PROVIDER-PLAN-BINDING-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PRODUCTION-OUTPUT-API-GATE-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PRODUCTION-OUTPUT-API-GATE-V1/DECISION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PRODUCTION-OUTPUT-API-GATE-V1/INPUT-ONLY-CASES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PRODUCTION-OUTPUT-API-GATE-V1/SOURCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PRODUCTION-OUTPUT-API-GATE-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-VALIDATED-PLAN-OUTPUT-BINDING-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-VALIDATED-PLAN-OUTPUT-BINDING-BOUNDARY-V1/DECISION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-VALIDATED-PLAN-OUTPUT-BINDING-BOUNDARY-V1/INPUT-ONLY.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-VALIDATED-PLAN-OUTPUT-BINDING-BOUNDARY-V1/SOURCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-VALIDATED-PLAN-OUTPUT-BINDING-BOUNDARY-V1/WASH-VERIFICATION.json"
+            ],
+            "validation_boundary": "Only the private projection/test harness is available. The latest F15 provider plan and production API gate are mapped as requirements, not integrated production authority.",
+            "output_root_manifest_sha256": "2101f9c29c663ef53c1629c943e1fc474cc16cf2cac484013399facf2cc7f88f",
+            "f15_provider_plan_manifest_sha256": "b591e821fe28203a3e2f71fb4e592611874d19d8055c2491bc0dfc9a09f791a2",
+            "f15_production_output_api_gate_manifest_sha256": "954da54ae20ca9288eb00c736ef28ac5dd39870334cc091ad1eef6a7c7eac388",
+            "f15_validated_plan_output_binding_manifest_sha256": "db01077a07a611c6c1964bb65aba47cd87a10172c1e9e8cebd4403bcfe43dd31",
+            "latest_f15_provider_plan_manifest_sha256": "b591e821fe28203a3e2f71fb4e592611874d19d8055c2491bc0dfc9a09f791a2"
+          },
+          "test_modules": [
+            "crates/jocforge-application/src/output_publication/tests.rs",
+            "crates/jocforge-application/tests/prepared_job_input.rs",
+            "crates/jocforge-cli/src/output_publication/tests.rs",
+            "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs"
+          ],
+          "vectors": {
+            "kind": "INPUT_ONLY_F15_PROGRAMME_ATTEMPT_PROVIDER_AND_PRE_IO_BINDING",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/OUTPUT-ROOT-GTC-PARENT-BINDING-V1/INPUT-ONLY-BINDING-CASES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-OUTPUT-PROVIDER-PLAN-BINDING-V1/INPUT-ONLY-CASES.json",
+              "crates/jocforge-domain/tests/fixtures/selected_frame_prefix/input-only-vectors.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-PRODUCTION-OUTPUT-API-GATE-V1/INPUT-ONLY-CASES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F15-VALIDATED-PLAN-OUTPUT-BINDING-BOUNDARY-V1/INPUT-ONLY.json"
+            ],
+            "case_pointers": [
+              "Test-only projection maps supported carriage modes to a synthetic F15 provider.",
+              "Test-support binding checks typed attempt and staging-owner identity before test staging I/O.",
+              "No ValidatedEncodingPlan-backed production binding constructor is available.",
+              "No provider-to-prepared-plan identity join or production CLI binding path is claimed."
+            ],
+            "expected_values_are_assertions_only": true
+          },
+          "not_run": [
+            "ValidatedEncodingPlan-backed production output binding and provider-plan lineage are NOT_RUN.",
+            "Canonical combined GTC output state_ref and GTC OwnerReceipt are NOT_RUN.",
+            "GTC single root swap, durable finalize/DONE integration, production filesystem durability acceptance, encode, native execution, and W04 are NOT_RUN."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-application/src/output_publication.rs",
+              "bytes": 23512,
+              "sha256": "02b83103efdd7b3daa4492ff9ee1886d4e0d0775458b582fed18dff9242f2efe"
+            },
+            {
+              "path": "crates/jocforge-application/src/output_publication/tests.rs",
+              "bytes": 8039,
+              "sha256": "5f61193f4dd72f0b84234c34457a6d30e12fe2c40dc4fdf9acfabda349b955ce"
+            },
+            {
+              "path": "crates/jocforge-application/src/lib.rs",
+              "bytes": 13659,
+              "sha256": "83d8746737c77cfa71918c6de11da7f428cd81bfc149c6e779bb3dc019fc8bcc"
+            },
+            {
+              "path": "crates/jocforge-application/tests/prepared_job_input.rs",
+              "bytes": 10499,
+              "sha256": "34762580b30da1020a1e563363940a67ab85ceb02891029763bc35075ca8f700"
+            },
+            {
+              "path": "crates/jocforge-cli/src/output_publication.rs",
+              "bytes": 5594,
+              "sha256": "3394b38b0e1d9abd2d93c2da227ea3a17784918fec721abcf12c79e7f7000cff"
+            },
+            {
+              "path": "crates/jocforge-cli/src/output_publication/tests.rs",
+              "bytes": 5919,
+              "sha256": "a7ed47e817ab13367ec4625bbbad8c45c21c9912dc618b0404d7d6492adfb0ba"
+            },
+            {
+              "path": "crates/jocforge-domain/src/publication/output_owner.rs",
+              "bytes": 39341,
+              "sha256": "d3db7557e207ede77452a5215e0add1a0ba622b89fbbd9bd09c81e5e39bc3eae"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
+              "bytes": 36622,
+              "sha256": "fac2f5e9e728987aba91455a48cbcd1946bcfe2bb7de9c1c49c1b2ef8ea58083"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
+              "bytes": 20602,
+              "sha256": "d8344a8c3f1acf009d26cc044aebc576a4f97532f7e157704f823781f3032cf7"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-application/src/output_publication/tests.rs",
+              "bytes": 8039,
+              "sha256": "5f61193f4dd72f0b84234c34457a6d30e12fe2c40dc4fdf9acfabda349b955ce"
+            },
+            {
+              "path": "crates/jocforge-application/tests/prepared_job_input.rs",
+              "bytes": 10499,
+              "sha256": "34762580b30da1020a1e563363940a67ab85ceb02891029763bc35075ca8f700"
+            },
+            {
+              "path": "crates/jocforge-cli/src/output_publication/tests.rs",
+              "bytes": 5919,
+              "sha256": "a7ed47e817ab13367ec4625bbbad8c45c21c9912dc618b0404d7d6492adfb0ba"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
+              "bytes": 20602,
+              "sha256": "d8344a8c3f1acf009d26cc044aebc576a4f97532f7e157704f823781f3032cf7"
+            }
+          ]
+        },
+        {
+          "slice_id": "fit-to-id14-writer-metadata-body-join",
+          "mapping_status": "MATERIALIZED_SAME_DISPATCH_ID14_BODY_TO_F13_PROPOSAL__WHOLE_F13C_AND_PARENT_COMMIT_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_SAME_DISPATCH_ID14_BODY_CONSUMPTION__F04D_F04RB_AND_F05JL_ACCEPTANCE_NOT_RUN",
+          "scope": "The F05JL JOC source stage derives clip_gain_index from the same-dispatch descriptor projection, derives sequence_count from committed dispatch state, completes the selected ID14 writer, and retains the full body with its writer generation. JocSourceProposal::assemble_metadata_bodies consumes that complete body after validating same programme, attempt, transaction, source, dispatch, spatial before-generation/digest, and reader receipt. F13 accepts no raw clip_gain_index or sequence_count arguments and does not recalculate the header fields. The metadata-body proposal remains noncommitting. The public low-level writer remains a separate typed CoefficientPayloadInput primitive.",
+          "owner": "joc",
+          "dependencies": [
+            "selected-coefficient-fit-retry-and-payload",
+            "selected-fit-dispatch-and-id14-proposal",
+            "controlled-id14-coefficient-to-payload-writer"
+          ],
+          "implementation_files": [
+            "crates/jocforge-domain/src/joc/source_stage.rs",
+            "crates/jocforge-domain/src/joc/dispatch_state.rs",
+            "crates/jocforge-domain/src/joc/coefficient_fitting.rs",
+            "crates/jocforge-domain/src/joc/coefficient_payload.rs",
+            "crates/jocforge-domain/src/joc/coefficient_representation.rs",
+            "crates/jocforge-domain/src/joc/emdf/metadata_bodies.rs",
+            "crates/jocforge-domain/src/joc/oamd/reader_target.rs"
+          ],
+          "clock": {
+            "domains": [
+              "ProgrammeId",
+              "AttemptId",
+              "CallbackTransactionId",
+              "CodecSourceIndex",
+              "JocDispatchIndex",
+              "JocGeneratedWriterIndex"
+            ],
+            "covered_clauses": [
+              "The fit and selected spatial projection must have identical programme, attempt, transaction, source, dispatch, and before-state identity.",
+              "The ID14 writer generation is derived from the same CodecSourceIndex and the owned descriptor copy becomes one F13 metadata payload body.",
+              "Writer rejection preserves its complete outcome; the method returns no metadata-body proposal and commits no owner state."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_SAME_DISPATCH_ID14_HEADER_PRODUCERS_AND_F13_BODY_CONSUMER",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOC-ID14-HEADER-PRODUCER-BINDING-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOC-ID14-HEADER-PRODUCER-BINDING-V1/CONTRACT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOC-ID14-HEADER-PRODUCER-BINDING-V1/INPUT-ONLY-CASES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOC-ID14-HEADER-PRODUCER-BINDING-V1/SOURCES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOC-ID14-HEADER-PRODUCER-BINDING-V1/WASH-VERIFICATION.json",
+              "crates/jocforge-domain/tests/fixtures/id14_coefficient_payload_writer/approved-codebooks.json"
+            ],
+            "supplement_manifest_sha256": "7d67ff782ea457e100882914c5254b293e92291146114b6e8d87d205b4176c9d",
+            "validation_boundary": "The approved package binds same-dispatch field producers and clocks. The selected F05JL sequence counter accepts only -1..=1023; the low-level writer remains a separate typed CoefficientPayloadInput primitive."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests/spatial_audio_composer.rs",
+            "crates/jocforge-domain/tests/id14_coefficient_payload_writer.rs",
+            "crates/jocforge-domain/src/joc/coefficient_fitting.rs"
+          ],
+          "vectors": {
+            "kind": "INPUT_ONLY_SAME_DISPATCH_ID14_PRODUCER_AND_F13_CONSUMER_CASES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/JOC-ID14-HEADER-PRODUCER-BINDING-V1/INPUT-ONLY-CASES.json",
+              "crates/jocforge-domain/tests/fixtures/id14_coefficient_payload_writer/INPUT-ONLY.json",
+              "crates/jocforge-domain/tests/fixtures/id14_coefficient_payload_writer/approved-codebooks.json"
+            ],
+            "case_pointers": [
+              "For callback g=2, receiver r=0, dispatch d=1, and source s=0, the same-dispatch header carries clip index 128 and wire sequence 0.",
+              "For callback g=3, receiver r=1, dispatch d=2, and source s=1, the same-dispatch header carries clip index 255 and wire sequence 0.",
+              "Sequence retries preserve one same-dispatch header value; successful body completion advances the existing dispatch state once, including the 1023-to-1 wrap.",
+              "The F13 body proposal consumes the same immutable complete ID14 body and writer generation without header-field recomputation.",
+              "The washed package is input-only and contains no audio or expected body; numeric parity and product acceptance are not claimed.",
+              "A focused local regression rejects sequence counters -2 and 1024 with JocDispatchError::Sequence before the ID14 writer; those two rejection values are local assertions, not added Wash vectors."
+            ],
+            "expected_values_are_assertions_only": true,
+            "source_supplement_manifest_sha256": "7d67ff782ea457e100882914c5254b293e92291146114b6e8d87d205b4176c9d"
+          },
+          "not_run": [
+            "F04D and F04RB whole production/provider integration remain NOT_RUN.",
+            "F05JL full runtime acceptance and complete programme source-stage integration remain NOT_RUN.",
+            "Top-level production caller closure, canonical JOC/F13 GTC OwnerReceipt, GTC single root swap, durable publication, encode, W04, and product acceptance remain NOT_RUN."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/joc/source_stage.rs",
+              "bytes": 5661,
+              "sha256": "f6c796ba0269ba9ba064f03ad8d304843780ddd2d54be4ee96ac4f8b459f445b"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/dispatch_state.rs",
+              "bytes": 9240,
+              "sha256": "27fd455935df843620bf1624bb42a947a39a0a1ead1f87469793327d5c4d01b4"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/coefficient_fitting.rs",
+              "bytes": 30212,
+              "sha256": "5caba8d4d52936880c1eedb1e4751d842f476ec3a2c313282859f283cd5aa984"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/coefficient_payload.rs",
+              "bytes": 19699,
+              "sha256": "5e2a4cf6e39f85b81cd485f522889652a97dcefebf36c9b3296573987370ff49"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/coefficient_representation.rs",
+              "bytes": 11634,
+              "sha256": "d08da899d19d05b59aa58dd21813ac7870247ecda0ae8da9f0111bfac5f3423a"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/emdf/metadata_bodies.rs",
+              "bytes": 7035,
+              "sha256": "df89ff9fb5104cb5bc017d735b9f768bc68f65dc9a893ae1ab6f85621d542de3"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/oamd/reader_target.rs",
+              "bytes": 37153,
+              "sha256": "0f77f69e945aaf184528f08b1a36860f5953bc1fbad1db00a99fb7f687651ad5"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler/tests/spatial_audio_composer.rs",
+              "bytes": 13331,
+              "sha256": "ad7ac439e79f493ba48468827b1dc52203b3a252d5e450376687594ad8abf663"
+            },
+            {
+              "path": "crates/jocforge-domain/tests/id14_coefficient_payload_writer.rs",
+              "bytes": 14249,
+              "sha256": "afb939f02687e2ecf92e3c748ba1b85d6874b921ea3566e547c81cee432ead19"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/coefficient_fitting.rs",
+              "bytes": 30212,
+              "sha256": "5caba8d4d52936880c1eedb1e4751d842f476ec3a2c313282859f283cd5aa984"
+            }
+          ],
+          "verification": {
+            "focused_parent_composer_test": "PASS_PARENT_REPORT",
+            "domain_library_suite": {
+              "passed": 369,
+              "ignored": 1
+            },
+            "id14_writer_integration": {
+              "passed": 4
+            },
+            "report_source": "parent final test report",
+            "focused_sequence_guard_test": "PASS_PARENT_REPORT"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "JocDispatchError::Sequence",
+              "category": "pre-writer input validation",
+              "trigger": "The committed sequence_counter is below -1 or above 1023, including the tested values -2 and 1024.",
+              "programme_state_after": "Unchanged; no writer attempt, ID14 body, dispatch after-state, or F13 proposal is returned.",
+              "caller_action": "Reject the source stage; do not retry with a caller-chosen sequence value."
+            }
+          ]
         }
       ]
     },
@@ -15964,21 +17348,246 @@
       "reset_authority": "Programme full restart reconstructs JOCSEL01 cold; no component-local reset or commit API exists.",
       "parent_install_status": "NOT_RUN; the complete after-state and ID14 body are available as one noncommitting proposal, but all twelve owner roots remain mandatory."
     },
-    {
+        {
       "root_id": "meter",
-      "materialization_status": "INVENTORIED_PENDING_P1.3_MATERIALIZATION"
+      "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
+      "implementation_status": "PARTIAL_LOCAL_OWNER_STAGE__GTC_RECEIPT_AND_SINGLE_SWAP_NOT_RUN",
+      "implementation_files": [
+        "crates/jocforge-domain/src/meter/standalone_root.rs",
+        "crates/jocforge-domain/src/meter/mod.rs"
+      ],
+      "test_modules": [
+        "crates/jocforge-domain/src/meter/standalone_root/tests.rs"
+      ],
+      "implementation_inventory": [
+        {
+          "path": "crates/jocforge-domain/src/meter/standalone_root.rs",
+          "bytes": 16057,
+          "sha256": "69848193bd49e5429028494385bcba48c47c1051c965a3836f1bd8737cab3de9"
+        },
+        {
+          "path": "crates/jocforge-domain/src/meter/mod.rs",
+          "bytes": 648,
+          "sha256": "2795a8f103682569d34184f7d6d4a2bec97f750c273658a42af5a75fb74b6577"
+        }
+      ],
+      "test_inventory": [
+        {
+          "path": "crates/jocforge-domain/src/meter/standalone_root/tests.rs",
+          "bytes": 6976,
+          "sha256": "4d204315db95118824c8a4deb40c93ffde9d02ab33f46897fb7abed8694b0f55"
+        }
+      ],
+      "local_scope": "The fixed selected meter schedule and noncommitting callback/finalization-values proposal are locally materialized.",
+      "canonical_gtc_state_ref_status": "NOT_RUN",
+      "gtc_owner_receipt_status": "NOT_RUN",
+      "gtc_single_root_swap_status": "NOT_RUN",
+      "encode_status": "NOT_RUN",
+      "remaining_gates": [
+        "Canonical GTC meter state_ref bytes and GTC OwnerReceipt.",
+        "Terminal MeasurementReceipt and READY transition.",
+        "F06OF production caller, GTC single root swap, programme reset/fatal/EOF integration.",
+        "Native EOF/drain evidence, end-to-end encode, W04, and product acceptance."
+      ],
+      "measurement_receipt_ready_status": "NOT_RUN"
     },
-    {
+        {
       "root_id": "drc",
-      "materialization_status": "INVENTORIED_PENDING_P1.3_MATERIALIZATION"
+      "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
+      "implementation_status": "PARTIAL_LOCAL_OWNER_STAGE__GTC_RECEIPT_AND_SINGLE_SWAP_NOT_RUN",
+      "implementation_files": [
+        "crates/jocforge-domain/src/drc/none_drc_owner.rs",
+        "crates/jocforge-domain/src/drc/mod.rs",
+        "crates/jocforge-domain/src/analysis/source_frame.rs",
+        "crates/jocforge-domain/src/transaction/mod.rs"
+      ],
+      "test_modules": [
+        "crates/jocforge-domain/src/drc/none_drc_owner.rs"
+      ],
+      "implementation_inventory": [
+        {
+          "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
+          "bytes": 29200,
+          "sha256": "548503939c562ff1ab7de8b4768dd163c82fe91abc45aa05a52adf7869686662"
+        },
+        {
+          "path": "crates/jocforge-domain/src/drc/mod.rs",
+          "bytes": 363,
+          "sha256": "9e727cb278a452ed0ad9d7e62c52ebc2d297436fc0a01b474686c0a359db8275"
+        },
+        {
+          "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
+          "bytes": 18091,
+          "sha256": "f5a7939117a8fd604d22b2a05adc8400c51d414014a68f48c5df4f1b53a288a3"
+        },
+        {
+          "path": "crates/jocforge-domain/src/transaction/mod.rs",
+          "bytes": 2915,
+          "sha256": "442a74702c82926abd9de95e5f0686fd9f1cb8e656e2e051ade2390abdee238c"
+        }
+      ],
+      "test_inventory": [
+        {
+          "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
+          "bytes": 29200,
+          "sha256": "548503939c562ff1ab7de8b4768dd163c82fe91abc45aa05a52adf7869686662"
+        }
+      ],
+      "local_scope": "The standalone selected DRC owner and noncommitting F06ND source-stage proposal are locally materialized.",
+      "canonical_gtc_state_ref_status": "NOT_RUN",
+      "gtc_owner_receipt_status": "NOT_RUN",
+      "gtc_single_root_swap_status": "NOT_RUN",
+      "encode_status": "NOT_RUN",
+      "remaining_gates": [
+        "F06NR secondary producer and same-source after-state join.",
+        "Canonical DRC state_ref bytes and GTC OwnerReceipt.",
+        "Meter MeasurementReceipt/READY input and GTC single root swap.",
+        "Programme fatal/reset/EOF integration, end-to-end encode, and product acceptance."
+      ],
+      "f06nr_producer_status": "NOT_RUN",
+      "measurement_receipt_ready_input_status": "NOT_RUN"
     },
-    {
+        {
       "root_id": "analysis",
-      "materialization_status": "INVENTORIED_PENDING_P1.3_MATERIALIZATION"
+      "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
+      "implementation_status": "PARTIAL_LOCAL_OWNER_STAGE__GTC_RECEIPT_AND_SINGLE_SWAP_NOT_RUN",
+      "implementation_files": [
+        "crates/jocforge-domain/src/analysis/owner.rs",
+        "crates/jocforge-domain/src/analysis/exponent_plan.rs",
+        "crates/jocforge-domain/src/analysis/source_frame.rs",
+        "crates/jocforge-domain/src/analysis/transient_channel.rs",
+        "crates/jocforge-domain/src/codec/exponent_normalization.rs",
+        "crates/jocforge-domain/src/codec/exponent_refresh_state.rs"
+      ],
+      "test_modules": [
+        "crates/jocforge-domain/src/analysis/owner.rs",
+        "crates/jocforge-domain/src/analysis/exponent_plan.rs",
+        "crates/jocforge-domain/tests/exponent_normalization.rs"
+      ],
+      "implementation_inventory": [
+        {
+          "path": "crates/jocforge-domain/src/analysis/owner.rs",
+          "bytes": 56380,
+          "sha256": "53fa7833cf763570ebe1217d39a1e0b0f425e1d840a8d0634a285b608cc2942b"
+        },
+        {
+          "path": "crates/jocforge-domain/src/analysis/exponent_plan.rs",
+          "bytes": 21426,
+          "sha256": "ea0c196b846f3ca4fe25254adf830a8fe7e1a872735b552279c5bb5bc33f8828"
+        },
+        {
+          "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
+          "bytes": 18091,
+          "sha256": "f5a7939117a8fd604d22b2a05adc8400c51d414014a68f48c5df4f1b53a288a3"
+        },
+        {
+          "path": "crates/jocforge-domain/src/analysis/transient_channel.rs",
+          "bytes": 16730,
+          "sha256": "5523689f13c36eb5ced27c8f512bf7134614c566118e7feec23af2c9916e9b3a"
+        },
+        {
+          "path": "crates/jocforge-domain/src/codec/exponent_normalization.rs",
+          "bytes": 15773,
+          "sha256": "fa25ea47daa654579294235b78bb82749950910e0d2072a1ed267377d756531a"
+        },
+        {
+          "path": "crates/jocforge-domain/src/codec/exponent_refresh_state.rs",
+          "bytes": 4693,
+          "sha256": "45509c9144fc4869d7ec2f71f5fbe663a6cd09c27a3a98b30d177a9baca3063a"
+        }
+      ],
+      "test_inventory": [
+        {
+          "path": "crates/jocforge-domain/src/analysis/owner.rs",
+          "bytes": 56380,
+          "sha256": "53fa7833cf763570ebe1217d39a1e0b0f425e1d840a8d0634a285b608cc2942b"
+        },
+        {
+          "path": "crates/jocforge-domain/src/analysis/exponent_plan.rs",
+          "bytes": 21426,
+          "sha256": "ea0c196b846f3ca4fe25254adf830a8fe7e1a872735b552279c5bb5bc33f8828"
+        },
+        {
+          "path": "crates/jocforge-domain/tests/exponent_normalization.rs",
+          "bytes": 24783,
+          "sha256": "3d402f7bccc15a542b4f56be93abe54ff61579bfcdb85ad92e43e38356d30108"
+        }
+      ],
+      "local_scope": "F07, F08, F09G, and the same-source F09/F10 value stages are partially materialized as noncommitting proposals.",
+      "canonical_gtc_state_ref_status": "NOT_RUN",
+      "gtc_owner_receipt_status": "NOT_RUN",
+      "gtc_single_root_swap_status": "NOT_RUN",
+      "encode_status": "NOT_RUN",
+      "remaining_gates": [
+        "Canonical Analysis state_ref bytes, GTC OwnerReceipt, and GTC single root swap.",
+        "Full cross-owner provider-plan lineage and parent fatal/reset/EOF integration.",
+        "F11 consumer, end-to-end encode, native execution, and product acceptance."
+      ],
+      "provider_plan_lineage_status": "NOT_RUN",
+      "verification_report": {
+        "analysis_focused_tests_reported_passed": 16,
+        "source": "implementation agent report; not independently rerun in this mapping update"
+      }
     },
-    {
+        {
       "root_id": "codec",
-      "materialization_status": "INVENTORIED_PENDING_P1.3_MATERIALIZATION"
+      "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
+      "implementation_status": "PARTIAL_LOCAL_OWNER_STAGE__GTC_RECEIPT_AND_SINGLE_SWAP_NOT_RUN",
+      "implementation_files": [
+        "crates/jocforge-domain/src/codec/owner.rs",
+        "crates/jocforge-domain/src/codec/mod.rs",
+        "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
+        "crates/jocforge-domain/src/publication/output_owner.rs",
+        "crates/jocforge-domain/src/integrity/crc16.rs"
+      ],
+      "test_modules": [
+        "crates/jocforge-domain/src/codec/owner.rs"
+      ],
+      "implementation_inventory": [
+        {
+          "path": "crates/jocforge-domain/src/codec/owner.rs",
+          "bytes": 12640,
+          "sha256": "c44e82457f6144995432eb791545b9eabbe05be3a394ba3a3a9aff32c5983e2c"
+        },
+        {
+          "path": "crates/jocforge-domain/src/codec/mod.rs",
+          "bytes": 805,
+          "sha256": "ac238e59e8cff2579e42a609c292b6e43bd787f6e1124cb426aaf64ac8e2bc63"
+        },
+        {
+          "path": "crates/jocforge-domain/src/codec/selected_frame_trial.rs",
+          "bytes": 55545,
+          "sha256": "9671fbe3a5066295dc340cd721f234300cca15c680d4f5fd0e4772d57c0d733e"
+        },
+        {
+          "path": "crates/jocforge-domain/src/publication/output_owner.rs",
+          "bytes": 39341,
+          "sha256": "d3db7557e207ede77452a5215e0add1a0ba622b89fbbd9bd09c81e5e39bc3eae"
+        },
+        {
+          "path": "crates/jocforge-domain/src/integrity/crc16.rs",
+          "bytes": 478,
+          "sha256": "c642d8bc8bf8a75e736ab7f7c7468d6ede85c25fc70811be4206016333cad8c6"
+        }
+      ],
+      "test_inventory": [
+        {
+          "path": "crates/jocforge-domain/src/codec/owner.rs",
+          "bytes": 12640,
+          "sha256": "c44e82457f6144995432eb791545b9eabbe05be3a394ba3a3a9aff32c5983e2c"
+        }
+      ],
+      "local_scope": "The selected codec generation and five previous_short flags have a noncommitting source-stage proposal.",
+      "canonical_gtc_state_ref_status": "NOT_RUN",
+      "gtc_owner_receipt_status": "NOT_RUN",
+      "gtc_single_root_swap_status": "NOT_RUN",
+      "encode_status": "NOT_RUN",
+      "remaining_gates": [
+        "Complete F12 candidate/provider-plan lineage into the GTC codec owner.",
+        "Canonical codec state_ref bytes, GTC OwnerReceipt, and GTC single root swap.",
+        "Parent fatal/reset/EOF integration, end-to-end encode, and product acceptance."
+      ],
+      "provider_plan_lineage_status": "NOT_RUN"
     },
     {
       "root_id": "metadata",
@@ -16169,9 +17778,104 @@
         "product_and_W04_acceptance": "NOT_RUN"
       }
     },
-    {
+        {
       "root_id": "output",
-      "materialization_status": "INVENTORIED_PENDING_P1.3_MATERIALIZATION"
+      "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
+      "implementation_status": "TEST_SUPPORT_ONLY_OUTPUT_BINDING_HARNESS__PRODUCTION_VALIDATED_PLAN_BINDING_NOT_RUN",
+      "implementation_files": [
+        "crates/jocforge-application/src/output_publication.rs",
+        "crates/jocforge-application/src/output_publication/tests.rs",
+        "crates/jocforge-application/src/lib.rs",
+        "crates/jocforge-application/tests/prepared_job_input.rs",
+        "crates/jocforge-cli/src/output_publication.rs",
+        "crates/jocforge-cli/src/output_publication/tests.rs",
+        "crates/jocforge-domain/src/publication/output_owner.rs",
+        "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
+        "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs"
+      ],
+      "test_modules": [
+        "crates/jocforge-application/src/output_publication/tests.rs",
+        "crates/jocforge-application/tests/prepared_job_input.rs",
+        "crates/jocforge-cli/src/output_publication/tests.rs"
+      ],
+      "implementation_inventory": [
+        {
+          "path": "crates/jocforge-application/src/output_publication.rs",
+          "bytes": 23512,
+          "sha256": "02b83103efdd7b3daa4492ff9ee1886d4e0d0775458b582fed18dff9242f2efe"
+        },
+        {
+          "path": "crates/jocforge-application/src/output_publication/tests.rs",
+          "bytes": 8039,
+          "sha256": "5f61193f4dd72f0b84234c34457a6d30e12fe2c40dc4fdf9acfabda349b955ce"
+        },
+        {
+          "path": "crates/jocforge-application/src/lib.rs",
+          "bytes": 13659,
+          "sha256": "83d8746737c77cfa71918c6de11da7f428cd81bfc149c6e779bb3dc019fc8bcc"
+        },
+        {
+          "path": "crates/jocforge-application/tests/prepared_job_input.rs",
+          "bytes": 10499,
+          "sha256": "34762580b30da1020a1e563363940a67ab85ceb02891029763bc35075ca8f700"
+        },
+        {
+          "path": "crates/jocforge-cli/src/output_publication.rs",
+          "bytes": 5594,
+          "sha256": "3394b38b0e1d9abd2d93c2da227ea3a17784918fec721abcf12c79e7f7000cff"
+        },
+        {
+          "path": "crates/jocforge-cli/src/output_publication/tests.rs",
+          "bytes": 5919,
+          "sha256": "a7ed47e817ab13367ec4625bbbad8c45c21c9912dc618b0404d7d6492adfb0ba"
+        },
+        {
+          "path": "crates/jocforge-domain/src/publication/output_owner.rs",
+          "bytes": 39341,
+          "sha256": "d3db7557e207ede77452a5215e0add1a0ba622b89fbbd9bd09c81e5e39bc3eae"
+        },
+        {
+          "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
+          "bytes": 36622,
+          "sha256": "fac2f5e9e728987aba91455a48cbcd1946bcfe2bb7de9c1c49c1b2ef8ea58083"
+        },
+        {
+          "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
+          "bytes": 20602,
+          "sha256": "d8344a8c3f1acf009d26cc044aebc576a4f97532f7e157704f823781f3032cf7"
+        }
+      ],
+      "test_inventory": [
+        {
+          "path": "crates/jocforge-application/src/output_publication/tests.rs",
+          "bytes": 8039,
+          "sha256": "5f61193f4dd72f0b84234c34457a6d30e12fe2c40dc4fdf9acfabda349b955ce"
+        },
+        {
+          "path": "crates/jocforge-application/tests/prepared_job_input.rs",
+          "bytes": 10499,
+          "sha256": "34762580b30da1020a1e563363940a67ab85ceb02891029763bc35075ca8f700"
+        },
+        {
+          "path": "crates/jocforge-cli/src/output_publication/tests.rs",
+          "bytes": 5919,
+          "sha256": "a7ed47e817ab13367ec4625bbbad8c45c21c9912dc618b0404d7d6492adfb0ba"
+        }
+      ],
+      "local_scope": "Private F15 carriage-to-provider projection and synthetic binding harness are gated to tests or the non-default test-support feature; no ValidatedEncodingPlan-backed production binding constructor exists.",
+      "canonical_gtc_state_ref_status": "NOT_RUN",
+      "gtc_owner_receipt_status": "NOT_RUN",
+      "gtc_single_root_swap_status": "NOT_RUN",
+      "encode_status": "NOT_RUN",
+      "remaining_gates": [
+        "ValidatedEncodingPlan-backed production output binding and provider-plan identity join.",
+        "Canonical combined GTC output state_ref and GTC OwnerReceipt.",
+        "GTC single root swap, durable finalize/DONE integration, encode, native execution, W04, and product acceptance."
+      ],
+      "provider_plan_lineage_status": "NOT_RUN",
+      "production_output_api_gate_status": "NOT_RUN",
+      "validated_plan_output_binding_status": "NOT_RUN",
+      "latest_f15_provider_plan_manifest_sha256": "b591e821fe28203a3e2f71fb4e592611874d19d8055c2491bc0dfc9a09f791a2"
     }
   ],
   "selected_overlap_projection": {

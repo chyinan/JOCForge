@@ -1,0 +1,26 @@
+{
+  "package_id": "F15-PRODUCTION-OUTPUT-API-GATE-V1",
+  "files": [
+    {
+      "file": "DECISION.json",
+      "bytes": 1979,
+      "sha256": "832fe492cd8f37514c190c2eecbe970b17f584faaf8a083b011c446af540d75e"
+    },
+    {
+      "file": "INPUT-ONLY-CASES.json",
+      "bytes": 573,
+      "sha256": "a3f5de2110a5e007513e8d345610be29c8b551bfb3806b791a0aab31b35aec7e"
+    },
+    {
+      "file": "SOURCES.json",
+      "bytes": 1203,
+      "sha256": "8ea4e0edb24de54aaa4ab50771a1d9f3c8d8e9f4ea8d2b37a0dee015a0695a02"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 216,
+      "sha256": "b601dd8e7b2811bd2b25bc27328662f81f29db78dcb6fbae932c7e6515b7c4ce"
+    }
+  ],
+  "implementation_execution": "NOT_RUN"
+}

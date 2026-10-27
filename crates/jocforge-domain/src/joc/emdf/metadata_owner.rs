@@ -913,6 +913,8 @@ impl MetadataOwner {
         }
 
         Ok(MetadataEofProposal {
+            programme_id: self.programme_id.clone(),
+            attempt: self.attempt,
             expected_sources: actual_sources,
             before,
             after_state,
@@ -955,12 +957,22 @@ impl MetadataOwner {
 
 #[derive(Debug)]
 pub struct MetadataEofProposal {
+    programme_id: ProgrammeId,
+    attempt: AttemptId,
     expected_sources: u64,
     before: Value,
     after_state: MetadataState,
 }
 
 impl MetadataEofProposal {
+    pub fn programme_id(&self) -> &ProgrammeId {
+        &self.programme_id
+    }
+
+    pub const fn attempt(&self) -> AttemptId {
+        self.attempt
+    }
+
     pub const fn expected_sources(&self) -> u64 {
         self.expected_sources
     }

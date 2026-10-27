@@ -1,0 +1,36 @@
+{
+  "modes": [
+    {
+      "carriage": "deployed_compat",
+      "provider": {
+        "schema": "output-owner-provider.v1",
+        "profile_id": "selected-keyless-output-policy.v1",
+        "encoding_profile_id": "eac3-joc-48k-1024k-acmod7-uncoupled-nonspx",
+        "emdf_carriage_mode": "deployed_compat",
+        "f15_dependency_manifest_sha256": "a2cf06839d3da81d14240ccd6526eebc0b878721d48a03fd0d0813f26961f6ce",
+        "frame_bytes": 4096,
+        "suppressed_sources": 2,
+        "staging_name_template": "attempt-{attempt_id}.ec3.partial",
+        "intent_name_template": "attempt-{attempt_id}.finalize-intent.json"
+      },
+      "canonical_utf8": "{\"emdf_carriage_mode\":\"deployed_compat\",\"encoding_profile_id\":\"eac3-joc-48k-1024k-acmod7-uncoupled-nonspx\",\"f15_dependency_manifest_sha256\":\"a2cf06839d3da81d14240ccd6526eebc0b878721d48a03fd0d0813f26961f6ce\",\"frame_bytes\":4096,\"intent_name_template\":\"attempt-{attempt_id}.finalize-intent.json\",\"profile_id\":\"selected-keyless-output-policy.v1\",\"schema\":\"output-owner-provider.v1\",\"staging_name_template\":\"attempt-{attempt_id}.ec3.partial\",\"suppressed_sources\":2}",
+      "provider_sha256": "e5d18a8b140e768279ef0cc282aafc3495f42720030ed95522bf8ed240b221c5"
+    },
+    {
+      "carriage": "etsi_emdf",
+      "provider": {
+        "schema": "output-owner-provider.v1",
+        "profile_id": "selected-keyless-output-policy.v1",
+        "encoding_profile_id": "eac3-joc-48k-1024k-acmod7-uncoupled-nonspx",
+        "emdf_carriage_mode": "etsi_emdf",
+        "f15_dependency_manifest_sha256": "a2cf06839d3da81d14240ccd6526eebc0b878721d48a03fd0d0813f26961f6ce",
+        "frame_bytes": 4096,
+        "suppressed_sources": 2,
+        "staging_name_template": "attempt-{attempt_id}.ec3.partial",
+        "intent_name_template": "attempt-{attempt_id}.finalize-intent.json"
+      },
+      "canonical_utf8": "{\"emdf_carriage_mode\":\"etsi_emdf\",\"encoding_profile_id\":\"eac3-joc-48k-1024k-acmod7-uncoupled-nonspx\",\"f15_dependency_manifest_sha256\":\"a2cf06839d3da81d14240ccd6526eebc0b878721d48a03fd0d0813f26961f6ce\",\"frame_bytes\":4096,\"intent_name_template\":\"attempt-{attempt_id}.finalize-intent.json\",\"profile_id\":\"selected-keyless-output-policy.v1\",\"schema\":\"output-owner-provider.v1\",\"staging_name_template\":\"attempt-{attempt_id}.ec3.partial\",\"suppressed_sources\":2}",
+      "provider_sha256": "d4ba533d06ddf9bda330023891919e8a233ee8a12611eec051708012034b1687"
+    }
+  ]
+}

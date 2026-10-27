@@ -1,0 +1,8 @@
+{
+  "approved_base_sources_verified": 3,
+  "washed_authority_manifests_verified": 3,
+  "implementation_review": "NOT_RUN",
+  "filesystem_io": "NOT_RUN",
+  "GTC_commit": "NOT_RUN",
+  "product_acceptance": "NOT_RUN"
+}

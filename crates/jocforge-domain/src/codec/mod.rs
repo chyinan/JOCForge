@@ -19,6 +19,7 @@ pub mod frame_syntax;
 pub mod grouped_quantizer;
 pub mod lfe_coefficient_exponent;
 pub mod mantissa;
+pub mod owner;
 pub mod policy_parameters;
 pub mod rate_profile;
 pub mod raw_exponent_from_power;
