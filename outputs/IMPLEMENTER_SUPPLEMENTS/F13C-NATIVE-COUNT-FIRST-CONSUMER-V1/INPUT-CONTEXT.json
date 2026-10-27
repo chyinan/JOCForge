@@ -1,0 +1,33 @@
+{
+  "case_id": "selected_adm_file_position_frames_0_48",
+  "expected_outputs_included": false,
+  "frame_window": {
+    "end_exclusive": 48,
+    "start_inclusive": 0
+  },
+  "input_identity": {
+    "audio_channel_format_count": 38,
+    "audio_object_count": 29,
+    "bits_per_sample": 24,
+    "channels": 38,
+    "chna_track_count": 38,
+    "file_bytes": 743696526,
+    "sample_count_per_channel": 6522906,
+    "sample_rate_hz": 48000,
+    "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
+  },
+  "job_profile": {
+    "data_rate_kbps": 1024,
+    "dialogue_intelligence": "false",
+    "end_frame_exclusive": 48,
+    "line_mode_drc": "none",
+    "measurement_mode": "1770-4",
+    "rf_mode_drc": "none",
+    "speech_threshold": "100",
+    "start_frame": 0,
+    "time_base": "file_position"
+  },
+  "pcm_values_included": false,
+  "schema": "washed-f13c-first-consumer-input-context.v1",
+  "source_package_manifest_sha256": "12d9e248e436978870a9ef0754c8a58db720b75e7cb915ee447922a5472bfa82"
+}

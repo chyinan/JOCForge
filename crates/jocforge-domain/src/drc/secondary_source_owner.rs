@@ -7,6 +7,7 @@
 //! after-state has input-only vectors but no independent after-state oracle.
 
 use crate::{
+    analysis::owner::F07AnalysisStage,
     analysis::source_frame::{AnalysisOwnerId, SharedAnalysisReceipt},
     drc::{
         none_drc_owner::{
@@ -124,6 +125,23 @@ impl NoneDrcSourceFrameProposal {
 /// Stages one F06NR PRIMARY source frame and the same-source F06ND transition.
 /// It borrows the committed root; returned owner and carrier values are proposals.
 impl NoneDrcOwnerRoot {
+    /// Stages F06NR/F06ND directly from the public F07 owner proposal for this source.
+    ///
+    /// This keeps the handoff on the owner-produced SharedAnalysisReceipt and gives the
+    /// source coordinator a production entry point without exposing row/flag arrays.
+    pub fn prepare_source_frame_from_f07_stage(
+        &self,
+        f07_stage: &F07AnalysisStage,
+        callback_identity: &CallbackLineageIdentity,
+    ) -> Result<NoneDrcSourceFrameProposal, SecondarySourceError> {
+        let shared_analysis = f07_stage
+            .shared_analysis()
+            .ok_or(SecondarySourceError::Owner(
+                NoneDrcOwnerError::SharedAnalysisIdentity,
+            ))?;
+        self.prepare_source_frame(shared_analysis, callback_identity)
+    }
+
     pub fn prepare_source_frame(
         &self,
         shared_analysis: &SharedAnalysisReceipt,

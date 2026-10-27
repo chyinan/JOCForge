@@ -1,0 +1,70 @@
+{
+  "schema": "wash-research-manifest.v1",
+  "files": [
+    {
+      "path": "MODEL-IDENTITIES.json",
+      "bytes": 2954,
+      "sha256": "6a8ef4495f36210634105b9761625f115646e802441024873d4a9cb821abeed8"
+    },
+    {
+      "path": "README.md",
+      "bytes": 851,
+      "sha256": "72ec3ba753cd4d20a472dcff2de5681512abcc754408733dbd2d1c13897a6057"
+    },
+    {
+      "path": "REFERENCE-RESULTS.json",
+      "bytes": 6306,
+      "sha256": "7f61da6fbc52839a95bb89dc726ebed0f9807f1bd52a263b1158e366a5d5caf4"
+    },
+    {
+      "path": "SOURCE-IDENTITY-RESOLUTION.json",
+      "bytes": 4530,
+      "sha256": "05eed8b259a08fe0c8e000705007066c80fb992a47581d67e6db64fee537b04a"
+    },
+    {
+      "path": "source-one-forward-history-after.f32le",
+      "bytes": 2560,
+      "sha256": "752475f9b1049fc75d12d37f8fcde88950e1216854101b1c44e9269555b42434"
+    },
+    {
+      "path": "source-one-inverse-carry-after.f32le",
+      "bytes": 2560,
+      "sha256": "ba11255ffed31a83475cc6895f0cc85fc86586222879657bd9469e06f55561ba"
+    },
+    {
+      "path": "source-one-secondary-carrier.f32le",
+      "bytes": 36864,
+      "sha256": "d80b5edba71008e6adbbf8af2a94193c36f1b1a376c16d23263e6f2abe3999f4"
+    },
+    {
+      "path": "source-two-forward-history-after.f32le",
+      "bytes": 2560,
+      "sha256": "bb12405bd48dbf0f1fe4c3bf1bf1b125348a8a3a1cdda2ed4489145bffe19331"
+    },
+    {
+      "path": "source-two-inverse-carry-after.f32le",
+      "bytes": 2560,
+      "sha256": "d1554d1e5b32c5cdc81f7eb3d602682033764816822ab89944b4e65ccc951c2f"
+    },
+    {
+      "path": "source-two-secondary-carrier.f32le",
+      "bytes": 36864,
+      "sha256": "aabc68bb5e25438f253330429ec0d2fc45f504f70bc94c81818480ed0eedef0f"
+    },
+    {
+      "path": "source-zero-forward-history-after.f32le",
+      "bytes": 2560,
+      "sha256": "40c143e1a615d996165693236171fb2c6ccce49af5aa932f45483f2696a236a2"
+    },
+    {
+      "path": "source-zero-inverse-carry-after.f32le",
+      "bytes": 2560,
+      "sha256": "33d93a3af88a1875f357e7794ea7e31968faea47598f9729709ed91dec63c7de"
+    },
+    {
+      "path": "source-zero-secondary-carrier.f32le",
+      "bytes": 36864,
+      "sha256": "c5207ac2edad0b75e58406a035d15c1327d5e645386341eb930e6437ff7ec6ef"
+    }
+  ]
+}

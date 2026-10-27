@@ -2,6 +2,7 @@ use super::*;
 use crate::{
     analysis::{
         input_history::InputHistory,
+        owner::AnalysisOwnerRoot,
         source_frame::{
             AnalysisOwnerGeneration, F07SourceFrameBeforeState, InstalledAudioSourceFrame,
             SharedAnalysisReceipt, SourceStageKey, stage_f07a_source_frame,
@@ -10,7 +11,7 @@ use crate::{
         transient_parameters::load_transient_parameters,
     },
     meter::measurement_receipt::{ProgrammeMeasurementReceipt, ProgrammeMeasurementReceiptInput},
-    timeline::FrontendCallbackIndex,
+    timeline::{CodecSourceIndex, FrontendCallbackIndex},
     transaction::{AttemptId, CallbackTransactionId, ProgrammeId},
 };
 use serde_json::Value;
@@ -400,6 +401,74 @@ fn f06nd_receives_the_same_source_carrier_and_only_a_proposal_is_returned() {
         root.state().source_generation().unwrap(),
         CodecSourceIndex::new(0)
     );
+}
+
+#[test]
+fn public_f07_owner_stage_reaches_the_same_source_drc_proposal() {
+    let measurement = measurement_receipt(12);
+    let root = NoneDrcOwnerRoot::cold_after_meter_finalize(&measurement).unwrap();
+    let before_reference = root.state_reference().unwrap();
+    let attempt = measurement.attempt();
+    let installed_audio: InstalledAudioSourceFrame = std::array::from_fn(|lane| {
+        std::array::from_fn(|block| {
+            std::array::from_fn(|sample| {
+                let value =
+                    i32::try_from((lane * 47 + block * 31 + sample * 13) % 257).unwrap() - 128;
+                (value as f32 / 32_768.0).to_bits()
+            })
+        })
+    });
+    let transient_parameters = load_transient_parameters(Some(D05_PARAMETERS)).unwrap();
+    let f07_stage = AnalysisOwnerRoot::cold()
+        .prepare_f07_source(
+            attempt,
+            CallbackTransactionId::new("owner-f07-stage-source-0").unwrap(),
+            CodecSourceIndex::new(0),
+            &installed_audio,
+            [false; SECONDARY_LANE_COUNT],
+            &transient_parameters,
+        )
+        .unwrap();
+    let shared = f07_stage.shared_analysis().unwrap();
+    assert_eq!(shared.identity().source_index(), CodecSourceIndex::new(0));
+
+    let callback = callback_identity(0, attempt);
+    let from_owner_stage = root
+        .prepare_source_frame_from_f07_stage(&f07_stage, &callback)
+        .unwrap();
+    let from_same_receipt = root.prepare_source_frame(shared, &callback).unwrap();
+
+    assert_eq!(from_owner_stage, from_same_receipt);
+    assert_eq!(from_owner_stage.source_index(), CodecSourceIndex::new(0));
+    assert_eq!(
+        from_owner_stage.after_root().source_index(),
+        CodecSourceIndex::new(0)
+    );
+    assert_eq!(
+        from_owner_stage
+            .after_root()
+            .state()
+            .source_generation()
+            .unwrap(),
+        CodecSourceIndex::new(1)
+    );
+    assert_eq!(
+        from_owner_stage
+            .after_root()
+            .state()
+            .secondary()
+            .frame_index(),
+        1
+    );
+    assert_eq!(
+        from_owner_stage
+            .after_root()
+            .state()
+            .scheduler()
+            .generation(),
+        1
+    );
+    assert_eq!(root.state_reference().unwrap(), before_reference);
 }
 
 #[test]

@@ -1,0 +1,35 @@
+{
+  "delivery": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+  "files": [
+    {
+      "bytes": 1605,
+      "file": "CONTRACT.md",
+      "sha256": "16fbcc146f07006ce99bb69a78f592bd517df97567c597f8e0ce0ef927623a59"
+    },
+    {
+      "bytes": 3174,
+      "file": "OBSERVED-NATIVE-COUNT-VECTOR.json",
+      "sha256": "d2eafff7d237f71c6f0fadc8b5c3db7e9bf5dd7df7bcca99d5c030cf3ef918e0"
+    },
+    {
+      "bytes": 561,
+      "file": "OUTPUT-CONTROL-CLAIM.json",
+      "sha256": "6e93f3f23b9515ff3be6e38fcc12a8ed2a17bc77e0b5c1cc5c1305ec624d36ca"
+    },
+    {
+      "bytes": 813,
+      "file": "SOURCE-CHAIN.json",
+      "sha256": "fa591b75d4f56d45bea248ef8ab659d51114a639fba8f2cf5ce88bc720ea7496"
+    },
+    {
+      "bytes": 857,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "05ac5d858fd7bd5b3d926f3ef6e8c4f68711cbab4faea9ff4ce63a6e5ffe1c35"
+    }
+  ],
+  "implementation_requirement": false,
+  "package_id": "F13C-NATIVE-COUNT-OBSERVATION-SLICE-00-V1",
+  "schema": "wash-package-manifest.v1",
+  "scope": "Informational native count observation for file-position frames 0..48 only; no model rule or AU join",
+  "source_manifest_sha256": "1e693963f1cb579fffaff435f505e07a6d9140ddff33282ff7cf03ac87bcd36f"
+}

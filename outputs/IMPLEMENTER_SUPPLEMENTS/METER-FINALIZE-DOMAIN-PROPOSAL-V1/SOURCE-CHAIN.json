@@ -1,0 +1,282 @@
+{
+  "approved_documents": [
+    {
+      "bytes": 20041,
+      "document": "specs/00-global-transaction-contract.md",
+      "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105"
+    },
+    {
+      "bytes": 12153,
+      "document": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
+      "sha256": "74c8e4a60600187783e559459b426aada2508ae273f95401c9a4234aee4504b4"
+    },
+    {
+      "bytes": 6887,
+      "document": "specs/01-input-and-clock.md",
+      "sha256": "6bd78ebe23536c3a55ec54f2e13c2e8b98c2ee245ae5a886e47bc9580520b93a"
+    },
+    {
+      "bytes": 13867,
+      "document": "specs/01-frontend-config-dbmd-events.md",
+      "sha256": "afd9efc879ed9a4878bd967c1370275074efd2226e11e67eb86838f4168f61b7"
+    },
+    {
+      "bytes": 6337,
+      "document": "specs/06-meter-bsi.md",
+      "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
+    },
+    {
+      "bytes": 9594,
+      "document": "specs/06-meter-none-drc-whole-composition.md",
+      "sha256": "94e8d42e77e71f4f16e99a74ee3c808cfc925074e19dd814762d21cde6f259d2"
+    },
+    {
+      "bytes": 9427,
+      "document": "specs/06-oar-frontend-input-and-clock-join.md",
+      "sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423"
+    },
+    {
+      "bytes": 9824,
+      "document": "specs/06-true-peak-cascade-and-metrics.md",
+      "sha256": "e0491288c3a9beb59ecb7b017d505ee16eb9f401d53bd0fd918573644c1876b3"
+    },
+    {
+      "bytes": 8673,
+      "document": "specs/06-ungated-mean-and-fallback.md",
+      "sha256": "07c850be31dbe42a1396634bd96dfd4a54fbd80aa27b3d39a36998545cdc3b9e"
+    },
+    {
+      "bytes": 18048,
+      "document": "specs/06-none-drc-statistics-and-control.md",
+      "sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081"
+    }
+  ],
+  "approved_main_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "architecture_dependency_rule": {
+    "bytes": 6111,
+    "document": "docs/architecture/DEPENDENCY-RULES.md",
+    "sha256": "7db30e3de32bf96276d1ed4ef376823559acc726085043217136bdce0a91ba8b",
+    "use": "Application owns the admitted PreparedJobInput and immutable snapshot; Application-to-Domain is allowed; Domain has no IO/process/environment dependency."
+  },
+  "implementation_api_identity_snapshot": {
+    "files": [
+      {
+        "path": "crates/jocforge-domain/src/meter/standalone_root.rs",
+        "sha256": "69848193bd49e5429028494385bcba48c47c1051c965a3836f1bd8737cab3de9"
+      },
+      {
+        "path": "crates/jocforge-domain/src/meter/measurement_receipt.rs",
+        "sha256": "2fff890d6d3e6a1672e13b22f8481b5a14ce2e18c06a1ffb29ee0531081c52aa"
+      },
+      {
+        "path": "crates/jocforge-domain/src/meter/programme_measurement.rs",
+        "sha256": "f854dd9cbe6385c62731e84dcceac313c2327deacb81fefb42ca7b77c55a6770"
+      },
+      {
+        "path": "crates/jocforge-domain/src/meter/meter_prepass.rs",
+        "sha256": "a654cefe6a81ef78e10958d73a2d57d2a01e9f4b1f425bb085400a63816d9c33"
+      },
+      {
+        "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
+        "sha256": "f5a7939117a8fd604d22b2a05adc8400c51d414014a68f48c5df4f1b53a288a3"
+      },
+      {
+        "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
+        "sha256": "a00c0c50cbec6ea80954bb0979e8a1bb65e303cabe2043fb6e5333bf86b145a0"
+      },
+      {
+        "path": "crates/jocforge-application/src/lib.rs",
+        "sha256": "83d8746737c77cfa71918c6de11da7f428cd81bfc149c6e779bb3dc019fc8bcc"
+      }
+    ],
+    "identity_only": true,
+    "implementation_source_read": false,
+    "snapshot": "HEAD ab48009"
+  },
+  "prepared_job_input_identity_package": {
+    "package_manifest_sha256": "4ba12217bfb7283a05a1b13966cd725db0617210129405c3989b7c2537aabf0f",
+    "payloads_independently_verified_by_wash": "2/2",
+    "scope": "The same immutable PreparedJobInput contains resource identity, normalized config identity and graph provenance bound to that resource. This audit did not open the implementation copy."
+  },
+  "schema": "washed-meter-finalize-source-chain.v1",
+  "source_manifest_sha256": "63411f40f839e87134b741ad5c8e7eeb21059bf4f2ae79d649a226201e781abf",
+  "source_package_id": "METER-FINALIZE-DOMAIN-BOUNDARY-CROSSWALK-V1",
+  "source_payloads": [
+    {
+      "bytes": 4847,
+      "file": "FINALIZE-PROPOSAL-AND-PARENT-COMMIT.json",
+      "sha256": "852fa7d7b90353d0e1639044f51d9ad762eee0ab6050cb63a0db4e429f8a553b"
+    },
+    {
+      "bytes": 7977,
+      "file": "INPUT-ONLY-IDENTITY-VECTORS.json",
+      "sha256": "00daeb7abcec1b28820d06c9523a1b921de35b8b287e0eadc074222eeb90ee3a"
+    },
+    {
+      "bytes": 9451,
+      "file": "INTERFACE-CROSSWALK.md",
+      "sha256": "0cff2d0e424e22bd61b063ed1deecba516812558053fb935cf8dcbe80e83d3a0"
+    },
+    {
+      "bytes": 9765,
+      "file": "SOURCE-REFERENCES.json",
+      "sha256": "25efe04fc5f0cd4ab9f959372a76dbf2b25ff2e85f6b334d80598fbe232d1759"
+    },
+    {
+      "bytes": 398,
+      "file": "STATUS.json",
+      "sha256": "98dd20a2b5ad86d33397439883b670b9830480a4c23f1987b9c759e81f19c1b9"
+    }
+  ],
+  "supporting_supplements": [
+    {
+      "manifest_sha256": "d4e93e12c18307678415ab13cd1304960ce658100346662ddac115b45b298a8a",
+      "package": "METER-ROOT-CANONICAL-STATE-REFERENCE-V4",
+      "payloads": [
+        {
+          "bytes": 9021,
+          "file": "CONTRACT.md",
+          "sha256": "08862636eff8acfa1e5ad0d9addd47a42eaf91b39ce0306c8d8ed44013c4b74a"
+        },
+        {
+          "bytes": 2559,
+          "file": "ERRATUM.md",
+          "sha256": "8422a400bb6018a5aeba3f94e60207f59a0288feda2d81500a64df15a4a6adc1"
+        },
+        {
+          "bytes": 17016,
+          "file": "INPUT-ONLY-ROOT-RECIPES.json",
+          "sha256": "eb8e953bc8037a887b23b363cdffbf0ac64d6b804c69f8eacbb81b655de41ad4"
+        },
+        {
+          "bytes": 16476,
+          "file": "MATERIALIZATION-RESULT.json",
+          "sha256": "34882b65d8dd9d51717bdd5497ec075c970df182fd9f332054d25a44ef5df48c"
+        },
+        {
+          "bytes": 10832,
+          "file": "REFERENCES.json",
+          "sha256": "9c90768e8bcccd1a565b0fb1f70f7b02090c54c4193e7db45b76dff78efab9f9"
+        },
+        {
+          "bytes": 10443,
+          "file": "ROOT-FIELDS.json",
+          "sha256": "45975cb5435bc163b9428d083180bfae46bd9954306713629ca0dbb826dea058"
+        },
+        {
+          "bytes": 2201,
+          "file": "SOURCE-PACKAGE-MANIFEST.json",
+          "sha256": "252987fe67ea20de6b4f893da911349127c65f76b8f9217deaeb77b8f48cbfd8"
+        },
+        {
+          "bytes": 1819,
+          "file": "WASH-VERIFICATION.json",
+          "sha256": "a6a07b4d221b0172b6c2d0910a1497379312a4109c613e706db47eceb762d2f2"
+        },
+        {
+          "bytes": 280829,
+          "file": "input-only-cold-roots/N1_pre_callback0_cold_root.json",
+          "sha256": "20200261e6a2d16602ada0e234d394668de5ee556718c8e65469f748d9d43d8f"
+        },
+        {
+          "bytes": 280850,
+          "file": "input-only-cold-roots/N1537_pre_callback0_cold_root.json",
+          "sha256": "4473c384b93076cb79d6cc0f4f5241c9e68c1478e7f84e1de1f7fe91c92c1227"
+        },
+        {
+          "bytes": 280892,
+          "file": "input-only-cold-roots/N6522906_pre_callback0_cold_root.json",
+          "sha256": "a983c9344a57357a3bd094b1002b2effe9e78490bc82132259b4ae6f39991c4b"
+        }
+      ]
+    },
+    {
+      "manifest_sha256": "4ba12217bfb7283a05a1b13966cd725db0617210129405c3989b7c2537aabf0f",
+      "package": "PREPARED-JOB-INPUT-IDENTITY-V1",
+      "payloads": [
+        {
+          "bytes": 3955,
+          "file": "CONTRACT.md",
+          "sha256": "9d7c857f3fb039c0ccec1e0967a7a1044f1f0ed635f3cf6d00a05d2281549f56"
+        },
+        {
+          "bytes": 1441,
+          "file": "IDENTITY-MAP.json",
+          "sha256": "3240aba416474f0e5974459876ab184f39893bb98c2d5198f6ee59e2ed8157b1"
+        }
+      ]
+    },
+    {
+      "manifest_sha256": "0ee7491d713000921c5e002710d67771791d64c531ed41a2d55c77c5c559cbb7",
+      "package": "DRC-STANDALONE-OWNER-OPTIONAL-DIALNORM-V1",
+      "payloads": [
+        {
+          "bytes": 2498,
+          "file": "CONTRACT.md",
+          "sha256": "2b50b99bfb0beeb8882d70cd66e0a14fc751ac736c1742b1617d954339f701c3"
+        },
+        {
+          "bytes": 3861,
+          "file": "DRC-ROOT-SCHEMA.json",
+          "sha256": "08289163fab74aad77793fc3488805fc6b9a910bd2ca6aa7fda26d2fb3694e2d"
+        },
+        {
+          "bytes": 60441,
+          "file": "INPUT-ONLY-OPTION-COLD-VECTOR.json",
+          "sha256": "b5bbfa59c6651d8d5ef31c6211b238e6f62279b79dea848759fd29bc5b39d2a4"
+        },
+        {
+          "bytes": 4989,
+          "file": "SOURCE-REFERENCES.json",
+          "sha256": "21eeef4d4b61994815b919d67374c5546d9a97a63fc672e62e6ab03497d86ecc"
+        },
+        {
+          "bytes": 1154,
+          "file": "SOURCE-PACKAGE-MANIFEST.json",
+          "sha256": "467b0dcab5e36a9de5da372e726bfdd36a84f6347223af34eddc1b31bc8168d9"
+        },
+        {
+          "bytes": 1925,
+          "file": "WASH-DECISION.json",
+          "sha256": "d095d003e669306aefe9b2773530da98cd26d19dfebecfa47217feb753dc37ef"
+        },
+        {
+          "bytes": 1406,
+          "file": "WASH-VERIFICATION.json",
+          "sha256": "5653583c96b716a1bef83d2a520191dae80d97e0fb7749b4649c8c552c65397e"
+        }
+      ]
+    },
+    {
+      "manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6",
+      "package": "GTC-OWNER-STATE-REF-CONVENTION-V1",
+      "payloads": [
+        {
+          "bytes": 1853,
+          "file": "CONTRACT.md",
+          "sha256": "f8b322f1a1a7ba30d0cacb52ddbc1a5950ab5049da0af139ed44ee96d181db99"
+        },
+        {
+          "bytes": 1110,
+          "file": "STATE-REF-MAP.json",
+          "sha256": "f1b225e5581a9028ff49c32d7e3d939aad375832684bccc9c40bc36c0867aa29"
+        },
+        {
+          "bytes": 1433,
+          "file": "INPUT-ONLY-VECTORS.json",
+          "sha256": "158452443f04b8f40a993f4852962c326e30c984c385c78d660ca4028bd27e24"
+        },
+        {
+          "bytes": 954,
+          "file": "SOURCES.json",
+          "sha256": "dd00248fab9e0bde551c6f8a639aa098dd1c8211da00dca168e109c2e11cfaa6"
+        },
+        {
+          "bytes": 882,
+          "file": "WASH-VERIFICATION.json",
+          "sha256": "dc215e6f73a1030f4817d54d5f80d4e8d5bb2065a05a2359bd65808e6c354873"
+        }
+      ]
+    }
+  ]
+}

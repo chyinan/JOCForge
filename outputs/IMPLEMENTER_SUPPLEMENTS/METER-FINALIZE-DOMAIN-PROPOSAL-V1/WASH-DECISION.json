@@ -1,0 +1,10 @@
+{
+  "classification": "PROPOSED_API_DESIGN_NOT_NATIVE_OBSERVATION",
+  "decision": "APPROVED_FOR_INTERNAL_IMPLEMENTATION_AS_LOCAL_BOUNDARY",
+  "implementation_status": "NOT_IMPLEMENTED_OR_EXECUTED",
+  "private_vendor_key_material": "EXCLUDED",
+  "schema": "wash-decision.v1",
+  "scope": "Meter finalize proposal and one GTC MEASUREMENT parent root swap; no DSP/codec algorithm changes",
+  "source_code_or_disassembly": "EXCLUDED",
+  "type_layering": "Application derives a Domain-owned immutable PreparedJobInputIdentity once from the single admitted PreparedJobInput"
+}

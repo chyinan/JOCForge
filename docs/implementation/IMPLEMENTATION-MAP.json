@@ -5769,8 +5769,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/meter/mod.rs",
-              "bytes": 648,
-              "sha256": "2795a8f103682569d34184f7d6d4a2bec97f750c273658a42af5a75fb74b6577"
+              "bytes": 679,
+              "sha256": "6ccaeb4c4cf50e8fe31abb55ef2146d65c7fb37931849b517d11e399c6957f17"
             }
           ],
           "test_inventory": [
@@ -5780,8 +5780,118 @@
               "sha256": "4d204315db95118824c8a4deb40c93ffde9d02ab33f46897fb7abed8694b0f55"
             }
           ]
+        },
+        {
+          "slice_id": "prepared-job-input-domain-identity-projection",
+          "mapping_status": "MATERIALIZED_LAYER_SAFE_PREPARED_JOB_IDENTITY_PROJECTION__METER_FINALIZE_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_DOMAIN_OWNED_INPUT_IDENTITY_PROJECTION__TERMINAL_PREIMAGE_BLOCKED_ON_METER_V4_FIELDS",
+          "scope": "Application derives and stores one immutable Domain-owned PreparedJobInputIdentity during admission from the same PreparedJobInput: whole-resource SHA/byte length, canonical config SHA plus raw XML SHA and typed F01E input kind, and ADM graph parent identity plus AXML/CHNA/DBMD chunk spans. The projection contains no path or I/O capability and rejects graph/resource identity or chunk-span mismatches. It does not compute the terminal meter root hash, mint ProgrammeMeasurementReceipt, set READY, or commit DRC Option<U5>.",
+          "owner": "meter",
+          "implementation_files": [
+            "crates/jocforge-domain/src/meter/prepared_job_identity.rs",
+            "crates/jocforge-domain/src/meter/mod.rs",
+            "crates/jocforge-application/src/lib.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The identity is derived once from one already-admitted immutable PreparedJobInput and nests resource, normalized configuration, and graph provenance.",
+              "The graph parent resource identity must equal the complete prepared resource identity; chunk IDs and payload spans are bounded by that same resource length."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_PREPARED_JOB_INPUT_DOMAIN_IDENTITY_PROJECTION",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-FINALIZE-DOMAIN-PROPOSAL-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-FINALIZE-DOMAIN-PROPOSAL-V1/INPUT-ONLY-IDENTITY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-FINALIZE-DOMAIN-PROPOSAL-V1/SOURCE-CHAIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PREPARED-JOB-INPUT-IDENTITY-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PREPARED-JOB-INPUT-IDENTITY-V1/IDENTITY-MAP.json"
+            ],
+            "supplement_manifest_sha256s": {
+              "METER-FINALIZE-DOMAIN-PROPOSAL-V1": "abb560381448727aa4c88877373769aa14556a4e365e4bec82637a043155333b",
+              "PREPARED-JOB-INPUT-IDENTITY-V1": "4ba12217bfb7283a05a1b13966cd725db0617210129405c3989b7c2537aabf0f"
+            },
+            "validation_boundary": "Typed identity projection and same-resource graph provenance only; the terminal meter preimage is blocked on the V4 model-owner-key and K-filter-exponent field ownership gaps, so no terminal hash or receipt is emitted."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/src/meter/prepared_job_identity.rs",
+            "crates/jocforge-application/tests/prepared_job_input.rs"
+          ],
+          "vectors": {
+            "kind": "INPUT_ONLY_PREPARED_JOB_IDENTITY_AND_GRAPH_RESOURCE_MISMATCH_CASES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-FINALIZE-DOMAIN-PROPOSAL-V1/INPUT-ONLY-IDENTITY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "Application integration asserts the stored projection uses the same admitted resource/config/graph values.",
+              "Domain tests reject a graph parent from another resource, wrong chunk kind, and chunk span outside the complete resource extent.",
+              "Config/parent identity mismatch, terminal counter mismatch, missing getter and receipt/READY proposal cases remain pending the Meter finalize operation."
+            ],
+            "expected_outputs_included": false,
+            "expected_values_are_assertions_only": true
+          },
+          "error_outcomes": [
+            {
+              "error_code": "PreparedJobInputIdentityError::GraphResourceMismatch",
+              "category": "single-resource graph provenance",
+              "trigger": "The parsed ADM graph names a parent resource identity other than the admitted complete resource.",
+              "programme_state_after": "No PreparedJobInputIdentity projection is returned.",
+              "caller_action": "Reject this input projection; do not create Meter/READY identity from mixed resources."
+            },
+            {
+              "error_code": "PreparedJobInputIdentityError::ChunkIdentityMismatch",
+              "category": "AXML/CHNA/DBMD chunk provenance",
+              "trigger": "A named parsed graph span is not the expected AXML, CHNA or DBMD chunk kind.",
+              "programme_state_after": "No projection is returned.",
+              "caller_action": "Reject the inconsistent graph provenance."
+            },
+            {
+              "error_code": "PreparedJobInputIdentityError::ChunkOutsideResource",
+              "category": "immutable RIFF resource bounds",
+              "trigger": "A parsed metadata payload span exceeds the admitted whole-resource byte length.",
+              "programme_state_after": "No projection is returned.",
+              "caller_action": "Reject the inconsistent resource span."
+            }
+          ],
+          "not_run": [
+            "Terminal owners.meter canonical preimage is BLOCKED: V4 input_cursor.model_owner_key has no approved owner source.",
+            "Terminal owners.meter canonical preimage is BLOCKED: leaves.window_k_energy K-filter exponents have no approved owner/type source and must not be merged with energy accumulator exponents.",
+            "Terminal meter hash, ProgrammeMeasurementReceipt, READY transition and DRC Option<U5> Some proposal remain NOT_RUN.",
+            "GTC single root swap, parent reset/fatal integration and full encode remain NOT_RUN."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/meter/prepared_job_identity.rs",
+              "bytes": 9354,
+              "sha256": "cbdd13e0658c10fed14f6cee5d82ee5406dfbdec5e26d7a88ee109eca0d1993e"
+            },
+            {
+              "path": "crates/jocforge-domain/src/meter/mod.rs",
+              "bytes": 679,
+              "sha256": "6ccaeb4c4cf50e8fe31abb55ef2146d65c7fb37931849b517d11e399c6957f17"
+            },
+            {
+              "path": "crates/jocforge-application/src/lib.rs",
+              "bytes": 15925,
+              "sha256": "11a7fadab151c2edf21effa5c0b66dfaff5871467335e2f49d3a9e84d163dbeb"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/meter/prepared_job_identity.rs",
+              "bytes": 9354,
+              "sha256": "cbdd13e0658c10fed14f6cee5d82ee5406dfbdec5e26d7a88ee109eca0d1993e"
+            },
+            {
+              "path": "crates/jocforge-application/tests/prepared_job_input.rs",
+              "bytes": 11582,
+              "sha256": "d9286b86b07654f5fd8af65b69786fb7f16cc63d6ce4ea5a5489f42e05b8ccf4"
+            }
+          ]
         }
-      ]
+                       ]
     },
     {
       "functional_id": "F06L",
@@ -6360,7 +6470,7 @@
             {"path":"crates/jocforge-domain/src/meter/sample_block_queue.rs","bytes":34921,"sha256":"8efacd5236f3a56f5621b8fc420bc76dcc99fb4dfd41a5f932d0b9f544c3a315"},
             {"path":"crates/jocforge-domain/src/meter/post_render_meter.rs","bytes":21564,"sha256":"7e533a1b2a576e495099a117128aa0dce5d62a5f5eb1eeef844d3e71769b941a"},
             {"path":"crates/jocforge-domain/src/meter/standalone_root.rs","bytes":16057,"sha256":"69848193bd49e5429028494385bcba48c47c1051c965a3836f1bd8737cab3de9"},
-            {"path":"crates/jocforge-domain/src/meter/mod.rs","bytes":648,"sha256":"2795a8f103682569d34184f7d6d4a2bec97f750c273658a42af5a75fb74b6577"}
+            {"path":"crates/jocforge-domain/src/meter/mod.rs","bytes":679,"sha256":"6ccaeb4c4cf50e8fe31abb55ef2146d65c7fb37931849b517d11e399c6957f17"}
           ],
           "test_inventory": [
             {"path":"crates/jocforge-domain/src/meter/sample_block_queue.rs","bytes":34921,"sha256":"8efacd5236f3a56f5621b8fc420bc76dcc99fb4dfd41a5f932d0b9f544c3a315"}
@@ -7557,8 +7667,8 @@
         {
           "slice_id": "selected-f06nr-same-source-drc-proposal",
           "mapping_status": "MATERIALIZED_F06NR_PRIMARY_AND_F06ND_SAME_SOURCE_PROPOSAL__NUMERICAL_PARITY_AND_PARENT_OPEN",
-          "implementation_status": "LOCALLY_VERIFIED_NONCOMMITTING_SAME_SOURCE_DRC_PROPOSAL_API__NUMERICAL_PARITY_AND_PARENT_COMMIT_NOT_RUN",
-          "scope": "For one source, the DRC root reads F07 delayed primary rows and short_consumed from one SharedAnalysisReceipt, stages F06NR secondary history/carrier and F06ND using that same receipt, then joins both after-states into one complete noncommitting DRC proposal. This is a domain-level API only: numerical after-state parity, a parent/application callsite, receipt admission, and root commit are not established. Application cannot currently construct the required DRC root because the verified-prepass ProgrammeMeasurementReceipt producer is crate-private.",
+          "implementation_status": "LOCALLY_VERIFIED_F07_OWNER_STAGE_TO_SAME_SOURCE_DRC_PROPOSAL__NUMERICAL_PARITY_AND_PARENT_NOT_RUN",
+          "scope": "For one source, the public DRC adapter accepts an F07AnalysisStage produced by AnalysisOwnerRoot::prepare_f07_source, borrows that stage's exact SharedAnalysisReceipt, reads its delayed primary rows and short_consumed flags, stages F06NR/F06ND from the same receipt, and returns one complete noncommitting DRC proposal. This is a production-domain entry point, not a test-only raw-array helper. No application source-parent caller, independent numerical after-state parity, receipt admission, or root commit is established; application still cannot construct the DRC root until a verified ProgrammeMeasurementReceipt producer is available.",
           "owner": "drc",
           "dependencies": ["analysis-owner-f07-source-stage", "selected-none-drc-source-owner-stage", "selected-secondary-source-au-clock-projection"],
           "implementation_files": [
@@ -7566,6 +7676,7 @@
             "crates/jocforge-domain/src/drc/none_drc_owner.rs",
             "crates/jocforge-domain/src/drc/none_drc_statistics.rs",
             "crates/jocforge-domain/src/drc/mod.rs",
+            "crates/jocforge-domain/src/analysis/owner.rs",
             "crates/jocforge-domain/src/analysis/source_frame.rs",
             "crates/jocforge-domain/src/timeline/clock.rs",
             "crates/jocforge-domain/src/timeline/index.rs",
@@ -7624,12 +7735,21 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DRC-STANDALONE-OWNER-OPTIONAL-DIALNORM-V1/INPUT-ONLY-OPTION-COLD-VECTOR.json"
             ],
             "case_pointers": [
-              "Input recipes bind source frames 0, 1, and 2; they contain synthetic values/flags only and no expected DSP outputs.",
-              "Focused tests construct the same SharedAnalysisReceipt consumed by F06NR and F06ND and verify the noncommitting joined proposal shape.",
+              "Input recipes bind synthetic source frames 0, 1, and 2; they contain no expected DSP outputs.",
+              "The public F07-owner-stage test obtains SharedAnalysisReceipt from AnalysisOwnerRoot::prepare_f07_source and verifies that the DRC adapter returns the same proposal as direct use of that receipt.",
               "The selected F08 PRIMARY bank is documented; numerical forward/inverse after-state and nonzero carrier parity remain NOT_RUN."
             ],
             "expected_outputs_included": false,
-            "expected_values_are_assertions_only": true
+            "expected_values_are_assertions_only": true,
+            "frozen_model_reference": {
+              "kind": "FROZEN_PYTHON_REFERENCE_EXECUTION",
+              "package_manifest_sha256": "4cc114591e0600b13bfd5e0c713d5529f07270389e7095578f039ee886d654cb",
+              "comparison_report": "docs/implementation/secondary-source-model-reference-comparison.json",
+              "comparison_result": "9_OF_9_F32LE_HASHES_MATCHED_MODEL_REFERENCE_ONLY",
+              "independent_golden": false,
+              "native_or_dee_execution": "NOT_RUN",
+              "numeric_after_state_status": "NOT_RUN"
+            }
           },
           "error_outcomes": [
             {
@@ -7655,17 +7775,17 @@
             }
           ],
           "not_run": [
-            "Numerical F06NR forward/inverse after-state parity and nonzero carrier oracle.",
-            "Application/parent producer callsite and SharedAnalysisReceipt::from_parent construction.",
-            "DRC OwnerReceipt admission, GTC single root swap, and parent fatal/reset/EOF behavior.",
-            "Meter READY input, complete F12 frame/AU production, encode, and product acceptance."
+            "Numerical F06NR forward/inverse after-state parity and nonzero carrier oracle remain NOT_RUN.",
+            "Application/parent source coordinator, root construction from verified MeasurementReceipt, and global source commit remain NOT_RUN.",
+            "DRC GTC OwnerReceipt admission, single-root swap, fatal/reset/EOF integration, and encode remain NOT_RUN.",
+            "Meter MeasurementReceipt/READY input remains NOT_RUN."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/drc/secondary_source_owner.rs",
-              "bytes": 17673,
-              "sha256": "3ad5e78b424fe3b295eef94bddbbe2e4f971ba26a1594c4c558f7b5334aeab61"
+              "bytes": 18477,
+              "sha256": "4ce74d6496931c3700744b6ac58769279a207463a65360ae85e7cd229a3f97fa"
             },
             {
               "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
@@ -7681,6 +7801,11 @@
               "path": "crates/jocforge-domain/src/drc/mod.rs",
               "bytes": 595,
               "sha256": "3e043ac6dcde92bc3e100fc8b83ec7a83692f7a6e4a0dfd0507fa1c71ece5f0a"
+            },
+            {
+              "path": "crates/jocforge-domain/src/analysis/owner.rs",
+              "bytes": 70309,
+              "sha256": "3122bb54c3e29348b775232137f9b257f906227e600d6aa87bc2819c69934821"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
@@ -7751,8 +7876,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/drc/secondary_source_owner/tests.rs",
-              "bytes": 16624,
-              "sha256": "d61a8c70ae107930d30ec200530d712e33d64f611088c3cbbbe43de1f12dae48"
+              "bytes": 18986,
+              "sha256": "9567e6f414560087f6c7749ff1e6523d311c6bd4ca906688d9111b4d7d6983ff"
             },
             {
               "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
@@ -9380,8 +9505,8 @@
         {
           "slice_id": "selected-none-drc-source-owner-stage",
           "mapping_status": "MATERIALIZED_SELECTED_F06ND_F06NR_SAME_SOURCE_PROPOSAL__NUMERICAL_PARITY_AND_GTC_PARENT_OPEN",
-          "implementation_status": "LOCALLY_VERIFIED_SAME_RECEIPT_F06NR_F06ND_NONCOMMITTING_PROPOSAL__PARENT_RECEIPT_AND_COMMIT_NOT_RUN",
-          "scope": "The standalone DRC root combines the selected secondary histories, F06ND statistics/scheduler/FIFO, and programme dialnorm. For one source, a domain-level API reads F07 delayed audio and flags from one SharedAnalysisReceipt, stages F06NR and F06ND from that same receipt, and returns a complete noncommitting DRC after-root proposal. Application cannot currently construct the required root because verified-prepass ProgrammeMeasurementReceipt minting is crate-private. Numerical parity, a production parent caller, receipt admission, and parent commit remain NOT_RUN.",
+          "implementation_status": "LOCALLY_VERIFIED_PUBLIC_F07_STAGE_TO_SAME_RECEIPT_F06NR_F06ND_PROPOSAL__PARENT_COMMIT_NOT_RUN",
+          "scope": "The standalone DRC root combines the selected secondary histories, F06ND statistics/scheduler/FIFO, and programme dialnorm. A public domain adapter accepts the same callback's F07AnalysisStage, uses its SharedAnalysisReceipt for F06NR delayed-primary/short-consumed inputs and the F06ND consumer, then returns a complete noncommitting DRC after-root proposal. Application cannot currently construct the required root because verified-prepass ProgrammeMeasurementReceipt minting is crate-private. Numerical parity, application parent caller, receipt admission, and parent commit remain NOT_RUN.",
           "owner": "drc",
           "dependencies": [
             "selected-none-drc-statistics-to-scheduler-frame-composition",
@@ -9392,6 +9517,7 @@
             "crates/jocforge-domain/src/drc/none_drc_owner.rs",
             "crates/jocforge-domain/src/drc/mod.rs",
             "crates/jocforge-domain/src/drc/secondary_source_owner.rs",
+            "crates/jocforge-domain/src/analysis/owner.rs",
             "crates/jocforge-domain/src/analysis/source_frame.rs",
             "crates/jocforge-domain/src/transaction/mod.rs",
             "crates/jocforge-domain/src/transform/long_transform.rs"
@@ -9438,8 +9564,8 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/DRC-STANDALONE-OWNER-OPTIONAL-DIALNORM-V1/INPUT-ONLY-OPTION-COLD-VECTOR.json"
             ],
             "case_pointers": [
-              "Input recipes bind source frames 0, 1, and 2; they contain synthetic values/flags only and no expected DSP outputs.",
-              "Focused tests construct the same SharedAnalysisReceipt consumed by F06NR and F06ND and verify the noncommitting joined proposal shape.",
+              "Input recipes bind synthetic source frames 0, 1, and 2; they contain no expected DSP outputs.",
+              "The public F07-owner-stage test obtains SharedAnalysisReceipt from AnalysisOwnerRoot::prepare_f07_source and verifies that the DRC adapter returns the same proposal as direct use of that receipt.",
               "The selected F08 PRIMARY bank is documented; numerical forward/inverse after-state and nonzero carrier parity remain NOT_RUN."
             ],
             "expected_values_are_assertions_only": true,
@@ -9447,7 +9573,7 @@
           },
           "not_run": [
             "Numerical F06NR forward/inverse after-state parity and nonzero carrier oracle remain NOT_RUN.",
-            "No application/parent producer callsite; SharedAnalysisReceipt::from_parent remains unwired.",
+            "Application/parent source coordinator, root construction from verified MeasurementReceipt, and global source commit remain NOT_RUN.",
             "DRC GTC OwnerReceipt admission, single-root swap, fatal/reset/EOF integration, and encode remain NOT_RUN.",
             "Meter MeasurementReceipt/READY input remains NOT_RUN."
           ],
@@ -9465,8 +9591,13 @@
             },
             {
               "path": "crates/jocforge-domain/src/drc/secondary_source_owner.rs",
-              "bytes": 17673,
-              "sha256": "3ad5e78b424fe3b295eef94bddbbe2e4f971ba26a1594c4c558f7b5334aeab61"
+              "bytes": 18477,
+              "sha256": "4ce74d6496931c3700744b6ac58769279a207463a65360ae85e7cd229a3f97fa"
+            },
+            {
+              "path": "crates/jocforge-domain/src/analysis/owner.rs",
+              "bytes": 70309,
+              "sha256": "3122bb54c3e29348b775232137f9b257f906227e600d6aa87bc2819c69934821"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
@@ -9492,8 +9623,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/drc/secondary_source_owner/tests.rs",
-              "bytes": 16624,
-              "sha256": "d61a8c70ae107930d30ec200530d712e33d64f611088c3cbbbe43de1f12dae48"
+              "bytes": 18986,
+              "sha256": "9567e6f414560087f6c7749ff1e6523d311c6bd4ca906688d9111b4d7d6983ff"
             }
           ]
         }
@@ -15787,13 +15918,13 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 13659,
-              "sha256": "83d8746737c77cfa71918c6de11da7f428cd81bfc149c6e779bb3dc019fc8bcc"
+              "bytes": 15925,
+              "sha256": "11a7fadab151c2edf21effa5c0b66dfaff5871467335e2f49d3a9e84d163dbeb"
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 10499,
-              "sha256": "34762580b30da1020a1e563363940a67ab85ceb02891029763bc35075ca8f700"
+              "bytes": 11582,
+              "sha256": "d9286b86b07654f5fd8af65b69786fb7f16cc63d6ce4ea5a5489f42e05b8ccf4"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -15829,8 +15960,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 10499,
-              "sha256": "34762580b30da1020a1e563363940a67ab85ceb02891029763bc35075ca8f700"
+              "bytes": 11582,
+              "sha256": "d9286b86b07654f5fd8af65b69786fb7f16cc63d6ce4ea5a5489f42e05b8ccf4"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication/tests.rs",
@@ -15996,8 +16127,114 @@
               "caller_action": "Reject the source stage; do not retry with a caller-chosen sequence value."
             }
           ]
+        },
+        {
+          "slice_id": "informational-native-count-observation-frames-0-48",
+          "mapping_status": "WASHED_INFORMATIONAL_NATIVE_OBSERVATION_ONLY",
+          "implementation_status": "INFORMATIONAL_ONLY_IMPLEMENTATION_REQUIREMENT_FALSE_NO_AU_OR_SERIALIZER_JOIN",
+          "scope": "Records 64 reported U32 `counted_body_bytes` values for file-position frames [0,48) of one hash-bound 38-channel, 48 kHz, 24-bit ADM BWF input. The observed range is 239..331, stream selectors are zero, and targets 507/508/511/512 have zero hits in this window only. Codec/JOC mode is NOT_RECORDED. This is informational native evidence, not a serialized-frame/AU rule, model oracle, or full-program reachability claim; it does not change the clean-model F12 path.",
+          "owner": "joc",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The observation identifies file-position frames [0,48) only; no CodecSourceIndex or AU identity is established."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_NATIVE_COUNT_OBSERVATION",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-OBSERVATION-SLICE-00-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-OBSERVATION-SLICE-00-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-OBSERVATION-SLICE-00-V1/OBSERVED-NATIVE-COUNT-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-OBSERVATION-SLICE-00-V1/OUTPUT-CONTROL-CLAIM.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-OBSERVATION-SLICE-00-V1/SOURCE-CHAIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-OBSERVATION-SLICE-00-V1/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "38d6aad2ce6c46c78498680aab8aebdf7307909c16d001afedea7921e7cc16eb",
+            "validation_boundary": "Information-only observation. It provides no implementation rule, expected output, or selected AU identity."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_NATIVE_COUNT_OBSERVATION_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-OBSERVATION-SLICE-00-V1/OBSERVED-NATIVE-COUNT-VECTOR.json"
+            ],
+            "case_pointers": [
+              "64 count events in file-position frames [0,48), values range 239..331, stream selector 0.",
+              "Targets 507/508/511/512 have no hits in this window; this is not generalized to later frames or a full programme.",
+              "No codec/JOC mode, serialized frame, parent generation, serializer/refill, or selected AU join is recorded."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "38d6aad2ce6c46c78498680aab8aebdf7307909c16d001afedea7921e7cc16eb"
+          },
+          "not_run": [
+            "Same invocation/object/generation identity through consumer, serializer/refill, and output writer.",
+            "Selected F12/AU identity and any count-to-serialized-frame rule.",
+            "Frames beyond [0,48), full-programme reachability, independent repeat of the native capture, and product acceptance."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
+        },
+        {
+          "slice_id": "informational-native-count-first-consumer-edge-0",
+          "mapping_status": "WASHED_INFORMATIONAL_FIRST_CONSUMER_EDGE__SEMANTIC_OWNER_AND_AU_JOIN_OPEN",
+          "implementation_status": "INFORMATIONAL_ONLY_RETURN_SLOT_AND_TWO_FIELD_STORES__SERIALIZER_AU_UNBOUND",
+          "scope": "Within the same bounded file-position run [0,48), the native producer U32 output slot and caller local return slot were transiently aliased; the same thread returned, read value 281 and stored it into two scalar fields in the same caller context. Raw address is omitted. The observations do not identify the semantic owner/source generation or whether either field is a codec input, and do not connect to serializer/refill/writer or a selected AU. This does not change the clean-model F12 path.",
+          "owner": "joc",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The event ordinal is capture-local and explicitly is not a source generation, codec frame, or AU clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_FIRST_CONSUMER_OBSERVATION",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-FIRST-CONSUMER-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-FIRST-CONSUMER-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-FIRST-CONSUMER-V1/OBSERVED-FIRST-CONSUMER.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-FIRST-CONSUMER-V1/DOWNSTREAM-EDGE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-FIRST-CONSUMER-V1/F12-MODEL-SEPARATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-FIRST-CONSUMER-V1/INPUT-CONTEXT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-FIRST-CONSUMER-V1/SOURCE-CHAIN.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-FIRST-CONSUMER-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-OBSERVATION-SLICE-00-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-AU-JOIN-STATUS-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-CONFIGURATION-COUNT-SELECTED-F12-CROSSWALK-V1/MANIFEST.json"
+            ],
+            "supplement_manifest_sha256": "f142a099e98bf2ad4f138142932b988f3a9ce86d3bfa23cff6d2e57636302c11",
+            "validation_boundary": "Information-only first consumer observation. No semantic producer rule, codec field identity, serializer/refill connection, or AU identity is established."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_INFORMATIONAL_NATIVE_EVENT_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-FIRST-CONSUMER-V1/OBSERVED-FIRST-CONSUMER.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F13C-NATIVE-COUNT-FIRST-CONSUMER-V1/DOWNSTREAM-EDGE-STATUS.json"
+            ],
+            "case_pointers": [
+              "One capture-local event at ordinal0 reports U32 value281, stream0, same-thread return-slot read and two immediate field stores.",
+              "Semantic owner and source generation remain UNBOUND; downstream serializer/refill/writer and selected AU edges remain NOT_CAPTURED/UNBOUND.",
+              "The separate clean-model F12 rule remains U8(ID14.object_count+1) from same-source validated EMDF; value281 is not substituted."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "f142a099e98bf2ad4f138142932b988f3a9ce86d3bfa23cff6d2e57636302c11"
+          },
+          "not_run": [
+            "Semantic owner and source generation for the count input.",
+            "Two immediate destination fields to serializer/refill/writer and selected F12/AU identity.",
+            "Whole-programme reachability, output bytes, and product acceptance."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
         }
-      ]
+                       ]
     },
     {
       "functional_id": "F13D2",
@@ -17669,8 +17906,13 @@
       "root_id": "meter",
       "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
       "implementation_status": "PARTIAL_LOCAL_OWNER_STAGE__GTC_RECEIPT_AND_SINGLE_SWAP_NOT_RUN",
-      "implementation_files": ["crates/jocforge-domain/src/meter/standalone_root.rs", "crates/jocforge-domain/src/meter/mod.rs"],
-      "test_modules": ["crates/jocforge-domain/src/meter/standalone_root/tests.rs"],
+      "implementation_files": [
+        "crates/jocforge-domain/src/meter/standalone_root.rs",
+        "crates/jocforge-domain/src/meter/mod.rs"
+      ],
+      "test_modules": [
+        "crates/jocforge-domain/src/meter/standalone_root/tests.rs"
+      ],
       "implementation_inventory": [
         {
           "path": "crates/jocforge-domain/src/meter/standalone_root.rs",
@@ -17679,8 +17921,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/meter/mod.rs",
-          "bytes": 648,
-          "sha256": "2795a8f103682569d34184f7d6d4a2bec97f750c273658a42af5a75fb74b6577"
+          "bytes": 679,
+          "sha256": "6ccaeb4c4cf50e8fe31abb55ef2146d65c7fb37931849b517d11e399c6957f17"
         }
       ],
       "test_inventory": [
@@ -17690,7 +17932,7 @@
           "sha256": "4d204315db95118824c8a4deb40c93ffde9d02ab33f46897fb7abed8694b0f55"
         }
       ],
-      "local_scope": "The fixed selected meter schedule and noncommitting callback/finalization-values proposal are locally materialized.",
+      "local_scope": "The selected schedule, queue lifecycle and Domain-owned PreparedJobInputIdentity projection are locally materialized. Complete terminal owners.meter serialization is BLOCKED on V4 input_cursor.model_owner_key and K-filter exponent ownership; there is no terminal meter hash, ProgrammeMeasurementReceipt, READY proposal or parent commit.",
       "canonical_gtc_state_ref_status": "NOT_RUN",
       "gtc_owner_receipt_status": "NOT_RUN",
       "gtc_single_root_swap_status": "NOT_RUN",
@@ -17707,12 +17949,15 @@
         ]
       },
       "remaining_gates": [
-        "Resolve V4 k-filter exponent ownership and model-owner-key/input-cursor binding before any complete canonical preimage.",
-        "Terminal MeasurementReceipt and READY transition.",
-        "F06OF production caller, GTC single root swap, programme reset/fatal/EOF integration.",
-        "Native EOF/drain evidence, end-to-end encode, W04, and product acceptance."
+        "V4 input_cursor.model_owner_key has no approved owner source; terminal owners.meter serialization is BLOCKED.",
+        "V4 leaves.window_k_energy K-filter exponents have no approved owner/type source and are distinct from energy accumulator exponents; terminal owners.meter serialization is BLOCKED.",
+        "Terminal meter hash and ProgrammeMeasurementReceipt/READY production remain NOT_RUN.",
+        "F06OF production caller, GTC single root swap, programme reset/fatal/EOF integration remain NOT_RUN.",
+        "Native EOF/drain evidence, end-to-end encode, W04 and product acceptance remain NOT_RUN."
       ],
-      "measurement_receipt_ready_status": "NOT_RUN"
+      "measurement_receipt_ready_status": "NOT_RUN",
+      "terminal_state_reference_status": "BLOCKED_ON_UNBOUND_INPUT_CURSOR_MODEL_OWNER_KEY_AND_K_FILTER_EXPONENT_OWNER",
+      "terminal_meter_sha256_status": "NOT_RUN"
     },
                 {
       "root_id": "drc",
@@ -17740,7 +17985,8 @@
         "crates/jocforge-domain/src/drc/secondary_source_owner.rs",
         "crates/jocforge-domain/src/transform/long_transform.rs",
         "crates/jocforge-domain/src/analysis/source_frame.rs",
-        "crates/jocforge-domain/src/transaction/mod.rs"
+        "crates/jocforge-domain/src/transaction/mod.rs",
+        "crates/jocforge-domain/src/analysis/owner.rs"
       ],
       "test_modules": ["crates/jocforge-domain/src/drc/none_drc_owner.rs", "crates/jocforge-domain/src/drc/secondary_source_owner/tests.rs"],
       "implementation_inventory": [
@@ -17756,8 +18002,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/drc/secondary_source_owner.rs",
-          "bytes": 17673,
-          "sha256": "3ad5e78b424fe3b295eef94bddbbe2e4f971ba26a1594c4c558f7b5334aeab61"
+          "bytes": 18477,
+          "sha256": "4ce74d6496931c3700744b6ac58769279a207463a65360ae85e7cd229a3f97fa"
         },
         {
           "path": "crates/jocforge-domain/src/transform/long_transform.rs",
@@ -17773,6 +18019,11 @@
           "path": "crates/jocforge-domain/src/transaction/mod.rs",
           "bytes": 2915,
           "sha256": "442a74702c82926abd9de95e5f0686fd9f1cb8e656e2e051ade2390abdee238c"
+        },
+        {
+          "path": "crates/jocforge-domain/src/analysis/owner.rs",
+          "bytes": 70309,
+          "sha256": "3122bb54c3e29348b775232137f9b257f906227e600d6aa87bc2819c69934821"
         }
       ],
       "test_inventory": [
@@ -17783,11 +18034,11 @@
         },
         {
           "path": "crates/jocforge-domain/src/drc/secondary_source_owner/tests.rs",
-          "bytes": 16624,
-          "sha256": "d61a8c70ae107930d30ec200530d712e33d64f611088c3cbbbe43de1f12dae48"
+          "bytes": 18986,
+          "sha256": "9567e6f414560087f6c7749ff1e6523d311c6bd4ca906688d9111b4d7d6983ff"
         }
       ],
-      "local_scope": "The complete standalone DRC root has a locally verified canonical state reference. A domain-level API stages F06NR PRIMARY and same-source F06ND from one SharedAnalysisReceipt into a noncommitting DRC proposal. Application cannot currently construct the required DRC root because verified-prepass ProgrammeMeasurementReceipt minting is crate-private. Numerical parity, parent/application callsite, receipt admission, and GTC commit remain NOT_RUN.",
+      "local_scope": "The complete standalone DRC root has a locally verified canonical state reference. A public domain adapter consumes the Analysis F07 owner stage's SharedAnalysisReceipt and stages same-source F06NR plus F06ND into a noncommitting DRC proposal. Numerical parity, application root construction/callsite, receipt admission, and GTC commit remain NOT_RUN.",
       "encode_status": "NOT_RUN",
       "remaining_gates": [
         "Application/parent SourceTransaction callsite for prepare_source_frame; SharedAnalysisReceipt::from_parent remains unwired.",
@@ -17797,7 +18048,7 @@
         "Meter MeasurementReceipt/READY input remains NOT_RUN.",
         "Programme fatal/reset/EOF integration, end-to-end encode, and product acceptance remain NOT_RUN."
       ],
-      "f06nr_producer_status": "LOCALLY_VERIFIED_SAME_SOURCE_F06NR_F06ND_NONCOMMITTING_PROPOSAL_API__NUMERICAL_PARITY_NOT_RUN",
+      "f06nr_producer_status": "LOCALLY_VERIFIED_F07_STAGE_TO_F06NR_F06ND_NONCOMMITTING_PROPOSAL_API__NUMERICAL_PARITY_NOT_RUN",
       "f06nr_input_crosswalk_status": "INPUT_HASHES_INTERFACE_SHAPES_AND_F08_PRIMARY_BANK_MAPPING_VERIFIED__NUMERICAL_AFTER_STATE_NOT_RUN",
       "f06nr_input_crosswalk_manifest_sha256": "e19715f1e673faa615b1e7b9016bd7103b41b93ab4c94ca0213e7d1dfa2ef285",
       "f06nr_bank_state_crosswalk_manifest_sha256": "28e0395258d9b0773d989c636bef680f60c75947955da0c27ee925bfb854578c",
@@ -18294,13 +18545,13 @@
         },
         {
           "path": "crates/jocforge-application/src/lib.rs",
-          "bytes": 13659,
-          "sha256": "83d8746737c77cfa71918c6de11da7f428cd81bfc149c6e779bb3dc019fc8bcc"
+          "bytes": 15925,
+          "sha256": "11a7fadab151c2edf21effa5c0b66dfaff5871467335e2f49d3a9e84d163dbeb"
         },
         {
           "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-          "bytes": 10499,
-          "sha256": "34762580b30da1020a1e563363940a67ab85ceb02891029763bc35075ca8f700"
+          "bytes": 11582,
+          "sha256": "d9286b86b07654f5fd8af65b69786fb7f16cc63d6ce4ea5a5489f42e05b8ccf4"
         },
         {
           "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -18346,8 +18597,8 @@
         },
         {
           "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-          "bytes": 10499,
-          "sha256": "34762580b30da1020a1e563363940a67ab85ceb02891029763bc35075ca8f700"
+          "bytes": 11582,
+          "sha256": "d9286b86b07654f5fd8af65b69786fb7f16cc63d6ce4ea5a5489f42e05b8ccf4"
         },
         {
           "path": "crates/jocforge-cli/src/output_publication/tests.rs",

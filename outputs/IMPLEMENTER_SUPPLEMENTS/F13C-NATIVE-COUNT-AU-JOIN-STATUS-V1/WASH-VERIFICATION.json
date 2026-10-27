@@ -1,0 +1,14 @@
+{
+  "clean_model_rule_cross_reference_verified": true,
+  "count_value_is_281_stream_zero": true,
+  "native_capture_reproduced_by_wash": false,
+  "producer_store_only_observed": true,
+  "product_acceptance": "NOT_RUN",
+  "raw_pcm_ec3_license_or_source_code_included": false,
+  "same_input_hash_and_window": true,
+  "same_parent_and_downstream_join_unbound": true,
+  "schema": "f13c-native-join-wash-verification.v1",
+  "selected_event_matches_prior_washed_vector": true,
+  "source_manifest_sha256": "b157ae0ddecd824d841ff1689c17043cd399725447ec630c5504d92cf0bda5b3",
+  "source_payloads_rehashed": "5/5 PASS"
+}

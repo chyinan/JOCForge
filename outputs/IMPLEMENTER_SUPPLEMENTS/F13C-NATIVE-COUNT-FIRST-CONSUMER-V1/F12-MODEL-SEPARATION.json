@@ -1,0 +1,12 @@
+{
+  "approved_f12_complexity_rule": "U8(ID14.object_count + 1) from same-source complete validated EMDF",
+  "native_count_is_f12_complexity": false,
+  "native_count_u32": 281,
+  "native_to_selected_au": "UNBOUND",
+  "numeric_equality_proves_identity": false,
+  "schema": "washed-f13c-f12-model-separation.v1",
+  "verified_wash_package": {
+    "manifest_sha256": "55e09368aa86a3650cd30a958b00e036fdf2956681044f5a5fa6ac4eec542b3a",
+    "package_id": "F13C-CONFIGURATION-COUNT-SELECTED-F12-CROSSWALK-V1"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "event0_count_281_stream0_matches_prior_vector": true,
+  "f12_model_rule_verified_separately": true,
+  "input_hash_and_frame_window_match_prior_slice": true,
+  "same_call_return_slot_and_two_stores_reported": true,
+  "schema": "f13c-first-consumer-wash-verification.v1",
+  "semantic_owner_and_source_generation": "UNBOUND/NOT_CAPTURED",
+  "serializer_refill_writer_selected_au": "NOT_CAPTURED/UNBOUND",
+  "source_code_disassembly_raw_pcm_ec3_license_or_address_in_wash_package": false,
+  "source_manifest_sha256": "12d9e248e436978870a9ef0754c8a58db720b75e7cb915ee447922a5472bfa82",
+  "source_payloads_rehashed": "4/4 PASS",
+  "source_trace_reproduced_by_wash": false
+}

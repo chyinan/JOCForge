@@ -15,6 +15,7 @@ pub mod object_render_metadata;
 pub mod object_renderer;
 pub mod output_schedule;
 pub mod post_render_meter;
+pub mod prepared_job_identity;
 pub mod programme_measurement;
 pub mod sample_block_queue;
 pub mod shared_gain_delay;

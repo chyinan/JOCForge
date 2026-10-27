@@ -1,0 +1,19 @@
+{
+  "event_ordinal": 0,
+  "field_semantics": "UNBOUND",
+  "first_post_return_read_value": 281,
+  "ordinal_is_generation": false,
+  "producer_output_to_caller_return_slot": "OBSERVED_EXACT_POINTER_ALIAS_TRANSIENTLY; raw pointer omitted",
+  "producer_return_code": 0,
+  "producer_store": "OBSERVED",
+  "reported_count_u32": 281,
+  "same_thread_return_chain": true,
+  "schema": "washed-f13c-first-consumer-observation.v1",
+  "source_payload_sha256": "0a38f3959434f37be34a13259c15dd3b206d8cdb26469da8e11eb9222c2ead62",
+  "stream_index": 0,
+  "two_immediate_field_stores": {
+    "per_stream_context_field_value": 281,
+    "referenced_stream_record_field_value": 281,
+    "same_enclosing_caller_context": true
+  }
+}

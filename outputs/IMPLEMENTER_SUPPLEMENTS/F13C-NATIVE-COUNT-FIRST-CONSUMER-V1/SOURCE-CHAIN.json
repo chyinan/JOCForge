@@ -1,0 +1,39 @@
+{
+  "clean_f12_model_reference": {
+    "manifest_sha256": "55e09368aa86a3650cd30a958b00e036fdf2956681044f5a5fa6ac4eec542b3a",
+    "package_id": "F13C-CONFIGURATION-COUNT-SELECTED-F12-CROSSWALK-V1"
+  },
+  "prior_native_count_slice": {
+    "manifest_sha256": "38d6aad2ce6c46c78498680aab8aebdf7307909c16d001afedea7921e7cc16eb",
+    "package_id": "F13C-NATIVE-COUNT-OBSERVATION-SLICE-00-V1"
+  },
+  "prior_native_join_status": {
+    "manifest_sha256": "09867b310314aee0c43473d33b952b9ca4e388545f768aa5e96d4e33aebe8360",
+    "package_id": "F13C-NATIVE-COUNT-AU-JOIN-STATUS-V1"
+  },
+  "schema": "washed-f13c-first-consumer-source-chain.v1",
+  "source_manifest_sha256": "12d9e248e436978870a9ef0754c8a58db720b75e7cb915ee447922a5472bfa82",
+  "source_package_id": "F13C-NATIVE-COUNT-FIRST-CONSUMER-V1",
+  "source_payloads": [
+    {
+      "bytes": 2822,
+      "file": "NATIVE-FIRST-CONSUMER-OBSERVATION.json",
+      "sha256": "0a38f3959434f37be34a13259c15dd3b206d8cdb26469da8e11eb9222c2ead62"
+    },
+    {
+      "bytes": 1376,
+      "file": "DOWNSTREAM-EDGE-STATUS.json",
+      "sha256": "f560443d866b57067517471ef6577f2029ded552526e9e2aa14d7046ce93403a"
+    },
+    {
+      "bytes": 1105,
+      "file": "REFERENCE-IDENTITIES.json",
+      "sha256": "55902a55d9ad3f395587d0e8b84f4abdf5d3f6d9508e0a9a39e2e076939ff608"
+    },
+    {
+      "bytes": 484,
+      "file": "CHECK.json",
+      "sha256": "eb9f38342bcae1b8bb1503cb60e885e68e2b7eb8bb1a068972beca85302d15c7"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "classification": "NATIVE_OBSERVATION_NOT_ALGORITHM",
+  "delivery": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+  "files": [
+    {
+      "bytes": 1667,
+      "file": "CONTRACT.md",
+      "sha256": "55108e51a33000dded9ecc8194faae20e8d4b502faf840833c7f5d6201829c60"
+    },
+    {
+      "bytes": 1401,
+      "file": "DOWNSTREAM-EDGE-STATUS.json",
+      "sha256": "f0647f0f5bd8db4b5aeabf631f84183d051ea101e62052f31e5892fd97180160"
+    },
+    {
+      "bytes": 507,
+      "file": "F12-MODEL-SEPARATION.json",
+      "sha256": "84d86dc6947f14c19496da7ee4d141f05d9ad400838a97d628d8a7837ef315b0"
+    },
+    {
+      "bytes": 1013,
+      "file": "INPUT-CONTEXT.json",
+      "sha256": "4dca14d47977afdbff85c0d7048cee33d0230b5270d6e004005aec18d27a7cdd"
+    },
+    {
+      "bytes": 710,
+      "file": "OBSERVED-FIRST-CONSUMER.json",
+      "sha256": "635da56ed0e10d8399374e10018e668f1e812bc4dc2bace6d31b52fd83ea383d"
+    },
+    {
+      "bytes": 1459,
+      "file": "SOURCE-CHAIN.json",
+      "sha256": "2f76b03c1cae1d055fc2bd1a0f9a94b737ed7127a452e23dad5b7e4c44e8db8b"
+    },
+    {
+      "bytes": 673,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "d3c075d6ce7cf0a2c2c8ce701b6b398fc1b787de7edca98d30198b0e2f2a4f1d"
+    }
+  ],
+  "implementation_requirement": false,
+  "package_id": "F13C-NATIVE-COUNT-FIRST-CONSUMER-V1",
+  "schema": "wash-package-manifest.v1",
+  "scope": "One observed producer return and immediate caller stores within the same 0..48 frame run; later codec/AU edges remain open",
+  "source_manifest_sha256": "12d9e248e436978870a9ef0754c8a58db720b75e7cb915ee447922a5472bfa82"
+}

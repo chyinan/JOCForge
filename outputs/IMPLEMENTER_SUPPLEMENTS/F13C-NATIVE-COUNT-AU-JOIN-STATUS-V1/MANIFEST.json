@@ -1,0 +1,41 @@
+{
+  "classification": "OBSERVATION_STATUS_NOT_ALGORITHM",
+  "delivery": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+  "files": [
+    {
+      "bytes": 1697,
+      "file": "CONTRACT.md",
+      "sha256": "e06a98beda64498183127e71addaf88264f3f95bd6a7d83b05b8d6c44a551199"
+    },
+    {
+      "bytes": 1264,
+      "file": "JOIN-STATUS.json",
+      "sha256": "6437e1c09ec650e44a903836e9ba9c5745d18a6a11ab4770746c2a9b63d39fab"
+    },
+    {
+      "bytes": 543,
+      "file": "MODEL-PATH-SEPARATION.json",
+      "sha256": "828d624cb2f91b744686cc46135d180b5a417930003aa053a6c20adf35a89431"
+    },
+    {
+      "bytes": 801,
+      "file": "OBSERVED-EVENT.json",
+      "sha256": "0a64ac9fb0bb604ec4414bf2e58f80fbd1fe64acd0d831f13e2414e8b4aab329"
+    },
+    {
+      "bytes": 1422,
+      "file": "SOURCE-CHAIN.json",
+      "sha256": "89bffcb5add6c95b1a2df18879de8941046de48819ebd0a4816c2db89ce9457d"
+    },
+    {
+      "bytes": 609,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "2bd69f3a04123831d9dc8404a7567452d81437358af495f0069c7526b423bcab"
+    }
+  ],
+  "implementation_requirement": false,
+  "package_id": "F13C-NATIVE-COUNT-AU-JOIN-STATUS-V1",
+  "schema": "wash-package-manifest.v1",
+  "scope": "One native producer count event through explicitly unbound downstream AU join; no model rule changes",
+  "source_manifest_sha256": "b157ae0ddecd824d841ff1689c17043cd399725447ec630c5504d92cf0bda5b3"
+}

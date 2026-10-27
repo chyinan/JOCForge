@@ -1,0 +1,24 @@
+{
+  "payloads": [
+    {
+      "bytes": 7366,
+      "file": "NATIVE-COUNT-SLICE.json",
+      "sha256": "0a6dd53984d2ab6ef21f75f087f37ac90b495138f2a14b6a397f17b5ce1e54a9"
+    },
+    {
+      "bytes": 576,
+      "file": "BASELINE-INTERFERENCE.json",
+      "sha256": "2c41e23f94b4e06e9943ab6d8cf5ec6d14e5b0af840506b9ba68982bf57dc856"
+    },
+    {
+      "bytes": 523,
+      "file": "CHECK.json",
+      "sha256": "4c225d24a01a2aee5fdb53dc39dc329db346f8170f12a41a7518344cc100c485"
+    }
+  ],
+  "schema": "wash-source-chain.v1",
+  "source_delivery": "WASH_ONLY",
+  "source_manifest_scope": "Path-free 0..48 frame native count-output vector with baseline hash control",
+  "source_manifest_sha256": "1e693963f1cb579fffaff435f505e07a6d9140ddff33282ff7cf03ac87bcd36f",
+  "source_package_id": "F13C-NATIVE-COUNT-SLICE-00-V1"
+}

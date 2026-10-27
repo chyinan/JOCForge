@@ -1,0 +1,15 @@
+{
+  "baseline": {
+    "bytes": 262144,
+    "sha256": "e170ba3f9fa3735cc810496a15c30ed25ba728e7c9b2afe3e319ceea0045a00e"
+  },
+  "bytewise_comparison": "NOT_RUN",
+  "instrumented": {
+    "bytes": 262144,
+    "sha256": "e170ba3f9fa3735cc810496a15c30ed25ba728e7c9b2afe3e319ceea0045a00e"
+  },
+  "schema": "sender-reported-output-control.v1",
+  "sender_reported_hash_equality": true,
+  "source_payload_sha256": "2c41e23f94b4e06e9943ab6d8cf5ec6d14e5b0af840506b9ba68982bf57dc856",
+  "wash_status": "NOT_INDEPENDENTLY_REPRODUCED; output files were not in the package"
+}

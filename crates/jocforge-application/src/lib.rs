@@ -13,6 +13,11 @@ use jocforge_domain::frontend::{
     dbmd_sections::{DbmdSectionError, SelectedDbmdSections, parse_selected_dbmd_sections},
     selected_adm_graph::{SelectedAdmGraph, SelectedAdmGraphError, parse_selected_adm_graph},
 };
+use jocforge_domain::meter::prepared_job_identity::{
+    NormalizedJobConfigurationIdentity, PreparedAdmChunkSpan,
+    PreparedAdmGraphProvenance as DomainAdmGraphProvenance, PreparedInputResourceIdentity,
+    PreparedJobInputIdentity, PreparedJobInputIdentityError,
+};
 use jocforge_domain::state::EncodeError;
 use jocforge_domain::timeline::{AdmSampleCount, ClockError};
 pub use jocforge_domain::transaction::ProgrammeId;
@@ -39,6 +44,7 @@ pub struct PreparedJobInput {
     config_sha256: [u8; 32],
     resource: Arc<[u8]>,
     resource_identity: ResourceIdentity,
+    domain_identity: PreparedJobInputIdentity,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -194,6 +200,11 @@ impl PreparedJobInput {
         self.resource_identity
     }
 
+    /// Returns the one domain-owned identity projection derived during admission.
+    pub const fn domain_identity(&self) -> &PreparedJobInputIdentity {
+        &self.domain_identity
+    }
+
     pub const fn job_xml_sha256(&self) -> [u8; 32] {
         self.job_xml_sha256
     }
@@ -234,6 +245,7 @@ pub enum PreparedJobInputError {
     DbmdParse(DbmdSectionError),
     MetadataPayloadBinding,
     IdentityEnvelope,
+    IdentityProjection(PreparedJobInputIdentityError),
 }
 
 impl std::fmt::Display for PreparedJobInputError {
@@ -252,6 +264,9 @@ impl std::fmt::Display for PreparedJobInputError {
             ),
             Self::IdentityEnvelope => {
                 formatter.write_str("failed to serialize selected job identity envelope")
+            }
+            Self::IdentityProjection(error) => {
+                write!(formatter, "prepared job identity projection: {error:?}")
             }
         }
     }
@@ -318,6 +333,45 @@ pub fn prepare_selected_job_input(
             dbmd: dbmd_span,
         },
     };
+    let domain_resource = PreparedInputResourceIdentity::new(
+        resource_identity.input_sha256(),
+        resource_identity.resource_bytes(),
+    );
+    let graph_provenance = graph.provenance();
+    let domain_graph = DomainAdmGraphProvenance::new(
+        PreparedInputResourceIdentity::new(
+            graph_provenance.parent_resource().input_sha256(),
+            graph_provenance.parent_resource().resource_bytes(),
+        ),
+        PreparedAdmChunkSpan::new(
+            graph_provenance.axml().chunk_id(),
+            graph_provenance.axml().payload_offset(),
+            graph_provenance.axml().payload_bytes(),
+            graph_provenance.axml().payload_sha256(),
+        ),
+        PreparedAdmChunkSpan::new(
+            graph_provenance.chna().chunk_id(),
+            graph_provenance.chna().payload_offset(),
+            graph_provenance.chna().payload_bytes(),
+            graph_provenance.chna().payload_sha256(),
+        ),
+        PreparedAdmChunkSpan::new(
+            graph_provenance.dbmd().chunk_id(),
+            graph_provenance.dbmd().payload_offset(),
+            graph_provenance.dbmd().payload_bytes(),
+            graph_provenance.dbmd().payload_sha256(),
+        ),
+    );
+    let domain_identity = PreparedJobInputIdentity::new(
+        domain_resource,
+        NormalizedJobConfigurationIdentity::new(
+            config_sha256,
+            job_xml_sha256,
+            configuration.input_kind(),
+        ),
+        domain_graph,
+    )
+    .map_err(PreparedJobInputError::IdentityProjection)?;
     Ok(PreparedJobInput {
         programme_id,
         configuration,
@@ -329,6 +383,7 @@ pub fn prepare_selected_job_input(
         config_sha256,
         resource,
         resource_identity,
+        domain_identity,
     })
 }
 

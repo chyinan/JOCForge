@@ -1,0 +1,120 @@
+{
+  "schema": "jocforge-model-reference-comparison.v1",
+  "classification": "MODEL_REFERENCE_ONLY",
+  "reference_kind": "FROZEN_PYTHON_REFERENCE_EXECUTION",
+  "independent_golden": false,
+  "native_or_dee_execution": "NOT_RUN",
+  "product_acceptance": "NOT_RUN",
+  "numeric_after_state_status": "NOT_RUN",
+  "reference_package": {
+    "id": "F06NR-FROZEN-PYTHON-REFERENCE-FINGERPRINTS-V1",
+    "manifest_sha256": "4cc114591e0600b13bfd5e0c713d5529f07270389e7095578f039ee886d654cb"
+  },
+  "input_package": {
+    "id": "F06NR-SOURCE-FRAME-INPUT-ONLY-CROSSWALK-V1",
+    "manifest_sha256": "e19715f1e673faa615e5cbd9202e87ebe700cf9ba3f0ed969b0f52ce9f69181f"
+  },
+  "implementation_file": {
+    "path": "crates/jocforge-domain/src/drc/secondary_source_owner.rs",
+    "sha256": "4ce74d6496931c3700744b6ac58769279a207463a65360ae85e7cd229a3f97fa"
+  },
+  "method": "Recomputed F32LE hashes from the selected Rust F06NR stage for the three existing synthetic input recipes. Hash equality is a comparison to the frozen Python model only; it does not establish independent numeric parity.",
+  "f32le_comparisons": [
+    {
+      "source_frame": 0,
+      "input_sha256": "49064153e1faaeda358303a02915d7604b7bdf4f427d9b1b41a8c04cffc36f31",
+      "field": "forward_history_after",
+      "shape": [5, 128],
+      "bytes": 2560,
+      "reference_sha256": "40c143e1a615d996165693236171fb2c6ccce49af5aa932f45483f2696a236a2",
+      "implementation_sha256": "40c143e1a615d996165693236171fb2c6ccce49af5aa932f45483f2696a236a2",
+      "result": "MATCH_MODEL_REFERENCE_ONLY"
+    },
+    {
+      "source_frame": 0,
+      "input_sha256": "49064153e1faaeda358303a02915d7604b7bdf4f427d9b1b41a8c04cffc36f31",
+      "field": "inverse_carry_after",
+      "shape": [5, 128],
+      "bytes": 2560,
+      "reference_sha256": "33d93a3af88a1875f357e7794ea7e31968faea47598f9729709ed91dec63c7de",
+      "implementation_sha256": "33d93a3af88a1875f357e7794ea7e31968faea47598f9729709ed91dec63c7de",
+      "result": "MATCH_MODEL_REFERENCE_ONLY"
+    },
+    {
+      "source_frame": 0,
+      "input_sha256": "49064153e1faaeda358303a02915d7604b7bdf4f427d9b1b41a8c04cffc36f31",
+      "field": "secondary_carrier",
+      "shape": [6, 1536],
+      "bytes": 36864,
+      "reference_sha256": "c5207ac2edad0b75e58406a035d15c1327d5e645386341eb930e6437ff7ec6ef",
+      "implementation_sha256": "c5207ac2edad0b75e58406a035d15c1327d5e645386341eb930e6437ff7ec6ef",
+      "result": "MATCH_MODEL_REFERENCE_ONLY"
+    },
+    {
+      "source_frame": 1,
+      "input_sha256": "901d2ae95029fe828e436da25b69a02f43ad10c6b6f14b5b3b7e371e8e97ace0",
+      "field": "forward_history_after",
+      "shape": [5, 128],
+      "bytes": 2560,
+      "reference_sha256": "752475f9b1049fc75d12d37f8fcde88950e1216854101b1c44e9269555b42434",
+      "implementation_sha256": "752475f9b1049fc75d12d37f8fcde88950e1216854101b1c44e9269555b42434",
+      "result": "MATCH_MODEL_REFERENCE_ONLY"
+    },
+    {
+      "source_frame": 1,
+      "input_sha256": "901d2ae95029fe828e436da25b69a02f43ad10c6b6f14b5b3b7e371e8e97ace0",
+      "field": "inverse_carry_after",
+      "shape": [5, 128],
+      "bytes": 2560,
+      "reference_sha256": "ba11255ffed31a83475cc6895f0cc85fc86586222879657bd9469e06f55561ba",
+      "implementation_sha256": "ba11255ffed31a83475cc6895f0cc85fc86586222879657bd9469e06f55561ba",
+      "result": "MATCH_MODEL_REFERENCE_ONLY"
+    },
+    {
+      "source_frame": 1,
+      "input_sha256": "901d2ae95029fe828e436da25b69a02f43ad10c6b6f14b5b3b7e371e8e97ace0",
+      "field": "secondary_carrier",
+      "shape": [6, 1536],
+      "bytes": 36864,
+      "reference_sha256": "d80b5edba71008e6adbbf8af2a94193c36f1b1a376c16d23263e6f2abe3999f4",
+      "implementation_sha256": "d80b5edba71008e6adbbf8af2a94193c36f1b1a376c16d23263e6f2abe3999f4",
+      "result": "MATCH_MODEL_REFERENCE_ONLY"
+    },
+    {
+      "source_frame": 2,
+      "input_sha256": "a4ca44c56f67f0572160551d7b445775a00e380badb6a49e0c3b882a730a85c1",
+      "field": "forward_history_after",
+      "shape": [5, 128],
+      "bytes": 2560,
+      "reference_sha256": "bb12405bd48dbf0f1fe4c3bf1bf1b125348a8a3a1cdda2ed4489145bffe19331",
+      "implementation_sha256": "bb12405bd48dbf0f1fe4c3bf1bf1b125348a8a3a1cdda2ed4489145bffe19331",
+      "result": "MATCH_MODEL_REFERENCE_ONLY"
+    },
+    {
+      "source_frame": 2,
+      "input_sha256": "a4ca44c56f67f0572160551d7b445775a00e380badb6a49e0c3b882a730a85c1",
+      "field": "inverse_carry_after",
+      "shape": [5, 128],
+      "bytes": 2560,
+      "reference_sha256": "d1554d1e5b32c5cdc81f7eb3d602682033764816822ab89944b4e65ccc951c2f",
+      "implementation_sha256": "d1554d1e5b32c5cdc81f7eb3d602682033764816822ab89944b4e65ccc951c2f",
+      "result": "MATCH_MODEL_REFERENCE_ONLY"
+    },
+    {
+      "source_frame": 2,
+      "input_sha256": "a4ca44c56f67f0572160551d7b445775a00e380badb6a49e0c3b882a730a85c1",
+      "field": "secondary_carrier",
+      "shape": [6, 1536],
+      "bytes": 36864,
+      "reference_sha256": "aabc68bb5e25438f253330429ec0d2fc45f504f70bc94c81818480ed0eedef0f",
+      "implementation_sha256": "aabc68bb5e25438f253330429ec0d2fc45f504f70bc94c81818480ed0eedef0f",
+      "result": "MATCH_MODEL_REFERENCE_ONLY"
+    }
+  ],
+  "summary": {
+    "hash_comparisons": 9,
+    "matches": 9,
+    "mismatches": 0,
+    "interpretation": "Model-reference agreement only; not an independent oracle, native equivalence, product validation, or full-song acceptance."
+  }
+}

@@ -1,0 +1,210 @@
+{
+  "schema": "measurement-finalize-identity-inputs.v1",
+  "input_only": true,
+  "contains_expected_outputs": false,
+  "base_identity": {
+    "parent": {
+      "programme_id": "synthetic-programme-A",
+      "attempt": 7
+    },
+    "prepared_job_identity": {
+      "type": "PreparedJobInputIdentity",
+      "type_owner": "Domain-owned immutable pure data projection",
+      "producer": "Application derives exactly once from the single admitted PreparedJobInput",
+      "resource_identity": {
+        "input_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+        "resource_bytes": 1000
+      },
+      "normalized_config_identity": {
+        "config_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "job_xml_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+        "selected_input_label": "adm"
+      },
+      "parsed_adm_graph_provenance": {
+        "parent_resource_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+        "chunk_spans": [
+          {
+            "kind": "axml",
+            "offset": 100,
+            "length": 50
+          }
+        ]
+      }
+    },
+    "meter_terminal": {
+      "source_samples": 1537,
+      "callback_samples": 1536,
+      "normal_callback_count_input": 2,
+      "zero_drain_count_input": 2,
+      "energy_window_count_input": 3,
+      "committed_meter_callbacks_input": 4,
+      "root_sha256": "4444444444444444444444444444444444444444444444444444444444444444"
+    }
+  },
+  "schedule_rule": "Q=ceil(N/1536); exactly3 fresh-zero meter drains; P=Q*1536; C=floor(P/1024)*1024; E=floor(C/960). The supplied meter_terminal counters are test inputs and are not expected values.",
+  "selected_input_example_only": {
+    "N": 6522906,
+    "Q_formula": "ceil(N/1536)",
+    "drains": "fixed3 by F06WH",
+    "energy_windows_formula": "floor(floor(Q*1536/1024)*1024/960)",
+    "runtime_literals_allowed": false
+  },
+  "mismatch_cases": [
+    {
+      "case_id": "attempt_mismatch",
+      "parent": {
+        "programme_id": "synthetic-programme-A",
+        "attempt": 8
+      }
+    },
+    {
+      "case_id": "programme_id_mismatch",
+      "parent": {
+        "programme_id": "synthetic-programme-B",
+        "attempt": 7
+      }
+    },
+    {
+      "case_id": "resource_identity_mismatch",
+      "prepared_job_identity": {
+        "type": "PreparedJobInputIdentity",
+        "type_owner": "Domain-owned immutable pure data projection",
+        "producer": "Application derives exactly once from the single admitted PreparedJobInput",
+        "resource_identity": {
+          "input_sha256": "5555555555555555555555555555555555555555555555555555555555555555",
+          "resource_bytes": 1000
+        },
+        "normalized_config_identity": {
+          "config_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "job_xml_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+          "selected_input_label": "adm"
+        },
+        "parsed_adm_graph_provenance": {
+          "parent_resource_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "chunk_spans": [
+            {
+              "kind": "axml",
+              "offset": 100,
+              "length": 50
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "config_identity_mismatch",
+      "prepared_job_identity": {
+        "type": "PreparedJobInputIdentity",
+        "type_owner": "Domain-owned immutable pure data projection",
+        "producer": "Application derives exactly once from the single admitted PreparedJobInput",
+        "resource_identity": {
+          "input_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "resource_bytes": 1000
+        },
+        "normalized_config_identity": {
+          "config_sha256": "6666666666666666666666666666666666666666666666666666666666666666",
+          "job_xml_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+          "selected_input_label": "adm"
+        },
+        "parsed_adm_graph_provenance": {
+          "parent_resource_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "chunk_spans": [
+            {
+              "kind": "axml",
+              "offset": 100,
+              "length": 50
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "missing_final_dialnorm_getter",
+      "available_getters": [
+        "true_peak",
+        "sample_peak",
+        "integrated",
+        "ungated",
+        "dialogue",
+        "loudness_selector"
+      ]
+    },
+    {
+      "case_id": "graph_resource_mismatch",
+      "prepared_job_identity": {
+        "type": "PreparedJobInputIdentity",
+        "type_owner": "Domain-owned immutable pure data projection",
+        "producer": "Application derives exactly once from the single admitted PreparedJobInput",
+        "resource_identity": {
+          "input_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "resource_bytes": 1000
+        },
+        "normalized_config_identity": {
+          "config_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "job_xml_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+          "selected_input_label": "adm"
+        },
+        "parsed_adm_graph_provenance": {
+          "parent_resource_sha256": "7777777777777777777777777777777777777777777777777777777777777777",
+          "chunk_spans": [
+            {
+              "kind": "axml",
+              "offset": 100,
+              "length": 50
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "attempt_mismatch_at_parent_commit",
+      "proposal_identity": {
+        "programme_id": "synthetic-programme-A",
+        "attempt": 6,
+        "input_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+        "config_sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+      }
+    },
+    {
+      "case_id": "incomplete_terminal_callbacks",
+      "prepared_job_identity": {
+        "type": "PreparedJobInputIdentity",
+        "type_owner": "Domain-owned immutable pure data projection",
+        "producer": "Application derives exactly once from the single admitted PreparedJobInput",
+        "resource_identity": {
+          "input_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "resource_bytes": 1000
+        },
+        "normalized_config_identity": {
+          "config_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+          "job_xml_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+          "selected_input_label": "adm"
+        },
+        "parsed_adm_graph_provenance": {
+          "parent_resource_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "chunk_spans": [
+            {
+              "kind": "axml",
+              "offset": 100,
+              "length": 50
+            }
+          ]
+        }
+      },
+      "parent": {
+        "programme_id": "synthetic-programme-A",
+        "attempt": 7
+      },
+      "meter_terminal": {
+        "source_samples": 1537,
+        "callback_samples": 1536,
+        "normal_callback_count_input": 2,
+        "zero_drain_count_input": 2,
+        "energy_window_count_input": 3,
+        "committed_meter_callbacks_input": 4,
+        "root_sha256": "4444444444444444444444444444444444444444444444444444444444444444"
+      }
+    }
+  ],
+  "vector_scope": "Synthetic identity/counter fixtures only; not measurements, receipt outputs, audio or terminal root hashes from a real programme."
+}

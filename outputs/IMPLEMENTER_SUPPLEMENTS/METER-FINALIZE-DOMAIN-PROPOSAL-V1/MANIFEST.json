@@ -1,0 +1,36 @@
+{
+  "classification": "PROPOSED_API_DESIGN_NOT_NATIVE_OBSERVATION",
+  "delivery": "INTERNAL_IMPLEMENTATION_DESIGN",
+  "files": [
+    {
+      "bytes": 4183,
+      "file": "CONTRACT.md",
+      "sha256": "d3da7e1d083b29b369c5b0ff7b215990f3e28ce4acbb90db4a6c9dbab8d1253f"
+    },
+    {
+      "bytes": 7977,
+      "file": "INPUT-ONLY-IDENTITY-VECTORS.json",
+      "sha256": "00daeb7abcec1b28820d06c9523a1b921de35b8b287e0eadc074222eeb90ee3a"
+    },
+    {
+      "bytes": 10382,
+      "file": "SOURCE-CHAIN.json",
+      "sha256": "5abad49c2cd0b4d01c8ac8dc72496fa2bacb37cfddb47a8f13e277cad320c576"
+    },
+    {
+      "bytes": 570,
+      "file": "WASH-DECISION.json",
+      "sha256": "1d25cc2356d44ea84ea3036da3ecfafff9fa0131159e5b7ffab89c6096bb1f0b"
+    },
+    {
+      "bytes": 811,
+      "file": "WASH-VERIFICATION.json",
+      "sha256": "640382985f876cd9e8e25adbf46e8282089d7f6ace19f17a4e30ee19eafae764"
+    }
+  ],
+  "implementation_required": true,
+  "package_id": "METER-FINALIZE-DOMAIN-PROPOSAL-V1",
+  "schema": "wash-package-manifest.v1",
+  "scope": "Layer-safe Meter finalization proposal and one GTC MEASUREMENT parent commit using approved local contracts",
+  "source_manifest_sha256": "63411f40f839e87134b741ad5c8e7eeb21059bf4f2ae79d649a226201e781abf"
+}

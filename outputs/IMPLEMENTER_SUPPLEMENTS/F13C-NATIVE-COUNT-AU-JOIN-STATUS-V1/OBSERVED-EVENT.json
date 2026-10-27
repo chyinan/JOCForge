@@ -1,0 +1,23 @@
+{
+  "codec_or_joc_mode": "NOT_RECORDED",
+  "count_function_return_status": "NOT_CAPTURED",
+  "event_ordinal_in_capture": 0,
+  "evidence_grade": "NATIVE_COUNT_PRODUCER_OUTPUT_STORE_OBSERVED",
+  "input_context": {
+    "bits_per_sample": 24,
+    "channels": 38,
+    "data_rate_kbps": 1024,
+    "end_frame_exclusive": 48,
+    "resource_bytes": 743696526,
+    "resource_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "sample_count_per_channel": 6522906,
+    "sample_rate_hz": 48000,
+    "start_frame": 0,
+    "time_base": "file_position"
+  },
+  "ordinal_is_generation": false,
+  "reported_count_u32": 281,
+  "schema": "washed-f13c-native-count-event.v1",
+  "source_payload_sha256": "e45e7fa2ebf1da677c1717171b54c8aefb263adfcf2a0772ec8e68c820959d88",
+  "stream_index": 0
+}

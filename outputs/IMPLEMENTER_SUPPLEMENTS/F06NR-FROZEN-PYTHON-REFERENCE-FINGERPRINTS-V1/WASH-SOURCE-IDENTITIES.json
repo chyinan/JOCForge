@@ -1,0 +1,17 @@
+{
+  "schema": "jocforge-f06nr-reference-model-source-identities.v1",
+  "research_package": "secondary_producer_reference_slice",
+  "model_sources": [
+    {"basename": "transform_spec_core.py", "bytes": 5577, "sha256": "7a18804788df90f50883649f5e93fd73e4cee57df03f1bf76695b1d9a09c7eec", "purpose": "F08 primary long/short transform and forward history", "wash_rehash": "MATCH"},
+    {"basename": "secondary_inverse_wrapper_core.py", "bytes": 2305, "sha256": "d59e42da24a9a939ce0cb5afd405e45542cef954657c846f753826bd633ac7d8", "purpose": "F06NI inverse spectrum split, descriptor pre/post and clamp", "wash_rehash": "MATCH"},
+    {"basename": "secondary_fft_math_core.py", "bytes": 5596, "sha256": "1fbff53b551ed54eeaafc15c7d26bed47d4549dfb0d53b5ff8fcae568ef84221", "purpose": "F06NF FFT64/128 network", "wash_rehash": "MATCH"},
+    {"basename": "secondary_overlap_core.py", "bytes": 1545, "sha256": "a6905fb3d6c2f98764c5df19bd03241de9d4b641c332d5d0d0ec4bcf1430b32d", "purpose": "F06NR overlap and six-row carrier routing", "wash_rehash": "MATCH"},
+    {"basename": "secondary_producer_reference_runner.py", "bytes": 26966, "sha256": "1727f0481bed5913f3b5314ffe411a45a4b3aaf4da46e84a3efd3ae1007ebdb9", "purpose": "Composition driver for the three synthetic source-frame results", "wash_rehash": "MATCH; code not included"}
+  ],
+  "approved_parameters": [
+    {"basename": "ordinary-transform-math-v1.json", "sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1"},
+    {"basename": "secondary-inverse-math-v1.json", "sha256": "b452a929d7e4f7090f9466930e5c6047a8007192a30a3ed7c3cd7447dba073b1"}
+  ],
+  "input_package_manifest_sha256": "6f2ff56687f7cf62e082d0801f90b126dca6ef96457566f6ca3620130e662ded",
+  "scope_note": "The source hashes identify the reference run. They do not make its outputs an independent golden or native equivalence result."
+}

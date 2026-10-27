@@ -1,0 +1,15 @@
+{
+  "schema": "washed-spec-manifest.v1",
+  "payloads": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 3955,
+      "sha256": "9d7c857f3fb039c0ccec1e0967a7a1044f1f0ed635f3cf6d00a05d2281549f56"
+    },
+    {
+      "file": "IDENTITY-MAP.json",
+      "bytes": 1441,
+      "sha256": "3240aba416474f0e5974459876ab184f39893bb98c2d5198f6ee59e2ed8157b1"
+    }
+  ]
+}

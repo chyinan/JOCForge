@@ -1,0 +1,22 @@
+{
+  "evidence_tier": "REPORTED_NATIVE_OBSERVATION; HASHES_AND_VECTOR_INTEGRITY_RECHECKED; CAPTURE_NOT_REPRODUCED_BY_WASH",
+  "independent_vector_checks": {
+    "all_stream_selectors_zero": true,
+    "event_count_is_64": true,
+    "input_hash_referenced_in_existing_washed_material": true,
+    "reported_min_max_match": true,
+    "slice_local_target_hits_all_zero": true
+  },
+  "not_established": [
+    "count-to-serialized-frame semantics",
+    "same-parent generation join",
+    "serializer/refill join",
+    "selected E-AC-3 JOC AU identity",
+    "full-program target-length reachability",
+    "baseline/instrumented bytewise equality",
+    "product acceptance"
+  ],
+  "schema": "native-count-wash-verification.v1",
+  "source_manifest_sha256": "1e693963f1cb579fffaff435f505e07a6d9140ddff33282ff7cf03ac87bcd36f",
+  "source_payloads_rehashed": "3/3 PASS"
+}

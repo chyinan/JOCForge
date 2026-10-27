@@ -1,0 +1,44 @@
+{
+  "edges": [
+    {
+      "edge": "count function call to its U32 output value",
+      "status": "OBSERVED_WITHIN_PRODUCER_CALL"
+    },
+    {
+      "edge": "count event to same parent invocation/object",
+      "status": "NOT_CAPTURED"
+    },
+    {
+      "edge": "count event to source/frame generation",
+      "status": "NOT_CAPTURED"
+    },
+    {
+      "edge": "count event to selected codec record consumer",
+      "status": "NOT_CAPTURED"
+    },
+    {
+      "edge": "codec record to serializer output",
+      "status": "NOT_CAPTURED"
+    },
+    {
+      "edge": "serializer output to fragment refill",
+      "status": "NOT_CAPTURED"
+    },
+    {
+      "edge": "fragment refill to output writer",
+      "status": "NOT_CAPTURED"
+    },
+    {
+      "edge": "output writer to selected AU index",
+      "status": "UNBOUND"
+    },
+    {
+      "edge": "native capture to selected F12 AU",
+      "status": "UNBOUND"
+    }
+  ],
+  "implementation_consequence": "informational only; do not alter the selected F12 model path",
+  "overall_status": "COUNT_OUTPUT_OBSERVED; DOWNSTREAM_SAME_GENERATION_AND_AU_JOIN_NOT_CAPTURED",
+  "schema": "washed-f13c-native-au-join-status.v1",
+  "source_payload_sha256": "4743890f373cca7b801211d1f90d18294518fee5e584b7a16f0fd41465024def"
+}

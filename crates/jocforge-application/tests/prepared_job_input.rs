@@ -56,6 +56,33 @@ fn value_preparation_binds_graph_and_identity_to_one_immutable_resource() {
                 prepared.resource_identity().resource_bytes(),
                 resource.len() as u64
             );
+            let domain_identity = prepared.domain_identity();
+            assert_eq!(
+                domain_identity.resource().input_sha256(),
+                prepared.resource_identity().input_sha256()
+            );
+            assert_eq!(
+                domain_identity.resource().resource_bytes(),
+                prepared.resource_identity().resource_bytes()
+            );
+            assert_eq!(
+                domain_identity.normalized_configuration().config_sha256(),
+                prepared.config_sha256()
+            );
+            assert_eq!(
+                domain_identity.normalized_configuration().job_xml_sha256(),
+                prepared.job_xml_sha256()
+            );
+            assert_eq!(
+                domain_identity
+                    .normalized_configuration()
+                    .selected_input_label(),
+                prepared.configuration().input_kind().selected_label()
+            );
+            assert_eq!(
+                domain_identity.graph_provenance().parent_resource(),
+                domain_identity.resource()
+            );
             assert_eq!(prepared.resource(), resource.as_ref());
             assert_eq!(prepared.resource().as_ptr(), resource.as_ptr());
             assert_eq!(prepared.programme_id(), &test_programme_id());

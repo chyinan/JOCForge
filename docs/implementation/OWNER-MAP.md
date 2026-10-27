@@ -175,6 +175,7 @@
 | F06/independent-meter-prepass-callback-commit | F06 | `meter` |
 | F06/selected-lufs-to-dialnorm-value | F06 | `meter` |
 | F06/standalone-meter-selected-root-and-schedule-stage | F06 | `meter` |
+| F06/prepared-job-input-domain-identity-projection | F06 | `meter` |
 | F06L/ordered-log-energy-peak-accumulator-window-and-reduction | F06L | `meter` |
 | F06I/integrated-meter-synthetic-state-and-event-transition | F06I | `meter` |
 | F06W/meter-output-sample-accounting-and-span-ledger | F06W | `meter` |
@@ -296,6 +297,8 @@
 | F13C/selected-model-joc-complexity-u8-projection | F13C | `joc` |
 | F13C/programme-output-identity-and-preflight-binding | F13C | `output` |
 | F13C/fit-to-id14-writer-metadata-body-join | F13C | `joc` |
+| F13C/informational-native-count-observation-frames-0-48 | F13C | `joc` |
+| F13C/informational-native-count-first-consumer-edge-0 | F13C | `joc` |
 | F13D2/id2-profile-header-and-body-wire | F13D2 | `metadata` |
 | F14/authenticated-bit-compaction | F14 | `integrity` |
 | F14/hmac-sha256-primitive | F14 | `integrity` |

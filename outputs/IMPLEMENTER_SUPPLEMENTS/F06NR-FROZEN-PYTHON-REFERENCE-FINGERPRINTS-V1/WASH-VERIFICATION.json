@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge-f06nr-reference-fingerprint-verification.v1",
+  "package_id": "F06NR-FROZEN-PYTHON-REFERENCE-FINGERPRINTS-V1",
+  "status": "HASH_BOUND_FROZEN_MODEL_REFERENCE_WITH_RAW_OUTPUTS_WITHHELD",
+  "source_reference_package_manifest_sha256": "b9eb0a360dcea85435ed22957ccb5bb91afac5ba13cfa516733272f17f3317cf",
+  "source_reference_package_files_verified": "12/12",
+  "model_code_identities_independently_rehashed": "5/5",
+  "synthetic_input_hashes_recomputed": "3/3",
+  "f32le_output_payloads": {
+    "files": 9,
+    "total_bytes": 125952,
+    "sha256_hashes_verified": "9/9",
+    "all_values_finite": true,
+    "carrier_shapes_verified": "3/3 [6,1536]",
+    "history_shapes_verified": "6/6 [5,128]",
+    "carrier_positive_zero_lfe_and_tail": "3/3",
+    "nonzero_carrier_words": [6400, 6400, 6400],
+    "raw_f32le_files_in_wash_package": false
+  },
+  "reference_kind": "FROZEN_PYTHON_REFERENCE_EXECUTION",
+  "independent_golden": false,
+  "native_or_dee_execution": "NOT_RUN",
+  "independent_implementation_comparison": "NOT_RUN",
+  "full_song_or_product_acceptance": "NOT_RUN",
+  "code_or_private_key_included": false
+}

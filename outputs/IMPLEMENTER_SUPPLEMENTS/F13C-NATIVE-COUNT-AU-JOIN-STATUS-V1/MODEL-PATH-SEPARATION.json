@@ -1,0 +1,13 @@
+{
+  "native_event_is_f12_field": false,
+  "native_event_value": 281,
+  "native_selected_au_join": "UNBOUND",
+  "numeric_equality_proves_identity": false,
+  "schema": "washed-f13c-native-vs-model-separation.v1",
+  "selected_f12_model_rule": "U8(ID14.object_count + 1) from same-source complete validated EMDF",
+  "selected_model_example_value": 16,
+  "source_wash_package": {
+    "manifest_sha256": "55e09368aa86a3650cd30a958b00e036fdf2956681044f5a5fa6ac4eec542b3a",
+    "package_id": "F13C-CONFIGURATION-COUNT-SELECTED-F12-CROSSWALK-V1"
+  }
+}

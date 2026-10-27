@@ -1,0 +1,231 @@
+{
+  "schema": "secondary-producer-frozen-python-reference-results.v1",
+  "reference_status": "FROZEN_PYTHON_REFERENCE_EXECUTED",
+  "reference_kind": "MODEL_OUTPUT_NOT_INDEPENDENT_GOLDEN",
+  "bank_state_selection": {
+    "f06nr_forward_bank": "F08_PRIMARY",
+    "f06nr_companion_history_or_spectrum": "NOT_USED",
+    "analysis_root_primary_companion_histories": "SEPARATE_OWNERS_NOT_SHARED",
+    "f06ni_input": "F06NR_LOCAL_PRIMARY_UNQUANTIZED_SPECTRUM"
+  },
+  "source_frames": [
+    {
+      "source_frame": 0,
+      "callback_index": 2,
+      "dispatch_index": 1,
+      "input_sha256": "49064153e1faaeda358303a02915d7604b7bdf4f427d9b1b41a8c04cffc36f31",
+      "frame_index_before": 0,
+      "frame_index_after": 1,
+      "forward_history_after": {
+        "file": "source-zero-forward-history-after.f32le",
+        "shape": [
+          5,
+          128
+        ],
+        "lane_order": [
+          "L",
+          "C",
+          "R",
+          "Ls",
+          "Rs"
+        ],
+        "bytes": 2560,
+        "sha256": "40c143e1a615d996165693236171fb2c6ccce49af5aa932f45483f2696a236a2"
+      },
+      "inverse_carry_after": {
+        "file": "source-zero-inverse-carry-after.f32le",
+        "shape": [
+          5,
+          128
+        ],
+        "lane_order": [
+          "L",
+          "C",
+          "R",
+          "Ls",
+          "Rs"
+        ],
+        "bytes": 2560,
+        "sha256": "33d93a3af88a1875f357e7794ea7e31968faea47598f9729709ed91dec63c7de"
+      },
+      "secondary_carrier": {
+        "file": "source-zero-secondary-carrier.f32le",
+        "shape": [
+          6,
+          1536
+        ],
+        "external_row_order": [
+          "L",
+          "R",
+          "C",
+          "LFE",
+          "Ls",
+          "Rs"
+        ],
+        "bytes": 36864,
+        "sha256": "c5207ac2edad0b75e58406a035d15c1327d5e645386341eb930e6437ff7ec6ef",
+        "nonzero_f32_words": 6400,
+        "lfe_row_positive_zero": true,
+        "trailing_block_positive_zero": true
+      },
+      "flag_counts": {
+        "long": 15,
+        "short": 15
+      },
+      "f08_forward_calls": 30,
+      "f06ni_inverse_calls": 30,
+      "f06nf_fft_calls_by_size": {
+        "64": 30,
+        "128": 15
+      }
+    },
+    {
+      "source_frame": 1,
+      "callback_index": 3,
+      "dispatch_index": 2,
+      "input_sha256": "901d2ae95029fe828e436da25b69a02f43ad10c6b6f14b5b3b7e371e8e97ace0",
+      "frame_index_before": 1,
+      "frame_index_after": 2,
+      "forward_history_after": {
+        "file": "source-one-forward-history-after.f32le",
+        "shape": [
+          5,
+          128
+        ],
+        "lane_order": [
+          "L",
+          "C",
+          "R",
+          "Ls",
+          "Rs"
+        ],
+        "bytes": 2560,
+        "sha256": "752475f9b1049fc75d12d37f8fcde88950e1216854101b1c44e9269555b42434"
+      },
+      "inverse_carry_after": {
+        "file": "source-one-inverse-carry-after.f32le",
+        "shape": [
+          5,
+          128
+        ],
+        "lane_order": [
+          "L",
+          "C",
+          "R",
+          "Ls",
+          "Rs"
+        ],
+        "bytes": 2560,
+        "sha256": "ba11255ffed31a83475cc6895f0cc85fc86586222879657bd9469e06f55561ba"
+      },
+      "secondary_carrier": {
+        "file": "source-one-secondary-carrier.f32le",
+        "shape": [
+          6,
+          1536
+        ],
+        "external_row_order": [
+          "L",
+          "R",
+          "C",
+          "LFE",
+          "Ls",
+          "Rs"
+        ],
+        "bytes": 36864,
+        "sha256": "d80b5edba71008e6adbbf8af2a94193c36f1b1a376c16d23263e6f2abe3999f4",
+        "nonzero_f32_words": 6400,
+        "lfe_row_positive_zero": true,
+        "trailing_block_positive_zero": true
+      },
+      "flag_counts": {
+        "long": 15,
+        "short": 15
+      },
+      "f08_forward_calls": 30,
+      "f06ni_inverse_calls": 30,
+      "f06nf_fft_calls_by_size": {
+        "64": 30,
+        "128": 15
+      }
+    },
+    {
+      "source_frame": 2,
+      "callback_index": 4,
+      "dispatch_index": 3,
+      "input_sha256": "a4ca44c56f67f0572160551d7b445775a00e380badb6a49e0c3b882a730a85c1",
+      "frame_index_before": 2,
+      "frame_index_after": 3,
+      "forward_history_after": {
+        "file": "source-two-forward-history-after.f32le",
+        "shape": [
+          5,
+          128
+        ],
+        "lane_order": [
+          "L",
+          "C",
+          "R",
+          "Ls",
+          "Rs"
+        ],
+        "bytes": 2560,
+        "sha256": "bb12405bd48dbf0f1fe4c3bf1bf1b125348a8a3a1cdda2ed4489145bffe19331"
+      },
+      "inverse_carry_after": {
+        "file": "source-two-inverse-carry-after.f32le",
+        "shape": [
+          5,
+          128
+        ],
+        "lane_order": [
+          "L",
+          "C",
+          "R",
+          "Ls",
+          "Rs"
+        ],
+        "bytes": 2560,
+        "sha256": "d1554d1e5b32c5cdc81f7eb3d602682033764816822ab89944b4e65ccc951c2f"
+      },
+      "secondary_carrier": {
+        "file": "source-two-secondary-carrier.f32le",
+        "shape": [
+          6,
+          1536
+        ],
+        "external_row_order": [
+          "L",
+          "R",
+          "C",
+          "LFE",
+          "Ls",
+          "Rs"
+        ],
+        "bytes": 36864,
+        "sha256": "aabc68bb5e25438f253330429ec0d2fc45f504f70bc94c81818480ed0eedef0f",
+        "nonzero_f32_words": 6400,
+        "lfe_row_positive_zero": true,
+        "trailing_block_positive_zero": true
+      },
+      "flag_counts": {
+        "long": 15,
+        "short": 15
+      },
+      "f08_forward_calls": 30,
+      "f06ni_inverse_calls": 30,
+      "f06nf_fft_calls_by_size": {
+        "64": 30,
+        "128": 15
+      }
+    }
+  ],
+  "terminal_frame_index": 3,
+  "numeric_after_state_replay": "EXECUTED_BY_HASH_BOUND_FROZEN_RESEARCH_PYTHON_COMPONENTS",
+  "independent_implementation_comparison_for_this_slice": "NOT_RUN",
+  "native_dll_or_callsite_join": "NOT_RUN",
+  "real_pcm_or_adm_input": "NOT_USED",
+  "product_render_or_acceptance": "NOT_RUN",
+  "historical_native_f08_equivalence": "NOT_ESTABLISHED",
+  "private_key_or_protected_output": "NOT_USED"
+}

@@ -1,0 +1,19 @@
+{
+  "GTC_measurement_finalize_execution": "NOT_RUN",
+  "absolute_local_paths_in_source_payloads": false,
+  "approved_main_documents": "10/10 exact bytes and SHA-256 PASS",
+  "architecture_dependency_rule": "6111 bytes and SHA-256 match",
+  "implementation_api_identity_hashes": "7/7 current-file hashes match; no source content read",
+  "real_terminal_meter_hash": "NOT_RUN",
+  "schema": "meter-finalize-wash-verification.v1",
+  "source_manifest_sha256": "63411f40f839e87134b741ad5c8e7eeb21059bf4f2ae79d649a226201e781abf",
+  "source_payload_hashes": "5/5 PASS",
+  "supporting_package_manifests": "4/4 PASS",
+  "vectors": {
+    "contains_expected_outputs": false,
+    "graph_resource_mismatch_present": true,
+    "input_only": true,
+    "mismatch_cases": 8
+  },
+  "whole_chain_or_product_execution": "NOT_RUN"
+}

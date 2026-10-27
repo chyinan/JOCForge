@@ -1,0 +1,42 @@
+{
+  "consumer_field_semantics": "UNBOUND",
+  "edges": [
+    {
+      "edge": "producer output store to caller return slot",
+      "status": "OBSERVED_EXACT_POINTER_ALIAS_WITHIN_SAME_CALL"
+    },
+    {
+      "edge": "caller return slot to first caller read",
+      "status": "OBSERVED_SAME_THREAD_POST_RETURN"
+    },
+    {
+      "edge": "first caller read to per-stream context field",
+      "status": "OBSERVED_VALUE_281"
+    },
+    {
+      "edge": "first caller read to referenced stream-record field",
+      "status": "OBSERVED_VALUE_281"
+    },
+    {
+      "edge": "count input to semantic owner and source ADM/frame generation",
+      "status": "UNBOUND"
+    },
+    {
+      "edge": "two immediate fields to codec serializer input",
+      "status": "NOT_CAPTURED"
+    },
+    {
+      "edge": "serializer output to fragment refill and output writer",
+      "status": "NOT_CAPTURED"
+    },
+    {
+      "edge": "output writer to selected AU and F12 model generation",
+      "status": "UNBOUND"
+    }
+  ],
+  "same-generation-to-AU": "UNBOUND",
+  "schema": "washed-f13c-first-consumer-edge-status.v1",
+  "software-breakpoint-output-comparison": "NOT_RUN",
+  "source_payload_sha256": "f560443d866b57067517471ef6577f2029ded552526e9e2aa14d7046ce93403a",
+  "terminal_observed_consumer": "the first post-return caller read, followed by two immediate scalar field stores in the same enclosing caller context"
+}

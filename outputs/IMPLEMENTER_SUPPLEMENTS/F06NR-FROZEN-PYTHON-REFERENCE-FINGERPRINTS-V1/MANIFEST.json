@@ -1,0 +1,36 @@
+{
+  "package_id": "F06NR-FROZEN-PYTHON-REFERENCE-FINGERPRINTS-V1",
+  "scope": "Synthetic F06NR frozen-model reference output hashes and shapes only; raw F32LE outputs withheld",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1334,
+      "sha256": "0541a4e65c796621749ee941ad97d36de1b3041264ee39200b50f1408becd0c4"
+    },
+    {
+      "file": "WASH-SOURCE-IDENTITIES.json",
+      "bytes": 1868,
+      "sha256": "e6afc8cb4b07f1c07712cbcf39278ae46ebecd0b35365970d0f6abcc86e4de36"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 1134,
+      "sha256": "634c70acbe3f04c2821d0759db4bad758c5de418627d66536a7d08d843d23d16"
+    },
+    {
+      "file": "MODEL-IDENTITIES.json",
+      "bytes": 2954,
+      "sha256": "6a8ef4495f36210634105b9761625f115646e802441024873d4a9cb821abeed8"
+    },
+    {
+      "file": "REFERENCE-RESULTS.json",
+      "bytes": 6306,
+      "sha256": "7f61da6fbc52839a95bb89dc726ebed0f9807f1bd52a263b1158e366a5d5caf4"
+    },
+    {
+      "file": "SOURCE-PACKAGE-MANIFEST.json",
+      "bytes": 2298,
+      "sha256": "7c8d6f12c12858c4f0961837957601ab453438847f39cd71ab9c2922c7267132"
+    }
+  ]
+}

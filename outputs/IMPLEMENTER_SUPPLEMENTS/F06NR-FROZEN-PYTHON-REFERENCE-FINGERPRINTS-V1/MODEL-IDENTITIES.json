@@ -1,0 +1,63 @@
+{
+  "schema": "secondary-producer-reference-model-identities.v1",
+  "input_package_manifest_sha256": "6f2ff56687f7cf62e082d0801f90b126dca6ef96457566f6ca3620130e662ded",
+  "approved_base_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "model_source_code_included": false,
+  "bank_state_selection": {
+    "f06wh_owner": "main_none_drc_state.secondary",
+    "f06nr_forward_bank": "F08_PRIMARY",
+    "frozen_model_selector": "transform_spec_core.fullband alternate=False",
+    "companion_bank_used_for_f06nr": false,
+    "analysis_root_primary_history_shared": false,
+    "analysis_root_companion_history_shared": false,
+    "f06ni_consumes": "the same F06NR-owned unquantized F08 PRIMARY spectrum after F06NR bins 217..255 are set to positive zero",
+    "short_flag_selects": "the F06NR-owned F08 PRIMARY long/short transform and the corresponding F06NI inverse mode for the same lane/block",
+    "inverse_carry_updated_after": "F06NI output followed by F06NR overlap for the same lane/block"
+  },
+  "reference_model_sources": [
+    {
+      "name": "transform_spec_core.py",
+      "role": "F08 primary long/short transform and forward history",
+      "sha256": "7a18804788df90f50883649f5e93fd73e4cee57df03f1bf76695b1d9a09c7eec"
+    },
+    {
+      "name": "secondary_inverse_wrapper_core.py",
+      "role": "F06NI inverse wrapper",
+      "sha256": "d59e42da24a9a939ce0cb5afd405e45542cef954657c846f753826bd633ac7d8"
+    },
+    {
+      "name": "secondary_fft_math_core.py",
+      "role": "F06NF FFT network",
+      "sha256": "1fbff53b551ed54eeaafc15c7d26bed47d4549dfb0d53b5ff8fcae568ef84221"
+    },
+    {
+      "name": "secondary_overlap_core.py",
+      "role": "F06NR overlap and carrier routing",
+      "sha256": "a6905fb3d6c2f98764c5df19bd03241de9d4b641c332d5d0d0ec4bcf1430b32d"
+    },
+    {
+      "name": "secondary_producer_reference_runner.py",
+      "role": "source-frame composition driver; not included in package",
+      "sha256": "1727f0481bed5913f3b5314ffe411a45a4b3aaf4da46e84a3efd3ae1007ebdb9"
+    }
+  ],
+  "parameter_sources": [
+    {
+      "name": "ordinary-transform-math-v1.json",
+      "sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1"
+    },
+    {
+      "name": "secondary-inverse-math-v1.json",
+      "sha256": "b452a929d7e4f7090f9466930e5c6047a8007192a30a3ed7c3cd7447dba073b1"
+    }
+  ],
+  "f08_prior_crosscheck": {
+    "result_file": "F08-NONZERO-COMPOSITION-RESULT.json",
+    "result_sha256": "a77806e29ea7e0cb361353a2a6313826e4cdcc2b3f36cebce6fc0b434cdcb906",
+    "model_source_sha256": "7a18804788df90f50883649f5e93fd73e4cee57df03f1bf76695b1d9a09c7eec",
+    "compared_u32_words": 4650,
+    "mismatches": 0,
+    "scope_note": "Prior F08 model cross-check only; not an independent oracle for this F06NR three-frame composition."
+  },
+  "f06nf_generated_parameter_word_mismatches_vs_approved_provider": 0
+}
