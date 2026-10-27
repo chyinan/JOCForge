@@ -1,0 +1,61 @@
+{
+  "package_id": "METER-ROOT-CANONICAL-STATE-REFERENCE-V4",
+  "scope": "Complete standalone GTC meter owner local canonical state preimage and three synthetic cold root snapshots",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 9021,
+      "sha256": "08862636eff8acfa1e5ad0d9addd47a42eaf91b39ce0306c8d8ed44013c4b74a"
+    },
+    {
+      "file": "ERRATUM.md",
+      "bytes": 2559,
+      "sha256": "8422a400bb6018a5aeba3f94e60207f59a0288feda2d81500a64df15a4a6adc1"
+    },
+    {
+      "file": "INPUT-ONLY-ROOT-RECIPES.json",
+      "bytes": 17016,
+      "sha256": "eb8e953bc8037a887b23b363cdffbf0ac64d6b804c69f8eacbb81b655de41ad4"
+    },
+    {
+      "file": "MATERIALIZATION-RESULT.json",
+      "bytes": 16476,
+      "sha256": "34882b65d8dd9d51717bdd5497ec075c970df182fd9f332054d25a44ef5df48c"
+    },
+    {
+      "file": "REFERENCES.json",
+      "bytes": 10832,
+      "sha256": "9c90768e8bcccd1a565b0fb1f70f7b02090c54c4193e7db45b76dff78efab9f9"
+    },
+    {
+      "file": "ROOT-FIELDS.json",
+      "bytes": 10443,
+      "sha256": "45975cb5435bc163b9428d083180bfae46bd9954306713629ca0dbb826dea058"
+    },
+    {
+      "file": "SOURCE-PACKAGE-MANIFEST.json",
+      "bytes": 2201,
+      "sha256": "252987fe67ea20de6b4f893da911349127c65f76b8f9217deaeb77b8f48cbfd8"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 1819,
+      "sha256": "a6a07b4d221b0172b6c2d0910a1497379312a4109c613e706db47eceb762d2f2"
+    },
+    {
+      "file": "input-only-cold-roots/N1_pre_callback0_cold_root.json",
+      "bytes": 280829,
+      "sha256": "20200261e6a2d16602ada0e234d394668de5ee556718c8e65469f748d9d43d8f"
+    },
+    {
+      "file": "input-only-cold-roots/N1537_pre_callback0_cold_root.json",
+      "bytes": 280850,
+      "sha256": "4473c384b93076cb79d6cc0f4f5241c9e68c1478e7f84e1de1f7fe91c92c1227"
+    },
+    {
+      "file": "input-only-cold-roots/N6522906_pre_callback0_cold_root.json",
+      "bytes": 280892,
+      "sha256": "a983c9344a57357a3bd094b1002b2effe9e78490bc82132259b4ae6f39991c4b"
+    }
+  ]
+}

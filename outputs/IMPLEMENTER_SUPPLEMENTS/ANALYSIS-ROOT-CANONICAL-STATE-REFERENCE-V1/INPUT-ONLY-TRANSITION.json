@@ -1,0 +1,53 @@
+{
+  "schema": "analysis-root-transition-input-only.v1",
+  "case_id": "source0_g2_transition_only",
+  "input_only": true,
+  "attempt": 0,
+  "codec_source_index": 0,
+  "main_callback_index": 2,
+  "analysis_owner_before_generation": 0,
+  "source_index_g": 0,
+  "SharedAnalysisPrepare": {
+    "advancement_count": 1,
+    "before_generation": 0,
+    "staged_generation": 1,
+    "commit_eligible": false,
+    "family_generations": {
+      "input_history_generation": 1,
+      "transient_generation": 1,
+      "transform_generation": 0,
+      "policy_generation": 0
+    },
+    "persistent_numeric_after_words": "NOT_RUN"
+  },
+  "NumericPlanComplete": {
+    "status": "CONTRACT_TRANSITION_ONLY_NOT_EXECUTED",
+    "family_generations": {
+      "input_history_generation": 1,
+      "transient_generation": 1,
+      "transform_generation": 1,
+      "policy_generation": 1
+    },
+    "gain_range_completed_blocks_u64": 6,
+    "db_per_bit_completed_blocks_u64": 6,
+    "six_block_complete": true,
+    "commit_eligible": true,
+    "F08/F09/F10 numerical after words and scratch": "NOT_RUN_NOT_PERSISTENT_ROOT"
+  },
+  "parent_source_commit": {
+    "expected_root_generation_after": 1,
+    "executed": "NOT_RUN"
+  },
+  "failure_discard": {
+    "committed_root_remains_cold": true,
+    "commit_count": 0,
+    "executed": "CONTRACT_INVARIANT_ONLY"
+  },
+  "ephemeral_not_root": [
+    "SharedAnalysisReceipt",
+    "NumericPlanReceipt",
+    "MeasurementReceipt",
+    "source/sample plan and spectra scratch",
+    "codec previous_short"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "washed-evidence-package.v1",
+  "package_id": "CONVERTER-CODEC-PLAN-HANDOFF-AUDIT-V1",
+  "decision": "NO_NEW_SELECTED_MODEL_GAP",
+  "scope": "approved selected ADM 48 kHz / 1024 kbps / 5.1 model only",
+  "implementation_ready": "UNCHANGED_FROM_APPROVED_BASE",
+  "fresh_source_to_frame_integration": "NOT_RUN",
+  "native_execution": "NOT_RUN",
+  "full_song_replay": "NOT_RUN",
+  "source_code_disassembly_machine_code_addresses_pcm_and_keys_included": false,
+  "payloads": [
+    {
+      "file": "DECISION.md",
+      "bytes": 5456,
+      "sha256": "eab9a4daabb5ed91cedead55ac62c73ac39d7509e4ea39af4fec8bdfd5ccdfbe"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 2113,
+      "sha256": "3fd27792cfa975693e4c0d434dc067a4fd6da22f62acd456fc1fde6f25922404"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 4011,
+      "sha256": "4b02138ba55410efeff2e2d137db1f2b5297b4e5519dd3b34f650a62bd07d802"
+    }
+  ],
+  "detached_manifest_digest": "MANIFEST.sha256"
+}

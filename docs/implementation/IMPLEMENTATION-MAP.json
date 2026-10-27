@@ -7481,8 +7481,215 @@
             "Real ADM, native DLL, product and listening acceptance"
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+        },
+        {
+          "slice_id": "selected-f06nr-same-source-drc-proposal",
+          "mapping_status": "MATERIALIZED_F06NR_PRIMARY_AND_F06ND_SAME_SOURCE_PROPOSAL__NUMERICAL_PARITY_AND_PARENT_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_NONCOMMITTING_SAME_SOURCE_DRC_PROPOSAL_API__NUMERICAL_PARITY_AND_PARENT_COMMIT_NOT_RUN",
+          "scope": "For one source, the DRC root reads F07 delayed primary rows and short_consumed from one SharedAnalysisReceipt, stages F06NR secondary history/carrier and F06ND using that same receipt, then joins both after-states into one complete noncommitting DRC proposal. This is a callable domain API only: numerical after-state parity, a parent/application callsite, receipt admission, and root commit are not established.",
+          "owner": "drc",
+          "dependencies": ["analysis-owner-f07-source-stage", "selected-none-drc-source-owner-stage", "selected-secondary-source-au-clock-projection"],
+          "implementation_files": [
+            "crates/jocforge-domain/src/drc/secondary_source_owner.rs",
+            "crates/jocforge-domain/src/drc/none_drc_owner.rs",
+            "crates/jocforge-domain/src/drc/none_drc_statistics.rs",
+            "crates/jocforge-domain/src/drc/mod.rs",
+            "crates/jocforge-domain/src/analysis/source_frame.rs",
+            "crates/jocforge-domain/src/timeline/clock.rs",
+            "crates/jocforge-domain/src/timeline/index.rs",
+            "crates/jocforge-domain/src/transaction/mod.rs",
+            "crates/jocforge-domain/src/numeric/finite_f32.rs",
+            "crates/jocforge-domain/src/transform/fbw_transform.rs",
+            "crates/jocforge-domain/src/transform/long_transform.rs",
+            "crates/jocforge-domain/src/transform/math_generated_parameters.rs",
+            "crates/jocforge-domain/src/transform/secondary_carrier.rs",
+            "crates/jocforge-domain/src/transform/secondary_fft.rs",
+            "crates/jocforge-domain/src/transform/secondary_inverse.rs",
+            "crates/jocforge-domain/src/transform/secondary_overlap.rs",
+            "crates/jocforge-domain/src/transform/window_fold.rs"
+          ],
+          "clock": {
+            "domains": ["AttemptId", "CallbackLineageIdentity", "FrontendCallbackIndex", "CodecSourceIndex", "JocDispatchIndex", "AnalysisOwnerGeneration"],
+            "covered_clauses": [
+              "The callback identity, SharedAnalysisReceipt source identity, DRC source generation, and dispatch projection must identify the same source.",
+              "F06NR and F06ND both consume inputs from the same SharedAnalysisReceipt; no caller-supplied row or flag arrays cross the proposal API.",
+              "The joined proposal advances the F06NR and F06ND state projections to source index plus one but does not commit either owner root."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_F06NR_F08_PRIMARY_BANK_AND_DRC_OWNER_CONTRACTS",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DRC-STANDALONE-OWNER-OPTIONAL-DIALNORM-V1/DRC-ROOT-SCHEMA.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DRC-STANDALONE-OWNER-OPTIONAL-DIALNORM-V1/INPUT-ONLY-OPTION-COLD-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06NR-SOURCE-FRAME-INPUT-ONLY-CROSSWALK-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06NR-SOURCE-FRAME-INPUT-ONLY-CROSSWALK-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06NR-SOURCE-FRAME-INPUT-ONLY-CROSSWALK-V1/SOURCE-VECTOR-HASHES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06NR-SOURCE-FRAME-INPUT-ONLY-CROSSWALK-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06NR-F08-PRIMARY-BANK-STATE-CROSSWALK-V1/MODEL-BANK-STATE-CROSSWALK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06NR-F08-PRIMARY-BANK-STATE-CROSSWALK-V1/SOURCE-VECTOR-CROSSWALK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06NR-APPROVED-SOURCE-LEAVES-V1/SOURCE-IDENTITIES.json",
+              "crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json",
+              "crates/jocforge-domain/src/transform/secondary_fft_parameters.json",
+              "crates/jocforge-domain/tests/fixtures/transient_channel/PARAMETERS.json"
+            ],
+            "supplement_manifest_sha256s": {
+              "F06NR-SOURCE-FRAME-INPUT-ONLY-CROSSWALK-V1": "e19715f1e673faa615b1e7b9016bd7103b41b93ab4c94ca0213e7d1dfa2ef285",
+              "F06NR-F08-PRIMARY-BANK-STATE-CROSSWALK-V1": "28e0395258d9b0773d989c636bef680f60c75947955da0c27ee925bfb854578c",
+              "F06NR-APPROVED-SOURCE-LEAVES-V1": "c24bdcee1c8c816a65e5cbd9202e87ebe700cf9ba3f0ed969b0f52ce9f69181f",
+              "DRC-STANDALONE-OWNER-OPTIONAL-DIALNORM-V1": "0ee7491d713000921c5e002710d67771791d64c531ed41a2d55c77c5c559cbb7"
+            },
+            "validation_boundary": "Input schema, primary-bank selection, and same-source structure only; no independent numerical outputs or production parent-call evidence.",
+            "numerical_after_state_oracle": "NOT_RUN",
+            "authorization_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL"
+          },
+          "test_modules": ["crates/jocforge-domain/src/drc/secondary_source_owner/tests.rs", "crates/jocforge-domain/src/drc/none_drc_owner.rs"],
+          "vectors": {
+            "kind": "SYNTHETIC_INPUT_ONLY_F06NR_AND_SAME_SOURCE_F06ND_PROPOSAL",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06NR-SOURCE-FRAME-INPUT-ONLY-CROSSWALK-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06NR-SOURCE-FRAME-INPUT-ONLY-CROSSWALK-V1/SOURCE-VECTOR-HASHES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06NR-F08-PRIMARY-BANK-STATE-CROSSWALK-V1/SOURCE-VECTOR-CROSSWALK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DRC-STANDALONE-OWNER-OPTIONAL-DIALNORM-V1/INPUT-ONLY-OPTION-COLD-VECTOR.json"
+            ],
+            "case_pointers": [
+              "Input recipes bind source frames 0, 1, and 2; they contain synthetic values/flags only and no expected DSP outputs.",
+              "Focused tests construct the same SharedAnalysisReceipt consumed by F06NR and F06ND and verify the noncommitting joined proposal shape.",
+              "The selected F08 PRIMARY bank is documented; numerical forward/inverse after-state and nonzero carrier parity remain NOT_RUN."
+            ],
+            "expected_outputs_included": false,
+            "expected_values_are_assertions_only": true
+          },
+          "error_outcomes": [
+            {
+              "error_code": "SecondarySourceError::F07OutputShape",
+              "category": "same-source F07 proposal shape",
+              "trigger": "The receipt does not expose six delayed audio rows of the selected block shape.",
+              "programme_state_after": "No source proposal is returned; the borrowed DRC root remains unchanged.",
+              "caller_action": "Reject this source-stage proposal and report the typed source error to the parent."
+            },
+            {
+              "error_code": "SecondarySourceError::InputNonFinite",
+              "category": "F06NR primary input validity",
+              "trigger": "Any delayed primary sample word is nonfinite.",
+              "programme_state_after": "No source proposal is returned; no committed owner state changes.",
+              "caller_action": "Reject this source-stage proposal; parent fatal/error mapping remains unimplemented."
+            },
+            {
+              "error_code": "SecondarySourceError::Owner",
+              "category": "programme/attempt/source/generation identity",
+              "trigger": "The measurement, callback, SharedAnalysisReceipt, or DRC generation fails its same-source preflight.",
+              "programme_state_after": "No DRC after-root proposal is returned; the borrowed root remains unchanged.",
+              "caller_action": "Reject this proposal; GTC receipt admission and global fatal handling remain NOT_RUN."
+            }
+          ],
+          "not_run": [
+            "Numerical F06NR forward/inverse after-state parity and nonzero carrier oracle.",
+            "Application/parent producer callsite and SharedAnalysisReceipt::from_parent construction.",
+            "DRC OwnerReceipt admission, GTC single root swap, and parent fatal/reset/EOF behavior.",
+            "Meter READY input, complete F12 frame/AU production, encode, and product acceptance."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/drc/secondary_source_owner.rs",
+              "bytes": 17673,
+              "sha256": "3ad5e78b424fe3b295eef94bddbbe2e4f971ba26a1594c4c558f7b5334aeab61"
+            },
+            {
+              "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
+              "bytes": 39690,
+              "sha256": "a00c0c50cbec6ea80954bb0979e8a1bb65e303cabe2043fb6e5333bf86b145a0"
+            },
+            {
+              "path": "crates/jocforge-domain/src/drc/none_drc_statistics.rs",
+              "bytes": 18428,
+              "sha256": "f88cf10d2dcc607baaffe5157534530c003030aae901ab8880c6e2c01f3dcf68"
+            },
+            {
+              "path": "crates/jocforge-domain/src/drc/mod.rs",
+              "bytes": 595,
+              "sha256": "3e043ac6dcde92bc3e100fc8b83ec7a83692f7a6e4a0dfd0507fa1c71ece5f0a"
+            },
+            {
+              "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
+              "bytes": 18091,
+              "sha256": "f5a7939117a8fd604d22b2a05adc8400c51d414014a68f48c5df4f1b53a288a3"
+            },
+            {
+              "path": "crates/jocforge-domain/src/timeline/clock.rs",
+              "bytes": 4325,
+              "sha256": "2c10c400d2ce3b8b8cc7fdc43be857365ab5ec8b0d441362916031425a5783ee"
+            },
+            {
+              "path": "crates/jocforge-domain/src/timeline/index.rs",
+              "bytes": 2672,
+              "sha256": "50696493ea1bed2b647f2c438f032410548b70e5008b535773e23647ee59bd40"
+            },
+            {
+              "path": "crates/jocforge-domain/src/transaction/mod.rs",
+              "bytes": 2915,
+              "sha256": "442a74702c82926abd9de95e5f0686fd9f1cb8e656e2e051ade2390abdee238c"
+            },
+            {
+              "path": "crates/jocforge-domain/src/numeric/finite_f32.rs",
+              "bytes": 1192,
+              "sha256": "80b92e72cb36a883189de17b63db7601c4d9acb85590f8c6ca46432b233707cf"
+            },
+            {
+              "path": "crates/jocforge-domain/src/transform/fbw_transform.rs",
+              "bytes": 6652,
+              "sha256": "4254c8245769beb887f556bf04d4685e8e61ecdf80dafe316e2080a60fb9214a"
+            },
+            {
+              "path": "crates/jocforge-domain/src/transform/long_transform.rs",
+              "bytes": 13816,
+              "sha256": "8e3496533f3e560d4f0e1dd038e9256ff7d96ad5306724884388e1b2e51bc4ae"
+            },
+            {
+              "path": "crates/jocforge-domain/src/transform/math_generated_parameters.rs",
+              "bytes": 9346,
+              "sha256": "7e8b23147ce9be9b9a19a518ec07d7b1d73bb5b2c60cdd04fe02fc8ff33e20a8"
+            },
+            {
+              "path": "crates/jocforge-domain/src/transform/secondary_carrier.rs",
+              "bytes": 2193,
+              "sha256": "83900614c5abe63e7c4239460d067578da09c9a75a51dcf8fdee863b2d4382fa"
+            },
+            {
+              "path": "crates/jocforge-domain/src/transform/secondary_fft.rs",
+              "bytes": 28245,
+              "sha256": "aabd57dcef14941a4ac4428d041ad1aacbbab84812a7140e4b323ba42698b9e3"
+            },
+            {
+              "path": "crates/jocforge-domain/src/transform/secondary_inverse.rs",
+              "bytes": 8995,
+              "sha256": "98c9cea31cb28b924c0822685fc57b9199f5655ca4751116570637088847bcd7"
+            },
+            {
+              "path": "crates/jocforge-domain/src/transform/secondary_overlap.rs",
+              "bytes": 9455,
+              "sha256": "98be885981f5db91a648f46f96e37841cea097617989c3060edbd4d683701377"
+            },
+            {
+              "path": "crates/jocforge-domain/src/transform/window_fold.rs",
+              "bytes": 5171,
+              "sha256": "9295d6d0cc18d796c55bdc4d61542a19d0b43886778ad41f8cf24cb34f734c9e"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/drc/secondary_source_owner/tests.rs",
+              "bytes": 16624,
+              "sha256": "d61a8c70ae107930d30ec200530d712e33d64f611088c3cbbbe43de1f12dae48"
+            },
+            {
+              "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
+              "bytes": 39690,
+              "sha256": "a00c0c50cbec6ea80954bb0979e8a1bb65e303cabe2043fb6e5333bf86b145a0"
+            }
+          ]
         }
-      ]
+                       ]
     },
     {
       "functional_id": "F06NI",
@@ -9100,9 +9307,9 @@
         },
         {
           "slice_id": "selected-none-drc-source-owner-stage",
-          "mapping_status": "MATERIALIZED_SELECTED_F06ND_OWNER_STAGE__F06NR_AND_GTC_PARENT_OPEN",
-          "implementation_status": "LOCALLY_MATERIALIZED_NONCOMMITTING_F06ND_SOURCE_STAGE__F06NR_RECEIPT_AND_PARENT_NOT_RUN",
-          "scope": "Adds a standalone selected DRC root around the existing secondary histories, F06ND statistics, scheduler, four-record zero FIFO, and programme dialnorm. For one source it validates the same SharedAnalysisReceipt, callback identity, attempt, source index, and local generations, then stages the F06ND transition and BSI projection. A typed secondary after-state can be joined into a complete noncommitting DRC after-root, but no F06NR producer is connected here.",
+          "mapping_status": "MATERIALIZED_SELECTED_F06ND_F06NR_SAME_SOURCE_PROPOSAL__NUMERICAL_PARITY_AND_GTC_PARENT_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_SAME_RECEIPT_F06NR_F06ND_NONCOMMITTING_PROPOSAL__PARENT_RECEIPT_AND_COMMIT_NOT_RUN",
+          "scope": "The standalone DRC root combines the selected secondary histories, F06ND statistics/scheduler/FIFO, and programme dialnorm. For one source, a callable domain API reads F07 delayed audio and flags from one SharedAnalysisReceipt, stages F06NR and F06ND from that same receipt, and returns a complete noncommitting DRC after-root proposal. Numerical parity, a production parent caller, receipt admission, and parent commit remain NOT_RUN.",
           "owner": "drc",
           "dependencies": [
             "selected-none-drc-statistics-to-scheduler-frame-composition",
@@ -9112,8 +9319,10 @@
           "implementation_files": [
             "crates/jocforge-domain/src/drc/none_drc_owner.rs",
             "crates/jocforge-domain/src/drc/mod.rs",
+            "crates/jocforge-domain/src/drc/secondary_source_owner.rs",
             "crates/jocforge-domain/src/analysis/source_frame.rs",
-            "crates/jocforge-domain/src/transaction/mod.rs"
+            "crates/jocforge-domain/src/transaction/mod.rs",
+            "crates/jocforge-domain/src/transform/long_transform.rs"
           ],
           "clock": {
             "domains": [
@@ -9130,55 +9339,62 @@
             ]
           },
           "parameters": {
-            "kind": "HASH_BOUND_SELECTED_METER_DRC_AND_SHARED_ANALYSIS_OWNER_CONTRACTS",
+            "kind": "HASH_BOUND_SELECTED_METER_DRC_F06NR_AND_SHARED_ANALYSIS_OWNER_CONTRACTS",
             "provider_files": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-TRANSITION-CONTRACT-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-TRANSITION-CONTRACT-V1/ANALYSIS-ROOT-SCHEMA.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-TRANSITION-CONTRACT-V1/INPUT-ONLY-TRANSITIONS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-ANALYSIS-CODEC-OWNER-RECONCILIATION-V1/MANIFEST.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-ANALYSIS-CODEC-OWNER-RECONCILIATION-V1/AMENDMENT.md"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DRC-STANDALONE-OWNER-OPTIONAL-DIALNORM-V1/DRC-ROOT-SCHEMA.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DRC-STANDALONE-OWNER-OPTIONAL-DIALNORM-V1/INPUT-ONLY-OPTION-COLD-VECTOR.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06NR-SOURCE-FRAME-INPUT-ONLY-CROSSWALK-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06NR-F08-PRIMARY-BANK-STATE-CROSSWALK-V1/MODEL-BANK-STATE-CROSSWALK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-CANONICAL-STATE-REFERENCE-V1/COLD-ROOT-PREIMAGE.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-TRANSITION-CONTRACT-V1/ANALYSIS-ROOT-SCHEMA.json"
             ],
-            "validation_boundary": "The constructor requires a ProgrammeMeasurementReceipt supplied by an external caller; the meter finalization and READY chain is not connected.",
-            "meter_drc_manifest_sha256": "23952c523c8bb7435133fadc77bdc1a491d74c9df09b191ff591a2da967fdb1a",
-            "analysis_root_manifest_sha256": "96d259b01b7422aacd8d31747fb6894c849e19cbb6250891bd48dea6777afc8b",
-            "owner_reconciliation_manifest_sha256": "da4334efa864c7fd5530caa2a6a446e3c7d6dc4de20ea6933642fb0c7b22faf4"
+            "validation_boundary": "Callable same-source domain proposal only; no application parent caller, independent numerical after-state oracle, GTC OwnerReceipt, or parent commit.",
+            "supplement_manifest_sha256s": {
+              "F06NR-SOURCE-FRAME-INPUT-ONLY-CROSSWALK-V1": "e19715f1e673faa615b1e7b9016bd7103b41b93ab4c94ca0213e7d1dfa2ef285",
+              "F06NR-F08-PRIMARY-BANK-STATE-CROSSWALK-V1": "28e0395258d9b0773d989c636bef680f60c75947955da0c27ee925bfb854578c",
+              "F06NR-APPROVED-SOURCE-LEAVES-V1": "c24bdcee1c8c816a65e5cbd9202e87ebe700cf9ba3f0ed969b0f52ce9f69181f",
+              "DRC-STANDALONE-OWNER-OPTIONAL-DIALNORM-V1": "0ee7491d713000921c5e002710d67771791d64c531ed41a2d55c77c5c559cbb7"
+            }
           },
-          "test_modules": [
-            "crates/jocforge-domain/src/drc/none_drc_owner.rs"
-          ],
+          "test_modules": ["crates/jocforge-domain/src/drc/none_drc_owner.rs", "crates/jocforge-domain/src/drc/secondary_source_owner/tests.rs"],
           "vectors": {
-            "kind": "INPUT_ONLY_DRC_OWNER_IDENTITY_AND_SOURCE_AFTER_STATE_JOIN",
+            "kind": "INPUT_ONLY_F06NR_F06ND_SAME_SOURCE_PROPOSAL_AND_OWNER_ROOT",
             "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-DRC-STANDALONE-ROOT-BINDING-V1/INPUT-ONLY-VECTORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-TRANSITION-CONTRACT-V1/INPUT-ONLY-TRANSITIONS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06NR-SOURCE-FRAME-INPUT-ONLY-CROSSWALK-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06NR-SOURCE-FRAME-INPUT-ONLY-CROSSWALK-V1/SOURCE-VECTOR-HASHES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06NR-F08-PRIMARY-BANK-STATE-CROSSWALK-V1/SOURCE-VECTOR-CROSSWALK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/DRC-STANDALONE-OWNER-OPTIONAL-DIALNORM-V1/INPUT-ONLY-OPTION-COLD-VECTOR.json"
             ],
             "case_pointers": [
-              "A missing or mismatched programme, attempt, SharedAnalysisReceipt, callback, source, or generation returns no DRC after-root.",
-              "F07 ordinary history remains owned only by Analysis.",
-              "A typed matching F06NR after-state may join the staged F06ND fields into a noncommitting root value.",
-              "The local tests use test-only SharedAnalysisReceipt construction and supplied secondary after-state; they do not establish production F06NR wiring."
+              "Input recipes bind source frames 0, 1, and 2; they contain synthetic values/flags only and no expected DSP outputs.",
+              "Focused tests construct the same SharedAnalysisReceipt consumed by F06NR and F06ND and verify the noncommitting joined proposal shape.",
+              "The selected F08 PRIMARY bank is documented; numerical forward/inverse after-state and nonzero carrier parity remain NOT_RUN."
             ],
-            "expected_values_are_assertions_only": true
+            "expected_values_are_assertions_only": true,
+            "expected_outputs_included": false
           },
           "not_run": [
-            "F06NR secondary producer and same-source production after-state join are NOT_RUN.",
-            "Canonical DRC state_ref preimage and GTC OwnerReceipt are NOT_RUN.",
-            "Meter MeasurementReceipt/READY input, GTC single root swap, fatal/reset/EOF parent integration, and encode are NOT_RUN."
+            "Numerical F06NR forward/inverse after-state parity and nonzero carrier oracle remain NOT_RUN.",
+            "No application/parent producer callsite; SharedAnalysisReceipt::from_parent remains unwired.",
+            "DRC GTC OwnerReceipt admission, single-root swap, fatal/reset/EOF integration, and encode remain NOT_RUN.",
+            "Meter MeasurementReceipt/READY input remains NOT_RUN."
           ],
           "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
-              "bytes": 29200,
-              "sha256": "548503939c562ff1ab7de8b4768dd163c82fe91abc45aa05a52adf7869686662"
+              "bytes": 39690,
+              "sha256": "a00c0c50cbec6ea80954bb0979e8a1bb65e303cabe2043fb6e5333bf86b145a0"
             },
             {
               "path": "crates/jocforge-domain/src/drc/mod.rs",
-              "bytes": 363,
-              "sha256": "9e727cb278a452ed0ad9d7e62c52ebc2d297436fc0a01b474686c0a359db8275"
+              "bytes": 595,
+              "sha256": "3e043ac6dcde92bc3e100fc8b83ec7a83692f7a6e4a0dfd0507fa1c71ece5f0a"
+            },
+            {
+              "path": "crates/jocforge-domain/src/drc/secondary_source_owner.rs",
+              "bytes": 17673,
+              "sha256": "3ad5e78b424fe3b295eef94bddbbe2e4f971ba26a1594c4c558f7b5334aeab61"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
@@ -9189,13 +9405,23 @@
               "path": "crates/jocforge-domain/src/transaction/mod.rs",
               "bytes": 2915,
               "sha256": "442a74702c82926abd9de95e5f0686fd9f1cb8e656e2e051ade2390abdee238c"
+            },
+            {
+              "path": "crates/jocforge-domain/src/transform/long_transform.rs",
+              "bytes": 13816,
+              "sha256": "8e3496533f3e560d4f0e1dd038e9256ff7d96ad5306724884388e1b2e51bc4ae"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
-              "bytes": 29200,
-              "sha256": "548503939c562ff1ab7de8b4768dd163c82fe91abc45aa05a52adf7869686662"
+              "bytes": 39690,
+              "sha256": "a00c0c50cbec6ea80954bb0979e8a1bb65e303cabe2043fb6e5333bf86b145a0"
+            },
+            {
+              "path": "crates/jocforge-domain/src/drc/secondary_source_owner/tests.rs",
+              "bytes": 16624,
+              "sha256": "d61a8c70ae107930d30ec200530d712e33d64f611088c3cbbbe43de1f12dae48"
             }
           ]
         }
@@ -9767,8 +9993,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 56380,
-              "sha256": "53fa7833cf763570ebe1217d39a1e0b0f425e1d840a8d0634a285b608cc2942b"
+              "bytes": 70309,
+              "sha256": "3122bb54c3e29348b775232137f9b257f906227e600d6aa87bc2819c69934821"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
@@ -9794,8 +10020,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 56380,
-              "sha256": "53fa7833cf763570ebe1217d39a1e0b0f425e1d840a8d0634a285b608cc2942b"
+              "bytes": 70309,
+              "sha256": "3122bb54c3e29348b775232137f9b257f906227e600d6aa87bc2819c69934821"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
@@ -10289,8 +10515,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 56380,
-              "sha256": "53fa7833cf763570ebe1217d39a1e0b0f425e1d840a8d0634a285b608cc2942b"
+              "bytes": 70309,
+              "sha256": "3122bb54c3e29348b775232137f9b257f906227e600d6aa87bc2819c69934821"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
@@ -10326,8 +10552,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 56380,
-              "sha256": "53fa7833cf763570ebe1217d39a1e0b0f425e1d840a8d0634a285b608cc2942b"
+              "bytes": 70309,
+              "sha256": "3122bb54c3e29348b775232137f9b257f906227e600d6aa87bc2819c69934821"
             }
           ]
         }
@@ -11430,8 +11656,8 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 56380,
-              "sha256": "53fa7833cf763570ebe1217d39a1e0b0f425e1d840a8d0634a285b608cc2942b"
+              "bytes": 70309,
+              "sha256": "3122bb54c3e29348b775232137f9b257f906227e600d6aa87bc2819c69934821"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/gain_history.rs",
@@ -11457,8 +11683,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 56380,
-              "sha256": "53fa7833cf763570ebe1217d39a1e0b0f425e1d840a8d0634a285b608cc2942b"
+              "bytes": 70309,
+              "sha256": "3122bb54c3e29348b775232137f9b257f906227e600d6aa87bc2819c69934821"
             }
           ]
         }
@@ -11929,8 +12155,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 56380,
-              "sha256": "53fa7833cf763570ebe1217d39a1e0b0f425e1d840a8d0634a285b608cc2942b"
+              "bytes": 70309,
+              "sha256": "3122bb54c3e29348b775232137f9b257f906227e600d6aa87bc2819c69934821"
             },
             {
               "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
@@ -11966,8 +12192,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 56380,
-              "sha256": "53fa7833cf763570ebe1217d39a1e0b0f425e1d840a8d0634a285b608cc2942b"
+              "bytes": 70309,
+              "sha256": "3122bb54c3e29348b775232137f9b257f906227e600d6aa87bc2819c69934821"
             },
             {
               "path": "crates/jocforge-domain/tests/exponent_normalization.rs",
@@ -12756,8 +12982,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/publication/output_owner.rs",
-              "bytes": 39341,
-              "sha256": "d3db7557e207ede77452a5215e0add1a0ba622b89fbbd9bd09c81e5e39bc3eae"
+              "bytes": 40989,
+              "sha256": "4392c99ee6e170cde468802a3491256267fa6939906e0855841f749a1c9c7c87"
             },
             {
               "path": "crates/jocforge-domain/src/integrity/crc16.rs",
@@ -15509,18 +15735,18 @@
             },
             {
               "path": "crates/jocforge-domain/src/publication/output_owner.rs",
-              "bytes": 39341,
-              "sha256": "d3db7557e207ede77452a5215e0add1a0ba622b89fbbd9bd09c81e5e39bc3eae"
+              "bytes": 40989,
+              "sha256": "4392c99ee6e170cde468802a3491256267fa6939906e0855841f749a1c9c7c87"
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
-              "bytes": 36622,
-              "sha256": "fac2f5e9e728987aba91455a48cbcd1946bcfe2bb7de9c1c49c1b2ef8ea58083"
+              "bytes": 38184,
+              "sha256": "bc35672688e9a4847a04069ee213ca735e1ec95133142c6aa3e78d88e18780ce"
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-              "bytes": 20602,
-              "sha256": "d8344a8c3f1acf009d26cc044aebc576a4f97532f7e157704f823781f3032cf7"
+              "bytes": 22755,
+              "sha256": "f5295a1b8670f267621747f80d325cb6191b12ac48fa2a67dcaae013501fd1fd"
             }
           ],
           "test_inventory": [
@@ -15541,8 +15767,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-              "bytes": 20602,
-              "sha256": "d8344a8c3f1acf009d26cc044aebc576a4f97532f7e157704f823781f3032cf7"
+              "bytes": 22755,
+              "sha256": "f5295a1b8670f267621747f80d325cb6191b12ac48fa2a67dcaae013501fd1fd"
             }
           ]
         },
@@ -16168,6 +16394,43 @@
     {
       "root_id": "reader_eof",
       "materialization_status": "MATERIALIZED",
+      "canonical_gtc_state_ref_status": "LOCALLY_VERIFIED_COMPLETE_READER_EOF_STATE_REFERENCE",
+      "gtc_owner_receipt_status": "NOT_IMPLEMENTED",
+      "gtc_single_root_swap_status": "NOT_RUN",
+      "canonical_state_reference": {
+        "state_ref": "owners.reader_eof",
+        "snapshot_api": "ReaderEofMachine::state_reference",
+        "serialization": "Existing complete ReaderEofState canonical bytes",
+        "cold_bytes": 31,
+        "cold_sha256": "8b3391d621f823e01cbda7dc935c1b659b8779b5f488d123a40a2a753da9dbd9",
+        "generation": "machine generation; advances only on explicit local commit",
+        "state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6"
+      },
+      "implementation_files": ["crates/jocforge-domain/src/state/reader_eof.rs", "crates/jocforge-domain/src/state/mod.rs"],
+      "test_modules": ["crates/jocforge-domain/tests/reader_eof_lifecycle.rs"],
+      "implementation_inventory": [
+        {
+          "path": "crates/jocforge-domain/src/state/reader_eof.rs",
+          "bytes": 12844,
+          "sha256": "c3d206180626cff155a896c2caf4dd6a79c92dd5b890d34ecb778384dc5465dd"
+        },
+        {
+          "path": "crates/jocforge-domain/src/state/mod.rs",
+          "bytes": 850,
+          "sha256": "c755479e7fd2d18d6130eea9fcc79a5588bdbe4837c02967adfeb5a5c9d2956e"
+        }
+      ],
+      "test_inventory": [
+        {
+          "path": "crates/jocforge-domain/tests/reader_eof_lifecycle.rs",
+          "bytes": 7779,
+          "sha256": "c473bd99ea704368cb518ef091b467ed65c57a2f195eba0bb9128d12c7a8efd3"
+        }
+      ],
+      "state_reference_verification": {
+        "cold_warm_cases": 1,
+        "test_status": "LOCALLY_VERIFIED"
+      },
       "schema_file": "parameters/adm-installed48-state-v1.json",
       "schema_version": "selected-adm-installed48-state.v3",
       "schema_pointers": [
@@ -16220,15 +16483,8 @@
         "kind": "GENERATED_PROVIDER",
         "identity": "reader-eof-cold.selected-adm-installed48-state.v3",
         "provider_files": [],
-        "generation_specs": [
-          "parameters/adm-installed48-state-v1.json",
-          "specs/01-input-and-clock.md"
-        ],
-        "rules": [
-          "all integer clocks zero except remaining_cached_drains=4",
-          "both optional caches absent",
-          "last_phase=UNSET/0"
-        ],
+        "generation_specs": ["parameters/adm-installed48-state-v1.json", "specs/01-input-and-clock.md"],
+        "rules": ["all integer clocks zero except remaining_cached_drains=4", "both optional caches absent", "last_phase=UNSET/0"],
         "validation": [
           "schema version exact",
           "seven schema pointers resolve",
@@ -16245,11 +16501,7 @@
       "permissions": {
         "prepare": {
           "authority": "F01R/F02",
-          "inputs": [
-            "committed reader_eof",
-            "explicit source byte/sample offset",
-            "validated host/control proposal"
-          ],
+          "inputs": ["committed reader_eof", "explicit source byte/sample offset", "validated host/control proposal"],
           "output": "ReaderEofStagedProposal",
           "mutation": "none"
         },
@@ -16281,16 +16533,7 @@
         "type": "OwnerReceipt<ReaderEof>",
         "schema_file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
         "schema_pointer": "#/$defs/ownerReceipt",
-        "immutable_fields": [
-          "owner_id=reader_eof",
-          "before_generation",
-          "before_sha256",
-          "after_generation",
-          "after_sha256",
-          "changed",
-          "commit_count",
-          "transaction_id"
-        ],
+        "immutable_fields": ["owner_id=reader_eof", "before_generation", "before_sha256", "after_generation", "after_sha256", "changed", "commit_count", "transaction_id"],
         "generation": "cold=0; successful callback commit increments exactly once",
         "canonical_digest": "SHA-256 over canonical serialized complete reader_eof bytes",
         "field_types": {
@@ -16306,15 +16549,7 @@
         "serialization": "GLOBAL-TRANSACTION schema JSON object; key order is not semantic; no receipt-byte digest is claimed"
       },
       "canonical_serialization": {
-        "field_order": [
-          "callback_index",
-          "source_cursor_samples",
-          "normal_callbacks",
-          "remaining_cached_drains",
-          "last_normal_host38",
-          "last_control_snapshot",
-          "last_phase"
-        ],
+        "field_order": ["callback_index", "source_cursor_samples", "normal_callbacks", "remaining_cached_drains", "last_normal_host38", "last_control_snapshot", "last_phase"],
         "integers": "little-endian",
         "f32": "exact U32 bits row-major",
         "optional": "presence byte then payload",
@@ -16322,10 +16557,7 @@
       },
       "boundaries": {
         "domain": "crates/jocforge-domain/src/frontend/input_clock.rs owns pure transition and generated cold constructor",
-        "io": [
-          "crates/jocforge-io/src/bw64/mod.rs",
-          "crates/jocforge-io/src/pcm/mod.rs"
-        ],
+        "io": ["crates/jocforge-io/src/bw64/mod.rs", "crates/jocforge-io/src/pcm/mod.rs"],
         "io_rule": "seek/chunk/bounded read only; pass bytes and explicit offsets to domain; cannot mutate owner"
       },
       "evidence": [
@@ -16350,11 +16582,7 @@
         "staged": {
           "type": "ReaderEofStaged",
           "clone": false,
-          "consumed_by": [
-            "abort(self, staged)",
-            "commit(&mut self, staged)",
-            "fatal(&mut self, staged)"
-          ]
+          "consumed_by": ["abort(self, staged)", "commit(&mut self, staged)", "fatal(&mut self, staged)"]
         },
         "abort_reuse": "impossible after successful abort because staged token is moved",
         "stale_token": "independently prepared stale token is consumed and rejected by generation/digest validation"
@@ -16373,6 +16601,39 @@
     {
       "root_id": "frontend_control",
       "materialization_status": "PARTIALLY_MATERIALIZED_NO_COMMIT",
+      "canonical_gtc_state_ref_status": "LOCALLY_VERIFIED_COLD_STATE_REFERENCE_ONLY",
+      "gtc_owner_receipt_status": "NOT_IMPLEMENTED",
+      "gtc_single_root_swap_status": "NOT_RUN",
+      "canonical_state_reference": {
+        "state_ref": "owners.frontend_control",
+        "snapshot_api": "FrontendControlMachine::state_reference",
+        "serialization": "Existing validated provider canonical bytes",
+        "cold_bytes": 4402,
+        "cold_sha256": "9c943879cd36cb45bc7538346cfdf4f71d0998d8f261f75c135045fcb59870aa",
+        "scope": "Cold-only; current stage clones cold state and no warm state transition or parent receipt is claimed",
+        "state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6"
+      },
+      "implementation_files": ["crates/jocforge-domain/src/frontend/state.rs", "crates/jocforge-domain/src/frontend/mod.rs"],
+      "test_modules": ["crates/jocforge-domain/tests/frontend_control_staging.rs"],
+      "implementation_inventory": [
+        {
+          "path": "crates/jocforge-domain/src/frontend/state.rs",
+          "bytes": 16878,
+          "sha256": "9f7f903093d37cd9cd56ce3e4219d1281eff95d14f218297e851f29eb809c5fa"
+        },
+        {
+          "path": "crates/jocforge-domain/src/frontend/mod.rs",
+          "bytes": 1774,
+          "sha256": "5fe4186ed860f5d3c61dc5d85a90a80bdbd5bf83770f1fb718164f02fedf1056"
+        }
+      ],
+      "test_inventory": [
+        {
+          "path": "crates/jocforge-domain/tests/frontend_control_staging.rs",
+          "bytes": 5653,
+          "sha256": "49b641d631f1b2b2849e324c346d0eb212b80d8d647b23643fc883734802928a"
+        }
+      ],
       "schema_file": "parameters/f01e-selected-constructor-v1.json",
       "schema_version": "f01e-selected-constructor.v1",
       "schema_pointer": "/value",
@@ -16469,10 +16730,7 @@
       "canonical_serialization": {
         "encoding": "UTF-8 JSON",
         "sort_keys": true,
-        "separators": [
-          ",",
-          ":"
-        ],
+        "separators": [",", ":"],
         "ensure_ascii": false,
         "numbers": "JSON decimal integers; booleans/null lowercase",
         "trailing_bytes": "none",
@@ -16487,11 +16745,7 @@
       "permissions": {
         "prepare": {
           "authority": "F01E pure config/event/control transition",
-          "inputs": [
-            "committed frontend_control",
-            "validated ADM/config/DBMD/event bytes already gathered by I/O shell",
-            "callback kind and reader_eof clock proposal"
-          ],
+          "inputs": ["committed frontend_control", "validated ADM/config/DBMD/event bytes already gathered by I/O shell", "callback kind and reader_eof clock proposal"],
           "output": "FrontendControlPrepared",
           "mutation": "none"
         },
@@ -16528,11 +16782,7 @@
         "staged": {
           "type": "FrontendControlStaged",
           "clone": false,
-          "consumed_by": [
-            "global abort",
-            "global commit",
-            "global fatal"
-          ]
+          "consumed_by": ["global abort", "global commit", "global fatal"]
         },
         "machine": {
           "type": "FrontendControlMachine",
@@ -16545,27 +16795,13 @@
         "type": "OwnerReceipt<FrontendControl>",
         "schema_file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
         "schema_pointer": "#/$defs/ownerReceipt",
-        "immutable_fields": [
-          "owner_id=frontend_control",
-          "before_generation",
-          "before_sha256",
-          "after_generation",
-          "after_sha256",
-          "changed",
-          "commit_count",
-          "transaction_id"
-        ],
+        "immutable_fields": ["owner_id=frontend_control", "before_generation", "before_sha256", "after_generation", "after_sha256", "changed", "commit_count", "transaction_id"],
         "generation": "cold=0; successful global callback commit increments exactly once",
         "digest": "SHA-256 canonical complete frontend_control bytes"
       },
       "boundaries": {
-        "domain": [
-          "crates/jocforge-domain/src/frontend/config.rs",
-          "crates/jocforge-domain/src/frontend/events.rs"
-        ],
-        "io": [
-          "crates/jocforge-io/src/bw64/mod.rs"
-        ],
+        "domain": ["crates/jocforge-domain/src/frontend/config.rs", "crates/jocforge-domain/src/frontend/events.rs"],
+        "io": ["crates/jocforge-io/src/bw64/mod.rs"],
         "io_rule": "I/O gathers bounded metadata bytes only; domain parses/validates and owns state"
       },
       "cross_root_coordination": {
@@ -16573,12 +16809,7 @@
         "peer_root": "reader_eof",
         "required_future_interface": "CallbackJoinProposal { transaction_id, callback_index, reader_eof_before_generation, frontend_control_before_generation, reader_eof_staged, frontend_control_staged }",
         "atomicity_claim": "NOT_IMPLEMENTED; two independent machine commits must never be presented as global atomic success",
-        "required_checks": [
-          "same transaction_id",
-          "same callback_index",
-          "both before generations current",
-          "all callback roots staged before any root replacement"
-        ]
+        "required_checks": ["same transaction_id", "same callback_index", "both before generations current", "all callback roots staged before any root replacement"]
       },
       "evidence": [
         "parameters/f01e-selected-constructor-v1.json",
@@ -16633,26 +16864,63 @@
       "root_id": "spatial_control",
       "materialization_status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
       "implementation_status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
+      "canonical_gtc_state_ref_status": "LOCALLY_VERIFIED_COMPLETE_SPATIAL_CONTROL_STATE_REFERENCE",
+      "gtc_owner_receipt_status": "NOT_IMPLEMENTED",
+      "gtc_single_root_swap_status": "NOT_RUN",
+      "canonical_state_reference": {
+        "state_ref": "owners.spatial_control",
+        "snapshot_api": "SpatialControlMachine::state_reference",
+        "serialization": "Existing complete selected v5 root canonical bytes",
+        "cold_bytes": 768582,
+        "cold_sha256": "cb9b512e03d82604270a22cf60e288f9ea8f6aa808517a6319a27f860552bcc0",
+        "state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6"
+      },
+      "implementation_files": ["crates/jocforge-domain/src/spatial/spatial_control.rs", "crates/jocforge-domain/src/spatial/mod.rs"],
+      "test_modules": ["crates/jocforge-domain/src/spatial/spatial_control.rs", "crates/jocforge-domain/tests/spatial_control_foundation.rs"],
+      "implementation_inventory": [
+        {
+          "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+          "bytes": 33420,
+          "sha256": "b23c0cc31eb8a2e0be1fe0b0635addb5dd680f713971c174e34c95697e2fed8c"
+        },
+        {
+          "path": "crates/jocforge-domain/src/spatial/mod.rs",
+          "bytes": 3333,
+          "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"
+        }
+      ],
+      "test_inventory": [
+        {
+          "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+          "bytes": 33420,
+          "sha256": "b23c0cc31eb8a2e0be1fe0b0635addb5dd680f713971c174e34c95697e2fed8c"
+        },
+        {
+          "path": "crates/jocforge-domain/tests/spatial_control_foundation.rs",
+          "bytes": 10051,
+          "sha256": "7235e30cf033d32c746e44c5501424a77e97fe84f745984c8cecf771d40d3212"
+        }
+      ],
+      "state_reference_verification": {
+        "cold_bytes": 768582,
+        "cold_sha256": "cb9b512e03d82604270a22cf60e288f9ea8f6aa808517a6319a27f860552bcc0",
+        "focused_test_status": "PASS_3"
+      },
       "programme_owner_binding": {
         "owner_id": "spatial_control",
         "wrapper_schema_file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
         "wrapper_schema_pointer": "#/properties/owners/properties/spatial_control",
         "wrapper_ref": "#/$defs/ownerState",
-        "wrapper_fields": [
-          "owner_id",
-          "generation",
-          "state_sha256",
-          "cold_sha256",
-          "state_ref"
-        ],
+        "wrapper_fields": ["owner_id", "generation", "state_sha256", "cold_sha256", "state_ref"],
         "wrapper_bindings": {
           "owner_id": "spatial_control",
           "generation": "main callback generation; cold=0",
           "state_sha256": "SHA-256 over complete canonical f03w_owned_fields bytes",
           "cold_sha256": "SHA-256 over canonical bytes generated from the complete cold constructor and validated provider values",
-          "state_ref": "parameters/adm-installed48-state-v1.json#/f03w_owned_fields"
+          "state_ref": "owners.spatial_control"
         },
-        "state_ref_value": "parameters/adm-installed48-state-v1.json#/f03w_owned_fields",
+        "state_ref_value": "owners.spatial_control",
+        "state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6",
         "layout_file": "parameters/adm-installed48-state-v1.json",
         "layout_manifest_entry_bytes": 7237,
         "layout_manifest_entry_sha256": "5138318de304b83d26e47271c1661bcc903cebcd2cea457ae98e0048b161ed46",
@@ -16669,35 +16937,11 @@
         ]
       },
       "f03w_owned_field_groups": {
-        "clocks": [
-          "callback_index",
-          "source_cursor_samples",
-          "normal_callbacks",
-          "remaining_cached_drains",
-          "retired"
-        ],
-        "source_cache": [
-          "last_normal_host38",
-          "last_control_snapshot",
-          "last_phase"
-        ],
-        "event_control": [
-          "owned_state",
-          "derived_control38",
-          "derived_regular37"
-        ],
-        "render_audio": [
-          "regular_raw_history",
-          "previous_pcm",
-          "previous_current_rows",
-          "diffusion_instances",
-          "diffusion_previous_outputs"
-        ],
-        "feature": [
-          "source_vector",
-          "source_scalar",
-          "fft4096_work"
-        ],
+        "clocks": ["callback_index", "source_cursor_samples", "normal_callbacks", "remaining_cached_drains", "retired"],
+        "source_cache": ["last_normal_host38", "last_control_snapshot", "last_phase"],
+        "event_control": ["owned_state", "derived_control38", "derived_regular37"],
+        "render_audio": ["regular_raw_history", "previous_pcm", "previous_current_rows", "diffusion_instances", "diffusion_previous_outputs"],
+        "feature": ["source_vector", "source_scalar", "fft4096_work"],
         "selection_outer": [
           "target_current_xyz",
           "target_current_id",
@@ -16713,12 +16957,7 @@
           "f03n_nnls",
           "f03s_outer"
         ],
-        "matrix_assignment": [
-          "assignment",
-          "markers",
-          "matrix",
-          "writer_set"
-        ]
+        "matrix_assignment": ["assignment", "markers", "matrix", "writer_set"]
       },
       "profile_binding": {
         "schema_identity": "selected-adm-installed48-state.v5",
@@ -16731,11 +16970,7 @@
         "persistent_state_field": false,
         "root_canonical_bytes": 0,
         "presence_tag": false,
-        "binding_sources": [
-          "selected EncodingProfile identity",
-          "validated F01E provider receipt",
-          "validated F03 target provider receipt"
-        ],
+        "binding_sources": ["selected EncodingProfile identity", "validated F01E provider receipt", "validated F03 target provider receipt"],
         "active_target_count_n": {
           "classification": "documentation_only",
           "numeric_state": false,
@@ -16783,8 +17018,8 @@
           "callback_index": "g",
           "payload": "flags U8[48][2]",
           "derived_from": "same callback before history plus current input/control/route/prefix writer set",
-        "producer_status": "LOCALLY_VERIFIED_NUMERIC_AND_PACKET",
-        "implementation_file": "crates/jocforge-domain/src/spatial/source_flags.rs",
+          "producer_status": "LOCALLY_VERIFIED_NUMERIC_AND_PACKET",
+          "implementation_file": "crates/jocforge-domain/src/spatial/source_flags.rs",
           "persistent": false,
           "root_canonical_bytes": 0,
           "presence_tag": false,
@@ -16796,7 +17031,7 @@
           "payload": "features F32[24][48]",
           "order": "band-major",
           "bitwise_relation": "features[band][source] = source_vector_after[source][band]",
-        "producer_status": "LOCALLY_VERIFIED_MATH_AND_CAPABILITY__RENDER_AND_PARENT_DEFERRED",
+          "producer_status": "LOCALLY_VERIFIED_MATH_AND_CAPABILITY__RENDER_AND_PARENT_DEFERRED",
           "persistent": false,
           "root_canonical_bytes": 0,
           "presence_tag": false,
@@ -16902,26 +17137,14 @@
         "type": "OwnerReceipt<SpatialControl>",
         "schema_file": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
         "schema_pointer": "#/$defs/ownerReceipt",
-        "fields": [
-          "owner_id=spatial_control",
-          "before_generation",
-          "before_sha256",
-          "after_generation",
-          "after_sha256",
-          "changed",
-          "commit_count",
-          "transaction_id"
-        ],
+        "fields": ["owner_id=spatial_control", "before_generation", "before_sha256", "after_generation", "after_sha256", "changed", "commit_count", "transaction_id"],
         "transaction_id": "same CallbackTransactionId as reader_eof and frontend_control",
         "commit_count": "1 when changed; 0 when unchanged, per GTC",
         "serialization": "GTC JSON object; property order is not semantic and no receipt-byte digest is specified"
       },
       "transaction_stage": {
         "status": "STAGING_ONLY_WAITING_ON_P1.3_C_OWNER_ROOTS",
-        "capabilities": [
-          "SpatialControlPrepared non-Clone/non-Copy",
-          "SpatialControlStaged non-Clone/non-Copy"
-        ],
+        "capabilities": ["SpatialControlPrepared non-Clone/non-Copy", "SpatialControlStaged non-Clone/non-Copy"],
         "join_metadata": [
           "shared CallbackTransactionId",
           "same FrontendCallbackIndex as reader_eof and frontend_control",
@@ -17013,6 +17236,7 @@
         "serialization": "Existing complete F04CompositionState canonical bytes",
         "cold_bytes": 813733,
         "cold_sha256": "35cfac927bbdca64f28954844938fe2936531f59f049dfca911c44d3a38b0b5e",
+        "state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6",
         "local_snapshot_api": "SpatialAudioMachine::state_reference",
         "receipt_or_commit": "none; enclosing GTC remains the only parent receipt and commit authority"
       },
@@ -17370,186 +17594,291 @@
       "parent_install_status": "NOT_RUN; the complete after-state and ID14 body are available as one noncommitting proposal, but all twelve owner roots remain mandatory."
     },
                 {
-          "root_id": "meter",
-          "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
-          "implementation_status": "PARTIAL_LOCAL_OWNER_STAGE__GTC_RECEIPT_AND_SINGLE_SWAP_NOT_RUN",
-          "implementation_files": [
-            "crates/jocforge-domain/src/meter/standalone_root.rs",
-            "crates/jocforge-domain/src/meter/mod.rs"
-          ],
-          "test_modules": [
-            "crates/jocforge-domain/src/meter/standalone_root/tests.rs"
-          ],
-          "implementation_inventory": [
-            {
-              "path": "crates/jocforge-domain/src/meter/standalone_root.rs",
-              "bytes": 16057,
-              "sha256": "69848193bd49e5429028494385bcba48c47c1051c965a3836f1bd8737cab3de9"
-            },
-            {
-              "path": "crates/jocforge-domain/src/meter/mod.rs",
-              "bytes": 648,
-              "sha256": "2795a8f103682569d34184f7d6d4a2bec97f750c273658a42af5a75fb74b6577"
-            }
-          ],
-          "test_inventory": [
-            {
-              "path": "crates/jocforge-domain/src/meter/standalone_root/tests.rs",
-              "bytes": 6976,
-              "sha256": "4d204315db95118824c8a4deb40c93ffde9d02ab33f46897fb7abed8694b0f55"
-            }
-          ],
-          "local_scope": "The fixed selected meter schedule and noncommitting callback/finalization-values proposal are locally materialized.",
-          "canonical_gtc_state_ref_status": "NOT_RUN",
-          "gtc_owner_receipt_status": "NOT_RUN",
-          "gtc_single_root_swap_status": "NOT_RUN",
-          "encode_status": "NOT_RUN",
-          "remaining_gates": [
-            "Canonical GTC meter state_ref bytes and GTC OwnerReceipt.",
-            "Terminal MeasurementReceipt and READY transition.",
-            "F06OF production caller, GTC single root swap, programme reset/fatal/EOF integration.",
-            "Native EOF/drain evidence, end-to-end encode, W04, and product acceptance."
-          ],
-          "measurement_receipt_ready_status": "NOT_RUN"
+      "root_id": "meter",
+      "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
+      "implementation_status": "PARTIAL_LOCAL_OWNER_STAGE__GTC_RECEIPT_AND_SINGLE_SWAP_NOT_RUN",
+      "implementation_files": ["crates/jocforge-domain/src/meter/standalone_root.rs", "crates/jocforge-domain/src/meter/mod.rs"],
+      "test_modules": ["crates/jocforge-domain/src/meter/standalone_root/tests.rs"],
+      "implementation_inventory": [
+        {
+          "path": "crates/jocforge-domain/src/meter/standalone_root.rs",
+          "bytes": 16057,
+          "sha256": "69848193bd49e5429028494385bcba48c47c1051c965a3836f1bd8737cab3de9"
         },
+        {
+          "path": "crates/jocforge-domain/src/meter/mod.rs",
+          "bytes": 648,
+          "sha256": "2795a8f103682569d34184f7d6d4a2bec97f750c273658a42af5a75fb74b6577"
+        }
+      ],
+      "test_inventory": [
+        {
+          "path": "crates/jocforge-domain/src/meter/standalone_root/tests.rs",
+          "bytes": 6976,
+          "sha256": "4d204315db95118824c8a4deb40c93ffde9d02ab33f46897fb7abed8694b0f55"
+        }
+      ],
+      "local_scope": "The fixed selected meter schedule and noncommitting callback/finalization-values proposal are locally materialized.",
+      "canonical_gtc_state_ref_status": "NOT_RUN",
+      "gtc_owner_receipt_status": "NOT_RUN",
+      "gtc_single_root_swap_status": "NOT_RUN",
+      "encode_status": "NOT_RUN",
+      "latest_owner_state_reference_supplement": {
+        "package_id": "METER-ROOT-CANONICAL-STATE-REFERENCE-V4",
+        "manifest_sha256": "d4e93e12c18307678415ab13cd1304960ce658100346662ddac115b45b298a8a",
+        "queue_lifecycle_manifest_sha256": "362b383d4b5148394d7bdc43a502cc1ed68cfe39aa5fbbe1e98c2871ad68e606",
+        "payloads": "11/11 locally verified",
+        "implementation_status": "BLOCKED_ON_K_FILTER_EXPONENT_OWNER_AND_MODEL_OWNER_KEY_BINDING",
+        "unresolved_fields": [
+          "independent k_filter.exponents_i32_by_channel has no current owner/source/transition mapping",
+          "input_cursor.model_owner_key and runtime cursor/owner identity binding are not part of the current Meter root; the queue lifecycle package does not close this field"
+        ]
+      },
+      "remaining_gates": [
+        "Resolve V4 k-filter exponent ownership and model-owner-key/input-cursor binding before any complete canonical preimage.",
+        "Terminal MeasurementReceipt and READY transition.",
+        "F06OF production caller, GTC single root swap, programme reset/fatal/EOF integration.",
+        "Native EOF/drain evidence, end-to-end encode, W04, and product acceptance."
+      ],
+      "measurement_receipt_ready_status": "NOT_RUN"
+    },
                 {
-          "root_id": "drc",
-          "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
-          "implementation_status": "PARTIAL_LOCAL_OWNER_STAGE__GTC_RECEIPT_AND_SINGLE_SWAP_NOT_RUN",
-          "implementation_files": [
-            "crates/jocforge-domain/src/drc/none_drc_owner.rs",
-            "crates/jocforge-domain/src/drc/mod.rs",
-            "crates/jocforge-domain/src/analysis/source_frame.rs",
-            "crates/jocforge-domain/src/transaction/mod.rs"
-          ],
-          "test_modules": [
-            "crates/jocforge-domain/src/drc/none_drc_owner.rs"
-          ],
-          "implementation_inventory": [
-            {
-              "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
-              "bytes": 29200,
-              "sha256": "548503939c562ff1ab7de8b4768dd163c82fe91abc45aa05a52adf7869686662"
-            },
-            {
-              "path": "crates/jocforge-domain/src/drc/mod.rs",
-              "bytes": 363,
-              "sha256": "9e727cb278a452ed0ad9d7e62c52ebc2d297436fc0a01b474686c0a359db8275"
-            },
-            {
-              "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
-              "bytes": 18091,
-              "sha256": "f5a7939117a8fd604d22b2a05adc8400c51d414014a68f48c5df4f1b53a288a3"
-            },
-            {
-              "path": "crates/jocforge-domain/src/transaction/mod.rs",
-              "bytes": 2915,
-              "sha256": "442a74702c82926abd9de95e5f0686fd9f1cb8e656e2e051ade2390abdee238c"
-            }
-          ],
-          "test_inventory": [
-            {
-              "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
-              "bytes": 29200,
-              "sha256": "548503939c562ff1ab7de8b4768dd163c82fe91abc45aa05a52adf7869686662"
-            }
-          ],
-          "local_scope": "The standalone selected DRC owner and noncommitting F06ND source-stage proposal are locally materialized.",
-          "canonical_gtc_state_ref_status": "NOT_RUN",
-          "gtc_owner_receipt_status": "NOT_RUN",
-          "gtc_single_root_swap_status": "NOT_RUN",
-          "encode_status": "NOT_RUN",
-          "remaining_gates": [
-            "F06NR secondary producer and same-source after-state join.",
-            "Canonical DRC state_ref bytes and GTC OwnerReceipt.",
-            "Meter MeasurementReceipt/READY input and GTC single root swap.",
-            "Programme fatal/reset/EOF integration, end-to-end encode, and product acceptance."
-          ],
-          "f06nr_producer_status": "NOT_RUN",
-          "measurement_receipt_ready_input_status": "NOT_RUN"
+      "root_id": "drc",
+      "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
+      "implementation_status": "LOCALLY_VERIFIED_DRC_STATE_REF_AND_F06NR_F06ND_PROPOSAL_API__PARENT_CALLER_AND_COMMIT_NOT_RUN",
+      "canonical_gtc_state_ref_status": "LOCALLY_VERIFIED_COMPLETE_DRC_OPTIONAL_DIALNORM_STATE_REFERENCE",
+      "gtc_owner_receipt_status": "NOT_RUN",
+      "gtc_single_root_swap_status": "NOT_RUN",
+      "canonical_state_reference": {
+        "state_ref": "owners.drc",
+        "snapshot_api": "NoneDrcOwnerRoot::state_reference",
+        "serialization": "DRC-ROOT-SCHEMA.json sorted compact UTF-8 JSON; programme_dialnorm Option<U5> is a complete root member and the MeasurementReceipt remains an external parent input",
+        "finalized_some_bytes": 3395,
+        "finalized_some_24_sha256": "31347d238b8f69d59aa9c8708c7b752ca9775a14ec479108db26bc0b53fc27e4",
+        "generation": "committed main codec source count; meter finalize None->Some keeps DRC generation at zero",
+        "state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6",
+        "supplement_manifest_sha256": "0ee7491d713000921c5e002710d67771791d64c531ed41a2d55c77c5c559cbb7",
+        "cold_bytes": 3397,
+        "cold_sha256": "e0abc1647bf9b0857b9d9a1a3d7ab1d88207d4ac4cd8a488552bb9ad3a907e30",
+        "cold_variant": "programme_dialnorm=None"
+      },
+      "implementation_files": [
+        "crates/jocforge-domain/src/drc/none_drc_owner.rs",
+        "crates/jocforge-domain/src/drc/mod.rs",
+        "crates/jocforge-domain/src/drc/secondary_source_owner.rs",
+        "crates/jocforge-domain/src/transform/long_transform.rs",
+        "crates/jocforge-domain/src/analysis/source_frame.rs",
+        "crates/jocforge-domain/src/transaction/mod.rs"
+      ],
+      "test_modules": ["crates/jocforge-domain/src/drc/none_drc_owner.rs", "crates/jocforge-domain/src/drc/secondary_source_owner/tests.rs"],
+      "implementation_inventory": [
+        {
+          "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
+          "bytes": 39690,
+          "sha256": "a00c0c50cbec6ea80954bb0979e8a1bb65e303cabe2043fb6e5333bf86b145a0"
         },
+        {
+          "path": "crates/jocforge-domain/src/drc/mod.rs",
+          "bytes": 595,
+          "sha256": "3e043ac6dcde92bc3e100fc8b83ec7a83692f7a6e4a0dfd0507fa1c71ece5f0a"
+        },
+        {
+          "path": "crates/jocforge-domain/src/drc/secondary_source_owner.rs",
+          "bytes": 17673,
+          "sha256": "3ad5e78b424fe3b295eef94bddbbe2e4f971ba26a1594c4c558f7b5334aeab61"
+        },
+        {
+          "path": "crates/jocforge-domain/src/transform/long_transform.rs",
+          "bytes": 13816,
+          "sha256": "8e3496533f3e560d4f0e1dd038e9256ff7d96ad5306724884388e1b2e51bc4ae"
+        },
+        {
+          "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
+          "bytes": 18091,
+          "sha256": "f5a7939117a8fd604d22b2a05adc8400c51d414014a68f48c5df4f1b53a288a3"
+        },
+        {
+          "path": "crates/jocforge-domain/src/transaction/mod.rs",
+          "bytes": 2915,
+          "sha256": "442a74702c82926abd9de95e5f0686fd9f1cb8e656e2e051ade2390abdee238c"
+        }
+      ],
+      "test_inventory": [
+        {
+          "path": "crates/jocforge-domain/src/drc/none_drc_owner.rs",
+          "bytes": 39690,
+          "sha256": "a00c0c50cbec6ea80954bb0979e8a1bb65e303cabe2043fb6e5333bf86b145a0"
+        },
+        {
+          "path": "crates/jocforge-domain/src/drc/secondary_source_owner/tests.rs",
+          "bytes": 16624,
+          "sha256": "d61a8c70ae107930d30ec200530d712e33d64f611088c3cbbbe43de1f12dae48"
+        }
+      ],
+      "local_scope": "The complete standalone DRC root has a locally verified canonical state reference. A callable domain API stages F06NR PRIMARY and same-source F06ND from one SharedAnalysisReceipt into a noncommitting DRC proposal. Numerical parity, parent/application callsite, receipt admission, and GTC commit remain NOT_RUN.",
+      "encode_status": "NOT_RUN",
+      "remaining_gates": [
+        "Application/parent SourceTransaction callsite for prepare_source_frame; SharedAnalysisReceipt::from_parent remains unwired.",
+        "Numerical F06NR forward/inverse after-state parity and nonzero carrier oracle remain NOT_RUN.",
+        "DRC GTC OwnerReceipt admission and single-root swap remain NOT_RUN.",
+        "Meter MeasurementReceipt/READY input remains NOT_RUN.",
+        "Programme fatal/reset/EOF integration, end-to-end encode, and product acceptance remain NOT_RUN."
+      ],
+      "f06nr_producer_status": "LOCALLY_VERIFIED_SAME_SOURCE_F06NR_F06ND_NONCOMMITTING_PROPOSAL_API__NUMERICAL_PARITY_NOT_RUN",
+      "f06nr_input_crosswalk_status": "INPUT_HASHES_INTERFACE_SHAPES_AND_F08_PRIMARY_BANK_MAPPING_VERIFIED__NUMERICAL_AFTER_STATE_NOT_RUN",
+      "f06nr_input_crosswalk_manifest_sha256": "e19715f1e673faa615b1e7b9016bd7103b41b93ab4c94ca0213e7d1dfa2ef285",
+      "f06nr_bank_state_crosswalk_manifest_sha256": "28e0395258d9b0773d989c636bef680f60c75947955da0c27ee925bfb854578c",
+      "f06nr_approved_source_leaf_manifest_sha256": "c24bdcee1c8c816a65e5cbd9202e87ebe700cf9ba3f0ed969b0f52ce9f69181f",
+      "f06nr_approved_source_leaf_local_rehash": "16/16",
+      "f06nr_unresolved_join": [
+        "Numerical F06NR forward/inverse after-state parity and nonzero carrier oracle remain NOT_RUN.",
+        "No application/parent callsite exists; SharedAnalysisReceipt::from_parent remains unwired.",
+        "DRC OwnerReceipt admission, GTC single-root swap, and parent fatal/reset/EOF integration remain NOT_RUN."
+      ],
+      "measurement_receipt_ready_input_status": "NOT_RUN",
+      "f06nr_numerical_after_state_status": "NOT_RUN",
+      "f06nr_parent_callsite_status": "NOT_RUN"
+    },
                 {
-          "root_id": "analysis",
-          "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
-          "implementation_status": "PARTIAL_LOCAL_OWNER_STAGE__GTC_RECEIPT_AND_SINGLE_SWAP_NOT_RUN",
-          "implementation_files": [
-            "crates/jocforge-domain/src/analysis/owner.rs",
-            "crates/jocforge-domain/src/analysis/exponent_plan.rs",
-            "crates/jocforge-domain/src/analysis/source_frame.rs",
-            "crates/jocforge-domain/src/analysis/transient_channel.rs",
-            "crates/jocforge-domain/src/codec/exponent_normalization.rs",
-            "crates/jocforge-domain/src/codec/exponent_refresh_state.rs"
-          ],
-          "test_modules": [
-            "crates/jocforge-domain/src/analysis/owner.rs",
-            "crates/jocforge-domain/src/analysis/exponent_plan.rs",
-            "crates/jocforge-domain/tests/exponent_normalization.rs"
-          ],
-          "implementation_inventory": [
-            {
-              "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 56380,
-              "sha256": "53fa7833cf763570ebe1217d39a1e0b0f425e1d840a8d0634a285b608cc2942b"
-            },
-            {
-              "path": "crates/jocforge-domain/src/analysis/exponent_plan.rs",
-              "bytes": 21426,
-              "sha256": "ea0c196b846f3ca4fe25254adf830a8fe7e1a872735b552279c5bb5bc33f8828"
-            },
-            {
-              "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
-              "bytes": 18091,
-              "sha256": "f5a7939117a8fd604d22b2a05adc8400c51d414014a68f48c5df4f1b53a288a3"
-            },
-            {
-              "path": "crates/jocforge-domain/src/analysis/transient_channel.rs",
-              "bytes": 16730,
-              "sha256": "5523689f13c36eb5ced27c8f512bf7134614c566118e7feec23af2c9916e9b3a"
-            },
-            {
-              "path": "crates/jocforge-domain/src/codec/exponent_normalization.rs",
-              "bytes": 15773,
-              "sha256": "fa25ea47daa654579294235b78bb82749950910e0d2072a1ed267377d756531a"
-            },
-            {
-              "path": "crates/jocforge-domain/src/codec/exponent_refresh_state.rs",
-              "bytes": 4693,
-              "sha256": "45509c9144fc4869d7ec2f71f5fbe663a6cd09c27a3a98b30d177a9baca3063a"
-            }
-          ],
-          "test_inventory": [
-            {
-              "path": "crates/jocforge-domain/src/analysis/owner.rs",
-              "bytes": 56380,
-              "sha256": "53fa7833cf763570ebe1217d39a1e0b0f425e1d840a8d0634a285b608cc2942b"
-            },
-            {
-              "path": "crates/jocforge-domain/src/analysis/exponent_plan.rs",
-              "bytes": 21426,
-              "sha256": "ea0c196b846f3ca4fe25254adf830a8fe7e1a872735b552279c5bb5bc33f8828"
-            },
-            {
-              "path": "crates/jocforge-domain/tests/exponent_normalization.rs",
-              "bytes": 24783,
-              "sha256": "3d402f7bccc15a542b4f56be93abe54ff61579bfcdb85ad92e43e38356d30108"
-            }
-          ],
-          "local_scope": "F07, F08, F09G, and the same-source F09/F10 value stages are partially materialized as noncommitting proposals.",
-          "canonical_gtc_state_ref_status": "NOT_RUN",
-          "gtc_owner_receipt_status": "NOT_RUN",
-          "gtc_single_root_swap_status": "NOT_RUN",
-          "encode_status": "NOT_RUN",
-          "remaining_gates": [
-            "Canonical Analysis state_ref bytes, GTC OwnerReceipt, and GTC single root swap.",
-            "Full cross-owner provider-plan lineage and parent fatal/reset/EOF integration.",
-            "F11 consumer, end-to-end encode, native execution, and product acceptance."
-          ],
-          "provider_plan_lineage_status": "NOT_RUN",
-          "verification_report": {
-            "analysis_focused_tests_reported_passed": 16,
-            "source": "implementation agent report; not independently rerun in this mapping update"
-          }
+      "root_id": "analysis",
+      "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
+      "implementation_status": "LOCALLY_VERIFIED_ANALYSIS_STATE_REF__GTC_RECEIPT_AND_PARENT_SWAP_NOT_RUN__F11_LINEAGE_OPEN",
+      "canonical_gtc_state_ref_status": "LOCALLY_VERIFIED_COMPLETE_ANALYSIS_STATE_REFERENCE",
+      "gtc_owner_receipt_status": "NOT_RUN",
+      "gtc_single_root_swap_status": "NOT_RUN",
+      "canonical_state_reference": {
+        "state_ref": "owners.analysis",
+        "snapshot_api": "AnalysisOwnerRoot::state_reference",
+        "serialization": "F07_F12_OWNER_STATE_V5 sorted-key compact UTF-8 JSON with the F07-F12-POLICY-ROOT-STATE-AMENDMENT-V1 V6 policy projection",
+        "cold_bytes": 19422,
+        "cold_sha256": "008167df2194d7ffebc2ba0aa1e28f70067afda1a089160c46ad78b40e3c0f23",
+        "fields": [
+          "companion_fbw_history_u32_words",
+          "companion_lfe_history_u32_words",
+          "db_per_bit",
+          "gain_range",
+          "input_history_generation",
+          "input_history_u32_words",
+          "policy_generation",
+          "primary_fbw_history_u32_words",
+          "primary_lfe_history_u32_words",
+          "transform_generation",
+          "transient_generation",
+          "transient_other_queue_i1",
+          "transient_peak_statistics_u32_words",
+          "transient_previous_mean_u32_words",
+          "transient_short_queue_i1",
+          "transient_three_history_u32_words",
+          "transient_two_history_u32_words"
+        ],
+        "nested_fields": {
+          "gain_range": ["completed_blocks_u64", "previous_peak_f32_bits_u32"],
+          "db_per_bit": ["completed_blocks_u64", "selector_u16"]
         },
+        "policy_state_amendment_manifest_sha256": "35c8252198a189e3cf0fd2649e02569486b4abdb22a124a528a47cca184ffa9a",
+        "approved_source_leaf_manifest_sha256": "edc15b751a3d9db6d0e59a51e76979b5eb77a07110382906b975a0561f9ba61e",
+        "cold_state_reference_manifest_sha256": "24929efecb2637f84793848b08fa2f9fdd8e97c345d597c4f6917df47149e9ac",
+        "state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6"
+      },
+      "approved_analysis_source_materialization": {
+        "package_id": "ANALYSIS-ROOT-APPROVED-SOURCE-LEAVES-V1",
+        "manifest_sha256": "edc15b751a3d9db6d0e59a51e76979b5eb77a07110382906b975a0561f9ba61e",
+        "payloads": "21/21 locally verified; 19/19 approved source leaves locally materialized"
+      },
+      "policy_state_amendment": {
+        "package_id": "F07-F12-POLICY-ROOT-STATE-AMENDMENT-V1",
+        "manifest_sha256": "35c8252198a189e3cf0fd2649e02569486b4abdb22a124a528a47cca184ffa9a",
+        "status": "V6 policy root matches current owner fields; supersedes only V5 policy field projection"
+      },
+      "f11_handoff_evidence": {
+        "crosswalk_manifest_sha256": "a8e682949508281eccd7bbceacc8efd029ddec6d8df4c668ea0bc6c84cea9673",
+        "source_leaf_manifest_sha256": "01dbb8fe97bc8f40247340b93eccd008826c2330e6c4616323f2cbd1aa2ab81f",
+        "source_identity_resolution": "25/25 locally hash-verifiable",
+        "typed_boundary_manifest_sha256": "88f5d8145910e6eac6eb33dbf12fba0ce1f865d4083da54a6ac628b4e5dfe1cc",
+        "synthetic_source_plan_results_manifest_sha256": "f60672fcab2a833413b9263ab55825151cfe2ecb570ad51da6072298eed1611f",
+        "typed_receipt_execution_status": "NOT_RUN; no canonical SharedAnalysisReceipt digest preimage or source0/1/2 digest values",
+        "f11_input_status": "NOT_RUN; current F07-F10 plan does not retain the complete POWER S rows required by F11",
+        "producer_and_typed_plan_join": "NOT_RUN; no canonical SharedAnalysisReceipt digest preimage/actual source digests and no persisted F11 POWER S/decoded exponent rows are available from the current Analysis API"
+      },
+      "implementation_files": [
+        "crates/jocforge-domain/src/analysis/owner.rs",
+        "crates/jocforge-domain/src/analysis/exponent_plan.rs",
+        "crates/jocforge-domain/src/analysis/source_frame.rs",
+        "crates/jocforge-domain/src/analysis/transient_channel.rs",
+        "crates/jocforge-domain/src/codec/exponent_normalization.rs",
+        "crates/jocforge-domain/src/codec/exponent_refresh_state.rs"
+      ],
+      "test_modules": [
+        "crates/jocforge-domain/src/analysis/owner.rs",
+        "crates/jocforge-domain/src/analysis/exponent_plan.rs",
+        "crates/jocforge-domain/tests/exponent_normalization.rs"
+      ],
+      "implementation_inventory": [
+        {
+          "path": "crates/jocforge-domain/src/analysis/owner.rs",
+          "bytes": 70309,
+          "sha256": "3122bb54c3e29348b775232137f9b257f906227e600d6aa87bc2819c69934821"
+        },
+        {
+          "path": "crates/jocforge-domain/src/analysis/exponent_plan.rs",
+          "bytes": 21426,
+          "sha256": "ea0c196b846f3ca4fe25254adf830a8fe7e1a872735b552279c5bb5bc33f8828"
+        },
+        {
+          "path": "crates/jocforge-domain/src/analysis/source_frame.rs",
+          "bytes": 18091,
+          "sha256": "f5a7939117a8fd604d22b2a05adc8400c51d414014a68f48c5df4f1b53a288a3"
+        },
+        {
+          "path": "crates/jocforge-domain/src/analysis/transient_channel.rs",
+          "bytes": 16730,
+          "sha256": "5523689f13c36eb5ced27c8f512bf7134614c566118e7feec23af2c9916e9b3a"
+        },
+        {
+          "path": "crates/jocforge-domain/src/codec/exponent_normalization.rs",
+          "bytes": 15773,
+          "sha256": "fa25ea47daa654579294235b78bb82749950910e0d2072a1ed267377d756531a"
+        },
+        {
+          "path": "crates/jocforge-domain/src/codec/exponent_refresh_state.rs",
+          "bytes": 4693,
+          "sha256": "45509c9144fc4869d7ec2f71f5fbe663a6cd09c27a3a98b30d177a9baca3063a"
+        }
+      ],
+      "test_inventory": [
+        {
+          "path": "crates/jocforge-domain/src/analysis/owner.rs",
+          "bytes": 70309,
+          "sha256": "3122bb54c3e29348b775232137f9b257f906227e600d6aa87bc2819c69934821"
+        },
+        {
+          "path": "crates/jocforge-domain/src/analysis/exponent_plan.rs",
+          "bytes": 21426,
+          "sha256": "ea0c196b846f3ca4fe25254adf830a8fe7e1a872735b552279c5bb5bc33f8828"
+        },
+        {
+          "path": "crates/jocforge-domain/tests/exponent_normalization.rs",
+          "bytes": 24783,
+          "sha256": "3d402f7bccc15a542b4f56be93abe54ff61579bfcdb85ad92e43e38356d30108"
+        }
+      ],
+      "local_scope": "F07, F08, F09G, and the same-source F09/F10 value stages are partially materialized as noncommitting proposals; the complete V6 Analysis root state reference is locally serialized and tested.",
+      "encode_status": "NOT_RUN",
+      "remaining_gates": [
+        "GTC OwnerReceipt admission and GTC single root swap.",
+        "Full cross-owner provider-plan lineage and parent fatal/reset/EOF integration.",
+        "F11 consumer, end-to-end encode, native execution, and product acceptance."
+      ],
+      "provider_plan_lineage_status": "NOT_RUN",
+      "verification_report": {
+        "analysis_owner_tests": "PASS_14",
+        "analysis_state_reference_tests": "PASS_2_INCLUDED_IN_OWNER_SUITE",
+        "cold_bytes": 19422,
+        "cold_sha256": "008167df2194d7ffebc2ba0aa1e28f70067afda1a089160c46ad78b40e3c0f23",
+        "gtc_owner_receipt_admission": "NOT_RUN",
+        "source": "parent independently reran analysis::owner::tests after policy-root V6 amendment"
+      }
+    },
                 {
           "root_id": "codec",
           "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
@@ -17582,8 +17911,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/publication/output_owner.rs",
-              "bytes": 39341,
-              "sha256": "d3db7557e207ede77452a5215e0add1a0ba622b89fbbd9bd09c81e5e39bc3eae"
+              "bytes": 40989,
+              "sha256": "4392c99ee6e170cde468802a3491256267fa6939906e0855841f749a1c9c7c87"
             },
             {
               "path": "crates/jocforge-domain/src/integrity/crc16.rs",
@@ -17615,6 +17944,33 @@
       "root_id": "metadata",
       "materialization_status": "LOCALLY_VERIFIED_NONCOMMITTING_SOURCE_AFTER_PROPOSAL__PARENT_INSTALL_NOT_RUN",
       "implementation_status": "LOCALLY_VERIFIED_NONCOMMITTING_SOURCE_AFTER_PROPOSAL__PARENT_INSTALL_NOT_RUN",
+      "canonical_gtc_state_ref_status": "LOCALLY_VERIFIED_COMPLETE_METADATA_STATE_REFERENCE",
+      "gtc_owner_receipt_status": "NOT_IMPLEMENTED",
+      "gtc_single_root_swap_status": "NOT_RUN",
+      "canonical_state_reference": {
+        "state_ref": "owners.metadata",
+        "snapshot_api": "MetadataOwner::state_reference",
+        "serialization": "Existing complete MetadataStateV1 canonical bytes",
+        "cold_bytes": 314,
+        "cold_sha256": "cd1eb68e3f8644b22d12a686b58432d6ed65fcf75da9a0d4377ff0c9718de7e9",
+        "state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6"
+      },
+      "implementation_files": ["crates/jocforge-domain/src/joc/emdf/metadata_owner.rs"],
+      "test_modules": ["crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs"],
+      "implementation_inventory": [
+        {
+          "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
+          "bytes": 38184,
+          "sha256": "bc35672688e9a4847a04069ee213ca735e1ec95133142c6aa3e78d88e18780ce"
+        }
+      ],
+      "test_inventory": [
+        {
+          "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
+          "bytes": 22755,
+          "sha256": "f5295a1b8670f267621747f80d325cb6191b12ac48fa2a67dcaae013501fd1fd"
+        }
+      ],
       "selected_profile_id": "selected-48k-1536-four-queue.v1",
       "owning_module": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
       "field_groups": [
@@ -17686,6 +18042,7 @@
         "state_ref": "owners.integrity",
         "serialization": "Exact existing IntegrityStateV1 canonical bytes; JSON is not used",
         "cold_sha256": "9b48c6c28b797f5ae375c63835677ec4c9738fe5207a3560366c1bed0d71577b",
+        "state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6",
         "snapshot_api": "IntegrityProgrammeOwner::owner_state_snapshot",
         "fields": ["profile_id", "provider_sha256", "generation", "next_source_index", "published_au_count", "finalized"]
       },
@@ -17818,104 +18175,131 @@
       }
     },
                 {
-          "root_id": "output",
-          "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
-          "implementation_status": "TEST_SUPPORT_ONLY_OUTPUT_BINDING_HARNESS__PRODUCTION_VALIDATED_PLAN_BINDING_NOT_RUN",
-          "implementation_files": [
-            "crates/jocforge-application/src/output_publication.rs",
-            "crates/jocforge-application/src/output_publication/tests.rs",
-            "crates/jocforge-application/src/lib.rs",
-            "crates/jocforge-application/tests/prepared_job_input.rs",
-            "crates/jocforge-cli/src/output_publication.rs",
-            "crates/jocforge-cli/src/output_publication/tests.rs",
-            "crates/jocforge-domain/src/publication/output_owner.rs",
-            "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
-            "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs"
-          ],
-          "test_modules": [
-            "crates/jocforge-application/src/output_publication/tests.rs",
-            "crates/jocforge-application/tests/prepared_job_input.rs",
-            "crates/jocforge-cli/src/output_publication/tests.rs"
-          ],
-          "implementation_inventory": [
-            {
-              "path": "crates/jocforge-application/src/output_publication.rs",
-              "bytes": 23512,
-              "sha256": "02b83103efdd7b3daa4492ff9ee1886d4e0d0775458b582fed18dff9242f2efe"
-            },
-            {
-              "path": "crates/jocforge-application/src/output_publication/tests.rs",
-              "bytes": 8039,
-              "sha256": "5f61193f4dd72f0b84234c34457a6d30e12fe2c40dc4fdf9acfabda349b955ce"
-            },
-            {
-              "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 13659,
-              "sha256": "83d8746737c77cfa71918c6de11da7f428cd81bfc149c6e779bb3dc019fc8bcc"
-            },
-            {
-              "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 10499,
-              "sha256": "34762580b30da1020a1e563363940a67ab85ceb02891029763bc35075ca8f700"
-            },
-            {
-              "path": "crates/jocforge-cli/src/output_publication.rs",
-              "bytes": 5594,
-              "sha256": "3394b38b0e1d9abd2d93c2da227ea3a17784918fec721abcf12c79e7f7000cff"
-            },
-            {
-              "path": "crates/jocforge-cli/src/output_publication/tests.rs",
-              "bytes": 5919,
-              "sha256": "a7ed47e817ab13367ec4625bbbad8c45c21c9912dc618b0404d7d6492adfb0ba"
-            },
-            {
-              "path": "crates/jocforge-domain/src/publication/output_owner.rs",
-              "bytes": 39341,
-              "sha256": "d3db7557e207ede77452a5215e0add1a0ba622b89fbbd9bd09c81e5e39bc3eae"
-            },
-            {
-              "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
-              "bytes": 36622,
-              "sha256": "fac2f5e9e728987aba91455a48cbcd1946bcfe2bb7de9c1c49c1b2ef8ea58083"
-            },
-            {
-              "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
-              "bytes": 20602,
-              "sha256": "d8344a8c3f1acf009d26cc044aebc576a4f97532f7e157704f823781f3032cf7"
-            }
-          ],
-          "test_inventory": [
-            {
-              "path": "crates/jocforge-application/src/output_publication/tests.rs",
-              "bytes": 8039,
-              "sha256": "5f61193f4dd72f0b84234c34457a6d30e12fe2c40dc4fdf9acfabda349b955ce"
-            },
-            {
-              "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 10499,
-              "sha256": "34762580b30da1020a1e563363940a67ab85ceb02891029763bc35075ca8f700"
-            },
-            {
-              "path": "crates/jocforge-cli/src/output_publication/tests.rs",
-              "bytes": 5919,
-              "sha256": "a7ed47e817ab13367ec4625bbbad8c45c21c9912dc618b0404d7d6492adfb0ba"
-            }
-          ],
-          "local_scope": "Private F15 carriage-to-provider projection and synthetic binding harness are gated to tests or the non-default test-support feature; no ValidatedEncodingPlan-backed production binding constructor exists.",
-          "canonical_gtc_state_ref_status": "NOT_RUN",
-          "gtc_owner_receipt_status": "NOT_RUN",
-          "gtc_single_root_swap_status": "NOT_RUN",
-          "encode_status": "NOT_RUN",
-          "remaining_gates": [
-            "ValidatedEncodingPlan-backed production output binding and provider-plan identity join.",
-            "Canonical combined GTC output state_ref and GTC OwnerReceipt.",
-            "GTC single root swap, durable finalize/DONE integration, encode, native execution, W04, and product acceptance."
-          ],
-          "provider_plan_lineage_status": "NOT_RUN",
-          "production_output_api_gate_status": "NOT_RUN",
-          "validated_plan_output_binding_status": "NOT_RUN",
-          "latest_f15_provider_plan_manifest_sha256": "b591e821fe28203a3e2f71fb4e592611874d19d8055c2491bc0dfc9a09f791a2"
+      "root_id": "output",
+      "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
+      "implementation_status": "TEST_SUPPORT_ONLY_OUTPUT_BINDING_HARNESS__PRODUCTION_VALIDATED_PLAN_BINDING_NOT_RUN",
+      "canonical_state_reference": {
+        "state_ref": "owners.output",
+        "snapshot_api": "OutputOwner::state_reference",
+        "serialization": "Existing complete OutputStateV1 canonical bytes",
+        "cold_bytes": 179,
+        "cold_sha256": "79fa7b4e0ba196b14a882a75250984ce6aceab5a0f73ac39a347463d0b2fa6e1",
+        "fixture_scope": "Synthetic test-only provider; ValidatedEncodingPlan-backed production binding remains NOT_RUN",
+        "state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6"
+      },
+      "implementation_files": [
+        "crates/jocforge-application/src/output_publication.rs",
+        "crates/jocforge-application/src/output_publication/tests.rs",
+        "crates/jocforge-application/src/lib.rs",
+        "crates/jocforge-application/tests/prepared_job_input.rs",
+        "crates/jocforge-cli/src/output_publication.rs",
+        "crates/jocforge-cli/src/output_publication/tests.rs",
+        "crates/jocforge-domain/src/publication/output_owner.rs",
+        "crates/jocforge-domain/src/publication/mod.rs",
+        "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
+        "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs"
+      ],
+      "test_modules": [
+        "crates/jocforge-application/src/output_publication/tests.rs",
+        "crates/jocforge-application/tests/prepared_job_input.rs",
+        "crates/jocforge-cli/src/output_publication/tests.rs",
+        "crates/jocforge-domain/src/publication/tests.rs",
+        "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs"
+      ],
+      "implementation_inventory": [
+        {
+          "path": "crates/jocforge-application/src/output_publication.rs",
+          "bytes": 23512,
+          "sha256": "02b83103efdd7b3daa4492ff9ee1886d4e0d0775458b582fed18dff9242f2efe"
+        },
+        {
+          "path": "crates/jocforge-application/src/output_publication/tests.rs",
+          "bytes": 8039,
+          "sha256": "5f61193f4dd72f0b84234c34457a6d30e12fe2c40dc4fdf9acfabda349b955ce"
+        },
+        {
+          "path": "crates/jocforge-application/src/lib.rs",
+          "bytes": 13659,
+          "sha256": "83d8746737c77cfa71918c6de11da7f428cd81bfc149c6e779bb3dc019fc8bcc"
+        },
+        {
+          "path": "crates/jocforge-application/tests/prepared_job_input.rs",
+          "bytes": 10499,
+          "sha256": "34762580b30da1020a1e563363940a67ab85ceb02891029763bc35075ca8f700"
+        },
+        {
+          "path": "crates/jocforge-cli/src/output_publication.rs",
+          "bytes": 5594,
+          "sha256": "3394b38b0e1d9abd2d93c2da227ea3a17784918fec721abcf12c79e7f7000cff"
+        },
+        {
+          "path": "crates/jocforge-cli/src/output_publication/tests.rs",
+          "bytes": 5919,
+          "sha256": "a7ed47e817ab13367ec4625bbbad8c45c21c9912dc618b0404d7d6492adfb0ba"
+        },
+        {
+          "path": "crates/jocforge-domain/src/publication/output_owner.rs",
+          "bytes": 40989,
+          "sha256": "4392c99ee6e170cde468802a3491256267fa6939906e0855841f749a1c9c7c87"
+        },
+        {
+          "path": "crates/jocforge-domain/src/publication/mod.rs",
+          "bytes": 574,
+          "sha256": "c13857d7f5d8d462ef3ad314d2b90d2cf40aa57155910a96389a67c8cde732dd"
+        },
+        {
+          "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner.rs",
+          "bytes": 38184,
+          "sha256": "bc35672688e9a4847a04069ee213ca735e1ec95133142c6aa3e78d88e18780ce"
+        },
+        {
+          "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
+          "bytes": 22755,
+          "sha256": "f5295a1b8670f267621747f80d325cb6191b12ac48fa2a67dcaae013501fd1fd"
         }
+      ],
+      "test_inventory": [
+        {
+          "path": "crates/jocforge-domain/src/publication/tests.rs",
+          "bytes": 7995,
+          "sha256": "1d6e82c73b7cd8202474efa447e4f8c7ed07846c73b1ce97fcda0e8e2d42070a"
+        },
+        {
+          "path": "crates/jocforge-application/src/output_publication/tests.rs",
+          "bytes": 8039,
+          "sha256": "5f61193f4dd72f0b84234c34457a6d30e12fe2c40dc4fdf9acfabda349b955ce"
+        },
+        {
+          "path": "crates/jocforge-application/tests/prepared_job_input.rs",
+          "bytes": 10499,
+          "sha256": "34762580b30da1020a1e563363940a67ab85ceb02891029763bc35075ca8f700"
+        },
+        {
+          "path": "crates/jocforge-cli/src/output_publication/tests.rs",
+          "bytes": 5919,
+          "sha256": "a7ed47e817ab13367ec4625bbbad8c45c21c9912dc618b0404d7d6492adfb0ba"
+        },
+        {
+          "path": "crates/jocforge-domain/src/joc/emdf/metadata_owner/tests.rs",
+          "bytes": 22755,
+          "sha256": "f5295a1b8670f267621747f80d325cb6191b12ac48fa2a67dcaae013501fd1fd"
+        }
+      ],
+      "local_scope": "Private F15 carriage-to-provider projection and synthetic binding harness are gated to tests or the non-default test-support feature; a complete OutputStateV1 state reference is locally verified, but no ValidatedEncodingPlan-backed production binding constructor exists.",
+      "canonical_gtc_state_ref_status": "LOCALLY_VERIFIED_COMPLETE_OUTPUT_STATE_REFERENCE",
+      "gtc_owner_receipt_status": "NOT_RUN",
+      "gtc_single_root_swap_status": "NOT_RUN",
+      "encode_status": "NOT_RUN",
+      "remaining_gates": [
+        "ValidatedEncodingPlan-backed production output binding and provider-plan identity join.",
+        "GTC OwnerReceipt admission for the output state reference.",
+        "GTC single root swap, durable finalize/DONE integration, encode, native execution, W04, and product acceptance."
+      ],
+      "provider_plan_lineage_status": "NOT_RUN",
+      "production_output_api_gate_status": "NOT_RUN",
+      "validated_plan_output_binding_status": "NOT_RUN",
+      "latest_f15_provider_plan_manifest_sha256": "b591e821fe28203a3e2f71fb4e592611874d19d8055c2491bc0dfc9a09f791a2"
+    }
   ],
   "selected_overlap_projection": {
     "source": "parameters/selected-owner-projection-v1.json",
@@ -17947,8 +18331,8 @@
       ],
       "current_source_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 55012, "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3294, "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"},
-        {"path": "crates/jocforge-domain/src/spatial/spatial_control.rs", "bytes": 30134, "sha256": "0ea66b3b2d1c5f1ae554769ecb92c0001130915b536cb461ec084f0b0ee5ae86"},
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3333, "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"},
+        {"path": "crates/jocforge-domain/src/spatial/spatial_control.rs", "bytes": 33420, "sha256": "b23c0cc31eb8a2e0be1fe0b0635addb5dd680f713971c174e34c95697e2fed8c"},
         {"path": "crates/jocforge-domain/src/transaction/mod.rs", "bytes": 2915, "sha256": "442a74702c82926abd9de95e5f0686fd9f1cb8e656e2e051ade2390abdee238c"},
         {"path": "crates/jocforge-domain/src/spatial/source_flags.rs", "bytes": 61230, "sha256": "55155b4a84a1199f77d0b006b9923b1621cb885ef98e01d63d12b1f99bdfe348"},
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs", "bytes": 48742, "sha256": "9ed4b36687e6694d73716bb774c7773c9b545f93ca49e1025336d355f24b8e2b"},
@@ -17981,6 +18365,7 @@
         "generated_map_check": "PASS",
         "integrity_owner_state_ref_tests": "PASS_10",
         "spatial_audio_state_ref_tests": "PASS_6",
+        "spatial_control_state_ref_tests": "PASS_3",
         "id1_public_kind_projection_tests": "PASS_4"
       }
     },
@@ -18996,7 +19381,7 @@
       ],
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 55012, "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3294, "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"},
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3333, "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"},
         {"path": "crates/jocforge-domain/src/timeline/index.rs", "bytes": 2672, "sha256": "50696493ea1bed2b647f2c438f032410548b70e5008b535773e23647ee59bd40"},
         {"path": "crates/jocforge-domain/src/timeline/mod.rs", "bytes": 586, "sha256": "7f2099065d657bdacab116d921a63107a180930086b73a42557881aa3acdb7b2"}
       ],
@@ -19006,16 +19391,46 @@
           {"package_id": "SPATIAL-AUDIO-SOURCE-INVENTORY-AMENDMENT-V1", "manifest_sha256": "915af5789ae57b000d61c12eddd768953d55fe9b0356b0180044f4eedd23aa17", "payload_path": "outputs/IMPLEMENTER_SUPPLEMENTS/SPATIAL-AUDIO-SOURCE-INVENTORY-AMENDMENT-V1/AMENDMENT.json", "payload_sha256": "1f03880ab4531b766fc6d99cec36129ced19dae0c10e7e322496f0d27d8f5856"},
           {"package_id": "IMPLEMENTATION-INVENTORY-EVOLUTION-AND-SPATIAL-EXPORTS-V1", "manifest_sha256": "8860588472c55700d4aa2c6e9d49f1f4740ebcdd8367ab79dc90a32d8af85991", "payload_path": "outputs/IMPLEMENTER_SUPPLEMENTS/IMPLEMENTATION-INVENTORY-EVOLUTION-AND-SPATIAL-EXPORTS-V1/AMENDMENT.json", "payload_sha256": "b1b7b84d9d04b5572d8c5fb159d66e1e466b710b88972c8b16cbaef843776ed8"}
         ],
-        "current_source_scope": "The Wash amendments bind the pre-extension source bytes at commit 99f27fe9e22a90bac957f4e935b91a95fcdde8fc. A separate local, read-only SpatialAudio owner state-reference view was then added using the existing complete canonical bytes; it does not change F04 serialization, stage behavior, or parent commit authority. The complete current files are recorded in the current inventory below.",
+        "current_source_scope": "The Wash amendments bind the pre-extension source bytes at commit 99f27fe9e22a90bac957f4e935b91a95fcdde8fc. Separate local, read-only SpatialAudio and SpatialControl owner state-reference views were then added using the existing complete canonical bytes; they do not change either serializer, stage behavior, or parent commit authority. The complete current files are recorded in the current inventory below.",
         "local_extension_after_wash_inventory": {
           "base_commit": "99f27fe9e22a90bac957f4e935b91a95fcdde8fc",
           "state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6",
           "status": "LOCALLY_VERIFIED_READ_ONLY_OWNER_STATE_REFERENCE_VIEW",
           "serialization_changed": false,
           "parent_receipt_or_commit_added": false,
+          "base_files": [
+            {
+              "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+              "bytes": 53239,
+              "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+              "bytes": 30134,
+              "sha256": "0ea66b3b2d1c5f1ae554769ecb92c0001130915b536cb461ec084f0b0ee5ae86"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/mod.rs",
+              "bytes": 3261,
+              "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"
+            }
+          ],
           "current_files": [
-            {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 55012, "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"},
-            {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3294, "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"}
+            {
+              "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+              "bytes": 55012,
+              "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+              "bytes": 33420,
+              "sha256": "b23c0cc31eb8a2e0be1fe0b0635addb5dd680f713971c174e34c95697e2fed8c"
+            },
+            {
+              "path": "crates/jocforge-domain/src/spatial/mod.rs",
+              "bytes": 3333,
+              "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"
+            }
           ]
         },
         "verification": {
@@ -19290,7 +19705,7 @@
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs", "bytes": 16562, "sha256": "bfa2808ba2aa5566cf832a76a5ef93a6180bc1e81c35a63934809f3ffe9abce7"},
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 55012, "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"},
-        {"path": "crates/jocforge-domain/src/spatial/spatial_control.rs", "bytes": 30134, "sha256": "0ea66b3b2d1c5f1ae554769ecb92c0001130915b536cb461ec084f0b0ee5ae86"}
+        {"path": "crates/jocforge-domain/src/spatial/spatial_control.rs", "bytes": 33420, "sha256": "b23c0cc31eb8a2e0be1fe0b0635addb5dd680f713971c174e34c95697e2fed8c"}
       ],
       "historical_implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs", "bytes": 16562, "sha256": "bfa2808ba2aa5566cf832a76a5ef93a6180bc1e81c35a63934809f3ffe9abce7"},
@@ -19474,7 +19889,7 @@
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state.rs","bytes":55012,"sha256":"037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"},
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs","bytes":48742,"sha256":"9ed4b36687e6694d73716bb774c7773c9b545f93ca49e1025336d355f24b8e2b"},
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/direct_lfe.rs","bytes":16562,"sha256":"bfa2808ba2aa5566cf832a76a5ef93a6180bc1e81c35a63934809f3ffe9abce7"},
-        {"path":"crates/jocforge-domain/src/spatial/spatial_control.rs","bytes":30134,"sha256":"0ea66b3b2d1c5f1ae554769ecb92c0001130915b536cb461ec084f0b0ee5ae86"}
+        {"path":"crates/jocforge-domain/src/spatial/spatial_control.rs","bytes":33420,"sha256":"b23c0cc31eb8a2e0be1fe0b0635addb5dd680f713971c174e34c95697e2fed8c"}
       ],
       "historical_implementation_inventory": [
         {"path":"crates/jocforge-domain/src/spatial/spatial_audio_state/type10_assembler.rs","bytes":12074,"sha256":"22c336456921c174ce1d1e72d4a265b4e61a7321e9c3753cf20d1924e0d77413"},
@@ -19740,8 +20155,8 @@
         "file_inventory": [
           {
             "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-            "bytes": 30134,
-            "sha256": "0ea66b3b2d1c5f1ae554769ecb92c0001130915b536cb461ec084f0b0ee5ae86"
+            "bytes": 33420,
+            "sha256": "b23c0cc31eb8a2e0be1fe0b0635addb5dd680f713971c174e34c95697e2fed8c"
           },
           {
             "path": "crates/jocforge-domain/src/transaction/mod.rs",
@@ -19755,8 +20170,8 @@
           },
           {
             "path": "crates/jocforge-domain/src/spatial/mod.rs",
-          "bytes": 3294,
-          "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"
+          "bytes": 3333,
+          "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"
           },
           {
             "path": "crates/jocforge-domain/tests/spatial_control_foundation.rs",
@@ -20715,7 +21130,7 @@
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/window_q15_provider.rs", "bytes": 19312, "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},
         {"path": "crates/jocforge-domain/src/spatial/component_parameters_provider.rs", "bytes": 14344, "sha256": "b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3294, "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"}
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3333, "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"}
       ],
       "historical_implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/window_q15_provider.rs", "bytes": 19312, "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},
@@ -20841,7 +21256,7 @@
         {"path": "crates/jocforge-domain/src/spatial/qmf_mathematical_fft_provider.rs", "bytes": 11066, "sha256": "bddb8bd2b775b2cd9fc3e6412981965ef9ca5c5f98d137ff98de31c87dbbb2d8"},
         {"path": "crates/jocforge-domain/src/spatial/descriptor_mathematical_provider.rs", "bytes": 10441, "sha256": "df8612dcdc46fcf2620e2a73d68d26d392bbba02be27af729f8c5ded76cf8639"},
         {"path": "crates/jocforge-domain/src/spatial/window_q15_provider.rs", "bytes": 19312, "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3294, "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"}
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3333, "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"}
       ],
       "historical_implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_receiver_functional_provider.rs", "bytes": 22614, "sha256": "dc04957542f802fa7a751d88911180cef7575c11033fd9a06b5221e7697e4bff"},
@@ -20995,7 +21410,7 @@
       "shared_fixture_dependencies": ["crates/jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json", "crates/jocforge-domain/tests/fixtures/f04_parameters/qmf-mathematical-fft-v1.json"],
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_fft64.rs", "bytes": 3812, "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3294, "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"}
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3333, "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"}
       ],
       "historical_implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_fft64.rs", "bytes": 3812, "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"},
@@ -21166,7 +21581,7 @@
       ],
       "implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs", "bytes": 21790, "sha256": "9184b8ca22b5ed89082a92e3027b74c13d7e5424c4504598c3e71c239f2beeaa"},
-        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3294, "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"}
+        {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3333, "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"}
       ],
       "historical_implementation_inventory": [
         {"path": "crates/jocforge-domain/src/spatial/qmf_analysis_synthesis.rs", "bytes": 21790, "sha256": "9184b8ca22b5ed89082a92e3027b74c13d7e5424c4504598c3e71c239f2beeaa"},

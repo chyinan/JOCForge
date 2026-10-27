@@ -1,0 +1,35 @@
+{
+  "package_id": "DRC-STANDALONE-GTC-OWNER-OPTION-DIALNORM-ERRATUM-V1",
+  "status": "LOCAL_CANONICAL_ROOT_ERRATUM_FOR_WASH_REVIEW",
+  "supersedes": {
+    "package_id": "DRC-STANDALONE-GTC-OWNER-CANONICAL-ROOT-V1",
+    "manifest_sha256": "0531e43d60b196a7b7261d664a1506e1cdfb0435b77fe6aab1901b2a6d16e810"
+  },
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 2498,
+      "sha256": "2b50b99bfb0beeb8882d70cd66e0a14fc751ac736c1742b1617d954339f701c3"
+    },
+    {
+      "file": "DRC-ROOT-SCHEMA.json",
+      "bytes": 3861,
+      "sha256": "08289163fab74aad77793fc3488805fc6b9a910bd2ca6aa7fda26d2fb3694e2d"
+    },
+    {
+      "file": "INPUT-ONLY-COLD-VECTOR.json",
+      "bytes": 33797,
+      "sha256": "da35e9a831787901aadf8ad57b7527abacfc77eef73af9cfd0a81e1451d520ac"
+    },
+    {
+      "file": "INPUT-ONLY-OPTION-COLD-VECTOR.json",
+      "bytes": 60441,
+      "sha256": "b5bbfa59c6651d8d5ef31c6211b238e6f62279b79dea848759fd29bc5b39d2a4"
+    },
+    {
+      "file": "SOURCE-REFERENCES.json",
+      "bytes": 4989,
+      "sha256": "21eeef4d4b61994815b919d67374c5546d9a97a63fc672e62e6ab03497d86ecc"
+    }
+  ]
+}

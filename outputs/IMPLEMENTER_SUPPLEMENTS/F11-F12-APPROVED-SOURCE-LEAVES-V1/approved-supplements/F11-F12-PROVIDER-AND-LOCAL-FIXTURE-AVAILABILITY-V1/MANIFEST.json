@@ -1,0 +1,29 @@
+{
+  "schema": "jocforge-washed-implementer-supplement.v1",
+  "package_id": "F11-F12-PROVIDER-AND-LOCAL-FIXTURE-AVAILABILITY-V1",
+  "status": "MODEL_CONTRACTS_AND_PROVIDERS_AVAILABLE_FRESH_SOURCE_FRAME_INTEGRATION_NOT_RUN",
+  "implementation_ready": false,
+  "source_reverse_manifest_sha256": "de32249013653d40c5e6667a8537cf6b015f38357fda01d79f4c006125ac251e",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 2288,
+      "sha256": "26ee3f8119572fe4be4cc21970defc3ecf58d55020dea661af5d83f0a69caef2"
+    },
+    {
+      "file": "EVIDENCE.json",
+      "bytes": 1620,
+      "sha256": "aa5272aac1a832c6517c2d4129dec774ef25351af5721048b702d9afe1a2c8f8"
+    },
+    {
+      "file": "SOURCE-MANIFESTS.json",
+      "bytes": 1550,
+      "sha256": "d8ba514d6671e008896a8a8763bfd3b28cdf0251d21698a92db248fbbf093196"
+    },
+    {
+      "file": "WASH-REVIEW.json",
+      "bytes": 831,
+      "sha256": "44bb71a0616a963f5a3bc8d8d27943ac182945ff597522acd0f89ec244c79417"
+    }
+  ]
+}

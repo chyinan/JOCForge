@@ -1,0 +1,80 @@
+{
+  "schema": "secondary-producer-input-only-vectors.v1",
+  "input_only": true,
+  "real_pcm_included": false,
+  "sample_arrays_persisted": false,
+  "expected_outputs_included": false,
+  "selected_profile": {
+    "sample_rate_hz": 48000,
+    "bitrate_kbps": 1024,
+    "channel_layout": "5.1"
+  },
+  "source_clock": {
+    "source_frame_symbol": "s",
+    "global_transaction_callback_index": "s+2",
+    "joc_dispatch_index": "s+1",
+    "secondary_frame_index_before_call": "s",
+    "f06nd_source_generation": "s"
+  },
+  "input_layout": {
+    "primary_boundary": "same-generation F07-delayed primary; do not apply input-history delay again",
+    "dtype": "IEEE-754 binary32 little-endian",
+    "shape": [6, 1536],
+    "external_channel_order": ["L", "R", "C", "LFE", "Ls", "Rs"],
+    "block_size": 256,
+    "blocks_per_channel": 6
+  },
+  "sample_recipe": {
+    "id": "secondary-frame-synthetic-rational-f32-v1",
+    "symbolic_indices": {
+      "s": "source frame 0, 1, or 2",
+      "r": "external row index 0 through 5",
+      "i": "sample index 0 through 1535"
+    },
+    "numerator": "((17*s + 11*r + 5*(i mod 257)) mod 257) - 128",
+    "sample_value": "numerator / 32768",
+    "rounding": "The denominator is a power of two and the numerator magnitude is at most 128, so every generated value is exactly representable as binary32; no additional rounding step is required.",
+    "materialization_order": "external row-major, then increasing sample index"
+  },
+  "flag_recipe": {
+    "id": "alternating-short-consumed-v1",
+    "input_name": "F07 short_consumed",
+    "shape": [6, 5],
+    "order": "block-major, internal lane order L,C,R,Ls,Rs",
+    "value_rule": "(s + block + lane) mod 2",
+    "meaning": "0 selects long; 1 selects short",
+    "storage_dtype": "U8 values constrained to 0 or 1"
+  },
+  "input_hash": {
+    "file": "SOURCE-VECTOR-HASHES.json",
+    "algorithm": "SHA-256",
+    "preimage": "UTF-8 bytes SECONDARY-SOURCE-INPUT-V1 followed by NUL, then all 9216 F32LE words in external row-major order, then the 30 short_consumed bytes in block-major internal-lane order",
+    "scope": "input values and flags only; excludes state, carrier outputs, and expected results"
+  },
+  "source_frames": [
+    {
+      "source_frame": 0,
+      "callback_index": 2,
+      "dispatch_index": 1,
+      "state_before_ref": "cold_state",
+      "delayed_primary_recipe": "secondary-frame-synthetic-rational-f32-v1",
+      "short_consumed_recipe": "alternating-short-consumed-v1"
+    },
+    {
+      "source_frame": 1,
+      "callback_index": 3,
+      "dispatch_index": 2,
+      "state_before_ref": "state_after_source_frame_0",
+      "delayed_primary_recipe": "secondary-frame-synthetic-rational-f32-v1",
+      "short_consumed_recipe": "alternating-short-consumed-v1"
+    },
+    {
+      "source_frame": 2,
+      "callback_index": 4,
+      "dispatch_index": 3,
+      "state_before_ref": "state_after_source_frame_1",
+      "delayed_primary_recipe": "secondary-frame-synthetic-rational-f32-v1",
+      "short_consumed_recipe": "alternating-short-consumed-v1"
+    }
+  ]
+}

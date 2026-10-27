@@ -12,6 +12,8 @@ const FRAME_BYTES: usize = 4_096;
 const FRAME_BYTES_U32: u32 = FRAME_BYTES as u32;
 const SUPPRESSED_SOURCES: u64 = 2;
 const SOURCE_FRAME_SAMPLES: u64 = 1_536;
+const OUTPUT_OWNER_ID: &str = "output";
+const OUTPUT_STATE_REF: &str = "owners.output";
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum OutputOwnerError {
@@ -434,6 +436,44 @@ pub struct OutputOwner {
     state: OutputState,
 }
 
+/// Read-only GTC state-reference view over the complete canonical OutputStateV1.
+///
+/// This carries the owner's current canonical bytes and the instance-specific
+/// cold digest. It creates neither a GTC OwnerReceipt nor a parent commit.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct OutputOwnerStateReference {
+    generation: u64,
+    state_sha256: [u8; 32],
+    cold_sha256: [u8; 32],
+    canonical_bytes: Vec<u8>,
+}
+
+impl OutputOwnerStateReference {
+    pub const fn owner_id(&self) -> &'static str {
+        OUTPUT_OWNER_ID
+    }
+
+    pub const fn state_ref(&self) -> &'static str {
+        OUTPUT_STATE_REF
+    }
+
+    pub const fn generation(&self) -> u64 {
+        self.generation
+    }
+
+    pub const fn state_sha256(&self) -> &[u8; 32] {
+        &self.state_sha256
+    }
+
+    pub const fn cold_sha256(&self) -> &[u8; 32] {
+        &self.cold_sha256
+    }
+
+    pub fn canonical_bytes(&self) -> &[u8] {
+        &self.canonical_bytes
+    }
+}
+
 impl OutputOwner {
     pub fn cold(configuration: OutputConfiguration) -> Self {
         let state = OutputState::from_configuration(&configuration);
@@ -614,6 +654,19 @@ impl OutputOwner {
 
     pub fn state_digest(&self) -> Result<[u8; 32], OutputOwnerError> {
         self.state.sha256()
+    }
+
+    /// Returns the complete immutable owner state under the approved GTC member key.
+    pub fn state_reference(&self) -> Result<OutputOwnerStateReference, OutputOwnerError> {
+        let canonical_bytes = self.state.canonical_bytes()?;
+        let cold_state = OutputState::from_configuration(&self.configuration);
+        let cold_bytes = cold_state.canonical_bytes()?;
+        Ok(OutputOwnerStateReference {
+            generation: self.state.generation,
+            state_sha256: sha256(&canonical_bytes),
+            cold_sha256: sha256(&cold_bytes),
+            canonical_bytes,
+        })
     }
 
     pub fn configuration(&self) -> &OutputConfiguration {

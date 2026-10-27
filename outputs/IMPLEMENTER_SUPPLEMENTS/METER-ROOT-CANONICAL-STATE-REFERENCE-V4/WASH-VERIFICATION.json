@@ -1,0 +1,44 @@
+{
+  "schema": "jocforge-meter-root-v4-wash-verification.v1",
+  "package_id": "METER-ROOT-CANONICAL-STATE-REFERENCE-V4",
+  "status": "WASH_VERIFIED_LOCAL_ROOT_REPRESENTATION",
+  "research_package_manifest_sha256": "252987fe67ea20de6b4f893da911349127c65f76b8f9217deaeb77b8f48cbfd8",
+  "research_payloads_verified": "9/9",
+  "approved_package": {
+    "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "leaf_hashes_verified": "17/17"
+  },
+  "crosswalk_sources": [
+    {
+      "package_id": "GTC-OWNER-STATE-REF-CONVENTION-V1",
+      "manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6",
+      "payloads_verified": "5/5"
+    },
+    {
+      "package_id": "METER-SAMPLE-QUEUE-LIFECYCLE-V1",
+      "manifest_sha256": "362b383d4b5148394d7bdc43a502cc1ed68cfe39aa5fbbe1e98c2871ad68e606",
+      "payloads_verified": "3/3"
+    }
+  ],
+  "implementation_interface_identity": {
+    "type": "SampleBlockQueueState",
+    "sha256": "8efacd5236f3a56f5621b8fc420bc76dcc99fb4dfd41a5f932d0b9f544c3a315",
+    "sha256_recomputed_against_current_implementation_file": true,
+    "source_code_included": false
+  },
+  "input_only_snapshots": {
+    "canonical_root_hashes_verified": "3/3",
+    "cases_are_synthetic_cold_pre_callback0": true,
+    "pending_pcm_words_empty": true,
+    "lfe_delay_frames_null": true,
+    "real_pcm_included": false
+  },
+  "execution_boundary": {
+    "meter_dsp_or_terminal_measurement": "NOT_RUN",
+    "real_terminal_meter_hash": "NOT_PRODUCED",
+    "input_only_vectors_executed_by_wash": false,
+    "native_execution": "NOT_RUN",
+    "full_song_or_product_acceptance": "NOT_RUN"
+  },
+  "scope_note": "This is a local GTC meter-owner representation over the approved F06 state, not a DEE-native digest or evidence of product/runtime success."
+}

@@ -1,0 +1,105 @@
+{
+  "schema": "authorized-policy-functional-parameters.v1",
+  "selected_profile": {
+    "id": "eac3-joc-48k-1024k-acmod7-uncoupled-nonspx-policy-v1",
+    "sample_rate_hz": 48000,
+    "data_rate_kbps": 1024,
+    "acmod": 7,
+    "coupling": false,
+    "spx": false,
+    "gain_layout_mask": 7,
+    "refresh_mode": 1,
+    "normalization_option": 1,
+    "normalization_gate": 0
+  },
+  "profile_mismatch_error": "UNSUPPORTED_PROFILE",
+  "delivery_scope": "internal isolated specification and implementation only; no public or third-party distribution authorization",
+  "authorization_basis": "user authorized delivery of ordinary non-secret constants while excluding Dolby private keys and authentication secrets",
+  "secret_or_authentication_material": false,
+  "delivery_exclusions": {
+    "private_or_authentication_secret_included": false,
+    "upstream_implementation_artifact_included": false,
+    "original_table_artifact_included": false,
+    "compiled_container_included": false
+  },
+  "serialization": {
+    "order": "asset_order, then element_order within each asset",
+    "integer_encoding": "I32 little endian",
+    "float_encoding": "F32 little endian from exact u32 word",
+    "scalar_count": 19,
+    "byte_count": 76
+  },
+  "assets": [
+    {
+      "asset_id": "D06-T-NORMAL",
+      "name": "ordinary refresh threshold",
+      "type": "F32",
+      "consumer_order": 0,
+      "u32_words_hex": ["0x3ebda123"],
+      "source_classification": "compiled static non-secret audio-functional parameter, bound through the verified frozen model",
+      "fixed_profile_use": "mode 1 and mode 0 refresh comparison threshold"
+    },
+    {
+      "asset_id": "D06-W",
+      "name": "frequency-position weights",
+      "type": "I32",
+      "consumer_order": 1,
+      "i32_values": [3, 6, 10, 10],
+      "source_classification": "compiled static non-secret audio-functional parameters, bound through the verified frozen model",
+      "fixed_profile_use": "mode 1 refresh error weighting for positions 0, 1, 2 and 3-or-later"
+    },
+    {
+      "asset_id": "D06-N",
+      "name": "option-one normalization error factor",
+      "type": "F32",
+      "consumer_order": 2,
+      "u32_words_hex": ["0x35cccccd"],
+      "source_classification": "non-secret model-bound audio-functional parameter; exact F32 identity also equals rounded 1/655360, without claiming original design provenance",
+      "fixed_profile_use": "option 1, error gate 0 normalization second-pass threshold"
+    },
+    {
+      "asset_id": "D07-P",
+      "name": "level polynomial parameters",
+      "type": "F32",
+      "consumer_order": 3,
+      "element_names": ["offset", "linear", "quadratic", "headroom_step", "result_scale"],
+      "u32_words_hex": ["0x3c622bca", "0x3caa5bd7", "0x3be635de", "0x3caaaaab", "0x40800000"],
+      "source_classification": "compiled static non-secret audio-functional parameters, bound through the verified frozen model",
+      "fixed_profile_use": "mean-square to level scalar network"
+    },
+    {
+      "asset_id": "D07-A",
+      "name": "selector anchors",
+      "type": "F32",
+      "consumer_order": 4,
+      "u32_words_hex": ["0x3f24d014", "0x3ef49518", "0x3e9f9724", "0x3e15182b"],
+      "source_classification": "compiled static non-secret audio-functional parameters, bound through the verified frozen model",
+      "fixed_profile_use": "difference from the previous db-per-bit selector"
+    },
+    {
+      "asset_id": "D07-T",
+      "name": "consumed selector thresholds",
+      "type": "F32",
+      "consumer_order": 5,
+      "u32_words_hex": ["0x3f0f9097", "0x3eca161e", "0x3e6a161e"],
+      "source_classification": "compiled static non-secret audio-functional parameters, bound through the verified frozen model",
+      "fixed_profile_use": "strict descending threshold scan that selects code 0 through 3"
+    },
+    {
+      "asset_id": "D07-H",
+      "name": "selector hysteresis",
+      "type": "F32",
+      "consumer_order": 6,
+      "u32_words_hex": ["0x3dff2e49"],
+      "source_classification": "compiled static non-secret audio-functional parameter, bound through the verified frozen model",
+      "fixed_profile_use": "strict absolute-difference gate before selector replacement"
+    }
+  ],
+  "out_of_scope_values": [
+    "secondary-positive refresh threshold",
+    "CENTER_SIDE and MONO_SURROUND low-layout weights",
+    "unconsumed fourth selector-threshold storage item"
+  ],
+  "generated_difference_mapping_dependency": "D06-E is supplied separately as a 32-entry mathematical behavior rule",
+  "whole_pipeline_or_bit_exact_claim": false
+}

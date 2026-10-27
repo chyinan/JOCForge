@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge-drc-owner-optional-dialnorm-wash-verification.v1",
+  "package_id": "DRC-STANDALONE-OWNER-OPTIONAL-DIALNORM-V1",
+  "status": "WASHED_LOCAL_OWNER_SCHEMA_WITH_OPTION_U5",
+  "source_package_manifest_sha256": "467b0dcab5e36a9de5da372e726bfdd36a84f6347223af34eddc1b31bc8168d9",
+  "source_package_payload_hashes_verified": "5/5",
+  "approved_base_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_source_documents_verified": "8/8",
+  "standalone_drc_binding_manifest_sha256": "23952c523c8bb7435133fadc77bdc1a491d74c9df09b191ff591a2da967fdb1a",
+  "standalone_drc_binding_payloads_verified": "4/4",
+  "gtc_state_ref_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6",
+  "gtc_state_ref_payloads_verified": "5/5",
+  "canonical_preimages_verified": [
+    {"case": "dialnorm_none_cold", "bytes": 3397, "sha256": "e0abc1647bf9b0857b9d9a1a3d7ab1d88207d4ac4cd8a488552bb9ad3a907e30"},
+    {"case": "dialnorm_some_24_synthetic", "bytes": 3395, "sha256": "31347d238b8f69d59aa9c8708c7b752ca9775a14ec479108db26bc0b53fc27e4"}
+  ],
+  "numeric_policy": "The F06.3 -24.0 to U5=24 example is synthetic materialization only. No dialnorm default is admitted.",
+  "measurement_receipt_nested_in_drc_preimage": false,
+  "implementation_code_or_private_key_included": false,
+  "native_execution_or_product_acceptance": "NOT_RUN"
+}

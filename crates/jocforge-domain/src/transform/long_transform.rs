@@ -33,6 +33,17 @@ impl LongTransformHistory {
         }
     }
 
+    /// Reconstructs an owner history from its exact F32 bit words.
+    ///
+    /// This is a representation boundary only: it preserves every input word
+    /// unchanged and rejects non-finite values without arithmetic.
+    pub(crate) fn try_from_words(words: &[u32; LONG_TRANSFORM_HISTORY_WORDS]) -> Option<Self> {
+        words
+            .iter()
+            .all(|word| f32::from_bits(*word).is_finite())
+            .then_some(Self { words: *words })
+    }
+
     pub const fn words(&self) -> &[u32; LONG_TRANSFORM_HISTORY_WORDS] {
         &self.words
     }

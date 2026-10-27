@@ -1,0 +1,49 @@
+{
+  "schema": "selected-source-numeric-plan-receipt-map.v1",
+  "approved_receipt_name": "NumericPlanReceipt",
+  "implementation_alias": {
+    "name": "SelectedSourceNumericPlan",
+    "mapping": "adapter projection of NumericPlanReceipt fields; not a new persistent owner or an independently advancing plan",
+    "evidence_grade": "CROSSWALK_FROM_APPROVED_MODEL_CONTRACT"
+  },
+  "shared_analysis_receipt": {
+    "source_index": "U64",
+    "analysis_before_generation": "owner-local U64",
+    "analysis_after_generation": "owner-local U64",
+    "analysis_before_hash": "SHA-256 identity",
+    "analysis_after_hash": "SHA-256 identity",
+    "f07_advancement_count": 1,
+    "short_flags": "I1[30]",
+    "primary_unquantized_spectrum": "same-source spectrum identity",
+    "installed_and_delayed_audio": "same-source domain identities"
+  },
+  "numeric_plan_receipt": {
+    "source_index": "same U64 source as SharedAnalysisReceipt",
+    "shared_analysis_digest": "canonical SHA-256 digest of the same SharedAnalysisReceipt",
+    "completed_blocks": "six-block completion status",
+    "structure_flags": "same-source short/other flags",
+    "spectrum_identities": ["primary", "companion", "LFE"],
+    "main_plan": ["POWER/PRIMARY plan", "gain/db codes", "normalization"],
+    "f11_converter_result": {
+      "main_frame_codes": "five source-local codes",
+      "converter_frame_codes": "five independent source-local codes",
+      "converter_snr_offset": "U16, successful 10-bit value"
+    },
+    "provider_identities": "required immutable provider identities",
+    "persistent_owner": false,
+    "per_source_cost_intermediates": "NOT_RECORDED; not listed as receipt fields"
+  },
+  "cross_receipt_linkage": {
+    "F06_and_F08_must_reference_same_shared_analysis_digest": true,
+    "F11_is_inside_F08_F09_F10_consumer_plan": true,
+    "F12_preflight_checks": ["source", "generation", "provider digest", "advancement_count=1"],
+    "F12_inputs": ["codec clone", "NumericPlanReceipt", "same-source BSI/DRC", "same-source EMDF or absent-payload disposition"],
+    "generation_rule": "compare the typed source and owner-local generation/hash references; do not require unrelated owner counters to be numerically identical"
+  },
+  "recorded_local_rows": [
+    {"source":0,"source_result":"S0-LONG-MIX","f11_codes_and_offset":"source_numeric_plan_handoff_audit_v1/SOURCE-NUMERIC-PLAN-VECTORS.json","plan_sha256":"4a8aca843023095aea4fc7d8c34b77efa59e094a5392554103a60254634c396a","owner_counters_before":[0,0,0,0,0],"owner_counters_after":[1,1,1,1,1]},
+    {"source":1,"source_result":"S1-SHORT-CARRY","f11_codes_and_offset":"source_numeric_plan_handoff_audit_v1/SOURCE-NUMERIC-PLAN-VECTORS.json","plan_sha256":"4a8aca843023095aea4fc7d8c34b77efa59e094a5392554103a60254634c396a","owner_counters_before":[1,1,1,1,1],"owner_counters_after":[2,2,2,2,2]},
+    {"source":2,"source_result":"S2-PUBLISH","f11_codes_and_offset":"source_numeric_plan_handoff_audit_v1/SOURCE-NUMERIC-PLAN-VECTORS.json","plan_sha256":"4a8aca843023095aea4fc7d8c34b77efa59e094a5392554103a60254634c396a","owner_counters_before":[2,2,2,2,2],"owner_counters_after":[3,3,3,3,3]}
+  ],
+  "recorded_row_limit": "The source rows preserve F11 output and F12 plan/frame in one synthetic result row, but do not contain a serialized SharedAnalysisReceipt canonical digest or typed cross-owner generation token. The equal plan digests are content hashes, not generation identities."
+}

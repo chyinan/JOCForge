@@ -1,0 +1,77 @@
+{
+  "package_id": "F11-F12-APPROVED-SOURCE-LEAVES-V1",
+  "scope": "Verbatim materialization of 11 referenced approved spec/parameter/washed-evidence leaves",
+  "approved_source_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "files": [
+    {
+      "file": "approved/specs/06-meter-bsi.md",
+      "bytes": 6337,
+      "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
+    },
+    {
+      "file": "approved/specs/11-converter.md",
+      "bytes": 5172,
+      "sha256": "9ecb50bbb125d2a6e2d8f5e565ffbc7514c156c72602d2d2d89d8b17e9e4e4c8"
+    },
+    {
+      "file": "approved/specs/12-selected-codec-wire.md",
+      "bytes": 14760,
+      "sha256": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448"
+    },
+    {
+      "file": "approved/specs/13-emdf-and-timeline.md",
+      "bytes": 12839,
+      "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd"
+    },
+    {
+      "file": "approved/parameters/f01e-selected-constructor-v1.json",
+      "bytes": 20138,
+      "sha256": "b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb"
+    },
+    {
+      "file": "approved/parameters/codec-wire-cross-module-providers-v1.json",
+      "bytes": 15764,
+      "sha256": "d0a99cd1fd25b5ba0b2e690d549ac474006d8a4dddb10e185446808379e96e2d"
+    },
+    {
+      "file": "approved-supplements/F11-F12-PROVIDER-AND-LOCAL-FIXTURE-AVAILABILITY-V1/MANIFEST.json",
+      "bytes": 1006,
+      "sha256": "bd771f4b6a60b986499ff6e7c5ac27e1d06d7eb04b2de15df32f810c2efe0128"
+    },
+    {
+      "file": "approved-supplements/F11-F12-PROVIDER-AND-LOCAL-FIXTURE-AVAILABILITY-V1/CONTRACT.md",
+      "bytes": 2288,
+      "sha256": "26ee3f8119572fe4be4cc21970defc3ecf58d55020dea661af5d83f0a69caef2"
+    },
+    {
+      "file": "approved-supplements/F11-F12-PROVIDER-AND-LOCAL-FIXTURE-AVAILABILITY-V1/EVIDENCE.json",
+      "bytes": 1620,
+      "sha256": "aa5272aac1a832c6517c2d4129dec774ef25351af5721048b702d9afe1a2c8f8"
+    },
+    {
+      "file": "approved-supplements/F11-F12-PROVIDER-AND-LOCAL-FIXTURE-AVAILABILITY-V1/SOURCE-MANIFESTS.json",
+      "bytes": 1550,
+      "sha256": "d8ba514d6671e008896a8a8763bfd3b28cdf0251d21698a92db248fbbf093196"
+    },
+    {
+      "file": "approved-supplements/F11-F12-PROVIDER-AND-LOCAL-FIXTURE-AVAILABILITY-V1/WASH-REVIEW.json",
+      "bytes": 831,
+      "sha256": "44bb71a0616a963f5a3bc8d8d27943ac182945ff597522acd0f89ec244c79417"
+    },
+    {
+      "file": "CONTRACT.md",
+      "bytes": 977,
+      "sha256": "71af432d114f637468c2db7ee1acf10463f05e401f2835b105b935bf9969ebf8"
+    },
+    {
+      "file": "SOURCE-LEAVES.json",
+      "bytes": 2583,
+      "sha256": "97b8dd9fb469bdb3bcceb2f12f0c43a9cfd27c943e984915ce45268117aa66be"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 675,
+      "sha256": "a454085ab663f45876cc6e2671fd7f23b4135231a4d2964d0b10dd11fcb0c87d"
+    }
+  ]
+}

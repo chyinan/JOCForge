@@ -1,0 +1,28 @@
+{
+  "schema": "secondary-source-generation-rejection.v1",
+  "input_only": false,
+  "case_id": "skip-source-frame-0",
+  "pre_state": {
+    "frame_index": 0,
+    "state_ref": "cold_state",
+    "forward_history_shape": [5, 128],
+    "inverse_carry_shape": [5, 128]
+  },
+  "request": {
+    "source_frame": 1,
+    "callback_index": 3,
+    "dispatch_index": 2,
+    "delayed_primary_shape": [6, 1536],
+    "short_consumed_shape": [6, 5]
+  },
+  "contract_result": {
+    "status": "EXPECTED_BY_SPEC_NOT_RUN",
+    "error": "SECONDARY_INPUT_ERROR",
+    "normal_secondary_returned": false,
+    "state_commit": false,
+    "frame_index_after": 0,
+    "numeric_state_words_after": "UNCHANGED_FROM_PRE_STATE_BY_TRANSACTION_RULE",
+    "runtime_execution": "NOT_RUN"
+  },
+  "authority": "Approved F06NR frame_index/source_frame equality and no-normal-output-on-invalid-input rules; this is a contract vector, not native error behavior evidence."
+}

@@ -1,0 +1,56 @@
+{
+  "package_id": "F06NR-SOURCE-FRAME-INPUT-ONLY-CROSSWALK-V1",
+  "scope": "Selected model F06NR source-frame input/state/carrier interface vectors only; numeric after-state NOT_RUN",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 3008,
+      "sha256": "e0de4e25c4b60744ce76c2f25b6ae353c00d2436e860532eb48b24ec141a3907"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 3059,
+      "sha256": "6871c3f68582596b6f7bb9e30082f31e8ed59f9f1f5b0bec35ff8cad45f56fa1"
+    },
+    {
+      "file": "STATE-TRANSITION-SHAPES.json",
+      "bytes": 3221,
+      "sha256": "0158214d5b3dfb6663139fa2d9ce9f3e07c37259e53242b7c78d0fe29ec27096"
+    },
+    {
+      "file": "GENERATION-REJECTION-VECTOR.json",
+      "bytes": 930,
+      "sha256": "a67d996e62ece1cc342196b64b5fb9febb66534a44efb735b880b9b60ce8d932"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 3408,
+      "sha256": "637aa9840c958899beb1365ec6d7a1dd537e720b6389d03851b2ee3ecfbf246c"
+    },
+    {
+      "file": "DELIVERY-ENVELOPE.json",
+      "bytes": 552,
+      "sha256": "0821f339ecc471868987eff511b69942f5755d3077b346cf1b7925e7f2c941b4"
+    },
+    {
+      "file": "MODEL-CONNECTIONS.md",
+      "bytes": 3479,
+      "sha256": "1c80b735c4c8f59d5d7cd3481c3b090f2ab249c2c4c0d59e19d6e2d609d07374"
+    },
+    {
+      "file": "SOURCE-VECTOR-HASHES.json",
+      "bytes": 610,
+      "sha256": "548c344de796ea0609b7a756b0da8d37f89ae21a030b733ca78ebfcde916b5df"
+    },
+    {
+      "file": "SOURCE-PACKAGE-MANIFEST.json",
+      "bytes": 1496,
+      "sha256": "6f2ff56687f7cf62e082d0801f90b126dca6ef96457566f6ca3620130e662ded"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 934,
+      "sha256": "24fdc4a12da2ee906d641887bbc03021b404c88e09635a48998cc6c7b00fe0e2"
+    }
+  ]
+}

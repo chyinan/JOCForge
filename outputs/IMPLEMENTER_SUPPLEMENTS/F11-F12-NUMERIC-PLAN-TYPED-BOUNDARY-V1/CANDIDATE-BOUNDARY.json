@@ -1,0 +1,29 @@
+{
+  "schema": "selected-f12-candidate-boundary.v1",
+  "producer_order": ["one F11 converter/main plan per codec source", "one fixed NumericPlanReceipt", "F12 candidate loop"],
+  "candidate_scope": {
+    "candidate_q": "per-trial F12 search input",
+    "fixed_across_candidates": ["source index", "NumericPlanReceipt digest", "main frame codes", "converter frame codes", "converter SNR offset", "same-source BSI/DRC", "EMDF or absent-payload disposition"],
+    "scratch_per_candidate": ["BAP rows", "mantissa groups/codes", "bitwriter cursor and frame attempt"],
+    "f11_recomputed_per_candidate": false,
+    "trial_state_commit": false
+  },
+  "accepted_candidate_boundary": {
+    "complete_frame_bytes": 4096,
+    "crc_receipt_required": true,
+    "source_commit_count": 1,
+    "global_commit_gate": "after complete frame and the source transaction's durable append gate"
+  },
+  "recorded_synthetic_rows": [
+    {"source":0,"candidate_trials":11,"best_q":422,"trial_state_commits":0,"source_commits":1,"frame_bytes":4096,"crc_residual":0,"published":false},
+    {"source":1,"candidate_trials":11,"best_q":422,"trial_state_commits":0,"source_commits":1,"frame_bytes":4096,"crc_residual":0,"published":false},
+    {"source":2,"candidate_trials":11,"best_q":422,"trial_state_commits":0,"source_commits":1,"frame_bytes":4096,"crc_residual":0,"published":true,"au":0}
+  ],
+  "failure_boundary": {
+    "failed_candidate": "discard candidate scratch; retain the same fixed source plan for the next candidate",
+    "all_candidates_fail": "fatal source; discard staged roots under the source transaction contract",
+    "f11_producer_failure": "before F12 trials; no candidate loop",
+    "durable_append_fault_injection": "NOT_RUN_IN_THE_SAVED_SYNTHETIC_ROWS"
+  },
+  "snr_name_guard": "F11 converter_snr_offset is a U16 10-bit plan result; it is distinct from F12's two-bit SNR offset strategy syntax value 0."
+}

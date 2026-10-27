@@ -1,0 +1,35 @@
+{
+  "schema": "source-numeric-plan-handoff-source-identities.v1",
+  "source_paths_are_relative_to_the_approved_package_or_supplement": true,
+  "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "verified_source_resolution": {
+    "artifact": "washed-supplements/F11-F12-NUMERIC-PLAN-HANDOFF-CROSSWALK-V1/SOURCE-IDENTITY-RESOLUTION.json",
+    "artifact_sha256": "cd88555bc661c6a754637fc6288c589c4c52b3ed41710ee4c1592f103bbd0b6e",
+    "resolved_count": 25,
+    "rehash_result": "25_OF_25_MATCH",
+    "groups": {"IMPLEMENTER_PACKAGE":12,"CODEC_ALLOCATION":4,"F06ND_F12_BSI":4,"F11_F12_AVAILABILITY":5}
+  },
+  "sources": [
+    {"path":"approved/specs/11-converter.md","bytes":5172,"sha256":"9ecb50bbb125d2a6e2d8f5e565ffbc7514c156c72602d2d2d89d8b17e9e4e4c8","grade":"FROZEN_APPROVED_MODEL"},
+    {"path":"approved/specs/00-global-transaction-contract.md","bytes":20041,"sha256":"5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105","grade":"FROZEN_APPROVED_MODEL"},
+    {"path":"approved/specs/12-selected-source-frame-composition.md","bytes":10843,"sha256":"9e6fcc14489ca0acaff0f7c223fce65539aa5b19cb4119ebcb34d19049cd0769","grade":"FROZEN_APPROVED_MODEL"},
+    {"path":"approved/specs/12-selected-codec-wire.md","bytes":14760,"sha256":"9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448","grade":"FROZEN_APPROVED_MODEL"},
+    {"path":"approved/parameters/f07-f12-source-state-schema-v1.json","bytes":5359,"sha256":"7967752a88493648c24cf7c1183da61dc470e35a684bb48d6335c496e90c6f4e","grade":"FROZEN_APPROVED_MODEL"},
+    {"path":"approved/parameters/codec-wire-cross-module-providers-v1.json","bytes":15764,"sha256":"d0a99cd1fd25b5ba0b2e690d549ac474006d8a4dddb10e185446808379e96e2d","grade":"FROZEN_PROVIDER_REGISTRY"},
+    {"path":"approved/test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json","bytes":10558,"sha256":"59f7e83438bd1e7bd955cb4a9fe9c6dd7717939a651eb150d190edb2d91432d5","grade":"HASH_BOUND_SYNTHETIC_INPUTS"},
+    {"path":"approved/test-vectors/F07-F12-SOURCE-COMPOSITION-VERIFICATION-RESULT.json","bytes":2871144,"sha256":"ada7e443a21299dbdbc527f05f705c65cbe2b674d785b20ad8b339aa7347766a","grade":"HASH_BOUND_SYNTHETIC_MODEL_EXECUTION"},
+    {"path":"approved/test-vectors/F07-F12-SOURCE-COMPOSITION-GAP-INVENTORY.json","bytes":2092,"sha256":"acfe3c28e77f98743b82e43c8a5d026cb953f3e858ce568edaf6f2f39a70abd1","grade":"HASH_BOUND_SCOPE_STATUS"},
+    {"path":"washed-supplements/F11-F12-PROVIDER-AND-LOCAL-FIXTURE-AVAILABILITY-V1/MANIFEST.json","bytes":1006,"sha256":"bd771f4b6a60b986499ff6e7c5ac27e1d06d7eb04b2de15df32f810c2efe0128","grade":"WASH_VERIFIED_SUPPLEMENT"},
+    {"path":"washed-supplements/F11-F12-PROVIDER-AND-LOCAL-FIXTURE-AVAILABILITY-V1/CONTRACT.md","bytes":2288,"sha256":"26ee3f8119572fe4be4cc21970defc3ecf58d55020dea661af5d83f0a69caef2","grade":"WASH_VERIFIED_SUPPLEMENT"},
+    {"path":"washed-supplements/F11-F12-PROVIDER-AND-LOCAL-FIXTURE-AVAILABILITY-V1/EVIDENCE.json","bytes":1620,"sha256":"aa5272aac1a832c6517c2d4129dec774ef25351af5721048b702d9afe1a2c8f8","grade":"WASH_VERIFIED_SUPPLEMENT"},
+    {"path":"washed-supplements/F11-F12-PROVIDER-AND-LOCAL-FIXTURE-AVAILABILITY-V1/SOURCE-MANIFESTS.json","bytes":1550,"sha256":"d8ba514d6671e008896a8a8763bfd3b28cdf0251d21698a92db248fbbf093196","grade":"WASH_VERIFIED_SUPPLEMENT"},
+    {"path":"washed-supplements/F11-F12-PROVIDER-AND-LOCAL-FIXTURE-AVAILABILITY-V1/WASH-REVIEW.json","bytes":831,"sha256":"44bb71a0616a963f5a3bc8d8d27943ac182945ff597522acd0f89ec244c79417","grade":"WASH_VERIFIED_SUPPLEMENT"},
+    {"path":"washed-supplements/F11-F12-NUMERIC-PLAN-HANDOFF-CROSSWALK-V1/MANIFEST.json","bytes":1340,"sha256":"a8e682949508281eccd7bbceacc8efd029ddec6d8df4c668ea0bc6c84cea9673","grade":"WASH_VERIFIED_CROSSWALK"},
+    {"path":"washed-supplements/F11-F12-NUMERIC-PLAN-HANDOFF-CROSSWALK-V1/SOURCE-IDENTITY-RESOLUTION.json","bytes":5746,"sha256":"cd88555bc661c6a754637fc6288c589c4c52b3ed41710ee4c1592f103bbd0b6e","grade":"25_OF_25_REHASHED_IN_THIS_AUDIT"},
+    {"path":"washed-supplements/F11-F12-NUMERIC-PLAN-HANDOFF-CROSSWALK-V1/WASH-VERIFICATION.json","bytes":1938,"sha256":"e7f8f7d4a9b3e1505022a43f5451cfe7d437b28c295caef61a48ccd848b76594","grade":"WASH_VERIFICATION"},
+    {"path":"washed-supplements/F11-F12-APPROVED-SOURCE-LEAVES-V1/MANIFEST.json","bytes":2984,"sha256":"01dbb8fe97bc8f40247340b93eccd008826c2330e6c4616323f2cbd1aa2ab81f","grade":"14_OF_14_REHASHED_IN_THIS_AUDIT"},
+    {"path":"washed-supplements/F11-F12-APPROVED-SOURCE-LEAVES-V1/CONTRACT.md","bytes":977,"sha256":"71af432d114f637468c2db7ee1acf10463f05e401f2835b105b935bf9969ebf8","grade":"WASH_VERIFIED_SOURCE_MATERIALIZATION"},
+    {"path":"washed-supplements/F11-F12-APPROVED-SOURCE-LEAVES-V1/SOURCE-LEAVES.json","bytes":2583,"sha256":"97b8dd9fb469bdb3bcceb2f12f0c43a9cfd27c943e984915ce45268117aa66be","grade":"WASH_VERIFIED_SOURCE_MATERIALIZATION"},
+    {"path":"washed-supplements/F11-F12-APPROVED-SOURCE-LEAVES-V1/WASH-VERIFICATION.json","bytes":675,"sha256":"a454085ab663f45876cc6e2671fd7f23b4135231a4d2964d0b10dd11fcb0c87d","grade":"WASH_VERIFICATION"}
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "schema": "selected-source-numeric-plan-generation-input-vectors.v1",
+  "kind": "input-only; contains no expected output values",
+  "scope": "approved selected 48 kHz / 1024 kbps / 5.1 source transaction",
+  "generation_token_notice": "G_s0/G_s1/G_s2 and the SHARED_ANALYSIS_sN/NUMERIC_PLAN_sN labels are symbolic contract-vector tokens, not captured native IDs, owner counters, hashes, or product inputs.",
+  "clock_notice": "codec source s maps to main callback index g=s+2; this clock index is separate from owner-generation counters and receipt identity.",
+  "vectors": [
+    {
+      "case": "same-generation-source-zero-priming",
+      "input": {
+        "codec_source_index": 0,
+        "main_callback_index": 2,
+        "source_generation_token": "G_s0",
+        "shared_analysis_receipt": {"source":0,"token":"G_s0","digest":"SHARED_ANALYSIS_s0","advancement_count":1},
+        "f06_bsi_drc_receipt": {"source":0,"token":"G_s0","shared_analysis_digest":"SHARED_ANALYSIS_s0"},
+        "numeric_plan_receipt": {"source":0,"token":"G_s0","shared_analysis_digest":"SHARED_ANALYSIS_s0","f11_output_source":0,"digest":"NUMERIC_PLAN_s0"},
+        "f12_selected_source_numeric_plan": {"source":0,"token":"G_s0","numeric_plan_receipt_digest":"NUMERIC_PLAN_s0"},
+        "published_payload": {"kind":"ABSENT_PUBLISHED_PAYLOAD_V1","source":0}
+      }
+    },
+    {
+      "case": "same-generation-source-one-priming",
+      "input": {
+        "codec_source_index": 1,
+        "main_callback_index": 3,
+        "source_generation_token": "G_s1",
+        "shared_analysis_receipt": {"source":1,"token":"G_s1","digest":"SHARED_ANALYSIS_s1","advancement_count":1},
+        "f06_bsi_drc_receipt": {"source":1,"token":"G_s1","shared_analysis_digest":"SHARED_ANALYSIS_s1"},
+        "numeric_plan_receipt": {"source":1,"token":"G_s1","shared_analysis_digest":"SHARED_ANALYSIS_s1","f11_output_source":1,"digest":"NUMERIC_PLAN_s1"},
+        "f12_selected_source_numeric_plan": {"source":1,"token":"G_s1","numeric_plan_receipt_digest":"NUMERIC_PLAN_s1"},
+        "published_payload": {"kind":"ABSENT_PUBLISHED_PAYLOAD_V1","source":1}
+      }
+    },
+    {
+      "case": "same-generation-source-two-published",
+      "input": {
+        "codec_source_index": 2,
+        "main_callback_index": 4,
+        "source_generation_token": "G_s2",
+        "shared_analysis_receipt": {"source":2,"token":"G_s2","digest":"SHARED_ANALYSIS_s2","advancement_count":1},
+        "f06_bsi_drc_receipt": {"source":2,"token":"G_s2","shared_analysis_digest":"SHARED_ANALYSIS_s2"},
+        "numeric_plan_receipt": {"source":2,"token":"G_s2","shared_analysis_digest":"SHARED_ANALYSIS_s2","f11_output_source":2,"digest":"NUMERIC_PLAN_s2"},
+        "f12_selected_source_numeric_plan": {"source":2,"token":"G_s2","numeric_plan_receipt_digest":"NUMERIC_PLAN_s2"},
+        "published_payload": {"kind":"EMDF_RECEIPT","source":2},
+        "candidate_inputs": ["candidate-A","candidate-B","candidate-C"]
+      }
+    },
+    {
+      "case": "source-two-with-cross-generation-consumer",
+      "input": {
+        "codec_source_index": 2,
+        "main_callback_index": 4,
+        "source_generation_token": "G_s2",
+        "shared_analysis_receipt": {"source":2,"token":"G_s2","digest":"SHARED_ANALYSIS_s2","advancement_count":1},
+        "f06_bsi_drc_receipt": {"source":2,"token":"G_s2","shared_analysis_digest":"SHARED_ANALYSIS_s2"},
+        "numeric_plan_receipt": {"source":2,"token":"G_s2","shared_analysis_digest":"SHARED_ANALYSIS_s2","f11_output_source":2,"digest":"NUMERIC_PLAN_s2"},
+        "f12_selected_source_numeric_plan": {"source":2,"token":"G_s1","numeric_plan_receipt_digest":"NUMERIC_PLAN_s2"},
+        "published_payload": {"kind":"EMDF_RECEIPT","source":2}
+      }
+    }
+  ]
+}

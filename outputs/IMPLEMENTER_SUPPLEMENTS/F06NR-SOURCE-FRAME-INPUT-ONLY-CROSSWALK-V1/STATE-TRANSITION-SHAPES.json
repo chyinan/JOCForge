@@ -1,0 +1,79 @@
+{
+  "schema": "secondary-producer-state-transition-shapes.v1",
+  "numeric_replay": "NOT_RUN",
+  "state_owner": "one F06NR owner per selected programme, with independent lane state",
+  "cold_state": {
+    "frame_index": 0,
+    "frame_index_dtype": "U64",
+    "forward_history": {
+      "shape": [5, 128],
+      "dtype": "F32",
+      "lane_order": ["L", "C", "R", "Ls", "Rs"],
+      "initial_values": "positive zero"
+    },
+    "inverse_carry": {
+      "shape": [5, 128],
+      "dtype": "F32",
+      "lane_order": ["L", "C", "R", "Ls", "Rs"],
+      "initial_values": "positive zero",
+      "storage_is_independent_of_forward_history": true
+    }
+  },
+  "accepted_source_transition": {
+    "precondition": "frame_index equals source_frame s",
+    "commit_rule": "After all five lanes and six blocks succeed, commit the complete next state once.",
+    "frame_index_after": "s + 1",
+    "forward_history_after": {
+      "shape": [5, 128],
+      "numeric_words": "NOT_RUN",
+      "authoritative_rule": "F08 ordinary long/short transform consumes each lane's six block inputs and maintains its independent forward history; see approved identity list.",
+      "independent_after_state_recomputation": false
+    },
+    "inverse_carry_after": {
+      "shape": [5, 128],
+      "numeric_words": "NOT_RUN",
+      "authoritative_rule": "F06NI/F06NF inverse and the F06NR overlap rule update each lane's independent carry; see approved identity list.",
+      "independent_after_state_recomputation": false
+    },
+    "secondary_carrier": {
+      "shape": [6, 1536],
+      "dtype": "F32",
+      "external_row_order": ["L", "R", "C", "LFE", "Ls", "Rs"],
+      "numeric_words": "NOT_RUN",
+      "known_positive_zero_slots": [
+        "entire external LFE row 3",
+        "samples 1280 through 1535 in each row"
+      ],
+      "known_nonzero_slot_rule": "Internal lanes L,C,R,Ls,Rs write inverse/overlap blocks 1 through 5 to the corresponding external row's carrier blocks 0 through 4; block 0 output is discarded after its state update."
+    }
+  },
+  "source_chain_references": [
+    {
+      "source_frame": 0,
+      "frame_index_before": 0,
+      "frame_index_after": 1,
+      "next_source_state_ref": "state_after_source_frame_0",
+      "all_f32_after_state_words": "NOT_RUN"
+    },
+    {
+      "source_frame": 1,
+      "frame_index_before": 1,
+      "frame_index_after": 2,
+      "next_source_state_ref": "state_after_source_frame_1",
+      "all_f32_after_state_words": "NOT_RUN"
+    },
+    {
+      "source_frame": 2,
+      "frame_index_before": 2,
+      "frame_index_after": 3,
+      "all_f32_after_state_words": "NOT_RUN"
+    }
+  ],
+  "authority_boundary": {
+    "frame_index_increment": "directly specified by F06NR source-frame contract",
+    "carrier_zero_slots": "directly specified by F06NR carrier construction contract",
+    "forward_history_words": "require independent F08 execution from the supplied synthetic inputs; not inferred from block-level expected outputs",
+    "inverse_carry_words": "require independent F06NI/F06NF plus overlap execution; not inferred from carrier routing hashes",
+    "nonzero_carrier_words": "require the integrated producer execution; not inferred from per-block verification results"
+  }
+}

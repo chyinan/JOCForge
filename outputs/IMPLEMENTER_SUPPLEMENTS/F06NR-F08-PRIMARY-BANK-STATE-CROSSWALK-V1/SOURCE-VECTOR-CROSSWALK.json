@@ -1,0 +1,47 @@
+{
+  "schema": "secondary-source-vector-bank-crosswalk.v1",
+  "input_only_package_manifest_sha256": "6f2ff56687f7cf62e082d0801f90b126dca6ef96457566f6ca3620130e662ded",
+  "input_package_modified": false,
+  "input_only": true,
+  "expected_dsp_outputs_included": false,
+  "input_recipe_leaf": {
+    "file": "INPUT-ONLY-VECTORS.json",
+    "sha256": "6871c3f68582596b6f7bb9e30082f31e8ed59f9f1f5b0bec35ff8cad45f56fa1",
+    "input_layout": "six external rows [L,R,C,LFE,Ls,Rs], 1536 F32 samples per row; already F07-delayed input domain",
+    "sample_numerator": "((17*s + 11*r + 5*(i mod 257)) mod 257) - 128",
+    "sample_value": "numerator / 32768; exactly representable as F32",
+    "short_consumed": "(s + block + internal_lane) mod 2; block-major [L,C,R,Ls,Rs], 0=long, 1=short"
+  },
+  "input_hash_leaf": {
+    "file": "SOURCE-VECTOR-HASHES.json",
+    "sha256": "548c344de796ea0609b7a756b0da8d37f89ae21a030b733ca78ebfcde916b5df"
+  },
+  "source_frames": [
+    {
+      "source_frame": 0,
+      "callback_index": 2,
+      "dispatch_index": 1,
+      "state_before_ref": "cold_state",
+      "input_sha256": "49064153e1faaeda358303a02915d7604b7bdf4f427d9b1b41a8c04cffc36f31",
+      "f06nr_bank": "F08_PRIMARY"
+    },
+    {
+      "source_frame": 1,
+      "callback_index": 3,
+      "dispatch_index": 2,
+      "state_before_ref": "state_after_source_frame_0",
+      "input_sha256": "901d2ae95029fe828e436da25b69a02f43ad10c6b6f14b5b3b7e371e8e97ace0",
+      "f06nr_bank": "F08_PRIMARY"
+    },
+    {
+      "source_frame": 2,
+      "callback_index": 4,
+      "dispatch_index": 3,
+      "state_before_ref": "state_after_source_frame_1",
+      "input_sha256": "a4ca44c56f67f0572160551d7b445775a00e380badb6a49e0c3b882a730a85c1",
+      "f06nr_bank": "F08_PRIMARY"
+    }
+  ],
+  "numeric_after_state": "NOT_RUN",
+  "input_materialization": "The source hashes identify the synthetic six-row delayed-primary words and 30 short_consumed flags only; state and output words are excluded."
+}

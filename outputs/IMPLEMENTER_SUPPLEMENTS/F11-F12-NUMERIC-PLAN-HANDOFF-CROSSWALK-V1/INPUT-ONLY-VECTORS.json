@@ -1,0 +1,52 @@
+{
+  "schema": "converter-codec-plan-handoff-input-vectors.v1",
+  "kind": "input-only; no expected output values are embedded",
+  "scope": "selected ADM 48 kHz / 1024 kbps / 5.1 model",
+  "vectors": [
+    {
+      "case": "priming-source-zero",
+      "inputs": {
+        "codec_source_index": 0,
+        "transaction_generation": "G0",
+        "shared_analysis_receipt": {"source": 0, "generation": "G0", "advancement_count": 1},
+        "f06_bsi_drc_receipt": {"source": 0, "generation": "G0"},
+        "numeric_plan_receipt": {"source": 0, "generation": "G0"},
+        "published_payload": {"kind": "ABSENT_PUBLISHED_PAYLOAD_V1", "source": 0}
+      }
+    },
+    {
+      "case": "priming-source-one",
+      "inputs": {
+        "codec_source_index": 1,
+        "transaction_generation": "G1",
+        "shared_analysis_receipt": {"source": 1, "generation": "G1", "advancement_count": 1},
+        "f06_bsi_drc_receipt": {"source": 1, "generation": "G1"},
+        "numeric_plan_receipt": {"source": 1, "generation": "G1"},
+        "published_payload": {"kind": "ABSENT_PUBLISHED_PAYLOAD_V1", "source": 1}
+      }
+    },
+    {
+      "case": "published-source-two-candidate-loop",
+      "inputs": {
+        "codec_source_index": 2,
+        "transaction_generation": "G2",
+        "shared_analysis_receipt": {"source": 2, "generation": "G2", "advancement_count": 1},
+        "f06_bsi_drc_receipt": {"source": 2, "generation": "G2"},
+        "numeric_plan_receipt": {"source": 2, "generation": "G2"},
+        "published_payload": {"kind": "EMDF_RECEIPT", "source": 2},
+        "f12_candidate_inputs": ["candidate-A", "candidate-B", "candidate-C"]
+      }
+    },
+    {
+      "case": "reject-cross-generation-receipt",
+      "inputs": {
+        "codec_source_index": 2,
+        "transaction_generation": "G2",
+        "shared_analysis_receipt": {"source": 2, "generation": "G2", "advancement_count": 1},
+        "f06_bsi_drc_receipt": {"source": 2, "generation": "G1"},
+        "numeric_plan_receipt": {"source": 2, "generation": "G2"},
+        "published_payload": {"kind": "EMDF_RECEIPT", "source": 2}
+      }
+    }
+  ]
+}

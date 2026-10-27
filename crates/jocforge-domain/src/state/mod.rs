@@ -5,8 +5,8 @@ mod reader_eof;
 
 pub use reader_eof::{
     Control38Snapshot, Host38Frame, ReaderEofDigest, ReaderEofError, ReaderEofMachine,
-    ReaderEofOwnerId, ReaderEofPhase, ReaderEofPrepared, ReaderEofReceipt, ReaderEofStaged,
-    ReaderEofState,
+    ReaderEofOwnerId, ReaderEofOwnerStateReference, ReaderEofPhase, ReaderEofPrepared,
+    ReaderEofReceipt, ReaderEofStaged, ReaderEofState,
 };
 
 /// An encoding request cannot run in the migration baseline.

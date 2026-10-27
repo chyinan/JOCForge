@@ -1,0 +1,39 @@
+{
+  "schema": "jocforge-f11-f12-availability-evidence.v1",
+  "status": "MODEL_CONTRACTS_AND_PROVIDERS_AVAILABLE_FRESH_SOURCE_FRAME_INTEGRATION_NOT_RUN",
+  "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "verified_approved_file_references": 48,
+  "verified_cross_module_provider_references": 25,
+  "cross_module_provider_groups": {
+    "F12_LOCAL": 2,
+    "F06_BSI": 8,
+    "F07_F09_F10_POLICY": 7,
+    "F08_TRANSFORM": 4,
+    "F13_EMDF": 4
+  },
+  "F11": {
+    "contract": "MODEL_APPROVED_CONTRACT",
+    "available_unit_cases": ["U-COST-0", "U-COST-2", "U-SEARCH-01"],
+    "unit_case_scope": "two fixed-cost cases and search with an all-zero synthetic BAP callback",
+    "full_converter_producer_integration": "NOT_ESTABLISHED",
+    "dedicated_local_review": "NOT_REGISTERED"
+  },
+  "F12A": {
+    "contract": "MODEL_APPROVED_CONTRACT",
+    "recorded_local_review": "80 normal cases, 8 caller-context cases, 10 rejections, 60 supplemental checks",
+    "recomputed_in_this_audit": false
+  },
+  "F12S": {
+    "contract": "MODEL_APPROVED_CONTRACT",
+    "recorded_local_review": "208 quantizer cases and four complete 4096-byte supplied-fixture frames with CRC/search/EMDF/commit checks",
+    "live_adm_or_producer_inputs": "NOT_USED"
+  },
+  "fresh_execution": {
+    "F07_F08_F09_F10_to_F11_F12A_F12S": "NOT_RUN",
+    "4249_source_to_4247_au_cold_replay": "NOT_RUN",
+    "product_audio_or_decoder_render": "NOT_RUN"
+  },
+  "native_parity_only_unbound": [
+    "metadata owner to exact F12 validated-count/working-header owner in the same source/reset generation"
+  ]
+}

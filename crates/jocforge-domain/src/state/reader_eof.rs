@@ -151,6 +151,56 @@ impl ReaderEofState {
     }
 }
 
+/// Read-only GTC owner-state view over the complete canonical ReaderEof root.
+///
+/// `state_ref` names the logical member in the enclosing programme snapshot; it
+/// does not replace the complete canonical bytes or grant parent commit authority.
+#[derive(Debug, Eq, PartialEq)]
+pub struct ReaderEofOwnerStateReference {
+    generation: u64,
+    state_sha256: ReaderEofDigest,
+    cold_sha256: ReaderEofDigest,
+    canonical_bytes: Vec<u8>,
+}
+
+impl ReaderEofOwnerStateReference {
+    fn from_state(state: &ReaderEofState, generation: u64) -> Self {
+        let canonical_bytes = state.canonical_bytes();
+        let state_sha256 = ReaderEofDigest::from_canonical_bytes(&canonical_bytes);
+        let cold_sha256 = ReaderEofState::cold().digest();
+        Self {
+            generation,
+            state_sha256,
+            cold_sha256,
+            canonical_bytes,
+        }
+    }
+
+    pub const fn owner_id(&self) -> &'static str {
+        "reader_eof"
+    }
+
+    pub const fn state_ref(&self) -> &'static str {
+        "owners.reader_eof"
+    }
+
+    pub const fn generation(&self) -> u64 {
+        self.generation
+    }
+
+    pub const fn state_sha256(&self) -> ReaderEofDigest {
+        self.state_sha256
+    }
+
+    pub const fn cold_sha256(&self) -> ReaderEofDigest {
+        self.cold_sha256
+    }
+
+    pub fn canonical_bytes(&self) -> &[u8] {
+        &self.canonical_bytes
+    }
+}
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum ReaderEofError {
     HostShape,
@@ -270,6 +320,10 @@ impl ReaderEofMachine {
     }
     pub const fn is_retired(&self) -> bool {
         self.retired
+    }
+    /// Returns the full committed owner state as a read-only GTC reference.
+    pub fn state_reference(&self) -> ReaderEofOwnerStateReference {
+        ReaderEofOwnerStateReference::from_state(&self.committed, self.generation)
     }
     pub fn prepare(
         &self,

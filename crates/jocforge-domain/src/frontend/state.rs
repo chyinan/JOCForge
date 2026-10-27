@@ -7,6 +7,9 @@ use crate::timeline::{FrontendCallbackIndex, NormalCallbackCount};
 use crate::transaction::{AttemptId, CallbackLineageIdentity, ProgrammeId};
 use std::sync::Arc;
 
+const FRONTEND_CONTROL_OWNER_ID: &str = "frontend_control";
+const FRONTEND_CONTROL_STATE_REF: &str = "owners.frontend_control";
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct FrontendControlDigest(ProviderSha256);
 impl FrontendControlDigest {
@@ -256,6 +259,49 @@ impl FrontendControlState {
     }
 }
 
+/// Read-only state-reference view for the complete cold frontend-control owner.
+///
+/// The currently materialized machine has no commit API and its stage path only
+/// clones this state. The view therefore reports the current cold owner bytes;
+/// it does not claim a warmed normal-control producer or GTC receipt.
+#[derive(Clone, Copy, Debug)]
+pub struct FrontendControlOwnerStateReference<'a> {
+    state: &'a FrontendControlState,
+    generation: u64,
+    state_sha256: FrontendControlDigest,
+    cold_sha256: FrontendControlDigest,
+}
+
+impl FrontendControlOwnerStateReference<'_> {
+    pub const fn owner_id(&self) -> &'static str {
+        FRONTEND_CONTROL_OWNER_ID
+    }
+
+    pub const fn state_ref(&self) -> &'static str {
+        FRONTEND_CONTROL_STATE_REF
+    }
+
+    pub const fn state(&self) -> &FrontendControlState {
+        self.state
+    }
+
+    pub const fn generation(&self) -> u64 {
+        self.generation
+    }
+
+    pub const fn state_sha256(&self) -> FrontendControlDigest {
+        self.state_sha256
+    }
+
+    pub const fn cold_sha256(&self) -> FrontendControlDigest {
+        self.cold_sha256
+    }
+
+    pub fn canonical_bytes(&self) -> &[u8] {
+        self.state.canonical_bytes()
+    }
+}
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum FrontendControlError {
     CallbackIdentityMismatch,
@@ -350,6 +396,7 @@ impl FrontendControlJoinMetadata {
 pub struct FrontendControlMachine {
     committed: FrontendControlState,
     generation: u64,
+    cold_digest: FrontendControlDigest,
 }
 impl FrontendControlMachine {
     pub fn from_provider(
@@ -357,9 +404,12 @@ impl FrontendControlMachine {
         programme_id: ProgrammeId,
         attempt_id: AttemptId,
     ) -> Result<Self, FrontendControlError> {
+        let committed = FrontendControlState::from_provider(provider, programme_id, attempt_id)?;
+        let cold_digest = committed.digest();
         Ok(Self {
-            committed: FrontendControlState::from_provider(provider, programme_id, attempt_id)?,
+            committed,
             generation: 0,
+            cold_digest,
         })
     }
     pub const fn committed(&self) -> &FrontendControlState {
@@ -367,6 +417,15 @@ impl FrontendControlMachine {
     }
     pub const fn generation(&self) -> u64 {
         self.generation
+    }
+    /// Returns the complete current state reference without changing owner state.
+    pub fn state_reference(&self) -> FrontendControlOwnerStateReference<'_> {
+        FrontendControlOwnerStateReference {
+            state: &self.committed,
+            generation: self.generation,
+            state_sha256: self.committed.digest(),
+            cold_sha256: self.cold_digest,
+        }
     }
     pub fn prepare(
         &self,

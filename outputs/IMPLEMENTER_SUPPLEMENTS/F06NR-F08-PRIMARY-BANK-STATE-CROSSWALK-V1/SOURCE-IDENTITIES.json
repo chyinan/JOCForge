@@ -1,0 +1,109 @@
+{
+  "schema": "secondary-bank-state-approved-identities.v1",
+  "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "input_only_package_manifest_sha256": "6f2ff56687f7cf62e082d0801f90b126dca6ef96457566f6ca3620130e662ded",
+  "input_only_package_leaves": [
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "sha256": "6871c3f68582596b6f7bb9e30082f31e8ed59f9f1f5b0bec35ff8cad45f56fa1"
+    },
+    {
+      "file": "SOURCE-VECTOR-HASHES.json",
+      "sha256": "548c344de796ea0609b7a756b0da8d37f89ae21a030b733ca78ebfcde916b5df"
+    }
+  ],
+  "approved_leaf_identities": [
+    {
+      "file": "specs/00-global-transaction-contract.md",
+      "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105"
+    },
+    {
+      "file": "specs/06-secondary-reconstruction-clock-and-overlap.md",
+      "sha256": "26a67687d019b480fcb450cc8321198f8df3d5182c55d49adefc4179fa23f74a"
+    },
+    {
+      "file": "specs/06-secondary-inverse-spectrum-and-rotations.md",
+      "sha256": "5d811a74d6ae22bd50be1e74656ae81a43e84582100e5cbddd908d394295805d"
+    },
+    {
+      "file": "specs/06-secondary-fft64-128.md",
+      "sha256": "a899c158eeed9485090d4307ef3629eadeca9359ac0d5085612c5f632390ad66"
+    },
+    {
+      "file": "specs/06-meter-none-drc-whole-composition.md",
+      "sha256": "94e8d42e77e71f4f16e99a74ee3c808cfc925074e19dd814762d21cde6f259d2"
+    },
+    {
+      "file": "specs/06-none-drc-statistics-and-control.md",
+      "sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081"
+    },
+    {
+      "file": "specs/07-history-and-transient.md",
+      "sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac"
+    },
+    {
+      "file": "specs/08-transforms.md",
+      "sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e"
+    },
+    {
+      "file": "parameters/f06-meter-none-drc-whole-state-schema-v1.json",
+      "sha256": "64374f686377d94ab8a3843d09d26329788c7afd48c7683459596b119f68e4be"
+    },
+    {
+      "file": "parameters/f07-f12-source-state-schema-v1.json",
+      "sha256": "7967752a88493648c24cf7c1183da61dc470e35a684bb48d6335c496e90c6f4e"
+    },
+    {
+      "file": "parameters/ordinary-transform-math-v1.json",
+      "sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1"
+    },
+    {
+      "file": "parameters/secondary-inverse-math-v1.json",
+      "sha256": "b452a929d7e4f7090f9466930e5c6047a8007192a30a3ed7c3cd7447dba073b1"
+    },
+    {
+      "file": "test-vectors/F08-NONZERO-COMPOSITION-RESULT.json",
+      "sha256": "a77806e29ea7e0cb361353a2a6313826e4cdcc2b3f36cebce6fc0b434cdcb906"
+    },
+    {
+      "file": "test-vectors/SECONDARY-FFT-LOCAL-REVIEW-STATUS.json",
+      "sha256": "965c72d9f1fc73d8aa94c1a67a39a2c0bbaf3319262074936e2b19bcd273fe67"
+    },
+    {
+      "file": "test-vectors/SECONDARY-FFT-INVERSE-VERIFICATION.json",
+      "sha256": "15794c5eea4ef67b6bc07dc5e970c7c3000ad2aae1fe8a9ed5f3d447276f0261",
+      "use_boundary": "hash-bound component review identity only; not used to construct or stand in for a full-source after-state"
+    },
+    {
+      "file": "SPEC-COMPLETENESS-MATRIX.json",
+      "sha256": "2da96a83e431c33f2d4d1cbe028eff06c1fa29741817ca04bf3fa56da66c3c9e"
+    }
+  ],
+  "wash_supplement_manifests": [
+    {
+      "package_id": "F07-F08-NATIVE-PARENT-LIFECYCLE-BOUNDARY-V1",
+      "manifest_sha256": "62a1164b98197aff7eb0120737b0250e69cc9016b03f2a77a793c88e389055d8",
+      "status": "MODEL_CONTRACTS_PRESENT_NATIVE_CALLBACK_OWNER_GENERATION_UNBOUND"
+    },
+    {
+      "package_id": "F08-MODEL-CONTRACT-AVAILABILITY-AND-REMAINDER-V1",
+      "manifest_sha256": "6d13f8a8bf3961c649ea1a3583e39f6fe25da7d95ae9266f5c2c30dbdcb0aacc",
+      "status": "APPROVED_F07_F08_CONTRACTS_AND_PROVIDERS_PRESENT_WHOLE_SOURCE_TRANSACTION_NOT_CLOSED"
+    }
+  ],
+  "research_model_identity": {
+    "file": "transform_spec_core.py",
+    "sha256": "7a18804788df90f50883649f5e93fd73e4cee57df03f1bf76695b1d9a09c7eec",
+    "selection_rule": "alternate=False is the frozen model's PRIMARY output/history; alternate=True is its separate companion output/history.",
+    "prior_f08_crosscheck": {
+      "compared_u32_words": 4650,
+      "mismatches": 0,
+      "scope": "Prior F08 model cross-check only; does not prove native caller identity."
+    }
+  },
+  "native_boundary": {
+    "selected_f06nr_native_callsite": "NOT_REQUIRED_FOR_REQUESTED_MODEL_SCOPE",
+    "native_owner_generation_join": "NOT_REQUIRED_FOR_REQUESTED_MODEL_SCOPE",
+    "dll_or_dynamic_execution_used": false
+  }
+}

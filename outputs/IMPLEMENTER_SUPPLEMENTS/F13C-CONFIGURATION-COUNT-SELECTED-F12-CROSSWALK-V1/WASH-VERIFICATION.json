@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge-f13c-configuration-count-crosswalk-wash-verification.v1",
+  "package_id": "F13C-CONFIGURATION-COUNT-SELECTED-F12-CROSSWALK-V1",
+  "status": "WASHED_CAPTURE_LOCAL_AND_SELECTED_MODEL_CROSSWALK",
+  "source_package_manifest_sha256": "63a4c4c8b4d40ca0ef1515973eba09a0124365450f0f6ee5e3ec3f549908a6df",
+  "source_package_payloads_verified": "4/4",
+  "approved_base_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "path_bearing_source_hashes_recomputed": "24/24",
+  "supporting_washed_packages": [
+    {"package_id": "F13C-BSI-CONFIGURATION-COUNT-PRODUCER-V1", "manifest_sha256": "253d2cbca8cbad05f432c39655aeea06a74641f17a1117b9126e09e5c83e17f5", "payloads_verified": "4/4"},
+    {"package_id": "F13C-SELECTED-ADM-METADATA-CROSSWALK-STATUS-V1", "manifest_sha256": "f4a605e9bb901ae3b198505574b4635d5f8291c457132d0e61916352d122f5de", "payloads_verified": "3/3"},
+    {"package_id": "F13C-SELECTED-PROFILE-CONFIGURATION-COUNT-AU-JOIN-STATUS-V1", "manifest_sha256": "4a96c250347838f4fe0930cdba030751411de851e7f90c6e100b9046ab62fce4", "payloads_verified": "4/4"},
+    {"package_id": "F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1", "manifest_sha256": "4e9e6a566acbc186e7ff6f11c98b47a62df616336338b8453fa39810592fe39e", "payloads_verified": "4/4"},
+    {"package_id": "additional-bsi-complexity-wire-field", "manifest_sha256": "d48fa96a507e30e936172f43a290a7db0a4c3a2c9c4b153c0605a24ebd524953", "payloads_verified": "5/5"}
+  ],
+  "unresolved_identity_hashes": {
+    "capture_reverse_package_manifest_sha256": "a152ce9bf335018f7ddf8da075fd4164f0fd05e00a5a39bca6f8fb7714c62c85",
+    "frozen_python_replayer_sha256": "397ea01b62ad6ff868bbf992ba665dbeb633b091aedfdbe955edab4cf3080068"
+  },
+  "scope": {
+    "capture_local_count_path": "CLOSED_FOR_REVIEWED_CAPTURE_ONLY",
+    "selected_f12_model_complexity_rule": "EXPLICIT_FROM_SAME_SOURCE_VALIDATED_EMDF",
+    "native_capture_record_to_selected_f12_source_au_join": "UNBOUND",
+    "source_code_included": false,
+    "native_execution": "NOT_RUN",
+    "full_song_replay": "NOT_RUN",
+    "input_only_vectors_executed_by_wash": false,
+    "expected_dsp_outputs_included": false,
+    "private_key_or_protected_output_included": false
+  },
+  "interpretation": "The capture-local count is not a selected F12 producer input. This package does not establish that cross-path identity and does not change the approved selected-model EMDF rule."
+}

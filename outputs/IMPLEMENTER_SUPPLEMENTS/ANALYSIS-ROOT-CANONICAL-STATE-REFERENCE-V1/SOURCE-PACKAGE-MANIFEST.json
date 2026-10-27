@@ -1,0 +1,29 @@
+{
+  "schema": "research.analysis-owner-root-manifest.v1",
+  "sealed_utc": "2026-10-27T06:15:06.343127+00:00",
+  "files": {
+    "COLD-ROOT-PREIMAGE.json": {
+      "bytes": 19422,
+      "sha256": "008167df2194d7ffebc2ba0aa1e28f70067afda1a089160c46ad78b40e3c0f23"
+    },
+    "GTC-OWNER-STATE-REFERENCE.json": {
+      "bytes": 233,
+      "sha256": "fa70b432dd0ac745510d492d8d6d7ca496d7f0701c1dd08f5c4963c69cd155ae"
+    },
+    "INPUT-ONLY-TRANSITION.json": {
+      "bytes": 1574,
+      "sha256": "f7ecfde7d1a35a052a6328eade78f080ca76b6a0a0d516f41a6de68683f03699"
+    },
+    "MATERIALIZATION-RESULT.json": {
+      "bytes": 1750,
+      "sha256": "e5ed66eb1e11fb9f5558b7c5bdb44bd4bb189afc2f89b84f0b602f9e1f65cb10"
+    },
+    "REFERENCES.json": {
+      "bytes": 10615,
+      "sha256": "3af1e0f7f956918d9886938d6e8d9f7f0da82765602d3b4635b2ec9cf5e7162a"
+    }
+  },
+  "delivery": "WASH_ONLY",
+  "source_bundle_manifest_sha256": "edc15b751a3d9db6d0e59a51e76979b5eb77a07110382906b975a0561f9ba61e",
+  "scope": "owners.analysis cold materialization plus transition-only generation example; no numerical after state"
+}

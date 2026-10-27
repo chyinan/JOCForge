@@ -1,0 +1,41 @@
+{
+  "package_id": "F11-F12-SYNTHETIC-SOURCE-PLAN-RESULTS-V1",
+  "scope": "Hash-bound synthetic model source 0/1/2 F11 outputs and F12 result rows; no fresh integration",
+  "files": [
+    {
+      "file": "DECISION.md",
+      "bytes": 5474,
+      "sha256": "b8596efddeb1e4568eb50021e0bd437904bcda294c3e8fc0d8a429ef8187552a"
+    },
+    {
+      "file": "SOURCE-NUMERIC-PLAN-VECTORS.json",
+      "bytes": 9843,
+      "sha256": "158cf78c98c26de69b60f98ec113e381c3ac87862c5dc1015c15dbd507c7be37"
+    },
+    {
+      "file": "INPUT-ONLY-GENERATION-VECTORS.json",
+      "bytes": 3750,
+      "sha256": "07c7ada799057a07754879be1a17228be0ec8756972afbee44d21a7925df8c91"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 5111,
+      "sha256": "3f4b763e3dbc30d2062cb8e54fe89af51fb8913700b719e2ebbba3d4d3f26d3a"
+    },
+    {
+      "file": "SOURCE-PACKAGE-MANIFEST.json",
+      "bytes": 1546,
+      "sha256": "6db2a0d8245dd71ef0dfc2d4358cb06f9cf477114fdf53176e887cfced07733c"
+    },
+    {
+      "file": "SOURCE-PACKAGE-MANIFEST.sha256",
+      "bytes": 65,
+      "sha256": "8c4c2b0033bb3f9422b880178670ba7ec8a3e3efa7d7e3219cbcb7b3780c0110"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 1009,
+      "sha256": "cac5668bc68e93e00efb26dc1cc5a34d89e13081c47140690f37ca38a8ea0a92"
+    }
+  ]
+}

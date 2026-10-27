@@ -1,0 +1,12 @@
+{
+  "schema": "source-numeric-plan-typed-boundary-basis.v1",
+  "basis_package": "source_numeric_plan_handoff_audit_v1",
+  "basis_manifest_sha256": "6db2a0d8245dd71ef0dfc2d4358cb06f9cf477114fdf53176e887cfced07733c",
+  "source_rows_payload_sha256": "158cf78c98c26de69b60f98ec113e381c3ac87862c5dc1015c15dbd507c7be37",
+  "input_only_generation_vector_sha256": "07c7ada799057a07754879be1a17228be0ec8756972afbee44d21a7925df8c91",
+  "source_identity_resolution_sha256": "cd88555bc661c6a754637fc6288c589c4c52b3ed41710ee4c1592f103bbd0b6e",
+  "source_identity_resolution_status": "25_OF_25_REHASHED_IN_BASIS_PACKAGE",
+  "source_reverification_in_this_addendum": "NOT_REPEATED_AS_REQUESTED",
+  "approved_model_scope": "selected ADM 48 kHz / 1024 kbps / 5.1",
+  "execution_boundary": {"fresh_source_to_frame":"NOT_RUN","typed_receipt_join":"CONTRACT_MAP_ONLY_NOT_RUN","native":"NOT_RUN","full_song":"NOT_RUN"}
+}

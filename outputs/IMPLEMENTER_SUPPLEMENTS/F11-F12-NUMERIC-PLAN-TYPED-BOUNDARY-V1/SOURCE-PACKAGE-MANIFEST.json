@@ -1,0 +1,22 @@
+{
+  "schema": "washed-evidence-package.v1",
+  "package_id": "F11-F12-SELECTED-NUMERIC-PLAN-TYPED-BOUNDARY-V1",
+  "scope": "approved selected ADM 48 kHz / 1024 kbps / 5.1 model",
+  "source0_source1_source2_f11_plan_contents": "REFERENCED_FROM_HASH_BOUND_BASIS_PACKAGE",
+  "typed_receipt_mapping": "APPROVED_NUMERIC_PLAN_RECEIPT_FIELD_MAP",
+  "candidate_boundary": "APPROVED_F12_FIXED_PLAN_AND_SCRATCH_TRIAL_BOUNDARY",
+  "f11_intermediate_cost_trace": "NOT_RECORDED",
+  "runtime_typed_receipt_join": "NOT_RUN",
+  "fresh_source_to_frame_integration": "NOT_RUN",
+  "native_execution": "NOT_RUN",
+  "full_song_replay": "NOT_RUN",
+  "source_identity_rehash_in_this_addendum": "NOT_REPEATED; BASIS_REPORTED_25_OF_25",
+  "payloads": [
+    {"file":"DECISION.md","bytes":1569,"sha256":"76e1b9930c88caec9bb69bf366dcccc309de562c082595de9c3a1e636fd2f8b0"},
+    {"file":"RECEIPT-FIELD-MAP.json","bytes":3427,"sha256":"ef9e8a9de764c748a80c4fe41b20bf76c115999eb3db3a36efc51961154a3884"},
+    {"file":"CANDIDATE-BOUNDARY.json","bytes":1904,"sha256":"473f315391a8b98b0ce7152892181be7952b77f7436863d246b8177279f0c871"},
+    {"file":"SOURCE-BASIS.json","bytes":900,"sha256":"f73e13a049c47be9d22362e3a7788e2a8a4fc542e5e02b463bd15dac80a63686"}
+  ],
+  "detached_manifest_digest": "MANIFEST.sha256",
+  "source_code_machine_code_pcm_dthd_or_private_keys_included": false
+}

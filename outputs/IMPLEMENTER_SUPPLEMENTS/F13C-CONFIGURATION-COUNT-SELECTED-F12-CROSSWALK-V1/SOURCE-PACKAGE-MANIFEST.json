@@ -1,0 +1,21 @@
+{
+  "schema": "washed-evidence-package.v1",
+  "package_id": "F13C-CONFIGURATION-COUNT-BSI-CONSUMER-CROSSWALK-V1",
+  "scope": "selected ADM 48 kHz / 1024 kbps / 5.1 model; bounded count producer and BSI/F12 field crosswalk",
+  "capture_local_count_producer": "CLOSED_FOR_REVIEWED_CAPTURE",
+  "approved_f12_model_consumer": "EXPLICIT_FROM_SAME_SOURCE_VALIDATED_EMDF",
+  "native_configuration_record_to_selected_f12_source_or_au_join": "NO_UNBOUND",
+  "implementation_ready_for_cross_path": "NO",
+  "native_execution": "NOT_RUN_IN_THIS_AUDIT",
+  "full_song_replay": "NOT_RUN",
+  "input_only_vectors": 3,
+  "source_package_files_rehashed": {"count_producer":"5_OF_5","adm_metadata_crosswalk":"4_OF_4","configuration_count_au_join":"5_OF_5","f06nd_f12_bsi":"5_OF_5"},
+  "payloads": [
+    {"file":"DECISION.md","bytes":4211,"sha256":"4ff41ae878d770cc429464ed755a96afd57fe4d5f70a4286f18fa0b7471ed30c"},
+    {"file":"FIELD-CROSSWALK.json","bytes":3488,"sha256":"8d25f48987403dc1b1e5c0f442aa9b202cfada461469a6f1a137f5b08a319779"},
+    {"file":"INPUT-ONLY-VECTORS.json","bytes":1541,"sha256":"bcea8acfad060ae25fb993bcbaa45674e0b42140b1120c1fcdbb7119145ff001"},
+    {"file":"SOURCE-IDENTITIES.json","bytes":6236,"sha256":"17d2cde4c03820e8fc0ce1a7796f879279cfe3b86d76814485a41c74d71925a2"}
+  ],
+  "detached_manifest_digest": "MANIFEST.sha256",
+  "source_code_decompilation_addresses_pcm_and_private_keys_included": false
+}

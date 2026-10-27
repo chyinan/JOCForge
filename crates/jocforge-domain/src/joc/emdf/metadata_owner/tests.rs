@@ -175,6 +175,69 @@ fn cold_state_and_five_source_receipts_match_the_complete_vectors() {
 }
 
 #[test]
+fn cold_state_reference_carries_the_complete_metadata_state_v1_value() {
+    let vectors = vectors();
+    let owner = owner();
+    let committed_before = owner.state.canonical_bytes();
+    let reference = owner.state_reference();
+
+    assert_eq!(reference.owner_id(), "metadata");
+    assert_eq!(reference.state_ref(), "owners.metadata");
+    assert_eq!(reference.generation(), 0);
+    assert_eq!(reference.canonical_bytes(), committed_before);
+    assert_eq!(
+        hex_encode(reference.canonical_bytes()),
+        vectors["cold"]["canonical_hex"]
+    );
+    assert_eq!(
+        hex_encode(reference.state_sha256()),
+        vectors["cold"]["sha256"]
+    );
+    assert_eq!(reference.state_sha256(), reference.cold_sha256());
+    assert_eq!(owner.state.canonical_bytes(), committed_before);
+}
+
+#[test]
+fn staged_state_reference_carries_full_after_bytes_without_installing_them() {
+    let vectors = vectors();
+    let owner = owner();
+    let cold_reference = owner.state_reference();
+    let case = &vectors["continuous_calls"][0];
+    let call = source_call(case);
+    let bodies = MetadataBodiesProposal::for_test(
+        call.programme_id.clone(),
+        call.attempt,
+        call.transaction_id.clone(),
+        call.source_index,
+        call.bodies,
+    );
+    let proposal = owner
+        .stage_source(MetadataStageInput {
+            au_index: call.au_index,
+            bodies,
+        })
+        .expect("source proposal computes its complete metadata after-state");
+    let after_reference = proposal.after_owner.state_reference();
+
+    assert_eq!(after_reference.owner_id(), "metadata");
+    assert_eq!(after_reference.state_ref(), "owners.metadata");
+    assert_eq!(after_reference.generation(), 1);
+    assert_eq!(
+        hex_encode(after_reference.canonical_bytes()),
+        case["expected"]["state_canonical_hex"]
+    );
+    assert_eq!(
+        hex_encode(after_reference.state_sha256()),
+        case["expected"]["after_sha256"]
+    );
+    assert_eq!(after_reference.cold_sha256(), cold_reference.cold_sha256());
+    assert_eq!(
+        owner.state.canonical_bytes(),
+        cold_reference.canonical_bytes()
+    );
+}
+
+#[test]
 fn typed_stage_uses_pinned_wrapper_and_leaves_committed_leaf_unchanged() {
     let vectors = vectors();
     let case = &vectors["continuous_calls"][0];

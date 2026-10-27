@@ -1,0 +1,101 @@
+{
+  "schema": "secondary-transform-bank-state-crosswalk.v1",
+  "status": "MODEL_BANK_SELECTION_CLOSED_MODEL_SCOPE_ONLY",
+  "scope": "APPROVED_MODEL_CONTRACT_AND_FROZEN_PYTHON_BANK_SELECTION",
+  "input_package_changed": false,
+  "bank_selection": {
+    "f06nr_forward_algorithm": "F08_PRIMARY_LONG_OR_SHORT",
+    "frozen_python_selector": "transform_spec_core.fullband(..., alternate=False, short=short_consumed)",
+    "companion_selector": "alternate=True; used only by the separate F08 companion transform model branch",
+    "f06nr_owns_or_advances_companion_history": false,
+    "f06ni_spectrum_source": "the same F06NR-owned F08 PRIMARY unquantized spectrum from this lane/block",
+    "analysis_root_primary_or_companion_spectrum_reused_by_f06ni": false,
+    "quantized_bap_or_mantissa_spectrum_used": false
+  },
+  "f06wh_secondary_owner": {
+    "root_field": "main_none_drc_state.secondary",
+    "forward_history": {
+      "shape": [5, 128],
+      "dtype": "F32",
+      "lane_order": ["L", "C", "R", "Ls", "Rs"],
+      "algorithm_bank": "F08_PRIMARY",
+      "meaning": "private history for F06NR's independent F08 PRIMARY reconstruction"
+    },
+    "inverse_carry": {
+      "shape": [5, 128],
+      "dtype": "F32",
+      "lane_order": ["L", "C", "R", "Ls", "Rs"],
+      "meaning": "private overlap carry after F06NI output and F06NR overlap"
+    },
+    "frame_index": {
+      "dtype": "U64",
+      "cold_value": 0,
+      "before_source_s": "s",
+      "after_successful_source_s": "s+1"
+    },
+    "cold_reset": "forward_history and inverse_carry are all F32 positive zero; frame_index is zero"
+  },
+  "analysis_root_f08_owner": {
+    "root_field": "F07-F12 analysis source state",
+    "primary_transform": {
+      "fbw_shape": [5, 128],
+      "lfe_shape": [1, 128],
+      "dtype": "F32",
+      "distinct_owner": true
+    },
+    "companion_transform": {
+      "fbw_shape": [5, 128],
+      "lfe_shape": [1, 128],
+      "dtype": "F32",
+      "distinct_owner": true,
+      "distinct_from_primary": true
+    },
+    "shared_mutable_history_with_f06wh_secondary": false,
+    "relationship": "These histories belong to the analysis/root F08 computation. The F06WH secondary history uses the same F08 PRIMARY algorithm family but is a separate reconstruction instance and owner."
+  },
+  "lane_flag_and_inverse_mapping": {
+    "external_channel_order": ["L", "R", "C", "LFE", "Ls", "Rs"],
+    "internal_f06nr_lane_order": ["L", "C", "R", "Ls", "Rs"],
+    "internal_lane_to_external_row": [0, 2, 1, 4, 5],
+    "blocks_per_source": 6,
+    "flags_per_source": 30,
+    "flag_source": "same-generation F07 short_consumed",
+    "flag_order": "block-major then internal lane order",
+    "flag_meaning": {
+      "0": "F08 PRIMARY long forward transform and F06NI long inverse",
+      "1": "F08 PRIMARY short forward transform and F06NI short inverse"
+    },
+    "flag_advances": "For each F06NR lane/block, the one flag selects the long/short F08 PRIMARY computation using that lane's F06WH secondary forward history; F06NI then consumes that result with the same flag. No F06NR companion transform/history is run.",
+    "inverse_carry_update": "After F06NI returns transformed[256], F06NR overlap reads the lane's old inverse_carry[128] and stores the complete next carry for that lane."
+  },
+  "generation_join": {
+    "source_frame_symbol": "s",
+    "gtc_callback_index": "s+2",
+    "joc_dispatch_index": "s+1",
+    "f06nr_frame_index_before": "s",
+    "f06nd_source_generation": "s",
+    "commit_rule": "Commit the complete next F06WH secondary state once only after the full source operation succeeds."
+  },
+  "after_state": {
+    "shape_after_each_source": {
+      "forward_history": [5, 128],
+      "inverse_carry": [5, 128],
+      "frame_index": "U64",
+      "secondary_carrier": [6, 1536]
+    },
+    "frame_index_after_source_s": "s+1",
+    "numeric_forward_history_words": "NOT_RUN",
+    "numeric_inverse_carry_words": "NOT_RUN",
+    "numeric_carrier_words": "NOT_RUN",
+    "known_positive_zero_carrier_slots": [
+      "entire external LFE row 3",
+      "samples 1280 through 1535 of every external row"
+    ]
+  },
+  "native_boundary": {
+    "selected_dll_caller_bank_join": "NOT_REQUIRED_FOR_REQUESTED_MODEL_SCOPE",
+    "native_owner_generation_join": "NOT_REQUIRED_FOR_REQUESTED_MODEL_SCOPE",
+    "dll_or_dynamic_execution_used": false,
+    "interpretation": "The bank selection here is the approved model/Frozen-Python mapping. No native DLL/ABI/runtime claim is made or required by this addendum."
+  }
+}

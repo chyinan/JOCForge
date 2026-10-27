@@ -1,0 +1,58 @@
+{
+  "schema": "f06-selected-whole-state-schema.v1",
+  "canonical_encoding": {
+    "name": "F06WH_OWNER_STATE_V2",
+    "rule": "UTF-8 canonical JSON, keys sorted lexicographically, separators comma/colon, finite numbers only; every *_u32_repeat [count,word] descriptor MUST first expand to the complete indexed *_u32_words array; SHA-256 is over expanded bytes, never compact descriptor JSON",
+    "cold_identity_file": "COLD-STATE-IDENTITIES.json",
+    "whole_material_shape": "JSON object mapping each of the 13 owner names directly to its expanded cold value; wrapper schema/owners metadata is excluded",
+    "whole_expanded_canonical_bytes": 88191,
+    "whole_cold_sha256": "25faa659a83d83c3056d47b79e2d88ff3303b9b6aaef66b2dce941f8b0b08f5c",
+    "failure_comparison": "compare every owner canonical digest before and after; only lifecycle phase/failed/failure_stage may change on fatal failure"
+  },
+  "top_level": {
+    "phase": "METER|MAIN|FAILED",
+    "meter_finalized": "bool",
+    "programme_measurement": "immutable after successful finalize",
+    "meter_callback": "U64 continuous meter callback index",
+    "main_source": "U64 continuous codec source index"
+  },
+  "meter_state": {
+    "frontend_oar": "F06OC canonical callback/cache/target/gain-row/record state; distinct from main frontend",
+    "shared_dv32": {"portable_layout": "SHARED_DV32_STATE_V1", "bytes": 812, "fields": "callback_index, 8 parameter fields, history[6][32] F32"},
+    "window_clock": "startup,pending,processed,callback_index,1024-ring occupancy,960-window sample count",
+    "k_filter": "state[6][2][4] F32 plus six mantissa F32 and six exponent I32 accumulators",
+    "true_peak": "fir_state[6][4628] F32 plus programme_true_max[6] and programme_sample_max[6] F32",
+    "integrated": {"portable_layout": "METER_INTEGRATED_STATE_V1", "bytes": 24512, "fields": "period,counter,recent_m[4][5],recent_e[4][5],counts[3040],bin_means[3040],absolute_count,absolute_mean,absolute_exponent,result"},
+    "ungated": {"portable_layout": "MEAN_STATE_V1", "bytes": 40, "fields": "count,mean,exponent,phase,cursor,filled,linear_energy,result"},
+    "programme_peak_maxima": "12 F32, cold -15/16",
+    "finalized_measurement": "dialogue=-120,speech=-1,ITU,ungated,true_peak,sample_peak,selected,gating_kind,dialnorm,digest"
+  },
+  "main_none_drc_state": {
+    "ordinary_input_history": "history[6][1280] F32 cold +0; delayed exactly once",
+    "secondary": "forward_history[5][128] F32, inverse_carry[5][128] F32, frame_index U64",
+    "statistics": "23 F32: filter_pairs[5][2], previous_primary_peak[6], previous_secondary_peak[6], previous_downmix_peak",
+    "scheduler": "line/rf dynamics{level F32,hold U16,log_gain F32}; line/rf limiter{gain F32,hold U16}; peak_logs[6] F32; generation U64",
+    "metadata_override_fifo": "four zero logical records, metadata_delay=3072, append_slot=3, frames_processed U64",
+    "programme_dialnorm": "immutable U5 from finalized selected loudness"
+  },
+  "ownership_rules": [
+    "meter state never aliases main audio or main codec state",
+    "primary history, secondary forward history and inverse carry are three distinct state families",
+    "integrated and ungated consume the same ordered energy pairs but never share state",
+    "true-peak final scalar does not replace none-DRC per-source peak_inputs",
+    "programme measurement is committed once before main source0"
+  ],
+  "leaf_schema_bindings": {
+    "F06OC": "specs/06-oar-model-callback-state-and-clock.md",
+    "F06OF": "specs/06-oar-frontend-input-and-clock-join.md",
+    "F06M": "specs/06-oar-mix-ramp-and-filter-gate.md",
+    "F06OP": "specs/06-oar-point-target.md",
+    "DV32": "specs/06-shared-dv32-state-and-audio.md:SHARED_DV32_STATE_V1",
+    "integrated": "specs/06-integrated-meter-state.md:METER_INTEGRATED_STATE_V1",
+    "ungated": "specs/06-ungated-mean-and-fallback.md:MEAN_STATE_V1",
+    "true_peak": "specs/06-true-peak-cascade-and-metrics.md",
+    "secondary": "specs/06-secondary-reconstruction-clock-and-overlap.md",
+    "none_drc": "specs/06-none-drc-statistics-and-control.md"
+  },
+  "reset": "reset reconstructs every owner to its COLD-STATE-IDENTITIES.json value, clears frozen measurement/digest, sets phase METER and source/callback generations0; no partial reset is valid"
+}

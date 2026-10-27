@@ -74,6 +74,41 @@ fn source_identity(source: u64) -> OutputSourceIdentity {
 }
 
 #[test]
+fn owner_state_reference_carries_complete_bytes_and_instance_cold_hash() {
+    let vectors = fixture_vectors();
+    let owner = synthetic_owner();
+    let before = owner.state_reference().expect("canonical owner snapshot");
+    let cold = &vectors["cold"];
+    let expected_bytes = decode_hex(cold["canonical_hex"].as_str().unwrap());
+    let expected_sha: [u8; 32] = decode_hex(cold["sha256"].as_str().unwrap())
+        .try_into()
+        .expect("cold SHA-256 width");
+
+    assert_eq!(before.owner_id(), "output");
+    assert_eq!(before.state_ref(), "owners.output");
+    assert_eq!(before.generation(), 0);
+    assert_eq!(before.canonical_bytes(), expected_bytes.as_slice());
+    assert_eq!(before.state_sha256(), &expected_sha);
+    assert_eq!(before.cold_sha256(), &expected_sha);
+
+    let frame = [0_u8; 4_096];
+    let proposal = owner
+        .prepare_source(source_identity(0), &frame, &digest(&frame))
+        .expect("suppressed source proposal");
+    let OutputSourceProposal::Suppressed(proposal) = proposal else {
+        panic!("source zero must be suppressed")
+    };
+    let after_owner = proposal.into_after().into_after_owner();
+    let after = after_owner
+        .state_reference()
+        .expect("canonical proposed owner snapshot");
+
+    assert_eq!(after.generation(), 1);
+    assert_eq!(after.cold_sha256(), before.cold_sha256());
+    assert_ne!(after.state_sha256(), before.state_sha256());
+}
+
+#[test]
 fn source_proposals_match_suppression_writer_and_durable_ledger_vectors() {
     let vectors = fixture_vectors();
     let calls = vectors["continuous_calls"]

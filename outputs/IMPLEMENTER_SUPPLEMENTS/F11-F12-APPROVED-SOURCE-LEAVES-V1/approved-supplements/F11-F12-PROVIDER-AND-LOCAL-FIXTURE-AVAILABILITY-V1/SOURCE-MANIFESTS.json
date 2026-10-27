@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge-f11-f12-availability-source-manifests.v1",
+  "reverse_package": {
+    "package": "converter_codec_availability_wash",
+    "manifest_sha256": "de32249013653d40c5e6667a8537cf6b015f38357fda01d79f4c006125ac251e",
+    "payload_integrity": "INDEPENDENTLY_VERIFIED_5_OF_5"
+  },
+  "approved_root_package": {
+    "manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "file_size_and_sha_checks": "PASS_48_OF_48"
+  },
+  "cross_module_provider_registry": {
+    "file": "parameters/codec-wire-cross-module-providers-v1.json",
+    "sha256": "d0a99cd1fd25b5ba0b2e690d549ac474006d8a4dddb10e185446808379e96e2d",
+    "entries": 25,
+    "file_identity_checks": "PASS_25_OF_25"
+  },
+  "key_contracts_and_inputs": [
+    {"file":"specs/11-converter.md","sha256":"9ecb50bbb125d2a6e2d8f5e565ffbc7514c156c72602d2d2d89d8b17e9e4e4c8"},
+    {"file":"specs/12-bit-allocation.md","sha256":"fa347045793bf3ce88349052526a758bc47e9d33fb1f1a1265a50c249ccd45f7"},
+    {"file":"specs/12-selected-codec-wire.md","sha256":"9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448"},
+    {"file":"specs/12-selected-source-frame-composition.md","sha256":"9e6fcc14489ca0acaff0f7c223fce65539aa5b19cb4119ebcb34d19049cd0769"},
+    {"file":"test-vectors/CODEC-WIRE-SELECTED-INPUT-VECTORS.json","sha256":"8333a23ccd093659dd0f4b296528a3f44120f78caf41546991ed9113ce14d017"},
+    {"file":"test-vectors/CODEC-WIRE-COMPLETE-FRAME-INPUT-VECTORS.json","sha256":"698c2ec69a8250251a3b3295ce135d1178079a5a2750a9ea5381c4e688db527a"}
+  ]
+}

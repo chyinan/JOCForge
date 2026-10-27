@@ -1,0 +1,226 @@
+{
+  "schema": "d05-authorized-functional-constants.v1",
+  "classification": "AUTHORIZED_NONSECRET_AUDIO_FUNCTIONAL_CONSTANTS",
+  "delivery_scope": "INTERNAL_RESEARCH_AND_INTERNAL_IMPLEMENTATION_ONLY",
+  "public_or_third_party_distribution_authorized": false,
+  "secret_or_authentication_material": false,
+  "private_vendor_key_included": false,
+  "independently_generated_mathematical_design_claim": false,
+  "group_order": [
+    "D05-P",
+    "D05-A",
+    "D05-S",
+    "D05-O",
+    "D05-M",
+    "D05-C"
+  ],
+  "groups": {
+    "D05-P": {
+      "type": "binary32",
+      "field_order": [
+        "section0.a0",
+        "section0.a1",
+        "section0.b0",
+        "section0.b1",
+        "section0.b2",
+        "section1.a0",
+        "section1.a1",
+        "section1.b0",
+        "section1.b1",
+        "section1.b2"
+      ],
+      "count": 10,
+      "distinct_f32_words": 8,
+      "f32_words_u32": [
+        1061816320,
+        3191801856,
+        1051936768,
+        3207749632,
+        1051936768,
+        1065454592,
+        3205474304,
+        1055676416,
+        3211097088,
+        1055676416
+      ],
+      "decimal_annotations": [
+        0.7891845703125,
+        -0.186553955078125,
+        0.35015869140625,
+        -0.69677734375,
+        0.35015869140625,
+        1.0120849609375,
+        -0.5611572265625,
+        0.46160888671875,
+        -0.89630126953125,
+        0.46160888671875
+      ],
+      "f32le_sha256": "1907c8c16ca0481f6eacc6d4e5b680cabd07d2034624f16d869a78e841366326",
+      "source_classification": "EXISTING_COMPILED_STATIC_AUDIO_FUNCTIONAL_CONSTANTS",
+      "compiled_location_status": "PREVIOUSLY_CONFIRMED_IN_RESEARCH_EVIDENCE; LOCATION_NOT_DELIVERED",
+      "authority": "User-authorized nonsecret normal functional constants for internal isolated implementation"
+    },
+    "D05-A": {
+      "type": "binary32",
+      "field_order": [
+        "section0.a0",
+        "section0.a1",
+        "section0.b0",
+        "section0.b1",
+        "section0.b2",
+        "section1.a0",
+        "section1.a1",
+        "section1.b0",
+        "section1.b1",
+        "section1.b2",
+        "section2.a0",
+        "section2.a1",
+        "section2.b0",
+        "section2.b1",
+        "section2.b2"
+      ],
+      "count": 15,
+      "distinct_f32_words": 12,
+      "f32_words_u32": [
+        3212259011,
+        3198368401,
+        1058690531,
+        1066012707,
+        1058690531,
+        3216682464,
+        3209317823,
+        1062342082,
+        1070437610,
+        1062342082,
+        3218144523,
+        3212171480,
+        1064627667,
+        1070722735,
+        1064627667
+      ],
+      "decimal_annotations": [
+        -0.9655572772026062,
+        -0.3188062012195587,
+        0.6028730273246765,
+        1.0786174535751343,
+        0.6028730273246765,
+        -1.4584312438964844,
+        -0.7902488112449646,
+        0.8205224275588989,
+        1.6061069965362549,
+        0.8205224275588989,
+        -1.63272225856781,
+        -0.9603400230407715,
+        0.9567539095878601,
+        1.6400965452194214,
+        0.9567539095878601
+      ],
+      "f32le_sha256": "4155c1ea9d133f1b239cd4141335fb1f5d855f5373d489f84da769f8c499a358",
+      "source_classification": "EXISTING_COMPILED_STATIC_AUDIO_FUNCTIONAL_CONSTANTS",
+      "compiled_location_status": "PREVIOUSLY_CONFIRMED_IN_RESEARCH_EVIDENCE; LOCATION_NOT_DELIVERED",
+      "authority": "User-authorized nonsecret normal functional constants for internal isolated implementation"
+    },
+    "D05-S": {
+      "type": "binary32",
+      "field_order": [
+        "whole_block",
+        "half_block",
+        "quarter_block"
+      ],
+      "count": 3,
+      "distinct_f32_words": 3,
+      "f32_words_u32": [
+        1036831949,
+        1033476506,
+        1028443341
+      ],
+      "decimal_annotations": [
+        0.10000000149011612,
+        0.07500000298023224,
+        0.05000000074505806
+      ],
+      "f32le_sha256": "eb72d3da8247c9b3ccef3f7d01bc500eeaa621ed4c0022f2863997137a382a09",
+      "source_classification": "EXISTING_COMPILED_STATIC_AUDIO_FUNCTIONAL_CONSTANTS",
+      "compiled_location_status": "PREVIOUSLY_CONFIRMED_IN_RESEARCH_EVIDENCE; LOCATION_NOT_DELIVERED",
+      "authority": "User-authorized nonsecret normal functional constants for internal isolated implementation"
+    },
+    "D05-O": {
+      "type": "binary32",
+      "field_order": [
+        "whole_block",
+        "half_block",
+        "quarter_block"
+      ],
+      "count": 3,
+      "distinct_f32_words": 3,
+      "f32_words_u32": [
+        1053609165,
+        1048576000,
+        1041865114
+      ],
+      "decimal_annotations": [
+        0.4000000059604645,
+        0.25,
+        0.15000000596046448
+      ],
+      "f32le_sha256": "cf47a82957022989a95ae84f394796b2433f515227ee4f9c3896e25edb49f60f",
+      "source_classification": "EXISTING_COMPILED_STATIC_AUDIO_FUNCTIONAL_CONSTANTS",
+      "compiled_location_status": "PREVIOUSLY_CONFIRMED_IN_RESEARCH_EVIDENCE; LOCATION_NOT_DELIVERED",
+      "authority": "User-authorized nonsecret normal functional constants for internal isolated implementation"
+    },
+    "D05-M": {
+      "type": "binary32",
+      "field_order": [
+        "minimum_filtered_peak_gate"
+      ],
+      "count": 1,
+      "distinct_f32_words": 1,
+      "f32_words_u32": [
+        986185909
+      ],
+      "decimal_annotations": [
+        0.0015258999774232507
+      ],
+      "f32le_sha256": "4b784dcbbd2fb3e27496d9ad5c0120a6c445b4b36ce8cb35dea2945cefc698e4",
+      "source_classification": "EXISTING_STATIC_AUDIO_FUNCTIONAL_SCALAR_EVIDENCE",
+      "compiled_location_status": "SPECIFIC_COMPILED_LOCATION_NOT_RECORDED_IN_SELECTED_EVIDENCE",
+      "authority": "User-authorized nonsecret normal functional constants for internal isolated implementation"
+    },
+    "D05-C": {
+      "type": "binary32",
+      "field_order": [
+        "block_end_abs_history_sum_clear_threshold"
+      ],
+      "count": 1,
+      "distinct_f32_words": 1,
+      "f32_words_u32": [
+        786163455
+      ],
+      "decimal_annotations": [
+        1.000000013351432e-10
+      ],
+      "f32le_sha256": "8904496de840b6b3c309b4bd2fc607b2d6c204bea6b8b55ced8035df60624bf1",
+      "source_classification": "VERIFIED_FROZEN_PYTHON_FUNCTIONAL_LITERAL",
+      "compiled_location_status": "ORIGINAL_COMPILED_LOCATION_NOT_REESTABLISHED",
+      "authority": "User-authorized nonsecret normal functional constants for internal isolated implementation"
+    }
+  },
+  "serialization": {
+    "word_byte_order": "little-endian",
+    "slots": 33,
+    "bytes": 132,
+    "distinct_f32_words": 28,
+    "sha256": "05bd7906942e0d786a4e31bcd7ca4352b1bb41d63e30e14b723c1c6ab4f86eee"
+  },
+  "decimals_are_annotations": "U32 binary32 words are authoritative; do not round decimal annotations",
+  "excluded_materials": [
+    "original parameter tables",
+    "research source code",
+    "DLL",
+    "private vendor key",
+    "authentication material"
+  ],
+  "source_scope": "P/A/S/O use existing compiled static audio evidence. M uses an existing static audio scalar record whose precise compiled location was not retained. C uses a verified frozen Python functional literal; its original compiled location was not reestablished.",
+  "consumer_scope": "Selected 48 kHz six-block transient producer and its short/other consumers only",
+  "other_profile_constants_authorized_by_this_artifact": false
+}

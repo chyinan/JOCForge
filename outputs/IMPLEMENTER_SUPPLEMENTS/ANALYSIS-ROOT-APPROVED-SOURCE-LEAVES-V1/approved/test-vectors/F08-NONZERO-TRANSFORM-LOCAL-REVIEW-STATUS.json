@@ -1,0 +1,92 @@
+{
+  "schema": "f08-nonzero-transform-local-review-status.v1",
+  "revision": "r1",
+  "review_target": "review-input-v0.3.0-f08-nonzero-transform-r1",
+  "decision": {
+    "numeric_recomputation": "PASS",
+    "provider_validation": "PASS",
+    "reset_and_error_boundaries": "PASS",
+    "local_math_generated_v1_composition": "YES",
+    "historical_D01_D04_bit_identity": "NOT_REQUIRED_BY_SELECTED_ROUTE_AND_NOT_PROVED",
+    "native_or_historical_production_equivalence": "NO",
+    "encoded_audio_render_listening_ready": "NO",
+    "whole_package_implementation_ready": "NO",
+    "numeric_does_not_override_manual": true
+  },
+  "input_integrity": {
+    "manifest_sha256": "bdc90cc03ddc2cf35645f3c9798921a9f97814dcd672e714aab828596dc91c59",
+    "manifest_match": true,
+    "manifest_entries": 17,
+    "matching_entries": 17,
+    "read_set_files_including_manifest": 18,
+    "research_model_read": false,
+    "research_source_dll_wav_pcm_song_lookup_or_private_key_read": false,
+    "os_allowlist": "NOT_ENFORCED"
+  },
+  "review_artifacts": {
+    "checker_sha256": "6beb8a9c1f37158877154eae9a0437f3babccd261dd31171859161c13926a742",
+    "checker_result_sha256": "51baf3a5921f9dc88c5b4e884e3628a1c44fd80c5501b614510bd223c176b220",
+    "review_json_sha256": "ade5e558f1c7072778b8bfe00f0ea0b6c5be5b3913ee283f879e1aac684c1d27",
+    "review_markdown_sha256": "dcaf67d8835290ca69ea5bf48b79ae50bca110f6e2f7bed1718be6aeac50d831",
+    "expected_loaded_after_actual": true
+  },
+  "provider": {
+    "file": "parameters/ordinary-transform-math-v1.json",
+    "bytes": 16538,
+    "sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1",
+    "schema": "mathematical-transform-parameters.v1",
+    "profile_id": "math-generated-v1",
+    "all_required_fields_dimensions_and_finite_words_valid": true,
+    "all_required_permutations_valid": true
+  },
+  "evidence": {
+    "fbw_continuous_blocks": 3,
+    "fbw_branch_sequence": ["LONG", "SHORT_INTERLEAVED", "LONG"],
+    "lfe_continuous_blocks": 3,
+    "algorithm_trace_hashes_compared": 80,
+    "all_exposed_hashes_previews_and_nonzero_counts_match": true,
+    "first_difference": null,
+    "reset_assertions": 7,
+    "reset_assertions_passed": 7,
+    "machine_error_cases": 7,
+    "machine_error_cases_passed": 7,
+    "all_machine_errors_preserved_caller_state": true,
+    "long_short_discriminator": {
+      "spectrum_word_differences": 256,
+      "power_word_differences": 217,
+      "power_raw_differences": 150,
+      "primary_raw_differences": 181,
+      "next_history_same_across_branch": true
+    }
+  },
+  "frozen_4650_word_postcompare": {
+    "reported_compared_u32_words": 4650,
+    "reported_mismatches": 0,
+    "independent_status": "PUBLIC_HASH_AND_PREVIEW_IDENTITIES_MATCH; NOT_AN_INDEPENDENT_WORDWISE_ORACLE_REPLAY",
+    "reason": "The freeze exposes complete trace hashes and short previews, but not 4650 expected U32 words or the verified Python model. The fresh checker did not read that model."
+  },
+  "d01_d04_boundary": {
+    "D01": "Selected generated window is complete; twelve words are declared different from the historical identity.",
+    "D02": "Selected long/short rotations and permutation are complete and exercised; historical reference words are absent from the freeze.",
+    "D03": "All butterfly words and active branches are supplied and exercised; legacy table identity is not required.",
+    "D04": "Selected LFE arrays and nonzero composition are complete; trigonometric terms differ historically and native out-of-range LFE mantissa behavior remains open."
+  },
+  "issues": [],
+  "known_limits": [
+    "No independent word-by-word replay of the reported 4650-word model postcompare is possible from this freeze.",
+    "No complete five-FBW-plus-LFE six-block source transaction was executed.",
+    "F07/F09/F10/F12 whole-frame staged commit and EOF integration remain open.",
+    "No cold ADM computation, encoded audio, decoder/player, JOC render or listening acceptance was run.",
+    "Native LFE out-of-range mantissa behavior remains unresolved."
+  ],
+  "reviewed_freeze_bindings": [
+    {"file": "specs/08-nonzero-transform-composition.md", "sha256": "f4281edb91d79362d15895ecbda11200dd67cb039797b775aeb44df15676677f"},
+    {"file": "specs/08-transforms.md", "sha256": "bca381bf08c1f23dff58fcc04c4a817e60c4af88354fad7815ba1a6654223a75"},
+    {"file": "parameters/ordinary-transform-math-v1.json", "sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1"},
+    {"file": "test-vectors/F08-NONZERO-COMPOSITION-INPUT-VECTORS.json", "sha256": "eb825796adc60933b1c717122f991a9a0ced95ab0cd89d29ef4f6e1e28b6866c"},
+    {"file": "test-vectors/F08-NONZERO-COMPOSITION-RESULT.json", "sha256": "d3838ccbd136eb0a33e5f8f5fb0fc2d3b7eeb0ed672f81d23ec5f53200f6cb55"},
+    {"file": "test-vectors/F08-NONZERO-COMPOSITION-GAP-AUDIT.md", "sha256": "9ec85364148decd4e9dc71da30a161200012969cd16431ba2f82b106c807ffb9"}
+  ],
+  "scope": "Local nonzero transform-to-POWER/PRIMARY composition for the selected math-generated-v1 provider only.",
+  "implementation_ready": "NO"
+}

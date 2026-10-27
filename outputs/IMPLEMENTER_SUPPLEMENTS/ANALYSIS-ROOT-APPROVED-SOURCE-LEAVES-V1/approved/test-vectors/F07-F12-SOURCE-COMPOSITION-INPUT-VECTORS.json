@@ -1,0 +1,508 @@
+{
+  "schema": "f07-f12-source-composition-inputs.v5",
+  "contains_pcm": false,
+  "recipes": [
+    {
+      "id": "S0-LONG-MIX",
+      "source": 0,
+      "blocks": 6,
+      "fbw_bins": [
+        217,
+        217,
+        217,
+        217,
+        217
+      ],
+      "lfe_bins": 7,
+      "short_flags": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          0,
+          1,
+          0,
+          1
+        ],
+        [
+          1,
+          0,
+          1,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "capacity_threshold": 500,
+      "audio_recipe": {
+        "schema": "installed-audio-modular-v1",
+        "channel_order": [
+          "L",
+          "R",
+          "C",
+          "LFE",
+          "Ls",
+          "Rs"
+        ],
+        "channels": 6,
+        "samples_per_channel": 1536,
+        "sample_formula": {
+          "numerator": "((sample*37 + channel*53 + source*71 + 17) mod 257)-128",
+          "power_of_two_denominator": 4096
+        },
+        "delayed_audio_rule": "F07.1 starts from 1280-word history; for each 256-sample block emit old history[256:512], shift history left256, append current installed block; cold source first nonzero delayed sample is index1024; committed next history is the last1280 installed samples"
+      },
+      "db_per_bit_codes": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "bsi": {
+        "dialnorm": 31,
+        "rf_compression_code": null,
+        "mixing": null,
+        "information": null,
+        "line_dynamic_range_codes": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "payloads": {
+        "joc": {
+          "present": false,
+          "mode": "ABSENT",
+          "bytes_hex": ""
+        },
+        "oamd": {
+          "present": false,
+          "mode": "ABSENT",
+          "bytes_hex": ""
+        },
+        "id1": {
+          "present": false,
+          "mode": "ABSENT",
+          "bytes_hex": ""
+        },
+        "id2": {
+          "present": false,
+          "mode": "ABSENT",
+          "bytes_hex": ""
+        }
+      },
+      "emdf_payload_hex": "",
+      "joc_complexity": null,
+      "exponent_format": 0
+    },
+    {
+      "id": "S1-SHORT-CARRY",
+      "source": 1,
+      "blocks": 6,
+      "fbw_bins": [
+        217,
+        217,
+        217,
+        217,
+        217
+      ],
+      "lfe_bins": 7,
+      "short_flags": [
+        [
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "capacity_threshold": 350,
+      "audio_recipe": {
+        "schema": "installed-audio-modular-v1",
+        "channel_order": [
+          "L",
+          "R",
+          "C",
+          "LFE",
+          "Ls",
+          "Rs"
+        ],
+        "channels": 6,
+        "samples_per_channel": 1536,
+        "sample_formula": {
+          "numerator": "((sample*37 + channel*53 + source*71 + 17) mod 257)-128",
+          "power_of_two_denominator": 4096
+        },
+        "delayed_audio_rule": "F07.1 starts from 1280-word history; for each 256-sample block emit old history[256:512], shift history left256, append current installed block; cold source first nonzero delayed sample is index1024; committed next history is the last1280 installed samples"
+      },
+      "db_per_bit_codes": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "bsi": {
+        "dialnorm": 31,
+        "rf_compression_code": null,
+        "mixing": null,
+        "information": null,
+        "line_dynamic_range_codes": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "payloads": {
+        "joc": {
+          "present": false,
+          "mode": "ABSENT",
+          "bytes_hex": ""
+        },
+        "oamd": {
+          "present": false,
+          "mode": "ABSENT",
+          "bytes_hex": ""
+        },
+        "id1": {
+          "present": false,
+          "mode": "ABSENT",
+          "bytes_hex": ""
+        },
+        "id2": {
+          "present": false,
+          "mode": "ABSENT",
+          "bytes_hex": ""
+        }
+      },
+      "emdf_payload_hex": "",
+      "joc_complexity": null,
+      "exponent_format": 0
+    },
+    {
+      "id": "S2-PUBLISH",
+      "source": 2,
+      "blocks": 6,
+      "fbw_bins": [
+        217,
+        217,
+        217,
+        217,
+        217
+      ],
+      "lfe_bins": 7,
+      "short_flags": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "capacity_threshold": 620,
+      "audio_recipe": {
+        "schema": "installed-audio-modular-v1",
+        "channel_order": [
+          "L",
+          "R",
+          "C",
+          "LFE",
+          "Ls",
+          "Rs"
+        ],
+        "channels": 6,
+        "samples_per_channel": 1536,
+        "sample_formula": {
+          "numerator": "((sample*37 + channel*53 + source*71 + 17) mod 257)-128",
+          "power_of_two_denominator": 4096
+        },
+        "delayed_audio_rule": "F07.1 starts from 1280-word history; for each 256-sample block emit old history[256:512], shift history left256, append current installed block; cold source first nonzero delayed sample is index1024; committed next history is the last1280 installed samples"
+      },
+      "db_per_bit_codes": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "bsi": {
+        "dialnorm": 31,
+        "rf_compression_code": null,
+        "mixing": null,
+        "information": null,
+        "line_dynamic_range_codes": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "payloads": {
+        "joc": {
+          "present": false,
+          "mode": "ABSENT",
+          "bytes_hex": ""
+        },
+        "oamd": {
+          "present": false,
+          "mode": "ABSENT",
+          "bytes_hex": ""
+        },
+        "id1": {
+          "present": false,
+          "mode": "ABSENT",
+          "bytes_hex": ""
+        },
+        "id2": {
+          "present": false,
+          "mode": "ABSENT",
+          "bytes_hex": ""
+        }
+      },
+      "emdf_payload_hex": "",
+      "joc_complexity": null,
+      "exponent_format": 0
+    },
+    {
+      "id": "S3-ALL-CANDIDATES-FAIL",
+      "source": 3,
+      "blocks": 6,
+      "fbw_bins": [
+        217,
+        217,
+        217,
+        217,
+        217
+      ],
+      "lfe_bins": 7,
+      "short_flags": [
+        [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      ],
+      "capacity_threshold": 15,
+      "frame_capacity_bits": 512,
+      "audio_recipe": {
+        "schema": "installed-audio-modular-v1",
+        "channel_order": [
+          "L",
+          "R",
+          "C",
+          "LFE",
+          "Ls",
+          "Rs"
+        ],
+        "channels": 6,
+        "samples_per_channel": 1536,
+        "sample_formula": {
+          "numerator": "((sample*37 + channel*53 + source*71 + 17) mod 257)-128",
+          "power_of_two_denominator": 4096
+        },
+        "delayed_audio_rule": "F07.1 starts from 1280-word history; for each 256-sample block emit old history[256:512], shift history left256, append current installed block; cold source first nonzero delayed sample is index1024; committed next history is the last1280 installed samples"
+      },
+      "db_per_bit_codes": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "bsi": {
+        "dialnorm": 31,
+        "rf_compression_code": null,
+        "mixing": null,
+        "information": null,
+        "line_dynamic_range_codes": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "payloads": {
+        "joc": {
+          "present": false,
+          "mode": "ABSENT",
+          "bytes_hex": ""
+        },
+        "oamd": {
+          "present": false,
+          "mode": "ABSENT",
+          "bytes_hex": ""
+        },
+        "id1": {
+          "present": false,
+          "mode": "ABSENT",
+          "bytes_hex": ""
+        },
+        "id2": {
+          "present": false,
+          "mode": "ABSENT",
+          "bytes_hex": ""
+        }
+      },
+      "emdf_payload_hex": "",
+      "joc_complexity": null,
+      "exponent_format": 0
+    }
+  ],
+  "canonical_input_serialization": {
+    "encoding": "UTF-8 canonical JSON",
+    "sort_keys": true,
+    "separators": [
+      ",",
+      ":"
+    ],
+    "finite_numbers_only": true
+  }
+}

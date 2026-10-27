@@ -1,0 +1,20 @@
+{
+  "schema": "jocforge-f11-f12-typed-plan-boundary-wash-verification.v1",
+  "package_id": "F11-F12-NUMERIC-PLAN-TYPED-BOUNDARY-V1",
+  "status": "WASHED_TYPED_RECEIPT_AND_CANDIDATE_BOUNDARY_CROSSWALK",
+  "source_package_manifest_sha256": "20e1245bb7a284cb60627ee126d12d3b5b3aa5163cd9bd037cce9cd843e15cb0",
+  "source_payload_hashes_verified": "4/4",
+  "basis_source_package_manifest_sha256": "6db2a0d8245dd71ef0dfc2d4358cb06f9cf477114fdf53176e887cfced07733c",
+  "basis_source_rows_sha256": "158cf78c98c26de69b60f98ec113e381c3ac87862c5dc1015c15dbd507c7be37",
+  "basis_input_only_generation_vectors_sha256": "07c7ada799057a07754879be1a17228be0ec8756972afbee44d21a7925df8c91",
+  "source_identity_resolution_sha256": "cd88555bc661c6a754637fc6288c589c4c52b3ed41710ee4c1592f103bbd0b6e",
+  "source_identity_rehash_in_basis": "25/25",
+  "approved_receipt_name": "NumericPlanReceipt",
+  "implementation_alias": "SelectedSourceNumericPlan may be a nonpersistent adapter view only",
+  "f11_intermediate_costs": "NOT_RECORDED; not an approved receipt field",
+  "runtime_typed_receipt_join": "NOT_RUN",
+  "fresh_source_to_frame_integration": "NOT_RUN",
+  "native_or_full_song_execution": "NOT_RUN",
+  "candidate_expected_values_included": "SYNTHETIC_MODEL_RESULT_ROWS_ONLY",
+  "code_or_private_key_included": false
+}

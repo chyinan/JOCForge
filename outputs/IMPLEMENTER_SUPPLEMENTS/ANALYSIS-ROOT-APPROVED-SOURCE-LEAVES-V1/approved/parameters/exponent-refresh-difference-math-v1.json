@@ -1,0 +1,76 @@
+{
+  "schema": "exponent-refresh-difference-math.v1",
+  "asset_id": "D06-E",
+  "delivery_scope": "internal isolated specification and implementation only; no public or third-party distribution authorization",
+  "source_classification": "research-observed mathematical behavior rule; not an independent original design claim",
+  "original_table_file_delivered": false,
+  "input": {
+    "name": "index",
+    "type": "strict integer; bool rejected",
+    "minimum": 0,
+    "maximum": 31
+  },
+  "output": {
+    "type": "I16",
+    "precision": "exact integer arithmetic"
+  },
+  "generator": {
+    "index_lt_2": 0,
+    "index_eq_2": 1,
+    "otherwise": "2*index-4"
+  },
+  "generated_values_i16": [
+    0,
+    0,
+    1,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    22,
+    24,
+    26,
+    28,
+    30,
+    32,
+    34,
+    36,
+    38,
+    40,
+    42,
+    44,
+    46,
+    48,
+    50,
+    52,
+    54,
+    56,
+    58
+  ],
+  "generated_bytes": 64,
+  "serialization": "32 I16 little endian in index order",
+  "generated_i16le_sha256": "a0e75dafa9f3c1627ec36351ed857711c5a79f60fd7fda0b9f988f0505a4a070",
+  "exact_equivalence_scope": {
+    "declared_indices": 32,
+    "equal_entries": 32,
+    "mismatch_count": 0,
+    "not_a_whole_pipeline_or_native_audio_equivalence_claim": true
+  },
+  "algorithm_spec": "specs/09-exponents.md#f096-完整刷新误差映射",
+  "parameters_resolved_by": "parameters/policy-authorized-v1.json",
+  "resolved_selected_parameters": [
+    "D06-T-NORMAL",
+    "D06-W",
+    "D06-N",
+    "D07-P",
+    "D07-A",
+    "D07-T",
+    "D07-H"
+  ]
+}

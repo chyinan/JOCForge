@@ -38,6 +38,8 @@ const WRAPPER_CANONICAL_SHA256: &str =
 const QUEUE_MUTATION_ORDER: [u8; 4] = [11, 1, 2, 14];
 const PUBLICATION_ORDER: [u8; 4] = [11, 14, 2, 1];
 const CANONICAL_QUEUE_ORDER: [u8; 4] = [1, 2, 11, 14];
+const METADATA_OWNER_ID: &str = "metadata";
+const METADATA_STATE_REF: &str = "owners.metadata";
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum MetadataOwnerError {
@@ -157,6 +159,44 @@ impl MetadataOwnerSnapshot {
 
     pub(crate) const fn next_source_index(self) -> CodecSourceIndex {
         self.next_source_index
+    }
+}
+
+/// Complete immutable canonical state material for one GTC Metadata owner snapshot.
+///
+/// The snapshot carries the full `MetadataStateV1` bytes. It is not a source
+/// receipt, a GTC `OwnerReceipt`, or a parent commit capability.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct MetadataOwnerStateReference {
+    generation: u64,
+    state_sha256: [u8; 32],
+    cold_sha256: [u8; 32],
+    canonical_bytes: Vec<u8>,
+}
+
+impl MetadataOwnerStateReference {
+    pub const fn owner_id(&self) -> &'static str {
+        METADATA_OWNER_ID
+    }
+
+    pub const fn state_ref(&self) -> &'static str {
+        METADATA_STATE_REF
+    }
+
+    pub const fn generation(&self) -> u64 {
+        self.generation
+    }
+
+    pub const fn state_sha256(&self) -> &[u8; 32] {
+        &self.state_sha256
+    }
+
+    pub const fn cold_sha256(&self) -> &[u8; 32] {
+        &self.cold_sha256
+    }
+
+    pub fn canonical_bytes(&self) -> &[u8] {
+        &self.canonical_bytes
     }
 }
 
@@ -612,6 +652,18 @@ impl MetadataOwner {
             generation: self.state.generation,
             state_sha256: self.state.digest(),
             next_source_index: CodecSourceIndex::new(self.state.next_source_index),
+        }
+    }
+
+    /// Returns the complete current owner value under the approved logical GTC state_ref.
+    pub fn state_reference(&self) -> MetadataOwnerStateReference {
+        let canonical_bytes = self.state.canonical_bytes();
+        let cold_state = MetadataState::cold(self.provider_sha256);
+        MetadataOwnerStateReference {
+            generation: self.state.generation,
+            state_sha256: self.state.digest(),
+            cold_sha256: cold_state.digest(),
+            canonical_bytes,
         }
     }
 

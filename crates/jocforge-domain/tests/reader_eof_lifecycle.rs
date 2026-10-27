@@ -48,6 +48,48 @@ fn generated_cold_constructor_has_exact_fields_and_serialization() {
 }
 
 #[test]
+fn owner_state_reference_tracks_complete_cold_and_committed_bytes() {
+    let mut machine = ReaderEofMachine::cold();
+    let cold_state = ReaderEofState::cold();
+    let cold_reference = machine.state_reference();
+
+    assert_eq!(cold_reference.owner_id(), "reader_eof");
+    assert_eq!(cold_reference.state_ref(), "owners.reader_eof");
+    assert_eq!(cold_reference.generation(), 0);
+    assert_eq!(
+        cold_reference.canonical_bytes(),
+        cold_state.canonical_bytes()
+    );
+    assert_eq!(cold_reference.state_sha256(), cold_state.digest());
+    assert_eq!(cold_reference.cold_sha256(), cold_state.digest());
+
+    let staged = machine
+        .stage(
+            machine
+                .prepare("tx-state-reference", next_state(machine.committed()))
+                .unwrap(),
+        )
+        .unwrap();
+    machine.commit(staged).unwrap();
+
+    let committed_reference = machine.state_reference();
+    assert_eq!(committed_reference.generation(), 1);
+    assert_eq!(
+        committed_reference.canonical_bytes(),
+        machine.committed().canonical_bytes()
+    );
+    assert_eq!(
+        committed_reference.state_sha256(),
+        machine.committed().digest()
+    );
+    assert_eq!(committed_reference.cold_sha256(), cold_state.digest());
+    assert_eq!(
+        cold_reference.canonical_bytes(),
+        cold_state.canonical_bytes()
+    );
+}
+
+#[test]
 fn canonical_options_use_presence_then_row_major_little_endian_payload() {
     let mut host = vec![0.0_f32; 38 * 1536];
     host[0] = -0.0;

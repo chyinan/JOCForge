@@ -1,0 +1,50 @@
+{
+  "schema": "wash-research-manifest.v1",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 1849,
+      "sha256": "5465c862b5b40eda3d54fa1d846b1b4bf9e05a98e68a03179e1b69b2e954580d"
+    },
+    {
+      "path": "INPUT-ONLY-VECTORS.json",
+      "bytes": 3059,
+      "sha256": "6871c3f68582596b6f7bb9e30082f31e8ed59f9f1f5b0bec35ff8cad45f56fa1"
+    },
+    {
+      "path": "STATE-TRANSITION-SHAPES.json",
+      "bytes": 3221,
+      "sha256": "0158214d5b3dfb6663139fa2d9ce9f3e07c37259e53242b7c78d0fe29ec27096"
+    },
+    {
+      "path": "GENERATION-REJECTION-VECTOR.json",
+      "bytes": 930,
+      "sha256": "a67d996e62ece1cc342196b64b5fb9febb66534a44efb735b880b9b60ce8d932"
+    },
+    {
+      "path": "SOURCE-IDENTITIES.json",
+      "bytes": 3408,
+      "sha256": "637aa9840c958899beb1365ec6d7a1dd537e720b6389d03851b2ee3ecfbf246c"
+    },
+    {
+      "path": "DELIVERY-ENVELOPE.json",
+      "bytes": 552,
+      "sha256": "0821f339ecc471868987eff511b69942f5755d3077b346cf1b7925e7f2c941b4"
+    },
+    {
+      "path": "MODEL-CONNECTIONS.md",
+      "bytes": 3479,
+      "sha256": "1c80b735c4c8f59d5d7cd3481c3b090f2ab249c2c4c0d59e19d6e2d609d07374"
+    },
+    {
+      "path": "SOURCE-VECTOR-HASHES.json",
+      "bytes": 610,
+      "sha256": "548c344de796ea0609b7a756b0da8d37f89ae21a030b733ca78ebfcde916b5df"
+    },
+    {
+      "path": "check_secondary_producer_input_package.py",
+      "bytes": 11480,
+      "sha256": "387c2cfd53774b7ecf95a3eb3e6455ea6b0ebf9e421a4aa7344479810e519459"
+    }
+  ]
+}

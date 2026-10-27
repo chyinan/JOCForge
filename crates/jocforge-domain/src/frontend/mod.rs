@@ -31,8 +31,9 @@ pub use provider::{
 };
 pub use state::{
     FrontendControlDigest, FrontendControlError, FrontendControlJoinMetadata,
-    FrontendControlMachine, FrontendControlPhase, FrontendControlPrepared, FrontendControlStaged,
-    FrontendControlState, FrontendNormalizedConfig, FrontendObjectState,
+    FrontendControlMachine, FrontendControlOwnerStateReference, FrontendControlPhase,
+    FrontendControlPrepared, FrontendControlStaged, FrontendControlState, FrontendNormalizedConfig,
+    FrontendObjectState,
 };
 pub use target_cold_provider::{
     F03TargetProviderError, F03TargetProviderLineage, F03TargetProviderReceipt,

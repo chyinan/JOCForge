@@ -1,0 +1,92 @@
+{
+  "schema": "f07-f12-selected-source-state.v5",
+  "persistent": {
+    "source_index": "U64",
+    "input_history": "6x1280 F32 positive-zero cold",
+    "transient_fbw": "5 owners each two_history[4], three_history[6], peak_statistics[18], previous_mean F32, short_queue[4] I1, other_queue[4] I1",
+    "primary_transform": "5 FBW x128 F32 plus LFE x128 F32",
+    "companion_transform": "5 FBW x128 F32 plus LFE x128 F32; distinct from primary",
+    "previous_short": "5 I1, last consumed block of prior source",
+    "gain_db_policy": "F09 declared gain peak/db selector and authorized policy state",
+    "codec": "six transform histories and five previous_short as one staged owner; no keyless tail RNG",
+    "published_au_count": "U64; source0/1 suppressed"
+  },
+  "per_source_scratch": {
+    "installed_audio": "6x1536 F32 immutable",
+    "delayed_audio": "6x1536 F32 generated exactly once",
+    "short_consumed": "6x5 I1",
+    "other_consumed": "6x5 I1",
+    "structure_refresh": "6x5 I1",
+    "primary_spectrum": "6 blocks x (5x256 FBW + 7 LFE used)",
+    "companion_spectrum": "same owner shape, independent histories",
+    "power_snapshot": "6x5x217 F32 plus LFE7 inputs",
+    "primary_raw_exponents": "6x5x217 I16 plus 6x7 LFE I16",
+    "normalized_plan": "main strategies/anchors/groups/gain ranges/expanded exponents",
+    "converter_plan": "five frame codes plus converter SNR offset, derived independently from POWER snapshot",
+    "trial": "candidate q, BAP rows, mantissa codes, scratch bitwriter; never persistent"
+  },
+  "commit": "one source commit installs F07/F08/F09 next state, codec transform next state and previous_short only after final 4096-byte frame succeeds",
+  "failure": "candidate failure changes search bounds only; fatal source failure records before/after canonical SHA-256 for lifecycle,input_history,transient,primary_companion_lfe,policy,codec,previous_short,publication; only lifecycle retired bit may differ",
+  "canonical_digest": "UTF-8 JSON with sort_keys=true and separators comma/colon over the owner projection named by the r2 vector; integers are JSON decimal and booleans are lowercase JSON literals",
+  "reset": "all persistent families cold and source index0; reset state equals cold state field-for-field and source0 replay equals cold source0 core output",
+  "canonical_encoding": {
+    "name": "F07_F12_OWNER_STATE_V5",
+    "rule": "Each owner is the field-complete JSON object defined by owner_shapes; previous_short is exactly {i1_words:[5 I1]}; UTF-8 sorted keys comma/colon separators finite numbers only; no generation-only projection.",
+    "fatal_rule": "all-candidate-fail may change lifecycle only; every other complete owner digest before/after must match",
+    "reset_rule": "reset_state object must equal cold_state object field-for-field"
+  },
+  "owner_shapes": {
+    "input_history": {
+      "generation": "U64",
+      "history_u32_words": 7680
+    },
+    "transient": {
+      "generation": "U64",
+      "two_history_u32_words": 20,
+      "three_history_u32_words": 30,
+      "peak_statistics_u32_words": 90,
+      "previous_mean_u32_words": 5,
+      "short_queue_i1": 20,
+      "other_queue_i1": 20
+    },
+    "primary_companion_lfe": {
+      "generation": "U64",
+      "primary_fbw_history_u32_words": 640,
+      "companion_fbw_history_u32_words": 640,
+      "primary_lfe_history_u32_words": 128,
+      "companion_lfe_history_u32_words": 128
+    },
+    "policy": {
+      "generation": "U64",
+      "gain_db_history_u32_words": 64,
+      "exponent_refresh_history_u16_words": 30,
+      "normalized_anchor_u16_words": 30
+    },
+    "codec": {
+      "generation": "U64",
+      "transform_history_u32_words": 256,
+      "mantissa_group_state_u16_words": 18,
+      "bitwriter_cursor": "U32"
+    },
+    "previous_short": {
+      "i1_words": 5
+    },
+    "publication": {
+      "published_aus": "U64",
+      "payload_fifo": "complete logical records"
+    },
+    "lifecycle": {
+      "source": "U64",
+      "retired": "bool",
+      "failure_stage": "string|null"
+    }
+  },
+  "audio_owner_projection": {
+    "policy_gain_db_history_u32_words": "external channel LFE (input channel index3), delayed_audio[3][1472:1536], each value squared then rounded once to binary32, serialize 64 U32 little-endian bit patterns in increasing sample index",
+    "codec_transform_history_u32_words": "external channel L (input channel index0), delayed_audio[0][1280:1536], serialize 256 binary32 U32 bit patterns in increasing sample index",
+    "flattening": "channel selection occurs before slicing; no cross-channel flatten is permitted",
+    "successful_generation": "input/transient/transform/policy generations each advance once during staged numeric work; codec generation advances once and bitwriter_cursor becomes32768 only after a successful complete frame",
+    "fatal_staged": "input/transient/transform/policy staged generations advance and their arrays contain attempted source values; codec staged samples contain attempted external-L delayed[1280:1536], while codec generation and cursor retain committed values; committed after equals before outside lifecycle",
+    "publication": "accepted source>=2 appends exactly {au:source-2,payloads:input payloads}; suppressed or fatal source appends nothing"
+  }
+}

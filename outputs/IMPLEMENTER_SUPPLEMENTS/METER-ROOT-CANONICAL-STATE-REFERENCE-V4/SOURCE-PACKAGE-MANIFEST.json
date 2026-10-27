@@ -1,0 +1,48 @@
+{
+  "schema": "research.standalone-meter-root-materialization-manifest.v4",
+  "sealed_utc": "2026-10-27T06:00:50.637112+00:00",
+  "files": {
+    "CONTRACT.md": {
+      "bytes": 9021,
+      "sha256": "08862636eff8acfa1e5ad0d9addd47a42eaf91b39ce0306c8d8ed44013c4b74a"
+    },
+    "ERRATUM.md": {
+      "bytes": 2559,
+      "sha256": "8422a400bb6018a5aeba3f94e60207f59a0288feda2d81500a64df15a4a6adc1"
+    },
+    "input-only-cold-roots/N1537_pre_callback0_cold_root.json": {
+      "bytes": 280850,
+      "sha256": "4473c384b93076cb79d6cc0f4f5241c9e68c1478e7f84e1de1f7fe91c92c1227"
+    },
+    "input-only-cold-roots/N1_pre_callback0_cold_root.json": {
+      "bytes": 280829,
+      "sha256": "20200261e6a2d16602ada0e234d394668de5ee556718c8e65469f748d9d43d8f"
+    },
+    "input-only-cold-roots/N6522906_pre_callback0_cold_root.json": {
+      "bytes": 280892,
+      "sha256": "a983c9344a57357a3bd094b1002b2effe9e78490bc82132259b4ae6f39991c4b"
+    },
+    "INPUT-ONLY-ROOT-RECIPES.json": {
+      "bytes": 17016,
+      "sha256": "eb8e953bc8037a887b23b363cdffbf0ac64d6b804c69f8eacbb81b655de41ad4"
+    },
+    "MATERIALIZATION-RESULT.json": {
+      "bytes": 16476,
+      "sha256": "34882b65d8dd9d51717bdd5497ec075c970df182fd9f332054d25a44ef5df48c"
+    },
+    "REFERENCES.json": {
+      "bytes": 10832,
+      "sha256": "9c90768e8bcccd1a565b0fb1f70f7b02090c54c4193e7db45b76dff78efab9f9"
+    },
+    "ROOT-FIELDS.json": {
+      "bytes": 10443,
+      "sha256": "45975cb5435bc163b9428d083180bfae46bd9954306713629ca0dbb826dea058"
+    }
+  },
+  "delivery": "WASH_ONLY",
+  "supersedes_v3_manifest_sha256": "e2e0b85f1bfd7bb25e65d20a56e4ff595a7068b940f5819e306f2d2f0da81c2f",
+  "gtc_state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6",
+  "sample_queue_lifecycle_manifest_sha256": "362b383d4b5148394d7bdc43a502cc1ed68cfe39aa5fbbe1e98c2871ad68e606",
+  "wash_reported_implementation_source_sha256": "8efacd5236f3a56f5621b8fc420bc76dcc99fb4dfd41a5f932d0b9f544c3a315",
+  "scope": "Correct SampleBlockQueueState runtime field name for pcm_block_fill_cursor and deduplicate the queue field inventory; root bytes unchanged from v3"
+}

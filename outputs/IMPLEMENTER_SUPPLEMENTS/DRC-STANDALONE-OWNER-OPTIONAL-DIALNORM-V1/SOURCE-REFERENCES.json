@@ -1,0 +1,131 @@
+{
+  "approved_main_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_documents": [
+    {
+      "document": "specs/00-global-transaction-contract.md",
+      "bytes": 20041,
+      "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105"
+    },
+    {
+      "document": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
+      "bytes": 12153,
+      "sha256": "74c8e4a60600187783e559459b426aada2508ae273f95401c9a4234aee4504b4"
+    },
+    {
+      "document": "specs/06-meter-none-drc-whole-composition.md",
+      "bytes": 9594,
+      "sha256": "94e8d42e77e71f4f16e99a74ee3c808cfc925074e19dd814762d21cde6f259d2"
+    },
+    {
+      "document": "parameters/f06-meter-none-drc-whole-state-schema-v1.json",
+      "bytes": 4280,
+      "sha256": "64374f686377d94ab8a3843d09d26329788c7afd48c7683459596b119f68e4be"
+    },
+    {
+      "document": "specs/06-none-drc-statistics-and-control.md",
+      "bytes": 18048,
+      "sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081"
+    },
+    {
+      "document": "specs/06-meter-bsi.md",
+      "bytes": 6337,
+      "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752"
+    },
+    {
+      "document": "parameters/none-drc-authorized-v1.json",
+      "bytes": 3792,
+      "sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f"
+    },
+    {
+      "document": "parameters/none-drc-math-v1.json",
+      "bytes": 2010,
+      "sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166"
+    }
+  ],
+  "supplements": [
+    {
+      "package_id": "METER-DRC-STANDALONE-ROOT-BINDING-V1",
+      "manifest_sha256": "23952c523c8bb7435133fadc77bdc1a491d74c9df09b191ff591a2da967fdb1a",
+      "payloads": [
+        {
+          "file": "CONTRACT.md",
+          "bytes": 7314,
+          "sha256": "a7477a63de3fdd3b0a9a74ece12885330820a0ed12e2204a71ff76349c80a2bd"
+        },
+        {
+          "file": "INPUT-ONLY-VECTORS.json",
+          "bytes": 1650,
+          "sha256": "00c08621f6ca5600be5873355f2a4ef9ae254a6ade680c9ae18d0087401709d1"
+        },
+        {
+          "file": "SOURCE-REFERENCES.json",
+          "bytes": 5134,
+          "sha256": "263a6d0c2b4ddc75bd335dcd2c930b597a31a115ecddb396b125a8fa91b5f457"
+        },
+        {
+          "file": "STATUS-AND-VERIFICATION.json",
+          "bytes": 1609,
+          "sha256": "628e1f14f2942fc7540b342940e0fc919ba52a5d4c3a60823f8a9691a22bc4a7"
+        }
+      ]
+    },
+    {
+      "package_id": "GTC-OWNER-STATE-REF-CONVENTION-V1",
+      "manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6",
+      "payloads": [
+        {
+          "file": "CONTRACT.md",
+          "bytes": 1853,
+          "sha256": "f8b322f1a1a7ba30d0cacb52ddbc1a5950ab5049da0af139ed44ee96d181db99"
+        },
+        {
+          "file": "STATE-REF-MAP.json",
+          "bytes": 1110,
+          "sha256": "f1b225e5581a9028ff49c32d7e3d939aad375832684bccc9c40bc36c0867aa29"
+        },
+        {
+          "file": "INPUT-ONLY-VECTORS.json",
+          "bytes": 1433,
+          "sha256": "158452443f04b8f40a993f4852962c326e30c984c385c78d660ca4028bd27e24"
+        },
+        {
+          "file": "SOURCES.json",
+          "bytes": 954,
+          "sha256": "dd00248fab9e0bde551c6f8a639aa098dd1c8211da00dca168e109c2e11cfaa6"
+        },
+        {
+          "file": "WASH-VERIFICATION.json",
+          "bytes": 882,
+          "sha256": "dc215e6f73a1030f4817d54d5f80d4e8d5bb2065a05a2359bd65808e6c354873"
+        }
+      ]
+    }
+  ],
+  "frozen_model_sources": [
+    {
+      "name": "ordinary_metadata_override_core.py",
+      "bytes": 5365,
+      "sha256": "c4315c78c927221c20a193df2ee6205b24ccb4ed1b9f267c57c0a3eac9c09bf2",
+      "use": "Frozen FIFO record Python type, constructor and selected transition; static identity only.",
+      "executed": false
+    },
+    {
+      "name": "ordinary_constructor_defaults_core.py",
+      "bytes": 734,
+      "sha256": "4e684fcecbf170c5217b6e41fe74b39d13213ab5cc6654ebcbda2ca2485c485f",
+      "use": "Frozen selected metadata delay provider identity.",
+      "executed": false
+    },
+    {
+      "name": "metadata_programme_timeline_core.py",
+      "bytes": 5909,
+      "sha256": "2fee3fe4fba44e69e0ed7d67ac58b560a8d1c2f38c3f5bf2b8346e02292adb3f",
+      "use": "Frozen source loop constructs one FIFO state and reuses the same measurement configuration per source; static identity only.",
+      "executed": false
+    }
+  ],
+  "measurement_boundary": "Complete finalized MeasurementReceipt is a top-level immutable shared input. The DRC owner stores only its F06ND-declared immutable U5 dialnorm projection; no receipt body/hash is nested in owners.drc.",
+  "combined_13_owner_cold": "NOT_READ_OR_USED_AS_STANDALONE_ROOT_SEED",
+  "implementation_source_read": false,
+  "native_execution": "NOT_RUN"
+}

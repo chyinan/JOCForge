@@ -36,10 +36,73 @@ use crate::transform::lfe_transform::{
 };
 use crate::transform::math_generated_parameters::MathGeneratedTransformParameters;
 use crate::transform::window_fold::{F08WindowFoldError, f08_window_fold_block};
+use serde_json::Value;
+use sha2::{Digest, Sha256};
+use std::collections::BTreeMap;
 
 const EXTERNAL_AUDIO_LANES: usize = 6;
 const TRANSFORM_HISTORY_WORDS_PER_LANE: usize = 128;
 const GAIN_RANGE_CHANNELS: usize = 6;
+const ANALYSIS_OWNER_ID: &str = "analysis";
+const ANALYSIS_OWNER_STATE_REF: &str = "owners.analysis";
+
+fn json_integer_array<T, I>(values: I) -> Value
+where
+    I: IntoIterator<Item = T>,
+    Value: From<T>,
+{
+    Value::Array(values.into_iter().map(Value::from).collect())
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum AnalysisOwnerStateReferenceError {
+    IncompleteRoot,
+    InvalidTransientI1,
+    CanonicalSerialization,
+}
+
+/// Read-only canonical state view for one commit-eligible Analysis owner root.
+///
+/// The snapshot borrows the complete typed root and carries its canonical V6 owner
+/// JSON plus the current and cold SHA-256 values. It does not stage or commit state.
+#[derive(Debug, Eq, PartialEq)]
+pub struct AnalysisOwnerStateReference<'a> {
+    root: &'a AnalysisOwnerRoot,
+    generation: u64,
+    canonical_bytes: Vec<u8>,
+    state_sha256: [u8; 32],
+    cold_sha256: [u8; 32],
+}
+
+impl AnalysisOwnerStateReference<'_> {
+    pub const fn owner_id(&self) -> &'static str {
+        ANALYSIS_OWNER_ID
+    }
+
+    pub const fn state_ref(&self) -> &'static str {
+        ANALYSIS_OWNER_STATE_REF
+    }
+
+    pub const fn generation(&self) -> u64 {
+        self.generation
+    }
+
+    pub const fn state(&self) -> &AnalysisOwnerRoot {
+        self.root
+    }
+
+    pub fn canonical_bytes(&self) -> &[u8] {
+        &self.canonical_bytes
+    }
+
+    pub const fn state_sha256(&self) -> &[u8; 32] {
+        &self.state_sha256
+    }
+
+    pub const fn cold_sha256(&self) -> &[u8; 32] {
+        &self.cold_sha256
+    }
+}
 
 /// The four persistent F07-F10 analysis families.
 ///
@@ -148,6 +211,158 @@ impl AnalysisOwnerRoot {
 
     pub const fn db_per_bit_completed_blocks_u64(&self) -> u64 {
         self.db_per_bit_completed_blocks_u64
+    }
+
+    /// Returns the complete sorted-key JSON owner snapshot for a commit-eligible root.
+    ///
+    /// The V6 projection contains only the four persistent F07-F10 families. Candidate,
+    /// F11/F12, publication, and other owner state are deliberately outside this value.
+    pub fn state_reference(
+        &self,
+    ) -> Result<AnalysisOwnerStateReference<'_>, AnalysisOwnerStateReferenceError> {
+        let generation = self
+            .common_generation()
+            .ok_or(AnalysisOwnerStateReferenceError::IncompleteRoot)?;
+        let canonical_bytes = self.canonical_state_bytes()?;
+        let state_sha256 = Sha256::digest(&canonical_bytes).into();
+        let cold_bytes = Self::cold().canonical_state_bytes()?;
+        let cold_sha256 = Sha256::digest(&cold_bytes).into();
+        Ok(AnalysisOwnerStateReference {
+            root: self,
+            generation,
+            canonical_bytes,
+            state_sha256,
+            cold_sha256,
+        })
+    }
+
+    fn canonical_state_bytes(&self) -> Result<Vec<u8>, AnalysisOwnerStateReferenceError> {
+        if !self.is_commit_eligible() {
+            return Err(AnalysisOwnerStateReferenceError::IncompleteRoot);
+        }
+        if self.transient_states.iter().any(|state| {
+            state
+                .short_queue_i1()
+                .iter()
+                .chain(state.other_queue_i1())
+                .any(|value| *value > 1)
+        }) {
+            return Err(AnalysisOwnerStateReferenceError::InvalidTransientI1);
+        }
+
+        let mut fields = BTreeMap::<String, Value>::new();
+        fields.insert(
+            "input_history_generation".to_owned(),
+            Value::from(self.input_history_generation),
+        );
+        fields.insert(
+            "input_history_u32_words".to_owned(),
+            json_integer_array(
+                self.input_histories
+                    .iter()
+                    .flat_map(|history| history.words().iter().copied()),
+            ),
+        );
+        fields.insert(
+            "transient_generation".to_owned(),
+            Value::from(self.transient_generation),
+        );
+        fields.insert(
+            "transient_two_history_u32_words".to_owned(),
+            json_integer_array(
+                self.transient_states
+                    .iter()
+                    .flat_map(TransientChannelState::two_history_words),
+            ),
+        );
+        fields.insert(
+            "transient_three_history_u32_words".to_owned(),
+            json_integer_array(
+                self.transient_states
+                    .iter()
+                    .flat_map(TransientChannelState::three_history_words),
+            ),
+        );
+        fields.insert(
+            "transient_peak_statistics_u32_words".to_owned(),
+            json_integer_array(
+                self.transient_states
+                    .iter()
+                    .flat_map(|state| state.peak_statistics_words().iter().copied()),
+            ),
+        );
+        fields.insert(
+            "transient_previous_mean_u32_words".to_owned(),
+            json_integer_array(
+                self.transient_states
+                    .iter()
+                    .map(TransientChannelState::previous_mean_word),
+            ),
+        );
+        fields.insert(
+            "transient_short_queue_i1".to_owned(),
+            json_integer_array(
+                self.transient_states
+                    .iter()
+                    .flat_map(|state| state.short_queue_i1().iter().copied()),
+            ),
+        );
+        fields.insert(
+            "transient_other_queue_i1".to_owned(),
+            json_integer_array(
+                self.transient_states
+                    .iter()
+                    .flat_map(|state| state.other_queue_i1().iter().copied()),
+            ),
+        );
+        fields.insert(
+            "transform_generation".to_owned(),
+            Value::from(self.transform_generation),
+        );
+        fields.insert(
+            "primary_fbw_history_u32_words".to_owned(),
+            json_integer_array(self.primary_fbw_history_u32_words),
+        );
+        fields.insert(
+            "companion_fbw_history_u32_words".to_owned(),
+            json_integer_array(self.companion_fbw_history_u32_words),
+        );
+        fields.insert(
+            "primary_lfe_history_u32_words".to_owned(),
+            json_integer_array(self.primary_lfe_history_u32_words),
+        );
+        fields.insert(
+            "companion_lfe_history_u32_words".to_owned(),
+            json_integer_array(self.companion_lfe_history_u32_words),
+        );
+        fields.insert(
+            "policy_generation".to_owned(),
+            Value::from(self.policy_generation),
+        );
+        let mut gain_range = serde_json::Map::new();
+        gain_range.insert(
+            "completed_blocks_u64".to_owned(),
+            Value::from(self.gain_range_completed_blocks_u64),
+        );
+        gain_range.insert(
+            "previous_peak_f32_bits_u32".to_owned(),
+            json_integer_array(self.gain_range_previous_peak_f32_bits_u32),
+        );
+        fields.insert("gain_range".to_owned(), Value::Object(gain_range));
+
+        let mut db_per_bit = serde_json::Map::new();
+        db_per_bit.insert(
+            "completed_blocks_u64".to_owned(),
+            Value::from(self.db_per_bit_completed_blocks_u64),
+        );
+        db_per_bit.insert(
+            "selector_u16".to_owned(),
+            Value::from(self.db_per_bit_selector_u16),
+        );
+        fields.insert("db_per_bit".to_owned(), Value::Object(db_per_bit));
+
+        serde_json::to_vec(&fields)
+            .map_err(|_| AnalysisOwnerStateReferenceError::CanonicalSerialization)
     }
 
     /// Reports whether this root satisfies the four-family committed-generation invariant.
@@ -702,7 +917,10 @@ fn map_transaction_stage_error(_: SourceTransactionStageError) -> AnalysisOwnerS
 
 #[cfg(test)]
 mod tests {
-    use super::{AnalysisOwnerRoot, AnalysisOwnerStageError, F07_BLOCKS_PER_FRAME};
+    use super::{
+        AnalysisOwnerRoot, AnalysisOwnerStageError, AnalysisOwnerStateReferenceError,
+        F07_BLOCKS_PER_FRAME,
+    };
     use crate::analysis::exponent_plan::{AnalysisBlockIndex, FullbandLaneIndex};
     use crate::analysis::input_history::INPUT_HISTORY_BLOCK_SAMPLES;
     use crate::analysis::source_frame::F07SourceFrameError;
@@ -719,6 +937,9 @@ mod tests {
     use crate::timeline::CodecSourceIndex;
     use crate::transaction::{AttemptId, CallbackTransactionId};
     use crate::transform::math_generated_parameters::MathGeneratedTransformParameters;
+    use serde_json::Value;
+    use sha2::{Digest, Sha256};
+    use std::collections::BTreeMap;
 
     const D05_PARAMETERS: &[u8] =
         include_bytes!("../../tests/fixtures/transient_channel/PARAMETERS.json");
@@ -731,6 +952,12 @@ mod tests {
     );
     const POLICY_AMENDMENT_VECTORS_SHA256: &str =
         "0c0fed50ae080623ec62771a2cfeaa0fd562a3c694db08cf2d1e9aa213a5a039";
+    const ANALYSIS_COLD_PREIMAGE: &[u8] = include_bytes!(
+        "../../../../outputs/IMPLEMENTER_SUPPLEMENTS/ANALYSIS-ROOT-CANONICAL-STATE-REFERENCE-V1/COLD-ROOT-PREIMAGE.json"
+    );
+    const POLICY_ROOT_AMENDMENT: &[u8] = include_bytes!(
+        "../../../../outputs/IMPLEMENTER_SUPPLEMENTS/F07-F12-POLICY-ROOT-STATE-AMENDMENT-V1/POLICY-ROOT-AMENDMENT.json"
+    );
 
     fn source_transaction() -> (AttemptId, CallbackTransactionId, CodecSourceIndex) {
         (
@@ -849,6 +1076,160 @@ mod tests {
 
         root.reset();
         assert_eq!(root, AnalysisOwnerRoot::cold());
+    }
+
+    #[test]
+    fn owner_state_reference_serializes_the_complete_v6_root_as_sorted_json() {
+        let mut root = AnalysisOwnerRoot::cold();
+        root.input_history_generation = 1;
+        root.transient_generation = 1;
+        root.transform_generation = 1;
+        root.policy_generation = 1;
+        root.gain_range_previous_peak_f32_bits_u32 = [
+            0x3dcc_cccd,
+            0x3e4c_cccd,
+            0x3e99_999a,
+            0x3ecc_cccd,
+            0x3f00_0000,
+            0x3f19_999a,
+        ];
+        root.gain_range_completed_blocks_u64 = 17;
+        root.db_per_bit_selector_u16 = 2;
+        root.db_per_bit_completed_blocks_u64 = 17;
+
+        let reference = root
+            .state_reference()
+            .expect("complete four-family root has a state reference");
+        let parsed: BTreeMap<String, Value> =
+            serde_json::from_slice(reference.canonical_bytes()).unwrap();
+        let mut expected_keys = vec![
+            "input_history_generation",
+            "input_history_u32_words",
+            "transient_generation",
+            "transient_two_history_u32_words",
+            "transient_three_history_u32_words",
+            "transient_peak_statistics_u32_words",
+            "transient_previous_mean_u32_words",
+            "transient_short_queue_i1",
+            "transient_other_queue_i1",
+            "transform_generation",
+            "primary_fbw_history_u32_words",
+            "companion_fbw_history_u32_words",
+            "primary_lfe_history_u32_words",
+            "companion_lfe_history_u32_words",
+            "policy_generation",
+            "gain_range",
+            "db_per_bit",
+        ];
+        expected_keys.sort_unstable();
+        assert_eq!(
+            parsed.keys().map(String::as_str).collect::<Vec<_>>(),
+            expected_keys
+        );
+        assert_eq!(
+            serde_json::to_vec(&parsed).unwrap(),
+            reference.canonical_bytes(),
+            "the preimage is compact UTF-8 JSON with sorted keys"
+        );
+        assert_eq!(reference.owner_id(), "analysis");
+        assert_eq!(reference.state_ref(), "owners.analysis");
+        assert_eq!(reference.generation(), 1);
+        assert_eq!(reference.state(), &root);
+        for (field, length) in [
+            ("input_history_u32_words", 7_680),
+            ("transient_two_history_u32_words", 20),
+            ("transient_three_history_u32_words", 30),
+            ("transient_peak_statistics_u32_words", 90),
+            ("transient_previous_mean_u32_words", 5),
+            ("transient_short_queue_i1", 20),
+            ("transient_other_queue_i1", 20),
+            ("primary_fbw_history_u32_words", 640),
+            ("companion_fbw_history_u32_words", 640),
+            ("primary_lfe_history_u32_words", 128),
+            ("companion_lfe_history_u32_words", 128),
+        ] {
+            assert_eq!(parsed[field].as_array().unwrap().len(), length, "{field}");
+        }
+        assert_eq!(
+            parsed["gain_range"]["previous_peak_f32_bits_u32"]
+                .as_array()
+                .unwrap()
+                .len(),
+            6
+        );
+        assert_eq!(
+            parsed["gain_range"]["previous_peak_f32_bits_u32"],
+            serde_json::json!([
+                0x3dcc_cccd_u32,
+                0x3e4c_cccd_u32,
+                0x3e99_999a_u32,
+                0x3ecc_cccd_u32,
+                0x3f00_0000_u32,
+                0x3f19_999a_u32
+            ])
+        );
+        assert_eq!(parsed["gain_range"]["completed_blocks_u64"], 17);
+        assert_eq!(parsed["db_per_bit"]["selector_u16"], 2);
+        assert_eq!(parsed["db_per_bit"]["completed_blocks_u64"], 17);
+        let current_hash: [u8; 32] = Sha256::digest(reference.canonical_bytes()).into();
+        let cold_root = AnalysisOwnerRoot::cold();
+        let cold_reference = cold_root.state_reference().unwrap();
+        let cold_bytes = cold_reference.canonical_bytes().to_vec();
+        let cold_hash: [u8; 32] = Sha256::digest(&cold_bytes).into();
+        assert_eq!(reference.state_sha256(), &current_hash);
+        assert_eq!(reference.cold_sha256(), cold_reference.cold_sha256());
+        assert_eq!(cold_reference.state_sha256(), &cold_hash);
+        assert_ne!(reference.state_sha256(), reference.cold_sha256());
+        let cold_hash_hex = format!("{:x}", Sha256::digest(&cold_bytes));
+        assert_eq!(cold_bytes, ANALYSIS_COLD_PREIMAGE);
+        assert_eq!(cold_bytes.len(), 19_422);
+        assert_eq!(
+            cold_hash_hex, "008167df2194d7ffebc2ba0aa1e28f70067afda1a089160c46ad78b40e3c0f23",
+            "cold identity matches the approved canonical preimage"
+        );
+
+        let amendment: Value = serde_json::from_slice(POLICY_ROOT_AMENDMENT).unwrap();
+        assert_eq!(
+            amendment["schema_version"],
+            "F07_F12_OWNER_STATE_V6_POLICY_AMENDMENT"
+        );
+        assert_eq!(
+            amendment["persistent_fields"]["gain_range"]["previous_peak_f32_bits_u32"],
+            serde_json::json!([6])
+        );
+        assert_eq!(
+            amendment["persistent_fields"]["gain_range"]["completed_blocks_u64"],
+            0
+        );
+        assert_eq!(
+            amendment["persistent_fields"]["db_per_bit"]["selector_u16"],
+            0
+        );
+        assert_eq!(
+            amendment["persistent_fields"]["db_per_bit"]["completed_blocks_u64"],
+            0
+        );
+
+        root.reset();
+        let reset_reference = root
+            .state_reference()
+            .expect("reset reconstructs a complete cold root");
+        assert_eq!(root, AnalysisOwnerRoot::cold());
+        assert_eq!(reset_reference.canonical_bytes(), cold_bytes);
+        assert_eq!(
+            reset_reference.state_sha256(),
+            reset_reference.cold_sha256()
+        );
+    }
+
+    #[test]
+    fn incomplete_analysis_root_cannot_be_published_as_an_owner_reference() {
+        let mut partial = AnalysisOwnerRoot::cold();
+        partial.input_history_generation = 1;
+        assert_eq!(
+            partial.state_reference(),
+            Err(AnalysisOwnerStateReferenceError::IncompleteRoot)
+        );
     }
 
     #[test]

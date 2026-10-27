@@ -1,0 +1,21 @@
+{
+  "schema": "jocforge-wash-review.v1",
+  "package_id": "F11-F12-PROVIDER-AND-LOCAL-FIXTURE-AVAILABILITY-V1",
+  "review_result": "WASHED_AS_MODEL_AVAILABILITY_AND_FIXTURE_BOUNDARY",
+  "checks": {
+    "incoming_manifest_and_payloads": "PASS_5_OF_5",
+    "approved_root_manifest_file_references": "PASS_48_OF_48",
+    "cross_module_provider_file_references": "PASS_25_OF_25",
+    "fresh_algorithm_or_product_execution": "NOT_RUN",
+    "fixture_evidence_promoted_to_live_source_execution": false,
+    "whole_chain_readiness_changed": false
+  },
+  "content_boundary": {
+    "algorithm_source_code_included": false,
+    "decompilation_included": false,
+    "parameter_arrays_or_frame_literals_copied": false,
+    "private_key_or_auth_material_included": false,
+    "audio_or_pcm_included": false
+  },
+  "implementation_ready": false
+}

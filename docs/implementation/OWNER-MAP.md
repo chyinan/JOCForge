@@ -198,6 +198,7 @@
 | F06NR/single-lane-secondary-overlap-carry | F06NR | `drc` |
 | F06NR/selected-secondary-carrier-routing | F06NR | `drc` |
 | F06NR/selected-secondary-source-au-clock-projection | F06NR | `drc` |
+| F06NR/selected-f06nr-same-source-drc-proposal | F06NR | `drc` |
 | F06NI/selected-secondary-inverse256-wrapper | F06NI | `drc` |
 | F06NF/selected-secondary-fft-network | F06NF | `drc` |
 | F06U/ungated-single-slot-mean-and-di-off-getter | F06U | `meter` |

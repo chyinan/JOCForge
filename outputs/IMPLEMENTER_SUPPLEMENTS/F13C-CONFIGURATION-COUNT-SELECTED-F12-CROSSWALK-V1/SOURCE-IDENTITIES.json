@@ -1,0 +1,39 @@
+{
+  "schema": "f13c-configuration-count-crosswalk-source-identities.v1",
+  "source_paths_are_relative": true,
+  "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "sources": [
+    {"path":"approved/specs/06-meter-bsi.md","bytes":6337,"sha256":"5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752","grade":"FROZEN_APPROVED_MODEL"},
+    {"path":"approved/specs/12-selected-codec-wire.md","bytes":14760,"sha256":"9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448","grade":"FROZEN_APPROVED_MODEL"},
+    {"path":"approved/specs/13-joc-complexity-timer-payload-order.md","bytes":8367,"sha256":"09bcff06bf48d6bd6c28fcd2a3748229ee254f762576df45a24ef12729f4381b","grade":"FROZEN_APPROVED_MODEL"},
+    {"path":"approved/specs/13-emdf-and-timeline.md","bytes":12839,"sha256":"0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd","grade":"FROZEN_APPROVED_MODEL"},
+    {"path":"approved/specs/00-global-transaction-contract.md","bytes":20041,"sha256":"5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105","grade":"FROZEN_APPROVED_MODEL"},
+    {"path":"approved/parameters/f01e-selected-constructor-v1.json","bytes":20138,"sha256":"b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb","grade":"FROZEN_APPROVED_MODEL"},
+    {"path":"washed-supplements/F13C-BSI-CONFIGURATION-COUNT-PRODUCER-V1/MANIFEST.json","bytes":998,"sha256":"253d2cbca8cbad05f432c39655aeea06a74641f17a1117b9126e09e5c83e17f5","grade":"WASHED_CAPTURE_LOCAL_PRODUCER"},
+    {"path":"washed-supplements/F13C-BSI-CONFIGURATION-COUNT-PRODUCER-V1/CONTRACT.md","bytes":3536,"sha256":"3f180787efe8d58098eff6c3c309d60b51380589be0b190f890c755cf7c3b19a","grade":"WASHED_CAPTURE_LOCAL_PRODUCER"},
+    {"path":"washed-supplements/F13C-BSI-CONFIGURATION-COUNT-PRODUCER-V1/EVIDENCE.json","bytes":2892,"sha256":"d4fc6e02445aa6197869df2e76b5e1f2eab272b59d940e16a243bc23e7c95e2d","grade":"WASHED_CAPTURE_LOCAL_PRODUCER"},
+    {"path":"washed-supplements/F13C-BSI-CONFIGURATION-COUNT-PRODUCER-V1/INPUT-ONLY-VECTORS.json","bytes":2513,"sha256":"23f210fb7a9b3d01aca4951b0d47dbf3eb9c9e46f34a7bbe05417507f496260d","grade":"HASH_BOUND_CAPTURE_INPUTS"},
+    {"path":"washed-supplements/F13C-BSI-CONFIGURATION-COUNT-PRODUCER-V1/SOURCE-MANIFESTS.json","bytes":1791,"sha256":"53d6d70dd187d206b4cedf8875ebd24ed8789232a78f58bd73f1272f218bd1e2","grade":"WASHED_SOURCE_IDENTITY_SET"},
+    {"path":"washed-supplements/F13C-SELECTED-ADM-METADATA-CROSSWALK-STATUS-V1/MANIFEST.json","bytes":837,"sha256":"f4a605e9bb901ae3b198505574b4635d5f8291c457132d0e61916352d122f5de","grade":"WASHED_ADM_METADATA_LIMITS"},
+    {"path":"washed-supplements/F13C-SELECTED-ADM-METADATA-CROSSWALK-STATUS-V1/CONTRACT.md","bytes":2163,"sha256":"74e0a89fdd364c1f0e9713979445c4e3fa0a8a47a7f98edc3a884ddfa7f8eaba","grade":"WASHED_ADM_METADATA_LIMITS"},
+    {"path":"washed-supplements/F13C-SELECTED-ADM-METADATA-CROSSWALK-STATUS-V1/EVIDENCE.json","bytes":3131,"sha256":"0a2295ed87396b136b63d60fb5de563cdfe599650aa61b19168e217ba6b5cea9","grade":"WASHED_ADM_METADATA_LIMITS"},
+    {"path":"washed-supplements/F13C-SELECTED-ADM-METADATA-CROSSWALK-STATUS-V1/SOURCE-MANIFESTS.json","bytes":1647,"sha256":"b7032449d94f8395cbcadd6ebd8b558ff46a15aaf47e563bd3305637b7ec7d93","grade":"WASHED_SOURCE_IDENTITY_SET"},
+    {"path":"washed-supplements/F13C-SELECTED-PROFILE-CONFIGURATION-COUNT-AU-JOIN-STATUS-V1/MANIFEST.json","bytes":1002,"sha256":"4a96c250347838f4fe0930cdba030751411de851e7f90c6e100b9046ab62fce4","grade":"WASHED_CROSS_PATH_UNBOUND_STATUS"},
+    {"path":"washed-supplements/F13C-SELECTED-PROFILE-CONFIGURATION-COUNT-AU-JOIN-STATUS-V1/CONTRACT.md","bytes":2236,"sha256":"7c8d0f132d097c439ac0829f76bb61decebe65a1c07597a097eb46e08cc61020","grade":"WASHED_CROSS_PATH_UNBOUND_STATUS"},
+    {"path":"washed-supplements/F13C-SELECTED-PROFILE-CONFIGURATION-COUNT-AU-JOIN-STATUS-V1/EVIDENCE.json","bytes":2246,"sha256":"e92f9676929a3d9e20601c609916b905fee3b9c60e9fe94874cd9c9a1cbfd4bf","grade":"WASHED_CROSS_PATH_UNBOUND_STATUS"},
+    {"path":"washed-supplements/F13C-SELECTED-PROFILE-CONFIGURATION-COUNT-AU-JOIN-STATUS-V1/SOURCE-MANIFESTS.json","bytes":1554,"sha256":"b8a92505826c44d0a676aea5c800be0cbe35d92abe4ba4bf9e1d7e944fb0154d","grade":"WASHED_SOURCE_IDENTITY_SET"},
+    {"path":"washed-supplements/F13C-SELECTED-PROFILE-CONFIGURATION-COUNT-AU-JOIN-STATUS-V1/WASH-REVIEW.json","bytes":961,"sha256":"ef88ea34b5fe1af4460ca7f644a102cf8e97136fa5e1e8f1a354945b8d422431","grade":"WASH_REVIEW"},
+    {"path":"washed-supplements/F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1/MANIFEST.json","bytes":826,"sha256":"4e9e6a566acbc186e7ff6f11c98b47a62df616336338b8453fa39810592fe39e","grade":"WASHED_F12_BSI_FIELD_MAP"},
+    {"path":"washed-supplements/F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1/CONTRACT.md","bytes":3177,"sha256":"fd1d1cadef3a088bf679ba0e87da2b0496ebb415f89d07860958b7a53b5e9192","grade":"WASHED_F12_BSI_FIELD_MAP"},
+    {"path":"washed-supplements/F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1/BSI-FIELD-MAP.json","bytes":2634,"sha256":"02343a8682feb384556e3c4ff97d69df64e70cf93d5a95f44b58fb35fcca0ad0","grade":"WASHED_F12_BSI_FIELD_MAP"},
+    {"path":"washed-supplements/F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1/EVIDENCE.json","bytes":1920,"sha256":"b622e88f53049a2f18525205cd3c91b5c432de2200dd91b038b9dc7afd3110d5","grade":"WASHED_F12_BSI_FIELD_MAP"},
+    {"source_label":"native count reverse package manifest","sha256":"a152ce9bf335018f7ddf8da075fd4164f0fd05e00a5a39bca6f8fb7714c62c85","grade":"HASH_BOUND_CAPTURE_PACKAGE; 5 PAYLOADS VERIFIED BY WASH"},
+    {"source_label":"native BSI count wire-field supplement manifest","sha256":"d48fa96a507e30e936172f43a290a7db0a4c3a2c9c4b153c0605a24ebd524953","grade":"HASH_BOUND_WIRE_FIELD_SUPPLEMENT; 5 PAYLOADS VERIFIED BY WASH"},
+    {"source_label":"frozen Python count replayer source identity","sha256":"397ea01b62ad6ff868bbf992ba665dbeb633b091aedfdbe955edab4cf3080068","grade":"HASH_REPORTED; SOURCE_NOT_INCLUDED_OR_EXECUTED"}
+  ],
+  "identity_limits": {
+    "native_module_image_sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "image_hash_proves_field_or_generation_identity": false,
+    "numeric_equality_proves_producer_identity": false
+  }
+}

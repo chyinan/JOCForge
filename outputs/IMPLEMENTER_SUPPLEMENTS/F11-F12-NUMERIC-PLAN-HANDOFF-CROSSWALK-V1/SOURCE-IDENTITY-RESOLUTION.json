@@ -1,0 +1,32 @@
+{
+  "schema": "jocforge-f11-f12-handoff-source-resolution.v1",
+  "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "resolved_source_count": 25,
+  "resolution": [
+    {"source_label": "F06 selected measurement, BSI, and DRC contract", "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752", "path": "IMPLEMENTER_PACKAGE/specs/06-meter-bsi.md"},
+    {"source_label": "F08 transform contract", "sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e", "path": "IMPLEMENTER_PACKAGE/specs/08-transforms.md"},
+    {"source_label": "F09 exponent and POWER refresh contract", "sha256": "41cd157140d0deaab51fa9a895c33758cb49eb46cf5844a2883c1d6e8bb81739", "path": "IMPLEMENTER_PACKAGE/specs/09-exponents.md"},
+    {"source_label": "F10 exponent normalization contract", "sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc", "path": "IMPLEMENTER_PACKAGE/specs/10-exponent-normalization.md"},
+    {"source_label": "F11 converter contract", "sha256": "9ecb50bbb125d2a6e2d8f5e565ffbc7514c156c72602d2d2d89d8b17e9e4e4c8", "path": "IMPLEMENTER_PACKAGE/specs/11-converter.md"},
+    {"source_label": "F12 selected codec wire contract", "sha256": "9809b6b64c1ca4702640d2b15b1c2efb4e8a3c67ae1962f69a44ad7892a29448", "path": "IMPLEMENTER_PACKAGE/specs/12-selected-codec-wire.md"},
+    {"source_label": "F13 EMDF and timeline contract", "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd", "path": "IMPLEMENTER_PACKAGE/specs/13-emdf-and-timeline.md"},
+    {"source_label": "global source transaction contract", "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105", "path": "IMPLEMENTER_PACKAGE/specs/00-global-transaction-contract.md"},
+    {"source_label": "selected source-to-frame composition contract", "sha256": "9e6fcc14489ca0acaff0f7c223fce65539aa5b19cb4119ebcb34d19049cd0769", "path": "IMPLEMENTER_PACKAGE/specs/12-selected-source-frame-composition.md"},
+    {"source_label": "selected F01E constructor/provider", "sha256": "b0548b0c45e321795455c68095e804de5507af318636676353a73f119a41f7cb", "path": "IMPLEMENTER_PACKAGE/parameters/f01e-selected-constructor-v1.json"},
+    {"source_label": "F07-F12 source-state schema", "sha256": "7967752a88493648c24cf7c1183da61dc470e35a684bb48d6335c496e90c6f4e", "path": "IMPLEMENTER_PACKAGE/parameters/f07-f12-source-state-schema-v1.json"},
+    {"source_label": "cross-module provider registry", "sha256": "d0a99cd1fd25b5ba0b2e690d549ac474006d8a4dddb10e185446808379e96e2d", "path": "IMPLEMENTER_PACKAGE/parameters/codec-wire-cross-module-providers-v1.json"},
+    {"source_label": "codec allocation producer/search supplement manifest", "sha256": "9e709fa4f7d1a751f0eead53949bf6999432bac2b1360bdd2fc246e9595a36a9", "path": "IMPLEMENTER_SUPPLEMENTS/CODEC-ALLOCATION-PRODUCER-SEARCH-V1/MANIFEST.json"},
+    {"source_label": "codec allocation producer/search contract", "sha256": "7a84767db6e76c6a85b40bf8bbda6087bfe154ace0bab952965eb17b5a0c4f93", "path": "IMPLEMENTER_SUPPLEMENTS/CODEC-ALLOCATION-PRODUCER-SEARCH-V1/CONTRACT.md"},
+    {"source_label": "codec allocation stage map", "sha256": "c31bfc85a6f329f12b4ce326bcb03fff91caa30c5f27443c43ca569126d205e0", "path": "IMPLEMENTER_SUPPLEMENTS/CODEC-ALLOCATION-PRODUCER-SEARCH-V1/STAGE-MAP.json"},
+    {"source_label": "codec allocation source manifest set", "sha256": "c04480a6ae2eccfaa0a3e5203b80c88286d7bf74725f2bbd76923e658c5eaa23", "path": "IMPLEMENTER_SUPPLEMENTS/CODEC-ALLOCATION-PRODUCER-SEARCH-V1/SOURCE-MANIFESTS.json"},
+    {"source_label": "F06ND-to-F12 BSI binding supplement manifest", "sha256": "4e9e6a566acbc186e7ff6f11c98b47a62df616336338b8453fa39810592fe39e", "path": "IMPLEMENTER_SUPPLEMENTS/F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1/MANIFEST.json"},
+    {"source_label": "F06ND-to-F12 BSI binding contract", "sha256": "fd1d1cadef3a088bf679ba0e87da2b0496ebb415f89d07860958b7a53b5e9192", "path": "IMPLEMENTER_SUPPLEMENTS/F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1/CONTRACT.md"},
+    {"source_label": "F06ND-to-F12 BSI field map", "sha256": "02343a8682feb384556e3c4ff97d69df64e70cf93d5a95f44b58fb35fcca0ad0", "path": "IMPLEMENTER_SUPPLEMENTS/F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1/BSI-FIELD-MAP.json"},
+    {"source_label": "F06ND-to-F12 BSI evidence record", "sha256": "b622e88f53049a2f18525205cd3c91b5c432de2200dd91b038b9dc7afd3110d5", "path": "IMPLEMENTER_SUPPLEMENTS/F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1/EVIDENCE.json"},
+    {"source_label": "F11-F12 provider and fixture availability manifest", "sha256": "bd771f4b6a60b986499ff6e7c5ac27e1d06d7eb04b2de15df32f810c2efe0128", "path": "IMPLEMENTER_SUPPLEMENTS/F11-F12-PROVIDER-AND-LOCAL-FIXTURE-AVAILABILITY-V1/MANIFEST.json"},
+    {"source_label": "F11-F12 provider and fixture availability contract", "sha256": "26ee3f8119572fe4be4cc21970defc3ecf58d55020dea661af5d83f0a69caef2", "path": "IMPLEMENTER_SUPPLEMENTS/F11-F12-PROVIDER-AND-LOCAL-FIXTURE-AVAILABILITY-V1/CONTRACT.md"},
+    {"source_label": "F11-F12 provider and fixture availability evidence", "sha256": "aa5272aac1a832c6517c2d4129dec774ef25351af5721048b702d9afe1a2c8f8", "path": "IMPLEMENTER_SUPPLEMENTS/F11-F12-PROVIDER-AND-LOCAL-FIXTURE-AVAILABILITY-V1/EVIDENCE.json"},
+    {"source_label": "F11-F12 provider and fixture source identities", "sha256": "d8ba514d6671e008896a8a8763bfd3b28cdf0251d21698a92db248fbbf093196", "path": "IMPLEMENTER_SUPPLEMENTS/F11-F12-PROVIDER-AND-LOCAL-FIXTURE-AVAILABILITY-V1/SOURCE-MANIFESTS.json"},
+    {"source_label": "F11-F12 provider and fixture Wash review", "sha256": "44bb71a0616a963f5a3bc8d8d27943ac182945ff597522acd0f89ec244c79417", "path": "IMPLEMENTER_SUPPLEMENTS/F11-F12-PROVIDER-AND-LOCAL-FIXTURE-AVAILABILITY-V1/WASH-REVIEW.json"}
+  ]
+}

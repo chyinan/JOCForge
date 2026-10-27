@@ -1,0 +1,79 @@
+{
+  "schema": "f07-f12-selected-provider-manifest.v7",
+  "providers": [
+    {
+      "scope": "F07 transient",
+      "file": "parameters/transient-d05-authorized-v1.json",
+      "sha256": "130cd1a446ea8413a1d0d4c5eea631e890b7f1cd675975efa92697e258402991",
+      "values": "33 F32",
+      "status": "DELIVERED_REVIEWED"
+    },
+    {
+      "scope": "F08 transform",
+      "file": "parameters/ordinary-transform-math-v1.json",
+      "sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1",
+      "status": "DELIVERED_LOCAL_NONZERO_COMPOSITION; REAL_RENDER_PENDING"
+    },
+    {
+      "scope": "F09/F10 policy",
+      "file": "parameters/policy-authorized-v1.json",
+      "sha256": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a",
+      "values": "19 authorized scalars",
+      "status": "DELIVERED_REVIEWED"
+    },
+    {
+      "scope": "F09 difference map",
+      "file": "parameters/exponent-refresh-difference-math-v1.json",
+      "sha256": "6cf3ae8d899b334d5aa87e0744e4c58b7dba1d92177ca07738726f8ea0ee2c6d",
+      "values": "32 I16",
+      "status": "GENERATED_REVIEWED"
+    },
+    {
+      "scope": "F11/F12 bit allocation",
+      "file": "parameters/public-bap-48k-v1.json",
+      "sha256": "eb913038a89d853db453831d64df34c19f8ea8a89d04a72c0ef43733619545a3",
+      "status": "DELIVERED_LOCAL_REVIEW"
+    },
+    {
+      "scope": "F12 wire",
+      "file": "parameters/codec-wire-selected-v1.json",
+      "sha256": "a7a0a721a9e515d197a2d12fc0c9cb942b2b393f9019383a66ce2635f7aaa0dd",
+      "status": "DELIVERED_R2B_LOCAL_REVIEW"
+    }
+  ],
+  "new_selected_constant_gaps": [],
+  "known_boundaries": [
+    "F08 generated window/LFE trig differs from historical research identity; real encoded/render acceptance pending",
+    "LFE gate producer selected value0 is scoped and needs bounded nonzero/extreme configuration evidence",
+    "native out-of-range mantissa behavior is not product input contract"
+  ],
+  "private_key_required": false,
+  "local_r2_evidence": {
+    "inputs": "test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json",
+    "results": "test-vectors/F07-F12-SOURCE-COMPOSITION-VERIFICATION-RESULT.json",
+    "coverage": "3 actual BAP/mantissa/bitwriter/4096-byte/CRC successes plus 10-trial fatal; cold/reset/replay"
+  },
+  "local_r3_evidence": {
+    "inputs": "test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json",
+    "results": "test-vectors/F07-F12-SOURCE-COMPOSITION-VERIFICATION-RESULT.json",
+    "coverage": "four explicit input-only source recipes; db-per-bit/complete BSI/line DRC/four payloads/audio serialization; 3 complete frames+CRC; full-owner before/staged/after and cold/reset"
+  },
+  "local_r4_evidence": {
+    "inputs": "test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json",
+    "results": "test-vectors/F07-F12-SOURCE-COMPOSITION-VERIFICATION-RESULT.json",
+    "coverage": "29043 U32 state words over 3 successes derived from explicit audio; exact F07 delay/history, F08 next histories, actual q422 trials, canonical previous_short object, 11-trial fatal"
+  },
+  "local_r5_evidence": {
+    "projection_rules": "external LFE delayed[1472:1536] squared to policy64; external L delayed[1280:1536] to codec256",
+    "fatal_staged": "codec samples attempted; codec generation/cursor retained; other staged owner generations advance",
+    "search": "success 11 trials q422; fatal exact 10 trials stops at [16,17]",
+    "cold_replay": "defined 8-field projection, equal hashes and state"
+  },
+  "local_r5_review": "PASS_157_OF_157_LOCAL_WHOLE_NO",
+  "r6_post_review_fixes": [
+    "normative events spelling restored",
+    "mantissa_fields_sha256 fully specified and emitted in vector metadata"
+  ],
+  "r6_review": "PASS_180_OF_180_LOCAL_WHOLE_NO",
+  "r7_fix": "strict JSON summary terminator plus explicit block[b].mantissa[i] label grammar"
+}

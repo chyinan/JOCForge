@@ -1,0 +1,315 @@
+{
+  "schema": "analysis-root-canonical-references.v1",
+  "source_bundle": {
+    "manifest_sha256": "edc15b751a3d9db6d0e59a51e76979b5eb77a07110382906b975a0561f9ba61e",
+    "source_leaf_count": 19,
+    "reference_leaf_count": 2,
+    "total_payloads": 21,
+    "files": [
+      {
+        "id": "approved/specs/00-global-transaction-contract.md",
+        "bytes": 20041,
+        "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105"
+      },
+      {
+        "id": "approved/specs/00-cross-stage-contract-joins.md",
+        "bytes": 1890,
+        "sha256": "3840bc0cbaa6938c4a129790f39ba103d435fd484866de24a604cb43ff59afdb"
+      },
+      {
+        "id": "approved/specs/07-history-and-transient.md",
+        "bytes": 15770,
+        "sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac"
+      },
+      {
+        "id": "approved/specs/08-transforms.md",
+        "bytes": 9916,
+        "sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e"
+      },
+      {
+        "id": "approved/specs/08-nonzero-transform-composition.md",
+        "bytes": 4444,
+        "sha256": "629d8c5c2853f81f82bcee281370fbb39efea0a62255f367da6fd3677172175d"
+      },
+      {
+        "id": "approved/specs/09-exponents.md",
+        "bytes": 9722,
+        "sha256": "41cd157140d0deaab51fa9a895c33758cb49eb46cf5844a2883c1d6e8bb81739"
+      },
+      {
+        "id": "approved/specs/10-exponent-normalization.md",
+        "bytes": 5969,
+        "sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc"
+      },
+      {
+        "id": "approved/specs/12-selected-source-frame-composition.md",
+        "bytes": 10843,
+        "sha256": "9e6fcc14489ca0acaff0f7c223fce65539aa5b19cb4119ebcb34d19049cd0769"
+      },
+      {
+        "id": "approved/parameters/f07-f12-source-state-schema-v1.json",
+        "bytes": 5359,
+        "sha256": "7967752a88493648c24cf7c1183da61dc470e35a684bb48d6335c496e90c6f4e"
+      },
+      {
+        "id": "approved/parameters/f07-f12-source-provider-manifest-v1.json",
+        "bytes": 3905,
+        "sha256": "2bde77646052a86b626c70d486069ddacec9231ea216fc6b44ef9a045401b1b9"
+      },
+      {
+        "id": "approved/parameters/transient-d05-authorized-v1.json",
+        "bytes": 7548,
+        "sha256": "130cd1a446ea8413a1d0d4c5eea631e890b7f1cd675975efa92697e258402991"
+      },
+      {
+        "id": "approved/parameters/ordinary-transform-math-v1.json",
+        "bytes": 16538,
+        "sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1"
+      },
+      {
+        "id": "approved/parameters/policy-authorized-v1.json",
+        "bytes": 4559,
+        "sha256": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a"
+      },
+      {
+        "id": "approved/parameters/exponent-refresh-difference-math-v1.json",
+        "bytes": 1661,
+        "sha256": "6cf3ae8d899b334d5aa87e0744e4c58b7dba1d92177ca07738726f8ea0ee2c6d"
+      },
+      {
+        "id": "approved/test-vectors/CROSS-STAGE-CONTRACT-JOIN-VECTORS.json",
+        "bytes": 6886,
+        "sha256": "70e6adbd83f7474e858c3aeb8e62c10a3b623130d648e93d31cdfc8e914baba1"
+      },
+      {
+        "id": "approved/test-vectors/CROSS-STAGE-CONTRACT-LOCAL-REVIEW-STATUS.json",
+        "bytes": 2529,
+        "sha256": "6c9d216572404f87bb7ddffea16aa0e4d9406967317381aec0e15711ce08a680"
+      },
+      {
+        "id": "approved/test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json",
+        "bytes": 10558,
+        "sha256": "59f7e83438bd1e7bd955cb4a9fe9c6dd7717939a651eb150d190edb2d91432d5"
+      },
+      {
+        "id": "approved/test-vectors/F07-F12-SOURCE-COMPOSITION-VERIFICATION-RESULT.json",
+        "bytes": 2871144,
+        "sha256": "ada7e443a21299dbdbc527f05f705c65cbe2b674d785b20ad8b339aa7347766a"
+      },
+      {
+        "id": "approved/test-vectors/F08-NONZERO-TRANSFORM-LOCAL-REVIEW-STATUS.json",
+        "bytes": 5060,
+        "sha256": "6229a83f38d856ba93f91405b64f5f3726b1af0fe1c146c2ab7e3c2b8fd4eca8"
+      },
+      {
+        "id": "SOURCE-REFERENCES.json",
+        "bytes": 3534,
+        "sha256": "33d4343bbc6944d3a9fce441ef220b0dfe41265a49c70486f11280d0c33e0583"
+      },
+      {
+        "id": "WASH-VERIFICATION.json",
+        "bytes": 859,
+        "sha256": "b621af621ca36e3e39628ab272129003e6c7f4f5b37c341052d49e79a9ce1493"
+      }
+    ]
+  },
+  "wash_contract_packages": [
+    {
+      "id": "ANALYSIS-ROOT-TRANSITION-CONTRACT-V1",
+      "manifest_sha256": "96d259b01b7422aacd8d31747fb6894c849e19cbb6250891bd48dea6777afc8b",
+      "payloads": [
+        {
+          "id": "CONTRACT.md",
+          "bytes": 8641,
+          "sha256": "15054dea8974711ccee543a01949b239e54524f4e06d2cebe9d68b0d858bbbf9"
+        },
+        {
+          "id": "ANALYSIS-ROOT-SCHEMA.json",
+          "bytes": 3491,
+          "sha256": "614820b96a89324f1958971da6f206aab0a171599e34b49b425a01546fc861b8"
+        },
+        {
+          "id": "INPUT-ONLY-TRANSITIONS.json",
+          "bytes": 3606,
+          "sha256": "0da5c96b39b89ce5e1b258b24b21eb5d64d8f4e210d405cf4db29050f00c8823"
+        },
+        {
+          "id": "SOURCES.json",
+          "bytes": 3534,
+          "sha256": "33d4343bbc6944d3a9fce441ef220b0dfe41265a49c70486f11280d0c33e0583"
+        },
+        {
+          "id": "WASH-VERIFICATION.json",
+          "bytes": 876,
+          "sha256": "ba5c0d667f67d320e036982103d4e5b5cff28415e1cbd5549cc20975727afb8c"
+        }
+      ]
+    },
+    {
+      "id": "F07-F12-ANALYSIS-CODEC-OWNER-RECONCILIATION-V1",
+      "manifest_sha256": "da4334efa864c7fd5530caa2a6a446e3c7d6dc4de20ea6933642fb0c7b22faf4",
+      "payloads": [
+        {
+          "id": "AMENDMENT.md",
+          "bytes": 3738,
+          "sha256": "8aeb73501a4d5641f25706370e7c877cbad1b310458534598f8ab934609d9acf"
+        },
+        {
+          "id": "INPUT-ONLY-TRANSITIONS.json",
+          "bytes": 3005,
+          "sha256": "08317238309fd4704753298f86bfb6e277cadbd659423edcd29336b14c2cf36c"
+        },
+        {
+          "id": "SOURCES.json",
+          "bytes": 3150,
+          "sha256": "ee4b0f28bbaac9a25e30eb60b87839b2770b95d6dbdc03e2bfc9ba31d7b19113"
+        },
+        {
+          "id": "WASH-VERIFICATION.json",
+          "bytes": 442,
+          "sha256": "b688fcd2d9506fc76dcdd7552706abf455354ac745cd89e96e7c21c9e657252e"
+        }
+      ]
+    },
+    {
+      "id": "F07-F12-POLICY-ROOT-STATE-AMENDMENT-V1",
+      "manifest_sha256": "35c8252198a189e3cf0fd2649e02569486b4abdb22a124a528a47cca184ffa9a",
+      "payloads": [
+        {
+          "id": "POLICY-ROOT-AMENDMENT.json",
+          "bytes": 3356,
+          "sha256": "345d19ad19646bb8b38516417c7a9c7a79f4b8dd897d55c7031c028b9e1a4ef2"
+        },
+        {
+          "id": "INPUT-ONLY-VECTORS.json",
+          "bytes": 5420,
+          "sha256": "0c0fed50ae080623ec62771a2cfeaa0fd562a3c694db08cf2d1e9aa213a5a039"
+        },
+        {
+          "id": "SOURCES-AND-DECISION.json",
+          "bytes": 4620,
+          "sha256": "75d4612710fe3acb60ec3a152ff978899d31f2f4190cc5cd922374544420176c"
+        },
+        {
+          "id": "WASH-VERIFICATION.json",
+          "bytes": 484,
+          "sha256": "eaf66b366e4835b90501bb1f2a50a1f3c08de817bcb73f78e5f289a50971c33c"
+        }
+      ]
+    }
+  ],
+  "gtc": {
+    "programme_state_schema_sha256": "74c8e4a60600187783e559459b426aada2508ae273f95401c9a4234aee4504b4",
+    "state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6",
+    "state_ref": "owners.analysis",
+    "owner_state_required_fields": [
+      "owner_id",
+      "generation",
+      "state_sha256",
+      "cold_sha256",
+      "state_ref"
+    ]
+  },
+  "canonical_encoding": "GTC sorted-key UTF-8 JSON, comma/colon separators, no whitespace; F32 persisted as U32 bit words; I1 as0/1; U16/U64 as JSON integers",
+  "policy_schema": "V6 amendment replaces only V5 policy persistence; old V5 gain_db/exponent_refresh/normalized_anchor arrays are not root fields",
+  "root_fields": [
+    {
+      "name": "input_history_generation",
+      "type": "U64",
+      "meaning": null
+    },
+    {
+      "name": "input_history_u32_words",
+      "type": "U32[7680]",
+      "meaning": "6x1280 F32 bit words"
+    },
+    {
+      "name": "transient_generation",
+      "type": "U64",
+      "meaning": null
+    },
+    {
+      "name": "transient_two_history_u32_words",
+      "type": "U32[20]",
+      "meaning": "5x4 F32 bit words"
+    },
+    {
+      "name": "transient_three_history_u32_words",
+      "type": "U32[30]",
+      "meaning": "5x6 F32 bit words"
+    },
+    {
+      "name": "transient_peak_statistics_u32_words",
+      "type": "U32[90]",
+      "meaning": "5x18 F32 bit words"
+    },
+    {
+      "name": "transient_previous_mean_u32_words",
+      "type": "U32[5]",
+      "meaning": "5 F32 bit words"
+    },
+    {
+      "name": "transient_short_queue_i1",
+      "type": "I1[20]",
+      "meaning": "strict 0 or1"
+    },
+    {
+      "name": "transient_other_queue_i1",
+      "type": "I1[20]",
+      "meaning": "strict 0 or1"
+    },
+    {
+      "name": "transform_generation",
+      "type": "U64",
+      "meaning": null
+    },
+    {
+      "name": "primary_fbw_history_u32_words",
+      "type": "U32[640]",
+      "meaning": "5x128 F32 bit words"
+    },
+    {
+      "name": "companion_fbw_history_u32_words",
+      "type": "U32[640]",
+      "meaning": "5x128 F32 bit words"
+    },
+    {
+      "name": "primary_lfe_history_u32_words",
+      "type": "U32[128]",
+      "meaning": "128 F32 bit words"
+    },
+    {
+      "name": "companion_lfe_history_u32_words",
+      "type": "U32[128]",
+      "meaning": "128 F32 bit words"
+    },
+    {
+      "name": "policy_generation",
+      "type": "U64",
+      "meaning": null
+    },
+    {
+      "name": "gain_range.previous_peak_f32_bits_u32",
+      "type": "U32[6]",
+      "meaning": "V6 persistent gain range peaks"
+    },
+    {
+      "name": "gain_range.completed_blocks_u64",
+      "type": "U64",
+      "meaning": "V6 per-source block completion"
+    },
+    {
+      "name": "db_per_bit.selector_u16",
+      "type": "U16",
+      "meaning": "V6 current db selector"
+    },
+    {
+      "name": "db_per_bit.completed_blocks_u64",
+      "type": "U64",
+      "meaning": "V6 per-source block completion"
+    }
+  ],
+  "native_serializer_or_DLL_read": false,
+  "implementation_repository_read": false,
+  "source_paths_in_package": false
+}

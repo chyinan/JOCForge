@@ -1,0 +1,12 @@
+{
+  "schema": "jocforge-analysis-root-source-leaf-materialization.v1",
+  "package_id": "ANALYSIS-ROOT-APPROVED-SOURCE-LEAVES-V1",
+  "status": "APPROVED_SOURCE_LEAVES_REPACKAGED_VERBATIM",
+  "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_leaf_count": 19,
+  "source_hashes_verified": "19/19",
+  "payload_policy": "Only exact spec, parameter, and input-vector files listed in the approved IMPLEMENTER_PACKAGE manifest are copied. No research source, implementation source code, expected PCM, binary or private key is included.",
+  "scope": "Make the existing hash-bound Analysis root source leaves available in the isolated implementation workspace; this does not amend their content or approve a root serializer.",
+  "tests_or_vectors_executed": false,
+  "product_or_runtime_verified": false
+}

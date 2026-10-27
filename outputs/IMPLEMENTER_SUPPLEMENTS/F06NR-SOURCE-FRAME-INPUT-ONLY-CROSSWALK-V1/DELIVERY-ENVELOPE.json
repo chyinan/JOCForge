@@ -1,0 +1,13 @@
+{
+  "schema": "wash-only-research-envelope.v1",
+  "recipient": "Wash",
+  "purpose": "Provide deterministic source-frame input recipes and a hash-bound interface/state-shape crosswalk for the approved secondary reconstruction model.",
+  "input_only_source_vectors": true,
+  "expected_dsp_outputs_included": false,
+  "numerical_replay": "NOT_RUN",
+  "native_callsite_join": "NOT_RUN",
+  "implementation_ready": false,
+  "contains_real_pcm": false,
+  "contains_target_source_or_decompilation": false,
+  "contains_private_key_or_protected_output": false
+}

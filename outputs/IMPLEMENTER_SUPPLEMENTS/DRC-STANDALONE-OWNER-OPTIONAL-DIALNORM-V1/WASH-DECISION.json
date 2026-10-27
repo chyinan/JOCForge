@@ -1,0 +1,26 @@
+{
+  "schema": "jocforge-drc-owner-optional-dialnorm-wash-decision.v1",
+  "package_id": "DRC-STANDALONE-OWNER-OPTIONAL-DIALNORM-V1",
+  "decision": "USE_ONE_COMPLETE_OWNERS_DRC_ROOT_WITH_OPTION_U5",
+  "owner_id": "drc",
+  "state_ref": "owners.drc",
+  "programme_dialnorm": {
+    "type": "Option<U5>",
+    "canonical_json": "null before finalized measurement; integer 1..31 after finalize",
+    "cold": null,
+    "no_default": true
+  },
+  "measurement_ownership": {
+    "complete_measurement_receipt": "top-level immutable GTC shared input; not nested in the DRC owner preimage",
+    "drc_projection": "programme_dialnorm only, derived from the finalized receipt using approved F06.3",
+    "finalize_effect": "The existing MeasurementTransaction parent commit changes programme_dialnorm from null to Some(U5); DRC source generation remains 0. The complete GTC root/receipt and DRC owner state change together under the parent commit. Missing or unadmitted measurement leaves the option null and blocks READY/main-source work."
+  },
+  "source_clock": "The DRC owner generation is committed codec-source count. The first source advances it to 1; source0/1 still advance DRC although their AUs are suppressed.",
+  "canonical_preimage": "Use the complete standalone DRC owner value in DRC-ROOT-SCHEMA.json, F06WH-compatible sorted-key compact UTF-8 JSON, F32 as exact U32 bit words, full arrays, no receipt duplication or new digest.",
+  "supersession": {
+    "research_package_manifest_sha256": "467b0dcab5e36a9de5da372e726bfdd36a84f6347223af34eddc1b31bc8168d9",
+    "old_union_vector_sha256": "4d4b40c64d12034c45312fb07d3324420edcf5d9dd1de2e78187462da75fd5b6",
+    "old_awaiting_measurement_ready_union": "SUPERSEDED; do not use as the state representation"
+  },
+  "scope_boundary": "This is a local GTC owner encoding choice over approved F06ND fields. It is not a DEE-native state ABI or proof of runtime/product acceptance."
+}

@@ -72,8 +72,9 @@ pub use spatial_audio_state::{
 };
 pub use spatial_control::{
     PacketReadiness, SpatialControlAfterProposal, SpatialControlDigest, SpatialControlError,
-    SpatialControlJoinMetadata, SpatialControlMachine, SpatialControlPrepared,
-    SpatialControlProviderLineage, SpatialControlStaged, SpatialControlState,
+    SpatialControlJoinMetadata, SpatialControlMachine, SpatialControlOwnerStateReference,
+    SpatialControlPrepared, SpatialControlProviderLineage, SpatialControlStaged,
+    SpatialControlState,
 };
 pub use window_q15_provider::{
     F04ParameterProviderError, F04ParameterProviderLineage, ValidatedF04ParameterPackageManifest,

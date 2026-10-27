@@ -1,0 +1,112 @@
+{
+  "package_id": "ANALYSIS-ROOT-APPROVED-SOURCE-LEAVES-V1",
+  "scope": "Verbatim materialization of 19 approved source leaves cited by Analysis root crosswalk",
+  "approved_source_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "files": [
+    {
+      "file": "approved/specs/00-global-transaction-contract.md",
+      "bytes": 20041,
+      "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105"
+    },
+    {
+      "file": "approved/specs/00-cross-stage-contract-joins.md",
+      "bytes": 1890,
+      "sha256": "3840bc0cbaa6938c4a129790f39ba103d435fd484866de24a604cb43ff59afdb"
+    },
+    {
+      "file": "approved/specs/07-history-and-transient.md",
+      "bytes": 15770,
+      "sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac"
+    },
+    {
+      "file": "approved/specs/08-transforms.md",
+      "bytes": 9916,
+      "sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e"
+    },
+    {
+      "file": "approved/specs/08-nonzero-transform-composition.md",
+      "bytes": 4444,
+      "sha256": "629d8c5c2853f81f82bcee281370fbb39efea0a62255f367da6fd3677172175d"
+    },
+    {
+      "file": "approved/specs/09-exponents.md",
+      "bytes": 9722,
+      "sha256": "41cd157140d0deaab51fa9a895c33758cb49eb46cf5844a2883c1d6e8bb81739"
+    },
+    {
+      "file": "approved/specs/10-exponent-normalization.md",
+      "bytes": 5969,
+      "sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc"
+    },
+    {
+      "file": "approved/specs/12-selected-source-frame-composition.md",
+      "bytes": 10843,
+      "sha256": "9e6fcc14489ca0acaff0f7c223fce65539aa5b19cb4119ebcb34d19049cd0769"
+    },
+    {
+      "file": "approved/parameters/f07-f12-source-state-schema-v1.json",
+      "bytes": 5359,
+      "sha256": "7967752a88493648c24cf7c1183da61dc470e35a684bb48d6335c496e90c6f4e"
+    },
+    {
+      "file": "approved/parameters/f07-f12-source-provider-manifest-v1.json",
+      "bytes": 3905,
+      "sha256": "2bde77646052a86b626c70d486069ddacec9231ea216fc6b44ef9a045401b1b9"
+    },
+    {
+      "file": "approved/parameters/transient-d05-authorized-v1.json",
+      "bytes": 7548,
+      "sha256": "130cd1a446ea8413a1d0d4c5eea631e890b7f1cd675975efa92697e258402991"
+    },
+    {
+      "file": "approved/parameters/ordinary-transform-math-v1.json",
+      "bytes": 16538,
+      "sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1"
+    },
+    {
+      "file": "approved/parameters/policy-authorized-v1.json",
+      "bytes": 4559,
+      "sha256": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a"
+    },
+    {
+      "file": "approved/parameters/exponent-refresh-difference-math-v1.json",
+      "bytes": 1661,
+      "sha256": "6cf3ae8d899b334d5aa87e0744e4c58b7dba1d92177ca07738726f8ea0ee2c6d"
+    },
+    {
+      "file": "approved/test-vectors/CROSS-STAGE-CONTRACT-JOIN-VECTORS.json",
+      "bytes": 6886,
+      "sha256": "70e6adbd83f7474e858c3aeb8e62c10a3b623130d648e93d31cdfc8e914baba1"
+    },
+    {
+      "file": "approved/test-vectors/CROSS-STAGE-CONTRACT-LOCAL-REVIEW-STATUS.json",
+      "bytes": 2529,
+      "sha256": "6c9d216572404f87bb7ddffea16aa0e4d9406967317381aec0e15711ce08a680"
+    },
+    {
+      "file": "approved/test-vectors/F07-F12-SOURCE-COMPOSITION-INPUT-VECTORS.json",
+      "bytes": 10558,
+      "sha256": "59f7e83438bd1e7bd955cb4a9fe9c6dd7717939a651eb150d190edb2d91432d5"
+    },
+    {
+      "file": "approved/test-vectors/F07-F12-SOURCE-COMPOSITION-VERIFICATION-RESULT.json",
+      "bytes": 2871144,
+      "sha256": "ada7e443a21299dbdbc527f05f705c65cbe2b674d785b20ad8b339aa7347766a"
+    },
+    {
+      "file": "approved/test-vectors/F08-NONZERO-TRANSFORM-LOCAL-REVIEW-STATUS.json",
+      "bytes": 5060,
+      "sha256": "6229a83f38d856ba93f91405b64f5f3726b1af0fe1c146c2ab7e3c2b8fd4eca8"
+    },
+    {
+      "file": "SOURCE-REFERENCES.json",
+      "bytes": 3534,
+      "sha256": "33d4343bbc6944d3a9fce441ef220b0dfe41265a49c70486f11280d0c33e0583"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 859,
+      "sha256": "b621af621ca36e3e39628ab272129003e6c7f4f5b37c341052d49e79a9ce1493"
+    }
+  ]
+}

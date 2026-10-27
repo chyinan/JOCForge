@@ -1,0 +1,42 @@
+{
+  "schema": "f13c-configuration-count-consumer-input-only-vectors.v1",
+  "kind": "input-only; no expected output values are embedded",
+  "vectors": [
+    {
+      "case": "capture-local-count-producer-inputs",
+      "input": {
+        "rate_code": 5,
+        "signed_i16_channel_label_count": 38,
+        "non_lfe_count": 15,
+        "lfe_presence": 1,
+        "configuration_parameter_id": 13,
+        "configuration_parameter_type": "signed I32",
+        "configuration_query_selector": 10,
+        "capture_source_generation_token": null
+      }
+    },
+    {
+      "case": "selected-f12-emdf-producer-inputs",
+      "input": {
+        "codec_source_index": "S",
+        "emdf_validation_source_index": "S",
+        "ID14_object_count": 15,
+        "ID11_slot_count": 16,
+        "ID14_downmix_index": 3,
+        "joc_payload_present": true,
+        "configuration_count_record_reference": null
+      }
+    },
+    {
+      "case": "separate-numeric-domains",
+      "input": {
+        "configuration_count_domain": {"parameter_id":13,"selector":10,"type":"signed I32","capture_local_record":"CFG_A"},
+        "wrapper_profile_pair_domain": {"pair_key":13,"value":"X + Y","cross_mapping":null},
+        "EMDF_domain": {"ID14_object_count":15,"ID11_slot_count":16,"ID14_downmix_index":3},
+        "carrier_block_domain": {"independent_field":"carrier_block","count_producer_input":false},
+        "transport_domain": {"independent_field":"first_block","count_producer_input":false},
+        "source_generation_join": null
+      }
+    }
+  ]
+}

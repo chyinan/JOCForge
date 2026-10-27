@@ -1,0 +1,41 @@
+{
+  "package_id": "F11-F12-NUMERIC-PLAN-HANDOFF-CROSSWALK-V1",
+  "scope": "Selected model F11 NumericPlanReceipt to F12 candidate input/provider/generation boundary only",
+  "files": [
+    {
+      "file": "DECISION.md",
+      "bytes": 5456,
+      "sha256": "eab9a4daabb5ed91cedead55ac62c73ac39d7509e4ea39af4fec8bdfd5ccdfbe"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 2113,
+      "sha256": "3fd27792cfa975693e4c0d434dc067a4fd6da22f62acd456fc1fde6f25922404"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 4011,
+      "sha256": "4b02138ba55410efeff2e2d137db1f2b5297b4e5519dd3b34f650a62bd07d802"
+    },
+    {
+      "file": "SOURCE-IDENTITY-RESOLUTION.json",
+      "bytes": 5746,
+      "sha256": "cd88555bc661c6a754637fc6288c589c4c52b3ed41710ee4c1592f103bbd0b6e"
+    },
+    {
+      "file": "SOURCE-PACKAGE-MANIFEST.json",
+      "bytes": 1002,
+      "sha256": "9b7462dcf07beb0d52f02eb75c56a96cf201eaed4813356624d40aaa0074abd8"
+    },
+    {
+      "file": "SOURCE-PACKAGE-MANIFEST.sha256",
+      "bytes": 65,
+      "sha256": "9bff4c4417c947f849ec2f1d14623931dbf047f2686096017c6c2f936e32da9e"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 1938,
+      "sha256": "e7f8f7d4a9b3e1505022a43f5451cfe7d437b28c295caef61a48ccd848b76594"
+    }
+  ]
+}

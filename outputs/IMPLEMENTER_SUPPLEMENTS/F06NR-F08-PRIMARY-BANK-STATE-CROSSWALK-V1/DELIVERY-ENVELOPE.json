@@ -1,0 +1,13 @@
+{
+  "schema": "wash-only-research-envelope.v1",
+  "recipient": "Wash",
+  "purpose": "Clarify F06NR model bank selection and distinguish its state owner from F07/F08 analysis-root primary and companion history owners.",
+  "input_only_vectors_referenced_by_hash": true,
+  "numeric_after_state": "NOT_RUN",
+  "native_callsite_join": "NOT_REQUIRED_FOR_REQUESTED_MODEL_SCOPE",
+  "implementation_ready": false,
+  "contains_real_pcm": false,
+  "contains_python_source": false,
+  "contains_native_source_or_decompilation": false,
+  "contains_private_key_or_protected_output": false
+}

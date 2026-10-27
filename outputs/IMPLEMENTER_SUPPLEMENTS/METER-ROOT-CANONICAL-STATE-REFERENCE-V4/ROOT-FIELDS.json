@@ -1,0 +1,210 @@
+{
+  "schema": "standalone-meter-root-field-schema.v3",
+  "canonical_preimage": {
+    "top_level_keys_sorted": [
+      "binding",
+      "callback_clock",
+      "input_cursor",
+      "leaves",
+      "schema"
+    ],
+    "encoding": "UTF-8 canonical JSON, sort_keys=true, separators comma/colon, ensure_ascii=false, allow_nan=false; no trailing bytes; all F32 mutable values represented as U32 bit words or exact portable F32LE bytes; integer widths constrained by leaf clauses",
+    "root_fields": [
+      {
+        "key": "schema",
+        "type": "literal string",
+        "value": "standalone-meter-root-materialization.v3"
+      },
+      {
+        "key": "binding",
+        "type": "object",
+        "fields": [
+          "programme_id UTF-8 string",
+          "attempt U64",
+          "input_sha256 raw identity hex64",
+          "config_sha256 raw identity hex64",
+          "source_samples N U64 positive",
+          "channels=38 U32",
+          "pcm_bits=24 U32",
+          "sample_rate_hz=48000 U32",
+          "callback_samples=1536 U32",
+          "normal_callbacks Q=ceil(N/1536) U64",
+          "expected_published_samples=Q*1536 U64 including scheduled padded normal extent",
+          "zero_input_drains=3 U32",
+          "provider_set_sha256 hex64",
+          "provider_ids_hash_sorted list of {id string,sha256 hex64}"
+        ]
+      },
+      {
+        "key": "input_cursor",
+        "type": "nested object; LOCAL root owner materialization of F06OF model cursor",
+        "fields": [
+          "model_owner_key nonempty string",
+          "duration_frames=N U64",
+          "source_cursor U64 samples/channel",
+          "read_index U64 successful source reads",
+          "data_length_bytes=114*N U64",
+          "channels=38 U32",
+          "pcm_bits=24 U32",
+          "source_identity_sha256= binding.input_sha256 hex64"
+        ]
+      },
+      {
+        "key": "callback_clock",
+        "type": "object",
+        "fields": [
+          "committed_meter_callbacks U64",
+          "next_meter_callback_index U64",
+          "normal_callbacks Q U64",
+          "zero_input_drains 3 U32",
+          "total_meter_callbacks Q+3 U64"
+        ]
+      },
+      {
+        "key": "leaves.frontend_oar",
+        "type": "object",
+        "fields": [
+          "layout literal OAR_MODEL_CALLBACK_STATE_V1",
+          "bytes_le_hex exact full F06OC state including source_samples,callback_index,retired,all8 task gain rows+remaining and records-null/value"
+        ]
+      },
+      {
+        "key": "leaves.shared_dv32",
+        "type": "object",
+        "fields": [
+          "layout SHARED_DV32_STATE_V1",
+          "bytes_le_hex exactly812 bytes"
+        ]
+      },
+      {
+        "key": "leaves.window_k_energy",
+        "type": "object",
+        "fields": [
+          "window_clock.processed U64: F06W cumulative valid six-lane samples published after startup trimming",
+          "sample_block_queue.callback_index U64 canonical local key mapped from runtime next_callback_index",
+          "sample_block_queue.startup_remaining U64 exact owner field",
+          "sample_block_queue.scheduler_pending U64 exact owner field",
+          "sample_block_queue.published_samples U64 actual current owner value; same valid-span accumulator as F06W processed under queue lifecycle contract",
+          "sample_block_queue.last_upstream_generation Option<MeterUpstreamGeneration(U64 newtype)>; null at cold; Some(g+1) after each successful callback g, including valid=0",
+          "sample_block_queue.pcm_block_fill_cursor U32 canonical value read from runtime SampleBlockQueueState.block_fill_cursor: SampleBlockFillCursor, constrained to the U32 domain",
+          "sample_block_queue.pcm_enqueued_samples U64 exact owner field",
+          "sample_block_queue.pcm_consumed_samples U64 exact owner field",
+          "sample_block_queue.complete_block_count U64 exact owner field",
+          "sample_block_queue.pending_sample_words U32[6][lane_pending_count], all actual queued F32 words in FIFO order",
+          "K state U32[6][2][4] and exponents I32[6]",
+          "energy accumulator mantissa U32[6], exponent I32[6], samples_in_window U32"
+        ],
+        "encoding": "Canonical Option is JSON null or the complete U64 newtype value as an unsigned JSON integer; no enum variant exists. Phase stays in scheduler state separately."
+      },
+      {
+        "key": "leaves.true_peak",
+        "type": "object",
+        "fields": [
+          "fir_state_f32le_hex exact six×4628 F32 state bytes (111072 bytes)",
+          "programme_true_max_f32_u32 U32[6]",
+          "programme_sample_max_f32_u32 U32[6]"
+        ]
+      },
+      {
+        "key": "leaves.integrated",
+        "type": "object",
+        "fields": [
+          "layout METER_INTEGRATED_STATE_V1",
+          "bytes_le_hex exactly24512 bytes"
+        ]
+      },
+      {
+        "key": "leaves.ungated",
+        "type": "object",
+        "fields": [
+          "layout MEAN_STATE_V1",
+          "bytes_le_hex exactly40 bytes"
+        ]
+      },
+      {
+        "key": "leaves.meter_lfe_delay_ring",
+        "type": "Implementation-reported MeterLfeDelayState; locally canonicalized typed fields",
+        "fields": [
+          "source_samples N U64",
+          "normal_callbacks Q U64",
+          "callback_index U64 completed meter callbacks",
+          "samples_consumed U64 samples/channel",
+          "write_index U8 modulo3",
+          "read_index U8 modulo3",
+          "frames array[3], each null or {origin:U64,sample_words:U32[1536]}"
+        ],
+        "encoding": "Retain exact LfeDelayRingState logical fields under a nested root owner; no bytes are discarded or synthesized.",
+        "evidence_grade": "Runtime field names supplied by Wash implementation review; F06OF/model rule crosswalked by ring transition/lineage, not field-name equality."
+      }
+    ],
+    "not_root_fields": [
+      "MeasurementReceipt or any field derived from it",
+      "GTC lifecycle phase/fatal/receipt owner references",
+      "main reader_eof cursor/cache/callback clock",
+      "F06WH combined-only DRC/main-analysis owners",
+      "combined13-owner cold hash or frontend initializer/schema-files descriptor"
+    ],
+    "root_state_ref_convention": {
+      "owner_id": "meter",
+      "state_ref": "owners.meter",
+      "convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6",
+      "member_value": "complete canonical standalone meter root bytes"
+    },
+    "local_field_name_mappings": [
+      {
+        "canonical_key": "leaves.window_k_energy.sample_block_queue.callback_index",
+        "runtime_field": "SampleBlockQueueState.next_callback_index",
+        "semantic_domain": "completed meter callback count"
+      },
+      {
+        "canonical_key": "leaves.window_k_energy.sample_block_queue.published_samples",
+        "runtime_field": "SampleBlockQueueState.published_samples",
+        "semantic_domain": "valid output samples cumulatively published"
+      },
+      {
+        "canonical_key": "leaves.window_k_energy.sample_block_queue.last_upstream_generation",
+        "runtime_field": "SampleBlockQueueState.last_upstream_generation: Option<MeterUpstreamGeneration(U64 newtype)>",
+        "semantic_domain": "last successfully accepted upstream callback generation g+1, even valid=0"
+      },
+      {
+        "canonical_key": "input_cursor.read_index",
+        "runtime_field": "MeterPcmSourceCursor.read_index",
+        "semantic_domain": "successful source reads Q"
+      },
+      {
+        "canonical_key": "leaves.meter_lfe_delay_ring.read_index",
+        "runtime_field": "MeterLfeDelayState.read_index",
+        "semantic_domain": "LFE delay slot index0..2"
+      },
+      {
+        "canonical_key": "leaves.window_k_energy.sample_block_queue.pcm_block_fill_cursor",
+        "runtime_field": "SampleBlockQueueState.block_fill_cursor: SampleBlockFillCursor",
+        "runtime_domain": "U32",
+        "semantic_domain": "block fill cursor; canonical key spelling is retained in the Meter root"
+      }
+    ],
+    "binding_derived_fields": {
+      "source_samples": "N, represented in binding and cursor.duration_frames",
+      "normal_callback_count": "Q=ceil(N/1536), represented by binding/callback schedule",
+      "expected_published_samples": "Q*1536, immutable F06W scheduled output extent; actual published_samples advances by each valid output span"
+    }
+  },
+  "existing_portable_bytes": {
+    "oar": "OAR_MODEL_CALLBACK_STATE_V1, dynamic1569+120*K bytes; use complete serializer",
+    "shared_dv32": "SHARED_DV32_STATE_V1,812 bytes",
+    "integrated": "METER_INTEGRATED_STATE_V1,24512 bytes",
+    "ungated": "MEAN_STATE_V1,40 bytes",
+    "true_peak": "F06TP specifies exact FIR U32/F32 state and two programme-max arrays; state-byte serialization is a local root decision",
+    "window_k": "No complete leaf portable serializer for ring/clock/K plus energy accumulator; materialize typed fields above under this local canonical JSON rule.",
+    "window_scheduler": "F06W owns processed/startup/pending counters semantically, but no F06W standalone portable byte serializer is declared",
+    "sample_block_queue": "Use actual owner counters and actual queued sample values; no processed/pcm_ring_count alias is defined",
+    "lfe_delay_ring": "F06OF defines the typed three-slot ring content/provenance but no named portable serializer; use a local canonical typed representation with all frame words."
+  },
+  "local_deterministic_decisions": [
+    "Canonical root is complete materialized owner value plus input identity; receipt excluded.",
+    "SampleBlockQueueState field names are supplied by Wash implementation report and are kept as direct local owner fields; F06W does not define their named alias map.",
+    "F06W processed remains its own published-valid-sample counter. No pcm_ring_count alias is synthesized. Complete pending per-lane sample words are materialized.",
+    "MeterLfeDelayState is its own owner. Keep all three frame values/origins and ring cursors; no alias to source cursor or F06W processed.",
+    "Any existing portable leaf bytes are nested verbatim; local JSON fields use exact unsigned words for F32 bit patterns and canonical decimal integers for clocks."
+  ]
+}

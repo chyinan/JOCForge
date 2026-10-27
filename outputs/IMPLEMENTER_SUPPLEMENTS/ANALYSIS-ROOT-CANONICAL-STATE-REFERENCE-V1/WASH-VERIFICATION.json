@@ -1,0 +1,35 @@
+{
+  "schema": "jocforge-analysis-root-v1-wash-verification.v1",
+  "package_id": "ANALYSIS-ROOT-CANONICAL-STATE-REFERENCE-V1",
+  "status": "LOCAL_ANALYSIS_OWNER_PREIMAGE_AND_COLD_REFERENCE_VERIFIED",
+  "research_package_manifest_sha256": "46b178057ce0cfdba806e4b97fd3c76a6bc381054c612b35087ea19c349d0220",
+  "research_payload_hashes_verified": "5/5",
+  "approved_source_leaves_package_manifest_sha256": "edc15b751a3d9db6d0e59a51e76979b5eb77a07110382906b975a0561f9ba61e",
+  "approved_source_leaves_payloads_verified": "21/21",
+  "crosswalk_packages": [
+    {"package_id": "ANALYSIS-ROOT-TRANSITION-CONTRACT-V1", "manifest_sha256": "96d259b01b7422aacd8d31747fb6894c849e19cbb6250891bd48dea6777afc8b", "payloads_verified": "5/5"},
+    {"package_id": "F07-F12-ANALYSIS-CODEC-OWNER-RECONCILIATION-V1", "manifest_sha256": "da4334efa864c7fd5530caa2a6a446e3c7d6dc4de20ea6933642fb0c7b22faf4", "payloads_verified": "4/4"},
+    {"package_id": "F07-F12-POLICY-ROOT-STATE-AMENDMENT-V1", "manifest_sha256": "35c8252198a189e3cf0fd2649e02569486b4abdb22a124a528a47cca184ffa9a", "payloads_verified": "4/4"},
+    {"package_id": "GTC-OWNER-STATE-REF-CONVENTION-V1", "manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6", "payloads_verified": "5/5"}
+  ],
+  "canonical_cold_root": {
+    "owner_id": "analysis",
+    "state_ref": "owners.analysis",
+    "generation": 0,
+    "canonical_bytes": 19422,
+    "cold_sha256": "008167df2194d7ffebc2ba0aa1e28f70067afda1a089160c46ad78b40e3c0f23",
+    "preimage_file_hash_matches_cold_sha256": true,
+    "top_level_key_count": 17
+  },
+  "evidence_boundary": {
+    "source0_transition_vector": "INPUT_ONLY; F07 staged generation split; numeric after-state NOT_RUN",
+    "source_commit_or_parent_swap": "NOT_RUN",
+    "native_or_product_execution": "NOT_RUN",
+    "full_song_replay": "NOT_RUN",
+    "source_code_or_native_material_included": false,
+    "real_pcm_included": false,
+    "private_key_or_protected_output_included": false
+  },
+  "scope_note": "The V6 policy amendment replaces only the obsolete V5 policy projection arrays. This package defines a local GTC owner preimage and synthetic cold identity, not a DEE-native serializer or product acceptance.",
+  "review_note": "The GTC schema/reference and local root are coherent. Numeric F08/F09/F10 after words and transaction execution are deliberately not represented as PASS."
+}

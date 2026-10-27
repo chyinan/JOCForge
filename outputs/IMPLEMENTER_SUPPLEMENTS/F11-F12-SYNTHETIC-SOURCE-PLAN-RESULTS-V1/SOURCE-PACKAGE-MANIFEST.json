@@ -1,0 +1,40 @@
+{
+  "schema": "washed-evidence-package.v1",
+  "package_id": "F11-F12-SOURCE-NUMERIC-PLAN-PRODUCER-CROSSWALK-V1",
+  "scope": "approved selected ADM 48 kHz / 1024 kbps / 5.1 model",
+  "selected_model_contract_crosswalk": "CLOSED",
+  "source_0_1_2_f11_outputs": "HASH_BOUND_SYNTHETIC_MODEL_EXECUTION",
+  "f11_intermediate_cost_trace": "NOT_RECORDED",
+  "generation_vectors": "INPUT_ONLY_SYMBOLIC_CONTRACT_VECTORS_NOT_EXECUTED",
+  "resolved_source_identities": "25_OF_25_REHASHED",
+  "approved_source_leaves": "14_OF_14_REHASHED",
+  "fresh_source_to_frame_integration": "NOT_RUN",
+  "native_execution": "NOT_RUN",
+  "full_song_replay": "NOT_RUN",
+  "product_audio_or_render_acceptance": "NOT_RUN",
+  "implementation_ready": "UNCHANGED_FROM_APPROVED_BASE",
+  "source_code_disassembly_machine_code_addresses_pcm_dthd_or_keys_included": false,
+  "payloads": [
+    {
+      "file": "DECISION.md",
+      "bytes": 5474,
+      "sha256": "b8596efddeb1e4568eb50021e0bd437904bcda294c3e8fc0d8a429ef8187552a"
+    },
+    {
+      "file": "SOURCE-NUMERIC-PLAN-VECTORS.json",
+      "bytes": 9843,
+      "sha256": "158cf78c98c26de69b60f98ec113e381c3ac87862c5dc1015c15dbd507c7be37"
+    },
+    {
+      "file": "INPUT-ONLY-GENERATION-VECTORS.json",
+      "bytes": 3750,
+      "sha256": "07c7ada799057a07754879be1a17228be0ec8756972afbee44d21a7925df8c91"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 5111,
+      "sha256": "3f4b763e3dbc30d2062cb8e54fe89af51fb8913700b719e2ebbba3d4d3f26d3a"
+    }
+  ],
+  "detached_manifest_digest": "MANIFEST.sha256"
+}

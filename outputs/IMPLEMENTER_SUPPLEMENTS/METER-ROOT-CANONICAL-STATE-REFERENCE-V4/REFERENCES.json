@@ -1,0 +1,224 @@
+{
+  "schema": "research.standalone-meter-root-references.v1",
+  "approved_parent_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_leaf_identities": [
+    {
+      "id": "GTC transaction contract",
+      "document": "specs/00-global-transaction-contract.md",
+      "bytes": 20041,
+      "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105"
+    },
+    {
+      "id": "GTC programme state schema",
+      "document": "test-vectors/GLOBAL-TRANSACTION-PROGRAMME-STATE-SCHEMA.json",
+      "bytes": 12153,
+      "sha256": "74c8e4a60600187783e559459b426aada2508ae273f95401c9a4234aee4504b4"
+    },
+    {
+      "id": "F06WH two-pass composition",
+      "document": "specs/06-meter-none-drc-whole-composition.md",
+      "bytes": 9594,
+      "sha256": "94e8d42e77e71f4f16e99a74ee3c808cfc925074e19dd814762d21cde6f259d2"
+    },
+    {
+      "id": "F06WH owner field projection",
+      "document": "parameters/f06-meter-none-drc-whole-state-schema-v1.json",
+      "bytes": 4280,
+      "sha256": "64374f686377d94ab8a3843d09d26329788c7afd48c7683459596b119f68e4be"
+    },
+    {
+      "id": "combined cold descriptors (cross-check only, never root seed)",
+      "document": "test-vectors/F06-METER-NONE-DRC-WHOLE-COLD-STATE-IDENTITIES.json",
+      "bytes": 8973,
+      "sha256": "a2283d3e1dd06f32d40e360ee48018501d0b88b2a6dbd0ad8234d9e82d14b74a"
+    },
+    {
+      "id": "F06OC OAR callback state",
+      "document": "specs/06-oar-model-callback-state-and-clock.md",
+      "bytes": 11750,
+      "sha256": "7342e87525e30e09e2ed95fb07593cebaa81cc113d2ce3798d99ec7cefaf0ae9"
+    },
+    {
+      "id": "F06OF input/output clock",
+      "document": "specs/06-oar-frontend-input-and-clock-join.md",
+      "bytes": 9427,
+      "sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423"
+    },
+    {
+      "id": "F06D shared DV32 state",
+      "document": "specs/06-shared-dv32-state-and-audio.md",
+      "bytes": 9116,
+      "sha256": "f99c0f47d502d949f726633d100ae8868acf4669dfe99f4624ebfb1bf42d8691"
+    },
+    {
+      "id": "F06W window and K state",
+      "document": "specs/06-meter-window-and-output-clock.md",
+      "bytes": 7388,
+      "sha256": "c08dd41c42dd231ef23a683415f59b9b7db60375a3da2b8140501969933d073c"
+    },
+    {
+      "id": "F06KG K parameter generation",
+      "document": "specs/06-meter-k-matrix-generation.md",
+      "bytes": 5811,
+      "sha256": "d6287e17dec2a4b93b5756eb25345fd41cc4329eebeacefabd8e71ad84d33e31"
+    },
+    {
+      "id": "F06I integrated portable state",
+      "document": "specs/06-integrated-meter-state.md",
+      "bytes": 9368,
+      "sha256": "e5caf84805cb24850dd0cf85e18d1dc4a4ee91fcb9e334cfc6f9881952efdb72"
+    },
+    {
+      "id": "F06U mean portable state",
+      "document": "specs/06-ungated-mean-and-fallback.md",
+      "bytes": 8673,
+      "sha256": "07c850be31dbe42a1396634bd96dfd4a54fbd80aa27b3d39a36998545cdc3b9e"
+    },
+    {
+      "id": "F06TP true-peak state and maxima",
+      "document": "specs/06-true-peak-cascade-and-metrics.md",
+      "bytes": 9824,
+      "sha256": "e0491288c3a9beb59ecb7b017d505ee16eb9f401d53bd0fd918573644c1876b3"
+    },
+    {
+      "id": "K matrix math parameters",
+      "document": "parameters/meter-k-matrix-math-v1.json",
+      "bytes": 3985,
+      "sha256": "c8b4ffd52fffd62f5d0fdeba36a993f02188933a43593abe6969243f44f7f536"
+    },
+    {
+      "id": "K state bounds",
+      "document": "parameters/meter-k-state-bounds-v1.json",
+      "bytes": 970,
+      "sha256": "2faaa9d0aeefb105a913589590fcbafb97362a54192b0b21c5fdda7da1974e68"
+    },
+    {
+      "id": "DV32 mathematical provider",
+      "document": "parameters/shared-dv32-mathematical-v1.json",
+      "bytes": 1236,
+      "sha256": "af189ffb34f703fdebe9a37bc46ffe972d97432b7f2e3f2a463b82682c96d4fa"
+    },
+    {
+      "id": "true-peak authorized values",
+      "document": "parameters/meter-truepeak-authorized-v1.json",
+      "bytes": 2584,
+      "sha256": "f67e6fe86533af74acc261bf3908890e77a461198116c64b624dc91b69049757"
+    }
+  ],
+  "frozen_model_identity": {
+    "id": "F06OF MeterPcmSourceCursor selected model implementation",
+    "document": "r33_pcm_source_cursor_core.py",
+    "bytes": 5439,
+    "sha256": "378fc204a4c3f6d2aed5fd7c839062cd84a68071b3c97ffb5920da5efa2de8ee",
+    "grade": "REHASHED_FROZEN_MODEL_SOURCE_NOT_NATIVE_ABI"
+  },
+  "provider_set_sha256": "0629d444f0b18b126ff51061563e02da0582430a74a44ccca7e608ba4cdb3b6d",
+  "relative_reference_rule": "documents are identified by approved package-relative name/hash; source identity is basename/hash only. Source root paths stay research-side.",
+  "local_runtime_representation_decision": {
+    "field_set": [
+      "startup_remaining",
+      "scheduler_pending",
+      "next_callback_index",
+      "published_samples",
+      "last_upstream_generation",
+      "pcm_enqueued_samples",
+      "pcm_consumed_samples",
+      "complete_block_count",
+      "block_fill_cursor",
+      "pending_sample_words by lane"
+    ],
+    "evidence_grade": "Field names supplied by Wash implementation review; not part of F06W leaf schema and not independently rehashed against implementation source.",
+    "canonical_rule": "Store the actual current owner field values and complete pending sample words directly. F06W processed remains a separate specified scheduler field. Do not derive a pcm_ring_count alias or equate processed and enqueued solely by name.",
+    "pending_payload": "For a restorable root include all actual per-lane pending U32 F32 bit words in FIFO temporal order. Six lane lengths must agree. Empty cold lanes are []",
+    "lfe_ring": {
+      "field_set": [
+        "source_samples",
+        "normal_callbacks",
+        "callback_index",
+        "samples_consumed",
+        "write_index",
+        "read_index",
+        "frames[3] optional DelayedLfeFrame{origin,sample_words[1536]}"
+      ],
+      "evidence_grade": "Names/typed row shape are supplied by Wash implementation review; F06OF contract plus rehashed frozen model independently define matching three-slot transition, generation and frame extent. Runtime field names not separately source-rehashed.",
+      "frozen_counterpart_crosswalk": "Implementation samples_consumed is bound to F06OF's sample count by g=count//1536 and +1536 after each successful advance; frozen model calls this model_samples_consumed. Slot frame bytes correspond to frozen rows; origin corresponds to input_frame_indexes by exact slot and write generation."
+    },
+    "canonical_key_mappings": {
+      "callback_index": "runtime next_callback_index",
+      "pcm_block_fill_cursor": "runtime block_fill_cursor: SampleBlockFillCursor U32"
+    }
+  },
+  "revision": "Root window owner now retains actual SampleBlockQueueState fields and pending_sample_words; F06OF three-slot MeterLfeDelayState is explicitly materialized.",
+  "additional_frozen_model_identities": [
+    {
+      "id": "Meter LFE ring field model",
+      "document": "r33_model_time_schedule_core.py",
+      "bytes": 7239,
+      "sha256": "4b0a1e2da637230b908ee68f4114c95426edfb62c9028e423eb9bdfe3041cd8d",
+      "grade": "REHASHED_FROZEN_MODEL_SOURCE_NOT_NATIVE_ABI"
+    }
+  ],
+  "supersedes_unsealed_v3_working_copy": true,
+  "supersedes_v2_manifest_sha256": "777c7b3b6fc21503c101fb68cdf89849984fb478eab0850ac1bbf5dee37889a6",
+  "gtc_state_ref_convention": {
+    "id": "GTC-OWNER-STATE-REF-CONVENTION-V1",
+    "manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6",
+    "contract_sha256": "f8b322f1a1a7ba30d0cacb52ddbc1a5950ab5049da0af139ed44ee96d181db99",
+    "mapping_sha256": "f1b225e5581a9028ff49c32d7e3d939aad375832684bccc9c40bc36c0867aa29",
+    "canonical_owner_meter_state_ref": "owners.meter"
+  },
+  "sample_queue_lifecycle_wash_contract": {
+    "manifest_sha256": "362b383d4b5148394d7bdc43a502cc1ed68cfe39aa5fbbe1e98c2871ad68e606",
+    "contract_sha256": "8bbd3c0264e4e284bbf563b87f89f6a76771c87a773ec1ebccdfd75b0136bb7f",
+    "input_only_sha256": "2ea6448bc73e1a80d488eda3488deedfbeba9e976b855fac140b209bb28ec2ad",
+    "expected_sha256": "39c028f77c887106685e9ad1502417aa1488bcfdf244da01ed5df6ff13bf8905",
+    "scope": "Approved symbolic sample/energy queue lifecycle; no PCM amplitudes or numeric DSP",
+    "after_state_vector_example": {
+      "input_sha256": "99e5ed3c2bd35c030a3aaaf76188361664f1d779f704f57d4b9a88abafb5c2fa",
+      "source_samples": 9217,
+      "normal_callbacks": 7,
+      "terminal_callback_index": 10,
+      "published_samples": 10752,
+      "pcm_consumed_samples": 10240,
+      "pcm_block_fill_cursor": 512,
+      "energy_window_fill_cursor": 640
+    }
+  },
+  "implementation_field_source_identity": {
+    "type_name": "SampleBlockQueueState",
+    "additional_fields": [
+      "published_samples",
+      "last_upstream_generation"
+    ],
+    "source_sha256": "8efacd5236f3a56f5621b8fc420bc76dcc99fb4dfd41a5f932d0b9f544c3a315",
+    "grade": "Wash-reported source identity and typed field correction; no implementation code read or local source rehash",
+    "last_upstream_generation_type": "Option<MeterUpstreamGeneration>; MeterUpstreamGeneration is a U64 newtype, not an enum. runtime source details supplied by Wash; not locally code-read.",
+    "lifecycle_rule": "U64 generation g+1 on every successfully committed callback, including valid=0 and DRAIN; cold None; phase is separate.",
+    "block_fill_cursor_runtime_field": "block_fill_cursor",
+    "block_fill_cursor_type": "SampleBlockFillCursor",
+    "block_fill_cursor_domain": "U32",
+    "canonical_meter_root_key": "pcm_block_fill_cursor",
+    "queue_fields_used_in_root": [
+      "startup_remaining",
+      "scheduler_pending",
+      "next_callback_index",
+      "published_samples",
+      "last_upstream_generation",
+      "pcm_enqueued_samples",
+      "pcm_consumed_samples",
+      "complete_block_count",
+      "block_fill_cursor",
+      "pending_sample_words by lane"
+    ],
+    "canonical_runtime_mappings": {
+      "callback_index": "next_callback_index",
+      "pcm_block_fill_cursor": "block_fill_cursor: SampleBlockFillCursor (U32)"
+    },
+    "v4_deduplication": "each field appears exactly once"
+  },
+  "supersedes_v3_manifest_sha256": "e2e0b85f1bfd7bb25e65d20a56e4ff595a7068b940f5819e306f2d2f0da81c2f",
+  "v4_erratum": {
+    "supersedes_v3_manifest_sha256": "e2e0b85f1bfd7bb25e65d20a56e4ff595a7068b940f5819e306f2d2f0da81c2f",
+    "change": "Normalize the queue field inventory to the exact Wash-reported runtime names, list published_samples and last_upstream_generation once, and retain separate canonical-key-to-runtime-field mappings. No root bytes or algorithms changed."
+  }
+}

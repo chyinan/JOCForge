@@ -66,6 +66,25 @@ fn provider_constructs_exact_cold_root_and_digest() {
 }
 
 #[test]
+fn cold_owner_state_reference_preserves_the_complete_provider_state() {
+    let provider = validated_provider();
+    let expected_digest = provider.receipt().canonical_sha256();
+    let machine =
+        FrontendControlMachine::from_provider(provider, programme_id(), AttemptId::new(0)).unwrap();
+    let before = machine.committed().canonical_bytes().to_vec();
+    let reference = machine.state_reference();
+
+    assert_eq!(reference.owner_id(), "frontend_control");
+    assert_eq!(reference.state_ref(), "owners.frontend_control");
+    assert_eq!(reference.generation(), 0);
+    assert!(std::ptr::eq(reference.state(), machine.committed()));
+    assert_eq!(reference.canonical_bytes(), before.as_slice());
+    assert_eq!(reference.state_sha256().to_hex(), expected_digest.to_hex());
+    assert_eq!(reference.cold_sha256().to_hex(), expected_digest.to_hex());
+    assert_eq!(machine.committed().canonical_bytes(), before.as_slice());
+}
+
+#[test]
 fn prepare_and_stage_are_read_only_and_emit_join_metadata() {
     let provider = validated_provider();
     let receipt = provider.receipt().clone();

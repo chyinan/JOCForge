@@ -1,0 +1,70 @@
+{
+  "schema": "f13c-configuration-count-bsi-f12-crosswalk.v1",
+  "profile_scope": "selected ADM 48 kHz / 1024 kbps / 5.1",
+  "capture_local_configuration_count_path": {
+    "producer_inputs": {
+      "rate_code": 5,
+      "signed_i16_channel_label_count": 38,
+      "non_lfe_count": 15,
+      "lfe_presence": 1
+    },
+    "count_definition": "non_lfe_count + lfe_presence",
+    "count_type": "signed I32",
+    "count_observed_value": 16,
+    "query": {"parameter_id":13,"parameter_type":"signed I32","selector":10,"returned_value":16},
+    "freeze_point": "query result is passed into the configuration-record constructor before the BSI producer consumes that record",
+    "capture_local_joins": {
+      "query_to_constructor": "JOINED_WITHIN_CAPTURE",
+      "constructor_to_bsi_producer": "JOINED_WITHIN_CAPTURE",
+      "bsi_producer_to_importer": "JOINED_WITHIN_CAPTURE",
+      "bsi_producer_invocations": 7,
+      "importer_invocations": 6
+    },
+    "bounded_range_evidence": {"observed_selected_value":16,"bounded_successful_control_values":[1,16],"general_legal_range":"NOT_ESTABLISHED"},
+    "destination_field": {
+      "name": "complexity_index_type_a",
+      "width_bits": 8,
+      "frame_relative_start_bit": 105,
+      "cursor_after": 113,
+      "working_header_byte_offset": 119,
+      "grade": "HASH_BOUND_CAPTURE_LOCAL_JOIN_PLUS_EXISTING_WIRE_FIELD_SUPPLEMENT"
+    },
+    "source_generation": "NOT_RECORDED",
+    "per_au_use": "UNBOUND"
+  },
+  "approved_f12_model_path": {
+    "producer_input": {
+      "source": "same-source complete validated EMDF",
+      "ID14_object_count": 15,
+      "ID11_slot_count": 16,
+      "ID14_downmix_index": 3
+    },
+    "consumer": "selected F12 JOC additional-BSI writer",
+    "field_name_in_approved_wire_contract": "complexity",
+    "field_width_bits": 8,
+    "value_rule": "U8(ID14.object_count + 1)",
+    "selected_value": 16,
+    "field_present_only_when_joc_payload_is_present": true,
+    "sources_zero_and_one": "ABSENT_PUBLISHED_PAYLOAD_V1; no JOC complexity field",
+    "source_generation": "same source call as the validated EMDF",
+    "grade": "FROZEN_APPROVED_MODEL"
+  },
+  "domain_separation": {
+    "configuration_count": {"namespace":"configuration record","type":"signed I32","parameter_id":13,"query_selector":10},
+    "wrapper_profile_pair_key_13": {"namespace":"F01E profile pair list","value":"X + Y","mapping_to_configuration_parameter_13":"UNBOUND"},
+    "downmix_index": {"namespace":"ID14 EMDF","selected_value":3,"defines_configuration_count":false},
+    "object_count": {"namespace":"ID14 EMDF","selected_value":15,"F12_complexity_input":true},
+    "slot_count": {"namespace":"ID11 EMDF","selected_value":16,"F12_complexity_input":false},
+    "carrier_block": {"namespace":"separate semantic field","participates_in_configuration_count_path":false,"cross_join":"NOT_ESTABLISHED"},
+    "first_block": {"namespace":"separate transport field","participates_in_configuration_count_path":false,"cross_join":"NOT_ESTABLISHED"}
+  },
+  "cross_path_identity": {
+    "captured_configuration_record_to_selected_f12_receipt": "UNBOUND",
+    "captured_configuration_record_to_selected_source_frame_or_au": "UNBOUND",
+    "native_count_generation_to_f12_source_generation": "UNBOUND",
+    "shared_encoder_module_sha256_proves_identity": false,
+    "equal_value_16_proves_identity": false,
+    "event_order_or_capture_local_alias_proves_identity": false,
+    "selected_adm_metadata_to_native_profile_pair_list": "UNBOUND"
+  }
+}

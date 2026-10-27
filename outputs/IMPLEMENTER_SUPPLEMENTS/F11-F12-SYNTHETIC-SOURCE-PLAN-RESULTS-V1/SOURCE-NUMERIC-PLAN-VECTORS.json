@@ -1,0 +1,171 @@
+{
+  "schema": "f11-source-numeric-plan-handoff-v1",
+  "scope": "approved selected 48 kHz / 1024 kbps / 5.1 model",
+  "existing_execution_grade": "HASH_BOUND_SYNTHETIC_MODEL_EXECUTION",
+  "cost_trace_status": "NOT_RECORDED_IN_APPROVED_SOURCE_COMPOSITION_RESULT",
+  "receipt_execution_status": "NOT_RUN",
+  "f11_producer_input_contract": {
+    "power_snapshot_S": {"type":"I16[5 FBW channels][6 blocks][217 bins]","owner":"same-source main POWER first-refresh current rows","literal_rows_in_saved_result":false,"digest_proxy":"per-source power_sha256 plus approved F11.1 definition"},
+    "consumed_structure_flags": {"short_flags":"I1[6 blocks][5 FBW channels] from the source row","other_flags":"F07-consumed same-source structure flags; literal values not stored in this result"},
+    "main_decoded_exponents": {"fbw":"I16[5 channels][6 blocks][217 bins]","lfe":"I16[6 blocks][7 bins]","literal_rows_in_saved_result":false},
+    "converter_local_work": "fresh 217-entry work per FBW channel/frame; LFE reuses the main LFE strategy and decoded rows",
+    "source_plan_fields": {"db_per_bit_codes":"6 selected per-block codes; this vector uses [2,2,2,2,2,2]","normalization_and_reuse_plan":"same-source fixed plan; identity digest recorded per row"},
+    "profile_cost_context": {"acmod":7,"programme_count":1,"line_compression_field_present":true,"converter_virtual_budget_bits":20480},
+    "cost_dependencies": ["converter strategies and packed groups per block","LFE refresh","db-code transitions","BAP histogram","selected public BAP provider"],
+    "input_grade": "approved typed contract plus source recipe/digests; no raw PCM"
+  },
+  "f11_output_contract": {
+    "main_frame_codes": {"arity":5,"observed_value_domain":[0,31],"storage_type":"not separately named in F11 leaf text"},
+    "converter_frame_codes": {"arity":5,"observed_value_domain":[0,31],"storage_type":"not separately named in F11 leaf text"},
+    "converter_snr_offset": {"storage_type":"U16","successful_value_width_bits":10,"selected_search_cap":671},
+    "handoff": "converter result is part of NumericPlanReceipt; F12 candidates consume it without rerunning F11"
+  },
+  "source_rows": [
+    {
+      "case": "S0-LONG-MIX",
+      "recorded_input": {
+        "source_index_u64": 0,
+        "blocks": 6,
+        "fbw_bins_per_channel": [217, 217, 217, 217, 217],
+        "lfe_bins": 7,
+        "short_flags_i1_by_block": [[0,0,0,0,0],[0,1,0,1,0],[0,1,0,1,0],[1,0,1,0,1],[1,0,1,0,1],[0,0,0,0,0]],
+        "db_per_bit_codes": [2,2,2,2,2,2],
+        "audio_recipe_sha256": "cc0e8ff4d9897da2a68c786ed7188a8f0d51641ad414a70b49cd21c370cadcc4",
+        "input_wire_sha256": "9ac6a417f903a3cfd6eab1a053f95c5709b84eb0026dfe8cbf17a022013a7f3a",
+        "spectra_recipe": "x[source,channel,bin]=(-1)^((source+channel+bin)&1)*2^-16; same row consumed by six blocks",
+        "spectra_sha256": "d032d5f28c2cebd42845fd43f4fda1c4d4e86b86fcf7dbf7a4ecdd3e5ff030e0",
+        "power_rule": "POWER[block,fbw,bin]=spectra[fbw,bin]^2, binary64 round-to-nearest-even",
+        "power_sha256": "78c6a4361df07a93a508ba3ee052a44a5ac10b8547525eecc9277c3087037c5d",
+        "expanded_exponents_sha256": "6276589436c770625f9609490887a97cd64aea8b4f6546735c873cfddf198176",
+        "numeric_plan_sha256": "4a8aca843023095aea4fc7d8c34b77efa59e094a5392554103a60254634c396a",
+        "literal_saved_power_rows": false,
+        "literal_saved_decoded_exponent_rows": false
+      },
+      "recorded_f11_output": {
+        "main_frame_codes": [0,1,2,3,4],
+        "converter_frame_codes": [16,17,18,19,20],
+        "converter_snr_offset": 341,
+        "converter_snr_offset_type": "U16; 10-bit successful model value"
+      },
+      "recorded_f12_result": {
+        "same_row_numeric_plan_sha256": "4a8aca843023095aea4fc7d8c34b77efa59e094a5392554103a60254634c396a",
+        "best_q": 422,
+        "best_used_bits_before_padding": 31811,
+        "frame_bytes": 4096,
+        "frame_sha256": "83fe152d05cf5ee15dd601351ceb89a2428044cbfab33aa6d846477ec86dafee",
+        "crc_residual": 0,
+        "published": false,
+        "au": null,
+        "candidate_trials": 11,
+        "trial_state_commits": 0
+      },
+      "recorded_owner_generations": {
+        "source_index_before": 0,
+        "source_owner_counters_before": {"input_history":0,"transient":0,"transform":0,"policy":0,"codec":0},
+        "source_owner_counters_after": {"input_history":1,"transient":1,"transform":1,"policy":1,"codec":1},
+        "source_commit_count": 1
+      },
+      "f11_intermediate_costs": "NOT_RECORDED"
+    },
+    {
+      "case": "S1-SHORT-CARRY",
+      "recorded_input": {
+        "source_index_u64": 1,
+        "blocks": 6,
+        "fbw_bins_per_channel": [217, 217, 217, 217, 217],
+        "lfe_bins": 7,
+        "short_flags_i1_by_block": [[1,0,0,0,0],[1,1,0,0,0],[0,1,1,0,0],[0,0,1,1,0],[0,0,0,1,1],[0,0,0,0,1]],
+        "db_per_bit_codes": [2,2,2,2,2,2],
+        "audio_recipe_sha256": "cc0e8ff4d9897da2a68c786ed7188a8f0d51641ad414a70b49cd21c370cadcc4",
+        "input_wire_sha256": "9ac6a417f903a3cfd6eab1a053f95c5709b84eb0026dfe8cbf17a022013a7f3a",
+        "spectra_recipe": "x[source,channel,bin]=(-1)^((source+channel+bin)&1)*2^-16; same row consumed by six blocks",
+        "spectra_sha256": "536d5284e320ece5eeb38a1c3f47dded0d099b8dfd37971606f616d311856957",
+        "power_rule": "POWER[block,fbw,bin]=spectra[fbw,bin]^2, binary64 round-to-nearest-even",
+        "power_sha256": "78c6a4361df07a93a508ba3ee052a44a5ac10b8547525eecc9277c3087037c5d",
+        "expanded_exponents_sha256": "6276589436c770625f9609490887a97cd64aea8b4f6546735c873cfddf198176",
+        "numeric_plan_sha256": "4a8aca843023095aea4fc7d8c34b77efa59e094a5392554103a60254634c396a",
+        "literal_saved_power_rows": false,
+        "literal_saved_decoded_exponent_rows": false
+      },
+      "recorded_f11_output": {
+        "main_frame_codes": [5,6,7,8,9],
+        "converter_frame_codes": [21,22,23,24,25],
+        "converter_snr_offset": 414,
+        "converter_snr_offset_type": "U16; 10-bit successful model value"
+      },
+      "recorded_f12_result": {
+        "same_row_numeric_plan_sha256": "4a8aca843023095aea4fc7d8c34b77efa59e094a5392554103a60254634c396a",
+        "best_q": 422,
+        "best_used_bits_before_padding": 31811,
+        "frame_bytes": 4096,
+        "frame_sha256": "5509341a550cda1aedbf4a7379a9de853722c5c61d992cebb74a8f4d9e081089",
+        "crc_residual": 0,
+        "published": false,
+        "au": null,
+        "candidate_trials": 11,
+        "trial_state_commits": 0
+      },
+      "recorded_owner_generations": {
+        "source_index_before": 1,
+        "source_owner_counters_before": {"input_history":1,"transient":1,"transform":1,"policy":1,"codec":1},
+        "source_owner_counters_after": {"input_history":2,"transient":2,"transform":2,"policy":2,"codec":2},
+        "source_commit_count": 1
+      },
+      "f11_intermediate_costs": "NOT_RECORDED"
+    },
+    {
+      "case": "S2-PUBLISH",
+      "recorded_input": {
+        "source_index_u64": 2,
+        "blocks": 6,
+        "fbw_bins_per_channel": [217, 217, 217, 217, 217],
+        "lfe_bins": 7,
+        "short_flags_i1_by_block": [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]],
+        "db_per_bit_codes": [2,2,2,2,2,2],
+        "audio_recipe_sha256": "cc0e8ff4d9897da2a68c786ed7188a8f0d51641ad414a70b49cd21c370cadcc4",
+        "input_wire_sha256": "9ac6a417f903a3cfd6eab1a053f95c5709b84eb0026dfe8cbf17a022013a7f3a",
+        "spectra_recipe": "x[source,channel,bin]=(-1)^((source+channel+bin)&1)*2^-16; same row consumed by six blocks",
+        "spectra_sha256": "d032d5f28c2cebd42845fd43f4fda1c4d4e86b86fcf7dbf7a4ecdd3e5ff030e0",
+        "power_rule": "POWER[block,fbw,bin]=spectra[fbw,bin]^2, binary64 round-to-nearest-even",
+        "power_sha256": "78c6a4361df07a93a508ba3ee052a44a5ac10b8547525eecc9277c3087037c5d",
+        "expanded_exponents_sha256": "6276589436c770625f9609490887a97cd64aea8b4f6546735c873cfddf198176",
+        "numeric_plan_sha256": "4a8aca843023095aea4fc7d8c34b77efa59e094a5392554103a60254634c396a",
+        "literal_saved_power_rows": false,
+        "literal_saved_decoded_exponent_rows": false
+      },
+      "recorded_f11_output": {
+        "main_frame_codes": [10,11,12,13,14],
+        "converter_frame_codes": [26,27,28,29,30],
+        "converter_snr_offset": 487,
+        "converter_snr_offset_type": "U16; 10-bit successful model value"
+      },
+      "recorded_f12_result": {
+        "same_row_numeric_plan_sha256": "4a8aca843023095aea4fc7d8c34b77efa59e094a5392554103a60254634c396a",
+        "best_q": 422,
+        "best_used_bits_before_padding": 31781,
+        "frame_bytes": 4096,
+        "frame_sha256": "031657f2674aa6a7f75a368d2e8a50dd6d08d49692d953f23709a369c4824cf1",
+        "crc_residual": 0,
+        "published": true,
+        "au": 0,
+        "candidate_trials": 11,
+        "trial_state_commits": 0
+      },
+      "recorded_owner_generations": {
+        "source_index_before": 2,
+        "source_owner_counters_before": {"input_history":2,"transient":2,"transform":2,"policy":2,"codec":2},
+        "source_owner_counters_after": {"input_history":3,"transient":3,"transform":3,"policy":3,"codec":3},
+        "source_commit_count": 1
+      },
+      "f11_intermediate_costs": "NOT_RECORDED"
+    }
+  ],
+  "generation_join_vector_file": "INPUT-ONLY-GENERATION-VECTORS.json",
+  "cost_contract_projection": {
+    "approved_cost_inputs": ["selected profile/header shape", "converter strategy and packed groups per block", "LFE refresh", "db-code transitions", "BAP histogram", "selected BAP provider"],
+    "approved_cost_output_fields": ["converter_snr_offset U16 (10-bit successful result)"],
+    "intermediate_H_F_M_residual_values": "NOT_RECORDED",
+    "source_of_rules": "approved F11.1-F11.4 contract",
+    "cost_trace_is_a_required_F12_receipt_field": "NOT_SPECIFIED"
+  }
+}

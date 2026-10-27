@@ -9,7 +9,7 @@ mod tests;
 pub use output_owner::{
     OutputAppendProposal, OutputConfiguration, OutputDurableAppendReceipt,
     OutputFinalExposureReceipt, OutputFinalizeProposal, OutputFinalizedProposal, OutputOwner,
-    OutputOwnerCommitReceipt, OutputOwnerError, OutputProvider, OutputSourceAfterProposal,
-    OutputSourceCommitReceipt, OutputSourceIdentity, OutputSourceProposal,
-    OutputSuppressedSourceProposal,
+    OutputOwnerCommitReceipt, OutputOwnerError, OutputOwnerStateReference, OutputProvider,
+    OutputSourceAfterProposal, OutputSourceCommitReceipt, OutputSourceIdentity,
+    OutputSourceProposal, OutputSuppressedSourceProposal,
 };

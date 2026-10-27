@@ -1,0 +1,74 @@
+{
+  "proposal": "LOCAL_GTC_DRC_OWNER_ROOT_OPTION_U5_V1",
+  "owner_id": "drc",
+  "state_ref": "owners.drc",
+  "owner_generation": {
+    "type": "U64",
+    "unit": "committed main codec source count",
+    "cold": 0,
+    "after_successful_source_s": "s+1"
+  },
+  "measurement_option": {
+    "field": "programme_dialnorm",
+    "type": "Option<U5>",
+    "canonical_encoding": {
+      "None": "JSON null",
+      "Some(u5)": "JSON integer 1..31"
+    },
+    "cold": null,
+    "finalized_measurement": "Some(F06.3(selected_lufs))",
+    "generation_effect": "None->Some is committed with measurement finalize; drc source generation remains0.",
+    "no_default": "No source can run while None; never synthesize a U5 before an admitted finalized measurement."
+  },
+  "persistent_fields": {
+    "secondary": {
+      "forward_history_f32_u32_words": "F32[5][128] raw U32 words",
+      "inverse_carry_f32_u32_words": "F32[5][128] raw U32 words",
+      "frame_index_u64": "U64"
+    },
+    "statistics": {
+      "filter_pairs_f32_u32_words": "F32[5][2] raw U32 words",
+      "previous_primary_peak_f32_u32_words": "F32[6] raw U32 words",
+      "previous_secondary_peak_f32_u32_words": "F32[6] raw U32 words",
+      "previous_downmix_peak_f32_u32_word": "F32 raw U32 word"
+    },
+    "scheduler": {
+      "line_dynamics": {
+        "level_f32_u32_word": "F32 raw U32 word",
+        "hold_u16": "U16",
+        "log_gain_f32_u32_word": "F32 raw U32 word"
+      },
+      "rf_dynamics": "same line_dynamics shape",
+      "line_limiter": {
+        "gain_f32_u32_word": "F32 raw U32 word",
+        "hold_u16": "U16"
+      },
+      "rf_limiter": "same line_limiter shape",
+      "peak_logs_f32_u32_words": "F32[6] raw U32 words",
+      "generation_u64": "U64"
+    },
+    "metadata_override_fifo": {
+      "records": "Python logical int[4], selected values remain [0,0,0,0]; no physical storage-width claim",
+      "metadata_delay_samples": "integer, selected fixed value3072",
+      "append_slot": "integer, selected fixed value3",
+      "frames_processed_u64": "U64"
+    }
+  },
+  "excluded_from_drc_root": {
+    "ordinary_input_history": "GTC shared-analysis/F07 owner; DRC consumes SharedAnalysisReceipt and never gathers or advances this history.",
+    "programme_measurement_receipt": "Top-level immutable shared GTC input, not duplicated in DRC owner state.",
+    "static_coefficients": "Immutable approved provider/configuration input, not mutable owner state.",
+    "opaque_category5_packet_bytes": "Separate packet path; selected category5/32/1 does not write the DRC control FIFO."
+  },
+  "canonical_preimage": {
+    "rules": "F06WH-compatible UTF-8 canonical JSON, sorted keys, compact comma/colon separators, no BOM/newline, finite values only. F32 values are exact U32 words; full nested arrays are serialized. JSON integers use exact base-10; booleans are rejected for integer fields.",
+    "scope": "Standalone owners.drc value only; GTC owner envelope (id/generation/state_ref) and top-level MeasurementReceipt remain outside.",
+    "hash": "Existing GTC state_sha256/cold_sha256 only; no additional digest."
+  },
+  "transaction": {
+    "source_clock": "GTC drc owner generation equals successfully committed codec-source count. Source0 and1 advance DRC even though AU publication is suppressed; callbacks0/1 have no codec source and do not advance DRC.",
+    "parent_commit": "F06ND returns staged next DRC value. GTC parent source/callback root swap alone commits it.",
+    "failure_reset_eof": "Fatal discards staged root and preserves committed before state, retires attempt, requires full programme restart and remeasurement; no DRC-only EOF flush."
+  },
+  "scope": "Pure owner-root representation proposal; no DRC math replay, implementation integration, product or filesystem execution."
+}

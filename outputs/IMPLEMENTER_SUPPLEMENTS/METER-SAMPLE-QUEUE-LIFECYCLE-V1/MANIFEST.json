@@ -1,0 +1,20 @@
+{
+  "schema": "washed-spec-manifest.v1",
+  "payloads": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 4128,
+      "sha256": "8bbd3c0264e4e284bbf563b87f89f6a76771c87a773ec1ebccdfd75b0136bb7f"
+    },
+    {
+      "file": "EXPECTED.json",
+      "bytes": 186000,
+      "sha256": "39c028f77c887106685e9ad1502417aa1488bcfdf244da01ed5df6ff13bf8905"
+    },
+    {
+      "file": "INPUT-ONLY.json",
+      "bytes": 1239,
+      "sha256": "2ea6448bc73e1a80d488eda3488deedfbeba9e976b855fac140b209bb28ec2ad"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "schema": "analysis-root-cold-materialization-result.v1",
+  "source_bundle_manifest_sha256": "edc15b751a3d9db6d0e59a51e76979b5eb77a07110382906b975a0561f9ba61e",
+  "root_canonical_bytes": 19422,
+  "root_key_count": 17,
+  "cold_root_sha256": "008167df2194d7ffebc2ba0aa1e28f70067afda1a089160c46ad78b40e3c0f23",
+  "owner_id": "analysis",
+  "owner_generation": 0,
+  "state_ref": "owners.analysis",
+  "gtc_owner_state": {
+    "owner_id": "analysis",
+    "generation": 0,
+    "state_sha256": "008167df2194d7ffebc2ba0aa1e28f70067afda1a089160c46ad78b40e3c0f23",
+    "cold_sha256": "008167df2194d7ffebc2ba0aa1e28f70067afda1a089160c46ad78b40e3c0f23",
+    "state_ref": "owners.analysis"
+  },
+  "cold_generation_families": {
+    "input_history": 0,
+    "transient": 0,
+    "transform": 0,
+    "policy": 0
+  },
+  "cold_word_counts": {
+    "input_history_u32_words": 7680,
+    "transient_two_history_u32_words": 20,
+    "transient_three_history_u32_words": 30,
+    "transient_peak_statistics_u32_words": 90,
+    "transient_previous_mean_u32_words": 5,
+    "transient_short_queue_i1": 20,
+    "transient_other_queue_i1": 20,
+    "primary_fbw_history_u32_words": 640,
+    "companion_fbw_history_u32_words": 640,
+    "primary_lfe_history_u32_words": 128,
+    "companion_lfe_history_u32_words": 128
+  },
+  "policy_v6_cold": {
+    "previous_peak_f32_bits_u32": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "gain_range_completed_blocks_u64": 0,
+    "db_per_bit_selector_u16": 0,
+    "db_per_bit_completed_blocks_u64": 0
+  },
+  "transition_vector": "F07 staged generation split represented; numerical after words NOT_RUN; no expected arrays used as input",
+  "actual_source0_commit": "NOT_RUN"
+}

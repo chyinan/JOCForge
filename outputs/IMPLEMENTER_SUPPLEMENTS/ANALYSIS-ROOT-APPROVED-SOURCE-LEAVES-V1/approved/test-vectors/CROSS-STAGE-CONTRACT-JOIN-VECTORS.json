@@ -1,0 +1,297 @@
+{
+  "schema": "cross-stage-contract-join-vectors.v1",
+  "input_only": true,
+  "expected_use": "Run the adapter first; compare expected only after actual receipts and state are fixed.",
+  "contract": "CROSS_STAGE_JOIN_V1",
+  "cases": [
+    {
+      "case_id": "J01_distinct_r_c",
+      "input": {
+        "receiver_lane_order": [
+          "L",
+          "R",
+          "C",
+          "LFE",
+          "Ls",
+          "Rs"
+        ],
+        "receiver_band0_complex": [
+          [
+            1.0,
+            -1.0
+          ],
+          [
+            20.0,
+            -2.0
+          ],
+          [
+            30.0,
+            -3.0
+          ],
+          [
+            4.0,
+            -4.0
+          ],
+          [
+            50.0,
+            -5.0
+          ],
+          [
+            60.0,
+            -6.0
+          ]
+        ],
+        "carrier_gain": [
+          0.11,
+          0.22,
+          0.33,
+          0.44,
+          0.55
+        ],
+        "selected_channel": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "expected": {
+        "canonical_carrier_order": [
+          "L",
+          "R",
+          "C",
+          "Ls",
+          "Rs"
+        ],
+        "carrier_complex": [
+          [
+            1.0,
+            -1.0
+          ],
+          [
+            20.0,
+            -2.0
+          ],
+          [
+            30.0,
+            -3.0
+          ],
+          [
+            50.0,
+            -5.0
+          ],
+          [
+            60.0,
+            -6.0
+          ]
+        ],
+        "fit_gain_by_identity": {
+          "R": 0.22,
+          "C": 0.33
+        },
+        "sparse_selected_identity": [
+          "L",
+          "R",
+          "C",
+          "Ls",
+          "Rs"
+        ],
+        "codec_adapter_indices": [
+          0,
+          2,
+          1,
+          3,
+          4
+        ],
+        "implicit_swap_allowed": false
+      }
+    },
+    {
+      "case_id": "J02_shared_analysis_success",
+      "input": {
+        "source": 0,
+        "analysis_before_generation": 0,
+        "f07_calls_requested": 1,
+        "f06_consumer": true,
+        "f08_consumer": true
+      },
+      "expected": {
+        "shared_receipt_count": 1,
+        "f07_advancement_count": 1,
+        "analysis_staged_generation": 1,
+        "consumer_digest_equal": true,
+        "top_level_commit_count": 1
+      }
+    },
+    {
+      "case_id": "J02_drc_failure_after_analysis_staged",
+      "input": {
+        "source": 7,
+        "analysis_before_generation": 7,
+        "inject_failure": "F06_SECONDARY_AFTER_SHARED_ANALYSIS"
+      },
+      "expected": {
+        "status": "RETIRED",
+        "analysis_committed_generation": 7,
+        "analysis_committed_hash": "UNCHANGED",
+        "drc_committed_hash": "UNCHANGED",
+        "top_level_commit_count": 0,
+        "later_stages": "NOT_RUN"
+      }
+    },
+    {
+      "case_id": "J03_source0_absent_payload",
+      "input": {
+        "source": 0,
+        "queue_push_pop": [
+          11,
+          1,
+          2,
+          14
+        ],
+        "popped": {
+          "11": null,
+          "1": null,
+          "2": null,
+          "14": null
+        }
+      },
+      "expected": {
+        "queues_advanced": true,
+        "payload": "ABSENT_PUBLISHED_PAYLOAD_V1",
+        "emdf_serialized": false,
+        "complexity_checked": false,
+        "f12_payload_validation": false,
+        "au_appended": false,
+        "source_committed": true,
+        "branch_after_queue_pop": "PRIMING_ABSENT_PAYLOAD",
+        "emdf_parsed": false,
+        "carrier_budget_checked": false
+      }
+    },
+    {
+      "case_id": "J03_source1_disposes_joc0",
+      "input": {
+        "source": 1,
+        "queue_push_pop": [
+          11,
+          1,
+          2,
+          14
+        ],
+        "popped": {
+          "11": null,
+          "1": null,
+          "2": null,
+          "14": 0
+        }
+      },
+      "expected": {
+        "joc_writer0_disposition": "CONSUMED_SUPPRESSED",
+        "payload": "ABSENT_PUBLISHED_PAYLOAD_V1",
+        "emdf_serialized": false,
+        "complexity_checked": false,
+        "au_appended": false,
+        "source_committed": true,
+        "branch_after_queue_pop": "PRIMING_ABSENT_PAYLOAD",
+        "emdf_parsed": false,
+        "carrier_budget_checked": false,
+        "f12_payload_validation": false
+      }
+    },
+    {
+      "case_id": "J03_source2_first_published",
+      "input": {
+        "source": 2,
+        "popped": {
+          "11": 0,
+          "1": 0,
+          "2": 0,
+          "14": 1
+        }
+      },
+      "expected": {
+        "emdf_order": [
+          11,
+          14,
+          2,
+          1
+        ],
+        "complexity": 16,
+        "f12_payload_validation": true,
+        "au_index": 0,
+        "append_required": true,
+        "branch_after_queue_pop": "PUBLISHED_EMDF",
+        "emdf_serialized": true,
+        "emdf_parsed": true
+      }
+    },
+    {
+      "case_id": "J04_partial_write_loop",
+      "input": {
+        "au_index": 3,
+        "initial_offset": 12288,
+        "successful_write_sizes": [
+          1,
+          2048,
+          2047
+        ],
+        "flush": "SUCCESS",
+        "readback": "MATCH"
+      },
+      "expected": {
+        "write_calls": 3,
+        "bytes_written": 4096,
+        "durable_receipt": true,
+        "ledger_increment": 1,
+        "same_attempt_continues": true
+      }
+    },
+    {
+      "case_id": "J04_partial_then_error",
+      "input": {
+        "au_index": 3,
+        "initial_offset": 12288,
+        "successful_write_sizes": [
+          2048
+        ],
+        "next_write": "ERROR"
+      },
+      "expected": {
+        "status": "RETIRED",
+        "staging_status": "ABANDONED",
+        "ledger": "UNCHANGED",
+        "cleanup_truncate_allowed": true,
+        "same_attempt_resume": false,
+        "required_recovery": "PROGRAMME_ORIGIN_FULL_RESTART"
+      }
+    },
+    {
+      "case_id": "J04_crash_after_append_before_root_swap",
+      "input": {
+        "au_index": 3,
+        "append_and_fsync": "SUCCESS",
+        "root_swap": "CRASH"
+      },
+      "expected": {
+        "staging_status": "ABANDONED",
+        "ledger": "PREVIOUS_COMMITTED",
+        "roll_forward": false,
+        "truncate_as_recovery": false,
+        "required_recovery": "PROGRAMME_ORIGIN_FULL_RESTART"
+      }
+    }
+  ],
+  "summary": {
+    "findings_closed_by_contract": [
+      "J01",
+      "J02",
+      "J03",
+      "J04"
+    ],
+    "independent_review": "PENDING",
+    "contains_private_key": false
+  },
+  "semantic_sha256": "f72b146e197af044579d6d9df8f5e124bf2c3522992705fdfe813b3697cc8f31"
+}

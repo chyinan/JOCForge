@@ -1,0 +1,351 @@
+{
+  "schema": "codec-wire-cross-module-providers.v1",
+  "scope": "Clean package identities needed to reconstruct selected F12 inputs without research/model files.",
+  "groups": {
+    "F12_LOCAL": [
+      {
+        "file": "parameters/codec-wire-selected-v1.json",
+        "bytes": 3081,
+        "sha256": "a7a0a721a9e515d197a2d12fc0c9cb942b2b393f9019383a66ce2635f7aaa0dd"
+      },
+      {
+        "file": "parameters/public-bap-48k-v1.json",
+        "bytes": 8509,
+        "sha256": "eb913038a89d853db453831d64df34c19f8ea8a89d04a72c0ef43733619545a3"
+      }
+    ],
+    "F06_BSI": [
+      {
+        "file": "specs/06-meter-bsi.md",
+        "bytes": 6337,
+        "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752",
+        "historical_sha256_before_status_reconciliation": "553cfecc176dfe6ad14077ea35363fad8a8b477381038550d35d15905b264cab",
+        "identity_role": "CURRENT_LIVE_FILE; historical freeze identities remain in review status records"
+      },
+      {
+        "file": "specs/06-none-drc-statistics-and-control.md",
+        "bytes": 18048,
+        "sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+        "historical_sha256_before_status_reconciliation": "6a2151fb9b7af942bad4a611b6aabbaa36c8e3ecfd44d08185d6845077ad39c5",
+        "identity_role": "CURRENT_LIVE_FILE; historical freeze identities remain in review status records"
+      },
+      {
+        "file": "specs/06-meter-log-and-peak.md",
+        "bytes": 7525,
+        "sha256": "c8a9aec8c931391bfbb4ecaca01a8e5cbec3ba680899f516727c6574a170e38f",
+        "historical_sha256_before_status_reconciliation": "0d316d3a6202b681d49475db23a586a1fe2f0213682794acf2cd1b9c3d17ac81",
+        "identity_role": "CURRENT_LIVE_FILE; historical identities retained separately",
+        "current_binding_history": [
+          {
+            "bytes": 7370,
+            "sha256": "7bcfe6b7e93c723816f5e5fb9edbde9be10ffedbb32d347720c9db58b3ceb8f8",
+            "superseded_by": "c8a9aec8c931391bfbb4ecaca01a8e5cbec3ba680899f516727c6574a170e38f",
+            "reason": "Current named provider identity refresh; historical identity fields remain unchanged."
+          }
+        ]
+      },
+      {
+        "file": "specs/06-true-peak-cascade-and-metrics.md",
+        "bytes": 9824,
+        "sha256": "e0491288c3a9beb59ecb7b017d505ee16eb9f401d53bd0fd918573644c1876b3"
+      },
+      {
+        "file": "parameters/none-drc-authorized-v1.json",
+        "bytes": 3792,
+        "sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f"
+      },
+      {
+        "file": "parameters/none-drc-math-v1.json",
+        "bytes": 2010,
+        "sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166"
+      },
+      {
+        "file": "parameters/meter-log-mathematical-v1.json",
+        "bytes": 780,
+        "sha256": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266"
+      },
+      {
+        "file": "parameters/meter-truepeak-authorized-v1.json",
+        "bytes": 2584,
+        "sha256": "f67e6fe86533af74acc261bf3908890e77a461198116c64b624dc91b69049757"
+      }
+    ],
+    "F07_F09_F10_POLICY": [
+      {
+        "file": "specs/07-history-and-transient.md",
+        "bytes": 15770,
+        "sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac",
+        "historical_sha256_before_status_reconciliation": "ab59cb962673315bfa9b8be3018aaffa778e8d29bb92903de0c4165224dd1530",
+        "identity_role": "CURRENT_LIVE_FILE; historical identities retained separately",
+        "current_binding_history": [
+          {
+            "bytes": 15617,
+            "sha256": "468a95e0a369edd00c9757452f3fbb8f2ed78e17c2c81622b441a2f7a0d12462",
+            "superseded_by": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac",
+            "reason": "Current named provider identity refresh; historical identity fields remain unchanged."
+          }
+        ]
+      },
+      {
+        "file": "specs/09-exponents.md",
+        "bytes": 9722,
+        "sha256": "41cd157140d0deaab51fa9a895c33758cb49eb46cf5844a2883c1d6e8bb81739",
+        "historical_sha256_before_status_reconciliation": "51e5866f4e1bc3ac6566641d794d950fa8ee3f3339f1042693c02fed21f79862",
+        "identity_role": "CURRENT_LIVE_FILE; historical freeze identities remain in review status records"
+      },
+      {
+        "file": "specs/09-gain-and-db.md",
+        "bytes": 5440,
+        "sha256": "f6e73ca2e361c06413974f4b7725fdc94f8e1d13a6a299062edde9dc3a7e6c12"
+      },
+      {
+        "file": "specs/10-exponent-normalization.md",
+        "bytes": 5969,
+        "sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc",
+        "historical_sha256_before_status_reconciliation": "eea5ed9833a6ca19d859df21f68f3b08e34407ace846f94e64ac5416957c59fb",
+        "identity_role": "CURRENT_LIVE_FILE; historical freeze identities remain in review status records"
+      },
+      {
+        "file": "parameters/transient-d05-authorized-v1.json",
+        "bytes": 7548,
+        "sha256": "130cd1a446ea8413a1d0d4c5eea631e890b7f1cd675975efa92697e258402991"
+      },
+      {
+        "file": "parameters/policy-authorized-v1.json",
+        "bytes": 4559,
+        "sha256": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a"
+      },
+      {
+        "file": "parameters/exponent-refresh-difference-math-v1.json",
+        "bytes": 1661,
+        "sha256": "6cf3ae8d899b334d5aa87e0744e4c58b7dba1d92177ca07738726f8ea0ee2c6d"
+      }
+    ],
+    "F08_TRANSFORM": [
+      {
+        "file": "specs/08-transforms.md",
+        "bytes": 9916,
+        "sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e",
+        "historical_sha256_before_status_reconciliation": "c3d68ca7affc2f389a8a07b9347d56e70d48d570821135414ba5874bc2061199",
+        "identity_role": "CURRENT_LIVE_FILE; historical identities retained separately",
+        "current_binding_history": [
+          {
+            "bytes": 9833,
+            "sha256": "ffe9b5a15e104eeb2cb465abc1ed8f4e9b63ac663f45af3f64edff9280fc4736",
+            "superseded_by": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e",
+            "reason": "Current named provider identity refresh; historical identity fields remain unchanged."
+          }
+        ]
+      },
+      {
+        "file": "parameters/ordinary-transform-math-v1.json",
+        "bytes": 16538,
+        "sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1"
+      },
+      {
+        "file": "test-vectors/TRANSFORM-RULE-VERIFICATION.json",
+        "bytes": 695,
+        "sha256": "12ab9067d9310a5dee14943fd96c9ef3548ed44379917d12da81055e049cc5e4"
+      },
+      {
+        "file": "test-vectors/GENERATED-TRANSFORM-PREFIX-VERIFICATION.json",
+        "bytes": 1319,
+        "sha256": "897a9a92748204069af17e039b7a5068da33f4a174421025670fb61ecfdc8454"
+      }
+    ],
+    "F13_EMDF": [
+      {
+        "file": "specs/13-emdf-and-timeline.md",
+        "bytes": 12839,
+        "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd",
+        "historical_sha256_before_status_reconciliation": "9aeafaa87ae075fbca3d66c4e34c7bc92ab7f3e6490abbeb2e540bc471da6f40",
+        "identity_role": "CURRENT_LIVE_FILE; historical freeze identities remain in review status records"
+      },
+      {
+        "file": "specs/13-id2-profile-metadata.md",
+        "bytes": 3236,
+        "sha256": "35aa89d0dd67fb0133c4898c1007c84d48b39c5df6683dd88a173600975b48cc"
+      },
+      {
+        "file": "test-vectors/unit/ADAPTER-CONTRACT.md",
+        "bytes": 22205,
+        "sha256": "9bce2e35ce47147c76c13e58ee976d44c5109938f0b19e1f3a81f1d8a61fa1ae"
+      },
+      {
+        "file": "test-vectors/CODEC-WIRE-EMDF-MODE-INPUT-VECTORS.json",
+        "bytes": 2317,
+        "sha256": "aa18b1bffacfc665b19dd12c279896118e1ddad9f0d7169da245f6cc876404b8"
+      }
+    ]
+  },
+  "all_files": [
+    {
+      "file": "parameters/codec-wire-selected-v1.json",
+      "bytes": 3081,
+      "sha256": "a7a0a721a9e515d197a2d12fc0c9cb942b2b393f9019383a66ce2635f7aaa0dd"
+    },
+    {
+      "file": "parameters/public-bap-48k-v1.json",
+      "bytes": 8509,
+      "sha256": "eb913038a89d853db453831d64df34c19f8ea8a89d04a72c0ef43733619545a3"
+    },
+    {
+      "file": "specs/06-meter-bsi.md",
+      "bytes": 6337,
+      "sha256": "5402250feaee342af79e6ff53b59a33833722e2123c602a21ccd9ec2af0bc752",
+      "historical_sha256_before_status_reconciliation": "553cfecc176dfe6ad14077ea35363fad8a8b477381038550d35d15905b264cab",
+      "identity_role": "CURRENT_LIVE_FILE; historical freeze identities remain in review status records"
+    },
+    {
+      "file": "specs/06-none-drc-statistics-and-control.md",
+      "bytes": 18048,
+      "sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081",
+      "historical_sha256_before_status_reconciliation": "6a2151fb9b7af942bad4a611b6aabbaa36c8e3ecfd44d08185d6845077ad39c5",
+      "identity_role": "CURRENT_LIVE_FILE; historical freeze identities remain in review status records"
+    },
+    {
+      "file": "specs/06-meter-log-and-peak.md",
+      "bytes": 7525,
+      "sha256": "c8a9aec8c931391bfbb4ecaca01a8e5cbec3ba680899f516727c6574a170e38f",
+      "historical_sha256_before_status_reconciliation": "0d316d3a6202b681d49475db23a586a1fe2f0213682794acf2cd1b9c3d17ac81",
+      "identity_role": "CURRENT_LIVE_FILE; historical identities retained separately",
+      "current_binding_history": [
+        {
+          "bytes": 7370,
+          "sha256": "7bcfe6b7e93c723816f5e5fb9edbde9be10ffedbb32d347720c9db58b3ceb8f8",
+          "superseded_by": "c8a9aec8c931391bfbb4ecaca01a8e5cbec3ba680899f516727c6574a170e38f",
+          "reason": "Current named provider identity refresh; historical identity fields remain unchanged."
+        }
+      ]
+    },
+    {
+      "file": "specs/06-true-peak-cascade-and-metrics.md",
+      "bytes": 9824,
+      "sha256": "e0491288c3a9beb59ecb7b017d505ee16eb9f401d53bd0fd918573644c1876b3"
+    },
+    {
+      "file": "parameters/none-drc-authorized-v1.json",
+      "bytes": 3792,
+      "sha256": "35b28cc27a0bd903cdf58df431c1b2f17769d534425765eb1588573e1fba101f"
+    },
+    {
+      "file": "parameters/none-drc-math-v1.json",
+      "bytes": 2010,
+      "sha256": "f1a552443315414ad499118d905ef9fe6612f178dfe28c16aa5d9fa6b2002166"
+    },
+    {
+      "file": "parameters/meter-log-mathematical-v1.json",
+      "bytes": 780,
+      "sha256": "044d42327f471b183b0a29caaa9db85f694a40c436a5afe3b83734dbf29bc266"
+    },
+    {
+      "file": "parameters/meter-truepeak-authorized-v1.json",
+      "bytes": 2584,
+      "sha256": "f67e6fe86533af74acc261bf3908890e77a461198116c64b624dc91b69049757"
+    },
+    {
+      "file": "specs/07-history-and-transient.md",
+      "bytes": 15770,
+      "sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac",
+      "historical_sha256_before_status_reconciliation": "ab59cb962673315bfa9b8be3018aaffa778e8d29bb92903de0c4165224dd1530",
+      "identity_role": "CURRENT_LIVE_FILE; historical identities retained separately",
+      "current_binding_history": [
+        {
+          "bytes": 15617,
+          "sha256": "468a95e0a369edd00c9757452f3fbb8f2ed78e17c2c81622b441a2f7a0d12462",
+          "superseded_by": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac",
+          "reason": "Current named provider identity refresh; historical identity fields remain unchanged."
+        }
+      ]
+    },
+    {
+      "file": "specs/09-exponents.md",
+      "bytes": 9722,
+      "sha256": "41cd157140d0deaab51fa9a895c33758cb49eb46cf5844a2883c1d6e8bb81739",
+      "historical_sha256_before_status_reconciliation": "51e5866f4e1bc3ac6566641d794d950fa8ee3f3339f1042693c02fed21f79862",
+      "identity_role": "CURRENT_LIVE_FILE; historical freeze identities remain in review status records"
+    },
+    {
+      "file": "specs/09-gain-and-db.md",
+      "bytes": 5440,
+      "sha256": "f6e73ca2e361c06413974f4b7725fdc94f8e1d13a6a299062edde9dc3a7e6c12"
+    },
+    {
+      "file": "specs/10-exponent-normalization.md",
+      "bytes": 5969,
+      "sha256": "a538f0af5c70c8e8f4e4b5212438a1e5abd304c3fb2efa7165617014a55fc5fc",
+      "historical_sha256_before_status_reconciliation": "eea5ed9833a6ca19d859df21f68f3b08e34407ace846f94e64ac5416957c59fb",
+      "identity_role": "CURRENT_LIVE_FILE; historical freeze identities remain in review status records"
+    },
+    {
+      "file": "parameters/transient-d05-authorized-v1.json",
+      "bytes": 7548,
+      "sha256": "130cd1a446ea8413a1d0d4c5eea631e890b7f1cd675975efa92697e258402991"
+    },
+    {
+      "file": "parameters/policy-authorized-v1.json",
+      "bytes": 4559,
+      "sha256": "a99d077900058eb4a862f5ea29bc87408bf6d7a4f4cc42e3da66ae6c68a93c6a"
+    },
+    {
+      "file": "parameters/exponent-refresh-difference-math-v1.json",
+      "bytes": 1661,
+      "sha256": "6cf3ae8d899b334d5aa87e0744e4c58b7dba1d92177ca07738726f8ea0ee2c6d"
+    },
+    {
+      "file": "specs/08-transforms.md",
+      "bytes": 9916,
+      "sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e",
+      "historical_sha256_before_status_reconciliation": "c3d68ca7affc2f389a8a07b9347d56e70d48d570821135414ba5874bc2061199",
+      "identity_role": "CURRENT_LIVE_FILE; historical identities retained separately",
+      "current_binding_history": [
+        {
+          "bytes": 9833,
+          "sha256": "ffe9b5a15e104eeb2cb465abc1ed8f4e9b63ac663f45af3f64edff9280fc4736",
+          "superseded_by": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e",
+          "reason": "Current named provider identity refresh; historical identity fields remain unchanged."
+        }
+      ]
+    },
+    {
+      "file": "parameters/ordinary-transform-math-v1.json",
+      "bytes": 16538,
+      "sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1"
+    },
+    {
+      "file": "test-vectors/TRANSFORM-RULE-VERIFICATION.json",
+      "bytes": 695,
+      "sha256": "12ab9067d9310a5dee14943fd96c9ef3548ed44379917d12da81055e049cc5e4"
+    },
+    {
+      "file": "test-vectors/GENERATED-TRANSFORM-PREFIX-VERIFICATION.json",
+      "bytes": 1319,
+      "sha256": "897a9a92748204069af17e039b7a5068da33f4a174421025670fb61ecfdc8454"
+    },
+    {
+      "file": "specs/13-emdf-and-timeline.md",
+      "bytes": 12839,
+      "sha256": "0ddf3e52856b97e505f83576b684e235b21bdacf207de354b8e8b12182dca6fd",
+      "historical_sha256_before_status_reconciliation": "9aeafaa87ae075fbca3d66c4e34c7bc92ab7f3e6490abbeb2e540bc471da6f40",
+      "identity_role": "CURRENT_LIVE_FILE; historical freeze identities remain in review status records"
+    },
+    {
+      "file": "specs/13-id2-profile-metadata.md",
+      "bytes": 3236,
+      "sha256": "35aa89d0dd67fb0133c4898c1007c84d48b39c5df6683dd88a173600975b48cc"
+    },
+    {
+      "file": "test-vectors/unit/ADAPTER-CONTRACT.md",
+      "bytes": 22205,
+      "sha256": "9bce2e35ce47147c76c13e58ee976d44c5109938f0b19e1f3a81f1d8a61fa1ae"
+    },
+    {
+      "file": "test-vectors/CODEC-WIRE-EMDF-MODE-INPUT-VECTORS.json",
+      "bytes": 2317,
+      "sha256": "aa18b1bffacfc665b19dd12c279896118e1ddad9f0d7169da245f6cc876404b8"
+    }
+  ],
+  "file_count": 25,
+  "private_key_required": false,
+  "fixture_boundary": "Complete-frame vectors supply explicit spectra, exponent plans, BSI and F13-produced EMDF bytes. These are input fixtures, not runtime lookup values; the listed contracts and providers define production from upstream inputs."
+}

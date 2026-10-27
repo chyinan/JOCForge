@@ -1,0 +1,28 @@
+{
+  "schema": "jocforge-f06nr-primary-bank-wash-verification.v1",
+  "package_id": "F06NR-F08-PRIMARY-BANK-STATE-CROSSWALK-V1",
+  "status": "MODEL_BANK_AND_OWNER_CROSSWALK_CLOSED_NUMERIC_AFTER_STATE_NOT_RUN",
+  "source_package_manifest_sha256": "9f6c7a14e9496733cf358fcf94889d3962222713c3cf2d791febe3d5ba4dcdaa",
+  "source_package_payload_hashes_verified": "6/6",
+  "approved_base_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_leaf_hashes_verified": "16/16",
+  "input_package_manifest_sha256": "6f2ff56687f7cf62e082d0801f90b126dca6ef96457566f6ca3620130e662ded",
+  "input_package_payloads_verified": "9/9",
+  "input_vector_hashes_independently_recomputed": "3/3",
+  "supporting_wash_supplements": [
+    {"package_id": "F07-F08-NATIVE-PARENT-LIFECYCLE-BOUNDARY-V1", "manifest_sha256": "62a1164b98197aff7eb0120737b0250e69cc9016b03f2a77a793c88e389055d8", "payloads_verified": true},
+    {"package_id": "F08-MODEL-CONTRACT-AVAILABILITY-AND-REMAINDER-V1", "manifest_sha256": "6d13f8a8bf3961c649ea1a3583e39f6fe25da7d95ae9266f5c2c30dbdcb0aacc", "payloads_verified": true}
+  ],
+  "model_bank_rule": "F06NR uses its own secondary reconstruction history with the F08 PRIMARY long/short algorithm; F06NI consumes that same unquantized spectrum. Analysis-root primary and companion histories are separate owners and are neither used nor advanced by F06NR.",
+  "frozen_python_identity": {
+    "sha256_reported": "7a18804788df90f50883649f5e93fd73e4cee57df03f1bf76695b1d9a09c7eec",
+    "source_included_or_rehashed_by_wash": false,
+    "not_required_for_the_approved_spec_mapping": true
+  },
+  "numeric_forward_after_state": "NOT_RUN",
+  "numeric_inverse_carry_after_state": "NOT_RUN",
+  "nonzero_secondary_carrier": "NOT_RUN",
+  "native_dll_or_runtime_join": "NOT_RUN_AND_NOT_REQUIRED_FOR_SELECTED_MODEL_RULE",
+  "real_pcm_or_private_key_included": false,
+  "product_or_full_song_acceptance": "NOT_RUN"
+}

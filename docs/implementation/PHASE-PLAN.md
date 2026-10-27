@@ -473,6 +473,7 @@
       ],
       "io_rule": "seek/chunk/bounded read only; pass bytes and explicit offsets to domain; cannot mutate owner"
     },
+    "canonical_gtc_state_ref_status": "LOCALLY_VERIFIED_COMPLETE_READER_EOF_STATE_REFERENCE",
     "canonical_serialization": {
       "f32": "exact U32 bits row-major",
       "field_order": [
@@ -487,6 +488,15 @@
       "integers": "little-endian",
       "optional": "presence byte then payload",
       "padding": "none"
+    },
+    "canonical_state_reference": {
+      "cold_bytes": 31,
+      "cold_sha256": "8b3391d621f823e01cbda7dc935c1b659b8779b5f488d123a40a2a753da9dbd9",
+      "generation": "machine generation; advances only on explicit local commit",
+      "serialization": "Existing complete ReaderEofState canonical bytes",
+      "snapshot_api": "ReaderEofMachine::state_reference",
+      "state_ref": "owners.reader_eof",
+      "state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6"
     },
     "clock": {
       "advance": "one per committed normal or cached-drain callback",
@@ -566,6 +576,24 @@
         "cold": 0,
         "name": "last_phase",
         "type": "U8 enum UNSET=0 NORMAL=1 CACHED_DRAIN=2"
+      }
+    ],
+    "gtc_owner_receipt_status": "NOT_IMPLEMENTED",
+    "gtc_single_root_swap_status": "NOT_RUN",
+    "implementation_files": [
+      "crates/jocforge-domain/src/state/reader_eof.rs",
+      "crates/jocforge-domain/src/state/mod.rs"
+    ],
+    "implementation_inventory": [
+      {
+        "bytes": 12844,
+        "path": "crates/jocforge-domain/src/state/reader_eof.rs",
+        "sha256": "c3d206180626cff155a896c2caf4dd6a79c92dd5b890d34ecb778384dc5465dd"
+      },
+      {
+        "bytes": 850,
+        "path": "crates/jocforge-domain/src/state/mod.rs",
+        "sha256": "c755479e7fd2d18d6130eea9fcc79a5588bdbe4837c02967adfeb5a5c9d2956e"
       }
     ],
     "implementation_status": "LOCALLY_VERIFIED",
@@ -667,7 +695,21 @@
       "/f03w_owned_fields/source_cache/last_control_snapshot",
       "/f03w_owned_fields/source_cache/last_phase"
     ],
-    "schema_version": "selected-adm-installed48-state.v3"
+    "schema_version": "selected-adm-installed48-state.v3",
+    "state_reference_verification": {
+      "cold_warm_cases": 1,
+      "test_status": "LOCALLY_VERIFIED"
+    },
+    "test_inventory": [
+      {
+        "bytes": 7779,
+        "path": "crates/jocforge-domain/tests/reader_eof_lifecycle.rs",
+        "sha256": "c473bd99ea704368cb518ef091b467ed65c57a2f195eba0bb9128d12c7a8efd3"
+      }
+    ],
+    "test_modules": [
+      "crates/jocforge-domain/tests/reader_eof_lifecycle.rs"
+    ]
   },
   "task": {
     "implementation_status": "LOCALLY_VERIFIED",
@@ -693,6 +735,7 @@
       ],
       "io_rule": "I/O gathers bounded metadata bytes only; domain parses/validates and owns state"
     },
+    "canonical_gtc_state_ref_status": "LOCALLY_VERIFIED_COLD_STATE_REFERENCE_ONLY",
     "canonical_serialization": {
       "digest": "SHA-256 over complete canonical /value bytes",
       "encoding": "UTF-8 JSON",
@@ -704,6 +747,15 @@
       ],
       "sort_keys": true,
       "trailing_bytes": "none"
+    },
+    "canonical_state_reference": {
+      "cold_bytes": 4402,
+      "cold_sha256": "9c943879cd36cb45bc7538346cfdf4f71d0998d8f261f75c135045fcb59870aa",
+      "scope": "Cold-only; current stage clones cold state and no warm state transition or parent receipt is claimed",
+      "serialization": "Existing validated provider canonical bytes",
+      "snapshot_api": "FrontendControlMachine::state_reference",
+      "state_ref": "owners.frontend_control",
+      "state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6"
     },
     "clock": {
       "advance": "one per committed normal or cached-drain callback",
@@ -825,6 +877,24 @@
         "type": "immutable selected config record"
       }
     ],
+    "gtc_owner_receipt_status": "NOT_IMPLEMENTED",
+    "gtc_single_root_swap_status": "NOT_RUN",
+    "implementation_files": [
+      "crates/jocforge-domain/src/frontend/state.rs",
+      "crates/jocforge-domain/src/frontend/mod.rs"
+    ],
+    "implementation_inventory": [
+      {
+        "bytes": 16878,
+        "path": "crates/jocforge-domain/src/frontend/state.rs",
+        "sha256": "9f7f903093d37cd9cd56ce3e4219d1281eff95d14f218297e851f29eb809c5fa"
+      },
+      {
+        "bytes": 1774,
+        "path": "crates/jocforge-domain/src/frontend/mod.rs",
+        "sha256": "5fe4186ed860f5d3c61dc5d85a90a80bdbd5bf83770f1fb718164f02fedf1056"
+      }
+    ],
     "implementation_status": "P1.3_B1_LOCALLY_VERIFIED_STAGING_ONLY",
     "linear_capabilities": {
       "machine": {
@@ -939,7 +1009,17 @@
     "root_id": "frontend_control",
     "schema_file": "parameters/f01e-selected-constructor-v1.json",
     "schema_pointer": "/value",
-    "schema_version": "f01e-selected-constructor.v1"
+    "schema_version": "f01e-selected-constructor.v1",
+    "test_inventory": [
+      {
+        "bytes": 5653,
+        "path": "crates/jocforge-domain/tests/frontend_control_staging.rs",
+        "sha256": "49b641d631f1b2b2849e324c346d0eb212b80d8d647b23643fc883734802928a"
+      }
+    ],
+    "test_modules": [
+      "crates/jocforge-domain/tests/frontend_control_staging.rs"
+    ]
   },
   "task": {
     "cross_root_atomic_commit": "DEFERRED_NOT_IMPLEMENTED",
@@ -1318,6 +1398,7 @@
       "parent_success": "commit only persistent histories; packet storage stays outside the root",
       "same_parent_transaction": "Both packets and their corresponding staged-after root belong to the same parent CallbackTransaction"
     },
+    "canonical_gtc_state_ref_status": "LOCALLY_VERIFIED_COMPLETE_SPATIAL_CONTROL_STATE_REFERENCE",
     "canonical_state": {
       "arrays": "fixed arrays row-major",
       "digest": "SHA-256 over the complete serialized v5 persistent f03w_owned_fields; recompute from the full v5 preimage after callback outputs and immutable profile_dimensions are excluded",
@@ -1330,6 +1411,14 @@
       "serialization_rule": "Canonical map in shown field order; fixed arrays row-major; integers little-endian; F32 exact U32 bits; optional values carry presence byte; variable records carry U32LE count and length. Callback-local scratch is never serialized. No pointers, padding, hash-expanded bytes or zero-filled unknown state.",
       "serialization_source": "parameters/adm-installed48-state-v1.json#/serialization",
       "variable_records": "U32LE count and length"
+    },
+    "canonical_state_reference": {
+      "cold_bytes": 768582,
+      "cold_sha256": "cb9b512e03d82604270a22cf60e288f9ea8f6aa808517a6319a27f860552bcc0",
+      "serialization": "Existing complete selected v5 root canonical bytes",
+      "snapshot_api": "SpatialControlMachine::state_reference",
+      "state_ref": "owners.spatial_control",
+      "state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6"
     },
     "clock": {
       "callback_index": {
@@ -1468,6 +1557,24 @@
       "reset": "destroy every owner root and call each referenced cold constructor; a missing constructor is fatal; unknown arrays are not zero-filled",
       "reset_source": "parameters/adm-installed48-state-v1.json#/reset"
     },
+    "gtc_owner_receipt_status": "NOT_IMPLEMENTED",
+    "gtc_single_root_swap_status": "NOT_RUN",
+    "implementation_files": [
+      "crates/jocforge-domain/src/spatial/spatial_control.rs",
+      "crates/jocforge-domain/src/spatial/mod.rs"
+    ],
+    "implementation_inventory": [
+      {
+        "bytes": 33420,
+        "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+        "sha256": "b23c0cc31eb8a2e0be1fe0b0635addb5dd680f713971c174e34c95697e2fed8c"
+      },
+      {
+        "bytes": 3333,
+        "path": "crates/jocforge-domain/src/spatial/mod.rs",
+        "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"
+      }
+    ],
     "implementation_status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
     "materialization_status": "LOCALLY_VERIFIED_STORAGE_AND_STAGING_FOUNDATION__PACKET_PRODUCERS_DEFERRED",
     "overlap_projection": {
@@ -1534,13 +1641,14 @@
       "package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
       "previous_schema_amendment_file": "docs/implementation/CALLBACK-OUTPUT-PERSISTENCE-AMENDMENT.md",
       "schema_amendment_file": "docs/implementation/SPATIAL-CONTROL-STATE-V5-AMENDMENT.md",
-      "state_ref_value": "parameters/adm-installed48-state-v1.json#/f03w_owned_fields",
+      "state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6",
+      "state_ref_value": "owners.spatial_control",
       "superseding_logic_schema": "selected-adm-installed48-state.v5",
       "wrapper_bindings": {
         "cold_sha256": "SHA-256 over canonical bytes generated from the complete cold constructor and validated provider values",
         "generation": "main callback generation; cold=0",
         "owner_id": "spatial_control",
-        "state_ref": "parameters/adm-installed48-state-v1.json#/f03w_owned_fields",
+        "state_ref": "owners.spatial_control",
         "state_sha256": "SHA-256 over complete canonical f03w_owned_fields bytes"
       },
       "wrapper_fields": [
@@ -1596,6 +1704,27 @@
       ],
       "receipt_source": "specs/00-global-transaction-evidence-gaps.md#G02"
     },
+    "state_reference_verification": {
+      "cold_bytes": 768582,
+      "cold_sha256": "cb9b512e03d82604270a22cf60e288f9ea8f6aa808517a6319a27f860552bcc0",
+      "focused_test_status": "PASS_3"
+    },
+    "test_inventory": [
+      {
+        "bytes": 33420,
+        "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+        "sha256": "b23c0cc31eb8a2e0be1fe0b0635addb5dd680f713971c174e34c95697e2fed8c"
+      },
+      {
+        "bytes": 10051,
+        "path": "crates/jocforge-domain/tests/spatial_control_foundation.rs",
+        "sha256": "7235e30cf033d32c746e44c5501424a77e97fe84f745984c8cecf771d40d3212"
+      }
+    ],
+    "test_modules": [
+      "crates/jocforge-domain/src/spatial/spatial_control.rs",
+      "crates/jocforge-domain/tests/spatial_control_foundation.rs"
+    ],
     "transaction_stage": {
       "capabilities": [
         "SpatialControlPrepared non-Clone/non-Copy",
@@ -2017,7 +2146,8 @@
       "local_snapshot_api": "SpatialAudioMachine::state_reference",
       "receipt_or_commit": "none; enclosing GTC remains the only parent receipt and commit authority",
       "serialization": "Existing complete F04CompositionState canonical bytes",
-      "state_ref": "owners.spatial_audio"
+      "state_ref": "owners.spatial_audio",
+      "state_ref_convention_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6"
     },
     "clock": {
       "callback_index_type": "FrontendCallbackIndex",
@@ -2507,14 +2637,14 @@
       "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"
     },
     {
-      "bytes": 3294,
+      "bytes": 3333,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"
+      "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"
     },
     {
-      "bytes": 30134,
+      "bytes": 33420,
       "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-      "sha256": "0ea66b3b2d1c5f1ae554769ecb92c0001130915b536cb461ec084f0b0ee5ae86"
+      "sha256": "b23c0cc31eb8a2e0be1fe0b0635addb5dd680f713971c174e34c95697e2fed8c"
     },
     {
       "bytes": 2915,
@@ -2596,6 +2726,7 @@
     "spatial_control_foundation_tests": "PASS_6",
     "spatial_control_parent_seam_tests": "PASS_1",
     "spatial_control_production_admission_tests": "PASS_1",
+    "spatial_control_state_ref_tests": "PASS_3",
     "spatial_unit_tests": "PASS_162_IGNORED_1",
     "workspace_check": "PASS",
     "workspace_clippy_all_targets_deny_warnings": "PASS"
@@ -2659,9 +2790,9 @@
       "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"
     },
     {
-      "bytes": 3294,
+      "bytes": 3333,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"
+      "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"
     },
     {
       "bytes": 2672,
@@ -2696,9 +2827,26 @@
       }
     ],
     "classification": "CURRENT_IMPLEMENTATION_INVENTORY; historical source evidence remains separate",
-    "current_source_scope": "The Wash amendments bind the pre-extension source bytes at commit 99f27fe9e22a90bac957f4e935b91a95fcdde8fc. A separate local, read-only SpatialAudio owner state-reference view was then added using the existing complete canonical bytes; it does not change F04 serialization, stage behavior, or parent commit authority. The complete current files are recorded in the current inventory below.",
+    "current_source_scope": "The Wash amendments bind the pre-extension source bytes at commit 99f27fe9e22a90bac957f4e935b91a95fcdde8fc. Separate local, read-only SpatialAudio and SpatialControl owner state-reference views were then added using the existing complete canonical bytes; they do not change either serializer, stage behavior, or parent commit authority. The complete current files are recorded in the current inventory below.",
     "local_extension_after_wash_inventory": {
       "base_commit": "99f27fe9e22a90bac957f4e935b91a95fcdde8fc",
+      "base_files": [
+        {
+          "bytes": 53239,
+          "path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs",
+          "sha256": "74fe7640d04a263508182ea7c765cae19ed85e19715a6de11a013baaecf490c4"
+        },
+        {
+          "bytes": 30134,
+          "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+          "sha256": "0ea66b3b2d1c5f1ae554769ecb92c0001130915b536cb461ec084f0b0ee5ae86"
+        },
+        {
+          "bytes": 3261,
+          "path": "crates/jocforge-domain/src/spatial/mod.rs",
+          "sha256": "521768b37a8fa6957abc2e55b5383c1b6c363f3356ac46a0a05f77fd6e2bcfe3"
+        }
+      ],
       "current_files": [
         {
           "bytes": 55012,
@@ -2706,9 +2854,14 @@
           "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"
         },
         {
-          "bytes": 3294,
+          "bytes": 33420,
+          "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
+          "sha256": "b23c0cc31eb8a2e0be1fe0b0635addb5dd680f713971c174e34c95697e2fed8c"
+        },
+        {
+          "bytes": 3333,
           "path": "crates/jocforge-domain/src/spatial/mod.rs",
-          "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"
+          "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"
         }
       ],
       "parent_receipt_or_commit_added": false,
@@ -2819,9 +2972,9 @@
     "clock_domain_file": "crates/jocforge-domain/src/timeline/index.rs",
     "file_inventory": [
       {
-        "bytes": 30134,
+        "bytes": 33420,
         "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-        "sha256": "0ea66b3b2d1c5f1ae554769ecb92c0001130915b536cb461ec084f0b0ee5ae86"
+        "sha256": "b23c0cc31eb8a2e0be1fe0b0635addb5dd680f713971c174e34c95697e2fed8c"
       },
       {
         "bytes": 2915,
@@ -2834,9 +2987,9 @@
         "sha256": "50696493ea1bed2b647f2c438f032410548b70e5008b535773e23647ee59bd40"
       },
       {
-        "bytes": 3294,
+        "bytes": 3333,
         "path": "crates/jocforge-domain/src/spatial/mod.rs",
-        "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"
+        "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"
       },
       {
         "bytes": 10051,
@@ -4316,9 +4469,9 @@
       "sha256": "b4d3c456d02cfb4cafc93e870beeb7fc190a293332bf241c746f96e74672d48e"
     },
     {
-      "bytes": 3294,
+      "bytes": 3333,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"
+      "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"
     }
   ],
   "implementation_prohibitions": [
@@ -4720,9 +4873,9 @@
       "sha256": "3593a00feaf527991bce45289fe113c62a5b0f51e70630f7e0f4d8ca41b22e5c"
     },
     {
-      "bytes": 3294,
+      "bytes": 3333,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"
+      "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"
     }
   ],
   "implementation_prohibitions": [
@@ -5145,9 +5298,9 @@
       "sha256": "d393d09d14346d9c275650ea2918b6e59a18d5113a82d1a9208d9ed044923f18"
     },
     {
-      "bytes": 3294,
+      "bytes": 3333,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"
+      "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"
     }
   ],
   "implementation_prohibitions": [
@@ -5526,9 +5679,9 @@
       "sha256": "9184b8ca22b5ed89082a92e3027b74c13d7e5424c4504598c3e71c239f2beeaa"
     },
     {
-      "bytes": 3294,
+      "bytes": 3333,
       "path": "crates/jocforge-domain/src/spatial/mod.rs",
-      "sha256": "69cf4de9fa57d51187fedd9dfc4697b855c4f30a60d6f63b4523227c9d78ac92"
+      "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"
     }
   ],
   "implementation_prohibitions": [
@@ -8427,9 +8580,9 @@
       "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"
     },
     {
-      "bytes": 30134,
+      "bytes": 33420,
       "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-      "sha256": "0ea66b3b2d1c5f1ae554769ecb92c0001130915b536cb461ec084f0b0ee5ae86"
+      "sha256": "b23c0cc31eb8a2e0be1fe0b0635addb5dd680f713971c174e34c95697e2fed8c"
     }
   ],
   "implementation_prohibitions": [
@@ -8756,9 +8909,9 @@
       "sha256": "bfa2808ba2aa5566cf832a76a5ef93a6180bc1e81c35a63934809f3ffe9abce7"
     },
     {
-      "bytes": 30134,
+      "bytes": 33420,
       "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-      "sha256": "0ea66b3b2d1c5f1ae554769ecb92c0001130915b536cb461ec084f0b0ee5ae86"
+      "sha256": "b23c0cc31eb8a2e0be1fe0b0635addb5dd680f713971c174e34c95697e2fed8c"
     }
   ],
   "implementation_prohibitions": [
@@ -9183,6 +9336,7 @@
 | F06NR/single-lane-secondary-overlap-carry | Phase 5 | Consumes one already-transformed 256-word lane block and an independent 128-word carry, applies the selected math-generated F08 window with the F06NR.3 overlap operation order, and returns all 256 output words plus the exact D[64..192] next carry. It owns no clock, lane routing, frame/source transaction, inverse FFT, carrier assembly or private EOF flush; it does not claim original static-window identity or whole F06NR equivalence. | `crates/jocforge-domain/src/transform/mod.rs`<br>`crates/jocforge-domain/src/transform/secondary_overlap.rs`<br>`crates/jocforge-domain/src/transform/ordinary_transform_math_parameters.json` | `crates/jocforge-domain/tests/secondary_overlap.rs` | LOCALLY_VERIFIED_SELECTED_SINGLE_LANE_OVERLAP_AND_CARRY__F06NR_FRAME_DEFERRED |
 | F06NR/selected-secondary-carrier-routing | Phase 5 | Consumes five logical lane streams, each with six finite 256-word blocks. It drops block 0, places blocks 1..5 in carrier rows [0,2,1,4,5], leaves row 3 as positive-zero LFE, and leaves the final 256 words of every row as positive zero. It does not implement FFT, inverse, overlap, transform history, frame transaction, or whole F06NR composition. | `crates/jocforge-domain/src/transform/mod.rs`<br>`crates/jocforge-domain/src/transform/secondary_carrier.rs` | `crates/jocforge-domain/tests/secondary_carrier.rs` | LOCALLY_VERIFIED_SELECTED_SECONDARY_CARRIER_ROUTING_AND_WARMUP_DROP__FULL_F06NR_DEFERRED |
 | F06NR/selected-secondary-source-au-clock-projection | Phase 5 | Pure typed conversion for the selected sample-count, callback, codec-source, JOC-dispatch, generated-writer, popped-writer and published-AU domains. It accounts for 4,247 normal callbacks, four cached drains, two suppressed priming sources, 4,249 sources and 4,247 published AUs, including ordinary/JOC pending writer ordinals. It does not execute transform blocks, write codec frames, flush at EOF, commit a programme, or claim whole F06NR production integration. | `crates/jocforge-domain/src/timeline/mod.rs`<br>`crates/jocforge-domain/src/timeline/index.rs`<br>`crates/jocforge-domain/src/timeline/clock.rs` | `crates/jocforge-domain/tests/timeline_clock_contract.rs` | LOCALLY_VERIFIED_TYPED_SOURCE_DISPATCH_AU_WRITER_PROJECTION__FULL_F06NR_DEFERRED |
+| F06NR/selected-f06nr-same-source-drc-proposal | Phase 5 | For one source, the DRC root reads F07 delayed primary rows and short_consumed from one SharedAnalysisReceipt, stages F06NR secondary history/carrier and F06ND using that same receipt, then joins both after-states into one complete noncommitting DRC proposal. This is a callable domain API only: numerical after-state parity, a parent/application callsite, receipt admission, and root commit are not established. | `crates/jocforge-domain/src/drc/secondary_source_owner.rs`<br>`crates/jocforge-domain/src/drc/none_drc_owner.rs`<br>`crates/jocforge-domain/src/drc/none_drc_statistics.rs`<br>`crates/jocforge-domain/src/drc/mod.rs`<br>`crates/jocforge-domain/src/analysis/source_frame.rs`<br>`crates/jocforge-domain/src/timeline/clock.rs`<br>`crates/jocforge-domain/src/timeline/index.rs`<br>`crates/jocforge-domain/src/transaction/mod.rs`<br>`crates/jocforge-domain/src/numeric/finite_f32.rs`<br>`crates/jocforge-domain/src/transform/fbw_transform.rs`<br>`crates/jocforge-domain/src/transform/long_transform.rs`<br>`crates/jocforge-domain/src/transform/math_generated_parameters.rs`<br>`crates/jocforge-domain/src/transform/secondary_carrier.rs`<br>`crates/jocforge-domain/src/transform/secondary_fft.rs`<br>`crates/jocforge-domain/src/transform/secondary_inverse.rs`<br>`crates/jocforge-domain/src/transform/secondary_overlap.rs`<br>`crates/jocforge-domain/src/transform/window_fold.rs` | `crates/jocforge-domain/src/drc/secondary_source_owner/tests.rs`<br>`crates/jocforge-domain/src/drc/none_drc_owner.rs` | LOCALLY_VERIFIED_NONCOMMITTING_SAME_SOURCE_DRC_PROPOSAL_API__NUMERICAL_PARITY_AND_PARENT_COMMIT_NOT_RUN |
 | F06NI/selected-secondary-inverse256-wrapper | Phase 5 | Implements the selected long/short inverse256 spectrum split, descriptor pre/post rotations, F06NF FFT128/FFT64 calls, the descriptor scale and outer clamp. Each invocation is stateless and returns a complete 256-word array. It does not own forward history, inverse carry, overlap, F06NR frame/block placement, main-source transaction, or F06 finalize identity. | `crates/jocforge-domain/src/transform/mod.rs`<br>`crates/jocforge-domain/src/transform/secondary_fft.rs`<br>`crates/jocforge-domain/src/transform/secondary_inverse.rs`<br>`crates/jocforge-domain/src/transform/secondary_fft_parameters.json` | `crates/jocforge-domain/tests/secondary_inverse.rs`<br>`crates/jocforge-domain/tests/secondary_fft.rs` | LOCALLY_VERIFIED_LONG_SHORT_INVERSE256_SPLIT_ROTATION_AND_CLAMP__OVERLAP_DEFERRED |
 | F06NF/selected-secondary-fft-network | Phase 5 | Implements the stateless F06NF complex FFT64/FFT128 network with the selected pinned twiddle, scale and permutation words. It follows the specified F4/B4 operation order with a separate F32 rounding step for each add, subtract and multiply. It validates the full supplied parameter document, including the pre/post rotation arrays reserved for the surrounding inverse path. It does not implement inverse256, spectrum pre/post rotations, forward analysis, overlap history, or full F06 main-source composition. | `crates/jocforge-domain/src/transform/mod.rs`<br>`crates/jocforge-domain/src/transform/secondary_fft.rs`<br>`crates/jocforge-domain/src/transform/secondary_fft_parameters.json` | `crates/jocforge-domain/tests/secondary_fft.rs` | LOCALLY_VERIFIED_SECONDARY_FFT64_128_DIRECT_AND_BASIS_VECTORS__INVERSE_CHAIN_DEFERRED |
 | F06U/ungated-single-slot-mean-and-di-off-getter | Phase 5 | Fixed period-one/capacity-one F06U admission, mean update, normalized event result, full eight-field state projection, and selected 1770-4 DI-off getter. Consumes explicit energy mantissa/exponent pairs. Reuses the selected F06L log network only; no meter frontend, F06I integrated state, F06W scheduling, K/FIR processing, measurement owner, source/AU parent, or full none-DRC path. | `crates/jocforge-domain/src/meter/mod.rs`<br>`crates/jocforge-domain/src/meter/ungated_mean.rs`<br>`crates/jocforge-domain/src/meter/true_peak.rs`<br>`crates/jocforge-domain/src/meter/truepeak_log_parameters.json` | `crates/jocforge-domain/tests/ungated_mean.rs` | LOCALLY_VERIFIED_F06U_SINGLE_SLOT_MEAN_AND_DI_OFF_SELECTION__INTEGRATED_METER_DEFERRED |
@@ -9199,7 +9353,7 @@
 | F06ND/selected-none-drc-closed-numeric-outcome-mapping | Phase 5 | Maps only the declared F06ND intermediate numeric-failure class in the statistics/scheduler composition: R32 arithmetic failure, normalization/quantizer NumericNonFinite, and checked scheduler U64 generation overflow return NUMERIC_FAILURE. Other nested labels, raw input NaN/Inf, out-of-range dialnorm, parameter identity mismatch and simultaneous-invalid precedence remain UNBOUND. This mapping returns only an outcome classification; it owns no state, commit, reset or native parity. | `crates/jocforge-domain/src/drc/none_drc_statistics.rs`<br>`crates/jocforge-domain/src/drc/none_drc_scheduler.rs`<br>`crates/jocforge-domain/src/drc/none_drc_frame.rs`<br>`crates/jocforge-domain/src/drc/none_drc_callback.rs` | `crates/jocforge-domain/tests/none_drc_frame.rs` | LOCALLY_VERIFIED_DECLARED_NUMERIC_FAILURE_CLASS__PRECEDENCE_AND_OTHER_CHILD_LABELS_OPEN |
 | F06ND/selected-none-drc-bsi-high-byte-projection | Phase 5 | Consumes only the selected scheduler RF U16 control word and six line U16 control words and returns their high bytes for the F12 BSI boundary. It does not reinterpret BSI bytes as U16 inputs, consume auxiliary/limiter words or flags, emit any F12 bits, or perform CRC/whole-frame writing. | `crates/jocforge-domain/src/lib.rs`<br>`crates/jocforge-domain/src/drc/mod.rs`<br>`crates/jocforge-domain/src/drc/none_drc_bsi_projection.rs`<br>`crates/jocforge-domain/src/drc/none_drc_scheduler.rs` | `crates/jocforge-domain/tests/none_drc_bsi_projection.rs` | LOCALLY_VERIFIED_RF_AND_SIX_LINE_HIGH_BYTE_PROJECTION__F12_WRITER_OPEN |
 | F06ND/selected-f06nd-controls-to-f12-bsi-drc-fields | Phase 5 | Binds a successful callback-derived F06ND transition to a caller-supplied F12 CodecSourceIndex and stages only selected DRC BSI fields. It writes U5 dialnorm, `compre`, and optional `compr` at header bit 45; writes each selected line-presence/code pair at the live cursor after that block's optional short/dither syntax in block order 0..5. Each field group is capacity-preflighted as one bounded write. This does not build other BSI fields, codec audio syntax, candidate trials, CRC, a complete frame, or parent state. | `crates/jocforge-domain/src/codec/frame_syntax.rs`<br>`crates/jocforge-domain/src/codec/frame_builder.rs`<br>`crates/jocforge-domain/src/codec/bitio.rs`<br>`crates/jocforge-domain/src/drc/none_drc_callback.rs`<br>`crates/jocforge-domain/src/drc/none_drc_bsi_projection.rs` | `crates/jocforge-domain/tests/none_drc_bsi_fields.rs`<br>`crates/jocforge-domain/tests/none_drc_frame.rs`<br>`crates/jocforge-domain/src/codec/frame_syntax.rs` | LOCALLY_VERIFIED_SAME_SOURCE_BSI_CONTROL_PLAN_AND_CURSOR_WRITES__FULL_F12_DEFERRED |
-| F06ND/selected-none-drc-source-owner-stage | Phase 5 | Adds a standalone selected DRC root around the existing secondary histories, F06ND statistics, scheduler, four-record zero FIFO, and programme dialnorm. For one source it validates the same SharedAnalysisReceipt, callback identity, attempt, source index, and local generations, then stages the F06ND transition and BSI projection. A typed secondary after-state can be joined into a complete noncommitting DRC after-root, but no F06NR producer is connected here. | `crates/jocforge-domain/src/drc/none_drc_owner.rs`<br>`crates/jocforge-domain/src/drc/mod.rs`<br>`crates/jocforge-domain/src/analysis/source_frame.rs`<br>`crates/jocforge-domain/src/transaction/mod.rs` | `crates/jocforge-domain/src/drc/none_drc_owner.rs` | LOCALLY_MATERIALIZED_NONCOMMITTING_F06ND_SOURCE_STAGE__F06NR_RECEIPT_AND_PARENT_NOT_RUN |
+| F06ND/selected-none-drc-source-owner-stage | Phase 5 | The standalone DRC root combines the selected secondary histories, F06ND statistics/scheduler/FIFO, and programme dialnorm. For one source, a callable domain API reads F07 delayed audio and flags from one SharedAnalysisReceipt, stages F06NR and F06ND from that same receipt, and returns a complete noncommitting DRC after-root proposal. Numerical parity, a production parent caller, receipt admission, and parent commit remain NOT_RUN. | `crates/jocforge-domain/src/drc/none_drc_owner.rs`<br>`crates/jocforge-domain/src/drc/mod.rs`<br>`crates/jocforge-domain/src/drc/secondary_source_owner.rs`<br>`crates/jocforge-domain/src/analysis/source_frame.rs`<br>`crates/jocforge-domain/src/transaction/mod.rs`<br>`crates/jocforge-domain/src/transform/long_transform.rs` | `crates/jocforge-domain/src/drc/none_drc_owner.rs`<br>`crates/jocforge-domain/src/drc/secondary_source_owner/tests.rs` | LOCALLY_VERIFIED_SAME_RECEIPT_F06NR_F06ND_NONCOMMITTING_PROPOSAL__PARENT_RECEIPT_AND_COMMIT_NOT_RUN |
 | F07/input-history-block-transition | Phase 6 | Implements one F07.1 256-word transition over one 1,280-word lane history, returning old history[256..512] and the next history formed by dropping the first 256 words and appending the current block. Six lanes and two frames are replayed against U-HISTORY-01 byte files. It does not implement F07.2 transient filtering, F08 transform history, programme ownership, source/callback clocks, or parent reset/fatal/EOF transactions. | `crates/jocforge-domain/src/analysis/input_history.rs` | `crates/jocforge-domain/tests/input_history.rs` | LOCALLY_VERIFIED_TWO_FRAME_SIX_LANE_F07_1_HISTORY__TRANSIENT_AND_PARENT_OWNER_OPEN |
 | F07/structure-refresh-flag-projection | Phase 6 | Projects caller-supplied six-block short_consumed and other_consumed flags to the selected-profile F07.4 structure-refresh flags. SPX=0 and end-bin=217 are fixed by the selected profile. It does not produce either input flag, implement transient filtering/queues, or own frame state. | `crates/jocforge-domain/src/analysis/structure_refresh.rs` | `crates/jocforge-domain/tests/transient_flag_primitives.rs` | LOCALLY_VERIFIED_SELECTED_PROFILE_4096_STRUCTURE_CASES__WHOLE_F07_OPEN |
 | F07/selected-dither-flag-plan | Phase 6 | Projects caller-supplied prior_short[5] and short_consumed[6][5] into six-by-five dither flags, header syntax presence, and next_previous_short[5] for selector 7/acmod 7/coupling disabled/gate enabled. It does not produce short flags, mutate programme state, serialize a header, or close F07/F12. | `crates/jocforge-domain/src/analysis/dither.rs` | `crates/jocforge-domain/tests/transient_flag_primitives.rs` | LOCALLY_VERIFIED_2048_SELECTED_DITHER_PLANS__WHOLE_F07_OPEN |

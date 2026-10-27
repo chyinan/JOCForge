@@ -57,6 +57,8 @@ const NORMAL_CALLBACKS_COLD: u64 = 0;
 const CACHED_DRAINS_COLD: u32 = 4;
 const F01E_COLD_BYTES: usize = 4_402;
 const F03_TARGET_PROJECTION_BYTES: u64 = 630;
+const SPATIAL_CONTROL_OWNER_ID: &str = "spatial_control";
+const SPATIAL_CONTROL_STATE_REF: &str = "owners.spatial_control";
 
 /// Producer capability reserved for the future F03W direct-LFE ingress path.
 #[derive(Debug)]
@@ -93,6 +95,48 @@ impl SpatialControlDigest {
             write!(&mut value, "{byte:02x}").expect("writing to String cannot fail");
         }
         value
+    }
+}
+
+/// Read-only GTC owner-state view over the complete persistent SpatialControl root.
+///
+/// `state_ref` is a logical member key. The borrowed bytes are the complete v5
+/// canonical owner preimage; this view contains no receipt or parent commit state.
+#[derive(Clone, Copy, Debug)]
+pub struct SpatialControlOwnerStateReference<'a> {
+    state: &'a SpatialControlState,
+    generation: u64,
+    state_sha256: SpatialControlDigest,
+    cold_sha256: SpatialControlDigest,
+}
+
+impl<'a> SpatialControlOwnerStateReference<'a> {
+    pub const fn owner_id(&self) -> &'static str {
+        SPATIAL_CONTROL_OWNER_ID
+    }
+
+    pub const fn state_ref(&self) -> &'static str {
+        SPATIAL_CONTROL_STATE_REF
+    }
+
+    pub const fn state(&self) -> &'a SpatialControlState {
+        self.state
+    }
+
+    pub fn canonical_bytes(&self) -> &'a [u8] {
+        self.state.canonical_bytes()
+    }
+
+    pub const fn generation(&self) -> u64 {
+        self.generation
+    }
+
+    pub const fn state_sha256(&self) -> SpatialControlDigest {
+        self.state_sha256
+    }
+
+    pub const fn cold_sha256(&self) -> SpatialControlDigest {
+        self.cold_sha256
     }
 }
 
@@ -660,6 +704,7 @@ impl SpatialControlJoinMetadata {
 pub struct SpatialControlMachine {
     committed: SpatialControlState,
     generation: u64,
+    cold_digest: SpatialControlDigest,
     profile_identity: EncodingProfile,
     provider_lineage: SpatialControlProviderLineage,
 }
@@ -699,9 +744,11 @@ impl SpatialControlMachine {
         let provider_lineage =
             SpatialControlProviderLineage::from_receipts(f01e_receipt, f03_receipt);
         let committed = SpatialControlState::from_cold(f01e.canonical_bytes(), f03);
+        let cold_digest = committed.digest();
         Ok(Self {
             committed,
             generation: 0,
+            cold_digest,
             profile_identity,
             provider_lineage,
         })
@@ -731,6 +778,16 @@ impl SpatialControlMachine {
 
     pub const fn digest(&self) -> SpatialControlDigest {
         self.committed.digest()
+    }
+
+    /// Returns the complete current root through the registered logical GTC state_ref.
+    pub fn state_reference(&self) -> SpatialControlOwnerStateReference<'_> {
+        SpatialControlOwnerStateReference {
+            state: &self.committed,
+            generation: self.generation,
+            state_sha256: self.committed.digest(),
+            cold_sha256: self.cold_digest,
+        }
     }
 
     pub const fn profile(&self) -> EncodingProfile {
@@ -854,6 +911,43 @@ mod tests {
         let f03_evidence = ProviderFileEvidence::new(Arc::from(F03_PROVIDER_BYTES), None);
         let f03 = validate_f03_target_cold_provider(&f03_evidence, &f03_manifest).unwrap();
         SpatialControlMachine::new_cold(EncodingProfile::selected(), &f01e, &f03).unwrap()
+    }
+
+    #[test]
+    fn owner_state_reference_contains_the_complete_v5_cold_root() {
+        let machine = selected_machine();
+        let reference = machine.state_reference();
+
+        assert_eq!(reference.owner_id(), "spatial_control");
+        assert_eq!(reference.state_ref(), "owners.spatial_control");
+        assert_eq!(reference.generation(), 0);
+        assert!(std::ptr::eq(reference.state(), machine.committed()));
+        assert_eq!(
+            reference.canonical_bytes(),
+            machine.committed().canonical_bytes()
+        );
+        assert_eq!(reference.canonical_bytes().len(), 768_582);
+        assert_eq!(reference.state_sha256(), machine.digest());
+        assert_eq!(reference.cold_sha256(), machine.digest());
+        assert_eq!(
+            reference.state_sha256().to_hex(),
+            "cb9b512e03d82604270a22cf60e288f9ea8f6aa808517a6319a27f860552bcc0"
+        );
+    }
+
+    #[test]
+    fn owner_state_reference_keeps_the_cold_digest_separate_from_current_state() {
+        let mut machine = selected_machine();
+        let cold_sha256 = machine.state_reference().cold_sha256();
+        let mut source_vector_bits = vec![0; 48 * 24];
+        source_vector_bits[0] = 0x3f80_0000;
+
+        machine.set_current_features_test_history(&source_vector_bits, &[0; 48]);
+
+        let updated = machine.state_reference();
+        assert_ne!(updated.state_sha256(), cold_sha256);
+        assert_eq!(updated.cold_sha256(), cold_sha256);
+        assert_eq!(updated.generation(), 0);
     }
 
     #[test]

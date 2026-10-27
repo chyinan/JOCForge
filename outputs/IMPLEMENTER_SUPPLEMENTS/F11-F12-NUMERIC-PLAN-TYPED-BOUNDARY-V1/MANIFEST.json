@@ -1,0 +1,41 @@
+{
+  "package_id": "F11-F12-NUMERIC-PLAN-TYPED-BOUNDARY-V1",
+  "scope": "Approved NumericPlanReceipt field and F12 candidate scratch/commit boundary only",
+  "files": [
+    {
+      "file": "DECISION.md",
+      "bytes": 1569,
+      "sha256": "76e1b9930c88caec9bb69bf366dcccc309de562c082595de9c3a1e636fd2f8b0"
+    },
+    {
+      "file": "RECEIPT-FIELD-MAP.json",
+      "bytes": 3427,
+      "sha256": "ef9e8a9de764c748a80c4fe41b20bf76c115999eb3db3a36efc51961154a3884"
+    },
+    {
+      "file": "CANDIDATE-BOUNDARY.json",
+      "bytes": 1904,
+      "sha256": "473f315391a8b98b0ce7152892181be7952b77f7436863d246b8177279f0c871"
+    },
+    {
+      "file": "SOURCE-BASIS.json",
+      "bytes": 900,
+      "sha256": "f73e13a049c47be9d22362e3a7788e2a8a4fc542e5e02b463bd15dac80a63686"
+    },
+    {
+      "file": "SOURCE-PACKAGE-MANIFEST.json",
+      "bytes": 1348,
+      "sha256": "20e1245bb7a284cb60627ee126d12d3b5b3aa5163cd9bd037cce9cd843e15cb0"
+    },
+    {
+      "file": "SOURCE-PACKAGE-MANIFEST.sha256",
+      "bytes": 65,
+      "sha256": "f1bf04fc8140e6bf700e79adc2c9ea8cf0efd5775a07014c20b5a04b9463fa87"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 1303,
+      "sha256": "6c615e1eba765a4bd5bf3e8ba2bbf0907034b1c694e0763250ebf7a71cea8ad7"
+    }
+  ]
+}

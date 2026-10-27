@@ -1,0 +1,102 @@
+{
+  "package_id": "F06NR-APPROVED-SOURCE-LEAVES-V1",
+  "scope": "Verbatim materialization of 16 c7 source leaves referenced by the F06NR input/state crosswalk",
+  "approved_source_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "files": [
+    {
+      "file": "approved/specs/00-global-transaction-contract.md",
+      "bytes": 20041,
+      "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105"
+    },
+    {
+      "file": "approved/specs/06-secondary-reconstruction-clock-and-overlap.md",
+      "bytes": 5974,
+      "sha256": "26a67687d019b480fcb450cc8321198f8df3d5182c55d49adefc4179fa23f74a"
+    },
+    {
+      "file": "approved/specs/06-secondary-inverse-spectrum-and-rotations.md",
+      "bytes": 4803,
+      "sha256": "5d811a74d6ae22bd50be1e74656ae81a43e84582100e5cbddd908d394295805d"
+    },
+    {
+      "file": "approved/specs/06-secondary-fft64-128.md",
+      "bytes": 6376,
+      "sha256": "a899c158eeed9485090d4307ef3629eadeca9359ac0d5085612c5f632390ad66"
+    },
+    {
+      "file": "approved/specs/06-none-drc-statistics-and-control.md",
+      "bytes": 18048,
+      "sha256": "62dace058d92eaf8c4b9262c40d885d37801e55798d0be331e07bae0117a7081"
+    },
+    {
+      "file": "approved/specs/07-history-and-transient.md",
+      "bytes": 15770,
+      "sha256": "61a957410a05e1e44c15d7a3f6622d2ff4c2a1135020f35261c0dee1979f1eac"
+    },
+    {
+      "file": "approved/specs/08-transforms.md",
+      "bytes": 9916,
+      "sha256": "bf4806b1bc6bc183b87892aace46338b2b35fc6bff08fd3ae6b46527dcb1982e"
+    },
+    {
+      "file": "approved/parameters/f06-meter-none-drc-whole-state-schema-v1.json",
+      "bytes": 4280,
+      "sha256": "64374f686377d94ab8a3843d09d26329788c7afd48c7683459596b119f68e4be"
+    },
+    {
+      "file": "approved/parameters/f07-f12-source-state-schema-v1.json",
+      "bytes": 5359,
+      "sha256": "7967752a88493648c24cf7c1183da61dc470e35a684bb48d6335c496e90c6f4e"
+    },
+    {
+      "file": "approved/parameters/ordinary-transform-math-v1.json",
+      "bytes": 16538,
+      "sha256": "f1fb1a16b3caedab6ddc583201b9454755fd8871ecdf7881a6a3ffbad10fddf1"
+    },
+    {
+      "file": "approved/parameters/secondary-inverse-math-v1.json",
+      "bytes": 41297,
+      "sha256": "b452a929d7e4f7090f9466930e5c6047a8007192a30a3ed7c3cd7447dba073b1"
+    },
+    {
+      "file": "approved/test-vectors/SECONDARY-OVERLAP-CARRIER-VERIFICATION.json",
+      "bytes": 45751,
+      "sha256": "11e353e47d189aa1eff9bd51290609a5684481610b8a03df226a73b3600e518b"
+    },
+    {
+      "file": "approved/test-vectors/SECONDARY-FFT-INVERSE-VERIFICATION.json",
+      "bytes": 592083,
+      "sha256": "15794c5eea4ef67b6bc07dc5e970c7c3000ad2aae1fe8a9ed5f3d447276f0261"
+    },
+    {
+      "file": "approved/test-vectors/SECONDARY-INVERSE-WRAPPER-VERIFICATION.json",
+      "bytes": 43317,
+      "sha256": "e3895ca821516f2caca1abfb1f793310cbb47440b0ba61ed115af313e06dd12b"
+    },
+    {
+      "file": "approved/test-vectors/SECONDARY-FFT-LOCAL-REVIEW-STATUS.json",
+      "bytes": 13473,
+      "sha256": "965c72d9f1fc73d8aa94c1a67a39a2c0bbaf3319262074936e2b19bcd273fe67"
+    },
+    {
+      "file": "approved/SPEC-COMPLETENESS-MATRIX.json",
+      "bytes": 405547,
+      "sha256": "2da96a83e431c33f2d4d1cbe028eff06c1fa29741817ca04bf3fa56da66c3c9e"
+    },
+    {
+      "file": "CONTRACT.md",
+      "bytes": 852,
+      "sha256": "3fb5ad0c8c4f6841191664e5482160667db304dcefab688fa16ab14bae294f16"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 3408,
+      "sha256": "637aa9840c958899beb1365ec6d7a1dd537e720b6389d03851b2ee3ecfbf246c"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 622,
+      "sha256": "6fea7d9443e2ec8bff0b9df8ff9d515dd7cfc13de787b1ee91cb61975fd5a987"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "package_id": "F13C-CONFIGURATION-COUNT-SELECTED-F12-CROSSWALK-V1",
+  "scope": "Capture-local BSI config count and separate selected-model F12 EMDF complexity crosswalk only",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1586,
+      "sha256": "ecbe7b8699931d6caab9cb30b203d20cd8ad3c84df58864bc9d57092a73c6892"
+    },
+    {
+      "file": "DECISION.md",
+      "bytes": 4211,
+      "sha256": "4ff41ae878d770cc429464ed755a96afd57fe4d5f70a4286f18fa0b7471ed30c"
+    },
+    {
+      "file": "FIELD-CROSSWALK.json",
+      "bytes": 3488,
+      "sha256": "8d25f48987403dc1b1e5c0f442aa9b202cfada461469a6f1a137f5b08a319779"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 1541,
+      "sha256": "bcea8acfad060ae25fb993bcbaa45674e0b42140b1120c1fcdbb7119145ff001"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 6236,
+      "sha256": "17d2cde4c03820e8fc0ce1a7796f879279cfe3b86d76814485a41c74d71925a2"
+    },
+    {
+      "file": "SOURCE-PACKAGE-MANIFEST.json",
+      "bytes": 1411,
+      "sha256": "63a4c4c8b4d40ca0ef1515973eba09a0124365450f0f6ee5e3ec3f549908a6df"
+    },
+    {
+      "file": "SOURCE-PACKAGE-MANIFEST.sha256",
+      "bytes": 65,
+      "sha256": "a1850a90502906b694385f48c9b4c92bc8c293cbce5782ab2fd655c86f5ea3d3"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 2429,
+      "sha256": "f938943af80b280d7d46680aa1a5aeabc7fa0d50aa55612ef0d02c37f89d0940"
+    }
+  ]
+}

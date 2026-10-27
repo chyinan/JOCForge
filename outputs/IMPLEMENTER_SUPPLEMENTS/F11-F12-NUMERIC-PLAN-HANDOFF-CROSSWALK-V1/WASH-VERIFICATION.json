@@ -1,0 +1,33 @@
+{
+  "schema": "jocforge-f11-f12-handoff-wash-verification.v1",
+  "package_id": "F11-F12-NUMERIC-PLAN-HANDOFF-CROSSWALK-V1",
+  "status": "WASHED_SELECTED_MODEL_INTERFACE_CROSSWALK",
+  "source_package": {
+    "manifest_sha256": "9b7462dcf07beb0d52f02eb75c56a96cf201eaed4813356624d40aaa0074abd8",
+    "payload_hashes_verified": "3/3",
+    "detached_manifest_hash_verified": true
+  },
+  "approved_source_verification": {
+    "base_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+    "source_hashes_verified": "25/25",
+    "resolution": [
+      {"package": "IMPLEMENTER_PACKAGE", "source_count": 12},
+      {"package": "CODEC-ALLOCATION-PRODUCER-SEARCH-V1", "source_count": 4, "manifest_sha256": "9e709fa4f7d1a751f0eead53949bf6999432bac2b1360bdd2fc246e9595a36a9", "payloads_verified": 8},
+      {"package": "F06ND-F12-BSI-CONTROL-FIELD-BINDING-V1", "source_count": 4, "manifest_sha256": "4e9e6a566acbc186e7ff6f11c98b47a62df616336338b8453fa39810592fe39e", "payloads_verified": 4},
+      {"package": "F11-F12-PROVIDER-AND-LOCAL-FIXTURE-AVAILABILITY-V1", "source_count": 5, "manifest_sha256": "bd771f4b6a60b986499ff6e7c5ac27e1d06d7eb04b2de15df32f810c2efe0128", "payloads_verified": 4}
+    ]
+  },
+  "scope": {
+    "selected_profile": "ADM 48 kHz / 1024 kbps / 5.1 model",
+    "new_selected_model_contract_gap": false,
+    "native_metadata_owner_to_f12_validated_count_join": "UNBOUND_SEPARATE_NATIVE_ONLY_ITEM",
+    "source_to_frame_integration": "NOT_RUN",
+    "native_execution": "NOT_RUN",
+    "full_song_replay": "NOT_RUN",
+    "product_audio_and_render": "NOT_RUN",
+    "input_only_vectors_executed": false,
+    "source_code_or_machine_code_included": false,
+    "pcm_or_vendor_key_included": false
+  },
+  "interpretation": "This crosswalk clarifies selected model provider, generation, and consumer joins. It does not mark F11/F12 implementation, runtime integration, or product acceptance complete."
+}

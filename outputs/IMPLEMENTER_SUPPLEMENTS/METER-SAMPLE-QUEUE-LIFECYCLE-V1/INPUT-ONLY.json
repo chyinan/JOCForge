@@ -1,0 +1,40 @@
+{
+  "schema": "meter-lifecycle-boundary-input.v1",
+  "input_only": true,
+  "source_samples": 9217,
+  "sample_rate_hz": 48000,
+  "callback_samples": 1536,
+  "latency_samples": 3104,
+  "normal_callbacks": 7,
+  "zero_drain_callbacks": 3,
+  "lanes": [
+    "L",
+    "R",
+    "C",
+    "LFE",
+    "Ls",
+    "Rs"
+  ],
+  "consumer_block_samples": 1024,
+  "energy_window_samples": 960,
+  "sample_id_formula": "U64=(producer_generation<<32)|(lane_index<<24)|callback_sample_index; producer_generation=callback_index+1",
+  "sample_id_role": "Owned abstract OAR+DV32 output identity at the meter scheduler boundary; no numeric PCM amplitude claim. Drain outputs remain distinct generated identities, not assumed zero.",
+  "last_source_callback": {
+    "actual_source_samples": 1,
+    "source_padding_samples": 1535
+  },
+  "initial_state": {
+    "callback_index": 0,
+    "startup_remaining": 3104,
+    "scheduler_pending": 0,
+    "published_samples": 0,
+    "pcm_enqueued_samples": 0,
+    "pcm_consumed_samples": 0,
+    "pcm_block_fill_cursor": 0,
+    "energy_input_samples": 0,
+    "energy_complete_windows": 0,
+    "energy_window_fill_cursor": 0,
+    "finalized": false
+  },
+  "expected_used_as_input": false
+}

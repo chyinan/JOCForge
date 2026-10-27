@@ -1,0 +1,35 @@
+{
+  "schema": "wash-research-manifest.v1",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 767,
+      "sha256": "dd2d8de43e4ae4db38d99965acfed6dd723fffe529ed8879a0c5ff137453013e"
+    },
+    {
+      "path": "MODEL-BANK-STATE-CROSSWALK.json",
+      "bytes": 4504,
+      "sha256": "860d41daad03dc0bfc27b05375ac3f3b4b09adbb6da119fa790d3e612a8a399c"
+    },
+    {
+      "path": "SOURCE-VECTOR-CROSSWALK.json",
+      "bytes": 1966,
+      "sha256": "fa34bc16ccfb9be1504bce3fd40f0f28226bfa9c8d3833c94c149dfa1f7af734"
+    },
+    {
+      "path": "MODEL-EXECUTION-ORDER.md",
+      "bytes": 2755,
+      "sha256": "65cd670f173699a3068f9762df925d47dd2cf1777f21af3aaa033833911f4967"
+    },
+    {
+      "path": "SOURCE-IDENTITIES.json",
+      "bytes": 4550,
+      "sha256": "bc7fe26082b96b16f25b760f9d240637d308e4084d6f544c81c2b51ad539d3d5"
+    },
+    {
+      "path": "DELIVERY-ENVELOPE.json",
+      "bytes": 576,
+      "sha256": "c1a53710fa7c9f0f6360e390cf0248b03f194b23cead19bc0041c556f4423dba"
+    }
+  ]
+}

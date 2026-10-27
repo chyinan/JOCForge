@@ -1,0 +1,18 @@
+{
+  "schema": "jocforge-f11-f12-synthetic-plan-results-wash-verification.v1",
+  "package_id": "F11-F12-SYNTHETIC-SOURCE-PLAN-RESULTS-V1",
+  "status": "HASH_BOUND_SYNTHETIC_MODEL_RESULTS_NOT_FRESH_EXECUTION",
+  "source_package_manifest_sha256": "6db2a0d8245dd71ef0dfc2d4358cb06f9cf477114fdf53176e887cfced07733c",
+  "source_payload_hashes_verified": "4/4",
+  "approved_package_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "source_identity_crosswalk": "25/25 verified via the previously washed F11/F12 crosswalk; hashes retain the stated source scope",
+  "source_rows": 3,
+  "evidence_grade": "HASH_BOUND_SYNTHETIC_MODEL_EXECUTION",
+  "input_generation_vectors": "SYMBOLIC_INPUT_ONLY_NOT_EXECUTED",
+  "f11_intermediate_cost_trace": "NOT_RECORDED",
+  "serialized_typed_receipt_execution": "NOT_RUN",
+  "fresh_source_to_frame_integration": "NOT_RUN",
+  "native_execution": "NOT_RUN",
+  "full_song_or_product_acceptance": "NOT_RUN",
+  "real_pcm_or_code_included": false
+}

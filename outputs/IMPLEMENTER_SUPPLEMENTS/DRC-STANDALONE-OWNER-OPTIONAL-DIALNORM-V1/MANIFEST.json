@@ -1,0 +1,41 @@
+{
+  "package_id": "DRC-STANDALONE-OWNER-OPTIONAL-DIALNORM-V1",
+  "scope": "GTC owners.drc standalone state and measurement finalize Option<U5> lifecycle only",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 2498,
+      "sha256": "2b50b99bfb0beeb8882d70cd66e0a14fc751ac736c1742b1617d954339f701c3"
+    },
+    {
+      "file": "DRC-ROOT-SCHEMA.json",
+      "bytes": 3861,
+      "sha256": "08289163fab74aad77793fc3488805fc6b9a910bd2ca6aa7fda26d2fb3694e2d"
+    },
+    {
+      "file": "INPUT-ONLY-OPTION-COLD-VECTOR.json",
+      "bytes": 60441,
+      "sha256": "b5bbfa59c6651d8d5ef31c6211b238e6f62279b79dea848759fd29bc5b39d2a4"
+    },
+    {
+      "file": "SOURCE-REFERENCES.json",
+      "bytes": 4989,
+      "sha256": "21eeef4d4b61994815b919d67374c5546d9a97a63fc672e62e6ab03497d86ecc"
+    },
+    {
+      "file": "SOURCE-PACKAGE-MANIFEST.json",
+      "bytes": 1154,
+      "sha256": "467b0dcab5e36a9de5da372e726bfdd36a84f6347223af34eddc1b31bc8168d9"
+    },
+    {
+      "file": "WASH-DECISION.json",
+      "bytes": 1925,
+      "sha256": "d095d003e669306aefe9b2773530da98cd26d19dfebecfa47217feb753dc37ef"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 1406,
+      "sha256": "5653583c96b716a1bef83d2a520191dae80d97e0fb7749b4649c8c552c65397e"
+    }
+  ]
+}
