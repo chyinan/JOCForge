@@ -17239,6 +17239,55 @@
           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
           "implementation_inventory": [],
           "test_inventory": []
+        },
+        {
+          "slice_id": "informational-root-history-single-element-stop",
+          "mapping_status": "WASHED_FOUR_POINT_ROOT_HISTORY_RECEIPT_CONFIRMS_CONTROL_SCALARS__CONSUMER_JOIN_OPEN",
+          "implementation_status": "INFORMATIONAL_ONLY_ROOT_HISTORY_BRANCH_STOPPED__NO_CONSUMER_AU_OR_SOURCE_BINDING",
+          "scope": "A hash-bound four-point receipt follows two non-payload root-owned U32 control/history scalars across before-shift, after-shift, writer-stage and post-serializer common-record points in one root and higher invocation. Both values are zero at every point; serializer-consumer does not write them. The scalars therefore carry no consumer-output identity and cannot close consumer_N to writer_N+1. Stop enumerating adjacent root-history scalars. The common record is not an AU; transport AU and source generation remain UNBOUND. The next useful target is an actual payload or descriptor receipt at the post-consumer contiguous destination and its downstream queue/transport consumer.",
+          "owner": "joc",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "A higher-invocation/root-history receipt is not a consumer generation, source generation, ADM sample, or transport AU clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_ROOT_HISTORY_CONTROL_SCALAR_STOP",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1/FOUR-POINT-RECEIPT.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "dd0da5c855455d2f0a3a222e3240b611bec2775cde2de830f260a05f013894fe",
+            "validation_boundary": "Four points bind same root and higher invocation only; control/history scalar values are not payload or consumer identity."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_INFORMATIONAL_FOUR_POINT_RECEIPT_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1/FOUR-POINT-RECEIPT.json"
+            ],
+            "case_pointers": [
+              "Elements A and B are root-owned U32 control/history scalars with no payload bytes.",
+              "Same root/higher invocation; both scalars are zero before shift, after shift, at writer stage, and in the common record.",
+              "Serializer-consumer writes neither scalar; consumer_N to writer_N+1 remains unbound.",
+              "Stop adjacent scalar enumeration; next target is a real contiguous payload/descriptor receipt and downstream consumer."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "dd0da5c855455d2f0a3a222e3240b611bec2775cde2de830f260a05f013894fe"
+          },
+          "not_run": [
+            "Consumer-output identity across generation shift.",
+            "Actual contiguous payload/descriptor receipt to downstream queue or transport consumer.",
+            "Transport AU and source-generation identities."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
         }
                        ]
     },

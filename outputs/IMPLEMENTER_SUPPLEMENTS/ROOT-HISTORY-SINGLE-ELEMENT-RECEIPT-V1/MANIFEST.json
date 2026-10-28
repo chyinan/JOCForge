@@ -1,0 +1,26 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1",
+  "scope": "One four-point non-payload root-history receipt; branch stopped as control/history scalar, not consumer identity",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "classification": "NATIVE_AND_STATIC_STOP_EVIDENCE",
+  "implementation_requirement": false,
+  "source_manifest_sha256": "f596a64d3b9195392f5fe11bdb5b728a4c41ff50b65369979a4daf8b6d996193",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 999,
+      "sha256": "863e7e0a6448baafd7e4393529e8730c7ec07c58a789c79622fdc3c66554477a"
+    },
+    {
+      "file": "FOUR-POINT-RECEIPT.json",
+      "bytes": 1694,
+      "sha256": "c6cc8c08dc460ba249a109763ff64d18db7da9d65d9e58ae344e61e3ab487ac6"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 1162,
+      "sha256": "8f15baf575a8d16015e44680fe9a089db1b8e32c8283a3dc745390ba1c332317"
+    }
+  ]
+}

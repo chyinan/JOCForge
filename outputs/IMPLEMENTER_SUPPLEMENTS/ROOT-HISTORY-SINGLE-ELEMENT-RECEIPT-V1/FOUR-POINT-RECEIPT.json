@@ -1,0 +1,55 @@
+{
+  "schema": "washed-root-history-single-element-receipt.v1",
+  "package_id": "ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1",
+  "classification": "NATIVE_AND_STATIC_STOP_EVIDENCE",
+  "selected_elements": {
+    "A": "root-owned U32 history/control scalar",
+    "B": "root-owned U32 history/control scalar",
+    "payload_bytes": false
+  },
+  "same_root_owner": true,
+  "same_higher_invocation": true,
+  "receipts": {
+    "before_shift": {
+      "A_current": 0,
+      "A_next": 0,
+      "B_current": 0,
+      "B_next": 0
+    },
+    "after_shift": {
+      "A_current": 0,
+      "B_current": 0
+    },
+    "writer_stage": {
+      "A_current": 0,
+      "B_current": 0,
+      "writer_root_equals_shift_root": true
+    },
+    "post_serializer_record": {
+      "A_root_current": 0,
+      "B_root_current": 0,
+      "A_record": 0,
+      "B_record": 0,
+      "record_values_equal_current": true
+    }
+  },
+  "static_flow": {
+    "A_next_to_current_before_writer": true,
+    "B_next_to_current_before_writer": true,
+    "new_tails_cleared": true,
+    "A_current_to_common_record_after_serializer": true,
+    "B_current_to_common_record_after_serializer": true,
+    "serializer_consumer_writes_A_or_B": false
+  },
+  "result": {
+    "carries_consumer_output_identity": false,
+    "closes_consumer_N_to_writer_N_plus_1": false,
+    "stop_this_branch": true,
+    "common_record_is_transport_AU": "NOT_INFERRED",
+    "transport_AU": "UNBOUND",
+    "source_generation": "UNBOUND"
+  },
+  "next_target": "Actual payload or descriptor receipt at post-consumer contiguous destination and downstream queue/transport consumer.",
+  "implementation_requirement": false,
+  "raw_body_or_output_bytes_read_or_persisted": false
+}

@@ -1,0 +1,33 @@
+{
+  "schema": "washed-package-verification.v1",
+  "source_package_id": "ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT-V1",
+  "source_manifest_sha256": "f596a64d3b9195392f5fe11bdb5b728a4c41ff50b65369979a4daf8b6d996193",
+  "source_payloads_verified": [
+    {
+      "file": "ROOT-HISTORY-SINGLE-ELEMENT-RECEIPT.json",
+      "bytes": 2860,
+      "sha256": "0ec5255bde56f700861f67f96b54c98c7ccd903c1bd868b1f9130ff63a4ed1fd"
+    },
+    {
+      "file": "CHECK.json",
+      "bytes": 525,
+      "sha256": "fbf83041d24053ddd9f09304fbbe8a1151acf32f6fe4e2bef1e97914fc1f1d59"
+    }
+  ],
+  "read_scope": "Only named manifest and two hash-bound payloads; no native research files.",
+  "checks": {
+    "manifest_matches_handoff": true,
+    "payloads_match_manifest": true,
+    "source_check_claim_reviewed": true,
+    "no_raw_body_or_output_bytes": true,
+    "no_native_addresses_or_code": true,
+    "no_key_or_auth_material": true
+  },
+  "omitted": [
+    "input/config/reference-output digests",
+    "native addresses/code/disassembly",
+    "raw body/output bytes",
+    "license/key/auth"
+  ],
+  "evidence_status": "WASHED_REPORT_ONLY; native observation not independently reproduced"
+}
