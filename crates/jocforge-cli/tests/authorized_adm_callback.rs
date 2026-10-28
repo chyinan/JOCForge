@@ -1,10 +1,15 @@
 // pattern: Imperative Shell
 //! Explicit user-authorized real-resource callback probe. It stores no PCM or path output.
 
-use jocforge::meter_source_bridge::{prepare_selected_adm_bwf_input, view_for_source_proposal};
+use jocforge::meter_source_bridge::{
+    prepare_selected_adm_bwf_input, stage_meter_source_oar_callback, view_for_source_proposal,
+};
 use jocforge_application::{
     ProgrammeId,
-    meter_source_bridge::{MeterCallbackIndex, MeterSourceSampleCount},
+    meter_source_bridge::{
+        IndependentMeterPrepass, KMatrixMode, KMatrixProfile, MeterCallbackIndex,
+        MeterSourceSampleCount, SharedGainDelayParameters, generate_k_matrix,
+    },
 };
 use jocforge_domain::{
     frontend::{
@@ -119,6 +124,22 @@ fn selected_diffusion_parameters() -> DiffusionFilterParameters {
         &manifest,
     )
     .unwrap()
+}
+
+fn selected_meter_prepass(source_samples: MeterSourceSampleCount) -> IndependentMeterPrepass {
+    const SELECTED_KERNEL_Q15: [u16; 32] = [
+        20, 177, 491, 958, 1_573, 2_331, 3_224, 4_244, 5_381, 6_624, 7_961, 9_379, 10_864, 12_403,
+        13_980, 15_580, 17_188, 18_788, 20_365, 21_904, 23_389, 24_807, 26_144, 27_387, 28_524,
+        29_544, 30_437, 31_195, 31_810, 32_277, 32_591, 32_748,
+    ];
+    let gain = SharedGainDelayParameters::selected(&SELECTED_KERNEL_Q15).unwrap();
+    let matrix = generate_k_matrix(KMatrixProfile {
+        sample_rate_hz: 48_000,
+        mode: KMatrixMode::Modern,
+        stage_count: 2,
+    })
+    .unwrap();
+    IndependentMeterPrepass::cold(source_samples, gain, matrix).unwrap()
 }
 
 struct SpatialCallbackOwners {
@@ -258,7 +279,7 @@ fn authorized_adm_bwf_produces_one_bound_normal_geometry_and_pcm_callback() {
         prepared.resource_identity().input_sha256(),
     );
     let source_samples = MeterSourceSampleCount::new(parsed.total_samples()).unwrap();
-    let cursor = MeterPcmSourceCursor::cold(&parsed, source_identity, source_samples).unwrap();
+    let mut cursor = MeterPcmSourceCursor::cold(&parsed, source_identity, source_samples).unwrap();
     let pcm_proposal =
         stage_meter_pcm_source_frame(&cursor, MeterCallbackIndex::new(0), &parsed).unwrap();
     let callback = view_for_source_proposal(&prepared, &pcm_proposal).unwrap();
@@ -386,8 +407,24 @@ fn authorized_adm_bwf_produces_one_bound_normal_geometry_and_pcm_callback() {
         reader_target_before
     );
 
+    let handoff = callback
+        .bind_spatial_outputs(
+            spatial_stage.component_rows(),
+            spatial_stage.reader_target_proposal().delivered_controls(),
+        )
+        .unwrap();
+    let mut meter_prepass = selected_meter_prepass(source_samples);
+    let cursor_before = cursor.callback_index();
+    let meter_callback_before = meter_prepass.next_callback_index();
+    let oar_stage =
+        stage_meter_source_oar_callback(&mut cursor, &mut meter_prepass, pcm_proposal, handoff)
+            .unwrap();
+    drop(oar_stage);
+    assert_eq!(cursor.callback_index(), cursor_before);
+    assert_eq!(meter_prepass.next_callback_index(), meter_callback_before);
+
     println!(
-        "authorized one-callback check passed: 38 PCM rows, 48 geometry rows, 48 installed rows, spatial stages 5-14, {} samples",
+        "authorized one-callback check passed: 38 PCM rows, 48 geometry/installed rows, spatial stages 5-14, OAR stage pending, {} samples",
         parsed.total_samples()
     );
 }

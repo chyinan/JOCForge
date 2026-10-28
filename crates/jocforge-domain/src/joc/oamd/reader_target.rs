@@ -443,8 +443,8 @@ impl ReaderTargetStageProposal {
         &self.next_state
     }
 
-    /// Proposed Control52 rows remain pending until the enclosing spatial_control parent admits them.
-    pub(crate) const fn delivered_controls(&self) -> &ReaderTargetControlRows {
+    /// Read-only proposed Control52 rows remain pending until the enclosing spatial_control parent admits them.
+    pub const fn delivered_controls(&self) -> &ReaderTargetControlRows {
         &self.delivered_controls
     }
 

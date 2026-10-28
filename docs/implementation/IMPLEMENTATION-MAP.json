@@ -3347,8 +3347,8 @@
             "test_inventory": [
               {
                 "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-                "bytes": 16162,
-                "sha256": "51d0c27ba63be321ac731193261b0193bd21220c9ad2f252436252a352d3986e"
+                "bytes": 17752,
+                "sha256": "210cfc4fdb5c8194e5a5ca5014260127dcda039ee43ebf5cf27ab21311649c12"
               }
             ]
           },
@@ -3362,8 +3362,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
-              "bytes": 16162,
-              "sha256": "51d0c27ba63be321ac731193261b0193bd21220c9ad2f252436252a352d3986e"
+              "bytes": 17752,
+              "sha256": "210cfc4fdb5c8194e5a5ca5014260127dcda039ee43ebf5cf27ab21311649c12"
             }
           ]
         }
@@ -8445,9 +8445,9 @@
         },
         {
           "slice_id": "meter-source-oar-callback-handoff",
-          "mapping_status": "MATERIALIZED_DIRECT_BRIDGE_SUBSLICE_F06OF_SPATIAL_AND_CONTROL_PRODUCER_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_EXACT_ADM_AND_SOURCE_EXTENT_BINDING__PRODUCTION_SPATIAL_PROVIDER_DEFERRED",
-          "scope": "The CLI composition root owns the IO cursor and translates its proposal into an immutable domain MeterSourceCallbackFrame for application. Application binds the frame to PreparedJobInput and the selected ADM graph, exposes 38 physical rows to the upstream frontend caller, checks the returned OAR input clock and exact direct-LFE physical row, and stages the independent meter prepass. The CLI combines that application stage with the IO cursor after-state in one infallible commit, checks source/prepass extents and normal-callback counts, coordinates cold reset, and joins their Q+3 finalization schedule. Application has no IO dependency. The slice does not produce component15 rows, regular controls, matrix/destinations, or spatial DSP.",
+          "mapping_status": "MATERIALIZED_DIRECT_BRIDGE_F06OF_ONE_AUTHORIZED_SPATIAL_TO_OAR_CALLBACK__PARENT_COMMIT_OPEN",
+          "implementation_status": "USER_AUTHORIZED_REAL_G0_SPATIAL_TO_OAR_STAGE_PASSED__METER_STATE_AND_SOURCE_CURSOR_UNCOMMITTED",
+          "scope": "The CLI composition root owns the IO cursor and translates its proposal into an immutable domain MeterSourceCallbackFrame for application. Application binds the frame to PreparedJobInput and the selected ADM graph, exposes 38 physical rows, checks the returned OAR input clock and exact direct-LFE physical row, and stages the independent meter prepass. It now exposes the immutable proposed reader-target controls for the existing source-to-OAR handoff; one explicitly authorized 38-track real-resource callback has traversed F01E, PrimaryActivity, installed48, CurrentFeatures/SourceFlags, spatial stages5-14, and the F06OF OAR stage. The OAR/cursor/prepass stage was dropped without commit. The application remains independent of IO; this does not create a top-level GTC receipt or encode an AU.",
           "owner": "application",
           "implementation_files": [
             "crates/jocforge-cli/Cargo.toml",
@@ -8460,7 +8460,8 @@
             "crates/jocforge-domain/src/meter/lfe_delay_ring.rs",
             "crates/jocforge-domain/src/meter/meter_prepass.rs",
             "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
-            "crates/jocforge-io/src/pcm/riff_pcm24.rs"
+            "crates/jocforge-io/src/pcm/riff_pcm24.rs",
+            "crates/jocforge-domain/src/joc/oamd/reader_target.rs"
           ],
           "local_mapping_files": [],
           "clock": {
@@ -8471,7 +8472,9 @@
               "MeterSampleCount",
               "MeterCallbackCount",
               "ObjectRenderCallbackGeneration",
-              "PhysicalHostIndex"
+              "PhysicalHostIndex",
+              "FrontendCallbackIndex",
+                            "CallbackLineageIdentity"
             ],
             "covered_clauses": [
               "A source frame and its frontend/OAR input must share callback index, generation g+1, and normal/drain phase.",
@@ -8479,7 +8482,8 @@
               "Before staging, independent source and prepass sample extents and normal-callback counts must match.",
               "Reader cursor advancement and the existing meter/OAR callback proposal install through one linear stage commit; dropping the stage leaves the reader cursor unchanged.",
               "Reset validates the same source identity and extent, resets the prepass to its cold state, and reconstructs the source cursor at callback zero.",
-              "Finalization requires both owners to complete Q normal callbacks plus three drains, with the source cursor at N."
+              "Finalization requires both owners to complete Q normal callbacks plus three drains, with the source cursor at N.",
+              "The user-authorized g0 source, F01E geometry, installed48, spatial proposal, and OAR handoff share one parsed resource and callback identity; dropping the outer stage leaves cursor and prepass unadvanced."
             ]
           },
           "parameters": {
@@ -8490,20 +8494,29 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/MODEL-BINDING.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/INPUT-ONLY-VECTORS.json"
             ],
-            "validation_boundary": "Model count, row-map, callback, LFE and prepass joins use a domain-owned frame value. The CLI composition root may depend on IO; application remains independent of IO and validation. The integration test decodes one synthetic frame and does not execute spatial DSP.",
-            "supplement_manifest_sha256": "7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac"
+            "validation_boundary": "The synthetic Q+3 lifecycle tests remain model-only. The user-authorized real-resource result covers g0 to a noncommitting OAR stage only; no full prepass, receipt, GTC root swap, codec frame or product acceptance is claimed.",
+            "supplement_manifest_sha256": "7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac",
+            "user_authorized_resource":             {
+              "sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+              "bytes": 743696526,
+              "source_samples": 6522906,
+              "pcm_bytes_stored": false,
+              "path_stored": false
+            }
           },
           "test_modules": [
             "crates/jocforge-cli/tests/meter_source_bridge.rs",
             "crates/jocforge-domain/src/meter/lfe_delay_ring.rs",
-            "crates/jocforge-domain/src/meter/meter_prepass.rs"
+            "crates/jocforge-domain/src/meter/meter_prepass.rs",
+            "crates/jocforge-cli/tests/authorized_adm_callback.rs"
           ],
           "vectors": {
-            "kind": "SYNTHETIC_SOURCE_TO_OAR_CALLBACK_CLOCK_LFE_AND_RESET_BOUNDARY",
+            "kind": "SYNTHETIC_Q_PLUS_3_BOUNDARIES_AND_USER_AUTHORIZED_G0_SPATIAL_TO_OAR_STAGE",
             "authoritative_vectors": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/F06OF-MODEL-PCM-TO-OAR-TYPED-BRIDGE-V1/INPUT-ONLY-VECTORS.json",
               "crates/jocforge-cli/tests/meter_source_bridge.rs",
-              "crates/jocforge-domain/tests/fixtures/post_render_meter/zero_programme.json"
+              "crates/jocforge-domain/tests/fixtures/post_render_meter/zero_programme.json",
+              "crates/jocforge-cli/tests/authorized_adm_callback.rs"
             ],
             "case_pointers": [
               "N=1: one normal callback reads one sample and pads 1535; three fresh drains keep cursor at N; all four generations are g+1.",
@@ -8511,10 +8524,13 @@
               "Mismatched callback/generation or source/prepass extents reject before reader advancement.",
               "After Q+3 callbacks, both owners are ready to finalize; reset returns both callback clocks and cursor to cold zero.",
               "Synthetic input validates interface and lifecycle only; no matrix, component, control producer, spatial DSP, native execution, or product acceptance is covered.",
-              "Prepared ADM branch and positive source sample extent must match the same PreparedJobInput before handoff; AtmosMezz is rejected by this F06OF bridge."
+              "Prepared ADM branch and positive source sample extent must match the same PreparedJobInput before handoff; AtmosMezz is rejected by this F06OF bridge.",
+              "User-authorized source g0 traverses primary installed48 and spatial stages5-14, then binds the same component/reader controls into a noncommitting F06OF OAR stage; dropping it leaves cursor and prepass at zero."
             ],
             "source_supplement_manifest_sha256": "7ee7d1577ed3c215e652aed64065f5bcbbabfdc4ff68a46b957676e35737a9ac",
-            "payload_hashes_and_sizes": "PASS"
+            "payload_hashes_and_sizes": "PASS",
+            "expected_outputs_included":             false,
+            "user_authorized_source_sha256":             "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1"
           },
           "error_outcomes": [
             {
@@ -8561,10 +8577,95 @@
             }
           ],
           "not_run": [
-            "Production component15 and regular control52 producers remain open.",
-        "matrix/destination production and full spatial DSP remain open."
+            "Full normal source sequence and all Q+3 meter callbacks with committed prepass/cursor state.",
+        "GTC owner receipts and one parent state-root swap for reader, frontend, spatial, audio and meter owners.",
+            "F12/F13/F15 codec assembly, durable AU publication, full-song external decode, W04 and listening."
           ],
-          "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory":           [
+            {
+              "path": "crates/jocforge-cli/Cargo.toml",
+              "bytes": 538,
+              "sha256": "e4a09e235e21e003b8f0eb734ce31adea5e86fd2dcb3b99255a2a0c8adb1b27c"
+            },
+            {
+              "path": "crates/jocforge-cli/src/lib.rs",
+              "bytes": 148,
+              "sha256": "e90089d3aa39e51cbd6ae93ff8b67cdf06a2f7271fa9653a1d3a6b754a8a62e2"
+            },
+            {
+              "path": "crates/jocforge-cli/src/meter_source_bridge.rs",
+              "bytes": 9286,
+              "sha256": "edac38e1797337c38192b783a69c39450b5223fe5c1695567647c0d2e517a3f3"
+            },
+            {
+              "path": "crates/jocforge-application/src/meter_source_bridge.rs",
+              "bytes": 32728,
+              "sha256": "b800f5c9c113abf772ed90a107c738a0c041b50ebbc09e6db2f73781a015e0cc"
+            },
+            {
+              "path": "crates/jocforge-application/src/lib.rs",
+              "bytes": 20326,
+              "sha256": "8fda08da64e8a417589bf008bce210af79defa420aef5f05cc4928369e2442b8"
+            },
+            {
+              "path": "crates/jocforge-domain/src/meter/mod.rs",
+              "bytes": 679,
+              "sha256": "6ccaeb4c4cf50e8fe31abb55ef2146d65c7fb37931849b517d11e399c6957f17"
+            },
+            {
+              "path": "crates/jocforge-domain/src/meter/source_frame.rs",
+              "bytes": 3010,
+              "sha256": "545ef6b21adc271679e960b82be06b2b90208ad4c47699bd3ae909948fb1642f"
+            },
+            {
+              "path": "crates/jocforge-domain/src/meter/lfe_delay_ring.rs",
+              "bytes": 32718,
+              "sha256": "ae59e95bde9589978b2a607875ac9aea16b7c072e774ad0c002c23d87a6e0656"
+            },
+            {
+              "path": "crates/jocforge-domain/src/meter/meter_prepass.rs",
+              "bytes": 15287,
+              "sha256": "a654cefe6a81ef78e10958d73a2d57d2a01e9f4b1f425bb085400a63816d9c33"
+            },
+            {
+              "path": "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
+              "bytes": 19988,
+              "sha256": "70cda1be233ee98d452dbadb2ffaa4af4c480769a83fec28c931fb4742fed332"
+            },
+            {
+              "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
+              "bytes": 17616,
+              "sha256": "003cf021ea18977cda6c355b5eab4dfa2ed9944012b7a2ccec1534cd62258965"
+            },
+            {
+              "path": "crates/jocforge-domain/src/joc/oamd/reader_target.rs",
+              "bytes": 37156,
+              "sha256": "08c298863ba2c90ba1fd9def733d062e4e592a0343d5d83958e596fa2b629a45"
+            }
+          ],
+          "test_inventory":           [
+            {
+              "path": "crates/jocforge-cli/tests/meter_source_bridge.rs",
+              "bytes": 20023,
+              "sha256": "a317e83baea74e8738a9a4ee1f8b0af3975001715a039e5e915804cde87db6cf"
+            },
+            {
+              "path": "crates/jocforge-domain/src/meter/lfe_delay_ring.rs",
+              "bytes": 32718,
+              "sha256": "ae59e95bde9589978b2a607875ac9aea16b7c072e774ad0c002c23d87a6e0656"
+            },
+            {
+              "path": "crates/jocforge-domain/src/meter/meter_prepass.rs",
+              "bytes": 15287,
+              "sha256": "a654cefe6a81ef78e10958d73a2d57d2a01e9f4b1f425bb085400a63816d9c33"
+            },
+            {
+              "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
+              "bytes": 17752,
+              "sha256": "210cfc4fdb5c8194e5a5ca5014260127dcda039ee43ebf5cf27ab21311649c12"
+            }
+          ]
         },
         {
           "slice_id": "washed-native-frontend-lineage-source-owner-hold",
@@ -18161,8 +18262,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/joc/oamd/reader_target.rs",
-              "bytes": 37153,
-              "sha256": "0f77f69e945aaf184528f08b1a36860f5953bc1fbad1db00a99fb7f687651ad5"
+              "bytes": 37156,
+              "sha256": "08c298863ba2c90ba1fd9def733d062e4e592a0343d5d83958e596fa2b629a45"
             }
           ],
           "test_inventory": [
