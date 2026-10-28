@@ -1168,12 +1168,13 @@
         {
           "slice_id": "selected-adm-riff-to-prepared-job-input",
           "mapping_status": "MATERIALIZED_DIRECT_ADM_RIFF_TO_PREPARED_JOB_INPUT__FULL_PRODUCT_ENCODE_OPEN",
-          "implementation_status": "LOCALLY_VERIFIED_SAME_RESOURCE_METADATA_PCM_ADMISSION__ENCODER_ENTRY_OPEN",
-          "scope": "The CLI composition helper consumes one parsed selected-profile RIFF/PCM24 byte allocation, selects its unique AXML/CHNA/DBMD payloads, derives the wave descriptor and actual source extent, and calls application::prepare_selected_job_input. The prepared whole-resource SHA-256 and byte count must match the parsed RIFF identity; metadata payload pointer provenance is independently checked by the application binder. This helper performs no file I/O and does not encode, render, or accept a user programme.",
+          "implementation_status": "LOCALLY_VERIFIED_SAME_RESOURCE_F01E_PRIMARY_CONTROLS__ENCODER_ENTRY_OPEN",
+          "scope": "The CLI composition helper consumes one parsed selected-profile RIFF/PCM24 byte allocation, selects its unique AXML/CHNA/DBMD payloads, derives the wave descriptor and actual source extent, and calls application::prepare_selected_job_input. It then binds F01E primary control rows using the parsed data-byte extent and the same resource/config/metadata identities; metadata payload pointer provenance is independently checked by the application binder. Generic metadata-only preparation remains available without claiming PCM extent. This helper performs no file I/O and does not encode, render, or accept a user programme.",
           "owner": "frontend",
           "implementation_requirement": true,
           "implementation_files": [
-            "crates/jocforge-cli/src/meter_source_bridge.rs"
+            "crates/jocforge-cli/src/meter_source_bridge.rs",
+            "crates/jocforge-application/src/lib.rs"
           ],
           "local_mapping_files": [],
           "clock": {
@@ -1208,7 +1209,7 @@
             {
               "error_code": "ADM_RIFF_METADATA_SELECTION | PREPARED_JOB_INPUT_* | SOURCE_IDENTITY_MISMATCH",
               "category": "selected input admission",
-              "trigger": "Unique metadata selection fails, metadata is not a subslice of the admitted resource, selected job configuration or graph admission rejects, or the parsed whole-resource digest differs.",
+              "trigger": "Unique metadata selection fails, metadata is not a subslice of the admitted resource, selected job configuration or graph admission rejects, or the parsed whole-resource digest differs. Primary selected-profile extent binding or metadata/control production rejects.",
               "programme_state_after": "No PreparedJobInput is returned; no owner or output is created.",
               "caller_action": "Reject the input before callback staging; do not substitute metadata from a matching but distinct resource allocation."
             }
@@ -1221,15 +1222,89 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-cli/src/meter_source_bridge.rs",
-              "bytes": 9005,
-              "sha256": "ed2ce0479b7fd4e2f5e3314f93007fd6c36e396c74f2a2eba1e4ec0417581d27"
+              "bytes": 9286,
+              "sha256": "edac38e1797337c38192b783a69c39450b5223fe5c1695567647c0d2e517a3f3"
+            },
+            {
+              "path": "crates/jocforge-application/src/lib.rs",
+              "bytes": 20326,
+              "sha256": "8fda08da64e8a417589bf008bce210af79defa420aef5f05cc4928369e2442b8"
             }
           ],
           "test_inventory": [
             {
               "path": "crates/jocforge-cli/tests/meter_source_bridge.rs",
-              "bytes": 19820,
-              "sha256": "e88ca484b5441dd7abfa0b397ffa5a80108eb154f61974f916709e6414ee9c7e"
+              "bytes": 20023,
+              "sha256": "a317e83baea74e8738a9a4ee1f8b0af3975001715a039e5e915804cde87db6cf"
+            }
+          ]
+        },
+        {
+          "slice_id": "prepared-input-to-f01e-snapshot-binding",
+          "mapping_status": "MATERIALIZED_DIRECT_PREPARED_INPUT_TO_F01E_NORMAL_SNAPSHOT__SELECTED_EXTENT_SUCCESS_NOT_RUN",
+          "implementation_status": "LOCALLY_VERIFIED_PROGRAMME_BINDING_AND_WRONG_EXTENT_REJECTION__SELECTED_EXTENT_SUCCESS_NOT_RUN",
+          "scope": "PreparedJobInput can produce the reusable F01E NormalControlPreparedSnapshot by delegating its exact graph, admitted object events, DBMD and parsed F01E primary binding to the approved domain constructor. The programme ID must match the supplied cold FrontendControlState; a generic unbound PreparedJobInput is rejected. A one-frame synthetic resource verifies programme mismatch and selected-extent rejection, not successful full-profile sampling. No callback is staged or committed.",
+          "owner": "frontend",
+          "implementation_requirement": true,
+          "implementation_files": [
+            "crates/jocforge-application/src/lib.rs"
+          ],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "ProgrammeId",
+              "AttemptId"
+            ],
+            "covered_clauses": [
+              "The normal snapshot reuses the PreparedJobInput programme and the caller's existing FrontendControlState attempt; this method creates no callback or AU index."
+            ]
+          },
+          "parameters": {
+            "kind": "NONE_REUSES_PREPARED_SELECTED_F01E_BINDING",
+            "provider_files": [],
+            "validation_boundary": "The test fixture is one PCM sample and therefore only verifies fail-closed extent and programme identity; successful selected 6,522,906-sample F01E staging remains NOT_RUN."
+          },
+          "test_modules": [
+            "crates/jocforge-application/tests/prepared_job_input.rs"
+          ],
+          "vectors": {
+            "kind": "LOCAL_PREPARED_INPUT_SNAPSHOT_BINDING_NEGATIVE_BOUNDARIES",
+            "authoritative_vectors": [
+              "crates/jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+            ],
+            "case_pointers": [
+              "Matching programme + bound primary metadata reaches the F01E domain snapshot validator; this one-frame fixture rejects because its extent is not the selected profile.",
+              "Wrong programme identity is rejected before the normal snapshot is produced.",
+              "A generic unbound PreparedJobInput is rejected before the F01E snapshot validator."
+            ],
+            "expected_outputs_included": false
+          },
+          "error_outcomes": [
+            {
+              "error_code": "PRIMARY_CONTROL_BINDING_UNAVAILABLE | PROGRAMME_IDENTITY_MISMATCH | NORMAL_CONTROL_SNAPSHOT_*",
+              "category": "prepared input to F01E owner binding",
+              "trigger": "No parsed selected-primary binding exists, the frontend owner programme differs, or the prepared graph/controls/source extent fail the domain snapshot checks.",
+              "programme_state_after": "No NormalControlPreparedSnapshot is returned; the frontend owner is unchanged.",
+              "caller_action": "Reject before callback proposals; use only a fully prepared selected-profile input and its matching programme owner."
+            }
+          ],
+          "not_run": [
+            "Successful 28-object sampler proposal at the selected 6,522,906-sample extent.",
+            "Full per-callback parent transaction, source/AU integration, encoded output and product validation."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-application/src/lib.rs",
+              "bytes": 20326,
+              "sha256": "8fda08da64e8a417589bf008bce210af79defa420aef5f05cc4928369e2442b8"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-application/tests/prepared_job_input.rs",
+              "bytes": 14884,
+              "sha256": "d3185dcc27208201a6d64d7b3f267da020e1ab6468dfa7a2256d71c8fa172958"
             }
           ]
         }
@@ -6985,8 +7060,8 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 15925,
-              "sha256": "11a7fadab151c2edf21effa5c0b66dfaff5871467335e2f49d3a9e84d163dbeb"
+              "bytes": 20326,
+              "sha256": "8fda08da64e8a417589bf008bce210af79defa420aef5f05cc4928369e2442b8"
             }
           ],
           "test_inventory": [
@@ -6997,8 +7072,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 11582,
-              "sha256": "d9286b86b07654f5fd8af65b69786fb7f16cc63d6ce4ea5a5489f42e05b8ccf4"
+              "bytes": 14884,
+              "sha256": "d3185dcc27208201a6d64d7b3f267da020e1ab6468dfa7a2256d71c8fa172958"
             }
           ]
         },
@@ -8897,8 +8972,8 @@
             },
             {
               "path": "crates/jocforge-cli/src/meter_source_bridge.rs",
-              "bytes": 9005,
-              "sha256": "ed2ce0479b7fd4e2f5e3314f93007fd6c36e396c74f2a2eba1e4ec0417581d27"
+              "bytes": 9286,
+              "sha256": "edac38e1797337c38192b783a69c39450b5223fe5c1695567647c0d2e517a3f3"
             },
             {
               "path": "crates/jocforge-domain/src/frontend/adm_file_storage_map.rs",
@@ -8946,8 +9021,8 @@
             },
             {
               "path": "crates/jocforge-cli/tests/meter_source_bridge.rs",
-              "bytes": 19820,
-              "sha256": "e88ca484b5441dd7abfa0b397ffa5a80108eb154f61974f916709e6414ee9c7e"
+              "bytes": 20023,
+              "sha256": "a317e83baea74e8738a9a4ee1f8b0af3975001715a039e5e915804cde87db6cf"
             }
           ],
           "verification": {
@@ -17847,13 +17922,13 @@
             },
             {
               "path": "crates/jocforge-application/src/lib.rs",
-              "bytes": 15925,
-              "sha256": "11a7fadab151c2edf21effa5c0b66dfaff5871467335e2f49d3a9e84d163dbeb"
+              "bytes": 20326,
+              "sha256": "8fda08da64e8a417589bf008bce210af79defa420aef5f05cc4928369e2442b8"
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 11582,
-              "sha256": "d9286b86b07654f5fd8af65b69786fb7f16cc63d6ce4ea5a5489f42e05b8ccf4"
+              "bytes": 14884,
+              "sha256": "d3185dcc27208201a6d64d7b3f267da020e1ab6468dfa7a2256d71c8fa172958"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -17889,8 +17964,8 @@
             },
             {
               "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-              "bytes": 11582,
-              "sha256": "d9286b86b07654f5fd8af65b69786fb7f16cc63d6ce4ea5a5489f42e05b8ccf4"
+              "bytes": 14884,
+              "sha256": "d3185dcc27208201a6d64d7b3f267da020e1ab6468dfa7a2256d71c8fa172958"
             },
             {
               "path": "crates/jocforge-cli/src/output_publication/tests.rs",
@@ -21784,13 +21859,13 @@
         },
         {
           "path": "crates/jocforge-application/src/lib.rs",
-          "bytes": 15925,
-          "sha256": "11a7fadab151c2edf21effa5c0b66dfaff5871467335e2f49d3a9e84d163dbeb"
+          "bytes": 20326,
+          "sha256": "8fda08da64e8a417589bf008bce210af79defa420aef5f05cc4928369e2442b8"
         },
         {
           "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-          "bytes": 11582,
-          "sha256": "d9286b86b07654f5fd8af65b69786fb7f16cc63d6ce4ea5a5489f42e05b8ccf4"
+          "bytes": 14884,
+          "sha256": "d3185dcc27208201a6d64d7b3f267da020e1ab6468dfa7a2256d71c8fa172958"
         },
         {
           "path": "crates/jocforge-cli/src/output_publication.rs",
@@ -21836,8 +21911,8 @@
         },
         {
           "path": "crates/jocforge-application/tests/prepared_job_input.rs",
-          "bytes": 11582,
-          "sha256": "d9286b86b07654f5fd8af65b69786fb7f16cc63d6ce4ea5a5489f42e05b8ccf4"
+          "bytes": 14884,
+          "sha256": "d3185dcc27208201a6d64d7b3f267da020e1ab6468dfa7a2256d71c8fa172958"
         },
         {
           "path": "crates/jocforge-cli/src/output_publication/tests.rs",

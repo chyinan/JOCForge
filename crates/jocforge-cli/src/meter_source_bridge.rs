@@ -41,6 +41,10 @@ pub fn prepare_selected_adm_bwf_input(
         .selected_adm_payloads()
         .map_err(SelectedAdmPreparationError::MetadataSelection)?;
     let wave = SelectedWaveDescriptor::new(parsed.sample_rate_hz(), parsed.channels(), 24);
+    let data_bytes = parsed
+        .total_samples()
+        .checked_mul(u64::from(parsed.block_align()))
+        .ok_or(SelectedAdmPreparationError::SourceIdentityMismatch)?;
     let prepared = prepare_selected_job_input(
         programme_id,
         job_xml,
@@ -49,6 +53,8 @@ pub fn prepare_selected_adm_bwf_input(
         resource,
         SelectedAdmResourcePayloads::new(metadata.axml(), metadata.chna(), metadata.dbmd()),
     )
+    .map_err(SelectedAdmPreparationError::PreparedJobInput)?
+    .bind_primary_control_rows(data_bytes)
     .map_err(SelectedAdmPreparationError::PreparedJobInput)?;
     let resource_bytes = u64::try_from(prepared.resource().len())
         .map_err(|_| SelectedAdmPreparationError::SourceIdentityMismatch)?;

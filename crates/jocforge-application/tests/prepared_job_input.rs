@@ -3,9 +3,13 @@ use jocforge_application::{
     PreparedJobInputError, SelectedAdmResourcePayloads, prepare_selected_job_input,
 };
 use jocforge_domain::frontend::adm_file_storage_map::AdmFileStorageTrackSlot;
-use jocforge_domain::frontend::job_configuration::SelectedWaveDescriptor;
 use jocforge_domain::frontend::selected_adm_graph::SelectedTrackKind;
-use jocforge_domain::transaction::ProgrammeId;
+use jocforge_domain::frontend::{
+    FrontendControlMachine, PackageManifestEvidence, ProviderFileEvidence,
+    job_configuration::SelectedWaveDescriptor, normal_control_snapshot::NormalControlSnapshotError,
+    validate_f01e_package_manifest, validate_f01e_provider,
+};
+use jocforge_domain::transaction::{AttemptId, ProgrammeId};
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 use std::{ops::Range, sync::Arc};
@@ -17,9 +21,101 @@ const CHNA: &[u8] = include_bytes!(
 );
 const DBMD: &[u8] =
     include_bytes!("../../jocforge-domain/tests/fixtures/selected_adm_graph/source_metadata.dbmd");
+const F01E_MANIFEST: &[u8] =
+    include_bytes!("../../jocforge-domain/tests/fixtures/f01e_provider/MANIFEST.json");
+const F01E_PROVIDER: &[u8] = include_bytes!(
+    "../../jocforge-domain/tests/fixtures/f01e_provider/f01e-selected-constructor-v1.json"
+);
 
 fn test_programme_id() -> ProgrammeId {
     ProgrammeId::new("JOCForgeTestID01").unwrap()
+}
+
+fn validated_f01e_provider() -> jocforge_domain::frontend::ValidatedF01EColdProvider {
+    let manifest = validate_f01e_package_manifest(&PackageManifestEvidence::new(
+        Arc::from(F01E_MANIFEST),
+        None,
+    ))
+    .unwrap();
+    validate_f01e_provider(
+        &ProviderFileEvidence::new(Arc::from(F01E_PROVIDER), None),
+        &manifest,
+    )
+    .unwrap()
+}
+
+#[test]
+fn bound_prepared_input_rejects_unselected_extent_before_f01e_snapshot() {
+    let (resource, spans) = selected_resource();
+    let vectors: Value = serde_json::from_slice(include_bytes!(
+        "../../jocforge-domain/tests/fixtures/job_configuration/job-configuration-vectors.json"
+    ))
+    .unwrap();
+    let case = &vectors["config_cases"][0];
+    let descriptor = &case["pcm_descriptor"];
+    let prepared = prepare_selected_job_input(
+        test_programme_id(),
+        case["input_xml"].as_str().unwrap().as_bytes(),
+        SelectedWaveDescriptor::new(
+            descriptor["sample_rate"].as_u64().unwrap() as u32,
+            descriptor["channels"].as_u64().unwrap() as u16,
+            descriptor["pcm_bits"].as_u64().unwrap() as u16,
+        ),
+        1,
+        Arc::clone(&resource),
+        metadata_payloads(&resource, &spans),
+    )
+    .unwrap()
+    .bind_primary_control_rows(114)
+    .unwrap();
+    let unbound_prepared = prepare_selected_job_input(
+        test_programme_id(),
+        case["input_xml"].as_str().unwrap().as_bytes(),
+        SelectedWaveDescriptor::new(
+            descriptor["sample_rate"].as_u64().unwrap() as u32,
+            descriptor["channels"].as_u64().unwrap() as u16,
+            descriptor["pcm_bits"].as_u64().unwrap() as u16,
+        ),
+        1,
+        Arc::clone(&resource),
+        metadata_payloads(&resource, &spans),
+    )
+    .unwrap();
+    let machine = FrontendControlMachine::from_provider(
+        validated_f01e_provider(),
+        test_programme_id(),
+        AttemptId::new(0),
+    )
+    .unwrap();
+
+    assert_eq!(
+        unbound_prepared
+            .normal_control_prepared_snapshot(machine.committed())
+            .unwrap_err(),
+        PreparedJobInputError::PrimaryControlBindingUnavailable
+    );
+
+    assert_eq!(
+        prepared
+            .normal_control_prepared_snapshot(machine.committed())
+            .unwrap_err(),
+        PreparedJobInputError::NormalControlSnapshot(
+            NormalControlSnapshotError::SourceConfigurationMismatch
+        )
+    );
+
+    let other_programme = FrontendControlMachine::from_provider(
+        validated_f01e_provider(),
+        ProgrammeId::new("other-programme").unwrap(),
+        AttemptId::new(0),
+    )
+    .unwrap();
+    assert_eq!(
+        prepared
+            .normal_control_prepared_snapshot(other_programme.committed())
+            .unwrap_err(),
+        PreparedJobInputError::ProgrammeIdentityMismatch
+    );
 }
 
 #[test]

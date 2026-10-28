@@ -68,6 +68,14 @@ fn selected_adm_riff_preparation_binds_metadata_and_pcm_to_one_resource() {
         parsed.source_sha256()
     );
     assert_eq!(prepared.graph().graph().tracks().len(), 38);
+    assert_eq!(
+        prepared.primary_control_binding().unwrap().data_bytes(),
+        114
+    );
+    assert_eq!(
+        prepared.primary_metadata_controls().unwrap().rows().len(),
+        38
+    );
 
     let foreign_resource: Arc<[u8]> = Arc::from(resource.as_ref().to_vec().into_boxed_slice());
     let foreign_parsed = parse_selected_riff_pcm24(&foreign_resource, None).unwrap();

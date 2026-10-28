@@ -3,14 +3,22 @@
 
 pub use jocforge_domain::frontend::job_configuration::SelectedWaveDescriptor;
 use jocforge_domain::frontend::job_configuration::{
-    JobConfigurationError, SelectedJobConfiguration, parse_selected_job_configuration,
+    JobConfigurationError, PrimaryControlBindingError, PrimaryMetadataChunkHashes,
+    SelectedJobConfiguration, SelectedPrimaryControlBinding, SelectedPrimaryRuntimeIdentity,
+    bind_admitted_selected_input, parse_selected_job_configuration,
 };
 use jocforge_domain::frontend::{
+    FrontendControlState,
     adm_file_storage_map::{
         AdmFileStorageChannelMap, AdmFileStorageMapError, build_adm_file_storage_channel_map,
     },
     adm_object_events::AdmittedSelectedObjectEvents,
     dbmd_sections::{DbmdSectionError, SelectedDbmdSections, parse_selected_dbmd_sections},
+    normal_control_snapshot::{NormalControlPreparedSnapshot, NormalControlSnapshotError},
+    primary_metadata_control::{
+        PrimaryMetadataControlError, PrimaryMetadataControlRows,
+        produce_primary_metadata_control_rows,
+    },
     selected_adm_graph::{SelectedAdmGraph, SelectedAdmGraphError, parse_selected_adm_graph},
 };
 use jocforge_domain::meter::prepared_job_identity::{
@@ -41,10 +49,13 @@ pub struct PreparedJobInput {
     admitted_object_events: AdmittedSelectedObjectEvents,
     identity_envelope: Value,
     job_xml_sha256: [u8; 32],
+    job_xml_bytes: u64,
     config_sha256: [u8; 32],
     resource: Arc<[u8]>,
     resource_identity: ResourceIdentity,
     domain_identity: PreparedJobInputIdentity,
+    primary_control_binding: Option<SelectedPrimaryControlBinding>,
+    primary_metadata_controls: Option<PrimaryMetadataControlRows>,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -205,6 +216,66 @@ impl PreparedJobInput {
         &self.domain_identity
     }
 
+    pub const fn primary_control_binding(&self) -> Option<&SelectedPrimaryControlBinding> {
+        self.primary_control_binding.as_ref()
+    }
+
+    pub const fn primary_metadata_controls(&self) -> Option<&PrimaryMetadataControlRows> {
+        self.primary_metadata_controls.as_ref()
+    }
+
+    /// Adds the F01E primary-source binding after an IO adapter supplies the actual data extent.
+    pub fn bind_primary_control_rows(
+        mut self,
+        data_bytes: u64,
+    ) -> Result<Self, PreparedJobInputError> {
+        let graph = self.graph.graph();
+        let binding = bind_admitted_selected_input(
+            &self.configuration,
+            SelectedPrimaryRuntimeIdentity {
+                source_file_bytes: self.resource_identity.resource_bytes(),
+                data_bytes,
+                metadata_hashes: PrimaryMetadataChunkHashes::new(
+                    *graph.receipt().axml_sha256(),
+                    *graph.receipt().chna_sha256(),
+                    *self.dbmd.payload_sha256(),
+                ),
+                resource_sha256: self.resource_identity.input_sha256(),
+                config_sha256: self.config_sha256,
+                job_xml_sha256: self.job_xml_sha256,
+                job_xml_bytes: self.job_xml_bytes,
+            },
+        )
+        .map_err(PreparedJobInputError::PrimaryControlBinding)?;
+        let controls = produce_primary_metadata_control_rows(&binding, graph, &self.dbmd)
+            .map_err(PreparedJobInputError::PrimaryMetadataControls)?;
+        self.primary_control_binding = Some(binding);
+        self.primary_metadata_controls = Some(controls);
+        Ok(self)
+    }
+
+    /// Builds the reusable F01E callback snapshot from this admitted input and one cold owner.
+    pub fn normal_control_prepared_snapshot(
+        &self,
+        state: &FrontendControlState,
+    ) -> Result<Arc<NormalControlPreparedSnapshot>, PreparedJobInputError> {
+        if state.programme_id() != &self.programme_id {
+            return Err(PreparedJobInputError::ProgrammeIdentityMismatch);
+        }
+        let binding = self
+            .primary_control_binding
+            .as_ref()
+            .ok_or(PreparedJobInputError::PrimaryControlBindingUnavailable)?;
+        NormalControlPreparedSnapshot::from_validated(
+            state,
+            binding,
+            self.graph.graph(),
+            &self.admitted_object_events,
+            &self.dbmd,
+        )
+        .map_err(PreparedJobInputError::NormalControlSnapshot)
+    }
+
     pub const fn job_xml_sha256(&self) -> [u8; 32] {
         self.job_xml_sha256
     }
@@ -246,6 +317,11 @@ pub enum PreparedJobInputError {
     MetadataPayloadBinding,
     IdentityEnvelope,
     IdentityProjection(PreparedJobInputIdentityError),
+    PrimaryControlBinding(PrimaryControlBindingError),
+    PrimaryMetadataControls(PrimaryMetadataControlError),
+    PrimaryControlBindingUnavailable,
+    ProgrammeIdentityMismatch,
+    NormalControlSnapshot(NormalControlSnapshotError),
 }
 
 impl std::fmt::Display for PreparedJobInputError {
@@ -267,6 +343,24 @@ impl std::fmt::Display for PreparedJobInputError {
             }
             Self::IdentityProjection(error) => {
                 write!(formatter, "prepared job identity projection: {error:?}")
+            }
+            Self::PrimaryControlBinding(error) => {
+                write!(formatter, "primary control binding: {error:?}")
+            }
+            Self::PrimaryMetadataControls(error) => {
+                write!(formatter, "primary metadata controls: {error:?}")
+            }
+            Self::PrimaryControlBindingUnavailable => {
+                formatter.write_str("selected PCM extent is required before F01E callback staging")
+            }
+            Self::ProgrammeIdentityMismatch => {
+                formatter.write_str("prepared input and F01E owner have different programme IDs")
+            }
+            Self::NormalControlSnapshot(error) => {
+                write!(
+                    formatter,
+                    "F01E normal-control prepared snapshot: {error:?}"
+                )
             }
         }
     }
@@ -324,6 +418,9 @@ pub fn prepare_selected_job_input(
     let identity_bytes = serde_json::to_vec(&identity_envelope)
         .map_err(|_| PreparedJobInputError::IdentityEnvelope)?;
     let config_sha256: [u8; 32] = Sha256::digest(identity_bytes).into();
+    let job_xml_bytes = u64::try_from(xml.len()).map_err(|_| {
+        PreparedJobInputError::PrimaryControlBinding(PrimaryControlBindingError::SourceExtent)
+    })?;
     let graph = PreparedAdmGraph {
         graph,
         provenance: PreparedAdmGraphProvenance {
@@ -380,10 +477,13 @@ pub fn prepare_selected_job_input(
         admitted_object_events,
         identity_envelope,
         job_xml_sha256,
+        job_xml_bytes,
         config_sha256,
         resource,
         resource_identity,
         domain_identity,
+        primary_control_binding: None,
+        primary_metadata_controls: None,
     })
 }
 

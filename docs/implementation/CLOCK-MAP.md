@@ -129,6 +129,7 @@
 | F01E/informational-primary-geometry-source-recheck | — | `Source-package identity verification adds no producer, callback, owner, reset, or publication clock.` |
 | F01E/same-attempt-normal-sampler-source-geometry-stage | `FrontendCallbackIndex`<br>`AttemptId`<br>`ProgrammeId`<br>`CallbackLineageIdentity` | `Normal controls and the 48-row geometry must carry the same programme, attempt and callback transaction.`<br>`The value/source origin is the normal callback g; this stage does not create an E-AC-3 source or AU index.`<br>`The complete normal after-state remains pending for the parent transaction; this function has no commit authority.` |
 | F01E/selected-adm-riff-to-prepared-job-input | `AdmSampleCount`<br>`ResourceIdentity` | `The parsed selected PCM frame count binds the admitted source extent; no callback, AU, drain or publication clock is created.` |
+| F01E/prepared-input-to-f01e-snapshot-binding | `ProgrammeId`<br>`AttemptId` | `The normal snapshot reuses the PreparedJobInput programme and the caller's existing FrontendControlState attempt; this method creates no callback or AU index.` |
 | F03G/target-slot-install | — | `Pure per-callback value transition; no clock or committed state is owned.` |
 | F03C/candidate-selector | — | `Each selector call initializes cold scratch; no callback/source/AU counter or cross-call selector state is owned.` |
 | F03C/selector-score-choice | — | `No state or clock is owned.` |
