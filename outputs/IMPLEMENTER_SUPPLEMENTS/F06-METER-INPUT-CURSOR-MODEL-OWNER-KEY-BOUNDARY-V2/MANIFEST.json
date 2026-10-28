@@ -1,0 +1,37 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2",
+  "scope": "Frozen cursor API caller search; confirms Panner callers only and Meter production key source remains unbound",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "classification": "MODEL_CALLSITE_BOUNDARY_PRODUCTION_OWNER_UNBOUND",
+  "implementation_requirement": false,
+  "source_manifest_sha256": "ebf0444307bac55c36c714aafe9f7e8df68a0276c3a9c81075311714544a7d87",
+  "supersedes_manifest_sha256": "9df53a2b612b3dec8296faa8549f089545cd5e16d01cab7e2c082d616cfc01ec",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1622,
+      "sha256": "7d607c6e4e791a17b668d86d3076efe0b4aeaead5600490133ea35a7a678db76"
+    },
+    {
+      "file": "CALLSITE-STATUS.json",
+      "bytes": 1711,
+      "sha256": "8ec17c02ff1d5a2e65cc075527b0b34d165c1d77ca32049afacaa538867d4bc7"
+    },
+    {
+      "file": "OWNER-KEY-STATUS.json",
+      "bytes": 1168,
+      "sha256": "00c022418220d3b1cdfebc3f349b588f6d398c8b67caaee48e803604899cfd66"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 1758,
+      "sha256": "b9c197ab697f54a760524e3f29f481fe6a884318e9fd599d1a699afd588fa542"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 449,
+      "sha256": "2b902cd414f7354489f121f838dc742fc45c3594759cfbf8bcf83f5aeb1d0853"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "washed-f06-cursor-callsite-status.v2",
+  "package_id": "F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2",
+  "frozen_tree_scope": "execution-sources Python tree only",
+  "searched_apis": [
+    "initialize_pcm_source_cursor",
+    "read_pcm_source_owner",
+    "complete_pcm_read_schedule"
+  ],
+  "external_callsite_counts": {
+    "initializer": 2,
+    "read_pcm_source_owner": 0,
+    "complete_pcm_read_schedule": 0,
+    "selected_meter_root_ingress": 0
+  },
+  "initializer_callers": [
+    {
+      "basename": "fullstream_numeric_FMA3_panner_regular_tiny_matrix_OWN64_resume_rev4.py",
+      "bytes": 32940,
+      "sha256": "8d27e57b80bb5bff913fce9472261fe015ceb70b8929c07b23b478050830ccd3",
+      "role": "FMA3 Panner model",
+      "owner_key_source": "fixed declared-storage label",
+      "length_source": "len(wave.data)",
+      "input_hash_passed": false,
+      "attempt_passed": false,
+      "meter_root_token_passed": false
+    },
+    {
+      "basename": "fullstream_numeric_regular_currentfactor_tiny_receiver_fma3_panner_matrix_cold_rev1.py",
+      "bytes": 32596,
+      "sha256": "a5265f3e4734743721e8ca6329af6dcfa701b42d14b48ceb12afdd0fe0b94db9",
+      "role": "regular Panner model",
+      "owner_key_source": "fixed declared-storage label",
+      "length_source": "len(wave.data)",
+      "input_hash_passed": false,
+      "attempt_passed": false,
+      "meter_root_token_passed": false
+    }
+  ],
+  "conclusion": "Frozen model has caller-supplied identity only; the two callers are Panner models, not selected Meter ingress. No Meter production owner-key generator was found in this caller set.",
+  "source_code_or_disassembly_included": false,
+  "implementation_requirement": false
+}

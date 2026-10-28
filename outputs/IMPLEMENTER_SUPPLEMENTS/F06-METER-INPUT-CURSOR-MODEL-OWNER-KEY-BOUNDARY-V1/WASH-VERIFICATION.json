@@ -1,0 +1,12 @@
+{
+  "schema": "washed-package-verification.v1",
+  "source_manifest_sha256": "9df53a2b612b3dec8296faa8549f089545cd5e16d01cab7e2c082d616cfc01ec",
+  "source_payloads_verified": 4,
+  "payload_hashes_and_lengths_match": true,
+  "source_package_path_free_claim_checked": true,
+  "no_native_static_or_dynamic_execution_claimed": true,
+  "native_status": "NOT_RUN_NO_USABLE_INTERFACE",
+  "key_classification": "ordinary model owner identity, not vendor private/auth",
+  "implementation_readiness": "PRODUCTION_OWNER_UNBOUND",
+  "product_acceptance": "NOT_RUN"
+}

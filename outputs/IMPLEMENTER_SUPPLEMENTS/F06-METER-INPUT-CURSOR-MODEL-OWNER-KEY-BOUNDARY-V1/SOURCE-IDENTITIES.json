@@ -1,0 +1,58 @@
+{
+  "schema": "washed-f06-input-cursor-source-identities.v1",
+  "source_manifest_sha256": "9df53a2b612b3dec8296faa8549f089545cd5e16d01cab7e2c082d616cfc01ec",
+  "source_payloads_verified": [
+    {
+      "file": "COLD-ROOT-BINDING-FINDINGS.json",
+      "bytes": 1683,
+      "sha256": "5a54869aed010d7456add0b6d6bc489ce1452812b3650d21043ead8feaa9754c"
+    },
+    {
+      "file": "MODEL-OWNER-KEY-CONTRACT.md",
+      "bytes": 6445,
+      "sha256": "d7bfba99f630a38866943f3aae9e89ad95fd2896776bce280867c251b618d8de"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 3837,
+      "sha256": "a30951fa09ce240f1e805ac858717350527f8dfcf1fa4ff3a04c49ec1a8ee11c"
+    },
+    {
+      "file": "STATUS.json",
+      "bytes": 1437,
+      "sha256": "30b7aee1816fad0dbeba253d46140ba573c47da8666782509381a4b526d63a90"
+    }
+  ],
+  "rehashed_sources": [
+    {
+      "identity": "frozen Python cursor model",
+      "bytes": 5439,
+      "sha256": "378fc204a4c3f6d2aed5fd7c839062cd84a68071b3c97ffb5920da5efa2de8ee",
+      "grade": "MODEL_SOURCE_NOT_NATIVE_ABI"
+    },
+    {
+      "identity": "GTC full_restart contract",
+      "sha256": "5415b7b2fb60f50351cd26691e7ef0fc5bd758e501d305d0a714b90c714cd105",
+      "grade": "APPROVED_CLEANROOM_RULE"
+    },
+    {
+      "identity": "production ingress blocker crosswalk",
+      "manifest_sha256": "2537e099d693f48a76c260357be5b1f5467b0f2314c422bcd18457d155b0ed0d",
+      "grade": "EXISTING_WASH_AUDIT"
+    }
+  ],
+  "native_target": {
+    "bytes": 10942464,
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "identity": "REHASHED",
+    "static_analysis": "NOT_RUN_NO_USABLE_INTERFACE"
+  },
+  "omitted": [
+    "source code",
+    "disassembly",
+    "addresses",
+    "PCM/EC3",
+    "private key/auth material",
+    "absolute paths"
+  ]
+}

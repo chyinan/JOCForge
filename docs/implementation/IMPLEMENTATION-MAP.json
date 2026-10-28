@@ -6107,8 +6107,8 @@
         {
           "slice_id": "prepared-job-input-domain-identity-projection",
           "mapping_status": "MATERIALIZED_LAYER_SAFE_PREPARED_JOB_IDENTITY_PROJECTION__METER_FINALIZE_OPEN",
-          "implementation_status": "LOCALLY_VERIFIED_DOMAIN_OWNED_INPUT_IDENTITY_PROJECTION__TERMINAL_PREIMAGE_BLOCKED_ON_METER_V4_FIELDS",
-          "scope": "Application derives and stores one immutable Domain-owned PreparedJobInputIdentity during admission from the same PreparedJobInput: whole-resource SHA/byte length, canonical config SHA plus raw XML SHA and typed F01E input kind, and ADM graph parent identity plus AXML/CHNA/DBMD chunk spans. The projection contains no path or I/O capability and rejects graph/resource identity or chunk-span mismatches. It does not compute the terminal meter root hash, mint ProgrammeMeasurementReceipt, set READY, or commit DRC Option<U5>.",
+          "implementation_status": "LOCALLY_VERIFIED_DOMAIN_OWNED_INPUT_IDENTITY_PROJECTION__TERMINAL_PREIMAGE_BLOCKED_ON_PRODUCTION_KEY_PRODUCER_AND_K_FILTER_SOURCE",
+          "scope": "Application derives and stores one immutable Domain-owned PreparedJobInputIdentity during admission from the same PreparedJobInput: whole-resource SHA/byte length, canonical config SHA plus raw XML SHA and typed F01E input kind, and ADM graph parent identity plus AXML/CHNA/DBMD chunk spans. The projection contains no path or I/O capability and rejects graph/resource identity or chunk-span mismatches. It does not compute the terminal meter root hash, mint ProgrammeMeasurementReceipt, set READY, or commit DRC Option<U5>. The frozen model contract for input_cursor.model_owner_key is now closed as an ordinary non-empty Python string with no derivation rule; the production key producer/call receipt and attempt+1 policy remain UNBOUND. The K-filter exponent owner/type source remains UNBOUND, so no terminal meter hash, MeasurementReceipt or READY proposal is emitted. V2 closes the frozen model callsite search to two Panner initializers only; no external Meter-root caller or production owner-key producer was found. The production owner-key receipt remains UNBOUND, and the separate K-filter owner/type source remains UNBOUND. V2 closes the frozen model callsite search to two Panner initializers only; no external Meter-root caller or production owner-key producer was found. The production owner-key receipt remains UNBOUND, and the separate K-filter owner/type source remains UNBOUND. V2 closes the frozen model callsite search to two Panner initializers only; no external Meter-root caller or production owner-key producer was found. The production owner-key receipt remains UNBOUND, and the separate K-filter owner/type source remains UNBOUND.",
           "owner": "meter",
           "implementation_files": [
             "crates/jocforge-domain/src/meter/prepared_job_identity.rs",
@@ -6129,13 +6129,42 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/METER-FINALIZE-DOMAIN-PROPOSAL-V1/INPUT-ONLY-IDENTITY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/METER-FINALIZE-DOMAIN-PROPOSAL-V1/SOURCE-CHAIN.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/PREPARED-JOB-INPUT-IDENTITY-V1/CONTRACT.md",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/PREPARED-JOB-INPUT-IDENTITY-V1/IDENTITY-MAP.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PREPARED-JOB-INPUT-IDENTITY-V1/IDENTITY-MAP.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/MODEL-OWNER-KEY-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/CALLSITE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/OWNER-KEY-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/WASH-VERIFICATION.json"
             ],
             "supplement_manifest_sha256s": {
               "METER-FINALIZE-DOMAIN-PROPOSAL-V1": "abb560381448727aa4c88877373769aa14556a4e365e4bec82637a043155333b",
               "PREPARED-JOB-INPUT-IDENTITY-V1": "4ba12217bfb7283a05a1b13966cd725db0617210129405c3989b7c2537aabf0f"
             },
-            "validation_boundary": "Typed identity projection and same-resource graph provenance only; the terminal meter preimage is blocked on the V4 model-owner-key and K-filter-exponent field ownership gaps, so no terminal hash or receipt is emitted."
+            "validation_boundary": "Typed identity projection and same-resource graph provenance only; frozen owner-key model/callsite semantics are closed, but production Meter owner-key producer/call receipt and K-filter exponent owner/type source remain unbound, so no terminal hash or receipt is emitted.",
+            "field_contract_update": {
+              "package_id": "F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2",
+              "manifest_sha256": "3dc1750db282cc0cf1ff56b3fcc936f0458dcd53a5a967f9e04c864317f282cc",
+              "supersedes_implementer_manifest_sha256": "e7f7719f8a9ea172df61ed06853b9a388a65ea762deb0c193a73c474bd942d9f",
+              "supersedes_source_manifest_sha256": "9df53a2b612b3dec8296faa8549f089545cd5e16d01cab7e2c082d616cfc01ec",
+              "field": "input_cursor.model_owner_key",
+              "model_contract": "CLOSED_ORDINARY_NONEMPTY_PYTHON_STRING_NO_DERIVATION",
+              "model_callsites": "TWO_PANNER_INITIALIZERS; NO_METER_INGRESS_CALLER",
+              "production_meter_owner": "UNBOUND",
+              "attempt_plus_one_policy": "UNBOUND",
+              "terminal_meter_digest_or_receipt": "BLOCKED"
+            },
+            "superseded_v1": {
+              "package_id": "F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1",
+              "manifest_sha256": "e7f7719f8a9ea172df61ed06853b9a388a65ea762deb0c193a73c474bd942d9f",
+              "source_manifest_sha256": "9df53a2b612b3dec8296faa8549f089545cd5e16d01cab7e2c082d616cfc01ec",
+              "status": "SUPERSEDED_BY_V2_CALLSITE_AUDIT"
+            }
           },
           "test_modules": [
             "crates/jocforge-domain/src/meter/prepared_job_identity.rs",
@@ -6144,15 +6173,39 @@
           "vectors": {
             "kind": "INPUT_ONLY_PREPARED_JOB_IDENTITY_AND_GRAPH_RESOURCE_MISMATCH_CASES",
             "authoritative_vectors": [
-              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-FINALIZE-DOMAIN-PROPOSAL-V1/INPUT-ONLY-IDENTITY-VECTORS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/METER-FINALIZE-DOMAIN-PROPOSAL-V1/INPUT-ONLY-IDENTITY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/MODEL-OWNER-KEY-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/CALLSITE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/OWNER-KEY-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/SOURCE-IDENTITIES.json"
             ],
             "case_pointers": [
               "Application integration asserts the stored projection uses the same admitted resource/config/graph values.",
               "Domain tests reject a graph parent from another resource, wrong chunk kind, and chunk span outside the complete resource extent.",
-              "Config/parent identity mismatch, terminal counter mismatch, missing getter and receipt/READY proposal cases remain pending the Meter finalize operation."
+              "Config/parent identity mismatch, terminal counter mismatch, missing getter and receipt/READY proposal cases remain pending the Meter finalize operation.",
+              "Frozen model-key semantics are closed; production producer/call receipt and attempt+1 policy remain unbound."
             ],
             "expected_outputs_included": false,
-            "expected_values_are_assertions_only": true
+            "expected_values_are_assertions_only": true,
+            "field_contract_update": {
+              "package_id": "F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2",
+              "manifest_sha256": "3dc1750db282cc0cf1ff56b3fcc936f0458dcd53a5a967f9e04c864317f282cc",
+              "supersedes_implementer_manifest_sha256": "e7f7719f8a9ea172df61ed06853b9a388a65ea762deb0c193a73c474bd942d9f",
+              "supersedes_source_manifest_sha256": "9df53a2b612b3dec8296faa8549f089545cd5e16d01cab7e2c082d616cfc01ec",
+              "field": "input_cursor.model_owner_key",
+              "model_contract": "CLOSED_ORDINARY_NONEMPTY_PYTHON_STRING_NO_DERIVATION",
+              "model_callsites": "TWO_PANNER_INITIALIZERS; NO_METER_INGRESS_CALLER",
+              "production_meter_owner": "UNBOUND",
+              "attempt_plus_one_policy": "UNBOUND",
+              "terminal_meter_digest_or_receipt": "BLOCKED"
+            },
+            "superseded_v1": {
+              "package_id": "F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1",
+              "manifest_sha256": "e7f7719f8a9ea172df61ed06853b9a388a65ea762deb0c193a73c474bd942d9f",
+              "source_manifest_sha256": "9df53a2b612b3dec8296faa8549f089545cd5e16d01cab7e2c082d616cfc01ec",
+              "status": "SUPERSEDED_BY_V2_CALLSITE_AUDIT"
+            }
           },
           "error_outcomes": [
             {
@@ -6178,7 +6231,7 @@
             }
           ],
           "not_run": [
-            "Terminal owners.meter canonical preimage is BLOCKED: V4 input_cursor.model_owner_key has no approved owner source.",
+            "Terminal owners.meter canonical preimage is BLOCKED: no production input_cursor.model_owner_key producer/call receipt or same-root parent commit; frozen model callsites are limited to two Panner initializers.",
             "Terminal owners.meter canonical preimage is BLOCKED: leaves.window_k_energy K-filter exponents have no approved owner/type source and must not be merged with energy accumulator exponents.",
             "Terminal meter hash, ProgrammeMeasurementReceipt, READY transition and DRC Option<U5> Some proposal remain NOT_RUN.",
             "GTC single root swap, parent reset/fatal integration and full encode remain NOT_RUN."
@@ -6213,6 +6266,107 @@
               "sha256": "d9286b86b07654f5fd8af65b69786fb7f16cc63d6ce4ea5a5489f42e05b8ccf4"
             }
           ]
+        },
+        {
+          "slice_id": "informational-input-cursor-model-owner-key-contract",
+          "mapping_status": "WASHED_MODEL_CONTRACT_AND_PANNER_CALLSITES_CLOSED__PRODUCTION_METER_OWNER_UNBOUND",
+          "implementation_status": "MODEL_CONTRACT_CLOSED__TWO_PANNER_CALLSITES_ONLY__PRODUCTION_METER_OWNER_PRODUCER_UNBOUND",
+          "scope": "V2 supersedes V1 callsite status. The frozen model contract defines model_owner_key as an ordinary non-empty Python string, not vendor private-key or authentication material, with no derivation rule. A frozen-tree search found two direct initializer callers, both Panner numerical models; each passes a fixed declared-storage label and len(wave.data), neither passes input hash, source-instance, attempt or Meter-root token. No external Meter-root caller of read_pcm_source_owner or complete_pcm_read_schedule was found. Thus MODEL_CONTRACT_CLOSED and MODEL_CALLSITE_CLOSED are limited to the frozen model; the production Meter owner-key producer/call receipt, root/commit binding, and attempt+1 policy remain UNBOUND. Native static analysis remains NOT_RUN; do not infer a production key from Panner constants or synthetic V4 examples.",
+          "owner": "meter",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "The owner-key string is an identity lookup input, not a meter/source/AU clock or generation token."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_F06_MODEL_OWNER_KEY_FIELD_CONTRACT",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/MODEL-OWNER-KEY-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/CALLSITE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/OWNER-KEY-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "3dc1750db282cc0cf1ff56b3fcc936f0458dcd53a5a967f9e04c864317f282cc",
+            "candidate_source_manifest_sha256": "ebf0444307bac55c36c714aafe9f7e8df68a0276c3a9c81075311714544a7d87",
+            "validation_boundary": "Frozen model and synthetic V4 projection only; production producer, storage identity, parent commit, and native behavior remain unbound.",
+            "superseded_v1": {
+              "package_id": "F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1",
+              "manifest_sha256": "e7f7719f8a9ea172df61ed06853b9a388a65ea762deb0c193a73c474bd942d9f",
+              "source_manifest_sha256": "9df53a2b612b3dec8296faa8549f089545cd5e16d01cab7e2c082d616cfc01ec",
+              "status": "SUPERSEDED_BY_V2_CALLSITE_AUDIT"
+            },
+            "model_contract_status": "MODEL_CONTRACT_CLOSED",
+            "model_callsite_status": "MODEL_CALLSITE_CLOSED_TWO_PANNER_INITIALIZERS_NO_METER_INGRESS",
+            "production_owner_status": "PRODUCTION_METER_OWNER_UNBOUND",
+            "field_contract_update": {
+              "package_id": "F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2",
+              "manifest_sha256": "3dc1750db282cc0cf1ff56b3fcc936f0458dcd53a5a967f9e04c864317f282cc",
+              "supersedes_implementer_manifest_sha256": "e7f7719f8a9ea172df61ed06853b9a388a65ea762deb0c193a73c474bd942d9f",
+              "supersedes_source_manifest_sha256": "9df53a2b612b3dec8296faa8549f089545cd5e16d01cab7e2c082d616cfc01ec",
+              "field": "input_cursor.model_owner_key",
+              "model_contract": "CLOSED_ORDINARY_NONEMPTY_PYTHON_STRING_NO_DERIVATION",
+              "model_callsites": "TWO_PANNER_INITIALIZERS; NO_METER_INGRESS_CALLER",
+              "production_meter_owner": "UNBOUND",
+              "attempt_plus_one_policy": "UNBOUND",
+              "terminal_meter_digest_or_receipt": "BLOCKED"
+            }
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "HASH_BOUND_MODEL_COLD_CURSOR_CASES_NO_EXPECTED_NATIVE_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/MODEL-OWNER-KEY-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/CALLSITE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/OWNER-KEY-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/SOURCE-IDENTITIES.json"
+            ],
+            "case_pointers": [
+              "N1, N1537, and N6522906 cold examples initialize cursor/read_index to zero.",
+              "Owner-map key is a caller-supplied non-empty string; no derivation or grammar is defined.",
+              "A map hit checks stored key and duration but not source SHA or attempt; duplicate-key aliasing is inferred, no collision observed.",
+              "No production key producer/call receipt, attempt+1 renewal policy, or native static/dynamic analysis."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "3dc1750db282cc0cf1ff56b3fcc936f0458dcd53a5a967f9e04c864317f282cc",
+            "superseded_v1": {
+              "package_id": "F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1",
+              "manifest_sha256": "e7f7719f8a9ea172df61ed06853b9a388a65ea762deb0c193a73c474bd942d9f",
+              "source_manifest_sha256": "9df53a2b612b3dec8296faa8549f089545cd5e16d01cab7e2c082d616cfc01ec",
+              "status": "SUPERSEDED_BY_V2_CALLSITE_AUDIT"
+            },
+            "field_contract_update": {
+              "package_id": "F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2",
+              "manifest_sha256": "3dc1750db282cc0cf1ff56b3fcc936f0458dcd53a5a967f9e04c864317f282cc",
+              "supersedes_implementer_manifest_sha256": "e7f7719f8a9ea172df61ed06853b9a388a65ea762deb0c193a73c474bd942d9f",
+              "supersedes_source_manifest_sha256": "9df53a2b612b3dec8296faa8549f089545cd5e16d01cab7e2c082d616cfc01ec",
+              "field": "input_cursor.model_owner_key",
+              "model_contract": "CLOSED_ORDINARY_NONEMPTY_PYTHON_STRING_NO_DERIVATION",
+              "model_callsites": "TWO_PANNER_INITIALIZERS; NO_METER_INGRESS_CALLER",
+              "production_meter_owner": "UNBOUND",
+              "attempt_plus_one_policy": "UNBOUND",
+              "terminal_meter_digest_or_receipt": "BLOCKED"
+            }
+          },
+          "not_run": [
+            "Production Meter owner-key producer/call receipt to cursor map slot/read receipt.",
+            "Same Meter root, parent generation and commit binding; no Meter ingress caller exists in the frozen model caller set.",
+            "Attempt+1 owner-key renewal/reuse policy.",
+            "Native static analysis/execution and terminal meter digest/MeasurementReceipt."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
         }
                        ]
     },
@@ -17735,9 +17889,9 @@
       "direct_slices": [
         {
           "slice_id": "informational-production-ingress-readiness-audit",
-          "mapping_status": "WASHED_STATIC_READINESS_AUDIT__LOCAL_MODEL_SCOPES_AND_PRODUCTION_DEPENDENCIES_PINNED",
-          "implementation_status": "INFORMATIONAL_ONLY_LOCAL_MODEL_CLOCK_AND_FAILURE_SCOPES_IDENTIFIED__PRODUCTION_PLAN_AND_RECEIPTS_OPEN",
-          "scope": "Read-only audit of approved clean-room contracts, types and supplements. It identifies independently implementable LOCAL_MODEL scopes for N-to-Q clocks, source0/1 suppression while building complete 4096-byte CRC-checked frames, main cached4 versus independent meter zero3 EOF, candidate-infeasibility versus fatal boundaries, F15 provider projection/hash, and source-proposal lineage. Production encode remains blocked: encode() is BackendUnavailable; ValidatedEncodingPlan and its builder are absent; the production ProgrammeOutputBinding constructor is absent and current binding/provider projection are test-support only. Same-source F06/F08/F09/F10/F11/F13 receipts and parent adapters remain incomplete. F06 additionally lacks approved owner/type/source/cold-reset contracts for input_cursor.model_owner_key and window_k_energy.k_filter.exponents_i32_by_channel; no terminal meter digest or MeasurementReceipt is admissible until those fields bind to the selected meter root. The audit is a readiness map, not DEE equivalence or product execution.",
+          "mapping_status": "WASHED_STATIC_READINESS_AUDIT__F06_MODEL_CALLSITE_V2_SUPERSEDES_V1",
+          "implementation_status": "INFORMATIONAL_ONLY_MODEL_CALLSITE_CLOSED__PRODUCTION_METER_OWNER_AND_K_FILTER_SOURCE_OPEN",
+          "scope": "Read-only audit of approved clean-room contracts, types and supplements. It identifies independently implementable LOCAL_MODEL scopes for N-to-Q clocks, source0/1 suppression while building complete 4096-byte CRC-checked frames, main cached4 versus independent meter zero3 EOF, candidate-infeasibility versus fatal boundaries, F15 provider projection/hash, and source-proposal lineage. Production encode remains blocked: encode() is BackendUnavailable; ValidatedEncodingPlan and its builder are absent; the production ProgrammeOutputBinding constructor is absent and current binding/provider projection are test-support only. Same-source F06/F08/F09/F10/F11/F13 receipts and parent adapters remain incomplete. The F06 V2 package supersedes V1: the ordinary-string model contract and two Panner-only initializer callsites are closed, with no Meter ingress caller found. Production Meter owner-key producer/call receipt, root/commit binding and attempt+1 policy remain UNBOUND. The K-filter exponent owner/type source also remains UNBOUND. No terminal meter digest or MeasurementReceipt is admissible until these production receipts and the K-filter source are bound. The audit remains a readiness map, not DEE equivalence or product execution.",
           "owner": "output",
           "implementation_requirement": false,
           "implementation_files": [],
@@ -17753,32 +17907,86 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/PRODUCTION-INGRESS-READINESS-AUDIT-V1/MANIFEST.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/PRODUCTION-INGRESS-READINESS-AUDIT-V1/DEPENDENCY-AND-ORDER.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/PRODUCTION-INGRESS-READINESS-AUDIT-V1/SOURCE-IDENTITIES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/PRODUCTION-INGRESS-READINESS-AUDIT-V1/WASH-VERIFICATION.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PRODUCTION-INGRESS-READINESS-AUDIT-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/MODEL-OWNER-KEY-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/CALLSITE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/OWNER-KEY-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/WASH-VERIFICATION.json"
             ],
             "supplement_manifest_sha256": "2537e099d693f48a76c260357be5b1f5467b0f2314c422bcd18457d155b0ed0d",
             "audited_head": "9bf95d82822a1e74be8d448bf3fb14ecc66c9e41",
             "audited_implementation_map_sha256": "04bb5a5ab46ed2a62626bdc62dad9ac7d5412b6bf8e7b3fb03dcb5dadb13d381",
-            "validation_boundary": "Audit snapshot is bound to the listed HEAD and source identities; no production source change, test execution, native execution, or product acceptance occurred."
+            "validation_boundary": "Audit snapshot is bound to the listed HEAD and source identities; no production source change, test execution, native execution, or product acceptance occurred.",
+            "field_contract_update": {
+              "package_id": "F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2",
+              "manifest_sha256": "3dc1750db282cc0cf1ff56b3fcc936f0458dcd53a5a967f9e04c864317f282cc",
+              "supersedes_implementer_manifest_sha256": "e7f7719f8a9ea172df61ed06853b9a388a65ea762deb0c193a73c474bd942d9f",
+              "supersedes_source_manifest_sha256": "9df53a2b612b3dec8296faa8549f089545cd5e16d01cab7e2c082d616cfc01ec",
+              "field": "input_cursor.model_owner_key",
+              "model_contract": "CLOSED_ORDINARY_NONEMPTY_PYTHON_STRING_NO_DERIVATION",
+              "model_callsites": "TWO_PANNER_INITIALIZERS; NO_METER_INGRESS_CALLER",
+              "production_meter_owner": "UNBOUND",
+              "attempt_plus_one_policy": "UNBOUND",
+              "terminal_meter_digest_or_receipt": "BLOCKED"
+            },
+            "superseded_v1": {
+              "package_id": "F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1",
+              "manifest_sha256": "e7f7719f8a9ea172df61ed06853b9a388a65ea762deb0c193a73c474bd942d9f",
+              "source_manifest_sha256": "9df53a2b612b3dec8296faa8549f089545cd5e16d01cab7e2c082d616cfc01ec",
+              "status": "SUPERSEDED_BY_V2_CALLSITE_AUDIT"
+            }
           },
           "test_modules": [],
           "vectors": {
             "kind": "HASH_BOUND_READINESS_AUDIT_NO_EXPECTED_OUTPUTS",
             "authoritative_vectors": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/PRODUCTION-INGRESS-READINESS-AUDIT-V1/DEPENDENCY-AND-ORDER.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/PRODUCTION-INGRESS-READINESS-AUDIT-V1/SOURCE-IDENTITIES.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PRODUCTION-INGRESS-READINESS-AUDIT-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/MODEL-OWNER-KEY-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1/SOURCE-IDENTITIES.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/CALLSITE-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/OWNER-KEY-STATUS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2/SOURCE-IDENTITIES.json"
             ],
             "case_pointers": [
               "Local-model source-clock, suppression/CRC, EOF, candidate/fatal, F15 projection/hash and proposal-lineage scopes are identified.",
               "Product encode authority is absent; no ValidatedEncodingPlan or production output binding exists.",
-              "F06 meter root is blocked on model_owner_key and K-filter exponent owner/type/cold-reset source contracts.",
-              "F08 and F13 remain blocked on same-source production frame and four-body parent adapters/receipts."
+              "V2: model contract and two Panner-only initializer callsites are closed; there is no external Meter-root caller. Production Meter owner-key producer/call receipt, same-root binding, and attempt+1 policy remain UNBOUND.",
+              "No terminal meter digest or MeasurementReceipt until production owner/root receipts and the K-filter source are bound."
             ],
             "expected_outputs_included": false,
-            "supplement_manifest_sha256": "2537e099d693f48a76c260357be5b1f5467b0f2314c422bcd18457d155b0ed0d"
+            "supplement_manifest_sha256": "2537e099d693f48a76c260357be5b1f5467b0f2314c422bcd18457d155b0ed0d",
+            "field_contract_update": {
+              "package_id": "F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2",
+              "manifest_sha256": "3dc1750db282cc0cf1ff56b3fcc936f0458dcd53a5a967f9e04c864317f282cc",
+              "supersedes_implementer_manifest_sha256": "e7f7719f8a9ea172df61ed06853b9a388a65ea762deb0c193a73c474bd942d9f",
+              "supersedes_source_manifest_sha256": "9df53a2b612b3dec8296faa8549f089545cd5e16d01cab7e2c082d616cfc01ec",
+              "field": "input_cursor.model_owner_key",
+              "model_contract": "CLOSED_ORDINARY_NONEMPTY_PYTHON_STRING_NO_DERIVATION",
+              "model_callsites": "TWO_PANNER_INITIALIZERS; NO_METER_INGRESS_CALLER",
+              "production_meter_owner": "UNBOUND",
+              "attempt_plus_one_policy": "UNBOUND",
+              "terminal_meter_digest_or_receipt": "BLOCKED"
+            },
+            "superseded_v1": {
+              "package_id": "F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1",
+              "manifest_sha256": "e7f7719f8a9ea172df61ed06853b9a388a65ea762deb0c193a73c474bd942d9f",
+              "source_manifest_sha256": "9df53a2b612b3dec8296faa8549f089545cd5e16d01cab7e2c082d616cfc01ec",
+              "status": "SUPERSEDED_BY_V2_CALLSITE_AUDIT"
+            }
           },
           "not_run": [
             "Production encode and trusted ValidatedEncodingPlan construction.",
-            "F06 terminal meter root/MeasurementReceipt and the two missing owner/type source contracts.",
+            "Production Meter owner-key producer/call receipt, same meter root/parent commit, and attempt+1 policy.",
+            "K-filter exponents_i32_by_channel owner/type source contract.",
+            "F06 terminal meter root/MeasurementReceipt/READY status.",
             "F08 production frame receipt and F13 production four-body barrier/parent adapter.",
             "Native execution, whole-programme execution, filesystem fault execution, and product acceptance."
           ],
@@ -19015,7 +19223,7 @@
                 {
       "root_id": "meter",
       "materialization_status": "PARTIALLY_MATERIALIZED_NO_GTC_COMMIT",
-      "implementation_status": "PARTIAL_LOCAL_OWNER_STAGE__GTC_RECEIPT_AND_SINGLE_SWAP_NOT_RUN",
+      "implementation_status": "PARTIAL_LOCAL_OWNER_STAGE__PRODUCTION_METER_KEY_AND_K_FILTER_SOURCE_BLOCKED",
       "implementation_files": [
         "crates/jocforge-domain/src/meter/standalone_root.rs",
         "crates/jocforge-domain/src/meter/mod.rs"
@@ -19042,7 +19250,7 @@
           "sha256": "4d204315db95118824c8a4deb40c93ffde9d02ab33f46897fb7abed8694b0f55"
         }
       ],
-      "local_scope": "The selected schedule, queue lifecycle and Domain-owned PreparedJobInputIdentity projection are locally materialized. Complete terminal owners.meter serialization is BLOCKED on V4 input_cursor.model_owner_key and K-filter exponent ownership; there is no terminal meter hash, ProgrammeMeasurementReceipt, READY proposal or parent commit.",
+      "local_scope": "The selected schedule, queue lifecycle and Domain-owned PreparedJobInputIdentity projection are locally materialized. The frozen model contract and two Panner-only initializer callsites for input_cursor.model_owner_key are closed; no external Meter-root caller was found. The production Meter owner-key producer/call receipt, same-root binding and K-filter exponent owner/type source remain unbound. Complete terminal owners.meter serialization is blocked; no terminal hash, ProgrammeMeasurementReceipt, READY proposal or parent commit exists.",
       "canonical_gtc_state_ref_status": "NOT_RUN",
       "gtc_owner_receipt_status": "NOT_RUN",
       "gtc_single_root_swap_status": "NOT_RUN",
@@ -19052,21 +19260,21 @@
         "manifest_sha256": "d4e93e12c18307678415ab13cd1304960ce658100346662ddac115b45b298a8a",
         "queue_lifecycle_manifest_sha256": "362b383d4b5148394d7bdc43a502cc1ed68cfe39aa5fbbe1e98c2871ad68e606",
         "payloads": "11/11 locally verified",
-        "implementation_status": "BLOCKED_ON_K_FILTER_EXPONENT_OWNER_AND_MODEL_OWNER_KEY_BINDING",
+        "implementation_status": "BLOCKED_ON_K_FILTER_EXPONENT_OWNER_AND_PRODUCTION_INPUT_CURSOR_OWNER_KEY_PRODUCER",
         "unresolved_fields": [
           "independent k_filter.exponents_i32_by_channel has no current owner/source/transition mapping",
-          "input_cursor.model_owner_key and runtime cursor/owner identity binding are not part of the current Meter root; the queue lifecycle package does not close this field"
+          "input_cursor.model_owner_key model contract and Panner-only callsites are closed; production Meter owner-key producer and runtime cursor/owner identity binding are not part of the current Meter root"
         ]
       },
       "remaining_gates": [
-        "V4 input_cursor.model_owner_key has no approved owner source; terminal owners.meter serialization is BLOCKED.",
+        "Frozen model semantics and two Panner-only callsites for input_cursor.model_owner_key are closed; production Meter key producer/call receipt and same-root binding are UNBOUND, so terminal owners.meter serialization is BLOCKED.",
         "V4 leaves.window_k_energy K-filter exponents have no approved owner/type source and are distinct from energy accumulator exponents; terminal owners.meter serialization is BLOCKED.",
         "Terminal meter hash and ProgrammeMeasurementReceipt/READY production remain NOT_RUN.",
         "F06OF production caller, GTC single root swap, programme reset/fatal/EOF integration remain NOT_RUN.",
         "Native EOF/drain evidence, end-to-end encode, W04 and product acceptance remain NOT_RUN."
       ],
       "measurement_receipt_ready_status": "NOT_RUN",
-      "terminal_state_reference_status": "BLOCKED_ON_UNBOUND_INPUT_CURSOR_MODEL_OWNER_KEY_AND_K_FILTER_EXPONENT_OWNER",
+      "terminal_state_reference_status": "BLOCKED_ON_UNBOUND_PRODUCTION_INPUT_CURSOR_OWNER_KEY_AND_K_FILTER_EXPONENT_OWNER",
       "terminal_meter_sha256_status": "NOT_RUN"
     },
                 {

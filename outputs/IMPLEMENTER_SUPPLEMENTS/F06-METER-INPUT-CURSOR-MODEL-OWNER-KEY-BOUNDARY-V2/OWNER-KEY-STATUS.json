@@ -1,0 +1,14 @@
+{
+  "schema": "washed-f06-meter-owner-key-status.v2",
+  "field": "input_cursor.model_owner_key",
+  "classification": "ORDINARY_MODEL_OWNER_IDENTITY_NOT_VENDOR_PRIVATE_KEY_OR_AUTH",
+  "frozen_type": "Python str",
+  "frozen_domain": "non-empty; no length/charset/prefix/digest/path rule or derivation",
+  "map_behavior": "caller-supplied key selects cursor; miss initializes cold; hit checks key and duration; no input-SHA or attempt check in the map API",
+  "alias_boundary": "Repeated keys can select existing cursor; caller uniqueness is required by model separation; no collision was reported",
+  "v4_projection": "Synthetic source_owner_key input copied to local root; source_identity_sha256 separately equals binding.input_sha256; no key formula or attempt+1 renewal rule",
+  "actual_meter_owner_key_producer": "UNBOUND; no frozen Meter ingress caller found",
+  "native_analysis": "NOT_RUN_NO_USABLE_IDA_GHIDRA_INTERFACE",
+  "minimum_next_receipt": "Admitted input identity/extent/format/attempt + opaque storage owner + producer/call token + cursor map/read receipt + same Meter root and parent generation through commit",
+  "implementation_requirement": false
+}

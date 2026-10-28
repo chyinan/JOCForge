@@ -1,0 +1,50 @@
+{
+  "schema": "washed-f06-meter-owner-key-source-identities.v2",
+  "supersedes_v1_manifest_sha256": "e7f7719f8a9ea172df61ed06853b9a388a65ea762deb0c193a73c474bd942d9f",
+  "source_package_id": "F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V2",
+  "source_manifest_sha256": "ebf0444307bac55c36c714aafe9f7e8df68a0276c3a9c81075311714544a7d87",
+  "payloads_verified": [
+    {
+      "file": "COLD-ROOT-BINDING-FINDINGS.json",
+      "bytes": 1683,
+      "sha256": "5a54869aed010d7456add0b6d6bc489ce1452812b3650d21043ead8feaa9754c"
+    },
+    {
+      "file": "MODEL-CALLSITE-FINDINGS.json",
+      "bytes": 2303,
+      "sha256": "e4cdc501248256e9c439783361721f1368ae622017c25b3cd0f69a9aa69eb8f8"
+    },
+    {
+      "file": "MODEL-OWNER-KEY-CONTRACT.md",
+      "bytes": 7629,
+      "sha256": "b9bfd6b9c5e3a5285f9ef05993d4a8ba87b18c0eb6dec898c7d76e8eab90d7bb"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 5214,
+      "sha256": "9fbf1db55f25add63fd9de86b3d7452ece7c56fd9cf6e5ba28ec22060b7b65df"
+    },
+    {
+      "file": "STATUS.json",
+      "bytes": 1772,
+      "sha256": "77f8ff0521f160716f68bed8552b7d69586cdd2288d4640a6cbc973d13270f24"
+    }
+  ],
+  "frozen_model_sha256": "378fc204a4c3f6d2aed5fd7c839062cd84a68071b3c97ffb5920da5efa2de8ee",
+  "panner_caller_sha256s": [
+    "8d27e57b80bb5bff913fce9472261fe015ceb70b8929c07b23b478050830ccd3",
+    "a5265f3e4734743721e8ca6329af6dcfa701b42d14b48ceb12afdd0fe0b94db9"
+  ],
+  "native_target": {
+    "bytes": 10942464,
+    "sha256": "3d66bcec36031fd48e6565d15f05fea656642377ca4f8c98cdce1cce8b7e95d2",
+    "status": "IDENTITY_REHASHED; STATIC_ANALYSIS_NOT_RUN"
+  },
+  "omitted": [
+    "source code",
+    "absolute paths",
+    "disassembly/addresses",
+    "PCM/EC3",
+    "private/auth material"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "F06-METER-INPUT-CURSOR-MODEL-OWNER-KEY-BOUNDARY-V1",
+  "scope": "Frozen model key semantics and V4 local-root projection; native production owner-key producer remains unbound",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "classification": "MODEL_CONTRACT_CLOSED_PRODUCTION_OWNER_UNBOUND",
+  "implementation_requirement": false,
+  "source_manifest_sha256": "9df53a2b612b3dec8296faa8549f089545cd5e16d01cab7e2c082d616cfc01ec",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 1591,
+      "sha256": "69930da695a817d5cb3a75f438b9704287c5fdf7805d6212e647ace9c8f205b1"
+    },
+    {
+      "file": "MODEL-OWNER-KEY-STATUS.json",
+      "bytes": 2062,
+      "sha256": "14d199510bde357b3d473220a0dfbc25a8442994891324744243739f42429791"
+    },
+    {
+      "file": "SOURCE-IDENTITIES.json",
+      "bytes": 1807,
+      "sha256": "44b224baa26af8bb5b7ec0580eafada7dcd3fbf30cccbcf9d6e5bbc84c644aeb"
+    },
+    {
+      "file": "WASH-VERIFICATION.json",
+      "bytes": 554,
+      "sha256": "ddecdf0f779cf751bdee8d888e37264dd15f2247c98f09be5a656ede62cce6b0"
+    }
+  ]
+}

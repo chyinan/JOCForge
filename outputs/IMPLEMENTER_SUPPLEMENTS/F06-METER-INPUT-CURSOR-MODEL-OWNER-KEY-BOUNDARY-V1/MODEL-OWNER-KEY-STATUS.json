@@ -1,0 +1,60 @@
+{
+  "schema": "washed-f06-input-cursor-owner-key-status.v1",
+  "field": "input_cursor.model_owner_key",
+  "classification": "ORDINARY_MODEL_OWNER_IDENTITY_NOT_VENDOR_PRIVATE_KEY",
+  "model_contract": {
+    "type": "Python str",
+    "domain": "non-empty",
+    "grammar_or_derivation": "NONE_DEFINED",
+    "initialization": {
+      "profile": "selected 38-channel PCM24",
+      "frame_bytes": 114,
+      "accepted_length": "positive U64 and divisible by 114",
+      "cursor": 0,
+      "read_index": 0,
+      "duration_frames": "data_length_bytes/114"
+    },
+    "owner_map": {
+      "key": "caller-supplied model_owner_key",
+      "miss": "construct cold cursor",
+      "hit_checks": [
+        "stored key equals lookup key",
+        "stored duration agrees with external byte length"
+      ],
+      "resource_sha_comparison_in_map_api": false,
+      "attempt_comparison_in_map_api": false,
+      "duplicate_key_alias_risk": "DEDUCED_FROM_LOOKUP; NO COLLISION OBSERVED"
+    }
+  },
+  "v4_projection": {
+    "field_embedded_in": "complete canonical owners.meter root",
+    "source_identity_sha256_equals_binding_input_sha256": true,
+    "synthetic_recipe_copies_supplied_key": true,
+    "key_generation_formula": "NOT_DEFINED",
+    "attempt_plus_one_key_policy": "NOT_DEFINED"
+  },
+  "cold_examples": [
+    {
+      "extent_label": "N1",
+      "cursor": 0,
+      "read_index": 0,
+      "source_identity_matches_input": true
+    },
+    {
+      "extent_label": "N1537",
+      "cursor": 0,
+      "read_index": 0,
+      "source_identity_matches_input": true
+    },
+    {
+      "extent_label": "N6522906",
+      "cursor": 0,
+      "read_index": 0,
+      "source_identity_matches_input": true
+    }
+  ],
+  "production_edge": "UNBOUND",
+  "minimum_evidence": "Metadata-only receipt binding admitted PreparedJobInputIdentity/resource extent/attempt, opaque storage token, key producer/call token, cursor map slot/read receipt, same meter root and parent generation through commit.",
+  "implementation_requirement": false,
+  "native_analysis": "NOT_RUN_NO_USABLE_INTERFACE"
+}

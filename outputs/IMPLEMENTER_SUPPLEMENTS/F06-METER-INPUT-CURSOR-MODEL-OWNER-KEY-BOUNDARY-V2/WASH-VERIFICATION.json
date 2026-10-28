@@ -1,0 +1,11 @@
+{
+  "schema": "washed-package-verification.v1",
+  "source_manifest_sha256": "ebf0444307bac55c36c714aafe9f7e8df68a0276c3a9c81075311714544a7d87",
+  "source_payloads_verified": 5,
+  "payload_hashes_and_lengths_match": true,
+  "JSON_payloads_parse": true,
+  "native_analysis": "NOT_RUN",
+  "production_owner_key": "UNBOUND",
+  "private_key_or_auth_material_included": false,
+  "status": "MODEL_CALLSITE_SCOPE_WASHED; PRODUCTION_METER_INGRESS_UNBOUND"
+}
