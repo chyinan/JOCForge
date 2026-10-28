@@ -1,0 +1,1067 @@
+{
+  "schema": "sampler-geometry-input-vectors.v1",
+  "grade": "LOCAL_MODEL_INPUT_ONLY",
+  "identity_fixture": {
+    "programme_id": "fixture-primary",
+    "attempt": 0,
+    "input_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+    "config_identity": "b710150f1b8357ca417d3fe705c88334b9c9bbd418656b458e49f8ffa3faba82"
+  },
+  "config_identity_scope": "F01E job-field projection hash used only as fixture, not a production validated plan",
+  "source_samples": 6522906,
+  "bed_rows": [
+    {
+      "host": 0,
+      "control_hex": "000000000000000003000000020000000100000000000000"
+    },
+    {
+      "host": 1,
+      "control_hex": "000000000000000003000000020000000100000001000000"
+    },
+    {
+      "host": 2,
+      "control_hex": "000000000000000003000000020000000100000002000000"
+    },
+    {
+      "host": 3,
+      "control_hex": "000000000000000003000000020000000100000003000000"
+    },
+    {
+      "host": 4,
+      "control_hex": "000000000000000003000000020000000100000004000000"
+    },
+    {
+      "host": 5,
+      "control_hex": "000000000000000003000000020000000100000005000000"
+    },
+    {
+      "host": 6,
+      "control_hex": "000000000000000003000000020000000100000006000000"
+    },
+    {
+      "host": 7,
+      "control_hex": "000000000000000003000000020000000100000007000000"
+    },
+    {
+      "host": 8,
+      "control_hex": "000000000000000003000000020000000100000008000000"
+    },
+    {
+      "host": 9,
+      "control_hex": "000000000000000003000000020000000100000009000000"
+    }
+  ],
+  "object_events": [
+    {
+      "host_channel_index": 10,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": -1.0,
+      "y": -0.852,
+      "z": 0.0,
+      "width": 0.1,
+      "diffuse": 1,
+      "dbmd_track": {
+        "host_channel_index": 10,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 11,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 1.0,
+      "y": -0.853,
+      "z": 0.0,
+      "width": 0.1,
+      "diffuse": 1,
+      "dbmd_track": {
+        "host_channel_index": 11,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 12,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": -0.930316,
+      "y": -0.51204,
+      "z": 0.1,
+      "width": 0.2,
+      "diffuse": 1,
+      "dbmd_track": {
+        "host_channel_index": 12,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 13,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.930316,
+      "y": -0.512041,
+      "z": 0.1,
+      "width": 0.2,
+      "diffuse": 1,
+      "dbmd_track": {
+        "host_channel_index": 13,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 14,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": -1.0,
+      "y": 0.582817,
+      "z": 0.0,
+      "width": 0.19,
+      "diffuse": 1,
+      "dbmd_track": {
+        "host_channel_index": 14,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 15,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 1.0,
+      "y": 0.582818,
+      "z": 0.0,
+      "width": 0.19,
+      "diffuse": 1,
+      "dbmd_track": {
+        "host_channel_index": 15,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 16,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": -1.0,
+      "y": 0.804,
+      "z": 0.1,
+      "width": 0.1,
+      "diffuse": 1,
+      "dbmd_track": {
+        "host_channel_index": 16,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 17,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 1.0,
+      "y": 0.804,
+      "z": 0.1,
+      "width": 0.1,
+      "diffuse": 1,
+      "dbmd_track": {
+        "host_channel_index": 17,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 18,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": -1.0,
+      "y": 0.813,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 18,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 19,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 1.0,
+      "y": 0.824,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 19,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 20,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": -0.188939,
+      "y": -0.151216,
+      "z": 0.0,
+      "width": 0.23,
+      "diffuse": 1,
+      "dbmd_track": {
+        "host_channel_index": 20,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 21,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.188938,
+      "y": -0.151216,
+      "z": 0.0,
+      "width": 0.23,
+      "diffuse": 1,
+      "dbmd_track": {
+        "host_channel_index": 21,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 22,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": -0.819,
+      "y": 0.12,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 22,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 23,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.821,
+      "y": 0.121,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 23,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 24,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": -0.583,
+      "y": 0.315,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 24,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 25,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.455,
+      "y": 0.288,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 25,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 26,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": -0.975753,
+      "y": 1.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 26,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 27,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.975752,
+      "y": 1.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 27,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 28,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": -0.975753,
+      "y": 1.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 28,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 29,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.975752,
+      "y": 1.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 29,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 30,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": -0.844851,
+      "y": 0.31404,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 30,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 31,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.844851,
+      "y": 0.31404,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 31,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 32,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": -0.975753,
+      "y": 1.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 32,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 33,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.975752,
+      "y": 1.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 33,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 34,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": -0.975753,
+      "y": 1.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 34,
+        "enum48": 1,
+        "enum52": 0,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 64
+      }
+    },
+    {
+      "host_channel_index": 35,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.975752,
+      "y": 1.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 35,
+        "enum48": 1,
+        "enum52": 0,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 64
+      }
+    },
+    {
+      "host_channel_index": 36,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": -0.975753,
+      "y": 1.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 36,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 37,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.975752,
+      "y": 1.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 37,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    }
+  ],
+  "approved_synthetic_clock_events": [
+    {
+      "host_channel_index": 10,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 10,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 11,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 11,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 12,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 12,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 13,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 13,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 14,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 14,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 15,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 15,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 16,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 16,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 17,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 17,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 18,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 18,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 19,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 19,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 20,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 20,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 21,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 21,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 22,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 22,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 23,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 23,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 24,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 24,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 25,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 25,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 26,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 26,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 27,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 27,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 28,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 28,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 29,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 29,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 30,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 30,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 31,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 31,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 32,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 32,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 33,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 33,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 34,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 34,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 35,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 35,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 36,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 36,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    },
+    {
+      "host_channel_index": 37,
+      "start_sample": 0,
+      "duration_samples": 6522906,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "width": 0.0,
+      "diffuse": 0,
+      "dbmd_track": {
+        "host_channel_index": 37,
+        "enum48": 1,
+        "enum52": -1,
+        "flag64": 0,
+        "raw_flag_low2": 0,
+        "raw_packed": 68
+      }
+    }
+  ],
+  "source_reference": "F01E R4 metadata-only primary snapshot; no PCM or encoded payload"
+}

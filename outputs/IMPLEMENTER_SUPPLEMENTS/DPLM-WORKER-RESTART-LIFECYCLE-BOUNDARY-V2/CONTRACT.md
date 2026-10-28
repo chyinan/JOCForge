@@ -1,0 +1,3 @@
+# DPLM scoped restart observation
+
+Reporter-attributed Ghidra static path: lazy open creates and stores an outer handle, then reset validates that handle, cleans the old inner object and invokes shared setup using the existing handle/backing regions. Setup reconstructs inner worker and per-row state. A completion-related wrapper also invokes setup on an existing handle. This is not an observed close/reopen, attempt transition, full write-set, or runtime identity. The shared helper hash matches the previously approved identity; newly analyzed functions were not independently PE-byte-compared in this slice. GTC full_restart is a local model contract, not proof of native restart.

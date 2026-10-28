@@ -1,0 +1,3 @@
+# Primary geometry model projection status
+
+A research-side local-model metadata projection reports 11 prefix, 9 regular bed and 28 object sources, with one direct LFE excluded from regular routing: 48 distinct positions. It combines approved F01B/F01GL rules with a primary F01E control snapshot. Object route keys use physical control-row order as a local model adapter, not a native raw-record ordinal. Source+0 hold/state, per-callback sampler and production owner receipt are not established. This is one metadata snapshot, not audio, native callback, multi-input or product validation. Derive values from admitted input and approved rules; do not hardcode the snapshot.

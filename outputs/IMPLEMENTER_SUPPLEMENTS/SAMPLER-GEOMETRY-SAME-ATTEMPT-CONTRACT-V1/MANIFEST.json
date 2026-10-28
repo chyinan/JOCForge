@@ -1,0 +1,24 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "SAMPLER-GEOMETRY-SAME-ATTEMPT-CONTRACT-V1",
+  "scope": "Selected metadata-only sampler and geometry staging contract; no production receipt",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "source_manifest_sha256": "0f95649fcbcece3cd610136bd3a02ee9918ec0edf9c397639e1ebc1307dba5e5",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 5280,
+      "sha256": "d1bd94118d9cc4e57b054cf1e66f15b7f6b4c59ce6dc62a67c7c9be555dd1133"
+    },
+    {
+      "file": "INPUT-ONLY-VECTORS.json",
+      "bytes": 23873,
+      "sha256": "b794f789d3d85280764944b103ad4903a48ebb42ba10137743fbc1ed763659b0"
+    },
+    {
+      "file": "WASH-REVIEW.json",
+      "bytes": 594,
+      "sha256": "b6f089877b7ad6868d8de7f99a8fcf02d4b7c3e68587f0b2831ef6c8d6ed4a5b"
+    }
+  ]
+}

@@ -149,6 +149,48 @@ pub(in crate::spatial) fn f01b_f01e_fixture() -> F01bF01eFixture {
     }
 }
 
+#[test]
+fn normal_control_and_source_geometry_stage_share_one_callback_identity() {
+    let fixture = f01b_f01e_fixture();
+    let transaction_id = fixture.normal.transaction_id().clone();
+    let stage =
+        stage_normal_source_geometry(&fixture.graph, &fixture.source_map, fixture.normal).unwrap();
+
+    assert_eq!(stage.source_geometry().rows().len(), 48);
+    assert_eq!(stage.normal_control().transaction_id(), &transaction_id);
+    assert_eq!(stage.source_geometry().transaction_id(), &transaction_id);
+    assert_eq!(stage.source_geometry().value_generation().value(), 0);
+    assert_eq!(
+        stage.source_geometry().source_origin_generation().value(),
+        0
+    );
+    assert_eq!(stage.normal_control().control38_rows().len(), 38);
+    assert_eq!(stage.normal_control().invocation_hosts().len(), 28);
+
+    let lfe_host = fixture.graph.receipt().direct_lfe_host().value();
+    assert!(
+        fixture
+            .graph
+            .regular_source_bindings()
+            .iter()
+            .all(|binding| binding.physical_host().value() != lfe_host)
+    );
+    for binding in fixture.graph.regular_source_bindings() {
+        let geometry = stage
+            .source_geometry()
+            .row_for_source(binding.global_source())
+            .unwrap();
+        let control =
+            &stage.normal_control().control38_rows()[usize::from(binding.physical_host().value())];
+        if let NormalControlRow::Object13 { control, .. } = control {
+            assert_eq!(
+                geometry.xyz_f32_bits(),
+                [control.words()[5], control.words()[6], control.words()[7]]
+            );
+        }
+    }
+}
+
 fn target_context(
     geometry: &SelectedP15Geometry,
     active_flags: [u8; 15],

@@ -1,0 +1,10 @@
+{
+  "source_manifest_sha256": "f59acddb56141343392ebe956c8472027c443c44bc30531423ea8ebf0306d4cf",
+  "source_payloads_verified": "3/3",
+  "reported_instruction_streams_matching_PE": "8/8",
+  "native_runtime": "NOT_RUN",
+  "close_to_next_setup": "UNBOUND",
+  "cross_attempt_generation": "NOT_CAPTURED",
+  "independent_native_reproduction": false,
+  "raw_audio_or_keys_included": false
+}

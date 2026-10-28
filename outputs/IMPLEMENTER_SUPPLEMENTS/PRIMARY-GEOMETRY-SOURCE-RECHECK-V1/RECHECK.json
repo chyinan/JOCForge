@@ -1,0 +1,26 @@
+{
+  "schema": "primary-geometry-source-recheck.v1",
+  "primary_F01E_manifest_sha256": "f210abc9fb0d92f239ebef228cb3c3e15b9f55a820623aecf650b96d537102f4",
+  "primary_F01E_payloads": "19/19_HASH_AND_SIZE_MATCH",
+  "approved_base_manifest_sha256": "c7cddb7d5ac073c0f410fe44be9a431cfbb21c3df469d8b43c32a4297298674a",
+  "approved_specs": [
+    [
+      "F01B",
+      "26e4220818d50227f75d5bc00e99840609d6a2023619e01328cb768bed4511b2"
+    ],
+    [
+      "F01GL",
+      "8ea5ff070ebfb77ecfe86a7e87ce846e05de2a1b3575bf834b5ead7414a51830"
+    ],
+    [
+      "F01E",
+      "afd9efc879ed9a4878bd967c1370275074efd2226e11e67eb86838f4168f61b7"
+    ],
+    [
+      "F03R",
+      "ef0a7bd95edc2adc63b07e752879b6ddefb817962b7b6fa44c77b4acb5c51f19"
+    ]
+  ],
+  "wash_model_execution": "NOT_RUN",
+  "scope": "source identities only; prior primary projection remains one LOCAL_MODEL metadata snapshot; production/native/audio NOT_RUN"
+}

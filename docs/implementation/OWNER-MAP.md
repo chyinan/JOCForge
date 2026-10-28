@@ -126,6 +126,8 @@
 | F01E/primary-source-bound-control38-value-production | F01E | `frontend` |
 | F01E/object-track-sampler-owner-binding | F01E | `spatial_control` |
 | F01E/normal-control-snapshot-proposal | F01E | `spatial_control` |
+| F01E/informational-primary-geometry-source-recheck | F01E | `frontend` |
+| F01E/same-attempt-normal-sampler-source-geometry-stage | F01E | `frontend` |
 | F03G/target-slot-install | F03G | `spatial_control` |
 | F03C/candidate-selector | F03C | `spatial_control` |
 | F03C/selector-score-choice | F03C | `spatial_control` |
@@ -154,12 +156,16 @@
 | F04A/active-component-matrix-and-packet-constructor | F04A | `spatial_audio` |
 | F04A/washed-membership-producer-owner-status-v2 | F04A | `spatial_audio` |
 | F04A/informational-diffusion-gate-to-prefix-consumer-identity-unbound | F04A | `spatial_audio` |
+| F04A/informational-f04-descriptor-map-source-join | F04A | `spatial_audio` |
+| F04A/informational-diffusion-event-reader-identity | F04A | `spatial_audio` |
+| F04A/informational-diffusion-quiet-finite-sample-boundary | F04A | `spatial_audio` |
 | F04F/single-tail-diffusion-filter-block-preview | F04F | `spatial_audio` |
 | F04F/single-tail-active-inactive-callback-lifecycle | F04F | `spatial_audio` |
 | F04F/informational-diffusion-filter-opaque-gate-status | F04F | `spatial_audio` |
 | F04F/informational-diffusion-gate-fixture-callback-lineage | F04F | `spatial_audio` |
 | F04F/informational-diffusion-control-provider-fixture-lineage | F04F | `spatial_audio` |
 | F04FM/informational-diffusion-gate-to-math-output-identity-unbound | F04FM | `spatial_audio` |
+| F04FM/informational-diffusion-mode-finite-sample-reference | F04FM | `spatial_audio` |
 | F04FCM/informational-diffusion-gate-to-constructor-identity-unbound | F04FCM | `spatial_audio` |
 | F04G/selected-p11-prefix-membership-producer | F04G | `spatial_audio` |
 | F04G/washed-control52-static-row-and-owner-copy-lineage | F04G | `spatial_audio` |
@@ -186,6 +192,7 @@
 | F06/prepared-job-input-domain-identity-projection | F06 | `meter` |
 | F06/informational-input-cursor-model-owner-key-contract | F06 | `meter` |
 | F06/informational-kfilter-exponent-state-lineage | F06 | `meter` |
+| F06/informational-dplm-restart-lifecycle-boundary | F06 | `meter` |
 | F06L/ordered-log-energy-peak-accumulator-window-and-reduction | F06L | `meter` |
 | F06I/integrated-meter-synthetic-state-and-event-transition | F06I | `meter` |
 | F06W/meter-output-sample-accounting-and-span-ledger | F06W | `meter` |

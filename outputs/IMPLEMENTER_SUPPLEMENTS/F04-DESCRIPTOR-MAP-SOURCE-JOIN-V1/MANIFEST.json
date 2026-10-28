@@ -1,0 +1,19 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "F04-DESCRIPTOR-MAP-SOURCE-JOIN-V1",
+  "scope": "Secondary-fixture descriptor-to-map source join",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "source_manifest_sha256": "d68f53497c0bc50a401dacfdaa74ba4998e96c73378aa66733ca8cb6fbe97c0f",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 920,
+      "sha256": "130c5a26cdeca00c544958d3162da7a04fcf763846928d8f13a53b18841fdfff"
+    },
+    {
+      "file": "STATUS.json",
+      "bytes": 636,
+      "sha256": "377d54b433a91b6ba5e95de936af90a98fa94b8eea9a8166c976516112318fe1"
+    }
+  ]
+}

@@ -1006,6 +1006,164 @@
             "Cached-drain hold production and native/real-ADM acceptance."
           ],
           "delivery_scope": "PUBLIC_CLEANROOM_NO_PRIVATE_KEY"
+        },
+        {
+          "slice_id": "informational-primary-geometry-source-recheck",
+          "mapping_status": "WASHED_PRIMARY_F01E_SOURCE_REHASH_19_OF_19__MODEL_EXECUTION_NOT_RUN",
+          "implementation_status": "SOURCE_IDENTITY_RECHECK_CLOSED__LOCAL_MODEL_REPORT_ONLY",
+          "scope": "Wash independently rehashed all 19 payloads in the primary F01E R4 source package and verified the four approved F01B/F01GL/F01E/F03R specification identities. This closes source identity recheck only. The earlier primary projection remains one LOCAL_MODEL metadata snapshot; Wash did not rerun its generator, and no native callback, encode, PCM, or audio acceptance is established.",
+          "owner": "frontend",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "test_modules": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Source-package identity verification adds no producer, callback, owner, reset, or publication clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_PRIMARY_F01E_SOURCE_IDENTITY_RECHECK",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PRIMARY-GEOMETRY-SOURCE-RECHECK-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PRIMARY-GEOMETRY-SOURCE-RECHECK-V1/RECHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PRIMARY-GEOMETRY-MODEL-PROJECTION-STATUS-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PRIMARY-GEOMETRY-MODEL-PROJECTION-STATUS-V1/CONTRACT.md"
+            ],
+            "supplement_manifest_sha256": "c7271cbdd926bdb0eeda85b2f31e32a8240adc93feb9311811aeb1edb386b37c",
+            "primary_f01e_manifest_sha256": "f210abc9fb0d92f239ebef228cb3c3e15b9f55a820623aecf650b96d537102f4",
+            "primary_f01e_payloads": "19/19_HASH_AND_SIZE_MATCH",
+            "approved_spec_identities": {
+              "F01B": "26e4220818d50227f75d5bc00e99840609d6a2023619e01328cb768bed4511b2",
+              "F01GL": "8ea5ff070ebfb77ecfe86a7e87ce846e05de2a1b3575bf834b5ead7414a51830",
+              "F01E": "afd9efc879ed9a4878bd967c1370275074efd2226e11e67eb86838f4168f61b7",
+              "F03R": "ef0a7bd95edc2adc63b07e752879b6ddefb817962b7b6fa44c77b4acb5c51f19"
+            },
+            "wash_model_execution": "NOT_RUN",
+            "primary_projection_grade": "ONE_LOCAL_MODEL_METADATA_SNAPSHOT",
+            "validation_boundary": "Source identities rechecked; no primary projection generator rerun or product acceptance."
+          },
+          "vectors": {
+            "kind": "HASH_BOUND_SOURCE_IDENTITY_RECHECK_NO_EXPECTED_OUTPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PRIMARY-GEOMETRY-SOURCE-RECHECK-V1/RECHECK.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/PRIMARY-GEOMETRY-MODEL-PROJECTION-STATUS-V1/CONTRACT.md"
+            ],
+            "case_pointers": [
+              "Primary F01E R4 source package: 19/19 payload identities match.",
+              "F01B, F01GL, F01E, and F03R approved spec hashes match.",
+              "The single local-model projection was not regenerated; no codec or audio outcome is implied."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "c7271cbdd926bdb0eeda85b2f31e32a8240adc93feb9311811aeb1edb386b37c"
+          },
+          "not_run": [
+            "Wash model generator execution.",
+            "Primary source installation through a production callback.",
+            "PCM identity, native encoding, decode, and audio acceptance."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
+        },
+                {
+          "slice_id": "same-attempt-normal-sampler-source-geometry-stage",
+          "mapping_status": "MATERIALIZED_DIRECT_NORMAL_SAMPLER_TO_SOURCE_GEOMETRY_STAGE__GTC_COMMIT_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_SAME_CALLBACK_IDENTITY_NONCOMMITTING_CONTROL_AND_48_SOURCE_GEOMETRY",
+          "scope": "Consumes one already-admitted selected-profile F01E normal-control proposal, builds the selected 48-source geometry from the same graph and Installed48SourceMap, and returns both values together under the identical programme/attempt/callback transaction. Direct LFE is excluded by graph regular-source bindings; object XYZ comes from the same callback's sampled Object13 words5..7. This is metadata-only staging: it does not read PCM, advance a codec-source/AU clock, create a production owner receipt, or commit the F01E after-state. The Wash contract's 4,247+4 full reference is not independently implemented by this one-callback local test.",
+          "owner": "frontend",
+          "implementation_requirement": true,
+          "implementation_files": [
+            "crates/jocforge-domain/src/spatial/source_geometry_outer.rs"
+          ],
+          "local_mapping_files": [],
+          "clock": {
+            "domains": [
+              "FrontendCallbackIndex",
+              "AttemptId",
+              "ProgrammeId",
+              "CallbackLineageIdentity"
+            ],
+            "covered_clauses": [
+              "Normal controls and the 48-row geometry must carry the same programme, attempt and callback transaction.",
+              "The value/source origin is the normal callback g; this stage does not create an E-AC-3 source or AU index.",
+              "The complete normal after-state remains pending for the parent transaction; this function has no commit authority."
+            ]
+          },
+          "inputs": {
+            "kind": "ADMITTED_F01E_NORMAL_CONTROL_PROPOSAL_PLUS_SELECTED_GRAPH_AND_INSTALLED48_MAP",
+            "fields": [
+              "Noncommitting NormalControlSnapshotProposal",
+              "SelectedAdmGraph",
+              "Installed48SourceMap built from selected metadata controls and P11 geometry"
+            ],
+            "validation": [
+              "Existing F01E proposal preflights prepared identity, graph and callback state.",
+              "Geometry builder checks programme/attempt/callback identity, physical rows, direct LFE exclusion and 48 source bindings."
+            ]
+          },
+          "outputs": {
+            "kind": "NORMAL_CONTROL_AND_GLOBAL_SOURCE_GEOMETRY_STAGE",
+            "shape": "One 38-row normal-control proposal and one 48-row geometry snapshot for the same callback lineage",
+            "state": "Noncommitting value proposal; no receipt or parent state mutation"
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_SAMPLER_GEOMETRY_SAME_ATTEMPT_CONTRACT",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SAMPLER-GEOMETRY-SAME-ATTEMPT-CONTRACT-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SAMPLER-GEOMETRY-SAME-ATTEMPT-CONTRACT-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SAMPLER-GEOMETRY-SAME-ATTEMPT-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SAMPLER-GEOMETRY-SAME-ATTEMPT-CONTRACT-V1/WASH-REVIEW.json"
+            ],
+            "supplement_manifest_sha256": "b7a59678cb561bc8b301f939ce36afe687c9ca95b80dbea497d04a73ff7a5129",
+            "candidate_source_manifest_sha256": "0f95649fcbcece3cd610136bd3a02ee9918ec0edf9c397639e1ebc1307dba5e5",
+            "validation_boundary": "Wash reference reuses research reference and has no production receipt; local verification covers a single metadata callback only. GTC owner capabilities, 4,247-callback replay, four drains, PCM, encoder and product acceptance remain open."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/src/spatial/source_geometry_outer/tests.rs"
+          ],
+          "vectors": {
+            "kind": "WASHED_INPUT_ONLY_SAMPLER_GEOMETRY_CONTRACT_AND_LOCAL_FIRST_CALLBACK_JOIN",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SAMPLER-GEOMETRY-SAME-ATTEMPT-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SAMPLER-GEOMETRY-SAME-ATTEMPT-CONTRACT-V1/WASH-REVIEW.json"
+            ],
+            "case_pointers": [
+              "Local first-callback test checks shared callback identity, 48 source rows, 38 control rows, 28 sampler hosts and direct-LFE exclusion.",
+              "Wash input-only fixture exercises 4,247 normal callbacks plus four cached drains, but its trace is a same-reference LOCAL_MODEL result and is not replayed here."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "b7a59678cb561bc8b301f939ce36afe687c9ca95b80dbea497d04a73ff7a5129"
+          },
+          "error_outcomes": [
+            {
+              "error_code": "GLOBAL_SOURCE_GEOMETRY_*",
+              "category": "source geometry identity or row construction",
+              "trigger": "Prepared graph, callback identity, source-map identity, physical row, LFE, bed geometry, object owner or finite geometry validation fails.",
+              "programme_state_after": "No combined stage is returned; the caller's committed normal-control owner is unchanged.",
+              "caller_action": "Reject the callback and let the enclosing parent transaction apply its approved error outcome."
+            }
+          ],
+          "not_run": [
+            "GTC authoritative same-attempt owner identity and atomic parent commit.",
+            "Full 4,247-normal-callback and four-drain replay through production owner state.",
+            "Primary ADM PCM callback, JOC encoding, external structure/decode, listening and product acceptance."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/spatial/source_geometry_outer.rs",
+              "bytes": 38235,
+              "sha256": "1875261c7f08eef34a952fa571c0156b4a3ca9f6dba9d0754ebe45fabed80edb"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/spatial/source_geometry_outer/tests.rs",
+              "bytes": 28854,
+              "sha256": "ac663d159569c0862903fef3cf8aaff12b550675643712075fd6956ed95ffd48"
+            }
+          ]
         }
       ]
     },
@@ -2942,8 +3100,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/spatial/source_geometry_outer.rs",
-              "bytes": 36605,
-              "sha256": "afdf61dd37c09223794adb800104c6fa0effb1aeddd262cdb5aca546a7408790"
+              "bytes": 38235,
+              "sha256": "1875261c7f08eef34a952fa571c0156b4a3ca9f6dba9d0754ebe45fabed80edb"
             },
             {
               "path": "crates/jocforge-domain/src/spatial/frontend_stages.rs",
@@ -3324,7 +3482,213 @@
           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
           "implementation_inventory": [],
           "test_inventory": []
-        }
+        },
+                         {
+                           "slice_id": "informational-f04-descriptor-map-source-join",
+                           "mapping_status": "WASHED_SECONDARY_FIXTURE_SELECTED_DESCRIPTOR_MAP_JOIN__PRIMARY_SOURCE_UNBOUND",
+                           "implementation_status": "REPORTER_OBSERVED_STATIC_SELECTED_OPEN__NO_PRIMARY_OWNER_BINDING",
+                           "scope": "One secondary ADM BWF fixture: four read-open generations each bind 38 graph descriptor getter identities and UID/track/host checks. Static loader dataflow passes CHNA lookup track_index-1 to descriptor construction; the selected read-open builds the physical map from graph descriptors. Encoder process callbacks use the fourth open generation's storage/map through event table, reader, sampler, provider and row writer; measurement and encoder owners remain separate. The prior external-map-copy open was an unselected sibling. This does not bind the map producer to the approved primary CHNA/UID/prepared resource owner. Quiet/F04FM aliases and primary source identity remain UNBOUND; no PCM payload or product validation is claimed.",
+                           "owner": "spatial_audio",
+                           "implementation_requirement": false,
+                           "implementation_files": [],
+                           "clock": {
+                             "domains": [],
+                             "covered_clauses": [
+                               "Same-run event-reader identity is fixture scoped and does not bind a selected primary source or generation."
+                             ]
+                           },
+                           "parameters": {
+                             "kind": "HASH_BOUND_INFORMATIONAL_F04_DESCRIPTOR_MAP_SOURCE_JOIN",
+                             "provider_files": [
+                               "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DESCRIPTOR-MAP-SOURCE-JOIN-V1/MANIFEST.json",
+                               "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DESCRIPTOR-MAP-SOURCE-JOIN-V1/CONTRACT.md",
+                               "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DESCRIPTOR-MAP-SOURCE-JOIN-V1/STATUS.json"
+                             ],
+                             "supplement_manifest_sha256": "fb9c1ed2dbbfd77b19175d0740d8a1fcf1755bd130f04964f16f1e9848736c2f",
+                             "candidate_source_manifest_sha256": "d68f53497c0bc50a401dacfdaa74ba4998e96c73378aa66733ca8cb6fbe97c0f",
+                             "event_reader_join": "4/4 SAME-RUN STORAGE TOKEN",
+                             "measurement_reader_calls": [
+                               1,
+                               2,
+                               3,
+                               4
+                             ],
+                             "encoder_reader_calls": [
+                               5,
+                               6,
+                               7,
+                               8
+                             ],
+                             "approved_chna_uid_prepared_source_join": "UNBOUND",
+                             "validation_boundary": "Secondary fixture only; selected read-open/input map is not joined to approved CHNA/UID/prepared primary source.",
+                             "read_open_generations": 4,
+                             "descriptor_getter_identity_matches_per_open": "38/38",
+                             "uid_lookups": 152,
+                             "physical_slot_rule": "track_index-1 via direct static dataflow",
+                             "selected_open": "GRAPH_DESCRIPTOR_DERIVED_READ_OPEN",
+                             "prior_external_map_copy": "UNSELECTED_SIBLING",
+                             "primary_source": "NOT_SUBSTITUTED",
+                             "typed_quiet_f04fm": "UNBOUND"
+                           },
+                           "test_modules": [],
+                           "vectors": {
+                             "kind": "HASH_BOUND_REPORTER_OBSERVED_SECONDARY_DESCRIPTOR_READ_OPEN_STATUS_NO_EXPECTED_OUTPUTS",
+                             "authoritative_vectors": [
+                               "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DESCRIPTOR-MAP-SOURCE-JOIN-V1/STATUS.json"
+                             ],
+                             "case_pointers": [
+                               "Four open generations each matched 38 graph descriptor getter identities and same-run UID/track/host checks.",
+                               "Selected read-open builds the physical map from graph descriptors via track_index-1; the prior external-map-copy open is unselected.",
+                               "Encoder callbacks use the fourth open generation; measurement and encoder owners are distinct.",
+                               "The source-map producer is not joined to approved CHNA/UID/prepared-resource identity; quiet/F04FM aliases remain unbound."
+                             ],
+                             "expected_outputs_included": false,
+                             "supplement_manifest_sha256": "fb9c1ed2dbbfd77b19175d0740d8a1fcf1755bd130f04964f16f1e9848736c2f"
+                           },
+                           "not_run": [
+                             "Selected primary source-map producer to approved CHNA/UID/prepared-resource identity.",
+                             "Quiet, F04FM lane/tail typed aliases and primary production callback.",
+                             "Full-song replay and product acceptance."
+                           ],
+                           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+                           "implementation_inventory": [],
+                           "test_inventory": []
+                         },
+                                                  {
+                           "slice_id": "informational-diffusion-event-reader-identity",
+                           "mapping_status": "WASHED_SECONDARY_FIXTURE_EVENT_READER_TOKEN_JOIN__PRIMARY_MAP_SOURCE_UNBOUND",
+                           "implementation_status": "REPORTER_OBSERVED_SAME_RUN_SECONDARY_LINEAGE__NO_PRODUCTION_INPUT",
+                           "scope": "One secondary ADM fixture binds four storage-event writer tokens to AtmosReader frame and encoder callback tokens. Measurement-reader calls 1..4 and encoder-reader calls 5..8 remain distinct owners. This does not join the event input map to the approved primary CHNA/UID/prepared-resource source, nor close typed width, quiet, or F04FM values. No PCM payload was captured; the prior source-file digest was streamed. Full-song and product validation remain NOT_RUN.",
+                           "owner": "spatial_audio",
+                           "implementation_requirement": false,
+                           "implementation_files": [],
+                           "test_modules": [],
+                           "clock": {
+                             "domains": [],
+                             "covered_clauses": [
+                               "The same-run token join is limited to one secondary fixture and does not establish a primary callback or generation clock."
+                             ]
+                           },
+                           "parameters": {
+                             "kind": "HASH_BOUND_INFORMATIONAL_F04_DIFFUSION_EVENT_READER_IDENTITY",
+                             "provider_files": [
+                               "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-EVENT-READER-IDENTITY-V1/MANIFEST.json",
+                               "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-EVENT-READER-IDENTITY-V1/CONTRACT.md",
+                               "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-EVENT-READER-IDENTITY-V1/STATUS.json"
+                             ],
+                             "supplement_manifest_sha256": "d02a41e22d1901dd559683b5fd619a4e8894a34220ae7428585415bc4ed1430a",
+                             "candidate_source_manifest_sha256": "08385cf906457509acecce0ff91281fb045871442ba4044d85519b47c8e943ce",
+                             "scope": "ONE_SECONDARY_FIXTURE",
+                             "event_writer_to_reader_to_callback": "4/4 SAME TOKEN",
+                             "measurement_reader_calls": [
+                               1,
+                               2,
+                               3,
+                               4
+                             ],
+                             "encoder_reader_calls": [
+                               5,
+                               6,
+                               7,
+                               8
+                             ],
+                             "approved_chna_map_producer": "UNBOUND",
+                             "typed_width_quiet_f04fm": "UNBOUND",
+                             "pcm_payload_captured": false,
+                             "validation_boundary": "One secondary fixture only; no approved primary input map, typed value, PCM or product claim."
+                           },
+                           "vectors": {
+                             "kind": "HASH_BOUND_REPORTER_OBSERVED_SECONDARY_FIXTURE_LINEAGE_NO_EXPECTED_OUTPUTS",
+                             "authoritative_vectors": [
+                               "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-EVENT-READER-IDENTITY-V1/STATUS.json"
+                             ],
+                             "case_pointers": [
+                               "Storage event writer to AtmosReader frame to encoder callback: 4/4 same-run token.",
+                               "Measurement calls 1..4 and encoder calls 5..8 are distinct.",
+                               "Primary map producer and CHNA/UID/prepared-source join remain unbound."
+                             ],
+                             "expected_outputs_included": false,
+                             "supplement_manifest_sha256": "d02a41e22d1901dd559683b5fd619a4e8894a34220ae7428585415bc4ed1430a"
+                           },
+                           "not_run": [
+                             "Approved primary map/source identity join.",
+                             "Typed width, quiet, and F04FM producer values.",
+                             "Full-song replay and product acceptance."
+                           ],
+                           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+                           "implementation_inventory": [],
+                           "test_inventory": []
+                         },
+                                                  {
+                           "slice_id": "informational-diffusion-quiet-finite-sample-boundary",
+                           "mapping_status": "WASHED_FINITE_REFERENCE_STRICT_QUIET_THRESHOLD__LOCAL_BOUNDARY_TESTED",
+                           "implementation_status": "LOCALLY_TESTED_STRICT_ABSOLUTE_THRESHOLD__NATIVE_WINDOW_MUTATION_UNBOUND",
+                           "scope": "Wash reports three authorized excerpts and one secondary reference, four AUs each, with native 5.1 E-AC-3 structure recognized and base 5.1 decode to null. Its finite-sample quiet report uses strict abs(R32(window*sample)) > 2^-23 and says raw current history is copied; mute-clear behavior is conditional on a strict-threshold witness. JOCForge locally tests the selected source-flags helper's strict absolute threshold at equality and one ULP above, but this is not a replay of the Wash cases or a native source-window identity join. The reference outputs are not JOCForge outputs; spatial render, listening and full-song validation remain NOT_RUN.",
+                           "owner": "spatial_audio",
+                           "implementation_requirement": false,
+                           "implementation_files": [
+                             "crates/jocforge-domain/src/spatial/source_flags.rs"
+                           ],
+                           "clock": {
+                             "domains": [],
+                             "covered_clauses": [
+                               "The tested threshold helper is stateless; the finite native excerpt report does not establish a source or callback generation join."
+                             ]
+                           },
+                           "parameters": {
+                             "kind": "HASH_BOUND_INFORMATIONAL_F04_QUIET_FINITE_REFERENCE_AND_LOCAL_BOUNDARY",
+                             "provider_files": [
+                               "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-QUIET-MODE-FINITE-SAMPLE-V1/MANIFEST.json",
+                               "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-QUIET-MODE-FINITE-SAMPLE-V1/CONTRACT.md",
+                               "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-QUIET-MODE-FINITE-SAMPLE-V1/STATUS.json"
+                             ],
+                             "supplement_manifest_sha256": "fa16742b29e5310df09159dc494ba257db820778d804346e5102ddb2e5609766",
+                             "candidate_source_manifest_sha256": "1c950d3c9ec890ff0af61180e93ad6a1beeb08ba39d87afce0dc1d4038cf4b63",
+                             "native_reference_samples": 4,
+                             "authorized_samples": 3,
+                             "au_per_sample": 4,
+                             "native_base_51_decode": "REPORTED_PASS_FOR_EXCERPTS",
+                             "strict_quiet_threshold": "abs(R32(window*sample)) > 2^-23",
+                             "reported_mute_clear_rule": "ONLY_WHEN_A_STRICT_THRESHOLD_WITNESS_EXISTS",
+                             "local_boundary_test": "EQUALITY_AND_ONE_ULP_ABOVE_BOTH_SIGNS",
+                             "validation_boundary": "Native reference finite excerpts only; locally added boundary test does not reproduce Wash input cases or promote JOCForge/native product validation."
+                           },
+                           "test_modules": [
+                             "crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs"
+                           ],
+                           "vectors": {
+                             "kind": "WASHED_FINITE_REFERENCE_STATUS_AND_LOCAL_STRICT_THRESHOLD_BOUNDARY",
+                             "authoritative_vectors": [
+                               "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-QUIET-MODE-FINITE-SAMPLE-V1/STATUS.json"
+                             ],
+                             "case_pointers": [
+                               "The Wash package reports four synthetic threshold/mute cases per sample but includes no exact case inputs for independent replay.",
+                               "The local test asserts strict absolute comparison at threshold equality and one representable F32 step above, positive and negative.",
+                               "The native reference's mute/window behavior is not joined to the local callback/source owner."
+                             ],
+                             "expected_outputs_included": false,
+                             "supplement_manifest_sha256": "fa16742b29e5310df09159dc494ba257db820778d804346e5102ddb2e5609766"
+                           },
+                           "not_run": [
+                             "Independent replay of the four Wash synthetic cases because exact inputs are not included.",
+                             "Native source/window owner join, JOCForge output recognition/decode, spatial rendering, listening, and full-song acceptance."
+                           ],
+                           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+                           "implementation_inventory": [
+                             {
+                               "path": "crates/jocforge-domain/src/spatial/source_flags.rs",
+                               "bytes": 61230,
+                               "sha256": "55155b4a84a1199f77d0b006b9923b1621cb885ef98e01d63d12b1f99bdfe348"
+                             }
+                           ],
+                           "test_inventory": [
+                             {
+                               "path": "crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs",
+                               "bytes": 37623,
+                               "sha256": "4df3638e4817219d12e97d49ef40bd876294dc7fe602881eae7d627906fc81bd"
+                             }
+                           ]
+                         }
                        ],
       "implementation_status": "DEFERRED_DETAILED_MAPPING"
     },
@@ -3734,6 +4098,81 @@
             "Unique context-pointer/row-word writer and typed owner.",
             "Gate row joins to the selected ADM callback, semantic producer, selected tail and source/callback generation.",
             "Native execution, dynamic capture, full-song replay and product acceptance."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": []
+        },
+        {
+          "slice_id": "informational-diffusion-mode-finite-sample-reference",
+          "mapping_status": "WASHED_F04FM_11_LANE_AND_MODE_VALUES_MATCH_APPROVED_GENERATOR__NATIVE_PRODUCER_UNBOUND",
+          "implementation_status": "REPORTER_SUMMARY_ONLY__NO_TYPED_PRODUCER_OR_SELECTED_CALLBACK",
+          "scope": "The Wash finite-sample package reports F04FM lane values [0,0,-1,1,1,2,2,3,3,0,0] and mode values [1,-1,0,1,-1,1,-1,1,-1,1,-1], 11/11 each matching the approved generator. The package does not provide a selected native producer-to-callback join; no local producer or selected-layout equivalence is implied. Three authorized reference excerpts and one secondary reference each cover four AUs; native reference recognition/decode is not a JOCForge product test.",
+          "owner": "spatial_audio",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Reported lane/mode generator comparison establishes no selected native callback or source-generation clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_INFORMATIONAL_F04FM_FINITE_SAMPLE_MODE_STATUS",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-QUIET-MODE-FINITE-SAMPLE-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-QUIET-MODE-FINITE-SAMPLE-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-QUIET-MODE-FINITE-SAMPLE-V1/STATUS.json"
+            ],
+            "supplement_manifest_sha256": "fa16742b29e5310df09159dc494ba257db820778d804346e5102ddb2e5609766",
+            "candidate_source_manifest_sha256": "1c950d3c9ec890ff0af61180e93ad6a1beeb08ba39d87afce0dc1d4038cf4b63",
+            "reported_lane_values": [
+              0,
+              0,
+              -1,
+              1,
+              1,
+              2,
+              2,
+              3,
+              3,
+              0,
+              0
+            ],
+            "reported_mode_values": [
+              1,
+              -1,
+              0,
+              1,
+              -1,
+              1,
+              -1,
+              1,
+              -1,
+              1,
+              -1
+            ],
+            "lane_generator_comparison": "11/11_MATCH",
+            "mode_generator_comparison": "11/11_MATCH",
+            "native_producer_callback_join": "UNBOUND",
+            "validation_boundary": "Wash-reported finite-sample generator comparison only; no native producer join, local product, or layout-general claim."
+          },
+          "test_modules": [],
+          "vectors": {
+            "kind": "WASHED_GENERATOR_COMPARISON_STATUS_NO_EXECUTABLE_CASE_INPUTS",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/F04-DIFFUSION-QUIET-MODE-FINITE-SAMPLE-V1/STATUS.json"
+            ],
+            "case_pointers": [
+              "11/11 reported lane values match the approved generator.",
+              "11/11 reported mode values match the approved generator.",
+              "Exact dynamic native producer-to-selected-callback join remains unbound."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "fa16742b29e5310df09159dc494ba257db820778d804346e5102ddb2e5609766"
+          },
+          "not_run": [
+            "Independent native producer replay, selected-layout callback join, JOCForge product render, listening, and full-song acceptance."
           ],
           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
           "implementation_inventory": [],
@@ -6722,7 +7161,67 @@
           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
           "implementation_inventory": [],
           "test_inventory": []
-        }
+        },
+                         {
+                           "slice_id": "informational-dplm-restart-lifecycle-boundary",
+                           "mapping_status": "WASHED_STATIC_CLOSE_AND_RESET_BOUNDARY__SAME_INSTANCE_CLOSE_TO_NEXT_SETUP_UNBOUND",
+                           "implementation_status": "LOCAL_GTC_FULL_RESTART_APPROVED_MODEL_ONLY__NATIVE_GENERATION_NOT_RUN",
+                           "scope": "V3 supersedes V2 only on the reporter-attributed static instruction-byte comparison: eight function streams were reported matching the target PE. Static claims distinguish close clearing handles/backing regions/guard from scoped reset retaining the outer handle and reconstructing the inner worker. The comparison was not independently PE-rehashed by Wash. Same-instance close-to-next-setup, cross-attempt generation, complete reset write set, and native runtime remain UNBOUND/NOT_RUN. JOCForge full_restart remains an approved local model contract, not native lifecycle equivalence.",
+                           "owner": "meter",
+                           "implementation_requirement": false,
+                           "implementation_files": [],
+                           "test_modules": [],
+                           "clock": {
+                             "domains": [],
+                             "covered_clauses": [
+                               "Static close/reset facts do not establish a same-instance next-setup or cross-attempt generation clock."
+                             ]
+                           },
+                           "parameters": {
+                             "kind": "HASH_BOUND_INFORMATIONAL_DPLM_RESTART_LIFECYCLE_BOUNDARY",
+                             "provider_files": [
+                               "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-WORKER-RESTART-LIFECYCLE-BOUNDARY-V3/MANIFEST.json",
+                               "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-WORKER-RESTART-LIFECYCLE-BOUNDARY-V3/CONTRACT.md",
+                               "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-WORKER-RESTART-LIFECYCLE-BOUNDARY-V3/STATUS.json",
+                               "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-WORKER-RESTART-LIFECYCLE-BOUNDARY-V2/MANIFEST.json",
+                               "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-WORKER-RESTART-LIFECYCLE-BOUNDARY-V2/CONTRACT.md",
+                               "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-WORKER-RESTART-LIFECYCLE-BOUNDARY-V2/STATUS.json"
+                             ],
+                             "supplement_manifest_sha256": "cfd1967347d782a553432bf0c0ebd7b13d7be2ab04d1f6ae2e609b15b5e412b0",
+                             "candidate_source_manifest_sha256": "f59acddb56141343392ebe956c8472027c443c44bc30531423ea8ebf0306d4cf",
+                             "source_payloads_verified": "3/3",
+                             "reported_instruction_streams_matching_pe": "8/8",
+                             "independent_pe_rehash": false,
+                             "native_runtime": "NOT_RUN",
+                             "close_to_next_setup": "UNBOUND",
+                             "cross_attempt_generation": "NOT_CAPTURED",
+                             "local_gtc_full_restart": "APPROVED_MODEL_ONLY",
+                             "validation_boundary": "Reporter-attributed static boundary only; no independent PE rehash, native restart/generation, or product claim.",
+                             "superseded_v2_manifest_sha256": "e30017427b8ee348cd02d50575f15b211bb26e9f6172414ffabd4651c5f7a4fa"
+                           },
+                           "vectors": {
+                             "kind": "HASH_BOUND_REPORTER_ATTRIBUTED_STATIC_LIFECYCLE_STATUS_NO_EXPECTED_OUTPUTS",
+                             "authoritative_vectors": [
+                               "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-WORKER-RESTART-LIFECYCLE-BOUNDARY-V3/STATUS.json",
+                               "outputs/IMPLEMENTER_SUPPLEMENTS/DPLM-WORKER-RESTART-LIFECYCLE-BOUNDARY-V3/CONTRACT.md"
+                             ],
+                             "case_pointers": [
+                               "V3 reports eight instruction streams matched to the target PE.",
+                               "Close clears handles/backing regions/guard; scoped reset retains the outer handle and reconstructs the inner worker.",
+                               "No independent PE rehash, runtime generation join, or native restart-equivalence claim."
+                             ],
+                             "expected_outputs_included": false,
+                             "supplement_manifest_sha256": "cfd1967347d782a553432bf0c0ebd7b13d7be2ab04d1f6ae2e609b15b5e412b0"
+                           },
+                           "not_run": [
+                             "Independent PE rehash of the eight reporter-attributed instruction streams.",
+                             "Same-instance close to next setup and cross-attempt generation.",
+                             "Native restart replay and audio/JOC validation."
+                           ],
+                           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+                           "implementation_inventory": [],
+                           "test_inventory": []
+                         }
                        ]
     },
     {
@@ -7678,9 +8177,9 @@
         },
         {
           "slice_id": "meter-in-memory-pcm24-source-cursor",
-          "mapping_status": "MATERIALIZED_DIRECT_INPUT_SUBSLICE_F06OF_AND_FRONTEND_DEFERRED",
-          "implementation_status": "LOCALLY_VERIFIED_TYPED_PCM24_READ_CHUNK_CURSOR_TO_RAW_FRAMES__SCP_CONTROL_PRODUCER_DEFERRED",
-          "scope": "Binds an independent typed meter source cursor to one already parsed selected RIFF/PCM24 byte slice by full source SHA and sample count. Each normal sample range is addressed through the parsed blockAlign byte offset and decoded by the shared selected PCM24 read-chunk helper; the cursor consumes its typed actual-frame count and advances by that returned count. It pads only the final raw source input and emits exactly three fresh zero-input model drain frames. The cursor stores source identity and clocks, never PCM. Output stops at raw physical-channel input; no operating-system read, native EOF/drain, ADM/event render or SCP/control is claimed.",
+          "mapping_status": "MATERIALIZED_DIRECT_INPUT_SUBSLICE_F06OF_AND_FRONTEND__MODEL_TAIL_RULE_CLOSED_NATIVE_FINAL_BYTES_UNBOUND",
+          "implementation_status": "LOCALLY_VERIFIED_TYPED_PCM24_CURSOR_AND_1050_TO_1536_POSITIVE_ZERO_TAIL__NATIVE_TAIL_CONTENTS_UNBOUND",
+          "scope": "Binds an independent typed meter source cursor to one already parsed selected RIFF/PCM24 byte slice by full source SHA and sample count. Each normal sample range is addressed through the parsed blockAlign byte offset and decoded by the shared selected PCM24 read-chunk helper; the cursor consumes its typed actual-frame count and advances by that returned count. It pads only the final raw source input and emits exactly three fresh zero-input model drain frames. The cursor stores source identity and clocks, never PCM. Output stops at raw physical-channel input; no operating-system read, native EOF/drain, ADM/event render or SCP/control is claimed. The approved F01/F02 model's 38-row cold positive-zero initialization, 1050-sample actual prefix and 486-word positive-zero tail are now explicitly exercised by a synthetic in-memory cursor case. The native final extra-slot contents and physical ADM frame remain unobserved; this does not infer native padding bytes. The approved F01/F02 model's 38-row cold positive-zero initialization, 1050-sample actual prefix and 486-word positive-zero tail are now explicitly exercised by a synthetic in-memory cursor case. The native final extra-slot contents and physical ADM frame remain unobserved; this does not infer native padding bytes.",
           "implementation_files": ["crates/jocforge-io/Cargo.toml", "crates/jocforge-io/src/pcm/mod.rs", "crates/jocforge-io/src/pcm/riff_pcm24.rs", "crates/jocforge-io/src/pcm/meter_source_cursor.rs", "crates/jocforge-application/src/lib.rs"],
           "local_mapping_files": ["docs/implementation/meter-source-cursor.md", "docs/implementation/meter-source-cursor-provenance.json"],
           "clock": {
@@ -7689,21 +8188,26 @@
           },
           "parameters": {
             "kind": "SELECTED_IN_MEMORY_RIFF_PCM24_PROFILE",
-            "provider_files": [],
-            "validation_boundary": "Requires a caller-borrowed ParsedRiffPcm24 matching the selected 48 kHz, 38-channel, PCM24, block-align 114 profile, selected job resource SHA-256, and selected job sample extent. It performs no filesystem read or sample persistence; its three drains are model schedule only."
+            "provider_files": ["outputs/IMPLEMENTER_SUPPLEMENTS/F06-READER-TAIL-ZERO-INITIALIZATION-V1/MANIFEST.json","outputs/IMPLEMENTER_SUPPLEMENTS/F06-READER-TAIL-ZERO-INITIALIZATION-V1/CONTRACT.md","outputs/IMPLEMENTER_SUPPLEMENTS/F06-READER-TAIL-ZERO-INITIALIZATION-V1/STATUS.json"],
+            "validation_boundary": "The local model pads each of 38 rows with positive-zero U32 words after the actual prefix; the Wash native observation does not establish the final native slot bytes or physical ADM frame.",
+            "tail_zero_supplement_manifest_sha256":             "a1543ff52ec9ab46bfe29636139023983eb05351f834fbc6cb413baf010ca4de",
+            "tail_zero_source_manifest_sha256":             "fa5e762ff3bc10a1f9444319b0742422298060a581d2bec1e2facc1c1248495b"
           },
           "test_modules": ["crates/jocforge-io/src/pcm/meter_source_cursor.rs"],
           "vectors": {
             "kind": "SYNTHETIC_IN_MEMORY_PCM24_BYTES_AND_TYPED_READ_CHUNK_SCHEDULE",
-            "authoritative_vectors": ["crates/jocforge-io/tests/fixtures/meter_source_cursor/input_only.json"],
-            "case_pointers": ["INPUT-ONLY source_samples=1537 generates two normal frames and three zero drains", "last normal read is one host sample plus 1535 positive zeros per channel", "each normal cursor step consumes the shared chunk decoder's typed frame count and returns the same actual sample words as the caller-borrowed RIFF hop", "a different byte-slice identity and an out-of-order callback reject without cursor advance"],
+            "authoritative_vectors": ["crates/jocforge-io/tests/fixtures/meter_source_cursor/input_only.json","outputs/IMPLEMENTER_SUPPLEMENTS/F06-READER-TAIL-ZERO-INITIALIZATION-V1/STATUS.json"],
+            "case_pointers": ["INPUT-ONLY source_samples=1537 generates two normal frames and three zero drains","last normal read is one host sample plus 1535 positive zeros per channel","each normal cursor step consumes the shared chunk decoder's typed frame count and returns the same actual sample words as the caller-borrowed RIFF hop","a different byte-slice identity and an out-of-order callback reject without cursor advance","Synthetic 1050-sample source case reads 1050 actual samples and verifies a 486-word positive-zero tail in each of 38 rows.","Synthetic 1050-sample source case reads 1050 actual samples and verifies a 486-word positive-zero tail in each of 38 rows."],
             "local_fixture": {
               "file": "crates/jocforge-io/tests/fixtures/meter_source_cursor/input_only.json",
               "bytes": 681,
               "sha256": "6f16eb8f4047b0a4f590f813c69a2469a45e0d51a66288e964f81d4d7fbf46ed"
             },
             "source_spec_sha256": "6bd78ebe23536c3a55ec54f2e13c2e8b98c2ee245ae5a886e47bc9580520b93a",
-            "source_oar_join_spec_sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423"
+            "source_oar_join_spec_sha256": "2a98742b9032b900bb42da7f6a7c404a835c9539fbb55040939d7d025c8ce423",
+            "tail_zero_supplement_manifest_sha256":             "a1543ff52ec9ab46bfe29636139023983eb05351f834fbc6cb413baf010ca4de",
+            "tail_zero_source_manifest_sha256":             "fa5e762ff3bc10a1f9444319b0742422298060a581d2bec1e2facc1c1248495b",
+            "expected_outputs_included":             false
           },
           "error_outcomes": [{"error_code":"METER_SOURCE_EXTENT_INVALID","category":"selected source sample count","trigger":"Source sample count is zero, exceeds the selected signed-63-bit domain, or cannot form a checked normal/drain schedule.","programme_state_after":"No cursor is created or advanced.","caller_action":"Reject before reading a hop."},{"error_code":"METER_SOURCE_PROFILE_MISMATCH","category":"RIFF descriptor","trigger":"RIFF descriptor does not match selected 48 kHz, 38-channel, PCM24, block-align 114.","programme_state_after":"No frame or next cursor is returned.","caller_action":"Reject before source progress."},{"error_code":"METER_SOURCE_EXTENT_MISMATCH","category":"selected resource source count","trigger":"Parsed RIFF sample count differs from the selected job's bound source sample count.","programme_state_after":"No frame or next cursor is returned.","caller_action":"Reject the mismatched source resource."},{"error_code":"METER_SOURCE_IDENTITY_MISMATCH","category":"selected resource byte identity","trigger":"The parsed full-resource SHA-256 differs from the selected job resource identity or from the cursor's source identity.","programme_state_after":"No frame or next cursor is returned.","caller_action":"Reject; do not continue on another source byte slice of the same length."},{"error_code":"METER_SOURCE_CALLBACK_ORDER","category":"meter source cursor","trigger":"Callback index is stale, skipped, or called after the fixed three drains.","programme_state_after":"No frame or next cursor is returned.","caller_action":"Reject without source progress."},{"error_code":"METER_SOURCE_READER_ERROR","category":"PCM24 hop extraction","trigger":"The in-memory reader rejects the requested hop.","programme_state_after":"No frame or next cursor is returned.","caller_action":"Propagate the selected reader error; do not synthesize the missing normal samples."}],
           "not_run": ["The three zero-input drains are model schedule only; no native EOF/drain join is established.", "38-channel raw rows through an independent ADM/object render and event-control producer", "Physical PCM row to F06OF measurement descriptor owner/source-generation join remains UNBOUND.", "SCP16/control16 construction and same-callback F06OF packet production", "complete independent frontend warm state, terminal root, real ADM and product acceptance"],
@@ -8330,8 +8834,8 @@
             },
             {
               "path": "crates/jocforge-io/src/pcm/meter_source_cursor.rs",
-              "bytes": 18670,
-              "sha256": "e2ea766815ba3b5a923732cd66733f7161b0288eaf1b387929e158ce01f81286"
+              "bytes": 19988,
+              "sha256": "70cda1be233ee98d452dbadb2ffaa4af4c480769a83fec28c931fb4742fed332"
             },
             {
               "path": "crates/jocforge-io/src/pcm/riff_pcm24.rs",
@@ -20589,7 +21093,26 @@
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     "native_close_reopen_or_next_attempt_reconstruction": "UNBOUND",
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     "native_cross_attempt_owner_generation": "UNBOUND",
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     "local_gtc_full_restart": "APPROVED_MODEL_ONLY_DESTROY_AND_RECONSTRUCT_COLD_ROOT_WITH_ATTEMPT_PLUS_ONE",
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "native_runtime": "NOT_RUN"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "native_runtime": "NOT_RUN",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "latest_static_boundary_supplement":                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "package_id": "DPLM-WORKER-RESTART-LIFECYCLE-BOUNDARY-V3",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "manifest_sha256": "cfd1967347d782a553432bf0c0ebd7b13d7be2ab04d1f6ae2e609b15b5e412b0",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "source_manifest_sha256": "f59acddb56141343392ebe956c8472027c443c44bc30531423ea8ebf0306d4cf",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "reporter_instruction_streams_matching_pe": "8/8_NOT_INDEPENDENTLY_REHASHED",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "close_clears_handle_backing_regions_and_guard": "REPORTER_ATTRIBUTED_STATIC",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "scoped_reset_retains_outer_handle_and_reconstructs_inner_worker": "REPORTER_ATTRIBUTED_STATIC",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "close_to_next_setup": "UNBOUND",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "cross_attempt_generation": "NOT_CAPTURED",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "native_runtime": "NOT_RUN",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "local_gtc_full_restart": "APPROVED_MODEL_ONLY"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    },
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "superseded_v2_supplement":                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "package_id": "DPLM-WORKER-RESTART-LIFECYCLE-BOUNDARY-V2",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "manifest_sha256": "e30017427b8ee348cd02d50575f15b211bb26e9f6172414ffabd4651c5f7a4fa",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "source_manifest_sha256": "fd019c8542a5f6dac82319263ab7fc781871b952da3acaf8877126e93dfb0116",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "superseded_claim": "four new function instruction streams not PE-compared",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "superseded_by": "DPLM-WORKER-RESTART-LIFECYCLE-BOUNDARY-V3"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    }
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   }
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 },
                 {
@@ -23294,7 +23817,7 @@
           {"path": "crates/jocforge-domain/src/spatial/source_flags.rs", "bytes": 58899, "sha256": "ec8630271e67f5d5f73f15c6aa1e01e9738a591b486d2e63f47167ede3738328"},
           {"path": "crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs", "bytes": 36501, "sha256": "b72391a0aab869193399501aa49329c717a353d91c07cc9564c73d3835e25992"}
         ],
-          "test_mode": "20 synthetic literal vectors plus one meter-owned value-only vector and one cross-consumer fixture vector in workspace suite; authorized WAVE boundary vector is explicitly invoked with JOCFORGE_AUTHORIZED_WAV and is ignored otherwise",
+          "test_mode": "20 synthetic literal vectors plus one meter-owned value-only vector, one cross-consumer fixture vector, and one local strict-threshold boundary test in workspace suite; authorized WAVE boundary vector is explicitly invoked with JOCFORGE_AUTHORIZED_WAV and is ignored otherwise",
         "file_inventory": [
           {
             "path": "crates/jocforge-domain/src/spatial/source_flags.rs",
@@ -23303,8 +23826,8 @@
           },
           {
             "path": "crates/jocforge-domain/src/spatial/source_flags/source_flags_tests.rs",
-              "bytes": 36501,
-              "sha256": "b72391a0aab869193399501aa49329c717a353d91c07cc9564c73d3835e25992"
+              "bytes": 37623,
+              "sha256": "4df3638e4817219d12e97d49ef40bd876294dc7fe602881eae7d627906fc81bd"
           },
           {
             "path": "crates/jocforge-domain/tests/fixtures/source_flags/INPUT-ONLY-VECTORS.json",

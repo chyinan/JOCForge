@@ -1,0 +1,14 @@
+{
+  "source_manifest_sha256": "d68f53497c0bc50a401dacfdaa74ba4998e96c73378aa66733ca8cb6fbe97c0f",
+  "source_payloads_verified": "2/2",
+  "scope": "secondary fixture, four open generations and four encoder callbacks",
+  "descriptor_getter_identity_matches": "38/38 each open",
+  "uid_lookups": 152,
+  "physical_slot_rule": "track_index-1 via direct static dataflow",
+  "selected_open": "graph-descriptor-derived read-open",
+  "prior_external_map_copy": "UNSELECTED_SIBLING",
+  "primary_source": "NOT_SUBSTITUTED",
+  "quiet_and_F04FM": "UNBOUND",
+  "product_validation": "NOT_RUN",
+  "native_observation_independently_reproduced": false
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "DPLM-WORKER-RESTART-LIFECYCLE-BOUNDARY-V2",
+  "scope": "Scoped existing-handle inner-worker reconstruction; restart identity unbound",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "source_manifest_sha256": "fd019c8542a5f6dac82319263ab7fc781871b952da3acaf8877126e93dfb0116",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 686,
+      "sha256": "c5ee1b080abf0d3b7d59f8f7eed1b9ab13b809688834c6e875e50374f43e6b05"
+    },
+    {
+      "file": "STATUS.json",
+      "bytes": 451,
+      "sha256": "d4db26cc9235e37859be8634186e34a721f97572602f8cafb2f2d0b4766fb807"
+    }
+  ]
+}

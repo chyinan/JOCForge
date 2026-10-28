@@ -1,0 +1,3 @@
+# DPLM close/reopen static boundary
+
+Reporter-attributed static evidence reports guarded close cleaning and clearing the handle, freeing two backing regions and clearing the guard. Lazy open on a clear guard creates a handle; scoped reset retains outer handle/backing regions while cleaning and reconstructing the inner worker. Eight scoped function instruction streams were reported matched to the target PE. The V3 addendum supersedes V2's statement that the four new functions were not PE-compared. Same-instance close-to-next-setup, cross-attempt identity, complete reset write set and runtime generation remain UNBOUND/NOT_RUN. The GTC full restart is a local model contract. Sample audio/JOC validation remains NOT_RUN.

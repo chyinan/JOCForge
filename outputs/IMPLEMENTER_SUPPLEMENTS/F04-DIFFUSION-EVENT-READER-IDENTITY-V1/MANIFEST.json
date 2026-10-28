@@ -1,0 +1,19 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "F04-DIFFUSION-EVENT-READER-IDENTITY-V1",
+  "scope": "Secondary fixture event reader identity; approved CHNA producer unbound",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "source_manifest_sha256": "08385cf906457509acecce0ff91281fb045871442ba4044d85519b47c8e943ce",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 805,
+      "sha256": "ba954d48f667d0a61120c92ec859327829fc1bd18aad5fc30100b8d549a57481"
+    },
+    {
+      "file": "STATUS.json",
+      "bytes": 459,
+      "sha256": "50d50bb1e7104ecb935c4ec6eac1876ecabd31c5ff95b412003e0befc396b74a"
+    }
+  ]
+}

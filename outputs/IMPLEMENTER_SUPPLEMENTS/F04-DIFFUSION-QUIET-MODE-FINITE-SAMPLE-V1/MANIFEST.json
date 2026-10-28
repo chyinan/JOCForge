@@ -1,0 +1,19 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "F04-DIFFUSION-QUIET-MODE-FINITE-SAMPLE-V1",
+  "scope": "Native reference quiet/mode checks on four excerpts",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "source_manifest_sha256": "1c950d3c9ec890ff0af61180e93ad6a1beeb08ba39d87afce0dc1d4038cf4b63",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 825,
+      "sha256": "65e882bdb828927a71e1335f49e36e9972188d4444d284a29843c0ca44bea852"
+    },
+    {
+      "file": "STATUS.json",
+      "bytes": 548,
+      "sha256": "a61a74039c049cfe57cb26363e75c8a9dcde4c6fe55f3751e4a1ad933b004add"
+    }
+  ]
+}

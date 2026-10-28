@@ -1,0 +1,12 @@
+{
+  "schema": "wash-review.v1",
+  "source_manifest_sha256": "0f95649fcbcece3cd610136bd3a02ee9918ec0edf9c397639e1ebc1307dba5e5",
+  "source_payloads_verified": "10/10",
+  "research_checker_executed_normal": "PASS",
+  "research_checker_executed_python_optimized": "PASS",
+  "checker_independence": "recomputed before expected; uses same research reference; not independent implementation",
+  "source_code_or_expected_trace_delivered": false,
+  "fixture_identity_is_production_authority": false,
+  "canonical_owner_hash_or_parent_commit": "NOT_RUN",
+  "native_audio_product": "NOT_RUN"
+}

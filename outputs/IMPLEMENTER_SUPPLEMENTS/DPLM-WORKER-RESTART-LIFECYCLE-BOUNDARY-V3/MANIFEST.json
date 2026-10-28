@@ -1,0 +1,19 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "DPLM-WORKER-RESTART-LIFECYCLE-BOUNDARY-V3",
+  "scope": "Scoped static close/reset; runtime reopen and attempt identity unbound",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "source_manifest_sha256": "f59acddb56141343392ebe956c8472027c443c44bc30531423ea8ebf0306d4cf",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 726,
+      "sha256": "cf6f82ff6577d5be7cf948094c9731a46137a8e00445ed89ec4f45b70a5b2186"
+    },
+    {
+      "file": "STATUS.json",
+      "bytes": 384,
+      "sha256": "0623d401c94fc14e67c07d40c65122530689e9a1ba42c0772338075caaafe475"
+    }
+  ]
+}

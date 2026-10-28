@@ -1,0 +1,10 @@
+{
+  "source_manifest_sha256": "ec6971b095a2ac58959c758c5a4a2bc5cba71f3137f61e2a787ca85fc6c56afc",
+  "source_payloads_verified": "5/5",
+  "primary_F01E_payloads": "19/19_REPORTED_BY_SOURCE; WASH_INDEPENDENT_REHASH_PENDING",
+  "basis_sha256": "ea7577cf5fa0bce6ab76aeb81447c452cbac498fa79bd039a11149d970d7de68",
+  "scope": "LOCAL_MODEL_PRIMARY_METADATA_ONLY",
+  "source_data_values_included": false,
+  "native_execution": "NOT_RUN",
+  "audio_or_product_validation": "NOT_RUN"
+}

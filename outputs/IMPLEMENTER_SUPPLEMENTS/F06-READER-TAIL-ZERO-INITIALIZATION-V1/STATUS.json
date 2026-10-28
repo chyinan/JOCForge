@@ -1,0 +1,12 @@
+{
+  "source_manifest_sha256": "fa5e762ff3bc10a1f9444319b0742422298060a581d2bec1e2facc1c1248495b",
+  "source_payloads_verified": "3/3",
+  "model_rule": "38 rows initialized positive zero, actual prefix copied",
+  "native_clear": "38 rows x 6144 bytes observed",
+  "native_transfer_samples": 1050,
+  "native_callback_reported": 1536,
+  "native_final_tail": "NOT_CAPTURED",
+  "physical_ADM_frame": "UNBOUND",
+  "native_replay_independently_reproduced": false,
+  "product_acceptance": "NOT_RUN"
+}

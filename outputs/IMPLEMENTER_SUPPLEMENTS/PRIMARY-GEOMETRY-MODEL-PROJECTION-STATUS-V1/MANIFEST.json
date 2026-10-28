@@ -1,0 +1,19 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "PRIMARY-GEOMETRY-MODEL-PROJECTION-STATUS-V1",
+  "scope": "Primary metadata projection report; source rehash pending",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "source_manifest_sha256": "ec6971b095a2ac58959c758c5a4a2bc5cba71f3137f61e2a787ca85fc6c56afc",
+  "files": [
+    {
+      "file": "CONTRACT.md",
+      "bytes": 676,
+      "sha256": "2a2472255a3a4b0943fa0e7489dbe7d8856a991e90796590f0a096f0027d3822"
+    },
+    {
+      "file": "STATUS.json",
+      "bytes": 474,
+      "sha256": "a9e42e6d855ec8677fe5a59be2a320297a639c63292502c8b38fff78944db576"
+    }
+  ]
+}

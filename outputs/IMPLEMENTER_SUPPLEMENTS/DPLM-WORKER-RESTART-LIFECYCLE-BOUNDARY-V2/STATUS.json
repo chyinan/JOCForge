@@ -1,0 +1,10 @@
+{
+  "source_manifest_sha256": "fd019c8542a5f6dac82319263ab7fc781871b952da3acaf8877126e93dfb0116",
+  "source_payloads_verified": "2/2",
+  "supersedes_source_v1": "9f0a3a98a07854ea002d7cbed6030471db0e07a5771a0d2e3304fc3dd5323c4d",
+  "static_scope": "existing outer handle, inner reconstruction",
+  "new_function_PE_comparison": "NOT_RUN",
+  "native_runtime": "NOT_RUN",
+  "close_reopen_attempt_identity": "UNBOUND",
+  "GTC_restart": "LOCAL_MODEL_ONLY"
+}

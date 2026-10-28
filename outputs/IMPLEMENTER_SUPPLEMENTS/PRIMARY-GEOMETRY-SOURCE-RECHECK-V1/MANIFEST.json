@@ -1,0 +1,14 @@
+{
+  "schema": "wash-package-manifest.v1",
+  "package_id": "PRIMARY-GEOMETRY-SOURCE-RECHECK-V1",
+  "scope": "Independent primary F01E and four approved spec hash recheck",
+  "delivery": "WASHED_IMPLEMENTER_SUPPLEMENT",
+  "source_manifest_sha256": "f210abc9fb0d92f239ebef228cb3c3e15b9f55a820623aecf650b96d537102f4",
+  "files": [
+    {
+      "file": "RECHECK.json",
+      "bytes": 915,
+      "sha256": "907c420a083f51ed3b10f265d257e5db5218201f5df2f428930b3377ca87539d"
+    }
+  ]
+}

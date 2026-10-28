@@ -1,0 +1,15 @@
+{
+  "source_manifest_sha256": "1c950d3c9ec890ff0af61180e93ad6a1beeb08ba39d87afce0dc1d4038cf4b63",
+  "source_payloads_verified": "2/2",
+  "native_reference_samples": 4,
+  "authorized_samples": 3,
+  "au_per_sample": 4,
+  "ffprobe_and_base_51_decode": "REPORTED_PASS_FOR_EXCERPTS",
+  "implementation_under_test": "NOT_RUN",
+  "spatial_render": "NOT_RUN",
+  "listening": "NOT_RUN",
+  "full_song": "NOT_RUN",
+  "quiet_threshold": "2^-23 strict greater",
+  "F04FM_generator_comparison": "11/11 lanes and 11/11 modes",
+  "wash_independent_replay": false
+}

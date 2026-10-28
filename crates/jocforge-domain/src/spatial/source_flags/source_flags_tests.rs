@@ -2,11 +2,12 @@
 #[cfg(test)]
 mod tests {
     use super::super::{
-        BeforeRegularHistory, CurrentHostPcm, FRAME_SAMPLES, HOST_CHANNELS, HostRole,
-        HostRouteRecord, PREFIX_SOURCE_COUNT, PrefixWriterSet, REGULAR_HOSTS, RegularControl,
-        RegularControls, SOURCE_COUNT, SelectedFeatureFlagsControl, SourceFlagsError,
-        SourceFlagsHistoryGeneration, SourceFlagsInput, SourceFlagsParentLineage,
-        SourceFlagsProducer, SourceFlagsProgrammeId, ValidatedSemanticRoute,
+        ACTIVITY_EPSILON_BITS, BeforeRegularHistory, CurrentHostPcm, FRAME_SAMPLES, HOST_CHANNELS,
+        HostRole, HostRouteRecord, PREFIX_SOURCE_COUNT, PrefixWriterSet, REGULAR_HOSTS,
+        RegularControl, RegularControls, SOURCE_COUNT, SelectedFeatureFlagsControl,
+        SourceFlagsError, SourceFlagsHistoryGeneration, SourceFlagsInput, SourceFlagsParentLineage,
+        SourceFlagsProducer, SourceFlagsProgrammeId, ValidatedSemanticRoute, WINDOW_WORDS,
+        triangle_activity_witness,
     };
     use crate::{
         frontend::{
@@ -16,6 +17,7 @@ mod tests {
             validate_f03_target_cold_provider, validate_feature_fft4096_math_provider,
             validate_feature_processor_math_provider,
         },
+        numeric::FiniteF32,
         profile::{EncodingProfile, resolve_selected_profile},
         spatial::{
             SpatialControlMachine, frontend_stages::stage_frontend_features,
@@ -708,6 +710,26 @@ mod tests {
             SourceFlagsProducer::window_sha256().unwrap(),
             "134a5a788d42b0532f3ec46112ad978cc14fb3c46cb0d82f02fee5f129b7c919"
         );
+    }
+
+    #[test]
+    fn triangle_activity_uses_strict_absolute_threshold() {
+        let zero = FiniteF32::new(0.0).unwrap();
+        let one = FiniteF32::new(1.0).unwrap();
+        let epsilon = FiniteF32::new(f32::from_bits(ACTIVITY_EPSILON_BITS)).unwrap();
+        let above = FiniteF32::new(f32::from_bits(ACTIVITY_EPSILON_BITS + 1)).unwrap();
+        let window = vec![one; WINDOW_WORDS];
+        let current = vec![zero; FRAME_SAMPLES];
+        let mut previous = vec![zero; FRAME_SAMPLES];
+
+        previous[0] = epsilon;
+        assert!(!triangle_activity_witness(&previous, &current, &window).unwrap());
+        previous[0] = above;
+        assert!(triangle_activity_witness(&previous, &current, &window).unwrap());
+        previous[0] = FiniteF32::new(-epsilon.value()).unwrap();
+        assert!(!triangle_activity_witness(&previous, &current, &window).unwrap());
+        previous[0] = FiniteF32::new(-above.value()).unwrap();
+        assert!(triangle_activity_witness(&previous, &current, &window).unwrap());
     }
 
     #[test]

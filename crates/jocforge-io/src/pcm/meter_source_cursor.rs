@@ -489,4 +489,32 @@ mod tests {
         );
         assert_eq!(state.callback_index().value(), 0);
     }
+
+    #[test]
+    fn approved_1050_sample_source_tail_is_486_positive_zero_words_in_all_38_rows() {
+        let mut recipe = input_recipe();
+        recipe["source_samples"] = Value::from(1_050_u64);
+        let source_bytes = in_memory_pcm24_wave(&recipe);
+        let parsed = parse_selected_riff_pcm24(&source_bytes, None).unwrap();
+        let source_samples = MeterSourceSampleCount::new(1_050).unwrap();
+        let source_identity =
+            MeterPcmSourceIdentity::from_selected_resource_sha256(parsed.source_sha256());
+        let state = MeterPcmSourceCursor::cold(&parsed, source_identity, source_samples).unwrap();
+
+        let frame = stage_meter_pcm_source_frame(&state, MeterCallbackIndex::new(0), &parsed)
+            .unwrap()
+            .frame()
+            .clone();
+        assert_eq!(frame.host_input_count().value(), 1_050);
+        assert_eq!(frame.source_padding_count().value(), 486);
+        assert_eq!(frame.rows().len(), 38);
+        let expected_rows = parsed
+            .read_pcm24_hop(AdmSampleIndex::new(0), 1_050)
+            .unwrap();
+        for (row, expected) in frame.rows().iter().zip(expected_rows) {
+            assert_eq!(row.len(), 1_536);
+            assert_eq!(&row[..1_050], expected);
+            assert!(row[1_050..].iter().all(|word| *word == 0));
+        }
+    }
 }

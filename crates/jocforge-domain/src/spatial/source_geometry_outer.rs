@@ -293,6 +293,28 @@ impl GlobalSourceGeometrySnapshot {
     }
 }
 
+/// Noncommitting normal-control and source-geometry values for one callback transaction.
+#[must_use]
+#[derive(Debug)]
+pub struct NormalSourceGeometryStage {
+    normal_control: NormalControlSnapshotProposal,
+    source_geometry: GlobalSourceGeometrySnapshot,
+}
+
+impl NormalSourceGeometryStage {
+    pub const fn normal_control(&self) -> &NormalControlSnapshotProposal {
+        &self.normal_control
+    }
+
+    pub const fn source_geometry(&self) -> &GlobalSourceGeometrySnapshot {
+        &self.source_geometry
+    }
+
+    pub fn into_parts(self) -> (NormalControlSnapshotProposal, GlobalSourceGeometrySnapshot) {
+        (self.normal_control, self.source_geometry)
+    }
+}
+
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum GlobalSourceGeometryError {
     PreparedGraphMismatch,
@@ -347,6 +369,27 @@ pub fn build_global_source_geometry_snapshot(
         prepared,
         normal.control38_rows(),
     )
+}
+
+/// Stages F01E normal controls and their 48-source geometry under the same callback identity.
+/// The complete normal after-state remains pending for the parent transaction to adopt.
+pub fn stage_normal_source_geometry(
+    graph: &SelectedAdmGraph,
+    source_map: &Installed48SourceMap,
+    normal_control: NormalControlSnapshotProposal,
+) -> Result<NormalSourceGeometryStage, GlobalSourceGeometryError> {
+    let source_geometry =
+        build_global_source_geometry_snapshot(graph, source_map, &normal_control)?;
+    if source_geometry.transaction_id() != normal_control.transaction_id()
+        || source_geometry.value_generation() != normal_control.value_generation()
+        || source_geometry.source_origin_generation() != normal_control.normal_origin_generation()
+    {
+        return Err(GlobalSourceGeometryError::CallbackIdentityMismatch);
+    }
+    Ok(NormalSourceGeometryStage {
+        normal_control,
+        source_geometry,
+    })
 }
 
 /// Reuses committed last-normal F01E rows at a later main cached-audio delivery callback.

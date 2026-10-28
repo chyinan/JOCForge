@@ -1,0 +1,11 @@
+{
+  "source_manifest_sha256": "08385cf906457509acecce0ff91281fb045871442ba4044d85519b47c8e943ce",
+  "source_payloads_verified": "2/2",
+  "scope": "secondary fixture, four process plus four flush callbacks",
+  "event_writer_to_reader_to_callback": "4/4 same-token",
+  "measurement_and_encode_owners": "distinct",
+  "approved_CHNA_map_producer": "UNBOUND",
+  "typed_width_quiet_F04FM": "UNBOUND",
+  "full_song": "NOT_RUN",
+  "native_reproduced_by_wash": false
+}
