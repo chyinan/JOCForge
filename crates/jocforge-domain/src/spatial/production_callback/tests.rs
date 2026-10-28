@@ -59,7 +59,6 @@ const SELECTOR_VECTORS_BYTES: &[u8] =
 struct CallbackOwners {
     spatial_control: SpatialControlMachine,
     spatial_audio: SpatialAudioMachine,
-    reader_target: ReaderTargetState,
     processor: ValidatedFeatureProcessorMathProvider,
     fft: ValidatedFeatureFft4096MathProvider,
     window: ValidatedWindowQ15Provider,
@@ -107,7 +106,6 @@ fn callback_owners() -> CallbackOwners {
     CallbackOwners {
         spatial_control: SpatialControlMachine::new_cold(profile, &f01e, &f03).unwrap(),
         spatial_audio: SpatialAudioMachine::new_cold(profile).unwrap(),
-        reader_target: ReaderTargetState::cold(),
         processor,
         fft,
         window,
@@ -213,7 +211,11 @@ fn run_callback(
     }
     let before_control = owners.spatial_control.digest();
     let before_audio = owners.spatial_audio.digest();
-    let before_reader = owners.reader_target.canonical_sha256();
+    let before_reader = owners
+        .spatial_control
+        .committed()
+        .reader_target_state()
+        .canonical_sha256();
     let (activity, installed48) = stage_activity_and_installed48(&fixture);
     let resolved_profile = resolve_selected_profile(&owners.spatial_control.profile()).unwrap();
     let source_projection = project_normal_control_snapshot_source_controls(
@@ -264,7 +266,6 @@ fn run_callback(
             p15_geometry: &p15_geometry,
             spatial_control: &owners.spatial_control,
             spatial_audio: &owners.spatial_audio,
-            reader_target: &owners.reader_target,
             window: &owners.window,
             parameters: &owners.parameters,
         },
@@ -360,7 +361,14 @@ fn empty_selection_keeps_empty_c_d_and_stages_all_pending_owners_once() {
     );
     assert_eq!(owners.spatial_control.digest(), before_control);
     assert_eq!(owners.spatial_audio.digest(), before_audio);
-    assert_eq!(owners.reader_target.canonical_sha256(), before_reader);
+    assert_eq!(
+        owners
+            .spatial_control
+            .committed()
+            .reader_target_state()
+            .canonical_sha256(),
+        before_reader
+    );
 }
 
 #[test]
@@ -399,7 +407,14 @@ fn all_zero_active_c_keeps_d_and_advances_component_without_committing_owners() 
     assert_eq!(proposal.component.blocks_processed(), 24);
     assert_eq!(owners.spatial_control.digest(), before_control);
     assert_eq!(owners.spatial_audio.digest(), before_audio);
-    assert_eq!(owners.reader_target.canonical_sha256(), before_reader);
+    assert_eq!(
+        owners
+            .spatial_control
+            .committed()
+            .reader_target_state()
+            .canonical_sha256(),
+        before_reader
+    );
 }
 
 #[test]
@@ -429,7 +444,14 @@ fn capacity_reached_runs_u04_and_preserves_selected_identity_through_installatio
     assert_eq!(proposal.component.blocks_processed(), 24);
     assert_eq!(owners.spatial_control.digest(), before_control);
     assert_eq!(owners.spatial_audio.digest(), before_audio);
-    assert_eq!(owners.reader_target.canonical_sha256(), before_reader);
+    assert_eq!(
+        owners
+            .spatial_control
+            .committed()
+            .reader_target_state()
+            .canonical_sha256(),
+        before_reader
+    );
 }
 
 #[test]

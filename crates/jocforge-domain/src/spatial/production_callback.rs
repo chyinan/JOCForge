@@ -40,7 +40,7 @@ use crate::{
     },
     joc::oamd::reader_target::{
         ReaderTargetCallbackInputs, ReaderTargetControlRows, ReaderTargetError,
-        ReaderTargetStageProposal, ReaderTargetState, SELECTED_PROFILE_ID, stage_reader_target,
+        ReaderTargetStageProposal, SELECTED_PROFILE_ID, stage_reader_target,
     },
     spatial::installed48_source_map::Installed48SourceMap,
     timeline::{CodecSourceIndex, FrontendCallbackIndex, NormalCallbackCount},
@@ -124,7 +124,6 @@ pub struct SpatialProductionCallbackInputs<'a> {
     pub p15_geometry: &'a SelectedP15Geometry,
     pub spatial_control: &'a SpatialControlMachine,
     pub spatial_audio: &'a SpatialAudioMachine,
-    pub reader_target: &'a ReaderTargetState,
     pub window: &'a ValidatedWindowQ15Provider,
     pub parameters: &'a ValidatedComponentParameterProvider,
 }
@@ -138,7 +137,6 @@ pub struct SpatialProductionNormalCallbackInputs<'a> {
     pub p15_geometry: &'a SelectedP15Geometry,
     pub spatial_control: &'a SpatialControlMachine,
     pub spatial_audio: &'a SpatialAudioMachine,
-    pub reader_target: &'a ReaderTargetState,
     pub window: &'a ValidatedWindowQ15Provider,
     pub parameters: &'a ValidatedComponentParameterProvider,
 }
@@ -207,7 +205,6 @@ pub fn continue_spatial_production_callback_from_normal_stage(
         p15_geometry,
         spatial_control,
         spatial_audio,
-        reader_target,
         window,
         parameters,
     } = input;
@@ -221,7 +218,6 @@ pub fn continue_spatial_production_callback_from_normal_stage(
         p15_geometry,
         spatial_control,
         spatial_audio,
-        reader_target,
         window,
         parameters,
     })
@@ -310,7 +306,6 @@ pub fn continue_spatial_production_callback(
         p15_geometry,
         spatial_control,
         spatial_audio,
-        reader_target,
         window,
         parameters,
     } = input;
@@ -328,7 +323,7 @@ pub fn continue_spatial_production_callback(
         || source_snapshot.transaction_id() != &transaction_id
         || spatial_control.committed().callback_index() != callback_index
         || spatial_audio.generation() != u64::from(callback_index.value())
-        || reader_target.callback_index() != callback_index
+        || spatial_control.committed().reader_targets_callback_index() != callback_index
     {
         return Err(SpatialProductionCallbackError::CallbackIdentity);
     }
@@ -442,8 +437,11 @@ pub fn continue_spatial_production_callback(
         previous_overlap_rows,
         current_mixer_rows,
     };
-    let reader_target = stage_reader_target(reader_target, &reader_inputs)
-        .map_err(SpatialProductionCallbackError::ReaderTarget)?;
+    let reader_target = stage_reader_target(
+        spatial_control.committed().reader_target_state(),
+        &reader_inputs,
+    )
+    .map_err(SpatialProductionCallbackError::ReaderTarget)?;
     let spatial_control_projection =
         spatial_control_callback_projection(&installation, &matrix, &reader_target)?;
     let (reader_target_state, reader_target_receipt, reader_target_controls, _) =

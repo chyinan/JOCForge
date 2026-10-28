@@ -23,7 +23,6 @@ use jocforge_domain::{
         validate_f01e_provider, validate_f03_package_manifest, validate_f03_target_cold_provider,
         validate_feature_fft4096_math_provider, validate_feature_processor_math_provider,
     },
-    joc::oamd::reader_target::ReaderTargetState,
     meter::installed48_renderer::{
         MeterInstalled48Input, MeterInstalled48State, stage_meter_installed48,
     },
@@ -145,7 +144,6 @@ fn selected_meter_prepass(source_samples: MeterSourceSampleCount) -> Independent
 struct SpatialCallbackOwners {
     spatial_control: SpatialControlMachine,
     spatial_audio: SpatialAudioMachine,
-    reader_target: ReaderTargetState,
     processor: ValidatedFeatureProcessorMathProvider,
     fft: ValidatedFeatureFft4096MathProvider,
     window: ValidatedWindowQ15Provider,
@@ -193,7 +191,6 @@ fn spatial_callback_owners() -> SpatialCallbackOwners {
     SpatialCallbackOwners {
         spatial_control: SpatialControlMachine::new_cold(profile, &f01e, &f03).unwrap(),
         spatial_audio: SpatialAudioMachine::new_cold(profile).unwrap(),
-        reader_target: ReaderTargetState::cold(),
         processor,
         fft,
         window,
@@ -381,7 +378,11 @@ fn authorized_adm_bwf_produces_one_bound_normal_geometry_and_pcm_callback() {
     let p15 = generate_selected_p15_geometry(0x159b, true).unwrap();
     let spatial_control_before = owners.spatial_control.digest();
     let spatial_audio_before = owners.spatial_audio.digest();
-    let reader_target_before = owners.reader_target.canonical_sha256();
+    let reader_target_before = owners
+        .spatial_control
+        .committed()
+        .reader_target_state()
+        .canonical_sha256();
     let spatial_stage = continue_spatial_production_callback_from_normal_stage(
         SpatialProductionNormalCallbackInputs {
             frontend,
@@ -391,7 +392,6 @@ fn authorized_adm_bwf_produces_one_bound_normal_geometry_and_pcm_callback() {
             p15_geometry: &p15,
             spatial_control: &owners.spatial_control,
             spatial_audio: &owners.spatial_audio,
-            reader_target: &owners.reader_target,
             window: &owners.window,
             parameters: &owners.parameters,
         },
@@ -426,7 +426,11 @@ fn authorized_adm_bwf_produces_one_bound_normal_geometry_and_pcm_callback() {
     assert_eq!(owners.spatial_control.digest(), spatial_control_before);
     assert_eq!(owners.spatial_audio.digest(), spatial_audio_before);
     assert_eq!(
-        owners.reader_target.canonical_sha256(),
+        owners
+            .spatial_control
+            .committed()
+            .reader_target_state()
+            .canonical_sha256(),
         reader_target_before
     );
 

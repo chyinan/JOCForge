@@ -228,7 +228,7 @@ def check_source_inventory_evolution(root,d):
  current=[
   {'path':'crates/jocforge-domain/src/spatial/spatial_audio_state.rs','bytes':55012,'sha256':'037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075'},
   {'path':'crates/jocforge-domain/src/spatial/mod.rs','bytes':3333,'sha256':'779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c'},
-  {'path':'crates/jocforge-domain/src/spatial/spatial_control.rs','bytes':47032,'sha256':'712aab6568ff4854fbb51e2bd7397334673794ea9001c663c6c91a28b8c460b8'},
+  {'path':'crates/jocforge-domain/src/spatial/spatial_control.rs','bytes':47309,'sha256':'fdcf5ff115ab56f95e4167607b854b0233bbaf10927f0a93216068bf45d0a8a2'},
   {'path':'crates/jocforge-domain/src/transaction/mod.rs','bytes':14560,'sha256':'51662df704bc7600fcc50129fe5540d8893567e8a68b27d993e1ccad909d9bae'},
   {'path':'crates/jocforge-domain/src/spatial/source_flags.rs','bytes':61230,'sha256':'55155b4a84a1199f77d0b006b9923b1621cb885ef98e01d63d12b1f99bdfe348'},
   {'path':'crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs','bytes':48742,'sha256':'9ed4b36687e6694d73716bb774c7773c9b545f93ca49e1025336d355f24b8e2b'},

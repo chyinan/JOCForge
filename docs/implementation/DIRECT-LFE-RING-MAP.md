@@ -124,9 +124,9 @@ This is only the direct-LFE ring transition and a future Type10 row0 input; it d
       "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"
     },
     {
-      "bytes": 47032,
+      "bytes": 47309,
       "path": "crates/jocforge-domain/src/spatial/spatial_control.rs",
-      "sha256": "712aab6568ff4854fbb51e2bd7397334673794ea9001c663c6c91a28b8c460b8"
+      "sha256": "fdcf5ff115ab56f95e4167607b854b0233bbaf10927f0a93216068bf45d0a8a2"
     }
   ],
   "implementation_prohibitions": [

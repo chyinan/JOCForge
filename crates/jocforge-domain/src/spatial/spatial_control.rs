@@ -545,6 +545,9 @@ impl SpatialControlState {
             .checked_add(1)
             .ok_or(SpatialControlError::CallbackAfterStateInvalid)?;
         if parts.callback_index != before.clocks.callback_index
+            || parts.reader_target_state.callback_index()
+                != FrontendCallbackIndex::new(next_callback)
+            || parts.reader_target_state.is_retired()
             || parts.normal_callbacks.value() != next_normal_callbacks
             || parts.source_cursor_samples.value() < before.clocks.source_cursor_samples.value()
             || parts.source_pcm_rows.len() != PHYSICAL_HOST_COUNT
@@ -713,6 +716,10 @@ impl SpatialControlState {
 
     pub const fn reader_targets_callback_index(&self) -> FrontendCallbackIndex {
         self.reader_targets.callback_index()
+    }
+
+    pub const fn reader_target_state(&self) -> &ReaderTargetState {
+        &self.reader_targets
     }
 
     pub const fn source_cursor_samples(&self) -> AdmSampleIndex {
