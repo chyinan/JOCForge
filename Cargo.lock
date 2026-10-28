@@ -73,6 +73,7 @@ name = "jocforge"
 version = "0.1.0-dev.1"
 dependencies = [
  "jocforge-application",
+ "jocforge-domain",
  "jocforge-io",
  "serde_json",
 ]

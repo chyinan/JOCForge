@@ -152,6 +152,7 @@
 | F03W/selector-u04-target-value-handoff | F03W | `spatial_control` |
 | F03W/p15-response-source-admission-and-columns | F03W | `spatial_control` |
 | F03W/capacity-gated-u04-callback-continuation | F03W | `spatial_control` |
+| F03W/user-authorized-adm-first-normal-callback | F03W | `spatial_audio` |
 | F04/independent-meter-installed48-postwindow-leaf | F04 | `meter` |
 | F04C/whole-spatial-audio-j05-composer | F04C | `spatial_audio` |
 | F04A/independent-meter-installed48-postwindow-leaf | F04A | `meter` |
@@ -343,3 +344,4 @@
 | F14/hmac-sha256-primitive | F14 | `integrity` |
 | F14K/public-keyless-integrity-owner | F14K | `integrity` |
 | F15/informational-production-ingress-readiness-audit | F15 | `output` |
+| F15/gtc-owner-state-ref-convention | F15 | `transaction` |

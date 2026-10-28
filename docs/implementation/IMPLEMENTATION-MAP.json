@@ -3294,6 +3294,78 @@
               "sha256": "9d011fd15b537adacc556a65b21895f6e4d9079b00acfa98b63fb7489ed0d30f"
             }
           ]
+        },
+        {
+          "slice_id": "user-authorized-adm-first-normal-callback",
+          "mapping_status": "MATERIALIZED_USER_AUTHORIZED_38_TRACK_G0_CALLBACK__GTC_AND_CODEC_OPEN",
+          "implementation_status": "USER_AUTHORIZED_REAL_RESOURCE_G0_SPATIAL_STAGES_5_TO_14_PASSED__PARENT_RECEIPT_AND_OUTPUT_NOT_RUN",
+          "scope": "An explicitly invoked ignored test read the user-authorized 38-channel ADM BWF in memory, independently checked its full byte count and SHA-256 against the user/Wash-provided identity, and passed the same parsed allocation into application preparation and the PCM cursor. It produced 38 physical PCM rows, 38 F01E control rows, 28 object sampler host updates, 48 source-geometry rows, 48 installed rows, and a noncommitting spatial proposal through stages 5-14 for normal callback g=0. The local test emitted only counts, saved no path or PCM, and did not commit any owner.",
+          "owner": "spatial_audio",
+          "implementation_requirement": false,
+          "implementation_files": [],
+          "clock": {
+            "domains": [
+              "AdmSampleCount",
+              "MeterCallbackIndex",
+              "FrontendCallbackIndex",
+              "CallbackLineageIdentity"
+            ],
+            "covered_clauses": [
+              "The tested callback is the first normal source callback g=0 with actual count 1536 and no tail padding.",
+              "F01E, physical PCM rows, installed48 and spatial stages share one input resource and callback lineage.",
+              "The proposal remains pending; no parent receipt or commit occurred."
+            ]
+          },
+          "parameters": {
+            "kind": "USER_AUTHORIZED_REAL_RESOURCE_IDENTITY_AND_FIRST_CALLBACK",
+            "provider_files": [],
+            "source_sha256": "7826dcbef37ef69642a6164c97a37bcfb3f917cea74aa0f0a30d76d0a825f1d1",
+            "source_file_bytes": 743696526,
+            "source_samples": 6522906,
+            "physical_channels": 38,
+            "sample_rate_hz": 48000,
+            "pcm_bits": 24,
+            "derived_data_bytes": 743611284,
+            "file_path_stored": false,
+            "pcm_bytes_stored": false,
+            "validation_boundary": "One user-authorized real-resource normal callback only; reference hash was independently recomputed, but this is not an E-AC-3 encode or product acceptance."
+          },
+          "test_modules": [
+            "crates/jocforge-cli/tests/authorized_adm_callback.rs"
+          ],
+          "vectors": {
+            "kind": "USER_AUTHORIZED_ONE_CALLBACK_EXTERNAL_RESOURCE_IDENTITY_NO_PCM_OUTPUTS",
+            "authoritative_vectors": [
+              "crates/jocforge-cli/tests/authorized_adm_callback.rs"
+            ],
+            "case_pointers": [
+              "Input identity: 743,696,526 bytes, independently computed SHA-256 matches the user-provided identity.",
+              "g=0: 38 PCM rows -> F01E 38 controls / 28 sampler hosts -> 48 source-geometry rows -> 48 installed rows -> spatial proposal stages 5..14.",
+              "The test is ignored by default and requires an explicitly supplied path/hash/byte count; it writes no audio or file path."
+            ],
+            "expected_outputs_included": false,
+            "test_inventory": [
+              {
+                "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
+                "bytes": 16162,
+                "sha256": "51d0c27ba63be321ac731193261b0193bd21220c9ad2f252436252a352d3986e"
+              }
+            ]
+          },
+          "not_run": [
+            "Callbacks g=1..4246, main cached drains g=4247..4250, and meter fresh-zero drains.",
+            "GTC owner receipts, atomic parent commit, F12 frame search/assembly, F13 JOC EMDF, F15 output publication, and W04.",
+            "Encoded-file structure, OpenJOC/ffmpeg decode, full-song playback, and listening."
+          ],
+          "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
+          "implementation_inventory": [],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-cli/tests/authorized_adm_callback.rs",
+              "bytes": 16162,
+              "sha256": "51d0c27ba63be321ac731193261b0193bd21220c9ad2f252436252a352d3986e"
+            }
+          ]
         }
       ]
     },
@@ -9438,8 +9510,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/transaction/mod.rs",
-              "bytes": 2915,
-              "sha256": "442a74702c82926abd9de95e5f0686fd9f1cb8e656e2e051ade2390abdee238c"
+              "bytes": 6539,
+              "sha256": "21376fa70d4554f981e2028804d7f69b7190cee256ab9b13164646989a6426a0"
             },
             {
               "path": "crates/jocforge-domain/src/numeric/finite_f32.rs",
@@ -11220,8 +11292,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/transaction/mod.rs",
-              "bytes": 2915,
-              "sha256": "442a74702c82926abd9de95e5f0686fd9f1cb8e656e2e051ade2390abdee238c"
+              "bytes": 6539,
+              "sha256": "21376fa70d4554f981e2028804d7f69b7190cee256ab9b13164646989a6426a0"
             },
             {
               "path": "crates/jocforge-domain/src/transform/long_transform.rs",
@@ -11830,8 +11902,8 @@
             },
             {
               "path": "crates/jocforge-domain/src/transaction/mod.rs",
-              "bytes": 2915,
-              "sha256": "442a74702c82926abd9de95e5f0686fd9f1cb8e656e2e051ade2390abdee238c"
+              "bytes": 6539,
+              "sha256": "21376fa70d4554f981e2028804d7f69b7190cee256ab9b13164646989a6426a0"
             }
           ],
           "test_inventory": [
@@ -19854,6 +19926,70 @@
           "delivery_scope": "INTERNAL_IMPLEMENTER_INFORMATION_ONLY",
           "implementation_inventory": [],
           "test_inventory": []
+        },
+        {
+          "slice_id": "gtc-owner-state-ref-convention",
+          "mapping_status": "MATERIALIZED_LOCAL_GTC_OWNER_STATE_REF_CONVENTION__PARENT_ROOT_OPEN",
+          "implementation_status": "LOCALLY_VERIFIED_12_REGISTERED_OWNER_REFS__ROOT_AND_RECEIPTS_OPEN",
+          "scope": "The selected GTC contract supplement defines each logical owner reference as owners.<owner_id>. The implementation represents the 12 registered owner IDs as a closed enum and derives the exact state_ref from that enum; callers cannot supply a separate arbitrary path string. This is only a local snapshot reference convention: it does not serialize owner state bytes, define generation/hash timing, create an owner receipt, or commit the programme root.",
+          "owner": "transaction",
+          "implementation_requirement": true,
+          "implementation_files": [
+            "crates/jocforge-domain/src/transaction/mod.rs"
+          ],
+          "clock": {
+            "domains": [],
+            "covered_clauses": [
+              "Owner reference naming creates no state generation or transaction clock."
+            ]
+          },
+          "parameters": {
+            "kind": "HASH_BOUND_GTC_OWNER_STATE_REF_CONVENTION",
+            "provider_files": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/GTC-OWNER-STATE-REF-CONVENTION-V1/MANIFEST.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/GTC-OWNER-STATE-REF-CONVENTION-V1/CONTRACT.md",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/GTC-OWNER-STATE-REF-CONVENTION-V1/STATE-REF-MAP.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/GTC-OWNER-STATE-REF-CONVENTION-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/GTC-OWNER-STATE-REF-CONVENTION-V1/WASH-VERIFICATION.json"
+            ],
+            "supplement_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6",
+            "validation_boundary": "Local logical member reference only; not native syntax, canonical owner state bytes, receipts or parent commit."
+          },
+          "test_modules": [
+            "crates/jocforge-domain/src/transaction/mod.rs"
+          ],
+          "vectors": {
+            "kind": "HASH_BOUND_12_REGISTERED_OWNER_ID_TO_STATE_REF_CASES",
+            "authoritative_vectors": [
+              "outputs/IMPLEMENTER_SUPPLEMENTS/GTC-OWNER-STATE-REF-CONVENTION-V1/STATE-REF-MAP.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/GTC-OWNER-STATE-REF-CONVENTION-V1/INPUT-ONLY-VECTORS.json"
+            ],
+            "case_pointers": [
+              "All 12 registered GTC owner IDs map to the exact owners.<owner_id> member reference.",
+              "The reference is derived from the enum, not parsed from a separately supplied path string."
+            ],
+            "expected_outputs_included": false,
+            "supplement_manifest_sha256": "0ca4895b0e4f4082c6607f5a40c1cd6141d35d303425f0043dfef9b24f4ca3c6"
+          },
+          "not_run": [
+            "Complete typed ProgrammeState owner roots and canonical state-byte serialization.",
+            "Before/after owner receipts, top-level phase generation, callback/source transaction commit, restart and durable AU publication."
+          ],
+          "delivery_scope": "USER_AUTHORIZED_NON_PRIVATE_KEY_MATERIAL",
+          "implementation_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/transaction/mod.rs",
+              "bytes": 6539,
+              "sha256": "21376fa70d4554f981e2028804d7f69b7190cee256ab9b13164646989a6426a0"
+            }
+          ],
+          "test_inventory": [
+            {
+              "path": "crates/jocforge-domain/src/transaction/mod.rs",
+              "bytes": 6539,
+              "sha256": "21376fa70d4554f981e2028804d7f69b7190cee256ab9b13164646989a6426a0"
+            }
+          ]
         }
       ]
     },
@@ -21331,8 +21467,8 @@
         },
         {
           "path": "crates/jocforge-domain/src/transaction/mod.rs",
-          "bytes": 2915,
-          "sha256": "442a74702c82926abd9de95e5f0686fd9f1cb8e656e2e051ade2390abdee238c"
+          "bytes": 6539,
+          "sha256": "21376fa70d4554f981e2028804d7f69b7190cee256ab9b13164646989a6426a0"
         },
         {
           "path": "crates/jocforge-domain/src/analysis/owner.rs",
@@ -21973,7 +22109,7 @@
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state.rs", "bytes": 55012, "sha256": "037087d1fb2f47e10d84b2f9eef4de05dcf3f95cd13826d7f2a09c1855850075"},
         {"path": "crates/jocforge-domain/src/spatial/mod.rs", "bytes": 3333, "sha256": "779624ba5a46059068c2f172d26d46df73e0ed7dc5a394909b6719477493113c"},
         {"path": "crates/jocforge-domain/src/spatial/spatial_control.rs", "bytes": 33420, "sha256": "b23c0cc31eb8a2e0be1fe0b0635addb5dd680f713971c174e34c95697e2fed8c"},
-        {"path": "crates/jocforge-domain/src/transaction/mod.rs", "bytes": 2915, "sha256": "442a74702c82926abd9de95e5f0686fd9f1cb8e656e2e051ade2390abdee238c"},
+        {"path": "crates/jocforge-domain/src/transaction/mod.rs", "bytes": 6539, "sha256": "21376fa70d4554f981e2028804d7f69b7190cee256ab9b13164646989a6426a0"},
         {"path": "crates/jocforge-domain/src/spatial/source_flags.rs", "bytes": 61230, "sha256": "55155b4a84a1199f77d0b006b9923b1621cb885ef98e01d63d12b1f99bdfe348"},
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage.rs", "bytes": 48742, "sha256": "9ed4b36687e6694d73716bb774c7773c9b545f93ca49e1025336d355f24b8e2b"},
         {"path": "crates/jocforge-domain/src/spatial/spatial_audio_state/component_stage/tests.rs", "bytes": 61890, "sha256": "9275736d43853f6b137abdeeda5ae4aa4530acda241eacad02dcd28f22f7d555"}
@@ -23800,8 +23936,8 @@
           },
           {
             "path": "crates/jocforge-domain/src/transaction/mod.rs",
-            "bytes": 2915,
-            "sha256": "442a74702c82926abd9de95e5f0686fd9f1cb8e656e2e051ade2390abdee238c"
+            "bytes": 6539,
+            "sha256": "21376fa70d4554f981e2028804d7f69b7190cee256ab9b13164646989a6426a0"
           },
           {
             "path": "crates/jocforge-domain/src/timeline/index.rs",

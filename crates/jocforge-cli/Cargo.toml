@@ -11,6 +11,7 @@ jocforge-io = { path = "../jocforge-io" }
 
 [dev-dependencies]
 jocforge-application = { path = "../jocforge-application", features = ["test-support"] }
+jocforge-domain = { path = "../jocforge-domain" }
 serde_json = { version = "=1.0.154", default-features = false, features = ["std"] }
 
 [lints]
