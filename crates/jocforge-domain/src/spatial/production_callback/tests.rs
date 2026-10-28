@@ -28,7 +28,7 @@ use crate::{
             BeforeRegularHistory, CurrentHostPcm, PrefixWriterSet, SourceFlagsInput,
             SourceFlagsParentLineage, project_normal_control_snapshot_source_controls,
         },
-        source_geometry_outer::build_global_source_geometry_snapshot,
+        source_geometry_outer::stage_normal_source_geometry,
         spatial_audio_state::{SpatialAudioDigest, SpatialAudioMachine},
         spatial_control::SpatialControlDigest,
         validate_component_parameter_provider, validate_f04_parameter_package_manifest,
@@ -252,23 +252,23 @@ fn run_callback(
         &owners.fft,
     )
     .unwrap();
-    let source_geometry =
-        build_global_source_geometry_snapshot(&fixture.graph, &fixture.source_map, &fixture.normal)
-            .unwrap();
+    let normal_source_geometry =
+        stage_normal_source_geometry(&fixture.graph, &fixture.source_map, fixture.normal).unwrap();
     let p15_geometry = generate_selected_p15_geometry(0x159b, true).unwrap();
-    let proposal = continue_spatial_production_callback(SpatialProductionCallbackInputs {
-        frontend,
-        source_snapshot: NormalControlCallbackSource::Normal(Box::new(fixture.normal)),
-        source_geometry,
-        source_control_clock,
-        source_map: &fixture.source_map,
-        p15_geometry: &p15_geometry,
-        spatial_control: &owners.spatial_control,
-        spatial_audio: &owners.spatial_audio,
-        reader_target: &owners.reader_target,
-        window: &owners.window,
-        parameters: &owners.parameters,
-    })
+    let proposal = continue_spatial_production_callback_from_normal_stage(
+        SpatialProductionNormalCallbackInputs {
+            frontend,
+            normal_source_geometry,
+            source_control_clock,
+            source_map: &fixture.source_map,
+            p15_geometry: &p15_geometry,
+            spatial_control: &owners.spatial_control,
+            spatial_audio: &owners.spatial_audio,
+            reader_target: &owners.reader_target,
+            window: &owners.window,
+            parameters: &owners.parameters,
+        },
+    )
     .unwrap();
     (
         proposal,

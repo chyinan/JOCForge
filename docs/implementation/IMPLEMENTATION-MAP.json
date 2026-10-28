@@ -2981,8 +2981,8 @@
         {
           "slice_id": "capacity-gated-u04-callback-continuation",
           "mapping_status": "MATERIALIZED_EXISTING_F03W_U04_CALLER_JOIN__NUMERIC_PARITY_AND_PARENT_COMMIT_OPEN",
-          "implementation_status": "EXISTING_LOCAL_CALLBACK_CONTINUATION__NUMERIC_PARITY_AND_PARENT_COMMIT_NOT_RUN",
-          "scope": "Within the existing continue_spatial_production_callback path, the selector result is handed to the U04 gate. Only CAPACITY_REACHED calls produce_u04_refinement; the producer receives the original candidate rows and selected initial targets, checks the source/target IDs, geometry, and complete attributes against those same values, and forwards projected XYZ into the target-install proposal. This is a mapping of existing behavior, not a new code change or whole-F03W completion.",
+          "implementation_status": "LOCALLY_VERIFIED_SAME_ATTEMPT_NORMAL_GEOMETRY_CONTINUATION__NUMERIC_PARITY_AND_PARENT_COMMIT_OPEN",
+          "scope": "Within the existing continue_spatial_production_callback path, the selector result is handed to the U04 gate. Only CAPACITY_REACHED calls produce_u04_refinement; the producer receives the original candidate rows and selected initial targets, checks the source/target IDs, geometry, and complete attributes against those same values, and forwards projected XYZ into the target-install proposal. This is a mapping of existing behavior, not a new code change or whole-F03W completion. The production continuation now also has an entry point that consumes the indivisible NormalSourceGeometryStage, so F01E controls and all 48 source rows retain the same callback transaction through stages 5-14; it does not grant the parent commit or close U04 numeric parity.",
           "owner": "spatial_control",
           "dependencies": [
             "selector-u04-target-value-handoff",
@@ -3012,7 +3012,8 @@
               "The continuation validates callback lineage before deriving source and target inputs.",
               "Original candidate IDs stay source-ascending and the source-weight row is computed from the same original band-major feature values.",
               "Selected target IDs remain in selector order; initial positions and complete attributes are gathered for the same IDs before refinement.",
-              "CANDIDATES_EXHAUSTED and empty-candidate paths skip refinement; CAPACITY_REACHED admits one callback-local proposal."
+              "CANDIDATES_EXHAUSTED and empty-candidate paths skip refinement; CAPACITY_REACHED admits one callback-local proposal.",
+              "The callback continuation can consume F01E normal controls and source geometry only as one combined same-programme/attempt/callback stage."
             ]
           },
           "parameters": {
@@ -3027,11 +3028,20 @@
               "outputs/IMPLEMENTER_SUPPLEMENTS/U04-SOURCE-WEIGHT-CALLER-BINDING-V1/BINDING.md",
               "outputs/IMPLEMENTER_SUPPLEMENTS/U04-SOURCE-WEIGHT-CALLER-BINDING-V1/INPUT-ONLY-VECTORS.json",
               "outputs/IMPLEMENTER_SUPPLEMENTS/U04-SOURCE-WEIGHT-CALLER-BINDING-V1/REFERENCES.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/U04-SOURCE-WEIGHT-CALLER-BINDING-V1/WASH-VERIFICATION.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/U04-SOURCE-WEIGHT-CALLER-BINDING-V1/WASH-VERIFICATION.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SAMPLER-GEOMETRY-SAME-ATTEMPT-CONTRACT-V1/MANIFEST.json",
+                            "outputs/IMPLEMENTER_SUPPLEMENTS/SAMPLER-GEOMETRY-SAME-ATTEMPT-CONTRACT-V1/CONTRACT.md",
+                            "outputs/IMPLEMENTER_SUPPLEMENTS/SAMPLER-GEOMETRY-SAME-ATTEMPT-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+                            "outputs/IMPLEMENTER_SUPPLEMENTS/SAMPLER-GEOMETRY-SAME-ATTEMPT-CONTRACT-V1/WASH-REVIEW.json"
             ],
             "validation_boundary": "The supplements establish input identity and call-domain only; their vectors provide no expected gains and do not establish numeric parity.",
             "u04_gain_manifest_sha256": "3dc243e1cb05b65dd5d703e5a0718fadae6618cdf44d6de4709430f247c208fc",
-            "u04_source_weight_manifest_sha256": "b16da90125002cebd14658240b517f5163e8b3b230cde18ca488cb526062c835"
+            "u04_source_weight_manifest_sha256": "b16da90125002cebd14658240b517f5163e8b3b230cde18ca488cb526062c835",
+            "same_attempt_sampler_geometry_contract":             {
+              "manifest_sha256": "b7a59678cb561bc8b301f939ce36afe687c9ca95b80dbea497d04a73ff7a5129",
+              "stage_api": "continue_spatial_production_callback_from_normal_stage",
+              "contract_scope": "same transaction binding only; full callback replay and parent commit remain open"
+            }
           },
           "test_modules": [
             "crates/jocforge-domain/src/spatial/production_callback/tests.rs",
@@ -3043,18 +3053,23 @@
             "kind": "WASHED_CALLER_JOIN_DISCRIMINATORS_AND_LOCAL_IDENTITY_ASSERTIONS",
             "authoritative_vectors": [
               "outputs/IMPLEMENTER_SUPPLEMENTS/U04-GAIN-CALLER-JOIN-V1/INPUT-ONLY-JOIN-DISCRIMINATORS.json",
-              "outputs/IMPLEMENTER_SUPPLEMENTS/U04-SOURCE-WEIGHT-CALLER-BINDING-V1/INPUT-ONLY-VECTORS.json"
+              "outputs/IMPLEMENTER_SUPPLEMENTS/U04-SOURCE-WEIGHT-CALLER-BINDING-V1/INPUT-ONLY-VECTORS.json",
+              "outputs/IMPLEMENTER_SUPPLEMENTS/SAMPLER-GEOMETRY-SAME-ATTEMPT-CONTRACT-V1/INPUT-ONLY-VECTORS.json",
+                            "outputs/IMPLEMENTER_SUPPLEMENTS/SAMPLER-GEOMETRY-SAME-ATTEMPT-CONTRACT-V1/WASH-REVIEW.json"
             ],
             "case_pointers": [
               "CAPACITY_REACHED admits U04 while CANDIDATES_EXHAUSTED skips it, including a count-15 exhausted result.",
               "Original candidate IDs, feature rows, source geometry, and full attributes remain joined by source ordinal.",
               "Selected target IDs remain unsorted selector order with the same initial geometry and complete attributes.",
               "The local callback test checks that U04 projected XYZ reaches the installation proposal.",
-              "Input-only packages contain no expected gain values; numerical parity is not claimed."
+              "Input-only packages contain no expected gain values; numerical parity is not claimed.",
+              "The F03W continuation consumes NormalSourceGeometryStage as one value, then applies its existing same-callback identity gate to stages 5-14."
             ],
             "expected_values_are_assertions_only": true,
             "input_only_expected_gains": false,
-            "pcm_or_native_run": "NOT_RUN"
+            "pcm_or_native_run": "NOT_RUN",
+            "sampler_geometry_supplement_manifest_sha256":             "b7a59678cb561bc8b301f939ce36afe687c9ca95b80dbea497d04a73ff7a5129",
+            "expected_outputs_included":             false
           },
           "not_run": [
             "Wash input-only source/target discriminators do not provide expected gain values; U04 numeric parity is NOT_RUN.",
@@ -3065,13 +3080,13 @@
           "implementation_inventory": [
             {
               "path": "crates/jocforge-domain/src/spatial/production_callback.rs",
-              "bytes": 20024,
-              "sha256": "cb5ccc4d2b9722fc99afd19f9ec33559495827cd24327d4537e739df5fb17648"
+              "bytes": 21875,
+              "sha256": "167eb927a9a73e186c197f002203bc4761d9b52ef7db96bd18b0425e0a21af3d"
             },
             {
               "path": "crates/jocforge-domain/src/spatial/production_callback/tests.rs",
-              "bytes": 17370,
-              "sha256": "213995df4bf6c787afc23aaccdb50672cfced532cc6e3e9a252bae5528d8e29b"
+              "bytes": 17347,
+              "sha256": "9263a51404cd0cad12dd6f39825ce65dd774a2e764de706dbc060aac129ce603"
             },
             {
               "path": "crates/jocforge-domain/src/spatial/u04_refinement.rs",
@@ -3117,8 +3132,8 @@
           "test_inventory": [
             {
               "path": "crates/jocforge-domain/src/spatial/production_callback/tests.rs",
-              "bytes": 17370,
-              "sha256": "213995df4bf6c787afc23aaccdb50672cfced532cc6e3e9a252bae5528d8e29b"
+              "bytes": 17347,
+              "sha256": "9263a51404cd0cad12dd6f39825ce65dd774a2e764de706dbc060aac129ce603"
             },
             {
               "path": "crates/jocforge-domain/src/spatial/u04_refinement.rs",

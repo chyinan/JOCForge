@@ -15,7 +15,7 @@ use super::{
     source_flags::SourceControlSnapshotClock,
     source_geometry_outer::{
         CallbackPointResponseError, CompactOuterMatrix, GlobalSourceGeometrySnapshot,
-        produce_callback_point_response,
+        NormalSourceGeometryStage, produce_callback_point_response,
     },
     spatial_audio_state::{
         ComponentStageError, MeterComponentOutputRows, MeterComponentStageProposal,
@@ -109,6 +109,20 @@ pub struct SpatialProductionCallbackInputs<'a> {
     pub parameters: &'a ValidatedComponentParameterProvider,
 }
 
+/// Same-callback continuation when F01E controls and source geometry were staged together.
+pub struct SpatialProductionNormalCallbackInputs<'a> {
+    pub frontend: RenderedFrontendFeatureStageProposal,
+    pub normal_source_geometry: NormalSourceGeometryStage,
+    pub source_control_clock: SourceControlSnapshotClock,
+    pub source_map: &'a Installed48SourceMap,
+    pub p15_geometry: &'a SelectedP15Geometry,
+    pub spatial_control: &'a SpatialControlMachine,
+    pub spatial_audio: &'a SpatialAudioMachine,
+    pub reader_target: &'a ReaderTargetState,
+    pub window: &'a ValidatedWindowQ15Provider,
+    pub parameters: &'a ValidatedComponentParameterProvider,
+}
+
 /// Complete pending values for stages 5–14. No owner is committed or receipt admitted here.
 #[must_use]
 pub struct SpatialProductionCallbackProposal {
@@ -127,6 +141,39 @@ pub struct SpatialProductionCallbackProposal {
     active_target_slots: Box<[u8]>,
     reader_target: ReaderTargetStageProposal,
     component: MeterComponentStageProposal,
+}
+
+/// Continues the existing spatial pipeline from the indivisible normal-control/geometry stage.
+/// The final proposal still contains only pending values; this function commits no owner.
+pub fn continue_spatial_production_callback_from_normal_stage(
+    input: SpatialProductionNormalCallbackInputs<'_>,
+) -> Result<SpatialProductionCallbackProposal, SpatialProductionCallbackError> {
+    let SpatialProductionNormalCallbackInputs {
+        frontend,
+        normal_source_geometry,
+        source_control_clock,
+        source_map,
+        p15_geometry,
+        spatial_control,
+        spatial_audio,
+        reader_target,
+        window,
+        parameters,
+    } = input;
+    let (normal_control, source_geometry) = normal_source_geometry.into_parts();
+    continue_spatial_production_callback(SpatialProductionCallbackInputs {
+        frontend,
+        source_snapshot: NormalControlCallbackSource::Normal(Box::new(normal_control)),
+        source_geometry,
+        source_control_clock,
+        source_map,
+        p15_geometry,
+        spatial_control,
+        spatial_audio,
+        reader_target,
+        window,
+        parameters,
+    })
 }
 
 impl SpatialProductionCallbackProposal {
